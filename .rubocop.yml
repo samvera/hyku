@@ -10,7 +10,6 @@ AllCops:
   Exclude:
     - 'bin/**/*'
     - 'db/**/*'
-    - 'config/**/*'
     - 'vendor/**/*'
 
 Rails:

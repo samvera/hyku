@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  before_action :require_active_account!
+  before_action :require_active_account!, if: :multitenant?
 
   rescue_from Apartment::TenantNotFound do
     redirect_to accounts_path
@@ -28,5 +28,9 @@ class ApplicationController < ActionController::Base
       account = Account.from_request(request)
 
       raise Apartment::TenantNotFound, "No tenant for #{request.host}" unless account
+    end
+
+    def multitenant?
+      Settings.multitenant
     end
 end

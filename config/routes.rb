@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'application_service_status/application_service_status_dashboard'
+
+  get 'configuration/configuration_dashboard'
+
   resources :accounts
   root 'sufia/homepage#index'
 

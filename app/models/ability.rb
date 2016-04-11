@@ -4,10 +4,16 @@ class Ability
   include CurationConcerns::Ability
   include Sufia::Ability
 
-  self.ability_logic += [:everyone_can_create_curation_concerns]
+  self.ability_logic += [:superadmin_permissions, :everyone_can_create_curation_concerns]
 
   def custom_permissions
     can [:create], Account
+  end
+
+  def superadmin_permissions
+    return unless current_user.has_role?(:superadmin)
+
+    can [:manage], :all
   end
 
   def admin_permissions

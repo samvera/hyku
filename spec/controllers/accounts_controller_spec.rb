@@ -174,4 +174,71 @@ RSpec.describe AccountsController, type: :controller do
       end
     end
   end
+
+  context 'as a superadmin' do
+    let(:user) { FactoryGirl.create(:superadmin) }
+    let(:account) { Account.create! valid_attributes }
+
+    describe "GET #index" do
+      it "assigns all accounts as @accounts" do
+        # create these accounts:
+        another_account
+        account
+
+        get :index, {}, valid_session
+        expect(assigns(:accounts)).to match_array [another_account, account]
+      end
+    end
+
+    describe "DELETE #destroy" do
+      it "destroys the requested account" do
+        # initialize the account in the first place
+        account
+
+        expect do
+          delete :destroy, { id: account.to_param }, valid_session
+        end.to change(Account, :count).by(-1)
+      end
+
+      it "redirects to the accounts list" do
+        delete :destroy, { id: account.to_param }, valid_session
+        expect(response).to redirect_to(accounts_url)
+      end
+    end
+
+    describe "GET #show" do
+      it "assigns the requested account as @account" do
+        get :show, { id: account.to_param }, valid_session
+        expect(assigns(:account)).to eq(account)
+      end
+    end
+
+    describe "GET #edit" do
+      it "assigns the requested account as @account" do
+        get :edit, { id: account.to_param }, valid_session
+        expect(assigns(:account)).to eq(account)
+      end
+    end
+
+    describe "PUT #update" do
+      context "with valid params" do
+        let(:new_attributes) do
+          { cname: 'new.example.com' }
+        end
+
+        it "updates the requested account" do
+          put :update, { id: account.to_param, account: new_attributes }, valid_session
+          account.reload
+          expect(account.cname).to eq 'new.example.com'
+        end
+      end
+
+      context "with invalid params" do
+        it "assigns the account as @account" do
+          put :update, { id: account.to_param, account: invalid_attributes }, valid_session
+          expect(assigns(:account)).to eq(account)
+        end
+      end
+    end
+  end
 end

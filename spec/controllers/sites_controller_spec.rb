@@ -27,7 +27,10 @@ RSpec.describe SitesController, type: :controller do
   # Site. As you add validations to Site, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    { application_name: "Custom Name" }
+    {
+      application_name: "Custom Name",
+      institution_name: "Custom Inst Name"
+    }
   end
 
   let(:invalid_attributes) do
@@ -70,13 +73,17 @@ RSpec.describe SitesController, type: :controller do
     describe "PUT #update" do
       context "with valid params" do
         let(:new_attributes) do
-          { application_name: "New Custom Name" }
+          {
+            application_name: "New Custom Name",
+            institution_name: "New Custom Inst Name"
+          }
         end
 
         it "updates the requested site" do
           put :update, { site: new_attributes }, valid_session
           Site.reload
-          expect(Site.application_name).to eq "New Custom Name"
+          expect(site.application_name).to eq "New Custom Name"
+          expect(site.institution_name).to eq "New Custom Inst Name"
         end
 
         it "assigns the requested site as @site" do

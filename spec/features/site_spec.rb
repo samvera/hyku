@@ -24,5 +24,18 @@ RSpec.describe 'Site Configuration' do
         expect(page).to have_css 'head title', text: 'Custom Name', visible: false
       end
     end
+
+    describe 'institution name' do
+      before do
+        Site.update(application_name: 'name')
+      end
+      it 'updates the institution name in the brand bar' do
+        visit edit_site_path
+        fill_in 'Institution name', with: 'Custom Inst Name'
+        click_on 'Update Site'
+        # expect(page).to have_css '.navbar-brand', text: 'Custom Name'
+        expect(Site.instance.reload.institution_name).to eq('Custom Inst Name')
+      end
+    end
   end
 end

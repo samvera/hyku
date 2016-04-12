@@ -82,8 +82,8 @@ RSpec.describe SitesController, type: :controller do
         it "updates the requested site" do
           put :update, { site: new_attributes }, valid_session
           Site.reload
-          expect(site.application_name).to eq "New Custom Name"
-          expect(site.institution_name).to eq "New Custom Inst Name"
+          expect(Site.application_name).to eq "New Custom Name"
+          expect(Site.institution_name).to eq "New Custom Inst Name"
         end
 
         it "assigns the requested site as @site" do

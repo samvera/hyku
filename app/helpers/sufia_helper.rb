@@ -12,5 +12,7 @@ module SufiaHelper
     Site.institution_name || super
   end
 
-  alias institution_name_full institution_name
+  def institution_name_full
+    Site.institution_name_full || super
+  end
 end

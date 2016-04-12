@@ -33,8 +33,9 @@ RSpec.describe 'Site Configuration' do
         visit edit_site_path
         fill_in 'Institution name', with: 'Custom Inst Name'
         click_on 'Update Site'
-        # expect(page).to have_css '.navbar-brand', text: 'Custom Name'
-        expect(Site.instance.reload.institution_name).to eq('Custom Inst Name')
+
+        visit sufia.static_path action: 'agreement'
+        expect(page).to have_content('Custom Inst Name (Custom Inst Name) requires')
       end
     end
   end

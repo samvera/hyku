@@ -7,4 +7,10 @@ module SufiaHelper
   def application_name
     Site.application_name || super
   end
+
+  def institution_name
+    Site.institution_name || super
+  end
+
+  alias institution_name_full institution_name
 end

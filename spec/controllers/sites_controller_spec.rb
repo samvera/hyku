@@ -29,7 +29,8 @@ RSpec.describe SitesController, type: :controller do
   let(:valid_attributes) do
     {
       application_name: "Custom Name",
-      institution_name: "Custom Inst Name"
+      institution_name: "Custom Inst Name",
+      institution_name_full: "Custom Full Inst Name"
     }
   end
 
@@ -75,7 +76,8 @@ RSpec.describe SitesController, type: :controller do
         let(:new_attributes) do
           {
             application_name: "New Custom Name",
-            institution_name: "New Custom Inst Name"
+            institution_name: "New Custom Inst Name",
+            institution_name_full: "New Full Custom Inst Name"
           }
         end
 
@@ -84,6 +86,7 @@ RSpec.describe SitesController, type: :controller do
           Site.reload
           expect(Site.application_name).to eq "New Custom Name"
           expect(Site.institution_name).to eq "New Custom Inst Name"
+          expect(Site.institution_name_full).to eq "New Full Custom Inst Name"
         end
 
         it "assigns the requested site as @site" do

@@ -28,6 +28,7 @@ RSpec.describe 'Site Configuration' do
     describe 'institution name' do
       before do
         Site.update(
+          application_name: 'Test',
           institution_name_full: 'fullname'
         )
       end
@@ -44,6 +45,7 @@ RSpec.describe 'Site Configuration' do
     describe 'institution name full' do
       before do
         Site.update(
+          application_name: 'Test',
           institution_name: 'name'
         )
       end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160411181343) do
+ActiveRecord::Schema.define(version: 20160411212338) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "tenant"
@@ -240,9 +240,11 @@ ActiveRecord::Schema.define(version: 20160411181343) do
 
   create_table "sites", force: :cascade do |t|
     t.string   "application_name"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
     t.integer  "account_id"
+    t.string   "institution_name"
+    t.string   "institution_name_full"
   end
 
   create_table "subject_local_authority_entries", force: :cascade do |t|

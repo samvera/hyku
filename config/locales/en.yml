@@ -21,3 +21,8 @@
 
 en:
   hello: "Hello world"
+
+  activerecord:
+    attributes:
+      site:
+        institution_name_full: Full institution name

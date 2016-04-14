@@ -51,7 +51,7 @@ RSpec.describe 'Site Configuration' do
       end
       it 'updates the full institution name in the agreement text' do
         visit edit_site_path
-        fill_in 'Institution name full', with: 'Custom Full Inst Name'
+        fill_in 'Full institution name', with: 'Custom Full Inst Name'
         click_on 'Update Site'
 
         visit sufia.static_path action: 'agreement'

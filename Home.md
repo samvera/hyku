@@ -12,3 +12,16 @@ Some `Roles` are scoped to `Sites`; some aren't. There is a many-to-many relatio
 
 `Abilities` use `Roles` to make authorization decisions on `Resources` (terminology from the rolify gem).
 
+# Using account-switching in development
+
+Set up some localhost IPs (one per tenant) in /etc/hosts, e.g.:
+
+```
+127.0.2.1       foo
+127.0.3.1       bar
+```
+
+Flip the `multitenancy.enabled` setting in (config/settings.yml)[https://github.com/projecthydra-labs/hybox/blob/master/config/settings.yml#L2] to `true` (but don't commit this later)
+
+Bind the rails server to 0.0.0.0 so that all of your tenants respond to HTTP requests: `rails s -b 0.0.0.0` 
+

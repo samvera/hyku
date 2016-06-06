@@ -3,9 +3,9 @@
  *= require select2
  *= require_self
 */
-
-@import "hybox";
-@import "bootstrap-sprockets";
+@import 'variables';
+@import 'bootstrap-sprockets';
 @import 'bootstrap';
-@import "font-awesome";
+@import 'font-awesome';
 @import 'sufia/sufia';
+@import 'hybox';

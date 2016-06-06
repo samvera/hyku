@@ -46,15 +46,39 @@
     margin-bottom: 20px;
   }
 
-  .btn-primary {
+  .btn-sign-up {
     background-color: #7ab55c;
-    border: 0;
+    border-color: #7ab55c;
     border-radius: 3px;
-    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    color: #fff;
     font-size: 0.7em;
     margin-top: 15px;
     padding-left: 20px;
     padding-right: 20px;
+  }
+
+  .btn-sign-up:hover,
+  .btn-sign-up:focus,
+  .btn-sign-up:active,
+  .btn-sign-up.active {
+    background-color: #6daa4d;
+    border-color: #619945;
+  }
+
+  .btn-sign-up.disabled:hover,
+  .btn-sign-up.disabled:focus,
+  .btn-sign-up.disabled:active,
+  .btn-sign-up.disabled.active,
+  .btn-sign-up[disabled]:hover,
+  .btn-sign-up[disabled]:focus,
+  .btn-sign-up[disabled]:active,
+  .btn-sign-up[disabled].active,
+  fieldset[disabled] .btn-sign-up:hover,
+  fieldset[disabled] .btn-sign-up:focus,
+  fieldset[disabled] .btn-sign-up:active,
+  fieldset[disabled] .btn-sign-up.active {
+    background-color: #7ab55c;
+    border-color: #7ab55c;
   }
 }
 

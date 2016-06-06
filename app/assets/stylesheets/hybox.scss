@@ -80,6 +80,34 @@
   margin-right: auto;
 }
 
+.product-features {
+  background: #f4f4f4;
+  border-top: 1px solid #ddd;
+  font-family: "Lato", Helvetica, sans-serif;
+  padding: 20px 0 50px;
+
+  .grid-row {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .grid-item {
+    padding-left: 40px;
+    padding-right: 40px;
+    text-align: center;
+  }
+
+  .grid-item p {
+    font-size: 1em;
+    line-height: 1.5em;
+  }
+
+  .grid-item .heading {
+    color: #555;
+    font-size: 1.4em;
+  }
+}
+
 .graph-container {
   height: 300px; // height must be specified or flot.js raises an error.
   width: 60%; // height must be specified or flot.js raises an error.

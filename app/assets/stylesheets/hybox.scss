@@ -1,27 +1,90 @@
-$brand-primary: #629dd1 !default;
-$jumbotron-heading-font-size: 2.5em;
-$jumbotron-heading-color: #fff;
-$jumbotron-color: #d8d8d8;
+
+#masthead,
+#footer {
+  background-color: #3c3c3c;
+  border: 0;
+
+  a,
+  p {
+    color: #ccc;
+    font-weight: 500;
+  }
+}
+
+#masthead {
+  #logo {
+    margin-left: 10px;
+  }
+
+  .navbar-right {
+    margin-right: 10px;
+  }
+
+  .glyphicon {
+    display: none;
+  }
+}
 
 .jumbotron {
-  background-image: url("http://hydrainabox.projecthydra.org/images/dark_tint.png"), url("http://hydrainabox.projecthydra.org/images/fractal.jpg");
-
-  font-family: "Roboto", Helvetica, sans-serif;
+  background-color: #eee;
+  background: url('white-cloud-background.jpg') repeat-x;
+  border: 0;
+  font-family: "Lato", Helvetica, sans-serif;
+  margin-bottom: 0;
   text-align: center;
 
   h1 {
-    font-weight: 300;
-    letter-spacing: 0.125em;
+    color: #30373b;
+    font-weight: 700;
+    letter-spacing: 0.075em;
     text-transform: uppercase;
   }
+
+  p {
+    color: #444;
+    font-size: 1.6em;
+    margin-bottom: 20px;
+  }
+
+  .btn-primary {
+    background-color: #7ab55c;
+    border: 0;
+    border-radius: 3px;
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 0.7em;
+    margin-top: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+#footer {
+  border-radius: 0;
+  font-size: 0.9em;
+  min-height: 40px;
+  vertical-align: middle;
+
+  p {
+    margin: 10px;
+    text-align: center;
+
+    strong {
+      font-weight: 500;
+    }
+  }
+}
+
+.copyright {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .graph-container {
   height: 300px; // height must be specified or flot.js raises an error.
   width: 60%; // height must be specified or flot.js raises an error.
 
-  .graph { 
+  .graph {
     height: 100%;
   }
 }
-

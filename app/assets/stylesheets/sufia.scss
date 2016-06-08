@@ -4,8 +4,9 @@
  *= require_self
 */
 
-@import "hybox";
+@import "variables";
 @import "bootstrap-sprockets";
-@import 'bootstrap';
+@import "bootstrap";
 @import "font-awesome";
-@import 'sufia/sufia';
+@import "sufia/sufia";
+@import "hybox";

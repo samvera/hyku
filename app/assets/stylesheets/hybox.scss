@@ -1,18 +1,102 @@
-$brand-primary: #629dd1 !default;
-$jumbotron-heading-font-size: 2.5em;
-$jumbotron-heading-color: #fff;
-$jumbotron-color: #d8d8d8;
+#masthead,
+footer.navbar {
+  background-color: $header-background-color;
+  border: 0;
+
+  a,
+  p {
+    color: $color-medium-gray;
+    font-weight: 500;
+  }
+}
+
+#masthead {
+  #logo {
+    margin-left: 10px;
+  }
+
+  .navbar-right {
+    margin-right: 10px;
+  }
+
+  .glyphicon {
+    display: none;
+  }
+}
 
 .jumbotron {
-  background-image: url("http://hydrainabox.projecthydra.org/images/dark_tint.png"), url("http://hydrainabox.projecthydra.org/images/fractal.jpg");
-
-  font-family: "Roboto", Helvetica, sans-serif;
+  background: url('white-cloud-background.jpg') repeat-x;
+  background-color: $gray-lighter;
+  border: 0;
+  font-family: $primary-font-family;
+  margin-bottom: 0;
   text-align: center;
 
   h1 {
-    font-weight: 300;
-    letter-spacing: 0.125em;
+    color: $jumbotron-heading-color;
+    font-size: $jumbotron-heading-font-size;
+    font-weight: 700;
+    letter-spacing: 0.075em;
     text-transform: uppercase;
+  }
+
+  p {
+    color: $jumbotron-sub-heading-color;
+    font-size: 1.6em;
+    margin-bottom: 20px;
+  }
+
+  .btn-sign-up {
+    @include button-variant($classic-white, $jumbotron-button-background-color, $jumbotron-button-background-color);
+    border-radius: 3px;
+    font-size: 0.7em;
+    margin-top: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+footer.navbar {
+  border-radius: 0;
+  font-size: 0.9em;
+  min-height: 40px;
+  vertical-align: middle;
+
+  p {
+    margin: 10px;
+    text-align: center;
+
+    strong {
+      font-weight: 500;
+    }
+  }
+}
+
+.product-features {
+  background: $features-section-background-color;
+  border-top: 1px solid $features-section-border-color;
+  font-family: $primary-font-family;
+  padding: 20px 0 50px;
+
+  .grid-row {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .grid-item {
+    padding-left: 40px;
+    padding-right: 40px;
+    text-align: center;
+  }
+
+  .heading {
+    color: $gray;
+    font-size: 1.4em;
+  }
+
+  p {
+    font-size: 1em;
+    line-height: 1.5em;
   }
 }
 
@@ -20,8 +104,7 @@ $jumbotron-color: #d8d8d8;
   height: 300px; // height must be specified or flot.js raises an error.
   width: 60%; // height must be specified or flot.js raises an error.
 
-  .graph { 
+  .graph {
     height: 100%;
   }
 }
-

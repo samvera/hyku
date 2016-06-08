@@ -1,12 +1,11 @@
-
 #masthead,
-#footer {
-  background-color: #3c3c3c;
+footer.navbar {
+  background-color: $header-background-color;
   border: 0;
 
   a,
   p {
-    color: #ccc;
+    color: $color-medium-gray;
     font-weight: 500;
   }
 }
@@ -26,63 +25,38 @@
 }
 
 .jumbotron {
-  background-color: #eee;
   background: url('white-cloud-background.jpg') repeat-x;
+  background-color: $gray-lighter;
   border: 0;
-  font-family: "Lato", Helvetica, sans-serif;
+  font-family: $primary-font-family;
   margin-bottom: 0;
   text-align: center;
 
   h1 {
-    color: #30373b;
+    color: $jumbotron-heading-color;
+    font-size: $jumbotron-heading-font-size;
     font-weight: 700;
     letter-spacing: 0.075em;
     text-transform: uppercase;
   }
 
   p {
-    color: #444;
+    color: $jumbotron-sub-heading-color;
     font-size: 1.6em;
     margin-bottom: 20px;
   }
 
   .btn-sign-up {
-    background-color: #7ab55c;
-    border-color: #7ab55c;
+    @include button-variant($classic-white, $jumbotron-button-background-color, $jumbotron-button-background-color);
     border-radius: 3px;
-    color: #fff;
     font-size: 0.7em;
     margin-top: 15px;
     padding-left: 20px;
     padding-right: 20px;
   }
-
-  .btn-sign-up:hover,
-  .btn-sign-up:focus,
-  .btn-sign-up:active,
-  .btn-sign-up.active {
-    background-color: #6daa4d;
-    border-color: #619945;
-  }
-
-  .btn-sign-up.disabled:hover,
-  .btn-sign-up.disabled:focus,
-  .btn-sign-up.disabled:active,
-  .btn-sign-up.disabled.active,
-  .btn-sign-up[disabled]:hover,
-  .btn-sign-up[disabled]:focus,
-  .btn-sign-up[disabled]:active,
-  .btn-sign-up[disabled].active,
-  fieldset[disabled] .btn-sign-up:hover,
-  fieldset[disabled] .btn-sign-up:focus,
-  fieldset[disabled] .btn-sign-up:active,
-  fieldset[disabled] .btn-sign-up.active {
-    background-color: #7ab55c;
-    border-color: #7ab55c;
-  }
 }
 
-#footer {
+footer.navbar {
   border-radius: 0;
   font-size: 0.9em;
   min-height: 40px;
@@ -98,16 +72,10 @@
   }
 }
 
-.copyright {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 .product-features {
-  background: #f4f4f4;
-  border-top: 1px solid #ddd;
-  font-family: "Lato", Helvetica, sans-serif;
+  background: $features-section-background-color;
+  border-top: 1px solid $features-section-border-color;
+  font-family: $primary-font-family;
   padding: 20px 0 50px;
 
   .grid-row {
@@ -121,14 +89,14 @@
     text-align: center;
   }
 
-  .grid-item p {
-    font-size: 1em;
-    line-height: 1.5em;
+  .heading {
+    color: $gray;
+    font-size: 1.4em;
   }
 
-  .grid-item .heading {
-    color: #555;
-    font-size: 1.4em;
+  p {
+    font-size: 1em;
+    line-height: 1.5em;
   }
 }
 

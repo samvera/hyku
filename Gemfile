@@ -47,7 +47,6 @@ group :development, :test do
   gem 'fcrepo_wrapper', '~> 0.4'
 
   gem 'rubocop', '~> 0.40'
-  gem 'rubocop-rspec', '~> 1.5'
 end
 
 group :development do
@@ -61,7 +60,6 @@ end
 gem 'blacklight', '~> 6.2'
 
 gem 'sufia', git: 'https://github.com/projecthydra/sufia.git'
-gem 'breadcrumbs_on_rails', git: 'https://github.com/weppos/breadcrumbs_on_rails.git'
 gem 'rsolr', '~> 1.1.2'
 
 gem 'devise'

@@ -30,12 +30,6 @@ GIT
       tinymce-rails-imageupload (~> 4.0.16.beta)
       yaml_db (~> 0.2)
 
-GIT
-  remote: https://github.com/weppos/breadcrumbs_on_rails.git
-  revision: 8d3ef09135d6673788c477120702076cd28670ab
-  specs:
-    breadcrumbs_on_rails (3.0.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -157,6 +151,7 @@ GEM
     bootstrap-sass (3.3.7)
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
+    breadcrumbs_on_rails (3.0.1)
     browse-everything (0.10.4)
       bootstrap-sass
       dropbox-sdk (>= 1.6.2)
@@ -594,8 +589,6 @@ GEM
       rainbow (>= 1.99.1, < 3.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (~> 1.0, >= 1.0.1)
-    rubocop-rspec (1.6.0)
-      rubocop (>= 0.42.0)
     ruby-box (1.15.0)
       addressable
       json
@@ -716,7 +709,6 @@ DEPENDENCIES
   active_elastic_job
   apartment
   blacklight (~> 6.2)
-  breadcrumbs_on_rails!
   byebug
   capybara
   coffee-rails (~> 4.1.0)
@@ -752,7 +744,6 @@ DEPENDENCIES
   rspec
   rspec-rails
   rubocop (~> 0.40)
-  rubocop-rspec (~> 1.5)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   secure_headers

@@ -1,4 +1,8 @@
 class ApplicationController < ActionController::Base
+  # Prevent CSRF attacks by raising an exception.
+  # For APIs, you may want to use :null_session instead.
+  protect_from_forgery with: :exception, prepend: true
+
   force_ssl if: :ssl_configured?
 
   helper Openseadragon::OpenseadragonHelper
@@ -13,10 +17,6 @@ class ApplicationController < ActionController::Base
 
   include CurationConcerns::ThemedLayoutController
   layout 'sufia-one-column'
-
-  # Prevent CSRF attacks by raising an exception.
-  # For APIs, you may want to use :null_session instead.
-  protect_from_forgery with: :exception
 
   helper_method :peek_enabled?
 

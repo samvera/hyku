@@ -23,6 +23,8 @@ class ApplicationController < ActionController::Base
   before_action :require_active_account!, if: :multitenant?
   before_action :set_account_specific_connections!
 
+  before_action :add_honeybadger_context
+
   rescue_from Apartment::TenantNotFound do
     raise ActionController::RoutingError, 'Not Found' unless worker? || base_host?
     redirect_to splash_path
@@ -67,6 +69,10 @@ class ApplicationController < ActionController::Base
       payload[:request_id] = request.uuid
       payload[:user_id] = current_user.id if current_user
       payload[:account_id] = current_account.cname if current_account
+    end
+
+    def add_honeybadger_context
+      Honeybadger.context(user_email: current_user.email) if current_user
     end
 
     def ssl_configured?

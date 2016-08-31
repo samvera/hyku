@@ -1,1 +1,4 @@
 ---
+user_informer:
+  enabled: true
+  info: "Error ID: {{error_id}}"

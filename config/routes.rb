@@ -44,20 +44,6 @@ Rails.application.routes.draw do
   end
 
   mount Peek::Railtie => '/peek'
-
-  namespace :admin do
-    resources :features, only: [:index] do
-      resources :strategies, only: [:update, :destroy]
-    end
-  end
-
-  namespace :admin do
-    resources :features, only: [:index] do
-      resources :strategies, only: [:update, :destroy]
-    end
-  end
-
-  mount Flip::Engine => '/admin/features'
   mount Riiif::Engine => '/images', as: 'riiif'
 
   # This must be the very last route in the file because it has a catch-all route for 404 errors.

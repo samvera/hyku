@@ -79,7 +79,7 @@ gem 'peek-pg'
 gem 'peek-redis'
 gem 'peek-sidekiq'
 
-gem 'flip'
+gem 'flipflop', git: 'https://github.com/jcoyne/flipflop.git', branch: 'hydra'
 gem 'lograge'
 
 gem 'zk'

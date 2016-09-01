@@ -8,9 +8,9 @@
       </li>
     <% end %>
 
-    <% if can? :manage, Feature %>
+    <% if can? :manage, Sufia::Feature %>
       <li>
-        <%= link_to main_app.admin_features_path do %>
+        <%= link_to sufia.admin_features_path do %>
           <span class="fa fa-tasks"></span> Features
         <% end %>
       </li>

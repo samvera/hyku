@@ -1,6 +1,14 @@
 GIT
+  remote: https://github.com/jcoyne/flipflop.git
+  revision: 0eecddade9890548c92b1e8aa681512f1db01469
+  branch: hydra
+  specs:
+    flipflop (2.2.1)
+      activesupport (>= 4.0)
+
+GIT
   remote: https://github.com/projecthydra/sufia.git
-  revision: 258fb348cd77f44ba83a05263e8c1942da85e03c
+  revision: b717c0c70282a2811e8b8a46dc2f8006887b4eab
   specs:
     sufia (7.1.0)
       acts_as_follower (>= 0.1.1, < 0.3)
@@ -11,7 +19,7 @@ GIT
       carrierwave (~> 0.9)
       curation_concerns (~> 1.5)
       daemons (~> 1.1)
-      flip (~> 1.1)
+      flipflop (~> 2.2)
       flot-rails (~> 0.0.6)
       font-awesome-rails (~> 4.2)
       hydra-batch-edit (~> 2.0)
@@ -261,9 +269,6 @@ GEM
       faraday (>= 0.7.4, < 0.10)
     fcrepo_wrapper (0.6.0)
       ruby-progressbar
-    flip (1.1.0)
-      activesupport (>= 3.0, < 5.1)
-      i18n
     flot-rails (0.0.7)
       jquery-rails
     fog-aws (0.11.0)
@@ -734,7 +739,7 @@ DEPENDENCIES
   devise-guests (~> 0.3)
   factory_girl_rails
   fcrepo_wrapper (~> 0.4)
-  flip
+  flipflop!
   fog-aws
   honeybadger (~> 2.0)
   iiif_manifest (~> 0.1.2)

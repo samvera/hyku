@@ -14,7 +14,7 @@ class ContentBlocksController < ApplicationController
   # PATCH/PUT /sites/1.json
   def update
     respond_to do |format|
-      if @site.update(site_params)
+      if @site.update_content(site_params)
         format.html { redirect_to edit_site_content_blocks_path, notice: 'Site was successfully updated.' }
       else
         format.html { render :edit }
@@ -32,6 +32,7 @@ class ContentBlocksController < ApplicationController
     def site_params
       params.require(:site).permit(:announcement_text,
                                    :marketing_text,
-                                   :featured_researcher)
+                                   :featured_researcher,
+                                   :about_page)
     end
 end

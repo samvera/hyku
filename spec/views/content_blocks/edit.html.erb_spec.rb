@@ -14,6 +14,7 @@ RSpec.describe "content_blocks/edit", type: :view do
       assert_select "textarea#site_announcement_text[name=?]", "site[announcement_text]"
       assert_select "textarea#site_marketing_text[name=?]", "site[marketing_text]"
       assert_select "textarea#site_featured_researcher[name=?]", "site[featured_researcher]"
+      assert_select "textarea#site_about_page[name=?]", "site[about_page]"
     end
   end
 end

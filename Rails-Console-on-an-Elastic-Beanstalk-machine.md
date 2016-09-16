@@ -5,5 +5,5 @@ $ BUNDLE_PATH=/opt/rubies/ruby-2.3.1/lib/ruby/gems/2.3.0/ bundle exec rails c pr
 
 If you want to switch to a specific tenant:
 ```ruby
-Account.use_account!('nacho.demo.hydrainabox.org')
+AccountElevator.switch!('nacho.demo.hydrainabox.org')
 ```

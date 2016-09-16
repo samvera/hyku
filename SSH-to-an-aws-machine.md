@@ -1,0 +1,11 @@
+1. Visit https://console.aws.amazon.com and sign in.
+1. Click "EC2"
+1. Click "Security Groups" in the sidebar
+1. Then select "demo-bastion"
+1. Select "Inbound" from the tab below
+1. Edit the rules and set "Source" to "My IP"
+1. Click "Instances" in the sidebar
+1. Click "demo-bastion" from the list
+1. In the "Description" tab below copy the "Public DNS" 
+1. In your console type `ssh -A ec2-user@<paste DNS>`
+1. Now you can ssh to any other machine in the cluster.

@@ -1,0 +1,165 @@
+version: '2'
+
+volumes:
+  fcrepo:
+  solr:
+  db:
+  redis:
+  exhibitor:
+  zookeeper:
+  app:
+
+networks:
+  external:
+  internal:
+
+services:
+  zookeeper_primary:
+    extends: zookeeper
+    volumes:
+      - zookeeper:/zookeeper/data
+
+  zookeeper:
+    image: netflixoss/exhibitor:1.5.2
+    expose:
+      - 2181
+      - 2888
+      - 3888
+      - 8080
+    volumes:
+      - exhibitor:/exhibitor
+    networks:
+      internal:
+        aliases:
+          - zookeeper_cluster
+
+  solr:
+    image: solr
+    command: solr -c -f -z zookeeper_cluster:2181
+    depends_on:
+      - zookeeper_primary
+    expose:
+      - 8983
+    volumes:
+      - .:/app
+      - solr:/data
+    networks:
+      internal:
+
+  fcrepo:
+    image: cbeer/fcrepo4
+    expose:
+      - 8983
+    volumes:
+      - fcrepo:/data
+    environment:
+      - JAVA_OPTS="${JAVA_OPTS} -Dfcrepo.modeshape.configuration=\"classpath:/config/minimal-default/repository.json\""
+    networks:
+      internal:
+
+  db:
+    image: postgres
+    volumes:
+      - db:/var/lib/postgresql/data
+    networks:
+      internal:
+
+  app:
+    build: .
+    environment:
+      - REDIS_HOST=redis_cluster
+      - REDIS_SENTINEL_HOST=redis_sentinel
+      - DATABASE_URL=postgresql://postgres@db/postgres
+      - FEDORA_URL=http://fcrepo:8983/fedora/rest
+      - SOLR_URL=http://solr:8983/solr/
+      - SETTINGS__ACTIVE_JOB__QUEUE_ADAPTER=sidekiq
+      - SETTINGS__SOLR__URL=http://solr:8983/solr/
+      - SETTINGS__ZOOKEEPER__CONNECTION_STR=zookeeper_cluster:2181/configs
+      - RAILS_ENV=production
+      - RAILS_SERVE_STATIC_FILES=true
+      - RAILS_LOG_TO_STDOUT=true
+      - SECRET_KEY_BASE=asdf
+      - RAILS_CACHE_STORE_URL=memcache
+    volumes:
+      - app:/data/public/uploads
+    networks:
+      internal:
+
+  web:
+    extends: app
+    command: bundle exec rails server -p 3000 -b '0.0.0.0'
+    depends_on:
+      - db
+      - solr
+      - fcrepo
+      - redis_sentinel
+      - zookeeper_primary
+      - memcache
+      - initialize_app
+    expose:
+      - 3000
+
+  workers:
+    extends: app
+    command: bundle exec sidekiq
+    depends_on:
+      - db
+      - solr
+      - fcrepo
+      - redis_sentinel
+      - zookeeper_primary
+  
+  initialize_app:
+    extends: app
+    restart: on-failure
+    command: bundle exec rails zookeeper:upload
+    depends_on:
+      - zookeeper_primary
+
+  lb:
+    image: dockercloud/haproxy:1.5.3
+    links:
+      - web
+    environment:
+      - DOCKER_TLS_VERIFY
+      - DOCKER_HOST
+      - DOCKER_CERT_PATH
+    volumes:
+      - $DOCKER_CERT_PATH:$DOCKER_CERT_PATH
+    ports:
+      - 8080:80
+      - 8443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      internal:
+      external:
+
+  redis_primary:
+    extends: redis
+    command: redis-server
+    volumes:
+      - redis:/data
+
+  redis:
+    image: redis:3
+    command: redis-server --slaveof redis_primary 6379
+    networks:
+      internal:
+        aliases:
+          - redis_cluster
+
+  redis_sentinel:
+    image: s7anley/redis-sentinel-docker
+    environment:
+      - MASTER=redis_primary
+      - MASTER_NAME=redis_cluster
+    links:
+      - redis_primary
+    networks:
+      internal:
+
+  memcache:
+    image: memcached
+    networks:
+      internal:

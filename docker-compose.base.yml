@@ -1,0 +1,37 @@
+version: '2'
+
+volumes:
+  fcrepo:
+  solr:
+  db:
+  redis:
+  exhibitor:
+  zookeeper:
+  app:
+
+networks:
+  external:
+  internal:
+
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    environment:
+      - REDIS_HOST=redis_cluster
+      - DATABASE_URL=postgresql://postgres@db/postgres
+      - FEDORA_URL=http://fcrepo:8983/fedora/rest
+      - SOLR_URL=http://solr:8983/solr/
+      - SETTINGS__ACTIVE_JOB__QUEUE_ADAPTER=sidekiq
+      - SETTINGS__SOLR__URL=http://solr:8983/solr/
+      - SETTINGS__ZOOKEEPER__CONNECTION_STR=zookeeper_cluster:2181/configs
+      - RAILS_ENV=production
+      - RAILS_SERVE_STATIC_FILES=true
+      - RAILS_LOG_TO_STDOUT=true
+      - SECRET_KEY_BASE=asdf
+      - RAILS_CACHE_STORE_URL=memcache
+    volumes:
+      - .:/data
+      - app:/app
+    networks:
+      internal:

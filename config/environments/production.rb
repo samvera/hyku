@@ -54,8 +54,9 @@ Rails.application.configure do
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
   require 'active_job/queue_adapters/better_active_elastic_job_adapter'
-   config.active_job.queue_adapter     = :better_active_elastic_job
+  config.active_job.queue_adapter     = Settings.active_job.queue_adapter
   # config.active_job.queue_name_prefix = "lerna_#{Rails.env}"
+
   config.action_mailer.perform_caching = false
 
   # Ignore bad email addresses and do not raise email delivery errors.

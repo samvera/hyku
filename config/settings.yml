@@ -39,6 +39,9 @@ solr:
 zookeeper:
   connection_str: "localhost:9983/configs"
 
+active_job:
+  queue_adapter: :async
+
 active_job_queue:
   url:
 

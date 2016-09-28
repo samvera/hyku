@@ -37,6 +37,11 @@
                 <%= f.text_area :featured_researcher, value: f.object.featured_researcher.value, class: 'form-control tinymce', rows: 20, cols: 120 %>
             </div>
 
+            <div class="field form-group">
+              <%= f.label :about_page %><br>
+              <%= f.text_area :about_page, value: f.object.content_by_name('about_page').value, class: 'form-control tinymce', rows: 20, cols: 120 %>
+            </div>
+
             <%= tinymce_assets %>
             <%= tinymce %>
         </div>

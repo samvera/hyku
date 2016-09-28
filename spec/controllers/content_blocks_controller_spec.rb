@@ -27,7 +27,8 @@ RSpec.describe ContentBlocksController, type: :controller do
     {
       announcement_text: 'This is announcement text!',
       marketing_text: 'This is marketing text!',
-      featured_researcher: 'This is featured researcher!'
+      featured_researcher: 'This is featured researcher!',
+      about_page: 'This page is about us!'
     }
   end
 
@@ -65,7 +66,8 @@ RSpec.describe ContentBlocksController, type: :controller do
           {
             announcement_text: 'This is new announcement text!',
             marketing_text: 'This is new marketing text!',
-            featured_researcher: 'This is a new featured researcher!'
+            featured_researcher: 'This is a new featured researcher!',
+            about_page: 'This is a new page about us!'
           }
         end
 
@@ -81,12 +83,17 @@ RSpec.describe ContentBlocksController, type: :controller do
           FactoryGirl.create(:content_block, name: 'featured_researcher')
         end
 
+        let!(:about) do
+          FactoryGirl.create(:content_block, name: 'about_page')
+        end
+
         it "updates the requested site" do
           put :update, params: { site: new_attributes }
           Site.reload
           expect(Site.announcement_text.value).to eq "This is new announcement text!"
           expect(Site.marketing_text.value).to eq "This is new marketing text!"
           expect(Site.featured_researcher.value).to eq "This is a new featured researcher!"
+          expect(Site.content_by_name('about_page').value).to eq "This is a new page about us!"
         end
 
         it "assigns the requested site as @site" do

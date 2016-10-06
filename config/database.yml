@@ -1,17 +1,22 @@
-# SQLite version 3.x
-#   gem install sqlite3
+# PostgreSQL database
+#   gem install pg
 #
-#   Ensure the SQLite 3 gem is defined in your Gemfile
-#   gem 'sqlite3'
+#   Ensure the PostgreSQL gem is defined in your Gemfile
+#   gem 'pg'
 #
 default: &default
   adapter: postgresql
   pool: 5
   timeout: 5000
+  encoding: unicode
+  username: <%= ENV['RDS_USERNAME'] %>
+  password: <%= ENV['RDS_PASSWORD'] %>
+  host: <%= ENV['RDS_HOSTNAME'] || 'localhost' %>
+  port: <%= ENV['RDS_PORT'] || 5432 %>
 
 development:
   <<: *default
-  database: development
+  database: <%= ENV['RDS_DEVELOPMENT_DB_NAME'] || 'development' %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -22,9 +27,4 @@ test:
 
 production:
   <<: *default
-  encoding: unicode
   database: <%= ENV['RDS_DB_NAME'] %>
-  username: <%= ENV['RDS_USERNAME'] %>
-  password: <%= ENV['RDS_PASSWORD'] %>
-  host: <%= ENV['RDS_HOSTNAME'] %>
-  port: <%= ENV['RDS_PORT'] %>

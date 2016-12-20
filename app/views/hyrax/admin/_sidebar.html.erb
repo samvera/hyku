@@ -67,6 +67,23 @@
       <span class="fa fa-sitemap"></span> <%= t('hyrax.admin.sidebar.admin_sets') %>
     <% end %>
 
+    <li>
+      <a role="button" class="collapsed collapse-toggle" data-toggle="collapse" href="#collapseWorkflows" aria-expanded="false" aria-controls="collapseWorkflows">
+        <span class="fa fa-code-fork"></span>
+        <span><%= t('hyrax.admin.sidebar.workflow') %></span>
+      </a>
+      <% workflows_class = 'collapse ' unless menu.workflows_section? %>
+      <ul class="<%= workflows_class %>nav nav-pills nav-stacked" id="collapseWorkflows">
+        <%= menu.nav_link(hyrax.admin_workflow_roles_path) do %>
+          <span class="fa fa-users"></span> <%= t('hyrax.admin.sidebar.workflow_roles') %>
+        <% end %>
+
+        <%= menu.nav_link(hyrax.admin_workflows_path) do %>
+          <span class="fa fa-flag"></span> <%= t('hyrax.admin.sidebar.workflow_review') %>
+        <% end %>
+      </ul>
+    </li>
+
     <% if can?(:manage, Role) || can?(:manage, User) %>
     <li>
       <a role="button" class="collapsed collapse-toggle" data-toggle="collapse" href="#collapseRoles" aria-expanded="false" aria-controls="collapseRoles">

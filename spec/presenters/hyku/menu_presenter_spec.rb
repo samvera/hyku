@@ -54,6 +54,22 @@ RSpec.describe Hyku::MenuPresenter do
     end
   end
 
+  describe "#workflows_section?" do
+    before do
+      allow(context).to receive(:controller_name).and_return(controller_name)
+      allow(context).to receive(:controller).and_return(controller)
+    end
+    subject { instance.workflows_section? }
+    context "for the WorkflowRolesController" do
+      let(:controller) { Hyrax::Admin::WorkflowRolesController.new }
+      it { is_expected.to be true }
+    end
+    context "for the Admin::UsersController" do
+      let(:controller) { Admin::UsersController.new }
+      it { is_expected.to be false }
+    end
+  end
+
   describe "#roles_and_permissions_section?" do
     before do
       allow(context).to receive(:controller_name).and_return(controller_name)

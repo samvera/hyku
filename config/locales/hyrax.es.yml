@@ -6,3 +6,6 @@ es:
     account_name:       "Hydra-en-una-Caja Cuenta ID"
     directory:
       suffix:           "@hydrainabox.org"
+    admin:
+      workflow_roles:
+        header: "Funciones del Flujo de Trabajo"

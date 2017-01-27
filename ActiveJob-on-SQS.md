@@ -1,4 +1,4 @@
 ## How does activejob work on sqs
 
 ## How does activejob work with tenants
-`lib/active_job_tenant.rb`
+the `config/initializers/apartment_activejob.rb` initializer includes `ActiveJobTenant` onto `ActiveJob::Base`.  This module adds a `tenant` key on the queue messages and calls `Apartment::Tenant.switch` around the `perform` method.

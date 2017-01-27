@@ -8,8 +8,9 @@ end
 ```
 
 ## If the solr collections were deleted
-First find the accounts with missing collections:
+Find the accounts with missing collections and submit CreateSolrCollectionJob for each
 ```ruby
 accounts_to_create = Account.all.map { |a| a.switch { a unless a.solr_endpoint.ping } }.compact
 accounts_to_create.map { |account| CreateSolrCollectionJob.perform_later(account) }
 ```
+When the jobs have completed each account should have a collection again.

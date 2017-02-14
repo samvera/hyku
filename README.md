@@ -19,6 +19,9 @@ bin/setup
 DISABLE_REDIS_CLUSTER=true bundle exec sidekiq
 DISABLE_REDIS_CLUSTER=true bundle exec rails server -b 0.0.0.0
 ```
+### For testing
+
+See the [Hyku Development Guide](wiki/Hyku-Development-Guide) for how to run tests.
 
 ### On AWS
 

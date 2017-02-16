@@ -27,6 +27,8 @@ class ImportWorkFromPurlJob < ActiveJob::Base
     model = model_to_create(attributes)
 
     CreateWorkJob.perform_later(user, model, attributes, log)
+  rescue Faraday::ResourceNotFound
+    Rails.logger.error "Unable to fetch #{druid} from purl."
   end
 
   private

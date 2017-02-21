@@ -3,6 +3,7 @@
 1. `cd /var/app/current`
 1. Run this:
 ```
-BUNDLE_PATH=/opt/rubies/ruby-2.3.1/lib/ruby/gems/2.3.0/ RAILS_ENV=production DISABLE_REDIS_CLUSTER=true \
-bundle exec bin/import_from_purl nacho.demo.hydrainabox.org jcoyne85@stanford.edu ~/select_band.txt
+BUNDLE_PATH=/opt/rubies/ruby-2.3.1/lib/ruby/gems/2.3.0/ RAILS_ENV=production \
+DISABLE_REDIS_CLUSTER=true bundle exec bin/import_from_purl \
+nacho.demo.hydrainabox.org jcoyne85@stanford.edu ~/select_band.txt
 ```

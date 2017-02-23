@@ -1,3 +1,11 @@
+## Run a query for bad data in every database schema:
+```ruby
+Account.all.map do |a|
+  Apartment::Tenant.switch!(a.tenant)
+  [ a.cname, Hyrax::PermissionTemplate.all.pluck(:admin_set_id) ]
+end.select { |row| row.last.size > 1 }
+```
+
 ## If the CreateSolrCollectionJob failed
 Then you'll have a bunch of accounts without solr collections. These are not useful. Clean them up with:
 ```ruby

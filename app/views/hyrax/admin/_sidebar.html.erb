@@ -34,79 +34,79 @@
     <% end %>
   </li>
 
-    <li class="h5">Configuration</li>
-    <li>
-      <%= menu.collapsable_section t('hyrax.admin.sidebar.settings'),
-                                   icon_class: "fa fa-cog",
-                                   id: 'collapseSettings',
-                                   open: menu.user_activity_section? do %>
+  <li class="h5">Configuration</li>
+  <li>
+    <%= menu.collapsable_section t('hyrax.admin.sidebar.settings'),
+                                 icon_class: "fa fa-cog",
+                                 id: 'collapseSettings',
+                                 open: menu.user_activity_section? do %>
 
-        <% if can? :manage, Site %>
-          <%= menu.nav_link(main_app.edit_site_labels_path) do %>
-            <span class="fa fa-institution"></span> <%= t('hyrax.admin.sidebar.labels') %>
-          <% end %>
-          <%= menu.nav_link(main_app.edit_site_appearances_path) do %>
-            <span class="fa fa-paint-brush"></span> <%= t('hyrax.admin.sidebar.appearance') %>
-          <% end %>
-          <%= menu.nav_link(main_app.edit_site_content_blocks_path) do %>
-            <span class="fa fa-file-text-o"></span> <%= t('hyrax.admin.sidebar.content_blocks') %>
-          <% end %>
+      <% if can? :manage, Site %>
+        <%= menu.nav_link(main_app.edit_site_labels_path) do %>
+          <span class="fa fa-institution"></span> <%= t('hyrax.admin.sidebar.labels') %>
         <% end %>
-
-        <%= menu.nav_link(hyrax.admin_features_path) do %>
-          <span class="fa fa-wrench"></span> Technical
+        <%= menu.nav_link(main_app.edit_site_appearances_path) do %>
+          <span class="fa fa-paint-brush"></span> <%= t('hyrax.admin.sidebar.appearance') %>
+        <% end %>
+        <%= menu.nav_link(main_app.edit_site_content_blocks_path) do %>
+          <span class="fa fa-file-text-o"></span> <%= t('hyrax.admin.sidebar.content_blocks') %>
         <% end %>
       <% end %>
-    </li>
 
-    <%= menu.nav_link(hyrax.admin_admin_sets_path) do %>
-      <span class="fa fa-sitemap"></span> <%= t('hyrax.admin.sidebar.admin_sets') %>
-    <% end %>
-
-    <li>
-      <%= menu.collapsable_section t('hyrax.admin.sidebar.workflow'),
-                                   icon_class: "fa fa-code-fork",
-                                   id: 'collapseWorkflows',
-                                   open: menu.workflows_section? do %>
-        <%= menu.nav_link(hyrax.admin_workflow_roles_path) do %>
-          <span class="fa fa-users"></span> <%= t('hyrax.admin.sidebar.workflow_roles') %>
-        <% end %>
-      <% end %>
-    </li>
-
-    <% if can?(:manage, User) || can?(:manage, Hyku::Group) %>
-    <li>
-
-      <%= menu.collapsable_section t('hyrax.admin.sidebar.roles_and_permissions'),
-                                   icon_class: "fa fa-users",
-                                   id: 'collapseRoles',
-                                   open: menu.roles_and_permissions_section? do %>
-        <% if can? :manage, Hyku::Group %>
-          <%= menu.nav_link(main_app.admin_groups_path) do %>
-            <span class="fa fa-users"></span> <%= t('hyrax.admin.sidebar.manage_groups') %>
-          <% end %>
-        <% end %>
-
-        <% if can? :manage, User %>
-          <%= menu.nav_link(main_app.admin_users_path) do %>
-            <span class="fa fa-user"></span> <%= t('hyrax.admin.sidebar.manage_users') %>
-          <% end %>
-        <% end %>
-      <% end %>
-    </li>
-    <% end %>
-
-    <% if Site.account && can?(:manage, Site.account) %>
-      <%= menu.nav_link(main_app.edit_admin_account_path) do %>
-        Account
+      <%= menu.nav_link(hyrax.admin_features_path) do %>
+        <span class="fa fa-wrench"></span> Technical
       <% end %>
     <% end %>
+  </li>
 
-    <li class="h5"><%= t('hyrax.admin.sidebar.tasks') %></li>
-    <%= menu.nav_link(hyrax.admin_workflows_path) do %>
-      <span class="fa fa-flag"></span> <%= t('hyrax.admin.sidebar.workflow_review') %>
+  <%= menu.nav_link(hyrax.admin_admin_sets_path) do %>
+    <span class="fa fa-sitemap"></span> <%= t('hyrax.admin.sidebar.admin_sets') %>
+  <% end %>
+
+  <li>
+    <%= menu.collapsable_section t('hyrax.admin.sidebar.workflow'),
+                                 icon_class: "fa fa-code-fork",
+                                 id: 'collapseWorkflows',
+                                 open: menu.workflows_section? do %>
+      <%= menu.nav_link(hyrax.admin_workflow_roles_path) do %>
+        <span class="fa fa-users"></span> <%= t('hyrax.admin.sidebar.workflow_roles') %>
+      <% end %>
     <% end %>
-    <%= menu.nav_link(hyrax.admin_stats_path) do %>
-      <span class="fa fa-bar-chart"></span> <%= t('hyrax.admin.sidebar.statistics') %>
+  </li>
+
+  <% if can?(:manage, User) || can?(:manage, Hyku::Group) %>
+  <li>
+
+    <%= menu.collapsable_section t('hyrax.admin.sidebar.roles_and_permissions'),
+                                 icon_class: "fa fa-users",
+                                 id: 'collapseRoles',
+                                 open: menu.roles_and_permissions_section? do %>
+      <% if can? :manage, Hyku::Group %>
+        <%= menu.nav_link(main_app.admin_groups_path) do %>
+          <span class="fa fa-users"></span> <%= t('hyrax.admin.sidebar.manage_groups') %>
+        <% end %>
+      <% end %>
+
+      <% if can? :manage, User %>
+        <%= menu.nav_link(main_app.admin_users_path) do %>
+          <span class="fa fa-user"></span> <%= t('hyrax.admin.sidebar.manage_users') %>
+        <% end %>
+      <% end %>
     <% end %>
+  </li>
+  <% end %>
+
+  <% if Site.account && can?(:manage, Site.account) %>
+    <%= menu.nav_link(main_app.edit_admin_account_path) do %>
+      Account
+    <% end %>
+  <% end %>
+
+  <li class="h5"><%= t('hyrax.admin.sidebar.tasks') %></li>
+  <%= menu.nav_link(hyrax.admin_workflows_path) do %>
+    <span class="fa fa-flag"></span> <%= t('hyrax.admin.sidebar.workflow_review') %>
+  <% end %>
+  <%= menu.nav_link(hyrax.admin_stats_path) do %>
+    <span class="fa fa-bar-chart"></span> <%= t('hyrax.admin.sidebar.statistics') %>
+  <% end %>
 </ul>

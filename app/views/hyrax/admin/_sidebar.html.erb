@@ -39,8 +39,7 @@
     <%= menu.collapsable_section t('hyrax.admin.sidebar.settings'),
                                  icon_class: "fa fa-cog",
                                  id: 'collapseSettings',
-                                 open: menu.user_activity_section? do %>
-
+                                 open: menu.settings_section? do %>
       <% if can? :manage, Site %>
         <%= menu.nav_link(main_app.edit_site_labels_path) do %>
           <span class="fa fa-institution"></span> <%= t('hyrax.admin.sidebar.labels') %>
@@ -52,7 +51,6 @@
           <span class="fa fa-file-text-o"></span> <%= t('hyrax.admin.sidebar.content_blocks') %>
         <% end %>
       <% end %>
-
       <%= menu.nav_link(hyrax.admin_features_path) do %>
         <span class="fa fa-wrench"></span> Technical
       <% end %>
@@ -76,7 +74,6 @@
 
   <% if can?(:manage, User) || can?(:manage, Hyku::Group) %>
   <li>
-
     <%= menu.collapsable_section t('hyrax.admin.sidebar.roles_and_permissions'),
                                  icon_class: "fa fa-users",
                                  id: 'collapseRoles',

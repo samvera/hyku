@@ -7,7 +7,7 @@ fcrepo_wrapper -v --config config/fcrepo_wrapper_test.yml
 postgres -D ./db/postgres
 redis-server /usr/local/etc/redis.conf
 DISABLE_REDIS_CLUSTER=true bundle exec sidekiq
-DISABLE_REDIS_CLUSTER=true bundle exec rails server -b 0.0.0.0
+DISABLE_REDIS_CLUSTER=true RAILS_ENV=test bundle exec rails server -b 0.0.0.0
 bundle exec rake spec
 ```
 

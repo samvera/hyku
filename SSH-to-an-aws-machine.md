@@ -8,6 +8,6 @@
 1. Click "Instances" in the sidebar
 1. Click "demo-bastion" from the list
 1. In the "Description" tab below copy the "Public DNS"
-1. In your console add your key to the identity: `ssh-add ~/.ssh/hybox`
+1. In your console add your key to the identity: `ssh-add ~/.ssh/hybox` (we think that this key will have been provided for you previously)
 1. In your console type `ssh -i <path to key> -A ec2-user@<paste DNS>`
 1. Now you can ssh to any other machine in the cluster.

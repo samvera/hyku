@@ -1,6 +1,7 @@
 1. Visit https://console.aws.amazon.com and sign in.
 1. Click "EC2"
 1. Click "Security Groups" in the sidebar
+1. Click region dropdown in topbar and select "N. Virginia" to see US East entries
 1. Then select "demo-bastion"
 1. Select "Inbound" from the tab below
 1. Edit the rules and set "Source" to "My IP"

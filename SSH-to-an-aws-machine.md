@@ -8,6 +8,14 @@
 1. Click "Instances" in the sidebar
 1. Click "demo-bastion" from the list
 1. In the "Description" tab below copy the "Public DNS"
-1. In your console add your key to the identity: `ssh-add ~/.ssh/hybox` (we think that this key will have been provided for you previously)
+1. In your console add your key to the identity: `ssh-add ~/.ssh/hybox` (see below if you don't have this key already)
 1. In your console type `ssh -i <path to key> -A ec2-user@<paste DNS>`
 1. Now you can ssh to any other machine in the cluster.
+
+## Getting the SSH key
+
+1. Visit https://console.aws.amazon.com and sign in.
+1. Click "S3"
+1. Click on "hybox-keys"
+1. Click on "key-pairs-us-east-1"
+1. Check the box next to "hybox" and download the SSH key to `~/.ssh/`

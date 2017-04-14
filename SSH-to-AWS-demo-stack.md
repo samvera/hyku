@@ -2,15 +2,15 @@
 1. Click "EC2"
 1. Click "Security Groups" in the sidebar
 1. Click region dropdown in topbar and select "N. Virginia" to see US East entries
-1. Then select "demo-bastion" (I'm seeing two of these now, and I performed this operation for both)
+1. Select "demo-bastion" (I'm seeing two of these now, and I performed this operation for both)
 1. Select "Inbound" from the tab below
 1. Click "Edit" button, then add a new rule with Type "SSH" and Source to "My IP"
 1. Click "Save" button
 1. Click "Instances" in the sidebar
 1. Click "demo-bastion" from the list
 1. In the "Description" tab below copy the "Public DNS"
-1. In your console type `ssh -i ~/.ssh/hybox -A ec2-user@<paste DNS here>`
-1. Now you can SSH to any other machine in the cluster.
+1. In your console type `ssh -A -i ~/.ssh/hybox -A ec2-user@<paste DNS here>`
+1. Now you can SSH to any other machine in the cluster. Make note of the machine's internal IP or domain name.
 
 ## Getting the SSH key
 

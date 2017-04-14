@@ -4,7 +4,8 @@
 1. Click region dropdown in topbar and select "N. Virginia" to see US East entries
 1. Then select "demo-bastion" (I'm seeing two of these now, and I performed this operation for both)
 1. Select "Inbound" from the tab below
-1. Edit the rules and set "Source" to "My IP"
+1. Click "Edit" button, then add a new rule with Type "SSH" and Source to "My IP"
+1. Click "Save" button
 1. Click "Instances" in the sidebar
 1. Click "demo-bastion" from the list
 1. In the "Description" tab below copy the "Public DNS"

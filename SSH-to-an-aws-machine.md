@@ -2,7 +2,7 @@
 1. Click "EC2"
 1. Click "Security Groups" in the sidebar
 1. Click region dropdown in topbar and select "N. Virginia" to see US East entries
-1. Then select "demo-bastion"
+1. Then select "demo-bastion" (I'm seeing two of these now, and I performed this operation for both)
 1. Select "Inbound" from the tab below
 1. Edit the rules and set "Source" to "My IP"
 1. Click "Instances" in the sidebar

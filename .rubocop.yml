@@ -13,7 +13,6 @@ AllCops:
   Exclude:
     - 'bin/**/*'
     - 'db/**/*'
-    - 'config/**/*'
     - 'vendor/**/*'
     - '.internal_test_app/**/*'
     - 'spec/fixtures/**/*'

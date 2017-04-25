@@ -1,4 +1,4 @@
-RSpec.describe "account_sign_up/new", type: :view, multitenant: true do
+RSpec.describe "account_sign_up/new", type: :view do
   before do
     assign(:account, Account.new(
                        name: "MyString"

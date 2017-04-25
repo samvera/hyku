@@ -1,4 +1,4 @@
-RSpec.describe AccountSignUpController, type: :controller, multitenant: true do
+RSpec.describe AccountSignUpController, type: :controller do
   let(:user) {}
 
   before do

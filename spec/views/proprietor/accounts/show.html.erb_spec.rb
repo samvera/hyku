@@ -1,4 +1,4 @@
-RSpec.describe "proprietor/accounts/show", type: :view, multitenant: true do
+RSpec.describe "proprietor/accounts/show", type: :view do
   let(:account) { FactoryGirl.create(:account) }
 
   before do

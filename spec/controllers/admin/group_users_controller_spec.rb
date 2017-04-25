@@ -1,4 +1,4 @@
-RSpec.describe Admin::GroupUsersController do
+RSpec.describe Admin::GroupUsersController, faketenant: true do
   let(:group) { FactoryGirl.create(:group) }
 
   context 'as an anonymous user' do

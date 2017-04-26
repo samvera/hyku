@@ -1,3 +1,5 @@
+sudo: false
+language: ruby
 notifications:
   email: false
 dist: trusty
@@ -12,8 +14,6 @@ env:
     - secure: BnmjWPatxrNOpYKw05B54q+CUiDRw16bnL0YMvBU6XDotOTNnGjG24oul3et0wmOx0TfgLXLQ3twyWnOkW5HEIUGzjX825Pd/Ur8YaHZI9KeQc9FrAn43aDIVAtbnkg7lxMqsJZUmfSHzUXkbyPmMtLc+LK9wteQ0kdzIplsenyLV7VRTP8jINxkUnt/TYj5poah1RU9NemvGcUKW2hC3aW0d8/yjAV7boZodgBSiMSHSLQvScNNvS3+Goymlq15hl26ZjMqddLMJgRZwskZhDyAgUQuZpSHymXlzRSiSzSshJW1ST0MLmECImRdJ6t/JP2cf0ZHN/sR2XBG0ABc9dQfKB/aLITbZ5IbSHyjOoBzlilSixNVT7+VoW6MfbnXFlg2cwFfKgKPkXElADcIUT7lRcTiR5EO7oJILJ8C1psOFtC1XtbKVT1P4zHXoFqvaNQ8iWg0sMdSbYfDxfG9ObAA0SYA4d7ZvbZ0bt8XUhWFsBoMEAi6bzDxsp4jPkKIAjboDar/iol/rEIF2FwaRIjoTsM+MzN+p+P1bqjMFIJsFRX7DqzJ/6XP+vm+z437oEWKbTGnPlCWCwBw2qOpQNwe9o5wzP2H3KN2u0AcVs2UUcyE/pPObvWFKiGXC5FAljdyjv1jjHmuvBnnsuAkB3siqbEpvT7S/c4Qi8L8/To=
     - secure: FknMcFAQQAZMZZeUOgm1pyYI7s2/I+JYpKzCDI4y7MjwdGjRWs1vM1suud2sEtBEtCajeedvXDhrENHPEwVaBwKwgOkQxb6WjcVHLm9MBzrG5apWOZre9hAdbZXcs5QVpoA/xj3ASLF/XV4wndyN03eex0cAYRekh/rTsHPhItdEOc1PuZKuLb+3UNWKp9tyQ1oHA7ZqeEvyEK6EqOMBBW9EBdnkYN6JT5x1NwAtm0FPTia58UQyUdqjSLv7oWUAutACyPCS5zNsBwpzJWaQ2x7qhCDuRB8X0J0lz5lReuBx9j2FW0dWLEdj11gam0osdYux85Tk5fPOOGtKRmNwWFqSPrvzIvcuR/C3pzlfr35d+KduK+OD3EnsKL2Cp6mkgQPlBDGvKGl6GH0aiOenhHxjNIsG5eK29Gyit0EQRLosHy+eDZymzvT97WNheali+PKTFmopatmFILmID2Gnk66yvtdeNFFBUCAMVH3t0C/8hsSt484HP1AiwaPR4aeucMOJmK+H7xvwQRPs+vYemGYL7bBRoQE7F6tr9UQFMyw7/WuKPNSx1KV8bhcmoCOrOpjxzVvMjhokX83CGxok2hA/vhhHMHjh3D+Z+uhJzLja/gDJAa5rPHkqQMUdUssJ0/R9IiW+tEGHdUM8hPrzyFU5V1DmcO1DEBFvSeTvL/4=
 
-sudo: false
-language: ruby
 cache:
   bundler: true
   directories:
@@ -21,6 +21,11 @@ cache:
 
 jdk:
   - oraclejdk8
+addons:
+  hosts:
+    - tenant1.localhost
+    - tenant2.localhost
+    - test.host
 
 before_install:
   - gem update --system

@@ -1,6 +1,5 @@
 module Admin
   class AccountsController < AdminController
-    before_action :ensure_admin!
     layout 'dashboard'
     before_action :set_current_account
     load_and_authorize_resource

@@ -25,3 +25,7 @@ Flip the `multitenancy.enabled` setting in [config/settings.yml](https://github.
 
 Bind the rails server to 0.0.0.0 so that all of your tenants respond to HTTP requests: `rails s -b 0.0.0.0` 
 
+On OSX 10.11.6, it was also necessary to disable low level packet filtering to allow connections to the additional local IPs, as documented [here](https://gist.github.com/atz/0fb87891dd11d291d282947e4607fed9):
+```bash
+sudo pfctl -d
+```

@@ -2,7 +2,7 @@
 
 The [`Apartment` gem](https://github.com/influitive/apartment) segments the application into one or more `Apartment` tenants.
 
-`Account` is a global model, i.e., one that isn't scoped to an `Apartment` tenant. An `Account` has one or more `Apartment` tenants.
+`Account` is a global model, i.e., one that isn't scoped to an `Apartment` tenant. An `Account` has one `Apartment` tenant.
 
 `Site` is a singleton that we use to effectively namespace, e.g., `application_name` values. A `Site` maps 1-to-1 onto an `Apartment` tenant. A `Site` belongs to an `Account`.
 

@@ -1,7 +1,7 @@
 1. Make sure you have the `~/.ssh/hybox` key first. If not, see the instructions in the section below.
 1. Visit [hybox.signin.aws.amazon.com/console](https://hybox.signin.aws.amazon.com/console) and sign in.
-1. Click "EC2"
-1. Click "Security Groups" in the sidebar
+1. Click "Services > EC2"
+1. Click "Security Groups" in the sidebar (under Network & Security)
 1. Click region dropdown in topbar and select "N. Virginia" to see US East entries
 1. Select "demo-bastion" (I'm seeing two of these now, and I performed this operation for both)
 1. Select "Inbound" from the tab below

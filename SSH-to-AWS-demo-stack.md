@@ -1,3 +1,4 @@
+1. Make sure you have the ~/.ssh/hybox key first. If not, see the instructions in the section below.
 1. Visit https://console.aws.amazon.com and sign in.
 1. Click "EC2"
 1. Click "Security Groups" in the sidebar
@@ -8,9 +9,11 @@
 1. Click "Save" button
 1. Click "Instances" in the sidebar
 1. Click "demo-bastion" from the list
-1. In the "Description" tab below copy the "Public DNS"
-1. In your console type `ssh -A -i ~/.ssh/hybox -A ec2-user@<paste DNS here>`
-1. Now you can SSH to any other machine in the cluster. Make note of the machine's internal IP or domain name.
+1. In the "Description" tab below, copy the "Public DNS" value
+1. In your console type `ssh -A -i ~/.ssh/hybox -A ec2-user@<paste DNS here>` to connect to the bastion host
+1. Back in your browser, click "demo-webapp" (for instance) from the list
+1. In the "Description" tab below, copy the "Private DNS" value
+1. Now you can SSH to any other machine in the cluster via e.g. `ssh ip-10-0-5-178.ec2.internal` (If you get a `Permission denied (publickey)` error, you may need to run the `ssh-add ~/.ssh/hybox` step from the instructions below.)
 
 ## Getting the SSH key
 

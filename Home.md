@@ -1,6 +1,6 @@
 # Multi-tenant domain model
 
-`Apartment` segments the application into one or more `Apartment` tenants.
+The [`Apartment` gem](https://github.com/influitive/apartment) segments the application into one or more `Apartment` tenants.
 
 `Account` is a global model, i.e., one that isn't scoped to an `Apartment` tenant. An `Account` has one or more `Apartment` tenants.
 
@@ -14,18 +14,22 @@ Some `Roles` are scoped to `Sites`; some aren't. There is a many-to-many relatio
 
 # Using account-switching in development
 
-Set up some localhost IPs (one per tenant) in /etc/hosts, e.g.:
-
-```
-127.0.2.1       foo
-127.0.3.1       bar
-```
-
-Flip the `multitenancy.enabled` setting in [config/settings.yml](https://github.com/projecthydra-labs/hybox/blob/master/config/settings.yml#L2) to `true` (but don't commit this later)
-
-Bind the rails server to 0.0.0.0 so that all of your tenants respond to HTTP requests: `rails s -b 0.0.0.0` 
-
-On OSX 10.11.6, it was also necessary to disable low level packet filtering to allow connections to the additional local IPs, as documented [here](https://gist.github.com/atz/0fb87891dd11d291d282947e4607fed9):
-```bash
-sudo pfctl -d
-```
+* Set up some localhost IPs (one per tenant) in /etc/hosts, e.g.:
+  ```
+  127.0.2.1       foo
+  127.0.3.1       bar
+  ```
+  * On OSX 10.11.6, it was also necessary to disable low level packet filtering to allow connections to the additional local IPs, as documented [here](https://gist.github.com/atz/0fb87891dd11d291d282947e4607fed9):
+     ```bash
+     sudo pfctl -d
+     ```
+* Flip the `multitenancy.enabled` setting in [config/settings.yml](https://github.com/projecthydra-labs/hybox/blob/master/config/settings.yml#L2) to `true` (but don't commit this later)
+* When starting Hyku, be sure to bind the rails server to 0.0.0.0 so that all of your tenants respond to HTTP requests: 
+  ```
+  rails s -b 0.0.0.0
+  ```
+* To manage your tenants, you'll want to have at least one SuperAdmin user. So, grant one of your users "superadmin" rights. (Note: The square brackets around the email address are 
+required)
+  ```
+  rake superadmin:grant[user@email.org]
+  ```

@@ -35,3 +35,4 @@ required)
   ```
   rake superadmin:grant[user@email.org]
   ```
+* Once your application is started, you can login as a superadmin using the "Administrator Login" option in the footer. Once logged in, you'll be able to create a new repository (tenant) or see currently existing tenants via an "Accounts" menu option in header.

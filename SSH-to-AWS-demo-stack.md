@@ -1,5 +1,5 @@
-1. Make sure you have the ~/.ssh/hybox key first. If not, see the instructions in the section below.
-1. Visit https://console.aws.amazon.com and sign in.
+1. Make sure you have the `~/.ssh/hybox` key first. If not, see the instructions in the section below.
+1. Visit https://signin.aws.amazon.com/console and sign in.
 1. Click "EC2"
 1. Click "Security Groups" in the sidebar
 1. Click region dropdown in topbar and select "N. Virginia" to see US East entries
@@ -17,7 +17,7 @@
 
 ## Getting the SSH key
 
-1. Visit https://console.aws.amazon.com and sign in.
+1. Visit https://signin.aws.amazon.com/console and sign in.
 1. Click "S3"
 1. Click on "hybox-keys"
 1. Click on "key-pairs-us-east-1"

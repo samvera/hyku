@@ -24,3 +24,5 @@
 1. Check the box next to "hybox" and download the SSH key to `~/.ssh/`
 1. Make the new SSH identity file private in your console with `chmod 0600 ~/.ssh/hybox`
 1. In your console, add your key to the identity: `ssh-add ~/.ssh/hybox`
+
+Note: You would need to `ssh-add` again after restarting.  Or use `-K` to retain the key persistently.

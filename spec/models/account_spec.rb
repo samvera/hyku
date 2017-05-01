@@ -67,15 +67,14 @@ RSpec.describe Account, type: :model do
   end
 
   describe '#switch' do
-    let!(:previous_solr_connection) { Blacklight.default_index }
-    let!(:previous_fcrepo_connection) { ActiveFedora.fedora }
+    let!(:previous_solr_url) { ActiveFedora::SolrService.instance.conn.uri.to_s }
     let!(:previous_redis_namespace) { 'hyku' }
+    let!(:previous_fedora_host) { ActiveFedora.fedora.host }
 
     before do
       subject.build_solr_endpoint.update(url: 'http://example.com/solr/')
       subject.build_fcrepo_endpoint.update(url: 'http://example.com/fedora', base_path: '/dev')
       subject.build_redis_endpoint.update(namespace: 'foobaz')
-      subject.switch!
     end
 
     it 'switches to the account-specific connection' do
@@ -91,9 +90,8 @@ RSpec.describe Account, type: :model do
       subject.switch do
         # no-op
       end
-
-      expect(ActiveFedora::SolrService.instance.conn.uri.to_s).to eq 'http://127.0.0.1:8985/solr/hydra-test/'
-      expect(ActiveFedora.fedora.host).to eq 'http://127.0.0.1:8986/rest'
+      expect(ActiveFedora::SolrService.instance.conn.uri.to_s).to eq previous_solr_url
+      expect(ActiveFedora.fedora.host).to eq previous_fedora_host
       expect(Hyrax.config.redis_namespace).to eq previous_redis_namespace
     end
   end

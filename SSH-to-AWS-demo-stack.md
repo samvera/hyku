@@ -8,7 +8,7 @@
 1. Click "Edit" button, then add a new rule with Type "SSH" and Source to "My IP"
 1. Click "Save" button
 1. Click "Instances" in the sidebar
-1. Click "demo-bastion" from the list
+1. Click `demo-bastion` from the list
 1. In the "Description" tab below, copy the "Public DNS" value
 1. In your console type `ssh -A -i ~/.ssh/hybox ec2-user@<paste DNS here>` to connect to the bastion host
 1. Back in your browser, click "demo-webapp" (for instance) from the list

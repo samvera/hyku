@@ -3,7 +3,7 @@
 1. Click "Services > EC2"
 1. Click "Security Groups" in the sidebar (under Network & Security)
 1. Click region dropdown in topbar and select "N. Virginia" to see US East entries
-1. Select "demo-bastion" (I'm seeing two of these now, and I performed this operation for both)
+1. Select `demo-bastion` (I'm seeing two of these now, and I performed this operation for both)
 1. Select "Inbound" from the tab below
 1. Click "Edit" button, then add a new rule with Type "SSH" and Source to "My IP"
 1. Click "Save" button

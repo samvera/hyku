@@ -16,8 +16,14 @@ action_controller:
 redis:
   default_namespace: hyku
 
+<%
+  # Read the config/solr.yml
+  # - note that it specifies a URL that includes the collection path, which is stripped below.
+  solr_config = YAML.load(ERB.new(IO.read(Rails.root + 'config' + 'solr.yml')).result)[Rails.env].with_indifferent_access
+%>
+
 solr:
-  url: "http://127.0.0.1:8983/solr/"
+  url:  <%= solr_config["url"].gsub(/solr\/.*/, 'solr/') %>
   configset: hyku
   configset_source_path: <%= File.join(Rails.root, 'solr', 'config') %>
   collection_options:

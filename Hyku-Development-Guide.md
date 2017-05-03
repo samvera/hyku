@@ -1,6 +1,6 @@
 ## Testing
 
-Obviously, all you must have completed the installation prerequisites.  
+Obviously, you must have completed the installation prerequisites.  
 
 The default wrapper configs are for development, but testing will expect solr and fedora on different ports.  You will need at least 7 processes in background or their own windows/tabs to accomplish a successful test run:
 ```bash

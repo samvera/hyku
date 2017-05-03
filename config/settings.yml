@@ -17,20 +17,21 @@ redis:
   default_namespace: hyku
 
 <%
-  # Read the config/solr.yml
-  # - note that it specifies a URL that includes the collection path, which is stripped below.
   solr_config = YAML.load(ERB.new(IO.read(Rails.root + 'config' + 'solr.yml')).result)[Rails.env].with_indifferent_access
+  solr_url = solr_config[:url]
+  solr_name = solr_config[:collection][:name]
+  solr_source_path = File.join(Rails.root, solr_config[:collection][:dir])
 %>
 
 solr:
-  url:  <%= solr_config["url"].gsub(/solr\/.*/, 'solr/') %>
-  configset: hyku
-  configset_source_path: <%= File.join(Rails.root, 'solr', 'config') %>
+  url: <%= solr_url %>
+  configset: <%= solr_name %>
+  configset_source_path: <%= solr_source_path %>
   collection_options:
     async:
     auto_add_replicas:
     collection:
-      config_name: hyku
+      config_name: <%= solr_name %>
     create_node_set:
     max_shards_per_node:
     num_shards: 1

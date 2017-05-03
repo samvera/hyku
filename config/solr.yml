@@ -1,8 +1,29 @@
 # This is a sample config file that points to a solr server for each environment
 # TODO: there's also a Settings.solr.url configuration that is used in multitenant environments
+
+<%
+  # Assume that anything parsing this file is using ERB
+  # Assume that Rails.env is not yet available in this code
+  rails_env = ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'development'
+  name = "hydra"
+  namespace = "#{name}-#{rails_env}"
+  solr_path = "solr/#{namespace}/"
+%>
+
+default: &default
+  collection:
+    dir: solr/config/
+    name: <%= name %>
+    namespace: <%= namespace %>
+
 development:
-  url: <%= ENV['SOLR_URL'] || "http://127.0.0.1:#{ENV.fetch('SOLR_DEVELOPMENT_PORT', 8983)}/solr/hydra-development" %>
+  <<: *default
+  url: <%= ENV['SOLR_URL'] || "http://127.0.0.1:#{ENV.fetch('SOLR_DEVELOPMENT_PORT', 8983)}/#{solr_path}" %>
+
 test:
-  url: <%= ENV['SOLR_URL'] || "http://127.0.0.1:#{ENV.fetch('SOLR_TEST_PORT', 8985)}/solr/hydra-test" %>
+  <<: *default
+  url: <%= ENV['SOLR_URL'] || "http://127.0.0.1:#{ENV.fetch('SOLR_TEST_PORT', 8985)}/#{solr_path}" %>
+
 production:
-  url: <%= ENV['SOLR_URL'] || "http://your.production.server:8080/bl_solr/core0" %>
+  <<: *default
+  url: <%= ENV['SOLR_URL'] || "http://your.production.server:8080/#{solr_path}" %>

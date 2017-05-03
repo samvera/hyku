@@ -12,6 +12,8 @@ DISABLE_REDIS_CLUSTER=true bundle exec sidekiq
 DISABLE_REDIS_CLUSTER=true RAILS_ENV=test bundle exec rails server -b 0.0.0.0
 bundle exec rake spec
 ```
+
+#### Debian/Ubuntu
 On Debian/Ubunutu, the redis and postgress steps might look like:
 ```
 [sudo] service postgresql status

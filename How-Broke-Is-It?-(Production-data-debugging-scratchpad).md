@@ -5,6 +5,9 @@ All of these are queries that at one time or other detected actual problems.
 select cname, count from (select cname,count(cname) as count from accounts group by cname) as foo where count > 1;
 ```
 Should return none.
+
+#### Check for null endpoints
+
 ```sql
 hybox=> select cname,created_at,updated_at,solr_endpoint_id,fcrepo_endpoint_id,redis_endpoint_id from accounts where solr_endpoint_id IS NULL OR fcrepo_endpoint_id IS NULL OR redis_endpoint_id IS NULL;
                cname                |         created_at         |         updated_at         | solr_endpoint_id | fcrepo_endpoint_id | redis_endpoint_id 
@@ -17,6 +20,4 @@ hybox=> select cname,created_at,updated_at,solr_endpoint_id,fcrepo_endpoint_id,r
  bbtesttenant2.demo.hydrainabox.org | 2017-05-03 23:38:57.755706 | 2017-05-03 23:38:57.755706 |                  |                    |                  
 (6 rows)
 ```
-#### Check for null endpoints
-
 Should return none.

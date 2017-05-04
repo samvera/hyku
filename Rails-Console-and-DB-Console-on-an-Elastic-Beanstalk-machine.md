@@ -1,4 +1,4 @@
-First SSH onto the correct box.
+First [SSH onto the correct box](https://github.com/projecthydra-labs/hyku/wiki/SSH-to-AWS-demo-stack).
 
 ### Application directory
 Start in the correct location.

@@ -876,7 +876,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active-fedora (>= 11.1.4)
+  active-fedora (~> 11.2)
   active_elastic_job (~> 2.0)
   apartment
   blacklight (~> 6.7)

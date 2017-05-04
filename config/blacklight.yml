@@ -1,13 +1,8 @@
-<%
-  erb_result = ERB.new(IO.read(Rails.root + 'config' + 'solr.yml')).result
-  solr_config = YAML.safe_load(erb_result, [], [], true) # allow YAML aliases
-  solr_config = solr_config[Rails.env].with_indifferent_access
-  solr_url = solr_config[:url]
-%>
+<% Settings.solr.url || raise("Settings.solr failed to initialize") %>
 
 default: &default
   adapter: solr
-  url: <%= solr_url %>
+  url: <%= Settings.solr.url %>
 
 development:
   <<: *default

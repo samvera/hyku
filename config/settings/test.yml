@@ -1,10 +1,18 @@
+multitenancy:
+  enabled: true
+
+<%
+  solr_namespace = 'hydra-test'
+  solr_port = ENV.fetch('SOLR_TEST_PORT', 8985)
+  solr_url = ENV.fetch('SOLR_URL', "http://127.0.0.1:#{solr_port}/solr/#{solr_namespace}/")
+%>
+
+solr:
+  port: <%= solr_port %>
+  url:  <%= solr_url %>
+  collection:
+    name: <%= solr_namespace %>
+
 zookeeper:
   connection_str: 'localhost:9985/configs'
 
-solr:
-  url: "http://127.0.0.1:8985/solr/"
-
-multitenancy:
-  enabled: true
-# admin_host: 'localhost'
-# default_host: "%{tenant}.localhost"

@@ -10,17 +10,9 @@
 
   # Settings.solr variables
   solr_dir = 'solr/config/'
-  solr_namespace = "hydra-#{Rails.env}"
-  solr_port_default = case Rails.env
-                      when 'test'
-                        8985
-                      when 'production'
-                        8080
-                      else
-                        8983
-                      end
-  solr_port = ENV.fetch("SOLR_#{Rails.env.upcase}_PORT", solr_port_default)
-  solr_url  = ENV.fetch('SOLR_URL', "http://127.0.0.1:#{solr_port}/solr/#{solr_namespace}/")
+  solr_namespace = 'hydra-development'
+  solr_port = ENV.fetch('SOLR_DEVELOPMENT_PORT', 8983)
+  solr_url = ENV.fetch('SOLR_URL', "http://127.0.0.1:#{solr_port}/solr/#{solr_namespace}/")
 %>
 
 multitenancy:

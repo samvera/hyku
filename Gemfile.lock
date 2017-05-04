@@ -47,6 +47,20 @@ GIT
       tinymce-rails (~> 4.1)
       tinymce-rails-imageupload (~> 4.0.17.beta)
 
+GIT
+  remote: https://github.com/projecthydra/active_fedora
+  revision: 87deb3579fe66573814f070f94ca8ba6c02738d8
+  specs:
+    active-fedora (11.1.5)
+      active-triples (~> 0.11.0)
+      activemodel (>= 4.2, < 6)
+      activesupport (>= 4.2.4, < 6)
+      deprecation
+      ldp (~> 0.6.0)
+      rsolr (>= 1.1.2, < 3)
+      ruby-progressbar (~> 1.0)
+      solrizer (>= 3.4, < 5)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -73,14 +87,6 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.3)
-    active-fedora (11.1.6)
-      active-triples (~> 0.11.0)
-      activemodel (>= 4.2, < 6)
-      activesupport (>= 4.2.4, < 6)
-      deprecation
-      ldp (~> 0.6.0)
-      rsolr (>= 1.1.2, < 3)
-      solrizer (>= 3.4, < 5)
     active-triples (0.11.0)
       activemodel (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -834,7 +840,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active-fedora (>= 11.1.4)
+  active-fedora!
   active_elastic_job (~> 2.0)
   apartment
   blacklight (~> 6.7)

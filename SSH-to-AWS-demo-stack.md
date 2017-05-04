@@ -14,6 +14,7 @@
 1. Back in your browser, click `demo-webapp` (for instance) from the list
 1. In the "Description" tab below, copy the "Private DNS" value
 1. Now you can SSH to any other machine in the cluster via e.g. `ssh ip-10-0-5-178.ec2.internal` (If you get a `Permission denied (publickey)` error, you may need to run the `ssh-add ~/.ssh/hybox` step from the instructions below.)
+1. Once you've SSHed into the machine, you may be wondering how to see the demo-webapp data, etc. For hints on getting to the Rails Console and/or viewing the Database, see [this guide](https://github.com/projecthydra-labs/hyku/wiki/Rails-Console-and-DB-Console-on-an-Elastic-Beanstalk-machine)
 
 ## Getting the SSH key
 

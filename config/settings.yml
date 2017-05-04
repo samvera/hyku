@@ -21,7 +21,7 @@ redis:
   solr_config = YAML.safe_load(erb_result, [], [], true) # allow YAML aliases
   solr_config = solr_config[Rails.env].with_indifferent_access
   solr_url = solr_config[:url]
-  solr_name = solr_config[:collection][:name]
+  solr_name = 'hyku' # TODO: use `solr_config[:collection][:name]` instead
   solr_source_path = File.join(Rails.root, solr_config[:collection][:dir])
 %>
 

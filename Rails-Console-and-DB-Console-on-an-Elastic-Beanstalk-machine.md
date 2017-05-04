@@ -1,3 +1,5 @@
+First SSH onto the correct box.
+
 ### Application directory
 Start in the correct location.
 ```

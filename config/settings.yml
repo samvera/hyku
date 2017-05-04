@@ -17,7 +17,9 @@ redis:
   default_namespace: hyku
 
 <%
-  solr_config = YAML.load(ERB.new(IO.read(Rails.root + 'config' + 'solr.yml')).result)[Rails.env].with_indifferent_access
+  erb_result = ERB.new(IO.read(Rails.root + 'config' + 'solr.yml')).result
+  solr_config = YAML.safe_load(erb_result, [], [], true) # allow YAML aliases
+  solr_config = solr_config[Rails.env].with_indifferent_access
   solr_url = solr_config[:url]
   solr_name = solr_config[:collection][:name]
   solr_source_path = File.join(Rails.root, solr_config[:collection][:dir])

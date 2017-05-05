@@ -53,6 +53,15 @@ solr:
     shards:
     snitch:
 
+solr_wrapper:
+  enabled: true
+  verbose: true
+  cloud: true
+  port: <%= solr_port %>
+  version: '5.3.1'
+  instance_dir: 'solr'
+  download_dir: 'tmp'
+
 zookeeper:
   connection_str: "localhost:9983/configs"
 

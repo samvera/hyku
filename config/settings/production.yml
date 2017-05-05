@@ -12,3 +12,7 @@ solr:
   url:  <%= solr_url %>
   collection:
     name: <%= solr_namespace %>
+
+solr_wrapper:
+  enabled: false
+

@@ -8,6 +8,14 @@ task default: [:rubocop, :ci]
 Rails.application.load_tasks
 
 begin
+  SolrWrapper.default_instance_options = {
+    verbose: Settings.solr_wrapper.verbose,
+    cloud: Settings.solr_wrapper.cloud,
+    port: Settings.solr_wrapper.port,
+    version: Settings.solr_wrapper.version,
+    instance_dir: Settings.solr_wrapper.instance_dir,
+    download_dir: Settings.solr_wrapper.download_dir,
+  }
   require 'solr_wrapper/rake_task'
 rescue LoadError
 end

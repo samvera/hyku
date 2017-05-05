@@ -13,6 +13,10 @@ solr:
   collection:
     name: <%= solr_namespace %>
 
+solr_wrapper:
+  verbose: false
+  port: <%= solr_port %>
+
 zookeeper:
   connection_str: 'localhost:9985/configs'
 

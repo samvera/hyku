@@ -7,7 +7,7 @@ In Hyku, each tenant is managed by an [`Account`](https://github.com/projecthydr
 * A Solr Collection is created specific to the tenant (named with the tenant UUID). All objects in this tenant will be indexed into that collection.
 * A Fedora Container is created specific to the tenant (named with the tenant UUID). All objects in this tenant will be stored in this container.
 * A Redis namespace is created specific to the tenant (named with the tenant UUID).
-* A [`Site`](https://github.com/projecthydra-labs/hyku/blob/master/app/models/site.rb) is created. The `Site` corresponds to this tenant's Hyku application (and is configured to use the defined database schema, Solr collection, Fedora container, etc). `Site` is a singleton that we use to effectively namespace, e.g., `application_name` values.
+* A [`Site`](https://github.com/projecthydra-labs/hyku/blob/master/app/models/site.rb) is created on the tenant. The `Site` corresponds to this tenant's Hyku application (and is configured to use the defined database schema, Solr collection, Fedora container, etc). `Site` is a singleton that we use to effectively namespace, e.g., `application_name` values.
 
 Other models to be aware of:
 * Application users are managed by the [`User` model](https://github.com/projecthydra-labs/hyku/blob/master/app/models/user.rb). Each `User` has one or more `Roles`. `Users` are defined within a tenant scope (using `Apartment`). So, if a user has a login for multiple Sites, those logins are stored separately (and may have different passwords, etc).

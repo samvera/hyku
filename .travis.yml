@@ -40,6 +40,9 @@ before_install:
 before_script:
   - bundle exec rake db:create
 
+script:
+  - bundle exec rake --trace
+
 before_deploy:
   - git clean -dxf; rm -rf vendor/bundle
   - echo $TRAVIS_COMMIT > REVISION

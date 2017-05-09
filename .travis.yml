@@ -47,7 +47,7 @@ before_deploy:
   - git clean -dxf; rm -rf vendor/bundle
   - echo $TRAVIS_COMMIT > REVISION
   - mkdir build; zip -q -r build/hyku.zip .
-  - echo "\n\nCOMPLETED before_deploy\n\n"
+  - echo "COMPLETED before_deploy"
 
 services:
   - postgresql
@@ -80,4 +80,4 @@ deploy:
     acl: public_read
 
 after_deploy:
-  - echo "\n\nCOMPLETED after_deploy\n\n"
+  - echo "COMPLETED after_deploy"

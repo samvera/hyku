@@ -6,6 +6,10 @@ dist: trusty
 rvm:
   - 2.4.1
 
+services:
+  - postgresql
+  - redis-server
+
 # We provide AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY encrypted by travis here
 env:
   global:
@@ -50,10 +54,6 @@ before_deploy:
   - echo $TRAVIS_COMMIT > REVISION
   - mkdir build; zip -q -r build/hyku.zip .
   - echo "COMPLETED before_deploy"
-
-services:
-  - postgresql
-  - redis-server
 
 deploy:
   - provider: s3

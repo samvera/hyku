@@ -27,6 +27,10 @@ addons:
     - tenant2.localhost
     - test.host
 
+services:
+  - postgresql
+  - redis-server
+
 before_install:
   - gem update --system
   - gem install bundler
@@ -44,10 +48,7 @@ before_deploy:
   - git clean -dxf; rm -rf vendor/bundle
   - echo $TRAVIS_COMMIT > REVISION
   - mkdir build; zip -q -r build/hyku.zip .
-
-services:
-  - postgresql
-  - redis-server
+  - echo "COMPLETED before_deploy"
 
 deploy:
   - provider: s3
@@ -74,3 +75,7 @@ deploy:
     local_dir: build
     upload-dir: hyku/current
     acl: public_read
+
+after_deploy:
+  - echo "COMPLETED after_deploy"
+

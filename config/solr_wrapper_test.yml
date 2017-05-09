@@ -9,3 +9,5 @@ cloud: true
 configsets:
   - dir: solr/config/
     name: hyku
+
+download_dir: tmp/solr_wrapper

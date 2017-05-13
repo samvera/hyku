@@ -1,6 +1,6 @@
 ## Testing
 
-Obviously, you must have completed the installation [Hyrax Prerequisites](https://github.com/projecthydra-labs/hyrax#prerequisites), including PhantomJS, ImageMagick and FITS.  
+Obviously, you must have completed the installation of [Hyrax Prerequisites](https://github.com/projecthydra-labs/hyrax#prerequisites), including PhantomJS, ImageMagick and FITS.  
 
 The default wrapper configs are for development, but testing will expect solr and fedora on different ports.  You will need at least 7 processes in background or their own windows/tabs to accomplish a successful test run:
 ```bash

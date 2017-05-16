@@ -33,7 +33,7 @@ Other models to be aware of:
      127.0.2.1       foo
      127.0.3.1       bar
      ```
-     * On OSX 10.11.6, it was also necessary to disable low level packet filtering to allow connections to the additional local IPs, as documented [here](https://gist.github.com/atz/0fb87891dd11d291d282947e4607fed9):
+     * On OSX 10.11.6, it was also necessary to turn off `System Preferences > Security & Privacy > Firewall` and/or disable low level packet filtering to allow connections to the additional local IPs, as documented [here](https://gist.github.com/atz/0fb87891dd11d291d282947e4607fed9):
         ```bash
         sudo pfctl -d
         ```

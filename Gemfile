@@ -29,6 +29,8 @@ gem 'jbuilder', '~> 2.5'
 
 gem 'active-fedora', '~> 11.2'
 
+gem 'puma'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

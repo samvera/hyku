@@ -45,6 +45,7 @@ GIT
       select2-rails (~> 3.5.9)
       signet
       tinymce-rails (~> 4.1)
+      tinymce-rails-imageupload (~> 4.0.17.beta)
 
 GEM
   remote: https://rubygems.org/

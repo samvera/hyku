@@ -58,7 +58,7 @@ solr_wrapper:
   verbose: true
   cloud: true
   port: <%= solr_port %>
-  version: '5.3.1'
+  version: '6.5.1'
   instance_dir: 'solr'
   download_dir: 'tmp'
 

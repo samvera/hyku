@@ -8,6 +8,7 @@ docker-compose up -d
 
 Now you can visit http://localhost:8080/ and see the site running in multitenancy mode.  
 
+## How do I set up DNS for multiple tenants?
 
 ## How do I run it in single tenant mode?
 

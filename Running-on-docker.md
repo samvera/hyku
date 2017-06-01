@@ -27,3 +27,9 @@ fcfb362ac61d        zookeeper                   "/docker-entrypoin..."   5 days 
 ```
 docker exec -it hyku_workers_1 bash
 ```
+
+## Rails console
+
+```
+rails console
+```

@@ -1,6 +1,6 @@
 1. Modify `/etc/hosts` and add `127.0.0.1 sample.localhost` (Look into setting base host variable)
 1. Open browser and go to http://localhost:8080/ enter "sample" for the "Short name"
-1. Upload a new file
+1. Create an Image type object.
 
 
 ## Check out the services
@@ -32,4 +32,10 @@ docker exec -it hyku_workers_1 bash
 
 ```
 rails console
+```
+
+## Switch tenant
+```
+AccountElevator.switch!('sample.localhost')
+Image.all
 ```

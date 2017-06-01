@@ -7,6 +7,8 @@
 ```
 docker ps
 ```
+
+```
 CONTAINER ID        IMAGE                       COMMAND                  CREATED             STATUS              PORTS                                                   NAMES
 eedf5f80cdf1        dockercloud/haproxy:1.5.3   "/sbin/tini -- doc..."   17 minutes ago      Up 20 seconds       1936/tcp, 0.0.0.0:8080->80/tcp, 0.0.0.0:8443->443/tcp   hyku_lb_1
 5ff4b199d09f        hyku_workers                "bundle exec sidekiq"    17 minutes ago      Up 21 seconds       3000/tcp                                                hyku_workers_1

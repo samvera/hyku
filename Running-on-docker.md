@@ -23,3 +23,7 @@ fcfb362ac61d        zookeeper                   "/docker-entrypoin..."   5 days 
 ```
 
 ## Connect to Service
+
+```
+docker exec -it hyku_workers_1 bash
+```

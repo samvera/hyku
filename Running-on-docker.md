@@ -6,7 +6,7 @@ Download this file: https://download.docker.com/win/stable/InstallDocker.msi
 
 Double click on the downloaded file to run the installer.
 
-Open a terminal and type `docker run hello-world` to verify installation was correct.
+Open a command prompt (Press windows + r and type "cmd", or go to Start Menu > Windows System > Command Prompt) and type `docker run hello-world` to verify installation was correct.
 
 You should see a message that states:
 ```

@@ -1,3 +1,41 @@
+# Install docker
+### For Windows
+\* Docker for Windows requires 64bit Windows 10 Pro and Microsoft Hyper-V. [Details](https://docs.docker.com/docker-for-windows/install/#what-to-know-before-you-install)
+
+Download this file: https://download.docker.com/win/stable/InstallDocker.msi
+
+Double click on the downloaded file to run the installer.
+
+Open a terminal and type `docker run hello-world` to verify installation was correct.
+
+You should see a message that states:
+```
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+```
+
+### For Mac
+\* Docker for Mac requires OS X El Capitan 10.11 or newer macOS release running on a 2010 or newer Mac, with Intel’s hardware support for MMU virtualization. The app will run on 10.10.3 Yosemite, but with limited support.
+
+Download this file: https://download.docker.com/mac/stable/Docker.dmg
+
+Double-click Docker.dmg to open the installer, then drag Moby the whale to the Applications folder.
+Double-click Docker.app in the Applications folder to start Docker.
+
+Open a terminal and type `docker run hello-world` to verify installation was correct.
+
+You should see a message that states:
+```
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+```
+
+### For Linux
+
+
+
+# Starting Hyku in Docker
+
 1. Modify `/etc/hosts` and add `127.0.0.1 sample.localhost` (Look into setting base host variable)
 1. Open browser and go to http://localhost:8080/ enter "sample" for the "Short name"
 1. Create an Image type object.

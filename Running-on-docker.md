@@ -32,6 +32,7 @@ This message shows that your installation appears to be working correctly.
 
 ### For Linux
 
+Follow the guide for your distro at https://docs.docker.com/engine/installation/#supported-platforms
 
 
 # Starting Hyku in Docker

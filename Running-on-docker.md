@@ -37,6 +37,7 @@ Follow the guide for your distro at https://docs.docker.com/engine/installation/
 
 # Starting Hyku in Docker
 
+1. Download hyku (git or zip?)
 1. Modify `/etc/hosts` and add `127.0.0.1 sample.localhost` (Look into setting base host variable)
 1. Open browser and go to http://localhost:8080/ enter "sample" for the "Short name"
 1. Create an Image type object.

@@ -30,19 +30,13 @@ Hello from Docker!
 This message shows that your installation appears to be working correctly.
 ```
 
+
 ### For Linux
 
 Follow the guide for your distro at https://docs.docker.com/engine/installation/#supported-platforms
 
 
-# Starting Hyku in Docker
-
-1. Download hyku (git or zip?)
-1. Modify `/etc/hosts` and add `127.0.0.1 sample.localhost` (Look into setting base host variable)
-1. Open browser and go to http://localhost:8080/ enter "sample" for the "Short name"
-1. Create an Image type object.
-
-# If you have an older version of mac or windows try docker-machine:
+### If you have an older version of mac or windows try docker-machine:
 
 ```
 docker-machine create --driver virtualbox containerhost
@@ -57,6 +51,17 @@ You should see a message that states:
 Hello from Docker!
 This message shows that your installation appears to be working correctly.
 ```
+
+
+
+
+# Starting Hyku in Docker
+
+1. Download hyku (git or zip?)
+1. Modify `/etc/hosts` and add `127.0.0.1 sample.localhost` (Look into setting base host variable)
+1. Open browser and go to http://localhost:8080/ enter "sample" for the "Short name"
+1. Create an Image type object.
+
 
 ## Check out the services
 ```

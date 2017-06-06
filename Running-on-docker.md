@@ -42,6 +42,21 @@ Follow the guide for your distro at https://docs.docker.com/engine/installation/
 1. Open browser and go to http://localhost:8080/ enter "sample" for the "Short name"
 1. Create an Image type object.
 
+# If you have an older version of mac or windows try docker-machine:
+
+```
+docker-machine create --driver virtualbox containerhost
+eval "$(docker-machine env containerhost)"
+```
+
+
+Open a terminal and type `docker run hello-world` to verify installation was correct.
+
+You should see a message that states:
+```
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+```
 
 ## Check out the services
 ```

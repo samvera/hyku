@@ -21,4 +21,4 @@ On Debian/Ubunutu, the redis and postgress steps might look like:
 ```
 ## See Also
 
-- the [Sufia Development Guide](https://github.com/projecthydra/sufia/wiki/Sufia-Development-Guide#start-servers-individually-for-development) for more background.
+- the [Hyrax Development Guide](https://github.com/samvera-labs/hyrax/wiki/Hyrax-Development-Guide#start-servers-individually-for-development) for more background.

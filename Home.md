@@ -28,7 +28,8 @@ Other models to be aware of:
        ...
        admin_host: lvh.me
      ```
-   * Option 2: Set up some localhost IPs (one per tenant) in `/etc/hosts` (or similar), e.g.:
+   * Option 2: Use dnsmasq per http://evans.io/legacy/posts/wildcard-subdomains-of-localhost/. (Tested successfully on Ubuntu.)
+   * Option 3: Set up some localhost IPs (one per tenant) in `/etc/hosts` (or similar), e.g.:
      ```
      127.0.2.1       foo
      127.0.3.1       bar

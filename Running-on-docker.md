@@ -7,7 +7,7 @@ docker save -o images/hyku-all.tar hyku_app solr postgres redis zookeeper memcac
 
 ```
 docker load -i images/hyku-all.tar
-``
+```
 
 # Starting Hyku in Docker
 

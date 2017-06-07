@@ -1,3 +1,8 @@
+# Packaging Docker
+```
+docker save -o images/hyku-all.tar hyku_app solr postgres redis zookeeper memcached cbeer/fcrepo4 ruby dockercloud/haproxy
+```
+
 # Starting Hyku in Docker
 
 1. Download hyku (git or zip?)

@@ -7,6 +7,10 @@ docker save -o images/hyku-all.tar hyku_app solr postgres redis zookeeper memcac
 
 ```
 docker load -i images/hyku-all.tar
+docker tag hyku_app hyku_web
+docker tag hyku_app hyku_workers
+docker tag hyku_app hyku_initialize_app
+docker tag hyku_app hyku_db_migrate
 ```
 
 # Starting Hyku in Docker

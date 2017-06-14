@@ -42,10 +42,4 @@ Other models to be aware of:
   ```
   rails s -b 0.0.0.0
   ```
-* To manage your tenants, you'll want to have at least one superadmin user. This user must be a "global" user (i.e. not specific to a tenant).
-    * To create a "global" user, click the "Administrator Login" link in the footer of the homepage. Then click "Sign up" to create a global user account.
-    * After that, you'll need to grant your global user "superadmin" rights via the following rake task: (Note: The square brackets around the email address are required)
-      ```
-      rake superadmin:grant[user@email.org]
-      ```
-* You can now login as a superadmin using the "Administrator Login" option in the footer. Once logged in, you'll be able to create a new repository (i.e. tenant) or see currently existing tenants via an "Accounts" menu option in header.
+* To manage your tenants, [you'll want to have at least one superadmin user.](https://github.com/samvera-labs/hyku/wiki/Create-super-admin-user)

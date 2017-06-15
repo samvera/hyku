@@ -19,6 +19,21 @@ On Debian/Ubunutu, the redis and postgress steps might look like:
 [sudo] service postgresql status
 [sudo] service redis status
 ```
+
+## Production debugging on laptop
+
+Try to apply this config patch in https://gist.github.com/darrenleeweber/2c8b9f4a32e4ca6bcb0a58cf5ac3d97e (disclaimer: works for me).
+```
+solr_wrapper   -p 8981 -n hydra-production
+fcrepo_wrapper -p 8982
+DISABLE_REDIS_CLUSTER=true RAILS_ENV=production bundle exec sidekiq
+
+RAILS_ENV=production bin/setup # fix stuff until it works
+RAILS_ENV=production rails db:migrate
+RAILS_ENV=production rails assets:precompile
+RAILS_ENV=production RAILS_SERVE_STATIC_FILES=true rails s
+```
+
 ## See Also
 
 - the [Hyrax Development Guide](https://github.com/samvera-labs/hyrax/wiki/Hyrax-Development-Guide#start-servers-individually-for-development) for more background.

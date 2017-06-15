@@ -22,14 +22,17 @@ On Debian/Ubunutu, the redis and postgress steps might look like:
 
 ## Production debugging on laptop
 
-Try to apply this config patch in https://gist.github.com/darrenleeweber/2c8b9f4a32e4ca6bcb0a58cf5ac3d97e (disclaimer: works for me).
-```
-solr_wrapper   -p 8981 -n hydra-production
-fcrepo_wrapper -p 8982
-DISABLE_REDIS_CLUSTER=true RAILS_ENV=production bundle exec sidekiq
+Apply the patch in https://gist.github.com/darrenleeweber/2c8b9f4a32e4ca6bcb0a58cf5ac3d97e (disclaimer: works for me).
+```bash
+solr_wrapper   -v --config config/solr_wrapper_production.yml
+fcrepo_wrapper -v --config config/fcrepo_wrapper_production.yml
 
-RAILS_ENV=production bin/setup # fix stuff until it works
-RAILS_ENV=production rails db:migrate
+export DISABLE_REDIS_CLUSTER=true
+RAILS_ENV=production bundle exec sidekiq
+
+RAILS_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1 bin/setup # fix stuff until it works
+RAILS_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1 rails db:migrate
+
 RAILS_ENV=production rails assets:precompile
 RAILS_ENV=production RAILS_SERVE_STATIC_FILES=true rails s
 ```

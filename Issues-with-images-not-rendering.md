@@ -1,0 +1,6 @@
+If you encounter issues with images, such as thumbnails, not rendering and you are deploying Hyku via Apache and/or Passenger, you might try the following:
+
+* Use the `AllowEncodedSlashes NoDecode` directive in your Apache HTTPD config (e.g., within the `VirtualHost`)
+* Include `PassengerAllowEncodedSlashes on` in Passenger's config file
+
+Also double-check via the FileSet show view that image files contain height and width properties within their characterization metadata. To deal with this, first make sure you're using the right version of FITS -- as of June, 2017, the Hyku team recommends 1.0.5. If you are seeing the height and width properties in characterization metadata and images still aren't rendering, some Hyku users have had luck installing `mediainfo` and then renaming or removing the mediainfo libraries in FITS: `/opt/fits/tools/mediainfo/linux/libmediainfo.so.0` and `/opt/fits/tools/mediainfo/linux/libzen.so.0`. The libraries included in FITS didn't work, at least in Ubuntu 16.04.

@@ -1,5 +1,3 @@
-# Multi-tenant domain model
-
 In Hyku, each tenant is managed by an [`Account`](https://github.com/projecthydra-labs/hyku/blob/master/app/models/account.rb). `Account` segments the application data as follows:
 * First, a unique identifier for the tenant (a random UUID) is generated
 * The [`Apartment` gem](https://github.com/influitive/apartment) is used to segment the application database. In the PostgreSQL database, this segmentation occurs via database schemas. So, each Hyku tenant stores its data in its own database schema. (_NOTE: Apartment also calls these segments "tenants". But, in Hyku, a tenant encompasses a bit more, as you will see below._)

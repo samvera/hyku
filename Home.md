@@ -8,29 +8,29 @@ Welcome to the Hyku development wiki!
 * [Management](#management)
 
 # Development
-[[Hyku Development Guide]]
+* [[Hyku Development Guide]]
 
 ## Multi-tenancy
-[[Multi tenant domain model]]
-[[Using account switching in development]]
-[[ActiveJob with tenants]]
+* [[Multi tenant domain model]]
+* [[Using account switching in development]]
+* [[ActiveJob with tenants]]
 
 ## Amazon Web Services
-[[SSH to AWS demo stack]]
-[[Rails Console and DB Console on an Elastic Beanstalk machine]]
-[[Update the cloudformation deploy]]
-[[ActiveJob on SQS]]
+* [[SSH to AWS demo stack]]
+* [[Rails Console and DB Console on an Elastic Beanstalk machine]]
+* [[Update the cloudformation deploy]]
+* [[ActiveJob on SQS]]
 
 ### Cleanup
-[[Cleaning out bad data]]
-[[How Broke Is It? (Production data debugging scratchpad)]]
+* [[Cleaning out bad data]]
+* [[How Broke Is It? (Production data debugging scratchpad)]]
 
 ## Docker
-[[Hyku on Docker]]
-[[Running on docker]]
+* [[Hyku on Docker]]
+* [[Running on docker]]
 
 # Management
-[[Create super admin user]]
-[[Give tenant user admin role]]
-[[Issues with images not rendering]]
-[[Import from purl]] (Stanford-specific)
+* [[Create super admin user]]
+* [[Give tenant user admin role]]
+* [[Issues with images not rendering]]
+* [[Import from purl]] (Stanford-specific)

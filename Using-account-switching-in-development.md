@@ -1,5 +1,3 @@
-# Using account-switching in development
-
 * Flip the `multitenancy.enabled` setting in [config/settings.yml](https://github.com/projecthydra-labs/hybox/blob/master/config/settings.yml#L7) to `true` (but don't commit this later)
   ```
   multitenancy:

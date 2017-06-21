@@ -5,8 +5,8 @@
 1. Remove all images. `docker rmi $(docker images -q)`
 
 # Packaging Docker
-1. Run `docker-compose build` to build the following images: hyku_app, hyku_web, hyku_workers, hyku_db_migrate, hyku_initialize_app and pull the ruby image. Besides the ruby image, these are all aliases to a single image, so we only need to pack one of them. e.g. hyku_app
-1. Run `docker-compose up` to pull the rest of the images: solr, postgres, redis, zookeeper, memcached, cbeer/fcrepo4, dockercloud/haproxy.
+1. Clear everything from `./tmp`. Otherwise this is going into the packaged image.
+1. Run `docker-compose up --build` to pull/build all of the images. Note that hyku_app, hyku_web, hyku_workers, hyku_db_migrate, hyku_initialize_app all aliases to a single image, so we only need to pack one of them. e.g. hyku_app
 1. Run `docker-compose down` to shut down once everything looks okay.
 1. Export the images to a tar file and compress it:
 ```

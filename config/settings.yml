@@ -55,7 +55,10 @@ google_analytics_id:
 # Register here: http://www.geonames.org/manageaccount
 geonames_username: 'jcoyne'
 
+# The address to which the contact form is submitted
 contact_email: ""
 
 devise:
   account_signup: true
+  # The address from which user invitations are sent
+  invitation_from_email: "change-me-in-hyku-settings@example.org"

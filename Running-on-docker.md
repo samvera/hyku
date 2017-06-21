@@ -13,6 +13,14 @@
 docker save -o hyku-images/hyku-all.tar hyku_app solr postgres redis zookeeper memcached cbeer/fcrepo4 ruby dockercloud/haproxy
 gzip hyku-images/hyku-all.tar
 ```
+
+# docker-machine?
+If you're using an older computer you'll need to start a docker-machine. This installs a VM that can run docker inside it.  It is much slower than using the  Docker directly on your computer.
+```
+docker-machine create virtualbox
+```
+
+
 # Starting Hyku in Docker
 
 1. Download hyku (git or zip?)

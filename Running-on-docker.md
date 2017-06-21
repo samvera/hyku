@@ -16,9 +16,21 @@ gzip hyku-images/hyku-all.tar
 
 # docker-machine?
 If you're using an older computer you'll need to start a docker-machine. This installs a VM that can run docker inside it.  It is much slower than using the  Docker directly on your computer.
+Build the VM
 ```
-docker-machine create virtualbox
+docker-machine create --driver=virtualbox hyku
 ```
+
+Connect the docker client to the VM
+```
+docker-machine env hyku
+```
+On mac this gives directions such as:
+```
+eval $(docker-machine env hyku)
+```
+
+
 
 
 # Starting Hyku in Docker

@@ -1,0 +1,1 @@
+Change the values of the `contact_email` and `devise.invitation_from_email` configuration options in `config/settings.yml`, or environment-specific `settings/*.yml` files if you want to be able receive submissions from the contact form and to reply to user invitations emails respectively.

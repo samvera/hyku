@@ -31,6 +31,7 @@ Welcome to the Hyku development wiki!
 
 # Management
 * [[Create super admin user]]
+* [[Set email addresses]]
 * [[Give tenant user admin role]]
 * [[Issues with images not rendering]]
 * [[Import from purl]] (Stanford-specific)

@@ -8,10 +8,10 @@
 1. Clear everything from `./tmp`. Otherwise this is going into the packaged image.
 1. Run `docker-compose up --build` to pull/build all of the images. Note that hyku_app, hyku_web, hyku_workers, hyku_db_migrate, hyku_initialize_app all aliases to a single image, so we only need to pack one of them. e.g. hyku_app
 1. Run `docker-compose down` to shut down once everything looks okay.
-1. Export the images to a tar file and compress it:
+1. Export the images to a tar file and compress it. Don't do this in the project directory, or the next time you do this those images will get packaged in the new volumes.:
 ```
-docker save -o images/hyku-all.tar hyku_app solr postgres redis zookeeper memcached cbeer/fcrepo4 ruby dockercloud/haproxy
-gzip images/hyku-all.tar
+docker save -o hyku-images/hyku-all.tar hyku_app solr postgres redis zookeeper memcached cbeer/fcrepo4 ruby dockercloud/haproxy
+gzip hyku-images/hyku-all.tar
 ```
 # Starting Hyku in Docker
 

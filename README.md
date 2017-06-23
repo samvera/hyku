@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/projecthydra-labs/hyku.svg)](https://travis-ci.org/projecthydra-labs/hyku)
-[![Coverage Status](https://coveralls.io/repos/projecthydra-labs/hyku/badge.svg?branch=master&service=github)](https://coveralls.io/github/projecthydra-labs/hyku?branch=master)
-[![Stories in Ready](https://badge.waffle.io/projecthydra-labs/hyku.png?label=ready&title=Ready)](https://waffle.io/projecthydra-labs/hyku)
+[![Build Status](https://travis-ci.org/samvera-labs/hyku.svg)](https://travis-ci.org/samvera-labs/hyku)
+[![Coverage Status](https://coveralls.io/repos/samvera-labs/hyku/badge.svg?branch=master&service=github)](https://coveralls.io/github/samvera-labs/hyku?branch=master)
+[![Stories in Ready](https://badge.waffle.io/samvera-labs/hyku.png?label=ready&title=Ready)](https://waffle.io/samvera-labs/hyku)
 
 # Hyku, the Hydra-in-a-Box Repository Application
 
@@ -19,7 +19,7 @@ DISABLE_REDIS_CLUSTER=true bundle exec rails server -b 0.0.0.0
 ```
 ### For testing
 
-See the [Hyku Development Guide](https://github.com/projecthydra-labs/hyku/wiki/Hyku-Development-Guide) for how to run tests.
+See the [Hyku Development Guide](https://github.com/samvera-labs/hyku/wiki/Hyku-Development-Guide) for how to run tests.
 
 ### Working with Translations
 

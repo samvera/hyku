@@ -1,6 +1,7 @@
 GIT
   remote: https://github.com/projecthydra-labs/hyrax.git
-  revision: ed30d8f3a60db8768dd6c510bc402edb8ca0402b
+  revision: 5bd285ed56fba95f4f414724fc00d5dcd657b3fe
+  ref: 5bd285ed56fba95f4f414724fc00d5dcd657b3fe
   specs:
     hyrax (2.0.0.alpha)
       active-fedora (>= 11.3.1)

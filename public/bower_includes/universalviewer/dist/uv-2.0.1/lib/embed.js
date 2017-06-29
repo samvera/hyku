@@ -167,7 +167,7 @@ docReady(function() {
             };
             document.getElementsByTagName("head")[0].appendChild(script);
         }
-    })(window, document, "1.10.2", function ($, scriptUri, absScriptUri, jqueryLoaded) {
+    })(window, document, "3.2.1", function ($, scriptUri, absScriptUri, jqueryLoaded) {
 
         $.support.cors = true;
 

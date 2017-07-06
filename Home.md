@@ -20,6 +20,7 @@ Welcome to the Hyku development wiki!
 * [[Rails Console and DB Console on an Elastic Beanstalk machine]]
 * [[Update the cloudformation deploy]]
 * [[ActiveJob on SQS]]
+* [[View Solr and Zookeeper dashboards in AWS]]
 
 ### Cleanup
 * [[Cleaning out bad data]]

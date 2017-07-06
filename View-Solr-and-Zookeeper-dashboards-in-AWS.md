@@ -4,7 +4,9 @@ Both Solr and Exhibitor (which is used to manage the Zookeeper ensemble) provide
 
 ## Solution
 
-1. Open up the necessary ports in the Solr and Zookeeper security groups. (Note: This step only needs to be done once, then it will work for everyone needing to connect afterwards. This step could also be included in CloudFormation.)
+1. Open up the necessary ports in the Solr and Zookeeper security groups. 
+
+   _Note: This step only needs to be done once, then it will work for everyone needing to connect afterwards. This step could also be included in CloudFormation._
    1. For Solr, this is port 8983. For Exhibitor, this is port 80.
    2. In the AWS EC2 console, select `Security Groups` and search for "BastionSecurityGroup" (there should be only one result.) Copy the Group ID, it should be something like "sg-12345678".
    3. Still in the `Security Groups` section, search for "SolrSecurityGroup" (there should be only one result.) Select the `Inbound` tab, and click `Edit`. Select to `Add Rule`. For the port, use *8983*, for the source, paste in the bastion security group ID. Select Save.

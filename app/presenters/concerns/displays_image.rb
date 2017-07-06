@@ -3,8 +3,11 @@
 module DisplaysImage
   extend ActiveSupport::Concern
 
+  # Creates a display image only where FileSet is an image.
+  #
+  # @return [IIIFManifest::DisplayImage] the display image required by the manifest builder.
   def display_image
-    return nil unless FileSet.exists?(id)
+    return nil unless FileSet.exists?(id) && solr_document.image?
     # TODO: this is slow, find a better way (perhaps index iiif url):
     original_file = FileSet.find(id).original_file
 

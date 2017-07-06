@@ -17,6 +17,13 @@ RSpec.describe Hyku::FileSetPresenter do
       expect(subject).to be_instance_of IIIFManifest::DisplayImage
       expect(subject.url).to eq "http://test.host/images/#{id}/full/600,/0/default.jpg"
     end
+
+    it "returns nil when the fileset responds false to image?" do
+      # replace the image file with something else
+      Hydra::Works::AddFileToFileSet.call(file_set,
+                                          fixture_file('csv/sample.csv'), :original_file)
+      expect(subject).to be_nil
+    end
   end
 
   describe "iiif_endpoint" do

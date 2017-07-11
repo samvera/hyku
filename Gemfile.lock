@@ -1,7 +1,6 @@
 GIT
   remote: https://github.com/projecthydra-labs/hyrax.git
-  revision: 5bd285ed56fba95f4f414724fc00d5dcd657b3fe
-  ref: 5bd285ed56fba95f4f414724fc00d5dcd657b3fe
+  revision: eeab20176ab5957eed54292f73e674f7ae794825
   specs:
     hyrax (2.0.0.alpha)
       active-fedora (>= 11.3.1)
@@ -42,7 +41,6 @@ GIT
       rdf-rdfxml
       redis-namespace (~> 1.5.2)
       redlock (>= 0.1.2)
-      retriable (>= 2.9, < 4.0)
       select2-rails (~> 3.5.9)
       signet
       tinymce-rails (~> 4.1)
@@ -166,7 +164,7 @@ GEM
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
     breadcrumbs_on_rails (3.0.1)
-    browse-everything (0.13.1)
+    browse-everything (0.14.0)
       addressable (~> 2.5)
       aws-sdk
       bootstrap-sass

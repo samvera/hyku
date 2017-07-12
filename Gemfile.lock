@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/projecthydra-labs/hyrax.git
-  revision: b145741a061affec31247f05e3c85ce7aef325e1
+  revision: 26ea14e78294bb05baada7eac06cde8ea719bf4a
   branch: extra_logging
   specs:
     hyrax (2.0.0.alpha)

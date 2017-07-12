@@ -6,6 +6,10 @@ dist: trusty
 rvm:
   - 2.4.1
 
+services:
+  - postgresql
+  - redis-server
+
 # We provide AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY encrypted by travis here
 env:
   global:
@@ -18,6 +22,8 @@ cache:
   bundler: true
   directories:
     - "travis_phantomjs"
+    - tmp/solr_wrapper
+    - tmp/fcrepo_wrapper
 
 jdk:
   - oraclejdk8
@@ -40,14 +46,14 @@ before_install:
 before_script:
   - bundle exec rake db:create
 
+script:
+  - bundle exec rake --trace
+
 before_deploy:
   - git clean -dxf; rm -rf vendor/bundle
   - echo $TRAVIS_COMMIT > REVISION
   - mkdir build; zip -q -r build/hyku.zip .
-
-services:
-  - postgresql
-  - redis-server
+  - echo "COMPLETED before_deploy"
 
 deploy:
   - provider: s3
@@ -74,3 +80,6 @@ deploy:
     local_dir: build
     upload-dir: hyku/current
     acl: public_read
+
+after_deploy:
+  - echo "COMPLETED after_deploy"

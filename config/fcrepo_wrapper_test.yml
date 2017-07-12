@@ -1,3 +1,4 @@
 port: 8986
 enable_jms: false
 
+download_dir: tmp/fcrepo_wrapper

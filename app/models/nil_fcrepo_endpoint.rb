@@ -1,10 +1,14 @@
-class NilFcrepoEndpoint
+class NilFcrepoEndpoint < NilEndpoint
   def switch!
     ActiveFedora::Fedora.register(options)
   end
 
-  def ping
-    false
+  def url
+    'Fcrepo not initialized'
+  end
+
+  def base_path
+    'Fcrepo not initialized'
   end
 
   private

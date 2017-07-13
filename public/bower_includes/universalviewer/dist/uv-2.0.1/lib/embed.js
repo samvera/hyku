@@ -155,7 +155,7 @@ docReady(function() {
         }
 
         // only load jQuery if not already included in page.
-        if (!(j = window.jQuery) || compareVersionNumbers(version, j.fn.jquery) || callback(j, scriptUri, absScriptUri, loaded)) {
+        if (!(j = window.jQuery) || compareVersionNumbers(version, j.fn.jquery) > 0 || callback(j, scriptUri, absScriptUri, loaded)) {
             var script = document.createElement("script");
             script.type = "text/javascript";
             script.src = "//cdnjs.cloudflare.com/ajax/libs/jquery/" + version + "/jquery.min.js";
@@ -167,7 +167,7 @@ docReady(function() {
             };
             document.getElementsByTagName("head")[0].appendChild(script);
         }
-    })(window, document, "3.2.1", function ($, scriptUri, absScriptUri, jqueryLoaded) {
+    })(window, document, "1.10.2", function ($, scriptUri, absScriptUri, jqueryLoaded) {
 
         $.support.cors = true;
 

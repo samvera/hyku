@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/samvera/hydra-works.git
-  revision: f2cfbe437f309bc576111acb47fb7d059a38621d
+  revision: 11f02216adb520b3e20e55155367edf5ebbb2cd1
   branch: hyku_testing
   specs:
     hydra-works (0.16.0)

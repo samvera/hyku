@@ -3,6 +3,18 @@
 #
 # The mapping is described in `./config/initializers/config.rb`.
 #
+
+<%
+  # General variables
+  app_name = 'hyku'
+
+  # Settings.solr variables
+  solr_dir = 'solr/config/'
+  solr_namespace = 'hydra-development'
+  solr_port = ENV.fetch('SOLR_DEVELOPMENT_PORT', 8983)
+  solr_url = ENV.fetch('SOLR_URL', "http://127.0.0.1:#{solr_port}/solr/#{solr_namespace}/")
+%>
+
 multitenancy:
   enabled: false
   default_host: # "%{tenant}.dev"
@@ -14,17 +26,22 @@ action_controller:
   asset_host:
 
 redis:
-  default_namespace: hyku
+  default_namespace: <%= app_name %>
 
 solr:
-  url: "http://127.0.0.1:8983/solr/"
-  configset: hyku
-  configset_source_path: <%= File.join(Rails.root, 'solr', 'config') %>
+  port: <%= solr_port %>
+  url:  <%= solr_url %>
+  cloud: true
+  configset: <%= app_name %>
+  configset_source_path: <%= File.join(Rails.root, solr_dir) %>
+  collection:
+    dir:  <%= solr_dir %>
+    name: <%= solr_namespace %>
   collection_options:
     async:
     auto_add_replicas:
     collection:
-      config_name: hyku
+      config_name: <%= app_name %>
     create_node_set:
     max_shards_per_node:
     num_shards: 1
@@ -35,6 +52,15 @@ solr:
     rule:
     shards:
     snitch:
+
+solr_wrapper:
+  enabled: true
+  verbose: true
+  cloud: true
+  port: <%= solr_port %>
+  version: '6.5.1'
+  instance_dir: 'solr'
+  download_dir: 'tmp'
 
 zookeeper:
   connection_str: "localhost:9983/configs"

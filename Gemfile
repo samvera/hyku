@@ -27,7 +27,9 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
-gem 'active-fedora', '>= 11.1.4'
+gem 'active-fedora', '~> 11.2'
+
+gem 'puma'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -74,7 +76,7 @@ end
 
 gem 'blacklight', '~> 6.7'
 
-gem 'hyrax', git: 'https://github.com/projecthydra-labs/hyrax.git', ref: '5bd285ed56fba95f4f414724fc00d5dcd657b3fe'
+gem 'hyrax', git: 'https://github.com/projecthydra-labs/hyrax.git', branch: 'extra_logging'
 gem 'rsolr', '~> 2.0'
 
 gem 'devise'

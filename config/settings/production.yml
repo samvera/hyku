@@ -1,2 +1,18 @@
 multitenancy:
   enabled: true
+
+<%
+  solr_namespace = 'hydra-production'
+  solr_port = ENV.fetch('SOLR_PRODUCTION_PORT', 8080)
+  solr_url = ENV.fetch('SOLR_URL', "http://127.0.0.1:#{solr_port}/solr/#{solr_namespace}/")
+%>
+
+solr:
+  port: <%= solr_port %>
+  url:  <%= solr_url %>
+  collection:
+    name: <%= solr_namespace %>
+
+solr_wrapper:
+  enabled: false
+

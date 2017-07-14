@@ -1,9 +1,15 @@
+<% Settings.solr.url || raise("Settings.solr failed to initialize") %>
+
+default: &default
+  adapter: solr
+  url: <%= Settings.solr.url %>
+
 development:
-  adapter: solr
-  url: <%= ENV['SOLR_URL'] || "http://127.0.0.1:#{ENV.fetch('SOLR_DEVELOPMENT_PORT', 8983)}/solr/hydra-development" %>
+  <<: *default
+
 test: &test
-  adapter: solr
-  url: <%= ENV['SOLR_URL'] || "http://127.0.0.1:#{ENV.fetch('SOLR_TEST_PORT', 8985)}/solr/hydra-test" %>
+  <<: *default
+
 production:
-  adapter: solr
-  url: <%= ENV['SOLR_URL'] || "http://127.0.0.1:8983/solr/blacklight-core" %>
+  <<: *default
+

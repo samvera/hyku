@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170605152346) do
+ActiveRecord::Schema.define(version: 20170712172828) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -151,6 +151,20 @@ ActiveRecord::Schema.define(version: 20170605152346) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "job_io_wrappers", id: :serial, force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "uploaded_file_id"
+    t.string "file_set_id"
+    t.string "mime_type"
+    t.string "original_name"
+    t.string "path"
+    t.string "relation"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["uploaded_file_id"], name: "index_job_io_wrappers_on_uploaded_file_id"
+    t.index ["user_id"], name: "index_job_io_wrappers_on_user_id"
+  end
+
   create_table "local_authorities", id: :serial, force: :cascade do |t|
     t.string "name"
   end
@@ -164,8 +178,8 @@ ActiveRecord::Schema.define(version: 20170605152346) do
   end
 
   create_table "mailboxer_conversation_opt_outs", id: :serial, force: :cascade do |t|
-    t.integer "unsubscriber_id"
     t.string "unsubscriber_type"
+    t.integer "unsubscriber_id"
     t.integer "conversation_id"
     t.index ["conversation_id"], name: "index_mailboxer_conversation_opt_outs_on_conversation_id"
     t.index ["unsubscriber_id", "unsubscriber_type"], name: "index_mailboxer_conversation_opt_outs_on_unsubscriber_id_type"
@@ -181,13 +195,13 @@ ActiveRecord::Schema.define(version: 20170605152346) do
     t.string "type"
     t.text "body"
     t.string "subject", default: ""
-    t.integer "sender_id"
     t.string "sender_type"
+    t.integer "sender_id"
     t.integer "conversation_id"
     t.boolean "draft", default: false
     t.string "notification_code"
-    t.integer "notified_object_id"
     t.string "notified_object_type"
+    t.integer "notified_object_id"
     t.string "attachment"
     t.datetime "updated_at", null: false
     t.datetime "created_at", null: false
@@ -200,8 +214,8 @@ ActiveRecord::Schema.define(version: 20170605152346) do
   end
 
   create_table "mailboxer_receipts", id: :serial, force: :cascade do |t|
-    t.integer "receiver_id"
     t.string "receiver_type"
+    t.integer "receiver_id"
     t.integer "notification_id", null: false
     t.boolean "is_read", default: false
     t.boolean "trashed", default: false
@@ -285,8 +299,8 @@ ActiveRecord::Schema.define(version: 20170605152346) do
 
   create_table "roles", id: :serial, force: :cascade do |t|
     t.string "name"
-    t.integer "resource_id"
     t.string "resource_type"
+    t.integer "resource_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"

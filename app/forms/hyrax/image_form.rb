@@ -3,6 +3,10 @@
 module Hyrax
   class ImageForm < Hyrax::Forms::WorkForm
     self.model_class = ::Image
-    self.terms += [:resource_type, :extent]
+    self.terms += [:resource_type,:extent,:rendering_ids]
+
+    def secondary_terms
+      super - [:rendering_ids]
+    end
   end
 end

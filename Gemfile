@@ -102,7 +102,8 @@ gem 'zk'
 gem 'mods', '~> 2.1'
 gem 'riiif', '~> 1.1'
 
-gem 'iiif_manifest', '~> 0.2.0'
+# gem 'iiif_manifest', '~> 0.2.0'
+gem 'iiif_manifest', git: 'https://github.com/ULCC/iiif_manifest', branch: 'hyku_1372_rendering'
 
 group :aws, :test do
   gem 'carrierwave-aws'

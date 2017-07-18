@@ -25,4 +25,25 @@ RSpec.describe Hyku::ManifestEnabledWorkShowPresenter do
       expect(subject).to be_kind_of Hyku::FileSetPresenter
     end
   end
+
+  describe "manifest_extras" do
+    subject do
+      presenter.manifest_extras
+    end
+
+    let(:work) { FactoryGirl.create(:work_with_one_file) }
+    let(:document) { work.to_solr }
+    let(:solr_document) { SolrDocument.new(document) }
+    let(:presenter) { described_class.new(solr_document, ability, request) }
+
+    before do
+      Hydra::Works::AddFileToFileSet.call(work.file_sets.first,
+                                            fixture_file('images/world.png'), :original_file)
+    end
+
+    it "returns a hash containing the rendering information" do
+      work.rendering_ids = [work.file_sets.first.id]
+      expect(subject).to include(:sequence_rendering)
+    end
+  end
 end

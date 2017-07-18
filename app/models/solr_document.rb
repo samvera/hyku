@@ -25,4 +25,5 @@ class SolrDocument
   use_extension(Hydra::ContentNegotiation)
 
   attribute :extent, Solr::Array, solr_name('extent')
+  attribute :rendering_ids, Solr::Array, solr_name('hasRendering', :symbol)
 end

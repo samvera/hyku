@@ -14,11 +14,18 @@ bundle exec rake spec
 ```
 
 #### Debian/Ubuntu
-On Debian/Ubunutu, the redis and postgress steps might look like:
+On Debian/Ubunutu, the redis and postgres steps might look like:
 ```
 [sudo] service postgresql status
 [sudo] service redis status
 ```
+
+### Live Carrierwave S3 Bucket
+When you are trying to test specific Carrierwave configuration or behavior and want to use an actual S3 bucket:
+```bash
+SETTINGS__S3__UPLOAD_BUCKET=hyku-carrierwave-test bundle exec rspec
+```
+The presence of that configuration (`Settings.s3.upload_bucket`) triggers `config/initializers/carrierwave_config.rb` to configure Carrierwave to use carrierwave-aws.  You may need other environmental variables (for secret and key) or aws config file to use S3 live in development.  
 
 ## Production debugging on laptop
 

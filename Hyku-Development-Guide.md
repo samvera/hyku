@@ -25,7 +25,7 @@ When you are trying to test specific Carrierwave configuration or behavior and w
 ```bash
 SETTINGS__S3__UPLOAD_BUCKET=hyku-carrierwave-test bundle exec rspec
 ```
-The presence of that configuration (`Settings.s3.upload_bucket`) triggers `config/initializers/carrierwave_config.rb` to configure Carrierwave to use carrierwave-aws.  You may need other environmental variables (for secret and key) or aws config file to use S3 live in development.  
+The presence of that setting (`Settings.s3.upload_bucket`) triggers `config/initializers/carrierwave_config.rb` to configure Carrierwave to use carrierwave-aws.  You may need other environmental variables (for secret and key) or aws config file to use S3 live in development.  
 
 ## Production debugging on laptop
 

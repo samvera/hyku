@@ -5,7 +5,7 @@ class CleanupAccountJob < ActiveJob::Base
     cleanup_solr(account)
     cleanup_fedora(account)
     cleanup_redis(account)
-    Apartment::Tenant.drop(account.tenant)
+    cleanup_database(account)
     account.destroy
   end
 
@@ -13,7 +13,7 @@ class CleanupAccountJob < ActiveJob::Base
 
     def cleanup_fedora(account)
       # Return immediately if fcrepo_endpoint doesn't exist
-      return unless account.fcrepo_endpoint
+      return unless account.fcrepo_endpoint && !account.fcrepo_endpoint.instance_of?(NilFcrepoEndpoint)
       client = fcrepo_client(account)
       # Preceding slash must be removed from base_path when calling delete()
       client.delete(account.fcrepo_endpoint.base_path.sub!(%r{^/}, ''))
@@ -22,7 +22,7 @@ class CleanupAccountJob < ActiveJob::Base
 
     def cleanup_redis(account)
       # Return immediately if redis_endpoint doesn't exist
-      return unless account.redis_endpoint
+      return unless account.redis_endpoint && !account.redis_endpoint.instance_of?(NilRedisEndpoint)
       redis_ns = redis_namespace(account)
       # Redis::Namespace currently doesn't support flushall or flushdb.
       # See https://github.com/resque/redis-namespace/issues/56
@@ -37,10 +37,16 @@ class CleanupAccountJob < ActiveJob::Base
 
     def cleanup_solr(account)
       # A partially set up account, may never have been given a solr_endpoint.
-      return unless account.solr_endpoint
+      return unless account.solr_endpoint && !account.solr_endpoint.instance_of?(NilSolrEndpoint)
       # Spin off as a job, so that it can fail and be retried separately from the other logic.
       RemoveSolrCollectionJob.perform_later(account.solr_endpoint.collection, account.solr_endpoint.connection_options)
       account.solr_endpoint.destroy
+    end
+
+    def cleanup_database(account)
+      Apartment::Tenant.drop(account.tenant)
+    rescue
+      nil # ignore if account.tenant missing
     end
 
     def fcrepo_client(account)

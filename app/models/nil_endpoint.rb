@@ -7,4 +7,8 @@ class NilEndpoint
   def persisted?
     false
   end
+
+  def remove!
+    false
+  end
 end

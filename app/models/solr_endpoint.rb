@@ -27,6 +27,13 @@ class SolrEndpoint < Endpoint
     Blacklight.default_index = nil
   end
 
+  # Remove the solr collection then destroy this record
+  def remove!
+    # Spin off as a job, so that it can fail and be retried separately from the other logic.
+    RemoveSolrCollectionJob.perform_later(collection, connection_options)
+    destroy
+  end
+
   def self.reset!
     ActiveFedora::SolrService.reset!
     Blacklight.connection_config = nil

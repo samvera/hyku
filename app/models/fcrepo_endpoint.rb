@@ -14,4 +14,13 @@ class FcrepoEndpoint < Endpoint
   rescue
     false
   end
+
+  # Remove the Fedora resource for this endpoint, then destroy the record
+  def remove!
+    switch!
+    # Preceding slash must be removed from base_path when calling delete()
+    path = base_path.sub!(%r{^/}, '')
+    ActiveFedora.fedora.connection.delete(path)
+    destroy
+  end
 end

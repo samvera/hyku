@@ -6,7 +6,6 @@ class CleanupAccountJob < ActiveJob::Base
     cleanup_fedora(account)
     cleanup_redis(account)
     cleanup_database(account)
-    Apartment::Tenant.drop(account.tenant)
     account.destroy
   end
 

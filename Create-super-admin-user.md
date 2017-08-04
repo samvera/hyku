@@ -11,6 +11,6 @@ cd /var/app/current
 ```
 4. Use the `superadmin` rake task to provide superadmin rights. The square brackets around the email address are required. (Because we use some gems from github we need to set the BUNDLE_PATH first.)
 ```shell
-BUNDLE_PATH=/opt/rubies/ruby-2.3.1/lib/ruby/gems/2.3.0/ bundle exec rake superadmin:grant[user@email.org]
+BUNDLE_PATH=/opt/rubies/ruby-2.3.4/lib/ruby/gems/2.3.0/ bundle exec rake superadmin:grant[user@email.org]
 ```
 5. Back in the browser, log out and in again using the "Administrator Login" option in the footer. Once logged in, you'll be able to create a new repository (i.e. tenant) or see currently existing tenants via an "Accounts" menu option in header.

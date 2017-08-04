@@ -20,7 +20,7 @@ AccountElevator.switch!('nacho.demo.hydrainabox.org')
 ### Rails db console
 For direct postgres access:
 ```shell
-BUNDLE_PATH=/opt/rubies/ruby-2.3.1/lib/ruby/gems/2.3.0/ RAILS_ENV=production bundle exec rails db -p
+BUNDLE_PATH=/opt/rubies/ruby-2.3.4/lib/ruby/gems/2.3.0/ RAILS_ENV=production bundle exec rails db -p
 ```
 The `-p` is required to pickup DB user/pass from app configuration.
 

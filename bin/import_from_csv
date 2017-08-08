@@ -38,6 +38,10 @@ def main(hostname, csv_file, files_directory)
   puts "Imported #{size} records."
 end
 
+def logger
+  Rails.logger
+end
+
 def usage
   $stderr.puts "Usage: #{$PROGRAM_NAME} <hostname> <csv file> <files directory>"
 end

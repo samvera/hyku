@@ -14,6 +14,7 @@ Welcome to the Hyku development wiki!
 * [[Multi tenant domain model]]
 * [[Using account switching in development]]
 * [[ActiveJob with tenants]]
+* [[Run rake task on all or selected tenants]]
 
 ## Amazon Web Services
 * [[SSH to AWS demo stack]]

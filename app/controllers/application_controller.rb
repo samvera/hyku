@@ -36,8 +36,8 @@ class ApplicationController < ActionController::Base
     def require_active_account!
       return unless Settings.multitenancy.enabled
       return if devise_controller? || peek_controller?
-
-      raise Apartment::TenantNotFound, "No tenant for #{request.host}" unless current_account.persisted?
+      return if current_account && current_account.persisted?
+      raise Apartment::TenantNotFound, "No tenant for #{request.host}"
     end
 
     def set_account_specific_connections!

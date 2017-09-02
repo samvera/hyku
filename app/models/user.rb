@@ -51,6 +51,16 @@ class User < ActiveRecord::Base
   private
 
     def add_default_roles
-      add_role :admin, Site.instance unless self.class.any?
+      return unless self.class.any?
+
+      if default_tenant?
+        add_role :superadmin
+      else
+        add_role :admin, Site.instance
+      end
+    end
+
+    def default_tenant?
+      Apartment::Tenant.default_tenant == Apartment::Tenant.current
     end
 end

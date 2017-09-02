@@ -1,4 +1,20 @@
 RSpec.describe User, type: :model do
+  before do
+    allow_any_instance_of(described_class).to receive(:default_tenant?).and_return(false)
+  end
+
+  context 'in a multitenant environment' do
+    before do
+      allow_any_instance_of(described_class).to receive(:default_tenant?).and_return(true)
+    end
+
+    subject { FactoryGirl.create(:base_user) }
+
+    it 'is given the superadmin role' do
+      expect(subject).to have_role :superadmin
+    end
+  end
+
   context 'the first created user' do
     subject { FactoryGirl.create(:base_user) }
     it 'is given the admin role' do

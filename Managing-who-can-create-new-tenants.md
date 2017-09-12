@@ -7,9 +7,9 @@ After logging in as a superadmin, you'll see a "Get Started" option to create yo
 
 ## Allowing anyone to create a tenant
 
-In some scenarios, namely for demonstration, development or testing, it may be desirable to allow anyone to create a new tenant.
+In some scenarios (namely for demonstration, development or testing), it may be desirable to allow anyone to create a new tenant.
 
-To allow anyone to create a tenant, flip the `multitenancy.admin_only_tenant_creation` setting in `config/settings.yml` to `false`
+To allow anyone to create a tenant, in the `config/settings.yml`, flip the `multitenancy.admin_only_tenant_creation` setting to `false`
   ```
   multitenancy:
     enabled: true

@@ -12,6 +12,7 @@ Welcome to the Hyku development wiki!
 
 ## Multi-tenancy
 * [[Multi tenant domain model]]
+* [[Managing who can create new tenants]]
 * [[Using account switching in development]]
 * [[ActiveJob with tenants]]
 * [[Run rake task on all or selected tenants]]

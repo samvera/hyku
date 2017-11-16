@@ -74,7 +74,7 @@ end
 
 gem 'blacklight', '~> 6.7'
 
-gem 'hyrax', git: 'https://github.com/samvera/hyrax.git'
+gem 'hyrax', '2.0.0'
 gem 'rsolr', '~> 2.0'
 
 gem 'devise'

@@ -119,7 +119,7 @@ module Importer
 
         # Regardless of what the MODS Parser gives us, these are the properties we are prepared to accept.
         def permitted_attributes
-          klass.properties.keys.map(&:to_sym) + [:id, :edit_users, :edit_groups, :read_groups, :visibility]
+          klass.properties.keys.map(&:to_sym) + %i[id edit_users edit_groups read_groups visibility]
         end
     end
   end

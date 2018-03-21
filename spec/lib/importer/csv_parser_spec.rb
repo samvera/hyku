@@ -19,9 +19,9 @@ RSpec.describe Importer::CSVParser do
                                                 { name: ["Brandao, Leonidas"] },
                                                 { name: ["Brandao, Anarosa"] },
                                                 { name: ["Isotani, Seiji"] }]
-      expect(first_record.keys).to match_array [:id, :type, :title, :description,
-                                                :subject, :resource_type, :contributor,
-                                                :date_created, :file]
+      expect(first_record.keys).to match_array %i[id type title description
+                                                  subject resource_type contributor
+                                                  date_created file]
     end
   end
 
@@ -29,7 +29,8 @@ RSpec.describe Importer::CSVParser do
     subject { parser.send(:validate_headers, headers) }
 
     context 'with valid headers' do
-      let(:headers) { %w(id title) }
+      let(:headers) { %w[id title] }
+
       it { is_expected.to eq headers }
     end
 
@@ -43,12 +44,14 @@ RSpec.describe Importer::CSVParser do
 
     context 'with nil headers' do
       let(:headers) { ['title', nil] }
+
       it { is_expected.to eq headers }
     end
 
     # It doesn't expect a matching column for "resource_type"
     context 'with resource_type column' do
-      let(:headers) { %w(resource_type title) }
+      let(:headers) { %w[resource_type title] }
+
       it { is_expected.to eq headers }
     end
   end
@@ -57,7 +60,8 @@ RSpec.describe Importer::CSVParser do
     subject { parser.send(:validate_header_pairs, headers) }
 
     context 'with "*_type" columns' do
-      let(:headers) { %w(rights_holder rights_holder_type rights_holder title note_type note) }
+      let(:headers) { %w[rights_holder rights_holder_type rights_holder title note_type note] }
+
       it { is_expected.to be_nil }
     end
 
@@ -66,7 +70,7 @@ RSpec.describe Importer::CSVParser do
     # authority.  If the columns aren't in the correct order,
     # raise an error.
     context 'with columns in the wrong order' do
-      let(:headers) { %w(note note_type rights_holder_type rights_holder_type rights_holder title) }
+      let(:headers) { %w[note note_type rights_holder_type rights_holder_type rights_holder title] }
 
       it 'raises an error' do
         expect { subject }.to raise_error "Invalid headers: 'note_type' column " \

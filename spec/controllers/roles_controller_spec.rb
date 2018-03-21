@@ -13,14 +13,14 @@ RSpec.describe RolesController, type: :controller do
     describe "GET #edit" do
       it "denies the request" do
         get :index
-        expect(response).not_to have_http_status(200)
+        expect(response).not_to have_http_status(:ok)
       end
     end
 
     describe "PUT #update" do
       it "denies the request" do
         put :update, params: { id: user.id }
-        expect(response).not_to have_http_status(201)
+        expect(response).not_to have_http_status(:created)
       end
     end
   end

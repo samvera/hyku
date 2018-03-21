@@ -1,5 +1,6 @@
 RSpec.describe FcrepoEndpoint do
   let(:base_path) { 'foobar' }
+
   describe '.options' do
     subject { described_class.new base_path: base_path }
 
@@ -10,6 +11,7 @@ RSpec.describe FcrepoEndpoint do
 
   describe '#ping' do
     let(:success_response) { double(response: double(success?: true)) }
+
     it 'checks if the service is up' do
       allow(ActiveFedora::Fedora.instance.connection).to receive(:head).with('/').and_return(success_response)
       expect(subject.ping).to be_truthy

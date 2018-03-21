@@ -25,7 +25,7 @@ class CleanupAccountJob < ActiveJob::Base
 
     def cleanup_database(account)
       Apartment::Tenant.drop(account.tenant)
-    rescue
+    rescue StandardError
       nil # ignore if account.tenant missing
     end
 end

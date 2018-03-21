@@ -40,10 +40,10 @@ Metrics/LineLength:
     - 'spec/services/iiif_work_thumbnail_path_service_spec.rb'
     - 'spec/routing/proprietor/accounts_routing_spec.rb'
 
-Style/IndentationConsistency:
+Layout/IndentationConsistency:
   EnforcedStyle: rails
 
-Style/DotPosition:
+Layout/DotPosition:
   EnforcedStyle: leading
 
 Style/Documentation:

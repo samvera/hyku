@@ -7,6 +7,7 @@ RSpec.describe Hyku::RegistrationsController, type: :controller do
 
   context 'with account signup enabled' do
     let(:account_signup_enabled) { true }
+
     describe '#new' do
       it 'renders the form' do
         get :new
@@ -29,6 +30,7 @@ RSpec.describe Hyku::RegistrationsController, type: :controller do
   end
   context 'with account signup disabled' do
     let(:account_signup_enabled) { false }
+
     describe '#new' do
       it 'redirects with a flash message' do
         get :new

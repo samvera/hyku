@@ -9,6 +9,7 @@ RSpec.describe Hyku::FileSetPresenter do
   describe "display_image" do
     context "when the file is not an image" do
       subject { presenter.display_image }
+
       before do
         Hydra::Works::AddFileToFileSet.call(file_set,
                                             fixture_file('csv/sample.csv'), :original_file)
@@ -17,6 +18,7 @@ RSpec.describe Hyku::FileSetPresenter do
     end
     context "when the file is an image" do
       subject { presenter.display_image }
+
       before do
         Hydra::Works::AddFileToFileSet.call(file_set,
                                             fixture_file('images/world.png'), :original_file)
@@ -30,6 +32,7 @@ RSpec.describe Hyku::FileSetPresenter do
 
   describe "iiif_endpoint" do
     subject { presenter.send(:iiif_endpoint, file_set.original_file) }
+
     before do
       Hydra::Works::AddFileToFileSet.call(file_set,
                                           fixture_file('images/world.png'), :original_file)

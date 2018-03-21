@@ -74,7 +74,7 @@ module Hyku
         model = solr_document['has_model_ssim'].first
 
         "#{ns}::#{model}Form".constantize.required_fields
-      rescue
+      rescue StandardError
         []
       end
 

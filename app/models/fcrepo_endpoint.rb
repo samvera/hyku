@@ -1,5 +1,5 @@
 class FcrepoEndpoint < Endpoint
-  store :options, accessors: [:url, :base_path]
+  store :options, accessors: %i[url base_path]
 
   def switch!
     ActiveFedora::Fedora.register(options.symbolize_keys)
@@ -11,7 +11,7 @@ class FcrepoEndpoint < Endpoint
 
   def ping
     ActiveFedora::Fedora.instance.connection.head('/').response.success?
-  rescue
+  rescue StandardError
     false
   end
 

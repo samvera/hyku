@@ -101,11 +101,7 @@ module Importer
     def language
       mods.language.languageTerm.map do |term|
         uris = term.valueURI.map { |uri| RDF::URI.new(uri) }
-        if uris.present?
-          uris
-        else
-          term.text
-        end
+        uris.presence || term.text
       end
     end
 

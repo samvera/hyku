@@ -7,7 +7,7 @@ RSpec.describe SitesController, type: :controller, singletenant: true do
     describe "POST #update" do
       it "denies the request" do
         post :update
-        expect(response).to have_http_status(401)
+        expect(response).to have_http_status(:unauthorized)
       end
     end
   end

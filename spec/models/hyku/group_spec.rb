@@ -2,6 +2,7 @@ module Hyku
   RSpec.describe Group do
     describe 'group with no members' do
       subject { described_class.new(name: name, description: description) }
+
       let(:name) { 'Empty Group' }
       let(:description) { 'Add members plz' }
       let(:empty_group_attributes) do
@@ -11,6 +12,7 @@ module Hyku
           number_of_users: 0
         }
       end
+
       it { is_expected.to have_attributes(empty_group_attributes) }
       it { is_expected.to respond_to(:created_at) }
     end
@@ -44,6 +46,7 @@ module Hyku
 
     context '#search_members' do
       subject { FactoryGirl.create(:group) }
+
       let(:known_user_name) { FactoryGirl.create(:user, display_name: 'Tom Cramer') }
       let(:known_user_email) { FactoryGirl.create(:user, email: 'tom@project-hydra.com') }
 
@@ -68,7 +71,9 @@ module Hyku
 
     describe '#add_members_by_id' do
       subject { FactoryGirl.create(:group) }
+
       let(:user) { FactoryGirl.create(:user) }
+
       before { subject.add_members_by_id(user.id) }
 
       it 'adds one user when passed a single user id' do
@@ -85,6 +90,7 @@ module Hyku
 
       context 'single user id' do
         let(:user) { FactoryGirl.create(:user) }
+
         before { subject.add_members_by_id(user.id) }
 
         it 'removes one user' do
@@ -97,6 +103,7 @@ module Hyku
       context 'collection of user ids' do
         let(:user_list) { FactoryGirl.create_list(:user, 3) }
         let(:user_ids) { user_list.collect(&:id) }
+
         before { subject.add_members_by_id(user_ids) }
 
         it 'removes multiple users' do
@@ -109,6 +116,7 @@ module Hyku
 
     context '#number_of_users' do
       subject { FactoryGirl.create(:group) }
+
       let(:user) { FactoryGirl.create(:user) }
 
       it 'starts out with 0 users' do

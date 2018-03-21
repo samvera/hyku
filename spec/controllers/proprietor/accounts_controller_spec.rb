@@ -112,7 +112,7 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
     describe "DELETE #destroy" do
       it "denies the request" do
         delete :destroy, params: { id: account.to_param }
-        expect(response).to have_http_status(401)
+        expect(response).to have_http_status(:unauthorized)
       end
     end
 
@@ -122,21 +122,21 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
       describe "GET #show" do
         it "denies the request" do
           get :show, params: { id: another_account.to_param }
-          expect(response).to have_http_status(401)
+          expect(response).to have_http_status(:unauthorized)
         end
       end
 
       describe "GET #edit" do
         it "denies the request" do
           get :edit, params: { id: another_account.to_param }
-          expect(response).to have_http_status(401)
+          expect(response).to have_http_status(:unauthorized)
         end
       end
 
       describe "PUT #update" do
         it "denies the request" do
           put :update, params: { id: another_account.to_param, account: valid_attributes }
-          expect(response).to have_http_status(401)
+          expect(response).to have_http_status(:unauthorized)
         end
       end
     end

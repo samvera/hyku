@@ -6,6 +6,7 @@ RSpec.describe Devise::Mailer, type: :mailer do
 
   describe "reset_password_instructions" do
     let(:mail) { described_class.reset_password_instructions(user, token) }
+
     it "renders the body" do
       expect(mail.body.encoded).to match("http://localhost/users/password/edit")
     end

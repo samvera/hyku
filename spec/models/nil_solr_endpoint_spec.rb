@@ -2,8 +2,10 @@ require 'spec_helper'
 
 RSpec.describe NilSolrEndpoint do
   let(:instance) { described_class.new }
+
   describe "#ping" do
     subject { instance.ping }
+
     it { is_expected.to be false }
   end
 
@@ -13,6 +15,7 @@ RSpec.describe NilSolrEndpoint do
 
   describe "#url" do
     subject { instance.url }
+
     it { is_expected.to eq 'Solr not initialized' }
   end
 end

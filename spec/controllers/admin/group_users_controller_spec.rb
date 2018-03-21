@@ -4,6 +4,7 @@ RSpec.describe Admin::GroupUsersController, faketenant: true do
   context 'as an anonymous user' do
     describe 'GET #index' do
       subject { get :index, params: { group_id: group.id } }
+
       it { is_expected.to redirect_to root_path }
     end
   end
@@ -13,6 +14,7 @@ RSpec.describe Admin::GroupUsersController, faketenant: true do
 
     describe 'GET #index' do
       subject { get :index, params: { group_id: group.id } }
+
       it { is_expected.to render_template('layouts/dashboard') }
       it { is_expected.to render_template('admin/groups/users') }
     end

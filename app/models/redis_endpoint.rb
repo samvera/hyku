@@ -12,7 +12,7 @@ class RedisEndpoint < Endpoint
 
   def ping
     redis_instance.ping
-  rescue
+  rescue StandardError
     false
   end
 

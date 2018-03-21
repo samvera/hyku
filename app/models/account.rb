@@ -1,5 +1,5 @@
 # Customer organization account
-class Account < ActiveRecord::Base
+class Account < ApplicationRecord
   # @param [String] piece the tenant piece of the canonical name
   # @return [String] full canonical name
   # @raise [ArgumentError] if piece contains a trailing dot

@@ -1,4 +1,4 @@
-RSpec.feature 'Creating a new Work', :clean do
+RSpec.describe 'Creating a new Work', :clean do
   let(:user) { create(:user) }
 
   before do

@@ -8,6 +8,7 @@ RSpec.describe Hyrax::MemberPresenterFactory do
 
   describe "file_presenter_class" do
     subject { described_class.file_presenter_class }
+
     it { is_expected.to eq Hyku::FileSetPresenter }
   end
 end

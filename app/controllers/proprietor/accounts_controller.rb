@@ -83,8 +83,8 @@ module Proprietor
       def account_params
         params.require(:account).permit(:name, :cname, :title,
                                         admin_emails: [],
-                                        solr_endpoint_attributes: [:id, :url],
-                                        fcrepo_endpoint_attributes: [:id, :url, :base_path])
+                                        solr_endpoint_attributes: %i[id url],
+                                        fcrepo_endpoint_attributes: %i[id url base_path])
       end
   end
 end

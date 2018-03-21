@@ -1,6 +1,7 @@
 RSpec.describe Proprietor::AccountsController, type: :routing do
   let(:admin_host) { Account.admin_host }
   let(:admin_host_url) { "http://#{admin_host}" }
+
   describe "routing" do
     it "routes to #index" do
       expect(get: "#{admin_host_url}/proprietor/accounts").to route_to("proprietor/accounts#index", host: admin_host)

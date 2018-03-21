@@ -1,6 +1,6 @@
 module Admin
   class GroupsController < AdminController
-    before_action :load_group, only: [:edit, :update, :remove, :destroy]
+    before_action :load_group, only: %i[edit update remove destroy]
 
     # rubocop:disable Metrics/AbcSize
     def index

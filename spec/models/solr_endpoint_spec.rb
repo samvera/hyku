@@ -3,6 +3,7 @@ RSpec.describe SolrEndpoint do
 
   describe '#connection_options' do
     subject(:options) { instance.connection_options }
+
     it 'merges the model attributes with the application settings' do
       expect(options).to include url: 'http://example.com/solr/', read_timeout: 120
     end
@@ -10,6 +11,7 @@ RSpec.describe SolrEndpoint do
 
   describe '#connection' do
     subject { instance.connection }
+
     let(:result) { double }
     let(:af_options) do
       { read_timeout: 120,
@@ -36,6 +38,7 @@ RSpec.describe SolrEndpoint do
 
   describe '#ping' do
     let(:mock_connection) { instance_double(RSolr::Client, options: {}) }
+
     before do
       # Mocking on the subject, because mocking RSolr.connect causes doubles to leak for some reason
       allow(subject).to receive(:connection).and_return(mock_connection)

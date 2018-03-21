@@ -1,5 +1,6 @@
 RSpec.describe RedisEndpoint do
   let(:namespace) { 'foobar' }
+
   describe '.options' do
     subject { described_class.new namespace: namespace }
 

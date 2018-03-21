@@ -5,7 +5,7 @@ RSpec.describe 'Home page', type: :request do
         before { host! 'localhost' }
         it 'redirects to the accounts landing page' do
           get root_path
-          expect(response).to have_http_status(200)
+          expect(response).to have_http_status(:ok)
         end
       end
 
@@ -22,7 +22,7 @@ RSpec.describe 'Home page', type: :request do
     describe 'GET /' do
       it 'fields the request' do
         get root_path
-        expect(response).to have_http_status(200)
+        expect(response).to have_http_status(:ok)
       end
     end
   end

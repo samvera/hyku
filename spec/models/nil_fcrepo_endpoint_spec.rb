@@ -2,8 +2,10 @@ require 'spec_helper'
 
 RSpec.describe NilFcrepoEndpoint do
   let(:instance) { described_class.new }
+
   describe "#ping" do
     subject { instance.ping }
+
     it { is_expected.to be false }
   end
 
@@ -13,11 +15,13 @@ RSpec.describe NilFcrepoEndpoint do
 
   describe "#url" do
     subject { instance.url }
+
     it { is_expected.to eq 'Fcrepo not initialized' }
   end
 
   describe "#base_path" do
     subject { instance.base_path }
+
     it { is_expected.to eq 'Fcrepo not initialized' }
   end
 end

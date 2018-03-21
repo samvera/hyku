@@ -36,6 +36,7 @@ RSpec.describe Importer::Factory::ETDFactory, :clean do
     context "for an existing image without files" do
       let(:work) { create(:generic_work) }
       let(:factory) { described_class.new(attributes.merge(id: work.id), 'tmp/files', files) }
+
       it 'creates file sets' do
         expect(actor).to receive(:update).with(Hyrax::Actors::Environment) do |k|
           expect(k.attributes).to include(member_of_collection_ids: [coll.id], files: ['tmp/files/img.png'])
@@ -54,7 +55,7 @@ RSpec.describe Importer::Factory::ETDFactory, :clean do
       end
       expect do
         factory.run
-      end.to change { Collection.count }.by(0)
+      end.to change(Collection, :count).by(0)
     end
   end
 end

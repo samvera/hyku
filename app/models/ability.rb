@@ -2,10 +2,10 @@ class Ability
   include Hydra::Ability
   include Hyrax::Ability
 
-  self.ability_logic += [
-    :everyone_can_create_curation_concerns,
-    :group_permissions,
-    :superadmin_permissions
+  self.ability_logic += %i[
+    everyone_can_create_curation_concerns
+    group_permissions
+    superadmin_permissions
   ]
 
   # Define any customized permissions here.

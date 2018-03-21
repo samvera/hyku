@@ -51,6 +51,7 @@ RSpec.describe Importer::ModsParser do
 
     context 'with a file that has a general (untyped) note' do
       let(:file) { 'spec/fixtures/mods/shpc/druid_xv169dn4538.mods' }
+
       it 'imports notes' do
         expect(attributes[:notes_attributes].first[:value]).to start_with(
           "\"Left to right: Anna Maria Lathrop"
@@ -94,6 +95,7 @@ RSpec.describe Importer::ModsParser do
 
     context 'with a file that has coordinates', skip: 'Need metadata with geo data' do
       let(:file) { 'spec/fixtures/mods/shpc/druid_xv169dn4538.mods' }
+
       it 'imports coordinates' do
         expect(attributes[:latitude]).to eq ['34.442982']
         expect(attributes[:longitude]).to eq ['-119.657362']
@@ -133,6 +135,7 @@ RSpec.describe Importer::ModsParser do
 
     context 'with a file that has a range of dateIssued', skip: "no dates on this record" do
       let(:file) { 'spec/fixtures/mods/shpc/druid_xv169dn4538.mods' }
+
       it 'imports issued' do
         expect(attributes[:issued_attributes]).to eq [
           { start: ['1900'],
@@ -146,6 +149,7 @@ RSpec.describe Importer::ModsParser do
 
     context 'with a file that has a single dateIssued', skip: "no dates on this record" do
       let(:file) { 'spec/fixtures/mods/shpc/druid_xv169dn4538.mods' }
+
       it 'imports issued' do
         expect(attributes[:issued_attributes]).to eq [
           { start: ['1925'],
@@ -162,6 +166,7 @@ RSpec.describe Importer::ModsParser do
       let(:xml) do
         "<mods #{ns_decl}><originInfo><copyrightDate encoding=\"w3cdtf\">1985-12-01</copyrightDate></originInfo></mods>"
       end
+
       before { allow(parser).to receive(:mods).and_return(Mods::Record.new.from_str(xml)) }
       it 'imports date_copyrighted' do
         expect(attributes[:date_copyrighted_attributes]).to eq [
@@ -179,6 +184,7 @@ RSpec.describe Importer::ModsParser do
       let(:xml) do
         "<mods #{ns_decl}><originInfo><dateValid encoding=\"w3cdtf\">1989-12-01</dateValid></originInfo></mods>"
       end
+
       before { allow(parser).to receive(:mods).and_return(Mods::Record.new.from_str(xml)) }
       it 'imports date_valid' do
         expect(attributes[:date_valid_attributes]).to eq [
@@ -193,6 +199,7 @@ RSpec.describe Importer::ModsParser do
 
     context 'with a file that has an alternative title', skip: "Need a record with alt title" do
       let(:file) { 'spec/fixtures/mods/shpc/druid_xv169dn4538.mods' }
+
       it 'distinguishes between title and alternative title' do
         expect(attributes[:title]).to eq ['Stanford residences -- Sacramento -- Muybridge']
         expect(attributes[:alternative]).to eq ['An alternative']
@@ -201,6 +208,7 @@ RSpec.describe Importer::ModsParser do
 
     context 'with a file that has placeTerm', skip: 'file has no originInfo' do
       let(:file) { 'spec/fixtures/mods/shpc/druid_xv169dn4538.mods' }
+
       it 'reads the place' do
         expect(attributes[:place_of_publication]). to eq ['Santa Barbara, California']
       end

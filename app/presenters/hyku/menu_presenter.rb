@@ -4,7 +4,7 @@ module Hyku
     # Returns true if the current controller happens to be one of the controllers that deals
     # with settings.  This is used to keep the parent section on the sidebar open.
     def settings_section?
-      %w(appearances content_blocks labels features pages).include?(controller_name)
+      %w[appearances content_blocks labels features pages].include?(controller_name)
     end
 
     # Returns true if the current controller happens to be one of the controllers that deals
@@ -23,7 +23,7 @@ module Hyku
     # Returns true if the current controller happens to be one of the controllers that deals
     # with repository activity  This is used to keep the parent section on the sidebar open.
     def repository_activity_section?
-      %w(admin dashboard status).include?(controller_name)
+      %w[admin dashboard status].include?(controller_name)
     end
 
     # Returns true if we ought to show the user the 'Configuration' section

@@ -1,12 +1,12 @@
 FactoryGirl.define do
   factory :solr_endpoint do
-    options Hash.new(url: 'http://fakesolr.localhost:9876/solr/', collection: 'fakecore')
+    options { Hash.new(url: 'http://fakesolr.localhost:9876/solr/', collection: 'fakecore') }
   end
   factory :fcrepo_endpoint do
-    options Hash.new(url: 'http://fakefedora.localhost:8765/', base_path: 'fakebase')
+    options { Hash.new(url: 'http://fakefedora.localhost:8765/', base_path: 'fakebase') }
   end
   factory :redis_endpoint do
-    options Hash.new(namespace: 'fakeNS')
+    options { Hash.new(namespace: 'fakeNS') }
   end
   factory :account do
     sequence(:cname) { |_n| srand }

@@ -54,6 +54,7 @@ RSpec.describe "Rake tasks" do
     end
     let(:accounts) { Account.where(name: ['first', 'second']) }
     let(:task) { double('task') }
+
     it 'requires at least one argument' do
       expect { run_task('tenantize:task') }.to raise_error(ArgumentError, /rake task name is required/)
     end
@@ -72,6 +73,7 @@ RSpec.describe "Rake tasks" do
     context 'when run against specified tenants' do
       let(:accounts) { [account] }
       let(:account) { Account.find_by(name: 'first') }
+
       before do
         ENV['tenants'] = "garbage_value #{account.cname} other_garbage_value"
       end

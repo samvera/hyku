@@ -1,3 +1,3 @@
-class Endpoint < ActiveRecord::Base
+class Endpoint < ApplicationRecord
   has_one :account
 end

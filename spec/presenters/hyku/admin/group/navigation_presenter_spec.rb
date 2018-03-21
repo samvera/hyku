@@ -9,6 +9,7 @@ RSpec.describe Hyku::Admin::Group::NavigationPresenter do
 
   context 'edit page' do
     subject { presenter.tabs }
+
     let(:action) { 'edit' }
     let(:params) { base_params.merge(action: action) }
     let(:presenter) { described_class.new(params: params) }
@@ -24,6 +25,7 @@ RSpec.describe Hyku::Admin::Group::NavigationPresenter do
 
   context 'members page' do
     subject { presenter.tabs }
+
     let(:action) { 'index' }
     let(:params) { base_params.merge(controller: 'admin/group_users', action: action) }
     let(:presenter) { described_class.new(params: params) }
@@ -39,6 +41,7 @@ RSpec.describe Hyku::Admin::Group::NavigationPresenter do
 
   context 'remve page' do
     subject { presenter.tabs }
+
     let(:action) { 'remove' }
     let(:params) { base_params.merge(action: action) }
     let(:presenter) { described_class.new(params: params) }

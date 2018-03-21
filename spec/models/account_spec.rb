@@ -210,6 +210,7 @@ RSpec.describe Account, type: :model do
 
     describe 'prevents duplicate cname and tenant values' do
       let!(:account1) { described_class.create(name: 'example', tenant: 'example_tenant', cname: 'example.dev') }
+
       it 'on create' do
         account2 = described_class.create(name: 'example', tenant: 'example_tenant', cname: 'example.dev')
         expect(account1.errors).to be_empty
@@ -244,6 +245,7 @@ RSpec.describe Account, type: :model do
     describe 'guarantees only one account can reference the same' do
       let(:endpoint) { SolrEndpoint.new(url: 'solr') }
       let!(:account1) { described_class.create(name: 'example', solr_endpoint: endpoint) }
+
       it 'solr_endpoint' do
         account2 = described_class.new(name: 'other', solr_endpoint: endpoint)
         expect { account2.save }.to raise_error(ActiveRecord::RecordNotUnique)
@@ -254,6 +256,7 @@ RSpec.describe Account, type: :model do
 
   describe '#admin_emails' do
     let!(:account) { FactoryGirl.create(:account, tenant: "mytenant") }
+
     before do
       Site.update(account: account)
       Site.instance.admin_emails = ["test@test.com", "test@test.org"]
@@ -266,6 +269,7 @@ RSpec.describe Account, type: :model do
 
   describe '#admin_emails=' do
     let!(:account) { FactoryGirl.create(:account, tenant: "mytenant") }
+
     before do
       Site.update(account: account)
       Site.instance.admin_emails = ["test@test.com", "test@test.org"]
@@ -280,6 +284,7 @@ RSpec.describe Account, type: :model do
 
   describe '#global_tenant?' do
     subject { described_class.global_tenant? }
+
     context 'default setting for test environment' do
       it { is_expected.to be false }
     end

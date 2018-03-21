@@ -21,6 +21,7 @@ RSpec.describe Site, type: :model do
 
   describe ".admin_emails" do
     subject { described_class.instance }
+
     context "no admins exist" do
       it "returns empty array" do
         expect(subject.admin_emails).to eq([])
@@ -39,6 +40,7 @@ RSpec.describe Site, type: :model do
 
   describe ".admin_emails=" do
     subject { described_class.instance }
+
     context "passed empty array" do
       before do
         admin1.add_role :admin, subject

@@ -3,7 +3,7 @@
 include Warden::Test::Helpers
 
 # NOTE: If you generated more than one work, you have to set "js: true"
-RSpec.feature 'Create a Image', :clean, js: true do
+RSpec.describe 'Create a Image', :clean, js: true do
   context 'a logged in user' do
     let(:user) { create(:user) }
 
@@ -12,7 +12,7 @@ RSpec.feature 'Create a Image', :clean, js: true do
       login_as user, scope: :user
     end
 
-    scenario do
+    it do
       visit '/dashboard'
       click_link "Works"
       click_link "Add new work"

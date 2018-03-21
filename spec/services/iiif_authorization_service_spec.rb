@@ -18,6 +18,7 @@ RSpec.describe IIIFAuthorizationService do
 
       context "show" do
         subject { service.can?(:show, image) }
+
         it { is_expected.to be true }
       end
     end
@@ -32,6 +33,7 @@ RSpec.describe IIIFAuthorizationService do
 
       context "show" do
         subject { service.can?(:show, image) }
+
         it { is_expected.to be false }
       end
     end

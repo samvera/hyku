@@ -50,3 +50,68 @@ RSpec/LetSetup:
 RSpec/NestedGroups:
   Exclude:
     - 'spec/services/iiif_authorization_service_spec.rb'
+
+RSpec/ContextWording:
+  Enabled: false
+
+RSpec/IteratedExpectation:
+  Exclude:
+    - 'spec/tasks/rake_spec.rb'
+
+RSpec/BeforeAfterAll:
+  Exclude:
+    - 'spec/tasks/rake_spec.rb'
+    - 'spec/models/uploaded_file_spec.rb'
+
+Style/MixinUsage:
+  Exclude:
+    - 'spec/support/devise.rb'
+    - 'spec/features/create_image_spec.rb'
+
+RSpec/ScatteredLet:
+  Enabled: false
+
+RSpec/HookArgument:
+  Exclude:
+    - 'spec/rails_helper.rb'
+    - 'spec/models/uploaded_file_spec.rb'
+
+RSpec/ExpectInHook:
+  Exclude:
+    - 'spec/models/uploaded_file_spec.rb'
+    - 'spec/controllers/sites_controller_spec.rb'
+  
+Style/FormatStringToken:
+  Exclude:
+    - 'spec/models/account_spec.rb'
+    - 'app/models/account.rb'
+
+Rails/ApplicationJob:
+  Enabled: false
+
+Rails/ApplicationRecord:
+  Enabled: false
+
+RSpec/BeforeAfterAll:
+  Exclude:
+    - 'spec/models/hyku/group_spec.rb'
+    - 'spec/tasks/rake_spec.rb'
+    - 'spec/models/uploaded_file_spec.rb'
+
+Naming/HeredocDelimiterNaming:
+  Exclude:
+    - 'spec/jobs/import_work_from_purl_job_spec.rb'
+
+Rails/HasManyOrHasOneDependent:
+  Exclude:
+    - 'app/models/endpoint.rb'
+
+FactoryBot/DynamicAttributeDefinedStatically:
+  Exclude:
+    - 'spec/factories/users.rb'
+
+Performance/RegexpMatch:
+  Exclude:
+    - 'lib/importer/csv_parser.rb'
+    - 'app/services/solr_config_uploader.rb'
+    - 'app/models/account.rb'

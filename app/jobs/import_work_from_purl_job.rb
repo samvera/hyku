@@ -53,17 +53,17 @@ class ImportWorkFromPurlJob < ActiveJob::Base
     end
 
     class_attribute :attributes_to_keep
-    self.attributes_to_keep = [:title,
-                               :description,
-                               :subject,
-                               :language,
-                               :resource_type,
-                               :location,
-                               :rights,
-                               :visibility,
-                               :id,
-                               :collection,
-                               :files]
+    self.attributes_to_keep = %i[title
+                                 description
+                                 subject
+                                 language
+                                 resource_type
+                                 location
+                                 rights
+                                 visibility
+                                 id
+                                 collection
+                                 files]
 
     def process_collection(attributes)
       # rename :collection to :member_of_collection_ids

@@ -1,6 +1,7 @@
 RSpec.describe User, type: :model do
   context 'the first created user in global tenant' do
     subject { FactoryGirl.create(:base_user) }
+
     before do
       allow(Account).to receive(:global_tenant?).and_return true
     end
@@ -11,6 +12,7 @@ RSpec.describe User, type: :model do
 
   context 'the first created user on a tenant' do
     subject { FactoryGirl.create(:base_user) }
+
     it 'is given the admin role' do
       expect(subject).to have_role :admin, Site.instance
     end

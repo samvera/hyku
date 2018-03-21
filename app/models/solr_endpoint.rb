@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SolrEndpoint < Endpoint
-  store :options, accessors: [:url, :collection]
+  store :options, accessors: %i[url collection]
 
   def connection
     # We remove the adapter, otherwise RSolr 2 will try to use it as a Faraday middleware

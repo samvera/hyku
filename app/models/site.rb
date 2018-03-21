@@ -1,4 +1,4 @@
-class Site < ActiveRecord::Base
+class Site < ApplicationRecord
   resourcify
 
   validates :application_name, presence: true, allow_nil: true

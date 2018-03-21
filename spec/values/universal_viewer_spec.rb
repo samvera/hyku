@@ -1,5 +1,6 @@
 RSpec.describe UniversalViewer do
   subject { described_class.instance }
+
   describe "#viewer_version" do
     it "calculates it from existing directories" do
       expect(subject.viewer_version).to eq "2.0.1"

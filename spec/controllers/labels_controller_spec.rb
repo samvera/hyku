@@ -39,14 +39,14 @@ RSpec.describe LabelsController, type: :controller do
     describe "GET #edit" do
       it "denies the request" do
         get :edit
-        expect(response).to have_http_status(401)
+        expect(response).to have_http_status(:unauthorized)
       end
     end
 
     describe "PUT #update" do
       it "denies the request" do
         put :update, params: { site: valid_attributes }
-        expect(response).to have_http_status(401)
+        expect(response).to have_http_status(:unauthorized)
       end
     end
   end

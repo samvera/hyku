@@ -20,6 +20,7 @@
 //= require peek/views/performance_bar
 // Required by Blacklight
 //= require blacklight/blacklight
+//= require cable
 
 // Moved the Hyku JS *above* the Hyrax JS to resolve #1187 (following
 // a pattern found in ScholarSphere)

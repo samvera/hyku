@@ -14,6 +14,11 @@ docker save -o hyku-images/hyku-all.tar hyku_app solr postgres redis zookeeper m
 gzip hyku-images/hyku-all.tar
 ```
 
+# Loading
+```
+docker load -i <path to image tar file>
+```
+
 # docker-machine?
 If you're using an older computer you'll need to start a docker-machine. This installs a VM that can run docker inside it.  It is much slower than using the  Docker directly on your computer.
 Build the VM

@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/samvera-labs/hyku.svg)](https://travis-ci.org/samvera-labs/hyku)
 [![Coverage Status](https://coveralls.io/repos/samvera-labs/hyku/badge.svg?branch=master&service=github)](https://coveralls.io/github/samvera-labs/hyku?branch=master)
-[![Stories in Ready](https://badge.waffle.io/samvera-labs/hyku.png?label=ready&title=Ready)](https://waffle.io/samvera-labs/hyku)
+[![Stories in Ready](https://img.shields.io/waffle/label/samvera-labs/hyku/ready.svg)](https://waffle.io/samvera-labs/hyku)
 
 # Hyku, the Hydra-in-a-Box Repository Application
 

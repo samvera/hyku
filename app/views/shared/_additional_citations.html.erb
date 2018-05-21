@@ -1,0 +1,11 @@
+<% content_for(:gscholar_meta) do %>
+  <% unless @presenter.description.blank? %>
+    <meta name="description" content="<%= @presenter.description.join %>" />
+  <%end %>
+  <% unless @presenter.keyword.blank? %>
+    <meta name="citation_keywords" content="<%= @presenter.keyword.join('; ') %>" />
+  <% end %>
+  <% unless @presenter.publisher.blank? %>
+    <meta name="citation_publisher" content="<%= @presenter.publisher.join %>" />
+  <% end %>
+<% end %>

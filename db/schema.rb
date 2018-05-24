@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171208100918) do
+ActiveRecord::Schema.define(version: 20180524010247) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,28 @@ ActiveRecord::Schema.define(version: 20171208100918) do
     t.boolean "passed"
     t.index ["checked_uri"], name: "index_checksum_audit_logs_on_checked_uri"
     t.index ["file_set_id", "file_id"], name: "by_file_set_id_and_file_id"
+  end
+
+  create_table "collection_branding_infos", force: :cascade do |t|
+    t.string "collection_id"
+    t.string "role"
+    t.string "local_path"
+    t.string "alt_text"
+    t.string "target_url"
+    t.integer "height"
+    t.integer "width"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "collection_type_participants", force: :cascade do |t|
+    t.bigint "hyrax_collection_type_id"
+    t.string "agent_type"
+    t.string "agent_id"
+    t.string "access"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hyrax_collection_type_id"], name: "hyrax_collection_type_id"
   end
 
   create_table "content_blocks", id: :serial, force: :cascade do |t|
@@ -142,6 +164,23 @@ ActiveRecord::Schema.define(version: 20171208100918) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "hyrax_collection_types", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.string "machine_id"
+    t.boolean "nestable", default: true, null: false
+    t.boolean "discoverable", default: true, null: false
+    t.boolean "sharable", default: true, null: false
+    t.boolean "allow_multiple_membership", default: true, null: false
+    t.boolean "require_membership", default: false, null: false
+    t.boolean "assigns_workflow", default: false, null: false
+    t.boolean "assigns_visibility", default: false, null: false
+    t.boolean "share_applies_to_new_works", default: true, null: false
+    t.boolean "brandable", default: true, null: false
+    t.string "badge_color", default: "#663333"
+    t.index ["machine_id"], name: "index_hyrax_collection_types_on_machine_id", unique: true
   end
 
   create_table "hyrax_features", id: :serial, force: :cascade do |t|
@@ -245,16 +284,17 @@ ActiveRecord::Schema.define(version: 20171208100918) do
     t.string "access"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["permission_template_id", "agent_id", "agent_type", "access"], name: "uk_permission_template_accesses", unique: true
   end
 
   create_table "permission_templates", id: :serial, force: :cascade do |t|
-    t.string "admin_set_id"
+    t.string "source_id"
     t.string "visibility"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.date "release_date"
     t.string "release_period"
-    t.index ["admin_set_id"], name: "index_permission_templates_on_admin_set_id", unique: true
+    t.index ["source_id"], name: "index_permission_templates_on_source_id", unique: true
   end
 
   create_table "proxy_deposit_requests", id: :serial, force: :cascade do |t|
@@ -614,6 +654,7 @@ ActiveRecord::Schema.define(version: 20171208100918) do
   add_foreign_key "accounts", "endpoints", column: "fcrepo_endpoint_id", on_delete: :nullify
   add_foreign_key "accounts", "endpoints", column: "redis_endpoint_id", on_delete: :nullify
   add_foreign_key "accounts", "endpoints", column: "solr_endpoint_id", on_delete: :nullify
+  add_foreign_key "collection_type_participants", "hyrax_collection_types"
   add_foreign_key "content_blocks", "sites"
   add_foreign_key "curation_concerns_operations", "users"
   add_foreign_key "mailboxer_conversation_opt_outs", "mailboxer_conversations", column: "conversation_id", name: "mb_opt_outs_on_conversations_id"

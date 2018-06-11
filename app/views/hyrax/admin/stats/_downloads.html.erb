@@ -6,6 +6,6 @@
 <h2>Downloads per Work</h2>
 <ul>
   <% @works_to_display.each do |dwnld| %>
-    <li><%= dwnld.title %></li><span class="count">(<%= dwnld.downloads %>)</span>
+    <li><%= dwnld.title %><span class="count"> (<%= dwnld.downloads %>)</span></li>
   <% end %>
 </ul>

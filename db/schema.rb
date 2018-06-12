@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171208100918) do
+ActiveRecord::Schema.define(version: 20180612084347) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -598,6 +598,18 @@ ActiveRecord::Schema.define(version: 20171208100918) do
     t.string "committer_login"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "work_download_stats", force: :cascade do |t|
+    t.string "work_uid"
+    t.string "title"
+    t.integer "downloads"
+    t.integer "owner_id"
+    t.datetime "date", default: [], array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner_id"], name: "index_work_download_stats_on_owner_id"
+    t.index ["work_uid"], name: "index_work_download_stats_on_work_uid"
   end
 
   create_table "work_view_stats", id: :serial, force: :cascade do |t|

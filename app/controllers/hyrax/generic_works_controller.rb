@@ -1,9 +1,5 @@
 module Hyrax
-  class GenericWorksController < ApplicationController
-    # Adds Hyrax behaviors to the controller.
-    include Hyrax::WorksControllerBehavior
-    include Hyrax::BreadcrumbsForWorks
-
+  class GenericWorksController < SharedBehaviorsController
     self.curation_concern_type = GenericWork
 
     include Hyku::IIIFManifest

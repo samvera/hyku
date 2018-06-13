@@ -3,7 +3,7 @@ class CreateWorkDownloadStats < ActiveRecord::Migration[5.1]
     create_table :work_download_stats do |t|
       t.string :work_uid
       t.string :title
-      t.integer :downloads
+      t.integer :downloads, default: 0
       t.integer :owner_id
       t.datetime :date, array: true, default: []
 

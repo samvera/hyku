@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  # TODO swap this out for hyrax's collection_lw
+  # TODO: swap this out for hyrax's collection_lw
   factory :collection do
     transient do
       user { create(:user) }

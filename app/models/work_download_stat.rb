@@ -6,7 +6,9 @@ class WorkDownloadStat < ApplicationRecord
     end
   end
 
+  ## method below works with a FileSet as argument
   def log_download(record)
+    raise TypeError, 'argument is not a file_set' unless record.file_set?
     stats = current_work_stats(record)
     total = stats.downloads + 1
     dates_arr = stats.date << Time.now.utc

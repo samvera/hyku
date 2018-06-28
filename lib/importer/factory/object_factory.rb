@@ -34,7 +34,7 @@ module Importer
       end
 
       def create_attributes
-        transform_attributes
+        { collection_type: collection_type }.merge(transform_attributes)
       end
 
       def update_attributes
@@ -56,6 +56,10 @@ module Importer
         query = { Solrizer.solr_name(system_identifier_field, :symbol) =>
                     attributes[system_identifier_field] }
         klass.where(query).first
+      end
+
+      def collection_type
+        @collection_type ||= Hyrax::CollectionType.find_or_create_default_collection_type
       end
 
       # An ActiveFedora bug when there are many habtm <-> has_many associations means they won't all get saved.

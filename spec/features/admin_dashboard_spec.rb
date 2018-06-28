@@ -18,7 +18,6 @@ RSpec.describe 'Admin Dashboard', type: :feature do
         expect(page).to have_link('Appearance')
         expect(page).to have_link('Content Blocks')
         expect(page).to have_link('Technical')
-        expect(page).to have_link('Administrative Sets')
         expect(page).to have_link('Manage groups')
         expect(page).to have_link('Manage users')
         expect(page).to have_link('Reports')

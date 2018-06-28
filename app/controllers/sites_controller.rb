@@ -1,7 +1,7 @@
 class SitesController < ApplicationController
   before_action :set_site
   load_and_authorize_resource instance_variable: :site, class: 'Site' # descendents still auth Site
-  layout 'dashboard'
+  layout 'hyrax/dashboard'
 
   def update
     params.require(:remove_banner_image)

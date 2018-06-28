@@ -56,6 +56,7 @@ group :test do
   gem 'chromedriver-helper'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
+  gem 'rack-test', '0.7.0'
   gem 'rails-controller-testing'
   gem 'selenium-webdriver'
   gem 'webmock'

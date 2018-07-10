@@ -11,7 +11,7 @@ namespace :hyku do
         MESSAGE
         raise ArgumentError, error_message
       end
-      Dir.chdir(Rails.root.join('db/migrate'))
+      Dir.chdir(Rails.root.join('db', 'migrate'))
       Dir.glob("#{args.datestub}*") do |file|
         core = file.split(".")[0].split("_")[1..-1].join("_")
         matches = Dir.glob("*#{core}.rb") +

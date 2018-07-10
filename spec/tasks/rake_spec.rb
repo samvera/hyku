@@ -9,11 +9,11 @@ RSpec.describe "Rake tasks" do
     it 'requires a datesub argument'
 
     it 'removes unnecessary migrations' do
-      original_migrations = Dir.glob(Rails.root.join('db/migrate/*.rb'))
+      original_migrations = Dir.glob(Rails.root.join('db', 'migrate', '*.rb'))
       time = Time.now.utc.strftime("%Y%m%d%H")
       run_task('hyrax:install:migrations')
       run_task('hyku:upgrade:clean_migrations', time)
-      new_migrations = Dir.glob(Rails.root.join('db/migrate/*.rb'))
+      new_migrations = Dir.glob(Rails.root.join('db', 'migrate', '*.rb'))
       expect(new_migrations).to eq(original_migrations)
     end
   end

@@ -11,17 +11,18 @@ namespace :hyku do
         MESSAGE
         raise ArgumentError, error_message
       end
-      Dir.chdir(Rails.root.join('db', 'migrate'))
-      Dir.glob("#{args.datestub}*") do |file|
-        core = file.split(".")[0].split("_")[1..-1].join("_")
-        matches = Dir.glob("*#{core}.rb") +
-                  Dir.glob("*#{core}.blacklight.rb") +
-                  Dir.glob("*#{core}.sufia.rb") +
-                  Dir.glob("*#{core}.curation_concerns.rb")
+      Dir.chdir(Rails.root.join('db', 'migrate')) do
+        Dir.glob("#{args.datestub}*") do |file|
+          core = file.split(".")[0].split("_")[1..-1].join("_")
+          matches = Dir.glob("*#{core}.rb") +
+                    Dir.glob("*#{core}.blacklight.rb") +
+                    Dir.glob("*#{core}.sufia.rb") +
+                    Dir.glob("*#{core}.curation_concerns.rb")
 
-        if matches.present?
-          FileUtils.rm(file)
-          puts "Removed: #{file}"
+          if matches.present?
+            FileUtils.rm(file)
+            puts "Removed: #{file}"
+          end
         end
       end
     end

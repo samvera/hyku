@@ -56,6 +56,7 @@ group :test do
   gem 'chromedriver-helper'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
+  # rack-test >= 0.71 does not work with older Capybara versions (< 2.17). See #214 for more details
   gem 'rack-test', '0.7.0'
   gem 'rails-controller-testing'
   gem 'selenium-webdriver'

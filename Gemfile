@@ -77,7 +77,7 @@ end
 
 gem 'blacklight', '~> 6.7'
 
-gem 'hyrax', '2.1.0'
+gem 'hyrax', '2.2.0'
 gem 'rsolr', '~> 2.0'
 
 gem 'devise'

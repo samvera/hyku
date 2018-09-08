@@ -103,6 +103,7 @@ services:
 
   app:
     build: .
+    image: registry.gitlab.com/notch8/palni-palci:latest
     environment:
       - REDIS_HOST=redis
       - DATABASE_URL=postgresql://postgres@db/postgres
@@ -118,7 +119,7 @@ services:
       - SECRET_KEY_BASE=asdf
       - RAILS_CACHE_STORE_URL=memcache
 # version and location of fits are set in Dockerfile:
-      - LD_LIBRARY_PATH=/opt/fits-1.0.5/tools/mediainfo/linux
+      - LD_LIBRARY_PATH=/opt/fits-latest/tools/mediainfo/linux
     volumes:
       - app:/data/tmp/uploads
     networks:
@@ -146,7 +147,7 @@ services:
       service: app
     command: bundle exec sidekiq
     environment:
-      - SETTINGS__FITS_PATH=/opt/fits-1.0.5/fits.sh
+      - SETTINGS__FITS_PATH=/opt/fits-latest/fits.sh
     depends_on:
       - db
       - solr

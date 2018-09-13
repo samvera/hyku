@@ -2,7 +2,8 @@
 <style>
 <% appearance = Hyrax::Forms::Admin::Appearance.new %>
 @import url('https://fonts.googleapis.com/css?family=Lato|Lora|Merriweather|Montserrat|Noto+Sans|Open+Sans|Open+Sans+Condensed:300|Oswald|PT+Sans|PT+Serif|Playfair+Display|Poppins|Raleway|Roboto|Roboto+Condensed|Roboto+Mono|Roboto+Slab|Slabo+27px|Source+Sans+Pro|Ubuntu');
-body { font-family: "<%= appearance.body_font %>" }
+body { font-family: <%= appearance.body_font.html_safe %> }
+h1, h2, h3, h4, h5, h6 { font-family: <%= appearance.headline_font.html_safe %>}
 a { color: <%= appearance.link_color %>; }
 
 .navbar-inverse .navbar-link { color: <%= appearance.footer_link_color %>; }

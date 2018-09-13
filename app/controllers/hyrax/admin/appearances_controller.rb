@@ -8,26 +8,26 @@ module Hyrax
 
       def show
         @fonts =  [
-                    'Open Sans',
-                    'Roboto',
-                    'Lato',
-                    'Montserrat',
-                    'Roboto Condensed',
-                    'Source Sans Pro',
-                    'Oswald',
-                    'Raleway',
-                    'Slabo 27px',
-                    'Roboto Slab',
-                    'Merriweather',
-                    'PT Sans',
-                    'Open Sans Condensed',
-                    'Ubuntu',
-                    'Noto Sans',
-                    'Poppins',
-                    'Playfair Display',
-                    'Roboto Mono',
-                    'Lora',
-                    'PT Serif'
+                    # "'Open Sans', sans-serif",
+                    # "'Roboto', sans-serif",
+                    # "'Lato', sans-serif",
+                    # "'Montserrat', sans-serif",
+                    # "'Roboto Condensed', sans-serif",
+                    # "'Source Sans Pro', sans-serif",
+                    # "'Oswald', sans-serif",
+                    # "'Raleway', sans-serif",
+                    # "'Slabo 27px', serif",
+                    # "'Roboto Slab', serif",
+                    # "'Merriweather', serif",
+                    # "'PT Sans', sans-serif",
+                    # "'Open Sans Condensed', sans-serif",
+                    # "'Ubuntu', sans-serif",
+                    # "'Noto Sans', sans-serif",
+                    # "'Poppins', sans-serif",
+                    # "'Playfair Display', serif",
+                    # "'Roboto Mono', monospace",
+                    # "'Lora', serif",
+                    # "'PT Serif', serif"
                   ]
         add_breadcrumb t(:'hyrax.controls.home'), root_path
         add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path

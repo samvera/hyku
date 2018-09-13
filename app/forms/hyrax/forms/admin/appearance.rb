@@ -21,7 +21,7 @@ module Hyrax
 
         # Override this method if your form takes more than just the color_params
         def self.permitted_params
-          color_params
+          customization_params
         end
 
         # Required to back a form
@@ -37,6 +37,11 @@ module Hyrax
         # The font for the body copy
         def body_font
           block_for('body_font', '"Helvetica Neue", Helvetica, Arial, sans-serif;')
+        end
+
+        # The font for the headline copy
+        def headline_font
+          block_for('headline_font', '"Helvetica Neue", Helvetica, Arial, sans-serif;')
         end
 
         # The color for the background of the header and footer bars
@@ -101,23 +106,20 @@ module Hyrax
 
         # Persist the form values
         def update!
-          self.class.color_params.each do |field|
+          self.class.customization_params.each do |field|
             update_block(field, attributes[field]) if attributes[field]
           end
         end
 
-        # A list of parameters that are related to custom colors
-        def self.color_params
+        # A list of parameters that are related to customizations
+        def self.customization_params
           [:header_background_color,
            :header_text_color,
            :link_color,
            :footer_link_color,
            :primary_button_background_color,
-           :body_font]
-        end
-
-        def self.font_params
-          [:body_font]
+           :body_font,
+           :headline_font]
         end
 
         private
@@ -135,6 +137,7 @@ module Hyrax
           def block_for(name, default_value)
             block = ContentBlock.find_by(name: name)
             block ? block.value : default_value
+            
           end
 
           # Persist a key/value tuple as a ContentBlock

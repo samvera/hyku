@@ -12,6 +12,9 @@
         <li>
           <a href="#color" role="tab" data-toggle="tab"><%= t('.tabs.colors') %></a>
         </li>
+        <li>
+          <a href="#font" role="tab" data-toggle="tab"><%= t('.tabs.fonts') %></a>
+        </li>
       </ul>
       <div class="tab-content">
         <div id="banner_image" class="tab-pane active">
@@ -40,13 +43,25 @@
           <div class="panel panel-default labels">
             <%= simple_form_for @form, url: admin_appearance_path do |f| %>
               <div class="panel-body">
-                
-                <%= f.input :body_font, required: false, collection: @fonts %>
                 <%= f.input :header_background_color, required: false, input_html: { type: 'color' } %>
                 <%= f.input :header_text_color, required: false, input_html: { type: 'color' }  %>
                 <%= f.input :link_color, required: false, input_html: { type: 'color' }  %>
                 <%= f.input :footer_link_color, required: false, input_html: { type: 'color' }  %>
                 <%= f.input :primary_button_background_color, required: false, input_html: { type: 'color' }  %>
+              </div>
+              <div class="panel-footer">
+                <%= f.submit class: 'btn btn-primary pull-right' %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <div id="font" class="tab-pane">
+          <div class="panel panel-default labels">
+            <%= simple_form_for @form, url: admin_appearance_path do |f| %>
+              <div class="panel-body">
+                <%= f.input :body_font, required: false, collection: @fonts %>
+                <%= f.input :headline_font, required: false, collection: @fonts %>
               </div>
               <div class="panel-footer">
                 <%= f.submit class: 'btn btn-primary pull-right' %>

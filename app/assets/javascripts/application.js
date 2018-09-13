@@ -32,3 +32,4 @@
 //= require flot_graph
 //= require statistics_tab_manager
 //= require blacklight_gallery/default
+//= require google_fonts

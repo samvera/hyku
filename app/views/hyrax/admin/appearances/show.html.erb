@@ -40,6 +40,8 @@
           <div class="panel panel-default labels">
             <%= simple_form_for @form, url: admin_appearance_path do |f| %>
               <div class="panel-body">
+                
+                <%= f.input :body_font, required: false, collection: @fonts %>
                 <%= f.input :header_background_color, required: false, input_html: { type: 'color' } %>
                 <%= f.input :header_text_color, required: false, input_html: { type: 'color' }  %>
                 <%= f.input :link_color, required: false, input_html: { type: 'color' }  %>

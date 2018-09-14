@@ -5,7 +5,6 @@ $(document).on('turbolinks:load', function() {
       dataType: 'json',
       method: 'GET',
       success: function(data) {
-        console.log(data)
         var bodyFontList = $("#admin_appearance_body_font")
         var headlineFontList = $('#admin_appearance_headline_font')
         for (var i = 0; i < 99; i++) {

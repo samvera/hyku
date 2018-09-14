@@ -122,6 +122,11 @@ module Hyrax
            :headline_font]
         end
 
+        def google_fonts_import_tag(*fonts)
+          families = fonts.map {|f| f.to_s.gsub("_", " ").titleize.gsub(" ", "+")}.join("|")
+          import_url = "http://fonts.googleapis.com/css?family=#{families}"
+        end
+
         private
 
           def darken_color(hex_color, adjustment = 0.2)

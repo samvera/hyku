@@ -7,28 +7,10 @@ module Hyrax
       self.form_class = Hyrax::Forms::Admin::Appearance
 
       def show
-        @fonts =  [
-                    # "'Open Sans', sans-serif",
-                    # "'Roboto', sans-serif",
-                    # "'Lato', sans-serif",
-                    # "'Montserrat', sans-serif",
-                    # "'Roboto Condensed', sans-serif",
-                    # "'Source Sans Pro', sans-serif",
-                    # "'Oswald', sans-serif",
-                    # "'Raleway', sans-serif",
-                    # "'Slabo 27px', serif",
-                    # "'Roboto Slab', serif",
-                    # "'Merriweather', serif",
-                    # "'PT Sans', sans-serif",
-                    # "'Open Sans Condensed', sans-serif",
-                    # "'Ubuntu', sans-serif",
-                    # "'Noto Sans', sans-serif",
-                    # "'Poppins', sans-serif",
-                    # "'Playfair Display', serif",
-                    # "'Roboto Mono', monospace",
-                    # "'Lora', serif",
-                    # "'PT Serif', serif"
-                  ]
+        #TODO make selected font the font that show in select box
+        #TODO add body and headline font to the import url
+        
+        @fonts =  []
         add_breadcrumb t(:'hyrax.controls.home'), root_path
         add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
         add_breadcrumb t(:'hyrax.admin.sidebar.configuration'), '#'
@@ -38,6 +20,9 @@ module Hyrax
 
       def update
         form_class.new(update_params).update!
+        # raise "fun"
+        # font_names = update_params['body_font']
+        # google_fonts_import_tag(*fonts)
         redirect_to({ action: :show }, notice: t('.flash.success'))
       end
 

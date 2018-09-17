@@ -60,8 +60,8 @@
           <div class="panel panel-default labels">
             <%= simple_form_for @form, url: admin_appearance_path do |f| %>
               <div class="panel-body">
-                <%= f.input :body_font, required: false, collection: @fonts, selected: appearance.body_font  %>
-                <%= f.input :headline_font, required: false, collection: @fonts, selected: appearance.body_font  %>
+                <%= f.input :body_font, required: false, collection: @fonts, selected: f.object.body_font  %>
+                <%= f.input :headline_font, required: false, collection: @fonts, selected: f.object.headline_font  %>
               </div>
               <div class="panel-footer">
                 <%= f.submit class: 'btn btn-primary pull-right' %>

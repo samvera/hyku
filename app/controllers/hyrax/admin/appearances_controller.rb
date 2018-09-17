@@ -9,20 +9,17 @@ module Hyrax
       def show
         #TODO make selected font the font that show in select box
         #TODO add body and headline font to the import url
-        
-        @fonts =  []
+      
         add_breadcrumb t(:'hyrax.controls.home'), root_path
         add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
         add_breadcrumb t(:'hyrax.admin.sidebar.configuration'), '#'
         add_breadcrumb t(:'hyrax.admin.sidebar.appearance'), request.path
         @form = form_class.new
+        @fonts =  [@form.headline_font, @form.body_font]
       end
 
       def update
         form_class.new(update_params).update!
-        # raise "fun"
-        # font_names = update_params['body_font']
-        # google_fonts_import_tag(*fonts)
         redirect_to({ action: :show }, notice: t('.flash.success'))
       end
 

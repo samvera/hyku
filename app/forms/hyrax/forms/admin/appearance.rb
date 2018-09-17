@@ -122,9 +122,19 @@ module Hyrax
            :headline_font]
         end
 
-        def google_fonts_import_tag(*fonts)
-          families = fonts.map {|f| f.to_s.gsub("_", " ").titleize.gsub(" ", "+")}.join("|")
-          import_url = "http://fonts.googleapis.com/css?family=#{families}"
+        def font_import_url()
+          headline = headline_font.split('|').first.to_s.gsub(" ", "+")
+          body = body_font.split('|').first.to_s.gsub(" ", "+")
+
+          import_url = "http://fonts.googleapis.com/css?family=#{headline}|#{body}".html_safe
+        end
+
+        def font_body_family
+          format_font_names(body_font)
+        end
+
+        def font_headline_family
+          format_font_names(headline_font)
         end
 
         private
@@ -142,7 +152,6 @@ module Hyrax
           def block_for(name, default_value)
             block = ContentBlock.find_by(name: name)
             block ? block.value : default_value
-            
           end
 
           # Persist a key/value tuple as a ContentBlock
@@ -150,6 +159,11 @@ module Hyrax
           # @param [String] value the value to set
           def update_block(name, value)
             ContentBlock.find_or_create_by(name: name.to_s).update!(value: value)
+          end
+
+          def format_font_names(font_style)
+            parts = font_style.split('|')
+            "'#{parts[0]}', #{parts[1]}".html_safe
           end
       end
     end

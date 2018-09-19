@@ -6,10 +6,7 @@ volumes:
   db:
   redis:
   zk1:
-  zk2:
-  zk3:
   zkconf:
-  app:
 
 networks:
   external:
@@ -18,10 +15,9 @@ networks:
 services:
   zoo1:
     image: zookeeper
-    restart: always
     environment:
       - ZOO_MY_ID=1
-      - ZOO_SERVERS=server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
+      - ZOO_SERVERS=server.1=zoo1:2888:3888
     expose:
       - 2181
       - 2888
@@ -33,48 +29,12 @@ services:
       internal:
        aliases:
          - zookeeper_cluster
-  zoo2:
-    image: zookeeper
-    restart: always
-    environment:
-      - ZOO_MY_ID=2
-      - ZOO_SERVERS=server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
-    expose:
-      - 2181
-      - 2888
-      - 3888
-    volumes:
-      - zk2:/data
-      - zkconf:/conf
-    networks:
-      internal:
-       aliases:
-         - zookeeper_cluster
-  zoo3:
-    image: zookeeper
-    restart: always
-    environment:
-      - ZOO_MY_ID=3
-      - ZOO_SERVERS=server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
-    expose:
-      - 2181
-      - 2888
-      - 3888
-    volumes:
-      - zk3:/data
-      - zkconf:/conf
-    networks:
-      internal:
-       aliases:
-         - zookeeper_cluster
 
   solr:
     image: solr
     command: solr -c -f -z zookeeper_cluster:2181
     depends_on:
       - zoo1
-      - zoo2
-      - zoo3
     expose:
       - 8983
     volumes:
@@ -94,7 +54,7 @@ services:
     networks:
       internal:
 
-  db:
+  postgres:
     image: postgres
     volumes:
       - db:/var/lib/postgresql/data
@@ -105,24 +65,26 @@ services:
     build: .
     image: registry.gitlab.com/notch8/palni-palci:latest
     environment:
-      - REDIS_HOST=redis
-      - DATABASE_URL=postgresql://postgres@db/postgres
+      - DATABASE_URL=postgresql://postgres@postgres/postgres
       - FEDORA_URL=http://fcrepo:8080/fcrepo/rest
-      - SOLR_URL=http://solr:8983/solr/
+      - RAILS_ENV=development
+      - RAILS_LOG_TO_STDOUT=true
+      - RAILS_SERVE_STATIC_FILES=true
+      - REDIS_HOST=redis
+      - SECRET_KEY_BASE=asdf
       - SETTINGS__ACTIVE_JOB__QUEUE_ADAPTER=sidekiq
+      - SETTINGS__MULTITENANCY__ADMIN_HOST=palni.docker
       - SETTINGS__MULTITENANCY__ADMIN_ONLY_TENANT_CREATION=false
+      - SETTINGS__MULTITENANCY__DEFAULT_HOST=%{tenant}.palni.docker
+      - SETTINGS__MULTITENANCY__ENABLED=true
       - SETTINGS__SOLR__URL=http://solr:8983/solr/
       - SETTINGS__ZOOKEEPER__CONNECTION_STR=zookeeper_cluster:2181/configs
-      - RAILS_ENV=development
-      - RAILS_SERVE_STATIC_FILES=true
-      - RAILS_LOG_TO_STDOUT=true
-      - SECRET_KEY_BASE=asdf
-      - RAILS_CACHE_STORE_URL=memcache
+      - SOLR_URL=http://solr:8983/solr/
+
 # version and location of fits are set in Dockerfile:
       - LD_LIBRARY_PATH=/opt/fits-latest/tools/mediainfo/linux
     volumes:
-      - .:/data
-      - app:/data/tmp/uploads
+      - .:/data/
     networks:
       internal:
 
@@ -131,15 +93,16 @@ services:
       service: app
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails server -p 3000 -b '0.0.0.0'"
     depends_on:
-      - db
+      - postgres
       - solr
       - fcrepo
       - redis
       - zoo1
-      - zoo2
-      - zoo3
-      - memcache
       - db_migrate
+      - initialize_app
+    environment:
+      - VIRTUAL_PORT=3000
+      - VIRTUAL_HOST=palni.docker
     ports:
       - 3000:3000
 
@@ -150,15 +113,11 @@ services:
     environment:
       - SETTINGS__FITS_PATH=/opt/fits-latest/fits.sh
     depends_on:
-      - db
+      - postgres
       - solr
       - fcrepo
       - redis
       - zoo1
-      - zoo2
-      - zoo3
-      - initialize_app
-      - db_migrate
 
   initialize_app:
     extends:
@@ -167,8 +126,6 @@ services:
     command: bundle exec rails zookeeper:upload
     depends_on:
       - zoo1
-      - zoo2
-      - zoo3
 
   db_migrate:
     extends:
@@ -176,36 +133,12 @@ services:
     restart: on-failure
     command: bundle exec rails db:migrate
     depends_on:
-      - db
-
-  lb:
-    image: dockercloud/haproxy:1.5.3
-    links:
-      - web
-    environment:
-      - DOCKER_TLS_VERIFY
-      - DOCKER_HOST
-      - DOCKER_CERT_PATH
-    ports:
-      - 8080:80
-      - 8443:443
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      # You must uncomment this line if and only if you are running docker-machine
-      # - $DOCKER_CERT_PATH:$DOCKER_CERT_PATH
-    networks:
-      internal:
-      external:
+      - postgres
 
   redis:
     image: redis:3
     command: redis-server
     volumes:
       - redis:/data
-    networks:
-      internal:
-
-  memcache:
-    image: memcached
     networks:
       internal:

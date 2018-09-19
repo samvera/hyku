@@ -60,7 +60,7 @@
           <div class="panel panel-default labels">
             <%= simple_form_for @form, url: admin_appearance_path do |f| %>
               <div class="panel-body">
-                <%= f.input :custom_css_block, required: false, as: :text %> 
+                <%= f.input :custom_css_block, required: false, as: :text, label: 'Add Custom CSS Below' %> 
                 <script>  
                   var custom_css_block = document.getElementById('admin_appearance_custom_css_block')
                   var editor = CodeMirror.fromTextArea(custom_css_block, {

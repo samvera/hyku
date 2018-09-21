@@ -122,7 +122,7 @@ module Hyrax
            :headline_font]
         end
 
-        def font_import_url()
+        def font_import_url
           headline = headline_font.split('|').first.to_s.gsub(" ", "+")
           body = body_font.split('|').first.to_s.gsub(" ", "+")
 

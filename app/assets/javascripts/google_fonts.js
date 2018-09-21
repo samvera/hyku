@@ -1,15 +1,14 @@
-$(document).on('turbolinks:load', function() {
-  if (location.pathname.match(/admin\/appearance/)) {
 
+  function getFonts(key) {
+    
     var bodyFontList = $("#admin_appearance_body_font")
     var headlineFontList = $('#admin_appearance_headline_font')
 
     var selectedBodyFont = bodyFontList.val()
     var selectedHeadlineFont = headlineFontList.val()
 
-
     $.ajax({
-      url: 'https://www.googleapis.com/webfonts/v1/webfonts?sort=popularity&key=AIzaSyADkETrrqoQWjhved9e09wupS1gJVkyfe4',
+      url: `https://www.googleapis.com/webfonts/v1/webfonts?sort=popularity&key=${key}`,
       dataType: 'json',
       method: 'GET',
       success: function(data) {
@@ -18,7 +17,7 @@ $(document).on('turbolinks:load', function() {
       }
     })
   }
-})
+
 
 function handleGoogleFonts(element, set, selected) {
   let options = []

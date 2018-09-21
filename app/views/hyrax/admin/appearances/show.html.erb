@@ -73,3 +73,8 @@
     </div>
   </div>
 </div>
+<script>
+  $(document).on('turbolinks:load', function() {
+    getFonts('<%= ENV['GOOGLE_FONTS_KEY'] %>')
+  })
+</script>

@@ -34,10 +34,10 @@ module Hyrax
           true
         end
 
-<<<<<<< HEAD
+        # The logo image for the top-right on the page
         def logo_image
+        end
 
-=======
         # The font for the body copy
         def body_font
           block_for('body_font', '"Helvetica Neue", Helvetica, Arial, sans-serif;')
@@ -46,7 +46,6 @@ module Hyrax
         # The font for the headline copy
         def headline_font
           block_for('headline_font', '"Helvetica Neue", Helvetica, Arial, sans-serif;')
->>>>>>> master
         end
 
         # The color for the background of the header and footer bars

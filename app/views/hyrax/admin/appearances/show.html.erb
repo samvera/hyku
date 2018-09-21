@@ -45,9 +45,21 @@
               <div class="panel-body">
                 <%= f.input :header_background_color, required: false, input_html: { type: 'color' } %>
                 <%= f.input :header_text_color, required: false, input_html: { type: 'color' }  %>
+                <%= f.input :searchbar_background_color, required: false, input_html: { type: 'color' }  %>
+                <%= f.input :searchbar_background_hover_color, required: false, input_html: { type: 'color' }  %>
+                <%= f.input :searchbar_text_color, required: false, input_html: { type: 'color' }  %>
+                <%= f.input :searchbar_text_hover_color, required: false, input_html: { type: 'color' }  %>
                 <%= f.input :link_color, required: false, input_html: { type: 'color' }  %>
+                <%= f.input :link_hover_color, required: false, input_html: { type: 'color' }  %>
                 <%= f.input :footer_link_color, required: false, input_html: { type: 'color' }  %>
+                <%= f.input :footer_link_hover_color, required: false, input_html: { type: 'color' }  %>
                 <%= f.input :primary_button_background_color, required: false, input_html: { type: 'color' }  %>
+                <%= f.input :default_button_background_color, required: false, input_html: { type: 'color' }  %>
+                <%= f.input :default_button_border_color, required: false, input_html: { type: 'color' }  %>
+                <%= f.input :default_button_text_color, required: false, input_html: { type: 'color' }  %>
+                <%= f.input :active_tabs_background_color, required: false, input_html: { type: 'color' }  %>
+                <%= f.input :facet_panel_background_color, required: false, input_html: { type: 'color' }  %>
+                <%= f.input :facet_panel_text_color, required: false, input_html: { type: 'color' }  %>
               </div>
               <div class="panel-footer">
                 <%= f.submit class: 'btn btn-primary pull-right' %>

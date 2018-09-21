@@ -131,6 +131,7 @@ en:
             banner_image: 'Banner Image'
             colors: 'Colors'
             custom_css: Custom CSS
+            fonts: 'Fonts'
       sidebar:
         accounts:                     'Accounts'
         activity_summary:             'Activity summary'

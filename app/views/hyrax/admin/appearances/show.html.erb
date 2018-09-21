@@ -17,6 +17,12 @@
         <li>
           <a href="#color" role="tab" data-toggle="tab"><%= t('.tabs.colors') %></a>
         </li>
+        <li>
+          <a href="#font" role="tab" data-toggle="tab"><%= t('.tabs.fonts') %></a>
+        </li>
+        <li>
+          <a href="#css" role="tab" data-toggle="tab">Custom CSS</a>
+        </li>
       </ul>
       <div class="tab-content">
 
@@ -86,7 +92,51 @@
           </div>
         </div>
 
+<<<<<<< HEAD
+=======
+        <div id="font" class="tab-pane">
+          <div class="panel panel-default labels">
+            <%= simple_form_for @form, url: admin_appearance_path do |f| %>
+              <div class="panel-body">
+                <%= f.input :body_font, required: false, collection: @fonts, selected: f.object.body_font  %>
+                <%= f.input :headline_font, required: false, collection: @fonts, selected: f.object.headline_font  %>
+              </div>
+              <div class="panel-footer">
+                <%= f.submit class: 'btn btn-primary pull-right' %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <div id="css" class="tab-pane">
+          <div class="panel panel-default labels">
+            <%= simple_form_for @form, url: admin_appearance_path do |f| %>
+              <div class="panel-body">
+                <%= f.input :custom_css_block, required: false, as: :text, label: 'Add Custom CSS Below' %> 
+                <script>  
+                  var custom_css_block = document.getElementById('admin_appearance_custom_css_block')
+                  var editor = CodeMirror.fromTextArea(custom_css_block, {
+                    mode: 'text/css',
+                    autofocus: true,
+                    lineNumbers: true,
+                    theme: 'base16-light',
+                    autoRefresh: true
+                  });
+                </script>
+              </div>
+              <div class="panel-footer">
+                <%= f.submit class: 'btn btn-primary pull-right' %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+>>>>>>> master
       </div>
     </div>
   </div>
 </div>
+<script>
+  $(document).on('turbolinks:load', function() {
+    getFonts('<%= ENV['GOOGLE_FONTS_KEY'] %>')
+  })
+</script>

@@ -104,6 +104,7 @@ es:
             banner_image: Imagen de la Bandera
             colors: Colores
             custom_css: Personnaliser CSS
+            fonts: Fuentes
       sidebar:
         accounts: Cuentas
         activity_summary: Resumen de la actividad

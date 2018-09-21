@@ -1,6 +1,9 @@
 <% # Dynamic styles added by the admin in the appearances page %>
 <style>
 <% appearance = Hyrax::Forms::Admin::Appearance.new %>
+@import url(<%= appearance.font_import_url %>);
+body { font-family: <%= appearance.font_body_family %> }
+h1, h2, h3, h4, h5, h6 { font-family: <%= appearance.font_headline_family %>}
 
 /* LINK COLORS */
 a { color: <%= appearance.link_color %>; }
@@ -124,5 +127,7 @@ a:hover, a:focus { color: <%= appearance.link_hover_color %>; }
 }
 .panel-default { border-color: <%= appearance.facet_panel_border_color %>; }
 .panel-heading.collapse-toggle .panel-title:after { color: <%= appearance.facet_panel_text_color %>; }
+
+<%= appearance.custom_css_block %>
 
 </style>

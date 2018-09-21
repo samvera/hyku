@@ -64,6 +64,9 @@ services:
   app:
     build: .
     image: registry.gitlab.com/notch8/palni-palci:latest
+    env_file:
+      - .env
+      - .env.development
     environment:
       - DATABASE_URL=postgresql://postgres@postgres/postgres
       - FEDORA_URL=http://fcrepo:8080/fcrepo/rest

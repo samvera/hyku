@@ -103,6 +103,7 @@ pt-BR:
           tabs:
             banner_image: Imagem do banner
             colors: Cores
+            fonts: Fontes
       sidebar:
         accounts: Contas
         activity_summary: Resumo da atividade

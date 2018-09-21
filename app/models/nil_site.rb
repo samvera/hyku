@@ -32,4 +32,8 @@ class NilSite
   def banner_image?
     false
   end
+
+  def default_collection_image?
+    false
+  end
 end

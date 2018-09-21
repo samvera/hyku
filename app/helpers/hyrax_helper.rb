@@ -18,4 +18,8 @@ module HyraxHelper
   def banner_image
     Site.instance.banner_image? ? Site.instance.banner_image.url : super
   end
+
+  def default_collection_image
+    Site.instance.default_collection_image? ? Site.instance.default_collection_image.url : super
+  end
 end

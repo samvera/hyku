@@ -96,7 +96,7 @@ module Hyrax
 
         # The custom css module
         def custom_css_block
-          block_for('custom_css_block', '/* custom stylesheet */')
+          block_for('custom_css_block', '/* custom stylesheet */').html_safe
         end
 
         # Persist the form values

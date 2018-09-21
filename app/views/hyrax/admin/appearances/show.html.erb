@@ -2,11 +2,16 @@
   <h1><span class="fa fa-paint-brush"></span> <%= t('.header') %></h1>
 <% end %>
 
+<% console %>
+
 <div class="row">
   <div class="col-md-12">
     <div class="panel panel-default tabs" id="admin-set-controls">
       <ul class="nav nav-tabs" role="tablist">
         <li class="active">
+          <a href="#logo_image" role="tab" data-toggle="tab"><%= t('.tabs.logo') %></a>
+        </li>
+        <li>
           <a href="#banner_image" role="tab" data-toggle="tab"><%= t('.tabs.banner_image') %></a>
         </li>
         <li>
@@ -14,7 +19,23 @@
         </li>
       </ul>
       <div class="tab-content">
-        <div id="banner_image" class="tab-pane active">
+
+        <div id="logo_image" class="tab-pane active">
+          <div class="panel panel-default labels">
+            <%= simple_form_for @form, url: admin_appearance_path do |f| %>
+              <div class="panel-body">
+                <%# Upload Banner Image %>
+                <%= f.input :logo_image, as: :file, wrapper: :vertical_file_input, hint: t('.hints.logo_image') %>
+                <%# image_tag @form.banner_image.url, class: "img-responsive" if @form.banner_image? %>
+              </div>
+              <div class="panel-footer">
+                <%= f.button :submit, class: 'btn-primary pull-right' %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <div id="banner_image" class="tab-pane">
           <div class="panel panel-default labels">
             <%= simple_form_for @form, url: admin_appearance_path do |f| %>
               <div class="panel-body">
@@ -64,6 +85,7 @@
             <% end %>
           </div>
         </div>
+
       </div>
     </div>
   </div>

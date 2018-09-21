@@ -34,6 +34,10 @@ module Hyrax
           true
         end
 
+        def logo_image
+
+        end
+
         # The color for the background of the header and footer bars
         def header_background_color
           block_for('header_background_color', '#3c3c3c')
@@ -57,7 +61,7 @@ module Hyrax
           darken_color(searchbar_background_color, 0.35)
         end
 
-        def searchbar_background_hover_color 
+        def searchbar_background_hover_color
           block_for('searchbar_background_hover_color', '#ffffff')
         end
 
@@ -72,7 +76,7 @@ module Hyrax
         def searchbar_text_hover_color
           block_for('searchbar_text_hover_color', '#eeeeee')
         end
-      
+
         # The color links
         def link_color
           block_for('link_color', '#2e74b2')
@@ -135,7 +139,7 @@ module Hyrax
         end
 
         # DEFAULT BUTTON COLORS
-        
+
         # The background color for "default" buttons
         def default_button_background_color
           block_for('default_button_background_color', '#ffffff')
@@ -197,7 +201,7 @@ module Hyrax
         end
 
         # The color for the facet header text
-        def facet_panel_text_color 
+        def facet_panel_text_color
           block_for('facet_panel_text_color', '#333333')
         end
 

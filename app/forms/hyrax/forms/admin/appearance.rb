@@ -19,7 +19,7 @@ module Hyrax
           ActiveModel::Name.new(self, Hyrax, "Hyrax::Admin::Appearance")
         end
 
-        # Override this method if your form takes more than just the color_params
+        # Override this method if your form takes more than just the customization_params
         def self.permitted_params
           customization_params
         end
@@ -222,7 +222,7 @@ module Hyrax
 
         # Persist the form values
         def update!
-          self.class.color_params.each do |field|
+          self.class.customization_params.each do |field|
             update_block(field, attributes[field]) if attributes[field]
           end
         end

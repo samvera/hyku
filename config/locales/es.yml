@@ -103,6 +103,7 @@ es:
           tabs:
             banner_image: Imagen de la Bandera
             colors: Colores
+            custom_css: Personnaliser CSS
       sidebar:
         accounts: Cuentas
         activity_summary: Resumen de la actividad

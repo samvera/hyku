@@ -154,10 +154,7 @@ module Hyrax
         end
 
         # DEFAULT BUTTON COLORS
-<<<<<<< HEAD
 
-=======
->>>>>>> master
         # The background color for "default" buttons
         def default_button_background_color
           block_for('default_button_background_color', '#ffffff')

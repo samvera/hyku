@@ -257,10 +257,10 @@ module Hyrax
         end
 
         def font_import_url
-          headline = headline_font.split('|').first.to_s.gsub(" ", "+")
-          body = body_font.split('|').first.to_s.gsub(" ", "+")
+          headline = headline_font.split('|').first.to_s.tr(" ", "+")
+          body = body_font.split('|').first.to_s.tr(" ", "+")
 
-          import_url = "http://fonts.googleapis.com/css?family=#{headline}|#{body}".html_safe
+          "http://fonts.googleapis.com/css?family=#{headline}|#{body}".html_safe
         end
 
         def font_body_family
@@ -283,10 +283,10 @@ module Hyrax
           format("#%02x%02x%02x", *rgb)
         end
 
-        def convert_to_rgba(hex_color, alpha = 0.5 )
+        def convert_to_rgba(hex_color, alpha = 0.5)
           hex_color = hex_color.delete('#')
           rgb = hex_color.scan(/../).map(&:hex)
-          rgba = "rgba(#{rgb[0]}, #{rgb[1]}, #{rgb[2]}, #{alpha})"
+          "rgba(#{rgb[0]}, #{rgb[1]}, #{rgb[2]}, #{alpha})"
         end
 
         def block_for(name, default_value)

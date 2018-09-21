@@ -134,6 +134,9 @@ module Hyrax
           darken_color(primary_button_border_color, 0.25)
         end
 
+        # The custom css module
+        def custom_css_block
+          block_for('custom_css_block', '/* custom stylesheet */').html_safe
         # DEFAULT BUTTON COLORS
         
         # The background color for "default" buttons
@@ -231,7 +234,8 @@ module Hyrax
            :searchbar_background_color,
            :searchbar_background_hover_color,
            :searchbar_text_color,
-           :searchbar_text_hover_color
+           :searchbar_text_hover_color,
+           :custom_css_block
           ]
         end
 

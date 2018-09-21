@@ -147,8 +147,9 @@ module Hyrax
         # The custom css module
         def custom_css_block
           block_for('custom_css_block', '/* custom stylesheet */').html_safe
+        end
+
         # DEFAULT BUTTON COLORS
-        
         # The background color for "default" buttons
         def default_button_background_color
           block_for('default_button_background_color', '#ffffff')

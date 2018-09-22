@@ -2,8 +2,6 @@
   <h1><span class="fa fa-paint-brush"></span> <%= t('.header') %></h1>
 <% end %>
 
-<% console %>
-
 <div class="row">
   <div class="col-md-12">
     <div class="panel panel-default tabs" id="admin-set-controls">
@@ -32,10 +30,17 @@
               <div class="panel-body">
                 <%# Upload Banner Image %>
                 <%= f.input :logo_image, as: :file, wrapper: :vertical_file_input, hint: t('.hints.logo_image') %>
-                <%# image_tag @form.banner_image.url, class: "img-responsive" if @form.banner_image? %>
+                <%= image_tag @form.logo_image.url, class: "img-responsive" if @form.logo_image? %>
               </div>
               <div class="panel-footer">
                 <%= f.button :submit, class: 'btn-primary pull-right' %>
+              </div>
+            <% end %>
+            <% if @form.logo_image? %>
+              <div class="panel-footer">
+                <%= simple_form_for @form.site, url: main_app.site_path(@form.site) do |f| %>
+                  <%= f.button :submit, 'Remove logo image', type: :submit, class: 'btn-danger', name: :remove_logo_image %>
+                <% end %>
               </div>
             <% end %>
           </div>

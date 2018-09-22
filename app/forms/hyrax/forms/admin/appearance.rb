@@ -34,10 +34,6 @@ module Hyrax
           true
         end
 
-        # The logo image for the top-right on the page
-        def logo_image
-        end
-
         # The font for the body copy
         def body_font
           block_for('body_font', '"Helvetica Neue", Helvetica, Arial, sans-serif;')

@@ -103,6 +103,7 @@ es:
           tabs:
             banner_image: Imagen de la Bandera
             colors: Colores
+            custom_css: Personnaliser CSS
             fonts: Fuentes
       sidebar:
         accounts: Cuentas

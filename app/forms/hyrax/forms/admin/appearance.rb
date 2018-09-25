@@ -67,7 +67,7 @@ module Hyrax
           darken_color(searchbar_background_color, 0.35)
         end
 
-        def searchbar_background_hover_color 
+        def searchbar_background_hover_color
           block_for('searchbar_background_hover_color', '#ffffff')
         end
 
@@ -82,7 +82,7 @@ module Hyrax
         def searchbar_text_hover_color
           block_for('searchbar_text_hover_color', '#eeeeee')
         end
-      
+
         # The color links
         def link_color
           block_for('link_color', '#2e74b2')
@@ -150,6 +150,7 @@ module Hyrax
         end
 
         # DEFAULT BUTTON COLORS
+
         # The background color for "default" buttons
         def default_button_background_color
           block_for('default_button_background_color', '#ffffff')
@@ -211,7 +212,7 @@ module Hyrax
         end
 
         # The color for the facet header text
-        def facet_panel_text_color 
+        def facet_panel_text_color
           block_for('facet_panel_text_color', '#333333')
         end
 
@@ -252,10 +253,10 @@ module Hyrax
         end
 
         def font_import_url
-          headline = headline_font.split('|').first.to_s.gsub(" ", "+")
-          body = body_font.split('|').first.to_s.gsub(" ", "+")
+          headline = headline_font.split('|').first.to_s.tr(" ", "+")
+          body = body_font.split('|').first.to_s.tr(" ", "+")
 
-          import_url = "http://fonts.googleapis.com/css?family=#{headline}|#{body}".html_safe
+          "http://fonts.googleapis.com/css?family=#{headline}|#{body}".html_safe
         end
 
         def font_body_family
@@ -278,10 +279,10 @@ module Hyrax
           format("#%02x%02x%02x", *rgb)
         end
 
-        def convert_to_rgba(hex_color, alpha = 0.5 )
+        def convert_to_rgba(hex_color, alpha = 0.5)
           hex_color = hex_color.delete('#')
           rgb = hex_color.scan(/../).map(&:hex)
-          rgba = "rgba(#{rgb[0]}, #{rgb[1]}, #{rgb[2]}, #{alpha})"
+          "rgba(#{rgb[0]}, #{rgb[1]}, #{rgb[2]}, #{alpha})"
         end
 
         def block_for(name, default_value)

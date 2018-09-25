@@ -7,6 +7,9 @@
     <div class="panel panel-default tabs" id="admin-set-controls">
       <ul class="nav nav-tabs" role="tablist">
         <li class="active">
+          <a href="#logo_image" role="tab" data-toggle="tab"><%= t('.tabs.logo') %></a>
+        </li>
+        <li>
           <a href="#banner_image" role="tab" data-toggle="tab"><%= t('.tabs.banner_image') %></a>
         </li>
         <li>
@@ -20,7 +23,30 @@
         </li>
       </ul>
       <div class="tab-content">
-        <div id="banner_image" class="tab-pane active">
+
+        <div id="logo_image" class="tab-pane active">
+          <div class="panel panel-default labels">
+            <%= simple_form_for @form, url: admin_appearance_path do |f| %>
+              <div class="panel-body">
+                <%# Upload Banner Image %>
+                <%= f.input :logo_image, as: :file, wrapper: :vertical_file_input, hint: t('.hints.logo_image') %>
+                <%= image_tag @form.logo_image.url, class: "img-responsive" if @form.logo_image? %>
+              </div>
+              <div class="panel-footer">
+                <%= f.button :submit, class: 'btn-primary pull-right' %>
+              </div>
+            <% end %>
+            <% if @form.logo_image? %>
+              <div class="panel-footer">
+                <%= simple_form_for @form.site, url: main_app.site_path(@form.site) do |f| %>
+                  <%= f.button :submit, 'Remove logo image', type: :submit, class: 'btn-danger', name: :remove_logo_image %>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <div id="banner_image" class="tab-pane">
           <div class="panel panel-default labels">
             <%= simple_form_for @form, url: admin_appearance_path do |f| %>
               <div class="panel-body">
@@ -89,8 +115,8 @@
           <div class="panel panel-default labels">
             <%= simple_form_for @form, url: admin_appearance_path do |f| %>
               <div class="panel-body">
-                <%= f.input :custom_css_block, required: false, as: :text, label: 'Add Custom CSS Below' %> 
-                <script>  
+                <%= f.input :custom_css_block, required: false, as: :text, label: 'Add Custom CSS Below' %>
+                <script>
                   var custom_css_block = document.getElementById('admin_appearance_custom_css_block')
                   var editor = CodeMirror.fromTextArea(custom_css_block, {
                     mode: 'text/css',

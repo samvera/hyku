@@ -2,7 +2,6 @@ Hyrax.config do |config|
   config.register_curation_concern :generic_work
   # Injected via `rails g hyrax:work Image`
   config.register_curation_concern :image
-
   # Email recipient of messages sent via the contact form
   config.contact_email = Settings.contact_email
 
@@ -38,6 +37,9 @@ Hyrax.config do |config|
 
   # If you have ffmpeg installed and want to transcode audio and video uncomment this line
   config.enable_ffmpeg = false
+
+  # Disable the iiif server until we are ready for it
+  config.iiif_image_server = false
 
   # Using the database noid minter was too slow when ingesting 1000s of objects (8s per transaction),
   # so switching to UUIDs for the MVP.

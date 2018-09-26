@@ -13,6 +13,9 @@
           <a href="#banner_image" role="tab" data-toggle="tab"><%= t('.tabs.banner_image') %></a>
         </li>
         <li>
+          <a href="#default_images" role="tab" data-toggle="tab"><%= t('.tabs.default_images') %></a>
+        </li>
+        <li>
           <a href="#color" role="tab" data-toggle="tab"><%= t('.tabs.colors') %></a>
         </li>
         <li>
@@ -70,6 +73,37 @@
           </div>
         </div>
 
+        <div id="default_images" class="tab-pane">
+          <div class="panel panel-default labels">
+            <%= simple_form_for @form, url: admin_appearance_path do |f| %>
+              <div class="panel-body">
+                <%= f.input :default_collection_image, as: :file, wrapper: :vertical_file_input, hint: t('.hints.default_collection_image') %>
+                <%= image_tag @form.default_collection_image.url, class: "img-responsive" if @form.default_collection_image? %>
+
+                <%= f.input :default_work_image, as: :file, wrapper: :vertical_file_input, hint: t('.hints.default_work_image') %>
+                <%= image_tag @form.default_work_image.url, class: "img-responsive" if @form.default_work_image? %>
+              </div>
+              <div class="panel-footer">
+                <%= f.button :submit, class: 'btn-primary pull-right' %>
+              </div>
+            <% end %>
+            <% if @form.default_collection_image? %>
+              <div class="panel-footer">
+                <%= simple_form_for @form.site, url: main_app.site_path(@form.site) do |f| %>
+                  <%= f.button :submit, 'Remove default collection image', type: :submit, class: 'btn-danger', name: :remove_default_collection_image %>
+                <% end %>
+              </div>
+            <% end %>
+            <% if @form.default_work_image? %>
+              <div class="panel-footer">
+                <%= simple_form_for @form.site, url: main_app.site_path(@form.site) do |f| %>
+                  <%= f.button :submit, 'Remove default work image', type: :submit, class: 'btn-danger', name: :remove_default_work_image %>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
         <div id="color" class="tab-pane">
           <div class="panel panel-default labels">
             <%= simple_form_for @form, url: admin_appearance_path do |f| %>
@@ -89,8 +123,8 @@
                 <%= f.input :default_button_border_color, required: false, input_html: { type: 'color' }  %>
                 <%= f.input :default_button_text_color, required: false, input_html: { type: 'color' }  %>
                 <%= f.input :active_tabs_background_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :facet_panel_background_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :facet_panel_text_color, required: false, input_html: { type: 'color' }  %>
+                <%= f.input :facet_panel_background_color, required: false, input_html: { type: 'color' }, label: 'Search Facet Panel Background Color'  %>
+                <%= f.input :facet_panel_text_color, required: false, input_html: { type: 'color' }, label: 'Search Facet Panel Text Color'  %>
               </div>
               <div class="panel-footer">
                 <%= f.submit class: 'btn btn-primary pull-right' %>

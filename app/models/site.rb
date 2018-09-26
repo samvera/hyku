@@ -5,6 +5,8 @@ class Site < ApplicationRecord
 
   # Allow for uploading of site's banner image
   mount_uploader :banner_image, BannerImageUploader
+  # Allow for uploading of site's logo image
+  mount_uploader :logo_image, LogoImageUploader
 
   belongs_to :account
   accepts_nested_attributes_for :account, update_only: true

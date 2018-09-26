@@ -153,6 +153,8 @@ GEM
       archive-zip (~> 0.10)
       nokogiri (~> 1.8)
     clipboard-rails (1.7.1)
+    codemirror-rails (5.16.0)
+      railties (>= 3.0, < 6.0)
     coffee-rails (4.2.2)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0)
@@ -911,6 +913,7 @@ DEPENDENCIES
   capybara
   carrierwave-aws
   chromedriver-helper
+  codemirror-rails
   coffee-rails (~> 4.2)
   config (~> 1.5, >= 1.5.1)
   coveralls

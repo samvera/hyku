@@ -103,6 +103,8 @@ de:
           tabs:
             banner_image: Banner Bild
             colors: Farben
+            custom_css: Maßgeschneidert CSS
+            fonts: Schriftarten
       sidebar:
         accounts: Konten
         activity_summary: Aktivitätsübersicht

@@ -103,6 +103,8 @@ it:
           tabs:
             banner_image: Immagine banner
             colors: Colori
+            custom_css: Personalizzare CSS
+            fonts: Font
       sidebar:
         accounts: conti
         activity_summary: Riepilogo attività

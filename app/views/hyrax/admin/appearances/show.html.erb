@@ -7,14 +7,46 @@
     <div class="panel panel-default tabs" id="admin-set-controls">
       <ul class="nav nav-tabs" role="tablist">
         <li class="active">
+          <a href="#logo_image" role="tab" data-toggle="tab"><%= t('.tabs.logo') %></a>
+        </li>
+        <li>
           <a href="#banner_image" role="tab" data-toggle="tab"><%= t('.tabs.banner_image') %></a>
         </li>
         <li>
           <a href="#color" role="tab" data-toggle="tab"><%= t('.tabs.colors') %></a>
         </li>
+        <li>
+          <a href="#font" role="tab" data-toggle="tab"><%= t('.tabs.fonts') %></a>
+        </li>
+        <li>
+          <a href="#css" role="tab" data-toggle="tab">Custom CSS</a>
+        </li>
       </ul>
       <div class="tab-content">
-        <div id="banner_image" class="tab-pane active">
+
+        <div id="logo_image" class="tab-pane active">
+          <div class="panel panel-default labels">
+            <%= simple_form_for @form, url: admin_appearance_path do |f| %>
+              <div class="panel-body">
+                <%# Upload Banner Image %>
+                <%= f.input :logo_image, as: :file, wrapper: :vertical_file_input, hint: t('.hints.logo_image') %>
+                <%= image_tag @form.logo_image.url, class: "img-responsive" if @form.logo_image? %>
+              </div>
+              <div class="panel-footer">
+                <%= f.button :submit, class: 'btn-primary pull-right' %>
+              </div>
+            <% end %>
+            <% if @form.logo_image? %>
+              <div class="panel-footer">
+                <%= simple_form_for @form.site, url: main_app.site_path(@form.site) do |f| %>
+                  <%= f.button :submit, 'Remove logo image', type: :submit, class: 'btn-danger', name: :remove_logo_image %>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <div id="banner_image" class="tab-pane">
           <div class="panel panel-default labels">
             <%= simple_form_for @form, url: admin_appearance_path do |f| %>
               <div class="panel-body">
@@ -44,9 +76,58 @@
               <div class="panel-body">
                 <%= f.input :header_background_color, required: false, input_html: { type: 'color' } %>
                 <%= f.input :header_text_color, required: false, input_html: { type: 'color' }  %>
+                <%= f.input :searchbar_background_color, required: false, input_html: { type: 'color' }  %>
+                <%= f.input :searchbar_background_hover_color, required: false, input_html: { type: 'color' }  %>
+                <%= f.input :searchbar_text_color, required: false, input_html: { type: 'color' }  %>
+                <%= f.input :searchbar_text_hover_color, required: false, input_html: { type: 'color' }  %>
                 <%= f.input :link_color, required: false, input_html: { type: 'color' }  %>
+                <%= f.input :link_hover_color, required: false, input_html: { type: 'color' }  %>
                 <%= f.input :footer_link_color, required: false, input_html: { type: 'color' }  %>
+                <%= f.input :footer_link_hover_color, required: false, input_html: { type: 'color' }  %>
                 <%= f.input :primary_button_background_color, required: false, input_html: { type: 'color' }  %>
+                <%= f.input :default_button_background_color, required: false, input_html: { type: 'color' }  %>
+                <%= f.input :default_button_border_color, required: false, input_html: { type: 'color' }  %>
+                <%= f.input :default_button_text_color, required: false, input_html: { type: 'color' }  %>
+                <%= f.input :active_tabs_background_color, required: false, input_html: { type: 'color' }  %>
+                <%= f.input :facet_panel_background_color, required: false, input_html: { type: 'color' }  %>
+                <%= f.input :facet_panel_text_color, required: false, input_html: { type: 'color' }  %>
+              </div>
+              <div class="panel-footer">
+                <%= f.submit class: 'btn btn-primary pull-right' %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <div id="font" class="tab-pane">
+          <div class="panel panel-default labels">
+            <%= simple_form_for @form, url: admin_appearance_path do |f| %>
+              <div class="panel-body">
+                <%= f.input :body_font, required: false, collection: @fonts, selected: f.object.body_font  %>
+                <%= f.input :headline_font, required: false, collection: @fonts, selected: f.object.headline_font  %>
+              </div>
+              <div class="panel-footer">
+                <%= f.submit class: 'btn btn-primary pull-right' %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <div id="css" class="tab-pane">
+          <div class="panel panel-default labels">
+            <%= simple_form_for @form, url: admin_appearance_path do |f| %>
+              <div class="panel-body">
+                <%= f.input :custom_css_block, required: false, as: :text, label: 'Add Custom CSS Below' %>
+                <script>
+                  var custom_css_block = document.getElementById('admin_appearance_custom_css_block')
+                  var editor = CodeMirror.fromTextArea(custom_css_block, {
+                    mode: 'text/css',
+                    autofocus: true,
+                    lineNumbers: true,
+                    theme: 'base16-light',
+                    autoRefresh: true
+                  });
+                </script>
               </div>
               <div class="panel-footer">
                 <%= f.submit class: 'btn btn-primary pull-right' %>
@@ -58,3 +139,8 @@
     </div>
   </div>
 </div>
+<script>
+  $(document).on('turbolinks:load', function() {
+    getFonts('<%= ENV['GOOGLE_FONTS_KEY'] %>')
+  })
+</script>

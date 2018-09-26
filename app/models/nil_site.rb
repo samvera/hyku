@@ -33,7 +33,7 @@ class NilSite
     false
   end
 
-  def default_collection_image?
+  def logo_image?
     false
   end
 end

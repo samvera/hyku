@@ -103,6 +103,7 @@ zh:
           tabs:
             banner_image: 横幅图像
             colors: 颜色
+            fonts: 字形
       sidebar:
         accounts: 帐号
         activity_summary: 活动摘要

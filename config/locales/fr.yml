@@ -103,6 +103,8 @@ fr:
           tabs:
             banner_image: Image de la bannière
             colors: Couleurs
+            custom_css: Personnaliser CSS
+            fonts: Les Polices
       sidebar:
         accounts: Comptes
         activity_summary: Résumé de l'activité

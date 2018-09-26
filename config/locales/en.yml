@@ -127,6 +127,7 @@ en:
         show:
           hints:
             banner_image: 'To use an image as a masthead background, you should use an image (JPG, GIF or PNG) that is at least 120 pixels tall and 1200 pixels wide. For best results, use an image at least 1800 pixels wide.'
+            logo_image: 'To use an image as the logo, you should use an image (JPG, GIF or PNG) that is no taller than the header and no wider than 400 pixels wide.'
           tabs:
             banner_image: 'Banner Image'
             colors: 'Colors'

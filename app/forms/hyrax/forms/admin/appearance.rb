@@ -231,6 +231,8 @@ module Hyrax
         # A list of parameters that are related to customizations
         def self.customization_params
           [
+            :body_font,
+            :headline_font,
             :header_background_color,
             :header_text_color,
             :link_color,

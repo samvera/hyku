@@ -18,7 +18,7 @@ Riiif::Image.file_resolver.id_to_uri = lambda do |id|
     Rails.logger.info "Riiif resolved #{id} to #{url}"
   end
 end
-# Riiif::Image.file_resolver.basic_auth_credentials = [ActiveFedora.fedora.user, ActiveFedora.fedora.password]
+Riiif::Image.file_resolver.basic_auth_credentials = [ActiveFedora.fedora.user, ActiveFedora.fedora.password]
 
 
 Riiif::Image.authorization_service = IIIFAuthorizationService

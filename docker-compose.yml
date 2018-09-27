@@ -1,4 +1,4 @@
-version: '2'
+version: '2.2'
 
 volumes:
   fcrepo:
@@ -32,13 +32,14 @@ services:
 
   solr:
     image: solr
-    command: solr -c -f -z zookeeper_cluster:2181
+    command: solr -c -f -z zoo1:2181
     depends_on:
       - zoo1
     expose:
       - 8983
+    ports:
+      - 8983:8983
     volumes:
-      - .:/app
       - solr:/opt/solr/server/solr
     networks:
       internal:
@@ -63,7 +64,7 @@ services:
 
   app:
     build: .
-    image: registry.gitlab.com/notch8/palni-palci:latest
+    image: registry.gitlab.com/notch8/palni-palci:${TAG:-latest}
     env_file:
       - .env
       - .env.development
@@ -76,16 +77,17 @@ services:
       - REDIS_HOST=redis
       - SECRET_KEY_BASE=asdf
       - SETTINGS__ACTIVE_JOB__QUEUE_ADAPTER=sidekiq
+      - SETTINGS__FITS_PATH=/opt/fits/fits.sh
       - SETTINGS__MULTITENANCY__ADMIN_HOST=palni.docker
       - SETTINGS__MULTITENANCY__ADMIN_ONLY_TENANT_CREATION=false
       - SETTINGS__MULTITENANCY__DEFAULT_HOST=%{tenant}.palni.docker
       - SETTINGS__MULTITENANCY__ENABLED=true
-      - SETTINGS__SOLR__URL=http://solr:8983/solr/
+      - SETTINGS__SOLR__URL=http://solr:8983/solr
       - SETTINGS__ZOOKEEPER__CONNECTION_STR=zookeeper_cluster:2181/configs
-      - SOLR_URL=http://solr:8983/solr/
+      - SOLR_URL=http://solr:8983/solr
 
 # version and location of fits are set in Dockerfile:
-      - LD_LIBRARY_PATH=/opt/fits-latest/tools/mediainfo/linux
+      - LD_LIBRARY_PATH=/opt/fits/tools/mediainfo/linux
     volumes:
       - .:/data/
     networks:
@@ -113,8 +115,6 @@ services:
     extends:
       service: app
     command: bundle exec sidekiq
-    environment:
-      - SETTINGS__FITS_PATH=/opt/fits-latest/fits.sh
     depends_on:
       - postgres
       - solr

@@ -36,8 +36,7 @@ module Hyrax
         end
 
         def default_image
-          raise 'puppies'
-          ActionController::Base.helpers.image_path 'default.png'
+          Site.instance.default_work_image
         end
 
         def audio_image

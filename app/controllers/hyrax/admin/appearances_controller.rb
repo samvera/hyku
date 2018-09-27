@@ -9,7 +9,7 @@ module Hyrax
       def show
         #TODO make selected font the font that show in select box
         #TODO add body and headline font to the import url
-      
+
         add_breadcrumb t(:'hyrax.controls.home'), root_path
         add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
         add_breadcrumb t(:'hyrax.admin.sidebar.configuration'), '#'
@@ -35,5 +35,3 @@ module Hyrax
     end
   end
 end
-
-        

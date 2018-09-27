@@ -31,7 +31,7 @@
           <div class="panel panel-default labels">
             <%= simple_form_for @form, url: admin_appearance_path do |f| %>
               <div class="panel-body">
-                <%# Upload Banner Image %>
+                <%# Upload Logo Image %>
                 <%= f.input :logo_image, as: :file, wrapper: :vertical_file_input, hint: t('.hints.logo_image') %>
                 <%= image_tag @form.logo_image.url, class: "img-responsive" if @form.logo_image? %>
               </div>

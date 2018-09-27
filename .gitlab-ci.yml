@@ -1,0 +1,78 @@
+image: registry.gitlab.com/notch8/scripts/builder:latest
+services:
+  - docker:dind
+
+stages:
+  - build
+#  - test
+#  - review
+#  - staging
+  - production
+
+variables:
+  DOCKER_DRIVER: overlay
+  REGISTRY_HOST: registry.gitlab.com
+  REGISTRY_URI: /notch8/palni-palci
+  SITE_URI_BASE: hykuup.com
+
+before_script:
+  - export TAG=${CI_COMMIT_SHA:0:8}
+  - export BRANCH=${CI_COMMIT_REF_NAME}
+  - export REGISTRY_HOST=${CI_REGISTRY}
+  - export REGISTRY_URI="/${CI_PROJECT_PATH}"
+  - touch .env.development
+  - touch .env.production
+
+base:
+  stage: build
+  script:
+    - docker login -u "gitlab-ci-token" -p "$CI_JOB_TOKEN" $CI_REGISTRY
+    - sc build -s base
+    - sc push -s base
+  when: manual
+  tags:
+    - docker
+
+build:
+  stage: build
+  script:
+    - docker login -u "gitlab-ci-token" -p "$CI_JOB_TOKEN" $CI_REGISTRY
+    - sc build
+    - sc push
+    - docker tag $CI_REGISTRY_IMAGE:$TAG $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+  tags:
+    - docker
+
+# test:
+#   stage: test
+#   image: $CI_REGISTRY_IMAGE:$CI_PROJECT_NAME-$CI_BUILD_REF_SLUG
+#   script:
+#     - cd /home/app/webapp && bundle exec rake db:create db:schema:load test
+#   tags:
+#     - docker
+#   variables:
+#     GIT_STRATEGY: none
+
+# staging:
+#   stage: staging
+#   type: deploy
+#   script:
+#     - sc deploy staging 
+#   only:
+#     - master
+#   tags:
+#     - docker
+
+production:
+  stage: production
+  type: deploy
+  script:
+    - mkdir -p ~/.kube
+    - echo $KUBE_CONFIG | base64 -d > ~/.kube/config
+    - kubectl --namespace palshyku set image deployment/web web=$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME 
+  when: manual
+  only:
+    - master
+  tags:
+    - docker

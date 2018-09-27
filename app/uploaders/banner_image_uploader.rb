@@ -1,6 +1,6 @@
 class BannerImageUploader < CarrierWave::Uploader::Base
   def store_dir
-    'public/uploads/banner_images'
+    'uploads/banner_images'
   end
 
   # Define valid extensions for site banner image

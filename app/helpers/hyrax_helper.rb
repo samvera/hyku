@@ -22,4 +22,12 @@ module HyraxHelper
   def logo_image
     Site.instance.logo_image? ? Site.instance.logo_image.url : false
   end
+
+  def default_collction_image
+    Site.instance.default_collection_image? ? Site.instance.default_collection_image.url : false
+  end
+
+  def default_work_image
+    Site.instance.default_work_image? ? Site.instance.default_work_image.url : false
+  end
 end

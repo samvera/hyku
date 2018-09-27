@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180921232642) do
+ActiveRecord::Schema.define(version: 20180926181850) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -531,6 +531,8 @@ ActiveRecord::Schema.define(version: 20180921232642) do
     t.string "institution_name_full"
     t.string "banner_image"
     t.string "logo_image"
+    t.string "default_collection_image"
+    t.string "default_work_image"
   end
 
   create_table "subject_local_authority_entries", id: :serial, force: :cascade do |t|

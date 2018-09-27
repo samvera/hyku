@@ -36,4 +36,12 @@ class NilSite
   def logo_image?
     false
   end
+
+  def default_collection_image?
+    false
+  end
+
+  def default_work_image?
+    false
+  end
 end

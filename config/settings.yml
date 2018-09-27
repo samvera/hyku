@@ -49,7 +49,7 @@ active_job_queue:
 s3:
   upload_bucket:
 
-fits_path: "fits.sh"
+fits_path: "/opt/fits-latest/fits.sh"
 
 google_analytics_id:
 

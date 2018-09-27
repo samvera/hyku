@@ -1,4 +1,4 @@
-version: '2'
+version: '2.2'
 
 volumes:
   fcrepo:
@@ -64,7 +64,7 @@ services:
 
   app:
     build: .
-    image: registry.gitlab.com/notch8/palni-palci:latest
+    image: registry.gitlab.com/notch8/palni-palci:${TAG:-latest}
     env_file:
       - .env
       - .env.development

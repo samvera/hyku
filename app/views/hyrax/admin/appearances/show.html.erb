@@ -55,9 +55,7 @@
               <div class="panel-body">
                 <%# Upload Banner Image %>
                 <%= f.input :banner_image, as: :file, wrapper: :vertical_file_input, hint: t('.hints.banner_image') %>
-                <%= image_tag @form.banner_image.url, class: "img-responsive" if @form.banner_image? %>
-                <%= f.input :default_collection_image, as: :file, wrapper: :vertical_file_input, hint: 'The default collection image ' %>
-                
+                <%= image_tag @form.banner_image.url, class: "img-responsive" if @form.banner_image? %>                
               </div>
               <div class="panel-footer">
                 <%= f.button :submit, class: 'btn-primary pull-right' %>

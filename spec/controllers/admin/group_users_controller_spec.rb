@@ -15,7 +15,7 @@ RSpec.describe Admin::GroupUsersController, faketenant: true do
     describe 'GET #index' do
       subject { get :index, params: { group_id: group.id } }
 
-      it { is_expected.to render_template('layouts/dashboard') }
+      it { is_expected.to render_template('layouts/hyrax/dashboard') }
       it { is_expected.to render_template('admin/groups/users') }
     end
 

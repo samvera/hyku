@@ -3,7 +3,7 @@
 # existing users
 class RolesController < ApplicationController
   load_and_authorize_resource :user, parent: false
-  layout 'dashboard'
+  layout 'hyrax/dashboard'
 
   before_action do
     authorize! :manage, Role

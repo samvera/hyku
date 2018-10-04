@@ -23,4 +23,6 @@ RSpec.describe Hyrax::ImageForm do
       expect(subject['extent']).to eq ['extent']
     end
   end
+
+  include_examples("work_form")
 end

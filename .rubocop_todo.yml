@@ -115,3 +115,6 @@ Performance/RegexpMatch:
     - 'lib/importer/csv_parser.rb'
     - 'app/services/solr_config_uploader.rb'
     - 'app/models/account.rb'
+
+ClassLength:
+  Max: 120

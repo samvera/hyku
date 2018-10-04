@@ -1,5 +1,5 @@
 class StatusController < ApplicationController
-  layout 'dashboard'
+  layout 'hyrax/dashboard'
 
   before_action do
     authorize! :read, :admin_dashboard

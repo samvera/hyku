@@ -20,4 +20,6 @@ RSpec.describe Hyrax::GenericWorkForm do
       expect(subject['rendering_ids']).to eq [file_set.id]
     end
   end
+
+  include_examples("work_form")
 end

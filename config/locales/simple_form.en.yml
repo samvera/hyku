@@ -35,6 +35,7 @@ en:
         per: 'Show'
       user:
         email: 'Email address'
+        display_name: 'Your Name'  # need to add this to other languages
     #   defaults:
     #     password: 'Password'
     #   user:

@@ -13,7 +13,7 @@ RSpec.describe Admin::GroupsController, singletenant: true do
     describe 'GET #index' do
       subject { get :index }
 
-      it { is_expected.to render_template('layouts/dashboard') }
+      it { is_expected.to render_template('layouts/hyrax/dashboard') }
       it { is_expected.to render_template('admin/groups/index') }
     end
 

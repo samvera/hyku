@@ -6,7 +6,7 @@ RSpec.describe ImportWorkFromPurlJob do
     stub_request(:get, "https://purl.stanford.edu/bc390xk2647.xml")
       .to_return(status: 200, body: purl_xml)
     ActiveFedora::Base.find(druid).destroy(eradicate: true) if ActiveFedora::Base.exists? druid
-    Hyrax::PermissionTemplate.create!(admin_set_id: AdminSet::DEFAULT_ID)
+    Hyrax::PermissionTemplate.create!(source_id: AdminSet::DEFAULT_ID)
     # Don't call load_workflows until the PermissionTemplate has been created
     Hyrax::Workflow::WorkflowImporter.load_workflows
   end

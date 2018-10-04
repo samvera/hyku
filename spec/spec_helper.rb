@@ -54,8 +54,12 @@ RSpec.configure do |config|
   config.filter_run :focus
   config.run_all_when_everything_filtered = true
 
-  # only run aws tests from CI (or w/ `--tag aws`)
-  config.filter_run_excluding(aws: true) unless ENV['CI']
+  # only run aws tests from CI (or w/ `--tag aws`) and only run it on the main repo, since that
+  # is where the valid aws keys live. TRAVIS_PULL_REQUEST_SLUG is "" when the job is a push job
+  unless ENV['CI'] &&
+         (ENV['TRAVIS_PULL_REQUEST_SLUG'].match('samvera-labs/hyku') || ENV['TRAVIS_PULL_REQUEST_SLUG'].blank?)
+    config.filter_run_excluding(aws: true)
+  end
 
   # Allows RSpec to persist some state between runs in order to support
   # the `--only-failures` and `--next-failure` CLI options. We recommend

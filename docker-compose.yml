@@ -125,7 +125,8 @@ services:
       internal:
 
   web:
-    extends: app
+    extends:
+      service: app
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails server -p 3000 -b '0.0.0.0'"
     depends_on:
       - db
@@ -141,7 +142,8 @@ services:
       - 3000
 
   workers:
-    extends: app
+    extends:
+      service: app
     command: bundle exec sidekiq
     environment:
       - SETTINGS__FITS_PATH=/opt/fits-1.0.5/fits.sh
@@ -157,7 +159,8 @@ services:
       - db_migrate
 
   initialize_app:
-    extends: app
+    extends:
+      service: app
     restart: on-failure
     command: bundle exec rails zookeeper:upload
     depends_on:
@@ -166,7 +169,8 @@ services:
       - zoo3
 
   db_migrate:
-    extends: app
+    extends:
+      service: app
     restart: on-failure
     command: bundle exec rails db:migrate
     depends_on:

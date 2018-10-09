@@ -41,7 +41,16 @@ class NilSite
     false
   end
 
+  def default_collection_image 
+    nil
+  end
+
   def default_work_image?
     false
   end
+
+  def default_work_image
+    nil
+  end
+
 end

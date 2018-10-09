@@ -141,6 +141,7 @@ fr:
           actions: action
           email: Adresse e-mail
           header: Administrateurs de compte actuels
+          all_users: Tous les utilisateurs
           no_admins: Aucun administrateur n'existe
         edit: Modifier le compte
         header: Gérer son compte

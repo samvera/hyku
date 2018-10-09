@@ -110,6 +110,7 @@ services:
       - VIRTUAL_HOST=palni.docker
     ports:
       - 3000:3000
+      - 3001:3001
 
   workers:
     extends:

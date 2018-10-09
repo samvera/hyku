@@ -141,6 +141,7 @@ it:
           actions: Azione
           email: Indirizzo email
           header: Amministratori dell'account corrente
+          all_users: Tutti gli utenti
           no_admins: Nessun amministratore esiste
         edit: Modifica account
         header: Gestisci profilo

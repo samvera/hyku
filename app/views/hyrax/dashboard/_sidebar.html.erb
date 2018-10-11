@@ -115,7 +115,6 @@
       <% end %>
     <% end %>
 
-
     <% if can?(:manage, User) || can?(:manage, Hyku::Group) %>
       <li>
         <%= menu.collapsable_section t('hyrax.admin.sidebar.roles_and_permissions'),
@@ -127,7 +126,6 @@
               <span class="fa fa-users"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.manage_groups') %></span>
             <% end %>
           <% end %>
-
 
           <% if can? :manage, User %>
             <%= menu.nav_link(hyrax.admin_users_path) do %>

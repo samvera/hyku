@@ -300,8 +300,10 @@ module Hyrax
         end
 
         def format_font_names(font_style)
-          parts = font_style.split('|')
-          "'#{parts[0]}', #{parts[1]}".html_safe
+          # the fonts come with `Font Name:font-weight` - this removes the weight
+          parts = font_style.split(':')
+          # Google fonts use `+` in place of spaces. This fixes it for CSS.
+          parts[0].tr('+', ' ').html_safe
         end
       end
     end

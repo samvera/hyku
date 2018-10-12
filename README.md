@@ -76,13 +76,3 @@ Hydra-in-a-Box supports multitenancy using the `apartment` gem. `apartment` work
 ./bin/import_from_purl ../hyku-objects bc390xk2647 bc402fk6835 bc483gc9313
 ```
 
-
-## User Apartment notes
-Hydra::User
-Hyrax::User
-Blacklight::AccessControls::User
-Hyrax::UserUsageStats
-Hyrax::WithEvents
-
-Mailboxer::Models::Messageable
-Blacklight::User

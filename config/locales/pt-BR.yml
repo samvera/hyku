@@ -140,6 +140,7 @@ pt-BR:
           actions: Açao
           email: Endereço de e-mail
           header: Administradores de contas atuais
+          all_users: Todos os usuários
           no_admins: Nenhum administrador existe
         edit: Editar conta
         header: Gerenciar Conta

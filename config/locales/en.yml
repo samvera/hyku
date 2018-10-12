@@ -181,6 +181,7 @@ en:
         remove: 'Remove'
         current_admins:
           header: 'Current Account Administrators'
+          all_users: 'All Users'
           email: 'Email address'
           actions: 'Action'
           no_admins: 'No administrators exist'

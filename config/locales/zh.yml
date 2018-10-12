@@ -140,6 +140,7 @@ zh:
           actions: 行动
           email: 电子邮件地址
           header: 经常账户管理员
+          all_users: 全部用户
           no_admins: 没有管理员存在
         edit: 编辑帐号
         header: 管理帐户

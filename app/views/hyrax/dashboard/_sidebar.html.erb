@@ -116,24 +116,24 @@
     <% end %>
 
     <% if can?(:manage, User) || can?(:manage, Hyku::Group) %>
-    <li>
-      <%= menu.collapsable_section t('hyrax.admin.sidebar.roles_and_permissions'),
-                                   icon_class: "fa fa-users",
-                                   id: 'collapseRoles',
-                                   open: menu.roles_and_permissions_section? do %>
-        <% if can? :manage, Hyku::Group %>
-          <%= menu.nav_link(main_app.admin_groups_path) do %>
-            <span class="fa fa-users"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.manage_groups') %></span>
+      <li>
+        <%= menu.collapsable_section t('hyrax.admin.sidebar.roles_and_permissions'),
+                                     icon_class: "fa fa-users",
+                                     id: 'collapseRoles',
+                                     open: menu.roles_and_permissions_section? do %>
+          <% if can? :manage, Hyku::Group %>
+            <%= menu.nav_link(main_app.admin_groups_path) do %>
+              <span class="fa fa-users"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.manage_groups') %></span>
+            <% end %>
           <% end %>
-        <% end %>
 
-        <% if can? :manage, User %>
-          <%= menu.nav_link(hyrax.admin_users_path) do %>
-            <span class="fa fa-user"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.manage_users') %></span>
+          <% if can? :manage, User %>
+            <%= menu.nav_link(hyrax.admin_users_path) do %>
+              <span class="fa fa-user"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.manage_users') %></span>
+            <% end %>
           <% end %>
         <% end %>
-      <% end %>
-    </li>
+      </li>
     <% end %>
   <% end # end of configuration block %>
 </ul>

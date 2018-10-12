@@ -17,6 +17,10 @@ class User < ApplicationRecord
 
   before_create :add_default_roles
 
+  scope :for_repository, ->{
+    joins(:roles)
+  }
+
   # Method added by Blacklight; Blacklight uses #to_s on your
   # user class to get a user-displayable login/identifier.
   def to_s

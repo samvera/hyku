@@ -62,4 +62,4 @@ contact_email: ""
 devise:
   account_signup: true
   # The address from which user invitations are sent
-  invitation_from_email: "change-me-in-hyku-settings@example.org"
+  invitation_from_email: "hello@hykuup.com"

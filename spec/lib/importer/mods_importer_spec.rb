@@ -60,7 +60,7 @@ RSpec.describe Importer::ModsImporter, :clean do
     end
 
     context 'when the collection already exists' do
-      let!(:existing) { FactoryGirl.create(:collection, id: 'kx532cb7981', title: ['Test Collection']) }
+      let!(:existing) { FactoryBot.create(:collection, id: 'kx532cb7981', title: ['Test Collection']) }
 
       it 'adds metadata to existing collection' do
         coll = nil

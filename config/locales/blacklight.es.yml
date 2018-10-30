@@ -1,6 +1,7 @@
+---
 es:
   blacklight:
-    application_name: 'Hyku'
+    application_name: Hyku
     search:
       fields:
         facet:

@@ -3,7 +3,7 @@ RSpec.describe AccountElevator do
 
   let(:request) { double(host: 'example.com') }
   let(:bad_request) { double(host: 'new.example.com') }
-  let!(:account) { FactoryGirl.create(:account, cname: 'example.com') }
+  let!(:account) { FactoryBot.create(:account, cname: 'example.com') }
 
   describe '#parse_tenant_name' do
     it 'retrieves the tenant name for the account' do

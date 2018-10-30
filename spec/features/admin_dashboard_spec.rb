@@ -1,7 +1,7 @@
 RSpec.describe 'Admin Dashboard', type: :feature do
   context 'as an administrator' do
-    let(:user) { FactoryGirl.create(:admin) }
-    let(:group) { FactoryGirl.create(:group) }
+    let(:user) { FactoryBot.create(:admin) }
+    let(:group) { FactoryBot.create(:group) }
 
     before do
       login_as(user, scope: :user)
@@ -10,17 +10,17 @@ RSpec.describe 'Admin Dashboard', type: :feature do
     it 'shows the admin page' do
       visit Hyrax::Engine.routes.url_helpers.dashboard_path
       within '.sidebar' do
-        expect(page).to have_link('Activity summary')
+        expect(page).to have_link('Activity Summary')
+        expect(page).to have_link('System Status')
         expect(page).to have_link('Profile')
         expect(page).to have_link('Notifications')
         expect(page).to have_link('Transfers')
         expect(page).to have_link('Labels')
         expect(page).to have_link('Appearance')
         expect(page).to have_link('Content Blocks')
-        expect(page).to have_link('Technical')
-        expect(page).to have_link('Administrative Sets')
-        expect(page).to have_link('Manage groups')
-        expect(page).to have_link('Manage users')
+        expect(page).to have_link('Features')
+        expect(page).to have_link('Manage Groups')
+        expect(page).to have_link('Manage Users')
         expect(page).to have_link('Reports')
       end
     end

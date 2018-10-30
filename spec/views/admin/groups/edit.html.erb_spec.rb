@@ -1,6 +1,6 @@
 RSpec.describe 'admin/groups/edit', type: :view do
   context 'groups index page' do
-    let(:group) { FactoryGirl.create(:group) }
+    let(:group) { FactoryBot.create(:group) }
 
     before do
       allow(controller).to receive(:params).and_return(

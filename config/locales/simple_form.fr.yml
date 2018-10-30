@@ -5,9 +5,27 @@ fr:
     error_notification:
       default_message: 'Veuillez examiner les problèmes ci-dessous:'
     hints:
+      account:
+        admin_emails: Entrez une adresse e-mail à la fois
+        fcrepo_endpoint:
+          base_path: Le chemin de base de Fedora doit commencer par une barre oblique ET ne pas se terminer par une barre oblique
+          url: Fedora URL ne devrait pas se terminer par une barre oblique
+        name: Nom unique ou un trait d'union utilisé pour les aspects techniques du référentiel (par exemple, "acme" ou "acme-bibliothèque").
       hyku_group:
         description: Un bref résumé du rôle du groupe
+      user:
+        email: Entrez une adresse e-mail à la fois. Vous pouvez également renvoyer une invitation via ce formulaire.
     labels:
+      account:
+        admin_emails: Ajouter ou inviter un nouvel administrateur (par courrier électronique)
+        cname: Locataire CNAME
+        fcrepo_endpoint:
+          base_path: Chemin de base
+          url: URL
+        name: Nom court
+        solr_endpoint:
+          url: URL
+        tenant: UUID du locataire
       add_user_to_group:
         user_ids: Identifiant d'utilisateur
       group_search:
@@ -16,6 +34,9 @@ fr:
         description: La description
       page_size:
         per: Montrer
+      user:
+        display_name: votre nom
+        email: Adresse électronique
       user_search:
         uq: Recherche d'utilisateur
     'no': Non

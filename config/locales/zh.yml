@@ -77,6 +77,8 @@ zh:
       accounts:
         nav: 帐号
     splash:
+      account_denied: 您无权创建租户
+      account_login: 登录即可开始使用
       account_signup: 开始使用
       center_heading: 功能丰富
       center_text: 您所期待的成熟存储库系统的所有功能。支持一系列内容类型和用例。
@@ -106,15 +108,23 @@ zh:
       sidebar:
         accounts: 帐号
         activity_summary: 活动摘要
-        content_blocks: 内容块
         labels: 标签
         manage_groups: 管理组
-        manage_roles_and_permissions: 定义角色和权限
-        manage_users: 管理用户
-        repository_activity: 存储库活动
-        roles_and_permissions: 用户和组
         system_status: 系统状态
-        technical: 技术
+      users:
+        destroy:
+          confirmation: 您确定要删除用户“%{user}”吗？这一行动是不可逆转的。
+          failure: 无法删除用户“%{user}”。
+          success: 用户“%{user}”已成功删除。
+        index:
+          action_label: 行动
+          add: 邀请用户
+          delete: 删除
+          invite_users: 通过电子邮件添加或邀请用户
+          status:
+            active: 活性
+            pending: 有待
+          status_label: 状态
   proprietor:
     accounts:
       edit:

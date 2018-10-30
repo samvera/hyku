@@ -32,7 +32,7 @@ RSpec.configure do |config|
       Rails.application.reload_routes!
     elsif example.metadata[:faketenant] || example.metadata[:type] == :controller
       example.metadata[:faketenant] = true if example.metadata[:type] == :controller # flag for cleanup later
-      acct = FactoryGirl.build(:account, tenant: 'FakeTenant', cname: 'tenant1')
+      acct = FactoryBot.build(:account, tenant: 'FakeTenant', cname: 'tenant1')
       allow(acct).to receive(:persisted?).and_return true # nevertheless
       allow(Account).to receive(:from_request).and_return(acct)
     end

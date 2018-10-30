@@ -5,9 +5,27 @@ de:
     error_notification:
       default_message: 'Bitte überprüfen Sie die folgenden Probleme:'
     hints:
+      account:
+        admin_emails: Geben Sie jeweils eine E-Mail-Adresse ein
+        fcrepo_endpoint:
+          base_path: Fedora-Basispfad sollte mit einem Schrägstrich beginnen und nicht mit einem Schrägstrich enden
+          url: Fedora-URL sollte nicht mit einem Schrägstrich enden
+        name: Ein einzelner oder mit Bindestrich versehener Name, der für technische Aspekte des Repositorys verwendet wird (z. B. "acme" oder "acme-library").
       hyku_group:
         description: Eine kurze Zusammenfassung der Rolle der Gruppe
+      user:
+        email: Geben Sie jeweils eine E-Mail-Adresse ein. Sie können eine Einladung auch über dieses Formular erneut senden.
     labels:
+      account:
+        admin_emails: Neuen Administrator hinzufügen oder einladen (per E-Mail)
+        cname: Mandanten CNAME
+        fcrepo_endpoint:
+          base_path: Basispfad
+          url: URL
+        name: Kurzer Name
+        solr_endpoint:
+          url: URL
+        tenant: Mandanten UUID
       add_user_to_group:
         user_ids: Benutzeridentifikation
       group_search:
@@ -16,6 +34,9 @@ de:
         description: Beschreibung
       page_size:
         per: Show
+      user:
+        display_name: Dein Name
+        email: E-Mail-Addresse
       user_search:
         uq: Suche nach Benutzer
     'no': Nein

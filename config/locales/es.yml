@@ -77,6 +77,8 @@ es:
       accounts:
         nav: Cuentas
     splash:
+      account_denied: No estás autorizado para crear inquilinos.
+      account_login: Inicia sesión para comenzar
       account_signup: Empezar
       center_heading: Rico en funciones
       center_text: Todas las características que usted esperaría de un sistema de repositorio maduro. Soporta una variedad de tipos de contenido y casos de uso.
@@ -106,15 +108,23 @@ es:
       sidebar:
         accounts: Cuentas
         activity_summary: Resumen de la actividad
-        content_blocks: Bloques de contenido
         labels: Etiquetas
-        manage_groups: Administrar grupos
-        manage_roles_and_permissions: Defina roles y permisos
-        manage_users: Administrar usuarios
-        repository_activity: Actividad de repositorio
-        roles_and_permissions: Usarios y grupos
+        manage_groups: Administrar Grupos
         system_status: Estado del sistema
-        technical: Técnico
+      users:
+        destroy:
+          confirmation: ¿Estás seguro de que deseas eliminar el usuario "%{user}"? Esta acción es irreversible.
+          failure: El usuario "%{user}" no pudo ser eliminado.
+          success: El usuario "%{user}" ha sido eliminado exitosamente.
+        index:
+          action_label: Acción
+          add: Invitar al usuario
+          delete: Borrar
+          invite_users: Agregar o invitar al usuario por correo electrónico
+          status:
+            active: Activo
+            pending: Pendiente
+          status_label: Estado
   proprietor:
     accounts:
       edit:

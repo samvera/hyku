@@ -1,5 +1,4 @@
 module Importer
-  # rubocop:disable Metrics/ClassLength
   class CSVParser
     include Enumerable
 

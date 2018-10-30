@@ -3,21 +3,21 @@ de:
   activerecord:
     attributes:
       site:
-        institution_name_full: Name der vollständigen Institution
+        institution_name_full: Vollständiger Name der Institution
   application:
-    tagline: Die nächste Generation der Repository-Lösung
+    tagline: Die Next-Generation Repository-Lösung
   helpers:
     submit:
       add_user_to_group:
         submit: Hinzufügen
       group_search:
-        submit: Gehen
+        submit: Suche
       page_size:
         submit: Aktualisieren
       revoke_membership:
         submit: Entfernen
       user_search:
-        submit: Gehen
+        submit: Suche
   hyku:
     account:
       signup_disabled: Kontoanmeldung ist deaktiviert
@@ -33,7 +33,7 @@ de:
           per_page: Aktualisieren
           remove:
             confirmation: Sind Sie sicher, dass Sie diese Gruppe entfernen möchten?
-            description: Diese Handlung ist irreversibel. Es werden alle Berechtigungen entfernt. Gruppenmitglieder wurden über diese Gruppe vergeben.
+            description: Diese Aktion lässt sich nicht rückgängig machen. Es werden alle Berechtigungen entfernt. Gruppenmitglieder wurden über diese Gruppe vergeben.
             submit: Entfernen
           search:
             clear: Zurücksetzen
@@ -45,14 +45,14 @@ de:
             invalid: Gruppen müssen einen Namen haben
             success: "%{group} erstellt"
           destroy:
-            failure: "%{group} konnte nicht zerstört werden"
-            success: "%{group} zerstört"
+            failure: "%{group} konnte nicht entfernt werden"
+            success: "%{group} entfernt"
           update:
             failure: "%{group} konnte nicht aktualisiert werden"
             success: "%{group} aktualisiert"
         label:
           actions: Aktionen
-          created_at: Datum erstellt
+          created_at: Erstellungsdatum
           members: Benutzer
           name: Name
           per_page: pro Seite
@@ -72,25 +72,26 @@ de:
           remove: Gruppe entfernen
       title: Verwaltung
     footer:
-      admin_login: Administrator anmelden
+      admin_login: Administratorenlogin
     proprietor:
       accounts:
         nav: Konten
     splash:
+      account_denied: Sie sind nicht berechtigt, Mandanten zu erstellen
+      account_login: Einloggen um loszulegen
       account_signup: Sich aufmachen
       center_heading: Feature-Rich
-      center_text: Alle Features, die Sie von einem reifen Repository-System erwarten würden. Unterstützt eine Reihe von Inhaltstypen und Anwendungsfälle.
+      center_text: Alle Features, die Sie von einem ausgewachsenen Repository-System erwarten würden. Unterstützt eine Reihe von Inhaltstypen und Anwendungsfälle.
       left_heading: Einfach
-      left_text: Arbeiten für Institutionen, die groß und klein sind, von Museen bis hin zu Universitätsbibliotheken. Beginne in Minuten.
+      left_text: Arbeiten für Institutionen, die groß und klein sind, von Museen bis hin zu Universitätsbibliotheken. Starten Sie in Minuten.
       right_heading: Flexibel
-      right_text: Passen Sie die Benutzeroberfläche an, um die Markenidentität Ihrer Institution zu erfüllen. Maßgeschneiderte Arbeitsabläufe passen zu, wie Ihre Mitarbeiter gerne arbeiten.
-    tagline: Die nächste Generation der Repository-Lösung
+      right_text: Passen Sie die Benutzeroberfläche an, um das Corporate-Design Ihrer Institution zu erfüllen. Maßgeschneiderte Arbeitsabläufe passen zu, wie Ihre Mitarbeiter gerne arbeiten.
     toolbar:
       profile:
         edit_registration: Passwort ändern
     users:
       label:
-        date_joined: Beigetreten
+        date_joined: Registriert seit
         last_login: Letzter Zugriff
         name: Name
         user_key: Benutzername
@@ -99,7 +100,7 @@ de:
       appearances:
         show:
           hints:
-            banner_image: Um ein Bild als Masthead-Hintergrund zu verwenden, solltest du ein Bild (JPG, GIF oder PNG) verwenden, das mindestens 120 Pixel hoch und 1200 Pixel breit ist. Für beste Ergebnisse verwenden Sie ein Bild mindestens 1800 Pixel breit.
+            banner_image: Um ein Bild als Überschriften-Hintergrund zu verwenden, solltest du ein Bild (JPG, GIF oder PNG) verwenden, das mindestens 120 Pixel hoch und 1200 Pixel breit ist. Für beste Ergebnisse verwenden Sie ein Bild mindestens 1800 Pixel breit.
           tabs:
             banner_image: Banner Bild
             colors: Farben
@@ -108,13 +109,26 @@ de:
         activity_summary: Aktivitätsübersicht
         content_blocks: Inhaltsblöcke
         labels: Etiketten
-        manage_groups: Gruppen verwalten
-        manage_roles_and_permissions: Rollen und Berechtigungen definieren
+        manage_groups: Gruppen Verwalten
+        manage_roles_and_permissions: Rollen und Berechtigungen festlegen
         manage_users: Benutzer verwalten
         repository_activity: Repository-Aktivität
         roles_and_permissions: Benutzer und Gruppen
         system_status: Systemstatus
-        technical: Technisch
+      users:
+        destroy:
+          confirmation: Möchten Sie den Benutzer "%{user}" wirklich löschen? Diese Aktion lässt sich nicht rückgängig machen.
+          failure: Benutzer "%{user}" konnte nicht gelöscht werden.
+          success: Der Benutzer "%{user}" wurde erfolgreich gelöscht.
+        index:
+          action_label: Aktion
+          add: Nutzer einladen
+          delete: Löschen
+          invite_users: Benutzer hinzufügen oder via Email einladen
+          status:
+            active: Aktiv
+            pending: noch ausstehend
+          status_label: Status
   proprietor:
     accounts:
       edit:
@@ -127,9 +141,9 @@ de:
         create_new: Neuen Account erstellen
         header: Konten
         manage: Verwalten
-        tenant: Mieter (UUID)
+        tenant: Mandant (UUID)
       new:
-        header: Erstellen Sie ein neues Repository
+        header: Erstellen Sie ein neues Repositorium
       show:
         add: Hinzufügen
         current_admins:
@@ -142,7 +156,7 @@ de:
         remove: Entfernen
   status:
     index:
-      services: Dienstleistungen
+      services: Dienste
     service:
-      down: Unten
+      down: Down
       ok: OK

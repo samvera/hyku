@@ -7,7 +7,7 @@ RSpec.describe ActiveJobTenant do
     end
   end
 
-  let(:account) { FactoryGirl.build(:account) }
+  let(:account) { FactoryBot.build(:account) }
 
   subject do
     Class.new(ActiveJob::Base) do

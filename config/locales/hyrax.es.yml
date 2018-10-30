@@ -1,18 +1,19 @@
+---
 es:
   hyrax:
-    product_name:           "Hyku"
-    product_twitter_handle: "@HydraInABox"
-    institution_name:       "Institución"
-    institution_name_full:  "El nombre de la institución"
-    account_name:           "Mi identificador de cuenta institucional"
+    account_name: Mi identificador de cuenta institucional
     directory:
-      suffix:               "@hydrainabox.org"
+      suffix: "@hydrainabox.org"
     footer:
       copyright_html: "<strong>Copyright &copy; 2017 Samvera</strong> bajo licencia de Apache, Version 2.0"
       service_html: Un servicio de <a href="http://samvera.org/" class="navbar-link" target="_blank">Samvera</a>.
+    institution_name: Institución
+    institution_name_full: El nombre de la institución
+    product_name: Hyku
+    product_twitter_handle: "@HydraInABox"
   simple_form:
     hints:
       defaults:
-        extent: "La extensión (tamaño, duración, número, etc.) de la obra."
+        extent: La extensión (tamaño, duración, número, etc.) de la obra.
       labels:
-        extent: "Extensión"
+        extent: Extensión

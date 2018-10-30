@@ -1,5 +1,6 @@
 RSpec.describe Hyrax::Admin::AppearancesController, type: :controller, singletenant: true do
   before { sign_in user }
+
   routes { Hyrax::Engine.routes }
 
   context 'with an unprivileged user' do

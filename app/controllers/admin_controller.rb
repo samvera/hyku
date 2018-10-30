@@ -1,7 +1,7 @@
 # TODO: move to hyrax?
 class AdminController < ApplicationController
   before_action :ensure_admin!
-  layout 'dashboard'
+  layout 'hyrax/dashboard'
 
   private
 

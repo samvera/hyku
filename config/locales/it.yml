@@ -77,6 +77,8 @@ it:
       accounts:
         nav: conti
     splash:
+      account_denied: Non sei autorizzato a creare inquilini
+      account_login: Accedi per iniziare
       account_signup: Iniziare
       center_heading: Ricco di funzioni
       center_text: Tutte le caratteristiche che ti aspetteresti da un sistema di archiviazione maturo. Supporta una gamma di tipi di contenuto e casi di utilizzo.
@@ -106,15 +108,23 @@ it:
       sidebar:
         accounts: conti
         activity_summary: Riepilogo attività
-        content_blocks: Blocchi di contenuti
         labels: etichette
         manage_groups: Gestisci gruppi
-        manage_roles_and_permissions: Definire ruoli e autorizzazioni
-        manage_users: Gestire gli utenti
-        repository_activity: Attività di repository
-        roles_and_permissions: Utenti e gruppi
         system_status: Stato del sistema
-        technical: Tecnico
+      users:
+        destroy:
+          confirmation: Sei sicuro di voler cancellare l'utente "%{user}"? Questa azione è irreversibile.
+          failure: L'utente "%{user}" non può essere cancellato.
+          success: L'utente "%{user}" è stato cancellato con successo.
+        index:
+          action_label: Azione
+          add: Invita utente
+          delete: Elimina
+          invite_users: Aggiungi o invita l'utente via email
+          status:
+            active: Attivo
+            pending: in attesa di
+          status_label: Stato
   proprietor:
     accounts:
       edit:

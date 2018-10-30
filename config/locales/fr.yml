@@ -77,6 +77,8 @@ fr:
       accounts:
         nav: Comptes
     splash:
+      account_denied: Vous n'êtes pas autorisé à créer des locataires
+      account_login: Connectez-vous pour commencer
       account_signup: Commencer
       center_heading: Riche en fonctionnalités
       center_text: Toutes les fonctionnalités que vous attendez d'un système de dépôt mature. Prend en charge une gamme de types de contenu et de cas d'utilisation.
@@ -115,6 +117,20 @@ fr:
         roles_and_permissions: Utilisateurs et groupes
         system_status: État du système
         technical: Technique
+      users:
+        destroy:
+          confirmation: Voulez-vous vraiment supprimer l'utilisateur "%{user}"? Cette action est irréversible.
+          failure: L'utilisateur "%{user}" n'a pas pu être supprimé.
+          success: L'utilisateur "%{user}" a été supprimé avec succès.
+        index:
+          action_label: action
+          add: Inviter un utilisateur
+          delete: Effacer
+          invite_users: Ajouter ou inviter un utilisateur par courrier électronique
+          status:
+            active: actif
+            pending: en attendant
+          status_label: Statut
   proprietor:
     accounts:
       edit:

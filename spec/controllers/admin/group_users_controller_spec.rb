@@ -1,5 +1,5 @@
 RSpec.describe Admin::GroupUsersController, faketenant: true do
-  let(:group) { FactoryGirl.create(:group) }
+  let(:group) { FactoryBot.create(:group) }
 
   context 'as an anonymous user' do
     describe 'GET #index' do
@@ -15,12 +15,12 @@ RSpec.describe Admin::GroupUsersController, faketenant: true do
     describe 'GET #index' do
       subject { get :index, params: { group_id: group.id } }
 
-      it { is_expected.to render_template('layouts/dashboard') }
+      it { is_expected.to render_template('layouts/hyrax/dashboard') }
       it { is_expected.to render_template('admin/groups/users') }
     end
 
     context 'modifying group membership' do
-      let(:user) { FactoryGirl.create(:user) }
+      let(:user) { FactoryBot.create(:user) }
 
       describe 'POST #add' do
         it 'adds a user to a group when it recieves a group ID' do

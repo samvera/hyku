@@ -56,9 +56,11 @@ RSpec.describe NilSite do
 
       it { is_expected.to be_empty }
     end
+
     context "set a value" do
-      before { instance.admin_emails = "test@test.org" }
       subject { instance.admin_emails }
+
+      before { instance.admin_emails = "test@test.org" }
 
       it { is_expected.to be_empty }
     end

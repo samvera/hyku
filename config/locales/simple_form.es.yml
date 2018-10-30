@@ -1,43 +1,49 @@
+---
 es:
   simple_form:
-    "yes": 'Sí'
-    "no": 'No'
-    cancel: 'Cancelar'
-    required:
-      text: 'obligatorio'
-      mark: '*'
+    cancel: Cancelar
     error_notification:
-      default_message: "Repase los problemas abajo, por favor:"
-    labels:
-      account:
-        name: 'Nombre corto'
-        tenant: 'Inquilino UUID'
-        cname: 'Inquilino CNAME'
-        solr_endpoint:
-          url: 'URL'
-        fcrepo_endpoint:
-          url: 'URL'
-          base_path: 'Ruta base'
-        admin_emails: 'Agregar o invitar al nuevo administrador (por correo electrónico)'
-      hyku_group:
-        description: 'Descripción'
-      group_search:
-        q: 'Buscar'
-      user_search:
-        uq: 'Buscar usuario'
-      add_user_to_group:
-        user_ids: 'Identidad de usuario'
-      page_size:
-        per: 'Mostrar'
+      default_message: 'Repase los problemas abajo, por favor:'
     hints:
       account:
-        name: 'Un nombre único o con guión utilizado para los aspectos técnicos del repositorio (por ejemplo, "acme" o "acme-library").'
+        admin_emails: Introduce una dirección de correo electrónico a la vez
         fcrepo_endpoint:
-          url: 'La URL de Fedora no debe terminar con una barra'
-          base_path: 'Fedora base ruta debe comenzar con una barra y no terminar con una barra'
-        admin_emails: 'Introduce una dirección de correo electrónico a la vez'
+          base_path: Fedora base ruta debe comenzar con una barra y no terminar con una barra
+          url: La URL de Fedora no debe terminar con una barra
+        name: Un nombre único o con guión utilizado para los aspectos técnicos del repositorio (por ejemplo, "acme" o "acme-library").
       hyku_group:
-        description: 'Un breve resumen de la función del grupo'
+        description: Un breve resumen de la función del grupo
+      user:
+        email: Introduzca una dirección de correo electrónico a la vez. También puede reenviar una invitación a través de este formulario.
+    labels:
+      account:
+        admin_emails: Agregar o invitar al nuevo administrador (por correo electrónico)
+        cname: Inquilino CNAME
+        fcrepo_endpoint:
+          base_path: Ruta base
+          url: URL
+        name: Nombre corto
+        solr_endpoint:
+          url: URL
+        tenant: Inquilino UUID
+      add_user_to_group:
+        user_ids: Identidad de usuario
+      group_search:
+        q: Buscar
+      hyku_group:
+        description: Descripción
+      page_size:
+        per: Mostrar
+      user:
+        display_name: Tu nombre
+        email: Dirección de correo electrónico
+      user_search:
+        uq: Buscar usuario
+    'no': 'No'
     placeholders:
       user_search:
-        uq: 'Nombre o nombre de usuario'
+        uq: Nombre o nombre de usuario
+    required:
+      mark: "*"
+      text: obligatorio
+    'yes': Sí

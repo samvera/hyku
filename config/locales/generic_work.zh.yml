@@ -1,8 +1,9 @@
+---
 zh:
   hyrax:
     icons:
-      generic_work:     'fa fa-file-text-o'
+      generic_work: fa fa-file-text-o
     select_type:
       generic_work:
-        name:               "通用工作"
-        description:        "通用工作类型。 如果下面的更具体的工作类型不适合您要添加的工作，请选择此项。"
+        description: 通用工作类型。 如果下面的更具体的工作类型不适合您要添加的工作，请选择此项。
+        name: 通用工作

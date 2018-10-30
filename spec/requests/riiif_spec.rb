@@ -7,6 +7,7 @@ RSpec.describe 'IIIF image API', type: :request, singletenant: true do
                                         fixture_file('images/world.png'),
                                         :original_file)
   end
+
   let(:file) { file_set.original_file }
   let(:size) { '300,' }
 

@@ -39,5 +39,14 @@ RSpec.describe IIIFWorkThumbnailPathService do
 
       it { is_expected.to eq '/downloads/s1784k724?file=thumbnail' }
     end
+
+    context "with an unsupported mime type" do
+      let(:file) do
+        double(id: 's1/78/4k/72/s1784k724/files/6185235a-79b2-4c29-8c24-4d6ad9b11470',
+               mime_type: 'text/example')
+      end
+
+      it { is_expected.to match %r{^\/assets\/work-\w+\.png$} }
+    end
   end
 end

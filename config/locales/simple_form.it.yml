@@ -5,9 +5,27 @@ it:
     error_notification:
       default_message: 'Leggi i seguenti problemi:'
     hints:
+      account:
+        admin_emails: Inserisci un indirizzo email alla volta
+        fcrepo_endpoint:
+          base_path: Il percorso base di Fedora dovrebbe iniziare con una barra E non finire con una barra
+          url: L'URL di Fedora non dovrebbe terminare con una barra
+        name: Un nome singolo o sillabato utilizzato per gli aspetti tecnici del repository (ad es. "Acme" o "acme-library").
       hyku_group:
         description: Un breve riepilogo del ruolo del gruppo
+      user:
+        email: Inserisci un indirizzo email alla volta. Puoi anche inviare nuovamente un invito tramite questo modulo.
     labels:
+      account:
+        admin_emails: Aggiungi o invita un nuovo amministratore (via email)
+        cname: Locatario CNAME
+        fcrepo_endpoint:
+          base_path: Percorso di base
+          url: URL
+        name: Nome corto
+        solr_endpoint:
+          url: URL
+        tenant: UUID tenant
       add_user_to_group:
         user_ids: ID utente
       group_search:
@@ -16,6 +34,9 @@ it:
         description: Descrizione
       page_size:
         per: Mostrare
+      user:
+        display_name: Il tuo nome
+        email: Indirizzo email
       user_search:
         uq: Cerca Utente
     'no': 'No'

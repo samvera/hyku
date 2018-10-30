@@ -1,5 +1,5 @@
 RSpec.describe CreateAccount do
-  let(:account) { FactoryGirl.build(:sign_up_account) }
+  let(:account) { FactoryBot.build(:sign_up_account) }
 
   subject { described_class.new(account) }
 
@@ -36,6 +36,7 @@ RSpec.describe CreateAccount do
       allow(account1).to receive(:create_external_resources).and_return true
       allow(account2).to receive(:create_external_resources).and_return true
     end
+
     it 'prevents duplicate accounts' do
       expect(account1.save).to be true
       expect(account2.save).to be false

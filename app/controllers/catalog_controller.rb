@@ -1,6 +1,7 @@
 class CatalogController < ApplicationController
   include Hydra::Catalog
   include Hydra::Controller::ControllerBehavior
+  include BlacklightOaiProvider::Controller
 
   # These before_action filters apply the hydra access controls
   before_action :enforce_show_permissions, only: :show
@@ -336,6 +337,21 @@ class CatalogController < ApplicationController
     config.add_sort_field "#{modified_field} desc", label: "date modified \u25BC"
     config.add_sort_field "#{modified_field} asc", label: "date modified \u25B2"
 
+    config.oai = {
+      provider: {
+        repository_name: ->(current_account) {current_account.name.humanize},
+        repository_url: ->(current_account) {"http://#{current_account.cname}/catalog/oai"},
+        record_prefix:  ->(current_account) {"oai:#{current_account.name}"},
+        admin_email: ->(current_account) {current_account.admin_emails.first },
+        sample_id: '109660'
+      },
+      document: {
+        limit: 25,            # number of records returned with each request, default: 15
+        set_fields: [        # ability to define ListSets, optional, default: nil
+          { label: 'language', solr_field: 'language_facet' }
+        ]
+      }
+    }
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
     config.spell_max = 5
@@ -346,4 +362,13 @@ class CatalogController < ApplicationController
     _, @document = fetch params[:id]
     render json: @document.to_h
   end
+
+  def oai_config
+    blacklight_config.oai || {}
+    blacklight_config.oai[:provider].each do |k, v|
+      blacklight_config.oai[:provider][k] = v.call(current_account) if v.respond_to?(:call)
+    end
+    blacklight_config
+  end
+
 end

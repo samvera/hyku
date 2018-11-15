@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  concern :oai_provider, BlacklightOaiProvider::Routes.new
 
   if Settings.multitenancy.enabled
     constraints host: Account.admin_host do
@@ -41,6 +42,8 @@ Rails.application.routes.draw do
   end
 
   resource :catalog, only: [:index], as: 'catalog', path: '/catalog', controller: 'catalog' do
+    concerns :oai_provider
+
     concerns :searchable
   end
 

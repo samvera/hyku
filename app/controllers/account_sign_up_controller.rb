@@ -13,7 +13,7 @@ class AccountSignUpController < ProprietorController
   # POST /account/sign_up.json
   def create
     respond_to do |format|
-      if CreateAccount.new(@account).save
+      if CreateAccount.new(@account, current_user).save
         format.html { redirect_to first_user_registration_url, notice: 'Account was successfully created.' }
         format.json { render :show, status: :created, location: @account.cname }
       else

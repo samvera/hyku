@@ -22,7 +22,6 @@ class ApplicationController < ActionController::Base
   before_action :set_account_specific_connections!
   skip_after_action :discard_flash_if_xhr
 
-  before_action :add_honeybadger_context
 
   rescue_from Apartment::TenantNotFound do
     raise ActionController::RoutingError, 'Not Found'

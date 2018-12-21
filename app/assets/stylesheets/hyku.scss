@@ -1,6 +1,9 @@
 #masthead {
   #logo {
     margin-left: 10px;
+    img {
+      max-height: 50px;
+    }
   }
 
   .navbar-right {

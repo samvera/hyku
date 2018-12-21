@@ -4,39 +4,18 @@
   <div class="container">
     <h1><%= application_name %></h1>
     <p><%= t('application.tagline') %></p>
-    <p>
-      <% if !Settings.multitenancy.admin_only_tenant_creation || can?(:manage, Account) %>
-        <%= link_to t('hyku.splash.account_signup'), account_sign_up_path, class: 'btn btn-lg btn-sign-up' %>
-      <% elsif !user_signed_in? %>
-        <%= link_to t('hyku.splash.account_login'), main_app.new_user_session_path, class: 'btn btn-lg btn-sign-up' %>
-      <% else %>
-        <%= t('hyku.splash.account_denied') %>
-      <% end %>
-    </p>
   </div>
 </section>
 
 <section class="product-features">
-  <div class="row grid-row">
-    <div class="col-xs-12 col-sm-4 grid-item">
-      <h2 class="heading"><%= t('hyku.splash.left_heading') %></h2>
-      <p>
-          <%= t('hyku.splash.left_text') %>
-      </p>
-    </div>
-
-    <div class="col-xs-12 col-sm-4 grid-item">
-      <h2 class="heading"><%= t('hyku.splash.center_heading') %></h2>
-      <p>
-          <%= t('hyku.splash.center_text') %>
-      </p>
-    </div>
-
-    <div class="col-xs-12 col-sm-4 grid-item">
-      <h2 class="heading"><%= t('hyku.splash.right_heading') %></h2>
-      <p>
-          <%= t('hyku.splash.right_text') %>
-      </p>
-    </div>
+  <div class="row grid-row accounts-row">
+    <% @accounts.each_with_index do |account, i| %>
+      <div class="col-xs-12 col-sm-4 grid-item">
+        <div class='logo-set'>
+          <%= image_tag @images[i], class: 'img-responsive img-thumbnail' %>
+        </div>
+        <h2 class="heading"><%= link_to account.cname, "https://#{account.cname}" %></h2>
+      </div>
+    <% end %>
   </div>
 </section>

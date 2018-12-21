@@ -928,7 +928,7 @@ DEPENDENCIES
   factory_bot_rails
   fcrepo_wrapper (~> 0.4)
   flipflop (~> 2.3)
-  hyrax (= 2.1.0)
+  hyrax (~> 2.3.0)
   i18n-debug
   i18n-tasks
   iiif_manifest (~> 0.5.0)

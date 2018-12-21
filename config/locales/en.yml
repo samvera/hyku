@@ -152,8 +152,6 @@ en:
           email: Email address
           actions: Action
           no_admins: No administrators exist
-      new:
-        header: 'Create a new repository'
         edit: Edit Account
         header: Manage Account
         remove: Remove
@@ -163,4 +161,3 @@ en:
     service:
       down: Down
       ok: OK
->>>>>>> origin

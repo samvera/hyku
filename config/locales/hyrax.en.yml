@@ -1091,6 +1091,7 @@ en:
         creator: The person or group responsible for the work. Usually this is the author of the content. Personal names should be entered with the last name first, e.g. &quot;Smith, John.&quot;.
         date_created: The date on which the work was created.
         description: Free-text notes about the work. Examples include abstracts of a paper or citation information for a journal article.
+        extent: The extent (size, duration, number, etc.) of the work.
         identifier: A unique handle identifying the work. An example would be a DOI for a journal article, or an ISBN or OCLC number for a book.
         keyword: Words or phrases you select to describe what the work is about. These are used to search for content.
         language: The language of the work's content.

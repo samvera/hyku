@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   with_themed_layout '1_column'
 
   helper_method :peek_enabled?, :current_account, :admin_host?
-
+  before_action :set_raven_context
   before_action :require_active_account!, if: :multitenant?
   before_action :set_account_specific_connections!
   skip_after_action :discard_flash_if_xhr
@@ -29,6 +29,10 @@ class ApplicationController < ActionController::Base
   end
 
   private
+    def set_raven_context
+      Raven.user_context(id: session[:current_user_id]) # or anything else in session
+      Raven.extra_context(params: params.to_unsafe_h, url: request.url)
+    end
 
     def peek_enabled?
       can? :peek, Hyku::Application
@@ -66,10 +70,6 @@ class ApplicationController < ActionController::Base
       payload[:request_id] = request.uuid
       payload[:user_id] = current_user.id if current_user
       payload[:account_id] = current_account.cname if current_account
-    end
-
-    def add_honeybadger_context
-      Honeybadger.context(user_email: current_user.email) if current_user
     end
 
     def ssl_configured?

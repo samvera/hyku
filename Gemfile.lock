@@ -299,7 +299,6 @@ GEM
     hashdiff (0.3.4)
     highline (1.7.8)
     hiredis (0.6.1)
-    honeybadger (3.1.2)
     htmlentities (4.3.4)
     httmultiparty (0.3.16)
       httparty (>= 0.7.3)
@@ -790,6 +789,8 @@ GEM
     selenium-webdriver (3.4.2)
       childprocess (~> 0.5)
       rubyzip (~> 1.0)
+    sentry-raven (2.7.4)
+      faraday (>= 0.7.6, < 1.0)
     shex (0.5.2)
       ebnf (~> 1.1)
       json-ld (>= 2.2, < 4.0)
@@ -934,7 +935,6 @@ DEPENDENCIES
   factory_girl_rails
   fcrepo_wrapper (~> 0.4)
   flipflop (~> 2.3)
-  honeybadger (~> 3.0)
   hyrax (= 2.1.0)
   i18n-debug
   i18n-tasks
@@ -968,6 +968,7 @@ DEPENDENCIES
   scss_lint
   secure_headers
   selenium-webdriver
+  sentry-raven
   sidekiq
   simplecov
   solr_wrapper (~> 2.0)

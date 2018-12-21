@@ -203,3 +203,11 @@ footer.navbar {
     color: $brand-danger;
   }
 }
+
+.logo-set {
+  min-height: 320px;
+  img {
+    vertical-align: middle;
+    display: inline;
+  }
+}

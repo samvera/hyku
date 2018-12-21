@@ -19,7 +19,7 @@ module Hyrax
         send_local_content
       else
         if params[:file] == "thumbnail"
-	  redirect_to default_image
+	        redirect_to default_image
         else
           raise ActiveFedora::ObjectNotFoundError
         end

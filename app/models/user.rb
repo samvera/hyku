@@ -52,9 +52,7 @@ class User < ApplicationRecord
     []
   end
 
-  private
-
-    def add_default_roles
-      add_role :admin, Site.instance unless self.class.any? || Account.global_tenant?
-    end
+  def add_default_roles
+    add_role :admin, Site.instance unless self.class.joins(:roles).where("roles.name = ?", "admin").any? || Account.global_tenant?
+  end
 end

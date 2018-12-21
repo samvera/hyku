@@ -1,11 +1,12 @@
 # Initialize and configure external dependencies for an Account
 class CreateAccount
-  attr_reader :account
+  attr_reader :account, :user
 
   ##
   # @param [Account]
-  def initialize(account)
+  def initialize(account, user=nil)
     @account = account
+    @user = user
   end
 
   # @return [Boolean] true if save and jobs spawning were successful
@@ -28,6 +29,9 @@ class CreateAccount
       initialize_account_data
       account.switch do
         AdminSet.find_or_create_default_admin_set_id
+        if user.present?
+          user.add_default_roles
+        end
       end
     end
   end

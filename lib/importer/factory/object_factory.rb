@@ -34,7 +34,11 @@ module Importer
       end
 
       def create_attributes
-        { collection_type: collection_type }.merge(transform_attributes)
+        if klass == Collection
+          { collection_type: collection_type }.merge(transform_attributes)
+        else
+          transform_attributes
+        end
       end
 
       def update_attributes

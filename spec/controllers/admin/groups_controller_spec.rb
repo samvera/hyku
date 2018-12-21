@@ -26,14 +26,14 @@ RSpec.describe Admin::GroupsController, singletenant: true do
     describe 'POST #create' do
       it 'creates a group when it recieves valid attribtes' do
         expect do
-          post :create, params: { hyku_group: FactoryGirl.attributes_for(:group) }
+          post :create, params: { hyku_group: FactoryBot.attributes_for(:group) }
         end.to change(Hyku::Group, :count).by(1)
       end
     end
 
     context 'with an existing group' do
-      let(:group) { FactoryGirl.create(:group) }
-      let(:new_attributes) { FactoryGirl.attributes_for(:group) }
+      let(:group) { FactoryBot.create(:group) }
+      let(:new_attributes) { FactoryBot.attributes_for(:group) }
 
       describe 'GET #edit' do
         subject { get :edit, params: { id: group.id } }
@@ -62,6 +62,7 @@ RSpec.describe Admin::GroupsController, singletenant: true do
         subject { Hyku::Group.find_by(id: group.id) }
 
         before { delete :destroy, params: { id: group.id } }
+
         it { is_expected.to be_nil }
       end
     end

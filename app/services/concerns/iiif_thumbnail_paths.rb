@@ -22,8 +22,13 @@ module IIIFThumbnailPaths
       )
     end
 
-    def thumbnail?(_thumbnail)
-      true
+    # @param [FileSet] thumbnail the object that is the thumbnail
+    # @return [boolean] true when a thumbnail (either generated or a common asset)
+    #                   is expected to be available on the file system
+    def thumbnail?(thumbnail)
+      return true if thumbnail.image? || thumbnail.pdf? || thumbnail.office_document? ||
+                     thumbnail.audio? || thumbnail.video?
+      super(thumbnail)
     end
   end
 end

@@ -1,8 +1,8 @@
 RSpec.describe 'admin/groups/users', type: :view do
   context 'groups index page' do
-    let(:group) { FactoryGirl.create(:group) }
-    let(:user_1) { FactoryGirl.create(:user) }
-    let(:user_2) { FactoryGirl.create(:user) }
+    let(:group) { FactoryBot.create(:group) }
+    let(:user_1) { FactoryBot.create(:user) }
+    let(:user_2) { FactoryBot.create(:user) }
     let(:users) { double('users') }
     let(:path_parameters) do
       {

@@ -1,13 +1,13 @@
-FactoryGirl.define do
+FactoryBot.define do
   # TODO: swap this out for hyrax's collection_lw
   factory :collection do
     transient do
       user { create(:user) }
       # allow defaulting to default user collection
-      collection_type_settings nil
-      with_permission_template false
-      create_access false
-      with_nesting_attributes nil
+      collection_type_settings { nil }
+      with_permission_template { false }
+      create_access { false }
+      with_nesting_attributes { nil }
     end
     sequence(:title) { |n| ["Collection Title #{n}"] }
 

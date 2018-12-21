@@ -1,8 +1,9 @@
+---
 it:
   hyrax:
     icons:
-      generic_work:     'fa fa-file-text-o'
+      generic_work: fa fa-file-text-o
     select_type:
       generic_work:
-        name:               "Opere Generiche"
-        description:        "Tipo di opere di tipo generale. Selezionare questa opzione se i tipi di opere più specifici di seguito non sono adatti al opere che si desidera aggiungere."
+        description: Tipo di opere di tipo generale. Selezionare questa opzione se i tipi di opere più specifici di seguito non sono adatti al opere che si desidera aggiungere.
+        name: Opere Generiche

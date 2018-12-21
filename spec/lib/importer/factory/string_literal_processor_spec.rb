@@ -12,8 +12,8 @@ RSpec.describe Importer::Factory::StringLiteralProcessor do
     let(:name) { ["Muybridge"] }
 
     it do
-      is_expected.to eq(title: ["Stanford residences"],
-                        contributor: ['Muybridge'])
+      expect(subject).to eq(title: ["Stanford residences"],
+                            contributor: ['Muybridge'])
     end
   end
 
@@ -21,8 +21,8 @@ RSpec.describe Importer::Factory::StringLiteralProcessor do
     let(:name) { ["Stanford University", "Archives."] }
 
     it do
-      is_expected.to eq(title: ["Stanford residences"],
-                        contributor: ['Stanford University — Archives.'])
+      expect(subject).to eq(title: ["Stanford residences"],
+                            contributor: ['Stanford University — Archives.'])
     end
   end
 
@@ -31,6 +31,6 @@ RSpec.describe Importer::Factory::StringLiteralProcessor do
       { title: ["Stanford residences"] }
     end
 
-    it { is_expected.to eq(title: ["Stanford residences"]) }
+    it { expect(subject).to eq(title: ["Stanford residences"]) }
   end
 end

@@ -1,8 +1,9 @@
+---
 pt-BR:
   hyrax:
     icons:
-      generic_work:     'fa fa-file-text-o'
+      generic_work: fa fa-file-text-o
     select_type:
       generic_work:
-        name:               "Trabalho Genérico"
-        description:        "Tipo de trabalho de propósito geral. Selecione isso se os tipos de trabalho mais específicos abaixo não forem adequados ao trabalho que deseja adicionar."
+        description: Tipo de trabalho de propósito geral. Selecione isso se os tipos de trabalho mais específicos abaixo não forem adequados ao trabalho que deseja adicionar.
+        name: Trabalho Genérico

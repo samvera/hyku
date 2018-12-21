@@ -1,68 +1,49 @@
+---
 en:
   simple_form:
-    "yes": 'Yes'
-    "no": 'No'
-    cancel: 'Cancel'
-    required:
-      text: 'required'
-      mark: '*'
-      # You can uncomment the line below if you need to overwrite the whole required html.
-      # When using html, text and mark won't be used.
-      # html: '<abbr title="required">*</abbr>'
+    cancel: Cancel
     error_notification:
-      default_message: "Please review the problems below:"
-    # Examples
-    labels:
-      account:
-        name: 'Short name'
-        tenant: 'Tenant UUID'
-        cname: 'Tenant CNAME'
-        solr_endpoint:
-          url: 'URL'
-        fcrepo_endpoint:
-          url: 'URL'
-          base_path: 'Base Path'
-        admin_emails: 'Add or invite new administrator (via email)'
-      hyku_group:
-        description: 'Description'
-      group_search:
-        q: 'Search'
-      user_search:
-        uq: 'Search for User'
-      add_user_to_group:
-        user_ids: 'User ID'
-      page_size:
-        per: 'Show'
-      user:
-        email: 'Email address'
-        display_name: 'Your Name'  # need to add this to other languages
-    #   defaults:
-    #     password: 'Password'
-    #   user:
-    #     new:
-    #       email: 'E-mail to sign in.'
-    #     edit:
-    #       email: 'E-mail.'
+      default_message: 'Please review the problems below:'
     hints:
       account:
-        name: 'A single or hyphenated name used for technical aspects of the repository (e.g., "acme" or "acme-library").'
+        admin_emails: Enter one email address at a time
         fcrepo_endpoint:
-          url: 'Fedora URL should not end with a slash'
-          base_path: 'Fedora base path should begin with a slash AND not end with a slash'
-        admin_emails: 'Enter one email address at a time'
+          base_path: Fedora base path should begin with a slash AND not end with a slash
+          url: Fedora URL should not end with a slash
+        name: A single or hyphenated name used for technical aspects of the repository (e.g., "acme" or "acme-library").
       hyku_group:
-        description: 'A brief summary of the role of the group'
+        description: A brief summary of the role of the group
       user:
-        email: 'Enter one email address at a time. You may also resend an invitation via this form.'
-    #   defaults:
-    #     username: 'User name to sign in.'
-    #     password: 'No special characters, please.'
-    # include_blanks:
-    #   defaults:
-    #     age: 'Rather not say'
-    # prompts:
-    #   defaults:
-    #     age: 'Select your age'
+        email: Enter one email address at a time. You may also resend an invitation via this form.
+    labels:
+      account:
+        admin_emails: Add or invite new administrator (via email)
+        cname: Tenant CNAME
+        fcrepo_endpoint:
+          base_path: Base Path
+          url: URL
+        name: Short name
+        solr_endpoint:
+          url: URL
+        tenant: Tenant UUID
+      add_user_to_group:
+        user_ids: User ID
+      group_search:
+        q: Search
+      hyku_group:
+        description: Description
+      page_size:
+        per: Show
+      user:
+        display_name: Your Name
+        email: Email address
+      user_search:
+        uq: Search for User
+    'no': 'No'
     placeholders:
       user_search:
-        uq: 'Name or username'
+        uq: Name or username
+    required:
+      mark: "*"
+      text: required
+    'yes': 'Yes'

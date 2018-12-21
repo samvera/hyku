@@ -42,8 +42,8 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
   end
 
   context 'as an admin of a site' do
-    let(:user) { FactoryGirl.create(:user).tap { |u| u.add_role(:admin, Site.instance) } }
-    let(:account) { FactoryGirl.create(:account) }
+    let(:user) { FactoryBot.create(:user).tap { |u| u.add_role(:admin, Site.instance) } }
+    let(:account) { FactoryBot.create(:account) }
 
     before do
       Site.update(account: account)
@@ -117,7 +117,7 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
     end
 
     context 'editing another tenants account' do
-      let(:another_account) { FactoryGirl.create(:account) }
+      let(:another_account) { FactoryBot.create(:account) }
 
       describe "GET #show" do
         it "denies the request" do
@@ -143,8 +143,8 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
   end
 
   context 'as a superadmin' do
-    let(:user) { FactoryGirl.create(:superadmin) }
-    let!(:account) { FactoryGirl.create(:account) }
+    let(:user) { FactoryBot.create(:superadmin) }
+    let!(:account) { FactoryBot.create(:account) }
 
     describe "GET #index" do
       it "assigns all accounts as @accounts" do
@@ -177,7 +177,7 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
   end
 
   describe 'account dependency switching' do
-    let(:account) { FactoryGirl.create(:account) }
+    let(:account) { FactoryBot.create(:account) }
 
     before do
       Site.update(account: account)

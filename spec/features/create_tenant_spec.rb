@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'creating a new tenant', multitenant: true do
   include ActiveJob::TestHelper
 
-  let(:user) { FactoryGirl.create(:superadmin) }
+  let(:user) { FactoryBot.create(:superadmin) }
 
   before do
     login_as(user, scope: :user)

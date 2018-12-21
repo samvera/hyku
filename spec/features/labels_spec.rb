@@ -1,6 +1,6 @@
 RSpec.describe 'Site labels configuration' do
   context 'as an administrator' do
-    let(:user) { FactoryGirl.create(:admin) }
+    let(:user) { FactoryBot.create(:admin) }
 
     before do
       login_as(user, scope: :user)
@@ -30,6 +30,7 @@ RSpec.describe 'Site labels configuration' do
           institution_name_full: 'fullname'
         )
       end
+
       it 'updates the institution name in the agreement text' do
         visit edit_site_labels_path
         fill_in 'Institution name', with: 'Custom Inst Name'
@@ -47,6 +48,7 @@ RSpec.describe 'Site labels configuration' do
           institution_name: 'name'
         )
       end
+
       it 'updates the full institution name in the agreement text' do
         visit edit_site_labels_path
         fill_in 'Full institution name', with: 'Custom Full Inst Name'

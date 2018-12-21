@@ -1,8 +1,9 @@
+---
 zh:
   hyrax:
     icons:
-      image:     'fa fa-picture-o'
+      image: fa fa-picture-o
     select_type:
       image:
-        name:               "图片"
-        description:        "单页或多页图像工作。"
+        description: 单页或多页图像工作。
+        name: 图片

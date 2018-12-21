@@ -12,13 +12,13 @@ RSpec.describe Ability do
   end
 
   describe 'an ordinary user' do
-    let(:user) { FactoryGirl.create(:user) }
+    let(:user) { FactoryBot.create(:user) }
 
     it { is_expected.not_to be_able_to(:manage, :all) }
   end
 
   describe 'an administrative user' do
-    let(:user) { FactoryGirl.create(:admin) }
+    let(:user) { FactoryBot.create(:admin) }
 
     it { is_expected.not_to be_able_to(:manage, :all) }
     it { is_expected.not_to be_able_to(:manage, Account) }
@@ -34,7 +34,7 @@ RSpec.describe Ability do
   end
 
   describe 'a superadmin user' do
-    let(:user) { FactoryGirl.create(:superadmin) }
+    let(:user) { FactoryBot.create(:superadmin) }
 
     it { is_expected.to be_able_to(:manage, :all) }
   end

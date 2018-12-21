@@ -1,3 +1,4 @@
+---
 en:
   hyrax:
     product_name:           "Commons Archive"
@@ -6,7 +7,7 @@ en:
     institution_name_full:  "The Institution Name"
     account_name:           "Account Id"
     directory:
-      suffix:               "@hydrainabox.org"
+      suffix: "@hydrainabox.org"
     footer:
       copyright_html: "<strong>Copyright &copy; 2017 Samvera</strong> Licensed under the Apache License, Version 2.0"
       service_html: A service of <a href="http://samvera.org/" class="navbar-link" target="_blank">Samvera</a>.
@@ -1144,4 +1145,3 @@ en:
         member_of_collection_ids: Select a collection…
     required:
       html: <span class="label label-info required-tag">required</span>
-

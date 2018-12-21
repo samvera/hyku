@@ -1,8 +1,9 @@
+---
 fr:
   hyrax:
     icons:
-      image:     'fa fa-picture-o'
+      image: fa fa-picture-o
     select_type:
       image:
-        name:               "Image"
-        description:        "L'image simple ou multi-page fonctionne."
+        description: L'image simple ou multi-page fonctionne.
+        name: Image

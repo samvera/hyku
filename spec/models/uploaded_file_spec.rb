@@ -30,6 +30,7 @@ RSpec.describe 'Hyrax::UploadedFile' do # rubocop:disable RSpec/DescribeClass
 
   describe CarrierWave::Storage::File do # default in dev/test
     before { expect(Hyrax::UploadedFileUploader).to receive(:storage).and_return(described_class) }
+
     it_behaves_like 'Regular upload'
     it 'returns a SanitizedFile' do
       expect(upload.file.file).to be_a CarrierWave::SanitizedFile
@@ -99,6 +100,7 @@ RSpec.describe 'Hyrax::UploadedFile' do # rubocop:disable RSpec/DescribeClass
 
       describe 'unlike our documented issue' do
         before { allow(upload.file.file).to receive(:url).and_return(bigurl) }
+
         it 'can handle S3 URI' do
           expect(upload.file.file.filename).to eq 'image.png'
         end

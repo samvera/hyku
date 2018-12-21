@@ -1,5 +1,5 @@
 RSpec.describe "proprietor/accounts/show", type: :view do
-  let(:account) { FactoryGirl.create(:account) }
+  let(:account) { FactoryBot.create(:account) }
   let(:admin1) { build(:user) }
   let(:admin2) { build(:user) }
 
@@ -27,6 +27,7 @@ RSpec.describe "proprietor/accounts/show", type: :view do
       allow(account).to receive(:admin_emails).and_return([])
       render
     end
+
     it 'displays "No administrators exist"' do
       expect(rendered).to have_content('No administrators exist')
     end
@@ -37,6 +38,7 @@ RSpec.describe "proprietor/accounts/show", type: :view do
       allow(account).to receive(:admin_emails).and_return([admin1.email, admin2.email])
       render
     end
+
     it 'displays each user email and a remove button' do
       expect(rendered).to have_content(admin1.email)
       expect(rendered).to have_content(admin2.email)

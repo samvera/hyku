@@ -19,8 +19,8 @@ RSpec.describe "Rake tasks" do
   end
 
   describe "superadmin:grant" do
-    let!(:user1) { FactoryGirl.create(:user) }
-    let!(:user2) { FactoryGirl.create(:user) }
+    let!(:user1) { FactoryBot.create(:user) }
+    let!(:user2) { FactoryBot.create(:user) }
 
     before do
       user1.remove_role :superadmin
@@ -57,14 +57,17 @@ RSpec.describe "Rake tasks" do
       CreateAccount.new(Account.new(name: 'first')).save
       CreateAccount.new(Account.new(name: 'second')).save
     end
+
     after(:all) do
       Account.find_by(name: 'first').destroy
       Account.find_by(name: 'second').destroy
     end
+
     before do
       # This omits a tenant that appears automatically created and is not switch-intoable
       allow(Account).to receive(:tenants).and_return(accounts)
     end
+
     let(:accounts) { Account.where(name: ['first', 'second']) }
     let(:task) { double('task') }
 
@@ -90,9 +93,11 @@ RSpec.describe "Rake tasks" do
       before do
         ENV['tenants'] = "garbage_value #{account.cname} other_garbage_value"
       end
+
       after do
         ENV.delete('tenants')
       end
+
       it 'runs against a single tenant and ignores bogus tenants' do
         expect(account).to receive(:switch).once.and_call_original
         allow(Rake::Task).to receive(:[]).with('hyrax:count').and_return(task)

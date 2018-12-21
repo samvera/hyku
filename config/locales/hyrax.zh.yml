@@ -1,18 +1,19 @@
+---
 zh:
   hyrax:
-    product_name:           "俳句"
-    product_twitter_handle: "@HydraInABox"
-    institution_name:       "机构"
-    institution_name_full:  "机构名称"
-    account_name:           "我的机构帐户标识符"
+    account_name: 我的机构帐户标识符
     directory:
-      suffix:               "@hydrainabox.org"
+      suffix: "@hydrainabox.org"
     footer:
       copyright_html: "<strong>版权所有 &copy; 2017 Samvera</strong> 根据Apache许可证2.0版许可"
       service_html: 的服务<a href="http://samvera.org/" class="navbar-link" target="_blank">Samvera</a>.
+    institution_name: 机构
+    institution_name_full: 机构名称
+    product_name: 俳句
+    product_twitter_handle: "@HydraInABox"
   simple_form:
     hints:
       defaults:
-        extent: "工作的程度（大小，持续时间，数量等）。"
+        extent: 工作的程度（大小，持续时间，数量等）。
       labels:
-        extent: "程度"
+        extent: 程度

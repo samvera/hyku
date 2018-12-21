@@ -19,8 +19,8 @@ module Hyku
 
     context '.search' do
       before(:context) do
-        FactoryGirl.create(:group, name: 'IMPORTANT-GROUP-NAME')
-        FactoryGirl.create(:group, description: 'IMPORTANT-GROUP-DESCRIPTION')
+        FactoryBot.create(:group, name: 'IMPORTANT-GROUP-NAME')
+        FactoryBot.create(:group, description: 'IMPORTANT-GROUP-DESCRIPTION')
       end
 
       after(:context) do
@@ -45,10 +45,10 @@ module Hyku
     end
 
     context '#search_members' do
-      subject { FactoryGirl.create(:group) }
+      subject { FactoryBot.create(:group) }
 
-      let(:known_user_name) { FactoryGirl.create(:user, display_name: 'Tom Cramer') }
-      let(:known_user_email) { FactoryGirl.create(:user, email: 'tom@project-hydra.com') }
+      let(:known_user_name) { FactoryBot.create(:user, display_name: 'Tom Cramer') }
+      let(:known_user_email) { FactoryBot.create(:user, email: 'tom@project-hydra.com') }
 
       before { subject.add_members_by_id([known_user_name.id, known_user_email.id]) }
 
@@ -70,9 +70,9 @@ module Hyku
     end
 
     describe '#add_members_by_id' do
-      subject { FactoryGirl.create(:group) }
+      subject { FactoryBot.create(:group) }
 
-      let(:user) { FactoryGirl.create(:user) }
+      let(:user) { FactoryBot.create(:user) }
 
       before { subject.add_members_by_id(user.id) }
 
@@ -86,10 +86,10 @@ module Hyku
     end
 
     describe '#remove_members_by_id' do
-      subject { FactoryGirl.create(:group) }
+      subject { FactoryBot.create(:group) }
 
       context 'single user id' do
-        let(:user) { FactoryGirl.create(:user) }
+        let(:user) { FactoryBot.create(:user) }
 
         before { subject.add_members_by_id(user.id) }
 
@@ -101,7 +101,7 @@ module Hyku
       end
 
       context 'collection of user ids' do
-        let(:user_list) { FactoryGirl.create_list(:user, 3) }
+        let(:user_list) { FactoryBot.create_list(:user, 3) }
         let(:user_ids) { user_list.collect(&:id) }
 
         before { subject.add_members_by_id(user_ids) }
@@ -115,9 +115,9 @@ module Hyku
     end
 
     context '#number_of_users' do
-      subject { FactoryGirl.create(:group) }
+      subject { FactoryBot.create(:group) }
 
-      let(:user) { FactoryGirl.create(:user) }
+      let(:user) { FactoryBot.create(:user) }
 
       it 'starts out with 0 users' do
         expect(subject.number_of_users).to eq(0)

@@ -1,28 +1,31 @@
+---
 zh:
   devise:
     failure:
-      invited: "您有待处理的邀请，接受它以完成创建您的帐户。"
+      invited: 您有待处理的邀请，接受它以完成创建您的帐户。
     invitations:
-      send_instructions: "已发送邀请电子邮件 %{email}."
-      invitation_token_invalid: "提供的邀请令牌无效！"
-      updated: "您的密码设置成功。 您现在已经登录。"
-      updated_not_active: "您的密码设置成功。"
-      no_invitations_remaining: "没有邀请"
-      invitation_removed: "您的邀请已被删除。"
-      new:
-        header: "发送邀请"
-        submit_button: "发送邀请"
       edit:
-        header: "设置你的密码"
-        submit_button: "设置我的密码"
+        header: 设置你的密码
+        submit_button: 设置我的密码
+      invitation_removed: 您的邀请已被删除。
+      invitation_token_invalid: 提供的邀请令牌无效！
+      new:
+        header: 发送邀请
+        submit_button: 发送邀请
+      no_invitations_remaining: 没有邀请
+      send_instructions: 已发送邀请电子邮件 %{email}.
+      updated: 您的密码设置成功。 您现在已经登录。
+      updated_not_active: 您的密码设置成功。
     mailer:
       invitation_instructions:
-        subject: "邀请说明"
-        hello: "你好 %{email}"
-        someone_invited_you: "有人邀请你到 %{url}，您可以通过以下链接接受。"
-        accept: "接受邀请"
-        accept_until: "此邀请将到期 %{due_date}."
-        ignore: "如果您不想接受邀请，请忽略此电子邮件。<br />\n在您访问以上链接并设置密码之前，您的帐户将不会被创建。"
+        accept: 接受邀请
+        accept_until: 此邀请将到期 %{due_date}.
+        hello: 你好 %{email}
+        ignore: |-
+          如果您不想接受邀请，请忽略此电子邮件。<br />
+          在您访问以上链接并设置密码之前，您的帐户将不会被创建。
+        someone_invited_you: 有人邀请你到 %{url}，您可以通过以下链接接受。
+        subject: 邀请说明
   time:
     formats:
       devise:

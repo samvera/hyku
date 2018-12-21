@@ -10,6 +10,7 @@ RSpec.describe ImportWorkFromPurlJob do
     # Don't call load_workflows until the PermissionTemplate has been created
     Hyrax::Workflow::WorkflowImporter.load_workflows
   end
+
   let(:purl_xml) do
     <<~EOF
       <?xml version="1.0" encoding="UTF-8"?>
@@ -140,7 +141,7 @@ RSpec.describe ImportWorkFromPurlJob do
         </releaseData>
         <thumb>bc390xk2647/00007845_005.jp2</thumb>
       </publicObject>
-EOF
+    EOF
   end
 
   it "works" do

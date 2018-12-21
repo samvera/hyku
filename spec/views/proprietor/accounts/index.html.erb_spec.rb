@@ -1,6 +1,6 @@
 RSpec.describe "proprietor/accounts/index", type: :view do
-  let(:account_a) { FactoryGirl.create(:account) }
-  let(:account_b) { FactoryGirl.create(:account) }
+  let(:account_a) { FactoryBot.create(:account) }
+  let(:account_b) { FactoryBot.create(:account) }
 
   before do
     assign(:accounts, [account_a, account_b])

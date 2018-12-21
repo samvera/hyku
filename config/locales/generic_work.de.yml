@@ -1,8 +1,9 @@
+---
 de:
   hyrax:
     icons:
-      generic_work:     'fa fa-file-text-o'
+      generic_work: fa fa-file-text-o
     select_type:
       generic_work:
-        name:               "Generische Werke"
-        description:        "Allzweckarbeitstyp. Wählen Sie diese Option aus, wenn die unten aufgeführten Werkstypen nicht für die Werk geeignet sind, die Sie hinzufügen möchten."
+        description: "Arbeitstyp: Generische Arbeit. Wählen Sie diesen Typ für Ihre Arbeit, die Sie hinzufügen möchten, aus, wenn die unten aufgeführten, spezielleren Arbeitstypen nicht für Ihre Arbeit geeignet erscheinen."
+        name: Generische Arbeit

@@ -1,5 +1,5 @@
 RSpec.describe CreateAccountInlineJob do
-  let(:account) { FactoryGirl.create(:account) }
+  let(:account) { FactoryBot.create(:account) }
 
   describe '#perform' do
     it 'calls other jobs synchronously' do

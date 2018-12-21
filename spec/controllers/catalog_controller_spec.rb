@@ -7,6 +7,7 @@ RSpec.describe CatalogController do
         sign_in create(:user)
         allow(controller).to receive(:can?).and_return(true)
       end
+
       it "is successful" do
         get :show, params: { id: file_set }
         expect(response).to be_successful

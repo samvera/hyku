@@ -1,8 +1,9 @@
+---
 de:
   hyrax:
     icons:
-      image:     'fa fa-picture-o'
+      image: fa fa-picture-o
     select_type:
       image:
-        name:               "Bild"
-        description:        "Einzel- oder mehrseitiges Bild funktioniert."
+        description: Einzel- oder mehrseitiges Bild funktioniert.
+        name: Bild

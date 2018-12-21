@@ -14,6 +14,7 @@ RSpec.describe Hyku::RegistrationsController, type: :controller do
         expect(response).to render_template('devise/registrations/new')
       end
     end
+
     describe '#create' do
       it 'processes the form' do
         post :create, params: {
@@ -28,6 +29,7 @@ RSpec.describe Hyku::RegistrationsController, type: :controller do
       end
     end
   end
+
   context 'with account signup disabled' do
     let(:account_signup_enabled) { false }
 
@@ -38,6 +40,7 @@ RSpec.describe Hyku::RegistrationsController, type: :controller do
         expect(flash[:alert]).to eq 'Account registration is disabled'
       end
     end
+
     describe '#create' do
       it 'redirects with a flash message' do
         post :create

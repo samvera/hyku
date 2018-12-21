@@ -1,6 +1,6 @@
 RSpec.describe 'hyrax/base/_form_rendering.html.erb', type: :view do
   let(:ability) { double }
-  let(:work) { FactoryGirl.create(:work_with_one_file) }
+  let(:work) { FactoryBot.create(:work_with_one_file) }
   let(:form) do
     Hyrax::GenericWorkForm.new(work, ability, controller)
   end

@@ -1,24 +1,4 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t 'hello'
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t('hello') %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more, please read the Rails Internationalization guide
-# available at http://guides.rubyonrails.org/i18n.html.
-
+---
 en:
   activerecord:
     attributes:
@@ -26,101 +6,95 @@ en:
         institution_name_full: Full institution name
   application:
     tagline: The next-generation repository solution
-  status:
-    index:
-      services: 'Services'
-    service:
-      ok: 'OK'
-      down: 'Down'
   helpers:
     submit:
       add_user_to_group:
-        submit: 'Add'
+        submit: Add
       group_search:
-        submit: 'Go'
+        submit: Go
       page_size:
-        submit: 'Update'
+        submit: Update
       revoke_membership:
-        submit: 'Remove'
+        submit: Remove
       user_search:
-        submit: 'Go'
+        submit: Go
   hyku:
+    account:
+      signup_disabled: Account registration is disabled
+    admin:
+      flash:
+        access_denied: You are not authorized to view this page
+      groups:
+        action:
+          create: Create New Group
+          edit: Edit group & users
+          members:
+            description: Group members assume all privileges assigned to this group.
+          per_page: Update
+          remove:
+            confirmation: Are you sure you want to remove this group?
+            description: This action is irreversible. It will remove all privileges group members have been assigned through this group.
+            submit: Remove
+          search:
+            clear: Reset
+        describe_quantity_html: There are <b>%{number} groups</b> in this repository.
+        describe_singular_quantity_html: There is <b>1 group</b> in this repository.
+        flash:
+          create:
+            failure: Group could not be created
+            invalid: Groups must have a name
+            success: "%{group} created"
+          destroy:
+            failure: "%{group} could not be destroyed"
+            success: "%{group} destroyed"
+          update:
+            failure: "%{group} could not be updated"
+            success: "%{group} updated"
+        label:
+          actions: Actions
+          created_at: Date Created
+          members: Users
+          name: Name
+          per_page: per page
+        nav:
+          attributes: Description
+          delete: Remove
+          index: return to Manage Groups
+          members: Users
+        title:
+          add_user: Add User to Group
+          delete: Remove Group “%{group}”
+          edit: Edit Group
+          index: Manage Groups
+          list_members: Current Group Members
+          members: Group Members
+          new: New Group
+          remove: Remove Group
+      title: Administration
+    footer:
+      admin_login: Administrator login
+    proprietor:
+      accounts:
+        nav: Accounts
     splash:
       account_denied: You are not authorized to create tenants
       account_login: Login to get started
       account_signup: Get Started
+      center_heading: Feature-Rich
+      center_text: All the features you'd expect from a mature repository system. Supports a range of content types and use cases.
       left_heading: Easy
       left_text: Works for institutions large and small, from museums to university libraries. Get started in minutes.
-      center_heading: Feature-Rich
-      center_text: "All the features you'd expect from a mature repository system. Supports a range of content types and use cases."
       right_heading: Flexible
-      right_text: "Customize the user interface to match your institution's brand identity. Tailor workflows to match how your staff likes to work."
-    footer:
-      admin_login: 'Administrator login'
-    proprietor:
-      accounts:
-        nav: 'Accounts'
+      right_text: Customize the user interface to match your institution's brand identity. Tailor workflows to match how your staff likes to work.
     toolbar:
       profile:
-        edit_registration: 'Change password'
-    account:
-      signup_disabled: 'Account registration is disabled'
-    admin:
-      title: 'Administration'
-      flash:
-        access_denied: 'You are not authorized to view this page'
-      groups:
-        describe_quantity_html: "There are <b>%{number} groups</b> in this repository."
-        describe_singular_quantity_html: "There is <b>1 group</b> in this repository."
-        action:
-          create: 'Create New Group'
-          edit: 'Edit group & users'
-          members:
-            description: 'Group members assume all privileges assigned to this group.'
-          per_page: 'Update'
-          remove:
-            confirmation: 'Are you sure you want to remove this group?'
-            description: 'This action is irreversible. It will remove all privileges group members have been assigned through this group.'
-            submit: 'Remove'
-          search:
-            clear: 'Reset'
-        flash:
-          create:
-            success: '%{group} created'
-            invalid: 'Groups must have a name'
-            failure: 'Group could not be created'
-          update:
-            success: '%{group} updated'
-            failure: '%{group} could not be updated'
-          destroy:
-            success: '%{group} destroyed'
-            failure: '%{group} could not be destroyed'
-        label:
-          actions: 'Actions'
-          created_at: 'Date Created'
-          members: 'Users'
-          name: 'Name'
-          per_page: 'per page'
-        nav:
-          attributes: 'Description'
-          delete: 'Remove'
-          index: 'return to Manage Groups'
-          members: 'Users'
-        title:
-          add_user: 'Add User to Group'
-          delete: "Remove Group “%{group}”"
-          edit: 'Edit Group'
-          index: 'Manage Groups'
-          list_members: 'Current Group Members'
-          members: 'Group Members'
-          new: 'New Group'
-          remove: 'Remove Group'
+        edit_registration: Change password
     users:
       label:
-        name: 'Name'
-        user_key: 'Username'
-        date_joined: 'Joined'
-        last_login: 'Last access'
+        date_joined: Joined
+        last_login: Last access
+        name: Name
+        user_key: Username
   hyrax:
     admin:
       appearances:
@@ -136,54 +110,57 @@ en:
             custom_css: Custom CSS
             fonts: 'Fonts'
       sidebar:
-        accounts:                     'Accounts'
-        activity_summary:             'Activity summary'
-        content_blocks:               'Content Blocks'
-        labels:                       'Labels'
-        manage_groups:                'Manage groups'
-        manage_roles_and_permissions: 'Define roles and permissions'
-        manage_users:                 'Manage users'
-        repository_activity:          'Repository activity'
-        roles_and_permissions:        'Users and groups'
-        system_status:                'System status'
-        technical:                    'Technical'
+        accounts: Accounts
+        activity_summary: Activity Summary
+        labels: Labels
+        manage_groups: Manage Groups
+        system_status: System Status
       users:
+        destroy:
+          confirmation: Are you sure you wish to delete the user "%{user}"? This action is irreversible.
+          failure: User "%{user}" could not be deleted.
+          success: User "%{user}" has been successfully deleted.
         index:
           action_label: Action
           add: Invite user
           delete: Delete
-          invite_users: 'Add or Invite user via email'
-          status_label: Status
+          invite_users: Add or Invite user via email
           status:
             active: Active
             pending: Pending
-        destroy:
-          confirmation: 'Are you sure you wish to delete the user "%{user}"? This action is irreversible.'
-          success: 'User "%{user}" has been successfully deleted.'
-          failure: 'User "%{user}" could not be deleted.'
+          status_label: Status
   proprietor:
     accounts:
-      index:
-        header: 'Accounts'
-        create_new: 'Create new account'
-        tenant: 'Tenant (UUID)'
-        cname: 'CNAME'
-        manage: 'Manage'
-        confirm_delete: 'Are you sure you wish to delete this repository?'
       edit:
-        header: 'Editing Account'
-        solr_endpoint: 'Solr Endpoint'
-        fcrepo_endpoint: 'Fedora Endpoint'
+        fcrepo_endpoint: Fedora Endpoint
+        header: Editing Account
+        solr_endpoint: Solr Endpoint
+      index:
+        cname: CNAME
+        confirm_delete: Are you sure you wish to delete this repository?
+        create_new: Create new account
+        header: Accounts
+        manage: Manage
+        tenant: Tenant (UUID)
+      new:
+        header: Create a new repository
       show:
-        header: 'Manage Account'
-        edit: 'Edit Account'
-        add: 'Add'
-        remove: 'Remove'
+        add: Add
         current_admins:
-          header: 'Current Account Administrators'
-          all_users: 'All Users'
-          email: 'Email address'
-          actions: 'Action'
-          no_admins: 'No administrators exist'
+          header: Current Account Administrators
+          all_users: All Users
+          email: Email address
+          actions: Action
+          no_admins: No administrators exist
       new:
         header: 'Create a new repository'
+        edit: Edit Account
+        header: Manage Account
+        remove: Remove
+  status:
+    index:
+      services: Services
+    service:
+      down: Down
+      ok: OK
+>>>>>>> origin

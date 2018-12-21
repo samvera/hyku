@@ -1,6 +1,7 @@
+---
 zh:
   blacklight:
-    application_name: '俳句'
+    application_name: 俳句
     search:
       fields:
         facet:

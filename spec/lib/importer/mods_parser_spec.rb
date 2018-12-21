@@ -168,6 +168,7 @@ RSpec.describe Importer::ModsParser do
       end
 
       before { allow(parser).to receive(:mods).and_return(Mods::Record.new.from_str(xml)) }
+
       it 'imports date_copyrighted' do
         expect(attributes[:date_copyrighted_attributes]).to eq [
           { start: ['1985-12-01'],
@@ -186,6 +187,7 @@ RSpec.describe Importer::ModsParser do
       end
 
       before { allow(parser).to receive(:mods).and_return(Mods::Record.new.from_str(xml)) }
+
       it 'imports date_valid' do
         expect(attributes[:date_valid_attributes]).to eq [
           { start: ['1989-12-01'],

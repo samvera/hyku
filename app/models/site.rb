@@ -8,7 +8,7 @@ class Site < ApplicationRecord
   # Allow for uploading of site's logo image
   mount_uploader :logo_image, AvatarUploader
   # Allow for uploading of site's default collection image
-  mount_uploader :default_collection_image, Hyrax::UploadedFileUploader
+  mount_uploader :default_collection_image, AvatarUploader
   # Allow for uploading of site's default work image
   mount_uploader :default_work_image, AvatarUploader
 

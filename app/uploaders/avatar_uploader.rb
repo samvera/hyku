@@ -1,4 +1,4 @@
-class Hyrax::AvatarUploader < CarrierWave::Uploader::Base
+class AvatarUploader < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
 
   version :medium do

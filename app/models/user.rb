@@ -27,6 +27,22 @@ class User < ApplicationRecord
     email
   end
 
+  def to_param
+    id
+  end
+
+  def is_superadmin
+    has_role? :superadmin
+  end
+
+  def is_superadmin=(value)
+    if value
+      add_role :superadmin
+    else
+      remove_role :superadmin
+    end
+  end
+
   def site_roles
     roles.site
   end

@@ -12,6 +12,11 @@ Rails.application.routes.draw do
 
       namespace :proprietor do
         resources :accounts
+        resources :users do
+          member do
+            post :become
+          end
+        end
       end
     end
   end

@@ -76,6 +76,8 @@ en:
     proprietor:
       accounts:
         nav: Accounts
+      users:
+        nav: Users
     splash:
       account_denied: You are not authorized to create tenants
       account_login: Login to get started
@@ -146,6 +148,7 @@ en:
         header: Create a new repository
       show:
         add: Add
+        update: Update
         current_admins:
           header: Current Account Administrators
           all_users: All Users
@@ -155,6 +158,12 @@ en:
         edit: Edit Account
         header: Manage Account
         remove: Remove
+  proprietor:
+    users:
+      show:
+        add: Add
+        update: Update
+ 
   status:
     index:
       services: Services

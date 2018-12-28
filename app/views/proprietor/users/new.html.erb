@@ -1,0 +1,29 @@
+<% content_for :page_header do %>
+  <h1><span class="fa fa-gears"></span> <%= t('.header') %></h1>
+<% end %>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default user-form">
+      <%= simple_form_for @user, url: [:proprietor, @user], html: { class: 'form' } do |f| %>
+        <div class="panel-body">
+            <% if @user.errors.any? %>
+              <div id="error_explanation" class="alert alert-danger">
+                <%= pluralize(@user.errors.count, "error") %> prohibited this repository from being saved:
+                <ul>
+                  <% @user.errors.messages.each do |key, messages| %>
+                    <li><%= key %> &quot;<%= @user.errors.details[key].first[:value] %>&quot; <%= messages.join(' and ') %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+
+            <%= render 'form', user: @user, f: f %>
+
+            <%= f.submit class: 'btn btn-primary' %>
+            <%= link_to t('simple_form.cancel'), proprietor_users_path, class: 'btn btn-link action-cancel' %>
+          </div>
+      <% end %>
+    </div>
+  </div>
+</div>

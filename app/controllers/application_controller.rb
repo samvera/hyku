@@ -20,6 +20,7 @@ class ApplicationController < ActionController::Base
   with_themed_layout '1_column'
 
   helper_method :current_account, :admin_host?
+  before_action :authenticate_for_staging
 
   before_action :require_active_account!, if: :multitenant?
   before_action :set_account_specific_connections!
@@ -30,7 +31,15 @@ class ApplicationController < ActionController::Base
     raise ActionController::RoutingError, 'Not Found'
   end
 
-  protected
+  private
+
+    def authenticate_for_staging
+      if ['staging', 'production'].include?(Rails.env) && !request.format.to_s.match('json') && !params[:print] && !request.path.include?('api') && !request.path.include?('pdf')
+        authenticate_or_request_with_http_basic do |username, password|
+          username == "pals" && password == "pals"
+        end
+      end
+    end
 
     def super_and_current_users
       users = Role.find_by(name: 'superadmin')&.users.to_a

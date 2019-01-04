@@ -17,6 +17,7 @@ class ApplicationController < ActionController::Base
   with_themed_layout '1_column'
 
   helper_method :peek_enabled?, :current_account, :admin_host?
+  before_action :authenticate_for_staging
   before_action :set_raven_context
   before_action :require_active_account!, if: :multitenant?
   before_action :set_account_specific_connections!
@@ -28,6 +29,15 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+    def authenticate_for_staging
+      if ['staging', 'production'].include?(Rails.env) && !request.format.to_s.match('json') && !params[:print] && !request.path.include?('api') && !request.path.include?('pdf')
+        authenticate_or_request_with_http_basic do |username, password|
+          username == "pals" && password == "pals"
+        end
+      end
+    end
+
     def set_raven_context
       Raven.user_context(id: session[:current_user_id]) # or anything else in session
       Raven.extra_context(params: params.to_unsafe_h, url: request.url)

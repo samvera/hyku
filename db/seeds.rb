@@ -17,4 +17,4 @@ user = User.where(email: 'rob@notch8.com').first_or_create do |u|
   u.password = 'testing123'
   u.display_name = "Rob"
 end
-user.add_role :superadmin unless user.had_role? :superadmin
+user.add_role :superadmin unless user.has_role? :superadmin

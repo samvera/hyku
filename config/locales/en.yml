@@ -7,6 +7,8 @@ en:
   application:
     tagline: The next-generation repository solution
   helpers:
+    action:
+      become: Become
     submit:
       add_user_to_group:
         submit: Add
@@ -160,10 +162,18 @@ en:
         remove: Remove
   proprietor:
     users:
+      index:
+        create_new: Create New
+        email: Email
+        display_name: Display name
+        department: Department
+        manage: Manage
+        title: Title
+        affiliation: Affiliation
+        actions: Actions
       show:
         add: Add
         update: Update
- 
   status:
     index:
       services: Services

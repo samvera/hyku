@@ -179,6 +179,7 @@ de:
       show:
         add: Hinzufügen
         update: Aktualisieren
+        edit: Bearbeiten
   status:
     index:
       services: Dienste

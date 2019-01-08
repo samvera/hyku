@@ -181,6 +181,7 @@ fr:
       show:
         add: Ajouter
         update: Mettre à jour
+        edit: Modifier
   status:
     index:
       services: Prestations de service

@@ -175,6 +175,7 @@ es:
       show:
         add: Añadir
         update: Actualizar
+        edit: Editar
   status:
     index:
       services: Servicios

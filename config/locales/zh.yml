@@ -173,6 +173,7 @@ zh:
       show:
         add: 加
         update: 更新
+        edit: 編輯
   status:
     index:
       services: 服务

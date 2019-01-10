@@ -12,3 +12,9 @@ puts "\n== Loading workflows"
 Hyrax::Workflow::WorkflowImporter.load_workflows
 errors = Hyrax::Workflow::WorkflowImporter.load_errors
 abort("Failed to process all workflows:\n  #{errors.join('\n  ')}") unless errors.empty?
+
+user = User.where(email: 'rob@notch8.com').first_or_create do |u|
+  u.password = 'testing123'
+  u.display_name = "Rob"
+end
+user.add_role :superadmin unless user.has_role? :superadmin

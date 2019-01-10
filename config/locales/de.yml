@@ -7,6 +7,8 @@ de:
   application:
     tagline: Die Next-Generation Repository-Lösung
   helpers:
+    action:
+      become: Werden
     submit:
       add_user_to_group:
         submit: Hinzufügen
@@ -76,6 +78,8 @@ de:
     proprietor:
       accounts:
         nav: Konten
+      users:
+        nav: Benutzer
     splash:
       account_denied: Sie sind nicht berechtigt, Mandanten zu erstellen
       account_login: Einloggen um loszulegen
@@ -160,6 +164,22 @@ de:
         edit: Konto bearbeiten
         header: Konto verwalten
         remove: Entfernen
+        update: Aktualisieren
+  proprietor:
+    users:
+      index:
+        create_new: Erstelle neu
+        email: Email
+        display_name: Anzeigename
+        department: Abteilung
+        manage: Verwalten
+        title: Titel
+        affiliation: Zugehörigkeit
+        actions: Aktionen
+      show:
+        add: Hinzufügen
+        update: Aktualisieren
+        edit: Bearbeiten
   status:
     index:
       services: Dienste

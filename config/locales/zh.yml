@@ -7,6 +7,8 @@ zh:
   application:
     tagline: 下一代存储库解决方案
   helpers:
+    action:
+      become: 成為
     submit:
       add_user_to_group:
         submit: 加
@@ -76,6 +78,8 @@ zh:
     proprietor:
       accounts:
         nav: 帐号
+      users:
+        nav: 用戶
     splash:
       account_denied: 您无权创建租户
       account_login: 登录即可开始使用
@@ -155,6 +159,21 @@ zh:
         edit: 编辑帐号
         header: 管理帐户
         remove: 去掉
+        update: 更新
+  proprietor:
+    users:
+      index:
+        create_new: 創建新的
+        email: 電子郵件
+        display_name: 顯示名稱
+        manage: 管理
+        department: 部門
+        title: 標題
+        affiliation: 聯繫
+      show:
+        add: 加
+        update: 更新
+        edit: 編輯
   status:
     index:
       services: 服务

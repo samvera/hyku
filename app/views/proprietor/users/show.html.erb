@@ -1,0 +1,33 @@
+<% content_for :page_header do %>
+  <h1><span class="fa fa-gears"></span> <%= t('.header') %></h1>
+<% end %>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-sm-10">
+            <h2><%= @user.display_name %> (<%= @user.email %>)</h2>
+          </div>
+          <div class="col-sm-2">
+            <div class="pull-right">
+              <%= link_to edit_proprietor_user_path(@user), class: 'btn btn-primary' do %>
+                <span class="fa fa-edit"></span> <%= t('.edit') %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <%= simple_form_for @user, url: [:proprietor, @user], html: { class: 'form' } do |f| %>
+          <div class="form-group">
+            <%= f.association :roles, as: :check_boxes %>
+          </div>
+          <%= f.submit t('.update'), class: 'btn btn-primary' %>
+          <%= link_to t('simple_form.cancel'), proprietor_users_path, class: 'btn btn-link action-cancel' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -7,6 +7,8 @@ es:
   application:
     tagline: La solución de repositorio de próxima generación
   helpers:
+    action:
+      become: Volverse
     submit:
       add_user_to_group:
         submit: Añadir
@@ -76,6 +78,8 @@ es:
     proprietor:
       accounts:
         nav: Cuentas
+      users:
+        nav: Usuarios
     splash:
       account_denied: No estás autorizado para crear inquilinos.
       account_login: Inicia sesión para comenzar
@@ -156,6 +160,22 @@ es:
         edit: Editar cuenta
         header: Administrar cuenta
         remove: Retirar
+        update: Actualizar
+  proprietor:
+    users:
+      index:
+        create_new: Crear nuevo
+        email: Email
+        display_name: Nombre para mostrar
+        department: Departamento
+        manage: Gestionar
+        title: Título
+        affiliation: Afiliación
+        actions: Comportamiento
+      show:
+        add: Añadir
+        update: Actualizar
+        edit: Editar
   status:
     index:
       services: Servicios

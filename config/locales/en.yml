@@ -7,6 +7,8 @@ en:
   application:
     tagline: The next-generation repository solution
   helpers:
+    action:
+      become: Become
     submit:
       add_user_to_group:
         submit: Add
@@ -76,6 +78,8 @@ en:
     proprietor:
       accounts:
         nav: Accounts
+      users:
+        nav: Users
     splash:
       account_denied: You are not authorized to create tenants
       account_login: Login to get started
@@ -146,6 +150,7 @@ en:
         header: Create a new repository
       show:
         add: Add
+        update: Update
         current_admins:
           header: Current Account Administrators
           all_users: All Users
@@ -155,6 +160,21 @@ en:
         edit: Edit Account
         header: Manage Account
         remove: Remove
+  proprietor:
+    users:
+      index:
+        create_new: Create New
+        email: Email
+        display_name: Display name
+        department: Department
+        manage: Manage
+        title: Title
+        affiliation: Affiliation
+        actions: Actions
+      show:
+        add: Add
+        update: Update
+        edit: Edit
   status:
     index:
       services: Services

@@ -36,7 +36,7 @@ class User < ApplicationRecord
   end
 
   def is_superadmin=(value)
-    if value
+    if value && value != "0"
       add_role :superadmin
     else
       remove_role :superadmin

@@ -40,7 +40,7 @@ module Proprietor
       @user = User.new(user_params)
       respond_to do |format|
         if @user.valid? && @user.save
-          format.html { redirect_to proprietor_user_path(@user.id), notice: 'User was successfully created.' }
+          format.html { redirect_to proprietor_users_path, notice: 'User was successfully created.' }
           format.json { render :show, status: :created, location: @user.cname }
         else
           format.html { render :new }
@@ -54,7 +54,7 @@ module Proprietor
     def update
       respond_to do |format|
         if @user.update(user_params)
-          format.html { redirect_to [:proprietor, @user], notice: 'User was successfully updated.' }
+          format.html { redirect_to proprietor_users_path, notice: 'User was successfully updated.' }
           format.json { render :show, status: :ok, location: [:proprietor, @user] }
         else
           format.html { render :edit }

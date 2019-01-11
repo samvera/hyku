@@ -70,8 +70,8 @@ production:
   script:
     - mkdir -p ~/.kube
     - echo $KUBE_CONFIG | base64 -d > ~/.kube/config
-    - echo $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME 
-    - kubectl --namespace palshyku set image deployment/web web=$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME 
+    - echo $CI_REGISTRY_IMAGE:$TAG
+    - kubectl --namespace palshyku set image deployment/web web=$CI_REGISTRY_IMAGE:$TAG
   when: manual
   only:
     - master

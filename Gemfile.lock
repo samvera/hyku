@@ -268,6 +268,7 @@ GEM
       activesupport (>= 4.0)
     flot-rails (0.0.7)
       jquery-rails
+    flutie (2.1.0)
     font-awesome-rails (4.7.0.4)
       railties (>= 3.2, < 6.0)
     globalid (0.4.1)
@@ -928,6 +929,7 @@ DEPENDENCIES
   factory_bot_rails
   fcrepo_wrapper (~> 0.4)
   flipflop (~> 2.3)
+  flutie
   hyrax (~> 2.3.0)
   i18n-debug
   i18n-tasks
@@ -974,4 +976,4 @@ DEPENDENCIES
   zk
 
 BUNDLED WITH
-   1.16.6
+   1.17.2

@@ -1,5 +1,11 @@
+require 'sidekiq/web'
+Sidekiq::Web.set :session_secret, Rails.application.secrets[:secret_key_base]
+
 Rails.application.routes.draw do
   concern :oai_provider, BlacklightOaiProvider::Routes.new
+  authenticate :user, lambda { |u| u.is_superadmin } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
 
   if Settings.multitenancy.enabled
     constraints host: Account.admin_host do

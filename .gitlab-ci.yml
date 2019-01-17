@@ -72,6 +72,7 @@ production:
     - echo $KUBE_CONFIG | base64 -d > ~/.kube/config
     - echo $CI_REGISTRY_IMAGE:$TAG
     - kubectl --namespace palshyku set image deployment/web web=$CI_REGISTRY_IMAGE:$TAG
+    - kubectl --namespace palshyku set image deployment/workers workers=$CI_REGISTRY_IMAGE:$TAG
   when: manual
   only:
     - master

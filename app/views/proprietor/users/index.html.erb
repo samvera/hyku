@@ -31,7 +31,7 @@
                 <td><%= user.department %></td>
                 <td><%= user.title %></td>
                 <td><%= user.affiliation %></td>
-                <td class="col-md-2"><%= link_to t('.manage'), proprietor_user_path(user.id) %>&nbsp;|&nbsp;<%= link_to t('helpers.action.edit'), edit_proprietor_user_path(user.id) %>&nbsp;|&nbsp;<%= link_to t('helpers.action.become'), become_proprietor_user_path(user.id), method: :post %>&nbsp;|&nbsp;<%= link_to t('helpers.action.delete'), proprietor_user_path(user.id), method: :delete, data: { confirm: t('.confirm_delete') } %></td>
+                <td class="col-md-2"><%= link_to t('.manage'), proprietor_user_path(user) %>&nbsp;|&nbsp;<%= link_to t('helpers.action.edit'), edit_proprietor_user_path(user) %>&nbsp;|&nbsp;<%= link_to t('helpers.action.become'), become_proprietor_user_path(user.id), method: :post %>&nbsp;|&nbsp;<%= link_to t('helpers.action.delete'), proprietor_user_path(user), method: :delete, data: { confirm: t('.confirm_delete') } %></td>
               </tr>
             <% end %>
           </tbody>

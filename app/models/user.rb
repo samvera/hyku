@@ -27,10 +27,6 @@ class User < ApplicationRecord
     email
   end
 
-  def to_param
-    id
-  end
-
   def is_superadmin
     has_role? :superadmin
   end

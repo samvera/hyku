@@ -97,7 +97,7 @@ module Proprietor
       end
 
       def find_user
-        @user = ::User.from_url_component(params[:id])
+        @user ||= ::User.from_url_component(params[:id])
         raise ActiveRecord::RecordNotFound unless @user
       end
   end

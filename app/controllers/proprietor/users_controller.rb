@@ -2,6 +2,7 @@ module Proprietor
   class UsersController < ProprietorController
     before_action :ensure_admin!
 
+    before_action :find_user, only: [:show, :edit, :update, :destroy]
     load_and_authorize_resource
 
     # GET /users
@@ -74,6 +75,7 @@ module Proprietor
       end
     end
 
+    # method uses user's id, not their user_key
     def become
       bypass_sign_in(User.find(params[:id]))
       redirect_to root_url, notice: 'User changed successfully'
@@ -92,6 +94,11 @@ module Proprietor
         end
 
         params.require(:user).permit(:email, :password, :is_superadmin, :facebook_handle, :twitter_handle, :googleplus_handle, :display_name, :address, :department, :title, :office, :chat_id, :website, :affiliation, :telephone, :avatar, :group_list, :linkedin_handle, :orcid, :arkivo_token, :arkivo_subscription, :zotero_token, :zotero_userid, :preferred_locale, role_ids: [])
+      end
+
+      def find_user
+        @user ||= ::User.from_url_component(params[:id])
+        raise ActiveRecord::RecordNotFound unless @user
       end
   end
 end

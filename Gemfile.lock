@@ -518,7 +518,7 @@ GEM
     mimemagic (0.3.2)
     mini_magick (4.9.2)
     mini_mime (1.0.0)
-    mini_portile2 (2.3.0)
+    mini_portile2 (2.4.0)
     minitest (5.11.3)
     mods (2.1.0)
       iso-639
@@ -536,8 +536,8 @@ GEM
     noid-rails (3.0.0)
       actionpack (>= 5.0.0, < 6)
       noid (~> 0.9)
-    nokogiri (1.8.3)
-      mini_portile2 (~> 2.3.0)
+    nokogiri (1.10.1)
+      mini_portile2 (~> 2.4.0)
     nom-xml (0.6.0)
       activesupport (>= 3.2.18)
       i18n
@@ -961,4 +961,4 @@ DEPENDENCIES
   zk
 
 BUNDLED WITH
-   1.16.6
+   1.17.3

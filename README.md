@@ -58,7 +58,7 @@ gem install dory
 dory up
 ```
 
-Then the app is available at "http://palni.docker" or whatever the directory name you chose is.
+Then the app is available at "http://pals.docker" or whatever the directory name you chose is.
 
 # Developing
 

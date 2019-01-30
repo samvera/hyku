@@ -28,7 +28,17 @@ class CreateAccount
     Apartment::Tenant.create(account.tenant) do
       initialize_account_data
       account.switch do
-        AdminSet.find_or_create_default_admin_set_id
+        default = Hyrax::CollectionType.find_or_create_default_collection_type
+        admin_set = Hyrax::CollectionType.find_or_create_admin_set_type
+        collection_types = Hyrax::CollectionType.all
+        collection_types.each do |c|
+          next unless c.title =~ /^translation missing/
+          oldtitle = c.title
+          c.title = I18n.t(c.title.gsub("translation missing: en.", ''))
+          c.save
+          puts "#{oldtitle} changed to #{c.title}"
+        end
+
         if user.present?
           user.add_default_roles
         end

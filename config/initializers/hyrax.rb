@@ -58,7 +58,7 @@ Hyrax.config do |config|
   # config.libreoffice_path = "soffice"
 
   # Stream realtime notifications to users in the browser
-  # config.realtime_notifications = true
+  config.realtime_notifications = false 
 
   # Which RDF term should be used to relate objects to an admin set?
   # If this is a new repository, you may want to set a custom predicate term here to

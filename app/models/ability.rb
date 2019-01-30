@@ -35,7 +35,6 @@ class Ability
     return unless superadmin?
 
     can :manage, :all
-    can :peek, Hyku::Application
   end
 
   def superadmin?

@@ -18,9 +18,6 @@
 //= require dataTables/jquery.dataTables
 //= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
 //= require turbolinks
-//= require peek
-//= require peek/views/faraday
-//= require peek/views/performance_bar
 // Required by Blacklight
 //= require blacklight/blacklight
 

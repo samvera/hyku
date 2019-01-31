@@ -160,8 +160,9 @@ en:
         edit: Edit Account
         header: Manage Account
         remove: Remove
-  proprietor:
     users:
+      edit:
+        header: Edit User
       index:
         create_new: Create New
         email: Email
@@ -171,10 +172,13 @@ en:
         title: Title
         affiliation: Affiliation
         actions: Actions
+        header: Manage Users
+        confirm_delete: Are you sure you wish to delete this user?
       show:
         add: Add
         update: Update
         edit: Edit
+        header: Manage User
   status:
     index:
       services: Services

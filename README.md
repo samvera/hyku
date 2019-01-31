@@ -105,4 +105,3 @@ This software is brought to you by the Samvera community.  Learn more at the
 [Samvera website](http://samvera.org/).
 
 ![Samvera Logo](https://wiki.duraspace.org/download/thumbnails/87459292/samvera-fall-font2-200w.png?version=1&modificationDate=1498550535816&api=v2)
-

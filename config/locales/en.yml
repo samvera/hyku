@@ -161,6 +161,8 @@ en:
         header: Manage Account
         remove: Remove
     users:
+      edit:
+        header: Edit User
       index:
         create_new: Create New
         email: Email
@@ -176,6 +178,7 @@ en:
         add: Add
         update: Update
         edit: Edit
+        header: Manage User
   status:
     index:
       services: Services

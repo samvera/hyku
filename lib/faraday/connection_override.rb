@@ -1,3 +1,4 @@
+require 'faraday/connection'
 module Faraday
   # Public: Connection objects manage the default properties and the middleware
   # stack for fulfilling an HTTP request.
@@ -81,11 +82,13 @@ module Faraday
 
       @proxy = nil
       proxy(options.fetch(:proxy) {
-        uri = nil
+              uri = nil
+              Rails.logger.error("~~~~~~~~ #{url}")
         if URI.parse("").respond_to?(:find_proxy)
           case url
           when String
-            uri = URI.parse(url).find_proxy
+            uri = Utils.URI(url)
+            uri = URI.parse("#{uri.scheme}://#{uri.hostname}").find_proxy
           when URI
             uri = url.find_proxy
           when nil

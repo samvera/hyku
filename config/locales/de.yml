@@ -106,9 +106,11 @@ de:
           hints:
             banner_image: Um ein Bild als Überschriften-Hintergrund zu verwenden, solltest du ein Bild (JPG, GIF oder PNG) verwenden, das mindestens 120 Pixel hoch und 1200 Pixel breit ist. Für beste Ergebnisse verwenden Sie ein Bild mindestens 1800 Pixel breit.
             logo_image: Um ein Bild als Logo zu verwenden, sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das nicht größer als die Kopfzeile und nicht breiter als 400 Pixel ist.
+            directory_image: Um ein Bild als Verzeichnisbild zu verwenden, sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das nicht größer als der Header und nicht breiter als 400 Pixel ist.
             default_image: Für Standardbilder sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das die gleiche Höhe und Breite hat (100 Pixel breit und 100 Pixel hoch).
           tabs:
             banner_image: Banner Bild
+            directory_image: Verzeichnis Bild
             default_images: Standardbilder
             colors: Farben
             custom_css: Maßgeschneidert CSS

@@ -36,7 +36,7 @@ RSpec.describe Hyrax::Admin::AppearancesController, type: :controller, singleten
 
       context "with valid params" do
         let(:valid_attributes) do
-          { banner_image: "image.jpg" }
+          { banner_image: "image.jpg", directory_image: "image.jpg" }
         end
 
         it "sets a banner image" do
@@ -46,6 +46,15 @@ RSpec.describe Hyrax::Admin::AppearancesController, type: :controller, singleten
           expect(response).to redirect_to(hyrax.admin_appearance_path(locale: 'en'))
           expect(flash[:notice]).to include("The appearance was successfully updated")
           expect(Site.instance.banner_image?).to be true
+        end
+
+        it "sets a directory image" do
+          expect(Site.instance.directory_image?).to be false
+          f = fixture_file_upload('/images/nypl-hydra-of-lerna.jpg', 'image/jpg')
+          post :update, params: { admin_appearance: { directory_image: f } }
+          expect(response).to redirect_to(hyrax.admin_appearance_path(locale: 'en'))
+          expect(flash[:notice]).to include("The appearance was successfully updated")
+          expect(Site.instance.directory_image?).to be true
         end
 
         it "redirects to the site" do

@@ -102,7 +102,7 @@ gem 'lograge'
 
 gem 'zk'
 
-gem 'mods', '~> 2.1'
+gem 'mods', '~> 2.4'
 gem 'riiif', '~> 1.1'
 
 gem 'iiif_manifest', '~> 0.5.0'

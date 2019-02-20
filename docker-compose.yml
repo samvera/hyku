@@ -62,6 +62,14 @@ services:
     networks:
       internal:
 
+  base:
+    image: registry.gitlab.com/notch8/palni-palci/base:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.base
+    env_file:
+      - .env
+
   app:
     build: .
     image: registry.gitlab.com/notch8/palni-palci:${TAG:-latest}
@@ -89,7 +97,7 @@ services:
 # version and location of fits are set in Dockerfile:
       - LD_LIBRARY_PATH=/opt/fits/tools/mediainfo/linux
     volumes:
-      - .:/data/
+      - .:/home/app/webapp
     networks:
       internal:
 

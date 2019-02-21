@@ -2,7 +2,7 @@ class FcrepoEndpoint < Endpoint
   store :options, accessors: %i[url base_path]
 
   def switch!
-    ActiveFedora::Fedora.register(options.symbolize_keys)
+    ActiveFedora::Fedora.register(switchable_options.symbolize_keys)
   end
 
   def self.reset!

@@ -21,12 +21,14 @@ module ActiveFedora
 
     def initialize(config)
       @config = config
-      Rails.logger.error("------------- #{@config[:url]}")
+      Rails.logger.error("------------- #{@config} ~ s:#{ENV['SOLR_URL']} ~ f:#{ENV['FEDORA_URL']}")
+      if @config[:url].blank?
+        Rails.logger.error("+++++++++++++ #{caller}")
+      end
       validate_options
     end
 
     def host
-      Rails.logger.error("+++++++++++++ #{@config[:url]}")
       @config[:url].sub(/\/$/, BLANK)
     end
 

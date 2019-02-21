@@ -2,7 +2,7 @@ class RedisEndpoint < Endpoint
   store :options, accessors: [:namespace]
 
   def switch!
-    Hyrax.config.redis_namespace = options[:namespace]
+    Hyrax.config.redis_namespace = switchable_options[:namespace]
   end
 
   # Reset the Redis namespace back to the default value

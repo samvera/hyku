@@ -12,7 +12,7 @@ class SolrEndpoint < Endpoint
   def connection_options
     bl_defaults = Blacklight.connection_config
     af_defaults = ActiveFedora::SolrService.instance.conn.options
-    options.reverse_merge(bl_defaults).reverse_merge(af_defaults)
+    switchable_options.reverse_merge(bl_defaults).reverse_merge(af_defaults)
   end
 
   def ping

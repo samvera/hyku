@@ -83,7 +83,6 @@ module Faraday
       @proxy = nil
       proxy(options.fetch(:proxy) {
               uri = nil
-              Rails.logger.error("~~~~~~~~ #{url}")
         if URI.parse("").respond_to?(:find_proxy)
           case url
           when String

@@ -1,18 +1,14 @@
-FROM ruby:2.5.3
-RUN apt-get update -qq && \
-    apt-get install -y build-essential libpq-dev nodejs libreoffice imagemagick unzip ghostscript && \
-    rm -rf /var/lib/apt/lists/*
-# If changes are made to fits version or location,
-# amend `LD_LIBRARY_PATH` in docker-compose.yml accordingly.
-RUN mkdir -p /opt/fits && \
-    curl -fSL -o /opt/fits/fits-latest.zip https://projects.iq.harvard.edu/files/fits/files/fits-1.3.0.zip && \
-    cd /opt/fits && unzip fits-latest.zip && chmod +X /opt/fits/fits.sh
+FROM registry.gitlab.com/notch8/palni-palci/base:latest
 
-RUN mkdir /data
-WORKDIR /data
-ADD Gemfile /data/Gemfile
-ADD Gemfile.lock /data/Gemfile.lock
-RUN bundle install
-ADD . /data
-RUN bundle exec rake assets:precompile
-EXPOSE 3000
+ADD https://time.is/just build-time
+COPY ops/nginx.sh /etc/service/nginx/run
+COPY ops/webapp.conf /etc/nginx/sites-enabled/webapp.conf
+COPY ops/env.conf /etc/nginx/main.d/env.conf
+
+COPY  --chown=app . $APP_HOME
+
+RUN /sbin/setuser app bash -l -c "set -x && \
+    (bundle check || bundle install) && \
+    bundle exec rake assets:clobber assets:precompile DB_ADAPTER=nulldb"
+
+CMD ["/sbin/my_init"]

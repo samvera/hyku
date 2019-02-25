@@ -84,6 +84,18 @@ RSpec.describe NilSite do
     it { is_expected.to be nil }
   end
 
+  describe "#directory_image?" do
+    subject { instance.directory_image? }
+
+    it { is_expected.to be false }
+  end
+
+  describe "#directory_image" do
+    subject { instance.directory_image }
+
+    it { is_expected.to be nil }
+  end
+
   describe "#primary_key" do
     subject { instance.primary_key }
 

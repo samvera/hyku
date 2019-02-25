@@ -13,6 +13,9 @@
           <a href="#banner_image" role="tab" data-toggle="tab"><%= t('.tabs.banner_image') %></a>
         </li>
         <li>
+          <a href="#directory_image" role="tab" data-toggle="tab"><%= t('.tabs.directory_image') %></a>
+        </li>
+        <li>
           <a href="#default_images" role="tab" data-toggle="tab"><%= t('.tabs.default_images') %></a>
         </li>
         <li>
@@ -55,7 +58,7 @@
               <div class="panel-body">
                 <%# Upload Banner Image %>
                 <%= f.input :banner_image, as: :file, wrapper: :vertical_file_input, hint: t('.hints.banner_image') %>
-                <%= image_tag @form.banner_image.url, class: "img-responsive" if @form.banner_image? %>                
+                <%= image_tag @form.banner_image.url, class: "img-responsive" if @form.banner_image? %>
               </div>
               <div class="panel-footer">
                 <%= f.button :submit, class: 'btn-primary pull-right' %>
@@ -65,6 +68,28 @@
               <div class="panel-footer">
                 <%= simple_form_for @form.site, url: main_app.site_path(@form.site) do |f| %>
                   <%= f.button :submit, 'Remove banner image', type: :submit, class: 'btn-danger', name: :remove_banner_image %>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <div id="directory_image" class="tab-pane">
+          <div class="panel panel-default labels">
+            <%= simple_form_for @form, url: admin_appearance_path do |f| %>
+              <div class="panel-body">
+                <%# Upload Directory Image %>
+                <%= f.input :directory_image, as: :file, wrapper: :vertical_file_input, hint: t('.hints.directory_image') %>
+                <%= image_tag @form.directory_image.url, class: "img-responsive" if @form.directory_image? %>
+              </div>
+              <div class="panel-footer">
+                <%= f.button :submit, class: 'btn-primary pull-right' %>
+              </div>
+            <% end %>
+            <% if @form.directory_image? %>
+              <div class="panel-footer">
+                <%= simple_form_for @form.site, url: main_app.site_path(@form.site) do |f| %>
+                  <%= f.button :submit, 'Remove directory image', type: :submit, class: 'btn-danger', name: :remove_directory_image %>
                 <% end %>
               </div>
             <% end %>

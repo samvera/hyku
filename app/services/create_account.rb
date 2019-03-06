@@ -1,12 +1,12 @@
 # Initialize and configure external dependencies for an Account
 class CreateAccount
-  attr_reader :account, :user
+  attr_reader :account, :users
 
   ##
   # @param [Account]
-  def initialize(account, user=nil)
+  def initialize(account, users=[])
     @account = account
-    @user = user
+    @users = users
   end
 
   # @return [Boolean] true if save and jobs spawning were successful
@@ -39,9 +39,12 @@ class CreateAccount
           puts "#{oldtitle} changed to #{c.title}"
         end
 
-        if user.present?
-          user.add_default_roles
+        self.users.each do |user|
+          user.add_role :admin, account.sites.first
+          user.add_role :superadmin
         end
+
+        true
       end
     end
   end

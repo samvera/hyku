@@ -41,6 +41,7 @@ class Account < ApplicationRecord
   validates :tenant, presence: true, uniqueness: true
   validates :cname, presence: true, uniqueness: true, exclusion: { in: [default_cname('')] }
 
+  has_many :sites
   belongs_to :solr_endpoint, dependent: :delete
   belongs_to :fcrepo_endpoint, dependent: :delete
   belongs_to :redis_endpoint, dependent: :delete

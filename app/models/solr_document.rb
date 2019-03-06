@@ -29,4 +29,20 @@ class SolrDocument
 
   attribute :extent, Solr::Array, solr_name('extent')
   attribute :rendering_ids, Solr::Array, solr_name('hasFormat', :symbol)
+
+  field_semantics.merge!(
+    contributor: 'contributor_tesim',
+    creator: 'creator_tesim',
+    date: 'date_created_tesim',
+    description: 'description_tesim',
+    identifier: 'identifier_tesim',
+    language: 'language_tesim',
+    publisher: 'publisher_tesim',
+    relation: 'nesting_collection__pathnames_ssim',
+    rights: 'rights_statement_tesim',
+    subject: 'subject_tesim',
+    title: 'title_tesim',
+    type: 'human_readable_type_tesim'
+  )
+
 end

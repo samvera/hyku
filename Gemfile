@@ -105,10 +105,8 @@ group :aws do
   gem 'active_elastic_job', '~> 2.0'
 end
 
+gem 'codemirror-rails'
 gem 'sidekiq'
-
 gem 'secure_headers'
-
 gem 'honeybadger', '~> 3.0'
-
 gem 'riiif', '~> 1.1'

@@ -11,7 +11,8 @@ class NilSite
 
   # Return nil for all these attributes
   attr_reader :id, :account, :application_name, :institution_name,
-              :institution_name_full, :banner_image, :primary_key
+              :institution_name_full, :banner_image, :primary_key,
+              :logo_image, :default_collction_image, :default_work_image
 
   def reload
     NilSite.instance
@@ -32,4 +33,25 @@ class NilSite
   def banner_image?
     false
   end
+
+  def logo_image?
+    false
+  end
+
+  def default_collection_image?
+    false
+  end
+
+  def default_collection_image
+    nil
+  end
+
+  def default_work_image?
+    false
+  end
+
+  def default_work_image
+    nil
+  end
+
 end

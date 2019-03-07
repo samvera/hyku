@@ -17,7 +17,7 @@ RSpec.describe SitesController, type: :controller, singletenant: true do
 
     context "site with existing banner image" do
       before do
-        expect(BannerImageUploader).to receive(:storage).and_return(CarrierWave::Storage::File).at_least(3).times
+        expect(Hyrax::UploadedFileUploader).to receive(:storage).and_return(CarrierWave::Storage::File).at_least(3).times
         f = fixture_file_upload('/images/nypl-hydra-of-lerna.jpg', 'image/jpg')
         Site.instance.update(banner_image: f)
       end

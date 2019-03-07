@@ -12,7 +12,8 @@
  *
  *= require codemirror
  *= require codemirror-theme
- *= require hyrax
  *= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
+ *= require fontselect
+ *= require hyrax
  *= require_self
  */

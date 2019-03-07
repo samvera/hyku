@@ -19,9 +19,9 @@ module Hyrax
           ActiveModel::Name.new(self, Hyrax, "Hyrax::Admin::Appearance")
         end
 
-        # Override this method if your form takes more than just the color_params
+        # Override this method if your form takes more than just the customization_params
         def self.permitted_params
-          color_params
+          customization_params
         end
 
         # Required to back a form
@@ -32,6 +32,16 @@ module Hyrax
         # Required to back a form (for route determination)
         def persisted?
           true
+        end
+
+        # The font for the body copy
+        def body_font
+          block_for('body_font', '"Helvetica Neue", Helvetica, Arial, sans-serif;')
+        end
+
+        # The font for the headline copy
+        def headline_font
+          block_for('headline_font', '"Helvetica Neue", Helvetica, Arial, sans-serif;')
         end
 
         # The color for the background of the header and footer bars
@@ -57,7 +67,7 @@ module Hyrax
           darken_color(searchbar_background_color, 0.35)
         end
 
-        def searchbar_background_hover_color 
+        def searchbar_background_hover_color
           block_for('searchbar_background_hover_color', '#ffffff')
         end
 
@@ -72,7 +82,7 @@ module Hyrax
         def searchbar_text_hover_color
           block_for('searchbar_text_hover_color', '#eeeeee')
         end
-      
+
         # The color links
         def link_color
           block_for('link_color', '#2e74b2')
@@ -136,9 +146,10 @@ module Hyrax
 
         # The custom css module
         def custom_css_block
-          block_for('custom_css_block', '/* custom stylesheet */')
-        # DEFAULT BUTTON COLORS
+          block_for('custom_css_block', '/* custom stylesheet */').html_safe
         end
+
+        # DEFAULT BUTTON COLORS
         
         # The background color for "default" buttons
         def default_button_background_color
@@ -201,7 +212,7 @@ module Hyrax
         end
 
         # The color for the facet header text
-        def facet_panel_text_color 
+        def facet_panel_text_color
           block_for('facet_panel_text_color', '#333333')
         end
 
@@ -212,14 +223,17 @@ module Hyrax
 
         # Persist the form values
         def update!
-          self.class.color_params.each do |field|
+          self.class.customization_params.each do |field|
             update_block(field, attributes[field]) if attributes[field]
           end
         end
 
-        # A list of parameters that are related to custom colors
-        def self.color_params
-          [:header_background_color,
+        # A list of parameters that are related to customizations
+        def self.customization_params
+          [
+           :body_font,
+           :headline_font,
+           :header_background_color,
            :header_text_color,
            :link_color,
            :link_hover_color,
@@ -240,35 +254,57 @@ module Hyrax
           ]
         end
 
+        def font_import_url
+          headline = headline_font.split('|').first.to_s.tr(" ", "+")
+          body = body_font.split('|').first.to_s.tr(" ", "+")
+
+          "http://fonts.googleapis.com/css?family=#{headline}|#{body}".html_safe
+        end
+
+        def font_body_family
+          format_font_names(body_font)
+        end
+
+        def font_headline_family
+          format_font_names(headline_font)
+        end
+
         private
 
-          def darken_color(hex_color, adjustment = 0.2)
-            amount = 1.0 - adjustment
-            hex_color = hex_color.delete('#')
-            rgb = hex_color.scan(/../).map(&:hex)
-            rgb[0] = (rgb[0].to_i * amount).round
-            rgb[1] = (rgb[1].to_i * amount).round
-            rgb[2] = (rgb[2].to_i * amount).round
-            format("#%02x%02x%02x", *rgb)
-          end
+        def darken_color(hex_color, adjustment = 0.2)
+          amount = 1.0 - adjustment
+          hex_color = hex_color.delete('#')
+          rgb = hex_color.scan(/../).map(&:hex)
+          rgb[0] = (rgb[0].to_i * amount).round
+          rgb[1] = (rgb[1].to_i * amount).round
+          rgb[2] = (rgb[2].to_i * amount).round
+          format("#%02x%02x%02x", *rgb)
+        end
 
-          def convert_to_rgba(hex_color, alpha = 0.5 )
-            hex_color = hex_color.delete('#')
-            rgb = hex_color.scan(/../).map(&:hex)
-            rgba = "rgba(#{rgb[0]}, #{rgb[1]}, #{rgb[2]}, #{alpha})"
-          end
+        def convert_to_rgba(hex_color, alpha = 0.5)
+          hex_color = hex_color.delete('#')
+          rgb = hex_color.scan(/../).map(&:hex)
+          "rgba(#{rgb[0]}, #{rgb[1]}, #{rgb[2]}, #{alpha})"
+        end
 
-          def block_for(name, default_value)
-            block = ContentBlock.find_by(name: name)
-            block ? block.value : default_value
-          end
+        def block_for(name, default_value)
+          block = ContentBlock.find_by(name: name)
+          block ? block.value : default_value
+        end
 
-          # Persist a key/value tuple as a ContentBlock
-          # @param [Symbol] name the identifier for the ContentBlock
-          # @param [String] value the value to set
-          def update_block(name, value)
-            ContentBlock.find_or_create_by(name: name.to_s).update!(value: value)
-          end
+        # Persist a key/value tuple as a ContentBlock
+        # @param [Symbol] name the identifier for the ContentBlock
+        # @param [String] value the value to set
+        def update_block(name, value)
+          ContentBlock.find_or_create_by(name: name.to_s).update!(value: value)
+        end
+
+        def format_font_names(font_style)
+          # the fonts come with `Font Name:font-weight` - this removes the weight
+          parts = font_style.split(':')
+          # Google fonts use `+` in place of spaces. This fixes it for CSS.
+          parts[0].tr('+', ' ').html_safe
+        end
       end
     end
   end

@@ -5,6 +5,9 @@
 
   .navbar-right {
     margin-right: 10px;
+    img {
+      max-height: 50px;
+    }
   }
 
   .glyphicon {
@@ -12,6 +15,13 @@
   }
 }
 
+@media (min-width: $screen-sm-min) {
+  .logo-set {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+}
 
 .jumbotron {
   background: image_url('white-cloud-background.jpg') repeat-x;
@@ -198,5 +208,13 @@ footer.navbar {
   h5,
   h6 {
     color: $brand-danger;
+  }
+}
+
+.logo-set {
+  min-height: 320px;
+  img {
+    vertical-align: middle;
+    display: inline;
   }
 }

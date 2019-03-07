@@ -38,6 +38,7 @@ class CreateAccount
           c.save
           puts "#{oldtitle} changed to #{c.title}"
         end
+        AdminSet.find_or_create_default_admin_set_id
 
         self.users.each do |user|
           user.add_role :admin, account.sites.first

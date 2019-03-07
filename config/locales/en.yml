@@ -176,6 +176,8 @@ en:
         actions: Actions
         header: Manage Users
         confirm_delete: Are you sure you wish to delete this user?
+      new:
+        header: Create a new user
       show:
         add: Add
         update: Update

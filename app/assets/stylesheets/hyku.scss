@@ -5,6 +5,7 @@
 
   .navbar-right {
     margin-right: 10px;
+
     img {
       max-height: 50px;
     }
@@ -18,8 +19,8 @@
 @media (min-width: $screen-sm-min) {
   .logo-set {
     display: flex;
-    justify-content: center;
     flex-direction: column;
+    justify-content: center;
   }
 }
 
@@ -213,8 +214,9 @@ footer.navbar {
 
 .logo-set {
   min-height: 320px;
+
   img {
-    vertical-align: middle;
     display: inline;
+    vertical-align: middle;
   }
 }

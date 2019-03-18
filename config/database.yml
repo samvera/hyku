@@ -15,7 +15,7 @@ development:
 
 test:
   <<: *login
-  database: <%= ENV['TEST_DB'] || 'hyku-test' %>
+  database: <%= ENV['TEST_DB'] || 'hyku_test' %>
 
 staging:
   <<: *login

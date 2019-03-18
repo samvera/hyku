@@ -15,6 +15,12 @@ class CreateSolrCollectionJob < ActiveJob::Base
     account.create_solr_endpoint(url: collection_url(name), collection: name)
   end
 
+  def without_account(name)
+    return if collection_exists?(name)
+    client.get '/solr/admin/collections', params: collection_options.merge(action: 'CREATE',
+                                                                           name: name)
+  end
+
   # Transform settings from nested, snaked-cased options to flattened, camel-cased options
   class CollectionOptions
     attr_reader :settings

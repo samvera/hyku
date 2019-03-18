@@ -2,7 +2,7 @@
 port: 8985
 collection:
   dir: solr/config/
-  name: hydra-test
+  name: hyku-test
 
 cloud: true
 

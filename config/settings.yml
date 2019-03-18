@@ -63,3 +63,10 @@ devise:
   account_signup: true
   # The address from which user invitations are sent
   invitation_from_email: "change-me-in-hyku-settings@example.org"
+
+oai:
+  name: Hyku
+  url: http://example.org/catalog/oai
+  prefix: oai:hyku
+  email: change-me-in-hyku-settings@example.org
+  sample_id: 806bbc5e-8ebe-468c-a188-b7c14fbe34df

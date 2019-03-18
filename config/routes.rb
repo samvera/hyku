@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
+  concern :oai_provider, BlacklightOaiProvider::Routes.new
 
   mount Riiif::Engine => 'images', as: :riiif if Hyrax.config.iiif_image_server?
-  
+
   if Settings.multitenancy.enabled
     constraints host: Account.admin_host do
       get '/account/sign_up' => 'account_sign_up#new', as: 'new_sign_up'
@@ -39,6 +40,8 @@ Rails.application.routes.draw do
   curation_concerns_basic_routes
 
   resource :catalog, only: [:index], as: 'catalog', path: '/catalog', controller: 'catalog' do
+    concerns :oai_provider
+
     concerns :searchable
   end
 

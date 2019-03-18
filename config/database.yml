@@ -3,7 +3,7 @@
 login: &login
   adapter: <%= ENV['DB_ADAPTER'] || 'postgresql' %>
   host: <%= ENV['POSTGRES_HOST'] %>
-  username: <%= ENV['POSTGRES_USER'] || %>
+  username: <%= ENV['POSTGRES_USER'] %>
   password: <%= ENV['POSTGRES_PASSWORD'] %>
   database: <%= ENV['POSTGRES_DB'] || 'hyku' %>
   pool: 5

@@ -108,6 +108,7 @@ services:
   web:
     extends:
       service: app
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails server -p 3000 -b '0.0.0.0'"
     environment:
       - VIRTUAL_PORT=3000
       - VIRTUAL_HOST=hyku.docker
@@ -122,6 +123,8 @@ services:
       - db_migrate
     expose:
       - 80
+    ports: 
+    - 3000:3000
 
   workers:
     extends:

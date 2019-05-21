@@ -231,7 +231,9 @@ module Hyrax
 
         def add_new_banner(uploaded_file_ids)
           file = uploaded_files(uploaded_file_ids).first
+          ## New code
           file_location = process_file_location(file)
+          ## END NEW CODE
           banner_info = CollectionBrandingInfo.new(
             collection_id: @collection.id,
             filename: File.split(file.file_url).last,
@@ -257,7 +259,9 @@ module Hyrax
 
         def create_logo_info(uploaded_file_id, alttext, linkurl)
           file = uploaded_files(uploaded_file_id)
+          ## New code
           file_location = process_file_location(file)
+          ## end new code
           logo_info = CollectionBrandingInfo.new(
             collection_id: @collection.id,
             filename: File.split(file.file_url).last,
@@ -462,6 +466,7 @@ module Hyrax
           params.merge(q: params[:cq])
         end
 
+        ## NEW METHOD
         def process_file_location(f)
           if f.file_url.match(/^http/)
             f.file.download!(f.file_url)
@@ -472,6 +477,7 @@ module Hyrax
             f.file_url
           end
         end
+        ## END NEW CODE
     end
   end
 end

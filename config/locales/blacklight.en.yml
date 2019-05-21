@@ -8,6 +8,7 @@ en:
           creator_sim: Creator
           file_format_sim: Format
           generic_type_sim: Type
+          depositor_ssim: Depositor
           keyword_sim: Keyword
           language_sim: Language
           publisher_sim: Publisher

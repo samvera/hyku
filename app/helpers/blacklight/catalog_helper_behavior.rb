@@ -212,7 +212,7 @@ module Blacklight::CatalogHelperBehavior
 
       image_tag url, image_options if url.present?
     end
-    
+
     if value
       if url_options == false
         Deprecation.warn(self, "passing false as the second argument to render_thumbnail_tag is deprecated. Use suppress_link: true instead. This behavior will be removed in Blacklight 7")
@@ -223,6 +223,8 @@ module Blacklight::CatalogHelperBehavior
       else
         link_to_document document, value, url_options
       end
+    else
+      image_tag default_work_image, image_options
     end
   end
 

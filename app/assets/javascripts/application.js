@@ -15,6 +15,7 @@
 //= require codemirror/modes/css
 //= require jquery3
 //= require jquery_ujs
+//= require jquery.fontselect
 //= require dataTables/jquery.dataTables
 //= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
 //= require turbolinks
@@ -32,6 +33,4 @@
 //= require flot_graph
 //= require statistics_tab_manager
 //= require blacklight_gallery/default
-
-
-//= require jquery.fontselect
+//= require admin_font_select

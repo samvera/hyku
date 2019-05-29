@@ -25,7 +25,9 @@
 }
 
 .jumbotron {
-  background: image_url('white-cloud-background.jpg') repeat-x;
+  background: image_url('CommonsArchive_Logo_Wordsblue__1_.png') no-repeat;
+  background-position: center;
+  height: 220px;
   background-color: $gray-lighter;
   border: 0;
   font-family: $primary-font-family;

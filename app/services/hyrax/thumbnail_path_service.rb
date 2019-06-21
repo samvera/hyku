@@ -36,7 +36,7 @@ module Hyrax
         end
 
         def default_image
-          Site.instance.default_work_image
+          Site.instance.default_work_image.present? ? Site.instance.default_work_image : ActionController::Base.helpers.image_path('default.png')
         end
 
         def audio_image

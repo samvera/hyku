@@ -19,7 +19,7 @@ module Hyrax
         send_local_content
       else
         if params[:file] == "thumbnail"
-	        redirect_to Site.instance.default_work_image.url(:medium)
+	        redirect_to Site.instance.default_work_image.present? ? Site.instance.default_work_image.url(:medium) : view_context.image_path('work.png')
         else
           raise ActiveFedora::ObjectNotFoundError
         end

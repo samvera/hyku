@@ -21,6 +21,7 @@
 //= require turbolinks
 // Required by Blacklight
 //= require blacklight/blacklight
+//= require admin_font_select
 
 // Moved the Hyku JS *above* the Hyrax JS to resolve #1187 (following
 // a pattern found in ScholarSphere)
@@ -33,4 +34,3 @@
 //= require flot_graph
 //= require statistics_tab_manager
 //= require blacklight_gallery/default
-//= require admin_font_select

@@ -34,6 +34,7 @@ Welcome to the Hyku development wiki!
 
 # Management
 * [[Create super admin user]]
+* [[Super Admin vs Admin]]
 * [[Set email addresses]]
 * [[Give tenant user admin role]]
 * [[Issues with images not rendering]]

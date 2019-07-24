@@ -144,13 +144,13 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)
+    Account.destroy_all
     CreateSolrCollectionJob.new.without_account('hydra-test') if ENV['IN_DOCKER']
   end
 
   config.before(:each) do |example|
     # Pass `:clean' to destroy objects in fedora/solr and start from scratch
     ActiveFedora::Cleaner.clean! if example.metadata[:clean]
-
     if example.metadata[:type] == :feature && Capybara.current_driver != :rack_test
       DatabaseCleaner.strategy = :truncation
     else

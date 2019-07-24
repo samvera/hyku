@@ -13,7 +13,6 @@ volumes:
   assets:
 
 networks:
-  external:
   internal:
 
 services:
@@ -79,7 +78,6 @@ services:
     expose:
       - 8983
     volumes:
-      - .:/app
       - solr:/opt/solr/server/solr
     networks:
       internal:
@@ -93,6 +91,7 @@ services:
     volumes:
       - fcrepo:/data
     environment:
+      # - JAVA_OPTS=-Dfcrepo.modeshape.configuration="classpath:/config/jdbc-postgresql-s3/repository.json" -Dfcrepo.postgresql.host="db" -Dfcrepo.postgresql.username="postgres" -Dfcrepo.postgresql.password="DatabaseFTW" -Daws.accessKeyId="REPLACE_WITH_AWS_ID" -Daws.secretKey="REPLACE_WITH_AWS_SECRET_KEY" -Daws.bucket="REPLACE_WITH_BUCKET_NAME" 
       - JAVA_OPTS=${JAVA_OPTS} -Dfcrepo.modeshape.configuration="classpath:/config/file-simple/repository.json" -Dfcrepo.object.directory="/data/objects" -Dfcrepo.binary.directory="/data/binaries"
     networks:
       internal:
@@ -106,16 +105,7 @@ services:
     networks:
       internal:
 
-  base:
-    image: hyku/base:latest
-    build:
-      context: .
-      dockerfile: Dockerfile.base
-    env_file:
-      - .env
-
   app:
-    build: .
     image: hyku/main:latest
     env_file:
       - .env
@@ -124,6 +114,7 @@ services:
       - FEDORA_URL=http://fcrepo:8080/fcrepo/rest
       - IN_DOCKER=true
       - LD_LIBRARY_PATH=/opt/fits/tools/mediainfo/linux
+      - PASSENGER_APP_ENV=production
       - RAILS_CACHE_STORE_URL=memcache
       - RAILS_LOG_TO_STDOUT=true
       - REDIS_HOST=redis
@@ -140,16 +131,12 @@ services:
     volumes:
       - app:/home/app/webapp/tmp/uploads
       - assets:/home/app/webapp/public/assets
-      - .:/home/app/webapp
     networks:
       internal:
 
   web:
     extends:
       service: app
-    environment:
-      - VIRTUAL_PORT=80
-      - VIRTUAL_HOST=hyku.docker
     depends_on:
       - db
       - solr

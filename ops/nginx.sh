@@ -20,6 +20,8 @@ fi
 
 if [[ $PASSENGER_APP_ENV == "production" ]] || [[ $PASSENGER_APP_ENV == "staging" ]]
 then
+    /bin/bash -l -c 'chown -R app:app /home/app/webapp/tmp' # mounted volume may have wrong permissions
+    /bin/bash -l -c 'chown -R app:app /home/app/webapp/public/assets' # mounted volume may have wrong permissions
     /sbin/setuser app /bin/bash -l -c 'cd /home/app/webapp && rsync -a public/assets-new/ public/assets/'
 fi
 

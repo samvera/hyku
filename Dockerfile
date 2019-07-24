@@ -10,6 +10,6 @@ COPY  --chown=app . $APP_HOME
 RUN /sbin/setuser app bash -l -c "set -x && \
     (bundle check || bundle install) && \
     bundle exec rake assets:precompile DB_ADAPTER=nulldb && \
-    mv ./public/assets ./public/assets.new"
+    mv ./public/assets ./public/assets-new"
 
 CMD ["/sbin/my_init"]

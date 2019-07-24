@@ -12,3 +12,8 @@ puts "\n== Loading workflows"
 Hyrax::Workflow::WorkflowImporter.load_workflows
 errors = Hyrax::Workflow::WorkflowImporter.load_errors
 abort("Failed to process all workflows:\n  #{errors.join('\n  ')}") unless errors.empty?
+
+unless Settings.multitenancy.enabled
+  single_tenant_default = Account.new(name: 'Single Tenenat', cname: 'single.tenant.default', tenant: 'single')
+  CreateAccount.new(single_tenant_default).save
+end

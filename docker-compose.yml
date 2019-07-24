@@ -11,7 +11,6 @@ volumes:
   assets:
 
 networks:
-  external:
   internal:
 
 services:
@@ -34,7 +33,7 @@ services:
          - zookeeper_cluster
 
   solr:
-    image: solr:7.1
+    image: solr:7.5
     command: solr -c -f -z zoo1:2181
     depends_on:
       - zoo1

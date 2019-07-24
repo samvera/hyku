@@ -32,7 +32,7 @@ before_install:
 
 before_script:
   - bundle exec rake db:create
-  - bundle exec chromedriver-update 74.0.3729.6
+  - bundle exec chromedriver-update 76.0.3809.68
 
 before_deploy:
   - git clean -dxf; rm -rf vendor/bundle

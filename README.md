@@ -21,6 +21,7 @@ Jump In: [![Slack Status](http://slack.samvera.org/badge.svg)](http://slack.samv
     * [On AWS](#on-aws)
     * [With Docker](#with-docker)
     * [With Vagrant](#with-vagrant)
+  * [Single Tenant Mode](#single-tenancy)
   * [Switching accounts](#switching-accounts)
   * [Development dependencies](#development-dependencies)
     * [Postgres](#postgres) 
@@ -63,7 +64,8 @@ The full spec suite can be run in docker locally. There are several ways to do t
 docker-compose exec web rake
 ```
 
-### For development
+### With out Docker
+#### For development
 
 ```bash
 solr_wrapper
@@ -74,7 +76,7 @@ bin/setup
 DISABLE_REDIS_CLUSTER=true bundle exec sidekiq
 DISABLE_REDIS_CLUSTER=true bundle exec rails server -b 0.0.0.0
 ```
-### For testing
+#### For testing
 
 See the [Hyku Development Guide](https://github.com/samvera/hyku/wiki/Hyku-Development-Guide) for how to run tests.
 
@@ -104,6 +106,12 @@ docker-compose up -d
 
 The [samvera-vagrant project](https://github.com/samvera-labs/samvera-vagrant) provides another simple way to get started "kicking the tires" of Hyku (and [Hyrax](http://hyr.ax/)), making it easy and quick to spin up Hyku. (Note that this is not for production or production-like installations.) It requires [VirtualBox](https://www.virtualbox.org/) and [Vagrant](https://www.vagrantup.com/).
 
+## Single Tenant Mode
+
+Much of the default configuration in Hyku is set up to use multi-tenant mode.  This default mode allows Hyku users to run the equivielent of multiple Hyrax installs on a single set of resources. However, sometimes the subdomain splitting mutli-headed complexity is simply not needed.  If this is the case, then single tenant mode is for you.  Single tenant mode will not show the tenant sign up page, or any of the tenant management screens. Instead it shows a single Samvera instance at what ever domain is pointed at the application.
+
+To enable single tenant, in your settings.yml file change multitenancy/enabled to `false` or set `SETTINGS__MULTITENANCY__ENABLED=false` in your `docker-compose.yml` and `docker-compose.production.yml` configs. After changinig this setting, run the seeds to prepopulate the single tenant.
+
 ## Switching accounts
 
 The recommend way to switch your current session from one account to another is by doing:
@@ -116,7 +124,7 @@ AccountElevator.switch!('repo.example.com')
 
 ### Postgres
 
-Hydra-in-a-Box supports multitenancy using the `apartment` gem. `apartment` works best with a postgres database.
+Hyku supports multitenancy using the `apartment` gem. `apartment` works best with a postgres database.
 
 ## Importing
 ### from CSV:

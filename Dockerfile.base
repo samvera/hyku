@@ -1,7 +1,20 @@
 FROM phusion/passenger-ruby25:1.0.2
 
 RUN apt-get update -qq && \
-    apt-get install -y build-essential libpq-dev nodejs libreoffice imagemagick unzip ghostscript libsasl2-dev libpq-dev postgresql-client tzdata && \
+    apt-get install -y \
+                       build-essential \
+                       ghostscript \
+                       imagemagick \
+                       libpq-dev \
+                       libpq-dev nodejs \
+                       libreoffice \
+                       libsasl2-dev \
+                       netcat \
+                       postgresql-client \
+                       rsync \
+                       tzdata \
+                       unzip \
+                       && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 

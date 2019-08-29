@@ -81,7 +81,7 @@ end
 gem 'blacklight', '~> 6.7'
 gem 'blacklight_oai_provider', '~> 6.0'
 
-gem 'hyrax', '~>2.3.0'
+gem 'hyrax', '~> 2.5.1'
 gem 'rsolr', '~> 2.0'
 
 gem 'devise'

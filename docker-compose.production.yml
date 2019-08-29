@@ -18,7 +18,7 @@ networks:
 
 services:
   zoo1:
-    image: zookeeper
+    image: zookeeper:3.4
     restart: always
     environment:
       - ZOO_MY_ID=1
@@ -35,7 +35,7 @@ services:
        aliases:
          - zookeeper_cluster
   zoo2:
-    image: zookeeper
+    image: zookeeper:3.4
     restart: always
     environment:
       - ZOO_MY_ID=2
@@ -52,7 +52,7 @@ services:
        aliases:
          - zookeeper_cluster
   zoo3:
-    image: zookeeper
+    image: zookeeper:3.4
     restart: always
     environment:
       - ZOO_MY_ID=3
@@ -70,7 +70,7 @@ services:
          - zookeeper_cluster
 
   solr:
-    image: solr
+    image: solr:7.1
     command: solr -c -f -z zookeeper_cluster:2181
     depends_on:
       - zoo1
@@ -98,7 +98,7 @@ services:
       internal:
 
   db:
-    image: postgres
+    image: postgres:11.1
     env_file:
       - .env
     volumes:
@@ -206,6 +206,6 @@ services:
       internal:
 
   memcache:
-    image: memcached
+    image: memcached:1.5.14
     networks:
       internal:

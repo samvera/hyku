@@ -16,7 +16,7 @@ networks:
 
 services:
   zoo1:
-    image: zookeeper
+    image: zookeeper:3.4
     restart: always
     environment:
       - ZOO_MY_ID=1
@@ -34,7 +34,7 @@ services:
          - zookeeper_cluster
 
   solr:
-    image: solr
+    image: solr:7.1
     command: solr -c -f -z zoo1:2181
     depends_on:
       - zoo1
@@ -60,7 +60,7 @@ services:
       internal:
 
   db:
-    image: postgres
+    image: postgres:11.1
     env_file:
       - .env
     volumes:
@@ -164,6 +164,6 @@ services:
       internal:
 
   chrome:
-    image: selenium/standalone-chrome
+    image: selenium/standalone-chrome:3.141
     networks:
       internal:

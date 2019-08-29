@@ -48,7 +48,6 @@ jobs:
       SPEC_OPTS: --profile 10 --format RspecJunitFormatter --out /tmp/test-results/rspec.xml --format progress
     steps:
       - samvera/cached_checkout
-      - run: CFLAGS=-Wno-error=format-overflow gem install zookeeper --version 1.4.11
 
       - samvera/bundle:
           ruby_version: << parameters.ruby_version >>
@@ -56,9 +55,8 @@ jobs:
 
       - samvera/install_solr_core:
           solr_config_path: << parameters.solr_config_path >>
-
       - samvera/rubocop
-      - run: bundle exec rake db:create db:schema:load 
+      - run: bundle exec rake db:create db:schema:load zookeeper:upload
       - samvera/parallel_rspec
 workflows:
   ci:

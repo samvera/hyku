@@ -68,5 +68,5 @@ workflows:
           name: "ruby2-5-5"
           solr_config_path: 'solr/config'
       - notify:
-        webhooks:
-          - url: https://coveralls.io/webhook?repo_token=$COVERALLS_REPO_TOKEN
+          webhooks:
+            - url: https://coveralls.io/webhook?repo_token=$COVERALLS_REPO_TOKEN

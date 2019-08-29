@@ -1,7 +1,7 @@
 # Hyku, the Hydra-in-a-Box Repository Application
 
 Code: 
-[![Build Status](https://travis-ci.org/samvera/hyku.svg)](https://travis-ci.org/samvera/hyku)
+[![Build Status](https://circleci.com/gh/samvera/hyku.svg?style=svg)](https://circleci.com/gh/samvera/hyku)
 [![Coverage Status](https://coveralls.io/repos/samvera/hyku/badge.svg?branch=master&service=github)](https://coveralls.io/github/samvera/hyku?branch=master)
 [![Stories in Ready](https://img.shields.io/waffle/label/samvera/hyku/ready.svg)](https://waffle.io/samvera/hyku)
 

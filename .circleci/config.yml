@@ -3,6 +3,10 @@ orbs:
   samvera: samvera/circleci-orb@0
 jobs:
   send_ci_done:
+    parameters:
+      ruby_version:
+        type: string
+        default: 2.5.5
     docker:
       - image: circleci/ruby:<< parameters.ruby_version >>-node-browsers-legacy
     parallelism: 1

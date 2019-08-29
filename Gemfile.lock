@@ -556,7 +556,7 @@ GEM
     noid-rails (3.0.1)
       actionpack (>= 5.0.0, < 6)
       noid (~> 0.9)
-    nokogiri (1.10.3)
+    nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
     nom-xml (1.1.0)
       activesupport (>= 3.2.18)
@@ -730,6 +730,8 @@ GEM
       rspec-mocks (~> 3.6.0)
       rspec-support (~> 3.6.0)
     rspec-support (3.6.0)
+    rspec_junit_formatter (0.4.1)
+      rspec-core (>= 2, < 4, != 2.12.0)
     rubocop (0.52.1)
       parallel (~> 1.10)
       parser (>= 2.4.0.2, < 3.0)
@@ -934,6 +936,7 @@ DEPENDENCIES
   rsolr (~> 2.0)
   rspec
   rspec-rails (>= 3.6.0)
+  rspec_junit_formatter
   rubocop (~> 0.50, <= 0.52.1)
   rubocop-rspec (~> 1.22, <= 1.22.2)
   sass-rails (~> 5.0)

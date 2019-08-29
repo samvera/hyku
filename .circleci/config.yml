@@ -2,6 +2,10 @@ version: 2.1
 orbs:
   samvera: samvera/circleci-orb@0
 jobs:
+  send_ci_done:
+    parallelism: 1
+    steps:
+      - run: curl -k https://coveralls.io/webhook?repo_token=$COVERALLS_REPO_TOKEN -d "payload[build_num]=$CIRCLE_BUILD_NUM&payload[status]=done" 
   bundle_lint_test:
     parameters:
       ruby_version:
@@ -69,4 +73,4 @@ workflows:
           ruby_version: "2.5.5"
           name: "ruby2-5-5"
           solr_config_path: 'solr/config'
-      - run: curl -k https://coveralls.io/webhook?repo_token=$COVERALLS_REPO_TOKEN -d "payload[build_num]=$CIRCLE_BUILD_NUM&payload[status]=done" 
+      - send_ci_done

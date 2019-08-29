@@ -62,7 +62,6 @@ jobs:
       - samvera/parallel_rspec
       - store_artifacts:
           path: coverage
-      - run: curl -k https://coveralls.io/webhook?repo_token=$COVERALLS_REPO_TOKEN -d "payload[build_num]=$CIRCLE_BUILD_NUM&payload[status]=done" 
 workflows:
   ci:
     jobs:
@@ -70,3 +69,4 @@ workflows:
           ruby_version: "2.5.5"
           name: "ruby2-5-5"
           solr_config_path: 'solr/config'
+      - run: curl -k https://coveralls.io/webhook?repo_token=$COVERALLS_REPO_TOKEN -d "payload[build_num]=$CIRCLE_BUILD_NUM&payload[status]=done" 

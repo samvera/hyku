@@ -166,6 +166,10 @@ RSpec.configure do |config|
   end
 
   config.after do
-    DatabaseCleaner.clean
+    begin
+      DatabaseCleaner.clean
+    rescue NoMethodError
+      'This can happen which the database is gone, which depends on load order of tests'
+    end
   end
 end

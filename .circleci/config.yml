@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  samvera: samvera/circleci-orb@dev:generic-bundle
+  samvera: samvera/circleci-orb:generic-bundle
 jobs:
   bundle_lint_test:
     parameters:

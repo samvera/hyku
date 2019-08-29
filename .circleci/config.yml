@@ -3,6 +3,8 @@ orbs:
   samvera: samvera/circleci-orb@0
 jobs:
   send_ci_done:
+    docker:
+      - image: circleci/ruby:<< parameters.ruby_version >>-node-browsers-legacy
     parallelism: 1
     steps:
       - run: curl -k https://coveralls.io/webhook?repo_token=$COVERALLS_REPO_TOKEN -d "payload[build_num]=$CIRCLE_BUILD_NUM&payload[status]=done" 

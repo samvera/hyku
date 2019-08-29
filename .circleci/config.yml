@@ -81,5 +81,6 @@ workflows:
           name: "ruby2-5-5"
           solr_config_path: 'solr/config'
       - send_ci_done:
+          ruby_version: "2.5.5"
           requires:
-            - bundle_lint_test
+            - ruby2-5-5

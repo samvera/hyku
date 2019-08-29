@@ -60,9 +60,9 @@ jobs:
       - samvera/rubocop
       - run: bundle exec rake db:create db:schema:load zookeeper:upload
       - samvera/parallel_rspec
-  notify:
-    webhooks:
-      - url: https://coveralls.io/webhook?repo_token=$COVERALLS_REPO_TOKEN
+    notify:
+      webhooks:
+        - url: https://coveralls.io/webhook?repo_token=$COVERALLS_REPO_TOKEN
 workflows:
   ci:
     jobs:

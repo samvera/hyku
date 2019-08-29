@@ -48,6 +48,7 @@ jobs:
       SPEC_OPTS: --profile 10 --format RspecJunitFormatter --out /tmp/test-results/rspec.xml --format progress
     steps:
       - samvera/cached_checkout
+      - run: CFLAGS=-Wno-error=format-overflow gem install zookeeper --version 1.4.11
 
       - samvera/bundle:
           ruby_version: << parameters.ruby_version >>

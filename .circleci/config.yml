@@ -62,17 +62,7 @@ jobs:
       - samvera/parallel_rspec
       - store_artifacts:
           path: coverage
-  send_ci_done:
-    parameters:
-      ruby_version:
-        type: string
-        default: 2.5.5
-    docker:
-      - image: circleci/ruby:<< parameters.ruby_version >>-node-browsers-legacy
-    parallelism: 1
-    steps:
-      - run: curl -k https://coveralls.io/webhook?repo_token=$COVERALLS_REPO_TOKEN -d "payload[build_num]=$CIRCLE_BUILD_NUM&payload[status]=done" 
-
+      - deploy: curl -k https://coveralls.io/webhook?repo_token=$COVERALLS_REPO_TOKEN -d "payload[build_num]=$CIRCLE_BUILD_NUM&payload[status]=done" 
 workflows:
   ci:
     jobs:
@@ -80,7 +70,3 @@ workflows:
           ruby_version: "2.5.5"
           name: "ruby2-5-5"
           solr_config_path: 'solr/config'
-      - send_ci_done:
-          ruby_version: "2.5.5"
-          requires:
-            - ruby2-5-5

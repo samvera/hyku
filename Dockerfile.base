@@ -32,3 +32,5 @@ RUN  /sbin/setuser app /bin/bash -l -c 'cd /home/app/webapp && DB_ADAPTER=nulldb
 COPY ops/nginx.sh /etc/service/nginx/run
 RUN chmod +x /etc/service/nginx/run
 RUN rm -f /etc/service/nginx/down
+# reenables pdfs in imagemagick see https://ubuntuforums.org/showthread.php?t=2403266
+RUN sed -i '/PDF/s/none/read|write/' /etc/ImageMagick-6/policy.xml

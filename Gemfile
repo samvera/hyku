@@ -55,7 +55,6 @@ end
 
 group :test do
   gem 'capybara'
-  gem 'chromedriver-helper'
   gem 'database_cleaner'
   gem 'factory_bot_rails'
   # rack-test >= 0.71 does not work with older Capybara versions (< 2.17). See #214 for more details
@@ -63,6 +62,7 @@ group :test do
   gem 'rails-controller-testing'
   gem 'rspec_junit_formatter'
   gem 'selenium-webdriver'
+  gem 'webdrivers', '~> 4.0'
   gem 'webmock'
 end
 

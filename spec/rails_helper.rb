@@ -27,7 +27,7 @@ require 'capybara/rails'
 require 'database_cleaner'
 require 'active_fedora/cleaner'
 require 'factory_bot'
-
+require 'webdrivers'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in

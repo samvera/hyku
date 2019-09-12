@@ -23,7 +23,8 @@ RSpec.configure do |config|
                                    'hyku-carrierwave-test.s3.amazonaws.com',
                                    'fcrepo',
                                    'solr',
-                                   'chrome'
+                                   'chrome',
+                                   'chromedriver.storage.googleapis.com'
                                  ])
   end
 

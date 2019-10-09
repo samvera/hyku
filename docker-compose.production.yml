@@ -100,6 +100,10 @@ services:
     image: postgres:11.1
     env_file:
       - .env
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_USER=${DATABASE_USER}
     volumes:
       - db:/var/lib/postgresql/data
     networks:
@@ -110,7 +114,6 @@ services:
     env_file:
       - .env
     environment:
-      - DATABASE_URL=postgresql://postgres@db/postgres
       - FEDORA_URL=http://fcrepo:8080/fcrepo/rest
       - IN_DOCKER=true
       - LD_LIBRARY_PATH=/opt/fits/tools/mediainfo/linux

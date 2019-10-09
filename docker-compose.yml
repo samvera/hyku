@@ -16,7 +16,6 @@ networks:
 services:
   zoo1:
     image: zookeeper:3.4
-    restart: always
     environment:
       - ZOO_MY_ID=1
       - ZOO_SERVERS=server.1=zoo1:2888:3888
@@ -62,6 +61,10 @@ services:
     image: postgres:11.1
     env_file:
       - .env
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_USER=${DATABASE_USER}
     volumes:
       - db:/var/lib/postgresql/data
     networks:
@@ -81,7 +84,6 @@ services:
     env_file:
       - .env
     environment:
-      - DATABASE_URL=postgresql://postgres@db/postgres
       - FEDORA_URL=http://fcrepo:8080/fcrepo/rest
       - IN_DOCKER=true
       - LD_LIBRARY_PATH=/opt/fits/tools/mediainfo/linux
@@ -141,7 +143,6 @@ services:
   initialize_app:
     extends:
       service: app
-    restart: on-failure
     command: bundle exec rails zookeeper:upload
     depends_on:
       - zoo1
@@ -149,7 +150,6 @@ services:
   db_migrate:
     extends:
       service: app
-    restart: on-failure
     command: bundle exec rails db:migrate
     depends_on:
       - db

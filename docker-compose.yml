@@ -14,7 +14,7 @@ networks:
 
 services:
   zoo1:
-    image: zookeeper
+    image: zookeeper:3.4
     environment:
       - ZOO_MY_ID=1
       - ZOO_SERVERS=server.1=zoo1:2888:3888
@@ -31,7 +31,7 @@ services:
          - zookeeper_cluster
 
   solr:
-    image: solr
+    image: solr:7.5.0
     command: solr -c -f -z zoo1:2181
     depends_on:
       - zoo1

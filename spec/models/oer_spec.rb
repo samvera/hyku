@@ -6,6 +6,6 @@ RSpec.describe Oer do
   describe 'indexer' do
     subject { described_class.indexer }
 
-    it { is_expected.to eq OerWorkIndexer }
+    it { is_expected.to eq OerIndexer }
   end
 end

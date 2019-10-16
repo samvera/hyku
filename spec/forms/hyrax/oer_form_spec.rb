@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Hyrax::OerForm do
-  let(:work) { OerWork.new }
+  let(:work) { Oer.new }
   let(:form) { described_class.new(work, nil, nil) }
   let(:file_set) { FactoryBot.create(:file_set) }
 

@@ -339,15 +339,15 @@ class CatalogController < ApplicationController
 
     config.oai = {
       provider: {
-        repository_name: 'Commons Archive',
-        repository_url: 'http://commons-archive.org/catalog/oai',
-        record_prefix: 'oai:commons-archive',
-        admin_email: 'info@commons-archive.org',
-        sample_id: '806bbc5e-8ebe-468c-a188-b7c14fbe34df'
+        repository_name: Settings.oai.name,
+        repository_url: Settings.oai.url,
+        record_prefix: Settings.oai.prefix,
+        admin_email: Settings.oai.email,
+        sample_id: Settings.oai.sample_id
       },
       document: {
-        limit: 25,            # number of records returned with each request, default: 15
-        set_fields: [        # ability to define ListSets, optional, default: nil
+        limit: 25, # number of records returned with each request, default: 15
+        set_fields: [ # ability to define ListSets, optional, default: nil
           { label: 'collection', solr_field: 'isPartOf_ssim' }
         ]
       }

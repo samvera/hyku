@@ -29,8 +29,10 @@
         <%= menu.nav_link(hyrax.admin_features_path) do %>
           <span class="fa fa-wrench" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.technical') %></span>
         <% end %>
+        <%= menu.nav_link('/admin/work_types/edit') do %>
+          <span class="fa  fa-address-book"></span> <span class="sidebar-action-text"><%= t('hyku.admin.work_types') %></span>
+        <% end %>
       <% end %>
-          <% end %>
         </li>
     <% end %>
     <% if can?(:manage, Sipity::WorkflowResponsibility) %>
@@ -39,3 +41,4 @@
       <% end %>
     <% end # end of configuration block %>
   <% end %>
+<% end %>

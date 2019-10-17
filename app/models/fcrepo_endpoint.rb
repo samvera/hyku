@@ -10,7 +10,9 @@ class FcrepoEndpoint < Endpoint
   end
 
   def ping
-    ActiveFedora::Fedora.instance.connection.head('/').response.success?
+    ActiveFedora::Fedora.instance.connection.head(
+      ActiveFedora::Fedora.instance.connection.connection.http.url_prefix.to_s
+    ).response.success?
   rescue StandardError
     false
   end

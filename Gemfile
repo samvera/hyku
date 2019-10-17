@@ -2,6 +2,8 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.1'
+
+gem 'activerecord-nulldb-adapter'
 # Use sqlite3 as the database for Active Record
 gem 'pg'
 # Use Puma as the app server
@@ -53,13 +55,14 @@ end
 
 group :test do
   gem 'capybara'
-  gem 'chromedriver-helper'
   gem 'database_cleaner'
   gem 'factory_bot_rails'
   # rack-test >= 0.71 does not work with older Capybara versions (< 2.17). See #214 for more details
   gem 'rack-test', '0.7.0'
   gem 'rails-controller-testing'
+  gem 'rspec_junit_formatter'
   gem 'selenium-webdriver'
+  gem 'webdrivers', '~> 4.0'
   gem 'webmock'
 end
 
@@ -78,7 +81,7 @@ end
 gem 'blacklight', '~> 6.7'
 gem 'blacklight_oai_provider', '~> 6.0'
 
-gem 'hyrax', '~>2.3.0'
+gem 'hyrax', '~> 2.5.1'
 gem 'rsolr', '~> 2.0'
 
 gem 'devise'
@@ -96,8 +99,7 @@ gem 'lograge'
 
 gem 'zk'
 
-gem 'mods', '~> 2.1'
-gem 'riiif', '~> 1.1'
+gem 'mods', '~> 2.4'
 
 gem 'iiif_manifest', '~> 0.5.0'
 
@@ -112,7 +114,7 @@ gem 'sidekiq'
 gem 'secure_headers'
 
 #gem 'honeybadger', '~> 3.0'
-
+gem 'riiif', '~> 1.1'
 gem 'codemirror-rails'
 
 gem "sentry-raven"

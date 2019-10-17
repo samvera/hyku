@@ -3,7 +3,9 @@ Sidekiq::Web.set :session_secret, Rails.application.secrets[:secret_key_base]
 
 Rails.application.routes.draw do
   concern :oai_provider, BlacklightOaiProvider::Routes.new
+
   authenticate :user, lambda { |u| u.is_superadmin } do
+  mount Riiif::Engine => 'images', as: :riiif if Hyrax.config.iiif_image_server?
     mount Sidekiq::Web => '/sidekiq'
   end
 
@@ -45,12 +47,8 @@ Rails.application.routes.draw do
 
   concern :searchable, Blacklight::Routes::Searchable.new
   concern :exportable, Blacklight::Routes::Exportable.new
-
-  curation_concerns_basic_routes do
-    member do
-      get :manifest
-    end
-  end
+  
+  curation_concerns_basic_routes
 
   resource :catalog, only: [:index], as: 'catalog', path: '/catalog', controller: 'catalog' do
     concerns :oai_provider
@@ -72,6 +70,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resource :account, only: [:edit, :update]
+    resource :work_types, only: [:edit, :update]
     resources :users, only: [:destroy]
     resources :groups do
       member do
@@ -86,6 +85,4 @@ Rails.application.routes.draw do
       end
     end
   end
-
-  mount Riiif::Engine => '/images', as: 'riiif'
 end

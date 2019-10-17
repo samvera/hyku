@@ -7,14 +7,15 @@ volumes:
   redis:
   zk1:
   zkconf:
+  app:
+  assets:
 
 networks:
-  external:
   internal:
 
 services:
   zoo1:
-    image: zookeeper
+    image: zookeeper:3.4
     environment:
       - ZOO_MY_ID=1
       - ZOO_SERVERS=server.1=zoo1:2888:3888
@@ -31,7 +32,7 @@ services:
          - zookeeper_cluster
 
   solr:
-    image: solr
+    image: solr:7.5
     command: solr -c -f -z zoo1:2181
     depends_on:
       - zoo1
@@ -40,12 +41,15 @@ services:
     ports:
       - 8983:8983
     volumes:
+      - .:/app
       - solr:/opt/solr/server/solr
     networks:
       internal:
 
   fcrepo:
     image: cbeer/fcrepo4:4.7
+    env_file:
+      - .env
     expose:
       - 8080
     volumes:
@@ -55,8 +59,14 @@ services:
     networks:
       internal:
 
-  postgres:
-    image: postgres
+  db:
+    image: postgres:11.1
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_USER=${DATABASE_USER}
     volumes:
       - db:/var/lib/postgresql/data
     networks:
@@ -77,9 +87,9 @@ services:
       - .env
       - .env.development
     environment:
-      - DATABASE_URL=postgresql://postgres@postgres/postgres
       - FEDORA_URL=http://fcrepo:8080/fcrepo/rest
-      - RAILS_ENV=development
+      - IN_DOCKER=true
+      - LD_LIBRARY_PATH=/opt/fits/tools/mediainfo/linux
       - RAILS_LOG_TO_STDOUT=true
       - RAILS_SERVE_STATIC_FILES=true
       - REDIS_HOST=redis
@@ -96,7 +106,10 @@ services:
 
 # version and location of fits are set in Dockerfile:
       - LD_LIBRARY_PATH=/opt/fits/tools/mediainfo/linux
+      - PASSENGER_APP_ENV=development
     volumes:
+      - app:/home/app/webapp/tmp/uploads
+      - assets:/home/app/webapp/public/assets
       - .:/home/app/webapp
     networks:
       internal:
@@ -104,21 +117,23 @@ services:
   web:
     extends:
       service: app
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails server -p 3000 -b '0.0.0.0'"
+    environment:
+      - VIRTUAL_PORT=80
+      - VIRTUAL_HOST=pals.docker
     depends_on:
       - postgres
       - solr
       - fcrepo
       - redis
       - zoo1
+      - chrome
+      - initialize_app
       - db_migrate
       - initialize_app
-    environment:
-      - VIRTUAL_PORT=3000
-      - VIRTUAL_HOST=pals.docker
-    ports:
-      - 3000:3000
-      - 3001:3001
+    expose:
+      - 80
+    #ports:
+      # 3000:80 # uncomment this if you dont use dory or another proxy
 
   workers:
     extends:
@@ -134,7 +149,6 @@ services:
   initialize_app:
     extends:
       service: app
-    restart: on-failure
     command: bundle exec rails zookeeper:upload
     depends_on:
       - zoo1
@@ -142,15 +156,19 @@ services:
   db_migrate:
     extends:
       service: app
-    restart: on-failure
     command: bundle exec rails db:migrate
     depends_on:
-      - postgres
+      - db
 
   redis:
     image: redis:3
     command: redis-server
     volumes:
       - redis:/data
+    networks:
+      internal:
+
+  chrome:
+    image: selenium/standalone-chrome:3.141
     networks:
       internal:

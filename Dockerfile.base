@@ -1,7 +1,21 @@
 FROM phusion/passenger-ruby25:1.0.2
 
 RUN apt-get update -qq && \
-    apt-get install -y build-essential libpq-dev nodejs libreoffice imagemagick unzip ghostscript libsasl2-dev libpq-dev postgresql-client tzdata && \
+    apt-get install -y \
+                       build-essential \
+                       ghostscript \
+                       imagemagick \
+                       libpq-dev \
+                       libpq-dev nodejs \
+                       libreoffice \
+                       libsasl2-dev \
+                       netcat \
+                       nodejs \
+                       postgresql-client \
+                       rsync \
+                       tzdata \
+                       unzip \
+                       && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -16,7 +30,7 @@ COPY ops/webapp.conf /etc/nginx/sites-enabled/webapp.conf
 COPY ops/env.conf /etc/nginx/main.d/env.conf
 
 ENV APP_HOME /home/app/webapp
-RUN mkdir $APP_HOME
+RUN mkdir $APP_HOME && chown -R app /home/app
 WORKDIR $APP_HOME
 
 ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile \
@@ -34,4 +48,3 @@ RUN chmod +x /etc/service/nginx/run
 RUN rm -f /etc/service/nginx/down
 # reenables pdfs in imagemagick see https://ubuntuforums.org/showthread.php?t=2403266
 RUN sed -i '/PDF/s/none/read|write/' /etc/ImageMagick-6/policy.xml
-

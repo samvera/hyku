@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "hyku.fcrepo-env.name" . }}
+data:
+  POSTGRES_USER: {{ .Values.env.configmap.POSTGRES_USER }}
+  POSTGRES_DATABASE: {{ .Values.env.configmap.POSTGRES_DATABASE }}

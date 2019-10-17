@@ -1,0 +1,46 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "hyku.redis.name" . }}
+  labels:
+    app: {{ template "hyku.name" . }}
+    chart: {{ template "hyku.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ template "hyku.name" . }}
+      release: {{ .Release.Name }}
+      component: redis
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ template "hyku.name" . }}
+        release: {{ .Release.Name }}
+        component: redis
+    spec:
+      restartPolicy: Always
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ template "hyku.redis.name" . }}
+      containers:
+        - name: redis
+          image: {{ .Values.redis.image.repository }}:{{ .Values.redis.image.tag }}
+          livenessProbe:
+            tcpSocket:
+              port: 6379
+          readinessProbe:
+            tcpSocket:
+              port: 6379
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          command:
+            - redis-server

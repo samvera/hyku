@@ -1,0 +1,59 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "hyku.postgres.name" . }}
+  labels:
+    app: {{ template "hyku.name" . }}
+    chart: {{ template "hyku.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ template "hyku.name" . }}
+      release: {{ .Release.Name }}
+      component: postgres
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ template "hyku.name" . }}
+        release: {{ .Release.Name }}
+        component: postgres
+    spec:
+      restartPolicy: Always
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ template "hyku.postgres.name" . }}
+      initContainers:
+        - name: "remove-lost-found"
+          image: "busybox:1.25.0"
+          command: 
+            - rm
+            - -fr
+            - /var/lib/postgresql/data/lost+found
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+      containers:
+        - name: postgres
+          image: {{ .Values.postgres.image.repository }}:{{ .Values.postgres.image.tag }}
+          livenessProbe:
+            tcpSocket:
+              port: 5432
+          readinessProbe:
+            tcpSocket:
+              port: 5432
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+          envFrom:
+            - configMapRef:
+                name: {{ template "hyku.postgres-env.name" . }}
+            - secretRef:
+                name: {{ template "hyku.postgres-env.name" . }}

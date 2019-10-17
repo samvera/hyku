@@ -1,0 +1,48 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "hyku.web.name" . }}
+  labels:
+    app: {{ template "hyku.name" . }}
+    chart: {{ template "hyku.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: web
+spec:
+  replicas: {{ .Values.web.replicas }}
+  selector:
+    matchLabels:
+      app: {{ template "hyku.name" . }}
+      release: {{ .Release.Name }}
+      component: web
+  template:
+    metadata:
+      labels:
+        app: {{ template "hyku.name" . }}
+        release: {{ .Release.Name }}
+        component: web
+      annotations:
+        checksum/rails-env-cm: {{ include (print $.Template.BasePath "/rails-env-cm.yaml") . | sha256sum }}
+        checksum/rails-env-secret: {{ include (print $.Template.BasePath "/rails-env-secret.yaml") . | sha256sum }}
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: web
+          image: {{ .Values.rails.image.repository }}:{{ .Values.rails.image.tag }}
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            httpGet:
+              path: / # TODO hyku healthcheck
+              port: 80
+            initialDelaySeconds: 60
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 60
+          envFrom:
+            - configMapRef:
+                name: {{ template "hyku.rails-env.name" . }}
+            - secretRef:
+                name: {{ template "hyku.rails-env.name" . }}

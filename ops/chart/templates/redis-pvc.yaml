@@ -1,0 +1,18 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ template "hyku.redis.name" . }}
+  labels:
+    app: {{ template "hyku.name" . }}
+    chart: {{ template "hyku.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: redis
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.redis.storage.size }}
+  storageClassName: {{ .Values.redis.storage.className }}

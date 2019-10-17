@@ -1,0 +1,30 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "hyku.setup.name" . }}
+  labels:
+    app: {{ template "hyku.name" . }}
+    chart: {{ template "hyku.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  backoffLimit: 4
+  template:
+    metadata:
+      labels:
+        app: {{ template "hyku.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: setup
+          image: {{ .Values.rails.image.repository }}:{{ .Values.rails.image.setupDbTag }}
+          command:
+            - ./bin/setup
+            - ./bin/rails db:migrate zookeeper:upload
+          envFrom:
+            - configMapRef:
+                name: {{ template "hyku.rails-env.name" . }}
+            - secretRef:
+                name: {{ template "hyku.rails-env.name" . }}

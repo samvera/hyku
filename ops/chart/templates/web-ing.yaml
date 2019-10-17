@@ -1,0 +1,21 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ template "hyku.web.name" . }}
+  annotations:
+    kubernetes.io/ingress.allow-http: "false"
+    # for GKE
+    # kubernetes.io/ingress.global-static-ip-name: rails-k8s-hyku
+spec:
+  tls:
+  - hosts:
+    - {{ .Values.ingress.host }}
+    secretName: {{ .Values.ingress.tlsSecretName }}
+  rules:
+  - host: {{ .Values.ingress.host }}
+    http:
+      paths:
+      - backend:
+          serviceName: {{ template "hyku.web.name" . }}
+          servicePort: 3000

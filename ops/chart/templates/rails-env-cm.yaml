@@ -1,0 +1,28 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "hyku.rails-env.name" . }}
+data:
+  DB_ADAPTER: {{ .Values.env.configmap.DB_ADAPTER }}
+  FEDORA_URL: http://{{ template "hyku.fcrepo.name" . }}:8080/fcrepo/rest
+  IN_DOCKER: {{ .Values.env.configmap.IN_DOCKER | quote }}
+  LD_LIBRARY_PATH: {{ .Values.env.configmap.LD_LIBRARY_PATH | quote }}
+  POSTGRES_DATABASE: {{ .Values.env.configmap.POSTGRES_DATABASE }}
+  POSTGRES_HOST: {{ template "hyku.postgres.name" . }}
+  POSTGRES_USER: {{ .Values.env.configmap.POSTGRES_USER }}
+  RAILS_CACHE_STORE_URL: redis://{{ template "hyku.redis.name" . }}:6379/1 
+  RAILS_LOG_TO_STDOUT: {{ .Values.env.configmap.RAILS_LOG_TO_STDOUT | quote }} 
+  RAILS_SERVE_STATIC_FILES: {{ .Values.env.configmap.RAILS_SERVE_STATIC_FILES | quote }}
+  REDIS_HOST: {{ template "hyku.redis.name" . }}
+  REDIS_URL: redis://{{ template "hyku.redis.name" . }}:6379/1
+  SETTINGS__ACTIVE_JOB__QUEUE_ADAPTER: {{ .Values.env.configmap.SETTINGS__ACTIVE_JOB__QUEUE_ADAPTER | quote }}
+  SETTINGS__FITS_PATH: {{ .Values.env.configmap.SETTINGS__FITS_PATH | quote }}
+  SETTINGS__MULTITENANCY__ADMIN_HOST: {{ .Values.env.configmap.SETTINGS__MULTITENANCY__ADMIN_HOST | quote }}
+  SETTINGS__MULTITENANCY__ADMIN_ONLY_TENANT_CREATION: {{ .Values.env.configmap.SETTINGS__MULTITENANCY__ADMIN_ONLY_TENANT_CREATION | quote }}
+  SETTINGS__MULTITENANCY__DEFAULT_HOST: {{ .Values.env.configmap.SETTINGS__MULTITENANCY__DEFAULT_HOST | quote }}
+  SETTINGS__MULTITENANCY__ENABLED: {{ .Values.env.configmap.SETTINGS__MULTITENANCY__ENABLED | quote }}
+  SETTINGS__SOLR_URL: http://{{ template "hyku.solr.name" . }}:8983/solr/
+  SETTINGS__ZOOKEEPER__CONNECTION_STR: http://{{ template "hyku.zookeeper.name" . }}:2181/configs
+  SOLR_URL: http://{{ template "hyku.solr.name" . }}:8983/solr/
+  SIDEKIQ_TIMEOUT: {{ .Values.sidekiq.timeout | quote }}

@@ -1,0 +1,46 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "hyku.sidekiq.name" . }}
+  labels:
+    app: {{ template "hyku.name" . }}
+    chart: {{ template "hyku.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: sidekiq
+spec:
+  replicas: {{ .Values.sidekiq.replicas }}
+  selector:
+    matchLabels:
+      app: {{ template "hyku.name" . }}
+      release: {{ .Release.Name }}
+      component: sidekiq
+  template:
+    metadata:
+      labels:
+        app: {{ template "hyku.name" . }}
+        release: {{ .Release.Name }}
+        component: sidekiq
+      annotations:
+        checksum/rails-env-cm: {{ include (print $.Template.BasePath "/rails-env-cm.yaml") . | sha256sum }}
+        checksum/rails-env-secret: {{ include (print $.Template.BasePath "/rails-env-secret.yaml") . | sha256sum }}
+    spec:
+      restartPolicy: Always
+      terminationGracePeriodSeconds: {{ .Values.sidekiq.timeout | add 5 }}
+      containers:
+        - name: sidekiq
+          image: {{ .Values.rails.image.repository }}:{{ .Values.rails.image.tag }}
+          imagePullPolicy: IfNotPresent
+          command:
+            - ./bin/start-sidekiq
+          livenessProbe:
+            exec:
+              command:
+                - ./bin/health-check-sidekiq
+            initialDelaySeconds: 30
+          envFrom:
+            - configMapRef:
+                name: {{ template "hyku.rails-env.name" . }}
+            - secretRef:
+                name: {{ template "hyku.rails-env.name" . }}

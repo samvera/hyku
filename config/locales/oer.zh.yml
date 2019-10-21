@@ -5,6 +5,6 @@ zh:
     select_type:
       oer:
         # TODO: translate `human_name` into Chinese
-        description:        "Oer 作品"
-        name:               "Oer"
+        description:        "Open educational resources (OER) are free and openly licensed educational materials that can be used for teaching, learning, research, and other purposes."
+        name:               "OER"
         # TODO: translate `human_name` into Chinese

@@ -4,5 +4,26 @@ de:
       oer:     'fa fa-file-text-o'
     select_type:
       oer:
-        description:        "Oer Werke"
-        name:               "Oer"
+        description:        "Open educational resources (OER) are free and openly licensed educational materials that can be used for teaching, learning, research, and other purposes."
+        name:               "OER"
+  simple_form:
+    hints:
+      defaults:
+        description: 'Kurze Beschreibung des Inhalts der Ressource ohne Inhaltsverzeichnis.'
+        resource_type: 'Vordefinierte Kategorien, um die Art des hochgeladenen Inhalts zu beschreiben. Es können mehr als ein Typ ausgewählt werden.'
+        additional_information: 'Informationen zu anderen Rechten, die nicht durch den Status vermittelt werden, wie z. B. Lizenzbedingungen oder Kontaktinformationen.'
+        alternative_title: 'Alternativer Titel für die Ressource.'
+        date: 'Das Datum, an dem das Werk erstellt, veröffentlicht oder anderweitig ausgestellt wurde.'
+        oer_size: 'Größe oder Dauer der Arbeit.'
+        rights_holder: 'Person oder Gruppe, die die Rechte an dem Werk besitzt, sofern bekannt.'
+        table_of_contents: 'Inhaltsverzeichnis einer Arbeit.'
+    labels:
+      defaults:
+        description: 'Beschreibung'
+        resource_type: 'Art'
+        additional_information: 'Zusätzliche Information'
+        alternative_title: 'Alternativer Titel'
+        date: 'Datum'
+        oer_size: 'Größe'
+        rights_holder: 'Rechteinhaber'
+        table_of_contents: 'Inhaltsverzeichnis'

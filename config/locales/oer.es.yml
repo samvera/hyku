@@ -5,6 +5,6 @@ es:
     select_type:
       oer:
         # TODO: translate `human_name` into Spanish
-        description:        "Oer trabajos"
-        name:               "Oer"
+        description:        "Open educational resources (OER) are free and openly licensed educational materials that can be used for teaching, learning, research, and other purposes."
+        name:               "OER"
         # TODO: translate `human_name` into Spanish

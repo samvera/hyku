@@ -4,26 +4,6 @@ fr:
       oer:     'fa fa-file-text-o'
     select_type:
       oer:
-        description:        "Open educational resources (OER) are free and openly licensed educational materials that can be used for teaching, learning, research, and other purposes."
+        description:        "Les ressources éducatives libres (REL) sont un matériel éducatif gratuit et sous licence ouverte qui peut être utilisé à des fins d'enseignement, d'apprentissage, de recherche et autres."
         name:               "OER"
-  simple_form:
-    hints:
-      defaults:
-        description: 'Brève description du contenu de la ressource, sans table des matières.'
-        resource_type: Des catégories prédéfinies pour décrire le type de contenu en cours de chargement. Plus d'un type peut être sélectionné.
-        additional_information: 'Autres informations sur les droits non indiquées par statut, telles que les conditions de licence ou les informations de contact.'
-        alternative_title: 'Titre alternatif pour la ressource.'
-        date: "La date à laquelle l'œuvre a été créée, publiée ou autrement publiée."
-        oer_size: 'Taille ou durée du travail.'
-        rights_holder: "Personne ou groupe qui détient les droits sur l'œuvre si elle est connue."
-        table_of_contents: "Table des matières d'une oeuvre."
-    labels:
-      defaults:
-        description: 'La description'
-        resource_type: 'Type'
-        additional_information: 'Information additionnelle'
-        alternative_title: 'Titre alternatif'
-        date: 'Date'
-        oer_size: 'Taille'
-        rights_holder: 'Titulaire des droits'
-        table_of_contents: 'Table des matières'
+  

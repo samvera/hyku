@@ -4,26 +4,6 @@ pt-BR:
       oer:     'fa fa-file-text-o'
     select_type:
       oer:
-        description:        "Open educational resources (OER) are free and openly licensed educational materials that can be used for teaching, learning, research, and other purposes."
+        description:        "Os recursos educacionais abertos (REA) são materiais educacionais gratuitos e com licença aberta, que podem ser usados ​​para ensino, aprendizado, pesquisa e outros propósitos."
         name:               "OER"
-  simple_form:
-    hints:
-      defaults:
-        description: 'Breve descrição do conteúdo do recurso, sem incluir um índice.'
-        resource_type: 'Categorias pré-definidas para descrever o tipo de conteúdo que está sendo carregado. Mais de um tipo pode ser selecionado.'
-        additional_information: 'Outras informações sobre direitos não transmitidas por status, como termos de licença ou informações de contato.'
-        alternative_title: 'Título alternativo para o recurso.'
-        date: 'A data em que o trabalho foi criado, publicado ou emitido.'
-        oer_size: 'Tamanho ou duração do trabalho.'
-        rights_holder: 'Pessoa ou grupo que detém os direitos do trabalho, se conhecido.'
-        table_of_contents: 'Sumário de um trabalho.'
-    labels:
-      defaults:
-        description: 'Descrição'
-        resource_type: 'Tipo'
-        additional_information: 'Informação adicional'
-        alternative_title: 'Título alternativo'
-        date: 'Encontro'
-        oer_size: 'Tamanho'
-        rights_holder: 'Detentor dos direitos'
-        table_of_contents: 'Índice'
+  

@@ -6,24 +6,4 @@ en:
       oer:
         description:        "Open educational resources (OER) are free and openly licensed educational materials that can be used for teaching, learning, research, and other purposes."
         name:               "OER"
-  simple_form:
-    hints:
-      defaults:
-        description: 'Brief description of the content of the resource, not including a table of contents.'
-        resource_type: 'Pre-defined categories to describe the type of content being uploaded. More than one type may be selected.'
-        additional_information: 'Other rights information not conveyed by status such as license terms or contact information.'
-        alternative_title: 'Alternative title for the resource.'
-        date: 'The date on which the work was created, published or otherwise issued.'
-        oer_size: 'Size or duration of the work.'
-        rights_holder: 'Person or group that holds the rights to the work if known.'
-        table_of_contents: 'Table of contents of a work.'     
-    labels:
-      defaults:
-        description: 'Description'
-        resource_type: 'Type'
-        additional_information: 'Additional information'
-        alternative_title: 'Alternative title'
-        date: 'Date'
-        oer_size: 'Size'
-        rights_holder: 'Rights holder'
-        table_of_contents: 'Table of contents'
+  

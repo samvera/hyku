@@ -87,9 +87,11 @@ services:
       - .env
       - .env.development
     environment:
+        # version and location of fits are set in Dockerfile:
       - FEDORA_URL=http://fcrepo:8080/fcrepo/rest
       - IN_DOCKER=true
       - LD_LIBRARY_PATH=/opt/fits/tools/mediainfo/linux
+      - PASSENGER_APP_ENV=development
       - RAILS_LOG_TO_STDOUT=true
       - RAILS_SERVE_STATIC_FILES=true
       - REDIS_HOST=redis
@@ -103,10 +105,6 @@ services:
       - SETTINGS__SOLR__URL=http://solr:8983/solr
       - SETTINGS__ZOOKEEPER__CONNECTION_STR=zookeeper_cluster:2181/configs
       - SOLR_URL=http://solr:8983/solr
-
-# version and location of fits are set in Dockerfile:
-      - LD_LIBRARY_PATH=/opt/fits/tools/mediainfo/linux
-      - PASSENGER_APP_ENV=development
     volumes:
       - app:/home/app/webapp/tmp/uploads
       - assets:/home/app/webapp/public/assets

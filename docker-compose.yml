@@ -119,15 +119,14 @@ services:
       - VIRTUAL_PORT=80
       - VIRTUAL_HOST=pals.docker
     depends_on:
-      - postgres
-      - solr
-      - fcrepo
-      - redis
-      - zoo1
       - chrome
-      - initialize_app
       - db_migrate
+      - fcrepo
       - initialize_app
+      - postgres
+      - redis
+      - solr
+      - zoo1
     expose:
       - 80
     #ports:

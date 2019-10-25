@@ -13,13 +13,17 @@ RSpec.describe FcrepoEndpoint do
     let(:success_response) { double(response: double(success?: true)) }
 
     it 'checks if the service is up' do
-      allow(ActiveFedora::Fedora.instance.connection).to receive(:head).with('/').and_return(success_response)
+      allow(ActiveFedora::Fedora.instance.connection).to receive(:head).with(
+        ActiveFedora::Fedora.instance.connection.connection.http.url_prefix.to_s
+      ).and_return(success_response)
       expect(subject.ping).to be_truthy
     end
 
     it 'is false if the service is down' do
-      allow(ActiveFedora::Fedora.instance.connection).to receive(:head).with('/').and_raise(RuntimeError)
-      expect(subject.ping).to eq false
+      allow(ActiveFedora::Fedora.instance.connection).to receive(:head).with(
+        ActiveFedora::Fedora.instance.connection.connection.http.url_prefix.to_s
+      ).and_raise(RuntimeError)
+      expect(subject.ping).to be_falsey
     end
   end
 end

@@ -73,6 +73,7 @@ en:
           new: New Group
           remove: Remove Group
       title: Administration
+      work_types: Available Work Types
     footer:
       admin_login: Administrator login
     proprietor:

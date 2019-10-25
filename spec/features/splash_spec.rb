@@ -1,6 +1,9 @@
 RSpec.describe "The splash page", multitenant: true do
-  before do
-    Capybara.default_host = "http://#{Account.admin_host}"
+  around do |example|
+    default_host = Capybara.default_host
+    Capybara.default_host = Capybara.app_host || "http://#{Account.admin_host}"
+    example.run
+    Capybara.default_host = default_host
   end
 
   it "shows the page, displaying the Hyku version" do

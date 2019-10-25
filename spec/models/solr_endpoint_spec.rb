@@ -25,9 +25,9 @@ RSpec.describe SolrEndpoint do
       allow(ActiveFedora::SolrService.instance).to receive(:conn)
         .and_return(double(options: af_options))
       allow(RSolr).to receive(:connect)
-        .with("read_timeout" => 120,
-              "open_timeout" => 120,
-              "url" => "http://example.com/solr/")
+        .with(hash_including("read_timeout" => 120,
+                             "open_timeout" => 120,
+                             "url" => "http://example.com/solr/"))
         .and_return(result)
     end
 

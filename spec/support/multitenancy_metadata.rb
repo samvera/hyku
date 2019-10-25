@@ -25,6 +25,12 @@ RSpec.configure do |config|
     example = RSpec.current_example
     if example.metadata[:multitenant]
       allow(Settings.multitenancy).to receive(:enabled).and_return(true)
+      if ENV['WEB_HOST']
+        Settings.multitenancy.admin_host = ENV['WEB_HOST']
+        # rubocop:disable Style/FormatStringToken
+        Settings.multitenancy.default_host = "%{tenant}.#{ENV['WEB_HOST']}"
+        # rubocop:enable Style/FormatStringToken
+      end
       Rails.application.reload_routes!
     elsif example.metadata[:singletenant] || example.metadata[:type] == :feature
       example.metadata[:singletenant] = true if example.metadata[:type] == :feature # flag for cleanup later
@@ -35,6 +41,12 @@ RSpec.configure do |config|
       acct = FactoryBot.build(:account, tenant: 'FakeTenant', cname: 'tenant1')
       allow(acct).to receive(:persisted?).and_return true # nevertheless
       allow(Account).to receive(:from_request).and_return(acct)
+    else
+      if ENV['WEB_HOST']
+        Settings.multitenancy.admin_host = nil
+        Settings.multitenancy.default_host = nil
+      end
+      Rails.application.reload_routes!
     end
   end
 end

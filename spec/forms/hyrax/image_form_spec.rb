@@ -13,13 +13,11 @@ RSpec.describe Hyrax::ImageForm do
     let(:attributes) do
       {
         title: ['foo'],
-        rendering_ids: [file_set.id],
         extent: ['extent']
       }
     end
 
     it 'permits parameters' do
-      expect(subject['rendering_ids']).to eq [file_set.id]
       expect(subject['extent']).to eq ['extent']
     end
   end

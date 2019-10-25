@@ -2,7 +2,6 @@
 #  `rails generate hyrax:work Oer`
 class Oer < ActiveFedora::Base
   include ::Hyrax::WorkBehavior
-  include HasRendering
 
   self.indexer = OerIndexer
   # Change this to restrict which works can be added as a child.

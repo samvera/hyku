@@ -59,8 +59,8 @@ RSpec.describe "Rake tasks" do
     end
 
     after(:all) do
-      Account.find_by(name: 'first').destroy
-      Account.find_by(name: 'second').destroy
+      Account.find_by(name: 'first')&.destroy
+      Account.find_by(name: 'second')&.destroy
     end
 
     before do

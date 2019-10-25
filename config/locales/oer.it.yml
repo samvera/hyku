@@ -1,0 +1,8 @@
+it:
+  hyrax:
+    icons:
+      oer:     'fa fa-file-text-o'
+    select_type:
+      oer:
+        description:        "Oer opere"
+        name:               "Oer"

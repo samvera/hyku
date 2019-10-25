@@ -1,4 +1,4 @@
-# This file is cepied to spec/ when you run 'rails generate rspec:install'
+# This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
 
 # In test most, unset some variables that can cause trouble
@@ -26,7 +26,7 @@ require 'rspec/rails'
 require 'capybara/rails'
 require 'database_cleaner'
 require 'active_fedora/cleaner'
-require 'factory_bot'
+require 'support/factory_bot'
 require 'webdrivers'
 # Add additional requires below this line. Rails is not loaded until this point!
 

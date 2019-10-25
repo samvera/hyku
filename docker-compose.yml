@@ -123,7 +123,7 @@ services:
       - db_migrate
       - fcrepo
       - initialize_app
-      - postgres
+      - db
       - redis
       - solr
       - zoo1
@@ -137,7 +137,7 @@ services:
       service: app
     command: bundle exec sidekiq
     depends_on:
-      - postgres
+      - db
       - solr
       - fcrepo
       - redis

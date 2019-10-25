@@ -87,6 +87,7 @@ services:
       - .env
       - .env.development
     environment:
+        # version and location of fits are set in Dockerfile:
       - FEDORA_URL=http://fcrepo:8080/fcrepo/rest
       - IN_DOCKER=true
       # version and location of fits are set in Dockerfile:
@@ -127,6 +128,10 @@ services:
       - chrome
       - db_migrate
       - initialize_app
+      - db
+      - redis
+      - solr
+      - zoo1
     expose:
       - 80
     #ports:

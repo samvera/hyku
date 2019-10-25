@@ -122,17 +122,13 @@ services:
       - VIRTUAL_HOST=pals.docker
     depends_on:
       - db
-      - solr
       - fcrepo
       - redis
-      - zoo1
-      - chrome
-      - db_migrate
-      - initialize_app
-      - db
-      - redis
       - solr
       - zoo1
+      - initialize_app
+      - db_migrate
+      - chrome
     expose:
       - 80
     #ports:

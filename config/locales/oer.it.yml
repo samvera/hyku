@@ -4,5 +4,6 @@ it:
       oer:     'fa fa-file-text-o'
     select_type:
       oer:
-        description:        "Oer opere"
-        name:               "Oer"
+        description:        "Le risorse didattiche aperte (OER) sono materiali didattici gratuiti e con licenza aperta che possono essere utilizzati per insegnare, apprendere, ricercare e per altri scopi."
+        name:               "OER"
+  

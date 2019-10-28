@@ -4,5 +4,6 @@ en:
       oer:     'fa fa-file-text-o'
     select_type:
       oer:
-        description:        "Oer works"
-        name:               "Oer"
+        description:        "Open educational resources (OER) are free and openly licensed educational materials that can be used for teaching, learning, research, and other purposes."
+        name:               "OER"
+  

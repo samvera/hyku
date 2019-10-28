@@ -4,5 +4,6 @@ fr:
       oer:     'fa fa-file-text-o'
     select_type:
       oer:
-        description:        "Oer œuvres"
-        name:               "Oer"
+        description:        "Les ressources éducatives libres (REL) sont un matériel éducatif gratuit et sous licence ouverte qui peut être utilisé à des fins d'enseignement, d'apprentissage, de recherche et autres."
+        name:               "OER"
+  

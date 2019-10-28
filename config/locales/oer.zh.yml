@@ -4,7 +4,5 @@ zh:
       oer:     'fa fa-file-text-o'
     select_type:
       oer:
-        # TODO: translate `human_name` into Chinese
-        description:        "Oer 作品"
-        name:               "Oer"
-        # TODO: translate `human_name` into Chinese
+        description:        "开放式教育资源（OER）是免费的和开放许可的教育材料，可用于教学，学习，研究和其他目的。"
+        name:               "OER"

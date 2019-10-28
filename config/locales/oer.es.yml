@@ -4,7 +4,5 @@ es:
       oer:     'fa fa-file-text-o'
     select_type:
       oer:
-        # TODO: translate `human_name` into Spanish
-        description:        "Oer trabajos"
-        name:               "Oer"
-        # TODO: translate `human_name` into Spanish
+        description:        "Los recursos educativos abiertos (REA) son materiales educativos gratuitos y con licencia abierta que se pueden utilizar para la enseñanza, el aprendizaje, la investigación y otros fines."
+        name:               "OER"

@@ -6,6 +6,13 @@ fr:
       oer:
         description:        "Les ressources éducatives libres (REL) sont un matériel éducatif gratuit et sous licence ouverte qui peut être utilisé à des fins d'enseignement, d'apprentissage, de recherche et autres."
         name:               "OER"
+    oer:
+      hints:
+        description: 'Brève description du contenu de la ressource, sans table des matières.'
+        resource_type: Des catégories prédéfinies pour décrire le type de contenu en cours de chargement. Plus d'un type peut être sélectionné.
+      labels:
+        description: 'La description'
+        resource_type: 'Type'
   simple_form:
     hints:
       defaults:

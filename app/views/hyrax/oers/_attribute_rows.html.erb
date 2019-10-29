@@ -6,7 +6,7 @@
 <%= presenter.attribute_to_html(:publisher, render_as: :faceted, html_dl: true) %>
 <%= presenter.attribute_to_html(:language, render_as: :faceted, html_dl: true) %>
 <%= presenter.attribute_to_html(:identifier, render_as: :linked, search_field: 'identifier_tesim', html_dl: true) %>
-<%= presenter.attribute_to_html(:resource_type, render_as: :faceted, html_dl: true) %>
+<%= presenter.attribute_to_html(:resource_type, label: t("hyrax.oer.labels.resource_type"), render_as: :faceted, html_dl: true) %>
 <%= presenter.attribute_to_html(:rights_statement, render_as: :rights_statement, html_dl: true) %>
 <%= presenter.attribute_to_html(:rights_notes, html_dl: true) %>
 <%= presenter.attribute_to_html(:access_right, html_dl: true) %>

@@ -6,6 +6,13 @@ de:
       oer:
         description:        "Open Education Resources (OER) sind kostenlose und offen lizenzierte Unterrichtsmaterialien, die zum Lehren, Lernen, Forschen und für andere Zwecke verwendet werden können."
         name:               "OER"
+    oer:
+      hints:
+        description: 'Kurze Beschreibung des Inhalts der Ressource ohne Inhaltsverzeichnis.'
+        resource_type: 'Vordefinierte Kategorien, um die Art des hochgeladenen Inhalts zu beschreiben. Es können mehr als ein Typ ausgewählt werden.'
+      labels:
+        description: 'Beschreibung'
+        resource_type: 'Art'
   simple_form:
     hints:
       defaults:

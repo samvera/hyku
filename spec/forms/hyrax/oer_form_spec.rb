@@ -15,7 +15,10 @@ RSpec.describe Hyrax::OerForm do
       {
         title: ['foo'],
         rendering_ids: [file_set.id],
-        resource_type: ['Collection']
+        audience: ['instructor'],
+        education_level: ['adult education'],
+        learning_resource_type: ['Lecture notes'],
+        resource_type: ['Collection'],
         date: ['10/3/2000'],
         alternative_title: ['alternative title'],
         table_of_contents: ['table of contents'],

@@ -92,6 +92,9 @@ class CatalogController < ApplicationController
     config.add_index_field solr_name("identifier", :stored_searchable), helper_method: :index_field_link, field_name: 'identifier'
     config.add_index_field solr_name("embargo_release_date", :stored_sortable, type: :date), label: "Embargo release date", helper_method: :human_readable_date
     config.add_index_field solr_name("lease_expiration_date", :stored_sortable, type: :date), label: "Lease expiration date", helper_method: :human_readable_date
+    config.add_index_field solr_name('audience', :stored_searchable)
+    config.add_index_field solr_name('education_level', :stored_searchable)
+    config.add_index_field solr_name('learning_resource_type', :stored_searchable)
     config.add_index_field solr_name("alternative_title", :stored_searchable), label: "Alternative title"
     config.add_index_field solr_name("date", :stored_searchable), label: "Date", helper_method: :human_readable_date
     config.add_index_field solr_name("table_of_contents", :stored_searchable), label: "Table of contents"
@@ -122,6 +125,9 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name("format", :stored_searchable)
     config.add_show_field solr_name("identifier", :stored_searchable)
     config.add_show_field solr_name('extent', :stored_searchable)
+    config.add_show_field solr_name('audience', :stored_searchable)
+    config.add_show_field solr_name('education_level', :stored_searchable)
+    config.add_show_field solr_name('learning_resource_type', :stored_searchable)
     config.add_show_field solr_name("alternative_title", :stored_searchable), label: "Alternative title"
     config.add_show_field solr_name("date", :stored_searchable), label: "Date", helper_method: :human_readable_date
     config.add_show_field solr_name("table_of_contents", :stored_searchable), label: "Table of contents"

@@ -24,7 +24,10 @@ es:
         table_of_contents: 'Tabla de contenidos de una obra.'
         accessibility_feature: "Características accesibles de la obra."
         accessibility_hazard: "Características del trabajo que pueden ser fisiológicamente peligrosas para algunos usuarios."
-        accessibility_summary: "Un resumen de las características específicas de accesibilidad o deficiencias."   
+        accessibility_summary: "Un resumen de las características específicas de accesibilidad o deficiencias."
+        audience: "El objetivo previsto para el trabajo."
+        education_level: "The level of education for which the work is intended."
+        learning_resource_type: "El tipo específico de recurso educativo descrito."  
     labels:
       defaults:
         additional_information: 'Información Adicional'
@@ -36,3 +39,6 @@ es:
         accessibility_feature: "Característica de accesibilidad"
         accessibility_hazard: "Peligro de accesibilidad"
         accessibility_summary: "Resumen de accesibilidad"
+        audience: "Audiencia"
+        education_level: "Nivel de Educación"
+        learning_resource_type: "Tipo de recurso de aprendizaje"

@@ -7,9 +7,9 @@ module Hyrax
     self.model_class = ::Oer
     include HydraEditor::Form::Permissions
     
-    self.terms += %i[resource_type rendering_ids alternative_title date table_of_contents additional_information rights_holder oer_size accessibility_feature accessibility_hazard accessibility_summary]
+    self.terms += %i[resource_type rendering_ids alternative_title date table_of_contents additional_information rights_holder oer_size accessibility_feature accessibility_hazard accessibility_summary audience education_level learning_resource_type]
     self.terms -=%i[keyword based_near related_url source date_created]    
-    self.required_fields += %i[resource_type date]
+    self.required_fields += %i[resource_type date audience education_level learning_resource_type]
 
     def secondary_terms
       super - [:rendering_ids]

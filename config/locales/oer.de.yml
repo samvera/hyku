@@ -24,7 +24,10 @@ de:
         table_of_contents: 'Inhaltsverzeichnis einer Arbeit.'
         accessibility_feature: "Zugängliche Funktionen der Arbeit."
         accessibility_hazard: "Eigenschaften der Arbeit, die für einige Benutzer physiologisch gefährlich sein können."
-        accessibility_summary: "Eine Zusammenfassung der spezifischen Barrierefreiheitsfunktionen oder -mängel."     
+        accessibility_summary: "Eine Zusammenfassung der spezifischen Barrierefreiheitsfunktionen oder -mängel."
+        audience: "as beabsichtigte Ziel für die Arbeit."
+        education_level: "Das Bildungsniveau, für das die Arbeit bestimmt ist."
+        learning_resource_type: "Die spezifische Art der beschriebenen Bildungsressource."    
     labels:
       defaults:
         additional_information: 'Zusätzliche Information'
@@ -36,3 +39,6 @@ de:
         accessibility_feature: "Eingabehilfen"
         accessibility_hazard: "Zugänglichkeitsgefahr"
         accessibility_summary: "Barrierefreiheitsübersicht"
+        audience: "Publikum"
+        education_level: "Bildungsniveau"
+        learning_resource_type: "Lernressourcentyp"

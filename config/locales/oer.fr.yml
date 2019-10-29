@@ -24,7 +24,10 @@ fr:
         table_of_contents: "Table des matières d'une oeuvre."
         accessibility_feature: "Caractéristiques accessibles du travail."
         accessibility_hazard: "Caractéristiques du travail pouvant être physiologiquement dangereuses pour certains utilisateurs."
-        accessibility_summary: "Un résumé des caractéristiques ou des problèmes d’accessibilité spécifiques."    
+        accessibility_summary: "Un résumé des caractéristiques ou des problèmes d’accessibilité spécifiques."
+        audience: "La cible visée pour le travail."
+        education_level: "Le niveau d'éducation auquel le travail est destiné."
+        learning_resource_type: "Le type spécifique de ressource pédagogique décrit." 
     labels:
       defaults:
         additional_information: 'Information additionnelle'
@@ -36,3 +39,6 @@ fr:
         accessibility_feature: "Fonction d'accessibilité"
         accessibility_hazard: "Risque d'accessibilité"
         accessibility_summary: "Résumé d'accessibilité"
+        audience: "Public"
+        education_level: "iveau d'éducation"
+        learning_resource_type: "Type de ressource d'apprentissage"

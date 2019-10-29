@@ -12,6 +12,9 @@ RSpec.describe 'hyrax/oers/_attributes.html.erb' do
   let(:accessibility_feature) { 'Alternative Text' }
   let(:accessibility_hazard) { 'Flashing' }
   let(:accessibility_summary) { 'Summary' }
+  let(:audience)    { 'Instructor' }
+  let(:education_level) { 'College / Upper division' }
+  let(:learning_resource) { 'Game' }
 
   let(:solr_document) { SolrDocument.new(attributes) }
   let(:attributes) do
@@ -29,7 +32,10 @@ RSpec.describe 'hyrax/oers/_attributes.html.erb' do
       oer_size_tesim: size,
       accessibility_feature_tesim: accessibility_feature,
       accessibility_hazard_tesim: accessibility_hazard,
-      accessibility_summary_tesim: accessibility_summary
+      accessibility_summary_tesim: accessibility_summary,
+      audience_tesim: audience,
+      education_level_tesim: education_level,
+      learning_resource_type_tesim: learning_resource
     }
   end
   let(:ability) { double(admin?: true) }
@@ -58,5 +64,8 @@ RSpec.describe 'hyrax/oers/_attributes.html.erb' do
     expect(rendered).to have_link(accessibility_feature)
     expect(rendered).to have_link(accessibility_hazard)
     expect(rendered).to have_link(accessibility_summary)
+    expect(rendered).to have_link(audience)
+    expect(rendered).to have_link(education_level)
+    expect(rendered).to have_link(learning_resource)
   end
 end

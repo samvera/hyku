@@ -1,9 +1,19 @@
 fr:
   hyrax:
     icons:
-      oer:     'fa fa-file-text-o'
+      oer:     "fa fa-file-text-o"
     select_type:
       oer:
         description:        "Les ressources éducatives libres (REL) sont un matériel éducatif gratuit et sous licence ouverte qui peut être utilisé à des fins d'enseignement, d'apprentissage, de recherche et autres."
         name:               "OER"
-  
+  simple_form:
+    hints:
+      defaults:
+        accessibility_feature: "Caractéristiques accessibles du travail."
+        accessibility_hazard: "Caractéristiques du travail pouvant être physiologiquement dangereuses pour certains utilisateurs."
+        accessibility_summary: "Un résumé des caractéristiques ou des problèmes d’accessibilité spécifiques."
+      labels:
+        defaults:
+          accessibility_feature: "Fonction d'accessibilité"
+          accessibility_hazard: "Risque d'accessibilité"
+          accessibility_summary: "Résumé d'accessibilité"

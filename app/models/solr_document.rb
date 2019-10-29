@@ -54,7 +54,7 @@ class SolrDocument
     rights: 'rights_statement_tesim',
     subject: 'subject_tesim',
     title: 'title_tesim',
-    type: 'human_readable_type_tesim',
+    type: 'human_readable_type_tesim'
   )
 
 end

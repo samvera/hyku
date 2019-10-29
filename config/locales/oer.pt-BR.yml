@@ -24,7 +24,10 @@ pt-BR:
         table_of_contents: 'Sumário de um trabalho.'
         accessibility_feature: "Recursos acessíveis do trabalho."
         accessibility_hazard: "Características do trabalho que pode ser fisiologicamente perigoso para alguns usuários."
-        accessibility_summary: "Um resumo de recursos ou deficiências específicas de acessibilidade."    
+        accessibility_summary: "Um resumo de recursos ou deficiências específicas de acessibilidade."
+        audience: "O alvo pretendido para o trabalho."
+        education_level: "O nível de educação para o qual o trabalho é destinado."
+        learning_resource_type: "O tipo específico de recurso educacional descrito."
     labels:
       defaults:
         additional_information: 'Informação adicional'
@@ -36,3 +39,6 @@ pt-BR:
         accessibility_feature: "Recurso de acessibilidade"
         accessibility_hazard: "Risco de acessibilidade"
         accessibility_summary: "Resumo de Acessibilidade"
+        audience: "Público"
+        education_level: "Nível de educação"
+        learning_resource_type: "Tipo de recurso de aprendizagem"

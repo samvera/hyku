@@ -24,7 +24,10 @@ en:
         table_of_contents: 'Table of contents of a work.'
         accessibility_feature: "Accessible features of the work."
         accessibility_hazard: "Characteristics of the work that may be physiologically dangerous to some users."
-        accessibility_summary: "A summary of specific accessibility features or deficiencies."    
+        accessibility_summary: "A summary of specific accessibility features or deficiencies."
+        audience: "The intended target for the work."
+        education_level: "The level of education for which the work is intended."
+        learning_resource_type: "The specific type of educational resource described."  
     labels:
       defaults:
         additional_information: 'Additional information'
@@ -36,3 +39,5 @@ en:
         accessibility_feature: "Accessibility Feature"
         accessibility_hazard: "Accessibility Hazard"
         accessibility_summary: "Accessibility Summary"
+        audience: "Audience"
+        education_level: "Education level"

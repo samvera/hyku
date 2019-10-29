@@ -10,6 +10,9 @@
 <%= presenter.attribute_to_html(:rights_statement, render_as: :rights_statement, html_dl: true) %>
 <%= presenter.attribute_to_html(:rights_notes, html_dl: true) %>
 <%= presenter.attribute_to_html(:access_right, html_dl: true) %>
+<%= presenter.attribute_to_html(:audience, render_as: :faceted, html_dl: true) %>
+<%= presenter.attribute_to_html(:education_level, render_as: :faceted, html_dl: true) %>
+<%= presenter.attribute_to_html(:learning_resource_type, render_as: :faceted, html_dl: true) %>
 <%= presenter.attribute_to_html(:alternative_title, render_as: :linked, html_dl: true) %>
 <%= presenter.attribute_to_html(:date, render_as: :linked, html_dl: true) %>
 <%= presenter.attribute_to_html(:table_of_contents, render_as: :linked, html_dl: true) %>

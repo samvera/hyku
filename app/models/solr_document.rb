@@ -31,22 +31,16 @@ class SolrDocument
   attribute :rendering_ids, Solr::Array, solr_name('hasFormat', :symbol)
   attribute :alternative_title, Solr::String, solr_name('alternative_title')
   attribute :date, Solr::Date, solr_name('alternative_title')
-  
-  def table_of_contents
-    self[Solrizer.solr_name('table_of_contents')]
-  end
-
-  def additional_information
-    self[Solrizer.solr_name('additional_information')]
-  end
-
-  def rights_holder
-    self[Solrizer.solr_name('rights_holder')]
-  end
-
-  def oer_size
-    self[Solrizer.solr_name('oer_size')]
-  end
+  attribute :audience, Solr::Array, solr_name('audience')
+  attribute :education_level, Solr::Array, solr_name('education_level')
+  attribute :learning_resource_type, Solr::Array, solr_name('learning_resource_type')
+  attribute :table_of_contents, Solr::String, solr_name('table_of_contents')
+  attribute :additional_information, Solr::String, solr_name('additional_information')
+  attribute :rights_holder, Solr::String, solr_name('rights_holder')
+  attribute :oer_size, Solr::String, solr_name('oer_size')
+  attribute :accessibility_summary, Solr::String, solr_name('accessibility_summary')
+  attribute :accessibility_feature, Solr::Array, solr_name('accessibility_feature')
+  attribute :accessibility_hazard, Solr::Array, solr_name('accessibility_hazard')
 
   field_semantics.merge!(
     contributor: 'contributor_tesim',
@@ -63,15 +57,4 @@ class SolrDocument
     type: 'human_readable_type_tesim',
   )
 
-  def accessibility_feature
-    self[Solrizer.solr_name('accessibility_feature')]
-  end
-
-  def accessibility_hazard
-    self[Solrizer.solr_name('accessibility_hazard')]
-  end
-
-  def accessibility_summary
-    self[Solrizer.solr_name('accessibility_summary')]
-  end
 end

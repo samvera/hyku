@@ -24,7 +24,10 @@ zh:
         table_of_contents: '作品目录。'
         accessibility_feature: "作品的無障礙功能"
         accessibility_hazard: "對某些使用者可能造成生理危險的作品特徵"
-        accessibility_summary: "特定輔助功能或缺陷的摘要"    
+        accessibility_summary: "特定輔助功能或缺陷的摘要"
+        audience: "工作的预期目标。"
+        education_level: "预期工作的教育水平。"
+        learning_resource_type: "描述的特定类型的教育资源。"  
     labels:
       defaults:
         additional_information: '附加信息'
@@ -36,3 +39,6 @@ zh:
         accessibility_feature: "輔助功能"
         accessibility_hazard: "可達性危害"
         accessibility_summary: "輔助功能摘要"
+        audience: "听众"
+        education_level: "教育程度"
+        learning_resource_type: "学习资源类型"

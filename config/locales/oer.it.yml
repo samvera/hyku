@@ -24,7 +24,10 @@ it:
         table_of_contents: "Indice di un'opera."
         accessibility_feature: "Funzionalità accessibili dell'opera."
         accessibility_hazard: "Caratteristiche del lavoro che possono essere fisiologicamente pericolose per alcuni utenti."
-        accessibility_summary: "Un riepilogo di specifiche caratteristiche o carenze dell'accessibilità."   
+        accessibility_summary: "Un riepilogo di specifiche caratteristiche o carenze dell'accessibilità."
+        audience: "L'obiettivo previsto per il lavoro."
+        education_level: "Il livello di istruzione a cui è destinato il lavoro."
+        learning_resource_type: "Il tipo specifico di risorsa educativa descritta."   
     labels:
       defaults:
         additional_information: 'Informazioni aggiuntive'
@@ -36,3 +39,6 @@ it:
         accessibility_feature: "Funzionalità di accessibilità"
         accessibility_hazard: "Rischio di accessibilità"
         accessibility_summary: "Riepilogo dell'accessibilità"
+        audience: "Pubblico"
+        education_level: "Livello scolastico"
+        learning_resource_type: "Tipo di risorsa di apprendimento"

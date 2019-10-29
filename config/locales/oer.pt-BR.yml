@@ -16,29 +16,31 @@ pt-BR:
   simple_form:
     hints:
       defaults:
-        additional_information: 'Outras informações sobre direitos não transmitidas por status, como termos de licença ou informações de contato.'
-        alternative_title: 'Título alternativo para o recurso.'
-        date: 'A data em que o trabalho foi criado, publicado ou emitido.'
-        oer_size: 'Tamanho ou duração do trabalho.'
-        rights_holder: 'Pessoa ou grupo que detém os direitos do trabalho, se conhecido.'
-        table_of_contents: 'Sumário de um trabalho.'
         accessibility_feature: "Recursos acessíveis do trabalho."
         accessibility_hazard: "Características do trabalho que pode ser fisiologicamente perigoso para alguns usuários."
         accessibility_summary: "Um resumo de recursos ou deficiências específicas de acessibilidade."
+        additional_information: 'Outras informações sobre direitos não transmitidas por status, como termos de licença ou informações de contato.'
+        alternative_title: 'Título alternativo para o recurso.'
         audience: "O alvo pretendido para o trabalho."
+        date: 'A data em que o trabalho foi criado, publicado ou emitido.'
+        discipline: "O domínio educacional ao qual o recurso se destina."
         education_level: "O nível de educação para o qual o trabalho é destinado."
         learning_resource_type: "O tipo específico de recurso educacional descrito."
+        oer_size: 'Tamanho ou duração do trabalho.'
+        rights_holder: 'Pessoa ou grupo que detém os direitos do trabalho, se conhecido.'
+        table_of_contents: 'Sumário de um trabalho.'
     labels:
       defaults:
-        additional_information: 'Informação adicional'
-        alternative_title: 'Título alternativo'
-        date: 'Encontro'
-        oer_size: 'Tamanho'
-        rights_holder: 'Detentor dos direitos'
-        table_of_contents: 'Índice'
         accessibility_feature: "Recurso de acessibilidade"
         accessibility_hazard: "Risco de acessibilidade"
         accessibility_summary: "Resumo de Acessibilidade"
+        additional_information: 'Informação adicional'
+        alternative_title: 'Título alternativo'
         audience: "Público"
+        date: 'Encontro'
+        discipline: "Disciplina"
         education_level: "Nível de educação"
         learning_resource_type: "Tipo de recurso de aprendizagem"
+        oer_size: 'Tamanho'
+        rights_holder: 'Detentor dos direitos'
+        table_of_contents: 'Índice'

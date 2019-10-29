@@ -16,29 +16,31 @@ fr:
   simple_form:
     hints:
       defaults:
-        additional_information: 'Autres informations sur les droits non indiquées par statut, telles que les conditions de licence ou les informations de contact.'
-        alternative_title: 'Titre alternatif pour la ressource.'
-        date: "La date à laquelle l'œuvre a été créée, publiée ou autrement publiée."
-        oer_size: 'Taille ou durée du travail.'
-        rights_holder: "Personne ou groupe qui détient les droits sur l'œuvre si elle est connue."
-        table_of_contents: "Table des matières d'une oeuvre."
         accessibility_feature: "Caractéristiques accessibles du travail."
         accessibility_hazard: "Caractéristiques du travail pouvant être physiologiquement dangereuses pour certains utilisateurs."
         accessibility_summary: "Un résumé des caractéristiques ou des problèmes d’accessibilité spécifiques."
+        additional_information: 'Autres informations sur les droits non indiquées par statut, telles que les conditions de licence ou les informations de contact.'
+        alternative_title: 'Titre alternatif pour la ressource.'
         audience: "La cible visée pour le travail."
+        date: "La date à laquelle l'œuvre a été créée, publiée ou autrement publiée."
+        discipline: "Domaine éducatif que la ressource est destinée à servir."
         education_level: "Le niveau d'éducation auquel le travail est destiné."
-        learning_resource_type: "Le type spécifique de ressource pédagogique décrit." 
+        learning_resource_type: "Le type spécifique de ressource pédagogique décrit."
+        oer_size: 'Taille ou durée du travail.'
+        rights_holder: "Personne ou groupe qui détient les droits sur l'œuvre si elle est connue."
+        table_of_contents: "Table des matières d'une oeuvre."
     labels:
       defaults:
-        additional_information: 'Information additionnelle'
-        alternative_title: 'Titre alternatif'
-        date: 'Date'
-        oer_size: 'Taille'
-        rights_holder: 'Titulaire des droits'
-        table_of_contents: 'Table des matières'
         accessibility_feature: "Fonction d'accessibilité"
         accessibility_hazard: "Risque d'accessibilité"
         accessibility_summary: "Résumé d'accessibilité"
+        additional_information: 'Information additionnelle'
+        alternative_title: 'Titre alternatif'
         audience: "Public"
+        date: 'Date'
+        discipline: "La discipline"
         education_level: "iveau d'éducation"
         learning_resource_type: "Type de ressource d'apprentissage"
+        oer_size: 'Taille'
+        rights_holder: 'Titulaire des droits'
+        table_of_contents: 'Table des matières'

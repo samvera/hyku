@@ -16,29 +16,31 @@ es:
   simple_form:
     hints:
       defaults:
-        additional_information: 'Otra información de derechos no transmitida por estado, como términos de licencia o información de contacto.'
-        alternative_title: 'Título alternativo para el recurso.'
-        date: 'La fecha en que se creó, publicó o emitió el trabajo.'
-        oer_size: 'Tamaño o duración del trabajo.'
-        rights_holder: 'Persona o grupo que posee los derechos del trabajo si se conoce.'
-        table_of_contents: 'Tabla de contenidos de una obra.'
         accessibility_feature: "Características accesibles de la obra."
         accessibility_hazard: "Características del trabajo que pueden ser fisiológicamente peligrosas para algunos usuarios."
         accessibility_summary: "Un resumen de las características específicas de accesibilidad o deficiencias."
+        additional_information: 'Otra información de derechos no transmitida por estado, como términos de licencia o información de contacto.'
+        alternative_title: 'Título alternativo para el recurso.'
         audience: "El objetivo previsto para el trabajo."
+        date: 'La fecha en que se creó, publicó o emitió el trabajo.'
+        discipline: "El dominio educativo al que está destinado el recurso."
         education_level: "The level of education for which the work is intended."
-        learning_resource_type: "El tipo específico de recurso educativo descrito."  
+        learning_resource_type: "El tipo específico de recurso educativo descrito."
+        oer_size: 'Tamaño o duración del trabajo.'
+        rights_holder: 'Persona o grupo que posee los derechos del trabajo si se conoce.'
+        table_of_contents: 'Tabla de contenidos de una obra.'
     labels:
       defaults:
-        additional_information: 'Información Adicional'
-        alternative_title: 'Título alternativo'
-        date: 'Fecha'
-        oer_size: 'Talla'
-        rights_holder: 'Titular de los derechos'
-        table_of_contents: 'Tabla de contenido'
         accessibility_feature: "Característica de accesibilidad"
         accessibility_hazard: "Peligro de accesibilidad"
         accessibility_summary: "Resumen de accesibilidad"
+        additional_information: 'Información Adicional'
+        alternative_title: 'Título alternativo'
         audience: "Audiencia"
+        date: 'Fecha'
+        discipline: "Disciplina"
         education_level: "Nivel de Educación"
         learning_resource_type: "Tipo de recurso de aprendizaje"
+        oer_size: 'Talla'
+        rights_holder: 'Titular de los derechos'
+        table_of_contents: 'Tabla de contenido'

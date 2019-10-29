@@ -1,0 +1,129 @@
+terms:
+  - id: Spanish
+    term: Languages - Spanish
+  - id: French
+    term: Languages - French
+  - id: German
+    term: Languages - German
+  - id: Public Relations
+    term: Communication - Public Relations
+  - id: Journalism
+    term: Communication - Journalism
+  - id: Public Speaking
+    term: Communication - Public Speaking
+  - id: Calculus
+    term: Math - Calculus
+  - id: Statistics
+    term: Math - Statistics
+  - id: Algebra
+    term: Math - Algebra
+  - id: Geometry
+    term: Math - Geometry
+  - id: Trigonometry
+    term: Math - Trigonometry
+  - id: Foundations of Mathematics
+    term: Math - Foundations of Mathematics
+  - id: Chemistry
+    term: Natural Sciences - Chemistry
+  - id: Biology
+    term: Natural Sciences - Biology
+  - id: Physics
+    term: Natural Sciences - Physics
+  - id: Astronomy
+    term: Natural Sciences - Astronomy
+  - id: Geoscience
+    term: Natural Sciences - Geoscience
+  - id: Agricultural Science
+    term: Natural Sciences - Agricultural Science
+  - id: Sociology
+    term: Social and Behavioral Sciences - Sociology
+  - id: Political Science
+    term: Social and Behavioral Sciences - Political Science
+  - id: Education
+    term: Social and Behavioral Sciences - Education
+  - id: Economics
+    term: Social and Behavioral Sciences - Economics
+  - id: Anthropology
+    term: Social and Behavioral Sciences - Anthropology
+  - id: Criminal Justice
+    term: Social and Behavioral Sciences - Criminal Justice
+  - id: Women and Gender Studies
+    term: Social and Behavioral Sciences - Women and Gender Studies
+  - id: African American Studies
+    term: Social and Behavioral Sciences - African American Studies
+  - id: Music
+    term: Arts and Humanities - Music
+  - id: Philosophy
+    term: Arts and Humanities - Philosophy
+  - id: Ethics
+    term: Arts and Humanities - Ethics
+  - id: Art
+    term: Arts and Humanities - Art
+  - id: Literature
+    term: Arts and Humanities - Literature
+  - id: Poetry
+    term: Arts and Humanities - Poetry
+  - id: Classics
+    term: Arts and Humanities - Classics
+  - id: History
+    term: Arts and Humanities - History
+  - id: Theater
+    term: Arts and Humanities - Theater
+  - id: Architecture
+    term: Arts and Humanities - Architecture
+  - id: English Composition
+    term: Arts and Humanities - English Composition
+  - id: Computer Science
+    term: Computing and Information - Computer Science
+  - id: Cybersecurity
+    term: Computing and Information - Cybersecurity
+  - id: Human Computer Interaction
+    term: Computing and Information - Human Computer Interaction
+  - id: Information and Data Science
+    term: Computing and Information - Information and Data Science
+  - id: Accounting
+    term: Business - Accounting
+  - id: Finance
+    term: Business - Finance
+  - id: Marketing
+    term: Business - Marketing
+  - id: Management
+    term: Business - Management
+  - id: Anatomy and Physiology
+    term: Health Science - Anatomy and Physiology
+  - id: Nursing
+    term: Health Science - Nursing
+  - id: Communication Science & Disorders
+    term: Health Science - Communication Science & Disorders
+  - id: Psychology
+    term: Health Science - Psychology
+  - id: Medicine
+    term: Health Science - Medicine
+  - id: Rehabilitation Science
+    term: Health Science - Rehabilitation Science
+  - id: Nutrition
+    term: Health Science - Nutrition
+  - id: Kinesiology
+    term: Health Science - Kinesiology
+  - id: Sports Management
+    term: Health Science - Sports Management
+  - id: Dentistry
+    term: Health Science - Dentistry
+  - id: Neuroscience
+    term: Health Science - Neuroscience
+  - id: Mechanical
+    term: Engineering - Mechanical
+  - id: Chemical
+    term: Engineering - Chemical
+  - id: Civil
+    term: Engineering - Civil
+  - id: Nuclear
+    term: Engineering - Nuclear
+  - id: Aerospace
+    term: Engineering - Aerospace
+  - id: Electrical
+    term: Engineering - Electrical
+  - id: Industrial
+    term: Engineering - Industrial
+  - id: Law
+    term: Law

@@ -16,29 +16,31 @@ de:
   simple_form:
     hints:
       defaults:
-        additional_information: 'Informationen zu anderen Rechten, die nicht durch den Status vermittelt werden, wie z. B. Lizenzbedingungen oder Kontaktinformationen.'
-        alternative_title: 'Alternativer Titel für die Ressource.'
-        date: 'Das Datum, an dem das Werk erstellt, veröffentlicht oder anderweitig ausgestellt wurde.'
-        oer_size: 'Größe oder Dauer der Arbeit.'
-        rights_holder: 'Person oder Gruppe, die die Rechte an dem Werk besitzt, sofern bekannt.'
-        table_of_contents: 'Inhaltsverzeichnis einer Arbeit.'
         accessibility_feature: "Zugängliche Funktionen der Arbeit."
         accessibility_hazard: "Eigenschaften der Arbeit, die für einige Benutzer physiologisch gefährlich sein können."
         accessibility_summary: "Eine Zusammenfassung der spezifischen Barrierefreiheitsfunktionen oder -mängel."
+        additional_information: 'Informationen zu anderen Rechten, die nicht durch den Status vermittelt werden, wie z. B. Lizenzbedingungen oder Kontaktinformationen.'
+        alternative_title: 'Alternativer Titel für die Ressource.'
         audience: "as beabsichtigte Ziel für die Arbeit."
+        date: 'Das Datum, an dem das Werk erstellt, veröffentlicht oder anderweitig ausgestellt wurde.'
+        discipline: "Der Bildungsbereich, dem die Ressource dienen soll."
         education_level: "Das Bildungsniveau, für das die Arbeit bestimmt ist."
-        learning_resource_type: "Die spezifische Art der beschriebenen Bildungsressource."    
+        learning_resource_type: "Die spezifische Art der beschriebenen Bildungsressource."
+        oer_size: 'Größe oder Dauer der Arbeit.'
+        rights_holder: 'Person oder Gruppe, die die Rechte an dem Werk besitzt, sofern bekannt.'
+        table_of_contents: 'Inhaltsverzeichnis einer Arbeit.'
     labels:
       defaults:
-        additional_information: 'Zusätzliche Information'
-        alternative_title: 'Alternativer Titel'
-        date: 'Datum'
-        oer_size: 'Größe'
-        rights_holder: 'Rechteinhaber'
-        table_of_contents: 'Inhaltsverzeichnis'
         accessibility_feature: "Eingabehilfen"
         accessibility_hazard: "Zugänglichkeitsgefahr"
         accessibility_summary: "Barrierefreiheitsübersicht"
+        additional_information: 'Zusätzliche Information'
+        alternative_title: 'Alternativer Titel'
         audience: "Publikum"
+        date: 'Datum'
+        discipline: "die Ausbildung"
         education_level: "Bildungsniveau"
         learning_resource_type: "Lernressourcentyp"
+        oer_size: 'Größe'
+        rights_holder: 'Rechteinhaber'
+        table_of_contents: 'Inhaltsverzeichnis'

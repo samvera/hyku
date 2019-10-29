@@ -9,11 +9,23 @@ en:
   simple_form:
     hints:
       defaults:
+        additional_information: 'Other rights information not conveyed by status such as license terms or contact information.'
+        alternative_title: 'Alternative title for the resource.'
+        date: 'The date on which the work was created, published or otherwise issued.'
+        oer_size: 'Size or duration of the work.'
+        rights_holder: 'Person or group that holds the rights to the work if known.'
+        table_of_contents: 'Table of contents of a work.'
         accessibility_feature: "Accessible features of the work."
         accessibility_hazard: "Characteristics of the work that may be physiologically dangerous to some users."
-        accessibility_summary: "A summary of specific accessibility features or deficiencies."
-      labels:
-        defaults:
-          accessibility_feature: "Accessibility Feature"
-          accessibility_hazard: "Accessibility Hazard"
-          accessibility_summary: "Accessibility Summary"
+        accessibility_summary: "A summary of specific accessibility features or deficiencies."    
+    labels:
+      defaults:
+        additional_information: 'Additional information'
+        alternative_title: 'Alternative title'
+        date: 'Date'
+        oer_size: 'Size'
+        rights_holder: 'Rights holder'
+        table_of_contents: 'Table of contents'
+        accessibility_feature: "Accessibility Feature"
+        accessibility_hazard: "Accessibility Hazard"
+        accessibility_summary: "Accessibility Summary"

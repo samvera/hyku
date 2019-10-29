@@ -29,6 +29,24 @@ class SolrDocument
 
   attribute :extent, Solr::Array, solr_name('extent')
   attribute :rendering_ids, Solr::Array, solr_name('hasFormat', :symbol)
+  attribute :alternative_title, Solr::String, solr_name('alternative_title')
+  attribute :date, Solr::Date, solr_name('alternative_title')
+  
+  def table_of_contents
+    self[Solrizer.solr_name('table_of_contents')]
+  end
+
+  def additional_information
+    self[Solrizer.solr_name('additional_information')]
+  end
+
+  def rights_holder
+    self[Solrizer.solr_name('rights_holder')]
+  end
+
+  def oer_size
+    self[Solrizer.solr_name('oer_size')]
+  end
 
   field_semantics.merge!(
     contributor: 'contributor_tesim',
@@ -42,7 +60,7 @@ class SolrDocument
     rights: 'rights_statement_tesim',
     subject: 'subject_tesim',
     title: 'title_tesim',
-    type: 'human_readable_type_tesim'
+    type: 'human_readable_type_tesim',
   )
 
   def accessibility_feature

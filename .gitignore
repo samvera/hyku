@@ -51,4 +51,9 @@ public/uploads
 #Vim
 *.swp
 *.swo
+<<<<<<< HEAD
+
+fits.log
+=======
 *.log
+>>>>>>> master

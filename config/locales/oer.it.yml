@@ -9,11 +9,23 @@ it:
   simple_form:
     hints:
       defaults:
+        additional_information: "Altre informazioni sui diritti non trasmesse dallo stato come condizioni di licenza o informazioni di contatto."
+        alternative_title: 'Titolo alternativo per la risorsa.'
+        date: "La data in cui l'opera è stata creata, pubblicata o altrimenti pubblicata."
+        oer_size: 'Dimensione o durata del lavoro.'
+        rights_holder: "Persona o gruppo che detiene i diritti sull'opera, se noto."
+        table_of_contents: "Indice di un'opera."
         accessibility_feature: "Funzionalità accessibili dell'opera."
         accessibility_hazard: "Caratteristiche del lavoro che possono essere fisiologicamente pericolose per alcuni utenti."
-        accessibility_summary: "Un riepilogo di specifiche caratteristiche o carenze dell'accessibilità."
-      labels:
-        defaults:
-          accessibility_feature: "Funzionalità di accessibilità"
-          accessibility_hazard: "Rischio di accessibilità"
-          accessibility_summary: "Riepilogo dell'accessibilità"
+        accessibility_summary: "Un riepilogo di specifiche caratteristiche o carenze dell'accessibilità."   
+    labels:
+      defaults:
+        additional_information: 'Informazioni aggiuntive'
+        alternative_title: 'Titolo alternativo'
+        date: 'Data'
+        oer_size: 'Taglia'
+        rights_holder: 'Titolare dei diritti'
+        table_of_contents: 'Sommario'
+        accessibility_feature: "Funzionalità di accessibilità"
+        accessibility_hazard: "Rischio di accessibilità"
+        accessibility_summary: "Riepilogo dell'accessibilità"

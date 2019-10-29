@@ -3,6 +3,12 @@ RSpec.describe 'hyrax/oers/_attributes.html.erb' do
   let(:contributor) { 'Frodo' }
   let(:subject)     { 'history' }
   let(:description) { ['Lorem ipsum < lorem ipsum. http://my.link.com'] }
+  let(:date) { '10/3/2000' }
+  let(:alternative_title) { 'alternative_title' }
+  let(:table_of_contents) { 'table of contents' }
+  let(:additional_information) { 'additional information' }
+  let(:rights_holder) { 'rights holder' }
+  let(:size) { '3 feet' }
   let(:accessibility_feature) { 'Alternative Text' }
   let(:accessibility_hazard) { 'Flashing' }
   let(:accessibility_summary) { 'Summary' }
@@ -15,6 +21,12 @@ RSpec.describe 'hyrax/oers/_attributes.html.erb' do
       contributor_tesim: contributor,
       creator_tesim: creator,
       description_tesim: description,
+      date_tesim: date,
+      alternative_title_tesim: alternative_title,
+      table_of_contents_tesim: table_of_contents,
+      additional_information_tesim: additional_information,
+      rights_holder_tesim: rights_holder,
+      oer_size_tesim: size,
       accessibility_feature_tesim: accessibility_feature,
       accessibility_hazard_tesim: accessibility_hazard,
       accessibility_summary_tesim: accessibility_summary
@@ -37,6 +49,12 @@ RSpec.describe 'hyrax/oers/_attributes.html.erb' do
     expect(rendered).to have_link(creator)
     expect(rendered).to have_link(contributor)
     expect(rendered).to have_link(subject)
+    expect(rendered).to have_link(alternative_title)
+    expect(rendered).to have_link(date)
+    expect(rendered).to have_link(table_of_contents)
+    expect(rendered).to have_link(additional_information)
+    expect(rendered).to have_link(rights_holder)
+    expect(rendered).to have_link(size)
     expect(rendered).to have_link(accessibility_feature)
     expect(rendered).to have_link(accessibility_hazard)
     expect(rendered).to have_link(accessibility_summary)

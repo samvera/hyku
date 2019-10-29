@@ -14,7 +14,10 @@ RSpec.describe Hyrax::OerForm do
     let(:attributes) do
       {
         title: ['foo'],
-        rendering_ids: [file_set.id]
+        rendering_ids: [file_set.id],
+        accessibility_feature: ['Alternative Text'],
+        accessibility_hazard: ['Flashing'],
+        accessibility_summary: ['Summary']
       }
     end
 

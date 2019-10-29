@@ -6,4 +6,14 @@ de:
       oer:
         description:        "Open Education Resources (OER) sind kostenlose und offen lizenzierte Unterrichtsmaterialien, die zum Lehren, Lernen, Forschen und für andere Zwecke verwendet werden können."
         name:               "OER"
-  
+  simple_form:
+    hints:
+      defaults:
+        accessibility_feature: "Zugängliche Funktionen der Arbeit."
+        accessibility_hazard: "Eigenschaften der Arbeit, die für einige Benutzer physiologisch gefährlich sein können."
+        accessibility_summary: "Eine Zusammenfassung der spezifischen Barrierefreiheitsfunktionen oder -mängel."
+      labels:
+        defaults:
+          accessibility_feature: "Eingabehilfen"
+          accessibility_hazard: "Zugänglichkeitsgefahr"
+          accessibility_summary: "Barrierefreiheitsübersicht"

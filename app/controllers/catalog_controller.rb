@@ -92,6 +92,9 @@ class CatalogController < ApplicationController
     config.add_index_field solr_name("identifier", :stored_searchable), helper_method: :index_field_link, field_name: 'identifier'
     config.add_index_field solr_name("embargo_release_date", :stored_sortable, type: :date), label: "Embargo release date", helper_method: :human_readable_date
     config.add_index_field solr_name("lease_expiration_date", :stored_sortable, type: :date), label: "Lease expiration date", helper_method: :human_readable_date
+    config.add_index_field solr_name('accessibility_feature', :stored_searchable), link_to_search: solr_name("accessibility_feature", :facetable)
+    config.add_index_field solr_name('accessibility_hazard', :stored_searchable), link_to_search: solr_name("accessibility_hazard", :facetable)
+    config.add_index_field solr_name('accessibility_summary', :stored_searchable), label: "Accessibility Summary", link_to_search: solr_name("accessibility_summary", :facetable)
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
@@ -113,6 +116,9 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name("format", :stored_searchable)
     config.add_show_field solr_name("identifier", :stored_searchable)
     config.add_show_field solr_name('extent', :stored_searchable)
+    config.add_show_field solr_name('accessibility_feature', :stored_searchable)
+    config.add_show_field solr_name('accessibility_hazard', :stored_searchable)
+    config.add_show_field solr_name('accessibility_summary', :stored_searchable), label: "Accessibility Summary"
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields

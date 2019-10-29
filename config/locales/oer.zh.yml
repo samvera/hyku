@@ -1,8 +1,19 @@
 zh:
   hyrax:
     icons:
-      oer:     'fa fa-file-text-o'
+      oer:     "fa fa-file-text-o"
     select_type:
       oer:
         description:        "开放式教育资源（OER）是免费的和开放许可的教育材料，可用于教学，学习，研究和其他目的。"
         name:               "OER"
+  simple_form:
+    hints:
+      defaults:
+        accessibility_feature: "作品的無障礙功能"
+        accessibility_hazard: "對某些使用者可能造成生理危險的作品特徵"
+        accessibility_summary: "特定輔助功能或缺陷的摘要"
+      labels:
+        defaults:
+          accessibility_feature: "輔助功能"
+          accessibility_hazard: "可達性危害"
+          accessibility_summary: "輔助功能摘要"

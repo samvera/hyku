@@ -45,4 +45,15 @@ class SolrDocument
     type: 'human_readable_type_tesim'
   )
 
+  def accessibility_feature
+    self[Solrizer.solr_name('accessibility_feature')]
+  end
+
+  def accessibility_hazard
+    self[Solrizer.solr_name('accessibility_hazard')]
+  end
+
+  def accessibility_summary
+    self[Solrizer.solr_name('accessibility_summary')]
+  end
 end

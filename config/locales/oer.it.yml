@@ -6,4 +6,14 @@ it:
       oer:
         description:        "Le risorse didattiche aperte (OER) sono materiali didattici gratuiti e con licenza aperta che possono essere utilizzati per insegnare, apprendere, ricercare e per altri scopi."
         name:               "OER"
-  
+  simple_form:
+    hints:
+      defaults:
+        accessibility_feature: "Funzionalità accessibili dell'opera."
+        accessibility_hazard: "Caratteristiche del lavoro che possono essere fisiologicamente pericolose per alcuni utenti."
+        accessibility_summary: "Un riepilogo di specifiche caratteristiche o carenze dell'accessibilità."
+      labels:
+        defaults:
+          accessibility_feature: "Funzionalità di accessibilità"
+          accessibility_hazard: "Rischio di accessibilità"
+          accessibility_summary: "Riepilogo dell'accessibilità"

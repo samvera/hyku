@@ -6,7 +6,7 @@ module Hyrax
     include Hyrax::FormTerms
     self.model_class = ::Oer
     include HydraEditor::Form::Permissions
-    self.terms += %i[resource_type rendering_ids]
+    self.terms += %i[resource_type rendering_ids accessibility_feature accessibility_hazard accessibility_summary]
     self.terms -=%i[keyword based_near related_url source date_created]
     
     def secondary_terms

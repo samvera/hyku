@@ -1,8 +1,19 @@
 es:
   hyrax:
     icons:
-      oer:     'fa fa-file-text-o'
+      oer:     "fa fa-file-text-o"
     select_type:
       oer:
         description:        "Los recursos educativos abiertos (REA) son materiales educativos gratuitos y con licencia abierta que se pueden utilizar para la enseñanza, el aprendizaje, la investigación y otros fines."
         name:               "OER"
+  simple_form:
+    hints:
+      defaults:
+        accessibility_feature: "Características accesibles de la obra."
+        accessibility_hazard: "Características del trabajo que pueden ser fisiológicamente peligrosas para algunos usuarios."
+        accessibility_summary: "Un resumen de las características específicas de accesibilidad o deficiencias."
+      labels:
+        defaults:
+          accessibility_feature: "Característica de accesibilidad"
+          accessibility_hazard: "Peligro de accesibilidad"
+          accessibility_summary: "Resumen de accesibilidad"

@@ -3,6 +3,9 @@ RSpec.describe 'hyrax/oers/_attributes.html.erb' do
   let(:contributor) { 'Frodo' }
   let(:subject)     { 'history' }
   let(:description) { ['Lorem ipsum < lorem ipsum. http://my.link.com'] }
+  let(:accessibility_feature) { 'Alternative Text' }
+  let(:accessibility_hazard) { 'Flashing' }
+  let(:accessibility_summary) { 'Summary' }
 
   let(:solr_document) { SolrDocument.new(attributes) }
   let(:attributes) do
@@ -11,7 +14,10 @@ RSpec.describe 'hyrax/oers/_attributes.html.erb' do
       subject_tesim: subject,
       contributor_tesim: contributor,
       creator_tesim: creator,
-      description_tesim: description
+      description_tesim: description,
+      accessibility_feature_tesim: accessibility_feature,
+      accessibility_hazard_tesim: accessibility_hazard,
+      accessibility_summary_tesim: accessibility_summary
     }
   end
   let(:ability) { double(admin?: true) }
@@ -31,5 +37,8 @@ RSpec.describe 'hyrax/oers/_attributes.html.erb' do
     expect(rendered).to have_link(creator)
     expect(rendered).to have_link(contributor)
     expect(rendered).to have_link(subject)
+    expect(rendered).to have_link(accessibility_feature)
+    expect(rendered).to have_link(accessibility_hazard)
+    expect(rendered).to have_link(accessibility_summary)
   end
 end

@@ -6,6 +6,13 @@ zh:
       oer:
         description:        "开放式教育资源（OER）是免费的和开放许可的教育材料，可用于教学，学习，研究和其他目的。"
         name:               "OER"
+    oer:
+      hints:
+        description: '资源内容的简要说明，不包括目录。'
+        resource_type: '预定类型用于描述上传内容类型。可以选择多项类型。'
+      labels:
+        description: '描述'
+        resource_type: '类型'
   simple_form:
     hints:
       defaults:

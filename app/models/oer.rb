@@ -7,6 +7,7 @@ class Oer < ActiveFedora::Base
   # Change this to restrict which works can be added as a child.
   # self.valid_child_concerns = []
   validates :title, presence: { message: 'Your work must have a title.' }
+  validates :resource_type, presence: { message: 'Your must select a resource type' }
 
   property :alternative_title, predicate: ::RDF::Vocab::DC.alternative do |index|
     index.as :stored_searchable

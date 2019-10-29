@@ -6,6 +6,13 @@ it:
       oer:
         description:        "Le risorse didattiche aperte (OER) sono materiali didattici gratuiti e con licenza aperta che possono essere utilizzati per insegnare, apprendere, ricercare e per altri scopi."
         name:               "OER"
+    oer:
+      hints:
+        description: 'Breve descrizione del contenuto della risorsa, escluso un sommario.'
+        resource_type: 'Categorie predefinite per descrivere il tipo di contenuto che viene caricato. Possono essere selezionati più di un tipo.'
+      labels:
+        description: 'Descrizione'
+        resource_type: 'genere'
   simple_form:
     hints:
       defaults:

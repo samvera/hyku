@@ -15,6 +15,7 @@ RSpec.describe Hyrax::OerForm do
       {
         title: ['foo'],
         rendering_ids: [file_set.id],
+        resource_type: ['Collection']
         date: ['10/3/2000'],
         alternative_title: ['alternative title'],
         table_of_contents: ['table of contents'],

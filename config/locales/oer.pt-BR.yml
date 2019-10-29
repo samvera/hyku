@@ -6,6 +6,13 @@ pt-BR:
       oer:
         description:        "Os recursos educacionais abertos (REA) são materiais educacionais gratuitos e com licença aberta, que podem ser usados ​​para ensino, aprendizado, pesquisa e outros propósitos."
         name:               "OER"
+    oer:
+      hints:
+        description: 'Breve descrição do conteúdo do recurso, sem incluir um índice.'
+        resource_type: 'Categorias pré-definidas para descrever o tipo de conteúdo que está sendo carregado. Mais de um tipo pode ser selecionado.'
+      labels:
+        description: 'Descrição'
+        resource_type: 'Tipo'
   simple_form:
     hints:
       defaults:

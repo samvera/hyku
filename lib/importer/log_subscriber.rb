@@ -5,8 +5,7 @@ module Importer
       @odd = false
     end
 
-    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-    def import(event)
+    def import(event) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       return unless logger.debug?
 
       payload = event.payload
@@ -24,7 +23,6 @@ module Importer
 
       debug "  #{name} #{klass} #{id}"
     end
-    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
     def odd?
       @odd = !@odd

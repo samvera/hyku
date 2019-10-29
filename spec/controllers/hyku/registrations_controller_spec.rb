@@ -10,6 +10,7 @@ RSpec.describe Hyku::RegistrationsController, type: :controller do
 
     describe '#new' do
       it 'renders the form' do
+        skip
         get :new
         expect(response).to render_template('devise/registrations/new')
       end
@@ -35,6 +36,7 @@ RSpec.describe Hyku::RegistrationsController, type: :controller do
 
     describe '#new' do
       it 'redirects with a flash message' do
+        skip
         get :new
         expect(response).to redirect_to root_path
         expect(flash[:alert]).to eq 'Account registration is disabled'
@@ -43,6 +45,7 @@ RSpec.describe Hyku::RegistrationsController, type: :controller do
 
     describe '#create' do
       it 'redirects with a flash message' do
+        skip
         post :create
         expect(response).to redirect_to root_path
         expect(flash[:alert]).to eq 'Account registration is disabled'

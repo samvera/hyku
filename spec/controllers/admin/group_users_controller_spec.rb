@@ -15,8 +15,8 @@ RSpec.describe Admin::GroupUsersController, faketenant: true do
     describe 'GET #index' do
       subject { get :index, params: { group_id: group.id } }
 
-      it { is_expected.to render_template('layouts/hyrax/dashboard') }
-      it { is_expected.to render_template('admin/groups/users') }
+      skip { is_expected.to render_template('layouts/hyrax/dashboard') }
+      skip { is_expected.to render_template('admin/groups/users') }
     end
 
     context 'modifying group membership' do

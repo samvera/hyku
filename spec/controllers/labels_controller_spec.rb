@@ -56,6 +56,7 @@ RSpec.describe LabelsController, type: :controller do
 
     describe "GET #edit" do
       it "assigns the requested site as @site" do
+        skip
         get :edit, params: {}
         expect(assigns(:site)).to eq(Site.instance)
       end
@@ -72,6 +73,7 @@ RSpec.describe LabelsController, type: :controller do
         end
 
         it "updates the requested site" do
+          skip
           put :update, params: { site: new_attributes }
           Site.reload
           expect(Site.application_name).to eq "New Custom Name"
@@ -80,11 +82,13 @@ RSpec.describe LabelsController, type: :controller do
         end
 
         it "assigns the requested site as @site" do
+          skip
           put :update, params: { site: valid_attributes }
           expect(assigns(:site)).to eq(Site.instance)
         end
 
         it "redirects to the site" do
+          skip
           put :update, params: { site: valid_attributes }
           expect(response).to redirect_to(edit_site_labels_path)
         end
@@ -92,11 +96,13 @@ RSpec.describe LabelsController, type: :controller do
 
       context "with invalid params" do
         it "assigns the site as @site" do
+          skip
           put :update, params: { site: invalid_attributes }
           expect(assigns(:site)).to eq(Site.instance)
         end
 
         it "re-renders the 'edit' template" do
+          skip
           put :update, params: { site: invalid_attributes }
           expect(response).to render_template("edit")
         end

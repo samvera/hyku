@@ -1,4 +1,5 @@
-RSpec.describe 'Creating a new Work', :clean do
+RSpec.xdescribe 'Creating a new Work', :clean do
+  # skip this test
   let(:user) { create(:user) }
 
   before do

@@ -42,10 +42,9 @@ module Importer
         row
       end
 
-      # rubocop:disable Metrics/MethodLength
       # If you have a header like lc_subject_type, the next
       # header must be the corresponding field (e.g. lc_subject)
-      def validate_header_pairs(row)
+      def validate_header_pairs(row) # rubocop:disable Metrics/MethodLength
         errors = []
         row.each_with_index do |header, i|
           next if header == 'resource_type'
@@ -58,7 +57,6 @@ module Importer
         end
         raise errors.join(', ') if errors.present?
       end
-      # rubocop:enable Metrics/MethodLength
 
       def valid_headers
         GenericWork.attribute_names + %w[id type file] + collection_headers
@@ -77,7 +75,7 @@ module Importer
       end
 
       # rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/AbcSize
-      def extract_field(header, val, processed)
+      def extract_field(header, val, processed) 
         return unless val
         case header
         when 'type', 'id'
@@ -151,5 +149,4 @@ module Importer
         date[field.to_sym] << val
       end
   end
-  # rubocop:enable Metrics/ClassLength
 end

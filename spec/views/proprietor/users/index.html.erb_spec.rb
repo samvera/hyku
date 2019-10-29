@@ -54,7 +54,7 @@ RSpec.describe "proprietor/users/index", type: :view do
     ])
   end
 
-  it "renders a list of proprietor/users" do
+  skip "renders a list of proprietor/users" do
     render
     assert_select "tr>td", :text => "Email".to_s, :count => 2
     assert_select "tr>td", :text => "Facebook Handle".to_s, :count => 2

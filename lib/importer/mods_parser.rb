@@ -1,6 +1,5 @@
 module Importer
-  # rubocop:disable Metrics/ClassLength
-  class ModsParser
+  class ModsParser # rubocop:disable Metrics/ClassLength
     NAMESPACES = { 'mods'.freeze => Mods::MODS_NS }.freeze
 
     attr_reader :filename
@@ -77,8 +76,7 @@ module Importer
         .merge(relations)
     end
 
-    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-    def description
+    def description # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
       {
         title: untyped_title,
         alternative: alt_title,
@@ -96,7 +94,6 @@ module Importer
         description_standard: mods.record_info.descriptionStandard.map(&:text)
       }
     end
-    # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
     def language
       mods.language.languageTerm.map do |term|
@@ -138,8 +135,7 @@ module Importer
       Array.wrap(mods.location.physicalLocation.text)
     end
 
-    # rubocop:disable Metrics/AbcSize
-    def dates
+    def dates # rubocop:disable Metrics/AbcSize
       {
         issued_attributes: build_date(mods.origin_info.dateIssued),
         created_attributes: build_date(mods.origin_info.dateCreated),
@@ -148,7 +144,6 @@ module Importer
         date_valid_attributes: build_date(mods.origin_info.dateValid)
       }
     end
-    # rubocop:enable Metrics/AbcSize
 
     def identifiers
       { accession_number: mods.identifier.map(&:text) }
@@ -229,8 +224,7 @@ module Importer
       end
     end
 
-    # rubocop:disable Metrics/AbcSize
-    def notes
+    def notes # rubocop:disable Metrics/AbcSize
       preferred_citation = 'preferred citation'.freeze
       type = 'type'.freeze
       mods.note.each_with_object([]) do |node, list|
@@ -241,7 +235,6 @@ module Importer
         list << hash
       end
     end
-    # rubocop:enable Metrics/AbcSize
 
     private
 
@@ -311,5 +304,4 @@ module Importer
         end
       end
   end
-  # rubocop:enable Metrics/ClassLength
 end

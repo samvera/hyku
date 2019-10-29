@@ -26,7 +26,6 @@ require 'rspec/rails'
 require 'capybara/rails'
 require 'database_cleaner'
 require 'active_fedora/cleaner'
-require 'support/factory_bot'
 require 'webdrivers'
 # Add additional requires below this line. Rails is not loaded until this point!
 

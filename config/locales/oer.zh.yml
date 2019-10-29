@@ -9,11 +9,23 @@ zh:
   simple_form:
     hints:
       defaults:
+        additional_information: '未按状态传达的其他权利信息，例如许可条款或联系信息。'
+        alternative_title: '资源的备用标题。'
+        date: 'T创建，发布或发布作品的日期。'
+        oer_size: '工作的规模或持续时间。'
+        rights_holder: '作品的大小或持续时间。拥有作品权利的个人或团体（如果知道）。'
+        table_of_contents: '作品目录。'
         accessibility_feature: "作品的無障礙功能"
         accessibility_hazard: "對某些使用者可能造成生理危險的作品特徵"
-        accessibility_summary: "特定輔助功能或缺陷的摘要"
-      labels:
-        defaults:
-          accessibility_feature: "輔助功能"
-          accessibility_hazard: "可達性危害"
-          accessibility_summary: "輔助功能摘要"
+        accessibility_summary: "特定輔助功能或缺陷的摘要"    
+    labels:
+      defaults:
+        additional_information: '附加信息'
+        alternative_title: '替代标题'
+        date: '日期'
+        oer_size: '尺寸'
+        rights_holder: '权利人'
+        table_of_contents: '目录'
+        accessibility_feature: "輔助功能"
+        accessibility_hazard: "可達性危害"
+        accessibility_summary: "輔助功能摘要"

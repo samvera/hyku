@@ -15,6 +15,12 @@ RSpec.describe Hyrax::OerForm do
       {
         title: ['foo'],
         rendering_ids: [file_set.id],
+        date: ['10/3/2000'],
+        alternative_title: ['alternative title'],
+        table_of_contents: ['table of contents'],
+        additional_information: ['additional information'],
+        rights_holder: ['rights holder'],
+        size: ['3 feet'],
         accessibility_feature: ['Alternative Text'],
         accessibility_hazard: ['Flashing'],
         accessibility_summary: ['Summary']

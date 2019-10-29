@@ -10,6 +10,12 @@
 <%= presenter.attribute_to_html(:rights_statement, render_as: :rights_statement, html_dl: true) %>
 <%= presenter.attribute_to_html(:rights_notes, html_dl: true) %>
 <%= presenter.attribute_to_html(:access_right, html_dl: true) %>
+<%= presenter.attribute_to_html(:alternative_title, render_as: :linked, html_dl: true) %>
+<%= presenter.attribute_to_html(:date, render_as: :linked, html_dl: true) %>
+<%= presenter.attribute_to_html(:table_of_contents, render_as: :linked, html_dl: true) %>
+<%= presenter.attribute_to_html(:additional_information, render_as: :linked, html_dl: true) %>
+<%= presenter.attribute_to_html(:rights_holder, render_as: :linked, html_dl: true) %>
+<%= presenter.attribute_to_html(:oer_size, render_as: :linked, label: t('simple_form.labels.default.size'), html_dl: true) %>
 <%= presenter.attribute_to_html(:accessibility_feature, render_as: :faceted, html_dl: true) %>
 <%= presenter.attribute_to_html(:accessibility_hazard, render_as: :faceted, html_dl: true) %>
 <%= presenter.attribute_to_html(:accessibility_summary, render_as: :faceted, html_dl: true) %>

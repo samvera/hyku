@@ -43,11 +43,6 @@ class SolrDocument
   attribute :accessibility_hazard, Solr::Array, solr_name('accessibility_hazard')
   attribute :discipline, Solr::Array, solr_name('discipline')
 
-  # def date
-  #   self[Solrizer.solr_name('date')]
-  # end
-
-
   field_semantics.merge!(
     contributor: 'contributor_tesim',
     creator: 'creator_tesim',

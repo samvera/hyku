@@ -106,6 +106,10 @@ RSpec/MessageSpies:
 
 RSpec/ExampleLength:
   Max: 16
+  Exclude: 
+    - 'spec/models/oer_spec.rb'
+    - 'spec/features/create_oer_spec.rb'
+    - 'spec/views/proprietor/users/*'
 
 RSpec/NestedGroups:
   Max: 4

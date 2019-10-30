@@ -14,4 +14,3 @@ RSpec.describe Hyrax::AudienceService do
     it { is_expected.to eq 'Instructor' }
   end
 end
-

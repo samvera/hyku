@@ -9,7 +9,7 @@ module Hyrax
   # @note This was extracted from internationalization because Schema.org keys are not internationalized
   class Microdata
     include Singleton
-    FILENAME = 'config/schema_org.yml'
+    FILENAME = 'config/schema_org.yml'.freeze
     TOP_KEY = 'schema_org'.freeze
 
     # @api private (See note regarding specific methods)

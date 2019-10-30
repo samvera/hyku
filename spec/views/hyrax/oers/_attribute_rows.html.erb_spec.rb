@@ -12,7 +12,7 @@ RSpec.describe 'hyrax/oers/_attributes.html.erb' do
   let(:accessibility_feature) { 'Alternative Text' }
   let(:accessibility_hazard) { 'Flashing' }
   let(:accessibility_summary) { 'Summary' }
-  let(:audience)    { 'Instructor' }
+  let(:audience) { 'Instructor' }
   let(:education_level) { 'College / Upper division' }
   let(:learning_resource) { 'Game' }
   let(:discipline) { 'Computing and Information - Computer Science' }
@@ -48,7 +48,7 @@ RSpec.describe 'hyrax/oers/_attributes.html.erb' do
 
   before do
     allow(presenter).to receive(:member_of_collection_presenters).and_return([])
-    allow(view).to receive(:dom_class) { '' }
+    allow(view).to receive(:dom_class).and_return('')
 
     render 'hyrax/oers/attribute_rows', presenter: presenter
   end

@@ -44,4 +44,3 @@ RSpec.describe Hyrax::AccessibilityFeaturesService do
     end
   end
 end
-

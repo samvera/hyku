@@ -41,3 +41,6 @@ en:
         accessibility_summary: "Accessibility Summary"
         audience: "Audience"
         education_level: "Education level"
+    placeholders:
+      defaults:
+        previous_version: "Search for a work..."

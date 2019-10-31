@@ -62,6 +62,10 @@ class Oer < ActiveFedora::Base
     index.as :stored_searchable
   end
 
+  property :previous_version, predicate: ::RDF::Vocab::DC.replaces do |index|
+    index.as :stored_searchable, :facetable
+  end
+
   self.human_readable_type = 'OER'
   # This must be included at the end, because it finalizes the metadata
   # schema (by adding accepts_nested_attributes)

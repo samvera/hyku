@@ -4,6 +4,7 @@ module Hyrax
   class OerPresenter < Hyku::WorkShowPresenter
     delegate :alternative_title, :date, :table_of_contents, :additional_information,
              :rights_holder, :oer_size, :accessibility_feature, :accessibility_hazard,
-             :accessibility_summary, :audience, :education_level, :learning_resource_type, to: :solr_document
+             :accessibility_summary, :audience, :education_level, :learning_resource_type, 
+             :previous_version, to: :solr_document
   end
 end

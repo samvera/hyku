@@ -96,7 +96,7 @@ class CatalogController < ApplicationController
     config.add_index_field solr_name('education_level', :stored_searchable)
     config.add_index_field solr_name('learning_resource_type', :stored_searchable)
     config.add_index_field solr_name("alternative_title", :stored_searchable), label: "Alternative title"
-    config.add_index_field solr_name("date", :stored_searchable), label: "Date", helper_method: :human_readable_date
+    config.add_index_field solr_name("date", :stored_searchable), label: "Date"
     config.add_index_field solr_name("table_of_contents", :stored_searchable), label: "Table of contents"
     config.add_index_field solr_name("additional_information", :stored_searchable), label: "Additional information"
     config.add_index_field solr_name("rights_holder", :stored_searchable), label: "Rights holder"
@@ -136,7 +136,8 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name("oer_size", :stored_searchable), label: "Size"
     config.add_show_field solr_name('accessibility_feature', :stored_searchable)
     config.add_show_field solr_name('accessibility_hazard', :stored_searchable)
-    config.add_show_field solr_name('accessibility_summary', :stored_searchable), label: "Accessibility Summary"
+    config.add_show_field solr_name('accessibility_summary', :stored_searchable), label: "Accessibility summary"
+    config.add_show_field solr_name('previous_version', :stored_searchable), label: "Previous version"
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields

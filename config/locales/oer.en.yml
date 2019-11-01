@@ -14,10 +14,10 @@ en:
         resource_type: 'Type'
         description: 'Description'
     oers:
-      form_previous_versions:
+      form_previous_version:
         actions:
           remove: Remove from this work
-        caption: This work currently contains these previous versions
+        caption: This work currently contains this previous version
         confirm:
           cancel: Cancel
           remove: Remove

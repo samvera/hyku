@@ -105,7 +105,7 @@ export default class {
                                    'work_members_attributes',
                                    'tmpl-child-work').init())
                               
-      let related_works = this.element.find('[data-behavior="previous-version-relationships"]')
+      let related_works = this.element.find('[data-behavior="previous-version-relationship"]')
       related_works.each((_idx, element) =>
           new RelationshipsControl(element,
                                   related_works.data('members'),

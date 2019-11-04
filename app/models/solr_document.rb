@@ -41,7 +41,7 @@ class SolrDocument
   attribute :accessibility_summary, Solr::String, solr_name('accessibility_summary')
   attribute :accessibility_feature, Solr::Array, solr_name('accessibility_feature')
   attribute :accessibility_hazard, Solr::Array, solr_name('accessibility_hazard')
-  attribute :previous_version, Solr::Array, solr_name('previous_version')
+  attribute :previous_version, Solr::String, solr_name('previous_version')
 
   field_semantics.merge!(
     contributor: 'contributor_tesim',

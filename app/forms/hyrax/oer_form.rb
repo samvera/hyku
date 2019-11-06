@@ -13,9 +13,18 @@ module Hyrax
     self.terms -=%i[keyword based_near related_url source date_created previous_version]    
     self.required_fields += %i[resource_type date audience education_level learning_resource_type]
 
+    delegate :related_members_attributes=, to: :model
+
     def secondary_terms
       super - [:rendering_ids]
     end
 
+    def self.build_permitted_params
+      super + [
+        {
+          related_members_attributes: [:id, :_destroy]
+        }
+      ]
+    end
   end
 end

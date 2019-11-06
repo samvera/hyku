@@ -110,7 +110,7 @@ export default class {
           new RelationshipsControl(element,
                                   related_works.data('members'),
                                   related_works.data('paramKey'),
-                                  'work_members_attributes',
+                                  'related_members_attributes',
                                   'tmpl-previous-version-work').init())
   }
 

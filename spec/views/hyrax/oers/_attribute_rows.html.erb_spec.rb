@@ -15,6 +15,7 @@ RSpec.describe 'hyrax/oers/_attributes.html.erb' do
   let(:audience) { 'Instructor' }
   let(:education_level) { 'College / Upper division' }
   let(:learning_resource) { 'Game' }
+  let(:discipline) { 'Computing and Information - Computer Science' }
 
   let(:solr_document) { SolrDocument.new(attributes) }
   let(:attributes) do
@@ -35,7 +36,8 @@ RSpec.describe 'hyrax/oers/_attributes.html.erb' do
       accessibility_summary_tesim: accessibility_summary,
       audience_tesim: audience,
       education_level_tesim: education_level,
-      learning_resource_type_tesim: learning_resource
+      learning_resource_type_tesim: learning_resource,
+      discipline_tesim: discipline
     }
   end
   let(:ability) { double(admin?: true) }
@@ -56,7 +58,7 @@ RSpec.describe 'hyrax/oers/_attributes.html.erb' do
     expect(rendered).to have_link(contributor)
     expect(rendered).to have_link(subject)
     expect(rendered).to have_link(alternative_title)
-    # expect(rendered).to have_link(date) # TODO: investigate why this is failing
+    expect(rendered).to have_css('li.attribute-date', text: date)
     expect(rendered).to have_link(table_of_contents)
     expect(rendered).to have_link(additional_information)
     expect(rendered).to have_link(rights_holder)
@@ -67,5 +69,6 @@ RSpec.describe 'hyrax/oers/_attributes.html.erb' do
     expect(rendered).to have_link(audience)
     expect(rendered).to have_link(education_level)
     expect(rendered).to have_link(learning_resource)
+    expect(rendered).to have_link(discipline)
   end
 end

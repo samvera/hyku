@@ -45,6 +45,7 @@ RSpec.describe Oer do
       expect(subject).to respond_to(:resource_type)
       expect(subject).to respond_to(:identifier)
       expect(subject).to respond_to(:audience)
+      expect(subject).to respond_to(:discipline)
       expect(subject).to respond_to(:education_level)
       expect(subject).to respond_to(:learning_resource_type)
       expect(subject).to respond_to(:alternative_title)

@@ -10,7 +10,8 @@ class Oer < ActiveFedora::Base
   validates :audience, presence: { message: 'You must select an audience.' }
   validates :education_level, presence: { message: 'You must select an education level.' }
   validates :learning_resource_type, presence: { message: 'You must select a learning resource type.' }
-  validates :resource_type, presence: { message: 'Your must select a resource type' }
+  validates :resource_type, presence: { message: 'You must select a resource type.' }
+  validates :discipline, presence: { message: 'You must select a discipline.' }
 
   property :audience, predicate: ::RDF::Vocab::SCHEMA.EducationalAudience do |index|
     index.as :stored_searchable, :facetable
@@ -63,6 +64,10 @@ class Oer < ActiveFedora::Base
   end
 
   property :previous_version, predicate: ::RDF::Vocab::DC.replaces, multiple: false do |index|
+    index.as :stored_searchable, :facetable
+  end
+  
+  property :discipline, predicate: ::RDF::Vocab::DC.coverage do |index|
     index.as :stored_searchable, :facetable
   end
 

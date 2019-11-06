@@ -16,6 +16,7 @@ RSpec.describe Hyrax::OerForm do
         title: ['foo'],
         rendering_ids: [file_set.id],
         audience: ['instructor'],
+        discipline: ['Engineering - Nuclear'],
         education_level: ['adult education'],
         learning_resource_type: ['Lecture notes'],
         resource_type: ['Collection'],

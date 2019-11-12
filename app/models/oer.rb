@@ -63,7 +63,7 @@ class Oer < ActiveFedora::Base
     index.as :stored_searchable
   end
 
-  property :previous_version, predicate: ::RDF::Vocab::DC.replaces, multiple: false do |index|
+  property :previous_version, predicate: ::RDF::Vocab::DC.replaces do |index|
     index.as :stored_searchable, :facetable
   end
   

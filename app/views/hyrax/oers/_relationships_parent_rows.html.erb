@@ -13,7 +13,3 @@
 <% if current_user %>
 <%= presenter.attribute_to_html(:admin_set, render_as: :faceted, html_dl: true) %>
 <% end %>
-
-<% if current_user %>
-<%= presenter.attribute_to_html(:previous_version, render_as: :related_item, html_dl: true) %>
-<% end %>

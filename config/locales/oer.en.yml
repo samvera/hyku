@@ -13,9 +13,13 @@ en:
       labels:
         resource_type: 'Type'
         description: 'Description'
+      works:
+        form:
+          related_versions: "Related Versions"
     oers:
       form_previous_version:
         actions:
+          add: Add
           remove: Remove from this work
         caption: This work currently contains this previous version
         confirm:

@@ -13,6 +13,22 @@ it:
       labels:
         description: 'Descrizione'
         resource_type: 'genere'
+      works:
+        form:
+          related_versions: "Versioni correlate"
+    oers:
+      form_previous_version:
+        actions:
+          add: Inserisci
+          remove: Rimuovi da questo lavoro
+        caption: Questo lavoro contiene attualmente questa versione precedente
+        confirm:
+          cancel: Annulla
+          remove: Rimuovere
+          text: La rimozione di questa versione precedente non la rimuoverà dal repository, ma solo da questo lavoro. Sei sicuro di voler rimuovere questa versione precedente?
+        header:
+          actions: Azione
+          title: Titolo dell'opera
   simple_form:
     hints:
       defaults:

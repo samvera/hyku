@@ -13,6 +13,22 @@ fr:
       labels:
         description: 'La description'
         resource_type: 'Type'
+      works:
+        form:
+          related_versions: "Versions connexes"
+    oers:
+      form_previous_version:
+        actions:
+          add: Ajouter
+          remove: Supprimer de ce travail
+        caption: Ce travail contient actuellement cette version précédente
+        confirm:
+          cancel: Annuler
+          remove: Retirer
+          text: La suppression de cette version précédente ne la supprimera pas du référentiel, mais uniquement de ce travail. Êtes-vous sûr de vouloir supprimer cette version précédente?
+        header:
+          actions: Action
+          title: Titre de l'oeuvre
   simple_form:
     hints:
       defaults:

@@ -57,6 +57,7 @@ RSpec.describe Oer do
       expect(subject).to respond_to(:accessibility_feature)
       expect(subject).to respond_to(:accessibility_hazard)
       expect(subject).to respond_to(:accessibility_summary)
+      expect(subject).to respond_to(:previous_version)
     end
   end
 end

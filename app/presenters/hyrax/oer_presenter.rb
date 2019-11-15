@@ -18,7 +18,7 @@ module Hyrax
       # gets list of ids for previous versions
       def authorized_previous_item_ids
         @item_list_ids ||= begin
-          items = previous_version_ids
+          items = previous_version_id
           items.delete_if { |m| !current_ability.can?(:read, m) } if Flipflop.hide_private_items?
           items
         end
@@ -27,12 +27,12 @@ module Hyrax
       #TODO: This isn't working yet
       # get list of ids from solr for the previous_versions
       # Arbitrarily maxed at 10 thousand; had to specify rows due to solr's default of 10
-      def previous_version_ids
-        @previous_version_ids ||= begin
+      def previous_version_id
+        @previous_version_id ||= begin
           ActiveFedora::SolrService.query("proxy_in_ssi:#{id}", #what is proxy_in_ssi?
             rows: 10_000,
-            fl:   "previous_version_ssim")
-          .flat_map { |x| x.fetch("previous_version_ssim", []) }
+            fl:   "previous_version_id_ssim")
+          .flat_map { |x| x.fetch("previous_version_id_ssim", []) }
         end
       end
   end

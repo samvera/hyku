@@ -14,8 +14,8 @@ HTML Properties:
 <div class="form-group" data-behavior="previous-version-relationship" data-param-key="<%= f.object.model_name.param_key %>" data-members="<%= f.object.work_members_json %>">
 
   <div class="form-inline">
-      <%= f.label :previous_version %>
-      <%= f.input_field :previous_version,
+      <%= f.label :previous_version_id %>
+      <%= f.input_field :previous_version_id,
                   prompt: :translate,
                   autocomplete: 'off',
                   data: {

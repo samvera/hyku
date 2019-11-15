@@ -22,7 +22,7 @@ RSpec.describe Hyrax::Actors::OerActor do
   describe "#create" do
     it 'adds a related version' do
       expect(subject.create(env)).to be true
-      expect(work.previous_version).to eq([related_oer.id])
+      expect(work.previous_version_id).to eq([related_oer.id])
     end
   end
 
@@ -32,13 +32,13 @@ RSpec.describe Hyrax::Actors::OerActor do
 
     it 'updates a related version' do
       expect(subject.update(env)).to be true
-      expect(work.previous_version).to include(related_oer.id)
-      expect(work.previous_version).to include(new_related_oer.id)
+      expect(work.previous_version_id).to include(related_oer.id)
+      expect(work.previous_version_id).to include(new_related_oer.id)
     end
     let(:attributes) { HashWithIndifferentAccess.new(related_members_attributes: { '0' => { id: related_oer.id, _destroy: 'true' }, '1' => { id: new_related_oer.id, _destroy: 'false' } }) }
     it 'removes the related version' do
       expect(subject.update(env)).to be true
-      expect(work.previous_version).to eq([new_related_oer.id])
+      expect(work.previous_version_id).to eq([new_related_oer.id])
     end
   end
 

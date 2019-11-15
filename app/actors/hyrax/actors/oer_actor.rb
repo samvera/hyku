@@ -23,7 +23,7 @@ module Hyrax
           # after  [{"id"=>"6e9740ab-fc9c-403f-9e01-9c06c85148ee", "_destroy"=>"false"}, {"id"=>"9abb566c-4873-4565-b02b-b32c7dd46fc8", "_destroy"=>"false"}]
           attributes = attributes_collection&.sort_by { |i, _| i.to_i }&.map { |_, attributes| attributes }
           # checking for existing works to avoid rewriting/loading works that are already attached
-          existing_previous_works = env.curation_concern.previous_version
+          existing_previous_works = env.curation_concern.previous_version_id
           attributes&.each do |attributes|
 
             next if attributes['id'].blank?
@@ -38,13 +38,13 @@ module Hyrax
         end
 
         def add(env, id)
-          env.curation_concern.previous_version = (env.curation_concern.previous_version.to_a << id)
+          env.curation_concern.previous_version_id = (env.curation_concern.previous_version_id.to_a << id)
           env.curation_concern.save
           return env
         end
 
         def remove(env, id)
-          env.curation_concern.previous_version = (env.curation_concern.previous_version.to_a - [id])
+          env.curation_concern.previous_version_id = (env.curation_concern.previous_version_id.to_a - [id])
           env.curation_concern.save
           return env
         end

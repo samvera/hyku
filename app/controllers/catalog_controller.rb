@@ -139,7 +139,7 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name('accessibility_feature', :stored_searchable)
     config.add_show_field solr_name('accessibility_hazard', :stored_searchable)
     config.add_show_field solr_name('accessibility_summary', :stored_searchable), label: "Accessibility summary"
-    config.add_show_field solr_name('previous_version', :stored_searchable), label: "Previous version"
+    config.add_show_field solr_name('previous_version_id', :stored_searchable), label: "Previous version"
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields

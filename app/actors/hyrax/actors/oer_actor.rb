@@ -38,15 +38,13 @@ module Hyrax
         end
 
         def add(env, id)
-          work = Oer.find(id)
-          env.curation_concern.previous_version << work
+          env.curation_concern.previous_version = (env.curation_concern.previous_version.to_a << id)
           env.curation_concern.save
           return env
         end
 
         def remove(env, id)
-          work = Oer.find(id)
-          env.curation_concern.previous_version.delete(work)
+          env.curation_concern.previous_version = (env.curation_concern.previous_version.to_a - [id])
           env.curation_concern.save
           return env
         end

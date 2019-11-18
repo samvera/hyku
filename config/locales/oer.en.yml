@@ -62,5 +62,5 @@ en:
         table_of_contents: 'Table of contents'
     placeholders:
       defaults:
-        previous_version: "Search for a work..."
+        previous_version_id: "Search for a work..."
         

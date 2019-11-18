@@ -1,5 +1,5 @@
 <%# copied from Hyrax to create custom label and hints for OER worktype %>
-<% if curation_concern.class == Oer %>
+<% if @collection || curation_concern.class == Oer %>
   <%= f.input :resource_type, as: :select, 
   collection: Hyrax::OerTypesService.select_all_options, 
   label: t("hyrax.oer.labels.resource_type"),

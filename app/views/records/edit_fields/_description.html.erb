@@ -1,5 +1,5 @@
 <%# copied from Hyrax to create custom label and hints for OER worktype %>
-<% if curation_concern.class == Oer %>
+<% if @collection || curation_concern.class == Oer %>
   <% if f.object.multiple? key %>
     <%= f.input :description, as: :multi_value,
     label: t("hyrax.oer.labels.description"),

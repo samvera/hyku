@@ -13,6 +13,8 @@ pt-BR:
       labels:
         description: 'Descrição'
         resource_type: 'Tipo'
+      show:
+        related_items: 'Versões e itens relacionados'
       works:
         form:
           related_versions: "Versões relacionadas"

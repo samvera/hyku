@@ -13,6 +13,8 @@ it:
       labels:
         description: 'Descrizione'
         resource_type: 'genere'
+      show:
+        related_items: 'Versioni ed elementi correlati'
       works:
         form:
           related_versions: "Versioni correlate"

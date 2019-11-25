@@ -13,6 +13,8 @@ de:
       labels:
         description: 'Beschreibung'
         resource_type: 'Art'
+      show:
+        related_items: 'Verwandte Versionen und Elemente'
       works:
         form:
           related_versions: "Verwandte Versionen"

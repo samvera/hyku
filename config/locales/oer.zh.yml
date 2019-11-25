@@ -13,6 +13,8 @@ zh:
       labels:
         description: '描述'
         resource_type: '类型'
+      show:
+        related_items: '相关版本和项目'
       works:
         form:
           related_versions: '相关版本'

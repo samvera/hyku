@@ -13,6 +13,8 @@ en:
       labels:
         resource_type: 'Type'
         description: 'Description'
+      show:
+        related_items: 'Related Versions and Items'
       works:
         form:
           related_versions: "Related Versions"

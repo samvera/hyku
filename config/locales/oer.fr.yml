@@ -13,6 +13,8 @@ fr:
       labels:
         description: 'La description'
         resource_type: 'Type'
+      show:
+        related_items: 'Versions et articles connexes'
       works:
         form:
           related_versions: "Versions connexes"

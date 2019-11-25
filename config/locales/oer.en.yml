@@ -19,7 +19,7 @@ en:
         form:
           related_versions: "Related Versions"
     oers:
-      form_previous_version:
+      form_custom_relationships:
         actions:
           add: Add
           remove: Remove from this work

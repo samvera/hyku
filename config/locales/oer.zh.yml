@@ -19,7 +19,7 @@ zh:
         form:
           related_versions: '相关版本'
     oers:
-      form_previous_version:
+      form_custom_relationships:
         actions:
           add: 加
           remove: 从这项工作中删除

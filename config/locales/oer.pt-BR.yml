@@ -19,7 +19,7 @@ pt-BR:
         form:
           related_versions: "Versões relacionadas"
     oers:
-      form_previous_version:
+      form_custom_relationships:
         actions:
           add: acrescentar
           remove: Remover deste trabalho

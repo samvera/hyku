@@ -14,6 +14,7 @@ fr:
         description: 'La description'
         resource_type: 'Type'
       show:
+        previous_version: 'Versions précédentes'
         related_items: 'Versions et articles connexes'
       works:
         form:

@@ -14,6 +14,7 @@ en:
         resource_type: 'Type'
         description: 'Description'
       show:
+        previous_version: "Previous Versions"
         related_items: 'Related Versions and Items'
       works:
         form:

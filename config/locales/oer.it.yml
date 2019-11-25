@@ -14,6 +14,7 @@ it:
         description: 'Descrizione'
         resource_type: 'genere'
       show:
+        previous_version: 'Versione precedente'
         related_items: 'Versioni ed elementi correlati'
       works:
         form:

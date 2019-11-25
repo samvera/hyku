@@ -14,6 +14,7 @@ pt-BR:
         description: 'Descrição'
         resource_type: 'Tipo'
       show:
+        previous_version: 'Versões prévias'
         related_items: 'Versões e itens relacionados'
       works:
         form:

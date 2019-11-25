@@ -13,7 +13,7 @@ module Hyrax
     self.terms -=%i[keyword based_near related_url source date_created previous_version_id]    
     self.required_fields += %i[resource_type date audience education_level learning_resource_type discipline]
 
-    delegate :related_members_attributes=, to: :model
+    delegate :related_members_attributes=, :previous_version, to: :model
 
     def secondary_terms
       super - [:rendering_ids]
@@ -26,5 +26,16 @@ module Hyrax
         }
       ]
     end
+
+    def previous_version_json
+      previous_version.map do |child|
+        {
+          id: child.id,
+          label: child.to_s,
+          path: @controller.url_for(child)
+        }
+      end.to_json
+    end
+
   end
 end

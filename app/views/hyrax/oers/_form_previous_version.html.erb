@@ -11,7 +11,7 @@ HTML Properties:
     data-param-key : the parameter key value for this model type %>
 <h2><%= t("oer.works.form.related_versions") %></h2>
 
-<div class="form-group" data-behavior="previous-version-relationship" data-param-key="<%= f.object.model_name.param_key %>" data-members="<%= f.object.work_members_json %>">
+<div class="form-group" data-behavior="previous-version-relationship" data-param-key="<%= f.object.model_name.param_key %>" data-members="<%= f.object.previous_version_json %>">
 
   <div class="form-inline">
       <%= f.label :previous_version_id %>

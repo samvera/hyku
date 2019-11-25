@@ -76,8 +76,8 @@ class Oer < ActiveFedora::Base
   # schema (by adding accepts_nested_attributes)
   include ::Hyrax::BasicMetadata
 
-  # def previous_version
-  #   @previous_version ||= Work.where(self.previous_version_id) if self.previous_version_id
-  # end
+  def previous_version
+    @previous_version ||= Oer.where(id: self.previous_version_id) if self.previous_version_id
+  end
 
 end

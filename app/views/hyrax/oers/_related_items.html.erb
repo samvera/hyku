@@ -1,8 +1,4 @@
-
-<h1>HELLO HERE?</h1>
-<%= presenter.list_of_previous_item_ids_to_display %>
-<%  array_of_ids = presenter.list_of_previous_item_ids_to_display %>
-<%  members = presenter.member_presenters_for(array_of_ids) %>
+<%  members = presenter.member_presenters_for(presenter.relationships) %>
 <% if members.present? %>
   <table class="table table-striped related-files">
     <thead>
@@ -11,7 +7,7 @@
         <th><%= t('.title') %></th>
         <th><%= t('.date_uploaded') %></th>
         <th><%= t('.visibility') %></th>
-        <th><%= t('.actions') %></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>

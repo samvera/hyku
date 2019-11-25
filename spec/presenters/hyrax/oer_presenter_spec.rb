@@ -126,51 +126,6 @@ RSpec.describe Hyrax::OerPresenter do
     end
   end
 
-  # describe "#list_of_previous_item_ids_to_display" do
-  #   let(:subject) { presenter.list_of_previous_item_ids_to_display }
-  #   let(:items_list) { ['item0', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8', 'item9'] }
-  #   let(:rows) { 10 }
-  #   let(:page) { 1 }
-  #   let(:ability) { double "Ability" }
-  #   let(:current_ability) { ability }
-
-  #   before do
-  #     allow(presenter).to receive(:ordered_ids).and_return(items_list)
-  #     allow(current_ability).to receive(:can?).with(:read, 'item0').and_return true
-  #     allow(current_ability).to receive(:can?).with(:read, 'item1').and_return false
-  #     allow(current_ability).to receive(:can?).with(:read, 'item2').and_return true
-  #     allow(current_ability).to receive(:can?).with(:read, 'item3').and_return false
-  #     allow(current_ability).to receive(:can?).with(:read, 'item4').and_return true
-  #     allow(current_ability).to receive(:can?).with(:read, 'item5').and_return true
-  #     allow(current_ability).to receive(:can?).with(:read, 'item6').and_return false
-  #     allow(current_ability).to receive(:can?).with(:read, 'item7').and_return true
-  #     allow(current_ability).to receive(:can?).with(:read, 'item8').and_return false
-  #     allow(current_ability).to receive(:can?).with(:read, 'item9').and_return true
-  #     allow(presenter).to receive(:rows_from_params).and_return(rows)
-  #     allow(presenter).to receive(:current_page).and_return(page)
-  #     allow(Flipflop).to receive(:hide_private_items?).and_return(answer)
-  #   end
-  # end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   describe "#manifest" do
     let(:work) { create(:oer_work_with_one_file) }
     let(:solr_document) { SolrDocument.new(work.to_solr) }
@@ -282,8 +237,4 @@ RSpec.describe Hyrax::OerPresenter do
       expect(subject).to be :universal_viewer
     end
   end
-  # it "has tests" do
-  #   skip "Add your tests here"
-  #   # list_of_previous_item_ids_to_display
-  # end
 end

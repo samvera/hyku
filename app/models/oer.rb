@@ -63,6 +63,10 @@ class Oer < ActiveFedora::Base
     index.as :stored_searchable
   end
 
+  property :previous_version_id, predicate: ::RDF::Vocab::DC.replaces do |index|
+    index.as :stored_searchable, :facetable
+  end
+  
   property :discipline, predicate: ::RDF::Vocab::DC.coverage do |index|
     index.as :stored_searchable, :facetable
   end
@@ -71,4 +75,9 @@ class Oer < ActiveFedora::Base
   # This must be included at the end, because it finalizes the metadata
   # schema (by adding accepts_nested_attributes)
   include ::Hyrax::BasicMetadata
+
+  def previous_version
+    @previous_version ||= Oer.where(id: self.previous_version_id) if self.previous_version_id
+  end
+
 end

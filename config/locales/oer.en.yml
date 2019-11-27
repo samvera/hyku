@@ -13,6 +13,25 @@ en:
       labels:
         resource_type: 'Type'
         description: 'Description'
+      show:
+        previous_version: "Previous Versions"
+        related_items: 'Related Versions and Items'
+      works:
+        form:
+          related_versions: "Related Versions"
+    oers:
+      form_custom_relationships:
+        actions:
+          add: Add
+          remove: Remove from this work
+        caption: This work currently contains this previous version
+        confirm:
+          cancel: Cancel
+          remove: Remove
+          text: Removing this previous version will not remove it from the repository, only from this work.  Are you sure you want to remove this previous version?
+        header:
+          actions: Action
+          title: Work title
   simple_form:
     hints:
       defaults:
@@ -44,3 +63,7 @@ en:
         oer_size: 'Size'
         rights_holder: 'Rights holder'
         table_of_contents: 'Table of contents'
+    placeholders:
+      defaults:
+        previous_version_id: "Search for a work..."
+        

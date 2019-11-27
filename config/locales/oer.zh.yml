@@ -13,6 +13,25 @@ zh:
       labels:
         description: '描述'
         resource_type: '类型'
+      show:
+        previous_version: '之前的版本'
+        related_items: '相关版本和项目'
+      works:
+        form:
+          related_versions: '相关版本'
+    oers:
+      form_custom_relationships:
+        actions:
+          add: 加
+          remove: 从这项工作中删除
+        caption: 该作品当前包含此先前版本
+        confirm:
+          cancel: 取消
+          remove: 去掉
+          text: 删除此先前版本不会将其从资源库中删除，仅会从此工作中删除。您确定要删除此先前版本吗？
+        header:
+          actions: 行动
+          title: 作品名称
   simple_form:
     hints:
       defaults:

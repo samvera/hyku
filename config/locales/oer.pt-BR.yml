@@ -13,6 +13,25 @@ pt-BR:
       labels:
         description: 'Descrição'
         resource_type: 'Tipo'
+      show:
+        previous_version: 'Versões prévias'
+        related_items: 'Versões e itens relacionados'
+      works:
+        form:
+          related_versions: "Versões relacionadas"
+    oers:
+      form_custom_relationships:
+        actions:
+          add: acrescentar
+          remove: Remover deste trabalho
+        caption: Este trabalho contém atualmente esta versão anterior
+        confirm:
+          cancel: Cancelar
+          remove: Retirar
+          text: A remoção desta versão anterior não a removerá do repositório, apenas deste trabalho. Tem certeza de que deseja remover esta versão anterior?
+        header:
+          actions: Açao
+          title: Título do trabalho
   simple_form:
     hints:
       defaults:

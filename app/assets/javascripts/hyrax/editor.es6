@@ -1,3 +1,4 @@
+// Override from Hyrax 2.5 - Add previous version dropdown
 import RelationshipsControl from 'hyrax/relationships/control'
 import SaveWorkControl from 'hyrax/save_work/save_work_control'
 import AdminSetWidget from 'hyrax/editor/admin_set_widget'
@@ -104,7 +105,7 @@ export default class {
                                    works.data('paramKey'),
                                    'work_members_attributes',
                                    'tmpl-child-work').init())
-                              
+        // Hyrax Override - Add previous versions dropdown                      
       let related_works = this.element.find('[data-behavior="previous-version-relationship"]')
       related_works.each((_idx, element) =>
           new RelationshipsControl(element,

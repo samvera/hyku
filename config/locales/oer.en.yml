@@ -10,6 +10,7 @@ en:
       hints:
         description: 'Brief description of the content of the resource, not including a table of contents.'
         resource_type: 'Pre-defined categories to describe the type of content being uploaded. More than one type may be selected.'
+        table_of_contents: 'Table of contents of a work.'
       labels:
         resource_type: 'Type'
         description: 'Description'
@@ -66,4 +67,3 @@ en:
     placeholders:
       defaults:
         previous_version_id: "Search for a work..."
-        

@@ -1,0 +1,6 @@
+<% if curation_concern.class == Oer %>
+  <%= f.input :table_of_contents, as: :multi_value,
+    label: t("hyrax.oer.labels.table_of_contents"),
+    hint: t("hyrax.oer.hints.table_of_contents"),
+    input_html: { rows: '14', type: 'textarea'}, required: f.object.required?(key) %>
+<% end %>

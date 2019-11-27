@@ -10,6 +10,7 @@ fr:
       hints:
         description: 'Brève description du contenu de la ressource, sans table des matières.'
         resource_type: Des catégories prédéfinies pour décrire le type de contenu en cours de chargement. Plus d'un type peut être sélectionné.
+        table_of_contents: "Table des matières d'une oeuvre."
       labels:
         description: 'La description'
         resource_type: 'Type'

@@ -10,6 +10,7 @@ it:
       hints:
         description: 'Breve descrizione del contenuto della risorsa, escluso un sommario.'
         resource_type: 'Categorie predefinite per descrivere il tipo di contenuto che viene caricato. Possono essere selezionati più di un tipo.'
+        table_of_contents: "Indice di un'opera."
       labels:
         description: 'Descrizione'
         resource_type: 'genere'

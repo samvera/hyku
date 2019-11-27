@@ -10,6 +10,7 @@ pt-BR:
       hints:
         description: 'Breve descrição do conteúdo do recurso, sem incluir um índice.'
         resource_type: 'Categorias pré-definidas para descrever o tipo de conteúdo que está sendo carregado. Mais de um tipo pode ser selecionado.'
+        table_of_contents: 'Sumário de um trabalho.'
       labels:
         description: 'Descrição'
         resource_type: 'Tipo'

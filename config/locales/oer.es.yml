@@ -10,6 +10,7 @@ es:
       hints:
         description: 'Breve descripción del contenido del recurso, sin incluir una tabla de contenido.'
         resource_type: 'Categorías predefinidas que describen el tipo de contenido que se ha subido. Se puede seleccionar más de un tipo.'
+        table_of_contents: 'Tabla de contenidos de una obra.'
       labels:
         description: 'Descripción'
         resource_type: 'Tipo'

@@ -10,6 +10,7 @@ zh:
       hints:
         description: '资源内容的简要说明，不包括目录。'
         resource_type: '预定类型用于描述上传内容类型。可以选择多项类型。'
+        table_of_contents: '作品目录。'
       labels:
         description: '描述'
         resource_type: '类型'

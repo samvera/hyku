@@ -10,6 +10,7 @@ de:
       hints:
         description: 'Kurze Beschreibung des Inhalts der Ressource ohne Inhaltsverzeichnis.'
         resource_type: 'Vordefinierte Kategorien, um die Art des hochgeladenen Inhalts zu beschreiben. Es können mehr als ein Typ ausgewählt werden.'
+        table_of_contents: 'Inhaltsverzeichnis einer Arbeit.'
       labels:
         description: 'Beschreibung'
         resource_type: 'Art'

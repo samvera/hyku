@@ -20,6 +20,19 @@ fr:
         form:
           related_versions: "Versions connexes"
     oers:
+      form_alternate_version:
+        actions:
+          remove: Supprimer de ce travail
+        add: Ajouter
+        caption: Référence à une version mise à jour de la ressource destinée à la remplacer
+        confirm:
+          cancel: Annuler
+          remove: Retirer
+          text: La suppression de cette version alternative ne la supprimera pas du référentiel, uniquement de ce travail. Voulez-vous vraiment supprimer cette version alternative?
+          header:
+          actions: Action
+          title: Titre de l'oeuvre
+      form_previous_version:
       form_newer_version:
         actions:
           remove: Supprimer de ce travail

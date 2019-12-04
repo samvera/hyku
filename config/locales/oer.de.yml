@@ -20,6 +20,18 @@ de:
         form:
           related_versions: "Verwandte Versionen"
     oers:
+      form_alternate_version:
+        actions:
+          add: Hinzufügen
+          remove: Entfernen Sie aus dieser Arbeit
+        caption: Verweis auf eine aktualisierte Version der Ressource, die diese ersetzen soll
+        confirm:
+          cancel: Stornieren
+          remove: Entfernen
+          text: Durch das Entfernen dieser alternativen Version wird sie nicht aus dem Repository entfernt, sondern nur aus dieser Arbeit. Möchten Sie diese alternative Version wirklich entfernen?
+          header:
+          actions: Aktion
+          title: Arbeitstitel
       form_newer_version:
         actions:
           add: Hinzufügen

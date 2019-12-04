@@ -20,8 +20,20 @@ zh:
         form:
           related_versions: '相关版本'
     oers:
+      form_alternate_version:
+        actions:
+          remove: 从这项工作中删除
+        add: 加
+        caption: 引用旨在替换它的资源的更新版本
+        confirm:
+          cancel: 取消
+          remove: 去掉
+          text: 刪除此替代版本不會將其從存儲庫中刪除，僅會從此工作中刪除。您確定要刪除此備用版本嗎？
+          header:
+          actions: 行动
+          title: 作品名称
       form_newer_version:
-        actions:   
+        actions:
           remove: 从这项工作中删除
         add: 加
         caption: 引用旨在替换它的资源的更新版本

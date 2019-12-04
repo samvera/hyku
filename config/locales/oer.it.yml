@@ -20,6 +20,18 @@ it:
         form:
           related_versions: "Versioni correlate"
     oers:
+      form_alternate_version:
+        actions:
+          remove: Rimuovi da questo lavoro
+        add: Inserisci
+        caption: Riferimento a una versione aggiornata della risorsa destinata a sostituirla
+        confirm:
+          cancel: Annulla
+          remove: Rimuovere
+          text: La rimozione di questa versione alternativa non la rimuoverà dal repository, ma solo da questo lavoro. Sei sicuro di voler rimuovere questa versione alternativa?
+          header:
+          actions: Azione
+          title: Titolo dell'opera
       form_newer_version:
         actions:
           remove: Rimuovi da questo lavoro

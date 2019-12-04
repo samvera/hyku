@@ -1,6 +1,7 @@
 <%  previous_members = presenter.member_presenters_for(presenter.previous_versions) %>
 <%  newer_members = presenter.member_presenters_for(presenter.newer_versions) %>
-<% if previous_members.present? || newer_members.present? %>
+<%  alternate_members = presenter.member_presenters_for(presenter.alternate_versions) %>
+<% if previous_members.present? || newer_members.present? || alternate_members.present?%>
   <h2><%= t('hyrax.oer.show.related_items') %></h2>
   <table class="table table-striped related-files">
     <thead>
@@ -18,6 +19,9 @@
       <% end %>
       <% newer_members.each do |member| %>
         <%= render partial: 'related_item', locals: { member: member, relationship: "newer version" } %>
+      <% end %>
+      <% alternate_members.each do |member| %>
+        <%= render partial: 'related_item', locals: { member: member, relationship: "alternate version" } %>
       <% end %>
     </tbody>
   </table>

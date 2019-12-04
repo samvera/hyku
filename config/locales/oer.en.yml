@@ -20,6 +20,18 @@ en:
         form:
           related_versions: "Related Versions"
     oers:
+      form_alternate_version:
+        actions:
+          remove: Remove from this work
+        add: Add
+        caption: Reference to an updated version of the resource intended to replace it
+        confirm:
+          cancel: Cancel
+          remove: Remove
+          text: Removing this alternate version will not remove it from the repository, only from this work.  Are you sure you want to remove this alternate version?
+        header:
+          actions: Action
+          title: Work title
       form_newer_version:
         actions:
           remove: Remove from this work
@@ -35,7 +47,7 @@ en:
       form_previous_version:
         actions:
           remove: Remove from this work
-        add: Add 
+        add: Add
         caption: This work currently contains this previous version
         confirm:
           cancel: Cancel
@@ -85,5 +97,6 @@ en:
         table_of_contents: 'Table of contents'
     placeholders:
       defaults:
+        alternate_version_id: "Search for a work..."
         newer_version_id: "Search for a work..."
-        previous_version_id: "Search for a work..."        
+        previous_version_id: "Search for a work..."

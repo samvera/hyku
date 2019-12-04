@@ -35,7 +35,7 @@ export default class {
       $('.panel-footer').toggleClass('hidden');
     });
   }
-  
+
   // Used when you have a linked data field that can have terms from multiple
   // authorities.
   authoritySelect() {
@@ -105,7 +105,7 @@ export default class {
                                    works.data('paramKey'),
                                    'work_members_attributes',
                                    'tmpl-child-work').init())
-                              
+
       let previous_versions = this.element.find('[data-behavior="previous-version-relationship"]')
       previous_versions.each((_idx, element) =>
           new RelationshipsControl(element,
@@ -114,7 +114,7 @@ export default class {
                                   'related_members_attributes',
                                   'tmpl-previous-version',
                                   previous_versions.data('relationship')).init())
-      
+
       // added newer_versions relationship
       let newer_versions = this.element.find('[data-behavior="newer-version-relationship"]')
       newer_versions.each((_idx, element) =>
@@ -124,6 +124,16 @@ export default class {
                                   'related_members_attributes',
                                   'tmpl-newer-version',
                                   newer_versions.data('relationship')).init())
+
+      // added alternate_versions relationship
+      let alternate_versions = this.element.find('[data-behavior="alternate-version-relationship"]')
+      alternate_versions.each((_idx, element) =>
+          new RelationshipsControl(element,
+                                  alternate_versions.data('members'),
+                                  alternate_versions.data('paramKey'),
+                                  'related_members_attributes',
+                                  'tmpl-alternate-version',
+                                  alternate_versions.data('relationship')).init())
   }
 
   saveWorkControl() {

@@ -15,13 +15,24 @@ zh:
         description: '描述'
         resource_type: '类型'
       show:
-        previous_version: '之前的版本'
         related_items: '相关版本和项目'
       works:
         form:
           related_versions: '相关版本'
     oers:
-      form_custom_relationships:
+      form_newer_version:
+        actions:   
+          remove: 从这项工作中删除
+        add: 加
+        caption: 引用旨在替换它的资源的更新版本
+        confirm:
+          cancel: 取消
+          remove: 去掉
+          text: 删除此较新版本不会仅从此项工作中将其从存储库中删除。您确定要删除此较新版本吗？
+        header:
+          actions: 行动
+          title: 作品名称
+      form_previous_version:
         actions:
           add: 加
           remove: 从这项工作中删除
@@ -33,6 +44,14 @@ zh:
         header:
           actions: 行动
           title: 作品名称
+      related_items:
+        date_uploaded: 上传日期
+        empty: 该 %{type} 没有相关文件。 请点击'编辑'添加更多文件。
+        relationship_type: 关系类型
+        thumbnail: 缩略图
+        title: 标题
+        unauthorized: 这个%{type}中没有公开可用的项目。
+        visibility: 公开度
   simple_form:
     hints:
       defaults:

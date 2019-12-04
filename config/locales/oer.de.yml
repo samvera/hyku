@@ -15,13 +15,24 @@ de:
         description: 'Beschreibung'
         resource_type: 'Art'
       show:
-        previous_version: 'Vorherige Versionen'
         related_items: 'Verwandte Versionen und Elemente'
       works:
         form:
           related_versions: "Verwandte Versionen"
     oers:
-      form_custom_relationships:
+      form_newer_version:
+        actions:
+          add: Hinzufügen
+          remove: Entfernen Sie aus dieser Arbeit
+        caption: Verweis auf eine aktualisierte Version der Ressource, die diese ersetzen soll
+        confirm:
+          cancel: Stornieren
+          remove: Entfernen
+          text: Durch das Entfernen dieser neueren Version wird sie nicht aus dem Repository entfernt, sondern nur aus dieser Arbeit. Möchten Sie diese neuere Version wirklich entfernen?
+        header:
+          actions: Aktion
+          title: Arbeitstitel
+      form_previous_version:
         actions:
           add: Hinzufügen
           remove: Entfernen Sie aus dieser Arbeit
@@ -33,6 +44,14 @@ de:
         header:
           actions: Aktion
           title: Arbeitstitel
+      related_items:
+        date_uploaded: Datum Hochgeladen
+        empty: Diese %{type} hat keine Dateien zugeordnet. Klicken Sie auf „Bearbeiten“, um weitere Dateien hinzuzufügen.
+        relationship_type: Beziehungstyp
+        thumbnail: Miniaturansicht
+        title: Titel
+        unauthorized: Es gibt keine öffentlich verfügbaren Elemente in diesem %{type}.
+        visibility: Sichtbarkeit
   simple_form:
     hints:
       defaults:

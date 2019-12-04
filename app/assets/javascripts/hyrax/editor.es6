@@ -105,14 +105,25 @@ export default class {
                                    works.data('paramKey'),
                                    'work_members_attributes',
                                    'tmpl-child-work').init())
-        // Hyrax Override - Add previous versions dropdown                      
-      let related_works = this.element.find('[data-behavior="previous-version-relationship"]')
-      related_works.each((_idx, element) =>
+                              
+      let previous_versions = this.element.find('[data-behavior="previous-version-relationship"]')
+      previous_versions.each((_idx, element) =>
           new RelationshipsControl(element,
-                                  related_works.data('members'),
-                                  related_works.data('paramKey'),
+                                  previous_versions.data('members'), 
+                                  previous_versions.data('paramKey'),
                                   'related_members_attributes',
-                                  'tmpl-previous-version-work').init())
+                                  'tmpl-previous-version',
+                                  previous_versions.data('relationship')).init())
+      
+      // added newer_versions relationship
+      let newer_versions = this.element.find('[data-behavior="newer-version-relationship"]')
+      newer_versions.each((_idx, element) =>
+          new RelationshipsControl(element,
+                                  newer_versions.data('members'),
+                                  newer_versions.data('paramKey'),
+                                  'related_members_attributes',
+                                  'tmpl-newer-version',
+                                  newer_versions.data('relationship')).init())
   }
 
   saveWorkControl() {

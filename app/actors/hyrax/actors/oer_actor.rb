@@ -19,37 +19,54 @@ module Hyrax
       private
         def add_custom_relations(env, attributes_collection)
           return env unless attributes_collection
-          # before {"0"=>{"id"=>"6e9740ab-fc9c-403f-9e01-9c06c85148ee", "_destroy"=>"false"}, "1"=>{"id"=>"9abb566c-4873-4565-b02b-b32c7dd46fc8", "_destroy"=>"false"}}
-          # after  [{"id"=>"6e9740ab-fc9c-403f-9e01-9c06c85148ee", "_destroy"=>"false"}, {"id"=>"9abb566c-4873-4565-b02b-b32c7dd46fc8", "_destroy"=>"false"}]
           attributes = attributes_collection&.sort_by { |i, _| i.to_i }&.map { |_, attributes| attributes }
+
           # checking for existing works to avoid rewriting/loading works that are already attached
           existing_previous_works = env.curation_concern.previous_version_id
+          existing_newer_works = env.curation_concern.newer_version_id
+  
           attributes&.each do |attributes|
-
             next if attributes['id'].blank?
-            if existing_previous_works&.include?(attributes['id'])
-              env = remove(env, attributes['id']) if
-                ActiveModel::Type::Boolean.new.cast(attributes['_destroy'])
+            if existing_previous_works&.include?(attributes['id']) || existing_newer_works&.include?(attributes['id'])
+              if existing_previous_works&.include?(attributes['id'])
+                env = remove(env, attributes['id'], attributes['relationship']) if
+                  ActiveModel::Type::Boolean.new.cast(attributes['_destroy']) && attributes['relationship'] == 'previous-version'
+              else
+                env = remove(env, attributes['id'], attributes['relationship']) if
+                ActiveModel::Type::Boolean.new.cast(attributes['_destroy']) && attributes['relationship'] == 'newer-version'
+              end
             else
-              env = add(env, attributes['id'])
+              env = add(env, attributes['id'], attributes['relationship'])
             end
           end
           env
         end
 
-        def add(env, id)
-          env.curation_concern.previous_version_id = (env.curation_concern.previous_version_id.to_a << id)
-          env.curation_concern.save
-          return env
+        def add(env, id, relationship)
+          rel = "#{relationship.underscore}_id"
+          if rel == "previous_version_id"
+            env.curation_concern.previous_version_id = (env.curation_concern.previous_version_id.to_a << id)
+            env.curation_concern.save
+          end
+          if rel == "newer_version_id"
+            env.curation_concern.newer_version_id = (env.curation_concern.newer_version_id.to_a << id)
+            env.curation_concern.save
+          end 
+          return env   
         end
 
-        def remove(env, id)
-          env.curation_concern.previous_version_id = (env.curation_concern.previous_version_id.to_a - [id])
-          env.curation_concern.save
-          return env
+        def remove(env, id, relationship)
+          rel= "#{relationship.underscore}_id"
+          if rel == "previous_version_id"
+            env.curation_concern.previous_version_id = (env.curation_concern.previous_version_id.to_a - [id])
+            env.curation_concern.save
+          end
+          if rel == "newer_version_id"
+            env.curation_concern.newer_version_id = (env.curation_concern.newer_version_id.to_a - [id])
+            env.curation_concern.save
+          end    
+            return env
         end
-
-      
     end
   end
 end

@@ -15,13 +15,24 @@ pt-BR:
         description: 'Descrição'
         resource_type: 'Tipo'
       show:
-        previous_version: 'Versões prévias'
         related_items: 'Versões e itens relacionados'
       works:
         form:
           related_versions: "Versões relacionadas"
     oers:
-      form_custom_relationships:
+      form_newer_version:
+        actions:
+          remove: Remover deste trabalho
+        add: acrescentar
+        caption: Referência a uma versão atualizada do recurso destinado a substituí-lo
+        confirm:
+          cancel: Cancelar
+          remove: Retirar
+          text: A remoção desta versão mais recente não a removerá do repositório, apenas deste trabalho. Tem certeza de que deseja remover esta versão mais recente?
+        header:
+          actions: Açao
+          title: Título do trabalho
+      form_previous_version:
         actions:
           add: acrescentar
           remove: Remover deste trabalho
@@ -33,6 +44,14 @@ pt-BR:
         header:
           actions: Açao
           title: Título do trabalho
+      related_items:
+        date_uploaded: Data de carga
+        empty: Este %{type} não possui arquivos associados a ele. Clique em "editar" para acrescentar mais arquivos.
+        relationship_type: Tipo de Relacionamento
+        thumbnail: Miniatura
+        title: Título
+        unauthorized: Não há itens publicados neste %{type}.
+        visibility: Acesso
   simple_form:
     hints:
       defaults:

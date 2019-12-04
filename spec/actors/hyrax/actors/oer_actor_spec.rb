@@ -10,7 +10,7 @@ RSpec.describe Hyrax::Actors::OerActor do
   let(:work) { create(:oer_work) }
   let(:related_oer) { create(:oer_work) }
   let(:new_related_oer) { create(:oer_work) }
-  let(:attributes) { HashWithIndifferentAccess.new(related_members_attributes: { '0' => { id: related_oer.id } }) }
+  let(:attributes) { HashWithIndifferentAccess.new(related_members_attributes: { '0' => { id: related_oer.id, _destroy: 'false', relationship: 'previous-version' } }) }
 
   subject(:middleware) do
     stack = ActionDispatch::MiddlewareStack.new.tap do |middleware|
@@ -28,21 +28,22 @@ RSpec.describe Hyrax::Actors::OerActor do
 
   describe "#update" do
     let(:new_related_oer) { create(:oer_work) }
-    let(:attributes) { HashWithIndifferentAccess.new(related_members_attributes: { '0' => { id: related_oer.id, _destroy: 'false' }, '1' => { id: new_related_oer.id, _destroy: 'false' } }) }
+    let(:attributes) { HashWithIndifferentAccess.new(related_members_attributes: { '0' => { id: related_oer.id, _destroy: 'false', relationship: 'previous-version' }, '1' => { id: new_related_oer.id, _destroy: 'false', relationship: 'newer-version' } }) }
 
     before { subject.update(env) }
 
     it 'updates a related version' do
       expect(subject.update(env)).to be true
       expect(work.previous_version_id).to include(related_oer.id)
-      expect(work.previous_version_id).to include(new_related_oer.id)
+      expect(work.newer_version_id).to include(new_related_oer.id)
     end
 
     it 'removes the related version' do
-      attributes =  HashWithIndifferentAccess.new(related_members_attributes: { '0' => { id: related_oer.id, _destroy: 'true' }, '1' => { id: new_related_oer.id, _destroy: 'false' } })
+      attributes =  HashWithIndifferentAccess.new(related_members_attributes: { '0' => { id: related_oer.id, _destroy: 'true',relationship: 'previous-version' }, '1' => { id: new_related_oer.id, _destroy: 'false', relationship: 'newer-version' } })
       env =  Hyrax::Actors::Environment.new(work, ability, attributes)
       expect(subject.update(env)).to be true
-      expect(work.previous_version_id).to eq([new_related_oer.id])
+      expect(work.previous_version_id).to eq([])
+      expect(work.newer_version_id).to eq([new_related_oer.id])
     end
   end
 

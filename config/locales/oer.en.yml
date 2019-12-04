@@ -15,16 +15,27 @@ en:
         resource_type: 'Type'
         description: 'Description'
       show:
-        previous_version: "Previous Versions"
         related_items: 'Related Versions and Items'
       works:
         form:
           related_versions: "Related Versions"
     oers:
-      form_custom_relationships:
+      form_newer_version:
         actions:
-          add: Add
           remove: Remove from this work
+        add: Add
+        caption: Reference to an updated version of the resource intended to replace it
+        confirm:
+          cancel: Cancel
+          remove: Remove
+          text: Removing this newer version will not remove it from the repository, only from this work.  Are you sure you want to remove this newer version?
+        header:
+          actions: Action
+          title: Work title
+      form_previous_version:
+        actions:
+          remove: Remove from this work
+        add: Add 
         caption: This work currently contains this previous version
         confirm:
           cancel: Cancel
@@ -33,6 +44,14 @@ en:
         header:
           actions: Action
           title: Work title
+      related_items:
+        date_uploaded: Date Uploaded
+        empty: This %{type} has no files associated with it. Click "edit" to add more files.
+        relationship_type: Relationship Type
+        thumbnail: Thumbnail
+        title: Title
+        unauthorized: There are no publicly available items in this %{type}.
+        visibility: Visibility
   simple_form:
     hints:
       defaults:
@@ -66,4 +85,5 @@ en:
         table_of_contents: 'Table of contents'
     placeholders:
       defaults:
-        previous_version_id: "Search for a work..."
+        newer_version_id: "Search for a work..."
+        previous_version_id: "Search for a work..."        

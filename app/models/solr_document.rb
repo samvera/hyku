@@ -42,6 +42,7 @@ class SolrDocument
   attribute :accessibility_feature, Solr::Array, solr_name('accessibility_feature')
   attribute :accessibility_hazard, Solr::Array, solr_name('accessibility_hazard')
   attribute :previous_version_id, Solr::String, solr_name('previous_version_id')
+  attribute :newer_version_id, Solr::String, solr_name('newer_version_id')
   attribute :discipline, Solr::Array, solr_name('discipline')
 
   field_semantics.merge!(

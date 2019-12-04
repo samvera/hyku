@@ -15,13 +15,24 @@ fr:
         description: 'La description'
         resource_type: 'Type'
       show:
-        previous_version: 'Versions précédentes'
         related_items: 'Versions et articles connexes'
       works:
         form:
           related_versions: "Versions connexes"
     oers:
-      form_custom_relationships:
+      form_newer_version:
+        actions:
+          remove: Supprimer de ce travail
+        add: Ajouter
+        caption: Référence à une version mise à jour de la ressource destinée à la remplacer
+        confirm:
+          cancel: Annuler
+          remove: Retirer
+          text: La suppression de cette version plus récente ne la supprimera pas du référentiel, mais uniquement de ce travail. Êtes-vous sûr de vouloir supprimer cette version plus récente?
+        header:
+          actions: Action
+          title: Titre de l'oeuvre
+      form_previous_version:
         actions:
           add: Ajouter
           remove: Supprimer de ce travail
@@ -33,6 +44,14 @@ fr:
         header:
           actions: Action
           title: Titre de l'oeuvre
+      related_items:
+        date_uploaded: Date de téléchargement
+        empty: Ce %{type} n'a aucun fichier associé. Cliquez sur "modifier" pour ajouter d'autres fichiers.
+        relationship_type: Type de relation
+        thumbnail: La vignette
+        title: Titre
+        unauthorized: Il n'y a pas d'objets disponibles publiquement dans ce %{type}.
+        visibility: Visibilité
   simple_form:
     hints:
       defaults:

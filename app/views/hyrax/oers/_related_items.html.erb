@@ -1,6 +1,7 @@
-<%  members = presenter.member_presenters_for(presenter.relationships) %>
-<% if members.present? %>
-  <h2><%= t('hyrax.oer.show.previous_version') %></h2>
+<%  previous_members = presenter.member_presenters_for(presenter.previous_versions) %>
+<%  newer_members = presenter.member_presenters_for(presenter.newer_versions) %>
+<% if previous_members.present? || newer_members.present? %>
+  <h2><%= t('hyrax.oer.show.related_items') %></h2>
   <table class="table table-striped related-files">
     <thead>
       <tr>
@@ -8,11 +9,16 @@
         <th><%= t('.title') %></th>
         <th><%= t('.date_uploaded') %></th>
         <th><%= t('.visibility') %></th>
-        <th></th>
+        <th><%= t('.relationship_type')%></th>
       </tr>
     </thead>
     <tbody>
-      <%= render partial: 'member', collection: members %>
+      <% previous_members.each do |member| %>
+        <%= render partial: 'related_item', locals: { member: member, relationship: "previous version" } %>
+      <% end %>
+      <% newer_members.each do |member| %>
+        <%= render partial: 'related_item', locals: { member: member, relationship: "newer version" } %>
+      <% end %>
     </tbody>
   </table>
   <div class="row">

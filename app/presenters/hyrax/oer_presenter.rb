@@ -41,7 +41,7 @@ module Hyrax
       end
 
       def authorized_alternate_versions
-        @nv_item_list_ids ||= begin
+        @av_item_list_ids ||= begin
           items = alternate_version
           items.delete_if { |m| !current_ability.can?(:read, m) } if Flipflop.hide_private_items?
           items

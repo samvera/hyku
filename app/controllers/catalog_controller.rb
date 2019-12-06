@@ -72,76 +72,75 @@ class CatalogController < ApplicationController
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display
     config.add_index_field solr_name("title", :stored_searchable), label: "Title", itemprop: 'name', if: false
-    config.add_index_field solr_name("description", :stored_searchable), itemprop: 'description', helper_method: :iconify_auto_link
-    config.add_index_field solr_name("keyword", :stored_searchable), itemprop: 'keywords', link_to_search: solr_name("keyword", :facetable)
-    config.add_index_field solr_name("subject", :stored_searchable), itemprop: 'about', link_to_search: solr_name("subject", :facetable)
     config.add_index_field solr_name("creator", :stored_searchable), itemprop: 'creator', link_to_search: solr_name("creator", :facetable)
-    config.add_index_field solr_name("contributor", :stored_searchable), itemprop: 'contributor', link_to_search: solr_name("contributor", :facetable)
-    config.add_index_field solr_name("proxy_depositor", :symbol), label: "Depositor", helper_method: :link_to_profile
-    config.add_index_field solr_name("depositor"), label: "Owner", helper_method: :link_to_profile
-    config.add_index_field solr_name("publisher", :stored_searchable), itemprop: 'publisher', link_to_search: solr_name("publisher", :facetable)
-    config.add_index_field solr_name("based_near_label", :stored_searchable), itemprop: 'contentLocation', link_to_search: solr_name("based_near_label", :facetable)
-    config.add_index_field solr_name("language", :stored_searchable), itemprop: 'inLanguage', link_to_search: solr_name("language", :facetable)
-    config.add_index_field solr_name("date_uploaded", :stored_sortable, type: :date), itemprop: 'datePublished', helper_method: :human_readable_date
-    config.add_index_field solr_name("date_modified", :stored_sortable, type: :date), itemprop: 'dateModified', helper_method: :human_readable_date
-    config.add_index_field solr_name("date_created", :stored_searchable), itemprop: 'dateCreated'
-    config.add_index_field solr_name("rights_statement", :stored_searchable), label: "Rights statement", helper_method: :rights_statement_links
-    config.add_index_field solr_name("license", :stored_searchable), label: 'License', helper_method: :license_links
+    config.add_index_field solr_name("date", :stored_searchable), label: "Date"
+    config.add_index_field solr_name("description", :stored_searchable), itemprop: 'description', helper_method: :iconify_auto_link
     config.add_index_field solr_name("resource_type", :stored_searchable), label: "Resource Type", link_to_search: solr_name("resource_type", :facetable)
-    config.add_index_field solr_name("file_format", :stored_searchable), link_to_search: solr_name("file_format", :facetable)
-    config.add_index_field solr_name("identifier", :stored_searchable), helper_method: :index_field_link, field_name: 'identifier'
-    config.add_index_field solr_name("embargo_release_date", :stored_sortable, type: :date), label: "Embargo release date", helper_method: :human_readable_date
-    config.add_index_field solr_name("lease_expiration_date", :stored_sortable, type: :date), label: "Lease expiration date", helper_method: :human_readable_date
-    config.add_index_field solr_name('discipline', :stored_searchable)
-    config.add_index_field solr_name('audience', :stored_searchable)
-    config.add_index_field solr_name('education_level', :stored_searchable)
-    config.add_index_field solr_name('learning_resource_type', :stored_searchable)
-    config.add_index_field solr_name("alternative_title", :stored_searchable), label: "Alternative title"
-    config.add_index_field solr_name("date", :stored_searchable)
-    config.add_index_field solr_name("table_of_contents", :stored_searchable), label: "Table of contents"
-    config.add_index_field solr_name("additional_information", :stored_searchable), label: "Additional information"
-    config.add_index_field solr_name("rights_holder", :stored_searchable), label: "Rights holder"
-    config.add_index_field solr_name("oer_size", :stored_searchable), label: "Size"
-    config.add_index_field solr_name('accessibility_feature', :stored_searchable), label: "Accessibility feature", link_to_search: solr_name("accessibility_feature", :facetable)
-    config.add_index_field solr_name('accessibility_hazard', :stored_searchable), label: "Accessibility hazard", link_to_search: solr_name("accessibility_hazard", :facetable)
-    config.add_index_field solr_name('accessibility_summary', :stored_searchable), label: "Accessibility Summary", link_to_search: solr_name("accessibility_summary", :facetable)
+    config.add_index_field solr_name('learning_resource_type', :stored_searchable), label: "Learning resource type"
+    config.add_index_field solr_name('education_level', :stored_searchable), label: "Education level"
+    config.add_index_field solr_name('audience', :stored_searchable), label: "Audience"
+    config.add_index_field solr_name('discipline', :stored_searchable), label: "Discipline"
+    # config.add_index_field solr_name("keyword", :stored_searchable), itemprop: 'keywords', link_to_search: solr_name("keyword", :facetable)
+    # config.add_index_field solr_name("subject", :stored_searchable), itemprop: 'about', link_to_search: solr_name("subject", :facetable)
+    # config.add_index_field solr_name("contributor", :stored_searchable), itemprop: 'contributor', link_to_search: solr_name("contributor", :facetable)
+    # config.add_index_field solr_name("proxy_depositor", :symbol), label: "Depositor", helper_method: :link_to_profile
+    # config.add_index_field solr_name("depositor"), label: "Owner", helper_method: :link_to_profile
+    # config.add_index_field solr_name("publisher", :stored_searchable), itemprop: 'publisher', link_to_search: solr_name("publisher", :facetable)
+    # config.add_index_field solr_name("based_near_label", :stored_searchable), itemprop: 'contentLocation', link_to_search: solr_name("based_near_label", :facetable)
+    # config.add_index_field solr_name("language", :stored_searchable), itemprop: 'inLanguage', link_to_search: solr_name("language", :facetable)
+    # config.add_index_field solr_name("date_uploaded", :stored_sortable, type: :date), itemprop: 'datePublished', helper_method: :human_readable_date
+    # config.add_index_field solr_name("date_modified", :stored_sortable, type: :date), itemprop: 'dateModified', helper_method: :human_readable_date
+    # config.add_index_field solr_name("date_created", :stored_searchable), itemprop: 'dateCreated'
+    # config.add_index_field solr_name("rights_statement", :stored_searchable), label: "Rights statement", helper_method: :rights_statement_links
+    # config.add_index_field solr_name("license", :stored_searchable), label: 'License', helper_method: :license_links
+    # config.add_index_field solr_name("file_format", :stored_searchable), link_to_search: solr_name("file_format", :facetable)
+    # config.add_index_field solr_name("identifier", :stored_searchable), helper_method: :index_field_link, field_name: 'identifier'
+    # config.add_index_field solr_name("embargo_release_date", :stored_sortable, type: :date), label: "Embargo release date", helper_method: :human_readable_date
+    # config.add_index_field solr_name("lease_expiration_date", :stored_sortable, type: :date), label: "Lease expiration date", helper_method: :human_readable_date
+    # config.add_index_field solr_name("alternative_title", :stored_searchable), label: "Alternative title"
+    # config.add_index_field solr_name("table_of_contents", :stored_searchable), label: "Table of contents"
+    # config.add_index_field solr_name("additional_information", :stored_searchable), label: "Additional information"
+    # config.add_index_field solr_name("rights_holder", :stored_searchable), label: "Rights holder"
+    # config.add_index_field solr_name("oer_size", :stored_searchable), label: "Size"
+    # config.add_index_field solr_name('accessibility_feature', :stored_searchable), label: "Accessibility feature", link_to_search: solr_name("accessibility_feature", :facetable)
+    # config.add_index_field solr_name('accessibility_hazard', :stored_searchable), label: "Accessibility hazard", link_to_search: solr_name("accessibility_hazard", :facetable)
+    # config.add_index_field solr_name('accessibility_summary', :stored_searchable), label: "Accessibility Summary", link_to_search: solr_name("accessibility_summary", :facetable)
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
     config.add_show_field solr_name("title", :stored_searchable)
-    config.add_show_field solr_name("description", :stored_searchable)
-    config.add_show_field solr_name("keyword", :stored_searchable)
-    config.add_show_field solr_name("subject", :stored_searchable)
+    config.add_show_field solr_name("alternative_title", :stored_searchable), label: "Alternative title"
     config.add_show_field solr_name("creator", :stored_searchable)
     config.add_show_field solr_name("contributor", :stored_searchable)
-    config.add_show_field solr_name("publisher", :stored_searchable)
-    config.add_show_field solr_name("based_near_label", :stored_searchable)
+    config.add_show_field solr_name('learning_resource_type', :stored_searchable)
+    config.add_show_field solr_name('education_level', :stored_searchable)
+    config.add_show_field solr_name('audience', :stored_searchable)
+    config.add_show_field solr_name('discipline', :stored_searchable)
+    config.add_show_field solr_name("date", :stored_searchable), label: "Date", helper_method: :human_readable_date
+    config.add_show_field solr_name("description", :stored_searchable)
+    config.add_show_field solr_name("table_of_contents", :stored_searchable), label: "Table of contents"
+    config.add_show_field solr_name("subject", :stored_searchable)
+    config.add_show_field solr_name("rights_statement", :stored_searchable)
+    config.add_show_field solr_name("license", :stored_searchable)
+    config.add_show_field solr_name("rights_holder", :stored_searchable), label: "Rights holder"
+    config.add_show_field solr_name("additional_information", :stored_searchable), label: "Additional information"
     config.add_show_field solr_name("language", :stored_searchable)
+    config.add_show_field solr_name("oer_size", :stored_searchable), label: "Size"
+    config.add_show_field solr_name("publisher", :stored_searchable)
+    config.add_show_field solr_name("identifier", :stored_searchable)
+    config.add_show_field solr_name("resource_type", :stored_searchable), label: "Resource Type"
+    config.add_show_field solr_name('accessibility_feature', :stored_searchable)
+    config.add_show_field solr_name('accessibility_hazard', :stored_searchable)
+    config.add_show_field solr_name('accessibility_summary', :stored_searchable), label: "Accessibility summary"
+    config.add_show_field solr_name("keyword", :stored_searchable)
+    config.add_show_field solr_name("based_near_label", :stored_searchable)
     config.add_show_field solr_name("date_uploaded", :stored_searchable)
     config.add_show_field solr_name("date_modified", :stored_searchable)
     config.add_show_field solr_name("date_created", :stored_searchable)
-    config.add_show_field solr_name("rights_statement", :stored_searchable)
-    config.add_show_field solr_name("license", :stored_searchable)
-    config.add_show_field solr_name("resource_type", :stored_searchable), label: "Resource Type"
     config.add_show_field solr_name("format", :stored_searchable)
-    config.add_show_field solr_name("identifier", :stored_searchable)
     config.add_show_field solr_name('extent', :stored_searchable)
-    config.add_show_field solr_name('discipline', :stored_searchable)
-    config.add_show_field solr_name('audience', :stored_searchable)
-    config.add_show_field solr_name('education_level', :stored_searchable)
-    config.add_show_field solr_name('learning_resource_type', :stored_searchable)
-    config.add_show_field solr_name("alternative_title", :stored_searchable)
-    config.add_show_field solr_name("date", :stored_searchable), helper_method: :human_readable_date
-    config.add_show_field solr_name("table_of_contents", :stored_searchable) 
-    config.add_show_field solr_name("additional_information", :stored_searchable)
-    config.add_show_field solr_name("rights_holder", :stored_searchable)
-    config.add_show_field solr_name("oer_size", :stored_searchable)
-    config.add_show_field solr_name('accessibility_feature', :stored_searchable)
-    config.add_show_field solr_name('accessibility_hazard', :stored_searchable)
-    config.add_show_field solr_name('accessibility_summary', :stored_searchable)
-    config.add_show_field solr_name('previous_version_id', :stored_searchable)
-    config.add_show_field solr_name('newer_version_id', :stored_searchable)
-    config.add_show_field solr_name('alternate_version_id', :stored_searchable)
+    config.add_show_field solr_name('previous_version_id', :stored_searchable), label: "Previous version"
+    config.add_show_field solr_name('newer_version_id', :stored_searchable), label: "Newer version"
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields

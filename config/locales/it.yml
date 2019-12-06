@@ -6,6 +6,25 @@ it:
         institution_name_full: Nome dell'istituto completo
   application:
     tagline: La soluzione di repository di nuova generazione
+  blacklight:
+    search:
+      fields:
+        facet:
+          contributor_sim: "Collaboratore"
+          human_readable_type_sim: 'genere'
+          member_of_collections_sim: "collezioni"
+          resource_type_sim: 'Tipo di risorsa'
+        index:
+          audience_tesim: "Pubblico"
+          date_tesim: 'Data'
+          description_tesim: 'Descrizione'
+          depositor_tesim: 'Proprietario'
+          discipline_tesim: "Disciplina"
+          education_level_tesim: "Livello scolastico"
+          learning_resource_type_tesim: "Tipo di risorsa di apprendimento"
+          license_tesim: 'Licenza'
+          resource_type_tesim: 'Tipo di risorsa' 
+          rights_statement_tesim: 'Dichiarazione dei diritti'
   helpers:
     action:
       become: Diventare

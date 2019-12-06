@@ -52,17 +52,17 @@ class CatalogController < ApplicationController
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
-    config.add_facet_field solr_name("human_readable_type", :facetable), label: "Type", limit: 5
-    config.add_facet_field solr_name("resource_type", :facetable), label: "Resource Type", limit: 5
+    config.add_facet_field solr_name("human_readable_type", :facetable), limit: 5
+    config.add_facet_field solr_name("resource_type", :facetable), limit: 5
     config.add_facet_field solr_name("creator", :facetable), limit: 5
-    config.add_facet_field solr_name("contributor", :facetable), label: "Contributor", limit: 5
+    config.add_facet_field solr_name("contributor", :facetable), limit: 5
     config.add_facet_field solr_name("keyword", :facetable), limit: 5
     config.add_facet_field solr_name("subject", :facetable), limit: 5
     config.add_facet_field solr_name("language", :facetable), limit: 5
     config.add_facet_field solr_name("based_near_label", :facetable), limit: 5
     config.add_facet_field solr_name("publisher", :facetable), limit: 5
     config.add_facet_field solr_name("file_format", :facetable), limit: 5
-    config.add_facet_field solr_name('member_of_collections', :symbol), limit: 5, label: 'Collections'
+    config.add_facet_field solr_name('member_of_collections', :symbol), limit: 5
 
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
@@ -92,12 +92,12 @@ class CatalogController < ApplicationController
     config.add_index_field solr_name("identifier", :stored_searchable), helper_method: :index_field_link, field_name: 'identifier'
     config.add_index_field solr_name("embargo_release_date", :stored_sortable, type: :date), label: "Embargo release date", helper_method: :human_readable_date
     config.add_index_field solr_name("lease_expiration_date", :stored_sortable, type: :date), label: "Lease expiration date", helper_method: :human_readable_date
-    config.add_index_field solr_name('discipline', :stored_searchable), label: "Discipline"
-    config.add_index_field solr_name('audience', :stored_searchable), label: "Audience"
-    config.add_index_field solr_name('education_level', :stored_searchable), label: "Education level"
-    config.add_index_field solr_name('learning_resource_type', :stored_searchable), label: "Learning resource type"
+    config.add_index_field solr_name('discipline', :stored_searchable)
+    config.add_index_field solr_name('audience', :stored_searchable)
+    config.add_index_field solr_name('education_level', :stored_searchable)
+    config.add_index_field solr_name('learning_resource_type', :stored_searchable)
     config.add_index_field solr_name("alternative_title", :stored_searchable), label: "Alternative title"
-    config.add_index_field solr_name("date", :stored_searchable), label: "Date"
+    config.add_index_field solr_name("date", :stored_searchable)
     config.add_index_field solr_name("table_of_contents", :stored_searchable), label: "Table of contents"
     config.add_index_field solr_name("additional_information", :stored_searchable), label: "Additional information"
     config.add_index_field solr_name("rights_holder", :stored_searchable), label: "Rights holder"
@@ -130,18 +130,18 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name('audience', :stored_searchable)
     config.add_show_field solr_name('education_level', :stored_searchable)
     config.add_show_field solr_name('learning_resource_type', :stored_searchable)
-    config.add_show_field solr_name("alternative_title", :stored_searchable), label: "Alternative title"
-    config.add_show_field solr_name("date", :stored_searchable), label: "Date", helper_method: :human_readable_date
-    config.add_show_field solr_name("table_of_contents", :stored_searchable), label: "Table of contents"
-    config.add_show_field solr_name("additional_information", :stored_searchable), label: "Additional information"
-    config.add_show_field solr_name("rights_holder", :stored_searchable), label: "Rights holder"
-    config.add_show_field solr_name("oer_size", :stored_searchable), label: "Size"
+    config.add_show_field solr_name("alternative_title", :stored_searchable)
+    config.add_show_field solr_name("date", :stored_searchable), helper_method: :human_readable_date
+    config.add_show_field solr_name("table_of_contents", :stored_searchable) 
+    config.add_show_field solr_name("additional_information", :stored_searchable)
+    config.add_show_field solr_name("rights_holder", :stored_searchable)
+    config.add_show_field solr_name("oer_size", :stored_searchable)
     config.add_show_field solr_name('accessibility_feature', :stored_searchable)
     config.add_show_field solr_name('accessibility_hazard', :stored_searchable)
-    config.add_show_field solr_name('accessibility_summary', :stored_searchable), label: "Accessibility summary"
-    config.add_show_field solr_name('previous_version_id', :stored_searchable), label: "Previous version"
-    config.add_show_field solr_name('newer_version_id', :stored_searchable), label: "Newer version"
-    config.add_show_field solr_name('alternate_version_id', :stored_searchable), label: "Alternate version"
+    config.add_show_field solr_name('accessibility_summary', :stored_searchable)
+    config.add_show_field solr_name('previous_version_id', :stored_searchable)
+    config.add_show_field solr_name('newer_version_id', :stored_searchable)
+    config.add_show_field solr_name('alternate_version_id', :stored_searchable)
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields

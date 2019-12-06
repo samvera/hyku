@@ -6,6 +6,25 @@ zh:
         institution_name_full: 完整的机构名称
   application:
     tagline: 下一代存储库解决方案
+  blacklight:
+    search:
+      fields:
+        facet:
+          contributor_sim: "贡献者"
+          human_readable_type_sim: '类型'
+          member_of_collections_sim: "馆藏"
+          resource_type_sim: '资源类型'
+        index:
+          audience_tesim: "听众"
+          date_tesim: '日期'
+          description_tesim: '描述'
+          depositor_tesim: '所有者'
+          discipline_tesim: "学科"
+          education_level_tesim: "教育程度"
+          learning_resource_type_tesim: "学习资源类型"
+          license_tesim: '执照'
+          resource_type_tesim: '类型' 
+          rights_statement_tesim: '权利声明'
   helpers:
     action:
       become: 成為

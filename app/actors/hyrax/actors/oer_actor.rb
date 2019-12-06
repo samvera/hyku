@@ -9,7 +9,7 @@ module Hyrax
         env = add_custom_relations(env, attributes_collection)
         super
       end
-        
+
       def update(env)
         attributes_collection = env.attributes.delete(:related_members_attributes)
         env = add_custom_relations(env, attributes_collection)
@@ -24,16 +24,20 @@ module Hyrax
           # checking for existing works to avoid rewriting/loading works that are already attached
           existing_previous_works = env.curation_concern.previous_version_id
           existing_newer_works = env.curation_concern.newer_version_id
-  
+          existing_alternate_works = env.curation_concern.alternate_version_id
+
           attributes&.each do |attributes|
             next if attributes['id'].blank?
-            if existing_previous_works&.include?(attributes['id']) || existing_newer_works&.include?(attributes['id'])
+            if existing_previous_works&.include?(attributes['id']) || existing_newer_works&.include?(attributes['id']) || existing_alternate_works&.include?(attributes['id'])
               if existing_previous_works&.include?(attributes['id'])
                 env = remove(env, attributes['id'], attributes['relationship']) if
                   ActiveModel::Type::Boolean.new.cast(attributes['_destroy']) && attributes['relationship'] == 'previous-version'
-              else
+              elsif existing_newer_works&.include?(attributes['id'])
                 env = remove(env, attributes['id'], attributes['relationship']) if
                 ActiveModel::Type::Boolean.new.cast(attributes['_destroy']) && attributes['relationship'] == 'newer-version'
+              elsif existing_alternate_works&.include?(attributes['id'])
+                env = remove(env, attributes['id'], attributes['relationship']) if
+                ActiveModel::Type::Boolean.new.cast(attributes['_destroy']) && attributes['relationship'] == 'alternate-version'
               end
             else
               env = add(env, attributes['id'], attributes['relationship'])
@@ -51,8 +55,12 @@ module Hyrax
           if rel == "newer_version_id"
             env.curation_concern.newer_version_id = (env.curation_concern.newer_version_id.to_a << id)
             env.curation_concern.save
-          end 
-          return env   
+          end
+          if rel == "alternate_version_id"
+            env.curation_concern.alternate_version_id = (env.curation_concern.alternate_version_id.to_a << id)
+            env.curation_concern.save
+          end
+          return env
         end
 
         def remove(env, id, relationship)
@@ -64,8 +72,12 @@ module Hyrax
           if rel == "newer_version_id"
             env.curation_concern.newer_version_id = (env.curation_concern.newer_version_id.to_a - [id])
             env.curation_concern.save
-          end    
-            return env
+          end
+          if rel == "alternate_version_id"
+            env.curation_concern.alternate_version_id = (env.curation_concern.alternate_version_id.to_a - [id])
+            env.curation_concern.save
+          end
+          return env
         end
     end
   end

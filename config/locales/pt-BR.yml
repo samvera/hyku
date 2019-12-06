@@ -39,7 +39,7 @@ pt-BR:
             submit: Remover
           search:
             clear: Restabelecer
-        describe_quantity_html: Existem <b>grupos</b> %{number} neste repositório.
+        describe_quantity_html: "Existem <b>grupos</b> %{number} neste repositório."
         describe_singular_quantity_html: Há <b>um grupo</b> neste repositório.
         flash:
           create:

@@ -28,7 +28,7 @@ RSpec.describe Hyrax::Actors::OerActor do
 
   describe "#update" do
     let(:new_related_oer) { create(:oer_work) }
-    let(:attributes) { HashWithIndifferentAccess.new(related_members_attributes: { '0' => { id: related_oer.id, _destroy: 'false', relationship: 'previous-version' }, '1' => { id: new_related_oer.id, _destroy: 'false', relationship: 'newer-version' } }) }
+    let(:attributes) { HashWithIndifferentAccess.new(related_members_attributes: { '0' => { id: related_oer.id, _destroy: 'false', relationship: 'previous-version' }, '1' => { id: new_related_oer.id, _destroy: 'false', relationship: 'newer-version' }, '2' => { id: new_related_oer.id, _destroy: 'false', relationship: 'alternate-version' } }) }
 
     before { subject.update(env) }
 
@@ -36,14 +36,16 @@ RSpec.describe Hyrax::Actors::OerActor do
       expect(subject.update(env)).to be true
       expect(work.previous_version_id).to include(related_oer.id)
       expect(work.newer_version_id).to include(new_related_oer.id)
+      expect(work.alternate_version_id).to include(new_related_oer.id)
     end
 
     it 'removes the related version' do
-      attributes =  HashWithIndifferentAccess.new(related_members_attributes: { '0' => { id: related_oer.id, _destroy: 'true',relationship: 'previous-version' }, '1' => { id: new_related_oer.id, _destroy: 'false', relationship: 'newer-version' } })
+      attributes =  HashWithIndifferentAccess.new(related_members_attributes: { '0' => { id: related_oer.id, _destroy: 'true',relationship: 'previous-version' }, '1' => { id: new_related_oer.id, _destroy: 'false', relationship: 'newer-version' }, '2' => { id: new_related_oer.id, _destroy: 'false', relationship: 'alternate-version' } })
       env =  Hyrax::Actors::Environment.new(work, ability, attributes)
       expect(subject.update(env)).to be true
       expect(work.previous_version_id).to eq([])
       expect(work.newer_version_id).to eq([new_related_oer.id])
+      expect(work.alternate_version_id).to eq([new_related_oer.id])
     end
   end
 

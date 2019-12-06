@@ -20,6 +20,18 @@ es:
         form:
           related_versions: "Versiones relacionadas"
     oers:
+      form_alternate_version:
+        actions:
+          remove: Eliminar de este trabajo
+        add: Añadir
+        caption: Referencia a una versión actualizada del recurso destinado a reemplazarlo
+        confirm:
+          cancel: Cancelar
+          remove: Eliminar
+          text: Eliminar esta versión alternativa no la eliminará del repositorio, solo de este trabajo. ¿Seguro que quieres eliminar esta versión alternativa?
+          header:
+          actions: Acción
+          title: Título de trabajo
       form_newer_version:
         actions:
           remove: Eliminar de este trabajo

@@ -6,6 +6,25 @@ es:
         institution_name_full: El nombre de la institución
   application:
     tagline: La solución de repositorio de próxima generación
+  blacklight:
+    search:
+      fields:
+        facet:
+          contributor_sim: "Contribuyente"
+          human_readable_type_sim: 'Tipo'
+          member_of_collections_sim: "Colecciones"
+          resource_type_sim: 'Tipo de recurso'
+        index:
+          audience_tesim: "Audiencia"
+          date_tesim: 'Fecha'
+          description_tesim: 'Descripción'
+          depositor_tesim: 'Propietario'
+          discipline_tesim: "Disciplina"
+          education_level_tesim: "Nivel de Educación"
+          learning_resource_type_tesim: "Tipo de recurso de aprendizaje"
+          license_tesim: 'Licencia'
+          resource_type_tesim: 'Tipo de recurso' 
+          rights_statement_tesim: 'Declaración de derechos'
   helpers:
     action:
       become: Volverse

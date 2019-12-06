@@ -6,6 +6,25 @@ fr:
         institution_name_full: Nom complet de l'établissement
   application:
     tagline: La solution de dépôt de nouvelle génération
+  blacklight:
+    search:
+      fields:
+        facet:
+          contributor_sim: "Contribuinte"
+          human_readable_type_sim: 'Type'
+          member_of_collections_sim: "Colecções"
+          resource_type_sim: 'Type de ressource'
+        index:
+          audience_tesim: "Public"
+          date_tesim: 'Date'
+          description_tesim: 'La description'
+          depositor_tesim: 'Proprietário'
+          discipline_tesim: "La discipline"
+          education_level_tesim: "iveau d'éducation"
+          learning_resource_type_tesim: "Type de ressource d'apprentissage"
+          license_tesim: 'licença'
+          resource_type_tesim: 'Type' 
+          rights_statement_tesim: 'Declaração de direitos'
   helpers:
     action:
       become: Devenir

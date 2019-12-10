@@ -49,18 +49,16 @@ class Oer < ActiveFedora::Base
     index.as :stored_searchable
   end
 
-  # TODO: clicking on link in show pg fails to produce expected search results
   property :accessibility_feature, predicate: ::RDF::Vocab::SCHEMA.accessibilityFeature, multiple: true do |index|
-    index.as :stored_searchable
+    index.as :stored_searchable, :facetable
   end
 
-  # TODO: clicking on link in show pg fails to produce expected search results
   property :accessibility_hazard, predicate: ::RDF::Vocab::SCHEMA.accessibilityHazard, multiple: true do |index|
-    index.as :stored_searchable
+    index.as :stored_searchable, :facetable
   end
 
   property :accessibility_summary, predicate: ::RDF::Vocab::SCHEMA.accessibilitySummary, multiple: false do |index|
-    index.as :stored_searchable
+    index.as :stored_searchable, :facetable
   end
 
   property :previous_version_id, predicate: ::RDF::Vocab::DC.replaces do |index|

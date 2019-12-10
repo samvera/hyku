@@ -16,7 +16,7 @@ RSpec.describe 'hyrax/oers/_attributes.html.erb' do
   let(:education_level) { 'College / Upper division' }
   let(:learning_resource) { 'Game' }
   let(:discipline) { 'Computing and Information - Computer Science' }
-
+  let(:publisher) { 'Penguin' }
   let(:solr_document) { SolrDocument.new(attributes) }
   let(:attributes) do
     {
@@ -31,6 +31,7 @@ RSpec.describe 'hyrax/oers/_attributes.html.erb' do
       additional_information_tesim: additional_information,
       rights_holder_tesim: rights_holder,
       oer_size_tesim: size,
+      publisher_tesim: publisher,
       accessibility_feature_tesim: accessibility_feature,
       accessibility_hazard_tesim: accessibility_hazard,
       accessibility_summary_tesim: accessibility_summary,
@@ -54,21 +55,22 @@ RSpec.describe 'hyrax/oers/_attributes.html.erb' do
   end
 
   it 'has links to search for other objects with the same metadata' do
+    expect(rendered).to have_link(alternative_title)
     expect(rendered).to have_link(creator)
     expect(rendered).to have_link(contributor)
-    expect(rendered).to have_link(subject)
-    expect(rendered).to have_link(alternative_title)
+    expect(rendered).to have_link(learning_resource)
+    expect(rendered).to have_link(education_level)
+    expect(rendered).to have_link(audience)
+    expect(rendered).to have_link(discipline)
     expect(rendered).to have_css('li.attribute-date', text: date)
     expect(rendered).to have_link(table_of_contents)
-    expect(rendered).to have_link(additional_information)
+    expect(rendered).to have_link(subject)
     expect(rendered).to have_link(rights_holder)
     expect(rendered).to have_link(size)
+    expect(rendered).to have_link(publisher)
     expect(rendered).to have_link(accessibility_feature)
     expect(rendered).to have_link(accessibility_hazard)
     expect(rendered).to have_link(accessibility_summary)
-    expect(rendered).to have_link(audience)
-    expect(rendered).to have_link(education_level)
-    expect(rendered).to have_link(learning_resource)
     expect(rendered).to have_link(discipline)
   end
 end

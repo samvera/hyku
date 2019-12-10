@@ -44,6 +44,7 @@ class SolrDocument
   attribute :previous_version_id, Solr::String, solr_name('previous_version_id')
   attribute :newer_version_id, Solr::String, solr_name('newer_version_id')
   attribute :alternate_version_id, Solr::String, solr_name('alternate_version_id')
+  attribute :related_item_id, Solr::String, solr_name('related_item_id')
   attribute :discipline, Solr::Array, solr_name('discipline')
 
   field_semantics.merge!(

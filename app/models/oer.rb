@@ -71,7 +71,11 @@ class Oer < ActiveFedora::Base
     index.as :stored_searchable, :facetable
   end
 
-  property :alternate_version_id, predicate: ::RDF::Vocab::DC.isReplacedBy do |index|
+  property :alternate_version_id, predicate: ::RDF::Vocab::DC.hasVersion do |index|
+    index.as :stored_searchable, :facetable
+  end
+
+  property :related_item_id, predicate: ::RDF::Vocab::DC.relation do |index|
     index.as :stored_searchable, :facetable
   end
 
@@ -94,6 +98,10 @@ class Oer < ActiveFedora::Base
 
   def alternate_version
     @alternate_version ||= Oer.where(id: self.alternate_version_id) if self.alternate_version_id
+  end
+
+  def related_item
+    @related_item ||= Oer.where(id: self.related_item_id) if self.related_item_id
   end
 
 end

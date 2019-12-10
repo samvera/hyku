@@ -56,6 +56,18 @@ it:
         header:
           actions: Azione
           title: Titolo dell'opera
+      form_related_item:
+        actions:
+          remove: Rimuovi da questo lavoro
+        add: Inserisci
+        caption: Riferimento a una risorsa generalmente correlata alla risorsa descritta
+        confirm:
+          cancel: Annulla
+          remove: Rimuovere
+          text: La rimozione di questa versione alternativa non la rimuoverà dal repository, ma solo da questo lavoro. Sei sicuro di voler rimuovere questa versione alternativa?
+        header:
+          actions: Azione
+          title: Titolo dell'opera
       related_items:
         date_uploaded: Data caricata
         empty: Questo %{type} non ha nessun file associato ad esso. Fai clic su "modifica" per aggiungere altri file.

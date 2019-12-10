@@ -57,6 +57,18 @@ fr:
         header:
           actions: Action
           title: Titre de l'oeuvre
+      form_related_item:
+        actions:
+          remove: Supprimer de ce travail
+        add: Ajouter
+        caption: Référence à une ressource généralement liée à la ressource décrite
+        confirm:
+          cancel: Annuler
+          remove: Retirer
+          text: La suppression de cette version alternative ne la supprimera pas du référentiel, uniquement de ce travail. Voulez-vous vraiment supprimer cette version alternative?
+        header:
+          actions: Action
+          title: Titre de l'oeuvre
       related_items:
         date_uploaded: Date de téléchargement
         empty: Ce %{type} n'a aucun fichier associé. Cliquez sur "modifier" pour ajouter d'autres fichiers.

@@ -134,6 +134,16 @@ export default class {
                                   'related_members_attributes',
                                   'tmpl-alternate-version',
                                   alternate_versions.data('relationship')).init())
+
+      // added alternate_versions relationship
+      let related_items = this.element.find('[data-behavior="related-item-relationship"]')
+      related_items.each((_idx, element) =>
+          new RelationshipsControl(element,
+                                  related_items.data('members'),
+                                  related_items.data('paramKey'),
+                                  'related_members_attributes',
+                                  'tmpl-related-item',
+                                  related_items.data('relationship')).init())
   }
 
   saveWorkControl() {

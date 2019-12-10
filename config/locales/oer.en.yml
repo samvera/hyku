@@ -56,6 +56,18 @@ en:
         header:
           actions: Action
           title: Work title
+      form_related_item:
+        actions:
+          remove: Remove from this work
+        add: Add
+        caption: Reference to a resource generally related to the resource described
+        confirm:
+          cancel: Cancel
+          remove: Remove
+          text: Removing this alternate version will not remove it from the repository, only from this work.  Are you sure you want to remove this alternate version?
+        header:
+          actions: Action
+          title: Work title
       related_items:
         date_uploaded: Date Uploaded
         empty: This %{type} has no files associated with it. Click "edit" to add more files.
@@ -100,3 +112,4 @@ en:
         alternate_version_id: "Search for a work..."
         newer_version_id: "Search for a work..."
         previous_version_id: "Search for a work..."
+        related_item_id: "Search for a work..."

@@ -30,7 +30,7 @@ class SolrDocument
   attribute :extent, Solr::Array, solr_name('extent')
   attribute :rendering_ids, Solr::Array, solr_name('hasFormat', :symbol)
   attribute :alternative_title, Solr::String, solr_name('alternative_title')
-  attribute :date, Solr::String, solr_name('date')
+  attribute :date, Solr::Date, solr_name('date')
   attribute :audience, Solr::Array, solr_name('audience')
   attribute :education_level, Solr::Array, solr_name('education_level')
   attribute :learning_resource_type, Solr::Array, solr_name('learning_resource_type')

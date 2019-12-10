@@ -3,7 +3,7 @@ RSpec.describe 'hyrax/oers/_attributes.html.erb' do
   let(:contributor) { 'Frodo' }
   let(:subject)     { 'history' }
   let(:description) { ['Lorem ipsum < lorem ipsum. http://my.link.com'] }
-  let(:date) { '10/3/2000' }
+  let(:date) { 'October 3, 2000' }
   let(:alternative_title) { 'alternative_title' }
   let(:table_of_contents) { 'table of contents' }
   let(:additional_information) { 'additional information' }
@@ -62,7 +62,7 @@ RSpec.describe 'hyrax/oers/_attributes.html.erb' do
     expect(rendered).to have_link(education_level)
     expect(rendered).to have_link(audience)
     expect(rendered).to have_link(discipline)
-    expect(rendered).to have_css('li.attribute-date', text: date)
+    expect(rendered).to have_css('li.attribute-date', text: '10/03/2000')
     expect(rendered).to have_link(table_of_contents)
     expect(rendered).to have_link(subject)
     expect(rendered).to have_link(rights_holder)

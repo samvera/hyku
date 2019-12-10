@@ -56,6 +56,18 @@ zh:
         header:
           actions: 行动
           title: 作品名称
+      form_related_item:
+        actions:
+          remove: 从这项工作中删除
+        add: 加
+        caption: 引用通常与所描述资源有关的资源
+        confirm:
+          cancel: 取消
+          remove: 去掉
+          text: 删除此替代版本不会将其从存储库中删除，仅会从此工作中删除。您确定要删除此备用版本吗？
+        header:
+          actions: 行动
+          title: 作品名称
       related_items:
         date_uploaded: 上传日期
         empty: 该 %{type} 没有相关文件。 请点击'编辑'添加更多文件。

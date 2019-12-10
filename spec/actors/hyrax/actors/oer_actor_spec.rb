@@ -9,8 +9,16 @@ RSpec.describe Hyrax::Actors::OerActor do
   let(:depositor) { create(:user) }
   let(:work) { create(:oer_work) }
   let(:related_oer) { create(:oer_work) }
-  let(:new_related_oer) { create(:oer_work) }
-  let(:attributes) { HashWithIndifferentAccess.new(related_members_attributes: { '0' => { id: related_oer.id, _destroy: 'false', relationship: 'previous-version' } }) }
+  let(:previous_oer) { create(:oer_work) }
+  let(:newer_oer) { create(:oer_work) }
+  let(:alternate_oer) { create(:oer_work) }
+  let(:related_item_oer) { create(:oer_work) }
+  let(:attributes) { HashWithIndifferentAccess.new(related_members_attributes: { 
+    '0' => { id: previous_oer.id, _destroy: 'false', relationship: 'previous-version' }, 
+    '1' => { id: newer_oer.id, _destroy: 'false', relationship: 'newer_version' }, 
+    '2' => { id: alternate_oer.id, _destroy: 'false', relationship: 'alternate-version'}, 
+    '3' => { id: related_item_oer.id, _destroy: 'false', relationship: 'related-item' } 
+  }) }
 
   subject(:middleware) do
     stack = ActionDispatch::MiddlewareStack.new.tap do |middleware|
@@ -22,30 +30,67 @@ RSpec.describe Hyrax::Actors::OerActor do
   describe "#create" do
     it 'adds a related version' do
       expect(subject.create(env)).to be true
-      expect(work.previous_version_id).to eq([related_oer.id])
+      expect(work.previous_version_id).to eq([previous_oer.id])
     end
   end
 
   describe "#update" do
-    let(:new_related_oer) { create(:oer_work) }
-    let(:attributes) { HashWithIndifferentAccess.new(related_members_attributes: { '0' => { id: related_oer.id, _destroy: 'false', relationship: 'previous-version' }, '1' => { id: new_related_oer.id, _destroy: 'false', relationship: 'newer-version' }, '2' => { id: new_related_oer.id, _destroy: 'false', relationship: 'alternate-version' } }) }
+    it 'updates the previous version items' do
+      expect(subject.update(env)).to be true
+      expect(work.previous_version_id).to eq([previous_oer.id])
+    end
+    
+    it 'updates the newer version items' do
+      expect(subject.update(env)).to be true
+      expect(work.newer_version_id).to eq([newer_oer.id])
+    end
+
+    it 'updates the alternate version' do
+      expect(subject.update(env)).to be true
+      expect(work.alternate_version_id).to eq([alternate_oer.id])
+    end
+
+    it 'updates the related item' do
+      expect(subject.update(env)).to be true
+      expect(work.related_item_id).to eq([related_item_oer.id])
+    end
 
     before { subject.update(env) }
 
-    it 'updates a related version' do
-      expect(subject.update(env)).to be true
-      expect(work.previous_version_id).to include(related_oer.id)
-      expect(work.newer_version_id).to include(new_related_oer.id)
-      expect(work.alternate_version_id).to include(new_related_oer.id)
-    end
+    it 'removes the related version items' do
+      attributes =  HashWithIndifferentAccess.new(related_members_attributes: { 
+        '0' => { id: previous_oer.id, _destroy: 'true', relationship: 'previous-version' }, 
+        '1' => { id: newer_oer.id, _destroy: 'true', relationship: 'newer-version' }, 
+        '2' => { id: alternate_oer.id, _destroy: 'true', relationship: 'alternate-version' }, 
+        '3' => { id: related_item_oer.id, _destroy: 'true', relationship: 'related-item' } 
+      }) 
 
-    it 'removes the related version' do
-      attributes =  HashWithIndifferentAccess.new(related_members_attributes: { '0' => { id: related_oer.id, _destroy: 'true',relationship: 'previous-version' }, '1' => { id: new_related_oer.id, _destroy: 'false', relationship: 'newer-version' }, '2' => { id: new_related_oer.id, _destroy: 'false', relationship: 'alternate-version' } })
       env =  Hyrax::Actors::Environment.new(work, ability, attributes)
+
       expect(subject.update(env)).to be true
       expect(work.previous_version_id).to eq([])
-      expect(work.newer_version_id).to eq([new_related_oer.id])
-      expect(work.alternate_version_id).to eq([new_related_oer.id])
+      expect(work.newer_version_id).to eq([])
+      expect(work.alternate_version_id).to eq([])
+      expect(work.related_item_id).to eq([])
+    end
+
+    before { subject.update(env) }
+    
+    it 'adds and removes relationships on same submit' do
+      attributes =  HashWithIndifferentAccess.new(related_members_attributes: { 
+        '0' => { id: previous_oer.id, _destroy: 'true', relationship: 'previous-version' }, 
+        '1' => { id: newer_oer.id, _destroy: 'false', relationship: 'newer-version' }, 
+        '2' => { id: alternate_oer.id, _destroy: 'true', relationship: 'alternate-version' }, 
+        '3' => { id: related_item_oer.id, _destroy: 'false', relationship: 'related-item' } 
+      })
+
+      env =  Hyrax::Actors::Environment.new(work, ability, attributes)
+
+      expect(subject.update(env)).to be true
+      expect(work.previous_version_id).to eq([])
+      expect(work.newer_version_id).to eq([newer_oer.id])
+      expect(work.alternate_version_id).to eq([])
+      expect(work.related_item_id).to eq([related_item_oer.id])
     end
   end
 

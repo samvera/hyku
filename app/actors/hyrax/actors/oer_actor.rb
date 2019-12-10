@@ -25,10 +25,15 @@ module Hyrax
           existing_previous_works = env.curation_concern.previous_version_id
           existing_newer_works = env.curation_concern.newer_version_id
           existing_alternate_works = env.curation_concern.alternate_version_id
+          existing_related_items = env.curation_concern.related_item_id
 
           attributes&.each do |attributes|
             next if attributes['id'].blank?
-            if existing_previous_works&.include?(attributes['id']) || existing_newer_works&.include?(attributes['id']) || existing_alternate_works&.include?(attributes['id'])
+            if existing_previous_works&.include?(attributes['id']) || 
+               existing_newer_works&.include?(attributes['id']) || 
+               existing_alternate_works&.include?(attributes['id']) ||
+               existing_related_items&.include?(attributes['id'])
+              
               if existing_previous_works&.include?(attributes['id'])
                 env = remove(env, attributes['id'], attributes['relationship']) if
                   ActiveModel::Type::Boolean.new.cast(attributes['_destroy']) && attributes['relationship'] == 'previous-version'
@@ -38,6 +43,9 @@ module Hyrax
               elsif existing_alternate_works&.include?(attributes['id'])
                 env = remove(env, attributes['id'], attributes['relationship']) if
                 ActiveModel::Type::Boolean.new.cast(attributes['_destroy']) && attributes['relationship'] == 'alternate-version'
+              elsif existing_related_items&.include?(attributes['id'])
+                env = remove(env, attributes['id'], attributes['relationship']) if
+                ActiveModel::Type::Boolean.new.cast(attributes['_destroy']) && attributes['relationship'] == 'related-item'
               end
             else
               env = add(env, attributes['id'], attributes['relationship'])
@@ -47,36 +55,34 @@ module Hyrax
         end
 
         def add(env, id, relationship)
-          rel = "#{relationship.underscore}_id"
-          if rel == "previous_version_id"
+          rel = "#{relationship.underscore}_id"          
+          case rel
+          when "previous_version_id"
             env.curation_concern.previous_version_id = (env.curation_concern.previous_version_id.to_a << id)
-            env.curation_concern.save
-          end
-          if rel == "newer_version_id"
+          when "newer_version_id"
             env.curation_concern.newer_version_id = (env.curation_concern.newer_version_id.to_a << id)
-            env.curation_concern.save
-          end
-          if rel == "alternate_version_id"
+          when "alternate_version_id"
             env.curation_concern.alternate_version_id = (env.curation_concern.alternate_version_id.to_a << id)
-            env.curation_concern.save
+          when "related_item_id"
+            env.curation_concern.related_item_id = (env.curation_concern.related_item_id.to_a << id)
           end
+          env.curation_concern.save
           return env
         end
 
         def remove(env, id, relationship)
           rel= "#{relationship.underscore}_id"
-          if rel == "previous_version_id"
+          case rel
+          when "previous_version_id"
             env.curation_concern.previous_version_id = (env.curation_concern.previous_version_id.to_a - [id])
-            env.curation_concern.save
-          end
-          if rel == "newer_version_id"
+          when "newer_version_id"
             env.curation_concern.newer_version_id = (env.curation_concern.newer_version_id.to_a - [id])
-            env.curation_concern.save
-          end
-          if rel == "alternate_version_id"
+          when "alternate_version_id"
             env.curation_concern.alternate_version_id = (env.curation_concern.alternate_version_id.to_a - [id])
-            env.curation_concern.save
+          when "related_item_id"
+            env.curation_concern.related_item_id = (env.curation_concern.related_item_id.to_a - [id])
           end
+          env.curation_concern.save
           return env
         end
     end

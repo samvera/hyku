@@ -56,6 +56,18 @@ es:
         header:
           actions: Acción
           title: Título de trabajo
+      form_related_item:
+        actions:
+          remove: Eliminar
+        add: Añadir
+        caption: Referencia a un recurso generalmente relacionado con el recurso descrito
+        confirm:
+          cancel: Cancelar
+          remove: Eliminar
+          text: Eliminar esta versión alternativa no la eliminará del repositorio, solo de este trabajo. ¿Seguro que quieres eliminar esta versión alternativa
+        header:
+          actions: Acción
+          title: Título de trabajo
       related_items:
         date_uploaded: Fecha de subida
         empty: Este %{type} no tiene archivos asociados. Presione "editar" para añadir más archivos.

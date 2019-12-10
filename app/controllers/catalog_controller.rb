@@ -139,8 +139,10 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name("date_created", :stored_searchable)
     config.add_show_field solr_name("format", :stored_searchable)
     config.add_show_field solr_name('extent', :stored_searchable)
-    config.add_show_field solr_name('previous_version_id', :stored_searchable), label: "Previous version"
-    config.add_show_field solr_name('newer_version_id', :stored_searchable), label: "Newer version"
+    config.add_show_field solr_name('previous_version_id', :stored_searchable)
+    config.add_show_field solr_name('newer_version_id', :stored_searchable)
+    config.add_show_field solr_name('related_item_id', :stored_searchable)
+
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields

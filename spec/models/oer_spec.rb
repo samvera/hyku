@@ -60,6 +60,7 @@ RSpec.describe Oer do
       expect(subject).to respond_to(:previous_version_id)
       expect(subject).to respond_to(:newer_version_id)
       expect(subject).to respond_to(:alternate_version_id)
+      expect(subject).to respond_to(:related_item_id)
     end
   end
 end

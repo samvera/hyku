@@ -580,7 +580,7 @@ GEM
     powerpack (0.1.1)
     public_suffix (3.0.2)
     pul_uv_rails (2.0.1)
-    puma (3.9.1)
+    puma (3.12.2)
     qa (2.2.0)
       activerecord-import
       deprecation
@@ -924,7 +924,7 @@ DEPENDENCIES
   lograge
   mods (~> 2.4)
   pg
-  puma (~> 3.7)
+  puma (~> 3.12)
   rack-test (= 0.7.0)
   rails (~> 5.1.1)
   rails-controller-testing

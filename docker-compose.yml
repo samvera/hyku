@@ -91,6 +91,7 @@ services:
       - REDIS_HOST=redis
       - SECRET_KEY_BASE=asdf
       - SETTINGS__ACTIVE_JOB__QUEUE_ADAPTER=sidekiq
+      - SETTINGS__BULKRAX__ENABLED=false
       - SETTINGS__FITS_PATH=/opt/fits/fits.sh
       - SETTINGS__MULTITENANCY__ADMIN_HOST=hyku.docker
       - SETTINGS__MULTITENANCY__ADMIN_ONLY_TENANT_CREATION=false

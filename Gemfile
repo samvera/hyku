@@ -78,6 +78,10 @@ group :development do
   gem 'scss_lint', require: false
 end
 
+# Bulkrax
+gem 'bulkrax', git: 'https://github.com/samvera-labs/bulkrax.git'
+gem 'willow_sword', github: 'notch8/willow_sword'
+
 gem 'blacklight', '~> 6.7'
 gem 'blacklight_oai_provider', '~> 6.0'
 

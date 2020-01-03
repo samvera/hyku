@@ -33,6 +33,9 @@ Rails.application.routes.draw do
 
   mount Blacklight::Engine => '/'
   mount Hyrax::Engine, at: '/'
+  if Settings.bulkrax.enabled
+    mount Bulkrax::Engine, at: '/'
+  end
 
   concern :searchable, Blacklight::Routes::Searchable.new
   concern :exportable, Blacklight::Routes::Exportable.new

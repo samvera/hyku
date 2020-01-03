@@ -26,6 +26,7 @@ Jump In: [![Slack Status](http://slack.samvera.org/badge.svg)](http://slack.samv
   * [Development dependencies](#development-dependencies)
     * [Postgres](#postgres) 
   * [Importing](#importing)
+    * [enable Bulkrax](#bulkrax)
     * [from CSV](#from-csv)
     * [from purl](#from-purl)
   * [Compatibility](#compatibility)
@@ -127,6 +128,15 @@ AccountElevator.switch!('repo.example.com')
 Hyku supports multitenancy using the `apartment` gem. `apartment` works best with a postgres database.
 
 ## Importing
+### enable Bulkrax:
+
+Set bulkrax -> enabled to true in settings (via file or env variable)
+
+(in a `docker-compose exec web bash` if you're doing docker otherwise in your terminal)
+```bash
+bundle exec rails db:migrate
+```
+
 ### from CSV:
 
 ```bash

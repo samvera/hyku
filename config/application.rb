@@ -48,6 +48,9 @@ module Hyku
           config.active_elastic_job.secret_key_base = Rails.application.secrets[:secret_key_base]
         end
       end
+      if Settings.bulkrax.enabled
+        Bundler.require('bulkrax')
+      end
     end
   end
 end

@@ -1,7 +1,15 @@
-menubar: false
-toolbar1: styleselect | bold italic | link image | undo redo
-toolbar2: table | fullscreen | uploadimage
-plugins:
-  - table
-  - fullscreen
-  - uploadimage
+default: &default
+  setup: tinymce_nav_safety # onChange event init
+content_block:
+  <<: *default
+  menubar: false
+  image_uploadtab: true
+  toolbar1: styleselect | bold italic underline | link hr | undo redo
+  toolbar2: indent outdent | alignleft aligncenter alignright | table | fullscreen 
+  plugins:
+    - table
+    - fullscreen
+    - link
+    - autolink
+custom:
+  <<: *default

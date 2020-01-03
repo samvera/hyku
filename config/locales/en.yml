@@ -101,10 +101,17 @@ en:
       appearances:
         show:
           hints:
-            banner_image: To use an image as a masthead background, you should use an image (JPG, GIF or PNG) that is at least 120 pixels tall and 1200 pixels wide. For best results, use an image at least 1800 pixels wide.
+            banner_image: 'To use an image as a masthead background, you should use an image (JPG, GIF or PNG) that is at least 120 pixels tall and 1200 pixels wide. For best results, use an image at least 1800 pixels wide.'
+            logo_image: 'To use an image as the logo, you should use an image (JPG, GIF or PNG) that is no taller than the header and no wider than 400 pixels wide.'
+            directory_image: 'To use an image as the directory image, you should use an image (JPG, GIF or PNG) that is no taller than the header and no wider than 400 pixels wide.'
+            default_image: 'For default images, you should use an image (JPG, GIF or PNG) that has equal height and width dimensions (100 pixels wide and 100 pixels tall)'
           tabs:
-            banner_image: Banner Image
-            colors: Colors
+            banner_image: 'Banner Image'
+            directory_image: 'Directory Image'
+            default_images: 'Default Images'
+            colors: 'Colors'
+            custom_css: Custom CSS
+            fonts: 'Fonts'
       sidebar:
         accounts: Accounts
         activity_summary: Activity Summary
@@ -133,7 +140,7 @@ en:
         solr_endpoint: Solr Endpoint
       index:
         cname: CNAME
-        confirm_delete: Are you sure you wish to delete this repository?
+        confirm_delete: Are you sure you wish to delete this repository? ALL COLLECTIONS AND WORKS within this repository will be DELETED PERMANENTLY
         create_new: Create new account
         header: Accounts
         manage: Manage
@@ -142,6 +149,7 @@ en:
         header: Create a new repository
       show:
         add: Add
+        update: Update
         current_admins:
           actions: Action
           email: Email address

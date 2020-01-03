@@ -37,6 +37,9 @@ module Hyku
       Hyrax::Admin::AppearancesController.form_class = AppearanceForm
     end
 
+    # resolve reloading issue in dev mode
+    config.paths.add 'app/helpers', eager_load: true
+
     config.before_initialize do
       if defined? ActiveElasticJob
         Rails.application.configure do

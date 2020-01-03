@@ -102,9 +102,15 @@ zh:
         show:
           hints:
             banner_image: 要使用图像作为标头背景，您应该使用至少120像素高和1200像素宽的图像（JPG，GIF或PNG）。 为获得最佳效果，请使用至少1800像素宽的图像。
+            logo_image: 要使用图像作为徽标，您应使用不高于标题且宽度不超过400像素的图像（JPG，GIF或PNG）。
+            directory_image: 要将图像用作目录图像，您应使用不高于标题且宽度不超过400像素的图像（JPG，GIF或PNG）。
+            default_image: 对于默认图像，您应使用具有相同高度和宽度尺寸（100像素宽，100像素高）的图像（JPG，GIF或PNG）
           tabs:
             banner_image: 横幅图像
+            directory_image: 目录图像
+            default_images: 默认图像
             colors: 颜色
+            fonts: 字形
       sidebar:
         accounts: 帐号
         activity_summary: 活动摘要

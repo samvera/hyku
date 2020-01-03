@@ -4,7 +4,15 @@ class Site < ApplicationRecord
   validates :application_name, presence: true, allow_nil: true
 
   # Allow for uploading of site's banner image
-  mount_uploader :banner_image, BannerImageUploader
+  mount_uploader :banner_image, Hyrax::UploadedFileUploader
+  # Allow for uploading of site's logo image
+  mount_uploader :logo_image, Hyrax::AvatarUploader
+  # Allow for uploading of site's directory image
+  mount_uploader :directory_image, Hyrax::AvatarUploader
+  # Allow for uploading of site's default collection image
+  mount_uploader :default_collection_image, Hyrax::AvatarUploader
+  # Allow for uploading of site's default work image
+  mount_uploader :default_work_image, Hyrax::AvatarUploader
 
   belongs_to :account
   accepts_nested_attributes_for :account, update_only: true

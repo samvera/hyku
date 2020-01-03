@@ -4,8 +4,13 @@ class SitesController < ApplicationController
   layout 'hyrax/dashboard'
 
   def update
-    params.require(:remove_banner_image)
-    @site.remove_banner_image!
+    # params.permit([:remove_banner_image, :remove_logo_image])
+    @site.remove_banner_image! if params[:remove_banner_image]
+    @site.remove_logo_image! if params[:remove_logo_image]
+    @site.remove_directory_image! if params[:remove_directory_image]
+    @site.remove_default_collection_image! if params[:remove_default_collection_image]
+    @site.remove_default_work_image! if params[:remove_default_work_image]
+
     redirect_to hyrax.admin_appearance_path, notice: 'The appearance was successfully updated.'
   end
 

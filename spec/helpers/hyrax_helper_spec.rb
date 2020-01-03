@@ -17,4 +17,23 @@ RSpec.describe HyraxHelper, type: :helper do
       end
     end
   end
+
+  describe "#directory_image" do
+    context "with uploaded directory image" do
+      before do
+        f = fixture_file_upload('/images/nypl-hydra-of-lerna.jpg', 'image/jpg')
+        Site.instance.update(directory_image: f)
+      end
+
+      it "returns the uploaded directory image" do
+        expect(helper.directory_image).to eq(Site.instance.directory_image.url)
+      end
+    end
+
+    context "without uploaded directory image" do
+      it "returns false" do
+        expect(helper.directory_image).to eq(false)
+      end
+    end
+  end
 end

@@ -102,9 +102,16 @@ es:
         show:
           hints:
             banner_image: Para utilizar una imagen como fondo de masthead, debe utilizar una imagen (JPG, GIF o PNG) que tenga al menos 120 píxeles de alto y 1200 píxeles de ancho. Para obtener mejores resultados, utilice una imagen de al menos 1800 píxeles de ancho.
+            logo_image: Para usar una imagen como logotipo, debe usar una imagen (JPG, GIF o PNG) que no sea más alta que el encabezado y que no tenga más de 400 píxeles de ancho.
+            directory_image: Para usar una imagen como la imagen del directorio, debe usar una imagen (JPG, GIF o PNG) que no sea más alta que el encabezado y que no tenga más de 400 píxeles de ancho.
+            default_image: Para las imágenes predeterminadas, debe usar una imagen (JPG, GIF o PNG) que tenga las mismas dimensiones de alto y ancho (100 píxeles de ancho y 100 píxeles de alto)
           tabs:
             banner_image: Imagen de la Bandera
+            directory_image: Imagen de directorio
+            default_images: Imágenes predeterminadas
             colors: Colores
+            custom_css: Personnaliser CSS
+            fonts: Fuentes
       sidebar:
         accounts: Cuentas
         activity_summary: Resumen de la actividad

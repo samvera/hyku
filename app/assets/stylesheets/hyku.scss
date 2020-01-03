@@ -1,6 +1,9 @@
 #masthead {
   #logo {
     margin-left: 10px;
+    img {
+      max-height: 50px;
+    }
   }
 
   .navbar-right {
@@ -12,6 +15,14 @@
   }
 }
 
+
+@media (min-width: $screen-sm-min) {
+  .logo-set {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+}
 
 .jumbotron {
   background: image_url('white-cloud-background.jpg') repeat-x;
@@ -198,5 +209,35 @@ footer.navbar {
   h5,
   h6 {
     color: $brand-danger;
+  }
+}
+
+.logo-set {
+  min-height: 320px;
+  img {
+    vertical-align: middle;
+    display: inline;
+  }
+}
+
+#s2id_collection_thumbnail_id {
+  height: auto;
+  padding: 0;
+}
+.select2-container.generic_work_based_near {
+  height: auto;
+  padding: 0;
+}
+
+
+#users > .panel {
+  .panel-body{
+    padding-left: 0px;
+  }
+  ul, h2, h3, h4, form, p {
+    padding-left: 15px;
+  }
+  ul {
+    padding-left: 40px;
   }
 }

@@ -6,7 +6,7 @@ RUN apt-get update -qq && \
                        ghostscript \
                        imagemagick \
                        libpq-dev \
-                       libpq-dev nodejs \
+                       nodejs \
                        libreoffice \
                        libsasl2-dev \
                        netcat \

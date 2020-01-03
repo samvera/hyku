@@ -102,9 +102,16 @@ it:
         show:
           hints:
             banner_image: Per utilizzare un'immagine come sfondo di masthead, è consigliabile utilizzare un'immagine (JPG, GIF o PNG) di almeno 120 pixel di altezza e 1200 pixel di larghezza. Per ottenere risultati ottimali, utilizzare un'immagine di larghezza almeno 1800 pixel.
+            logo_image: Per usare un'immagine come logo, dovresti usare un'immagine (JPG, GIF o PNG) che non sia più alta dell'intestazione e non più larga di 400 pixel di larghezza.
+            directory_image: Per usare un'immagine come immagine della directory, dovresti usare un'immagine (JPG, GIF o PNG) che non sia più alta dell'intestazione e non più larga di 400 pixel di larghezza.
+            default_image: Per le immagini predefinite, è necessario utilizzare un'immagine (JPG, GIF o PNG) che abbia le stesse dimensioni di altezza e larghezza (100 pixel di larghezza e 100 pixel di altezza)
           tabs:
             banner_image: Immagine banner
+            directory_image: Immagine della directory
+            default_images: Immagini predefinite
             colors: Colori
+            custom_css: Personalizzare CSS
+            fonts: Font
       sidebar:
         accounts: conti
         activity_summary: Riepilogo attività

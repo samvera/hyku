@@ -18,4 +18,20 @@ module HyraxHelper
   def banner_image
     Site.instance.banner_image? ? Site.instance.banner_image.url : super
   end
+
+  def logo_image
+    Site.instance.logo_image? ? Site.instance.logo_image.url : false
+  end
+
+  def directory_image
+    Site.instance.directory_image? ? Site.instance.directory_image.url : false
+  end
+
+  def default_collction_image
+    Site.instance.default_collection_image? ? Site.instance.default_collection_image.url : false
+  end
+
+  def default_work_image
+    Site.instance.default_work_image? ? Site.instance.default_work_image.url : 'default.png'
+  end
 end

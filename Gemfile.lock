@@ -71,7 +71,7 @@ GEM
       activerecord (>= 3.1.2, < 6.0)
       rack (>= 1.3.6)
     arel (8.0.0)
-    ast (2.3.0)
+    ast (2.4.0)
     autoprefixer-rails (9.4.10)
       execjs
     awesome_nested_set (3.1.4)
@@ -115,6 +115,8 @@ GEM
       blacklight (~> 6.0)
       oai (~> 0.4)
       rails (>= 4.2, < 6)
+    bootstrap-datepicker-rails (1.8.0.1)
+      railties (>= 3.0)
     bootstrap-sass (3.4.1)
       autoprefixer-rails (>= 5.2.1)
       sassc (>= 2.0.0)
@@ -153,6 +155,8 @@ GEM
     childprocess (0.7.0)
       ffi (~> 1.0, >= 1.0.11)
     clipboard-rails (1.7.1)
+    codemirror-rails (5.16.0)
+      railties (>= 3.0, < 6.0)
     coffee-rails (4.2.2)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0)
@@ -572,8 +576,8 @@ GEM
     orm_adapter (0.5.0)
     os (1.0.1)
     parallel (1.12.1)
-    parser (2.4.0.2)
-      ast (~> 2.3)
+    parser (2.5.3.0)
+      ast (~> 2.4.0)
     pg (0.21.0)
     posix-spawn (0.3.13)
     power_converter (0.1.2)
@@ -899,9 +903,11 @@ DEPENDENCIES
   apartment
   blacklight (~> 6.7)
   blacklight_oai_provider (~> 6.0)
+  bootstrap-datepicker-rails
   byebug
   capybara
   carrierwave-aws
+  codemirror-rails
   coffee-rails (~> 4.2)
   config (~> 1.5, >= 1.5.1)
   coveralls
@@ -923,6 +929,7 @@ DEPENDENCIES
   listen (>= 3.0.5, < 3.2)
   lograge
   mods (~> 2.4)
+  parser (~> 2.5.3)
   pg
   puma (~> 3.12)
   rack-test (= 0.7.0)

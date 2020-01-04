@@ -15,13 +15,13 @@ RSpec.describe Hyrax::ImagesController do
   end
 
   describe "#presenter" do
+    subject { controller.send :presenter }
+
     let(:solr_document) { SolrDocument.new(FactoryBot.create(:image).to_solr) }
 
     before do
       allow(controller).to receive(:curation_concern_from_search_results).and_return(solr_document)
     end
-
-    subject { controller.send :presenter }
 
     it "initializes a presenter" do
       expect(subject).to be_kind_of Hyku::WorkShowPresenter

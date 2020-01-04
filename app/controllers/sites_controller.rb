@@ -5,11 +5,13 @@ class SitesController < ApplicationController
 
   def update
     # params.permit([:remove_banner_image, :remove_logo_image])
-    @site.remove_banner_image! if params[:remove_banner_image]
-    @site.remove_logo_image! if params[:remove_logo_image]
-    @site.remove_directory_image! if params[:remove_directory_image]
-    @site.remove_default_collection_image! if params[:remove_default_collection_image]
-    @site.remove_default_work_image! if params[:remove_default_work_image]
+    %i[remove_banner_image
+       remove_logo_image
+       remove_directory_image
+       remove_default_collection_image
+       remove_default_work_image].each do |key|
+      @site.send("#{key}!") if params[key]
+    end
 
     redirect_to hyrax.admin_appearance_path, notice: 'The appearance was successfully updated.'
   end

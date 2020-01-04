@@ -21,24 +21,30 @@ RSpec.describe "hyrax/content_blocks/edit", type: :view do
 
   it "loads the wysiwyg config file" do
     expect(rendered).to have_text('link hr')
-    # Checking to see if the changed tinymce.yml is changed in the scripts (we added hr). This is no guarantee that it's actually loaded, that would be a full js integration test
+    # Checking to see if the changed tinymce.yml is changed in the scripts (we added hr).
+    # This is no guarantee that it's actually loaded, that would be a full js integration test
   end
 
   it "renders the instruction blocks" do
-    expect(rendered).to have_xpath('//p[@class="content-block-instructions" ]', count:3)
+    expect(rendered).to have_xpath('//p[@class="content-block-instructions" ]', count: 3)
   end
 
-  # TODO: These next 3 tests are tightly coupled with the implimentation, find a way to read the text from the yaml to test this
+  # TODO: These next 3 tests are tightly coupled with the implimentation,
+  # find a way to read the text from the yaml to test this
   it "renders the announcement instructions" do
-    expect(rendered).to have_xpath('//p[@class="content-block-instructions" ]', :text =>"Announcement Text displays on the homepage.")
+    text = "Announcement Text displays on the homepage."
+    expect(rendered).to have_xpath('//p[@class="content-block-instructions" ]', text: text)
   end
-  
+
   it "renders the banner instructions" do
-    expect(rendered).to have_xpath('//p[@class="content-block-instructions" ]', :text =>"Banner Text refers to the text that is displayed over banner image on the homepage.")
+    text = "Banner Text refers to the text that is displayed over banner image on the homepage."
+    expect(rendered).to have_xpath('//p[@class="content-block-instructions" ]', text: text)
   end
 
   it "renders the featured researcher instructions" do
-    expect(rendered).to have_xpath('//p[@class="content-block-instructions" ]', :text =>"Featured Researcher is a space to enter information and on the home page reserved for highlighting repository users.")
-  end 
-
+    text = "Featured Researcher is a space to enter information and on"
+    text += " the home page reserved for highlighting repository users."
+    expect(rendered).to have_xpath('//p[@class="content-block-instructions" ]',
+                                   text: text)
+  end
 end

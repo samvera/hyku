@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 module Hyrax
   module Forms
     module Admin
@@ -291,7 +292,8 @@ module Hyrax
 
           def block_for(name, default_value)
             block = ContentBlock.find_by(name: name)
-            (block && block.value.present?) ? block.value : default_value
+            needs_default = block && block.value.present?
+            needs_default ? block.value : default_value
           end
 
           # Persist a key/value tuple as a ContentBlock
@@ -311,3 +313,4 @@ module Hyrax
     end
   end
 end
+# rubocop:enable Metrics/ClassLength

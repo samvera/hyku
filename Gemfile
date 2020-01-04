@@ -118,6 +118,5 @@ gem 'honeybadger', '~> 3.0'
 gem 'codemirror-rails'
 gem 'riiif', '~> 1.1'
 
-
 gem 'bootstrap-datepicker-rails'
 gem 'parser', '~> 2.5.3'

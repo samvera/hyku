@@ -261,10 +261,8 @@ module Hyrax
         def font_import_url
           headline = headline_font.split('|').first.to_s.tr(" ", "+")
           body = body_font.split('|').first.to_s.tr(" ", "+")
-          # rubocop:disable Rails/OutputSafety
           # we need to be able to read the url to import fonts
-          "http://fonts.googleapis.com/css?family=#{headline}|#{body}".html_safe
-          # rubocop:enable Rails/OutputSafety
+          "fonts.googleapis.com/css?family=#{headline}|#{body}"
         end
 
         def font_body_family

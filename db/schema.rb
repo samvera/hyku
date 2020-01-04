@@ -602,6 +602,10 @@ ActiveRecord::Schema.define(version: 20191212155530) do
     t.string "institution_name_full"
     t.string "banner_image"
     t.text "available_works", default: [], array: true
+    t.string "logo_image"
+    t.string "default_collection_image"
+    t.string "default_work_image"
+    t.string "directory_image"
   end
 
   create_table "subject_local_authority_entries", id: :serial, force: :cascade do |t|

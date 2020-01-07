@@ -15,4 +15,6 @@ spec:
   resources:
     requests:
       storage: {{ .Values.postgres.storage.size }}
+  {{- if .Values.postgres.storage.className }}
   storageClassName: {{ .Values.postgres.storage.className }}
+  {{- end }}

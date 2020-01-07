@@ -15,4 +15,6 @@ spec:
   resources:
     requests:
       storage: {{ .Values.fcrepo.storage.size }}
-  storageClassName: {{ .Values.fcrepo.storage.className }}
+  {{- if .Values.fcrepo.storage.className }}
+  storageClassName: "{{ .Values.fcrepo.storage.ClassName }}"
+  {{- end }}

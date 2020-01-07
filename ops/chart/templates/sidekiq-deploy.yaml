@@ -28,16 +28,20 @@ spec:
     spec:
       restartPolicy: Always
       terminationGracePeriodSeconds: {{ .Values.sidekiq.timeout | add 5 }}
+      {{- if .Values.rails.imagePullSecrets }}
+      imagePullSecrets:
+        {{ toYaml .Values.rails.imagePullSecrets }}
+      {{- end }}
       containers:
         - name: sidekiq
           image: {{ .Values.rails.image.repository }}:{{ .Values.rails.image.tag }}
           imagePullPolicy: IfNotPresent
           command:
-            - ./bin/start-sidekiq
+            - bundle exec sidekiq -q default -q import
           livenessProbe:
             exec:
               command:
-                - ./bin/health-check-sidekiq
+                - ./bin/rake sidekiq:status
             initialDelaySeconds: 30
           envFrom:
             - configMapRef:

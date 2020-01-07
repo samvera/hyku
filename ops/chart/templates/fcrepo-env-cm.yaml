@@ -4,5 +4,5 @@ kind: ConfigMap
 metadata:
   name: {{ template "hyku.fcrepo-env.name" . }}
 data:
-  POSTGRES_USER: {{ .Values.env.configmap.POSTGRES_USER }}
-  POSTGRES_DATABASE: {{ .Values.env.configmap.POSTGRES_DATABASE }}
+  DATABASE_USER: {{ .Values.env.configmap.DATABASE_USER }}
+  DATABASE_NAME: {{ .Values.env.configmap.DATABASE_NAME }}

@@ -15,4 +15,6 @@ spec:
   resources:
     requests:
       storage: {{ .Values.redis.storage.size }}
+  {{- if .Values.redis.storage.className }}
   storageClassName: {{ .Values.redis.storage.className }}
+  {{- end }}

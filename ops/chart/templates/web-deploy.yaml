@@ -27,6 +27,10 @@ spec:
         checksum/rails-env-secret: {{ include (print $.Template.BasePath "/rails-env-secret.yaml") . | sha256sum }}
     spec:
       restartPolicy: Always
+      {{- if .Values.rails.imagePullSecrets }}
+      imagePullSecrets:
+        {{ toYaml .Values.rails.imagePullSecrets }}
+      {{- end }}
       containers:
         - name: web
           image: {{ .Values.rails.image.repository }}:{{ .Values.rails.image.tag }}

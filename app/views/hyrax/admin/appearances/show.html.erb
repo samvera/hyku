@@ -162,7 +162,7 @@
               <div class="panel-body">
                 <% font = f.object.body_font %>
                 <%= f.input :body_font, label: 'Select Body Font', required: false, input_html: { class: 'font-fields' } %>
-                <%= f.input :headline_font, required: false %>
+                <%= f.input :headline_font, label: 'Select Header Font', required: false %>
               </div>
               <div class="panel-footer">
                 <%= f.submit class: 'btn btn-primary pull-right' %>

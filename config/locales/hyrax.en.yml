@@ -730,7 +730,9 @@ en:
       transfer_works_link: Select works to transfer
       transfers_received: Transfers Received
       transfers_sent: Transfers Sent
-      user_activity: User Activity
+      user_activity:
+        subtitle: New user signups
+        title: User Activity
       user_notifications: User Notifications
       view_files: View Files
     document_language: en

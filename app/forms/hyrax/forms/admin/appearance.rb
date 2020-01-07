@@ -37,7 +37,7 @@ module Hyrax
 
         # The font for the body copy
         def body_font
-          block_for('body_font', '"Helvetica Neue", Helvetica, Arial, sans-serif;')
+          block_for('body_font', 'Helvetica Neue, Helvetica, Arial, sans-serif;')
         end
 
         # The font for the headline copy
@@ -258,11 +258,15 @@ module Hyrax
           ]
         end
 
-        def font_import_url
-          headline = headline_font.split('|').first.to_s.tr(" ", "+")
+        def font_import_body_url
           body = body_font.split('|').first.to_s.tr(" ", "+")
           # we need to be able to read the url to import fonts
-          "fonts.googleapis.com/css?family=#{headline}|#{body}"
+          "fonts.googleapis.com/css?family=#{body}"
+        end
+
+        def font_import_headline_url
+          headline = headline_font.split('|').first.to_s.tr(" ", "+")
+          "fonts.googleapis.com/css?family=#{headline}"
         end
 
         def font_body_family

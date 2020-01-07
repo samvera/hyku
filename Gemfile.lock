@@ -9,7 +9,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera-labs/bulkrax.git
-  revision: 30fe2e1893f3a3e1b27922dd06be94b5f5bd6103
+  revision: 2b61abc9fa2d1c295d75beb40b7e9e97bf32f760
   specs:
     bulkrax (0.1.0)
       bagit (~> 0.4)

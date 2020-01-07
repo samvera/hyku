@@ -55,7 +55,7 @@ RSpec.describe 'hyrax/oers/_attributes.html.erb' do
   end
 
   it 'has links to search for other objects with the same metadata' do
-    expect(rendered).to have_link(alternative_title)
+    expect(rendered).to have_css('li.attribute-alternative_title', text: alternative_title)
     expect(rendered).to have_link(creator)
     expect(rendered).to have_link(contributor)
     expect(rendered).to have_link(learning_resource)
@@ -63,10 +63,10 @@ RSpec.describe 'hyrax/oers/_attributes.html.erb' do
     expect(rendered).to have_link(audience)
     expect(rendered).to have_link(discipline)
     expect(rendered).to have_css('li.attribute-date', text: '10/03/2000')
-    expect(rendered).to have_link(table_of_contents)
+    expect(rendered).to have_css('li.attribute-table_of_contents', text: table_of_contents)
     expect(rendered).to have_link(subject)
     expect(rendered).to have_link(rights_holder)
-    expect(rendered).to have_link(size)
+    expect(rendered).to have_css('li.attribute-oer_size', text: size)
     expect(rendered).to have_link(publisher)
     expect(rendered).to have_link(accessibility_feature)
     expect(rendered).to have_link(accessibility_hazard)

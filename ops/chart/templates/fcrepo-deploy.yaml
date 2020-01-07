@@ -26,6 +26,10 @@ spec:
         component: fcrepo
     spec:
       restartPolicy: Always
+      {{- if .Values.fcrepo.imagePullSecrets }}
+      imagePullSecrets:
+        {{ toYaml .Values.fcrepo.imagePullSecrets }}
+      {{- end }}
       volumes:
         - name: data
           persistentVolumeClaim:

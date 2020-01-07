@@ -36,8 +36,11 @@ spec:
         - name: sidekiq
           image: {{ .Values.rails.image.repository }}:{{ .Values.rails.image.tag }}
           imagePullPolicy: IfNotPresent
-          command:
-            - bundle exec sidekiq -q default -q import
+          command: ["/bin/bash"]
+          args:
+            - "-l"
+            - "-c"
+            - "bundle exec sidekiq -q default -q import"
           livenessProbe:
             exec:
               command:

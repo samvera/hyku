@@ -25,6 +25,8 @@ en:
           license: "License"
           resource_type_tesim: "Type"
           rights_statement_tesim: "Rights statement"
+        show:
+          additional_information: "Additional rights information"
   helpers:
     action:
       become: Become

@@ -97,16 +97,17 @@ en:
         accessibility_feature: "Accessibility Feature"
         accessibility_hazard: "Accessibility Hazard"
         accessibility_summary: "Accessibility Summary"
-        additional_information: 'Additional information'
-        alternative_title: 'Alternative title'
+        additional_information: 'Additional Rights Information'
+        alternative_title: 'Alternative Title'
         audience: "Audience"
         date: 'Date'
         discipline: "Discipline"
-        education_level: "Education level"
+        education_level: "Education Level"
         learning_resource_type: "Learning Resource Type"
         oer_size: 'Size'
-        rights_holder: 'Rights holder'
-        table_of_contents: 'Table of contents'
+        rights_statement: 'Rights Statement'
+        rights_holder: 'Rights Holder'
+        table_of_contents: 'Table of Contents'
     placeholders:
       defaults:
         alternate_version_id: "Search for a work..."

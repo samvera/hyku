@@ -25,6 +25,8 @@ zh:
           license_tesim: '执照'
           resource_type_tesim: '类型' 
           rights_statement_tesim: '权利声明'
+        show:
+          additional_information: "附加权利信息"
   helpers:
     action:
       become: 成為

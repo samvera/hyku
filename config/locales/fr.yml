@@ -25,6 +25,8 @@ fr:
           license_tesim: 'licença'
           resource_type_tesim: 'Type' 
           rights_statement_tesim: 'Declaração de direitos'
+        show:
+          additional_information: "Informations supplémentaires sur les droits"
   helpers:
     action:
       become: Devenir

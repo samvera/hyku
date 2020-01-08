@@ -42,7 +42,7 @@ class Oer < ActiveFedora::Base
   end
 
   property :rights_holder, predicate: ::RDF::Vocab::DC.rightsHolder do |index|
-    index.as :stored_searchable
+    index.as :stored_searchable, :facetable
   end
 
   property :oer_size, predicate: ::RDF::Vocab::DC.extent do |index|

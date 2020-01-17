@@ -2,3 +2,4 @@ server.pem
 server.key
 values.yaml
 staging.yaml
+production.yaml

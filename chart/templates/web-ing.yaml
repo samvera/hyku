@@ -18,3 +18,11 @@ spec:
       - backend:
           serviceName: {{ template "hyku.web.name" . }}
           servicePort: 80
+  # {{- range .Values.ingress.hosts }}
+  #   - host: {{ . }}
+  #   http:
+  #     paths:
+  #     - backend:
+  #         servicename: {{ template "hyku.web.name" . }}
+  #         serviceport: 80
+  # {{- end }}

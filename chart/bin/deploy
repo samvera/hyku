@@ -8,4 +8,4 @@ then
     exit 1
 fi
 
-helm upgrade --install --namespace pals $1 . -f $1.yaml --set rails.image.tag=$2
+helm upgrade --install --namespace pals-$1 $1 . -f $1.yaml --set rails.image.tag=$2

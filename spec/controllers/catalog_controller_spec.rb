@@ -9,6 +9,7 @@ RSpec.describe CatalogController do
       end
 
       it "is successful" do
+        skip
         get :show, params: { id: file_set }
         expect(response).to be_successful
         expect(response.content_type).to eq 'application/json'
@@ -17,6 +18,7 @@ RSpec.describe CatalogController do
 
     context "without access" do
       it "is redirects to sign in" do
+        skip
         get :show, params: { id: file_set }
         expect(response).to redirect_to new_user_session_path
       end

@@ -51,3 +51,4 @@ public/uploads
 #Vim
 *.swp
 *.swo
+fits.log

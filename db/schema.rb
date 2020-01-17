@@ -533,6 +533,7 @@ ActiveRecord::Schema.define(version: 20190214012430) do
     t.string "logo_image"
     t.string "default_collection_image"
     t.string "default_work_image"
+    t.text "available_works", default: [], array: true
     t.string "directory_image"
   end
 

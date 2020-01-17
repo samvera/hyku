@@ -5,7 +5,28 @@ pt-BR:
       site:
         institution_name_full: Nome completo da instituição
   application:
-    tagline: A solução de repositório de próxima geração
+    tagline: A solução de repos
+  blacklight:
+    search:
+      fields:
+        facet:
+          contributor_sim: "Contribuinte"
+          human_readable_type_sim: 'Tipo'
+          member_of_collections_sim: "Colecções"
+          resource_type_sim: 'Tipo de recurso'
+        index:
+          audience_tesim: "Público"
+          date_tesim: 'Encontro'
+          description_tesim: 'Descrição'
+          depositor_tesim: 'proprietário'
+          discipline_tesim: "Disciplina"
+          education_level_tesim: "Nível de educação"
+          learning_resource_type_tesim: "Tipo de recurso de aprendizagem"
+          license_tesim: 'licença'
+          resource_type_tesim: 'Tipo'
+          rights_statement_tesim: 'Declaração de direitos'
+        show:
+          additional_information: "Informações adicionais sobre direitos"
   helpers:
     action:
       become: Tornar-se
@@ -39,7 +60,7 @@ pt-BR:
             submit: Remover
           search:
             clear: Restabelecer
-        describe_quantity_html: Existem <b>grupos</b> %{number} neste repositório.
+        describe_quantity_html: "Existem <b>grupos</b> %{number} neste repositório."
         describe_singular_quantity_html: Há <b>um grupo</b> neste repositório.
         flash:
           create:

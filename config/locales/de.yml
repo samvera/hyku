@@ -6,6 +6,27 @@ de:
         institution_name_full: Vollständiger Name der Institution
   application:
     tagline: Die Next-Generation Repository-Lösung
+  blacklight:
+    search:
+      fields:
+        facet:
+          contributor_sim: "Mitwirkender"
+          human_readable_type_sim: 'Art'
+          member_of_collections_sim: "Sammlungen"
+          resource_type_sim: 'Ressourcentyp'
+        index:
+          audience_tesim: "Publikum"
+          date_tesim: 'Datum'
+          description_tesim: 'Beschreibung'
+          depositor_tesim: 'Inhaber'
+          discipline_tesim: "die Ausbildung"
+          education_level_tesim: "Bildungsniveau"
+          learning_resource_type_tesim: "Lernressourcentyp"
+          license_tesim: 'Lizenz'
+          resource_type_tesim: 'Ressourcentyp' 
+          rights_statement_tesim: 'Erklärung der Rechte'
+        show:
+          additional_information: "Zusätzliche Rechteinformationen"
   helpers:
     action:
       become: Werden

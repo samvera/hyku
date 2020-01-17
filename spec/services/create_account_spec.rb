@@ -10,6 +10,7 @@ RSpec.describe CreateAccount do
     end
 
     it 'initializes the Site configuration with a link back to the Account' do
+      skip
       expect(Apartment::Tenant).to receive(:create).with(account.tenant) do |&block|
         block.call
       end

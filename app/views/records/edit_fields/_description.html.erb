@@ -1,0 +1,17 @@
+<%# copied from Hyrax to create custom label and hints for OER worktype %>
+<% if @collection || curation_concern.class == Oer %>
+  <% if f.object.multiple? key %>
+    <%= f.input :description, as: :multi_value,
+    label: t("hyrax.oer.labels.description"),
+    hint: t("hyrax.oer.hints.description"),
+    input_html: { rows: '14', type: 'textarea'}, required: f.object.required?(key) %>
+  <% else %>
+    <%= f.input :description, as: :text, input_html: { rows: '14' }, required: f.object.required?(key) %>
+  <% end %>
+<% else %>
+  <% if f.object.multiple? key %>
+    <%= f.input :description, as: :multi_value, input_html: { rows: '14', type: 'textarea'}, required: f.object.required?(key) %>
+  <% else %>
+    <%= f.input :description, as: :text, input_html: { rows: '14' }, required: f.object.required?(key) %>
+  <% end %>
+<% end %>

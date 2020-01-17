@@ -1,0 +1,2 @@
+<%= f.input :discipline, as: :select, collection: Hyrax::DisciplineService.select_all_options,
+    input_html: { class: 'form-control', multiple: true } %>

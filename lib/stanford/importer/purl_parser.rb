@@ -1,7 +1,6 @@
 module Stanford
   module Importer
-    # rubocop:disable Metrics/ClassLength
-    class PurlParser
+    class PurlParser # rubocop:disable Metrics/ClassLength
       DC_NS = { 'dc'.freeze => 'http://purl.org/dc/elements/1.1/'.freeze }.freeze
 
       attr_reader :xml
@@ -169,6 +168,5 @@ module Stanford
           oai.xpath('./dc:subject', DC_NS).map(&:text)
         end
     end
-    # rubocop:enable Metrics/ClassLength
   end
 end

@@ -14,7 +14,21 @@ RSpec.describe Hyrax::OerForm do
     let(:attributes) do
       {
         title: ['foo'],
-        rendering_ids: [file_set.id]
+        rendering_ids: [file_set.id],
+        audience: ['instructor'],
+        discipline: ['Engineering - Nuclear'],
+        education_level: ['adult education'],
+        learning_resource_type: ['Lecture notes'],
+        resource_type: ['Collection'],
+        date: ['10/3/2000'],
+        alternative_title: ['alternative title'],
+        table_of_contents: ['table of contents'],
+        additional_information: ['additional information'],
+        rights_holder: ['rights holder'],
+        size: ['3 feet'],
+        accessibility_feature: ['Alternative Text'],
+        accessibility_hazard: ['Flashing'],
+        accessibility_summary: ['Summary']
       }
     end
 

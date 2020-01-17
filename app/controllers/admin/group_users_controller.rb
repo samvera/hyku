@@ -2,8 +2,7 @@ module Admin
   class GroupUsersController < AdminController
     before_action :load_group
 
-    # rubocop:disable Metrics/AbcSize
-    def index
+    def index # rubocop:disable Metrics/AbcSize
       add_breadcrumb t(:'hyrax.controls.home'), root_path
       add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
       add_breadcrumb t(:'hyku.admin.groups.title.edit'), edit_admin_group_path(@group)
@@ -11,7 +10,6 @@ module Admin
       @users = @group.search_members(params[:q]).page(page_number).per(page_size)
       render template: 'admin/groups/users'
     end
-    # rubocop:enable Metrics/AbcSize
 
     def add
       @group.add_members_by_id(params[:user_ids])

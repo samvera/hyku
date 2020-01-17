@@ -10,7 +10,5 @@ module Hyrax
 
     # Use this line if you want to use a custom presenter
     self.show_presenter = Hyrax::OerPresenter
-
-    include Hyku::IIIFManifest
   end
 end

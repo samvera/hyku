@@ -1,0 +1,2 @@
+<%= f.input :education_level, as: :select, collection: Hyrax::EducationLevelsService.select_all_options,
+    input_html: { class: 'form-control', multiple: true } %>

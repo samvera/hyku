@@ -28,7 +28,7 @@ RSpec.describe "proprietor/users/show", type: :view do
     ))
   end
 
-  it "renders attributes in <p>" do
+  skip "renders attributes in <p>" do
     render
     expect(rendered).to match(/Email/)
     expect(rendered).to match(/Facebook Handle/)

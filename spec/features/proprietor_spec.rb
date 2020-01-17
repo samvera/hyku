@@ -4,7 +4,13 @@ RSpec.describe 'Proprietor administration', multitenant: true do
 
     before do
       login_as(user, scope: :user)
-      Capybara.default_host = "http://#{Account.admin_host}"
+    end
+
+    around do |example|
+      default_host = Capybara.default_host
+      Capybara.default_host = Capybara.app_host || "http://#{Account.admin_host}"
+      example.run
+      Capybara.default_host = default_host
     end
 
     it 'has a navbar link to an account admin section' do

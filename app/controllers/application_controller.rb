@@ -46,7 +46,6 @@ class ApplicationController < ActionController::Base
     def require_active_account!
       return unless Settings.multitenancy.enabled
       return if devise_controller?
-
       raise Apartment::TenantNotFound, "No tenant for #{request.host}" unless current_account.persisted?
     end
 
@@ -66,7 +65,15 @@ class ApplicationController < ActionController::Base
 
     def current_account
       @current_account ||= Account.from_request(request)
-      @current_account ||= Account.single_tenant_default
+      @current_account ||= if Settings.multitenancy.enabled
+                             Account.new do |a|
+                               a.build_solr_endpoint
+                               a.build_fcrepo_endpoint
+                               a.build_redis_endpoint
+                             end
+                           else
+                             Account.single_tenant_default
+                           end
     end
 
     # Add context information to the lograge entries
@@ -80,5 +87,4 @@ class ApplicationController < ActionController::Base
     def ssl_configured?
       ActiveRecord::Type::Boolean.new.cast(Settings.ssl_configured)
     end
-
 end

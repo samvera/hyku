@@ -35,7 +35,6 @@ module Hyku
       # Before moving this here (from an initializer) Devise was raising invalid
       # authenticity token errors.
       Hyrax::Admin::AppearancesController.form_class = AppearanceForm
-      Hyrax::FileSetsController.show_presenter = Hyku::FileSetPresenter
     end
 
     config.before_initialize do

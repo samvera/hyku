@@ -1,0 +1,8 @@
+de:
+  hyrax:
+    icons:
+      oer:     'fa fa-file-text-o'
+    select_type:
+      oer:
+        description:        "Oer Werke"
+        name:               "Oer"

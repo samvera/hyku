@@ -8,10 +8,16 @@ RSpec.describe 'Accounts administration', multitenant: true do
 
     before do
       login_as(user, scope: :user)
-      Capybara.default_host = "http://#{Account.admin_host}"
       allow(Apartment::Tenant).to receive(:switch).with(account.tenant) do |&block|
         block.call
       end
+    end
+
+    around do |example|
+      default_host = Capybara.default_host
+      Capybara.default_host = Capybara.app_host || "http://#{Account.admin_host}"
+      example.run
+      Capybara.default_host = default_host
     end
 
     it 'changes the associated cname' do

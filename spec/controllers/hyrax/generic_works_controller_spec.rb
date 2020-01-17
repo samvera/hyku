@@ -9,22 +9,6 @@ RSpec.describe Hyrax::GenericWorksController do
                                         :original_file)
   end
 
-  describe '#manifest' do
-    let(:manifest_factory) { double(to_h: { test: 'manifest' }) }
-
-    before do
-      sign_in user
-      allow(IIIFManifest::ManifestFactory).to receive(:new)
-        .with(Hyku::ManifestEnabledWorkShowPresenter)
-        .and_return(manifest_factory)
-    end
-
-    it "produces a manifest" do
-      get :manifest, params: { id: work, format: :json }
-      expect(response.body).to eq "{\"test\":\"manifest\"}"
-    end
-  end
-
   describe "#presenter" do
     let(:solr_document) { SolrDocument.new(FactoryBot.create(:generic_work).to_solr) }
 
@@ -35,7 +19,7 @@ RSpec.describe Hyrax::GenericWorksController do
     subject { controller.send :presenter }
 
     it "initializes a presenter" do
-      expect(subject).to be_kind_of Hyku::ManifestEnabledWorkShowPresenter
+      expect(subject).to be_kind_of Hyku::WorkShowPresenter
       expect(subject.manifest_url).to eq "http://test.host/concern/generic_works/#{solr_document.id}/manifest"
     end
   end

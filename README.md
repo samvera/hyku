@@ -1,12 +1,12 @@
 # Hyku, the Hydra-in-a-Box Repository Application
 
 Code: 
-[![Build Status](https://travis-ci.org/samvera-labs/hyku.svg)](https://travis-ci.org/samvera-labs/hyku)
-[![Coverage Status](https://coveralls.io/repos/samvera-labs/hyku/badge.svg?branch=master&service=github)](https://coveralls.io/github/samvera-labs/hyku?branch=master)
-[![Stories in Ready](https://img.shields.io/waffle/label/samvera-labs/hyku/ready.svg)](https://waffle.io/samvera-labs/hyku)
+[![Build Status](https://circleci.com/gh/samvera/hyku.svg?style=svg)](https://circleci.com/gh/samvera/hyku)
+[![Coverage Status](https://coveralls.io/repos/samvera/hyku/badge.svg?branch=master&service=github)](https://coveralls.io/github/samvera/hyku?branch=master)
+[![Stories in Ready](https://img.shields.io/waffle/label/samvera/hyku/ready.svg)](https://waffle.io/samvera/hyku)
 
 Docs: 
-[![Documentation](http://img.shields.io/badge/DOCUMENTATION-wiki-blue.svg)](https://github.com/samvera-labs/hyku/wiki)
+[![Documentation](http://img.shields.io/badge/DOCUMENTATION-wiki-blue.svg)](https://github.com/samvera/hyku/wiki)
 [![Contribution Guidelines](http://img.shields.io/badge/CONTRIBUTING-Guidelines-blue.svg)](./CONTRIBUTING.md)
 [![Apache 2.0 License](http://img.shields.io/badge/APACHE2-license-blue.svg)](./LICENSE)
 
@@ -21,6 +21,7 @@ Jump In: [![Slack Status](http://slack.samvera.org/badge.svg)](http://slack.samv
     * [On AWS](#on-aws)
     * [With Docker](#with-docker)
     * [With Vagrant](#with-vagrant)
+  * [Single Tenant Mode](#single-tenancy)
   * [Switching accounts](#switching-accounts)
   * [Development dependencies](#development-dependencies)
     * [Postgres](#postgres) 
@@ -36,40 +37,94 @@ Jump In: [![Slack Status](http://slack.samvera.org/badge.svg)](http://slack.samv
 
 ## Running the stack
 
-### For development
+### For development / testing with Docker
+
+#### Dory
+
+On OS X or Linux we recommend running [Dory](https://github.com/FreedomBen/dory). It acts as a proxy allowing you to access domains locally such as hyku.docker or tenant.hyku.docker, making multitenant development more straightforward and prevents the need to bind ports locally.  You can still run in development via docker with out Dory, but to do so please uncomment the ports section in docker-compose.yml and then find the running application at localhost:3000
+
+```bash
+gem install dory
+dory up
+```
+
+#### Basic steps
+
+```bash
+docker-compose up web # web here means you can start and stop Rails w/o starting or stopping other services. `docker-compose stop` when done shuts everything else down.
+```
+
+Once that starts (you'll see the line `Passenger core running in multi-application mode.` to indicate a successful boot), you can view your app in a web browser with at either hyku.docker or localhost:3000 (see above)
+
+#### Tests in Docker
+
+The full spec suite can be run in docker locally. There are several ways to do this, but one way is to run the following:
+
+```bash
+docker-compose exec web rake
+```
+
+### With out Docker
+#### For development
+
+```bash
+solr_wrapper
+fcrepo_wrapper
+postgres -D ./db/postgres
+redis-server /usr/local/etc/redis.conf
+bin/setup
+DISABLE_REDIS_CLUSTER=true bundle exec sidekiq
+DISABLE_REDIS_CLUSTER=true bundle exec rails server -b 0.0.0.0
+```
+#### For testing
+
+See the [Hyku Development Guide](https://github.com/samvera/hyku/wiki/Hyku-Development-Guide) for how to run tests.
+
+### Working with Translations
+
+You can log all of the I18n lookups to the Rails logger by setting the I18N_DEBUG environment variable to true. This will add a lot of chatter to the Rails logger (but can be very helpful to zero in on what I18n key you should or could use).
+
+```console
+$ I18N_DEBUG=true bin/rails server
+```
+
+### On AWS
+
+AWS CloudFormation templates for the Hyku stack are available in a separate repository:
+
+https://github.com/hybox/aws
+
+### With Docker
+
+We distribute two `docker-compose.yml` configuration files.  The first is set up for development / running the specs. The other, `docker-compose.production.yml` is for running the Hyku stack in a production setting. . Once you have [docker](https://docker.com) installed and running, launch the stack using e.g.:
 
 ```bash
 docker-compose up -d
 ```
 
-## Dory
-Dory is a useful tool to manage the IP adresses and ports of the apps you are running locally for development.
+### With Vagrant
 
-### Directory Name
-The VIRTUAL_HOST set in the docker-compose.yml file must match the name of the directory if you use default Dory settings, or match your Dory Config.  In our case, we'll assume that the directory is named "palni".  See docker-compose.yml  services:web:environment: for how your VIRTUAL_PORT is set.
+The [samvera-vagrant project](https://github.com/samvera-labs/samvera-vagrant) provides another simple way to get started "kicking the tires" of Hyku (and [Hyrax](http://hyr.ax/)), making it easy and quick to spin up Hyku. (Note that this is not for production or production-like installations.) It requires [VirtualBox](https://www.virtualbox.org/) and [Vagrant](https://www.vagrantup.com/).
 
-### Install Dory
-```bash
-gem install dory
-```
+## Single Tenant Mode
 
-### And run from your project directory
-```
-dory up
-```
+Much of the default configuration in Hyku is set up to use multi-tenant mode.  This default mode allows Hyku users to run the equivielent of multiple Hyrax installs on a single set of resources. However, sometimes the subdomain splitting mutli-headed complexity is simply not needed.  If this is the case, then single tenant mode is for you.  Single tenant mode will not show the tenant sign up page, or any of the tenant management screens. Instead it shows a single Samvera instance at what ever domain is pointed at the application.
 
-Then the app is available at "http://pals.docker" or whatever the directory name you chose is.
-
-# Developing
+To enable single tenant, in your settings.yml file change multitenancy/enabled to `false` or set `SETTINGS__MULTITENANCY__ENABLED=false` in your `docker-compose.yml` and `docker-compose.production.yml` configs. After changinig this setting, run the seeds to prepopulate the single tenant.
 
 ## Switching accounts
+
 The recommend way to switch your current session from one account to another is by doing:
 
 ```ruby
 AccountElevator.switch!('repo.example.com')
 ```
 
-# Everything below may be stale
+## Development Dependencies
+
+### Postgres
+
+Hyku supports multitenancy using the `apartment` gem. `apartment` works best with a postgres database.
 
 ## Importing
 ### from CSV:

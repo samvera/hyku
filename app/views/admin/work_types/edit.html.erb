@@ -1,0 +1,15 @@
+<% provide :page_header do %>
+  <h1><span class="fa fa-address-book"></span> <%= t('hyku.admin.work_types') %></h1>
+<% end %>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <%= simple_form_for @site, url: '/admin/work_types' do |f| %>
+      <% Hyrax.config.registered_curation_concern_types.each do |type| %>
+        <%= check_box_tag 'available_works[]', type, @site.available_works.include?(type) %>
+        <span><%= type %></span><br />
+      <% end %>
+      <%= f.submit class: 'btn btn-primary' %>
+    <% end %>
+  </div>
+</div>

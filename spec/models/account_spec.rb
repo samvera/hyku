@@ -203,9 +203,12 @@ RSpec.describe Account, type: :model do
 
       context 'is unset' do
         it 'builds default cname from name and admin_host' do
+          original = Settings.multitenancy.default_host
+          Settings.multitenancy.default_host = nil
           allow(Settings.multitenancy).to receive(:admin_host).and_return('admin-host')
           expect(account1.errors).to be_empty
           expect(account1.cname).to eq('example.admin-host')
+          Settings.multitenancy.default_host = original
         end
       end
     end

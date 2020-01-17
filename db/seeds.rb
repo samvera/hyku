@@ -13,8 +13,7 @@ Hyrax::Workflow::WorkflowImporter.load_workflows
 errors = Hyrax::Workflow::WorkflowImporter.load_errors
 abort("Failed to process all workflows:\n  #{errors.join('\n  ')}") unless errors.empty?
 
-user = User.where(email: 'rob@notch8.com').first_or_create do |u|
-  u.password = 'testing123'
-  u.display_name = "Rob"
+unless Settings.multitenancy.enabled
+  single_tenant_default = Account.new(name: 'Single Tenenat', cname: 'single.tenant.default', tenant: 'single')
+  CreateAccount.new(single_tenant_default).save
 end
-user.add_role :superadmin unless user.has_role? :superadmin

@@ -12,18 +12,15 @@ Riiif::Image.info_service = lambda do |id, _file|
   { height: doc['height_is'], width: doc['width_is'] }
 end
 
-
 Riiif::Image.file_resolver.id_to_uri = lambda do |id|
   ActiveFedora::Base.id_to_uri(CGI.unescape(id)).tap do |url|
     Rails.logger.info "Riiif resolved #{id} to #{url}"
   end
 end
-Riiif::Image.file_resolver.basic_auth_credentials = [ActiveFedora.fedora.user, ActiveFedora.fedora.password]
 
+Riiif::Image.authorization_service = Hyrax::IIIFAuthorizationService
 
-Riiif::Image.authorization_service = IIIFAuthorizationService
-
-Riiif.not_found_image = 'app/assets/images/us_404.svg'
-Riiif.unauthorized_image = 'app/assets/images/us_404.svg'
+Riiif.not_found_image = Rails.root.join('app', 'assets', 'images', 'us_404.svg')
+Riiif.unauthorized_image = Rails.root.join('app', 'assets', 'images', 'us_404.svg')
 
 Riiif::Engine.config.cache_duration_in_days = 365

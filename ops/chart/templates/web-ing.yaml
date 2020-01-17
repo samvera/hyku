@@ -4,7 +4,7 @@ kind: Ingress
 metadata:
   name: {{ template "hyku.web.name" . }}
   annotations:
-    kubernetes.io/ingress.allow-http: "false"
+    # kubernetes.io/ingress.allow-http: "false"
     # for GKE
     # kubernetes.io/ingress.global-static-ip-name: rails-k8s-hyku
 spec:
@@ -18,4 +18,4 @@ spec:
       paths:
       - backend:
           serviceName: {{ template "hyku.web.name" . }}
-          servicePort: 3000
+          servicePort: 80

@@ -35,16 +35,16 @@ spec:
         - name: web
           image: {{ .Values.rails.image.repository }}:{{ .Values.rails.image.tag }}
           imagePullPolicy: IfNotPresent
-          livenessProbe:
-            httpGet:
-              path: / # TODO hyku healthcheck
-              port: 80
-            initialDelaySeconds: 60
           readinessProbe:
-            httpGet:
-              path: /
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
               port: 80
             initialDelaySeconds: 60
+            periodSeconds: 120
           envFrom:
             - configMapRef:
                 name: {{ template "hyku.rails-env.name" . }}

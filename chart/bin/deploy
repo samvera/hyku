@@ -1,0 +1,11 @@
+#!/bin/bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+cd $DIR/../../chart
+
+if [ -z "$1" ] || [ -z "$2" ]
+then
+    echo './chart/bin/deploy ENVIRONMENT TAG'
+    exit 1
+fi
+
+helm upgrade --install --namespace pals $1 . -f $1.yaml --set rails.image.tag=$2

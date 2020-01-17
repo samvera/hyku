@@ -4,6 +4,10 @@ development:
 test:
   adapter: async
 
+staging:
+  adapter: redis
+  url: redis://<%= ENV['REDIS_HOST'] || 'localhost' %>:<%= ENV['REDIS_PORT'] || '6379' %>
+
 production:
   adapter: redis
   url: redis://<%= ENV['REDIS_HOST'] || 'localhost' %>:<%= ENV['REDIS_PORT'] || '6379' %>

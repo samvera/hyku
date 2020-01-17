@@ -2,19 +2,19 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{ template "hyku.redis.name" . }}
+  name: {{ template "hyku.rails-env.name" . }}-shared
   labels:
     app: {{ template "hyku.name" . }}
     chart: {{ template "hyku.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-    component: redis
+    component: rails
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
-      storage: {{ .Values.redis.storage.size }}
-  {{- if .Values.redis.storage.className }}
-  storageClassName: {{ .Values.redis.storage.className }}
+      storage: {{ .Values.rails.shared.storage.size }}
+  {{- if .Values.rails.shared.storage.className }}
+  storageClassName: "{{ .Values.rails.shared.storage.className }}"
   {{- end }}

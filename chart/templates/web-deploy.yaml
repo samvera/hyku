@@ -31,10 +31,40 @@ spec:
       imagePullSecrets:
         {{ toYaml .Values.rails.imagePullSecrets }}
       {{- end }}
+      volumes:
+        - name: shared
+          persistentVolumeClaim:
+            claimName: {{ template "hyku.rails-env.name" . }}-shared
       containers:
         - name: web
           image: {{ .Values.rails.image.repository }}:{{ .Values.rails.image.tag }}
           imagePullPolicy: IfNotPresent
+          # Use sub-path for individual folders
+          volumeMounts:
+            - mountPath: /home/app/webapp/tmp/imports
+              name: shared
+              subPath: import_path
+            - mountPath: /home/app/webapp/tmp/exports
+              name: shared
+              subPath: export_path
+            - mountPath: /home/app/webapp/tmp/derivatives_path
+              name: shared
+              subPath: derivatives_path
+            - mountPath: /home/app/webapp/tmp/uploads
+              name: shared
+              subPath: tmp_upload_path
+            - mountPath: /home/app/webapp/public/uploads
+              name: shared
+              subPath: upload_path
+            - mountPath: /home/app/webapp/public/assets
+              name: shared
+              subPath: assets
+            - mountPath: /home/app/webapp/public/system
+              name: shared
+              subPath: system
+            - mountPath: /home/app/webapp/public/branding
+              name: shared
+              subPath: branding
           readinessProbe:
             tcpSocket:
               port: 80

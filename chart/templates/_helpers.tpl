@@ -34,11 +34,12 @@ Create chart name and version as used by the chart label.
 {{/*
 Shorthand for component names
 */}}
+
 {{- define "hyku.postgres.name" -}}
-{{- include "hyku.fullname" . -}}-postgres
+{{- .Release.Name -}}-postgresql
 {{- end -}}
 {{- define "hyku.redis.name" -}}
-{{- include "hyku.fullname" . -}}-redis
+{{- .Release.Name -}}-redis-master
 {{- end -}}
 {{- define "hyku.web.name" -}}
 {{- include "hyku.fullname" . -}}-web

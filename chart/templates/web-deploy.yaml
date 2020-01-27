@@ -47,21 +47,18 @@ spec:
             - mountPath: /home/app/webapp/tmp/exports
               name: shared
               subPath: export_path
-            - mountPath: /home/app/webapp/tmp/derivatives_path
+            - mountPath: /home/app/webapp/tmp/derivatives
               name: shared
               subPath: derivatives_path
             - mountPath: /home/app/webapp/tmp/uploads
               name: shared
-              subPath: tmp_upload_path
+              subPath: upload_path
             - mountPath: /home/app/webapp/public/uploads
               name: shared
-              subPath: upload_path
+              subPath: uploads
             - mountPath: /home/app/webapp/public/assets
               name: shared
               subPath: assets
-            - mountPath: /home/app/webapp/public/system
-              name: shared
-              subPath: system
             - mountPath: /home/app/webapp/public/branding
               name: shared
               subPath: branding

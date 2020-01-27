@@ -3,3 +3,4 @@ server.key
 values.yaml
 staging.yaml
 production.yaml
+*-values.yaml

@@ -48,7 +48,7 @@ spec:
           # livenessProbe:
           #   exec:
           #     command:
-          #       - ./bin/rails runner ./chart/bin/check-sidekiq.rb
+          #       - ./bin/rails runner ./chart/bin/check_sidekiq.rb
           #   initialDelaySeconds: 30
           # Use sub-path for individual folders
           volumeMounts:
@@ -64,6 +64,9 @@ spec:
             - mountPath: /home/app/webapp/tmp/uploads
               name: shared
               subPath: upload_path
+            - mountPath: /home/app/webapp/public/uploads
+              name: shared
+              subPath: uploads
             - mountPath: /home/app/webapp/public/assets
               name: shared
               subPath: assets

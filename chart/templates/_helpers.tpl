@@ -65,6 +65,11 @@ Shorthand for component names
 {{- define "hyku.solr.name" -}}
 {{- .Release.Name -}}-solr-svc
 {{- end -}}
+
+{{- define "hyku.solr.collection" -}}
+{{- if eq .Values.env.configmap.SETTINGS__MULTITENANCY__ENABLED false }}single{{- end -}}
+{{- end -}}
+
 {{- define "hyku.fcrepo.name" -}}
 {{- include "hyku.fullname" . -}}-fcrepo
 {{- end -}}

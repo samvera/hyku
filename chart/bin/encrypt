@@ -7,8 +7,8 @@ NAMESPACE=${REPO%.git}
 
 if [ -z "$1" ] || [ -z "$2" ]
 then
-    echo './chart/bin/deploy ENVIRONMENT TAG'
+    echo './chart/bin/encrypt ENVIRONMENT TEAM'
     exit 1
 fi
 
-helm upgrade --install --namespace $1-$NAMESPACE $1 . -f $1-values.yaml --set rails.image.tag=$2
+keybase encrypt -i $1-values.yaml -o $1.yaml.enc --team $2

@@ -2,7 +2,7 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ template "hyku.web.name" . }}-in
+  name: {{ template "hyku.web.name" . }}-in-wildcard
   annotations:
     # kubernetes.io/ingress.allow-http: "false"
     # for GKE
@@ -12,7 +12,7 @@ spec:
   # - hosts:
   #   - {{ .Values.ingress.host }}
   rules:
-  - host: "{{ .Values.ingress.host }}"
+  - host: "*.{{ .Values.ingress.host }}"
     http:
       paths:
       - backend:

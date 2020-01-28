@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/notch8/willow_sword.git
+  remote: https://github.com/notch8/willow_sword.git
   revision: 0a669d78617c6003e4aa1a46a10447be92be27d5
   specs:
     willow_sword (0.2.0)

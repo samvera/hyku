@@ -1,0 +1,20 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ template "hyku.fcrepo.name" . }}
+  labels:
+    app: {{ template "hyku.name" . }}
+    chart: {{ template "hyku.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: fcrepo
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.fcrepo.storage.size }}
+  {{- if .Values.fcrepo.storage.className }}
+  storageClassName: "{{ .Values.fcrepo.storage.ClassName }}"
+  {{- end }}

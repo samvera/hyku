@@ -1,0 +1,112 @@
+# Customize the following values as needed
+
+solr:
+  image:
+   repository: solr
+   tag: 7.4
+  replicaCount: 1
+  volumeClaimTemplates:
+    storageSize: 1Gi
+
+zookeeper:
+  replicaCount: 1
+  persistence:
+    enabled: true
+    accessMode: ReadWriteOnce
+    size: 1Gi
+
+postgresql:
+  enabled: true
+  # Use fcrepo; the web app can create it's own db with db:create
+  postgresqlDatabase: fcrepo
+  postgresqlUsername: postgres
+  # Only used when internal PG is disabled
+  # postgresqlHost: postgres
+  postgresqlPassword: passwordabc
+  # postgresqlPort: 5432
+  persistence:
+    enabled: true
+    size: 1Gi
+
+redis:
+  enabled: true
+  usePassword: false
+  # Only used when internal redis is disabled
+  # host: redis
+  # Just omit the password field if your redis cluster doesn't use password
+  # password: redis
+  # port: 6379
+  master:
+    persistence:
+      enabled: true
+      size: 1Gi
+  slave:
+    persistence:
+      enabled: true
+      size: 1Gi
+
+fcrepo:
+  image:
+    repository: ualbertalib/docker-fcrepo4
+    tag: 4.7
+  storage:
+    size: 1Gi
+
+web:
+  replicas: 2
+
+sidekiq:
+  replicas: 1
+  timeout: 3600
+
+rails:
+  image:
+    repository: hyku/main
+    tag: latest
+  # If using a private registry setup access via secrets
+  # imagePullSecrets:
+  #   - name: gitlab
+  shared:
+    storage:
+      size: 1Gi
+      className: nfs
+
+ingress:
+  tlsSecretName: demoapp-puma-tls
+  
+  # helm upgrade release-name . --set ingress.localhost
+  host: hyku.docker
+
+# Used for naming k8s resources (eg. staging-hyku-web) 
+nameOverride:
+  hyku
+
+env:
+  configmap:
+    NAME: hyku
+    DATABASE_ADAPTER: postgresql
+    DATABASE_USER: postgres
+    FC_DATABASE_NAME: fcrepo
+    DATABASE_NAME: hyku
+    IN_DOCKER: "true"
+    LD_LIBRARY_PATH: /opt/fits-latest/tools/mediainfo/linux
+    PASSENGER_APP_ENV: production
+    RAILS_CACHE_STORE_URL: memcache
+    RAILS_ENV: production
+    RAILS_LOG_TO_STDOUT: true
+    RAILS_SERVE_STATIC_FILES: true
+    SETTINGS__ACTIVE_JOB__QUEUE_ADAPTER: sidekiq
+    SETTINGS__CONTACT_EMAIL: admin@example.org
+    SETTINGS__DEVISE__INVITATION_FROM_EMAIL: admin@example.org
+    SETTINGS__FITS_PATH: /opt/fits/fits.sh
+    SETTINGS__MULTITENANCY__ADMIN_HOST: hyku.docker
+    SETTINGS__MULTITENANCY__ADMIN_ONLY_TENANT_CREATION: true
+    SETTINGS__MULTITENANCY__DEFAULT_HOST: "%{tenant}.hyku.docker"
+    SETTINGS__MULTITENANCY__ENABLED: true
+
+  secret:
+    # GOOGLE_FONTS_KEY: 
+    SECRET_KEY_BASE: secretabc
+    # SMTP_PASSWORD: 
+    # SMTP_USERNAME: 
+    DATABASE_PASSWORD: passwordabc

@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "hyku.fcrepo.name" . }}
+  labels:
+    app: {{ template "hyku.name" . }}
+    chart: {{ template "hyku.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: fcrepo
+spec:
+  ports:
+    - protocol: TCP
+      port: 8080
+  selector:
+    app: {{ template "hyku.name" . }}
+    release: {{ .Release.Name }}
+    component: fcrepo

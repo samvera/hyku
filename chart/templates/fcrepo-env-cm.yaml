@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "hyku.fcrepo-env.name" . }}
+data:
+  DATABASE_USER: {{ .Values.env.configmap.DATABASE_USER }}
+  DATABASE_NAME: {{ .Values.env.configmap.FC_DATABASE_NAME }}

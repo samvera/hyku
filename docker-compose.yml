@@ -80,7 +80,7 @@ services:
 
   app:
     build: .
-    image: hyku/main:latest
+    image: hyku/main:helm-charts
     env_file:
       - .env
     environment:

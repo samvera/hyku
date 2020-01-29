@@ -21,6 +21,7 @@ class ApplicationController < ActionController::Base
 
   before_action :require_active_account!, if: :multitenant?
   before_action :set_account_specific_connections!
+  before_action :elevate_single_tenant!, if: :singletenant?
   skip_after_action :discard_flash_if_xhr
 
   before_action :add_honeybadger_context
@@ -45,9 +46,20 @@ class ApplicationController < ActionController::Base
       Settings.multitenancy.enabled
     end
 
+    def singletenant?
+      !Settings.multitenancy.enabled
+    end
+
+    def elevate_single_tenant!
+      AccountElevator.switch!(current_account.cname) if current_account && root_host?
+    end
+
+    def root_host?
+      Account.canonical_cname(request.host) == Account.root_host
+    end
+
     def admin_host?
       return false unless multitenant?
-
       Account.canonical_cname(request.host) == Account.admin_host
     end
 

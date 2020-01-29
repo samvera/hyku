@@ -8,6 +8,7 @@ multitenancy:
   default_host: # "%{tenant}.dev"
   admin_host:
   admin_only_tenant_creation: true
+  root_host:
 
 ssl_configured: false
 

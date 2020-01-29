@@ -11,4 +11,4 @@ then
     exit 1
 fi
 
-helm upgrade --install --namespace $NAMESPACE $1 . -f $1-values.yaml --set rails.image.tag=$2
+helm upgrade --install --namespace $1-$NAMESPACE $1 . -f $1-values.yaml --set rails.image.tag=$2

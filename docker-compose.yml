@@ -96,11 +96,13 @@ services:
       - SETTINGS__MULTITENANCY__ADMIN_HOST=hyku.docker
       - SETTINGS__MULTITENANCY__ADMIN_ONLY_TENANT_CREATION=false
       - SETTINGS__MULTITENANCY__DEFAULT_HOST=%{tenant}.hyku.docker
+      # - SETTINGS__MULTITENANCY__ROOT_HOST=hyku.docker
       - SETTINGS__MULTITENANCY__ENABLED=true
       - SETTINGS__SOLR__URL=http://solr:8983/solr/
       - SETTINGS__ZOOKEEPER__CONNECTION_STR=zookeeper_cluster:2181/configs
       - SOLR_URL=http://solr:8983/solr/
       - PASSENGER_APP_ENV=development
+      - RAILS_ENV=development
     volumes:
       - app:/home/app/webapp/tmp/uploads
       - assets:/home/app/webapp/public/assets

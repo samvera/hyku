@@ -64,6 +64,9 @@ spec:
             - mountPath: /home/app/webapp/tmp/uploads
               name: shared
               subPath: upload_path
+            - mountPath: /home/app/webapp/public/uploads
+              name: shared
+              subPath: uploads
             - mountPath: /home/app/webapp/public/assets
               name: shared
               subPath: assets

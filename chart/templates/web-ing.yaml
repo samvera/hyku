@@ -4,9 +4,9 @@ kind: Ingress
 metadata:
   name: {{ template "hyku.web.name" . }}-in
   annotations:
-    # kubernetes.io/ingress.allow-http: "false"
-    # for GKE
-    # kubernetes.io/ingress.global-static-ip-name: rails-k8s-hyku
+  {{- range $key, $value := .Values.ingress.annotations }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
 spec:
   # tls:
   # - hosts:

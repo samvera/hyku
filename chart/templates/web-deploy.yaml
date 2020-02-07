@@ -50,6 +50,9 @@ spec:
             - mountPath: /home/app/webapp/tmp/derivatives
               name: shared
               subPath: derivatives_path
+            - mountPath: /home/app/webapp/tmp/network_files
+              name: shared
+              subPath: network_files
             - mountPath: /home/app/webapp/tmp/uploads
               name: shared
               subPath: upload_path

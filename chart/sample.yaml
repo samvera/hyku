@@ -69,7 +69,9 @@ rails:
   shared:
     storage:
       size: 1Gi
-      className: nfs
+      # uncomment / change as per your local setup
+      # className: nfs
+      # className: efs
 
 ingress:
   tlsSecretName: demoapp-puma-tls

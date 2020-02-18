@@ -1,0 +1,20 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ template "hyku.rails-env.name" . }}-shared
+  labels:
+    app: {{ template "hyku.name" . }}
+    chart: {{ template "hyku.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: rails
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.rails.shared.storage.size }}
+  {{- if .Values.rails.shared.storage.className }}
+  storageClassName: "{{ .Values.rails.shared.storage.className }}"
+  {{- end }}

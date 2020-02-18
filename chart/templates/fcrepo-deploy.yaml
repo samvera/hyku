@@ -1,0 +1,63 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "hyku.fcrepo.name" . }}
+  labels:
+    app: {{ template "hyku.name" . }}
+    chart: {{ template "hyku.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: fcrepo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ template "hyku.name" . }}
+      release: {{ .Release.Name }}
+      component: fcrepo
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ template "hyku.name" . }}
+        release: {{ .Release.Name }}
+        component: fcrepo
+    spec:
+      restartPolicy: Always
+      {{- if .Values.fcrepo.imagePullSecrets }}
+      imagePullSecrets:
+        {{ toYaml .Values.fcrepo.imagePullSecrets }}
+      {{- end }}
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ template "hyku.fcrepo.name" . }}
+      initContainers:
+        - name: "remove-lost-found"
+          image: "busybox:1.25.0"
+          command: 
+            - rm
+            - -fr
+            - /data/lost+found
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      containers:
+        - name: fcrepo
+          image: {{ .Values.fcrepo.image.repository }}:{{ .Values.fcrepo.image.tag }}
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          envFrom:
+            - configMapRef:
+                name: {{ template "hyku.fcrepo-env.name" . }}
+            - secretRef:
+                name: {{ template "hyku.fcrepo-env.name" . }}

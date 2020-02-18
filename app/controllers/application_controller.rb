@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
   private
 
     def authenticate_for_staging
-      if ['staging', 'production'].include?(Rails.env) && !request.format.to_s.match('json') && !params[:print] && !request.path.include?('api') && !request.path.include?('pdf')
+      if ['staging'].include?(Rails.env) && !request.format.to_s.match('json') && !params[:print] && !request.path.include?('api') && !request.path.include?('pdf')
         authenticate_or_request_with_http_basic do |username, password|
           username == "pals" && password == "pals"
         end

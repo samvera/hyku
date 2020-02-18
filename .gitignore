@@ -52,3 +52,4 @@ public/uploads
 *.swp
 *.swo
 fits.log
+public/branding/*

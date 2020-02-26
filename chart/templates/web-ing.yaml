@@ -8,9 +8,11 @@ metadata:
     {{ $key }}: {{ $value | quote }}
   {{- end }}
 spec:
-  # tls:
-  # - hosts:
-  #   - {{ .Values.ingress.host }}
+  tls:
+  - secretName: {{ .Values.ingress.tlsSecretName }}
+    hosts:
+      - {{ .Values.ingress.host }}
+    
   rules:
   - host: "{{ .Values.ingress.host }}"
     http:

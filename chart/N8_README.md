@@ -81,3 +81,26 @@ There are equivalent kubectl commands for logs and accessing a shell, eg.
 kubectl kubectl exec -it POD --namespace NAMESPACE -- /bin/bash
 kubectl kubectl logs POD --namespace NAMESPACE
 ```
+
+## Resizing volumes
+
+First, ensure that allowVolumeExpansion is set to true for the storage classes being updated. This can be done manually in rancher via the API.
+
+You will need to redeploy, by deleting the resources in rancher and running deploy via helm.
+
+For deployments, redeploying in Rancher will probably work. But, for StatefulSets (rather than deployments), this error will occur:
+
+```
+Forbidden: updates to statefulset spec for fields other than 'replicas', 'template', and 'updateStrategy' are forbidden
+```
+
+So deleting the stateful sets and deployments in rancher and running the deploy via helm is the best strategy all round!
+
+EFS seems to resist all attempts at resizing:
+```
+Ignoring the PVC: didn't find a plugin capable of expanding the volume; waiting for an external controller to process this PVC.
+```
+
+See https://github.com/kubernetes-incubator/external-storage/issues/754
+
+This needs fixing.

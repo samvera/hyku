@@ -30,7 +30,7 @@ In the menu bar item for DfM you'll 'Kubernetes', this will list the available c
 
 ## KubeConfig
 
-Kubernetetes creates a config file at `~/.kube/config`. When we come to setting up access to external clusters, we will be editing this file. That will add clusters to the DfM Kubernetes list. Remember that if you are running deployment actions using helm or kubectl they will use the cluster selected in that list, so if you were deploying to a production server yesterday, that will still be selected. It is a good practice to run `kubectl cluster-info` or `kubectl config current-context` before starting any deployment to make sure you are deploying to the right cluster.
+Kubernetetes creates a config file at `~/.kube/config`. When we come to setting up access to external clusters, we will be editing this file. That will add clusters to the DfM Kubernetes list. Remember that if you are running deployment actions using helm or kubectl they will use the cluster selected in that list, so if you were deploying to a production server yesterday, that will still be selected. It is a good practice to run `kubectl cluster-info` or `kubectl config current-context` before starting any deployment to make sure you are deploying to the right cluster. `kubectl config get-clusters` will get the list of clusters.
 
 ## GitLab Secret
 

@@ -76,6 +76,9 @@ spec:
             - mountPath: /home/app/webapp/public/branding
               name: shared
               subPath: branding
+            - mountPath: /home/app/webapp/public/system
+              name: shared
+              subPath: system
           envFrom:
             - configMapRef:
                 name: {{ template "hyku.rails-env.name" . }}

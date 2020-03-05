@@ -9,7 +9,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera-labs/bulkrax.git
-  revision: 2661c451b85a011ac0e8c67f671c9d525a9360f2
+  revision: be91b423739c3f232d8eed96b2ca5339f71a57f7
   specs:
     bulkrax (0.1.0)
       bagit (~> 0.4)
@@ -17,7 +17,7 @@ GIT
       language_list (~> 1.2, >= 1.2.1)
       libxml-ruby (~> 3.1.0)
       loofah (>= 2.2.3)
-      oai (~> 0.4)
+      oai (>= 0.4, < 2.x)
       rack (>= 2.0.6)
       rails (>= 5.1.6)
       rdf (>= 2.0.2, < 4.0)
@@ -192,7 +192,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    concurrent-ruby (1.1.5)
+    concurrent-ruby (1.1.6)
     config (1.5.1)
       activesupport (>= 3.0)
       deep_merge (~> 1.1.1)
@@ -206,7 +206,7 @@ GEM
       tins (~> 1.6)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
-    crass (1.0.5)
+    crass (1.0.6)
     daemons (1.2.6)
     database_cleaner (1.6.1)
     declarative (0.0.10)
@@ -300,7 +300,7 @@ GEM
       multipart-post (>= 1.2, < 3)
     faraday-encoding (0.0.4)
       faraday
-    faraday_middleware (0.13.1)
+    faraday_middleware (0.14.0)
       faraday (>= 0.7.4, < 1.0)
     fcrepo_wrapper (0.9.0)
       ruby-progressbar
@@ -569,7 +569,7 @@ GEM
     mini_magick (4.9.5)
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
-    minitest (5.13.0)
+    minitest (5.14.0)
     mods (2.4.1)
       edtf
       iso-639
@@ -587,7 +587,7 @@ GEM
     noid-rails (3.0.1)
       actionpack (>= 5.0.0, < 6)
       noid (~> 0.9)
-    nokogiri (1.10.7)
+    nokogiri (1.10.9)
       mini_portile2 (~> 2.4.0)
     nom-xml (1.1.0)
       activesupport (>= 3.2.18)
@@ -617,7 +617,7 @@ GEM
     powerpack (0.1.1)
     public_suffix (3.0.2)
     pul_uv_rails (2.0.1)
-    puma (3.12.3)
+    puma (3.12.4)
     qa (2.2.0)
       activerecord-import
       deprecation
@@ -625,7 +625,7 @@ GEM
       nokogiri (~> 1.6)
       rails (~> 5.0)
       rdf
-    rack (2.0.8)
+    rack (2.2.2)
     rack-protection (2.0.0)
       rack
     rack-test (0.7.0)

@@ -12,7 +12,6 @@ spec:
   - secretName: {{ .Values.ingress.tlsSecretName }}
     hosts:
       - {{ .Values.ingress.host }}
-    
   rules:
   - host: "{{ .Values.ingress.host }}"
     http:

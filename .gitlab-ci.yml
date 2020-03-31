@@ -6,8 +6,8 @@ stages:
   - build
 #  - test
 #  - review
-#  - staging
-  - production
+  - deploy
+#  - production
 
 variables:
   DOCKER_DRIVER: overlay
@@ -54,27 +54,28 @@ build:
 #   variables:
 #     GIT_STRATEGY: none
 
-# staging:
-#   stage: staging
-#   type: deploy
-#   script:
-#     - sc deploy staging 
-#   only:
-#     - master
-#   tags:
-#     - docker
-
-production:
-  stage: production
-  type: deploy
+staging:
+  stage: deploy
+  image: dtzar/helm-kubectl
   script:
     - mkdir -p ~/.kube
     - echo $KUBE_CONFIG | base64 -d > ~/.kube/config
-    - echo $CI_REGISTRY_IMAGE:$TAG
-    - kubectl --namespace palshyku set image deployment/web web=$CI_REGISTRY_IMAGE:$TAG
-    - kubectl --namespace palshyku set image deployment/workers workers=$CI_REGISTRY_IMAGE:$TAG
-  when: manual
-  only:
-    - master
+    - echo $STAGING_VALUES | base64 -d > ./chart/staging-values.yaml
+    - echo "Deploying registry.gitlab.com/notch8/palni-palci:$CI_COMMIT_SHORT_SHA"
+    - ./chart/bin/deploy staging $CI_COMMIT_SHORT_SHA
   tags:
     - docker
+  when: manual
+
+production:
+  stage: deploy
+  image: dtzar/helm-kubectl
+  script:
+    - mkdir -p ~/.kube
+    - echo $KUBE_CONFIG | base64 -d > ~/.kube/config
+    - echo $PRODUCTION_VALUES | base64 -d > ./chart/production-values.yaml
+    - echo "Deploying registry.gitlab.com/notch8/palni-palci:$CI_COMMIT_SHORT_SHA"
+    - ./chart/bin/deploy staging $CI_COMMIT_SHORT_SHA
+  tags:
+    - docker
+  when: manual

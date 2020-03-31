@@ -30,7 +30,6 @@ class Oer < ActiveFedora::Base
   end
 
   property :date, predicate: ::RDF::Vocab::DC.date do |index|
-    index.type :date
     index.as :stored_searchable
   end
 

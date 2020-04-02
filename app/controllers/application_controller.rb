@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
 
 
   rescue_from Apartment::TenantNotFound do
-    raise ActionController::RoutingError, 'Not Found'
+    raise ActionController::RoutingError, 'Mofo Not Found'
   end
 
   private

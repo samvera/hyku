@@ -75,7 +75,7 @@ production:
     - echo $KUBE_CONFIG | base64 -d > ~/.kube/config
     - echo $PRODUCTION_VALUES | base64 -d > ./chart/production-values.yaml
     - echo "Deploying registry.gitlab.com/notch8/palni-palci:$CI_COMMIT_SHORT_SHA"
-    - ./chart/bin/deploy staging $CI_COMMIT_SHORT_SHA
+    - ./chart/bin/deploy production $CI_COMMIT_SHORT_SHA
   tags:
     - docker
   when: manual

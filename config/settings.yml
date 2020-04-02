@@ -65,7 +65,7 @@ devise:
   invitation_from_email: "hello@commons-archive.org"
 
 oai:
-  name: Commons Archive
+  name: Hyku Commons
   url: http://example.org/catalog/oai
   prefix: oai:commons-archive
   email: hello@commons-archive.org

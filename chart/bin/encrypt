@@ -11,4 +11,4 @@ then
     exit 1
 fi
 
-keybase encrypt -i $1-values.yaml -o $1.yaml.enc --team $2
+keybase encrypt -i $1-values.yaml -o $1-values.yaml.enc --team $2

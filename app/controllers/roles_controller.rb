@@ -10,7 +10,7 @@ class RolesController < ApplicationController
   end
 
   def index
-    @users = @users.where(guest: false)
+    @users = @users.exclude_guests
     add_breadcrumb t(:'hyrax.controls.home'), root_path
     add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
     add_breadcrumb t(:'hyrax.admin.sidebar.roles_and_permissions'), site_roles_path

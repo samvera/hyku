@@ -20,6 +20,7 @@ class User < ApplicationRecord
   scope :for_repository, ->{
     joins(:roles)
   }
+  scope :exclude_guests, -> { where(guest: false) }
 
   # Method added by Blacklight; Blacklight uses #to_s on your
   # user class to get a user-displayable login/identifier.

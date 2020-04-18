@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  include HykuHelper
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception, prepend: true
@@ -21,6 +22,7 @@ class ApplicationController < ActionController::Base
   before_action :set_raven_context
   before_action :require_active_account!, if: :multitenant?
   before_action :set_account_specific_connections!
+  before_action :elevate_single_tenant!, if: :singletenant?
   skip_after_action :discard_flash_if_xhr
 
 
@@ -57,9 +59,20 @@ class ApplicationController < ActionController::Base
       Settings.multitenancy.enabled
     end
 
+    def singletenant?
+      !Settings.multitenancy.enabled
+    end
+
+    def elevate_single_tenant!
+      AccountElevator.switch!(current_account.cname) if current_account && root_host?
+    end
+
+    def root_host?
+      Account.canonical_cname(request.host) == Account.root_host
+    end
+
     def admin_host?
       return false unless multitenant?
-
       Account.canonical_cname(request.host) == Account.admin_host
     end
 

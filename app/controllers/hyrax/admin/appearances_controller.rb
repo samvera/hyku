@@ -10,12 +10,9 @@ module Hyrax
         #TODO make selected font the font that show in select box
         #TODO add body and headline font to the import url
 
-        add_breadcrumb t(:'hyrax.controls.home'), root_path
-        add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
-        add_breadcrumb t(:'hyrax.admin.sidebar.configuration'), '#'
-        add_breadcrumb t(:'hyrax.admin.sidebar.appearance'), request.path
+        add_breadcrumbs
         @form = form_class.new
-        @fonts =  [@form.headline_font, @form.body_font]
+        @fonts = [@form.headline_font, @form.body_font]
       end
 
       def update
@@ -31,6 +28,13 @@ module Hyrax
 
         def require_permissions
           authorize! :update, :appearance
+        end
+
+        def add_breadcrumbs
+          add_breadcrumb t(:'hyrax.controls.home'), root_path
+          add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
+          add_breadcrumb t(:'hyrax.admin.sidebar.configuration'), '#'
+          add_breadcrumb t(:'hyrax.admin.sidebar.appearance'), request.path
         end
     end
   end

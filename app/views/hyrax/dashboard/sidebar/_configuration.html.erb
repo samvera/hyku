@@ -6,6 +6,9 @@
                      icon_class: "fa fa-cog",
                      id: 'collapseSettings',
                      open: menu.settings_section? do %>
+      <%= menu.nav_link(main_app.edit_site_contact_path) do %>
+          <span class="fa fa-at"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.contact') %></span>
+      <% end %>
       <%= menu.nav_link(main_app.edit_site_labels_path) do %>
           <span class="fa fa-institution"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.labels') %></span>
       <% end %>

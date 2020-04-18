@@ -8,7 +8,7 @@ module Hyrax
       include BreadcrumbsForCollections
       with_themed_layout 'dashboard'
 
-      before_action :filter_docs_with_read_access!, except: [:show, :edit]
+      before_action :filter_docs_with_read_access!, except: %i[show edit]
       before_action :remove_select_something_first_flash, except: :show
 
       include Hyrax::Collections::AcceptsBatches
@@ -38,7 +38,7 @@ module Hyrax
       # The search builder to find the collections' members
       self.membership_service_class = Collections::CollectionMemberService
 
-      load_and_authorize_resource except: [:index, :create], instance_name: :collection
+      load_and_authorize_resource except: %i[index create], instance_name: :collection
 
       def deny_collection_access(exception)
         if exception.action == :edit
@@ -468,10 +468,10 @@ module Hyrax
 
         ## NEW METHOD
         def process_file_location(f)
-          if f.file_url.match(/^http/)
+          if f.file_url =~ /^http/
             f.file.download!(f.file_url)
             f.file_url
-          elsif f.file_url.match(/^\//)
+          elsif f.file_url =~ %r{^\/}
             f.file.path
           else
             f.file_url

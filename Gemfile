@@ -7,7 +7,7 @@ gem 'activerecord-nulldb-adapter'
 # Use sqlite3 as the database for Active Record
 gem 'pg'
 # Use Puma as the app server
-gem 'puma', '~> 3.7'
+gem 'puma', '~> 3.12'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -78,6 +78,10 @@ group :development do
   gem 'scss_lint', require: false
 end
 
+# Bulkrax
+gem 'bulkrax', git: 'https://github.com/samvera-labs/bulkrax.git'
+gem 'willow_sword', git: 'https://github.com/notch8/willow_sword.git'
+
 gem 'blacklight', '~> 6.7'
 gem 'blacklight_oai_provider', '~> 6.0'
 
@@ -114,7 +118,12 @@ gem 'sidekiq'
 gem 'secure_headers'
 
 #gem 'honeybadger', '~> 3.0'
+
+gem 'codemirror-rails'
 gem 'riiif', '~> 1.1'
 gem 'codemirror-rails'
 
 gem "sentry-raven"
+gem 'bootstrap-datepicker-rails'
+gem 'parser', '~> 2.5.3'
+gem 'tether-rails'

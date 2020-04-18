@@ -1,6 +1,7 @@
 #masthead {
   #logo {
     margin-left: 10px;
+
     img {
       max-height: 50px;
     }
@@ -19,6 +20,7 @@
 @media (min-width: $screen-sm-min) {
   .logo-set {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     flex-direction: column;
   }
@@ -216,8 +218,38 @@ footer.navbar {
 
 .logo-set {
   min-height: 320px;
+
   img {
-    vertical-align: middle;
     display: inline;
+    vertical-align: middle;
+  }
+}
+
+#s2id_collection_thumbnail_id {
+  height: auto;
+  padding: 0;
+}
+
+.select2-container.generic_work_based_near {
+  height: auto;
+  padding: 0;
+}
+
+
+#users > .panel {
+  .panel-body {
+    padding-left: 0px;
+  }
+
+  ul,
+  h2,
+  h3,
+  h4,
+  form,
+  p {
+    padding-left: 15px;
+  }
+  ul {
+    padding-left: 40px;
   }
 }

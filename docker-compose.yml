@@ -98,12 +98,17 @@ services:
       - REDIS_HOST=redis
       - SECRET_KEY_BASE=asdf
       - SETTINGS__ACTIVE_JOB__QUEUE_ADAPTER=sidekiq
+      - SETTINGS__BULKRAX__ENABLED=false
       - SETTINGS__FITS_PATH=/opt/fits/fits.sh
+      # Comment out these 5 for single tenancy / Uncomment for multi
       - SETTINGS__MULTITENANCY__ADMIN_HOST=pals.docker
       - SETTINGS__MULTITENANCY__ADMIN_ONLY_TENANT_CREATION=false
       - SETTINGS__MULTITENANCY__ROOT_HOST=pals.docker
       - SETTINGS__MULTITENANCY__DEFAULT_HOST=%{tenant}.pals.docker
       - SETTINGS__MULTITENANCY__ENABLED=true
+      # Comment out these 2 for multi tenancy / Uncomment for single
+      # - SETTINGS__MULTITENANCY__ROOT_HOST=hyku.docker
+      # - SETTINGS__MULTITENANCY__ENABLED=false
       - SETTINGS__SOLR__URL=http://solr:8983/solr/
       - SETTINGS__ZOOKEEPER__CONNECTION_STR=zookeeper_cluster:2181/configs
       - SOLR_URL=http://solr:8983/solr/
@@ -126,12 +131,12 @@ services:
       - redis
       - solr
       - zoo1
+      - chrome
       - initialize_app
       - db_migrate
-      - chrome
     expose:
       - 80
-    #ports:
+    # ports:
       # 3000:80 # uncomment this if you dont use dory or another proxy
 
   workers:
@@ -144,6 +149,8 @@ services:
       - fcrepo
       - redis
       - zoo1
+      - initialize_app
+      - db_migrate
 
   initialize_app:
     extends:

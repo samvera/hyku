@@ -8,6 +8,7 @@ multitenancy:
   default_host: # "%{tenant}.dev"
   admin_host:
   admin_only_tenant_creation: true
+  root_host:
 
 ssl_configured: false
 
@@ -57,7 +58,8 @@ google_analytics_id:
 geonames_username: 'jcoyne'
 
 # The address to which the contact form is submitted
-contact_email: ""
+contact_email: "hykuup@notch8.com"
+contact_email_to: ""
 
 devise:
   account_signup: true
@@ -70,3 +72,6 @@ oai:
   prefix: oai:commons-archive
   email: hello@commons-archive.org
   sample_id: 806bbc5e-8ebe-468c-a188-b7c14fbe34df
+
+bulkrax:
+  enabled: false

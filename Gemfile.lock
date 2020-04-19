@@ -341,7 +341,6 @@ GEM
     hashdiff (0.3.4)
     highline (1.7.8)
     hiredis (0.6.3)
-    honeybadger (3.1.2)
     htmlentities (4.3.4)
     httmultiparty (0.3.16)
       httparty (>= 0.7.3)

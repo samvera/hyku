@@ -119,7 +119,6 @@ gem 'secure_headers'
 
 #gem 'honeybadger', '~> 3.0'
 
-gem 'codemirror-rails'
 gem 'riiif', '~> 1.1'
 gem 'codemirror-rails'
 

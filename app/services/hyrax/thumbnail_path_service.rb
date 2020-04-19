@@ -10,12 +10,6 @@ module Hyrax
         return unless thumb
         return call(thumb) unless thumb.is_a?(::FileSet)
         return_path(thumb)
-          audio_image
-        elsif thumbnail?(thumb)
-          thumbnail_path(thumb)
-        else
-          default_image
-        end
       end
 
       private

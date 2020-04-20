@@ -21,6 +21,8 @@ AllCops:
     - 'spec/test_app_templates/**/*'
     - 'Rakefile'
     - 'lib/tasks/rubocop.rake'
+    # disabling collections controller as most of the rubocop errors are in hyrax
+    - 'app/controllers/hyrax/dashboard/collections_controller.rb'
 
 Rails:
   Enabled: true

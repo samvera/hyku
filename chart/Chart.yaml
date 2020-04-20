@@ -5,7 +5,7 @@ name: hyku
 version: 0.0.1
 dependencies:
   - name: solr 
-    version: 1.0.0
+    version: 1.3.3
     repository: https://storage.googleapis.com/kubernetes-charts-incubator
   - name: redis
     version: 10.3.1

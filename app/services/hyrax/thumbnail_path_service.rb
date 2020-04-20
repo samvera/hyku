@@ -9,16 +9,20 @@ module Hyrax
         thumb = fetch_thumbnail(object)
         return unless thumb
         return call(thumb) unless thumb.is_a?(::FileSet)
-        if thumb.audio?
-          audio_image
-        elsif thumbnail?(thumb)
-          thumbnail_path(thumb)
-        else
-          default_image
-        end
+        return_path(thumb)
       end
 
       private
+
+        def return_path(thumb)
+          if thumb.audio?
+            audio_image
+          elsif thumbnail?(thumb)
+            thumbnail_path(thumb)
+          else
+            default_image
+          end
+        end
 
         def fetch_thumbnail(object)
           return object if object.thumbnail_id == object.id
@@ -36,7 +40,7 @@ module Hyrax
         end
 
         def default_image
-          Site.instance.default_work_image.present? ? Site.instance.default_work_image : ActionController::Base.helpers.image_path('default.png')
+          Site.instance.default_work_image.presence || ActionController::Base.helpers.image_path('default.png')
         end
 
         def audio_image

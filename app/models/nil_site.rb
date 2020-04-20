@@ -12,9 +12,10 @@ class NilSite
   # Return nil for all these attributes
   attr_reader :id, :account, :application_name, :institution_name,
               :institution_name_full, :banner_image, :primary_key,
-              :logo_image, :default_collction_image, :default_work_image,
-              :directory_image
+              :logo_image, :default_collection_image, :default_work_image,
+              :directory_image, :contact_email
 
+  # rubocop:disable Lint/DuplicateMethods
   def reload
     NilSite.instance
   end
@@ -47,7 +48,7 @@ class NilSite
     false
   end
 
-  def default_collection_image 
+  def default_collection_image
     nil
   end
 
@@ -58,5 +59,5 @@ class NilSite
   def default_work_image
     nil
   end
-
+  # rubocop:enable Lint/DuplicateMethods
 end

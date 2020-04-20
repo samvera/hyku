@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 module Hyrax
   module Forms
     module Admin
@@ -36,7 +37,7 @@ module Hyrax
 
         # The font for the body copy
         def body_font
-          block_for('body_font', '"Helvetica Neue", Helvetica, Arial, sans-serif;')
+          block_for('body_font', 'Helvetica Neue, Helvetica, Arial, sans-serif;')
         end
 
         # The font for the headline copy
@@ -146,7 +147,10 @@ module Hyrax
 
         # The custom css module
         def custom_css_block
+          # rubocop:disable Rails/OutputSafety
+          # we want to be able to read the css
           block_for('custom_css_block', '/* custom stylesheet */').html_safe
+          # rubocop:enable Rails/OutputSafety
         end
 
         # DEFAULT BUTTON COLORS
@@ -229,36 +233,41 @@ module Hyrax
         end
 
         # A list of parameters that are related to customizations
-        def self.customization_params
-          [
-            :body_font,
-            :headline_font,
-            :header_background_color,
-            :header_text_color,
-            :link_color,
-            :link_hover_color,
-            :footer_link_color,
-            :footer_link_hover_color,
-            :primary_button_background_color,
-            :default_button_background_color,
-            :default_button_border_color,
-            :default_button_text_color,
-            :active_tabs_background_color,
-            :facet_panel_background_color,
-            :facet_panel_text_color,
-            :searchbar_background_color,
-            :searchbar_background_hover_color,
-            :searchbar_text_color,
-            :searchbar_text_hover_color,
-            :custom_css_block
+        def self.customization_params # rubocop:disable Metrics/MethodLength
+          %i[
+            body_font
+            headline_font
+            header_background_color
+            header_text_color
+            link_color
+            link_hover_color
+            footer_link_color
+            footer_link_hover_color
+            primary_button_background_color
+            default_button_background_color
+            default_button_border_color
+            default_button_text_color
+            active_tabs_background_color
+            facet_panel_background_color
+            facet_panel_text_color
+            searchbar_background_color
+            searchbar_background_hover_color
+            searchbar_text_color
+            searchbar_text_hover_color
+            custom_css_block
           ]
         end
 
-        def font_import_url
+        def font_import_body_url
           headline = headline_font.split('|').first.to_s.tr(" ", "+")
           body = body_font.split('|').first.to_s.tr(" ", "+")
+          # we need to be able to read the url to import fonts
+          "fonts.googleapis.com/css?family=#{body}"
+        end
 
-          "http://fonts.googleapis.com/css?family=#{headline}|#{body}".html_safe
+        def font_import_headline_url
+          headline = headline_font.split('|').first.to_s.tr(" ", "+")
+          "fonts.googleapis.com/css?family=#{headline}"
         end
 
         def font_body_family
@@ -271,41 +280,43 @@ module Hyrax
 
         private
 
-        def darken_color(hex_color, adjustment = 0.2)
-          amount = 1.0 - adjustment
-          hex_color = hex_color.delete('#')
-          rgb = hex_color.scan(/../).map(&:hex)
+          def darken_color(hex_color, adjustment = 0.2)
+            amount = 1.0 - adjustment
+            hex_color = hex_color.delete('#')
+            rgb = hex_color.scan(/../).map { |color| (color.to_i(16) * amount).round }
           rgb[0] = (rgb[0].to_i * amount).round
           rgb[1] = (rgb[1].to_i * amount).round
           rgb[2] = (rgb[2].to_i * amount).round
-          format("#%02x%02x%02x", *rgb)
-        end
+            format("#%02x%02x%02x", *rgb)
+          end
 
-        def convert_to_rgba(hex_color, alpha = 0.5)
-          hex_color = hex_color.delete('#')
-          rgb = hex_color.scan(/../).map(&:hex)
-          "rgba(#{rgb[0]}, #{rgb[1]}, #{rgb[2]}, #{alpha})"
-        end
+          def convert_to_rgba(hex_color, alpha = 0.5)
+            hex_color = hex_color.delete('#')
+            rgb = hex_color.scan(/../).map(&:hex)
+            "rgba(#{rgb[0]}, #{rgb[1]}, #{rgb[2]}, #{alpha})"
+          end
 
-        def block_for(name, default_value)
-          block = ContentBlock.find_by(name: name)
-          block ? block.value : default_value
-        end
+          def block_for(name, default_value)
+            block = ContentBlock.find_by(name: name)
+            needs_default = block && block.value.present?
+            needs_default ? block.value : default_value
+          end
 
-        # Persist a key/value tuple as a ContentBlock
-        # @param [Symbol] name the identifier for the ContentBlock
-        # @param [String] value the value to set
-        def update_block(name, value)
-          ContentBlock.find_or_create_by(name: name.to_s).update!(value: value)
-        end
+          # Persist a key/value tuple as a ContentBlock
+          # @param [Symbol] name the identifier for the ContentBlock
+          # @param [String] value the value to set
+          def update_block(name, value)
+            ContentBlock.find_or_create_by(name: name.to_s).update!(value: value)
+          end
 
-        def format_font_names(font_style)
-          # the fonts come with `Font Name:font-weight` - this removes the weight
-          parts = font_style.split(':')
-          # Google fonts use `+` in place of spaces. This fixes it for CSS.
-          parts[0].tr('+', ' ').html_safe
-        end
+          def format_font_names(font_style)
+            # the fonts come with `Font Name:font-weight` - this removes the weight
+            parts = font_style.split(':')
+            # Google fonts use `+` in place of spaces. This fixes it for CSS.
+            parts[0].tr('+', ' ')
+          end
       end
     end
   end
 end
+# rubocop:enable Metrics/ClassLength

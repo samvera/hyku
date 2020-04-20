@@ -1,0 +1,35 @@
+<% content_for :page_header do %>
+  <h1><span class="fa fa-at"></span> <%= t(:'hyrax.admin.sidebar.contact') %></h1>
+<% end %>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <%= form_for(@site, url: site_contact_path) do |f| %>
+        <div class="panel-heading">
+          <h3 class="panel-title">Contact</h3>
+        </div>
+        <div class="panel-body">
+          <% if @site.errors.any? %>
+              <div id="error_explanation">
+                  <h2><%= pluralize(@site.errors.count, "error") %> prohibited this site from being saved:</h2>
+
+                  <ul>
+                      <% @site.errors.full_messages.each do |message| %>
+                          <li><%= message %></li>
+                      <% end %>
+                  </ul>
+              </div>
+          <% end %>
+          <div class="field form-group">
+              <%= f.label :contact_email %><br>
+              <%= f.text_field :contact_email, class: 'form-control'%>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <%= f.submit class: 'btn btn-primary pull-right' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

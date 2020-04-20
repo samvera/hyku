@@ -1,7 +1,13 @@
 <% # Dynamic styles added by the admin in the appearances page %>
-<style>
 <% appearance = Hyrax::Forms::Admin::Appearance.new %>
-@import url(<%= appearance.font_import_url %>);
+<style>
+<% unless appearance.body_font.include?('Helvetica') %>
+  @import url(//<%= appearance.font_import_body_url %>);
+<% end %>
+<% unless appearance.body_font.include?('Helvetica') %>
+  @import url(//<%= appearance.font_import_headline_url %>);
+<% end %>
+
 body { font-family: <%= appearance.font_body_family %> }
 h1, h2, h3, h4, h5, h6 { font-family: <%= appearance.font_headline_family %>}
 

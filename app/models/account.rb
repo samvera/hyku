@@ -27,6 +27,13 @@ class Account < ApplicationRecord
     canonical_cname(host)
   end
 
+  def self.root_host
+    host = Settings.multitenancy.root_host
+    host ||= ENV['HOST']
+    host ||= 'localhost'
+    canonical_cname(host)
+  end
+
   def self.tenants(tenant_list)
     return Account.all if tenant_list.blank?
     where(cname: tenant_list)

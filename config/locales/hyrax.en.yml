@@ -9,9 +9,13 @@ en:
     directory:
       suffix: "@hydrainabox.org"
     footer:
-      copyright_html: "<strong>Copyright &copy; 2017 Samvera</strong> Licensed under the Apache License, Version 2.0"
+      copyright_html: "<strong>Copyright &copy; 2019 Samvera</strong> Licensed under the Apache License, Version 2.0"
       service_html: A service of <a href="http://samvera.org/" class="navbar-link" target="_blank">Samvera</a>.
     account_label: User
+    activefedora:
+      models:
+        generic_work: "Work"
+        image: "Image"
     active_consent_to_agreement: I have read and agree to the
     admin:
       admin_sets:
@@ -206,6 +210,7 @@ en:
         collection_types: Collection Types
         collections: Collections
         configuration: Configuration
+        contact: Contact
         content_blocks: Content Blocks
         notifications: Notifications
         pages: Pages
@@ -481,6 +486,10 @@ en:
         announcement_text: Announcement Text
         featured_researcher: Featured Researcher
         marketing_text: Marketing Text
+      instructions:
+        announcement_instructions: Announcement Text displays on the homepage. It is for important or timely messages to be made prominently visible to all home page visitors. It would be appropriate to enter an announcement here, for example, to notify users about an upcoming planned maintenance outage of the system.
+        featured_researcher_instructions: Featured Researcher is a space to enter information and on the home page reserved for highlighting repository users.
+        marketing_instructions: Banner Text refers to the text that is displayed over banner image on the homepage. We recommend no more than approximately 30 characters or spaces in this text area.
       updated: Content blocks updated.
     controls:
       about: About
@@ -722,7 +731,9 @@ en:
       transfer_works_link: Select works to transfer
       transfers_received: Transfers Received
       transfers_sent: Transfers Sent
-      user_activity: User Activity
+      user_activity:
+        subtitle: New user signups
+        title: User Activity
       user_notifications: User Notifications
       view_files: View Files
     document_language: en

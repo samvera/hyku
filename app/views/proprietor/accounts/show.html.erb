@@ -93,6 +93,7 @@
               </tbody>
             </table>
           </div>
+
           <div class="tab-pane" id="all-users-tab">
             <table class="table table-striped">
               <thead>
@@ -100,7 +101,7 @@
                 <th><%= t('.current_admins.actions') %></th>
               </thead>
               <tbody>
-                <% User.all.each do |user| %>
+                <% @users.each do |user| %>
                   <tr>
                     <td><%= user.email %></td>
                     <td>
@@ -118,8 +119,8 @@
                 <% end %>
               </tbody>
             </table>
-
           </div>
+
         </div>
       </div>
     </div>

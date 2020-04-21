@@ -8,6 +8,8 @@ module Proprietor
     # GET /accounts.json
     def index
       authorize! :manage, Account
+      @users = User.exclude_guests
+
       add_breadcrumb t(:'hyrax.controls.home'), root_path
       add_breadcrumb t(:'hyrax.admin.sidebar.accounts'), proprietor_accounts_path
     end

@@ -4,7 +4,9 @@ module Hyrax
   class CollectionThumbnailPathService < Hyrax::ThumbnailPathService
     class << self
       def default_image
-        Site.instance.default_collection_image&.url&.presence || ActionController::Base.helpers.image_path('collection.png')
+        hyrax_default_collection_image = ActionController::Base.helpers.image_path('collection.png')
+
+        Site.instance.default_collection_image&.url&.presence || hyrax_default_collection_image
       end
     end
   end

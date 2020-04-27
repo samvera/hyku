@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190214012430) do
+ActiveRecord::Schema.define(version: 20200103172822) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,77 @@ ActiveRecord::Schema.define(version: 20190214012430) do
     t.datetime "updated_at", null: false
     t.string "document_type"
     t.index ["user_id"], name: "index_bookmarks_on_user_id"
+  end
+
+  create_table "bulkrax_entries", force: :cascade do |t|
+    t.string "identifier"
+    t.string "collection_ids"
+    t.string "type"
+    t.text "raw_metadata"
+    t.text "parsed_metadata"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "last_error"
+    t.datetime "last_error_at"
+    t.datetime "last_succeeded_at"
+    t.integer "importerexporter_id"
+    t.string "importerexporter_type", default: "Bulkrax::Importer"
+  end
+
+  create_table "bulkrax_exporter_runs", force: :cascade do |t|
+    t.bigint "exporter_id"
+    t.integer "total_work_entries", default: 0
+    t.integer "enqueued_records", default: 0
+    t.integer "processed_records", default: 0
+    t.integer "deleted_records", default: 0
+    t.integer "failed_records", default: 0
+    t.index ["exporter_id"], name: "index_bulkrax_exporter_runs_on_exporter_id"
+  end
+
+  create_table "bulkrax_exporters", force: :cascade do |t|
+    t.string "name"
+    t.bigint "user_id"
+    t.string "parser_klass"
+    t.integer "limit"
+    t.text "parser_fields"
+    t.text "field_mapping"
+    t.string "export_source"
+    t.string "export_from"
+    t.string "export_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_bulkrax_exporters_on_user_id"
+  end
+
+  create_table "bulkrax_importer_runs", force: :cascade do |t|
+    t.bigint "importer_id"
+    t.integer "total_work_entries", default: 0
+    t.integer "enqueued_records", default: 0
+    t.integer "processed_records", default: 0
+    t.integer "deleted_records", default: 0
+    t.integer "failed_records", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "processed_collections", default: 0
+    t.integer "failed_collections", default: 0
+    t.integer "total_collection_entries", default: 0
+    t.integer "processed_children", default: 0
+    t.integer "failed_children", default: 0
+    t.index ["importer_id"], name: "index_bulkrax_importer_runs_on_importer_id"
+  end
+
+  create_table "bulkrax_importers", force: :cascade do |t|
+    t.string "name"
+    t.string "admin_set_id"
+    t.bigint "user_id"
+    t.string "frequency"
+    t.string "parser_klass"
+    t.integer "limit"
+    t.text "parser_fields"
+    t.text "field_mapping"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_bulkrax_importers_on_user_id"
   end
 
   create_table "checksum_audit_logs", id: :serial, force: :cascade do |t|
@@ -535,6 +606,7 @@ ActiveRecord::Schema.define(version: 20190214012430) do
     t.string "default_work_image"
     t.text "available_works", default: [], array: true
     t.string "directory_image"
+    t.string "contact_email"
   end
 
   create_table "subject_local_authority_entries", id: :serial, force: :cascade do |t|
@@ -659,6 +731,8 @@ ActiveRecord::Schema.define(version: 20190214012430) do
   add_foreign_key "accounts", "endpoints", column: "fcrepo_endpoint_id", on_delete: :nullify
   add_foreign_key "accounts", "endpoints", column: "redis_endpoint_id", on_delete: :nullify
   add_foreign_key "accounts", "endpoints", column: "solr_endpoint_id", on_delete: :nullify
+  add_foreign_key "bulkrax_exporter_runs", "bulkrax_exporters", column: "exporter_id"
+  add_foreign_key "bulkrax_importer_runs", "bulkrax_importers", column: "importer_id"
   add_foreign_key "collection_type_participants", "hyrax_collection_types"
   add_foreign_key "content_blocks", "sites"
   add_foreign_key "mailboxer_conversation_opt_outs", "mailboxer_conversations", column: "conversation_id", name: "mb_opt_outs_on_conversations_id"

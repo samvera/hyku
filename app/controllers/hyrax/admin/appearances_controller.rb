@@ -13,6 +13,8 @@ module Hyrax
         add_breadcrumbs
         @form = form_class.new
         @fonts = [@form.headline_font, @form.body_font]
+
+        flash[:alert] = t('hyrax.admin.appearances.show.custom_css_warning')
       end
 
       def update

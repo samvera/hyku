@@ -130,26 +130,165 @@
         <div id="color" class="tab-pane">
           <div class="panel panel-default labels">
             <%= simple_form_for @form, url: admin_appearance_path do |f| %>
-              <div class="panel-body">
-                <%= f.input :header_background_color, required: false, input_html: { type: 'color' } %>
-                <%= f.input :header_text_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :searchbar_background_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :searchbar_background_hover_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :searchbar_text_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :searchbar_text_hover_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :link_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :link_hover_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :footer_link_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :footer_link_hover_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :primary_button_background_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :default_button_background_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :default_button_border_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :default_button_text_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :active_tabs_background_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :facet_panel_background_color, required: false, input_html: { type: 'color' }, label: 'Search Sidebar Panel Background Color'  %>
-                <%= f.input :facet_panel_text_color, required: false, input_html: { type: 'color' }, label: 'Search Sidebar Panel Text Color'  %>
+              <div class="panel-body defaultable-colors">
+                <% dc = @form.class::DEFAULT_COLORS %>
+
+                <div class='row'>
+                  <div class='col-lg-10'>
+                    <%= f.input :header_background_color, required: false, input_html: { type: 'color', data: { default_value: dc['header_background_color'] } } %>
+                  </div>
+                  <div class='col-lg-2'>
+                    <%= link_to 'Restore Default', '#color', class: 'btn btn-default restore-default-color', data: { default_target: 'header_background_color' } %>
+                  </div>
+                </div>
+
+                <div class='row'>
+                  <div class='col-lg-10'>
+                    <%= f.input :header_text_color, required: false, input_html: { type: 'color', data: { default_value: dc['header_text_color'] } }  %>
+                  </div>
+                  <div class='col-lg-2'>
+                    <%= link_to 'Restore Default', '#color', class: 'btn btn-default restore-default-color', data: { default_target: 'header_text_color' } %>
+                  </div>
+                </div>
+
+                <div class='row'>
+                  <div class='col-lg-10'>
+                    <%= f.input :searchbar_background_color, required: false, input_html: { type: 'color', data: { default_value: dc['searchbar_background_color'] } }  %>
+                  </div>
+                  <div class='col-lg-2'>
+                    <%= link_to 'Restore Default', '#color', class: 'btn btn-default restore-default-color', data: { default_target: 'searchbar_background_color' } %>
+                  </div>
+                </div>
+
+                <div class='row'>
+                  <div class='col-lg-10'>
+                    <%= f.input :searchbar_background_hover_color, required: false, input_html: { type: 'color', data: { default_value: dc['searchbar_background_hover_color'] } }  %>
+                  </div>
+                  <div class='col-lg-2'>
+                    <%= link_to 'Restore Default', '#color', class: 'btn btn-default restore-default-color', data: { default_target: 'searchbar_background_hover_color' } %>
+                  </div>
+                </div>
+
+                <div class='row'>
+                  <div class='col-lg-10'>
+                    <%= f.input :searchbar_text_color, required: false, input_html: { type: 'color', data: { default_value: dc['searchbar_text_color'] } }  %>
+                  </div>
+                  <div class='col-lg-2'>
+                    <%= link_to 'Restore Default', '#color', class: 'btn btn-default restore-default-color', data: { default_target: 'searchbar_text_color' } %>
+                  </div>
+                </div>
+
+                <div class='row'>
+                  <div class='col-lg-10'>
+                    <%= f.input :searchbar_text_hover_color, required: false, input_html: { type: 'color', data: { default_value: dc['searchbar_text_hover_color'] } }  %>
+                  </div>
+                  <div class='col-lg-2'>
+                    <%= link_to 'Restore Default', '#color', class: 'btn btn-default restore-default-color', data: { default_target: 'searchbar_text_hover_color' } %>
+                  </div>
+                </div>
+
+                <div class='row'>
+                  <div class='col-lg-10'>
+                    <%= f.input :link_color, required: false, input_html: { type: 'color', data: { default_value: dc['link_color'] } }  %>
+                  </div>
+                  <div class='col-lg-2'>
+                    <%= link_to 'Restore Default', '#color', class: 'btn btn-default restore-default-color', data: { default_target: 'link_color' } %>
+                  </div>
+                </div>
+
+                <div class='row'>
+                  <div class='col-lg-10'>
+                    <%= f.input :link_hover_color, required: false, input_html: { type: 'color', data: { default_value: dc['link_hover_color'] } }  %>
+                  </div>
+                  <div class='col-lg-2'>
+                    <%= link_to 'Restore Default', '#color', class: 'btn btn-default restore-default-color', data: { default_target: 'link_hover_color' } %>
+                  </div>
+                </div>
+
+                <div class='row'>
+                  <div class='col-lg-10'>
+                    <%= f.input :footer_link_color, required: false, input_html: { type: 'color', data: { default_value: dc['footer_link_color'] } }  %>
+                  </div>
+                  <div class='col-lg-2'>
+                    <%= link_to 'Restore Default', '#color', class: 'btn btn-default restore-default-color', data: { default_target: 'footer_link_color' } %>
+                  </div>
+                </div>
+
+                <div class='row'>
+                  <div class='col-lg-10'>
+                    <%= f.input :footer_link_hover_color, required: false, input_html: { type: 'color', data: { default_value: dc['footer_link_hover_color'] } }  %>
+                  </div>
+                  <div class='col-lg-2'>
+                    <%= link_to 'Restore Default', '#color', class: 'btn btn-default restore-default-color', data: { default_target: 'footer_link_hover_color' } %>
+                  </div>
+                </div>
+
+                <div class='row'>
+                  <div class='col-lg-10'>
+                    <%= f.input :primary_button_background_color, required: false, input_html: { type: 'color', data: { default_value: dc['primary_button_background_color'] } }  %>
+                  </div>
+                  <div class='col-lg-2'>
+                    <%= link_to 'Restore Default', '#color', class: 'btn btn-default restore-default-color', data: { default_target: 'primary_button_background_color' } %>
+                  </div>
+                </div>
+
+                <div class='row'>
+                  <div class='col-lg-10'>
+                    <%= f.input :default_button_background_color, required: false, input_html: { type: 'color', data: { default_value: dc['default_button_background_color'] } }  %>
+                  </div>
+                  <div class='col-lg-2'>
+                    <%= link_to 'Restore Default', '#color', class: 'btn btn-default restore-default-color', data: { default_target: 'default_button_background_color' } %>
+                  </div>
+                </div>
+
+                <div class='row'>
+                  <div class='col-lg-10'>
+                    <%= f.input :default_button_border_color, required: false, input_html: { type: 'color', data: { default_value: dc['default_button_border_color'] } }  %>
+                  </div>
+                  <div class='col-lg-2'>
+                    <%= link_to 'Restore Default', '#color', class: 'btn btn-default restore-default-color', data: { default_target: 'default_button_border_color' } %>
+                  </div>
+                </div>
+
+                <div class='row'>
+                  <div class='col-lg-10'>
+                    <%= f.input :default_button_text_color, required: false, input_html: { type: 'color', data: { default_value: dc['default_button_text_color'] } }  %>
+                  </div>
+                  <div class='col-lg-2'>
+                    <%= link_to 'Restore Default', '#color', class: 'btn btn-default restore-default-color', data: { default_target: 'default_button_text_color' } %>
+                  </div>
+                </div>
+
+                <div class='row'>
+                  <div class='col-lg-10'>
+                    <%= f.input :active_tabs_background_color, required: false, input_html: { type: 'color', data: { default_value: dc['active_tabs_background_color'] } }  %>
+                  </div>
+                  <div class='col-lg-2'>
+                    <%= link_to 'Restore Default', '#color', class: 'btn btn-default restore-default-color', data: { default_target: 'active_tabs_background_color' } %>
+                  </div>
+                </div>
+
+                <div class='row'>
+                  <div class='col-lg-10'>
+                    <%= f.input :facet_panel_background_color, required: false, label: 'Search sidebar panel background color', input_html: { type: 'color', data: { default_value: dc['facet_panel_background_color'] } } %>
+                  </div>
+                  <div class='col-lg-2'>
+                    <%= link_to 'Restore Default', '#color', class: 'btn btn-default restore-default-color', data: { default_target: 'facet_panel_background_color' } %>
+                  </div>
+                </div>
+
+                <div class='row'>
+                  <div class='col-lg-10'>
+                    <%= f.input :facet_panel_text_color, required: false, label: 'Search sidebar panel text color', input_html: { type: 'color', data: { default_value: dc['facet_panel_text_color'] } } %>
+                  </div>
+                  <div class='col-lg-2'>
+                    <%= link_to 'Restore Default', '#color', class: 'btn btn-default restore-default-color', data: { default_target: 'facet_panel_text_color' } %>
+                  </div>
+                </div>
+
               </div>
               <div class="panel-footer">
+                <%= link_to 'Restore All Defaults', '#color', class: 'btn btn-default restore-all-default-colors' %>
                 <%= f.submit class: 'btn btn-primary pull-right' %>
               </div>
             <% end %>
@@ -159,12 +298,19 @@
         <div id="font" class="tab-pane">
           <div class="panel panel-default labels">
             <%= simple_form_for @form, url: admin_appearance_path do |f| %>
-              <div class="panel-body">
+              <div class="panel-body defaultable-fonts">
+                <% df = @form.class::DEFAULT_FONTS %>
                 <% font = f.object.body_font %>
-                <%= f.input :body_font, label: 'Select Body Font', required: false, input_html: { class: 'font-fields' } %>
-                <%= f.input :headline_font, label: 'Select Header Font', required: false %>
+
+                <%= f.input :body_font, label: 'Select Body Font', required: false, input_html: { class: 'font-fields', data: { default_value: df['body_font'] } } %>
+                <%= link_to 'Restore Default', '#font', class: 'btn btn-default restore-default-font', data: { default_target: 'body_font' } %>
+
+                <%= f.input :headline_font, label: 'Select Header Font', required: false, input_html: { class: 'font-fields', data: { default_value: df['headline_font'] } } %>
+                <%= link_to 'Restore Default', '#font', class: 'btn btn-default restore-default-font', data: { default_target: 'headline_font' } %>
+
               </div>
               <div class="panel-footer">
+                <%= link_to 'Restore All Defaults', '#font', class: 'btn btn-default restore-all-default-fonts' %>
                 <%= f.submit class: 'btn btn-primary pull-right' %>
               </div>
             <% end %>
@@ -188,7 +334,7 @@
                 </script>
               </div>
               <div class="panel-footer">
-                <%= f.submit class: 'btn btn-primary pull-right' %>
+                <%= f.submit class: 'btn btn-primary pull-right', data: { confirm: t('hyrax.admin.appearances.show.forms.custom_css.confirm') } %>
               </div>
             <% end %>
           </div>

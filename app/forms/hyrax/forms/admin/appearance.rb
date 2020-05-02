@@ -7,6 +7,33 @@ module Hyrax
       class Appearance
         extend ActiveModel::Naming
 
+        DEFAULT_FONTS = {
+          'body_font'     => 'Helvetica Neue, Helvetica, Arial, sans-serif;',
+          'headline_font' => 'Helvetica Neue, Helvetica, Arial, sans-serif;'
+        }.freeze
+
+        DEFAULT_COLORS = {
+          'header_background_color'          => '#3c3c3c',
+          'header_text_color'                => '#dcdcdc',
+          'searchbar_background_color'       => '#000000',
+          'searchbar_background_hover_color' => '#ffffff',
+          'searchbar_text_color'             => '#eeeeee',
+          'searchbar_text_hover_color'       => '#eeeeee',
+          'link_color'                       => '#2e74b2',
+          'link_hover_color'                 => '#215480',
+          'footer_link_color'                => '#ffebcd',
+          'footer_link_hover_color'          => '#ffffff',
+          'primary_button_background_color'  => '#286090',
+          'default_button_background_color'  => '#ffffff',
+          'default_button_border_color'      => '#cccccc',
+          'default_button_text_color'        => '#333333',
+          'active_tabs_background_color'     => '#337ab7',
+          'facet_panel_background_color'     => '#f5f5f5',
+          'facet_panel_text_color'           => '#333333'
+        }.freeze
+
+        DEFAULT_VALUES = DEFAULT_FONTS.merge(DEFAULT_COLORS).freeze
+
         # @param [Hash] attributes the list of parameters from the form
         def initialize(attributes = {})
           @attributes = attributes
@@ -37,27 +64,27 @@ module Hyrax
 
         # The font for the body copy
         def body_font
-          block_for('body_font', 'Helvetica Neue, Helvetica, Arial, sans-serif;')
+          block_for('body_font')
         end
 
         # The font for the headline copy
         def headline_font
-          block_for('headline_font', '"Helvetica Neue", Helvetica, Arial, sans-serif;')
+          block_for('headline_font')
         end
 
         # The color for the background of the header and footer bars
         def header_background_color
-          block_for('header_background_color', '#3c3c3c')
+          block_for('header_background_color')
         end
 
         # The color for the text in the header bar
         def header_text_color
-          block_for('header_text_color', '#dcdcdc')
+          block_for('header_text_color')
         end
 
         # The color for the background of the search navbar
         def searchbar_background_color
-          block_for('searchbar_background_color', '#000000')
+          block_for('searchbar_background_color')
         end
 
         def searchbar_background_color_alpha
@@ -69,7 +96,7 @@ module Hyrax
         end
 
         def searchbar_background_hover_color
-          block_for('searchbar_background_hover_color', '#ffffff')
+          block_for('searchbar_background_hover_color')
         end
 
         def searchbar_background_hover_color_alpha
@@ -77,16 +104,16 @@ module Hyrax
         end
 
         def searchbar_text_color
-          block_for('searchbar_text_color', '#eeeeee')
+          block_for('searchbar_text_color')
         end
 
         def searchbar_text_hover_color
-          block_for('searchbar_text_hover_color', '#eeeeee')
+          block_for('searchbar_text_hover_color')
         end
 
         # The color links
         def link_color
-          block_for('link_color', '#2e74b2')
+          block_for('link_color')
         end
 
         # The color for links when hover or focus state
@@ -96,18 +123,18 @@ module Hyrax
 
         # The color for links in the footer
         def footer_link_color
-          block_for('footer_link_color', '#ffebcd')
+          block_for('footer_link_color')
         end
 
         # The color for links when hover in the footer
         def footer_link_hover_color
-          block_for('footer_link_hover_color', '#ffffff')
+          block_for('footer_link_hover_color')
         end
 
         # PRIMARY BUTTON COLORS
         # The background color for "primary" buttons
         def primary_button_background_color
-          block_for('primary_button_background_color', '#286090')
+          block_for('primary_button_background_color')
         end
 
         # The border color for "primary" buttons
@@ -157,17 +184,17 @@ module Hyrax
 
         # The background color for "default" buttons
         def default_button_background_color
-          block_for('default_button_background_color', '#ffffff')
+          block_for('default_button_background_color')
         end
 
         # The border color for "default" buttons
         def default_button_border_color
-          block_for('default_button_border_color', '#cccccc')
+          block_for('default_button_border_color')
         end
 
         # The text color for "default" buttons
         def default_button_text_color
-          block_for('default_button_text_color', '#333333')
+          block_for('default_button_text_color')
         end
 
         # The mouse over color for "default" buttons
@@ -202,7 +229,7 @@ module Hyrax
 
         # The color for the background of the home page nav-pills tab with active class
         def active_tabs_background_color
-          block_for('active_tabs_background_color', '#337ab7')
+          block_for('active_tabs_background_color')
         end
 
         # The color for the border of navbar-inverse
@@ -212,12 +239,12 @@ module Hyrax
 
         # The color for the facet panel header background color
         def facet_panel_background_color
-          block_for('facet_panel_background_color', '#f5f5f5')
+          block_for('facet_panel_background_color')
         end
 
         # The color for the facet header text
         def facet_panel_text_color
-          block_for('facet_panel_text_color', '#333333')
+          block_for('facet_panel_text_color')
         end
 
         # The color for the facet borders
@@ -284,9 +311,9 @@ module Hyrax
             amount = 1.0 - adjustment
             hex_color = hex_color.delete('#')
             rgb = hex_color.scan(/../).map { |color| (color.to_i(16) * amount).round }
-          rgb[0] = (rgb[0].to_i * amount).round
-          rgb[1] = (rgb[1].to_i * amount).round
-          rgb[2] = (rgb[2].to_i * amount).round
+            rgb[0] = (rgb[0].to_i * amount).round
+            rgb[1] = (rgb[1].to_i * amount).round
+            rgb[2] = (rgb[2].to_i * amount).round
             format("#%02x%02x%02x", *rgb)
           end
 
@@ -296,10 +323,10 @@ module Hyrax
             "rgba(#{rgb[0]}, #{rgb[1]}, #{rgb[2]}, #{alpha})"
           end
 
-          def block_for(name, default_value)
+          def block_for(name, dynamic_default = nil)
             block = ContentBlock.find_by(name: name)
-            needs_default = block && block.value.present?
-            needs_default ? block.value : default_value
+            has_value = block && block.value.present?
+            has_value ? block.value : DEFAULT_VALUES[name] || dynamic_default
           end
 
           # Persist a key/value tuple as a ContentBlock

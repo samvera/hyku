@@ -125,6 +125,10 @@ en:
     admin:
       appearances:
         show:
+          custom_css_warning: "If your theming customizations don't appear to be applying correctly, verify that they aren't being overwritten by Custom CSS."
+          forms:
+            custom_css:
+              confirm: 'Custom CSS will always override other theming selections. Proceed?'
           hints:
             banner_image: 'To use an image as a masthead background, you should use an image (JPG, GIF or PNG) that is at least 120 pixels tall and 1200 pixels wide. For best results, use an image at least 1800 pixels wide.'
             logo_image: 'To use an image as the logo, you should use an image (JPG, GIF or PNG) that is no taller than the header and no wider than 400 pixels wide.'

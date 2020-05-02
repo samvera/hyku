@@ -253,3 +253,33 @@ footer.navbar {
     padding-left: 40px;
   }
 }
+
+.defaultable-fonts div[class$="_font"] {
+  margin-bottom: 0;
+}
+
+.defaultable-fonts div[class$="_font"] label {
+  display: block;
+}
+
+.defaultable-fonts div.font-select {
+  margin: 0 10px 10px 0;
+}
+
+a.restore-default-font, a.restore-default-color {
+  margin-bottom: 2em;
+}
+
+.defaultable-colors div[class$="_color"] {
+  margin-bottom: 0.75em;
+}
+
+@media (min-width: $screen-lg-min) {
+  a.restore-default-color {
+    margin-top: 2em;
+  }
+
+  .defaultable-colors div[class$="_color"] {
+    margin-bottom: 2em;
+  }
+}

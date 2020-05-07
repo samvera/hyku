@@ -6,12 +6,27 @@ class SitesController < ApplicationController
   def update
     # params.permit([:remove_banner_image, :remove_logo_image])
 
-    %i[remove_banner_image
-       remove_logo_image
-       remove_directory_image
-       remove_default_collection_image
-       remove_default_work_image].each do |key|
+    # Dynamic CarrierWave methods
+    remove_image_methods = %i[remove_banner_image
+                              remove_logo_image
+                              remove_directory_image
+                              remove_default_collection_image
+                              remove_default_work_image]
+
+    # JUST removes images from file system, does not update @site attrs
+    remove_image_methods.each do |key|
       @site.send("#{key}!") if params[key]
+    end
+
+    @site.save
+
+    if params['remove_default_collection_image']
+      # Reindex all Collections and AdminSets to fall back on Hyrax's default collection image
+      ReindexCollectionsJob.perform_later
+      ReindexAdminSetsJob.perform_later
+    elsif params['remove_default_work_image']
+      # Reindex all Works to fall back on Hyrax's default work image
+      ReindexWorksJob.perform_later
     end
 
     redirect_to hyrax.admin_appearance_path, notice: 'The appearance was successfully updated.'

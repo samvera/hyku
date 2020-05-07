@@ -66,14 +66,23 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
 
   config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.smtp_settings = {
+  #   :user_name => '419a091cfdc7a1',
+  #   :password => 'fa467350c817d2',
+  #   :address => 'smtp.mailtrap.io',
+  #   :domain => 'smtp.mailtrap.io',
+  #   :port => '2525',
+  #   :authentication => :cram_md5
+  # }
   config.action_mailer.smtp_settings = {
-    :user_name => '419a091cfdc7a1',
-    :password => 'fa467350c817d2',
-    :address => 'smtp.mailtrap.io',
-    :domain => 'smtp.mailtrap.io',
-    :port => '2525',
-    :authentication => :cram_md5
+    :address => "email-smtp.us-west-2.amazonaws.com",
+    :port => 587,
+    :user_name => ENV["SMTP_USERNAME"], #Your SMTP user
+    :password => ENV["SMTP_PASSWORD"], #Your SMTP password
+    :authentication => :login,
+    :enable_starttls_auto => true
   }
+
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.

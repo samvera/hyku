@@ -833,8 +833,8 @@ en:
         tab_label: Recently Uploaded
         title: Recently Uploaded
     icons:
-      collection: fa fa-bomb
-      default: fa fa-bomb
+      collection: fa fa-cubes
+      default: fa fa-cube
     leases:
       edit:
         header:

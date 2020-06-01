@@ -1,3 +1,4 @@
+// Colors form
 $(document).on('turbolinks:load', function() {
   $('div.defaultable-colors a.restore-default-color').click(function(e) {
     e.preventDefault()

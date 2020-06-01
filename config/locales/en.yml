@@ -125,15 +125,19 @@ en:
     admin:
       appearances:
         show:
-          custom_css_warning: "If your theming customizations don't appear to be applying correctly, verify that they aren't being overwritten by Custom CSS."
           forms:
+            banner_image:
+              hint: 'To use an image as a masthead background, you should use an image (JPG, GIF or PNG) that is at least 120 pixels tall and 1200 pixels wide. For best results, use an image at least 1800 pixels wide.'
             custom_css:
               confirm: 'Custom CSS will always override other theming selections. Proceed?'
-          hints:
-            banner_image: 'To use an image as a masthead background, you should use an image (JPG, GIF or PNG) that is at least 120 pixels tall and 1200 pixels wide. For best results, use an image at least 1800 pixels wide.'
-            logo_image: 'To use an image as the logo, you should use an image (JPG, GIF or PNG) that is no taller than the header and no wider than 400 pixels wide.'
-            directory_image: 'To use an image as the directory image, you should use an image (JPG, GIF or PNG) that is no taller than the header and no wider than 400 pixels wide.'
-            default_image: 'For default images, you should use an image (JPG, GIF or PNG) that has equal height and width dimensions (100 pixels wide and 100 pixels tall)'
+              warning: "If your theming customizations don't appear to be applying correctly, verify that they aren't being overwritten by Custom CSS."
+            default_images:
+              alert: 'Please upload at least one file before submitting.'
+              hint: 'For default images, you should use an image (JPG, GIF or PNG) that has equal height and width dimensions (100 pixels wide and 100 pixels tall)'
+            directory_image:
+              hint: 'To use an image as the directory image, you should use an image (JPG, GIF or PNG) that is no taller than the header and no wider than 400 pixels wide.'
+            logo_image:
+              hint: 'To use an image as the logo, you should use an image (JPG, GIF or PNG) that is no taller than the header and no wider than 400 pixels wide.'
           tabs:
             banner_image: 'Banner Image'
             directory_image: 'Directory Image'

@@ -14,7 +14,7 @@ module Hyrax
         @form = form_class.new
         @fonts = [@form.headline_font, @form.body_font]
 
-        flash[:alert] = t('hyrax.admin.appearances.show.custom_css_warning')
+        flash[:alert] = t('hyrax.admin.appearances.show.forms.custom_css.warning')
       end
 
       def update

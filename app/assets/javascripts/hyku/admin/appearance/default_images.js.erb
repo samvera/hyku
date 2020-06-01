@@ -1,0 +1,24 @@
+// Default Images form
+$(document).on('turbolinks:load', function() {
+  $('#default_images .panel-footer input[name="commit"]').click(function(e) {
+    // Prevent ActionController::ParameterMissing error by not
+    // allowing a blank form to be submit. Blank inputs are allowed,
+    // as long as at least one input has a value.
+    if (inputsWithValueCount() < 1) {
+      e.preventDefault()
+      // TODO: non-english i18n translations don't appear to be functioning properly, fix
+      alert('<%= I18n.t('hyrax.admin.appearances.show.forms.default_images.alert') %>')
+    }
+  })
+
+  function inputsWithValueCount() {
+    var inputsWithValue = []
+    var inputs = $('#default_images input[type="file"]')
+
+    inputs.each(function() {
+      if ($(this).val().length > 0) { inputsWithValue.push($(this)) }
+    })
+
+    return inputsWithValue.length
+  }
+});

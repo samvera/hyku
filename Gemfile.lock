@@ -921,7 +921,7 @@ GEM
       hashdiff
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
-    websocket-extensions (0.1.4)
+    websocket-extensions (0.1.5)
     xml-simple (1.1.5)
     xpath (2.1.0)
       nokogiri (~> 1.3)

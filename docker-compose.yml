@@ -106,7 +106,6 @@ services:
       - SETTINGS__ZOOKEEPER__CONNECTION_STR=zookeeper_cluster:2181/configs
       - SOLR_URL=http://solr:8983/solr/
       - PASSENGER_APP_ENV=development
-      - RAILS_ENV=development
     volumes:
       - app:/home/app/webapp/tmp/uploads
       - assets:/home/app/webapp/public/assets

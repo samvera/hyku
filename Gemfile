@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.1.1'
+gem 'rails', '~> 5.2.4', '>= 5.2.4.3'
 
 gem 'activerecord-nulldb-adapter'
 # Use sqlite3 as the database for Active Record
@@ -43,7 +43,7 @@ group :development, :test do
   gem 'rspec'
   gem 'rspec-rails', '>= 3.6.0'
 
-  gem 'coveralls', require: false
+  gem 'coveralls', '~> 0.8', '>= 0.8.23', require: false
   gem 'simplecov', require: false
 
   gem 'fcrepo_wrapper', '~> 0.4'
@@ -85,7 +85,8 @@ gem 'willow_sword', git: 'https://github.com/notch8/willow_sword.git'
 gem 'blacklight', '~> 6.7'
 gem 'blacklight_oai_provider', '~> 6.0'
 
-gem 'hyrax', '~> 2.5.1'
+gem 'hyrax', '~> 2.8'
+
 gem 'rsolr', '~> 2.0'
 
 gem 'devise'
@@ -94,7 +95,7 @@ gem 'devise-i18n'
 gem 'devise_invitable', '~> 1.6'
 
 gem 'apartment'
-gem 'config', '~> 1.5', '>= 1.5.1'
+gem 'config', '~> 2.2', '>= 2.2.1'
 gem 'is_it_working'
 gem 'rolify'
 
@@ -106,11 +107,11 @@ gem 'zk'
 gem 'mods', '~> 2.4'
 
 group :aws, :test do
-  gem 'carrierwave-aws'
+  gem 'carrierwave-aws', '~> 1.3'
 end
 
 group :aws do
-  gem 'active_elastic_job', '~> 2.0'
+  gem 'active_elastic_job', github: 'tawan/active-elastic-job'
 end
 
 gem 'sidekiq'

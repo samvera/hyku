@@ -14,5 +14,4 @@ SecureHeaders::Configuration.default do |config|
   config.x_permitted_cross_domain_policies = "none"
   config.referrer_policy = "origin-when-cross-origin"
   config.csp = SecureHeaders::OPT_OUT
-  config.hpkp = SecureHeaders::OPT_OUT
 end

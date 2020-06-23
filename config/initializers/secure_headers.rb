@@ -1,6 +1,6 @@
 SecureHeaders::Configuration.default do |config|
   config.cookies = {
-    secure: ActiveRecord::Type::Boolean.new.cast(Settings.ssl_configured),
+    secure: ActiveRecord::Type::Boolean.new.cast(Settings.ssl_configured) || SecureHeaders::OPT_OUT,
     httponly: true, # mark all cookies as "HttpOnly"
     samesite: {
       strict: true # mark all cookies as SameSite=Strict
@@ -14,5 +14,4 @@ SecureHeaders::Configuration.default do |config|
   config.x_permitted_cross_domain_policies = "none"
   config.referrer_policy = "origin-when-cross-origin"
   config.csp = SecureHeaders::OPT_OUT
-  config.hpkp = SecureHeaders::OPT_OUT
 end

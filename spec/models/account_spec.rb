@@ -78,12 +78,14 @@ RSpec.describe Account, type: :model do
   end
 
   describe '#switch!' do
+    subject { described_class.new }
+
     let!(:old_default_index) { Blacklight.default_index }
 
     before do
-      subject.build_solr_endpoint.update(url: 'http://example.com/solr/')
-      subject.build_fcrepo_endpoint.update(url: 'http://example.com/fedora', base_path: '/dev')
-      subject.build_redis_endpoint.update(namespace: 'foobaz')
+      subject.build_solr_endpoint(url: 'http://example.com/solr/')
+      subject.build_fcrepo_endpoint(url: 'http://example.com/fedora', base_path: '/dev')
+      subject.build_redis_endpoint(namespace: 'foobaz')
       subject.switch!
     end
 
@@ -110,14 +112,16 @@ RSpec.describe Account, type: :model do
   end
 
   describe '#switch' do
+    subject { described_class.new }
+
     let!(:previous_solr_url) { ActiveFedora::SolrService.instance.conn.uri.to_s }
     let!(:previous_redis_namespace) { 'hyku' }
     let!(:previous_fedora_host) { ActiveFedora.fedora.host }
 
     before do
-      subject.build_solr_endpoint.update(url: 'http://example.com/solr/')
-      subject.build_fcrepo_endpoint.update(url: 'http://example.com/fedora', base_path: '/dev')
-      subject.build_redis_endpoint.update(namespace: 'foobaz')
+      subject.build_solr_endpoint(url: 'http://example.com/solr/')
+      subject.build_fcrepo_endpoint(url: 'http://example.com/fedora', base_path: '/dev')
+      subject.build_redis_endpoint(namespace: 'foobaz')
     end
 
     after do
@@ -248,7 +252,7 @@ RSpec.describe Account, type: :model do
     end
 
     describe 'guarantees only one account can reference the same' do
-      let(:endpoint) { SolrEndpoint.new(url: 'solr') }
+      let(:endpoint) { SolrEndpoint.create(url: 'solr') }
       let!(:account1) { described_class.create(name: 'example', solr_endpoint: endpoint) }
 
       it 'solr_endpoint' do

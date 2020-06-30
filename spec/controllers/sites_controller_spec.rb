@@ -48,6 +48,23 @@ RSpec.describe SitesController, type: :controller, singletenant: true do
         expect(flash[:notice]).to include("The appearance was successfully updated")
         expect(Site.instance.directory_image?).to be false
       end
+
+      context 'when update fails' do
+        let(:site) { Site.instance }
+
+        before do
+          allow(Site).to receive(:instance).and_return(site)
+          allow(site).to receive(:update).and_return(false)
+        end
+
+        it "#update with remove_directory_image sets error flash" do
+          expect(Site.instance.directory_image?).to be true
+          post :update, params: { id: Site.instance.id, remove_directory_image: 'Remove directory image' }
+          expect(response).to redirect_to('/admin/appearance?locale=en')
+          expect(flash[:error]).to include("Updating the appearance was unsuccessful")
+          expect(Site.instance.directory_image?).to be true
+        end
+      end
     end
   end
 end

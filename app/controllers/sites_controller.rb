@@ -4,21 +4,25 @@ class SitesController < ApplicationController
   layout 'hyrax/dashboard'
 
   def update
-    # params.permit([:remove_banner_image, :remove_logo_image])
-    %i[remove_banner_image
-       remove_logo_image
-       remove_directory_image
-       remove_default_collection_image
-       remove_default_work_image].each do |key|
-      @site.send("#{key}!") if params[key]
+    # FIXME: Pull these strings out to i18n locale
+    if @site.update(update_params)
+      redirect_to hyrax.admin_appearance_path, notice: 'The appearance was successfully updated.'
+    else
+      redirect_to hyrax.admin_appearance_path, flash: { error: 'Updating the appearance was unsuccessful.' }
     end
-
-    redirect_to hyrax.admin_appearance_path, notice: 'The appearance was successfully updated.'
   end
 
   private
 
     def set_site
       @site ||= Site.instance
+    end
+
+    def update_params
+      params.permit(:remove_banner_image,
+                    :remove_logo_image,
+                    :remove_directory_image,
+                    :remove_default_collection_image,
+                    :remove_default_work_image)
     end
 end

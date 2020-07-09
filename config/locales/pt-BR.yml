@@ -10,23 +10,23 @@ pt-BR:
     search:
       fields:
         facet:
-          contributor_sim: "Contribuinte"
-          human_readable_type_sim: 'Tipo'
-          member_of_collections_sim: "Colecções"
-          resource_type_sim: 'Tipo de recurso'
+          contributor_sim: Contribuinte
+          human_readable_type_sim: Tipo
+          member_of_collections_sim: Colecções
+          resource_type_sim: Tipo de recurso
         index:
-          audience_tesim: "Público"
-          date_tesim: 'Encontro'
-          description_tesim: 'Descrição'
-          depositor_tesim: 'proprietário'
-          discipline_tesim: "Disciplina"
-          education_level_tesim: "Nível de educação"
-          learning_resource_type_tesim: "Tipo de recurso de aprendizagem"
-          license_tesim: 'licença'
-          resource_type_tesim: 'Tipo'
-          rights_statement_tesim: 'Declaração de direitos'
+          audience_tesim: Público
+          date_tesim: Encontro
+          depositor_tesim: proprietário
+          discipline_tesim: Disciplina
+          education_level_tesim: Nível de educação
+          learning_resource_type_tesim: Tipo de recurso de aprendizagem
+          license: Licença
+          license_tesim: licença
+          resource_type_tesim: Tipo
+          rights_statement_tesim: Declaração de direitos
         show:
-          additional_information: "Informações adicionais sobre direitos"
+          additional_information: Informações adicionais sobre direitos
   helpers:
     action:
       become: Tornar-se
@@ -60,7 +60,7 @@ pt-BR:
             submit: Remover
           search:
             clear: Restabelecer
-        describe_quantity_html: "Existem <b>grupos</b> %{number} neste repositório."
+        describe_quantity_html: Existem <b>grupos</b> %{number} neste repositório.
         describe_singular_quantity_html: Há <b>um grupo</b> neste repositório.
         flash:
           create:
@@ -94,6 +94,7 @@ pt-BR:
           new: Novo grupo
           remove: Remover grupo
       title: Administração
+      work_types: Tipos de trabalho disponíveis
     footer:
       admin_login: Login do administrador
     proprietor:
@@ -125,16 +126,30 @@ pt-BR:
     admin:
       appearances:
         show:
+          forms:
+            banner_image:
+              hint: Para usar uma imagem como plano de fundo do cabeçalho, você deve usar uma imagem (JPG, GIF ou PNG) com pelo menos 120 pixels de altura e 1200 pixels de largura. Para obter melhores resultados, use uma imagem com pelo menos 1800 pixels de largura.
+            custom_css:
+              confirm: CSS personalizado sempre substituirá outras seleções de temas. Continuar?
+              warning: Se suas personalizações de temas não parecem estar sendo aplicadas corretamente, verifique se elas não estão sendo substituídas pelo CSS personalizado.
+            default_images:
+              alert: Faça upload de pelo menos um arquivo antes de enviar.
+              hint: Para imagens padrão, você deve usar uma imagem (JPG, GIF ou PNG) que tenha dimensões iguais de altura e largura (100 pixels de largura e 100 pixels de altura)
+            directory_image:
+              hint: Para usar uma imagem como imagem do diretório, use uma imagem (JPG, GIF ou PNG) que não seja mais alta que o cabeçalho e que não tenha mais que 400 pixels de largura.
+            logo_image:
+              hint: Para usar uma imagem como logotipo, use uma imagem (JPG, GIF ou PNG) que não seja mais alta que o cabeçalho e que não tenha mais que 400 pixels de largura.
           hints:
             banner_image: Para usar uma imagem como um fundo de masthead, você deve usar uma imagem (JPG, GIF ou PNG) com pelo menos 120 pixels de altura e 1200 pixels de largura. Para obter melhores resultados, use uma imagem de pelo menos 1800 pixels de largura.
-            logo_image: Para usar uma imagem como logotipo, você deve usar uma imagem (JPG, GIF ou PNG) que não seja mais alta que o cabeçalho e não tenha mais de 400 pixels de largura.
-            directory_image: Para usar uma imagem como a imagem de diretório, você deve usar uma imagem (JPG, GIF ou PNG) que não seja mais alta que o cabeçalho e não tenha mais de 400 pixels de largura.
             default_image: Para imagens padrão, você deve usar uma imagem (JPG, GIF ou PNG) que tenha dimensões de altura e largura iguais (100 pixels de largura e 100 pixels de altura)
+            directory_image: Para usar uma imagem como a imagem de diretório, você deve usar uma imagem (JPG, GIF ou PNG) que não seja mais alta que o cabeçalho e não tenha mais de 400 pixels de largura.
+            logo_image: Para usar uma imagem como logotipo, você deve usar uma imagem (JPG, GIF ou PNG) que não seja mais alta que o cabeçalho e não tenha mais de 400 pixels de largura.
           tabs:
             banner_image: Imagem do banner
-            directory_image: Imagem do diretório
-            default_images: Imagens padrão
             colors: Cores
+            custom_css: CSS customizado
+            default_images: Imagens padrão
+            directory_image: Imagem do diretório
             fonts: Fontes
       sidebar:
         accounts: Contas
@@ -159,45 +174,51 @@ pt-BR:
   proprietor:
     accounts:
       edit:
-        fcrepo_endpoint: Fedora Endpoint
+        fcrepo_endpoint: Ponto de extremidade do Fedora
         header: Editando conta
-        solr_endpoint: Solr Endpoint
+        solr_endpoint: Ponto final do Solr
       index:
         cname: CNAME
-        confirm_delete: Tem certeza de que deseja excluir esse repositório?
+        confirm_delete: Tem certeza de que deseja excluir este repositório? TODAS AS COLEÇÕES E TRABALHOS dentro deste repositório serão EXCLUÍDOS PERMANENTEMENTE
         create_new: Criar nova conta
         header: Contas
         manage: Gerir
-        tenant: Inquilino (UUID)
+        tenant: Locatário (UUID)
       new:
         header: Crie um novo repositório
       show:
         add: Adicionar
         current_admins:
           actions: Açao
-          email: Endereço de e-mail
-          header: Administradores de contas atuais
           all_users: Todos os usuários
-          no_admins: Nenhum administrador existe
+          email: Endereço de e-mail
+          header: Administradores de conta corrente
+          no_admins: Não existem administradores
         edit: Editar conta
-        header: Gerenciar Conta
+        header: Gerenciar conta
         remove: Remover
         update: Atualizar
-  proprietor:
     users:
+      edit:
+        header: Editar usuário
       index:
+        actions: Ações
+        affiliation: Afiliação
+        confirm_delete: Tem certeza de que deseja excluir este usuário?
         create_new: Crie um novo
-        email: Email
-        display_name: Mostrar nome
         department: Departamento
+        display_name: Mostrar nome
+        email: Email
+        header: Gerenciar usuários
         manage: Gerir
         title: Título
-        affiliation: Afiliação
-        actions: Ações
+      new:
+        header: Crie um novo usuário
       show:
         add: Adicionar
-        update: Atualizar
         edit: Editar
+        header: Gerenciar usuário
+        update: Atualizar
   status:
     index:
       services: Serviços

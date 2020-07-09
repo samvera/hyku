@@ -7,6 +7,7 @@ pt-BR:
         facet:
           based_near_label_sim: Localização
           creator_sim: O Criador
+          depositor_ssim: Depositante
           file_format_sim: Formato
           generic_type_sim: Tipo
           keyword_sim: Palavra-chave

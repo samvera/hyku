@@ -96,7 +96,7 @@
           </div>
         </div>
 
-        <div id="default_images" class="tab-pane">
+        <div id="default_images" class="tab-pane" data-alert="<%= I18n.t('hyrax.admin.appearances.show.forms.default_images.alert') %>">
           <div class="panel panel-default labels">
             <%= simple_form_for @form, url: admin_appearance_path do |f| %>
               <div class="panel-body">

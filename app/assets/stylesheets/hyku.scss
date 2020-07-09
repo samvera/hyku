@@ -83,14 +83,15 @@ footer.navbar {
   padding: 20px 0 50px;
 
   .grid-row {
-    margin-left: auto;
-    margin-right: auto;
+    display: flex;
+    flex-wrap: wrap;
   }
-
+  
   .grid-item {
     padding-left: 40px;
     padding-right: 40px;
     text-align: center;
+    width: 33.33%;
   }
 
   .heading {
@@ -287,3 +288,20 @@ a.restore-default-font, a.restore-default-color {
 #default_images .panel-footer form {
   display: inline-block;
 }
+
+@media (max-width: $screen-md-min) {
+  .product-features {
+    .grid-item {
+      width: 50%;
+    }
+  }
+}
+
+@media (max-width: $screen-sm-min) {
+  .product-features {
+    .grid-item {
+      width: 100%;
+    }
+  }
+}
+

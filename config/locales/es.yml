@@ -10,23 +10,23 @@ es:
     search:
       fields:
         facet:
-          contributor_sim: "Contribuyente"
-          human_readable_type_sim: 'Tipo'
-          member_of_collections_sim: "Colecciones"
-          resource_type_sim: 'Tipo de recurso'
+          contributor_sim: Contribuyente
+          human_readable_type_sim: Tipo
+          member_of_collections_sim: Colecciones
+          resource_type_sim: Tipo de recurso
         index:
-          audience_tesim: "Audiencia"
-          date_tesim: 'Fecha'
-          description_tesim: 'Descripción'
-          depositor_tesim: 'Propietario'
-          discipline_tesim: "Disciplina"
-          education_level_tesim: "Nivel de Educación"
-          learning_resource_type_tesim: "Tipo de recurso de aprendizaje"
-          license_tesim: 'Licencia'
-          resource_type_tesim: 'Tipo de recurso' 
-          rights_statement_tesim: 'Declaración de derechos'
+          audience_tesim: Audiencia
+          date_tesim: Fecha
+          depositor_tesim: Propietario
+          discipline_tesim: Disciplina
+          education_level_tesim: Nivel de Educación
+          learning_resource_type_tesim: Tipo de recurso de aprendizaje
+          license: Licencia
+          license_tesim: Licencia
+          resource_type_tesim: Tipo de recurso
+          rights_statement_tesim: Declaración de derechos
         show:
-          additional_information: "Información adicional de derechos"
+          additional_information: Información adicional de derechos
   helpers:
     action:
       become: Volverse
@@ -94,6 +94,7 @@ es:
           new: Nuevo grupo
           remove: Eliminar grupo
       title: Administración
+      work_types: Tipos de trabajo disponibles
     footer:
       admin_login: Acceso del administrador
     proprietor:
@@ -126,19 +127,29 @@ es:
       appearances:
         show:
           forms:
+            banner_image:
+              hint: Para usar una imagen como fondo de cabecera, debe usar una imagen (JPG, GIF o PNG) que tenga al menos 120 píxeles de alto y 1200 píxeles de ancho. Para obtener mejores resultados, use una imagen de al menos 1800 píxeles de ancho.
+            custom_css:
+              confirm: CSS personalizado siempre anulará otras selecciones de temas. ¿Continuar?
+              warning: Si sus personalizaciones de temas no parecen aplicarse correctamente, verifique que CSS personalizado no las sobrescriba.
             default_images:
-              alert: 'Cargue al menos un archivo antes de enviarlo.'
+              alert: Cargue al menos un archivo antes de enviarlo.
+              hint: Para las imágenes predeterminadas, debe usar una imagen (JPG, GIF o PNG) que tenga las mismas dimensiones de alto y ancho (100 píxeles de ancho y 100 píxeles de alto)
+            directory_image:
+              hint: Para usar una imagen como imagen de directorio, debe usar una imagen (JPG, GIF o PNG) que no sea más alta que el encabezado ni más ancha que 400 píxeles de ancho.
+            logo_image:
+              hint: Para usar una imagen como logotipo, debe usar una imagen (JPG, GIF o PNG) que no sea más alta que el encabezado ni más ancha que 400 píxeles de ancho.
           hints:
             banner_image: Para utilizar una imagen como fondo de masthead, debe utilizar una imagen (JPG, GIF o PNG) que tenga al menos 120 píxeles de alto y 1200 píxeles de ancho. Para obtener mejores resultados, utilice una imagen de al menos 1800 píxeles de ancho.
-            logo_image: Para usar una imagen como logotipo, debe usar una imagen (JPG, GIF o PNG) que no sea más alta que el encabezado y que no tenga más de 400 píxeles de ancho.
-            directory_image: Para usar una imagen como la imagen del directorio, debe usar una imagen (JPG, GIF o PNG) que no sea más alta que el encabezado y que no tenga más de 400 píxeles de ancho.
             default_image: Para las imágenes predeterminadas, debe usar una imagen (JPG, GIF o PNG) que tenga las mismas dimensiones de alto y ancho (100 píxeles de ancho y 100 píxeles de alto)
+            directory_image: Para usar una imagen como la imagen del directorio, debe usar una imagen (JPG, GIF o PNG) que no sea más alta que el encabezado y que no tenga más de 400 píxeles de ancho.
+            logo_image: Para usar una imagen como logotipo, debe usar una imagen (JPG, GIF o PNG) que no sea más alta que el encabezado y que no tenga más de 400 píxeles de ancho.
           tabs:
             banner_image: Imagen de la Bandera
-            directory_image: Imagen de directorio
-            default_images: Imágenes predeterminadas
             colors: Colores
             custom_css: Personnaliser CSS
+            default_images: Imágenes predeterminadas
+            directory_image: Imagen de directorio
             fonts: Fuentes
       sidebar:
         accounts: Cuentas
@@ -163,45 +174,51 @@ es:
   proprietor:
     accounts:
       edit:
-        fcrepo_endpoint: Fedora punto final
-        header: Editar cuenta
-        solr_endpoint: Solr punto final
+        fcrepo_endpoint: Punto final de Fedora
+        header: Cuenta de edición
+        solr_endpoint: Punto final de Solr
       index:
         cname: CNAME
-        confirm_delete: "¿Está seguro de que desea eliminar este repositorio?"
+        confirm_delete: "¿Estás seguro de que deseas eliminar este repositorio? TODAS LAS COLECCIONES Y TRABAJOS dentro de este repositorio se BORRARÁN PERMANENTEMENTE"
         create_new: Crear una nueva cuenta
         header: Cuentas
         manage: Gestionar
         tenant: Inquilino (UUID)
       new:
-        header: Crear un nuevo repositorio
+        header: Crea un nuevo repositorio
       show:
         add: Añadir
         current_admins:
           actions: Acción
+          all_users: Todos los usuarios
           email: Dirección de correo electrónico
-          header: Administradores de cuentas actuales
-          all_users: Todos Los Usuarios
+          header: Administradores de cuenta corriente
           no_admins: No existen administradores
         edit: Editar cuenta
         header: Administrar cuenta
-        remove: Retirar
+        remove: Eliminar
         update: Actualizar
-  proprietor:
     users:
+      edit:
+        header: editar usuario
       index:
+        actions: Comportamiento
+        affiliation: Afiliación
+        confirm_delete: "¿Estás seguro de que deseas eliminar a este usuario?"
         create_new: Crear nuevo
-        email: Email
-        display_name: Nombre para mostrar
         department: Departamento
+        display_name: Nombre para mostrar
+        email: Email
+        header: Administrar usuarios
         manage: Gestionar
         title: Título
-        affiliation: Afiliación
-        actions: Comportamiento
+      new:
+        header: Crea un nuevo usuario
       show:
         add: Añadir
-        update: Actualizar
         edit: Editar
+        header: Administrar usuario
+        update: Actualizar
   status:
     index:
       services: Servicios

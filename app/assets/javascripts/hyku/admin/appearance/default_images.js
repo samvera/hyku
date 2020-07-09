@@ -6,8 +6,7 @@ $(document).on('turbolinks:load', function() {
     // as long as at least one input has a value.
     if (inputsWithValueCount() < 1) {
       e.preventDefault()
-      // TODO: non-english i18n translations don't appear to be functioning properly, fix
-      alert('<%= I18n.t('hyrax.admin.appearances.show.forms.default_images.alert') %>')
+      alert($('[data-alert]').data('alert'))
     }
   })
 

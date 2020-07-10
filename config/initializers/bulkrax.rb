@@ -6,6 +6,10 @@ Bulkrax.setup do |config|
   #   { name: 'MODS - My Local MODS parser', class_name: 'Bulkrax::ModsXmlParser', partial: 'mods_fields' },
   # ]
 
+  config.parsers += [
+    { name: 'CSV - Open Educational Resources (OER)', class_name: 'Bulkrax::OerCsvParser', partial: 'oer_csv_fields' }
+  ]
+
   # Field to use during import to identify if the Work or Collection already exists.
   # Default is 'source'.
   # config.system_identifier_field = 'source'
@@ -47,10 +51,18 @@ Bulkrax.setup do |config|
   #   config.field_mappings = {
   #     "Bulkrax::OaiDcParser" => { **individual field mappings go here*** }
   #   }
+  config.field_mappings['Bulkrax::OerCsvParser'] = {
+    'file' => { from: ['item'], split: true },
+    'resource_type' => { from: ['type'], split: true },
+    'subject' => { from: ['subject'], split: true }
+  }
 
   # Add to, or change existing mappings as follows
   #   e.g. to exclude date
   #   config.field_mappings["Bulkrax::OaiDcParser"]["date"] = { from: ["date"], excluded: true  }
+  #
+  # Bulkrax::CsvParser - field_mapping adjustments
+  config.field_mappings['Bulkrax::CsvParser']['publisher'] = { from: ['publisher'], split: true }
 
   # To duplicate a set of mappings from one parser to another
   #   config.field_mappings["Bulkrax::OaiOmekaParser"] = {}

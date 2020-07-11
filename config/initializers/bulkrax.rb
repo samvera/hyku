@@ -51,6 +51,17 @@ Bulkrax.setup do |config|
   #   config.field_mappings = {
   #     "Bulkrax::OaiDcParser" => { **individual field mappings go here*** }
   #   }
+  config.field_mappings['Bulkrax::CsvParser'] = {
+    'title' => { from: ['title'], split: true },
+    'creator' => { from: ['creator'], split: true },
+    'description' => { from: ['description'], split: true },
+    'subject' => { from: ['subject'], split: true },
+    'license' => { from: ['license'], split: '\|' },
+    'language' => { from: ['language'], split: true },
+    'resource_type' => { from: ['type'], split: true },
+    'file' => { from: ['item'], split: true }
+  }
+
   config.field_mappings['Bulkrax::OerCsvParser'] = {
     'title' => { from: ['title'], split: true },
     'creator' => { from: ['creator'], split: true },

@@ -52,9 +52,22 @@ Bulkrax.setup do |config|
   #     "Bulkrax::OaiDcParser" => { **individual field mappings go here*** }
   #   }
   config.field_mappings['Bulkrax::OerCsvParser'] = {
-    'file' => { from: ['item'], split: true },
+    'title' => { from: ['title'], split: true },
+    'creator' => { from: ['creator'], split: true },
+    'learning_resource_type' => { from: ['learning_resource_type'], split: true },
+    'education_level' => { from: ['education_level'], split: true },
+    'audience' => { from: ['audience'], split: true },
+    'discipline' => { from: ['discipline'], split: true },
+    'date' => { from: ['date'], split: true },
+    'description' => { from: ['description'], split: true },
+    'subject' => { from: ['subject'], split: true },
+    'license' => { from: ['license'], split: '\|' },
+    'rights_holder' => { from: ['rights_holder'], split: true },
+    'language' => { from: ['language'], split: true },
     'resource_type' => { from: ['type'], split: true },
-    'subject' => { from: ['subject'], split: true }
+    'accessibility_feature' => { from: ['accessibility_feature'], split: true },
+    'accessibility_hazard' => { from: ['accessibility_hazard'], split: true },
+    'file' => { from: ['item'], split: true }
   }
 
   # Add to, or change existing mappings as follows

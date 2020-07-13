@@ -98,7 +98,7 @@ services:
       - REDIS_HOST=redis
       - SECRET_KEY_BASE=asdf
       - SETTINGS__ACTIVE_JOB__QUEUE_ADAPTER=sidekiq
-      - SETTINGS__BULKRAX__ENABLED=false
+      - SETTINGS__BULKRAX__ENABLED=true
       - SETTINGS__FITS_PATH=/opt/fits/fits.sh
       # Comment out these 5 for single tenancy / Uncomment for multi
       - SETTINGS__MULTITENANCY__ADMIN_HOST=pals.docker

@@ -6,6 +6,10 @@ Bulkrax.setup do |config|
   #   { name: 'MODS - My Local MODS parser', class_name: 'Bulkrax::ModsXmlParser', partial: 'mods_fields' },
   # ]
 
+  config.parsers += [
+    { name: 'CSV - Open Educational Resources (OER)', class_name: 'Bulkrax::OerCsvParser', partial: 'oer_csv_fields' }
+  ]
+
   # Field to use during import to identify if the Work or Collection already exists.
   # Default is 'source'.
   # config.system_identifier_field = 'source'
@@ -47,10 +51,42 @@ Bulkrax.setup do |config|
   #   config.field_mappings = {
   #     "Bulkrax::OaiDcParser" => { **individual field mappings go here*** }
   #   }
+  config.field_mappings['Bulkrax::CsvParser'] = {
+    'title' => { from: ['title'], split: true },
+    'creator' => { from: ['creator'], split: true },
+    'description' => { from: ['description'], split: true },
+    'subject' => { from: ['subject'], split: true },
+    'license' => { from: ['license'], split: '\|' },
+    'language' => { from: ['language'], split: true },
+    'resource_type' => { from: ['type'], split: true },
+    'file' => { from: ['item'], split: true }
+  }
+
+  config.field_mappings['Bulkrax::OerCsvParser'] = {
+    'title' => { from: ['title'], split: true },
+    'creator' => { from: ['creator'], split: true },
+    'learning_resource_type' => { from: ['learning_resource_type'], split: true },
+    'education_level' => { from: ['education_level'], split: true },
+    'audience' => { from: ['audience'], split: true },
+    'discipline' => { from: ['discipline'], split: true },
+    'date' => { from: ['date'], split: true },
+    'description' => { from: ['description'], split: true },
+    'subject' => { from: ['subject'], split: true },
+    'license' => { from: ['license'], split: '\|' },
+    'rights_holder' => { from: ['rights_holder'], split: true },
+    'language' => { from: ['language'], split: true },
+    'resource_type' => { from: ['type'], split: true },
+    'accessibility_feature' => { from: ['accessibility_feature'], split: true },
+    'accessibility_hazard' => { from: ['accessibility_hazard'], split: true },
+    'file' => { from: ['item'], split: true }
+  }
 
   # Add to, or change existing mappings as follows
   #   e.g. to exclude date
   #   config.field_mappings["Bulkrax::OaiDcParser"]["date"] = { from: ["date"], excluded: true  }
+  #
+  # Bulkrax::CsvParser - field_mapping adjustments
+  config.field_mappings['Bulkrax::CsvParser']['publisher'] = { from: ['publisher'], split: true }
 
   # To duplicate a set of mappings from one parser to another
   #   config.field_mappings["Bulkrax::OaiOmekaParser"] = {}

@@ -1,0 +1,39 @@
+<div class='oer_csv_fields'>
+
+  <%= fi.input :visibility,
+    collection: [
+      ['Public', 'open'],
+      ['Private', 'restricted']
+    ],
+    selected: importer.parser_fields['visibility'] || 'open',
+    input_html: { class: 'form-control' }
+  %>
+
+  <% rights_statements = Hyrax.config.rights_statement_service_class.new %>
+  <%= fi.input :rights_statement,
+        collection: rights_statements.select_active_options,
+        selected: importer.parser_fields['rights_statement'],
+        include_blank: true,
+        item_helper: rights_statements.method(:include_current_value),
+        input_html: { class: 'form-control' },
+        required: false
+        %>
+  <%= fi.input :override_rights_statement, as: :boolean, hint: 'If checked, always use the selected rights statment. If unchecked, use rights or rights_statement from the record and only use the provided value if dc:rights is blank.', input_html: { checked: (importer.parser_fields['override_rights_statement'] == "1") } %>
+
+  <h4>Add CSV File to Import:</h4>
+  <%# accept a single file upload; data files and bags will need to be added another way %>
+
+  <%= fi.input :file_style, collection: ['Upload a File', 'Specify a Path on the Server'], as: :radio_buttons, label: false %>
+  <div id='file_upload'>
+    <%= fi.input 'file', as: :file, input_html: { accept: 'text/csv,application/zip' } %><br />
+  </div>
+  <div id='file_path'>
+    <%= fi.input :import_file_path, as: :string, input_html: { value: importer.parser_fields['import_file_path'] } %>
+  </div>
+  <% if Hyrax.config.browse_everything? %>
+	  <h4>Add Files to Import:</h4>
+	  <p>Choose files to upload. The filenames must be unique, and the filenames must be referenced in a column called 'file' in the accompanying CSV file.</p>
+    <%= render 'browse_everything', form: form %>
+  <% end %>
+  <br />
+</div>

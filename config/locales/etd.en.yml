@@ -1,0 +1,8 @@
+en:
+  hyrax:
+    icons:
+      etd:     'fa fa-file-text-o'
+    select_type:
+      etd:
+        description:        "ETD works"
+        name:               "ETD"

@@ -1,0 +1,8 @@
+it:
+  hyrax:
+    icons:
+      etd:     'fa fa-file-text-o'
+    select_type:
+      etd:
+        description:        "ETD opere"
+        name:               "ETD"

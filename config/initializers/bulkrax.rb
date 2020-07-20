@@ -51,42 +51,48 @@ Bulkrax.setup do |config|
   #   config.field_mappings = {
   #     "Bulkrax::OaiDcParser" => { **individual field mappings go here*** }
   #   }
-  config.field_mappings['Bulkrax::CsvParser'] = {
+  basic_csv_mappings = {
     'title' => { from: ['title'], split: true },
     'creator' => { from: ['creator'], split: true },
+    'keyword' => { from: ['keyword'], split: true },
     'description' => { from: ['description'], split: true },
     'subject' => { from: ['subject'], split: true },
     'license' => { from: ['license'], split: '\|' },
+    'contributor' => { from: ['contributor'], split: true },
+    'publisher' => { from: ['publisher'], split: true },
+    'date_created' => { from: ['date_created'], split: true },
     'language' => { from: ['language'], split: true },
+    'identifier' => { from: ['identifier'], split: true },
+    'based_near' => { from: ['location'], split: '\|' },
+    'related_url' => { from: ['related_url'], split: '\|' },
     'resource_type' => { from: ['type'], split: true },
     'file' => { from: ['item'], split: true }
   }
 
-  config.field_mappings['Bulkrax::OerCsvParser'] = {
-    'title' => { from: ['title'], split: true },
-    'creator' => { from: ['creator'], split: true },
+  config.field_mappings['Bulkrax::CsvParser'] = basic_csv_mappings
+
+  config.field_mappings['Bulkrax::OerCsvParser'] = basic_csv_mappings.merge({
     'learning_resource_type' => { from: ['learning_resource_type'], split: true },
+    'alternative_title' => { from: ['alternative_title'], split: true },
     'education_level' => { from: ['education_level'], split: true },
     'audience' => { from: ['audience'], split: true },
     'discipline' => { from: ['discipline'], split: true },
     'date' => { from: ['date'], split: true },
-    'description' => { from: ['description'], split: true },
-    'subject' => { from: ['subject'], split: true },
-    'license' => { from: ['license'], split: '\|' },
+    'table_of_contents' => { from: ['table_of_contents'], split: true },
+    'oer_size' => { from: ['oer_size'], split: true },
     'rights_holder' => { from: ['rights_holder'], split: true },
-    'language' => { from: ['language'], split: true },
-    'resource_type' => { from: ['type'], split: true },
     'accessibility_feature' => { from: ['accessibility_feature'], split: true },
     'accessibility_hazard' => { from: ['accessibility_hazard'], split: true },
-    'file' => { from: ['item'], split: true }
-  }
+    'accessibility_summary' => { from: ['accessibility_summary'], split: true },
+    'previous_version_id' => { from: ['previous_version_id'], split: true },
+    'newer_version_id' => { from: ['newer_version_id'], split: true },
+    'alternate_version_id' => { from: ['alternate_version_id'], split: true },
+    'related_item_id' => { from: ['related_item_id'], split: true }
+  })
 
   # Add to, or change existing mappings as follows
   #   e.g. to exclude date
   #   config.field_mappings["Bulkrax::OaiDcParser"]["date"] = { from: ["date"], excluded: true  }
-  #
-  # Bulkrax::CsvParser - field_mapping adjustments
-  config.field_mappings['Bulkrax::CsvParser']['publisher'] = { from: ['publisher'], split: true }
 
   # To duplicate a set of mappings from one parser to another
   #   config.field_mappings["Bulkrax::OaiOmekaParser"] = {}

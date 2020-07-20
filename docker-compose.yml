@@ -134,6 +134,7 @@ services:
       - chrome
       - initialize_app
       - db_migrate
+      - workers
     expose:
       - 80
     # ports:

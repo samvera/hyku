@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.configure do |config|
   # The before and after blocks must run instantaneously, because Capybara
   # might not actually be used in all examples where it's included.
@@ -41,12 +43,6 @@ RSpec.configure do |config|
       acct = FactoryBot.build(:account, tenant: 'FakeTenant', cname: 'tenant1')
       allow(acct).to receive(:persisted?).and_return true # nevertheless
       allow(Account).to receive(:from_request).and_return(acct)
-    else
-      if ENV['WEB_HOST']
-        Settings.multitenancy.admin_host = nil
-        Settings.multitenancy.default_host = nil
-      end
-      Rails.application.reload_routes!
     end
   end
 end

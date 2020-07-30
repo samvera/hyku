@@ -8,7 +8,7 @@ module Admin
 
     # Delete a user from the site
     def destroy
-      if @user.present? && @user.destroy
+      if @user.present? && @user.roles.destroy_all
         redirect_to hyrax.admin_users_path, notice: t('hyrax.admin.users.destroy.success', user: @user)
       else
         redirect_to hyrax.admin_users_path flash: { error: t('hyrax.admin.users.destroy.failure', user: @user) }

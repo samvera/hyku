@@ -2,12 +2,13 @@
 
 # Initialize and configure external dependencies for an Account
 class CreateAccount
-  attr_reader :account
+  attr_reader :account, :users
 
   ##
   # @param [Account]
-  def initialize(account)
+  def initialize(account, users = [])
     @account = account
+    @users = users
   end
 
   # @return [Boolean] true if save and jobs spawning were successful
@@ -29,8 +30,35 @@ class CreateAccount
     Apartment::Tenant.create(account.tenant) do
       initialize_account_data
       account.switch do
-        AdminSet.find_or_create_default_admin_set_id
+        create_defaults
+        fillin_translations
+        add_initial_users
+        true
       end
+    end
+  end
+
+  def create_defaults
+    Hyrax::CollectionType.find_or_create_default_collection_type
+    Hyrax::CollectionType.find_or_create_admin_set_type
+    AdminSet.find_or_create_default_admin_set_id
+  end
+
+  def fillin_translations
+    collection_types = Hyrax::CollectionType.all
+    collection_types.each do |c|
+      next unless c.title =~ /^translation missing/
+      oldtitle = c.title
+      c.title = I18n.t(c.title.gsub("translation missing: en.", ''))
+      c.save
+      Rails.logger.debug "#{oldtitle} changed to #{c.title}"
+    end
+  end
+
+  def add_initial_users
+    users.each do |user|
+      user.add_role :admin, account.sites.first
+      user.add_role :superadmin
     end
   end
 

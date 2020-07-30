@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Importer
   class CSVParser
     include Enumerable
@@ -42,7 +44,6 @@ module Importer
         row
       end
 
-      # rubocop:disable Metrics/MethodLength
       # If you have a header like lc_subject_type, the next
       # header must be the corresponding field (e.g. lc_subject)
       def validate_header_pairs(row)
@@ -58,7 +59,6 @@ module Importer
         end
         raise errors.join(', ') if errors.present?
       end
-      # rubocop:enable Metrics/MethodLength
 
       def valid_headers
         GenericWork.attribute_names + %w[id type file] + collection_headers
@@ -76,7 +76,6 @@ module Importer
         end
       end
 
-      # rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/AbcSize
       def extract_field(header, val, processed)
         return unless val
         case header
@@ -106,7 +105,6 @@ module Importer
           end
         end
       end
-      # rubocop:enable Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/AbcSize
 
       # Faking a typed field for now.
       # TODO: support other types of contributors

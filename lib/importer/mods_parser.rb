@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module Importer
   # rubocop:disable Metrics/ClassLength
   class ModsParser
-    NAMESPACES = { 'mods'.freeze => Mods::MODS_NS }.freeze
+    NAMESPACES = { 'mods' => Mods::MODS_NS }.freeze
 
     attr_reader :filename
 
@@ -20,7 +22,7 @@ module Importer
     end
 
     def origin_text
-      'Converted from MODS 3.4 to local RDF profile by Hyku'.freeze
+      'Converted from MODS 3.4 to local RDF profile by Hyku'
     end
 
     def mods
@@ -77,7 +79,6 @@ module Importer
         .merge(relations)
     end
 
-    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     def description
       {
         title: untyped_title,
@@ -96,7 +97,6 @@ module Importer
         description_standard: mods.record_info.descriptionStandard.map(&:text)
       }
     end
-    # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
     def language
       mods.language.languageTerm.map do |term|
@@ -112,7 +112,7 @@ module Importer
     end
 
     def rights
-      query = '/mods:mods/mods:accessCondition[@type="use and reproduction"]'.freeze
+      query = '/mods:mods/mods:accessCondition[@type="use and reproduction"]'
       {
         restrictions: mods.xpath(query, NAMESPACES).map { |node| strip_whitespace(node.text) }
       }
@@ -128,7 +128,7 @@ module Importer
     end
 
     def sub_location
-      query = './mods:copyInformation/mods:subLocation'.freeze
+      query = './mods:copyInformation/mods:subLocation'
       mods.location.holdingSimple.xpath(query, NAMESPACES).map(&:text)
     end
 
@@ -138,7 +138,6 @@ module Importer
       Array.wrap(mods.location.physicalLocation.text)
     end
 
-    # rubocop:disable Metrics/AbcSize
     def dates
       {
         issued_attributes: build_date(mods.origin_info.dateIssued),
@@ -148,7 +147,6 @@ module Importer
         date_valid_attributes: build_date(mods.origin_info.dateValid)
       }
     end
-    # rubocop:enable Metrics/AbcSize
 
     def identifiers
       { accession_number: mods.identifier.map(&:text) }
@@ -176,7 +174,7 @@ module Importer
     end
 
     def relations
-      name_nodes = mods.xpath('//mods:mods/mods:name'.freeze, NAMESPACES)
+      name_nodes = mods.xpath('//mods:mods/mods:name', NAMESPACES)
       # TODO: do we want all sorts of relators?
       # property_name_for_uri = Metadata::MARCREL.invert
       name_nodes.each_with_object({}) do |node, relations|
@@ -210,13 +208,13 @@ module Importer
     end
 
     def collection_name
-      node_set = mods.at_xpath("//mods:relatedItem[@type='host']".freeze, NAMESPACES)
+      node_set = mods.at_xpath("//mods:relatedItem[@type='host']", NAMESPACES)
       return unless node_set
       [node_set.titleInfo.title.text.strip]
     end
 
     def collection_id
-      query = "//mods:relatedItem[@type='host']/mods:identifier[@type='uri']".freeze
+      query = "//mods:relatedItem[@type='host']/mods:identifier[@type='uri']"
       node_set = mods.at_xpath(query, NAMESPACES)
       return [] unless node_set
       Array.wrap(node_set.text)
@@ -224,15 +222,14 @@ module Importer
 
     # Remove multiple whitespace
     def citation
-      mods.xpath('//mods:note[@type="preferred citation"]'.freeze, NAMESPACES).map do |node|
+      mods.xpath('//mods:note[@type="preferred citation"]', NAMESPACES).map do |node|
         node.text.gsub(/\n\s+/, "\n")
       end
     end
 
-    # rubocop:disable Metrics/AbcSize
     def notes
-      preferred_citation = 'preferred citation'.freeze
-      type = 'type'.freeze
+      preferred_citation = 'preferred citation'
+      type = 'type'
       mods.note.each_with_object([]) do |node, list|
         next if node.attributes.key?(type) && node.attributes[type].value == preferred_citation
         hash = { value: node.text.gsub(/\n\s+/, "\n") }
@@ -241,7 +238,6 @@ module Importer
         list << hash
       end
     end
-    # rubocop:enable Metrics/AbcSize
 
     private
 
@@ -263,11 +259,11 @@ module Importer
       end
 
       def start_point(node)
-        node.css("[encoding]:not([point='end'])".freeze)
+        node.css("[encoding]:not([point='end'])")
       end
 
       def date_label(node)
-        node.css(':not([encoding])'.freeze).map(&:text)
+        node.css(':not([encoding])').map(&:text)
       end
 
       def untyped_title
@@ -277,7 +273,7 @@ module Importer
       def alt_title
         Array(mods.xpath('//mods:titleInfo[@type]', NAMESPACES)).flat_map do |node|
           type = node.attributes['type'].text
-          alternative = 'alternative'.freeze
+          alternative = 'alternative'
 
           node.title.map do |title|
             value = title.text

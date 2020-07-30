@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Importer
   module Factory
     # Transform the attributes from the parser into basic string literals.

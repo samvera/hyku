@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :hyku do
   namespace :superadmin do
     desc 'Create a superadmin user'

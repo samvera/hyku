@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Importer
   class LogSubscriber < ActiveSupport::LogSubscriber
     def initialize
@@ -5,7 +7,6 @@ module Importer
       @odd = false
     end
 
-    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     def import(event)
       return unless logger.debug?
 
@@ -24,7 +25,6 @@ module Importer
 
       debug "  #{name} #{klass} #{id}"
     end
-    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
     def odd?
       @odd = !@odd

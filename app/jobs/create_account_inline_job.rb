@@ -1,4 +1,6 @@
-class CreateAccountInlineJob < ActiveJob::Base
+# frozen_string_literal: true
+
+class CreateAccountInlineJob < ApplicationJob
   non_tenant_job
 
   def perform(account)

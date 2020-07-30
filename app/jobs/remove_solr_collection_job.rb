@@ -1,4 +1,6 @@
-class RemoveSolrCollectionJob < ActiveJob::Base
+# frozen_string_literal: true
+
+class RemoveSolrCollectionJob < ApplicationJob
   # @param collection [String] the name of the collection
   # @param connection_options [Hash] options for connecting to solr.
   # @option connection_options [String] :url

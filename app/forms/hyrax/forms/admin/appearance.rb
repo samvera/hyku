@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # rubocop:disable Metrics/ClassLength
 module Hyrax
   module Forms
@@ -147,10 +149,8 @@ module Hyrax
 
         # The custom css module
         def custom_css_block
-          # rubocop:disable Rails/OutputSafety
           # we want to be able to read the css
           block_for('custom_css_block', '/* custom stylesheet */').html_safe
-          # rubocop:enable Rails/OutputSafety
         end
 
         # DEFAULT BUTTON COLORS
@@ -233,7 +233,7 @@ module Hyrax
         end
 
         # A list of parameters that are related to customizations
-        def self.customization_params # rubocop:disable Metrics/MethodLength
+        def self.customization_params
           %i[
             body_font
             headline_font
@@ -259,6 +259,7 @@ module Hyrax
         end
 
         def font_import_body_url
+          headline = headline_font.split('|').first.to_s.tr(" ", "+")
           body = body_font.split('|').first.to_s.tr(" ", "+")
           # we need to be able to read the url to import fonts
           "fonts.googleapis.com/css?family=#{body}"
@@ -294,7 +295,7 @@ module Hyrax
 
           def block_for(name, default_value)
             block = ContentBlock.find_by(name: name)
-            needs_default = block && block.value.present?
+            needs_default = block&.value.present?
             needs_default ? block.value : default_value
           end
 
@@ -309,7 +310,7 @@ module Hyrax
             # the fonts come with `Font Name:font-weight` - this removes the weight
             parts = font_style.split(':')
             # Google fonts use `+` in place of spaces. This fixes it for CSS.
-            parts[0].tr('+', ' ')
+            parts[0].tr('+', ' ').html_safe
           end
       end
     end

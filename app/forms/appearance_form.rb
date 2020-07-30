@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # The for for the color picker and background setter
 class AppearanceForm < Hyrax::Forms::Admin::Appearance
   delegate :banner_image, :banner_image?, to: :site

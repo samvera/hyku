@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LabelsController < SitesController
   # GET /sites/1/edit
   def edit

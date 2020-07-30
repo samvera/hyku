@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copied from hyrax 2.5.1 to override the mail to
 module Hyrax
   class ContactForm

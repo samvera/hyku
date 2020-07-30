@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AccountSignUpController < ProprietorController
   load_and_authorize_resource instance_name: :account, class: 'Account'
 

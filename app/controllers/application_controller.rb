@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   include HykuHelper
   # Prevent CSRF attacks by raising an exception.
@@ -39,7 +41,7 @@ class ApplicationController < ActionController::Base
     end
 
     def set_account_specific_connections!
-      current_account.switch! if current_account
+      current_account&.switch!
     end
 
     def multitenant?

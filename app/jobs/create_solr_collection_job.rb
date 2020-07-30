@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 # Create a new account-specific Solr collection using the base templates
-class CreateSolrCollectionJob < ActiveJob::Base
+class CreateSolrCollectionJob < ApplicationJob
   non_tenant_job
 
   ##

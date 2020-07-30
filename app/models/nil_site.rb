@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # NilSite is used to represent the Site in the global tenant in a multitenant environment
 # (i.e. Sites only exist on individual tenants and never globally)
 class NilSite

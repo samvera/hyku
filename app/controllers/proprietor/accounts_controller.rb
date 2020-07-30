@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Proprietor
   class AccountsController < ProprietorController
     before_action :ensure_admin!

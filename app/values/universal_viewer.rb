@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UniversalViewer
   include Singleton
   class << self

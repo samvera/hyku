@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # CRUD actions for assigning exhibit roles to
 # existing users

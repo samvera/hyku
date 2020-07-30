@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hyku
   class InvitationsController < Devise::InvitationsController
     # For devise_invitable, specify post-invite path to be 'Manage Users' form

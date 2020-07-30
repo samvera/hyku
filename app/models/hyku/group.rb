@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hyku
   class Group < ApplicationRecord
     self.table_name = 'hyku_groups'

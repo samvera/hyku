@@ -477,7 +477,7 @@ module Hyrax
             f.file_url
           end
         end
-      ## END NEW CODE
+        ## END NEW CODE
     end
   end
 end

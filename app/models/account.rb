@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Customer organization account
 class Account < ApplicationRecord
   # @param [String] piece the tenant piece of the canonical name

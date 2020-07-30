@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AdminStatsHelper
   def graph_tag(id, data, options)
     content_tag :div, class: 'graph-container',

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Initialize and configure external dependencies for an Account
 class CreateAccount
   attr_reader :account

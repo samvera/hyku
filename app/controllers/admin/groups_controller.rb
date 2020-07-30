@@ -1,15 +1,15 @@
+# frozen_string_literal: true
+
 module Admin
   class GroupsController < AdminController
     before_action :load_group, only: %i[edit update remove destroy]
 
-    # rubocop:disable Metrics/AbcSize
     def index
       add_breadcrumb t(:'hyrax.controls.home'), root_path
       add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
       add_breadcrumb t(:'hyku.admin.groups.title.index'), admin_groups_path
       @groups = Hyku::Group.search(params[:q]).page(page_number).per(page_size)
     end
-    # rubocop:enable Metrics/AbcSize
 
     def new
       add_breadcrumb t(:'hyrax.controls.home'), root_path

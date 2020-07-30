@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NilFcrepoEndpoint < NilEndpoint
   def switch!
     ActiveFedora::Fedora.register(options)

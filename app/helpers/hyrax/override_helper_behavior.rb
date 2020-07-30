@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # These methods override 2.5.1 behavior defined in hyrax_helper_behavior.rb
 module Hyrax
   module OverrideHelperBehavior

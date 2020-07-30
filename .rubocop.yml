@@ -61,6 +61,9 @@ Metrics/ClassLength:
   Exclude:
     - 'app/controllers/catalog_controller.rb'
 
+Metrics/ModuleLength:
+  Max: 200
+
 Rails/HasAndBelongsToMany:
   Exclude:
     - 'app/models/role.rb'

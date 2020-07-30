@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'importer'
 
 RSpec.describe Importer::Factory::ImageFactory, :clean do

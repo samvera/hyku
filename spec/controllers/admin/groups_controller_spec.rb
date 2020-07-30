@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Admin::GroupsController, singletenant: true do
   context 'as an anonymous user' do
     describe 'GET #index' do

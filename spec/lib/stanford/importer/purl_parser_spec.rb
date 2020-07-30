@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'stanford'
 
 RSpec.describe Stanford::Importer::PurlParser do

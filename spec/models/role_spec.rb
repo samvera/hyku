@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Role, type: :model do
   describe '.global' do
     let!(:role_a) { described_class.create(name: :a) }

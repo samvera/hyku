@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Hyrax::GenericWorksController do
   let(:user) { FactoryBot.create(:user) }
   let(:work) { FactoryBot.create(:work_with_one_file, user: user) }
@@ -10,13 +12,13 @@ RSpec.describe Hyrax::GenericWorksController do
   end
 
   describe "#presenter" do
+    subject { controller.send :presenter }
+
     let(:solr_document) { SolrDocument.new(FactoryBot.create(:generic_work).to_solr) }
 
     before do
       allow(controller).to receive(:curation_concern_from_search_results).and_return(solr_document)
     end
-
-    subject { controller.send :presenter }
 
     it "initializes a presenter" do
       expect(subject).to be_kind_of Hyku::WorkShowPresenter

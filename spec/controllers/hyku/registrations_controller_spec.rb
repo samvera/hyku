@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Hyku::RegistrationsController, type: :controller do
   before do
     allow(Settings.devise).to receive(:account_signup).and_return(account_signup_enabled)

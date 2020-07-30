@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe RolesController, type: :routing do
   describe "routing" do
     it "routes to #edit" do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe "proprietor/accounts/show", type: :view do
   let(:account) { FactoryBot.create(:account) }
   let(:admin1) { build(:user) }

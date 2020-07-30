@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Proprietor administration', multitenant: true do
   context 'as an superadmin' do
     let(:user) { FactoryBot.create(:superadmin) }

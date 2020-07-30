@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   # TODO: swap this out for hyrax's collection_lw
   factory :collection do

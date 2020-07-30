@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe "The splash page", multitenant: true do
   around do |example|
     default_host = Capybara.default_host

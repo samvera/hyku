@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Admin Dashboard', type: :feature do
   context 'as an administrator' do
     let(:user) { FactoryBot.create(:admin) }

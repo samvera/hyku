@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Admin::GroupUsersController, faketenant: true do
   let(:group) { FactoryBot.create(:group) }
 

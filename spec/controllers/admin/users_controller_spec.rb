@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Admin::UsersController, type: :controller do
   context 'as an anonymous user' do
     let(:user) { FactoryBot.create(:user) }
@@ -17,12 +19,16 @@ RSpec.describe Admin::UsersController, type: :controller do
   context 'as an admin user' do
     let(:user) { FactoryBot.create(:user) }
 
-    before { sign_in create(:admin) }
+    before do
+      sign_in create(:admin)
+    end
 
     describe 'DELETE #destroy' do
       subject { User.find_by(id: user.id) }
 
-      before { delete :destroy, params: { id: user.to_param } }
+      before do
+        delete :destroy, params: { id: user.to_param }
+      end
 
       it "deletes the user and displays success message" do
         expect(subject).to be_nil

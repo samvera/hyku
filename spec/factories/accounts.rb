@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :solr_endpoint do
     options { Hash.new(url: 'http://fakesolr.localhost:9876/solr/', collection: 'fakecore') }

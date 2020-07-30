@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe "proprietor/accounts/edit", type: :view do
   before do
     assign(:account, account)

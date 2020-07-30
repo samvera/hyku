@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe CreateDefaultAdminSetJob do
   let!(:account) { FactoryBot.create(:account) }
 

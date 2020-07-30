@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Hyku::WorkShowPresenter do
   let(:work) { FactoryBot.create(:work_with_one_file) }
   let(:document) { work.to_solr }

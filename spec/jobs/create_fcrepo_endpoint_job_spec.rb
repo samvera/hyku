@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe CreateFcrepoEndpointJob do
   let(:account) { FactoryBot.create(:account) }
 

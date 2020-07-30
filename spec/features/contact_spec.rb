@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Site contact configuration' do
   context 'as an administrator' do
     let(:user) { FactoryBot.create(:admin) }

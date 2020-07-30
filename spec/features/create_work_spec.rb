@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Creating a new Work', :clean do
   let(:user) { create(:user) }
 

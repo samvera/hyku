@@ -1,7 +1,9 @@
-RSpec.describe SolrConfigUploader do
-  let(:config_dir) { Rails.root.join('solr', 'config') }
+# frozen_string_literal: true
 
+RSpec.describe SolrConfigUploader do
   subject { described_class.new('solr_config_uploader_test') }
+
+  let(:config_dir) { Rails.root.join('solr', 'config') }
 
   describe 'round-tripping data to zookeeper' do
     before do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe AccountElevator do
   subject { described_class.new(nil) }
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe RemoveSolrCollectionJob do
   let(:collection) { 'x' }
   let(:connection_options) { double }

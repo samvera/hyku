@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe User, type: :model do
   context 'the first created user in global tenant' do
     subject { FactoryBot.create(:base_user) }

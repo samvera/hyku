@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe SplashController do
   describe 'get index' do
     it 'is successful' do

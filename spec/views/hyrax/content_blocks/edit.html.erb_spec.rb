@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe "hyrax/content_blocks/edit", type: :view do
   before { render }
   # these first 3 tests are from hyrax

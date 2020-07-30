@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Home page', type: :request do
-  context 'with multitenancy' do
+  context 'with multitenancy', multitenant: true do
     describe 'GET /' do
       context 'on the primary host' do
-        before { host! 'localhost' }
+        before { host!(ENV['WEB_HOST'] || 'localhost') }
 
         it 'redirects to the accounts landing page' do
           get root_path

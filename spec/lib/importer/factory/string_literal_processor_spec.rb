@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 require 'importer'
 
 RSpec.describe Importer::Factory::StringLiteralProcessor do
+  subject { described_class.process(input) }
+
   let(:input) do
     { title: ["Stanford residences"],
       contributor: [{ name: name, type: "corporate" }] }
   end
-
-  subject { described_class.process(input) }
 
   context "with a single name" do
     let(:name) { ["Muybridge"] }

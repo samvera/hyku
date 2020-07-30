@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'admin/groups/index', type: :view do
   context 'groups index page' do
     let(:group_1) { FactoryBot.create(:group) }

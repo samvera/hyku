@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe ContactsController, type: :controller do
   before do
     sign_in user

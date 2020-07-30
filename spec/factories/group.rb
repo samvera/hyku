@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :group, class: Hyku::Group do
     sequence(:name) { |_n| "group-#{srand}" }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe SolrEndpoint do
   subject(:instance) { described_class.new url: 'http://example.com/solr/' }
 

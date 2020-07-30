@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Much of this testing is the complex configurable stuff underneath UploadedFile
 # and simulating the AWS configuration that would be in production.
 

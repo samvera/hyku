@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe NilSite do
   let(:instance) { described_class.instance }
 

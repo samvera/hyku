@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Site, type: :model do
   let(:admin1) { FactoryBot.create(:user, email: 'bob@was_here.net') }
   let(:admin2) { FactoryBot.create(:user, email: 'jane@was_here.net') }

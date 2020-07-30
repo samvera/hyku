@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.shared_examples "csv_importer" do
   context "with a file" do
     let(:attributes) do

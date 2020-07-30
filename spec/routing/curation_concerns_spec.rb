@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe '/concern/generic_works routing' do
   it "routes to manifest" do
     expect(get: '/concern/generic_works/1234/manifest')

@@ -1,4 +1,6 @@
-# This file is cepied to spec/ when you run 'rails generate rspec:install'
+# frozen_string_literal: true
+
+# This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
 
 # In test most, unset some variables that can cause trouble
@@ -26,7 +28,6 @@ require 'rspec/rails'
 require 'capybara/rails'
 require 'database_cleaner'
 require 'active_fedora/cleaner'
-require 'factory_bot'
 require 'webdrivers'
 # Add additional requires below this line. Rails is not loaded until this point!
 
@@ -148,7 +149,7 @@ RSpec.configure do |config|
     CreateSolrCollectionJob.new.without_account('hydra-test') if ENV['IN_DOCKER']
   end
 
-  config.before(:each) do |example|
+  config.before do |example|
     # Pass `:clean' to destroy objects in fedora/solr and start from scratch
     ActiveFedora::Cleaner.clean! if example.metadata[:clean]
     if example.metadata[:type] == :feature && Capybara.current_driver != :rack_test
@@ -159,7 +160,10 @@ RSpec.configure do |config|
     end
   end
 
-  config.after(:each, type: :feature) do
+  config.after(:each, type: :feature) do |example|
+    # rubocop:disable Lint/Debugger
+    save_and_open_page if example.exception.present?
+    # rubocop:enable Lint/Debugger
     Warden.test_reset!
     Capybara.reset_sessions!
     page.driver.reset!

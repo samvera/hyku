@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Fixtures
   module FixtureFileUpload
     def fixture_file(path)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe HyraxHelper, type: :helper do
   describe "#banner_image" do
     context "with uploaded banner image" do

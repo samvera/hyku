@@ -1,7 +1,9 @@
-RSpec.describe CreateAccount do
-  let(:account) { FactoryBot.build(:sign_up_account) }
+# frozen_string_literal: true
 
+RSpec.describe CreateAccount do
   subject { described_class.new(account) }
+
+  let(:account) { FactoryBot.build(:sign_up_account) }
 
   describe '#create_tenant' do
     it 'creates a new apartment tenant' do

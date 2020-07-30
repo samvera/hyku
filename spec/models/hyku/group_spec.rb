@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hyku
   RSpec.describe Group do
     describe 'group with no members' do

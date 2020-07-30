@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe "hyrax/admin/appearances/show", type: :view do
   let(:form) { AppearanceForm.new }
 

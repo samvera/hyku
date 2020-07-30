@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Account, type: :model do
   describe '.tenants' do
     context 'when tenant_list param is nil' do
@@ -78,8 +80,6 @@ RSpec.describe Account, type: :model do
   end
 
   describe '#switch!' do
-    subject { described_class.new }
-
     let!(:old_default_index) { Blacklight.default_index }
 
     before do
@@ -112,8 +112,6 @@ RSpec.describe Account, type: :model do
   end
 
   describe '#switch' do
-    subject { described_class.new }
-
     let!(:previous_solr_url) { ActiveFedora::SolrService.instance.conn.uri.to_s }
     let!(:previous_redis_namespace) { 'hyku' }
     let!(:previous_fedora_host) { ActiveFedora.fedora.host }

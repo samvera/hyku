@@ -3,7 +3,7 @@
 # Generated via
 #  `rails generate curation_concerns:work GenericWork`
 RSpec.describe Hyrax::Actors::GenericWorkActor do
-  it "has tests" do
-    skip "Add your tests here"
+  it "exists" do
+    expect(Hyrax::Actors::GenericWorkActor).to be_a(Class)
   end
 end

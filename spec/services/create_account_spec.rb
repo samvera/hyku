@@ -12,11 +12,11 @@ RSpec.describe CreateAccount do
     end
 
     it 'initializes the Site configuration with a link back to the Account' do
-      expect(Apartment::Tenant).to receive(:create).with(account.tenant) do |&block|
+      expect(Apartment::Tenant).to receive(:create).with(any_args) do |&block|
         block.call
       end
       expect(AdminSet).to receive(:find_or_create_default_admin_set_id)
-      subject.create_tenant
+      subject.save
       expect(Site.reload.account).to eq account
     end
   end

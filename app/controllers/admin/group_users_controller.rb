@@ -28,7 +28,7 @@ module Admin
     private
 
       def load_group
-        @group = Hyku::Group.find_by(id: params[:group_id])
+        @group = Hyrax::Group.find_by(id: params[:group_id])
       end
 
       def page_number

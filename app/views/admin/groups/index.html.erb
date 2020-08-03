@@ -8,7 +8,7 @@
 
 <div class="panel panel-default group-listing">
   <div class="panel-heading">
-    <% group_count = Hyku::Group.all.count %>
+    <% group_count = Hyrax::Group.all.count %>
     <% if group_count == 1 %>
       <%= t('hyku.admin.groups.describe_singular_quantity_html') %>
     <% else %>

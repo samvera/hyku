@@ -1,11 +1,10 @@
-module Hyku
+# Override from hyrax 2.5.1 to migrate Hyku::Group into Hyrax::Group
+module Hyrax
   class Group < ApplicationRecord
-    self.table_name = 'hyku_groups'
-
-    resourcify # Declares Hyku::Group a resource model so rolify can manage membership
+    resourcify # Declares Hyrax::Group a resource model so rolify can manage membership
 
     MEMBERSHIP_ROLE = :member
-    DEFAULT_MEMBER_CLASS = User
+    DEFAULT_MEMBER_CLASS = ::User
 
     validates :name, presence: true
 
@@ -42,5 +41,19 @@ module Hyku
     def number_of_users
       members.count
     end
+
+    def to_sipity_agent
+      sipity_agent || create_sipity_agent!
+    end
+
+    private
+
+      def sipity_agent
+        Sipity::Agent.find_by(proxy_for_id: name, proxy_for_type: self.class.name)
+      end
+
+      def create_sipity_agent!
+        Sipity::Agent.create!(proxy_for_id: name, proxy_for_type: self.class.name)
+      end
   end
 end

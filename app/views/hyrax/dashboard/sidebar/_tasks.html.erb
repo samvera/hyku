@@ -11,7 +11,7 @@
     <% end %>
   <% end %>
   
-  <% if can? :manage, Hyku::Group %>
+  <% if can? :manage, Hyrax::Group %>
           <%= menu.nav_link(main_app.admin_groups_path) do %>
             <span class="fa fa-users"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.manage_groups') %></span>
           <% end %>

@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
   with_themed_layout '1_column'
 
   helper_method :current_account, :admin_host?
-  before_action :authenticate_for_staging
+  before_action :authenticate_if_needed
   before_action :set_raven_context
   before_action :require_active_account!, if: :multitenant?
   before_action :set_account_specific_connections!
@@ -32,8 +32,20 @@ class ApplicationController < ActionController::Base
 
   private
 
-    def authenticate_for_staging
-      if ['staging'].include?(Rails.env) && !request.format.to_s.match('json') && !params[:print] && !request.path.include?('api') && !request.path.include?('pdf')
+    def is_hidden
+      current_account.persisted? && !current_account.is_public?
+    end
+
+    def is_api_or_pdf
+      request.format.to_s.match('json') || params[:print] || request.path.include?('api') || request.path.include?('pdf')
+    end
+
+    def is_staging
+      ['staging'].include?(Rails.env)
+    end
+
+    def authenticate_if_needed
+      if (is_hidden || is_staging) && !is_api_or_pdf
         authenticate_or_request_with_http_basic do |username, password|
           username == "pals" && password == "pals"
         end

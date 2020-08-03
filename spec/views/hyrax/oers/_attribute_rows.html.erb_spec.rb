@@ -62,7 +62,7 @@ RSpec.describe 'hyrax/oers/_attributes.html.erb' do
     expect(rendered).to have_link(education_level)
     expect(rendered).to have_link(audience)
     expect(rendered).to have_link(discipline)
-    expect(rendered).to have_css('li.attribute-date', text: '10/03/2000')
+    expect(rendered).to have_css('li.attribute-date', text: 'October 3, 2000')
     expect(rendered).to have_css('li.attribute-table_of_contents', text: table_of_contents)
     expect(rendered).to have_link(subject)
     expect(rendered).to have_link(rights_holder)

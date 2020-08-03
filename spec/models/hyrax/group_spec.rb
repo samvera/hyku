@@ -1,4 +1,4 @@
-module Hyku
+module Hyrax
   RSpec.describe Group do
     describe 'group with no members' do
       subject { described_class.new(name: name, description: description) }
@@ -12,7 +12,7 @@ module Hyku
           number_of_users: 0
         }
       end
-
+      
       it { is_expected.to have_attributes(empty_group_attributes) }
       it { is_expected.to respond_to(:created_at) }
     end

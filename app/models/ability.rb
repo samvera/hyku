@@ -28,7 +28,7 @@ class Ability
   def group_permissions
     return unless admin?
 
-    can :manage, Hyku::Group
+    can :manage, Hyrax::Group
   end
 
   def superadmin_permissions

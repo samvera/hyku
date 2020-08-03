@@ -20,7 +20,7 @@ RSpec.describe Stanford::Importer::ModsParser do
   describe '#record_attributes' do
     subject { parser.record_attributes }
 
-    let(:file) { 'spec/fixtures/mods/shpc/druid_xv169dn4538.mods' }
+    let(:file) { File.join(fixture_path, 'mods', 'shpc', 'druid_xv169dn4538.mods') }
 
     it "has visibility" do
       expect(subject[:visibility]).to eq 'open'

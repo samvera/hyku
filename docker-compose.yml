@@ -9,6 +9,7 @@ volumes:
   zkconf:
   app:
   assets:
+  cache:
 
 networks:
   internal:
@@ -109,6 +110,7 @@ services:
     volumes:
       - app:/home/app/webapp/tmp/uploads
       - assets:/home/app/webapp/public/assets
+      - cache:/home/app/webapp/tmp/cache
       - .:/home/app/webapp
     networks:
       internal:

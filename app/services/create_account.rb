@@ -20,7 +20,7 @@ class CreateAccount
   # Account (i.e. creation steps complete, endpoints populated).  THEREFORE, `create_tenant`
   # must be called *after* all external resources are provisioned.
   def create_external_resources
-    create_account_inline && create_tenant
+    create_account_inline && account.save && create_tenant
   end
 
   ##

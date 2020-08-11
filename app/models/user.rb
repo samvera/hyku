@@ -33,6 +33,9 @@ class User < ApplicationRecord
     has_role? :superadmin
   end
 
+  # This comes from a checkbox in the proprietor interface
+  # Rails checkboxes are often nil or "0" so we handle that
+  # case directly
   def is_superadmin=(value)
     if value && value != "0"
       add_role :superadmin
@@ -66,6 +69,8 @@ class User < ApplicationRecord
     []
   end
 
+  # If this user is the first user on the tenant, they become its admin
+  # unless we are in the global tenant
   def add_default_roles
     add_role :admin, Site.instance unless
       self.class.joins(:roles).where("roles.name = ?", "admin").any? || Account.global_tenant?

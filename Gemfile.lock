@@ -9,10 +9,11 @@ GIT
 
 GIT
   remote: https://github.com/samvera-labs/bulkrax.git
-  revision: 2d247ee1eb20a022b510b0b8de728854cbe187e3
+  revision: b3b04c5d6e098f61fbd2e634d6bd4b1811b7dfb6
   specs:
     bulkrax (0.1.0)
       bagit (~> 0.4)
+      coderay
       iso8601 (~> 0.9.0)
       language_list (~> 1.2, >= 1.2.1)
       libxml-ruby (~> 3.1.0)
@@ -185,6 +186,7 @@ GEM
     clipboard-rails (1.7.1)
     codemirror-rails (5.16.0)
       railties (>= 3.0, < 6.0)
+    coderay (1.1.3)
     coffee-rails (4.2.2)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0)

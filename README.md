@@ -158,6 +158,21 @@ bundle exec rails db:migrate
 ./bin/import_from_purl ../hyku-objects bc390xk2647 bc402fk6835 bc483gc9313
 ```
 
+## Workflows
+To set the default workflow, update the name of the default workflow in config/initializers/hyrax.rb
+
+```bash
+config.default_active_workflow_name = 'new_workflow_name'
+```
+
+After setting the new name, run the 'workflow_setup' rake task. This task will add the new workflow to admin sets in each tenant.
+
+Multi-tenant mode:
+
+```bash
+rake tenantize:task[workflow:setup]
+``` 
+
 ## Compatibility
 
 * Ruby 2.4 or the latest 2.3 version is recommended.  Later versions may also work.

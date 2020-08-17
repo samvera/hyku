@@ -62,7 +62,12 @@ Hyrax.config do |config|
   # config.libreoffice_path = "soffice"
 
   # Stream realtime notifications to users in the browser
-  config.realtime_notifications = false 
+  config.realtime_notifications = false
+
+  # When an admin set is created, we need to activate a workflow.
+  # The :default_active_workflow_name is the name of the workflow we will activate.
+  # @see Hyrax::Configuration for additional details and defaults.
+  config.default_active_workflow_name = 'hyku_commons_mediated_deposit'
 
   # Which RDF term should be used to relate objects to an admin set?
   # If this is a new repository, you may want to set a custom predicate term here to

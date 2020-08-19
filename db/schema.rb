@@ -47,7 +47,6 @@ ActiveRecord::Schema.define(version: 20200730194003) do
     t.string "identifier"
     t.string "collection_ids"
     t.string "type"
-    t.bigint "importerexporter_id"
     t.text "raw_metadata"
     t.text "parsed_metadata"
     t.datetime "created_at", null: false
@@ -55,8 +54,8 @@ ActiveRecord::Schema.define(version: 20200730194003) do
     t.text "last_error"
     t.datetime "last_error_at"
     t.datetime "last_succeeded_at"
+    t.integer "importerexporter_id"
     t.string "importerexporter_type", default: "Bulkrax::Importer"
-    t.index ["importerexporter_id"], name: "index_bulkrax_entries_on_importerexporter_id"
   end
 
   create_table "bulkrax_exporter_runs", force: :cascade do |t|

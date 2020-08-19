@@ -994,6 +994,7 @@ DEPENDENCIES
   active_elastic_job!
   activerecord-nulldb-adapter
   apartment
+  aws-sdk-sqs
   blacklight (~> 6.7)
   blacklight_oai_provider (~> 6.0)
   bootstrap-datepicker-rails
@@ -1055,6 +1056,3 @@ DEPENDENCIES
   webmock
   willow_sword!
   zk
-
-BUNDLED WITH
-   2.1.4

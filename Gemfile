@@ -113,7 +113,8 @@ group :aws, :test do
 end
 
 group :aws do
-  gem 'active_elastic_job', github: 'tawan/active-elastic-job'
+  gem 'active_elastic_job', git: 'https://github.com/tawan/active-elastic-job.git'
+  gem 'aws-sdk-sqs'
 end
 
 gem 'sidekiq'

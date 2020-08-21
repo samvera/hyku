@@ -259,7 +259,6 @@ module Hyrax
         end
 
         def font_import_body_url
-          headline = headline_font.split('|').first.to_s.tr(" ", "+")
           body = body_font.split('|').first.to_s.tr(" ", "+")
           # we need to be able to read the url to import fonts
           "fonts.googleapis.com/css?family=#{body}"

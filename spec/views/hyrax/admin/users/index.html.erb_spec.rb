@@ -24,7 +24,7 @@ RSpec.describe 'hyrax/admin/users/index.html.erb', type: :view do
   it "draws user invite form" do
     expect(page).to have_selector("div.users-invite")
     expect(page).to have_content("Add or Invite user via email")
-    expect(page).to have_selector("div.users-invite input#account_admin_emails")
+    expect(page).to have_selector("div.users-invite input#user_email")
     expect(page).to have_selector("//input[@value='Invite user']")
   end
 

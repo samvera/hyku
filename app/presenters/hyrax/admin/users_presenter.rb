@@ -15,7 +15,7 @@ module Hyrax
 
       # @return [Array] an array of user roles
       def user_roles(user)
-        user.groups
+        user.roles.map(&:name)
       end
 
       def last_accessed(user)
@@ -26,7 +26,7 @@ module Hyrax
 
         # Returns a list of users excluding the system users and guest_users
         def search
-          ::User.registered.for_repository.without_system_accounts
+          ::User.registered.for_repository.without_system_accounts.uniq
         end
     end
   end

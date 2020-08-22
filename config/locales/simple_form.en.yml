@@ -14,7 +14,7 @@ en:
       hyku_group:
         description: A brief summary of the role of the group
       user:
-        email: Enter one email address at a time. You may also resend an invitation via this form.
+        email: Enter one email address at a time. You may also resend an invitation via this form. Roles are comma sepearted and only apply to this tenant.
     labels:
       account:
         admin_emails: Add or invite new administrator (via email)

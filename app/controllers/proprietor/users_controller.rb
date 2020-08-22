@@ -77,12 +77,6 @@ module Proprietor
       end
     end
 
-    # method uses user's id, not their user_key
-    def become
-      bypass_sign_in(User.find(params[:id]))
-      redirect_to root_url, notice: 'User changed successfully'
-    end
-
     private
 
       def ensure_admin!

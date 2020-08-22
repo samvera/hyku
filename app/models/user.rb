@@ -37,7 +37,8 @@ class User < ApplicationRecord
   # Rails checkboxes are often nil or "0" so we handle that
   # case directly
   def is_superadmin=(value)
-    if value && value != "0"
+    value = ActiveModel::Type::Boolean.new.cast(value)
+    if value
       add_role :superadmin
     else
       remove_role :superadmin

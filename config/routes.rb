@@ -14,11 +14,7 @@ Rails.application.routes.draw do
 
       namespace :proprietor do
         resources :accounts
-        resources :users do
-          member do
-            post :become
-          end
-        end
+        resources :users
       end
     end
   end
@@ -45,7 +41,7 @@ Rails.application.routes.draw do
 
   concern :searchable, Blacklight::Routes::Searchable.new
   concern :exportable, Blacklight::Routes::Exportable.new
-  
+
   curation_concerns_basic_routes
 
   resource :catalog, only: [:index], as: 'catalog', path: '/catalog', controller: 'catalog' do

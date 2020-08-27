@@ -83,11 +83,11 @@ Bulkrax.setup do |config|
     'rights_holder' => { from: ['rights_holder'], split: true },
     'accessibility_feature' => { from: ['accessibility_feature'], split: true },
     'accessibility_hazard' => { from: ['accessibility_hazard'], split: true },
-    'accessibility_summary' => { from: ['accessibility_summary'], split: true },
-    'previous_version_id' => { from: ['previous_version_id'], split: true },
-    'newer_version_id' => { from: ['newer_version_id'], split: true },
-    'alternate_version_id' => { from: ['alternate_version_id'], split: true },
-    'related_item_id' => { from: ['related_item_id'], split: true }
+    'accessibility_summary' => { from: ['accessibility_summary'] },
+    'previous_version' => { from: ['previous_version'], split: true },
+    'newer_version' => { from: ['newer_version'], split: true },
+    'alternate_version' => { from: ['alternate_version'], split: true },
+    'related_item' => { from: ['related_item'], split: true }
   })
 
   # Add to, or change existing mappings as follows

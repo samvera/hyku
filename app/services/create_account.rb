@@ -44,6 +44,7 @@ class CreateAccount
     AdminSet.find_or_create_default_admin_set_id
   end
 
+  # Workaround for upstream issue https://github.com/samvera/hyrax/issues/3136
   def fillin_translations
     collection_types = Hyrax::CollectionType.all
     collection_types.each do |c|
@@ -57,7 +58,7 @@ class CreateAccount
 
   def add_initial_users
     users.each do |user|
-      user.add_role :admin, account.sites.first
+      user.add_role :admin, Site.instance
       user.add_role :superadmin
     end
   end

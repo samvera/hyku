@@ -76,6 +76,8 @@ zh:
     proprietor:
       accounts:
         nav: 帐号
+      users:
+        nav: 用户
     splash:
       account_denied: 您无权创建租户
       account_login: 登录即可开始使用

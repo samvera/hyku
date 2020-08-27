@@ -76,6 +76,8 @@ fr:
     proprietor:
       accounts:
         nav: Comptes
+      users:
+        nav: Utilisateurs
     splash:
       account_denied: Vous n'êtes pas autorisé à créer des locataires
       account_login: Connectez-vous pour commencer

@@ -76,6 +76,8 @@ de:
     proprietor:
       accounts:
         nav: Konten
+      users:
+        nav: Benutzer
     splash:
       account_denied: Sie sind nicht berechtigt, Mandanten zu erstellen
       account_login: Einloggen um loszulegen

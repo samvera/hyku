@@ -76,6 +76,8 @@ pt-BR:
     proprietor:
       accounts:
         nav: Contas
+      users:
+        nav: Comercial
     splash:
       account_denied: Você não está autorizado a criar inquilinos
       account_login: Inicie sessão para começar

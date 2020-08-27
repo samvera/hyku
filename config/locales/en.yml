@@ -77,6 +77,8 @@ en:
     proprietor:
       accounts:
         nav: Accounts
+      users:
+        nav: Users
     splash:
       account_denied: You are not authorized to create tenants
       account_login: Login to get started

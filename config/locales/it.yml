@@ -76,6 +76,8 @@ it:
     proprietor:
       accounts:
         nav: conti
+      users:
+        nav: utenti
     splash:
       account_denied: Non sei autorizzato a creare inquilini
       account_login: Accedi per iniziare

@@ -146,6 +146,8 @@ Set bulkrax -> enabled to true in settings (via file or env variable)
 bundle exec rails db:migrate
 ```
 
+**NOTE:** Some Bulkrax overrides are located in [bulkrax_overrides.rb](config/initializers/bulkrax_overrides.rb). Others are located throughout the repo labeled with "override" comments. 
+
 ### from CSV:
 
 ```bash

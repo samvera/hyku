@@ -44,6 +44,7 @@ class CreateAccount
     AdminSet.find_or_create_default_admin_set_id
   end
 
+  # Workaround for upstream issue https://github.com/samvera/hyrax/issues/3136
   def fillin_translations
     collection_types = Hyrax::CollectionType.all
     collection_types.each do |c|

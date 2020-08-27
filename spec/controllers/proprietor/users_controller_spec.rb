@@ -43,7 +43,7 @@ RSpec.describe Proprietor::UsersController, type: :controller, multitenant: true
     end
 
     describe "GET #index" do
-      it "is unauthorized" do
+      it "is authorized" do
         get :index
         expect(response).to be_successful
       end

@@ -122,7 +122,7 @@ RSpec.describe Proprietor::UsersController, type: :controller, multitenant: true
     end
 
     describe "DELETE #destroy" do
-      it "denies the request" do
+      it "destroys the user and redirects to the users list" do
         expect_any_instance_of(User).to receive(:destroy).and_return(true)
         delete :destroy, params: { id: user.to_param }
         expect(response).to redirect_to(proprietor_users_url)

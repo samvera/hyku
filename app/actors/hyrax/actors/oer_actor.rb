@@ -33,7 +33,7 @@ module Hyrax
                existing_newer_works&.include?(attributes['id']) || 
                existing_alternate_works&.include?(attributes['id']) ||
                existing_related_items&.include?(attributes['id'])
-              
+
               if existing_previous_works&.include?(attributes['id'])
                 env = remove(env, attributes['id'], attributes['relationship']) if
                   ActiveModel::Type::Boolean.new.cast(attributes['_destroy']) && attributes['relationship'] == 'previous-version'

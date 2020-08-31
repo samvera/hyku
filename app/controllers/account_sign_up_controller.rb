@@ -15,7 +15,7 @@ class AccountSignUpController < ProprietorController
   # POST /account/sign_up.json
   def create
     respond_to do |format|
-      if CreateAccount.new(@account, [current_user]).save
+      if CreateAccount.new(@account, super_and_current_users).save
         format.html { redirect_to first_user_registration_url, notice: 'Account was successfully created.' }
         format.json { render :show, status: :created, location: @account.cname }
       else
@@ -37,7 +37,11 @@ class AccountSignUpController < ProprietorController
     end
 
     def first_user_registration_url
-      new_user_registration_url(host: @account.cname)
+      if current_user
+        new_user_session_url(host: @account.cname)
+      else
+        new_user_registration_url(host: @account.cname)
+      end
     end
 
     def create_params

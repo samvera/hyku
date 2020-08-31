@@ -32,6 +32,13 @@ class ApplicationController < ActionController::Base
     raise ActionController::RoutingError, 'Not Found'
   end
 
+  protected
+
+    def super_and_current_users
+      users = Role.find_by(name: 'superadmin')&.users.to_a
+      users << current_user if current_user && !users.include?(current_user)
+    end
+
   private
 
     def require_active_account!

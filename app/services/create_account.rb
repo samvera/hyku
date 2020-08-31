@@ -59,7 +59,6 @@ class CreateAccount
   def add_initial_users
     users.each do |user|
       user.add_role :admin, Site.instance
-      user.add_role :superadmin
     end
   end
 

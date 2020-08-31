@@ -69,11 +69,11 @@ module Proprietor
     # DELETE /users/1
     # DELETE /users/1.json
     def destroy
-      if @user.destroy
-        message = 'User was successfully destroyed.'
-      else
-        message = 'User could not be destroyed.'
-      end
+      message = if @user.destroy
+                  'User was successfully destroyed.'
+                else
+                  'User could not be destroyed.'
+                end
 
       respond_to do |format|
         format.html { redirect_to proprietor_users_url, notice: message }

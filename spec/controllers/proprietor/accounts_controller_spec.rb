@@ -190,5 +190,9 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
       expect(account).to receive(:switch!)
       get :show, params: { id: account.to_param }
     end
+
+    after do
+      account.reset!
+    end
   end
 end

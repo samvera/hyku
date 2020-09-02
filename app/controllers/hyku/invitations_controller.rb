@@ -17,7 +17,7 @@ module Hyku
       # safe because adding the same role twice is a noop
       site = Site.instance
       if params[:user][:roles].present?
-        params[:user][:roles].split(',') do |role|
+        params[:user][:roles].split(',').each do |role|
           resource.add_role(role.strip, site)
         end
       end

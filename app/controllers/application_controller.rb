@@ -37,6 +37,7 @@ class ApplicationController < ActionController::Base
     def super_and_current_users
       users = Role.find_by(name: 'superadmin')&.users.to_a
       users << current_user if current_user && !users.include?(current_user)
+      users
     end
 
   private

@@ -79,6 +79,15 @@ en:
         nav: Accounts
       users:
         nav: Users
+        edit:
+          header: Editing User
+        index:
+          confirm_delete: Are you sure you wish to delete this user?  This action cannot be undone.
+          header: Manage Users
+          manage: Manage
+        show:
+          header: Manage User
+          update: Update
     splash:
       account_denied: You are not authorized to create tenants
       account_login: Login to get started

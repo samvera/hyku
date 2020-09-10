@@ -251,8 +251,12 @@ de:
           delete:
             confirm: Bist du sicher?
           header:
+            group_name: Gruppenname
+            group_roles: Gruppenrollen
             roles: Rollen
             user: Benutzer
+            user_roles: Benutzerregeln
+          new_group_role: Rolle der Gruppe zuweisen
           new_role: Rolle zuweisen
           no_roles: Keine Rollen
       workflows:

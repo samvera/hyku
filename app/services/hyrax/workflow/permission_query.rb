@@ -164,12 +164,11 @@ module Hyrax
       def scope_processing_agents_for(user:)
         return Sipity::Agent.none if user.blank?
         return Sipity::Agent.none unless user.persisted?
-        # byebug
         user_agent = PowerConverter.convert_to_sipity_agent(user)
-        group_agents = user.groups.map do |g|
-          # Override from hyrax 2.5.1 - need to pass in a hash not a string for group name
-          group = Hyrax::Group.new({name: g})
-          PowerConverter.convert_to_sipity_agent(group)
+        # Override from hyrax 2.5.1 - use User.workflow groups method
+        group_agents = user.workflow_groups.map do |g|
+          # Override from hyrax 2.5.1 - use sipity agent and not create new group
+          g.to_sipity_agent
         end
         Sipity::Agent.where(id: group_agents + [user_agent])
       end

@@ -49,11 +49,11 @@ module Hyrax
     private
 
       def sipity_agent
-        Sipity::Agent.find_by(proxy_for_id: name, proxy_for_type: self.class.name)
+        Sipity::Agent.find_by(proxy_for_id: id, proxy_for_type: self.class.name)
       end
 
       def create_sipity_agent!
-        Sipity::Agent.create!(proxy_for_id: name, proxy_for_type: self.class.name)
+        Sipity::Agent.create!(proxy_for_id: id, proxy_for_type: self.class.name)
       end
   end
 end

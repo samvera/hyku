@@ -252,8 +252,12 @@ es:
           delete:
             confirm: "¿Estás seguro?"
           header:
+            group_name: Nombre del grupo
+            group_roles: Roles de grupo
             roles: Roles
             user: Usuario
+            user_roles: Roles del usuario
+          new_group_role: Asignar rol al grupo
           new_role: Asignar rol
           no_roles: Sin roles
       workflows:

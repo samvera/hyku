@@ -28,6 +28,7 @@ class CreateAccount
     Apartment::Tenant.create(account.tenant) do
       initialize_account_data
       account.switch do
+        Hyrax::GroupsService.create_default_hyrax_groups
         default = Hyrax::CollectionType.find_or_create_default_collection_type
         admin_set = Hyrax::CollectionType.find_or_create_admin_set_type
         collection_types = Hyrax::CollectionType.all

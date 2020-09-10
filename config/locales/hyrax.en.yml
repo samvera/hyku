@@ -261,8 +261,12 @@ en:
           delete:
             confirm: Are you sure?
           header:
+            group_name: Group Name
+            group_roles: Group Roles
             roles: Roles
             user: User
+            user_roles: User Roles
+          new_group_role: Assign Role to Group
           new_role: Assign Role
           no_roles: No roles
       workflows:

@@ -252,8 +252,12 @@ zh:
           delete:
             confirm: 你确定吗？
           header:
+            group_name: 团队名字
+            group_roles: 组角色
             roles: 的角色
             user: 用户
+            user_roles: 用户角色
+          new_group_role: 将角色分配给组
           new_role: 分配角色
           no_roles: 没有角色
       workflows:

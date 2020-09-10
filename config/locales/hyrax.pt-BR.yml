@@ -252,8 +252,12 @@ pt-BR:
           delete:
             confirm: Você tem certeza?
           header:
+            group_name: Nome do grupo
+            group_roles: Funções de grupo
             roles: Funções
             user: Do utilizador
+            user_roles: Funções do usuário
+          new_group_role: Atribuir função ao grupo
           new_role: Atribuir função
           no_roles: Sem papéis
       workflows:

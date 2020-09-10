@@ -60,9 +60,15 @@ class User < ApplicationRecord
     end
   end
 
+  # TODO: return the Hyrax::Groups that the user belongs to
+  # TODO: user.groups is called several times in Hyrax so need to investigate
   def groups
     return ['admin'] if has_role?(:admin, Site.instance)
     []
+  end
+
+  def workflow_groups
+    self.roles.where(name: "member", resource_type: "Hyrax::Group").map(&:resource).uniq
   end
 
   def add_default_roles

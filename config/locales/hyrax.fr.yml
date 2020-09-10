@@ -250,8 +250,12 @@ fr:
           delete:
             confirm: Êtes-vous sûr?
           header:
+            group_name: Nom de groupe
+            group_roles: Rôles de groupe
             roles: Les rôles
             user: Utilisateur
+            user_roles: Rôles des utilisateurs
+          new_group_role: Attribuer un rôle au groupe
           new_role: Attribuer un rôle
           no_roles: Aucun rôle
       workflows:

@@ -113,7 +113,7 @@ module Hyrax
       # Override from hyrax 2.5.1 - need to pass in a hash not a string for group name
       def workflow_agents
         [
-          Hyrax::Group.new({name: admin_group_name})
+          Hyrax::Group.find_by!(name: admin_group_name)
         ].tap do |agent_list|
           # The default admin set does not have a creating user
           agent_list << creating_user if creating_user
@@ -125,7 +125,7 @@ module Hyrax
       def create_default_access_for(permission_template:, workflow:)
         permission_template.access_grants.create(agent_type: 'group', agent_id: ::Ability.registered_group_name, access: Hyrax::PermissionTemplateAccess::DEPOSIT)
         deposit = Sipity::Role[Hyrax::RoleRegistry::DEPOSITING]
-        workflow.update_responsibilities(role: deposit, agents: Hyrax::Group.new({name: 'registered'}))
+        workflow.update_responsibilities(role: deposit, agents: Hyrax::Group.find_by!(name: 'registered'))
       end
 
       def default_workflow_importer

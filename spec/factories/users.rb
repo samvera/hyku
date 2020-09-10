@@ -20,4 +20,7 @@ FactoryBot.define do
       after(:create, &:invite!)
     end
   end
+  trait :guest do
+    guest { true }
+  end
 end

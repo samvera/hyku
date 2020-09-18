@@ -87,7 +87,7 @@ gem 'willow_sword', git: 'https://github.com/notch8/willow_sword.git'
 gem 'blacklight', '~> 6.7'
 gem 'blacklight_oai_provider', '~> 6.0'
 
-gem 'hyrax', '~> 2.9'
+gem 'hyrax', git: 'https://github.com/samvera/hyrax.git', branch: '2.x-stable'
 
 gem 'rsolr', '~> 2.0'
 
@@ -118,6 +118,7 @@ group :aws do
 end
 
 gem 'sidekiq'
+gem "sidekiq-cron", "~> 1.1"
 
 gem 'secure_headers'
 

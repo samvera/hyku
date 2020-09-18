@@ -24,6 +24,63 @@ GIT
       simple_form
 
 GIT
+  remote: https://github.com/samvera/hyrax.git
+  revision: 7e747f6935ed03ed6b819e746fafbd055185fa1b
+  branch: 2.x-stable
+  specs:
+    hyrax (2.9.0)
+      active-fedora (>= 11.5.2, < 12.2)
+      almond-rails (~> 0.1)
+      awesome_nested_set (~> 3.1)
+      blacklight (~> 6.14)
+      blacklight-gallery (~> 0.7)
+      breadcrumbs_on_rails (~> 3.0)
+      browse-everything (>= 0.16)
+      carrierwave (~> 1.0)
+      clipboard-rails (~> 1.5)
+      draper (~> 4.0)
+      dry-equalizer (~> 0.2)
+      dry-struct (>= 0.1, < 2.0)
+      dry-transaction (~> 0.11)
+      dry-validation (>= 0.9, < 2.0)
+      flipflop (~> 2.3)
+      flot-rails (~> 0.0.6)
+      font-awesome-rails (~> 4.2)
+      hydra-derivatives (~> 3.3)
+      hydra-editor (>= 3.3, < 6.0)
+      hydra-head (>= 10.6.1)
+      hydra-works (>= 0.16, < 2.0)
+      iiif_manifest (>= 0.3, < 0.6)
+      jquery-datatables-rails (~> 3.4)
+      jquery-ui-rails (~> 6.0)
+      json-schema
+      kaminari_route_prefix (~> 0.1.1)
+      legato (~> 0.3)
+      linkeddata (~> 3.1)
+      mailboxer (~> 0.12)
+      nest (~> 3.1)
+      noid-rails (~> 3.0.0)
+      oauth
+      oauth2 (~> 1.2)
+      posix-spawn
+      power_converter (~> 0.1, >= 0.1.2)
+      pul_uv_rails (~> 2.0)
+      qa (>= 2.0, < 6.0)
+      rails (~> 5.0)
+      rails_autolink (~> 1.1)
+      rdf-rdfxml
+      rdf-vocab (< 3.1.5)
+      redis-namespace (~> 1.5)
+      redlock (>= 0.1.2)
+      retriable (>= 2.9, < 4.0)
+      samvera-nesting_indexer (~> 2.0)
+      sass-rails (~> 5.0)
+      select2-rails (~> 3.5)
+      signet
+      solrizer (>= 3.4, < 5)
+      tinymce-rails (~> 4.1)
+
+GIT
   remote: https://github.com/tawan/active-elastic-job.git
   revision: ec51c5d9dedc4a1b47f2db41f26d5fceb251e979
   specs:
@@ -89,7 +146,7 @@ GEM
       activemodel (= 5.2.4.3)
       activesupport (= 5.2.4.3)
       arel (>= 9.0)
-    activerecord-import (1.0.5)
+    activerecord-import (1.0.6)
       activerecord (>= 3.2)
     activerecord-nulldb-adapter (0.4.0)
       activerecord (>= 2.0.0)
@@ -332,6 +389,8 @@ GEM
     equivalent-xml (0.6.0)
       nokogiri (>= 1.4.3)
     erubi (1.9.0)
+    et-orbi (1.2.4)
+      tzinfo
     ethon (0.12.0)
       ffi (>= 1.3.0)
     execjs (2.7.0)
@@ -356,6 +415,10 @@ GEM
     flutie (2.2.0)
     font-awesome-rails (4.7.0.5)
       railties (>= 3.2, < 6.1)
+    fugit (1.3.8)
+      et-orbi (~> 1.1, >= 1.1.8)
+      raabro (~> 1.3)
+    geocoder (1.6.3)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     google-api-client (0.32.1)
@@ -407,7 +470,7 @@ GEM
       deprecation
       mime-types (> 2.0, < 4.0)
       mini_magick (>= 3.2, < 5)
-    hydra-editor (5.0.2)
+    hydra-editor (5.0.3)
       active-fedora (>= 9.0.0)
       activerecord (~> 5.0)
       almond-rails (~> 0.1)
@@ -416,7 +479,6 @@ GEM
       simple_form (>= 4.1.0, < 6.0)
       sprockets (~> 3.7)
       sprockets-es6
-      thor (~> 0.19)
     hydra-file_characterization (1.1.2)
       activesupport (>= 3.0.0)
     hydra-head (11.0.0)
@@ -431,57 +493,6 @@ GEM
       hydra-derivatives (~> 3.0)
       hydra-file_characterization (~> 1.0)
       hydra-pcdm (>= 0.9)
-    hyrax (2.9.0)
-      active-fedora (>= 11.5.2, < 12.2)
-      almond-rails (~> 0.1)
-      awesome_nested_set (~> 3.1)
-      blacklight (~> 6.14)
-      blacklight-gallery (~> 0.7)
-      breadcrumbs_on_rails (~> 3.0)
-      browse-everything (>= 0.16)
-      carrierwave (~> 1.0)
-      clipboard-rails (~> 1.5)
-      draper (~> 4.0)
-      dry-equalizer (~> 0.2)
-      dry-struct (>= 0.1, < 2.0)
-      dry-transaction (~> 0.11)
-      dry-validation (>= 0.9, < 2.0)
-      flipflop (~> 2.3)
-      flot-rails (~> 0.0.6)
-      font-awesome-rails (~> 4.2)
-      hydra-derivatives (~> 3.3)
-      hydra-editor (>= 3.3, < 6.0)
-      hydra-head (>= 10.6.1)
-      hydra-works (>= 0.16, < 2.0)
-      iiif_manifest (>= 0.3, < 0.6)
-      jquery-datatables-rails (~> 3.4)
-      jquery-ui-rails (~> 6.0)
-      json-schema
-      kaminari_route_prefix (~> 0.1.1)
-      legato (~> 0.3)
-      linkeddata (~> 3.1)
-      mailboxer (~> 0.12)
-      nest (~> 3.1)
-      noid-rails (~> 3.0.0)
-      oauth
-      oauth2 (~> 1.2)
-      posix-spawn
-      power_converter (~> 0.1, >= 0.1.2)
-      pul_uv_rails (~> 2.0)
-      qa (~> 2.0)
-      rails (~> 5.0)
-      rails_autolink (~> 1.1)
-      rdf-rdfxml
-      rdf-vocab (< 3.1.5)
-      redis-namespace (~> 1.5)
-      redlock (>= 0.1.2)
-      retriable (>= 2.9, < 4.0)
-      samvera-nesting_indexer (~> 2.0)
-      sass-rails (~> 5.0)
-      select2-rails (~> 3.5)
-      signet
-      solrizer (>= 3.4, < 5)
-      tinymce-rails (~> 4.1)
     i18n (1.8.5)
       concurrent-ruby (~> 1.0)
     i18n-debug (1.2.0)
@@ -530,7 +541,7 @@ GEM
       rdf (~> 3.1)
     json-schema (2.8.1)
       addressable (>= 2.4)
-    jwt (2.2.1)
+    jwt (2.2.2)
     kaminari (1.2.1)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.1)
@@ -562,6 +573,10 @@ GEM
       rdf-turtle
       rdf-vocab (>= 0.8)
       slop
+    ldpath (1.1.0)
+      nokogiri (~> 1.8)
+      parslet
+      rdf (~> 3.0)
     legato (0.7.0)
       multi_json
     libxml-ruby (3.1.0)
@@ -660,10 +675,11 @@ GEM
     openseadragon (0.5.0)
       rails (> 3.2.0)
     orm_adapter (0.5.0)
-    os (1.1.0)
+    os (1.1.1)
     parallel (1.19.2)
     parser (2.5.3.0)
       ast (~> 2.4.0)
+    parslet (2.0.0)
     pg (1.2.3)
     posix-spawn (0.3.15)
     power_converter (0.1.2)
@@ -671,13 +687,16 @@ GEM
     public_suffix (4.0.5)
     pul_uv_rails (2.0.1)
     puma (3.12.6)
-    qa (2.2.0)
+    qa (5.5.1)
       activerecord-import
       deprecation
       faraday
+      geocoder
+      ldpath
       nokogiri (~> 1.6)
-      rails (~> 5.0)
+      rails (>= 5.0, < 6.1)
       rdf
+    raabro (1.3.1)
     rack (2.2.3)
     rack-protection (2.0.8.1)
       rack
@@ -756,7 +775,7 @@ GEM
       rdf (~> 3.1)
       rdf-vocab (~> 3.1)
       rdf-xsd (~> 3.1)
-    rdf-tabular (3.1.0)
+    rdf-tabular (3.1.1)
       addressable (~> 2.3)
       bcp47 (~> 0.3, >= 0.3.3)
       json-ld (~> 3.1)
@@ -779,7 +798,7 @@ GEM
     redic (1.5.3)
       hiredis
     redis (4.2.1)
-    redis-namespace (1.7.0)
+    redis-namespace (1.8.0)
       redis (>= 3.0.4)
     redlock (1.2.0)
       redis (>= 3.0.0, < 5.0)
@@ -879,6 +898,9 @@ GEM
       rack (~> 2.0)
       rack-protection (>= 2.0.0)
       redis (>= 4.1.0)
+    sidekiq-cron (1.2.0)
+      fugit (~> 1.1)
+      sidekiq (>= 4.2.1)
     signet (0.14.0)
       addressable (~> 2.3)
       faraday (>= 0.17.3, < 2.0)
@@ -1016,7 +1038,7 @@ DEPENDENCIES
   flipflop (~> 2.3)
   flutie
   honeybadger (~> 3.0)
-  hyrax (~> 2.9)
+  hyrax!
   i18n-debug
   i18n-tasks
   is_it_working
@@ -1044,6 +1066,7 @@ DEPENDENCIES
   secure_headers
   selenium-webdriver
   sidekiq
+  sidekiq-cron (~> 1.1)
   simplecov
   solr_wrapper (~> 2.0)
   spring (~> 1.7)

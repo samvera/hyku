@@ -142,6 +142,7 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include ApplicationHelper, type: :view
   config.include Warden::Test::Helpers, type: :feature
+  config.include ActiveJob::TestHelper
 
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)

@@ -1,6 +1,6 @@
-RSpec.describe EmbargoAutoExpiryJob do
-  include ActiveJob::TestHelper
+# frozen_string_literal: true
 
+RSpec.describe EmbargoAutoExpiryJob do
   before do
     ActiveJob::Base.queue_adapter = :test
   end
@@ -9,26 +9,32 @@ RSpec.describe EmbargoAutoExpiryJob do
     clear_enqueued_jobs
   end
 
-  sidekiq_file = File.join(Rails.root, "config", "schedule.yml")
+  sidekiq_file = Rails.root.join("config", "schedule.yml")
   schedule = YAML.load_file(sidekiq_file)["embargo_auto_expiry_job"]
 
   let(:past_date) { 2.days.ago }
   let(:future_date) { 2.days.from_now }
 
   let!(:embargoed_work) do
-   build(:work, embargo_release_date: future_date.to_s, visibility_during_embargo: 'restricted', visibility_after_embargo: 'open').tap do |work|
-     work.save(validate: false)
-   end
- end
+    build(:work, embargo_release_date: future_date.to_s,
+                 visibility_during_embargo: 'restricted',
+                 visibility_after_embargo: 'open').tap do |work|
+      work.save(validate: false)
+    end
+  end
 
   let!(:work_with_expired_embargo) do
-   build(:work, embargo_release_date: past_date.to_s, visibility_during_embargo: 'restricted', visibility_after_embargo: 'open').tap do |work|
-     work.save(validate: false)
-   end
- end
+    build(:work, embargo_release_date: past_date.to_s,
+                 visibility_during_embargo: 'restricted',
+                 visibility_after_embargo: 'open').tap do |work|
+      work.save(validate: false)
+    end
+  end
 
- let!(:file_set_with_expired_embargo) do
-    build(:file_set, embargo_release_date: past_date.to_s, visibility_during_embargo: 'restricted', visibility_after_embargo: 'open').tap do |file_set|
+  let!(:file_set_with_expired_embargo) do
+    build(:file_set, embargo_release_date: past_date.to_s,
+                     visibility_during_embargo: 'restricted',
+                     visibility_after_embargo: 'open').tap do |file_set|
       file_set.save(validate: false)
     end
   end
@@ -38,10 +44,9 @@ RSpec.describe EmbargoAutoExpiryJob do
     expect(Fugit.do_parse(cron).original).to eq("0 0 * * *")
   end
 
-
   describe '#perform' do
     it "Enques a EmbargoExpiryJob" do
-      expect { EmbargoAutoExpiryJob.perform_now}.to have_enqueued_job(EmbargoExpiryJob)
+      expect { EmbargoAutoExpiryJob.perform_now }.to have_enqueued_job(EmbargoExpiryJob)
     end
 
     it "Expires the Embargo on a work with expired Embargo" do

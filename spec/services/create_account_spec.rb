@@ -45,4 +45,12 @@ RSpec.describe CreateAccount do
       expect(account2.account.errors).to match a_hash_including(:cname)
     end
   end
+
+  describe '#schedule_recurring_jobs' do
+    it "Enques Embargo and Lease Expiry jobs" do
+      expect(EmbargoAutoExpiryJob).to receive(:perform_now).with(account)
+      expect(LeaseAutoExpiryJob).to receive(:perform_now).with(account)
+      subject.schedule_recurring_jobs
+    end
+  end
 end

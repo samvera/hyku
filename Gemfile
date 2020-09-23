@@ -118,7 +118,6 @@ group :aws do
 end
 
 gem 'sidekiq'
-gem "sidekiq-cron", "~> 1.1"
 
 gem 'secure_headers'
 

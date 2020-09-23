@@ -9,11 +9,10 @@ RSpec.describe LeaseAutoExpiryJob do
     clear_enqueued_jobs
   end
 
-  sidekiq_file = Rails.root.join("config", "schedule.yml")
-  schedule = YAML.load_file(sidekiq_file)["lease_auto_expiry_job"]
-
   let(:past_date) { 2.days.ago }
   let(:future_date) { 2.days.from_now }
+
+  let(:account) { create(:account) }
 
   let!(:leased_work) do
     build(:work, lease_expiration_date: future_date.to_s,
@@ -42,20 +41,17 @@ RSpec.describe LeaseAutoExpiryJob do
     end
   end
 
-  it 'is scheduled to run everyday at 00:00' do
-    cron = schedule["cron"]
-    expect(Fugit.do_parse(cron).original).to eq("0 0 * * *")
+  describe '#reenqueue' do
+    it 'Enques an LeaseExpiryJob after perform' do
+      expect { LeaseAutoExpiryJob.perform_now(account) }.to have_enqueued_job(LeaseAutoExpiryJob)
+    end
   end
 
   describe '#perform' do
-    it "Enques a LeaseAutoExpiryJob" do
-      expect { LeaseAutoExpiryJob.perform_now }.to have_enqueued_job(LeaseExpiryJob)
-    end
-
     it "Expires the lease on a work with expired lease" do
       expect(work_with_expired_lease.visibility).to eq('open')
       ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
-      LeaseAutoExpiryJob.perform_now
+      LeaseAutoExpiryJob.perform_now(account)
       work_with_expired_lease.reload
       expect(work_with_expired_lease.visibility).to eq('restricted')
     end
@@ -63,7 +59,7 @@ RSpec.describe LeaseAutoExpiryJob do
     it 'Expires leases on file sets with expired leases' do
       expect(file_set_with_expired_lease.visibility).to eq('open')
       ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
-      LeaseAutoExpiryJob.perform_now
+      LeaseAutoExpiryJob.perform_now(account)
       file_set_with_expired_lease.reload
       expect(file_set_with_expired_lease.visibility).to eq('restricted')
     end
@@ -71,7 +67,7 @@ RSpec.describe LeaseAutoExpiryJob do
     it "Does not expire lease when lease is still active" do
       expect(leased_work.visibility).to eq('open')
       ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
-      LeaseAutoExpiryJob.perform_now
+      LeaseAutoExpiryJob.perform_now(account)
       expect(leased_work.visibility).to eq('open')
     end
   end

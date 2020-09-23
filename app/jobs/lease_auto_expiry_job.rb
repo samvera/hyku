@@ -1,8 +1,21 @@
 # frozen_string_literal: true
 
 class LeaseAutoExpiryJob < ApplicationJob
-  def perform
-    # From Hyrax app/jobs/lease_expiry_job
-    LeaseExpiryJob.perform_later
+  non_tenant_job
+  after_perform do |job|
+    reenqueue(job.arguments.first)
   end
+
+  def perform(account)
+    account.switch do
+      # From Hyrax app/jobs/lease_expiry_job
+      LeaseExpiryJob.perform_now
+    end
+  end
+
+  private
+
+    def reenqueue(account)
+      LeaseAutoExpiryJob.set(wait_until: Date.tomorrow.midnight).perform_later(account)
+    end
 end

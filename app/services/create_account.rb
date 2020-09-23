@@ -33,6 +33,7 @@ class CreateAccount
         create_defaults
         fillin_translations
         add_initial_users
+        # schedule_recurring_jobs
         true
       end
     end
@@ -67,6 +68,13 @@ class CreateAccount
   # specifically Solr and Fedora, and creation of the default Admin Set.
   def create_account_inline
     CreateAccountInlineJob.perform_now(account)
+  end
+
+  # Schedules jobs that will run automatically after
+  # the first time they are called
+  def schedule_recurring_jobs
+    EmbargoAutoExpiryJob.perform_now(account)
+    LeaseAutoExpiryJob.perform_now(account)
   end
 
   private

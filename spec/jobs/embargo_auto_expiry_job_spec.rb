@@ -9,11 +9,10 @@ RSpec.describe EmbargoAutoExpiryJob do
     clear_enqueued_jobs
   end
 
-  sidekiq_file = Rails.root.join("config", "schedule.yml")
-  schedule = YAML.load_file(sidekiq_file)["embargo_auto_expiry_job"]
-
   let(:past_date) { 2.days.ago }
   let(:future_date) { 2.days.from_now }
+
+  let(:account) { create(:account) }
 
   let!(:embargoed_work) do
     build(:work, embargo_release_date: future_date.to_s,
@@ -39,20 +38,17 @@ RSpec.describe EmbargoAutoExpiryJob do
     end
   end
 
-  it 'is scheduled to run everyday at 00:00' do
-    cron = schedule["cron"]
-    expect(Fugit.do_parse(cron).original).to eq("0 0 * * *")
+  describe '#reenqueue' do
+    it 'Enques an EmbargoExpiryJob after perform' do
+      expect { EmbargoAutoExpiryJob.perform_now(account) }.to have_enqueued_job(EmbargoAutoExpiryJob)
+    end
   end
 
   describe '#perform' do
-    it "Enques a EmbargoExpiryJob" do
-      expect { EmbargoAutoExpiryJob.perform_now }.to have_enqueued_job(EmbargoExpiryJob)
-    end
-
     it "Expires the Embargo on a work with expired Embargo" do
       expect(work_with_expired_embargo.visibility).to eq('restricted')
       ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
-      EmbargoAutoExpiryJob.perform_now
+      EmbargoAutoExpiryJob.perform_now(account)
       work_with_expired_embargo.reload
       expect(work_with_expired_embargo.visibility).to eq('open')
     end
@@ -60,7 +56,7 @@ RSpec.describe EmbargoAutoExpiryJob do
     it 'Expires embargos on file sets with expired embargos' do
       expect(file_set_with_expired_embargo.visibility).to eq('restricted')
       ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
-      EmbargoAutoExpiryJob.perform_now
+      EmbargoAutoExpiryJob.perform_now(account)
       file_set_with_expired_embargo.reload
       expect(file_set_with_expired_embargo.visibility).to eq('open')
     end
@@ -68,7 +64,7 @@ RSpec.describe EmbargoAutoExpiryJob do
     it "Does not expire embargo when embargo is still active" do
       expect(embargoed_work.visibility).to eq('restricted')
       ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
-      EmbargoAutoExpiryJob.perform_now
+      EmbargoAutoExpiryJob.perform_now(account)
       embargoed_work.reload
       expect(embargoed_work.visibility).to eq('restricted')
     end

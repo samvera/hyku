@@ -33,7 +33,7 @@ class CreateAccount
         create_defaults
         fillin_translations
         add_initial_users
-        # schedule_recurring_jobs
+        schedule_recurring_jobs
         true
       end
     end
@@ -73,8 +73,8 @@ class CreateAccount
   # Schedules jobs that will run automatically after
   # the first time they are called
   def schedule_recurring_jobs
-    EmbargoAutoExpiryJob.perform_now(account)
-    LeaseAutoExpiryJob.perform_now(account)
+    EmbargoAutoExpiryJob.perform_later(account)
+    LeaseAutoExpiryJob.perform_later(account)
   end
 
   private

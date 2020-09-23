@@ -1,9 +1,0 @@
-embargo_auto_expiry_job:
-  cron: "@daily"
-  class: "EmbargoAutoExpiryJob"
-  queue: embargo_expiry_queue
-
-lease_auto_expiry_job:
-  cron: "@daily"
-  class: "LeaseAutoExpiryJob"
-  queue: lease_expiry_queue

@@ -5,7 +5,6 @@ class Ability
   include Hyrax::Ability
 
   self.ability_logic += %i[
-    everyone_can_create_curation_concerns
     group_permissions
     superadmin_permissions
   ]

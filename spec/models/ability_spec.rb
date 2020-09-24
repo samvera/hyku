@@ -13,10 +13,12 @@ RSpec.describe Ability do
     it { is_expected.not_to be_able_to(:manage, :all) }
   end
 
-  describe 'an ordinary user' do
+  describe 'a registered user' do
     let(:user) { FactoryBot.create(:user) }
+    let(:curation_concerns_models) { [::FileSet, ::Collection] + Hyrax.config.curation_concerns }
 
     it { is_expected.not_to be_able_to(:manage, :all) }
+    it { is_expected.not_to be_able_to(:create, curation_concerns_models) }
   end
 
   describe 'an administrative user' do

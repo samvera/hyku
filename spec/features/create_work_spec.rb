@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Creating a new Work', :clean do
-  let(:user) { create(:user) }
+  let(:user) { create(:admin) }
 
   before do
     AdminSet.find_or_create_default_admin_set_id

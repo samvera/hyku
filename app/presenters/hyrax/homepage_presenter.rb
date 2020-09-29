@@ -1,4 +1,5 @@
 # Override from hyrax 2.5.1 to add method to hide featured researcher
+# and add method to hide share button
 module Hyrax
   class HomepagePresenter
     class_attribute :create_work_presenter_class
@@ -14,6 +15,7 @@ module Hyrax
     #   is activated, then return true. Otherwise return true if the signed in
     #   user has permission to create at least one kind of work.
     def display_share_button?
+      Flipflop.show_share_button? &&
       (user_unregistered? && Hyrax.config.display_share_button_when_not_logged_in?) ||
         current_ability.can_create_any_work?
     end

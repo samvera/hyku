@@ -45,6 +45,10 @@ services:
       - solr:/opt/solr/server/solr
     networks:
       internal:
+    environment:
+      - OOM=script
+      - VIRTUAL_PORT=8983
+      - VIRTUAL_HOST=solr.pals.docker
 
   fcrepo:
     image: cbeer/fcrepo4:4.7

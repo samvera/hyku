@@ -1,3 +1,4 @@
+# Override from hyrax 2.5.1 to move users out of apartments (mattc commit)
 module Hyrax
   module Admin
     class UsersPresenter
@@ -24,7 +25,7 @@ module Hyrax
 
         # Returns a list of users excluding the system users and guest_users
         def search
-          ::User.registered.for_repository.without_system_accounts
+          ::User.registered.for_repository.without_system_accounts.uniq
         end
     end
   end

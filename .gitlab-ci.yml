@@ -1,25 +1,17 @@
-image: registry.gitlab.com/notch8/scripts/builder:latest
-services:
-  - docker:dind
-
 stages:
   - build
-#  - test
-#  - review
+  - test
   - deploy
-#  - production
 
 variables:
-  DOCKER_DRIVER: overlay
+  DOCKER_DRIVER: overlay2
   REGISTRY_HOST: registry.gitlab.com
-  REGISTRY_URI: /notch8/palni-palci
-  SITE_URI_BASE: hykuup.com
+  REGISTRY_URI: /notch8/hyku-up
 
 before_script:
-  - export TAG=${CI_COMMIT_SHA:0:8}
+  - export TAG=${CI_COMMIT_SHORT_SHA}
   - export BRANCH=${CI_COMMIT_REF_NAME}
-  - export REGISTRY_HOST=${CI_REGISTRY}
-  - export REGISTRY_URI="/${CI_PROJECT_PATH}"
+  - export REPO_URL=${CI_REPOSITORY_URL}
   - touch .env.development
   - touch .env.production
 
@@ -31,7 +23,7 @@ base:
     - sc push -s base
   when: manual
   tags:
-    - docker
+    - local
 
 build:
   stage: build
@@ -39,43 +31,85 @@ build:
     - docker login -u "gitlab-ci-token" -p "$CI_JOB_TOKEN" $CI_REGISTRY
     - sc build
     - sc push
-    - docker tag $CI_REGISTRY_IMAGE:$TAG $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
-    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+  tags:
+    - local
+
+test:
+  stage: test
+  image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+  services:
+    - name: selenium/standalone-chrome:3.141
+      alias: chrome
+    - name: postgres:10-alpine
+      alias: db-test
+    - name: solr:7.5
+      alias: solr
+      command: ["solr", "-c", "-f"]
+    - name: ualbertalib/docker-fcrepo4:4.7
+      alias: fcrepo
+    - name: redis:4-alpine
+      alias: redis-test
+      command: ["redis-server"]
+  variables:
+    CHROME_HOSTNAME: chrome
+    DATABASE_ADAPTER: postgresql
+    DATABASE_HOST: db-test
+    DATABASE_NAME: hyku
+    DATABASE_PASSWORD: DatabaseFTW
+    DATABASE_USER: postgres
+    DATBASE_TEST_NAME: hyku_test
+    FEDORA_URL: http://fcrepo:8080/fcrepo/rest
+    GIT_STRATEGY: none
+    IN_DOCKER: 'true'
+    LD_LIBRARY_PATH: /opt/fits/tools/mediainfo/linux
+    POSTGRES_DB: hyku_test
+    POSTGRES_PASSWORD: DatabaseFTW
+    POSTGRES_USER: postgres
+    RAILS_ENV: test
+    RAILS_LOG_TO_STDOUT: 'true'
+    RAILS_SERVE_STATIC_FILES: 'true'
+    REDIS_HOST: redis-test
+    REDIS_PORT: '6379'
+    SECRET_KEY_BASE: asdf
+    SETTINGS__ACTIVE_JOB__QUEUE_ADAPTER: sidekiq
+    SETTINGS__BULKRAX__ENABLED: 'false'
+    SETTINGS__FITS_PATH: /opt/fits/fits.sh
+    SETTINGS__MULTITENANCY__ADMIN_HOST: hyku.docker
+    SETTINGS__MULTITENANCY__ADMIN_ONLY_TENANT_CREATION: 'false'
+    SETTINGS__MULTITENANCY__DEFAULT_HOST: '%{tenant}.hyku.docker'
+    SETTINGS__MULTITENANCY__ENABLED: 'true'
+    SETTINGS__SOLR__URL: http://solr:8983/solr/
+    SETTINGS__ZOOKEEPER__CONNECTION_STR: solr:9983/configs
+    SOLR_URL: http://solr:8983/solr/
+  script:
+    - rm -f /home/app/webapp/tmp/capybara/*
+    - rm -rf $CI_PROJECT_DIR/capybara
+    - cd /home/app/webapp && bundle exec rake zookeeper:upload db:create db:schema:load spec
+  after_script:
+    - cp -r /home/app/webapp/tmp/capybara $CI_PROJECT_DIR/capybara
   tags:
     - docker
-
-# test:
-#   stage: test
-#   image: $CI_REGISTRY_IMAGE:$CI_PROJECT_NAME-$CI_BUILD_REF_SLUG
-#   script:
-#     - cd /home/app/webapp && bundle exec rake db:create db:schema:load test
-#   tags:
-#     - docker
-#   variables:
-#     GIT_STRATEGY: none
+  allow_failure: true
+  artifacts:
+    paths:
+      - capybara/*.html
+    expire_in: 1 week
+    when: always
 
 staging:
   stage: deploy
-  image: dtzar/helm-kubectl
+  type: deploy
   script:
-    - mkdir -p ~/.kube
-    - echo $KUBE_CONFIG | base64 -d > ~/.kube/config
-    - echo $STAGING_VALUES | base64 -d > ./chart/staging-values.yaml
-    - echo "Deploying registry.gitlab.com/notch8/palni-palci:$CI_COMMIT_SHORT_SHA"
-    - ./chart/bin/deploy staging $CI_COMMIT_SHORT_SHA
-  tags:
-    - docker
+    - ./chart/bin/deploy staging $CI_COMMIT_SHORT_SHA $STAGING_CONFIG_FILE
   when: manual
+  tags:
+    - local
 
 production:
   stage: deploy
-  image: dtzar/helm-kubectl
+  type: deploy
   script:
-    - mkdir -p ~/.kube
-    - echo $KUBE_CONFIG | base64 -d > ~/.kube/config
-    - echo $PRODUCTION_VALUES | base64 -d > ./chart/production-values.yaml
-    - echo "Deploying registry.gitlab.com/notch8/palni-palci:$CI_COMMIT_SHORT_SHA"
-    - ./chart/bin/deploy production $CI_COMMIT_SHORT_SHA
-  tags:
-    - docker
+    - ./chart/bin/deploy staging $CI_COMMIT_SHORT_SHA $STAGING_CONFIG_FILE
   when: manual
+  only:
+    - master

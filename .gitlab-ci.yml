@@ -6,7 +6,7 @@ stages:
 variables:
   DOCKER_DRIVER: overlay2
   REGISTRY_HOST: registry.gitlab.com
-  REGISTRY_URI: /notch8/hyku-up
+  REGISTRY_URI: /notch8/palni-palci
 
 before_script:
   - export TAG=${CI_COMMIT_SHORT_SHA}

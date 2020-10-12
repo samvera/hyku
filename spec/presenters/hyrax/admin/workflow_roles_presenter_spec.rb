@@ -16,11 +16,11 @@ RSpec.describe Hyrax::Admin::WorkflowRolesPresenter do
 
   describe "#groups" do
     subject { presenter.groups }
+
     let!(:group) { create(:group) }
 
     it "includes all Hyrax::Groups" do
       expect(subject).to eq [group]
     end
-
   end
 end

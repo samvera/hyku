@@ -2,10 +2,10 @@ RSpec.describe Hyrax::Forms::WorkflowResponsibilityGroupForm do
   let(:instance) { described_class.new }
 
   describe "#initialize" do
+    subject { instance.model_instance }
+
     let(:group) { create(:group) }
     let(:instance) { described_class.new(group_id: group.id, workflow_role_id: 7) }
-
-    subject { instance.model_instance }
 
     it "creates an agent and sets the workflow_role_id" do
       expect(subject.agent).to be_kind_of Sipity::Agent

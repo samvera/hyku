@@ -87,19 +87,18 @@ class Oer < ActiveFedora::Base
   include ::Hyrax::BasicMetadata
 
   def previous_version
-    @previous_version ||= Oer.where(id: self.previous_version_id) if self.previous_version_id
+    @previous_version ||= Oer.where(id: previous_version_id) if previous_version_id
   end
 
   def newer_version
-    @newer_version ||= Oer.where(id: self.newer_version_id) if self.newer_version_id
+    @newer_version ||= Oer.where(id: newer_version_id) if newer_version_id
   end
 
   def alternate_version
-    @alternate_version ||= Oer.where(id: self.alternate_version_id) if self.alternate_version_id
+    @alternate_version ||= Oer.where(id: alternate_version_id) if alternate_version_id
   end
 
   def related_item
-    @related_item ||= Oer.where(id: self.related_item_id) if self.related_item_id
+    @related_item ||= Oer.where(id: related_item_id) if related_item_id
   end
-
 end

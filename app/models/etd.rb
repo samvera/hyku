@@ -11,8 +11,7 @@ class Etd < ActiveFedora::Base
   # This must be included at the end, because it finalizes the metadata
   # schema (by adding accepts_nested_attributes)
   include ::Hyrax::BasicMetadata
-  
+
   self.human_readable_type = 'ETD'
   # This must be included at the end, because it finalizes the metadata
-
 end

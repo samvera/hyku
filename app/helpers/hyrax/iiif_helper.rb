@@ -1,3 +1,4 @@
+# TODO: RG - still needed?
 module Hyrax
   module IiifHelper
     def iiif_viewer_display(work_presenter, locals = {})

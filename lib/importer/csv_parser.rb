@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Importer
   class CSVParser
     include Enumerable
@@ -44,7 +46,7 @@ module Importer
 
       # If you have a header like lc_subject_type, the next
       # header must be the corresponding field (e.g. lc_subject)
-      def validate_header_pairs(row) # rubocop:disable Metrics/MethodLength
+      def validate_header_pairs(row)
         errors = []
         row.each_with_index do |header, i|
           next if header == 'resource_type'
@@ -74,8 +76,7 @@ module Importer
         end
       end
 
-      # rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/AbcSize
-      def extract_field(header, val, processed) 
+      def extract_field(header, val, processed)
         return unless val
         case header
         when 'type', 'id'
@@ -104,7 +105,6 @@ module Importer
           end
         end
       end
-      # rubocop:enable Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/AbcSize
 
       # Faking a typed field for now.
       # TODO: support other types of contributors
@@ -149,4 +149,5 @@ module Importer
         date[field.to_sym] << val
       end
   end
+  # rubocop:enable Metrics/ClassLength
 end

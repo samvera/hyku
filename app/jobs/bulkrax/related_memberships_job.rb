@@ -22,7 +22,7 @@ module Bulkrax
       def related_membership
         related_members = []
 
-        related_works_hash.each { |k, v| related_members << k }
+        related_works_hash.each { |k, _v| related_members << k }
         relate_members_to_record(related_members) if related_members.present?
       end
 

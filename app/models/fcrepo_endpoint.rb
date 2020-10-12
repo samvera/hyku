@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FcrepoEndpoint < Endpoint
   store :options, accessors: %i[url base_path]
 

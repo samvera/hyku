@@ -166,10 +166,7 @@ module Hyrax
         return Sipity::Agent.none unless user.persisted?
         user_agent = PowerConverter.convert_to_sipity_agent(user)
         # Override from hyrax 2.5.1 - use User.workflow groups method
-        group_agents = user.workflow_groups.map do |g|
-          # Override from hyrax 2.5.1 - use sipity agent and not create new group
-          g.to_sipity_agent
-        end
+        group_agents = user.workflow_groups.map(&:to_sipity_agent)
         Sipity::Agent.where(id: group_agents + [user_agent])
       end
 

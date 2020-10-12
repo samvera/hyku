@@ -1,11 +1,11 @@
 RSpec.describe Hyrax::Forms::PermissionTemplateForm do
+  subject { form }
+
   let(:permission_template) { create(:permission_template) }
   let(:form) { described_class.new(permission_template) }
   let(:today) { Time.zone.today }
   let(:admin_set) { create(:admin_set) }
   let(:collection) { build(:collection_lw) }
-
-  subject { form }
 
   it { is_expected.to delegate_method(:available_workflows).to(:model) }
   it { is_expected.to delegate_method(:active_workflow).to(:model) }
@@ -21,8 +21,6 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
   end
 
   describe 'integration tests' do
-    let(:permission_template) { create(:permission_template, with_admin_set: true, with_workflows: true) }
-
     subject do
       form.update(
         ActionController::Parameters.new(
@@ -34,6 +32,8 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
         ).permit!
       )
     end
+
+    let(:permission_template) { create(:permission_template, with_admin_set: true, with_workflows: true) }
 
     before do
       # Create MANAGING role manually
@@ -537,12 +537,12 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
   end
 
   describe "#permission_template_update_params" do
-    let(:permission_template) { create(:permission_template, source_id: admin_set.id) }
-
     subject do
       form.attributes = input_params
       form.send(:permission_template_update_params)
     end
+
+    let(:permission_template) { create(:permission_template, source_id: admin_set.id) }
 
     context "with release varies by date selected" do
       let(:input_params) do

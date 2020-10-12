@@ -31,16 +31,18 @@ services:
       internal:
        aliases:
          - zookeeper_cluster
-
+    healthcheck:
+      test: ["CMD-SHELL", "echo 'ruok' | nc -w 2 -q 2 localhost 2181 | grep imok || exit 1"]
+      interval: "10s"
+      timeout: "8"
   solr:
     image: solr:7.5
     command: solr -c -f -z zoo1:2181
     depends_on:
-      - zoo1
+      zoo1:
+        condition: service_healthy
     expose:
       - 8983
-    ports:
-      - 8983:8983
     volumes:
       - .:/app
       - solr:/opt/solr/server/solr

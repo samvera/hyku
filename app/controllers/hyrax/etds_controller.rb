@@ -9,6 +9,6 @@ module Hyrax
     self.curation_concern_type = ::Etd
 
     # Use this line if you want to use a custom presenter
-    self.show_presenter = Hyrax::EtdPresenter  
+    self.show_presenter = Hyrax::EtdPresenter
   end
 end

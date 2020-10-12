@@ -1,3 +1,4 @@
+# TODO: RG - is this still needed
 module Hyrax
   module HyraxHelperBehavior
     include Hyrax::CitationsBehavior

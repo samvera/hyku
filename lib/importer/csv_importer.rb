@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Importer
   # Import a csv file with one work per row. The first row of the csv should be a
   # header row. The model for each row can either be specified in a column called

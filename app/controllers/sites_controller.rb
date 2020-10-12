@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class SitesController < ApplicationController
   before_action :set_site
   load_and_authorize_resource instance_variable: :site, class: 'Site' # descendents still auth Site
   layout 'hyrax/dashboard'
 
   def update
-    # params.permit([:remove_banner_image, :remove_logo_image])
+    # FIXME: Pull these strings out to i18n locale
 
     # Dynamic CarrierWave methods
     remove_image_methods = %i[remove_banner_image

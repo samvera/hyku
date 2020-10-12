@@ -9,17 +9,14 @@
 
   <div class="panel-body">
     <%# user_invitation_path is provided by devise_invitable %>
-    <%= simple_form_for :account,  url: main_app.user_invitation_path, html: { class: 'form-inline pull-left' } do |f| %>
+    <%= simple_form_for :user,  url: main_app.user_invitation_path, html: { class: 'form-inline pull-left' } do |f| %>
       <div class="form-group">
-        <%= f.label :admin_emails, class: "control-label" %>
-        <%# Use input_field to support multiple :admin_emails fields that become an array of values %>
-        <%= f.input_field :admin_emails, multiple: true, class: "form-control", value: "" %>
-        <%# Add all existing admin emails as hidden inputs %>
-        <% current_account.admin_emails.each do |email| %>
-          <%= f.input_field :admin_emails, multiple: true, hidden: true, value: email %>
-        <% end %>
+        <%= f.hint :email %>
+        <%= f.label :email, class: "control-label", required: false %>
+        <%= f.input_field :email, class: "form-control", value: "" %>
+        <%= f.input :roles, required: false %>'
+        <%= f.submit t('.add'), class: 'btn btn-primary' %>
       </div>
-      <%= f.submit t('.add'), class: 'btn btn-primary' %>
     <% end %>
   </div>
 </div>

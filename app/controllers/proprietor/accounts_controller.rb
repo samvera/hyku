@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# TODO: RG - why are there differences here
 module Proprietor
   class AccountsController < ProprietorController
     before_action :ensure_admin!
@@ -8,7 +11,6 @@ module Proprietor
     # GET /accounts.json
     def index
       authorize! :manage, Account
-
       add_breadcrumb t(:'hyrax.controls.home'), root_path
       add_breadcrumb t(:'hyrax.admin.sidebar.accounts'), proprietor_accounts_path
     end
@@ -83,7 +85,7 @@ module Proprietor
         authorize! :read, :admin_dashboard
       end
 
-      # Never trust parameters from the scary internet, only allow the white list through.
+      # Never trust parameters from the scary internet, only allow the permitted parameters through.
       def account_params
         params.require(:account).permit(:name, :cname, :title, :is_public,
                                         admin_emails: [],

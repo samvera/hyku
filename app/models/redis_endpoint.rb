@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RedisEndpoint < Endpoint
   store :options, accessors: [:namespace]
 

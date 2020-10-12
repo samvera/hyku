@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # These methods override 2.5.1 behavior defined in hyrax_helper_behavior.rb
 module Hyrax
   module OverrideHelperBehavior
@@ -14,7 +16,7 @@ module Hyrax
 
     # Used by the gallery view
     def collection_thumbnail(_document, _image_options = {}, _url_options = {})
-      return super unless Site.instance.default_collection_image.present?
+      return super if Site.instance.default_collection_image.blank?
 
       image_tag(Site.instance.default_collection_image)
     end

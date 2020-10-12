@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StatusController < ApplicationController
   layout 'hyrax/dashboard'
 

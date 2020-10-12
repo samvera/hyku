@@ -17,7 +17,6 @@ RSpec.describe 'Site contact configuration' do
         expect(page).to have_field('Contact email')
         expect(page.first(:css, "#site_contact_email")[:value]).to be "contact@email.com"
       end
-
     end
   end
 end

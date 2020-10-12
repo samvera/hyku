@@ -4,10 +4,10 @@ module Hyrax
   module Forms
     class BatchEditForm < Hyrax::Forms::WorkForm
       # Used for drawing the fields that appear on the page
-      self.terms = [:creator, :contributor,
-                    :keyword, :license, :publisher, :date_created,
-                    :subject, :language, :identifier, :based_near,
-                    :related_url]
+      self.terms = %i[creator contributor
+                      keyword license publisher date_created
+                      subject language identifier based_near
+                      related_url]
       self.required_fields = []
       self.model_class = Hyrax.primary_work_type
 
@@ -27,7 +27,6 @@ module Hyrax
       attr_reader :batch_document_ids
 
       # Returns a list of parameters we accept from the form
-      # rubocop:disable Metrics/MethodLength
       def self.build_permitted_params
         [{ creator: [] },
          { contributor: [] },
@@ -42,7 +41,7 @@ module Hyrax
          { identifier: [] },
          { based_near: [] },
          { related_url: [] },
-         { permissions_attributes: [:type, :name, :access, :id, :_destroy] },
+         { permissions_attributes: %i[type name access id _destroy] },
          :on_behalf_of,
          :version,
          :add_works_to_collection,
@@ -53,7 +52,7 @@ module Hyrax
          :lease_expiration_date,
          :visibility_after_lease,
          :visibility,
-         { based_near_attributes: [:id, :_destroy] }]
+         { based_near_attributes: %i[id _destroy] }]
       end
       # rubocop:enable Metrics/MethodLength
 

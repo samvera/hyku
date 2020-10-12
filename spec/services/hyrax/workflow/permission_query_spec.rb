@@ -76,7 +76,7 @@ module Hyrax
 
       describe 'permissions assigned at the workflow level' do
         let(:reviewing_group_member) { create(:user) }
-        let(:reviewing_group) { Group.new({name: 'librarians'}) }
+        let(:reviewing_group) { Group.new(name: 'librarians') }
 
         before do
           allow(reviewing_group_member).to receive(:groups).and_return(['librarians'])
@@ -186,17 +186,17 @@ module Hyrax
         end
 
         context 'when user is persisted' do
+          subject { described_class.scope_processing_agents_for(user: user) }
+
           let(:user) { create(:user) }
 
           before do
             allow(user).to receive(:groups).and_return(['librarians'])
           end
 
-          subject { described_class.scope_processing_agents_for(user: user) }
-
           it 'will equal [kind_of(Sipity::Agent)]' do
             is_expected.to contain_exactly(PowerConverter.convert_to_sipity_agent(user),
-                                           PowerConverter.convert_to_sipity_agent(Group.new({name: 'librarians'})))
+                                           PowerConverter.convert_to_sipity_agent(Group.new(name: 'librarians')))
           end
         end
       end

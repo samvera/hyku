@@ -65,9 +65,9 @@ module Hyrax
       def previous_version
         @previous_version_id ||= begin
           ActiveFedora::SolrService.query("id:#{id}",
-            rows: 10_000,
-            fl:   "previous_version_id_tesim")
-          .flat_map { |x| x.fetch("previous_version_id_tesim", []) }
+                                          rows: 10_000,
+                                          fl:   "previous_version_id_tesim")
+                                   .flat_map { |x| x.fetch("previous_version_id_tesim", []) }
         end
       end
 
@@ -76,9 +76,9 @@ module Hyrax
       def newer_version
         @newer_version_id ||= begin
           ActiveFedora::SolrService.query("id:#{id}",
-            rows: 10_000,
-            fl:   "newer_version_id_tesim")
-          .flat_map { |x| x.fetch("newer_version_id_tesim", []) }
+                                          rows: 10_000,
+                                          fl:   "newer_version_id_tesim")
+                                   .flat_map { |x| x.fetch("newer_version_id_tesim", []) }
         end
       end
 
@@ -87,9 +87,9 @@ module Hyrax
       def alternate_version
         @alternate_version_id ||= begin
           ActiveFedora::SolrService.query("id:#{id}",
-            rows: 10_000,
-            fl:   "alternate_version_id_tesim")
-          .flat_map { |x| x.fetch("alternate_version_id_tesim", []) }
+                                          rows: 10_000,
+                                          fl:   "alternate_version_id_tesim")
+                                   .flat_map { |x| x.fetch("alternate_version_id_tesim", []) }
         end
       end
 
@@ -98,9 +98,9 @@ module Hyrax
       def related_item
         @related_item_id ||= begin
           ActiveFedora::SolrService.query("id:#{id}",
-            rows: 10_000,
-            fl:   "related_item_id_tesim")
-          .flat_map { |x| x.fetch("related_item_id_tesim", []) }
+                                          rows: 10_000,
+                                          fl:   "related_item_id_tesim")
+                                   .flat_map { |x| x.fetch("related_item_id_tesim", []) }
         end
       end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hyku
   module Admin
     module Group
@@ -56,7 +58,7 @@ module Hyku
           end
 
           class Tab
-            ACTIVE_CSS_CLASS = 'active'.freeze
+            ACTIVE_CSS_CLASS = 'active'
 
             attr_reader :name, :path, :action
 

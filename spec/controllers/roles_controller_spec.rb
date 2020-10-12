@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe RolesController, type: :controller do
   before do
     sign_in user
@@ -35,7 +37,6 @@ RSpec.describe RolesController, type: :controller do
       end
 
       it "assigns the users as @users" do
-        skip
         get :index
         expect(assigns(:users)).to match_array [user]
       end
@@ -48,14 +49,12 @@ RSpec.describe RolesController, type: :controller do
         end
 
         it "updates the requested role" do
-          skip
           put :update, params: { id: user.id, user: new_attributes }
           user.reload
           expect(user.site_roles.pluck(:name)).to match_array ['admin', 'superadmin']
         end
 
         it "assigns the requested user as @user" do
-          skip
           put :update, params: { id: user.id, user: valid_attributes }
           expect(assigns(:user)).to eq(user)
         end

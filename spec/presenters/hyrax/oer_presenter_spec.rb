@@ -3,6 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Hyrax::OerPresenter do
+  subject { described_class.new(double, double) }
 
   let(:solr_document) { SolrDocument.new(attributes) }
   let(:request) { double(host: 'example.org', base_url: 'http://example.org') }
@@ -19,8 +20,6 @@ RSpec.describe Hyrax::OerPresenter do
   let(:ability) { double Ability }
   let(:presenter) { described_class.new(solr_document, ability, request) }
 
-  subject { described_class.new(double, double) }
-
   describe "#model_name" do
     subject { presenter.model_name }
 
@@ -28,6 +27,8 @@ RSpec.describe Hyrax::OerPresenter do
   end
 
   describe '#iiif_viewer?' do
+    subject { presenter.iiif_viewer? }
+
     let(:id_present) { false }
     let(:representative_presenter) { double('representative', present?: false) }
     let(:image_boolean) { false }
@@ -45,8 +46,6 @@ RSpec.describe Hyrax::OerPresenter do
       allow(representative_presenter).to receive(:image?).and_return(image_boolean)
       allow(Hyrax.config).to receive(:iiif_image_server?).and_return(iiif_enabled)
     end
-
-    subject { presenter.iiif_viewer? }
 
     context 'with no representative_id' do
       it { is_expected.to be false }
@@ -90,8 +89,6 @@ RSpec.describe Hyrax::OerPresenter do
       end
     end
   end
-
-  
 
   describe "#attribute_to_html" do
     let(:renderer) { double('renderer') }
@@ -150,9 +147,9 @@ RSpec.describe Hyrax::OerPresenter do
           'id' => '99999'
         }
       end
-  
+
       before { allow(user).to receive_messages(groups: ['admin', 'registered']) }
-  
+
       context 'with a new public work' do
         xit 'can feature the work' do
           allow(user).to receive(:can?).with(:create, FeaturedWork).and_return(true)
@@ -161,7 +158,7 @@ RSpec.describe Hyrax::OerPresenter do
           expect(presenter.display_unfeature_link?).to be false
         end
       end
-  
+
       context 'with a featured work' do
         before { FeaturedWork.create(work_id: attributes.fetch('id')) }
         xit 'can unfeature the work' do
@@ -170,10 +167,10 @@ RSpec.describe Hyrax::OerPresenter do
           expect(presenter.display_unfeature_link?).to be true
         end
       end
-  
+
       describe "#editor?" do
         subject { presenter.editor? }
-  
+
         it { is_expected.to be true }
       end
     end

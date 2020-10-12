@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Importer
   extend ActiveSupport::Autoload
   autoload :AttachFiles

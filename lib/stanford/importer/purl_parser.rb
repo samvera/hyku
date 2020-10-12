@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module Stanford
   module Importer
-    class PurlParser # rubocop:disable Metrics/ClassLength
-      DC_NS = { 'dc'.freeze => 'http://purl.org/dc/elements/1.1/'.freeze }.freeze
+    class PurlParser
+      DC_NS = { 'dc' => 'http://purl.org/dc/elements/1.1/' }.freeze
 
       attr_reader :xml
 
@@ -24,7 +26,7 @@ module Stanford
       end
 
       def origin_text
-        'Imported from PURL to local RDF profile by Hyku'.freeze
+        'Imported from PURL to local RDF profile by Hyku'
       end
 
       def collection?
@@ -168,5 +170,6 @@ module Stanford
           oai.xpath('./dc:subject', DC_NS).map(&:text)
         end
     end
+    # rubocop:enable Metrics/ClassLength
   end
 end

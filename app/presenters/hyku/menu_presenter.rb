@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hyku
   # view-model for the admin menu
   class MenuPresenter < Hyrax::MenuPresenter

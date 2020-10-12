@@ -2,7 +2,7 @@ module Admin
   class GroupsController < AdminController
     before_action :load_group, only: %i[edit update remove destroy]
 
-    def index # rubocop:disable Metrics/AbcSize
+    def index
       add_breadcrumb t(:'hyrax.controls.home'), root_path
       add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
       add_breadcrumb t(:'hyku.admin.groups.title.index'), admin_groups_path

@@ -1,4 +1,5 @@
-# rubocop:disable Metrics/ClassLength
+# frozen_string_literal: true
+
 module Hyrax
   module Forms
     module Admin
@@ -174,7 +175,6 @@ module Hyrax
 
         # The custom css module
         def custom_css_block
-          # rubocop:disable Rails/OutputSafety
           # we want to be able to read the css
           block_for('custom_css_block', '/* custom stylesheet */').html_safe
           # rubocop:enable Rails/OutputSafety
@@ -260,7 +260,7 @@ module Hyrax
         end
 
         # A list of parameters that are related to customizations
-        def self.customization_params # rubocop:disable Metrics/MethodLength
+        def self.customization_params
           %i[
             body_font
             headline_font
@@ -325,7 +325,7 @@ module Hyrax
 
           def block_for(name, dynamic_default = nil)
             block = ContentBlock.find_by(name: name)
-            has_value = block && block.value.present?
+            has_value = block&.value.present?
             has_value ? block.value : DEFAULT_VALUES[name] || dynamic_default
           end
 

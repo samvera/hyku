@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Upload solr configuration from the local filesystem into the zookeeper configs path for solr
 class SolrConfigUploader
   attr_reader :collection_path

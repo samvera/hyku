@@ -1,5 +1,6 @@
 # Copied from Hyrax 2.5.1 to change media_display_partial method
 # Default mp3 and video player not functioning so setting to default partial
+# TODO RG - is this still needed?
 
 module Hyrax::FileSetHelper
   def parent_path(parent)

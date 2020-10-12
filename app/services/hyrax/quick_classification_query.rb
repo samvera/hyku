@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hyrax
   # added for tenant specific works, only the normalized_model_names method has been changed
   class QuickClassificationQuery

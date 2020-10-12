@@ -5,6 +5,7 @@ require 'rails_helper'
 module Bulkrax
   RSpec.describe OerCsvParser do
     subject           { described_class.new(importer) }
+
     let(:importer)    { FactoryBot.create(:bulkrax_importer_oer_csv) }
     let(:oer_entry_1) { FactoryBot.build(:bulkrax_oer_csv_entry, importerexporter: importer, identifier: 'oer_1') }
     let(:oer_entry_2) { FactoryBot.build(:bulkrax_oer_csv_entry, importerexporter: importer, identifier: 'oer_2') }
@@ -20,41 +21,41 @@ module Bulkrax
 
     describe '#records_with_previous_versions' do
       it 'returns a hash of identifiers with previous versions' do
-        expect(subject.records_with_previous_versions).to eq({ 'oer_1' => ['oer_4'] })
+        expect(subject.records_with_previous_versions).to eq('oer_1' => ['oer_4'])
       end
 
       context 'with complex relationships' do
         let(:importer) { FactoryBot.create(:bulkrax_importer_oer_csv_complex) }
 
         it 'parses complex related items appropriately' do
-          expect(subject.records_with_previous_versions).to eq({ 'oer_1' => ['oer_4', 'oer_3'], 'oer_2' => ['oer_1'] })
+          expect(subject.records_with_previous_versions).to eq('oer_1' => ['oer_4', 'oer_3'], 'oer_2' => ['oer_1'])
         end
       end
     end
 
     describe '#records_with_newer_versions' do
       it 'returns a hash of identifiers with newer versions' do
-        expect(subject.records_with_newer_versions).to eq({ 'oer_2' => ['oer_3'] })
+        expect(subject.records_with_newer_versions).to eq('oer_2' => ['oer_3'])
       end
     end
 
     describe '#records_with_alternate_versions' do
       it 'returns a hash of identifiers with alternate versions' do
-        expect(subject.records_with_alternate_versions).to eq({ 'oer_3' => ['oer_2'] })
+        expect(subject.records_with_alternate_versions).to eq('oer_3' => ['oer_2'])
       end
 
       context 'with complex relationships' do
         let(:importer) { FactoryBot.create(:bulkrax_importer_oer_csv_complex) }
 
         it 'parses complex related items appropriately' do
-          expect(subject.records_with_alternate_versions).to eq({ 'oer_3' => ['oer_2', 'oer_4'], 'oer_4' => ['oer_2'] })
+          expect(subject.records_with_alternate_versions).to eq('oer_3' => ['oer_2', 'oer_4'], 'oer_4' => ['oer_2'])
         end
       end
     end
 
     describe '#records_with_related_items' do
       it 'returns a hash of identifiers with related items' do
-        expect(subject.records_with_related_items).to eq({ 'oer_4' => ['oer_1'] })
+        expect(subject.records_with_related_items).to eq('oer_4' => ['oer_1'])
       end
     end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hyrax
   module Admin
     class AppearancesController < ApplicationController
@@ -7,9 +9,8 @@ module Hyrax
       self.form_class = Hyrax::Forms::Admin::Appearance
 
       def show
-        #TODO make selected font the font that show in select box
-        #TODO add body and headline font to the import url
-
+        # TODO: make selected font the font that show in select box
+        # TODO add body and headline font to the import url
         add_breadcrumbs
         @form = form_class.new
         @fonts = [@form.headline_font, @form.body_font]

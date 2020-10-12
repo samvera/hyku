@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Admin
   class UsersController < AdminController
     before_action :load_user, only: [:destroy]

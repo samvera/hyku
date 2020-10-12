@@ -1,7 +1,7 @@
-class ReindexAdminSetsJob < ActiveJob::Base
+# frozen_string_literal: true
+
+class ReindexAdminSetsJob < ApplicationJob
   def perform
-    AdminSet.find_each do |admin_set|
-      admin_set.update_index
-    end
+    AdminSet.find_each(&:update_index)
   end
 end

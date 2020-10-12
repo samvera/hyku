@@ -1,4 +1,6 @@
-class CreateRedisNamespaceJob < ActiveJob::Base
+# frozen_string_literal: true
+
+class CreateRedisNamespaceJob < ApplicationJob
   non_tenant_job
 
   def perform(account)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Admin::AccountsController, type: :controller do
   let(:user) {}
 
@@ -26,7 +28,6 @@ RSpec.describe Admin::AccountsController, type: :controller do
 
     describe "GET #edit" do
       it "assigns the requested account as @account" do
-        skip
         get :edit
         expect(assigns(:account)).to eq(account)
       end
@@ -39,7 +40,6 @@ RSpec.describe Admin::AccountsController, type: :controller do
         end
 
         it "updates the requested account" do
-          skip
           put :update, params: { account: new_attributes }
           account.reload
           expect(account.cname).to eq 'new.example.com'
@@ -47,7 +47,6 @@ RSpec.describe Admin::AccountsController, type: :controller do
         end
 
         it "assigns the requested account as @account" do
-          skip
           put :update, params: { account: valid_attributes }
           expect(assigns(:account)).to eq(account)
         end
@@ -55,13 +54,11 @@ RSpec.describe Admin::AccountsController, type: :controller do
 
       context "with invalid params" do
         it "assigns the account as @account" do
-          skip
           put :update, params: { account: invalid_attributes }
           expect(assigns(:account)).to eq(account)
         end
 
         it "re-renders the 'edit' template" do
-          skip
           put :update, params: { account: invalid_attributes }
           expect(response).to render_template("edit")
         end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'importer/log_subscriber'
 module Importer
   module Factory
@@ -121,7 +123,7 @@ module Importer
         # otherwise it gets reuploaded by `work_actor`.
         def upload_ids
           work_files_titles = object.file_sets.map(&:title) if object.present? && object.file_sets.present?
-          work_files_titles && work_files_titles.include?(attributes[:file]) ? [] : [import_file(file_paths.first)]
+          work_files_titles&.include?(attributes[:file]) ? [] : [import_file(file_paths.first)]
         end
 
         def file_attributes
@@ -132,7 +134,7 @@ module Importer
         end
 
         def file_paths
-          attributes[:file].map { |file_name| File.join(files_directory, file_name) } if attributes[:file]
+          attributes[:file]&.map { |file_name| File.join(files_directory, file_name) }
         end
 
         def import_file(path)

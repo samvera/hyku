@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 RSpec.describe Hyku::RegistrationsController, type: :controller do
   before do
     allow(Settings.devise).to receive(:account_signup).and_return(account_signup_enabled)
     # Recommended by Devise: https://github.com/plataformatec/devise/wiki/How-To:-Test-controllers-with-Rails-3-and-4-%28and-RSpec%29
     @request.env['devise.mapping'] = Devise.mappings[:user]
+    allow_any_instance_of(Hyku::RegistrationsController).to receive(:authenticate_if_needed).and_return(true)
   end
 
   context 'with account signup enabled' do
@@ -10,7 +13,6 @@ RSpec.describe Hyku::RegistrationsController, type: :controller do
 
     describe '#new' do
       it 'renders the form' do
-        skip
         get :new
         expect(response).to render_template('devise/registrations/new')
       end
@@ -36,7 +38,6 @@ RSpec.describe Hyku::RegistrationsController, type: :controller do
 
     describe '#new' do
       it 'redirects with a flash message' do
-        skip
         get :new
         expect(response).to redirect_to root_path
         expect(flash[:alert]).to eq 'Account registration is disabled'
@@ -45,7 +46,6 @@ RSpec.describe Hyku::RegistrationsController, type: :controller do
 
     describe '#create' do
       it 'redirects with a flash message' do
-        skip
         post :create
         expect(response).to redirect_to root_path
         expect(flash[:alert]).to eq 'Account registration is disabled'

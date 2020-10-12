@@ -8,5 +8,4 @@ RSpec.describe Etd do
 
     it { is_expected.to eq EtdIndexer }
   end
-
 end

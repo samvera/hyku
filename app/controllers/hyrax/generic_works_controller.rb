@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Generated via
 #  `rails generate hyrax:work GenericWork`
 module Hyrax
@@ -9,6 +11,6 @@ module Hyrax
     self.curation_concern_type = ::GenericWork
 
     # Use this line if you want to use a custom presenter
-    self.show_presenter = Hyku::WorkShowPresenter
+    self.show_presenter = Hyrax::GenericWorkPresenter
   end
 end

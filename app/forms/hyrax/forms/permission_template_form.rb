@@ -148,7 +148,7 @@ module Hyrax
             agent = if grant[:agent_type] == 'user'
                       ::User.find_by_user_key(grant[:agent_id])
                     else
-                      Hyrax::Group.find_by!(name: grant[:agent_id]) # TODO(bkiahstroud): #find_or_create_by! instead?
+                      Hyrax::Group.find_or_create_by!(name: grant[:agent_id])
                     end
             PowerConverter.convert_to_sipity_agent(agent)
           end
@@ -161,7 +161,7 @@ module Hyrax
               if access.agent_type == 'user'
                 ::User.find_by_user_key(access.agent_id)
               else
-                Hyrax::Group.find_by!(name: access.agent_id) # TODO(bkiahstroud): #find_or_create_by! instead?
+                Hyrax::Group.find_or_create_by!(name: access.agent_id)
               end
             end
             authorized_agents.map { |agent| PowerConverter.convert_to_sipity_agent(agent) }

@@ -1,6 +1,6 @@
 module Hyrax
   module Workflow
-    RSpec.describe PermissionQuery, slow_test: true do
+    RSpec.describe PermissionQuery, slow_test: true, clean: true do
       let(:reviewing_user) { create(:user) }
       let(:completing_user) { create(:user) }
       let(:workflow_config) do
@@ -76,10 +76,10 @@ module Hyrax
 
       describe 'permissions assigned at the workflow level' do
         let(:reviewing_group_member) { create(:user) }
-        let(:reviewing_group) { Group.new({name: 'librarians'}) }
+        let(:reviewing_group) { Group.create(name: 'librarians') }
 
         before do
-          allow(reviewing_group_member).to receive(:groups).and_return(['librarians'])
+          allow(reviewing_group_member).to receive(:workflow_groups).and_return(['librarians'])
           PermissionGenerator.call(roles: 'reviewing', workflow: sipity_workflow, agents: reviewing_user)
           PermissionGenerator.call(roles: 'reviewing', workflow: sipity_workflow, agents: reviewing_group)
           PermissionGenerator.call(roles: 'completing', workflow: sipity_workflow, agents: completing_user)
@@ -186,17 +186,18 @@ module Hyrax
         end
 
         context 'when user is persisted' do
+          subject { described_class.scope_processing_agents_for(user: user) }
+
           let(:user) { create(:user) }
+          let!(:group) { create(:group, name: "librarians") }
 
           before do
-            allow(user).to receive(:groups).and_return(['librarians'])
+            allow(user).to receive(:workflow_groups).and_return(['librarians'])
           end
-
-          subject { described_class.scope_processing_agents_for(user: user) }
 
           it 'will equal [kind_of(Sipity::Agent)]' do
             is_expected.to contain_exactly(PowerConverter.convert_to_sipity_agent(user),
-                                           PowerConverter.convert_to_sipity_agent(Group.new({name: 'librarians'})))
+                                           PowerConverter.convert_to_sipity_agent(group))
           end
         end
       end

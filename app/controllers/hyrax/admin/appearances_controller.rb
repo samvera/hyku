@@ -14,10 +14,24 @@ module Hyrax
         add_breadcrumbs
         @form = form_class.new
         @fonts = [@form.headline_font, @form.body_font]
+
+        flash[:alert] = t('hyrax.admin.appearances.show.forms.custom_css.warning')
       end
 
       def update
         form_class.new(update_params).update!
+
+        if update_params['default_collection_image']
+          # Reindex all Collections and AdminSets to apply new default collection image
+          ReindexCollectionsJob.perform_later
+          ReindexAdminSetsJob.perform_later
+        end
+
+        if update_params['default_work_image']
+          # Reindex all Works to apply new default work image
+          ReindexWorksJob.perform_later
+        end
+
         redirect_to({ action: :show }, notice: t('.flash.success'))
       end
 

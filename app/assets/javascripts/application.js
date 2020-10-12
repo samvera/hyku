@@ -23,11 +23,13 @@
 //= require tether
 // Required by Blacklight
 //= require blacklight/blacklight
-//= require admin_font_select
 
 // Moved the Hyku JS *above* the Hyrax JS to resolve #1187 (following
 // a pattern found in ScholarSphere)
 //
+//= require hyku/admin/appearance/colors
+//= require hyku/admin/appearance/default_images
+//= require hyku/admin/appearance/fonts
 //= require hyku/groups/per_page
 //= require hyku/groups/add_member
 //= require bootstrap-datepicker

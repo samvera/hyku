@@ -44,7 +44,11 @@ class ApplicationController < ActionController::Base
       ['staging'].include?(Rails.env)
     end
 
+    ##
+    # Extra authentication for palni-palci during development phase
     def authenticate_if_needed
+      # Disable this extra authentication in test mode
+      return true if Rails.env.test?
       if (is_hidden || is_staging) && !is_api_or_pdf
         authenticate_or_request_with_http_basic do |username, password|
           username == "pals" && password == "pals"

@@ -7,13 +7,9 @@ RSpec.describe Admin::UsersController, type: :controller do
 
       before { delete :destroy, params: { id: user.id } }
 
-      # TODO: What is the correct behavior here? I am updating this test to match
-      # the current behavior (i.e., to give an unauthorized response) but if we really
-      # do want a redirect in this case we'll need to go back and fix that.
       it "doesn't delete the user and gives an unauthorized response" do
         expect(subject).not_to be_nil
-        # expect(response).to redirect_to root_path
-        expect(response).to have_http_status(:unauthorized)
+        expect(response).to redirect_to root_path
       end
     end
   end

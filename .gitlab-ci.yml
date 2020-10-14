@@ -89,7 +89,7 @@ test:
     - cp -r /home/app/webapp/tmp/capybara $CI_PROJECT_DIR/capybara
   tags:
     - docker
-  allow_failure: true
+  allow_failure: false
   artifacts:
     paths:
       - capybara/*.html

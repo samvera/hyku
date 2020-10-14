@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HykuHelper
   def multitenant?
     Settings.multitenancy.enabled

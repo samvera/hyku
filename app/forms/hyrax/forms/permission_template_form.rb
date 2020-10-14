@@ -248,8 +248,6 @@ module Hyrax
         # Removes release_varies and release_embargo from the returned attributes
         # These form fields are only used to update release_period
         # @return [Hash] attributes used to update the model
-        # rubocop:disable Metrics/CyclomaticComplexity
-        # rubocop:disable Metrics/PerceivedComplexity
         def permission_template_update_params
           filtered_attributes = attributes.except(:release_varies, :release_embargo)
           # If 'varies' before date option selected, then set release_period='before' and save release_date as-is
@@ -276,9 +274,6 @@ module Hyrax
 
         # validate the hash of attributes used to update the visibility tab of the model
         # @return [String, Nil] the error code if invalid, nil if valid
-        # rubocop:disable Metrics/CyclomaticComplexity
-        # rubocop:disable Metrics/PerceivedComplexity
-        # rubocop:disable Metrics/AbcSize
         def validate_visibility_combinations
           return unless attributes.key?(:visibility) # only the visibility tab has validations
 

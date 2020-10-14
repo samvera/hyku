@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   # Includes lib/rolify from the rolify gem
   rolify
@@ -32,8 +34,12 @@ class User < ApplicationRecord
     has_role? :superadmin
   end
 
+  # This comes from a checkbox in the proprietor interface
+  # Rails checkboxes are often nil or "0" so we handle that
+  # case directly
   def is_superadmin=(value)
-    if value && value != "0"
+    value = ActiveModel::Type::Boolean.new.cast(value)
+    if value
       add_role :superadmin
     else
       remove_role :superadmin
@@ -68,7 +74,7 @@ class User < ApplicationRecord
   end
 
   def workflow_groups
-    self.roles.where(name: "member", resource_type: "Hyrax::Group").map(&:resource).uniq
+    roles.where(name: "member", resource_type: "Hyrax::Group").map(&:resource).uniq
   end
 
   def add_default_roles

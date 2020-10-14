@@ -1,4 +1,6 @@
-class CreateFcrepoEndpointJob < ActiveJob::Base
+# frozen_string_literal: true
+
+class CreateFcrepoEndpointJob < ApplicationJob
   non_tenant_job
 
   def perform(account)

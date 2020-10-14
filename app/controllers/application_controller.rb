@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   include HykuHelper
   # Prevent CSRF attacks by raising an exception.
@@ -27,7 +29,7 @@ class ApplicationController < ActionController::Base
 
 
   rescue_from Apartment::TenantNotFound do
-    raise ActionController::RoutingError, 'Mofo Not Found'
+    raise ActionController::RoutingError, 'Not Found'
   end
 
   private
@@ -68,7 +70,7 @@ class ApplicationController < ActionController::Base
     end
 
     def set_account_specific_connections!
-      current_account.switch! if current_account
+      current_account&.switch!
     end
 
     def multitenant?

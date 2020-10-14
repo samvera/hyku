@@ -1,4 +1,5 @@
-# Override from hyrax 2.5.1 to move users out of apartments (mattc commit)
+# frozen_string_literal: true
+
 module Hyrax
   module Admin
     class UsersPresenter

@@ -34,7 +34,7 @@ Rails/DynamicFindBy:
     - 'lib/importer/factory/object_factory.rb'
 
 Metrics/LineLength:
-  # Max: 120
+  Max: 120
   Exclude:
     - 'app/controllers/catalog_controller.rb'
     - 'spec/controllers/curation_concerns/generic_works_controller_spec.rb'
@@ -48,9 +48,6 @@ Layout/IndentationConsistency:
 Layout/DotPosition:
   EnforcedStyle: leading
 
-Lint/UnneededDisable:
-  Enabled: false
-
 Style/Documentation:
   Enabled: false
 
@@ -63,6 +60,9 @@ Style/WordArray:
 Metrics/ClassLength:
   Exclude:
     - 'app/controllers/catalog_controller.rb'
+
+Metrics/ModuleLength:
+  Max: 200
 
 Rails/HasAndBelongsToMany:
   Exclude:

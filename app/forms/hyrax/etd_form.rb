@@ -6,7 +6,7 @@ module Hyrax
     include Hyrax::FormTerms
     self.model_class = ::Etd
     include HydraEditor::Form::Permissions
-    
+
     self.terms += [:resource_type]
   end
 end

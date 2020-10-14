@@ -1,14 +1,17 @@
+# frozen_string_literal: true
+
 module Proprietor
   class UsersController < ProprietorController
     before_action :ensure_admin!
 
-    before_action :find_user, only: [:show, :edit, :update, :destroy]
+    before_action :find_user, only: %i[show edit update destroy]
     load_and_authorize_resource
 
     # GET /users
     # GET /users.json
     def index
       authorize! :manage, User
+      # TODO RG - this is added, why?
       @users = User.exclude_guests.accessible_by(current_ability)
 
       add_breadcrumb t(:'hyrax.controls.home'), root_path
@@ -44,7 +47,7 @@ module Proprietor
       respond_to do |format|
         if @user.valid? && @user.save
           format.html { redirect_to proprietor_users_path, notice: 'User was successfully created.' }
-          format.json { render :show, status: :created, location: @user.cname }
+          format.json { render :show, status: :created, location: [:proprietor, @user] }
         else
           format.html { render :new }
           format.json { render json: @user.errors, status: :unprocessable_entity }
@@ -69,10 +72,14 @@ module Proprietor
     # DELETE /users/1
     # DELETE /users/1.json
     def destroy
-      @user.destroy
+      message = if @user.destroy
+                  'User was successfully destroyed.'
+                else
+                  'User could not be destroyed.'
+                end
 
       respond_to do |format|
-        format.html { redirect_to proprietor_users_url, notice: 'User was successfully destroyed.' }
+        format.html { redirect_to proprietor_users_url, notice: message }
         format.json { head :no_content }
       end
     end
@@ -85,22 +92,45 @@ module Proprietor
 
     private
 
-      def ensure_admin!
-        authorize! :read, :admin_dashboard
-      end
+    def ensure_admin!
+      authorize! :read, :admin_dashboard
+    end
 
-      def user_params
-        # remove blank passwords
-        if params[:user] && params[:user][:password].blank?
-          params[:user].delete(:password)
-        end
+    def user_params
+      # remove blank passwords
+      params[:user].delete(:password) if params[:user] && params[:user][:password].blank?
+      params[:user].delete(:password)
 
-        params.require(:user).permit(:email, :password, :is_superadmin, :facebook_handle, :twitter_handle, :googleplus_handle, :display_name, :address, :department, :title, :office, :chat_id, :website, :affiliation, :telephone, :avatar, :group_list, :linkedin_handle, :orcid, :arkivo_token, :arkivo_subscription, :zotero_token, :zotero_userid, :preferred_locale, role_ids: [])
-      end
+      params.require(:user).permit(:email,
+        :password,
+        :is_superadmin,
+        :facebook_handle,
+        :twitter_handle,
+        :googleplus_handle,
+        :display_name,
+        :address,
+        :department,
+        :title,
+        :office,
+        :chat_id,
+        :website,
+        :affiliation,
+        :telephone,
+        :avatar,
+        :group_list,
+        :linkedin_handle,
+        :orcid,
+        :arkivo_token,
+        :arkivo_subscription,
+        :zotero_token,
+        :zotero_userid,
+        :preferred_locale,
+        role_ids: [])
+    end
 
-      def find_user
-        @user ||= ::User.from_url_component(params[:id])
-        raise ActiveRecord::RecordNotFound unless @user
-      end
+    def find_user
+      @user ||= ::User.from_url_component(params[:id])
+      raise ActiveRecord::RecordNotFound unless @user
+    end
   end
 end

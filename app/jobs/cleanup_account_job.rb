@@ -1,4 +1,6 @@
-class CleanupAccountJob < ActiveJob::Base
+# frozen_string_literal: true
+
+class CleanupAccountJob < ApplicationJob
   non_tenant_job
 
   def perform(account)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # rubocop:disable Metrics/LineLength
 namespace :tenantize do
   desc 'Run given task on all or selected tenants'

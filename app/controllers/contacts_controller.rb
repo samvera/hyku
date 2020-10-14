@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ContactsController < SitesController
   # GET /sites/1/edit
   def edit

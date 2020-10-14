@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # NilSite is used to represent the Site in the global tenant in a multitenant environment
 # (i.e. Sites only exist on individual tenants and never globally)
 class NilSite
@@ -14,8 +16,6 @@ class NilSite
               :institution_name_full, :banner_image, :primary_key,
               :logo_image, :default_collection_image, :default_work_image,
               :directory_image, :contact_email
-
-  # rubocop:disable Lint/DuplicateMethods
   def reload
     NilSite.instance
   end

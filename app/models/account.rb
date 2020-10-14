@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Customer organization account
 class Account < ApplicationRecord
   # @param [String] piece the tenant piece of the canonical name
@@ -52,10 +54,11 @@ class Account < ApplicationRecord
   belongs_to :solr_endpoint, dependent: :delete
   belongs_to :fcrepo_endpoint, dependent: :delete
   belongs_to :redis_endpoint, dependent: :delete
+
   accepts_nested_attributes_for :solr_endpoint, :fcrepo_endpoint, :redis_endpoint, update_only: true
 
   scope :sorted_by_cname, -> { order("cname ASC") }
-  
+
   before_validation do
     self.tenant ||= SecureRandom.uuid
     self.cname ||= self.class.default_cname(name)

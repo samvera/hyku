@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AccountSignUpController < ProprietorController
   load_and_authorize_resource instance_name: :account, class: 'Account'
 
@@ -13,6 +15,7 @@ class AccountSignUpController < ProprietorController
   # POST /account/sign_up.json
   def create
     respond_to do |format|
+      # TODO: RG - this is different that upstream, should upstream be changed and should this be change or are they divergent?
       if CreateAccount.new(@account, [current_user]).save
         format.html { redirect_to first_user_registration_url, notice: 'Account was successfully created.' }
         format.json { render :show, status: :created, location: @account.cname }
@@ -35,7 +38,11 @@ class AccountSignUpController < ProprietorController
     end
 
     def first_user_registration_url
-      new_user_registration_url(host: @account.cname)
+      if current_user
+        new_user_session_url(host: @account.cname)
+      else
+        new_user_registration_url(host: @account.cname)
+      end
     end
 
     def create_params

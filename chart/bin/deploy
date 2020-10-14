@@ -28,4 +28,3 @@ else
 fi
 
 helm upgrade --install --namespace $1-$NAMESPACE $1 . -f $1-values.yaml --set rails.image.tag=$2
-

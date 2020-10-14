@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Apartment middleware for switching tenants based on the
 # CNAME entry for an account.
 class AccountElevator < Apartment::Elevators::Generic
@@ -5,7 +7,7 @@ class AccountElevator < Apartment::Elevators::Generic
   def parse_tenant_name(request)
     account = Account.from_request(request)
 
-    account.tenant if account
+    account&.tenant
   end
 
   def self.switch!(cname)

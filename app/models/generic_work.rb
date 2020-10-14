@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GenericWork < ActiveFedora::Base
   include ::Hyrax::WorkBehavior
   include ::Hyrax::BasicMetadata

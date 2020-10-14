@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+require 'aws-sdk-sqs'
 require 'active_elastic_job'
 
 module ActiveJob

@@ -14,7 +14,7 @@ module Hyrax
 
       def destroy
         responsibility = Sipity::WorkflowResponsibility.find(params[:id])
-        authorize! :destroy, responsibility        
+        authorize! :destroy, responsibility
         responsibility.destroy
         redirect_to admin_workflow_roles_path
       end
@@ -25,11 +25,11 @@ module Hyrax
 
         # Determine which form it is, user or group
         form_params = params[:sipity_workflow_responsibility]
-        if form_params[:user_id].present?
-          form = Forms::WorkflowResponsibilityForm.new(form_params)        
-        else
-          form = Forms::WorkflowResponsibilityGroupForm.new(form_params)
-        end
+        form = if form_params[:user_id].present?
+                 Forms::WorkflowResponsibilityForm.new(form_params)
+               else
+                 Forms::WorkflowResponsibilityGroupForm.new(form_params)
+               end
 
         begin
           form.save!

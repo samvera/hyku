@@ -7,7 +7,6 @@ if [[ ! -e /var/log/nginx/error.log ]]; then
         (sleep 1 && sv restart /etc/service/nginx-log-forwarder)
 fi
 
-
 if [ -z $PASSENGER_APP_ENV ]
 then
     export PASSENGER_APP_ENV=development

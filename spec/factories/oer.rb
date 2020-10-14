@@ -15,8 +15,7 @@ FactoryBot.define do
       before(:create) do |work, evaluator|
         work.ordered_members << FactoryBot.create(:file_set,
                                                   user: evaluator.user,
-                                                  title: ['A Sample OER File']
-                                                 )
+                                                  title: ['A Sample OER File'])
       end
     end
 
@@ -32,7 +31,7 @@ FactoryBot.define do
         work.previous_version << create(:oer_work, user: evaluator.user)
       end
     end
-    
+
     after(:build) do |work, evaluator|
       work.apply_depositor_metadata(evaluator.user)
     end

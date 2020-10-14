@@ -16,7 +16,7 @@ module Hyrax
     #   user has permission to create at least one kind of work.
     def display_share_button?
       Flipflop.show_share_button? &&
-      (user_unregistered? && Hyrax.config.display_share_button_when_not_logged_in?) ||
+        (user_unregistered? && Hyrax.config.display_share_button_when_not_logged_in?) ||
         current_ability.can_create_any_work?
     end
 

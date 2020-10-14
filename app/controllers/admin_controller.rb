@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # TODO: move to hyrax?
 class AdminController < ApplicationController
   before_action :ensure_admin!

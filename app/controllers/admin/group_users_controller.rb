@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Admin
   class GroupUsersController < AdminController
     before_action :load_group
 
-    def index # rubocop:disable Metrics/AbcSize
+    def index
       add_breadcrumb t(:'hyrax.controls.home'), root_path
       add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
       add_breadcrumb t(:'hyku.admin.groups.title.edit'), edit_admin_group_path(@group)

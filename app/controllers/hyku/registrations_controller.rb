@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hyku
   class RegistrationsController < Devise::RegistrationsController
     before_action :configure_permitted_parameters

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe SitesController, type: :controller, singletenant: true do
   before { sign_in user }
 

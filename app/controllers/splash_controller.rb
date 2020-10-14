@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SplashController < ProprietorController
   def index
     @accounts = Account.where('is_public = ?', true).sorted_by_cname

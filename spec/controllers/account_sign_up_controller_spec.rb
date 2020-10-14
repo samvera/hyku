@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe AccountSignUpController, type: :controller do
   let(:user) {}
 
@@ -23,7 +25,6 @@ RSpec.describe AccountSignUpController, type: :controller do
 
     describe "GET #new" do
       it "assigns a new account as @account" do
-        skip
         get :new
         expect(response).to render_template("layouts/proprietor")
         expect(assigns(:account)).to be_a_new(Account)
@@ -37,7 +38,6 @@ RSpec.describe AccountSignUpController, type: :controller do
         end
 
         it "creates a new Account, but not a duplicate" do
-          skip
           expect do
             post :create, params: { account: valid_attributes }
           end.to change(Account, :count).by(1)
@@ -52,7 +52,6 @@ RSpec.describe AccountSignUpController, type: :controller do
 
       context "with invalid params" do
         it "assigns a newly created but unsaved account as @account" do
-          skip
           post :create, params: { account: invalid_attributes }
           expect(assigns(:account)).to be_a_new(Account)
           expect(assigns(:account).tenant).not_to eq('missing-names')
@@ -61,7 +60,6 @@ RSpec.describe AccountSignUpController, type: :controller do
         end
 
         it "re-renders the 'new' template" do
-          skip
           post :create, params: { account: invalid_attributes }
           expect(response).to render_template("new")
         end
@@ -76,7 +74,6 @@ RSpec.describe AccountSignUpController, type: :controller do
 
     describe "GET #new" do
       it "redirects to sign in" do
-        skip
         get :new
         expect(response).to redirect_to new_user_session_path
       end
@@ -84,7 +81,6 @@ RSpec.describe AccountSignUpController, type: :controller do
 
     describe "POST #create" do
       it "redirects to sign in" do
-        skip
         post :create, params: { account: valid_attributes }
         expect(response).to redirect_to new_user_session_path
       end
@@ -100,7 +96,6 @@ RSpec.describe AccountSignUpController, type: :controller do
 
     describe "GET #new" do
       it "assigns a new account as @account" do
-        skip
         get :new
         expect(response).to render_template("layouts/proprietor")
         expect(assigns(:account)).to be_a_new(Account)
@@ -113,7 +108,6 @@ RSpec.describe AccountSignUpController, type: :controller do
       end
 
       it "creates a new Account" do
-        skip
         expect do
           post :create, params: { account: valid_attributes }
         end.to change(Account, :count).by(1)

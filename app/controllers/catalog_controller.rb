@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+# TODO: RG - why are these files so divergent?
+
 class CatalogController < ApplicationController
   include Hydra::Catalog
   include Hydra::Controller::ControllerBehavior
@@ -142,7 +146,6 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name('previous_version_id', :stored_searchable)
     config.add_show_field solr_name('newer_version_id', :stored_searchable)
     config.add_show_field solr_name('related_item_id', :stored_searchable)
-
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields

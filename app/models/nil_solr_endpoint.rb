@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NilSolrEndpoint < NilEndpoint
   def switch!
     ActiveFedora::SolrService.instance.conn = connection

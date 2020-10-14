@@ -3,7 +3,6 @@
 module Hyrax
   module Actors
     class OerActor < Hyrax::Actors::BaseActor
-
       def create(env)
         attributes_collection = env.attributes.delete(:related_members_attributes)
         env = add_custom_relations(env, attributes_collection)
@@ -17,6 +16,7 @@ module Hyrax
       end
 
       private
+
         def add_custom_relations(env, attributes_collection)
           return env unless attributes_collection
           attributes = attributes_collection&.sort_by { |i, _| i.to_i }&.map { |_, attributes| attributes }
@@ -29,8 +29,8 @@ module Hyrax
 
           attributes&.each do |attributes|
             next if attributes['id'].blank?
-            if existing_previous_works&.include?(attributes['id']) || 
-               existing_newer_works&.include?(attributes['id']) || 
+            if existing_previous_works&.include?(attributes['id']) ||
+               existing_newer_works&.include?(attributes['id']) ||
                existing_alternate_works&.include?(attributes['id']) ||
                existing_related_items&.include?(attributes['id'])
 
@@ -55,7 +55,7 @@ module Hyrax
         end
 
         def add(env, id, relationship)
-          rel = "#{relationship.underscore}_id"          
+          rel = "#{relationship.underscore}_id"
           case rel
           when "previous_version_id"
             env.curation_concern.previous_version_id = (env.curation_concern.previous_version_id.to_a << id)
@@ -67,11 +67,11 @@ module Hyrax
             env.curation_concern.related_item_id = (env.curation_concern.related_item_id.to_a << id)
           end
           env.curation_concern.save
-          return env
+          env
         end
 
         def remove(env, id, relationship)
-          rel= "#{relationship.underscore}_id"
+          rel = "#{relationship.underscore}_id"
           case rel
           when "previous_version_id"
             env.curation_concern.previous_version_id = (env.curation_concern.previous_version_id.to_a - [id])
@@ -83,7 +83,7 @@ module Hyrax
             env.curation_concern.related_item_id = (env.curation_concern.related_item_id.to_a - [id])
           end
           env.curation_concern.save
-          return env
+          env
         end
     end
   end

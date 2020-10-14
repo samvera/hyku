@@ -1,3 +1,5 @@
+
+# TODO: RG - why is this here? it is not upstream
 module Hyrax
   class DownloadsController < ApplicationController
     include Hydra::Controller::DownloadBehavior

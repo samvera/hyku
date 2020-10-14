@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :zookeeper do
   desc 'Push solr configs into zookeeper'
   task upload: [:environment] do

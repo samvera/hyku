@@ -105,38 +105,38 @@ module Bulkrax
 
     private
 
-    # Will be skipped unless the #record is a Hash
-    def setup_records_with(relationship_type)
-      records_with_relationship = []
+      # Will be skipped unless the #record is a Hash
+      def setup_records_with(relationship_type)
+        records_with_relationship = []
 
-      records.each do |record|
-        r = if record.respond_to?(:to_h)
-              record.to_h
-            else
-              record
-            end
-        next unless r.is_a?(Hash)
+        records.each do |record|
+          r = if record.respond_to?(:to_h)
+                record.to_h
+              else
+                record
+              end
+          next unless r.is_a?(Hash)
 
-        related_member_ids = if r[relationship_type].is_a?(String)
-                            r[relationship_type].split(/\s*[:;|]\s*/) # TODO(bkiahstroud): use Bulkrax::ApplicationMatcher#result to process split
-                          else
-                            r[relationship_type]
-                          end
-        next if related_member_ids.blank?
+          related_member_ids = if r[relationship_type].is_a?(String)
+                                 r[relationship_type].split(/\s*[:;|]\s*/) # TODO(bkiahstroud): use Bulkrax::ApplicationMatcher#result to process split
+                               else
+                                 r[relationship_type]
+                            end
+          next if related_member_ids.blank?
 
-        records_with_relationship << {
-          r[:source_identifier] => related_member_ids
-        }
+          records_with_relationship << {
+            r[:source_identifier] => related_member_ids
+          }
+        end
+        records_with_relationship.blank? ? records_with_relationship : records_with_relationship.inject(:deep_merge)
       end
-      records_with_relationship.blank? ? records_with_relationship : records_with_relationship.inject(:deep_merge)
-    end
 
-    def find_entry(identifier)
-      entry_class.where(
-        identifier: identifier,
-        importerexporter_id: importerexporter.id,
-        importerexporter_type: 'Bulkrax::Importer'
-      ).first
-    end
+      def find_entry(identifier)
+        entry_class.where(
+          identifier: identifier,
+          importerexporter_id: importerexporter.id,
+          importerexporter_type: 'Bulkrax::Importer'
+        ).first
+      end
   end
 end

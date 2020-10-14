@@ -1,10 +1,13 @@
 RSpec.describe Hyrax::ContactForm, type: :model do
   describe 'headers' do
     before do
-      subject { described_class.new(
-        subject: "subject",
-        from: "from@email.com"
-      )}
+      subject do
+        described_class.new(
+          subject: "subject",
+          from: "from@email.com"
+        )
+      end
+
       allow(Hyrax.config).to receive(:contact_email).and_return('hyrax@email.com')
     end
 

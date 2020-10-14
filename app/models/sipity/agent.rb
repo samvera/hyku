@@ -4,7 +4,7 @@ module Sipity
   #
   # * A User can be an agent
   # * A Group can be an agent (though Group is outside the scope of this system)
-  class Agent < ActiveRecord::Base
+  class Agent < ApplicationRecord
     self.table_name = 'sipity_agents'
 
     ENTITY_LEVEL_AGENT_RELATIONSHIP = 'entity_level'.freeze
@@ -33,10 +33,10 @@ module Sipity
     # Override from hyrax 2.5.1 to add group responsibilities to users
     def workflow_responsibilities
       groups = if proxy_for.respond_to?(:roles) && !proxy_for_type.match("Hyrax::Group")
-        proxy_for.roles.where(name: "member", resource_type: "Hyrax::Group").map(&:resource)
+                 proxy_for.roles.where(name: "member", resource_type: "Hyrax::Group").map(&:resource)
       end
       if groups
-        group_workflow_responsibilities = groups.map{ |g| g.to_sipity_agent.workflow_responsibilities }.flatten
+        group_workflow_responsibilities = groups.map { |g| g.to_sipity_agent.workflow_responsibilities }.flatten
         super.or(Sipity::WorkflowResponsibility.where(id: group_workflow_responsibilities))
       else
         super

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: true do
   let(:user) {}
 
@@ -58,7 +60,6 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
 
     describe "GET #show" do
       it "assigns the requested account as @account" do
-        skip
         get :show, params: { id: account.to_param }
         expect(assigns(:account)).to eq(account)
       end
@@ -66,7 +67,6 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
 
     describe "GET #edit" do
       it "assigns the requested account as @account" do
-        skip
         get :edit, params: { id: account.to_param }
         expect(assigns(:account)).to eq(account)
       end
@@ -81,7 +81,6 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
         end
 
         it "updates the requested account" do
-          skip
           allow(Apartment::Tenant).to receive(:switch).with(account.tenant) do |&block|
             block.call
           end
@@ -94,7 +93,6 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
         end
 
         it "assigns the requested account as @account" do
-          skip
           put :update, params: { id: account.to_param, account: valid_attributes }
           expect(assigns(:account)).to eq(account)
         end
@@ -102,13 +100,11 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
 
       context "with invalid params" do
         it "assigns the account as @account" do
-          skip
           put :update, params: { id: account.to_param, account: invalid_attributes }
           expect(assigns(:account)).to eq(account)
         end
 
         it "re-renders the 'edit' template" do
-          skip
           put :update, params: { id: account.to_param, account: invalid_attributes }
           expect(response).to render_template("edit")
         end
@@ -117,7 +113,6 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
 
     describe "DELETE #destroy" do
       it "denies the request" do
-        skip
         delete :destroy, params: { id: account.to_param }
         expect(response).to have_http_status(:unauthorized)
       end
@@ -128,7 +123,6 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
 
       describe "GET #show" do
         it "denies the request" do
-          skip
           get :show, params: { id: another_account.to_param }
           expect(response).to have_http_status(:unauthorized)
         end
@@ -136,7 +130,6 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
 
       describe "GET #edit" do
         it "denies the request" do
-          skip
           get :edit, params: { id: another_account.to_param }
           expect(response).to have_http_status(:unauthorized)
         end
@@ -144,7 +137,6 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
 
       describe "PUT #update" do
         it "denies the request" do
-          skip
           put :update, params: { id: another_account.to_param, account: valid_attributes }
           expect(response).to have_http_status(:unauthorized)
         end
@@ -158,7 +150,6 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
 
     describe "GET #index" do
       it "assigns all accounts as @accounts" do
-        skip
         get :index
         expect(assigns(:accounts)).to include account
         expect(response).to render_template("layouts/proprietor")
@@ -167,7 +158,6 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
 
     describe "GET #show" do
       it "assigns the requested account as @account" do
-        skip
         get :show, params: { id: account.to_param }
         expect(assigns(:account)).to eq(account)
       end
@@ -199,6 +189,10 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
     it 'switches account information' do
       expect(account).to receive(:switch!)
       get :show, params: { id: account.to_param }
+    end
+
+    after do
+      account.reset!
     end
   end
 end

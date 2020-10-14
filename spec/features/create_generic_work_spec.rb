@@ -12,6 +12,7 @@ RSpec.describe 'Create a GenericWork', js: true do
     let(:user) do
       User.new(user_attributes) { |u| u.save(validate: false) }
     end
+    let!(:admin_group) { Hyrax::Group.create(name: "admin") }
     let(:admin_set_id) { AdminSet.find_or_create_default_admin_set_id }
     let(:permission_template) { Hyrax::PermissionTemplate.find_or_create_by!(source_id: admin_set_id) }
     let(:workflow) do

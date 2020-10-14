@@ -1,8 +1,14 @@
 RSpec.describe CleanupAccountJob do
+  let(:solr_endpoint) { FactoryBot.create(:solr_endpoint, options: { collection: 'x' }) }
+  let(:fcrepo_endpoint) { FactoryBot.create(:fcrepo_endpoint, options: { base_path: '/x' }) }
+  let(:redis_endpoint) { FactoryBot.create(:redis_endpoint, options: { namespace: 'x' }) }
   let!(:account) do
-    FactoryBot.create(:account, solr_endpoint_attributes: { collection: 'x' },
-                                fcrepo_endpoint_attributes: { base_path: '/x' },
-                                redis_endpoint_attributes: { namespace: 'x' })
+    FactoryBot.create(
+      :account,
+      solr_endpoint: solr_endpoint,
+      fcrepo_endpoint: fcrepo_endpoint,
+      redis_endpoint: redis_endpoint
+    )
   end
 
   before do

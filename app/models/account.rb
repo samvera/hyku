@@ -58,7 +58,7 @@ class Account < ApplicationRecord
   accepts_nested_attributes_for :solr_endpoint, :fcrepo_endpoint, :redis_endpoint, update_only: true
 
   scope :sorted_by_cname, -> { order("cname ASC") }
-  
+
   before_validation do
     self.tenant ||= SecureRandom.uuid
     self.cname ||= self.class.default_cname(name)

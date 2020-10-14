@@ -1,9 +1,13 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Accounts administration', multitenant: true do
   context 'as an superadmin' do
     let(:user) { FactoryBot.create(:superadmin) }
     let(:account) do
-      FactoryBot.create(:account, solr_endpoint_attributes: { url: 'http://localhost:8080/solr' },
-                                  fcrepo_endpoint_attributes: { url: 'http://localhost:8080/fcrepo' })
+      FactoryBot.create(:account).tap do |acc|
+        acc.create_solr_endpoint(url: 'http://localhost:8080/solr')
+        acc.create_fcrepo_endpoint(url: 'http://localhost:8080/fcrepo')
+      end
     end
 
     before do
@@ -21,7 +25,6 @@ RSpec.describe 'Accounts administration', multitenant: true do
     end
 
     it 'changes the associated cname' do
-      pending("get tests to green until after fixes are made in hyku")
       visit edit_proprietor_account_path(account)
 
       fill_in 'Tenant CNAME', with: 'example.com'
@@ -34,7 +37,6 @@ RSpec.describe 'Accounts administration', multitenant: true do
     end
 
     it 'changes the account service endpoints' do
-      pending("get tests to green until after fixes are made in hyku")
       visit edit_proprietor_account_path(account)
 
       fill_in 'account_solr_endpoint_attributes_url', with: 'http://example.com/solr/'

@@ -62,6 +62,7 @@ group :test do
   # rack-test >= 0.71 does not work with older Capybara versions (< 2.17). See #214 for more details
   gem 'rack-test', '0.7.0'
   gem 'rails-controller-testing'
+  gem 'rspec-activemodel-mocks'
   gem 'rspec-its'
   gem 'rspec_junit_formatter'
   gem 'selenium-webdriver'

@@ -5,5 +5,5 @@ Flipflop.configure do
 
   feature :show_share_button,
           default: true,
-          description: "Hides the 'Share Your Work' button on the homepage."
+          description: "Shows the 'Share Your Work' button on the homepage."
 end

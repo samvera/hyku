@@ -3,9 +3,10 @@
 require 'rails_helper'
 
 # NOTE: If you generated more than one work, you have to set "js: true"
-RSpec.describe 'Create a GenericWork', type: :feature, js: true do
+RSpec.describe 'Create a GenericWork', type: :feature, js: true, singletenant: true  do
   include Warden::Test::Helpers
   context 'a logged in user' do
+    let(:admin) { FactoryBot.create(:admin) }
     let(:user_attributes) do
       { email: 'test@example.com' }
     end
@@ -35,20 +36,21 @@ RSpec.describe 'Create a GenericWork', type: :feature, js: true do
         agent_id: user.user_key,
         access: 'deposit'
       )
-      login_as user
+      login_as admin
     end
 
     # rubocop:disable RSpec/ExampleLength
-    it do
+    xit do
       visit '/dashboard'
       click_link "Works"
+
       click_link "Add new work"
 
       # If you generate more than one work uncomment these lines
       choose "payload_concern", option: "GenericWork"
       click_button "Create work"
 
-      # expect(page).to have_content "Add New Work"
+      expect(page).to have_content "Add New Work"
       click_link "Files" # switch tab
       expect(page).to have_content "Add files"
       expect(page).to have_content "Add folder"

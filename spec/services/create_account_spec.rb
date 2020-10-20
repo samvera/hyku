@@ -44,4 +44,70 @@ RSpec.describe CreateAccount do
       expect(account2.account.errors).to match a_hash_including(:cname)
     end
   end
+
+  describe '#create_defaults' do
+    let(:resource) { FactoryBot.create(:account) }
+    let(:account) { CreateAccount.new(resource) }
+
+    before do
+      resource.switch!
+    end
+
+    it 'seeds the account with default data' do
+      expect(RolesService).to receive(:create_default_roles!)
+      expect(Hyrax::GroupsService).to receive(:create_default_hyrax_groups!)
+      expect(Hyrax::CollectionType).to receive(:find_or_create_default_collection_type)
+      expect(Hyrax::CollectionType).to receive(:find_or_create_admin_set_type)
+      expect(AdminSet).to receive(:find_or_create_default_admin_set_id)
+
+      account.create_defaults
+    end
+  end
+
+  describe '#add_initial_users' do
+    let(:resource) { FactoryBot.create(:account) }
+
+    before do
+      resource.switch!
+    end
+
+    context 'supplied users' do
+      let(:user1) { FactoryBot.create(:user) }
+      let(:user2) { FactoryBot.create(:user) }
+      let(:account) { CreateAccount.new(resource, [user1, user2]) }
+
+      it 'get the admin role for the account' do
+        expect(user1.has_role?(:admin, Site.instance)).to eq(false)
+        expect(user2.has_role?(:admin, Site.instance)).to eq(false)
+
+        account.add_initial_users
+
+        expect(user1.has_role?(:admin, Site.instance)).to eq(true)
+        expect(user2.has_role?(:admin, Site.instance)).to eq(true)
+      end
+
+      it 'get default group memberships for the account' do
+        expect(user1.groups).to contain_exactly('registered', 'public')
+        expect(user2.groups).to contain_exactly('registered', 'public')
+
+        account.add_initial_users
+
+        expect(user1.groups).to contain_exactly('admin', 'registered', 'public')
+        expect(user2.groups).to contain_exactly('admin', 'registered', 'public')
+      end
+    end
+
+    context 'non-supplied users' do
+      let(:user) { FactoryBot.create(:user) }
+      let(:account) { CreateAccount.new(resource) }
+
+      it 'do not change' do
+        expect(user.has_role?(:admin, Site.instance)).to eq(false)
+
+        account.add_initial_users
+
+        expect(user.has_role?(:admin, Site.instance)).to eq(false)
+      end
+    end
+  end
 end

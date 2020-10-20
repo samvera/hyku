@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :bulkrax_importer_oer_csv, class: 'Bulkrax::Importer' do
     name { 'OER CSV Import' }
     admin_set_id { 'MyString' }
-    user { FactoryBot.build(:base_user) }
+    user { FactoryBot.build(:user) }
     frequency { 'PT0S' }
     parser_klass { 'Bulkrax::OerCsvParser' }
     limit { 10 }
@@ -15,7 +15,7 @@ FactoryBot.define do
   factory :bulkrax_importer_oer_csv_complex, class: 'Bulkrax::Importer' do
     name { 'OER CSV Import' }
     admin_set_id { 'MyString' }
-    user { FactoryBot.build(:base_user) }
+    user { FactoryBot.build(:user) }
     frequency { 'PT0S' }
     parser_klass { 'Bulkrax::OerCsvParser' }
     limit { 10 }

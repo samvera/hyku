@@ -7,8 +7,9 @@ RSpec.describe Hyrax::Admin::WorkflowRolesPresenter do
     let!(:user) { create(:user) }
 
     before do
-      create(:user, :guest)
+      create(:guest_user)
     end
+
     it "doesn't include guests" do
       expect(subject).to eq [user]
     end

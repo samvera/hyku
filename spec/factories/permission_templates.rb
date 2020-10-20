@@ -28,6 +28,7 @@ FactoryBot.define do
               create(:collection, id: source_id)
             end
           else
+            # TODO(bkiahstroud): reconcile factory with :collection_lw (necessary?)
             create(:collection)
           end
         permission_template.source_id = collection.id

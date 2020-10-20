@@ -27,7 +27,6 @@ class ApplicationController < ActionController::Base
   before_action :elevate_single_tenant!, if: :singletenant?
   skip_after_action :discard_flash_if_xhr
 
-
   rescue_from Apartment::TenantNotFound do
     raise ActionController::RoutingError, 'Not Found'
   end

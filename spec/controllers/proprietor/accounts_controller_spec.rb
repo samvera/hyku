@@ -44,7 +44,7 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
   end
 
   context 'as an admin of a site' do
-    let(:user) { FactoryBot.create(:user).tap { |u| u.add_role(:admin, Site.instance) } }
+    let(:user) { FactoryBot.create(:admin) }
     let(:account) { FactoryBot.create(:account) }
 
     before do

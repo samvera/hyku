@@ -47,7 +47,7 @@ RSpec.describe Importer::Factory::ImageFactory, :clean do
     end
     let(:actor) { Hyrax::CurationConcern.actor }
 
-    skip 'does not create a new collection' do
+    it 'does not create a new collection' do
       expect(actor).to receive(:create).with(Hyrax::Actors::Environment) do |k|
         expect(k.attributes).to include(member_of_collection_ids: [coll.id])
       end

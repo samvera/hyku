@@ -17,7 +17,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :invitable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  before_create :add_default_roles
+  after_create :add_default_group_memberships!
 
   scope :for_repository, ->{
     joins(:roles)
@@ -66,18 +66,25 @@ class User < ApplicationRecord
     end
   end
 
-  # TODO: return the Hyrax::Groups that the user belongs to
-  # TODO: user.groups is called several times in Hyrax so need to investigate
+  def enrolled_hyrax_groups
+    roles.where(name: 'member', resource_type: 'Hyrax::Group').map(&:resource).uniq
+  end
+
   def groups
-    return ['admin'] if has_role?(:admin, Site.instance)
-    []
+    enrolled_hyrax_groups.map(&:name)
   end
 
-  def workflow_groups
-    roles.where(name: "member", resource_type: "Hyrax::Group").map(&:resource).uniq
-  end
+  def add_default_group_memberships!
+    return if Account.global_tenant?
 
-  def add_default_roles
-    add_role :admin, Site.instance unless self.class.joins(:roles).where("roles.name = ?", "admin").any? || Account.global_tenant?
+    Hyrax::Group.find_or_create_by!(name: 'public').add_members_by_id(self.id)
+
+    if self.has_role?(:admin, Site.instance)
+      Hyrax::Group.find_or_create_by!(name: 'admin').add_members_by_id(self.id)
+    end
+
+    unless self.guest?
+      Hyrax::Group.find_or_create_by!(name: 'registered').add_members_by_id(self.id)
+    end
   end
 end

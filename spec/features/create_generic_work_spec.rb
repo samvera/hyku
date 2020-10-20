@@ -25,6 +25,8 @@ RSpec.describe 'Create a GenericWork', js: true do
     end
 
     before do
+      # Required to create an AdminSet
+      create(:admin_group)
       # Create a single action that can be taken
       Sipity::WorkflowAction.create!(name: 'submit', workflow: workflow)
 

@@ -110,7 +110,6 @@ module Hyrax
         end
       end
 
-      # Override from hyrax 2.5.1 - need to pass in a hash not a string for group name
       def workflow_agents
         [
           Hyrax::Group.find_by!(name: admin_group_name)
@@ -120,7 +119,6 @@ module Hyrax
         end
       end
 
-      # Override from hyrax 2.5.1 - need to pass in a hash not a string for group name
       # Gives deposit access to registered users to default AdminSet
       def create_default_access_for(permission_template:, workflow:)
         permission_template.access_grants.create(agent_type: 'group', agent_id: ::Ability.registered_group_name, access: Hyrax::PermissionTemplateAccess::DEPOSIT)

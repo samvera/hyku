@@ -25,7 +25,7 @@ module Hyrax
     end
 
     def add_members_by_id(ids, member_class: DEFAULT_MEMBER_CLASS)
-      new_members = member_class.find(ids)
+      new_members = member_class.unscoped.find(ids)
       Array.wrap(new_members).collect { |m| m.add_role(MEMBERSHIP_ROLE, self) }
     end
 

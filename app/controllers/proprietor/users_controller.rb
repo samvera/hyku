@@ -12,7 +12,7 @@ module Proprietor
     def index
       authorize! :manage, User
       # TODO RG - this is added, why?
-      @users = User.exclude_guests.accessible_by(current_ability)
+      @users = User.accessible_by(current_ability)
 
       add_breadcrumb t(:'hyrax.controls.home'), root_path
       add_breadcrumb t(:'hyrax.admin.sidebar.users'), proprietor_users_path

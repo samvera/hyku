@@ -24,10 +24,10 @@ if ENV['IN_DOCKER'].present?
                                        url: ENV['HUB_URL'])
 
     # Fix for capybara vs remote files. Selenium handles this for us
-    driver.browser.file_detector = lambda do |args|
-      str = args.first.to_s
-      str if File.exist?(str)
-    end
+    # driver.browser.file_detector = lambda do |args|
+    #   str = args.first.to_s
+    #   str if File.exist?(str)
+    # end
 
     driver
   end

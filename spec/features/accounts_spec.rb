@@ -30,6 +30,11 @@ RSpec.describe 'Accounts administration', type: :feature, js: true, multitenant:
 
     it 'changes the associated cname' do
       login_as user
+      puts "-----------------------"
+      puts account.inspect
+      puts edit_proprietor_account_path(account)
+      puts "-----------------------"
+
       visit edit_proprietor_account_path(account)
       fill_in 'Tenant CNAME', with: 'example.com'
 

@@ -18,7 +18,7 @@ module Proprietor
     # GET /accounts/1
     # GET /accounts/1.json
     def show
-      @users = User.exclude_guests.accessible_by(current_ability)
+      @users = User.accessible_by(current_ability)
 
       add_breadcrumb t(:'hyrax.controls.home'), root_path
       add_breadcrumb t(:'hyrax.admin.sidebar.accounts'), proprietor_accounts_path

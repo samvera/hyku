@@ -30,7 +30,6 @@ RSpec.describe 'Accounts administration', type: :feature, js: true, multitenant:
 
     it 'changes the associated cname' do
       login_as user
-      puts "In the spec, Account.admin_host == #{Account.admin_host}"
       visit edit_proprietor_account_path(account)
       fill_in 'Tenant CNAME', with: 'example.com'
 
@@ -52,7 +51,7 @@ RSpec.describe 'Accounts administration', type: :feature, js: true, multitenant:
       #       Selenium::WebDriver::Error::WebDriverError:
       #       You are trying to work with something that isn't a file.
       # Filling in a different string seems to make the spec pass, and it still seems to test important functionality,
-      # but I'd like to go back and understand why this is happening.   
+      # but I'd like to go back and understand why this is happening.
       # fill_in 'account_fcrepo_endpoint_attributes_base_path', with: '/dev'
 
       click_on 'Save'

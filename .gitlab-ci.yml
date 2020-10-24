@@ -59,6 +59,7 @@ test:
     DATABASE_USER: postgres
     DATBASE_TEST_NAME: hyku_test
     FEDORA_URL: http://fcrepo:8080/fcrepo/rest
+    HUB_URL: http://chrome:4444/wd/hub
     GIT_STRATEGY: none
     IN_DOCKER: 'true'
     LD_LIBRARY_PATH: /opt/fits/tools/mediainfo/linux
@@ -84,7 +85,7 @@ test:
   script:
     - rm -f /home/app/webapp/tmp/capybara/*
     - rm -rf $CI_PROJECT_DIR/capybara
-    - export CAPYBARA_SERVER=http://`hostname -s| tr -d '[:space:]'`:3010
+    - export CAPYBARA_SERVER=`hostname -s| tr -d '[:space:]'`
     - cd /home/app/webapp && bundle exec rake zookeeper:upload db:create db:schema:load spec
   after_script:
     - cp -r /home/app/webapp/tmp/capybara $CI_PROJECT_DIR/capybara

@@ -84,7 +84,7 @@ test:
   script:
     - rm -f /home/app/webapp/tmp/capybara/*
     - rm -rf $CI_PROJECT_DIR/capybara
-    - export CAPYBARA_SERVER=`hostname -s| tr -d '[:space:]'`
+    - export CAPYBARA_SERVER=http://`hostname -s| tr -d '[:space:]'`:3010
     - cd /home/app/webapp && bundle exec rake zookeeper:upload db:create db:schema:load spec
   after_script:
     - cp -r /home/app/webapp/tmp/capybara $CI_PROJECT_DIR/capybara

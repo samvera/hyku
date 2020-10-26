@@ -133,6 +133,8 @@ services:
     environment:
       - VIRTUAL_PORT=80
       - VIRTUAL_HOST=pals.docker
+      - IN_DOCKER='true'
+      - HUB_URL=http://chrome:4444/wd/hub
     depends_on:
       - db
       - fcrepo
@@ -145,6 +147,8 @@ services:
       - workers
     expose:
       - 80
+    networks:
+      internal:
     # ports:
       # 3000:80 # uncomment this if you dont use dory or another proxy
 
@@ -184,6 +188,14 @@ services:
       internal:
 
   chrome:
-    image: selenium/standalone-chrome:3.141
+    image: selenium/standalone-chrome-debug:3.141.59-20201010
+    logging:
+      driver: none
+    volumes:
+      - /dev/shm:/dev/shm
+    shm_size: 2G
     networks:
       internal:
+    ports:
+      - "4444:4444"
+      - "5959:5900"

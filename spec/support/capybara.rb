@@ -14,6 +14,13 @@ end
 if ENV['IN_DOCKER'].present?
   args = %w[disable-gpu no-sandbox whitelisted-ips window-size=1400,1400]
   args.push('headless') if ENV['CHROME_HEADLESS_MODE'].present? && ENV['CHROME_HEADLESS_MODE'] == "true"
+  args.push(
+    loggingPrefs: {
+      browser: 'ALL',
+      driver: 'ALL',
+      performance: 'ALL'
+    }
+  )
 
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(chromeOptions: { args: args })
 

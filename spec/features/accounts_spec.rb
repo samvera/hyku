@@ -20,6 +20,14 @@ RSpec.describe 'Accounts administration', type: :feature, js: true, multitenant:
       end
     end
 
+    after(:each) do
+      # customize based on which type of logs you want displayed
+      log_types = page.driver.browser.manage.logs.available_types
+      log_types.each do |t|
+        puts t.to_s + ": " + page.driver.browser.manage.logs.get(t).join("\n")
+      end
+    end
+
     around do |example|
       original_host = ENV['HOST']
       ENV['HOST'] = 'web'

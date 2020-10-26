@@ -38,7 +38,7 @@ test:
   stage: test
   image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
   services:
-    - name: selenium/standalone-chrome:3.141
+    - name: selenium/standalone-chrome-debug:3.141.59-20201010
       alias: chrome
     - name: postgres:10-alpine
       alias: db-test

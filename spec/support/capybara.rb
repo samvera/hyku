@@ -31,7 +31,7 @@ if ENV['IN_DOCKER'].present?
 
     driver
   end
-
+  Capybara.always_include_port = true
   Capybara.server_host = '0.0.0.0'
   Capybara.server_port = 3010
   ENV['WEB_HOST'] ||= ENV['CAPYBARA_SERVER'] || '127.0.0.1'

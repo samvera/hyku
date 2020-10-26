@@ -23,6 +23,7 @@ RSpec.describe 'Accounts administration', type: :feature, js: true, multitenant:
     around do |example|
       default_host = Capybara.default_host
       Capybara.default_host = Capybara.app_host || "http://#{Account.admin_host}"
+      puts "+++++++++++++++++++++++ #{Capybara.default_host}"
       # Capybara.default_host = "http://#{Account.admin_host}"
       example.run
       Capybara.default_host = default_host
@@ -33,6 +34,7 @@ RSpec.describe 'Accounts administration', type: :feature, js: true, multitenant:
       puts "-----------------------"
       puts account.inspect
       puts edit_proprietor_account_path(account)
+      puts edit_proprietor_account_url(account)
       puts "-----------------------"
 
       visit edit_proprietor_account_path(account)

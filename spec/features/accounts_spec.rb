@@ -21,11 +21,14 @@ RSpec.describe 'Accounts administration', type: :feature, js: true, multitenant:
     end
 
     around do |example|
+      original_host = ENV['HOST']
+      ENV['HOST'] = 'web'
       default_host = Capybara.default_host
       # Capybara.default_host = Capybara.app_host || "http://#{Account.admin_host}"
       Capybara.default_host = "http://#{Account.admin_host}"
       example.run
       Capybara.default_host = default_host
+      ENV['HOST']=original_host
     end
 
     it 'changes the associated cname' do
@@ -35,7 +38,7 @@ RSpec.describe 'Accounts administration', type: :feature, js: true, multitenant:
       puts edit_proprietor_account_path(account)
       puts "-----------------------"
 
-      visit edit_proprietor_account_path(account)
+      visit edit_proprietor_account_url(account)
       fill_in 'Tenant CNAME', with: 'example.com'
 
       click_on 'Save'

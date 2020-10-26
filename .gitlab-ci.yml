@@ -51,6 +51,7 @@ test:
       alias: redis-test
       command: ["redis-server"]
   variables:
+    CAPYBARA_SERVER: http://web:3010
     CHROME_HOSTNAME: chrome
     DATABASE_ADAPTER: postgresql
     DATABASE_HOST: db-test

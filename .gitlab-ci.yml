@@ -38,7 +38,7 @@ test:
   stage: test
   image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
   services:
-    - name: selenium/standalone-chrome:3.141
+    - name: selenium/standalone-chrome-debug:3.141.59-20201010
       alias: chrome
     - name: postgres:10-alpine
       alias: db-test
@@ -51,6 +51,8 @@ test:
       alias: redis-test
       command: ["redis-server"]
   variables:
+    FF_NETWORK_PER_BUILD: 1
+    CAPYBARA_SERVER: build
     CHROME_HOSTNAME: chrome
     DATABASE_ADAPTER: postgresql
     DATABASE_HOST: db-test
@@ -59,6 +61,7 @@ test:
     DATABASE_USER: postgres
     DATBASE_TEST_NAME: hyku_test
     FEDORA_URL: http://fcrepo:8080/fcrepo/rest
+    HUB_URL: http://chrome:4444/wd/hub
     GIT_STRATEGY: none
     IN_DOCKER: 'true'
     LD_LIBRARY_PATH: /opt/fits/tools/mediainfo/linux

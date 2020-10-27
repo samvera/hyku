@@ -14,6 +14,13 @@ end
 if ENV['IN_DOCKER'].present?
   args = %w[disable-gpu no-sandbox whitelisted-ips window-size=1400,1400]
   args.push('headless') if ENV['CHROME_HEADLESS_MODE'].present? && ENV['CHROME_HEADLESS_MODE'] == "true"
+  args.push(
+    loggingPrefs: {
+      browser: 'ALL',
+      driver: 'ALL',
+      performance: 'ALL'
+    }
+  )
 
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(chromeOptions: { args: args })
 
@@ -31,10 +38,11 @@ if ENV['IN_DOCKER'].present?
 
     driver
   end
-
+  Capybara.always_include_port = true
   Capybara.server_host = '0.0.0.0'
   Capybara.server_port = 3010
-  Capybara.app_host = ENV['CAPYBARA_SERVER'] || 'http://127.0.0.1:3010'
+  ENV['WEB_HOST'] ||= ENV['CAPYBARA_SERVER'] || '127.0.0.1'
+  Capybara.app_host = "http://#{ENV['WEB_HOST']}:#{Capybara.server_port}"
 else
   TEST_HOST = 'localhost:3000'.freeze
   # @note In January 2018, TravisCI disabled Chrome sandboxing in its Linux

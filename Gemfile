@@ -67,6 +67,7 @@ group :test do
   gem 'rspec-activemodel-mocks'
   gem 'rspec-its'
   gem 'rspec_junit_formatter'
+  gem 'rspec-retry'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', '~> 4.0'
   gem 'webdrivers', '~> 4.0'

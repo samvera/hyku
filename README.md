@@ -66,6 +66,16 @@ The full spec suite can be run in docker locally. There are several ways to do t
 docker-compose exec web rake
 ```
 
+#### Feature Specs
+
+Feature specs can be viewed in the Screen Sharing app on the Mac.
+When you launch the Screen Sharing app you will need to connect to your IP address and port 5959:
+```
+Connect To: vnc://127.0.0.1:5959
+Password: secret
+```
+The server must be running when you connect.
+
 ### With out Docker
 #### For development
 

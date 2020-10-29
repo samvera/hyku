@@ -10,8 +10,10 @@ class Ability
     superadmin_permissions
   ]
 
-  # Override method from blacklight-access_controls v0.6.2
-  # to use Hyrax::Groups
+  ##
+  # Override method from blacklight-access_controls v0.6.2 to use Hyrax::Groups.
+  # NOTE(bkiahstroud): DO NOT RENAME THIS METHOD - it is required for
+  # permissions to function properly.
   def user_groups
     current_user.groups
   end

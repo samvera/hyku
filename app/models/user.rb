@@ -23,10 +23,10 @@ class User < ApplicationRecord
     joins(:roles)
   }
 
-    # set default scope to exclude guest users
-    def self.default_scope
-      where(guest: false)
-    end
+  # set default scope to exclude guest users
+  def self.default_scope
+    where(guest: false)
+  end
 
   # Method added by Blacklight; Blacklight uses #to_s on your
   # user class to get a user-displayable login/identifier.
@@ -74,6 +74,10 @@ class User < ApplicationRecord
     roles.where(name: 'member', resource_type: 'Hyrax::Group').map(&:resource).uniq
   end
 
+  ##
+  # Override method from hydra-access-controls v11.0.0 to use Hyrax::Groups.
+  # NOTE(bkiahstroud): DO NOT RENAME THIS METHOD - it is required for
+  # permissions to function properly.
   def groups
     enrolled_hyrax_groups.map(&:name)
   end

@@ -1,6 +1,4 @@
 RSpec.describe Hyku::Admin::Group::NavigationPresenter do
-  # TODO(bess,kiah,lea ann): This spec is not yet passing but we want to get this branch merged
-  # so it doesn't block future work.
   let(:active_css_class) { described_class::Tab::ACTIVE_CSS_CLASS }
   let(:base_params) do
     {
@@ -16,11 +14,11 @@ RSpec.describe Hyku::Admin::Group::NavigationPresenter do
     let(:params) { base_params.merge(action: action) }
     let(:presenter) { described_class.new(params: params) }
 
-    xit 'has 3 tabs' do
-      expect(subject.count).to be(3)
+    it 'has 4 tabs' do
+      expect(subject.count).to be(4)
     end
 
-    xit 'has the edit tab marked as active' do
+    it 'has the edit tab marked as active' do
       expect(subject.select { |tab| tab.css_class == active_css_class && tab.action == action }.count).to be(1)
     end
   end
@@ -32,27 +30,43 @@ RSpec.describe Hyku::Admin::Group::NavigationPresenter do
     let(:params) { base_params.merge(controller: 'admin/group_users', action: action) }
     let(:presenter) { described_class.new(params: params) }
 
-    xit 'has 3 tabs' do
-      expect(subject.count).to be(3)
+    it 'has 4 tabs' do
+      expect(subject.count).to be(4)
     end
 
-    xit 'has the members tab marked as active' do
+    it 'has the members tab marked as active' do
       expect(subject.select { |tab| tab.css_class == active_css_class && tab.action == action }.count).to be(1)
     end
   end
 
-  context 'remve page' do
+  context 'roles page' do
+    subject { presenter.tabs }
+
+    let(:action) { 'roles' }
+    let(:params) { base_params.merge(action: action) }
+    let(:presenter) { described_class.new(params: params) }
+
+    it 'has 4 tabs' do
+      expect(subject.count).to be(4)
+    end
+
+    it 'has the roles tab marked as active' do
+      expect(subject.select { |tab| tab.css_class == active_css_class && tab.action == action }.count).to be(1)
+    end
+  end
+
+  context 'remove page' do
     subject { presenter.tabs }
 
     let(:action) { 'remove' }
     let(:params) { base_params.merge(action: action) }
     let(:presenter) { described_class.new(params: params) }
 
-    xit 'has 3 tabs' do
-      expect(subject.count).to be(3)
+    it 'has 4 tabs' do
+      expect(subject.count).to be(4)
     end
 
-    xit 'has the members tab marked as active' do
+    it 'has the remove tab marked as active' do
       expect(subject.select { |tab| tab.css_class == active_css_class && tab.action == action }.count).to be(1)
     end
   end

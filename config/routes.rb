@@ -78,6 +78,7 @@ Rails.application.routes.draw do
     resources :users, only: [:destroy]
     resources :groups do
       member do
+        get :roles
         get :remove
       end
 

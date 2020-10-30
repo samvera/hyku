@@ -1,6 +1,6 @@
 module Admin
   class GroupsController < AdminController
-    before_action :load_group, only: %i[edit update remove destroy]
+    before_action :load_group, only: %i[edit update remove roles destroy]
 
     def index
       add_breadcrumb t(:'hyrax.controls.home'), root_path
@@ -41,6 +41,14 @@ module Admin
           error: t('hyku.admin.groups.flash.update.failure', group: @group.name)
         }
       end
+    end
+
+    def roles
+      add_breadcrumb t(:'hyrax.controls.home'), root_path
+      add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
+      add_breadcrumb t(:'hyku.admin.groups.title.edit'), edit_admin_group_path
+      add_breadcrumb t(:'hyku.admin.groups.title.roles'), request.path
+      @roles = ::Role.site - @group.roles
     end
 
     def remove

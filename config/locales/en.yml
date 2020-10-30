@@ -84,6 +84,16 @@ en:
           delete: Remove
           index: return to Manage Groups
           members: Users
+          roles: Roles
+        roles:
+          add: Add
+          label:
+            name: Role
+            action: Action
+          remove: Remove
+          title:
+            current_group_roles: Current Group Roles
+            add_group_roles: Add Roles to Group
         title:
           add_user: Add User to Group
           delete: Remove Group “%{group}”
@@ -93,6 +103,7 @@ en:
           members: Group Members
           new: New Group
           remove: Remove Group
+          roles: Group Roles
       title: Administration
       work_types: Available Work Types
     footer:

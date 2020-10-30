@@ -7,6 +7,9 @@ module Hyrax
     DEFAULT_MEMBER_CLASS = ::User
 
     validates :name, presence: true
+    has_many :group_roles
+    has_many :roles, through: :group_roles
+
 
     def self.search(query)
       if query.present?

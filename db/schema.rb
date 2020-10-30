@@ -293,11 +293,6 @@ ActiveRecord::Schema.define(version: 2020_10_27_230818) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "hyrax_groups_roles", id: false, force: :cascade do |t|
-    t.bigint "role_id", null: false
-    t.bigint "hyrax_group_id", null: false
-  end
-
   create_table "job_io_wrappers", id: :serial, force: :cascade do |t|
     t.integer "user_id"
     t.integer "uploaded_file_id"

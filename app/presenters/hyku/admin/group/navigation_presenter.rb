@@ -13,6 +13,7 @@ module Hyku
           [
             edit_tab,
             members_tab,
+            roles_tab,
             remove_tab
           ]
         end
@@ -37,6 +38,16 @@ module Hyku
               controller: 'admin/group_users',
               action: 'index',
               path: Rails.application.routes.url_helpers.admin_group_users_path(group_id),
+              context: params
+            )
+          end
+
+          def roles_tab
+            Tab.new(
+              name: I18n.t('hyku.admin.groups.nav.roles'),
+              controller: 'admin/groups',
+              action: 'roles',
+              path: Rails.application.routes.url_helpers.roles_admin_group_path(group_id),
               context: params
             )
           end

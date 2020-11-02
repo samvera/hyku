@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_29_001829) do
+ActiveRecord::Schema.define(version: 2020_10_27_230818) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -251,6 +251,15 @@ ActiveRecord::Schema.define(version: 2020_09_29_001829) do
     t.integer "user_id"
     t.index ["file_id"], name: "index_file_view_stats_on_file_id"
     t.index ["user_id"], name: "index_file_view_stats_on_user_id"
+  end
+
+  create_table "group_roles", force: :cascade do |t|
+    t.bigint "role_id"
+    t.bigint "group_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_group_roles_on_group_id"
+    t.index ["role_id"], name: "index_group_roles_on_role_id"
   end
 
   create_table "hyrax_collection_types", force: :cascade do |t|

@@ -8,15 +8,16 @@ module Bulkrax
 
     def perform(importer_id, only_updates_since_last_import = false)
       importer = Importer.find(importer_id)
-
+      importer.current_run
       import(importer, only_updates_since_last_import)
       schedule(importer) if importer.schedulable?
     end
 
     def import(importer, only_updates_since_last_import)
+      importer.only_updates = only_updates_since_last_import || false
       return unless importer.valid_import?
       importer.import_collections
-      importer.import_works(only_updates_since_last_import)
+      importer.import_works
       importer.create_parent_child_relationships unless importer.validate_only
       # NOTE(bkiahstroud): Added method to add memberships
       importer&.create_memberships unless importer.validate_only

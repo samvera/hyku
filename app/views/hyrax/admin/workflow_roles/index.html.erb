@@ -12,8 +12,9 @@
       </div>
       <div class="panel-body">
         <%= simple_form_for Hyrax::Forms::WorkflowResponsibilityGroupForm.new, url: hyrax.admin_workflow_roles_path do |f| %>
-          <%= f.input :group_id, as: :select, collection: f.object.group_options %>
-          <%= f.input :workflow_role_id, as: :select, collection: f.object.workflow_role_options %>
+        <%# TODO(labradford1): Commented to allow page to load, fix ASAP %>
+          <%#= f.input :group_id, as: :select, collection: Hyrax::Group.all %>
+          <%#= f.input :workflow_role_id, as: :select, collection: f.object.workflow_role_options %>
           <%= f.submit class: 'btn btn-sm btn-primary' %>
         <% end %>
       </div>
@@ -30,7 +31,7 @@
         <%= simple_form_for Hyrax::Forms::WorkflowResponsibilityForm.new, url: hyrax.admin_workflow_roles_path do |f| %>
           <%= f.input :user_id, as: :select, collection: f.object.user_options %>
           <%= f.input :workflow_role_id, as: :select, collection: f.object.workflow_role_options %>
-          <%= f.submit class: 'btn btn-sm btn-primary' %>
+          <%= f.submit id: 'assign_user_role_save_button', class: 'btn btn-sm btn-primary' %>
         <% end %>
       </div>
     </div>
@@ -85,7 +86,7 @@
           </thead>
           <tbody>
           <% @presenter.users.each do |user| %>
-            <tr>
+            <tr id=<%= "#{user.user_key.gsub('@','-').gsub('.','-')}" %>>
               <td data-sort="<%= user.name %>"><%= user.name %></td>
               <td data-sort="<%= user.user_key %>"><%= user.user_key %></td>
               <% agent_presenter = @presenter.presenter_for(user) %>

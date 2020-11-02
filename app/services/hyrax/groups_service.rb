@@ -2,6 +2,9 @@
 # TODO(bkiahstroud): filename and location make sense?
 module Hyrax
   module GroupsService
+    ##
+    # NOTE(bkiahstroud): DO NOT CHANGE THE NAMES OF THESE GROUPS!
+    # They are required to exist for permissions to work properly.
     # TODO(bkiahstroud): Grab list from Hyrax::RoleRegistry instead? See AdminSetCreateService
     ALL_DEFAULT_GROUPS = [
       'admin',

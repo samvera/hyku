@@ -33,6 +33,7 @@
         <thead>
           <tr>
             <th><%= t('hyku.admin.groups.label.name') %></th>
+            <th><%= t('hyku.admin.groups.label.roles') %></th>
             <th><%= t('hyku.admin.groups.label.members') %></th>
             <th><%= t('hyku.admin.groups.label.created_at') %></th>
             <th><%= t('hyku.admin.groups.label.actions') %></th>
@@ -48,6 +49,12 @@
                   <%= group.description %>
                   </p>
                 <% end %>
+              </td>
+              <td>
+                <ul><% group.roles.each do |role| %>
+                  <li><%= role.name.titleize %></li>
+                  <% end %>
+                </ul>
               </td>
               <td>
                 <%= group.number_of_users %>

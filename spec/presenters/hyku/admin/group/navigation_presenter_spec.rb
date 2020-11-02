@@ -42,8 +42,8 @@ RSpec.describe Hyku::Admin::Group::NavigationPresenter do
   context 'roles page' do
     subject { presenter.tabs }
 
-    let(:action) { 'roles' }
-    let(:params) { base_params.merge(action: action) }
+    let(:action) { 'index' }
+    let(:params) { base_params.merge(controller: 'admin/group_roles', action: action) }
     let(:presenter) { described_class.new(params: params) }
 
     it 'has 4 tabs' do

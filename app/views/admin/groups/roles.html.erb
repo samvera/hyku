@@ -2,11 +2,11 @@
 <% provide :page_header do %>
   <h1>
     <span class='fa fa-users'></span>
-    <%= "#{t('hyku.admin.groups.title.edit')}: #{@group.name.titleize}" %>
+    <%= "#{t('hyku.admin.groups.title.edit')}: #{@group.name}" %>
   </h1>
 <% end %>
 
-<%= render 'nav' %>
+<%= render '/admin/groups/nav' %>
 <div class='panel panel-default'>
   <div class='panel-body'>
     <p class='lead'><%= t('hyku.admin.groups.action.members.description') %></p>
@@ -19,22 +19,22 @@
 
     <div class='panel-body'>
       <div class='table-responsive'>
-        <table class='table table-striped datatable'>
+        <table class='table table-striped datatable group-roles-table'>
           <thead>
             <th><%= t('hyku.admin.groups.roles.label.name') %></th>
+            <th><%= t('hyku.admin.groups.roles.label.description') %></th>
             <th><%= t('hyku.admin.groups.roles.label.action') %></th>
           </thead>
 
           <tbody>
             <% @group.roles&.each do |role| %>
               <tr>
-                <td><%= role.name %></td>
-                <%# TODO(bkiahstroud): add role description %>
+                <td><%= role.name.titleize %></td>
+                <td><%= role.description %>
                 <td>
-                  <%# TODO(bkiahstroud): need real endpoint to hit %>
-                  <%= simple_form_for @group, url: [:admin, @group], html: { class: 'form' } do |f| %>
-                    <%= f.input_field :group_roles, multiple: true, hidden: true, value: role %>
-                    <%= f.submit t('hyku.admin.groups.roles.remove'), class: 'btn btn-danger' %>
+                  <%= simple_form_for :remove_role_from_group, url: remove_admin_group_roles_path(group_id: @group.to_param), method: :delete, html: { class: 'form' } do |f| %>
+                    <%= f.input :role_id, as: :hidden, input_html: { name: :role_id, value: role.id } %>
+                    <%= f.submit class: 'btn btn-danger' %>
                   <% end %>
                 </td>
               </tr>
@@ -54,22 +54,22 @@
 
     <div class='panel-body'>
       <div class='table-responsive'>
-        <table class='table table-striped datatable'>
+        <table class='table table-striped datatable group-roles-table'>
           <thead>
             <th><%= t('hyku.admin.groups.roles.label.name') %></th>
+            <th><%= t('hyku.admin.groups.roles.label.description') %></th>
             <th><%= t('hyku.admin.groups.roles.label.action') %></th>
           </thead>
 
           <tbody>
             <% @roles&.each do |role| %>
               <tr>
-                <td><%= role.name %></td>
-                <%# TODO(bkiahstroud): add role description %>
+                <td><%= role.name.titleize %></td>
+                <td><%= role.description %>
                 <td>
-                  <%# TODO(bkiahstroud): need real endpoint to hit %>
-                  <%= simple_form_for @group, url: [:admin, @group], html: { class: 'form' } do |f| %>
-                    <%= f.input_field :group_roles, multiple: true, hidden: true, value: role %>
-                    <%= f.submit t('hyku.admin.groups.roles.add'), class: 'btn btn-danger' %>
+                  <%= simple_form_for :add_role_to_group, url: add_admin_group_roles_path(group_id: @group.to_param), method: :post, html: { class: 'form' } do |f| %>
+                    <%= f.input :role_id, as: :hidden, input_html: { name: :role_id, value: role.id } %>
+                    <%= f.submit class: 'btn btn-success' %>
                   <% end %>
                 </td>
               </tr>
@@ -87,7 +87,7 @@
     $('table[id^="DataTables"]').DataTable({
       destroy: true, /* Reinitialize DataTable with config below */
       'columnDefs': [
-          { 'orderable': false, 'targets': [1] }
+          { 'orderable': false, 'targets': [2] }
       ],
       'language': {
         'info': 'Showing _START_ to _END_ of _TOTAL_ roles',

@@ -78,11 +78,17 @@ Rails.application.routes.draw do
     resources :users, only: [:destroy]
     resources :groups do
       member do
-        get :roles
         get :remove
       end
 
       resources :users, only: [:index], controller: 'group_users' do
+        collection do
+          post :add
+          delete :remove
+        end
+      end
+
+      resources :roles, only: [:index], controller: 'group_roles' do
         collection do
           post :add
           delete :remove

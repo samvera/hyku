@@ -45,9 +45,9 @@ module Hyku
           def roles_tab
             Tab.new(
               name: I18n.t('hyku.admin.groups.nav.roles'),
-              controller: 'admin/groups',
-              action: 'roles',
-              path: Rails.application.routes.url_helpers.roles_admin_group_path(group_id),
+              controller: 'admin/group_roles',
+              action: 'index',
+              path: Rails.application.routes.url_helpers.admin_group_roles_path(group_id),
               context: params
             )
           end

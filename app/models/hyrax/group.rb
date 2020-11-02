@@ -10,7 +10,6 @@ module Hyrax
     has_many :group_roles
     has_many :roles, through: :group_roles
 
-
     def self.search(query)
       if query.present?
         where("name LIKE :q OR description LIKE :q", q: "%#{query}%")

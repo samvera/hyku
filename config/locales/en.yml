@@ -31,12 +31,16 @@ en:
     action:
       become: Become
     submit:
+      add_role_to_group:
+        submit: Add
       add_user_to_group:
         submit: Add
       group_search:
         submit: Go
       page_size:
         submit: Update
+      remove_role_from_group:
+        submit: Remove
       revoke_membership:
         submit: Remove
       user_search:
@@ -79,6 +83,7 @@ en:
           members: Users
           name: Name
           per_page: per page
+          roles: Roles
         nav:
           attributes: Description
           delete: Remove
@@ -88,8 +93,9 @@ en:
         roles:
           add: Add
           label:
-            name: Role
             action: Action
+            description: Description
+            name: Role
           remove: Remove
           title:
             current_group_roles: Current Group Roles

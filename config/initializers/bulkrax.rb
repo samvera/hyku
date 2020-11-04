@@ -52,7 +52,7 @@ Bulkrax.setup do |config|
   #     "Bulkrax::OaiDcParser" => { **individual field mappings go here*** }
   #   }
   basic_csv_mappings = {
-    'title' => { from: ['title'], split: true },
+    'title' => { from: ['title'], split: /[;\|]/ },
     'creator' => { from: ['creator'], split: true },
     'keyword' => { from: ['keyword'], split: true },
     'description' => { from: ['description'], split: true },

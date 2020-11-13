@@ -679,8 +679,6 @@ GEM
       rails (~> 5.0)
       rdf
     rack (2.2.3)
-    rack-protection (2.0.8.1)
-      rack
     rack-test (0.7.0)
       rack (>= 1.0, < 3)
     rails (5.2.4.3)
@@ -874,11 +872,10 @@ GEM
       rdf-xsd (~> 3.1)
       sparql (~> 3.1)
       sxp (~> 1.1)
-    sidekiq (6.0.7)
+    sidekiq (6.1.2)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
-      rack-protection (>= 2.0.0)
-      redis (>= 4.1.0)
+      redis (>= 4.2.0)
     signet (0.14.0)
       addressable (~> 2.3)
       faraday (>= 0.17.3, < 2.0)
@@ -1056,3 +1053,6 @@ DEPENDENCIES
   webmock
   willow_sword!
   zk
+
+BUNDLED WITH
+   2.0.1

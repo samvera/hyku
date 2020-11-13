@@ -167,7 +167,7 @@ services:
       - db
 
   redis:
-    image: redis:3
+    image: redis:5
     command: redis-server
     volumes:
       - redis:/data

@@ -686,8 +686,6 @@ GEM
       rails (~> 5.0)
       rdf
     rack (2.2.3)
-    rack-protection (2.0.8.1)
-      rack
     rack-test (0.7.0)
       rack (>= 1.0, < 3)
     rails (5.2.4.3)
@@ -785,8 +783,8 @@ GEM
       rdf (~> 3.1)
     redic (1.5.3)
       hiredis
-    redis (4.2.1)
-    redis-namespace (1.7.0)
+    redis (4.2.2)
+    redis-namespace (1.8.0)
       redis (>= 3.0.4)
     redlock (1.2.0)
       redis (>= 3.0.0, < 5.0)
@@ -894,11 +892,10 @@ GEM
       sxp (~> 1.1)
     shoulda-matchers (4.4.1)
       activesupport (>= 4.2.0)
-    sidekiq (6.0.7)
+    sidekiq (6.1.2)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
-      rack-protection (>= 2.0.0)
-      redis (>= 4.1.0)
+      redis (>= 4.2.0)
     signet (0.14.0)
       addressable (~> 2.3)
       faraday (>= 0.17.3, < 2.0)

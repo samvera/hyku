@@ -148,26 +148,53 @@ footer.navbar {
     vertical-align: middle;
   }
 
+  ul {
+    padding-left: 1em;
+  }
+
   .panel-heading {
     line-height: 2.4em;
   }
 
   td:nth-child(2),
   th:nth-child(2) {
-    text-align: right;
-    width: 5em;
+    text-align: left;
+    width: 13em;
   }
 
   td:nth-child(3),
   th:nth-child(3) {
     text-align: right;
-    width: 9em;
+    width: 5em;
   }
 
   td:nth-child(4),
   th:nth-child(4) {
+    text-align: right;
+    width: 9em;
+  }
+
+  td:nth-child(5),
+  th:nth-child(5) {
     text-align: center;
     width: 13em;
+  }
+}
+
+.group-roles-table {
+  td:nth-child(1),
+  th:nth-child(1) {
+    width: 25%;
+  }
+
+  td:nth-child(2),
+  th:nth-child(2) {
+    width: 55%;
+  }
+
+  td:nth-child(3),
+  th:nth-child(3) {
+    width: 20%;
   }
 }
 

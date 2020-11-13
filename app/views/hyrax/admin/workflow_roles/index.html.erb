@@ -11,10 +11,10 @@
         <h2 class="panel-title h2"><%= t('new_group_role') %></h2> 
       </div>
       <div class="panel-body">
-        <%= simple_form_for Hyrax::Forms::WorkflowResponsibilityGroupForm.new, url: hyrax.admin_workflow_roles_path do |f| %>
+        <%= simple_form_for Hyrax::Forms::WorkflowResponsibilityGroupForm.new, url: hyrax.admin_workflow_roles_path, html: { id: :new_sipity_group_workflow_responsibility } do |f| %>
           <%= f.input :group_id, as: :select, collection: f.object.group_options %>
-          <%= f.input :workflow_role_id, as: :select, collection: f.object.workflow_role_options %>
-          <%= f.submit class: 'btn btn-sm btn-primary' %>
+          <%= f.input :workflow_role_id, as: :select, collection: f.object.workflow_role_options, input_html: { id: :sipity_workflow_responsibility_group_workflow_role_id } %>
+          <%= f.submit id: 'assign_group_role_save_button', class: 'btn btn-sm btn-primary' %>
         <% end %>
       </div>
     </div>
@@ -30,7 +30,7 @@
         <%= simple_form_for Hyrax::Forms::WorkflowResponsibilityForm.new, url: hyrax.admin_workflow_roles_path do |f| %>
           <%= f.input :user_id, as: :select, collection: f.object.user_options %>
           <%= f.input :workflow_role_id, as: :select, collection: f.object.workflow_role_options %>
-          <%= f.submit class: 'btn btn-sm btn-primary' %>
+          <%= f.submit id: 'assign_user_role_save_button', class: 'btn btn-sm btn-primary' %>
         <% end %>
       </div>
     </div>
@@ -53,7 +53,7 @@
           </thead>
           <tbody>
           <% @presenter.groups.each do |group| %>
-            <tr>
+            <tr id=<%= "#{group.name}" %>>
               <td data-sort="<%= group.name %>"><%= group.name %></td>
               <% agent_presenter = @presenter.group_presenter_for(group) %>
               <% if agent_presenter && agent_presenter.responsibilities_present? %>
@@ -85,7 +85,7 @@
           </thead>
           <tbody>
           <% @presenter.users.each do |user| %>
-            <tr>
+            <tr id=<%= "#{user.user_key.gsub('@','-').gsub('.','-')}" %>>
               <td data-sort="<%= user.name %>"><%= user.name %></td>
               <td data-sort="<%= user.user_key %>"><%= user.user_key %></td>
               <% agent_presenter = @presenter.presenter_for(user) %>

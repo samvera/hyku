@@ -12,7 +12,7 @@
                 <%= pluralize(@user.errors.count, "error") %> prohibited this repository from being saved:
                 <ul>
                   <% @user.errors.messages.each do |key, messages| %>
-                    <li><%= key %> &quot;<%= @user.errors.details[key].first[:value] %>&quot; <%= messages.join(' and ') %></li>
+                    <li><%= key %> <%= @user.errors.messages.dig(key)&.join(', ') %></li>
                   <% end %>
                 </ul>
               </div>

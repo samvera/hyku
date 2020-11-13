@@ -1,6 +1,6 @@
 <div class="form-inputs">
   <%= f.input :display_name, label: 'Display Name' %>
-  <%= f.input :email, hint: '' %>
+  <%= f.input :email, required: true, hint: '' %>
   <%= f.input :is_superadmin, as: :boolean %>
   <%= f.input :password, hint: 'Only if creating or changing' %>
   <%= f.input :facebook_handle %>

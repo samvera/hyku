@@ -1,0 +1,4 @@
+multitenancy:
+  enabled: true
+
+ssl_configured: true

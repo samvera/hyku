@@ -198,6 +198,35 @@ footer.navbar {
   }
 }
 
+.group-workflow-roles-table {
+  td:nth-child(1),
+  th:nth-child(1) {
+    width: 50%;
+  }
+
+  td:nth-child(2),
+  th:nth-child(2) {
+    width: 50%;
+  }
+}
+
+.user-workflow-roles-table {
+  td:nth-child(1),
+  th:nth-child(1) {
+    width: 25%;
+  }
+
+  td:nth-child(2),
+  th:nth-child(2) {
+    width: 25%;
+  }
+
+  td:nth-child(3),
+  th:nth-child(3) {
+    width: 50%;
+  }
+}
+
 .full-width-container {
   padding-left: 0;
   padding-right: 0;

@@ -7,6 +7,7 @@ namespace :hyku do
       user = User.where(email: 'admin@example.com').first_or_initialize do |u|
         if u.new_record?
           u.password = 'testing123'
+          u.display_name = 'Admin'
           u.save!
         end
         u
@@ -34,6 +35,7 @@ namespace :hyku do
           user = User.where(email: "#{role_name}@example.com").first_or_initialize do |u|
             if u.new_record?
               u.password = 'testing123'
+              u.display_name = role_name.titleize
               u.save!
             end
             u

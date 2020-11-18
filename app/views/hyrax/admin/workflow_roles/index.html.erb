@@ -3,35 +3,40 @@
   <h1><span class="fa fa-users" aria-hidden="true"></span>  <%= t("hyrax.admin.workflow_roles.header") %></h1>
 <% end %>
 
-<%# Override from hyrax 2.5.1: add form to add workflow roles to groups %>
 <div class="row">
   <div class="col-md-12">
     <div class="panel panel-default">
-      <div class="panel-heading">
-        <h2 class="panel-title h2"><%= t('new_group_role') %></h2> 
-      </div>
-      <div class="panel-body">
-        <%= simple_form_for Hyrax::Forms::WorkflowResponsibilityGroupForm.new, url: hyrax.admin_workflow_roles_path, html: { id: :new_sipity_group_workflow_responsibility } do |f| %>
-          <%= f.input :group_id, as: :select, collection: f.object.group_options %>
-          <%= f.input :workflow_role_id, as: :select, collection: f.object.workflow_role_options, input_html: { id: :sipity_workflow_responsibility_group_workflow_role_id } %>
-          <%= f.submit id: 'assign_group_role_save_button', class: 'btn btn-sm btn-primary' %>
-        <% end %>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-12">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h2 class="panel-title h2"><%= t('.new_role') %></h2>
-      </div>
-      <div class="panel-body">
-        <%= simple_form_for Hyrax::Forms::WorkflowResponsibilityForm.new, url: hyrax.admin_workflow_roles_path do |f| %>
-          <%= f.input :user_id, as: :select, collection: f.object.user_options %>
-          <%= f.input :workflow_role_id, as: :select, collection: f.object.workflow_role_options %>
-          <%= f.submit id: 'assign_user_role_save_button', class: 'btn btn-sm btn-primary' %>
-        <% end %>
+      <div class='panel-body'>
+        <%# Override from hyrax 2.5.1: add form to add workflow roles to groups %>
+        <!-- BEGIN Assign Role to Group -->
+        <div class='panel panel-default'>
+          <div class='panel-heading'>
+            <h2 class='panel-title h2'><%= t('.new_group_role') %></h2>
+          </div>
+          <div class='panel-body'>
+            <%= simple_form_for Hyrax::Forms::WorkflowResponsibilityGroupForm.new, url: hyrax.admin_workflow_roles_path, html: { id: :new_sipity_group_workflow_responsibility } do |f| %>
+              <%= f.input :group_id, as: :select, collection: f.object.group_options %>
+              <%= f.input :workflow_role_id, as: :select, collection: f.object.workflow_role_options, input_html: { id: :sipity_workflow_responsibility_group_workflow_role_id } %>
+              <%= f.submit id: 'assign_group_role_save_button', class: 'btn btn-sm btn-primary' %>
+            <% end %>
+          </div>
+        </div>
+        <!-- END Assign Role to Group -->
+
+        <!-- BEGIN Assign Role to User -->
+        <div class='panel panel-default'>
+          <div class='panel-heading'>
+            <h2 class='panel-title h2'><%= t('.new_user_role') %></h2>
+          </div>
+          <div class='panel-body'>
+            <%= simple_form_for Hyrax::Forms::WorkflowResponsibilityForm.new, url: hyrax.admin_workflow_roles_path do |f| %>
+              <%= f.input :user_id, as: :select, collection: f.object.user_options %>
+              <%= f.input :workflow_role_id, as: :select, collection: f.object.workflow_role_options %>
+              <%= f.submit id: 'assign_user_role_save_button', class: 'btn btn-sm btn-primary' %>
+            <% end %>
+          </div>
+        </div>
+        <!-- END Assign Role to User -->
       </div>
     </div>
   </div>
@@ -40,77 +45,116 @@
 <div class="row">
   <div class="col-md-12">
     <div class="panel panel-default">
-      <div class="panel-heading">
-        <h2 class="panel-title h2"><%= t('.current_roles') %></h3>
-      </div>
-      <%# Override from hyrax 2.5.1: add group roles %>
-      <div class="panel-body">
-        <h3><th><%= t('.header.group_roles') %></th></h3>
-        <table class="table table-striped datatable">
-          <thead>
-            <th><%= t('.header.group_name') %></th>
-            <th><%= t('.header.roles') %></th>
-          </thead>
-          <tbody>
-          <% @presenter.groups.each do |group| %>
-            <tr id=<%= "#{group.name}" %>>
-              <td data-sort="<%= group.name %>"><%= group.name %></td>
-              <% agent_presenter = @presenter.group_presenter_for(group) %>
-              <% if agent_presenter && agent_presenter.responsibilities_present? %>
-                <td>
-                  <ul class="workflow-roles">
-                    <% agent_presenter.responsibilities do |responsibility_presenter| %>
-                      <li><%= responsibility_presenter.label %>
-                        <%= link_to hyrax.admin_workflow_role_path(responsibility_presenter.responsibility),
+      <div class='panel-body'>
+        <%# Override from hyrax 2.5.1: add current group roles section %>
+        <!-- BEGIN Current Group Roles -->
+        <div class='panel panel-default'>
+          <div class='panel-heading'>
+            <h2 class='panel-title h2'><%= t('.current_group_roles') %></h2>
+          </div>
+          <div class='panel-body'>
+            <table class='table table-striped datatable group-workflow-roles-table'>
+              <thead>
+                <th><%= t('.header.group_name') %></th>
+                <th><%= t('.header.roles') %></th>
+              </thead>
+              <tbody>
+                <% @presenter.groups.each do |group| %>
+                  <tr id=<%= "#{group.name}" %>>
+                    <td data-sort="<%= group.name %>"><%= group.name %></td>
+                    <% agent_presenter = @presenter.group_presenter_for(group) %>
+                    <% if agent_presenter && agent_presenter.responsibilities_present? %>
+                      <td>
+                        <ul class='workflow-roles'>
+                          <% agent_presenter.responsibilities do |responsibility_presenter| %>
+                            <li><%= responsibility_presenter.label %>
+                            <%= link_to hyrax.admin_workflow_role_path(responsibility_presenter.responsibility),
                                     method: :delete,
                                     data: { confirm: t('.delete.confirm') } do %>
-                          <span class="fa fa-remove"></span>
-                        <% end %>
-                      </li>
+                                    <span class='fa fa-remove'></span>
+                                  <% end %>
+                            </li>
+                          <% end %>
+                        </ul>
+                      </td>
+                    <% else %>
+                      <td><%= t('.no_roles') %></td>
                     <% end %>
-                  </ul>
-                </td>
-              <% else %>
-                <td><%= t('.no_roles') %></td>
-              <% end %>
-            </tr>
-          <% end %>
-          </tbody>
-        </table>
-        <h3><%= t('.header.user_roles') %></h3>
-        <table class="table table-striped datatable">
-          <thead>
-            <th><%= t('.header.name') %></th>
-            <th><%= t('.header.roles') %></th>
-          </thead>
-          <tbody>
-          <% @presenter.users.each do |user| %>
-            <tr id=<%= "#{user.user_key.gsub('@','-').gsub('.','-')}" %>>
-              <td data-sort="<%= user.name %>"><%= user.name %></td>
-              <td data-sort="<%= user.user_key %>"><%= user.user_key %></td>
-              <% agent_presenter = @presenter.presenter_for(user) %>
-              <% if agent_presenter && agent_presenter.responsibilities_present? %>
-                <td>
-                  <ul class="workflow-roles">
-                    <% agent_presenter.responsibilities do |responsibility_presenter| %>
-                      <li><%= responsibility_presenter.label %>
-                        <%= link_to hyrax.admin_workflow_role_path(responsibility_presenter.responsibility),
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- END Current Group Roles -->
+
+        <!-- BEGIN Current User Roles -->
+        <div class='panel panel-default'>
+          <div class='panel-heading'>
+            <h2 class='panel-title h2'><%= t('.current_user_roles') %></h2>
+          </div>
+          <div class='panel-body'>
+            <table class='table table-striped datatable user-workflow-roles-table'>
+              <thead>
+                <th><%= t('.header.email') %></th>
+                <th><%= t('.header.display_name') %></th>
+                <th><%= t('.header.roles') %></th>
+              </thead>
+              <tbody>
+                <% @presenter.users.each do |user| %>
+                  <tr id=<%= "#{user.user_key.gsub('@','-').gsub('.','-')}" %>>
+                    <td data-sort="<%= user.user_key %>"><%= user.user_key %></td>
+                    <td data-sort="<%= user.display_name %>"><%= user.display_name %></td>
+                    <% agent_presenter = @presenter.presenter_for(user) %>
+                    <% if agent_presenter && agent_presenter.responsibilities_present? %>
+                      <td>
+                        <ul class='workflow-roles'>
+                          <% agent_presenter.responsibilities do |responsibility_presenter| %>
+                            <li><%= responsibility_presenter.label %>
+                            <%= link_to hyrax.admin_workflow_role_path(responsibility_presenter.responsibility),
                                     method: :delete,
                                     data: { confirm: t('.delete.confirm') } do %>
-                          <span class="fa fa-remove"></span>
-                        <% end %>
-                      </li>
+                                    <span class='fa fa-remove'></span>
+                                  <% end %>
+                            </li>
+                          <% end %>
+                        </ul>
+                      </td>
+                    <% else %>
+                      <td><%= t('.no_roles') %></td>
                     <% end %>
-                  </ul>
-                </td>
-              <% else %>
-                <td><%= t('.no_roles') %></td>
-              <% end %>
-            </tr>
-          <% end %>
-          </tbody>
-        </table>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- END Current User Roles -->
       </div>
     </div>
   </div>
 </div>
+
+<script>
+  $(function() {
+    $('table[id="DataTables_Table_0"]').DataTable({
+      destroy: true, /* Reinitialize DataTable with config below */
+      'language': {
+        'info': 'Showing _START_ to _END_ of _TOTAL_ groups',
+        'infoEmpty': 'No groups to show',
+        'infoFiltered': '(filtered from _MAX_ total groups)',
+        'lengthMenu': 'Show _MENU_ groups'
+      }
+    })
+
+    $('table[id="DataTables_Table_1"]').DataTable({
+      destroy: true, /* Reinitialize DataTable with config below */
+      'language': {
+        'info': 'Showing _START_ to _END_ of _TOTAL_ users',
+        'infoEmpty': 'No users to show',
+        'infoFiltered': '(filtered from _MAX_ total users)',
+        'lengthMenu': 'Show _MENU_ users'
+      }
+    })
+  })
+</script>

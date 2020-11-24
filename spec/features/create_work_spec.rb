@@ -1,6 +1,7 @@
-RSpec.xdescribe 'Creating a new Work', :clean do
-  # skip this test
+RSpec.describe 'Creating a new Work', type: :feature, js: true, clean: true do
   let(:user) { create(:user) }
+  let!(:admin_group) { Hyrax::Group.create(name: "admin") }
+  let!(:registered_group) { Hyrax::Group.create(name: "registered") }
 
   before do
     AdminSet.find_or_create_default_admin_set_id

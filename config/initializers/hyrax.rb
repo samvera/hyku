@@ -174,12 +174,13 @@ Hyrax.config do |config|
   config.iiif_image_server = true
   
   config.iiif_image_url_builder = lambda do |file_id, base_url, size|
-    Riiif::Engine.routes.url_helpers.image_url(file_id, host: base_url, size: size)
+    Riiif::Engine.routes.url_helpers.image_url(file_id, host: base_url.sub(/\Ahttp:/, 'https:'), size: size)
   end
   
   config.iiif_info_url_builder = lambda do |file_id, base_url|
     uri = Riiif::Engine.routes.url_helpers.info_url(file_id, host: base_url)
-    uri.sub(%r{/info\.json\Z}, '')
+    uri = uri.sub(%r{/info\.json\Z}, '')
+    uri.sub(/\Ahttp:/, 'https:')
   end
   
 end

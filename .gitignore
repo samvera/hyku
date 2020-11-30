@@ -52,3 +52,6 @@ public/uploads
 *.swo
 fits.log
 public/branding/*
+
+# Ignore Bulkrax in local development
+vendor/engines/*

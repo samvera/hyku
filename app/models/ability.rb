@@ -63,6 +63,12 @@ class Ability
     current_user.has_role? :superadmin
   end
 
+  # NOTE(bkiahstroud): Override method from Hyrax 2.9.0 to take roles
+  # on the User into account instead of only looking at #user_groups.
+  def admin?
+    current_user.has_role?(:admin, Site.instance) || user_groups.include?(admin_group_name)
+  end
+
   def collection_manager?
     current_user.has_role?(:collection_manager, Site.instance)
   end

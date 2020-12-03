@@ -57,4 +57,6 @@ unless ENV['DB_ADAPTER'] == 'nulldb'
 
   Rails.application.config.middleware.use AccountElevator
 
+  Apartment::Elevators::Subdomain.excluded_subdomains = ['www', 'solr', 'fedroa', 'admin']
+
 end

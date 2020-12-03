@@ -1,5 +1,6 @@
-require 'rails_helper'
+# frozen_string_literal: true
 
+require 'rails_helper'
 RSpec.describe 'Manage Group Roles', type: :feature, js: true, clean: true do
   include Warden::Test::Helpers
 

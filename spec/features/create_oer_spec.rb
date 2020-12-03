@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Generated via
 #  `rails generate hyrax:work Oer`
 require 'rails_helper'
@@ -6,7 +8,6 @@ include Warden::Test::Helpers
 # NOTE: If you generated more than one work, you have to set "js: true"
 
 RSpec.feature 'Create a Oer', type: :feature, js: true, clean: true do
-
   context 'a logged in user' do
     let(:user_attributes) do
       { email: 'test@example.com' }
@@ -39,8 +40,6 @@ RSpec.feature 'Create a Oer', type: :feature, js: true, clean: true do
       )
       login_as user
     end
-
-    # rubocop:disable RSpec/ExampleLength
     scenario do
       visit '/dashboard/works'
       # TODO(labradford) We are not able to get this link click to work in our automated tests, so this is a workaround.

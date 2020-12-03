@@ -17,6 +17,7 @@ Jump In: [![Slack Status](http://slack.samvera.org/badge.svg)](http://slack.samv
 
   * [Running the stack](#running-the-stack)
     * [For development](#for-development)
+    * [Universal Viewer in Development](#universal-viewer-in-development)
     * [For testing](#for-testing)
     * [On AWS](#on-aws)
     * [With Docker](#with-docker)
@@ -30,6 +31,7 @@ Jump In: [![Slack Status](http://slack.samvera.org/badge.svg)](http://slack.samv
     * [enable Bulkrax](#bulkrax)
     * [from CSV](#from-csv)
     * [from purl](#from-purl)
+  * [Workflows](#workflows)
   * [Compatibility](#compatibility)
   * [Product Owner](#product-owner)
   * [Help](#help)
@@ -91,6 +93,26 @@ DISABLE_REDIS_CLUSTER=true bundle exec rails server -b 0.0.0.0
 #### For testing
 
 See the [Hyku Development Guide](https://github.com/samvera/hyku/wiki/Hyku-Development-Guide) for how to run tests.
+
+#### Universal Viewer in Development
+
+When running Hyrax v2.9.0, there is an issue where IIIF has mixed content error when running with SSL enabled.
+
+See Samvera Slack thread https://samvera.slack.com/archives/C0F9JQJDQ/p1596718417351200?thread_ts=1596717896.350700&cid=C0F9JQJDQ
+
+To allow the Universal Viewer to run without SSL enabled, comment these in the url building lambdas in the Hyrax initializer.
+
+In config.hyrax.rb in the config.iiif_image_url_builder lambdas, comment these lines:
+
+  ```
+  # base_url = base_url.sub(/\Ahttp:/, 'https:')
+  ```
+  and
+  
+  ```
+  # uri.sub(/\Ahttp:/, 'https:')
+  ```
+Once the application moves to Hyrax 3.0 or above, these lines should be removed.
 
 ### Working with Translations
 

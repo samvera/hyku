@@ -26,7 +26,7 @@ RSpec.describe Proprietor::UsersController, type: :controller, multitenant: true
       context "with valid params" do
         it "is unauthorized" do
           expect do
-            post :create, params: { account: valid_attributes }
+            post :create, params: { user: valid_attributes }
           end.not_to change(User, :count)
           expect(response).to be_redirect
         end
@@ -145,6 +145,17 @@ RSpec.describe Proprietor::UsersController, type: :controller, multitenant: true
       it "assigns the requested user as @user" do
         get :show, params: { id: user.to_param }
         expect(assigns(:user)).to eq(user)
+      end
+    end
+
+    describe 'POST #create' do
+      context 'with valid params' do
+        it 'succeeds' do
+          expect do
+            post :create, params: { user: valid_attributes }
+          end.to change(User, :count).by(1)
+          expect(response).to be_redirect
+        end
       end
     end
 

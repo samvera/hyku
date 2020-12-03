@@ -99,9 +99,9 @@ module Proprietor
     def user_params
       # remove blank passwords
       params[:user].delete(:password) if params[:user] && params[:user][:password].blank?
-      params[:user].delete(:password)
 
-      params.require(:user).permit(:email,
+      params.require(:user).permit(
+        :email,
         :password,
         :is_superadmin,
         :facebook_handle,

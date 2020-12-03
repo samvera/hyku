@@ -257,17 +257,21 @@ en:
       workflow_roles:
         header: Workflow Roles
         index:
+          current_group_roles: Current Group Roles
           current_roles: Current Roles
+          current_user_roles: Current User Roles
           delete:
             confirm: Are you sure?
           header:
+            display_name: Display Name
+            email: Email
             group_name: Group Name
             group_roles: Group Roles
             roles: Roles
             user: User
             user_roles: User Roles
           new_group_role: Assign Role to Group
-          new_role: Assign Role
+          new_user_role: Assign Role to User
           no_roles: No roles
       workflows:
         index:

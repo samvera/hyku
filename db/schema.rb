@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_31_012123) do
+ActiveRecord::Schema.define(version: 2020_11_17_220007) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,6 +84,10 @@ ActiveRecord::Schema.define(version: 2020_10_31_012123) do
     t.text "last_error"
     t.datetime "last_error_at"
     t.datetime "last_succeeded_at"
+    t.date "start_date"
+    t.date "finish_date"
+    t.string "work_visibility"
+    t.string "workflow_status"
     t.index ["user_id"], name: "index_bulkrax_exporters_on_user_id"
   end
 

@@ -1,4 +1,4 @@
-RSpec.describe 'Site labels configuration' do
+RSpec.describe 'Site labels configuration' , type: :feature, clean: true do
   context 'as an administrator' do
     let(:user) { FactoryBot.create(:admin) }
 
@@ -8,7 +8,6 @@ RSpec.describe 'Site labels configuration' do
 
     describe 'application name' do
       it 'updates the application name in the brand bar' do
-        skip
         visit edit_site_labels_path
         fill_in 'Application name', with: 'Custom Name'
         click_on 'Save'
@@ -16,7 +15,6 @@ RSpec.describe 'Site labels configuration' do
       end
 
       it 'updates the application name in the <head> <title>' do
-        skip
         visit edit_site_labels_path
         fill_in 'Application name', with: 'Custom Name'
         click_on 'Save'
@@ -34,7 +32,6 @@ RSpec.describe 'Site labels configuration' do
       end
 
       it 'updates the institution name in the agreement text' do
-        skip
         visit edit_site_labels_path
         fill_in 'Institution name', with: 'Custom Inst Name'
         click_on 'Save'
@@ -53,7 +50,6 @@ RSpec.describe 'Site labels configuration' do
       end
 
       it 'updates the full institution name in the agreement text' do
-        skip
         visit edit_site_labels_path
         fill_in 'Full institution name', with: 'Custom Full Inst Name'
         click_on 'Save'

@@ -1,4 +1,5 @@
-RSpec.describe "The splash page", multitenant: true do
+# NOTE: If want to run spec in broweser, you have to set "js: true"
+RSpec.describe "The splash page", type: :feature, clean: true, multitenant: true do
   around do |example|
     default_host = Capybara.default_host
     Capybara.default_host = Capybara.app_host || "http://#{Account.admin_host}"
@@ -7,9 +8,8 @@ RSpec.describe "The splash page", multitenant: true do
   end
 
   it "shows the page, displaying the Hyku version" do
-    skip
     visit '/'
-    expect(page).to have_link 'Login to get started', href: main_app.new_user_session_path(locale: 'en')
+    expect(page).to have_content 'Hyku Commons'
 
     within 'footer' do
       expect(page).to have_link 'Administrator login'

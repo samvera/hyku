@@ -19,10 +19,10 @@ RSpec.feature 'Assign workflow to group', type: :feature, js: true, clean: true 
     scenario 'admin assigns an approving workflow role to a user' do
       login_as admin
       visit '/admin/workflow_roles'
-      expect(page).to have_content 'Current Roles'
+      expect(page).to have_content 'Current User Roles'
       expect(page).to have_content 'Wilma Flinstone'
-      expect(find('tr#user-example-com').find('td:first-child').text).to eq('Betty Rubble')
-      expect(find('tr#user-example-com').find('td:last-child').text).to eq('No roles')
+      expect(find('tr#user-example-com').find('td:nth-child(2)').text).to include('Betty Rubble')
+      expect(find('tr#user-example-com').find('td:nth-child(3)').text).to eq('No roles')
       find('#sipity_workflow_responsibility_user_id option', text: "Betty Rubble").click
       # With selenium and the chrome driver, focus remains on the
       # select box. Click outside the box so the next line can find
@@ -30,17 +30,17 @@ RSpec.feature 'Assign workflow to group', type: :feature, js: true, clean: true 
       find('body').click
       find('#sipity_workflow_responsibility_workflow_role_id option', text: 'Default Admin Set - approving (default)').click
       find('#assign_user_role_save_button').click
-      expect(find('tr#user-example-com').find('td:first-child').text).to eq('Betty Rubble')
-      expect(find('tr#user-example-com').find('td:last-child').text).to eq('Default Admin Set - approving (default)')
+      expect(find('tr#user-example-com').find('td:nth-child(2)').text).to include('Betty Rubble')
+      expect(find('tr#user-example-com').find('td:nth-child(3)').text).to eq('Default Admin Set - approving (default)')
     end
 
     scenario 'admin assigns an approving workflow role to a group' do
       group.add_members_by_id(user.id)
       login_as admin
       visit '/admin/workflow_roles'
-      expect(page).to have_content 'Group Roles'
-      expect(find('tr#Flinstones').find('td:first-child').text).to eq('Flinstones')
-      expect(find('tr#Flinstones').find('td:last-child').text).to eq ('No roles')
+      expect(page).to have_content 'Current Group Roles'
+      expect(find('tr#Flinstones').find('td:nth-child(1)').text).to eq('Flinstones')
+      expect(find('tr#Flinstones').find('td:nth-child(2)').text).to eq ('No roles')
       find('#sipity_workflow_responsibility_group_id option', text: "Flinstones").click
       # With selenium and the chrome driver, focus remains on the
       # select box. Click outside the box so the next line can find
@@ -48,8 +48,8 @@ RSpec.feature 'Assign workflow to group', type: :feature, js: true, clean: true 
       find('body').click
       find('#sipity_workflow_responsibility_group_workflow_role_id option', text: 'Default Admin Set - approving (default)').click
       find('#assign_group_role_save_button').click
-      expect(find('tr#Flinstones').find('td:first-child').text).to eq('Flinstones')
-      expect(find('tr#Flinstones').find('td:last-child').text).to eq ('Default Admin Set - approving (default)')
+      expect(find('tr#Flinstones').find('td:nth-child(1)').text).to eq('Flinstones')
+      expect(find('tr#Flinstones').find('td:nth-child(2)').text).to eq ('Default Admin Set - approving (default)')
     end
   end
 end

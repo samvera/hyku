@@ -38,6 +38,10 @@ services:
   solr:
     image: solr:7.5
     command: solr -c -f -z zoo1:2181
+    environment:
+      - OOM=script
+      - VIRTUAL_PORT=8983
+      - VIRTUAL_HOST=solr.hyku.docker
     depends_on:
       zoo1:
         condition: service_healthy

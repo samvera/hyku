@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200103172822) do
+ActiveRecord::Schema.define(version: 2020_06_01_204556) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(version: 20200103172822) do
     t.string "identifier"
     t.string "collection_ids"
     t.string "type"
+    t.bigint "importerexporter_id"
     t.text "raw_metadata"
     t.text "parsed_metadata"
     t.datetime "created_at", null: false
@@ -53,8 +54,8 @@ ActiveRecord::Schema.define(version: 20200103172822) do
     t.text "last_error"
     t.datetime "last_error_at"
     t.datetime "last_succeeded_at"
-    t.integer "importerexporter_id"
     t.string "importerexporter_type", default: "Bulkrax::Importer"
+    t.index ["importerexporter_id"], name: "index_bulkrax_entries_on_importerexporter_id"
   end
 
   create_table "bulkrax_exporter_runs", force: :cascade do |t|
@@ -79,6 +80,9 @@ ActiveRecord::Schema.define(version: 20200103172822) do
     t.string "export_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "last_error"
+    t.datetime "last_error_at"
+    t.datetime "last_succeeded_at"
     t.index ["user_id"], name: "index_bulkrax_exporters_on_user_id"
   end
 
@@ -96,6 +100,7 @@ ActiveRecord::Schema.define(version: 20200103172822) do
     t.integer "total_collection_entries", default: 0
     t.integer "processed_children", default: 0
     t.integer "failed_children", default: 0
+    t.text "invalid_records"
     t.index ["importer_id"], name: "index_bulkrax_importer_runs_on_importer_id"
   end
 
@@ -110,6 +115,10 @@ ActiveRecord::Schema.define(version: 20200103172822) do
     t.text "field_mapping"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "validate_only"
+    t.text "last_error"
+    t.datetime "last_error_at"
+    t.datetime "last_succeeded_at"
     t.index ["user_id"], name: "index_bulkrax_importers_on_user_id"
   end
 
@@ -601,10 +610,10 @@ ActiveRecord::Schema.define(version: 20200103172822) do
     t.string "institution_name"
     t.string "institution_name_full"
     t.string "banner_image"
-    t.text "available_works", default: [], array: true
     t.string "logo_image"
     t.string "default_collection_image"
     t.string "default_work_image"
+    t.text "available_works", default: [], array: true
     t.string "directory_image"
     t.string "contact_email"
   end
@@ -735,11 +744,9 @@ ActiveRecord::Schema.define(version: 20200103172822) do
   add_foreign_key "bulkrax_importer_runs", "bulkrax_importers", column: "importer_id"
   add_foreign_key "collection_type_participants", "hyrax_collection_types"
   add_foreign_key "content_blocks", "sites"
-  add_foreign_key "curation_concerns_operations", "users"
   add_foreign_key "mailboxer_conversation_opt_outs", "mailboxer_conversations", column: "conversation_id", name: "mb_opt_outs_on_conversations_id"
   add_foreign_key "mailboxer_notifications", "mailboxer_conversations", column: "conversation_id", name: "notifications_on_conversation_id"
   add_foreign_key "mailboxer_receipts", "mailboxer_notifications", column: "notification_id", name: "receipts_on_notification_id"
   add_foreign_key "permission_template_accesses", "permission_templates"
   add_foreign_key "qa_local_authority_entries", "qa_local_authorities", column: "local_authority_id"
-  add_foreign_key "uploaded_files", "users"
 end

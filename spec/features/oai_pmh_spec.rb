@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe "OAI PMH Support", type: :feature do
   let(:user) { create(:user) }
   let(:work) { create(:work, user: user) }

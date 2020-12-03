@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+
+# NOTE: If want to run spec in browser, you have to set "js: true"
 RSpec.describe 'Collection editor role can be assigned to Groups and Users', type: :feature, clean: true do
   context 'a user assigned to a group' do
     let(:user) { FactoryBot.create(:user, display_name: "Jane Quest") }

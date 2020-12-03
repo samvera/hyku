@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 # Generated via
 #  `rails generate hyrax:work Image`
 require 'rails_helper'
 
 # NOTE: If you generated more than one work, you have to set "js: true"
-
 RSpec.describe 'Create a Image', type: :feature, js: true, clean: true do
   include Warden::Test::Helpers
 
@@ -39,8 +40,6 @@ RSpec.describe 'Create a Image', type: :feature, js: true, clean: true do
       )
       login_as user
     end
-
-    # rubocop:disable RSpec/ExampleLength
     it do
       visit '/dashboard/works'
       # TODO(labradford) We are not able to get this link click to work in our automated tests, so this is a workaround.

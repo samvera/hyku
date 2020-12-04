@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-RSpec.describe 'Site contact configuration', type: :feature, js: true, clean: true do
+
+# NOTE: If want to run spec in browser, you have to set "js: true"
+RSpec.describe 'Site contact configuration', type: :feature, clean: true do
   context 'as an administrator' do
     let(:user) { FactoryBot.create(:admin) }
 

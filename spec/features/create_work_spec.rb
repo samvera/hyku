@@ -1,4 +1,7 @@
-RSpec.describe 'Creating a new Work', type: :feature, js: true, clean: true do
+# frozen_string_literal: true
+
+# NOTE: If want to run spec in browser, you have to set "js: true"
+RSpec.describe 'Creating a new Work', type: :feature, clean: true do
   let(:user) { create(:user) }
   let!(:admin_group) { Hyrax::Group.create(name: "admin") }
   let!(:registered_group) { Hyrax::Group.create(name: "registered") }

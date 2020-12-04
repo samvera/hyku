@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Generated via
 #  `rails generate hyrax:work GenericWork`
 require 'rails_helper'
@@ -38,8 +40,6 @@ RSpec.describe 'Create a GenericWork', type: :feature, js: true, clean: true do
       )
       login_as user
     end
-
-    # rubocop:disable RSpec/ExampleLength
     it do
       login_as user
       visit '/dashboard/works'

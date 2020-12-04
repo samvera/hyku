@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe 'AdminSet form Participants tab', type: :feature, js: true, clean: true do

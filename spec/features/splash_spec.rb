@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # NOTE: If want to run spec in broweser, you have to set "js: true"
 RSpec.describe "The splash page", type: :feature, clean: true, multitenant: true do
   around do |example|

@@ -112,7 +112,7 @@ production:
   stage: deploy
   type: deploy
   script:
-    - ./chart/bin/deploy staging $CI_COMMIT_SHORT_SHA $STAGING_CONFIG_FILE
+    - ./chart/bin/deploy production $CI_COMMIT_SHORT_SHA $PRODUCTION_CONFIG_FILE
   when: manual
   only:
     - master

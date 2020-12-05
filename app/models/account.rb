@@ -48,7 +48,8 @@ class Account < ApplicationRecord
             unless: :cname_is_blank?
 
   validates :tenant, presence: true, uniqueness: true
-  validates :cname, presence: true, uniqueness: true, exclusion: { in: [default_cname('')] }
+  validates :cname, presence: true, uniqueness: true,
+                    exclusion: { in: Account.excluded_cnames.map { |c| default_cname(c) } }
 
   belongs_to :solr_endpoint, dependent: :delete
   belongs_to :fcrepo_endpoint, dependent: :delete
@@ -85,6 +86,10 @@ class Account < ApplicationRecord
     # (In test environment tenant switching is currently not possible)
     return false unless Settings.multitenancy.enabled && !Rails.env.test?
     Apartment::Tenant.default_tenant == Apartment::Tenant.current
+  end
+
+  def self.excluded_cnames
+    ['', 'admin', 'db', 'fedora', 'sidekiq', 'solr', 'www']
   end
 
   def solr_endpoint

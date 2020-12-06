@@ -28,13 +28,13 @@
 
           <tbody>
             <% @group.roles&.each do |role| %>
-              <tr>
+              <tr id=<%= "assigned-role-#{role.id}" %>>
                 <td><%= role.name.titleize %></td>
                 <td><%= role.description %>
                 <td>
                   <%= simple_form_for :remove_role_from_group, url: remove_admin_group_roles_path(group_id: @group.to_param), method: :delete, html: { class: 'form' } do |f| %>
                     <%= f.input :role_id, as: :hidden, input_html: { name: :role_id, value: role.id } %>
-                    <%= f.submit class: 'btn btn-danger' %>
+                    <%= f.submit class: 'btn btn-danger', id: "remove-role-#{role.id}-from-group" %>
                   <% end %>
                 </td>
               </tr>
@@ -63,13 +63,13 @@
 
           <tbody>
             <% @roles&.each do |role| %>
-              <tr>
+              <tr id=<%= "available-role-#{role.id}" %>>
                 <td><%= role.name.titleize %></td>
                 <td><%= role.description %>
                 <td>
                   <%= simple_form_for :add_role_to_group, url: add_admin_group_roles_path(group_id: @group.to_param), method: :post, html: { class: 'form' } do |f| %>
                     <%= f.input :role_id, as: :hidden, input_html: { name: :role_id, value: role.id } %>
-                    <%= f.submit class: 'btn btn-success' %>
+                    <%= f.submit class: 'btn btn-success', id: "add-role-#{role.id}-to-group" %>
                   <% end %>
                 </td>
               </tr>

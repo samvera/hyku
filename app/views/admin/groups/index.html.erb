@@ -41,7 +41,7 @@
         </thead>
         <tbody>
           <% @groups.each do |group| %>
-            <tr>
+            <tr id=<%= "#{group.hyphenated_name}" %>>
               <td>
                 <b><%= group.name %></b>
                 <% if group.description.present? %>
@@ -63,7 +63,7 @@
                 <%= group.created_at.to_date.to_formatted_s(:standard) %>
               </td>
               <td>
-                <%= link_to t('hyku.admin.groups.action.edit'), edit_admin_group_path(group), class: 'btn btn-default' %>
+                <%= link_to t('hyku.admin.groups.action.edit'), edit_admin_group_path(group), id: "edit-#{group.hyphenated_name}-group", class: 'btn btn-default' %>
               </td>
             </tr>
           <% end %>

@@ -34,7 +34,7 @@ RSpec.describe User, type: :model do
     subject { FactoryBot.create(:admin) }
 
     it 'fetches the global roles assigned to the user' do
-      expect(subject.site_roles.pluck(:name)).to match_array ['admin']
+      expect(subject.site_roles.pluck(:name)).to match_array ['admin', 'registered']
     end
   end
 
@@ -42,11 +42,11 @@ RSpec.describe User, type: :model do
     subject { FactoryBot.create(:user) }
 
     it 'assigns global roles to the user' do
-      expect(subject.site_roles.pluck(:name)).to be_empty
+      expect(subject.site_roles.pluck(:name)).to match_array ['registered']
 
-      subject.update(site_roles: ['admin'])
+      subject.update(site_roles: ['admin', 'registered'])
 
-      expect(subject.site_roles.pluck(:name)).to match_array ['admin']
+      expect(subject.site_roles.pluck(:name)).to match_array ['admin', 'registered']
     end
 
     it 'removes roles' do

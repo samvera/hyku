@@ -40,8 +40,9 @@ RSpec.describe 'Insitution visiblity work access', type: :request, clean: true, 
     end
 
     # sign up user 1 at account 1
+    tenant_user
     # and sign up user 2 at account 2
-    expect(tenant_user).not_to eq(tenant2_user)
+    tenant2_user
   end
 
   after do

@@ -7,6 +7,26 @@ RSpec.describe 'Insitution visiblity work access', type: :request, clean: true, 
   let(:tenant2_user_attributes) { attributes_for(:user) }
   let(:work) { create(:work, visibility: 'authenticated') }
 
+  let(:tenant_user) do
+    post "http://#{account.cname}/users", params: { user: {
+      display_name: tenant_user_attributes[:name],
+      email: tenant_user_attributes[:email],
+      password: tenant_user_attributes[:password],
+      password_confirmation: tenant_user_attributes[:password]
+    } }
+    User.last
+  end
+
+  let(:tenant2_user) do
+    post "http://#{account2.cname}/users", params: { user: {
+      display_name: tenant2_user_attributes[:name],
+      email: tenant2_user_attributes[:email],
+      password: tenant2_user_attributes[:password],
+      password_confirmation: tenant2_user_attributes[:password]
+    } }
+    User.last
+  end
+
   before do
     WebMock.disable!
     Apartment::Tenant.create(account.tenant)
@@ -20,22 +40,8 @@ RSpec.describe 'Insitution visiblity work access', type: :request, clean: true, 
     end
 
     # sign up user 1 at account 1
-    post "http://#{account.cname}/users", params: { user: {
-      display_name: tenant_user_attributes[:name],
-      email: tenant_user_attributes[:email],
-      password: tenant_user_attributes[:password],
-      password_confirmation: tenant_user_attributes[:password]
-    }}
-    @tenant_user = User.last
-    # sign up user 2 at account 2
-    post "http://#{account2.cname}/users", params: { user: {
-      display_name: tenant2_user_attributes[:name],
-      email: tenant2_user_attributes[:email],
-      password: tenant2_user_attributes[:password],
-      password_confirmation: tenant2_user_attributes[:password]
-    }}
-    @tenant2_user = User.last
-    expect(@tenant_user).to_not eq(@tenant2_user)
+    # and sign up user 2 at account 2
+    expect(tenant_user).not_to eq(tenant2_user)
   end
 
   after do
@@ -46,13 +52,13 @@ RSpec.describe 'Insitution visiblity work access', type: :request, clean: true, 
 
   describe 'as an end-user' do
     it 'allows access for users of the tenant' do
-      login_as @tenant_user, scope: :user
+      login_as tenant_user, scope: :user
       get "http://#{account.cname}/concern/generic_works/#{work.id}"
       expect(response.status).to eq(200)
     end
 
     it 'does not allow access for users of other tenants' do
-      login_as @tenant2_user, scope: :user
+      login_as tenant2_user, scope: :user
       get "http://#{account.cname}/concern/generic_works/#{work.id}"
       expect(response.status).to eq(401)
     end
@@ -62,12 +68,12 @@ RSpec.describe 'Insitution visiblity work access', type: :request, clean: true, 
     before do
       Apartment::Tenant.switch(account.tenant) do
         site = Site.instance
-        @tenant2_user.add_role('manager', site)
+        tenant2_user.add_role('manager', site)
       end
     end
 
     it 'now allows access for users of the tenant' do
-      login_as @tenant2_user, scope: :user
+      login_as tenant2_user, scope: :user
       get "http://#{account.cname}/concern/generic_works/#{work.id}"
       expect(response.status).to eq(200)
     end

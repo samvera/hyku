@@ -10,12 +10,14 @@ class Ability
     superadmin_permissions
   ]
 
-  ##
-  # Override method from blacklight-access_controls v0.6.2 to use Hyrax::Groups.
-  # NOTE(bkiahstroud): DO NOT RENAME THIS METHOD - it is required for
-  # permissions to function properly.
+  # Override from blacklight-access_controls-0.6.2 to define registered to include having a role on this tenant
   def user_groups
-    current_user.groups
+    return @user_groups if @user_groups
+
+    @user_groups = default_user_groups
+    @user_groups |= current_user.groups if current_user.respond_to? :groups
+    @user_groups |= ['registered'] if !current_user.new_record? && current_user.roles.count.positive?
+    @user_groups
   end
 
   # Define any customized permissions here.

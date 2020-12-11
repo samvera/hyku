@@ -65,7 +65,9 @@ Once that starts (you'll see the line `Passenger core running in multi-applicati
 The full spec suite can be run in docker locally. There are several ways to do this, but one way is to run the following:
 
 ```bash
-docker-compose exec web rake
+docker-compose exec web bash
+# To run a specific test
+bundle exec rspec spec/PATH_TO_FILE
 ```
 
 #### Feature Specs

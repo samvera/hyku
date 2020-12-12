@@ -82,6 +82,12 @@ class User < ApplicationRecord
     enrolled_hyrax_groups.map(&:name)
   end
 
+  # TODO this needs tests and to be moved to the service
+  # Tmp shim to handle bug
+  def group_roles
+    enrolled_hyrax_groups.map(&:roles).flatten.uniq
+  end
+
   def add_default_group_memberships!
     return if Account.global_tenant?
 

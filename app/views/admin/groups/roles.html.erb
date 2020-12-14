@@ -1,5 +1,12 @@
 <% content_for :page_title, construct_page_title(t('hyku.admin.groups.title.edit'), t('hyku.admin.title')) %>
 <% provide :page_header do %>
+  <%# TODO(bkiahstroud): remove <h2> and <p> when groups have functional permissions %>
+  <h2 style='text-align: center;'>
+    <span class='fa fa-exclamation-triangle' style='color: #ffcc00;' aria-hidden='true'></span>
+    <span>Under Construction</span>
+    <span class='fa fa-exclamation-triangle' style='color: #ffcc00;' aria-hidden='true'></span>
+  </h2>
+  <p style='text-align: center;'><em>Some functionality may not be fully implemented yet.</em></p>
   <h1>
     <span class='fa fa-users'></span>
     <%= "#{t('hyku.admin.groups.title.edit')}: #{@group.name}" %>

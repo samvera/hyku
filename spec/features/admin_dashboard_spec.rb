@@ -24,11 +24,6 @@ RSpec.describe 'Admin Dashboard', type: :feature, js: true, clean: true do
         expect(page).to have_link('Notifications')
         expect(page).to have_link('Transfers')
         expect(page).to have_link('Manage Proxies')
-        # Can see the links to the items in Repository Contents
-        expect(page).to have_link('Collections')
-        expect(page).to have_link('Works')
-        expect(page).to have_link('Importers')
-        expect(page).to have_link('Exporters')
         # Can see the links to the items in Tasks
         expect(page).to have_link('Review Submissions')
         expect(page).to have_link('Manage Users')
@@ -88,11 +83,6 @@ RSpec.describe 'Admin Dashboard', type: :feature, js: true, clean: true do
         expect(page).to have_link('Notifications')
         expect(page).to have_link('Transfers')
         expect(page).to have_link('Manage Proxies')
-        # Can see the links to the items in Repository Contents
-        expect(page).to have_link('Collections')
-        expect(page).to have_link('Works')
-        expect(page).to have_link('Importers')
-        expect(page).to have_link('Exporters')
         # Should not see the links to the items in Tasks
         expect(page).not_to have_link('Review Submissions')
         expect(page).not_to have_link('Manage Users')

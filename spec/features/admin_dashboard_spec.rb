@@ -24,7 +24,10 @@ RSpec.describe 'Admin Dashboard', type: :feature, js: true, clean: true do
         expect(page).to have_link('Notifications')
         expect(page).to have_link('Transfers')
         expect(page).to have_link('Manage Proxies')
-        # Can see the links to the items in Tasks
+        # Should see Works and Collections
+        expect(page).to have_link('Collections')
+        expect(page).to have_link('Works')
+        # Should see items in Tasks
         expect(page).to have_link('Review Submissions')
         expect(page).to have_link('Manage Users')
         expect(page).to have_link('Manage Groups')
@@ -73,9 +76,10 @@ RSpec.describe 'Admin Dashboard', type: :feature, js: true, clean: true do
       visit Hyrax::Engine.routes.url_helpers.dashboard_path
       within '.sidebar' do
         expect(page).to have_link('Activity Summary')
+        # Should not see System Status
         expect(page).not_to have_link('System Status')
         expect(page).to have_link("Your activity")
-        # Should not see a link to Reports
+        # Should not see Reports
         expect(page).not_to have_link('Reports')
         # Need to click link to open collapsed menu
         click_link "Your activity"
@@ -83,13 +87,16 @@ RSpec.describe 'Admin Dashboard', type: :feature, js: true, clean: true do
         expect(page).to have_link('Notifications')
         expect(page).to have_link('Transfers')
         expect(page).to have_link('Manage Proxies')
-        # Should not see the links to the items in Tasks
+        # Should see Works and Collections
+        expect(page).to have_link('Collections')
+        expect(page).to have_link('Works')
+        # Should not see items in Tasks
         expect(page).not_to have_link('Review Submissions')
         expect(page).not_to have_link('Manage Users')
         expect(page).not_to have_link('Manage Groups')
         expect(page).not_to have_link('Manage Embargoes')
         expect(page).not_to have_link('Manage Leases')
-        # Should not see links to Settings or Workflow Roles
+        # Should not see Settings or Workflow Roles
         expect(page).not_to have_link('Settings')
         expect(page).not_to have_link('Workflow Roles')
       end

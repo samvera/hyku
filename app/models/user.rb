@@ -17,7 +17,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :invitable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  after_create :add_default_group_memberships!
+  after_save :add_default_group_memberships!
 
   scope :for_repository, ->{
     joins(:roles)

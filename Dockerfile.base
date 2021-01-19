@@ -36,7 +36,7 @@ ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile \
   BUNDLE_JOBS=4
 
 COPY  --chown=app Gemfile* $APP_HOME/
-RUN /sbin/setuser app bundle install
+RUN /sbin/setuser app /bin/bash -l -c 'cd /home/app/webapp && gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)" && bundle install'
 
 COPY  --chown=app . $APP_HOME
 

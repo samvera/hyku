@@ -60,6 +60,20 @@ docker-compose up web # web here means you can start and stop Rails w/o starting
 
 Once that starts (you'll see the line `Passenger core running in multi-application mode.` to indicate a successful boot), you can view your app in a web browser with at either hyku.docker or localhost:3000 (see above)
 
+#### Seed a superadmin
+When you first start the app, you will need to create a superadmin. You can do that with a rake task:
+
+ ```
+ docker-compose exec web bash
+ bundle exec rake hyku:seed:superadmin
+ ```
+
+Login credential for the superadmin:
+  admin@example.com
+  testing123
+
+Once you are logged in as a superadmin, you can create an account/tenant in the UI by selecting Accounts from the menu bar
+
 #### Tests in Docker
 
 The full spec suite can be run in docker locally. There are several ways to do this, but one way is to run the following:

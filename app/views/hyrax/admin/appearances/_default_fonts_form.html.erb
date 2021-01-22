@@ -1,0 +1,17 @@
+<%= simple_form_for @form, url: admin_appearance_path do |f| %>
+  <div class="panel-body defaultable-fonts">
+    <% df = @form.class::DEFAULT_FONTS %>
+    <% font = f.object.body_font %>
+
+    <%= f.input :body_font, label: 'Select Body Font', required: false, input_html: { class: 'font-fields', data: { default_value: df['body_font'] } } %>
+    <%= link_to 'Restore Default', '#font', class: 'btn btn-default restore-default-font', data: { default_target: 'body_font' } %>
+
+    <%= f.input :headline_font, label: 'Select Header Font', required: false, input_html: { class: 'font-fields', data: { default_value: df['headline_font'] } } %>
+    <%= link_to 'Restore Default', '#font', class: 'btn btn-default restore-default-font', data: { default_target: 'headline_font' } %>
+
+  </div>
+  <div class="panel-footer">
+    <%= link_to 'Restore All Defaults', '#font', class: 'btn btn-default restore-all-default-fonts' %>
+    <%= f.submit class: 'btn btn-primary pull-right' %>
+  </div>
+<% end %>

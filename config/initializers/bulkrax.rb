@@ -7,7 +7,8 @@ Bulkrax.setup do |config|
   # ]
 
   config.parsers += [
-    { name: 'CSV - Open Educational Resources (OER)', class_name: 'Bulkrax::OerCsvParser', partial: 'oer_csv_fields' }
+    { name: 'CSV - Open Educational Resources (OER)', class_name: 'Bulkrax::OerCsvParser', partial: 'oer_csv_fields' },
+    { name: 'CSV - Electronic Theses & Dissertations (ETD)', class_name: 'Bulkrax::EtdCsvParser', partial: 'etd_csv_fields' }
   ]
 
   # Field to use during import to identify if the Work or Collection already exists.
@@ -53,41 +54,54 @@ Bulkrax.setup do |config|
   #   }
   basic_csv_mappings = {
     'title' => { from: ['title'], split: /[;\|]/ },
-    'creator' => { from: ['creator'], split: true },
-    'keyword' => { from: ['keyword'], split: true },
-    'description' => { from: ['description'], split: true },
-    'subject' => { from: ['subject'], split: true },
+    'creator' => { from: ['creator'], split: '\|' },
+    'keyword' => { from: ['keyword'], split: '\|' },
+    'description' => { from: ['description'], split: '\|' },
+    'subject' => { from: ['subject'], split: '\|' },
     'license' => { from: ['license'], split: '\|' },
-    'contributor' => { from: ['contributor'], split: true },
-    'publisher' => { from: ['publisher'], split: true },
-    'date_created' => { from: ['date_created'], split: true },
-    'language' => { from: ['language'], split: true },
-    'identifier' => { from: ['identifier'], split: true },
+    'contributor' => { from: ['contributor'], split: '\|' },
+    'publisher' => { from: ['publisher'], split: '\|' },
+    'date_created' => { from: ['date_created'], split: '\|' },
+    'language' => { from: ['language'], split: '\|' },
+    'identifier' => { from: ['identifier'], split: '\|' },
     'based_near' => { from: ['location'], split: '\|' },
     'related_url' => { from: ['related_url'], split: '\|' },
-    'resource_type' => { from: ['type'], split: true },
-    'file' => { from: ['item'], split: true }
+    'resource_type' => { from: ['type'], split: '\|' },
+    'file' => { from: ['item'], split: '\|' }
   }
 
   config.field_mappings['Bulkrax::CsvParser'] = basic_csv_mappings
 
   config.field_mappings['Bulkrax::OerCsvParser'] = basic_csv_mappings.merge({
-    'learning_resource_type' => { from: ['learning_resource_type'], split: true },
-    'alternative_title' => { from: ['alternative_title'], split: true },
-    'education_level' => { from: ['education_level'], split: true },
-    'audience' => { from: ['audience'], split: true },
-    'discipline' => { from: ['discipline'], split: true },
-    'date' => { from: ['date'], split: true },
-    'table_of_contents' => { from: ['table_of_contents'], split: true },
-    'oer_size' => { from: ['oer_size'], split: true },
-    'rights_holder' => { from: ['rights_holder'], split: true },
-    'accessibility_feature' => { from: ['accessibility_feature'], split: true },
-    'accessibility_hazard' => { from: ['accessibility_hazard'], split: true },
+    'learning_resource_type' => { from: ['learning_resource_type'], split: '\|' },
+    'alternative_title' => { from: ['alternative_title'], split: '\|' },
+    'education_level' => { from: ['education_level'], split: '\|' },
+    'audience' => { from: ['audience'], split: '\|' },
+    'discipline' => { from: ['discipline'], split: '\|' },
+    'date' => { from: ['date'], split: '\|' },
+    'table_of_contents' => { from: ['table_of_contents'], split: '\|' },
+    'oer_size' => { from: ['oer_size'], split: '\|' },
+    'rights_holder' => { from: ['rights_holder'], split: '\|' },
+    'accessibility_feature' => { from: ['accessibility_feature'], split: '\|' },
+    'accessibility_hazard' => { from: ['accessibility_hazard'], split: '\|' },
     'accessibility_summary' => { from: ['accessibility_summary'] },
-    'previous_version' => { from: ['previous_version'], split: true },
-    'newer_version' => { from: ['newer_version'], split: true },
-    'alternate_version' => { from: ['alternate_version'], split: true },
-    'related_item' => { from: ['related_item'], split: true }
+    'previous_version' => { from: ['previous_version'], split: '\|' },
+    'newer_version' => { from: ['newer_version'], split: '\|' },
+    'alternate_version' => { from: ['alternate_version'], split: '\|' },
+    'related_item' => { from: ['related_item'], split: '\|' }
+  })
+
+  config.field_mappings['Bulkrax::EtdCsvParser'] = basic_csv_mappings.merge({
+    'committee_member' => { from: ['committee_member'], split: '\|' },
+    'creator' => { from: ['author'], split: '\|' },
+    'date_created' => { from: ['date'], split: '\|' },
+    'degree_discipline' => { from: ['discipline'], split: '\|' },
+    'degree_grantor' => { from: ['grantor'], split: '\|' },
+    'degree_level' => { from: ['level'], split: '\|' },
+    'degree_name' => { from: ['degree'], split: '\|' },
+    'related_url' => { from: ['relation'], split: '\|' },
+    'resource_type' => { from: ['type'], split: '\|' },
+    'rights_statement' => { from: ['rights'], split: '\|' }
   })
 
   # Add to, or change existing mappings as follows

@@ -6,3 +6,16 @@ en:
       etd:
         description:        "Electronic Theses & Dissertations"
         name:               "ETD"
+    etd:
+      labels:
+        committee_member: 'Committee member'
+        creator: 'Author'
+        date_created: 'Date'
+        degree_discipline: 'Discipline'
+        degree_grantor: 'Grantor'
+        degree_level: 'Level'
+        degree_name: 'Degree'
+        description: 'Abstract / Description'
+        related_url: 'Relation'
+        resource_type: 'Type'
+        rights_statement: 'Rights'

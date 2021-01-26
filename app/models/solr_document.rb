@@ -46,6 +46,14 @@ class SolrDocument
   attribute :alternate_version_id, Solr::String, solr_name('alternate_version_id')
   attribute :related_item_id, Solr::String, solr_name('related_item_id')
   attribute :discipline, Solr::Array, solr_name('discipline')
+  attribute :advisor, Solr::Array, solr_name('advisor')
+  attribute :committee_member, Solr::Array, solr_name('committee_member')
+  attribute :degree_discipline, Solr::Array, solr_name('degree_discipline')
+  attribute :degree_grantor, Solr::Array, solr_name('degree_grantor')
+  attribute :degree_level, Solr::Array, solr_name('degree_level')
+  attribute :degree_name, Solr::Array, solr_name('degree_name')
+  attribute :department, Solr::Array, solr_name('department')
+  attribute :format, Solr::Array, solr_name('format')
 
   field_semantics.merge!(
     contributor: 'contributor_tesim',

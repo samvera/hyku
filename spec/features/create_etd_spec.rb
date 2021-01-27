@@ -61,6 +61,7 @@ RSpec.describe 'Create a Etd', type: :feature, js: true, clean: true do
       fill_in('Title', with: 'My Test Work')
       fill_in('Author', with: 'Doe, Jane')
       select('In Copyright', from: 'Rights')
+      fill_in('Date', with: '01/27/2021')
       fill_in('Degree', with: 'CS')
       fill_in('Level', with: 'High')
       fill_in('Discipline', with: 'Com Sci')

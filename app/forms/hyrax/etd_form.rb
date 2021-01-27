@@ -23,7 +23,7 @@ module Hyrax
       :title,
       :creator,
       :rights_statement,
-      :created,
+      :date_created,
       :degree_name,
       :degree_level,
       :degree_discipline,

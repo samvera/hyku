@@ -14,17 +14,35 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
       expect(page).to have_content 'Home Page Theme'
     end
     
-    it "has a select box for the home page theme" do
+    it 'has a select box for the home, show, and search pages themes' do
       login_as admin
       visit '/admin/appearance'
       click_link('Themes')
-      select('Default theming', from: 'Home Page Theme')
-      select('Default theming', from: 'Search Results Page Theme')
-      select('Default theming', from: 'Show Page Theme')
-
+      select('Default home', from: 'Home Page Theme')
+      select('Default search', from: 'Search Results Page Theme')
+      select('Default show', from: 'Show Page Theme')
       find('body').click
       click_on('Save')
-      expect(page).to have_content("The appearance was successfully updated")
+      expect(page).to have_content('The appearance was successfully updated')
+    end
+
+    it 'sets the them to default if no theme is selected' do
+      visit '/'
+      expect(page).to have_css('body.default_home.default_search.default_show')
+    end
+
+    # TODO: switch to other theme names when a theme has been implemented
+    it 'sets the home page theme when the theme form is saved' do
+      login_as admin
+      visit 'admin/appearance'
+      click_link('Themes')
+      select('Default home', from: 'Home Page Theme')
+      select('Default search', from: 'Search Results Page Theme')
+      select('Default show', from: 'Show Page Theme')
+      find('body').click
+      click_on('Save')
+      visit '/'
+      expect(page).to have_css('body.default_home.default_search.default_show')
     end
   end
 end

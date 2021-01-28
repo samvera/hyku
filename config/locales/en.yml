@@ -155,6 +155,8 @@ en:
               hint: 'To use an image as the directory image, you should use an image (JPG, GIF or PNG) that is no taller than the header and no wider than 400 pixels wide.'
             logo_image:
               hint: 'To use an image as the logo, you should use an image (JPG, GIF or PNG) that is no taller than the header and no wider than 400 pixels wide.'
+            themes:
+              confirm: "If your theme doesn't appear to be applying correctly, verify that it isn't being overwritten by Custom CSS."
           tabs:
             banner_image: 'Banner Image'
             directory_image: 'Directory Image'
@@ -162,6 +164,7 @@ en:
             colors: 'Colors'
             custom_css: Custom CSS
             fonts: 'Fonts'
+            themes: 'Themes'
       sidebar:
         accounts: Accounts
         activity_summary: Activity Summary

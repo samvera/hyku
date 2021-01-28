@@ -25,7 +25,10 @@
           <a href="#font" role="tab" data-toggle="tab"><%= t('.tabs.fonts') %></a>
         </li>
         <li>
-          <a href="#css" role="tab" data-toggle="tab">Custom CSS</a>
+          <a href="#css" role="tab" data-toggle="tab"><%= t('.tabs.custom_css') %></a>
+        </li>
+        <li>
+          <a href="#themes" role="tab" data-toggle="tab"><%= t('.tabs.themes') %></a>
         </li>
       </ul>
       <div class="tab-content">
@@ -69,6 +72,12 @@
         <div id="css" class="tab-pane">
           <div class="panel panel-default labels">
             <%= render 'custom_css_form' %>
+          </div>
+        </div>
+
+        <div id="themes" class="tab-pane">
+          <div class="panel panel-default labels">
+            <%= render 'theme_form' %>
           </div>
         </div>
       </div>

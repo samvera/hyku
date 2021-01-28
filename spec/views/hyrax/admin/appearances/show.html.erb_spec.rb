@@ -31,5 +31,7 @@ RSpec.describe "hyrax/admin/appearances/show", type: :view do
       # custom css
       assert_select "textarea#admin_appearance_custom_css_block[name=?]", "admin_appearance[custom_css_block]"
     end
+    # themes
+    assert_select "select#site_home_theme[name=?]", "site[home_theme]"
   end
 end

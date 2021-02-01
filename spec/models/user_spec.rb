@@ -78,6 +78,18 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe '#hyrax_group_names' do
+    subject { FactoryBot.create(:user) }
+
+    before do
+      FactoryBot.create(:group, name: 'group1', member_users: [subject])
+    end
+
+    it 'returns the names of the Hyrax::Groups the user is a member of' do
+      expect(subject.hyrax_group_names).to include('group1')
+    end
+  end
+
   describe '#add_default_group_memberships!' do
     context 'when the user is a new user' do
       subject { FactoryBot.build(:user) }
@@ -96,11 +108,11 @@ RSpec.describe User, type: :model do
       subject { FactoryBot.build(:guest_user) }
 
       it 'does not get any Hyrax::Group memberships' do
-        expect(subject.groups).to eq([])
+        expect(subject.hyrax_group_names).to eq([])
 
         subject.save!
 
-        expect(subject.groups).to eq([])
+        expect(subject.hyrax_group_names).to eq([])
       end
     end
 
@@ -108,11 +120,11 @@ RSpec.describe User, type: :model do
       subject { FactoryBot.build(:user) }
 
       it 'adds the user as a member of the registered Hyrax::Group' do
-        expect(subject.groups).to eq([])
+        expect(subject.hyrax_group_names).to eq([])
 
         subject.save!
 
-        expect(subject.groups).to contain_exactly('registered')
+        expect(subject.hyrax_group_names).to contain_exactly('registered')
       end
     end
 
@@ -120,11 +132,11 @@ RSpec.describe User, type: :model do
       subject { FactoryBot.build(:admin) }
 
       it 'adds the user as a member of the registered and admin Hyrax::Groups' do
-        expect(subject.groups).to eq([])
+        expect(subject.hyrax_group_names).to eq([])
 
         subject.save!
 
-        expect(subject.groups).to contain_exactly('admin', 'registered')
+        expect(subject.hyrax_group_names).to contain_exactly('admin', 'registered')
       end
     end
   end

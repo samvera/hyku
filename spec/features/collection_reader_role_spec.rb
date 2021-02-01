@@ -23,7 +23,7 @@ RSpec.describe 'Collection reader role can be assigned to Groups and Users', typ
       # Add user to the group
       group.add_members_by_id(user.id)
       expect(group.members.include?(user)).to eq true
-      expect(user.groups).to include("Pirate Studies")
+      expect(user.hyrax_group_names).to include("Pirate Studies")
       # Check to see if user has role that was assigned to group
       # TODO(bess) Next up: get the ability from the group membership
       # expect(user_ability.collection_editor?).to eq true

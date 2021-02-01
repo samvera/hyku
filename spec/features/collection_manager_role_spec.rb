@@ -23,7 +23,7 @@ RSpec.describe 'Collection manager role can be assigned to Groups and Users', ty
       # Add user to the group
       group.add_members_by_id(user.id)
       expect(group.members.include?(user)).to eq true
-      expect(user.groups).to include("Random Group")
+      expect(user.hyrax_group_names).to include("Random Group")
       # Check to see if user has role that was assigned to group
       # TODO(bess) Next up: get the ability from the group membership
       # expect(user_ability.collection_editor?).to eq true

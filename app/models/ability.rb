@@ -10,7 +10,17 @@ class Ability
     superadmin_permissions
   ]
 
-  # Override from blacklight-access_controls-0.6.2 to define registered to include having a role on this tenant
+  # Override method from blacklight-access_controls-0.6.2 to define registered to include
+  # having a role on this tenant and so that it includes Hyrax::Groups.
+  #
+  # NOTE: DO NOT RENAME THIS METHOD - it is required for permissions to function properly.
+  #
+  # All Users are part of the 'public' user_group, and all Users who can authenticate into a tenant are
+  # part of the 'registered' group. See User#add_default_group_memberships!
+  #
+  # This method is not referring to the Hyrax::Groups the Ability's User is a member of; instead,
+  # these are more like ability groups; groups that define a set of permissions.
+  # TODO: Is it possible to override AND rename this method?
   def user_groups
     return @user_groups if @user_groups
 

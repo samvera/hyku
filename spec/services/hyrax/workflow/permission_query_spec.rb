@@ -79,7 +79,7 @@ module Hyrax
         let(:reviewing_group) { Group.create(name: 'librarians') }
 
         before do
-          allow(reviewing_group_member).to receive(:enrolled_hyrax_groups).and_return(['librarians'])
+          allow(reviewing_group_member).to receive(:hyrax_groups).and_return(['librarians'])
           PermissionGenerator.call(roles: 'reviewing', workflow: sipity_workflow, agents: reviewing_user)
           PermissionGenerator.call(roles: 'reviewing', workflow: sipity_workflow, agents: reviewing_group)
           PermissionGenerator.call(roles: 'completing', workflow: sipity_workflow, agents: completing_user)
@@ -192,7 +192,7 @@ module Hyrax
           let!(:group) { create(:group, name: "librarians") }
 
           before do
-            allow(user).to receive(:enrolled_hyrax_groups).and_return(['librarians'])
+            allow(user).to receive(:hyrax_groups).and_return(['librarians'])
           end
 
           it 'will equal [kind_of(Sipity::Agent)]' do

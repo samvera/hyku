@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'cancan/matchers'
 
 RSpec.describe Ability do
@@ -15,6 +17,40 @@ RSpec.describe Ability do
     let(:user) { FactoryBot.create(:user) }
 
     it { is_expected.not_to be_able_to(:manage, :all) }
+
+    describe "#user_groups" do
+      subject { ability.user_groups }
+
+      it "does have the registered group as they are created on this tenant" do
+        expect(subject).to include 'registered'
+      end
+
+      it "does not have the admin group" do
+        expect(subject).not_to include 'admin'
+      end
+    end
+  end
+
+  describe 'an ordinary user with a role on this tenant' do
+    let(:user) do
+      u = FactoryBot.create(:user)
+      u.add_role(:depositor)
+      u
+    end
+
+    it { is_expected.not_to be_able_to(:manage, :all) }
+
+    describe "#user_groups" do
+      subject { ability.user_groups }
+
+      it "does have the registered group" do
+        expect(subject).to include 'registered'
+      end
+
+      it "does not have the admin group" do
+        expect(subject).not_to include 'admin'
+      end
+    end
   end
 
   describe 'an administrative user' do
@@ -43,7 +79,7 @@ RSpec.describe Ability do
 
     # NOTE(bkiahstroud): Override to test guest users instead of
     # "unregistered" (User.new) users; see User#add_default_group_memberships!
-    xcontext 'a guest user' do # TODO(bkiahstroud): unskip after resolving Ability#user_groups
+    context 'a guest user' do
       let(:user) { create(:guest_user) }
 
       it { is_expected.to contain_exactly('public') }

@@ -19,6 +19,8 @@ module Hyrax
       :department
     ]
 
+    self.terms -= [:based_near]
+
     self.required_fields = [
       :title,
       :creator,

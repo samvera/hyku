@@ -25,7 +25,7 @@ class Ability
     return @user_groups if @user_groups
 
     @user_groups = default_user_groups
-    @user_groups |= current_user.groups if current_user.respond_to? :groups
+    @user_groups |= current_user.hyrax_group_names if current_user.respond_to? :hyrax_group_names
     @user_groups |= ['registered'] if !current_user.new_record? && current_user.roles.count.positive?
     @user_groups
   end

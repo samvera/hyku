@@ -82,13 +82,18 @@ class User < ApplicationRecord
     roles.where(name: 'member', resource_type: 'Hyrax::Group').map(&:resource).uniq
   end
 
-  ##
   # Override method from hydra-access-controls v11.0.0 to use Hyrax::Groups.
   # NOTE: DO NOT RENAME THIS METHOD - it is required for permissions to function properly.
   # @return [Array] Hyrax::Group names the User is a member of
-  # TODO: Is it possible to override AND rename this method?
   def groups
     hyrax_groups.map(&:name)
+  end
+
+  # NOTE: This is an alias for #groups to clarify what the method is doing.
+  # This is necessary because #groups overrides a method from a gem.
+  # @return [Array] Hyrax::Group names the User is a member of
+  def hyrax_group_names
+    groups
   end
 
   # TODO this needs tests and to be moved to the service

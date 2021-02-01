@@ -20,7 +20,6 @@ class Ability
   #
   # This method is not referring to the Hyrax::Groups the Ability's User is a member of; instead,
   # these are more like ability groups; groups that define a set of permissions.
-  # TODO: Is it possible to override AND rename this method?
   def user_groups
     return @user_groups if @user_groups
 
@@ -28,6 +27,13 @@ class Ability
     @user_groups |= current_user.groups if current_user.respond_to? :groups
     @user_groups |= ['registered'] if !current_user.new_record? && current_user.roles.count.positive?
     @user_groups
+  end
+
+  # NOTE: This is an alias for #user_groups to clarify what the method is used for.
+  # This is necessary because #user_groups overrides a method from a gem. See
+  # Ability#user_groups for more information.
+  def permission_set
+    user_groups
   end
 
   # Define any customized permissions here.
@@ -75,10 +81,10 @@ class Ability
     current_user.has_role? :superadmin
   end
 
-  # NOTE(bkiahstroud): Override method from Hyrax 2.9.0 to take roles
-  # on the User into account instead of only looking at #user_groups.
+  # NOTE: Override method from Hyrax 2.9.0 to take roles
+  # on the User into account instead of only looking at #permission_set.
   def admin?
-    current_user.has_role?(:admin, Site.instance) || user_groups.include?(admin_group_name)
+    current_user.has_role?(:admin, Site.instance) || permission_set.include?(admin_group_name)
   end
 
   def collection_manager?

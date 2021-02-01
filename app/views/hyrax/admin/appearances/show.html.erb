@@ -28,7 +28,10 @@
           <a href="#css" role="tab" data-toggle="tab"><%= t('.tabs.custom_css') %></a>
         </li>
         <li>
-          <a href="#themes" role="tab" data-toggle="tab"><%= t('.tabs.themes') %></a>
+          <%# TODO: remove icon when themes work is completed %>
+          <a href="#themes" role="tab" data-toggle="tab">
+            <%= t('.tabs.themes') %>&nbsp;
+            <span class='fa fa-exclamation-triangle' style='color: #ffcc00;' aria-hidden='true'></span></a>
         </li>
       </ul>
       <div class="tab-content">
@@ -77,6 +80,13 @@
 
         <div id="themes" class="tab-pane">
           <div class="panel panel-default labels">
+            <%# TODO: remove icon and notices when themes work is completed %>
+            <h2 style='text-align: center;'>
+              <span class='fa fa-exclamation-triangle' style='color: #ffcc00;' aria-hidden='true'></span>
+              <span>Under Construction</span>
+              <span class='fa fa-exclamation-triangle' style='color: #ffcc00;' aria-hidden='true'></span>
+            </h2>
+            <p style='text-align: center;'><em>Some functionality may not be fully implemented yet.</em></p>
             <%= render 'theme_form' %>
           </div>
         </div>

@@ -70,35 +70,45 @@ class User < ApplicationRecord
     end
   end
 
-  def enrolled_hyrax_groups
+  # Hyrax::Group memberships are tracked through User#roles. This method looks up
+  # the Hyrax::Groups the user is a member of and returns each one in an Array.
+  # Example:
+  #   u = User.last
+  #   u.roles
+  #   => #<ActiveRecord::Associations::CollectionProxy [#<Role id: 8, name: "member", resource_type: "Hyrax::Group", resource_id: 2,...>]>
+  #   u.hyrax_groups
+  #   => [#<Hyrax::Group id: 2, name: "registered", description: nil,...>]
+  def hyrax_groups
     roles.where(name: 'member', resource_type: 'Hyrax::Group').map(&:resource).uniq
   end
 
   ##
   # Override method from hydra-access-controls v11.0.0 to use Hyrax::Groups.
-  # NOTE(bkiahstroud): DO NOT RENAME THIS METHOD - it is required for
-  # permissions to function properly.
+  # NOTE: DO NOT RENAME THIS METHOD - it is required for permissions to function properly.
+  # @return [Array] Hyrax::Group names the User is a member of
+  # TODO: Is it possible to override AND rename this method?
   def groups
-    enrolled_hyrax_groups.map(&:name)
+    hyrax_groups.map(&:name)
   end
 
   # TODO this needs tests and to be moved to the service
   # Tmp shim to handle bug
   def group_roles
-    enrolled_hyrax_groups.map(&:roles).flatten.uniq
+    hyrax_groups.map(&:roles).flatten.uniq
   end
 
+  # TODO: The current way this method works may be problematic; if a User signs up
+  # in the global tenant, they won't get group memberships for any tenant. Need to
+  # identify all the places this kind of situation can arise (invited users, etc)
+  # and decide what to do about it.
   def add_default_group_memberships!
+    return if self.guest?
     return if Account.global_tenant?
 
-    Hyrax::Group.find_or_create_by!(name: 'public').add_members_by_id(self.id)
+    Hyrax::Group.find_or_create_by!(name: 'registered').add_members_by_id(self.id)
 
     if self.has_role?(:admin, Site.instance)
       Hyrax::Group.find_or_create_by!(name: 'admin').add_members_by_id(self.id)
-    end
-
-    unless self.guest?
-      Hyrax::Group.find_or_create_by!(name: 'registered').add_members_by_id(self.id)
     end
   end
 end

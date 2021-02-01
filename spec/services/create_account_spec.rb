@@ -87,13 +87,13 @@ RSpec.describe CreateAccount do
       end
 
       it 'get default group memberships for the account' do
-        expect(user1.groups).to contain_exactly('registered', 'public')
-        expect(user2.groups).to contain_exactly('registered', 'public')
+        expect(user1.groups).to contain_exactly('registered')
+        expect(user2.groups).to contain_exactly('registered')
 
         account.add_initial_users
 
-        expect(user1.groups).to contain_exactly('admin', 'registered', 'public')
-        expect(user2.groups).to contain_exactly('admin', 'registered', 'public')
+        expect(user1.groups).to contain_exactly('admin', 'registered')
+        expect(user2.groups).to contain_exactly('admin', 'registered')
       end
     end
 

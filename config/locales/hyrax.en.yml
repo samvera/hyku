@@ -493,10 +493,12 @@ en:
       tabs:
         announcement_text: Announcement Text
         featured_researcher: Featured Researcher
+        home_text: Home Page Text
         marketing_text: Marketing Text
       instructions:
         announcement_instructions: Announcement Text displays on the homepage. It is for important or timely messages to be made prominently visible to all home page visitors. It would be appropriate to enter an announcement here, for example, to notify users about an upcoming planned maintenance outage of the system.
         featured_researcher_instructions: Featured Researcher is a space to enter information and on the home page reserved for highlighting repository users.
+        home_text_instructions: Home Page Text refers to the custom messaging that is displayed on the home page either in the hero block or another section of the home page. This text appears when selecting a theme that either requires or allows home page text. We recommend no more than 3 sentences in this area.
         marketing_instructions: Banner Text refers to the text that is displayed over banner image on the homepage. We recommend no more than approximately 30 characters or spaces in this text area.
       updated: Content blocks updated.
     controls:

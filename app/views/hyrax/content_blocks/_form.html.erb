@@ -1,3 +1,4 @@
+<%# Copied from Hyrax v2.9.0 to add home_text content block form - Adding themes %>
 <%# imported from hyrax 3.0.0.pre.rc1 %>
 <%= render "shared/nav_safety_modal" %>
 <div class="panel panel-default tabs">
@@ -7,6 +8,9 @@
     </li>
     <li>
       <a href="#marketing" role="tab" data-toggle="tab" class="nav-safety-confirm"><%= t(:'hyrax.content_blocks.tabs.marketing_text') %></a>
+    </li>
+    <li>
+      <a href="#home_text" role="tab" data-toggle="tab" class="nav-safety-confirm"><%= t(:'hyrax.content_blocks.tabs.home_text') %></a>
     </li>
     <li>
       <a href="#researcher" role="tab" data-toggle="tab" class="nav-safety-confirm"><%= t(:'hyrax.content_blocks.tabs.featured_researcher') %></a>
@@ -40,6 +44,25 @@
                 <%# the following line was changed from hyrax to give some context for what this context block does %>
                 <p class="content-block-instructions"><%= t(:'hyrax.content_blocks.instructions.marketing_instructions') %></p>
                 <%= f.text_area :marketing, value: f.object.value, class: 'form-control tinymce', rows: 20, cols: 120 %>
+            </div>
+          </div>
+          <div class="panel-footer">
+            <%= link_to t(:'hyrax.content_blocks.cancel'), hyrax.admin_admin_sets_path, class: 'btn btn-default pull-right' %>
+            <%= f.button :submit, class: 'btn btn-primary pull-right' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <%# Copied from Hyrax v2.9.0 to add home_text content block form - Adding themes %>
+    <div id="home_text" class="tab-pane">
+      <div class="panel panel-default labels">
+        <%= simple_form_for ContentBlock.for(:home_text), url: hyrax.content_block_path(ContentBlock.for(:home_text)), html: {class: 'nav-safety'} do |f| %>
+          <div class="panel-body">
+            <div class="field form-group">
+                <%= f.label :home_text %><br />
+                <%# the following line was added to hyku for home page text for themes that use or allow home page text %>
+                <p class="content-block-instructions"><%= t(:'hyrax.content_blocks.instructions.home_text_instructions') %></p>
+                <%= f.text_area :home_text, value: f.object.value, class: 'form-control tinymce', rows: 20, cols: 120 %>
             </div>
           </div>
           <div class="panel-footer">

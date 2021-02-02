@@ -1,0 +1,11 @@
+<%= simple_form_for @form, url: admin_appearance_path do |f| %>
+  <div class="panel-body defaultable-colors">
+    <% @form.class::DEFAULT_COLORS.each do |color_name, hex| %>
+      <%= render 'color_input', f: f, color_name: color_name, hex: hex %>
+    <% end %>
+  </div>
+  <div class="panel-footer">
+    <%= link_to 'Restore All Defaults', '#color', class: 'btn btn-default restore-all-default-colors' %>
+    <%= f.submit class: 'btn btn-primary pull-right' %>
+  </div>
+<% end %>

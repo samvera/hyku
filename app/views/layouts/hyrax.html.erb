@@ -7,7 +7,7 @@
   </head>
   <% content_for(:extra_body_classes, 'public-facing') %>
 
-  <body class="<%= body_class %>">
+  <body class="<%= body_class %> <%= home_page_theme %> <%= search_results_theme %> <%= show_page_theme %>">
     <div class="skip-to-content">
       <%= link_to "Skip to Content", "#skip-to-content" %>
     </div>

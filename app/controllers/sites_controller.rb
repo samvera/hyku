@@ -6,6 +6,10 @@ class SitesController < ApplicationController
   layout 'hyrax/dashboard'
 
   def update
+    if params[:site]
+      @site.update(site_theme_params)
+    end
+    
     # FIXME: Pull these strings out to i18n locale
 
     # Dynamic CarrierWave methods
@@ -38,5 +42,9 @@ class SitesController < ApplicationController
 
     def set_site
       @site ||= Site.instance
+    end
+
+    def site_theme_params
+      params.require(:site).permit(:home_theme, :search_theme, :show_theme)
     end
 end

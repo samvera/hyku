@@ -1,0 +1,18 @@
+<%= simple_form_for @form, url: admin_appearance_path do |f| %>
+  <div class="panel-body">
+    <%= f.input :custom_css_block, required: false, as: :text, label: 'Add Custom CSS Below' %>
+    <script>
+      var custom_css_block = document.getElementById('admin_appearance_custom_css_block')
+      var editor = CodeMirror.fromTextArea(custom_css_block, {
+        mode: 'text/css',
+        autofocus: true,
+        lineNumbers: true,
+        theme: 'base16-light',
+        autoRefresh: true
+      });
+    </script>
+  </div>
+  <div class="panel-footer">
+    <%= f.submit class: 'btn btn-primary pull-right', data: { confirm: t('hyrax.admin.appearances.show.forms.custom_css.confirm') } %>
+  </div>
+<% end %>

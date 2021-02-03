@@ -77,24 +77,29 @@ class Ability
     can :manage, :all
   end
 
+  # TODO: move method to PermissionSetService, or use the PermissionSetService
   def superadmin?
     current_user.has_role? :superadmin
   end
 
   # NOTE: Override method from Hyrax 2.9.0 to take roles
   # on the User into account instead of only looking at #permission_set.
+  # TODO: move method to PermissionSetService, or use the PermissionSetService
   def admin?
     current_user.has_role?(:admin, Site.instance) || permission_set.include?(admin_group_name)
   end
 
+  # TODO: move method to PermissionSetService, or use the PermissionSetService
   def collection_manager?
     current_user.has_role?(:collection_manager, Site.instance)
   end
 
+  # TODO: move method to PermissionSetService, or use the PermissionSetService
   def collection_editor?
     current_user.has_role?(:collection_editor, Site.instance)
   end
 
+  # TODO: move method to PermissionSetService, or use the PermissionSetService
   def collection_reader?
     current_user.has_role?(:collection_reader, Site.instance)
   end

@@ -166,10 +166,9 @@ GEM
       bootstrap-sass (~> 3.0)
       openseadragon (>= 0.2.0)
       rails
-    blacklight_oai_provider (6.0.0)
+    blacklight_oai_provider (6.1.1)
       blacklight (~> 6.0)
-      oai (~> 0.4)
-      rails (>= 4.2, < 6)
+      oai (~> 1.0)
     bootstrap-datepicker-rails (1.9.0.1)
       railties (>= 3.0)
     bootstrap-sass (3.4.1)
@@ -648,7 +647,7 @@ GEM
       activesupport (>= 3.2.18)
       i18n
       nokogiri
-    oai (0.4.0)
+    oai (1.1.0)
       builder (>= 3.1.0)
       faraday
       faraday_middleware
@@ -1002,7 +1001,7 @@ DEPENDENCIES
   apartment
   aws-sdk-sqs
   blacklight (~> 6.7)
-  blacklight_oai_provider (~> 6.0)
+  blacklight_oai_provider (~> 6.1, >= 6.1.1)
   bootstrap-datepicker-rails
   bulkrax!
   byebug

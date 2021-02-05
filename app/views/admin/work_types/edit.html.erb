@@ -6,7 +6,7 @@
   <div class="panel-body">
     <%= simple_form_for @site, url: '/admin/work_types' do |f| %>
       <% Hyrax.config.registered_curation_concern_types.each do |type| %>
-        <%= check_box_tag 'available_works[]', type, @site.available_works.include?(type) %>
+        <%= check_box_tag 'available_works[]', type, @site.available_works&.include?(type) %>
         <span><%= type %></span><br />
       <% end %>
       <%= f.submit class: 'btn btn-primary' %>

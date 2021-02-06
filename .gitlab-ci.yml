@@ -87,15 +87,20 @@ test:
   script:
     - rm -f /home/app/webapp/tmp/capybara/*
     - rm -rf $CI_PROJECT_DIR/capybara
-    - cd /home/app/webapp && bundle exec rake zookeeper:upload db:create db:schema:load spec
+    - cd /home/app/webapp && bundle exec rake zookeeper:upload db:create db:schema:load
+    - bundle exec rspec --format progress --format RspecJunitFormatter --out rspec.xml # this should always be the last line in "script"
   after_script:
+    - cp /home/app/webapp/rspec.xml $CI_PROJECT_DIR/rspec.xml
     - cp -r /home/app/webapp/tmp/capybara $CI_PROJECT_DIR/capybara
   tags:
     - docker
   allow_failure: false
   artifacts:
     paths:
+      - rspec.xml
       - capybara/*.html
+    reports:
+      junit: rspec.xml
     expire_in: 1 week
     when: always
 

@@ -53,10 +53,9 @@ dory up
 #### Basic steps
 
 ```bash
-docker-compose up web # web here means you can start and stop Rails w/o starting or stopping other services. `docker-compose stop` when done shuts everything else down.
+docker-compose up web workers
 ```
-
-Once that starts (you'll see the line `Passenger core running in multi-application mode.` to indicate a successful boot), you can view your app in a web browser with at either hyku.docker or localhost:3000 (see above)
+This command starts the whole stack in individual containers allowing Rails to be started or stopped independent of the other services.  Once that starts (you'll see the line `Passenger core running in multi-application mode.` to indicate a successful boot), you can view your app in a web browser with at either hyku.docker or localhost:3000 (see above).  When done `docker-compose stop` shuts down everything.
 
 #### Tests in Docker
 
@@ -101,7 +100,7 @@ https://github.com/hybox/aws
 We distribute two `docker-compose.yml` configuration files.  The first is set up for development / running the specs. The other, `docker-compose.production.yml` is for running the Hyku stack in a production setting. . Once you have [docker](https://docker.com) installed and running, launch the stack using e.g.:
 
 ```bash
-docker-compose up -d web
+docker-compose up -d web workers
 ```
 
 ### With Vagrant

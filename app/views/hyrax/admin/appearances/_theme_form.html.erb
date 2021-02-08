@@ -8,7 +8,8 @@
     <hr />
     <div class="row">
       <div class="col-sm-3">
-        <%= f.input :search_theme, collection: ["Default search"], prompt: "Select search results page theme...", required: false, label: 'Search Results Page Theme' %>
+        <%= f.input :search_theme, collection: ["List view", "Gallery view", "Masonry view", "Slideshow view"], prompt: "Select search results page theme...", required: false, label: 'Search Results Page Theme' %>
+        <small class="form-text text-muted">This will select a default view for the search results page. Users can select their preferred views on the search results page that will override this.</small>
       </div>
     </div>
     <hr />

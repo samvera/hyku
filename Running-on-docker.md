@@ -1,3 +1,5 @@
+> :warning: This documentation is out of date.  See the [README](https://github.com/samvera/hyku#running-the-stack) instead.
+
 # Some helpful shortcuts
 1. List all containers (only IDs) `docker ps -aq`
 1. Stop all running containers. `docker stop $(docker ps -aq)`

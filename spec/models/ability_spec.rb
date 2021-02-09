@@ -30,8 +30,8 @@ RSpec.describe Ability do
       end
     end
 
-    describe "#permission_set" do
-      subject { ability.permission_set }
+    describe "#group_aware_role_checker" do
+      subject { ability.group_aware_role_checker }
 
       it "does have the registered group as they are created on this tenant" do
         expect(subject).to include 'registered'
@@ -64,8 +64,8 @@ RSpec.describe Ability do
       end
     end
 
-    describe "#permission_set" do
-      subject { ability.permission_set }
+    describe "#group_aware_role_checker" do
+      subject { ability.group_aware_role_checker }
 
       it "does have the registered group" do
         expect(subject).to include 'registered'
@@ -126,8 +126,8 @@ RSpec.describe Ability do
     end
   end
 
-  describe '#permission_set' do
-    subject { ability.permission_set }
+  describe '#group_aware_role_checker' do
+    subject { ability.group_aware_role_checker }
 
     context 'an admin user' do
       let(:user) { FactoryBot.create(:admin) }

@@ -25,6 +25,7 @@ Jump In: [![Slack Status](http://slack.samvera.org/badge.svg)](http://slack.samv
     * [With Kubernetes](#with-kubernetes)
   * [Single Tenant Mode](#single-tenancy)
   * [Switching accounts](#switching-accounts)
+  * [Roles and Auth](#roles-and-auth)
   * [Development dependencies](#development-dependencies)
     * [Postgres](#postgres) 
   * [Importing](#importing)
@@ -176,6 +177,17 @@ The recommend way to switch your current session from one account to another is 
 
 ```ruby
 AccountElevator.switch!('repo.example.com')
+```
+
+## Roles and Auth
+### Seeding Default Roles and Groups
+
+Default `Roles` and `Hyrax::Groups` are seeded into an account (tenant) at creation time (see [CreateAccount#create_defaults](app/services/create_account.rb)).
+
+To manually seed default `Roles` and `Hyrax::Groups` _across all tenants_, run this rake task:
+
+```bash
+rake hyku:seed:default_roles_and_groups
 ```
 
 ## Development Dependencies

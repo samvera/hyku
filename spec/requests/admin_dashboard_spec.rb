@@ -1,4 +1,4 @@
-RSpec.describe 'Admin Dashboard', type: :request, singletenant: true do
+RSpec.describe 'Admin Dashboard', type: :request, singletenant: true, clean: true do
   context 'as a non logged-in user' do
     describe 'I cannot access the dashboard' do
       it 'redirects the user to the log-in page' do # You need to sign in or sign up before continuing

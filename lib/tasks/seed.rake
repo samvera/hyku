@@ -1,5 +1,16 @@
 namespace :hyku do
   namespace :seed do
+    desc 'Create all default Roles and Hyrax::Groups in all tenants'
+    task default_roles_and_groups: :environment do
+      Account.find_each do |account|
+        AccountElevator.switch!(account.cname)
+        Rails.logger.info("Creating default Roles and Hyrax::Groups for #{account.cname}")
+
+        RolesService.create_default_roles!
+        Hyrax::GroupsService.create_default_hyrax_groups!
+      end
+    end
+
     desc 'Create a User with the superadmin Role'
     task superadmin: :environment do
       return 'Seed data should not be used in the production environment' if Rails.env == 'production'

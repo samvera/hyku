@@ -7,5 +7,17 @@ FactoryBot.define do
       resource_id   { Site.instance.id }
       resource_type { 'Site' }
     end
+
+    factory :collection_editor_role do
+      name          { 'collection_editor' }
+      resource_id   { Site.instance.id }
+      resource_type { 'Site' }
+    end
+
+    factory :collection_reader_role do
+      name          { 'collection_reader' }
+      resource_id   { Site.instance.id }
+      resource_type { 'Site' }
+    end
   end
 end

@@ -32,7 +32,7 @@ class Ability
   # NOTE: This is an alias for #user_groups to clarify what the method is used for.
   # This is necessary because #user_groups overrides a method from a gem. See
   # Ability#user_groups for more information.
-  def permission_set
+  def group_aware_role_checker
     user_groups
   end
 
@@ -77,29 +77,29 @@ class Ability
     can :manage, :all
   end
 
-  # TODO: move method to PermissionSetService, or use the PermissionSetService
+  # TODO: move method to GroupAwareRoleChecker, or use the GroupAwareRoleChecker
   def superadmin?
     current_user.has_role? :superadmin
   end
 
   # NOTE: Override method from Hyrax 2.9.0 to take roles
-  # on the User into account instead of only looking at #permission_set.
-  # TODO: move method to PermissionSetService, or use the PermissionSetService
+  # on the User into account instead of only looking at #group_aware_role_checker.
+  # TODO: move method to GroupAwareRoleChecker, or use the GroupAwareRoleChecker
   def admin?
-    current_user.has_role?(:admin, Site.instance) || permission_set.include?(admin_group_name)
+    current_user.has_role?(:admin, Site.instance) || group_aware_role_checker.include?(admin_group_name)
   end
 
-  # TODO: move method to PermissionSetService, or use the PermissionSetService
+  # TODO: move method to GroupAwareRoleChecker, or use the GroupAwareRoleChecker
   def collection_manager?
     current_user.has_role?(:collection_manager, Site.instance)
   end
 
-  # TODO: move method to PermissionSetService, or use the PermissionSetService
+  # TODO: move method to GroupAwareRoleChecker, or use the GroupAwareRoleChecker
   def collection_editor?
     current_user.has_role?(:collection_editor, Site.instance)
   end
 
-  # TODO: move method to PermissionSetService, or use the PermissionSetService
+  # TODO: move method to GroupAwareRoleChecker, or use the GroupAwareRoleChecker
   def collection_reader?
     current_user.has_role?(:collection_reader, Site.instance)
   end

@@ -2,14 +2,10 @@
 
 require 'rails_helper'
 
-RSpec.describe 'collection_manager role', type: :feature, js: true, clean: true do
+RSpec.describe 'actions permitted by the collection_manager role', type: :feature, js: true, clean: true do
   let!(:role) { FactoryBot.create(:collection_manager_role) }
   let(:user) { FactoryBot.create(:user) }
-  let(:permission_set) { ::PermissionSetService.new(user: user) }
-
-  before do
-    Hyrax::CollectionType.find_or_create_default_collection_type
-  end
+  let(:group_aware_role_checker) { ::GroupAwareRoleChecker.new(user: user) }
 
   context 'a User that has the collection_manager role' do
     before do
@@ -18,11 +14,21 @@ RSpec.describe 'collection_manager role', type: :feature, js: true, clean: true 
     end
 
     it 'can create a Collection' do
-      visit '/dashboard/collections/new?collection_type_id=1'
+      visit '/dashboard/collections/new'
       fill_in('Title', with: 'Collection Manager Test')
       click_button 'Save'
 
       expect(page).to have_content('Collection was successfully created.')
+    end
+
+    it 'can edit and update a Collection' do
+      collection = FactoryBot.create(:collection_lw, with_permission_template: true)
+
+      visit "/dashboard/collections/#{collection.id}/edit"
+      fill_in('Title', with: 'New Collection Title')
+      click_button 'Save'
+
+      expect(page).to have_content('Collection was successfully updated.')
     end
   end
 
@@ -36,11 +42,22 @@ RSpec.describe 'collection_manager role', type: :feature, js: true, clean: true 
     end
 
     it 'can create a Collection' do
-      visit '/dashboard/collections/new?collection_type_id=1'
+      visit '/dashboard/collections/new'
       fill_in('Title', with: 'Collection Manager Test')
       click_button 'Save'
 
       expect(page).to have_content('Collection was successfully created.')
+    end
+
+    # TODO: unskip when the GroupAwareRoleChecker is hooked up to the Ability model
+    xit 'can edit and update a Collection' do
+      collection = FactoryBot.create(:collection_lw, with_permission_template: true)
+
+      visit "/dashboard/collections/#{collection.id}/edit"
+      fill_in('Title', with: 'New Collection Title')
+      click_button 'Save'
+
+      expect(page).to have_content('Collection was successfully updated.')
     end
   end
 end

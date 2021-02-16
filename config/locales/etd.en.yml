@@ -1,4 +1,10 @@
 en:
+  simple_form:
+    labels:
+      defaults:
+        advisor: Advisor
+        department: Department
+        format: Format
   hyrax:
     icons:
       etd:     'fa fa-file-text-o'

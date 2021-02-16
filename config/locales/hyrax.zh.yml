@@ -248,10 +248,14 @@ zh:
       workflow_roles:
         header: 工作流程角色
         index:
+          current_group_roles: 目前的小组角色
           current_roles: 现任职务
+          current_user_roles: 当前用户角色
           delete:
             confirm: 你确定吗？
           header:
+            display_name: 显示名称
+            email: 电子邮件
             group_name: 团队名字
             group_roles: 组角色
             roles: 的角色
@@ -259,6 +263,7 @@ zh:
             user_roles: 用户角色
           new_group_role: 将角色分配给组
           new_role: 分配角色
+          new_user_role: 分配角色给用户
           no_roles: 没有角色
       workflows:
         index:
@@ -474,10 +479,12 @@ zh:
       instructions:
         announcement_instructions: 公告文本显示在主页上。重要或及时的消息必须显眼地显示给所有主页访问者。在此处输入一个公告是适当的，例如，以通知用户即将进行的计划中的系统维护中断。
         featured_researcher_instructions: Featured Researcher是一个用于输入信息的空间，并且在主页上保留以突出显示存储库用户。
+        home_text_instructions: 主页文本是指在主页上的英雄块或主页的其他部分中显示的自定义消息。选择需要或允许主页文本的主题时，将显示此文本。我们建议在此区域内不要超过3个句子。
         marketing_instructions: 标语文本是指在首页上标语图像上方显示的文本。我们建议在此文本区域中不要超过30个字符或空格。
       tabs:
         announcement_text: 公告文字
         featured_researcher: 特色研究员
+        home_text: 主页文字
         marketing_text: 营销文字
       updated: 内容块已更新。
     controls:
@@ -1132,17 +1139,21 @@ zh:
       defaults:
         admin_set_id: 行政套装
         based_near: 位置
+        contributor: 贡献者
         creator: 创作者
         date_created: 创建日期
         description: 摘要或摘要
         embargo_release_date: 直到
         files: 上传一个文件
+        identifier: 识别码
         keyword: 关键词
         lease_expiration_date: 直到
         license: 执照
         member_of_collection_ids: 添加到收藏
+        publisher: 发行人
         related_url: 相关网址
         rights_statement: 权利声明
+        source: 资源
         title: 标题
         visibility_after_embargo: 然后打开它
         visibility_after_lease: 然后将其限制为

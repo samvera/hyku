@@ -247,10 +247,14 @@ de:
       workflow_roles:
         header: Workflow-Rollen
         index:
+          current_group_roles: Aktuelle Gruppenrollen
           current_roles: Aktuelle Rollen
+          current_user_roles: Aktuelle Benutzerrollen
           delete:
             confirm: Bist du sicher?
           header:
+            display_name: Anzeigename
+            email: Email
             group_name: Gruppenname
             group_roles: Gruppenrollen
             roles: Rollen
@@ -258,6 +262,7 @@ de:
             user_roles: Benutzerregeln
           new_group_role: Rolle der Gruppe zuweisen
           new_role: Rolle zuweisen
+          new_user_role: Weisen Sie dem Benutzer eine Rolle zu
           no_roles: Keine Rollen
       workflows:
         index:
@@ -473,10 +478,12 @@ de:
       instructions:
         announcement_instructions: Ankündigungstext wird auf der Homepage angezeigt. Es ist wichtig, dass wichtige oder aktuelle Nachrichten für alle Besucher der Startseite sichtbar gemacht werden. Es wäre angebracht, hier eine Ankündigung einzugeben, um beispielsweise Benutzer über einen bevorstehenden geplanten Wartungsausfall des Systems zu informieren.
         featured_researcher_instructions: Featured Researcher ist ein Bereich zum Eingeben von Informationen und auf der Startseite, der zum Hervorheben von Repository-Benutzern reserviert ist.
+        home_text_instructions: Der Text der Startseite bezieht sich auf die benutzerdefinierten Nachrichten, die auf der Startseite entweder im Heldenblock oder in einem anderen Abschnitt der Startseite angezeigt werden. Dieser Text wird angezeigt, wenn Sie ein Thema auswählen, für das Startseitentext erforderlich oder zulässig ist. Wir empfehlen nicht mehr als 3 Sätze in diesem Bereich.
         marketing_instructions: Bannertext bezieht sich auf den Text, der über dem Bannerbild auf der Startseite angezeigt wird. Wir empfehlen nicht mehr als ungefähr 30 Zeichen oder Leerzeichen in diesem Textbereich.
       tabs:
         announcement_text: Ankündigungstext
         featured_researcher: Ausgewählter Forscher
+        home_text: Startseite Text
         marketing_text: Marketing-Text
       updated: Inhaltsblöcke aktualisiert.
     controls:
@@ -1131,17 +1138,21 @@ de:
       defaults:
         admin_set_id: Verwaltungsset
         based_near: Ort
+        contributor: Mitwirkender
         creator: Schöpfer
         date_created: Datum erstellt
         description: Zusammenfassung oder Zusammenfassung
         embargo_release_date: bis um
         files: Eine Datei hochladen
+        identifier: Kennung
         keyword: Stichwort
         lease_expiration_date: bis um
         license: Lizenz
         member_of_collection_ids: Zur Sammlung hinzufügen
+        publisher: Verleger
         related_url: Verwandte URL
         rights_statement: Rechteerklärung
+        source: Quelle
         title: Titel
         visibility_after_embargo: dann öffne es bis
         visibility_after_lease: dann beschränken Sie es auf

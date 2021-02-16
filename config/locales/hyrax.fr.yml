@@ -246,10 +246,14 @@ fr:
       workflow_roles:
         header: Rôles de workflow
         index:
+          current_group_roles: Rôles de groupe actuels
           current_roles: Rôles actuels
+          current_user_roles: Rôles des utilisateurs actuels
           delete:
             confirm: Êtes-vous sûr?
           header:
+            display_name: Afficher un nom
+            email: Email
             group_name: Nom de groupe
             group_roles: Rôles de groupe
             roles: Les rôles
@@ -257,6 +261,7 @@ fr:
             user_roles: Rôles des utilisateurs
           new_group_role: Attribuer un rôle au groupe
           new_role: Attribuer un rôle
+          new_user_role: Attribuer un rôle à l'utilisateur
           no_roles: Aucun rôle
       workflows:
         index:
@@ -472,10 +477,12 @@ fr:
       instructions:
         announcement_instructions: Le texte de l'annonce s'affiche sur la page d'accueil. C'est pour que les messages importants ou opportuns soient rendus bien visibles par tous les visiteurs de la page d'accueil. Il serait approprié de saisir une annonce ici, par exemple, pour informer les utilisateurs d'une interruption de maintenance planifiée à venir du système.
         featured_researcher_instructions: Chercheur en vedette est un espace pour entrer des informations et sur la page d'accueil réservé pour mettre en évidence les utilisateurs du référentiel.
+        home_text_instructions: Le texte de la page d'accueil fait référence à la messagerie personnalisée qui s'affiche sur la page d'accueil soit dans le bloc héros, soit dans une autre section de la page d'accueil. Ce texte apparaît lors de la sélection d'un thème qui requiert ou autorise le texte de la page d'accueil. Nous ne recommandons pas plus de 3 phrases dans ce domaine.
         marketing_instructions: Le texte de la bannière fait référence au texte qui s'affiche sur l'image de la bannière sur la page d'accueil. Nous ne recommandons pas plus d'environ 30 caractères ou espaces dans cette zone de texte.
       tabs:
         announcement_text: Texte de l'annonce
         featured_researcher: Chercheur en vedette
+        home_text: Texte de la page d'accueil
         marketing_text: Texte marketing
       updated: Blocs de contenu mis à jour.
     controls:
@@ -1130,17 +1137,21 @@ fr:
       defaults:
         admin_set_id: Ensemble administratif
         based_near: Emplacement
+        contributor: Donateur
         creator: Créateur
         date_created: date créée
         description: Résumé ou résumé
         embargo_release_date: jusqu'à ce que
         files: Télécharger un fichier
+        identifier: Identifiant
         keyword: Mot-clé
         lease_expiration_date: jusqu'à ce que
         license: Licence
         member_of_collection_ids: Ajouter à la collection
+        publisher: Éditeur
         related_url: URL associée
         rights_statement: Déclaration des droits
+        source: La source
         title: Titre
         visibility_after_embargo: puis ouvrez-le pour
         visibility_after_lease: puis limitez-le à

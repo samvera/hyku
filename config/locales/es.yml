@@ -31,12 +31,16 @@ es:
     action:
       become: Volverse
     submit:
+      add_role_to_group:
+        submit: Añadir
       add_user_to_group:
         submit: Añadir
       group_search:
         submit: Ir
       page_size:
         submit: Actualizar
+      remove_role_from_group:
+        submit: Eliminar
       revoke_membership:
         submit: Eliminar
       user_search:
@@ -79,11 +83,23 @@ es:
           members: Usuarios
           name: Nombre
           per_page: por página
+          roles: Roles
         nav:
           attributes: Descripción
           delete: Eliminar
           index: Volver a Administrar grupos
           members: Usuarios
+          roles: Roles
+        roles:
+          add: Añadir
+          label:
+            action: Acción
+            description: Descripción
+            name: Papel
+          remove: Eliminar
+          title:
+            add_group_roles: Agregar roles al grupo
+            current_group_roles: Roles de grupo actuales
         title:
           add_user: Añadir usuario a grupo
           delete: Eliminar grupo “%{group}”
@@ -93,6 +109,7 @@ es:
           members: Miembros del grupo
           new: Nuevo grupo
           remove: Eliminar grupo
+          roles: Roles de grupo
       title: Administración
       work_types: Tipos de trabajo disponibles
     footer:
@@ -139,6 +156,8 @@ es:
               hint: Para usar una imagen como imagen de directorio, debe usar una imagen (JPG, GIF o PNG) que no sea más alta que el encabezado ni más ancha que 400 píxeles de ancho.
             logo_image:
               hint: Para usar una imagen como logotipo, debe usar una imagen (JPG, GIF o PNG) que no sea más alta que el encabezado ni más ancha que 400 píxeles de ancho.
+            themes:
+              confirm: Si su tema no parece aplicarse correctamente, verifique que no esté siendo sobrescrito por CSS personalizado.
           hints:
             banner_image: Para utilizar una imagen como fondo de masthead, debe utilizar una imagen (JPG, GIF o PNG) que tenga al menos 120 píxeles de alto y 1200 píxeles de ancho. Para obtener mejores resultados, utilice una imagen de al menos 1800 píxeles de ancho.
             default_image: Para las imágenes predeterminadas, debe usar una imagen (JPG, GIF o PNG) que tenga las mismas dimensiones de alto y ancho (100 píxeles de ancho y 100 píxeles de alto)
@@ -151,6 +170,7 @@ es:
             default_images: Imágenes predeterminadas
             directory_image: Imagen de directorio
             fonts: Fuentes
+            themes: Temas
       sidebar:
         accounts: Cuentas
         activity_summary: Resumen de la actividad

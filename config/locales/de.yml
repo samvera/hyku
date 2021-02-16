@@ -31,12 +31,16 @@ de:
     action:
       become: Werden
     submit:
+      add_role_to_group:
+        submit: Hinzufügen
       add_user_to_group:
         submit: Hinzufügen
       group_search:
         submit: Suche
       page_size:
         submit: Aktualisieren
+      remove_role_from_group:
+        submit: Entfernen
       revoke_membership:
         submit: Entfernen
       user_search:
@@ -79,11 +83,23 @@ de:
           members: Benutzer
           name: Name
           per_page: pro Seite
+          roles: Rollen
         nav:
           attributes: Beschreibung
           delete: Entfernen
           index: Rückkehr zu Gruppen verwalten
           members: Benutzer
+          roles: Rollen
+        roles:
+          add: Hinzufügen
+          label:
+            action: Aktion
+            description: Beschreibung
+            name: Rolle
+          remove: Entfernen
+          title:
+            add_group_roles: Rollen zur Gruppe hinzufügen
+            current_group_roles: Aktuelle Gruppenrollen
         title:
           add_user: Benutzer zur Gruppe hinzufügen
           delete: Gruppe entfernen "%{group}"
@@ -93,6 +109,7 @@ de:
           members: Gruppenmitglieder
           new: Neue Gruppe
           remove: Gruppe entfernen
+          roles: Gruppenrollen
       title: Verwaltung
       work_types: Verfügbare Arbeitstypen
     footer:
@@ -138,6 +155,8 @@ de:
               hint: Um ein Bild als Verzeichnisbild zu verwenden, sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das nicht höher als der Header und nicht breiter als 400 Pixel ist.
             logo_image:
               hint: Um ein Bild als Logo zu verwenden, sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das nicht höher als der Header und nicht breiter als 400 Pixel ist.
+            themes:
+              confirm: Wenn Ihr Thema nicht richtig angewendet wird, stellen Sie sicher, dass es nicht von benutzerdefiniertem CSS überschrieben wird.
           hints:
             banner_image: Um ein Bild als Überschriften-Hintergrund zu verwenden, solltest du ein Bild (JPG, GIF oder PNG) verwenden, das mindestens 120 Pixel hoch und 1200 Pixel breit ist. Für beste Ergebnisse verwenden Sie ein Bild mindestens 1800 Pixel breit.
             default_image: Für Standardbilder sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das die gleiche Höhe und Breite hat (100 Pixel breit und 100 Pixel hoch).
@@ -150,6 +169,7 @@ de:
             default_images: Standardbilder
             directory_image: Verzeichnis Bild
             fonts: Schriftarten
+            themes: Themen
       sidebar:
         accounts: Konten
         activity_summary: Aktivitätsübersicht

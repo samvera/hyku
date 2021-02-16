@@ -1142,17 +1142,21 @@ en:
       defaults:
         admin_set_id: Administrative Set
         based_near: Location
+        contributor: Contributor
         creator: Creator
         date_created: Date Created
         description: Abstract or Summary
         embargo_release_date: until
         files: Upload a file
+        identifier: Identifier
         keyword: Keyword
         lease_expiration_date: until
         license: License
         member_of_collection_ids: Add to collection
+        publisher: Publisher
         related_url: Related URL
         rights_statement: Rights statement
+        source: Source
         title: Title
         visibility_after_embargo: then open it up to
         visibility_after_lease: then restrict it to

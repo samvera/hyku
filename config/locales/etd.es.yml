@@ -1,10 +1,28 @@
+---
 es:
   hyrax:
+    etd:
+      labels:
+        committee_member: miembro del Comité
+        creator: Autor
+        date_created: Fecha
+        degree_discipline: Disciplina
+        degree_grantor: Cedente
+        degree_level: Nivel
+        degree_name: La licenciatura
+        description: Resumen / Descripción
+        related_url: Relación
+        resource_type: Tipo
+        rights_statement: Derechos
     icons:
-      etd:     'fa fa-file-text-o'
+      etd: fa fa-file-text-o
     select_type:
       etd:
-        # TODO: translate `human_name` into Spanish
-        description:        "ETD trabajos"
-        name:               "ETD"
-        # TODO: translate `human_name` into Spanish
+        description: ETD trabajos
+        name: ETD
+  simple_form:
+    labels:
+      defaults:
+        advisor: Tutor
+        department: Departamento
+        format: Formato

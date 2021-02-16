@@ -31,12 +31,16 @@ zh:
     action:
       become: 成為
     submit:
+      add_role_to_group:
+        submit: 加
       add_user_to_group:
         submit: 加
       group_search:
         submit: 走
       page_size:
         submit: 更新
+      remove_role_from_group:
+        submit: 去掉
       revoke_membership:
         submit: 去掉
       user_search:
@@ -79,11 +83,23 @@ zh:
           members: 用户
           name: 名称
           per_page: 每页
+          roles: 的角色
         nav:
           attributes: 描述
           delete: 去掉
           index: 返回管理组
           members: 用户
+          roles: 的角色
+        roles:
+          add: 加
+          label:
+            action: 行动
+            description: 描述
+            name: 角色
+          remove: 去掉
+          title:
+            add_group_roles: 将角色添加到组
+            current_group_roles: 目前的小组角色
         title:
           add_user: 将用户添加到组
           delete: 删除组 "%{group}"
@@ -93,6 +109,7 @@ zh:
           members: 小组成员
           new: 新组
           remove: 删除组
+          roles: 组角色
       title: 行政
       work_types: 可用的工作类型
     footer:
@@ -139,6 +156,8 @@ zh:
               hint: 要将图像用作目录图像，应使用不大于标题且宽度不超过400像素的图像（JPG，GIF或PNG）。
             logo_image:
               hint: 要将图像用作徽标，应使用不大于标题且宽度不超过400像素的图像（JPG，GIF或PNG）。
+            themes:
+              confirm: 如果您的主题似乎没有正确应用，请确认该主题未被Custom CSS覆盖。
           hints:
             banner_image: 要使用图像作为标头背景，您应该使用至少120像素高和1200像素宽的图像（JPG，GIF或PNG）。 为获得最佳效果，请使用至少1800像素宽的图像。
             default_image: 对于默认图像，您应使用具有相同高度和宽度尺寸（100像素宽，100像素高）的图像（JPG，GIF或PNG）
@@ -151,6 +170,7 @@ zh:
             default_images: 默认图像
             directory_image: 目录图像
             fonts: 字形
+            themes: 主题
       sidebar:
         accounts: 帐号
         activity_summary: 活动摘要

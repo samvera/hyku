@@ -31,12 +31,16 @@ it:
     action:
       become: Diventare
     submit:
+      add_role_to_group:
+        submit: Inserisci
       add_user_to_group:
         submit: Inserisci
       group_search:
         submit: Partire
       page_size:
         submit: Aggiornare
+      remove_role_from_group:
+        submit: Rimuovere
       revoke_membership:
         submit: Rimuovere
       user_search:
@@ -79,11 +83,23 @@ it:
           members: utenti
           name: Nome
           per_page: per pagina
+          roles: Ruoli
         nav:
           attributes: Descrizione
           delete: Rimuovere
           index: Torna a Gestisci Gruppi
           members: utenti
+          roles: Ruoli
+        roles:
+          add: Inserisci
+          label:
+            action: Azione
+            description: Descrizione
+            name: Ruolo
+          remove: Rimuovere
+          title:
+            add_group_roles: Aggiungi ruoli al gruppo
+            current_group_roles: Ruoli attuali del gruppo
         title:
           add_user: Aggiungi utente a gruppo
           delete: Rimuovi gruppo "%{group}"
@@ -93,6 +109,7 @@ it:
           members: Membri del gruppo
           new: Nuovo gruppo
           remove: Rimuovi gruppo
+          roles: Ruoli del gruppo
       title: Amministrazione
       work_types: Tipi di lavoro disponibili
     footer:
@@ -139,6 +156,8 @@ it:
               hint: Per utilizzare un'immagine come immagine di directory, è necessario utilizzare un'immagine (JPG, GIF o PNG) non più alta dell'intestazione e non più larga di 400 pixel.
             logo_image:
               hint: Per utilizzare un'immagine come logo, è necessario utilizzare un'immagine (JPG, GIF o PNG) non più alta dell'intestazione e non più larga di 400 pixel.
+            themes:
+              confirm: Se il tuo tema non sembra essere applicato correttamente, verifica che non venga sovrascritto dal CSS personalizzato.
           hints:
             banner_image: Per utilizzare un'immagine come sfondo di masthead, è consigliabile utilizzare un'immagine (JPG, GIF o PNG) di almeno 120 pixel di altezza e 1200 pixel di larghezza. Per ottenere risultati ottimali, utilizzare un'immagine di larghezza almeno 1800 pixel.
             default_image: Per le immagini predefinite, è necessario utilizzare un'immagine (JPG, GIF o PNG) che abbia le stesse dimensioni di altezza e larghezza (100 pixel di larghezza e 100 pixel di altezza)
@@ -151,6 +170,7 @@ it:
             default_images: Immagini predefinite
             directory_image: Immagine della directory
             fonts: Font
+            themes: Temi
       sidebar:
         accounts: conti
         activity_summary: Riepilogo attività

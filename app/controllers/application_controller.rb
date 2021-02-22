@@ -130,4 +130,14 @@ class ApplicationController < ActionController::Base
     def ssl_configured?
       ActiveRecord::Type::Boolean.new.cast(Settings.ssl_configured)
     end
+
+    # Overrides method in devise-guest gem
+    # https://github.com/cbeer/devise-guests/pull/28
+    # fixes issue with cross process conflicts in guest users
+    # uses uuid for uniqueness rather than timestamp
+    # TODO: remove method when devise-guest gem is updated
+    def guest_email_authentication_key key
+      key &&= nil unless key.to_s.match(/^guest/)
+      key ||= "guest_" + SecureRandom.uuid + "@example.com"
+    end
 end

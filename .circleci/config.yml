@@ -48,6 +48,8 @@ jobs:
       RACK_ENV: test
       FCREPO_TEST_PORT: 8080/fcrepo
       SPEC_OPTS: --profile 10 --format RspecJunitFormatter --out /tmp/test-results/rspec.xml --format progress
+      # CFLAGS need to be set for zookeeper to compile native extensions
+      CFLAGS: -Wno-error=format-overflow
     steps:
       - samvera/cached_checkout
 

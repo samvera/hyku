@@ -31,6 +31,23 @@ class ApplicationController < ActionController::Base
     raise ActionController::RoutingError, 'Not Found'
   end
 
+  # Override method from devise-guests v0.7.0 to prevent the application
+  # from attempting to create duplicate guest users
+  def guest_user
+    return @guest_user if @guest_user
+    if session[:guest_user_id]
+      # Override - added #unscoped to include guest users who are filtered out of User queries by default
+      @guest_user = User.unscoped.find_by(User.authentication_keys.first => session[:guest_user_id]) rescue nil
+      @guest_user = nil if @guest_user.respond_to? :guest and !@guest_user.guest
+    end
+    @guest_user ||= begin
+      u = create_guest_user(session[:guest_user_id])
+      session[:guest_user_id] = u.send(User.authentication_keys.first)
+      u
+    end
+    @guest_user
+  end
+
   private
 
     def is_hidden

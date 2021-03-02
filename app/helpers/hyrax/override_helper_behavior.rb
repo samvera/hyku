@@ -18,7 +18,7 @@ module Hyrax
     def collection_thumbnail(_document, _image_options = {}, _url_options = {})
       return super if Site.instance.default_collection_image.blank?
 
-      image_tag(Site.instance.default_collection_image)
+      image_tag(Site.instance.default_collection_image&.url)
     end
 
     def collection_title_by_id(id)

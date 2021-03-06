@@ -22,7 +22,7 @@ RSpec.describe Hyrax::ImagesController do
     let(:solr_document) { SolrDocument.new(FactoryBot.create(:image).to_solr) }
 
     before do
-      allow(controller).to receive(:curation_concern_from_search_results).and_return(solr_document)
+      allow(controller).to receive(:search_result_document).and_return(solr_document)
     end
 
     it "initializes a presenter" do

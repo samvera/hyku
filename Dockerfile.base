@@ -1,6 +1,9 @@
 FROM phusion/passenger-ruby25:1.0.2
 
-RUN apt-get update -qq && \
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
+    curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
+    apt-get update -qq && \
     apt-get install -y \
                        build-essential \
                        ghostscript \
@@ -14,9 +17,12 @@ RUN apt-get update -qq && \
                        rsync \
                        tzdata \
                        unzip \
+                       yarn \
                        && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+    yarn config set no-progress && \
+    yarn config set silent
 
 # If changes are made to fits version or location,
 # amend `LD_LIBRARY_PATH` in docker-compose.yml accordingly.

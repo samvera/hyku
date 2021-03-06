@@ -9,11 +9,11 @@ class CatalogController < ApplicationController
   before_action :enforce_show_permissions, only: :show
 
   def self.uploaded_field
-    solr_name('system_create', :stored_sortable, type: :date)
+    'system_create_dtsi'
   end
 
   def self.modified_field
-    solr_name('system_modified', :stored_sortable, type: :date)
+    'system_modified_dtsi'
   end
 
   configure_blacklight do |config|
@@ -45,26 +45,26 @@ class CatalogController < ApplicationController
 
     # Specify which field to use in the tag cloud on the homepage.
     # To disable the tag cloud, comment out this line.
-    config.tag_cloud_field_name = Solrizer.solr_name("tag", :facetable)
+    config.tag_cloud_field_name = 'tag_sim'
 
     # solr field configuration for document/show views
-    config.index.title_field = solr_name("title", :stored_searchable)
-    config.index.display_type_field = solr_name("has_model", :symbol)
+    config.index.title_field = "title_tesim"
+    config.index.display_type_field = "has_model_ssim"
     config.index.thumbnail_field = 'thumbnail_path_ss'
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
-    config.add_facet_field solr_name("human_readable_type", :facetable), label: "Type", limit: 5
-    config.add_facet_field solr_name("resource_type", :facetable), label: "Resource Type", limit: 5
-    config.add_facet_field solr_name("creator", :facetable), limit: 5
-    config.add_facet_field solr_name("contributor", :facetable), label: "Contributor", limit: 5
-    config.add_facet_field solr_name("keyword", :facetable), limit: 5
-    config.add_facet_field solr_name("subject", :facetable), limit: 5
-    config.add_facet_field solr_name("language", :facetable), limit: 5
-    config.add_facet_field solr_name("based_near_label", :facetable), limit: 5
-    config.add_facet_field solr_name("publisher", :facetable), limit: 5
-    config.add_facet_field solr_name("file_format", :facetable), limit: 5
-    config.add_facet_field solr_name('member_of_collections', :symbol), limit: 5, label: 'Collections'
+    config.add_facet_field "human_readable_type_sim", label: "Type", limit: 5
+    config.add_facet_field "resource_type_sim", label: "Resource Type", limit: 5
+    config.add_facet_field "creator_sim", limit: 5
+    config.add_facet_field "contributor_sim", label: "Contributor", limit: 5
+    config.add_facet_field "keyword_sim", limit: 5
+    config.add_facet_field "subject_sim", limit: 5
+    config.add_facet_field "language_sim", limit: 5
+    config.add_facet_field "based_near_label_sim", limit: 5
+    config.add_facet_field "publisher_sim", limit: 5
+    config.add_facet_field "file_format_sim", limit: 5
+    config.add_facet_field "member_of_collections_ssim", limit: 5, label: 'Collections'
 
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
@@ -73,48 +73,48 @@ class CatalogController < ApplicationController
 
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display
-    config.add_index_field solr_name("title", :stored_searchable), label: "Title", itemprop: 'name', if: false
-    config.add_index_field solr_name("description", :stored_searchable), itemprop: 'description', helper_method: :iconify_auto_link
-    config.add_index_field solr_name("keyword", :stored_searchable), itemprop: 'keywords', link_to_search: solr_name("keyword", :facetable)
-    config.add_index_field solr_name("subject", :stored_searchable), itemprop: 'about', link_to_search: solr_name("subject", :facetable)
-    config.add_index_field solr_name("creator", :stored_searchable), itemprop: 'creator', link_to_search: solr_name("creator", :facetable)
-    config.add_index_field solr_name("contributor", :stored_searchable), itemprop: 'contributor', link_to_search: solr_name("contributor", :facetable)
-    config.add_index_field solr_name("proxy_depositor", :symbol), label: "Depositor", helper_method: :link_to_profile
-    config.add_index_field solr_name("depositor"), label: "Owner", helper_method: :link_to_profile
-    config.add_index_field solr_name("publisher", :stored_searchable), itemprop: 'publisher', link_to_search: solr_name("publisher", :facetable)
-    config.add_index_field solr_name("based_near_label", :stored_searchable), itemprop: 'contentLocation', link_to_search: solr_name("based_near_label", :facetable)
-    config.add_index_field solr_name("language", :stored_searchable), itemprop: 'inLanguage', link_to_search: solr_name("language", :facetable)
-    config.add_index_field solr_name("date_uploaded", :stored_sortable, type: :date), itemprop: 'datePublished', helper_method: :human_readable_date
-    config.add_index_field solr_name("date_modified", :stored_sortable, type: :date), itemprop: 'dateModified', helper_method: :human_readable_date
-    config.add_index_field solr_name("date_created", :stored_searchable), itemprop: 'dateCreated'
-    config.add_index_field solr_name("rights_statement", :stored_searchable), helper_method: :rights_statement_links
-    config.add_index_field solr_name("license", :stored_searchable), helper_method: :license_links
-    config.add_index_field solr_name("resource_type", :stored_searchable), label: "Resource Type", link_to_search: solr_name("resource_type", :facetable)
-    config.add_index_field solr_name("file_format", :stored_searchable), link_to_search: solr_name("file_format", :facetable)
-    config.add_index_field solr_name("identifier", :stored_searchable), helper_method: :index_field_link, field_name: 'identifier'
-    config.add_index_field solr_name("embargo_release_date", :stored_sortable, type: :date), label: "Embargo release date", helper_method: :human_readable_date
-    config.add_index_field solr_name("lease_expiration_date", :stored_sortable, type: :date), label: "Lease expiration date", helper_method: :human_readable_date
+    config.add_index_field "title_tesim", label: "Title", itemprop: 'name', if: false
+    config.add_index_field "description_tesim", itemprop: 'description', helper_method: :iconify_auto_link
+    config.add_index_field "keyword_tesim", itemprop: 'keywords', link_to_search: "keyword_sim"
+    config.add_index_field "subject_tesim", itemprop: 'about', link_to_search: "subject_sim"
+    config.add_index_field "creator_tesim", itemprop: 'creator', link_to_search: "creator_sim"
+    config.add_index_field "contributor_tesim", itemprop: 'contributor', link_to_search: "contributor_sim"
+    config.add_index_field "proxy_depositor_ssim", label: "Depositor", helper_method: :link_to_profile
+    config.add_index_field "depositor_tesim", label: "Owner", helper_method: :link_to_profile
+    config.add_index_field "publisher_tesim", itemprop: 'publisher', link_to_search: "publisher_sim"
+    config.add_index_field "based_near_label_tesim", itemprop: 'contentLocation', link_to_search: "based_near_label_sim"
+    config.add_index_field "language_tesim", itemprop: 'inLanguage', link_to_search: "language_sim"
+    config.add_index_field "date_uploaded_dtsi", itemprop: 'datePublished', helper_method: :human_readable_date
+    config.add_index_field "date_modified_dtsi", itemprop: 'dateModified', helper_method: :human_readable_date
+    config.add_index_field "date_created_tesim", itemprop: 'dateCreated'
+    config.add_index_field "rights_statement_tesim", helper_method: :rights_statement_links
+    config.add_index_field "license_tesim", helper_method: :license_links
+    config.add_index_field "resource_type_tesim", label: "Resource Type", link_to_search: "resource_type_sim"
+    config.add_index_field "file_format_tesim", link_to_search: "file_format_sim"
+    config.add_index_field "identifier_tesim", helper_method: :index_field_link, field_name: 'identifier'
+    config.add_index_field "embargo_release_date_dtsi", label: "Embargo release date", helper_method: :human_readable_date
+    config.add_index_field "lease_expiration_date_dtsi", label: "Lease expiration date", helper_method: :human_readable_date
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
-    config.add_show_field solr_name("title", :stored_searchable)
-    config.add_show_field solr_name("description", :stored_searchable)
-    config.add_show_field solr_name("keyword", :stored_searchable)
-    config.add_show_field solr_name("subject", :stored_searchable)
-    config.add_show_field solr_name("creator", :stored_searchable)
-    config.add_show_field solr_name("contributor", :stored_searchable)
-    config.add_show_field solr_name("publisher", :stored_searchable)
-    config.add_show_field solr_name("based_near_label", :stored_searchable)
-    config.add_show_field solr_name("language", :stored_searchable)
-    config.add_show_field solr_name("date_uploaded", :stored_searchable)
-    config.add_show_field solr_name("date_modified", :stored_searchable)
-    config.add_show_field solr_name("date_created", :stored_searchable)
-    config.add_show_field solr_name("rights_statement", :stored_searchable)
-    config.add_show_field solr_name("license", :stored_searchable)
-    config.add_show_field solr_name("resource_type", :stored_searchable), label: "Resource Type"
-    config.add_show_field solr_name("format", :stored_searchable)
-    config.add_show_field solr_name("identifier", :stored_searchable)
-    config.add_show_field solr_name('extent', :stored_searchable)
+    config.add_show_field "title_tesim"
+    config.add_show_field "description_tesim"
+    config.add_show_field "keyword_tesim"
+    config.add_show_field "subject_tesim"
+    config.add_show_field "creator_tesim"
+    config.add_show_field "contributor_tesim"
+    config.add_show_field "publisher_tesim"
+    config.add_show_field "based_near_label_tesim"
+    config.add_show_field "language_tesim"
+    config.add_show_field "date_uploaded_tesim"
+    config.add_show_field "date_modified_tesim"
+    config.add_show_field "date_created_tesim"
+    config.add_show_field "rights_statement_tesim"
+    config.add_show_field "license_tesim"
+    config.add_show_field "resource_type_tesim", label: "Resource Type"
+    config.add_show_field "format_tesim"
+    config.add_show_field "identifier_tesim"
+    config.add_show_field 'extent_tesim'
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields
@@ -135,7 +135,7 @@ class CatalogController < ApplicationController
     # since we aren't specifying it otherwise.
     config.add_search_field('all_fields', label: 'All Fields', include_in_advanced_search: false) do |field|
       all_names = config.show_fields.values.map(&:field).join(" ")
-      title_name = solr_name("title", :stored_searchable)
+      title_name = "title_tesim"
       field.solr_parameters = {
         qf: "#{all_names} file_format_tesim all_text_timv",
         pf: title_name.to_s
@@ -155,7 +155,7 @@ class CatalogController < ApplicationController
       # syntax, as eg {! qf=$title_qf }. This is neccesary to use
       # Solr parameter de-referencing like $title_qf.
       # See: http://wiki.apache.org/solr/LocalParams
-      solr_name = solr_name("contributor", :stored_searchable)
+      solr_name = "contributor_tesim"
       field.solr_local_parameters = {
         qf: solr_name,
         pf: solr_name
@@ -164,7 +164,7 @@ class CatalogController < ApplicationController
 
     config.add_search_field('creator') do |field|
       field.solr_parameters = { "spellcheck.dictionary": "creator" }
-      solr_name = solr_name("creator", :stored_searchable)
+      solr_name = "creator_tesim"
       field.solr_local_parameters = {
         qf: solr_name,
         pf: solr_name
@@ -175,7 +175,7 @@ class CatalogController < ApplicationController
       field.solr_parameters = {
         "spellcheck.dictionary": "title"
       }
-      solr_name = solr_name("title", :stored_searchable)
+      solr_name = "title_tesim"
       field.solr_local_parameters = {
         qf: solr_name,
         pf: solr_name
@@ -187,7 +187,7 @@ class CatalogController < ApplicationController
       field.solr_parameters = {
         "spellcheck.dictionary": "description"
       }
-      solr_name = solr_name("description", :stored_searchable)
+      solr_name = "description_tesim"
       field.solr_local_parameters = {
         qf: solr_name,
         pf: solr_name
@@ -198,7 +198,7 @@ class CatalogController < ApplicationController
       field.solr_parameters = {
         "spellcheck.dictionary": "publisher"
       }
-      solr_name = solr_name("publisher", :stored_searchable)
+      solr_name = "publisher_tesim"
       field.solr_local_parameters = {
         qf: solr_name,
         pf: solr_name
@@ -209,7 +209,7 @@ class CatalogController < ApplicationController
       field.solr_parameters = {
         "spellcheck.dictionary": "date_created"
       }
-      solr_name = solr_name("created", :stored_searchable)
+      solr_name = "created_tesim"
       field.solr_local_parameters = {
         qf: solr_name,
         pf: solr_name
@@ -220,7 +220,7 @@ class CatalogController < ApplicationController
       field.solr_parameters = {
         "spellcheck.dictionary": "subject"
       }
-      solr_name = solr_name("subject", :stored_searchable)
+      solr_name = "subject_tesim"
       field.solr_local_parameters = {
         qf: solr_name,
         pf: solr_name
@@ -231,7 +231,7 @@ class CatalogController < ApplicationController
       field.solr_parameters = {
         "spellcheck.dictionary": "language"
       }
-      solr_name = solr_name("language", :stored_searchable)
+      solr_name = "language_tesim"
       field.solr_local_parameters = {
         qf: solr_name,
         pf: solr_name
@@ -242,7 +242,7 @@ class CatalogController < ApplicationController
       field.solr_parameters = {
         "spellcheck.dictionary": "resource_type"
       }
-      solr_name = solr_name("resource_type", :stored_searchable)
+      solr_name = "resource_type_tesim"
       field.solr_local_parameters = {
         qf: solr_name,
         pf: solr_name
@@ -254,7 +254,7 @@ class CatalogController < ApplicationController
       field.solr_parameters = {
         "spellcheck.dictionary": "format"
       }
-      solr_name = solr_name("format", :stored_searchable)
+      solr_name = "format_tesim"
       field.solr_local_parameters = {
         qf: solr_name,
         pf: solr_name
@@ -266,7 +266,7 @@ class CatalogController < ApplicationController
       field.solr_parameters = {
         "spellcheck.dictionary": "identifier"
       }
-      solr_name = solr_name("id", :stored_searchable)
+      solr_name = "id_tesim"
       field.solr_local_parameters = {
         qf: solr_name,
         pf: solr_name
@@ -278,7 +278,7 @@ class CatalogController < ApplicationController
       field.solr_parameters = {
         "spellcheck.dictionary": "based_near_label"
       }
-      solr_name = solr_name("based_near_label", :stored_searchable)
+      solr_name = "based_near_label_tesim"
       field.solr_local_parameters = {
         qf: solr_name,
         pf: solr_name
@@ -289,7 +289,7 @@ class CatalogController < ApplicationController
       field.solr_parameters = {
         "spellcheck.dictionary": "keyword"
       }
-      solr_name = solr_name("keyword", :stored_searchable)
+      solr_name = "keyword_tesim"
       field.solr_local_parameters = {
         qf: solr_name,
         pf: solr_name
@@ -297,7 +297,7 @@ class CatalogController < ApplicationController
     end
 
     config.add_search_field('depositor') do |field|
-      solr_name = solr_name("depositor", :stored_searchable)
+      solr_name = "depositor_tesim"
       field.solr_local_parameters = {
         qf: solr_name,
         pf: solr_name
@@ -305,7 +305,7 @@ class CatalogController < ApplicationController
     end
 
     config.add_search_field('rights_statement') do |field|
-      solr_name = solr_name("rights_statement", :stored_searchable)
+      solr_name = "rights_statement_tesim"
       field.solr_local_parameters = {
         qf: solr_name,
         pf: solr_name
@@ -313,7 +313,7 @@ class CatalogController < ApplicationController
     end
 
     config.add_search_field('license') do |field|
-      solr_name = solr_name("license", :stored_searchable)
+      solr_name = "license_tesim"
       field.solr_local_parameters = {
         qf: solr_name,
         pf: solr_name
@@ -321,7 +321,7 @@ class CatalogController < ApplicationController
     end
 
     config.add_search_field('extent') do |field|
-      solr_name = solr_name("extent", :stored_searchable)
+      solr_name = "extent_tesim"
       field.solr_local_parameters = {
         qf: solr_name,
         pf: solr_name

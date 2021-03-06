@@ -27,8 +27,8 @@ class SolrDocument
   # Do content negotiation for AF models.
   use_extension(Hydra::ContentNegotiation)
 
-  attribute :extent, Solr::Array, solr_name('extent')
-  attribute :rendering_ids, Solr::Array, solr_name('hasFormat', :symbol)
+  attribute :extent, Solr::Array, 'extent_tesim'
+  attribute :rendering_ids, Solr::Array, 'hasFormat_ssim'
 
   field_semantics.merge!(
     contributor: 'contributor_tesim',

@@ -87,7 +87,7 @@ gem 'willow_sword', git: 'https://github.com/notch8/willow_sword.git'
 gem 'blacklight', '~> 6.7'
 gem 'blacklight_oai_provider', '~> 6.1', '>= 6.1.1'
 
-gem 'hyrax', '~> 2.9', '>= 2.9.1'
+gem 'hyrax', '3.0.0-rc3' #'~> 2.9', '>= 2.9.1'
 
 gem 'rsolr', '~> 2.0'
 

@@ -10,7 +10,7 @@ module Hyrax
     # @return [ActiveSupport::SafeBuffer] the html_safe link
     def link_to_facet_list(values, solr_field, empty_message = "No value entered", separator = ", ")
       return empty_message if values.blank?
-      facet_field = Solrizer.solr_name(solr_field, :facetable)
+      facet_field = "#{solr_field}_sim"
       safe_join(values.map { |item| link_to_facet(item, facet_field) }, separator)
     end
 
@@ -22,7 +22,7 @@ module Hyrax
     def collection_title_by_id(id)
       solr_docs = controller.repository.find(id).docs
       return nil if solr_docs.empty?
-      solr_field = solr_docs.first[Solrizer.solr_name("title", :stored_searchable)]
+      solr_field = solr_docs.first['title_tesim']
       return nil if solr_field.nil?
       solr_field.first
     end
@@ -33,7 +33,7 @@ module Hyrax
     def search_state_with_facets(params, facet = {})
       state = Blacklight::SearchState.new(params, CatalogController.blacklight_config)
       return state.params if facet.none?
-      state.add_facet_params(Solrizer.solr_name(facet.keys.first, :facetable),
+      state.add_facet_params("#{facet.keys.first}_sim",
                              facet.values.first)
     end
   end

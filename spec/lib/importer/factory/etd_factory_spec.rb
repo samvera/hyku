@@ -15,7 +15,7 @@ RSpec.describe Importer::Factory::ETDFactory, :clean do
   #   context "for a new image" do
   #     it 'calls the actor with the files' do
   #       expect(actor).to receive(:create).with(Hyrax::Actors::Environment) do |k|
-  #         expect(k.attributes).to include(member_of_collection_ids: [coll.id], files: ['tmp/files/img.png'])
+  #         expect(k.attributes).to include(member_of_collectoin_attributes: [id: coll.id], files: ['tmp/files/img.png'])
   #       end
   #       factory.run
   #     end
@@ -27,7 +27,7 @@ RSpec.describe Importer::Factory::ETDFactory, :clean do
   #
   #     it 'creates file sets' do
   #       expect(actor).to receive(:update).with(Hyrax::Actors::Environment) do |k|
-  #         expect(k.attributes).to include(member_of_collection_ids: [coll.id], files: ['tmp/files/img.png'])
+  #         expect(k.attributes).to include(member_of_collectoin_attributes: [id: coll.id], files: ['tmp/files/img.png'])
   #       end
   #       factory.run
   #     end
@@ -51,7 +51,7 @@ RSpec.describe Importer::Factory::ETDFactory, :clean do
 
     it 'does not create a new collection' do
       expect(actor).to receive(:create).with(Hyrax::Actors::Environment) do |k|
-        expect(k.attributes).to include(member_of_collection_ids: [coll.id])
+        expect(k.attributes).to include(member_of_collectoin_attributes: [id: coll.id])
       end
       expect do
         factory.run

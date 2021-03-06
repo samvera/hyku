@@ -10,6 +10,7 @@ volumes:
   app:
   assets:
   cache:
+  node_modules:
 
 networks:
   internal:
@@ -119,6 +120,7 @@ services:
       - app:/home/app/webapp/tmp/uploads
       - assets:/home/app/webapp/public/assets
       - cache:/home/app/webapp/tmp/cache
+      - node_modules:/home/app/webapp/node_modules
       - .:/home/app/webapp
     networks:
       internal:
@@ -179,6 +181,12 @@ services:
       internal:
 
   chrome:
-    image: selenium/standalone-chrome:3.141
-    networks:
-      internal:
+    image: selenium/standalone-chrome-debug:3.141.59-20201010
+    logging:
+      driver: none
+    volumes:
+      - /dev/shm:/dev/shm
+    shm_size: 2G
+    ports:
+      - "5959:5900"
+      - "4444"

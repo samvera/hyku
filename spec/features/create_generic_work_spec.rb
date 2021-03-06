@@ -53,13 +53,14 @@ RSpec.describe 'Create a GenericWork', js: true do
       click_link "Files" # switch tab
       expect(page).to have_content "Add files"
       expect(page).to have_content "Add folder"
-      within('span#addfiles') do
+      within('div#add-files') do
         attach_file("files[]", File.join(fixture_path, 'hyrax', 'image.jp2'), visible: false)
         attach_file("files[]", File.join(fixture_path, 'hyrax', 'jp2_fits.xml'), visible: false)
       end
       click_link "Descriptions" # switch tab
       fill_in('Title', with: 'My Test Work')
       fill_in('Creator', with: 'Doe, Jane')
+      click_on('Additional fields')
       fill_in('Keyword', with: 'testing')
       select('In Copyright', from: 'Rights statement')
 

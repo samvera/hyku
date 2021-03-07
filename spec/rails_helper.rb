@@ -61,6 +61,7 @@ Hyrax::Admin
 ActiveRecord::Migration.maintain_test_schema!
 
 # Uses faster rack_test driver when JavaScript support not needed
+Capybara.default_max_wait_time = 8
 Capybara.default_driver = :rack_test
 
 if ENV['CHROME_HOSTNAME'].present?

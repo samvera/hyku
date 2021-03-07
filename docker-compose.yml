@@ -187,6 +187,8 @@ services:
     volumes:
       - /dev/shm:/dev/shm
     shm_size: 2G
+    networks:
+      internal:
     ports:
+      - "4444:4444"
       - "5959:5900"
-      - "4444"

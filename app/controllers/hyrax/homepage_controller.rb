@@ -6,6 +6,8 @@ module Hyrax
     include Blacklight::SearchHelper
     include Blacklight::AccessControls::Catalog
 
+    around_action :inject_theme_views
+
     # The search builder for finding recent documents
     # Override of Blacklight::RequestBuilders
     def search_builder_class
@@ -49,6 +51,18 @@ module Hyrax
 
       def sort_field
         "#{Solrizer.solr_name('date_uploaded', :stored_sortable, type: :date)} desc"
+      end
+
+      def inject_theme_views
+        if home_page_theme && home_page_theme != 'default_home'
+          original_paths = view_paths
+          home_theme_view_path = Rails.root.join('app', 'views', "themes", home_page_theme.to_s)
+          prepend_view_path(home_theme_view_path)
+          yield
+          view_paths=(original_paths)
+        else
+          yield
+        end
       end
   end
 end

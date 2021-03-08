@@ -151,5 +151,9 @@ RSpec.describe Hyrax::HomepageController, type: :controller do
         expect(assigns(:recent_documents)).to be_blank
       end
     end
+
+    context 'with theming' do
+      it { should use_around_action(:inject_theme_views) }
+    end
   end
 end

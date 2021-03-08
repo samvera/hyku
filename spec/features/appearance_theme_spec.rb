@@ -12,9 +12,6 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
            keyword: ['llama', 'alpaca'],
            user: user)
   end
-  let!(:collection) do
-    create(:public_collection_lw, title: ['Camelids'], description: ['llamas and alpacas'], user: user, members: [work])
-  end
 
   context "as a repository admin" do
     it "has a tab for themes on the appearance tab" do
@@ -102,8 +99,6 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
       click_button "search-submit-header"
       expect(page).to have_css('a.view-type-gallery.active')
       click_link "List"
-      expect(page).to have_css('a.view-type-list.active')
-      expect(page).not_to have_css('a.view-type-gallery.active')
       expect(page).to have_current_path('/catalog?locale=en&q=llama&search_field=all_fields&utf8=✓&view=list')
     end
 
@@ -111,7 +106,60 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
       visit '/'
       fill_in "search-field-header", with: "llama"
       click_button "search-submit-header"
-      expect(page).to have_css('a.view-type-list.active')
+      expect(page).to have_current_path('/catalog?utf8=✓&search_field=all_fields&q=llama')
+    end
+  end
+
+  context 'when a home page theme is selected' do
+    it 'renders the partials in the theme folder' do
+      login_as admin
+      visit '/admin/appearance'
+      click_link('Themes')
+      select('Cultural Repository', from: 'Home Page Theme')
+      find('body').click
+      click_on('Save')
+      site = Site.last
+      account.sites << site
+      allow_any_instance_of(ApplicationController).to receive(:current_account).and_return(account)
+      visit '/'
+      expect(page).to have_css('body.cultural_repository')
+      expect(page).to have_css('nav.navbar.navbar-inverse.navbar-static-top.cultural-repsitory-nav')
+    end
+
+    it 'updates the home theme when the theme is changed' do
+      login_as admin
+      visit '/admin/appearance'
+      click_link('Themes')
+      select('Cultural Repository', from: 'Home Page Theme')
+      find('body').click
+      click_on('Save')
+      site = Site.last
+      account.sites << site
+      allow_any_instance_of(ApplicationController).to receive(:current_account).and_return(account)
+      visit '/'
+      expect(page).to have_css('body.cultural_repository')
+      expect(page).to have_css('nav.navbar.navbar-inverse.navbar-static-top.cultural-repsitory-nav')
+
+      visit '/admin/appearance'
+      click_link('Themes')
+      select('Default home', from: 'Home Page Theme')
+      find('body').click
+      click_on('Save')
+      site = Site.last
+      account.sites << site
+      allow_any_instance_of(ApplicationController).to receive(:current_account).and_return(account)
+      visit '/'
+      expect(page).to have_css('body.default_home')
+      expect(page).not_to have_css('nav.cultural-repsitory-nav')
+    end
+
+    it 'renders the default partial if the theme partial is missing' do
+      allow_any_instance_of(ApplicationController).to receive(:current_account).and_return(account)
+      allow_any_instance_of(ApplicationController).to receive(:home_page_theme).and_return("missing_theme")
+      visit '/'
+      expect(page).to have_css('body.missing_theme')
+      expect(page).not_to have_css('nav.cultural-repsitory-nav')
+      expect(page).to have_css('nav.navbar.navbar-inverse.navbar-static-top')
     end
   end
 end

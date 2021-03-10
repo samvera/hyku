@@ -1,0 +1,18 @@
+<div class="container"><!--- BEGIN FEATURED WORKS/HOME TEXT SECTION -->
+  <div class="row">
+    <!-- Adding a mobile style for the homepage text content block, hidden on md and lg -->
+    <div class="hidden-lg hidden-md col-sm-12 cultural-repository homepage-text-container">
+      <%= render 'themes/cultural_repository/home_text' if controller_name == 'homepage' %>
+    </div>
+
+    <div class="col-sm-12 col-md-8 cultural-repository featured-works-container">
+      <h4>Featured Works</h4>
+        <%= render 'themes/cultural_repository/featured_works' %>
+
+    </div>
+    <!-- Adding a desktop style for the homepage text content block, hidden on sm and xs -->
+    <div class="hidden-xs hidden-sm col-md-4 cultural-repository homepage-text-container">
+      <%= render 'themes/cultural_repository/home_text' if controller_name == 'homepage' %>
+    </div>
+  </div>
+</div><!--- END FEATURED WORKS/HOME TEXT SECTION -->

@@ -1,5 +1,7 @@
-# Override from hyrax 2.5.1 to add method to hide featured researcher
-# and add method to hide share button
+# Override from hyrax 2.5.1 to add methods to:
+# hide featured researcher
+# hide featured works
+# hide share button
 module Hyrax
   class HomepagePresenter
     class_attribute :create_work_presenter_class
@@ -41,6 +43,11 @@ module Hyrax
     # changed to add feature flag for featured researcher
     def display_featured_researcher?
       Flipflop.show_featured_researcher?
+    end
+
+    # changed to add feature flag for featured work
+    def display_featured_works?
+      Flipflop.show_featured_works?
     end
 
     private

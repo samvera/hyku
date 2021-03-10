@@ -1,10 +1,17 @@
 # Copied from Hyrax v2.9.0 to add home_text content block to the index method - Adding themes
+# Copied from Hyrax v2.9.0 add facets to home page - inheriting from CatalogController rather than ApplicationController
+# Copied from Hyrax v2.9.0 to add inject_theme_views method for theming
+# Added search_action_url method from Blacklight 6.23.0 to make facet links to go to /catalog
+
 module Hyrax
-  class HomepageController < ApplicationController
+  # Changed to inherit from CatalogController for home page facets
+  class HomepageController < CatalogController
     # Adds Hydra behaviors into the application controller
     include Blacklight::SearchContext
     include Blacklight::SearchHelper
     include Blacklight::AccessControls::Catalog
+
+    around_action :inject_theme_views
 
     # The search builder for finding recent documents
     # Override of Blacklight::RequestBuilders
@@ -26,12 +33,40 @@ module Hyrax
       @featured_work_list = FeaturedWorkList.new
       @announcement_text = ContentBlock.for(:announcement)
       recent
+
+      # override hyrax v2.9.0 added for facets on homepage - Adding Themes
+      (@response, @document_list) = search_results(params)
+
+      respond_to do |format|
+        format.html { store_preferred_view }
+        format.rss  { render :layout => false }
+        format.atom { render :layout => false }
+        format.json do
+          @presenter = Blacklight::JsonPresenter.new(@response,
+                                                     @document_list,
+                                                     facets_from_request,
+                                                     blacklight_config)
+        end
+        additional_response_formats(format)
+        document_export_formats(format)
+      end
     end
+
+    # Added from Blacklight 6.23.0 to change url for facets on home page
+    protected
+
+      # Default route to the search action (used e.g. in global partials). Override this method
+      # in a controller or in your ApplicationController to introduce custom logic for choosing
+      # which action the search form should use
+      def search_action_url(options = {})
+        # Rails 4.2 deprecated url helpers accepting string keys for 'controller' or 'action'
+        main_app.search_catalog_path(options)
+      end
 
     private
 
       # Return 5 collections
-      def collections(rows: 5)
+      def collections(rows: 6)
         builder = Hyrax::CollectionSearchBuilder.new(self)
                                                 .rows(rows)
         response = repository.search(builder)
@@ -42,13 +77,26 @@ module Hyrax
 
       def recent
         # grab any recent documents
-        (_, @recent_documents) = search_results(q: '', sort: sort_field, rows: 4)
+        (_, @recent_documents) = search_results(q: '', sort: sort_field, rows: 6)
       rescue Blacklight::Exceptions::ECONNREFUSED, Blacklight::Exceptions::InvalidRequest
         @recent_documents = []
       end
 
       def sort_field
         "#{Solrizer.solr_name('date_uploaded', :stored_sortable, type: :date)} desc"
+      end
+
+      # Add this method to prepend the theme views into the view_paths
+      def inject_theme_views
+        if home_page_theme && home_page_theme != 'default_home'
+          original_paths = view_paths
+          home_theme_view_path = Rails.root.join('app', 'views', "themes", home_page_theme.to_s)
+          prepend_view_path(home_theme_view_path)
+          yield
+          view_paths=(original_paths)
+        else
+          yield
+        end
       end
   end
 end

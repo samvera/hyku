@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# From Hyrax 2.5, add new colors, ability to save css file and expanded image types
 module Hyrax
   module Forms
     module Admin
@@ -7,6 +8,11 @@ module Hyrax
       # customization menu
       class Appearance
         extend ActiveModel::Naming
+        delegate :banner_image, :banner_image?, to: :site
+        delegate :logo_image, :logo_image?, to: :site
+        delegate :directory_image, :directory_image?, to: :site
+        delegate :default_collection_image, :default_collection_image?, to: :site
+        delegate :default_work_image, :default_work_image?, to: :site
 
         DEFAULT_FONTS = {
           'body_font'     => 'Helvetica Neue, Helvetica, Arial, sans-serif;',
@@ -50,7 +56,15 @@ module Hyrax
 
         # Override this method if your form takes more than just the customization_params
         def self.permitted_params
-          customization_params
+          customization_params + image_params
+        end
+
+        def self.image_params
+          %i[banner_image logo_image directory_image default_collection_image default_work_image]
+        end
+
+        def site
+          @site ||= Site.instance
         end
 
         # Required to back a form
@@ -252,11 +266,51 @@ module Hyrax
           darken_color(facet_panel_background_color, 0.12)
         end
 
+        # @return [Hash] attributes that are related to the banner
+        def banner_attributes
+          attributes.slice(*self.class.banner_fields)
+        end
+
+        # @return [Hash] attributes that are related to the banner
+        def logo_attributes
+          attributes.slice(*self.class.logo_fields)
+        end
+
+        def directory_attributes
+          attributes.slice(*self.class.directory_fields)
+        end
+
+        def default_image_attributes
+          attributes.slice(*self.class.default_image_fields)
+        end
+
+        # @return [Array<Symbol>] a list of fields that are related to the banner
+        def self.banner_fields
+          [:banner_image]
+        end
+
+        # @return [Array<Symbol>] a list of fields that are related to the banner
+        def self.logo_fields
+          [:logo_image]
+        end
+
+        def self.directory_fields
+          [:directory_image]
+        end
+
+        def self.default_image_fields
+          %i[default_collection_image default_work_image]
+        end
+
         # Persist the form values
         def update!
           self.class.customization_params.each do |field|
             update_block(field, attributes[field]) if attributes[field]
           end
+
+          site.update!(banner_attributes.merge(logo_attributes)
+                                        .merge(directory_attributes)
+                                        .merge(default_image_attributes))
         end
 
         # A list of parameters that are related to customizations
@@ -286,7 +340,6 @@ module Hyrax
         end
 
         def font_import_body_url
-          headline = headline_font.split('|').first.to_s.tr(" ", "+")
           body = body_font.split('|').first.to_s.tr(" ", "+")
           # we need to be able to read the url to import fonts
           "fonts.googleapis.com/css?family=#{body}"

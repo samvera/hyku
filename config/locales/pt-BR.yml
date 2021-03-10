@@ -31,12 +31,16 @@ pt-BR:
     action:
       become: Tornar-se
     submit:
+      add_role_to_group:
+        submit: Adicionar
       add_user_to_group:
         submit: Adicionar
       group_search:
         submit: Ir
       page_size:
         submit: Atualizar
+      remove_role_from_group:
+        submit: Remover
       revoke_membership:
         submit: Remover
       user_search:
@@ -79,11 +83,23 @@ pt-BR:
           members: Comercial
           name: Nome
           per_page: por página
+          roles: Funções
         nav:
           attributes: Descrição
           delete: Remover
           index: Retornar para gerenciar grupos
           members: Comercial
+          roles: Funções
+        roles:
+          add: Adicionar
+          label:
+            action: Açao
+            description: Descrição
+            name: Função
+          remove: Remover
+          title:
+            add_group_roles: Adicionar funções ao grupo
+            current_group_roles: Funções de grupo atuais
         title:
           add_user: Adicionar usuário ao grupo
           delete: Remove Group "%{group}"
@@ -93,6 +109,7 @@ pt-BR:
           members: Membros do grupo
           new: Novo grupo
           remove: Remover grupo
+          roles: Funções de grupo
       title: Administração
       work_types: Tipos de trabalho disponíveis
     footer:
@@ -139,6 +156,8 @@ pt-BR:
               hint: Para usar uma imagem como imagem do diretório, use uma imagem (JPG, GIF ou PNG) que não seja mais alta que o cabeçalho e que não tenha mais que 400 pixels de largura.
             logo_image:
               hint: Para usar uma imagem como logotipo, use uma imagem (JPG, GIF ou PNG) que não seja mais alta que o cabeçalho e que não tenha mais que 400 pixels de largura.
+            themes:
+              confirm: Se o seu tema não parece estar sendo aplicado corretamente, verifique se ele não está sendo substituído pelo CSS personalizado.
           hints:
             banner_image: Para usar uma imagem como um fundo de masthead, você deve usar uma imagem (JPG, GIF ou PNG) com pelo menos 120 pixels de altura e 1200 pixels de largura. Para obter melhores resultados, use uma imagem de pelo menos 1800 pixels de largura.
             default_image: Para imagens padrão, você deve usar uma imagem (JPG, GIF ou PNG) que tenha dimensões de altura e largura iguais (100 pixels de largura e 100 pixels de altura)
@@ -151,6 +170,7 @@ pt-BR:
             default_images: Imagens padrão
             directory_image: Imagem do diretório
             fonts: Fontes
+            themes: Temas
       sidebar:
         accounts: Contas
         activity_summary: Resumo da atividade

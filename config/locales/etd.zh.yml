@@ -1,10 +1,28 @@
+---
 zh:
   hyrax:
+    etd:
+      labels:
+        committee_member: 委员会成员
+        creator: 作者
+        date_created: 日期
+        degree_discipline: 学科
+        degree_grantor: 资助人
+        degree_level: 水平
+        degree_name: 度
+        description: 摘要/说明
+        related_url: 关系
+        resource_type: 类型
+        rights_statement: 权利
     icons:
-      etd:     'fa fa-file-text-o'
+      etd: fa fa-file-text-o
     select_type:
       etd:
-        # TODO: translate `human_name` into Chinese
-        description:        "ETD 作品"
-        name:               "ETD"
-        # TODO: translate `human_name` into Chinese
+        description: ETD 作品
+        name: ETD
+  simple_form:
+    labels:
+      defaults:
+        advisor: 顾问
+        department: 部门
+        format: 格式

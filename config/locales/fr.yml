@@ -31,12 +31,16 @@ fr:
     action:
       become: Devenir
     submit:
+      add_role_to_group:
+        submit: Ajouter
       add_user_to_group:
         submit: Ajouter
       group_search:
         submit: Aller
       page_size:
         submit: Mettre à jour
+      remove_role_from_group:
+        submit: Retirer
       revoke_membership:
         submit: Retirer
       user_search:
@@ -79,11 +83,23 @@ fr:
           members: Utilisateurs
           name: prénom
           per_page: par page
+          roles: Les rôles
         nav:
           attributes: La description
           delete: Retirer
           index: Retourner à Gérer les groupes
           members: Utilisateurs
+          roles: Les rôles
+        roles:
+          add: Ajouter
+          label:
+            action: action
+            description: La description
+            name: Rôle
+          remove: Retirer
+          title:
+            add_group_roles: Ajouter des rôles au groupe
+            current_group_roles: Rôles de groupe actuels
         title:
           add_user: Ajouter l'utilisateur au groupe
           delete: Supprimer le groupe "%{group}"
@@ -93,6 +109,7 @@ fr:
           members: Les membres du groupe
           new: Nouveau groupe
           remove: Supprimer le groupe
+          roles: Rôles de groupe
       title: Administration
       work_types: Types de travail disponibles
     footer:
@@ -139,6 +156,8 @@ fr:
               hint: Pour utiliser une image comme image de répertoire, vous devez utiliser une image (JPG, GIF ou PNG) qui n'est pas plus haute que l'en-tête et pas plus large que 400 pixels de large.
             logo_image:
               hint: Pour utiliser une image comme logo, vous devez utiliser une image (JPG, GIF ou PNG) qui n'est pas plus haute que l'en-tête et pas plus large que 400 pixels de large.
+            themes:
+              confirm: Si votre thème ne semble pas s'appliquer correctement, vérifiez qu'il n'est pas écrasé par le CSS personnalisé.
           hints:
             banner_image: Pour utiliser une image en tant que fond de masthead, vous devez utiliser une image (JPG, GIF ou PNG) d'au moins 120 pixels de hauteur et 1200 pixels de largeur. Pour de meilleurs résultats, utilisez une image d'au moins 1800 pixels de largeur.
             default_image: Pour les images par défaut, vous devez utiliser une image (JPG, GIF ou PNG) ayant des dimensions de hauteur et de largeur égales (100 pixels de largeur et 100 pixels de hauteur).
@@ -151,6 +170,7 @@ fr:
             default_images: Images par défaut
             directory_image: Image du répertoire
             fonts: Les Polices
+            themes: Thèmes
       sidebar:
         accounts: Comptes
         activity_summary: Résumé de l'activité

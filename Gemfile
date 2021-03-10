@@ -84,6 +84,7 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 
   gem 'scss_lint', require: false
+  gem 'easy_translate'
 end
 
 # Bulkrax
@@ -92,7 +93,7 @@ gem 'bulkrax', git: 'https://github.com/samvera-labs/bulkrax.git'
 gem 'willow_sword', git: 'https://github.com/notch8/willow_sword.git'
 
 gem 'blacklight', '~> 6.7'
-gem 'blacklight_oai_provider', '~> 6.0'
+gem 'blacklight_oai_provider', '~> 6.1', '>= 6.1.1'
 
 gem 'hyrax', '~> 2.9'
 

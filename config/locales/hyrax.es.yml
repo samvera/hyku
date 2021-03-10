@@ -248,10 +248,14 @@ es:
       workflow_roles:
         header: Roles de flujo de trabajo
         index:
+          current_group_roles: Roles de grupo actuales
           current_roles: Roles actuales
+          current_user_roles: Roles de usuario actuales
           delete:
             confirm: "¿Estás seguro?"
           header:
+            display_name: Nombre para mostrar
+            email: Email
             group_name: Nombre del grupo
             group_roles: Roles de grupo
             roles: Roles
@@ -259,6 +263,7 @@ es:
             user_roles: Roles del usuario
           new_group_role: Asignar rol al grupo
           new_role: Asignar rol
+          new_user_role: Asignar rol al usuario
           no_roles: Sin roles
       workflows:
         index:
@@ -474,10 +479,12 @@ es:
       instructions:
         announcement_instructions: El texto del anuncio aparece en la página de inicio. Es para que los mensajes importantes u oportunos sean visibles de manera prominente para todos los visitantes de la página de inicio. Sería apropiado ingresar un anuncio aquí, por ejemplo, para notificar a los usuarios sobre una próxima interrupción de mantenimiento planificada del sistema.
         featured_researcher_instructions: Investigador destacado es un espacio para ingresar información y en la página de inicio reservada para resaltar usuarios del repositorio.
+        home_text_instructions: El texto de la página de inicio se refiere a la mensajería personalizada que se muestra en la página de inicio, ya sea en el bloque de héroe o en otra sección de la página de inicio. Este texto aparece al seleccionar un tema que requiere o permite el texto de la página de inicio. Recomendamos no más de 3 frases en esta área.
         marketing_instructions: El texto del banner se refiere al texto que se muestra sobre la imagen del banner en la página de inicio. Recomendamos no más de aproximadamente 30 caracteres o espacios en esta área de texto.
       tabs:
         announcement_text: Texto de anuncio
         featured_researcher: Investigador destacado
+        home_text: Texto de la página de inicio
         marketing_text: Texto de marketing
       updated: Bloques de contenido actualizados.
     controls:
@@ -1132,17 +1139,21 @@ es:
       defaults:
         admin_set_id: Conjunto administrativo
         based_near: Ubicación
+        contributor: Contribuyente
         creator: Creador
         date_created: fecha de creacion
         description: Resumen o resumen
         embargo_release_date: hasta
         files: Cargar un archivo
+        identifier: Identificador
         keyword: Palabra clave
         lease_expiration_date: hasta
         license: Licencia
         member_of_collection_ids: Añadir a la colección
+        publisher: Editor
         related_url: URL relacionada
         rights_statement: Declaración de derechos
+        source: Fuente
         title: Título
         visibility_after_embargo: luego ábralo para
         visibility_after_lease: luego restringirlo a

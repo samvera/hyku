@@ -111,6 +111,16 @@ RSpec.configure do |config|
     CreateSolrCollectionJob.new.without_account('hydra-test') if ENV['IN_DOCKER']
   end
 
+  config.before(clean: true) do
+    DatabaseCleaner.clean
+    ActiveFedora::Cleaner.clean!
+  end
+
+  config.after(clean: true) do
+    DatabaseCleaner.clean
+    ActiveFedora::Cleaner.clean!
+  end
+
   config.before(:each) do |example|
     # Pass `:clean' to destroy objects in fedora/solr and start from scratch
     ActiveFedora::Cleaner.clean! if example.metadata[:clean]

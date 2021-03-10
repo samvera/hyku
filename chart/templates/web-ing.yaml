@@ -1,21 +1,37 @@
 ---
+{{- if .Values.ingress.enabled -}}
+{{- $releaseName := .Release.Name -}}
+{{- $serviceName := default .Chart.Name .Values.nameOverride -}}
+{{- $servicePort := .Values.ingress.bindPort -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{ template "hyku.web.name" . }}-in
+  labels:
+    app: {{ template "hyku.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
   annotations:
-  {{- range $key, $value := .Values.ingress.annotations }}
+    {{- range $key, $value := .Values.ingress.annotations }}
     {{ $key }}: {{ $value | quote }}
-  {{- end }}
+    {{- end }}
 spec:
+  rules:
+    {{- range .Values.ingress.hosts }}
+    - host: {{ . | quote }}
+      http:
+        paths:
+        - backend:
+            serviceName: {{ printf "%s-%s" $releaseName $serviceName | trunc 63 | trimSuffix "-" }}-web
+            servicePort: {{ $servicePort }}
+    {{- end }}
+  {{- if .Values.ingress.tlsSecretName }}
   tls:
   - secretName: {{ .Values.ingress.tlsSecretName }}
     hosts:
-      - {{ .Values.ingress.host }}
-  rules:
-  - host: "{{ .Values.ingress.host }}"
-    http:
-      paths:
-      - backend:
-          serviceName: {{ template "hyku.web.name" . }}
-          servicePort: 80
+      {{- range .Values.ingress.hosts }}
+      - {{ . | quote }}
+      {{- end }}
+  {{- end -}}
+{{- end -}}

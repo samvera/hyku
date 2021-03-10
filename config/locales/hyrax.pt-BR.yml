@@ -248,10 +248,14 @@ pt-BR:
       workflow_roles:
         header: Funções de fluxo de trabalho
         index:
+          current_group_roles: Funções de grupo atuais
           current_roles: Funções Atuais
+          current_user_roles: Funções de usuário atuais
           delete:
             confirm: Você tem certeza?
           header:
+            display_name: Nome em Exibição
+            email: O email
             group_name: Nome do grupo
             group_roles: Funções de grupo
             roles: Funções
@@ -259,6 +263,7 @@ pt-BR:
             user_roles: Funções do usuário
           new_group_role: Atribuir função ao grupo
           new_role: Atribuir função
+          new_user_role: Atribuir função ao usuário
           no_roles: Sem papéis
       workflows:
         index:
@@ -474,10 +479,12 @@ pt-BR:
       instructions:
         announcement_instructions: O texto do anúncio é exibido na página inicial. É para que mensagens importantes ou oportunas sejam visíveis a todos os visitantes da página inicial. Seria apropriado inserir um anúncio aqui, por exemplo, para notificar os usuários sobre uma futura interrupção planejada da manutenção do sistema.
         featured_researcher_instructions: Pesquisador em destaque é um espaço para inserir informações e na página inicial reservada para destacar os usuários do repositório.
+        home_text_instructions: Texto da página inicial refere-se à mensagem personalizada que é exibida na página inicial no bloco principal ou em outra seção da página inicial. Este texto aparece ao selecionar um tema que requer ou permite o texto da página inicial. Recomendamos não mais do que 3 frases nesta área.
         marketing_instructions: O texto do banner refere-se ao texto exibido sobre a imagem do banner na página inicial. Recomendamos não mais que aproximadamente 30 caracteres ou espaços nesta área de texto.
       tabs:
         announcement_text: Texto do anúncio
         featured_researcher: Pesquisador Destaque
+        home_text: Texto da página inicial
         marketing_text: Texto de Marketing
       updated: Blocos de conteúdo atualizados.
     controls:
@@ -1132,17 +1139,21 @@ pt-BR:
       defaults:
         admin_set_id: Conjunto administrativo
         based_near: Localização
+        contributor: Contribuinte
         creator: O Criador
         date_created: Data Criada
         description: Resumo ou Resumo
         embargo_release_date: até
         files: Enviar um arquivo
+        identifier: Identificador
         keyword: Palavra-chave
         lease_expiration_date: até
         license: Licença
         member_of_collection_ids: Adicionar a coleção
+        publisher: Editor
         related_url: URL relacionado
         rights_statement: Declaração de direitos
+        source: Fonte
         title: Título
         visibility_after_embargo: depois abra
         visibility_after_lease: então restrinja-o a

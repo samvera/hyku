@@ -5,5 +5,5 @@ de:
       generic_work: fa fa-file-text-o
     select_type:
       generic_work:
-        description: "Arbeitstyp: Generische Arbeit. Wählen Sie diesen Typ für Ihre Arbeit, die Sie hinzufügen möchten, aus, wenn die unten aufgeführten, spezielleren Arbeitstypen nicht für Ihre Arbeit geeignet erscheinen."
+        description: 'Arbeitstyp: Generische Arbeit. Wählen Sie diesen Typ für Ihre Arbeit, die Sie hinzufügen möchten, aus, wenn die unten aufgeführten, spezielleren Arbeitstypen nicht für Ihre Arbeit geeignet erscheinen.'
         name: Generische Arbeit

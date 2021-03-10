@@ -25,6 +25,7 @@ Jump In: [![Slack Status](http://slack.samvera.org/badge.svg)](http://slack.samv
     * [With Kubernetes](#with-kubernetes)
   * [Single Tenant Mode](#single-tenancy)
   * [Switching accounts](#switching-accounts)
+  * [Roles and Auth](#roles-and-auth)
   * [Development dependencies](#development-dependencies)
     * [Postgres](#postgres) 
   * [Importing](#importing)
@@ -59,6 +60,20 @@ docker-compose up web # web here means you can start and stop Rails w/o starting
 ```
 
 Once that starts (you'll see the line `Passenger core running in multi-application mode.` to indicate a successful boot), you can view your app in a web browser with at either hyku.docker or localhost:3000 (see above)
+
+#### Seed a superadmin
+When you first start the app, you will need to create a superadmin. You can do that with a rake task:
+
+ ```
+ docker-compose exec web bash
+ bundle exec rake hyku:seed:superadmin
+ ```
+
+Login credential for the superadmin:
+  admin@example.com
+  testing123
+
+Once you are logged in as a superadmin, you can create an account/tenant in the UI by selecting Accounts from the menu bar
 
 #### Tests in Docker
 
@@ -162,6 +177,17 @@ The recommend way to switch your current session from one account to another is 
 
 ```ruby
 AccountElevator.switch!('repo.example.com')
+```
+
+## Roles and Auth
+### Seeding Default Roles and Groups
+
+Default `Roles` and `Hyrax::Groups` are seeded into an account (tenant) at creation time (see [CreateAccount#create_defaults](app/services/create_account.rb)).
+
+To manually seed default `Roles` and `Hyrax::Groups` _across all tenants_, run this rake task:
+
+```bash
+rake hyku:seed:default_roles_and_groups
 ```
 
 ## Development Dependencies

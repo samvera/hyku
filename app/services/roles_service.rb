@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 # TODO(bkiahstroud): filename and location make sense?
 module RolesService
+  ADMIN_ROLE = ['admin']
+
   TENANT_ROLES = [
     'tenant_manager',
     'tenant_editor',
@@ -13,11 +15,11 @@ module RolesService
     'collection_reader'
   ].freeze
 
-  ALL_DEFAULT_ROLES = TENANT_ROLES + COLLECTION_ROLES
+  ALL_DEFAULT_ROLES = ADMIN_ROLE + TENANT_ROLES + COLLECTION_ROLES
 
   class << self
     def create_default_roles!
-      # NOTE(bkiahstroud): stop Roles from being created in public schema
+      # NOTE: stop Roles from being created in public schema
       return '`AccountElevator.switch!` into an Account before creating default Roles' if Site.instance.is_a?(NilSite)
 
       ALL_DEFAULT_ROLES.each do |role_name|

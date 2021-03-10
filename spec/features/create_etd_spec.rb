@@ -37,7 +37,7 @@ RSpec.describe 'Create a Etd', type: :feature, js: true, clean: true do
       login_as user
     end
 
-    it do
+    it 'can create an Etd' do
       visit '/dashboard/works'
       # TODO(bess) We are not able to get this link click to work in our automated tests, so this is a workaround.
       # I hope that if we move to system specs instead of feature specs we'll be able to move back to alignment with
@@ -57,11 +57,15 @@ RSpec.describe 'Create a Etd', type: :feature, js: true, clean: true do
         attach_file("files[]", Rails.root.join('spec', 'fixtures', 'images', 'image.jp2'), visible: false)
         attach_file("files[]", Rails.root.join('spec', 'fixtures', 'images', 'jp2_fits.xml'), visible: false)
       end
-      click_link "Descriptions" # switch tab
+      click_link 'Descriptions' # switch tab
       fill_in('Title', with: 'My Test Work')
-      fill_in('Creator', with: 'Doe, Jane')
-      fill_in('Keyword', with: 'testing')
-      select('In Copyright', from: 'Rights Statement')
+      fill_in('Author', with: 'Doe, Jane')
+      select('In Copyright', from: 'Rights')
+      fill_in('Date', with: '01/27/2021')
+      fill_in('Degree', with: 'CS')
+      fill_in('Level', with: 'High')
+      fill_in('Discipline', with: 'Com Sci')
+      fill_in('Grantor', with: 'PALNI/PALCI')
 
       # With selenium and the chrome driver, focus remains on the
       # select box. Click outside the box so the next line can't find

@@ -9,7 +9,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera-labs/bulkrax.git
-  revision: 1f51be1c5245afc753e834d79d25df384ef0861d
+  revision: 6f2f20a60387495bc142e5f57d62d3675452425d
   specs:
     bulkrax (0.1.0)
       bagit (~> 0.4)
@@ -168,10 +168,9 @@ GEM
       bootstrap-sass (~> 3.0)
       openseadragon (>= 0.2.0)
       rails
-    blacklight_oai_provider (6.0.0)
+    blacklight_oai_provider (6.1.1)
       blacklight (~> 6.0)
-      oai (~> 0.4)
-      rails (>= 4.2, < 6)
+      oai (~> 1.0)
     bootstrap-datepicker-rails (1.9.0.1)
       railties (>= 3.0)
     bootstrap-sass (3.4.1)
@@ -328,6 +327,9 @@ GEM
       dry-equalizer (~> 0.2)
       dry-initializer (~> 3.0)
       dry-schema (~> 1.5)
+    easy_translate (0.5.1)
+      thread
+      thread_safe
     ebnf (2.1.1)
       htmlentities (~> 4.3)
       rdf (~> 3.1)
@@ -653,7 +655,7 @@ GEM
       activesupport (>= 3.2.18)
       i18n
       nokogiri
-    oai (0.4.0)
+    oai (1.1.0)
       builder (>= 3.1.0)
       faraday
       faraday_middleware
@@ -956,6 +958,7 @@ GEM
     tether-rails (1.4.0)
       rails (>= 3.1)
     thor (0.20.3)
+    thread (0.2.2)
     thread_safe (0.3.6)
     tilt (2.0.10)
     tins (1.25.0)
@@ -1013,7 +1016,7 @@ DEPENDENCIES
   apartment
   aws-sdk-sqs
   blacklight (~> 6.7)
-  blacklight_oai_provider (~> 6.0)
+  blacklight_oai_provider (~> 6.1, >= 6.1.1)
   bootstrap-datepicker-rails
   bulkrax!
   byebug
@@ -1029,6 +1032,7 @@ DEPENDENCIES
   devise-guests (~> 0.3)
   devise-i18n
   devise_invitable (~> 1.6)
+  easy_translate
   factory_bot_rails
   fcrepo_wrapper (~> 0.4)
   flipflop (~> 2.3)

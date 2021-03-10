@@ -248,10 +248,14 @@ it:
       workflow_roles:
         header: Ruoli del flusso di lavoro
         index:
+          current_group_roles: Ruoli attuali del gruppo
           current_roles: Ruoli attuali
+          current_user_roles: Ruoli utente correnti
           delete:
             confirm: Sei sicuro?
           header:
+            display_name: Nome da visualizzare
+            email: E-mail
             group_name: Nome del gruppo
             group_roles: Ruoli del gruppo
             roles: ruoli
@@ -259,6 +263,7 @@ it:
             user_roles: Ruoli utente
           new_group_role: Assegna ruolo al gruppo
           new_role: Assegna ruolo
+          new_user_role: Assegna ruolo all'utente
           no_roles: Nessun ruolo
       workflows:
         index:
@@ -474,10 +479,12 @@ it:
       instructions:
         announcement_instructions: Il testo dell'annuncio viene visualizzato sulla home page. È importante che messaggi importanti o tempestivi siano resi ben visibili a tutti i visitatori della home page. Sarebbe opportuno inserire qui un annuncio, ad esempio, per avvisare gli utenti di un'imminente interruzione programmata della manutenzione del sistema.
         featured_researcher_instructions: Il ricercatore in primo piano è uno spazio per inserire informazioni e nella home page riservato per evidenziare gli utenti del repository.
+        home_text_instructions: Il testo della pagina iniziale si riferisce alla messaggistica personalizzata visualizzata nella pagina iniziale nel blocco eroe o in un'altra sezione della pagina iniziale. Questo testo viene visualizzato quando si seleziona un tema che richiede o consente il testo della home page. Raccomandiamo non più di 3 frasi in quest'area.
         marketing_instructions: Il testo del banner si riferisce al testo visualizzato sull'immagine del banner nella home page. Si consiglia di non più di circa 30 caratteri o spazi in questa area di testo.
       tabs:
         announcement_text: Testo dell'annuncio
         featured_researcher: Ricercatore in primo piano
+        home_text: Testo della home page
         marketing_text: Testo di marketing
       updated: Blocchi di contenuto aggiornati.
     controls:
@@ -1132,17 +1139,21 @@ it:
       defaults:
         admin_set_id: Set amministrativo
         based_near: Posizione
+        contributor: Collaboratore
         creator: Creatore
         date_created: data di creazione
         description: Riepilogo o Riepilogo
         embargo_release_date: fino a
         files: Caricare un file
+        identifier: Identificatore
         keyword: Parola chiave
         lease_expiration_date: fino a
         license: Licenza
         member_of_collection_ids: Aggiungere alla collezione
+        publisher: Editore
         related_url: URL correlato
         rights_statement: Dichiarazione dei diritti
+        source: fonte
         title: Titolo
         visibility_after_embargo: quindi aprilo fino a
         visibility_after_lease: quindi limitalo a

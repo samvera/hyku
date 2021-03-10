@@ -16,7 +16,7 @@ module Hyrax
       # @return [Array] an array of user roles
       def user_roles(user)
         # TODO this needs tests and to be moved to the service
-        user.site_roles.map(&:name) | user.groups
+        user.site_roles.map(&:name) | user.hyrax_group_names
       end
 
       def last_accessed(user)

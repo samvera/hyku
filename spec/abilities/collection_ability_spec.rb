@@ -17,7 +17,9 @@ RSpec.describe 'CollectionAbility' do
     it 'allows all abilities' do # rubocop:disable RSpec/ExampleLength
       is_expected.to be_able_to(:manage, Collection)
       is_expected.to be_able_to(:manage_any, Collection)
+      is_expected.to be_able_to(:create, Collection)
       is_expected.to be_able_to(:create_any, Collection)
+      is_expected.to be_able_to(:read_any, Collection)
       is_expected.to be_able_to(:view_admin_show_any, Collection)
       is_expected.to be_able_to(:edit, collection)
       is_expected.to be_able_to(:edit, solr_document) # defined in solr_document_ability.rb
@@ -31,86 +33,211 @@ RSpec.describe 'CollectionAbility' do
       is_expected.to be_able_to(:view_admin_show, solr_document)
       is_expected.to be_able_to(:read, collection)
       is_expected.to be_able_to(:read, solr_document) # defined in solr_document_ability.rb
+      is_expected.to be_able_to(:manage_discovery, collection)
     end
   end
 
-  context 'when a user has a Collections Manager role' do
-    let(:user) { FactoryBot.create(:collection_manager) }
+  # TODO: reorganize with `describe '#collection_roles' do` and make tests more specific (CRUD)
+  context 'when a user is a Collection Manager' do
     let!(:collection) { build(:collection_lw, with_permission_template: true, collection_type_gid: collection_type_gid) }
     let!(:solr_document) { SolrDocument.new(collection.to_solr) }
 
-    it 'allows all abilities' do # rubocop:disable RSpec/ExampleLength
-      is_expected.to be_able_to(:manage, Collection)
-      is_expected.to be_able_to(:manage_any, Collection)
-      is_expected.to be_able_to(:create_any, Collection)
-      is_expected.to be_able_to(:view_admin_show_any, Collection)
-      is_expected.to be_able_to(:edit, collection)
-      is_expected.to be_able_to(:edit, solr_document) # defined in solr_document_ability.rb
-      is_expected.to be_able_to(:update, collection)
-      is_expected.to be_able_to(:update, solr_document) # defined in solr_document_ability.rb
-      is_expected.to be_able_to(:destroy, collection)
-      is_expected.to be_able_to(:destroy, solr_document) # defined in solr_document_ability.rb
-      is_expected.to be_able_to(:deposit, collection)
-      is_expected.to be_able_to(:deposit, solr_document)
-      is_expected.to be_able_to(:view_admin_show, collection)
-      is_expected.to be_able_to(:view_admin_show, solr_document)
-      is_expected.to be_able_to(:read, collection)
-      is_expected.to be_able_to(:read, solr_document) # defined in solr_document_ability.rb
+    context 'through its User roles' do
+      let(:user) { FactoryBot.create(:collection_manager) }
+
+      it 'allows all abilities' do # rubocop:disable RSpec/ExampleLength
+        is_expected.to be_able_to(:manage, Collection)
+        is_expected.to be_able_to(:manage_any, Collection)
+        is_expected.to be_able_to(:create, Collection)
+        is_expected.to be_able_to(:create_any, Collection)
+        is_expected.to be_able_to(:read_any, Collection)
+        is_expected.to be_able_to(:view_admin_show_any, Collection)
+        is_expected.to be_able_to(:edit, collection)
+        is_expected.to be_able_to(:edit, solr_document)
+        is_expected.to be_able_to(:update, collection)
+        is_expected.to be_able_to(:update, solr_document)
+        is_expected.to be_able_to(:destroy, collection)
+        is_expected.to be_able_to(:destroy, solr_document)
+        is_expected.to be_able_to(:deposit, collection)
+        is_expected.to be_able_to(:deposit, solr_document)
+        is_expected.to be_able_to(:view_admin_show, collection)
+        is_expected.to be_able_to(:view_admin_show, solr_document)
+        is_expected.to be_able_to(:read, collection)
+        is_expected.to be_able_to(:read, solr_document)
+        is_expected.to be_able_to(:manage_discovery, collection)
+      end
+    end
+
+    context 'through its group memberships' do
+      let!(:role) { FactoryBot.create(:collection_manager_role) }
+      let(:user) { FactoryBot.create(:user) }
+      let(:hyrax_group) { FactoryBot.create(:group, name: 'collection_management_group') }
+
+      before do
+        hyrax_group.roles << role
+        hyrax_group.add_members_by_id(user.id)
+      end
+
+      it 'allows all abilities' do # rubocop:disable RSpec/ExampleLength
+        is_expected.to be_able_to(:manage, Collection)
+        is_expected.to be_able_to(:manage_any, Collection)
+        is_expected.to be_able_to(:create, Collection)
+        is_expected.to be_able_to(:create_any, Collection)
+        is_expected.to be_able_to(:read_any, Collection)
+        is_expected.to be_able_to(:view_admin_show_any, Collection)
+        is_expected.to be_able_to(:edit, collection)
+        is_expected.to be_able_to(:edit, solr_document)
+        is_expected.to be_able_to(:update, collection)
+        is_expected.to be_able_to(:update, solr_document)
+        is_expected.to be_able_to(:destroy, collection)
+        is_expected.to be_able_to(:destroy, solr_document)
+        is_expected.to be_able_to(:deposit, collection)
+        is_expected.to be_able_to(:deposit, solr_document)
+        is_expected.to be_able_to(:view_admin_show, collection)
+        is_expected.to be_able_to(:view_admin_show, solr_document)
+        is_expected.to be_able_to(:read, collection)
+        is_expected.to be_able_to(:read, solr_document)
+        is_expected.to be_able_to(:manage_discovery, collection)
+      end
     end
   end
 
   context 'when a user has a Collections Editor role' do
-    let(:user) { FactoryBot.create(:collection_editor) }
-    let!(:collection) { build(:collection_lw, with_permission_template: true, collection_type_gid: collection_type_gid) }
+    # TODO: why does the destroy test fail if we build the collection instead of creating it?
+    let!(:collection) { create(:collection_lw, with_permission_template: true, collection_type_gid: collection_type_gid) }
     let!(:solr_document) { SolrDocument.new(collection.to_solr) }
 
-    it 'allows most abilities' do # rubocop:disable RSpec/ExampleLength
-      is_expected.to be_able_to(:create, Collection)
-      is_expected.to be_able_to(:view_admin_show_any, Collection)
-      is_expected.to be_able_to(:edit, collection)
-      is_expected.to be_able_to(:edit, solr_document) # defined in solr_document_ability.rb
-      is_expected.to be_able_to(:update, collection)
-      is_expected.to be_able_to(:update, solr_document) # defined in solr_document_ability.rb
-      is_expected.to be_able_to(:deposit, collection)
-      is_expected.to be_able_to(:deposit, solr_document)
-      is_expected.to be_able_to(:view_admin_show, collection)
-      is_expected.to be_able_to(:view_admin_show, solr_document)
-      is_expected.to be_able_to(:read, collection)
-      is_expected.to be_able_to(:read, solr_document) # defined in solr_document_ability.rb
+    context 'through its User roles' do
+      let(:user) { FactoryBot.create(:collection_editor) }
+
+      it 'allows most abilities' do # rubocop:disable RSpec/ExampleLength
+        is_expected.to be_able_to(:create, Collection)
+        is_expected.to be_able_to(:create_any, Collection)
+        is_expected.to be_able_to(:read_any, Collection)
+        is_expected.to be_able_to(:view_admin_show_any, Collection)
+        is_expected.to be_able_to(:edit, collection)
+        is_expected.to be_able_to(:edit, solr_document)
+        is_expected.to be_able_to(:update, collection)
+        is_expected.to be_able_to(:update, solr_document)
+        is_expected.to be_able_to(:view_admin_show, collection)
+        is_expected.to be_able_to(:view_admin_show, solr_document)
+        is_expected.to be_able_to(:read, collection)
+        is_expected.to be_able_to(:read, solr_document)
+      end
+
+      it 'denies destroy ability' do
+        is_expected.not_to be_able_to(:destroy, collection)
+        is_expected.not_to be_able_to(:destroy, solr_document) # defined in solr_document_ability.rb
+      end
+
+      it 'denies manage_discovery ability' do
+        is_expected.not_to be_able_to(:manage_discovery, collection)
+      end
     end
 
-    it 'denies destroy ability' do
-      is_expected.not_to be_able_to(:destroy, collection)
-      is_expected.not_to be_able_to(:destroy, solr_document) # defined in solr_document_ability.rb
+    context 'through its group memberships' do
+      let!(:role) { FactoryBot.create(:collection_editor_role) }
+      let(:user) { FactoryBot.create(:user) }
+      let(:hyrax_group) { FactoryBot.create(:group, name: 'collection_editing_group') }
+
+      before do
+        hyrax_group.roles << role
+        hyrax_group.add_members_by_id(user.id)
+      end
+
+      it 'allows most abilities' do # rubocop:disable RSpec/ExampleLength
+        is_expected.to be_able_to(:create, Collection)
+        is_expected.to be_able_to(:create_any, Collection)
+        is_expected.to be_able_to(:read_any, Collection)
+        is_expected.to be_able_to(:view_admin_show_any, Collection)
+        is_expected.to be_able_to(:edit, collection)
+        is_expected.to be_able_to(:edit, solr_document)
+        is_expected.to be_able_to(:update, collection)
+        is_expected.to be_able_to(:update, solr_document)
+        is_expected.to be_able_to(:view_admin_show, collection)
+        is_expected.to be_able_to(:view_admin_show, solr_document)
+        is_expected.to be_able_to(:read, collection)
+        is_expected.to be_able_to(:read, solr_document)
+      end
+
+      it 'denies destroy ability' do
+        is_expected.not_to be_able_to(:destroy, collection)
+        is_expected.not_to be_able_to(:destroy, solr_document) # defined in solr_document_ability.rb
+      end
+
+      it 'denies manage_discovery ability' do
+        is_expected.not_to be_able_to(:manage_discovery, collection)
+      end
     end
   end
 
   context 'when a user has a Collections Reader role' do
-    let(:user) { FactoryBot.create(:collection_reader) }
-    let!(:collection) { build(:collection_lw, with_permission_template: true, collection_type_gid: collection_type_gid) }
+    let!(:collection) { create(:collection_lw, with_permission_template: true, collection_type_gid: collection_type_gid) }
     let!(:solr_document) { SolrDocument.new(collection.to_solr) }
 
-    it 'allows read abilities' do # rubocop:disable RSpec/ExampleLength
-      is_expected.to be_able_to(:read_any, Collection)
-      is_expected.to be_able_to(:view_admin_show_any, Collection)
-      is_expected.to be_able_to(:view_admin_show, collection)
-      is_expected.to be_able_to(:view_admin_show, solr_document)
-      is_expected.to be_able_to(:read, collection)
-      is_expected.to be_able_to(:read, solr_document) # defined in solr_document_ability.rb
+    context 'through its User roles' do
+      let(:user) { FactoryBot.create(:collection_reader) }
+
+      it 'allows read abilities' do # rubocop:disable RSpec/ExampleLength
+        is_expected.to be_able_to(:read_any, Collection)
+        is_expected.to be_able_to(:view_admin_show_any, Collection)
+        is_expected.to be_able_to(:view_admin_show, collection)
+        is_expected.to be_able_to(:view_admin_show, solr_document)
+        is_expected.to be_able_to(:read, collection)
+        is_expected.to be_able_to(:read, solr_document)
+      end
+
+      it 'denies most abilities' do
+        # TODO: This fails due to :everyone_can_create_curation_concerns being included in
+        # Ability.ability_logic. Uncomment after :everyone_can_create_curation_concerns
+        # is removed from ability_logic (Work roles must be completed first)
+        # is_expected.not_to be_able_to(:create, Collection)
+        is_expected.not_to be_able_to(:edit, collection)
+        is_expected.not_to be_able_to(:edit, solr_document)
+        is_expected.not_to be_able_to(:update, collection)
+        is_expected.not_to be_able_to(:update, solr_document)
+        is_expected.not_to be_able_to(:deposit, collection)
+        is_expected.not_to be_able_to(:deposit, solr_document)
+        is_expected.not_to be_able_to(:destroy, collection)
+        is_expected.not_to be_able_to(:destroy, solr_document) # defined in solr_document_ability.rb
+        is_expected.not_to be_able_to(:manage_discovery, collection)
+      end
     end
 
-    # TODO(bkiahstroud): fails due to permissions granted by the registered Hyrax::Group
-    xit 'denies most abilities' do
-      is_expected.not_to be_able_to(:manage, Collection)
-      is_expected.not_to be_able_to(:create, Collection)
-      is_expected.not_to be_able_to(:edit, collection)
-      is_expected.not_to be_able_to(:edit, solr_document) # defined in solr_document_ability.rb
-      is_expected.not_to be_able_to(:update, collection)
-      is_expected.not_to be_able_to(:update, solr_document) # defined in solr_document_ability.rb
-      is_expected.not_to be_able_to(:deposit, collection)
-      is_expected.not_to be_able_to(:deposit, solr_document)
-      is_expected.not_to be_able_to(:destroy, collection)
-      is_expected.not_to be_able_to(:destroy, solr_document) # defined in solr_document_ability.rb
+    context 'through its group memberships' do
+      let!(:role) { FactoryBot.create(:collection_reader_role) }
+      let(:user) { FactoryBot.create(:user) }
+      let(:hyrax_group) { FactoryBot.create(:group, name: 'collection_reader_group') }
+
+      before do
+        hyrax_group.roles << role
+        hyrax_group.add_members_by_id(user.id)
+      end
+
+      it 'allows read abilities' do # rubocop:disable RSpec/ExampleLength
+        is_expected.to be_able_to(:read_any, Collection)
+        is_expected.to be_able_to(:view_admin_show_any, Collection)
+        is_expected.to be_able_to(:view_admin_show, collection)
+        is_expected.to be_able_to(:view_admin_show, solr_document)
+        is_expected.to be_able_to(:read, collection)
+        is_expected.to be_able_to(:read, solr_document)
+      end
+
+      it 'denies most abilities' do
+        # TODO: This fails due to :everyone_can_create_curation_concerns being included in
+        # Ability.ability_logic. Uncomment after :everyone_can_create_curation_concerns
+        # is removed from ability_logic (Work roles must be completed first)
+        # is_expected.not_to be_able_to(:create, Collection)
+        is_expected.not_to be_able_to(:edit, collection)
+        is_expected.not_to be_able_to(:edit, solr_document)
+        is_expected.not_to be_able_to(:update, collection)
+        is_expected.not_to be_able_to(:update, solr_document)
+        is_expected.not_to be_able_to(:deposit, collection)
+        is_expected.not_to be_able_to(:deposit, solr_document)
+        is_expected.not_to be_able_to(:destroy, collection)
+        is_expected.not_to be_able_to(:destroy, solr_document) # defined in solr_document_ability.rb
+        is_expected.not_to be_able_to(:manage_discovery, collection)
+      end
     end
   end
 
@@ -142,6 +269,7 @@ RSpec.describe 'CollectionAbility' do
       is_expected.to be_able_to(:view_admin_show, solr_document)
       is_expected.to be_able_to(:read, collection) # edit access grants read and write
       is_expected.to be_able_to(:read, solr_document) # defined in solr_document_ability.rb
+      is_expected.to be_able_to(:manage_discovery, collection)
     end
 
     it 'denies manage ability' do
@@ -181,6 +309,7 @@ RSpec.describe 'CollectionAbility' do
       is_expected.not_to be_able_to(:destroy, solr_document) # defined in solr_document_ability.rb
       is_expected.not_to be_able_to(:read, collection)
       is_expected.not_to be_able_to(:read, solr_document) # defined in solr_document_ability.rb
+      is_expected.not_to be_able_to(:manage_discovery, collection)
     end
   end
 
@@ -216,6 +345,7 @@ RSpec.describe 'CollectionAbility' do
       is_expected.not_to be_able_to(:destroy, solr_document) # defined in solr_document_ability.rb
       is_expected.not_to be_able_to(:deposit, collection)
       is_expected.not_to be_able_to(:deposit, solr_document)
+      is_expected.not_to be_able_to(:manage_discovery, collection)
     end
   end
 
@@ -239,6 +369,7 @@ RSpec.describe 'CollectionAbility' do
       is_expected.not_to be_able_to(:view_admin_show, solr_document)
       is_expected.not_to be_able_to(:read, collection)
       is_expected.not_to be_able_to(:read, solr_document) # defined in solr_document_ability.rb
+      is_expected.not_to be_able_to(:manage_discovery, collection)
     end
   end
 

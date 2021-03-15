@@ -25,6 +25,27 @@ module Hyrax
           end
         end
       end
+
+      # TODO(bkiahstroud): documentation (or remove? needed?)
+      def groups_with_edit_roles_for(record_type:)
+        record_type = record_type.to_s.downcase
+        edit_groups = []
+
+        # TODO: handle other record types (work, adminset, user, etc.)
+        case record_type
+        when 'collection'
+          Hyrax::Group.find_each do |group|
+            edit_roles = ['collection_manager', 'collection_editor']
+            group_roles = group.roles.map(&:name)
+
+            edit_groups << group.name if (edit_roles & group_roles).present?
+          end
+        else
+          raise StandardError, "#{record_type} is not a valid record type to check for groups with edit roles"
+        end
+
+        edit_groups
+      end
     end
   end
 end

@@ -16,13 +16,21 @@
   }
 }
 
-
 @media (min-width: $screen-sm-min) {
   .logo-set {
     display: flex;
     flex-direction: column;
     justify-content: center;
     flex-direction: column;
+  }
+  // sets the home page tabs to use flex rather than columns
+  // allows full width if tabs are turned off with feature flipper
+  .home-content {
+    display: flex;
+    justify-content: space-between;
+  }
+  .home-tabs-left {
+    min-width: 50%;
   }
 }
 

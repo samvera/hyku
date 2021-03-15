@@ -1,6 +1,7 @@
 # Override from hyrax 2.5.1 to add methods to:
 # hide featured researcher
 # hide featured works
+# hide recently uploaded
 # hide share button
 module Hyrax
   class HomepagePresenter
@@ -48,6 +49,11 @@ module Hyrax
     # changed to add feature flag for featured work
     def display_featured_works?
       Flipflop.show_featured_works?
+    end
+
+    # changed to add feature flag for recently uploaded
+    def display_recently_uploaded?
+      Flipflop.show_recently_uploaded?
     end
 
     private

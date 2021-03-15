@@ -191,6 +191,10 @@ es:
             active: Activo
             pending: Pendiente
           status_label: Estado
+  permissions:
+    collections:
+      cannot:
+        manage_discovery: No tienes permiso para cambiar la configuración de descubrimiento de esta colección
   proprietor:
     accounts:
       edit:

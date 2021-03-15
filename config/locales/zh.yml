@@ -191,6 +191,10 @@ zh:
             active: 活性
             pending: 有待
           status_label: 状态
+  permissions:
+    collections:
+      cannot:
+        manage_discovery: 您无权更改此收藏集的发现设置
   proprietor:
     accounts:
       edit:

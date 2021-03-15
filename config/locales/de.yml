@@ -195,6 +195,10 @@ de:
             active: Aktiv
             pending: noch ausstehend
           status_label: Status
+  permissions:
+    collections:
+      cannot:
+        manage_discovery: Sie haben keine Berechtigung, die Erkennungseinstellung dieser Sammlung zu ändern
   proprietor:
     accounts:
       edit:

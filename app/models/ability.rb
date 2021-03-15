@@ -4,10 +4,18 @@ class Ability
   include Hydra::Ability
   include Hyrax::Ability
 
+  # TODO: :everyone_can_create_curation_concerns allows everyone to create Collections,
+  # FileSets, and Works. Because we are developing roles to explicitly grant creation
+  # permissions specifically, this will need to be removed from the ability logic after
+  # Work roles have been completed (as to not disrupt current use).
+  # Once removed, update the following specs:
+  # - spec/abilities/collection_ability_spec.rb (collection reader context)
+  # - spec/features/collection_reader_role_spec.rb (specs testing creation)
   self.ability_logic += %i[
     everyone_can_create_curation_concerns
     group_permissions
     superadmin_permissions
+    collection_roles
   ]
 
   # Override method from blacklight-access_controls-0.6.2 to define registered to include
@@ -29,11 +37,8 @@ class Ability
     @user_groups
   end
 
-  # NOTE: This is an alias for #user_groups to clarify what the method is used for.
-  # This is necessary because #user_groups overrides a method from a gem. See
-  # Ability#user_groups for more information.
   def group_aware_role_checker
-    user_groups
+    @group_aware_role_checker ||= GroupAwareRoleChecker.new(user: current_user)
   end
 
   # Define any customized permissions here.
@@ -59,18 +64,6 @@ class Ability
     can :manage, Hyrax::Group
   end
 
-  # Override method from Hyrax v2.5.1
-  def editor_abilities
-    can :read, ContentBlock
-    can :read, :admin_dashboard if admin?
-    can :update, ContentBlock if admin?
-    can :edit, ::SolrDocument do |solr_doc|
-      return true if admin?
-
-      solr_doc.collection? && collection_manager? || collection_editor?
-    end
-  end
-
   def superadmin_permissions
     return unless superadmin?
 
@@ -82,25 +75,8 @@ class Ability
     current_user.has_role? :superadmin
   end
 
-  # NOTE: Override method from Hyrax 2.9.0 to take roles
-  # on the User into account instead of only looking at #group_aware_role_checker.
   # TODO: move method to GroupAwareRoleChecker, or use the GroupAwareRoleChecker
   def admin?
-    current_user.has_role?(:admin, Site.instance) || group_aware_role_checker.include?(admin_group_name)
-  end
-
-  # TODO: move method to GroupAwareRoleChecker, or use the GroupAwareRoleChecker
-  def collection_manager?
-    current_user.has_role?(:collection_manager, Site.instance)
-  end
-
-  # TODO: move method to GroupAwareRoleChecker, or use the GroupAwareRoleChecker
-  def collection_editor?
-    current_user.has_role?(:collection_editor, Site.instance)
-  end
-
-  # TODO: move method to GroupAwareRoleChecker, or use the GroupAwareRoleChecker
-  def collection_reader?
-    current_user.has_role?(:collection_reader, Site.instance)
+    current_user.has_role?(:admin, Site.instance) || user_groups.include?(admin_group_name)
   end
 end

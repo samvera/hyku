@@ -197,6 +197,10 @@ fr:
             active: actif
             pending: en attendant
           status_label: Statut
+  permissions:
+    collections:
+      cannot:
+        manage_discovery: Vous n'êtes pas autorisé à modifier le paramètre de découverte de cette collection
   proprietor:
     accounts:
       edit:

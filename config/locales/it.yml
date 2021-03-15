@@ -191,6 +191,10 @@ it:
             active: Attivo
             pending: in attesa di
           status_label: Stato
+  permissions:
+    collections:
+      cannot:
+        manage_discovery: Non disponi dell'autorizzazione per modificare l'impostazione di rilevamento di questa raccolta
   proprietor:
     accounts:
       edit:

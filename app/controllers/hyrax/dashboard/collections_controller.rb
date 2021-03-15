@@ -51,6 +51,7 @@ module Hyrax
         end
       end
 
+      # TODO: need to #authorize! the specific CollectionType trying to be created?
       def new
         # Coming from the UI, a collection type id should always be present.  Coming from the API, if a collection type id is not specified,
         # use the default collection type (provides backward compatibility with versions < Hyrax 2.1.0)
@@ -134,6 +135,9 @@ module Hyrax
       end
 
       def update
+        # OVERRIDE: ensure user is allowed to change visibility
+        authorize! :manage_discovery, @collection if collection_params[:visibility].present? && @collection.visibility != collection_params[:visibility]
+
         unless params[:update_collection].nil?
           process_banner_input
           process_logo_input

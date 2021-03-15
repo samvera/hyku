@@ -1,14 +1,19 @@
 <%# Override from hyrax 2.5.1 to add feature flags to show/hide:
   featured researcher
   featured works
+  recently_uploaded
 %>
-<div class="col-xs-12 col-sm-6">
+
+<div class="<%= @presenter.display_featured_works? || @presenter.display_recently_uploaded? ? 'home-tabs-left' : ''%>">
   <ul id="homeTabs" class="nav nav-pills">
     <%# add check for featured works %>
     <% if @presenter.display_featured_works? %>
       <li class="active"><a href="#featured_container" data-toggle="tab" role="tab" id="featureTab"><%= t('hyrax.homepage.featured_works.tab_label') %></a></li>
     <% end %>
-    <li class="<%= @presenter.display_featured_works? ? '' : 'active' %>"><a href="#recently_uploaded" data-toggle="tab" role="tab" id="recentTab"><%= t('hyrax.homepage.recently_uploaded.tab_label') %></a></li>
+    <%# add check for recently uploaded %>
+    <% if @presenter.display_recently_uploaded? %>
+      <li class="<%= @presenter.display_featured_works? ? '' : 'active' %>"><a href="#recently_uploaded" data-toggle="tab" role="tab" id="recentTab"><%= t('hyrax.homepage.recently_uploaded.tab_label') %></a></li>
+    <% end %>
   </ul>
   
   <div class="tab-content">
@@ -18,14 +23,16 @@
         <%= render 'featured_works' %>
       </div>
     <% end %>
-    <div class="<%= @presenter.display_featured_works? ? 'tab-pane fade' : 'tab-pane active in' %>" id="recently_uploaded" role="tabpanel" aria-labelledby="recentTab">
-      <%= render 'recently_uploaded', recent_documents: @recent_documents %>
-    </div>
+    <%# add check for recently_uploaded %>
+    <% if @presenter.display_recently_uploaded? %>
+      <div class="<%= @presenter.display_featured_works? ? 'tab-pane fade' : 'tab-pane active in' %>" id="recently_uploaded" role="tabpanel" aria-labelledby="recentTab">
+        <%= render 'recently_uploaded', recent_documents: @recent_documents %>
+      </div>
+      <% end %>
   </div>
 </div><!-- /.col-xs-6 -->
 
-<div class="col-xs-12 col-sm-6">
-
+<div class="home-tabs-right">
   <ul class="nav nav-pills" role="tablist">
     <li class="active"><a aria-expanded="true" href="#tab-col2-first" role="tab" data-toggle="tab"><%= t('hyrax.homepage.admin_sets.title') %></a></li>
     <%# add check for featured researcher %>

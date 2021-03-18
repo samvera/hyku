@@ -11,7 +11,6 @@ module ActiveJobTenant
 
   module ClassMethods
     def deserialize(job_data)
-      Honeybadger.context(job_data: job_data)
       super.tap do |job|
         job.tenant = job_data['tenant']
         job.current_account = nil

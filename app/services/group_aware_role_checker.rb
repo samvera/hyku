@@ -29,6 +29,7 @@ class GroupAwareRoleChecker
 
   # Check for the presence of the passed role_name in the User's Roles and
   # the User's Hyrax::Group's Roles.
+  # TODO: investigate why this method causes spec/features/appearance_theme_spec.rb to fail
   def has_group_aware_role?(role_name)
     return false if @user.new_record?
 

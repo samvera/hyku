@@ -28,6 +28,7 @@ Jump In: [![Slack Status](http://slack.samvera.org/badge.svg)](http://slack.samv
   * [Roles and Auth](#roles-and-auth)
     * [Auth-related Overrides](#auth-related-overrides)
     * [Seeding Default Roles and Groups](#seeding-default-roles-and-groups)
+    * [Creating New Sets of Roles](#creating-new-sets-of-roles)
   * [Development dependencies](#development-dependencies)
     * [Postgres](#postgres) 
   * [Importing](#importing)
@@ -201,6 +202,10 @@ To manually seed default `Roles` and `Hyrax::Groups` _across all tenants_, run t
 ```bash
 rake hyku:seed:default_roles_and_groups
 ```
+
+### Creating New Sets of Roles
+
+See [GROUPS_WITH_ROLES.md](GROUPS_WITH_ROLES.md)
 
 ## Development Dependencies
 

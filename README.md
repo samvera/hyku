@@ -26,6 +26,8 @@ Jump In: [![Slack Status](http://slack.samvera.org/badge.svg)](http://slack.samv
   * [Single Tenant Mode](#single-tenancy)
   * [Switching accounts](#switching-accounts)
   * [Roles and Auth](#roles-and-auth)
+    * [Auth-related Overrides](#auth-related-overrides)
+    * [Seeding Default Roles and Groups](#seeding-default-roles-and-groups)
   * [Development dependencies](#development-dependencies)
     * [Postgres](#postgres) 
   * [Importing](#importing)
@@ -180,6 +182,16 @@ AccountElevator.switch!('repo.example.com')
 ```
 
 ## Roles and Auth
+### Auth-related Overrides
+
+_Some_ (not all) auth-related changes can be found in [config/initializers/permissions_overrides.rb](config/initializers/permissions_overrides.rb).
+Overrides in this file are generally small in scope that did not necessitate bringing an entire file into the local repo to make changes
+(e.g. overriding an individual method in a class).
+
+Other overrides to Hyku, Hyrax, and other dependencies can be found throughout the repository. These are denoted with `OVERRIDE` code comments.
+
+**Note**: not all overrides denoted with an `OVERRIDE` comment are auth-related.
+
 ### Seeding Default Roles and Groups
 
 Default `Roles` and `Hyrax::Groups` are seeded into an account (tenant) at creation time (see [CreateAccount#create_defaults](app/services/create_account.rb)).

@@ -2,7 +2,7 @@
 <% provide :page_header do %>
   <h1>
     <span class="fa fa-users"></span>
-    <%= "#{t('hyku.admin.groups.title.edit')}: #{@group.name}" %>
+    <%= "#{t('hyku.admin.groups.title.edit')}: #{@group.humanized_name}" %>
   </h1>
 <% end %>
 
@@ -10,7 +10,7 @@
 <div class="panel panel-default">
   <div class="panel-body">
     <blockquote class="callout callout-danger callout-with-action">
-      <h3><%= t('hyku.admin.groups.title.delete', group: @group.name) %></h3>
+      <h3><%= t('hyku.admin.groups.title.delete', group: @group.humanized_name) %></h3>
       <p>
       <%= t('hyku.admin.groups.action.remove.description') %>
       </p>

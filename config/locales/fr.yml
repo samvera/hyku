@@ -80,6 +80,8 @@ fr:
         label:
           actions: actes
           created_at: date créée
+          description: Description
+          humanized_name: Nom
           members: Utilisateurs
           name: prénom
           per_page: par page

@@ -18,6 +18,7 @@ module Admin
 
     def create
       new_group = Hyrax::Group.new(group_params)
+      new_group.name = group_params[:humanized_name].gsub(" ", "_").downcase
       if new_group.save
         redirect_to admin_groups_path, notice: t('hyku.admin.groups.flash.create.success', group: new_group.name)
       elsif new_group.invalid?
@@ -34,11 +35,12 @@ module Admin
     end
 
     def update
+      @group.name = group_params[:humanized_name].gsub(" ", "_").downcase
       if @group.update(group_params)
-        redirect_to admin_groups_path, notice: t('hyku.admin.groups.flash.update.success', group: @group.name)
+        redirect_to admin_groups_path, notice: t('hyku.admin.groups.flash.update.success', group: @group.humanized_name)
       else
         redirect_to edit_admin_group_path(@group), flash: {
-          error: t('hyku.admin.groups.flash.update.failure', group: @group.name)
+          error: t('hyku.admin.groups.flash.update.failure', group: @group.humanized_name)
         }
       end
     end
@@ -52,10 +54,10 @@ module Admin
 
     def destroy
       if @group.destroy
-        redirect_to admin_groups_path, notice: t('hyku.admin.groups.flash.destroy.success', group: @group.name)
+        redirect_to admin_groups_path, notice: t('hyku.admin.groups.flash.destroy.success', group: @group.humanized_name)
       else
         logger.error("Hyrax::Group id:#{@group.id} could not be destroyed")
-        redirect_to admin_groups_path flash: { error: t('hyku.admin.groups.flash.destroy.failure', group: @group.name) }
+        redirect_to admin_groups_path flash: { error: t('hyku.admin.groups.flash.destroy.failure', group: @group.humanized_name) }
       end
     end
 
@@ -66,7 +68,7 @@ module Admin
       end
 
       def group_params
-        params.require(:group).permit(:name, :description)
+        params.require(:group).permit(:name, :humanized_name, :description)
       end
 
       def page_number

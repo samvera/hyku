@@ -80,6 +80,8 @@ en:
         label:
           actions: Actions
           created_at: Date Created
+          description: Description
+          humanized_name: Name
           members: Users
           name: Name
           per_page: per page

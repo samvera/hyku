@@ -80,6 +80,8 @@ pt-BR:
         label:
           actions: Ações
           created_at: Data Criada
+          description: Descrição
+          humanized_name: Nome
           members: Comercial
           name: Nome
           per_page: por página

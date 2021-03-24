@@ -80,6 +80,8 @@ es:
         label:
           actions: Comportamiento
           created_at: Fecha de creacion
+          description: Descripción
+          humanized_name: Nombre
           members: Usuarios
           name: Nombre
           per_page: por página

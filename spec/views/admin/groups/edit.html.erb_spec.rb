@@ -22,7 +22,7 @@ RSpec.describe 'admin/groups/edit', type: :view do
     end
 
     it 'has an input for name' do
-      expect(rendered).to have_selector('input', id: 'group_name')
+      expect(rendered).to have_selector('input', id: 'group_humanized_name')
     end
 
     it 'has a text area for description' do

@@ -80,6 +80,8 @@ zh:
         label:
           actions: 操作
           created_at: 创建日期
+          description: 描述
+          humanized_name: 姓名
           members: 用户
           name: 名称
           per_page: 每页

@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :group, class: Hyrax::Group do
     sequence(:name) { |_n| "group-#{srand}" }
+    sequence(:humanized_name) { |_n| "Group #{name}" }
     sequence(:description) { |_n| "Somthing about group-#{srand}" }
 
     transient do

@@ -8,8 +8,8 @@
 <div class="panel panel-default">
   <%= simple_form_for @group, url: target_path do |f| %>
     <div class="panel-body">
-      <%= f.input :name %>
-      <%= f.input :description, as: :text %>
+      <%= f.input :humanized_name, label: t('hyku.admin.groups.label.humanized_name'), required: true %>
+      <%= f.input :description, as: :text, label: t('hyku.admin.groups.label.description'), hint: '' %>
     </div>
     <div class="panel-footer text-right">
       <%= link_to t('simple_form.cancel'), admin_groups_path, class: 'btn btn-link action-cancel' %>

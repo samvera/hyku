@@ -79,20 +79,18 @@ services:
     networks:
       internal:
 
-  base:
-    image: hyku/base:latest
-    build:
-      context: .
-      dockerfile: Dockerfile.base
-    env_file:
-      - .env
-
   app:
     build: .
-    image: hyku/main:latest
+    image: hyku:latest
     env_file:
       - .env
     environment:
+      - DB_PORT=5432
+      - DB_HOST=db
+      - FCREPO_PORT=8080
+      - FCREPO_HOST=fcrepo
+      - SOLR_PORT=8983
+      - SOLR_HOST=solr
       - FEDORA_URL=http://fcrepo:8080/fcrepo/rest
       - IN_DOCKER=true
       - LD_LIBRARY_PATH=/opt/fits/tools/mediainfo/linux
@@ -139,9 +137,7 @@ services:
       - initialize_app
       - db_migrate
     expose:
-      - 80
-    # ports:
-      # 3000:80 # uncomment this if you dont use dory or another proxy
+      - 3000
 
   workers:
     extends:
@@ -159,6 +155,7 @@ services:
   initialize_app:
     extends:
       service: app
+    entrypoint: ["sh", "-c"]
     command: bundle exec rails zookeeper:upload
     depends_on:
       - zoo1
@@ -166,7 +163,8 @@ services:
   db_migrate:
     extends:
       service: app
-    command: bundle exec rails db:migrate
+    entrypoint: ["sh", "-c"]
+    command: db-migrate-seed.sh
     depends_on:
       - db
 

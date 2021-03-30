@@ -65,7 +65,7 @@ module Hyrax
 
     private
 
-      # Return 5 collections
+      # Return 6 collections
       def collections(rows: 6)
         builder = Hyrax::CollectionSearchBuilder.new(self)
                                                 .rows(rows)

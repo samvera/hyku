@@ -1,0 +1,16 @@
+<% # Note: overriding Hyrax 2.9 for client theming -- removed item keywords and depositor from partial %>
+  <div>
+    <%= link_to [main_app, featured] do %>
+      <%= render_thumbnail_tag(featured, {suppress_link: true}, class: 'img-responsive center-block') %>
+    <% end %>
+    <div class="featured-item-title">
+      <span class="sr-only"><%= t('hyrax.homepage.featured_works.document.title_label') %></span>
+      <h3>
+        <%= link_to [main_app, featured] do %>
+          <%= featured.title.first %>
+        <% end %>
+      </h3>
+    </div>
+    <%# Removed featured-item-depositor %>
+    <%# Removed item keywords %>
+  </div>

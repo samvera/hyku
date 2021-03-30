@@ -1,5 +1,5 @@
 .cultural_repository  {
-  
+
   ///////// NAVABAR /////////
 
   .clear-right {
@@ -38,24 +38,34 @@
   $navbar-height: 100px !important;
 
   ///////// END NAVABAR /////////
+  div#featured_works > div.featured-works-4-column-layout:nth-child(1n+5){ display: none !important; }
 
-  ol#featured_works > .col-xs-3:nth-child(1n+5){ display: none !important; }
+  div#featured_works > div.featured-works-6-column-layout:nth-child(2n+3), div#featured_works > div.featured-works-4-column-layout:nth-child(2n+3) {
+    @media screen and (max-width: 991px) and (min-width: 480px) {
+      clear: left;
+    }
+  }
 
   .featured-works-container, .recent-works-container, .collections-container {
 
     a {
-
       img {
-        height: 150px !important;
-        width: auto !important;
+        width: 150px !important;
         display: block !important;
         margin: 0 auto !important;
-        // border: 2px dashed #FF0000  !important;
-
-        @media screen and (max-width: 768px) and (min-width: 480px) {
-          height: 80px !important;
+        // Medium breakpoint
+        @media screen and (max-width: 1200px) and (min-width: 991px) {
+          width: 120px !important;
         }
-
+        // Small breakpoint
+        @media screen and (max-width: 991px) and (min-width: 769px) {
+          width: 325px !important;
+        }
+        // X-Small breakpoint
+        @media screen and (max-width: 768px) and (min-width: 480px) {
+          max-width: 320px;
+          width: 100%;
+        }
       }
     }
   }
@@ -85,16 +95,73 @@
     padding-bottom: 30px;
   }
 
+  .p-20 {
+    padding: 20px;
+  }
+
+  .mt-40-20 {
+    margin-top: 40px;
+
+    @media screen and (max-width: 991px) and (min-width: 480px) {
+      margin-top: 0px;
+      margin-bottom: 40px;
+    }
+  }
+
+  .mb-40-0 {
+    margin-bottom: 40px;
+
+    @media screen and (max-width: 991px) and (min-width: 480px) {
+      margin-bottom: 0px;
+    }
+  }
+
+    // remove the blur on the banner image
+    .image-masthead .background-container {
+      -webkit-filter: none;
+      filter: none;
+    }
+
+    .featured-item-title, .collection-item-title, .recent-doc-title {
+      text-align: center;
+
+      h3 {
+        font-size: 14px !important;
+        cursor: default;
+        pointer-events: none;
+        text-decoration: none;
+
+        a {
+          color: #000000;
+        }
+      }
+    }
+
  //////////// HOMEPAGE TEXT BLOCK ///////////
 
-
-  div.hidden-xs.hidden-sm.col-md-4.homepage-text-container {
+  div.home_page_text.homepage-text-container {
     margin-top: -150px;
     height: 343px;
     background-color: #fff;
     border: 1px solid #ddd;
+    overflow: hidden;
+
+    @media screen and (max-width: 991px) and (min-width: 480px) {
+      margin-top: 30px;
+      margin-bottom: 30px;
+      height: 0px;
+      // min-height: 1px;
+    }
   }
 
+  .fill-height-flex {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .fill-height-flex > div {
+    flex: 1;
+  }
   //////////// END HOMEPAGE TEXT BLOCK ///////////
 
 

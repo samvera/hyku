@@ -125,7 +125,7 @@ class ApplicationController < ActionController::Base
 
     # Find themes set on Site model, or return default
     def home_page_theme
-      current_account.sites&.first&.home_theme&.parameterize&.underscore || 'default_home'
+      current_account.sites&.first&.home_theme || 'default_home'
     end
 
     def show_page_theme

@@ -14,7 +14,9 @@ module Hyrax
         add_breadcrumbs
         @form = form_class.new
         @fonts = [@form.headline_font, @form.body_font]
-
+        @theme_information = YAML.load_file('config/themes.yml')
+        @theme_names = load_theme_names
+        
         flash[:alert] = t('hyrax.admin.appearances.show.forms.custom_css.warning')
       end
 
@@ -50,6 +52,18 @@ module Hyrax
           add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
           add_breadcrumb t(:'hyrax.admin.sidebar.configuration'), '#'
           add_breadcrumb t(:'hyrax.admin.sidebar.appearance'), request.path
+        end
+
+        def load_theme_names
+          theme_names = []
+          @theme_information.each do |theme, value_hash|
+            value_hash.each do |key, value|
+              if key == 'name'
+                theme_names << [value, theme]
+              end
+            end
+          end
+          theme_names
         end
     end
   end

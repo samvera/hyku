@@ -30,6 +30,7 @@
 //= require hyku/admin/appearance/colors
 //= require hyku/admin/appearance/default_images
 //= require hyku/admin/appearance/fonts
+//= require hyku/admin/appearance/themes
 //= require hyku/groups/per_page
 //= require hyku/groups/add_member
 //= require bootstrap-datepicker

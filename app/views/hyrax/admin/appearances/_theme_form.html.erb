@@ -1,20 +1,38 @@
 <%= simple_form_for @form.site, url: main_app.site_path(@form.site) do |f| %>
   <div class="panel-body">
     <div class="row">
-      <div class="col-sm-3">
-        <%= f.input :home_theme, collection: ["Default home", "Cultural Repository"], prompt: "Select home page theme...", required: false, label: 'Home Page Theme' %>
+      <div class="col-sm-6">
+        <% options = @theme_names.map { |g| [g[0], g[1], {'data-image' => asset_path("themes/#{g[1]}/#{g[1]}")}] } %>
+        <%= f.input :home_theme, label: 'Home Page Theme' do %>
+          <%= f.select :home_theme, options, {}, { prompt: 'Select home page theme...', class: 'form-control', data: { theme_info: @theme_information }} %>
+        <% end %>
+        <h4>Theme notes:</h4>
+        <ul id="theme-notes">
+          <li id="banner-image-notes">
+            This theme uses a custom banner image. You can upload an image on the <a href="/admin/appearance#banner_image" target="_blank">banner image tab</a>.
+          </li>
+          <li id="home-page-text-notes">
+            This theme uses home page text. You can enter home page text on the <%= link_to 'content blocks', edit_content_blocks_path, target: "_blank" %> section of the admin panel.
+          </li>
+          <li id="marketing-text-notes">
+            This theme uses marketing text. You can add marketing text on the <%= link_to 'content blocks', edit_content_blocks_path, target: "_blank" %> section of the admin panel.
+          </li>
+        </ul>
+      </div>
+      <div id="wireframe" class="col-sm-6">
+        <%= image_tag "themes/default_home/default_home", class: "img-responsive" %>
       </div>
     </div>
     <hr />
     <div class="row">
-      <div class="col-sm-3">
+      <div class="col-sm-6">
         <%= f.input :search_theme, collection: ["List view", "Gallery view", "Masonry view", "Slideshow view"], prompt: "Select search results page theme...", required: false, label: 'Search Results Page Theme' %>
         <small class="form-text text-muted">This will select a default view for the search results page. Users can select their preferred views on the search results page that will override this.</small>
       </div>
     </div>
     <hr />
     <div class="row">
-      <div class="col-sm-3">
+      <div class="col-sm-6">
         <%= f.input :show_theme, collection: ["Default show"], prompt: "Select show page theme...", required: false, label: 'Show Page Theme' %>
       </div>
     </div>

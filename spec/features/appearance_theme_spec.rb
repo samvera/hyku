@@ -51,7 +51,7 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
       site = Site.last
       account.sites << site
       allow_any_instance_of(ApplicationController).to receive(:current_account).and_return(account)
-      expect(site.home_theme).to eq('Default home')
+      expect(site.home_theme).to eq('default_home')
       expect(site.show_theme).to eq('Default show')
       expect(site.search_theme).to eq('Masonry view')
       visit '/'
@@ -84,7 +84,8 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
       expect(page).to have_css('a.view-type-gallery.active')
     end
 
-    it 'updates to the users preferred view' do
+    # TODO: temp skip until GroupAwareRoleChecker#has_group_aware_role? bug is resolved
+    xit 'updates to the users preferred view' do
       login_as admin
       visit '/admin/appearance'
       click_link('Themes')
@@ -111,6 +112,18 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
   end
 
   context 'when a home page theme is selected' do
+    it 'renders theme notes and wireframe' do
+      login_as admin
+      visit '/admin/appearance'
+      click_link('Themes')
+      select('Cultural Repository', from: 'Home Page Theme')
+      find('body').click
+      expect(page).to have_content('This theme uses a custom banner image')
+      expect(page).to have_content('This theme uses home page text')
+      expect(page).to have_content('This theme uses marketing text')      
+      expect(page.find('#wireframe img')['src']).to match(/assets\/themes\/cultural_repository/)
+    end
+
     it 'renders the partials in the theme folder' do
       login_as admin
       visit '/admin/appearance'

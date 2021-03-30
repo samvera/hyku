@@ -1,10 +1,11 @@
 RSpec.describe "hyrax/admin/appearances/show", type: :view do
-  let(:form) { AppearanceForm.new }
-
+  let(:form) { Hyrax::Forms::Admin::Appearance.new }
   before do
     without_partial_double_verification do
       allow(view).to receive(:admin_appearance_path).and_return('/path')
+      allow(view).to receive(:edit_content_blocks_path).and_return('/path')
       assign(:form, form)
+      @theme_names = {"default_home"=>{"banner_image"=>true, "featured_researcher"=>true, "home_page_text"=>false, "marketing_text"=>true, "name"=>"Default home"}, "cultural_repository"=>{"banner_image"=>true, "featured_researcher"=>false, "home_page_text"=>true, "marketing_text"=>true, "name"=>"Cultural Repository"}}
       render
     end
   end

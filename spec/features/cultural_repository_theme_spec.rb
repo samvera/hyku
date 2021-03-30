@@ -24,7 +24,7 @@ RSpec.describe 'Admin can select cultural repository theme', type: :feature, js:
       site = Site.last
       account.sites << site
       allow_any_instance_of(ApplicationController).to receive(:current_account).and_return(account)
-      expect(site.home_theme).to eq('Cultural Repository')
+      expect(site.home_theme).to eq('cultural_repository')
       visit '/'
       expect(page).to have_css('body.cultural_repository')
     end

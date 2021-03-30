@@ -47,7 +47,6 @@ RSpec.describe 'Admin can select cultural repository theme', type: :feature, js:
       expect(page).to have_css('form#search-form-header.cultural-repository.form-horizontal.search-form')
       expect(page).to have_css('ul#user_utility_links.cultural-repository.nav.navbar-nav.navbar-right')
       expect(page).to have_css('div.cultural-repository.facets')
-      expect(page).to have_css('div.cultural-repository.homepage-text-container')
       expect(page).to have_css('div.cultural-repository.featured-works-container')
       expect(page).to have_css('div.cultural-repository.recent-works-container')
       expect(page).to have_css('div.cultural-repository.collections-container')

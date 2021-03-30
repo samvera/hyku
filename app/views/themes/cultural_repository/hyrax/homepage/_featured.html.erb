@@ -1,8 +1,12 @@
-<% presenter = featured.presenter %>
-<li class="featured-item" data-id="<%= presenter.id %>">
-  <div class="row">
-    <div class="col-sm-10">
-      <%= render 'themes/cultural_repository/featured_fields', featured: presenter %>
-    </div>
+<% # April's note: overriding Hyrax 2.9 for client theming -- removed all hyrax theming %>
+<% if display_content_block? @home_text %>
+  <% presenter = featured.presenter %>
+  <div class="featured-works-4-column-layout col-xs-6 col-md-3" data-id="<%= presenter.id %>">
+    <%= render 'themes/cultural_repository/hyrax/homepage/featured_fields', featured: presenter %>
   </div>
-</li>
+  <% else %>
+    <% presenter = featured.presenter %>
+    <div class="featured-works-6-column-layout col-xs-6 col-md-2" data-id="<%= presenter.id %>">
+      <%= render 'themes/cultural_repository/hyrax/homepage/featured_fields', featured: presenter %>
+    </div>
+  <% end %>

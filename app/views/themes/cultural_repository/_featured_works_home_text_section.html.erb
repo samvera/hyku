@@ -1,17 +1,22 @@
-<div class="container"><!--- BEGIN FEATURED WORKS/HOME TEXT SECTION -->
+<div class="container mb-40"><!--- BEGIN FEATURED WORKS/HOME TEXT SECTION -->
   <div class="row">
     <!-- Adding a mobile style for the homepage text content block, hidden on md and lg -->
-    <div class="hidden-lg hidden-md col-sm-12 cultural-repository homepage-text-container">
+    <div class="hidden-lg hidden-md col-sm-12 cultural-repository fill-height-flex">
       <%= render 'themes/cultural_repository/home_text' if controller_name == 'homepage' %>
     </div>
-
-    <div class="col-sm-12 col-md-8 cultural-repository featured-works-container">
-      <h4>Featured Works</h4>
-        <%= render 'themes/cultural_repository/featured_works' %>
-
-    </div>
+    <% if display_content_block? @home_text %>
+      <div class="col-sm-12 col-md-8 cultural-repository featured-works-container">
+        <h4>Featured Works</h4>
+          <%= render 'themes/cultural_repository/hyrax/homepage/featured_works' %>
+      </div>
+    <% else %>
+      <div class="col-sm-12 cultural-repository featured-works-container">
+        <h4>Featured Works</h4>
+          <%= render 'themes/cultural_repository/hyrax/homepage/featured_works' %>
+      </div>
+    <% end %>
     <!-- Adding a desktop style for the homepage text content block, hidden on sm and xs -->
-    <div class="hidden-xs hidden-sm col-md-4 cultural-repository homepage-text-container">
+    <div class="hidden-xs hidden-sm col-md-4 cultural-repository">
       <%= render 'themes/cultural_repository/home_text' if controller_name == 'homepage' %>
     </div>
   </div>

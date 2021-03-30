@@ -80,6 +80,8 @@ en:
         label:
           actions: Actions
           created_at: Date Created
+          description: Description
+          humanized_name: Name
           members: Users
           name: Name
           per_page: per page
@@ -185,6 +187,10 @@ en:
             active: Active
             pending: Pending
           status_label: Status
+  permissions:
+    collections:
+      cannot:
+        manage_discovery: You do not have permission to change this Collection's discovery setting
   proprietor:
     accounts:
       edit:

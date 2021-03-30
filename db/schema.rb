@@ -295,6 +295,7 @@ ActiveRecord::Schema.define(version: 2021_03_24_150251) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "humanized_name"
   end
 
   create_table "job_io_wrappers", id: :serial, force: :cascade do |t|

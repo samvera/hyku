@@ -80,6 +80,8 @@ pt-BR:
         label:
           actions: Ações
           created_at: Data Criada
+          description: Descrição
+          humanized_name: Nome
           members: Comercial
           name: Nome
           per_page: por página
@@ -191,6 +193,10 @@ pt-BR:
             active: Ativo
             pending: Pendente
           status_label: Status
+  permissions:
+    collections:
+      cannot:
+        manage_discovery: Você não tem permissão para alterar a configuração de descoberta desta coleção
   proprietor:
     accounts:
       edit:

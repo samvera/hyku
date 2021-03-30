@@ -80,6 +80,8 @@ de:
         label:
           actions: Aktionen
           created_at: Erstellungsdatum
+          description: Beschreibung
+          humanized_name: Name
           members: Benutzer
           name: Name
           per_page: pro Seite
@@ -195,6 +197,10 @@ de:
             active: Aktiv
             pending: noch ausstehend
           status_label: Status
+  permissions:
+    collections:
+      cannot:
+        manage_discovery: Sie haben keine Berechtigung, die Erkennungseinstellung dieser Sammlung zu ändern
   proprietor:
     accounts:
       edit:

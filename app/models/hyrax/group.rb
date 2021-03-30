@@ -49,10 +49,6 @@ module Hyrax
       sipity_agent || create_sipity_agent!
     end
 
-    def hyphenated_name
-      self.name.gsub(" ", "-").downcase
-    end
-
     private
 
       def sipity_agent

@@ -80,6 +80,8 @@ fr:
         label:
           actions: actes
           created_at: date créée
+          description: Description
+          humanized_name: Nom
           members: Utilisateurs
           name: prénom
           per_page: par page
@@ -197,6 +199,10 @@ fr:
             active: actif
             pending: en attendant
           status_label: Statut
+  permissions:
+    collections:
+      cannot:
+        manage_discovery: Vous n'êtes pas autorisé à modifier le paramètre de découverte de cette collection
   proprietor:
     accounts:
       edit:

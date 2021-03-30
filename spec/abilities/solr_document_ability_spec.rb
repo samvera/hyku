@@ -1,4 +1,4 @@
-# NOTE(bkiahstroud): Override file from Hryax 2.5.1
+# OVERRIDE FILE from Hryax 2.5.1
 require 'cancan/matchers'
 
 RSpec.describe 'SolrDocumentAbility' do
@@ -8,10 +8,10 @@ RSpec.describe 'SolrDocumentAbility' do
   let(:user) { create(:user) }
   let(:current_user) { user }
 
-  # NOTE(bkiahstroud): Override to add specs for custom ability logic
+  # OVERRIDE: add specs for custom ability logic
   context 'with Collection solr doc' do
     let(:collection_type_gid) { create(:collection_type).gid }
-    let(:collection) { build(:collection_lw, with_permission_template: true, collection_type_gid: collection_type_gid) }
+    let(:collection) { create(:collection_lw, with_permission_template: true, collection_type_gid: collection_type_gid) }
     let!(:solr_document) { SolrDocument.new(collection.to_solr) }
 
     context 'when admin user' do
@@ -52,15 +52,10 @@ RSpec.describe 'SolrDocumentAbility' do
       let(:user) { FactoryBot.create(:collection_editor) }
 
       it 'allows most abilities' do
-        is_expected.to be_able_to(:manage, SolrDocument)
-        is_expected.to be_able_to(:manage_any, SolrDocument)
-        is_expected.to be_able_to(:create_any, SolrDocument)
-        is_expected.to be_able_to(:view_admin_show_any, SolrDocument)
         is_expected.to be_able_to(:edit, solr_document)
         is_expected.to be_able_to(:update, solr_document)
-        is_expected.to be_able_to(:deposit, solr_document)
-        is_expected.to be_able_to(:view_admin_show, solr_document)
         is_expected.to be_able_to(:read, solr_document)
+        is_expected.to be_able_to(:view_admin_show, solr_document)
       end
 
       it 'denies destroy ability' do
@@ -72,10 +67,10 @@ RSpec.describe 'SolrDocumentAbility' do
       let(:user) { FactoryBot.create(:collection_reader) }
 
       it 'allows read abilities' do
-      is_expected.to be_able_to(:read_any, SolrDocument)
-      is_expected.to be_able_to(:view_admin_show_any, SolrDocument)
-      is_expected.to be_able_to(:view_admin_show, solr_document)
-      is_expected.to be_able_to(:read, solr_document)
+        is_expected.to be_able_to(:read_any, SolrDocument)
+        is_expected.to be_able_to(:view_admin_show_any, SolrDocument)
+        is_expected.to be_able_to(:view_admin_show, solr_document)
+        is_expected.to be_able_to(:read, solr_document)
       end
 
       it 'denies most abilities' do

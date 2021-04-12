@@ -1,0 +1,35 @@
+.text_show {
+  dl.work-show dd {
+    border-bottom: 1px solid #ddd;
+    .tabular {
+      border-bottom: none;
+    }
+  }
+  dl.work-show {
+    font-weight: 700;
+    .tabular {
+      border-bottom: 1px solid #ddd;
+      font-size: 18px;
+      font-weight: 400;
+    }
+  }
+  
+  li.attribute, td.attribute {
+    font-size: 18px;
+  }
+  .relationships-box {
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+  }
+  .table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #ffffff;
+  }
+  tr.file_set.attributes td {
+    padding-top: 18px;
+  }
+  .representative-media {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+}

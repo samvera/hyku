@@ -129,7 +129,7 @@ class ApplicationController < ActionController::Base
     end
 
     def show_page_theme
-      current_account.sites&.first&.show_theme&.parameterize&.underscore || 'default_show'
+      current_account.sites&.first&.show_theme || 'default_show'
     end
 
     def search_results_theme

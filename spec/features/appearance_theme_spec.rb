@@ -52,7 +52,7 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
       account.sites << site
       allow_any_instance_of(ApplicationController).to receive(:current_account).and_return(account)
       expect(site.home_theme).to eq('default_home')
-      expect(site.show_theme).to eq('Default show')
+      expect(site.show_theme).to eq('default_show')
       expect(site.search_theme).to eq('Masonry view')
       visit '/'
       expect(page).to have_css('body.default_home.masonry_view.default_show')
@@ -121,7 +121,7 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
       expect(page).to have_content('This theme uses a custom banner image')
       expect(page).to have_content('This theme uses home page text')
       expect(page).to have_content('This theme uses marketing text')      
-      expect(page.find('#wireframe img')['src']).to match(/assets\/themes\/cultural_repository/)
+      expect(page.find('#home-wireframe img')['src']).to match(/assets\/themes\/cultural_repository/)
     end
 
     it 'renders the partials in the theme folder' do

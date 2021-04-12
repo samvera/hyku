@@ -1,16 +1,8 @@
-<%# Overide Hyrax 2.5.2 to add Relationships partial for Oer worktype %>
-
-<% content_for(:extra_body_classes, 'works-show ') %>
-
+<% content_for(:extra_body_classes, 'works-show text-show-theme-partial ') %>
 <% provide :page_title, @presenter.page_title %>
-
 <%= render 'shared/citations' %>
 <%= render './shared/additional_citations' %>
-<div class="row work-type">
-  <div class="col-xs-12">
-    <%= render 'work_type', presenter: @presenter %>
-  </div>
-  <div class="col-xs-12">&nbsp;</div>
+<div class="row">
   <div itemscope itemtype="http://schema.org/CreativeWork" class="col-xs-12">
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -24,20 +16,27 @@
               <%= render 'representative_media', presenter: @presenter, viewer: true %>
             </div>
           <% end %>
-          <div class="col-sm-3 text-center">
-            <%= render 'representative_media', presenter: @presenter, viewer: false unless @presenter.universal_viewer? %>
-            <%= render 'citations', presenter: @presenter %>
-            <%= render 'social_media' %>
+          <div class="col-sm-12">
+            <%= render "show_actions", presenter: @presenter %>
           </div>
-          <div class="col-sm-9">
+          <div class="<%= !@presenter.universal_viewer? ? 'col-sm-3' : '' %>">
+            <%= render 'representative_media', presenter: @presenter, viewer: false unless @presenter.universal_viewer? %>
+          </div>
+          <div class="<%= @presenter.universal_viewer? ? 'col-sm-8' : 'col-sm-6' %>">
             <%= render 'work_description', presenter: @presenter %>
             <%= render 'metadata', presenter: @presenter %>
           </div>
+          <div class="<%= @presenter.universal_viewer? ? 'col-sm-4' : 'col-sm-3' %>">
+            <div class='relationships-box'>
+              <%= render 'relationships', presenter: @presenter %>
+              <% if @presenter.class == Hyrax::OerPresenter %>
+                <%= render 'related_items', presenter: @presenter %>
+              <% end %>
+              <%= render 'social_media' %>
+              <%= render 'citations', presenter: @presenter %>
+            </div>
+          </div>
           <div class="col-sm-12">
-            <%= render 'relationships', presenter: @presenter %>
-            <% if @presenter.class == Hyrax::OerPresenter %>
-              <%= render 'hyrax/oers/related_items', presenter: @presenter %>
-            <% end %>
             <%= render 'items', presenter: @presenter %>
             <%# TODO: we may consider adding these partials in the future %>
             <%# = render 'sharing_with', presenter: @presenter %>

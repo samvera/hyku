@@ -1,0 +1,17 @@
+# These settings are to provide information about your theme
+# and should follow the format   
+# theme:
+#   name: Theme notes
+#   notes: Notes about the theme you want to display
+#   
+default_show:
+  name: Default show
+  notes: This is the default Hyku show page. It is recommended for use with cultural repositories.
+text_show:
+  name: Text based
+  notes: This text based show page is recommended for institutional repositories.
+  
+  
+  
+  
+

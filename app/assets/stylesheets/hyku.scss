@@ -339,6 +339,12 @@ a.restore-default-font, a.restore-default-color {
   margin-bottom: 0.75em;
 }
 
+.representative-media {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
 @media (min-width: $screen-lg-min) {
   a.restore-default-color {
     margin-top: 2em;

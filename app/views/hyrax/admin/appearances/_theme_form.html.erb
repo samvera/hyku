@@ -2,12 +2,15 @@
   <div class="panel-body">
     <div class="row">
       <div class="col-sm-6">
-        <% options = @theme_names.map { |g| [g[0], g[1], {'data-image' => asset_path("themes/#{g[1]}/#{g[1]}")}] } %>
+        <% options = @home_theme_names.map { |g| [g[0], g[1], {'data-image' => image_path("themes/#{g[1]}/#{g[1]}.jpg")}] } %>
         <%= f.input :home_theme, label: 'Home Page Theme' do %>
-          <%= f.select :home_theme, options, {}, { prompt: 'Select home page theme...', class: 'form-control', data: { theme_info: @theme_information }} %>
+          <%= f.select :home_theme, options, {}, { prompt: 'Select home page theme...', class: 'form-control', data: { theme_info: @home_theme_information }} %>
         <% end %>
+
         <h4>Theme notes:</h4>
-        <ul id="theme-notes">
+        <ul>
+          <li id="home-theme-notes">
+          </li>
           <li id="banner-image-notes">
             This theme uses a custom banner image. You can upload an image on the <a href="/admin/appearance#banner_image" target="_blank">banner image tab</a>.
           </li>
@@ -19,7 +22,7 @@
           </li>
         </ul>
       </div>
-      <div id="wireframe" class="col-sm-6">
+      <div id="home-wireframe" class="col-sm-6">
         <%= image_tag "themes/default_home/default_home", class: "img-responsive" %>
       </div>
     </div>
@@ -33,7 +36,18 @@
     <hr />
     <div class="row">
       <div class="col-sm-6">
-        <%= f.input :show_theme, collection: ["Default show"], prompt: "Select show page theme...", required: false, label: 'Show Page Theme' %>
+        <% options = @show_theme_names.map { |g| [g[0], g[1], {'data-image' => image_path("themes/#{g[1]}/#{g[1]}.jpg")}] } %>
+        <%= f.input :show_theme, label: 'Show Page Theme' do %>
+          <%= f.select :show_theme, options, {}, { prompt: 'Select show page theme...', class: 'form-control', data: { theme_info: @show_theme_information }} %>
+        <% end %>
+        <h4>Show Theme notes:</h4>
+        <ul>
+          <li id="show-theme-notes">
+          </li>
+        </ul>
+      </div>
+      <div id="show-wireframe" class="col-sm-6">
+        <%= image_tag "themes/default_show/default_show", class: "img-responsive" %>
       </div>
     </div>
     <hr />

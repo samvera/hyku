@@ -9,13 +9,11 @@ default_home:
   home_page_text: false
   marketing_text: true
   name: Default home
+  notes: This theme is the default Hyku view
 cultural_repository:
   banner_image: true
   featured_researcher: false
   home_page_text: true
   marketing_text: true
   name: Cultural Repository
-  
-  
-  
-  
+  notes: This theme is recommended for cultural repositories

@@ -6,13 +6,12 @@ metadata:
 data:
   DATABASE_HOST: {{ template "hyku.postgres.name" . }}
   FEDORA_URL: http://{{ template "hyku.fcrepo.name" . }}:8080/fcrepo/rest
-  RAILS_CACHE_STORE_URL: redis://{{ template "hyku.redis.name" . }}:6379/1 
+  RAILS_CACHE_STORE_URL: redis://{{ template "hyku.redis.name" . }}:6379/1
   REDIS_HOST: {{ template "hyku.redis.name" . }}
   REDIS_URL: redis://{{ template "hyku.redis.name" . }}:6379/1
   SIDEKIQ_TIMEOUT: {{ .Values.sidekiq.timeout | quote }}
   SOLR_URL: http://{{ template "hyku.solr.name" . }}:8983/solr/
   SETTINGS__SOLR__URL: http://{{ template "hyku.solr.name" . }}:8983/solr/
-  SETTINGS__ZOOKEEPER__CONNECTION_STR: {{ template "hyku.zookeeper.name" . }}:2181/configs
   {{- if eq .Values.env.configmap.SETTINGS__MULTITENANCY__ENABLED false }}
   SETTINGS__MULTITENANCY__ROOT_HOST: {{ .Values.ingress.host }}
   {{- end -}}

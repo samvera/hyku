@@ -91,7 +91,7 @@ services:
     volumes:
       - fcrepo:/data
     environment:
-      # - JAVA_OPTS=-Dfcrepo.modeshape.configuration="classpath:/config/jdbc-postgresql-s3/repository.json" -Dfcrepo.postgresql.host="db" -Dfcrepo.postgresql.username="postgres" -Dfcrepo.postgresql.password="DatabaseFTW" -Daws.accessKeyId="REPLACE_WITH_AWS_ID" -Daws.secretKey="REPLACE_WITH_AWS_SECRET_KEY" -Daws.bucket="REPLACE_WITH_BUCKET_NAME" 
+      # - JAVA_OPTS=-Dfcrepo.modeshape.configuration="classpath:/config/jdbc-postgresql-s3/repository.json" -Dfcrepo.postgresql.host="db" -Dfcrepo.postgresql.username="postgres" -Dfcrepo.postgresql.password="DatabaseFTW" -Daws.accessKeyId="REPLACE_WITH_AWS_ID" -Daws.secretKey="REPLACE_WITH_AWS_SECRET_KEY" -Daws.bucket="REPLACE_WITH_BUCKET_NAME"
       - JAVA_OPTS=${JAVA_OPTS} -Dfcrepo.modeshape.configuration="classpath:/config/file-simple/repository.json" -Dfcrepo.object.directory="/data/objects" -Dfcrepo.binary.directory="/data/binaries"
     networks:
       internal:
@@ -129,7 +129,6 @@ services:
       - SETTINGS__MULTITENANCY__DEFAULT_HOST=%{tenant}.hyku.docker
       - SETTINGS__MULTITENANCY__ENABLED=true
       - SETTINGS__SOLR__URL=http://solr:8983/solr/
-      - SETTINGS__ZOOKEEPER__CONNECTION_STR=zookeeper_cluster:2181/configs
       - SOLR_URL=http://solr:8983/solr/
     volumes:
       - app:/home/app/webapp/tmp/uploads

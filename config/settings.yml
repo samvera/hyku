@@ -38,9 +38,6 @@ solr:
     shards:
     snitch:
 
-zookeeper:
-  connection_str: "localhost:9983/configs"
-
 active_job:
   queue_adapter: :async
 

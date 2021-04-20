@@ -1,6 +1,3 @@
-zookeeper:
-  connection_str: 'localhost:9985/configs'
-
 solr:
   url: "http://127.0.0.1:8985/solr/"
 

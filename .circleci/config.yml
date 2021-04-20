@@ -29,8 +29,21 @@ jobs:
       - image: ualbertalib/docker-fcrepo4:<< parameters.fcrepo_version>>
         environment:
           CATALINA_OPTS: "-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms512m -Xmx1024m -XX:NewSize=256m -XX:MaxNewSize=256m -XX:PermSize=256m -XX:MaxPermSize=256m -XX:+DisableExplicitGC"
-      - image: solr:7-alpine
-        command: bin/solr -cloud -noprompt -f -p <<parameters.solr_port>>
+      - image: bitnami/solr:8
+        environment:
+          SOLR_PORT_NUMBER: 8985
+          SOLR_CLOUD_BOOTSTRAP: "yes"
+          SOLR_ENABLE_CLOUD_MODE: "yes"
+          SOLR_ENABLE_AUTHENTICATION: "yes"
+          SOLR_COLLECTION: hydra-test
+          SOLR_ADMIN_USERNAME: admin
+          SOLR_ADMIN_PASSWORD: admin
+          SOLR_ZK_HOSTS: localhost
+      - image: bitnami/zookeeper
+        environment:
+           ALLOW_ANONYMOUS_LOGIN: "yes"
+           JVMFLAGS: -Dzookeeper.4lw.commands.whitelist=ruok -Dzookeeper.admin.enableServer=false
+           ZOO_SERVERS: zoo1:2888:3888
       - image: circleci/redis:<<parameters.redis_version>>
       - image: circleci/postgres:9.6.2-alpine
     parallelism: 4
@@ -44,23 +57,27 @@ jobs:
       COVERALLS_PARALLEL: true
       BUNDLE_JOBS: 4
       BUNDLE_RETRY: 3
+      SOLR_ADMIN_USER: admin
+      SOLR_ADMIN_PASSWORD: admin
+      SOLR_COLLECTION_NAME: hydra-test
+      SOLR_CONFIGSET_NAME: hyku
+      SOLR_HOST: localhost
+      SOLR_PORT: 8985
+      SOLR_URL: http://admin:admin@localhost:8985/solr/
+      SETTINGS__SOLR__URL: http://admin:admin@localhost:8985/solr/
       RAILS_ENV: test
       RACK_ENV: test
       FCREPO_TEST_PORT: 8080/fcrepo
       SPEC_OPTS: --profile 10 --format RspecJunitFormatter --out /tmp/test-results/rspec.xml --format progress
-      # CFLAGS need to be set for zookeeper to compile native extensions
-      CFLAGS: -Wno-error=format-overflow
     steps:
       - samvera/cached_checkout
 
       - samvera/bundle:
           ruby_version: << parameters.ruby_version >>
           bundler_version: << parameters.bundler_version >>
-
-      - samvera/install_solr_core:
-          solr_config_path: << parameters.solr_config_path >>
       - samvera/rubocop
-      - run: bundle exec rake db:create db:schema:load zookeeper:upload
+      - run: bundle exec rake db:create db:schema:load
+      - run: bin/solrcloud-upload-configset.sh solr/config
       - samvera/parallel_rspec
       - store_artifacts:
           path: coverage

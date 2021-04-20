@@ -104,8 +104,6 @@ gem 'rolify'
 gem 'flipflop', '~> 2.3'
 gem 'lograge'
 
-gem 'zk'
-
 gem 'mods', '~> 2.4'
 
 group :aws, :test do

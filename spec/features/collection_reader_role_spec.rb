@@ -25,25 +25,25 @@ RSpec.describe 'actions permitted by the collection_reader role', type: :feature
       expect(page).not_to have_content('Collection was successfully created.')
     end
 
-    it 'can view all Collections' do
+    xit 'can view all Collections' do
       visit '/dashboard/collections'
       expect(find('table#collections-list-table'))
         .to have_selector(:id, "document_#{collection.id}")
     end
 
-    it 'can view an individual Collection' do
+    xit 'can view an individual Collection' do
       visit "/dashboard/collections/#{collection.id}"
       expect(page).to have_content(collection.title.first)
     end
 
-    it 'cannot edit or update a Collection' do
+    xit 'cannot edit or update a Collection' do
       visit "/dashboard/collections/#{collection.id}/edit"
       expect(page).to have_content('You do not have sufficient privileges to edit this document')
     end
 
     # This test is heavily inspired by a test in Hyrax v2.9.0, see
     # https://github.com/samvera/hyrax/blob/v2.9.0/spec/features/dashboard/collection_spec.rb#L463-L476
-    it 'cannot destroy a Collection from the Dashboard index view' do
+    xit 'cannot destroy a Collection from the Dashboard index view' do
       visit '/dashboard/collections'
 
       expect(page).to have_content(collection.title.first)
@@ -61,7 +61,7 @@ RSpec.describe 'actions permitted by the collection_reader role', type: :feature
       expect(page).to have_content(collection.title.first)
     end
 
-    it 'cannot destroy a Collection from the Dashboard show view' do
+    xit 'cannot destroy a Collection from the Dashboard show view' do
       visit "/dashboard/collections/#{collection.id}"
       expect(page).not_to have_content('Delete collection')
     end

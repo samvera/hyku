@@ -1,0 +1,180 @@
+.neutral_repository {
+
+  .mt-40 {
+    margin-top: 40px;
+  }
+
+  .mb-40 {
+    margin-bottom: 40px;
+  }
+
+  .pt-30 {
+    padding-top: 30px;
+  }
+
+  .pb-30 {
+    padding-bottom: 30px;
+  }
+
+  .p-20 {
+    padding: 20px;
+  }
+
+  .mt-40-20 {
+    margin-top: 40px;
+
+    @media screen and (max-width: 991px) and (min-width: 480px) {
+      margin-top: 0px;
+      margin-bottom: 40px;
+    }
+  }
+
+  .mb-40-0 {
+    margin-bottom: 40px;
+
+    @media screen and (max-width: 991px) and (min-width: 480px) {
+      margin-bottom: 0px;
+    }
+  }
+
+  .collection-item-title, .recent-doc-title {
+    text-align: center;
+
+    h3 {
+      font-size: 14px !important;
+      cursor: default;
+      pointer-events: none;
+      text-decoration: none;
+
+      a {
+        color: #000000;
+      }
+    }
+  }
+
+  .recent-uploads-div-height {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .institutional-repository-collections {
+
+    a {
+
+      img {
+        width: 200px !important;
+        height: auto !important;
+        display: block !important;
+        margin: 0 auto !important;
+
+        @media screen and (max-width: 1199px) and (min-width: 992px) {
+          width: 150px !important;
+        }
+
+        @media screen and (max-width: 768px) and (min-width: 480px) {
+          width: 90px !important;
+        }
+
+      }
+    }
+  }
+
+  .recently-uploaded {
+
+    a {
+
+      img {
+        width: 90px !important;
+        height: auto !important;
+        display: block !important;
+        margin: 0 auto !important;
+
+        @media screen and (max-width: 768px) and (min-width: 480px) {
+          width: 70px !important;
+        }
+
+      }
+    }
+  }
+
+  div.recently-uploaded:nth-child(2n+3) {
+
+    @media screen and (max-width: 1199px) and (min-width: 992px) {
+        clear: left,
+      }
+    }
+
+  div.home_page_text.homepage-text-container, div.neutral_repository.featured-researcher, div.neutral_repository.recently-uploaded {
+    background-color: #fff;
+    border: 1px solid #ddd;
+  }
+
+  .home_page_text::first-line {
+    font-size: 24px;
+  }
+  .home_page_text {
+    font-size: 18px;
+  }
+
+  .featured-researcher {
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+  }
+
+  #featured-carousel {
+    border: 1px solid #ccc;
+    padding: 1em;
+  }
+
+  // remove the blur on the banner image
+  .image-masthead .background-container {
+    -webkit-filter: none;
+    filter: none;
+  }
+
+  //////////////// CAROUSEL ////////////////////
+
+
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img {
+  display: block;
+  max-width: 100%;
+  width: auto;
+  height: 350px;
+  margin: auto;
+}
+
+  div.carousel-caption {
+    a {
+      text-decoration: none;
+      color: #ffffff;
+    }
+  }
+  /* line 109, /usr/local/rvm/gems/ruby-2.5.3/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_carousel.scss */
+  .carousel-control.left {
+    background-image: none;
+    filter: none;
+  }
+  /* line 112, /usr/local/rvm/gems/ruby-2.5.3/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_carousel.scss */
+  .carousel-control.right {
+    right: 0;
+    left: auto;
+    background-image: none;
+    filter: none;
+    background-repeat: repeat-x;
+    z-index: 10;
+  }
+
+  .glyphicon-menu-right, .glyphicon-menu-left {
+    position: absolute;
+    top: 50%;
+    z-index: 5;
+    display: inline-block;
+    margin-top: -10px;
+    font-weight: 700;
+    color: #555;
+  }
+
+}

@@ -1,0 +1,49 @@
+<div class="theme-container col-xs-12 col-md-8">
+
+  <!-- Adding a mobile style for the homepage text content block, hidden on md and lg -->
+  <% if display_content_block? @home_text %>
+  <div class="hidden-md hidden-lg">
+    <div class="col-xs-12">
+      <%= render 'themes/neutral_repository/home_text' if controller_name == 'homepage' %>
+    </div>
+  </div>
+  <% end %>
+  <%# April todo add featured reserarch/recent doc feature flags %>
+  <% if @presenter.display_featured_works? %>
+    <div>
+      <div class="col-xs-12">
+          <%= render 'themes/neutral_repository/hyrax/homepage/featured_works' %>
+      </div>
+    </div>
+  <% end %>
+  <div>
+    <div class="col-xs-12 pb-30">
+      <h3>Collections</h3>
+      <%= render 'themes/neutral_repository/hyrax/homepage/explore_collections', collections: @presenter.collections %>
+    </div>
+  </div>
+</div>
+<div class="col-xs-12 col-md-4">
+  <!-- Adding a desktop style for the homepage text content block, hidden on sm and xs -->
+  <% if display_content_block? @home_text %>
+  <div class="hidden-xs hidden-sm">
+    <div class="col-xs-12">
+      <%= render 'themes/neutral_repository/home_text' if controller_name == 'homepage' %>
+    </div>
+  </div>
+  <% end %>
+  <% if @presenter.display_featured_researcher? %>
+  <div>
+    <div class="col-xs-12">
+      <%= render 'themes/neutral_repository/hyrax/homepage/featured_researcher' %>
+    </div>
+  </div>
+  <% end %>
+  <% if @presenter.display_recently_uploaded? %>
+  <div>
+    <div class="col-xs-12">
+      <%= render 'recently_uploaded', recent_documents: @recent_documents %>
+    </div>
+  </div>
+  <% end %>
+</div>

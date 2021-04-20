@@ -18,6 +18,7 @@ module Hyrax
         @show_theme_information = YAML.load_file('config/show_themes.yml')
         @home_theme_names = load_home_theme_names
         @show_theme_names = load_show_theme_names
+        @search_themes = load_search_themes
         
         flash[:alert] = t('hyrax.admin.appearances.show.forms.custom_css.warning')
       end
@@ -78,6 +79,14 @@ module Hyrax
             end
           end
           show_theme_names
+        end
+
+        def load_search_themes
+          {
+            'List view' => 'list_view',
+            'Gallery view' => 'gallery_view',
+            'Masonry view' => 'masonry_view'
+          }
         end
     end
   end

@@ -28,9 +28,9 @@ Blacklight.onLoad(function() {
     themeData['marketing_text'] === true ? $('#marketing-text-notes').show() : $('#marketing-text-notes').hide();
     $('#home-wireframe').find("img").attr("src", assetPath); 
   });
-
+  
   // show page theme notes and wireframe
-  var showSelect = $('#site_show_theme')
+  var showSelect = $('#site_show_theme');
   var showTheme = showSelect.val();
   var showThemeInfo = showSelect.data('theme-info');
   var showAssetPath = showSelect.find(':selected').data('image');
@@ -50,4 +50,21 @@ Blacklight.onLoad(function() {
     $('#show-theme-notes').html(showThemeData['notes']);
     $('#show-wireframe').find("img").attr("src", showAssetPath); 
   });
+
+  // search page theme wireframes
+  var searchSelect = $('#site_search_theme');
+  var searchTheme = searchSelect.val();
+  var searchAssetPath = searchSelect.find(':selected').data('image');
+
+  if (typeof searchTheme !== 'undefined') {
+    $('#search-wireframe').find("img").attr("src", searchAssetPath); 
+  }
+
+  searchSelect.on('change', function() { 
+    searchTheme = searchSelect.val();
+    searchAssetPath = searchSelect.find(':selected').data('image');
+    
+    $('#search-wireframe').find("img").attr("src", searchAssetPath); 
+  });
+
 });

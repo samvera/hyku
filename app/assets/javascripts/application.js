@@ -33,6 +33,7 @@
 //= require hyku/admin/appearance/themes
 //= require hyku/groups/per_page
 //= require hyku/groups/add_member
+//= require bootstrap_carousel
 //= require bootstrap-datepicker
 //= require bulkrax/application
 //= require hyrax

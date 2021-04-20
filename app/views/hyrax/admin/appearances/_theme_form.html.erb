@@ -2,9 +2,9 @@
   <div class="panel-body">
     <div class="row">
       <div class="col-sm-6">
-        <% options = @home_theme_names.map { |g| [g[0], g[1], {'data-image' => image_path("themes/#{g[1]}/#{g[1]}.jpg")}] } %>
+        <% home_options = @home_theme_names.map { |g| [g[0], g[1], {'data-image' => image_path("themes/#{g[1]}/#{g[1]}.jpg")}] } %>
         <%= f.input :home_theme, label: 'Home Page Theme' do %>
-          <%= f.select :home_theme, options, {}, { prompt: 'Select home page theme...', class: 'form-control', data: { theme_info: @home_theme_information }} %>
+          <%= f.select :home_theme, home_options, {}, { prompt: 'Select home page theme...', class: 'form-control', data: { theme_info: @home_theme_information }} %>
         <% end %>
 
         <h4>Theme notes:</h4>
@@ -29,16 +29,25 @@
     <hr />
     <div class="row">
       <div class="col-sm-6">
-        <%= f.input :search_theme, collection: ["List view", "Gallery view", "Masonry view", "Slideshow view"], prompt: "Select search results page theme...", required: false, label: 'Search Results Page Theme' %>
-        <small class="form-text text-muted">This will select a default view for the search results page. Users can select their preferred views on the search results page that will override this.</small>
+        <% search_options = @search_themes.map { |s| [s[0], s[1], { 'data-image' => image_path("themes/search/#{s[1]}.jpg") }] } %>
+        <%= f.input :search_theme, label: 'Search Results Page Theme' do %>
+          <%= f.select :search_theme, search_options, {}, { prompt: 'Select search results page theme...', class: 'form-control' } %>
+        <% end %>
+        <h4>Search Results Theme notes:</h4>
+        <ul>
+          <li>This will select a default view for the search results page. Users can select their preferred views on the search results page that will override this selection.</li>
+        </ul>
+      </div>
+      <div id="search-wireframe" class="col-sm-6">
+        <%= image_tag "themes/search/list_view.jpg", class: "img-responsive" %>
       </div>
     </div>
     <hr />
     <div class="row">
       <div class="col-sm-6">
-        <% options = @show_theme_names.map { |g| [g[0], g[1], {'data-image' => image_path("themes/#{g[1]}/#{g[1]}.jpg")}] } %>
+        <% show_options = @show_theme_names.map { |g| [g[0], g[1], { 'data-image' => image_path("themes/#{g[1]}/#{g[1]}.jpg") }] } %>
         <%= f.input :show_theme, label: 'Show Page Theme' do %>
-          <%= f.select :show_theme, options, {}, { prompt: 'Select show page theme...', class: 'form-control', data: { theme_info: @show_theme_information }} %>
+          <%= f.select :show_theme, show_options, {}, { prompt: 'Select show page theme...', class: 'form-control', data: { theme_info: @show_theme_information }} %>
         <% end %>
         <h4>Theme notes:</h4>
         <ul>

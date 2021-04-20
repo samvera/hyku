@@ -53,7 +53,7 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
       allow_any_instance_of(ApplicationController).to receive(:current_account).and_return(account)
       expect(site.home_theme).to eq('default_home')
       expect(site.show_theme).to eq('default_show')
-      expect(site.search_theme).to eq('Masonry view')
+      expect(site.search_theme).to eq('masonry_view')
       visit '/'
       expect(page).to have_css('body.default_home.masonry_view.default_show')
     end
@@ -66,7 +66,7 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
       click_link('Themes')
       select('Gallery view', from: 'Search Results Page Theme')
       # rubocop:disable Metrics/LineLength
-      expect(page).to have_content('This will select a default view for the search results page. Users can select their preferred views on the search results page that will override this.')
+      expect(page).to have_content('This will select a default view for the search results page. Users can select their preferred views on the search results page that will override this selection')
       # rubocop:enable Metrics/LineLength
       find('body').click
       click_on('Save')
@@ -74,7 +74,7 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
       account.sites << site
       allow_any_instance_of(ApplicationController).to receive(:current_account).and_return(account)
       expect(page).to have_content('The appearance was successfully updated')
-      expect(site.search_theme).to eq('Gallery view')
+      expect(site.search_theme).to eq('gallery_view')
       click_link('Themes')
       expect(page).to have_select('Search Results Page Theme', selected: 'Gallery view')
       visit '/'

@@ -133,7 +133,7 @@ class ApplicationController < ActionController::Base
     end
 
     def search_results_theme
-      current_account.sites&.first&.search_theme&.parameterize&.underscore || 'list_view'
+      current_account.sites&.first&.search_theme || 'list_view'
     end
 
     # Add context information to the lograge entries

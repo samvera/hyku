@@ -14,7 +14,7 @@ RSpec.describe 'actions permitted by the collection_editor role', type: :feature
       login_as user
     end
 
-    it 'can create a Collection' do
+    xit 'can create a Collection' do
       visit '/dashboard/collections/new'
       fill_in('Title', with: 'Collection Editor Test')
       click_button 'Save'

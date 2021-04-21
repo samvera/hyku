@@ -1,0 +1,3 @@
+extraEnvVars:
+  - name: CONFDIR
+    value: /app/samvera/hyrax-webapp/solr/config

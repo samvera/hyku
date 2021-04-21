@@ -1,5 +1,5 @@
-ARG HYRAX_IMAGE_VERSION=3.0.0
-FROM samveralabs/hyrax-base:$HYRAX_IMAGE_VERSION as hyku
+ARG HYRAX_IMAGE_VERSION=3.0.1
+FROM ghcr.io/samvera/hyrax/hyrax-base:$HYRAX_IMAGE_VERSION as hyku
 
 USER root
 RUN apk --no-cache upgrade && \

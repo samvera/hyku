@@ -1,4 +1,4 @@
-<!-- add body classes to make styling easier, removed the flash_msg partial for theming -->
+<!-- add body classes to make styling easier for theming -->
 <!DOCTYPE html>
 <html lang="<%= I18n.locale.to_s %>" prefix="og:http://ogp.me/ns#">
   <head>
@@ -16,6 +16,15 @@
     <%= content_for(:navbar) %>
     <%= content_for(:precontainer_content) %>
     <div id="content-wrapper" class="container" role="main">
+      <% if display_content_block? @home_text %>
+        <div class="col-sm-12 col-md-8">
+            <%= render '/flash_msg' %>
+        </div>
+      <% else %>
+        <div class="col-sm-12">
+            <%= render '/flash_msg' %>
+        </div>
+      <% end %>
       <%= render_breadcrumbs builder: Hyrax::BootstrapBreadcrumbsBuilder %>
       <% if content_for?(:page_header) %>
         <div class="row">

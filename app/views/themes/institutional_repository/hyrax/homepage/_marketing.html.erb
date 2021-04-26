@@ -1,0 +1,6 @@
+<% # OVERRIDE: Hyrax 2.9 template to remove the classes on line 4 and add col-sm-12 %>
+<% if display_content_block? @marketing_text %>
+  <div class="institutional-repository-home-marketing-text home_marketing_text">
+    <%= displayable_content_block @marketing_text, class: 'mt-40 col-sm-12' %>
+  </div>
+<% end %>

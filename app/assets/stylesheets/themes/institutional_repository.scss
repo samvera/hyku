@@ -1,0 +1,274 @@
+.institutional_repository {
+
+  // styles the top nav menu application name that is centered
+  .institutional-repository-application-name {
+    text-align: center;
+
+    span {
+      color: #fff;
+      font-size: 20px;
+    }
+  }
+
+  // remove the margin-right: 15px since a duplicate style
+  ul#user_utility_links.navbar-right {
+    margin-right: 0px !important;
+  }
+
+  // remove the blur on the banner image
+  .image-masthead .background-container {
+    -webkit-filter: none;
+    filter: none;
+  }
+
+  // For the search bar label in the navbar
+  div.form-group > label.control-label.col-sm-6 {
+    color: #dcdcdc;
+    font-weight: 400 !important;
+  }
+
+  .mt-40 {
+    margin-top: 40px;
+  }
+
+  .mb-40 {
+    margin-bottom: 40px;
+  }
+
+  .pt-30 {
+    padding-top: 30px;
+  }
+
+  .pb-30 {
+    padding-bottom: 30px;
+  }
+
+  .pb-40 {
+    padding-bottom: 40px;
+  }
+
+  // for the navbar to sit 100% width for the columns to play responsively
+  /* line 2, /home/app/webapp/app/assets/stylesheets/hyku.scss */
+  #masthead #logo {
+    margin-left: 0px !important;
+  }
+
+  // for the navbar to sit 100% width for the columns to play responsively
+  /* line 10, /home/app/webapp/app/assets/stylesheets/hyku.scss */
+  #masthead .navbar-right {
+    margin-right: 0px !important;
+  }
+
+  .institutional-repository-application-name > span {
+    vertical-align: middle;
+    line-height: 50px !important;
+  }
+
+  .section-border {
+    border: 1px solid #ddd;
+  }
+
+  .recent-uploads-div-height {
+    display: flex;
+    flex-direction: column;
+  }
+
+  //////////// Collections section ///////////////
+
+  .collections-container {
+
+    a {
+
+      img {
+        width: 240px !important;
+        height: auto !important;
+        display: block !important;
+        margin: 0 auto !important;
+
+        // @media screen and (max-width: 1199px) and (min-width: 992px) {
+        //   height: 125px !important;
+        // }
+
+        @media screen and (max-width: 768px) and (min-width: 480px) {
+          width: 200px !important;
+        }
+
+      }
+    }
+  }
+
+  .collection-item-title, .recent-doc-title {
+    text-align: center;
+
+    h3 {
+      font-size: 14px !important;
+      cursor: default;
+      pointer-events: none;
+      text-decoration: none;
+
+      a {
+        color: #000000;
+      }
+    }
+  }
+
+  .recently-uploaded {
+
+    a {
+
+      img {
+        width: 90px !important;
+        height: auto !important;
+        display: block !important;
+        margin: 0 auto !important;
+
+        @media screen and (max-width: 768px) and (min-width: 480px) {
+          width: 70px !important;
+        }
+
+      }
+    }
+  }
+
+  div.recently-uploaded:nth-child(2n+3), div.collections-container > div.institutional-repository-collections:nth-child(2n+3) {
+    clear: left,
+  }
+
+  //////// STATS ///////////
+
+  .stats-color-block {
+    background-color: #f8f8f8;
+    margin-top: -25px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .glyphicon-menu-right, .glyphicon-menu-left {
+    position: absolute;
+    top: 50%;
+    z-index: 5;
+    display: inline-block;
+    margin-top: -10px;
+    font-weight: 700;
+    color: #555;
+  }
+
+  /////// STATS CAROUSEL /////////
+
+  .institutional-repository-carousel .carousel-control {
+    width: 4%;
+    background-image: none;
+  }
+
+  .institutional-repository-carousel .carousel-control.left {
+    margin-left: 0;
+  }
+
+  .institutional-repository-carousel .carousel-control.right {
+    margin-right: 0;
+  }
+
+  .institutional-repository-carousel .cloneditem-1,
+  .institutional-repository-carousel .cloneditem-2,
+  .institutional-repository-carousel .cloneditem-3 {
+    display: none;
+  }
+
+  .carousel .item .col-xs-12 {
+    padding: 0;
+  }
+
+
+ /* Medium Devices, Desktops */
+
+  @media only screen and (max-width: 992px) {
+    .carousel .item .col-xs-12:nth-last-child(-n+2) {
+      display: none;
+    }
+  }
+
+  @media all and (min-width: 768px) {
+    .institutional-repository-carousel .carousel-inner > .active.left,
+    .institutional-repository-carousel .carousel-inner > .prev {
+      left: -50%;
+    }
+    .institutional-repository-carousel .carousel-inner > .active.right,
+    .institutional-repository-carousel .carousel-inner > .next {
+      left: 50%;
+    }
+    .institutional-repository-carousel .carousel-inner > .left,
+    .institutional-repository-carousel .carousel-inner > .prev.right,
+    .institutional-repository-carousel .carousel-inner > .active {
+      left: 0;
+    }
+    .institutional-repository-carousel .carousel-inner .cloneditem-1 {
+      display: block;
+    }
+  }
+
+  @media all and (min-width: 768px) and (transform-3d),
+  all and (min-width: 768px) and (-webkit-transform-3d) {
+    .institutional-repository-carousel .carousel-inner > .item.active.right,
+    .institutional-repository-carousel .carousel-inner > .item.next {
+      -webkit-transform: translate3d(50%, 0, 0);
+      transform: translate3d(50%, 0, 0);
+      left: 0;
+    }
+    .institutional-repository-carousel .carousel-inner > .item.active.left,
+    .institutional-repository-carousel .carousel-inner > .item.prev {
+      -webkit-transform: translate3d(-50%, 0, 0);
+      transform: translate3d(-50%, 0, 0);
+      left: 0;
+    }
+    .institutional-repository-carousel .carousel-inner > .item.left,
+    .institutional-repository-carousel .carousel-inner > .item.prev.right,
+    .institutional-repository-carousel .carousel-inner > .item.active {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+      left: 0;
+    }
+  }
+
+  @media all and (min-width: 992px) {
+    .institutional-repository-carousel .carousel-inner > .active.left,
+    .institutional-repository-carousel .carousel-inner > .prev {
+      left: -16.6%;
+    }
+    .institutional-repository-carousel .carousel-inner > .active.right,
+    .institutional-repository-carousel .carousel-inner > .next {
+      left: 16.6%;
+    }
+    .institutional-repository-carousel .carousel-inner > .left,
+    .institutional-repository-carousel .carousel-inner > .prev.right,
+    .institutional-repository-carousel .carousel-inner > .active {
+      left: 0;
+    }
+    .institutional-repository-carousel .carousel-inner .cloneditem-2,
+    .institutional-repository-carousel .carousel-inner .cloneditem-3 {
+      display: block;
+    }
+  }
+
+  @media all and (min-width: 992px) and (transform-3d),
+  all and (min-width: 992px) and (-webkit-transform-3d) {
+    .institutional-repository-carousel .carousel-inner > .item.active.right,
+    .institutional-repository-carousel .carousel-inner > .item.next {
+      -webkit-transform: translate3d(16.6%, 0, 0);
+      transform: translate3d(16.6%, 0, 0);
+      left: 0;
+    }
+    .institutional-repository-carousel .carousel-inner > .item.active.left,
+    .institutional-repository-carousel .carousel-inner > .item.prev {
+      -webkit-transform: translate3d(-16.6%, 0, 0);
+      transform: translate3d(-16.6%, 0, 0);
+      left: 0;
+    }
+    .institutional-repository-carousel .carousel-inner > .item.left,
+    .institutional-repository-carousel .carousel-inner > .item.prev.right,
+    .institutional-repository-carousel .carousel-inner > .item.active {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+      left: 0;
+    }
+  }
+
+}

@@ -22,7 +22,7 @@ RSpec.describe 'Users trying to search for an Institution Work', type: :feature,
   end
 
   context 'an unauthenticated user' do
-    it 'cannot see the work in the search results' do
+    xit 'cannot see the work in the search results' do
       visit '/catalog'
       expect(page).to have_content('No results found for your search')
       expect(page).not_to have_content('Institution GenericWork')
@@ -32,7 +32,7 @@ RSpec.describe 'Users trying to search for an Institution Work', type: :feature,
   context 'a registered user' do
     let(:tenant_user) { create(:user) }
 
-    it 'can see the work in the search results' do
+    xit 'can see the work in the search results' do
       login_as tenant_user
       visit '/catalog'
       expect(page).to have_content('Institution GenericWork')
@@ -42,7 +42,7 @@ RSpec.describe 'Users trying to search for an Institution Work', type: :feature,
   context 'an admin user' do
     let(:tenant_admin) { create(:admin) }
 
-    it 'can see the work in the search results' do
+    xit 'can see the work in the search results' do
       login_as tenant_admin
       visit '/catalog'
       expect(page).to have_content('Institution GenericWork')

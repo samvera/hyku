@@ -17,6 +17,13 @@ cultural_repository:
   marketing_text: true
   name: Cultural Repository
   notes: This theme is recommended for cultural repositories
+institutional_repository:
+  banner_image: true
+  featured_researcher: true
+  home_page_text: true
+  marketing_text: true
+  name: Institutional Repository
+  notes: This theme is recommended for institutional repositories
 neutral_repository:
   banner_image: true
   featured_researcher: true

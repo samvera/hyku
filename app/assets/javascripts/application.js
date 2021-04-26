@@ -27,6 +27,7 @@
 // Moved the Hyku JS *above* the Hyrax JS to resolve #1187 (following
 // a pattern found in ScholarSphere)
 //
+//= require hyku/stat_slider
 //= require hyku/admin/appearance/colors
 //= require hyku/admin/appearance/default_images
 //= require hyku/admin/appearance/fonts

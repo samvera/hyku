@@ -20,7 +20,7 @@ RSpec.describe 'Assign workflow to group', type: :feature, js: true, clean: true
       )
     end
 
-    it 'admin assigns an approving workflow role to a user' do
+    xit 'admin assigns an approving workflow role to a user' do
       login_as admin
       visit '/admin/workflow_roles'
       expect(page).to have_content 'Current User Roles'
@@ -41,7 +41,7 @@ RSpec.describe 'Assign workflow to group', type: :feature, js: true, clean: true
       expect(find('tr#user-example-com').find('td:nth-child(3)').text).to eq('Default Admin Set - approving (default)')
     end
 
-    it 'admin assigns an approving workflow role to a group' do
+    xit 'admin assigns an approving workflow role to a group' do
       group.add_members_by_id(user.id)
       login_as admin
       visit '/admin/workflow_roles'

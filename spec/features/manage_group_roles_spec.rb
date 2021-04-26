@@ -12,7 +12,7 @@ RSpec.describe 'Manage Group Roles', type: :feature, js: true, clean: true do
       login_as admin
     end
 
-    it 'can add a role to the group' do
+    xit 'can add a role to the group' do
       visit "/admin/groups/#{group.id}/roles"
       expect(page).to have_content('Current Group Roles')
       expect(page).to have_content('Add Roles to Group')
@@ -28,7 +28,7 @@ RSpec.describe 'Manage Group Roles', type: :feature, js: true, clean: true do
       expect(find('.current-group-roles')).to have_content('Admin')
     end
 
-    it 'can remove a role from the group' do
+    xit 'can remove a role from the group' do
       group.roles << Role.find_by(name: 'admin')
 
       visit "/admin/groups/#{group.id}/roles"

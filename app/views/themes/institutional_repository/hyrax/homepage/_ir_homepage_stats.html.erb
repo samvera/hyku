@@ -1,0 +1,32 @@
+<% works = [] %>
+<% Hyrax.config.registered_curation_concern_types.each do |w| %>
+	<% works << w.constantize.all %>
+<% end %>
+
+<% resource_types = {"Article" => "fa-pals fa fa-2x fa-file-text-o", "Audio" => "fa-pals fa fa-2x fa-headphones", "Book" => "fa-pals fa fa-2x fa-book", "Capstone Project" => "fa-pals fa fa-2x fa fa-folder-open", "Conference Proceeding" => "fa-pals fa fa-2x fa-file-powerpoint-o", "Dataset" => "fa-pals fa fa-2x fa-database", "Dissertation" => "fa-pals fa fa-2x fa-file-text-o", "Image" => "fa-pals fa fa-2x fa-picture-o", "Journal" => "fa-pals fa fa-2x fa-newspaper-o", "Map or Cartographic Material" => "fa-pals fa fa-2x fa-map-o", "Masters Thesis" => "fa-pals fa fa-2x fa-file-text-o", "Part of Book" => "fa-pals fa fa-2x fa-book", "Poster" => "fa-pals fa fa-2x fa-picture-o", "Presentation" => "fa-pals fa fa-2x fa-file-powerpoint-o", "Project" => "fa-pals fa fa-2x fa fa-folder-open", "Report" => "fa-pals fa fa-2x fa-bar-chart", "Research Paper" => "fa-pals fa fa-2x fa-file-text-o", "Software or Program Code" => "fa-pals fa fa-2x fa-file-code-o", "Video" => "fa-pals fa fa-2x fa-file-video-o"} %>
+
+<div class='stats-color-block container-fluid pt-30 pb-30 mb-40'>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="carousel institutional-repository-carousel slide" id="carousel-tilenav" data-interval="false">
+        <div class="carousel-inner">
+          <% resource_types.each.with_index do |(k,v), i| %>
+            <% rt_count = works[0].select { |w| w['resource_type'].include?(k) }.count %>
+            <% next if rt_count.zero? %>
+            <div class="item <%= i.zero? ? 'active' : '' %>">
+              <div class="col-xs-12 col-sm-4 col-md-2">
+                <div class="text-center">
+                  <i class='<%= "#{v}" %>' aria-hidden="true"></i>
+                  <h5><%= k %></h5>
+                  <p><%= rt_count %></p>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <a class="left carousel-control" href="#carousel-tilenav" data-slide="prev"><i class="glyphicon glyphicon-menu-left"></i></a>
+        <a class="right carousel-control" href="#carousel-tilenav" data-slide="next"><i class="glyphicon glyphicon-menu-right"></i></a>
+      </div>
+    </div>
+  </div>
+</div>

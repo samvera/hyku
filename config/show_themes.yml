@@ -10,8 +10,7 @@ default_show:
 text_show:
   name: Text based
   notes: This text based show page is recommended for institutional repositories.
+image_show:
+  name: Image based
+  notes: This image based show page is recommended for cultural repositories.
   
-  
-  
-  
-

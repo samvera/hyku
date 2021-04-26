@@ -1,5 +1,3 @@
-<%# OVERRIDE: Hyrax 2.5.2 to add Relationships partial for Oer worktype %>
-
 <% content_for(:extra_body_classes, 'works-show ') %>
 
 <% provide :page_title, @presenter.page_title %>
@@ -10,7 +8,6 @@
   <div class="col-xs-12">
     <%= render 'work_type', presenter: @presenter %>
   </div>
-  <div class="col-xs-12">&nbsp;</div>
   <div itemscope itemtype="http://schema.org/CreativeWork" class="col-xs-12">
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -23,15 +20,27 @@
             <div class="col-sm-12">
               <%= render 'representative_media', presenter: @presenter, viewer: true %>
             </div>
+            <div class="col-sm-12">
+              <div class="image-show-description">
+                <%= render 'work_description', presenter: @presenter %>
+              </div>
+            </div> 
+          <% else %>
+            <div class="col-sm-3 mb-1">
+              <%= render 'representative_media', presenter: @presenter, viewer: false unless @presenter.universal_viewer? %>
+            </div>
+            <div class="col-sm-9">
+              <%= render 'work_description', presenter: @presenter %>
+            </div>
           <% end %>
-          <div class="col-sm-3 text-center">
-            <%= render 'representative_media', presenter: @presenter, viewer: false unless @presenter.universal_viewer? %>
+        </div>
+        <div class="row">
+          <div class="col-sm-9 image-show-metadata">  
+            <%= render 'metadata', presenter: @presenter %>
+          </div>
+          <div class="col-sm-3 citations-social text-right">
             <%= render 'citations', presenter: @presenter %>
             <%= render 'social_media' %>
-          </div>
-          <div class="col-sm-9">
-            <%= render 'work_description', presenter: @presenter %>
-            <%= render 'metadata', presenter: @presenter %>
           </div>
           <div class="col-sm-12">
             <%= render 'relationships', presenter: @presenter %>
@@ -48,4 +57,3 @@
     </div>
   </div>
 </div>
-

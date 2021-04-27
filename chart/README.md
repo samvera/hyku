@@ -11,7 +11,7 @@ brew install helm
 ```
 
 * kubernetes
-Kubectl is the command line tool for controlling Kubernetes clusters. It is available via (https://docs.test.com/docker-for-mac/)[Docker for Mac]
+Kubectl is the command line tool for controlling Kubernetes clusters. It is available via (https://docs.docker.com/docker-for-mac/)[Docker for Mac]
 
 Alternatively:
 ```

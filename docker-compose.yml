@@ -112,7 +112,7 @@ services:
       - SETTINGS__MULTITENANCY__ADMIN_ONLY_TENANT_CREATION=false
       - SETTINGS__MULTITENANCY__DEFAULT_HOST=%{tenant}.hyku.test
       - SETTINGS__MULTITENANCY__ROOT_HOST=hyku.test
-      - SETTINGS__MULTITENANCY__ENABLED=false
+      - SETTINGS__MULTITENANCY__ENABLED=true
       # Comment out these 2 for multi tenancy / Uncomment for single
       # - SETTINGS__MULTITENANCY__ROOT_HOST=hyku.test
       # - SETTINGS__MULTITENANCY__ENABLED=false

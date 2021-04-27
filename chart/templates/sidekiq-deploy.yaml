@@ -52,28 +52,28 @@ spec:
           #   initialDelaySeconds: 30
           # Use sub-path for individual folders
           volumeMounts:
-            - mountPath: /home/app/webapp/tmp/imports
+            - mountPath: /app/samvera/hyrax-webapp/tmp/imports
               name: shared
               subPath: import_path
-            - mountPath: /home/app/webapp/tmp/exports
+            - mountPath: /app/samvera/hyrax-webapp/tmp/exports
               name: shared
               subPath: export_path
-            - mountPath: /home/app/webapp/tmp/derivatives
+            - mountPath: /app/samvera/hyrax-webapp/tmp/derivatives
               name: shared
               subPath: derivatives_path
-            - mountPath: /home/app/webapp/tmp/network_files
+            - mountPath: /app/samvera/hyrax-webapp/tmp/network_files
               name: shared
               subPath: network_files
-            - mountPath: /home/app/webapp/tmp/uploads
+            - mountPath: /app/samvera/hyrax-webapp/tmp/uploads
               name: shared
               subPath: upload_path
-            - mountPath: /home/app/webapp/public/uploads
+            - mountPath: /app/samvera/hyrax-webapp/public/uploads
               name: shared
               subPath: uploads
-            - mountPath: /home/app/webapp/public/assets
+            - mountPath: /app/samvera/hyrax-webapp/public/assets
               name: shared
               subPath: assets
-            - mountPath: /home/app/webapp/public/branding
+            - mountPath: /app/samvera/hyrax-webapp/public/branding
               name: shared
               subPath: branding
           envFrom:

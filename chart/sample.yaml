@@ -75,7 +75,7 @@ rails:
 
 ingress:
   tlsSecretName: demoapp-puma-tls
-  host: hyku.docker
+  host: hyku.test
   # use "0" for unlimited
   annotations: {
     kubernetes.io/ingress.class: "nginx",
@@ -104,9 +104,9 @@ env:
     SETTINGS__CONTACT_EMAIL: admin@example.org
     SETTINGS__DEVISE__INVITATION_FROM_EMAIL: admin@example.org
     SETTINGS__FITS_PATH: /opt/fits/fits.sh
-    SETTINGS__MULTITENANCY__ADMIN_HOST: hyku.docker
+    SETTINGS__MULTITENANCY__ADMIN_HOST: hyku.test
     SETTINGS__MULTITENANCY__ADMIN_ONLY_TENANT_CREATION: true
-    SETTINGS__MULTITENANCY__DEFAULT_HOST: "%{tenant}.hyku.docker"
+    SETTINGS__MULTITENANCY__DEFAULT_HOST: "%{tenant}.hyku.test"
     SETTINGS__MULTITENANCY__ENABLED: true
 
   secret:

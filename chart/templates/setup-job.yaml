@@ -40,7 +40,7 @@ spec:
         - name: setup
           image: {{ .Values.rails.image.repository }}:{{ .Values.rails.image.tag }}
           volumeMounts:
-            - mountPath: /home/app/webapp/public/assets
+            - mountPath: /app/samvera/hyrax-webapp/public/assets
               name: shared
               subPath: assets
           command: ["/bin/bash"]

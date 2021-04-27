@@ -1,11 +1,11 @@
 # Hyku, the Hydra-in-a-Box Repository Application
 
-Code: 
+Code:
 [![Build Status](https://circleci.com/gh/samvera/hyku.svg?style=svg)](https://circleci.com/gh/samvera/hyku)
 [![Coverage Status](https://coveralls.io/repos/samvera/hyku/badge.svg?branch=master&service=github)](https://coveralls.io/github/samvera/hyku?branch=master)
 [![Stories in Ready](https://img.shields.io/waffle/label/samvera/hyku/ready.svg)](https://waffle.io/samvera/hyku)
 
-Docs: 
+Docs:
 [![Documentation](http://img.shields.io/badge/DOCUMENTATION-wiki-blue.svg)](https://github.com/samvera/hyku/wiki)
 [![Contribution Guidelines](http://img.shields.io/badge/CONTRIBUTING-Guidelines-blue.svg)](./CONTRIBUTING.md)
 [![Apache 2.0 License](http://img.shields.io/badge/APACHE2-license-blue.svg)](./LICENSE)
@@ -25,7 +25,7 @@ Jump In: [![Slack Status](http://slack.samvera.org/badge.svg)](http://slack.samv
   * [Single Tenant Mode](#single-tenancy)
   * [Switching accounts](#switching-accounts)
   * [Development dependencies](#development-dependencies)
-    * [Postgres](#postgres) 
+    * [Postgres](#postgres)
   * [Importing](#importing)
     * [enable Bulkrax](#bulkrax)
     * [from CSV](#from-csv)
@@ -43,7 +43,7 @@ Jump In: [![Slack Status](http://slack.samvera.org/badge.svg)](http://slack.samv
 
 #### Dory
 
-On OS X or Linux we recommend running [Dory](https://github.com/FreedomBen/dory). It acts as a proxy allowing you to access domains locally such as hyku.docker or tenant.hyku.docker, making multitenant development more straightforward and prevents the need to bind ports locally.  You can still run in development via docker with out Dory, but to do so please uncomment the ports section in docker-compose.yml and then find the running application at localhost:3000
+On OS X or Linux we recommend running [Dory](https://github.com/FreedomBen/dory). It acts as a proxy allowing you to access domains locally such as hyku.test or tenant.hyku.test, making multitenant development more straightforward and prevents the need to bind ports locally. Be sure to adjust your ~/.dory.yml file to support the .test tld.  You can still run in development via docker with out Dory, but to do so please uncomment the ports section in docker-compose.yml and then find the running application at localhost:3000
 
 ```bash
 gem install dory
@@ -55,7 +55,7 @@ dory up
 ```bash
 docker-compose up web workers
 ```
-This command starts the whole stack in individual containers allowing Rails to be started or stopped independent of the other services.  Once that starts (you'll see the line `Passenger core running in multi-application mode.` to indicate a successful boot), you can view your app in a web browser with at either hyku.docker or localhost:3000 (see above).  When done `docker-compose stop` shuts down everything.
+This command starts the whole stack in individual containers allowing Rails to be started or stopped independent of the other services.  Once that starts (you'll see the line `Passenger core running in multi-application mode.` to indicate a successful boot), you can view your app in a web browser with at either hyku.test or localhost:3000 (see above).  When done `docker-compose stop` shuts down everything.
 
 #### Tests in Docker
 
@@ -109,7 +109,7 @@ The [samvera-vagrant project](https://github.com/samvera-labs/samvera-vagrant) p
 
 ### With Kubernetes
 
-Hyku provides a set of [Helm charts](chart/README.md) for deploying to a Kubernetes cluster. Detailed instructions are provided for deploying locally with Docker for Mac. 
+Hyku provides a set of [Helm charts](chart/README.md) for deploying to a Kubernetes cluster. Detailed instructions are provided for deploying locally with Docker for Mac.
 
 ## Single Tenant Mode
 
@@ -117,7 +117,7 @@ Much of the default configuration in Hyku is set up to use multi-tenant mode.  T
 
 To enable single tenant, in your settings.yml file change multitenancy/enabled to `false` or set `SETTINGS__MULTITENANCY__ENABLED=false` in your `docker-compose.yml` and `docker-compose.production.yml` configs. After changinig this setting, run `rails db:seed` to prepopulate the single tenant.
 
-In single tenant mode, both the application root (eg. localhost, or hyku.docker) and the tenant url single.* (eg. single.hyku.docker) will load the tenant. Override the root host by setting multitenancy/root_host in settings.yml or `SETTINGS__MULTITENANCY__ROOT_HOST`.
+In single tenant mode, both the application root (eg. localhost, or hyku.test) and the tenant url single.* (eg. single.hyku.test) will load the tenant. Override the root host by setting multitenancy/root_host in settings.yml or `SETTINGS__MULTITENANCY__ROOT_HOST`.
 
 To change from single- to multi-tenant mode, change the multitenancy/enabled flag to true and restart the application. Change the 'single' tenant account cname in the Accounts edit interface to the correct hostname.
 
@@ -172,7 +172,7 @@ The Samvera community is here to help. Please see our [support guide](./SUPPORT.
 
 ## Acknowledgments
 
-This software was developed by the Hydra-in-a-Box Project (DPLA, DuraSpace, and Stanford University) under a grant from IMLS. 
+This software was developed by the Hydra-in-a-Box Project (DPLA, DuraSpace, and Stanford University) under a grant from IMLS.
 
 This software is brought to you by the Samvera community.  Learn more at the
 [Samvera website](http://samvera.org/).

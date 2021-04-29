@@ -172,6 +172,10 @@ services:
     entrypoint: ["sh", "-c"]
     command:
       - >
+        # Do not recurse through all of tmp. derivitives will make booting
+        # very slow and eventually just time out as data grows
+        chown -f app:app /app/samvera/hyrax-webapp/tmp
+        chown -fR app:app /app/samvera/hyrax-webapp/tmp/pids
         chown -fR app:app /app/samvera/hyrax-webapp/tmp/uploads
         chown -fR app:app /app/samvera/hyrax-webapp/public/assets
         chown -fR app:app /app/samvera/hyrax-webapp/tmp/cache

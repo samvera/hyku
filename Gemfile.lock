@@ -798,7 +798,7 @@ GEM
       actionpack (>= 5.0)
       railties (>= 5.0)
     retriable (3.1.2)
-    rexml (3.2.4)
+    rexml (3.2.5)
     riiif (1.7.1)
       deprecation (>= 1.0.0)
       railties (>= 4.2, < 6)

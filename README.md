@@ -177,4 +177,4 @@ This software was developed by the Hydra-in-a-Box Project (DPLA, DuraSpace, and 
 This software is brought to you by the Samvera community.  Learn more at the
 [Samvera website](http://samvera.org/).
 
-![Samvera Logo](https://wiki.duraspace.org/download/thumbnails/87459292/samvera-fall-font2-200w.png?version=1&modificationDate=1498550535816&api=v2)
+![Samvera Logo](https://samvera.atlassian.net/wiki/download/attachments/405216084/samvera-fall-TM-220w-transparent.png?version=1&modificationDate=1540440075555&cacheVersion=1&api=v2)

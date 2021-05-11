@@ -97,7 +97,7 @@ gem 'devise-i18n'
 gem 'devise_invitable', '~> 1.6'
 
 gem 'apartment'
-gem 'config', '~> 2.2', '>= 2.2.1'
+gem 'config', '>= 2.2.1', '< 4.0'
 gem 'is_it_working'
 gem 'rolify'
 

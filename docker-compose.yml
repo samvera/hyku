@@ -90,8 +90,8 @@ services:
     build:
       context: .
       target: hyku-base
-      args:
-        - EXTRA_APK_PACKAGES="less vim bash" # TODO: this doesn't install vim, why?
+      # args:
+      #   - EXTRA_APK_PACKAGES="less vim bash" # TODO: this doesn't install vim, why?
     image: ghcr.io/samvera/hyku:latest
     env_file:
       - .env
@@ -127,8 +127,8 @@ services:
     build:
       context: .
       target: hyku-worker
-      args:
-        - EXTRA_APK_PACKAGES="less vim bash" # TODO: this doesn't install vim, why?
+      # args:
+      #   - EXTRA_APK_PACKAGES="less vim bash" # TODO: this doesn't install vim, why?
     command: bundle exec sidekiq
     depends_on:
       - check_volumes

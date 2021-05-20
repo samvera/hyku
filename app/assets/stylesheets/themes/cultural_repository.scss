@@ -79,6 +79,10 @@
     border-bottom-left-radius: 0px;
   }
 
+  .mt-20 {
+    margin-top: 20px;
+  }
+
   .mt-40 {
     margin-top: 40px;
   }
@@ -116,26 +120,36 @@
     }
   }
 
-    // remove the blur on the banner image
-    .image-masthead .background-container {
-      -webkit-filter: none;
-      filter: none;
-    }
+  // remove the blur on the banner image
+  .image-masthead .background-container {
+    -webkit-filter: none;
+    filter: none;
+  }
 
-    .featured-item-title, .collection-item-title, .recent-doc-title {
-      text-align: center;
+  .featured-item-title, .collection-item-title, .recent-doc-title {
+    text-align: center;
 
-      h3 {
-        font-size: 14px !important;
-        cursor: default;
-        pointer-events: none;
-        text-decoration: none;
+    h3 {
+      font-size: 14px !important;
+      cursor: default;
+      pointer-events: none;
+      text-decoration: none;
 
-        a {
-          color: #000000;
-        }
+      a {
+        color: #000000;
       }
     }
+  }
+
+  a.cr_terms {
+    font-size: 12px !important;
+    font-weight: bold;
+    color: #215480;
+
+    &:hover {
+      color: #333333;
+    }
+  }
 
  //////////// HOMEPAGE TEXT BLOCK ///////////
 

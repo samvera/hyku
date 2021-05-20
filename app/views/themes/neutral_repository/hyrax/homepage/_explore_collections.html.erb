@@ -13,3 +13,9 @@
     </div>
   </div>
 <% end %>
+
+<div class="col-xs-12 text-center mt-20">
+  <%= link_to t('hyrax.homepage.admin_sets.link'),
+                main_app.search_catalog_path(f: { human_readable_type_sim: ["Collection"]}),
+                class: 'btn btn-default' %>
+</div>

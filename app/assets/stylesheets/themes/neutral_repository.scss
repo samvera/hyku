@@ -1,5 +1,9 @@
 .neutral_repository {
 
+  .carousel-opacity {
+    background-color: rgba(102, 102, 102, 0.5) !important;
+  }
+
   .mt-40 {
     margin-top: 40px;
   }
@@ -18,6 +22,10 @@
 
   .p-20 {
     padding: 20px;
+  }
+
+  .p-10 {
+    padding: 10px;
   }
 
   .mt-40-20 {

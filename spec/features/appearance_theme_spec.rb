@@ -28,7 +28,7 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
       click_link('Themes')
       select('Default home', from: 'Home Page Theme')
       select('List view', from: 'Search Results Page Theme')
-      select('Default show', from: 'Show Page Theme')
+      select('Default Show Page', from: 'Show Page Theme')
       find('body').click
       click_on('Save')
       expect(page).to have_content('The appearance was successfully updated')
@@ -45,7 +45,7 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
       click_link('Themes')
       select('Default home', from: 'Home Page Theme')
       select('Masonry view', from: 'Search Results Page Theme')
-      select('Default show', from: 'Show Page Theme')
+      select('Default Show Page', from: 'Show Page Theme')
       find('body').click
       click_on('Save')
       site = Site.last

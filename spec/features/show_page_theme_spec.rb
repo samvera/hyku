@@ -30,7 +30,7 @@ RSpec.describe 'Admin can select show page theme', type: :feature, js: true, cle
       login_as admin
       visit '/admin/appearance'
       click_link('Themes')
-      select('Default show', from: 'Show Page Theme')
+      select('Default Show Page', from: 'Show Page Theme')
       find('body').click
       click_on('Save')
       expect(page).to have_content('The appearance was successfully updated')
@@ -45,7 +45,7 @@ RSpec.describe 'Admin can select show page theme', type: :feature, js: true, cle
       login_as admin
       visit 'admin/appearance'
       click_link('Themes')
-      select('Default show', from: 'Show Page Theme')
+      select('Default Show Page', from: 'Show Page Theme')
       find('body').click
       click_on('Save')
       site = Site.last
@@ -62,24 +62,24 @@ RSpec.describe 'Admin can select show page theme', type: :feature, js: true, cle
       login_as admin
       visit '/admin/appearance'
       click_link('Themes')
-      select('Text based', from: 'Show Page Theme')
+      select('Cultural Show Page', from: 'Show Page Theme')
       find('body').click
       expect(page).to have_content('This text based show page is recommended for institutional repositories.')    
-      expect(page.find('#show-wireframe img')['src']).to match(/assets\/themes\/text_show/)
+      expect(page.find('#show-wireframe img')['src']).to match(/assets\/themes\/cultural_show/)
     end
 
     it 'renders the partials in the theme folder' do
       login_as admin
       visit '/admin/appearance'
       click_link('Themes')
-      select('Text based', from: 'Show Page Theme')
+      select('Cultural Show Page', from: 'Show Page Theme')
       find('body').click
       click_on('Save')
       site = Site.last
       account.sites << site
       allow_any_instance_of(ApplicationController).to receive(:current_account).and_return(account)
       visit "/concern/generic_works/#{work.id}"
-      expect(page).to have_css('body.text_show.text-show-theme-partial')
+      expect(page).to have_css('body.cultural_show.text-show-theme-partial')
       expect(page).to have_css('.text-show-title')
     end
 
@@ -87,18 +87,18 @@ RSpec.describe 'Admin can select show page theme', type: :feature, js: true, cle
       login_as admin
       visit '/admin/appearance'
       click_link('Themes')
-      select('Text based', from: 'Show Page Theme')
+      select('Cultural Show Page', from: 'Show Page Theme')
       find('body').click
       click_on('Save')
       site = Site.last
       account.sites << site
       allow_any_instance_of(ApplicationController).to receive(:current_account).and_return(account)
       visit "/concern/generic_works/#{work.id}"
-      expect(page).to have_css('body.text_show.text-show-theme-partial')
+      expect(page).to have_css('body.cultural_show.text-show-theme-partial')
       expect(page).to have_css('.text-show-title')
       visit '/admin/appearance'
       click_link('Themes')
-      select('Default show', from: 'Show Page Theme')
+      select('Default Show Page', from: 'Show Page Theme')
       find('body').click
       click_on('Save')
       site = Site.last
@@ -114,7 +114,7 @@ RSpec.describe 'Admin can select show page theme', type: :feature, js: true, cle
       allow_any_instance_of(ApplicationController).to receive(:show_page_theme).and_return("missing_theme")
       visit "/concern/generic_works/#{work.id}"
       expect(page).to have_css('body.missing_theme')
-      expect(page).not_to have_css('body.text_show.text-show-theme-partial')
+      expect(page).not_to have_css('body.cultural_show.text-show-theme-partial')
     end
   end
 end

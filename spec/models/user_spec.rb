@@ -9,6 +9,7 @@ RSpec.describe User, type: :model do
     end
 
     it 'does not get the admin role' do
+      expect(subject.persisted?).to eq true
       expect(subject).not_to have_role :admin
     end
   end
@@ -17,6 +18,7 @@ RSpec.describe User, type: :model do
     subject { FactoryBot.create(:base_user) }
 
     it 'is given the admin role' do
+      expect(subject.persisted?).to eq true
       expect(subject).to have_role :admin, Site.instance
     end
   end
@@ -26,6 +28,7 @@ RSpec.describe User, type: :model do
     let!(:next_user) { FactoryBot.create(:base_user) }
 
     it 'does not get the admin role' do
+      expect(next_user.persisted?).to eq true
       expect(next_user).not_to have_role :admin
     end
   end

@@ -73,8 +73,9 @@ class User < ApplicationRecord
   # If this user is the first user on the tenant, they become its admin
   # unless we are in the global tenant
   def add_default_roles
-    add_role :admin, Site.instance unless
-      self.class.joins(:roles).where("roles.name = ?", "admin").any? || Account.global_tenant?
+    return if Account.global_tenant?
+
+    add_role :admin, Site.instance unless self.class.joins(:roles).where("roles.name = ?", "admin").any?
     # Role for any given site
     add_role :registered, Site.instance
   end

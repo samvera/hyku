@@ -104,6 +104,7 @@ class Account < ApplicationRecord
     solr_endpoint.switch!
     fcrepo_endpoint.switch!
     redis_endpoint.switch!
+    Settings.switch!(name: name, settings: additional_settings)
   end
 
   def switch
@@ -117,6 +118,7 @@ class Account < ApplicationRecord
     SolrEndpoint.reset!
     FcrepoEndpoint.reset!
     RedisEndpoint.reset!
+    Settings.switch!
   end
 
   # Get admin emails associated with this account/site
@@ -148,5 +150,10 @@ class Account < ApplicationRecord
 
     def canonicalize_cname
       self.cname &&= self.class.canonical_cname(cname)
+    end
+
+    # Allow for overriding this method to inject new settings from DB or elsewhere
+    def additional_settings
+      {}
     end
 end

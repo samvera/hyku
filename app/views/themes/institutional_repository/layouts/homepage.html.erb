@@ -5,7 +5,7 @@
 
     <div class="container site-title-container">
       <div class="site-title h1" style="text-align: center;">
-        <%= render "hyrax/homepage/marketing" if controller_name == 'homepage' %>
+        <%= render "hyrax/homepage/marketing" if controller_name == 'homepage' || controller_name == 'hyrax_contact_form' || controller_name == 'pages' %>
       </div>
       <div class="share-your-work-button">
         <% if @presenter.display_share_button? %>

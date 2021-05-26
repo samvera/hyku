@@ -35,12 +35,8 @@
           <% end %>
         </div>
         <div class="row">
-          <div class="col-sm-9 image-show-metadata">  
+          <div class="col-sm-12 image-show-metadata">  
             <%= render 'metadata', presenter: @presenter %>
-          </div>
-          <div class="col-sm-3 citations-social text-right">
-            <%= render 'citations', presenter: @presenter %>
-            <%= render 'social_media' %>
           </div>
           <div class="col-sm-12">
             <%= render 'relationships', presenter: @presenter %>

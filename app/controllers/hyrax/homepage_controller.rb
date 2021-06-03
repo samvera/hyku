@@ -72,7 +72,7 @@ module Hyrax
                                                 .rows(rows)
         response = repository.search(builder)
         # adding .sort_by to return collections in alphabetical order by title on the homepage
-        response.documents.sort_by(&:title_or_label)
+        response.documents.sort_by(&:title)
       rescue Blacklight::Exceptions::ECONNREFUSED, Blacklight::Exceptions::InvalidRequest
         []
       end

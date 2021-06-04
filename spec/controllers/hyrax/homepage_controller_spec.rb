@@ -96,7 +96,8 @@ RSpec.describe Hyrax::HomepageController, type: :controller do
     context "with collections" do
       let(:presenter) { double }
       let(:repository) { double }
-      let(:collection_results) { double(documents: ['collection results']) }
+      let(:collection) { create(:collection) }
+      let(:collection_results) { double(documents: [collection]) }
 
       before do
         allow(controller).to receive(:repository).and_return(repository)
@@ -107,7 +108,7 @@ RSpec.describe Hyrax::HomepageController, type: :controller do
 
       it "initializes the presenter with ability and a list of collections" do
         expect(Hyrax::HomepagePresenter).to receive(:new).with(Ability,
-                                                               ["collection results"])
+                                                               [collection])
                                                          .and_return(presenter)
         get :index
         expect(response).to be_success

@@ -1,4 +1,4 @@
-.text_show {
+.cultural_show {
   dl.work-show dd {
     border-bottom: 1px solid #ddd;
     .tabular {
@@ -13,7 +13,16 @@
       font-weight: 400;
     }
   }
-  
+
+  div.work-show {
+    h4 {
+      padding: 8px;
+    }
+    ul.tabular > li > a {
+      word-break: break-word;
+    }
+  }
+
   li.attribute, td.attribute {
     font-size: 18px;
   }

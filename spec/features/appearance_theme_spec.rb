@@ -44,7 +44,7 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
       visit 'admin/appearance'
       click_link('Themes')
       select('Default home', from: 'Home Page Theme')
-      select('Masonry view', from: 'Search Results Page Theme')
+      select('Gallery view', from: 'Search Results Page Theme')
       select('Default Show Page', from: 'Show Page Theme')
       find('body').click
       click_on('Save')
@@ -53,9 +53,9 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
       allow_any_instance_of(ApplicationController).to receive(:current_account).and_return(account)
       expect(site.home_theme).to eq('default_home')
       expect(site.show_theme).to eq('default_show')
-      expect(site.search_theme).to eq('masonry_view')
+      expect(site.search_theme).to eq('gallery_view')
       visit '/'
-      expect(page).to have_css('body.default_home.masonry_view.default_show')
+      expect(page).to have_css('body.default_home.gallery_view.default_show')
     end
   end
 
@@ -120,7 +120,7 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
       find('body').click
       expect(page).to have_content('This theme uses a custom banner image')
       expect(page).to have_content('This theme uses home page text')
-      expect(page).to have_content('This theme uses marketing text')      
+      expect(page).to have_content('This theme uses marketing text')
       expect(page.find('#home-wireframe img')['src']).to match(/assets\/themes\/cultural_repository/)
     end
 

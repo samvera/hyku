@@ -98,6 +98,7 @@ RSpec.describe Hyrax::HomepageController, type: :controller do
       let(:repository) { double }
       let(:collection) { create(:collection) }
       let(:collection_results) { double(documents: [collection]) }
+
       before do
         allow(controller).to receive(:repository).and_return(repository)
         allow(controller).to receive(:search_results).and_return([nil, ['recent document']])

@@ -5,12 +5,12 @@
 
     <div class="container">
       <% if controller_name == 'homepage' %>
-      <div class="col-md-4 facet-panel-background-color mt-40 mb-40-0">
+      <div class="col-md-3 facet-panel-background-color mt-40 mb-40-0">
         <%= render 'themes/cultural_repository/facets' %>
       </div>
       <% end %>
 
-      <div class="col-md-8 site-title-container">
+      <div class="col-md-8 col-md-offset-1 site-title-container">
         <div class="site-title h1 mb-40-0">
           <%= render "hyrax/homepage/marketing" %>
         </div>

@@ -1,53 +1,40 @@
 .cultural_repository  {
-
   ///////// NAVABAR /////////
-
   .clear-right {
     clear: right !important;
   }
-
   .vertical-center-image img {
     vertical-align: middle;
     display: inline-block;
     height: 100%;
   }
-
   body.dashboard {
     padding-top: 100px !important;
-
     @media (max-width: $screen-md-min) {
       padding-top: 0px !important;
     }
   }
-
   div.form-group > label.control-label.col-sm-4 {
     color: #dcdcdc;
     font-weight: 400 !important;
   }
-
   /* line 555, /usr/local/rvm/gems/ruby-2.5.3/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_navbar.scss */
   .navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus {
     background-color: transparent !important;
   }
-
   /* line 5, /home/app/webapp/app/assets/stylesheets/hyku.scss */
   #masthead #logo img {
     max-height: 100px !important;
   }
-
   $navbar-height: 100px !important;
-
   ///////// END NAVABAR /////////
   div#featured_works > div.featured-works-4-column-layout:nth-child(1n+5){ display: none !important; }
-
   div#featured_works > div.featured-works-6-column-layout:nth-child(2n+3), div#featured_works > div.featured-works-4-column-layout:nth-child(2n+3) {
     @media screen and (max-width: 991px) and (min-width: 480px) {
       clear: left;
     }
   }
-
   .featured-works-container, .recent-works-container, .collections-container {
-
     a {
       img {
         width: 150px !important;
@@ -69,97 +56,76 @@
       }
     }
   }
-
   .form-control, .btn, nav.breadcrumb, .alert {
     border-radius: 0;
   }
-
   #search-field-header {
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
   }
-
   .mt-20 {
     margin-top: 20px;
   }
-
   .mt-40 {
     margin-top: 40px;
   }
-
   .mb-40 {
     margin-bottom: 40px;
   }
-
   .pt-30 {
     padding-top: 30px;
   }
-
   .pb-30 {
     padding-bottom: 30px;
   }
-
   .p-20 {
     padding: 20px;
   }
-
   .mt-40-20 {
     margin-top: 40px;
-
     @media screen and (max-width: 991px) and (min-width: 480px) {
       margin-top: 0px;
       margin-bottom: 40px;
     }
   }
-
   .mb-40-0 {
     margin-bottom: 40px;
-
     @media screen and (max-width: 991px) and (min-width: 480px) {
       margin-bottom: 0px;
     }
   }
-
   // remove the blur on the banner image
   .image-masthead .background-container {
     -webkit-filter: none;
     filter: none;
   }
-
   .featured-item-title, .collection-item-title, .recent-doc-title {
     text-align: center;
-
     h3 {
       font-size: 14px !important;
       cursor: default;
       pointer-events: none;
       text-decoration: none;
-
       a {
         color: #000000;
       }
     }
   }
-
   a.cr_terms {
     font-size: 12px !important;
     font-weight: bold;
     color: #215480;
-
     &:hover {
       color: #333333;
     }
   }
-
  //////////// HOMEPAGE TEXT BLOCK ///////////
-
   div.home_page_text.homepage-text-container {
     margin-top: -150px;
     height: 343px;
     background-color: #fff;
     border: 1px solid #ddd;
     overflow: hidden;
-
     @media screen and (max-width: 991px) and (min-width: 480px) {
       margin-top: 30px;
       margin-bottom: 30px;
@@ -167,43 +133,33 @@
       // min-height: 1px;
     }
   }
-
   .fill-height-flex {
     display: flex;
     flex-direction: column;
   }
-
   .fill-height-flex > div {
     flex: 1;
   }
   //////////// END HOMEPAGE TEXT BLOCK ///////////
-
-
   /////// FACETS ///////
-
   .facet-panel-background-color {
     background-color: #ffffff;
-
     @media (max-width: $screen-md-min) {
       background-color: transparent;
     }
   }
-
   .facets-toggle {
     border-color: transparent !important;
   }
-
   // April's note: copied over to override /* line 226, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_panels.scss
   .panel-group .panel {
     margin-bottom: 0 !important;
     border-radius: 0px !important;
   }
-
   // April's note: copied over to override * line 254, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_panels.scss */
   .panel-default {
     border-color: transparent !important;
   }
-
   // April's note: copied over to override /* line 7, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_panels.scss */
   .panel {
     margin-bottom: 0px !important;
@@ -216,45 +172,41 @@
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.0) !important;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.0) !important;
   }
-
   // April's note: copied over to override /* line 230, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_panels.scss */
   .panel-group .panel + .panel {
     margin-top: 0px !important;
   }
-
   // April's note: copied over to override /* line 6, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/mixins/_panels.scss */
   .panel-default > .panel-heading {
     background-color: #ffffff !important;
     border-color: #ddd  !important;
   }
-
-  // April's note: copied over to override /* line 22, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_panels.scss */
-  .panel-heading {
-    padding: 20px 15px !important;
-    border-bottom: 0px !important;
-  }
-
+    // April's note: copied over to override /* line 22, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_panels.scss */
+    .panel-heading {
+      padding: 10px 15px !important;
+      border-bottom: 0px !important;
+    }
   // April's note: copied over to override /* line 238, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_panels.scss */
   .panel-group .panel-heading + .panel-collapse > .panel-body,
   .panel-group .panel-heading + .panel-collapse > .list-group {
     border-top: 0px !important;
   }
-
+  /* line 1, /usr/local/rvm/gems/ruby-2.5.3/gems/hyrax-2.9.0/app/assets/stylesheets/hyrax/_file-listing.scss */
+  div.facets h3 {
+    font-size: 1em !important;
+  }
   @media (max-width: 768px) {
     // April's note: copied over to override /* line 163, /usr/local/bundle/gems/blacklight-6.23.0/app/assets/stylesheets/blacklight/_facets.scss */
     #facets .top-panel-heading {
       border: 1px solid #999999 !important;
     }
   }
-
   // April's note: copied over to override /* line 52, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_scaffolding.scss */
   a:hover, a:focus {
     text-decoration: none !important;
   }
-
   #sortAndPerPage {
     margin-top: 15px;
   }
-
 /////////// END FACETS //////////
 }

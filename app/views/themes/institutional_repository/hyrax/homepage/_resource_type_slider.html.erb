@@ -1,0 +1,18 @@
+<div class="carousel institutional-repository-carousel slide" id="carousel-tilenav" data-interval="false">
+  <div class="carousel-inner">
+    <% resource_types.each.with_index do |(k,v), i| %>
+      <% next if v[0].zero? %>
+      <div class="item <%= i.zero? ? 'active' : '' %>">
+        <div class="col-xs-12 col-sm-4 col-md-2">
+          <div class="text-center">
+            <i class='<%= "#{v[1]}" %>' aria-hidden="true"></i>
+            <h5><%= k %></h5>
+            <p><%= v[0] %></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <a class="left carousel-control" href="#carousel-tilenav" data-slide="prev"><i class="glyphicon glyphicon-menu-left"></i></a>
+  <a class="right carousel-control" href="#carousel-tilenav" data-slide="next"><i class="glyphicon glyphicon-menu-right"></i></a>
+</div>

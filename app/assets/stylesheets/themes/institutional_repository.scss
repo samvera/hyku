@@ -177,6 +177,11 @@
     padding: 0;
   }
 
+  /* home page stats not in carousel */
+  .ir-stats {
+    display: flex;
+    justify-content: center;
+  }
 
  /* Medium Devices, Desktops */
 

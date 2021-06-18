@@ -1,4 +1,5 @@
-<% # April's note: overriding Hyrax 2.9 template for client theming %>
+<%# April's note: overriding Hyrax 2.9 template for client theming %>
+
 <% top_level_collections = collections.select{ |c| c['nesting_collection__deepest_nested_depth_isi'] == 1 }%>
 <% top_level_collections.each do |collection| %>
   <div class="institutional-repository-collections pb-40 col-xs-6">
@@ -17,6 +18,6 @@
 
 <div class="col-xs-12 text-center mt-20">
   <%= link_to t('hyrax.homepage.admin_sets.link'),
-                main_app.search_catalog_path(f: { human_readable_type_sim: ["Collection"]}),
-                class: 'btn btn-default' %>
+                main_app.all_collections_path,
+                class: 'btn btn-sm btn-default' %>
 </div>

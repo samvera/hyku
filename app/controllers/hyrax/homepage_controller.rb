@@ -3,6 +3,7 @@
 # OVERRIDE: Hyrax v2.9.0 from Hyrax v2.9.0 to add inject_theme_views method for theming
 # OVERRIDE: Hyrax v2.9.0 to add search_action_url method from Blacklight 6.23.0 to make facet links to go to /catalog
 # OVERRIDE: Hyrax v2.9.0 to add .sort_by to return collections in alphabetical order by title on the homepage
+# OVERRIDE: Hyrax v2.9.0 add all_collections page for IR theme
 
 module Hyrax
   # Changed to inherit from CatalogController for home page facets
@@ -51,6 +52,13 @@ module Hyrax
         additional_response_formats(format)
         document_export_formats(format)
       end
+    end
+
+    def all_collections
+      @presenter = presenter_class.new(current_ability, collections)
+      @marketing_text = ContentBlock.for(:marketing)
+      @announcement_text = ContentBlock.for(:announcement)
+      @collections = collections(rows: 100000)
     end
 
     # Added from Blacklight 6.23.0 to change url for facets on home page

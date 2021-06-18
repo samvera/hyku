@@ -96,4 +96,6 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  get 'all_collections' => 'hyrax/homepage#all_collections', as: :all_collections
 end

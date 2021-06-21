@@ -103,6 +103,12 @@ We distribute two `docker-compose.yml` configuration files.  The first is set up
 docker-compose up -d web workers
 ```
 
+Note: You may need to add your user to the "docker" group.
+
+```sudo gpasswd -a $USER docker
+newgrp docker
+```
+
 ### With Vagrant
 
 The [samvera-vagrant project](https://github.com/samvera-labs/samvera-vagrant) provides another simple way to get started "kicking the tires" of Hyku (and [Hyrax](http://hyr.ax/)), making it easy and quick to spin up Hyku. (Note that this is not for production or production-like installations.) It requires [VirtualBox](https://www.virtualbox.org/) and [Vagrant](https://www.vagrantup.com/).

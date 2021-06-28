@@ -1,31 +1,6 @@
 .institutional_repository {
 
-  // styles the top nav menu application name that is centered
-  .institutional-repository-application-name {
-    text-align: center;
-
-    span {
-      color: #fff;
-      font-size: 20px;
-    }
-  }
-
-  // remove the margin-right: 15px since a duplicate style
-  ul#user_utility_links.navbar-right {
-    margin-right: 0px !important;
-  }
-
-  // remove the blur on the banner image
-  .image-masthead .background-container {
-    -webkit-filter: none;
-    filter: none;
-  }
-
-  // For the search bar label in the navbar
-  div.form-group > label.control-label.col-sm-6 {
-    color: #dcdcdc;
-    font-weight: 400 !important;
-  }
+  ////// Basic Apperance Styles //////
 
   .mt-40 {
     margin-top: 40px;
@@ -47,6 +22,34 @@
     padding-bottom: 40px;
   }
 
+  // removes the blur on the banner image
+  .image-masthead .background-container {
+    -webkit-filter: none;
+    filter: none;
+  }
+
+  ////// Navbar //////
+
+  // styles the top nav menu application name that is centered
+  .institutional-repository-application-name {
+    text-align: center;
+    span {
+      color: #fff;
+      font-size: 20px;
+    }
+  }
+
+  // styles the search bar label in the navbar
+  div.form-group > label.control-label.col-sm-6 {
+    color: #dcdcdc;
+    font-weight: 400 !important;
+  }
+
+  // removes the margin-right: 15px since a duplicate style
+  ul#user_utility_links.navbar-right {
+    margin-right: 0px !important;
+  }
+
   // for the navbar to sit 100% width for the columns to play responsively
   /* line 2, /home/app/webapp/app/assets/stylesheets/hyku.scss */
   #masthead #logo {
@@ -64,8 +67,11 @@
     line-height: 50px !important;
   }
 
+  ////// Recent Uploads //////
+
   .section-border {
     border: 1px solid #ddd;
+    padding: 30px;
   }
 
   .recent-uploads-div-height {
@@ -73,68 +79,68 @@
     flex-direction: column;
   }
 
-  //////////// Collections section ///////////////
+  .institutional-repository-recent-uploads {
+    h3 {
+      margin-top: 0px !important;
+    }
+  }
+
+  .recently-uploaded {
+    a {
+      img {
+        width: 90px !important;
+        height: auto !important;
+        display: block !important;
+        margin: 0 auto !important;
+      }
+    }
+  }
+
+  div.recently-uploaded:nth-child(2n+3) {
+    clear: left,
+  }
+
+  div.recently-uploaded:nth-last-child(4), div.recently-uploaded:last-child {
+    padding-bottom: 0px !important;
+  }
+
+  ////// Collections Section //////
 
   .collections-container {
-
     a {
-
       img {
         width: 240px !important;
         height: auto !important;
         display: block !important;
         margin: 0 auto !important;
-
-        // @media screen and (max-width: 1199px) and (min-width: 992px) {
-        //   height: 125px !important;
-        // }
-
-        @media screen and (max-width: 768px) and (min-width: 480px) {
-          width: 200px !important;
-        }
-
       }
     }
   }
 
   .collection-item-title, .recent-doc-title {
     text-align: center;
-
     h3 {
       font-size: 14px !important;
       cursor: default;
       pointer-events: none;
       text-decoration: none;
-
       a {
         color: #000000;
       }
     }
   }
 
-  .recently-uploaded {
-
-    a {
-
-      img {
-        width: 90px !important;
-        height: auto !important;
-        display: block !important;
-        margin: 0 auto !important;
-
-        @media screen and (max-width: 768px) and (min-width: 480px) {
-          width: 70px !important;
-        }
-
-      }
-    }
-  }
-
-  div.recently-uploaded:nth-child(2n+3), div.collections-container > div.institutional-repository-collections:nth-child(2n+3) {
+  div.institutional-repository-collections:nth-child(4n) {
     clear: left,
   }
 
-  //////// STATS ///////////
+  ////// Stats Carousel //////
+
+  /* home page stats not in carousel */
+  .ir-stats {
+    display: flex;
+    justify-content: center;
+  }
 
   .stats-color-block {
     background-color: #f8f8f8;
@@ -151,8 +157,6 @@
     font-weight: 700;
     color: #555;
   }
-
-  /////// STATS CAROUSEL /////////
 
   .institutional-repository-carousel .carousel-control {
     width: 4%;
@@ -177,11 +181,7 @@
     padding: 0;
   }
 
-  /* home page stats not in carousel */
-  .ir-stats {
-    display: flex;
-    justify-content: center;
-  }
+  ////// All Collections //////
 
   /* browse by collection page */
   ul.all-collection-list {
@@ -189,8 +189,28 @@
     font-size: 1.5em;
   }
 
- /* Medium Devices, Desktops */
+  ////// Media Queries //////
+  @media (max-width: $screen-sm-max) {
+    .collections-container {
+      a {
+        img {
+          width: 200px !important;
+        }
+      }
+    }
+  }
 
+  @media (max-width: $screen-xs-min) {
+    .recently-uploaded {
+      a {
+        img {
+          width: 70px !important;
+        }
+      }
+    }
+  }
+
+  ////// Stats Carousel Media Queries //////
   @media only screen and (max-width: 992px) {
     .carousel .item .col-xs-12:nth-last-child(-n+2) {
       display: none;

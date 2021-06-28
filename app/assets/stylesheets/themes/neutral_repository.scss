@@ -1,19 +1,9 @@
 .neutral_repository {
 
-  .carousel-opacity {
-    background-color: rgba(102, 102, 102, 0.5) !important;
-  }
-
-  .mt-40 {
-    margin-top: 40px;
-  }
+  ////// Basic Apperance Styles //////
 
   .mb-40 {
     margin-bottom: 40px;
-  }
-
-  .pt-30 {
-    padding-top: 30px;
   }
 
   .pb-30 {
@@ -28,22 +18,14 @@
     padding: 10px;
   }
 
-  .mt-40-20 {
-    margin-top: 40px;
+  // removes the blur on the banner image
 
-    @media screen and (max-width: 991px) and (min-width: 480px) {
-      margin-top: 0px;
-      margin-bottom: 40px;
-    }
+  .image-masthead .background-container {
+    -webkit-filter: none;
+    filter: none;
   }
 
-  .mb-40-0 {
-    margin-bottom: 40px;
-
-    @media screen and (max-width: 991px) and (min-width: 480px) {
-      margin-bottom: 0px;
-    }
-  }
+  ////// Collections Section //////
 
   .collection-item-title, .recent-doc-title {
     text-align: center;
@@ -60,11 +42,6 @@
     }
   }
 
-  .recent-uploads-div-height {
-    display: flex;
-    flex-direction: column;
-  }
-
   .institutional-repository-collections {
 
     a {
@@ -74,45 +51,41 @@
         height: auto !important;
         display: block !important;
         margin: 0 auto !important;
-
-        @media screen and (max-width: 1199px) and (min-width: 992px) {
-          width: 150px !important;
-        }
-
-        @media screen and (max-width: 768px) and (min-width: 480px) {
-          width: 90px !important;
-        }
-
       }
     }
   }
 
+  ////// Recent Uploads Section //////
+
+  div.neutral_repository.recently-uploaded {
+    background-color: #fff;
+    border: 1px solid #ddd;
+  }
+
+  .recent-uploads-div-height {
+    display: flex;
+    flex-direction: column;
+  }
+
   .recently-uploaded {
-
     a {
-
       img {
         width: 90px !important;
         height: auto !important;
         display: block !important;
         margin: 0 auto !important;
 
-        @media screen and (max-width: 768px) and (min-width: 480px) {
-          width: 70px !important;
-        }
-
       }
     }
   }
 
   div.recently-uploaded:nth-child(2n+3) {
+    clear: left,
+  }
 
-    @media screen and (max-width: 1199px) and (min-width: 992px) {
-        clear: left,
-      }
-    }
+  ////// Home Page text Section //////
 
-  div.home_page_text.homepage-text-container, div.neutral_repository.featured-researcher, div.neutral_repository.recently-uploaded {
+  div.home_page_text.homepage-text-container {
     background-color: #fff;
     border: 1px solid #ddd;
   }
@@ -120,10 +93,12 @@
   .home_page_text::first-line {
     font-size: 24px;
   }
+
   .home_page_text {
     font-size: 18px;
   }
 
+  ////// Featured Researcher Section //////
   .featured-researcher {
     img {
       max-width: 100%;
@@ -131,28 +106,30 @@
     }
   }
 
+  div.neutral_repository.featured-researcher {
+    background-color: #fff;
+    border: 1px solid #ddd;
+  }
+
+  ////// Carousel //////
+
   #featured-carousel {
     border: 1px solid #ccc;
     padding: 1em;
   }
 
-  // remove the blur on the banner image
-  .image-masthead .background-container {
-    -webkit-filter: none;
-    filter: none;
+  .carousel-opacity {
+    background-color: rgba(102, 102, 102, 0.5) !important;
   }
 
-  //////////////// CAROUSEL ////////////////////
-
-
-.carousel-inner > .item > img,
-.carousel-inner > .item > a > img {
-  display: block;
-  max-width: 100%;
-  width: auto;
-  height: 350px;
-  margin: auto;
-}
+  .carousel-inner > .item > img,
+  .carousel-inner > .item > a > img {
+    display: block;
+    max-width: 100%;
+    width: auto;
+    height: 350px;
+    margin: auto;
+  }
 
   div.carousel-caption {
     a {
@@ -160,12 +137,14 @@
       color: #ffffff;
     }
   }
-  /* line 109, /usr/local/rvm/gems/ruby-2.5.3/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_carousel.scss */
+
+  // Note: copied over to override /* line 109, /usr/local/rvm/gems/ruby-2.5.3/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_carousel.scss */
   .carousel-control.left {
     background-image: none;
     filter: none;
   }
-  /* line 112, /usr/local/rvm/gems/ruby-2.5.3/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_carousel.scss */
+
+  // Note: copied over to override /* line 112, /usr/local/rvm/gems/ruby-2.5.3/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_carousel.scss */
   .carousel-control.right {
     right: 0;
     left: auto;
@@ -183,6 +162,44 @@
     margin-top: -10px;
     font-weight: 700;
     color: #555;
+  }
+
+  ////// Media Queries //////
+
+  @media (min-width: $screen-xs-min) and (max-width: $screen-lg-min) {
+    .institutional-repository-collections {
+      a {
+        img {
+          width: 150px !important;
+        }
+      }
+    }
+  }
+
+  @media (min-width: $screen-md-min) {
+    div.institutional-repository-collections:nth-child(5n) {
+      clear: left,
+    }
+  }
+
+  @media (min-width: $screen-sm-min) {
+    .recently-uploaded {
+      a {
+        img {
+          width: 70px !important;
+        }
+      }
+    }
+  }
+
+  @media (max-width: $screen-xs-min) {
+    .institutional-repository-collections {
+      a {
+        img {
+          width: 90px !important;
+        }
+      }
+    }
   }
 
 }

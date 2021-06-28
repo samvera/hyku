@@ -1,6 +1,6 @@
 <% # April's note: overriding Hyrax 2.9 template for client theming %>
 <% collections.each do |collection| %>
-  <div class="institutional-repository-collections pb-30 col-xs-4">
+  <div class="institutional-repository-collections pb-30 col-xs-6 col-md-4">
     <%= link_to [hyrax, collection] do %>
       <%= render_thumbnail_tag(collection, {suppress_link: true}, class: 'img-responsive center-block') %>
     <% end %>

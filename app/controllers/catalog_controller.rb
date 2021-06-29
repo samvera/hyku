@@ -17,11 +17,9 @@ class CatalogController < ApplicationController
   def self.modified_field
     solr_name('system_modified', :stored_sortable, type: :date)
   end
-
   configure_blacklight do |config|
     config.view.gallery.partials = %i[index_header index]
-    config.view.masonry.partials = [:index]
-    config.view.slideshow.partials = [:index]
+    # Removed the masonry and slideshow config partials for client themeing
 
     config.show.tile_source_field = :content_metadata_image_iiif_info_ssm
     config.show.partials.insert(1, :openseadragon)
@@ -36,7 +34,6 @@ class CatalogController < ApplicationController
 
     # Show gallery view
     config.view.gallery.partials = %i[index_header index]
-    config.view.slideshow.partials = [:index]
 
     ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
     config.default_solr_params = {

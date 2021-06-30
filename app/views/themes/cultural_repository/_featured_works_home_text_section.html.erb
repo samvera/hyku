@@ -11,8 +11,9 @@
       </div>
     <% else %>
       <div class="col-sm-12 cultural-repository featured-works-container">
+        <%= render 'themes/cultural_repository/layouts/share_your_work_row' if controller_name == 'homepage' %>
         <h4>Featured Works</h4>
-          <%= render 'themes/cultural_repository/hyrax/homepage/featured_works' %>
+        <%= render 'themes/cultural_repository/hyrax/homepage/featured_works' %>
       </div>
     <% end %>
     <!-- Adding a desktop style for the homepage text content block, hidden on sm and xs -->

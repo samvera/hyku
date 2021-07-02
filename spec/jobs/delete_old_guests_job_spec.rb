@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe EmbargoAutoExpiryJob do
+RSpec.describe DeleteOldGuestsJob do
   before do
     ActiveJob::Base.queue_adapter = :test
   end
@@ -11,10 +11,10 @@ RSpec.describe EmbargoAutoExpiryJob do
 
   let(:past_date) { 8.days.ago }
 
-  let(:old_user) { create(:user, guest: false, created_at: past_date, updated_at: past_date )}
-  let(:old_guest) { create(:user, guest: true, created_at: past_date, updated_at: past_date )}
-  let(:new_user) { create(:user, guest: false )}
-  let(:new_guest) { create(:user, guest: true )}
+  let(:old_user) { create(:user, guest: false, created_at: past_date, updated_at: past_date) }
+  let(:old_guest) { create(:user, guest: true, created_at: past_date, updated_at: past_date) }
+  let(:new_user) { create(:user, guest: false) }
+  let(:new_guest) { create(:user, guest: true) }
 
   describe '#reenqueue' do
     it 'Enques an DeleteOldGuestsJob after perform' do
@@ -29,9 +29,9 @@ RSpec.describe EmbargoAutoExpiryJob do
       expect(new_user).to be
       expect(new_guest).to be
       ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
-      expect{ DeleteOldGuestsJob.perform_now }.to change{User.count}.from(4).to(3)
+      expect { DeleteOldGuestsJob.perform_now }.to change(User, :count).from(4).to(3)
       expect(User.find_by(id: old_user.id)).to be
-      expect(User.find_by(id: old_guest)).to_not be
+      expect(User.find_by(id: old_guest)).not_to be
       expect(User.find_by(id: new_user)).to be
       expect(User.find_by(id: new_guest)).to be
     end

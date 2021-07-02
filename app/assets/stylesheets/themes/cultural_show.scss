@@ -14,10 +14,10 @@
     }
   }
 
-  div.work-show {
-    h4 {
-      padding: 8px;
-    }
+  .relationships-box {
+    padding: 8px;
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
     ul.tabular > li > a {
       word-break: break-word;
     }
@@ -25,10 +25,6 @@
 
   li.attribute, td.attribute {
     font-size: 18px;
-  }
-  .relationships-box {
-    border: 1px solid #ddd;
-    background-color: #f8f8f8;
   }
   .table-striped > tbody > tr:nth-of-type(odd) {
     background-color: #ffffff;

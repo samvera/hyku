@@ -29,11 +29,11 @@ RSpec.describe DeleteOldGuestsJob do
       expect(new_user).to be
       expect(new_guest).to be
       ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
-      expect { DeleteOldGuestsJob.perform_now }.to change(User, :count).from(4).to(3)
-      expect(User.find_by(id: old_user.id)).to be
-      expect(User.find_by(id: old_guest)).not_to be
-      expect(User.find_by(id: new_user)).to be
-      expect(User.find_by(id: new_guest)).to be
+      expect { DeleteOldGuestsJob.perform_now }.to change { User.unscope(:where).count }.from(4).to(3)
+      expect(User.unscope(:where).find_by(id: old_user.id)).to be
+      expect(User.unscope(:where).find_by(id: old_guest)).not_to be
+      expect(User.unscope(:where).find_by(id: new_user)).to be
+      expect(User.unscope(:where).find_by(id: new_guest)).to be
     end
   end
 end

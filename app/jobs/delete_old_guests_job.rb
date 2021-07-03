@@ -7,7 +7,7 @@ class DeleteOldGuestsJob < ApplicationJob
   end
 
   def perform
-    User.where("guest = ? and updated_at < ?", true, Time.current - 7.days).each(&:destroy)
+    User.unscope(:where).where("guest = ? and updated_at < ?", true, Time.current - 7.days).destroy_all
   end
 
   private

@@ -17,7 +17,7 @@ class AccountElevator < Apartment::Elevators::Generic
     elsif Account.any?
       raise "No tenant found for #{cname}"
     else
-      logger.info "It looks like we're in single tenant mode. No tenant found for #{cname}"
+      Rails.logger.info "It looks like we're in single tenant mode. No tenant found for #{cname}"
     end
   end
 end

@@ -11,4 +11,9 @@ if Settings.s3.upload_bucket
     config.aws_bucket = Settings.s3.upload_bucket
     config.aws_acl = 'bucket-owner-full-control'
   end
+elsif !Settings.file_acl || Settings.file_acl == 'false'
+  CarrierWave.configure do |config|
+    config.permissions = nil
+    config.directory_permissions = nil
+  end
 end

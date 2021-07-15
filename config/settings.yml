@@ -11,6 +11,7 @@ multitenancy:
   root_host:
 
 ssl_configured: false
+file_acl: true
 
 action_controller:
   asset_host:

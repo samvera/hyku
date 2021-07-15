@@ -18,6 +18,8 @@
             </div>
           <% end %>
 
+          <%= f.input :is_public, hint: 'Can users discover your site on the home page or access your pages without a special username / password?' %>
+
           <%= f.input :tenant, readonly: @account.persisted? %>
           <%= f.input :cname %>
 

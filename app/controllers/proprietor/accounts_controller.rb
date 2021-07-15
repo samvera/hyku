@@ -84,7 +84,7 @@ module Proprietor
 
       # Never trust parameters from the scary internet, only allow the permitted parameters through.
       def account_params
-        params.require(:account).permit(:name, :cname, :title,
+        params.require(:account).permit(:name, :cname, :title, :is_public,
                                         admin_emails: [],
                                         solr_endpoint_attributes: %i[id url],
                                         fcrepo_endpoint_attributes: %i[id url base_path])

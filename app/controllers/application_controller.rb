@@ -30,14 +30,17 @@ class ApplicationController < ActionController::Base
     raise ActionController::RoutingError, 'Not Found'
   end
 
-  private
+  protected
 
     def is_hidden
       current_account.persisted? && !current_account.is_public?
     end
 
     def is_api_or_pdf
-      request.format.to_s.match('json') || params[:print] || request.path.include?('api') || request.path.include?('pdf')
+      request.format.to_s.match('json') ||
+        params[:print] ||
+        request.path.include?('api') ||
+        request.path.include?('pdf')
     end
 
     def is_staging

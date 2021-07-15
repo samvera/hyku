@@ -5,7 +5,7 @@ RSpec.describe AccountElevator do
 
   let(:request) { double(host: 'example.com') }
   let(:bad_request) { double(host: 'new.example.com') }
-  let(:domain_name) { FactoryBot.build(:domain_name, cname: 'example.com')}
+  let(:domain_name) { FactoryBot.build(:domain_name, cname: 'example.com') }
   let!(:account) { FactoryBot.create(:account, domain_names: [domain_name]) }
 
   describe '#parse_tenant_name' do

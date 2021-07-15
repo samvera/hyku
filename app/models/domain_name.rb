@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DomainName < ApplicationRecord
   belongs_to :account
   validates :cname, presence: true, uniqueness: true, exclusion: { in: [Account.default_cname('')] }

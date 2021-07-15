@@ -20,7 +20,7 @@ RSpec.describe Account, type: :model do
       it 'calls Account.where' do
         account = class_double(Account)
         expect(Account).to receive(:joins).with(:domain_names).and_return(account)
-        expect(account).to receive(:where).with(domain_names: {cname: 'foo bar baz'})
+        expect(account).to receive(:where).with(domain_names: { cname: 'foo bar baz' })
         described_class.tenants('foo bar baz')
       end
     end

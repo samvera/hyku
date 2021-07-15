@@ -14,13 +14,19 @@ module Hyrax
       @collections = collections
     end
 
-    # @return [Boolean] If the current user is a guest and the display_share_button_when_not_logged_in?
-    #   is activated, then return true. Otherwise return true if the signed in
-    #   user has permission to create at least one kind of work.
+    # OVERRIDE: Hyrax v2.9.0 to removed: @return [Boolean] If the
+    #   display_share_button_when_not_logged_in? is activated, then
+    #   return true since we are utilizing the feature flipper
+    #   Flipflop.show_share_button? in Hyku.
+
+    # @return [Boolean] If the current user is a guest
+    #   and the feature flipper is enabled or if the signed in
+    #   user has permission to create at least one kind of work
+    #   and the feature flipper is enabled.
+
     def display_share_button?
-      Flipflop.show_share_button? &&
-        (user_unregistered? && Hyrax.config.display_share_button_when_not_logged_in?) ||
-        current_ability.can_create_any_work?
+      Flipflop.show_share_button? && current_ability.can_create_any_work? ||
+      Flipflop.show_share_button? && user_unregistered?
     end
 
     # A presenter for selecting a work type to create

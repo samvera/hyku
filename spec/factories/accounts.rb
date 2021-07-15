@@ -11,12 +11,27 @@ FactoryBot.define do
     options { Hash.new(namespace: 'fakeNS') }
   end
   factory :account do
-    sequence(:cname) { |_n| srand }
+    sequence(:name) { |_n| srand }
+
     solr_endpoint
     redis_endpoint
     fcrepo_endpoint
+
+    transient do
+      domain_names_count { 1 }
+    end
+    after(:create) do |account, evaluator|
+      create_list(:domain_name, evaluator.domain_names_count, account: account)
+    end
   end
   factory :sign_up_account, class: Account do
     sequence(:name) { |_n| srand }
+
+    transient do
+      domain_names_count { 1 }
+    end
+    after(:create) do |account, evaluator|
+      create_list(:domain_name, evaluator.domain_names_count, account: account)
+    end
   end
 end

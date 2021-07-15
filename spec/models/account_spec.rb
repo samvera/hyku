@@ -18,7 +18,9 @@ RSpec.describe Account, type: :model do
 
     context 'when tenant_list param is a string' do
       it 'calls Account.where' do
-        expect(Account).to receive(:where).with(cname: 'foo bar baz')
+        account = class_double(Account)
+        expect(Account).to receive(:joins).with(:domain_names).and_return(account)
+        expect(account).to receive(:where).with(domain_names: { cname: 'foo bar baz' })
         described_class.tenants('foo bar baz')
       end
     end
@@ -175,8 +177,8 @@ RSpec.describe Account, type: :model do
     subject { FactoryBot.create(:sign_up_account) }
 
     it 'canonicalizes the account cname' do
-      subject.update cname: 'example.com.'
-      expect(subject.cname).to eq 'example.com'
+      subject.domain_names.first.update cname: 'example.com.'
+      expect(subject.domain_names.first.cname).to eq 'example.com'
     end
   end
 
@@ -184,12 +186,7 @@ RSpec.describe Account, type: :model do
     it 'requires name when cname is absent' do
       account1 = described_class.create(tenant: 'example')
       expect(account1.errors).not_to be_empty
-      expect(account1.errors.messages).to match a_hash_including(:name, :cname)
-    end
-
-    it 'does not require name when cname is present' do
-      account1 = described_class.create(tenant: 'example', cname: 'example.com')
-      expect(account1.errors).to be_empty
+      expect(account1.errors.messages).to match a_hash_including(:name, :"domain_names.cname")
     end
 
     context 'default_host' do
@@ -199,7 +196,7 @@ RSpec.describe Account, type: :model do
         it 'builds default cname from name and default_host' do
           allow(Settings.multitenancy).to receive(:default_host).and_return "%{tenant}.dev"
           expect(account1.errors).to be_empty
-          expect(account1.cname).to eq('example.dev')
+          expect(account1.domain_names.first.cname).to eq('example.dev')
         end
       end
 
@@ -209,7 +206,7 @@ RSpec.describe Account, type: :model do
           Settings.multitenancy.default_host = nil
           allow(Settings.multitenancy).to receive(:admin_host).and_return('admin-host')
           expect(account1.errors).to be_empty
-          expect(account1.cname).to eq('example.admin-host')
+          expect(account1.domain_names.first.cname).to eq('example.admin-host')
           Settings.multitenancy.default_host = original
         end
       end
@@ -222,14 +219,13 @@ RSpec.describe Account, type: :model do
         account2 = described_class.create(name: 'example', tenant: 'example_tenant', cname: 'example.dev')
         expect(account1.errors).to be_empty
         expect(account2.errors).not_to be_empty
-        expect(account2.errors.messages).to match a_hash_including(:tenant, :cname)
-        expect(account2.errors.messages).not_to include(:name)
+        expect(account2.errors.messages).to match a_hash_including(:tenant, :name, :"domain_names.cname")
       end
       it 'on save' do
         account2 = described_class.new(tenant: 'other_tenant', cname: account1.cname)
         expect(account2.save).to be_falsey
         expect(account2.errors).not_to be_empty
-        expect(account2.errors.messages).to match a_hash_including(:cname)
+        expect(account2.errors.messages).to match a_hash_including(:name, :"domain_names.cname")
       end
     end
 
@@ -238,15 +234,14 @@ RSpec.describe Account, type: :model do
       account2 = described_class.create(name: 'example')
       expect(account1.errors).to be_empty
       expect(account2.errors).not_to be_empty
-      expect(account2.errors.messages).to match a_hash_including(:cname)
-      expect(account2.errors.messages).not_to include(:name)
+      expect(account2.errors.messages).to match a_hash_including(:name, :"domain_names.cname")
     end
 
     it 'prevents conflicting new object saves' do
       described_class.create(name: 'example')
       account2 = described_class.new(name: 'example')
       expect(account2.save).to be false
-      expect(account2.errors).to match a_hash_including(:cname)
+      expect(account2.errors).to match a_hash_including(:"domain_names.cname")
     end
 
     describe 'guarantees only one account can reference the same' do

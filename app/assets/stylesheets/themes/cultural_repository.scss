@@ -224,7 +224,7 @@
   }
 
   @media screen and (max-width: $screen-md-min) {
-    div.recently-uploaded:nth-child(2n+3) {
+    div.recently-uploaded:nth-of-type(2n+3) {
       clear: left,
     }
     .mb-40-0 {

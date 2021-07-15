@@ -130,7 +130,7 @@
     }
   }
 
-  div.institutional-repository-collections:nth-child(4n) {
+  div.institutional-repository-collections:nth-of-type(2n+3) {
     clear: left,
   }
 

@@ -144,6 +144,7 @@ class Account < ApplicationRecord
 
   # Writer to convert old cname in to new domain name child object
   def cname=(value)
+    self[:cname] = value
     domain_names.build(cname: value) unless domain_names.detect { |dn| dn.cname == value }
   end
 

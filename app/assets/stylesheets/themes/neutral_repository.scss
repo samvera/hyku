@@ -42,7 +42,7 @@
     }
   }
 
-  .institutional-repository-collections {
+  .neutral-repository-collections {
 
     a {
 
@@ -167,7 +167,7 @@
   ////// Media Queries //////
 
   @media (min-width: $screen-xs-min) and (max-width: $screen-lg-min) {
-    .institutional-repository-collections {
+    .neutral-repository-collections {
       a {
         img {
           width: 150px !important;
@@ -176,8 +176,14 @@
     }
   }
 
+  @media (max-width: $screen-md-min) {
+    div.neutral-repository-collections:nth-of-type(2n+3) {
+      clear: left,
+    }
+  }
+
   @media (min-width: $screen-md-min) {
-    div.institutional-repository-collections:nth-child(5n) {
+    div.neutral-repository-collections:nth-of-type(3n+4) {
       clear: left,
     }
   }
@@ -193,7 +199,7 @@
   }
 
   @media (max-width: $screen-xs-min) {
-    .institutional-repository-collections {
+    .neutral-repository-collections {
       a {
         img {
           width: 90px !important;

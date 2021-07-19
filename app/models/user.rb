@@ -17,7 +17,16 @@ class User < ApplicationRecord
   devise :database_authenticatable, :invitable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  before_create :add_default_roles
+  after_save :add_default_group_memberships!
+
+  scope :for_repository, ->{
+    joins(:roles)
+  }
+
+  # set default scope to exclude guest users
+  def self.default_scope
+    where(guest: false)
+  end
 
   scope :for_repository, -> {
     joins(:roles)
@@ -70,9 +79,30 @@ class User < ApplicationRecord
     end
   end
 
+  # Hyrax::Group memberships are tracked through User#roles. This method looks up
+  # the Hyrax::Groups the user is a member of and returns each one in an Array.
+  # Example:
+  #   u = User.last
+  #   u.roles
+  #   => #<ActiveRecord::Associations::CollectionProxy [#<Role id: 8, name: "member", resource_type: "Hyrax::Group", resource_id: 2,...>]>
+  #   u.hyrax_groups
+  #   => [#<Hyrax::Group id: 2, name: "registered", description: nil,...>]
+  def hyrax_groups
+    roles.where(name: 'member', resource_type: 'Hyrax::Group').map(&:resource).uniq
+  end
+
+  # Override method from hydra-access-controls v11.0.0 to use Hyrax::Groups.
+  # NOTE: DO NOT RENAME THIS METHOD - it is required for permissions to function properly.
+  # @return [Array] Hyrax::Group names the User is a member of
   def groups
-    return ['admin'] if has_role?(:admin, Site.instance)
-    []
+    hyrax_groups.map(&:name)
+  end
+
+  # NOTE: This is an alias for #groups to clarify what the method is doing.
+  # This is necessary because #groups overrides a method from a gem.
+  # @return [Array] Hyrax::Group names the User is a member of
+  def hyrax_group_names
+    groups
   end
 
   # If this user is the first user on the tenant, they become its admin

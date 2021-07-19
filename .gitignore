@@ -1,6 +1,5 @@
 *.rbc
 capybara-*.html
-.rspec
 /log
 /tmp
 /db/*.sqlite3
@@ -47,3 +46,12 @@ config/environments/*.local.yml
 # Avatars and such
 public/uploads
 .env.*
+
+#Vim
+*.swp
+*.swo
+fits.log
+public/branding/*
+
+# Ignore Bulkrax in local development
+vendor/engines/*

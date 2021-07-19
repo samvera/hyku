@@ -1,7 +1,13 @@
+require 'sidekiq/web'
+Sidekiq::Web.set :session_secret, Rails.application.secrets[:secret_key_base]
+
 Rails.application.routes.draw do
   concern :oai_provider, BlacklightOaiProvider::Routes.new
-
   mount Riiif::Engine => 'images', as: :riiif if Hyrax.config.iiif_image_server?
+
+  authenticate :user, lambda { |u| u.is_superadmin } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
 
   if Settings.multitenancy.enabled
     constraints host: Account.admin_host do
@@ -77,6 +83,15 @@ Rails.application.routes.draw do
           delete :remove
         end
       end
+
+      resources :roles, only: [:index], controller: 'group_roles' do
+        collection do
+          post :add
+          delete :remove
+        end
+      end
     end
   end
+
+  get 'all_collections' => 'hyrax/homepage#all_collections', as: :all_collections
 end

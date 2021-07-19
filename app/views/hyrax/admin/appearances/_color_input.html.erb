@@ -1,0 +1,8 @@
+<div class='row'>
+  <div class='col-lg-10'>
+    <%= f.input color_name, required: false, input_html: { type: 'color', data: { default_value: hex } } %>
+  </div>
+  <div class='col-lg-2'>
+    <%= link_to 'Restore Default', '#color', class: 'btn btn-default restore-default-color', data: { default_target: color_name } %>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="col-xs-12 col-md-8 institutional-repository collections-container mb-40">
+    <div class="col-sm-12">
+      <h3>Collections</h3>
+      <%= render 'themes/institutional_repository/hyrax/homepage/explore_collections', collections: @presenter.collections %>
+    </div>
+  </div>
+  <div class="col-xs-12 col-md-4 institutional-repository">
+    <% if display_content_block? @home_text %>
+      <%= render 'themes/institutional_repository/home_text' if controller_name == 'homepage' %>
+    <% end %>
+    <% if @presenter.display_featured_researcher? %>
+      <%= render 'themes/institutional_repository/hyrax/homepage/featured_researcher' %>
+    <% end %>
+    <% if @presenter.display_recently_uploaded? %>
+      <%= render 'recently_uploaded', recent_documents: @recent_documents %>
+    <% end %>
+  </div>
+</div>

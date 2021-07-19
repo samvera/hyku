@@ -17,6 +17,7 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require 'webmock/rspec'
 require 'i18n/debug' if ENV['I18N_DEBUG']
+require 'rspec/its'
 
 RSpec.configure do |config|
   config.before(:suite) do

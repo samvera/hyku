@@ -1,0 +1,13 @@
+<div class="container mb-40"><!--- BEGIN COLLECTIONS SECTION -->
+  <div class="row">
+    <div class="col-sm-12 cultural-repository collections-container"> <!-- can toggle on/off -->
+      <h4>Collections</h4>
+      <%= render 'themes/cultural_repository/hyrax/homepage/explore_collections', collections: @presenter.collections %>
+      <div class="col-xs-12 text-center mt-40">
+        <%= link_to t('hyrax.homepage.admin_sets.link'),
+                      main_app.search_catalog_path(f: { human_readable_type_sim: ["Collection"]}),
+                      class: 'btn btn-default' %>
+      </div>
+    </div>
+  </div>
+</div><!--- END COLLECTIONS SECTION -->

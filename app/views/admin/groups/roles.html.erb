@@ -1,0 +1,107 @@
+<% content_for :page_title, construct_page_title(t('hyku.admin.groups.title.edit'), t('hyku.admin.title')) %>
+<% provide :page_header do %>
+  <%# TODO(bkiahstroud): remove <h2> and <p> when groups have functional permissions %>
+  <h2 style='text-align: center;'>
+    <span class='fa fa-exclamation-triangle' style='color: #ffcc00;' aria-hidden='true'></span>
+    <span>Under Construction</span>
+    <span class='fa fa-exclamation-triangle' style='color: #ffcc00;' aria-hidden='true'></span>
+  </h2>
+  <p style='text-align: center;'><em>Some functionality may not be fully implemented yet.</em></p>
+  <h1>
+    <span class='fa fa-users'></span>
+    <%= "#{t('hyku.admin.groups.title.edit')}: #{@group.humanized_name}" %>
+  </h1>
+<% end %>
+
+<%= render '/admin/groups/nav' %>
+<div class='panel panel-default'>
+  <div class='panel-body'>
+    <p class='lead'><%= t('hyku.admin.groups.action.members.description') %></p>
+
+  <!-- BEGIN Current Group Roles -->
+  <div class='panel panel-default'>
+    <div class='panel-heading'>
+      <h3 class='panel-title'><%= t('hyku.admin.groups.roles.title.current_group_roles') %></h3>
+    </div>
+
+    <div class='panel-body'>
+      <div class='table-responsive'>
+        <table class='table table-striped datatable group-roles-table current-group-roles'>
+          <thead>
+            <th><%= t('hyku.admin.groups.roles.label.name') %></th>
+            <th><%= t('hyku.admin.groups.roles.label.description') %></th>
+            <th><%= t('hyku.admin.groups.roles.label.action') %></th>
+          </thead>
+
+          <tbody>
+            <% @group.roles&.each do |role| %>
+              <tr id=<%= "assigned-role-#{role.id}" %>>
+                <td><%= role.name.titleize %></td>
+                <td><%= role.description %>
+                <td>
+                  <%= simple_form_for :remove_role_from_group, url: remove_admin_group_roles_path(group_id: @group.to_param), method: :delete, html: { class: 'form' } do |f| %>
+                    <%= f.input :role_id, as: :hidden, input_html: { name: :role_id, value: role.id } %>
+                    <%= f.submit class: 'btn btn-danger', id: "remove-role-#{role.id}-from-group" %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- END Current Group Roles -->
+
+  <!-- BEGIN Add Role to Group -->
+  <div class='panel panel-default'>
+    <div class='panel-heading'>
+      <h3 class='panel-title'><%= t('hyku.admin.groups.roles.title.add_group_roles') %></h3>
+    </div>
+
+    <div class='panel-body'>
+      <div class='table-responsive'>
+        <table class='table table-striped datatable group-roles-table add-group-roles'>
+          <thead>
+            <th><%= t('hyku.admin.groups.roles.label.name') %></th>
+            <th><%= t('hyku.admin.groups.roles.label.description') %></th>
+            <th><%= t('hyku.admin.groups.roles.label.action') %></th>
+          </thead>
+
+          <tbody>
+            <% @roles&.each do |role| %>
+              <tr id=<%= "available-role-#{role.id}" %>>
+                <td><%= role.name.titleize %></td>
+                <td><%= role.description %>
+                <td>
+                  <%= simple_form_for :add_role_to_group, url: add_admin_group_roles_path(group_id: @group.to_param), method: :post, html: { class: 'form' } do |f| %>
+                    <%= f.input :role_id, as: :hidden, input_html: { name: :role_id, value: role.id } %>
+                    <%= f.submit class: 'btn btn-success', id: "add-role-#{role.id}-to-group" %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- END Add Role to Group -->
+</div>
+
+<script>
+  $(function() {
+    $('table[id^="DataTables"]').DataTable({
+      destroy: true, /* Reinitialize DataTable with config below */
+      'columnDefs': [
+          { 'orderable': false, 'targets': [2] }
+      ],
+      'language': {
+        'info': 'Showing _START_ to _END_ of _TOTAL_ roles',
+        'infoEmpty': 'No roles to show',
+        'infoFiltered': '(filtered from _MAX_ total roles)',
+        'lengthMenu': 'Show _MENU_ roles'
+      }
+    })
+  })
+</script>

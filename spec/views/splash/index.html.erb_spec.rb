@@ -12,7 +12,7 @@ RSpec.describe "splash/index.html.erb", type: :view do
       render
     end
 
-    it "displays a 'Get Started' button" do
+    skip "displays a 'Get Started' button" do
       expect(page).to have_selector('a.btn-sign-up', text: 'Get Started')
       assert_select "a.btn-sign-up[href=?]", account_sign_up_path
     end
@@ -26,7 +26,7 @@ RSpec.describe "splash/index.html.erb", type: :view do
       render
     end
 
-    it "displays a 'Get Started' button" do
+    skip "displays a 'Get Started' button" do
       expect(page).to have_selector('a.btn-sign-up', text: 'Get Started')
       assert_select "a.btn-sign-up[href=?]", account_sign_up_path
     end
@@ -40,7 +40,7 @@ RSpec.describe "splash/index.html.erb", type: :view do
       render
     end
 
-    it "displays a 'Login to get started' button" do
+    skip "displays a 'Login to get started' button" do
       expect(page).to have_selector('a.btn-sign-up', text: 'Login to get started')
       assert_select "a.btn-sign-up[href=?]", main_app.new_user_session_path
     end
@@ -54,7 +54,7 @@ RSpec.describe "splash/index.html.erb", type: :view do
       render
     end
 
-    it "displays a 'You are not authorized to create tenants' message" do
+    skip "displays a 'You are not authorized to create tenants' message" do
       expect(page).to have_no_selector('a.btn-sign-up')
       expect(page).to have_selector('p', text: 'You are not authorized to create tenants')
     end

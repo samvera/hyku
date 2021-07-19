@@ -1,0 +1,14 @@
+<% provide :page_title, application_name %>
+
+<%# add check for featured works %>
+<% if @presenter.display_featured_works? %>
+  <%= render 'themes/cultural_repository/featured_works_home_text_section' %>
+<% else %>
+  <%# check is added inside the partial %>
+  <%= render 'themes/cultural_repository/layouts/share_your_work_row' if controller_name == 'homepage' %> <%# render the sywb row when featured works feature flipper is in the off position %>
+<% end %>
+<%# add check for recently uploaded %>
+<% if @presenter.display_recently_uploaded? %>
+  <%= render 'themes/cultural_repository/recent_works_section' %>
+<% end %>
+<%= render 'themes/cultural_repository/collections_section' %>

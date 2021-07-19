@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+%x{git fetch -ap}
+branches = %x{git branch --merged master}.split("\n").collect {|b| b.gsub('*', '').strip}
+
+branches -= ['master']
+
+puts branches.inspect
+branches.each do |branch|
+  puts %x{git branch -d #{branch}}
+end

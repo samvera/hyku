@@ -59,5 +59,5 @@ RSpec.describe Importer::Factory::ImageFactory, :clean do
     end
   end
 
-  include_examples("csv_importer")
+  # include_examples("csv_importer")
 end

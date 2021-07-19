@@ -1,0 +1,2 @@
+<%= f.input :learning_resource_type, as: :select, collection: Hyrax::LearningResourceTypesService.select_all_options,
+    input_html: { class: 'form-control', multiple: true } %>

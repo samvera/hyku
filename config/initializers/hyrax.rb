@@ -2,7 +2,10 @@ Hyrax.config do |config|
   config.register_curation_concern :generic_work
   # Injected via `rails g hyrax:work Image`
   config.register_curation_concern :image
-
+  # Injected via `rails g hyrax:work Oer`
+  config.register_curation_concern :oer
+  # Injected via `rails g hyrax:work Etd`
+  config.register_curation_concern :etd
   # Email recipient of messages sent via the contact form
   config.contact_email = Settings.contact_email
 
@@ -59,7 +62,12 @@ Hyrax.config do |config|
   # config.libreoffice_path = "soffice"
 
   # Stream realtime notifications to users in the browser
-  # config.realtime_notifications = true
+  config.realtime_notifications = false
+
+  # When an admin set is created, we need to activate a workflow.
+  # The :default_active_workflow_name is the name of the workflow we will activate.
+  # @see Hyrax::Configuration for additional details and defaults.
+  config.default_active_workflow_name = 'hyku_commons_mediated_deposit'
 
   # Which RDF term should be used to relate objects to an admin set?
   # If this is a new repository, you may want to set a custom predicate term here to
@@ -166,12 +174,20 @@ Hyrax.config do |config|
   config.iiif_image_server = true
   
   config.iiif_image_url_builder = lambda do |file_id, base_url, size|
+    # Comment this next line to allow universal viewer to work in development
+    # Issue with Hyrax v 2.9.0 where IIIF has mixed content error when running with SSL enabled
+    # See Samvera Slack thread https://samvera.slack.com/archives/C0F9JQJDQ/p1596718417351200?thread_ts=1596717896.350700&cid=C0F9JQJDQ
+    base_url = base_url.sub(/\Ahttp:/, 'https:')
     Riiif::Engine.routes.url_helpers.image_url(file_id, host: base_url, size: size)
   end
   
   config.iiif_info_url_builder = lambda do |file_id, base_url|
     uri = Riiif::Engine.routes.url_helpers.info_url(file_id, host: base_url)
-    uri.sub(%r{/info\.json\Z}, '')
+    uri = uri.sub(%r{/info\.json\Z}, '')
+    # Comment this next line to allow universal viewer to work in development
+    # Issue with Hyrax v 2.9.0 where IIIF has mixed content error when running with SSL enabled
+    # See Samvera Slack thread https://samvera.slack.com/archives/C0F9JQJDQ/p1596718417351200?thread_ts=1596717896.350700&cid=C0F9JQJDQ
+    uri.sub(/\Ahttp:/, 'https:')
   end
   
 end

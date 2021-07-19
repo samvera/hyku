@@ -16,7 +16,9 @@ module Hyrax
 
     # Used by the gallery view
     def collection_thumbnail(_document, _image_options = {}, _url_options = {})
-      Site.instance.default_collection_image
+      return super if Site.instance.default_collection_image.blank?
+
+      image_tag(Site.instance.default_collection_image&.url)
     end
 
     def collection_title_by_id(id)

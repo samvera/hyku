@@ -1,0 +1,27 @@
+<%= simple_form_for @form, url: admin_appearance_path do |f| %>
+  <div class="panel-body">
+    <%= f.input :default_collection_image, as: :file, wrapper: :vertical_file_input, hint: t('.forms.default_images.hint'), required: false %>
+    <%= image_tag @form.default_collection_image.url, class: "img-responsive" if @form.default_collection_image? %>
+
+    <%= f.input :default_work_image, as: :file, wrapper: :vertical_file_input, hint: t('.forms.default_images.hint'), required: false %>
+    <%= image_tag @form.default_work_image.url, class: "img-responsive" if @form.default_work_image? %>
+  </div>
+  <div class="panel-footer">
+    <%= f.submit class: 'btn btn-primary pull-right' %>
+  </div>
+<% end %>
+
+<% if @form.default_collection_image? || @form.default_work_image? %>
+  <div class="panel-footer">
+    <% if @form.default_collection_image? %>
+      <%= simple_form_for @form.site, url: main_app.site_path(@form.site) do |f| %>
+        <%= f.submit 'Remove default collection image', class: 'btn btn-danger', name: :remove_default_collection_image %>
+      <% end %>
+    <% end %>
+    <% if @form.default_work_image? %>
+      <%= simple_form_for @form.site, url: main_app.site_path(@form.site) do |f| %>
+        <%= f.submit 'Remove default work image', class: 'btn btn-danger', name: :remove_default_work_image %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

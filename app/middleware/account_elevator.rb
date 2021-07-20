@@ -10,10 +10,6 @@ class AccountElevator < Apartment::Elevators::Generic
     account&.tenant
   end
 
-  def self.from_cname(cname)
-    joins(:domain_names).find_by(domain_names: { is_active: true, cname: canonical_cname(cname) })
-  end
-
   def self.switch!(cname)
     account = Account.from_cname(:cname)
     if account

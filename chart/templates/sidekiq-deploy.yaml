@@ -64,7 +64,7 @@ spec:
             - mountPath: /app/samvera/hyrax-webapp/tmp/network_files
               name: shared
               subPath: network_files
-            - mountPath: /app/samvera/hyrax-webapp/tmp/uploads
+            - mountPath: /app/samvera/hyrax-webapp/public/uploads
               name: shared
               subPath: upload_path
             - mountPath: /app/samvera/hyrax-webapp/public/uploads

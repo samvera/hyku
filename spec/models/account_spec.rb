@@ -312,4 +312,19 @@ RSpec.describe Account, type: :model do
       it { is_expected.to be true }
     end
   end
+
+  describe 'is_public' do
+    context 'it can change from public to not public' do
+      let(:public_account) { FactoryBot.create(:account, tenant: "public_tenant") }
+
+      it 'defaults to false' do
+        expect(public_account.is_public).to be false
+      end
+
+      it 'can change to true' do
+        public_account.is_public = true
+        expect(public_account.is_public).to be true
+      end
+    end
+  end
 end

@@ -111,7 +111,7 @@ Hyrax.config do |config|
      if Settings.s3.upload_bucket
        "uploads/#{Apartment::Tenant.current}"
      else
-       Rails.root + 'tmp' + 'uploads' + Apartment::Tenant.current
+       Rails.root + 'public' + 'uploads' + Apartment::Tenant.current
      end
    end
   end

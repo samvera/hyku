@@ -23,7 +23,7 @@ class User < ApplicationRecord
     joins(:roles)
   }
 
-  scope :registered, ->() { for_repository.group(:id).where(guest: false) }
+  scope :registered, -> { for_repository.group(:id).where(guest: false) }
 
   # set default scope to exclude guest users
   def self.default_scope

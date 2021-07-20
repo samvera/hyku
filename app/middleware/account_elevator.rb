@@ -10,5 +10,4 @@ class AccountElevator < Apartment::Elevators::Generic
 
     account&.tenant
   end
-
 end

@@ -67,35 +67,6 @@ class ApplicationController < ActionController::Base
 
   private
 
-    def is_hidden
-      current_account.persisted? && !current_account.is_public?
-    end
-
-    def is_api_or_pdf
-      request.format.to_s.match('json') || params[:print] || request.path.include?('api') || request.path.include?('pdf')
-    end
-
-    def is_staging
-      ['staging'].include?(Rails.env)
-    end
-
-    ##
-    # Extra authentication for palni-palci during development phase
-    def authenticate_if_needed
-      # Disable this extra authentication in test mode
-      return true if Rails.env.test?
-      if (is_hidden || is_staging) && !is_api_or_pdf
-        authenticate_or_request_with_http_basic do |username, password|
-          username == "pals" && password == "pals"
-        end
-      end
-    end
-
-    def set_raven_context
-      Raven.user_context(id: session[:current_user_id]) # or anything else in session
-      Raven.extra_context(params: params.to_unsafe_h, url: request.url)
-    end
-
     def require_active_account!
       return unless Settings.multitenancy.enabled
       return if devise_controller?
@@ -163,15 +134,5 @@ class ApplicationController < ActionController::Base
 
     def ssl_configured?
       ActiveRecord::Type::Boolean.new.cast(Settings.ssl_configured)
-    end
-
-    # Overrides method in devise-guest gem
-    # https://github.com/cbeer/devise-guests/pull/28
-    # fixes issue with cross process conflicts in guest users
-    # uses uuid for uniqueness rather than timestamp
-    # TODO: remove method when devise-guest gem is updated
-    def guest_email_authentication_key key
-      key &&= nil unless key.to_s.match(/^guest/)
-      key ||= "guest_" + SecureRandom.uuid + "@example.com"
     end
 end

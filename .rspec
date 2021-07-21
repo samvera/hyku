@@ -1,2 +1,3 @@
 --color
 --require rails_helper
+--exclude-pattern .internal_test_app/**/*

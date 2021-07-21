@@ -130,7 +130,7 @@ RSpec/ScatteredLet:
 # Include: app/models/**/*.rb
 Rails/HasManyOrHasOneDependent:
   Exclude:
-    - 'app/models/endpoint.rb'
+    - 'app/models/user.rb'
 
 # Offense count: 5
 Rails/OutputSafety:

@@ -1,0 +1,7 @@
+<div class="institutional-repository-featured-researcher col-sm-12 mb-40 section-border">
+  <% if @featured_researcher.value.present? %>
+      <%= displayable_content_block @featured_researcher %>
+  <% else %>
+      <%= t('hyrax.homepage.featured_researcher.missing') %>
+  <% end %>
+</div>

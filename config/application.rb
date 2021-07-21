@@ -17,6 +17,9 @@ module Hyku
     # configuring Nginx on Elastic Beanstalk is a pain.
     config.middleware.use Rack::Deflater
 
+    # i18n configuration
+    config.i18n.default_locale = :en
+
     # The locale is set by a query parameter, so if it's not found render 404
     config.action_dispatch.rescue_responses.merge!(
       "I18n::InvalidLocale" => :not_found
@@ -28,13 +31,6 @@ module Hyku
         config.active_elastic_job.aws_credentials = lambda { Aws::InstanceProfileCredentials.new }
         config.active_elastic_job.secret_key_base = Rails.application.secrets[:secret_key_base]
       end
-    end
-
-    config.to_prepare do
-      # Do dependency injection after the classes have been loaded.
-      # Before moving this here (from an initializer) Devise was raising invalid
-      # authenticity token errors.
-      Hyrax::Admin::AppearancesController.form_class = AppearanceForm
     end
 
     # resolve reloading issue in dev mode

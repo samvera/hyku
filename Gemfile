@@ -57,13 +57,19 @@ end
 
 group :test do
   gem 'capybara'
+  gem 'capybara-screenshot', '~> 1.0'
   gem 'database_cleaner'
   gem 'factory_bot_rails'
+  gem 'launchy'
   # rack-test >= 0.71 does not work with older Capybara versions (< 2.17). See #214 for more details
   gem 'rack-test', '0.7.0'
   gem 'rails-controller-testing'
+  gem 'rspec-activemodel-mocks'
+  gem 'rspec-its'
   gem 'rspec_junit_formatter'
+  gem 'rspec-retry'
   gem 'selenium-webdriver'
+  gem 'shoulda-matchers', '~> 4.0'
   gem 'webdrivers', '~> 4.0'
   gem 'webmock'
 end
@@ -78,6 +84,7 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 
   gem 'scss_lint', require: false
+  gem 'easy_translate'
 end
 
 # Bulkrax
@@ -124,6 +131,7 @@ gem 'secure_headers'
 gem 'codemirror-rails'
 gem 'riiif', '~> 1.1'
 
+gem "sentry-raven"
 gem 'bootstrap-datepicker-rails'
 gem 'parser', '~> 2.5.3'
 gem 'tether-rails'

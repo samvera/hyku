@@ -1,0 +1,15 @@
+<% # April's note: overriding Hyrax 2.9 template for client theming %>
+<% collections.each do |collection| %>
+  <div class="col-xs-6 col-md-2">
+    <%= link_to [hyrax, collection] do %>
+      <%= render_thumbnail_tag(collection, {suppress_link: true}, class: 'img-responsive center-block') %>
+    <% end %>
+    <div class="collection-item-title">
+      <h3>
+        <%= link_to [hyrax, collection] do %>
+          <%= collection.title_or_label %>
+        <% end %>
+      </h3>
+    </div>
+  </div>
+<% end %>

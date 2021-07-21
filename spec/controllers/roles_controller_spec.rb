@@ -33,7 +33,7 @@ RSpec.describe RolesController, type: :controller do
     describe "GET #index" do
       before do
         # it should not return guest users
-        create(:user, guest: true)
+        create(:guest_user)
       end
 
       it "assigns the users as @users" do

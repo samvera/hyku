@@ -1,0 +1,11 @@
+  <% # OVERRIDE: Hyrax 2.9 - added class col-sm-4 to the logo divs for theming %>
+  <% if logo_image %>
+    <a id="logo" class="col-sm-5" href="<%= hyrax.root_path %>" data-no-turbolink="true">
+      <span class="glyphicon glyphicon-globe" role="img" aria-label="<%= application_name %>" aria-hidden="true"></span>
+      <%= image_tag logo_image %>
+    </a>
+  <% else %>
+    <a id="logo" class="col-sm-5 navbar-brand" href="<%= hyrax.root_path %>" data-no-turbolink="true">
+      <span class="institution_name"><%= application_name %></span>
+    </a>
+  <% end %>

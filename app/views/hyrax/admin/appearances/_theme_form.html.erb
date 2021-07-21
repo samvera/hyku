@@ -1,0 +1,67 @@
+<%= simple_form_for @form.site, url: main_app.site_path(@form.site) do |f| %>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-sm-6">
+        <% home_options = @home_theme_names.map { |g| [g[0], g[1], {'data-image' => image_path("themes/#{g[1]}/#{g[1]}.jpg")}] } %>
+        <%= f.input :home_theme, label: 'Home Page Theme' do %>
+          <%= f.select :home_theme, home_options, {}, { prompt: 'Select home page theme...', class: 'form-control', data: { theme_info: @home_theme_information }} %>
+        <% end %>
+
+        <h4>Theme notes:</h4>
+        <ul>
+          <li id="home-theme-notes">
+          </li>
+          <li id="banner-image-notes">
+            This theme uses a custom banner image. You can upload an image on the <a href="/admin/appearance#banner_image" target="_blank">banner image tab</a>.
+          </li>
+          <li id="home-page-text-notes">
+            This theme uses home page text. You can enter home page text on the <%= link_to 'content blocks', edit_content_blocks_path, target: "_blank" %> section of the admin panel.
+          </li>
+          <li id="marketing-text-notes">
+            This theme uses marketing text. You can add marketing text on the <%= link_to 'content blocks', edit_content_blocks_path, target: "_blank" %> section of the admin panel.
+          </li>
+        </ul>
+      </div>
+      <div id="home-wireframe" class="col-sm-6">
+        <%= image_tag "themes/default_home/default_home", class: "img-responsive" %>
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-sm-6">
+        <% search_options = @search_themes.map { |s| [s[0], s[1], { 'data-image' => image_path("themes/search/#{s[1]}.jpg") }] } %>
+        <%= f.input :search_theme, label: 'Search Results Page Theme' do %>
+          <%= f.select :search_theme, search_options, {}, { prompt: 'Select search results page theme...', class: 'form-control' } %>
+        <% end %>
+        <h4>Search Results Theme notes:</h4>
+        <ul>
+          <li>This will select a default view for the search results page. Users can select their preferred views on the search results page that will override this selection.</li>
+        </ul>
+      </div>
+      <div id="search-wireframe" class="col-sm-6">
+        <%= image_tag "themes/search/list_view.jpg", class: "img-responsive" %>
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-sm-6">
+        <% show_options = @show_theme_names.map { |g| [g[0], g[1], { 'data-image' => image_path("themes/#{g[1]}/#{g[1]}.jpg") }] } %>
+        <%= f.input :show_theme, label: 'Show Page Theme' do %>
+          <%= f.select :show_theme, show_options, {}, { prompt: 'Select show page theme...', class: 'form-control', data: { theme_info: @show_theme_information }} %>
+        <% end %>
+        <h4>Theme notes:</h4>
+        <ul>
+          <li id="show-theme-notes">
+          </li>
+        </ul>
+      </div>
+      <div id="show-wireframe" class="col-sm-6">
+        <%= image_tag "themes/default_show/default_show", class: "img-responsive" %>
+      </div>
+    </div>
+    <hr />
+  </div>
+  <div class="panel-footer">
+    <%= f.submit class: 'btn btn-primary pull-right' %>
+  </div>
+<% end %>

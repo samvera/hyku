@@ -1,0 +1,3 @@
+<%= f.input :accessibility_hazard, as: :select, collection: Hyrax::AccessibilityHazardsService.select_all_options,
+    input_html: { class: 'form-control', multiple: true } %>
+

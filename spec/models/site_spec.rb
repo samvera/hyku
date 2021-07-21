@@ -72,5 +72,23 @@ RSpec.describe Site, type: :model do
         expect(subject.admin_emails).to match_array([admin3.email, admin1.email])
       end
     end
+
+    context "valid attributes" do
+      subject { described_class.new }
+
+      it "is valid without theme attributes" do
+        expect(subject).to be_valid
+      end
+
+      it "is valid with home page theme attributes" do
+        subject.home_theme = "Catchy Theme"
+        subject.show_theme = "Images Show Page"
+        subject.search_theme = "Grid View"
+        expect(subject).to be_valid
+        expect(subject.home_theme).to eq "Catchy Theme"
+        expect(subject.show_theme).to eq "Images Show Page"
+        expect(subject.search_theme).to eq "Grid View"
+      end
+    end
   end
 end

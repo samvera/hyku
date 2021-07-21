@@ -1,3 +1,5 @@
+<%# OVERRIDE: Hyrax 2.5.2 to add Relationships partial for Oer worktype %>
+
 <% content_for(:extra_body_classes, 'works-show ') %>
 
 <% provide :page_title, @presenter.page_title %>
@@ -33,6 +35,9 @@
           </div>
           <div class="col-sm-12">
             <%= render 'relationships', presenter: @presenter %>
+            <% if @presenter.class == Hyrax::OerPresenter %>
+              <%= render 'hyrax/oers/related_items', presenter: @presenter %>
+            <% end %>
             <%= render 'items', presenter: @presenter %>
             <%# TODO: we may consider adding these partials in the future %>
             <%# = render 'sharing_with', presenter: @presenter %>

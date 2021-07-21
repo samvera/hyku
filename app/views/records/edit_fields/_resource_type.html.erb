@@ -1,0 +1,16 @@
+<%# Copied from Hyrax to support dynamic labels and hints for custom worktypes %>
+
+<%# Avoid NoMethod error when rendering partial in Collection form %>
+<% record = @collection || curation_concern %>
+<% collection = if record.class == Oer
+                  Hyrax::OerTypesService.select_all_options
+                else
+                  Hyrax::ResourceTypesService.select_options
+                end %>
+
+<%= f.input :resource_type,
+    as: :select,
+    collection: collection,
+    label: label_for(term: :resource_type, record_class: record.class),
+    hint: hint_for(term: :resource_type, record_class: record.class),
+    input_html: { class: 'form-control', multiple: true } %>

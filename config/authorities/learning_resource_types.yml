@@ -1,0 +1,31 @@
+terms:
+  - id: Activity/lab
+    term: Activity/lab
+  - id: Assessment (test, quizzes, etc.)
+    term: Assessment (test, quizzes, etc.)
+  - id: Case study
+    term: Case study
+  - id: Diagram/illustration/image
+    term: Diagram/illustration/image
+  - id: Game
+    term: Game
+  - id: Homework/assignment
+    term: Homework/assignment
+  - id: Lecture
+    term: Lecture
+  - id: Lecture notes
+    term: Lecture notes
+  - id: Module
+    term: Module
+  - id: Reading
+    term: Reading
+  - id: Student guide
+    term: Student guide
+  - id: Supplemental audio/video
+    term: Supplemental audio/video
+  - id: Syllabus
+    term: Syllabus
+  - id: Textbook
+    term: Textbook
+  - id: Tutorial
+    term: Tutorial

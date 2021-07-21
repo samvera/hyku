@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
   include Hyrax::ThemedLayoutController
   with_themed_layout '1_column'
 
-  helper_method :current_account, :admin_host?
+  helper_method :current_account, :admin_host?, :home_page_theme, :show_page_theme, :search_results_theme
   before_action :authenticate_if_needed
   before_action :require_active_account!, if: :multitenant?
   before_action :set_account_specific_connections!
@@ -67,6 +67,35 @@ class ApplicationController < ActionController::Base
 
   private
 
+    def is_hidden
+      current_account.persisted? && !current_account.is_public?
+    end
+
+    def is_api_or_pdf
+      request.format.to_s.match('json') || params[:print] || request.path.include?('api') || request.path.include?('pdf')
+    end
+
+    def is_staging
+      ['staging'].include?(Rails.env)
+    end
+
+    ##
+    # Extra authentication for palni-palci during development phase
+    def authenticate_if_needed
+      # Disable this extra authentication in test mode
+      return true if Rails.env.test?
+      if (is_hidden || is_staging) && !is_api_or_pdf
+        authenticate_or_request_with_http_basic do |username, password|
+          username == "pals" && password == "pals"
+        end
+      end
+    end
+
+    def set_raven_context
+      Raven.user_context(id: session[:current_user_id]) # or anything else in session
+      Raven.extra_context(params: params.to_unsafe_h, url: request.url)
+    end
+
     def require_active_account!
       return unless Settings.multitenancy.enabled
       return if devise_controller?
@@ -111,6 +140,19 @@ class ApplicationController < ActionController::Base
                            end
     end
 
+    # Find themes set on Site model, or return default
+    def home_page_theme
+      current_account.sites&.first&.home_theme || 'default_home'
+    end
+
+    def show_page_theme
+      current_account.sites&.first&.show_theme || 'default_show'
+    end
+
+    def search_results_theme
+      current_account.sites&.first&.search_theme || 'list_view'
+    end
+
     # Add context information to the lograge entries
     def append_info_to_payload(payload)
       super
@@ -121,5 +163,15 @@ class ApplicationController < ActionController::Base
 
     def ssl_configured?
       ActiveRecord::Type::Boolean.new.cast(Settings.ssl_configured)
+    end
+
+    # Overrides method in devise-guest gem
+    # https://github.com/cbeer/devise-guests/pull/28
+    # fixes issue with cross process conflicts in guest users
+    # uses uuid for uniqueness rather than timestamp
+    # TODO: remove method when devise-guest gem is updated
+    def guest_email_authentication_key key
+      key &&= nil unless key.to_s.match(/^guest/)
+      key ||= "guest_" + SecureRandom.uuid + "@example.com"
     end
 end

@@ -8,18 +8,19 @@ module Admin
       add_breadcrumb t(:'hyrax.controls.home'), root_path
       add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
       add_breadcrumb t(:'hyku.admin.groups.title.index'), admin_groups_path
-      @groups = Hyku::Group.search(params[:q]).page(page_number).per(page_size)
+      @groups = Hyrax::Group.search(params[:q]).page(page_number).per(page_size)
     end
 
     def new
       add_breadcrumb t(:'hyrax.controls.home'), root_path
       add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
       add_breadcrumb t(:'hyku.admin.groups.title.new'), new_admin_group_path
-      @group = Hyku::Group.new
+      @group = Hyrax::Group.new
     end
 
     def create
-      new_group = Hyku::Group.new(group_params)
+      new_group = Hyrax::Group.new(group_params)
+      new_group.name = group_params[:humanized_name].gsub(" ", "_").downcase
       if new_group.save
         redirect_to admin_groups_path, notice: t('hyku.admin.groups.flash.create.success', group: new_group.name)
       elsif new_group.invalid?
@@ -36,11 +37,12 @@ module Admin
     end
 
     def update
+      @group.name = group_params[:humanized_name].gsub(" ", "_").downcase
       if @group.update(group_params)
-        redirect_to admin_groups_path, notice: t('hyku.admin.groups.flash.update.success', group: @group.name)
+        redirect_to admin_groups_path, notice: t('hyku.admin.groups.flash.update.success', group: @group.humanized_name)
       else
         redirect_to edit_admin_group_path(@group), flash: {
-          error: t('hyku.admin.groups.flash.update.failure', group: @group.name)
+          error: t('hyku.admin.groups.flash.update.failure', group: @group.humanized_name)
         }
       end
     end
@@ -54,21 +56,21 @@ module Admin
 
     def destroy
       if @group.destroy
-        redirect_to admin_groups_path, notice: t('hyku.admin.groups.flash.destroy.success', group: @group.name)
+        redirect_to admin_groups_path, notice: t('hyku.admin.groups.flash.destroy.success', group: @group.humanized_name)
       else
-        logger.error("Hyku::Group id:#{@group.id} could not be destroyed")
-        redirect_to admin_groups_path flash: { error: t('hyku.admin.groups.flash.destroy.failure', group: @group.name) }
+        logger.error("Hyrax::Group id:#{@group.id} could not be destroyed")
+        redirect_to admin_groups_path flash: { error: t('hyku.admin.groups.flash.destroy.failure', group: @group.humanized_name) }
       end
     end
 
     private
 
       def load_group
-        @group = Hyku::Group.find_by(id: params[:id])
+        @group = Hyrax::Group.find_by(id: params[:id])
       end
 
       def group_params
-        params.require(:hyku_group).permit(:name, :description)
+        params.require(:group).permit(:name, :humanized_name, :description)
       end
 
       def page_number

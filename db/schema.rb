@@ -140,7 +140,7 @@ ActiveRecord::Schema.define(version: 2020_07_30_194003) do
   end
 
   create_table "featured_works", id: :serial, force: :cascade do |t|
-    t.integer "order", default: 5
+    t.integer "order", default: 6
     t.string "work_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -170,11 +170,13 @@ ActiveRecord::Schema.define(version: 2020_07_30_194003) do
     t.index ["user_id"], name: "index_file_view_stats_on_user_id"
   end
 
-  create_table "hyku_groups", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.text "description"
+  create_table "group_roles", force: :cascade do |t|
+    t.bigint "role_id"
+    t.bigint "group_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_group_roles_on_group_id"
+    t.index ["role_id"], name: "index_group_roles_on_role_id"
   end
 
   create_table "hyrax_collection_types", force: :cascade do |t|
@@ -199,6 +201,14 @@ ActiveRecord::Schema.define(version: 2020_07_30_194003) do
     t.boolean "enabled", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "hyrax_groups", id: :serial, force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "humanized_name"
   end
 
   create_table "job_io_wrappers", id: :serial, force: :cascade do |t|
@@ -354,6 +364,7 @@ ActiveRecord::Schema.define(version: 2020_07_30_194003) do
     t.integer "resource_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text "description"
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
     t.index ["name"], name: "index_roles_on_name"
   end
@@ -547,6 +558,9 @@ ActiveRecord::Schema.define(version: 2020_07_30_194003) do
     t.text "available_works", default: [], array: true
     t.string "directory_image"
     t.string "contact_email"
+    t.string "home_theme"
+    t.string "show_theme"
+    t.string "search_theme"
   end
 
   create_table "subject_local_authority_entries", id: :serial, force: :cascade do |t|

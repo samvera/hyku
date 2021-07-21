@@ -17,6 +17,7 @@ Jump In: [![Slack Status](http://slack.samvera.org/badge.svg)](http://slack.samv
 
   * [Running the stack](#running-the-stack)
     * [For development](#for-development)
+    * [Universal Viewer in Development](#universal-viewer-in-development)
     * [For testing](#for-testing)
     * [On AWS](#on-aws)
     * [With Docker](#with-docker)
@@ -24,12 +25,17 @@ Jump In: [![Slack Status](http://slack.samvera.org/badge.svg)](http://slack.samv
     * [With Kubernetes](#with-kubernetes)
   * [Single Tenant Mode](#single-tenancy)
   * [Switching accounts](#switching-accounts)
+  * [Roles and Auth](#roles-and-auth)
+    * [Auth-related Overrides](#auth-related-overrides)
+    * [Seeding Default Roles and Groups](#seeding-default-roles-and-groups)
+    * [Creating New Sets of Roles](#creating-new-sets-of-roles)
   * [Development dependencies](#development-dependencies)
     * [Postgres](#postgres)
   * [Importing](#importing)
     * [enable Bulkrax](#bulkrax)
     * [from CSV](#from-csv)
     * [from purl](#from-purl)
+  * [Workflows](#workflows)
   * [Compatibility](#compatibility)
   * [Product Owner](#product-owner)
   * [Help](#help)
@@ -57,13 +63,39 @@ docker-compose up web workers
 ```
 This command starts the whole stack in individual containers allowing Rails to be started or stopped independent of the other services.  Once that starts (you'll see the line `Passenger core running in multi-application mode.` to indicate a successful boot), you can view your app in a web browser with at either hyku.test or localhost:3000 (see above).  When done `docker-compose stop` shuts down everything.
 
+#### Seed a superadmin
+When you first start the app, you will need to create a superadmin. You can do that with a rake task:
+
+ ```
+ docker-compose exec web bash
+ bundle exec rake hyku:seed:superadmin
+ ```
+
+Login credential for the superadmin:
+  admin@example.com
+  testing123
+
+Once you are logged in as a superadmin, you can create an account/tenant in the UI by selecting Accounts from the menu bar
+
 #### Tests in Docker
 
 The full spec suite can be run in docker locally. There are several ways to do this, but one way is to run the following:
 
 ```bash
-docker-compose exec web rake
+docker-compose exec web bash
+# To run a specific test
+bundle exec rspec spec/PATH_TO_FILE
 ```
+
+#### Feature Specs
+
+Feature specs can be viewed in the Screen Sharing app on the Mac.
+When you launch the Screen Sharing app you will need to connect to your IP address and port 5959:
+```
+Connect To: vnc://127.0.0.1:5959
+Password: secret
+```
+The server must be running when you connect.
 
 ### With out Docker
 #### For development
@@ -80,6 +112,26 @@ DISABLE_REDIS_CLUSTER=true bundle exec rails server -b 0.0.0.0
 #### For testing
 
 See the [Hyku Development Guide](https://github.com/samvera/hyku/wiki/Hyku-Development-Guide) for how to run tests.
+
+#### Universal Viewer in Development
+
+When running Hyrax v2.9.0, there is an issue where IIIF has mixed content error when running with SSL enabled.
+
+See Samvera Slack thread https://samvera.slack.com/archives/C0F9JQJDQ/p1596718417351200?thread_ts=1596717896.350700&cid=C0F9JQJDQ
+
+To allow the Universal Viewer to run without SSL enabled, comment these in the url building lambdas in the Hyrax initializer.
+
+In config.hyrax.rb in the config.iiif_image_url_builder lambdas, comment these lines:
+
+  ```
+  # base_url = base_url.sub(/\Ahttp:/, 'https:')
+  ```
+  and
+  
+  ```
+  # uri.sub(/\Ahttp:/, 'https:')
+  ```
+Once the application moves to Hyrax 3.0 or above, these lines should be removed.
 
 ### Working with Translations
 
@@ -135,6 +187,31 @@ The recommend way to switch your current session from one account to another is 
 AccountElevator.switch!('repo.example.com')
 ```
 
+## Roles and Auth
+### Auth-related Overrides
+
+_Some_ (not all) auth-related changes can be found in [config/initializers/permissions_overrides.rb](config/initializers/permissions_overrides.rb).
+Overrides in this file are generally small in scope that did not necessitate bringing an entire file into the local repo to make changes
+(e.g. overriding an individual method in a class).
+
+Other overrides to Hyku, Hyrax, and other dependencies can be found throughout the repository. These are denoted with `OVERRIDE` code comments.
+
+**Note**: not all overrides denoted with an `OVERRIDE` comment are auth-related.
+
+### Seeding Default Roles and Groups
+
+Default `Roles` and `Hyrax::Groups` are seeded into an account (tenant) at creation time (see [CreateAccount#create_defaults](app/services/create_account.rb)).
+
+To manually seed default `Roles` and `Hyrax::Groups` _across all tenants_, run this rake task:
+
+```bash
+rake hyku:seed:default_roles_and_groups
+```
+
+### Creating New Sets of Roles
+
+See [GROUPS_WITH_ROLES.md](GROUPS_WITH_ROLES.md)
+
 ## Development Dependencies
 
 ### Postgres
@@ -152,6 +229,8 @@ Hyku supports multitenancy using the `apartment` gem. `apartment` works best wit
 bundle exec rails db:migrate
 ```
 
+**NOTE:** Some Bulkrax overrides are located in [bulkrax_overrides.rb](config/initializers/bulkrax_overrides.rb). Others are located throughout the repo labeled with "override" comments. 
+
 ### from CSV:
 
 ```bash
@@ -163,6 +242,21 @@ bundle exec rails db:migrate
 ```bash
 ./bin/import_from_purl ../hyku-objects bc390xk2647 bc402fk6835 bc483gc9313
 ```
+
+## Workflows
+To set the default workflow, update the name of the default workflow in config/initializers/hyrax.rb
+
+```bash
+config.default_active_workflow_name = 'new_workflow_name'
+```
+
+After setting the new name, run the 'workflow_setup' rake task. This task will add the new workflow to admin sets in each tenant.
+
+Multi-tenant mode:
+
+```bash
+rake tenantize:task[workflow:setup]
+``` 
 
 ## Compatibility
 

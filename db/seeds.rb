@@ -42,4 +42,9 @@ unless Settings.multitenancy.enabled
   puts "\n== Finished creating single tenant resources"
 end
 
-
+if Rails.env.development?
+  u = User.where(email: 'rob@notch8.com').first_or_create do |u|
+    u.password = 'testing123'
+  end
+  u.add_role :superadmin unless u.has_role?(:superadmin)
+end

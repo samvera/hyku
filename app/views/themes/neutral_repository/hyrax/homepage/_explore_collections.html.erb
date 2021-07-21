@@ -1,0 +1,21 @@
+<% # April's note: overriding Hyrax 2.9 template for client theming %>
+<% collections.each do |collection| %>
+  <div class="neutral-repository-collections pb-30 col-xs-6 col-md-4">
+    <%= link_to [hyrax, collection] do %>
+      <%= render_thumbnail_tag(collection, {suppress_link: true}, class: 'img-responsive center-block') %>
+    <% end %>
+    <div class="collection-item-title">
+      <h3>
+        <%= link_to [hyrax, collection] do %>
+          <%= collection.title_or_label %>
+        <% end %>
+      </h3>
+    </div>
+  </div>
+<% end %>
+
+<div class="col-xs-12 text-center mt-20">
+  <%= link_to t('hyrax.homepage.admin_sets.link'),
+                main_app.search_catalog_path(f: { human_readable_type_sim: ["Collection"]}),
+                class: 'btn btn-default' %>
+</div>

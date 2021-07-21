@@ -2,7 +2,6 @@
 
 module Stanford
   module Importer
-    # rubocop:disable Metrics/ClassLength
     class PurlParser
       DC_NS = { 'dc' => 'http://purl.org/dc/elements/1.1/' }.freeze
 

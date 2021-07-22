@@ -25,7 +25,6 @@ spec:
       annotations:
         checksum/rails-env-cm: {{ include (print $.Template.BasePath "/rails-env-cm.yaml") . | sha256sum }}
         checksum/rails-env-secret: {{ include (print $.Template.BasePath "/rails-env-secret.yaml") . | sha256sum }}
-        backup.velero.io/backup-volumes: shared
     spec:
       restartPolicy: Always
       {{- if .Values.rails.imagePullSecrets }}
@@ -66,9 +65,6 @@ spec:
             - mountPath: /app/samvera/hyrax-webapp/public/branding
               name: shared
               subPath: branding
-            - mountPath: /home/app/webapp/public/system
-              name: shared
-              subPath: system
           readinessProbe:
             tcpSocket:
               port: 80

@@ -11,14 +11,11 @@
     <% end %>
   <% end %>
   
-  <% if can? :manage, Hyrax::Group %>
-          <%= menu.nav_link(main_app.admin_groups_path) do %>
-            <span class='fa fa-users' aria-hidden='true'></span>
-            <span class='sidebar-action-text'><%= t('hyrax.admin.sidebar.manage_groups') %></span>
-            <%# TODO(bkiahstroud): remove icon when groups have functional permissions %>
-            <span class='fa fa-exclamation-triangle' style='color: #ffcc00;' aria-hidden='true'></span>
-          <% end %>
-        <% end %>
+  <% if can? :manage, Hyku::Group %>
+    <%= menu.nav_link(main_app.admin_groups_path) do %>
+      <span class="fa fa-users"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.manage_groups') %></span>
+    <% end %>
+  <% end %>
 
   <% if can? :read, :admin_dashboard %>
     <%= menu.nav_link(hyrax.embargoes_path) do %>

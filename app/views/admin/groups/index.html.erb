@@ -1,12 +1,5 @@
 <% content_for :page_title, construct_page_title(t('hyku.admin.groups.title.index'), t('hyku.admin.title')) %>
 <% provide :page_header do %>
-  <%# TODO(bkiahstroud): remove <h2> and <p> when groups have functional permissions %>
-  <h2 style='text-align: center;'>
-    <span class='fa fa-exclamation-triangle' style='color: #ffcc00;' aria-hidden='true'></span>
-    <span>Under Construction</span>
-    <span class='fa fa-exclamation-triangle' style='color: #ffcc00;' aria-hidden='true'></span>
-  </h2>
-  <p style='text-align: center;'><em>Some functionality may not be fully implemented yet.</em></p>
   <h1>
     <span class="fa fa-users"></span>
     <%= t('hyku.admin.groups.title.index') %>
@@ -15,7 +8,7 @@
 
 <div class="panel panel-default group-listing">
   <div class="panel-heading">
-    <% group_count = Hyrax::Group.all.count %>
+    <% group_count = Hyku::Group.all.count %>
     <% if group_count == 1 %>
       <%= t('hyku.admin.groups.describe_singular_quantity_html') %>
     <% else %>
@@ -40,7 +33,6 @@
         <thead>
           <tr>
             <th><%= t('hyku.admin.groups.label.name') %></th>
-            <th><%= t('hyku.admin.groups.label.roles') %></th>
             <th><%= t('hyku.admin.groups.label.members') %></th>
             <th><%= t('hyku.admin.groups.label.created_at') %></th>
             <th><%= t('hyku.admin.groups.label.actions') %></th>
@@ -48,20 +40,14 @@
         </thead>
         <tbody>
           <% @groups.each do |group| %>
-            <tr id=<%= "#{group.name}" %>>
+            <tr>
               <td>
-                <b><%= group.humanized_name %></b>
+                <b><%= group.name %></b>
                 <% if group.description.present? %>
                   <p class="help-block">
                   <%= group.description %>
                   </p>
                 <% end %>
-              </td>
-              <td>
-                <ul><% group.roles.each do |role| %>
-                  <li><%= role.name.titleize %></li>
-                  <% end %>
-                </ul>
               </td>
               <td>
                 <%= group.number_of_users %>
@@ -70,7 +56,7 @@
                 <%= group.created_at.to_date.to_formatted_s(:standard) %>
               </td>
               <td>
-                <%= link_to t('hyku.admin.groups.action.edit'), edit_admin_group_path(group), id: "edit-#{group.name}-group", class: 'btn btn-default' %>
+                <%= link_to t('hyku.admin.groups.action.edit'), edit_admin_group_path(group), class: 'btn btn-default' %>
               </td>
             </tr>
           <% end %>

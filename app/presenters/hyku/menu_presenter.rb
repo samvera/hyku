@@ -34,7 +34,7 @@ module Hyku
       super ||
         can?(:manage, Site) ||
         can?(:manage, User) ||
-        can?(:manage, Hyrax::Group)
+        can?(:manage, Hyku::Group)
     end
 
     # Returns true if we ought to show the user Admin-only areas of the menu

@@ -128,11 +128,13 @@ In single tenant mode, both the application root (eg. localhost, or hyku.test) a
 To change from single- to multi-tenant mode, change the multitenancy/enabled flag to true and restart the application. Change the 'single' tenant account cname in the Accounts edit interface to the correct hostname.
 
 ## Switching accounts
-
-The recommend way to switch your current session from one account to another is by doing:
-
+There are three recommend ways to switch your current session from one account to another by using:
 ```ruby
-AccountElevator.switch!('repo.example.com')
+switch!(Account.first)
+# or
+switch!('my.site.com')
+# or
+switch!('myaccount')
 ```
 
 ## Development Dependencies

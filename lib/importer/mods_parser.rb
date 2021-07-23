@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Importer
+  # rubocop:disable Metrics/ClassLength
   class ModsParser
     NAMESPACES = { 'mods' => Mods::MODS_NS }.freeze
 

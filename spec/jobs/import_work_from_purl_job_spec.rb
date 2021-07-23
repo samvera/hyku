@@ -146,7 +146,7 @@ RSpec.describe ImportWorkFromPurlJob do
     EOF
   end
 
-  skip "works" do
+  it "works" do
     expect(CreateWorkJob).to receive(:perform_later)
     described_class.perform_now(user, druid, log)
   end

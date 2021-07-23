@@ -19,11 +19,11 @@ RSpec.describe 'admin/groups/new', type: :view do
     end
 
     it 'has an input for name' do
-      expect(rendered).to have_selector('input', id: 'group_humanized_name')
+      expect(rendered).to have_selector('input', id: 'hyku_group_name')
     end
 
     it 'has a text area for description' do
-      expect(rendered).to have_selector('textarea', id: 'group_description')
+      expect(rendered).to have_selector('textarea', id: 'hyku_group_description')
     end
 
     it 'has a save button' do

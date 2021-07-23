@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe CleanupAccountJob do
-  let(:solr_endpoint) { FactoryBot.create(:solr_endpoint, options: { collection: 'x' }) }
-  let(:fcrepo_endpoint) { FactoryBot.create(:fcrepo_endpoint, options: { base_path: '/x' }) }
-  let(:redis_endpoint) { FactoryBot.create(:redis_endpoint, options: { namespace: 'x' }) }
   let!(:account) do
     FactoryBot.create(:account).tap do |acc|
       acc.create_solr_endpoint(collection: 'x')

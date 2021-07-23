@@ -112,7 +112,6 @@ RSpec.describe Account, type: :model do
   end
 
   describe '#switch' do
-    subject { described_class.new }
     let!(:previous_solr_url) { ActiveFedora::SolrService.instance.conn.uri.to_s }
     let!(:previous_redis_namespace) { 'hyku' }
     let!(:previous_fedora_host) { ActiveFedora.fedora.host }

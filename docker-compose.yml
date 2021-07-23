@@ -78,10 +78,6 @@ services:
       - solr:/opt/solr/server/solr
     networks:
       internal:
-    environment:
-      - OOM=script
-      - VIRTUAL_PORT=8983
-      - VIRTUAL_HOST=solr.pals.docker
 
   fcrepo:
     image: cbeer/fcrepo4:4.7
@@ -117,14 +113,13 @@ services:
     depends_on:
       - check_volumes
       - db
+      - solr
       - fcrepo
       - redis
-      - solr
       - zoo1
       - chrome
       - initialize_app
       - db_migrate
-      - workers
     expose:
       - 3000
 
@@ -188,14 +183,6 @@ services:
       internal:
 
   chrome:
-    image: selenium/standalone-chrome-debug:3.141.59-20201010
-    logging:
-      driver: none
-    volumes:
-      - /dev/shm:/dev/shm
-    shm_size: 2G
+    image: selenium/standalone-chrome:3.141
     networks:
       internal:
-    ports:
-      - "4444:4444"
-      - "5959:5900"

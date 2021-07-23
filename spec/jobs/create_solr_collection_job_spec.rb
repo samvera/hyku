@@ -10,7 +10,6 @@ RSpec.describe CreateSolrCollectionJob do
 
   describe '#perform' do
     it 'creates a new collection for an account' do
-      skip
       expect(client).to receive(:get).with('/solr/admin/collections',
                                            params: { action: 'LIST' }).and_return('collections' => [])
 

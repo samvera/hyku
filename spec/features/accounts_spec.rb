@@ -24,7 +24,7 @@ RSpec.describe 'Accounts administration', multitenant: true do
       Capybara.default_host = default_host
     end
 
-    xit 'changes the associated cname' do
+    it 'changes the associated cname' do
       visit edit_proprietor_account_path(account)
 
       fill_in 'Tenant CNAME', with: 'example.com'
@@ -36,7 +36,7 @@ RSpec.describe 'Accounts administration', multitenant: true do
       expect(account.cname).to eq 'example.com'
     end
 
-    xit 'changes the account service endpoints' do
+    it 'changes the account service endpoints' do
       visit edit_proprietor_account_path(account)
 
       fill_in 'account_solr_endpoint_attributes_url', with: 'http://example.com/solr/'

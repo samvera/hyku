@@ -2,6 +2,7 @@ Hyrax.config do |config|
   config.register_curation_concern :generic_work
   # Injected via `rails g hyrax:work Image`
   config.register_curation_concern :image
+
   # Email recipient of messages sent via the contact form
   config.contact_email = Settings.contact_email
 
@@ -58,7 +59,7 @@ Hyrax.config do |config|
   # config.libreoffice_path = "soffice"
 
   # Stream realtime notifications to users in the browser
-  config.realtime_notifications = true
+  # config.realtime_notifications = true
 
   # Which RDF term should be used to relate objects to an admin set?
   # If this is a new repository, you may want to set a custom predicate term here to
@@ -170,7 +171,7 @@ Hyrax.config do |config|
   
   config.iiif_info_url_builder = lambda do |file_id, base_url|
     uri = Riiif::Engine.routes.url_helpers.info_url(file_id, host: base_url)
-    uri = uri.sub(%r{/info\.json\Z}, '')
+    uri.sub(%r{/info\.json\Z}, '')
   end
   
 end

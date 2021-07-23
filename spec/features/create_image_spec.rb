@@ -5,9 +5,8 @@
 require 'rails_helper'
 
 # NOTE: If you generated more than one work, you have to set "js: true"
-RSpec.describe 'Create a Image', type: :feature, js: true, clean: true do
+RSpec.describe 'Create a Image', js: true do
   include Warden::Test::Helpers
-
   context 'a logged in user' do
     let(:user_attributes) do
       { email: 'test@example.com' }
@@ -15,8 +14,6 @@ RSpec.describe 'Create a Image', type: :feature, js: true, clean: true do
     let(:user) do
       User.new(user_attributes) { |u| u.save(validate: false) }
     end
-    let!(:admin_group) { Hyrax::Group.create(name: "admin") }
-    let!(:registered_group) { Hyrax::Group.create(name: "registered") }
     let(:admin_set_id) { AdminSet.find_or_create_default_admin_set_id }
     let(:permission_template) { Hyrax::PermissionTemplate.find_or_create_by!(source_id: admin_set_id) }
     let(:workflow) do
@@ -40,12 +37,11 @@ RSpec.describe 'Create a Image', type: :feature, js: true, clean: true do
       )
       login_as user
     end
+
+    # rubocop:disable RSpec/ExampleLength
     it do
-      visit '/dashboard/works'
-      # TODO(labradford) We are not able to get this link click to work in our automated tests, so this is a workaround.
-      # I hope that if we move to system specs instead of feature specs we'll be able to move back to alignment with
-      # how upstream Hyku/ Hyrax do this.
-      # click_link "Works"
+      visit '/dashboard'
+      click_link "Works"
       click_link "Add new work"
 
       # If you generate more than one work uncomment these lines
@@ -64,7 +60,7 @@ RSpec.describe 'Create a Image', type: :feature, js: true, clean: true do
       fill_in('Title', with: 'My Test Work')
       fill_in('Creator', with: 'Doe, Jane')
       fill_in('Keyword', with: 'testing')
-      select('In Copyright', from: 'Rights Statement')
+      select('In Copyright', from: 'Rights statement')
 
       # With selenium and the chrome driver, focus remains on the
       # select box. Click outside the box so the next line can't find
@@ -78,7 +74,7 @@ RSpec.describe 'Create a Image', type: :feature, js: true, clean: true do
 
       click_on('Save')
       expect(page).to have_content('My Test Work')
-      expect(page).to have_content "Your files are being processed by Hyku Commons in the background."
+      expect(page).to have_content "Your files are being processed by Hyku in the background."
     end
     # rubocop:enable RSpec/ExampleLength
   end

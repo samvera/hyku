@@ -48,7 +48,7 @@ active_job_queue:
 s3:
   upload_bucket:
 
-fits_path: "/opt/fits/fits.sh"
+fits_path: "fits.sh"
 
 google_analytics_id:
 
@@ -62,14 +62,14 @@ contact_email_to: ""
 devise:
   account_signup: true
   # The address from which user invitations are sent
-  invitation_from_email: "hello@commons-archive.org"
+  invitation_from_email: "change-me-in-hyku-settings@example.org"
 
 oai:
-  name: Hyku Commons
+  name: Hyku
   url: http://example.org/catalog/oai
-  prefix: oai:commons-archive
-  email: hello@commons-archive.org
+  prefix: oai:hyku
+  email: change-me-in-hyku-settings@example.org
   sample_id: 806bbc5e-8ebe-468c-a188-b7c14fbe34df
 
 bulkrax:
-  enabled: true
+  enabled: false

@@ -26,7 +26,6 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require 'spec_helper'
 require 'rspec/rails'
 require 'capybara/rails'
-require 'capybara/rspec'
 require 'database_cleaner'
 require 'active_fedora/cleaner'
 require 'webdrivers'
@@ -65,6 +64,51 @@ ActiveRecord::Migration.maintain_test_schema!
 Capybara.default_max_wait_time = 8
 Capybara.default_driver = :rack_test
 
+if ENV['CHROME_HOSTNAME'].present?
+  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
+    chromeOptions: {
+      args: %w[headless disable-gpu no-sandbox whitelisted-ips window-size=1400,1400]
+    }
+  )
+
+  Capybara.register_driver :chrome do |app|
+    d = Capybara::Selenium::Driver.new(app,
+                                       browser: :remote,
+                                       desired_capabilities: capabilities,
+                                       url: "http://#{ENV['CHROME_HOSTNAME']}:4444/wd/hub")
+    # Fix for capybara vs remote files. Selenium handles this for us
+    d.browser.file_detector = lambda do |args|
+      str = args.first.to_s
+      str if File.exist?(str)
+    end
+    d
+  end
+  Capybara.server_host = '0.0.0.0'
+  Capybara.server_port = 3001
+  ENV['WEB_HOST'] ||= if ENV['IN_DOCKER']
+                        'web'
+                      else
+                        `hostname -s`.strip
+                      end
+  Capybara.app_host = "http://#{ENV['WEB_HOST']}:#{Capybara.server_port}"
+else
+  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
+    chromeOptions: {
+      args: %w[headless disable-gpu]
+    }
+  )
+
+  Capybara.register_driver :chrome do |app|
+    Capybara::Selenium::Driver.new(
+      app,
+      browser: :chrome,
+      desired_capabilities: capabilities
+    )
+  end
+end
+
+Capybara.javascript_driver = :chrome
+
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -73,7 +117,6 @@ RSpec.configure do |config|
   # examples within a transaction, remove the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = false
-  config.include Capybara::DSL
 
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
@@ -94,13 +137,6 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
-  
-  # show retry status in spec process
-  config.verbose_retry = true
-  # Try twice (retry once)
-  config.default_retry_count = 2
-  # Only retry when Selenium raises Net::ReadTimeout
-  config.exceptions_to_retry = [Net::ReadTimeout]
 
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include Fixtures::FixtureFileUpload
@@ -141,12 +177,5 @@ RSpec.configure do |config|
     rescue NoMethodError
       'This can happen which the database is gone, which depends on load order of tests'
     end
-  end
-end
-
-Shoulda::Matchers.configure do |config|
-  config.integrate do |with|
-    with.test_framework :rspec
-    with.library :rails
   end
 end

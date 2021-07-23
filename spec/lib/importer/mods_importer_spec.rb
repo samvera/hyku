@@ -15,7 +15,7 @@ RSpec.describe Importer::ModsImporter, :clean do
   describe '#import an image' do
     let(:file) { File.join(fixture_path, 'mods', 'shpc', 'druid_xv169dn4538.mods') }
 
-    skip 'creates a new image and a collection' do
+    it 'creates a new image and a collection' do
       expect(actor).to receive(:create).with(Hyrax::Actors::Environment) do |k|
         expect(k.attributes).to include(member_of_collection_ids: ['kx532cb7981'],
                                         identifier: ['xv169dn4538'],
@@ -34,7 +34,7 @@ RSpec.describe Importer::ModsImporter, :clean do
     context 'when the collection already exists' do
       let!(:coll) { create(:collection, id: 'kx532cb7981', title: ['Test Collection']) }
 
-      skip 'adds image to existing collection' do
+      it 'adds image to existing collection' do
         expect(actor).to receive(:create).with(Hyrax::Actors::Environment) do |k|
           expect(k.attributes).to include(member_of_collection_ids: [coll.id])
         end
@@ -48,7 +48,7 @@ RSpec.describe Importer::ModsImporter, :clean do
   describe '#import a Collection' do
     let(:file) { File.join(fixture_path, 'mods', 'shpc', 'kx532cb7981.mods') }
 
-    skip 'creates a collection' do
+    it 'creates a collection' do
       coll = nil
       expect do
         coll = importer.import(file)
@@ -64,7 +64,7 @@ RSpec.describe Importer::ModsImporter, :clean do
     context 'when the collection already exists' do
       let!(:existing) { FactoryBot.create(:collection, id: 'kx532cb7981', title: ['Test Collection']) }
 
-      skip 'adds metadata to existing collection' do
+      it 'adds metadata to existing collection' do
         coll = nil
         expect do
           coll = importer.import(file)

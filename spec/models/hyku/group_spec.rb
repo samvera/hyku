@@ -130,23 +130,5 @@ module Hyku
         expect(subject.number_of_users).to eq(1)
       end
     end
-
-    ##
-    # A Role can be assigned to a group, and this will grant all Users who are members of that Group certain abilities
-    context 'roles' do
-      context '#roles' do
-        let(:group1) { described_class.create(name: "Pirate Studies") }
-        let(:group2) { described_class.create(name: "Arcane Arts") }
-        let(:edit_collection_role) { FactoryBot.create(:role, name: "Edit Collection") }
-        it "can add a role" do
-          group1.roles << edit_collection_role
-          group2.roles << edit_collection_role
-          expect(group1.roles).to be_present
-          expect(group2.roles).to be_present
-          expect(group1.roles).to include(edit_collection_role)
-          expect(group2.roles).to include(edit_collection_role)
-        end
-      end
-    end
   end
 end

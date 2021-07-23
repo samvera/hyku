@@ -21,14 +21,14 @@ RSpec.describe 'hyrax/admin/users/index.html.erb', type: :view do
     render
   end
 
-  skip "draws user invite form" do
+  it "draws user invite form" do
     expect(page).to have_selector("div.users-invite")
     expect(page).to have_content("Add or Invite user via email")
     expect(page).to have_selector("div.users-invite input#user_email")
     expect(page).to have_selector("//input[@value='Invite user']")
   end
 
-  skip "draws user list with all users" do
+  it "draws user list with all users" do
     expect(page).to have_selector("div.users-listing")
     expect(page).to have_content("Username")
     expect(page).to have_content("Roles")
@@ -59,7 +59,7 @@ RSpec.describe 'hyrax/admin/users/index.html.erb', type: :view do
       render
     end
 
-    skip "lists users as having admin role" do
+    it "lists users as having admin role" do
       (5..6).each do |i|
         expect(page).to have_content("admin#{i}@example.com")
       end
@@ -80,7 +80,7 @@ RSpec.describe 'hyrax/admin/users/index.html.erb', type: :view do
       render
     end
 
-    skip "lists one user as pending status, and others as active" do
+    it "lists one user as pending status, and others as active" do
       (7..7).each do |i|
         expect(page).to have_content("invitee#{i}@example.com")
       end

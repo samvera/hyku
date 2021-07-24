@@ -42,7 +42,7 @@ RSpec.describe CreateAccount do
     it 'prevents duplicate accounts' do
       expect(account1.save).to be true
       expect(account2.save).to be false
-      expect(account2.account.errors).to match a_hash_including(:cname)
+      expect(account2.account.errors).to match a_hash_including(:"domain_names.cname")
     end
   end
 

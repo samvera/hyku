@@ -1,31 +1,14 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-cd $DIR/../..
+cd $DIR/../../chart
 
-REPO=$(basename $(git config --get remote.origin.url) | perl -pe 's/_/-/g')
-NAMESPACE=${REPO%.git}
-
-# Set to NAMESPACE the containing folder if empty (gitlib-ci)
-#   this will be the same as the github repo
-if [ -z "$NAMESPACE" ]
-then
-  NAMESPACE=$(basename $(pwd))
-fi
+REPO=$(basename $(git config --get remote.origin.url))
+NAMESPACE=${REPO%.git} 
 
 if [ -z "$1" ] || [ -z "$2" ]
 then
-    echo './chart/bin/deploy ENVIRONMENT TAG (CONFIG_FILE)'
+    echo './chart/bin/deploy ENVIRONMENT TAG'
     exit 1
 fi
 
-cd chart
-
-if [ -z "$3" ]
-then
-    CONFIG_FILE=$1-values.yaml
-else
-    CONFIG_FILE=$3
-fi
-
-helm upgrade --install --namespace $1-$NAMESPACE $1 . -f $CONFIG_FILE --set rails.image.tag=$2
-
+helm upgrade --install --namespace $1-$NAMESPACE $1 . -f $1-values.yaml --set rails.image.tag=$2

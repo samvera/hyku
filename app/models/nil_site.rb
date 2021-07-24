@@ -17,7 +17,7 @@ class NilSite
               :logo_image, :default_collection_image, :default_work_image,
               :directory_image, :contact_email
 
-  # rubocop:enable Lint/DuplicateMethods
+  # rubocop:disable Lint/DuplicateMethods
   def reload
     NilSite.instance
   end

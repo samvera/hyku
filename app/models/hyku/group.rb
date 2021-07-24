@@ -18,6 +18,7 @@ module Hyku
         all
       end
     end
+
     def search_members(query, member_class: DEFAULT_MEMBER_CLASS)
       if query.present? && member_class == DEFAULT_MEMBER_CLASS
         members.where("email LIKE :q OR display_name LIKE :q", q: "%#{query}%")
@@ -30,13 +31,16 @@ module Hyku
       new_members = member_class.unscoped.find(ids)
       Array.wrap(new_members).collect { |m| m.add_role(MEMBERSHIP_ROLE, self) }
     end
+
     def remove_members_by_id(ids, member_class: DEFAULT_MEMBER_CLASS)
       old_members = member_class.find(ids)
       Array.wrap(old_members).collect { |m| m.remove_role(MEMBERSHIP_ROLE, self) }
     end
+
     def members(member_class: DEFAULT_MEMBER_CLASS)
       member_class.with_role(MEMBERSHIP_ROLE, self)
     end
+
     def number_of_users
       members.count
     end

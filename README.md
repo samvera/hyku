@@ -65,6 +65,18 @@ The full spec suite can be run in docker locally. There are several ways to do t
 docker-compose exec web rake
 ```
 
+#### First time spinning up the app
+If it is the first time you have spun up the application then you will need to migrate and seed the database.  To do so exec into the running web container and execute the rake tasks.
+
+```
+docker-compose exec web bash
+
+# In bash
+bundle exec rake db:migrate
+bundle exec rake db:create
+
+```
+
 ### With out Docker
 #### For development
 

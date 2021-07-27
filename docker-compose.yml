@@ -5,7 +5,7 @@ x-app: &app
     context: .
     target: hyku-base
     args:
-      - EXTRA_APK_PACKAGES=less vim bash openjdk11-jre
+      - EXTRA_APK_PACKAGES=less vim bash openjdk11-jre ffmpeg rsync
   image: ghcr.io/samvera/hyku:latest
   env_file:
     - .env
@@ -53,7 +53,7 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "echo 'ruok' | nc -w 2 -q 2 localhost 2181 | grep imok || exit 1"]
       interval: "10s"
-      timeout: "8"
+      timeout: "8s"
   solr:
     image: bitnami/solr:8
     environment:
@@ -61,7 +61,7 @@ services:
       - SOLR_ADMIN_USERNAME=admin
       - SOLR_ADMIN_PASSWORD=admin
       - SOLR_COLLECTION=hydra-development
-      - SOLR_CLOUD_BOOTSTRAP=no
+      - SOLR_CLOUD_BOOTSTRAP=yes
       - SOLR_ENABLE_CLOUD_MODE=yes
       - SOLR_ENABLE_AUTHENTICATION=yes
       - SOLR_PORT_NUMBER=8983
@@ -75,18 +75,18 @@ services:
       - 8983
     volumes:
       - .:/app
-      - solr:/opt/solr/server/solr
+      - solr:/bitnami
     networks:
       internal:
 
   fcrepo:
-    image: cbeer/fcrepo4:4.7
+    image: ghcr.io/samvera/fcrepo4:4.7.5
+    volumes:
+      - fcrepo:/data:cached
     env_file:
       - .env
     expose:
       - 8080
-    volumes:
-      - fcrepo:/data
     environment:
       - JAVA_OPTS=${JAVA_OPTS} -Dfcrepo.modeshape.configuration="classpath:/config/file-simple/repository.json" -Dfcrepo.object.directory="/data/objects" -Dfcrepo.binary.directory="/data/binaries"
     networks:
@@ -119,7 +119,7 @@ services:
       - zoo1
       - chrome
       - initialize_app
-      - db_migrate
+      - workers
     expose:
       - 3000
 
@@ -129,7 +129,7 @@ services:
       context: .
       target: hyku-worker
       args:
-        - EXTRA_WORKER_APK_PACKAGES=ffmpeg
+        - EXTRA_WORKER_APK_PACKAGES=less vim bash openjdk11-jre ffmpeg rsync
     command: bundle exec sidekiq
     depends_on:
       - check_volumes
@@ -139,7 +139,6 @@ services:
       - redis
       - zoo1
       - initialize_app
-      - db_migrate
 
 
   # Do not recurse through all of tmp. derivitives will make booting
@@ -161,18 +160,14 @@ services:
     entrypoint: ["sh", "-c"]
     command:
       - >
-        solrcloud-upload-configset.sh /app/samvera/hyrax-webapp/solr/config;
-        solrcloud-assign-configset.sh;
-        SOLR_COLLECTION_NAME=hydra-test solrcloud-assign-configset.sh;
-    depends_on:
-      - solr
-
-  db_migrate:
-    <<: *app
-    entrypoint: ["sh", "-c"]
-    command: db-migrate-seed.sh
+        solrcloud-upload-configset.sh /app/samvera/hyrax-webapp/solr/config &&
+        solrcloud-assign-configset.sh &&
+        SOLR_COLLECTION_NAME=hydra-test solrcloud-assign-configset.sh &&
+        db-migrate-seed.sh
     depends_on:
       - db
+      - solr
+      - fcrepo
 
   redis:
     image: redis:5

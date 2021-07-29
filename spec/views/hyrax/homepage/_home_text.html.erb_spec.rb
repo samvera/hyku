@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe "hyrax/homepage/_home_text.html.erb", type: :view do
   subject { rendered }
 

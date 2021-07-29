@@ -66,8 +66,8 @@ group :test do
   gem 'rails-controller-testing'
   gem 'rspec-activemodel-mocks'
   gem 'rspec-its'
-  gem 'rspec_junit_formatter'
   gem 'rspec-retry'
+  gem 'rspec_junit_formatter'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', '~> 4.0'
   gem 'webdrivers', '~> 4.0'
@@ -80,11 +80,10 @@ group :development do
 
   gem 'listen', '>= 3.0.5', '< 3.2'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  gem 'easy_translate'
   gem 'spring', '~> 1.7'
   gem 'spring-watcher-listen', '~> 2.0.0'
-
   gem 'scss_lint', require: false
-  gem 'easy_translate'
 end
 
 # Bulkrax
@@ -130,8 +129,7 @@ gem 'secure_headers'
 
 gem 'codemirror-rails'
 gem 'riiif', '~> 1.1'
-
-gem "sentry-raven"
 gem 'bootstrap-datepicker-rails'
+gem "sentry-raven"
 gem 'parser', '~> 2.5.3'
 gem 'tether-rails'

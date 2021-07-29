@@ -1,4 +1,9 @@
 # frozen_string_literal: true
+<<<<<<< HEAD
+=======
+
+# COPIED FROM HYRAX 2.9.0 to add inject_show_theme_views - Hyku theming
+>>>>>>> 056aa1506d2736cda224ba9109f2ac65a273bf39
 
 # COPIED FROM HYRAX 2.9.0 to add inject_show_theme_views - Hyku theming
 require 'iiif_manifest'
@@ -28,7 +33,7 @@ module Hyrax
 
     class_methods do
       def curation_concern_type=(curation_concern_type)
-        load_and_authorize_resource class: curation_concern_type, instance_name: :curation_concern, except: [:show, :file_manager, :inspect_work, :manifest]
+        load_and_authorize_resource class: curation_concern_type, instance_name: :curation_concern, except: %i[show file_manager inspect_work manifest]
 
         # Load the fedora resource to get the etag.
         # No need to authorize for the file manager, because it does authorization via the presenter.
@@ -348,7 +353,11 @@ module Hyrax
           show_theme_view_path = Rails.root.join('app', 'views', "themes", show_page_theme.to_s)
           prepend_view_path(show_theme_view_path)
           yield
+<<<<<<< HEAD
           original_paths
+=======
+          view_paths = original_paths
+>>>>>>> 056aa1506d2736cda224ba9109f2ac65a273bf39
         else
           yield
         end

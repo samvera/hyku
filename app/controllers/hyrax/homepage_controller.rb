@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # OVERRIDE: Hyrax v2.9.0 to add home_text content block to the index method - Adding themes
 # OVERRIDE: Hyrax v2.9.0 from Hyrax v2.9.0 to add facets to home page - inheriting from CatalogController rather than ApplicationController
 # OVERRIDE: Hyrax v2.9.0 from Hyrax v2.9.0 to add inject_theme_views method for theming
@@ -41,8 +43,8 @@ module Hyrax
 
       respond_to do |format|
         format.html { store_preferred_view }
-        format.rss  { render :layout => false }
-        format.atom { render :layout => false }
+        format.rss  { render layout: false }
+        format.atom { render layout: false }
         format.json do
           @presenter = Blacklight::JsonPresenter.new(@response,
                                                      @document_list,
@@ -58,7 +60,7 @@ module Hyrax
       @presenter = presenter_class.new(current_ability, collections)
       @marketing_text = ContentBlock.for(:marketing)
       @announcement_text = ContentBlock.for(:announcement)
-      @collections = collections(rows: 100000)
+      @collections = collections(rows: 100_000)
     end
 
     # Added from Blacklight 6.23.0 to change url for facets on home page
@@ -103,7 +105,7 @@ module Hyrax
           home_theme_view_path = Rails.root.join('app', 'views', "themes", home_page_theme.to_s)
           prepend_view_path(home_theme_view_path)
           yield
-          view_paths=(original_paths)
+          view_paths = original_paths
         else
           yield
         end

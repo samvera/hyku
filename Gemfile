@@ -131,7 +131,7 @@ gem 'secure_headers'
 gem 'codemirror-rails'
 gem 'riiif', '~> 1.1'
 
-gem "sentry-raven"
 gem 'bootstrap-datepicker-rails'
 gem 'parser', '~> 2.5.3'
+gem "sentry-raven"
 gem 'tether-rails'

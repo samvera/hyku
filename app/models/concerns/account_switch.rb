@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AccountSwitch
   extend ActiveSupport::Concern
 
@@ -6,10 +8,10 @@ module AccountSwitch
       account = if cname_or_name_or_account.is_a?(Account)
                   cname_or_name_or_account
                   # is it a domain name?
-                elsif cname_or_name_or_account =~/^((?!-)[A-Za-z0-9-]{1, 63}(?<!-)\\.)+[A-Za-z]{2, 6}$”/
+                elsif cname_or_name_or_account =~ /^((?!-)[A-Za-z0-9-]{1, 63}(?<!-)\\.)+[A-Za-z]{2, 6}$”/
                   Account.joins(:domain_names).find_by(domain_names: {
-                    is_active: true, cname: Account.canonical_cname(cname)
-                  })
+                                                         is_active: true, cname: Account.canonical_cname(cname)
+                                                       })
                 else
                   Account.find_by(name: cname_or_name_account)
                 end

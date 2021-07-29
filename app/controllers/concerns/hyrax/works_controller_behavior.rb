@@ -10,10 +10,6 @@ module Hyrax
     include Blacklight::Base
     include Blacklight::AccessControls::Catalog
 
-    # def delete
-    #   # something
-    # end
-
     included do
       with_themed_layout :decide_layout
       copy_blacklight_config_from(::CatalogController)

@@ -23,7 +23,7 @@ module Hyrax
 
       rescue_from WorkflowAuthorizationException, with: :render_unavailable
       # add around action to load theme show page views
-      around_action :inject_show_theme_views, except: :delete
+      around_action :inject_show_theme_views, except: :delete # rubocop:disable Rails/LexicallyScopedActionFilter
     end
 
     class_methods do
@@ -37,7 +37,7 @@ module Hyrax
         self._curation_concern_type = curation_concern_type
         # We don't want the breadcrumb action to occur until after the concern has
         # been loaded and authorized
-        before_action :save_permissions, only: :update
+        before_action :save_permissions, only: :update # rubocop:disable Rails/LexicallyScopedActionFilter
       end
 
       def curation_concern_type
@@ -348,7 +348,7 @@ module Hyrax
           show_theme_view_path = Rails.root.join('app', 'views', "themes", show_page_theme.to_s)
           prepend_view_path(show_theme_view_path)
           yield
-          view_paths=(original_paths)
+          original_paths
         else
           yield
         end

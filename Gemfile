@@ -66,8 +66,8 @@ group :test do
   gem 'rails-controller-testing'
   gem 'rspec-activemodel-mocks'
   gem 'rspec-its'
-  gem 'rspec_junit_formatter'
   gem 'rspec-retry'
+  gem 'rspec_junit_formatter'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', '~> 4.0'
   gem 'webdrivers', '~> 4.0'
@@ -83,8 +83,8 @@ group :development do
   gem 'spring', '~> 1.7'
   gem 'spring-watcher-listen', '~> 2.0.0'
 
-  gem 'scss_lint', require: false
   gem 'easy_translate'
+  gem 'scss_lint', require: false
 end
 
 # Bulkrax
@@ -131,7 +131,7 @@ gem 'secure_headers'
 gem 'codemirror-rails'
 gem 'riiif', '~> 1.1'
 
-gem "sentry-raven"
 gem 'bootstrap-datepicker-rails'
 gem 'parser', '~> 2.5.3'
+gem "sentry-raven"
 gem 'tether-rails'

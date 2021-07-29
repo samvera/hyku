@@ -10,6 +10,10 @@ module Hyrax
     include Blacklight::Base
     include Blacklight::AccessControls::Catalog
 
+    # def delete
+    #   # something
+    # end
+
     included do
       with_themed_layout :decide_layout
       copy_blacklight_config_from(::CatalogController)
@@ -29,7 +33,7 @@ module Hyrax
 
     class_methods do
       def curation_concern_type=(curation_concern_type)
-        load_and_authorize_resource class: curation_concern_type, instance_name: :curation_concern, except: [:show, :file_manager, :inspect_work, :manifest]
+        load_and_authorize_resource class: curation_concern_type, instance_name: :curation_concern, except: %i[show file_manager inspect_work manifest]
 
         # Load the fedora resource to get the etag.
         # No need to authorize for the file manager, because it does authorization via the presenter.
@@ -349,7 +353,7 @@ module Hyrax
           show_theme_view_path = Rails.root.join('app', 'views', "themes", show_page_theme.to_s)
           prepend_view_path(show_theme_view_path)
           yield
-          view_paths=(original_paths)
+          view_paths = original_paths
         else
           yield
         end

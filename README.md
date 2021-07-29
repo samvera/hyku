@@ -65,7 +65,6 @@ The full spec suite can be run in docker locally. There are several ways to do t
 docker-compose exec web rake
 ```
 
-
 ### With out Docker
 #### For development
 

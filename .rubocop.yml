@@ -34,11 +34,7 @@ Rails/DynamicFindBy:
     - "lib/importer/factory/object_factory.rb"
 
 Metrics/LineLength:
-<<<<<<< HEAD
-  Max: 157
-=======
   Max: 500
->>>>>>> 056aa1506d2736cda224ba9109f2ac65a273bf39
   Exclude:
     - "app/controllers/catalog_controller.rb"
     - "spec/controllers/curation_concerns/generic_works_controller_spec.rb"

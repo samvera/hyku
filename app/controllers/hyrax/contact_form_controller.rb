@@ -1,17 +1,17 @@
-# OVERRIDE: Hyrax v2.9.0 
+# frozen_string_literal: true
+
+# OVERRIDE: Hyrax v2.9.0
 # - add inject_theme_views method for theming
 # - add homepage presenter for access to feature flippers
 # - add access to content blocks in the show method
 
 module Hyrax
   class ContactFormController < ApplicationController
-    
     # OVERRIDE: Hyrax v2.9.0 Add for theming
     # Adds Hydra behaviors into the application controller
     include Blacklight::SearchContext
     include Blacklight::SearchHelper
     include Blacklight::AccessControls::Catalog
-    
     before_action :build_contact_form
     layout 'homepage'
 
@@ -24,7 +24,7 @@ module Hyrax
     def search_builder_class
       Hyrax::HomepageSearchBuilder
     end
-    
+
     # OVERRIDE: Hyrax v2.9.0 Add for theming
     class_attribute :presenter_class
     # OVERRIDE: Hyrax v2.9.0 Add for theming
@@ -97,7 +97,7 @@ module Hyrax
           home_theme_view_path = Rails.root.join('app', 'views', "themes", home_page_theme.to_s)
           prepend_view_path(home_theme_view_path)
           yield
-          view_paths=(original_paths)
+          view_paths = original_paths
         else
           yield
         end

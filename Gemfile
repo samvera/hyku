@@ -129,14 +129,8 @@ gem 'sidekiq'
 gem 'secure_headers'
 
 gem 'codemirror-rails'
-<<<<<<< HEAD
-gem 'riiif', '~> 1.1'
 
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 056aa1506d2736cda224ba9109f2ac65a273bf39
->>>>>>> a4264738b8747c6a8aea07a509d0ee423202d874
+gem 'riiif', '~> 1.1'
 gem 'bootstrap-datepicker-rails'
 gem 'riiif', '~> 1.1'
 gem 'parser', '~> 2.5.3'

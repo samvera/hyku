@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 # COPIED FROM HYRAX 2.9.0 to add inject_show_theme_views - Hyku theming
-
 require 'iiif_manifest'
 
 module Hyrax

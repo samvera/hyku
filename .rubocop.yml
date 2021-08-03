@@ -11,18 +11,18 @@ AllCops:
   DisplayCopNames: true
   TargetRubyVersion: 2.3
   Exclude:
-    - 'bin/**/*'
-    - 'db/**/*'
-    - 'config/**/*'
-    - 'vendor/**/*'
-    - '.internal_test_app/**/*'
-    - 'spec/fixtures/**/*'
-    - 'spec/internal/**/*'
-    - 'spec/test_app_templates/**/*'
-    - 'Rakefile'
-    - 'lib/tasks/rubocop.rake'
+    - "bin/**/*"
+    - "db/**/*"
+    - "config/**/*"
+    - "vendor/**/*"
+    - ".internal_test_app/**/*"
+    - "spec/fixtures/**/*"
+    - "spec/internal/**/*"
+    - "spec/test_app_templates/**/*"
+    - "Rakefile"
+    - "lib/tasks/rubocop.rake"
     # disabling collections controller as most of the rubocop errors are in hyrax
-    - 'app/controllers/hyrax/dashboard/collections_controller.rb'
+    - "app/controllers/hyrax/dashboard/collections_controller.rb"
 
 Rails:
   Enabled: true
@@ -31,16 +31,16 @@ Rails/DynamicFindBy:
   Whitelist:
     - find_by_user_key
   Exclude:
-    - 'lib/importer/factory/object_factory.rb'
+    - "lib/importer/factory/object_factory.rb"
 
 Metrics/LineLength:
   Max: 500
   Exclude:
-    - 'app/controllers/catalog_controller.rb'
-    - 'spec/controllers/curation_concerns/generic_works_controller_spec.rb'
-    - 'spec/services/iiif_collection_thumbnail_path_service_spec.rb'
-    - 'spec/services/iiif_work_thumbnail_path_service_spec.rb'
-    - 'spec/routing/proprietor/accounts_routing_spec.rb'
+    - "app/controllers/catalog_controller.rb"
+    - "spec/controllers/curation_concerns/generic_works_controller_spec.rb"
+    - "spec/services/iiif_collection_thumbnail_path_service_spec.rb"
+    - "spec/services/iiif_work_thumbnail_path_service_spec.rb"
+    - "spec/routing/proprietor/accounts_routing_spec.rb"
 
 Layout/IndentationConsistency:
   EnforcedStyle: rails
@@ -59,40 +59,40 @@ Style/WordArray:
 
 Metrics/ClassLength:
   Exclude:
-    - 'app/controllers/catalog_controller.rb'
+    - "app/controllers/catalog_controller.rb"
 
 Metrics/ModuleLength:
   Max: 280
 
 Rails/HasAndBelongsToMany:
   Exclude:
-    - 'app/models/role.rb'
+    - "app/models/role.rb"
 
 RSpec/AnyInstance:
   Enabled: false
 
 RSpec/InstanceVariable:
   Exclude:
-    - 'spec/controllers/hyku/registrations_controller_spec.rb'
+    - "spec/controllers/hyku/registrations_controller_spec.rb"
 
 RSpec/NamedSubject:
   Enabled: false
 
 RSpec/DescribeClass:
   Exclude:
-    - 'spec/requests/**/*'
-    - 'spec/features/**/*'
-    - 'spec/views/**/*'
-    - 'spec/routing/**/*'
-    - 'spec/tasks/**/*'
+    - "spec/requests/**/*"
+    - "spec/features/**/*"
+    - "spec/views/**/*"
+    - "spec/routing/**/*"
+    - "spec/tasks/**/*"
 
 Rails/FilePath:
   Exclude:
-    - 'spec/routing/**/*'
+    - "spec/routing/**/*"
 
 RSpec/ExpectActual:
   Exclude:
-    - 'spec/routing/**/*'
+    - "spec/routing/**/*"
 
 RSpec/VerifiedDoubles:
   Enabled: false
@@ -117,6 +117,6 @@ RSpec/MultipleExpectations:
 
 Metrics/BlockLength:
   Exclude:
-    - 'spec/**/*.rb'
-    - 'lib/tasks/*.rake'
-    - 'app/controllers/catalog_controller.rb'
+    - "spec/**/*.rb"
+    - "lib/tasks/*.rake"
+    - "app/controllers/catalog_controller.rb"

@@ -5,20 +5,22 @@ require 'rails_helper'
 RSpec.describe 'Admin can select feature flags', type: :feature, js: true, clean: true do
   let(:admin) { FactoryBot.create(:admin, email: 'admin@example.com', display_name: 'Adam Admin') }
   let(:account) { FactoryBot.create(:account) }
+
   let!(:work) do
     create(:generic_work,
            title: ['Pandas'],
            keyword: ['red panda', 'giant panda'],
            user: admin)
   end
-  let!(:collection) do
+
+  before(:collection) do
     create(:public_collection_lw,
            title: ['Pandas'],
            description: ['Giant Pandas and Red Pandas'],
            user: admin,
            members: [work])
   end
-  let!(:feature) { FeaturedWork.create(work_id: work.id) }
+  before(:feature) { FeaturedWork.create(work_id: work.id) }
 
   context 'as a repository admin' do
     it 'has a setting for featured works' do

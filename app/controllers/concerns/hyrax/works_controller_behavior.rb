@@ -349,7 +349,7 @@ module Hyrax
           show_theme_view_path = Rails.root.join('app', 'views', "themes", show_page_theme.to_s)
           prepend_view_path(show_theme_view_path)
           yield
-          view_paths = original_paths
+          original_paths
         else
           yield
         end

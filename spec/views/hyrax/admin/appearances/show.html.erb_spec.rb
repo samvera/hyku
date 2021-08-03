@@ -25,7 +25,6 @@ RSpec.describe "hyrax/admin/appearances/show", type: :view do
       # directory image
       assert_select "input#admin_appearance_directory_image[name=?]", "admin_appearance[directory_image]"
       # default collection image
-      # rubocop:disable Metrics/LineLength
       assert_select "input#admin_appearance_default_collection_image[name=?]", "admin_appearance[default_collection_image]"
       # rubocop:enable Metrics/LineLength
       # default work image

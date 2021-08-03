@@ -61,9 +61,7 @@ module Hyrax
           home_theme_names = []
           @home_theme_information.each do |theme, value_hash|
             value_hash.each do |key, value|
-              if key == 'name'
-                home_theme_names << [value, theme]
-              end
+              home_theme_names << [value, theme] if key == 'name'
             end
           end
           home_theme_names
@@ -73,9 +71,7 @@ module Hyrax
           show_theme_names = []
           @show_theme_information.each do |theme, value_hash|
             value_hash.each do |key, value|
-              if key == 'name'
-                show_theme_names << [value, theme]
-              end
+              show_theme_names << [value, theme] if key == 'name'
             end
           end
           show_theme_names

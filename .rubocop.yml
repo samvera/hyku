@@ -107,10 +107,10 @@ RSpec/MessageSpies:
   EnforcedStyle: receive
 
 RSpec/ExampleLength:
-  Max: 16
+  Max: 31
 
 RSpec/NestedGroups:
-  Max: 4
+  Max: 6
 
 RSpec/MultipleExpectations:
   Enabled: false

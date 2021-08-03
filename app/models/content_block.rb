@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copied from Hyrax v2.9.0 to add home_text to registry
 # and getter/setter methods - Adding themes
 class ContentBlock < ApplicationRecord

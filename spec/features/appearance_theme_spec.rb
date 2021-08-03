@@ -6,7 +6,8 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
   let(:account) { FactoryBot.create(:account) }
   let(:admin) { FactoryBot.create(:admin, email: 'admin@example.com', display_name: 'Adam Admin') }
   let(:user) { create :user }
-  let!(:work) do
+
+  before(:work) do
     create(:generic_work,
            title: ['Llamas and Alpacas'],
            keyword: ['llama', 'alpaca'],
@@ -65,7 +66,6 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
       visit '/admin/appearance'
       click_link('Themes')
       select('Gallery view', from: 'Search Results Page Theme')
-      # rubocop:disable Metrics/LineLength
       expect(page).to have_content('This will select a default view for the search results page. Users can select their preferred views on the search results page that will override this selection')
       # rubocop:enable Metrics/LineLength
       find('body').click
@@ -121,7 +121,7 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
       expect(page).to have_content('This theme uses a custom banner image')
       expect(page).to have_content('This theme uses home page text')
       expect(page).to have_content('This theme uses marketing text')
-      expect(page.find('#home-wireframe img')['src']).to match(/assets\/themes\/cultural_repository/)
+      expect(page.find('#home-wireframe img')['src']).to match(%r{/assets\/themes\/cultural_repository/})
     end
 
     it 'renders the partials in the theme folder' do

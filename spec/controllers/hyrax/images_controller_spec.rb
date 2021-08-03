@@ -32,6 +32,6 @@ RSpec.describe Hyrax::ImagesController do
   end
 
   context 'with theming' do
-    it { should use_around_action(:inject_show_theme_views) }
+    it { is_expected.to use_around_action(:inject_show_theme_views) }
   end
 end

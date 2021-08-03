@@ -12,10 +12,9 @@ class SitesController < ApplicationController
     else
       redirect_to hyrax.admin_appearance_path, flash: { error: 'Updating the appearance was unsuccessful.' }
     end
-    if params[:site]
-      @site.update(site_theme_params)
-    end
-    
+
+    @site.update(site_theme_params) if params[:site]
+
     # Dynamic CarrierWave methods
     remove_image_methods = %i[remove_banner_image
                               remove_logo_image
@@ -55,7 +54,7 @@ class SitesController < ApplicationController
                     :remove_default_collection_image,
                     :remove_default_work_image)
     end
-    
+
     def site_theme_params
       params.require(:site).permit(:home_theme, :search_theme, :show_theme)
     end

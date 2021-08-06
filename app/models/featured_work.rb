@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-class FeaturedWork < ActiveRecord
-  class Base
+class FeaturedWork < ActiveRecord::Base
     FEATURE_LIMIT = 6
     validate :count_within_limit, on: :create
     validates :order, inclusion: { in: proc { 0..FEATURE_LIMIT } }

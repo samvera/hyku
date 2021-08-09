@@ -19,7 +19,7 @@ fr:
           no_works: L'ensemble administratif ne contient aucune œuvre.
           title: Liste des éléments de cet ensemble administratif
         edit:
-          header: 'Modifier le jeu d''administration: %{title}'
+          header: "Modifier le jeu d'administration: %{title}"
         form:
           cancel: Annuler
           note: Les utilisateurs bénéficiant d'un nouveau rôle n'obtiendront le rôle que sur les œuvres déposées après l'octroi de ce rôle.
@@ -70,9 +70,9 @@ fr:
             title: Les spectateurs
             type: Type
         form_participants:
-          add_group: 'Ajouter un groupe:'
+          add_group: "Ajouter un groupe:"
           add_participants: Ajouter des participants
-          add_user: 'Ajouter un utilisateur:'
+          add_user: "Ajouter un utilisateur:"
           current_participants: Participants actuels
         form_visibility:
           cancel: Annuler
@@ -84,15 +84,15 @@ fr:
             title: Libération
             varies:
               any: Le déposant peut choisir n'importe quelle durée d'embargo; les baux sont autorisés
-              between: 'Le déposant peut choisir l''embargo à jour:'
-              description: 'Autoriser le déposant à choisir les paramètres:'
+              between: "Le déposant peut choisir l'embargo à jour:"
+              description: "Autoriser le déposant à choisir les paramètres:"
               embargo:
                 1yr: 1 an après le dépôt
                 2yrs: 2 ans après le dépôt
                 3yrs: 3 ans après le dépôt
                 6mos: 6 mois après le dépôt
                 select: Sélectionnez la période d'embargo.
-              period: 'Le déposant peut choisir la période d''embargo jusqu''à:'
+              period: "Le déposant peut choisir la période d'embargo jusqu'à:"
           visibility:
             description: Définissez des politiques de visibilité pour l'ensemble administratif. Définir les politiques d'embargo sur les honneurs ci-dessus.
             everyone: Public - le déposant ne peut choisir que le paramètre de visibilité publique
@@ -164,7 +164,7 @@ fr:
           update_notice: Participants mis à jour
         form_settings:
           instructions: Ces paramètres déterminent comment les collections de ce type peuvent être gérées et découvertes.
-          warning: 'Avertissement: ces paramètres ne peuvent pas être modifiés après la création d''une collection de ce type.'
+          warning: "Avertissement: ces paramètres ne peuvent pas être modifiés après la création d'une collection de ce type."
         index:
           breadcrumb: Types de collections
           create_new_button: Créer un nouveau type de collection
@@ -182,7 +182,7 @@ fr:
             actions: Actions
             name: Nom
         multiple_membership_checker:
-          error_preamble: 'Erreur: vous avez spécifié plusieurs du même type de collection à adhésion unique'
+          error_preamble: "Erreur: vous avez spécifié plusieurs du même type de collection à adhésion unique"
           error_type_and_collections: "(type: %{type}, collections: %{collections})"
         new:
           header: Créer un nouveau type de collection
@@ -218,7 +218,7 @@ fr:
       stats:
         deposited_form:
           end_label: fin [par défaut à maintenant]
-          heading: 'Afficher les fichiers déposés:'
+          heading: "Afficher les fichiers déposés:"
           start_label: Début
         repository_objects:
           series:
@@ -232,7 +232,7 @@ fr:
         works:
           headers:
             main: Statistiques de travail
-            total: 'Total des travaux:'
+            total: "Total des travaux:"
             visibility: Totaux par visibilité
       users:
         index:
@@ -248,14 +248,9 @@ fr:
         index:
           current_group_roles: Rôles de groupe actuels
           current_roles: Rôles actuels
-          current_user_roles: Rôles des utilisateurs actuels
           delete:
             confirm: Êtes-vous sûr?
           header:
-            display_name: Afficher un nom
-            email: Email
-            group_name: Nom de groupe
-            group_roles: Rôles de groupe
             roles: Les rôles
             user: Utilisateur
             user_roles: Rôles des utilisateurs
@@ -288,10 +283,10 @@ fr:
         default: Vous devez être connecté pour faire cela!
       unprocessable_entity:
         default: La ressource que vous avez tenté de modifier ne peut pas être modifiée en fonction de votre demande.
-    background_attribution_html: ''
+    background_attribution_html: ""
     base:
       citations:
-        header: 'Citations:'
+        header: "Citations:"
       form_child_work_relationships:
         actions:
           remove: Supprimer de ce travail
@@ -358,7 +353,7 @@ fr:
         empty: Ce %{type} n'est actuellement dans aucune collection.
         header: Des relations
       relationships_parent_row:
-        label: 'Dans %{type}:'
+        label: "Dans %{type}:"
       show:
         last_modified: Dernière modification
       social_media:
@@ -430,7 +425,7 @@ fr:
         create: sauver
         create_new: Ajouter à une nouvelle collection
         no_collections: Vous n'avez accès à aucune collection existante. Vous pouvez créer une nouvelle collection.
-        select_heading: 'Sélectionnez la collection à laquelle ajouter vos fichiers:'
+        select_heading: "Sélectionnez la collection à laquelle ajouter vos fichiers:"
         title: Ajouter à la collection
         update: Sauvegarder les modifications
     collection_type:
@@ -510,7 +505,7 @@ fr:
         select_type_of_collection: Sélectionnez le type de collection
       collections:
         edit:
-          header: 'Modifier %{type_title}: %{title}'
+          header: "Modifier %{type_title}: %{title}"
         form:
           permission_update_errors:
             error: Option de mise à jour non valide pour le modèle d'autorisation.
@@ -647,20 +642,20 @@ fr:
           view_collection: Voir la collection
           work_confirmation: La suppression d'une œuvre de %{application_name} est définitive. Cliquez sur OK pour supprimer ce travail de %{application_name}, ou sur Annuler pour annuler cette opération
         collection_list:
-          description: 'La description:'
-          edit_access: 'Modifier l''accès:'
-          groups: 'Groupes:'
+          description: "La description:"
+          edit_access: "Modifier l'accès:"
+          groups: "Groupes:"
           managed_access:
             deposit: Dépôt
             manage: Gérer
             view: Vue
-          users: 'Utilisateurs:'
+          users: "Utilisateurs:"
         collections: Les collections
         facet_label:
-          collections: 'Filtrer les collections:'
-          highlighted: 'Filtrez les faits saillants:'
-          shared: 'Filtrer les partages:'
-          works: 'Le filtre fonctionne:'
+          collections: "Filtrer les collections:"
+          highlighted: "Filtrez les faits saillants:"
+          shared: "Filtrer les partages:"
+          works: "Le filtre fonctionne:"
         heading:
           access: Accès
           action: Actions
@@ -835,7 +830,7 @@ fr:
       collection: fa fa-cubes
       default: fa fa-cube
     institution_name: Institution
-    institution_name_full: Nom de l'établissement
+    institution_name_full: Institution
     leases:
       edit:
         header:
@@ -912,7 +907,7 @@ fr:
         terms_page: Conditions d'utilisation
       updated: Pages mises à jour.
     passive_consent_to_agreement: En enregistrant ce travail, j'accepte les
-    product_name: Hyku
+    product_name: "Hyku"
     product_twitter_handle: "@HydraInABox"
     search:
       button:
@@ -1041,7 +1036,7 @@ fr:
       default:
         deposit: Dépôt
       load:
-        state_error: 'Le workflow: %{workflow_name} n''a pas été mis à jour. Vous supprimez un état: %{state_name} avec entité (s) %{entity_count}. Un état ne peut pas être supprimé tant qu''il a des entités actives!'
+        state_error: "Le workflow: %{workflow_name} n'a pas été mis à jour. Vous supprimez un état: %{state_name} avec entité (s) %{entity_count}. Un état ne peut pas être supprimé tant qu'il a des entités actives!"
       unauthorized: Le travail n'est pas disponible actuellement car il n'a pas encore terminé le processus d'approbation
     works:
       create:
@@ -1098,7 +1093,7 @@ fr:
         require_membership: Une œuvre doit appartenir à au moins une collection de ce type
         sharable: Autoriser les utilisateurs à affecter des gestionnaires de collections, des déposants et des visualiseurs aux collections qu'ils gèrent
         share_applies_to_new_works: Lorsque de nouvelles œuvres sont créées directement dans la collection, accordez aux utilisateurs de partage et aux groupes des autorisations pour la nouvelle œuvre en fonction de leurs rôles de collection.
-        title: ''
+        title: ""
       defaults:
         based_near: Un nom de lieu lié à l'œuvre, tel que son site de publication, ou la ville, l'état ou le pays sur lequel porte le contenu de l'œuvre. Appelle le <a href='http://www.geonames.org'> service Web GeoNames </a>.
         contributor: Une personne ou un groupe que vous souhaitez reconnaître pour avoir joué un rôle dans la création de l'œuvre, mais pas le rôle principal.
@@ -1140,7 +1135,7 @@ fr:
         contributor: Donateur
         creator: Créateur
         date_created: date créée
-        description: Résumé ou résumé
+        description: Descripción
         embargo_release_date: jusqu'à ce que
         files: Télécharger un fichier
         identifier: Identifiant
@@ -1148,7 +1143,6 @@ fr:
         lease_expiration_date: jusqu'à ce que
         license: Licence
         member_of_collection_ids: Ajouter à la collection
-        publisher: Éditeur
         related_url: URL associée
         rights_statement: Déclaration des droits
         source: La source

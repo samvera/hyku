@@ -31,8 +31,6 @@ pt-BR:
     action:
       become: Tornar-se
     submit:
-      add_role_to_group:
-        submit: Adicionar
       add_user_to_group:
         submit: Adicionar
       group_search:
@@ -216,9 +214,6 @@ pt-BR:
         add: Adicionar
         current_admins:
           actions: Açao
-          all_users: Todos os usuários
-          email: Endereço de e-mail
-          header: Administradores de conta corrente
           no_admins: Não existem administradores
         edit: Editar conta
         header: Gerenciar conta

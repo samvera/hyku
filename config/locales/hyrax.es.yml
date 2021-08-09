@@ -19,7 +19,7 @@ es:
           no_works: El conjunto administrativo no contiene ninguna obra.
           title: Lista de artículos en este conjunto administrativo
         edit:
-          header: 'Editar conjunto administrativo: %{title}'
+          header: "Editar conjunto administrativo: %{title}"
         form:
           cancel: Cancelar
           note: Los usuarios a los que se les haya otorgado un nuevo rol solo obtendrán el rol en los trabajos que se depositen después de que se haya otorgado ese rol.
@@ -70,9 +70,9 @@ es:
             title: Espectadores
             type: Tipo
         form_participants:
-          add_group: 'Añadir grupo:'
+          add_group: "Añadir grupo:"
           add_participants: Agregar participantes
-          add_user: 'Agregar usuario:'
+          add_user: "Agregar usuario:"
           current_participants: Participantes actuales
         form_visibility:
           cancel: Cancelar
@@ -84,22 +84,22 @@ es:
             title: Lanzamiento
             varies:
               any: El depositante puede elegir cualquier duración de embargo; se permiten arrendamientos
-              between: 'El depositante puede elegir el embargo actualizado:'
-              description: 'Permita que el depositante elija la configuración:'
+              between: "El depositante puede elegir el embargo actualizado:"
+              description: "Permita que el depositante elija la configuración:"
               embargo:
                 1yr: 1 año después del depósito
                 2yrs: 2 años después del depósito
                 3yrs: 3 años después del depósito
                 6mos: 6 meses después del depósito
                 select: Seleccione período de embargo.
-              period: 'El depositante puede elegir el período de embargo hasta:'
+              period: "El depositante puede elegir el período de embargo hasta:"
           visibility:
             description: Establecer políticas de visibilidad para el conjunto administrativo. Establecer políticas de embargo de honor arriba.
-            everyone: 'Público: el depositante solo puede elegir la configuración de visibilidad pública'
-            institution: 'Institución: el depositante solo puede seleccionar la configuración de visibilidad de la institución'
+            everyone: "Público: el depositante solo puede elegir la configuración de visibilidad pública"
+            institution: "Institución: el depositante solo puede seleccionar la configuración de visibilidad de la institución"
             restricted: 'Privado: el depositante solo puede seleccionar privado para visibilidad. El acceso está restringido a los administradores de repositorios, gerentes y espectadores del conjunto. Se debe usar con el ajuste "Sin embargo" anterior.'
             title: Visibilidad
-            varies: 'Todos los ajustes permitidos: el depositante puede elegir. Debe usar esta opción para permitir arrendamientos.'
+            varies: "Todos los ajustes permitidos: el depositante puede elegir. Debe usar esta opción para permitir arrendamientos."
         form_workflow:
           cancel: Cancelar
           no_workflows: No hay flujos de trabajo para seleccionar.
@@ -164,7 +164,7 @@ es:
           update_notice: Participantes actualizados
         form_settings:
           instructions: Esta configuración determina cómo se pueden administrar y descubrir colecciones de este tipo.
-          warning: 'Advertencia: esta configuración no se puede cambiar después de crear una colección de este tipo.'
+          warning: "Advertencia: esta configuración no se puede cambiar después de crear una colección de este tipo."
         index:
           breadcrumb: Tipos de colección
           create_new_button: Crear nuevo tipo de colección
@@ -182,7 +182,7 @@ es:
             actions: Comportamiento
             name: Nombre
         multiple_membership_checker:
-          error_preamble: 'Error: ha especificado más de uno del mismo tipo de colección de membresía única'
+          error_preamble: "Error: ha especificado más de uno del mismo tipo de colección de membresía única"
           error_type_and_collections: "(tipo: %{type}, colecciones: %{collections})"
         new:
           header: Crear nuevo tipo de colección
@@ -220,7 +220,7 @@ es:
       stats:
         deposited_form:
           end_label: fin [predeterminado ahora]
-          heading: 'Mostrar archivos depositados:'
+          heading: "Mostrar archivos depositados:"
           start_label: comienzo
         repository_objects:
           series:
@@ -234,7 +234,7 @@ es:
         works:
           headers:
             main: Estadísticas de trabajo
-            total: 'Obras totales:'
+            total: "Obras totales:"
             visibility: Totales por visibilidad
       users:
         index:
@@ -250,14 +250,9 @@ es:
         index:
           current_group_roles: Roles de grupo actuales
           current_roles: Roles actuales
-          current_user_roles: Roles de usuario actuales
           delete:
             confirm: "¿Estás seguro?"
           header:
-            display_name: Nombre para mostrar
-            email: Email
-            group_name: Nombre del grupo
-            group_roles: Roles de grupo
             roles: Roles
             user: Usuario
             user_roles: Roles del usuario
@@ -290,10 +285,10 @@ es:
         default: "¡Debe iniciar sesión para hacer eso!"
       unprocessable_entity:
         default: El recurso que intentó modificar no se puede modificar de acuerdo con su solicitud.
-    background_attribution_html: ''
+    background_attribution_html: ""
     base:
       citations:
-        header: 'Citas:'
+        header: "Citas:"
       form_child_work_relationships:
         actions:
           remove: Eliminar de este trabajo
@@ -360,7 +355,7 @@ es:
         empty: Este %{type} no se encuentra actualmente en ninguna colección.
         header: Relaciones
       relationships_parent_row:
-        label: 'En %{type}:'
+        label: "En %{type}:"
       show:
         last_modified: Última modificación
       social_media:
@@ -432,7 +427,7 @@ es:
         create: Salvar
         create_new: Agregar a nueva colección
         no_collections: No tiene acceso a ninguna colección existente. Puedes crear una nueva colección.
-        select_heading: 'Seleccione la colección para agregar sus archivos a:'
+        select_heading: "Seleccione la colección para agregar sus archivos a:"
         title: Añadir a la colección
         update: Guardar cambios
     collection_type:
@@ -512,7 +507,7 @@ es:
         select_type_of_collection: Seleccione tipo de colección
       collections:
         edit:
-          header: 'Editar %{type_title}: %{title}'
+          header: "Editar %{type_title}: %{title}"
         form:
           permission_update_errors:
             error: Opción de actualización no válida para la plantilla de permisos.
@@ -649,20 +644,20 @@ es:
           view_collection: Ver colección
           work_confirmation: Eliminar un trabajo de %{application_name} es permanente. Haga clic en Aceptar para eliminar este trabajo de %{application_name}, o en Cancelar para cancelar esta operación
         collection_list:
-          description: 'Descripción:'
-          edit_access: 'Editar acceso:'
-          groups: 'Grupos:'
+          description: "Descripción:"
+          edit_access: "Editar acceso:"
+          groups: "Grupos:"
           managed_access:
             deposit: Depositar
             manage: Gestionar
             view: Ver
-          users: 'Usuarios:'
+          users: "Usuarios:"
         collections: Colecciones
         facet_label:
-          collections: 'Filtrar colecciones:'
-          highlighted: 'Filtro destacado:'
-          shared: 'Filtrar acciones:'
-          works: 'Trabajos de filtro:'
+          collections: "Filtrar colecciones:"
+          highlighted: "Filtro destacado:"
+          shared: "Filtrar acciones:"
+          works: "Trabajos de filtro:"
         heading:
           access: Acceso
           action: Comportamiento
@@ -837,7 +832,7 @@ es:
       collection: fa fa cubos
       default: fa fa-cube
     institution_name: Institución
-    institution_name_full: El nombre de la institución
+    institution_name_full: Institución
     leases:
       edit:
         header:
@@ -914,7 +909,7 @@ es:
         terms_page: Términos de Uso
       updated: Páginas actualizadas.
     passive_consent_to_agreement: Al guardar este trabajo, acepto el
-    product_name: Hyku
+    product_name: "Hyku"
     product_twitter_handle: "@HydraInABox"
     search:
       button:
@@ -1043,7 +1038,7 @@ es:
       default:
         deposit: Depositar
       load:
-        state_error: 'El flujo de trabajo: %{workflow_name} no se ha actualizado. Está eliminando un estado: %{state_name} con las entidades %{entity_count}. ¡Un estado no puede eliminarse mientras tenga entidades activas!'
+        state_error: "El flujo de trabajo: %{workflow_name} no se ha actualizado. Está eliminando un estado: %{state_name} con las entidades %{entity_count}. ¡Un estado no puede eliminarse mientras tenga entidades activas!"
       unauthorized: El trabajo no está disponible actualmente porque aún no ha completado el proceso de aprobación
     works:
       create:
@@ -1100,7 +1095,7 @@ es:
         require_membership: Una obra debe pertenecer al menos a una colección de este tipo.
         sharable: Permitir a los usuarios asignar administradores de colecciones, depositantes y espectadores para las colecciones que administran
         share_applies_to_new_works: Cuando se crean nuevos trabajos directamente en la colección, otorgue permisos para compartir usuarios y grupos para el nuevo trabajo de acuerdo con sus roles de colección.
-        title: ''
+        title: ""
       defaults:
         based_near: Un nombre de lugar relacionado con el trabajo, como su sitio de publicación, o la ciudad, el estado o el país del que trata el contenido del trabajo. Llama al <a href='http://www.geonames.org'> servicio web GeoNames </a>.
         contributor: Una persona o grupo que desea reconocer por desempeñar un papel en la creación del trabajo, pero no el papel principal.
@@ -1142,7 +1137,7 @@ es:
         contributor: Contribuyente
         creator: Creador
         date_created: fecha de creacion
-        description: Resumen o resumen
+        description: Descripción
         embargo_release_date: hasta
         files: Cargar un archivo
         identifier: Identificador
@@ -1150,7 +1145,6 @@ es:
         lease_expiration_date: hasta
         license: Licencia
         member_of_collection_ids: Añadir a la colección
-        publisher: Editor
         related_url: URL relacionada
         rights_statement: Declaración de derechos
         source: Fuente

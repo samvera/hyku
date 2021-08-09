@@ -19,7 +19,7 @@ it:
           no_works: Il set amministrativo non contiene alcuna opera.
           title: Elenco di elementi in questo set amministrativo
         edit:
-          header: 'Modifica set amministrativo: %{title}'
+          header: "Modifica set amministrativo: %{title}"
         form:
           cancel: Annulla
           note: Gli utenti a cui è stato assegnato un nuovo ruolo acquisiranno il ruolo solo sulle opere depositate dopo che è stato concesso quel ruolo.
@@ -70,9 +70,9 @@ it:
             title: Gli spettatori
             type: genere
         form_participants:
-          add_group: 'Aggiungere gruppo:'
+          add_group: "Aggiungere gruppo:"
           add_participants: Aggiungi partecipanti
-          add_user: 'Aggiungi utente:'
+          add_user: "Aggiungi utente:"
           current_participants: Partecipanti attuali
         form_visibility:
           cancel: Annulla
@@ -84,19 +84,19 @@ it:
             title: pubblicazione
             varies:
               any: Il depositario può scegliere qualsiasi lunghezza di embargo; sono consentiti contratti di locazione
-              between: 'Il depositante può scegliere l''embargo aggiornato:'
-              description: 'Consenti al depositante di scegliere le impostazioni:'
+              between: "Il depositante può scegliere l'embargo aggiornato:"
+              description: "Consenti al depositante di scegliere le impostazioni:"
               embargo:
                 1yr: 1 anno dopo il deposito
                 2yrs: 2 anni dopo il deposito
                 3yrs: 3 anni dopo il deposito
                 6mos: 6 mesi dopo il deposito
                 select: Seleziona il periodo di embargo.
-              period: 'Il depositante può scegliere il periodo di embargo fino a:'
+              period: "Il depositante può scegliere il periodo di embargo fino a:"
           visibility:
             description: Impostare i criteri di visibilità per il set amministrativo. Impostare onori politiche di embargo sopra.
             everyone: Pubblico - il depositante può solo selezionare l'impostazione di visibilità pubblica
-            institution: 'Istituzione: il depositante può selezionare solo l''impostazione di visibilità dell''istituzione'
+            institution: "Istituzione: il depositante può selezionare solo l'impostazione di visibilità dell'istituzione"
             restricted: Privato - il depositante può selezionare solo privato per visibilità. L'accesso è limitato agli amministratori, ai gestori e ai visualizzatori del repository del set. Deve essere utilizzato con l'impostazione "Nessun embargo" sopra.
             title: Visibilità
             varies: Tutte le impostazioni consentite - il depositante può scegliere. È necessario utilizzare questa opzione per consentire i contratti di locazione.
@@ -164,7 +164,7 @@ it:
           update_notice: Partecipanti aggiornati
         form_settings:
           instructions: Queste impostazioni determinano come gestire e scoprire raccolte di questo tipo.
-          warning: 'Avvertenza: queste impostazioni non possono essere modificate dopo la creazione di una raccolta di questo tipo.'
+          warning: "Avvertenza: queste impostazioni non possono essere modificate dopo la creazione di una raccolta di questo tipo."
         index:
           breadcrumb: Tipi di raccolta
           create_new_button: Crea un nuovo tipo di raccolta
@@ -182,7 +182,7 @@ it:
             actions: Azioni
             name: Nome
         multiple_membership_checker:
-          error_preamble: 'Errore: hai specificato più di uno stesso tipo di raccolta a appartenenza singola'
+          error_preamble: "Errore: hai specificato più di uno stesso tipo di raccolta a appartenenza singola"
           error_type_and_collections: "(tipo: %{type}, collezioni: %{collections})"
         new:
           header: Crea nuovo tipo di raccolta
@@ -220,7 +220,7 @@ it:
       stats:
         deposited_form:
           end_label: end [il valore predefinito è ora]
-          heading: 'Visualizza file depositati:'
+          heading: "Visualizza file depositati:"
           start_label: Inizio
         repository_objects:
           series:
@@ -234,7 +234,7 @@ it:
         works:
           headers:
             main: Statistiche di lavoro
-            total: 'Totale opere:'
+            total: "Totale opere:"
             visibility: Totali per visibilità
       users:
         index:
@@ -250,14 +250,9 @@ it:
         index:
           current_group_roles: Ruoli attuali del gruppo
           current_roles: Ruoli attuali
-          current_user_roles: Ruoli utente correnti
           delete:
             confirm: Sei sicuro?
           header:
-            display_name: Nome da visualizzare
-            email: E-mail
-            group_name: Nome del gruppo
-            group_roles: Ruoli del gruppo
             roles: ruoli
             user: Utente
             user_roles: Ruoli utente
@@ -290,10 +285,10 @@ it:
         default: Devi essere loggato per farlo!
       unprocessable_entity:
         default: La risorsa che hai tentato di modificare non può essere modificata in base alla tua richiesta.
-    background_attribution_html: ''
+    background_attribution_html: ""
     base:
       citations:
-        header: 'citazioni:'
+        header: "citazioni:"
       form_child_work_relationships:
         actions:
           remove: Rimuovi da questo lavoro
@@ -360,7 +355,7 @@ it:
         empty: Questo %{type} non è attualmente in nessuna raccolta.
         header: Le relazioni
       relationships_parent_row:
-        label: 'In %{type}:'
+        label: "In %{type}:"
       show:
         last_modified: Ultima modifica
       social_media:
@@ -432,7 +427,7 @@ it:
         create: Salva
         create_new: Aggiungi a nuova collezione
         no_collections: Non hai accesso ad alcuna raccolta esistente. È possibile creare una nuova raccolta.
-        select_heading: 'Seleziona la raccolta a cui aggiungere i tuoi file:'
+        select_heading: "Seleziona la raccolta a cui aggiungere i tuoi file:"
         title: Aggiungere alla collezione
         update: Salvare le modifiche
     collection_type:
@@ -512,7 +507,7 @@ it:
         select_type_of_collection: Seleziona il tipo di raccolta
       collections:
         edit:
-          header: 'Modifica %{type_title}: %{title}'
+          header: "Modifica %{type_title}: %{title}"
         form:
           permission_update_errors:
             error: Opzione di aggiornamento non valida per il modello di autorizzazione.
@@ -649,20 +644,20 @@ it:
           view_collection: Visualizza la raccolta
           work_confirmation: L'eliminazione di un'opera da %{application_name} è permanente. Fai clic su OK per eliminare quest'opera da %{application_name} o su Annulla per annullare questa operazione
         collection_list:
-          description: 'Descrizione:'
-          edit_access: 'Modifica accesso:'
-          groups: 'gruppi:'
+          description: "Descrizione:"
+          edit_access: "Modifica accesso:"
+          groups: "gruppi:"
           managed_access:
             deposit: Depositare
             manage: Gestire
             view: Visualizza
-          users: 'utenti:'
+          users: "utenti:"
         collections: collezioni
         facet_label:
-          collections: 'Filtra raccolte:'
-          highlighted: 'Punti salienti del filtro:'
-          shared: 'Filtra condivisioni:'
-          works: 'Il filtro funziona:'
+          collections: "Filtra raccolte:"
+          highlighted: "Punti salienti del filtro:"
+          shared: "Filtra condivisioni:"
+          works: "Il filtro funziona:"
         heading:
           access: Accesso
           action: Azioni
@@ -837,7 +832,7 @@ it:
       collection: fa-cubi
       default: fa-cube
     institution_name: Istituzione
-    institution_name_full: Nome dell'Istituzione
+    institution_name_full: Istituzione
     leases:
       edit:
         header:
@@ -914,7 +909,7 @@ it:
         terms_page: Condizioni d'uso
       updated: Pagine aggiornate.
     passive_consent_to_agreement: Salvando questo lavoro accetto il
-    product_name: Hyku
+    product_name: "Hyku"
     product_twitter_handle: "@HydraInABox"
     search:
       button:
@@ -1043,7 +1038,7 @@ it:
       default:
         deposit: Depositare
       load:
-        state_error: 'Il flusso di lavoro: %{workflow_name} non è stato aggiornato. Stai rimuovendo uno stato: %{state_name} con entità / i %{entity_count}. Uno stato non può essere rimosso mentre ha entità attive!'
+        state_error: "Il flusso di lavoro: %{workflow_name} non è stato aggiornato. Stai rimuovendo uno stato: %{state_name} con entità / i %{entity_count}. Uno stato non può essere rimosso mentre ha entità attive!"
       unauthorized: Il lavoro non è attualmente disponibile perché non ha ancora completato il processo di approvazione
     works:
       create:
@@ -1100,7 +1095,7 @@ it:
         require_membership: Un'opera deve appartenere ad almeno una raccolta di questo tipo
         sharable: Consenti agli utenti di assegnare gestori di raccolta, depositanti e visualizzatori per le raccolte che gestiscono
         share_applies_to_new_works: Quando le nuove opere vengono create direttamente nella raccolta, concedere le autorizzazioni di condivisione di utenti e gruppi per la nuova opera in base ai ruoli della raccolta.
-        title: ''
+        title: ""
       defaults:
         based_near: Un nome di luogo correlato all'opera, ad esempio il suo sito di pubblicazione, o la città, lo stato o il paese di cui si tratta. Invita il <a href='http://www.geonames.org'> servizio web GeoNames </a>.
         contributor: Una persona o un gruppo che vuoi riconoscere per avere un ruolo nella creazione dell'opera, ma non il ruolo principale.
@@ -1142,7 +1137,7 @@ it:
         contributor: Collaboratore
         creator: Creatore
         date_created: data di creazione
-        description: Riepilogo o Riepilogo
+        description: Descrizione
         embargo_release_date: fino a
         files: Caricare un file
         identifier: Identificatore
@@ -1150,7 +1145,6 @@ it:
         lease_expiration_date: fino a
         license: Licenza
         member_of_collection_ids: Aggiungere alla collezione
-        publisher: Editore
         related_url: URL correlato
         rights_statement: Dichiarazione dei diritti
         source: fonte

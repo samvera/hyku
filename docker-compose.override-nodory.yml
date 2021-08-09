@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  solr:
+    ports:
+      - "8983:8983"
+  fcrepo:
+    ports:
+      - "8080:8080"
+  db:
+    ports:
+      - "5432:5432"
+  web:
+    environment:
+      - SETTINGS__MULTITENANCY__ADMIN_HOST=lvh.me
+      - SETTINGS__MULTITENANCY__DEFAULT_HOST=%{tenant}.lvh.me
+      - SETTINGS__MULTITENANCY__ROOT_HOST=lvh.me
+    ports:
+      - "3000:3000"

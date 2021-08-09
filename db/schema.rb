@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_30_194003) do
+ActiveRecord::Schema.define(version: 2021_07_29_105649) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -273,6 +273,9 @@ ActiveRecord::Schema.define(version: 2020_07_30_194003) do
     t.string "mailbox_type", limit: 25
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_delivered", default: false
+    t.string "delivery_method"
+    t.string "message_id"
     t.index ["notification_id"], name: "index_mailboxer_receipts_on_notification_id"
     t.index ["receiver_id", "receiver_type"], name: "index_mailboxer_receipts_on_receiver_id_and_receiver_type"
   end

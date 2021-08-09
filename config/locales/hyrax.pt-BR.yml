@@ -248,7 +248,6 @@ pt-BR:
       workflow_roles:
         header: Funções de fluxo de trabalho
         index:
-          current_group_roles: Funções de grupo atuais
           current_roles: Funções Atuais
           current_user_roles: Funções de usuário atuais
           delete:
@@ -260,9 +259,6 @@ pt-BR:
             group_roles: Funções de grupo
             roles: Funções
             user: Do utilizador
-            user_roles: Funções do usuário
-          new_group_role: Atribuir função ao grupo
-          new_role: Atribuir função
           new_user_role: Atribuir função ao usuário
           no_roles: Sem papéis
       workflows:
@@ -1139,13 +1135,11 @@ pt-BR:
       defaults:
         admin_set_id: Conjunto administrativo
         based_near: Localização
-        contributor: Contribuinte
         creator: O Criador
         date_created: Data Criada
         description: Resumo ou Resumo
         embargo_release_date: até
         files: Enviar um arquivo
-        identifier: Identificador
         keyword: Palavra-chave
         lease_expiration_date: até
         license: Licença
@@ -1153,7 +1147,6 @@ pt-BR:
         publisher: Editor
         related_url: URL relacionado
         rights_statement: Declaração de direitos
-        source: Fonte
         title: Título
         visibility_after_embargo: depois abra
         visibility_after_lease: então restrinja-o a

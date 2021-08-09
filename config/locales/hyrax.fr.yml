@@ -246,7 +246,6 @@ fr:
       workflow_roles:
         header: Rôles de workflow
         index:
-          current_group_roles: Rôles de groupe actuels
           current_roles: Rôles actuels
           current_user_roles: Rôles des utilisateurs actuels
           delete:
@@ -258,9 +257,6 @@ fr:
             group_roles: Rôles de groupe
             roles: Les rôles
             user: Utilisateur
-            user_roles: Rôles des utilisateurs
-          new_group_role: Attribuer un rôle au groupe
-          new_role: Attribuer un rôle
           new_user_role: Attribuer un rôle à l'utilisateur
           no_roles: Aucun rôle
       workflows:
@@ -1137,13 +1133,11 @@ fr:
       defaults:
         admin_set_id: Ensemble administratif
         based_near: Emplacement
-        contributor: Donateur
         creator: Créateur
         date_created: date créée
         description: Résumé ou résumé
         embargo_release_date: jusqu'à ce que
         files: Télécharger un fichier
-        identifier: Identifiant
         keyword: Mot-clé
         lease_expiration_date: jusqu'à ce que
         license: Licence
@@ -1151,7 +1145,6 @@ fr:
         publisher: Éditeur
         related_url: URL associée
         rights_statement: Déclaration des droits
-        source: La source
         title: Titre
         visibility_after_embargo: puis ouvrez-le pour
         visibility_after_lease: puis limitez-le à

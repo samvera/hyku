@@ -248,7 +248,6 @@ zh:
       workflow_roles:
         header: 工作流程角色
         index:
-          current_group_roles: 目前的小组角色
           current_roles: 现任职务
           current_user_roles: 当前用户角色
           delete:
@@ -260,9 +259,6 @@ zh:
             group_roles: 组角色
             roles: 的角色
             user: 用户
-            user_roles: 用户角色
-          new_group_role: 将角色分配给组
-          new_role: 分配角色
           new_user_role: 分配角色给用户
           no_roles: 没有角色
       workflows:
@@ -1139,13 +1135,11 @@ zh:
       defaults:
         admin_set_id: 行政套装
         based_near: 位置
-        contributor: 贡献者
         creator: 创作者
         date_created: 创建日期
         description: 摘要或摘要
         embargo_release_date: 直到
         files: 上传一个文件
-        identifier: 识别码
         keyword: 关键词
         lease_expiration_date: 直到
         license: 执照
@@ -1153,7 +1147,6 @@ zh:
         publisher: 发行人
         related_url: 相关网址
         rights_statement: 权利声明
-        source: 资源
         title: 标题
         visibility_after_embargo: 然后打开它
         visibility_after_lease: 然后将其限制为

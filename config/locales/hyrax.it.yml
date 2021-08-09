@@ -248,7 +248,6 @@ it:
       workflow_roles:
         header: Ruoli del flusso di lavoro
         index:
-          current_group_roles: Ruoli attuali del gruppo
           current_roles: Ruoli attuali
           current_user_roles: Ruoli utente correnti
           delete:
@@ -260,9 +259,6 @@ it:
             group_roles: Ruoli del gruppo
             roles: ruoli
             user: Utente
-            user_roles: Ruoli utente
-          new_group_role: Assegna ruolo al gruppo
-          new_role: Assegna ruolo
           new_user_role: Assegna ruolo all'utente
           no_roles: Nessun ruolo
       workflows:
@@ -1139,13 +1135,11 @@ it:
       defaults:
         admin_set_id: Set amministrativo
         based_near: Posizione
-        contributor: Collaboratore
         creator: Creatore
         date_created: data di creazione
         description: Riepilogo o Riepilogo
         embargo_release_date: fino a
         files: Caricare un file
-        identifier: Identificatore
         keyword: Parola chiave
         lease_expiration_date: fino a
         license: Licenza
@@ -1153,7 +1147,6 @@ it:
         publisher: Editore
         related_url: URL correlato
         rights_statement: Dichiarazione dei diritti
-        source: fonte
         title: Titolo
         visibility_after_embargo: quindi aprilo fino a
         visibility_after_lease: quindi limitalo a

@@ -6,30 +6,7 @@ de:
         institution_name_full: Vollständiger Name der Institution
   application:
     tagline: Die Next-Generation Repository-Lösung
-  blacklight:
-    search:
-      fields:
-        facet:
-          contributor_sim: Mitwirkender
-          human_readable_type_sim: Art
-          member_of_collections_sim: Sammlungen
-          resource_type_sim: Ressourcentyp
-        index:
-          audience_tesim: Publikum
-          date_tesim: Datum
-          depositor_tesim: Inhaber
-          discipline_tesim: die Ausbildung
-          education_level_tesim: Bildungsniveau
-          learning_resource_type_tesim: Lernressourcentyp
-          license: Lizenz
-          license_tesim: Lizenz
-          resource_type_tesim: Ressourcentyp
-          rights_statement_tesim: Erklärung der Rechte
-        show:
-          additional_information: Zusätzliche Rechteinformationen
   helpers:
-    action:
-      become: Werden
     submit:
       add_role_to_group:
         submit: Hinzufügen
@@ -197,10 +174,6 @@ de:
             active: Aktiv
             pending: noch ausstehend
           status_label: Status
-  permissions:
-    collections:
-      cannot:
-        manage_discovery: Sie haben keine Berechtigung, die Erkennungseinstellung dieser Sammlung zu ändern
   proprietor:
     accounts:
       edit:
@@ -227,27 +200,6 @@ de:
         edit: Konto bearbeiten
         header: Konto verwalten
         remove: Entfernen
-        update: Aktualisieren
-    users:
-      edit:
-        header: Benutzer bearbeiten
-      index:
-        actions: Aktionen
-        affiliation: Zugehörigkeit
-        confirm_delete: Möchten Sie diesen Benutzer wirklich löschen?
-        create_new: Erstelle neu
-        department: Abteilung
-        display_name: Anzeigename
-        email: Email
-        header: Benutzer verwalten
-        manage: Verwalten
-        title: Titel
-      new:
-        header: Erstellen Sie einen neuen Benutzer
-      show:
-        add: Hinzufügen
-        edit: Bearbeiten
-        header: Benutzer verwalten
         update: Aktualisieren
   status:
     index:

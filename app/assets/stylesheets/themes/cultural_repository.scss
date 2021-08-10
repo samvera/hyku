@@ -23,31 +23,36 @@
     background-color: transparent !important;
   }
   // Note: copied over to override /* line 5, /home/app/webapp/app/assets/stylesheets/hyku.scss */
-  #masthead #logo img {
+  .masthead .logo img {
     max-height: 100px !important;
   }
   $navbar-height: 100px !important;
   ////// End Navbar //////
 
-  div#featured_works > div.featured-works-4-column-layout:nth-child(1n+5){ display: none !important; }
+  div#featured_works > div.featured-works-4-column-layout:nth-child(1n+5) { display: none !important; }
 
-  .featured-works-container, .recent-works-container, .collections-container {
+  .featured-works-container, 
+  .recent-works-container, 
+  .collections-container {
     a {
       img {
-        width: 150px !important;
         display: block !important;
         margin: 0 auto !important;
+        width: 150px !important;
       }
     }
   }
 
-  .form-control, .btn, nav.breadcrumb, .alert {
+  .form-control, 
+  .btn, 
+  nav.breadcrumb, 
+  .alert {
     border-radius: 0;
   }
 
-  #search-field-header {
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
+  .search-field-header {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
   }
 
   .mt-20 {
@@ -87,11 +92,13 @@
     filter: none;
   }
 
-  .featured-item-title, .collection-item-title, .recent-doc-title {
+  .featured-item-title, 
+  .collection-item-title, 
+  .recent-doc-title {
     text-align: center;
     h3 {
-      font-size: 14px !important;
       cursor: default;
+      font-size: 14px !important;
       pointer-events: none;
       text-decoration: none;
       a {

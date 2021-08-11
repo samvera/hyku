@@ -26,7 +26,7 @@ module Hyku
       yield resource if block_given?
 
       # Override destination as this was a success either way
-      if is_flashing_format? && resource.invitation_sent_at # rubocop:disable Style/IfUnlessModifier
+      if is_flashing_format? && resource.invitation_sent_at
         set_flash_message :notice, :send_instructions, email: resource.email
       end
       if method(:after_invite_path_for).arity == 1

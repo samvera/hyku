@@ -3,17 +3,20 @@
   .clear-right {
     clear: right !important;
   }
+
   .vertical-center-image img {
     vertical-align: middle;
     display: inline-block;
     height: 100%;
   }
+
   body.dashboard {
     padding-top: 100px !important;
     @media (max-width: $screen-md-min) {
       padding-top: 0px !important;
     }
   }
+
   div.form-group > label.control-label.col-sm-4 {
     color: #dcdcdc;
     font-weight: 400 !important;
@@ -25,14 +28,14 @@
   }
 
   // Note: copied over to override /* line 5, /home/app/webapp/app/assets/stylesheets/hyku.scss */
-  .masthead .logo img {
+  #masthead #logo img {
     max-height: 100px !important;
   }
 
   $navbar-height: 100px !important;
   ////// End Navbar //////
 
-  div#featured__works > div.featured-works-4-column-layout:nth-child(1n+5) { 
+  #featured__works > .featured-works-4-column-layout:nth-child(1n+5) { 
     display: none !important; 
   }
 
@@ -55,7 +58,7 @@
     border-radius: 0;
   }
 
-  .search-field-header {
+  #search-field-header {
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
   }
@@ -146,18 +149,22 @@
       background-color: transparent;
     }
   }
+
   .facets-toggle {
     border-color: transparent !important;
   }
+
   // Note: copied over to override /* line 226, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_panels.scss
   .panel-group .panel {
     margin-bottom: 0 !important;
     border-radius: 0px !important;
   }
+
   // Note: copied over to override * line 254, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_panels.scss */
   .panel-default {
     border-color: transparent !important;
   }
+
   // Note: copied over to override /* line 7, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_panels.scss */
   .panel {
     margin-bottom: 0px !important;

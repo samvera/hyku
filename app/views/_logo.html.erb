@@ -1,10 +1,10 @@
   <% if logo_image %>
-    <a class="logo" href="<%= hyrax.root_path %>" data-no-turbolink="true">
+    <a id="logo" href="<%= hyrax.root_path %>" data-no-turbolink="true">
       <span class="glyphicon glyphicon-globe" role="img" aria-label="<%= application_name %>" aria-hidden="true"></span>
       <%= image_tag logo_image %>
     </a>
   <% else %>
-    <a class="logo" class="navbar-brand" href="<%= hyrax.root_path %>" data-no-turbolink="true">
+    <a id="logo" class="navbar-brand" href="<%= hyrax.root_path %>" data-no-turbolink="true">
       <span class="institution_name"><%= application_name %></span>
     </a>
   <% end %>

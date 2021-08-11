@@ -16,4 +16,3 @@ namespace :tenantize do
     end
   end
 end
-# rubocop:enable Metrics/LineLength

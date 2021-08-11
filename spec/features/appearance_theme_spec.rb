@@ -61,13 +61,12 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
   end
 
   context 'when a search results theme is selected' do
-    it 'updates the search results page with the selected layout view' do
+    it 'updates the search results page with the selected layout view' do # rubocop:disable RSpec/ExampleLength
       login_as admin
       visit '/admin/appearance'
       click_link('Themes')
       select('Gallery view', from: 'Search Results Page Theme')
       expect(page).to have_content('This will select a default view for the search results page. Users can select their preferred views on the search results page that will override this selection')
-      # rubocop:enable Metrics/LineLength
       find('body').click
       click_on('Save')
       site = Site.last
@@ -139,7 +138,7 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
       expect(page).to have_css('nav.navbar.navbar-inverse.navbar-static-top.cultural-repository-nav')
     end
 
-    it 'updates the home theme when the theme is changed' do
+    it 'updates the home theme when the theme is changed' do # rubocop:disable RSpec/ExampleLength
       login_as admin
       visit '/admin/appearance'
       click_link('Themes')

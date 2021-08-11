@@ -101,7 +101,7 @@ module Hyrax
           home_theme_view_path = Rails.root.join('app', 'views', "themes", home_page_theme.to_s)
           prepend_view_path(home_theme_view_path)
           yield
-          view_paths=(original_paths)
+          view_paths=(original_paths) # rubocop:disable Lint/UselessAssignment, Layout/SpaceAroundOperators, Style/RedundantParentheses
         else
           yield
         end

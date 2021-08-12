@@ -81,7 +81,6 @@ RSpec.describe Hyrax::ContentBlocksController, type: :controller, clean: true do
         expect(response).to redirect_to(edit_content_blocks_path)
         expect(flash[:notice]).to include 'Content blocks updated'
         expect(ContentBlock.featured_researcher.value).to eq "Jane Doe is unimpeachable"
-        # rubocop:enable Metrics/LineLength
       end
     end
   end

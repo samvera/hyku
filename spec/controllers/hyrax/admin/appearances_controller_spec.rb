@@ -77,7 +77,7 @@ RSpec.describe Hyrax::Admin::AppearancesController, type: :controller, singleten
           expect(Site.instance.directory_image?).to be true
         end
 
-        context 'for default collection image' do
+        context 'for default collection image' do # rubocop:disable RSpec/NestedGroups
           it 'sets an image' do
             expect(Site.instance.default_collection_image?).to be false
             f = fixture_file_upload('/images/nypl-hydra-of-lerna.jpg', 'image/jpg')
@@ -96,7 +96,7 @@ RSpec.describe Hyrax::Admin::AppearancesController, type: :controller, singleten
           end
         end
 
-        context 'for default work image' do
+        context 'for default work image' do # rubocop:disable RSpec/NestedGroups
           it 'sets an image' do
             expect(Site.instance.default_work_image?).to be false
             f = fixture_file_upload('/images/nypl-hydra-of-lerna.jpg', 'image/jpg')

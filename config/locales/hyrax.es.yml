@@ -248,16 +248,12 @@ es:
       workflow_roles:
         header: Roles de flujo de trabajo
         index:
-          current_group_roles: Roles de grupo actuales
           current_roles: Roles actuales
           delete:
             confirm: "¿Estás seguro?"
           header:
             roles: Roles
             user: Usuario
-            user_roles: Roles del usuario
-          new_group_role: Asignar rol al grupo
-          new_role: Asignar rol
           new_user_role: Asignar rol al usuario
           no_roles: Sin roles
       workflows:
@@ -1134,20 +1130,17 @@ es:
       defaults:
         admin_set_id: Conjunto administrativo
         based_near: Ubicación
-        contributor: Contribuyente
         creator: Creador
         date_created: fecha de creacion
         description: Descripción
         embargo_release_date: hasta
         files: Cargar un archivo
-        identifier: Identificador
         keyword: Palabra clave
         lease_expiration_date: hasta
         license: Licencia
         member_of_collection_ids: Añadir a la colección
         related_url: URL relacionada
         rights_statement: Declaración de derechos
-        source: Fuente
         title: Título
         visibility_after_embargo: luego ábralo para
         visibility_after_lease: luego restringirlo a

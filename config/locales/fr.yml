@@ -6,30 +6,7 @@ fr:
         institution_name_full: Nom complet de l'établissement
   application:
     tagline: La solution de dépôt de nouvelle génération
-  blacklight:
-    search:
-      fields:
-        facet:
-          contributor_sim: Contribuinte
-          human_readable_type_sim: Type
-          member_of_collections_sim: Colecções
-          resource_type_sim: Type de ressource
-        index:
-          audience_tesim: Public
-          date_tesim: Date
-          depositor_tesim: Proprietário
-          discipline_tesim: La discipline
-          education_level_tesim: iveau d'éducation
-          learning_resource_type_tesim: Type de ressource d'apprentissage
-          license: Licence
-          license_tesim: licença
-          resource_type_tesim: Type
-          rights_statement_tesim: Declaração de direitos
-        show:
-          additional_information: Informations supplémentaires sur les droits
   helpers:
-    action:
-      become: Devenir
     submit:
       add_user_to_group:
         submit: Ajouter
@@ -197,10 +174,6 @@ fr:
             active: actif
             pending: en attendant
           status_label: Statut
-  permissions:
-    collections:
-      cannot:
-        manage_discovery: Vous n'êtes pas autorisé à modifier le paramètre de découverte de cette collection
   proprietor:
     accounts:
       edit:
@@ -224,27 +197,6 @@ fr:
         edit: Modifier le compte
         header: Gérer son compte
         remove: Retirer
-        update: Mettre à jour
-    users:
-      edit:
-        header: Modifier l'utilisateur
-      index:
-        actions: Actes
-        affiliation: Affiliation
-        confirm_delete: Voulez-vous vraiment supprimer cet utilisateur?
-        create_new: Créer un nouveau
-        department: Département
-        display_name: Afficher un nom
-        email: Email
-        header: gérer les utilisateurs
-        manage: Gérer
-        title: Titre
-      new:
-        header: Créer un nouvel utilisateur
-      show:
-        add: Ajouter
-        edit: Modifier
-        header: Gérer l'utilisateur
         update: Mettre à jour
   status:
     index:

@@ -6,30 +6,7 @@ es:
         institution_name_full: El nombre de la institución
   application:
     tagline: La solución de repositorio de próxima generación
-  blacklight:
-    search:
-      fields:
-        facet:
-          contributor_sim: Contribuyente
-          human_readable_type_sim: Tipo
-          member_of_collections_sim: Colecciones
-          resource_type_sim: Tipo de recurso
-        index:
-          audience_tesim: Audiencia
-          date_tesim: Fecha
-          depositor_tesim: Propietario
-          discipline_tesim: Disciplina
-          education_level_tesim: Nivel de Educación
-          learning_resource_type_tesim: Tipo de recurso de aprendizaje
-          license: Licencia
-          license_tesim: Licencia
-          resource_type_tesim: Tipo de recurso
-          rights_statement_tesim: Declaración de derechos
-        show:
-          additional_information: Información adicional de derechos
   helpers:
-    action:
-      become: Volverse
     submit:
       add_user_to_group:
         submit: Añadir
@@ -191,10 +168,6 @@ es:
             active: Activo
             pending: Pendiente
           status_label: Estado
-  permissions:
-    collections:
-      cannot:
-        manage_discovery: No tienes permiso para cambiar la configuración de descubrimiento de esta colección
   proprietor:
     accounts:
       edit:
@@ -218,27 +191,6 @@ es:
         edit: Editar cuenta
         header: Administrar cuenta
         remove: Eliminar
-        update: Actualizar
-    users:
-      edit:
-        header: editar usuario
-      index:
-        actions: Comportamiento
-        affiliation: Afiliación
-        confirm_delete: "¿Estás seguro de que deseas eliminar a este usuario?"
-        create_new: Crear nuevo
-        department: Departamento
-        display_name: Nombre para mostrar
-        email: Email
-        header: Administrar usuarios
-        manage: Gestionar
-        title: Título
-      new:
-        header: Crea un nuevo usuario
-      show:
-        add: Añadir
-        edit: Editar
-        header: Administrar usuario
         update: Actualizar
   status:
     index:

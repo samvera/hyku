@@ -9,7 +9,7 @@ RSpec.describe 'Admin Dashboard', type: :feature do
       login_as(user, scope: :user)
     end
 
-    it 'shows the admin page' do
+    it 'shows the admin page' do # rubocop:disable RSpec/ExampleLength
       visit Hyrax::Engine.routes.url_helpers.dashboard_path
       within '.sidebar' do
         expect(page).to have_link('Activity Summary')
@@ -69,7 +69,7 @@ RSpec.describe 'Admin Dashboard', type: :feature do
       login_as(user, scope: :user)
     end
 
-    it 'shows the regular user page' do
+    it 'shows the regular user page' do # rubocop:disable RSpec/ExampleLength
       visit Hyrax::Engine.routes.url_helpers.dashboard_path
       within '.sidebar' do
         expect(page).to have_link('Activity Summary')

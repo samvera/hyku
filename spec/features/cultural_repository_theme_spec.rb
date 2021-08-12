@@ -32,7 +32,7 @@ RSpec.describe 'Admin can select cultural repository theme', type: :feature, js:
   end
 
   context 'when the cultural repository theme is selected' do
-    it 'renders the partials in the theme folder' do
+    it 'renders the partials in the theme folder' do # rubocop:disable RSpec/ExampleLength
       login_as admin
       visit '/admin/appearance'
       click_link('Themes')

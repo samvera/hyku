@@ -32,7 +32,7 @@ RSpec.describe 'Admin can select institutional repository theme', type: :feature
   end
 
   context 'when the institutional repository theme is selected' do
-    it 'renders the partials in the theme folder' do
+    it 'renders the partials in the theme folder' do # rubocop:disable RSpec/ExampleLength
       login_as admin
       visit '/admin/appearance'
       click_link('Themes')

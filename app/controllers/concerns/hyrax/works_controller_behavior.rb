@@ -1,9 +1,4 @@
 # frozen_string_literal: true
-<<<<<<< HEAD
-=======
-
-# COPIED FROM HYRAX 2.9.0 to add inject_show_theme_views - Hyku theming
->>>>>>> 056aa1506d2736cda224ba9109f2ac65a273bf39
 
 # COPIED FROM HYRAX 2.9.0 to add inject_show_theme_views - Hyku theming
 require 'iiif_manifest'
@@ -353,11 +348,7 @@ module Hyrax
           show_theme_view_path = Rails.root.join('app', 'views', "themes", show_page_theme.to_s)
           prepend_view_path(show_theme_view_path)
           yield
-<<<<<<< HEAD
-          original_paths
-=======
-          view_paths = original_paths
->>>>>>> 056aa1506d2736cda224ba9109f2ac65a273bf39
+          view_paths=(original_paths) # rubocop:disable Lint/UselessAssignment, Layout/SpaceAroundOperators, Style/RedundantParentheses
         else
           yield
         end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Override from hyrax 2.5.1 to add methods to:
 # hide featured researcher
 # hide featured works
@@ -26,7 +28,7 @@ module Hyrax
 
     def display_share_button?
       Flipflop.show_share_button? && current_ability.can_create_any_work? ||
-      Flipflop.show_share_button? && user_unregistered?
+        Flipflop.show_share_button? && user_unregistered?
     end
 
     # A presenter for selecting a work type to create

@@ -81,16 +81,9 @@ group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'easy_translate'
+  gem 'scss_lint', require: false
   gem 'spring', '~> 1.7'
-<<<<<<< HEAD
   gem 'spring-watcher-listen', '~> 2.0.0'
-
-  gem 'easy_translate'
-  gem 'scss_lint', require: false
-=======
-  gem 'scss_lint', require: false
-  gem 'spring-watcher-listen', '~> 2.0.0'
->>>>>>> 056aa1506d2736cda224ba9109f2ac65a273bf39
 end
 
 # Bulkrax
@@ -130,18 +123,11 @@ group :aws do
   gem 'aws-sdk-sqs'
 end
 
-gem 'sidekiq'
-
-gem 'secure_headers'
-
-gem 'codemirror-rails'
-<<<<<<< HEAD
-gem 'riiif', '~> 1.1'
-
-=======
->>>>>>> 056aa1506d2736cda224ba9109f2ac65a273bf39
 gem 'bootstrap-datepicker-rails'
-gem 'riiif', '~> 1.1'
+gem 'codemirror-rails'
 gem 'parser', '~> 2.5.3'
+gem 'riiif', '~> 1.1'
+gem 'secure_headers'
 gem "sentry-raven"
+gem 'sidekiq'
 gem 'tether-rails'

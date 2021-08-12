@@ -6,7 +6,8 @@ RSpec.describe 'Admin can select cultural repository theme', type: :feature, js:
   let(:account) { FactoryBot.create(:account) }
   let(:admin) { FactoryBot.create(:admin, email: 'admin@example.com', display_name: 'Adam Admin') }
   let(:user) { create :user }
-  let!(:work) do
+
+  before(:work) do
     create(:generic_work,
            title: ['Llamas and Alpacas'],
            keyword: ['llama', 'alpaca'],
@@ -31,7 +32,7 @@ RSpec.describe 'Admin can select cultural repository theme', type: :feature, js:
   end
 
   context 'when the cultural repository theme is selected' do
-    it 'renders the partials in the theme folder' do
+    it 'renders the partials in the theme folder' do # rubocop:disable RSpec/ExampleLength
       login_as admin
       visit '/admin/appearance'
       click_link('Themes')

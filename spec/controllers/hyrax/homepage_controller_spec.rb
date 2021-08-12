@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copied from Hyrax v2.9.0 to add home_text content block to the index method - Adding themes
 RSpec.describe Hyrax::HomepageController, type: :controller do
   routes { Hyrax::Engine.routes }
@@ -154,7 +156,7 @@ RSpec.describe Hyrax::HomepageController, type: :controller do
     end
 
     context 'with theming' do
-      it { should use_around_action(:inject_theme_views) }
+      it { is_expected.to use_around_action(:inject_theme_views) }
     end
   end
 end

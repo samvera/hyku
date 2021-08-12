@@ -38,8 +38,7 @@ RSpec.describe 'Create a Image', js: true do
       login_as user
     end
 
-    # rubocop:disable RSpec/ExampleLength
-    it do
+    it do # rubocop:disable RSpec/ExampleLength
       visit '/dashboard'
       click_link "Works"
       click_link "Add new work"
@@ -67,15 +66,12 @@ RSpec.describe 'Create a Image', js: true do
       # its element
       find('body').click
       choose('image_visibility_open')
-      # rubocop:disable Metrics/LineLength
       expect(page).to have_content('Please note, making something visible to the world (i.e. marking this as Public) may be viewed as publishing which could impact your ability to')
-      # rubocop:enable Metrics/LineLength
       check('agreement')
 
       click_on('Save')
       expect(page).to have_content('My Test Work')
       expect(page).to have_content "Your files are being processed by Hyku in the background."
     end
-    # rubocop:enable RSpec/ExampleLength
   end
 end

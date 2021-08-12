@@ -13,19 +13,21 @@ RSpec.describe 'Admin can select show page theme', type: :feature, js: true, cle
            user: user)
   end
 
-  let!(:admin_group) { Hyrax::Group.create(name: "admin") }
-  let!(:registered_group) { Hyrax::Group.create(name: "registered") }
-  let(:admin_set_id) { AdminSet.find_or_create_default_admin_set_id }
-  let(:permission_template) { Hyrax::PermissionTemplate.find_or_create_by!(source_id: admin_set_id) }
-  let(:workflow) do
-    Sipity::Workflow.create!(
-      active: true,
-      name: 'test-workflow',
-      permission_template: permission_template
-    )
+  before(:admin_group) { Hyrax::Group.create(name: "admin") }
+  before(:registered_group) { Hyrax::Group.create(name: "registered") }
+  before do
+    let(:admin_set_id) { AdminSet.find_or_create_default_admin_set_id }
+    let(:permission_template) { Hyrax::PermissionTemplate.find_or_create_by!(source_id: admin_set_id) }
+    let(:workflow) do
+      Sipity::Workflow.create!(
+        active: true,
+        name: 'test-workflow',
+        permission_template: permission_template
+      )
+    end
   end
 
-  context "as a repository admin" do   
+  context "as a repository admin" do
     it 'has a select box for the show page themes' do
       login_as admin
       visit '/admin/appearance'
@@ -64,8 +66,8 @@ RSpec.describe 'Admin can select show page theme', type: :feature, js: true, cle
       click_link('Themes')
       select('Cultural Show Page', from: 'Show Page Theme')
       find('body').click
-      expect(page).to have_content('This text based show page is recommended for institutional repositories.')    
-      expect(page.find('#show-wireframe img')['src']).to match(/assets\/themes\/cultural_show/)
+      expect(page).to have_content('This text based show page is recommended for institutional repositories.')
+      expect(page.find('#show-wireframe img')['src']).to match(%r{/assets\/themes\/cultural_show/})
     end
 
     it 'renders the partials in the theme folder' do
@@ -83,7 +85,7 @@ RSpec.describe 'Admin can select show page theme', type: :feature, js: true, cle
       expect(page).to have_css('.text-show-title')
     end
 
-    it 'updates the show theme when the theme is changed' do
+    it 'updates the show theme when the theme is changed' do # rubocop:disable RSpec/ExampleLength
       login_as admin
       visit '/admin/appearance'
       click_link('Themes')

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copied from Hyrax v2.9.0 to add home_text content block - Adding themes
 RSpec.describe Hyrax::ContentBlocksController, type: :controller, clean: true do
   routes { Hyrax::Engine.routes }
@@ -68,7 +70,6 @@ RSpec.describe Hyrax::ContentBlocksController, type: :controller, clean: true do
 
       # Copied from Hyrax v2.9.0 to add home_text content block - Adding themes
       it "updates the home text" do
-        # rubocop:disable Metrics/LineLength
         patch :update, params: { id: home_page_text.id, content_block: { home_text: 'This repository is committed to providing broad access to our collections for teaching, learning, and research. Our websites, catalog records, finding aids, and digital images enhance scholarship and promote use of both digital and physical objects. A critical component of our mission is to “inspire curiosity” and providing free and open access to our collections is key to executing that mission.' } }
         expect(response).to redirect_to(edit_content_blocks_path)
         expect(flash[:notice]).to include 'Content blocks updated'
@@ -80,7 +81,6 @@ RSpec.describe Hyrax::ContentBlocksController, type: :controller, clean: true do
         expect(response).to redirect_to(edit_content_blocks_path)
         expect(flash[:notice]).to include 'Content blocks updated'
         expect(ContentBlock.featured_researcher.value).to eq "Jane Doe is unimpeachable"
-        # rubocop:enable Metrics/LineLength
       end
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copied from Hyrax v2.9.0 to add home_text methods - Adding themes
 RSpec.describe ContentBlock, type: :model do
   describe '.for' do
@@ -34,7 +36,7 @@ RSpec.describe ContentBlock, type: :model do
   describe '.announcement_text' do
     subject { described_class.for(:announcement).value }
 
-    let!(:announcement) do
+    before(:announcement) do
       create(:content_block,
              name: ContentBlock::NAME_REGISTRY[:announcement],
              value: '<h1>Announcement Text</h1>')
@@ -55,7 +57,7 @@ RSpec.describe ContentBlock, type: :model do
   describe '.marketing_text' do
     subject { described_class.for(:marketing).value }
 
-    let!(:marketing) do
+    before(:marketing) do
       create(:content_block,
              name: ContentBlock::NAME_REGISTRY[:marketing],
              value: '<h1>Marketing Text</h1>')
@@ -119,7 +121,7 @@ RSpec.describe ContentBlock, type: :model do
   describe '.home_text' do
     subject { described_class.for(:home_text).value }
 
-    let!(:home_text) do
+    before(:home_text) do
       create(:content_block,
              name: ContentBlock::NAME_REGISTRY[:home_text],
              value: '<h1>Home Page Text</h1>')

@@ -248,21 +248,12 @@ zh:
       workflow_roles:
         header: 工作流程角色
         index:
-          current_group_roles: 目前的小组角色
           current_roles: 现任职务
-          current_user_roles: 当前用户角色
           delete:
             confirm: 你确定吗？
           header:
-            display_name: 显示名称
-            email: 电子邮件
-            group_name: 团队名字
-            group_roles: 组角色
             roles: 的角色
             user: 用户
-            user_roles: 用户角色
-          new_group_role: 将角色分配给组
-          new_role: 分配角色
           new_user_role: 分配角色给用户
           no_roles: 没有角色
       workflows:
@@ -290,7 +281,7 @@ zh:
         default: 你必须先登录才能做到这一点！
       unprocessable_entity:
         default: 您尝试修改的资源无法根据您的请求进行修改。
-    background_attribution_html: ''
+    background_attribution_html: ""
     base:
       citations:
         header: 引文：
@@ -837,7 +828,7 @@ zh:
       collection: fa fa-cubes
       default: fa fa-cube
     institution_name: 机构
-    institution_name_full: 机构名称
+    institution_name_full: 机构
     leases:
       edit:
         header:
@@ -914,7 +905,7 @@ zh:
         terms_page: 使用条款
       updated: 页面已更新。
     passive_consent_to_agreement: 保存此作品，我同意
-    product_name: 俳句
+    product_name: "俳句"
     product_twitter_handle: "@HydraInABox"
     search:
       button:
@@ -1100,7 +1091,7 @@ zh:
         require_membership: 一件作品必须至少属于这一类型的收藏
         sharable: 允许用户为他们管理的收藏指派收藏经理，存款人和查看者
         share_applies_to_new_works: 在集合中直接创建新作品时，请根据其收藏角色授予共享用户和组新作品的权限。
-        title: ''
+        title: ""
       defaults:
         based_near: 与该作品相关的地名，例如其出版地或该作品所涉及的城市，州或国家。调用<a href='http://www.geonames.org'> GeoNames Web服务</a>。
         contributor: 您希望因在作品创作中扮演的角色而被认可的个人或团体，而不是主要角色。
@@ -1139,21 +1130,17 @@ zh:
       defaults:
         admin_set_id: 行政套装
         based_near: 位置
-        contributor: 贡献者
         creator: 创作者
         date_created: 创建日期
-        description: 摘要或摘要
+        description: 描述
         embargo_release_date: 直到
         files: 上传一个文件
-        identifier: 识别码
         keyword: 关键词
         lease_expiration_date: 直到
         license: 执照
         member_of_collection_ids: 添加到收藏
-        publisher: 发行人
         related_url: 相关网址
         rights_statement: 权利声明
-        source: 资源
         title: 标题
         visibility_after_embargo: 然后打开它
         visibility_after_lease: 然后将其限制为

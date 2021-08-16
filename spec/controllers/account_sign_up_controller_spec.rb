@@ -56,7 +56,7 @@ RSpec.describe AccountSignUpController, type: :controller do
           expect(assigns(:account)).to be_a_new(Account)
           expect(assigns(:account).tenant).not_to eq('missing-names')
           expect(assigns(:account).errors).not_to be_empty
-          expect(assigns(:account).errors.messages).to match a_hash_including(:name, :cname)
+          expect(assigns(:account).errors.messages).to match a_hash_including(:name, :"domain_names.cname")
         end
 
         it "re-renders the 'new' template" do

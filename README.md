@@ -43,7 +43,7 @@ Jump In: [![Slack Status](http://slack.samvera.org/badge.svg)](http://slack.samv
 
 #### Dory
 
-On OS X or Linux we recommend running [Dory](https://github.com/FreedomBen/dory). It acts as a proxy allowing you to access domains locally such as hyku.test or tenant.hyku.test, making multitenant development more straightforward and prevents the need to bind ports locally. Be sure to [adjust your ~/.dory.yml file to support the .test tld](https://github.com/FreedomBen/dory#config-file).  You can still run in development via docker with out Dory, but to do so please uncomment the ports section in docker-compose.yml and then find the running application at localhost:3000
+On OS X or Linux we recommend running [Dory](https://github.com/FreedomBen/dory). It acts as a proxy allowing you to access domains locally such as hyku.test or tenant.hyku.test, making multitenant development more straightforward and prevents the need to bind ports locally. Be sure to [adjust your ~/.dory.yml file to support the .test tld](https://github.com/FreedomBen/dory#config-file).  You can still run in development via docker with out Dory. To do so, copy `docker-compose.override-nodory.yml` to `docker-compose.override.yml` before starting doing docker-compose up.  You can then see the application t the loopback domain 'lvh.me:3000'.
 
 ```bash
 gem install dory
@@ -53,8 +53,9 @@ dory up
 #### Basic steps
 
 ```bash
-docker-compose up web workers
+docker-compose up web
 ```
+
 This command starts the whole stack in individual containers allowing Rails to be started or stopped independent of the other services.  Once that starts (you'll see the line `Passenger core running in multi-application mode.` to indicate a successful boot), you can view your app in a web browser with at either hyku.test or localhost:3000 (see above).  When done `docker-compose stop` shuts down everything.
 
 #### Tests in Docker
@@ -66,6 +67,9 @@ docker-compose exec web rake
 ```
 
 ### With out Docker
+
+Please note that this is unused by most contributors at this point and will likely become unsupported in a future release of Hyku unless someone in the community steps up to maintain it.
+
 #### For development
 
 ```bash
@@ -100,7 +104,7 @@ https://github.com/hybox/aws
 We distribute two `docker-compose.yml` configuration files.  The first is set up for development / running the specs. The other, `docker-compose.production.yml` is for running the Hyku stack in a production setting. . Once you have [docker](https://docker.com) installed and running, launch the stack using e.g.:
 
 ```bash
-docker-compose up -d web workers
+docker-compose up -d web
 ```
 
 Note: You may need to add your user to the "docker" group.
@@ -128,11 +132,13 @@ In single tenant mode, both the application root (eg. localhost, or hyku.test) a
 To change from single- to multi-tenant mode, change the multitenancy/enabled flag to true and restart the application. Change the 'single' tenant account cname in the Accounts edit interface to the correct hostname.
 
 ## Switching accounts
-
-The recommend way to switch your current session from one account to another is by doing:
-
+There are three recommend ways to switch your current session from one account to another by using:
 ```ruby
-AccountElevator.switch!('repo.example.com')
+switch!(Account.first)
+# or
+switch!('my.site.com')
+# or
+switch!('myaccount')
 ```
 
 ## Development Dependencies
@@ -184,4 +190,4 @@ This software was developed by the Hydra-in-a-Box Project (DPLA, DuraSpace, and 
 This software is brought to you by the Samvera community.  Learn more at the
 [Samvera website](http://samvera.org/).
 
-![Samvera Logo](https://wiki.duraspace.org/download/thumbnails/87459292/samvera-fall-font2-200w.png?version=1&modificationDate=1498550535816&api=v2)
+![Samvera Logo](https://samvera.atlassian.net/wiki/download/attachments/405216084/samvera-fall-TM-220w-transparent.png?version=1&modificationDate=1540440075555&cacheVersion=1&api=v2)

@@ -54,7 +54,6 @@ jobs:
       DATABASE_USER: postgres
       DATABASE_TEST_NAME: circle_test
       BUNDLE_PATH: vendor/bundle
-      COVERALLS_PARALLEL: true
       BUNDLE_JOBS: 4
       BUNDLE_RETRY: 3
       SOLR_ADMIN_USER: admin
@@ -81,9 +80,6 @@ jobs:
       - samvera/parallel_rspec
       - store_artifacts:
           path: coverage
-      - deploy:
-          command: |
-            curl -k https://coveralls.io/webhook?repo_token=$COVERALLS_REPO_TOKEN -d "payload[build_num]=$CIRCLE_BUILD_NUM&payload[status]=done"
 workflows:
   ci:
     jobs:

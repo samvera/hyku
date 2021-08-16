@@ -45,7 +45,6 @@ group :development, :test do
   gem 'rspec'
   gem 'rspec-rails', '>= 3.6.0'
 
-  gem 'coveralls', '~> 0.8', '>= 0.8.23', require: false
   gem 'simplecov', require: false
 
   gem 'fcrepo_wrapper', '~> 0.4'

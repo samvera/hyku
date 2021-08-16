@@ -19,7 +19,7 @@ pt-BR:
           no_works: O conjunto administrativo não contém nenhum trabalho.
           title: Lista de itens neste conjunto administrativo
         edit:
-          header: 'Editar conjunto administrativo: %{title}'
+          header: "Editar conjunto administrativo: %{title}"
         form:
           cancel: Cancelar
           note: Os usuários com uma nova função ganharão a função somente em trabalhos que forem depositados após a concessão dessa função.
@@ -70,9 +70,9 @@ pt-BR:
             title: Espectadores
             type: Tipo
         form_participants:
-          add_group: 'Adicionar grupo:'
+          add_group: "Adicionar grupo:"
           add_participants: Adicione participantes
-          add_user: 'Adicionar usuário:'
+          add_user: "Adicionar usuário:"
           current_participants: Participantes Atuais
         form_visibility:
           cancel: Cancelar
@@ -84,15 +84,15 @@ pt-BR:
             title: Liberação
             varies:
               any: O depositante pode escolher qualquer comprimento de embargo; arrendamentos são permitidos
-              between: 'O depositante pode escolher o embargo atualizado:'
-              description: 'Permita que o depositante escolha as configurações:'
+              between: "O depositante pode escolher o embargo atualizado:"
+              description: "Permita que o depositante escolha as configurações:"
               embargo:
                 1yr: 1 ano após o depósito
                 2yrs: 2 anos após o depósito
                 3yrs: 3 anos após o depósito
                 6mos: 6 meses após o depósito
                 select: Selecione o período de embargo.
-              period: 'O depositante pode escolher o período de embargo até:'
+              period: "O depositante pode escolher o período de embargo até:"
           visibility:
             description: Defina políticas de visibilidade para o conjunto administrativo. Definir as políticas de embargo respeitadas acima.
             everyone: Público - o depositante pode escolher apenas a configuração de visibilidade pública
@@ -164,7 +164,7 @@ pt-BR:
           update_notice: Participantes atualizados
         form_settings:
           instructions: Essas configurações determinam como as coleções desse tipo podem ser gerenciadas e descobertas.
-          warning: 'Aviso: essas configurações não podem ser alteradas após a criação de uma coleção desse tipo.'
+          warning: "Aviso: essas configurações não podem ser alteradas após a criação de uma coleção desse tipo."
         index:
           breadcrumb: Tipos de coleção
           create_new_button: Criar novo tipo de coleção
@@ -182,7 +182,7 @@ pt-BR:
             actions: Ações
             name: Nome
         multiple_membership_checker:
-          error_preamble: 'Erro: você especificou mais de um do mesmo tipo de coleção de associação única'
+          error_preamble: "Erro: você especificou mais de um do mesmo tipo de coleção de associação única"
           error_type_and_collections: "(tipo: %{type}, coleções: %{collections})"
         new:
           header: Criar novo tipo de coleção
@@ -220,7 +220,7 @@ pt-BR:
       stats:
         deposited_form:
           end_label: fim [o padrão é agora]
-          heading: 'Exibir arquivos depositados:'
+          heading: "Exibir arquivos depositados:"
           start_label: Começar
         repository_objects:
           series:
@@ -234,7 +234,7 @@ pt-BR:
         works:
           headers:
             main: Estatísticas do Trabalho
-            total: 'Total de Trabalhos:'
+            total: "Total de Trabalhos:"
             visibility: Totais por visibilidade
       users:
         index:
@@ -249,14 +249,9 @@ pt-BR:
         header: Funções de fluxo de trabalho
         index:
           current_roles: Funções Atuais
-          current_user_roles: Funções de usuário atuais
           delete:
             confirm: Você tem certeza?
           header:
-            display_name: Nome em Exibição
-            email: O email
-            group_name: Nome do grupo
-            group_roles: Funções de grupo
             roles: Funções
             user: Do utilizador
           new_user_role: Atribuir função ao usuário
@@ -286,10 +281,10 @@ pt-BR:
         default: Você deve estar logado para fazer isso!
       unprocessable_entity:
         default: O recurso que você tentou modificar não pode ser modificado de acordo com sua solicitação.
-    background_attribution_html: ''
+    background_attribution_html: ""
     base:
       citations:
-        header: 'Citações:'
+        header: "Citações:"
       form_child_work_relationships:
         actions:
           remove: Remover deste trabalho
@@ -356,7 +351,7 @@ pt-BR:
         empty: Atualmente, este %{type} não está em nenhuma coleção.
         header: Relacionamentos
       relationships_parent_row:
-        label: 'Em %{type}:'
+        label: "Em %{type}:"
       show:
         last_modified: Última modificação
       social_media:
@@ -428,7 +423,7 @@ pt-BR:
         create: Salve 
         create_new: Adicionar à nova coleção
         no_collections: Você não tem acesso a nenhuma coleção existente. Você pode criar uma nova coleção.
-        select_heading: 'Selecione a coleção para adicionar seus arquivos:'
+        select_heading: "Selecione a coleção para adicionar seus arquivos:"
         title: Adicionar a coleção
         update: Salvar alterações
     collection_type:
@@ -508,7 +503,7 @@ pt-BR:
         select_type_of_collection: Selecione o tipo de coleção
       collections:
         edit:
-          header: 'Editar %{type_title}: %{title}'
+          header: "Editar %{type_title}: %{title}"
         form:
           permission_update_errors:
             error: Opção de atualização inválida para o modelo de permissão.
@@ -645,20 +640,20 @@ pt-BR:
           view_collection: Ver coleção
           work_confirmation: A exclusão de um trabalho de %{application_name} é permanente. Clique em OK para excluir este trabalho de %{application_name} ou em Cancelar para cancelar esta operação
         collection_list:
-          description: 'Descrição:'
-          edit_access: 'Editar acesso:'
-          groups: 'Grupos:'
+          description: "Descrição:"
+          edit_access: "Editar acesso:"
+          groups: "Grupos:"
           managed_access:
             deposit: Depósito
             manage: Gerir
             view: Visão
-          users: 'Comercial:'
+          users: "Comercial:"
         collections: Colecções
         facet_label:
-          collections: 'Filtrar coleções:'
-          highlighted: 'Destaques do filtro:'
-          shared: 'Filtrar compartilhamentos:'
-          works: 'O filtro funciona:'
+          collections: "Filtrar coleções:"
+          highlighted: "Destaques do filtro:"
+          shared: "Filtrar compartilhamentos:"
+          works: "O filtro funciona:"
         heading:
           access: Acesso
           action: Ações
@@ -833,7 +828,7 @@ pt-BR:
       collection: fa fa-cubos
       default: fa fa-cube
     institution_name: Instituição
-    institution_name_full: O Nome da Instituição
+    institution_name_full: Instituição
     leases:
       edit:
         header:
@@ -910,7 +905,7 @@ pt-BR:
         terms_page: Termos de uso
       updated: Páginas atualizadas.
     passive_consent_to_agreement: Ao salvar este trabalho, concordo com o
-    product_name: Hyku
+    product_name: "Hyku"
     product_twitter_handle: "@HydraInABox"
     search:
       button:
@@ -1039,7 +1034,7 @@ pt-BR:
       default:
         deposit: Depósito
       load:
-        state_error: 'O fluxo de trabalho: %{workflow_name} não foi atualizado. Você está removendo um estado: %{state_name} com entidade (s) %{entity_count}. Um estado não pode ser removido enquanto tiver entidades ativas!'
+        state_error: "O fluxo de trabalho: %{workflow_name} não foi atualizado. Você está removendo um estado: %{state_name} com entidade (s) %{entity_count}. Um estado não pode ser removido enquanto tiver entidades ativas!"
       unauthorized: O trabalho não está disponível no momento porque ainda não concluiu o processo de aprovação
     works:
       create:
@@ -1096,7 +1091,7 @@ pt-BR:
         require_membership: Uma obra deve pertencer a pelo menos uma coleção desse tipo
         sharable: Permitir que os usuários atribuam gerenciadores, depositantes e visualizadores de coleções às coleções que gerenciam
         share_applies_to_new_works: Quando novos trabalhos são criados diretamente na coleção, conceda aos usuários e grupos de compartilhamento permissões para o novo trabalho, de acordo com suas funções de coleção.
-        title: ''
+        title: ""
       defaults:
         based_near: Um nome de local relacionado ao trabalho, como o site da publicação ou a cidade, estado ou país em que o conteúdo do trabalho se refere. Solicita o <a href='http://www.geonames.org'> serviço da web GeoNames </a>.
         contributor: Uma pessoa ou grupo que você deseja reconhecer por desempenhar um papel na criação do trabalho, mas não o papel principal.
@@ -1137,14 +1132,13 @@ pt-BR:
         based_near: Localização
         creator: O Criador
         date_created: Data Criada
-        description: Resumo ou Resumo
+        description: Descrição
         embargo_release_date: até
         files: Enviar um arquivo
         keyword: Palavra-chave
         lease_expiration_date: até
         license: Licença
         member_of_collection_ids: Adicionar a coleção
-        publisher: Editor
         related_url: URL relacionado
         rights_statement: Declaração de direitos
         title: Título

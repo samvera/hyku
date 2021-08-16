@@ -8,8 +8,6 @@ de:
     tagline: Die Next-Generation Repository-Lösung
   helpers:
     submit:
-      add_role_to_group:
-        submit: Hinzufügen
       add_user_to_group:
         submit: Hinzufügen
       group_search:
@@ -193,9 +191,6 @@ de:
         add: Hinzufügen
         current_admins:
           actions: Aktion
-          all_users: Alle Nutzer
-          email: E-Mail-Addresse
-          header: Administratoren für Girokonten
           no_admins: Es sind keine Administratoren vorhanden
         edit: Konto bearbeiten
         header: Konto verwalten

@@ -5,7 +5,7 @@ x-app: &app
     context: .
     target: hyku-base
     args:
-      - EXTRA_APK_PACKAGES=less vim bash openjdk11-jre
+      - EXTRA_APK_PACKAGES=less vim bash openjdk11-jre ffmpeg rsync
   image: ghcr.io/samvera/hyku:latest
   env_file:
     - .env
@@ -24,8 +24,7 @@ volumes:
   solr:
   db:
   redis:
-  zk1:
-  zkconf:
+  zk:
   uploads:
   assets:
   cache:
@@ -34,22 +33,21 @@ networks:
   internal:
 
 services:
-  zoo1:
-    image: zookeeper:3.4
+  zoo:
+    image: bitnami/zookeeper:3.6
     environment:
-      - ZOO_MY_ID=1
-      - ZOO_SERVERS=server.1=zoo1:2888:3888
+      - ALLOW_ANONYMOUS_LOGIN=yes
+      - ZOO_4LW_COMMANDS_WHITELIST=mntr, srvr, ruok
+      - ZOO_SERVER_ID=1
+      - ZOO_SERVERS=zoo:2888:3888
     expose:
       - 2181
       - 2888
       - 3888
     volumes:
-      - zk1:/data
-      - zkconf:/conf
+      - zk:/bitnami/zookeeper
     networks:
       internal:
-       aliases:
-         - zookeeper_cluster
     healthcheck:
       test: ["CMD-SHELL", "echo 'ruok' | nc -w 2 -q 2 localhost 2181 | grep imok || exit 1"]
       interval: "10s"
@@ -61,32 +59,35 @@ services:
       - SOLR_ADMIN_USERNAME=admin
       - SOLR_ADMIN_PASSWORD=admin
       - SOLR_COLLECTION=hydra-development
-      - SOLR_CLOUD_BOOTSTRAP=no
+      - SOLR_CLOUD_BOOTSTRAP=yes
       - SOLR_ENABLE_CLOUD_MODE=yes
       - SOLR_ENABLE_AUTHENTICATION=yes
       - SOLR_PORT_NUMBER=8983
-      - SOLR_ZK_HOSTS=zoo1
+      - SOLR_ZK_HOSTS=zoo
       - VIRTUAL_PORT=8983
       - VIRTUAL_HOST=solr.hyku.test
     depends_on:
-      zoo1:
+      zoo:
         condition: service_healthy
     expose:
       - 8983
     volumes:
       - .:/app
-      - solr:/opt/solr/server/solr
+      - solr:/bitnami
     networks:
       internal:
 
   fcrepo:
-    image: cbeer/fcrepo4:4.7
+    image: ghcr.io/samvera/fcrepo4:4.7.5
+    volumes:
+      - fcrepo:/data:cached
     env_file:
       - .env
+    environment:
+      - VIRTUAL_PORT=8080
+      - VIRTUAL_HOST=fcrepo.hyku.test
     expose:
       - 8080
-    volumes:
-      - fcrepo:/data
     environment:
       - JAVA_OPTS=${JAVA_OPTS} -Dfcrepo.modeshape.configuration="classpath:/config/file-simple/repository.json" -Dfcrepo.object.directory="/data/objects" -Dfcrepo.binary.directory="/data/binaries"
     networks:
@@ -100,6 +101,8 @@ services:
       - POSTGRES_DB=${DATABASE_NAME}
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
       - POSTGRES_USER=${DATABASE_USER}
+      - VIRTUAL_PORT=5432
+      - VIRTUAL_HOST=db.hyku.test
     volumes:
       - db:/var/lib/postgresql/data
     networks:
@@ -111,15 +114,27 @@ services:
       - VIRTUAL_PORT=3000
       - VIRTUAL_HOST=hyku.test
     depends_on:
-      - check_volumes
-      - db
-      - solr
-      - fcrepo
-      - redis
-      - zoo1
-      - chrome
-      - initialize_app
-      - db_migrate
+      initialize_app:
+        condition: service_healthy
+      db:
+        condition: service_started
+      solr:
+        condition: service_started
+      fcrepo:
+        condition: service_started
+      redis:
+        condition: service_started
+      zoo:
+        condition: service_started
+      check_volumes:
+        condition: service_started
+      chrome:
+        condition: service_started
+      workers:
+        condition: service_started
+      initialize_app:
+        condition: service_completed_successfully
+
     expose:
       - 3000
 
@@ -129,17 +144,25 @@ services:
       context: .
       target: hyku-worker
       args:
-        - EXTRA_WORKER_APK_PACKAGES=ffmpeg
+        - EXTRA_WORKER_APK_PACKAGES=less vim bash openjdk11-jre ffmpeg rsync
     command: bundle exec sidekiq
     depends_on:
-      - check_volumes
-      - db
-      - solr
-      - fcrepo
-      - redis
-      - zoo1
-      - initialize_app
-      - db_migrate
+      check_volumes:
+      db:
+        condition: service_started
+      solr:
+        condition: service_started
+      fcrepo:
+        condition: service_started
+      redis:
+        condition: service_started
+      zoo:
+        condition: service_started
+      check_volumes:
+        condition: service_started
+      initialize_app:
+        condition: service_completed_successfully
+
 
 
   # Do not recurse through all of tmp. derivitives will make booting
@@ -161,18 +184,14 @@ services:
     entrypoint: ["sh", "-c"]
     command:
       - >
-        solrcloud-upload-configset.sh /app/samvera/hyrax-webapp/solr/config;
-        solrcloud-assign-configset.sh;
-        SOLR_COLLECTION_NAME=hydra-test solrcloud-assign-configset.sh;
-    depends_on:
-      - solr
-
-  db_migrate:
-    <<: *app
-    entrypoint: ["sh", "-c"]
-    command: db-migrate-seed.sh
+        solrcloud-upload-configset.sh /app/samvera/hyrax-webapp/solr/config &&
+        solrcloud-assign-configset.sh &&
+        SOLR_COLLECTION_NAME=hydra-test solrcloud-assign-configset.sh &&
+        db-migrate-seed.sh
     depends_on:
       - db
+      - solr
+      - fcrepo
 
   redis:
     image: redis:5

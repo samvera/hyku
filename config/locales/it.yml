@@ -8,8 +8,6 @@ it:
     tagline: La soluzione di repository di nuova generazione
   helpers:
     submit:
-      add_role_to_group:
-        submit: Inserisci
       add_user_to_group:
         submit: Inserisci
       group_search:
@@ -189,9 +187,6 @@ it:
         add: Inserisci
         current_admins:
           actions: Azione
-          all_users: Tutti gli utenti
-          email: Indirizzo email
-          header: Amministratori del conto corrente
           no_admins: Nessun amministratore esiste
         edit: Modifica account
         header: Gestisci profilo

@@ -8,8 +8,6 @@ es:
     tagline: La solución de repositorio de próxima generación
   helpers:
     submit:
-      add_role_to_group:
-        submit: Añadir
       add_user_to_group:
         submit: Añadir
       group_search:
@@ -49,10 +47,10 @@ es:
             invalid: Los grupos deben tener un nombre
             success: "%{group} creado"
           destroy:
-            failure: 'No pudo ser destruido %{group} '
+            failure: "No pudo ser destruido %{group} "
             success: "%{group} destruido"
           update:
-            failure: 'No se pudo actualizar %{group} '
+            failure: "No se pudo actualizar %{group} "
             success: "%{group} actualizado"
         label:
           actions: Comportamiento
@@ -189,9 +187,6 @@ es:
         add: Añadir
         current_admins:
           actions: Acción
-          all_users: Todos los usuarios
-          email: Dirección de correo electrónico
-          header: Administradores de cuenta corriente
           no_admins: No existen administradores
         edit: Editar cuenta
         header: Administrar cuenta

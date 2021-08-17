@@ -375,10 +375,10 @@ module Hyrax
             "rgba(#{rgb[0]}, #{rgb[1]}, #{rgb[2]}, #{alpha})"
           end
 
-          def block_for(name, _dynamic_default = nil)
+          def block_for(name, dynamic_default = nil)
             block = ContentBlock.find_by(name: name)
-            needs_default = block&.value.present?
-            needs_default ? block.value : default_value
+            has_value = block&.value.present?
+            has_value ? block.value : DEFAULT_VALUES[name] || dynamic_default
           end
 
           # Persist a key/value tuple as a ContentBlock

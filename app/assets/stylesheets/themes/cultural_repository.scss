@@ -1,4 +1,4 @@
-.cultural__repository {
+.cultural_repository {
   ////// Navbar //////
   .clear-right {
     clear: right !important;
@@ -14,17 +14,17 @@
     padding-top: 100px !important;
     @media (max-width: $screen-md-min) {
       padding-top: 0px !important;
-    }   
+    }
   }
 
-  .form-group > .control-label.col-sm-4 {
+  div.form-group > label.control-label.col-sm-4 {
     color: #dcdcdc;
     font-weight: 400 !important;
   }
 
   // Note: copied over to override /* line 555, /usr/local/rvm/gems/ruby-2.5.3/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_navbar.scss */
   .navbar-inverse .navbar-nav > .active > a,
-  .navbar-inverse .navbar-nav > .active > a:hover, 
+  .navbar-inverse .navbar-nav > .active > a:hover,
   .navbar-inverse .navbar-nav > .active > a:focus {
     background-color: transparent !important;
   }
@@ -37,12 +37,12 @@
   $navbar-height: 100px !important;
   ////// End Navbar //////
 
-  #featured__works > .featured-works-4-column-layout:nth-child(1n+5) { 
-    display: none !important; 
+  div#featured__works > div.featured-works-4-column-layout:nth-child(1n+5) {
+    display: none !important;
   }
 
-  .featured-works-container, 
-  .recent-works-container, 
+  .featured-works-container,
+  .recent-works-container,
   .collections-container {
     a {
       img {
@@ -53,9 +53,9 @@
     }
   }
 
-  .form-control, 
-  .btn, 
-  nav.breadcrumb, 
+  .form-control,
+  .btn,
+  nav.breadcrumb,
   .alert {
     border-radius: 0;
   }
@@ -102,8 +102,8 @@
     filter: none;
   }
 
-  .featured-item-title, 
-  .collection-item-title, 
+  .featured-item-title,
+  .collection-item-title,
   .recent-doc-title {
     text-align: center;
     h3 {

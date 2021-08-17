@@ -6,7 +6,7 @@
   <%= render 'themes/neutral_repository/layouts/share_your_work_row' if controller_name == 'homepage' %>
   <%= form_for [hyrax, @featured_work_list] do |f| %>
     <div class="panel-group dd" id="dd">
-      <ol id="featured__works">
+      <ol id="featured_works">
         <%= f.fields_for :featured_works do |featured| %>
           <%= render 'sortable_featured', f: featured %>
         <% end %>

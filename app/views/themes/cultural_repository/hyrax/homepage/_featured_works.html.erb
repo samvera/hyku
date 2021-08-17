@@ -5,7 +5,7 @@
 <% elsif can? :update, FeaturedWork %>
   <%= form_for [hyrax, @featured_work_list] do |f| %>
     <div class="panel-group dd" id="dd">
-      <div id="featured__works" class="cultural-repository">
+      <div id="featured_works" class="cultural-repository">
         <%= f.fields_for :featured_works do |featured| %>
           <%= render 'sortable_featured', f: featured %>
         <% end %>
@@ -14,7 +14,7 @@
     <%= f.submit("Save order", class: 'btn btn-default') %>
   <% end %>
 <% else %>
-  <div class="row cultural-repository" id="featured__works">
+  <div class="row cultural-repository" id="featured_works">
     <%= render partial: 'themes/cultural_repository/hyrax/homepage/featured', collection: @featured_work_list.featured_works %>
   </div>
 <% end %>

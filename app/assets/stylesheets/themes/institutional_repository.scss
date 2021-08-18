@@ -240,22 +240,22 @@
   all and (min-width: 768px) and (-webkit-transform-3d) {
     .institutional-repository-carousel .carousel-inner > .item.active.right,
     .institutional-repository-carousel .carousel-inner > .item.next {
+      left: 0;
       -webkit-transform: translate3d(50%, 0, 0);
       transform: translate3d(50%, 0, 0);
-      left: 0;
     }
     .institutional-repository-carousel .carousel-inner > .item.active.left,
     .institutional-repository-carousel .carousel-inner > .item.prev {
+      left: 0;
       -webkit-transform: translate3d(-50%, 0, 0);
       transform: translate3d(-50%, 0, 0);
-      left: 0;
     }
     .institutional-repository-carousel .carousel-inner > .item.left,
     .institutional-repository-carousel .carousel-inner > .item.prev.right,
     .institutional-repository-carousel .carousel-inner > .item.active {
+      left: 0;
       -webkit-transform: translate3d(0, 0, 0);
       transform: translate3d(0, 0, 0);
-      left: 0;
     }
   }
 
@@ -283,23 +283,22 @@
   all and (min-width: 992px) and (-webkit-transform-3d) {
     .institutional-repository-carousel .carousel-inner > .item.active.right,
     .institutional-repository-carousel .carousel-inner > .item.next {
+      left: 0;
       -webkit-transform: translate3d(16.6%, 0, 0);
       transform: translate3d(16.6%, 0, 0);
-      left: 0;
     }
     .institutional-repository-carousel .carousel-inner > .item.active.left,
     .institutional-repository-carousel .carousel-inner > .item.prev {
+      left: 0;
       -webkit-transform: translate3d(-16.6%, 0, 0);
       transform: translate3d(-16.6%, 0, 0);
-      left: 0;
     }
     .institutional-repository-carousel .carousel-inner > .item.left,
     .institutional-repository-carousel .carousel-inner > .item.prev.right,
     .institutional-repository-carousel .carousel-inner > .item.active {
+      left: 0;
       -webkit-transform: translate3d(0, 0, 0);
       transform: translate3d(0, 0, 0);
-      left: 0;
     }
   }
-
 }

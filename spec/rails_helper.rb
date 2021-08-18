@@ -172,11 +172,11 @@ RSpec.configure do |config|
       'This can happen which the database is gone, which depends on load order of tests'
     end
   end
+end
 
-  Shoulda::Matchers.configure do |config|
-    config.integrate do |with|
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
     with.test_framework :rspec
     with.library :rails
-    end
-    end
+  end
 end

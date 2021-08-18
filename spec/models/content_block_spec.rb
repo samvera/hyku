@@ -36,7 +36,7 @@ RSpec.describe ContentBlock, type: :model do
   describe '.announcement_text' do
     subject { described_class.for(:announcement).value }
 
-    before(:announcement) do
+    let!(:announcement) do
       create(:content_block,
              name: ContentBlock::NAME_REGISTRY[:announcement],
              value: '<h1>Announcement Text</h1>')
@@ -57,7 +57,7 @@ RSpec.describe ContentBlock, type: :model do
   describe '.marketing_text' do
     subject { described_class.for(:marketing).value }
 
-    before(:marketing) do
+    let!(:marketing) do
       create(:content_block,
              name: ContentBlock::NAME_REGISTRY[:marketing],
              value: '<h1>Marketing Text</h1>')
@@ -121,7 +121,7 @@ RSpec.describe ContentBlock, type: :model do
   describe '.home_text' do
     subject { described_class.for(:home_text).value }
 
-    before(:home_text) do
+    let!(:home_text) do
       create(:content_block,
              name: ContentBlock::NAME_REGISTRY[:home_text],
              value: '<h1>Home Page Text</h1>')

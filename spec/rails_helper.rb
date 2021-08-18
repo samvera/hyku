@@ -22,6 +22,7 @@ require 'capybara/rails'
 require 'database_cleaner'
 require 'active_fedora/cleaner'
 require 'webdrivers'
+require 'shoulda/matchers'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -171,4 +172,11 @@ RSpec.configure do |config|
       'This can happen which the database is gone, which depends on load order of tests'
     end
   end
+
+  Shoulda::Matchers.configure do |config|
+    config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+    end
+    end
 end

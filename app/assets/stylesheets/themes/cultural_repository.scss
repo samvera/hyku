@@ -5,16 +5,18 @@
   }
 
   .vertical-center-image img {
-    vertical-align: middle;
     display: inline-block;
     height: 100%;
+    vertical-align: middle;
   }
 
   body.dashboard {
     padding-top: 100px !important;
+
     @media (max-width: $screen-md-min) {
-      padding-top: 0px !important;
+      padding-top: 0 !important;
     }
+
   }
 
   div.form-group > label.control-label.col-sm-4 {
@@ -35,6 +37,7 @@
   }
 
   $navbar-height: 100px !important;
+
   ////// End Navbar //////
 
   div#featured_works > div.featured-works-4-column-layout:nth-child(1n+5) {
@@ -106,11 +109,13 @@
   .collection-item-title,
   .recent-doc-title {
     text-align: center;
+
     h3 {
       cursor: default;
       font-size: 14px !important;
       pointer-events: none;
       text-decoration: none;
+
       a {
         color: #000000;
       }
@@ -118,9 +123,10 @@
   }
 
   a.cr_terms {
+    color: #215480;
     font-size: 12px !important;
     font-weight: bold;
-    color: #215480;
+
     &:hover {
       color: #333333;
     }
@@ -128,10 +134,10 @@
 
   ////// Homepage Text Block //////
   div.home_page_text.homepage-text-container {
-    margin-top: -150px;
-    height: 343px;
     background-color: #fff;
     border: 1px solid #ddd;
+    height: 343px;
+    margin-top: -150px;
     overflow: hidden;
   }
 
@@ -147,9 +153,11 @@
   ////// Facets //////
   .facet-panel-background-color {
     background-color: #ffffff;
+
     @media (max-width: $screen-md-min) {
       background-color: transparent;
     }
+
   }
 
   .facets-toggle {
@@ -158,8 +166,8 @@
 
   // Note: copied over to override /* line 226, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_panels.scss
   .panel-group .panel {
+    border-radius: 0 !important;
     margin-bottom: 0 !important;
-    border-radius: 0px !important;
   }
 
   // Note: copied over to override * line 254, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_panels.scss */
@@ -169,20 +177,20 @@
 
   // Note: copied over to override /* line 7, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_panels.scss */
   .panel {
-    margin-bottom: 0px !important;
     background-color: #fff !important;
-    border-top: 1px solid #ddd!important;
     border-bottom: 1px solid transparent !important;
-    border-right: 1px solid transparent !important;
     border-left: 1px solid transparent !important;
-    border-radius: 0px !important;
-    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.0) !important;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.0) !important;
+    border-radius: 0 !important;
+    border-right: 1px solid transparent !important;
+    border-top: 1px solid #ddd !important;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0) !important;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0) !important;
+    margin-bottom: 0 !important;
   }
 
   // Note: copied over to override /* line 230, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_panels.scss */
   .panel-group .panel + .panel {
-    margin-top: 0px !important;
+    margin-top: 0 !important;
   }
 
   // Note: copied over to override /* line 6, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/mixins/_panels.scss */
@@ -193,14 +201,14 @@
 
   // Note: copied over to override /* line 22, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_panels.scss */
   .panel-heading {
+    border-bottom: 0 !important;
     padding: 10px 15px !important;
-    border-bottom: 0px !important;
   }
 
   // Note: copied over to override /* line 238, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_panels.scss */
   .panel-group .panel-heading + .panel-collapse > .panel-body,
   .panel-group .panel-heading + .panel-collapse > .list-group {
-    border-top: 0px !important;
+    border-top: 0 !important;
   }
 
   // Note: copied over to override /* line 1, /usr/local/rvm/gems/ruby-2.5.3/gems/hyrax-2.9.0/app/assets/stylesheets/hyrax/_file-listing.scss */
@@ -209,7 +217,8 @@
   }
 
   // Note: copied over to override /* line 52, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_scaffolding.scss */
-  a:hover, a:focus {
+  a:hover, 
+  a:focus {
     text-decoration: none !important;
   }
 
@@ -221,21 +230,23 @@
 
   @media (min-width: $screen-xs-min) and (max-width: $screen-md-max) {
     .mt-reverse-mb {
-      margin-top: 0px;
       margin-bottom: 40px;
+      margin-top: 0;
     }
   }
 
   @media (max-width: $screen-sm-max) {
     div.home_page_text.homepage-text-container {
-      margin-top: 30px;
+      height: 0;
       margin-bottom: 30px;
-      height: 0px;
+      margin-top: 30px;
     }
   }
 
   @media (min-width: $screen-md-min) and (max-width: $screen-md-max){
-    .featured-works-container, .recent-works-container, .collections-container {
+    .featured-works-container, 
+    .recent-works-container, 
+    .collections-container {
       a {
         img {
           width: 120px !important;
@@ -246,14 +257,15 @@
 
   @media screen and (max-width: $screen-md-min) {
     div.recently-uploaded:nth-of-type(2n+3) {
-      clear: left,
+      clear: left;
     }
+
     .mb-40-0 {
-      margin-bottom: 0px;
+      margin-bottom: 0;
     }
 
     body.dashboard {
-      padding-top: 0px !important;
+      padding-top: 0 !important;
     }
 
     .facet-panel-background-color {

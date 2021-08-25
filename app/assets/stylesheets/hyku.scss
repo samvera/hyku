@@ -19,7 +19,6 @@
 @media (min-width: $screen-sm-min) {
   .logo-set {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     flex-direction: column;
   }
@@ -29,6 +28,7 @@
     display: flex;
     justify-content: space-between;
   }
+
   .home-tabs-left {
     min-width: 50%;
   }
@@ -36,11 +36,11 @@
 
 #banner.jumbotron {
   background: image_url('white-cloud-background.jpg') no-repeat;
-  background-position: center;
-  height: 220px;
   background-color: $gray-lighter;
+  background-position: center;
   border: 0;
   font-family: $primary-font-family;
+  height: 220px;
   margin-bottom: 0;
   text-align: center;
 
@@ -296,20 +296,20 @@ footer.navbar {
 }
 
 .hyc-bl-sort > form.per_page.form-horizontal {
-  margin-right: 0px;
-  margin-left: 0px;
+  margin-right: 0;
+  margin-left: 0;
   border-bottom: 1px solid #ddd;
   margin-bottom: 1em;
   padding-bottom: 1em;
 }
 
-.hyc-bl-sort > form.per_page.form-horizontal:before,
-.hyc-bl-sort > form.per_page.form-horizontal:after {
-  display: table;
+.hyc-bl-sort > form.per_page.form-horizontal::before,
+.hyc-bl-sort > form.per_page.form-horizontal::after {
   content: " ";
+  display: table;
 }
 
-.hyc-bl-sort > form.per_page.form-horizontal:after {
+.hyc-bl-sort > form.per_page.form-horizontal::after {
   clear: both;
 }
 
@@ -339,17 +339,17 @@ footer.navbar {
 
 .defaultable-fonts div[class$="_font"] {
   margin-bottom: 0;
-}
-
-.defaultable-fonts div[class$="_font"] label {
-  display: block;
+  label {
+    display: block;
+  }
 }
 
 .defaultable-fonts div.font-select {
   margin: 0 10px 10px 0;
 }
 
-a.restore-default-font, a.restore-default-color {
+a.restore-default-font,
+a.restore-default-color {
   margin-bottom: 2em;
 }
 
@@ -359,8 +359,8 @@ a.restore-default-font, a.restore-default-color {
 
 .representative-media {
   display: block;
-  max-width: 100%;
   height: auto;
+  max-width: 100%;
 }
 
 @media (min-width: $screen-lg-min) {

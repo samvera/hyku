@@ -5,7 +5,9 @@ require 'i18n/debug' if ENV['I18N_DEBUG']
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
-Bundler.require(*Rails.groups)
+groups = Rails.groups
+groups += ['bulkrax'] if ENV['SETTINGS__BULKRAX__ENABLED'] == 'true' # Settings obj is not available yet
+Bundler.require(*groups)
 
 module Hyku
   class Application < Rails::Application

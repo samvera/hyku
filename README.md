@@ -27,7 +27,7 @@ Jump In: [![Slack Status](http://slack.samvera.org/badge.svg)](http://slack.samv
   * [Development dependencies](#development-dependencies)
     * [Postgres](#postgres)
   * [Importing](#importing)
-    * [enable Bulkrax](#bulkrax)
+    * [Enable Bulkrax](#enable-bulkrax)
     * [from CSV](#from-csv)
     * [from purl](#from-purl)
   * [Compatibility](#compatibility)
@@ -148,9 +148,9 @@ switch!('myaccount')
 Hyku supports multitenancy using the `apartment` gem. `apartment` works best with a postgres database.
 
 ## Importing
-### enable Bulkrax:
+### Enable Bulkrax:
 
-- Set bulkrax -> enabled to true in settings (via file or env variable)
+- Set bulkrax -> enabled to true in the [config/settings.yml](config/settings.yml) and [.env](.env) files
 - Add `  require bulkrax/application` to app/assets/javascripts/application.js and app/assets/stylesheets/application.css files.
 
 (in a `docker-compose exec web bash` if you're doing docker otherwise in your terminal)

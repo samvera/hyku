@@ -1,5 +1,6 @@
 .cultural_repository {
   ////// Navbar //////
+
   .clear-right {
     clear: right !important;
   }
@@ -32,6 +33,7 @@
   }
 
   // Note: copied over to override /* line 5, /home/app/webapp/app/assets/stylesheets/hyku.scss */
+  
   #masthead #logo img {
     max-height: 100px !important;
   }
@@ -197,7 +199,7 @@
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0) !important;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0) !important;
     margin-bottom: 0 !important;
-  }  
+  }
 
   // Note: copied over to override /* line 22, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_panels.scss */
   .panel-heading {

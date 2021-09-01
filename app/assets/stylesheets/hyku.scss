@@ -22,6 +22,7 @@
     justify-content: center;
     flex-direction: column;
   }
+
   // sets the home page tabs to use flex rather than columns
   // allows full width if tabs are turned off with feature flipper
   .home-content {
@@ -339,6 +340,7 @@ footer.navbar {
 
 .defaultable-fonts div[class$="_font"] {
   margin-bottom: 0;
+
   label {
     display: block;
   }

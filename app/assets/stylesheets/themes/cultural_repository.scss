@@ -144,10 +144,10 @@
   .fill-height-flex {
     display: flex;
     flex-direction: column;
-  }
 
-  .fill-height-flex > div {
-    flex: 1;
+    div {
+      flex: 1;
+    }
   }
 
   ////// Facets //////
@@ -165,14 +165,25 @@
   }
 
   // Note: copied over to override /* line 226, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_panels.scss
-  .panel-group .panel {
-    border-radius: 0 !important;
-    margin-bottom: 0 !important;
-  }
+  .panel-group {
+    .panel {
+      border-radius: 0 !important;
+      margin-bottom: 0 !important;
+    }
 
+    .panel + .panel {
+      margin-top: 0 !important;
+    }
+  }
+  
   // Note: copied over to override * line 254, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_panels.scss */
   .panel-default {
     border-color: transparent !important;
+
+    .panel-heading {
+      background-color: #ffffff !important;
+      border-color: #ddd  !important;
+    }
   }
 
   // Note: copied over to override /* line 7, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_panels.scss */
@@ -186,18 +197,7 @@
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0) !important;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0) !important;
     margin-bottom: 0 !important;
-  }
-
-  // Note: copied over to override /* line 230, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_panels.scss */
-  .panel-group .panel + .panel {
-    margin-top: 0 !important;
-  }
-
-  // Note: copied over to override /* line 6, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/mixins/_panels.scss */
-  .panel-default > .panel-heading {
-    background-color: #ffffff !important;
-    border-color: #ddd  !important;
-  }
+  }  
 
   // Note: copied over to override /* line 22, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_panels.scss */
   .panel-heading {
@@ -217,7 +217,7 @@
   }
 
   // Note: copied over to override /* line 52, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_scaffolding.scss */
-  a:hover, 
+  a:hover,
   a:focus {
     text-decoration: none !important;
   }
@@ -244,8 +244,8 @@
   }
 
   @media (min-width: $screen-md-min) and (max-width: $screen-md-max){
-    .featured-works-container, 
-    .recent-works-container, 
+    .featured-works-container,
+    .recent-works-container,
     .collections-container {
       a {
         img {

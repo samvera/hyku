@@ -1,10 +1,4 @@
 .cultural_show {
-  dl.work-show dd {
-    border-bottom: 1px solid #ddd;
-    .tabular {
-      border-bottom: none;
-    }
-  }
   dl.work-show {
     font-weight: 700;
     .tabular {
@@ -12,26 +6,40 @@
       font-size: 18px;
       font-weight: 400;
     }
-  }
 
+    dd {
+      border-bottom: 1px solid #ddd;
+  
+      .tabular {
+        border-bottom: 0;
+      }
+  
+    }
+  }
+  
   .relationships-box {
-    padding: 8px;
-    border: 1px solid #ddd;
     background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    padding: 8px;
+
     ul.tabular > li > a {
       word-break: break-word;
     }
   }
 
-  li.attribute, td.attribute {
+  li.attribute,
+  td.attribute {
     font-size: 18px;
   }
+
   .table-striped > tbody > tr:nth-of-type(odd) {
     background-color: #ffffff;
   }
+
   tr.file_set.attributes td {
     padding-top: 18px;
   }
+
   .representative-media {
     display: block;
     height: auto;

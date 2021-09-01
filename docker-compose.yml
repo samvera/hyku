@@ -111,7 +111,7 @@ services:
     <<: *app
     environment:
       - VIRTUAL_PORT=3000
-      - VIRTUAL_HOST=hyku.test
+      - VIRTUAL_HOST=.hyku.test
     depends_on:
       initialize_app:
         condition: service_healthy

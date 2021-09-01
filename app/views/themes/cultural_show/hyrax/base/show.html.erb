@@ -29,9 +29,6 @@
           <div class="<%= @presenter.universal_viewer? ? 'col-sm-4' : 'col-sm-3' %>">
             <div class='relationships-box'>
               <%= render 'relationships', presenter: @presenter %>
-              <% if @presenter.class == Hyrax::OerPresenter %>
-                <%= render 'related_items', presenter: @presenter %>
-              <% end %>
             </div>
           </div>
           <div class="col-sm-12">

@@ -10,7 +10,7 @@ unless Settings.multitenancy.enabled
   begin
     single_tenant_default = Account.find_by(cname: 'single.tenant.default')
     if single_tenant_default.blank?
-      single_tenant_default = Account.new(name: 'Single Tenant', cname: 'single.tenant.default', tenant: 'single')
+      single_tenant_default = Account.new(name: 'Single Tenant', cname: 'single.tenant.default', tenant: 'single', is_public: true)
       CreateAccount.new(single_tenant_default).save
       single_tenant_default = single_tenant_default.reload
     end

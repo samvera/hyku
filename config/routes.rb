@@ -1,13 +1,20 @@
+require 'sidekiq/web'
+Sidekiq::Web.set :session_secret, Rails.application.secrets[:secret_key_base]
+
 Rails.application.routes.draw do
   concern :oai_provider, BlacklightOaiProvider::Routes.new
 
   mount Riiif::Engine => 'images', as: :riiif if Hyrax.config.iiif_image_server?
 
+  authenticate :user, lambda { |u| u.is_superadmin } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
   if Settings.multitenancy.enabled
     constraints host: Account.admin_host do
       get '/account/sign_up' => 'account_sign_up#new', as: 'new_sign_up'
       post '/account/sign_up' => 'account_sign_up#create'
-      get '/', to: 'splash#index'
+      get '/', to: 'splash#index', as: 'splash'
 
       # pending https://github.com/projecthydra-labs/hyrax/issues/376
       get '/dashboard', to: redirect('/')

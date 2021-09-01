@@ -12,7 +12,7 @@ RSpec.describe LeaseAutoExpiryJob do
   let(:past_date) { 2.days.ago }
   let(:future_date) { 2.days.from_now }
 
-  let(:account) { create(:account) }
+  let(:account) { create(:account_with_public_schema) }
 
   let!(:leased_work) do
     build(:work, lease_expiration_date: future_date.to_s,

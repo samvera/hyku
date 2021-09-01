@@ -72,7 +72,6 @@ services:
     expose:
       - 8983
     volumes:
-      - .:/app
       - solr:/bitnami
     networks:
       internal:
@@ -130,7 +129,7 @@ services:
         condition: service_started
       chrome:
         condition: service_started
-      workers:
+      worker:
         condition: service_started
       initialize_app:
         condition: service_completed_successfully
@@ -138,13 +137,13 @@ services:
     expose:
       - 3000
 
-  workers:
+  worker:
     <<: *app
     build:
       context: .
       target: hyku-worker
       args:
-        - EXTRA_WORKER_APK_PACKAGES=less vim bash openjdk11-jre ffmpeg rsync
+        - EXTRA_APK_PACKAGES=less vim bash openjdk11-jre ffmpeg rsync
     command: bundle exec sidekiq
     depends_on:
       check_volumes:
@@ -184,10 +183,13 @@ services:
     entrypoint: ["sh", "-c"]
     command:
       - >
-        solrcloud-upload-configset.sh /app/samvera/hyrax-webapp/solr/config &&
-        solrcloud-assign-configset.sh &&
-        SOLR_COLLECTION_NAME=hydra-test solrcloud-assign-configset.sh &&
-        db-migrate-seed.sh
+        if [ ! -f "/app/samvera/hyrax-webapp/solr_db_initialized" ]; then
+          solrcloud-upload-configset.sh /app/samvera/hyrax-webapp/solr/config &&
+          solrcloud-assign-configset.sh &&
+          SOLR_COLLECTION_NAME=hydra-test solrcloud-assign-configset.sh &&
+          db-migrate-seed.sh &&
+          touch /app/samvera/hyrax-webapp/solr_db_initialized
+        fi
     depends_on:
       - db
       - solr

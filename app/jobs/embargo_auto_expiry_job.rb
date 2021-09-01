@@ -7,7 +7,7 @@ class EmbargoAutoExpiryJob < ApplicationJob
   end
 
   def perform(account)
-    account.switch do
+    Apartment::Tenant.switch(account.tenant) do
       # From Hyrax app/jobs/embargo_expiry_job
       EmbargoExpiryJob.perform_now
     end

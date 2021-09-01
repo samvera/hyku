@@ -60,6 +60,25 @@ Rails.application.configure do
   config.active_job.queue_adapter     = Settings.active_job.queue_adapter
   # config.active_job.queue_name_prefix = "hyku_#{Rails.env}"
 
+  if ENV['SMTP_ENABLED'].present? && ENV['SMTP_ENABLED'].to_s == 'true'
+    config.action_mailer.smtp_settings = {
+      user_name: ENV['SMTP_USER_NAME'],
+      password: ENV['SMTP_PASSWORD'],
+      address: ENV['SMTP_ADDRESS'],
+      domain: ENV['SMTP_DOMAIN'],
+      port: ENV['SMTP_PORT'],
+      enable_starttls_auto: true,
+      authentication: ENV['SMTP_TYPE']
+    }
+    # ActionMailer Config
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.perform_deliveries = true
+    config.action_mailer.raise_delivery_errors = false
+    config.action_mailer.asset_host = ENV['SETTINGS__MULTITENANCY__ADMIN_HOST']
+  else
+    config.action_mailer.delivery_method = :test
+  end
+
   config.action_mailer.perform_caching = false
 
   # Ignore bad email addresses and do not raise email delivery errors.

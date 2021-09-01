@@ -5,6 +5,7 @@
 
 *.rdb
 
+node_modules/*
 tmp/*
 artifacts/*
 coverage/*

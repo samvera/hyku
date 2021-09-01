@@ -119,7 +119,7 @@ The [samvera-vagrant project](https://github.com/samvera-labs/samvera-vagrant) p
 
 ### With Kubernetes
 
-Hyku provides a set of [Helm charts](chart/README.md) for deploying to a Kubernetes cluster. Detailed instructions are provided for deploying locally with Docker for Mac.
+Hyku relies on the helm charts provided by Hyrax. See [Deployment Info](https://github.com/samvera/hyrax/blob/main/CONTAINERS.md#deploying-to-production) for more information. We also provide a basic helm [deployment script](bin/helm_deploy). Hyku currently needs some additional volumes and ENV vars over the base Hyrax. See (ops/review-deploy.tmpl.yaml) for an example of what that might look like.
 
 ## Single Tenant Mode
 

@@ -20,7 +20,7 @@ unless Settings.multitenancy.enabled
   AccountElevator.switch!(single_tenant_default.cname)
 
   puts "\n== Creating default admin set"
-  admin_set = AdminSet.find(AdminSet::DEFAULT_ID)
+  admin_set = AdminSet.find(AdminSet.find_or_create_default_admin_set_id)
 
   puts "\n== Creating default collection types"
   Hyrax::CollectionType.find_or_create_default_collection_type
@@ -42,4 +42,16 @@ unless Settings.multitenancy.enabled
   puts "\n== Finished creating single tenant resources"
 end
 
+Account.find_each do |account|
+  Apartment::Tenant.switch!(account.tenant)
+  next if Site.instance.available_works.present?
+  Site.instance.available_works = Hyrax.config.registered_curation_concern_types
+  Site.instance.save
+end
 
+if ENV['INITIAL_ADMIN_EMAIL'] && ENV['INITIAL_ADMIN_PASSWORD']
+  u = User.find_or_create_by(email: ENV['INITIAL_ADMIN_EMAIL']) do |u|
+    u.password = ENV['INITIAL_ADMIN_PASSWORD']
+  end
+  u.add_role(:superadmin)
+end

@@ -1,0 +1,220 @@
+replicaCount: 2
+
+livenessProbe:
+  enabled: false
+readinessProbe:
+  enabled: false
+
+brandingVolume:
+  storageClass: nfs
+derivativesVolume:
+  storageClass: nfs
+uploadsVolume:
+  storageClass: nfs
+
+extraVolumeMounts:
+  - name: uploads
+    mountPath: /app/samvera/hyrax-webapp/tmp/imports
+    subPath: imports
+  - name: uploads
+    mountPath: /app/samvera/hyrax-webapp/tmp/exports
+    subPath: exports
+  - name: uploads
+    mountPath: /app/samvera/hyrax-webapp/public/system
+    subPath: public-system
+  - name: uploads
+    mountPath: /app/samvera/hyrax-webapp/public/uploads
+    subPath: public-uploads
+  - name: uploads
+    mountPath: /app/samvera/hyrax-webapp/tmp/network_files
+    subPath: network-files
+
+ingress:
+  enabled: true
+  hosts:
+    - host: hyku-$CI_MERGE_REQUEST_ID.example.com
+      paths:
+        - path: /
+    - host: "*.hyku-$CI_MERGE_REQUEST_ID.example.com"
+      paths:
+        - path: /
+
+extraEnvVars:
+  - name: SETTINGS__MULTITENANCY__ADMIN_HOST
+    value: hyku-$CI_MERGE_REQUEST_ID.example.com
+  - name: SETTINGS__MULTITENANCY__ROOT_HOST
+    value: hyku-$CI_MERGE_REQUEST_ID.example.com
+  - name: SETTINGS__MULTITENANCY__DEFAULT_HOST
+    value: "%{tenant}.hyku-$CI_MERGE_REQUEST_ID.example.com"
+  - name: CONFDIR
+    value: "/app/samvera/hyrax-webapp/solr/config"
+  - name: INITIAL_ADMIN_EMAIL
+    value: samvera@example.com
+  - name: INITIAL_ADMIN_PASSWORD
+    value: testing123
+  - name: IN_DOCKER
+    value: "true"
+  - name: LD_LIBRARY_PATH
+    value: /app/fits/tools/mediainfo/linux
+  - name: PASSENGER_APP_ENV
+    value: production
+  - name: RAILS_ENV
+    value: production
+  - name: RAILS_LOG_TO_STDOUT
+    value: "true"
+  - name: RAILS_MAX_THREADS
+    value: "5"
+  - name: RAILS_SERVE_STATIC_FILES
+    value: "true"
+  - name: SETTINGS__ACTIVE_JOB__QUEUE_ADAPTER
+    value: sidekiq
+  - name: SETTINGS__CONTACT_EMAIL
+    value: samvera@example.com
+  - name: SETTINGS__DEVISE__INVITATION_FROM_EMAIL
+    value: samvera@example.com
+  - name: SETTINGS__FITS_PATH
+    value: /app/fits/fits.sh
+  - name: SETTINGS__MULTITENANCY__ADMIN_ONLY_TENANT_CREATION
+    value: "true"
+  - name: SETTINGS__MULTITENANCY__DEFAULT_HOST
+    value: "%{tenant}.hyku-staging.example.com"
+  - name: SETTINGS__MULTITENANCY__ENABLED
+    value: "true"
+  - name: SETTINGS__SOLR__COLLECTION_OPTIONS__COLLECTION__CONFIG_NAME
+    value: $CI_COMMIT_SHORT_SHA
+  - name: SETTINGS__SOLR__CONFIGSET
+    value: $CI_COMMIT_SHORT_SHA
+  - name: SOLR_ADMIN_USER
+    value: admin
+  - name: SOLR_COLLECTION_NAME
+    value: $CI_COMMIT_SHORT_SHA
+  - name: SOLR_CONFIGSET_NAME
+    value: $CI_COMMIT_SHORT_SHA
+  - name: SMTP_ENABLED
+    value: "true"
+  - name: SMTP_USER_NAME
+    value: fake
+  - name: SMTP_PASSWORD
+    value: fake
+  - name: SMTP_ADDRESS
+    value: fake
+  - name: SMTP_DOMAIN
+    value: fake
+  - name: SMTP_PORT
+    value: "2525"
+  - name: SMTP_TYPE
+    value: cram_md5
+
+worker:
+  replicaCount: 1
+  podSecurityContext:
+    runAsUser: 1001
+    runAsGroup: 101
+    fsGroup: 101
+    fsGroupChangePolicy: "OnRootMismatch"
+  extraVolumeMounts:
+    - name: uploads
+      mountPath: /app/samvera/hyrax-webapp/tmp/imports
+      subPath: imports
+    - name: uploads
+      mountPath: /app/samvera/hyrax-webapp/tmp/exports
+      subPath: exports
+    - name: uploads
+      mountPath: /app/samvera/hyrax-webapp/public/system
+      subPath: public-system
+    - name: uploads
+      mountPath: /app/samvera/hyrax-webapp/public/uploads
+      subPath: public-uploads
+    - name: uploads
+      mountPath: /app/samvera/hyrax-webapp/tmp/network_files
+      subPath: network-files
+  extraEnvVars:
+  - name: SETTINGS__MULTITENANCY__ADMIN_HOST
+    value: hyku-$CI_MERGE_REQUEST_ID.example.com
+  - name: SETTINGS__MULTITENANCY__ROOT_HOST
+    value: hyku-$CI_MERGE_REQUEST_ID.example.com
+  - name: SETTINGS__MULTITENANCY__DEFAULT_HOST
+    value: "%{tenant}.hyku-$CI_MERGE_REQUEST_ID.example.com"
+  - name: CONFDIR
+    value: "/app/samvera/hyrax-webapp/solr/config"
+  - name: INITIAL_ADMIN_EMAIL
+    value: samvera@example.com
+  - name: INITIAL_ADMIN_PASSWORD
+    value: testing123
+  - name: IN_DOCKER
+    value: "true"
+  - name: LD_LIBRARY_PATH
+    value: /app/fits/tools/mediainfo/linux
+  - name: PASSENGER_APP_ENV
+    value: production
+  - name: RAILS_ENV
+    value: production
+  - name: RAILS_LOG_TO_STDOUT
+    value: "true"
+  - name: RAILS_MAX_THREADS
+    value: "5"
+  - name: RAILS_SERVE_STATIC_FILES
+    value: "true"
+  - name: SETTINGS__ACTIVE_JOB__QUEUE_ADAPTER
+    value: sidekiq
+  - name: SETTINGS__CONTACT_EMAIL
+    value: samvera@example.com
+  - name: SETTINGS__DEVISE__INVITATION_FROM_EMAIL
+    value: samvera@example.com
+  - name: SETTINGS__FITS_PATH
+    value: /app/fits/fits.sh
+  - name: SETTINGS__MULTITENANCY__ADMIN_ONLY_TENANT_CREATION
+    value: "true"
+  - name: SETTINGS__MULTITENANCY__DEFAULT_HOST
+    value: "%{tenant}.hyku-staging.example.com"
+  - name: SETTINGS__MULTITENANCY__ENABLED
+    value: "true"
+  - name: SETTINGS__SOLR__COLLECTION_OPTIONS__COLLECTION__CONFIG_NAME
+    value: $CI_COMMIT_SHORT_SHA
+  - name: SETTINGS__SOLR__CONFIGSET
+    value: $CI_COMMIT_SHORT_SHA
+  - name: SOLR_ADMIN_USER
+    value: admin
+  - name: SOLR_COLLECTION_NAME
+    value: $CI_COMMIT_SHORT_SHA
+  - name: SOLR_CONFIGSET_NAME
+    value: $CI_COMMIT_SHORT_SHA
+  - name: SMTP_ENABLED
+    value: "true"
+  - name: SMTP_USER_NAME
+    value: fake
+  - name: SMTP_PASSWORD
+    value: fake
+  - name: SMTP_ADDRESS
+    value: fake
+  - name: SMTP_DOMAIN
+    value: fake
+  - name: SMTP_PORT
+    value: "2525"
+  - name: SMTP_TYPE
+    value: cram_md5
+
+podSecurityContext:
+  runAsUser: 1001
+  runAsGroup: 101
+  fsGroup: 101
+  fsGroupChangePolicy: "OnRootMismatch"
+
+embargoRelease:
+  enabled: false
+leaseRelease:
+  enabled: false
+
+# imagePullSecrets:
+#  - name: gitlab-registry
+
+fcrepo:
+  enabled: true
+postgresql:
+  enabled: true
+redis:
+  cluster:
+    enabled: false
+  password: staging
+solr:
+  enabled: true

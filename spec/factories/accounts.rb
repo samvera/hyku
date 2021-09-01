@@ -10,6 +10,7 @@ FactoryBot.define do
   factory :redis_endpoint do
     options { Hash.new(namespace: 'fakeNS') }
   end
+
   factory :account do
     sequence(:name) { |_n| srand }
 
@@ -23,7 +24,14 @@ FactoryBot.define do
     after(:create) do |account, evaluator|
       create_list(:domain_name, evaluator.domain_names_count, account: account)
     end
+
+    trait(:public_schema) do
+      tenant { 'public' }
+    end
+
+    factory :account_with_public_schema, traits: [:public_schema]
   end
+
   factory :sign_up_account, class: Account do
     sequence(:name) { |_n| srand }
 

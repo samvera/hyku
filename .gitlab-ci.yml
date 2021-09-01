@@ -1,0 +1,288 @@
+---
+stages:
+  - build
+  - test
+  - review
+  - staging
+
+before_script:
+  - export TAG=${CI_COMMIT_SHORT_SHA}
+  - export BRANCH=${CI_COMMIT_REF_NAME}
+  - export REGISTRY_HOST=${CI_REGISTRY}
+  - export REGISTRY_URI="/${CI_PROJECT_PATH}"
+
+hyku.build:
+  stage: build
+  script:
+    - docker login -u "gitlab-ci-token" -p "$CI_JOB_TOKEN" $CI_REGISTRY
+    - docker-compose build web
+    - docker-compose build worker
+    - docker-compose push web
+    - docker-compose push worker
+  only:
+    refs:
+      - merge_requests
+      - main
+  tags:
+    - local
+
+lint:
+  stage: test
+  image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+  allow_failure: true
+  script:
+    - cd /app/samvera/hyrax-webapp
+    - bundle check || bundle
+    - bundle exec rubocop
+  only:
+    refs:
+      - merge_requests
+  tags:
+    - kubernetes
+
+test:
+  stage: test
+  image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+  allow_failure: true
+  variables:
+    ALLOW_ANONYMOUS_LOGIN: "yes"
+    CONFDIR: "/app/samvera/hyrax-webapp/solr/config"
+    CHROME_HOSTNAME: chrome
+    DATABASE_ADAPTER: postgresql
+    DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: "true"
+    DATABASE_HOST: db
+    DATABASE_NAME: hyku
+    DATABASE_URL: postgres://postgres:postgres@db/hyku
+    DATABASE_USER: postgres
+    DB_HOST: db
+    DB_PORT: 5432
+    FCREPO_HOST: fcrepo
+    FCREPO_PORT: 8081
+    FEDORA_URL: http://fcrepo:8081/rest
+    FF_NETWORK_PER_BUILD: 1
+    GIT_STRATEGY: none
+    JAVA_OPTIONS: -Djetty.port=8081
+    IN_DOCKER: "true"
+    POSTGRESQL_DATABASE: hyku
+    POSTGRESQL_PASSWORD: postgres
+    REDIS_HOST: redis
+    SETTINGS__SOLR__URL: http://admin:admin@solr:8983/solr/
+    SOLR_ADMIN_PASSWORD: admin
+    SOLR_ADMIN_USER: admin
+    SOLR_ADMIN_USERNAME: admin
+    SOLR_CLOUD_BOOTSTRAP: "yes"
+    SOLR_COLLECTION_NAME: hyku-test
+    SOLR_CONFIGSET_NAME: hyku
+    SOLR_ENABLE_AUTHENTICATION: "yes"
+    SOLR_ENABLE_CLOUD_MODE: "yes"
+    SOLR_HOST: solr
+    SOLR_PORT: 8983
+    SOLR_URL: http://admin:admin@solr:8983/solr/
+    SOLR_ZK_HOSTS: zk:2181
+    ZOO_HEAP_SIZE: 128
+    ZOO_PORT_NUMBER: 2181
+  services:
+    - name: bitnami/postgresql:12.6.0
+      alias: db
+    - name: samvera/fcrepo4:4.7.5
+      alias: fcrepo
+    - name: redis:5-alpine
+      alias: redis
+    - name: bitnami/zookeeper:3
+      alias: zk
+    - name: bitnami/solr:8
+      alias: solr
+    - name: selenium/standalone-chrome:3.141
+      alias: chrome
+  before_script:
+    - >-
+      solrcloud-upload-configset.sh /app/samvera/hyrax-webapp/solr/config &&
+      SOLR_COLLECTION_NAME=hydra-test solrcloud-assign-configset.sh &&
+      solrcloud-assign-configset.sh
+  script:
+    - rm -f /home/app/webapp/tmp/capybara/*
+    - rm -rf $CI_PROJECT_DIR/capybara
+    - cd /app/samvera/hyrax-webapp
+    # - sleep 30m
+    - rspec --format progress --tag ~speed:slow --format RspecJunitFormatter --out rspec.xml
+  after_script:
+    - test -e /home/app/webapp/tmp/capybara && cp -r /home/app/webapp/tmp/capybara $CI_PROJECT_DIR/capybara
+    - test -e /home/app/webapp/rspec.xml && cp /home/app/webapp/rspec.xml $CI_PROJECT_DIR/rspec.xml
+  only:
+    refs:
+      - merge_requests
+      - main
+  artifacts:
+    when: always
+    paths:
+      - capybara/*.html
+      - rspec.xml
+    reports:
+      junit: rspec.xml
+  tags:
+    - kubernetes
+
+hyku.review:
+  stage: review
+  needs: ["hyku.build"]
+  extends:
+    - .deploy
+  environment:
+    name: hyku.review/$CI_MERGE_REQUEST_ID
+    url: http://hyku-$CI_MERGE_REQUEST_ID.$KUBE_INGRESS_BASE_DOMAIN
+    on_stop: hyku.review.stop
+    auto_stop_in: 1 day
+  only:
+    refs:
+      - merge_requests
+  variables:
+    DEPLOY_IMAGE: $CI_REGISTRY_IMAGE
+    DEPLOY_TAG: $CI_COMMIT_SHORT_SHA
+    WORKER_IMAGE: $CI_REGISTRY_IMAGE/worker
+    HELM_EXPERIMENTAL_OCI: 1
+    HELM_EXTRA_ARGS: >
+      --values ops/review-deploy.yaml
+  script:
+    - envsubst < ops/review-deploy.tmpl.yaml > ops/review-deploy.yaml
+    - ./bin/helm_deploy hyku-$CI_MERGE_REQUEST_ID review
+  tags:
+    - kubernetes
+
+hyku.review.stop:
+  stage: review
+  extends:
+    - .deploy
+  environment:
+    name: hyku.review/$CI_MERGE_REQUEST_ID
+    url: http://hyku-$CI_MERGE_REQUEST_ID.$KUBE_INGRESS_BASE_DOMAIN
+    action: stop
+  when: manual
+  allow_failure: true
+  script:
+    - .//bin/helm_delete hyku-$CI_MERGE_REQUEST_ID review
+  only:
+    refs:
+      - merge_requests
+  tags:
+    - kubernetes
+
+hyku.dev:
+  stage: staging
+  extends:
+    - .deploy
+  environment:
+    name: hyku.dev
+    url: http://hyku-dev.example.com
+    on_stop: hyku.dev.stop
+  only:
+    refs:
+      - main
+  variables:
+    DEPLOY_IMAGE: $CI_REGISTRY_IMAGE
+    DEPLOY_TAG: $CI_COMMIT_SHORT_SHA
+    WORKER_IMAGE: $CI_REGISTRY_IMAGE/worker
+    HELM_EXPERIMENTAL_OCI: 1
+    HELM_EXTRA_ARGS: >
+      --values ops/dev-deploy.yaml
+  script:
+    - envsubst < ops/dev-deploy.tmpl.yaml > ops/dev-deploy.yaml
+    - ./bin/helm_deploy hyku-dev dev
+  tags:
+    - kubernetes
+
+hyku.dev.stop:
+  stage: staging
+  extends:
+    - .deploy
+  environment:
+    name: hyku.dev
+    url: http://hyku-dev.example.com
+    action: stop
+  when: manual
+  allow_failure: true
+  script:
+    - .//bin/helm_delete hyku-dev dev
+  tags:
+    - kubernetes
+
+hyku.staging:
+  stage: staging
+  extends:
+    - .deploy
+  environment:
+    name: hyku.staging
+    url: http://dl-hyku-staging.example.com
+    on_stop: hyku.staging.stop
+  only:
+    refs:
+      - main
+  variables:
+    DEPLOY_IMAGE: $CI_REGISTRY_IMAGE
+    DEPLOY_TAG: $CI_COMMIT_SHORT_SHA
+    WORKER_IMAGE: $CI_REGISTRY_IMAGE/worker
+    HELM_EXPERIMENTAL_OCI: 1
+    HELM_EXTRA_ARGS: >
+      --values ops/staging-deploy.yaml
+  script:
+    - envsubst < ops/staging-deploy.tmpl.yaml > ops/staging-deploy.yaml
+    - ./bin/helm_deploy hyku-staging staging
+  tags:
+    - kubernetes
+
+hyku.staging.stop:
+  stage: staging
+  extends:
+    - .deploy
+  environment:
+    name: hyku.staging
+    url: http://hyku-staging.$KUBE_INGRESS_BASE_DOMAIN
+    action: stop
+  when: manual
+  allow_failure: true
+  script:
+    - .//bin/helm_delete hyku-staging staging
+  tags:
+    - kubernetes
+
+hyku.production:
+  stage: staging
+  extends:
+    - .deploy
+  environment:
+    name: hyku.production
+    url: http://hyku-production.example.com
+    on_stop: hyku.production.stop
+  only:
+    refs:
+      - main
+  when: manual
+  variables:
+    DEPLOY_IMAGE: $CI_REGISTRY_IMAGE
+    DEPLOY_TAG: $CI_COMMIT_SHORT_SHA
+    WORKER_IMAGE: $CI_REGISTRY_IMAGE/worker
+    HELM_EXPERIMENTAL_OCI: 1
+    HELM_EXTRA_ARGS: >
+      --values ops/production-deploy.yaml
+  script:
+    - envsubst < ops/production-deploy.tmpl.yaml > ops/production-deploy.yaml
+    - ./bin/helm_deploy hyku-production production
+  tags:
+    - kubernetes
+
+hyku.production.stop:
+  stage: staging
+  extends:
+    - .deploy
+  environment:
+    name: hyku.production
+    url: http://hyku-production.example.com
+    action: stop
+  when: manual
+  allow_failure: true
+  script:
+    - .//bin/helm_delete hyku-production production
+  tags:
+    - kubernetes
+
+.deploy:
+  image: dtzar/helm-kubectl:3.5.3

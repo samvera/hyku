@@ -7,7 +7,7 @@ class LeaseAutoExpiryJob < ApplicationJob
   end
 
   def perform(account)
-    account.switch do
+    Apartment::Tenant.switch(account.tenant) do
       # From Hyrax app/jobs/lease_expiry_job
       LeaseExpiryJob.perform_now
     end

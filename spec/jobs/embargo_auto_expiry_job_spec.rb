@@ -12,7 +12,7 @@ RSpec.describe EmbargoAutoExpiryJob do
   let(:past_date) { 2.days.ago }
   let(:future_date) { 2.days.from_now }
 
-  let(:account) { create(:account) }
+  let(:account) { create(:account_with_public_schema) }
 
   let!(:embargoed_work) do
     build(:work, embargo_release_date: future_date.to_s,

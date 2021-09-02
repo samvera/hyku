@@ -4,7 +4,7 @@
 require 'iiif_manifest'
 
 module Hyrax
-  module WorksControllerBehavior
+  module WorksControllerBehavior # rubocop:disable Metrics/ModuleLength
     extend ActiveSupport::Concern
     include Blacklight::Base
     include Blacklight::AccessControls::Catalog
@@ -13,11 +13,17 @@ module Hyrax
       with_themed_layout :decide_layout
       copy_blacklight_config_from(::CatalogController)
 
-      class_attribute :_curation_concern_type, :show_presenter, :work_form_service, :search_builder_class, :iiif_manifest_builder
+      class_attribute :_curation_concern_type,
+                      :show_presenter,
+                      :work_form_service,
+                      :search_builder_class,
+                      :iiif_manifest_builder
       self.show_presenter = Hyrax::WorkShowPresenter
       self.work_form_service = Hyrax::WorkFormService
       self.search_builder_class = WorkSearchBuilder
-      self.iiif_manifest_builder = (Flipflop.cache_work_iiif_manifest? ? Hyrax::CachingIiifManifestBuilder.new : Hyrax::ManifestBuilderService.new)
+      self.iiif_manifest_builder = (
+        Flipflop.cache_work_iiif_manifest? ? Hyrax::CachingIiifManifestBuilder.new : Hyrax::ManifestBuilderService.new
+      )
       attr_accessor :curation_concern
       helper_method :curation_concern, :contextual_path
 
@@ -28,7 +34,9 @@ module Hyrax
 
     class_methods do
       def curation_concern_type=(curation_concern_type)
-        load_and_authorize_resource class: curation_concern_type, instance_name: :curation_concern, except: %i[show file_manager inspect_work manifest]
+        load_and_authorize_resource class: curation_concern_type,
+                                    instance_name: :curation_concern,
+                                    except: %i[show file_manager inspect_work manifest]
 
         # Load the fedora resource to get the etag.
         # No need to authorize for the file manager, because it does authorization via the presenter.
@@ -65,7 +73,12 @@ module Hyrax
             build_form
             render 'new', status: :unprocessable_entity
           end
-          wants.json { render_json_response(response_type: :unprocessable_entity, options: { errors: curation_concern.errors }) }
+          wants.json do
+            render_json_response(
+              response_type: :unprocessable_entity,
+              options: { errors: curation_concern.errors }
+            )
+          end
         end
       end
     end
@@ -109,7 +122,12 @@ module Hyrax
             build_form
             render 'edit', status: :unprocessable_entity
           end
-          wants.json { render_json_response(response_type: :unprocessable_entity, options: { errors: curation_concern.errors }) }
+          wants.json do
+            render_json_response(
+              response_type: :unprocessable_entity,
+              options: { errors: curation_concern.errors }
+            )
+          end
         end
       end
     end
@@ -300,7 +318,10 @@ module Hyrax
         respond_to do |wants|
           wants.html do
             # Calling `#t` in a controller context does not mark _html keys as html_safe
-            flash[:notice] = view_context.t('hyrax.works.create.after_create_html', application_name: view_context.application_name)
+            flash[:notice] = view_context.t(
+              'hyrax.works.create.after_create_html',
+              application_name: view_context.application_name
+            )
             redirect_to [main_app, curation_concern]
           end
           wants.json { render :show, status: :created, location: polymorphic_path([main_app, curation_concern]) }
@@ -310,10 +331,15 @@ module Hyrax
       def after_update_response
         if curation_concern.file_sets.present?
           return redirect_to hyrax.confirm_access_permission_path(curation_concern) if permissions_changed?
-          return redirect_to main_app.confirm_hyrax_permission_path(curation_concern) if curation_concern.visibility_changed?
+          if curation_concern.visibility_changed?
+            return redirect_to main_app.confirm_hyrax_permission_path(curation_concern)
+          end
         end
         respond_to do |wants|
-          wants.html { redirect_to [main_app, curation_concern], notice: "Work \"#{curation_concern}\" successfully updated." }
+          wants.html do
+            redirect_to [main_app, curation_concern],
+                        notice: "Work \"#{curation_concern}\" successfully updated."
+          end
           wants.json { render :show, status: :ok, location: polymorphic_path([main_app, curation_concern]) }
         end
       end
@@ -348,7 +374,9 @@ module Hyrax
           show_theme_view_path = Rails.root.join('app', 'views', "themes", show_page_theme.to_s)
           prepend_view_path(show_theme_view_path)
           yield
-          view_paths=(original_paths) # rubocop:disable Lint/UselessAssignment, Layout/SpaceAroundOperators, Style/RedundantParentheses
+          # rubocop:disable Lint/UselessAssignment, Layout/SpaceAroundOperators, Style/RedundantParentheses
+          view_paths=(original_paths)
+          # rubocop:enable Lint/UselessAssignment, Layout/SpaceAroundOperators, Style/RedundantParentheses
         else
           yield
         end

@@ -14,7 +14,6 @@ class SitesController < ApplicationController
     end
 
     @site.update(site_theme_params) if params[:site]
-
   end
 
   private

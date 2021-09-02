@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 # OVERRIDE: Hyrax v2.9.0 to add home_text content block to the index method - Adding themes
-# OVERRIDE: Hyrax v2.9.0 from Hyrax v2.9.0 to add facets to home page - inheriting from CatalogController rather than ApplicationController
+# OVERRIDE: Hyrax v2.9.0 from Hyrax v2.9.0 to add facets to home page - inheriting from
+# CatalogController rather than ApplicationController
 # OVERRIDE: Hyrax v2.9.0 from Hyrax v2.9.0 to add inject_theme_views method for theming
 # OVERRIDE: Hyrax v2.9.0 to add search_action_url method from Blacklight 6.23.0 to make facet links to go to /catalog
 # OVERRIDE: Hyrax v2.9.0 to add .sort_by to return collections in alphabetical order by title on the homepage
@@ -105,7 +106,9 @@ module Hyrax
           home_theme_view_path = Rails.root.join('app', 'views', "themes", home_page_theme.to_s)
           prepend_view_path(home_theme_view_path)
           yield
-          view_paths=(original_paths) # rubocop:disable Lint/UselessAssignment, Layout/SpaceAroundOperators, Style/RedundantParentheses
+          # rubocop:disable Lint/UselessAssignment, Layout/SpaceAroundOperators, Style/RedundantParentheses
+          view_paths=(original_paths)
+          # rubocop:enable Lint/UselessAssignment, Layout/SpaceAroundOperators, Style/RedundantParentheses
         else
           yield
         end

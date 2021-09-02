@@ -21,7 +21,10 @@ module Blacklight
     # @return [String] the application name
     def application_name
       if Rails.application.config.respond_to? :application_name
-        Deprecation.warn(self, "BlacklightHelper#application_name will no longer delegate to config.application_name in version 7.0. Set the i18n for blacklight.application_name instead")
+        Deprecation.warn(
+          self, "BlacklightHelper#application_name will no longer delegate to config.application_name
+          in version 7.0. Set the i18n for blacklight.application_name instead"
+        )
         return Rails.application.config.application_name
       end
 
@@ -71,7 +74,10 @@ module Blacklight
     # @see render_body_class
     # @return [Array<String>]
     def extra_body_classes
-      @extra_body_classes ||= ['blacklight-' + controller.controller_name, 'blacklight-' + [controller.controller_name, controller.action_name].join('-')]
+      @extra_body_classes ||= [
+        'blacklight-' + controller.controller_name,
+        'blacklight-' + [controller.controller_name, controller.action_name].join('-')
+      ]
     end
 
     ##
@@ -142,7 +148,11 @@ module Blacklight
       document = args.first
 
       field = options[:field]
-      html_escape t(:"blacklight.search.index.#{document_index_view_type}.label", default: :'blacklight.search.index.label', label: index_field_label(document, field))
+      html_escape t(
+        :"blacklight.search.index.#{document_index_view_type}.label",
+        default: :'blacklight.search.index.label',
+        label: index_field_label(document, field)
+      )
     end
 
     ##
@@ -346,7 +356,10 @@ module Blacklight
       when 'index'
         index_presenter(document)
       else
-        Deprecation.warn(Blacklight::BlacklightHelperBehavior, "Unable to determine presenter type for #{action_name} on #{controller_name}, falling back on deprecated Blacklight::DocumentPresenter")
+        Deprecation.warn(
+          Blacklight::BlacklightHelperBehavior, "Unable to determine presenter type for
+            #{action_name} on #{controller_name}, falling back on deprecated Blacklight::DocumentPresenter"
+        )
         presenter_class.new(document, self)
       end
     end

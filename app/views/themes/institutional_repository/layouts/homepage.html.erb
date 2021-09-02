@@ -39,7 +39,7 @@
       </div>
     </div>
   </div>
-  <%= render "hyrax/homepage/ir_homepage_stats" %>
+  <%= render 'hyrax/homepage/ir_homepage_stats' if controller_name == 'homepage' %>
 <% end %>
 
 <% content_for(:precontainer_content) do %>

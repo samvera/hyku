@@ -83,17 +83,6 @@
     }
   }
 
-  .recently-uploaded {
-    a {
-      img {
-        display: block !important;
-        height: auto !important;
-        margin: 0 auto !important;
-        width: 90px !important;
-      }
-    }
-  }
-
   div.recently-uploaded:nth-child(2n+3) {
     clear: left;
   }
@@ -103,19 +92,21 @@
     padding-bottom: 0 !important;
   }
 
-  ////// Collections Section //////
-
-  .collections-container {
+  
+  .collections-container,
+  .recently-uploaded {
     a {
       img {
-        display: block !important;
-        height: auto !important;
-        margin: 0 auto !important;
-        width: 240px !important;
+        display: block;
+        height: auto;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 100%;
       }
     }
   }
-
+  
+  ////// Collections Section //////
   .collection-item-title,
   .recent-doc-title {
     text-align: center;
@@ -192,27 +183,6 @@
   ul.all-collection-list {
     font-size: 1.5em;
     list-style-type: none;
-  }
-
-  ////// Media Queries //////
-  @media (max-width: $screen-sm-max) {
-    .collections-container {
-      a {
-        img {
-          width: 200px !important;
-        }
-      }
-    }
-  }
-
-  @media (max-width: $screen-xs-min) {
-    .recently-uploaded {
-      a {
-        img {
-          width: 70px !important;
-        }
-      }
-    }
   }
 
   ////// Stats Carousel Media Queries //////

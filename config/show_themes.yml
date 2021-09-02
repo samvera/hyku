@@ -9,8 +9,8 @@ default_show:
   notes: This is the default Hyku show page. It is recommended for use with cultural repositories.
 cultural_show:
   name: Cultural Show Page
-  notes: This text based show page is recommended for institutional repositories.
+  notes: This image based show page is recommended for institutional repositories.
 scholarly_show:
   name: Scholarly Show Page
-  notes: This image based show page is recommended for cultural repositories.
+  notes: This text based show page is recommended for cultural repositories.
   

@@ -62,7 +62,7 @@ RSpec.describe 'Admin can select show page theme', type: :feature, js: true, cle
       click_link('Themes')
       select('Cultural Show Page', from: 'Show Page Theme')
       find('body').click
-      expect(page).to have_content('This text based show page is recommended for institutional repositories.')
+      expect(page).to have_content('This image based show page is recommended for cultural repositories.')
       expect(page.find('#show-wireframe img')['src']).to match(%r{/assets\/themes\/cultural_show/})
     end
 

@@ -87,7 +87,7 @@ extraEnvVars:
   - name: SOLR_ADMIN_USER
     value: admin
   - name: SOLR_COLLECTION_NAME
-    value: $CI_COMMIT_SHORT_SHA
+    value: hyrax
   - name: SOLR_CONFIGSET_NAME
     value: $CI_COMMIT_SHORT_SHA
   - name: SMTP_ENABLED
@@ -176,7 +176,7 @@ worker:
   - name: SOLR_ADMIN_USER
     value: admin
   - name: SOLR_COLLECTION_NAME
-    value: $CI_COMMIT_SHORT_SHA
+    value: hyrax
   - name: SOLR_CONFIGSET_NAME
     value: $CI_COMMIT_SHORT_SHA
   - name: SMTP_ENABLED

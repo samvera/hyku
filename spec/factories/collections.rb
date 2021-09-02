@@ -49,7 +49,7 @@ FactoryBot.define do
                                                                           evaluator.user,
                                                                           access)
 
-        attributes = evaluator.with_permission_template.merge(attributes) if evaluator.with_permission_template.respond_to?(:merge)
+        attributes = evaluator.with_permission_template.merge(attributes) if evaluator.with_permission_template.respond_to?(:merge) # rubocop:disable Metrics/LineLength
 
         create(:permission_template, attributes) unless Hyrax::PermissionTemplate.find_by(source_id: collection.id)
         collection.reset_access_controls!

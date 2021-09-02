@@ -7,7 +7,7 @@ RSpec.describe 'Admin can select cultural repository theme', type: :feature, js:
   let(:admin) { FactoryBot.create(:admin, email: 'admin@example.com', display_name: 'Adam Admin') }
   let(:user) { create :user }
 
-  before(:work) do
+  let!(:work) do
     create(:generic_work,
            title: ['Llamas and Alpacas'],
            keyword: ['llama', 'alpaca'],

@@ -13,14 +13,15 @@ RSpec.describe 'Admin can select feature flags', type: :feature, js: true, clean
            user: admin)
   end
 
-  before(:collection) do
-    create(:public_collection_lw,
+  let!(:collection) do
+    create(:collection,
            title: ['Pandas'],
            description: ['Giant Pandas and Red Pandas'],
            user: admin,
            members: [work])
   end
-  before(:feature) { FeaturedWork.create(work_id: work.id) }
+
+  let!(:feature) { FeaturedWork.create(work_id: work.id) }
 
   context 'as a repository admin' do
     it 'has a setting for featured works' do

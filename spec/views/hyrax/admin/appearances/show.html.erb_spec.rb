@@ -8,8 +8,31 @@ RSpec.describe "hyrax/admin/appearances/show", type: :view do
       allow(view).to receive(:admin_appearance_path).and_return('/path')
       allow(view).to receive(:edit_content_blocks_path).and_return('/path')
       assign(:form, form)
-      @home_theme_names = { "default_home" => { "banner_image" => true, "featured_researcher" => true, "home_page_text" => false, "marketing_text" => true, "name" => "Default home" }, "cultural_repository" => { "banner_image" => true, "featured_researcher" => false, "home_page_text" => true, "marketing_text" => true, "name" => "Cultural Repository" } }
-      @show_theme_names = { "default_show" => { "name" => "Default Show Page", "notes" => "This is the default Hyku show page. It is recommended for use with cultural repositories." } }
+      @home_theme_names = {
+        "default_home" =>
+          {
+            "banner_image" => true,
+            "featured_researcher" => true,
+            "home_page_text" => false,
+            "marketing_text" => true,
+            "name" => "Default home"
+          },
+        "cultural_repository" =>
+          {
+            "banner_image" => true,
+            "featured_researcher" => false,
+            "home_page_text" => true,
+            "marketing_text" => true,
+            "name" => "Cultural Repository"
+          }
+      }
+      @show_theme_names = {
+        "default_show" =>
+          {
+            "name" => "Default Show Page",
+            "notes" => "This is the default Hyku show page. It is recommended for use with cultural repositories."
+          }
+      }
       @search_themes = { 'List view' => 'list_view', 'Gallery view' => 'gallery_view' }
       render
     end
@@ -25,7 +48,10 @@ RSpec.describe "hyrax/admin/appearances/show", type: :view do
       # directory image
       assert_select "input#admin_appearance_directory_image[name=?]", "admin_appearance[directory_image]"
       # default collection image
-      assert_select "input#admin_appearance_default_collection_image[name=?]", "admin_appearance[default_collection_image]"
+      assert_select(
+        "input#admin_appearance_default_collection_image[name=?]",
+        "admin_appearance[default_collection_image]"
+      )
       # default work image
       assert_select "input#admin_appearance_default_work_image[name=?]", "admin_appearance[default_work_image]"
       # colors

@@ -56,7 +56,9 @@ RSpec.describe 'Admin can select institutional repository theme', type: :feature
     end
 
     it 'renders the stats carousel if there are more than 6 resource_types' do
-      work.resource_type = ['Article', 'Audio', 'Book', 'Capstone Project', 'Conference Proceeding', 'Dataset', 'Software or Program Code']
+      work.resource_type = [
+        'Article', 'Audio', 'Book', 'Capstone Project', 'Conference Proceeding', 'Dataset', 'Software or Program Code'
+      ]
       work.save
       login_as admin
       visit '/admin/appearance'

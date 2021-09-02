@@ -7,7 +7,7 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
   let(:admin) { FactoryBot.create(:admin, email: 'admin@example.com', display_name: 'Adam Admin') }
   let(:user) { create :user }
 
-  before(:work) do
+  let!(:work) do
     create(:generic_work,
            title: ['Llamas and Alpacas'],
            keyword: ['llama', 'alpaca'],
@@ -66,7 +66,10 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
       visit '/admin/appearance'
       click_link('Themes')
       select('Gallery view', from: 'Search Results Page Theme')
-      expect(page).to have_content('This will select a default view for the search results page. Users can select their preferred views on the search results page that will override this selection')
+      expect(page).to have_content(
+        'This will select a default view for the search results page. Users can select
+        their preferred views on the search results page that will override this selection'
+      )
       find('body').click
       click_on('Save')
       site = Site.last

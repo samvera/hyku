@@ -60,7 +60,7 @@
   }
 
   // for the navbar to sit 100% width for the columns to play responsively
-  /* line 10, /home/app/webapp/app/assets/stylesheets/hyku.scss */
+  // line 10, /home/app/webapp/app/assets/stylesheets/hyku.scss
   #masthead .navbar-right {
     margin-right: 0 !important;
   }
@@ -119,7 +119,7 @@
   .collection-item-title,
   .recent-doc-title {
     text-align: center;
-  
+
     h3 {
       cursor: default;
       font-size: 14px !important;
@@ -174,7 +174,7 @@
     .carousel-control.right {
       margin-right: 0;
     }
-  }  
+  }
 
   .institutional-repository-carousel .cloneditem-1,
   .institutional-repository-carousel .cloneditem-2,
@@ -232,13 +232,13 @@
     .institutional-repository-carousel .carousel-inner > .next {
       left: 50%;
     }
-  
+
     .institutional-repository-carousel .carousel-inner > .left,
     .institutional-repository-carousel .carousel-inner > .prev.right,
     .institutional-repository-carousel .carousel-inner > .active {
       left: 0;
     }
-  
+
     .institutional-repository-carousel .carousel-inner .cloneditem-1 {
       display: block;
     }

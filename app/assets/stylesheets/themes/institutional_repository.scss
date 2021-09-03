@@ -92,7 +92,6 @@
     padding-bottom: 0 !important;
   }
 
-  
   .collections-container,
   .recently-uploaded {
     a {
@@ -105,7 +104,7 @@
       }
     }
   }
-  
+
   ////// Collections Section //////
   .collection-item-title,
   .recent-doc-title {
@@ -156,14 +155,12 @@
     .carousel-control {
       background-image: none;
       width: 4%;
-    }
-
-    .carousel-control.left {
-      margin-left: 0;
-    }
-
-    .carousel-control.right {
-      margin-right: 0;
+      .left {
+        margin-left: 0;
+      }
+      .right {
+        margin-right: 0;
+      }
     }
   }
 

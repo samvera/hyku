@@ -2,7 +2,7 @@
 
 # Copied from Hyrax v2.9.0 to add home_text content block to the index method - Adding themes
 RSpec.describe Hyrax::HomepageController, type: :controller, clean: true do
-  routes { Hyrax::Engine.routes }
+  let(:routes) { Hyrax::Engine.routes }
 
   describe "#index" do
     let(:user) { create(:user) }
@@ -163,8 +163,10 @@ RSpec.describe Hyrax::HomepageController, type: :controller, clean: true do
       before do
         allow(controller).to receive(:home_page_theme).and_return('institutional_repository')
       end
-
+      # rubocop:disable RSpec/LetSetup
       let!(:work_with_resource_type) { create(:work, user: user, resource_type: ['Article']) }
+
+      # rubocop:enable RSpec/LetSetup
 
       it 'gets the stats' do
         get :index

@@ -6,6 +6,7 @@ RSpec.describe 'Admin can select feature flags', type: :feature, js: true, clean
   let(:admin) { FactoryBot.create(:admin, email: 'admin@example.com', display_name: 'Adam Admin') }
   let(:account) { FactoryBot.create(:account) }
 
+  # rubocop:disable RSpec/LetSetup
   let!(:work) do
     create(:generic_work,
            title: ['Pandas'],
@@ -22,6 +23,8 @@ RSpec.describe 'Admin can select feature flags', type: :feature, js: true, clean
   end
 
   let!(:feature) { FeaturedWork.create(work_id: work.id) }
+
+  # rubocop:enable RSpec/LetSetup
 
   context 'as a repository admin' do
     it 'has a setting for featured works' do

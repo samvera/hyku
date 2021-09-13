@@ -127,6 +127,5 @@ gem 'codemirror-rails'
 gem 'parser', '~> 2.5.3'
 gem 'riiif', '~> 1.1'
 gem 'secure_headers'
-gem "sentry-raven"
 gem 'sidekiq'
 gem 'tether-rails'

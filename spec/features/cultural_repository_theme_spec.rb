@@ -7,12 +7,15 @@ RSpec.describe 'Admin can select cultural repository theme', type: :feature, js:
   let(:admin) { FactoryBot.create(:admin, email: 'admin@example.com', display_name: 'Adam Admin') }
   let(:user) { create :user }
 
+  # rubocop:disable RSpec/LetSetup
   let!(:work) do
     create(:generic_work,
            title: ['Llamas and Alpacas'],
            keyword: ['llama', 'alpaca'],
            user: user)
   end
+
+  # rubocop:enable RSpec/LetSetup
 
   context "as a repository admin" do
     it 'sets the cultural repository theme when the theme form is saved' do

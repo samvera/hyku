@@ -78,18 +78,6 @@ RSpec/InstanceVariable:
 RSpec/NamedSubject:
   Enabled: false
 
-RSpec/LetSetup:
-  Exclude:
-    - 'spec/controllers/hyrax/homepage_controller_spec.rb'
-    - 'spec/features/appearance_theme_spec.rb'
-    - 'spec/features/cultural_repository_theme_spec.rb'
-    - 'spec/features/feature_flag_spec.rb'
-    - 'spec/features/show_page_theme_spec.rb'
-    - 'spec/models/content_block_spec.rb'
-    - 'spec/models/account_spec.rb'
-    - 'spec/models/user_spec.rb'
-    - 'spec/models/role_spec.rb'
-
 RSpec/DescribeClass:
   Exclude:
     - 'spec/requests/**/*'

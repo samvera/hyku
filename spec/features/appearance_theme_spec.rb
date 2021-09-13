@@ -7,12 +7,15 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
   let(:admin) { FactoryBot.create(:admin, email: 'admin@example.com', display_name: 'Adam Admin') }
   let(:user) { create :user }
 
+  # rubocop:disable RSpec/LetSetup
   let!(:work) do
     create(:generic_work,
            title: ['Llamas and Alpacas'],
            keyword: ['llama', 'alpaca'],
            user: user)
   end
+
+  # rubocop:enable RSpec/LetSetup
 
   context "as a repository admin" do
     it "has a tab for themes on the appearance tab" do

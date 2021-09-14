@@ -84,6 +84,6 @@ workflows:
   ci:
     jobs:
       - bundle_lint_test:
-          ruby_version: "2.5.5"
-          name: "ruby2-5-5"
+          ruby_version: "2.7.4"
+          name: "ruby2-7-4"
           solr_config_path: 'solr/config'

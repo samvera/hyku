@@ -12,6 +12,8 @@ class SitesController < ApplicationController
     else
       redirect_to hyrax.admin_appearance_path, flash: { error: 'Updating the appearance was unsuccessful.' }
     end
+
+    @site.update(site_theme_params) if params[:site]
   end
 
   private
@@ -26,5 +28,9 @@ class SitesController < ApplicationController
                     :remove_directory_image,
                     :remove_default_collection_image,
                     :remove_default_work_image)
+    end
+
+    def site_theme_params
+      params.require(:site).permit(:home_theme, :search_theme, :show_theme)
     end
 end

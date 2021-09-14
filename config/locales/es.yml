@@ -14,6 +14,8 @@ es:
         submit: Ir
       page_size:
         submit: Actualizar
+      remove_role_from_group:
+        submit: Eliminar
       revoke_membership:
         submit: Eliminar
       user_search:
@@ -45,22 +47,36 @@ es:
             invalid: Los grupos deben tener un nombre
             success: "%{group} creado"
           destroy:
-            failure: 'No pudo ser destruido %{group} '
+            failure: "No pudo ser destruido %{group} "
             success: "%{group} destruido"
           update:
-            failure: 'No se pudo actualizar %{group} '
+            failure: "No se pudo actualizar %{group} "
             success: "%{group} actualizado"
         label:
           actions: Comportamiento
           created_at: Fecha de creacion
+          description: Descripción
+          humanized_name: Nombre
           members: Usuarios
           name: Nombre
           per_page: por página
+          roles: Roles
         nav:
           attributes: Descripción
           delete: Eliminar
           index: Volver a Administrar grupos
           members: Usuarios
+          roles: Roles
+        roles:
+          add: Añadir
+          label:
+            action: Acción
+            description: Descripción
+            name: Papel
+          remove: Eliminar
+          title:
+            add_group_roles: Agregar roles al grupo
+            current_group_roles: Roles de grupo actuales
         title:
           add_user: Añadir usuario a grupo
           delete: Eliminar grupo “%{group}”
@@ -70,7 +86,9 @@ es:
           members: Miembros del grupo
           new: Nuevo grupo
           remove: Eliminar grupo
+          roles: Roles de grupo
       title: Administración
+      work_types: Tipos de trabajo disponibles
     footer:
       admin_login: Acceso del administrador
     proprietor:
@@ -102,18 +120,34 @@ es:
     admin:
       appearances:
         show:
+          forms:
+            banner_image:
+              hint: Para usar una imagen como fondo de cabecera, debe usar una imagen (JPG, GIF o PNG) que tenga al menos 120 píxeles de alto y 1200 píxeles de ancho. Para obtener mejores resultados, use una imagen de al menos 1800 píxeles de ancho.
+            custom_css:
+              confirm: CSS personalizado siempre anulará otras selecciones de temas. ¿Continuar?
+              warning: Si sus personalizaciones de temas no parecen aplicarse correctamente, verifique que CSS personalizado no las sobrescriba.
+            default_images:
+              alert: Cargue al menos un archivo antes de enviarlo.
+              hint: Para las imágenes predeterminadas, debe usar una imagen (JPG, GIF o PNG) que tenga las mismas dimensiones de alto y ancho (100 píxeles de ancho y 100 píxeles de alto)
+            directory_image:
+              hint: Para usar una imagen como imagen de directorio, debe usar una imagen (JPG, GIF o PNG) que no sea más alta que el encabezado ni más ancha que 400 píxeles de ancho.
+            logo_image:
+              hint: Para usar una imagen como logotipo, debe usar una imagen (JPG, GIF o PNG) que no sea más alta que el encabezado ni más ancha que 400 píxeles de ancho.
+            themes:
+              confirm: Si su tema no parece aplicarse correctamente, verifique que no esté siendo sobrescrito por CSS personalizado.
           hints:
             banner_image: Para utilizar una imagen como fondo de masthead, debe utilizar una imagen (JPG, GIF o PNG) que tenga al menos 120 píxeles de alto y 1200 píxeles de ancho. Para obtener mejores resultados, utilice una imagen de al menos 1800 píxeles de ancho.
-            logo_image: Para usar una imagen como logotipo, debe usar una imagen (JPG, GIF o PNG) que no sea más alta que el encabezado y que no tenga más de 400 píxeles de ancho.
-            directory_image: Para usar una imagen como la imagen del directorio, debe usar una imagen (JPG, GIF o PNG) que no sea más alta que el encabezado y que no tenga más de 400 píxeles de ancho.
             default_image: Para las imágenes predeterminadas, debe usar una imagen (JPG, GIF o PNG) que tenga las mismas dimensiones de alto y ancho (100 píxeles de ancho y 100 píxeles de alto)
+            directory_image: Para usar una imagen como la imagen del directorio, debe usar una imagen (JPG, GIF o PNG) que no sea más alta que el encabezado y que no tenga más de 400 píxeles de ancho.
+            logo_image: Para usar una imagen como logotipo, debe usar una imagen (JPG, GIF o PNG) que no sea más alta que el encabezado y que no tenga más de 400 píxeles de ancho.
           tabs:
             banner_image: Imagen de la Bandera
-            directory_image: Imagen de directorio
-            default_images: Imágenes predeterminadas
             colors: Colores
             custom_css: Personnaliser CSS
+            default_images: Imágenes predeterminadas
+            directory_image: Imagen de directorio
             fonts: Fuentes
+            themes: Temas
       sidebar:
         accounts: Cuentas
         activity_summary: Resumen de la actividad
@@ -137,28 +171,27 @@ es:
   proprietor:
     accounts:
       edit:
-        fcrepo_endpoint: Fedora punto final
-        header: Editar cuenta
-        solr_endpoint: Solr punto final
+        fcrepo_endpoint: Punto final de Fedora
+        header: Cuenta de edición
+        solr_endpoint: Punto final de Solr
       index:
         cname: CNAME
-        confirm_delete: "¿Está seguro de que desea eliminar este repositorio?"
+        confirm_delete: "¿Estás seguro de que deseas eliminar este repositorio? TODAS LAS COLECCIONES Y TRABAJOS dentro de este repositorio se BORRARÁN PERMANENTEMENTE"
         create_new: Crear una nueva cuenta
         header: Cuentas
         manage: Gestionar
         tenant: Inquilino (UUID)
       new:
-        header: Crear un nuevo repositorio
+        header: Crea un nuevo repositorio
       show:
         add: Añadir
         current_admins:
           actions: Acción
-          email: Dirección de correo electrónico
-          header: Administradores de cuentas actuales
           no_admins: No existen administradores
         edit: Editar cuenta
         header: Administrar cuenta
-        remove: Retirar
+        remove: Eliminar
+        update: Actualizar
   status:
     index:
       services: Servicios

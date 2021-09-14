@@ -1,0 +1,17 @@
+<%= simple_form_for @form, url: admin_appearance_path do |f| %>
+  <div class="panel-body">
+    <%# Upload Directory Image %>
+    <%= f.input :directory_image, as: :file, wrapper: :vertical_file_input, hint: t('.forms.directory_image.hint') %>
+    <%= image_tag @form.directory_image.url, class: "img-responsive" if @form.directory_image? %>
+  </div>
+  <div class="panel-footer">
+    <%= f.submit class: 'btn btn-primary pull-right' %>
+  </div>
+<% end %>
+<% if @form.directory_image? %>
+  <div class="panel-footer">
+    <%= simple_form_for @form.site, url: main_app.site_path(@form.site) do |f| %>
+      <%= f.submit 'Remove directory image', class: 'btn btn-danger', name: :remove_directory_image %>
+    <% end %>
+  </div>
+<% end %>

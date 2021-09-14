@@ -1,0 +1,45 @@
+<% content_for(:extra_body_classes, 'works-show text-show-theme-partial ') %>
+<% provide :page_title, @presenter.page_title %>
+<%= render 'shared/citations' %>
+<%= render './shared/additional_citations' %>
+<div class="row">
+  <div itemscope itemtype="http://schema.org/CreativeWork" class="col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <%= render 'work_title', presenter: @presenter %>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <%= render 'workflow_actions_widget', presenter: @presenter %>
+          <% if @presenter.universal_viewer? %>
+            <div class="col-sm-12">
+              <%= render 'representative_media', presenter: @presenter, viewer: true %>
+            </div>
+          <% end %>
+          <div class="col-sm-12">
+            <%= render "show_actions", presenter: @presenter %>
+          </div>
+          <div class="<%= !@presenter.universal_viewer? ? 'col-sm-3 text-center' : '' %>">
+            <%= render 'representative_media', presenter: @presenter, viewer: false unless @presenter.universal_viewer? %>
+          </div>
+          <div class="<%= @presenter.universal_viewer? ? 'col-sm-8' : 'col-sm-6' %>">
+            <%= render 'work_description', presenter: @presenter %>
+            <%= render 'metadata', presenter: @presenter %>
+          </div>
+          <div class="<%= @presenter.universal_viewer? ? 'col-sm-4' : 'col-sm-3' %>">
+            <div class='relationships-box'>
+              <%= render 'relationships', presenter: @presenter %>
+            </div>
+          </div>
+          <div class="col-sm-12">
+            <%= render 'items', presenter: @presenter %>
+            <%# TODO: we may consider adding these partials in the future %>
+            <%# = render 'sharing_with', presenter: @presenter %>
+            <%# = render 'user_activity', presenter: @presenter %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

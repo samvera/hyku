@@ -56,13 +56,19 @@ end
 
 group :test do
   gem 'capybara'
+  gem 'capybara-screenshot', '~> 1.0'
   gem 'database_cleaner'
   gem 'factory_bot_rails'
+  gem 'launchy'
   # rack-test >= 0.71 does not work with older Capybara versions (< 2.17). See #214 for more details
   gem 'rack-test', '0.7.0'
   gem 'rails-controller-testing'
+  gem 'rspec-activemodel-mocks'
+  gem 'rspec-its'
+  gem 'rspec-retry'
   gem 'rspec_junit_formatter'
   gem 'selenium-webdriver'
+  gem 'shoulda-matchers', '~> 4.0'
   gem 'webdrivers', '~> 4.0'
   gem 'webmock'
 end
@@ -73,10 +79,10 @@ group :development do
 
   gem 'listen', '>= 3.0.5', '< 3.2'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  gem 'easy_translate'
+  gem 'scss_lint', require: false
   gem 'spring', '~> 1.7'
   gem 'spring-watcher-listen', '~> 2.0.0'
-
-  gem 'scss_lint', require: false
 end
 
 # Bulkrax
@@ -117,13 +123,10 @@ group :aws do
   gem 'aws-sdk-sqs'
 end
 
-gem 'sidekiq'
-
-gem 'secure_headers'
-
-gem 'codemirror-rails'
-gem 'riiif', '~> 1.1'
-
 gem 'bootstrap-datepicker-rails'
+gem 'codemirror-rails'
 gem 'parser', '~> 2.5.3'
+gem 'riiif', '~> 1.1'
+gem 'secure_headers'
+gem 'sidekiq'
 gem 'tether-rails'

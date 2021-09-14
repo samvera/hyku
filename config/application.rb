@@ -32,13 +32,6 @@ module Hyku
       end
     end
 
-    config.to_prepare do
-      # Do dependency injection after the classes have been loaded.
-      # Before moving this here (from an initializer) Devise was raising invalid
-      # authenticity token errors.
-      Hyrax::Admin::AppearancesController.form_class = AppearanceForm
-    end
-
     # resolve reloading issue in dev mode
     config.paths.add 'app/helpers', eager_load: true
 

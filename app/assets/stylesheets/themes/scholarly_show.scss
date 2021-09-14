@@ -1,0 +1,39 @@
+.scholarly_show {
+  .show-actions {
+    .btn.btn-default,
+    .btn.btn-danger,
+    .btn-group {
+      padding: 5px 10px;
+      font-size: 12px;
+      line-height: 1.5;
+      border-radius: 3px;
+    }
+
+    .btn-group {
+      border-radius: 3px;
+      font-size: 12px;
+      line-height: 1.5;
+      padding: 0;
+    }
+  }
+
+  .mb-1 {
+    margin-bottom: 1em;
+  }
+
+  .work-show dt,
+  .work-show dd {
+    padding: 0;
+  }
+
+  .work-show ul.tabular {
+    padding-inline-start: 20px;
+  }
+
+  dl.work-show {
+    font-weight: 700;
+    ul.tabular {
+      font-weight: 400;
+    }
+  }
+}

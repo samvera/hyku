@@ -1,0 +1,31 @@
+.gallery {
+  div.thumbnail {
+    img {
+      height: 200px;
+      object-fit: cover;
+      width:  200px;
+    }
+  }
+
+  .thumbnail {
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+  }
+
+  .thumbnail > img,
+  .thumbnail a > img {
+    height: 200px !important;
+  }
+
+  .document {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 15px;
+  }
+
+  #documents .document {
+    border-bottom: 1px solid #ddd !important;
+  }
+}

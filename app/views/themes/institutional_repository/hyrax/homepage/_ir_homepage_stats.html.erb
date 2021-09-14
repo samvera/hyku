@@ -1,0 +1,52 @@
+<%# get the facet counts for resource types from the controller %>
+<%# facet_counts => {resource_type: count} %>
+<% facet_counts = {} %>
+<% @ir_counts['facet_counts']['facet_fields']['resource_type_sim'].each_slice(2) do | key, value| %>
+  <% facet_counts[key] = value %>
+<% end %>
+
+<%# create hash of resource_types with count of works with this resource type and icon to use for the slider %>
+<%# resource_type => [count, icon] %>
+<% resource_types = {
+  "Article" => [0, "fa-pals fa fa-2x fa-file-text-o"],
+  "Audio" => [0, "fa-pals fa fa-2x fa-headphones"],
+  "Book" => [0, "fa-pals fa fa-2x fa-book"],
+  "Capstone Project" => [0, "fa-pals fa fa-2x fa fa-folder-open"],
+  "Conference Proceeding" => [0, "fa-pals fa fa-2x fa-file-powerpoint-o"],
+  "Dataset" => [0, "fa-pals fa fa-2x fa-database"],
+  "Dissertation" => [0, "fa-pals fa fa-2x fa-file-text-o"],
+  "Image" => [0, "fa-pals fa fa-2x fa-picture-o"],
+  "Journal" => [0, "fa-pals fa fa-2x fa-newspaper-o"],
+  "Map or Cartographic Material" => [0, "fa-pals fa fa-2x fa-map-o"],
+  "Masters Thesis" => [0, "fa-pals fa fa-2x fa-file-text-o"],
+  "Part of Book" => [0, "fa-pals fa fa-2x fa-book"],
+  "Poster" => [0, "fa-pals fa fa-2x fa-picture-o"],
+  "Presentation" => [0, "fa-pals fa fa-2x fa-file-powerpoint-o"],
+  "Project" => [0, "fa-pals fa fa-2x fa fa-folder-open"],
+  "Report" => [0, "fa-pals fa fa-2x fa-bar-chart"],
+  "Research Paper" => [0, "fa-pals fa fa-2x fa-file-text-o"],
+  "Software or Program Code" => [0, "fa-pals fa fa-2x fa-file-code-o"],
+  "Video" => [0, "fa-pals fa fa-2x fa-file-video-o"]
+} %>
+
+<%# keep track of how many resource_types have a count so we know which partial to display %>
+<% count_of_resource_types_greater_than_zero = facet_counts.count %>
+
+<%# iterate through the resource_types and update the count of resource_types from the facet_counts hash. %>
+<% resource_types.each.with_index do |(k,v), i| %>
+  <% v[0] = facet_counts[k] if facet_counts[k].present? %>
+<% end %>
+
+<% if count_of_resource_types_greater_than_zero > 0 %>
+  <div class='stats-color-block container-fluid pt-30 pb-30 mb-40'>
+    <div class="row">
+      <div class="col-md-12">
+        <% if count_of_resource_types_greater_than_zero <= 6 %>
+          <%= render partial: 'resource_type_stats', locals: { resource_types: resource_types } %>
+        <% else %>
+          <%= render partial: 'resource_type_slider', locals: { resource_types: resource_types } %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

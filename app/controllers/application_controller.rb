@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
   include Hyrax::ThemedLayoutController
   with_themed_layout '1_column'
 
-  helper_method :current_account, :admin_host?
+  helper_method :current_account, :admin_host?, :home_page_theme, :show_page_theme, :search_results_theme
   before_action :authenticate_if_needed
   before_action :require_active_account!, if: :multitenant?
   before_action :set_account_specific_connections!
@@ -109,6 +109,19 @@ class ApplicationController < ActionController::Base
                            else
                              Account.single_tenant_default
                            end
+    end
+
+    # Find themes set on Site model, or return default
+    def home_page_theme
+      current_account.sites&.first&.home_theme || 'default_home'
+    end
+
+    def show_page_theme
+      current_account.sites&.first&.show_theme || 'default_show'
+    end
+
+    def search_results_theme
+      current_account.sites&.first&.search_theme || 'list_view'
     end
 
     # Add context information to the lograge entries

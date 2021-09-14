@@ -1,0 +1,7 @@
+# frozen_string_literal: true
+
+<% if display_content_block? @home_text %>
+  <div class="home_page_text">
+    <%= displayable_content_block @home_text, class: 'col-sm-3 home_page_text' %>
+  </div>
+<% end %>

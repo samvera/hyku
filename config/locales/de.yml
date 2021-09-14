@@ -14,6 +14,8 @@ de:
         submit: Suche
       page_size:
         submit: Aktualisieren
+      remove_role_from_group:
+        submit: Entfernen
       revoke_membership:
         submit: Entfernen
       user_search:
@@ -53,14 +55,28 @@ de:
         label:
           actions: Aktionen
           created_at: Erstellungsdatum
+          description: Beschreibung
+          humanized_name: Name
           members: Benutzer
           name: Name
           per_page: pro Seite
+          roles: Rollen
         nav:
           attributes: Beschreibung
           delete: Entfernen
           index: Rückkehr zu Gruppen verwalten
           members: Benutzer
+          roles: Rollen
+        roles:
+          add: Hinzufügen
+          label:
+            action: Aktion
+            description: Beschreibung
+            name: Rolle
+          remove: Entfernen
+          title:
+            add_group_roles: Rollen zur Gruppe hinzufügen
+            current_group_roles: Aktuelle Gruppenrollen
         title:
           add_user: Benutzer zur Gruppe hinzufügen
           delete: Gruppe entfernen "%{group}"
@@ -70,7 +86,9 @@ de:
           members: Gruppenmitglieder
           new: Neue Gruppe
           remove: Gruppe entfernen
+          roles: Gruppenrollen
       title: Verwaltung
+      work_types: Verfügbare Arbeitstypen
     footer:
       admin_login: Administratorenlogin
     proprietor:
@@ -101,11 +119,34 @@ de:
     admin:
       appearances:
         show:
+          forms:
+            banner_image:
+              hint: Um ein Bild als Masthead-Hintergrund zu verwenden, sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das mindestens 120 Pixel hoch und 1200 Pixel breit ist. Verwenden Sie für optimale Ergebnisse ein Bild mit einer Breite von mindestens 1800 Pixel.
+            custom_css:
+              confirm: Benutzerdefiniertes CSS überschreibt immer andere Themenauswahlen. Vorgehen?
+              warning: Wenn Ihre Themenanpassungen nicht korrekt angewendet werden, stellen Sie sicher, dass sie nicht von benutzerdefiniertem CSS überschrieben werden.
+            default_images:
+              alert: Bitte laden Sie vor dem Absenden mindestens eine Datei hoch.
+              hint: Für Standardbilder sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das die gleichen Abmessungen für Höhe und Breite aufweist (100 Pixel breit und 100 Pixel hoch).
+            directory_image:
+              hint: Um ein Bild als Verzeichnisbild zu verwenden, sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das nicht höher als der Header und nicht breiter als 400 Pixel ist.
+            logo_image:
+              hint: Um ein Bild als Logo zu verwenden, sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das nicht höher als der Header und nicht breiter als 400 Pixel ist.
+            themes:
+              confirm: Wenn Ihr Thema nicht richtig angewendet wird, stellen Sie sicher, dass es nicht von benutzerdefiniertem CSS überschrieben wird.
           hints:
             banner_image: Um ein Bild als Überschriften-Hintergrund zu verwenden, solltest du ein Bild (JPG, GIF oder PNG) verwenden, das mindestens 120 Pixel hoch und 1200 Pixel breit ist. Für beste Ergebnisse verwenden Sie ein Bild mindestens 1800 Pixel breit.
+            default_image: Für Standardbilder sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das die gleiche Höhe und Breite hat (100 Pixel breit und 100 Pixel hoch).
+            directory_image: Um ein Bild als Verzeichnisbild zu verwenden, sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das nicht größer als der Header und nicht breiter als 400 Pixel ist.
+            logo_image: Um ein Bild als Logo zu verwenden, sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das nicht größer als die Kopfzeile und nicht breiter als 400 Pixel ist.
           tabs:
             banner_image: Banner Bild
             colors: Farben
+            custom_css: Maßgeschneidert CSS
+            default_images: Standardbilder
+            directory_image: Verzeichnis Bild
+            fonts: Schriftarten
+            themes: Themen
       sidebar:
         accounts: Konten
         activity_summary: Aktivitätsübersicht
@@ -134,28 +175,27 @@ de:
   proprietor:
     accounts:
       edit:
-        fcrepo_endpoint: Fedora Endpunkt
+        fcrepo_endpoint: Fedora-Endpunkt
         header: Konto bearbeiten
-        solr_endpoint: Solr Endpunkt
+        solr_endpoint: Solr-Endpunkt
       index:
         cname: CNAME
-        confirm_delete: Sind Sie sicher, dass Sie dieses Repository löschen möchten?
+        confirm_delete: Möchten Sie dieses Repository wirklich löschen? ALLE SAMMLUNGEN UND ARBEITEN in diesem Repository werden dauerhaft gelöscht
         create_new: Neuen Account erstellen
         header: Konten
         manage: Verwalten
-        tenant: Mandant (UUID)
+        tenant: Mieter (UUID)
       new:
-        header: Erstellen Sie ein neues Repositorium
+        header: Erstellen Sie ein neues Repository
       show:
         add: Hinzufügen
         current_admins:
           actions: Aktion
-          email: E-Mail-Addresse
-          header: Aktuelle Account Administratoren
           no_admins: Es sind keine Administratoren vorhanden
         edit: Konto bearbeiten
         header: Konto verwalten
         remove: Entfernen
+        update: Aktualisieren
   status:
     index:
       services: Dienste

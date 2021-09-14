@@ -1,0 +1,166 @@
+.neutral_repository {
+
+  ////// Basic Apperance Styles //////
+
+  .mb-40 {
+    margin-bottom: 40px;
+  }
+
+  .pb-30 {
+    padding-bottom: 30px;
+  }
+
+  .p-20 {
+    padding: 20px;
+  }
+
+  .p-10 {
+    padding: 10px;
+  }
+
+  // removes the blur on the banner image
+
+  .image-masthead .background-container {
+    -webkit-filter: none;
+    filter: none;
+  }
+
+  ////// Collections Section //////
+
+  .collection-item-title,
+  .recent-doc-title {
+    text-align: center;
+
+    h3 {
+      cursor: default;
+      font-size: 14px !important;
+      pointer-events: none;
+      text-decoration: none;
+
+      a {
+        color: #000000;
+      }
+    }
+  }
+
+  .neutral-repository-collections,
+  .recently-uploaded,
+  .featured-researcher {
+
+    a {
+      img {
+        display: block;
+        height: auto;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 100%;
+      }
+    }
+  }
+
+  ////// Recent Uploads Section //////
+
+  div.neutral_repository.recently-uploaded {
+    background-color: #fff;
+    border: 1px solid #ddd;
+  }
+
+  .recent-uploads-div-height {
+    display: flex;
+    flex-direction: column;
+  }
+
+  div.recently-uploaded:nth-child(2n+3) {
+    clear: left;
+  }
+
+  ////// Home Page text Section //////
+
+  div.home_page_text.homepage-text-container {
+    background-color: #fff;
+    border: 1px solid #ddd;
+  }
+
+  .home_page_text::first-line {
+    font-size: 24px;
+  }
+
+  .home_page_text {
+    font-size: 18px;
+  }
+
+  ////// Featured Researcher Section //////
+
+  div.neutral_repository.featured-researcher {
+    background-color: #fff;
+    border: 1px solid #ddd;
+  }
+
+  ////// Carousel //////
+
+  #featured-carousel {
+    border: 1px solid #ccc;
+    padding: 1em;
+  }
+
+  .carousel-opacity {
+    background-color: rgba(102, 102, 102, 0.5) !important;
+  }
+
+  .carousel-inner > .item > img,
+  .carousel-inner > .item > a > img {
+    display: block;
+    height: 350px;
+    margin: auto;
+    max-width: 100%;
+    width: auto;
+  }
+
+  div.carousel-caption {
+    a {
+      color: #ffffff;
+      text-decoration: none;
+    }
+  }
+
+  // Note: copied over to override /* line 109, /usr/local/rvm/gems/ruby-2.5.3/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_carousel.scss */
+  .carousel-control.left {
+    background-image: none;
+    filter: none;
+  }
+
+  // Note: copied over to override /* line 112, /usr/local/rvm/gems/ruby-2.5.3/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_carousel.scss */
+  .carousel-control.right {
+    background-image: none;
+    background-repeat: repeat-x;
+    filter: none;
+    left: auto;
+    right: 0;
+    z-index: 10;
+  }
+
+  .glyphicon-menu-right,
+  .glyphicon-menu-left {
+    color: #555;
+    display: inline-block;
+    font-weight: 700;
+    margin-top: -10px;
+    position: absolute;
+    top: 50%;
+    z-index: 5;
+  }
+
+  ////// Media Queries //////
+
+  @media (max-width: $screen-md-min) {
+    div.neutral-repository-collections:nth-of-type(2n+3) {
+      clear: left;
+    }
+  }
+
+  @media (min-width: $screen-md-min) {
+    div.neutral-repository-collections:nth-of-type(3n+4) {
+      clear: left;
+    }
+  }
+}

@@ -1,0 +1,288 @@
+.institutional_repository {
+
+  ////// Basic Apperance Styles //////
+
+  .mt-40 {
+    margin-top: 40px;
+  }
+
+  .mb-40 {
+    margin-bottom: 40px;
+  }
+
+  .pt-30 {
+    padding-top: 30px;
+  }
+
+  .pb-30 {
+    padding-bottom: 30px;
+  }
+
+  .pb-40 {
+    padding-bottom: 40px;
+  }
+
+  // removes the blur on the banner image
+  .image-masthead .background-container {
+    -webkit-filter: none;
+    filter: none;
+  }
+
+  ////// Navbar //////
+
+  // styles the top nav menu application name that is centered
+  .institutional-repository-application-name {
+    text-align: center;
+
+    span {
+      color: #fff;
+      font-size: 20px;
+      line-height: 50px !important;
+      vertical-align: middle;
+    }
+  }
+
+  // styles the search bar label in the navbar
+  div.form-group > label.control-label.col-sm-6 {
+    color: #dcdcdc;
+    font-weight: 400 !important;
+  }
+
+  // removes the margin-right: 15px since a duplicate style
+  ul#user_utility_links.navbar-right {
+    margin-right: 0 !important;
+  }
+
+  // for the navbar to sit 100% width for the columns to play responsively
+  // line 2, /home/app/webapp/app/assets/stylesheets/hyku.scss
+  #masthead #logo {
+    margin-left: 0 !important;
+  }
+
+  // for the navbar to sit 100% width for the columns to play responsively
+  // line 10, /home/app/webapp/app/assets/stylesheets/hyku.scss
+  #masthead .navbar-right {
+    margin-right: 0 !important;
+  }
+
+  ////// Recent Uploads //////
+
+  .section-border {
+    border: 1px solid #ddd;
+    padding: 30px;
+  }
+
+  .recent-uploads-div-height {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .institutional-repository-recent-uploads {
+    h3 {
+      margin-top: 0 !important;
+    }
+  }
+
+  div.recently-uploaded:nth-child(2n+3) {
+    clear: left;
+  }
+
+  div.recently-uploaded:nth-last-child(4),
+  div.recently-uploaded:last-child {
+    padding-bottom: 0 !important;
+  }
+
+  .collections-container,
+  .recently-uploaded {
+    a {
+      img {
+        display: block;
+        height: auto;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 100%;
+      }
+    }
+  }
+
+  ////// Collections Section //////
+  .collection-item-title,
+  .recent-doc-title {
+    text-align: center;
+
+    h3 {
+      cursor: default;
+      font-size: 14px !important;
+      pointer-events: none;
+      text-decoration: none;
+
+      a {
+        color: #000000;
+      }
+    }
+  }
+
+  div.institutional-repository-collections:nth-of-type(2n+3) {
+    clear: left;
+  }
+
+  ////// Stats Carousel //////
+
+  // home page stats not in carousel
+  .ir-stats {
+    display: flex;
+    justify-content: center;
+  }
+
+  .stats-color-block {
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #ddd;
+    margin-top: -25px;
+  }
+
+  .glyphicon-menu-right,
+  .glyphicon-menu-left {
+    color: #555;
+    display: inline-block;
+    font-weight: 700;
+    margin-top: -10px;
+    position: absolute;
+    top: 50%;
+    z-index: 5;
+  }
+
+  .institutional-repository-carousel {
+    .carousel-control {
+      background-image: none;
+      width: 4%;
+
+      .left {
+        margin-left: 0;
+      }
+
+      .right {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .institutional-repository-carousel .cloneditem-1,
+  .institutional-repository-carousel .cloneditem-2,
+  .institutional-repository-carousel .cloneditem-3 {
+    display: none;
+  }
+
+  .carousel .item .col-xs-12 {
+    padding: 0;
+  }
+
+  ////// All Collections //////
+
+  // browse by collection page
+  ul.all-collection-list {
+    font-size: 1.5em;
+    list-style-type: none;
+  }
+
+  ////// Stats Carousel Media Queries //////
+  @media only screen and (max-width: 992px) {
+    .carousel .item .col-xs-12:nth-last-child(-n+2) {
+      display: none;
+    }
+  }
+
+  @media all and (min-width: 768px) {
+    .institutional-repository-carousel .carousel-inner > .active.left,
+    .institutional-repository-carousel .carousel-inner > .prev {
+      left: -50%;
+    }
+
+    .institutional-repository-carousel .carousel-inner > .active.right,
+    .institutional-repository-carousel .carousel-inner > .next {
+      left: 50%;
+    }
+
+    .institutional-repository-carousel .carousel-inner > .left,
+    .institutional-repository-carousel .carousel-inner > .prev.right,
+    .institutional-repository-carousel .carousel-inner > .active {
+      left: 0;
+    }
+
+    .institutional-repository-carousel .carousel-inner .cloneditem-1 {
+      display: block;
+    }
+  }
+
+  @media all and (min-width: 768px) and (transform-3d),
+  all and (min-width: 768px) and (-webkit-transform-3d) {
+    .institutional-repository-carousel .carousel-inner > .item.active.right,
+    .institutional-repository-carousel .carousel-inner > .item.next {
+      left: 0;
+      -webkit-transform: translate3d(50%, 0, 0);
+      transform: translate3d(50%, 0, 0);
+    }
+
+    .institutional-repository-carousel .carousel-inner > .item.active.left,
+    .institutional-repository-carousel .carousel-inner > .item.prev {
+      left: 0;
+      -webkit-transform: translate3d(-50%, 0, 0);
+      transform: translate3d(-50%, 0, 0);
+    }
+
+    .institutional-repository-carousel .carousel-inner > .item.left,
+    .institutional-repository-carousel .carousel-inner > .item.prev.right,
+    .institutional-repository-carousel .carousel-inner > .item.active {
+      left: 0;
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @media all and (min-width: 992px) {
+    .institutional-repository-carousel .carousel-inner > .active.left,
+    .institutional-repository-carousel .carousel-inner > .prev {
+      left: -16.6%;
+    }
+
+    .institutional-repository-carousel .carousel-inner > .active.right,
+    .institutional-repository-carousel .carousel-inner > .next {
+      left: 16.6%;
+    }
+
+    .institutional-repository-carousel .carousel-inner > .left,
+    .institutional-repository-carousel .carousel-inner > .prev.right,
+    .institutional-repository-carousel .carousel-inner > .active {
+      left: 0;
+    }
+
+    .institutional-repository-carousel .carousel-inner .cloneditem-2,
+    .institutional-repository-carousel .carousel-inner .cloneditem-3 {
+      display: block;
+    }
+  }
+
+  @media all and (min-width: 992px) and (transform-3d),
+  all and (min-width: 992px) and (-webkit-transform-3d) {
+    .institutional-repository-carousel .carousel-inner > .item.active.right,
+    .institutional-repository-carousel .carousel-inner > .item.next {
+      left: 0;
+      -webkit-transform: translate3d(16.6%, 0, 0);
+      transform: translate3d(16.6%, 0, 0);
+    }
+
+    .institutional-repository-carousel .carousel-inner > .item.active.left,
+    .institutional-repository-carousel .carousel-inner > .item.prev {
+      left: 0;
+      -webkit-transform: translate3d(-16.6%, 0, 0);
+      transform: translate3d(-16.6%, 0, 0);
+    }
+
+    .institutional-repository-carousel .carousel-inner > .item.left,
+    .institutional-repository-carousel .carousel-inner > .item.prev.right,
+    .institutional-repository-carousel .carousel-inner > .item.active {
+      left: 0;
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+    }
+  }
+}

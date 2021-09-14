@@ -30,4 +30,8 @@ RSpec.describe Hyrax::ImagesController do
       expect(subject.manifest_url).to eq "http://test.host/concern/images/#{solr_document.id}/manifest"
     end
   end
+
+  context 'with theming' do
+    it { is_expected.to use_around_action(:inject_show_theme_views) }
+  end
 end

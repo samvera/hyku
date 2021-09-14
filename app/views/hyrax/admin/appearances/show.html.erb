@@ -25,172 +25,61 @@
           <a href="#font" role="tab" data-toggle="tab"><%= t('.tabs.fonts') %></a>
         </li>
         <li>
-          <a href="#css" role="tab" data-toggle="tab">Custom CSS</a>
+          <a href="#css" role="tab" data-toggle="tab"><%= t('.tabs.custom_css') %></a>
+        </li>
+        <li>
+          <a href="#themes" role="tab" data-toggle="tab">
+            <%= t('.tabs.themes') %>
+          </a>
         </li>
       </ul>
       <div class="tab-content">
 
         <div id="logo_image" class="tab-pane active">
           <div class="panel panel-default labels">
-            <%= simple_form_for @form, url: admin_appearance_path do |f| %>
-              <div class="panel-body">
-                <%# Upload Logo Image %>
-                <%= f.input :logo_image, as: :file, wrapper: :vertical_file_input, hint: t('.hints.logo_image') %>
-                <%= image_tag @form.logo_image.url, class: "img-responsive" if @form.logo_image? %>
-              </div>
-              <div class="panel-footer">
-                <%= f.button :submit, class: 'btn-primary pull-right' %>
-              </div>
-            <% end %>
-            <% if @form.logo_image? %>
-              <div class="panel-footer">
-                <%= simple_form_for @form.site, url: main_app.site_path(@form.site) do |f| %>
-                  <%= f.button :submit, 'Remove logo image', type: :submit, class: 'btn-danger', name: :remove_logo_image %>
-                <% end %>
-              </div>
-            <% end %>
+            <%= render 'logo_image_form' %>
           </div>
         </div>
 
         <div id="banner_image" class="tab-pane">
           <div class="panel panel-default labels">
-            <%= simple_form_for @form, url: admin_appearance_path do |f| %>
-              <div class="panel-body">
-                <%# Upload Banner Image %>
-                <%= f.input :banner_image, as: :file, wrapper: :vertical_file_input, hint: t('.hints.banner_image') %>
-                <%= image_tag @form.banner_image.url, class: "img-responsive" if @form.banner_image? %>
-              </div>
-              <div class="panel-footer">
-                <%= f.button :submit, class: 'btn-primary pull-right' %>
-              </div>
-            <% end %>
-            <% if @form.banner_image? %>
-              <div class="panel-footer">
-                <%= simple_form_for @form.site, url: main_app.site_path(@form.site) do |f| %>
-                  <%= f.button :submit, 'Remove banner image', type: :submit, class: 'btn-danger', name: :remove_banner_image %>
-                <% end %>
-              </div>
-            <% end %>
+            <%= render 'banner_image_form' %>
           </div>
         </div>
 
         <div id="directory_image" class="tab-pane">
           <div class="panel panel-default labels">
-            <%= simple_form_for @form, url: admin_appearance_path do |f| %>
-              <div class="panel-body">
-                <%# Upload Directory Image %>
-                <%= f.input :directory_image, as: :file, wrapper: :vertical_file_input, hint: t('.hints.directory_image') %>
-                <%= image_tag @form.directory_image.url, class: "img-responsive" if @form.directory_image? %>
-              </div>
-              <div class="panel-footer">
-                <%= f.button :submit, class: 'btn-primary pull-right' %>
-              </div>
-            <% end %>
-            <% if @form.directory_image? %>
-              <div class="panel-footer">
-                <%= simple_form_for @form.site, url: main_app.site_path(@form.site) do |f| %>
-                  <%= f.button :submit, 'Remove directory image', type: :submit, class: 'btn-danger', name: :remove_directory_image %>
-                <% end %>
-              </div>
-            <% end %>
+            <%= render 'directory_image_form' %>
           </div>
         </div>
 
-        <div id="default_images" class="tab-pane">
+        <div id="default_images" class="tab-pane" data-alert="<%= I18n.t('hyrax.admin.appearances.show.forms.default_images.alert') %>">
           <div class="panel panel-default labels">
-            <%= simple_form_for @form, url: admin_appearance_path do |f| %>
-              <div class="panel-body">
-                <%= f.input :default_collection_image, as: :file, wrapper: :vertical_file_input, hint: t('.hints.default_collection_image'), required: false %>
-                <%= image_tag @form.default_collection_image.url, class: "img-responsive" if @form.default_collection_image? %>
-
-                <%= f.input :default_work_image, as: :file, wrapper: :vertical_file_input, hint: t('.hints.default_work_image'), required: false %>
-                <%= image_tag @form.default_work_image.url, class: "img-responsive" if @form.default_work_image? %>
-              </div>
-              <div class="panel-footer">
-                <%= f.button :submit, class: 'btn-primary pull-right' %>
-              </div>
-            <% end %>
-            <% if @form.default_collection_image? %>
-              <div class="panel-footer">
-                <%= simple_form_for @form.site, url: main_app.site_path(@form.site) do |f| %>
-                  <%= f.button :submit, 'Remove default collection image', type: :submit, class: 'btn-danger', name: :remove_default_collection_image %>
-                <% end %>
-              </div>
-            <% end %>
-            <% if @form.default_work_image? %>
-              <div class="panel-footer">
-                <%= simple_form_for @form.site, url: main_app.site_path(@form.site) do |f| %>
-                  <%= f.button :submit, 'Remove default work image', type: :submit, class: 'btn-danger', name: :remove_default_work_image %>
-                <% end %>
-              </div>
-            <% end %>
+            <%= render 'default_images_form' %>
           </div>
         </div>
 
         <div id="color" class="tab-pane">
           <div class="panel panel-default labels">
-            <%= simple_form_for @form, url: admin_appearance_path do |f| %>
-              <div class="panel-body">
-                <%= f.input :header_background_color, required: false, input_html: { type: 'color' } %>
-                <%= f.input :header_text_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :searchbar_background_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :searchbar_background_hover_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :searchbar_text_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :searchbar_text_hover_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :link_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :link_hover_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :footer_link_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :footer_link_hover_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :primary_button_background_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :default_button_background_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :default_button_border_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :default_button_text_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :active_tabs_background_color, required: false, input_html: { type: 'color' }  %>
-                <%= f.input :facet_panel_background_color, required: false, input_html: { type: 'color' }, label: 'Search Sidebar Panel Background Color'  %>
-                <%= f.input :facet_panel_text_color, required: false, input_html: { type: 'color' }, label: 'Search Sidebar Panel Text Color'  %>
-              </div>
-              <div class="panel-footer">
-                <%= f.submit class: 'btn btn-primary pull-right' %>
-              </div>
-            <% end %>
+            <%= render 'default_colors_form' %>
           </div>
         </div>
 
         <div id="font" class="tab-pane">
           <div class="panel panel-default labels">
-            <%= simple_form_for @form, url: admin_appearance_path do |f| %>
-              <div class="panel-body">
-                <% font = f.object.body_font %>
-                <%= f.input :body_font, label: 'Select Body Font', required: false, input_html: { class: 'font-fields' } %>
-                <%= f.input :headline_font, label: 'Select Header Font', required: false %>
-              </div>
-              <div class="panel-footer">
-                <%= f.submit class: 'btn btn-primary pull-right' %>
-              </div>
-            <% end %>
+            <%= render 'default_fonts_form' %>
           </div>
         </div>
 
         <div id="css" class="tab-pane">
           <div class="panel panel-default labels">
-            <%= simple_form_for @form, url: admin_appearance_path do |f| %>
-              <div class="panel-body">
-                <%= f.input :custom_css_block, required: false, as: :text, label: 'Add Custom CSS Below' %>
-                <script>
-                  var custom_css_block = document.getElementById('admin_appearance_custom_css_block')
-                  var editor = CodeMirror.fromTextArea(custom_css_block, {
-                    mode: 'text/css',
-                    autofocus: true,
-                    lineNumbers: true,
-                    theme: 'base16-light',
-                    autoRefresh: true
-                  });
-                </script>
-              </div>
-              <div class="panel-footer">
-                <%= f.submit class: 'btn btn-primary pull-right' %>
-              </div>
-            <% end %>
+            <%= render 'custom_css_form' %>
+          </div>
+        </div>
+
+        <div id="themes" class="tab-pane">
+          <div class="panel panel-default labels">
+            <%= render 'theme_form' %>
           </div>
         </div>
       </div>

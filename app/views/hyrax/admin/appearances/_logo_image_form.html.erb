@@ -1,0 +1,17 @@
+<%= simple_form_for @form, url: admin_appearance_path do |f| %>
+  <div class="panel-body">
+    <%# Upload Logo Image %>
+    <%= f.input :logo_image, as: :file, wrapper: :vertical_file_input, hint: t('.forms.logo_image.hint') %>
+    <%= image_tag @form.logo_image.url, class: "img-responsive" if @form.logo_image? %>
+  </div>
+  <div class="panel-footer">
+    <%= f.submit class: 'btn btn-primary pull-right' %>
+  </div>
+<% end %>
+<% if @form.logo_image? %>
+  <div class="panel-footer">
+    <%= simple_form_for @form.site, url: main_app.site_path(@form.site) do |f| %>
+      <%= f.submit 'Remove logo image', class: 'btn btn-danger', name: :remove_logo_image %>
+    <% end %>
+  </div>
+<% end %>

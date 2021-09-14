@@ -1,0 +1,49 @@
+<% # OVERRIDE: Hyrax 2.9 template to remove the gradient overlay span, removed /controls partial, and added the share your work button for themeing %>
+<% content_for(:navbar) do %>
+  <div class="image-masthead">
+    <div class="background-container" style="background-image: url('<%= banner_image %>')"></div>
+
+    <div class="container site-title-container">
+      <div class="site-title h1" style="text-align: center;">
+        <%= render "hyrax/homepage/marketing" if controller_name == 'homepage' || controller_name == 'hyrax_contact_form' || controller_name == 'pages' %>
+      </div>
+      <div class="share-your-work-button">
+        <% if @presenter.display_share_button? %>
+          <div class="institutional-repository home_share_work row">
+            <div class="col-sm-12 text-center">
+              <% if signed_in? %>
+                <% if @presenter.create_many_work_types? %>
+                  <%= link_to '#',
+                    class: "btn btn-primary btn-lg",
+                    data: { behavior: 'select-work', target: '#worktypes-to-create', 'create-type' => 'single' } do %>
+                    <i class="glyphicon glyphicon-upload" aria-hidden="true"></i> <%= t('hyrax.share_button') %>
+                  <% end %>
+                <% else # simple link to the first work type %>
+                  <%= link_to new_polymorphic_path([main_app, @presenter.first_work_type]),
+                        class: 'btn btn-primary' do %>
+                    <i class="glyphicon glyphicon-upload" aria-hidden="true"></i> <%= t('hyrax.share_button') %>
+                  <% end %>
+                <% end %>
+              <% else %>
+                <%= link_to hyrax.my_works_path,
+                  class: "btn btn-primary btn-lg" do %>
+                  <i class="glyphicon glyphicon-upload" aria-hidden="true"></i> <%= t('hyrax.share_button') %>
+                <% end %>
+              <% end %>
+              <p><%= link_to t(:'hyrax.pages.tabs.terms_page'), hyrax.terms_path %></p>
+            </div>
+          </div>
+        <% end %>
+
+        <%= render '/shared/select_work_type_modal', create_work_presenter: @presenter.create_work_presenter if @presenter.draw_select_work_modal? %>
+      </div>
+    </div>
+  </div>
+  <%= render 'hyrax/homepage/ir_homepage_stats' if controller_name == 'homepage' %>
+<% end %>
+
+<% content_for(:precontainer_content) do %>
+  <%= render 'hyrax/homepage/announcement' if controller_name == 'homepage' %>
+<% end %>
+
+<%= render template: 'layouts/hyrax' %>

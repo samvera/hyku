@@ -22,7 +22,8 @@ class Account < ApplicationRecord
   validates :name, presence: true, uniqueness: true
   validates :tenant, presence: true,
                      uniqueness: true,
-                     format: { with: /\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/ }
+                     format: { with: /\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/ },
+                     unless: proc { |a| a.tenant == 'public' }
 
   def self.admin_host
     host = Settings.multitenancy.admin_host

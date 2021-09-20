@@ -88,8 +88,7 @@ module Proprietor
                                         admin_emails: [],
                                         solr_endpoint_attributes: %i[id url],
                                         fcrepo_endpoint_attributes: %i[id url base_path],
-                                        datacite_endpoint_attributes: %i[mode prefix username password]
-                                       )
+                                        datacite_endpoint_attributes: %i[mode prefix username password])
       end
   end
 end

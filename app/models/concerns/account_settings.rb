@@ -105,7 +105,7 @@ module AccountSettings
   end
 
   def live_settings
-    all_settings.reject { |k, v| v[:disabled] }
+    all_settings.reject { |_k, v| v[:disabled] }
   end
 
   private

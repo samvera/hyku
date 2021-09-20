@@ -123,10 +123,10 @@ group :aws do
 end
 
 gem 'bootstrap-datepicker-rails'
+gem "cocoon"
 gem 'codemirror-rails'
 gem 'parser', '~> 2.5.3'
 gem 'riiif', '~> 1.1'
 gem 'secure_headers'
 gem 'sidekiq'
 gem 'tether-rails'
-gem "cocoon"

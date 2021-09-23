@@ -5,7 +5,7 @@ Welcome to the Hyku development wiki!
   * [Amazon Web Services](#amazon-web-services)
     * [Cleanup](#cleanup)
   * [Docker](#docker)
-  * [[Creating Custom Themes]]
+  * [Custom Themes](#custom-themes)
 * [Management](#management)
 
 # Development
@@ -32,6 +32,9 @@ Welcome to the Hyku development wiki!
 ## Docker
 * [[Hyku on Docker]]
 * [[Running on docker]]
+
+## Custom Themes
+* [[Creating Custom Themes]]
 
 # Management
 * [[Create super admin user]]

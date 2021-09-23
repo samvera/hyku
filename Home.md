@@ -39,3 +39,4 @@ Welcome to the Hyku development wiki!
 * [[Give tenant user admin role]]
 * [[Issues with images not rendering]]
 * [[Import from purl]] (Stanford-specific)
+* [[Selecting Custom Themes]]

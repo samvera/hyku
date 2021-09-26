@@ -13,4 +13,8 @@ class NilEndpoint
   def remove!
     false
   end
+
+  def assign_attributes(attr)
+    false
+  end
 end

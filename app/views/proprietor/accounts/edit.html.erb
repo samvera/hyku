@@ -62,7 +62,7 @@
 
           <h3><%= t(".solr_endpoint") %></h3>
           <%= f.simple_fields_for :solr_endpoint do |s| %>
-            <%= s.input :url %>
+            <%= s.input :url, required: false %>
           <% end %>
 
           <% unless @account.search_only? %>

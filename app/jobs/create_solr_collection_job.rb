@@ -113,9 +113,10 @@ class CreateSolrCollectionJob < ApplicationJob
 
     def perform_for_cross_search_tenant(account, name)
       return if account.full_accounts.blank?
-      if account.saved_changes&.[]('created_at').present?
+      if account.saved_changes&.[]('created_at').present? || account.solr_endpoint.is_a?(NilSolrEndpoint)
         create_shared_search_collection(account.full_accounts.map(&:tenant).uniq, name)
         account.create_solr_endpoint(url: collection_url(name), collection: name)
+        account.save
       else
         solr_options = account.solr_endpoint.connection_options.dup
         RemoveSolrCollectionJob.perform_now(name, solr_options, 'cross_search_tenant')

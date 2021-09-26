@@ -68,11 +68,12 @@ module AccountSettings
       all_settings[name] = args
       private_settings << name if args[:private]
 
+      # watch out because false is a valid value to return here
       define_method(name) do
         value = super()
-        value ||= ENV.fetch("HYKU_#{name.upcase}", nil)
-        value ||= ENV.fetch("HYRAX_#{name.upcase}", nil)
-        value ||= args[:default]
+        value = value.nil? ? ENV.fetch("HYKU_#{name.upcase}", nil) : value
+        value = value.nil? ? ENV.fetch("HYRAX_#{name.upcase}", nil) : value
+        value = value.nil? ? args[:default] : value
         set_type(value, (args[:type]).to_s)
       end
     end
@@ -115,7 +116,7 @@ module AccountSettings
       when 'array'
         value.is_a?(String) ? value.split(',') : Array.wrap(value)
       when 'boolean'
-        value.is_a?(String) ? ['1', 'true'].include?(value) : value
+        ActiveModel::Type::Boolean.new.cast(value)
       when 'hash'
         value.is_a?(String) ? JSON.parse(value) : value
       when 'string'

@@ -116,7 +116,6 @@ module Proprietor
         hash.detect do |_k, v|
           ActiveModel::Type::Boolean.new.cast(v["_destroy"]) == true || v["id"].blank?
         end
-        end
       end
   end
 end

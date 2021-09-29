@@ -392,5 +392,15 @@ module Blacklight
     def opensearch_description_tag(title, href)
       tag :link, href: href, title: title, type: "application/opensearchdescription+xml", rel: "search"
     end
+
+    def generate_work_url(model, request)
+      request_protocol = request.protocol || 'http://'
+      account_cname = model["account_cname_tesim"].try(:first)
+      request_host = request.host
+      has_model = model["has_model_ssim"].first
+      id = model["id"]
+      request_port = request.port
+      "#{request_protocol}#{account_cname || request_host}/concern/#{has_model.downcase}s/#{id}"
+    end
   end
 end

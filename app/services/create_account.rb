@@ -40,10 +40,10 @@ class CreateAccount
   end
 
   def create_defaults
-    return if account.search_only?
-
     Hyrax::CollectionType.find_or_create_default_collection_type
     Hyrax::CollectionType.find_or_create_admin_set_type
+    return if account.search_only?
+
     AdminSet.find_or_create_default_admin_set_id
   end
 
@@ -75,6 +75,8 @@ class CreateAccount
   # Schedules jobs that will run automatically after
   # the first time they are called
   def schedule_recurring_jobs
+    return if account.search_only?
+
     EmbargoAutoExpiryJob.perform_later(account)
     LeaseAutoExpiryJob.perform_later(account)
   end

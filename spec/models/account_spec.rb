@@ -542,4 +542,39 @@ RSpec.describe Account, type: :model do
       end
     end
   end
+
+  describe 'cross tenant shared search' do
+    context 'settings keys' do
+      it 'has default value for #shared_search' do
+        expect(account.search_only).to eq false
+      end
+    end
+
+    context 'boolean method checks' do
+      it '#shared_search_enabled? defaults to true using Flipflop' do
+        expect(account.shared_search_enabled?).to be_truthy
+      end
+
+      it '#shared_search_tenant? defaults to false' do
+        expect(account.search_only?).to be_falsey
+      end
+    end
+
+    context 'can add and remove Full Account from shared search' do
+      let(:normal_account) { create(:account) }
+      let(:cross_search_solr) { create(:solr_endpoint, url: "http://solr:8983/solr/hydra-cross-search-tenant") }
+
+      let(:shared_search_account) { create(:account, search_only: true, full_account_ids: [normal_account.id], solr_endpoint: cross_search_solr, fcrepo_endpoint: nil) }
+
+      it 'contains full_account' do
+        expect(shared_search_account.full_accounts).to be_truthy
+        expect(shared_search_account.full_accounts.size).to eq 1
+      end
+
+      it 'removes full_account' do
+        shared_search_account.full_account_ids = []
+        expect(shared_search_account.full_accounts.size).to eq 0
+      end
+    end
+  end
 end

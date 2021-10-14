@@ -29,6 +29,7 @@ class SolrDocument
 
   attribute :extent, Solr::Array, solr_name('extent')
   attribute :rendering_ids, Solr::Array, solr_name('hasFormat', :symbol)
+  attribute :account_cname, Solr::Array, solr_name('account_cname')
 
   field_semantics.merge!(
     contributor: 'contributor_tesim',

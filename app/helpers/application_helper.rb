@@ -4,4 +4,5 @@ module ApplicationHelper
   include ::HyraxHelper
   include Hyrax::OverrideHelperBehavior
   include GroupNavigationHelper
+  include SharedSearchHelper
 end

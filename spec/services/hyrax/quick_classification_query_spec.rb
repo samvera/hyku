@@ -1,5 +1,6 @@
-# OVERRIDE FILE from Hyrax v2.9.0
+# frozen_string_literal: true
 
+# OVERRIDE FILE from Hyrax v2.9.0
 RSpec.describe Hyrax::QuickClassificationQuery do
   let(:user) { create(:user) }
 

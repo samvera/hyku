@@ -14,6 +14,8 @@ fr:
         submit: Aller
       page_size:
         submit: Mettre à jour
+      remove_role_from_group:
+        submit: Retirer
       revoke_membership:
         submit: Retirer
       user_search:
@@ -53,14 +55,28 @@ fr:
         label:
           actions: actes
           created_at: date créée
+          description: Description
+          humanized_name: Nom
           members: Utilisateurs
           name: prénom
           per_page: par page
+          roles: Les rôles
         nav:
           attributes: La description
           delete: Retirer
           index: Retourner à Gérer les groupes
           members: Utilisateurs
+          roles: Les rôles
+        roles:
+          add: Ajouter
+          label:
+            action: action
+            description: La description
+            name: Rôle
+          remove: Retirer
+          title:
+            add_group_roles: Ajouter des rôles au groupe
+            current_group_roles: Rôles de groupe actuels
         title:
           add_user: Ajouter l'utilisateur au groupe
           delete: Supprimer le groupe "%{group}"
@@ -70,7 +86,9 @@ fr:
           members: Les membres du groupe
           new: Nouveau groupe
           remove: Supprimer le groupe
+          roles: Rôles de groupe
       title: Administration
+      work_types: Types de travail disponibles
     footer:
       admin_login: Connexion Administrateur
     proprietor:
@@ -102,18 +120,34 @@ fr:
     admin:
       appearances:
         show:
+          forms:
+            banner_image:
+              hint: Pour utiliser une image comme arrière-plan d'une bannière Masthead, vous devez utiliser une image (JPG, GIF ou PNG) d'au moins 120 pixels de haut et 1 200 pixels de large. Pour de meilleurs résultats, utilisez une image d'au moins 1800 pixels de large.
+            custom_css:
+              confirm: Le CSS personnalisé remplacera toujours les autres sélections de thèmes. Procéder?
+              warning: Si vos personnalisations de thème ne semblent pas s'appliquer correctement, vérifiez qu'elles ne sont pas écrasées par CSS personnalisé.
+            default_images:
+              alert: Veuillez télécharger au moins un fichier avant de soumettre.
+              hint: Pour les images par défaut, vous devez utiliser une image (JPG, GIF ou PNG) qui a des dimensions de hauteur et de largeur égales (100 pixels de large et 100 pixels de haut)
+            directory_image:
+              hint: Pour utiliser une image comme image de répertoire, vous devez utiliser une image (JPG, GIF ou PNG) qui n'est pas plus haute que l'en-tête et pas plus large que 400 pixels de large.
+            logo_image:
+              hint: Pour utiliser une image comme logo, vous devez utiliser une image (JPG, GIF ou PNG) qui n'est pas plus haute que l'en-tête et pas plus large que 400 pixels de large.
+            themes:
+              confirm: Si votre thème ne semble pas s'appliquer correctement, vérifiez qu'il n'est pas écrasé par le CSS personnalisé.
           hints:
             banner_image: Pour utiliser une image en tant que fond de masthead, vous devez utiliser une image (JPG, GIF ou PNG) d'au moins 120 pixels de hauteur et 1200 pixels de largeur. Pour de meilleurs résultats, utilisez une image d'au moins 1800 pixels de largeur.
-            logo_image: Pour utiliser une image comme logo, vous devez utiliser une image (JPG, GIF ou PNG) qui n’est pas plus haute que l’en-tête et pas plus de 400 pixels de large.
-            directory_image: Pour utiliser une image en tant qu'image de répertoire, vous devez utiliser une image (JPG, GIF ou PNG) qui ne dépasse pas l'en-tête et ne soit pas plus large que 400 pixels de large.
             default_image: Pour les images par défaut, vous devez utiliser une image (JPG, GIF ou PNG) ayant des dimensions de hauteur et de largeur égales (100 pixels de largeur et 100 pixels de hauteur).
+            directory_image: Pour utiliser une image en tant qu'image de répertoire, vous devez utiliser une image (JPG, GIF ou PNG) qui ne dépasse pas l'en-tête et ne soit pas plus large que 400 pixels de large.
+            logo_image: Pour utiliser une image comme logo, vous devez utiliser une image (JPG, GIF ou PNG) qui n’est pas plus haute que l’en-tête et pas plus de 400 pixels de large.
           tabs:
             banner_image: Image de la bannière
-            directory_image: Image du répertoire
-            default_images: Images par défaut
             colors: Couleurs
             custom_css: Personnaliser CSS
+            default_images: Images par défaut
+            directory_image: Image du répertoire
             fonts: Les Polices
+            themes: Thèmes
       sidebar:
         accounts: Comptes
         activity_summary: Résumé de l'activité
@@ -148,7 +182,7 @@ fr:
         solr_endpoint: Solr Endpoint
       index:
         cname: CNAME
-        confirm_delete: Êtes-vous sûr de vouloir supprimer ce dépôt?
+        confirm_delete: Voulez-vous vraiment supprimer ce référentiel? TOUTES LES COLLECTIONS ET LES OEUVRES de ce référentiel seront SUPPRIMÉES DE MANIÈRE PERMANENTE
         create_new: Créer un nouveau compte
         header: Comptes
         manage: Gérer
@@ -159,12 +193,11 @@ fr:
         add: Ajouter
         current_admins:
           actions: action
-          email: Adresse e-mail
-          header: Administrateurs de compte actuels
           no_admins: Aucun administrateur n'existe
         edit: Modifier le compte
         header: Gérer son compte
         remove: Retirer
+        update: Mettre à jour
   status:
     index:
       services: Prestations de service

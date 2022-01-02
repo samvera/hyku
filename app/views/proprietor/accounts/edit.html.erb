@@ -34,6 +34,30 @@
             <%= s.input :base_path %>
           <% end %>
 
+          <% if current_account.doi_writer || current_account.doi_reader %>
+            <h3><%= t(".datacite_endpoint") %></h3>
+					  <%= f.fields_for :datacite_endpoint do |s| %>
+						  <%= s.input :mode, required: false  %>
+						  <%= s.input :prefix, required: false  %>
+						  <%= s.input :username, required: false  %>
+						  <%= s.input :password, input_html: { value: @account.datacite_endpoint.password }, required: false  %>
+					  <% end %>
+          <% end  %>
+
+          <h3><%= t(".account_settings") %></h3>
+
+					<%= f.fields_for :settings do |s| %>
+						<%= s.label "file_size_limit", required: false %><br>
+						<%= s.text_field 'file_size_limit', value: @account.settings['file_size_limit'], class: 'form-control' %>
+						<p class="help-block"><%= t("settings.helptexts.file_size_limit") %></p>
+					<% end %>
+
+					<%= f.fields_for :settings do |s| %>
+						<%= s.label "locale_name", required: false %><br>
+						<%= s.text_field 'locale_name', value: @account.settings['locale_name'], class: "form-control" %>
+						<p class="help-block"><%= t("settings.helptexts.locale_name") %></p>
+					<% end %>
+
           <%= f.submit class: 'btn btn-primary' %>
           <%= link_to t('simple_form.cancel'), proprietor_accounts_path, class: 'btn btn-link action-cancel' %>
         </div>

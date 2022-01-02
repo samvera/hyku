@@ -1,0 +1,57 @@
+<%# Override from hyrax 2.5.1 to add feature flags to show/hide:
+  featured researcher
+  featured works
+  recently_uploaded
+%>
+
+<div class="<%= @presenter.display_featured_works? || @presenter.display_recently_uploaded? ? 'home-tabs-left' : ''%>">
+  <ul id="homeTabs" class="nav nav-pills">
+    <%# add check for featured works %>
+    <% if @presenter.display_featured_works? %>
+      <li class="active"><a href="#featured_container" data-toggle="tab" role="tab" id="featureTab"><%= t('hyrax.homepage.featured_works.tab_label') %></a></li>
+    <% end %>
+    <%# add check for recently uploaded %>
+    <% if @presenter.display_recently_uploaded? %>
+      <li class="<%= @presenter.display_featured_works? ? '' : 'active' %>"><a href="#recently_uploaded" data-toggle="tab" role="tab" id="recentTab"><%= t('hyrax.homepage.recently_uploaded.tab_label') %></a></li>
+    <% end %>
+  </ul>
+  
+  <div class="tab-content">
+    <%# add check for featured works %>
+    <% if @presenter.display_featured_works? %>
+      <div class="tab-pane fade in active" id="featured_container" role="tabpanel" aria-labelledby="featureTab">
+        <%= render 'featured_works' %>
+      </div>
+    <% end %>
+    <%# add check for recently_uploaded %>
+    <% if @presenter.display_recently_uploaded? %>
+      <div class="<%= @presenter.display_featured_works? ? 'tab-pane fade' : 'tab-pane active in' %>" id="recently_uploaded" role="tabpanel" aria-labelledby="recentTab">
+        <%= render 'recently_uploaded', recent_documents: @recent_documents %>
+      </div>
+      <% end %>
+  </div>
+</div><!-- /.col-xs-6 -->
+
+<div class="home-tabs-right">
+  <ul class="nav nav-pills" role="tablist">
+    <li class="active"><a aria-expanded="true" href="#tab-col2-first" role="tab" data-toggle="tab"><%= t('hyrax.homepage.admin_sets.title') %></a></li>
+    <%# add check for featured researcher %>
+    <% if @presenter.display_featured_researcher? %>
+      <li class=""><a aria-expanded="false" href="#tab-col2-second" role="tab" data-toggle="tab"><%= t('hyrax.homepage.featured_researcher.tab_label') %></a></li>
+    <% end %>
+  </ul>
+
+  <div class="tab-content">
+    <div class="tab-pane active" id="tab-col2-first">
+      <h2 class="sr-only"><%= t('hyrax.homepage.admin_sets.title') %></h2>
+      <%= render 'explore_collections', collections: @presenter.collections %>
+    </div>
+    <%# add check for featured researcher %>
+    <% if @presenter.display_featured_researcher? %>
+      <div class="tab-pane" id="tab-col2-second">
+        <h2 class="sr-only"><%= t('hyrax.homepage.featured_researcher.title') %></h2>
+        <%= render 'featured_researcher' %>
+      </div>
+    <% end %>
+  </div>
+</div>

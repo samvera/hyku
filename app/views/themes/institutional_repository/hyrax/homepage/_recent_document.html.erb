@@ -1,0 +1,13 @@
+<h3 class="sr-only"><%= t('hyrax.homepage.recently_uploaded.document.title_label') %></h3>
+<%= link_to [main_app, recent_document] do %>
+  <div class="recently-uploaded col-xs-6 col-sm-6 col-md-6 pt-30 pb-30">
+    <%= render_thumbnail_tag(recent_document, {suppress_link: true}, class: 'img-responsive center-block') %>
+      <div class="recent-doc-title">
+      <%= link_to [main_app, recent_document] do %>
+        <h3>
+          <%= recent_document.to_s %>
+        </h3>
+      <% end %>
+    </div>
+  </div>
+<% end %>

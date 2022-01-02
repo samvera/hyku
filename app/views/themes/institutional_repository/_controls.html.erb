@@ -1,0 +1,22 @@
+<% # OVERRIDE: Hyrax 2.9 - added the admin login menu from _user_util_links partial for theming %>
+<nav class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container-fluid">
+    <div class="row">
+      <ul class="nav navbar-nav col-sm-5">
+        <li <%= 'class=active' if current_page?(hyrax.root_path) %>>
+          <%= link_to t(:'hyrax.controls.home'), hyrax.root_path, aria: current_page?(hyrax.root_path) ? {current: 'page'} : nil %></li>
+        <li <%= 'class=active' if current_page?(hyrax.about_path) %>>
+          <%= link_to t(:'hyrax.controls.about'), hyrax.about_path, aria: current_page?(hyrax.about_path) ? {current: 'page'} : nil %></li>
+        <li <%= 'class=active' if current_page?(hyrax.help_path) %>>
+          <%= link_to t(:'hyrax.controls.help'), hyrax.help_path, aria: current_page?(hyrax.help_path) ? {current: 'page'} : nil %></li>
+        <li <%= 'class=active' if current_page?(hyrax.contact_path) %>>
+          <%= link_to t(:'hyrax.controls.contact'), hyrax.contact_path, aria: current_page?(hyrax.contact_path) ? {current: 'page'} : nil %></li>
+      </ul><!-- /.nav -->
+      <% if admin_host? %>
+        <%= render '/admin_util_links' %>
+      <% else %>
+        <%= render '/user_util_links' %>
+      <% end %>
+    </div>
+  </div>
+</nav><!-- /.navbar -->

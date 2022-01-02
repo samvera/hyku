@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_29_105649) do
+ActiveRecord::Schema.define(version: 2021_09_04_215623) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,10 +25,14 @@ ActiveRecord::Schema.define(version: 2021_07_29_105649) do
     t.string "name"
     t.integer "redis_endpoint_id"
     t.boolean "is_public", default: false
+    t.jsonb "settings", default: {}
+    t.bigint "data_cite_endpoint_id"
     t.index ["cname", "tenant"], name: "index_accounts_on_cname_and_tenant"
     t.index ["cname"], name: "index_accounts_on_cname", unique: true
+    t.index ["data_cite_endpoint_id"], name: "index_accounts_on_data_cite_endpoint_id"
     t.index ["fcrepo_endpoint_id"], name: "index_accounts_on_fcrepo_endpoint_id", unique: true
     t.index ["redis_endpoint_id"], name: "index_accounts_on_redis_endpoint_id", unique: true
+    t.index ["settings"], name: "index_accounts_on_settings", using: :gin
     t.index ["solr_endpoint_id"], name: "index_accounts_on_solr_endpoint_id", unique: true
   end
 
@@ -140,7 +144,7 @@ ActiveRecord::Schema.define(version: 2021_07_29_105649) do
   end
 
   create_table "featured_works", id: :serial, force: :cascade do |t|
-    t.integer "order", default: 5
+    t.integer "order", default: 6
     t.string "work_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -550,6 +554,9 @@ ActiveRecord::Schema.define(version: 2021_07_29_105649) do
     t.text "available_works", default: [], array: true
     t.string "directory_image"
     t.string "contact_email"
+    t.string "home_theme"
+    t.string "show_theme"
+    t.string "search_theme"
   end
 
   create_table "subject_local_authority_entries", id: :serial, force: :cascade do |t|

@@ -1,0 +1,26 @@
+<% if @presenter.display_share_button? %><%# added share your work button -- made btn-default and added btn-sm per theming, modal code to make the share your work button work is located in themes/cultural_repository/layouts/hyrax.html.erb %>
+<div class="home_share_work row">
+  <div class="col-sm-12 text-center">
+    <% if signed_in? %>
+      <% if @presenter.create_many_work_types? %>
+        <%= link_to '#',
+          class: "btn btn-default btn-sm mt-20",
+          data: { behavior: 'select-work', target: '#worktypes-to-create', 'create-type' => 'single' } do %>
+          <i class="glyphicon glyphicon-upload" aria-hidden="true"></i> <%= t('hyrax.share_button') %>
+        <% end %>
+      <% else # simple link to the first work type %>
+        <%= link_to new_polymorphic_path([main_app, @presenter.first_work_type]),
+              class: "btn btn-default btn-sm mt-20" do %>
+          <i class="glyphicon glyphicon-upload" aria-hidden="true"></i> <%= t('hyrax.share_button') %>
+        <% end %>
+      <% end %>
+    <% else %>
+      <%= link_to hyrax.my_works_path,
+        class: "btn btn-default btn-sm mt-20" do %>
+        <i class="glyphicon glyphicon-upload" aria-hidden="true"></i> <%= t('hyrax.share_button') %>
+      <% end %>
+    <% end %>
+    <p><%= link_to t(:'hyrax.pages.tabs.terms_page'), hyrax.terms_path, class: 'cr_terms'  %></p>
+  </div>
+</div>
+<% end %>

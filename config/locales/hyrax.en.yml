@@ -1,11 +1,11 @@
 ---
 en:
   hyrax:
-    product_name:           "Hyku"
+    product_name: "Hyku"
     product_twitter_handle: "@HydraInABox"
-    institution_name:       "Institution"
-    institution_name_full:  "Institution"
-    account_name:           "Account Id"
+    institution_name: "Institution"
+    institution_name_full: "Institution"
+    account_name: "Account Id"
     directory:
       suffix: "@hydrainabox.org"
     footer:
@@ -28,7 +28,7 @@ en:
           no_works: The administrative set does not contain any works.
           title: List of items in this administrative set
         edit:
-          header: 'Edit Administrative Set: %{title}'
+          header: "Edit Administrative Set: %{title}"
         form:
           cancel: Cancel
           note: Users granted a new role will only gain the role on works that are deposited after that role has been granted.
@@ -79,9 +79,9 @@ en:
             title: Viewers
             type: Type
         form_participants:
-          add_group: 'Add group:'
+          add_group: "Add group:"
           add_participants: Add Participants
-          add_user: 'Add user:'
+          add_user: "Add user:"
           current_participants: Current Participants
         form_visibility:
           cancel: Cancel
@@ -93,15 +93,15 @@ en:
             title: Release
             varies:
               any: Depositor can choose any embargo length; leases are allowed
-              between: 'Depositor can choose embargo up to date:'
-              description: 'Allow depositor to choose settings:'
+              between: "Depositor can choose embargo up to date:"
+              description: "Allow depositor to choose settings:"
               embargo:
                 1yr: 1 year after deposit
                 2yrs: 2 years after deposit
                 3yrs: 3 years after deposit
                 6mos: 6 months after deposit
                 select: Select embargo period..
-              period: 'Depositor can choose embargo period up to:'
+              period: "Depositor can choose embargo period up to:"
           visibility:
             description: Set visibility policies for the administrative set. Setting honors embargo policies above.
             everyone: Public - depositor can only choose public visibility setting
@@ -173,7 +173,7 @@ en:
           update_notice: Participants Updated
         form_settings:
           instructions: These settings determine how collections of this type can be managed and discovered.
-          warning: 'Warning: These settings cannot be changed after a collection of this type has been created.'
+          warning: "Warning: These settings cannot be changed after a collection of this type has been created."
         index:
           breadcrumb: Collection Types
           create_new_button: Create new collection type
@@ -191,7 +191,7 @@ en:
             actions: Actions
             name: Name
         multiple_membership_checker:
-          error_preamble: 'Error: You have specified more than one of the same single-membership collection type '
+          error_preamble: "Error: You have specified more than one of the same single-membership collection type "
           error_type_and_collections: "(type: %{type}, collections: %{collections})"
         new:
           header: Create New Collection Type
@@ -229,7 +229,7 @@ en:
       stats:
         deposited_form:
           end_label: end [defaults to now]
-          heading: 'Display Files Deposited:'
+          heading: "Display Files Deposited:"
           start_label: Start
         repository_objects:
           series:
@@ -243,7 +243,7 @@ en:
         works:
           headers:
             main: Work Statistics
-            total: 'Total Works:'
+            total: "Total Works:"
             visibility: Totals by Visibility
       users:
         index:
@@ -263,7 +263,6 @@ en:
           header:
             roles: Roles
             user: User
-          new_role: Assign Role
           no_roles: No roles
       workflows:
         index:
@@ -290,10 +289,10 @@ en:
         default: You must be logged in to do that!
       unprocessable_entity:
         default: The resource you attempted to modify cannot be modified according to your request.
-    background_attribution_html: ''
+    background_attribution_html: ""
     base:
       citations:
-        header: 'Citations:'
+        header: "Citations:"
       form_child_work_relationships:
         actions:
           remove: Remove from this work
@@ -366,7 +365,7 @@ en:
         empty: This %{type} is not currently in any collections.
         header: Relationships
       relationships_parent_row:
-        label: 'In %{type}:'
+        label: "In %{type}:"
       show:
         last_modified: Last modified
       social_media:
@@ -438,7 +437,7 @@ en:
         create: Save
         create_new: Add to new Collection
         no_collections: You do not have access to any existing collections. You may create a new collection.
-        select_heading: 'Select the collection to add your files to:'
+        select_heading: "Select the collection to add your files to:"
         title: Add to collection
         update: Save changes
     collection_type:
@@ -485,10 +484,12 @@ en:
       tabs:
         announcement_text: Announcement Text
         featured_researcher: Featured Researcher
-        marketing_text: Banner Text
+        home_text: Home Page Text
+        marketing_text: Marketing Text
       instructions:
         announcement_instructions: Announcement Text displays on the homepage. It is for important or timely messages to be made prominently visible to all home page visitors. It would be appropriate to enter an announcement here, for example, to notify users about an upcoming planned maintenance outage of the system.
         featured_researcher_instructions: Featured Researcher is a space to enter information and on the home page reserved for highlighting repository users.
+        home_text_instructions: Home Page Text refers to the custom messaging that is displayed on the home page either in the hero block or another section of the home page. This text appears when selecting a theme that either requires or allows home page text. We recommend no more than 3 sentences in this area.
         marketing_instructions: Banner Text refers to the text that is displayed over banner image on the homepage. We recommend no more than approximately 30 characters or spaces in this text area.
       updated: Content blocks updated.
     controls:
@@ -516,7 +517,7 @@ en:
         select_type_of_collection: Select type of collection
       collections:
         edit:
-          header: 'Edit %{type_title}: %{title}'
+          header: "Edit %{type_title}: %{title}"
         form:
           permission_update_errors:
             error: Invalid update option for permission template.
@@ -653,20 +654,20 @@ en:
           view_collection: View collection
           work_confirmation: Deleting a work from %{application_name} is permanent. Click OK to delete this work from %{application_name}, or Cancel to cancel this operation
         collection_list:
-          description: 'Description:'
-          edit_access: 'Edit Access:'
-          groups: 'Groups:'
+          description: "Description:"
+          edit_access: "Edit Access:"
+          groups: "Groups:"
           managed_access:
             deposit: Deposit
             manage: Manage
             view: View
-          users: 'Users:'
+          users: "Users:"
         collections: Collections
         facet_label:
-          collections: 'Filter collections:'
-          highlighted: 'Filter highlights:'
-          shared: 'Filter shares:'
-          works: 'Filter works:'
+          collections: "Filter collections:"
+          highlighted: "Filter highlights:"
+          shared: "Filter shares:"
+          works: "Filter works:"
         heading:
           access: Access
           action: Actions
@@ -758,7 +759,7 @@ en:
         expired: Expired Active Embargoes
         manage_embargoes: Manage Embargoes
       list_expired_active_embargoes:
-        change_all: 'Change all files within %{cc} to '
+        change_all: "Change all files within %{cc} to "
         deactivate: Deactivate Embargo
         deactivate_selected: Deactivate Embargoes for Selected
         missing: There are no expired embargoes in effect at this time.
@@ -833,8 +834,8 @@ en:
         tab_label: Recently Uploaded
         title: Recently Uploaded
     icons:
-      collection: fa fa-bomb
-      default: fa fa-bomb
+      collection: fa fa-cubes
+      default: fa fa-cube
     leases:
       edit:
         header:
@@ -855,7 +856,7 @@ en:
         expired: Expired Active Leases
         manage_leases: Manage Leases
       list_expired_active_leases:
-        change_all: 'Change all files within %{cc} to '
+        change_all: "Change all files within %{cc} to "
         deactivate: Deactivate Lease
         deactivate_selected: Deactivate Leases for Selected
         missing: There are no expired leases in effect at this time.
@@ -1038,7 +1039,7 @@ en:
       default:
         deposit: Deposit
       load:
-        state_error: 'The workflow: %{workflow_name} has not been updated.  You are removing a state: %{state_name} with %{entity_count} entity/ies.  A state may not be removed while it has active entities!'
+        state_error: "The workflow: %{workflow_name} has not been updated.  You are removing a state: %{state_name} with %{entity_count} entity/ies.  A state may not be removed while it has active entities!"
       unauthorized: The work is not currently available because it has not yet completed the approval process
     works:
       create:
@@ -1095,7 +1096,7 @@ en:
         require_membership: A work must belong to at least one collection of this type
         sharable: Allow users to assign collection managers, depositors, and viewers for collections they manage
         share_applies_to_new_works: When new works are created directly in the collection, grant sharing users and groups permissions for the new work according to their collection roles.
-        title: ''
+        title: ""
       defaults:
         based_near: A place name related to the work, such as its site of publication, or the city, state, or country the work contents are about. Calls upon the <a href='http://www.geonames.org'>GeoNames web service</a>.
         contributor: A person or group you want to recognize for playing a role in the creation of the work, but not the primary role.

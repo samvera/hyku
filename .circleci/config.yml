@@ -6,7 +6,7 @@ jobs:
     parameters:
       ruby_version:
         type: string
-        default: 2.5.5
+        default: 2.7.4
       bundler_version:
         type: string
         default: '2.0.1'
@@ -84,6 +84,6 @@ workflows:
   ci:
     jobs:
       - bundle_lint_test:
-          ruby_version: "2.5.5"
-          name: "ruby2-5-5"
+          ruby_version: "2.7.4"
+          name: "ruby2-7-4"
           solr_config_path: 'solr/config'

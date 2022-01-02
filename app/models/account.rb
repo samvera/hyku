@@ -2,25 +2,28 @@
 
 # Customer organization account
 class Account < ApplicationRecord
-  # @param [String] piece the tenant piece of the canonical name
-  # @return [String] full canonical name
-  # @raise [ArgumentError] if piece contains a trailing dot
-  # @see Settings.multitenancy.default_host
-  def self.default_cname(piece)
-    return unless piece
-    raise ArgumentError, "param '#{piece}' must not contain trailing dots" if piece =~ /\.\Z/
-    default_host = Settings.multitenancy.default_host || "%{tenant}.#{admin_host}"
-    canonical_cname(format(default_host, tenant: piece.parameterize))
+  include AccountEndpoints
+  include AccountSettings
+  include AccountCname
+  attr_readonly :tenant
+
+  has_many :sites, dependent: :destroy
+  has_many :domain_names, dependent: :destroy
+  accepts_nested_attributes_for :domain_names, allow_destroy: true
+
+  scope :is_public, -> { where(is_public: true) }
+  scope :sorted_by_name, -> { order("name ASC") }
+
+  before_validation do
+    self.tenant ||= SecureRandom.uuid
+    self.cname ||= self.class.default_cname(name)
   end
 
-  # Canonicalize the account cname or request host for comparison
-  # @param [String] cname distinct part of host name
-  # @return [String] canonicalized host name
-  def self.canonical_cname(cname)
-    # DNS host names are case-insensitive. Trim trailing dot(s).
-    cname &&= cname.downcase.sub(/\.*\Z/, '')
-    cname
-  end
+  validates :name, presence: true, uniqueness: true
+  validates :tenant, presence: true,
+                     uniqueness: true,
+                     format: { with: /\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/ },
+                     unless: proc { |a| a.tenant == 'public' }
 
   def self.admin_host
     host = Settings.multitenancy.admin_host
@@ -41,35 +44,6 @@ class Account < ApplicationRecord
     joins(:domain_names).where(domain_names: { cname: tenant_list })
   end
 
-  attr_readonly :tenant
-  validates :name, presence: true, uniqueness: true
-  validates :tenant, presence: true, uniqueness: true
-
-  has_many :sites, dependent: :destroy
-  has_many :domain_names, dependent: :destroy
-  belongs_to :solr_endpoint, dependent: :delete
-  belongs_to :fcrepo_endpoint, dependent: :delete
-  belongs_to :redis_endpoint, dependent: :delete
-  accepts_nested_attributes_for :solr_endpoint, :fcrepo_endpoint, :redis_endpoint, update_only: true
-  accepts_nested_attributes_for :domain_names, allow_destroy: true
-
-  scope :is_public, -> { where(is_public: true) }
-  scope :sorted_by_name, -> { order("name ASC") }
-
-  before_validation do
-    self.tenant ||= SecureRandom.uuid
-    self.cname ||= self.class.default_cname(name)
-  end
-
-  # @return [Account]
-  def self.from_request(request)
-    from_cname(request.host)
-  end
-
-  def self.from_cname(cname)
-    joins(:domain_names).find_by(domain_names: { is_active: true, cname: canonical_cname(cname) })
-  end
-
   # @return [Account] a placeholder account using the default connections configured by the application
   def self.single_tenant_default
     @single_tenant_default ||= Account.from_cname('single.tenant.default')
@@ -77,6 +51,7 @@ class Account < ApplicationRecord
       a.build_solr_endpoint
       a.build_fcrepo_endpoint
       a.build_redis_endpoint
+      a.build_data_cite_endpoint
     end
     @single_tenant_default
   end
@@ -88,23 +63,15 @@ class Account < ApplicationRecord
     Apartment::Tenant.default_tenant == Apartment::Tenant.current
   end
 
-  def solr_endpoint
-    super || NilSolrEndpoint.new
-  end
-
-  def fcrepo_endpoint
-    super || NilFcrepoEndpoint.new
-  end
-
-  def redis_endpoint
-    super || NilRedisEndpoint.new
-  end
-
   # Make all the account specific connections active
   def switch!
     solr_endpoint.switch!
     fcrepo_endpoint.switch!
     redis_endpoint.switch!
+    data_cite_endpoint.switch!
+    # TOOD Settings.switch!(name: locale_name, settings: settings)
+    switch_host!(cname)
+    setup_tenant_cache(cache_api?)
   end
 
   def switch
@@ -115,9 +82,31 @@ class Account < ApplicationRecord
   end
 
   def reset!
+    setup_tenant_cache(cache_api?)
     SolrEndpoint.reset!
     FcrepoEndpoint.reset!
     RedisEndpoint.reset!
+    DataCiteEndpoint.reset!
+    # TODO: Settings.switch!
+    switch_host!(nil)
+  end
+
+  def switch_host!(cname)
+    Rails.application.routes.default_url_options[:host] = cname
+    Hyrax::Engine.routes.default_url_options[:host] = cname
+  end
+
+  def setup_tenant_cache(is_enabled)
+    Rails.application.config.action_controller.perform_caching = is_enabled
+    ActionController::Base.perform_caching = is_enabled
+    # rubocop:disable Style/ConditionalAssignment
+    if is_enabled
+      Rails.application.config.cache_store = :redis_cache_store, { url: Redis.current.id }
+    else
+      Rails.application.config.cache_store = :file_store, Settings.cache_filesystem_root
+    end
+    # rubocop:enable Style/ConditionalAssignment
+    Rails.cache = ActiveSupport::Cache.lookup_store(Rails.application.config.cache_store)
   end
 
   # Get admin emails associated with this account/site
@@ -137,20 +126,7 @@ class Account < ApplicationRecord
     end
   end
 
-  # Reader to convert old cname in to new domain name child object
-  def cname
-    self[:cname] || domain_names&.first&.canonicalize_cname
+  def cache_api?
+    cache_api
   end
-
-  # Writer to convert old cname in to new domain name child object
-  def cname=(value)
-    self[:cname] = value
-    domain_names.build(cname: value) unless domain_names.detect { |dn| dn.cname == value }
-  end
-
-  private
-
-    def default_cname(piece = name)
-      self.class.default_cname(piece)
-    end
 end

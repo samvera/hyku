@@ -5,7 +5,7 @@ pt-BR:
       site:
         institution_name_full: Nome completo da instituição
   application:
-    tagline: A solução de repositório de próxima geração
+    tagline: A solução de repos
   helpers:
     submit:
       add_user_to_group:
@@ -14,6 +14,8 @@ pt-BR:
         submit: Ir
       page_size:
         submit: Atualizar
+      remove_role_from_group:
+        submit: Remover
       revoke_membership:
         submit: Remover
       user_search:
@@ -53,14 +55,28 @@ pt-BR:
         label:
           actions: Ações
           created_at: Data Criada
+          description: Descrição
+          humanized_name: Nome
           members: Comercial
           name: Nome
           per_page: por página
+          roles: Funções
         nav:
           attributes: Descrição
           delete: Remover
           index: Retornar para gerenciar grupos
           members: Comercial
+          roles: Funções
+        roles:
+          add: Adicionar
+          label:
+            action: Açao
+            description: Descrição
+            name: Função
+          remove: Remover
+          title:
+            add_group_roles: Adicionar funções ao grupo
+            current_group_roles: Funções de grupo atuais
         title:
           add_user: Adicionar usuário ao grupo
           delete: Remove Group "%{group}"
@@ -70,7 +86,9 @@ pt-BR:
           members: Membros do grupo
           new: Novo grupo
           remove: Remover grupo
+          roles: Funções de grupo
       title: Administração
+      work_types: Tipos de trabalho disponíveis
     footer:
       admin_login: Login do administrador
     proprietor:
@@ -102,17 +120,34 @@ pt-BR:
     admin:
       appearances:
         show:
+          forms:
+            banner_image:
+              hint: Para usar uma imagem como plano de fundo do cabeçalho, você deve usar uma imagem (JPG, GIF ou PNG) com pelo menos 120 pixels de altura e 1200 pixels de largura. Para obter melhores resultados, use uma imagem com pelo menos 1800 pixels de largura.
+            custom_css:
+              confirm: CSS personalizado sempre substituirá outras seleções de temas. Continuar?
+              warning: Se suas personalizações de temas não parecem estar sendo aplicadas corretamente, verifique se elas não estão sendo substituídas pelo CSS personalizado.
+            default_images:
+              alert: Faça upload de pelo menos um arquivo antes de enviar.
+              hint: Para imagens padrão, você deve usar uma imagem (JPG, GIF ou PNG) que tenha dimensões iguais de altura e largura (100 pixels de largura e 100 pixels de altura)
+            directory_image:
+              hint: Para usar uma imagem como imagem do diretório, use uma imagem (JPG, GIF ou PNG) que não seja mais alta que o cabeçalho e que não tenha mais que 400 pixels de largura.
+            logo_image:
+              hint: Para usar uma imagem como logotipo, use uma imagem (JPG, GIF ou PNG) que não seja mais alta que o cabeçalho e que não tenha mais que 400 pixels de largura.
+            themes:
+              confirm: Se o seu tema não parece estar sendo aplicado corretamente, verifique se ele não está sendo substituído pelo CSS personalizado.
           hints:
             banner_image: Para usar uma imagem como um fundo de masthead, você deve usar uma imagem (JPG, GIF ou PNG) com pelo menos 120 pixels de altura e 1200 pixels de largura. Para obter melhores resultados, use uma imagem de pelo menos 1800 pixels de largura.
-            logo_image: Para usar uma imagem como logotipo, você deve usar uma imagem (JPG, GIF ou PNG) que não seja mais alta que o cabeçalho e não tenha mais de 400 pixels de largura.
-            directory_image: Para usar uma imagem como a imagem de diretório, você deve usar uma imagem (JPG, GIF ou PNG) que não seja mais alta que o cabeçalho e não tenha mais de 400 pixels de largura.
             default_image: Para imagens padrão, você deve usar uma imagem (JPG, GIF ou PNG) que tenha dimensões de altura e largura iguais (100 pixels de largura e 100 pixels de altura)
+            directory_image: Para usar uma imagem como a imagem de diretório, você deve usar uma imagem (JPG, GIF ou PNG) que não seja mais alta que o cabeçalho e não tenha mais de 400 pixels de largura.
+            logo_image: Para usar uma imagem como logotipo, você deve usar uma imagem (JPG, GIF ou PNG) que não seja mais alta que o cabeçalho e não tenha mais de 400 pixels de largura.
           tabs:
             banner_image: Imagem do banner
-            directory_image: Imagem do diretório
-            default_images: Imagens padrão
             colors: Cores
+            custom_css: CSS customizado
+            default_images: Imagens padrão
+            directory_image: Imagem do diretório
             fonts: Fontes
+            themes: Temas
       sidebar:
         accounts: Contas
         activity_summary: Resumo da atividade
@@ -136,28 +171,27 @@ pt-BR:
   proprietor:
     accounts:
       edit:
-        fcrepo_endpoint: Fedora Endpoint
+        fcrepo_endpoint: Ponto de extremidade do Fedora
         header: Editando conta
-        solr_endpoint: Solr Endpoint
+        solr_endpoint: Ponto final do Solr
       index:
         cname: CNAME
-        confirm_delete: Tem certeza de que deseja excluir esse repositório?
+        confirm_delete: Tem certeza de que deseja excluir este repositório? TODAS AS COLEÇÕES E TRABALHOS dentro deste repositório serão EXCLUÍDOS PERMANENTEMENTE
         create_new: Criar nova conta
         header: Contas
         manage: Gerir
-        tenant: Inquilino (UUID)
+        tenant: Locatário (UUID)
       new:
         header: Crie um novo repositório
       show:
         add: Adicionar
         current_admins:
           actions: Açao
-          email: Endereço de e-mail
-          header: Administradores de contas atuais
-          no_admins: Nenhum administrador existe
+          no_admins: Não existem administradores
         edit: Editar conta
-        header: Gerenciar Conta
+        header: Gerenciar conta
         remove: Remover
+        update: Atualizar
   status:
     index:
       services: Serviços

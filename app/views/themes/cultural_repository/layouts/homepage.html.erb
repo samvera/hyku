@@ -1,0 +1,27 @@
+<% # OVERRIDE: Hyrax 2.9 template to remove the render of the /controls partial, removed the background gradient span, and added share your work btn %>
+<% content_for(:navbar) do %>
+  <div class="image-masthead cultural-homepage">
+    <div class="background-container" style="background-image: url('<%= banner_image %>')"></div>
+
+    <div class="container">
+      <% if controller_name == 'homepage' %>
+      <div class="col-md-3 facet-panel-background-color mt-40 mb-40-0">
+        <%= render 'themes/cultural_repository/facets' %>
+      </div>
+      <% end %>
+
+      <div class="col-md-8 col-md-offset-1 site-title-container">
+        <div class="site-title h1 mb-40-0">
+          <%= render "hyrax/homepage/marketing" %>
+        </div>
+      </div>
+
+    </div>
+  </div>
+<% end %>
+
+<% content_for(:precontainer_content) do %>
+  <%= render 'hyrax/homepage/announcement' if controller_name == 'homepage' || controller_name == 'hyrax_contact_form' || controller_name == 'pages' %>
+<% end %>
+
+<%= render template: 'layouts/hyrax' %>

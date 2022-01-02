@@ -38,8 +38,7 @@ RSpec.describe 'Create a Image', js: true do
       login_as user
     end
 
-    # rubocop:disable RSpec/ExampleLength
-    it do
+    it do # rubocop:disable RSpec/ExampleLength
       visit '/dashboard'
       click_link "Works"
       click_link "Add new work"
@@ -76,6 +75,5 @@ RSpec.describe 'Create a Image', js: true do
       expect(page).to have_content('My Test Work')
       expect(page).to have_content "Your files are being processed by Hyku in the background."
     end
-    # rubocop:enable RSpec/ExampleLength
   end
 end

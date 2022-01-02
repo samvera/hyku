@@ -1,0 +1,25 @@
+<div class="container mb-40"><!--- BEGIN FEATURED WORKS/HOME TEXT SECTION -->
+  <div class="row">
+    <!-- Mobile style - Homepage Text Block - when on sm and xs render full width col-sm-12 -->
+    <div class="hidden-lg hidden-md col-sm-12 cultural-repository fill-height-flex">
+      <%= render 'themes/cultural_repository/home_text' if controller_name == 'homepage' %>
+    </div>
+    <% if display_content_block? @home_text %> <!-- if the content block is displayed then display the featured works section to be a 4 column layout on min-width medium col-md-8 and full width on sm and xs col-sm-12 -->
+      <div class="col-sm-12 col-md-8 cultural-repository featured-works-container">
+        <%= render 'themes/cultural_repository/layouts/share_your_work_row' if controller_name == 'homepage' %> <!-- render the sywb row in 4 column layout -->
+        <h4>Featured Works</h4>
+          <%= render 'themes/cultural_repository/hyrax/homepage/featured_works' %>
+      </div>
+    <% else %> <!-- if the content block is not displayed the show the featured works section as a full width 6 column layout col-sm-12 -->
+      <div class="col-sm-12 cultural-repository featured-works-container">
+        <%= render 'themes/cultural_repository/layouts/share_your_work_row' if controller_name == 'homepage' %> <!-- render the sywb row in 6 column layout -->
+        <h4>Featured Works</h4>
+        <%= render 'themes/cultural_repository/hyrax/homepage/featured_works' %>
+      </div>
+    <% end %>
+    <!-- Adding a desktop style for the homepage text content block, hidden on sm and xs -->
+    <div class="hidden-xs hidden-sm col-md-4 cultural-repository">
+      <%= render 'themes/cultural_repository/home_text' if controller_name == 'homepage' %>
+    </div>
+  </div>
+</div><!--- END FEATURED WORKS/HOME TEXT SECTION -->

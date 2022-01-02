@@ -14,6 +14,8 @@ it:
         submit: Partire
       page_size:
         submit: Aggiornare
+      remove_role_from_group:
+        submit: Rimuovere
       revoke_membership:
         submit: Rimuovere
       user_search:
@@ -53,14 +55,28 @@ it:
         label:
           actions: Azioni
           created_at: data di creazione
+          description: Descrizione
+          humanized_name: Nome
           members: utenti
           name: Nome
           per_page: per pagina
+          roles: Ruoli
         nav:
           attributes: Descrizione
           delete: Rimuovere
           index: Torna a Gestisci Gruppi
           members: utenti
+          roles: Ruoli
+        roles:
+          add: Inserisci
+          label:
+            action: Azione
+            description: Descrizione
+            name: Ruolo
+          remove: Rimuovere
+          title:
+            add_group_roles: Aggiungi ruoli al gruppo
+            current_group_roles: Ruoli attuali del gruppo
         title:
           add_user: Aggiungi utente a gruppo
           delete: Rimuovi gruppo "%{group}"
@@ -70,7 +86,9 @@ it:
           members: Membri del gruppo
           new: Nuovo gruppo
           remove: Rimuovi gruppo
+          roles: Ruoli del gruppo
       title: Amministrazione
+      work_types: Tipi di lavoro disponibili
     footer:
       admin_login: Accesso amministratore
     proprietor:
@@ -102,18 +120,34 @@ it:
     admin:
       appearances:
         show:
+          forms:
+            banner_image:
+              hint: Per utilizzare un'immagine come sfondo di masthead, è necessario utilizzare un'immagine (JPG, GIF o PNG) alta almeno 120 pixel e larga 1200 pixel. Per risultati ottimali, utilizzare un'immagine larga almeno 1800 pixel.
+            custom_css:
+              confirm: I CSS personalizzati sostituiranno sempre altre selezioni di temi. Procedere?
+              warning: Se le personalizzazioni dei temi non sembrano essere applicate correttamente, verifica che non vengano sovrascritte dal CSS personalizzato.
+            default_images:
+              alert: Carica almeno un file prima di inviarlo.
+              hint: Per le immagini predefinite, è necessario utilizzare un'immagine (JPG, GIF o PNG) che abbia le stesse dimensioni in altezza e larghezza (100 pixel in larghezza e 100 pixel in altezza)
+            directory_image:
+              hint: Per utilizzare un'immagine come immagine di directory, è necessario utilizzare un'immagine (JPG, GIF o PNG) non più alta dell'intestazione e non più larga di 400 pixel.
+            logo_image:
+              hint: Per utilizzare un'immagine come logo, è necessario utilizzare un'immagine (JPG, GIF o PNG) non più alta dell'intestazione e non più larga di 400 pixel.
+            themes:
+              confirm: Se il tuo tema non sembra essere applicato correttamente, verifica che non venga sovrascritto dal CSS personalizzato.
           hints:
             banner_image: Per utilizzare un'immagine come sfondo di masthead, è consigliabile utilizzare un'immagine (JPG, GIF o PNG) di almeno 120 pixel di altezza e 1200 pixel di larghezza. Per ottenere risultati ottimali, utilizzare un'immagine di larghezza almeno 1800 pixel.
-            logo_image: Per usare un'immagine come logo, dovresti usare un'immagine (JPG, GIF o PNG) che non sia più alta dell'intestazione e non più larga di 400 pixel di larghezza.
-            directory_image: Per usare un'immagine come immagine della directory, dovresti usare un'immagine (JPG, GIF o PNG) che non sia più alta dell'intestazione e non più larga di 400 pixel di larghezza.
             default_image: Per le immagini predefinite, è necessario utilizzare un'immagine (JPG, GIF o PNG) che abbia le stesse dimensioni di altezza e larghezza (100 pixel di larghezza e 100 pixel di altezza)
+            directory_image: Per usare un'immagine come immagine della directory, dovresti usare un'immagine (JPG, GIF o PNG) che non sia più alta dell'intestazione e non più larga di 400 pixel di larghezza.
+            logo_image: Per usare un'immagine come logo, dovresti usare un'immagine (JPG, GIF o PNG) che non sia più alta dell'intestazione e non più larga di 400 pixel di larghezza.
           tabs:
             banner_image: Immagine banner
-            directory_image: Immagine della directory
-            default_images: Immagini predefinite
             colors: Colori
             custom_css: Personalizzare CSS
+            default_images: Immagini predefinite
+            directory_image: Immagine della directory
             fonts: Font
+            themes: Temi
       sidebar:
         accounts: conti
         activity_summary: Riepilogo attività
@@ -138,27 +172,26 @@ it:
     accounts:
       edit:
         fcrepo_endpoint: Fedora Endpoint
-        header: Modifica dell'account
+        header: Modifica account
         solr_endpoint: Solr Endpoint
       index:
         cname: CNAME
-        confirm_delete: Sei sicuro di voler eliminare questo repository?
+        confirm_delete: Sei sicuro di voler eliminare questo repository? TUTTE LE COLLEZIONI E LE OPERE all'interno di questo repository verranno ELIMINATE PERMANENTAMENTE
         create_new: Crea un nuovo account
         header: conti
         manage: Gestire
-        tenant: Tenente (UUID)
+        tenant: Locatario (UUID)
       new:
         header: Crea un nuovo repository
       show:
         add: Inserisci
         current_admins:
           actions: Azione
-          email: Indirizzo email
-          header: Amministratori dell'account corrente
           no_admins: Nessun amministratore esiste
         edit: Modifica account
         header: Gestisci profilo
         remove: Rimuovere
+        update: Aggiornare
   status:
     index:
       services: Servizi

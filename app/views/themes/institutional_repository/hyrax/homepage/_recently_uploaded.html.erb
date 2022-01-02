@@ -1,0 +1,11 @@
+<div class="institutional-repository-recent-uploads col-sm-12 section-border mb-40 recent-uploads-div-height">
+  <div>
+    <h2 class="sr-only"><%= t('hyrax.homepage.recently_uploaded.title') %></h2>
+    <% if recent_documents.blank? %>
+      <p><%= t('.no_public') %></p>
+    <% else %>
+      <h3>Recent Uploads</h3>
+      <%= render partial: "themes/institutional_repository/hyrax/homepage/recent_document", collection: recent_documents %>
+    <% end %>
+  </div>
+</div>

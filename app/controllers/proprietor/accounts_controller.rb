@@ -114,7 +114,7 @@ module Proprietor
 
       def deleted_or_new(hash)
         hash.detect do |_k, v|
-          v["_destroy"] == 'true' || v["id"].blank?
+          ActiveModel::Type::Boolean.new.cast(v["_destroy"]) == true || v["id"].blank?
         end
       end
   end

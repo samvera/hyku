@@ -4,10 +4,8 @@
     <%= render_thumbnail_tag(recent_document, {suppress_link: true}, class: 'img-responsive center-block') %>
   <% end %>
   <div class="recent-doc-title">
-    <h3>
-      <%= link_to [main_app, recent_document] do %>
-        <%= recent_document.to_s %>
-      <% end %>
-    </h3>
+    <%= link_to [main_app, recent_document] do %>
+      <h3><%= recent_document.to_s %></h3>
+    <% end %>
   </div>
 </div>

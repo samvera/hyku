@@ -166,12 +166,6 @@
     }
   }
 
-  .institutional-repository-carousel .cloneditem-1,
-  .institutional-repository-carousel .cloneditem-2,
-  .institutional-repository-carousel .cloneditem-3 {
-    display: none;
-  }
-
   .carousel .item .col-xs-12 {
     padding: 0;
   }
@@ -185,6 +179,15 @@
   }
 
   ////// Stats Carousel Media Queries //////
+
+  @media (max-width: 767px) {
+    .institutional-repository-carousel .cloneditem-1,
+    .institutional-repository-carousel .cloneditem-2,
+    .institutional-repository-carousel .cloneditem-3 {
+      display: none;
+    }
+  }
+
   @media only screen and (max-width: 992px) {
     .carousel .item .col-xs-12:nth-last-child(-n+2) {
       display: none;

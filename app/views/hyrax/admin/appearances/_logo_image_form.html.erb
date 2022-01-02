@@ -1,7 +1,7 @@
 <%= simple_form_for @form, url: admin_appearance_path do |f| %>
   <div class="panel-body">
     <%# Upload Logo Image %>
-    <%= f.input :logo_image, as: :file, wrapper: :vertical_file_input, hint: t('.forms.logo_image.hint') %>
+    <%= f.input :logo_image, as: :file, wrapper: :vertical_file_input, hint: t('hyrax.admin.appearances.show.forms.logo_image.hint') %>
     <%= image_tag @form.logo_image.url, class: "img-responsive" if @form.logo_image? %>
   </div>
   <div class="panel-footer">

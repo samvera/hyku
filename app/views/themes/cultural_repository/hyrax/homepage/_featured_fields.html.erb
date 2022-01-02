@@ -5,11 +5,9 @@
     <% end %>
     <div class="featured-item-title">
       <span class="sr-only"><%= t('hyrax.homepage.featured_works.document.title_label') %></span>
-      <h3>
-        <%= link_to [main_app, featured] do %>
-          <%= featured.title.first %>
-        <% end %>
-      </h3>
+      <%= link_to [main_app, featured] do %>
+        <h3><%= featured.title.first %></h3>
+      <% end %>
     </div>
     <%# Removed featured-item-depositor %>
     <%# Removed item keywords %>

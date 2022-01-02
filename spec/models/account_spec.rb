@@ -553,11 +553,11 @@ RSpec.describe Account, type: :model do
 
     context 'boolean method checks' do
       it '#shared_search_enabled? defaults to true using Flipflop' do
-        expect(account.shared_search_enabled?).to be_truthy
+        expect(account).to be_shared_search_enabled
       end
 
       it '#shared_search_tenant? defaults to false' do
-        expect(account.search_only?).to be_falsey
+        expect(account).not_to be_search_only
       end
     end
 
@@ -565,7 +565,13 @@ RSpec.describe Account, type: :model do
       let(:normal_account) { create(:account) }
       let(:cross_search_solr) { create(:solr_endpoint, url: "http://solr:8983/solr/hydra-cross-search-tenant") }
 
-      let(:shared_search_account) { create(:account, search_only: true, full_account_ids: [normal_account.id], solr_endpoint: cross_search_solr, fcrepo_endpoint: nil) }
+      let(:shared_search_account) do
+        create(:account,
+               search_only: true,
+               full_account_ids: [normal_account.id],
+               solr_endpoint: cross_search_solr,
+               fcrepo_endpoint: nil)
+      end
 
       it 'contains full_account' do
         expect(shared_search_account.full_accounts).to be_truthy

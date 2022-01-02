@@ -552,10 +552,6 @@ RSpec.describe Account, type: :model do
     end
 
     context 'boolean method checks' do
-      it '#shared_search_enabled? defaults to true using Flipflop' do
-        expect(account).to be_shared_search_enabled
-      end
-
       it '#shared_search_tenant? defaults to false' do
         expect(account).not_to be_search_only
       end

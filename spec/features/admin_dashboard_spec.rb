@@ -34,7 +34,6 @@ RSpec.describe 'Admin Dashboard', type: :feature do
         expect(page).to have_link('Settings')
         # Need to click link to open collapsed menu
         click_link "Settings"
-        expect(page).to have_link('Contact')
         expect(page).to have_link('Labels')
         expect(page).to have_link('Appearance')
         expect(page).to have_link('Collection Types')

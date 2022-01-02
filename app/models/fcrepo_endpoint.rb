@@ -4,7 +4,7 @@ class FcrepoEndpoint < Endpoint
   store :options, accessors: %i[url base_path]
 
   def url
-    read_attribute(:url) || ActiveFedora.config&.credentials&.[](:url)
+    self[:url] || ActiveFedora.config&.credentials&.[](:url)
   end
 
   def switch!

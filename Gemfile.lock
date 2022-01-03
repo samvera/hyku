@@ -249,8 +249,6 @@ GEM
       csl (~> 1.6)
     clipboard-rails (1.7.1)
     cocoon (1.2.15)
-    code_analyzer (0.5.2)
-      sexp_processor
     codemirror-rails (5.16.0)
       railties (>= 3.0, < 6.0)
     coderay (1.1.3)

@@ -14,7 +14,7 @@ class NilEndpoint
     false
   end
 
-  def assign_attributes(attr)
+  def assign_attributes(_attr)
     false
   end
 end

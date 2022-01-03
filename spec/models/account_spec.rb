@@ -204,7 +204,8 @@ RSpec.describe Account, type: :model do
       expect(ActiveFedora::SolrService.instance.conn.uri.to_s).to eq previous_solr_url
       expect(ActiveFedora.fedora.host).to eq previous_fedora_host
       expect(Hyrax.config.redis_namespace).to eq previous_redis_namespace
-      expect(Hyrax::DOI::DataCiteRegistrar.mode).to eq previous_data_cite_mode
+      # datacite mode is reset to test in between for safety.
+      expect(Hyrax::DOI::DataCiteRegistrar.mode).to eq :test
       expect(Hyrax::DOI::DataCiteRegistrar.prefix).to eq previous_data_cite_prefix
       expect(Hyrax::DOI::DataCiteRegistrar.username).to eq previous_data_cite_username
       expect(Hyrax::DOI::DataCiteRegistrar.password).to eq previous_data_cite_password
@@ -564,7 +565,13 @@ RSpec.describe Account, type: :model do
       let(:normal_account) { create(:account) }
       let(:cross_search_solr) { create(:solr_endpoint, url: "http://solr:8983/solr/hydra-cross-search-tenant") }
 
-      let(:shared_search_account) { create(:account, search_only: true, full_account_ids: [normal_account.id], solr_endpoint: cross_search_solr, fcrepo_endpoint: nil) }
+      let(:shared_search_account) do
+        create(:account,
+               search_only: true,
+               full_account_ids: [normal_account.id],
+               solr_endpoint: cross_search_solr,
+               fcrepo_endpoint: nil)
+      end
 
       it 'contains full_account' do
         expect(shared_search_account.full_accounts).to be_truthy

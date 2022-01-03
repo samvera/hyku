@@ -1,4 +1,21 @@
-<div class="work-show">
-  <h4><%= t('hyrax.base.show.relationships') %></h4>
-  <%= render 'relationships_parent_rows', presenter: presenter %>
-</div>
+<% if !current_user && presenter.grouped_presenters.present? %>
+  <div class="work-show">
+    <h4><%= t('hyrax.base.show.relationships') %></h4>
+    <%= render 'relationships_parent_rows', presenter: presenter %>
+  </div>
+<% end %>
+<% if current_user %>
+  <div class="work-show">
+    <h4><%= t('hyrax.base.show.relationships') %></h4>
+    <%= presenter.attribute_to_html(:admin_set, render_as: :faceted, html_dl: true) %>
+    <% presenter.grouped_presenters(except: presenter.presenter_types).each_pair do |model_name, items| %>
+      <%= render 'relationships_parent_row', type: model_name, items: items, presenter: presenter %>
+    <% end %>
+    <%# Render grouped presenters. Show rows if there are any items of that type %>
+    <% presenter.presenter_types.each do |type| %>
+      <% presenter.grouped_presenters(filtered_by: type).each_pair do |_, items| %>
+        <%= render 'relationships_parent_row', type: type, items: items, presenter: presenter %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

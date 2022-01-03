@@ -43,7 +43,7 @@ RSpec.describe Admin::AccountsController, type: :controller do
           put :update, params: { account: new_attributes }
           account.reload
           expect(account.cname).to eq 'new.example.com'
-          expect(response).to redirect_to(edit_admin_account_path)
+          expect(response).to redirect_to(edit_admin_account_path(account))
         end
 
         it "assigns the requested account as @account" do

@@ -18,10 +18,9 @@ module SharedSearchHelper
   private
 
     def get_url(id:, request:, account_cname:, has_model:)
-      if Rails.env.development? || Rails.env.test?
-        "#{request[:request_protocol]}#{account_cname || request[:request_host]}:#{request[:request_port]}/concern/#{has_model}/#{id}"
-      else
-        "#{request[:request_protocol]}#{account_cname || request[:request_host]}/concern/#{has_model}/#{id}"
-      end
+      new_url = "#{request[:request_protocol]}#{account_cname || request[:request_host]}"
+      new_url += ":#{request[:request_port]}" if Rails.env.development? || Rails.env.test?
+      new_url += "/concern/#{has_model}/#{id}"
+      new_url
     end
 end

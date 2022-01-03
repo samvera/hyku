@@ -5,11 +5,9 @@
       <%= render_thumbnail_tag(collection, {suppress_link: true}, class: 'img-responsive center-block') %>
     <% end %>
     <div class="collection-item-title">
-      <h3>
-        <%= link_to [hyrax, collection] do %>
-          <%= collection.title_or_label %>
-        <% end %>
-      </h3>
+      <%= link_to [hyrax, collection] do %>
+        <h3><%= collection.title_or_label %></h3>
+      <% end %>
     </div>
   </div>
 <% end %>

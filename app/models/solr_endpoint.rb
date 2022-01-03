@@ -30,7 +30,11 @@ class SolrEndpoint < Endpoint
   # Remove the solr collection then destroy this record
   def remove!
     # Spin off as a job, so that it can fail and be retried separately from the other logic.
-    RemoveSolrCollectionJob.perform_later(collection, connection_options)
+    if account.search_only?
+      RemoveSolrCollectionJob.perform_later(collection, connection_options, 'cross_search_tenant')
+    else
+      RemoveSolrCollectionJob.perform_later(collection, connection_options)
+    end
     destroy
   end
 

@@ -5,7 +5,7 @@
 <div class="row">
   <div class="col-md-12">
     <div class="panel panel-default account-form">
-      <%= form_for(@account, :html => { class: 'form' }) do |f| %>
+      <%= simple_form_for([:admin, @account], url: admin_account_path, :html => { class: 'form' }) do |f| %>
         <div class="panel-body">
           <% if @account.errors.any? %>
             <div id="error_explanation">
@@ -23,14 +23,13 @@
             <%= f.text_field :tenant, class: 'form-control', readonly: @account.persisted? %>
           </div>
 
-          <div class="form-group">
-            <%= f.label :cname %><br>
-            <%= f.text_field :cname, class: 'form-control' %>
-          </div>
+          <% current_account.public_settings.each do |key, value| %>
+            <%= render 'shared/settings', f:f, key: key, value: value %>
+          <% end %>
 
-        </div>
-        <div class="panel-footer">
-          <%= f.submit class: 'btn btn-primary pull-right' %>
+          <div class="panel-footer">
+            <%= f.submit class: 'btn btn-primary pull-right' %>
+          </div>
         </div>
       <% end %>
     </div>

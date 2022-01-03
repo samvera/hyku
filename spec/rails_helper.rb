@@ -141,6 +141,8 @@ RSpec.configure do |config|
     DatabaseCleaner.clean_with(:truncation)
     Account.destroy_all
     CreateSolrCollectionJob.new.without_account('hydra-test') if ENV['IN_DOCKER']
+    CreateSolrCollectionJob.new.without_account('hydra-sample')
+    CreateSolrCollectionJob.new.without_account('hydra-cross-search-tenant', 'hydra-test, hydra-sample')
   end
 
   config.before do |example|

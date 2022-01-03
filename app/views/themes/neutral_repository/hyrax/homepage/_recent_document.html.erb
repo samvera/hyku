@@ -3,11 +3,9 @@
   <div class="recently-uploaded pb-30 col-xs-6 col-md-6">
     <%= render_thumbnail_tag(recent_document, {suppress_link: true}, class: 'img-responsive center-block') %>
       <div class="recent-doc-title">
-      <h3>
         <%= link_to [main_app, recent_document] do %>
-          <%= recent_document.to_s %>
+          <h3><%= recent_document.to_s %></h3>
         <% end %>
-      </h3>
     </div>
   </div>
 <% end %>

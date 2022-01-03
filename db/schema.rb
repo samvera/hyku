@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_04_215623) do
+ActiveRecord::Schema.define(version: 2021_09_20_065530) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "account_cross_searches", force: :cascade do |t|
+    t.bigint "search_account_id"
+    t.bigint "full_account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["full_account_id"], name: "index_account_cross_searches_on_full_account_id"
+    t.index ["search_account_id"], name: "index_account_cross_searches_on_search_account_id"
+  end
 
   create_table "accounts", id: :serial, force: :cascade do |t|
     t.string "tenant"
@@ -27,6 +36,7 @@ ActiveRecord::Schema.define(version: 2021_09_04_215623) do
     t.boolean "is_public", default: false
     t.jsonb "settings", default: {}
     t.bigint "data_cite_endpoint_id"
+    t.boolean "search_only", default: false
     t.index ["cname", "tenant"], name: "index_accounts_on_cname_and_tenant"
     t.index ["cname"], name: "index_accounts_on_cname", unique: true
     t.index ["data_cite_endpoint_id"], name: "index_accounts_on_data_cite_endpoint_id"
@@ -678,6 +688,8 @@ ActiveRecord::Schema.define(version: 2021_09_04_215623) do
     t.index ["work_id"], name: "index_work_view_stats_on_work_id"
   end
 
+  add_foreign_key "account_cross_searches", "accounts", column: "full_account_id"
+  add_foreign_key "account_cross_searches", "accounts", column: "search_account_id"
   add_foreign_key "accounts", "endpoints", column: "fcrepo_endpoint_id", on_delete: :nullify
   add_foreign_key "accounts", "endpoints", column: "redis_endpoint_id", on_delete: :nullify
   add_foreign_key "accounts", "endpoints", column: "solr_endpoint_id", on_delete: :nullify

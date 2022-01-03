@@ -1,0 +1,8 @@
+<% if value[:type] == 'array' %>
+  <% current_account.send(key).each do |sub_value| %>
+    <%= f.input key, value: sub_value %>
+  <% end %>
+<% elsif value[:type] == 'hash' %>
+<% else %>
+  <%= f.input key, as: value[:type] %>
+<% end %>

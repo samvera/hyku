@@ -204,7 +204,8 @@ RSpec.describe Account, type: :model do
       expect(ActiveFedora::SolrService.instance.conn.uri.to_s).to eq previous_solr_url
       expect(ActiveFedora.fedora.host).to eq previous_fedora_host
       expect(Hyrax.config.redis_namespace).to eq previous_redis_namespace
-      expect(Hyrax::DOI::DataCiteRegistrar.mode).to eq previous_data_cite_mode
+      # datacite mode is reset to test in between for safety.
+      expect(Hyrax::DOI::DataCiteRegistrar.mode).to eq :test
       expect(Hyrax::DOI::DataCiteRegistrar.prefix).to eq previous_data_cite_prefix
       expect(Hyrax::DOI::DataCiteRegistrar.username).to eq previous_data_cite_username
       expect(Hyrax::DOI::DataCiteRegistrar.password).to eq previous_data_cite_password
@@ -539,6 +540,43 @@ RSpec.describe Account, type: :model do
         PerTenantSmtpInterceptor.available_smtp_fields.each do |setting_name|
           expect(settings).to have_key(setting_name)
         end
+      end
+    end
+  end
+
+  describe 'cross tenant shared search' do
+    context 'settings keys' do
+      it 'has default value for #shared_search' do
+        expect(account.search_only).to eq false
+      end
+    end
+
+    context 'boolean method checks' do
+      it '#shared_search_tenant? defaults to false' do
+        expect(account).not_to be_search_only
+      end
+    end
+
+    context 'can add and remove Full Account from shared search' do
+      let(:normal_account) { create(:account) }
+      let(:cross_search_solr) { create(:solr_endpoint, url: "http://solr:8983/solr/hydra-cross-search-tenant") }
+
+      let(:shared_search_account) do
+        create(:account,
+               search_only: true,
+               full_account_ids: [normal_account.id],
+               solr_endpoint: cross_search_solr,
+               fcrepo_endpoint: nil)
+      end
+
+      it 'contains full_account' do
+        expect(shared_search_account.full_accounts).to be_truthy
+        expect(shared_search_account.full_accounts.size).to eq 1
+      end
+
+      it 'removes full_account' do
+        shared_search_account.full_account_ids = []
+        expect(shared_search_account.full_accounts.size).to eq 0
       end
     end
   end

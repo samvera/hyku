@@ -106,7 +106,7 @@ module AccountSettings
   end
 
   def live_settings
-    all_settings.reject { |k, v| v[:disabled] }
+    all_settings.reject { |_k, v| v[:disabled] }
   end
 
   private
@@ -141,12 +141,13 @@ module AccountSettings
     end
 
     def initialize_settings
+      return true unless self.class.column_names.include?('settings')
       set_smtp_settings
       reload_library_config
     end
 
     def set_smtp_settings
-      current_smtp_settings = self.smtp_settings.presence || {}
+      current_smtp_settings = settings&.[]("smtp_settings").presence || {}
       self.smtp_settings = current_smtp_settings.with_indifferent_access.reverse_merge!(
         PerTenantSmtpInterceptor.available_smtp_fields.each_with_object("").to_h
       )

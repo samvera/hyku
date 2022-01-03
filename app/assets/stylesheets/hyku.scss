@@ -19,29 +19,31 @@
 @media (min-width: $screen-sm-min) {
   .logo-set {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     flex-direction: column;
   }
-
   // sets the home page tabs to use flex rather than columns
   // allows full width if tabs are turned off with feature flipper
   .home-content {
     display: flex;
-    justify-content: space-between;
   }
-
   .home-tabs-left {
     min-width: 50%;
+  }
+  .home-tabs-right,
+  .home-tabs-left {
+    margin: 0 10px;
   }
 }
 
 #banner.jumbotron {
-  background: image_url('white-cloud-background.jpg') no-repeat;
-  background-color: $gray-lighter;
+  background: image_url("white-cloud-background.jpg") no-repeat;
   background-position: center;
+  height: 220px;
+  background-color: $gray-lighter;
   border: 0;
   font-family: $primary-font-family;
-  height: 220px;
   margin-bottom: 0;
   text-align: center;
 
@@ -60,7 +62,11 @@
   }
 
   .btn-sign-up {
-    @include button-variant($classic-white, $jumbotron-button-background-color, $jumbotron-button-background-color);
+    @include button-variant(
+      $classic-white,
+      $jumbotron-button-background-color,
+      $jumbotron-button-background-color
+    );
     border-radius: 3px;
     font-size: 0.7em;
     margin-top: 15px;
@@ -296,7 +302,7 @@ footer.navbar {
   padding: 0;
 }
 
-.hyc-bl-sort > form.per_page.form-horizontal {
+.hyc-bl-sort > .per_page.form-horizontal {
   border-bottom: 1px solid #ddd;
   margin-bottom: 1em;
   margin-left: 0;
@@ -304,13 +310,13 @@ footer.navbar {
   padding-bottom: 1em;
 }
 
-.hyc-bl-sort > form.per_page.form-horizontal::before,
-.hyc-bl-sort > form.per_page.form-horizontal::after {
-  content: " ";
+.hyc-bl-sort > .per_page.form-horizontal::before,
+.hyc-bl-sort > .per_page.form-horizontal::after {
   display: table;
+  content: " ";
 }
 
-.hyc-bl-sort > form.per_page.form-horizontal::after {
+.hyc-bl-sort > .per_page.form-horizontal::after {
   clear: both;
 }
 
@@ -319,10 +325,9 @@ footer.navbar {
   padding: 0;
 }
 
-
 #users > .panel {
   .panel-body {
-    padding-left: 0px;
+    padding-left: 0;
   }
 
   ul,
@@ -361,8 +366,8 @@ a.restore-default-color {
 
 .representative-media {
   display: block;
-  height: auto;
   max-width: 100%;
+  height: auto;
 }
 
 @media (min-width: $screen-lg-min) {
@@ -395,3 +400,17 @@ a.restore-default-color {
   }
 }
 
+// make sure that URLs don't go outside the container on all work-show pages
+.work-show ul.tabular li {
+  word-wrap: break-word;
+}
+
+// removes the extra whitespace extending past the sides of the page
+nav.navbar.navbar-default.navbar-static-top .container-fluid .row {
+  margin-left: 0;
+  margin-right: 0;
+
+  nav.navbar-nav.col-sm-5 {
+    padding-right: 0;
+  }
+}

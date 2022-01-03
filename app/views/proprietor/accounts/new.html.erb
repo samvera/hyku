@@ -19,6 +19,18 @@
             <% end %>
 
             <%= f.input :name %>
+            <%= f.input :search_only %>
+
+            <div class='hide' id='full_account_cross_container'>
+              <div id='full_acount_cross_searches'>
+                <%= f.simple_fields_for :full_account_cross_searches do |full_account_cross_search| %>
+                  <%= render 'full_account_cross_search_fields', f: full_account_cross_search %>
+                <% end %>
+                <div 'class='links'>
+                  <%= link_to_add_association 'Add account to search', f, :full_account_cross_searches %>
+                </div>
+              </div>
+            </div>
 
             <%= f.submit class: 'btn btn-primary' %>
             <%= link_to t('simple_form.cancel'), proprietor_accounts_path, class: 'btn btn-link action-cancel' %>

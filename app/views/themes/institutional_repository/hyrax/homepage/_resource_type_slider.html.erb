@@ -3,7 +3,7 @@
     <% resource_types.each.with_index do |(k,v), i| %>
       <% next if v[0].zero? %>
       <div class="item <%= i.zero? ? 'active' : '' %>">
-        <div class="col-xs-12 col-sm-4 col-md-2">
+        <div class="col-xs-12 col-sm-3 col-md-2">
           <div class="text-center">
             <i class='<%= "#{v[1]}" %>' aria-hidden="true"></i>
             <h5><%= k %></h5>

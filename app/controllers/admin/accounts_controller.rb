@@ -17,7 +17,7 @@ module Admin
     def update
       respond_to do |format|
         if @account.update(account_params)
-          format.html { redirect_to edit_admin_account_path, notice: 'Account was successfully updated.' }
+          format.html { redirect_to edit_admin_account_path(@account), notice: 'Account was successfully updated.' }
           format.json { render :show, status: :ok, location: root_url }
         else
           format.html { render :edit }
@@ -29,7 +29,7 @@ module Admin
     private
 
       def account_params
-        params.require(:account).permit(:name, :cname, :title)
+        params.require(:account).permit(:name, :cname, :title, *@account.public_settings.keys)
       end
 
       def set_current_account

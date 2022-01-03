@@ -5,8 +5,12 @@ class RemoveSolrCollectionJob < ApplicationJob
   # @param connection_options [Hash] options for connecting to solr.
   # @option connection_options [String] :url
   # @option connection_options [String] :url
-  def perform(collection, connection_options)
-    solr_client(connection_options).get '/solr/admin/collections', params: { action: 'DELETE', name: collection }
+  def perform(collection, connection_options, tenant_type = 'normal')
+    if tenant_type == 'cross_search_tenant'
+      solr_client(connection_options).get '/solr/admin/collections', params: { action: 'DELETEALIAS', name: collection }
+    else
+      solr_client(connection_options).get '/solr/admin/collections', params: { action: 'DELETE', name: collection }
+    end
   end
 
   private

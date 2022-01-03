@@ -1,9 +1,9 @@
 <%= simple_form_for @form, url: admin_appearance_path do |f| %>
   <div class="panel-body">
-    <%= f.input :default_collection_image, as: :file, wrapper: :vertical_file_input, hint: t('.forms.default_images.hint'), required: false %>
+    <%= f.input :default_collection_image, as: :file, wrapper: :vertical_file_input, hint: t('hyrax.admin.appearances.show.forms.default_images.hint'), required: false %>
     <%= image_tag @form.default_collection_image.url, class: "img-responsive" if @form.default_collection_image? %>
 
-    <%= f.input :default_work_image, as: :file, wrapper: :vertical_file_input, hint: t('.forms.default_images.hint'), required: false %>
+    <%= f.input :default_work_image, as: :file, wrapper: :vertical_file_input, hint: t('hyrax.admin.appearances.show.forms.default_images.hint'), required: false %>
     <%= image_tag @form.default_work_image.url, class: "img-responsive" if @form.default_work_image? %>
   </div>
   <div class="panel-footer">

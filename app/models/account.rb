@@ -9,10 +9,26 @@ class Account < ApplicationRecord
 
   has_many :sites, dependent: :destroy
   has_many :domain_names, dependent: :destroy
+  has_many :full_account_cross_searches,
+           class_name: 'AccountCrossSearch',
+           dependent: :destroy,
+           foreign_key: 'search_account_id',
+           inverse_of: :search_account
+  has_many :full_accounts, class_name: 'Account', through: :full_account_cross_searches
+  has_many :search_account_cross_searches,
+           class_name: 'AccountCrossSearch',
+           dependent: :destroy,
+           foreign_key: 'full_account_id',
+           inverse_of: :full_account
+  has_many :search_accounts, class_name: 'Account', through: :search_account_cross_searches
+
   accepts_nested_attributes_for :domain_names, allow_destroy: true
+  accepts_nested_attributes_for :full_accounts
+  accepts_nested_attributes_for :full_account_cross_searches, allow_destroy: true
 
   scope :is_public, -> { where(is_public: true) }
   scope :sorted_by_name, -> { order("name ASC") }
+  scope :full_accounts, -> { where(search_only: false) }
 
   before_validation do
     self.tenant ||= SecureRandom.uuid
@@ -70,7 +86,7 @@ class Account < ApplicationRecord
     redis_endpoint.switch!
     data_cite_endpoint.switch!
     switch_host!(cname)
-    setup_tenant_cache(cache_api?)
+    setup_tenant_cache(cache_api?) if self.class.column_names.include?('settings')
   end
 
   def switch
@@ -81,7 +97,7 @@ class Account < ApplicationRecord
   end
 
   def reset!
-    setup_tenant_cache(cache_api?)
+    setup_tenant_cache(cache_api?) if self.class.column_names.include?('settings')
     SolrEndpoint.reset!
     FcrepoEndpoint.reset!
     RedisEndpoint.reset!

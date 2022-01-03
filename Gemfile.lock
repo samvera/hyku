@@ -28,11 +28,11 @@ GIT
 
 GIT
   remote: https://github.com/tawan/active-elastic-job.git
-  revision: 5528edd973d6beb5343cf3b475a3b9d8bf649b9f
+  revision: ec51c5d9dedc4a1b47f2db41f26d5fceb251e979
   specs:
-    active_elastic_job (3.1.0)
+    active_elastic_job (2.0.1)
       aws-sdk-sqs (~> 1)
-      rails (>= 5.0, < 7)
+      rails (>= 4.2)
 
 GEM
   remote: https://rubygems.org/

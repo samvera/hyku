@@ -552,7 +552,7 @@ RSpec.describe Account, type: :model do
     end
 
     context 'boolean method checks' do
-       it '#shared_search_tenant? defaults to false' do
+      it '#shared_search_tenant? defaults to false' do
         expect(account).not_to be_search_only
       end
     end

@@ -39,7 +39,7 @@ class Account < ApplicationRecord
   validates :tenant, presence: true,
                      uniqueness: true,
                      format: { with: /\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/ },
-                     unless: proc { |a| a.tenant == 'public' }
+                     unless: proc { |a| a.tenant == 'public' || a.tenant == 'single' }
 
   def self.admin_host
     host = ENV.fetch('HYKU_ADMIN_HOST', nil)

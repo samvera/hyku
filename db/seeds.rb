@@ -7,15 +7,12 @@
 
 unless ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_MULTITENANT', false))
   puts "\n== Creating single tenant resources"
-  begin
-    single_tenant_default = Account.find_by(cname: 'single.tenant.default')
-    if single_tenant_default.blank?
-      single_tenant_default = Account.new(name: 'Single Tenant', cname: 'single.tenant.default', tenant: 'single', is_public: true)
-      CreateAccount.new(single_tenant_default).save
-      single_tenant_default = single_tenant_default.reload
-    end
-  # Rescue from any errors during creation
-  rescue
+  single_tenant_default = Account.find_by(cname: 'single.tenant.default')
+  if single_tenant_default.blank?
+    single_tenant_default = Account.new(name: 'Single Tenant', cname: 'single.tenant.default', tenant: 'single', is_public: true)
+    CreateAccount.new(single_tenant_default).save
+    raise "Account creation failed for #{single_tenant_default.errors.full_messages}" unless single_tenant_account.valid?
+    single_tenant_default = single_tenant_default.reload
   end
   AccountElevator.switch!(single_tenant_default.cname)
 

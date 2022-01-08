@@ -146,6 +146,9 @@ RSpec.configure do |config|
   end
 
   config.before do |example|
+    # make sure we are on the default fedora config
+    ActiveFedora::Fedora.reset!
+    ActiveFedora::SolrService.reset!
     # Pass `:clean' to destroy objects in fedora/solr and start from scratch
     ActiveFedora::Cleaner.clean! if example.metadata[:clean]
     if example.metadata[:type] == :feature && Capybara.current_driver != :rack_test

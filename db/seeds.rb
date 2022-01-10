@@ -11,7 +11,7 @@ unless ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_MULTITENANT', false))
   if single_tenant_default.blank?
     single_tenant_default = Account.new(name: 'Single Tenant', cname: 'single.tenant.default', tenant: 'single', is_public: true)
     CreateAccount.new(single_tenant_default).save
-    raise "Account creation failed for #{single_tenant_default.errors.full_messages}" unless single_tenant_account.valid?
+    raise "Account creation failed for #{single_tenant_default.errors.full_messages}" unless single_tenant_default.valid?
     single_tenant_default = single_tenant_default.reload
   end
   AccountElevator.switch!(single_tenant_default.cname)

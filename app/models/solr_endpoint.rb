@@ -40,7 +40,7 @@ class SolrEndpoint < Endpoint
 
   def self.reset!
     ActiveFedora::SolrService.reset!
-    Blacklight.connection_config = nil
+    Blacklight.connection_config = Blacklight.blacklight_yml[::Rails.env].symbolize_keys
     Blacklight.default_index = nil
   end
 end

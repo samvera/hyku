@@ -1,4 +1,4 @@
-ARG HYRAX_IMAGE_VERSION=3.0.2
+ARG HYRAX_IMAGE_VERSION=3.1.0
 FROM ghcr.io/samvera/hyrax/hyrax-base:$HYRAX_IMAGE_VERSION as hyku-base
 
 USER root

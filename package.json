@@ -1,5 +1,5 @@
 {
-  "name": "nnp",
+  "name": "project_name",
   "private": true,
   "dependencies": {
     "universalviewer": "^3.0.16"

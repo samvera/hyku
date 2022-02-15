@@ -9,7 +9,7 @@ unless ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_MULTITENANT', false))
   puts "\n== Creating single tenant resources"
   single_tenant_default = Account.find_by(cname: 'single.tenant.default')
   if single_tenant_default.blank?
-    single_tenant_default = Account.new(name: 'Single Tenant', cname: 'single.tenant.default', tenant: 'single', is_public: true)
+    single_tenant_default = Account.new(name: 'Single Tenant', cname: 'single.tenant.default', tenant: SecureRandom.uuid, is_public: true)
     CreateAccount.new(single_tenant_default).save
     raise "Account creation failed for #{single_tenant_default.errors.full_messages}" unless single_tenant_default.valid?
     single_tenant_default = single_tenant_default.reload
@@ -39,11 +39,13 @@ unless ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_MULTITENANT', false))
   puts "\n== Finished creating single tenant resources"
 end
 
-Account.find_each do |account|
-  Apartment::Tenant.switch!(account.tenant)
-  next if Site.instance.available_works.present?
-  Site.instance.available_works = Hyrax.config.registered_curation_concern_types
-  Site.instance.save
+unless ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_MULTITENANT', true))
+  Account.find_each do |account|
+    Apartment::Tenant.switch!(account.tenant)
+    next if Site.instance.available_works.present?
+    Site.instance.available_works = Hyrax.config.registered_curation_concern_types
+    Site.instance.save
+  end
 end
 
 if ENV['INITIAL_ADMIN_EMAIL'] && ENV['INITIAL_ADMIN_PASSWORD']

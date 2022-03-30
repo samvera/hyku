@@ -8,6 +8,7 @@ class Ability
     everyone_can_create_curation_concerns
     group_permissions
     superadmin_permissions
+    featured_collection_abilities
   ]
 
   # Define any customized permissions here.
@@ -41,6 +42,10 @@ class Ability
 
   def superadmin?
     current_user.has_role? :superadmin
+  end
+
+  def featured_collection_abilities
+    can [:create, :destroy, :update], FeaturedCollection if admin?
   end
 
   # Override from blacklight-access_controls-0.6.2 to define registered to include having a role on this tenant

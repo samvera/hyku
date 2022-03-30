@@ -414,3 +414,21 @@ nav.navbar.navbar-default.navbar-static-top .container-fluid .row {
     padding-right: 0;
   }
 }
+
+// FEATURED COLLECTIONS
+@media (max-width: $screen-sm-min) {
+  .admin-show-page
+    .collection-title-row-wrapper
+    .collection-title-row-content
+    .btn.collapse {
+    display: none;
+  }
+}
+
+.show-actions-container a.btn.btn-primary:nth-child(2) {
+  padding-left: 0;
+}
+
+.dd-item.collapse {
+  display: none;
+}

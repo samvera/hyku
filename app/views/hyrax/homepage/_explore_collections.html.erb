@@ -1,0 +1,20 @@
+<%# OVERRIDE from Hyrax 2.9.0 to add featured collection functionality %>
+
+<% featured_collection = f.object.presenter %>
+<tr>
+  <td>
+    <div class="d-flex">
+      <div>
+        <%= link_to [hyrax, featured_collection] do %>
+          <%= render_thumbnail_tag(featured_collection, { class: "img-responsive", alt: "#{featured_collection.title.first} #{ t('hyrax.homepage.admin_sets.thumbnail')}" }, {suppress_link: true}) %>
+        <% end %>
+      </div>
+      <div>
+        <%= link_to [hyrax, featured_collection] do %>
+          <%= featured_collection.title.first %>
+        <% end %>
+      </div>
+      </div>
+    </div>
+  </td>
+</tr>

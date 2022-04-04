@@ -432,3 +432,19 @@ nav.navbar.navbar-default.navbar-static-top .container-fluid .row {
 .dd-item.collapse {
   display: none;
 }
+
+.dd-item.dd3-item.featured-item {
+  border-top: 0;
+  min-height: unset;
+  padding: 0
+}
+
+.d-flex {
+  display: flex
+}
+
+.collection-highlights img, .featured-item img {
+  height: 90px;
+  border: 0;
+  width: unset;
+}

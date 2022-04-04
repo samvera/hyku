@@ -52,4 +52,5 @@ Hyrax::CollectionPresenter.class_eval do
     current_ability.can?(:create, FeaturedCollection)
   end
   # End Featured Collections Methods
+
 end

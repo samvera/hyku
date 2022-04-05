@@ -18,7 +18,6 @@ x-app: &app
   networks:
     internal:
 
-
 volumes:
   fcrepo:
   solr:
@@ -52,6 +51,7 @@ services:
       test: ["CMD-SHELL", "echo 'ruok' | nc -w 2 -q 2 localhost 2181 | grep imok || exit 1"]
       interval: "10s"
       timeout: "8s"
+
   solr:
     image: bitnami/solr:8
     environment:
@@ -75,6 +75,12 @@ services:
       - solr:/bitnami
     networks:
       internal:
+    healthcheck:
+      test: curl -sf http://$$SOLR_ADMIN_USERNAME:$$SOLR_ADMIN_PASSWORD@localhost:8983/solr/$$SOLR_COLLECTION/admin/ping?wt=json\&distrib=true || exit 1
+      start_period: 30s
+      interval: 20s
+      timeout: 5s
+      retries: 3
 
   fcrepo:
     image: ghcr.io/samvera/fcrepo4:4.7.5
@@ -85,10 +91,9 @@ services:
     environment:
       - VIRTUAL_PORT=8080
       - VIRTUAL_HOST=fcrepo.hyku.test
+      - JAVA_OPTS=${JAVA_OPTS} -Dfcrepo.modeshape.configuration="classpath:/config/file-simple/repository.json" -Dfcrepo.object.directory="/data/objects" -Dfcrepo.binary.directory="/data/binaries"
     expose:
       - 8080
-    environment:
-      - JAVA_OPTS=${JAVA_OPTS} -Dfcrepo.modeshape.configuration="classpath:/config/file-simple/repository.json" -Dfcrepo.object.directory="/data/objects" -Dfcrepo.binary.directory="/data/binaries"
     networks:
       internal:
 
@@ -146,6 +151,8 @@ services:
     depends_on:
       check_volumes:
         condition: service_completed_successfully
+      initialize_app:
+        condition: service_completed_successfully
       db:
         condition: service_started
       solr:
@@ -156,12 +163,6 @@ services:
         condition: service_started
       zoo:
         condition: service_started
-      check_volumes:
-        condition: service_started
-      initialize_app:
-        condition: service_completed_successfully
-
-
 
   # Do not recurse through all of tmp. derivitives will make booting
   # very slow and eventually just time out as data grows
@@ -182,17 +183,19 @@ services:
     entrypoint: ["sh", "-c"]
     command:
       - >
-        if [ ! -f "/app/samvera/hyrax-webapp/solr_db_initialized" ]; then
-          solrcloud-upload-configset.sh /app/samvera/hyrax-webapp/solr/config &&
-          solrcloud-assign-configset.sh &&
-          SOLR_COLLECTION_NAME=hydra-test solrcloud-assign-configset.sh &&
-          db-migrate-seed.sh &&
-          touch /app/samvera/hyrax-webapp/solr_db_initialized
-        fi
+        solrcloud-upload-configset.sh /app/samvera/hyrax-webapp/solr/config &&
+        solrcloud-assign-configset.sh &&
+        SOLR_COLLECTION_NAME=hydra-test solrcloud-assign-configset.sh &&
+        db-migrate-seed.sh
     depends_on:
-      - db
-      - solr
-      - fcrepo
+      db:
+        condition: service_started
+      solr:
+        condition: service_healthy
+      fcrepo:
+        condition: service_started
+      redis:
+        condition: service_started
 
   redis:
     image: redis:5

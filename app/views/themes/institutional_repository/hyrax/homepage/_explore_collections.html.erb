@@ -1,23 +1,14 @@
 <%# April's note: overriding Hyrax 2.9 template for client theming %>
-
-<% top_level_collections = collections.select{ |c| c['nesting_collection__deepest_nested_depth_isi'] == 1 }%>
-<% top_level_collections.each do |collection| %>
+<% featured_collection = f.object.presenter %>
   <div class="institutional-repository-collections pb-40 col-xs-6">
-    <%= link_to [hyrax, collection] do %>
-      <%= render_thumbnail_tag(collection, {suppress_link: true}, class: 'img-responsive center-block') %>
+    <%= link_to [hyrax, featured_collection] do %>
+      <%= render_thumbnail_tag(featured_collection, { class: "img-responsive", alt: "#{featured_collection.title.first} #{ t('hyrax.homepage.admin_sets.thumbnail')}" }, {suppress_link: true}) %>
     <% end %>
     <div class="collection-item-title">
-      <%= link_to [hyrax, collection] do %>
+      <%= link_to [hyrax, featured_collection] do %>
         <h3>
-          <%= collection.title_or_label %>
+          <%= featured_collection.title.first %>
         </h3>
       <% end %>
     </div>
   </div>
-<% end %>
-
-<div class="col-xs-12 text-center mt-20">
-  <%= link_to t('hyrax.homepage.admin_sets.link'),
-                main_app.all_collections_path,
-                class: 'btn btn-sm btn-default' %>
-</div>

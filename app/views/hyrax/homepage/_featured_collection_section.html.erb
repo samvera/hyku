@@ -5,9 +5,11 @@
   <% elsif can? :update, FeaturedCollection %>
     <%= form_for [main_app, @featured_collection_list] do |f| %>
       <div class="panel-group dd" id="ff">
-        <%= f.fields_for :featured_collections do |featured| %>
-          <%= render 'sortable_featured_collections', f: featured %>
-        <% end %>
+        <ol id="featured_works">
+          <%= f.fields_for :featured_collections do |featured| %>
+            <%= render 'sortable_featured_collections', f: featured %>
+          <% end %>
+        </ol>
       </div>
       <%= f.submit("Save order", class: 'btn btn-default') %>
     <% end %>

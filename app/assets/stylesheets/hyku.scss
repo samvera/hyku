@@ -415,6 +415,17 @@ nav.navbar.navbar-default.navbar-static-top .container-fluid .row {
   }
 }
 
+body.public-facing {
+  .btn {
+    &.btn-primary, &.btn-danger {
+    color: #fff;
+  }
+    &.btn-primary {
+      background-color: #337ab7;
+    }
+  }
+}
+
 // FEATURED COLLECTIONS
 @media (max-width: $screen-sm-min) {
   .admin-show-page
@@ -423,10 +434,6 @@ nav.navbar.navbar-default.navbar-static-top .container-fluid .row {
     .btn.collapse {
     display: none;
   }
-}
-
-.show-actions-container a.btn.btn-primary:nth-child(2) {
-  padding-left: 0;
 }
 
 .dd-item.collapse {

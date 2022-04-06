@@ -5,6 +5,7 @@
 # CatalogController rather than ApplicationController
 # OVERRIDE: Hyrax v2.9.0 from Hyrax v2.9.0 to add inject_theme_views method for theming
 # OVERRIDE: Hyrax v2.9.0 to add search_action_url method from Blacklight 6.23.0 to make facet links to go to /catalog
+# OVERRIDE: Hyrax v2.9.0 to add .sort_by to return collections in alphabetical order by title on the homepage
 # OVERRIDE: Hyrax v2.9.0 add all_collections page for IR theme
 # OVERRIDE: Hyrax v2.9.0 to add facet counts for resource types for IR theme
 # OVERRIDE: Hyrax v. 2.9.0 to add @featured_collection_list to index method
@@ -87,6 +88,8 @@ module Hyrax
         builder = Hyrax::CollectionSearchBuilder.new(self)
                                                 .rows(rows)
         response = repository.search(builder)
+        # adding .sort_by to return collections in alphabetical order by title on the homepage
+        response.documents.sort_by(&:title)
       rescue Blacklight::Exceptions::ECONNREFUSED, Blacklight::Exceptions::InvalidRequest
         []
       end

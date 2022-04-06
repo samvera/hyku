@@ -1,27 +1,27 @@
-<table class="table table-striped collection-highlights">
-  <tbody>
   <% if @featured_collection_list.empty? %>
     <p id='no-collections'><%= t('hyrax.homepage.featured_collections.no_collections') %></p>
   <% elsif can? :update, FeaturedCollection %>
-    <%= form_for [main_app, @featured_collection_list] do |f| %>
-      <div class="panel-group dd" id="ff">
-        <ol id="featured_works">
-          <%= f.fields_for :featured_collections do |featured| %>
-            <%= render 'sortable_featured_collections', f: featured %>
-          <% end %>
-        </ol>
-      </div>
-      <%= f.submit("Save order", class: 'btn btn-default') %>
-    <% end %>
+  <%= form_for [main_app, @featured_collection_list] do |f| %>
+    <div class="panel-group dd" id="ff">
+      <ol id="featured_works">
+        <%= f.fields_for :featured_collections do |featured| %>
+          <%= render 'sortable_featured_collections', f: featured %>
+        <% end %>
+      </ol>
+    </div>
+    <%= f.submit("Save order", class: 'btn btn-default') %>
+  <% end %>
   <% else %>
+    <table class="table table-striped collection-highlights">
+    <tbody>
       <%= form_for [main_app, @featured_collection_list] do |f| %>
         <%= f.fields_for :featured_collections do |featured| %>
           <%= render 'explore_collections', f: featured %>
         <% end %>
-    <% end %>
+      <% end %>
+    </tbody>
+  </table>
   <% end %>
-  </tbody>
-</table>
 <ul class="list-inline collection-highlights-list">
   <li>
     <%= link_to t('hyrax.homepage.admin_sets.link'),

@@ -797,6 +797,7 @@ it:
         link: Visualizza tutte le raccolte
         tab_label: Esplora le raccolte
         title: Esplora le raccolte
+        thumbnail: miniatura
       featured_researcher:
         missing: Nessun ricercatore è stato descritto.
         tab_label: Ricercatore in primo piano

@@ -417,10 +417,11 @@ nav.navbar.navbar-default.navbar-static-top .container-fluid .row {
 
 body.public-facing {
   .btn {
-    &.btn-primary, 
+    &.btn-primary,
     &.btn-danger {
       color: #fff;
     }
+
     &.btn-primary {
       background-color: #337ab7;
     }
@@ -451,7 +452,7 @@ body.public-facing {
   display: flex;
 }
 
-.collection-highlights img, 
+.collection-highlights img,
 .featured-item img {
   border: 0;
   height: 90px;

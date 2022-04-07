@@ -8,7 +8,6 @@ FactoryBot.define do
 
     title { ["Test title"] }
 
-
     factory :public_generic_work, aliases: [:public_work], traits: [:public]
 
     trait :public do

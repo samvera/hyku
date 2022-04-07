@@ -3,6 +3,7 @@
 RSpec.describe "file routes", type: :routing do
   routes { Rails.application.routes }
 
+  # rubocop:disable Metrics/LineLength
   it 'creates a featured_collection' do
     expect(post: '/collections/7/featured_collection').to route_to(controller: 'hyrax/featured_collections', action: 'create', id: '7')
   end
@@ -14,4 +15,5 @@ RSpec.describe "file routes", type: :routing do
     expect(featured_collection_lists_path).to eq '/featured_collections'
     expect(post: '/featured_collections').to route_to(controller: 'hyrax/featured_collection_lists', action: 'create')
   end
+  # rubocop:enable Metrics/LineLength
 end

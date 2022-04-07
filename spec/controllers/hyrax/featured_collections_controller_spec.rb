@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Hyrax::FeaturedCollectionsController, type: :controller do
   describe "#create" do
     before do

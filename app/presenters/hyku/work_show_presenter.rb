@@ -42,7 +42,9 @@ module Hyku
 
     def collection_featured?
       # only look this up if it's not boolean; ||= won't work here
-      @collection_featured = FeaturedCollection.where(collection_id: solr_document.id).exists? if @collection_featured.nil?
+      if @collection_featured.nil?
+        @collection_featured = FeaturedCollection.where(collection_id: solr_document.id).exists?
+      end
       @collection_featured
     end
 
@@ -50,7 +52,7 @@ module Hyku
       current_ability.can?(:create, FeaturedCollection)
     end
     # End Featured Collections Methods
-    
+
     private
 
       def extract_from_identifier(rgx)

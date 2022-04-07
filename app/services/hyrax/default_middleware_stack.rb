@@ -3,7 +3,6 @@
 
 module Hyrax
   class DefaultMiddlewareStack
-    # rubocop:disable Metrics/MethodLength
     def self.build_stack
       ActionDispatch::MiddlewareStack.new.tap do |middleware|
         # Used to wrap everything in a database transaction, if the save of the resource
@@ -65,6 +64,5 @@ module Hyrax
         middleware.use Hyrax::Actors::InitializeWorkflowActor
       end
     end
-    # rubocop:enable Metrics/MethodLength
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FeaturedCollection < ApplicationRecord
   FEATURE_LIMIT = 6
   validate :count_within_limit, on: :create

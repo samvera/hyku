@@ -54,9 +54,6 @@ module Hyrax
         # Destroys the feature tag in the database when the work is destroyed
         middleware.use Hyrax::Actors::FeaturedWorkActor
 
-        # OVERRIDE - Destroys the feature tag in the database when the collection is destroyed
-        middleware.use Hyrax::Actors::FeaturedCollectionActor
-
         # Persist the metadata changes on the resource
         middleware.use Hyrax::Actors::ModelActor
 

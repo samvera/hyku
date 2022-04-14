@@ -6,4 +6,15 @@ class Collection < ActiveFedora::Base
   # You can replace these metadata if they're not suitable
   include Hyrax::BasicMetadata
   self.indexer = CollectionIndexer
+  after_update :check_featured
+  after_destroy :remove_featured
+
+  def remove_featured
+    FeaturedCollection.where(collection_id: self.id).destroy_all
+  end
+
+  def check_featured
+    remove_featured if self.private?
+  end
+
 end

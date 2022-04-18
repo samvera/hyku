@@ -3,14 +3,12 @@
 require 'spec_helper'
 
 RSpec.describe Collection do
-
   let(:user) { create(:user).tap { |u| u.add_role(:admin, Site.instance) } }
   let(:account) { create(:account) }
   let(:collection) { create(:collection, user: user) }
 
   before do
     Site.update(account: account)
-    #create(:featured_collection, collection_id: collection.id)
   end
 
   it "is a hyrax collection" do
@@ -23,7 +21,6 @@ RSpec.describe Collection do
     it { is_expected.to eq CollectionIndexer }
   end
 
-  # rubocop:disable Metrics/LineLength, Lint/AmbiguousBlockAssociation, RSpec/LetSetup
   describe "Featured Collections" do
     before do
       FeaturedCollection.create(collection_id: collection.id)
@@ -74,5 +71,4 @@ RSpec.describe Collection do
       end
     end
   end
-  # rubocop:enable Metrics/LineLength, Lint/AmbiguousBlockAssociation, RSpec/LetSetup
 end

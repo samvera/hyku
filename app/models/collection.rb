@@ -10,6 +10,6 @@ class Collection < ActiveFedora::Base
   after_destroy :remove_featured
 
   def remove_featured
-    FeaturedCollection.where(collection_id: self.id).destroy_all
+    FeaturedCollection.where(collection_id: id).destroy_all
   end
 end

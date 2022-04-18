@@ -55,5 +55,15 @@ FactoryBot.define do
         collection.reset_access_controls!
       end
     end
+
+    factory :public_collection, traits: [:public]
+
+    trait :public do
+      visibility { Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC }
+    end
+
+    factory :private_collection do
+      visibility { Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE }
+    end
   end
 end

@@ -100,4 +100,8 @@ Rails.application.routes.draw do
   end
 
   get 'all_collections' => 'hyrax/homepage#all_collections', as: :all_collections
+
+  # Upload a collection thumbnail
+  post "/dashboard/collections/:id/delete_uploaded_thumbnail", to: "hyrax/dashboard/collections#delete_uploaded_thumbnail", as: :delete_uploaded_thumbnail
+
 end

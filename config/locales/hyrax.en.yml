@@ -540,6 +540,9 @@ en:
           logo:
             description: One or more images to be displayed at the top of the collection page.  For best results, upload an image (JPG, GIF or PNG) that is 40 pixels in height.  Larger images will be resized to 40 pixels in height.
             label: Logo
+          thumbnail:
+            description: An image to be displayed in the search results and on the homepage if you decide to feature this collection. Image will be cropped and resized in various ways throughout the app, but for best results use an image (JPG, GIF or PNG) with a landscape orientation.
+            label: Thumbnail
         form_discovery:
           para1: These settings determine who is able to discover and view this collection's landing page; they do not affect the visibility of items in the collection.
           para2: If you chose not to make this collection open access, you can still share the collection with specific users and groups using the Sharing tab.

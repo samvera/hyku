@@ -22,7 +22,7 @@
 <% if presenter.collection_featurable? %>
 <%= link_to "Feature", main_app.featured_collection_path(presenter, format: :json),
     data: { behavior: 'feature' },
-    class: presenter.display_feature_collection_link? ? 'btn btn-primary' : 'btn btn-primary collapse' %>
+    class: presenter.display_feature_collection_link? ? 'btn btn-primary feature' : 'btn btn-primary collapse' %>
 <%= link_to "Unfeature", main_app.featured_collection_path(presenter, format: :json),
     data: { behavior: 'unfeature' },
     class: presenter.display_unfeature_collection_link? ? 'btn btn-primary' : 'btn btn-primary collapse' %>

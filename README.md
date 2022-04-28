@@ -144,7 +144,13 @@ switch!('myaccount')
 
 ## Environment Variables
 
-| Name | Description | Default | Development / Test Only
+| First Header  | Second Header |
+| ------------- | ------------- |
+| Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  |
+
+| Name | Description | Default | Development or Test Only |
+| ------------- | ------------- | ------------- | ------------- |
 | CHROME_HOSTNAME | specifies the chromium host for feature specs | chrome | yes |
 | DATABASE_ADAPTER | which Rails database adapter, mapped in to config/database.yml. Common values are postgresql, mysql2, jdbc, nulldb | postgresql | no |
 | DATABASE_HOST | host name for the database | db | no |
@@ -152,6 +158,7 @@ switch!('myaccount')
 | DATABASE_PASSWORD | password for connecting to database | | no |
 | DATABASE_TEST_NAME | name of database on database host for tests to run against. Should be different than the development database name or your tests will clobber your dev set up | hyku_test | yes |
 | DATABASE_USER | username for the database connection | postgres | no |
+
 DB_HOST=db
 DB_PORT=5432
 FCREPO_DEVELOPMENT_PORT - 8984

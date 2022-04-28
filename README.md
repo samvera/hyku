@@ -24,6 +24,7 @@ Jump In: [![Slack Status](http://slack.samvera.org/badge.svg)](http://slack.samv
     * [With Kubernetes](#with-kubernetes)
   * [Single Tenant Mode](#single-tenancy)
   * [Switching accounts](#switching-accounts)
+  * [Environment Variables](#environment-variables)
   * [Development dependencies](#development-dependencies)
     * [Postgres](#postgres)
   * [Importing](#importing)
@@ -140,6 +141,109 @@ switch!('my.site.com')
 # or
 switch!('myaccount')
 ```
+
+## Environment Variables
+
+| Name | Description | Default | Development / Test Only
+| CHROME_HOSTNAME | specifies the chromium host for feature specs | chrome | yes |
+| DATABASE_ADAPTER | which Rails database adapter, mapped in to config/database.yml. Common values are postgresql, mysql2, jdbc, nulldb | postgresql | no |
+| DATABASE_HOST | host name for the database | db | no |
+| DATABASE_NAME | name of database on database host | hyku | no |
+| DATABASE_PASSWORD | password for connecting to database | | no |
+| DATABASE_TEST_NAME | name of database on database host for tests to run against. Should be different than the development database name or your tests will clobber your dev set up | hyku_test | yes |
+| DATABASE_USER | username for the database connection | postgres | no |
+DB_HOST=db
+DB_PORT=5432
+FCREPO_DEVELOPMENT_PORT - 8984
+FCREPO_HOST=fcrepo
+FCREPO_PORT=8080
+FCREPO_TEST_PORT - 8986
+FEDORA_URL
+FEDORA_URL=http://fcrepo:8080/rest
+HOME
+HYKU_ADMIN_HOST
+HYKU_ADMIN_HOST=hyku.test
+HYKU_ADMIN_ONLY_TENANT_CREATION - false
+HYKU_ADMIN_ONLY_TENANT_CREATION=false
+HYKU_ALLOW_SIGNUP, type: 'boolean', default: true
+HYKU_ASSET_HOST
+HYKU_BULKRAX_ENABLED - false
+HYKU_BULKRAX_VALIDATIONS, type: 'boolean', disabled: true
+HYKU_CACHE_API, type: 'boolean', default: false
+HYKU_CACHE_ROOT - /app/samvera/file_cache
+HYKU_CONTACT_EMAIL
+HYKU_CONTACT_EMAIL, type: 'string', default: 'change-me-in-settings@example.com'
+HYKU_CONTACT_EMAIL_TO, type: 'string', default: 'change-me-in-settings@example.com'
+HYKU_DEFAULT_HOST
+HYKU_DEFAULT_HOST=%{tenant}.hyku.test
+HYKU_DOI_READER, type: 'boolean', default: false
+HYKU_DOI_WRITER, type: 'boolean', default: false
+HYKU_ELASTIC_JOBS - false
+HYKU_EMAIL_FORMAT, type: 'array'
+HYKU_EMAIL_SUBJECT_PREFIX, type: 'string'
+HYKU_ENABLE_OAI_METADATA, type: 'string', disabled: true
+HYKU_FILE_ACL, type: 'boolean', default: true, private: true
+HYKU_FILE_SIZE_LIMIT, type: 'string', default: 5.gigabytes.to_s
+HYKU_GEONAMES_USERNAME, type: 'string', default: ''
+HYKU_GOOGLE_ANALYTICS_ID, type: 'string'
+HYKU_GOOGLE_SCHOLARLY_WORK_TYPES, type: 'array', disabled: true
+HYKU_GTM_ID, type: 'string'
+HYKU_LOCALE_NAME, type: 'string', disabled: true
+HYKU_MONTHLY_EMAIL_LIST, type: 'array', disabled: true
+HYKU_MULTITENANT - false
+HYKU_MULTITENANT=true
+HYKU_OAI_ADMIN_EMAIL, type: 'string', default: 'changeme@example.com'
+HYKU_OAI_PREFIX, type: 'string', default: 'oai:hyku'
+HYKU_OAI_SAMPLE_IDENTIFIER, type: 'string', default: '806bbc5e-8ebe-468c-a188-b7c14fbe34df'
+HYKU_ROOT_HOST
+HYKU_ROOT_HOST=hyku.test
+HYKU_S3_BUCKET, type: 'string', private: true
+HYKU_SETTING_NAME
+HYKU_SHARED_LOGIN, type: 'boolean', disabled: true
+HYKU_SMTP_SETTINGS, type: 'hash', private: true, default: {}
+HYKU_SOLR_COLLECTION_OPTIONS, type: 'hash', default: solr_collection_options
+HYKU_SSL_CONFIGURED, type: 'boolean', default: false, private: true
+HYKU_WEEKLY_EMAIL_LIST, type: 'array', disabled: true
+HYKU_YEARLY_EMAIL_LIST, type: 'array', disabled: true
+HYRAX_ACTIVE_JOB_QUEUE
+HYRAX_ACTIVE_JOB_QUEUE=sidekiq
+HYRAX_FITS_PATH=/app/fits/fits.sh
+HYRAX_REDIS_NAMESPACE
+I18N_DEBUG
+INITIAL_ADMIN_EMAIL
+INITIAL_ADMIN_EMAIL=admin@example.com
+INITIAL_ADMIN_PASSWORD
+INITIAL_ADMIN_PASSWORD=testing123
+IN_DOCKER=true
+LD_LIBRARY_PATH=/opt/fits/tools/mediainfo/linux
+PASSENGER_APP_ENV=development
+RAILS_ENV - development
+RAILS_LOG_TO_STDOUT
+RAILS_LOG_TO_STDOUT=true
+RAILS_MAX_THREADS - 5
+REDIS_HOST - localhost
+REDIS_HOST=redis
+REDIS_PASSWORD - 6397
+REDIS_URL
+SECRET_KEY_BASE
+SECRET_KEY_BASE=asdf
+SMTP_ADDRESS
+SMTP_DOMAIN
+SMTP_PASSWORD
+SMTP_PORT
+SMTP_USER_NAME
+SOLR_ADMIN_PASSWORD=admin
+SOLR_ADMIN_USER - admin
+SOLR_ADMIN_USER=admin
+SOLR_COLLECTION_NAME=hydra-development
+SOLR_CONFIGSET_NAME - hyku
+SOLR_CONFIGSET_NAME=hyku
+SOLR_HOST=solr
+SOLR_PORT=8983
+SOLR_URL
+SOLR_URL=http://admin:admin@solr:8983/solr/
+WEB_CONCURRENCY - 5
+
 
 ## Development Dependencies
 

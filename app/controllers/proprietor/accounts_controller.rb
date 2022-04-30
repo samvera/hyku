@@ -20,6 +20,14 @@ module Proprietor
       add_breadcrumb t(:'hyrax.controls.home'), root_path
       add_breadcrumb t(:'hyrax.admin.sidebar.accounts'), proprietor_accounts_path
       add_breadcrumb @account.tenant, edit_proprietor_account_path(@account)
+
+      current_superadmin = []
+      @account.admin_emails.each do |email|
+        current_superadmin << User.find_by(email: email)
+      end
+
+      @paginatable_current_superadmin_array = Kaminari.paginate_array(current_superadmin).page(params[:user_superadmin_page]).per(5)
+      @current_nonadmin_user = User.all.page(params[:user_page]).per(5)
     end
 
     # GET /accounts/new

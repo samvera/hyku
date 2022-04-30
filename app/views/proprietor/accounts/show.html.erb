@@ -70,7 +70,7 @@
                     <td></td>
                   </tr>
                 <% else %>
-                  <% @account.admin_emails.each do |email| %>
+                  <% @paginatable_current_superadmin_array.admin_emails.each do |email| %>
                     <tr>
                       <td><%= email %></td>
                       <td>
@@ -92,6 +92,8 @@
                 <% end %>
               </tbody>
             </table>
+            <%= page_entries_info(@paginatable_current_superadmin_array) %><br />
+            <%= paginate(@paginatable_current_superadmin_array, param_name: :user_superadmin_page, params: {anchor: 'current-admins-tab'}) %>
           </div>
           <div class="tab-pane" id="all-users-tab">
             <table class="table table-striped">
@@ -100,7 +102,7 @@
                 <th><%= t('.current_admins.actions') %></th>
               </thead>
               <tbody>
-                <% User.all.each do |user| %>
+                <% current_nonadmin_user.each do |user| %>
                   <tr>
                     <td><%= user.email %></td>
                     <td>
@@ -118,7 +120,8 @@
                 <% end %>
               </tbody>
             </table>
-
+            <%= page_entries_info(@current_nonadmin_user) %><br />
+            <%= paginate(@current_nonadmin_user, param_name: :user_page, params: {anchor: 'all-users-tab'}) %>
           </div>
         </div>
       </div>

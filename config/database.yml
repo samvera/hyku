@@ -1,11 +1,11 @@
 # Hi - please dont edit this file directly, instead make changes in your .env file
 
 login: &login
-  adapter: <%= ENV['DATABASE_ADAPTER'] || 'postgresql' %>
-  host: <%= ENV['DATABASE_HOST'] %>
-  username: <%= ENV['DATABASE_USER'] %>
-  password: <%= ENV['DATABASE_PASSWORD'] %>
-  database: <%= ENV['DATABASE_NAME'] || 'hyku' %>
+  adapter: <%= ENV['DB_ADAPTER'] || 'postgresql' %>
+  host: <%= ENV['DB_HOST'] %>
+  username: <%= ENV['DB_USER'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
+  database: <%= ENV['DB_NAME'] || 'hyku' %>
   pool: 50
   timeout: 5000
 
@@ -15,7 +15,7 @@ development:
 
 test:
   <<: *login
-  database: <%= ENV['DATABASE_TEST_NAME'] || 'hyku_test' %>
+  database: <%= ENV['DB_TEST_NAME'] || 'hyku_test' %>
 
 staging:
   <<: *login

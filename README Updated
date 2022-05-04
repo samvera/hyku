@@ -4,12 +4,12 @@ Content Cell	Content Cell
 Content Cell	Content Cell
 Name	Description	Default	Development or Test Only
 CHROME_HOSTNAME |	specifies the chromium host for feature specs |	chrome |	yes
-DATABASE_ADAPTER | which Rails database adapter, mapped in to config/database.yml. Common values are postgresql, mysql2, jdbc, nulldb |	postgresql |	no
-DATABASE_HOST |	host name for the database  |	db |	no
-DATABASE_NAME |	name of database on database | host	hyku |	no
-DATABASE_PASSWORD |	password for connecting to database |  ?	 |	no
-DATABASE_TEST_NAME |	name of database on database host for tests to run against. Should be different than the development database name or your tests will clobber your dev set up |	hyku_test |	yes
-DATABASE_USER |	username for the database connection |	postgres |	no
+DB_ADAPTER | which Rails database adapter, mapped in to config/database.yml. Common values are postgresql, mysql2, jdbc, nulldb |	postgresql |	no
+DB_HOST |	host name for the database  |	db |	no
+DB_NAME |	name of database on database | host	hyku |	no
+DB_PASSWORD |	password for connecting to database |  ?	 |	no
+DB_TEST_NAME |	name of database on database host for tests to run against. Should be different than the development database name or your tests will clobber your dev set up |	hyku_test |	yes
+DB_USER |	username for the database connection |	postgres |	no
 DB_HOST | password for the database connection | postgres | no
 DB_PORT| port used for the database connection | postgres | no
 FCREPO_DEVELOPMENT_PORT | Port used for fedora development | ? | yes

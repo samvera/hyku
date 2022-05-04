@@ -152,41 +152,93 @@ switch!('myaccount')
 | Name | Description | Default | Development or Test Only |
 | ------------- | ------------- | ------------- | ------------- |
 | CHROME_HOSTNAME | specifies the chromium host for feature specs | chrome | yes |
-| DATABASE_ADAPTER | which Rails database adapter, mapped in to config/database.yml. Common values are postgresql, mysql2, jdbc, nulldb | postgresql | no |
-| DATABASE_HOST | host name for the database | db | no |
-| DATABASE_NAME | name of database on database host | hyku | no |
-| DATABASE_PASSWORD | password for connecting to database | | no |
-| DATABASE_TEST_NAME | name of database on database host for tests to run against. Should be different than the development database name or your tests will clobber your dev set up | hyku_test | yes |
-| DATABASE_USER | username for the database connection | postgres | no |
+| DB_ADAPTER | which Rails database adapter, mapped in to config/database.yml. Common values are postgresql, mysql2, jdbc, nulldb | postgresql | no |
+| DB_HOST | host name for the database | db | no |
+| DB_NAME | name of database on database host | hyku | no |
+| DB_PASSWORD | password for connecting to database | | no |
+| DB_TEST_NAME | name of database on database host for tests to run against. Should be different than the development database name or your tests will clobber your dev set up | hyku_test | yes |
+| DB_USER | username for the database connection | postgres | no |
+| DB_PORT | Port for database connections | 5432 | no |
+| FCREPO_DEVELOPMENT_PORT | Port used for fedora dev instance, only if FCREPO_URL is blank | 8984 | yes
+| FCREPO_HOST | host name for the fedora repo | ? | no |
+| FCREPO_PORT | port for the fedora repo | 8080 | no |
+| FCREPO_TEST_PORT | Test port for the fedora repo, only if FCREPO_URL is blank | 8986 | yes |
+| FCREPO_URL | URL of the fedora repo, including port and prefix, but not repo name. | http://fcrepo:8080/rest | no |
+| HYKU_ADMIN_HOST | URL of the admin / propritor host in a multitenant environment | hyku.test | no |
+| HYKU_ADMIN_ONLY_TENANT_CREATION | Restrict signing up a new tenant to the admin | false | no | |
+| HYKU_ALLOW_SIGNUP | Can users register themselves on a given Tenant | true  | no |
+| HYKU_ASSET_HOST | Host name of the asset server | - | no |
+| HYKU_BULKRAX_ENABLED | Is the Bulkrax gem enabled | false | no |
+| HYKU_BULKRAX_VALIDATIONS | Unused, pending feature addition by Ubiquity | - | no |
+| HYKU_CACHE_API | Use Redis instead of disk for caching | false | no |
+| HYKU_CACHE_ROOT | Directory of file cache (if CACHE_API is false) | /app/samvera/file_cache | no |
+| HYKU_CONTACT_EMAIL | Email address used for the FROM field when the contact form is submitted | change-me-in-settings@example.com | no |
+| HYKU_CONTACT_EMAIL_TO | Email addresses (comma seperated) that receive contact form submissions | change-me-in-settings@example.com | no |
+| HYKU_DEFAULT_HOST  | The host name pattern each tenant will respond to by default. %{tenant} is substituted for the tenants name. | "%{tenant}.#{admin_host}" | no |
+| HYKU_DOI_READER | Does the work new / edit form allow reading in a DOI from Datacite? | false | no |
+| HYKU_DOI_WRITER | Does saving or updating a work write to Datacite once the work is approved | false | no |
+| HYKU_ELASTIC_JOBS | Use AWS Elastic jobs for background jobs | false | no |
+| HYKU_EMAIL_FORMAT | Validate if user emails match a basic email regexp (currently `/@\S*.\S*/`) | false | no |
+| HYKU_EMAIL_SUBJECT_PREFIX | String to put in front of system email subjects | - | no |
+| HYKU_ENABLE_OAI_METADATA | Not used. Placeholder for upcoming OAI feature. | false | no |
+| HYKU_FILE_ACL | Set Unix ACLs on file creation. Set to false if using Azure cloud or another network file ssytem that does not allow setting permissions on files. | true | no |
+| HYKU_FILE_SIZE_LIMIT | How big a file do you want to accept in the work upload?  | 5242880 (5 MB) | no |
+| HYKU_GEONAMES_USERNAME | Username used for Geonames connections by the application | '' | no |
+| HYKU_GOOGLE_ANALYTICS_ID | Id for the applications Google Analytics account. Disabled if not set | - | no |
+| HYKU_GOOGLE_SCHOLARLY_WORK_TYPES | List of work types which should be presented to Google Scholar for indexing. Comman seperated WorkType list | - | no |
+| HYKU_GTM_ID | If set, enable Google Tag manager with this id.  | - | no |
+| HYKU_LOCALE_NAME | Not used. Placeholder for upcoming Ubiquity feature | en | no |
+| HYKU_MONTHLY_EMAIL_LIST | Not used. Placeholder for upcoming Ubiquity feature | en | no |
+| HYKU_MULTITENANT | Set application up for multitenantcy, or use the single tenant version. | false | no |
+| HYKU_OAI_ADMIN_EMAIL | OAI endpoint contact address | changeme@example.com | no |
+| HYKU_OAI_PREFIX | OAI namespace metadata prefix | oai:hyku | no |
+| HYKU_OAI_SAMPLE_IDENTIFIER | OAI example of what an identify might look like | 806bbc5e-8ebe-468c-a188-b7c14fbe34df | no |
+| HYKU_ROOT_HOST | ? | ? | ? |
+| HYKU_S3_BUCKET | ? | ? | ? |
+| HYKU_ROOT_HOST | ? | ? | ? |
+| HYKU_SETTING_NAME | ? | ? | ? |
+| HYKU_SHARED_LOGIN | ? | ? | ? |
+| HYKU_SMTP_SETTINGS | ? | ? | ? |
+| HYKU_SOLR_COLLECTION_OPTIONS | ? | ? | ? |
+| HYKU_SSL_CONFIGURED | ? | ? | ? |
+| HYKU_WEEKLY_EMAIL_LIST | Not used. Placeholder for upcoming Ubiquity feature | en | no |
+| HYKU_YEARLY_EMAIL_LIST | Not used. Placeholder for upcoming Ubiquity feature | en | no |
+| HYRAX_ACTIVE_JOB_QUEUE | Which Rails background job runner should be used? | sidekiq | no |
+| HYRAX_FITS_PATH | ? | ? | ? |
+| HYRAX_REDIS_NAMESPACE | ? | ? | ? |
+| I18N_DEBUG | ? | ? | ? |
+| INITIAL_ADMIN_EMAIL | ? | ? | ? |
+| INITIAL_ADMIN_PASSWORD | ? | ? | ? |
+| IN_DOCKER | ? | ? | ? |
+| INITIAL_ADMIN_PASSWORD | ? | ? | ? |
+| LD_LIBRARY_PATH | ? | ? | ? |
+| PASSENGER_APP_ENV | ? | ? | ? |
+| RAILS_ENV | ? | ? | ? |
+| RAILS_LOG_TO_STDOUT | ? | ? | ? |
+| RAILS_LOG_TO_STDOUT | ? | ? | ? |
+| RAILS_MAX_THREADS | ? | ? | ? |
+| REDIS_HOST | ? | ? | ? |
+| REDIS_PASSWORD | ? | ? | ? |
+| REDIS_HOST | ? | ? | ? |
+| REDIS_URL SECRET_KEY_BASE  | ? | ? | ? |
+| SECRET_KEY_BASE | ? | ? | ? |
+| SMTP_ADDRESS | ? | ? | ? |
+| SMTP_DOMAIN | ? | ? | ? |
+| SMTP_PASSWORD | ? | ? | ? |
+| SMTP_PORT | ? | ? | ? |
+| SMTP_USER_NAME | username for the STMP connection |
+| SOLR_ADMIN_PASSWORD | ? | ? | ? |
+| SOLR_ADMIN_USER | ? | ? | ? |
+| SOLR_COLLECTION_NAME | ? | ? | ? |
+| SOLR_CONFIGSET_NAME | ? | ? | ? |
+| SOLR_PORT  | ? | ? | ? |
+| SOLR_CONFIGSET_NAME  | ? | ? | ? |
+| SOLR_HOST | Host for the Solr connection |
+| SOLR_URL | Url for the Solr connection |
+| WEB_CONCURRENCY |
 
-DB_HOST=db
-DB_PORT=5432
-FCREPO_DEVELOPMENT_PORT - 8984
-FCREPO_HOST=fcrepo
-FCREPO_PORT=8080
-FCREPO_TEST_PORT - 8986
-FEDORA_URL
-FEDORA_URL=http://fcrepo:8080/rest
-HOME
-HYKU_ADMIN_HOST
-HYKU_ADMIN_HOST=hyku.test
-HYKU_ADMIN_ONLY_TENANT_CREATION - false
-HYKU_ADMIN_ONLY_TENANT_CREATION=false
-HYKU_ALLOW_SIGNUP, type: 'boolean', default: true
-HYKU_ASSET_HOST
-HYKU_BULKRAX_ENABLED - false
-HYKU_BULKRAX_VALIDATIONS, type: 'boolean', disabled: true
-HYKU_CACHE_API, type: 'boolean', default: false
-HYKU_CACHE_ROOT - /app/samvera/file_cache
-HYKU_CONTACT_EMAIL
-HYKU_CONTACT_EMAIL, type: 'string', default: 'change-me-in-settings@example.com'
-HYKU_CONTACT_EMAIL_TO, type: 'string', default: 'change-me-in-settings@example.com'
-HYKU_DEFAULT_HOST
-HYKU_DEFAULT_HOST=%{tenant}.hyku.test
-HYKU_DOI_READER, type: 'boolean', default: false
-HYKU_DOI_WRITER, type: 'boolean', default: false
 HYKU_ELASTIC_JOBS - false
-HYKU_EMAIL_FORMAT, type: 'array'
+HYKU_EMAIL_FORMAT, type: 'array' sap
 HYKU_EMAIL_SUBJECT_PREFIX, type: 'string'
 HYKU_ENABLE_OAI_METADATA, type: 'string', disabled: true
 HYKU_FILE_ACL, type: 'boolean', default: true, private: true

@@ -1,0 +1,95 @@
+Environment Variables
+First Header	Second Header
+Content Cell	Content Cell
+Content Cell	Content Cell
+Name	Description	Default	Development or Test Only
+CHROME_HOSTNAME |	specifies the chromium host for feature specs |	chrome |	yes
+DATABASE_ADAPTER | which Rails database adapter, mapped in to config/database.yml. Common values are postgresql, mysql2, jdbc, nulldb |	postgresql |	no
+DATABASE_HOST |	host name for the database  |	db |	no
+DATABASE_NAME |	name of database on database | host	hyku |	no
+DATABASE_PASSWORD |	password for connecting to database |  ?	 |	no
+DATABASE_TEST_NAME |	name of database on database host for tests to run against. Should be different than the development database name or your tests will clobber your dev set up |	hyku_test |	yes
+DATABASE_USER |	username for the database connection |	postgres |	no
+DB_HOST | password for the database connection | postgres | no
+DB_PORT| port used for the database connection | postgres | no
+FCREPO_DEVELOPMENT_PORT | Port used for fedora development | ? | yes
+FCREPO_HOST | host name for the fedora repo | ? | ?
+FCREPO_PORT | Host port for the fedora repo | ? | ?
+FCREPO_TEST_PORT | Test port for the fedora repo | ? | ?
+FCREPO_URL | Url of the fedora repo | ? | ?
+HYKU_ADMIN_HOST | Name of the fedora admin host   | ? | ?
+HYKU_ADMIN_ONLY_TENANT_CREATION - false | ? |  ? | 
+HYKU_ALLOW_SIGNUP | ? | ? | ?
+HYKU_ASSET_HOST | Host name of the hyku asset | ? | ?
+HYKU_BULKRAX_ENABLED | ? | ? | ?
+HYKU_BULKRAX_VALIDATIONS | ? | ?
+HYKU_CACHE_API | Receives and stores the hyku network requests | ? | ?
+HYKU_CACHE_ROOT | ? | ? | ?
+HYKU_CONTACT_EMAIL | ? | ? | ?
+HYKU_CONTACT_EMAIL_TO | ? | ? | ?
+HYKU_DEFAULT_HOST  | ? | ? | ?
+HYKU_DOI_READER | ? | ? | ?
+HYKU_DOI_WRITER | ? | ? | ?
+HYKU_ELASTIC_JOBS | ? | ? | ?
+HYKU_EMAIL_FORMAT | ? | ? | ?
+HYKU_EMAIL_SUBJECT_PREFIX
+HYKU_ENABLE_OAI_METADATA | ? | ? | ?
+HYKU_FILE_ACL | ? | ? | ?
+HYKU_FILE_SIZE_LIMIT | ? | ? | ?
+HYKU_GEONAMES_USERNAME | ? | ? | ?
+HYKU_GOOGLE_ANALYTICS_ID | ? | ? | ?
+HYKU_GOOGLE_SCHOLARLY_WORK_TYPES | ? | ? | ?
+HYKU_GTM_ID | ? | ? | ?
+HYKU_LOCALE_NAME
+HYKU_MONTHLY_EMAIL_LIST
+HYKU_MULTITENANT | ? | ? | ?
+HYKU_OAI_ADMIN_EMAIL | ? | ? | ?
+HYKU_OAI_PREFIX | ? | ? | ?
+HYKU_OAI_SAMPLE_IDENTIFIER | ? | ? | ?
+HYKU_ROOT_HOST | ? | ? | ?
+HYKU_S3_BUCKET | ? | ? | ?
+HYKU_ROOT_HOST | ? | ? | ?
+HYKU_SETTING_NAME | ? | ? | ?
+HYKU_SHARED_LOGIN | ? | ? | ?
+HYKU_SMTP_SETTINGS | ? | ? | ?
+HYKU_SOLR_COLLECTION_OPTIONS | ? | ? | ?
+HYKU_SSL_CONFIGURED | ? | ? | ?
+HYKU_WEEKLY_EMAIL_LIST | ? | ? | ?
+HYKU_YEARLY_EMAIL_LIST | ? | ? | ?
+HYRAX_ACTIVE_JOB_QUEUE | ? | ? | ?
+HYRAX_ACTIVE_JOB_QUEUE | ? | ? | ?
+HYRAX_FITS_PATH | ? | ? | ?
+HYRAX_REDIS_NAMESPACE | ? | ? | ?
+I18N_DEBUG | ? | ? | ?
+INITIAL_ADMIN_EMAIL | ? | ? | ?
+INITIAL_ADMIN_PASSWORD | ? | ? | ?
+IN_DOCKER | ? | ? | ?
+INITIAL_ADMIN_PASSWORD | ? | ? | ?
+LD_LIBRARY_PATH | ? | ? | ?
+PASSENGER_APP_ENV | ? | ? | ?
+RAILS_ENV | ? | ? | ?
+RAILS_LOG_TO_STDOUT | ? | ? | ?
+RAILS_LOG_TO_STDOUT | ? | ? | ?
+RAILS_MAX_THREADS | ? | ? | ?
+REDIS_HOST | ? | ? | ?
+REDIS_PASSWORD | ? | ? | ?
+REDIS_HOST | ? | ? | ?
+REDIS_URL SECRET_KEY_BASE  | ? | ? | ?
+SECRET_KEY_BASE | ? | ? | ?
+SMTP_ADDRESS | ? | ? | ?
+SMTP_DOMAIN | ? | ? | ?
+SMTP_PASSWORD | ? | ? | ?
+SMTP_PORT | ? | ? | ?
+SMTP_USER_NAME | username for the STMP connection
+SOLR_ADMIN_PASSWORD | ? | ? | ?
+SOLR_ADMIN_USER | ? | ? | ?
+SOLR_COLLECTION_NAME | ? | ? | ?
+SOLR_CONFIGSET_NAME | ? | ? | ? 
+SOLR_PORT  | ? | ? | ?
+SOLR_CONFIGSET_NAME  | ? | ? | ?
+SOLR_HOST | Host for the Solr connection 
+SOLR_URL | Url for the Solr connection 
+WEB_CONCURRENCY
+
+
+

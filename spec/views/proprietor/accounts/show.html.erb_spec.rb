@@ -2,8 +2,8 @@
 
 RSpec.describe "proprietor/accounts/show", type: :view do
   let(:account) { FactoryBot.create(:account) }
-  let(:admin1) { build(:user) }
-  let(:admin2) { build(:user) }
+  let(:superadmin1) { FactoryBot.create(:superadmin, email: 'superadmin_1@example.com') }
+  let(:superadmin2) { FactoryBot.create(:superadmin, email: 'superadmin_2@example.com') }
 
   before do
     allow(Apartment::Tenant).to receive(:switch).with(account.tenant) do |&block|
@@ -30,21 +30,20 @@ RSpec.describe "proprietor/accounts/show", type: :view do
       render
     end
 
-    it 'displays "No administrators exist"' do
-      expect(rendered).to have_content('No administrators exist')
+    it 'displays "No administrators message"' do
+      expect(rendered).to have_content('There are currently no admins assigned to this tenant. Please add some.')
     end
   end
 
   context 'with admin users' do
     before do
-      allow(account).to receive(:admin_emails).and_return([admin1.email, admin2.email])
+      allow(account).to receive(:admin_emails).and_return([superadmin1.email, superadmin2.email])
       render
     end
 
-    it 'displays each user email and a remove button' do
-      expect(rendered).to have_content(admin1.email)
-      expect(rendered).to have_content(admin2.email)
-      expect(rendered).to have_css("input[class='btn btn-danger'][value='Remove']")
+    it 'displays each admin email' do
+      expect(rendered).to match(/superadmin_1@example.com/)
+      expect(rendered).to match(/superadmin_2@example.com/)
     end
   end
 end

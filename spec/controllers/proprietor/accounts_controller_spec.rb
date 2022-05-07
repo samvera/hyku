@@ -60,6 +60,7 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
 
     describe "GET #show" do
       it "assigns the requested account as @account" do
+        allow_any_instance_of(Account).to receive(:admin_emails).and_return([user.email])
         get :show, params: { id: account.to_param }
         expect(assigns(:account)).to eq(account)
       end
@@ -158,6 +159,7 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
 
     describe "GET #show" do
       it "assigns the requested account as @account" do
+        allow_any_instance_of(Account).to receive(:admin_emails).and_return([user.email])
         get :show, params: { id: account.to_param }
         expect(assigns(:account)).to eq(account)
       end

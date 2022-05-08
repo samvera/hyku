@@ -207,9 +207,9 @@ switch!('myaccount')
 | HYRAX_FITS_PATH | ? | ? | ? |
 | HYRAX_REDIS_NAMESPACE | ? | ? | ? |
 | I18N_DEBUG | ? | ? | ? |
-| INITIAL_ADMIN_EMAIL | ? | ? | ? |
-| INITIAL_ADMIN_PASSWORD | ? | ? | ? |
-| IN_DOCKER | ? | ? | ? |
+| INITIAL_ADMIN_EMAIL | Admin email used by database seeds. | admin@example.com | no |
+| INITIAL_ADMIN_PASSWORD | Admin password used by database seeds. Be sure to change in production. | testing123 | no |
+| IN_DOCKER | Used specs to know if we are running inside a container or not. Set to true if in K8S regardless of Docker vs Containerd | false | yes |
 | INITIAL_ADMIN_PASSWORD | ? | ? | ? |
 | LD_LIBRARY_PATH | ? | ? | ? |
 | PASSENGER_APP_ENV | ? | ? | ? |
@@ -234,26 +234,9 @@ switch!('myaccount')
 | SOLR_PORT  | ? | ? | ? |
 | SOLR_CONFIGSET_NAME  | ? | ? | ? |
 | SOLR_HOST | Host for the Solr connection |
-| SOLR_URL | Url for the Solr connection |
+| SOLR_URL | URL for the Solr connection |
 | WEB_CONCURRENCY |
 
-HYKU_ELASTIC_JOBS - false
-HYKU_EMAIL_FORMAT, type: 'array' sap
-HYKU_EMAIL_SUBJECT_PREFIX, type: 'string'
-HYKU_ENABLE_OAI_METADATA, type: 'string', disabled: true
-HYKU_FILE_ACL, type: 'boolean', default: true, private: true
-HYKU_FILE_SIZE_LIMIT, type: 'string', default: 5.gigabytes.to_s
-HYKU_GEONAMES_USERNAME, type: 'string', default: ''
-HYKU_GOOGLE_ANALYTICS_ID, type: 'string'
-HYKU_GOOGLE_SCHOLARLY_WORK_TYPES, type: 'array', disabled: true
-HYKU_GTM_ID, type: 'string'
-HYKU_LOCALE_NAME, type: 'string', disabled: true
-HYKU_MONTHLY_EMAIL_LIST, type: 'array', disabled: true
-HYKU_MULTITENANT - false
-HYKU_MULTITENANT=true
-HYKU_OAI_ADMIN_EMAIL, type: 'string', default: 'changeme@example.com'
-HYKU_OAI_PREFIX, type: 'string', default: 'oai:hyku'
-HYKU_OAI_SAMPLE_IDENTIFIER, type: 'string', default: '806bbc5e-8ebe-468c-a188-b7c14fbe34df'
 HYKU_ROOT_HOST
 HYKU_ROOT_HOST=hyku.test
 HYKU_S3_BUCKET, type: 'string', private: true

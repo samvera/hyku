@@ -156,9 +156,9 @@ switch!('myaccount')
 | DB_HOST | host name for the database | db | no |
 | DB_NAME | name of database on database host | hyku | no |
 | DB_PASSWORD | password for connecting to database | | no |
+| DB_PORT | Port for database connections | 5432 | no |
 | DB_TEST_NAME | name of database on database host for tests to run against. Should be different than the development database name or your tests will clobber your dev set up | hyku_test | yes |
 | DB_USER | username for the database connection | postgres | no |
-| DB_PORT | Port for database connections | 5432 | no |
 | FCREPO_DEVELOPMENT_PORT | Port used for fedora dev instance, only if FCREPO_URL is blank | 8984 | yes
 | FCREPO_HOST | host name for the fedora repo | ? | no |
 | FCREPO_PORT | port for the fedora repo | 8080 | no |
@@ -193,99 +193,42 @@ switch!('myaccount')
 | HYKU_OAI_ADMIN_EMAIL | OAI endpoint contact address | changeme@example.com | no |
 | HYKU_OAI_PREFIX | OAI namespace metadata prefix | oai:hyku | no |
 | HYKU_OAI_SAMPLE_IDENTIFIER | OAI example of what an identify might look like | 806bbc5e-8ebe-468c-a188-b7c14fbe34df | no |
-| HYKU_ROOT_HOST | ? | ? | ? |
-| HYKU_S3_BUCKET | ? | ? | ? |
-| HYKU_ROOT_HOST | ? | ? | ? |
-| HYKU_SETTING_NAME | ? | ? | ? |
-| HYKU_SHARED_LOGIN | ? | ? | ? |
-| HYKU_SMTP_SETTINGS | ? | ? | ? |
-| HYKU_SOLR_COLLECTION_OPTIONS | ? | ? | ? |
-| HYKU_SSL_CONFIGURED | ? | ? | ? |
+| HYKU_ROOT_HOST | What is the very base url that default subdomains should be tacked on to? | hyku.test | no |
+| HYKU_S3_BUCKET | If set basic uploads for things like branding images will be sent to S3 | - | no |
+| HYKU_SHARED_LOGIN | Not used. Placeholder for upcoming Ubiquity feature | en | no |
+| HYKU_SMTP_SETTINGS | String representing a hash of options for tenant specific SMTP defaults. Can be any of `from user_name password address domain port authentication enable_starttls_auto` | - | no |
+| HYKU_SOLR_COLLECTION_OPTIONS | Overrides of specifice collection options for Solr. | `{async: nil, auto_add_replicas: nil, collection: { config_name: ENV.fetch('SOLR_CONFIGSET_NAME', 'hyku') }, create_node_set: nil, max_shards_per_node: nil, num_shards: 1, replication_factor: nil, router: { name: nil, field: nil }, rule: nil, shards: nil, snitch: nil}` | no |
+| HYKU_SSL_CONFIGURED | Force SSL on page loads and IIIF manifest links | false | no |
 | HYKU_WEEKLY_EMAIL_LIST | Not used. Placeholder for upcoming Ubiquity feature | en | no |
 | HYKU_YEARLY_EMAIL_LIST | Not used. Placeholder for upcoming Ubiquity feature | en | no |
 | HYRAX_ACTIVE_JOB_QUEUE | Which Rails background job runner should be used? | sidekiq | no |
-| HYRAX_FITS_PATH | ? | ? | ? |
-| HYRAX_REDIS_NAMESPACE | ? | ? | ? |
-| I18N_DEBUG | ? | ? | ? |
+| HYRAX_FITS_PATH | Where is fits.sh installed on the system. Will try the PATH if not set. | /app/fits/fits.sh | no |
+| HYRAX_REDIS_NAMESPACE | What namespace should the application use by default | hyrax | no |
+| I18N_DEBUG | See [Working with Translations] above | false | yes |
 | INITIAL_ADMIN_EMAIL | Admin email used by database seeds. | admin@example.com | no |
 | INITIAL_ADMIN_PASSWORD | Admin password used by database seeds. Be sure to change in production. | testing123 | no |
 | IN_DOCKER | Used specs to know if we are running inside a container or not. Set to true if in K8S regardless of Docker vs Containerd | false | yes |
-| INITIAL_ADMIN_PASSWORD | ? | ? | ? |
-| LD_LIBRARY_PATH | ? | ? | ? |
-| PASSENGER_APP_ENV | ? | ? | ? |
-| RAILS_ENV | ? | ? | ? |
-| RAILS_LOG_TO_STDOUT | ? | ? | ? |
-| RAILS_LOG_TO_STDOUT | ? | ? | ? |
-| RAILS_MAX_THREADS | ? | ? | ? |
-| REDIS_HOST | ? | ? | ? |
-| REDIS_PASSWORD | ? | ? | ? |
-| REDIS_HOST | ? | ? | ? |
-| REDIS_URL SECRET_KEY_BASE  | ? | ? | ? |
-| SECRET_KEY_BASE | ? | ? | ? |
-| SMTP_ADDRESS | ? | ? | ? |
-| SMTP_DOMAIN | ? | ? | ? |
-| SMTP_PASSWORD | ? | ? | ? |
-| SMTP_PORT | ? | ? | ? |
-| SMTP_USER_NAME | username for the STMP connection |
-| SOLR_ADMIN_PASSWORD | ? | ? | ? |
-| SOLR_ADMIN_USER | ? | ? | ? |
-| SOLR_COLLECTION_NAME | ? | ? | ? |
-| SOLR_CONFIGSET_NAME | ? | ? | ? |
-| SOLR_PORT  | ? | ? | ? |
-| SOLR_CONFIGSET_NAME  | ? | ? | ? |
-| SOLR_HOST | Host for the Solr connection |
-| SOLR_URL | URL for the Solr connection |
-| WEB_CONCURRENCY |
-
-HYKU_ROOT_HOST
-HYKU_ROOT_HOST=hyku.test
-HYKU_S3_BUCKET, type: 'string', private: true
-HYKU_SETTING_NAME
-HYKU_SHARED_LOGIN, type: 'boolean', disabled: true
-HYKU_SMTP_SETTINGS, type: 'hash', private: true, default: {}
-HYKU_SOLR_COLLECTION_OPTIONS, type: 'hash', default: solr_collection_options
-HYKU_SSL_CONFIGURED, type: 'boolean', default: false, private: true
-HYKU_WEEKLY_EMAIL_LIST, type: 'array', disabled: true
-HYKU_YEARLY_EMAIL_LIST, type: 'array', disabled: true
-HYRAX_ACTIVE_JOB_QUEUE
-HYRAX_ACTIVE_JOB_QUEUE=sidekiq
-HYRAX_FITS_PATH=/app/fits/fits.sh
-HYRAX_REDIS_NAMESPACE
-I18N_DEBUG
-INITIAL_ADMIN_EMAIL
-INITIAL_ADMIN_EMAIL=admin@example.com
-INITIAL_ADMIN_PASSWORD
-INITIAL_ADMIN_PASSWORD=testing123
-IN_DOCKER=true
-LD_LIBRARY_PATH=/opt/fits/tools/mediainfo/linux
-PASSENGER_APP_ENV=development
-RAILS_ENV - development
-RAILS_LOG_TO_STDOUT
-RAILS_LOG_TO_STDOUT=true
-RAILS_MAX_THREADS - 5
-REDIS_HOST - localhost
-REDIS_HOST=redis
-REDIS_PASSWORD - 6397
-REDIS_URL
-SECRET_KEY_BASE
-SECRET_KEY_BASE=asdf
-SMTP_ADDRESS
-SMTP_DOMAIN
-SMTP_PASSWORD
-SMTP_PORT
-SMTP_USER_NAME
-SOLR_ADMIN_PASSWORD=admin
-SOLR_ADMIN_USER - admin
-SOLR_ADMIN_USER=admin
-SOLR_COLLECTION_NAME=hydra-development
-SOLR_CONFIGSET_NAME - hyku
-SOLR_CONFIGSET_NAME=hyku
-SOLR_HOST=solr
-SOLR_PORT=8983
-SOLR_URL
-SOLR_URL=http://admin:admin@solr:8983/solr/
-WEB_CONCURRENCY - 5
-
+| LD_LIBRARY_PATH | Path used for fits | /app/fits/tools/mediainfo/linux | no |
+| RAILS_ENV | https://guides.rubyonrails.org/configuring.html#creating-rails-environments | development | no |
+| RAILS_LOG_TO_STDOUT | Redirect all logging to stdout | true | no |
+| RAILS_MAX_THREADS | Number of threads to use in puma or sidekiq | 5 | no |
+| REDIS_HOST | Host location of redis | redis | no |
+| REDIS_PASSWORD | Password for redis, optional | - | no |
+| REDIS_URL | Optional explicit redis url, build from host/passsword if not specified | redis://:staging@redis:6397/ | no |
+| SECRET_KEY_BASE | Used by Rails to secure sessions, should be a 128 character hex | - | no |
+| SMTP_ADDRESS | Address of the smtp endpoint for sending email | - | no |
+| SMTP_DOMAIN | Domain for sending email | - | no |
+| SMTP_PASSWORD | Password for email sending | - | no |
+| SMTP_PORT | Port for email sending | - | no |
+| SMTP_USER_NAME | Username for the email connection | - | no |
+| SOLR_ADMIN_PASSWORD | Solr requires a user/password when accesing the collections API (which we use to create and manage solr collections and aliases) | admin | no |
+| SOLR_ADMIN_USER | Solr requires a user/password when accesing the collections API (which we use to create and manage solr collections and aliases) | admin | no |
+| SOLR_COLLECTION_NAME | Name of the Solr collection used by non-tenant search. This is required by Hyrax, but is currently unused by Hyku | hydra-development | no |
+| SOLR_CONFIGSET_NAME  | Name of the Solr configset to use when creating new Solr collections | hyku | no |
+| SOLR_HOST | Host for the Solr connection | solr | no |
+| SOLR_PORT | Solr port | 8983 | no |
+| SOLR_URL | URL for the Solr connection | http://admin:admin@solr:8983/solr/ | no |
+| WEB_CONCURRENCY | Number of processes to run in either puma or sidekiq | 2 | no |
 
 ## Development Dependencies
 

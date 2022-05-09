@@ -30,3 +30,4 @@ fcrpo/*
 pg/*
 Dockerfile*
 fits.log
+ImageMagick*

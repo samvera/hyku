@@ -144,11 +144,6 @@ switch!('myaccount')
 
 ## Environment Variables
 
-| First Header  | Second Header |
-| ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
-
 | Name | Description | Default | Development or Test Only |
 | ------------- | ------------- | ------------- | ------------- |
 | CHROME_HOSTNAME | specifies the chromium host for feature specs | chrome | yes |
@@ -164,7 +159,7 @@ switch!('myaccount')
 | FCREPO_PORT | port for the fedora repo | 8080 | no |
 | FCREPO_TEST_PORT | Test port for the fedora repo, only if FCREPO_URL is blank | 8986 | yes |
 | FCREPO_URL | URL of the fedora repo, including port and prefix, but not repo name. | http://fcrepo:8080/rest | no |
-| HYKU_ADMIN_HOST | URL of the admin / propritor host in a multitenant environment | hyku.test | no |
+| HYKU_ADMIN_HOST | URL of the admin / proprietor host in a multitenant environment | hyku.test | no |
 | HYKU_ADMIN_ONLY_TENANT_CREATION | Restrict signing up a new tenant to the admin | false | no | |
 | HYKU_ALLOW_SIGNUP | Can users register themselves on a given Tenant | true  | no |
 | HYKU_ASSET_HOST | Host name of the asset server | - | no |
@@ -181,7 +176,7 @@ switch!('myaccount')
 | HYKU_EMAIL_FORMAT | Validate if user emails match a basic email regexp (currently `/@\S*.\S*/`) | false | no |
 | HYKU_EMAIL_SUBJECT_PREFIX | String to put in front of system email subjects | - | no |
 | HYKU_ENABLE_OAI_METADATA | Not used. Placeholder for upcoming OAI feature. | false | no |
-| HYKU_FILE_ACL | Set Unix ACLs on file creation. Set to false if using Azure cloud or another network file ssytem that does not allow setting permissions on files. | true | no |
+| HYKU_FILE_ACL | Set Unix ACLs on file creation. Set to false if using Azure cloud or another network file system that does not allow setting permissions on files. | true | no |
 | HYKU_FILE_SIZE_LIMIT | How big a file do you want to accept in the work upload?  | 5242880 (5 MB) | no |
 | HYKU_GEONAMES_USERNAME | Username used for Geonames connections by the application | '' | no |
 | HYKU_GOOGLE_ANALYTICS_ID | Id for the applications Google Analytics account. Disabled if not set | - | no |
@@ -197,7 +192,7 @@ switch!('myaccount')
 | HYKU_S3_BUCKET | If set basic uploads for things like branding images will be sent to S3 | - | no |
 | HYKU_SHARED_LOGIN | Not used. Placeholder for upcoming Ubiquity feature | en | no |
 | HYKU_SMTP_SETTINGS | String representing a hash of options for tenant specific SMTP defaults. Can be any of `from user_name password address domain port authentication enable_starttls_auto` | - | no |
-| HYKU_SOLR_COLLECTION_OPTIONS | Overrides of specifice collection options for Solr. | `{async: nil, auto_add_replicas: nil, collection: { config_name: ENV.fetch('SOLR_CONFIGSET_NAME', 'hyku') }, create_node_set: nil, max_shards_per_node: nil, num_shards: 1, replication_factor: nil, router: { name: nil, field: nil }, rule: nil, shards: nil, snitch: nil}` | no |
+| HYKU_SOLR_COLLECTION_OPTIONS | Overrides of specific collection options for Solr. | `{async: nil, auto_add_replicas: nil, collection: { config_name: ENV.fetch('SOLR_CONFIGSET_NAME', 'hyku') }, create_node_set: nil, max_shards_per_node: nil, num_shards: 1, replication_factor: nil, router: { name: nil, field: nil }, rule: nil, shards: nil, snitch: nil}` | no |
 | HYKU_SSL_CONFIGURED | Force SSL on page loads and IIIF manifest links | false | no |
 | HYKU_WEEKLY_EMAIL_LIST | Not used. Placeholder for upcoming Ubiquity feature | en | no |
 | HYKU_YEARLY_EMAIL_LIST | Not used. Placeholder for upcoming Ubiquity feature | en | no |
@@ -207,7 +202,7 @@ switch!('myaccount')
 | I18N_DEBUG | See [Working with Translations] above | false | yes |
 | INITIAL_ADMIN_EMAIL | Admin email used by database seeds. | admin@example.com | no |
 | INITIAL_ADMIN_PASSWORD | Admin password used by database seeds. Be sure to change in production. | testing123 | no |
-| IN_DOCKER | Used specs to know if we are running inside a container or not. Set to true if in K8S regardless of Docker vs Containerd | false | yes |
+| IN_DOCKER | Used specs to know if we are running inside a container or not. Set to true if in K8S regardless of Docker vs ContainerD | false | yes |
 | LD_LIBRARY_PATH | Path used for fits | /app/fits/tools/mediainfo/linux | no |
 | RAILS_ENV | https://guides.rubyonrails.org/configuring.html#creating-rails-environments | development | no |
 | RAILS_LOG_TO_STDOUT | Redirect all logging to stdout | true | no |

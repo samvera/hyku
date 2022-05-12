@@ -5,11 +5,15 @@ RSpec.describe SharedSearchHelper do
 
   context "shared search records" do
     let(:cname) { 'hyku-me.test' }
-    let(:account) { build(:account, cname: cname) }
+    let(:account) { build(:search_only_account, cname: cname) }
 
     let(:uuid) { SecureRandom.uuid }
     let(:request) { instance_double(ActionDispatch::Request, port: 3000, protocol: "https://", host: account.cname) }
     let(:work_hash) { { id: uuid, 'has_model_ssim': ['GenericWork'], 'account_cname_tesim': account.cname } }
+
+    before do 
+      allow(helper).to receive(:current_account) { account }
+    end
 
     it 'returns #generate_work_url for production' do
       allow(Rails.env).to receive(:development?).and_return(false)

@@ -11,7 +11,7 @@ RSpec.describe SharedSearchHelper do
     let(:request) { instance_double(ActionDispatch::Request, port: 3000, protocol: "https://", host: account.cname) }
     let(:work_hash) { { id: uuid, 'has_model_ssim': ['GenericWork'], 'account_cname_tesim': account.cname } }
 
-    before do 
+    before do
       allow(helper).to receive(:current_account) { account }
     end
 

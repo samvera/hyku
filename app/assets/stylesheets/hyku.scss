@@ -414,3 +414,71 @@ nav.navbar.navbar-default.navbar-static-top .container-fluid .row {
     padding-right: 0;
   }
 }
+
+body.public-facing {
+  .btn {
+    &.btn-primary,
+    &.btn-danger {
+      color: #fff;
+    }
+
+    &.btn-primary {
+      background-color: #337ab7;
+    }
+  }
+}
+
+// FEATURED COLLECTIONS
+@media (max-width: $screen-sm-min) {
+  .admin-show-page
+    .collection-title-row-wrapper
+    .collection-title-row-content
+    .btn.collapse {
+    display: none;
+  }
+}
+
+.dd-item.collapse {
+  display: none;
+}
+
+.dd-item.dd3-item.featured-item {
+  border-top: 0;
+  min-height: unset;
+  padding: 0;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.collection-highlights img,
+.featured-item img {
+  border: 0;
+  height: 90px;
+  width: unset;
+}
+
+.featured-collection-section {
+  border: 1px solid #ccc;
+}
+
+.mb-30 {
+  margin-bottom: 30px;
+}
+
+.btn-primary.feature {
+  margin-left: 4px;
+}
+//Styles we need access to in the dashboard
+.mb-40 {
+  margin-bottom: 40px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}

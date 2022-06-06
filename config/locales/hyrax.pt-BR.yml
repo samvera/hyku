@@ -797,6 +797,7 @@ pt-BR:
         link: Ver todas as coleções
         tab_label: Explorar coleções
         title: Explorar coleções
+        thumbnail: miniatura
       featured_researcher:
         missing: Nenhum pesquisador foi apresentado.
         tab_label: Pesquisador Destaque

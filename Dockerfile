@@ -16,6 +16,7 @@ RUN apk --no-cache upgrade && \
     openjpeg-tools \
     nodejs \
     yarn \
+    postgresql-client \
     $EXTRA_APK_PACKAGES
 
 RUN wget https://imagemagick.org/download/ImageMagick.tar.gz && \
@@ -63,11 +64,12 @@ RUN ln -sf /usr/lib/libmediainfo.so.0 /app/fits/tools/mediainfo/linux/libmediain
 
 COPY --chown=1001:101 $APP_PATH/Gemfile* /app/samvera/hyrax-webapp/
 RUN bundle install --jobs "$(nproc)"
+COPY --chown=1001:101 $APP_PATH/bin/db-migrate-seed.sh /app/samvera/
 
 COPY --chown=1001:101 $APP_PATH /app/samvera/hyrax-webapp
 
 ARG HYKU_BULKRAX_ENABLED="false"
-RUN RAILS_ENV=production SECRET_KEY_BASE=`bin/rake secret` DB_ADAPTER=nulldb DATABASE_URL='postgresql://fake' bundle exec rake assets:precompile
+RUN RAILS_ENV=production SECRET_KEY_BASE=`bin/rake secret` DB_ADAPTER=nulldb DB_URL='postgresql://fake' bundle exec rake assets:precompile
 
 FROM hyku-base as hyku-worker
 ENV MALLOC_ARENA_MAX=2

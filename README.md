@@ -24,6 +24,7 @@ Jump In: [![Slack Status](http://slack.samvera.org/badge.svg)](http://slack.samv
     * [With Kubernetes](#with-kubernetes)
   * [Single Tenant Mode](#single-tenancy)
   * [Switching accounts](#switching-accounts)
+  * [Environment Variables](#environment-variables)
   * [Development dependencies](#development-dependencies)
     * [Postgres](#postgres)
   * [Importing](#importing)
@@ -140,6 +141,89 @@ switch!('my.site.com')
 # or
 switch!('myaccount')
 ```
+
+## Environment Variables
+
+| Name | Description | Default | Development or Test Only |
+| ------------- | ------------- | ------------- | ------------- |
+| CHROME_HOSTNAME | specifies the chromium host for feature specs | chrome | yes |
+| DB_ADAPTER | which Rails database adapter, mapped in to config/database.yml. Common values are postgresql, mysql2, jdbc, nulldb | postgresql | no |
+| DB_HOST | host name for the database | db | no |
+| DB_NAME | name of database on database host | hyku | no |
+| DB_PASSWORD | password for connecting to database | | no |
+| DB_PORT | Port for database connections | 5432 | no |
+| DB_TEST_NAME | name of database on database host for tests to run against. Should be different than the development database name or your tests will clobber your dev set up | hyku_test | yes |
+| DB_USER | username for the database connection | postgres | no |
+| FCREPO_DEVELOPMENT_PORT | Port used for fedora dev instance, only if FCREPO_URL is blank | 8984 | yes
+| FCREPO_HOST | host name for the fedora repo | ? | no |
+| FCREPO_PORT | port for the fedora repo | 8080 | no |
+| FCREPO_TEST_PORT | Test port for the fedora repo, only if FCREPO_URL is blank | 8986 | yes |
+| FCREPO_URL | URL of the fedora repo, including port and prefix, but not repo name. | http://fcrepo:8080/rest | no |
+| HYKU_ADMIN_HOST | URL of the admin / proprietor host in a multitenant environment | hyku.test | no |
+| HYKU_ADMIN_ONLY_TENANT_CREATION | Restrict signing up a new tenant to the admin | false | no | |
+| HYKU_ALLOW_SIGNUP | Can users register themselves on a given Tenant | true  | no |
+| HYKU_ASSET_HOST | Host name of the asset server | - | no |
+| HYKU_BULKRAX_ENABLED | Is the Bulkrax gem enabled | false | no |
+| HYKU_BULKRAX_VALIDATIONS | Unused, pending feature addition by Ubiquity | - | no |
+| HYKU_CACHE_API | Use Redis instead of disk for caching | false | no |
+| HYKU_CACHE_ROOT | Directory of file cache (if CACHE_API is false) | /app/samvera/file_cache | no |
+| HYKU_CONTACT_EMAIL | Email address used for the FROM field when the contact form is submitted | change-me-in-settings@example.com | no |
+| HYKU_CONTACT_EMAIL_TO | Email addresses (comma seperated) that receive contact form submissions | change-me-in-settings@example.com | no |
+| HYKU_DEFAULT_HOST  | The host name pattern each tenant will respond to by default. %{tenant} is substituted for the tenants name. | "%{tenant}.#{admin_host}" | no |
+| HYKU_DOI_READER | Does the work new / edit form allow reading in a DOI from Datacite? | false | no |
+| HYKU_DOI_WRITER | Does saving or updating a work write to Datacite once the work is approved | false | no |
+| HYKU_ELASTIC_JOBS | Use AWS Elastic jobs for background jobs | false | no |
+| HYKU_EMAIL_FORMAT | Validate if user emails match a basic email regexp (currently `/@\S*.\S*/`) | false | no |
+| HYKU_EMAIL_SUBJECT_PREFIX | String to put in front of system email subjects | - | no |
+| HYKU_ENABLE_OAI_METADATA | Not used. Placeholder for upcoming OAI feature. | false | no |
+| HYKU_FILE_ACL | Set Unix ACLs on file creation. Set to false if using Azure cloud or another network file system that does not allow setting permissions on files. | true | no |
+| HYKU_FILE_SIZE_LIMIT | How big a file do you want to accept in the work upload?  | 5242880 (5 MB) | no |
+| HYKU_GEONAMES_USERNAME | Username used for Geonames connections by the application | '' | no |
+| HYKU_GOOGLE_ANALYTICS_ID | Id for the applications Google Analytics account. Disabled if not set | - | no |
+| HYKU_GOOGLE_SCHOLARLY_WORK_TYPES | List of work types which should be presented to Google Scholar for indexing. Comman seperated WorkType list | - | no |
+| HYKU_GTM_ID | If set, enable Google Tag manager with this id.  | - | no |
+| HYKU_LOCALE_NAME | Not used. Placeholder for upcoming Ubiquity feature | en | no |
+| HYKU_MONTHLY_EMAIL_LIST | Not used. Placeholder for upcoming Ubiquity feature | en | no |
+| HYKU_MULTITENANT | Set application up for multitenantcy, or use the single tenant version. | false | no |
+| HYKU_OAI_ADMIN_EMAIL | OAI endpoint contact address | changeme@example.com | no |
+| HYKU_OAI_PREFIX | OAI namespace metadata prefix | oai:hyku | no |
+| HYKU_OAI_SAMPLE_IDENTIFIER | OAI example of what an identify might look like | 806bbc5e-8ebe-468c-a188-b7c14fbe34df | no |
+| HYKU_ROOT_HOST | What is the very base url that default subdomains should be tacked on to? | hyku.test | no |
+| HYKU_S3_BUCKET | If set basic uploads for things like branding images will be sent to S3 | - | no |
+| HYKU_SHARED_LOGIN | Not used. Placeholder for upcoming Ubiquity feature | en | no |
+| HYKU_SMTP_SETTINGS | String representing a hash of options for tenant specific SMTP defaults. Can be any of `from user_name password address domain port authentication enable_starttls_auto` | - | no |
+| HYKU_SOLR_COLLECTION_OPTIONS | Overrides of specific collection options for Solr. | `{async: nil, auto_add_replicas: nil, collection: { config_name: ENV.fetch('SOLR_CONFIGSET_NAME', 'hyku') }, create_node_set: nil, max_shards_per_node: nil, num_shards: 1, replication_factor: nil, router: { name: nil, field: nil }, rule: nil, shards: nil, snitch: nil}` | no |
+| HYKU_SSL_CONFIGURED | Force SSL on page loads and IIIF manifest links | false | no |
+| HYKU_WEEKLY_EMAIL_LIST | Not used. Placeholder for upcoming Ubiquity feature | en | no |
+| HYKU_YEARLY_EMAIL_LIST | Not used. Placeholder for upcoming Ubiquity feature | en | no |
+| HYRAX_ACTIVE_JOB_QUEUE | Which Rails background job runner should be used? | sidekiq | no |
+| HYRAX_FITS_PATH | Where is fits.sh installed on the system. Will try the PATH if not set. | /app/fits/fits.sh | no |
+| HYRAX_REDIS_NAMESPACE | What namespace should the application use by default | hyrax | no |
+| I18N_DEBUG | See [Working with Translations] above | false | yes |
+| INITIAL_ADMIN_EMAIL | Admin email used by database seeds. | admin@example.com | no |
+| INITIAL_ADMIN_PASSWORD | Admin password used by database seeds. Be sure to change in production. | testing123 | no |
+| IN_DOCKER | Used specs to know if we are running inside a container or not. Set to true if in K8S regardless of Docker vs ContainerD | false | yes |
+| LD_LIBRARY_PATH | Path used for fits | /app/fits/tools/mediainfo/linux | no |
+| RAILS_ENV | https://guides.rubyonrails.org/configuring.html#creating-rails-environments | development | no |
+| RAILS_LOG_TO_STDOUT | Redirect all logging to stdout | true | no |
+| RAILS_MAX_THREADS | Number of threads to use in puma or sidekiq | 5 | no |
+| REDIS_HOST | Host location of redis | redis | no |
+| REDIS_PASSWORD | Password for redis, optional | - | no |
+| REDIS_URL | Optional explicit redis url, build from host/passsword if not specified | redis://:staging@redis:6397/ | no |
+| SECRET_KEY_BASE | Used by Rails to secure sessions, should be a 128 character hex | - | no |
+| SMTP_ADDRESS | Address of the smtp endpoint for sending email | - | no |
+| SMTP_DOMAIN | Domain for sending email | - | no |
+| SMTP_PASSWORD | Password for email sending | - | no |
+| SMTP_PORT | Port for email sending | - | no |
+| SMTP_USER_NAME | Username for the email connection | - | no |
+| SOLR_ADMIN_PASSWORD | Solr requires a user/password when accesing the collections API (which we use to create and manage solr collections and aliases) | admin | no |
+| SOLR_ADMIN_USER | Solr requires a user/password when accesing the collections API (which we use to create and manage solr collections and aliases) | admin | no |
+| SOLR_COLLECTION_NAME | Name of the Solr collection used by non-tenant search. This is required by Hyrax, but is currently unused by Hyku | hydra-development | no |
+| SOLR_CONFIGSET_NAME  | Name of the Solr configset to use when creating new Solr collections | hyku | no |
+| SOLR_HOST | Host for the Solr connection | solr | no |
+| SOLR_PORT | Solr port | 8983 | no |
+| SOLR_URL | URL for the Solr connection | http://admin:admin@solr:8983/solr/ | no |
+| WEB_CONCURRENCY | Number of processes to run in either puma or sidekiq | 2 | no |
 
 ## Development Dependencies
 

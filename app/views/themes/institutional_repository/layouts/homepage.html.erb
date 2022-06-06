@@ -8,7 +8,7 @@
         <%= render "hyrax/homepage/marketing" if controller_name == 'homepage' || controller_name == 'hyrax_contact_form' || controller_name == 'pages' %>
       </div>
       <div class="share-your-work-button">
-        <% if @presenter.display_share_button? %>
+        <% if @presenter&.display_share_button? %>
           <div class="institutional-repository home_share_work row">
             <div class="col-sm-12 text-center">
               <% if signed_in? %>
@@ -35,7 +35,7 @@
           </div>
         <% end %>
 
-        <%= render '/shared/select_work_type_modal', create_work_presenter: @presenter.create_work_presenter if @presenter.draw_select_work_modal? %>
+        <%= render '/shared/select_work_type_modal', create_work_presenter: @presenter&.create_work_presenter if @presenter&.draw_select_work_modal? %>
       </div>
     </div>
   </div>

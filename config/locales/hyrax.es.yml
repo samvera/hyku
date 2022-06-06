@@ -797,6 +797,7 @@ es:
         link: Ver todas las colecciones
         tab_label: Explore las colecciones
         title: Explore las colecciones
+        thumbnail: miniatura
       featured_researcher:
         missing: No se han presentado investigadores.
         tab_label: Investigador destacado

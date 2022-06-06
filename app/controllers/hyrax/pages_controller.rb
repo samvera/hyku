@@ -4,6 +4,7 @@
 # - add inject_theme_views method for theming
 # - add homepage presenter for access to feature flippers
 # - add access to content blocks in the show method
+# - adds @featured_collection_list to show method
 
 module Hyrax
   # Shows the about and help page
@@ -42,6 +43,8 @@ module Hyrax
       @marketing_text = ContentBlock.for(:marketing)
       @home_text = ContentBlock.for(:home_text)
       @featured_work_list = FeaturedWorkList.new
+      # OVERRIDE here to add featured collection list to show page
+      @featured_collection_list = FeaturedCollectionList.new
       @announcement_text = ContentBlock.for(:announcement)
     end
 

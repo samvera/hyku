@@ -1,5 +1,5 @@
 ## Override from hyrax to fix file upload in logo and banner
-## OVERRIDE: Hyrax 2.9 to use work titles for collection thumbnail select
+## OVERRIDE: Hyrax 2.9 to use work titles for collection thumbnail select & to add an option to reset to the default thumbnail
 module Hyrax
   module Dashboard
     ## Shows a list of all collections to the admins
@@ -76,6 +76,18 @@ module Hyrax
 
       def edit
         form
+        # Gets original filename of an uploaded thumbnail. See #update
+        if ::SolrDocument.find(@collection.id).thumbnail_path.include? "uploaded_collection_thumbnails" and uploaded_thumbnail?
+          @thumbnail_filename = File.basename(uploaded_thumbnail_files.reject { |f| File.basename(f).include? @collection.id }.first)
+        end
+      end
+
+      def uploaded_thumbnail?
+        uploaded_thumbnail_files.any?
+      end
+
+      def uploaded_thumbnail_files
+        Dir["#{UploadedCollectionThumbnailPathService.upload_dir(@collection)}/*"]
       end
 
       def after_create
@@ -139,7 +151,8 @@ module Hyrax
           process_banner_input
           process_logo_input
         end
-
+        # Save the thumbnail image in the proper dimensions to public folder
+        process_uploaded_thumbnail(params[:collection][:thumbnail_upload]) if params[:collection][:thumbnail_upload]
         process_member_changes
         @collection.visibility = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE unless @collection.discoverable?
         # we don't have to reindex the full graph when updating collection
@@ -148,6 +161,18 @@ module Hyrax
           after_update
         else
           after_update_error
+        end
+      end
+
+      # Deletes any previous thumbnails. The thumbnail indexer (see services/hyrax/indexes_thumbnails)
+      # checks if an uploaded thumbnail exists in the public folder before indexing the thumbnail path.
+      def delete_uploaded_thumbnail
+        FileUtils.rm_rf(uploaded_thumbnail_files)
+        @collection.update_index
+
+        respond_to do |format|
+          format.html
+          format.js # renders delete_uploaded_thumbnail.js.erb, which updates _current_thumbnail.html.erb
         end
       end
 
@@ -186,14 +211,23 @@ module Hyrax
 
       # Renders a JSON response with a list of files in this collection
       # This is used by the edit form to populate the thumbnail_id dropdown
-      # OVERRIDE: Hyrax 2.9 to use work titles for collection thumbnail select
+      # OVERRIDE: Hyrax 2.9 to use work titles for collection thumbnail select & to add an option to reset to the default thumbnail
       def files
         params[:q] = '' unless params[:q]
         builder = Hyrax::CollectionMemberSearchBuilder.new(scope: self, collection: collection, search_includes_models: :works)
+        # get the default work image because we do not want to show any works in this dropdown that only have the default work image. this indicates that they have no files attached, and will throw an error if selected.
+        default_work_thumbnail_path = Site.instance.default_work_image&.url.presence || ActionController::Base.helpers.image_path('default.png')
+        work_with_no_files_thumbnail_path = ActionController::Base.helpers.image_path('work.png')
         response = repository.search(builder.where(params[:q]).query)
-        result = response.documents.reject { |document| document["thumbnail_path_ss"].blank? }.map do |document|
+        # only return the works that have files, because these will be the only ones with a viable thumbnail
+        result = response.documents.reject { |document| document["thumbnail_path_ss"].blank? || document["thumbnail_path_ss"].include?(default_work_thumbnail_path) || document["thumbnail_path_ss"].include?(work_with_no_files_thumbnail_path) }.map do |document|
           { id: document["thumbnail_path_ss"].split('/').last.gsub(/\?.*/, ''), text: document["title_tesim"].first }
         end
+        reset_thumbnail_option = {
+          id: '',
+          text: 'Default thumbnail'
+        }
+        result << reset_thumbnail_option
         render json: result
       end
 
@@ -202,6 +236,26 @@ module Hyrax
       end
 
       private
+
+        def process_uploaded_thumbnail(uploaded_file)
+          dir_name = UploadedCollectionThumbnailPathService.upload_dir(@collection)
+          saved_file = Rails.root.join(dir_name, uploaded_file.original_filename)
+          # Create directory if it doesn't already exist
+          unless File.directory?(dir_name)
+            FileUtils.mkdir_p(dir_name)
+          else # clear contents
+          delete_uploaded_thumbnail
+          end
+          File.open(saved_file, 'wb') do |file|
+            file.write(uploaded_file.read)
+          end
+          image = MiniMagick::Image.open(saved_file)
+          # Save two versions of the image: one for homepage feature cards and one for regular thumbnail
+          image.resize('500x900').format("jpg").write("#{dir_name}/#{@collection.id}_card.jpg")
+          image.resize('150x300').format("jpg").write("#{dir_name}/#{@collection.id}_thumbnail.jpg")
+          File.chmod(0664,"#{dir_name}/#{@collection.id}_thumbnail.jpg")
+          File.chmod(0664,"#{dir_name}/#{@collection.id}_card.jpg")
+        end
 
         def default_collection_type
           Hyrax::CollectionType.find_or_create_default_collection_type

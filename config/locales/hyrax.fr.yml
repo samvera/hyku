@@ -795,6 +795,7 @@ fr:
         link: Voir toutes les collections
         tab_label: Explorez les collections
         title: Explorez les collections
+        thumbnail: Miniature
       featured_researcher:
         missing: Aucun chercheur n'a été présenté.
         tab_label: Chercheur en vedette

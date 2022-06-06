@@ -8,6 +8,12 @@ FactoryBot.define do
 
     title { ["Test title"] }
 
+    factory :public_generic_work, aliases: [:public_work], traits: [:public]
+
+    trait :public do
+      visibility { Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC }
+    end
+
     identifier do
       %w[
         ISBN:978-83-7659-303-6 978-3-540-49698-4 9790879392788

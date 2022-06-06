@@ -51,3 +51,5 @@ config/environments/*.local.yml
 public/uploads
 .env.*
 docker-compose.override.yml
+*~undo-tree~
+.DS_Store

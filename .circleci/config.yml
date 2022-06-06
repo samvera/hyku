@@ -50,10 +50,10 @@ jobs:
     parallelism: 4
     environment:
       RAILS_VERSION: << parameters.rails_version >>
-      DATABASE_NAME: circle_test
-      DATABASE_HOST: 127.0.0.1
-      DATABASE_USER: postgres
-      DATABASE_TEST_NAME: circle_test
+      DB_NAME: circle_test
+      DB_HOST: 127.0.0.1
+      DB_USER: postgres
+      DB_TEST_NAME: circle_test
       BUNDLE_PATH: vendor/bundle
       BUNDLE_JOBS: 4
       BUNDLE_RETRY: 3

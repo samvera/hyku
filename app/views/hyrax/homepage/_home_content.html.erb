@@ -2,9 +2,10 @@
   featured researcher
   featured works
   recently_uploaded
+  also, to render featured collections
 %>
 
-<div class="<%= @presenter.display_featured_works? || @presenter.display_recently_uploaded? ? 'home-tabs-left' : ''%>">
+<div class="<%= @presenter.display_featured_works? || @presenter.display_recently_uploaded? ? 'home-tabs-left col-sm-6' : ''%>">
   <ul id="homeTabs" class="nav nav-pills">
     <%# add check for featured works %>
     <% if @presenter.display_featured_works? %>
@@ -32,7 +33,7 @@
   </div>
 </div><!-- /.col-xs-6 -->
 
-<div class="home-tabs-right">
+<div class="home-tabs-right col-sm-6">
   <ul class="nav nav-pills" role="tablist">
     <li class="active"><a aria-expanded="true" href="#tab-col2-first" role="tab" data-toggle="tab"><%= t('hyrax.homepage.admin_sets.title') %></a></li>
     <%# add check for featured researcher %>
@@ -44,7 +45,7 @@
   <div class="tab-content">
     <div class="tab-pane active" id="tab-col2-first">
       <h2 class="sr-only"><%= t('hyrax.homepage.admin_sets.title') %></h2>
-      <%= render 'explore_collections', collections: @presenter.collections %>
+      <%= render 'featured_collection_section' %>
     </div>
     <%# add check for featured researcher %>
     <% if @presenter.display_featured_researcher? %>

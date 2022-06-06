@@ -8,6 +8,7 @@
 # OVERRIDE: Hyrax v2.9.0 to add .sort_by to return collections in alphabetical order by title on the homepage
 # OVERRIDE: Hyrax v2.9.0 add all_collections page for IR theme
 # OVERRIDE: Hyrax v2.9.0 to add facet counts for resource types for IR theme
+# OVERRIDE: Hyrax v. 2.9.0 to add @featured_collection_list to index method
 
 module Hyrax
   # Changed to inherit from CatalogController for home page facets
@@ -37,6 +38,8 @@ module Hyrax
       @marketing_text = ContentBlock.for(:marketing)
       @home_text = ContentBlock.for(:home_text)
       @featured_work_list = FeaturedWorkList.new
+      # OVERRIDE here to add featured collection list
+      @featured_collection_list = FeaturedCollectionList.new
       @announcement_text = ContentBlock.for(:announcement)
       recent
       ir_counts if home_page_theme == 'institutional_repository'

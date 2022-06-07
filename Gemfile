@@ -94,6 +94,7 @@ end
 
 gem 'blacklight', '~> 6.7'
 gem 'blacklight_oai_provider', '~> 6.1', '>= 6.1.1'
+gem 'blacklight_advanced_search'
 
 gem 'hyrax', '~> 2.9', '>= 2.9.1'
 

@@ -14,4 +14,8 @@ Flipflop.configure do
   feature :show_recently_uploaded,
           default: true,
           description: "Shows the Recently Uploaded tab on the homepage."
+
+  feature :show_pdfs_in_uv,
+          default: false,
+          description: "Renders PDFs in the Universal Viewer."
 end

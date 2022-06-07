@@ -567,7 +567,7 @@ GEM
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
-    jmespath (1.4.0)
+    jmespath (1.6.1)
     jquery-datatables-rails (3.4.0)
       actionpack (>= 3.1)
       jquery-rails

@@ -1129,6 +1129,7 @@ DEPENDENCIES
   apartment
   aws-sdk-sqs
   blacklight (~> 6.7)
+  blacklight_advanced_search
   blacklight_oai_provider (~> 6.1, >= 6.1.1)
   bootstrap-datepicker-rails
   bulkrax!

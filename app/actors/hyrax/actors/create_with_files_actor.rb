@@ -12,7 +12,7 @@ module Hyrax
         files = uploaded_files(uploaded_file_ids)
         next_actor.create(env)
         # OVERRIDE: Hyrax 2.5.1 Split PDF into jpg for each page and sent to attach files method
-        if display_pdfs_in_uv? && files.present?
+        if Flipflop.show_pdfs_in_uv? && files.present?
           ConvertPdfToJpgJob.perform_later(files, env.curation_concern, env.attributes, env.user.id)
         end
         validate_files(files, env) && attach_files(files, env)

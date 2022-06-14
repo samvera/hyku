@@ -6,8 +6,4 @@ module ApplicationHelper
   include GroupNavigationHelper
 
   include SharedSearchHelper
-
-  def display_pdfs_in_uv?
-    Flipflop.show_pdfs_in_uv?
-  end
 end

@@ -79,13 +79,13 @@ module Hyrax
             end
             auth_header = file_info.fetch(:auth_header, {})
             create_file_from_url(env, uri, file_info[:file_name], auth_header)
-            if display_pdfs_in_uv?
+            if Flipflop.show_pdfs_in_uv??
               ConvertRemotePdfToJpgJob.perform_now(uri.to_s, env.curation_concern, env.attributes, env.user)
             end
           end
 
           works_that_need_pdfs = [Image, GenericWork]
-          make_pdfs(env) if works_that_need_pdfs.include?(env.curation_concern.class) && Flipflop.show_pdfs_in_uv?
+          make_pdfs(env) if works_that_need_pdfs.include?(env.curation_concern.class)
           true
         end
         # rubocop:enable Metrics/PerceivedComplexity

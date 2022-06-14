@@ -19,32 +19,32 @@ x-app: &app
     internal:
 
 volumes:
-  fcrepo:
-  solr:
-  db:
-  redis:
-  zk:
-  uploads:
   assets:
   cache:
+  db:
+  fcrepo:
+  redis:
+  solr:
+  uploads:
+  zoo:
+  zk:
 
 networks:
   internal:
 
 services:
   zoo:
-    image: bitnami/zookeeper:3.6
+    image: zookeeper:3.6.2
+    ports:
+      - 2181:2181
+      - 7001:7000
     environment:
-      - ALLOW_ANONYMOUS_LOGIN=yes
-      - ZOO_4LW_COMMANDS_WHITELIST=mntr, srvr, ruok
-      - ZOO_SERVER_ID=1
-      - ZOO_SERVERS=zoo:2888:3888
-    expose:
-      - 2181
-      - 2888
-      - 3888
+      - ZOO_MY_ID=1
+      - ZOO_SERVERS=server.1=zoo:2888:3888;2181
+      - ZOO_4LW_COMMANDS_WHITELIST=mntr,srvr,ruok,conf
     volumes:
-      - zk:/bitnami/zookeeper
+      - zoo:/data
+      - zk:/datalog
     networks:
       internal:
     healthcheck:
@@ -53,34 +53,41 @@ services:
       timeout: "8s"
 
   solr:
-    image: bitnami/solr:8
+    image: hyku/solr:8
+    build:
+      context: solr
+      dockerfile: Dockerfile
     environment:
       - OOM=script
-      - SOLR_ADMIN_USERNAME=admin
-      - SOLR_ADMIN_PASSWORD=admin
+      - SOLR_ADMIN_USERNAME=solr
+      - SOLR_ADMIN_PASSWORD=SolrRocks
       - SOLR_COLLECTION=hydra-development
       - SOLR_CLOUD_BOOTSTRAP=yes
       - SOLR_ENABLE_CLOUD_MODE=yes
       - SOLR_ENABLE_AUTHENTICATION=yes
-      - SOLR_PORT_NUMBER=8983
-      - SOLR_ZK_HOSTS=zoo
+      - ZK_HOST=zoo:2181
       - VIRTUAL_PORT=8983
       - VIRTUAL_HOST=solr.hyku.test
-    depends_on:
-      zoo:
-        condition: service_healthy
+    user: root
+    command: bash -c "
+      chown -R 8983:8983 /var/solr
+      && ./bin/solr zk cp file:/var/solr/data/security.json zk:/security.json
+      && runuser -u solr -- solr-foreground"
     expose:
       - 8983
     volumes:
-      - solr:/bitnami
+      - solr:/var/solr
     networks:
       internal:
     healthcheck:
-      test: curl -sf http://$$SOLR_ADMIN_USERNAME:$$SOLR_ADMIN_PASSWORD@localhost:8983/solr/$$SOLR_COLLECTION/admin/ping?wt=json\&distrib=true || exit 1
+      test: curl -sf http://$$SOLR_ADMIN_USERNAME:$$SOLR_ADMIN_PASSWORD@localhost:8983/solr/admin/cores?action=STATUS || exit 1
       start_period: 30s
       interval: 20s
       timeout: 5s
       retries: 3
+    depends_on:
+      zoo:
+        condition: service_healthy
 
   fcrepo:
     image: ghcr.io/samvera/fcrepo4:4.7.5

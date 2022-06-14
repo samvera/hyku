@@ -20,6 +20,10 @@ module Proprietor
       add_breadcrumb t(:'hyrax.controls.home'), root_path
       add_breadcrumb t(:'hyrax.admin.sidebar.accounts'), proprietor_accounts_path
       add_breadcrumb @account.tenant, edit_proprietor_account_path(@account)
+
+      admin_page = params[:user_superadmin_page]
+      @current_superusers = User.where(email: @account.admin_emails).page(admin_page).per(5) if @account.admin_emails
+      @current_nonadmin_users = User.order('email').page(params[:user_page]).per(5)
     end
 
     # GET /accounts/new

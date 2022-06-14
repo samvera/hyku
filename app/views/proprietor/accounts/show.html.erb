@@ -58,6 +58,7 @@
       <div class="panel-body">
         <div class="tab-content clearfix">
           <div class="tab-pane active" id="current-admins-tab">
+          <% if @current_superusers.present? %>
             <table class="table table-striped">
               <thead>
                 <th><%= t('.current_admins.email') %></th>
@@ -70,7 +71,7 @@
                     <td></td>
                   </tr>
                 <% else %>
-                  <% @account.admin_emails.each do |email| %>
+                  <% @current_superusers.each do |email| %>
                     <tr>
                       <td><%= email %></td>
                       <td>
@@ -92,15 +93,21 @@
                 <% end %>
               </tbody>
             </table>
+            <%= page_entries_info(@current_superusers) %><br />
+            <%= paginate(@current_superusers, param_name: :user_superadmin_page, params: {anchor: 'current-admins-tab'}) %>
+            <% else %>
+              <p>There are currently no admins assigned to this tenant. Please add some.</p>
+            <% end %>
           </div>
           <div class="tab-pane" id="all-users-tab">
+          <% if @current_nonadmin_users.present? %>
             <table class="table table-striped">
               <thead>
                 <th><%= t('.current_admins.email') %></th>
                 <th><%= t('.current_admins.actions') %></th>
               </thead>
               <tbody>
-                <% User.all.each do |user| %>
+                <% @current_nonadmin_users.each do |user| %>
                   <tr>
                     <td><%= user.email %></td>
                     <td>
@@ -118,7 +125,11 @@
                 <% end %>
               </tbody>
             </table>
-
+            <%= page_entries_info(@current_nonadmin_users) %><br />
+            <%= paginate(@current_nonadmin_users, param_name: :user_page, params: {anchor: 'all-users-tab'}) %>
+            <% else %>
+              <p>There are currently no users added to this tenant. Please add some.</p>
+            <% end %>
           </div>
         </div>
       </div>

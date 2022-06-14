@@ -85,7 +85,7 @@ module Hyrax
           end
 
           works_that_need_pdfs = [Image, GenericWork]
-          make_pdfs(env) if works_that_need_pdfs.include?(env.curation_concern.class)
+          make_pdfs(env) if works_that_need_pdfs.include?(env.curation_concern.class) && Flipflop.show_pdfs_in_uv?
           true
         end
         # rubocop:enable Metrics/PerceivedComplexity

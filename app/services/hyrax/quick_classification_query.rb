@@ -9,8 +9,8 @@ Hyrax::QuickClassificationQuery.class_eval do
   # @param [#call] concern_name_normalizer (String#constantize) a proc that translates names to classes
   # @param [Array<String>] models the options to display, defaults to everything.
   def initialize(user,
-    models: Site.instance.available_works,
-    concern_name_normalizer: ->(str) { str.constantize })
+                 models: Site.instance.available_works,
+                 concern_name_normalizer: ->(str) { str.constantize })
     @user = user
     @concern_name_normalizer = concern_name_normalizer
     @models = models

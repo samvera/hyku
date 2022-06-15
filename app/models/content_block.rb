@@ -30,7 +30,7 @@ class ContentBlock < ApplicationRecord
   class << self
     # @deprecated
     def whitelisted?(key)
-      Deprecation.warn(self, "Samvera is deprecating '#{self}.whitelisted?' in Hyrax 3.0. Use #{self}.registered? instead.")
+      Deprecation.warn(self, "Samvera is deprecating '#{self}.whitelisted?' in Hyrax 3.0. Use #{self}.registered?")
       registered?(key)
     end
 

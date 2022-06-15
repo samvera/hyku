@@ -2,9 +2,9 @@
 <% model = document.hydra_model %>
 <div class="search-results-title-row">
     <% if model == Hyrax::PcdmCollection || model < Hyrax::PcdmCollection %>
-        <h3 class="search-result-title"><%= link_to document.title_or_label, generate_work_url(document.to_h, request) %></h3>
+        <h4 class="search-result-title"><%= link_to document.title_or_label, generate_work_url(document, request) %></h4>
         <%= Hyrax::CollectionPresenter.new(document, current_ability).collection_type_badge %>
     <% else %>
-        <h3 class="search-result-title"><%= link_to document.title_or_label, document %></h3>
+        <h4 class="search-result-title"><%= link_to document.title_or_label, generate_work_url(document, request) %></h4>
     <% end %>
 </div>

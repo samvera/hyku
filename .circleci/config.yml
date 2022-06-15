@@ -77,7 +77,7 @@ jobs:
           bundler_version: << parameters.bundler_version >>
       - samvera/rubocop
       - run: bundle exec rake db:create db:schema:load
-      - run: bin/solrcloud-upload-configset.sh solr/config
+      - run: bin/solrcloud-upload-configset.sh solr/conf
       - samvera/parallel_rspec
       - store_artifacts:
           path: coverage
@@ -87,4 +87,4 @@ workflows:
       - bundle_lint_test:
           ruby_version: "2.7.4"
           name: "ruby2-7-4"
-          solr_config_path: 'solr/config'
+          solr_config_path: 'solr/conf'

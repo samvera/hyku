@@ -46,7 +46,7 @@ test:
   allow_failure: true
   variables:
     ALLOW_ANONYMOUS_LOGIN: "yes"
-    CONFDIR: "/app/samvera/hyrax-webapp/solr/config"
+    CONFDIR: "/app/samvera/hyrax-webapp/solr/conf"
     CHROME_HOSTNAME: chrome
     DB_ADAPTER: postgresql
     DB_CLEANER_ALLOW_REMOTE_DB_URL: "true"
@@ -96,7 +96,7 @@ test:
       alias: chrome
   before_script:
     - >-
-      solrcloud-upload-configset.sh /app/samvera/hyrax-webapp/solr/config &&
+      solrcloud-upload-configset.sh /app/samvera/hyrax-webapp/solr/conf &&
       SOLR_COLLECTION_NAME=hydra-test solrcloud-assign-configset.sh &&
       solrcloud-assign-configset.sh
   script:

@@ -21,7 +21,7 @@ RSpec.describe "hyrax/homepage/_featured_collection_section.html.erb", type: :vi
                        title_tesim: ['Doc title'],
                        has_model_ssim: ['Collection'])
     end
-    let(:presenter) { Hyrax::WorkShowPresenter.new(doc, nil) }
+    let(:presenter) { Hyku::WorkShowPresenter.new(doc, nil) }
     let(:featured_collection) { FeaturedCollection.new }
 
     before do

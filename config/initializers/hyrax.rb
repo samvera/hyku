@@ -190,3 +190,10 @@ Qa::Authorities::Local.register_subauthority('genres', 'Qa::Authorities::Local::
 if ENV.fetch('HYKU_BULKRAX_ENABLED', false) && Bulkrax.default_work_type.blank?
   Bulkrax.default_work_type = Hyrax.config.curation_concerns.first.to_s
 end
+
+# Stop solr deprecation until ActiveFedora 13.2.8 comes out
+ActiveFedora::SolrService.class_eval do
+  def initialize(options = {})
+    @options = { timeout: 120, open_timeout: 120, url: 'http://localhost:8080/solr' }.merge(options)
+  end
+end

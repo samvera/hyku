@@ -43,7 +43,7 @@ class FeaturedCollectionList
     def collection_presenters
       ability = nil
       Hyrax::PresenterFactory.build_for(ids: ids,
-                                        presenter_class: Hyrax::WorkShowPresenter,
+                                        presenter_class: Hyku::WorkShowPresenter,
                                         presenter_args: ability)
     end
 

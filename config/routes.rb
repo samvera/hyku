@@ -1,7 +1,6 @@
 # OVERRIDE Hyrax 2.9.0 to add featured collection routes
 
 require 'sidekiq/web'
-Sidekiq::Web.set :session_secret, Rails.application.secrets[:secret_key_base]
 
 Rails.application.routes.draw do
   concern :oai_provider, BlacklightOaiProvider::Routes.new

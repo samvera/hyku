@@ -12,7 +12,7 @@ RSpec.describe FcrepoEndpoint do
   end
 
   describe '#ping' do
-    let(:success_response) { double(response: double(success?: true)) }
+    let(:success_response) { double(response: double(successful?: true)) }
 
     it 'checks if the service is up' do
       allow(ActiveFedora::Fedora.instance.connection).to receive(:head).with(

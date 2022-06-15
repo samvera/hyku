@@ -17,7 +17,7 @@ module Hyrax
 
       class_attribute :_curation_concern_type, :show_presenter, :work_form_service, :search_builder_class
       class_attribute :iiif_manifest_builder, instance_accessor: false
-      self.show_presenter = Hyrax::WorkShowPresenter
+      self.show_presenter = Hyku::WorkShowPresenter
       self.work_form_service = Hyrax::WorkFormService
       self.search_builder_class = WorkSearchBuilder
       self.iiif_manifest_builder = (

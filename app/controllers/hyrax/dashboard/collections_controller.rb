@@ -289,7 +289,7 @@ module Hyrax
       end
 
       def valkyrie_destroy
-        if transactions['collection_resource.destroy'].call(@collection).success?
+        if transactions['collection_resource.destroy'].call(@collection).successful?
           after_destroy(params[:id])
         else
           after_destroy_error(params[:id])

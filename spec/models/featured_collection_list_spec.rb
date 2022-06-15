@@ -19,7 +19,7 @@ RSpec.describe FeaturedCollectionList, type: :model do
       presenter_ids = subject.featured_collections.map { |fw| fw.presenter.id }
       expect(presenter_ids).to contain_exactly(collection1.id, collection2.id)
       subject.featured_collections.each do |fw|
-        expect(fw.presenter).to be_kind_of Hyrax::WorkShowPresenter
+        expect(fw.presenter).to be_kind_of Hyku::WorkShowPresenter
       end
     end
 
@@ -31,7 +31,7 @@ RSpec.describe FeaturedCollectionList, type: :model do
       it 'is a list of the remaining featured collection objects, each with the collection\'s solr_doc' do
         expect(subject.featured_collections.size).to eq 1
         presenter = subject.featured_collections.first.presenter
-        expect(presenter).to be_kind_of Hyrax::WorkShowPresenter
+        expect(presenter).to be_kind_of Hyku::WorkShowPresenter
         expect(presenter.id).to eq collection2.id
       end
     end

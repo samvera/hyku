@@ -11,9 +11,10 @@ x-app: &app
     - .env
   # NOTE: all common env variables moved to .env
   volumes:
-    - uploads:/app/samvera/hyrax-webapp/public/uploads
-    - assets:/app/samvera/hyrax-webapp/public/assets
-    - cache:/app/samvera/hyrax-webapp/tmp/cache
+    - node_modules:/app/samvera/hyrax-webapp/node_modules:cached
+    - uploads:/app/samvera/hyrax-webapp/public/uploads:cached
+    - assets:/app/samvera/hyrax-webapp/public/assets:cached
+    - cache:/app/samvera/hyrax-webapp/tmp/cache:cached
     - .:/app/samvera/hyrax-webapp
   networks:
     internal:
@@ -23,11 +24,12 @@ volumes:
   cache:
   db:
   fcrepo:
+  node_modules:
   redis:
   solr:
   uploads:
-  zoo:
   zk:
+  zoo:
 
 networks:
   internal:

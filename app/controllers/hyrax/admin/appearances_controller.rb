@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# OVERRIDE Hyrax 3.4 to add selectable themes
+
 module Hyrax
   module Admin
     class AppearancesController < ApplicationController

@@ -3,27 +3,25 @@
 <% provide :page_title, @presenter.page_title %>
 
 <%= render 'shared/citations' %>
-<%= render './shared/additional_citations' %>
+<%= render 'shared/additional_citations' %>
 <div class="row work-type">
-  <div class="col-xs-12">
+  <div class="col-sm-12">
     <%= render 'work_type', presenter: @presenter %>
   </div>
-  <div class="col-xs-12">&nbsp;</div>
   <div itemscope itemtype="http://schema.org/CreativeWork" class="col-xs-12">
+    <%= render 'work_title', presenter: @presenter %>
+    <%= render 'show_actions', presenter: @presenter %>
     <div class="panel panel-default">
-      <div class="panel-heading">
-        <%= render 'work_title', presenter: @presenter %>
-      </div>
       <div class="panel-body">
         <div class="row">
           <%= render 'workflow_actions_widget', presenter: @presenter %>
-          <% if @presenter.universal_viewer? %>
+          <% if @presenter.iiif_viewer? %>
             <div class="col-sm-12">
               <%= render 'representative_media', presenter: @presenter, viewer: true %>
             </div>
           <% end %>
           <div class="col-sm-3 text-center">
-            <%= render 'representative_media', presenter: @presenter, viewer: false unless @presenter.universal_viewer? %>
+            <%= render 'representative_media', presenter: @presenter, viewer: false unless @presenter.iiif_viewer? %>
             <%= render 'citations', presenter: @presenter %>
             <%= render 'social_media' %>
           </div>
@@ -31,16 +29,37 @@
             <%= render 'work_description', presenter: @presenter %>
             <%= render 'metadata', presenter: @presenter %>
           </div>
-          <div class="col-sm-12">
-            <%= render 'relationships', presenter: @presenter %>
-            <%= render 'items', presenter: @presenter %>
-            <%# TODO: we may consider adding these partials in the future %>
-            <%# = render 'sharing_with', presenter: @presenter %>
-            <%# = render 'user_activity', presenter: @presenter %>
-          </div>
         </div>
       </div>
+    </div><!-- /panel -->
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h1 class="panel-title"><%= t('hyrax.base.show.relationships') %></h1>
+      </div>
+      <div class="panel-body">
+        <%= render 'relationships', presenter: @presenter %>
+      </div>
     </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h1 class="panel-title"><%= t('.items') %></h1>
+      </div>
+      <div class="panel-body">
+        <%= render 'items', presenter: @presenter %>
+      </div>
+    </div>
+
+    <%# TODO: we may consider adding these partials in the future %>
+    <%# = render 'sharing_with', presenter: @presenter %>
+    <%# = render 'user_activity', presenter: @presenter %>
+
+    <span class='hide analytics-event' data-category="work" data-action="work-view" data-name="<%= @presenter.id %>" >
+      <% @presenter.member_of_collection_ids.each do |collection_id| %>
+        <span class='hide analytics-event' data-category="work-in-collection" data-action="work-in-collection-view" data-name="<%= collection_id %>" />
+      <% end %>
+    </span>
+
   </div>
 </div>
-

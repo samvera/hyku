@@ -6,17 +6,17 @@
 %>
 
 <div class="<%= @presenter.display_featured_works? || @presenter.display_recently_uploaded? ? 'home-tabs-left col-sm-6' : ''%>">
-  <ul id="homeTabs" class="nav nav-pills">
+  <ul id="homeTabs" class="nav nav-tabs" role="list">
     <%# add check for featured works %>
     <% if @presenter.display_featured_works? %>
-      <li class="active"><a href="#featured_container" data-toggle="tab" role="tab" id="featureTab"><%= t('hyrax.homepage.featured_works.tab_label') %></a></li>
+      <li class="active"><a href="#featured_container" data-toggle="tab" id="featureTab"><%= t('hyrax.homepage.featured_works.tab_label') %></a></li>
     <% end %>
     <%# add check for recently uploaded %>
     <% if @presenter.display_recently_uploaded? %>
-      <li class="<%= @presenter.display_featured_works? ? '' : 'active' %>"><a href="#recently_uploaded" data-toggle="tab" role="tab" id="recentTab"><%= t('hyrax.homepage.recently_uploaded.tab_label') %></a></li>
+      <li class="<%= @presenter.display_featured_works? ? '' : 'active' %>"><a href="#recently_uploaded" data-toggle="tab" id="recentTab"><%= t('hyrax.homepage.recently_uploaded.tab_label') %></a></li>
     <% end %>
   </ul>
-  
+
   <div class="tab-content">
     <%# add check for featured works %>
     <% if @presenter.display_featured_works? %>
@@ -34,11 +34,11 @@
 </div><!-- /.col-xs-6 -->
 
 <div class="home-tabs-right col-sm-6">
-  <ul class="nav nav-pills" role="tablist">
-    <li class="active"><a aria-expanded="true" href="#tab-col2-first" role="tab" data-toggle="tab"><%= t('hyrax.homepage.admin_sets.title') %></a></li>
+  <ul class="nav nav-tabs" role="list">
+    <li class="active"><a aria-expanded="true" href="#tab-col2-first" data-toggle="tab"><%= t('hyrax.homepage.admin_sets.title') %></a></li>
     <%# add check for featured researcher %>
     <% if @presenter.display_featured_researcher? %>
-      <li class=""><a aria-expanded="false" href="#tab-col2-second" role="tab" data-toggle="tab"><%= t('hyrax.homepage.featured_researcher.tab_label') %></a></li>
+      <li class=""><a aria-expanded="false" href="#tab-col2-second" data-toggle="tab"><%= t('hyrax.homepage.featured_researcher.tab_label') %></a></li>
     <% end %>
   </ul>
 

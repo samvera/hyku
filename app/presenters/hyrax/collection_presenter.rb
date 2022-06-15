@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# OVERRIDE FILE from Hyrax v2.9.0
-# OVERRIDE Hyrax v2.9.0 to add collection methods to collection presenter
+# OVERRIDE Hyrax v3.4.0
+# OVERRIDE Hyrax v3.4.0 to add collection methods to collection presenter
 # Terms is the list of fields displayed by app/views/collections/_show_descriptions.html.erb
 # rubocop:disable Metrics/BlockLength
 require_dependency Hyrax::Engine.root.join('app', 'presenters', 'hyrax', 'collection_presenter').to_s

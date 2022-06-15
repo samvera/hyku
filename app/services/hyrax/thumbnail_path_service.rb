@@ -1,23 +1,25 @@
 # frozen_string_literal: true
 
+# OVERRIDE Hyrax 3.4.0 - use site defaults instead of app wide defaults
 module Hyrax
   class ThumbnailPathService
     class << self
-      # @param [Work, FileSet] object - to get the thumbnail for
+      # @param [#id] object - to get the thumbnail for
       # @return [String] a path to the thumbnail
       def call(object)
-        return default_image unless object.thumbnail_id
+        return default_image if object.try(:thumbnail_id).blank?
 
         thumb = fetch_thumbnail(object)
-        return unless thumb
-        return call(thumb) unless thumb.is_a?(::FileSet)
+
+        return default_image unless thumb
+        return call(thumb) unless thumb.file_set?
         return_path(thumb)
       end
 
       private
 
         def return_path(thumb)
-          if thumb.audio?
+          if audio?(thumb)
             audio_image
           elsif thumbnail?(thumb)
             thumbnail_path(thumb)
@@ -26,10 +28,15 @@ module Hyrax
           end
         end
 
+        def audio?(thumb)
+          service = thumb.respond_to?(:audio?) ? thumb : Hyrax::FileSetTypeService.new(file_set: thumb)
+          service.audio?
+        end
+
         def fetch_thumbnail(object)
           return object if object.thumbnail_id == object.id
-          ::ActiveFedora::Base.find(object.thumbnail_id)
-        rescue ActiveFedora::ObjectNotFoundError
+          Hyrax.query_service.find_by_alternate_identifier(alternate_identifier: object.thumbnail_id)
+        rescue Valkyrie::Persistence::ObjectNotFoundError, Hyrax::ObjectNotFoundError
           Rails.logger.error("Couldn't find thumbnail #{object.thumbnail_id} for #{object.id}")
           nil
         end

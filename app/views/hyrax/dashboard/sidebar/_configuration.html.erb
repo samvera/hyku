@@ -3,9 +3,9 @@
   <% if can? :manage, Site %>
     <li>
       <%= menu.collapsable_section t('hyrax.admin.sidebar.settings'),
-         icon_class: "fa fa-cog",
-         id: 'collapseSettings',
-         open: menu.settings_section? do %>
+       icon_class: "fa fa-cog",
+       id: 'collapseSettings',
+       open: menu.settings_section? do %>
 
         <%= menu.nav_link(main_app.edit_admin_account_path) do %>
           <span class="fa fa-gear"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.account') %></span>
@@ -39,11 +39,12 @@
           <% end %>
         <% end %>
     </li>
-      <% end %>
-      <% if can?(:manage, Sipity::WorkflowResponsibility) %>
-        <%= menu.nav_link(hyrax.admin_workflow_roles_path) do %>
-          <span class="fa fa-users" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.workflow_roles') %></span>
-        <% end %>
-      <% end # end of configuration block %>
+  <% end %>
+  <% if can?(:manage, Sipity::WorkflowResponsibility) %>
+    <%= menu.nav_link(hyrax.admin_workflow_roles_path) do %>
+       <span class="fa fa-users" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.workflow_roles') %></span>
+    <% end %>
+    <% end # end of configuration block %>
+    <%= render 'hyrax/dashboard/sidebar/menu_partials', menu: menu, section: :configuration %>
   <% end %>
 <% end %>

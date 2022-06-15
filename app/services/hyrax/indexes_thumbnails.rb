@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax 2.9.0 to make collection thumbnails uploadable
+# OVERRIDE Hyrax 3.4.0 to make collection thumbnails uploadable
 module Hyrax
   module IndexesThumbnails
     extend ActiveSupport::Concern

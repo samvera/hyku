@@ -1,6 +1,6 @@
 <% menu = Hyku::MenuPresenter.new(self) %>
 <div class="sidebar-toggle"><span class="fa fa-chevron-circle-right"></span></div>
-<nav>
+<nav aria-label="sidebar-nav">
   <ul class="nav nav-pills nav-stacked">
     <li>
       <div class="profile">
@@ -12,7 +12,11 @@
         </div>
       </div>
     </li>
-
+    <li>
+      <%= link_to hyrax.dashboard_path do %>
+        <span class="fa fa-home" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.dashboard') %></span>
+      <% end %>
+    </li>
     <%= render 'hyrax/dashboard/sidebar/activity', menu: menu %>
     <%= render 'hyrax/dashboard/sidebar/repository_content', menu: menu %>
     <%= render 'hyrax/dashboard/sidebar/tasks', menu: menu %>

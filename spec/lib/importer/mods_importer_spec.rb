@@ -17,7 +17,7 @@ RSpec.describe Importer::ModsImporter, :clean do
 
     it 'creates a new image and a collection' do
       expect(actor).to receive(:create).with(Hyrax::Actors::Environment) do |k|
-        expect(k.attributes).to include(member_of_collection_ids: ['kx532cb7981'],
+        expect(k.attributes).to include(member_of_collection_attributes: [{ id: 'kx532cb7981' }],
                                         identifier: ['xv169dn4538'],
                                         visibility: 'open')
       end
@@ -36,7 +36,7 @@ RSpec.describe Importer::ModsImporter, :clean do
 
       it 'adds image to existing collection' do
         expect(actor).to receive(:create).with(Hyrax::Actors::Environment) do |k|
-          expect(k.attributes).to include(member_of_collection_ids: [coll.id])
+          expect(k.attributes).to include(member_of_collection_attributes: [{ id: coll.id }])
         end
         expect do
           importer.import(file)

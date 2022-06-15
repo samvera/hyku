@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Override from hyrax 2.5.1 to add methods to:
+# OVERRIDE Hyrax 3.4.0 to add methods to:
 # hide featured researcher
 # hide featured works
 # hide recently uploaded
@@ -16,7 +16,7 @@ module Hyrax
       @collections = collections
     end
 
-    # OVERRIDE: Hyrax v2.9.0 to removed: @return [Boolean] If the
+    # OVERRIDE: Hyrax v3.4.0 to removed: @return [Boolean] If the
     #   display_share_button_when_not_logged_in? is activated, then
     #   return true since we are utilizing the feature flipper
     #   Flipflop.show_share_button? in Hyku.

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# OVERRIDE Hyrax 3.4.0 use site defaults over app default
 module Hyrax
   class WorkThumbnailPathService < Hyrax::ThumbnailPathService
     class << self

@@ -71,7 +71,7 @@ class ImportWorkFromPurlJob < ApplicationJob
                                  collection_type]
 
     def process_collection(attributes)
-      # rename :collection to :member_of_collection_ids
+      # rename :collection to :member_of_collection_attributes
       collection = attributes.delete(:collection)
 
       # Workaround for ActiveFedora #1186
@@ -85,7 +85,7 @@ class ImportWorkFromPurlJob < ApplicationJob
         retry if (retries += 1) < 3
         raise e
       end
-      attributes[:member_of_collection_ids] = [id]
+      attributes[:member_of_collection_attributes] = [{ id: id }]
     end
 
     # Override this method if you have a different rubric for choosing the model

@@ -1,121 +1,135 @@
 <%# OVERRIDE Hyrax 2.9.1 to make it say 'Default thumbnail' in the thumbnail select box instead of 'undefined' %>
+<%= render "shared/nav_safety_modal" %>
 <div class="panel panel-default tabs" id="collection-edit-controls">
   <ul class="nav nav-tabs" role="tablist">
     <li class="active">
-      <a href="#description" role="tab" data-toggle="tab"><%= t('.tabs.description') %></a>
+      <a href="#description" role="tab" data-toggle="tab" class="nav-safety-confirm"><%= t('.tabs.description') %></a>
     </li>
     <% if @form.persisted? %>
-      <% if @collection.brandable? %>
+      <% if collection_brandable?(collection: @collection) %>
       <li>
-        <a href="#branding" role="tab" data-toggle="tab"><%= t('.tabs.branding') %></a>
+        <a href="#branding" role="tab" data-toggle="tab" class="nav-safety-confirm"><%= t('.tabs.branding') %></a>
       </li>
       <% end %>
-      <% if @collection.discoverable? %>
+      <% if collection_discoverable?(collection: @collection) %>
       <li>
-        <a href="#discovery" role="tab" data-toggle="tab"><%= t('.tabs.discovery') %></a>
+        <a href="#discovery" role="tab" data-toggle="tab" class="nav-safety-confirm"><%= t('.tabs.discovery') %></a>
       </li>
       <% end %>
-      <% if @collection.sharable? %>
+      <% if collection_sharable?(collection: @collection) %>
       <li>
-        <a href="#sharing" role="tab" data-toggle="tab"><%= t('.tabs.sharing') %></a>
+        <a href="#sharing" role="tab" data-toggle="tab" class="nav-safety-confirm"><%= t('.tabs.sharing') %></a>
       </li>
       <% end %>
     <% end %>
   </ul>
 
-<%= simple_form_for @form, url: [hyrax, :dashboard, @form], html: { class: 'editor' } do |f| %>
-  <div class="tab-content">
-    <div id="description" class="tab-pane active">
-      <div class="panel panel-default labels">
-        <div class="panel-body">
-          <div id="base-terms">
-            <% f.object.primary_terms.each do |term| %>
-              <%= render_edit_field_partial(term, f: f) %>
-            <% end %>
-            <% if f.object.persisted? %>
-              <%# we're loading these values dynamically to speed page load %>
-              <%# OVERRIDE here to make it say 'Default thumbnail' in the select box instead of 'undefined' %>
-              <%= f.input :thumbnail_id,
-                          input_html: { data: { text: f.object.thumbnail_title || 'Default thumbnail' } } %>
-              <%# option to upload thumbnail %>
-              <%= label_tag(:thumbnail_upload, "Upload a Thumbnail") %>
-              <p class='help-block'>
-                Uploading an image here will replace a thumbnail selected from the above dropdown. For best results, use an image at least 500x500 px. If you would like to use an image from the dropdown above, click the "Clear upload" button below.
-              </p>
-              <%# raise 'hell' %>
-              <div id="uploaded-thumbnail" class="mb-20">
-                <%= render "current_thumbnail" %>
-              </div>
-              <%= f.file_field :thumbnail_upload, class: "thumbnail-upload" %>
-              <%= link_to("Clear upload", main_app.delete_uploaded_thumbnail_path, method: :post, remote: :true, class: "btn btn-danger mb-40 mt-20", id: "clear-upload") %>
-            <% end %>
-          </div>
-          <% if f.object.display_additional_fields? %>
-            <%= link_to t('hyrax.collection.form.additional_fields'),
-                    '#extended-terms',
-                    class: 'btn btn-default additional-fields',
-                    data: { toggle: 'collapse' },
-                    role: "button",
-                    'aria-expanded'=> "false",
-                    'aria-controls'=> "extended-terms" %>
-            <div id="extended-terms" class='collapse'>
-              <% f.object.secondary_terms.each do |term| %>
+  <%= simple_form_for @form, url: [hyrax, :dashboard, @form], html: { class: 'editor nav-safety', data: { behavior: 'collection-form', 'param-key' => @form.model_name.param_key } } do |f| %>
+    <div class="tab-content">
+      <div id="description" class="tab-pane active">
+        <div class="panel panel-default labels">
+          <div class="panel-body">
+
+            <div id="base-terms">
+              <% f.object.primary_terms.each do |term| %>
                 <%= render_edit_field_partial(term, f: f) %>
               <% end %>
+
+              <% # TODO: Remove check for PcdmCollection when Issue #5286 is resolved. %>
+              <% if f.object.persisted? && !(Hyrax.config.collection_class < Valkyrie::Resource) %>
+                <%# we're loading these values dynamically to speed page load %>
+                <%# OVERRIDE here to make it say 'Default thumbnail' in the select box instead of 'undefined' %>
+                <%= f.input :thumbnail_id,
+                    input_html: { data: { text: thumbnail_label_for(object: f.object) } } %>
+
+                <%# option to upload thumbnail %>
+                <%= label_tag(:thumbnail_upload, "Upload a Thumbnail") %>
+                <p class='help-block'>
+                  Uploading an image here will replace a thumbnail selected from the above dropdown. For best results, use an image at least 500x500 px. If you would like to use an image from the dropdown above, click the "Clear upload" button below.
+                </p>
+                <div id="uploaded-thumbnail" class="mb-20">
+                  <%= render "current_thumbnail" %>
+                </div>
+                <%= f.file_field :thumbnail_upload, class: "thumbnail-upload" %>
+                <%= link_to("Clear upload", main_app.delete_uploaded_thumbnail_path, method: :post, remote: :true, class: "btn btn-danger mb-40 mt-20", id: "clear-upload") %>
+
+              <% end %>
             </div>
-          <% end %>
-          <%= hidden_field_tag :type, params[:type] %>
-          <%= hidden_field_tag :stay_on_edit, true %>
-          <%= hidden_field_tag :collection_type_gid, @collection.collection_type_gid %>
-          <!-- parent_id may be passed from the nested collections controller to allow a subcollection relationship to be added as collection is created -->
-          <% if params[:parent_id].present? %>
-            <%= hidden_field_tag :parent_id, params[:parent_id] %>
-          <% end %>
-          <% if params[:batch_document_ids].present? %>
-            <% params[:batch_document_ids].each do |batch_item| %>
-              <input type="hidden" name="batch_document_ids[]" value="<%= batch_item %>" />
+            <% if f.object.display_additional_fields? %>
+              <%= link_to t('hyrax.collection.form.additional_fields'),
+                      '#extended-terms',
+                      class: 'btn btn-default additional-fields',
+                      data: { toggle: 'collapse' },
+                      role: "button",
+                      'aria-expanded'=> "false",
+                      'aria-controls'=> "extended-terms" %>
+              <div id="extended-terms" class='collapse'>
+                <% f.object.secondary_terms.each do |term| %>
+                  <%= render_edit_field_partial(term, f: f) %>
+                <% end %>
+              </div>
             <% end %>
-          <% end %>
-        </div>
-      </div>
-    </div> <!-- end description -->
-    <% if @form.persisted? %>
-      <div id="branding" class="tab-pane">
-        <div class="panel panel-default labels">
-          <div class="panel-body">
-            <%= render 'form_branding', f: f %>
+            <%= hidden_field_tag :type, params[:type] %>
+            <%= hidden_field_tag :stay_on_edit, true %>
+            <%= hidden_field_tag :collection_type_gid, @collection.collection_type_gid %>
+            <!-- parent_id may be passed from the nested collections controller to allow a subcollection relationship to be added as collection is created -->
+            <% if params[:parent_id].present? %>
+              <%= hidden_field_tag :parent_id, params[:parent_id] %>
+            <% end %>
+            <% if params[:batch_document_ids].present? %>
+              <% params[:batch_document_ids].each do |batch_item| %>
+                <input type="hidden" name="batch_document_ids[]" value="<%= batch_item %>" />
+              <% end %>
+            <% end %>
           </div>
         </div>
-      </div>
+      </div> <!-- end description -->
 
-      <div id="discovery" class="tab-pane">
-        <div class="panel panel-default labels">
-          <div class="panel-body">
-            <%= render 'form_discovery', f: f %>
+      <% if @form.persisted? %>
+        <% if collection_brandable?(collection: @collection) %>
+          <div id="branding" class="tab-pane">
+            <div class="panel panel-default labels">
+              <div class="panel-body">
+                <%= render 'form_branding', f: f %>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        <% end %>
 
-      <div id="sharing" class="tab-pane">
-        <div class="panel panel-default labels" id="collection_permissions" data-param-key="<%= f.object.model_name.param_key %>">
-          <div class="panel-body">
-            <%= render 'form_share', f: f %>
+        <% if collection_discoverable?(collection: @collection) %>
+          <div id="discovery" class="tab-pane">
+            <div class="panel panel-default labels">
+              <div class="panel-body">
+                <%= render 'form_discovery', f: f %>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    <% end %>
-    <div class="panel-footer">
-      <% if @collection.persisted? %>
-        <%= f.submit t(:'hyrax.collection.select_form.update'), class: 'btn btn-primary', onclick: "confirmation_needed = false;", id: "update_submit", name: "update_collection" %>
-        <%= link_to t(:'helpers.action.cancel'), hyrax.dashboard_collection_path(@collection), class: 'btn btn-link' %>
-      <% else %>
-        <%= f.submit t(:'hyrax.collection.select_form.create'), class: 'btn btn-primary', onclick: "confirmation_needed = false;", id: "create_submit", name: "create_collection" %>
-        <%= link_to t(:'helpers.action.cancel'), hyrax.my_collections_path, class: 'btn btn-link' %>
+        <% end %>
+
+        <% if collection_sharable?(collection: @collection) %>
+          <div id="sharing" class="tab-pane">
+            <div class="panel panel-default labels" id="collection_permissions" data-param-key="<%= f.object.model_name.param_key %>">
+              <div class="panel-body">
+                <%= render 'form_share', f: f %>
+              </div>
+            </div>
+          </div>
+        <% end %>
       <% end %>
-    </div>
-  </div> <!-- end tab-content -->
-<% end # simple_form_for %>
 
+      <div class="panel-footer">
+        <% if @collection.persisted? %>
+          <%= f.submit t(:'hyrax.collection.select_form.update'), class: 'btn btn-primary', onclick: "confirmation_needed = false;", id: "update_submit", name: "update_collection" %>
+          <%= link_to t(:'helpers.action.cancel'), hyrax.dashboard_collection_path(@collection), class: 'btn btn-link' %>
+        <% else %>
+          <%= f.submit t(:'hyrax.collection.select_form.create'), class: 'btn btn-primary', onclick: "confirmation_needed = false;", id: "create_submit", name: "create_collection" %>
+          <%= link_to t(:'helpers.action.cancel'), hyrax.my_collections_path, class: 'btn btn-link' %>
+        <% end %>
+      </div>
+    </div> <!-- end tab-content -->
+  <% end # simple_form_for %>
+
+</div> <!-- end collection-controls -->
 <script>
   // loading message
   $("#clear-upload").click(function() {

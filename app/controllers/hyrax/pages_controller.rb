@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE: Hyrax v2.9.0
+# OVERRIDE: Hyrax v3.4.0
 # - add inject_theme_views method for theming
 # - add homepage presenter for access to feature flippers
 # - add access to content blocks in the show method
@@ -12,7 +12,7 @@ module Hyrax
     load_and_authorize_resource class: ContentBlock, except: :show
     layout :pages_layout
 
-    # OVERRIDE: Hyrax v2.9.0 Add for theming
+    # OVERRIDE: Hyrax v3.4.0 Add for theming
     # Adds Hydra behaviors into the application controller
     include Blacklight::SearchContext
     include Blacklight::SearchHelper
@@ -21,23 +21,23 @@ module Hyrax
     # OVERRIDE: Adding inject theme views method for theming
     around_action :inject_theme_views
 
-    # OVERRIDE: Hyrax v2.9.0 Add for theming
+    # OVERRIDE: Hyrax v3.4.0 Add for theming
     # The search builder for finding recent documents
     # Override of Blacklight::RequestBuilders
     def search_builder_class
       Hyrax::HomepageSearchBuilder
     end
 
-    # OVERRIDE: Hyrax v2.9.0 Add for theming
+    # OVERRIDE: Hyrax v3.4.0 Add for theming
     class_attribute :presenter_class
-    # OVERRIDE: Hyrax v2.9.0 Add for theming
+    # OVERRIDE: Hyrax v3.4.0 Add for theming
     self.presenter_class = Hyrax::HomepagePresenter
 
     helper Hyrax::ContentBlockHelper
 
     def show
       @page = ContentBlock.for(params[:key])
-      # OVERRIDE: Hyrax v2.9.0 Add for theming
+      # OVERRIDE: Hyrax v3.4.0 Add for theming
       @presenter = presenter_class.new(current_ability, collections)
       @featured_researcher = ContentBlock.for(:researcher)
       @marketing_text = ContentBlock.for(:marketing)

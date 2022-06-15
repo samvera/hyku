@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Copied from Hyrax v2.9.0 to add home_text to registry
+# OVERRIDE Hyrax v3.4.0 to add home_text to registry
 # and getter/setter methods - Adding themes
 class ContentBlock < ApplicationRecord
   # The keys in this registry are "public" names for collaborator
@@ -23,12 +23,18 @@ class ContentBlock < ApplicationRecord
   # `for` is a reserved word in Ruby.
   def self.for(key)
     key = key.respond_to?(:to_sym) ? key.to_sym : key
-    raise ArgumentError, "#{key} is not a ContentBlock name" unless whitelisted?(key)
+    raise ArgumentError, "#{key} is not a ContentBlock name" unless registered?(key)
     ContentBlock.public_send(NAME_REGISTRY[key])
   end
 
   class << self
+    # @deprecated
     def whitelisted?(key)
+      Deprecation.warn(self, "Samvera is deprecating '#{self}.whitelisted?' in Hyrax 3.0. Use #{self}.registered? instead.")
+      registered?(key)
+    end
+
+    def registered?(key)
       NAME_REGISTRY.include?(key)
     end
 
@@ -56,7 +62,7 @@ class ContentBlock < ApplicationRecord
       featured_researcher.update(value: value)
     end
 
-    # Copied from Hyrax v2.9.0 to add home_text getter/setter methods - Adding themes
+    # OVERRIDE Hyrax v3.4.0 to add home_text getter/setter methods - Adding themes
     def home_text
       find_or_create_by(name: 'home_text')
     end

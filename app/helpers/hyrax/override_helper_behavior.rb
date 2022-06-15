@@ -10,7 +10,7 @@ module Hyrax
     # @return [ActiveSupport::SafeBuffer] the html_safe link
     def link_to_facet_list(values, solr_field, empty_message = "No value entered", separator = ", ")
       return empty_message if values.blank?
-      facet_field = "#{solr_field}_sim" 
+      facet_field = "#{solr_field}_sim"
       safe_join(values.map { |item| link_to_facet(item, facet_field) }, separator)
     end
 

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# OVERRIDE Hyrax 3.4.0 ot add custom theming
+
 # rubocop:disable Metrics/ClassLength
 module Hyrax
   module Forms

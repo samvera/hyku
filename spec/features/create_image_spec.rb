@@ -41,7 +41,7 @@ RSpec.describe 'Create a Image', js: true do
     it do # rubocop:disable RSpec/ExampleLength
       visit '/dashboard'
       click_link "Works"
-      click_link "Add new work"
+      click_link "Add New Work"
 
       # If you generate more than one work uncomment these lines
       choose "payload_concern", option: "Image"
@@ -51,7 +51,7 @@ RSpec.describe 'Create a Image', js: true do
       click_link "Files" # switch tab
       expect(page).to have_content "Add files"
       expect(page).to have_content "Add folder"
-      within('div#addfiles') do
+      within('div#add-files') do
         attach_file("files[]", File.join(fixture_path, 'hyrax', 'image.jp2'), visible: false)
         attach_file("files[]", File.join(fixture_path, 'hyrax', 'jp2_fits.xml'), visible: false)
       end

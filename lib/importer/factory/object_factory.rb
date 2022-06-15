@@ -59,7 +59,7 @@ module Importer
       end
 
       def search_by_identifier
-        query = { Solrizer.solr_name(system_identifier_field, :symbol) =>
+        query = { "#{system_identifier_field}_ssim" =>
                     attributes[system_identifier_field] }
         klass.where(query).first
       end

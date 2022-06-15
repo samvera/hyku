@@ -45,7 +45,7 @@ extraEnvVars: &envVars
   - name: HYKU_ROOT_HOST
     value: hyku-$CI_MERGE_REQUEST_ID.example.com
   - name: CONFDIR
-    value: "/app/samvera/hyrax-webapp/solr/config"
+    value: "/app/samvera/hyrax-webapp/solr/conf"
   - name: INITIAL_ADMIN_EMAIL
     value: samvera@example.com
   - name: INITIAL_ADMIN_PASSWORD

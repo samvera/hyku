@@ -3,11 +3,11 @@ port: 8985
 # version locked until solr_wrapper and everyone else handles solr 8
 version: 7.4.0
 collection:
-  dir: solr/config/
+  dir: solr/conf/
   name: hydra-test
 
 cloud: true
 
 configsets:
-  - dir: solr/config/
+  - dir: solr/conf/
     name: hyku

@@ -186,11 +186,11 @@ services:
   initialize_app:
     <<: *app
     environment:
-      - CONFDIR=/app/samvera/hyrax-webapp/solr/config
+      - CONFDIR=/app/samvera/hyrax-webapp/solr/conf
     entrypoint: ["sh", "-c"]
     command:
       - >
-        solrcloud-upload-configset.sh /app/samvera/hyrax-webapp/solr/config &&
+        solrcloud-upload-configset.sh /app/samvera/hyrax-webapp/solr/conf &&
         solrcloud-assign-configset.sh &&
         SOLR_COLLECTION_NAME=hydra-test solrcloud-assign-configset.sh &&
         db-migrate-seed.sh

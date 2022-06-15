@@ -107,7 +107,7 @@ module Hyrax
       end
 
       def sort_field
-        "#{Solrizer.solr_name('date_uploaded', :stored_sortable, type: :date)} desc"
+        "date_uploaded_dtsi desc"
       end
 
       # Add this method to prepend the theme views into the view_paths

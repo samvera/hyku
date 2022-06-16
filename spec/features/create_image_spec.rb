@@ -70,7 +70,7 @@ RSpec.describe 'Create a Image', js: true do
       # rubocop:disable Metrics/LineLength
       expect(page).to have_content('Please note, making something visible to the world (i.e. marking this as Public) may be viewed as publishing which could impact your ability to')
       # rubocop:enable Metrics/LineLength
-      check('agreement')
+      find(:css, "#agreement[value='1']").set(true)
 
       click_on('Save')
       expect(page).to have_content('My Test Work')

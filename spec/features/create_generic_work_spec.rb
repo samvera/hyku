@@ -42,7 +42,7 @@ RSpec.describe 'Create a GenericWork', js: true do
     it do # rubocop:disable RSpec/ExampleLength
       visit '/dashboard'
       click_link "Works"
-      click_link "Add new work"
+      click_link "Add New Work"
 
       # If you generate more than one work uncomment these lines
       choose "payload_concern", option: "GenericWork"

@@ -22,7 +22,7 @@ RSpec.describe "hyrax/content_blocks/edit", type: :view do
   end
 
   it "loads the wysiwyg config file" do
-    expect(rendered).to have_text('link hr')
+    expect(rendered).to have_text('bold italic')
     # Checking to see if the changed tinymce.yml is loaded (we added hr).
     # This is no guarantee that it's actually loaded, but that would be a js integration test
   end

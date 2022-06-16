@@ -7,7 +7,12 @@ RSpec.describe SolrEndpoint do
     subject(:options) { instance.connection_options }
 
     it 'merges the model attributes with the application settings' do
-      expect(options).to include url: 'http://example.com/solr/', read_timeout: 120
+      expect(options).to eq(
+        "timeout" => 120,
+        "open_timeout" => 120,
+        "url" => "http://example.com/solr/",
+        "adapter" => "solr"
+      )
     end
   end
 

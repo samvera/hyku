@@ -114,7 +114,6 @@ gem 'flipflop', '~> 2.3'
 gem 'lograge'
 
 gem 'mods', '~> 2.4'
-gem 'terser' #to support the Safe Navigation / Optional Chaining operator (?.) and avoid uglifier precompile issue
 
 group :aws, :test do
   gem 'carrierwave-aws', '~> 1.3'
@@ -134,4 +133,5 @@ gem 'rdf', '~> 3.1.15' # rdf 3.2.0 removed SerializedTransaction which ldp requi
 gem 'riiif', '~> 1.1'
 gem 'secure_headers'
 gem 'sidekiq'
+gem 'terser' #to support the Safe Navigation / Optional Chaining operator (?.) and avoid uglifier precompile issue
 gem 'tether-rails'

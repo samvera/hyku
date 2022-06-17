@@ -133,5 +133,5 @@ gem 'rdf', '~> 3.1.15' # rdf 3.2.0 removed SerializedTransaction which ldp requi
 gem 'riiif', '~> 1.1'
 gem 'secure_headers'
 gem 'sidekiq'
-gem 'terser' #to support the Safe Navigation / Optional Chaining operator (?.) and avoid uglifier precompile issue
+gem 'terser' # to support the Safe Navigation / Optional Chaining operator (?.) and avoid uglifier precompile issue
 gem 'tether-rails'

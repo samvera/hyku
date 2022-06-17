@@ -114,6 +114,7 @@ gem 'flipflop', '~> 2.3'
 gem 'lograge'
 
 gem 'mods', '~> 2.4'
+gem 'terser' #to support the Safe Navigation / Optional Chaining operator (?.) and avoid uglifier precompile issue
 
 group :aws, :test do
   gem 'carrierwave-aws', '~> 1.3'

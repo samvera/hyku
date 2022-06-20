@@ -1,7 +1,9 @@
 <%= simple_form_for @form, url: admin_appearance_path do |f| %>
   <div class="panel-body">
+    <% require_image = @form.directory_image? ? false : true %>
     <%# Upload Directory Image %>
-    <%= f.input :directory_image, as: :file, wrapper: :vertical_file_input, hint: t('hyrax.admin.appearances.show.forms.directory_image.hint') %>
+    <%= f.input :directory_image, as: :file, wrapper: :vertical_file_input, required: require_image, hint: t('hyrax.admin.appearances.show.forms.directory_image.hint') %>
+    <%= f.input :directory_image_text, required: true, as: :text, label: 'Directory image alt text' %>
     <%= image_tag @form.directory_image.url, class: "img-responsive" if @form.directory_image? %>
   </div>
   <div class="panel-footer">

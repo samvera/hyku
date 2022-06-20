@@ -1,7 +1,8 @@
 <% # OVERRIDE: Hyrax 2.9 template to remove the gradient overlay span, removed /controls partial, and added the share your work button for themeing %>
 <% content_for(:navbar) do %>
   <div class="image-masthead">
-    <div class="background-container" style="background-image: url('<%= banner_image %>')"></div>
+  <!-- institutional repository homepage -->
+    <div class="background-container" style="background-image: url('<%= banner_image %>')" title="<%= block_for(name: 'banner_image_text') %>"></div>
 
     <div class="container site-title-container">
       <div class="site-title h1" style="text-align: center;">

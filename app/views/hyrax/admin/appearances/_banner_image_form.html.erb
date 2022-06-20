@@ -1,7 +1,9 @@
 <%= simple_form_for @form, url: admin_appearance_path do |f| %>
   <div class="panel-body">
+    <% require_image = @form.banner_image? ? false : true %>
     <%# Upload Banner Image %>
-    <%= f.input :banner_image, as: :file, wrapper: :vertical_file_input, hint: t('hyrax.admin.appearances.show.forms.banner_image.hint') %>
+    <%= f.input :banner_image, as: :file, wrapper: :vertical_file_input, required: require_image, hint: t('hyrax.admin.appearances.show.forms.banner_image.hint') %>
+    <%= f.input :banner_image_text, required: true, as: :text, label: 'Banner image alt text' %>
     <%= image_tag @form.banner_image.url, class: "img-responsive" if @form.banner_image? %>
   </div>
   <div class="panel-footer">

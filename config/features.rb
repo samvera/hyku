@@ -17,5 +17,5 @@ Flipflop.configure do
 
   feature :show_pdfs_in_uv,
           default: false,
-          description: "Renders PDFs in the Universal Viewer."
+          description: "Process PDF to show in the Universal Viewer."
 end

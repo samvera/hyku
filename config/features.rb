@@ -17,5 +17,5 @@ Flipflop.configure do
 
   feature :process_pdfs_for_uv_rendering,
           default: false,
-          description: "Processes PDFs to show in the Universal Viewer (UV). PDFs will only render in the UV if they're created with this feature enabled."
+          description: "Processes PDFs for display in the Universal Viewer (UV). PDFs will only render in the UV if they're created with this feature enabled."
 end

@@ -151,6 +151,7 @@ services:
 
   worker:
     <<: *app
+    image: ghcr.io/samvera/hyku/worker:latest
     build:
       context: .
       target: hyku-worker

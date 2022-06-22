@@ -23,7 +23,7 @@ Rails.application.configure do
   }
   config.middleware.insert_before ActionDispatch::Static, NoCacheMiddleware, [/dashboard\/collections\/.*\/edit/, /uploaded_collection_thumbnails/]
   # Compress JavaScripts and CSS.
-  config.assets.js_compressor = Uglifier.new(harmony: true)
+  config.assets.js_compressor = :terser
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
@@ -112,5 +112,4 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-  config.assets.js_compressor = :terser
 end

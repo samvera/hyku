@@ -67,7 +67,7 @@ extraEnvVars: &envVars
     value: fcrepo.staging-fcrepo.svc.cluster.local:8080
   - name: FCREPO_PATH
     value: /rest
-  - name: FEDORA_URL
+  - name: FCREPO_URL
     value: http://fcrepo.staging-fcrepo.svc.cluster.local:8080/rest
   - name: INITIAL_ADMIN_EMAIL
     value: support@notch8.com

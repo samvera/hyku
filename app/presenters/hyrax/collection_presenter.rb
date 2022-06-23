@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # OVERRIDE Hyrax v3.4.1: add collection methods to collection presenter and
-#    override to return full banner_file data, rather than only download path to file                   
+#    override to return full banner_file data, rather than only download path to file
 # Terms is the list of fields displayed by app/views/collections/_show_descriptions.html.erb
 # rubocop:disable Metrics/BlockLength
 require_dependency Hyrax::Engine.root.join('app', 'presenters', 'hyrax', 'collection_presenter').to_s

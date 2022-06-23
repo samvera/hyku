@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v3.4.0
-# OVERRIDE Hyrax v3.4.0 to add collection methods to collection presenter
+# OVERRIDE Hyrax v3.4.1: add collection methods to collection presenter and
+#    override to return full banner_file data, rather than only download path to file                   
 # Terms is the list of fields displayed by app/views/collections/_show_descriptions.html.erb
 # rubocop:disable Metrics/BlockLength
 require_dependency Hyrax::Engine.root.join('app', 'presenters', 'hyrax', 'collection_presenter').to_s
@@ -26,6 +26,18 @@ Hyrax::CollectionPresenter.class_eval do
       total_items
     else
       solr_document.send key
+    end
+  end
+
+  # override banner_file in hyrax to include all banner information rather than just relative_path
+  def banner_file
+    @banner_file ||= begin
+      # Find Banner filename
+      banner_info = CollectionBrandingInfo.where(collection_id: id, role: "banner")
+      filename = File.split(banner_info.first.local_path).last unless banner_info.empty?
+      alttext = banner_info.first.alt_text unless banner_info.empty?
+      relative_path = "/" + banner_info.first.local_path.split("/")[-4..-1].join("/") unless banner_info.empty?
+      { filename: filename, relative_path: relative_path, alt_text: alttext }
     end
   end
 

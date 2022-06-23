@@ -4,11 +4,11 @@
 <div class="hyc-container" itemscope itemtype="http://schema.org/CollectionPage">
   <div class="row hyc-header">
     <div class="col-md-12">
-
+    
       <% if @presenter.banner_file.present? %>
-          <div class="hyc-banner" style="background-image:url(<%= @presenter.banner_file %>)">
+        <div class="hyc-banner" style="background-image:url(<%= @presenter.banner_file[:relative_path] %>)" title="<%= @presenter.banner_file[:alt_text] %>">
       <% else %>
-          <div class="hyc-generic">
+        <div class="hyc-generic">
       <% end %>
 
       <div class="hyc-title">

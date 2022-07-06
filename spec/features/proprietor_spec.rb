@@ -25,16 +25,5 @@ RSpec.describe 'Proprietor administration', multitenant: true do
       visit '/'
       expect(page).to have_link 'Logout'
     end
-
-    it "has validation for password" do
-      visit '/proprietor/users/new'
-      fill_in "user_email", with: user.email
-      fill_in "user_password", with: ""
-      click_on "Save"
-      byebug
-      message = page.find("#user_password").native.attribute("validationMessage")
-      expect(message).to eq "Please fill out this field."
-    end
-
   end
 end

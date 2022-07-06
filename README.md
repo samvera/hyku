@@ -163,7 +163,7 @@ switch!('myaccount')
 | HYKU_ADMIN_ONLY_TENANT_CREATION | Restrict signing up a new tenant to the admin | false | no | |
 | HYKU_ALLOW_SIGNUP | Can users register themselves on a given Tenant | true  | no |
 | HYKU_ASSET_HOST | Host name of the asset server | - | no |
-| HYKU_BULKRAX_ENABLED | Is the Bulkrax gem enabled | false | no |
+| HYKU_BULKRAX_ENABLED | Is the Bulkrax gem enabled | true | no |
 | HYKU_BULKRAX_VALIDATIONS | Unused, pending feature addition by Ubiquity | - | no |
 | HYKU_CACHE_API | Use Redis instead of disk for caching | false | no |
 | HYKU_CACHE_ROOT | Directory of file cache (if CACHE_API is false) | /app/samvera/file_cache | no |

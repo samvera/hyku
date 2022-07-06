@@ -8,6 +8,7 @@
                 class: 'btn btn-primary' %>
 <% end %>
 <% if presenter.collection_type_is_nestable? && presenter.user_can_nest_collection? %>
+    <%= render 'hyrax/my/collections/modal_add_to_collection', source: 'show' %>
 <!-- The user should have deposit access to the parent and read access to the child (the collection we are already showing, so no test is necessary). -->
     <%= button_tag '',
                   class: 'btn btn-primary add-to-collection',

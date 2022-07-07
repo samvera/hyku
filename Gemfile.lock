@@ -1,32 +1,4 @@
 GIT
-  remote: https://github.com/notch8/willow_sword.git
-  revision: 0a669d78617c6003e4aa1a46a10447be92be27d5
-  specs:
-    willow_sword (0.2.0)
-      bagit (~> 0.4.1)
-      rails (>= 5.1.6)
-      rubyzip (>= 1.0.0)
-
-GIT
-  remote: https://github.com/samvera-labs/bulkrax.git
-  revision: 687f2488abfd619d506873792f38f346056a6c77
-  branch: main
-  specs:
-    bulkrax (1.0.2)
-      bagit (~> 0.4)
-      coderay
-      iso8601 (~> 0.9.0)
-      kaminari
-      language_list (~> 1.2, >= 1.2.1)
-      libxml-ruby (~> 3.1.0)
-      loofah (>= 2.2.3)
-      oai (>= 0.4, < 2.x)
-      rack (>= 2.0.6)
-      rails (>= 5.1.6)
-      rdf (>= 2.0.2, < 4.0)
-      simple_form
-
-GIT
   remote: https://github.com/samvera-labs/hyrax-doi.git
   revision: 16e459bf9d088610c21f8c0d446c196d66041686
   branch: hyrax_upgrade
@@ -229,6 +201,20 @@ GEM
       signet (~> 0.8)
       typhoeus
     builder (3.2.4)
+    bulkrax (3.5.1)
+      bagit (~> 0.4)
+      coderay
+      iso8601 (~> 0.9.0)
+      kaminari
+      language_list (~> 1.2, >= 1.2.1)
+      libxml-ruby (~> 3.1.0)
+      loofah (>= 2.2.3)
+      oai (>= 0.4, < 2.x)
+      rack (>= 2.0.6)
+      rails (>= 5.1.6)
+      rdf (>= 2.0.2, < 4.0)
+      rubyzip
+      simple_form
     byebug (11.1.3)
     cancancan (1.17.0)
     capybara (3.36.0)
@@ -1153,7 +1139,7 @@ DEPENDENCIES
   blacklight_oai_provider (~> 6.1, >= 6.1.1)
   bolognese (>= 1.9.10)
   bootstrap-datepicker-rails
-  bulkrax!
+  bulkrax (~> 3.5.0)
   byebug
   capybara
   capybara-screenshot (~> 1.0)
@@ -1218,7 +1204,6 @@ DEPENDENCIES
   web-console (>= 3.3.0)
   webdrivers (~> 4.0)
   webmock
-  willow_sword!
 
 BUNDLED WITH
    2.1.4

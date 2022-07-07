@@ -33,9 +33,7 @@
       <% unless @presenter.total_viewable_items.blank? %>
           <div class="hyc-bugs">
             <div class="hyc-item-count">
-              <b><%= @presenter.total_viewable_items %></b>
               <%= pluralize(@presenter.total_viewable_items, t('.item_count')) %></div>
-
             <% unless @presenter.creator.blank? %>
                 <div class="hyc-created-by">Created by: <%= @presenter.creator.first %></div>
             <% end %>
@@ -51,7 +49,17 @@
   </div>
   <%# OVERRIDE here to add admin actions buttons to show page %>
   <div class='show-actions-container'>
-    <%= render "hyrax/dashboard/collections/show_actions", presenter: @presenter %>
+    <% id = @presenter.id %>
+    <section class="collection-title-row-wrapper"
+      data-source="show"
+      data-id="<%= id %>"
+      data-colls-hash="<%= available_parent_collections_data(collection: @presenter) %>"
+      data-post-url="<%= hyrax.dashboard_create_nest_collection_within_path(id) %>"
+      data-post-delete-url="<%= hyrax.dashboard_collection_path(id) %>">
+      <div class="collection-title-row-content">
+        <%= render 'hyrax/dashboard/collections/show_actions', presenter: @presenter %>
+      </div>
+    </section>
   </div>
   <%# end OVERRIDE %>
   <div class="row hyc-body">

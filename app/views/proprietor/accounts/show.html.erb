@@ -71,13 +71,13 @@
                     <td></td>
                   </tr>
                 <% else %>
-                  <% @current_superusers.each do |email| %>
+                  <% @current_superusers.each do |current_superuser| %>
                     <tr>
-                      <td><%= email %></td>
+                      <td><%= current_superuser %></td>
                       <td>
                         <%# For the remove button form, add all admin emails *except this one* as hidden inputs %>
-                        <%= simple_form_for @account, url: [:proprietor, @account], namespace: "remove_#{email}_form", html: { class: 'form' } do |f| %>
-                          <% keep_emails = @account.admin_emails - [ email ] %>
+                        <%= simple_form_for @account, url: [:proprietor, @account], namespace: "remove_#{current_superuser}_form", html: { class: 'form' } do |f| %>
+                          <% keep_emails = @account.admin_emails - [current_superuser.email] %>
                           <% if keep_emails.empty? %>
                             <%= f.input_field :admin_emails, multiple: true, hidden: true, value: '' %>
                           <% else %>

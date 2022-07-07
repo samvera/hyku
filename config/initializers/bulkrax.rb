@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-if ENV.fetch('HYKU_BULKRAX_ENABLED', true)
+if ENV.fetch('HYKU_BULKRAX_ENABLED', 'true') == 'true'
 
   Bulkrax.setup do |config|
     # Add local parsers

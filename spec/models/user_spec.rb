@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 RSpec.describe User, type: :model do
+  it 'validates email and password' do
+    is_expected.to validate_presence_of(:email)
+    is_expected.to validate_presence_of(:password)
+  end
+
   context 'the first created user in global tenant' do
     subject { FactoryBot.create(:base_user) }
 

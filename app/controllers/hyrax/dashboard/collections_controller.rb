@@ -72,10 +72,8 @@ module Hyrax
       end
 
       def show
-        if @collection.collection_type.brandable?
-          banner_info = CollectionBrandingInfo.where(collection_id: @collection.id.to_s).where(role: "banner")
-          @banner_file = "/" + banner_info.first.local_path.split("/")[-4..-1].join("/") unless banner_info.empty?
-        end
+        # unused assignment to be removed in 4.0.0
+        @banner_file = presenter.banner_file if collection_type.brandable?
 
         presenter
         query_collection_members
@@ -333,19 +331,22 @@ module Hyrax
         dashboard_collection_path(@collection)
       end
 
+      # branding specific methods
       def process_banner_input
         return update_existing_banner if params["banner_unchanged"] == "true"
         remove_banner
         uploaded_file_ids = params["banner_files"]
-        add_new_banner(uploaded_file_ids) if uploaded_file_ids
+        banner_text = params["banner_text"]&.first
+        add_new_banner(uploaded_file_ids, banner_text) if uploaded_file_ids
       end
 
       def update_existing_banner
         banner_info = CollectionBrandingInfo.where(collection_id: @collection.id.to_s).where(role: "banner")
+        banner_info.first.alt_text = params["banner_text"].first
         banner_info.first.save(banner_info.first.local_path, false)
       end
 
-      def add_new_banner(uploaded_file_ids)
+      def add_new_banner(uploaded_file_ids, banner_text)
         f = uploaded_files(uploaded_file_ids).first
         ## OVERRIDE Hyrax 3.4.0 - process locations
         file_location = process_file_location(f)
@@ -354,7 +355,7 @@ module Hyrax
           collection_id: @collection.id,
           filename: File.split(f.file_url).last,
           role: "banner",
-          alt_txt: "",
+          alt_txt: banner_text,
           target_url: ""
         )
         ## OVERRIDE Hyrax 3.4.0 - process locations

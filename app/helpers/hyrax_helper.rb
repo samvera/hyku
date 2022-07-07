@@ -25,6 +25,12 @@ module HyraxHelper
     Site.instance.logo_image? ? Site.instance.logo_image.url : false
   end
 
+  def block_for(name:)
+    block = ContentBlock.find_by(name: name)
+    has_value = block&.value.present?
+    has_value ? block.value : false
+  end
+
   def directory_image
     Site.instance.directory_image? ? Site.instance.directory_image.url : false
   end

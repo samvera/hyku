@@ -1,7 +1,8 @@
 <% # OVERRIDE: Hyrax 2.9 template to remove the render of the /controls partial, removed the background gradient span, and added share your work btn %>
 <% content_for(:navbar) do %>
   <div class="image-masthead cultural-homepage">
-    <div class="background-container" style="background-image: url('<%= banner_image %>')"></div>
+    <!-- cultural repository homepage -->
+    <div class="background-container" style="background-image: url('<%= banner_image %>')" title="<%= block_for(name: 'banner_image_text') %>"></div>
 
     <div class="container">
       <% if controller_name == 'homepage' %>

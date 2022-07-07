@@ -1,7 +1,8 @@
 <% # OVERRIDE: Hyrax 2.9 template to remove the render of the removed the background gradient span and add mb-40 class on line 6%>
 <% content_for(:navbar) do %>
   <div class="image-masthead">
-    <div class="background-container" style="background-image: url('<%= banner_image %>')"></div>
+    <!-- neutral repository homepage -->
+    <div class="background-container" title="<%= block_for(name: 'banner_image_text') %>" style="background-image: url('<%= banner_image %>')"></div>
 
     <div class="container site-title-container mb-40">
       <div class="site-title h1" style="text-align: center;">

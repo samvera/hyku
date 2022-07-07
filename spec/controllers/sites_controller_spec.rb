@@ -38,14 +38,17 @@ RSpec.describe SitesController, type: :controller, singletenant: true do
           .at_least(3).times
         f = fixture_file_upload('/images/nypl-hydra-of-lerna.jpg', 'image/jpg')
         Site.instance.update(banner_image: f)
+        ContentBlock.find_or_create_by(name: 'banner_image_text').update!(value: 'Sample text')
       end
 
       it "#update with remove_banner_image deletes a banner image" do
         expect(Site.instance.banner_image?).to be true
+        expect(ContentBlock.find_by(name: 'banner_image_text')).not_to be nil
         post :update, params: { id: Site.instance.id, remove_banner_image: 'Remove banner image' }
         expect(response).to redirect_to('/admin/appearance?locale=en')
         expect(flash[:notice]).to include("The appearance was successfully updated")
         expect(Site.instance.banner_image?).to be false
+        expect(ContentBlock.find_by(name: 'banner_image_text')).to be nil
       end
     end
 
@@ -54,14 +57,17 @@ RSpec.describe SitesController, type: :controller, singletenant: true do
         expect(Hyrax::AvatarUploader).to receive(:storage).and_return(CarrierWave::Storage::File).at_least(3).times
         f = fixture_file_upload('/images/nypl-hydra-of-lerna.jpg', 'image/jpg')
         Site.instance.update(directory_image: f)
+        ContentBlock.find_or_create_by(name: 'directory_image_text').update!(value: 'Sample text')
       end
 
       it "#update with remove_directory_image deletes a directory image" do
         expect(Site.instance.directory_image?).to be true
+        expect(ContentBlock.find_by(name: 'directory_image_text')).not_to be nil
         post :update, params: { id: Site.instance.id, remove_directory_image: 'Remove directory image' }
         expect(response).to redirect_to('/admin/appearance?locale=en')
         expect(flash[:notice]).to include("The appearance was successfully updated")
         expect(Site.instance.directory_image?).to be false
+        expect(ContentBlock.find_by(name: 'directory_image_text')).to be nil
       end
 
       context 'when update fails' do
@@ -74,11 +80,35 @@ RSpec.describe SitesController, type: :controller, singletenant: true do
 
         it "#update with remove_directory_image sets error flash" do
           expect(Site.instance.directory_image?).to be true
+          expect(ContentBlock.find_by(name: 'directory_image_text')).not_to be nil
           post :update, params: { id: Site.instance.id, remove_directory_image: 'Remove directory image' }
           expect(response).to redirect_to('/admin/appearance?locale=en')
           expect(flash[:error]).to include("Updating the appearance was unsuccessful")
           expect(Site.instance.directory_image?).to be true
+          expect(ContentBlock.find_by(name: 'directory_image_text')).not_to be nil
         end
+      end
+    end
+
+    context "site with existing logo image and logo text" do
+      before do
+        expect(Hyrax::AvatarUploader)
+          .to receive(:storage)
+          .and_return(CarrierWave::Storage::File)
+          .at_least(3).times
+        f = fixture_file_upload('/images/nypl-hydra-of-lerna.jpg', 'image/jpg')
+        Site.instance.update(logo_image: f)
+        ContentBlock.find_or_create_by(name: 'logo_image_text').update!(value: 'Sample text')
+      end
+
+      it "#update with remove_logo_image deletes both image and text" do
+        expect(ContentBlock.find_by(name: 'logo_image_text')).not_to be nil
+        expect(Site.instance.logo_image?).to be true
+        post :update, params: { id: Site.instance.id, remove_logo_image: 'Remove logo image' }
+        expect(response).to redirect_to('/admin/appearance?locale=en')
+        expect(flash[:notice]).to include("The appearance was successfully updated")
+        expect(Site.instance.logo_image?).to be false
+        expect(ContentBlock.find_by(name: 'logo_image_text')).to be nil
       end
     end
   end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax 3.4.0 to use site in the search_service method
+# OVERRIDE Hyrax 3.4.0 to check the site's ssl_configured when setting protocols
 module Hyrax
   module IiifManifestPresenterDecorator
     def search_service

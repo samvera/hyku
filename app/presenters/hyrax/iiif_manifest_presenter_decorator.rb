@@ -7,6 +7,16 @@ module Hyrax
       url = Rails.application.routes.url_helpers.solr_document_url(id, host: hostname)
       Site.account.ssl_configured ? url.sub(/\Ahttp:/, 'https:') : url
     end
+    
+    ##
+    # @return [String] the URL where the manifest can be found
+    def manifest_url
+      return '' if id.blank?
+
+      protocol = Site.account.ssl_configured ? 'https' : 'http'
+      Rails.application.routes.url_helpers.polymorphic_url([:manifest, model], host: hostname, protocol: protocol)
+    end
+
   end
 end
 

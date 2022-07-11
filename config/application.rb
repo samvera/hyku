@@ -32,6 +32,12 @@ module Hyku
       end
     end
 
+    config.to_prepare do
+      Dir.glob(File.join(File.dirname(__FILE__), "../app/**/*_decorator*.rb")).sort.each do |c|
+        Rails.configuration.cache_classes ? require(c) : load(c)
+      end
+    end
+
     # resolve reloading issue in dev mode
     config.paths.add 'app/helpers', eager_load: true
 

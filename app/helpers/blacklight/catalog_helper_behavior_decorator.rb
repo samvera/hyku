@@ -21,7 +21,7 @@ Blacklight::CatalogHelperBehavior.module_eval do
       if url_options[:suppress_link]
         value
       elsif url_options[:full_url]
-        link_to generate_work_url(document, request) do
+        link_to generate_work_url(document.to_h, request) do
           value
         end
       else

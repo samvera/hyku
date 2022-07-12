@@ -25,7 +25,7 @@ module SharedSearchHelper
                    "/#{has_model}/#{id}"
                  else
                    "/concern/#{has_model}/#{id}"
-                end
+                 end
       new_url
     end
 end

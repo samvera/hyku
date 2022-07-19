@@ -2,8 +2,6 @@
 
 module SharedSearchHelper
   def generate_work_url(model, request)
-    return model unless current_account.search_only?
-
     # needed because some attributes eg id is a symbol 7 others are string
     model = model.to_h.with_indifferent_access
 
@@ -22,7 +20,12 @@ module SharedSearchHelper
     def get_url(id:, request:, account_cname:, has_model:)
       new_url = "#{request[:request_protocol]}#{account_cname || request[:request_host]}"
       new_url += ":#{request[:request_port]}" if Rails.env.development? || Rails.env.test?
-      new_url += "/concern/#{has_model}/#{id}"
+      new_url += case has_model
+                 when "collections"
+                   "/#{has_model}/#{id}"
+                 else
+                   "/concern/#{has_model}/#{id}"
+                 end
       new_url
     end
 end

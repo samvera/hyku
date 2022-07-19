@@ -58,6 +58,8 @@ module Proprietor
     # PATCH/PUT /accounts/1
     # PATCH/PUT /accounts/1.json
     def update
+      @account.data_cite_endpoint = DataCiteEndpoint.new unless @account.data_cite_endpoint.persisted?
+
       respond_to do |format|
         if @account.update(edit_account_params)
           f = edit_account_params['full_account_cross_searches_attributes'].to_h
@@ -104,7 +106,7 @@ module Proprietor
                                                                                  full_account_attributes: [:id]],
                                         solr_endpoint_attributes: %i[id url],
                                         fcrepo_endpoint_attributes: %i[id url base_path],
-                                        datacite_endpoint_attributes: %i[mode prefix username password])
+                                        data_cite_endpoint_attributes: %i[mode prefix username password])
       end
 
       def account_params

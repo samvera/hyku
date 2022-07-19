@@ -31,12 +31,14 @@ module Hyku
         config.active_elastic_job.secret_key_base = Rails.application.secrets[:secret_key_base]
       end
     end
+    
     config.to_prepare do
       # Allows us to use decorator files in the app directory
       Dir.glob(File.join(File.dirname(__FILE__), "../app/**/*_decorator*.rb")).sort.each do |c|
         Rails.configuration.cache_classes ? require(c) : load(c)
       end
     end
+    
     # resolve reloading issue in dev mode
     config.paths.add 'app/helpers', eager_load: true
 

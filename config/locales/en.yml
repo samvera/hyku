@@ -174,7 +174,7 @@ en:
   proprietor:
     accounts:
       edit:
-        datacite_endpoint: DataCite Endpoint
+        data_cite_endpoint: DataCite Endpoint
         fcrepo_endpoint: Fedora Endpoint
         header: Editing Account
         solr_endpoint: Solr Endpoint

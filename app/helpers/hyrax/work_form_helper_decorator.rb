@@ -4,7 +4,7 @@
 
 module Hyrax
   module WorkFormHelperDecorator
-        ##
+    ##
     # @todo this implementation hits database backends (solr) and is invoked
     #   from views. refactor to avoid
     # @return  [Array<Array<String, String, Hash>] options for the admin set drop down.

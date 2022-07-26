@@ -48,14 +48,14 @@ test:
     ALLOW_ANONYMOUS_LOGIN: "yes"
     CONFDIR: "/app/samvera/hyrax-webapp/solr/conf"
     CHROME_HOSTNAME: chrome
-    DB_ADAPTER: postgresql
-    DB_CLEANER_ALLOW_REMOTE_DB_URL: "true"
-    DB_HOST: db
-    DB_NAME: hyku
-    DB_URL: postgres://postgres:postgres@db/hyku
-    DB_USER: postgres
-    DB_HOST: db
-    DB_PORT: 5432
+    DATABASE_ADAPTER: postgresql
+    DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: "true"
+    DATABASE_HOST: DATABASE
+    DATABASE_NAME: hyku
+    DATABASE_URL: postgres://postgres:postgres@DATABASE/hyku
+    DATABASE_USER: postgres
+    DATABASE_HOST: DATABASE
+    DATABASE_PORT: 5432
     FCREPO_HOST: fcrepo
     FCREPO_PORT: 8081
     FCREPO_URL: http://fcrepo:8081/rest

@@ -1,0 +1,9 @@
+<% #OVERRIDE blacklight-gallery: for shared search URLs %>
+<div class="masonry document col-xs-6 col-md-3">
+  <div class="thumbnail">
+    <%= render_thumbnail_tag(document, {:counter => document_counter_with_offset(document_counter)}, {full_url: true}) %>
+    <div class="caption">
+      <%= render_document_partials document, blacklight_config.view_config(:masonry).partials, :document_counter => document_counter %>
+    </div>
+  </div>
+</div>

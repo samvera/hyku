@@ -396,7 +396,7 @@ module Blacklight
     ##
     # override Blacklight::UrlHelperBehavior for index gallery view groupings for shared tenants
     # link_to_document(doc, 'VIEW', :counter => 3)
-    def link_to_document(doc, field_or_opts = nil, opts = { :counter => nil })
+    def link_to_document(doc, field_or_opts = nil, opts = { counter: nil })
       if field_or_opts.is_a? Hash
         opts = field_or_opts
       else

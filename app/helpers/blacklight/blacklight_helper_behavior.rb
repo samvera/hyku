@@ -392,5 +392,24 @@ module Blacklight
     def opensearch_description_tag(title, href)
       tag :link, href: href, title: title, type: "application/opensearchdescription+xml", rel: "search"
     end
+
+    ##
+    # override Blacklight::UrlHelperBehavior for index gallery view groupings for shared tenants
+
+    # link_to_document(doc, 'VIEW', :counter => 3)
+    # Use the catalog_path RESTful route to create a link to the show page for a specific item.
+    # catalog_path accepts a hash. The solr query params are stored in the session,
+    # so we only need the +counter+ param here. We also need to know if we are viewing to document as part of search results.
+    def link_to_document(doc, field_or_opts = nil, opts={:counter => nil})
+      if field_or_opts.is_a? Hash
+        opts = field_or_opts
+      else
+        field = field_or_opts
+      end
+
+      field ||= document_show_link_field(doc)
+      label = index_presenter(doc).label field, opts
+      link_to label, generate_work_url(doc.to_h, request), document_link_params(doc, opts)
+    end
   end
 end

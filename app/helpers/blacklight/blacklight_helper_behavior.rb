@@ -405,7 +405,7 @@ module Blacklight
 
       field ||= document_show_link_field(doc)
       label = index_presenter(doc).label field, opts
-      link_to label, generate_work_url(doc, request), document_link_params(doc, opts)
+      link_to label, generate_work_url(doc.to_h, request), document_link_params(doc, opts)
     end
   end
 end

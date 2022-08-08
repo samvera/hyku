@@ -4,7 +4,7 @@
   </div>
     <div class= 'homepage-work-thumbnail'>
       <%= link_to [hyrax, featured] do %>
-          <%= render_thumbnail_tag(featured, {suppress_link: true}) %>
+          <%= render_thumbnail_tag(featured.solr_document, {suppress_link: true}) %>
         <% end %>
     </div>
     <div>

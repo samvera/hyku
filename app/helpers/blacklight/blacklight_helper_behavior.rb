@@ -393,7 +393,9 @@ module Blacklight
       tag :link, href: href, title: title, type: "application/opensearchdescription+xml", rel: "search"
     end
 
-    # OVERIDE: Blacklight::UrlHelperBehavior: override link_to_document to substitute method generate_work_url to fix URLs for gallery view groupings in shared tenants
+    # OVERIDE: Blacklight::UrlHelperBehavior: 
+    #   override link_to_document to substitute method generate_work_url
+    #   to fix URLs for gallery view groupings in shared tenants
     # link_to_document(doc, 'VIEW', :counter => 3)
     def link_to_document(doc, field_or_opts = nil, opts = { counter: nil })
       if field_or_opts.is_a? Hash

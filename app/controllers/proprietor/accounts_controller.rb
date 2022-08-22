@@ -103,7 +103,7 @@ module Proprietor
                                         full_account_cross_searches_attributes: [:id,
                                                                                  :_destroy,
                                                                                  :full_account_id,
-                                                                                 full_account_attributes: [:id]],
+                                                                                 { full_account_attributes: [:id] }],
                                         solr_endpoint_attributes: %i[id url],
                                         fcrepo_endpoint_attributes: %i[id url base_path],
                                         data_cite_endpoint_attributes: %i[mode prefix username password])
@@ -114,7 +114,7 @@ module Proprietor
           :name,
           :search_only,
           admin_emails: [],
-          full_account_cross_searches_attributes: [:id, :_destroy, :full_account_id, full_account_attributes: [:id]]
+          full_account_cross_searches_attributes: [:id, :_destroy, :full_account_id, { full_account_attributes: [:id] }]
         )
       end
 

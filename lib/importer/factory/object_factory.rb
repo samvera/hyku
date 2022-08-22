@@ -29,8 +29,9 @@ module Importer
 
       def update
         raise "Object doesn't exist" unless object
+
         run_callbacks(:save) do
-          work_actor.update(environment(update_attributes))
+          work_actor.update(environment(update))
         end
         log_updated(object)
       end
@@ -50,8 +51,9 @@ module Importer
       def find
         return find_by_id if attributes[:id]
         return search_by_identifier if attributes[system_identifier_field].present?
+
         raise "Missing identifier: Unable to search for existing object without " \
-          "either fedora ID or #{system_identifier_field}"
+              "either fedora ID or #{system_identifier_field}"
       end
 
       def find_by_id

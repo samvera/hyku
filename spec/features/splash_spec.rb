@@ -2,7 +2,7 @@
 
 RSpec.describe "The splash page", multitenant: true do
   around do |example|
-    original = ENV['HYKU_ADMIN_ONLY_TENANT_CREATION']
+    original = ENV.fetch('HYKU_ADMIN_ONLY_TENANT_CREATION', nil)
     ENV['HYKU_ADMIN_ONLY_TENANT_CREATION'] = "true"
     default_host = Capybara.default_host
     Capybara.default_host = Capybara.app_host || "http://#{Account.admin_host}"

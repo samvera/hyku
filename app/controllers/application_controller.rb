@@ -52,6 +52,7 @@ class ApplicationController < ActionController::Base
     def authenticate_if_needed
       # Disable this extra authentication in test mode
       return true if Rails.env.test?
+
       if (is_hidden || is_staging) && !is_api_or_pdf
         authenticate_or_request_with_http_basic do |username, password|
           username == "samvera" && password == "hyku"
@@ -61,7 +62,7 @@ class ApplicationController < ActionController::Base
 
     def super_and_current_users
       users = Role.find_by(name: 'superadmin')&.users.to_a
-      users << current_user if current_user && !users.include?(current_user)
+      users << current_user if current_user && users.exclude?(current_user)
       users
     end
 
@@ -95,6 +96,7 @@ class ApplicationController < ActionController::Base
 
     def admin_host?
       return false if singletenant?
+
       Account.canonical_cname(request.host) == Account.admin_host
     end
 

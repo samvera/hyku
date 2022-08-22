@@ -55,7 +55,7 @@ FactoryBot.define do
     factory :account_with_public_schema, traits: [:public_schema]
   end
 
-  factory :sign_up_account, class: Account do
+  factory :sign_up_account, class: 'Account' do
     sequence(:name) { |_n| srand }
 
     transient do

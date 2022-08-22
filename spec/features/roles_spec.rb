@@ -2,8 +2,8 @@
 
 RSpec.describe 'Site Roles' do
   context 'as an administrator' do
-    let!(:user) { FactoryBot.create(:admin) }
-    let!(:another_user) { FactoryBot.create(:user) }
+    let!(:user) { create(:admin) }
+    let!(:another_user) { create(:user) }
 
     before do
       login_as(user, scope: :user)

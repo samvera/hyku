@@ -3,14 +3,15 @@
 module AccountSwitch
   extend ActiveSupport::Concern
 
-  DOMAIN_REGEXP = %r{^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,8}(:[0-9]{1,5})?(/.*)?$}ix
+  DOMAIN_REGEXP = %r{^[a-z0-9]+([\-.]{1}[a-z0-9]+)*\.[a-z]{2,8}(:[0-9]{1,5})?(/.*)?$}ix.freeze
 
   class_methods do
     def switch!(cname_or_name_or_account)
-      account = if cname_or_name_or_account.is_a?(Account)
+      account = case cname_or_name_or_account
+                when Account
                   cname_or_name_or_account
                   # is it a domain name?
-                elsif cname_or_name_or_account =~ DOMAIN_REGEXP
+                when DOMAIN_REGEXP
                   Account.joins(:domain_names).find_by(domain_names: {
                                                          is_active: true,
                                                          cname: Account.canonical_cname(cname_or_name_or_account)

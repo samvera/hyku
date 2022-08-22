@@ -58,7 +58,7 @@ RSpec.describe SolrEndpoint do
 
     it 'is false if the service is down' do
       allow(mock_connection).to receive(:get).with('admin/ping').and_raise(RSolr::Error::Http.new(nil, nil))
-      expect(subject.ping).to eq false
+      expect(subject.ping).to be false
     end
   end
 end

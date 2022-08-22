@@ -2,7 +2,7 @@
 
 RSpec.describe 'admin/groups/new', type: :view do
   context 'groups index page' do
-    let(:group) { FactoryBot.build(:group) }
+    let(:group) { build(:group) }
 
     before do
       assign(:group, group)

@@ -19,8 +19,8 @@ RSpec.describe Admin::AccountsController, type: :controller do
   end
 
   context 'as an admin of a site' do
-    let(:user) { FactoryBot.create(:user).tap { |u| u.add_role(:admin, Site.instance) } }
-    let(:account) { FactoryBot.create(:account) }
+    let(:user) { create(:user).tap { |u| u.add_role(:admin, Site.instance) } }
+    let(:account) { create(:account) }
 
     before do
       Site.update(account: account)

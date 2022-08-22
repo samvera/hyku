@@ -9,6 +9,7 @@ module Importer
       # which is used by Hyrax::Actors::AddAsMemberOfCollectionsActor
       def create_attributes
         return super if attributes[:collection].nil?
+
         super.except(:collection).merge(member_of_collection_attributes: [id: collection.id])
       end
 
@@ -16,6 +17,7 @@ module Importer
       # which is used by Hyrax::Actors::AddAsMemberOfCollectionsActor
       def update_attributes
         return super if attributes[:collection].nil?
+
         super.except(:collection).merge(member_of_collection_attributes: [id: collection.id])
       end
 

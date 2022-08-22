@@ -28,7 +28,7 @@ RSpec.describe "proprietor/users/show", type: :view do
                             zotero_token: "",
                             zotero_userid: "Zotero Userid",
                             preferred_locale: "Preferred Locale"
-    ))
+                          ))
   end
 
   it "renders attributes in <p>" do

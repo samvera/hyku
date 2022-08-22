@@ -8,11 +8,13 @@ RSpec.describe ContentBlock, type: :model do
         expect { described_class.for(nil) }.to raise_error(ArgumentError)
       end
     end
+
     context 'with a non-whitelisted value' do
       it 'raises an ArgumentError' do
         expect { described_class.for(:destroy_all) }.to raise_error(ArgumentError)
       end
     end
+
     context 'with a whitelisted value as a symbol' do
       subject { described_class.for(:about) }
 
@@ -22,6 +24,7 @@ RSpec.describe ContentBlock, type: :model do
         expect(subject).to be_persisted
       end
     end
+
     context 'with a whitelisted value as a string' do
       subject { described_class.for('about') }
 
@@ -106,10 +109,11 @@ RSpec.describe ContentBlock, type: :model do
   end
 
   describe '.agreement_page' do
+    subject { described_class.for(:agreement) }
+
     before do
       allow(ApplicationController).to receive(:helpers).and_return(helper_module)
     end
-    subject { described_class.for(:agreement) }
 
     let(:helper_module) do
       double('helpers',
@@ -158,10 +162,11 @@ RSpec.describe ContentBlock, type: :model do
   end
 
   describe '.terms_page' do
+    subject { described_class.for(:terms) }
+
     before do
       allow(ApplicationController).to receive(:helpers).and_return(helper_module)
     end
-    subject { described_class.for(:terms) }
 
     let(:helper_module) do
       double('helpers',

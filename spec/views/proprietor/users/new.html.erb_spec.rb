@@ -28,7 +28,7 @@ RSpec.describe "proprietor/users/new", type: :view do
                     zotero_token: "",
                     zotero_userid: "MyString",
                     preferred_locale: "MyString"
-    ))
+                  ))
   end
 
   it "renders new proprietor_user form" do

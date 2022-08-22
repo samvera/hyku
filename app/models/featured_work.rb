@@ -10,6 +10,7 @@ class FeaturedWork < ActiveRecord::Base # rubocop:disable Rails/ApplicationRecor
 
   def count_within_limit
     return if FeaturedWork.can_create_another?
+
     errors.add(:base, "Limited to #{FEATURE_LIMIT} featured works.")
   end
 

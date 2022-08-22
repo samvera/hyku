@@ -18,10 +18,12 @@ RSpec.describe Hyrax::ContactForm, type: :model do
         allow(Site).to receive(:instance).and_return(site)
         allow(Site).to receive(:account).and_return(account)
       end
+
       it 'uses the hyrax setting' do
         expect(subject.headers[:to]).to eq('change-me-in-settings@example.com')
       end
     end
+
     context 'site email set' do
       before do
         site = double(Site.new)
@@ -30,6 +32,7 @@ RSpec.describe Hyrax::ContactForm, type: :model do
         allow(Site).to receive(:instance).and_return(site)
         allow(Site).to receive(:account).and_return(account)
       end
+
       it 'uses the Site email' do
         expect(subject.headers[:to]).to eq('setting@email.com')
       end

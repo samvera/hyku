@@ -32,6 +32,7 @@ module Importer
     def collection?
       type_keys = mods.typeOfResource.attributes.map(&:keys).flatten
       return false unless type_keys.include?('collection')
+
       mods.typeOfResource.attributes.any? { |hash| hash.fetch('collection').value == 'yes' }
     end
 
@@ -108,6 +109,7 @@ module Importer
     def resource_type
       uris = mods.xpath('//mods:mods/mods:typeOfResource/@valueURI', NAMESPACES).map { |uri| RDF::URI.new(uri.value) }
       return uris if uris.present?
+
       Array.wrap(mods.typeOfResource.text)
     end
 
@@ -135,6 +137,7 @@ module Importer
     def institutional_location
       uris = mods.location.physicalLocation.valueURI.map { |uri| RDF::URI.new(uri) }
       return uris if uris.present?
+
       Array.wrap(mods.location.physicalLocation.text)
     end
 
@@ -210,6 +213,7 @@ module Importer
     def collection_name
       node_set = mods.at_xpath("//mods:relatedItem[@type='host']", NAMESPACES)
       return unless node_set
+
       [node_set.titleInfo.title.text.strip]
     end
 
@@ -217,6 +221,7 @@ module Importer
       query = "//mods:relatedItem[@type='host']/mods:identifier[@type='uri']"
       node_set = mods.at_xpath(query, NAMESPACES)
       return [] unless node_set
+
       Array.wrap(node_set.text)
     end
 
@@ -232,6 +237,7 @@ module Importer
       type = 'type'
       mods.note.each_with_object([]) do |node, list|
         next if node.attributes.key?(type) && node.attributes[type].value == preferred_citation
+
         hash = { value: node.text.gsub(/\n\s+/, "\n") }
         type_attr = node.attributes[type].try(:text)
         hash[:note_type] = type_attr if type_attr
@@ -299,6 +305,7 @@ module Importer
         query = '//mods:subject/mods:name/@valueURI|//mods:subject/mods:topic/@valueURI'
         uris = mods.xpath(query, NAMESPACES).map { |uri| RDF::URI.new(uri) }
         return uris unless uris.empty?
+
         mods.subject.map do |sub|
           text = sub.css('name namePart').text
           secondary = sub.css('topic,genre').text

@@ -17,20 +17,18 @@ RSpec.configure do |config|
   #                 without routing as long as they get some account.
 
   config.before do |example|
-    if !example.metadata[:multitenant] && !example.metadata[:singletenant]
-      if example.metadata[:faketenant] || example.metadata[:type] == :controller
-        example.metadata[:faketenant] = true if example.metadata[:type] == :controller # flag for cleanup later
-        acct = FactoryBot.build(:account, tenant: 'FakeTenant', cname: 'tenant1')
-        allow(acct).to receive(:persisted?).and_return true # nevertheless
-        allow(Account).to receive(:from_request).and_return(acct)
-      end
+    if !example.metadata[:multitenant] && !example.metadata[:singletenant] && (example.metadata[:faketenant] || example.metadata[:type] == :controller)
+      example.metadata[:faketenant] = true if example.metadata[:type] == :controller # flag for cleanup later
+      acct = FactoryBot.build(:account, tenant: 'FakeTenant', cname: 'tenant1')
+      allow(acct).to receive(:persisted?).and_return true # nevertheless
+      allow(Account).to receive(:from_request).and_return(acct)
     end
   end
 
   config.around do |example|
-    @multitenat = ENV['HYKU_MULTITENANT']
-    @admin_host = ENV['HYKU_ADMIN_HOST']
-    @default_host = ENV['HYKU_DEFAULT_HOST']
+    @multitenat = ENV.fetch('HYKU_MULTITENANT', nil)
+    @admin_host = ENV.fetch('HYKU_ADMIN_HOST', nil)
+    @default_host = ENV.fetch('HYKU_DEFAULT_HOST', nil)
 
     if example.metadata[:multitenant]
       ENV['HYKU_MULTITENANT'] = "true"

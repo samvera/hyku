@@ -40,7 +40,7 @@ RSpec.describe Importer::ModsImporter, :clean do
         end
         expect do
           importer.import(file)
-        end.to change(Collection, :count).by(0)
+        end.not_to change(Collection, :count)
       end
     end
   end
@@ -62,13 +62,13 @@ RSpec.describe Importer::ModsImporter, :clean do
     end
 
     context 'when the collection already exists' do
-      let!(:existing) { FactoryBot.create(:collection, id: 'kx532cb7981', title: ['Test Collection']) }
+      let!(:existing) { create(:collection, id: 'kx532cb7981', title: ['Test Collection']) }
 
       it 'adds metadata to existing collection' do
         coll = nil
         expect do
           coll = importer.import(file)
-        end.to change(Collection, :count).by(0)
+        end.not_to change(Collection, :count)
 
         expect(coll.id).to eq existing.id
         expect(coll.identifier).to eq ['kx532cb7981']

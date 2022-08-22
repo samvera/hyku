@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe CreateDefaultAdminSetJob do
-  let!(:account) { FactoryBot.create(:account) }
+  let!(:account) { create(:account) }
 
   describe '#perform' do
     it 'creates a new admin set for an account' do

@@ -28,14 +28,14 @@ RSpec.describe Admin::GroupsController, singletenant: true do
     describe 'POST #create' do
       it 'creates a group when it recieves valid attribtes' do
         expect do
-          post :create, params: { hyku_group: FactoryBot.attributes_for(:group) }
+          post :create, params: { hyku_group: attributes_for(:group) }
         end.to change(Hyku::Group, :count).by(1)
       end
     end
 
     context 'with an existing group' do
-      let(:group) { FactoryBot.create(:group) }
-      let(:new_attributes) { FactoryBot.attributes_for(:group) }
+      let(:group) { create(:group) }
+      let(:new_attributes) { attributes_for(:group) }
 
       describe 'GET #edit' do
         subject { get :edit, params: { id: group.id } }

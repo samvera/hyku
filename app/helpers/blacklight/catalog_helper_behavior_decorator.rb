@@ -14,9 +14,9 @@ module Blacklight
       # rubocop:disable Style/GuardClause
       if value
         if url_options == false
-          # rubocop:disable Metrics/LineLength
+          # rubocop:disable Layout/LineLength
           Deprecation.warn(self, "passing false as the second argument to render_thumbnail_tag is deprecated. Use suppress_link: true instead. This behavior will be removed in Blacklight 7")
-          # rubocop:enable Metrics/LineLength
+          # rubocop:enable Layout/LineLength
           url_options = { suppress_link: true }
         end
         if url_options[:suppress_link]

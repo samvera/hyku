@@ -14,7 +14,7 @@ RSpec.describe Ability do
   end
 
   describe 'an ordinary user' do
-    let(:user) { FactoryBot.create(:user) }
+    let(:user) { create(:user) }
 
     it { is_expected.not_to be_able_to(:manage, :all) }
 
@@ -33,7 +33,7 @@ RSpec.describe Ability do
 
   describe 'an ordinary user with a role on this tenant' do
     let(:user) do
-      u = FactoryBot.create(:user)
+      u = create(:user)
       u.add_role(:depositor)
       u
     end
@@ -54,7 +54,7 @@ RSpec.describe Ability do
   end
 
   describe 'an administrative user' do
-    let(:user) { FactoryBot.create(:admin) }
+    let(:user) { create(:admin) }
 
     it { is_expected.not_to be_able_to(:manage, :all) }
     it { is_expected.not_to be_able_to(:manage, Account) }
@@ -70,7 +70,7 @@ RSpec.describe Ability do
   end
 
   describe 'a superadmin user' do
-    let(:user) { FactoryBot.create(:superadmin) }
+    let(:user) { create(:superadmin) }
 
     it { is_expected.to be_able_to(:manage, :all) }
   end

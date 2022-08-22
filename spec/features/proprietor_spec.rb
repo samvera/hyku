@@ -2,7 +2,7 @@
 
 RSpec.describe 'Proprietor administration', multitenant: true do
   context 'as an superadmin' do
-    let(:user) { FactoryBot.create(:superadmin) }
+    let(:user) { create(:superadmin) }
 
     before do
       login_as(user, scope: :user)

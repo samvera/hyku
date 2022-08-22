@@ -6,6 +6,7 @@ class NilSite
   class << self
     # NilSite must be a singleton like Site
     attr_writer :instance
+
     def instance
       @instance ||= NilSite.new
     end

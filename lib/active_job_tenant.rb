@@ -52,9 +52,7 @@ module ActiveJobTenant
       tenant || Apartment::Tenant.current
     end
 
-    def switch
-      Apartment::Tenant.switch(current_tenant) do
-        yield
-      end
+    def switch(&block)
+      Apartment::Tenant.switch(current_tenant, &block)
     end
 end

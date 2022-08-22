@@ -2,7 +2,7 @@
 
 RSpec.describe 'Site labels configuration' do
   context 'as an administrator' do
-    let(:user) { FactoryBot.create(:admin) }
+    let(:user) { create(:admin) }
 
     before do
       login_as(user, scope: :user)

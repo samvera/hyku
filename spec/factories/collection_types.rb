@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :collection_type, class: Hyrax::CollectionType do
+  factory :collection_type, class: 'Hyrax::CollectionType' do
     sequence(:title) { |n| "Collection Type #{n}" }
     sequence(:machine_id) { |n| "title_#{n}" }
 
@@ -105,11 +105,11 @@ FactoryBot.define do
     end
   end
 
-  factory :user_collection_type, class: Hyrax::CollectionType do
+  factory :user_collection_type, class: 'Hyrax::CollectionType' do
     initialize_with { Hyrax::CollectionType.find_or_create_default_collection_type }
   end
 
-  factory :admin_set_collection_type, class: Hyrax::CollectionType do
+  factory :admin_set_collection_type, class: 'Hyrax::CollectionType' do
     initialize_with { Hyrax::CollectionType.find_or_create_admin_set_type }
   end
 end

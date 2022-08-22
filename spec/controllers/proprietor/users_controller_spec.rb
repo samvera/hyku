@@ -35,8 +35,8 @@ RSpec.describe Proprietor::UsersController, type: :controller, multitenant: true
   end
 
   context 'as an admin of a site' do
-    let(:user) { FactoryBot.create(:user).tap { |u| u.add_role(:admin, Site.instance) } }
-    let(:account) { FactoryBot.create(:account) }
+    let(:user) { create(:user).tap { |u| u.add_role(:admin, Site.instance) } }
+    let(:account) { create(:account) }
 
     before do
       Site.update(account: account)
@@ -91,9 +91,7 @@ RSpec.describe Proprietor::UsersController, type: :controller, multitenant: true
         end
 
         it "updates the requested user" do
-          allow(Apartment::Tenant).to receive(:switch).with(account.tenant) do |&block|
-            block.call
-          end
+          allow(Apartment::Tenant).to receive(:switch).with(account.tenant).and_yield
           put :update, params: { id: user.to_param, user: new_attributes }
           user.reload
           new_attributes.each do |key, value|
@@ -131,7 +129,7 @@ RSpec.describe Proprietor::UsersController, type: :controller, multitenant: true
   end
 
   context 'as a superadmin' do
-    let(:user) { FactoryBot.create(:superadmin) }
+    let(:user) { create(:superadmin) }
 
     describe "GET #index" do
       it "assigns all users as @users" do

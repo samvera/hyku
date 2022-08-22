@@ -19,7 +19,7 @@ RSpec.describe SitesController, type: :controller, singletenant: true do
 
     context 'selecting a theme' do
       it 'sets the home, search, and show themes' do
-        expect(Site.instance.home_theme).to be nil
+        expect(Site.instance.home_theme).to be_nil
         post :update, params: {
           site: { home_theme: 'home page theme', search_theme: 'gallery', show_theme: 'show page theme' }
         }
@@ -43,12 +43,12 @@ RSpec.describe SitesController, type: :controller, singletenant: true do
 
       it "#update with remove_banner_image deletes a banner image" do
         expect(Site.instance.banner_image?).to be true
-        expect(ContentBlock.find_by(name: 'banner_image_text')).not_to be nil
+        expect(ContentBlock.find_by(name: 'banner_image_text')).not_to be_nil
         post :update, params: { id: Site.instance.id, remove_banner_image: 'Remove banner image' }
         expect(response).to redirect_to('/admin/appearance?locale=en')
         expect(flash[:notice]).to include("The appearance was successfully updated")
         expect(Site.instance.banner_image?).to be false
-        expect(ContentBlock.find_by(name: 'banner_image_text')).to be nil
+        expect(ContentBlock.find_by(name: 'banner_image_text')).to be_nil
       end
     end
 
@@ -62,12 +62,12 @@ RSpec.describe SitesController, type: :controller, singletenant: true do
 
       it "#update with remove_directory_image deletes a directory image" do
         expect(Site.instance.directory_image?).to be true
-        expect(ContentBlock.find_by(name: 'directory_image_text')).not_to be nil
+        expect(ContentBlock.find_by(name: 'directory_image_text')).not_to be_nil
         post :update, params: { id: Site.instance.id, remove_directory_image: 'Remove directory image' }
         expect(response).to redirect_to('/admin/appearance?locale=en')
         expect(flash[:notice]).to include("The appearance was successfully updated")
         expect(Site.instance.directory_image?).to be false
-        expect(ContentBlock.find_by(name: 'directory_image_text')).to be nil
+        expect(ContentBlock.find_by(name: 'directory_image_text')).to be_nil
       end
 
       context 'when update fails' do
@@ -80,12 +80,12 @@ RSpec.describe SitesController, type: :controller, singletenant: true do
 
         it "#update with remove_directory_image sets error flash" do
           expect(Site.instance.directory_image?).to be true
-          expect(ContentBlock.find_by(name: 'directory_image_text')).not_to be nil
+          expect(ContentBlock.find_by(name: 'directory_image_text')).not_to be_nil
           post :update, params: { id: Site.instance.id, remove_directory_image: 'Remove directory image' }
           expect(response).to redirect_to('/admin/appearance?locale=en')
           expect(flash[:error]).to include("Updating the appearance was unsuccessful")
           expect(Site.instance.directory_image?).to be true
-          expect(ContentBlock.find_by(name: 'directory_image_text')).not_to be nil
+          expect(ContentBlock.find_by(name: 'directory_image_text')).not_to be_nil
         end
       end
     end
@@ -102,13 +102,13 @@ RSpec.describe SitesController, type: :controller, singletenant: true do
       end
 
       it "#update with remove_logo_image deletes both image and text" do
-        expect(ContentBlock.find_by(name: 'logo_image_text')).not_to be nil
+        expect(ContentBlock.find_by(name: 'logo_image_text')).not_to be_nil
         expect(Site.instance.logo_image?).to be true
         post :update, params: { id: Site.instance.id, remove_logo_image: 'Remove logo image' }
         expect(response).to redirect_to('/admin/appearance?locale=en')
         expect(flash[:notice]).to include("The appearance was successfully updated")
         expect(Site.instance.logo_image?).to be false
-        expect(ContentBlock.find_by(name: 'logo_image_text')).to be nil
+        expect(ContentBlock.find_by(name: 'logo_image_text')).to be_nil
       end
     end
   end

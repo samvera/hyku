@@ -240,20 +240,20 @@ RSpec.describe Account, type: :model do
       it 'returns a NilDataCiteEndpoint' do
         account.data_cite_endpoint = nil
         expect(account.data_cite_endpoint).to be_kind_of NilDataCiteEndpoint
-        expect(account.data_cite_endpoint.persisted?).to eq false
+        expect(account.data_cite_endpoint.persisted?).to be false
         account.switch do
-          expect(Hyrax::DOI::DataCiteRegistrar.mode).to eq nil
-          expect(Hyrax::DOI::DataCiteRegistrar.prefix).to eq nil
-          expect(Hyrax::DOI::DataCiteRegistrar.password).to eq nil
-          expect(Hyrax::DOI::DataCiteRegistrar.username).to eq nil
-          expect(Rails.application.routes.default_url_options[:host]).to eq nil
+          expect(Hyrax::DOI::DataCiteRegistrar.mode).to be_nil
+          expect(Hyrax::DOI::DataCiteRegistrar.prefix).to be_nil
+          expect(Hyrax::DOI::DataCiteRegistrar.password).to be_nil
+          expect(Hyrax::DOI::DataCiteRegistrar.username).to be_nil
+          expect(Rails.application.routes.default_url_options[:host]).to be_nil
         end
       end
     end
   end
 
   describe '#save' do
-    subject { FactoryBot.create(:sign_up_account) }
+    subject { create(:sign_up_account) }
 
     it 'canonicalizes the account cname' do
       subject.domain_names.first.update cname: 'example.com.'
@@ -265,7 +265,7 @@ RSpec.describe Account, type: :model do
     it 'requires name when cname is absent' do
       account1 = described_class.create(tenant: 'example')
       expect(account1.errors).not_to be_empty
-      expect(account1.errors.messages).to match a_hash_including(:name, :"domain_names.cname")
+      expect(account1.errors.messages).to match a_hash_including(:name, :'domain_names.cname')
     end
 
     context 'default_host' do
@@ -282,7 +282,7 @@ RSpec.describe Account, type: :model do
 
       context 'is unset' do
         around do |example|
-          default = ENV['HYKU_DEFAULT_TENANT']
+          default = ENV.fetch('HYKU_DEFAULT_TENANT', nil)
           example.run
           ENV['HYKU_DEFAULT_TENANT'] = default
         end
@@ -307,13 +307,14 @@ RSpec.describe Account, type: :model do
                                           cname: 'example.dev')
         expect(account1.errors).to be_empty
         expect(account2.errors).not_to be_empty
-        expect(account2.errors.messages).to match a_hash_including(:tenant, :name, :"domain_names.cname")
+        expect(account2.errors.messages).to match a_hash_including(:tenant, :name, :'domain_names.cname')
       end
+
       it 'on save' do
         account2 = described_class.new(tenant: 'c2168c56-1d71-4314-be63-6b54bcad4a2e', cname: account1.cname)
         expect(account2.save).to be_falsey
         expect(account2.errors).not_to be_empty
-        expect(account2.errors.messages).to match a_hash_including(:name, :"domain_names.cname")
+        expect(account2.errors.messages).to match a_hash_including(:name, :'domain_names.cname')
       end
     end
 
@@ -322,14 +323,14 @@ RSpec.describe Account, type: :model do
       account2 = described_class.create(name: 'example')
       expect(account1.errors).to be_empty
       expect(account2.errors).not_to be_empty
-      expect(account2.errors.messages).to match a_hash_including(:name, :"domain_names.cname")
+      expect(account2.errors.messages).to match a_hash_including(:name, :'domain_names.cname')
     end
 
     it 'prevents conflicting new object saves' do
       described_class.create(name: 'example')
       account2 = described_class.new(name: 'example')
       expect(account2.save).to be false
-      expect(account2.errors).to match a_hash_including(:"domain_names.cname")
+      expect(account2.errors).to match a_hash_including(:'domain_names.cname')
     end
 
     describe 'guarantees only one account can reference the same' do
@@ -339,13 +340,13 @@ RSpec.describe Account, type: :model do
       it 'solr_endpoint' do
         account2 = described_class.new(name: 'other', solr_endpoint: endpoint)
         expect { account2.save }.to raise_error(ActiveRecord::RecordNotUnique)
-        # Note: this is different than just populating account2.errors, because it is a FK
+        # NOTE: this is different than just populating account2.errors, because it is a FK
       end
     end
   end
 
   describe '#admin_emails' do
-    let!(:account) { FactoryBot.create(:account, tenant: "59500a46-b1fb-412d-94d6-b928e91ef4d9") }
+    let!(:account) { create(:account, tenant: "59500a46-b1fb-412d-94d6-b928e91ef4d9") }
 
     before do
       Site.update(account: account)
@@ -359,7 +360,7 @@ RSpec.describe Account, type: :model do
   end
 
   describe '#admin_emails=' do
-    let!(:account) { FactoryBot.create(:account, tenant: "02839e1d-b4a4-451a-ab83-4b8968621f1e") }
+    let!(:account) { create(:account, tenant: "02839e1d-b4a4-451a-ab83-4b8968621f1e") }
 
     before do
       Site.update(account: account)
@@ -405,7 +406,7 @@ RSpec.describe Account, type: :model do
 
   describe 'is_public' do
     context 'it can change from public to not public' do
-      let(:public_account) { FactoryBot.create(:account, tenant: "c3034b09-1913-4f76-a0c6-d0c43ecd3bfc") }
+      let(:public_account) { create(:account, tenant: "c3034b09-1913-4f76-a0c6-d0c43ecd3bfc") }
 
       it 'defaults to false' do
         expect(public_account.is_public).to be false
@@ -547,7 +548,7 @@ RSpec.describe Account, type: :model do
   describe 'cross tenant shared search' do
     context 'settings keys' do
       it 'has default value for #shared_search' do
-        expect(account.search_only).to eq false
+        expect(account.search_only).to be false
       end
     end
 

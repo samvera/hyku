@@ -11,8 +11,8 @@ RSpec.describe Importer::ModsParser do
       let(:file) { File.join(fixture_path, 'mods', 'shpc', 'kx532cb7981.mods') }
 
       it 'knows it is a Collection' do
-        expect(parser.collection?).to eq true
-        expect(parser.image?).to eq false
+        expect(parser.collection?).to be true
+        expect(parser.image?).to be false
         expect(parser.model).to eq Collection
       end
     end
@@ -21,8 +21,8 @@ RSpec.describe Importer::ModsParser do
       let(:file) { File.join(fixture_path, 'mods', 'shpc', 'druid_xv169dn4538.mods') }
 
       it 'knows it is an Image' do
-        expect(parser.image?).to eq true
-        expect(parser.collection?).to eq false
+        expect(parser.image?).to be true
+        expect(parser.collection?).to be false
         expect(parser.model).to eq "Image"
       end
     end
@@ -41,7 +41,7 @@ RSpec.describe Importer::ModsParser do
       expect(attributes[:sub_location]).to eq []
       expect(attributes[:citation]).to eq []
       acquisition_note = attributes[:notes_attributes].first
-      expect(acquisition_note[:note_type]).to be nil
+      expect(acquisition_note[:note_type]).to be_nil
       expect(acquisition_note[:value]).to start_with '"Left to right'
       expect(attributes[:description_standard]).to eq []
       expect(attributes[:series_name]).to eq []
@@ -214,7 +214,7 @@ RSpec.describe Importer::ModsParser do
       let(:file) { File.join(fixture_path, 'mods', 'shpc', 'druid_xv169dn4538.mods') }
 
       it 'reads the place' do
-        expect(attributes[:place_of_publication]). to eq ['Santa Barbara, California']
+        expect(attributes[:place_of_publication]).to eq ['Santa Barbara, California']
       end
     end
   end

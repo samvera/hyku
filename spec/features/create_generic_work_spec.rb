@@ -5,7 +5,7 @@
 require 'rails_helper'
 
 # NOTE: If you generated more than one work, you have to set "js: true"
-RSpec.describe 'Create a GenericWork', js: true do
+RSpec.describe 'Create a GenericWork', :js, :allinson_flex_admin_set do
   include Warden::Test::Helpers
   context 'a logged in user' do
     let(:user_attributes) do
@@ -68,9 +68,9 @@ RSpec.describe 'Create a GenericWork', js: true do
       # its element
       find('body').click
       choose('generic_work_visibility_open')
-      # rubocop:disable Metrics/LineLength
+      # rubocop:disable Layout/LineLength
       expect(page).to have_content('Please note, making something visible to the world (i.e. marking this as Public) may be viewed as publishing which could impact your ability to')
-      # rubocop:enable Metrics/LineLength
+      # rubocop:enable Layout/LineLength
       check('agreement')
 
       click_on('Save')

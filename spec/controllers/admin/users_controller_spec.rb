@@ -2,7 +2,7 @@
 
 RSpec.describe Admin::UsersController, type: :controller do
   context 'as an anonymous user' do
-    let(:user) { FactoryBot.create(:user) }
+    let(:user) { create(:user) }
 
     describe 'DELETE #destroy' do
       subject { User.find_by(id: user.id) }
@@ -17,7 +17,7 @@ RSpec.describe Admin::UsersController, type: :controller do
   end
 
   context 'as an admin user' do
-    let(:user) { FactoryBot.create(:user) }
+    let(:user) { create(:user) }
 
     before do
       sign_in create(:admin)

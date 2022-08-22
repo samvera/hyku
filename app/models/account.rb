@@ -43,20 +43,21 @@ class Account < ApplicationRecord
 
   def self.admin_host
     host = ENV.fetch('HYKU_ADMIN_HOST', nil)
-    host ||= ENV['HOST']
+    host ||= ENV.fetch('HOST', nil)
     host ||= 'localhost'
     canonical_cname(host)
   end
 
   def self.root_host
     host = ENV.fetch('HYKU_ROOT_HOST', nil)
-    host ||= ENV['HOST']
+    host ||= ENV.fetch('HOST', nil)
     host ||= 'localhost'
     canonical_cname(host)
   end
 
   def self.tenants(tenant_list)
     return Account.all if tenant_list.blank?
+
     joins(:domain_names).where(domain_names: { cname: tenant_list })
   end
 
@@ -76,6 +77,7 @@ class Account < ApplicationRecord
     # Global tenant only exists when multitenancy is enabled and NOT in test environment
     # (In test environment tenant switching is currently not possible)
     return false unless ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_MULTITENANT', false)) && !Rails.env.test?
+
     Apartment::Tenant.default_tenant == Apartment::Tenant.current
   end
 

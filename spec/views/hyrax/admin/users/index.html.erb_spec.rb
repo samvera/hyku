@@ -8,12 +8,12 @@ RSpec.describe 'hyrax/admin/users/index.html.erb', type: :view do
   before do
     # Create four normal user accounts
     (1..4).each do |i|
-      users << FactoryBot.create(
+      users << create(
         :user,
         display_name: "user#{i}",
         email: "email#{i}@example.com",
-        last_sign_in_at: Time.zone.now - 15.minutes,
-        created_at: Time.zone.now - 3.days
+        last_sign_in_at: 15.minutes.ago,
+        created_at: 3.days.ago
       )
     end
     allow(presenter).to receive(:users).and_return(users)
@@ -50,11 +50,11 @@ RSpec.describe 'hyrax/admin/users/index.html.erb', type: :view do
     before do
       # Create two admin acccounts
       (5..6).each do |i|
-        users << FactoryBot.create(:admin,
-                                   display_name: "admin-user#{i}",
-                                   email: "admin#{i}@example.com",
-                                   last_sign_in_at: Time.zone.now - 15.minutes,
-                                   created_at: Time.zone.now - 3.days)
+        users << create(:admin,
+                        display_name: "admin-user#{i}",
+                        email: "admin#{i}@example.com",
+                        last_sign_in_at: 15.minutes.ago,
+                        created_at: 3.days.ago)
       end
       render
     end
@@ -71,11 +71,11 @@ RSpec.describe 'hyrax/admin/users/index.html.erb', type: :view do
     before do
       # Create one invited (pending) user
       (7..7).each do |i|
-        users << FactoryBot.create(:invited_user,
-                                   display_name: "invitee#{i}",
-                                   email: "invitee#{i}@example.com",
-                                   last_sign_in_at: Time.zone.now - 15.minutes,
-                                   created_at: Time.zone.now - 3.days)
+        users << create(:invited_user,
+                        display_name: "invitee#{i}",
+                        email: "invitee#{i}@example.com",
+                        last_sign_in_at: 15.minutes.ago,
+                        created_at: 3.days.ago)
       end
       render
     end

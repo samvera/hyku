@@ -52,6 +52,7 @@ module Blacklight
     # @option options [Array<String>] :exclude array of format shortnames to not include in the output
     def render_link_rel_alternates(document = @document, options = {})
       return if document.nil?
+
       presenter(document).link_rel_alternates(options)
     end
 
@@ -75,8 +76,8 @@ module Blacklight
     # @return [Array<String>]
     def extra_body_classes
       @extra_body_classes ||= [
-        'blacklight-' + controller.controller_name,
-        'blacklight-' + [controller.controller_name, controller.action_name].join('-')
+        "blacklight-#{controller.controller_name}",
+        "blacklight-#{[controller.controller_name, controller.action_name].join('-')}"
       ]
     end
 
@@ -390,7 +391,7 @@ module Blacklight
     ##
     # Open Search discovery tag for HTML <head> links
     def opensearch_description_tag(title, href)
-      tag :link, href: href, title: title, type: "application/opensearchdescription+xml", rel: "search"
+      tag.link(href: href, title: title, type: "application/opensearchdescription+xml", rel: "search")
     end
 
     # OVERIDE: Blacklight::UrlHelperBehavior:

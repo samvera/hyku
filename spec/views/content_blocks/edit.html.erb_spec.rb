@@ -2,6 +2,7 @@
 
 RSpec.describe "hyrax/content_blocks/edit", type: :view do
   before { render }
+
   # these first 3 tests are from hyrax
   it "renders the announcement form" do
     assert_select "form[action=?][method=?]", hyrax.content_block_path(ContentBlock.for(:announcement)), "post" do

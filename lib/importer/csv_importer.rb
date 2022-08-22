@@ -34,11 +34,13 @@ module Importer
       # @return [Class] the model class to be used
       def factory_class(model)
         return model if model.is_a?(Class)
+
         if model.empty?
           warn 'ERROR: No model was specified'
           exit(1) # rubocop:disable Rails/Exit
         end
         return Factory.for(model.to_s) if model.respond_to?(:to_s)
+
         raise "Unrecognized model type: #{model.class}"
       end
 

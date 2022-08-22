@@ -76,9 +76,9 @@ RSpec.describe Importer::CSVParser do
 
       it 'raises an error' do
         expect { subject }.to raise_error "Invalid headers: 'note_type' column " \
-          "must be immediately followed by 'note' column., Invalid headers: " \
-          "'rights_holder_type' column must be immediately followed by " \
-          "'rights_holder' column."
+                                          "must be immediately followed by 'note' column., Invalid headers: " \
+                                          "'rights_holder_type' column must be immediately followed by " \
+                                          "'rights_holder' column."
       end
     end
   end

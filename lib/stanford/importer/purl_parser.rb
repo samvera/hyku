@@ -98,6 +98,7 @@ module Stanford
 
       def visibility
         return 'open' if xml.xpath('//rightsMetadata/access[@type="read"]/machine/world').present?
+
         'restricted'
       end
 

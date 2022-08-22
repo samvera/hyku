@@ -22,12 +22,13 @@ RSpec.describe Hyrax::FeaturedCollectionsController, type: :controller do
           FeaturedCollection.create(collection_id: n.to_s)
         end
       end
+
       it "does not create another" do
         expect(controller).to receive(:authorize!).with(:create, FeaturedCollection).and_return(true)
         expect do
           post :create, params: { id: '1234abcd', format: :json }
         end.not_to change(FeaturedCollection, :count)
-        expect(response.status).to eq 422
+        expect(response).to have_http_status :unprocessable_entity
       end
     end
   end
@@ -45,7 +46,7 @@ RSpec.describe Hyrax::FeaturedCollectionsController, type: :controller do
         expect do
           delete :destroy, params: { id: '1234abcd', format: :json }
         end.to change(FeaturedCollection, :count).by(-1)
-        expect(response.status).to eq 204
+        expect(response).to have_http_status :no_content
       end
     end
 
@@ -53,7 +54,7 @@ RSpec.describe Hyrax::FeaturedCollectionsController, type: :controller do
       it "doesn't raise an error" do
         expect(controller).to receive(:authorize!).with(:destroy, FeaturedCollection).and_return(true)
         delete :destroy, params: { id: '1234abcd', format: :json }
-        expect(response.status).to eq 204
+        expect(response).to have_http_status :no_content
       end
     end
   end

@@ -126,6 +126,7 @@ module AccountSettings
 
     def validate_email_format
       return if settings['email_format'].blank?
+
       settings['email_format'].each do |email|
         errors.add(:email_format) unless email.match?(/@\S*\.\S*/)
       end
@@ -134,6 +135,7 @@ module AccountSettings
     def validate_contact_emails
       ['weekly_email_list', 'monthly_email_list', 'yearly_email_list'].each do |key|
         next if settings[key].blank?
+
         settings[key].each do |email|
           errors.add(:"#{key}") unless email.match?(URI::MailTo::EMAIL_REGEXP)
         end
@@ -142,6 +144,7 @@ module AccountSettings
 
     def initialize_settings
       return true unless self.class.column_names.include?('settings')
+
       set_smtp_settings
       reload_library_config
     end
@@ -184,6 +187,7 @@ module AccountSettings
       end
 
       return unless ssl_configured
+
       ActionMailer::Base.default_url_options ||= {}
       ActionMailer::Base.default_url_options[:protocol] = 'https'
     end

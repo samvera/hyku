@@ -36,7 +36,7 @@ RSpec.describe LabelsController, type: :controller do
   end
 
   context 'with an unprivileged user' do
-    let(:user) { FactoryBot.create(:user) }
+    let(:user) { create(:user) }
 
     describe "GET #edit" do
       it "denies the request" do
@@ -54,7 +54,7 @@ RSpec.describe LabelsController, type: :controller do
   end
 
   context 'with an administrator' do
-    let(:user) { FactoryBot.create(:admin) }
+    let(:user) { create(:admin) }
 
     describe "GET #edit" do
       it "assigns the requested site as @site" do

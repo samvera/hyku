@@ -2,9 +2,9 @@
 
 RSpec.describe 'Accounts administration', multitenant: true do
   context 'as an superadmin' do
-    let(:user) { FactoryBot.create(:superadmin) }
+    let(:user) { create(:superadmin) }
     let(:account) do
-      FactoryBot.create(:account).tap do |acc|
+      create(:account).tap do |acc|
         acc.create_solr_endpoint(url: 'http://localhost:8080/solr')
         acc.create_fcrepo_endpoint(url: 'http://localhost:8080/fcrepo')
       end
@@ -12,9 +12,7 @@ RSpec.describe 'Accounts administration', multitenant: true do
 
     before do
       login_as(user, scope: :user)
-      allow(Apartment::Tenant).to receive(:switch).with(account.tenant) do |&block|
-        block.call
-      end
+      allow(Apartment::Tenant).to receive(:switch).with(account.tenant).and_yield
     end
 
     around do |example|

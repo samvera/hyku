@@ -19,6 +19,7 @@ module Importer
       def self.contributors(attributes)
         value = attributes[:contributor]
         return {} unless value
+
         { contributor: value.map { |c| c[:name].join(' — ') } }
       end
     end

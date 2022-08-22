@@ -25,6 +25,7 @@ module Hyrax
       # return [Boolean] true if the devise trackable module is enabled.
       def show_last_access?
         return @show_last_access unless @show_last_access.nil?
+
         @show_last_access = ::User.devise_modules.include?(:trackable)
       end
 

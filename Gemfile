@@ -43,13 +43,22 @@ group :development, :test do
   gem 'rspec'
   gem 'rspec-rails', '>= 3.6.0'
 
+  # Pronto adds comments to MRs in gitlab when rubocop offenses are made.
+  # gem 'pronto'
+  # gem 'pronto-brakeman', require: false
+  # gem 'pronto-flay', require: false
+  # gem 'pronto-rails_best_practices', require: false
+  # gem 'pronto-rails_schema', require: false
+  # gem 'pronto-rubocop', require: false
+
   gem 'simplecov', require: false
 
   gem 'fcrepo_wrapper', '~> 0.4'
   gem 'solr_wrapper', '~> 2.0'
 
-  gem 'rubocop', '~> 0.50', '<= 0.52.1'
-  gem 'rubocop-rspec', '~> 1.22', '<= 1.22.2'
+  gem 'rubocop', '~> 1.35.0'
+  gem 'rubocop-rails'
+  gem 'rubocop-rspec'
 end
 
 group :test do
@@ -122,7 +131,7 @@ gem 'bootstrap-datepicker-rails'
 gem "cocoon"
 gem 'codemirror-rails'
 gem 'okcomputer'
-gem 'parser', '~> 2.5.3'
+gem 'parser'
 gem 'rdf', '~> 3.1.15' # rdf 3.2.0 removed SerializedTransaction which ldp requires
 gem 'riiif', '~> 1.1'
 gem 'secure_headers'

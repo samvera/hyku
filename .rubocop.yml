@@ -1,5 +1,7 @@
 # Turn on RSpec cops
-require: rubocop-rspec
+require:
+  - rubocop-rspec
+  - rubocop-rails
 inherit_from: .rubocop_todo.yml
 
 # With the rubocop 0.47.0 and rubocop-rspec 1.8.0 the following stderr message was sent:
@@ -8,6 +10,7 @@ RSpec/DescribedClass:
   Enabled: false
 
 AllCops:
+  NewCops: enable
   DisplayCopNames: true
   TargetRubyVersion: 2.3
   Exclude:
@@ -33,7 +36,7 @@ Rails/DynamicFindBy:
   Exclude:
     - 'lib/importer/factory/object_factory.rb'
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 120
   Exclude:
     - 'app/controllers/catalog_controller.rb'
@@ -43,7 +46,7 @@ Metrics/LineLength:
     - 'spec/routing/proprietor/accounts_routing_spec.rb'
 
 Layout/IndentationConsistency:
-  EnforcedStyle: rails
+  EnforcedStyle: indented_internal_methods
 
 Layout/DotPosition:
   EnforcedStyle: leading
@@ -86,7 +89,7 @@ RSpec/DescribeClass:
     - 'spec/routing/**/*'
     - 'spec/tasks/**/*'
 
-Rails/FilePath:
+RSpec/FilePath:
   Exclude:
     - 'spec/routing/**/*'
 

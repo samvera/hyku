@@ -6,14 +6,14 @@ class FeaturedCollectionList
   # @param [ActionController::Parameters] a collection of nested perameters
   def featured_collections_attributes=(attributes_collection)
     attributes_collection = attributes_collection.to_h if attributes_collection.respond_to?(:permitted?)
-    # rubocop:disable Metrics/LineLength
+    # rubocop:disable Layout/LineLength
     attributes_collection = attributes_collection.sort_by { |i, _| i.to_i }.map { |_, attributes| attributes } if attributes_collection.is_a? Hash
     attributes_collection.each do |attributes|
       raise "Missing id" if attributes['id'].blank?
       existing_record = FeaturedCollection.find(attributes['id'])
       existing_record.update(attributes.except('id'))
     end
-    # rubocop:enable Metrics/LineLength
+    # rubocop:enable Layout/LineLength
   end
 
   def featured_collections

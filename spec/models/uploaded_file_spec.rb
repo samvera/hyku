@@ -3,7 +3,7 @@
 # Much of this testing is the complex configurable stuff underneath UploadedFile
 # and simulating the AWS configuration that would be in production.
 
-# rubocop:disable Metrics/LineLength
+# rubocop:disable Layout/LineLength
 RSpec.describe 'Hyrax::UploadedFile' do # rubocop:disable RSpec/DescribeClass
   let(:file) { File.open(fixture_path + '/images/world.png') }
   let(:upload) { Hyrax::UploadedFile.create(file: file) }
@@ -110,4 +110,4 @@ RSpec.describe 'Hyrax::UploadedFile' do # rubocop:disable RSpec/DescribeClass
     end
   end
 end
-# rubocop:enable Metrics/LineLength
+# rubocop:enable Layout/LineLength

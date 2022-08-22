@@ -6,7 +6,7 @@
 RSpec.describe Hyrax::ImageForm do
   let(:work) { Image.new }
   let(:form) { described_class.new(work, nil, nil) }
-  let(:file_set) { FactoryBot.create(:file_set) }
+  let(:file_set) { create(:file_set) }
 
   describe ".model_attributes" do
     subject { described_class.model_attributes(params) }

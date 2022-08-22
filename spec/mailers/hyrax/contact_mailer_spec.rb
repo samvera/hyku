@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Hyrax::ContactMailer, type: :mailer do
-  let(:account) { FactoryBot.create(:account) }
+  let(:account) { create(:account) }
   let(:contact_form) do
     Hyrax::ContactForm.new(
       email: 'test@example.com',

@@ -54,6 +54,7 @@ module Hyku
           def group_id_key
             return :id if params.key?(:id)
             return :group_id if params.key?(:group_id)
+
             :key_not_found
           end
 
@@ -72,6 +73,7 @@ module Hyku
 
             def css_class
               return ACTIVE_CSS_CLASS if context.fetch(:controller) == controller && context.fetch(:action) == action
+
               ''
             end
 

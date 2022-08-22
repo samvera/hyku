@@ -36,7 +36,7 @@ Hyrax::CollectionPresenter.class_eval do
       banner_info = CollectionBrandingInfo.where(collection_id: id, role: "banner")
       filename = File.split(banner_info.first.local_path).last unless banner_info.empty?
       alttext = banner_info.first.alt_text unless banner_info.empty?
-      relative_path = "/" + banner_info.first.local_path.split("/")[-4..-1].join("/") unless banner_info.empty?
+      relative_path = "/#{banner_info.first.local_path.split('/')[-4..-1].join('/')}" unless banner_info.empty?
       { filename: filename, relative_path: relative_path, alt_text: alttext }
     end
   end
@@ -56,9 +56,7 @@ Hyrax::CollectionPresenter.class_eval do
 
   def collection_featured?
     # only look this up if it's not boolean; ||= won't work here
-    if @collection_featured.nil?
-      @collection_featured = FeaturedCollection.where(collection_id: solr_document.id).exists?
-    end
+    @collection_featured = FeaturedCollection.exists?(collection_id: solr_document.id) if @collection_featured.nil?
     @collection_featured
   end
 

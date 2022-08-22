@@ -2,44 +2,44 @@
 
 RSpec.describe User, type: :model do
   it 'validates email and password' do
-    is_expected.to validate_presence_of(:email)
-    is_expected.to validate_presence_of(:password)
+    expect(subject).to validate_presence_of(:email)
+    expect(subject).to validate_presence_of(:password)
   end
 
   context 'the first created user in global tenant' do
-    subject { FactoryBot.create(:base_user) }
+    subject { create(:base_user) }
 
     before do
       allow(Account).to receive(:global_tenant?).and_return true
     end
 
     it 'does not get the admin role' do
-      expect(subject.persisted?).to eq true
+      expect(subject.persisted?).to be true
       expect(subject).not_to have_role :admin
     end
   end
 
   context 'the first created user on a tenant' do
-    subject { FactoryBot.create(:base_user) }
+    subject { create(:base_user) }
 
     it 'is given the admin role' do
-      expect(subject.persisted?).to eq true
+      expect(subject.persisted?).to be true
       expect(subject).to have_role :admin, Site.instance
     end
   end
 
   context 'a subsequent user' do
-    let!(:first_user) { FactoryBot.create(:base_user) }
-    let!(:next_user) { FactoryBot.create(:base_user) }
+    let!(:first_user) { create(:base_user) }
+    let!(:next_user) { create(:base_user) }
 
     it 'does not get the admin role' do
-      expect(next_user.persisted?).to eq true
+      expect(next_user.persisted?).to be true
       expect(next_user).not_to have_role :admin
     end
   end
 
   describe '#site_roles' do
-    subject { FactoryBot.create(:admin) }
+    subject { create(:admin) }
 
     it 'fetches the global roles assigned to the user' do
       expect(subject.site_roles.pluck(:name)).to match_array ['admin', 'registered']
@@ -47,7 +47,7 @@ RSpec.describe User, type: :model do
   end
 
   describe '#site_roles=' do
-    subject { FactoryBot.create(:user) }
+    subject { create(:user) }
 
     it 'assigns global roles to the user' do
       expect(subject.site_roles.pluck(:name)).to match_array ['registered']

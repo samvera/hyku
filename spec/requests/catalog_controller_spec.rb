@@ -6,9 +6,9 @@ RSpec.describe CatalogController, type: :request, clean: true, multitenant: true
   let(:user) { create(:user, email: 'test_user@repo-sample.edu') }
   let(:work) { build(:work, title: ['welcome test'], id: SecureRandom.uuid, user: user) }
   let(:hyku_sample_work) { build(:work, title: ['sample test'], id: SecureRandom.uuid, user: user) }
-  let(:sample_solr_connection) { RSolr.connect url: "#{ENV['SOLR_URL']}hydra-sample" }
+  let(:sample_solr_connection) { RSolr.connect url: "#{ENV.fetch('SOLR_URL', nil)}hydra-sample" }
 
-  let(:cross_search_solr) { create(:solr_endpoint, url: "#{ENV['SOLR_URL']}hydra-cross-search-tenant") }
+  let(:cross_search_solr) { create(:solr_endpoint, url: "#{ENV.fetch('SOLR_URL', nil)}hydra-cross-search-tenant") }
   let!(:cross_search_tenant_account) do
     create(:account,
            name: 'cross_search',
@@ -47,7 +47,7 @@ RSpec.describe CatalogController, type: :request, clean: true, multitenant: true
       {
         "read_timeout" => 120,
         "open_timeout" => 120,
-        "url" => "#{ENV['SOLR_URL']}hydra-cross-search-tenant",
+        "url" => "#{ENV.fetch('SOLR_URL', nil)}hydra-cross-search-tenant",
         "adapter" => "solr"
       }
     end
@@ -60,14 +60,14 @@ RSpec.describe CatalogController, type: :request, clean: true, multitenant: true
 
     context 'can fetch data from other tenants' do
       it 'cross-search-tenant can fetch all record in child tenants' do
-        connection = RSolr.connect(url: "#{ENV['SOLR_URL']}hydra-cross-search-tenant")
+        connection = RSolr.connect(url: "#{ENV.fetch('SOLR_URL', nil)}hydra-cross-search-tenant")
         allow_any_instance_of(Blacklight::Solr::Repository).to receive(:build_connection).and_return(connection)
         allow(CatalogController).to receive(:blacklight_config).and_return(black_light_config)
 
         # get '/catalog', params: { q: '*' }
         # get search_catalog_url, params: { locale: 'en', q: 'test' }
         get "http://#{cross_search_tenant_account.cname}/catalog?q=test" # , params: { q: 'test' }
-        expect(response.status).to eq(200)
+        expect(response).to have_http_status(:ok)
       end
     end
   end

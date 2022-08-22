@@ -4,8 +4,8 @@
 # and simulating the AWS configuration that would be in production.
 
 # rubocop:disable Layout/LineLength
-RSpec.describe 'Hyrax::UploadedFile' do # rubocop:disable RSpec/DescribeClass
-  let(:file) { File.open(fixture_path + '/images/world.png') }
+RSpec.describe 'Hyrax::UploadedFile' do
+  let(:file) { File.open("#{fixture_path}/images/world.png") }
   let(:upload) { Hyrax::UploadedFile.create(file: file) }
   let(:config) { CarrierWave.configure { |c| c } }
   let(:bucket_name) { 'hyku-carrierwave-test' }
@@ -25,6 +25,7 @@ RSpec.describe 'Hyrax::UploadedFile' do # rubocop:disable RSpec/DescribeClass
       expect(upload.file).to be_a Hyrax::UploadedFileUploader
       expect(upload.file).to be_a CarrierWave::Uploader::Base
     end
+
     it 'Gives clean filename and object' do
       expect(upload.file.filename).to eq 'world.png'
     end
@@ -81,6 +82,7 @@ RSpec.describe 'Hyrax::UploadedFile' do # rubocop:disable RSpec/DescribeClass
       it 'has CarrierWave-AWS values available' do
         expect(config.storage_engines).to match a_hash_including(aws: 'CarrierWave::Storage::AWS')
       end
+
       it 'has correct storage and bucket' do
         expect(config.storage).to eq(CarrierWave::Storage::AWS)
         expect(config.aws_bucket).to eq(bucket_name)
@@ -89,7 +91,7 @@ RSpec.describe 'Hyrax::UploadedFile' do # rubocop:disable RSpec/DescribeClass
 
     describe CarrierWave::Support::UriFilename do # provided by carrierwave-aws
       it 'helper method can handle S3 URI' do
-        expect(described_class.filename(bigurl)). to eq 'image.png'
+        expect(described_class.filename(bigurl)).to eq 'image.png'
       end
     end
 

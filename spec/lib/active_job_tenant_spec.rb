@@ -1,14 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe ActiveJobTenant do
-  before do
-    allow(Apartment::Tenant).to receive(:current).and_return('x')
-    allow(Account).to receive(:find_by).with(tenant: 'x').and_return(account)
-    allow(Apartment::Tenant).to receive(:switch).with('x') do |&block|
-      block.call
-    end
-  end
-
   subject do
     Class.new(ApplicationJob) do
       def perform
@@ -17,7 +9,13 @@ RSpec.describe ActiveJobTenant do
     end
   end
 
-  let(:account) { FactoryBot.build(:account) }
+  before do
+    allow(Apartment::Tenant).to receive(:current).and_return('x')
+    allow(Account).to receive(:find_by).with(tenant: 'x').and_return(account)
+    allow(Apartment::Tenant).to receive(:switch).with('x').and_yield
+  end
+
+  let(:account) { build(:account) }
 
   describe 'tenant context' do
     it 'evaluates in the context of a tenant and account' do

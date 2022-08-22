@@ -7,6 +7,7 @@ RSpec.describe "file routes", type: :routing do
   it 'creates a featured_collection' do
     expect(post: '/collections/7/featured_collection').to route_to(controller: 'hyrax/featured_collections', action: 'create', id: '7')
   end
+
   it 'removes a featured_collection' do
     expect(delete: '/collections/7/featured_collection').to route_to(controller: 'hyrax/featured_collections', action: 'destroy', id: '7')
   end

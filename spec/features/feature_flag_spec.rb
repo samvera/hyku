@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Admin can select feature flags', type: :feature, js: true, clean: true do
-  let(:admin) { FactoryBot.create(:admin, email: 'admin@example.com', display_name: 'Adam Admin') }
-  let(:account) { FactoryBot.create(:account) }
+  let(:admin) { create(:admin, email: 'admin@example.com', display_name: 'Adam Admin') }
+  let(:account) { create(:account) }
 
   # rubocop:disable RSpec/LetSetup
   let!(:work) do

@@ -13,6 +13,7 @@ module AccountCname
     def default_cname(piece)
       return unless piece
       raise ArgumentError, "param '#{piece}' must not contain trailing dots" if piece =~ /\.\Z/
+
       # rubocop:disable Style/FormatStringToken
       default_host = ENV.fetch('HYKU_DEFAULT_HOST', "%{tenant}.#{admin_host}")
       # rubocop:enable Style/FormatStringToken

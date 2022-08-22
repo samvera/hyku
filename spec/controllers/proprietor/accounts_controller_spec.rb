@@ -44,8 +44,8 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
   end
 
   context 'as an admin of a site' do
-    let(:user) { FactoryBot.create(:user).tap { |u| u.add_role(:admin, Site.instance) } }
-    let(:account) { FactoryBot.create(:account) }
+    let(:user) { create(:user).tap { |u| u.add_role(:admin, Site.instance) } }
+    let(:account) { create(:account) }
 
     before do
       Site.update(account: account)
@@ -82,9 +82,7 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
         end
 
         it "updates the requested account" do
-          allow(Apartment::Tenant).to receive(:switch).with(account.tenant) do |&block|
-            block.call
-          end
+          allow(Apartment::Tenant).to receive(:switch).with(account.tenant).and_yield
           put :update, params: { id: account.to_param, account: new_attributes }
           account.reload
           expect(account.cname).to eq 'new.example.com'
@@ -120,7 +118,7 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
     end
 
     context 'editing another tenants account' do
-      let(:another_account) { FactoryBot.create(:account) }
+      let(:another_account) { create(:account) }
 
       describe "GET #show" do
         it "denies the request" do
@@ -146,8 +144,8 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
   end
 
   context 'as a superadmin' do
-    let(:user) { FactoryBot.create(:superadmin) }
-    let!(:account) { FactoryBot.create(:account) }
+    let(:user) { create(:superadmin) }
+    let!(:account) { create(:account) }
 
     describe "GET #index" do
       it "assigns all accounts as @accounts" do
@@ -181,20 +179,20 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
   end
 
   describe 'account dependency switching' do
-    let(:account) { FactoryBot.create(:account) }
+    let(:account) { create(:account) }
 
     before do
       Site.update(account: account)
       allow(controller).to receive(:current_account).and_return(account)
     end
 
+    after do
+      account.reset!
+    end
+
     it 'switches account information' do
       expect(account).to receive(:switch!)
       get :show, params: { id: account.to_param }
-    end
-
-    after do
-      account.reset!
     end
   end
 end

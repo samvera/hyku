@@ -15,7 +15,7 @@ RSpec.describe DataCiteEndpoint do
   describe '#ping' do
     # TODO: make this test better when #ping has a real implementation
     it 'returns true' do
-      expect(endpoint.ping).to eq true
+      expect(endpoint.ping).to be true
     end
   end
 

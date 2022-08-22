@@ -5,9 +5,9 @@
 # and copied liberally from the generic work spec
 require 'rails_helper'
 
-RSpec.describe Hyrax::ImagesController do
-  let(:user) { FactoryBot.create(:user) }
-  let(:work) { FactoryBot.create(:work_with_one_file, user: user) }
+RSpec.describe Hyrax::ImagesController, :allinson_flex_admin_set do
+  let(:user) { create(:user) }
+  let(:work) { create(:work_with_one_file, user: user) }
   let(:file_set) { work.ordered_members.to_a.first }
 
   before do
@@ -19,7 +19,7 @@ RSpec.describe Hyrax::ImagesController do
   describe "#presenter" do
     subject { controller.send :presenter }
 
-    let(:solr_document) { SolrDocument.new(FactoryBot.create(:image).to_solr) }
+    let(:solr_document) { SolrDocument.new(create(:image).to_solr) }
 
     before do
       allow(controller).to receive(:search_result_document).and_return(solr_document)

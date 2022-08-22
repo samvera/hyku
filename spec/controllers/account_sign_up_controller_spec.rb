@@ -9,7 +9,7 @@ RSpec.describe AccountSignUpController, type: :controller do
 
   # rubocop:disable RSpec/BeforeAfterAll
   before(:all) do
-    @multitenant = ENV['HYKU_MULTITENANT']
+    @multitenant = ENV.fetch('HYKU_MULTITENANT', nil)
     ENV['HYKU_MULTITENANT'] = 'true'
     Rails.application.reload_routes!
   end
@@ -70,7 +70,7 @@ RSpec.describe AccountSignUpController, type: :controller do
           expect(assigns(:account)).to be_a_new(Account)
           expect(assigns(:account).tenant).not_to eq('missing-names')
           expect(assigns(:account).errors).not_to be_empty
-          expect(assigns(:account).errors.messages).to match a_hash_including(:name, :"domain_names.cname")
+          expect(assigns(:account).errors.messages).to match a_hash_including(:name, :'domain_names.cname')
         end
 
         it "re-renders the 'new' template" do
@@ -103,7 +103,7 @@ RSpec.describe AccountSignUpController, type: :controller do
   end
 
   context 'as admin with restricted access' do
-    let(:user) { FactoryBot.create(:admin) }
+    let(:user) { create(:admin) }
 
     before do
       allow(ENV).to receive(:fetch).and_call_original

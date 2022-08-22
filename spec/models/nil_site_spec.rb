@@ -13,31 +13,31 @@ RSpec.describe NilSite do
   describe "#id" do
     subject { instance.id }
 
-    it { is_expected.to be nil }
+    it { is_expected.to be_nil }
   end
 
   describe "#account" do
     subject { instance.account }
 
-    it { is_expected.to be nil }
+    it { is_expected.to be_nil }
   end
 
   describe "#application_name" do
     subject { instance.application_name }
 
-    it { is_expected.to be nil }
+    it { is_expected.to be_nil }
   end
 
   describe "#institution_name" do
     subject { instance.institution_name }
 
-    it { is_expected.to be nil }
+    it { is_expected.to be_nil }
   end
 
   describe "#institution_name_full" do
     subject { instance.institution_name_full }
 
-    it { is_expected.to be nil }
+    it { is_expected.to be_nil }
   end
 
   describe "#reload" do
@@ -83,7 +83,7 @@ RSpec.describe NilSite do
   describe "#banner_image" do
     subject { instance.banner_image }
 
-    it { is_expected.to be nil }
+    it { is_expected.to be_nil }
   end
 
   describe "#directory_image?" do
@@ -95,12 +95,12 @@ RSpec.describe NilSite do
   describe "#directory_image" do
     subject { instance.directory_image }
 
-    it { is_expected.to be nil }
+    it { is_expected.to be_nil }
   end
 
   describe "#primary_key" do
     subject { instance.primary_key }
 
-    it { is_expected.to be nil }
+    it { is_expected.to be_nil }
   end
 end

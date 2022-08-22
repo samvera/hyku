@@ -18,24 +18,24 @@ RSpec.describe NilDataCiteEndpoint do
   describe "#mode" do
     subject { instance.mode }
 
-    it { is_expected.to eq nil }
+    it { is_expected.to be_nil }
   end
 
   describe "#prefix" do
     subject { instance.prefix }
 
-    it { is_expected.to eq nil }
+    it { is_expected.to be_nil }
   end
 
   describe "#username" do
     subject { instance.username }
 
-    it { is_expected.to eq nil }
+    it { is_expected.to be_nil }
   end
 
   describe "#password" do
     subject { instance.password }
 
-    it { is_expected.to eq nil }
+    it { is_expected.to be_nil }
   end
 end

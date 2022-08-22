@@ -8,10 +8,9 @@ RSpec.describe Importer::CSVImporter do
   context 'when the model is passed' do
     let(:csv_file) { "#{fixture_path}/csv/gse_metadata.csv" }
     let(:importer) { described_class.new(csv_file, image_directory, fallback_class) }
-    let(:fallback_class) { Class.new { def initialize(_argx, _argy); end } }
     let(:factory) { double(run: true) }
 
-    # note: 2 rows do not specify type, 17 do
+    # NOTE: 2 rows do not specify type, 17 do
     it 'creates new works' do
       expect(fallback_class).to receive(:new)
         .with(any_args).and_return(factory).twice

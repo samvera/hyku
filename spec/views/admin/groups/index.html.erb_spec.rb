@@ -2,8 +2,8 @@
 
 RSpec.describe 'admin/groups/index', type: :view do
   context 'groups index page' do
-    let(:group_1) { FactoryBot.create(:group) }
-    let(:group_2) { FactoryBot.create(:group) }
+    let(:group_1) { create(:group) }
+    let(:group_2) { create(:group) }
     let(:groups) { double('groups') }
 
     before do

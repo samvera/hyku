@@ -9,9 +9,10 @@ RSpec.describe "hyrax/homepage/_featured_collection_section.html.erb", type: :vi
 
   context "without featured collections" do
     before { render }
+
     it do
-      is_expected.to have_content 'No collections have been featured'
-      is_expected.not_to have_selector('form')
+      expect(subject).to have_content 'No collections have been featured'
+      expect(subject).not_to have_selector('form')
     end
   end
 
@@ -34,9 +35,9 @@ RSpec.describe "hyrax/homepage/_featured_collection_section.html.erb", type: :vi
     end
 
     it do
-      is_expected.not_to have_content 'No collections have been featured'
-      is_expected.not_to have_selector('#no-collections')
-      is_expected.to have_selector('form')
+      expect(subject).not_to have_content 'No collections have been featured'
+      expect(subject).not_to have_selector('#no-collections')
+      expect(subject).to have_selector('form')
     end
   end
 end

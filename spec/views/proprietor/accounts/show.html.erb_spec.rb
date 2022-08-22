@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
 RSpec.describe "proprietor/accounts/show", type: :view do
-  let(:account) { FactoryBot.create(:account) }
-  let(:superadmin1) { FactoryBot.create(:superadmin, email: 'superadmin_1@example.com') }
-  let(:superadmin2) { FactoryBot.create(:superadmin, email: 'superadmin_2@example.com') }
+  let(:account) { create(:account) }
+  let(:superadmin1) { create(:superadmin, email: 'superadmin_1@example.com') }
+  let(:superadmin2) { create(:superadmin, email: 'superadmin_2@example.com') }
 
   before do
-    allow(Apartment::Tenant).to receive(:switch).with(account.tenant) do |&block|
-      block.call
-    end
+    allow(Apartment::Tenant).to receive(:switch).with(account.tenant).and_yield
     @account = assign(:account, account)
   end
 

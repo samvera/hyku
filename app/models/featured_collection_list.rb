@@ -10,6 +10,7 @@ class FeaturedCollectionList
     attributes_collection = attributes_collection.sort_by { |i, _| i.to_i }.map { |_, attributes| attributes } if attributes_collection.is_a? Hash
     attributes_collection.each do |attributes|
       raise "Missing id" if attributes['id'].blank?
+
       existing_record = FeaturedCollection.find(attributes['id'])
       existing_record.update(attributes.except('id'))
     end
@@ -18,6 +19,7 @@ class FeaturedCollectionList
 
   def featured_collections
     return @collections if @collections
+
     @collections = FeaturedCollection.all
     add_solr_document_to_collections
     @collections = @collections.reject do |collection|

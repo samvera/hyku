@@ -2,9 +2,9 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Admin can select home page theme', type: :feature, js: true, clean: true do
-  let(:account) { FactoryBot.create(:account) }
-  let(:admin) { FactoryBot.create(:admin, email: 'admin@example.com', display_name: 'Adam Admin') }
+RSpec.describe 'Admin can select home page theme', type: :feature, :js, :clean, :allinson_flex_admin_set  do
+  let(:account) { create(:account) }
+  let(:admin) { create(:admin, email: 'admin@example.com', display_name: 'Adam Admin') }
   let(:user) { create :user }
 
   # rubocop:disable RSpec/LetSetup
@@ -125,7 +125,7 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
       expect(page).to have_content('This theme uses a custom banner image')
       expect(page).to have_content('This theme uses home page text')
       expect(page).to have_content('This theme uses marketing text')
-      expect(page.find('#home-wireframe img')['src']).to match(%r{/assets\/themes\/cultural_repository/})
+      expect(page.find('#home-wireframe img')['src']).to match(%r{/assets/themes/cultural_repository/})
     end
 
     it 'renders the partials in the theme folder' do

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.describe Hyrax::GenericWorksController do
-  let(:user) { FactoryBot.create(:user) }
-  let(:work) { FactoryBot.create(:work_with_one_file, user: user) }
+  let(:user) { create(:user) }
+  let(:work) { create(:work_with_one_file, user: user) }
   let(:file_set) { work.ordered_members.to_a.first }
 
   before do
@@ -14,7 +14,7 @@ RSpec.describe Hyrax::GenericWorksController do
   describe "#presenter" do
     subject { controller.send :presenter }
 
-    let(:solr_document) { SolrDocument.new(FactoryBot.create(:generic_work).to_solr) }
+    let(:solr_document) { SolrDocument.new(create(:generic_work).to_solr) }
 
     before do
       allow(controller).to receive(:search_result_document).and_return(solr_document)

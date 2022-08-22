@@ -2,7 +2,7 @@
 
 require 'importer'
 
-RSpec.describe Importer::Factory::ImageFactory, :clean do
+RSpec.describe Importer::Factory::ImageFactory, :clean, :allinson_flex_admin_set do
   let(:factory) { described_class.new(attributes) }
   let(:files) { [] }
   let(:work) { Image }
@@ -28,7 +28,7 @@ RSpec.describe Importer::Factory::ImageFactory, :clean do
       end
       expect do
         factory.run
-      end.to change(Collection, :count).by(0)
+      end.not_to change(Collection, :count)
     end
   end
 

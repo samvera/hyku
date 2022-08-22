@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Admin::GroupUsersController, faketenant: true do
-  let(:group) { FactoryBot.create(:group) }
+  let(:group) { create(:group) }
 
   context 'as an anonymous user' do
     describe 'GET #index' do
@@ -22,7 +22,7 @@ RSpec.describe Admin::GroupUsersController, faketenant: true do
     end
 
     context 'modifying group membership' do
-      let(:user) { FactoryBot.create(:user) }
+      let(:user) { create(:user) }
 
       describe 'POST #add' do
         it 'adds a user to a group when it recieves a group ID' do

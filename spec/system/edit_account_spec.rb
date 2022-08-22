@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Proprietor Edit Account Page', type: :system do
-  let(:user) { FactoryBot.create(:admin) }
+  let(:user) { create(:admin) }
   let(:full_account) { create(:account) }
   let!(:account) { create(:account, search_only: true, full_account_ids: [full_account.id]) }
 

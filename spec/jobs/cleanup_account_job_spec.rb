@@ -2,7 +2,7 @@
 
 RSpec.describe CleanupAccountJob do
   let!(:account) do
-    FactoryBot.create(:account).tap do |acc|
+    create(:account).tap do |acc|
       acc.create_solr_endpoint(collection: 'x')
       acc.create_fcrepo_endpoint(base_path: '/x')
       acc.create_redis_endpoint(namespace: 'x')

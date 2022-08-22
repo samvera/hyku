@@ -34,7 +34,7 @@ RSpec.describe HyraxHelper, type: :helper do
 
     context "without uploaded directory image" do
       it "returns false" do
-        expect(helper.directory_image).to eq(false)
+        expect(helper.directory_image).to be(false)
       end
     end
   end
@@ -43,12 +43,13 @@ RSpec.describe HyraxHelper, type: :helper do
     let(:key_name) { 'some_key' }
 
     context "when ContentBlock is found" do
-      let(:content_block) { FactoryBot.create(:content_block, name: key_name, value: a_value) }
+      let(:content_block) { create(:content_block, name: key_name, value: a_value) }
       let(:a_value) { 'some returned text' }
 
       before do
         content_block
       end
+
       it "returns text" do
         expect(helper.block_for(name: key_name)).to eq(a_value)
       end

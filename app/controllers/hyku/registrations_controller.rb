@@ -5,11 +5,13 @@ module Hyku
     before_action :configure_permitted_parameters
     def new
       return super if current_account&.allow_signup
+
       redirect_to root_path, alert: t(:'hyku.account.signup_disabled')
     end
 
     def create
       return super if current_account&.allow_signup
+
       redirect_to root_path, alert: t(:'hyku.account.signup_disabled')
     end
 

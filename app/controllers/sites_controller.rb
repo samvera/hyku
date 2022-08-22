@@ -36,11 +36,11 @@ class SitesController < ApplicationController
     end
 
     REMOVE_TEXT_MAPS = {
-      "remove_logo_image"               => "logo_image_text",
-      "remove_banner_image"             => "banner_image_text",
-      "remove_directory_image"          => "directory_image_text",
+      "remove_logo_image" => "logo_image_text",
+      "remove_banner_image" => "banner_image_text",
+      "remove_directory_image" => "directory_image_text",
       "remove_default_collection_image" => "default_collection_image_text",
-      "remove_default_work_image"       => "default_work_image_text"
+      "remove_default_work_image" => "default_work_image_text"
     }.freeze
 
     def remove_appearance_text(update_params)

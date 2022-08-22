@@ -4,7 +4,7 @@ RSpec.describe "hyrax/homepage/_home_text.html.erb", type: :view do
   subject { rendered }
 
   let(:groups) { [] }
-  let(:ability) { instance_double("Ability") }
+  let(:ability) { instance_double(Ability) }
   let(:home_text) { ContentBlock.new(name: ContentBlock::NAME_REGISTRY[:home_text], value: home_text_value) }
 
   before do

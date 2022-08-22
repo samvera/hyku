@@ -24,6 +24,7 @@ module Hyrax
         Flipflop.cache_work_iiif_manifest? ? Hyrax::CachingIiifManifestBuilder.new : Hyrax::ManifestBuilderService.new
       )
       attr_accessor :curation_concern
+
       helper_method :curation_concern, :contextual_path
 
       rescue_from WorkflowAuthorizationException, with: :render_unavailable
@@ -44,7 +45,7 @@ module Hyrax
         self._curation_concern_type = curation_concern_type
         # We don't want the breadcrumb action to occur until after the concern has
         # been loaded and authorized
-        before_action :save_permissions, only: :update # rubocop:disable Rails/LexicallyScopedActionFilter
+        before_action :save_permissions, only: :update
       end
 
       def curation_concern_type
@@ -93,7 +94,6 @@ module Hyrax
         wants.nt { render body: presenter.export_as_nt, mime_type: Mime[:nt] }
       end
     end
-    # rubocop:enable Metrics/AbcSize
 
     def edit
       @admin_set_options = available_admin_sets
@@ -115,6 +115,7 @@ module Hyrax
         title = curation_concern.to_s
         env = Actors::Environment.new(curation_concern, current_ability, {})
         return unless actor.destroy(env)
+
         Hyrax.config.callback.run(:after_destroy, curation_concern.id, current_user, warn: false)
       else
         transactions['work_resource.destroy']
@@ -134,6 +135,7 @@ module Hyrax
 
     def inspect_work
       raise Hydra::AccessDenied unless current_ability.admin?
+
       presenter
     end
 
@@ -203,6 +205,7 @@ module Hyrax
       def update_valkyrie_work
         form = build_form
         return after_update_error(form_err_msg(form)) unless form.validate(params[hash_key_for_curation_concern])
+
         result =
           transactions['change_set.update_work']
           .with_step_args('work_resource.add_file_sets' => { uploaded_files: uploaded_files, file_set_params: params[hash_key_for_curation_concern][:file_set] },
@@ -256,7 +259,7 @@ module Hyrax
       # @deprecated
       def curation_concern_from_search_results
         Deprecation.warn("'##{__method__}' will be removed in Hyrax 4.0.  " \
-          "Instead, use '#search_result_document'.")
+                         "Instead, use '#search_result_document'.")
         search_params = params.deep_dup
         search_params.delete :page
         search_result_document(search_params)
@@ -296,12 +299,14 @@ module Hyrax
       def search_result_document(search_params)
         _, document_list = search_results(search_params)
         return document_list.first unless document_list.empty?
+
         document_not_found!
       end
 
       def document_not_found!
         doc = ::SolrDocument.find(params[:id])
         raise WorkflowAuthorizationException if doc.suppressed? && current_ability.can?(:read, doc)
+
         raise CanCan::AccessDenied.new(nil, :show)
       end
 
@@ -356,7 +361,7 @@ module Hyrax
         uploaded_files = params.fetch(:uploaded_files, [])
         selected_files = params.fetch(:selected_files, {}).values
         browse_everything_urls = uploaded_files &
-                                 selected_files.map { |f| f[:url] }
+                                 selected_files.pluck(:url)
 
         # we need the hash of files with url and file_name
         browse_everything_files = selected_files
@@ -496,7 +501,6 @@ module Hyrax
           prepend_view_path(show_theme_view_path)
           yield
           view_paths = original_paths # rubocop:disable Lint/UselessAssignment
-          # rubocop:enable Lint/UselessAssignment, Layout/SpaceAroundOperators, Style/RedundantParentheses
         else
           yield
         end

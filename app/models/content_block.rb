@@ -24,6 +24,7 @@ class ContentBlock < ApplicationRecord
   def self.for(key)
     key = key.respond_to?(:to_sym) ? key.to_sym : key
     raise ArgumentError, "#{key} is not a ContentBlock name" unless registered?(key)
+
     ContentBlock.public_send(NAME_REGISTRY[key])
   end
 
@@ -107,7 +108,7 @@ class ContentBlock < ApplicationRecord
 
     def default_agreement_text
       ERB.new(
-        IO.read(
+        File.read(
           Hyrax::Engine.root.join('app', 'views', 'hyrax', 'content_blocks', 'templates', 'agreement.html.erb')
         )
       ).result
@@ -115,7 +116,7 @@ class ContentBlock < ApplicationRecord
 
     def default_terms_text
       ERB.new(
-        IO.read(
+        File.read(
           Hyrax::Engine.root.join('app', 'views', 'hyrax', 'content_blocks', 'templates', 'terms.html.erb')
         )
       ).result

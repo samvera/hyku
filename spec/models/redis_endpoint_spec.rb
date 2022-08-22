@@ -19,7 +19,7 @@ RSpec.describe RedisEndpoint do
 
     it 'is false if the service is down' do
       allow(Hyrax::RedisEventStore.instance).to receive(:ping).and_raise(RuntimeError)
-      expect(subject.ping).to eq false
+      expect(subject.ping).to be false
     end
   end
 end

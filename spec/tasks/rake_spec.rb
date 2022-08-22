@@ -22,8 +22,8 @@ RSpec.describe "Rake tasks" do
   end
 
   describe "superadmin:grant" do
-    let!(:user1) { FactoryBot.create(:user) }
-    let!(:user2) { FactoryBot.create(:user) }
+    let!(:user1) { create(:user) }
+    let!(:user2) { create(:user) }
 
     before do
       user1.remove_role :superadmin
@@ -40,14 +40,14 @@ RSpec.describe "Rake tasks" do
 
     it 'grants a single user the superadmin role' do
       run_task('hyku:superadmin:grant', user1.email)
-      expect(user1.has_role?(:superadmin)).to eq true
-      expect(user2.has_role?(:superadmin)).to eq false
+      expect(user1.has_role?(:superadmin)).to be true
+      expect(user2.has_role?(:superadmin)).to be false
     end
 
     it 'grants a multiple users the superadmin role' do
       run_task('hyku:superadmin:grant', user1.email, user2.email)
-      expect(user1.has_role?(:superadmin)).to eq true
-      expect(user2.has_role?(:superadmin)).to eq true
+      expect(user1.has_role?(:superadmin)).to be true
+      expect(user2.has_role?(:superadmin)).to be true
     end
   end
 
@@ -65,7 +65,7 @@ RSpec.describe "Rake tasks" do
     end
 
     it 'requires first argument to be a valid rake task' do
-      expect { run_task('tenantize:task', 'foobar') }.to raise_error(ArgumentError, /Rake task not found\: foobar/)
+      expect { run_task('tenantize:task', 'foobar') }.to raise_error(ArgumentError, /Rake task not found: foobar/)
     end
 
     it 'runs against all tenants' do

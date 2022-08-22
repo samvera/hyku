@@ -3,7 +3,7 @@
 RSpec.describe CreateAccount do
   subject { described_class.new(account) }
 
-  let(:account) { FactoryBot.build(:sign_up_account) }
+  let(:account) { build(:sign_up_account) }
 
   describe '#create_tenant' do
     it 'creates a new apartment tenant' do
@@ -12,9 +12,7 @@ RSpec.describe CreateAccount do
     end
 
     it 'initializes the Site configuration with a link back to the Account' do
-      expect(Apartment::Tenant).to receive(:create).with(any_args) do |&block|
-        block.call
-      end
+      expect(Apartment::Tenant).to receive(:create).with(any_args).and_yield
       expect(AdminSet).to receive(:find_or_create_default_admin_set_id)
       subject.save
       expect(Site.reload.account).to eq account
@@ -42,7 +40,7 @@ RSpec.describe CreateAccount do
     it 'prevents duplicate accounts' do
       expect(account1.save).to be true
       expect(account2.save).to be false
-      expect(account2.account.errors).to match a_hash_including(:"domain_names.cname")
+      expect(account2.account.errors).to match a_hash_including(:'domain_names.cname')
     end
   end
 

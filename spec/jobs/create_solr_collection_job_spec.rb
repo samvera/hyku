@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe CreateSolrCollectionJob do
-  let(:account) { FactoryBot.create(:account) }
+  let(:account) { create(:account) }
   let(:client) { double }
 
   before do

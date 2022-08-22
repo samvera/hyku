@@ -28,7 +28,7 @@ RSpec.describe RolesController, type: :controller do
   end
 
   context 'with an administrator' do
-    let(:user) { FactoryBot.create(:admin) }
+    let(:user) { create(:admin) }
 
     describe "GET #index" do
       before do

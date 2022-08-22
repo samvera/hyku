@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Admin can select show page theme', type: :feature, js: true, clean: true do
-  let(:account) { FactoryBot.create(:account) }
-  let(:admin) { FactoryBot.create(:admin, email: 'admin@example.com', display_name: 'Adam Admin') }
+  let(:account) { create(:account) }
+  let(:admin) { create(:admin, email: 'admin@example.com', display_name: 'Adam Admin') }
   let(:user) { create :user }
   let!(:work) do
     create(:generic_work,
@@ -63,7 +63,7 @@ RSpec.describe 'Admin can select show page theme', type: :feature, js: true, cle
       select('Cultural Show Page', from: 'Show Page Theme')
       find('body').click
       expect(page).to have_content('This image based show page is recommended for cultural repositories.')
-      expect(page.find('#show-wireframe img')['src']).to match(%r{/assets\/themes\/cultural_show/})
+      expect(page.find('#show-wireframe img')['src']).to match(%r{/assets/themes/cultural_show/})
     end
 
     it 'renders the partials in the theme folder' do

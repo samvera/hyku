@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe CreateAccountInlineJob do
-  let(:account) { FactoryBot.create(:account) }
+  let(:account) { create(:account) }
 
   describe '#perform' do
     it 'calls other jobs synchronously' do

@@ -5,7 +5,7 @@
 require 'rails_helper'
 
 # NOTE: If you generated more than one work, you have to set "js: true"
-RSpec.describe 'Create a Image', js: true do
+RSpec.describe 'Create a Image', :js, :allinson_flex_admin_set do
   include Warden::Test::Helpers
   context 'a logged in user' do
     let(:user_attributes) do

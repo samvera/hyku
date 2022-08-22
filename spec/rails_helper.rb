@@ -39,7 +39,7 @@ require 'shoulda/matchers'
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
+Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }
 
 # Ensure the Hyrax::Admin constant is loaded. Because testing is done using autoloading,
 # the order of the test run determines where the constants are loaded from.  Prior to
@@ -82,7 +82,7 @@ if ENV['CHROME_HOSTNAME'].present?
   end
   Capybara.server_host = '0.0.0.0'
   Capybara.server_port = 3001
-  Capybara.app_host = "http://#{ENV['WEB_HOST']}:#{Capybara.server_port}"
+  Capybara.app_host = "http://#{ENV.fetch('WEB_HOST', nil)}:#{Capybara.server_port}"
 else
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
     chromeOptions: {

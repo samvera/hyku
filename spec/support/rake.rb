@@ -29,7 +29,7 @@ module RakeHelper
     "Output: #{out.string}\n Errors:#{err.string}"
   ensure
     $stdout = STDOUT
-    $stdout = STDERR
+    $stdout = $stderr
   end
 
   RSpec.configure do |config|

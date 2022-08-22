@@ -13,6 +13,7 @@ module Hyrax
 
         return default_image unless thumb
         return call(thumb) unless thumb.file_set?
+
         return_path(thumb)
       end
 
@@ -35,6 +36,7 @@ module Hyrax
 
         def fetch_thumbnail(object)
           return object if object.thumbnail_id == object.id
+
           Hyrax.query_service.find_by(id: object.thumbnail_id)
         rescue Valkyrie::Persistence::ObjectNotFoundError, Hyrax::ObjectNotFoundError
           Rails.logger.error("Couldn't find thumbnail #{object.thumbnail_id} for #{object.id}")

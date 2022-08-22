@@ -51,6 +51,7 @@ module Importer
         row.each_with_index do |header, i|
           next if header == 'resource_type'
           next unless header.match(type_header_pattern)
+
           next_header = row[i + 1]
           field_name = header.gsub('_type', '')
           if next_header != field_name
@@ -78,6 +79,7 @@ module Importer
 
       def extract_field(header, val, processed)
         return unless val
+
         case header
         when 'type', 'id'
           # type and id are singular
@@ -149,5 +151,4 @@ module Importer
         date[field.to_sym] << val
       end
   end
-  # rubocop:enable Metrics/ClassLength
 end

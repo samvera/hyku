@@ -27,8 +27,8 @@ module Hyrax
     #   and the feature flipper is enabled.
 
     def display_share_button?
-      Flipflop.show_share_button? && current_ability.can_create_any_work? ||
-        Flipflop.show_share_button? && user_unregistered?
+      (Flipflop.show_share_button? && current_ability.can_create_any_work?) ||
+        (Flipflop.show_share_button? && user_unregistered?)
     end
 
     # A presenter for selecting a work type to create

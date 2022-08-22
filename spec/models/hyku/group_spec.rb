@@ -19,7 +19,7 @@ module Hyku
       it { is_expected.to respond_to(:created_at) }
     end
 
-    context '.search' do
+    describe '.search' do
       before(:context) do
         FactoryBot.create(:group, name: 'IMPORTANT-GROUP-NAME')
         FactoryBot.create(:group, description: 'IMPORTANT-GROUP-DESCRIPTION')
@@ -46,7 +46,7 @@ module Hyku
       end
     end
 
-    context '#search_members' do
+    describe '#search_members' do
       subject { FactoryBot.create(:group) }
 
       let(:known_user_name) { FactoryBot.create(:user, display_name: 'Tom Cramer') }
@@ -116,7 +116,7 @@ module Hyku
       end
     end
 
-    context '#number_of_users' do
+    describe '#number_of_users' do
       subject { FactoryBot.create(:group) }
 
       let(:user) { FactoryBot.create(:user) }

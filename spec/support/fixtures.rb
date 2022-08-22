@@ -7,7 +7,7 @@ module Fixtures
     end
 
     def fixture_file_path(path)
-      Rails.root + 'spec/fixtures' + path
+      "#{Rails.root}spec/fixtures#{path}"
     end
   end
 end

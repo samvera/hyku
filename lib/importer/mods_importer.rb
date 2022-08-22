@@ -16,6 +16,7 @@ module Importer
       count = 0
       Dir.glob("#{@metadata_directory}/**/*").each do |filename|
         next if File.directory?(filename)
+
         import(filename)
         count += 1
       end

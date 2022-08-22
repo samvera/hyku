@@ -27,7 +27,7 @@ module Hyrax
 
     # Returns the value for the thumbnail path to put into the solr document
     def thumbnail_path
-      if object.class == Collection && UploadedCollectionThumbnailPathService.uploaded_thumbnail?(object)
+      if object.instance_of?(Collection) && UploadedCollectionThumbnailPathService.uploaded_thumbnail?(object)
         UploadedCollectionThumbnailPathService.call(object)
       else
         self.class.thumbnail_path_service.call(object)

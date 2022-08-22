@@ -2,8 +2,8 @@
 
 RSpec.describe 'Admin Dashboard', type: :feature do
   context 'as an administrator' do
-    let(:user) { FactoryBot.create(:admin) }
-    let(:group) { FactoryBot.create(:group) }
+    let(:user) { create(:admin) }
+    let(:group) { create(:group) }
 
     before do
       login_as(user, scope: :user)
@@ -61,8 +61,8 @@ RSpec.describe 'Admin Dashboard', type: :feature do
   end
 
   context 'as a user' do
-    let(:user) { FactoryBot.create(:user) }
-    let(:group) { FactoryBot.create(:group) }
+    let(:user) { create(:user) }
+    let(:group) { create(:group) }
 
     before do
       login_as(user, scope: :user)

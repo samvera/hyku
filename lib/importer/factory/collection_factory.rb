@@ -9,12 +9,14 @@ module Importer
       def find_or_create
         collection = find
         return collection if collection
+
         run(&:save!)
       end
 
       def update
         raise "Collection doesn't exist" unless object
-        object.attributes = update_attributes
+
+        object.attributes = update
         run_callbacks(:save) do
           object.save!
         end

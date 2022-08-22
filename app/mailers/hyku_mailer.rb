@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Provides a default host for the current tenant
-class HykuMailer < ActionMailer::Base
+class HykuMailer < ApplicationMailer
   def default_url_options
     { host: host_for_tenant }
   end

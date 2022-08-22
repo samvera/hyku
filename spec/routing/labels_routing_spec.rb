@@ -5,6 +5,7 @@ RSpec.describe LabelsController, type: :routing do
     it "routes to #edit" do
       expect(get: "/site/labels/edit").to route_to("labels#edit")
     end
+
     it "routes to #update via PUT" do
       expect(put: "/site/labels").to route_to("labels#update")
     end

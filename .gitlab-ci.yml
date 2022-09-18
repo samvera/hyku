@@ -52,7 +52,7 @@ test:
     DB_CLEANER_ALLOW_REMOTE_DB_URL: "true"
     DB_HOST: db
     DB_NAME: hyku
-    DB_URL: postgres://postgres:postgres@db/hyku
+    DATABASE_URL: postgres://postgres:postgres@db/hyku
     DB_USER: postgres
     DB_PORT: 5432
     FCREPO_HOST: fcrepo

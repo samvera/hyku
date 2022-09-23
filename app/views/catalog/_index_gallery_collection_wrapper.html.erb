@@ -1,0 +1,11 @@
+<%# OVERRIDE Hyrax 3.4.1: make collection thumbnail a link so it matches works %>
+<div class="document col-xs-6 col-md-3">
+  <div class="thumbnail">
+  <% debugger %>
+    <% value = collection_thumbnail(document, {}, counter: document_counter_with_offset(document_counter)) %>
+    <%= link_to value, generate_work_url(document.to_h, request)%>
+    <div class="caption">
+      <%= render_document_partials document, blacklight_config.view_config(:gallery).partials, :document_counter => document_counter %>
+    </div>
+  </div>
+</div>

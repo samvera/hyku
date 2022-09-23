@@ -406,13 +406,9 @@ module Blacklight
 
       field ||= document_show_link_field(doc)
       label = index_presenter(doc).label field, opts
-      url = if doc.class == Hyrax::FileSetPresenter
-              search_state.url_for_document(doc)
-            else
-              generate_work_url(doc.to_h, request)
-            end
-
-      link_to label, url, document_link_params(doc, opts)
+      # pull solr_document from input if we don't already have a solr_document
+      document = doc&.try(:solr_document) || doc
+      link_to label, generate_work_url(document&.try(:to_h), request), document_link_params(doc, opts)
     end
   end
 end

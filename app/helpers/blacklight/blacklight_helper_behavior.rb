@@ -406,12 +406,13 @@ module Blacklight
 
       field ||= document_show_link_field(doc)
       label = index_presenter(doc).label field, opts
+      url = if doc.class == Hyrax::FileSetPresenter
+              search_state.url_for_document(doc)
+            else
+              generate_work_url(doc.to_h, request)
+            end
 
-      if doc.is_a? Hyrax::FileSetPresenter
-        link_to label, search_state.url_for_document(doc), document_link_params(doc, opts)
-      else
-        link_to label, generate_work_url(doc.to_h, request), document_link_params(doc, opts)
-      end
+      link_to label, url, document_link_params(doc, opts)
     end
   end
 end

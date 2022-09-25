@@ -154,14 +154,24 @@ module AccountSettings
     end
 
     def reload_library_config
-      Hyrax.config do |config|
-        config.contact_email = contact_email
-        config.analytics = google_analytics_id.present?
-        config.google_analytics_id = google_analytics_id
-        config.geonames_username = geonames_username
-        config.uploader[:maxFileSize] = file_size_limit
-      end
 
+      if google_analytics_id.present?
+        Hyrax.config do |config|
+          config.contact_email = contact_email
+          config.analytics = google_analytics_id.present?
+          config.google_analytics_id = google_analytics_id
+          config.geonames_username = geonames_username
+          config.uploader[:maxFileSize] = file_size_limit
+        end
+      else
+        Hyrax.config do |config|
+          config.contact_email = contact_email
+          config.analytics = google_analytics_id.present?
+          config.geonames_username = geonames_username
+          config.uploader[:maxFileSize] = file_size_limit
+        end
+      end
+      
       Devise.mailer_sender = contact_email
 
       if s3_bucket.present?

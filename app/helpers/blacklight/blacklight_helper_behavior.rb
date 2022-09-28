@@ -396,7 +396,7 @@ module Blacklight
     # OVERIDE: Blacklight::UrlHelperBehavior:
     #   override link_to_document to substitute method generate_work_url
     #   to fix URLs for gallery view groupings in shared tenants
-    # link_to_document(doc, 'VIEW', :counter => 3)
+    #     link_to_document(doc, 'VIEW', :counter => 3)
     def link_to_document(doc, field_or_opts = nil, opts = { counter: nil })
       if field_or_opts.is_a? Hash
         opts = field_or_opts
@@ -406,9 +406,16 @@ module Blacklight
 
       field ||= document_show_link_field(doc)
       label = index_presenter(doc).label field, opts
-      # pull solr_document from input if we don't already have a solr_document
-      document = doc&.try(:solr_document) || doc
-      link_to label, generate_work_url(document&.try(:to_h), request), document_link_params(doc, opts)
+      link_to label, generate_work_url(doc, request), document_link_params(doc, opts)
+    end
+
+    # OVERIDE: Blacklight::UrlHelperBehavior: 
+    # disable link jacking for tracking
+    # see https://playbook-staging.notch8.com/en/samvera/hyku/troubleshooting/multi-tenancy-and-full-urls
+    # If we need to preserve the link jacking for tracking, then we need to also amend
+    # method `session_tracking_params`so that instead of a path we have a URL
+    def document_link_params(_doc, opts)
+      opts.except(:label, :counter)
     end
   end
 end

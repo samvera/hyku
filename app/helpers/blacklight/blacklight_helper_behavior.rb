@@ -409,7 +409,7 @@ module Blacklight
       link_to label, generate_work_url(doc, request), document_link_params(doc, opts)
     end
 
-    # OVERIDE: Blacklight::UrlHelperBehavior: 
+    # OVERIDE: Blacklight::UrlHelperBehavior:
     # disable link jacking for tracking
     # see https://playbook-staging.notch8.com/en/samvera/hyku/troubleshooting/multi-tenancy-and-full-urls
     # If we need to preserve the link jacking for tracking, then we need to also amend

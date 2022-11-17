@@ -9,7 +9,7 @@ jobs:
         default: 2.7.4
       bundler_version:
         type: string
-        default: '2.0.1'
+        default: '2.1.4'
       rails_version:
         type: string
         default: '5.1.6'

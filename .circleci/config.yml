@@ -75,6 +75,7 @@ jobs:
           ruby_version: << parameters.ruby_version >>
           bundler_version: << parameters.bundler_version >>
       - samvera/rubocop
+      - run: bundle update parser
       - run: bundle exec rake db:create db:schema:load
       - run: bin/solrcloud-upload-configset.sh solr/conf
       - samvera/parallel_rspec

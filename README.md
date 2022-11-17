@@ -168,7 +168,7 @@ switch!('myaccount')
 | HYKU_CACHE_API | Use Redis instead of disk for caching | false | no |
 | HYKU_CACHE_ROOT | Directory of file cache (if CACHE_API is false) | /app/samvera/file_cache | no |
 | HYKU_CONTACT_EMAIL | Email address used for the FROM field when the contact form is submitted | change-me-in-settings@example.com | no |
-| HYKU_CONTACT_EMAIL_TO | Email addresses (comma seperated) that receive contact form submissions | change-me-in-settings@example.com | no |
+| HYKU_CONTACT_EMAIL_TO | Email addresses (comma separated) that receive contact form submissions | change-me-in-settings@example.com | no |
 | HYKU_DEFAULT_HOST  | The host name pattern each tenant will respond to by default. %{tenant} is substituted for the tenants name. | "%{tenant}.#{admin_host}" | no |
 | HYKU_DOI_READER | Does the work new / edit form allow reading in a DOI from Datacite? | false | no |
 | HYKU_DOI_WRITER | Does saving or updating a work write to Datacite once the work is approved | false | no |
@@ -180,7 +180,7 @@ switch!('myaccount')
 | HYKU_FILE_SIZE_LIMIT | How big a file do you want to accept in the work upload?  | 5242880 (5 MB) | no |
 | HYKU_GEONAMES_USERNAME | Username used for Geonames connections by the application | '' | no |
 | HYKU_GOOGLE_ANALYTICS_ID | Id for the applications Google Analytics account. Disabled if not set | - | no |
-| HYKU_GOOGLE_SCHOLARLY_WORK_TYPES | List of work types which should be presented to Google Scholar for indexing. Comman seperated WorkType list | - | no |
+| HYKU_GOOGLE_SCHOLARLY_WORK_TYPES | List of work types which should be presented to Google Scholar for indexing. Comma separated WorkType list | - | no |
 | HYKU_GTM_ID | If set, enable Google Tag manager with this id.  | - | no |
 | HYKU_LOCALE_NAME | Not used. Placeholder for upcoming Ubiquity feature | en | no |
 | HYKU_MONTHLY_EMAIL_LIST | Not used. Placeholder for upcoming Ubiquity feature | en | no |
@@ -216,8 +216,8 @@ switch!('myaccount')
 | SMTP_PASSWORD | Password for email sending | - | no |
 | SMTP_PORT | Port for email sending | - | no |
 | SMTP_USER_NAME | Username for the email connection | - | no |
-| SOLR_ADMIN_PASSWORD | Solr requires a user/password when accesing the collections API (which we use to create and manage solr collections and aliases) | admin | no |
-| SOLR_ADMIN_USER | Solr requires a user/password when accesing the collections API (which we use to create and manage solr collections and aliases) | admin | no |
+| SOLR_ADMIN_PASSWORD | Solr requires a user/password when accessing the collections API (which we use to create and manage solr collections and aliases) | admin | no |
+| SOLR_ADMIN_USER | Solr requires a user/password when accessing the collections API (which we use to create and manage solr collections and aliases) | admin | no |
 | SOLR_COLLECTION_NAME | Name of the Solr collection used by non-tenant search. This is required by Hyrax, but is currently unused by Hyku | hydra-development | no |
 | SOLR_CONFIGSET_NAME  | Name of the Solr configset to use when creating new Solr collections | hyku | no |
 | SOLR_HOST | Host for the Solr connection | solr | no |

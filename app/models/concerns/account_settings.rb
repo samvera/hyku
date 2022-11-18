@@ -161,7 +161,7 @@ module AccountSettings
         config.geonames_username = geonames_username
         config.uploader[:maxFileSize] = file_size_limit
       end
-      
+
       Devise.mailer_sender = contact_email
 
       if s3_bucket.present?

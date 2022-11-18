@@ -32,7 +32,7 @@ RSpec.describe SitesController, type: :controller, singletenant: true do
 
     context "site with existing banner image" do
       before do
-        expect(Hyrax::UploadedFileUploader)
+        expect(Hyrax::AvatarUploader)
           .to receive(:storage)
           .and_return(CarrierWave::Storage::File)
           .at_least(3).times

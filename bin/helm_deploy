@@ -24,7 +24,7 @@ DEPLOY_IMAGE="${DEPLOY_IMAGE:-ghcr.io/samvera/hyku}"
 WORKER_IMAGE="${WORKER_IMAGE:-ghcr.io/samvera/hyku/worker}"
 DEPLOY_TAG="${DEPLOY_TAG:-latest}"
 WORKER_TAG="${WORKER_TAG:-$DEPLOY_TAG}"
-
+echo $DEPLOY_TAG
 
 function V() # $1-a $2-op $3-$b
 # Compare a and b as version strings. Rules:

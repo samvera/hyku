@@ -8,6 +8,8 @@ en:
     tagline: The next-generation repository solution
   helpers:
     submit:
+      add_role_to_group:
+        submit: Add
       add_user_to_group:
         submit: Add
       group_search:
@@ -41,6 +43,13 @@ en:
             clear: Reset
         describe_quantity_html: There are <b>%{number} groups</b> in this repository.
         describe_singular_quantity_html: There is <b>1 group</b> in this repository.
+        description:
+          admin: Users in this group are considered admins for this tenant and have unrestricted access.
+          registered: Contains all users who have signed up in this tenant.
+          editors: 'Users in this group are allowed to read and edit all Collections and Works in this tenant.
+                           They can also: create Collections, deposit and approve Works, manage Embargoes and Leases,
+                           and manage Bulkrax importers and exporters.'
+          depositors: Users in this group are allowed to deposit Works into any Admin Set in this tenant.
         flash:
           create:
             failure: Group could not be created
@@ -52,6 +61,9 @@ en:
           update:
             failure: "%{group} could not be updated"
             success: "%{group} updated"
+        humanized_name:
+          admin: Repository Administrators
+          registered: Registered Users
         label:
           actions: Actions
           created_at: Date Created
@@ -82,11 +94,22 @@ en:
           delete: Remove Group “%{group}”
           edit: Edit Group
           index: Manage Groups
+          reader_index: View Groups
           list_members: Current Group Members
           members: Group Members
           new: New Group
           remove: Remove Group
           roles: Group Roles
+      roles:
+        description:
+          admin: Grants unrestricted access to this tenant
+          work_depositor: Can deposit Works into any Admin Set in this tenant. Can read, edit, and manage Embargoes / Leases for Works belonging to them
+          work_editor: Can create, read, edit, and approve any Work in this tenant, as well as move Works between Admin Sets and manage Embargoes and Leases
+          collection_editor: Can create, read, and edit any Collection in this tenant
+          collection_manager: Can create, read, edit, and destroy any Collection in this tenant
+          collection_reader: Can read any Collection in this tenant
+          user_manager: Can read, edit, invite, and remove any User in this tenant
+          user_reader: Can read any User in this tenant
       title: Administration
       work_types: Available Work Types
     footer:
@@ -171,6 +194,10 @@ en:
             active: Active
             pending: Pending
           status_label: Status
+  permissions:
+    collections:
+      cannot:
+        manage_discovery: You do not have permission to change this Collection's discovery setting
   proprietor:
     accounts:
       edit:
@@ -193,10 +220,34 @@ en:
         update: Update
         current_admins:
           header: Current Account Administrators
+          all_users: All Users
+          email: Email address
+          actions: Action
           no_admins: No administrators exist
         edit: Edit Account
         header: Manage Account
         remove: Remove
+    users:
+      edit:
+        header: Edit User
+      index:
+        create_new: Create New
+        email: Email
+        display_name: Display name
+        department: Department
+        manage: Manage
+        title: Title
+        affiliation: Affiliation
+        actions: Actions
+        header: Manage Users
+        confirm_delete: Are you sure you wish to delete this user?
+      new:
+        header: Create a new user
+      show:
+        add: Add
+        update: Update
+        edit: Edit
+        header: Manage User
   status:
     index:
       services: Services

@@ -253,16 +253,27 @@ en:
             other: There are <b>%{count} users</b> in this repository.
           id_label: Username
           role_label: Roles
+          group_label: Groups
           title: Manage Users
+          reader_title: View Users
       workflow_roles:
         header: Workflow Roles
         index:
+          current_group_roles: Current Group Roles
           current_roles: Current Roles
+          current_user_roles: Current User Roles
           delete:
             confirm: Are you sure?
           header:
+            display_name: Display Name
+            email: Email
+            group_name: Group Name
+            group_roles: Group Roles
             roles: Roles
             user: User
+            user_roles: User Roles
+          new_group_role: Assign Role to Group
+          new_user_role: Assign Role to User
           no_roles: No roles
       workflows:
         index:
@@ -662,6 +673,7 @@ en:
           groups: "Groups:"
           managed_access:
             deposit: Deposit
+            edit: Edit
             manage: Manage
             view: View
           users: "Users:"

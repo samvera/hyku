@@ -242,18 +242,29 @@ it:
           describe_users_html:
             one: C'è <b>un utente %{count}</b> in questo repository.
             other: Ci sono <b>utenti %{count}</b> in questo repository.
+          group_label: Gruppi
           id_label: Nome utente
+          reader_title: Visualizza utenti
           role_label: ruoli
           title: Gestisci utenti
       workflow_roles:
         header: Ruoli del flusso di lavoro
         index:
+          current_group_roles: Ruoli attuali del gruppo
           current_roles: Ruoli attuali
+          current_user_roles: Ruoli utente correnti
           delete:
             confirm: Sei sicuro?
           header:
+            display_name: Nome da visualizzare
+            email: E-mail
+            group_name: Nome del gruppo
+            group_roles: Ruoli del gruppo
             roles: ruoli
             user: Utente
+            user_roles: Ruoli utente
+          new_group_role: Assegna ruolo al gruppo
+          new_role: Assegna ruolo
           new_user_role: Assegna ruolo all'utente
           no_roles: Nessun ruolo
       workflows:

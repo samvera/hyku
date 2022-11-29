@@ -17,7 +17,12 @@ class User < ApplicationRecord
   devise :database_authenticatable, :invitable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  before_create :add_default_roles
+  after_save :add_default_group_memberships!
+
+  # set default scope to exclude guest users
+  def self.default_scope
+    where(guest: false)
+  end
 
   scope :for_repository, -> {
     joins(:roles)
@@ -72,18 +77,50 @@ class User < ApplicationRecord
     end
   end
 
-  def groups
-    return ['admin'] if has_role?(:admin, Site.instance)
-    []
+  # Hyrax::Group memberships are tracked through User#roles. This method looks up
+  # the Hyrax::Groups the user is a member of and returns each one in an Array.
+  # Example:
+  #   u = User.last
+  #   u.roles
+  #   => #<ActiveRecord::Associations::CollectionProxy [#<Role id: 8, name: "member", resource_type: "Hyrax::Group", resource_id: 2,...>]>
+  #   u.hyrax_groups
+  #   => [#<Hyrax::Group id: 2, name: "registered", description: nil,...>]
+  def hyrax_groups
+    roles.where(name: 'member', resource_type: 'Hyrax::Group').map(&:resource).uniq
   end
 
-  # If this user is the first user on the tenant, they become its admin
-  # unless we are in the global tenant
-  def add_default_roles
+  # Override method from hydra-access-controls v11.0.0 to use Hyrax::Groups.
+  # NOTE: DO NOT RENAME THIS METHOD - it is required for permissions to function properly.
+  # @return [Array] Hyrax::Group names the User is a member of
+  def groups
+    hyrax_groups.map(&:name)
+  end
+
+  # NOTE: This is an alias for #groups to clarify what the method is doing.
+  # This is necessary because #groups overrides a method from a gem.
+  # @return [Array] Hyrax::Group names the User is a member of
+  def hyrax_group_names
+    groups
+  end
+
+  # TODO this needs tests and to be moved to the service
+  # Tmp shim to handle bug
+  def group_roles
+    hyrax_groups.map(&:roles).flatten.uniq
+  end
+
+  # TODO: The current way this method works may be problematic; if a User signs up
+  # in the global tenant, they won't get group memberships for any tenant. Need to
+  # identify all the places this kind of situation can arise (invited users, etc)
+  # and decide what to do about it.
+  def add_default_group_memberships!
+    return if self.guest?
     return if Account.global_tenant?
 
-    add_role :admin, Site.instance unless self.class.joins(:roles).where("roles.name = ?", "admin").any?
-    # Role for any given site
-    add_role :registered, Site.instance
+    Hyrax::Group.find_or_create_by!(name: 'registered').add_members_by_id(self.id)
+
+    if self.has_role?(:admin, Site.instance)
+      Hyrax::Group.find_or_create_by!(name: 'admin').add_members_by_id(self.id)
+    end
   end
 end

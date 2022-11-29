@@ -26,7 +26,7 @@ RSpec.describe Proprietor::UsersController, type: :controller, multitenant: true
       context "with valid params" do
         it "is unauthorized" do
           expect do
-            post :create, params: { account: valid_attributes }
+            post :create, params: { user: valid_attributes }
           end.not_to change(User, :count)
           expect(response).to be_redirect
         end
@@ -35,7 +35,7 @@ RSpec.describe Proprietor::UsersController, type: :controller, multitenant: true
   end
 
   context 'as an admin of a site' do
-    let(:user) { FactoryBot.create(:user).tap { |u| u.add_role(:admin, Site.instance) } }
+    let(:user) { FactoryBot.create(:admin) }
     let(:account) { FactoryBot.create(:account) }
 
     before do

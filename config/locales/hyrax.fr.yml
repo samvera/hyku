@@ -240,18 +240,29 @@ fr:
           describe_users_html:
             one: Il y a <b>un utilisateur %{count}</b> dans ce référentiel.
             other: Il y <b>a des utilisateurs %{count}</b> dans ce référentiel.
+          group_label: Groupes
           id_label: Nom d'utilisateur
+          reader_title: Afficher les utilisateurs
           role_label: Les rôles
           title: gérer les utilisateurs
       workflow_roles:
         header: Rôles de workflow
         index:
+          current_group_roles: Rôles de groupe actuels
           current_roles: Rôles actuels
+          current_user_roles: Rôles des utilisateurs actuels
           delete:
             confirm: Êtes-vous sûr?
           header:
+            display_name: Afficher un nom
+            email: Email
+            group_name: Nom de groupe
+            group_roles: Rôles de groupe
             roles: Les rôles
             user: Utilisateur
+            user_roles: Rôles des utilisateurs
+          new_group_role: Attribuer un rôle au groupe
+          new_role: Attribuer un rôle
           new_user_role: Attribuer un rôle à l'utilisateur
           no_roles: Aucun rôle
       workflows:

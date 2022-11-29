@@ -8,6 +8,8 @@ de:
     tagline: Die Next-Generation Repository-Lösung
   helpers:
     submit:
+      add_role_to_group:
+        submit: Hinzufügen
       add_user_to_group:
         submit: Hinzufügen
       group_search:
@@ -41,6 +43,11 @@ de:
             clear: Zurücksetzen
         describe_quantity_html: Es gibt <b>%{number} Gruppen</b> in diesem Repository.
         describe_singular_quantity_html: Es gibt <b>1 Gruppe</b> in diesem Repository.
+        description:
+          admin: Benutzer in dieser Gruppe gelten als Administratoren für diesen Mandanten und haben uneingeschränkten Zugriff.
+          depositors: Benutzer in dieser Gruppe dürfen Works in jedem Admin-Set dieses Mandanten hinterlegen.
+          editors: 'Benutzer in dieser Gruppe dürfen alle Sammlungen und Werke in diesem Mandanten lesen und bearbeiten. Sie können auch: Sammlungen erstellen, Werke hinterlegen und genehmigen, Embargos und Leasingverträge verwalten und Bulkrax-Importeure und -Exporteure verwalten.'
+          registered: Enthält alle Benutzer, die sich bei diesem Mandanten angemeldet haben.
         flash:
           create:
             failure: Gruppe konnte nicht erstellt werden
@@ -52,6 +59,9 @@ de:
           update:
             failure: "%{group} konnte nicht aktualisiert werden"
             success: "%{group} aktualisiert"
+        humanized_name:
+          admin: Repository-Administratoren
+          registered: Registrierte Benutzer
         label:
           actions: Aktionen
           created_at: Erstellungsdatum
@@ -85,8 +95,19 @@ de:
           list_members: Aktuelle Gruppenmitglieder
           members: Gruppenmitglieder
           new: Neue Gruppe
+          reader_index: Gruppen anzeigen
           remove: Gruppe entfernen
           roles: Gruppenrollen
+      roles:
+        description:
+          admin: Gewährt uneingeschränkten Zugang zu diesem Mieter
+          collection_editor: Kann jede Sammlung in diesem Mandanten erstellen, lesen und bearbeiten
+          collection_manager: Kann jede Sammlung in diesem Mandanten erstellen, lesen, bearbeiten und zerstören
+          collection_reader: Kann jede Sammlung in diesem Mieter lesen
+          user_manager: Kann jeden Benutzer in diesem Mandanten lesen, bearbeiten, einladen und entfernen
+          user_reader: Kann jeden Benutzer in diesem Mandanten lesen
+          work_depositor: Kann Works in ein beliebiges Admin-Set dieses Mandanten einzahlen. Kann Embargos / Leasingverträge für dazugehörige Werke lesen, bearbeiten und verwalten
+          work_editor: Kann jedes Admin-Set in diesem Mandanten lesen. Sie können auch alle Arbeiten in diesem Mandanten erstellen, lesen, bearbeiten und genehmigen sowie Arbeiten zwischen Verwaltungssätzen verschieben und Embargos und Leases verwalten
       title: Verwaltung
       work_types: Verfügbare Arbeitstypen
     footer:
@@ -172,6 +193,10 @@ de:
             active: Aktiv
             pending: noch ausstehend
           status_label: Status
+  permissions:
+    collections:
+      cannot:
+        manage_discovery: Sie haben keine Berechtigung, die Erkennungseinstellung dieser Sammlung zu ändern
   proprietor:
     accounts:
       edit:
@@ -191,10 +216,35 @@ de:
         add: Hinzufügen
         current_admins:
           actions: Aktion
+          all_users: Alle Nutzer
+          email: E-Mail-Addresse
+          header: Administratoren für Girokonten
           no_admins: Es sind keine Administratoren vorhanden
         edit: Konto bearbeiten
         header: Konto verwalten
         remove: Entfernen
+        update: Aktualisieren
+    users:
+      edit:
+        header: Benutzer bearbeiten
+      index:
+        actions: Aktionen
+        affiliation: Zugehörigkeit
+        confirm_delete: Möchten Sie diesen Benutzer wirklich löschen?
+        create_new: Erstelle neu
+        department: Abteilung
+        display_name: Anzeigename
+        email: Email
+        header: Benutzer verwalten
+        manage: Verwalten
+        title: Titel
+        view_users: Benutzer anzeigen
+      new:
+        header: Erstellen Sie einen neuen Benutzer
+      show:
+        add: Hinzufügen
+        edit: Bearbeiten
+        header: Benutzer verwalten
         update: Aktualisieren
   status:
     index:

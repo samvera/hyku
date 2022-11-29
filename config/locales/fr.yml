@@ -8,6 +8,8 @@ fr:
     tagline: La solution de dépôt de nouvelle génération
   helpers:
     submit:
+      add_role_to_group:
+        submit: Ajouter
       add_user_to_group:
         submit: Ajouter
       group_search:
@@ -41,6 +43,11 @@ fr:
             clear: Réinitialiser
         describe_quantity_html: Il existe des <b>groupes %{number}</b> dans ce dépôt.
         describe_singular_quantity_html: Il y a <b>1 groupe</b> dans ce dépôt.
+        description:
+          admin: Les utilisateurs de ce groupe sont considérés comme des administrateurs pour ce locataire et ont un accès illimité.
+          depositors: Les utilisateurs de ce groupe sont autorisés à déposer des œuvres dans n'importe quel ensemble d'administration de ce client.
+          editors: 'Les utilisateurs de ce groupe sont autorisés à lire et à modifier toutes les collections et tous les travaux de ce client. Ils peuvent également: créer des collections, déposer et approuver des travaux, gérer les embargos et les baux, et gérer les importateurs et exportateurs Bulkrax.'
+          registered: Contient tous les utilisateurs qui se sont inscrits dans ce locataire.
         flash:
           create:
             failure: Le groupe n'a pas pu être créé
@@ -52,6 +59,9 @@ fr:
           update:
             failure: "%{group} n'a pas pu être mis à jour"
             success: "%{group} a mis à jour"
+        humanized_name:
+          admin: Administrateurs de référentiel
+          registered: Utilisateurs enregistrés
         label:
           actions: actes
           created_at: date créée
@@ -85,8 +95,19 @@ fr:
           list_members: Membres actuels du groupe
           members: Les membres du groupe
           new: Nouveau groupe
+          reader_index: Afficher les groupes
           remove: Supprimer le groupe
           roles: Rôles de groupe
+      roles:
+        description:
+          admin: Accorde un accès illimité à ce locataire
+          collection_editor: Peut créer, lire et modifier n'importe quelle collection dans ce client
+          collection_manager: Peut créer, lire, modifier et détruire n'importe quelle collection de ce client
+          collection_reader: Peut lire n'importe quelle collection dans ce locataire
+          user_manager: Peut lire, modifier, inviter et supprimer n'importe quel utilisateur de ce client
+          user_reader: Peut lire n'importe quel utilisateur de ce locataire
+          work_depositor: Peut déposer des œuvres dans n'importe quel ensemble d'administration de ce client. Peut lire, modifier et gérer les embargos / baux pour les œuvres qui leur appartiennent
+          work_editor: Peut lire n'importe quel ensemble d'administration dans ce client. En outre, peut créer, lire, modifier et approuver n'importe quel travail dans ce locataire, ainsi que déplacer des travaux entre les ensembles d'administration et gérer les embargos et les baux
       title: Administration
       work_types: Types de travail disponibles
     footer:
@@ -174,6 +195,10 @@ fr:
             active: actif
             pending: en attendant
           status_label: Statut
+  permissions:
+    collections:
+      cannot:
+        manage_discovery: Vous n'êtes pas autorisé à modifier le paramètre de découverte de cette collection
   proprietor:
     accounts:
       edit:
@@ -193,10 +218,35 @@ fr:
         add: Ajouter
         current_admins:
           actions: action
+          all_users: Tous les utilisateurs
+          email: Adresse e-mail
+          header: Administrateurs de compte actuels
           no_admins: Aucun administrateur n'existe
         edit: Modifier le compte
         header: Gérer son compte
         remove: Retirer
+        update: Mettre à jour
+    users:
+      edit:
+        header: Modifier l'utilisateur
+      index:
+        actions: Actes
+        affiliation: Affiliation
+        confirm_delete: Voulez-vous vraiment supprimer cet utilisateur?
+        create_new: Créer un nouveau
+        department: Département
+        display_name: Afficher un nom
+        email: Email
+        header: gérer les utilisateurs
+        manage: Gérer
+        title: Titre
+        view_users: Afficher les utilisateurs
+      new:
+        header: Créer un nouvel utilisateur
+      show:
+        add: Ajouter
+        edit: Modifier
+        header: Gérer l'utilisateur
         update: Mettre à jour
   status:
     index:

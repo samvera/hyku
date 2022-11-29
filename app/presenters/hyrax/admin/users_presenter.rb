@@ -15,7 +15,11 @@ module Hyrax
 
       # @return [Array] an array of user roles
       def user_roles(user)
-        user.roles.map(&:name).uniq
+        user.ability.all_user_and_group_roles
+      end
+
+      def user_groups(user)
+        user.hyrax_groups
       end
 
       def last_accessed(user)

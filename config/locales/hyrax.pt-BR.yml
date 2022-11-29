@@ -242,18 +242,29 @@ pt-BR:
           describe_users_html:
             one: Há <b>um usuário %{count}</b> neste repositório.
             other: Existem <b>usuários %{count}</b> neste repositório.
+          group_label: Grupos
           id_label: Nome do usuário
+          reader_title: Ver usuários
           role_label: Funções
           title: Gerenciar usuários
       workflow_roles:
         header: Funções de fluxo de trabalho
         index:
+          current_group_roles: Funções de grupo atuais
           current_roles: Funções Atuais
+          current_user_roles: Funções de usuário atuais
           delete:
             confirm: Você tem certeza?
           header:
+            display_name: Nome em Exibição
+            email: O email
+            group_name: Nome do grupo
+            group_roles: Funções de grupo
             roles: Funções
             user: Do utilizador
+            user_roles: Funções do usuário
+          new_group_role: Atribuir função ao grupo
+          new_role: Atribuir função
           new_user_role: Atribuir função ao usuário
           no_roles: Sem papéis
       workflows:

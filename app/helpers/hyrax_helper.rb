@@ -42,4 +42,13 @@ module HyraxHelper
   def default_work_image
     Site.instance.default_work_image? ? Site.instance.default_work_image.url : 'default.png'
   end
+
+  # OVERRIDE: Add method to display a Hyrax::Group's human-readable name when the Hyrax::Group's
+  # name is all that's available, e.g. when looking at a Hydra::AccessControl instance
+  def display_hyrax_group_name(hyrax_group_name)
+    label = I18n.t("hyku.admin.groups.humanized_name.#{hyrax_group_name}")
+    return hyrax_group_name.titleize if label.include?('translation missing:')
+
+    label
+  end
 end

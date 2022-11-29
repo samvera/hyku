@@ -478,8 +478,21 @@ module Hyrax
         admin_sets = admin_set_results.map do |admin_set_doc|
           template = templates.find { |temp| temp.source_id == admin_set_doc.id.to_s }
 
+          ## OVERRIDE: Hyrax v3.4.2
+          # Removes a short-circuit that allowed users with manage access to
+          # the given permission_template to always be able to edit a record's sharing
+          # (i.e. the "Sharing" tab in forms).
+          #
+          # We remove this because there is currently a bug in Hyrax where, if the
+          # workflow does not allow access grants, changes to a record's sharing
+          # are not being persisted, leading to a confusing UX.
+          # @see https://github.com/samvera/hyrax/issues/5904
+          #
+          # TEMPORARY: This override should be removed when the bug is resolved in
+          # upstream Hyrax and brought into this project.
+          #
           # determine if sharing tab should be visible
-          sharing = can?(:manage, template) || !!template&.active_workflow&.allows_access_grant? # rubocop:disable Style/DoubleNegation
+          sharing = !!template&.active_workflow&.allows_access_grant? # rubocop:disable Style/DoubleNegation
 
           AdminSetSelectionPresenter::OptionsEntry
             .new(admin_set: admin_set_doc, permission_template: template, permit_sharing: sharing)

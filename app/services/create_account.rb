@@ -40,6 +40,8 @@ class CreateAccount
   end
 
   def create_defaults
+    RolesService.create_default_roles!
+    RolesService.create_default_hyrax_groups_with_roles!
     Hyrax::CollectionType.find_or_create_default_collection_type
     Hyrax::CollectionType.find_or_create_admin_set_type
     return if account.search_only?
@@ -62,6 +64,7 @@ class CreateAccount
   def add_initial_users
     users.each do |user|
       user.add_role :admin, Site.instance
+      user.add_default_group_memberships!
     end
   end
 

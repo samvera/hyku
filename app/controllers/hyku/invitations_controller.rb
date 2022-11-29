@@ -11,6 +11,7 @@ module Hyku
     # override the standard invite so that accounts are added properly
     # if they already exist on another tenant and invited if they do not
     def create
+      authorize! :grant_admin_role, User if params[:user][:roles] == ::RolesService::ADMIN_ROLE
       self.resource = User.find_by(email: params[:user][:email]) || invite_resource
 
       # Set roles, whether they are a new user or not

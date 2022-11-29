@@ -84,6 +84,13 @@ Rails.application.routes.draw do
           delete :remove
         end
       end
+
+      resources :roles, only: [:index], controller: 'group_roles' do
+        collection do
+          post :add
+          delete :remove
+        end
+      end
     end
   end
 

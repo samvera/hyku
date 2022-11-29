@@ -241,18 +241,29 @@ de:
           describe_users_html:
             one: In diesem Repository befindet sich ein <b>%{count}-Benutzer</b> .
             other: In diesem Repository befinden sich <b>%{count}-Benutzer</b> .
+          group_label: Gruppen
           id_label: Nutzername
+          reader_title: Benutzer anzeigen
           role_label: Rollen
           title: Benutzer verwalten
       workflow_roles:
         header: Workflow-Rollen
         index:
+          current_group_roles: Aktuelle Gruppenrollen
           current_roles: Aktuelle Rollen
+          current_user_roles: Aktuelle Benutzerrollen
           delete:
             confirm: Bist du sicher?
           header:
+            display_name: Anzeigename
+            email: Email
+            group_name: Gruppenname
+            group_roles: Gruppenrollen
             roles: Rollen
             user: Benutzer
+            user_roles: Benutzerregeln
+          new_group_role: Rolle der Gruppe zuweisen
+          new_role: Rolle zuweisen
           new_user_role: Weisen Sie dem Benutzer eine Rolle zu
           no_roles: Keine Rollen
       workflows:

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Admin can select show page theme', type: :feature, js: true, clean: true do
+RSpec.describe 'Admin can select show page theme', type: :feature, js: true, clean: true, cohort: 'bravo' do
   let(:account) { FactoryBot.create(:account) }
   let(:admin) { FactoryBot.create(:admin, email: 'admin@example.com', display_name: 'Adam Admin') }
   let(:user) { create :user }
@@ -13,6 +13,8 @@ RSpec.describe 'Admin can select show page theme', type: :feature, js: true, cle
            user: user)
   end
 
+  let!(:admin_group) { Hyrax::Group.create(name: "admin") }
+  let!(:registered_group) { Hyrax::Group.create(name: "registered") }
   let(:admin_set_id) { AdminSet.find_or_create_default_admin_set_id }
   let(:permission_template) { Hyrax::PermissionTemplate.find_or_create_by!(source_id: admin_set_id) }
   let(:workflow) do

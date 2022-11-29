@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Admin Dashboard', type: :feature do
+require 'rails_helper'
+
+RSpec.describe 'Admin Dashboard', type: :feature, js: true, clean: true, cohort: 'bravo' do
   context 'as an administrator' do
     let(:user) { FactoryBot.create(:admin) }
     let(:group) { FactoryBot.create(:group) }

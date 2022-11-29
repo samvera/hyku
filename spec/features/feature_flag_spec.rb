@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Admin can select feature flags', type: :feature, js: true, clean: true do
+RSpec.describe 'Admin can select feature flags', type: :feature, js: true, clean: true, cohort: 'bravo' do
   let(:admin) { FactoryBot.create(:admin, email: 'admin@example.com', display_name: 'Adam Admin') }
   let(:account) { FactoryBot.create(:account) }
 

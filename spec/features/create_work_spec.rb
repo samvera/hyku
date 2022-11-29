@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Creating a new Work', :clean do
-  let(:user) do
-    u = create(:user)
-    u.add_role(:depositor)
-    u
-  end
+# NOTE: If want to run spec in browser, you have to set "js: true"
+RSpec.describe 'Creating a new Work', type: :feature, clean: true, cohort: 'bravo' do
+  let(:user) { create(:user, roles: [:work_depositor]) }
 
   before do
+    FactoryBot.create(:registered_group)
+    FactoryBot.create(:admin_group)
+    FactoryBot.create(:editors_group)
+    FactoryBot.create(:depositors_group)
     AdminSet.find_or_create_default_admin_set_id
     login_as user, scope: :user
   end

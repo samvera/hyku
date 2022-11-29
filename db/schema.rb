@@ -304,11 +304,13 @@ ActiveRecord::Schema.define(version: 2022_11_22_001715) do
     t.index ["user_id"], name: "index_file_view_stats_on_user_id"
   end
 
-  create_table "hyku_groups", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.text "description"
+  create_table "group_roles", force: :cascade do |t|
+    t.bigint "role_id"
+    t.bigint "group_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_group_roles_on_group_id"
+    t.index ["role_id"], name: "index_group_roles_on_role_id"
   end
 
   create_table "hyrax_collection_types", force: :cascade do |t|
@@ -339,6 +341,14 @@ ActiveRecord::Schema.define(version: 2022_11_22_001715) do
     t.boolean "enabled", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "hyrax_groups", id: :serial, force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "humanized_name"
   end
 
   create_table "job_io_wrappers", id: :serial, force: :cascade do |t|
@@ -497,6 +507,8 @@ ActiveRecord::Schema.define(version: 2022_11_22_001715) do
     t.integer "resource_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text "description"
+    t.integer "sort_value"
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
     t.index ["name"], name: "index_roles_on_name"
   end

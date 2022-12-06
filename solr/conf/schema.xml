@@ -171,7 +171,23 @@
         <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
       </analyzer>
     </fieldType>
-  </types>
+  
+    <!-- BEGIN Blacklight IIIF Search autocomplete config -->
+    <fieldType name="textSuggestTokenizer" class="solr.TextField" positionIncrementGap="100">
+      <analyzer>
+        <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords_en.txt"/>
+        <filter class="solr.WordDelimiterGraphFilterFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+        <filter class="solr.HyphenatedWordsFilterFactory"/>
+        <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
+        <!-- uncomment below to enable multi-word matches -->
+        <!-- <filter class="solr.ShingleFilterFactory" outputUnigrams="true" outputUnigramsIfNoShingles="true" maxShingleSize="3" /> -->
+      </analyzer>
+    </fieldType>
+    <!-- END Blacklight IIIF Search autocomplete config -->
+
+</types>
 
   <fields>
     <!-- If you remove this field, you must _also_ disable the update log in solrconfig.xml
@@ -323,7 +339,11 @@
     <!-- you must define copyField source and dest fields explicity or schemaBrowser doesn't work -->
     <field name="all_text_timv" type="text" stored="false" indexed="true" multiValued="true" termVectors="true" termPositions="true" termOffsets="true"/>
 
-  </fields>
+    <!-- BEGIN Blacklight IIIF Search autocomplete config -->
+   <field name="iiif_suggest" type="textSuggest" indexed="true" stored="true" multiValued="true" />
+   <!-- END Blacklight IIIF Search autocomplete config -->
+
+</fields>
 
  <!-- Field to use to determine and enforce document uniqueness.
       Unless this field is marked with required="false", it will be a required field
@@ -358,5 +378,9 @@
    <str name="paramkey">param value</str>
  </similarity>
  -->
+
+  <!-- BEGIN Blacklight IIIF Search autocomplete config -->
+  <copyField source="text" dest="iiif_suggest"/>
+  <!-- END Blacklight IIIF Search autocomplete config -->
 
 </schema>

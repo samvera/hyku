@@ -18,4 +18,7 @@
  *= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
  *= require bootstrap-datepicker
  *= require_self
- */
+ 
+ *= require 'blacklight_advanced_search'
+
+*/

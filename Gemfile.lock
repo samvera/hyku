@@ -11,8 +11,8 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: c9cf204521ad300ef3f0ede2e82a0393c2022a97
-  branch: hyrax-version
+  revision: 70f2a6b096d8a6784d4bd7d886534dbbda1f3a78
+  branch: main
   specs:
     iiif_print (0.0.1)
       blacklight_advanced_search (= 6.4.1)

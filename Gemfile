@@ -129,3 +129,9 @@ gem 'secure_headers'
 gem 'sidekiq'
 gem 'terser' # to support the Safe Navigation / Optional Chaining operator (?.) and avoid uglifier precompile issue
 gem 'tether-rails'
+
+# When first attempting to upgrade to Hyrax v3.4.2, this dry-monads gem was upgraded to v1.5.0.
+# This version threw the following error:
+# NameError: uninitialized constant Dry::Monads::Result::Transformer
+# Locking it to v1.4.x does not throw an error.
+gem 'dry-monads', '~> 1.4.0'

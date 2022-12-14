@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # OVERRIDE FILE from Hyrax v2.9.0
 module Hyrax
   class UsersController < ApplicationController
@@ -21,7 +23,7 @@ module Hyrax
 
     private
 
-    # TODO: this should move to a service.
+      # TODO: this should move to a service.
       # Returns a list of users excluding the system users and guest_users
       # @param query [String] the query string
       def search(query)
@@ -55,7 +57,7 @@ module Hyrax
       end
 
       def sort_value
-        sort = params[:sort].blank? ? "name" : params[:sort]
+        sort = params[:sort].presence || "name"
         case sort
         when 'name'
           'display_name'

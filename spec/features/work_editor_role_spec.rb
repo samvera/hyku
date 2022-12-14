@@ -23,6 +23,7 @@ RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, cohort
     admin_set.reload
   end
   let!(:work) { process_through_actor_stack(build(:work), work_depositor, admin_set.id, visibility) }
+
   before do
     login_as work_editor
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Hyrax::Forms::PermissionTemplateForm do
   subject { form }
 

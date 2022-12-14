@@ -25,7 +25,7 @@ module Admin
 
     def create
       new_group = Hyrax::Group.new(group_params)
-      new_group.name = group_params[:humanized_name].gsub(" ", "_").downcase
+      new_group.name = group_params[:humanized_name].tr(" ", "_").downcase
       if new_group.save
         redirect_to admin_groups_path, notice: t('hyku.admin.groups.flash.create.success', group: new_group.humanized_name)
       elsif new_group.invalid?
@@ -42,7 +42,7 @@ module Admin
     end
 
     def update
-      @group.name = group_params[:humanized_name].gsub(" ", "_").downcase
+      @group.name = group_params[:humanized_name].tr(" ", "_").downcase
       if @group.update(group_params)
         redirect_to admin_groups_path, notice: t('hyku.admin.groups.flash.update.success', group: @group.humanized_name)
       else
@@ -57,11 +57,11 @@ module Admin
       add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
       add_breadcrumb t(:'hyku.admin.groups.title.edit'), edit_admin_group_path
       add_breadcrumb t(:'hyku.admin.groups.title.remove'), request.path
-      
+
       flash.now[:alert] = "Default groups cannot be destroyed." if @group.is_default_group?
     end
 
-    def destroy  
+    def destroy
       return redirect_back(fallback_location: admin_groups_path) if @group.is_default_group?
       if @group.destroy
         redirect_to admin_groups_path, notice: t('hyku.admin.groups.flash.destroy.success', group: @group.humanized_name)

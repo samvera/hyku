@@ -103,7 +103,7 @@ class User < ApplicationRecord
     groups
   end
 
-  # TODO this needs tests and to be moved to the service
+  # TODO: this needs tests and to be moved to the service
   # Tmp shim to handle bug
   def group_roles
     hyrax_groups.map(&:roles).flatten.uniq
@@ -114,13 +114,11 @@ class User < ApplicationRecord
   # identify all the places this kind of situation can arise (invited users, etc)
   # and decide what to do about it.
   def add_default_group_memberships!
-    return if self.guest?
+    return if guest?
     return if Account.global_tenant?
 
-    Hyrax::Group.find_or_create_by!(name: 'registered').add_members_by_id(self.id)
+    Hyrax::Group.find_or_create_by!(name: 'registered').add_members_by_id(id)
 
-    if self.has_role?(:admin, Site.instance)
-      Hyrax::Group.find_or_create_by!(name: 'admin').add_members_by_id(self.id)
-    end
+    Hyrax::Group.find_or_create_by!(name: 'admin').add_members_by_id(id) if has_role?(:admin, Site.instance)
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # OVERRIDE FILE from Hyrax v2.9.0
 RSpec.describe 'collection', type: :feature, js: true, clean: true, cohort: 'alpha' do
   let(:user) { create(:user) }

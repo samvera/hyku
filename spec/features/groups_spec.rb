@@ -24,7 +24,7 @@ RSpec.describe 'Groups', type: :feature, js: true, clean: true, cohort: 'alpha' 
       visit "/admin/groups/#{users_group.id}/remove"
 
       expect(page).not_to have_content('Default groups cannot be destroyed.')
-      expect do 
+      expect do
         within(".callout-action") do
           click_link 'Remove'
         end
@@ -43,13 +43,13 @@ RSpec.describe 'Groups', type: :feature, js: true, clean: true, cohort: 'alpha' 
 
       visit "/admin/groups/#{managers_group.id}/roles"
       tr = find("#assigned-role-#{admin_role.id}")
-      
+
       expect(tr).to have_button('Remove', disabled: true)
     end
-    
+
     it 'can destroy a non-admin role in the Managers group' do
       dinosaur_role = managers_group.roles.find_by(name: 'dinosaur')
-      
+
       visit "/admin/groups/#{managers_group.id}/roles"
       tr = find("#assigned-role-#{dinosaur_role.id}")
 

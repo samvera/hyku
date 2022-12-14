@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hyrax
   module Workflow
     RSpec.describe PermissionQuery, slow_test: true, clean: true do

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # TODO(bkiahstroud): filename and location make sense?
 class RolesService
   ADMIN_ROLE = 'admin'
@@ -229,9 +230,7 @@ class RolesService
         u
       end
 
-      unless user.has_role?('superadmin')
-        user.roles << Role.find_or_create_by!(name: 'superadmin')
-      end
+      user.roles << Role.find_or_create_by!(name: 'superadmin') unless user.has_role?('superadmin')
 
       Account.find_each do |account|
         AccountElevator.switch!(account.cname)

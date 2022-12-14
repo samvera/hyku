@@ -40,7 +40,7 @@ module Hyrax
         group_or_role = Group.find_by(name: g) || Role.find_by(name: g)
         acl.grant(mode).to(group_or_role)
       end
-    end   
+    end
   end
 end
 

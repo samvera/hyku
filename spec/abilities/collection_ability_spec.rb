@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # OVERRIDE FILE from Hyrax 3.4.1
 require 'cancan/matchers'
 # rubocop:disable RSpec/FilePath
@@ -125,7 +127,7 @@ RSpec.describe Ability::CollectionAbility do
     context 'through its User roles' do
       let(:user) { FactoryBot.create(:collection_editor) }
 
-      it 'allows most abilities' do # rubocop:disable RSpec/ExampleLength
+      it 'allows most abilities' do
         is_expected.to be_able_to(:create, Collection)
         is_expected.to be_able_to(:create_any, Collection)
         is_expected.to be_able_to(:read_any, Collection)
@@ -167,7 +169,7 @@ RSpec.describe Ability::CollectionAbility do
         hyrax_group.add_members_by_id(user.id)
       end
 
-      it 'allows most abilities' do # rubocop:disable RSpec/ExampleLength
+      it 'allows most abilities' do
         is_expected.to be_able_to(:create, Collection)
         is_expected.to be_able_to(:create_any, Collection)
         is_expected.to be_able_to(:read_any, Collection)
@@ -206,7 +208,7 @@ RSpec.describe Ability::CollectionAbility do
     context 'through its User roles' do
       let(:user) { FactoryBot.create(:collection_reader) }
 
-      it 'allows read abilities' do # rubocop:disable RSpec/ExampleLength
+      it 'allows read abilities' do
         is_expected.to be_able_to(:read_any, Collection)
         is_expected.to be_able_to(:view_admin_show_any, Collection)
         is_expected.to be_able_to(:view_admin_show, collection)
@@ -247,7 +249,7 @@ RSpec.describe Ability::CollectionAbility do
         hyrax_group.add_members_by_id(user.id)
       end
 
-      it 'allows read abilities' do # rubocop:disable RSpec/ExampleLength
+      it 'allows read abilities' do
         is_expected.to be_able_to(:read_any, Collection)
         is_expected.to be_able_to(:view_admin_show_any, Collection)
         is_expected.to be_able_to(:view_admin_show, collection)
@@ -341,7 +343,7 @@ RSpec.describe Ability::CollectionAbility do
       is_expected.to be_able_to(:read, id)
     end
 
-    it 'denies non-deposit related abilities' do # rubocop:disable RSpec/ExampleLength
+    it 'denies non-deposit related abilities' do
       is_expected.not_to be_able_to(:manage, Collection)
       is_expected.not_to be_able_to(:manage_any, Collection)
       is_expected.not_to be_able_to(:edit, collection)

@@ -33,6 +33,7 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
     admin_set.reload
   end
   let!(:work) { process_through_actor_stack(build(:work), work_depositor, admin_set.id, visibility) }
+
   before do
     login_as work_editor
   end

@@ -32,7 +32,7 @@ RSpec.describe "Users trying to access a Public Work's show page", type: :reques
         email: tenant_user_attributes[:email],
         password: tenant_user_attributes[:password],
         password_confirmation: tenant_user_attributes[:password]
-      }}
+      } }
       @tenant_user = User.last
     end
 
@@ -49,7 +49,7 @@ RSpec.describe "Users trying to access a Public Work's show page", type: :reques
         email: tenant_user_attributes[:email],
         password: tenant_user_attributes[:password],
         password_confirmation: tenant_user_attributes[:password]
-      }}
+      } }
       @tenant_admin = User.last
 
       Apartment::Tenant.switch(account.tenant) do

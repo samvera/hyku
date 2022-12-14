@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # OVERRIDE FILE from Hryax 2.5.1
 require 'cancan/matchers'
 

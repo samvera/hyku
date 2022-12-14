@@ -151,7 +151,7 @@ RSpec.describe 'actions permitted by the collection_editor role', type: :feature
         public_work = FactoryBot.create(:work, member_of_collections: [collection], visibility: 'open')
         institutional_work = FactoryBot.create(:work, member_of_collections: [collection], visibility: 'authenticated')
         private_work = FactoryBot.create(:work, member_of_collections: [collection], visibility: 'restricted')
-        expect(collection.member_work_ids).to contain_exactly(*[public_work.id, institutional_work.id, private_work.id])
+        expect(collection.member_work_ids).to contain_exactly(public_work.id, institutional_work.id, private_work.id)
 
         visit "/dashboard/collections/#{collection.id}"
         expect(find("tr#document_#{public_work.id}")).not_to have_content('Remove')
@@ -301,7 +301,7 @@ RSpec.describe 'actions permitted by the collection_editor role', type: :feature
         public_work = FactoryBot.create(:work, member_of_collections: [collection], visibility: 'open')
         institutional_work = FactoryBot.create(:work, member_of_collections: [collection], visibility: 'authenticated')
         private_work = FactoryBot.create(:work, member_of_collections: [collection], visibility: 'restricted')
-        expect(collection.member_work_ids).to contain_exactly(*[public_work.id, institutional_work.id, private_work.id])
+        expect(collection.member_work_ids).to contain_exactly(public_work.id, institutional_work.id, private_work.id)
 
         visit "/dashboard/collections/#{collection.id}"
         expect(find("tr#document_#{public_work.id}")).not_to have_content('Remove')

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # OVERRIDE FILE from Hyrax 3.4.1 - Edit existing / add additional abilities
 module Hyrax
   module Ability
@@ -91,9 +93,7 @@ module Hyrax
           models.each do |collection_model|
             # Permit all actions (same collection permissions as admin users)
             can :manage, collection_model
-            can :manage, ::SolrDocument do |solr_doc|
-              solr_doc.collection?
-            end
+            can :manage, ::SolrDocument, &:collection?
             can :manage, ::String do |id|
               doc = permissions_doc(id)
               doc.collection?
@@ -103,17 +103,13 @@ module Hyrax
         # Can create, read, and edit/update all Collections
         elsif collection_editor?
           models.each { |collection_model| can %i[edit update create create_any], collection_model }
-          can %i[edit update], ::SolrDocument do |solr_doc|
-            solr_doc.collection?
-          end
+          can %i[edit update], ::SolrDocument, &:collection?
           can %i[edit update], ::String do |id|
             doc = permissions_doc(id)
             doc.collection?
           end
           models.each { |collection_model| can %i[read read_any view_admin_show view_admin_show_any], collection_model }
-          can %i[read read_any view_admin_show view_admin_show_any], ::SolrDocument do |solr_doc|
-            solr_doc.collection?
-          end
+          can %i[read read_any view_admin_show view_admin_show_any], ::SolrDocument, &:collection?
           can %i[read read_any view_admin_show view_admin_show_any], ::String do |id|
             doc = permissions_doc(id)
             doc.collection?
@@ -123,9 +119,7 @@ module Hyrax
         # Can read all Collections
         elsif collection_reader?
           models.each { |collection_model| can %i[read read_any view_admin_show view_admin_show_any], collection_model }
-          can %i[read read_any view_admin_show view_admin_show_any], ::SolrDocument do |solr_doc|
-            solr_doc.collection?
-          end
+          can %i[read read_any view_admin_show view_admin_show_any], ::SolrDocument, &:collection?
           can %i[read read_any view_admin_show view_admin_show_any], ::String do |id|
             doc = permissions_doc(id)
             doc.collection?

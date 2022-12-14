@@ -87,7 +87,7 @@ class Ability
 
     @all_user_and_group_roles = []
     RolesService::DEFAULT_ROLES.each do |role_name|
-      @all_user_and_group_roles |= [role_name.to_s] if self.public_send("#{role_name}?")
+      @all_user_and_group_roles |= [role_name.to_s] if public_send("#{role_name}?")
     end
 
     @all_user_and_group_roles

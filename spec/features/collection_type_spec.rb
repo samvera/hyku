@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # OVERRIDE FILE from Hyrax v2.9.0
 # - Set :js to true because some specs require it
 # - Changed #sign_in to #login_as (#sign_in was throwing undefined method errors)
@@ -449,7 +451,6 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true, cohort:
       end
     end
   end
-
 
   # OVERRIDE: new (non-hyrax) test cases below
 

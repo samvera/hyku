@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :hyku do
   namespace :roles do
     desc 'Create all default Roles and Hyrax::Groups in all tenants'

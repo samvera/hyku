@@ -1,5 +1,6 @@
-RSpec.describe 'Admin Dashboard', type: :request, singletenant: true, clean: true do
+# frozen_string_literal: true
 
+RSpec.describe 'Admin Dashboard', type: :request, singletenant: true, clean: true do
   context 'as a non logged-in user' do
     describe 'I cannot access the dashboard' do
       it 'redirects the user to the log-in page' do # You need to sign in or sign up before continuing
@@ -249,7 +250,7 @@ RSpec.describe 'Admin Dashboard', type: :request, singletenant: true, clean: tru
         expect(response.status).to eq(401)
       end
 
-      it 'renders a status of you are not authorized to access this page' do    # Collection Types
+      it 'renders a status of you are not authorized to access this page' do # Collection Types
         get '/admin/collection_types'
         expect(response.status).to eq(302)
       end

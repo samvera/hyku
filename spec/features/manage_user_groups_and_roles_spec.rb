@@ -40,7 +40,7 @@ RSpec.describe "The Manage Users table", type: :feature, js: true, clean: true, 
       expect(page).to have_content 'Add or Invite user via email'
       expect(page.has_select?('user_roles', with_options: [admin_role.name.titleize, user_manager_role.name.titleize])).to be true
       fill_in "Email address", with: 'user@test.com'
-      select "#{admin_role.name.titleize}", from: 'user_roles'
+      select admin_role.name.titleize.to_s, from: 'user_roles'
       click_on "Invite user"
       expect(page).to have_content 'An invitation email has been sent to user@test.com.'
     end

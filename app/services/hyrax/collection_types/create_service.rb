@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # OVERRIDE FILE from Hyrax v2.9.0
 # - Give the :collection_manager role MANAGE_ACCESS to all non-AdminSet CollectionTypes by default
 # - Give the :collection_editor role CREATE_ACCESS to all non-AdminSet CollectionTypes by default

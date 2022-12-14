@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 # rubocop:disable Metrics/ModuleLength
@@ -217,6 +219,7 @@ module Hyrax
         let(:group1) { described_class.create(name: "Pirate Studies") }
         let(:group2) { described_class.create(name: "Arcane Arts") }
         let(:edit_collection_role) { FactoryBot.create(:role, name: "Edit Collection") }
+
         it "can add a role" do
           group1.roles << edit_collection_role
           group2.roles << edit_collection_role

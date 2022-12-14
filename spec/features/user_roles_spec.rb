@@ -83,7 +83,6 @@ RSpec.describe 'User Roles', cohort: 'bravo' do
       expect(page).to have_content 'Remove Group'
       expect(page).to have_content 'This action is irreversible. It will remove all privileges group members have been assigned through this group.'
     end
-
   end
 
   context 'as a user reader' do
@@ -132,7 +131,6 @@ RSpec.describe 'User Roles', cohort: 'bravo' do
       visit "/admin/users"
       expect(page).not_to have_link 'Delete'
     end
-
   end
 
   context 'as a registered user' do
@@ -179,7 +177,7 @@ RSpec.describe 'User Roles', cohort: 'bravo' do
       click_on "Your activity"
       click_on "Profile"
       expect(page).to have_content "Profile"
-      expect(page).to have_content "#{user.email}"
+      expect(page).to have_content user.email.to_s
       expect(page).to have_content "Edit Profile"
     end
 
@@ -198,11 +196,9 @@ RSpec.describe 'User Roles', cohort: 'bravo' do
       expect(page).to have_content "Your profile has been updated"
       expect(page).to have_content "https://orcid.org/0000-0000-0000-0000"
     end
-
   end
 
   context 'as an unregistered user' do
-
     it 'can sign up' do
       visit "/"
       click_on "Login"
@@ -213,6 +209,5 @@ RSpec.describe 'User Roles', cohort: 'bravo' do
       click_on "Create account"
       expect(page).to have_content "Welcome! You have signed up successfully."
     end
-
   end
 end

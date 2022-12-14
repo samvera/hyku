@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'cancan/matchers'
 
 # rubocop:disable RSpec/FilePath
@@ -12,6 +14,7 @@ RSpec.describe Hyrax::Ability::UserAbility do
 
   context 'when user manager' do
     subject { Ability.new(user_manager) }
+
     let(:user_manager) { FactoryBot.create(:user_manager) }
 
     it 'allows all user abilities' do
@@ -29,11 +32,11 @@ RSpec.describe Hyrax::Ability::UserAbility do
       is_expected.to be_able_to(:update, hyrax_group)
       is_expected.to be_able_to(:destroy, hyrax_group)
     end
-
   end
 
   context 'when user reader' do
     subject { Ability.new(user_reader) }
+
     let(:user_reader) { FactoryBot.create(:user_reader) }
 
     it 'allows user read abilities' do
@@ -58,5 +61,4 @@ RSpec.describe Hyrax::Ability::UserAbility do
       is_expected.not_to be_able_to(:destroy, hyrax_group)
     end
   end
-
 end

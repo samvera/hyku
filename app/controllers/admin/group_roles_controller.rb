@@ -11,7 +11,7 @@ module Admin
 
     def index
       # OVERRIDE: AUTHORIZE AN EDIT ROLE TO ACCESS THE ROLES INDEX
-      authorize! :edit, Hyrax::Group 
+      authorize! :edit, Hyrax::Group
       add_breadcrumb t(:'hyrax.controls.home'), root_path
       add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
       add_breadcrumb t(:'hyku.admin.groups.title.edit'), edit_admin_group_path(@group)

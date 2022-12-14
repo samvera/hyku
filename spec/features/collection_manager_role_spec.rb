@@ -215,7 +215,7 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
 
         visit "/dashboard/collections/#{collection.id}"
         expect { find("tr#document_#{work.id}").find('.collection-remove.btn-danger').click }
-          .to change { collection.member_work_ids }.to eq([])
+          .to change(collection, :member_work_ids).to eq([])
         expect(page).to have_content('Collection was successfully updated.')
       end
 
@@ -225,7 +225,7 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
 
         visit "/dashboard/collections/#{collection.id}"
         expect { find("tr#document_#{work.id}").find('.collection-remove.btn-danger').click }
-          .to change { collection.member_work_ids }.to eq([])
+          .to change(collection, :member_work_ids).to eq([])
         expect(page).to have_content('Collection was successfully updated.')
       end
 
@@ -435,7 +435,7 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
 
         visit "/dashboard/collections/#{collection.id}"
         expect { find("tr#document_#{work.id}").find('.collection-remove.btn-danger').click }
-          .to change { collection.member_work_ids }.to eq([])
+          .to change(collection, :member_work_ids).to eq([])
         expect(page).to have_content('Collection was successfully updated.')
       end
 
@@ -445,7 +445,7 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
 
         visit "/dashboard/collections/#{collection.id}"
         expect { find("tr#document_#{work.id}").find('.collection-remove.btn-danger').click }
-          .to change { collection.member_work_ids }.to eq([])
+          .to change(collection, :member_work_ids).to eq([])
         expect(page).to have_content('Collection was successfully updated.')
       end
 

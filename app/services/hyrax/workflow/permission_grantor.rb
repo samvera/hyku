@@ -23,7 +23,8 @@ module Hyrax
       end
 
       def call
-        # This code must be invoked before calling `Sipity::Role.all` or the managing, approving, and depositing roles won't be there
+        # This code must be invoked before calling `Sipity::Role.all` or the managing,
+        # approving, and depositing roles won't be there
         register_default_sipity_roles!
 
         ActiveRecord::Base.transaction do

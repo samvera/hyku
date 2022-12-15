@@ -18,7 +18,11 @@ module Hyrax
 
     # Give registered users deposit access to default admin set
     def create_default_access_for(permission_template:, workflow:)
-      permission_template.access_grants.create(agent_type: 'group', agent_id: ::Ability.registered_group_name, access: Hyrax::PermissionTemplateAccess::DEPOSIT)
+      permission_template.access_grants.create(
+        agent_type: 'group',
+        agent_id: ::Ability.registered_group_name,
+        access: Hyrax::PermissionTemplateAccess::DEPOSIT
+      )
       deposit = Sipity::Role[Hyrax::RoleRegistry::DEPOSITING]
       # OVERRIDE: replace #new with #find_by(:name)
       workflow.update_responsibilities(role: deposit, agents: Hyrax::Group.find_by(name: 'registered'))

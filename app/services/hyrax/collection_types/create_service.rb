@@ -8,7 +8,8 @@ module Hyrax
   module CollectionTypes
     # @api public
     #
-    # Responsible for creating a CollectionType. If no params are given,the default user collection is assumed as defined by:
+    # Responsible for creating a CollectionType. If no params are given,
+    # the default user collection is assumed as defined by:
     #
     # * Hyrax::CollectionType::USER_COLLECTION_MACHINE_ID
     # * Hyrax::CollectionType::USER_COLLECTION_DEFAULT_TITLE

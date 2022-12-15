@@ -82,7 +82,8 @@ class User < ApplicationRecord
   # Example:
   #   u = User.last
   #   u.roles
-  #   => #<ActiveRecord::Associations::CollectionProxy [#<Role id: 8, name: "member", resource_type: "Hyrax::Group", resource_id: 2,...>]>
+  #   => #<ActiveRecord::Associations::CollectionProxy [#<Role id: 8, name: "member",
+  #      resource_type: "Hyrax::Group", resource_id: 2,...>]>
   #   u.hyrax_groups
   #   => [#<Hyrax::Group id: 2, name: "registered", description: nil,...>]
   def hyrax_groups

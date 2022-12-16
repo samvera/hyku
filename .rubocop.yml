@@ -35,6 +35,7 @@ Rails/DynamicFindBy:
 
 Rails/UnknownEnv:
   Environments:
+    - development
     - production
     - staging
     - test

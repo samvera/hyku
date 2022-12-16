@@ -44,8 +44,10 @@ module Hyrax
         end
 
         def grant_all_workflow_roles_to_creating_user_and_admins!
-          workflow_agents = [Hyrax::Group.find_by!(name: ::Ability.admin_group_name)] # The admin group should always receive workflow roles
-          workflow_agents << creating_user if creating_user # The default admin set does not have a creating user
+          # The admin group should always receive workflow roles
+          workflow_agents = [Hyrax::Group.find_by!(name: ::Ability.admin_group_name)]
+          # The default admin set does not have a creating user
+          workflow_agents << creating_user if creating_user
           workflow_agents |= Hyrax::Group.select { |g| g.has_site_role?(:admin) }.tap do |agent_list|
             ::User.find_each do |u|
               agent_list << u if u.has_role?(:admin, Site.instance)

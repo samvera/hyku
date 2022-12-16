@@ -33,6 +33,12 @@ Rails/DynamicFindBy:
   Exclude:
     - 'lib/importer/factory/object_factory.rb'
 
+Rails/UnknownEnv:
+  Environments:
+    - production
+    - staging
+    - test
+
 Metrics/LineLength:
   Max: 120
   Exclude:

@@ -81,7 +81,8 @@ class RolesService
       return '`AccountElevator.switch!` into an Account before creating default Hyrax::Groups' if Site.instance
                                                                                                       .is_a?(NilSite)
 
-      default_hyrax_groups_with_roles = DEFAULT_HYRAX_GROUPS_WITH_ATTRIBUTES.deep_merge(DEFAULT_ROLES_FOR_DEFAULT_HYRAX_GROUPS)
+      default_hyrax_groups_with_roles = DEFAULT_HYRAX_GROUPS_WITH_ATTRIBUTES
+                                        .deep_merge(DEFAULT_ROLES_FOR_DEFAULT_HYRAX_GROUPS)
 
       default_hyrax_groups_with_roles.each do |group_name, group_attrs|
         group_roles = group_attrs.delete(:roles)
@@ -207,7 +208,8 @@ class RolesService
     # NOTE: All AdminSets must have a permission template or this will fail. Run #create_admin_set_accesses first.
     def grant_workflow_roles_for_all_admin_sets!
       AdminSet.find_each do |admin_set|
-        Hyrax::Workflow::PermissionGrantor.grant_default_workflow_roles!(permission_template: admin_set.permission_template)
+        Hyrax::Workflow::PermissionGrantor
+          .grant_default_workflow_roles!(permission_template: admin_set.permission_template)
       end
     end
 
@@ -217,7 +219,7 @@ class RolesService
       stale_guest_users = User.unscoped.where(
         'guest = ? and updated_at < ?',
         true,
-        Time.now - 7.days
+        Time.current - 7.days
       )
       progress = ProgressBar.new(stale_guest_users.count)
 
@@ -273,7 +275,7 @@ class RolesService
             end
           end
 
-          puts "Email: #{user.email}\nRoles: #{user.roles.map(&:name)}\n\n"; nil
+          Rails.logger "Email: #{user.email}\nRoles: #{user.roles.map(&:name)}\n\n"
         end
       end
     end

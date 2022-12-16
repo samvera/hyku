@@ -59,7 +59,8 @@ module Admin
         role = Role.find_by(id: params[:role_id])
         return unless @group.name == ::Ability.admin_group_name && role.name == 'admin'
 
-        redirect_back(fallback_location: edit_admin_group_path(@group), flash: { error: "Admin role cannot be removed from this group" })
+        redirect_back(fallback_location:
+          edit_admin_group_path(@group), flash: { error: "Admin role cannot be removed from this group" })
       end
   end
 end

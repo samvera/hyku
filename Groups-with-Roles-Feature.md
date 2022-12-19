@@ -86,4 +86,4 @@ rake hyku:roles:destroy_registered_group_collection_type_participants # optional
   - [second inheritance question](https://notch8.slack.com/archives/CD47U8QCQ/p1615935043012800)
 
 ## Extra Resources
-https://docs.google.com/document/d/1dQta2JaT0rLPibl9XZNVt5VLskEWL9Ojym8EFKGdHYE/edit#heading=h.rrrlo1kmlxki
+(Managing Users, Groups and Permissions)[https://docs.google.com/document/d/1dQta2JaT0rLPibl9XZNVt5VLskEWL9Ojym8EFKGdHYE/edit#heading=h.rrrlo1kmlxki]

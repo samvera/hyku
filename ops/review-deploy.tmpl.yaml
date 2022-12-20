@@ -76,6 +76,8 @@ extraEnvVars: &envVars
     value: "%{tenant}.hyku-staging.example.com"
   - name: HYKU_ENABLED
     value: "true"
+  - name: NEGATIVE_CAPTCHA_SECRET
+    value: $NEGATIVE_CAPTCHA_SECRET
   - name: SOLR_ADMIN_USER
     value: admin
   - name: SOLR_COLLECTION_NAME

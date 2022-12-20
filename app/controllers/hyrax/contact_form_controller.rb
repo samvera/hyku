@@ -15,13 +15,11 @@ module Hyrax
     include Blacklight::AccessControls::Catalog
     before_action :build_contact_form
     layout 'homepage'
-
     # OVERRIDE: Adding inject theme views method for theming
     around_action :inject_theme_views
-
     class_attribute :model_class
     self.model_class = Hyrax::ContactForm
-
+    before_action :setup_negative_captcha, only: [:new, :create]
     # OVERRIDE: Hyrax v3.4.0 Add for theming
     # The search builder for finding recent documents
     # Override of Blacklight::RequestBuilders
@@ -49,15 +47,18 @@ module Hyrax
     end
 
     def create
-      # not spam and a valid form
-      if @contact_form.valid?
+      # not spam, form is valid, and captcha is valid
+      @captcha.values[:category] = params[:contact_form][:category]
+      @captcha.values[:contact_method] = params[:contact_form][:contact_method]
+      @contact_form = model_class.new(@captcha.values)
+      if @contact_form.valid? && @captcha.valid?
         ContactMailer.contact(@contact_form).deliver_now
         flash.now[:notice] = 'Thank you for your message!'
         after_deliver
-        @contact_form = model_class.new
       else
         flash.now[:error] = 'Sorry, this message was not sent successfully. ' +
-                            @contact_form.errors.full_messages.map(&:to_s).join(", ")
+                            @contact_form.errors.full_messages.map(&:to_s).join(", ") + 
+                            "" + @captcha.error
       end
       render :new
     rescue RuntimeError => exception
@@ -109,6 +110,19 @@ module Hyrax
         else
           yield
         end
+      end
+
+      def setup_negative_captcha
+        @captcha = NegativeCaptcha.new(
+          # A secret key entered in environment.rb. 'rake secret' will give you a good one.
+          secret: ENV.fetch('NEGATIVE_CAPTCHA_SECRET', 'default-value-change-me'),
+          spinner: request.remote_ip,
+          # Whatever fields are in your form
+          fields: [:name, :email, :subject, :message],
+          # If you wish to override the default CSS styles (position: absolute; left: -2000px;) used to position the fields off-screen
+          css: "display: none",
+          params: params
+        )
       end
   end
 end

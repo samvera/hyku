@@ -78,8 +78,9 @@ class RolesService
 
     def create_default_hyrax_groups_with_roles!
       # Prevent Hyrax::Groups from being created in the public schema
-      return '`AccountElevator.switch!` into an Account before creating default Hyrax::Groups' if Site.instance
-                                                                                                      .is_a?(NilSite)
+      if Site.instance.is_a?(NilSite)
+        return '`AccountElevator.switch!` into an Account before creating default Hyrax::Groups'
+      end
 
       default_hyrax_groups_with_roles = DEFAULT_HYRAX_GROUPS_WITH_ATTRIBUTES
                                         .deep_merge(DEFAULT_ROLES_FOR_DEFAULT_HYRAX_GROUPS)

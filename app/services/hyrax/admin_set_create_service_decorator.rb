@@ -1,11 +1,32 @@
 # frozen_string_literal: true
 
 module Hyrax
-  # This decorator is used to override logic found in Hyrax v3.4.1
+  # This decorator is used to override logic found in Hyrax v3.4.2
   #
   # Because Hyku has converted the Hyrax::Group model from a PORO to a db-backed active record object,
   # we have to query for existing Hyrax groups instead of initializing empty ones.
   module AdminSetCreateServiceDecorator
+    # Creates an admin set, setting the creator and the default access controls.
+    # @return [Hyrax::AdministrativeSet] The fully created admin set.
+    # @raise [RuntimeError] if admin set cannot be persisted
+    def create!
+      admin_set.creator = [creating_user.user_key] if creating_user
+      updated_admin_set = Hyrax.persister.save(resource: admin_set).tap do |result|
+        if result
+          ActiveRecord::Base.transaction do
+            permission_template = PermissionTemplate.find_by(source_id: result.id.to_s) ||
+                                  permissions_create_service.create_default(collection: result,
+                                                                            creating_user: creating_user)
+            workflow = create_workflows_for(permission_template: permission_template)
+            # OVERRIDE: Remove call to #create_default_access_for, which granted
+            # deposit access to all registered users for the Default Admin Set
+          end
+        end
+      end
+      Hyrax.publisher.publish('collection.metadata.updated', collection: updated_admin_set, user: creating_user)
+      updated_admin_set
+    end
+
     def workflow_agents
       [
         # OVERRIDE: replace #new with #find_by(:name)
@@ -14,14 +35,6 @@ module Hyrax
         # The default admin set does not have a creating user
         agent_list << creating_user if creating_user
       end
-    end
-
-    # Give registered users deposit access to default admin set
-    def create_default_access_for(permission_template:, workflow:)
-      permission_template.access_grants.create(agent_type: 'group', agent_id: ::Ability.registered_group_name, access: Hyrax::PermissionTemplateAccess::DEPOSIT)
-      deposit = Sipity::Role[Hyrax::RoleRegistry::DEPOSITING]
-      # OVERRIDE: replace #new with #find_by(:name)
-      workflow.update_responsibilities(role: deposit, agents: Hyrax::Group.find_by(name: 'registered'))
     end
   end
 end

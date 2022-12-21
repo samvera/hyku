@@ -165,7 +165,8 @@
         inheritable_discover_access_group_ssim,inheritable_discover_access_person_ssim,
         inheritable_read_access_group_ssim,inheritable_read_access_person_ssim,
         inheritable_edit_access_group_ssim,inheritable_edit_access_person_ssim,
-        inheritable_embargo_release_date_dtsi
+        inheritable_embargo_release_date_dtsi,
+        has_model_ssim
       </str>
     </lst>
   </requestHandler>

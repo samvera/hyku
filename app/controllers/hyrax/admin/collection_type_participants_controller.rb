@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
 # OVERRIDE FILE from Hryax v2.9.0
-require_dependency Hyrax::Engine.root
-                                .join('app', 'controllers', 'hyrax', 'admin', 'collection_type_participants_controller')
-                                .to_s
+require_dependency(
+  Hyrax::Engine
+    .root
+    .join('app', 'controllers', 'hyrax', 'admin', 'collection_type_participants_controller')
+    .to_s
+)
 
 Hyrax::Admin::CollectionTypeParticipantsController.class_eval do
   before_action :admin_group_participant_cannot_be_destroyed, only: :destroy

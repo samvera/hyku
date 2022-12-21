@@ -276,7 +276,7 @@ class RolesService
             end
           end
 
-          Rails.logger "Email: #{user.email}\nRoles: #{user.roles.map(&:name)}\n\n"
+          puts "Email: #{user.email}\nRoles: #{user.roles.map(&:name)}\n\n" # rubocop:disable Rails/Output
         end
       end
     end

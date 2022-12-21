@@ -35,7 +35,8 @@ module Hyrax
                        { agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE, agent_id: 'collection_manager', access: Hyrax::CollectionTypeParticipant::MANAGE_ACCESS },
                        # OVERRIDE: add :collection_editor role to participants array with CREATE_ACCESS
                        { agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE, agent_id: 'collection_editor', access: Hyrax::CollectionTypeParticipant::CREATE_ACCESS }].tap do |participants|
-                         # OVERRIDE: exclude group with CREATE_ACCESS for ::Ability.registered_group_name (all registered users) if we are restricting permissions
+                         # OVERRIDE: exclude group with CREATE_ACCESS for ::Ability.registered_group_name
+                         # (all registered users) if we are restricting permissions
                          unless ::ENV['SETTINGS__RESTRICT_CREATE_AND_DESTROY_PERMISSIONS'] == 'true'
                            participants << { agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE, agent_id: ::Ability.registered_group_name, access: Hyrax::CollectionTypeParticipant::CREATE_ACCESS }
                          end

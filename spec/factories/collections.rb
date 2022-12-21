@@ -75,9 +75,9 @@ FactoryBot.define do
   # Tests that create a Fedora Object are very slow.  This factory lets you control which parts of the object ecosystem
   # get built.
   #
-  # PREFERRED: Use build whenever possible.  You can control the creation of the permission template, collection type, and
-  #            solr document by passing parameters to the build(:collection_lw) method.  That way you can build only the parts
-  #            needed for a specific test.
+  # PREFERRED: Use build whenever possible.  You can control the creation of the permission template, collection type,
+  #            and solr document by passing parameters to the build(:collection_lw) method.  That way you can build
+  #            only the parts needed for a specific test.
   #
   # AVOID: Do not use create unless absolutely necessary.  It will create everything including the Fedora object.
   #
@@ -85,13 +85,16 @@ FactoryBot.define do
   #          NOTE: A user is automatically created as the owner of the collection.
   #   let(:collection) { build(:collection_lw) }
   #
-  # @example Simple build of a collection with no additional parts created.  User is the owner of the collection.  Lightest weight.
+  # @example Simple build of a collection with no additional parts created.  User is the owner of the collection.
+  # Lightest weight.
   #   let(:collection) { build(:collection_lw, user:) }
   #
-  # @example Simple build of a collection with only solr-document.  Owner is given edit-access in solr-document. Light weight.
+  # @example Simple build of a collection with only solr-document.  Owner is given edit-access in solr-document.
+  # Light weight.
   #   let(:collection) { build(:collection_lw, with_solr_document: true) }
   #
-  # @example Simple build of a collection with only a permission template created.  Owner is set as a manager.  Light weight.
+  # @example Simple build of a collection with only a permission template created.  Owner is set as a manager.
+  # Light weight.
   #   let(:collection) { build(:collection_lw, with_permission_template: true) }
   #
   # @example Build a collection with only a permission template created.  Permissions are set based on
@@ -145,8 +148,9 @@ FactoryBot.define do
   #   let(:collection) { build(:collection_lw, collection_type_gid: collection_type.gid) }
   #
   # @example Build a collection with nesting fields set in the solr document.  Light weight.
-  #          NOTE: The property `with_nesting_attributes` is only supported for building collections.  The attributes will
-  #                be overwritten by the save process when creating a collection, thus effectively ignoring this property.
+  #          NOTE: The property `with_nesting_attributes` is only supported for building collections.  The attributes
+  #                will be overwritten by the save process when creating a collection, thus effectively ignoring
+  #                this property.
   #   let(:collection) { build(:collection_lw, with_nesting_attributes: { ancestors: ['Parent_1'],
   #                                                                       parent_ids: ['Parent_1'],
   #                                                                       pathnames: ['Parent_1/Collection123'],
@@ -155,7 +159,8 @@ FactoryBot.define do
   # @example Create a collection with everything.  Extreme heavy weight.  This is very slow and should be avoided.
   #          NOTE: Everything gets created.
   #          NOTE: Build options effect created collections as follows...
-  #                 * `with_permission_template` can specify user/group permissions.  A permission template is always created.
+  #                 * `with_permission_template` can specify user/group permissions.
+  #                    A permission template is always created.
   #                 * `collection_type_settings` can specify to create a collection type with specific settings
   #                 * `with_solr_document` is ignored.  A solr document is always created.
   #                 * `with_nested_attributes` is ignored.
@@ -163,7 +168,8 @@ FactoryBot.define do
   #   let(:collection) { create(:collection_lw) }
   #
   # @example Create collections for use with nested collection index testing.
-  #          NOTE: For light weight nested collection testing using solr documents only, see `with_nested_attributes` above
+  #          NOTE: For light weight nested collection testing using solr documents only,
+  #                see `with_nested_attributes` above
   #          NOTE: Full indexed nested collections with solr documents and Fedora objects are created by...
   #                 * creating multiple collections (expensive)
   #                 * nesting them and saving - causing reindex of the Fedora objects (expensive)
@@ -281,7 +287,8 @@ FactoryBot.define do
     end
     private_class_method :permission_from_template
 
-    # @param [Hash] permission_template_attributes where names identify the role and value are the user keys for that role
+    # @param [Hash] permission_template_attributes where names
+    # identify the role and value are the user keys for that role
     # @parem [String] creator_user is the user who created the new collection
     # @param [Boolean] include_creator, when true, adds the creator_user as a manager
     # @returns array of user keys
@@ -291,7 +298,8 @@ FactoryBot.define do
       managers
     end
 
-    # @param [Hash] permission_template_attributes where names identify the role and value are the user keys for that role
+    # @param [Hash] permission_template_attributes where names
+    # identify the role and value are the user keys for that role
     # @returns array of user keys
     # OVERRIDE: add default PermissionTemplateAccess group with :manage access for :collection_manager role
     def self.group_managers(permission_template_attributes)
@@ -300,27 +308,32 @@ FactoryBot.define do
       group_managers
     end
 
-    # @param [Hash] permission_template_attributes where names identify the role and value are the user keys for that role
+    # @param [Hash] permission_template_attributes where names
+    # identify the role and value are the user keys for that role
     # @returns array of user keys
     def self.user_depositors(permission_template_attributes)
       permission_from_template(permission_template_attributes, :deposit_users)
     end
 
-    # @param [Hash] permission_template_attributes where names identify the role and value are the user keys for that role
+    # @param [Hash] permission_template_attributes where names
+    # identify the role and value are the user keys for that role
     # @returns array of user keys
     def self.group_depositors(permission_template_attributes)
       permission_from_template(permission_template_attributes, :deposit_groups)
     end
 
-    # @param [Hash] permission_template_attributes where names identify the role and value are the user keys for that role
+    # @param [Hash] permission_template_attributes where names
+    # identify the role and value are the user keys for that role
     # @returns array of user keys
     def self.user_viewers(permission_template_attributes)
       permission_from_template(permission_template_attributes, :view_users)
     end
 
-    # @param [Hash] permission_template_attributes where names identify the role and value are the user keys for that role
+    # @param [Hash] permission_template_attributes where names
+    # identify the role and value are the user keys for that role
     # @returns array of user keys
-    # OVERRIDE: add default PermissionTemplateAccess groups with :view access for :collection_editor and :collection_reader roles
+    # OVERRIDE: add default PermissionTemplateAccess groups with
+    # :view access for :collection_editor and :collection_reader roles
     def self.group_viewers(permission_template_attributes)
       group_viewers = permission_from_template(permission_template_attributes, :view_groups)
       group_viewers |= ['collection_editor', 'collection_reader']
@@ -328,7 +341,8 @@ FactoryBot.define do
     end
 
     # Process the collection_type_settings transient property such that...
-    # * creates the collection type with specified settings if collection_type_settings has settings (ignores collection_type_gid)
+    # * creates the collection type with specified settings if collection_type_settings
+    #   has settings (ignores collection_type_gid)
     # * uses passed in collection type if collection_type_gid is specified AND collection_type_settings is nil
     # * uses default User Collection type if neither are specified
     # @param [Collection] collection object being built/created by the factory
@@ -383,7 +397,8 @@ FactoryBot.define do
     # @param [Class] evaluator holding the transient properties for the current build/creation process
     def self.process_with_solr_document(collection, evaluator)
       return unless evaluator.with_solr_document
-      return if evaluator.with_nesting_attributes.present? && collection.nestable? # will create the solr document there instead
+      # will create the solr document there instead
+      return if evaluator.with_nesting_attributes.present? && collection.nestable?
       ActiveFedora::SolrService.add(solr_document_with_permissions(collection, evaluator), commit: true)
     end
 

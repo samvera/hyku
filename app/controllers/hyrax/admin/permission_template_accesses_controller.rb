@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 # OVERRIDE FILE from Hryax v2.9.0
-require_dependency Hyrax::Engine.root
-                                .join('app', 'controllers', 'hyrax', 'admin', 'permission_template_accesses_controller')
-                                .to_s
+require_dependency(
+  Hyrax::Engine.root
+    .join('app', 'controllers', 'hyrax', 'admin', 'permission_template_accesses_controller')
+    .to_s
+)
 
 Hyrax::Admin::PermissionTemplateAccessesController.class_eval do
   # OVERRIDE: Only prevent delete if it is for the admin group's MANAGE access

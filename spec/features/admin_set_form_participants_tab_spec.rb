@@ -44,12 +44,20 @@ RSpec.describe 'AdminSet form Participants tab', type: :feature, js: true, clean
       end
 
       it 'displays the groups humanized name' do
-        expect(page.has_select?('permission_template_access_grants_attributes_0_agent_id', with_options: [group.humanized_name])).to be true
+        expect(
+          page.has_select?(
+            'permission_template_access_grants_attributes_0_agent_id',
+            with_options: [group.humanized_name]
+          )
+        ).to be true
       end
 
       it 'can add a group as a Manager of the admin set' do
         within('form#group-participants-form') do
-          find('select#permission_template_access_grants_attributes_0_agent_id option', text: group.humanized_name).click
+          find(
+            'select#permission_template_access_grants_attributes_0_agent_id option',
+            text: group.humanized_name
+          ).click
           find('select#permission_template_access_grants_attributes_0_access option', text: 'Manager').click
           find('input.btn-info').click
         end
@@ -62,25 +70,33 @@ RSpec.describe 'AdminSet form Participants tab', type: :feature, js: true, clean
 
       it 'can add a group as a Depositor of the admin set' do
         within('form#group-participants-form') do
-          find('select#permission_template_access_grants_attributes_0_agent_id option', text: group.humanized_name).click
+          find(
+            'select#permission_template_access_grants_attributes_0_agent_id option',
+            text: group.humanized_name
+          ).click
           find('select#permission_template_access_grants_attributes_0_access option', text: 'Depositor').click
           find('input.btn-info').click
         end
 
         expect(find('table.managers-table')).not_to have_content(group.name.titleize)
         expect(find('table.depositors-table')).to have_content(group.name.titleize)
-        expect(page).not_to have_selector('table.viewers-table') # group does not have access if the table does not render
+        # group does not have access if the table does not render
+        expect(page).not_to have_selector('table.viewers-table')
       end
 
       it 'can add a group as a Viewer of the admin set' do
         within('form#group-participants-form') do
-          find('select#permission_template_access_grants_attributes_0_agent_id option', text: group.humanized_name).click
+          find(
+            'select#permission_template_access_grants_attributes_0_agent_id option',
+            text: group.humanized_name
+          ).click
           find('select#permission_template_access_grants_attributes_0_access option', text: 'Viewer').click
           find('input.btn-info').click
         end
 
         expect(find('table.managers-table')).not_to have_content(group.name.titleize)
-        expect(page).not_to have_selector('table.depositors-table') # group does not have access if the table does not render
+        # group does not have access if the table does not render
+        expect(page).not_to have_selector('table.depositors-table')
         expect(find('table.viewers-table')).to have_content(group.name.titleize)
       end
     end
@@ -91,36 +107,53 @@ RSpec.describe 'AdminSet form Participants tab', type: :feature, js: true, clean
       end
 
       it 'displays the agent_type in title case' do
-        manager_row_html = find('table.managers-table').find(:xpath, '//td[@data-agent="admin"]').find(:xpath, '..')['innerHTML']
+        manager_row_html = find('table.managers-table')
+                           .find(:xpath, '//td[@data-agent="admin"]')
+                           .find(:xpath, '..')['innerHTML']
         expect(manager_row_html).to include('<td>Group</td>')
       end
 
       it 'shows a disabled remove button next to Repository Administrator group as a Manager' do
-        manager_row_html = find('table.managers-table').find(:xpath, '//td[@data-agent="admin"]').find(:xpath, '..')['innerHTML']
+        manager_row_html = find('table.managers-table')
+                           .find(:xpath, '//td[@data-agent="admin"]')
+                           .find(:xpath, '..')['innerHTML']
         expect(manager_row_html).to include('<td data-agent="admin">Repository Administrators</td>')
-        expect(manager_row_html).to include('<input class="btn btn-danger" disabled="disabled" title="The repository administrators group cannot be removed" type="submit" value="Remove">')
+        expect(manager_row_html).to include(
+          '<input class="btn btn-danger" disabled="disabled" ' \
+          'title="The repository administrators group cannot be removed" type="submit" value="Remove">'
+        )
       end
 
       it 'shows an enabled remove button next to Repository Administrator group as a Depositor' do
         within('form#group-participants-form') do
-          find('select#permission_template_access_grants_attributes_0_agent_id option', text: "Repository Administrators").click
+          find(
+            'select#permission_template_access_grants_attributes_0_agent_id option',
+            text: "Repository Administrators"
+          ).click
           find('select#permission_template_access_grants_attributes_0_access option', text: 'Depositor').click
           find('input.btn-info').click
         end
 
-        depositor_row_html = find('table.depositors-table').find(:xpath, './/td[@data-agent="admin"]').find(:xpath, '..')['innerHTML']
+        depositor_row_html = find('table.depositors-table')
+                             .find(:xpath, './/td[@data-agent="admin"]')
+                             .find(:xpath, '..')['innerHTML']
         expect(depositor_row_html).to include('<td data-agent="admin">Repository Administrators</td>')
         expect(depositor_row_html).to include('<input class="btn btn-danger" type="submit" value="Remove">')
       end
 
       it 'shows an enabled remove button next to Repository Administrator group as a Viewer' do
         within('form#group-participants-form') do
-          find('select#permission_template_access_grants_attributes_0_agent_id option', text: "Repository Administrators").click
+          find(
+            'select#permission_template_access_grants_attributes_0_agent_id option',
+            text: "Repository Administrators"
+          ).click
           find('select#permission_template_access_grants_attributes_0_access option', text: 'Viewer').click
           find('input.btn-info').click
         end
 
-        viewer_row_html = find('table.viewers-table').find(:xpath, './/td[@data-agent="admin"]').find(:xpath, '..')['innerHTML']
+        viewer_row_html = find('table.viewers-table')
+                          .find(:xpath, './/td[@data-agent="admin"]')
+                          .find(:xpath, '..')['innerHTML']
         expect(viewer_row_html).to include('<td data-agent="admin">Repository Administrators</td>')
         expect(viewer_row_html).to include('<input class="btn btn-danger" type="submit" value="Remove">')
       end

@@ -8,7 +8,14 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true, cohort:
   let(:admin_user) { create(:admin) }
   let(:exhibit_title) { 'Exhibit' }
   let(:exhibit_description) { 'Description for exhibit collection type.' }
-  let(:exhibit_collection_type) { create(:collection_type, title: exhibit_title, description: exhibit_description, creator_user: admin_user) }
+  let(:exhibit_collection_type) do
+    create(
+      :collection_type,
+      title: exhibit_title,
+      description: exhibit_description,
+      creator_user: admin_user
+    )
+  end
   let(:user_collection_type) { create(:user_collection_type) }
   let(:admin_set_type) { create(:admin_set_collection_type) }
   let(:solr_gid) { Collection.collection_type_gid_document_field_name }
@@ -32,8 +39,20 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true, cohort:
 
       expect(page).to have_link('Edit', count: 3)
       expect(page).to have_link('Edit', href: hyrax.edit_admin_collection_type_path(admin_set_type.id, locale: 'en'))
-      expect(page).to have_link('Edit', href: hyrax.edit_admin_collection_type_path(user_collection_type.id, locale: 'en'))
-      expect(page).to have_link('Edit', href: hyrax.edit_admin_collection_type_path(exhibit_collection_type.id, locale: 'en'))
+      expect(page).to have_link(
+        'Edit',
+        href: hyrax.edit_admin_collection_type_path(
+          user_collection_type.id,
+          locale: 'en'
+        )
+      )
+      expect(page).to have_link(
+        'Edit',
+        href: hyrax.edit_admin_collection_type_path(
+          exhibit_collection_type.id,
+          locale: 'en'
+        )
+      )
       expect(page).to have_button('Delete', count: 2) # 1: Collection Type, 2: delete modal
     end
   end
@@ -118,7 +137,8 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true, cohort:
       click_button('Save')
 
       # Confirm error message is displayed.
-      expect(page).to have_content 'Save was not successful because title has already been taken, and machine_id has already been taken.'
+      expect(page).to have_content 'Save was not successful because title has already been taken, ' \
+                                   'and machine_id has already been taken.'
     end
   end
 
@@ -133,7 +153,12 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true, cohort:
 
       it 'displays the groups humanized name' do
         expect(page).to have_content 'Add Participants'
-        expect(page.has_select?('collection_type_participant_agent_id', with_options: [group.humanized_name])).to be true
+        expect(
+          page.has_select?(
+            'collection_type_participant_agent_id',
+            with_options: [group.humanized_name]
+          )
+        ).to be true
       end
     end
 
@@ -146,12 +171,16 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true, cohort:
       end
 
       it 'displays the agent_type in title case' do
-        manager_row_html = find('table.managers-table').find(:xpath, '//td[@data-agent="admin"]').find(:xpath, '..')['innerHTML']
+        manager_row_html = find('table.managers-table')
+                           .find(:xpath, '//td[@data-agent="admin"]')
+                           .find(:xpath, '..')['innerHTML']
         expect(manager_row_html).to include('<td>Group</td>')
       end
 
       it 'shows a disabled remove button next to Repository Administrator group as a Manager' do
-        manager_row_html = find('table.managers-table').find(:xpath, '//td[@data-agent="admin"]', match: :first).find(:xpath, '..')['innerHTML']
+        manager_row_html = find('table.managers-table')
+                           .find(:xpath, '//td[@data-agent="admin"]', match: :first)
+                           .find(:xpath, '..')['innerHTML']
         expect(manager_row_html).to include('<td data-agent="admin">Repository Administrators</td>')
         expect(manager_row_html).to include('<a class="btn btn-sm btn-danger disabled" disabled="disabled"')
       end
@@ -167,7 +196,9 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true, cohort:
         # wait one second for the item to populate in the table and check for it's existence
         sleep 1
         expect(page).to have_content("Participants Updated")
-        creator_row_html = find('table.creators-table').find(:xpath, './/td[@data-agent="admin"]').find(:xpath, '..')['innerHTML']
+        creator_row_html = find('table.creators-table')
+                           .find(:xpath, './/td[@data-agent="admin"]')
+                           .find(:xpath, '..')['innerHTML']
         expect(creator_row_html).to include('<td data-agent="admin">Repository Administrators</td>')
         expect(creator_row_html).not_to include('<a class="btn btn-sm btn-danger disabled" disabled="disabled"')
       end
@@ -349,7 +380,13 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true, cohort:
     end
 
     context 'when collections exist of this type' do
-      let!(:collection1) { create(:public_collection_lw, user: build(:user), collection_type_gid: exhibit_collection_type.gid) }
+      let!(:collection1) do
+        create(
+          :public_collection_lw,
+          user: build(:user),
+          collection_type_gid: exhibit_collection_type.gid
+        )
+      end
 
       before do
         exhibit_collection_type
@@ -379,7 +416,10 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true, cohort:
   describe 'delete collection type' do
     context 'when there are no collections of this type' do
       let!(:empty_collection_type) { create(:collection_type, title: 'Empty Type', creator_user: admin_user) }
-      let!(:delete_modal_text) { 'Deleting this collection type will permanently remove the type and its settings from the repository. Are you sure you want to delete this collection type?' }
+      let!(:delete_modal_text) do
+        'Deleting this collection type will permanently remove the type and its settings from the repository. ' \
+        'Are you sure you want to delete this collection type?'
+      end
       let!(:deleted_flash_text) { "The collection type #{empty_collection_type.title} has been deleted." }
 
       before do
@@ -409,7 +449,13 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true, cohort:
 
     context 'when collections exist of this type' do
       let!(:not_empty_collection_type) { create(:collection_type, title: 'Not Empty Type', creator_user: admin_user) }
-      let!(:collection1) { create(:public_collection_lw, user: admin_user, collection_type_gid: not_empty_collection_type.gid) }
+      let!(:collection1) do
+        create(
+          :public_collection_lw,
+          user: admin_user,
+          collection_type_gid: not_empty_collection_type.gid
+        )
+      end
       # OVERRIDE: split deny_delete_modal_text into two variables since the test was failing over the newline character
       let(:deny_delete_modal_text_1) do
         'You cannot delete this collection type because one or more collections of this type have already been created.'
@@ -455,7 +501,13 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true, cohort:
   # OVERRIDE: new (non-hyrax) test cases below
 
   describe 'default collection type participants' do
-    let!(:non_role_group) { FactoryBot.create(:group, name: 'town_of_bedrock', humanized_name: 'Town of Bedrock') }
+    let!(:non_role_group) do
+      FactoryBot.create(
+        :group,
+        name: 'town_of_bedrock',
+        humanized_name: 'Town of Bedrock'
+      )
+    end
     let!(:user) { FactoryBot.create(:user, email: 'user@example.com') }
     let(:title) { 'Title Test' }
 
@@ -484,7 +536,9 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true, cohort:
         # wait one second for the item to populate in the table and check for it's existence
         sleep 1
         expect(page).to have_content("Participants Updated")
-        manager_row_html = find('table.managers-table').find(:xpath, '//td[@data-agent="town_of_bedrock"]').find(:xpath, '..')['innerHTML']
+        manager_row_html = find('table.managers-table')
+                           .find(:xpath, '//td[@data-agent="town_of_bedrock"]')
+                           .find(:xpath, '..')['innerHTML']
         expect(manager_row_html).to include('<td data-agent="town_of_bedrock">Town Of Bedrock</td>')
       end
 
@@ -536,7 +590,9 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true, cohort:
         # wait one second for the item to populate in the table and check for it's existence
         sleep 1
         expect(page).to have_content("Participants Updated")
-        manager_row_html = find('table.managers-table').find(:xpath, '//td[@data-agent="user@example.com"]').find(:xpath, '..')['innerHTML']
+        manager_row_html = find('table.managers-table')
+                           .find(:xpath, '//td[@data-agent="user@example.com"]')
+                           .find(:xpath, '..')['innerHTML']
         expect(manager_row_html).to include('<td data-agent="user@example.com">user@example.com</td>')
         expect(manager_row_html).to include('<td>User</td>')
       end

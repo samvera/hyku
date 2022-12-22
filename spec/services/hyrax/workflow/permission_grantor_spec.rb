@@ -3,7 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe Hyrax::Workflow::PermissionGrantor do
-  subject(:permission_grantor) { described_class.new(permission_template: permission_template, creating_user: creating_user) }
+  subject(:permission_grantor) do
+    described_class.new(
+      permission_template: permission_template,
+      creating_user: creating_user
+    )
+  end
 
   let(:permission_template) { build(:permission_template) }
   let(:creating_user) { create(:user) }

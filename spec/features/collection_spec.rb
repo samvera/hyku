@@ -9,12 +9,30 @@ RSpec.describe 'collection', type: :feature, js: true, clean: true, cohort: 'alp
 
   describe 'collection show page' do
     let(:collection) do
-      create(:public_collection_lw, user: user, description: ['collection description'], collection_type_settings: :nestable)
+      create(
+        :public_collection_lw,
+        user: user, description: ['collection description'],
+        collection_type_settings: :nestable
+      )
     end
     let!(:work1) { create(:work, title: ["King Louie"], member_of_collections: [collection], user: user) }
     let!(:work2) { create(:work, title: ["King Kong"], member_of_collections: [collection], user: user) }
-    let!(:col1) { create(:public_collection_lw, title: ["Sub-collection 1"], member_of_collections: [collection], user: user) }
-    let!(:col2) { create(:public_collection_lw, title: ["Sub-collection 2"], member_of_collections: [collection], user: user) }
+    let!(:col1) do
+      create(
+        :public_collection_lw,
+        title: ["Sub-collection 1"],
+        member_of_collections: [collection],
+        user: user
+      )
+    end
+    let!(:col2) do
+      create(
+        :public_collection_lw,
+        title: ["Sub-collection 2"],
+        member_of_collections: [collection],
+        user: user
+      )
+    end
 
     before do
       login_as user
@@ -68,7 +86,13 @@ RSpec.describe 'collection', type: :feature, js: true, clean: true, cohort: 'alp
 
     context "with a non-nestable collection type" do
       let(:collection) do
-        build(:public_collection_lw, user: user, description: ['collection description'], collection_type_settings: :not_nestable, with_solr_document: true, with_permission_template: true)
+        build(
+          :public_collection_lw,
+          user: user,
+          description: ['collection description'],
+          collection_type_settings: :not_nestable,
+          with_solr_document: true, with_permission_template: true
+        )
       end
 
       it "displays basic information on its show page" do
@@ -154,7 +178,12 @@ RSpec.describe 'collection', type: :feature, js: true, clean: true, cohort: 'alp
 
       it 'displays the groups humanized name' do
         expect(page).to have_content 'Add Sharing'
-        expect(page.has_select?('permission_template_access_grants_attributes_0_agent_id', with_options: [non_role_group.humanized_name])).to be true
+        expect(
+          page.has_select?(
+            'permission_template_access_grants_attributes_0_agent_id',
+            with_options: [non_role_group.humanized_name]
+          )
+        ).to be true
       end
 
       it "includes user access_grants to render in tables" do
@@ -188,7 +217,9 @@ RSpec.describe 'collection', type: :feature, js: true, clean: true, cohort: 'alp
         # wait one second for the item to populate in the table and check for it's existence
         sleep 1
         expect(page).to have_content("The collection's sharing options have been updated.")
-        manager_row_html = find('table.managers-table').find(:xpath, '//td[@data-agent="user@example.com"]').find(:xpath, '..')['innerHTML']
+        manager_row_html = find('table.managers-table')
+                           .find(:xpath, '//td[@data-agent="user@example.com"]')
+                           .find(:xpath, '..')['innerHTML']
         expect(manager_row_html).to include('<td data-agent="user@example.com">user@example.com</td>')
       end
 
@@ -205,7 +236,9 @@ RSpec.describe 'collection', type: :feature, js: true, clean: true, cohort: 'alp
         # wait one second for the item to populate in the table and check for it's existence
         sleep 1
         expect(page).to have_content("The collection's sharing options have been updated.")
-        manager_row_html = find('table.managers-table').find(:xpath, '//td[@data-agent="town_of_bedrock"]').find(:xpath, '..')['innerHTML']
+        manager_row_html = find('table.managers-table')
+                           .find(:xpath, '//td[@data-agent="town_of_bedrock"]')
+                           .find(:xpath, '..')['innerHTML']
         expect(manager_row_html).to include('<td data-agent="town_of_bedrock">Town Of Bedrock</td>')
       end
     end
@@ -228,8 +261,13 @@ RSpec.describe 'collection', type: :feature, js: true, clean: true, cohort: 'alp
         let(:access) { Hyrax::PermissionTemplateAccess::MANAGE }
 
         it 'renders a disabled remove button' do
-          manager_row_html = find('table.managers-table').find(:xpath, '//td[@data-agent="admin"]').find(:xpath, '..')['innerHTML']
-          expect(manager_row_html).to include('<a class="btn btn-sm btn-danger disabled" disabled="disabled" title="The repository administrators group cannot be removed"')
+          manager_row_html = find('table.managers-table')
+                             .find(:xpath, '//td[@data-agent="admin"]')
+                             .find(:xpath, '..')['innerHTML']
+          expect(manager_row_html).to include(
+            '<a class="btn btn-sm btn-danger disabled" disabled="disabled" ' \
+            'title="The repository administrators group cannot be removed"'
+          )
         end
       end
 
@@ -237,9 +275,14 @@ RSpec.describe 'collection', type: :feature, js: true, clean: true, cohort: 'alp
         let(:access) { Hyrax::PermissionTemplateAccess::DEPOSIT }
 
         it 'renders an enabled remove button' do
-          depositor_row_html = find('table.depositors-table').find(:xpath, '//td[@data-agent="admin"]').find(:xpath, '..')['innerHTML']
+          depositor_row_html = find('table.depositors-table')
+                               .find(:xpath, '//td[@data-agent="admin"]')
+                               .find(:xpath, '..')['innerHTML']
           expect(depositor_row_html).to include('<a class="btn btn-sm btn-danger"')
-          expect(depositor_row_html).not_to include('<a class="btn btn-sm btn-danger disabled" disabled="disabled" title="The repository administrators group cannot be removed"')
+          expect(depositor_row_html).not_to include(
+            '<a class="btn btn-sm btn-danger disabled" disabled="disabled" ' \
+            'title="The repository administrators group cannot be removed"'
+          )
         end
       end
 
@@ -247,9 +290,14 @@ RSpec.describe 'collection', type: :feature, js: true, clean: true, cohort: 'alp
         let(:access) { Hyrax::PermissionTemplateAccess::VIEW }
 
         it 'renders an enabled remove button' do
-          viewer_row_html = find('table.viewers-table').find(:xpath, '//td[@data-agent="admin"]').find(:xpath, '..')['innerHTML']
+          viewer_row_html = find('table.viewers-table')
+                            .find(:xpath, '//td[@data-agent="admin"]')
+                            .find(:xpath, '..')['innerHTML']
           expect(viewer_row_html).to include('<a class="btn btn-sm btn-danger"')
-          expect(viewer_row_html).not_to include('<a class="btn btn-sm btn-danger disabled" disabled="disabled" title="The repository administrators group cannot be removed"')
+          expect(viewer_row_html).not_to include(
+            '<a class="btn btn-sm btn-danger disabled" disabled="disabled" ' \
+            'title="The repository administrators group cannot be removed"'
+          )
         end
       end
     end

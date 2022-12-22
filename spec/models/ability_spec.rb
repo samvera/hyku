@@ -164,11 +164,20 @@ RSpec.describe Ability do
 
     before do
       user.add_role(user_reader_role.name, Site.instance)
-      create(:group, name: 'test_group', member_users: [user], roles: [collection_editor_role.name, work_depositor_role.name])
+      create(
+        :group,
+        name: 'test_group',
+        member_users: [user],
+        roles: [collection_editor_role.name, work_depositor_role.name]
+      )
     end
 
     it 'lists all role names that apply to the user' do
-      expect(subject.all_user_and_group_roles).to contain_exactly(user_reader_role.name, collection_editor_role.name, work_depositor_role.name)
+      expect(subject.all_user_and_group_roles).to contain_exactly(
+        user_reader_role.name,
+        collection_editor_role.name,
+        work_depositor_role.name
+      )
     end
   end
 end

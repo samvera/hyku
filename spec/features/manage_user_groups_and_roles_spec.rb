@@ -10,7 +10,13 @@ RSpec.describe "The Manage Users table", type: :feature, js: true, clean: true, 
     let(:user_manager_role) { create(:role, :user_manager) }
 
     let!(:admin_group) { create(:group, humanized_name: 'Rockets', member_users: [admin], roles: [admin_role.name]) }
-    let!(:user_group) { create(:group, humanized_name: 'Trains', member_users: [user], roles: [user_manager_role.name]) }
+    let!(:user_group) do
+      create(
+        :group,
+        humanized_name: 'Trains',
+        member_users: [user], roles: [user_manager_role.name]
+      )
+    end
 
     let(:admin) { create(:admin) }
     let(:user) { create(:user) }
@@ -38,7 +44,12 @@ RSpec.describe "The Manage Users table", type: :feature, js: true, clean: true, 
 
     it 'can visit Manage Users and invite users with the admin role' do
       expect(page).to have_content 'Add or Invite user via email'
-      expect(page.has_select?('user_roles', with_options: [admin_role.name.titleize, user_manager_role.name.titleize])).to be true
+      expect(
+        page.has_select?(
+          'user_roles',
+          with_options: [admin_role.name.titleize, user_manager_role.name.titleize]
+        )
+      ).to be true
       fill_in "Email address", with: 'user@test.com'
       select admin_role.name.titleize.to_s, from: 'user_roles'
       click_on "Invite user"
@@ -65,7 +76,16 @@ RSpec.describe "The Manage Users table", type: :feature, js: true, clean: true, 
     it 'can visit Manage Users but cannot invite admin users' do
       visit '/admin/users'
       select = page.find('select#user_roles').all('option').collect(&:text)
-      expect(select).to contain_exactly('Select a role...', 'Work Editor', 'Work Depositor', 'Collection Manager', 'Collection Editor', 'Collection Reader', 'User Manager', 'User Reader')
+      expect(select).to contain_exactly(
+        'Select a role...',
+        'Work Editor',
+        'Work Depositor',
+        'Collection Manager',
+        'Collection Editor',
+        'Collection Reader',
+        'User Manager',
+        'User Reader'
+      )
       expect(select).not_to include('Admin')
     end
   end

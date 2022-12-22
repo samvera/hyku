@@ -81,7 +81,8 @@ RSpec.describe 'User Roles', cohort: 'bravo' do
     it 'can remove a group' do
       visit "/admin/groups/#{group_1.id}/remove"
       expect(page).to have_content 'Remove Group'
-      expect(page).to have_content 'This action is irreversible. It will remove all privileges group members have been assigned through this group.'
+      expect(page).to have_content 'This action is irreversible. It will remove all privileges ' \
+                                   'group members have been assigned through this group.'
     end
   end
 

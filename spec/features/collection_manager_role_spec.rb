@@ -150,7 +150,11 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
       end
 
       it "can remove a subcollection from the parent collection's show page" do
-        sub_col = FactoryBot.create(:private_collection_lw, with_permission_template: true, member_of_collections: [collection])
+        sub_col = FactoryBot.create(
+          :private_collection_lw,
+          with_permission_template: true,
+          member_of_collections: [collection]
+        )
         expect(collection.reload.member_collection_ids.count).to eq(1)
 
         visit "/dashboard/collections/#{collection.id}"
@@ -166,7 +170,11 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
       end
 
       it "can remove a subcollection from the child collection's show page" do
-        sub_col = FactoryBot.create(:private_collection_lw, with_permission_template: true, member_of_collections: [collection])
+        sub_col = FactoryBot.create(
+          :private_collection_lw,
+          with_permission_template: true,
+          member_of_collections: [collection]
+        )
         expect(collection.reload.member_collection_ids.count).to eq(1)
 
         visit "/dashboard/collections/#{sub_col.id}"
@@ -235,7 +243,9 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
 
         visit "/dashboard/collections/#{collection.id}"
         expect(page).not_to have_selector("tr#document_#{work.id}")
-        expect(page).to have_content('The collection is either empty or does not contain items to which you have access.')
+        expect(page).to have_content(
+          'The collection is either empty or does not contain items to which you have access.'
+        )
       end
     end
   end
@@ -370,7 +380,11 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
       end
 
       it "can remove a subcollection from the parent collection's show page" do
-        sub_col = FactoryBot.create(:private_collection_lw, with_permission_template: true, member_of_collections: [collection])
+        sub_col = FactoryBot.create(
+          :private_collection_lw,
+          with_permission_template: true,
+          member_of_collections: [collection]
+        )
         expect(collection.reload.member_collection_ids.count).to eq(1)
 
         visit "/dashboard/collections/#{collection.id}"
@@ -386,7 +400,11 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
       end
 
       it "can remove a subcollection from the child collection's show page" do
-        sub_col = FactoryBot.create(:private_collection_lw, with_permission_template: true, member_of_collections: [collection])
+        sub_col = FactoryBot.create(
+          :private_collection_lw,
+          with_permission_template: true,
+          member_of_collections: [collection]
+        )
         expect(collection.reload.member_collection_ids.count).to eq(1)
 
         visit "/dashboard/collections/#{sub_col.id}"
@@ -455,7 +473,9 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
 
         visit "/dashboard/collections/#{collection.id}"
         expect(page).not_to have_selector("tr#document_#{work.id}")
-        expect(page).to have_content('The collection is either empty or does not contain items to which you have access.')
+        expect(page).to have_content(
+          'The collection is either empty or does not contain items to which you have access.'
+        )
       end
     end
   end

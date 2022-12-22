@@ -29,12 +29,22 @@ module Hyrax
 
       def expect_actions_for(user:, entity:, actions:)
         actions = Array.wrap(actions).map { |action| PowerConverter.convert_to_sipity_action(action, scope: entity.workflow) }
-        expect(described_class.scope_permitted_workflow_actions_available_for_current_state(user: user, entity: entity)).to eq(actions)
+        expect(
+          described_class.scope_permitted_workflow_actions_available_for_current_state(
+            user: user,
+            entity: entity
+          )
+        ).to eq(actions)
       end
 
       def expect_agents_for(agents:, entity:, role:)
         agents = Array.wrap(agents).map { |agent| PowerConverter.convert_to_sipity_agent(agent) }
-        expect(described_class.scope_agents_associated_with_entity_and_role(role: role, entity: entity)).to contain_exactly(*agents)
+        expect(
+          described_class.scope_agents_associated_with_entity_and_role(
+            role: role,
+            entity: entity
+          )
+        ).to contain_exactly(*agents)
       end
 
       def expect_roles_for(entity:, roles:)
@@ -47,11 +57,22 @@ module Hyrax
       end
 
       def expect_to_be_authorized(user:, entity:, action:, message: 'should be authorized')
-        expect(described_class.authorized_for_processing?(user: user, entity: entity, action: action)).to be_truthy, message
+        expect(
+          described_class.authorized_for_processing?(
+            user: user,
+            entity: entity, action: action
+          )
+        ).to be_truthy, message
       end
 
       def expect_to_not_be_authorized(user:, entity:, action:, message: 'should not be authorized')
-        expect(described_class.authorized_for_processing?(user: user, entity: entity, action: action)).to be_falsey, message
+        expect(
+          described_class.authorized_for_processing?(
+            user: user,
+            entity: entity,
+            action: action
+          )
+        ).to be_falsey, message
       end
 
       def expect_entities_for(user:, entities:)
@@ -107,7 +128,8 @@ module Hyrax
           expect_to_not_be_authorized(user: reviewing_user, entity: sipity_entity, action: 'complete')
           expect_to_not_be_authorized(user: completing_user, entity: sipity_entity, action: 'forward')
           expect_to_not_be_authorized user: completing_user, entity: sipity_entity, action: 'complete',
-                                      message: 'should be unauthorized because the action is not available in this state'
+                                      message: 'should be unauthorized because ' \
+                                               'the action is not available in this state'
 
           # Then transition to Sipity::Entity
           sipity_entity.update!(
@@ -119,7 +141,8 @@ module Hyrax
           expect_actions_for(user: completing_user, entity: sipity_entity, actions: ['complete'])
 
           expect_to_not_be_authorized user: reviewing_user, entity: sipity_entity, action: 'forward',
-                                      message: 'should be unauthorized because the action is not available in this state'
+                                      message: 'should be unauthorized because ' \
+                                               'the action is not available in this state'
           expect_to_not_be_authorized(user: reviewing_user, entity: sipity_entity, action: 'complete')
           expect_to_not_be_authorized(user: completing_user, entity: sipity_entity, action: 'forward')
           expect_to_be_authorized(user: completing_user, entity: sipity_entity, action: 'complete')
@@ -134,8 +157,18 @@ module Hyrax
       # NOTE: I am stacking up expectations because these tests are non-trivial to build (lots of database interactions)
       describe 'permissions assigned at the entity level' do
         it 'will fullfil the battery of tests (of which they are nested because setup is expensive)' do
-          PermissionGenerator.call(roles: 'reviewing', entity: sipity_entity, workflow: sipity_workflow, agents: reviewing_user)
-          PermissionGenerator.call(roles: 'completing', entity: sipity_entity, workflow: sipity_workflow, agents: completing_user)
+          PermissionGenerator.call(
+            roles: 'reviewing',
+            entity: sipity_entity,
+            workflow: sipity_workflow,
+            agents: reviewing_user
+          )
+          PermissionGenerator.call(
+            roles: 'completing',
+            entity: sipity_entity,
+            workflow: sipity_workflow,
+            agents: completing_user
+          )
 
           expect_agents_for(entity: sipity_entity, role: 'reviewing', agents: [reviewing_user])
           expect_agents_for(entity: sipity_entity, role: 'completing', agents: [completing_user])
@@ -155,7 +188,8 @@ module Hyrax
           expect_to_not_be_authorized(user: reviewing_user, entity: sipity_entity, action: 'complete')
           expect_to_not_be_authorized(user: completing_user, entity: sipity_entity, action: 'forward')
           expect_to_not_be_authorized user: completing_user, entity: sipity_entity, action: 'complete',
-                                      message: 'should be unauthorized because the action is not available in this state'
+                                      message: 'should be unauthorized because ' \
+                                               'the action is not available in this state'
 
           # Then transition to Sipity::Entity
           sipity_entity.update!(
@@ -167,7 +201,8 @@ module Hyrax
           expect_actions_for(user: completing_user, entity: sipity_entity, actions: ['complete'])
 
           expect_to_not_be_authorized user: reviewing_user, entity: sipity_entity, action: 'forward',
-                                      message: 'should be unauthorized because the action is not available in this state'
+                                      message: 'should be unauthorized because ' \
+                                               'the action is not available in this state'
           expect_to_not_be_authorized(user: reviewing_user, entity: sipity_entity, action: 'complete')
           expect_to_not_be_authorized(user: completing_user, entity: sipity_entity, action: 'forward')
           expect_to_be_authorized(user: completing_user, entity: sipity_entity, action: 'complete')

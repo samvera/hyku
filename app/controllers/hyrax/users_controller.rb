@@ -29,7 +29,13 @@ module Hyrax
       def search(query)
         clause = query.blank? ? nil : "%" + query.downcase + "%"
         base = ::User.where(*base_query)
-        base = base.where("#{Hydra.config.user_key_field} like lower(?) OR display_name like lower(?)", clause, clause) if clause.present?
+        if clause.present?
+          base = base.where(
+            "#{Hydra.config.user_key_field} like lower(?) OR display_name like lower(?)",
+            clause,
+            clause
+          )
+        end
         base.registered
             .where("#{Hydra.config.user_key_field} not in (?)",
                    [::User.batch_user_key, ::User.audit_user_key])

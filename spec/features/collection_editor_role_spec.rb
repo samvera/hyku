@@ -107,7 +107,11 @@ RSpec.describe 'actions permitted by the collection_editor role', type: :feature
       end
 
       it "cannot remove a subcollection from the parent collection's show page" do
-        sub_col = FactoryBot.create(:private_collection_lw, with_permission_template: true, member_of_collections: [collection])
+        sub_col = FactoryBot.create(
+          :private_collection_lw,
+          with_permission_template: true,
+          member_of_collections: [collection]
+        )
         expect(collection.reload.member_collection_ids.count).to eq(1)
 
         visit "/dashboard/collections/#{collection.id}"
@@ -116,7 +120,11 @@ RSpec.describe 'actions permitted by the collection_editor role', type: :feature
       end
 
       it "cannot remove a subcollection from the child collection's show page" do
-        sub_col = FactoryBot.create(:private_collection_lw, with_permission_template: true, member_of_collections: [collection])
+        sub_col = FactoryBot.create(
+          :private_collection_lw,
+          with_permission_template: true,
+          member_of_collections: [collection]
+        )
         expect(collection.reload.member_collection_ids.count).to eq(1)
 
         visit "/dashboard/collections/#{sub_col.id}"
@@ -257,7 +265,11 @@ RSpec.describe 'actions permitted by the collection_editor role', type: :feature
       end
 
       it "cannot remove a subcollection from the parent collection's show page" do
-        sub_col = FactoryBot.create(:private_collection_lw, with_permission_template: true, member_of_collections: [collection])
+        sub_col = FactoryBot.create(
+          :private_collection_lw,
+          with_permission_template: true,
+          member_of_collections: [collection]
+        )
         expect(collection.reload.member_collection_ids.count).to eq(1)
 
         visit "/dashboard/collections/#{collection.id}"
@@ -266,7 +278,11 @@ RSpec.describe 'actions permitted by the collection_editor role', type: :feature
       end
 
       it "cannot remove a subcollection from the child collection's show page" do
-        sub_col = FactoryBot.create(:private_collection_lw, with_permission_template: true, member_of_collections: [collection])
+        sub_col = FactoryBot.create(
+          :private_collection_lw,
+          with_permission_template: true,
+          member_of_collections: [collection]
+        )
         expect(collection.reload.member_collection_ids.count).to eq(1)
 
         visit "/dashboard/collections/#{sub_col.id}"

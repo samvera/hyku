@@ -43,11 +43,19 @@ Hyrax::CollectionPresenter.class_eval do
   # @return String the access label (e.g. Manage, Deposit, View)
   def managed_access
     # OVERRIDE: Change check for manage access from :edit to :destroy
-    return I18n.t('hyrax.dashboard.my.collection_list.managed_access.manage') if current_ability.can?(:destroy, solr_document)
+    if current_ability.can?(:destroy, solr_document)
+      return I18n.t('hyrax.dashboard.my.collection_list.managed_access.manage')
+    end
     # OVERRIDE: Add label for Edit access
-    return I18n.t('hyrax.dashboard.my.collection_list.managed_access.edit') if current_ability.can?(:edit, solr_document)
-    return I18n.t('hyrax.dashboard.my.collection_list.managed_access.deposit') if current_ability.can?(:deposit, solr_document)
-    return I18n.t('hyrax.dashboard.my.collection_list.managed_access.view') if current_ability.can?(:read, solr_document)
+    if current_ability.can?(:edit, solr_document)
+      return I18n.t('hyrax.dashboard.my.collection_list.managed_access.edit')
+    end
+    if current_ability.can?(:deposit, solr_document)
+      return I18n.t('hyrax.dashboard.my.collection_list.managed_access.deposit')
+    end
+    if current_ability.can?(:read, solr_document)
+      return I18n.t('hyrax.dashboard.my.collection_list.managed_access.view')
+    end
     ''
   end
 

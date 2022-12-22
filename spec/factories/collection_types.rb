@@ -117,7 +117,9 @@ FactoryBot.define do
 
     # Workaround for upstream issue https://github.com/samvera/hyrax/issues/3136
     before(:create) do |collection_type|
-      collection_type.title = I18n.t(collection_type.title.gsub("translation missing: en.", '')) if collection_type.title =~ /^translation missing/
+      if collection_type.title =~ /^translation missing/
+        collection_type.title = I18n.t(collection_type.title.gsub("translation missing: en.", ''))
+      end
     end
   end
 
@@ -126,7 +128,9 @@ FactoryBot.define do
 
     # Workaround for upstream issue https://github.com/samvera/hyrax/issues/3136
     before(:create) do |collection_type|
-      collection_type.title = I18n.t(collection_type.title.gsub("translation missing: en.", '')) if collection_type.title =~ /^translation missing/
+      if collection_type.title =~ /^translation missing/
+        collection_type.title = I18n.t(collection_type.title.gsub("translation missing: en.", ''))
+      end
     end
   end
 end

@@ -118,7 +118,14 @@ FactoryBot.define do
   #                         manage_groups: [group_name],    # multiple groups can be listed
   #                         deposit_groups: [group_name],
   #                         view_groups: [group_name],  } }
-  #   let(:collection) { build(:collection_lw, user: , with_permission_template: permissions, with_solr_document: true) }
+  #   let(:collection) do
+  #     build(
+  #       :collection_lw,
+  #       user: ,
+  #       with_permission_template: permissions,
+  #       with_solr_document: true
+  #     )
+  #   end
   #
   # @example Build a collection generating its collection type with specific settings. Light Weight.
   #          NOTE: Do not use this approach if you need access to the collection type in the test.
@@ -199,7 +206,9 @@ FactoryBot.define do
 
     before(:create) do |collection, evaluator|
       # force create a permission template if it doesn't exist for the newly created collection
-      CollectionLwFactoryHelper.process_with_permission_template(collection, evaluator, true) unless evaluator.with_permission_template
+      unless evaluator.with_permission_template
+        CollectionLwFactoryHelper.process_with_permission_template(collection, evaluator, true)
+      end
     end
 
     after(:create) do |collection, _evaluator|
@@ -270,7 +279,9 @@ FactoryBot.define do
       if evaluator.with_permission_template
         attributes = { source_id: collection.id }
         attributes[:manage_users] = [evaluator.user]
-        attributes = evaluator.with_permission_template.merge(attributes) if evaluator.with_permission_template.respond_to?(:merge)
+        if evaluator.with_permission_template.respond_to?(:merge)
+          attributes = evaluator.with_permission_template.merge(attributes)
+        end
         create(:permission_template, attributes) unless Hyrax::PermissionTemplate.find_by(source_id: collection.id)
       end
     end
@@ -364,15 +375,21 @@ FactoryBot.define do
     # @param [Class] evaluator holding the transient properties for the current build/creation process
     # @param [Boolean] if true, force the permission template to be created
     def self.process_with_permission_template(collection, evaluator, force = false)
-      return unless force || evaluator.with_permission_template || RSpec.current_example.metadata[:with_nested_reindexing]
+      return unless force ||
+                    evaluator.with_permission_template ||
+                    RSpec.current_example.metadata[:with_nested_reindexing]
       collection.id ||= FactoryBot.generate(:object_id)
       attributes = { source_id: collection.id }
       attributes[:manage_users] = user_managers(evaluator.with_permission_template, evaluator.user)
       # OVERRIDE: add default group PermissionTemplateAccess for collection roles
       attributes[:manage_groups] = group_managers(evaluator.with_permission_template)
       attributes[:view_groups] = group_viewers(evaluator.with_permission_template)
-      attributes = evaluator.with_permission_template.merge(attributes) if evaluator.with_permission_template.respond_to?(:merge)
-      FactoryBot.create(:permission_template, attributes) unless Hyrax::PermissionTemplate.find_by(source_id: collection.id)
+      if evaluator.with_permission_template.respond_to?(:merge)
+        attributes = evaluator.with_permission_template.merge(attributes)
+      end
+      unless Hyrax::PermissionTemplate.find_by(source_id: collection.id) # rubocop:disable Style/GuardClause
+        FactoryBot.create(:permission_template, attributes)
+      end
     end
 
     # Process the with_nesting_attributes transient property such that...

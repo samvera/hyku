@@ -26,17 +26,43 @@ module Hyrax
                 { agent_type: 'group', agent_id: admin_group_name, access: Hyrax::PermissionTemplateAccess::MANAGE }
               ].tap do |attribute_list|
                 # Grant manage access to the creating_user if it exists
-                attribute_list << { agent_type: 'user', agent_id: creating_user.user_key, access: Hyrax::PermissionTemplateAccess::MANAGE } if creating_user
+                if creating_user
+                  attribute_list << {
+                    agent_type: 'user',
+                    agent_id: creating_user.user_key,
+                    access: Hyrax::PermissionTemplateAccess::MANAGE
+                  }
+                end
                 # OVERRIDE BEGIN
                 if collection_type.admin_set?
                   # Grant work roles appropriate access to all AdminSets
-                  attribute_list << { agent_type: 'group', agent_id: 'work_depositor', access: Hyrax::PermissionTemplateAccess::DEPOSIT }
-                  attribute_list << { agent_type: 'group', agent_id: 'work_editor', access: Hyrax::PermissionTemplateAccess::DEPOSIT }
-                  attribute_list << { agent_type: 'group', agent_id: 'work_editor', access: Hyrax::PermissionTemplateAccess::VIEW }
+                  attribute_list << {
+                    agent_type: 'group',
+                    agent_id: 'work_depositor',
+                    access: Hyrax::PermissionTemplateAccess::DEPOSIT
+                  }
+                  attribute_list << {
+                    agent_type: 'group',
+                    agent_id: 'work_editor',
+                    access: Hyrax::PermissionTemplateAccess::DEPOSIT
+                  }
+                  attribute_list << {
+                    agent_type: 'group',
+                    agent_id: 'work_editor',
+                    access: Hyrax::PermissionTemplateAccess::VIEW
+                  }
                 else
                   # Grant collection roles appropriate access to all Collections
-                  attribute_list << { agent_type: 'group', agent_id: 'collection_editor', access: Hyrax::PermissionTemplateAccess::VIEW }
-                  attribute_list << { agent_type: 'group', agent_id: 'collection_reader', access: Hyrax::PermissionTemplateAccess::VIEW }
+                  attribute_list << {
+                    agent_type: 'group',
+                    agent_id: 'collection_editor',
+                    access: Hyrax::PermissionTemplateAccess::VIEW
+                  }
+                  attribute_list << {
+                    agent_type: 'group',
+                    agent_id: 'collection_reader',
+                    access: Hyrax::PermissionTemplateAccess::VIEW
+                  }
                 end
                 attribute_list
                 # OVERRIDE END

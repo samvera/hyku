@@ -12,7 +12,9 @@ module Hyrax
             actions: [{
               name: "forward", from_states: [{ names: ["initial"], roles: ["reviewing"] }], transition_to: 'forwarded'
             }, {
-              name: "complete", from_states: [{ names: ["forwarded"], roles: ["completing"] }], transition_to: 'completed'
+              name: "complete",
+              from_states: [{ names: ["forwarded"], roles: ["completing"] }],
+              transition_to: 'completed'
             }]
           }]
         }
@@ -21,14 +23,27 @@ module Hyrax
       let(:sipity_entity) do
         Sipity::Entity.create!(proxy_for_global_id: 'gid://internal/Mock/1',
                                workflow: sipity_workflow,
-                               workflow_state: PowerConverter.convert_to_sipity_workflow_state('initial', scope: sipity_workflow))
+                               workflow_state: PowerConverter.convert_to_sipity_workflow_state(
+                                 'initial',
+                                 scope: sipity_workflow
+                               ))
       end
       let(:sipity_workflow) { create(:workflow, name: 'testing') }
 
-      before { Hyrax::Workflow::WorkflowImporter.generate_from_hash(data: workflow_config, permission_template: sipity_workflow.permission_template) }
+      before do
+        Hyrax::Workflow::WorkflowImporter.generate_from_hash(
+          data: workflow_config,
+          permission_template: sipity_workflow.permission_template
+        )
+      end
 
       def expect_actions_for(user:, entity:, actions:)
-        actions = Array.wrap(actions).map { |action| PowerConverter.convert_to_sipity_action(action, scope: entity.workflow) }
+        actions = Array.wrap(actions).map do |action|
+          PowerConverter.convert_to_sipity_action(
+            action,
+            scope: entity.workflow
+          )
+        end
         expect(
           described_class.scope_permitted_workflow_actions_available_for_current_state(
             user: user,

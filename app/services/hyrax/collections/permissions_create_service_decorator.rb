@@ -10,8 +10,8 @@ module Hyrax
       # This possible cruft before the #access_grants_attributes definition is how I (bkiahstroud) was
       # able to redefine a private class method using a decorator. If you know a better way,
       # please feel free to rework how this gets set up.
-      def self.prepended(base)
-        base.class_eval do
+      def self.prepended(base) # rubocop:disable Metrics/MethodLength
+        base.class_eval do # rubocop:disable Metrics/BlockLength
           class << self
             # @api private
             #
@@ -21,8 +21,10 @@ module Hyrax
             # @param creating_user [User] the user that created the collection
             # @param grants [Array<Hash>] additional grants to apply to the new collection
             # @return [Array<Hash>] a hash containing permission attributes
+            # rubocop:disable Metrics/MethodLength
             def access_grants_attributes(collection_type:, creating_user:, grants:)
-              [
+              # rubocop:enable Metrics/MethodLength
+              [ # rubocop:disable Metrics/BlockLength
                 { agent_type: 'group', agent_id: admin_group_name, access: Hyrax::PermissionTemplateAccess::MANAGE }
               ].tap do |attribute_list|
                 # Grant manage access to the creating_user if it exists

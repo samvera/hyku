@@ -17,7 +17,7 @@ module Hyrax
     #
     # @see Hyrax:CollectionType
     #
-    class CreateService
+    class CreateService # rubocop:disable Metrics/ClassLength
       DEFAULT_OPTIONS = {
         description: '',
         nestable: true,
@@ -30,17 +30,35 @@ module Hyrax
         assigns_workflow: false,
         assigns_visibility: false,
         badge_color: "#663333",
-        participants: [{ agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE, agent_id: ::Ability.admin_group_name, access: Hyrax::CollectionTypeParticipant::MANAGE_ACCESS },
-                       # OVERRIDE: add :collection_manager role to participants array with MANAGE_ACCESS
-                       { agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE, agent_id: 'collection_manager', access: Hyrax::CollectionTypeParticipant::MANAGE_ACCESS },
-                       # OVERRIDE: add :collection_editor role to participants array with CREATE_ACCESS
-                       { agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE, agent_id: 'collection_editor', access: Hyrax::CollectionTypeParticipant::CREATE_ACCESS }].tap do |participants|
-                         # OVERRIDE: exclude group with CREATE_ACCESS for ::Ability.registered_group_name
-                         # (all registered users) if we are restricting permissions
-                         unless ::ENV['SETTINGS__RESTRICT_CREATE_AND_DESTROY_PERMISSIONS'] == 'true'
-                           participants << { agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE, agent_id: ::Ability.registered_group_name, access: Hyrax::CollectionTypeParticipant::CREATE_ACCESS }
-                         end
-                       end
+        participants: [
+          {
+            agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
+            agent_id: ::Ability.admin_group_name,
+            access: Hyrax::CollectionTypeParticipant::MANAGE_ACCESS
+          },
+          # OVERRIDE: add :collection_manager role to participants array with MANAGE_ACCESS
+          {
+            agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
+            agent_id: 'collection_manager',
+            access: Hyrax::CollectionTypeParticipant::MANAGE_ACCESS
+          },
+          # OVERRIDE: add :collection_editor role to participants array with CREATE_ACCESS
+          {
+            agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
+            agent_id: 'collection_editor',
+            access: Hyrax::CollectionTypeParticipant::CREATE_ACCESS
+          }
+        ].tap do |participants|
+          # OVERRIDE: exclude group with CREATE_ACCESS for ::Ability.registered_group_name
+          # (all registered users) if we are restricting permissions
+          unless ::ENV['SETTINGS__RESTRICT_CREATE_AND_DESTROY_PERMISSIONS'] == 'true'
+            participants << {
+              agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
+              agent_id: ::Ability.registered_group_name,
+              access: Hyrax::CollectionTypeParticipant::CREATE_ACCESS
+            }
+          end
+        end
       }.freeze
 
       USER_COLLECTION_MACHINE_ID = Hyrax::CollectionType::USER_COLLECTION_MACHINE_ID
@@ -57,16 +75,35 @@ module Hyrax
         assigns_workflow: false,
         assigns_visibility: false,
         badge_color: "#705070",
-        participants: [{ agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE, agent_id: ::Ability.admin_group_name, access: Hyrax::CollectionTypeParticipant::MANAGE_ACCESS },
-                       # OVERRIDE: add :collection_manager role to participants array with MANAGE_ACCESS
-                       { agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE, agent_id: 'collection_manager', access: Hyrax::CollectionTypeParticipant::MANAGE_ACCESS },
-                       # OVERRIDE: add :collection_editor role to participants array with CREATE_ACCESS
-                       { agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE, agent_id: 'collection_editor', access: Hyrax::CollectionTypeParticipant::CREATE_ACCESS }].tap do |participants|
-                         # OVERRIDE: exclude group with CREATE_ACCESS for ::Ability.registered_group_name (all registered users) if we are restricting permissions
-                         unless ::ENV['SETTINGS__RESTRICT_CREATE_AND_DESTROY_PERMISSIONS'] == 'true'
-                           participants << { agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE, agent_id: ::Ability.registered_group_name, access: Hyrax::CollectionTypeParticipant::CREATE_ACCESS }
-                         end
-                       end
+        participants: [
+          {
+            agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
+            agent_id: ::Ability.admin_group_name,
+            access: Hyrax::CollectionTypeParticipant::MANAGE_ACCESS
+          },
+          # OVERRIDE: add :collection_manager role to participants array with MANAGE_ACCESS
+          {
+            agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
+            agent_id: 'collection_manager',
+            access: Hyrax::CollectionTypeParticipant::MANAGE_ACCESS
+          },
+          # OVERRIDE: add :collection_editor role to participants array with CREATE_ACCESS
+          {
+            agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
+            agent_id: 'collection_editor',
+            access: Hyrax::CollectionTypeParticipant::CREATE_ACCESS
+          }
+        ].tap do |participants|
+          # OVERRIDE: exclude group with CREATE_ACCESS for ::Ability.registered_group_name
+          # (all registered users) if we are restricting permissions
+          unless ::ENV['SETTINGS__RESTRICT_CREATE_AND_DESTROY_PERMISSIONS'] == 'true'
+            participants << {
+              agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
+              agent_id: ::Ability.registered_group_name,
+              access: Hyrax::CollectionTypeParticipant::CREATE_ACCESS
+            }
+          end
+        end
       }.freeze
 
       ADMIN_SET_MACHINE_ID = Hyrax::CollectionType::ADMIN_SET_MACHINE_ID
@@ -83,8 +120,18 @@ module Hyrax
         assigns_workflow: true,
         assigns_visibility: true,
         badge_color: "#405060",
-        participants: [{ agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE, agent_id: ::Ability.admin_group_name, access: Hyrax::CollectionTypeParticipant::MANAGE_ACCESS },
-                       { agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE, agent_id: ::Ability.admin_group_name, access: Hyrax::CollectionTypeParticipant::CREATE_ACCESS }]
+        participants: [
+          {
+            agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
+            agent_id: ::Ability.admin_group_name,
+            access: Hyrax::CollectionTypeParticipant::MANAGE_ACCESS
+          },
+          {
+            agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
+            agent_id: ::Ability.admin_group_name,
+            access: Hyrax::CollectionTypeParticipant::CREATE_ACCESS
+          }
+        ]
       }.freeze
 
       # @api public

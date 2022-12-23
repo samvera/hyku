@@ -186,7 +186,7 @@ RSpec.describe 'collection', type: :feature, js: true, clean: true, cohort: 'alp
         ).to be true
       end
 
-      it "includes user access_grants to render in tables" do
+      it "includes user access_grants to render in tables" do # rubocop:disable RSpec/ExampleLength
         expect(page).to have_content 'Add Sharing'
 
         # within the typeahead input the first two characters of the user's

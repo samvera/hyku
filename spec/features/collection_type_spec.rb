@@ -32,7 +32,6 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true, cohort:
     # NOTE(bkiahstroud): set :js to false because the page can't see the modal Delete button if it's true
     it 'has page title and lists collection types', js: false do
       expect(page).to have_content 'Collection Types'
-
       expect(page).to have_content 'Admin Set'
       expect(page).to have_content 'User Collection'
       expect(page).to have_content 'Collection Type'
@@ -41,17 +40,11 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true, cohort:
       expect(page).to have_link('Edit', href: hyrax.edit_admin_collection_type_path(admin_set_type.id, locale: 'en'))
       expect(page).to have_link(
         'Edit',
-        href: hyrax.edit_admin_collection_type_path(
-          user_collection_type.id,
-          locale: 'en'
-        )
+        href: hyrax.edit_admin_collection_type_path(user_collection_type.id, locale: 'en')
       )
       expect(page).to have_link(
         'Edit',
-        href: hyrax.edit_admin_collection_type_path(
-          exhibit_collection_type.id,
-          locale: 'en'
-        )
+        href: hyrax.edit_admin_collection_type_path(exhibit_collection_type.id, locale: 'en')
       )
       expect(page).to have_button('Delete', count: 2) # 1: Collection Type, 2: delete modal
     end
@@ -96,6 +89,7 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true, cohort:
       expect(page).to have_link('Participants', href: '#participants')
     end
 
+    # rubocop:disable RSpec/ExampleLength
     it 'tries to make a collection type with existing title, and receives error message', :js do
       click_link 'Create new collection type'
 
@@ -140,6 +134,7 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true, cohort:
       expect(page).to have_content 'Save was not successful because title has already been taken, ' \
                                    'and machine_id has already been taken.'
     end
+    # rubocop:enable RSpec/ExampleLength
   end
 
   describe 'edit collection type' do
@@ -551,7 +546,7 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true, cohort:
         expect(page.html).not_to include('<td data-agent="collection_reader">Collection Reader</td>')
       end
 
-      it "includes user access_grants to render in tables" do
+      it "includes user access_grants to render in tables" do # rubocop:disable RSpec/ExampleLength
         fill_in 'Type name', with: title
         click_button 'Save'
         expect(page).to have_content("The collection type #{title} has been created.")

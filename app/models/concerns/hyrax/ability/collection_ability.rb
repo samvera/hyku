@@ -6,7 +6,7 @@ module Hyrax
     module CollectionAbility
       # rubocop:disable Metrics/MethodLength
       # rubocop:disable Metrics/BlockLength
-      def collection_abilities
+      def collection_abilities # rubocop:disable Metrics/AbcSize
         models = [Hyrax::PcdmCollection, Hyrax.config.collection_class].uniq
         if admin?
           models.each do |collection_model|
@@ -60,10 +60,12 @@ module Hyrax
               Hyrax::Collections::PermissionsService.can_manage_collection?(ability: self, collection_id: collection.id)
             end
             can :destroy, ::SolrDocument do |solr_doc|
-              Hyrax::Collections::PermissionsService.can_manage_collection?(
-                ability: self,
-                collection_id: solr_doc.id
-              ) if solr_doc.collection?
+              if solr_doc.collection?
+                Hyrax::Collections::PermissionsService.can_manage_collection?(
+                  ability: self,
+                  collection_id: solr_doc.id
+                )
+              end
             end
 
             can :deposit, ::SolrDocument do |solr_doc|

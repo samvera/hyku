@@ -10,7 +10,7 @@ module Hyrax
     DEFAULT_NAME_PREFIX = 'group/'
 
     validates :name, presence: true, uniqueness: true
-    has_many :group_roles
+    has_many :group_roles, dependent: :destroy
     has_many :roles, through: :group_roles
     before_destroy :can_destroy?
     after_destroy :remove_all_members

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # TODO(bkiahstroud): filename and location make sense?
-class RolesService
+class RolesService # rubocop:disable Metrics/ClassLength
   ADMIN_ROLE = 'admin'
 
   COLLECTION_ROLES = %w[
@@ -83,7 +83,7 @@ class RolesService
       end
 
       default_hyrax_groups_with_roles =
-              DEFAULT_HYRAX_GROUPS_WITH_ATTRIBUTES.deep_merge(DEFAULT_ROLES_FOR_DEFAULT_HYRAX_GROUPS)
+        DEFAULT_HYRAX_GROUPS_WITH_ATTRIBUTES.deep_merge(DEFAULT_ROLES_FOR_DEFAULT_HYRAX_GROUPS)
 
       default_hyrax_groups_with_roles.each do |group_name, group_attrs|
         group_roles = group_attrs.delete(:roles)

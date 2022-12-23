@@ -5,11 +5,11 @@ RSpec.describe 'User Roles', cohort: 'bravo' do
   let(:account) { create(:account) }
 
   context 'as a user manager' do
-    let!(:user) { FactoryBot.create(:user, email: 'user@example.com', display_name: 'Regular User') }
     let!(:group_1) { FactoryBot.create(:group) }
     let(:user_manager) { FactoryBot.create(:user_manager) }
 
     before do
+      FactoryBot.create(:user, email: 'user@example.com', display_name: 'Regular User')
       login_as(user_manager, scope: :user)
     end
 
@@ -88,9 +88,9 @@ RSpec.describe 'User Roles', cohort: 'bravo' do
 
   context 'as a user reader' do
     let(:user_reader) { FactoryBot.create(:user_reader) }
-    let!(:user) { FactoryBot.create(:user, email: 'user@example.com', display_name: 'User Reader') }
 
     before do
+      FactoryBot.create(:user, email: 'user@example.com', display_name: 'User Reader')
       login_as(user_reader, scope: :user)
     end
 
@@ -136,9 +136,9 @@ RSpec.describe 'User Roles', cohort: 'bravo' do
 
   context 'as a registered user' do
     let(:user) { FactoryBot.create(:user) }
-    let!(:new_user) { FactoryBot.create(:user, email: 'user@example.com', display_name: 'Regular User') }
 
     before do
+      FactoryBot.create(:user, email: 'user@example.com', display_name: 'Regular User')
       login_as(user, scope: :user)
     end
 

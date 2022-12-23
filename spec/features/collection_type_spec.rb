@@ -163,9 +163,9 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true, cohort:
     end
 
     context 'when removing a group participant' do
-      let!(:admin_group) { FactoryBot.create(:admin_group) }
-
       before do
+        FactoryBot.create(:admin_group)
+
         login_as admin_user
         visit "/admin/collection_types/#{user_collection_type.id}/edit#participants"
       end
@@ -380,15 +380,13 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true, cohort:
     end
 
     context 'when collections exist of this type' do
-      let!(:collection1) do
+      before do
         create(
           :public_collection_lw,
           user: build(:user),
           collection_type_gid: exhibit_collection_type.gid
         )
-      end
 
-      before do
         exhibit_collection_type
         login_as admin_user
         visit "/admin/collection_types/#{exhibit_collection_type.id}/edit"
@@ -501,17 +499,16 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true, cohort:
   # OVERRIDE: new (non-hyrax) test cases below
 
   describe 'default collection type participants' do
-    let!(:non_role_group) do
+    let(:title) { 'Title Test' }
+
+    before do
       FactoryBot.create(
         :group,
         name: 'town_of_bedrock',
         humanized_name: 'Town of Bedrock'
       )
-    end
-    let!(:user) { FactoryBot.create(:user, email: 'user@example.com') }
-    let(:title) { 'Title Test' }
+      FactoryBot.create(:user, email: 'user@example.com')
 
-    before do
       login_as admin_user
       visit '/admin/collection_types/new'
     end

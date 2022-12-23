@@ -59,9 +59,9 @@ RSpec.describe "User roles", type: :request, singletenant: true, clean: true do
 
   context 'a registered user with user_manager role' do
     let(:user_manager) { FactoryBot.create(:user_manager) }
-    let!(:user) { FactoryBot.create(:user, email: 'user@example.com', display_name: 'Regular User') }
 
     before do
+      FactoryBot.create(:user, email: 'user@example.com', display_name: 'Regular User')
       login_as(user_manager, scope: :user)
     end
 
@@ -122,9 +122,9 @@ RSpec.describe "User roles", type: :request, singletenant: true, clean: true do
 
   context 'a registered user with user_reader role' do
     let(:user_reader) { FactoryBot.create(:user_reader) }
-    let!(:user) { FactoryBot.create(:user, email: 'user@example.com', display_name: 'Regular User') }
 
     before do
+      FactoryBot.create(:user, email: 'user@example.com', display_name: 'Regular User')
       login_as(user_reader, scope: :user)
     end
 

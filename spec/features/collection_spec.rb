@@ -151,11 +151,11 @@ RSpec.describe 'collection', type: :feature, js: true, clean: true, cohort: 'alp
   # OVERRIDE: new (non-hyrax) test cases below
 
   describe 'default collection sharing' do
-    let!(:user_2) { FactoryBot.create(:user, email: 'user@example.com') }
     let!(:non_role_group) { FactoryBot.create(:group, name: 'town_of_bedrock', humanized_name: 'Town of Bedrock') }
     let(:user) { create(:admin) }
 
     before do
+      FactoryBot.create(:user, email: 'user@example.com')
       login_as user
     end
 

@@ -12,18 +12,17 @@ RSpec.describe 'AdminSet form Participants tab', type: :feature, js: true, clean
       FactoryBot.create(:registered_group)
       FactoryBot.create(:editors_group)
       FactoryBot.create(:depositors_group)
-    end
 
-    let(:admin) { FactoryBot.create(:admin) }
-    let!(:admin_set_id) { AdminSet.find_or_create_default_admin_set_id }
-    let!(:permission_template) { Hyrax::PermissionTemplate.find_or_create_by!(source_id: admin_set_id) }
-    let!(:workflow) do
       Sipity::Workflow.create!(
         active: true,
         name: 'test-workflow',
         permission_template: permission_template
       )
     end
+
+    let(:admin) { FactoryBot.create(:admin) }
+    let!(:admin_set_id) { AdminSet.find_or_create_default_admin_set_id }
+    let!(:permission_template) { Hyrax::PermissionTemplate.find_or_create_by!(source_id: admin_set_id) }
 
     before do
       login_as admin

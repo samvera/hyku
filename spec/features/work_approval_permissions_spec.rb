@@ -9,7 +9,6 @@ RSpec.describe 'Work approval permissions', type: :feature, js: true, clean: tru
   let(:work_creator) { FactoryBot.create(:admin) }
   # These `let!` statements and the following `before` are order-dependent
   let!(:admin_group) { FactoryBot.create(:admin_group) }
-  let!(:registered_group) { FactoryBot.create(:registered_group) }
   let!(:editors_group) { FactoryBot.create(:editors_group) }
   let!(:depositors_group) { FactoryBot.create(:depositors_group) }
   let!(:admin_set) do
@@ -21,6 +20,7 @@ RSpec.describe 'Work approval permissions', type: :feature, js: true, clean: tru
   let!(:work) { process_through_actor_stack(build(:work), work_creator, admin_set.id, 'open') }
 
   before do
+    FactoryBot.create(:registered_group)
     login_as user
   end
 

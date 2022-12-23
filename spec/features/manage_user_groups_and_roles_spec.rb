@@ -58,10 +58,10 @@ RSpec.describe "The Manage Users table", type: :feature, js: true, clean: true, 
   end
 
   context 'as a user manager' do
-    let!(:group_1) { FactoryBot.create(:group) }
     let(:user_manager) { FactoryBot.create(:user_manager) }
 
     before do
+      FactoryBot.create(:group)
       login_as(user_manager, scope: :user)
     end
 

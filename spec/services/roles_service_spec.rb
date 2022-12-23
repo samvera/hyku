@@ -351,7 +351,9 @@ RSpec.describe RolesService, clean: true do
       # All non-AdminSet CollectionTypes created through the UI should automatically
       # get the :collection_manager role as a group participant with manage access
       # and the :collection_editor role as a group participant with create access
-      let!(:collection_type) { FactoryBot.create(:collection_type) }
+      before do
+        FactoryBot.create(:collection_type)
+      end
 
       it 'does not create any new CollectionTypeParticipant records' do
         expect { roles_service.create_collection_type_participants! }
@@ -410,7 +412,9 @@ RSpec.describe RolesService, clean: true do
     end
 
     context 'when the collection type is the admin set' do
-      let!(:collection_type) { FactoryBot.create(:admin_set_collection_type) }
+      before do
+        FactoryBot.create(:admin_set_collection_type)
+      end
 
       it 'does not create any CollectionTypeParticipant records for the collection roles' do
         expect { roles_service.create_collection_type_participants! }

@@ -6,7 +6,7 @@ module Hyrax
     module CollectionAbility
       # rubocop:disable Metrics/MethodLength
       # rubocop:disable Metrics/BlockLength
-      def collection_abilities # rubocop:disable Metrics/AbcSize
+      def collection_abilities
         models = [Hyrax::PcdmCollection, Hyrax.config.collection_class].uniq
         if admin?
           models.each do |collection_model|

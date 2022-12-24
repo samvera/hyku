@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.describe 'hyrax/admin/users/index.html.erb', type: :view do
+  include Warden::Test::Helpers
+  include Devise::Test::ControllerHelpers
   let(:presenter) { Hyrax::Admin::UsersPresenter.new }
   let(:users) { [] }
   let(:page) { Capybara::Node::Simple.new(rendered) }

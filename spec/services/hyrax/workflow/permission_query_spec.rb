@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Hyrax
-  module Workflow
+  module Workflow # rubocop:disable Metrics/ModuleLength
     RSpec.describe PermissionQuery, slow_test: true, clean: true do
       let(:reviewing_user) { create(:user) }
       let(:completing_user) { create(:user) }

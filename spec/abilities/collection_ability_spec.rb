@@ -25,7 +25,7 @@ RSpec.describe Ability::CollectionAbility do
       )
     end
 
-    it 'allows all abilities' do # rubocop:disable RSpec/ExampleLength
+    it 'allows all abilities' do
       is_expected.to be_able_to(:manage, Collection)
       is_expected.to be_able_to(:manage_any, Collection)
       is_expected.to be_able_to(:create, Collection)
@@ -324,7 +324,7 @@ RSpec.describe Ability::CollectionAbility do
       collection.reset_access_controls!
     end
 
-    it 'allows most abilities' do # rubocop:disable RSpec/ExampleLength
+    it 'allows most abilities' do
       is_expected.to be_able_to(:manage_any, Collection)
       is_expected.to be_able_to(:view_admin_show_any, Collection)
       is_expected.to be_able_to(:edit, collection)
@@ -425,7 +425,7 @@ RSpec.describe Ability::CollectionAbility do
       is_expected.to be_able_to(:read, id)
     end
 
-    it 'denies most abilities' do # rubocop:disable RSpec/ExampleLength
+    it 'denies most abilities' do
       is_expected.not_to be_able_to(:manage, Collection)
       is_expected.not_to be_able_to(:manage_any, Collection)
       is_expected.not_to be_able_to(:edit, collection)

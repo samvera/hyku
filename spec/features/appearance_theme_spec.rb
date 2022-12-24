@@ -64,7 +64,7 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
   end
 
   context 'when a search results theme is selected' do
-    it 'updates the search results page with the selected layout view' do # rubocop:disable RSpec/ExampleLength
+    it 'updates the search results page with the selected layout view' do
       login_as admin
       visit '/admin/appearance'
       click_link('Themes')

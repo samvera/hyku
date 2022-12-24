@@ -165,7 +165,6 @@ RSpec.describe 'collection', type: :feature, js: true, clean: true, cohort: 'alp
 
         fill_in('Title', with: 'Default Sharing Test')
         click_button 'Save'
-        expect(page).to have_content('Collection was successfully created.')
 
         click_link 'Sharing'
       end

@@ -18,31 +18,29 @@ RSpec.describe 'AdminSet form Participants tab', type: :feature, js: true, clean
         name: 'test-workflow',
         permission_template: permission_template
       )
+
+      login_as admin
     end
 
     let(:admin) { FactoryBot.create(:admin) }
     let!(:admin_set_id) { AdminSet.find_or_create_default_admin_set_id }
     let!(:permission_template) { Hyrax::PermissionTemplate.find_or_create_by!(source_id: admin_set_id) }
 
-    before do
-      login_as admin
-    end
-
     context 'add group participants' do
       let!(:group) { FactoryBot.create(:group) }
 
       before do
         visit "/admin/admin_sets/#{ERB::Util.url_encode(admin_set_id)}/edit#participants"
+      end
 
+      it 'displays the groups humanized name' do
         expect(page).to have_content('Add Participants')
         expect(page).to have_content('Add group')
         expect(find('table.managers-table')).not_to have_content(group.name.titleize)
         # group does not have access if the table does not render
         expect(page).not_to have_selector('table.depositors-table')
         expect(page).not_to have_selector('table.viewers-table')
-      end
 
-      it 'displays the groups humanized name' do
         expect(
           page.has_select?(
             'permission_template_access_grants_attributes_0_agent_id',
@@ -52,6 +50,13 @@ RSpec.describe 'AdminSet form Participants tab', type: :feature, js: true, clean
       end
 
       it 'can add a group as a Manager of the admin set' do
+        expect(page).to have_content('Add Participants')
+        expect(page).to have_content('Add group')
+        expect(find('table.managers-table')).not_to have_content(group.name.titleize)
+        # group does not have access if the table does not render
+        expect(page).not_to have_selector('table.depositors-table')
+        expect(page).not_to have_selector('table.viewers-table')
+
         within('form#group-participants-form') do
           find(
             'select#permission_template_access_grants_attributes_0_agent_id option',
@@ -68,6 +73,13 @@ RSpec.describe 'AdminSet form Participants tab', type: :feature, js: true, clean
       end
 
       it 'can add a group as a Depositor of the admin set' do
+        expect(page).to have_content('Add Participants')
+        expect(page).to have_content('Add group')
+        expect(find('table.managers-table')).not_to have_content(group.name.titleize)
+        # group does not have access if the table does not render
+        expect(page).not_to have_selector('table.depositors-table')
+        expect(page).not_to have_selector('table.viewers-table')
+
         within('form#group-participants-form') do
           find(
             'select#permission_template_access_grants_attributes_0_agent_id option',
@@ -84,6 +96,13 @@ RSpec.describe 'AdminSet form Participants tab', type: :feature, js: true, clean
       end
 
       it 'can add a group as a Viewer of the admin set' do
+        expect(page).to have_content('Add Participants')
+        expect(page).to have_content('Add group')
+        expect(find('table.managers-table')).not_to have_content(group.name.titleize)
+        # group does not have access if the table does not render
+        expect(page).not_to have_selector('table.depositors-table')
+        expect(page).not_to have_selector('table.viewers-table')
+
         within('form#group-participants-form') do
           find(
             'select#permission_template_access_grants_attributes_0_agent_id option',

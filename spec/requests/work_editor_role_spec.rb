@@ -25,6 +25,8 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
     FactoryBot.create(:registered_group)
     FactoryBot.create(:editors_group)
     FactoryBot.create(:depositors_group)
+
+    login_as work_editor
   end
   let!(:admin_set) do
     admin_set = AdminSet.new(title: ['Test Admin Set'])
@@ -33,10 +35,6 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
     admin_set.reload
   end
   let!(:work) { process_through_actor_stack(build(:work), work_depositor, admin_set.id, visibility) }
-
-  before do
-    login_as work_editor
-  end
 
   describe 'read permissions' do
     %w[open authenticated restricted].each do |visibility|

@@ -11,12 +11,13 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: 70f2a6b096d8a6784d4bd7d886534dbbda1f3a78
+  revision: 5b6b8726463bdf4775cbcfc467dcbf4791b09833
   branch: main
   specs:
     iiif_print (0.0.1)
       blacklight_advanced_search (= 6.4.1)
       blacklight_iiif_search (~> 1.0)
+      dry-monads (~> 1.4.0)
       hyrax (>= 2.5, < 4.0)
       nokogiri (>= 1.13.2)
       rails (~> 5.0)

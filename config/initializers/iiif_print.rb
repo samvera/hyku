@@ -1,12 +1,24 @@
 IiifPrint.config do |config|
-  # 'publication_unique_id' configs used for Chronicling America style linking
-  #  e.g. First page of an issue from publication with LCCN sn86069873, from Jan. 15, 1897
-  # https://host/newspapers/sn86069873/1897-01-15/ed-1/seq-1
-  # the property that represents a unique identifier for a NewspaperTitle
-  # defaults to :lccn
-  # config.publication_unique_id_property = :lccn
+  # NOTE: WorkTypes and models are used synonymously here.
+  #
+  # Add WorkTypes into the Array to use PageDerivativeService
+  # @example
+  #   # config.work_types_for_derivative_service = [GenericWork, Image]
+  #
+  # config.work_types_for_derivative_service = []
 
-  # the Solr field that represents a unique identifier for a NewspaperTitle
-  # defaults to 'lccn_tesim'
-  # config.publication_unique_id_field = 'lccn_tesim'
+  # Add models to be excluded from search so the user
+  # would not see them in the search results.
+  # by default, use the human readable versions like:
+  # @example
+  #   # config.excluded_model_name_solr_field_values = ['Generic Work', 'Image']
+  #
+  # config.excluded_model_name_solr_field_values = []
+
+  # Add configurable solr field key for searching,
+  # default key is: 'human_readable_type_sim'
+  # if another key is used, make sure to adjust the
+  # config.excluded_model_name_solr_field_values to match
+  #
+  # config.excluded_model_name_solr_field_key = 'some_solr_field_key'
 end

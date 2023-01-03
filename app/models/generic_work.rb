@@ -2,6 +2,8 @@
 
 class GenericWork < ActiveFedora::Base
   include ::Hyrax::WorkBehavior
+  include IiifPrint::SetChildFlag
+
   include ::Hyrax::BasicMetadata
 
   validates :title, presence: { message: 'Your work must have a title.' }

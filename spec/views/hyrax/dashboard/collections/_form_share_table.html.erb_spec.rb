@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'hyrax/dashboard/collections/_form_share_table.html.erb', type: :view do
   let(:template) { stub_model(Hyrax::PermissionTemplate) }
   let(:user) { create(:user) }
@@ -17,7 +19,9 @@ RSpec.describe 'hyrax/dashboard/collections/_form_share_table.html.erb', type: :
                             permission_template: pt_form,
                             filter_access_grants_by_access: [access_grant])
     # Ignore the delete button link
-    # allow(view).to receive(:admin_permission_template_access_path).and_return("/admin/permission_template_accesses/123")
+    # allow(view).to receive(
+    #   :admin_permission_template_access_path
+    # ).and_return("/admin/permission_template_accesses/123")
   end
 
   describe "Manager shares table" do

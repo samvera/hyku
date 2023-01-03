@@ -6,16 +6,18 @@ require 'rails_helper'
 RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, cohort: 'bravo' do
   include WorksHelper
 
-  let(:work_editor) { FactoryBot.create(:user, roles: [:work_editor]) }
-  let(:work_depositor) { FactoryBot.create(:user, roles: [:work_depositor]) }
-  let(:visibility) { 'open' }
   # `before`s and `let!`s are order-dependent -- do not move this `before` from the top
   before do
     FactoryBot.create(:admin_group)
     FactoryBot.create(:registered_group)
     FactoryBot.create(:editors_group)
     FactoryBot.create(:depositors_group)
+
+    login_as work_editor
   end
+  let(:work_editor) { FactoryBot.create(:user, roles: [:work_editor]) }
+  let(:work_depositor) { FactoryBot.create(:user, roles: [:work_depositor]) }
+  let(:visibility) { 'open' }
   let!(:admin_set) do
     admin_set = AdminSet.new(title: ['Test Admin Set'])
     allow(Hyrax.config).to receive(:default_active_workflow_name).and_return('default')
@@ -23,9 +25,6 @@ RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, cohort
     admin_set.reload
   end
   let!(:work) { process_through_actor_stack(build(:work), work_depositor, admin_set.id, visibility) }
-  before do
-    login_as work_editor
-  end
 
   describe 'read permissions' do
     %w[open authenticated restricted].each do |visibility|
@@ -103,7 +102,7 @@ RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, cohort
     end
 
     it 'can see the edit button for works it creates on the dashboard index page' do
-      my_work = process_through_actor_stack(build(:work), work_editor, admin_set.id, visibility)
+      process_through_actor_stack(build(:work), work_editor, admin_set.id, visibility)
       visit '/dashboard/my/works'
 
       click_button('Select')
@@ -126,7 +125,7 @@ RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, cohort
     end
 
     it 'cannot see the delete button for works it creates on the dashboard index page' do
-      my_work = process_through_actor_stack(build(:work), work_editor, admin_set.id, visibility)
+      process_through_actor_stack(build(:work), work_editor, admin_set.id, visibility)
       visit '/dashboard/my/works'
 
       click_button('Select')

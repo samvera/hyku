@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe "Users trying to access a Private Work's show page", type: :feature, clean: true, js: true, cohort: 'bravo' do
+RSpec.describe "Users trying to access a Private Work's show page", type: :feature, clean: true, js: true, cohort: 'bravo' do # rubocop:disable Metrics/LineLength
   let(:fake_solr_document) do
     {
       'has_model_ssim': ['GenericWork'],

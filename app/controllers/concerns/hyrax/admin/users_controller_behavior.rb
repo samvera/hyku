@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # OVERRIDE FILE from Hyrax v2.9.0
 module Hyrax
   module Admin
@@ -10,7 +12,7 @@ module Hyrax
 
       # Display admin menu list of users
       def index
-        # OVERRIDE: AUTHORIZE A READER ROLE TO ACCESS THE USERS INDEX 
+        # OVERRIDE: AUTHORIZE A READER ROLE TO ACCESS THE USERS INDEX
         authorize! :read, ::User
         add_breadcrumb t(:'hyrax.controls.home'), root_path
         add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path

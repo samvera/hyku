@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Hyrax::Forms::WorkflowResponsibilityGroupForm do
   let(:instance) { described_class.new }
 

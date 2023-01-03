@@ -5,7 +5,6 @@ RSpec.describe "User roles", type: :request, singletenant: true, clean: true do
   let!(:group_1) { FactoryBot.create(:group) }
 
   context 'within a tenant' do
-
     context 'a registered user with no role' do
       let(:user) { FactoryBot.create(:user) }
 
@@ -56,14 +55,13 @@ RSpec.describe "User roles", type: :request, singletenant: true, clean: true do
         expect(response).to have_http_status(:redirect)
       end
     end
-
   end
 
   context 'a registered user with user_manager role' do
     let(:user_manager) { FactoryBot.create(:user_manager) }
-    let!(:user) { FactoryBot.create(:user, email: 'user@example.com', display_name: 'Regular User') }
 
     before do
+      FactoryBot.create(:user, email: 'user@example.com', display_name: 'Regular User')
       login_as(user_manager, scope: :user)
     end
 
@@ -120,14 +118,13 @@ RSpec.describe "User roles", type: :request, singletenant: true, clean: true do
       expect(response.status).to eq(200)
       expect(response).to have_http_status(:success)
     end
-
   end
 
   context 'a registered user with user_reader role' do
     let(:user_reader) { FactoryBot.create(:user_reader) }
-    let!(:user) { FactoryBot.create(:user, email: 'user@example.com', display_name: 'Regular User') }
 
     before do
+      FactoryBot.create(:user, email: 'user@example.com', display_name: 'Regular User')
       login_as(user_reader, scope: :user)
     end
 
@@ -184,7 +181,5 @@ RSpec.describe "User roles", type: :request, singletenant: true, clean: true do
       expect(response.status).to eq(302)
       expect(response).to have_http_status(:redirect)
     end
-
   end
-
 end

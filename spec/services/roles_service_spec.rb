@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe RolesService, clean: true do
   subject(:roles_service) { described_class }
+
   let(:default_role_count) { described_class::DEFAULT_ROLES.count }
   let(:default_hyrax_group_count) { described_class::DEFAULT_HYRAX_GROUPS_WITH_ATTRIBUTES.keys.count }
 
@@ -63,8 +64,8 @@ RSpec.describe RolesService, clean: true do
 
   describe '#create_default_roles!' do
     include_examples 'must run inside a tenant',
-      :create_default_roles!,
-      '`AccountElevator.switch!` into an Account before creating default Roles'
+                     :create_default_roles!,
+                     '`AccountElevator.switch!` into an Account before creating default Roles'
 
     context 'when run inside the scope of a tenant' do
       it 'creates all default roles' do
@@ -84,8 +85,8 @@ RSpec.describe RolesService, clean: true do
 
   describe '#create_default_hyrax_groups_with_roles!' do
     include_examples 'must run inside a tenant',
-      :create_default_hyrax_groups_with_roles!,
-      '`AccountElevator.switch!` into an Account before creating default Hyrax::Groups'
+                     :create_default_hyrax_groups_with_roles!,
+                     '`AccountElevator.switch!` into an Account before creating default Hyrax::Groups'
 
     context 'when run inside the scope of a tenant' do
       it 'creates all default hyrax groups with their default roles' do
@@ -99,7 +100,7 @@ RSpec.describe RolesService, clean: true do
         admin_group = Hyrax::Group.find_by(name: 'admin')
         expect(admin_group.humanized_name).to eq('Repository Administrators')
         expect(admin_group.description).to eq(I18n.t("hyku.admin.groups.description.#{::Ability.admin_group_name}"))
-        expect(admin_group.roles.map(&:name)).to contain_exactly(*%w[admin])
+        expect(admin_group.roles.map(&:name)).to contain_exactly('admin')
       end
 
       it 'creates the registered group' do
@@ -107,7 +108,11 @@ RSpec.describe RolesService, clean: true do
 
         registered_group = Hyrax::Group.find_by(name: 'registered')
         expect(registered_group.humanized_name).to eq('Registered Users')
-        expect(registered_group.description).to eq(I18n.t("hyku.admin.groups.description.#{::Ability.registered_group_name}"))
+        expect(registered_group.description).to eq(
+          I18n.t(
+            "hyku.admin.groups.description.#{::Ability.registered_group_name}"
+          )
+        )
         expect(registered_group.roles.map(&:name)).to eq([])
       end
 
@@ -117,7 +122,7 @@ RSpec.describe RolesService, clean: true do
         editors_group = Hyrax::Group.find_by(name: 'editors')
         expect(editors_group.humanized_name).to eq('Editors')
         expect(editors_group.description).to eq(I18n.t('hyku.admin.groups.description.editors'))
-        expect(editors_group.roles.map(&:name)).to contain_exactly(*%w[collection_editor work_editor user_reader])
+        expect(editors_group.roles.map(&:name)).to contain_exactly('collection_editor', 'work_editor', 'user_reader')
       end
 
       it 'creates the tenant depositors group' do
@@ -126,7 +131,7 @@ RSpec.describe RolesService, clean: true do
         depositors_group = Hyrax::Group.find_by(name: 'depositors')
         expect(depositors_group.humanized_name).to eq('Depositors')
         expect(depositors_group.description).to eq(I18n.t('hyku.admin.groups.description.depositors'))
-        expect(depositors_group.roles.map(&:name)).to contain_exactly(*%w[work_depositor])
+        expect(depositors_group.roles.map(&:name)).to contain_exactly('work_depositor')
       end
     end
   end
@@ -346,7 +351,9 @@ RSpec.describe RolesService, clean: true do
       # All non-AdminSet CollectionTypes created through the UI should automatically
       # get the :collection_manager role as a group participant with manage access
       # and the :collection_editor role as a group participant with create access
-      let!(:collection_type) { FactoryBot.create(:collection_type) }
+      before do
+        FactoryBot.create(:collection_type)
+      end
 
       it 'does not create any new CollectionTypeParticipant records' do
         expect { roles_service.create_collection_type_participants! }
@@ -392,7 +399,6 @@ RSpec.describe RolesService, clean: true do
           ).count
         ).to eq(0)
 
-
         roles_service.create_collection_type_participants!
 
         expect(
@@ -406,7 +412,9 @@ RSpec.describe RolesService, clean: true do
     end
 
     context 'when the collection type is the admin set' do
-      let!(:collection_type) { FactoryBot.create(:admin_set_collection_type) }
+      before do
+        FactoryBot.create(:admin_set_collection_type)
+      end
 
       it 'does not create any CollectionTypeParticipant records for the collection roles' do
         expect { roles_service.create_collection_type_participants! }

@@ -111,7 +111,7 @@ RSpec.describe CreateAccount do
       end
     end
   end
-  
+
   describe '#schedule_recurring_jobs' do
     it "Enques Embargo and Lease Expiry jobs" do
       expect(EmbargoAutoExpiryJob).to receive(:perform_later).with(account)

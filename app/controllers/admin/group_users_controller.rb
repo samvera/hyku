@@ -49,7 +49,10 @@ module Admin
       def cannot_remove_admin_users_from_admin_group
         return unless @group.name == ::Ability.admin_group_name
 
-        redirect_back(fallback_location: edit_admin_group_path(@group), flash: { error: "Admin users cannot be removed from this group" })
+        redirect_back(
+          fallback_location: edit_admin_group_path(@group),
+          flash: { error: "Admin users cannot be removed from this group" }
+        )
       end
   end
 end

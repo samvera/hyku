@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # OVERRIDE FILE from Hryax v2.9.0
 require_dependency Hyrax::Engine.root.join('app', 'models', 'hyrax', 'collection_type_participant').to_s
 

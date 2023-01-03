@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'actions permitted by the collection_reader role', type: :feature, js: true, clean: true, cohort: 'bravo' do
+RSpec.describe 'actions permitted by the collection_reader role', type: :feature, js: true, clean: true, cohort: 'bravo' do # rubocop:disable Metrics/LineLength
   let!(:role) { FactoryBot.create(:role, :collection_reader) }
   let!(:collection) { FactoryBot.create(:private_collection_lw, with_permission_template: true) }
   let(:user) { FactoryBot.create(:user) }
@@ -80,7 +80,11 @@ RSpec.describe 'actions permitted by the collection_reader role', type: :feature
       end
 
       it "cannot remove a subcollection from the parent collection's show page" do
-        sub_col = FactoryBot.create(:private_collection_lw, with_permission_template: true, member_of_collections: [collection])
+        sub_col = FactoryBot.create(
+          :private_collection_lw,
+          with_permission_template: true,
+          member_of_collections: [collection]
+        )
         expect(collection.reload.member_collection_ids.count).to eq(1)
 
         visit "/dashboard/collections/#{collection.id}"
@@ -89,7 +93,11 @@ RSpec.describe 'actions permitted by the collection_reader role', type: :feature
       end
 
       it "cannot remove a subcollection from the child collection's show page" do
-        sub_col = FactoryBot.create(:private_collection_lw, with_permission_template: true, member_of_collections: [collection])
+        sub_col = FactoryBot.create(
+          :private_collection_lw,
+          with_permission_template: true,
+          member_of_collections: [collection]
+        )
         expect(collection.reload.member_collection_ids.count).to eq(1)
 
         visit "/dashboard/collections/#{sub_col.id}"
@@ -114,7 +122,7 @@ RSpec.describe 'actions permitted by the collection_reader role', type: :feature
         public_work = FactoryBot.create(:work, member_of_collections: [collection], visibility: 'open')
         institutional_work = FactoryBot.create(:work, member_of_collections: [collection], visibility: 'authenticated')
         private_work = FactoryBot.create(:work, member_of_collections: [collection], visibility: 'restricted')
-        expect(collection.member_work_ids).to contain_exactly(*[public_work.id, institutional_work.id, private_work.id])
+        expect(collection.member_work_ids).to contain_exactly(public_work.id, institutional_work.id, private_work.id)
 
         visit "/dashboard/collections/#{collection.id}"
         expect(find("tr#document_#{public_work.id}")).not_to have_content('Remove')
@@ -193,7 +201,11 @@ RSpec.describe 'actions permitted by the collection_reader role', type: :feature
       end
 
       it "cannot remove a subcollection from the parent collection's show page" do
-        sub_col = FactoryBot.create(:private_collection_lw, with_permission_template: true, member_of_collections: [collection])
+        sub_col = FactoryBot.create(
+          :private_collection_lw,
+          with_permission_template: true,
+          member_of_collections: [collection]
+        )
         expect(collection.reload.member_collection_ids.count).to eq(1)
 
         visit "/dashboard/collections/#{collection.id}"
@@ -202,7 +214,11 @@ RSpec.describe 'actions permitted by the collection_reader role', type: :feature
       end
 
       it "cannot remove a subcollection from the child collection's show page" do
-        sub_col = FactoryBot.create(:private_collection_lw, with_permission_template: true, member_of_collections: [collection])
+        sub_col = FactoryBot.create(
+          :private_collection_lw,
+          with_permission_template: true,
+          member_of_collections: [collection]
+        )
         expect(collection.reload.member_collection_ids.count).to eq(1)
 
         visit "/dashboard/collections/#{sub_col.id}"
@@ -227,7 +243,7 @@ RSpec.describe 'actions permitted by the collection_reader role', type: :feature
         public_work = FactoryBot.create(:work, member_of_collections: [collection], visibility: 'open')
         institutional_work = FactoryBot.create(:work, member_of_collections: [collection], visibility: 'authenticated')
         private_work = FactoryBot.create(:work, member_of_collections: [collection], visibility: 'restricted')
-        expect(collection.member_work_ids).to contain_exactly(*[public_work.id, institutional_work.id, private_work.id])
+        expect(collection.member_work_ids).to contain_exactly(public_work.id, institutional_work.id, private_work.id)
 
         visit "/dashboard/collections/#{collection.id}"
         expect(find("tr#document_#{public_work.id}")).not_to have_content('Remove')

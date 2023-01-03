@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # OVERRIDE FILE from Hyrax v2.9.0
 # - Give the :collection_manager role MANAGE_ACCESS to all non-AdminSet CollectionTypes by default
 # - Give the :collection_editor role CREATE_ACCESS to all non-AdminSet CollectionTypes by default
@@ -6,7 +8,8 @@ module Hyrax
   module CollectionTypes
     # @api public
     #
-    # Responsible for creating a CollectionType. If no params are given,the default user collection is assumed as defined by:
+    # Responsible for creating a CollectionType. If no params are given,
+    # the default user collection is assumed as defined by:
     #
     # * Hyrax::CollectionType::USER_COLLECTION_MACHINE_ID
     # * Hyrax::CollectionType::USER_COLLECTION_DEFAULT_TITLE
@@ -14,7 +17,7 @@ module Hyrax
     #
     # @see Hyrax:CollectionType
     #
-    class CreateService
+    class CreateService # rubocop:disable Metrics/ClassLength
       DEFAULT_OPTIONS = {
         description: '',
         nestable: true,
@@ -27,16 +30,35 @@ module Hyrax
         assigns_workflow: false,
         assigns_visibility: false,
         badge_color: "#663333",
-        participants: [{ agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE, agent_id: ::Ability.admin_group_name, access: Hyrax::CollectionTypeParticipant::MANAGE_ACCESS },
-                       # OVERRIDE: add :collection_manager role to participants array with MANAGE_ACCESS
-                       { agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE, agent_id: 'collection_manager', access: Hyrax::CollectionTypeParticipant::MANAGE_ACCESS },
-                       # OVERRIDE: add :collection_editor role to participants array with CREATE_ACCESS
-                       { agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE, agent_id: 'collection_editor', access: Hyrax::CollectionTypeParticipant::CREATE_ACCESS }].tap do |participants|
-                         # OVERRIDE: exclude group with CREATE_ACCESS for ::Ability.registered_group_name (all registered users) if we are restricting permissions
-                         unless ::ENV['SETTINGS__RESTRICT_CREATE_AND_DESTROY_PERMISSIONS'] == 'true'
-                           participants << { agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE, agent_id: ::Ability.registered_group_name, access: Hyrax::CollectionTypeParticipant::CREATE_ACCESS }
-                         end
-                       end
+        participants: [
+          {
+            agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
+            agent_id: ::Ability.admin_group_name,
+            access: Hyrax::CollectionTypeParticipant::MANAGE_ACCESS
+          },
+          # OVERRIDE: add :collection_manager role to participants array with MANAGE_ACCESS
+          {
+            agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
+            agent_id: 'collection_manager',
+            access: Hyrax::CollectionTypeParticipant::MANAGE_ACCESS
+          },
+          # OVERRIDE: add :collection_editor role to participants array with CREATE_ACCESS
+          {
+            agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
+            agent_id: 'collection_editor',
+            access: Hyrax::CollectionTypeParticipant::CREATE_ACCESS
+          }
+        ].tap do |participants|
+          # OVERRIDE: exclude group with CREATE_ACCESS for ::Ability.registered_group_name
+          # (all registered users) if we are restricting permissions
+          unless ::ENV['SETTINGS__RESTRICT_CREATE_AND_DESTROY_PERMISSIONS'] == 'true'
+            participants << {
+              agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
+              agent_id: ::Ability.registered_group_name,
+              access: Hyrax::CollectionTypeParticipant::CREATE_ACCESS
+            }
+          end
+        end
       }.freeze
 
       USER_COLLECTION_MACHINE_ID = Hyrax::CollectionType::USER_COLLECTION_MACHINE_ID
@@ -53,16 +75,35 @@ module Hyrax
         assigns_workflow: false,
         assigns_visibility: false,
         badge_color: "#705070",
-        participants: [{ agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE, agent_id: ::Ability.admin_group_name, access: Hyrax::CollectionTypeParticipant::MANAGE_ACCESS },
-                       # OVERRIDE: add :collection_manager role to participants array with MANAGE_ACCESS
-                       { agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE, agent_id: 'collection_manager', access: Hyrax::CollectionTypeParticipant::MANAGE_ACCESS },
-                       # OVERRIDE: add :collection_editor role to participants array with CREATE_ACCESS
-                       { agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE, agent_id: 'collection_editor', access: Hyrax::CollectionTypeParticipant::CREATE_ACCESS }].tap do |participants|
-                         # OVERRIDE: exclude group with CREATE_ACCESS for ::Ability.registered_group_name (all registered users) if we are restricting permissions
-                         unless ::ENV['SETTINGS__RESTRICT_CREATE_AND_DESTROY_PERMISSIONS'] == 'true'
-                           participants << { agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE, agent_id: ::Ability.registered_group_name, access: Hyrax::CollectionTypeParticipant::CREATE_ACCESS }
-                         end
-                       end
+        participants: [
+          {
+            agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
+            agent_id: ::Ability.admin_group_name,
+            access: Hyrax::CollectionTypeParticipant::MANAGE_ACCESS
+          },
+          # OVERRIDE: add :collection_manager role to participants array with MANAGE_ACCESS
+          {
+            agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
+            agent_id: 'collection_manager',
+            access: Hyrax::CollectionTypeParticipant::MANAGE_ACCESS
+          },
+          # OVERRIDE: add :collection_editor role to participants array with CREATE_ACCESS
+          {
+            agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
+            agent_id: 'collection_editor',
+            access: Hyrax::CollectionTypeParticipant::CREATE_ACCESS
+          }
+        ].tap do |participants|
+          # OVERRIDE: exclude group with CREATE_ACCESS for ::Ability.registered_group_name
+          # (all registered users) if we are restricting permissions
+          unless ::ENV['SETTINGS__RESTRICT_CREATE_AND_DESTROY_PERMISSIONS'] == 'true'
+            participants << {
+              agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
+              agent_id: ::Ability.registered_group_name,
+              access: Hyrax::CollectionTypeParticipant::CREATE_ACCESS
+            }
+          end
+        end
       }.freeze
 
       ADMIN_SET_MACHINE_ID = Hyrax::CollectionType::ADMIN_SET_MACHINE_ID
@@ -79,8 +120,18 @@ module Hyrax
         assigns_workflow: true,
         assigns_visibility: true,
         badge_color: "#405060",
-        participants: [{ agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE, agent_id: ::Ability.admin_group_name, access: Hyrax::CollectionTypeParticipant::MANAGE_ACCESS },
-                       { agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE, agent_id: ::Ability.admin_group_name, access: Hyrax::CollectionTypeParticipant::CREATE_ACCESS }]
+        participants: [
+          {
+            agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
+            agent_id: ::Ability.admin_group_name,
+            access: Hyrax::CollectionTypeParticipant::MANAGE_ACCESS
+          },
+          {
+            agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
+            agent_id: ::Ability.admin_group_name,
+            access: Hyrax::CollectionTypeParticipant::CREATE_ACCESS
+          }
+        ]
       }.freeze
 
       # @api public
@@ -93,14 +144,21 @@ module Hyrax
       # @option options [String] :description a description to show the user when selecting the collection type
       # @option options [Boolean] :nestable if true, collections of this type can be nested
       # @option options [Boolean] :brandable if true, collections of this type can be branded
-      # @option options [Boolean] :discoverable if true, collections of this type can be marked Public and found in search results
-      # @option options [Boolean] :sharable if true, collections of this type can have participants added for :manage, :deposit, or :view access
-      # @option options [Boolean] :share_applies_to_new_works if true, share participant permissions are applied to new works created in the collection
-      # @option options [Boolean] :allow_multiple_membership if true, works can be members of multiple collections of this type
-      # @option options [Boolean] :require_membership if true, all works must belong to at least one collection of this type.  When combined
-      #   with allow_multiple_membership=false, works can belong to one and only one collection of this type.
-      # @option options [Boolean] :assigns_workflow if true, collections of this type can be used to assign a workflow to a work
-      # @option options [Boolean] :assigns_visibility if true, collections of this type can be used to assign initial visibility to a work
+      # @option options [Boolean] :discoverable if true, collections of this type can be marked Public
+      #   and found in search results
+      # @option options [Boolean] :sharable if true, collections of this type can have participants added for
+      #   :manage, :deposit, or :view access
+      # @option options [Boolean] :share_applies_to_new_works if true, share participant permissions are applied
+      #   to new works created in the collection
+      # @option options [Boolean] :allow_multiple_membership if true, works can be members of multiple collections
+      #   of this type
+      # @option options [Boolean] :require_membership if true, all works must belong to at least one collection
+      #   of this type. When combined with allow_multiple_membership=false, works can belong to one and only one
+      #   collection of this type.
+      # @option options [Boolean] :assigns_workflow if true, collections of this type can be used to assign
+      #   a workflow to a work
+      # @option options [Boolean] :assigns_visibility if true, collections of this type can be used to assign
+      #   initial visibility to a work
       # @option options [String] :badge_color a color for the badge to show the user when selecting the collection type
       # @return [Hyrax::CollectionType] the newly created collection type instance
       def self.create_collection_type(machine_id:, title:, options: {})
@@ -117,7 +175,11 @@ module Hyrax
       #
       # @return [Hyrax::CollectionType] the newly created admin set collection type instance
       def self.create_admin_set_type
-        create_collection_type(machine_id: ADMIN_SET_MACHINE_ID, title: ADMIN_SET_TITLE, options: ADMIN_SET_OPTIONS)
+        create_collection_type(
+          machine_id: ADMIN_SET_MACHINE_ID,
+          title: ADMIN_SET_TITLE,
+          options: ADMIN_SET_OPTIONS
+        )
       end
 
       # @api public
@@ -126,7 +188,11 @@ module Hyrax
       #
       # @return [Hyrax::CollectionType] the newly created user collection type instance
       def self.create_user_collection_type
-        create_collection_type(machine_id: USER_COLLECTION_MACHINE_ID, title: USER_COLLECTION_TITLE, options: USER_COLLECTION_OPTIONS)
+        create_collection_type(
+          machine_id: USER_COLLECTION_MACHINE_ID,
+          title: USER_COLLECTION_TITLE,
+          options: USER_COLLECTION_OPTIONS
+        )
       end
 
       # @api public
@@ -134,8 +200,10 @@ module Hyrax
       # Add the default participants to a collection_type.
       #
       # @param collection_type_id [Integer] the id of the collection type
-      # @note Several checks get the user's groups from the user's ability.  The same values can be retrieved directly from a passed in ability.
-      #   If calling from Abilities, pass the ability.  If you try to get the ability from the user, you end up in an infinit loop.
+      # @note Several checks get the user's groups from the user's ability.
+      #   The same values can be retrieved directly from a passed in ability.
+      #   If calling from Abilities, pass the ability.
+      #   If you try to get the ability from the user, you end up in an infinite loop.
       def self.add_default_participants(collection_type_id)
         return unless collection_type_id
         default_participants = [{ agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
@@ -149,7 +217,8 @@ module Hyrax
                                 { agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
                                   agent_id: 'collection_editor',
                                   access: Hyrax::CollectionTypeParticipant::CREATE_ACCESS }].tap do |participants|
-                                    # OVERRIDE: exclude group with CREATE_ACCESS for ::Ability.registered_group_name (all registered users) if we are restricting permissions
+                                    # OVERRIDE: exclude group with CREATE_ACCESS for ::Ability.registered_group_name
+                                    # (all registered users) if we are restricting permissions
                                     unless ::ENV['SETTINGS__RESTRICT_CREATE_AND_DESTROY_PERMISSIONS'] == 'true'
                                       participants << { agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
                                                         agent_id: ::Ability.registered_group_name,
@@ -175,7 +244,12 @@ module Hyrax
           participants.all? { |p| p.key?(:agent_type) && p.key?(:agent_id) && p.key?(:access) }
 
         participants.each do |p|
-          Hyrax::CollectionTypeParticipant.create!(hyrax_collection_type_id: collection_type_id, agent_type: p.fetch(:agent_type), agent_id: p.fetch(:agent_id), access: p.fetch(:access))
+          Hyrax::CollectionTypeParticipant.create!(
+            hyrax_collection_type_id: collection_type_id,
+            agent_type: p.fetch(:agent_type),
+            agent_id: p.fetch(:agent_id),
+            access: p.fetch(:access)
+          )
         end
       rescue InvalidParticipantError => error
         Rails.logger.error "Participants not created for collection type " \

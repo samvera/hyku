@@ -1,5 +1,6 @@
-RSpec.describe 'Admin Dashboard', type: :request, singletenant: true, clean: true do
+# frozen_string_literal: true
 
+RSpec.describe 'Admin Dashboard', type: :request, singletenant: true, clean: true do
   context 'as a non logged-in user' do
     describe 'I cannot access the dashboard' do
       it 'redirects the user to the log-in page' do # You need to sign in or sign up before continuing
@@ -159,7 +160,7 @@ RSpec.describe 'Admin Dashboard', type: :request, singletenant: true, clean: tru
         expect(response.status).to eq(200)
       end
 
-      it 'renders a status of you are not authorized to access this page' do # System Status
+      it 'renders a status of you are not authorized to access the System Status page' do # System Status
         get '/status'
         expect(response.status).to eq(302)
       end
@@ -184,7 +185,7 @@ RSpec.describe 'Admin Dashboard', type: :request, singletenant: true, clean: tru
         expect(response.status).to eq(200)
       end
 
-      it 'renders a status of you are not authorized to access this page' do # Reports
+      it 'renders a status of you are not authorized to access the Reports page' do # Reports
         get '/admin/stats'
         expect(response.status).to eq(302)
       end
@@ -213,68 +214,68 @@ RSpec.describe 'Admin Dashboard', type: :request, singletenant: true, clean: tru
       end
 
       # Tasks
-      it 'renders a status of you are not authorized to access this page' do    # Review Submissions
+      it 'renders a status of you are not authorized to access the Review Submissions page' do # Review Submissions
         get '/admin/workflows'
         expect(response.status).to eq(302)
       end
 
-      it 'renders a status of you are not authorized to access this page' do    # Manage Users
+      it 'renders a status of you are not authorized to access the Manage Users page' do # Manage Users
         get '/admin/users'
         expect(response.status).to eq(302)
       end
 
-      it 'renders a status of you are not authorized to access this page' do    # Manage Groups
+      it 'renders a status of you are not authorized to access the Manage Groups page' do # Manage Groups
         get '/admin/groups'
         expect(response.status).to eq(302)
       end
 
-      it 'renders a status of you are not authorized to access this page' do    # Manage Embargoes
+      it 'renders a status of you are not authorized to access the Manage Embargoes page' do # Manage Embargoes
         get '/embargoes'
         expect(response.status).to eq(302)
       end
 
-      it 'renders a status of you are not authorized to access this page' do    # Manage Leases
+      it 'renders a status of you are not authorized to access the Manage Leases page' do # Manage Leases
         get '/leases'
         expect(response.status).to eq(302)
       end
 
       # Configuration
-      it 'renders a status of the page you are trying to access is private' do    # Labels
+      it 'renders a status of the Labels page is private' do # Labels
         get '/site/labels/edit'
         expect(response.status).to eq(401)
       end
 
-      it 'renders a status of the page you are trying to access is private' do    # Appearance
+      it 'renders a status of the Appearance page is private' do # Appearance
         get '/admin/appearance'
         expect(response.status).to eq(401)
       end
 
-      it 'renders a status of you are not authorized to access this page' do    # Collection Types
+      it 'renders a status of you are not authorized to access the Collection Types page' do # Collection Types
         get '/admin/collection_types'
         expect(response.status).to eq(302)
       end
 
-      it 'renders a status of the page you are trying to access is private' do    # Pages
+      it 'renders a status that the Pages page is private' do # Pages
         get '/pages/edit'
         expect(response.status).to eq(401)
       end
 
-      it 'renders a status of the page you are trying to access is private' do    # Content Blocks
+      it 'renders a status of the Content Blocks page is private' do # Content Blocks
         get '/content_blocks/edit'
         expect(response.status).to eq(401)
       end
 
-      it 'renders a status of you are not authorized to access this page' do    # Features
+      it 'renders a status of you are not authorized to access the Features page' do # Features
         get '/admin/features'
         expect(response.status).to eq(302)
       end
 
-      it 'renders a status of you are not authorized to access this page' do    # Available Work Types
+      it 'renders a status of you are not authorized to access the Available Work Types page' do # Available Work Types
         get '/admin/work_types/edit'
         expect(response.status).to eq(302)
       end
 
-      it 'renders a status of you are not authorized to access this page' do    # Workflow Roles
+      it 'renders a status of you are not authorized to access the Workflow Roles page' do # Workflow Roles
         get '/admin/workflow_roles'
         expect(response.status).to eq(302)
       end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe "Users trying to access an Institution Work's show page", type: :request, clean: true, multitenant: true do
+RSpec.describe "Users trying to access an Institution Work's show page", type: :request, clean: true, multitenant: true do # rubocop:disable Metrics/LineLength
   let(:account) { create(:account) }
   let(:work) { create(:work, visibility: 'authenticated') }
   let(:tenant_user_attributes) { attributes_for(:user) }
@@ -32,7 +32,7 @@ RSpec.describe "Users trying to access an Institution Work's show page", type: :
         email: tenant_user_attributes[:email],
         password: tenant_user_attributes[:password],
         password_confirmation: tenant_user_attributes[:password]
-      }}
+      } }
       @tenant_user = User.last
     end
 
@@ -49,7 +49,7 @@ RSpec.describe "Users trying to access an Institution Work's show page", type: :
         email: tenant_user_attributes[:email],
         password: tenant_user_attributes[:password],
         password_confirmation: tenant_user_attributes[:password]
-      }}
+      } }
       @tenant_admin = User.last
 
       Apartment::Tenant.switch(account.tenant) do

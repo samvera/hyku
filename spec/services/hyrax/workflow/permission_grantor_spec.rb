@@ -3,6 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe Hyrax::Workflow::PermissionGrantor do
+  subject(:permission_grantor) do
+    described_class.new(
+      permission_template: permission_template,
+      creating_user: creating_user
+    )
+  end
+
   let(:permission_template) { build(:permission_template) }
   let(:creating_user) { create(:user) }
   let(:user) { create(:user) }
@@ -10,8 +17,6 @@ RSpec.describe Hyrax::Workflow::PermissionGrantor do
   let(:depositor_user) { create(:user, roles: [:work_depositor]) }
   let(:editors_group) { create(:editors_group) }
   let(:depositors_group) { create(:depositors_group) }
-
-  subject(:permission_grantor) { described_class.new(permission_template: permission_template, creating_user: creating_user) }
 
   describe '#initialize' do
     it 'requires a :permission_template argument' do

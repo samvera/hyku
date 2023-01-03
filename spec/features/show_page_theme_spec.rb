@@ -13,8 +13,6 @@ RSpec.describe 'Admin can select show page theme', type: :feature, js: true, cle
            user: user)
   end
 
-  let!(:admin_group) { Hyrax::Group.create(name: "admin") }
-  let!(:registered_group) { Hyrax::Group.create(name: "registered") }
   let(:admin_set_id) { AdminSet.find_or_create_default_admin_set_id }
   let(:permission_template) { Hyrax::PermissionTemplate.find_or_create_by!(source_id: admin_set_id) }
   let(:workflow) do
@@ -23,6 +21,11 @@ RSpec.describe 'Admin can select show page theme', type: :feature, js: true, cle
       name: 'test-workflow',
       permission_template: permission_template
     )
+  end
+
+  before do
+    Hyrax::Group.create(name: "admin")
+    Hyrax::Group.create(name: "registered")
   end
 
   context "as a repository admin" do

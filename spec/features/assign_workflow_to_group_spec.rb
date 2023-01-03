@@ -12,6 +12,12 @@ RSpec.describe 'Assign workflow to group', type: :feature, js: true, clean: true
       FactoryBot.create(:registered_group)
       FactoryBot.create(:editors_group)
       FactoryBot.create(:depositors_group)
+
+      Sipity::Workflow.create!(
+        active: true,
+        name: 'test-workflow',
+        permission_template: permission_template
+      )
     end
 
     let!(:admin) { FactoryBot.create(:admin, email: 'admin@example.com', display_name: 'Wilma Flinstone') }
@@ -21,13 +27,6 @@ RSpec.describe 'Assign workflow to group', type: :feature, js: true, clean: true
 
     let!(:admin_set_id) { AdminSet.find_or_create_default_admin_set_id }
     let!(:permission_template) { Hyrax::PermissionTemplate.find_or_create_by!(source_id: admin_set_id) }
-    let!(:workflow) do
-      Sipity::Workflow.create!(
-        active: true,
-        name: 'test-workflow',
-        permission_template: permission_template
-      )
-    end
 
     it 'admin assigns an approving workflow role to a user' do
       login_as admin
@@ -75,7 +74,12 @@ RSpec.describe 'Assign workflow to group', type: :feature, js: true, clean: true
       login_as admin
       visit '/admin/workflow_roles'
       expect(page).to have_content 'Assign Role to Group'
-      expect(page.has_select?('sipity_workflow_responsibility[group_id]', with_options: [group_3.humanized_name])).to be true
+      expect(
+        page.has_select?(
+          'sipity_workflow_responsibility[group_id]',
+          with_options: [group_3.humanized_name]
+        )
+      ).to be true
       find('#sipity_workflow_responsibility_group_id option', text: "Town of Bedrock").click
       # With selenium and the chrome driver, focus remains on the
       # select box. Click outside the box so the next line can find

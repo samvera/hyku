@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # OVERRIDE FILE from Hryax 2.5.1
 require 'cancan/matchers'
 
@@ -13,7 +15,13 @@ RSpec.describe Hyrax::Ability::SolrDocumentAbility do
   # OVERRIDE: add specs for custom ability logic
   context 'with Collection solr doc' do
     let(:collection_type_gid) { create(:collection_type).gid }
-    let(:collection) { create(:collection_lw, with_permission_template: true, collection_type_gid: collection_type_gid) }
+    let(:collection) do
+      create(
+        :collection_lw,
+        with_permission_template: true,
+        collection_type_gid: collection_type_gid
+      )
+    end
     let!(:solr_document) { SolrDocument.new(collection.to_solr) }
 
     context 'when admin user' do

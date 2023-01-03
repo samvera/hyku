@@ -12,19 +12,19 @@ module GroupAwareRoleChecker
 
   private
 
-  # Check for the presence of the passed role_name in the User's Roles and
-  # the User's Hyrax::Group's Roles.
-  # TODO: investigate why this method causes spec/features/appearance_theme_spec.rb to fail
-  def has_group_aware_role?(role_name)
-    return false if current_user.new_record?
+    # Check for the presence of the passed role_name in the User's Roles and
+    # the User's Hyrax::Group's Roles.
+    # TODO: investigate why this method causes spec/features/appearance_theme_spec.rb to fail
+    def has_group_aware_role?(role_name)
+      return false if current_user.new_record?
 
-    current_user.reload # Get the most up-to-date version of the User before checking for Role
-    return true if current_user.has_role?(role_name, Site.instance)
+      current_user.reload # Get the most up-to-date version of the User before checking for Role
+      return true if current_user.has_role?(role_name, Site.instance)
 
-    current_user.hyrax_groups.each do |group|
-      return true if group.has_site_role?(role_name)
+      current_user.hyrax_groups.each do |group|
+        return true if group.has_site_role?(role_name)
+      end
+
+      false
     end
-
-    false
-  end
 end

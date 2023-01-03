@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # OVERRIDE FILE from Hyrax v2.9.0
 FactoryBot.define do
   factory :collection_type_participant, class: Hyrax::CollectionTypeParticipant do

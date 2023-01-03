@@ -18,6 +18,9 @@ RSpec.describe 'hyrax/admin/users/index.html.erb', type: :view do
         created_at: Time.zone.now - 3.days
       )
     end
+    FactoryBot.create(:admin_group, member_users: [users[0]])
+    sign_in users[0]
+    @invite_roles_options = ::RolesService::DEFAULT_ROLES
     allow(presenter).to receive(:users).and_return(users)
     assign(:presenter, presenter)
     render
@@ -65,7 +68,7 @@ RSpec.describe 'hyrax/admin/users/index.html.erb', type: :view do
       (5..6).each do |i|
         expect(page).to have_content("admin#{i}@example.com")
       end
-      expect(page).to have_selector("div.users-listing li", text: 'admin', count: 2)
+      expect(page).to have_selector("div.users-listing td.roles li", text: 'Admin', count: 4)
     end
   end
 

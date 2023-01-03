@@ -222,10 +222,10 @@ class RolesService # rubocop:disable Metrics/ClassLength
         true,
         Time.current - 7.days
       )
-      progress = ProgressBar.new(stale_guest_users.count)
+      progress = ProgressBar.create(total: stale_guest_users.count)
 
       stale_guest_users.find_each do |u|
-        progress.increment!
+        progress.increment
         u.destroy
       end
     end

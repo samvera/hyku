@@ -25,7 +25,7 @@ RSpec.describe 'Groups', type: :feature, js: true, clean: true, cohort: 'alpha' 
       visit "/admin/groups/#{users_group.id}/remove"
 
       expect(page).not_to have_content('Default groups cannot be destroyed.')
-      expect do 
+      expect do
         within(".callout-action") do
           click_link 'Remove'
         end

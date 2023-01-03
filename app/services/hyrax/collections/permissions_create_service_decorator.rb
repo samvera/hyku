@@ -10,8 +10,8 @@ module Hyrax
       # This possible cruft before the #access_grants_attributes definition is how I (bkiahstroud) was
       # able to redefine a private class method using a decorator. If you know a better way,
       # please feel free to rework how this gets set up.
-      def self.prepended(base)
-        base.class_eval do
+      def self.prepended(base) # rubocop:disable Metrics/MethodLength
+        base.class_eval do # rubocop:disable Metrics/BlockLength
           class << self
             # @api private
             #
@@ -21,22 +21,50 @@ module Hyrax
             # @param creating_user [User] the user that created the collection
             # @param grants [Array<Hash>] additional grants to apply to the new collection
             # @return [Array<Hash>] a hash containing permission attributes
+            # rubocop:disable Metrics/MethodLength
             def access_grants_attributes(collection_type:, creating_user:, grants:)
-              [
+              # rubocop:enable Metrics/MethodLength
+              [ # rubocop:disable Metrics/BlockLength
                 { agent_type: 'group', agent_id: admin_group_name, access: Hyrax::PermissionTemplateAccess::MANAGE }
               ].tap do |attribute_list|
                 # Grant manage access to the creating_user if it exists
-                attribute_list << { agent_type: 'user', agent_id: creating_user.user_key, access: Hyrax::PermissionTemplateAccess::MANAGE } if creating_user
+                if creating_user
+                  attribute_list << {
+                    agent_type: 'user',
+                    agent_id: creating_user.user_key,
+                    access: Hyrax::PermissionTemplateAccess::MANAGE
+                  }
+                end
                 # OVERRIDE BEGIN
                 if collection_type.admin_set?
                   # Grant work roles appropriate access to all AdminSets
-                  attribute_list << { agent_type: 'group', agent_id: 'work_depositor', access: Hyrax::PermissionTemplateAccess::DEPOSIT }
-                  attribute_list << { agent_type: 'group', agent_id: 'work_editor', access: Hyrax::PermissionTemplateAccess::DEPOSIT }
-                  attribute_list << { agent_type: 'group', agent_id: 'work_editor', access: Hyrax::PermissionTemplateAccess::VIEW }
+                  attribute_list << {
+                    agent_type: 'group',
+                    agent_id: 'work_depositor',
+                    access: Hyrax::PermissionTemplateAccess::DEPOSIT
+                  }
+                  attribute_list << {
+                    agent_type: 'group',
+                    agent_id: 'work_editor',
+                    access: Hyrax::PermissionTemplateAccess::DEPOSIT
+                  }
+                  attribute_list << {
+                    agent_type: 'group',
+                    agent_id: 'work_editor',
+                    access: Hyrax::PermissionTemplateAccess::VIEW
+                  }
                 else
                   # Grant collection roles appropriate access to all Collections
-                  attribute_list << { agent_type: 'group', agent_id: 'collection_editor', access: Hyrax::PermissionTemplateAccess::VIEW }
-                  attribute_list << { agent_type: 'group', agent_id: 'collection_reader', access: Hyrax::PermissionTemplateAccess::VIEW }
+                  attribute_list << {
+                    agent_type: 'group',
+                    agent_id: 'collection_editor',
+                    access: Hyrax::PermissionTemplateAccess::VIEW
+                  }
+                  attribute_list << {
+                    agent_type: 'group',
+                    agent_id: 'collection_reader',
+                    access: Hyrax::PermissionTemplateAccess::VIEW
+                  }
                 end
                 attribute_list
                 # OVERRIDE END

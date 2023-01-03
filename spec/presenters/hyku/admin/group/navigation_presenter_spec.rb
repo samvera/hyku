@@ -16,7 +16,7 @@ RSpec.describe Hyku::Admin::Group::NavigationPresenter do
     let(:params) { base_params.merge(action: action) }
     let(:presenter) { described_class.new(params: params) }
 
-     it 'has 4 tabs' do
+    it 'has 4 tabs' do
       expect(subject.count).to be(4)
     end
 

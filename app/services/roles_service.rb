@@ -1,6 +1,7 @@
 # frozen_string_literal: true
+
 # TODO(bkiahstroud): filename and location make sense?
-class RolesService
+class RolesService # rubocop:disable Metrics/ClassLength
   ADMIN_ROLE = 'admin'
 
   COLLECTION_ROLES = %w[
@@ -77,9 +78,12 @@ class RolesService
 
     def create_default_hyrax_groups_with_roles!
       # Prevent Hyrax::Groups from being created in the public schema
-      return '`AccountElevator.switch!` into an Account before creating default Hyrax::Groups' if Site.instance.is_a?(NilSite)
+      if Site.instance.is_a?(NilSite)
+        return '`AccountElevator.switch!` into an Account before creating default Hyrax::Groups'
+      end
 
-      default_hyrax_groups_with_roles = DEFAULT_HYRAX_GROUPS_WITH_ATTRIBUTES.deep_merge(DEFAULT_ROLES_FOR_DEFAULT_HYRAX_GROUPS)
+      default_hyrax_groups_with_roles =
+        DEFAULT_HYRAX_GROUPS_WITH_ATTRIBUTES.deep_merge(DEFAULT_ROLES_FOR_DEFAULT_HYRAX_GROUPS)
 
       default_hyrax_groups_with_roles.each do |group_name, group_attrs|
         group_roles = group_attrs.delete(:roles)
@@ -191,24 +195,33 @@ class RolesService
     # without it, collection readers will be allowed to create Collections whose Hyrax::CollectionType
     # has this Hyrax::CollectionTypeParticipant.
     def destroy_registered_group_collection_type_participants!
-      Hyrax::CollectionTypeParticipant.where(agent_type: 'group', agent_id: ::Ability.registered_group_name, access: 'create').map(&:destroy)
+      Hyrax::CollectionTypeParticipant.where(
+        agent_type: 'group',
+        agent_id: ::Ability.registered_group_name,
+        access: 'create'
+      ).map(&:destroy)
     end
 
-    # Permissions to deposit Works are controlled by Workflow Roles on individual AdminSets. In order for Hyrax::Group and
-    # User records who have either the :work_editor or :work_depositor Rolify Role to have the correct permissions for
-    # Works, we grant them Workflow Roles for all AdminSets.
+    # Permissions to deposit Works are controlled by Workflow Roles on individual AdminSets. In order for Hyrax::Group
+    # and User records who have either the :work_editor or :work_depositor Rolify Role to have the correct permissions
+    # for Works, we grant them Workflow Roles for all AdminSets.
     #
     # NOTE: All AdminSets must have a permission template or this will fail. Run #create_admin_set_accesses first.
     def grant_workflow_roles_for_all_admin_sets!
       AdminSet.find_each do |admin_set|
-        Hyrax::Workflow::PermissionGrantor.grant_default_workflow_roles!(permission_template: admin_set.permission_template)
+        Hyrax::Workflow::PermissionGrantor
+          .grant_default_workflow_roles!(permission_template: admin_set.permission_template)
       end
     end
 
     # This method is inspired by the devise_guests:delete_old_guest_users rake task in the devise-guests gem:
     # https://github.com/cbeer/devise-guests/blob/master/lib/railties/devise_guests.rake
     def prune_stale_guest_users
-      stale_guest_users = User.unscoped.where('guest = ? and updated_at < ?', true, Time.now - 7.days)
+      stale_guest_users = User.unscoped.where(
+        'guest = ? and updated_at < ?',
+        true,
+        Time.current - 7.days
+      )
       progress = ProgressBar.new(stale_guest_users.count)
 
       stale_guest_users.find_each do |u|
@@ -229,9 +242,7 @@ class RolesService
         u
       end
 
-      unless user.has_role?('superadmin')
-        user.roles << Role.find_or_create_by!(name: 'superadmin')
-      end
+      user.roles << Role.find_or_create_by!(name: 'superadmin') unless user.has_role?('superadmin')
 
       Account.find_each do |account|
         AccountElevator.switch!(account.cname)
@@ -265,7 +276,7 @@ class RolesService
             end
           end
 
-          puts "Email: #{user.email}\nRoles: #{user.roles.map(&:name)}\n\n"; nil
+          puts "Email: #{user.email}\nRoles: #{user.roles.map(&:name)}\n\n" # rubocop:disable Rails/Output
         end
       end
     end

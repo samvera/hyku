@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # OVERRIDE FILE from Hyrax v2.9.0
 module Hyrax
   class UsersController < ApplicationController
@@ -21,13 +23,19 @@ module Hyrax
 
     private
 
-    # TODO: this should move to a service.
+      # TODO: this should move to a service.
       # Returns a list of users excluding the system users and guest_users
       # @param query [String] the query string
       def search(query)
         clause = query.blank? ? nil : "%" + query.downcase + "%"
         base = ::User.where(*base_query)
-        base = base.where("#{Hydra.config.user_key_field} like lower(?) OR display_name like lower(?)", clause, clause) if clause.present?
+        if clause.present?
+          base = base.where(
+            "#{Hydra.config.user_key_field} like lower(?) OR display_name like lower(?)",
+            clause,
+            clause
+          )
+        end
         base.registered
             .where("#{Hydra.config.user_key_field} not in (?)",
                    [::User.batch_user_key, ::User.audit_user_key])
@@ -55,7 +63,7 @@ module Hyrax
       end
 
       def sort_value
-        sort = params[:sort].blank? ? "name" : params[:sort]
+        sort = params[:sort].presence || "name"
         case sort
         when 'name'
           'display_name'

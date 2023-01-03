@@ -3,7 +3,7 @@
 RSpec.describe 'admin/groups/users', type: :view do
   include Warden::Test::Helpers
   include Devise::Test::ControllerHelpers
-  
+
   context 'groups index page' do
     let(:group) { FactoryBot.create(:group) }
     let(:user_1) { FactoryBot.create(:user) }

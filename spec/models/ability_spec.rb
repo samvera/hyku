@@ -119,8 +119,11 @@ RSpec.describe Ability do
     # that the user is a member of.
     context 'a user with groups' do
       let(:user)    { create(:user) }
-      let!(:group1) { create(:group, name: 'group1', member_users: [user]) }
-      let!(:group2) { create(:group, name: 'group2', member_users: [user]) }
+
+      before do
+        create(:group, name: 'group1', member_users: [user])
+        create(:group, name: 'group2', member_users: [user])
+      end
 
       it { is_expected.to include('group1', 'group2') }
     end
@@ -136,8 +139,11 @@ RSpec.describe Ability do
     end
 
     context 'a user in the admin Hyrax::Group' do
-      let!(:admin_group) { create(:admin_group, member_users: [user]) }
       let(:user) { create(:user) }
+
+      before do
+        create(:admin_group, member_users: [user])
+      end
 
       it { is_expected.to eq(true) }
     end
@@ -149,8 +155,11 @@ RSpec.describe Ability do
     end
 
     context 'a user not in the admin Hyrax::Group' do
-      let!(:group) { create(:group, name: 'non-admin', member_users: [user]) }
       let(:user) { create(:user) }
+
+      before do
+        create(:group, name: 'non-admin', member_users: [user])
+      end
 
       it { is_expected.to eq(false) }
     end
@@ -164,11 +173,20 @@ RSpec.describe Ability do
 
     before do
       user.add_role(user_reader_role.name, Site.instance)
-      create(:group, name: 'test_group', member_users: [user], roles: [collection_editor_role.name, work_depositor_role.name])
+      create(
+        :group,
+        name: 'test_group',
+        member_users: [user],
+        roles: [collection_editor_role.name, work_depositor_role.name]
+      )
     end
 
     it 'lists all role names that apply to the user' do
-      expect(subject.all_user_and_group_roles).to contain_exactly(*[user_reader_role.name, collection_editor_role.name, work_depositor_role.name])
+      expect(subject.all_user_and_group_roles).to contain_exactly(
+        user_reader_role.name,
+        collection_editor_role.name,
+        work_depositor_role.name
+      )
     end
   end
 end

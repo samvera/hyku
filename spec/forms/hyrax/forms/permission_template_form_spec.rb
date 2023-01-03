@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Hyrax::Forms::PermissionTemplateForm do
   subject { form }
 
@@ -221,8 +223,12 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
 
       it "updates the visibility, release_period=now, release_date=today" do
         expect { subject }
-          .to change { permission_template.reload.visibility }.from(nil).to('open')
-                                                              .and change { permission_template.reload.release_period }.from(nil).to(Hyrax::PermissionTemplate::RELEASE_TEXT_VALUE_NO_DELAY)
+          .to change { permission_template.reload.visibility }
+          .from(nil)
+          .to('open')
+          .and change { permission_template.reload.release_period }
+          .from(nil)
+          .to(Hyrax::PermissionTemplate::RELEASE_TEXT_VALUE_NO_DELAY)
         expect(permission_template.release_date).to eq(today)
       end
     end
@@ -238,7 +244,10 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
       end
 
       it "sets release_period=before and release_date" do
-        expect { subject }.to change { permission_template.reload.release_period }.from(nil).to(Hyrax::PermissionTemplate::RELEASE_TEXT_VALUE_BEFORE_DATE)
+        expect { subject }
+          .to change { permission_template.reload.release_period }
+          .from(nil)
+          .to(Hyrax::PermissionTemplate::RELEASE_TEXT_VALUE_BEFORE_DATE)
         expect(permission_template.release_date).to eq(today + 1.year)
       end
     end
@@ -254,7 +263,10 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
       end
 
       it "sets release_period to embargo period and release_date to 2 years from now" do
-        expect { subject }.to change { permission_template.reload.release_period }.from(nil).to(Hyrax::PermissionTemplate::RELEASE_TEXT_VALUE_2_YEARS)
+        expect { subject }
+          .to change { permission_template.reload.release_period }
+          .from(nil)
+          .to(Hyrax::PermissionTemplate::RELEASE_TEXT_VALUE_2_YEARS)
         expect(permission_template.release_date).to eq(today + 2.years)
       end
     end
@@ -378,7 +390,7 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
     context "when a workflow is not changed" do
       it "does nothing" do
         subject # Setting up the subject to verify that when we call it again things don't change
-        expect { subject }.not_to change { Sipity::WorkflowResponsibility.count }
+        expect { subject }.not_to change(Sipity::WorkflowResponsibility, :count)
       end
     end
   end
@@ -417,7 +429,12 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
 
         it 'trigger error from #update' do
           expect(response).to eq(content_tab: "visibility", updated: false, error_code: error_code)
-          expect(I18n.t(response[:error_code], scope: 'hyrax.admin.admin_sets.form.permission_update_errors')).not_to include('translation missing')
+          expect(
+            I18n.t(
+              response[:error_code],
+              scope: 'hyrax.admin.admin_sets.form.permission_update_errors'
+            )
+          ).not_to include('translation missing')
         end
       end
 

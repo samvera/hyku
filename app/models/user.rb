@@ -30,11 +30,6 @@ class User < ApplicationRecord
 
   scope :registered, -> { for_repository.group(:id).where(guest: false) }
 
-  # set default scope to exclude guest users
-  def self.default_scope
-    where(guest: false)
-  end
-
   # Method added by Blacklight; Blacklight uses #to_s on your
   # user class to get a user-displayable login/identifier.
   def to_s
@@ -82,7 +77,8 @@ class User < ApplicationRecord
   # Example:
   #   u = User.last
   #   u.roles
-  #   => #<ActiveRecord::Associations::CollectionProxy [#<Role id: 8, name: "member", resource_type: "Hyrax::Group", resource_id: 2,...>]>
+  #   => #<ActiveRecord::Associations::CollectionProxy [#<Role id: 8, name: "member",
+  #      resource_type: "Hyrax::Group", resource_id: 2,...>]>
   #   u.hyrax_groups
   #   => [#<Hyrax::Group id: 2, name: "registered", description: nil,...>]
   def hyrax_groups
@@ -103,7 +99,7 @@ class User < ApplicationRecord
     groups
   end
 
-  # TODO this needs tests and to be moved to the service
+  # TODO: this needs tests and to be moved to the service
   # Tmp shim to handle bug
   def group_roles
     hyrax_groups.map(&:roles).flatten.uniq
@@ -114,13 +110,11 @@ class User < ApplicationRecord
   # identify all the places this kind of situation can arise (invited users, etc)
   # and decide what to do about it.
   def add_default_group_memberships!
-    return if self.guest?
+    return if guest?
     return if Account.global_tenant?
 
-    Hyrax::Group.find_or_create_by!(name: 'registered').add_members_by_id(self.id)
+    Hyrax::Group.find_or_create_by!(name: 'registered').add_members_by_id(id)
 
-    if self.has_role?(:admin, Site.instance)
-      Hyrax::Group.find_or_create_by!(name: 'admin').add_members_by_id(self.id)
-    end
+    Hyrax::Group.find_or_create_by!(name: 'admin').add_members_by_id(id) if has_role?(:admin, Site.instance)
   end
 end

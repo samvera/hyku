@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe GroupAwareRoleChecker, clean: true do
-  let(:user) { FactoryBot.create(:user) }
-
   subject(:ability) { user.ability }
+
+  let(:user) { FactoryBot.create(:user) }
 
   # Dynamically test all #<role_name>? methods so that, as more roles are added,
   # their role checker methods are automatically covered

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Override from hyrax 2.5.1 to add workflow roles for groups
 module Hyrax
   module Admin

@@ -16,10 +16,12 @@ class Ability
     work_roles
     featured_collection_abilities
   ]
-  # If the Groups with Roles feature is disabled, allow registered users to create curation concerns (Works, Collections, and FileSets).
-  # Otherwise, omit this ability logic as to not conflict with the roles that explicitly grant creation permissions.
-  self.ability_logic += %i[everyone_can_create_curation_concerns] unless ENV['SETTINGS__RESTRICT_CREATE_AND_DESTROY_PERMISSIONS'] == 'true'
-
+  # If the Groups with Roles feature is disabled, allow registered users to create curation concerns
+  # (Works, Collections, and FileSets). Otherwise, omit this ability logic as to not
+  # conflict with the roles that explicitly grant creation permissions.
+  unless ENV['SETTINGS__RESTRICT_CREATE_AND_DESTROY_PERMISSIONS'] == 'true'
+    self.ability_logic += %i[everyone_can_create_curation_concerns]
+  end
   # OVERRIDE METHOD from blacklight-access_controls v0.6.2
   #
   # NOTE: DO NOT RENAME THIS METHOD - it is required for permissions to function properly.
@@ -87,11 +89,11 @@ class Ability
 
     @all_user_and_group_roles = []
     RolesService::DEFAULT_ROLES.each do |role_name|
-      @all_user_and_group_roles |= [role_name.to_s] if self.public_send("#{role_name}?")
+      @all_user_and_group_roles |= [role_name.to_s] if public_send("#{role_name}?")
     end
 
     @all_user_and_group_roles
-  end # needed this for sure to-do April
+  end
 
   def featured_collection_abilities
     can %i[create destroy update], FeaturedCollection if admin?

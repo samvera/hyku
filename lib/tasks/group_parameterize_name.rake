@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :hyku do
   desc "Update group name to be parameterized"
   task update_hyrax_group_names: :environment do
@@ -17,7 +19,7 @@ namespace :hyku do
 
       ActiveRecord::Base.transaction do
         groups.each do |group|
-          parameterized_name = group.name.gsub(" ", "_").downcase
+          parameterized_name = group.name.tr(" ", "_").downcase
           group.update!(name: parameterized_name)
           print "."
         end

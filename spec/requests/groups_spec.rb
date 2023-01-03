@@ -5,7 +5,6 @@ RSpec.describe "Groups", type: :request, singletenant: true, clean: true do
   let!(:user) { FactoryBot.create(:admin) }
 
   context 'within a tenant' do
-
     context 'an admin user' do
       before do
         login_as(user)

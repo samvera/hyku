@@ -5,11 +5,11 @@ RSpec.describe 'User Roles', cohort: 'bravo' do
   let(:account) { create(:account) }
 
   context 'as a user manager' do
-    let!(:user) { FactoryBot.create(:user, email: 'user@example.com', display_name: 'Regular User') }
     let!(:group_1) { FactoryBot.create(:group) }
     let(:user_manager) { FactoryBot.create(:user_manager) }
 
     before do
+      FactoryBot.create(:user, email: 'user@example.com', display_name: 'Regular User')
       login_as(user_manager, scope: :user)
     end
 
@@ -81,16 +81,16 @@ RSpec.describe 'User Roles', cohort: 'bravo' do
     it 'can remove a group' do
       visit "/admin/groups/#{group_1.id}/remove"
       expect(page).to have_content 'Remove Group'
-      expect(page).to have_content 'This action is irreversible. It will remove all privileges group members have been assigned through this group.'
+      expect(page).to have_content 'This action is irreversible. It will remove all privileges ' \
+                                   'group members have been assigned through this group.'
     end
-
   end
 
   context 'as a user reader' do
     let(:user_reader) { FactoryBot.create(:user_reader) }
-    let!(:user) { FactoryBot.create(:user, email: 'user@example.com', display_name: 'User Reader') }
 
     before do
+      FactoryBot.create(:user, email: 'user@example.com', display_name: 'User Reader')
       login_as(user_reader, scope: :user)
     end
 
@@ -132,14 +132,13 @@ RSpec.describe 'User Roles', cohort: 'bravo' do
       visit "/admin/users"
       expect(page).not_to have_link 'Delete'
     end
-
   end
 
   context 'as a registered user' do
     let(:user) { FactoryBot.create(:user) }
-    let!(:new_user) { FactoryBot.create(:user, email: 'user@example.com', display_name: 'Regular User') }
 
     before do
+      FactoryBot.create(:user, email: 'user@example.com', display_name: 'Regular User')
       login_as(user, scope: :user)
     end
 
@@ -179,7 +178,7 @@ RSpec.describe 'User Roles', cohort: 'bravo' do
       click_on "Your activity"
       click_on "Profile"
       expect(page).to have_content "Profile"
-      expect(page).to have_content "#{user.email}"
+      expect(page).to have_content user.email.to_s
       expect(page).to have_content "Edit Profile"
     end
 
@@ -198,11 +197,9 @@ RSpec.describe 'User Roles', cohort: 'bravo' do
       expect(page).to have_content "Your profile has been updated"
       expect(page).to have_content "https://orcid.org/0000-0000-0000-0000"
     end
-
   end
 
   context 'as an unregistered user' do
-
     it 'can sign up' do
       visit "/"
       click_on "Login"
@@ -213,6 +210,5 @@ RSpec.describe 'User Roles', cohort: 'bravo' do
       click_on "Create account"
       expect(page).to have_content "Welcome! You have signed up successfully."
     end
-
   end
 end

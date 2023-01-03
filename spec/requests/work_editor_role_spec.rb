@@ -4,6 +4,15 @@
 RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: true do
   include WorksHelper
 
+  # `before`s and `let!`s are order-dependent -- do not move this `before` from the top
+  before do
+    FactoryBot.create(:admin_group)
+    FactoryBot.create(:registered_group)
+    FactoryBot.create(:editors_group)
+    FactoryBot.create(:depositors_group)
+
+    login_as work_editor
+  end
   let(:work_editor) { FactoryBot.create(:user, roles: [:work_editor]) }
   let(:work_depositor) { FactoryBot.create(:user, roles: [:work_depositor]) }
   let(:visibility) { 'open' }
@@ -19,13 +28,6 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
       }
     }
   end
-  # `before`s and `let!`s are order-dependent -- do not move this `before` from the top
-  before do
-    FactoryBot.create(:admin_group)
-    FactoryBot.create(:registered_group)
-    FactoryBot.create(:editors_group)
-    FactoryBot.create(:depositors_group)
-  end
   let!(:admin_set) do
     admin_set = AdminSet.new(title: ['Test Admin Set'])
     allow(Hyrax.config).to receive(:default_active_workflow_name).and_return('default')
@@ -33,9 +35,6 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
     admin_set.reload
   end
   let!(:work) { process_through_actor_stack(build(:work), work_depositor, admin_set.id, visibility) }
-  before do
-    login_as work_editor
-  end
 
   describe 'read permissions' do
     %w[open authenticated restricted].each do |visibility|
@@ -56,7 +55,7 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
         end
 
         it 'can see works it deposited in the dashboard' do
-          my_work = process_through_actor_stack(build(:work), work_editor, admin_set.id, visibility)
+          process_through_actor_stack(build(:work), work_editor, admin_set.id, visibility)
           get '/dashboard/my/works'
 
           expect(response).to have_http_status(:success)

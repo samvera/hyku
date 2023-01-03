@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :hyku do
   namespace :roles do
     desc 'Create all default Roles and Hyrax::Groups in all tenants'
@@ -15,7 +17,10 @@ namespace :hyku do
     task create_collection_accesses: :environment do
       Account.find_each do |account|
         AccountElevator.switch!(account.cname)
-        Rails.logger.info("Creating default collection role Hyrax::PermissionTemplateAccess records for all Collections in #{account.cname}")
+        Rails.logger.info(
+          "Creating default collection role Hyrax::PermissionTemplateAccess " \
+          "records for all Collections in #{account.cname}"
+        )
 
         RolesService.create_collection_accesses!
       end
@@ -25,7 +30,10 @@ namespace :hyku do
     task create_admin_set_accesses: :environment do
       Account.find_each do |account|
         AccountElevator.switch!(account.cname)
-        Rails.logger.info("Creating default work role Hyrax::PermissionTemplateAccess records for all Admin Sets in #{account.cname}")
+        Rails.logger.info(
+          "Creating default work role Hyrax::PermissionTemplateAccess " \
+          "records for all Admin Sets in #{account.cname}"
+        )
 
         RolesService.create_admin_set_accesses!
       end
@@ -35,7 +43,10 @@ namespace :hyku do
     task create_collection_type_participants: :environment do
       Account.find_each do |account|
         AccountElevator.switch!(account.cname)
-        Rails.logger.info("Creating default collection role Hyrax::CollectionTypeParticipant records for all Collection Types in #{account.cname}")
+        Rails.logger.info(
+          "Creating default collection role Hyrax::CollectionTypeParticipant " \
+          "records for all Collection Types in #{account.cname}"
+        )
 
         RolesService.create_collection_type_participants!
       end
@@ -53,13 +64,17 @@ namespace :hyku do
 
     desc 'Destroy Hyrax::CollectionTypeParticipant records for registered users in all Collection Types'
     task destroy_registered_group_collection_type_participants: :environment do
-      puts "\n This will remove create access from all Collection Types for all registered users in ALL tenants, continue? [y/n]"
+      puts "\n This will remove create access from all Collection Types " \
+           "for all registered users in ALL tenants, continue? [y/n]"
       answer = STDIN.gets.chomp
       return false unless answer == 'y'
 
       Account.find_each do |account|
         AccountElevator.switch!(account.cname)
-        Rails.logger.info("Destroying Hyrax::CollectionTypeParticipant records for registered users in all Collection Types in #{account.cname}")
+        Rails.logger.info(
+          "Destroying Hyrax::CollectionTypeParticipant " \
+          "records for registered users in all Collection Types in #{account.cname}"
+        )
 
         RolesService.destroy_registered_group_collection_type_participants!
       end

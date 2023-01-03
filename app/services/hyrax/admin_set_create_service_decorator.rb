@@ -17,7 +17,7 @@ module Hyrax
             permission_template = PermissionTemplate.find_by(source_id: result.id.to_s) ||
                                   permissions_create_service.create_default(collection: result,
                                                                             creating_user: creating_user)
-            workflow = create_workflows_for(permission_template: permission_template)
+            create_workflows_for(permission_template: permission_template)
             # OVERRIDE: Remove call to #create_default_access_for, which granted
             # deposit access to all registered users for the Default Admin Set
           end

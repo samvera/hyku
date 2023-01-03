@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # OVERRIDE FILE from Hyrax v2.9.0
 #
 # Override this class using #class_eval to avoid needing to copy the entire file over from

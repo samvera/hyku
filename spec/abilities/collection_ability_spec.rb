@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # OVERRIDE FILE from Hyrax 3.4.1
 require 'cancan/matchers'
 # rubocop:disable RSpec/FilePath
@@ -14,9 +16,16 @@ RSpec.describe Ability::CollectionAbility do
 
   context 'when admin user' do
     let(:user) { FactoryBot.create(:admin) }
-    let(:collection) { build(:collection_lw, id: 'col_au', with_permission_template: true, collection_type_gid: collection_type_gid) }
+    let(:collection) do
+      build(
+        :collection_lw,
+        id: 'col_au',
+        with_permission_template: true,
+        collection_type_gid: collection_type_gid
+      )
+    end
 
-    it 'allows all abilities' do # rubocop:disable RSpec/ExampleLength
+    it 'allows all abilities' do
       is_expected.to be_able_to(:manage, Collection)
       is_expected.to be_able_to(:manage_any, Collection)
       is_expected.to be_able_to(:create, Collection)
@@ -41,7 +50,13 @@ RSpec.describe Ability::CollectionAbility do
 
   # TODO: reorganize with `describe '#collection_roles' do` and make tests more specific (CRUD)
   context 'when a user is a Collection Manager' do
-    let(:collection) { create(:collection_lw, with_permission_template: true, collection_type_gid: collection_type_gid) }
+    let(:collection) do
+      create(
+        :collection_lw,
+        with_permission_template: true,
+        collection_type_gid: collection_type_gid
+      )
+    end
 
     context 'through its User roles' do
       let(:user) { FactoryBot.create(:collection_manager) }
@@ -120,12 +135,18 @@ RSpec.describe Ability::CollectionAbility do
   end
 
   context 'when a user has a Collection Editor role' do
-    let(:collection) { create(:collection_lw, with_permission_template: true, collection_type_gid: collection_type_gid) }
+    let(:collection) do
+      create(
+        :collection_lw,
+        with_permission_template: true,
+        collection_type_gid: collection_type_gid
+      )
+    end
 
     context 'through its User roles' do
       let(:user) { FactoryBot.create(:collection_editor) }
 
-      it 'allows most abilities' do # rubocop:disable RSpec/ExampleLength
+      it 'allows most abilities' do
         is_expected.to be_able_to(:create, Collection)
         is_expected.to be_able_to(:create_any, Collection)
         is_expected.to be_able_to(:read_any, Collection)
@@ -167,7 +188,7 @@ RSpec.describe Ability::CollectionAbility do
         hyrax_group.add_members_by_id(user.id)
       end
 
-      it 'allows most abilities' do # rubocop:disable RSpec/ExampleLength
+      it 'allows most abilities' do
         is_expected.to be_able_to(:create, Collection)
         is_expected.to be_able_to(:create_any, Collection)
         is_expected.to be_able_to(:read_any, Collection)
@@ -201,12 +222,18 @@ RSpec.describe Ability::CollectionAbility do
   end
 
   context 'when a user has a Collection Reader role' do
-    let(:collection) { create(:collection_lw, with_permission_template: true, collection_type_gid: collection_type_gid) }
+    let(:collection) do
+      create(
+        :collection_lw,
+        with_permission_template: true,
+        collection_type_gid: collection_type_gid
+      )
+    end
 
     context 'through its User roles' do
       let(:user) { FactoryBot.create(:collection_reader) }
 
-      it 'allows read abilities' do # rubocop:disable RSpec/ExampleLength
+      it 'allows read abilities' do
         is_expected.to be_able_to(:read_any, Collection)
         is_expected.to be_able_to(:view_admin_show_any, Collection)
         is_expected.to be_able_to(:view_admin_show, collection)
@@ -247,7 +274,7 @@ RSpec.describe Ability::CollectionAbility do
         hyrax_group.add_members_by_id(user.id)
       end
 
-      it 'allows read abilities' do # rubocop:disable RSpec/ExampleLength
+      it 'allows read abilities' do
         is_expected.to be_able_to(:read_any, Collection)
         is_expected.to be_able_to(:view_admin_show_any, Collection)
         is_expected.to be_able_to(:view_admin_show, collection)
@@ -280,7 +307,13 @@ RSpec.describe Ability::CollectionAbility do
   end
 
   context 'when manager of a collection' do
-    let(:collection) { create(:collection_lw, with_permission_template: true, collection_type_gid: collection_type_gid) }
+    let(:collection) do
+      create(
+        :collection_lw,
+        with_permission_template: true,
+        collection_type_gid: collection_type_gid
+      )
+    end
 
     before do
       create(:permission_template_access,
@@ -291,7 +324,7 @@ RSpec.describe Ability::CollectionAbility do
       collection.reset_access_controls!
     end
 
-    it 'allows most abilities' do # rubocop:disable RSpec/ExampleLength
+    it 'allows most abilities' do
       is_expected.to be_able_to(:manage_any, Collection)
       is_expected.to be_able_to(:view_admin_show_any, Collection)
       is_expected.to be_able_to(:edit, collection)
@@ -319,7 +352,13 @@ RSpec.describe Ability::CollectionAbility do
   end
 
   context 'when collection depositor' do
-    let(:collection) { create(:collection_lw, with_permission_template: true, collection_type_gid: collection_type_gid) }
+    let(:collection) do
+      create(
+        :collection_lw,
+        with_permission_template: true,
+        collection_type_gid: collection_type_gid
+      )
+    end
 
     before do
       create(:permission_template_access,
@@ -341,7 +380,7 @@ RSpec.describe Ability::CollectionAbility do
       is_expected.to be_able_to(:read, id)
     end
 
-    it 'denies non-deposit related abilities' do # rubocop:disable RSpec/ExampleLength
+    it 'denies non-deposit related abilities' do
       is_expected.not_to be_able_to(:manage, Collection)
       is_expected.not_to be_able_to(:manage_any, Collection)
       is_expected.not_to be_able_to(:edit, collection)
@@ -360,7 +399,13 @@ RSpec.describe Ability::CollectionAbility do
   end
 
   context 'when collection viewer' do
-    let(:collection) { create(:collection_lw, with_permission_template: true, collection_type_gid: collection_type_gid) }
+    let(:collection) do
+      create(
+        :collection_lw,
+        with_permission_template: true,
+        collection_type_gid: collection_type_gid
+      )
+    end
 
     before do
       create(:permission_template_access,
@@ -380,7 +425,7 @@ RSpec.describe Ability::CollectionAbility do
       is_expected.to be_able_to(:read, id)
     end
 
-    it 'denies most abilities' do # rubocop:disable RSpec/ExampleLength
+    it 'denies most abilities' do
       is_expected.not_to be_able_to(:manage, Collection)
       is_expected.not_to be_able_to(:manage_any, Collection)
       is_expected.not_to be_able_to(:edit, collection)
@@ -402,7 +447,13 @@ RSpec.describe Ability::CollectionAbility do
   end
 
   context 'when user has no special access' do
-    let(:collection) { create(:collection_lw, with_permission_template: true, collection_type_gid: collection_type_gid) }
+    let(:collection) do
+      create(
+        :collection_lw,
+        with_permission_template: true,
+        collection_type_gid: collection_type_gid
+      )
+    end
 
     it 'denies all abilities' do # rubocop:disable RSpec/ExampleLength
       is_expected.not_to be_able_to(:manage, Collection)

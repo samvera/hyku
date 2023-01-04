@@ -27,14 +27,14 @@ RSpec.describe 'User Roles', cohort: 'bravo' do
       expect(page).to have_content 'An invitation email has been sent to user@test.com.'
     end
 
-    it 'can visit Manage Users and delete users' do
+    it 'can visit Manage Users but cannot delete users' do
       visit "/admin/users"
-      expect(page).to have_link 'Delete'
+      expect(page).not_to have_link 'Delete'
     end
 
     it 'can visit the users index page' do
       visit "/users"
-      expect(page).to have_content 'Hyku Commons Users'
+      expect(page).to have_content 'Hyku Users'
     end
 
     it 'can visit a users showpage and see the Edit Profile button' do
@@ -96,7 +96,7 @@ RSpec.describe 'User Roles', cohort: 'bravo' do
 
     it 'can view the users index page' do
       visit "/users"
-      expect(page).to have_content 'Hyku Commons Users'
+      expect(page).to have_content 'Hyku Users'
     end
 
     it 'can view a users showpage' do

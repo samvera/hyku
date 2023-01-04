@@ -38,6 +38,8 @@ RSpec.describe EmbargoAutoExpiryJob do
     end
   end
 
+  let!(:group) { FactoryBot.create(:group, name: "public") }
+
   describe '#reenqueue' do
     it 'Enques an EmbargoExpiryJob after perform' do
       expect { EmbargoAutoExpiryJob.perform_now(account) }.to have_enqueued_job(EmbargoAutoExpiryJob)

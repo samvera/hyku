@@ -41,6 +41,8 @@ RSpec.describe LeaseAutoExpiryJob do
     end
   end
 
+  let!(:group) { FactoryBot.create(:group, name: "public") }
+
   describe '#reenqueue' do
     it 'Enques an LeaseExpiryJob after perform' do
       expect { LeaseAutoExpiryJob.perform_now(account) }.to have_enqueued_job(LeaseAutoExpiryJob)

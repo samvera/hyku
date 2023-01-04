@@ -1,11 +1,11 @@
-<% # April's note: overriding Hyrax 2.9 template for client theming %>
+<% # April's note: overriding Hyrax 3.4.1 template for client theming %>
 
 <% featured_collection = f.object.presenter %>
-<div class="neutral-repository-collections pb-30 col-sm-12 col-md-6 d-flex">
-  <%= link_to [hyrax, featured_collection], class: 'col-xs-3' do %>
+<div class="neutral-repository-collections pb-30 col-xs-6 col-md-4">
+  <%= link_to [hyrax, featured_collection] do %>
     <%= render_thumbnail_tag(featured_collection, { class: "img-responsive", alt: "#{featured_collection.title.first} #{ t('hyrax.homepage.admin_sets.thumbnail')}" }, {suppress_link: true}) %>
   <% end %>
-  <div class="collection-item-title col-xs-9 d-flex">
+  <div class="collection-item-title">
     <%= link_to [hyrax, featured_collection] do %>
       <h4><%= featured_collection.title.first %></h4>
     <% end %>

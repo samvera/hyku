@@ -152,6 +152,8 @@ it:
               hint: Per le immagini predefinite, è necessario utilizzare un'immagine (JPG, GIF o PNG) che abbia le stesse dimensioni in altezza e larghezza (100 pixel in larghezza e 100 pixel in altezza)
             directory_image:
               hint: Per utilizzare un'immagine come immagine di directory, è necessario utilizzare un'immagine (JPG, GIF o PNG) non più alta dell'intestazione e non più larga di 400 pixel.
+            favicon:
+              hint: Le favicon devono essere file png e devono essere quadrate. La dimensione massima utilizzata è 228px x 228px.
             logo_image:
               hint: Per utilizzare un'immagine come logo, è necessario utilizzare un'immagine (JPG, GIF o PNG) non più alta dell'intestazione e non più larga di 400 pixel.
             themes:
@@ -160,6 +162,7 @@ it:
             banner_image: Per utilizzare un'immagine come sfondo di masthead, è consigliabile utilizzare un'immagine (JPG, GIF o PNG) di almeno 120 pixel di altezza e 1200 pixel di larghezza. Per ottenere risultati ottimali, utilizzare un'immagine di larghezza almeno 1800 pixel.
             default_image: Per le immagini predefinite, è necessario utilizzare un'immagine (JPG, GIF o PNG) che abbia le stesse dimensioni di altezza e larghezza (100 pixel di larghezza e 100 pixel di altezza)
             directory_image: Per usare un'immagine come immagine della directory, dovresti usare un'immagine (JPG, GIF o PNG) che non sia più alta dell'intestazione e non più larga di 400 pixel di larghezza.
+            favicon: Le favicon devono essere file png e devono essere quadrate. La dimensione massima utilizzata è 228px x 228px.
             logo_image: Per usare un'immagine come logo, dovresti usare un'immagine (JPG, GIF o PNG) che non sia più alta dell'intestazione e non più larga di 400 pixel di larghezza.
           tabs:
             banner_image: Immagine banner
@@ -167,6 +170,7 @@ it:
             custom_css: Personalizzare CSS
             default_images: Immagini predefinite
             directory_image: Immagine della directory
+            favicon: favicon
             fonts: Font
             themes: Temi
       sidebar:

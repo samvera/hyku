@@ -1,1 +1,24 @@
 <%= render_gtm_head(request.original_url) %>
+<!-- generics -->
+<link rel="icon" href="<%= Site&.favicon&.url(:v32) %>" sizes="32x32">
+<link rel="icon" href="<%= Site&.favicon&.url(:v57) %>" sizes="57x57">
+<link rel="icon" href="<%= Site&.favicon&.url(:v76) %>" sizes="76x76">
+<link rel="icon" href="<%= Site&.favicon&.url(:v96) %>" sizes="96x96">
+<link rel="icon" href="<%= Site&.favicon&.url(:v128) %>" sizes="128x128">
+<link rel="icon" href="<%= Site&.favicon&.url(:v128) %>" sizes="192x192">
+<link rel="icon" href="<%= Site&.favicon&.url(:v228) %>" sizes="228x228">
+
+<!-- Android -->
+<link rel="shortcut icon" href="<%= Site&.favicon&.url(:v196) %>" sizes="196x196">
+
+<!-- iOS -->
+<link rel="apple-touch-icon" href="<%= Site&.favicon&.url(:v120) %>" sizes="120x120">
+<link rel="apple-touch-icon" href="<%= Site&.favicon&.url(:v152) %>" sizes="152x152">
+<link rel="apple-touch-icon" href="<%= Site&.favicon&.url(:v180) %>" sizes="180x180">
+
+<!-- Windows 8 IE 10-->
+<meta name="msapplication-TileColor" content="#FFFFFF">
+<meta name="msapplication-TileImage" content="<%= Site&.favicon&.url(:v228)">
+
+<!— Windows 8.1 + IE11 and above —>
+<meta name="msapplication-config" content="/browserconfig.xml" />

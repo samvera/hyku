@@ -152,6 +152,8 @@ fr:
               hint: Pour les images par défaut, vous devez utiliser une image (JPG, GIF ou PNG) qui a des dimensions de hauteur et de largeur égales (100 pixels de large et 100 pixels de haut)
             directory_image:
               hint: Pour utiliser une image comme image de répertoire, vous devez utiliser une image (JPG, GIF ou PNG) qui n'est pas plus haute que l'en-tête et pas plus large que 400 pixels de large.
+            favicon:
+              hint: Les favicons doivent être des fichiers png et doivent être carrés. La taille maximale utilisée est de 228px x 228px.
             logo_image:
               hint: Pour utiliser une image comme logo, vous devez utiliser une image (JPG, GIF ou PNG) qui n'est pas plus haute que l'en-tête et pas plus large que 400 pixels de large.
             themes:
@@ -160,6 +162,7 @@ fr:
             banner_image: Pour utiliser une image en tant que fond de masthead, vous devez utiliser une image (JPG, GIF ou PNG) d'au moins 120 pixels de hauteur et 1200 pixels de largeur. Pour de meilleurs résultats, utilisez une image d'au moins 1800 pixels de largeur.
             default_image: Pour les images par défaut, vous devez utiliser une image (JPG, GIF ou PNG) ayant des dimensions de hauteur et de largeur égales (100 pixels de largeur et 100 pixels de hauteur).
             directory_image: Pour utiliser une image en tant qu'image de répertoire, vous devez utiliser une image (JPG, GIF ou PNG) qui ne dépasse pas l'en-tête et ne soit pas plus large que 400 pixels de large.
+            favicon: Les favicons doivent être des fichiers png et doivent être carrés. La taille maximale utilisée est de 228px x 228px.
             logo_image: Pour utiliser une image comme logo, vous devez utiliser une image (JPG, GIF ou PNG) qui n’est pas plus haute que l’en-tête et pas plus de 400 pixels de large.
           tabs:
             banner_image: Image de la bannière
@@ -167,6 +170,7 @@ fr:
             custom_css: Personnaliser CSS
             default_images: Images par défaut
             directory_image: Image du répertoire
+            favicon: Icône de favori
             fonts: Les Polices
             themes: Thèmes
       sidebar:

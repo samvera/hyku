@@ -10,6 +10,9 @@
           <a href="#logo_image" role="tab" data-toggle="tab"><%= t('.tabs.logo') %></a>
         </li>
         <li>
+          <a href="#favicon" role="tab" data-toggle="tab"><%= t('.tabs.favicon') %></a>
+        </li>
+        <li>
           <a href="#banner_image" role="tab" data-toggle="tab"><%= t('.tabs.banner_image') %></a>
         </li>
         <li>
@@ -36,6 +39,12 @@
         <div id="logo_image" class="tab-pane active">
           <div class="panel panel-default labels">
             <%= render 'logo_image_form' %>
+          </div>
+        </div>
+
+        <div id="favicon" class="tab-pane">
+          <div class="panel panel-default labels">
+            <%= render 'favicon_form' %>
           </div>
         </div>
 

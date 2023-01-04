@@ -187,6 +187,10 @@
   // Note: copied over to override * line 254, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_panels.scss */
   .panel-default {
     border-color: transparent !important;
+    // prevent cultural repository theme override to the workflow actions header background
+    .panel-workflow .panel-heading {
+      background-color: #e6ab5f !important;
+    }
 
     .panel-heading {
       background-color: #ffffff !important;

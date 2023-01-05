@@ -6,13 +6,6 @@ FactoryBot.define do
     password { 'a password' }
     password_confirmation { 'a password' }
 
-    ## NOTE(bkiahstroud)
-    # A User's default Hyrax::Group membership(s) depend on what Role(s) it has.
-    # Because Roles are associations, not traits, #add_default_group_memberships!
-    # will not properly assign the User's intended Hyrax::Group
-    # memberships until after the User has finished being created,
-    # so we need to add the User's Roles before that happens.
-
     transient do
       roles { [] }
     end

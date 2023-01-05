@@ -52,6 +52,16 @@ namespace :hyku do
       end
     end
 
+    desc 'Add users who have the admin role to the admin group in each tenant'
+    task add_admin_users_to_admin_group: :environment do
+      Account.find_each do |account|
+        AccountElevator.switch!(account.cname)
+        Rails.logger.info("#{account.cname} -- Adding tenant admins to the admin group")
+
+        RolesService.add_admin_users_to_admin_group!
+      end
+    end
+
     desc 'Grant Workflow Roles for Work Roles and Admins in all AdminSets'
     task grant_workflow_roles: :environment do
       Account.find_each do |account|

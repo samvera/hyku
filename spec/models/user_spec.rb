@@ -98,18 +98,18 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#add_default_group_memberships!' do
+  describe '#add_default_group_membership!' do
     context 'when the user is a new user' do
       subject { FactoryBot.build(:user) }
 
       it 'is called after a user is created' do
-        expect(subject).to receive(:add_default_group_memberships!)
+        expect(subject).to receive(:add_default_group_membership!)
 
         subject.save!
       end
     end
 
-    # #add_default_group_memberships! does nothing for guest users;
+    # #add_default_group_membership! does nothing for guest users;
     # 'public' is the default group for all users (including guests).
     # See Ability#default_user_groups in blacklight-access_controls-0.6.2
     context 'when the user is a guest user' do
@@ -133,18 +133,6 @@ RSpec.describe User, type: :model do
         subject.save!
 
         expect(subject.hyrax_group_names).to contain_exactly('registered')
-      end
-    end
-
-    context 'when the user is an admin user' do
-      subject { FactoryBot.build(:admin) }
-
-      it 'adds the user as a member of the registered and admin Hyrax::Groups' do
-        expect(subject.hyrax_group_names).to eq([])
-
-        subject.save!
-
-        expect(subject.hyrax_group_names).to contain_exactly('admin', 'registered')
       end
     end
   end

@@ -102,7 +102,7 @@ RSpec.describe Ability do
     end
 
     # NOTE(bkiahstroud): Override to test guest users instead of
-    # "unregistered" (User.new) users; see User#add_default_group_memberships!
+    # "unregistered" (User.new) users; see User#add_default_group_membership!
     context 'a guest user' do
       let(:user) { create(:guest_user) }
 

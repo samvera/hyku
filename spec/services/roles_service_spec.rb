@@ -453,6 +453,34 @@ RSpec.describe RolesService, clean: true do
     end
   end
 
+  describe '#add_admin_users_to_admin_group!' do
+    let(:admin_group) { create(:admin_group) }
+
+    context 'when a user has the admin role' do
+      let!(:user) { create(:admin) }
+
+      it 'adds that user to the admin group' do
+        expect(admin_group.members).to be_empty
+
+        roles_service.add_admin_users_to_admin_group!
+
+        expect(admin_group.members).to include(user)
+      end
+    end
+
+    context 'when a user does not have the admin role' do
+      let(:user) { create(:user) }
+
+      it 'does not add that user to the admin group' do
+        expect(admin_group.members).to be_empty
+
+        roles_service.add_admin_users_to_admin_group!
+
+        expect(admin_group.members).not_to include(user)
+      end
+    end
+  end
+
   describe '#prune_stale_guest_users' do
     before do
       3.times do |i|
@@ -512,7 +540,7 @@ RSpec.describe RolesService, clean: true do
 
   describe '#seed_superadmin!' do
     it 'creates a user with the :superadmin role' do
-      expect_any_instance_of(User).to receive(:add_default_group_memberships!).once
+      expect_any_instance_of(User).to receive(:add_default_group_membership!).once
 
       superadmin_user = roles_service.seed_superadmin!
 

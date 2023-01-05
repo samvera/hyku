@@ -17,7 +17,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :invitable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  after_save :add_default_group_memberships!
+  after_create :add_default_group_membership!
 
   # set default scope to exclude guest users
   def self.default_scope
@@ -28,6 +28,7 @@ class User < ApplicationRecord
     joins(:roles)
   }
 
+  # TODO: Need to make sure this includes users in the registered group (see #add_default_group_membership!)
   scope :registered, -> { for_repository.group(:id).where(guest: false) }
 
   # Method added by Blacklight; Blacklight uses #to_s on your
@@ -109,12 +110,10 @@ class User < ApplicationRecord
   # in the global tenant, they won't get group memberships for any tenant. Need to
   # identify all the places this kind of situation can arise (invited users, etc)
   # and decide what to do about it.
-  def add_default_group_memberships!
+  def add_default_group_membership!
     return if guest?
     return if Account.global_tenant?
 
-    Hyrax::Group.find_or_create_by!(name: 'registered').add_members_by_id(id)
-
-    Hyrax::Group.find_or_create_by!(name: 'admin').add_members_by_id(id) if has_role?(:admin, Site.instance)
+    Hyrax::Group.find_or_create_by!(name: Ability.registered_group_name).add_members_by_id(id)
   end
 end

@@ -64,7 +64,8 @@ class CreateAccount
   def add_initial_users
     users.each do |user|
       user.add_role :admin, Site.instance
-      user.add_default_group_memberships!
+      user.add_default_group_membership!
+      Hyrax::Group.find_or_create_by!(name: Ability.admin_group_name).add_members_by_id(user.id)
     end
   end
 

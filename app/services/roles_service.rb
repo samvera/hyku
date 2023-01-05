@@ -202,6 +202,12 @@ class RolesService # rubocop:disable Metrics/ClassLength
       ).map(&:destroy)
     end
 
+    def add_admin_users_to_admin_group!
+      User.select { |user| user.has_role?('admin', Site.instance) }.each do |admin|
+        Hyrax::Group.find_or_create_by!(name: Ability.admin_group_name).add_members_by_id(admin.id)
+      end
+    end
+
     # Permissions to deposit Works are controlled by Workflow Roles on individual AdminSets. In order for Hyrax::Group
     # and User records who have either the :work_editor or :work_depositor Rolify Role to have the correct permissions
     # for Works, we grant them Workflow Roles for all AdminSets.
@@ -247,7 +253,8 @@ class RolesService # rubocop:disable Metrics/ClassLength
       Account.find_each do |account|
         AccountElevator.switch!(account.cname)
 
-        user.add_default_group_memberships!
+        user.add_default_group_membership!
+        Hyrax::Group.find_or_create_by!(name: Ability.admin_group_name).add_members_by_id(user.id)
       end
 
       user
@@ -271,7 +278,7 @@ class RolesService # rubocop:disable Metrics/ClassLength
             AccountElevator.switch!(account.cname)
 
             unless user.has_role?(role_name, Site.instance)
-              user.add_default_group_memberships!
+              user.add_default_group_membership!
               user.roles << find_or_create_site_role!(role_name: role_name)
             end
           end

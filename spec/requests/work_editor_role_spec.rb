@@ -10,8 +10,6 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
     FactoryBot.create(:registered_group)
     FactoryBot.create(:editors_group)
     FactoryBot.create(:depositors_group)
-
-    login_as work_editor
   end
   let(:work_editor) { FactoryBot.create(:user, roles: [:work_editor]) }
   let(:work_depositor) { FactoryBot.create(:user, roles: [:work_depositor]) }
@@ -41,6 +39,9 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
       context "with #{visibility} visibility" do
         let(:visibility) { visibility }
 
+        before do
+          login_as work_editor
+        end
         it 'can see the show page for works it deposited' do
           my_work = process_through_actor_stack(build(:work), work_editor, admin_set.id, visibility)
           get hyrax_generic_work_path(my_work)
@@ -72,12 +73,14 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
 
   describe 'create permissions' do
     it 'can see the work form' do
+      login_as work_editor
       get new_hyrax_generic_work_path
 
       expect(response).to have_http_status(:success)
     end
 
     it 'can create a work' do
+      login_as work_editor
       expect { post hyrax_generic_works_path, params: valid_work_params }
         .to change(GenericWork, :count).by(1)
     end
@@ -85,12 +88,14 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
 
   describe 'edit permissions' do
     it 'can edit works deposited by other users' do
+      login_as work_editor
       get edit_hyrax_generic_work_path(work)
 
       expect(response).to have_http_status(:success)
     end
 
     it 'can edit works it deposited' do
+      login_as work_editor
       my_work = process_through_actor_stack(build(:work), work_editor, admin_set.id, visibility)
       get edit_hyrax_generic_work_path(my_work)
 
@@ -100,6 +105,7 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
 
   describe 'destroy permissions' do
     it 'cannot destroy the work' do
+      login_as work_editor
       expect { delete hyrax_generic_work_path(work) }
         .not_to change(GenericWork, :count)
     end

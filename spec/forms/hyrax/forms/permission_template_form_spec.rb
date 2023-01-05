@@ -141,7 +141,7 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
     let(:user1) { create(:user) }
     let(:user2) { create(:user) }
     let(:user3) { create(:user) }
-    let!(:group) { create(:group, name: 'archivists')}
+    let!(:group) { create(:group, name: 'archivists') }
 
     before do
       create(:permission_template_access,

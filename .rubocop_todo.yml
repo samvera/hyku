@@ -103,11 +103,12 @@ RSpec/IteratedExpectation:
 # Offense count: 5
 RSpec/LetSetup:
   Exclude:
+    - 'spec/forms/hyrax/forms/permission_template_form_spec.rb'
+    - 'spec/jobs/embargo_auto_expiry_job_spec.rb'
+    - 'spec/jobs/lease_auto_expiry_job_spec.rb'
     - 'spec/models/account_spec.rb'
     - 'spec/models/role_spec.rb'
     - 'spec/models/user_spec.rb'
-    - 'spec/jobs/embargo_auto_expiry_job_spec.rb'
-    - 'spec/jobs/lease_auto_expiry_job_spec.rb'
 
 # Offense count: 8
 RSpec/ScatteredLet:

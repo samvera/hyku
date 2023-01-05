@@ -8,6 +8,8 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
   let(:today) { Time.zone.today }
   let(:admin_set) { create(:admin_set) }
   let(:collection) { build(:collection_lw) }
+  let!(:group) { FactoryBot.create(:group, name: 'admin') }
+  let!(:group2) { FactoryBot.create(:group, name: 'bob') }
 
   it { is_expected.to delegate_method(:available_workflows).to(:model) }
   it { is_expected.to delegate_method(:active_workflow).to(:model) }
@@ -65,7 +67,7 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
           count_template_accesses_for(user, access_level)
         }.from(0).to(1).and change {
           count_workflow_responsibilities_for(user)
-        }.from(0).to(9)
+        }.from(0).to(6)
       end
 
       it 'removes workflow responsibilities' do
@@ -75,7 +77,7 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
             permission_template.access_grants.find_by(agent_id: user.user_key, access: access_level)
           )
         end.to change { count_workflow_responsibilities_for(user) }
-          .from(9).to(0)
+          .from(6).to(0)
       end
     end
 
@@ -88,7 +90,7 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
           count_template_accesses_for(user, access_level)
         }.from(0).to(1).and change {
           count_workflow_responsibilities_for(user)
-        }.from(0).to(3)
+        }.from(0).to(2)
       end
 
       it 'removes workflow responsibilities' do
@@ -98,7 +100,7 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
             permission_template.access_grants.find_by(agent_id: user.user_key, access: access_level)
           )
         end.to change { count_workflow_responsibilities_for(user) }
-          .from(3).to(0)
+          .from(2).to(0)
       end
     end
 
@@ -136,8 +138,10 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
     let(:permission_template) { create(:permission_template, source_id: admin_set.id) }
 
     let(:user) { create(:user) }
+    let(:user1) { create(:user) }
     let(:user2) { create(:user) }
     let(:user3) { create(:user) }
+    let!(:group) { create(:group, name: 'archivists')}
 
     before do
       create(:permission_template_access,
@@ -203,7 +207,7 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
     context "without a manager" do
       let(:grant_attributes) do
         [ActionController::Parameters.new(agent_type: "user",
-                                          agent_id: "bob",
+                                          agent_id: user1.user_key,
                                           access: "view").permit!]
       end
 

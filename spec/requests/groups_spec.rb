@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.describe "Groups", type: :request, singletenant: true, clean: true do
-  let!(:managers_group) { FactoryBot.create(:admin_group, roles: ['admin', 'dinosaur']) }
   let!(:user) { FactoryBot.create(:admin) }
+  let!(:managers_group) { FactoryBot.create(:admin_group, roles: ['admin', 'dinosaur'], member_users: [user]) }
 
   context 'within a tenant' do
     context 'an admin user' do

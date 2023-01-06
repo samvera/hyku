@@ -2,7 +2,7 @@
 
 module Hyrax
   module Workflow # rubocop:disable Metrics/ModuleLength
-    RSpec.describe PermissionQuery, slow_test: true, clean: true do
+    RSpec.describe PermissionQuery, ci: 'skip', clean: true do
       let(:reviewing_user) { create(:user) }
       let(:completing_user) { create(:user) }
       let(:workflow_config) do

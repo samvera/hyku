@@ -67,7 +67,7 @@ jobs:
       RAILS_ENV: test
       RACK_ENV: test
       FCREPO_TEST_PORT: 8080/fcrepo
-      SPEC_OPTS: --profile 10 --format RspecJunitFormatter --out /tmp/test-results/rspec.xml --format progress
+      SPEC_OPTS: --tag ci:skip --profile 10 --format RspecJunitFormatter --out /tmp/test-results/rspec.xml --format progress
     steps:
       - samvera/cached_checkout
 

@@ -62,7 +62,7 @@ RSpec.describe Ability do
 
     it { is_expected.not_to be_able_to(:manage, :all) }
     it { is_expected.not_to be_able_to(:manage, Account) }
-    it { is_expected.to be_able_to(:manage, Site) }
+    it { is_expected.not_to be_able_to(:manage, Site) }
 
     describe "#user_groups" do
       subject { ability.user_groups }

@@ -36,6 +36,15 @@ module Hyrax
         agent_list << creating_user if creating_user
       end
     end
+
+    def create_workflows_for(permission_template:)
+      workflow_importer.call(permission_template: permission_template)
+      # OVERRIDE: Extract and expand upon granting Workflow Roles into service object so it can be used in RolesService
+      Hyrax::Workflow::PermissionGrantor
+        .grant_default_workflow_roles!(permission_template: permission_template, creating_user: creating_user)
+      Sipity::Workflow
+        .activate!(permission_template: permission_template, workflow_name: Hyrax.config.default_active_workflow_name)
+    end
   end
 end
 

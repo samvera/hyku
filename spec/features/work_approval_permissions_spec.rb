@@ -20,7 +20,6 @@ RSpec.describe 'Work approval permissions', type: :feature, js: true, clean: tru
   let!(:work) { process_through_actor_stack(build(:work), work_creator, admin_set.id, 'open') }
 
   before do
-    FactoryBot.create(:registered_group)
     login_as user
   end
 

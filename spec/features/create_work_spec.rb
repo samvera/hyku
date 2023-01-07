@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # NOTE: If want to run spec in browser, you have to set "js: true"
-RSpec.describe 'Creating a new Work', type: :feature, clean: true, cohort: 'bravo' do
+RSpec.describe 'Creating a new Work', type: :feature, clean: true do
   let(:user) { create(:user, roles: [:work_depositor]) }
 
   before do

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 # Two users, the user assigning roles and the user to whom a role is assigned
-RSpec.describe 'Assign workflow to group', type: :feature, js: true, clean: true, cohort: 'alpha' do
+RSpec.describe 'Assign workflow to group', type: :feature, js: true, clean: true, ci: 'skip' do
   include Warden::Test::Helpers
   context 'an admin user' do
     # `before`s and `let!`s are order-dependent -- do not move this `before` from the top

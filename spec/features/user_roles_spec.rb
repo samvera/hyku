@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # NOTE: If want to run spec in browser, you have to set "js: true"
-RSpec.describe 'User Roles', cohort: 'bravo' do
+RSpec.describe 'User Roles' do
   let(:account) { create(:account) }
 
   context 'as a user manager' do

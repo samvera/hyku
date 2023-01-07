@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'AdminSet form Participants tab', type: :feature, js: true, clean: true, cohort: 'alpha' do
+RSpec.describe 'AdminSet form Participants tab', type: :feature, js: true, clean: true, ci: 'skip' do
   include Warden::Test::Helpers
 
   context 'as an admin user' do

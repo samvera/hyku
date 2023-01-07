@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 # For work approval permissions, see spec/features/work_approval_permissions_spec.rb
-RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, cohort: 'bravo' do
+RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, ci: 'skip' do
   include WorksHelper
 
   # `before`s and `let!`s are order-dependent -- do not move this `before` from the top

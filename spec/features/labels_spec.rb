@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # NOTE: If want to run spec in browser, you have to set "js: true"
-RSpec.describe 'Site labels configuration', type: :feature, clean: true, cohort: 'alpha' do
+RSpec.describe 'Site labels configuration', type: :feature, clean: true do
   context 'as an administrator' do
     let(:user) { FactoryBot.create(:admin) }
 

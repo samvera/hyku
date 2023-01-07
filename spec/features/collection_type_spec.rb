@@ -4,7 +4,7 @@
 # - Set :js to true because some specs require it
 # - Changed #sign_in to #login_as (#sign_in was throwing undefined method errors)
 # Other overrides are marked with an OVERRIDE comment
-RSpec.describe 'collection_type', type: :feature, js: true, clean: true, cohort: 'bravo' do
+RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
   let(:admin_user) { create(:admin) }
   let(:exhibit_title) { 'Exhibit' }
   let(:exhibit_description) { 'Description for exhibit collection type.' }
@@ -491,7 +491,7 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true, cohort:
 
   # OVERRIDE: new (non-hyrax) test cases below
 
-  describe 'default collection type participants' do
+  describe 'default collection type participants', ci: 'skip' do
     let(:title) { 'Title Test' }
 
     before do

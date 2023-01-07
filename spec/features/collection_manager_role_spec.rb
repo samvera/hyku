@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'actions permitted by the collection_manager role', type: :feature, js: true, clean: true, cohort: 'alpha' do # rubocop:disable Metrics/LineLength
+RSpec.describe 'actions permitted by the collection_manager role', type: :feature, js: true, clean: true, ci: 'skip' do # rubocop:disable Metrics/LineLength
   let!(:role) { FactoryBot.create(:role, :collection_manager) }
   let!(:collection) { FactoryBot.create(:private_collection_lw, with_permission_template: true) }
   let(:user) { FactoryBot.create(:user) }

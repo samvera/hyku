@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # NOTE: If want to run spec in browser, you have to set "js: true"
-RSpec.describe 'Editing an existing Work', type: :feature, js: true, clean: true, cohort: 'bravo' do
+RSpec.describe 'Editing an existing Work', type: :feature, js: true, clean: true do
   let(:admin_user) { create(:admin) }
   let(:work) { FactoryBot.create(:generic_work) }
 

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Groups', type: :feature, js: true, clean: true, cohort: 'alpha' do
+RSpec.describe 'Groups', type: :feature, js: true, clean: true do
   let!(:user) { FactoryBot.create(:admin) }
   let!(:managers_group) { FactoryBot.create(:admin_group, member_users: [user]) }
   let!(:users_group) { FactoryBot.create(:group, name: 'users') }

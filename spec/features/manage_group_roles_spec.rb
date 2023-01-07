@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-RSpec.describe 'Manage Group Roles', type: :feature, js: true, clean: true, cohort: 'alpha' do
+RSpec.describe 'Manage Group Roles', type: :feature, js: true, clean: true do
   include Warden::Test::Helpers
 
   context 'as an admin user on the manage group roles view' do

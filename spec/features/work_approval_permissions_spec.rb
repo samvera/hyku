@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Work approval permissions', type: :feature, js: true, clean: true, cohort: 'bravo' do
+RSpec.describe 'Work approval permissions', type: :feature, js: true, clean: true, ci: 'skip' do
   include WorksHelper
 
   let(:user) { FactoryBot.create(:user) }

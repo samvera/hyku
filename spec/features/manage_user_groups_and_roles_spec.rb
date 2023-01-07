@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-RSpec.describe "The Manage Users table", type: :feature, js: true, clean: true, cohort: 'bravo' do
+RSpec.describe "The Manage Users table", type: :feature, js: true, clean: true do
   include Warden::Test::Helpers
 
   context 'as an admin user' do

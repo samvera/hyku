@@ -101,8 +101,8 @@ end
 
 Capybara.javascript_driver = :chrome
 
-# This will ensure that a field named email will not be referred to by a 
-# hash but by test-email instead. A tool like capybara can now bypass 
+# This will ensure that a field named email will not be referred to by a
+# hash but by test-email instead. A tool like capybara can now bypass
 # this security while still going through the captcha workflow.
 NegativeCaptcha.test_mode = true
 

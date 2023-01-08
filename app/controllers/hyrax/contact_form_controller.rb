@@ -19,7 +19,7 @@ module Hyrax
     around_action :inject_theme_views
     class_attribute :model_class
     self.model_class = Hyrax::ContactForm
-    before_action :setup_negative_captcha, only: [:new, :create]
+    before_action :setup_negative_captcha, only: %i[new create]
     # OVERRIDE: Hyrax v3.4.0 Add for theming
     # The search builder for finding recent documents
     # Override of Blacklight::RequestBuilders
@@ -57,7 +57,7 @@ module Hyrax
         after_deliver
       else
         flash.now[:error] = 'Sorry, this message was not sent successfully. ' +
-                            @contact_form.errors.full_messages.map(&:to_s).join(", ") + 
+                            @contact_form.errors.full_messages.map(&:to_s).join(", ") +
                             "" + @captcha.error
       end
       render :new
@@ -118,8 +118,9 @@ module Hyrax
           secret: ENV.fetch('NEGATIVE_CAPTCHA_SECRET', 'default-value-change-me'),
           spinner: request.remote_ip,
           # Whatever fields are in your form
-          fields: [:name, :email, :subject, :message],
-          # If you wish to override the default CSS styles (position: absolute; left: -2000px;) used to position the fields off-screen
+          fields: %i[name email subject message],
+          # If you wish to override the default CSS styles (position: absolute; left: -2000px;)
+          # used to position the fields off-screen
           css: "display: none",
           params: params
         )

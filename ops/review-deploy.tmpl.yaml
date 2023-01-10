@@ -88,6 +88,8 @@ extraEnvVars: &envVars
     value: "true"
   - name: LD_LIBRARY_PATH
     value: /app/fits/tools/mediainfo/linux
+  - name: NEGATIVE_CAPTCHA_SECRET
+    value: $NEGATIVE_CAPTCHA_SECRET
   - name: PASSENGER_APP_ENV
     value: production
   - name: RAILS_ENV

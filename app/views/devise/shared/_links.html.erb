@@ -2,7 +2,7 @@
   <%= link_to t(".sign_in"), new_session_path(resource_name) %><br />
 <% end -%>
 
-<%- if devise_mapping.registerable? && controller_name != 'registrations' && !Account.global_tenant? && current_account.try(:allow_signup) == "true"  %>
+<%- if devise_mapping.registerable? && controller_name != 'registrations' && !Account.global_tenant? && current_account.try(:allow_signup) %>
   <%= link_to t(".sign_up"), new_registration_path(resource_name) %><br />
 <% end -%>
 

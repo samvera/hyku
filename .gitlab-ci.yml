@@ -55,9 +55,10 @@ test:
     DB_URL: postgres://postgres:postgres@db/hyku
     DB_USER: postgres
     DB_PORT: 5432
+    FCREPO_BASE_PATH: /hykudemo
     FCREPO_HOST: fcrepo
     FCREPO_PORT: 8081
-    FCREPO_URL: http://fcrepo:8081/rest
+    FCREPO_REST_PATH: rest
     FF_NETWORK_PER_BUILD: 1
     GIT_STRATEGY: none
     JAVA_OPTIONS: -Djetty.port=8081

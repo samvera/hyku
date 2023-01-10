@@ -1,0 +1,13 @@
+#!/usr/local/bin/ruby
+
+if ENV['DATABASE_URL'].present?
+  ENV['DATABASE_URL'] = ENV['DATABASE_URL'].gsub('pool=5', 'pool=30')
+else
+  puts 'DATABASE_URL not set, no pool change needed'
+end
+
+exec "echo $DATABASE_URL && bundle exec sidekiq"
+
+if ENV['GOOGLE_OAUTH_PRIVATE_KEY_VALUE'] && !ENV['GOOGLE_OAUTH_PRIVATE_KEY_VALUE'].empty?
+  %x{echo #{ENV['GOOGLE_OAUTH_PRIVATE_KEY_VALUE']} | base64 --decode > prod-cred.p12}
+end

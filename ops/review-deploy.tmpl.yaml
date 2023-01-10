@@ -40,12 +40,46 @@ ingress:
         - path: /
 
 extraEnvVars: &envVars
-  - name: HYKU_ADMIN_HOST
-    value: hyku-$CI_MERGE_REQUEST_ID.example.com
-  - name: HYKU_ROOT_HOST
-    value: hyku-$CI_MERGE_REQUEST_ID.example.com
   - name: CONFDIR
     value: "/app/samvera/hyrax-webapp/solr/conf"
+  - name: FCREPO_BASE_PATH
+    value: /hykudemo
+  - name: FCREPO_HOST
+    value: fcrepo.staging-fcrepo.svc.cluster.local
+  - name: FCREPO_PORT
+    value: "8080"
+  - name: FCREPO_REST_PATH
+    value: rest
+  - name: GOOGLE_ANALYTICS_ID
+    value: $GOOGLE_ANALYTICS_ID
+  - name: GOOGLE_OAUTH_APP_NAME
+    value: hyku-demo
+  - name: GOOGLE_OAUTH_APP_VERSION
+    value: '1.0'
+  - name: GOOGLE_OAUTH_PRIVATE_KEY_SECRET
+    value: $GOOGLE_OAUTH_PRIVATE_KEY_SECRET
+  - name: GOOGLE_OAUTH_PRIVATE_KEY_PATH
+    value: prod-cred.p12
+  - name: GOOGLE_OAUTH_PRIVATE_KEY_VALUE
+    value: $GOOGLE_OAUTH_PRIVATE_KEY_VALUE
+  - name: GOOGLE_OAUTH_CLIENT_EMAIL
+    value: set-me@email.com
+  - name: HYKU_ADMIN_HOST
+    value: hyku-$CI_MERGE_REQUEST_ID.example.com
+  - name: HYKU_ADMIN_ONLY_TENANT_CREATION
+    value: "true"
+  - name: HYKU_CONTACT_EMAIL
+    value: samvera@example.com
+  - name: HYKU_DEFAULT_HOST
+    value: "%{tenant}.hyku-staging.example.com"
+  - name: HYKU_ENABLED
+    value: "true"
+  - name: HYKU_ROOT_HOST
+    value: hyku-$CI_MERGE_REQUEST_ID.example.com
+  - name: HYRAX_ACTIVE_JOB_QUEUE
+    value: sidekiq
+  - name: HYRAX_FITS_PATH
+    value: /app/fits/fits.sh
   - name: INITIAL_ADMIN_EMAIL
     value: samvera@example.com
   - name: INITIAL_ADMIN_PASSWORD
@@ -54,6 +88,8 @@ extraEnvVars: &envVars
     value: "true"
   - name: LD_LIBRARY_PATH
     value: /app/fits/tools/mediainfo/linux
+  - name: NEGATIVE_CAPTCHA_SECRET
+    value: $NEGATIVE_CAPTCHA_SECRET
   - name: PASSENGER_APP_ENV
     value: production
   - name: RAILS_ENV
@@ -64,26 +100,6 @@ extraEnvVars: &envVars
     value: "5"
   - name: RAILS_SERVE_STATIC_FILES
     value: "true"
-  - name: HYRAX_ACTIVE_JOB_QUEUE
-    value: sidekiq
-  - name: HYKU_CONTACT_EMAIL
-    value: samvera@example.com
-  - name: HYRAX_FITS_PATH
-    value: /app/fits/fits.sh
-  - name: HYKU_ADMIN_ONLY_TENANT_CREATION
-    value: "true"
-  - name: HYKU_DEFAULT_HOST
-    value: "%{tenant}.hyku-staging.example.com"
-  - name: HYKU_ENABLED
-    value: "true"
-  - name: NEGATIVE_CAPTCHA_SECRET
-    value: $NEGATIVE_CAPTCHA_SECRET
-  - name: SOLR_ADMIN_USER
-    value: admin
-  - name: SOLR_COLLECTION_NAME
-    value: hyrax
-  - name: SOLR_CONFIGSET_NAME
-    value: $CI_COMMIT_SHORT_SHA
   - name: SMTP_ENABLED
     value: "true"
   - name: SMTP_USER_NAME
@@ -98,6 +114,12 @@ extraEnvVars: &envVars
     value: "2525"
   - name: SMTP_TYPE
     value: cram_md5
+  - name: SOLR_ADMIN_USER
+    value: admin
+  - name: SOLR_COLLECTION_NAME
+    value: hyrax
+  - name: SOLR_CONFIGSET_NAME
+    value: $CI_COMMIT_SHORT_SHA
 
 worker:
   replicaCount: 1
@@ -121,7 +143,7 @@ leaseRelease:
   enabled: false
 
 # imagePullSecrets:
-#  - name: gitlab-registry
+#  - name: github
 
 fcrepo:
   enabled: true
@@ -133,3 +155,5 @@ redis:
   password: staging
 solr:
   enabled: true
+
+externalFcrepoHost: fcrepo.staging-fcrepo.svc.cluster.local

@@ -13,6 +13,9 @@ uploadsVolume:
   storageClass: aws-efs
   size: 200Gi
 
+# imagePullSecrets:
+#  - name: github
+
 extraVolumeMounts: &volMounts
   - name: uploads
     mountPath: /app/samvera/hyrax-webapp/tmp/imports
@@ -64,11 +67,25 @@ extraEnvVars: &envVars
   - name: FCREPO_BASE_PATH
     value: /hykudemo
   - name: FCREPO_HOST
-    value: fcrepo.staging-fcrepo.svc.cluster.local:8080
-  - name: FCREPO_PATH
-    value: /rest
-  - name: FCREPO_URL
-    value: http://fcrepo.staging-fcrepo.svc.cluster.local:8080/rest
+    value: fcrepo.staging-fcrepo.svc.cluster.local
+  - name: FCREPO_PORT
+    value: "8080"
+  - name: FCREPO_REST_PATH
+    value: rest
+  - name: GOOGLE_ANALYTICS_ID
+    value: $GOOGLE_ANALYTICS_ID
+  - name: GOOGLE_OAUTH_APP_NAME
+    value: hyku-demo
+  - name: GOOGLE_OAUTH_APP_VERSION
+    value: '1.0'
+  - name: GOOGLE_OAUTH_PRIVATE_KEY_SECRET
+    value: $GOOGLE_OAUTH_PRIVATE_KEY_SECRET
+  - name: GOOGLE_OAUTH_PRIVATE_KEY_PATH
+    value: prod-cred.p12
+  - name: GOOGLE_OAUTH_PRIVATE_KEY_VALUE
+    value: $GOOGLE_OAUTH_PRIVATE_KEY_VALUE
+  - name: GOOGLE_OAUTH_CLIENT_EMAIL
+    value: hyku-demo@hyku-demo.iam.gserviceaccount.com
   - name: INITIAL_ADMIN_EMAIL
     value: support@notch8.com
   - name: INITIAL_ADMIN_PASSWORD
@@ -180,6 +197,7 @@ solr:
   enabled: false
 
 externalFcrepoHost: fcrepo.staging-fcrepo.svc.cluster.local
+
 externalPostgresql:
   host: pg-postgresql.staging-postgres.svc.cluster.local
   username: postgres

@@ -132,6 +132,8 @@ extraEnvVars: &envVars
     value: "true"
   - name: HYKU_ROOT_HOST
     value: hyku-staging.$BASE_URL
+  - name: NEGATIVE_CAPTCHA_SECRET
+    value: $NEGATIVE_CAPTCHA_SECRET
   - name: SMTP_ENABLED
     value: "true"
   - name: SMTP_USER_NAME

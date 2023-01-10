@@ -294,6 +294,7 @@ Once you run this script the value is on your local computers clipboard. You wil
 | INITIAL_ADMIN_PASSWORD | Admin password used by database seeds. Be sure to change in production. | testing123 | no |
 | IN_DOCKER | Used specs to know if we are running inside a container or not. Set to true if in K8S regardless of Docker vs ContainerD | false | yes |
 | LD_LIBRARY_PATH | Path used for fits | /app/fits/tools/mediainfo/linux | no |
+| NEGATIVE_CAPTCHA_SECRET | A secret value you set for the appliations negative_captcha to work. | default-value-change-me | no |
 | RAILS_ENV | https://guides.rubyonrails.org/configuring.html#creating-rails-environments | development | no |
 | RAILS_LOG_TO_STDOUT | Redirect all logging to stdout | true | no |
 | RAILS_MAX_THREADS | Number of threads to use in puma or sidekiq | 5 | no |

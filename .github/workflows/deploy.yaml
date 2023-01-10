@@ -19,7 +19,7 @@ on:
 
 jobs:
   deploy:
-    uses: scientist-softserv/actions/.github/workflows/deploy.yaml@v0.0.6
+    uses: scientist-softserv/actions/.github/workflows/deploy.yaml@explicitly-environment
     with:
       environment: ${{ inputs.environment }}
       tag: 72b4cd7

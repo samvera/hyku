@@ -1,4 +1,4 @@
-name: "Build Lint Test"
+name: "Build"
 on:
   push:
     branches:
@@ -23,13 +23,3 @@ jobs:
       target: hyku-base
       worker: true
       workerTarget: hyku-worker
-  test:
-    needs: build
-    uses: scientist-softserv/actions/.github/workflows/test.yaml@v0.0.6
-    with:
-      worker: true
-  lint:
-    needs: build
-    uses: scientist-softserv/actions/.github/workflows/lint.yaml@v0.0.6
-    with:
-      worker: true

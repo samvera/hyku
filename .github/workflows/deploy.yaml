@@ -30,12 +30,13 @@ jobs:
         --values ops/${{ inputs.environment }}-deploy.yaml
       KUBECONFIG_FILE: ${{ secrets.KUBECONFIG_FILE }}
       KUBECONFIG: ./kubeconfig.yml
+      BASE_URL: ${{ secrets.BASE_URL }}
       DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
       GOOGLE_FONTS_KEY: ${{ secrets.GOOGLE_FONTS_KEY }}
       GOOGLE_OAUTH_PRIVATE_KEY_SECRET: ${{ secrets.GOOGLE_OAUTH_PRIVATE_KEY_SECRET }}
       GOOGLE_OAUTH_PRIVATE_KEY_VALUE: ${{ secrets.GOOGLE_OAUTH_PRIVATE_KEY_VALUE }}
-      GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
       IA_PASSWORD: ${{ secrets.IA_PASSWORD }}
       MAIL_PASS: ${{ secrets.MAIL_PASS }}
       NEGATIVE_CAPTCHA_SECRET: ${{ secrets.NEGATIVE_CAPTCHA_SECRET }}

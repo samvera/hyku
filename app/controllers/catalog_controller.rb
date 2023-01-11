@@ -38,7 +38,7 @@ class CatalogController < ApplicationController
       object_relation_field: 'is_page_of_ssim',
       supported_params: %w[q page],
       autocomplete_handler: 'iiif_suggest',
-      suggester_name: 'iiifSuggester'
+      # suggester_name: 'iiifSuggester'
     }
 
     config.view.gallery.partials = %i[index_header index]
@@ -389,5 +389,32 @@ class CatalogController < ApplicationController
   def show
     _, @document = fetch params[:id]
     render json: @document.to_h
+  end
+
+  def iiif_suggest
+    render json: {terms: []}
+    # TODO this is the implementation from Yale. we need to adapt it to
+    # hyku needs
+
+    # @query = params[:q] || ""
+    # @document_id = params[:solr_document_id]
+    # #  search children to get the count
+    # params = {
+    #   "rows": 0,
+    #   "facet.field": "child_fulltext_wstsim",
+    #   "facet": "on",
+    #   "q": "parent_ssi:#{@document_id}",
+    #   "facet.contains": @query,
+    #   "facet.contains.ignoreCase": "true"
+    # }
+    # results = search_service.repository.search(params)['facet_counts']['facet_fields']['child_fulltext_wstsim']
+    # terms_for_list = []
+    # results.each_slice(2) do |term, freq|
+    #   term_hash = { match: term, url: solr_document_iiif_search_url(@document_id, q: term), count: freq }
+    #   terms_for_list << term_hash
+    # end
+    # response = term_list(terms_for_list)
+    # response['terms'] = [] unless response['terms']
+    # render json: response.to_json
   end
 end

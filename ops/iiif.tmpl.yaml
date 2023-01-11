@@ -1,0 +1,325 @@
+replicaCount: 2
+
+livenessProbe:
+  enabled: false
+readinessProbe:
+  enabled: false
+
+brandingVolume:
+  storageClass: aws-efs
+derivativesVolume:
+  storageClass: aws-efs
+uploadsVolume:
+  storageClass: aws-efs
+  size: 200Gi
+
+# imagePullSecrets:
+#  - name: github
+
+extraVolumeMounts: &volMounts
+  - name: uploads
+    mountPath: /app/samvera/hyrax-webapp/tmp/imports
+    subPath: imports
+  - name: uploads
+    mountPath: /app/samvera/hyrax-webapp/tmp/exports
+    subPath: exports
+  - name: uploads
+    mountPath: /app/samvera/hyrax-webapp/public/system
+    subPath: public-system
+  - name: uploads
+    mountPath: /app/samvera/hyrax-webapp/public/uploads
+    subPath: public-uploads
+  - name: uploads
+    mountPath: /app/samvera/hyrax-webapp/tmp/network_files
+    subPath: network-files
+
+ingress:
+  enabled: true
+  hosts:
+    - host: hyku-iiif.$BASE_URL
+      paths:
+        - path: /
+    - host: "*.hyku-iiif.$BASE_URL"
+      paths:
+        - path: /
+  annotations: {
+    kubernetes.io/ingress.class: "nginx",
+    nginx.ingress.kubernetes.io/proxy-body-size: "0",
+    cert-manager.io/cluster-issuer: letsencrypt-production-dns
+  }
+  tls:
+    - hosts:
+        - hyku-iiif.$BASE_URL
+        - "*.hyku-iiif.$BASE_URL"
+      secretName: hykuiiif-tls
+
+extraEnvVars: &envVars
+  - name: CONFDIR
+    value: "/app/samvera/hyrax-webapp/solr/config"
+  - name: DB_ADAPTER
+    value: postgresql
+  - name: DB_HOST
+    value: pg-postgresql.staging-postgres.svc.cluster.local
+  - name: DB_NAME
+    value: hyku-iiif
+  - name: DB_USER
+    value: postgres
+  - name: FCREPO_BASE_PATH
+    value: /hykuiiif
+  - name: FCREPO_HOST
+    value: fcrepo.staging-fcrepo.svc.cluster.local
+  - name: FCREPO_PORT
+    value: "8080"
+  - name: FCREPO_REST_PATH
+    value: rest
+  - name: GOOGLE_ANALYTICS_ID
+    value: $GOOGLE_ANALYTICS_ID
+  - name: GOOGLE_OAUTH_APP_NAME
+    value: hyku-iiif
+  - name: GOOGLE_OAUTH_APP_VERSION
+    value: '1.0'
+  - name: GOOGLE_OAUTH_PRIVATE_KEY_SECRET
+    value: $GOOGLE_OAUTH_PRIVATE_KEY_SECRET
+  - name: GOOGLE_OAUTH_PRIVATE_KEY_PATH
+    value: prod-cred.p12
+  - name: GOOGLE_OAUTH_PRIVATE_KEY_VALUE
+    value: $GOOGLE_OAUTH_PRIVATE_KEY_VALUE
+  - name: GOOGLE_OAUTH_CLIENT_EMAIL
+    value: hyku-iiif@hyku-iiif.iam.gserviceaccount.com
+  - name: INITIAL_ADMIN_EMAIL
+    value: support@notch8.com
+  - name: INITIAL_ADMIN_PASSWORD
+    value: testing123
+  - name: IN_DOCKER
+    value: "true"
+  - name: LD_LIBRARY_PATH
+    value: /app/fits/tools/mediainfo/linux
+  - name: PASSENGER_APP_ENV
+    value: production
+  - name: RAILS_CACHE_STORE_URL
+    value: redis://:staging@hyku-iiif-redis-master:6379/iiif
+  - name: RAILS_ENV
+    value: production
+  - name: RAILS_LOG_TO_STDOUT
+    value: "true"
+  - name: RAILS_MAX_THREADS
+    value: "5"
+  - name: RAILS_SERVE_STATIC_FILES
+    value: "true"
+  - name: REDIS_HOST
+    value: hyku-iiif-redis-master
+  - name: REDIS_URL
+    value: redis://:staging@hyku-iiif-redis-master:6379/iiif
+  - name: HYRAX_ACTIVE_JOB_QUEUE
+    value: sidekiq
+  - name: HYKU_BULKRAX_ENABLED
+    value: "true"
+  - name: HYKU_CONTACT_EMAIL
+    value: support@notch8.com
+  - name: HYKU_FILE_ACL
+    value: "false"
+  - name: HYRAX_FITS_PATH
+    value: /app/fits/fits.sh
+  - name: HYKU_ADMIN_HOST
+    value: hyku-iiif.$BASE_URL
+  - name: HYKU_ADMIN_ONLY_TENANT_CREATION
+    value: "true"
+  - name: HYKU_ALLOW_SIGNUP
+    value: "false"
+  - name: HYKU_DEFAULT_HOST
+    value: "%{tenant}.hyku-iiif.$BASE_URL"
+  - name: HYKU_MULTITENANT
+    value: "true"
+  - name: HYKU_ROOT_HOST
+    value: hyku-iiif.$BASE_URL
+  - name: SMTP_ENABLED
+    value: "true"
+  - name: SMTP_USER_NAME
+    value: $SMTP_USER_NAME
+  - name: SMTP_PASSWORD
+    value: $SMTP_PASSWORD
+  - name: SMTP_ADDRESS
+    value: smtp.mailtrap.io
+  - name: SMTP_DOMAIN
+    value: smtp.mailtrap.io
+  - name: SMTP_PORT
+    value: "2525"
+  - name: SMTP_TYPE
+    value: cram_md5
+  - name: SOLR_ADMIN_USER
+    value: admin
+  - name: SOLR_COLLECTION_NAME
+    value: hyku-iiif
+  - name: SOLR_CONFIGSET_NAME
+    value: hyku-iiif
+  - name: SOLR_HOST
+    value: solr.staging-solr
+  - name: SOLR_PORT
+    value: "8983"
+  - name: SOLR_URL
+    value: http://admin:$SOLR_PASSWORD@solr.staging-solr:8983/solr/
+  - name: SECRET_KEY_BASE
+    value: $SECRET_KEY_BASE
+  - name: SENTRY_DSN
+    value: $SENTRY_DSN
+
+worker:
+  replicaCount: 1
+  extraVolumeMounts: *volMounts
+  extraEnvVars: *envVars
+  podSecurityContext:
+    runAsUser: 1001
+    runAsGroup: 101
+    fsGroup: 101
+    fsGroupChangePolicy: "OnRootMismatch"
+podSecurityContext:
+  runAsUser: 1001
+  runAsGroup: 101
+  fsGroup: 101
+  fsGroupChangePolicy: "OnRootMismatch"
+
+embargoRelease:
+  enabled: false
+leaseRelease:
+  enabled: false
+
+fcrepo:
+  enabled: false
+postgresql:
+  enabled: false
+redis:
+  cluster:
+    enabled: false
+  password: staging
+solr:
+  enabled: false
+
+externalFcrepoHost: fcrepo.staging-fcrepo.svc.cluster.local
+
+externalPostgresql:
+  host: pg-postgresql.staging-postgres.svc.cluster.local
+  username: postgres
+  password: $POSTGRES_PASSWORD
+
+externalSolrHost: solr.staging-solr.svc.cluster.local
+externalSolrUser: admin
+externalSolrCollection: "hyku-iiif"
+externalSolrPassword: $SOLR_PASSWORD
+
+global:
+  hyraxName: hyku-iiif-hyrax
+
+nginx:
+  enabled: true
+  image:
+    registry: registry.gitlab.com
+    repository: notch8/scripts/bitnami-nginx
+    tag: 1.21.5-debian-10-r4
+  serverBlock: |-
+    upstream rails_app {
+      server {{ .Values.global.hyraxName }};
+    }
+
+    map ${DOLLAR}status ${DOLLAR}loggable {
+        ~^444  0;
+        default 1;
+    }
+
+    log_format loki 'host=${DOLLAR}host ip=${DOLLAR}http_x_forwarded_for remote_user=${DOLLAR}remote_user [${DOLLAR}time_local] '
+                      'request="${DOLLAR}request" status=${DOLLAR}status bytes=${DOLLAR}body_bytes_sent '
+                      'referer="${DOLLAR}http_referer" agent="${DOLLAR}http_user_agent" request_time=${DOLLAR}request_time upstream_response_time=${DOLLAR}upstream_response_time upstream_response_length=${DOLLAR}upstream_response_length';
+
+    error_log  /opt/bitnami/nginx/logs/error.log warn;
+    #tcp_nopush     on;
+
+    # Cloudflare ips see for refresh
+    # https://support.cloudflare.com/hc/en-us/articles/200170786-Restoring-original-visitor-IPs-logging-visitor-IP-addresses
+    # update list https://www.cloudflare.com/ips/
+    set_real_ip_from 103.21.244.0/22;
+    set_real_ip_from 103.22.200.0/22;
+    set_real_ip_from 103.31.4.0/22;
+    set_real_ip_from 104.16.0.0/13;
+    set_real_ip_from 104.24.0.0/14;
+    set_real_ip_from 108.162.192.0/18;
+    set_real_ip_from 131.0.72.0/22;
+    set_real_ip_from 141.101.64.0/18;
+    set_real_ip_from 162.158.0.0/15;
+    set_real_ip_from 172.64.0.0/13;
+    set_real_ip_from 173.245.48.0/20;
+    set_real_ip_from 188.114.96.0/20;
+    set_real_ip_from 190.93.240.0/20;
+    set_real_ip_from 197.234.240.0/22;
+    set_real_ip_from 198.41.128.0/17;
+    set_real_ip_from 2400:cb00::/32;
+    set_real_ip_from 2606:4700::/32;
+    set_real_ip_from 2803:f800::/32;
+    set_real_ip_from 2405:b500::/32;
+    set_real_ip_from 2405:8100::/32;
+    set_real_ip_from 2a06:98c0::/29;
+    set_real_ip_from 2c0f:f248::/32;
+
+    real_ip_header X-Forwarded-For;
+    real_ip_recursive on;
+    include /opt/bitnami/nginx/conf/conf.d/*.conf;
+    server {
+        listen 8080;
+        server_name _;
+        root /app/samvera/hyrax-webapp/public;
+        index index.html;
+
+        client_body_in_file_only clean;
+        client_body_buffer_size 32K;
+        client_max_body_size 0;
+        access_log /opt/bitnami/nginx/logs/access.log loki;
+        # if=${DOLLAR}loggable;
+
+        sendfile on;
+        send_timeout 300s;
+
+        include /opt/bitnami/nginx/conf/bots.d/ddos.conf;
+        include /opt/bitnami/nginx/conf/bots.d/blockbots.conf;
+
+        location ~ (\.php|\.aspx|\.asp) {
+        	return 404;
+        }
+
+        # deny requests for files that should never be accessed
+        location ~ /\. {
+          deny all;
+        }
+
+        location ~* ^.+\.(rb|log)${DOLLAR} {
+          deny all;
+        }
+
+        # serve static (compiled) assets directly if they exist (for rails production)
+        location ~ ^/(assets|packs|fonts|images|javascripts|stylesheets|swfs|system)/ {
+          try_files ${DOLLAR}uri @rails;
+
+          # access_log off;
+          gzip_static on; # to serve pre-gzipped version
+
+          expires max;
+          add_header Cache-Control public;
+
+          # Some browsers still send conditional-GET requests if there's a
+          # Last-Modified header or an ETag header even if they haven't
+          # reached the expiry date sent in the Expires header.
+          add_header Last-Modified "";
+          add_header ETag "";
+          break;
+        }
+
+        # send non-static file requests to the app server
+        location / {
+          try_files ${DOLLAR}uri @rails;
+        }
+
+        location @rails {
+          proxy_set_header  X-Real-IP  ${DOLLAR}remote_addr;
+          proxy_set_header  X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
+          proxy_set_header Host ${DOLLAR}http_host;
+          proxy_redirect off;
+          proxy_pass http://rails_app;
+        }
+    }

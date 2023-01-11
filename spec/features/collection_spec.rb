@@ -155,6 +155,9 @@ RSpec.describe 'collection', type: :feature, js: true, clean: true do
     let(:user) { create(:admin) }
 
     before do
+      create(:role, :collection_manager)
+      create(:role, :collection_editor)
+      create(:role, :collection_reader)
       FactoryBot.create(:user, email: 'user@example.com')
       login_as user
     end

@@ -9,6 +9,7 @@ RSpec.describe 'Groups', type: :feature, js: true, clean: true do
 
   context 'An admin user' do
     before do
+      Hyrax::Group.find_or_create_by!(name: Ability.admin_group_name).add_members_by_id(user.id)
       login_as(user, scope: :user)
     end
 

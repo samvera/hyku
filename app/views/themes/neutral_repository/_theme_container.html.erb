@@ -8,7 +8,7 @@
     </div>
   </div>
   <% end %>
-  <%# April todo add featured reserarch/recent doc feature flags %>
+  <%= render 'themes/neutral_repository/layouts/share_your_work_row' if controller_name == 'homepage' %>
   <% if @presenter.display_featured_works? %>
     <div class="col-xs-12">
       <%= render 'themes/neutral_repository/hyrax/homepage/featured_works' %>

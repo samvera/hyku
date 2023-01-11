@@ -34,6 +34,25 @@ class ContentBlock < ApplicationRecord
       registered?(key)
     end
 
+    # @api public
+    #
+    # @param name [#to_s] the named content block
+    # @param fallback_value [Object] if we don't have a named content block use this value.
+    #
+    # @return [Object] either the named block's value or the fallback_value.
+    def block_for(name:, fallback_value: false)
+      block = ContentBlock.find_by(name: name)
+      block&.value.presence || fallback_value
+    end
+
+    # @api public
+    #
+    # @param name [#to_s] the named content block
+    # @param value [Object] the value to update the given content block
+    def update_block(name:, value:)
+      find_or_create_by(name: name.to_s).update!(value: value)
+    end
+
     def registered?(key)
       NAME_REGISTRY.include?(key)
     end

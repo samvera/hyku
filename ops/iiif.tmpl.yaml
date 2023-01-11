@@ -36,10 +36,10 @@ extraVolumeMounts: &volMounts
 ingress:
   enabled: true
   hosts:
-    - host: hyku-staging.$BASE_URL
+    - host: hyku-iiif.$BASE_URL
       paths:
         - path: /
-    - host: "*.hyku-staging.$BASE_URL"
+    - host: "*.hyku-iiif.$BASE_URL"
       paths:
         - path: /
   annotations: {
@@ -49,9 +49,9 @@ ingress:
   }
   tls:
     - hosts:
-        - hyku-staging.$BASE_URL
-        - "*.hyku-staging.$BASE_URL"
-      secretName: hykustaging-tls
+        - hyku-iiif.$BASE_URL
+        - "*.hyku-iiif.$BASE_URL"
+      secretName: hykuiiif-tls
 
 extraEnvVars: &envVars
   - name: CONFDIR
@@ -61,11 +61,11 @@ extraEnvVars: &envVars
   - name: DB_HOST
     value: pg-postgresql.staging-postgres.svc.cluster.local
   - name: DB_NAME
-    value: hyku-staging
+    value: hyku-iiif
   - name: DB_USER
     value: postgres
   - name: FCREPO_BASE_PATH
-    value: /hykustaging
+    value: /hykuiiif
   - name: FCREPO_HOST
     value: fcrepo.staging-fcrepo.svc.cluster.local
   - name: FCREPO_PORT
@@ -75,7 +75,7 @@ extraEnvVars: &envVars
   - name: GOOGLE_ANALYTICS_ID
     value: $GOOGLE_ANALYTICS_ID
   - name: GOOGLE_OAUTH_APP_NAME
-    value: hyku-staging
+    value: hyku-iiif
   - name: GOOGLE_OAUTH_APP_VERSION
     value: '1.0'
   - name: GOOGLE_OAUTH_PRIVATE_KEY_SECRET
@@ -85,7 +85,7 @@ extraEnvVars: &envVars
   - name: GOOGLE_OAUTH_PRIVATE_KEY_VALUE
     value: $GOOGLE_OAUTH_PRIVATE_KEY_VALUE
   - name: GOOGLE_OAUTH_CLIENT_EMAIL
-    value: hyku-staging@hyku-staging.iam.gserviceaccount.com
+    value: hyku-iiif@hyku-iiif.iam.gserviceaccount.com
   - name: INITIAL_ADMIN_EMAIL
     value: support@notch8.com
   - name: INITIAL_ADMIN_PASSWORD
@@ -97,7 +97,7 @@ extraEnvVars: &envVars
   - name: PASSENGER_APP_ENV
     value: production
   - name: RAILS_CACHE_STORE_URL
-    value: redis://:staging@hyku-staging-redis-master:6379/staging
+    value: redis://:staging@hyku-iiif-redis-master:6379/iiif
   - name: RAILS_ENV
     value: production
   - name: RAILS_LOG_TO_STDOUT
@@ -107,9 +107,9 @@ extraEnvVars: &envVars
   - name: RAILS_SERVE_STATIC_FILES
     value: "true"
   - name: REDIS_HOST
-    value: hyku-staging-redis-master
+    value: hyku-iiif-redis-master
   - name: REDIS_URL
-    value: redis://:staging@hyku-staging-redis-master:6379/staging
+    value: redis://:staging@hyku-iiif-redis-master:6379/iiif
   - name: HYRAX_ACTIVE_JOB_QUEUE
     value: sidekiq
   - name: HYKU_BULKRAX_ENABLED
@@ -121,19 +121,17 @@ extraEnvVars: &envVars
   - name: HYRAX_FITS_PATH
     value: /app/fits/fits.sh
   - name: HYKU_ADMIN_HOST
-    value: hyku-staging.$BASE_URL
+    value: hyku-iiif.$BASE_URL
   - name: HYKU_ADMIN_ONLY_TENANT_CREATION
     value: "true"
   - name: HYKU_ALLOW_SIGNUP
     value: "false"
   - name: HYKU_DEFAULT_HOST
-    value: "%{tenant}.hyku-staging.$BASE_URL"
+    value: "%{tenant}.hyku-iiif.$BASE_URL"
   - name: HYKU_MULTITENANT
     value: "true"
   - name: HYKU_ROOT_HOST
-    value: hyku-staging.$BASE_URL
-  - name: NEGATIVE_CAPTCHA_SECRET
-    value: $NEGATIVE_CAPTCHA_SECRET
+    value: hyku-iiif.$BASE_URL
   - name: SMTP_ENABLED
     value: "true"
   - name: SMTP_USER_NAME
@@ -151,9 +149,9 @@ extraEnvVars: &envVars
   - name: SOLR_ADMIN_USER
     value: admin
   - name: SOLR_COLLECTION_NAME
-    value: hyku-staging
+    value: hyku-iiif
   - name: SOLR_CONFIGSET_NAME
-    value: hyku-staging
+    value: hyku-iiif
   - name: SOLR_HOST
     value: solr.staging-solr
   - name: SOLR_PORT
@@ -205,11 +203,11 @@ externalPostgresql:
 
 externalSolrHost: solr.staging-solr.svc.cluster.local
 externalSolrUser: admin
-externalSolrCollection: "hyku-staging"
+externalSolrCollection: "hyku-iiif"
 externalSolrPassword: $SOLR_PASSWORD
 
 global:
-  hyraxName: hyku-staging-hyrax
+  hyraxName: hyku-iiif-hyrax
 
 nginx:
   enabled: true

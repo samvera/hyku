@@ -15,12 +15,14 @@ class Site < ApplicationRecord
   mount_uploader :default_collection_image, Hyrax::AvatarUploader
   # Allow for uploading of site's default work image
   mount_uploader :default_work_image, Hyrax::AvatarUploader
+  # Allow for uploading of site's favicon image
+  mount_uploader :favicon, FaviconUploader
 
   belongs_to :account
   accepts_nested_attributes_for :account, update_only: true
 
   class << self
-    delegate :account, :application_name, :institution_name,
+    delegate :account, :application_name, :institution_name, :favicon,
              :institution_name_full, :reload, :update, :contact_email,
              to: :instance
 

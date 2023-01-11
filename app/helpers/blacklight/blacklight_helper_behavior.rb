@@ -406,7 +406,9 @@ module Blacklight
 
       field ||= document_show_link_field(doc)
       label = index_presenter(doc).label field, opts
-      link_to label, generate_work_url(doc, request), document_link_params(doc, opts)
+      # pull solr_document from input if we don't already have a solr_document
+      document = doc&.try(:solr_document) || doc
+      link_to label, generate_work_url(document, request), document_link_params(document, opts)
     end
 
     # OVERIDE: Blacklight::UrlHelperBehavior:

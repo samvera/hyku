@@ -26,9 +26,7 @@ module HyraxHelper
   end
 
   def block_for(name:)
-    block = ContentBlock.find_by(name: name)
-    has_value = block&.value.present?
-    has_value ? block.value : false
+    ContentBlock.block_for(name: name, fallback_value: false)
   end
 
   def directory_image

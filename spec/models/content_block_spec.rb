@@ -33,6 +33,29 @@ RSpec.describe ContentBlock, type: :model do
     end
   end
 
+  describe '.block_for' do
+    subject { described_class.block_for(name: block_name, fallback_value: given_fallback_value) }
+
+    let(:block_name) { "blocky.mc.blockface" }
+    let(:given_fallback_value) { "wonderful" }
+
+    context 'with a missing name' do
+      it 'returns the fallback value' do
+        expect(subject).to eq(given_fallback_value)
+      end
+    end
+
+    context 'with an existing name' do
+      let(:expected_value) { "something else" }
+
+      before { described_class.update_block(name: block_name, value: expected_value) }
+
+      it 'returns the persisted value (and not the default value)' do
+        expect(subject).to eq(expected_value)
+      end
+    end
+  end
+
   describe '.announcement_text' do
     subject { described_class.for(:announcement).value }
 

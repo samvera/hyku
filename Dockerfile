@@ -6,6 +6,7 @@ USER root
 ARG EXTRA_APK_PACKAGES="openjdk11-jre ffmpeg"
 RUN apk --no-cache upgrade && \
   apk --no-cache add \
+    libreoffice \
     libxml2-dev \
     mediainfo \
     perl \
@@ -29,6 +30,8 @@ COPY --chown=1001:101 $APP_PATH /app/samvera/hyrax-webapp
 
 RUN RAILS_ENV=production SECRET_KEY_BASE=`bin/rake secret` DB_ADAPTER=nulldb DB_URL='postgresql://fake' bundle exec rake assets:precompile
 
+CMD ./bin/web
+
 FROM hyku-base as hyku-worker
 ENV MALLOC_ARENA_MAX=2
-CMD bundle exec sidekiq
+CMD ./bin/worker

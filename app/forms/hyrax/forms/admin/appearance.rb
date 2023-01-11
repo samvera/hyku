@@ -12,6 +12,7 @@ module Hyrax
         extend ActiveModel::Naming
         delegate :banner_image, :banner_image?, to: :site
         delegate :logo_image, :logo_image?, to: :site
+        delegate :favicon, :favicon?, to: :site
         delegate :directory_image, :directory_image?, to: :site
         delegate :default_collection_image, :default_collection_image?, to: :site
         delegate :default_work_image, :default_work_image?, to: :site
@@ -62,7 +63,7 @@ module Hyrax
         end
 
         def self.image_params
-          %i[banner_image logo_image directory_image default_collection_image default_work_image]
+          %i[favicon banner_image logo_image directory_image default_collection_image default_work_image]
         end
 
         def site
@@ -302,6 +303,10 @@ module Hyrax
           attributes.slice(*self.class.logo_fields)
         end
 
+        def favicon_attributes
+          attributes.slice(*self.class.favicon_fields)
+        end
+
         def directory_attributes
           attributes.slice(*self.class.directory_fields)
         end
@@ -315,6 +320,10 @@ module Hyrax
           %i[
             banner_image banner_label
           ]
+        end
+
+        def self.favicon_fields
+          [:favicon]
         end
 
         # @return [Array<Symbol>] a list of fields that are related to the logo
@@ -348,6 +357,7 @@ module Hyrax
           end
 
           site.update!(banner_attributes.merge(logo_attributes)
+                                        .merge(favicon_attributes)
                                         .merge(directory_attributes)
                                         .merge(default_image_attributes))
         end
@@ -421,16 +431,14 @@ module Hyrax
           end
 
           def block_for(name, dynamic_default = nil)
-            block = ContentBlock.find_by(name: name)
-            has_value = block&.value.present?
-            has_value ? block.value : DEFAULT_VALUES[name] || dynamic_default
+            ContentBlock.block_for(name: name, fallback_value: DEFAULT_VALUES[name] || dynamic_default)
           end
 
           # Persist a key/value tuple as a ContentBlock
           # @param [Symbol] name the identifier for the ContentBlock
           # @param [String] value the value to set
           def update_block(name, value)
-            ContentBlock.find_or_create_by(name: name.to_s).update!(value: value)
+            ContentBlock.update_block(name: name, value: value)
           end
 
           def format_font_names(font_style)

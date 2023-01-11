@@ -62,6 +62,8 @@ module Hyrax
       end
     end
 
+    def browserconfig; end
+
     def all_collections
       @presenter = presenter_class.new(current_ability, collections)
       @marketing_text = ContentBlock.for(:marketing)

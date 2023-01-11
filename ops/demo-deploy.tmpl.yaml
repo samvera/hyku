@@ -148,6 +148,8 @@ extraEnvVars: &envVars
     value: cram_md5
   - name: SOLR_ADMIN_USER
     value: admin
+  - name: SOLR_ADMIN_PASSWORD
+    value: $SOLR_ADMIN_PASSWORD
   - name: SOLR_COLLECTION_NAME
     value: hyku-demo
   - name: SOLR_CONFIGSET_NAME
@@ -157,12 +159,13 @@ extraEnvVars: &envVars
   - name: SOLR_PORT
     value: "8983"
   - name: SOLR_URL
-    value: http://admin:$SOLR_PASSWORD@solr.staging-solr:8983/solr/
+    value: http://admin:$SOLR_ADMIN_PASSWORD@solr.staging-solr:8983/solr/
   - name: SECRET_KEY_BASE
     value: $SECRET_KEY_BASE
   - name: SENTRY_DSN
     value: $SENTRY_DSN
-
+  - name: SENTRY_ENVIRONMENT
+    value: $SENTRY_ENVIRONMENT
 worker:
   replicaCount: 1
   extraVolumeMounts: *volMounts
@@ -204,7 +207,7 @@ externalPostgresql:
 externalSolrHost: solr.staging-solr.svc.cluster.local
 externalSolrUser: admin
 externalSolrCollection: "hyku-demo"
-externalSolrPassword: $SOLR_PASSWORD
+externalSolrPassword: $SOLR_ADMIN_PASSWORD
 
 global:
   hyraxName: hyku-demo-hyrax

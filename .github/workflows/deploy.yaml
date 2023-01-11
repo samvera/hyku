@@ -45,6 +45,8 @@ jobs:
       REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
       SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
       SENDGRID_PASSWORD: ${{ secrets.SENDGRID_PASSWORD }}
+      SENTRY_ENVIRONMENT: ${{ secrets.SENTRY_ENVIRONMENT }}
+      SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
       SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
       SOLR_ADMIN_PASSWORD: ${{ secrets.SOLR_ADMIN_PASSWORD }}
       SQUARE_ACCESS_TOKEN: ${{ secrets.SQUARE_ACCESS_TOKEN }}

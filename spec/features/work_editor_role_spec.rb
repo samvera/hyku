@@ -27,6 +27,10 @@ RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, ci: 's
   let!(:work) { process_through_actor_stack(build(:work), work_depositor, admin_set.id, visibility) }
 
   describe 'read permissions' do
+    before do
+      login_as work_editor
+    end
+
     %w[open authenticated restricted].each do |visibility|
       context "with #{visibility} visibility" do
         let(:visibility) { visibility }
@@ -57,10 +61,14 @@ RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, ci: 's
   end
 
   describe 'create permissions' do
+    before do
+      login_as work_editor
+    end
+
     it 'can see the "Add new work" button in the dashboard' do
       visit '/dashboard/my/works'
 
-      expect(page).to have_link('Add new work')
+      expect(page).to have_link('Add New Work')
     end
 
     it 'can see the "Share Your Work" button on the tenant homepage' do
@@ -69,24 +77,33 @@ RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, ci: 's
       expect(page).to have_link('Share Your Work')
     end
 
-    it 'can create a work' do
+    it 'can create a work' do # rubocop:disable RSpec/ExampleLength
       visit new_hyrax_generic_work_path
 
       click_link 'Relationships' # switch tab
       select(admin_set.title.first, from: 'Administrative Set')
 
       click_link 'Files' # switch tab
-      within('span#addfiles') do
-        attach_file("files[]", Rails.root.join('spec', 'fixtures', 'images', 'image.jp2'), visible: false)
+      expect(page).to have_content "Add files"
+      expect(page).to have_content "Add folder"
+      within('div#add-files') do
+        attach_file("files[]", File.join(fixture_path, 'hyrax', 'image.jp2'), visible: false)
+        attach_file("files[]", File.join(fixture_path, 'hyrax', 'jp2_fits.xml'), visible: false)
       end
+      expect(page).to have_selector(:link_or_button, 'Delete') # Wait for files to finish uploading
+
       click_link 'Descriptions' # switch tab
       fill_in('Title', with: 'WE Feature Spec Work')
       fill_in('Creator', with: 'Test Creator')
+      click_on('Additional fields')
       fill_in('Keyword', with: 'testing')
-      select('In Copyright', from: 'Rights Statement')
+      select('In Copyright', from: 'Rights statement')
 
       page.choose('generic_work_visibility_open')
-      check('agreement')
+      # rubocop:disable Metrics/LineLength
+      expect(page).to have_content('Please note, making something visible to the world (i.e. marking this as Public) may be viewed as publishing which could impact your ability to')
+      # rubocop:enable Metrics/LineLength
+      find('#agreement').click
 
       expect { click_on('Save') }
         .to change(GenericWork, :count)
@@ -95,6 +112,10 @@ RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, ci: 's
   end
 
   describe 'edit permissions' do
+    before do
+      login_as work_editor
+    end
+
     it 'can see the edit button on the work show page' do
       visit hyrax_generic_work_path(work)
 
@@ -118,6 +139,10 @@ RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, ci: 's
   end
 
   describe 'destroy permissions' do
+    before do
+      login_as work_editor
+    end
+
     it 'cannot see the delete button on the work show page' do
       visit hyrax_generic_work_path(work)
 

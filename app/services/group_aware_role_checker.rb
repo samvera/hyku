@@ -17,8 +17,6 @@ module GroupAwareRoleChecker
     # TODO: investigate why this method causes spec/features/appearance_theme_spec.rb to fail
     def has_group_aware_role?(role_name)
       return false if current_user.new_record?
-
-      current_user.reload # Get the most up-to-date version of the User before checking for Role
       return true if current_user.has_role?(role_name, Site.instance)
 
       current_user.hyrax_groups.each do |group|

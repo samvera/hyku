@@ -16,6 +16,7 @@ pg_upgrade_*.log
 rerun.txt
 pickle-email-*.html
 solr_db_initialized
+fits.log
 
 ## Environment normalization:
 /.bundle

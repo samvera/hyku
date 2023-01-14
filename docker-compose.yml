@@ -5,7 +5,7 @@ x-app: &app
     context: .
     target: hyku-base
     args:
-      - EXTRA_APK_PACKAGES=less vim bash openjdk11-jre ffmpeg rsync
+      - EXTRA_APK_PACKAGES=less vim bash openjdk11-jre ffmpeg cmake exiftool git imagemagick openjpeg-dev openjpeg-tools poppler poppler-utils rsync screen tesseract-ocr yarn
   image: ghcr.io/samvera/hyku:${TAG:-latest}
   env_file:
     - .env
@@ -155,8 +155,6 @@ services:
     build:
       context: .
       target: hyku-worker
-      args:
-        - EXTRA_APK_PACKAGES=less vim bash openjdk11-jre ffmpeg rsync
     command: bundle exec sidekiq
     depends_on:
       check_volumes:

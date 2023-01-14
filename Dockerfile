@@ -3,7 +3,7 @@ FROM ghcr.io/samvera/hyrax/hyrax-base:$HYRAX_IMAGE_VERSION as hyku-base
 
 USER root
 
-ARG EXTRA_APK_PACKAGES="openjdk11-jre ffmpeg"
+ARG EXTRA_APK_PACKAGES="openjdk11-jre ffmpeg cmake exiftool git imagemagick openjpeg-dev openjpeg-tools poppler poppler-utils rsync screen tesseract-ocr yarn"
 RUN apk --no-cache upgrade && \
   apk --no-cache add \
     bash \
@@ -24,6 +24,7 @@ RUN mkdir -p /app/fits && \
     chmod a+x /app/fits/fits.sh
 ENV PATH="${PATH}:/app/fits"
 
+COPY --chown=1001:101 $APP_PATH/ops/exiftool_image_to_fits.xslt /app/fits/xml/exiftool/exiftool_image_to_fits.xslt
 COPY --chown=1001:101 $APP_PATH/Gemfile* /app/samvera/hyrax-webapp/
 RUN bundle install --jobs "$(nproc)"
 COPY --chown=1001:101 $APP_PATH/bin/db-migrate-seed.sh /app/samvera/

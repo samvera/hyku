@@ -3,8 +3,23 @@
 # OVERRIDE Hyrax 3.4.0 to check the site's ssl_configured when setting protocols
 module Hyrax
   module IiifManifestPresenterDecorator
+    ##
+    # @note The #search_service method is to help configure the IIIF Manifest gem
+    # @note As of 3.4.2, the Hyrax::IiifManifestPresenter does not implement the
+    #    #search_service.
+    # @todo Write test when we incorporate the IIIF Print gem
     def search_service
-      url = Rails.application.routes.url_helpers.solr_document_url(id, host: hostname)
+      # When Hyku introduces the IIIF Print gem, we will then have a "super" method
+      # which creates a URL based on the IIIF Print gem's implementation.
+      # However, the IIIF Print gem has no knowledge of Site.account and so we need
+      # to massage the URL to be SSL or non-SSL.
+      #
+      # The fallback URL is the previous implementation.
+      url = if defined?(super)
+              super
+            else
+              Rails.application.routes.url_helpers.solr_document_url(id, host: hostname)
+            end
       Site.account.ssl_configured ? url.sub(/\Ahttp:/, 'https:') : url
     end
 

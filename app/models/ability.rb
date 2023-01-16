@@ -19,7 +19,7 @@ class Ability
   # If the Groups with Roles feature is disabled, allow registered users to create curation concerns
   # (Works, Collections, and FileSets). Otherwise, omit this ability logic as to not
   # conflict with the roles that explicitly grant creation permissions.
-  unless ENV['SETTINGS__RESTRICT_CREATE_AND_DESTROY_PERMISSIONS'] == 'true'
+  unless ENV['HYKU_RESTRICT_CREATE_AND_DESTROY_PERMISSIONS'] == 'true'
     self.ability_logic += %i[everyone_can_create_curation_concerns]
   end
   # OVERRIDE METHOD from blacklight-access_controls v0.6.2

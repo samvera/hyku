@@ -100,7 +100,7 @@ module Hyrax
           end
           # "Undo" permission restrictions added by the Groups with Roles feature,
           # effectively reverting them back to default Hyrax behavior
-          unless ::ENV['SETTINGS__RESTRICT_CREATE_AND_DESTROY_PERMISSIONS'] == 'true'
+          unless ::ENV['HYKU_RESTRICT_CREATE_AND_DESTROY_PERMISSIONS'] == 'true'
             can %i[destroy manage_discovery manage_items_in_collection], Hyrax::PcdmCollection do |collection|
               test_edit(collection.id)
             end

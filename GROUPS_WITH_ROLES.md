@@ -31,7 +31,7 @@ rake hyku:roles:create_default_roles_and_groups
 rake hyku:roles:create_collection_accesses
 rake hyku:roles:create_admin_set_accesses
 rake hyku:roles:create_collection_type_participants
-rake hyku:roles:add_admin_users_to_admin_group
+rake hyku:roles:create_admin_group_memberships
 rake hyku:roles:grant_workflow_roles
 rake hyku:roles:destroy_registered_group_collection_type_participants # optional
 ```

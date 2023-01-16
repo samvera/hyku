@@ -453,8 +453,9 @@ RSpec.describe RolesService, clean: true do
     end
   end
 
-  describe '#add_admin_users_to_admin_group!' do
+  describe '#create_admin_group_memberships!' do
     let(:admin_group) { create(:admin_group) }
+    let(:registered_group) { Hyrax::Group.find_by(name: Ability.registered_group_name) }
 
     context 'when a user has the admin role' do
       let!(:user) { create(:admin) }
@@ -462,21 +463,45 @@ RSpec.describe RolesService, clean: true do
       it 'adds that user to the admin group' do
         expect(admin_group.members).to be_empty
 
-        roles_service.add_admin_users_to_admin_group!
+        roles_service.create_admin_group_memberships!
 
         expect(admin_group.members).to include(user)
+      end
+
+      it 'adds that user to the registered group' do
+        # Users created within the scope of a tenant will automatically become members
+        # of the registered group (@see User#add_default_group_membership!). To
+        # effectively test this method, we need to remove the user first.
+        registered_group.remove_members_by_id(user.id)
+        expect(registered_group.members).to be_empty
+
+        roles_service.create_admin_group_memberships!
+
+        expect(registered_group.members).to include(user)
       end
     end
 
     context 'when a user does not have the admin role' do
-      let(:user) { create(:user) }
+      let!(:user) { create(:user) }
 
       it 'does not add that user to the admin group' do
         expect(admin_group.members).to be_empty
 
-        roles_service.add_admin_users_to_admin_group!
+        roles_service.create_admin_group_memberships!
 
         expect(admin_group.members).not_to include(user)
+      end
+
+      it 'does not add that user to the registered group' do
+        # Users created within the scope of a tenant will automatically become members
+        # of the registered group (@see User#add_default_group_membership!). To
+        # effectively test this method, we need to remove the user first.
+        registered_group.remove_members_by_id(user.id)
+        expect(registered_group.members).to be_empty
+
+        roles_service.create_admin_group_memberships!
+
+        expect(registered_group.members).not_to include(user)
       end
     end
   end

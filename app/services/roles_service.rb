@@ -202,8 +202,16 @@ class RolesService # rubocop:disable Metrics/ClassLength
       ).map(&:destroy)
     end
 
-    def add_admin_users_to_admin_group!
+    # Ensure users with the admin role are given memberships to their default groups (registered and admin).
+    # This method is primarily intended to be used for migrating existing Hyku applications to use the
+    # Groups with Roles feature; it should not be necessary to run more than once. For example, when
+    # creating a new tenant, admins should automatically be added to the admin group.
+    #
+    # @see Account#add_initial_users
+    # @see https://github.com/samvera/hyku/wiki/Groups-with-Roles-Feature#setup-an-existing-application-to-use-groups-with-roles
+    def create_admin_group_memberships!
       User.select { |user| user.has_role?('admin', Site.instance) }.each do |admin|
+        Hyrax::Group.find_or_create_by!(name: Ability.registered_group_name).add_members_by_id(admin.id)
         Hyrax::Group.find_or_create_by!(name: Ability.admin_group_name).add_members_by_id(admin.id)
       end
     end

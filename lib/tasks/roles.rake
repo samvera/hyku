@@ -52,13 +52,13 @@ namespace :hyku do
       end
     end
 
-    desc 'Add users who have the admin role to the admin group in each tenant'
-    task add_admin_users_to_admin_group: :environment do
+    desc 'Create default group memberships for users who have the admin role in each tenant'
+    task create_admin_group_memberships: :environment do
       Account.find_each do |account|
         AccountElevator.switch!(account.cname)
-        Rails.logger.info("#{account.cname} -- Adding tenant admins to the admin group")
+        Rails.logger.info("#{account.cname} -- Adding tenant admins to the registered and admin groups")
 
-        RolesService.add_admin_users_to_admin_group!
+        RolesService.create_admin_group_memberships!
       end
     end
 

@@ -11,18 +11,10 @@ module Hyku
     # override the standard invite so that accounts are added properly
     # if they already exist on another tenant and invited if they do not
     def create
-      authorize! :grant_admin_role, User if params[:user][:roles] == ::RolesService::ADMIN_ROLE
+      authorize! :grant_admin_role, User if params[:user][:role] == ::RolesService::ADMIN_ROLE
       self.resource = User.find_by(email: params[:user][:email]) || invite_resource
 
-      # Set roles, whether they are a new user or not
-      # safe because adding the same role twice is a noop
-      site = Site.instance
-      if params[:user][:roles].present?
-        params[:user][:roles].split(',').each do |role|
-          resource.add_role(role.strip, site)
-        end
-      end
-      # end of override code
+      resource.add_role(params[:user][:role], Site.instance) if params[:user][:role].present?
 
       yield resource if block_given?
 
@@ -40,7 +32,7 @@ module Hyku
     protected
 
       def user_params
-        params.require(:user).permit(:email, :roles)
+        params.require(:user).permit(:email, :role)
       end
   end
 end

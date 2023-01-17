@@ -21,7 +21,7 @@
           <%= f.hint :email %>
           <%= f.label :email, class: "control-label", required: false %>
           <%= f.input_field :email, class: "form-control", value: "" %>
-          <%= f.select :roles,
+          <%= f.select :role,
                       @invite_roles_options.map { |r| [r.titleize, r ]},
                       { prompt: 'Select a role...' },
                       required: false,

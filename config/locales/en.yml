@@ -58,6 +58,8 @@ en:
           destroy:
             failure: "%{group} could not be destroyed"
             success: "%{group} destroyed"
+          remove:
+            cannot_destroy_default_group: Default groups cannot be destroyed
           update:
             failure: "%{group} could not be updated"
             success: "%{group} updated"

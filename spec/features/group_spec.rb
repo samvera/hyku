@@ -14,7 +14,7 @@ RSpec.describe 'Groups', type: :feature, js: true, clean: true do
 
     it 'cannot destroy a default group' do
       visit "/admin/groups/#{managers_group.id}/remove"
-      expect(page).to have_content('Default groups cannot be destroyed.')
+      expect(page).to have_content('Default groups cannot be destroyed')
       within(".callout-action") do
         expect(page).to have_css('a.disabled', text: 'Remove')
       end
@@ -23,7 +23,7 @@ RSpec.describe 'Groups', type: :feature, js: true, clean: true do
     it 'can destroy a non-default group' do
       visit "/admin/groups/#{users_group.id}/remove"
 
-      expect(page).not_to have_content('Default groups cannot be destroyed.')
+      expect(page).not_to have_content('Default groups cannot be destroyed')
       expect do
         within(".callout-action") do
           click_link 'Remove'

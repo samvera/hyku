@@ -30,11 +30,11 @@ module Hyrax
 
       private
 
-      # OVERRIDE Hyrax v3.4.2 Replace :ensure_admin! with :ensure_access! to leverage User abilities.
-      # @see app/models/concerns/hyrax/ability/user_ability.rb
-      def ensure_access!
-        authorize! :read, ::User
-      end
+        # OVERRIDE Hyrax v3.4.2 Replace :ensure_admin! with :ensure_access! to leverage User abilities.
+        # @see app/models/concerns/hyrax/ability/user_ability.rb
+        def ensure_access!
+          authorize! :read, ::User
+        end
     end
   end
 end

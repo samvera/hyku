@@ -43,6 +43,8 @@
 //= require bulkrax/application
 
 //= require hyrax
+//= require iiif_print
+
 //= require jquery.flot.pie
 //= require flot_graph
 //= require statistics_tab_manager

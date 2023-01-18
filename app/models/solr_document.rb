@@ -8,6 +8,8 @@ class SolrDocument
 
   # Adds Hyrax behaviors to the SolrDocument.
   include Hyrax::SolrDocumentBehavior
+  include IiifPrint::Solr::Document
+  attribute :is_child, Solr::String, 'is_child_bsi'
 
   # self.unique_key = 'id'
 

@@ -1747,7 +1747,7 @@
     "sshpk" "^1.7.0"
 
 "http-status-codes@edsilv/http-status-codes#v0.0.7":
-  "resolved" "git+ssh://git@github.com/edsilv/http-status-codes.git#af3a8ab9970b1f291a79b03c7382dc16aebee749"
+  "resolved" "git+https://git@github.com/edsilv/http-status-codes.git#af3a8ab9970b1f291a79b03c7382dc16aebee749"
   "version" "0.0.7"
 
 "https-browserify@^1.0.0":

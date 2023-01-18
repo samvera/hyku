@@ -16,10 +16,12 @@ pg_upgrade_*.log
 rerun.txt
 pickle-email-*.html
 solr_db_initialized
+fits.log
 
 ## Environment normalization:
 /.bundle
 /vendor/bundle
+/vendor/engines
 
 # these should all be checked in to normalize the environment:
 # Gemfile.lock, .ruby-version, .ruby-gemset

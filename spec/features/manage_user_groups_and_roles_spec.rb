@@ -46,12 +46,12 @@ RSpec.describe "The Manage Users table", type: :feature, js: true, clean: true d
       expect(page).to have_content 'Add or Invite user via email'
       expect(
         page.has_select?(
-          'user_roles',
+          'user_role',
           with_options: [admin_role.name.titleize, user_manager_role.name.titleize]
         )
       ).to be true
       fill_in "Email address", with: 'user@test.com'
-      select admin_role.name.titleize.to_s, from: 'user_roles'
+      select admin_role.name.titleize.to_s, from: 'user_role'
       click_on "Invite user"
       expect(page).to have_content 'An invitation email has been sent to user@test.com.'
     end
@@ -68,14 +68,14 @@ RSpec.describe "The Manage Users table", type: :feature, js: true, clean: true d
     it 'can visit Manage Users and invite users' do
       visit "/admin/users"
       fill_in "Email address", with: 'user@test.com'
-      select "User Manager", from: 'user_roles'
+      select "User Manager", from: 'user_role'
       click_on "Invite user"
       expect(page).to have_content 'An invitation email has been sent to user@test.com.'
     end
 
     it 'can visit Manage Users but cannot invite admin users' do
       visit '/admin/users'
-      select = page.find('select#user_roles').all('option').collect(&:text)
+      select = page.find('select#user_role').all('option').collect(&:text)
       expect(select).to contain_exactly(
         'Select a role...',
         'Work Editor',
@@ -100,7 +100,7 @@ RSpec.describe "The Manage Users table", type: :feature, js: true, clean: true d
     it 'can visit Manage Users but cannot invite users' do
       visit "/admin/users"
       expect(page).not_to have_content 'Add or Invite user via email'
-      expect(page.has_select?('user_roles', with_options: ['Admin', 'Collection Editor', 'User Manager'])).to be false
+      expect(page.has_select?('user_role', with_options: ['Admin', 'Collection Editor', 'User Manager'])).to be false
     end
   end
 end

@@ -22,11 +22,11 @@ RSpec.describe Hyku::InvitationsController, type: :controller do
       post :create, params: {
         user: {
           email: "user@guest.org",
-          roles: "admin,manager"
+          role: "manager"
         }
       }
       created_user = User.find_by(email: 'user@guest.org')
-      expect(created_user.roles.map(&:name)).to include('manager', 'admin')
+      expect(created_user.roles.map(&:name)).to include('manager')
       expect(created_user.roles.map(&:resource_type).uniq).to contain_exactly('Site', 'Hyrax::Group')
       expect(response).to redirect_to Hyrax::Engine.routes.url_helpers.admin_users_path(locale: 'en')
       expect(flash[:notice]).to eq 'An invitation email has been sent to user@guest.org.'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # SearchBuilder for full-text searches with highlighting and snippets
 class IiifSearchBuilder < Blacklight::SearchBuilder
   include Blacklight::Solr::SearchBuilderBehavior

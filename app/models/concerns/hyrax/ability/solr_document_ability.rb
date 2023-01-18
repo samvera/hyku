@@ -18,7 +18,9 @@ module Hyrax
 
           # "Undo" permission restrictions added by the Groups with Roles feature,
           # effectively reverting them back to default Hyrax behavior
-          unless ::ENV['HYKU_RESTRICT_CREATE_AND_DESTROY_PERMISSIONS'] == 'true'
+          unless ActiveModel::Type::Boolean.new.cast(
+            ENV.fetch('HYKU_RESTRICT_CREATE_AND_DESTROY_PERMISSIONS', nil)
+          )
             can :destroy, ::SolrDocument do |solr_doc|
               test_edit(solr_doc.id)
             end

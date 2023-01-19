@@ -24,20 +24,20 @@ RSpec.describe Admin::GroupUsersController, faketenant: true do
     context 'modifying group membership' do
       let(:user) { FactoryBot.create(:user) }
 
-      describe 'POST #add' do
+      describe 'POST #create' do
         it 'adds a user to a group when it recieves a group ID' do
           expect do
-            post :add, params: { group_id: group.id, user_id: user.id }
+            post :create, params: { group_id: group.id, user_id: user.id }
           end.to change(group.members, :count).by(1)
         end
       end
 
-      describe 'DELETE #remove' do
+      describe 'DELETE #destroy' do
         before { group.add_members_by_id(user.id) }
 
         it 'removes a user from a group when it recieves a group ID' do
           expect do
-            delete :remove, params: { group_id: group.id, user_id: user.id }
+            delete :destroy, params: { group_id: group.id, user_id: user.id }
           end.to change(group.members, :count).by(-1)
         end
       end

@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: 20b38a4a79ba604ded3f9d314f4c1760dd7d9db6
+  revision: f4db18ac887ae3e4b5743e9882b6d346425d21ec
   branch: i11-child-works-revised
   specs:
     iiif_print (0.0.1)
@@ -568,7 +568,7 @@ GEM
       rainbow (>= 2.2.2, < 4.0)
       terminal-table (>= 1.5.1)
     ice_nine (0.11.2)
-    iiif-presentation (1.0.0)
+    iiif-presentation (1.1.0)
       activesupport (>= 3.2.18)
       faraday (>= 0.9)
       json

@@ -27,7 +27,7 @@ RSpec.describe Admin::GroupUsersController, faketenant: true do
       describe 'POST #add' do
         it 'adds a user to a group when it recieves a group ID' do
           expect do
-            post :add, params: { group_id: group.id, user_ids: user.id }
+            post :add, params: { group_id: group.id, user_id: user.id }
           end.to change(group.members, :count).by(1)
         end
       end
@@ -37,7 +37,7 @@ RSpec.describe Admin::GroupUsersController, faketenant: true do
 
         it 'removes a user from a group when it recieves a group ID' do
           expect do
-            delete :remove, params: { group_id: group.id, user_ids: user.id }
+            delete :remove, params: { group_id: group.id, user_id: user.id }
           end.to change(group.members, :count).by(-1)
         end
       end

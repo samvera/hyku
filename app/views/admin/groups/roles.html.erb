@@ -32,8 +32,7 @@
                 <td><%= role.name.titleize %></td>
                 <td><%= role.description_label %>
                 <td>
-                <%= simple_form_for :remove_role_from_group, url: remove_admin_group_roles_path(group_id: @group.to_param), method: :delete, html: { class: 'form' } do |f| %>
-                  <%= f.input :role_id, as: :hidden, input_html: { name: :role_id, value: role.id } %>
+                <%= simple_form_for :remove_role_from_group, url: admin_group_role_path(group_id: @group.to_param, role_id: role.id), method: :delete, html: { class: 'form' } do |f| %>
                   <%= f.submit class: 'btn btn-danger', disabled: @group.name == ::Ability.admin_group_name && role.name == 'admin', id: "remove-role-#{role.id}-from-group" %>
                 <% end %>
                 </td>
@@ -67,8 +66,7 @@
                 <td><%= role.name.titleize %></td>
                 <td><%= role.description_label %>
                 <td>
-                  <%= simple_form_for :add_role_to_group, url: add_admin_group_roles_path(group_id: @group.to_param), method: :post, html: { class: 'form' } do |f| %>
-                    <%= f.input :role_id, as: :hidden, input_html: { name: :role_id, value: role.id } %>
+                  <%= simple_form_for :add_role_to_group, url: admin_group_roles_path(group_id: @group.to_param, role_id: role.id), method: :post, html: { class: 'form' } do |f| %>
                     <%= f.submit class: 'btn btn-success', id: "add-role-#{role.id}-to-group" %>
                   <% end %>
                 </td>

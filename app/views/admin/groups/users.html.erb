@@ -22,8 +22,8 @@
           <%= f.submit class: 'btn btn-default js-group-user-search__submit' %>
         <% end %>
 
-        <%= simple_form_for :add_user_to_group, url: add_admin_group_users_path(group_id: @group.to_param), html: { class: 'form-inline pull-left js-group-user-add' } do |f| %>
-          <%= f.input :user_ids, required: false, input_html: { class: 'js-group-user-add__id', name: :user_ids } %>
+        <%= simple_form_for :add_user_to_group, url: admin_group_users_path(group_id: @group.to_param), method: :post, html: { class: 'form-inline pull-left js-group-user-add' } do |f| %>
+          <%= f.input :user_id, required: false, input_html: { class: 'js-group-user-add__id', name: :user_id } %>
           <%= f.submit class: 'btn btn-primary js-group-user-add__submit' %>
         <% end %>
       </div>
@@ -73,8 +73,7 @@
                   </td>
                   <td>
                   <% if can? :remove, User %>
-                    <%= simple_form_for :revoke_membership, url: remove_admin_group_users_path(group_id: @group.to_param), method: :delete, html: { class: 'form' } do |f| %>
-                      <%= f.input :user_ids, as: :hidden, input_html: { name: :user_ids, value: user.id } %>
+                    <%= simple_form_for :revoke_membership, url: admin_group_user_path(group_id: @group.to_param, user_id: user.id), method: :delete, html: { class: 'form' } do |f| %>
                       <%# Cannot remove admin users from admin group %>
                       <%= f.submit class: "btn btn-danger", disabled: @group.name == ::Ability.admin_group_name %>
                     <% end %>

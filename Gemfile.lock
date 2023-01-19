@@ -11,8 +11,8 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: 25d689a282e613e12cd8df16ace207235212b586
-  branch: i37-hot-fix
+  revision: a549c109008e69a01df3a355e69cd2215c7cc104
+  branch: main
   specs:
     iiif_print (0.0.1)
       blacklight_advanced_search (= 6.4.1)
@@ -568,7 +568,7 @@ GEM
       rainbow (>= 2.2.2, < 4.0)
       terminal-table (>= 1.5.1)
     ice_nine (0.11.2)
-    iiif-presentation (1.0.0)
+    iiif-presentation (1.1.0)
       activesupport (>= 3.2.18)
       faraday (>= 0.9)
       json

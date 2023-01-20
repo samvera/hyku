@@ -1,4 +1,4 @@
-<%# OVERRIDE FILE from Hyrax v2.9.0 to add #can? permission check for batch delete %>
+<%# OVERRIDE Hyrax v3.4.2 Add #can? permission check for batch delete %>
 <% if can?(:batch_delete, :works) %>
   <%= form_tag(hyrax.batch_edits_path, method: :delete, class: "batch-select-all hidden button_to-inline", "data-behavior" => 'batch-select-all') do -%>
       <%= hidden_field_tag('update_type', 'delete_all') %>

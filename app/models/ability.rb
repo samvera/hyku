@@ -4,7 +4,7 @@ class Ability
   include Hydra::Ability
   include Hyrax::Ability
   include GroupAwareRoleChecker
-  # OVERRIDE: Added custom user ability roles
+  # Add custom ability roles
   include Hyrax::Ability::UserAbility
   include Hyrax::Ability::WorkAbility
 
@@ -86,7 +86,7 @@ class Ability
     current_user.has_role? :superadmin
   end
 
-  # OVERRIDE: @return [Array<String>] a list of all role names that apply to the user
+  # @return [Array<String>] a list of all role names that apply to the user
   def all_user_and_group_roles
     return @all_user_and_group_roles if @all_user_and_group_roles
 

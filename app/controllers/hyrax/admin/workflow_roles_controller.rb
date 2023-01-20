@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Override from hyrax 2.5.1 to add workflow roles for groups
+# OVERRIDE Hyrax v3.4.2 Expand to allow adding groups to workflow roles
 module Hyrax
   module Admin
     class WorkflowRolesController < ApplicationController
@@ -21,7 +21,7 @@ module Hyrax
         redirect_to admin_workflow_roles_path
       end
 
-      # Override from hyrax 2.5.1 add WorkflowResponsibilityGroupForm
+      # OVERRIDE: Add WorkflowResponsibilityGroupForm
       def create
         authorize! :create, Sipity::WorkflowResponsibility
 

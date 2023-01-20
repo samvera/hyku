@@ -1,4 +1,4 @@
-<%# Override from hyrax 2.5.1 to use Hyrax::Groups for groups select box %>
+<%# OVERRIDE Hyrax v3.4.2 Use Hyrax::Groups for groups select box %>
 <div id="participants" class="tab-pane">
   <div class="panel panel-default labels">
     <div class="panel-body">
@@ -16,7 +16,7 @@
 
             <div class="col-md-10 col-xs-8 form-group">
               <%= builder.hidden_field :agent_type %>
-              <%# changed select to use Hyrax::Groups %>
+              <%# OVERRIDE: Change select to use Hyrax::Groups %>
               <%= builder.select :agent_id,
                           Hyrax::Group.all.map { |g| [g.humanized_name, g.name] },
                           { prompt: "Select a group..." },

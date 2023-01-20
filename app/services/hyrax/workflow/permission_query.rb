@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-# Override from hyrax 3.4.1 to migrate Hyku::Group into Hyrax::Group
+# OVERRIDE Hyrax v3.4.2 Expand functionality for Groups with Roles Feature
+# @see https://github.com/samvera/hyku/wiki/Groups-with-Roles-Feature
 # rubocop:disable Metrics/ModuleLength
 module Hyrax
   module Workflow

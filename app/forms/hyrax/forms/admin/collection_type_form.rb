@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE FILE from Hryax v2.9.0
+# OVERRIDE Hyrax v3.4.2 Filter Collection Roles out of displayed access grants
 require_dependency Hyrax::Engine.root.join('app', 'forms', 'hyrax', 'forms', 'admin', 'collection_type_form').to_s
 
 Hyrax::Forms::Admin::CollectionTypeForm.class_eval do

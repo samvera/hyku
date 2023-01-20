@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE FILE from Hryax v2.9.0
+# OVERRIDE Hyrax v3.4.2 Add backend validation to stop admin group access from being destroyed
 require_dependency(
   Hyrax::Engine
     .root
@@ -11,7 +11,6 @@ require_dependency(
 Hyrax::Admin::CollectionTypeParticipantsController.class_eval do
   before_action :admin_group_participant_cannot_be_destroyed, only: :destroy
 
-  # OVERRIDE: add backend validation to stop admin group access from being destroyed
   def admin_group_participant_cannot_be_destroyed
     @collection_type_participant = Hyrax::CollectionTypeParticipant.find(params[:id])
     if @collection_type_participant.admin_group? &&

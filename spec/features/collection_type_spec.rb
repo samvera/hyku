@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE FILE from Hyrax v2.9.0
+# OVERRIDE Hyrax v3.4.2 Add Groups with Roles feature test coverage
 # - Set :js to true because some specs require it
 # - Changed #sign_in to #login_as (#sign_in was throwing undefined method errors)
 # Other overrides are marked with an OVERRIDE comment

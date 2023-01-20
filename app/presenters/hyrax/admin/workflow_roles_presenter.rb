@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Override from hyrax 2.5.1 to add groups to workflow roles
+# OVERRIDE Hyrax v3.4.2 Expand to allow adding groups to workflow roles
 module Hyrax
   module Admin
     # Displays a list of users and their associated workflow roles
@@ -9,12 +9,12 @@ module Hyrax
         ::User.registered
       end
 
-      # Override from hyrax 2.5.1 new method to add groups
+      # OVERRIDE: New method for adding groups
       def groups
         Hyrax::Group.all
       end
 
-      # Override from hyrax 2.5.1 new method to add groups
+      # OVERRIDE: New method for adding groups
       def group_presenter_for(group)
         agent = group.to_sipity_agent
         return unless agent

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE FILE from Hyrax 3.4.1 - Edit existing / add additional abilities
+# OVERRIDE Hyrax v3.4.2 Alter abilities for Groups with Roles feature
 module Hyrax
   module Ability
     module CollectionAbility

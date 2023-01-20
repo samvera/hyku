@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Admin
-  # OVERRIDE from AdminController inheretence for user roles authorization
   class GroupRolesController < ApplicationController
     before_action :load_group
     before_action :cannot_remove_admin_role_from_admin_group, only: [:destroy]
@@ -10,7 +9,6 @@ module Admin
     rescue_from ActiveRecord::RecordNotFound, with: :redirect_not_found
 
     def index
-      # OVERRIDE: AUTHORIZE AN EDIT ROLE TO ACCESS THE ROLES INDEX
       authorize! :edit, Hyrax::Group
       add_breadcrumb t(:'hyrax.controls.home'), root_path
       add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path

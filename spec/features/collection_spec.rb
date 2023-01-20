@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE FILE from Hyrax v2.9.0
+# OVERRIDE Hyrax v3.4.2 Add Groups with Roles feature test coverage
 RSpec.describe 'collection', type: :feature, js: true, clean: true do
   let(:user) { create(:user) }
 

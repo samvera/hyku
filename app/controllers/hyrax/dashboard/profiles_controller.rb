@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
-# OVERRIDE FILE from Hyrax v2.9.0
+# OVERRIDE Hyrax v3.4.2 Add permission restrictions as part of the Groups with Roles feature
 module Hyrax
   module Dashboard
     ## Shows and edit the profile of the current_user
     class ProfilesController < Hyrax::UsersController
       with_themed_layout 'dashboard'
       before_action :find_user
+      # OVERRIDE: AUTHORIZE A READER ROLE TO ACCESS A USERS INDEX AND SHOW
       before_action :users_match!, only: %i[show edit update]
       authorize_resource class: '::User', instance_name: :user
 

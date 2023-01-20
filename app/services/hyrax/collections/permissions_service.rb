@@ -1,15 +1,12 @@
 # frozen_string_literal: true
 
-# OVERRIDE FILE from Hyrax v2.9.0
-#
-# Override this class using #class_eval to avoid needing to copy the entire file over from
-# the dependency. For more info, see the "Overrides using #class_eval" section in the README.
+# OVERRIDE Hyrax v3.4.2 Add new method for expanded permissions (Groups with Roles feature)
 require_dependency Hyrax::Engine.root.join('app', 'services', 'hyrax', 'collections', 'permissions_service').to_s
 
 Hyrax::Collections::PermissionsService.class_eval do
   # OVERRIDE: Add new method to check if a user has manage access to a collection.
   # This is used for :destroy permissions and the new :manage_discovery CanCan ability.
-  # See Hyrax::Ability::CollectionAbility for usage.
+  # @see Hyrax::Ability::CollectionAbility
   #
   # TODO: This just passes arguments to the private #manage_access_to_collection
   # method, which works and follows the Hyrax pattern, but it seems kind of silly

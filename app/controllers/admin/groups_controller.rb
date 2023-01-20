@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 module Admin
-  # OVERRIDE from AdminController inheretence for user roles authorization
   class GroupsController < ApplicationController
-    # OVERRIDE: replaced before_action :load_group with the following load_and_authorize_resource
     load_and_authorize_resource(
       class: '::Hyrax::Group',
       instance_name: :group,
@@ -12,7 +10,6 @@ module Admin
     layout 'hyrax/dashboard'
 
     def index
-      # OVERRIDE: AUTHORIZE A READER ROLE TO ACCESS THE GROUPS INDEX
       authorize! :read, Hyrax::Group
       add_breadcrumb t(:'hyrax.controls.home'), root_path
       add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE FILE from Hyrax v2.9.0
+# OVERRIDE Hyrax v3.4.2 Add permission restrictions as part of the Groups with Roles feature
 module Hyrax
   class UsersController < ApplicationController
     include Blacklight::SearchContext

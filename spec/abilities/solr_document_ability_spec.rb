@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE FILE from Hryax 2.5.1
+# OVERRIDE Hyrax v3.4.2 Add tests covering Groups with Roles permissions
 require 'cancan/matchers'
 
 # rubocop:disable RSpec/FilePath

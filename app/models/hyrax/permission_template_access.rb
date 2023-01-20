@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
-# OVERRIDE FILE from Hryax v2.9.0
+# OVERRIDE Hyrax v3.4.2 #titleize agent_id for groups since we are displaying their humanized names in the dropdown
 require_dependency Hyrax::Engine.root.join('app', 'models', 'hyrax', 'permission_template_access').to_s
 
 Hyrax::PermissionTemplateAccess.class_eval do
-  # OVERRIDE: #titleize agent_id for groups since we are displaying their humanized names in the dropdown
   def label
     return agent_id unless agent_type == Hyrax::PermissionTemplateAccess::GROUP
 

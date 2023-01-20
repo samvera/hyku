@@ -1,4 +1,4 @@
-<%# OVERRIDE FILE from Hryax v2.9.0 %>
+<%# OVERRIDE Hyrax v3.4.2 Filter out Role accesses as they should never be removed %>
 <h3><%= t(".#{access}.title") %></h3>
 <p><%= t(".#{access}.help") %></p>
 <p><%= t(".#{access}.help_with_works", type_title: @collection.collection_type.title) if @collection.share_applies_to_new_works? && access != 'depositors' %></p>

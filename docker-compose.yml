@@ -3,9 +3,10 @@ version: '3.8'
 x-app: &app
   build:
     context: .
-    target: hyku-base
-    args:
-      - EXTRA_APK_PACKAGES=less vim bash openjdk11-jre ffmpeg cmake exiftool git imagemagick openjpeg-dev openjpeg-tools poppler poppler-utils rsync screen tesseract-ocr yarn
+    target: hyku-web
+    cache_from:
+      - ghcr.io/samvera/hyku/base:${TAG:-latest}
+      - ghcr.io/samvera/hyku:${TAG:-latest}
   image: ghcr.io/samvera/hyku:${TAG:-latest}
   env_file:
     - .env
@@ -121,6 +122,14 @@ services:
     networks:
       internal:
 
+  # Used exclusively for building and caching the base image to reduce build times
+  base:
+    <<: *app
+    image: ghcr.io/samvera/hyku/base:${TAG:-latest}
+    build:
+      context: .
+      target: hyku-base
+
   web:
     <<: *app
     environment:
@@ -145,16 +154,18 @@ services:
         condition: service_started
       initialize_app:
         condition: service_completed_successfully
-
     expose:
       - 3000
 
   worker:
     <<: *app
-    image: ghcr.io/samvera/hyku/worker:latest
+    image: ghcr.io/samvera/hyku/worker:${TAG:-latest}
     build:
       context: .
       target: hyku-worker
+      cache_from:
+        - ghcr.io/samvera/hyku:${TAG:-latest}
+        - ghcr.io/samvera/hyku/worker:${TAG:-latest}
     command: bundle exec sidekiq
     depends_on:
       check_volumes:

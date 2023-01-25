@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE FILE from Hyrax v2.9.0
+# OVERRIDE FILE from Hyrax v3.4.2
 require_dependency Hyrax::Engine.root.join('app', 'forms', 'hyrax', 'forms', 'collection_form').to_s
 
 Hyrax::Forms::CollectionForm.class_eval do

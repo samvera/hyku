@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE FILE from Hyrax 2.5.1
+# OVERRIDE FILE from Hyrax v3.4.2
 module Hyrax
   module Ability
     module SolrDocumentAbility

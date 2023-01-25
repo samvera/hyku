@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE FILE from Hyrax v2.9.0
+# OVERRIDE FILE from Hyrax v3.4.0
 #
 # Override this class using #class_eval to avoid needing to copy the entire file over from
 # the dependency. For more info, see the "Overrides using #class_eval" section in the README.

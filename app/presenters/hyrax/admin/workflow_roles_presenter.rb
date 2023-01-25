@@ -9,7 +9,7 @@ module Hyrax
         ::User.registered
       end
 
-      # Override fto add new method to add groups
+      # Override to add new method to add groups
       def groups
         Hyrax::Group.all
       end

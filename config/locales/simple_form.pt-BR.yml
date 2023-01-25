@@ -7,10 +7,33 @@ pt-BR:
     hints:
       account:
         admin_emails: Digite um endereço de email de cada vez
+        allow_signup: Permitir que os usuários se inscrevam em seu repositório
+        cache_api: Ativa o cache para terminais de API. Experimental
+        contact_email: Destinatário de e-mail de mensagens enviadas por meio do formulário de contato
+        contact_email_to: Endereço de e-mail que deve receber e-mails de contato
+        doi_reader: Mostrar capacidade de ler do Datacite para preencher registros. WIP não use
+        doi_writer: Escreva DOIs para registros. WIP não use
+        email_format: Defina uma lista de domínios de e-mail que podem se inscrever neste repositório, por exemplo (@ubiquitypress.com @gmail.com). Deixe um único espaço entre cada domínio.
+        email_subjet_prefix: String a ser colocada antes dos assuntos do e-mail do sistema.
+        enable_oai_metadata: Ativar ou desativar o link OAI
         fcrepo_endpoint:
           base_path: O caminho base do Fedora deve começar com uma barra E não terminar com uma barra
           url: O URL do Fedora não deve terminar com uma barra
+        file_acl: Desligue se estiver usando um sistema de arquivos como samba ou nfs que não suporta a configuração de listas de controle de acesso
+        file_size_limit: Isso deve ser definido para pelo menos 536870912000
+        geonames_username: Registre-se em http://www.geonames.org/manageaccount
+        gtm_id: O ID da sua conta do Gerenciador de tags do Google
+        is_public: Os usuários podem descobrir seu site na página inicial ou acessar suas páginas sem um nome de usuário/senha especial?
+        locale_name: 'O nome do sufixo de localidade específico do locatário incluído em seus arquivos locale.yml. Apenas caracteres alfabéticos devem ser adicionados, sem símbolos ou números, estes serão então maiúsculos.
+
+          '
+        monthly_email_list: Lista de endereços de e-mail para enviar o relatório mensal por e-mail. Deixe um único espaço entre cada e-mail
         name: Um nome único ou hifenizado usado para aspectos técnicos do repositório (por exemplo, "acme" ou "acme-library").
+        oai_admin_email: Endereço de e-mail de contato do terminal OAI
+        shared_login: Habilitar ou desabilitar login compartilhado
+        ssl_configured: Defina como verdadeiro se estiver usando https
+        weekly_email_list: Lista de endereços de e-mail para enviar o relatório semanal. Deixe um único espaço entre cada e-mail
+        yearly_email_list: Lista de endereços de e-mail para enviar o relatório anual. Deixe um único espaço entre cada e-mail
       hyku_group:
         description: Um breve resumo do papel do grupo
       user:
@@ -22,12 +45,15 @@ pt-BR:
         fcrepo_endpoint:
           base_path: Caminho base
           url: URL
+        gtm_id: Gerenciador de tags do Google
         name: Nome curto
         solr_endpoint:
           url: URL
         tenant: Inquilino UUID
       add_user_to_group:
         user_ids: ID do usuário
+      domain_names:
+        cname: Nome do domínio
       group_search:
         q: Pesquisa
       hyku_group:

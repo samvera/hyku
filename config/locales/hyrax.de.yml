@@ -19,7 +19,7 @@ de:
           no_works: Der Verwaltungssatz enthält keine Werke.
           title: Liste der Elemente in diesem Verwaltungssatz
         edit:
-          header: "Verwaltungssatz bearbeiten: %{title}"
+          header: 'Verwaltungssatz bearbeiten: %{title}'
         form:
           cancel: Stornieren
           note: Benutzer, denen eine neue Rolle zugewiesen wurde, erhalten die Rolle nur für Werke, die nach Erteilung dieser Rolle hinterlegt wurden.
@@ -70,9 +70,9 @@ de:
             title: Zuschauer
             type: Art
         form_participants:
-          add_group: "Gruppe hinzufügen:"
+          add_group: 'Gruppe hinzufügen:'
           add_participants: Teilnehmer hinzufügen
-          add_user: "Nutzer hinzufügen:"
+          add_user: 'Nutzer hinzufügen:'
           current_participants: Aktuelle Teilnehmer
         form_visibility:
           cancel: Stornieren
@@ -84,15 +84,15 @@ de:
             title: Freisetzung
             varies:
               any: Der Einleger kann eine beliebige Embargolänge wählen. Mietverträge sind erlaubt
-              between: "Der Einleger kann ein aktuelles Embargo wählen:"
-              description: "Erlauben Sie dem Einleger, Einstellungen zu wählen:"
+              between: 'Der Einleger kann ein aktuelles Embargo wählen:'
+              description: 'Erlauben Sie dem Einleger, Einstellungen zu wählen:'
               embargo:
                 1yr: 1 Jahr nach Einzahlung
                 2yrs: 2 Jahre nach Einzahlung
                 3yrs: 3 Jahre nach Einzahlung
                 6mos: 6 Monate nach Einzahlung
                 select: Sperrfrist auswählen ..
-              period: "Der Einleger kann eine Sperrfrist von bis zu:"
+              period: 'Der Einleger kann eine Sperrfrist von bis zu:'
           visibility:
             description: Legen Sie Sichtbarkeitsrichtlinien für den Verwaltungssatz fest. Festlegen der oben genannten Richtlinien für Ehrenembargos.
             everyone: Der öffentliche Einleger kann nur die Einstellung für die öffentliche Sichtbarkeit auswählen
@@ -164,7 +164,7 @@ de:
           update_notice: Teilnehmer aktualisiert
         form_settings:
           instructions: Diese Einstellungen legen fest, wie Sammlungen dieses Typs verwaltet und erkannt werden können.
-          warning: "Warnung: Diese Einstellungen können nicht geändert werden, nachdem eine Sammlung dieses Typs erstellt wurde."
+          warning: 'Warnung: Diese Einstellungen können nicht geändert werden, nachdem eine Sammlung dieses Typs erstellt wurde.'
         index:
           breadcrumb: Sammlungsarten
           create_new_button: Erstellen Sie einen neuen Sammlungstyp
@@ -182,7 +182,7 @@ de:
             actions: Aktionen
             name: Name
         multiple_membership_checker:
-          error_preamble: "Fehler: Sie haben mehr als einen Sammeltyp für eine einzelne Mitgliedschaft angegeben"
+          error_preamble: 'Fehler: Sie haben mehr als einen Sammeltyp für eine einzelne Mitgliedschaft angegeben'
           error_type_and_collections: "(Typ: %{type}, Sammlungen: %{collections})"
         new:
           header: Neuen Sammlungstyp erstellen
@@ -219,7 +219,7 @@ de:
       stats:
         deposited_form:
           end_label: end [standardmäßig jetzt]
-          heading: "Hinterlegte Dateien anzeigen:"
+          heading: 'Hinterlegte Dateien anzeigen:'
           start_label: Anfang
         repository_objects:
           series:
@@ -233,7 +233,7 @@ de:
         works:
           headers:
             main: Arbeitsstatistik
-            total: "Total Works:"
+            total: 'Total Works:'
             visibility: Summen nach Sichtbarkeit
       users:
         index:
@@ -291,10 +291,10 @@ de:
         default: Sie müssen dafür angemeldet sein!
       unprocessable_entity:
         default: Die Ressource, die Sie ändern wollten, kann nicht gemäß Ihrer Anforderung geändert werden.
-    background_attribution_html: ""
+    background_attribution_html: ''
     base:
       citations:
-        header: "Zitate:"
+        header: 'Zitate:'
       form_child_work_relationships:
         actions:
           remove: Aus dieser Arbeit entfernen
@@ -361,7 +361,7 @@ de:
         empty: Dieses %{type} befindet sich derzeit in keiner Sammlung.
         header: Beziehungen
       relationships_parent_row:
-        label: "In %{type}:"
+        label: 'In %{type}:'
       show:
         last_modified: Zuletzt geändert
       social_media:
@@ -433,7 +433,7 @@ de:
         create: sparen
         create_new: Zur neuen Sammlung hinzufügen
         no_collections: Sie haben keinen Zugriff auf vorhandene Sammlungen. Sie können eine neue Sammlung erstellen.
-        select_heading: "Wählen Sie die Sammlung aus, zu der Sie Ihre Dateien hinzufügen möchten:"
+        select_heading: 'Wählen Sie die Sammlung aus, zu der Sie Ihre Dateien hinzufügen möchten:'
         title: Zur Sammlung hinzufügen
         update: Änderungen speichern
     collection_type:
@@ -513,7 +513,7 @@ de:
         select_type_of_collection: Wählen Sie den Sammlungstyp aus
       collections:
         edit:
-          header: "Bearbeiten Sie %{type_title}: %{title}"
+          header: 'Bearbeiten Sie %{type_title}: %{title}'
         form:
           permission_update_errors:
             error: Ungültige Aktualisierungsoption für Berechtigungsvorlage.
@@ -536,6 +536,9 @@ de:
           logo:
             description: Ein oder mehrere Bilder, die oben auf der Sammlungsseite angezeigt werden sollen. Laden Sie für beste Ergebnisse ein Bild (JPG, GIF oder PNG) mit einer Höhe von 40 Pixel hoch. Größere Bilder werden auf eine Höhe von 40 Pixel verkleinert.
             label: Logo
+          thumbnail:
+            description: Ein Bild, das in den Suchergebnissen und auf der Startseite angezeigt wird, wenn Sie sich entscheiden, diese Sammlung zu präsentieren. Das Bild wird in der gesamten App auf verschiedene Weise zugeschnitten und in der Größe angepasst, aber für beste Ergebnisse verwenden Sie ein Bild (JPG, GIF oder PNG) im Querformat.
+            label: Miniaturansicht
         form_discovery:
           para1: Diese Einstellungen bestimmen, wer die Zielseite dieser Sammlung erkennen und anzeigen kann. Sie haben keinen Einfluss auf die Sichtbarkeit von Elementen in der Sammlung.
           para2: Wenn Sie diese Sammlung nicht offen zugänglich machen möchten, können Sie die Sammlung weiterhin über die Registerkarte Freigabe für bestimmte Benutzer und Gruppen freigeben.
@@ -650,20 +653,21 @@ de:
           view_collection: Sammlung anzeigen
           work_confirmation: Das Löschen einer Arbeit aus %{application_name} ist dauerhaft. Klicken Sie auf OK, um diese Arbeit aus %{application_name} zu löschen, oder auf Abbrechen, um diesen Vorgang abzubrechen
         collection_list:
-          description: "Beschreibung:"
-          edit_access: "Zugriff bearbeiten:"
-          groups: "Gruppen:"
+          description: 'Beschreibung:'
+          edit_access: 'Zugriff bearbeiten:'
+          groups: 'Gruppen:'
           managed_access:
             deposit: Anzahlung
+            edit: Bearbeiten
             manage: Verwalten
             view: Aussicht
-          users: "Benutzer:"
+          users: 'Benutzer:'
         collections: Sammlungen
         facet_label:
-          collections: "Filtersammlungen:"
-          highlighted: "Filterhighlights:"
-          shared: "Filterfreigaben:"
-          works: "Filter funktioniert:"
+          collections: 'Filtersammlungen:'
+          highlighted: 'Filterhighlights:'
+          shared: 'Filterfreigaben:'
+          works: 'Filter funktioniert:'
         heading:
           access: Zugriff
           action: Aktionen
@@ -806,8 +810,13 @@ de:
       admin_sets:
         link: Alle Sammlungen anzeigen
         tab_label: Sammlungen erkunden
-        title: Sammlungen erkunden
         thumbnail: Miniaturansicht
+        title: Sammlungen erkunden
+      featured_collections:
+        document:
+          title_label: Titel
+        no_collections: Es wurden keine Sammlungen vorgestellt.
+        title: Ausgewählte Sammlungen
       featured_researcher:
         missing: Es wurden keine Forscher vorgestellt.
         tab_label: Ausgewählter Forscher
@@ -916,7 +925,7 @@ de:
         terms_page: Nutzungsbedingungen
       updated: Seiten aktualisiert.
     passive_consent_to_agreement: Durch das Speichern dieser Arbeit stimme ich dem zu
-    product_name: "Hyku"
+    product_name: Hyku
     product_twitter_handle: "@HydraInABox"
     search:
       button:
@@ -1045,7 +1054,7 @@ de:
       default:
         deposit: Anzahlung
       load:
-        state_error: "Der Workflow: %{workflow_name} wurde nicht aktualisiert. Sie entfernen einen Status: %{state_name} mit %{entity_count}-Entität (en). Ein Status darf nicht entfernt werden, solange er aktive Entitäten hat!"
+        state_error: 'Der Workflow: %{workflow_name} wurde nicht aktualisiert. Sie entfernen einen Status: %{state_name} mit %{entity_count}-Entität (en). Ein Status darf nicht entfernt werden, solange er aktive Entitäten hat!'
       unauthorized: Die Arbeit ist derzeit nicht verfügbar, da der Genehmigungsprozess noch nicht abgeschlossen ist
     works:
       create:
@@ -1102,7 +1111,7 @@ de:
         require_membership: Ein Werk muss zu mindestens einer Sammlung dieses Typs gehören
         sharable: Ermöglichen Sie Benutzern, Sammlungsmanager, Einleger und Betrachter für von ihnen verwaltete Sammlungen zuzuweisen
         share_applies_to_new_works: Wenn neue Werke direkt in der Sammlung erstellt werden, erteilen Sie Benutzern und Gruppen Berechtigungen für das neue Werk entsprechend ihrer Sammlungsrollen.
-        title: ""
+        title: ''
       defaults:
         based_near: Ein Ortsname, der sich auf das Werk bezieht, z. B. der Veröffentlichungsort oder die Stadt, das Bundesland oder das Land, um das es in dem Arbeitsinhalt geht. Ruft den <a href='http://www.geonames.org'> GeoNames-Webdienst </a> auf.
         contributor: Eine Person oder Gruppe, die Sie als eine Rolle bei der Erstellung der Arbeit erkennen möchten, jedoch nicht die primäre Rolle.

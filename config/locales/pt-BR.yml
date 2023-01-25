@@ -56,6 +56,8 @@ pt-BR:
           destroy:
             failure: "%{group} não pôde ser destruído"
             success: "%{group} destruído"
+          remove:
+            cannot_destroy_default_group: Grupos padrão não podem ser destruídos
           update:
             failure: "%{group} não pôde ser atualizado"
             success: "%{group} atualizado"
@@ -116,7 +118,16 @@ pt-BR:
       accounts:
         nav: Contas
       users:
+        edit:
+          header: Editando usuário
+        index:
+          confirm_delete: Tem certeza de que deseja excluir este usuário? Essa ação não pode ser desfeita.
+          header: Gerenciar usuários
+          manage: Gerir
         nav: Comercial
+        show:
+          header: Gerenciar usuário
+          update: Atualizar
     splash:
       account_denied: Você não está autorizado a criar inquilinos
       account_login: Inicie sessão para começar
@@ -200,6 +211,8 @@ pt-BR:
   proprietor:
     accounts:
       edit:
+        account_settings: Configurações de conta
+        data_cite_endpoint: Terminal DataCite
         fcrepo_endpoint: Ponto de extremidade do Fedora
         header: Editando conta
         solr_endpoint: Ponto final do Solr

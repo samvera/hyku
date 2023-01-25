@@ -56,6 +56,8 @@ fr:
           destroy:
             failure: "%{group} n'a pas pu être détruit"
             success: "%{group} détruit"
+          remove:
+            cannot_destroy_default_group: Les groupes par défaut ne peuvent pas être détruits
           update:
             failure: "%{group} n'a pas pu être mis à jour"
             success: "%{group} a mis à jour"
@@ -116,7 +118,16 @@ fr:
       accounts:
         nav: Comptes
       users:
+        edit:
+          header: Modification de l'utilisateur
+        index:
+          confirm_delete: Voulez-vous vraiment supprimer cet utilisateur ? Cette action ne peut pas être annulée.
+          header: gérer les utilisateurs
+          manage: Gérer
         nav: Utilisateurs
+        show:
+          header: Gérer l'utilisateur
+          update: Mettre à jour
     splash:
       account_denied: Vous n'êtes pas autorisé à créer des locataires
       account_login: Connectez-vous pour commencer
@@ -206,6 +217,8 @@ fr:
   proprietor:
     accounts:
       edit:
+        account_settings: Paramètre du compte
+        data_cite_endpoint: Point de terminaison DataCite
         fcrepo_endpoint: Fedora Endpoint
         header: Modification du compte
         solr_endpoint: Solr Endpoint

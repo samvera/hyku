@@ -56,6 +56,8 @@ zh:
           destroy:
             failure: "%{group}不能被毁灭"
             success: "%{group}销毁"
+          remove:
+            cannot_destroy_default_group: 默认组不能被销毁
           update:
             failure: "%{group}无法更新"
             success: "%{group}更新"
@@ -116,7 +118,16 @@ zh:
       accounts:
         nav: 帐号
       users:
+        edit:
+          header: 编辑用户
+        index:
+          confirm_delete: 您确定要删除该用户吗？此操作无法撤消。
+          header: 管理用户
+          manage: 管理
         nav: 用户
+        show:
+          header: 管理用户
+          update: 更新
     splash:
       account_denied: 您无权创建租户
       account_login: 登录即可开始使用
@@ -200,6 +211,8 @@ zh:
   proprietor:
     accounts:
       edit:
+        account_settings: 账户设置
+        data_cite_endpoint: 数据引用端点
         fcrepo_endpoint: Fedora端点
         header: 编辑帐号
         solr_endpoint: Solr端点

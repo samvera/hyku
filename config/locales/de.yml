@@ -56,6 +56,8 @@ de:
           destroy:
             failure: "%{group} konnte nicht entfernt werden"
             success: "%{group} entfernt"
+          remove:
+            cannot_destroy_default_group: Standardgruppen können nicht zerstört werden
           update:
             failure: "%{group} konnte nicht aktualisiert werden"
             success: "%{group} aktualisiert"
@@ -116,7 +118,16 @@ de:
       accounts:
         nav: Konten
       users:
+        edit:
+          header: Benutzer bearbeiten
+        index:
+          confirm_delete: Möchten Sie diesen Benutzer wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.
+          header: Benutzer verwalten
+          manage: Verwalten
         nav: Benutzer
+        show:
+          header: Benutzer verwalten
+          update: Aktualisieren
     splash:
       account_denied: Sie sind nicht berechtigt, Mandanten zu erstellen
       account_login: Einloggen um loszulegen
@@ -204,6 +215,8 @@ de:
   proprietor:
     accounts:
       edit:
+        account_settings: Konto-Einstellung
+        data_cite_endpoint: DataCite-Endpunkt
         fcrepo_endpoint: Fedora-Endpunkt
         header: Konto bearbeiten
         solr_endpoint: Solr-Endpunkt

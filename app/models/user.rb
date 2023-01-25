@@ -28,7 +28,6 @@ class User < ApplicationRecord
     joins(:roles)
   }
 
-  # TODO: Need to make sure this includes users in the registered group (see #add_default_group_membership!)
   scope :registered, -> { for_repository.group(:id).where(guest: false) }
 
   # Method added by Blacklight; Blacklight uses #to_s on your

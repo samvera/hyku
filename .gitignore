@@ -16,6 +16,7 @@ pg_upgrade_*.log
 rerun.txt
 pickle-email-*.html
 solr_db_initialized
+fits.log
 
 ## Environment normalization:
 /.bundle
@@ -49,6 +50,7 @@ config/environments/*.local.yml
 
 # Avatars and such
 public/uploads
+/public/branding
 .env.*
 docker-compose.override.yml
 *~undo-tree~

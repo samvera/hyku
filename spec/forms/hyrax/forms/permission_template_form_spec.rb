@@ -9,9 +9,6 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
   let(:admin_set) { create(:admin_set) }
   let(:collection) { build(:collection_lw) }
 
-  # let!(:group) { FactoryBot.create(:group, name: 'admin') }
-  # let!(:group2) { FactoryBot.create(:group, name: 'bob') }
-
   it { is_expected.to delegate_method(:available_workflows).to(:model) }
   it { is_expected.to delegate_method(:active_workflow).to(:model) }
   it { is_expected.to delegate_method(:source_model).to(:model) }

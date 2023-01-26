@@ -1,4 +1,24 @@
 GIT
+  remote: https://github.com/samvera-labs/bulkrax.git
+  revision: c2ea600c771581311ec573a2c5745050fcc12559
+  branch: main
+  specs:
+    bulkrax (5.0.0)
+      bagit (~> 0.4)
+      coderay
+      iso8601 (~> 0.9.0)
+      kaminari
+      language_list (~> 1.2, >= 1.2.1)
+      libxml-ruby (~> 3.2.4)
+      loofah (>= 2.2.3)
+      oai (>= 0.4, < 2.x)
+      rack (>= 2.0.6)
+      rails (>= 5.1.6)
+      rdf (>= 2.0.2, < 4.0)
+      rubyzip
+      simple_form
+
+GIT
   remote: https://github.com/samvera-labs/hyrax-doi.git
   revision: 16e459bf9d088610c21f8c0d446c196d66041686
   branch: hyrax_upgrade
@@ -10,9 +30,15 @@ GIT
       rails (~> 5.2.4, >= 5.2.4.3)
 
 GIT
-  remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: 465ed13050dc00685a8d4d6f1bdccbee2d0f136f
-  branch: main
+  remote: https://github.com/tawan/active-elastic-job.git
+  revision: ec51c5d9dedc4a1b47f2db41f26d5fceb251e979
+  specs:
+    active_elastic_job (2.0.1)
+      aws-sdk-sqs (~> 1)
+      rails (>= 4.2)
+
+PATH
+  remote: vendor/engines/iiif_print
   specs:
     iiif_print (0.0.1)
       blacklight_advanced_search (= 6.4.1)
@@ -23,14 +49,6 @@ GIT
       rails (~> 5.0)
       rdf-vocab (~> 3.0)
       sass-rails (~> 5.0)
-
-GIT
-  remote: https://github.com/tawan/active-elastic-job.git
-  revision: ec51c5d9dedc4a1b47f2db41f26d5fceb251e979
-  specs:
-    active_elastic_job (2.0.1)
-      aws-sdk-sqs (~> 1)
-      rails (>= 4.2)
 
 GEM
   remote: https://rubygems.org/
@@ -141,7 +159,7 @@ GEM
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
       execjs (~> 2.0)
-    bagit (0.4.4)
+    bagit (0.4.5)
       docopt (~> 0.5.0)
       validatable (~> 1.6)
     bcp47 (0.3.3)
@@ -222,20 +240,6 @@ GEM
       signet (~> 0.8)
       typhoeus
     builder (3.2.4)
-    bulkrax (3.5.1)
-      bagit (~> 0.4)
-      coderay
-      iso8601 (~> 0.9.0)
-      kaminari
-      language_list (~> 1.2, >= 1.2.1)
-      libxml-ruby (~> 3.1.0)
-      loofah (>= 2.2.3)
-      oai (>= 0.4, < 2.x)
-      rack (>= 2.0.6)
-      rails (>= 5.1.6)
-      rdf (>= 2.0.2, < 4.0)
-      rubyzip
-      simple_form
     byebug (11.1.3)
     cancancan (1.17.0)
     capybara (3.36.0)
@@ -650,7 +654,7 @@ GEM
       rdf (~> 3.0)
     legato (0.7.0)
       multi_json
-    libxml-ruby (3.1.0)
+    libxml-ruby (3.2.4)
     link_header (0.0.8)
     linkeddata (3.1.6)
       equivalent-xml (~> 0.6)
@@ -1159,7 +1163,7 @@ DEPENDENCIES
   blacklight_oai_provider (~> 6.1, >= 6.1.1)
   bolognese (>= 1.9.10)
   bootstrap-datepicker-rails
-  bulkrax (~> 3.5.0)
+  bulkrax!
   byebug
   capybara
   capybara-screenshot (~> 1.0)

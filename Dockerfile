@@ -35,8 +35,8 @@ RUN apk --no-cache upgrade && \
   # cargo install rbspy && \
   echo "******** Packages Installed *********"
 
-RUN wget http://old.notch8.com/ImageMagick.tar.gz \
-    && tar xf ImageMagick.tar.gz \
+RUN wget https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.0-57.tar.gz \
+    && tar xf 7.1.0-57.tar.gz \
     && apk --no-cache add \
       libjpeg-turbo openjpeg libpng tiff librsvg libgsf libimagequant poppler-qt5-dev \
     && cd ImageMagick* \

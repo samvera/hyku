@@ -9,7 +9,9 @@ require_dependency(
 )
 
 Hyrax::Admin::CollectionTypeParticipantsController.class_eval do
+  # rubocop:disable Rails/LexicallyScopedActionFilter
   before_action :admin_group_participant_cannot_be_destroyed, only: :destroy
+  # rubocop:enable Rails/LexicallyScopedActionFilter
 
   def admin_group_participant_cannot_be_destroyed
     @collection_type_participant = Hyrax::CollectionTypeParticipant.find(params[:id])

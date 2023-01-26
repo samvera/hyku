@@ -15,7 +15,7 @@
       <%= t('hyku.admin.groups.action.remove.description') %>
       </p>
       <div class="callout-action">
-        <%= link_to t('hyku.admin.groups.action.remove.submit'),  admin_group_path(@group), class: "btn btn-danger action-delete #{'disabled' if @group.is_default_group?}", method: :delete, data: { confirm: t('hyku.admin.groups.action.remove.confirmation') } %>
+        <%= link_to t('hyku.admin.groups.action.remove.submit'),  admin_group_path(@group), class: "btn btn-danger action-delete #{'disabled' if @group.default_group?}", method: :delete, data: { confirm: t('hyku.admin.groups.action.remove.confirmation') } %>
       </div>
     </blockquote>
   </div>

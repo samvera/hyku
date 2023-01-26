@@ -3,6 +3,7 @@
 RSpec.describe EmbargoAutoExpiryJob do
   before do
     ActiveJob::Base.queue_adapter = :test
+    FactoryBot.create(:group, name: "public")
   end
 
   after do
@@ -37,8 +38,6 @@ RSpec.describe EmbargoAutoExpiryJob do
       file_set.save(validate: false)
     end
   end
-
-  let!(:group) { FactoryBot.create(:group, name: "public") }
 
   describe '#reenqueue' do
     it 'Enques an EmbargoExpiryJob after perform' do

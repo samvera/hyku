@@ -90,8 +90,8 @@ module Hyrax
         ).to be_falsey, message
       end
 
-      def expect_entities_for(user:, entities:)
-        entities = Array.wrap(entities).map { |entity| PowerConverter.convert(entity, to: :sipity_entity) }
+      def expect_entities_for(user:, entities:) # rubocop:disable Lint/UnusedMethodArgument
+        Array.wrap(entities).map { |entity| PowerConverter.convert(entity, to: :sipity_entity) }
       end
 
       describe 'entity_responsibilities' do

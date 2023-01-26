@@ -8,8 +8,9 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
   let(:today) { Time.zone.today }
   let(:admin_set) { create(:admin_set) }
   let(:collection) { build(:collection_lw) }
-  let!(:group) { FactoryBot.create(:group, name: 'admin') }
-  let!(:group2) { FactoryBot.create(:group, name: 'bob') }
+
+  # let!(:group) { FactoryBot.create(:group, name: 'admin') }
+  # let!(:group2) { FactoryBot.create(:group, name: 'bob') }
 
   it { is_expected.to delegate_method(:available_workflows).to(:model) }
   it { is_expected.to delegate_method(:active_workflow).to(:model) }
@@ -63,6 +64,8 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
       let(:access_level) { 'manage' }
 
       it 'adds the expected permission template accesses and workflow responsibilities' do
+        FactoryBot.create(:group, name: 'admin')
+        FactoryBot.create(:group, name: 'bob')
         expect { subject }.to change {
           count_template_accesses_for(user, access_level)
         }.from(0).to(1).and change {
@@ -71,6 +74,8 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
       end
 
       it 'removes workflow responsibilities' do
+        FactoryBot.create(:group, name: 'admin')
+        FactoryBot.create(:group, name: 'bob')
         subject
         expect do
           form.remove_access!(
@@ -141,7 +146,6 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
     let(:user1) { create(:user) }
     let(:user2) { create(:user) }
     let(:user3) { create(:user) }
-    let!(:group) { create(:group, name: 'archivists') }
 
     before do
       create(:permission_template_access,
@@ -154,6 +158,7 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
              permission_template: permission_template,
              agent_type: 'group',
              agent_id: 'archivists')
+      create(:group, name: 'archivists')
     end
 
     context "with a user manager" do
@@ -199,6 +204,8 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
       end
 
       it "also adds edit_access to the AdminSet itself" do
+        FactoryBot.create(:group, name: 'admin')
+        FactoryBot.create(:group, name: 'bob')
         expect { subject }.to change { permission_template.access_grants.count }.by(1)
         expect(admin_set.reload.edit_groups).to match_array ['bob', 'archivists']
       end
@@ -383,6 +390,8 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
     before do
       permission_template.clear_changes_information
       workflow.workflow_roles.create!([{ role: role1 }, { role: role2 }])
+      FactoryBot.create(:group, name: 'admin')
+      FactoryBot.create(:group, name: 'bob')
     end
 
     context "when a new workflow has been chosen" do

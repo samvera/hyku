@@ -77,7 +77,7 @@ module Hyrax
       sipity_agent || create_sipity_agent!
     end
 
-    def is_default_group?
+    def default_group?
       return true if RolesService::DEFAULT_HYRAX_GROUPS_WITH_ATTRIBUTES.stringify_keys.keys.include?(name)
 
       false
@@ -90,7 +90,7 @@ module Hyrax
       label
     end
 
-    def has_site_role?(role_name)
+    def site_role?(role_name)
       site_roles = roles.select { |role| role.resource_type == 'Site' }
 
       site_roles.map(&:name).include?(role_name.to_s)
@@ -99,7 +99,7 @@ module Hyrax
     private
 
       def can_destroy?
-        return false if is_default_group?
+        return false if default_group?
 
         true
       end

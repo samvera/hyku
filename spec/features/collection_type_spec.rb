@@ -89,6 +89,7 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
       expect(page).to have_link('Participants', href: '#participants')
     end
 
+    # rubocop:disable RSpec/ExampleLength
     it 'tries to make a collection type with existing title, and receives error message', :js do
       click_link 'Create new collection type'
 
@@ -133,6 +134,7 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
       expect(page).to have_content 'Save was not successful because title has already been taken, ' \
                                    'and machine_id has already been taken.'
     end
+    # rubocop:enable RSpec/ExampleLength
   end
 
   describe 'edit collection type' do
@@ -209,7 +211,7 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
         visit "/admin/collection_types/#{exhibit_collection_type.id}/edit"
       end
 
-      it 'modifies metadata values of a collection type', :js do
+      it 'modifies metadata values of a collection type', :js do # rubocop:disable RSpec/ExampleLength
         expect(page).to have_content "Edit Collection Type: #{title_old}"
 
         # confirm all tabs are visible
@@ -544,7 +546,7 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
         expect(page.html).not_to include('<td data-agent="collection_reader">Collection Reader</td>')
       end
 
-      it "includes user access_grants to render in tables" do
+      it "includes user access_grants to render in tables" do # rubocop:disable RSpec/ExampleLength
         fill_in 'Type name', with: title
         click_button 'Save'
         expect(page).to have_content("The collection type #{title} has been created.")

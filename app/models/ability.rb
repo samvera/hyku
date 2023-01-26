@@ -57,4 +57,12 @@ class Ability
     @user_groups |= ['registered'] if !current_user.new_record? && current_user.roles.count.positive?
     @user_groups
   end
+
+  def can_import_works?
+    can_create_any_work?
+  end
+
+  def can_export_works?
+    can_create_any_work?
+  end
 end

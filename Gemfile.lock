@@ -30,15 +30,9 @@ GIT
       rails (~> 5.2.4, >= 5.2.4.3)
 
 GIT
-  remote: https://github.com/tawan/active-elastic-job.git
-  revision: ec51c5d9dedc4a1b47f2db41f26d5fceb251e979
-  specs:
-    active_elastic_job (2.0.1)
-      aws-sdk-sqs (~> 1)
-      rails (>= 4.2)
-
-PATH
-  remote: vendor/engines/iiif_print
+  remote: https://github.com/scientist-softserv/iiif_print.git
+  revision: 1a66d40503a7382b20eeb0ecdaccc460ef12c6fa
+  branch: i81-uv-text-search
   specs:
     iiif_print (0.0.1)
       blacklight_advanced_search (= 6.4.1)
@@ -49,6 +43,14 @@ PATH
       rails (~> 5.0)
       rdf-vocab (~> 3.0)
       sass-rails (~> 5.0)
+
+GIT
+  remote: https://github.com/tawan/active-elastic-job.git
+  revision: ec51c5d9dedc4a1b47f2db41f26d5fceb251e979
+  specs:
+    active_elastic_job (2.0.1)
+      aws-sdk-sqs (~> 1)
+      rails (>= 4.2)
 
 GEM
   remote: https://rubygems.org/
@@ -572,7 +574,7 @@ GEM
       rainbow (>= 2.2.2, < 4.0)
       terminal-table (>= 1.5.1)
     ice_nine (0.11.2)
-    iiif-presentation (1.0.0)
+    iiif-presentation (1.1.0)
       activesupport (>= 3.2.18)
       faraday (>= 0.9)
       json

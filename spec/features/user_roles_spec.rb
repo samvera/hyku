@@ -160,7 +160,7 @@ RSpec.describe 'User Roles' do
 
     it 'cannot edit a users profile' do
       visit "/dashboard/profiles/user@example-dot-com/edit"
-      expect(page).to have_content 'You are not authorized to access this page.'
+      expect(page).to have_content 'The page you have tried to access is private'
     end
 
     it 'cannot view the manage groups page' do

@@ -6,6 +6,7 @@ module Hyrax
 
     included do
       before_action :users_match!, only: %i[show] # rubocop:disable Rails/LexicallyScopedActionFilter
+      authorize_resource class: '::User', instance_name: :user
     end
 
     private

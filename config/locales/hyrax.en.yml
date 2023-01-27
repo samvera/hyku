@@ -388,6 +388,9 @@ en:
       help:
         resource_type: You may select multiple types to apply to all files
         title: Filename will be the default title. Please provide a more meaningful title, and filenames will still be preserved by the system.
+    batch_edits:
+      delete_selected:
+        button_label: Delete Selected
     batch_uploads:
       disabled: Feature disabled by administrator
       files:
@@ -576,6 +579,11 @@ en:
             collection_title: Collection Title
           this_collection_in_other_collections_description: You can add this collection to other collections as a sub-collection.
         form_share:
+          access_options:
+            creator: Creator
+            depositor: Depositor
+            manager: Manager
+            viewer: Viewer
           add_group: Add group
           add_sharing: Add Sharing
           add_user: Add user

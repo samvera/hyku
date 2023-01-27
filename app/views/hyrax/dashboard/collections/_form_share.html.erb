@@ -1,5 +1,8 @@
 <%# OVERRIDE Hyrax v3.4.2 Use Hyrax::Groups for groups select box %>
-<% access_options = options_for_select([['Manager', 'manage'], ['Depositor', 'deposit'], ['Viewer', 'view']]) %>
+<% access_options = options_for_select([
+    [t('hyrax.dashboard.collections.form_share.access_options.manager'), 'manage'],
+    [t('hyrax.dashboard.collections.form_share.access_options.depositor'), 'deposit'],
+    [t('hyrax.dashboard.collections.form_share.access_options.viewer'), 'view']]) %>
 
 <div id="participants" class="tab-pane">
   <div class="panel panel-default labels edit-sharing-tab">

@@ -374,6 +374,9 @@ es:
       help:
         resource_type: Puede seleccionar varios tipos para aplicar a todos los archivos
         title: Nombre de archivo será el título predeterminado. Proporcione un título más significativo, y el sistema aún conservará los nombres de archivo.
+    batch_edits:
+      delete_selected:
+        button_label: Eliminar seleccionado
     batch_uploads:
       disabled: Función deshabilitada por el administrador
       files:
@@ -562,6 +565,11 @@ es:
             collection_title: Título de la colección
           this_collection_in_other_collections_description: Puede agregar esta colección a otras colecciones como una subcolección.
         form_share:
+          access_options:
+            creator: Creador
+            depositor: Depositor
+            manager: Gerente
+            viewer: Espectador
           add_group: Añadir grupo
           add_sharing: Añadir Compartir
           add_user: Agregar usuario

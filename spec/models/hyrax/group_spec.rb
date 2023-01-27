@@ -279,7 +279,7 @@ module Hyrax
       end
     end
 
-    context '#is_default_group?' do
+    context '#default_group?' do
       let(:admin_group) { FactoryBot.create(:admin_group) }
       let(:registered_group) { FactoryBot.create(:registered_group) }
       let(:editors_group) { FactoryBot.create(:editors_group) }
@@ -287,11 +287,11 @@ module Hyrax
       let(:non_default_group) { FactoryBot.create(:group) }
 
       it 'returns true if the group is a Default Group' do
-        expect(admin_group.is_default_group?).to eq true
-        expect(registered_group.is_default_group?).to eq true
-        expect(editors_group.is_default_group?).to eq true
-        expect(depositors_group.is_default_group?).to eq true
-        expect(non_default_group.is_default_group?).to eq false
+        expect(admin_group.default_group?).to eq true
+        expect(registered_group.default_group?).to eq true
+        expect(editors_group.default_group?).to eq true
+        expect(depositors_group.default_group?).to eq true
+        expect(non_default_group.default_group?).to eq false
       end
     end
   end

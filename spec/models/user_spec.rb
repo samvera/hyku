@@ -103,7 +103,7 @@ RSpec.describe User, type: :model do
       subject { FactoryBot.build(:user) }
 
       it 'is called after a user is created' do
-        expect(subject).to receive(:add_default_group_membership!)
+        expect(subject).to receive(:add_default_group_membership!) # rubocop:disable RSpec/SubjectStub
 
         subject.save!
       end

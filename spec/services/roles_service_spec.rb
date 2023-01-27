@@ -73,6 +73,7 @@ RSpec.describe RolesService, clean: true do
           .to change(Role, :count).by(default_role_count)
       end
 
+      # rubocop:disable RSpec/SubjectStub
       it 'calls #find_or_create_site_role! for each role' do
         expect(roles_service)
           .to receive(:find_or_create_site_role!)
@@ -80,6 +81,7 @@ RSpec.describe RolesService, clean: true do
 
         roles_service.create_default_roles!
       end
+      # rubocop:enable RSpec/SubjectStub
     end
   end
 

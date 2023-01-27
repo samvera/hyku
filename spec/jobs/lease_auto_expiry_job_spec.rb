@@ -3,6 +3,7 @@
 RSpec.describe LeaseAutoExpiryJob do
   before do
     ActiveJob::Base.queue_adapter = :test
+    FactoryBot.create(:group, name: "public")
   end
 
   after do
@@ -40,8 +41,6 @@ RSpec.describe LeaseAutoExpiryJob do
       file_set.save(validate: false)
     end
   end
-
-  let!(:group) { FactoryBot.create(:group, name: "public") }
 
   describe '#reenqueue' do
     it 'Enques an LeaseExpiryJob after perform' do

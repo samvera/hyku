@@ -2,7 +2,9 @@
 
 require 'cancan/matchers'
 
+# rubocop:disable RSpec/FilePath
 RSpec.describe Hyrax::Ability::WorkAbility do
+  # rubocop:enable RSpec/FilePath
   subject(:ability) { ::Ability.new(user) }
 
   let(:user) { FactoryBot.create(:user) }

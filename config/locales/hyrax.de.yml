@@ -373,6 +373,9 @@ de:
       help:
         resource_type: Sie können mehrere Typen auswählen, die auf alle Dateien angewendet werden sollen
         title: Dateiname ist der Standardtitel. Bitte geben Sie einen aussagekräftigeren Titel an. Die Dateinamen bleiben vom System erhalten.
+    batch_edits:
+      delete_selected:
+        button_label: Ausgewählte löschen
     batch_uploads:
       disabled: Funktion vom Administrator deaktiviert
       files:
@@ -561,6 +564,11 @@ de:
             collection_title: Sammeltitel
           this_collection_in_other_collections_description: Sie können diese Sammlung anderen Sammlungen als Untersammlung hinzufügen.
         form_share:
+          access_options:
+            creator: Schöpfer
+            depositor: Einleger
+            manager: Manager
+            viewer: Zuschauer
           add_group: Gruppe hinzufügen
           add_sharing: Freigabe hinzufügen
           add_user: Nutzer hinzufügen

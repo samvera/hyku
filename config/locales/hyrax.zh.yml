@@ -374,6 +374,9 @@ zh:
       help:
         resource_type: 您可以选择多种类型以应用于所有文件
         title: 文件名将是默认标题。请提供更有意义的标题，文件名仍将被系统保留。
+    batch_edits:
+      delete_selected:
+        button_label: 删除所选
     batch_uploads:
       disabled: 管理员已禁用功能
       files:
@@ -562,6 +565,11 @@ zh:
             collection_title: 收藏标题
           this_collection_in_other_collections_description: 您可以将此集合作为子集合添加到其他集合。
         form_share:
+          access_options:
+            creator: 造物主
+            depositor: 储户
+            manager: 经理
+            viewer: 查看器
           add_group: 新增群组
           add_sharing: 添加共享
           add_user: 添加用户

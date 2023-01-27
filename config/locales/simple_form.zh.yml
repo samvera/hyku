@@ -7,10 +7,33 @@ zh:
     hints:
       account:
         admin_emails: 一次输入一个电子邮件地址
+        allow_signup: 允许用户注册到您的存储库
+        cache_api: 为 API 端点打开缓存。实验性的
+        contact_email: 通过联系表发送的邮件的电子邮件收件人
+        contact_email_to: 应接收联系电子邮件的电子邮件地址
+        doi_reader: 显示从 Datacite 读取数据以填充记录的能力。 WIP 不使用
+        doi_writer: 为记录写 DOI。 WIP 不使用
+        email_format: 设置允许注册此存储库的电子邮件域列表，例如 (@ubiquitypress.com @gmail.com)。在每个域之间留一个空格。
+        email_subjet_prefix: 放在系统电子邮件主题前面的字符串。
+        enable_oai_metadata: 启用或禁用 OAI 链接
         fcrepo_endpoint:
           base_path: Fedora 基本路径应以斜线开始，而不是以斜杠结尾
           url: Fedora 网址不应以斜线结尾
+        file_acl: 如果使用不支持设置访问控制列表的文件系统（如 samba 或 nfs），请关闭
+        file_size_limit: 这应该至少设置为 536870912000
+        geonames_username: 在 http://www.geonames.org/manageaccount 注册
+        gtm_id: 您的 Google 跟踪代码管理器帐户的 ID
+        is_public: 用户是否可以在主页上发现您的站点或在没有特殊用户名/密码的情况下访问您的页面？
+        locale_name: '添加到其 locale.yml 文件的租户特定区域设置后缀的名称。只能添加字母字符，不能添加符号或数字，这些将被大写。
+
+          '
+        monthly_email_list: 用于发送月度报告的电子邮件地址列表。在每封电子邮件之间留一个空格
         name: 用于存储库技术方面的单个或连字符名称（例如“acme”或“acme-library”）。
+        oai_admin_email: OAI 端点联系人电子邮件地址
+        shared_login: 启用或禁用共享登录
+        ssl_configured: 如果使用 https，请将其设置为 true
+        weekly_email_list: 用于发送每周报告的电子邮件地址列表。在每封电子邮件之间留一个空格
+        yearly_email_list: 通过电子邮件发送年度报告的电子邮件地址列表。在每封电子邮件之间留一个空格
       hyku_group:
         description: 小组角色的简要总结
       user:
@@ -22,12 +45,15 @@ zh:
         fcrepo_endpoint:
           base_path: 基本路径
           url: 网址
+        gtm_id: 谷歌标签管理器
         name: 简称
         solr_endpoint:
           url: 网址
         tenant: 承租人 UUID
       add_user_to_group:
         user_ids: 用户名
+      domain_names:
+        cname: 域名
       group_search:
         q: 搜索
       hyku_group:

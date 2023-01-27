@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# TODO(bkiahstroud): filename and location make sense?
 class RolesService # rubocop:disable Metrics/ClassLength
   ADMIN_ROLE = 'admin'
 

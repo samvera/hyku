@@ -90,7 +90,7 @@ module Hyrax
       label
     end
 
-    def site_role?(role_name)
+    def has_site_role?(role_name) # rubocop:disable Naming/PredicateName
       site_roles = roles.select { |role| role.resource_type == 'Site' }
 
       site_roles.map(&:name).include?(role_name.to_s)

@@ -6,7 +6,7 @@ module GroupAwareRoleChecker
   # their role checker methods are automatically defined
   RolesService::DEFAULT_ROLES.each do |role_name|
     define_method(:"#{role_name}?") do
-      group_aware_role?(role_name)
+      has_group_aware_role?(role_name)
     end
   end
 
@@ -15,12 +15,12 @@ module GroupAwareRoleChecker
     # Check for the presence of the passed role_name in the User's Roles and
     # the User's Hyrax::Group's Roles.
     # TODO: investigate why this method causes spec/features/appearance_theme_spec.rb to fail
-    def group_aware_role?(role_name)
+    def has_group_aware_role?(role_name) # rubocop:disable Naming/PredicateName
       return false if current_user.new_record?
       return true if current_user.has_role?(role_name, Site.instance)
 
       current_user.hyrax_groups.each do |group|
-        return true if group.site_role?(role_name)
+        return true if group.has_site_role?(role_name)
       end
 
       false

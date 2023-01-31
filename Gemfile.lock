@@ -11,8 +11,8 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: 465ed13050dc00685a8d4d6f1bdccbee2d0f136f
-  branch: main
+  revision: 25a43de74ad5bdfab2e756e35b1ffc11ee44c62d
+  branch: i11-job-split-pdfs-into-child-works
   specs:
     iiif_print (0.0.1)
       blacklight_advanced_search (= 6.4.1)
@@ -568,7 +568,7 @@ GEM
       rainbow (>= 2.2.2, < 4.0)
       terminal-table (>= 1.5.1)
     ice_nine (0.11.2)
-    iiif-presentation (1.0.0)
+    iiif-presentation (1.1.0)
       activesupport (>= 3.2.18)
       faraday (>= 0.9)
       json

@@ -367,6 +367,7 @@ ActiveRecord::Schema.define(version: 2023_01_25_180505) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["parent_id"], name: "index_iiif_print_pending_relationships_on_parent_id"
+  end
 
   create_table "hyrax_groups", id: :serial, force: :cascade do |t|
     t.string "name"

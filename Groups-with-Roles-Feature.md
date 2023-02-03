@@ -4,8 +4,8 @@
   * [Creating Default Roles and Groups](#creating-default-roles-and-groups)
   * [Setup an Existing Application to use Groups with Roles](#setup-an-existing-application-to-use-groups-with-roles)
   * [Role Set Creation Guidelines](#role-set-creation-guidelines)
-    * [Other Information](#other-information)
-  * [Search Permissions Notes](#search-permissions-notes)
+    * [Search Permissions Notes](#search-permissions-notes)
+  * [Using the Feature](#using-the-feature)
 
 ---
 
@@ -24,7 +24,7 @@ rake hyku:roles:create_default_roles_and_groups
 These rake tasks will create data across all tenants necessary to setup Groups with Roles. **Run them in the order listed below.**
 
 Prerequisites:
-- All Collections must have CollectionTypes _and_ PermissionTemplates (see the **Collection Migration** section in the [Hyrax 2.1 Release Notes](https://github.com/samvera/hyrax/releases?after=v2.2.0))
+- All Collections must have CollectionTypes _and_ PermissionTemplates (see the **Collection Migration** section in the [Hyrax 2.1 Release Notes](https://github.com/samvera/hyrax/releases/tag/v2.1.0))
 
 ```bash
 rake hyku:roles:create_default_roles_and_groups
@@ -72,19 +72,13 @@ rake hyku:roles:destroy_registered_group_collection_type_participants # optional
     ```
 6. Add new / change existing `#can?` ability checks in views and controllers where applicable
 
-### Other Information
-- For guidelines on overriding dependencies, see the [Overrides to Dependencies](README#overrides-to-dependencies) section of the README
-- Add [ability specs](spec/abilities) and [feature specs](spec/features)
-
-## Search Permissions Notes
+### Search Permissions Notes
 - Permissions are injected in the solr query's `fq` ("filter query") param ([link to code](https://github.com/projectblacklight/blacklight-access_controls/blob/master/lib/blacklight/access_controls/enforcement.rb#L56))
 - Enforced (injected into solr query) in [Blacklight::AccessControls::Enforcement](https://github.com/projectblacklight/blacklight-access_controls/blob/master/lib/blacklight/access_controls/enforcement.rb) 
 - Represented by an instance of `Blacklight::AccessControls::PermissionsQuery` (see [#permissions_doc](https://github.com/projectblacklight/blacklight-access_controls/blob/master/lib/blacklight/access_controls/permissions_query.rb#L7-L14))
 - Admin users don't have permission filters injected when searching ([link to code](https://github.com/samvera/hyrax/blob/v2.9.0/app/search_builders/hyrax/search_filters.rb#L15-L20))
 - `SearchBuilder` may be related to when permissions are and aren't enforced 
-- Related discussions in Slack: 
-  - [first inheritance question](https://samvera.slack.com/archives/C0F9JQJDQ/p1614103477032200)
-  - [second inheritance question](https://notch8.slack.com/archives/CD47U8QCQ/p1615935043012800)
+- Related discussion in Slack: [inheritance question](https://samvera.slack.com/archives/C0F9JQJDQ/p1614103477032200)
 
-## Extra Resources
+## Using the feature
 [Managing Users, Groups and Permissions](https://docs.google.com/document/d/1dQta2JaT0rLPibl9XZNVt5VLskEWL9Ojym8EFKGdHYE/edit#heading=h.rrrlo1kmlxki)

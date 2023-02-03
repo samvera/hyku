@@ -1,23 +1,12 @@
 # Groups with Roles
 
 ## Table of Contents
-  * [Creating Default Roles and Groups](#creating-default-roles-and-groups)
   * [Setup an Existing Application to use Groups with Roles](#setup-an-existing-application-to-use-groups-with-roles)
   * [Role Set Creation Guidelines](#role-set-creation-guidelines)
     * [Search Permissions Notes](#search-permissions-notes)
   * [Using the Feature](#using-the-feature)
 
 ---
-
-## Creating Default Roles and Groups
-
-Default `Roles` and `Hyrax::Groups` are seeded into an account (tenant) at creation time (see [CreateAccount#create_defaults](app/services/create_account.rb)).
-
-To manually seed default `Roles` and `Hyrax::Groups` _across all tenants_, run this rake task:
-
-```bash
-rake hyku:roles:create_default_roles_and_groups
-```
 
 ## Setup an Existing Application to use Groups with Roles
 
@@ -37,6 +26,8 @@ rake hyku:roles:destroy_registered_group_collection_type_participants # optional
 ```
 
 <sup>\*</sup> The `hyku:roles:destroy_registered_group_collection_type_participants` task is technically optional. However, without it, collection readers will be allowed to create Collections.
+
+Default `Role`s and `Hyrax::Group`s are seeded into an account (tenant) at creation time (see [CreateAccount#create_defaults](app/services/create_account.rb)), so these only need to be run once.
 
 ## Role Set Creation Guidelines
 1. Add role names to the [RolesService::DEFAULT_ROLES](app/services/roles_service.rb) constant

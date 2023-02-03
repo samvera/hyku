@@ -18,9 +18,9 @@ FactoryBot.define do
 
     transient do
       creator_user { nil }
-      creator_group { nil }
+      creator_group { 'collection_editor' }
       manager_user { nil }
-      manager_group { nil }
+      manager_group { 'collection_manager' }
     end
 
     after(:create) do |collection_type, evaluator|
@@ -103,13 +103,34 @@ FactoryBot.define do
     trait :not_allow_multiple_membership do
       allow_multiple_membership { false }
     end
+
+    trait :without_default_participants do
+      creator_user { nil }
+      creator_group { nil }
+      manager_user { nil }
+      manager_group { nil }
+    end
   end
 
   factory :user_collection_type, class: Hyrax::CollectionType do
     initialize_with { Hyrax::CollectionType.find_or_create_default_collection_type }
+
+    # Workaround for upstream issue https://github.com/samvera/hyrax/issues/3136
+    before(:create) do |collection_type|
+      if collection_type.title =~ /^translation missing/
+        collection_type.title = I18n.t(collection_type.title.gsub("translation missing: en.", ''))
+      end
+    end
   end
 
   factory :admin_set_collection_type, class: Hyrax::CollectionType do
     initialize_with { Hyrax::CollectionType.find_or_create_admin_set_type }
+
+    # Workaround for upstream issue https://github.com/samvera/hyrax/issues/3136
+    before(:create) do |collection_type|
+      if collection_type.title =~ /^translation missing/
+        collection_type.title = I18n.t(collection_type.title.gsub("translation missing: en.", ''))
+      end
+    end
   end
 end

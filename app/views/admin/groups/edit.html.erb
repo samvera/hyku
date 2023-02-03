@@ -2,7 +2,7 @@
 <% provide :page_header do %>
   <h1>
     <span class="fa fa-users"></span>
-    <%= t('hyku.admin.groups.title.edit') %>
+    <%= "#{t('hyku.admin.groups.title.edit')}: #{@group.humanized_name}" %>
   </h1>
 <% end %>
 <%= render 'nav' %>

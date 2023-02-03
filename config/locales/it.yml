@@ -8,6 +8,8 @@ it:
     tagline: La soluzione di repository di nuova generazione
   helpers:
     submit:
+      add_role_to_group:
+        submit: Inserisci
       add_user_to_group:
         submit: Inserisci
       group_search:
@@ -41,6 +43,11 @@ it:
             clear: Reset
         describe_quantity_html: Ci sono <b>gruppi %{number}</b> in questo repository.
         describe_singular_quantity_html: In questo repository c'è <b>un gruppo</b> .
+        description:
+          admin: Gli utenti di questo gruppo sono considerati amministratori per questo tenant e hanno accesso illimitato.
+          depositors: Gli utenti di questo gruppo possono depositare Works in qualsiasi set di amministratori in questo tenant.
+          editors: 'Gli utenti di questo gruppo possono leggere e modificare tutte le raccolte e le opere in questo tenant. Possono anche: creare collezioni, depositare e approvare lavori, gestire embarghi e contratti di locazione e gestire importatori ed esportatori Bulkrax.'
+          registered: Contiene tutti gli utenti che si sono registrati in questo tenant.
         flash:
           create:
             failure: Impossibile creare il gruppo
@@ -49,9 +56,14 @@ it:
           destroy:
             failure: "%{group} non poteva essere distrutto"
             success: "%{group} distrutto"
+          remove:
+            cannot_destroy_default_group: I gruppi predefiniti non possono essere distrutti
           update:
             failure: Non è stato possibile aggiornare %{group}
             success: "%{group} aggiornato"
+        humanized_name:
+          admin: Amministratori di repository
+          registered: utente registrato
         label:
           actions: Azioni
           created_at: data di creazione
@@ -85,8 +97,19 @@ it:
           list_members: Membri del gruppo attuale
           members: Membri del gruppo
           new: Nuovo gruppo
+          reader_index: Visualizza gruppi
           remove: Rimuovi gruppo
           roles: Ruoli del gruppo
+      roles:
+        description:
+          admin: Concede l'accesso illimitato a questo tenant
+          collection_editor: Può creare, leggere e modificare qualsiasi raccolta in questo tenant
+          collection_manager: Può creare, leggere, modificare e distruggere qualsiasi raccolta in questo tenant
+          collection_reader: Può leggere qualsiasi raccolta in questo inquilino
+          user_manager: Può leggere, modificare, invitare e rimuovere qualsiasi utente in questo tenant
+          user_reader: Può leggere qualsiasi utente in questo tenant
+          work_depositor: Può depositare Works in qualsiasi set di amministrazione in questo tenant. Può leggere, modificare e gestire Embarghi / Locazioni per Opere di loro proprietà
+          work_editor: Può leggere qualsiasi set di amministrazione in questo tenant. Inoltre, può creare, leggere, modificare e approvare qualsiasi lavoro in questo tenant, nonché spostare i lavori tra i set di amministrazione e gestire gli embarghi e i contratti di locazione
       title: Amministrazione
       work_types: Tipi di lavoro disponibili
     footer:
@@ -95,7 +118,16 @@ it:
       accounts:
         nav: conti
       users:
+        edit:
+          header: Modifica utente
+        index:
+          confirm_delete: Sei sicuro di voler eliminare questo utente? Questa azione non può essere annullata.
+          header: Gestisci utenti
+          manage: Maneggio
         nav: utenti
+        show:
+          header: Gestisci utente
+          update: Aggiornare
     splash:
       account_denied: Non sei autorizzato a creare inquilini
       account_login: Accedi per iniziare
@@ -172,9 +204,15 @@ it:
             active: Attivo
             pending: in attesa di
           status_label: Stato
+  permissions:
+    collections:
+      cannot:
+        manage_discovery: Non disponi dell'autorizzazione per modificare l'impostazione di rilevamento di questa raccolta
   proprietor:
     accounts:
       edit:
+        account_settings: Impostazione conto
+        data_cite_endpoint: Endpoint DataCite
         fcrepo_endpoint: Fedora Endpoint
         header: Modifica account
         solr_endpoint: Solr Endpoint
@@ -191,10 +229,35 @@ it:
         add: Inserisci
         current_admins:
           actions: Azione
+          all_users: Tutti gli utenti
+          email: Indirizzo email
+          header: Amministratori del conto corrente
           no_admins: Nessun amministratore esiste
         edit: Modifica account
         header: Gestisci profilo
         remove: Rimuovere
+        update: Aggiornare
+    users:
+      edit:
+        header: Modifica utente
+      index:
+        actions: Azioni
+        affiliation: Affiliazione
+        confirm_delete: Sei sicuro di voler eliminare questo utente?
+        create_new: Creare nuovo
+        department: Dipartimento
+        display_name: Nome da visualizzare
+        email: Email
+        header: Gestisci utenti
+        manage: Gestire
+        title: Titolo
+        view_users: Visualizza utenti
+      new:
+        header: Crea un nuovo utente
+      show:
+        add: Inserisci
+        edit: Modificare
+        header: Gestisci utente
         update: Aggiornare
   status:
     index:

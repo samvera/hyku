@@ -57,6 +57,7 @@ jobs:
       BUNDLE_PATH: vendor/bundle
       BUNDLE_JOBS: 4
       BUNDLE_RETRY: 3
+      HYKU_RESTRICT_CREATE_AND_DESTROY_PERMISSIONS: 'true'
       SOLR_ADMIN_USER: admin
       SOLR_ADMIN_PASSWORD: admin
       SOLR_COLLECTION_NAME: hydra-test
@@ -67,7 +68,7 @@ jobs:
       RAILS_ENV: test
       RACK_ENV: test
       FCREPO_TEST_PORT: 8080/fcrepo
-      SPEC_OPTS: --profile 10 --format RspecJunitFormatter --out /tmp/test-results/rspec.xml --format progress
+      SPEC_OPTS: --tag ~ci:skip --profile 10 --format RspecJunitFormatter --out /tmp/test-results/rspec.xml --format progress
     steps:
       - samvera/cached_checkout
 

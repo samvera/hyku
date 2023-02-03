@@ -8,6 +8,8 @@ pt-BR:
     tagline: A solução de repos
   helpers:
     submit:
+      add_role_to_group:
+        submit: Adicionar
       add_user_to_group:
         submit: Adicionar
       group_search:
@@ -41,6 +43,11 @@ pt-BR:
             clear: Restabelecer
         describe_quantity_html: Existem <b>grupos</b> %{number} neste repositório.
         describe_singular_quantity_html: Há <b>um grupo</b> neste repositório.
+        description:
+          admin: Os usuários neste grupo são considerados administradores para este locatário e têm acesso irrestrito.
+          depositors: Os usuários neste grupo têm permissão para depositar trabalhos em qualquer Admin Set neste locatário.
+          editors: 'Os usuários neste grupo têm permissão para ler e editar todas as coleções e obras neste inquilino. Eles também podem: criar cobranças, depositar e aprovar obras, gerenciar embargos e arrendamentos e gerenciar importadores e exportadores Bulkrax.'
+          registered: Contém todos os usuários que se inscreveram neste locatário.
         flash:
           create:
             failure: O grupo não pôde ser criado
@@ -49,9 +56,14 @@ pt-BR:
           destroy:
             failure: "%{group} não pôde ser destruído"
             success: "%{group} destruído"
+          remove:
+            cannot_destroy_default_group: Grupos padrão não podem ser destruídos
           update:
             failure: "%{group} não pôde ser atualizado"
             success: "%{group} atualizado"
+        humanized_name:
+          admin: Administradores de repositório
+          registered: Usuários registrados
         label:
           actions: Ações
           created_at: Data Criada
@@ -85,8 +97,19 @@ pt-BR:
           list_members: Membros atuais do grupo
           members: Membros do grupo
           new: Novo grupo
+          reader_index: Ver Grupos
           remove: Remover grupo
           roles: Funções de grupo
+      roles:
+        description:
+          admin: Concede acesso irrestrito a este inquilino
+          collection_editor: Pode criar, ler e editar qualquer coleção neste inquilino
+          collection_manager: Pode criar, ler, editar e destruir qualquer coleção neste locatário
+          collection_reader: Pode ler qualquer coleção neste inquilino
+          user_manager: Pode ler, editar, convidar e remover qualquer usuário neste locatário
+          user_reader: Pode ler qualquer usuário neste locatário
+          work_depositor: Pode depositar obras em qualquer Admin Set neste locatário. Pode ler, editar e gerenciar embargos / locações de obras pertencentes a eles
+          work_editor: Pode ler qualquer Admin Set neste inquilino. Além disso, pode criar, ler, editar e aprovar qualquer Trabalho neste inquilino, bem como mover Obras entre Conjuntos de Administradores e gerenciar Embargos e Locações
       title: Administração
       work_types: Tipos de trabalho disponíveis
     footer:
@@ -95,7 +118,16 @@ pt-BR:
       accounts:
         nav: Contas
       users:
+        edit:
+          header: Editando usuário
+        index:
+          confirm_delete: Tem certeza de que deseja excluir este usuário? Essa ação não pode ser desfeita.
+          header: Gerenciar usuários
+          manage: Gerir
         nav: Comercial
+        show:
+          header: Gerenciar usuário
+          update: Atualizar
     splash:
       account_denied: Você não está autorizado a criar inquilinos
       account_login: Inicie sessão para começar
@@ -172,9 +204,15 @@ pt-BR:
             active: Ativo
             pending: Pendente
           status_label: Status
+  permissions:
+    collections:
+      cannot:
+        manage_discovery: Você não tem permissão para alterar a configuração de descoberta desta coleção
   proprietor:
     accounts:
       edit:
+        account_settings: Configurações de conta
+        data_cite_endpoint: Terminal DataCite
         fcrepo_endpoint: Ponto de extremidade do Fedora
         header: Editando conta
         solr_endpoint: Ponto final do Solr
@@ -191,10 +229,35 @@ pt-BR:
         add: Adicionar
         current_admins:
           actions: Açao
+          all_users: Todos os usuários
+          email: Endereço de e-mail
+          header: Administradores de conta corrente
           no_admins: Não existem administradores
         edit: Editar conta
         header: Gerenciar conta
         remove: Remover
+        update: Atualizar
+    users:
+      edit:
+        header: Editar usuário
+      index:
+        actions: Ações
+        affiliation: Afiliação
+        confirm_delete: Tem certeza de que deseja excluir este usuário?
+        create_new: Crie um novo
+        department: Departamento
+        display_name: Mostrar nome
+        email: Email
+        header: Gerenciar usuários
+        manage: Gerir
+        title: Título
+        view_users: Ver usuários
+      new:
+        header: Crie um novo usuário
+      show:
+        add: Adicionar
+        edit: Editar
+        header: Gerenciar usuário
         update: Atualizar
   status:
     index:

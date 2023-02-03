@@ -151,6 +151,7 @@ Common checks that may occur in our repositories:
 
 1. Travis CI - where our automated tests are running
 2. Approval Required - Github enforces at least one person approve a pull request. Also, all reviewers that have chimed in must approve.
+3. Required Labels - an appropriate [semver](https://semver.org/) label (see [release.yml](https://github.com/samvera/hyku/blob/main/.github/release.yml))
 
 If one or more of the required checks failed (or are incomplete), the code should not be merged (and the UI will not allow it). If all of the checks have passed, then anyone on the project (including the pull request submitter) may merge the code.
 

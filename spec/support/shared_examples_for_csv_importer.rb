@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 RSpec.shared_examples "csv_importer" do
+  let!(:admin_group) { FactoryBot.create(:group, name: "admin") }
+  let!(:registered_group) { FactoryBot.create(:group, name: "registered") }
+  let!(:work_editor_group) { FactoryBot.create(:group, name: "work_editor") }
+  let!(:work_depositor_group) { FactoryBot.create(:group, name: "work_depositor") }
+
   context "with a file" do
     let(:attributes) do
       {
@@ -9,6 +14,7 @@ RSpec.shared_examples "csv_importer" do
         file: ["world.png"]
       }
     end
+
     let(:factory) { described_class.new(attributes, File.join(fixture_path, 'images')) }
 
     before do

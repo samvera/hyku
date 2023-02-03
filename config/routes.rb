@@ -83,12 +83,8 @@ Rails.application.routes.draw do
         get :remove
       end
 
-      resources :users, only: [:index], controller: 'group_users' do
-        collection do
-          post :add
-          delete :remove
-        end
-      end
+      resources :users, only: %i[index create destroy], param: :user_id, controller: 'group_users'
+      resources :roles, only: %i[index create destroy], param: :role_id, controller: 'group_roles'
     end
   end
 

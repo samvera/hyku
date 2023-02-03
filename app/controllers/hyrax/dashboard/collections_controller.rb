@@ -1,5 +1,6 @@
-## Override from hyrax to fix file upload in logo and banner
-## OVERRIDE: Hyrax 2.9 to use work titles for collection thumbnail select & to add an option to reset to the default thumbnail
+# OVERRIDE Hyrax v3.4.2
+# - Fix file upload in logo and banner
+# - Use work titles for collection thumbnail select & to add an option to reset to the default thumbnail
 module Hyrax
   module Dashboard
     ## Shows a list of all collections to the admins
@@ -132,6 +133,9 @@ module Hyrax
       end
 
       def update
+        # OVERRIDE: ensure user is allowed to change visibility
+        authorize! :manage_discovery, @collection if collection_params[:visibility].present? && @collection.visibility != collection_params[:visibility]
+
         case @collection
         when ActiveFedora::Base
           update_active_fedora_collection

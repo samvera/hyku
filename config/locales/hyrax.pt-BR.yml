@@ -19,7 +19,7 @@ pt-BR:
           no_works: O conjunto administrativo não contém nenhum trabalho.
           title: Lista de itens neste conjunto administrativo
         edit:
-          header: "Editar conjunto administrativo: %{title}"
+          header: 'Editar conjunto administrativo: %{title}'
         form:
           cancel: Cancelar
           note: Os usuários com uma nova função ganharão a função somente em trabalhos que forem depositados após a concessão dessa função.
@@ -70,9 +70,9 @@ pt-BR:
             title: Espectadores
             type: Tipo
         form_participants:
-          add_group: "Adicionar grupo:"
+          add_group: 'Adicionar grupo:'
           add_participants: Adicione participantes
-          add_user: "Adicionar usuário:"
+          add_user: 'Adicionar usuário:'
           current_participants: Participantes Atuais
         form_visibility:
           cancel: Cancelar
@@ -84,15 +84,15 @@ pt-BR:
             title: Liberação
             varies:
               any: O depositante pode escolher qualquer comprimento de embargo; arrendamentos são permitidos
-              between: "O depositante pode escolher o embargo atualizado:"
-              description: "Permita que o depositante escolha as configurações:"
+              between: 'O depositante pode escolher o embargo atualizado:'
+              description: 'Permita que o depositante escolha as configurações:'
               embargo:
                 1yr: 1 ano após o depósito
                 2yrs: 2 anos após o depósito
                 3yrs: 3 anos após o depósito
                 6mos: 6 meses após o depósito
                 select: Selecione o período de embargo.
-              period: "O depositante pode escolher o período de embargo até:"
+              period: 'O depositante pode escolher o período de embargo até:'
           visibility:
             description: Defina políticas de visibilidade para o conjunto administrativo. Definir as políticas de embargo respeitadas acima.
             everyone: Público - o depositante pode escolher apenas a configuração de visibilidade pública
@@ -164,7 +164,7 @@ pt-BR:
           update_notice: Participantes atualizados
         form_settings:
           instructions: Essas configurações determinam como as coleções desse tipo podem ser gerenciadas e descobertas.
-          warning: "Aviso: essas configurações não podem ser alteradas após a criação de uma coleção desse tipo."
+          warning: 'Aviso: essas configurações não podem ser alteradas após a criação de uma coleção desse tipo.'
         index:
           breadcrumb: Tipos de coleção
           create_new_button: Criar novo tipo de coleção
@@ -182,7 +182,7 @@ pt-BR:
             actions: Ações
             name: Nome
         multiple_membership_checker:
-          error_preamble: "Erro: você especificou mais de um do mesmo tipo de coleção de associação única"
+          error_preamble: 'Erro: você especificou mais de um do mesmo tipo de coleção de associação única'
           error_type_and_collections: "(tipo: %{type}, coleções: %{collections})"
         new:
           header: Criar novo tipo de coleção
@@ -220,7 +220,7 @@ pt-BR:
       stats:
         deposited_form:
           end_label: fim [o padrão é agora]
-          heading: "Exibir arquivos depositados:"
+          heading: 'Exibir arquivos depositados:'
           start_label: Começar
         repository_objects:
           series:
@@ -234,7 +234,7 @@ pt-BR:
         works:
           headers:
             main: Estatísticas do Trabalho
-            total: "Total de Trabalhos:"
+            total: 'Total de Trabalhos:'
             visibility: Totais por visibilidade
       users:
         index:
@@ -242,18 +242,29 @@ pt-BR:
           describe_users_html:
             one: Há <b>um usuário %{count}</b> neste repositório.
             other: Existem <b>usuários %{count}</b> neste repositório.
+          group_label: Grupos
           id_label: Nome do usuário
+          reader_title: Ver usuários
           role_label: Funções
           title: Gerenciar usuários
       workflow_roles:
         header: Funções de fluxo de trabalho
         index:
+          current_group_roles: Funções de grupo atuais
           current_roles: Funções Atuais
+          current_user_roles: Funções de usuário atuais
           delete:
             confirm: Você tem certeza?
           header:
+            display_name: Nome em Exibição
+            email: O email
+            group_name: Nome do grupo
+            group_roles: Funções de grupo
             roles: Funções
             user: Do utilizador
+            user_roles: Funções do usuário
+          new_group_role: Atribuir função ao grupo
+          new_role: Atribuir função
           new_user_role: Atribuir função ao usuário
           no_roles: Sem papéis
       workflows:
@@ -281,10 +292,10 @@ pt-BR:
         default: Você deve estar logado para fazer isso!
       unprocessable_entity:
         default: O recurso que você tentou modificar não pode ser modificado de acordo com sua solicitação.
-    background_attribution_html: ""
+    background_attribution_html: ''
     base:
       citations:
-        header: "Citações:"
+        header: 'Citações:'
       form_child_work_relationships:
         actions:
           remove: Remover deste trabalho
@@ -351,7 +362,7 @@ pt-BR:
         empty: Atualmente, este %{type} não está em nenhuma coleção.
         header: Relacionamentos
       relationships_parent_row:
-        label: "Em %{type}:"
+        label: 'Em %{type}:'
       show:
         last_modified: Última modificação
       social_media:
@@ -363,6 +374,9 @@ pt-BR:
       help:
         resource_type: Você pode selecionar vários tipos para aplicar a todos os arquivos
         title: Nome do arquivo será o título padrão. Forneça um título mais significativo e os nomes de arquivos ainda serão preservados pelo sistema.
+    batch_edits:
+      delete_selected:
+        button_label: Excluir selecionado
     batch_uploads:
       disabled: Recurso desativado pelo administrador
       files:
@@ -423,7 +437,7 @@ pt-BR:
         create: Salve 
         create_new: Adicionar à nova coleção
         no_collections: Você não tem acesso a nenhuma coleção existente. Você pode criar uma nova coleção.
-        select_heading: "Selecione a coleção para adicionar seus arquivos:"
+        select_heading: 'Selecione a coleção para adicionar seus arquivos:'
         title: Adicionar a coleção
         update: Salvar alterações
     collection_type:
@@ -503,7 +517,7 @@ pt-BR:
         select_type_of_collection: Selecione o tipo de coleção
       collections:
         edit:
-          header: "Editar %{type_title}: %{title}"
+          header: 'Editar %{type_title}: %{title}'
         form:
           permission_update_errors:
             error: Opção de atualização inválida para o modelo de permissão.
@@ -526,6 +540,9 @@ pt-BR:
           logo:
             description: Uma ou mais imagens a serem exibidas na parte superior da página de coleção. Para obter melhores resultados, carregue uma imagem (JPG, GIF ou PNG) com 40 pixels de altura. Imagens maiores serão redimensionadas para 40 pixels de altura.
             label: Logotipo
+          thumbnail:
+            description: Uma imagem a ser exibida nos resultados da pesquisa e na página inicial, caso você decida apresentar esta coleção. A imagem será cortada e redimensionada de várias maneiras em todo o aplicativo, mas para obter melhores resultados, use uma imagem (JPG, GIF ou PNG) com orientação de paisagem.
+            label: Miniatura
         form_discovery:
           para1: Essas configurações determinam quem é capaz de descobrir e visualizar a página de destino desta coleção; eles não afetam a visibilidade dos itens na coleção.
           para2: Se você optar por não tornar o acesso aberto a esta coleção, ainda poderá compartilhá-la com usuários e grupos específicos usando a guia Compartilhamento.
@@ -548,6 +565,11 @@ pt-BR:
             collection_title: Título da coleção
           this_collection_in_other_collections_description: Você pode adicionar essa coleção a outras coleções como uma sub-coleção.
         form_share:
+          access_options:
+            creator: O Criador
+            depositor: Depositante
+            manager: Gerente
+            viewer: Visualizador
           add_group: Adicionar grupo
           add_sharing: Adicionar compartilhamento
           add_user: Adicionar usuário
@@ -640,20 +662,21 @@ pt-BR:
           view_collection: Ver coleção
           work_confirmation: A exclusão de um trabalho de %{application_name} é permanente. Clique em OK para excluir este trabalho de %{application_name} ou em Cancelar para cancelar esta operação
         collection_list:
-          description: "Descrição:"
-          edit_access: "Editar acesso:"
-          groups: "Grupos:"
+          description: 'Descrição:'
+          edit_access: 'Editar acesso:'
+          groups: 'Grupos:'
           managed_access:
             deposit: Depósito
+            edit: Editar
             manage: Gerir
             view: Visão
-          users: "Comercial:"
+          users: 'Comercial:'
         collections: Colecções
         facet_label:
-          collections: "Filtrar coleções:"
-          highlighted: "Destaques do filtro:"
-          shared: "Filtrar compartilhamentos:"
-          works: "O filtro funciona:"
+          collections: 'Filtrar coleções:'
+          highlighted: 'Destaques do filtro:'
+          shared: 'Filtrar compartilhamentos:'
+          works: 'O filtro funciona:'
         heading:
           access: Acesso
           action: Ações
@@ -796,8 +819,13 @@ pt-BR:
       admin_sets:
         link: Ver todas as coleções
         tab_label: Explorar coleções
-        title: Explorar coleções
         thumbnail: miniatura
+        title: Explorar coleções
+      featured_collections:
+        document:
+          title_label: Título
+        no_collections: Nenhuma coleção foi apresentada.
+        title: Coleções em destaque
       featured_researcher:
         missing: Nenhum pesquisador foi apresentado.
         tab_label: Pesquisador Destaque
@@ -906,7 +934,7 @@ pt-BR:
         terms_page: Termos de uso
       updated: Páginas atualizadas.
     passive_consent_to_agreement: Ao salvar este trabalho, concordo com o
-    product_name: "Hyku"
+    product_name: Hyku
     product_twitter_handle: "@HydraInABox"
     search:
       button:
@@ -1035,7 +1063,7 @@ pt-BR:
       default:
         deposit: Depósito
       load:
-        state_error: "O fluxo de trabalho: %{workflow_name} não foi atualizado. Você está removendo um estado: %{state_name} com entidade (s) %{entity_count}. Um estado não pode ser removido enquanto tiver entidades ativas!"
+        state_error: 'O fluxo de trabalho: %{workflow_name} não foi atualizado. Você está removendo um estado: %{state_name} com entidade (s) %{entity_count}. Um estado não pode ser removido enquanto tiver entidades ativas!'
       unauthorized: O trabalho não está disponível no momento porque ainda não concluiu o processo de aprovação
     works:
       create:
@@ -1092,7 +1120,7 @@ pt-BR:
         require_membership: Uma obra deve pertencer a pelo menos uma coleção desse tipo
         sharable: Permitir que os usuários atribuam gerenciadores, depositantes e visualizadores de coleções às coleções que gerenciam
         share_applies_to_new_works: Quando novos trabalhos são criados diretamente na coleção, conceda aos usuários e grupos de compartilhamento permissões para o novo trabalho, de acordo com suas funções de coleção.
-        title: ""
+        title: ''
       defaults:
         based_near: Um nome de local relacionado ao trabalho, como o site da publicação ou a cidade, estado ou país em que o conteúdo do trabalho se refere. Solicita o <a href='http://www.geonames.org'> serviço da web GeoNames </a>.
         contributor: Uma pessoa ou grupo que você deseja reconhecer por desempenhar um papel na criação do trabalho, mas não o papel principal.

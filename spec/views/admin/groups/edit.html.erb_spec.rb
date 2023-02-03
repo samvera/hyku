@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 RSpec.describe 'admin/groups/edit', type: :view do
+  include Warden::Test::Helpers
+  include Devise::Test::ControllerHelpers
+
   context 'groups index page' do
     let(:group) { FactoryBot.create(:group) }
 
@@ -24,11 +27,11 @@ RSpec.describe 'admin/groups/edit', type: :view do
     end
 
     it 'has an input for name' do
-      expect(rendered).to have_selector('input', id: 'hyku_group_name')
+      expect(rendered).to have_selector('input', id: 'group_humanized_name')
     end
 
     it 'has a text area for description' do
-      expect(rendered).to have_selector('textarea', id: 'hyku_group_description')
+      expect(rendered).to have_selector('textarea', id: 'group_description')
     end
 
     it 'has a save button' do

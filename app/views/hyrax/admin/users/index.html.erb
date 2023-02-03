@@ -1,25 +1,37 @@
-<% provide :page_header do %>
-  <h1><span class="fa fa-user" aria-hidden="true"></span> <%= t('hyrax.admin.users.index.title') %></h1>
+<% if can? :create, User %>
+  <% provide :page_header do %>
+    <h1><span class="fa fa-user" aria-hidden="true"></span> <%= t('hyrax.admin.users.index.title') %></h1>
+  <% end %>
+<% else %>
+  <% provide :page_header do %>
+    <h1><span class="fa fa-user"></span> <%= t('hyrax.admin.users.index.reader_title') %></h1>
+  <% end %>
 <% end %>
 
-<div class="panel panel-default users-invite">
-  <div class="panel-heading">
-      <%= t('.invite_users') %>
-  </div>
+<% if can? :create, User %>
+  <div class="panel panel-default users-invite">
+    <div class="panel-heading">
+        <%= t('.invite_users') %>
+    </div>
 
-  <div class="panel-body">
-    <%# user_invitation_path is provided by devise_invitable %>
-    <%= simple_form_for :user,  url: main_app.user_invitation_path, html: { class: 'form-inline pull-left' } do |f| %>
-      <div class="form-group">
-        <%= f.hint :email %>
-        <%= f.label :email, class: "control-label", required: false %>
-        <%= f.input_field :email, class: "form-control", value: "" %>
-        <%= f.input :roles, required: false %>'
-        <%= f.submit t('.add'), class: 'btn btn-primary' %>
-      </div>
-    <% end %>
+    <div class="panel-body">
+      <%# user_invitation_path is provided by devise_invitable %>
+      <%= simple_form_for :user,  url: main_app.user_invitation_path, html: { class: 'form-inline pull-left' } do |f| %>
+        <div class="form-group">
+          <%= f.hint :email %>
+          <%= f.label :email, class: "control-label", required: false %>
+          <%= f.input_field :email, class: "form-control", value: "" %>
+          <%= f.select :role,
+                      @invite_roles_options.map { |r| [r.titleize, r ]},
+                      { prompt: 'Select a role...' },
+                      required: false,
+                      class: 'form-control' %> 
+          <%= f.submit t('.add'), class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+    </div>
   </div>
-</div>
+<% end %>
 
 <div class="panel panel-default users-listing">
   <div class="panel-heading">
@@ -33,23 +45,35 @@
           <tr>
             <th></th>
             <th><%= t('.id_label') %></th>
+            <th><%= t('.group_label') %></th>
             <th><%= t('.role_label') %></th>
             <th><%= t('.access_label') %></th>
             <th><%= t('.status_label') %></th>
+            <% if can? :destroy, User %>
             <th><%= t('.action_label') %></th>
+            <% end %>
           </tr>
         </thead>
         <tbody>
           <% @presenter.users.each do |user| %>
-            <tr>
+            <tr id="<%= user.email.parameterize %>">
               <td><%= link_to hyrax.user_path(user) do %>
                     <%= image_tag(user.avatar.url(:thumb), width: 30) if user.avatar.file %>
                   <% end %>
               </td>
               <td><%= link_to user.email, hyrax.user_path(user) %></td>
-              <td><% roles = @presenter.user_roles(user) %>
+
+              <td class="groups">
+                <% groups = @presenter.user_groups(user) %>
+                  <ul><% groups.each do |group| %>
+                    <li><%= group.humanized_name %></li>
+                    <% end %>
+                  </ul>
+              </td>
+
+              <td class="roles"><% roles = @presenter.user_roles(user) %>
                   <ul><% roles.each do |role| %>
-                    <li><%= role %></li>
+                    <li><%= role.titleize %></li>
                     <% end %>
                   </ul>
               </td>
@@ -61,9 +85,11 @@
               </td>
               <%# If user accepted invite or was a self-signup, they are active. Otherwise pending %>
               <td><%= user.accepted_or_not_invited? ? t('.status.active') : t('.status.pending') %></td>
-              <td>
-                <%= link_to t('.delete'),  main_app.admin_user_path(user), class: 'btn btn-danger btn-sm action-delete', method: :delete, data: { confirm: t('hyrax.admin.users.destroy.confirmation', user: user.email) } %>
-              </td>
+              <% if can? :destroy, User %>
+                <td>
+                  <%= link_to t('.delete'),  main_app.admin_user_path(user), class: 'btn btn-danger btn-sm action-delete', method: :delete, data: { confirm: t('hyrax.admin.users.destroy.confirmation', user: user.email) } %>
+                </td>
+              <% end %>
             </tr>
           <% end %>
         </tbody>

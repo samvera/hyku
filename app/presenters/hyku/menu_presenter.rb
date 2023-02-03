@@ -34,12 +34,19 @@ module Hyku
       super ||
         can?(:manage, Site) ||
         can?(:manage, User) ||
-        can?(:manage, Hyku::Group)
+        can?(:manage, Hyrax::Group)
     end
 
     # Returns true if we ought to show the user Admin-only areas of the menu
     def show_admin_menu_items?
       can?(:read, :admin_dashboard)
+    end
+
+    def show_task?
+      can?(:review, :submissions) ||
+        can?(:read, User) ||
+        can?(:read, Hyrax::Group) ||
+        can?(:read, :admin_dashboard)
     end
   end
 end

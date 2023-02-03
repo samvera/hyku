@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-RSpec.describe "The splash page", multitenant: true do
+# NOTE: If want to run spec in broweser, you have to set "js: true"
+RSpec.describe "The splash page", type: :feature, clean: true, multitenant: true do
   around do |example|
     original = ENV['HYKU_ADMIN_ONLY_TENANT_CREATION']
     ENV['HYKU_ADMIN_ONLY_TENANT_CREATION'] = "true"

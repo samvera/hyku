@@ -326,7 +326,7 @@ Hyku supports multitenancy using the `apartment` gem. `apartment` works best wit
 ### Bulkrax:
 
 Bulkrax is enabled by default and CSV, OAI and XML importers can be used in the admin dashboard or through the command line API.
-More info about configuring and using bulkrax can be found [here]()
+More info about configuring and using bulkrax can be found [here](https://github.com/samvera-labs/bulkrax/wiki)
 
 ### Commandline Importers
 

@@ -143,7 +143,7 @@ switch!('myaccount')
 ```
 
 ## Analytics Feature
-Hyku currently only supports the configuration of one Google Analytics account for the basic functionality of this feature. Hyku currently only support Google Analytics with the Universal Analytics property for this feature. 
+Hyku currently only supports the configuration of one Google Analytics account for the basic functionality of this feature. Hyku currently only support Google Analytics with the Universal Analytics property for this feature.
 
 Note: Google has announced they will stop processing data using the Universal Analytics property on July 1, 2023  or July 1, 2024 for Analytics 360 properties.
 
@@ -323,32 +323,19 @@ Once you run this script the value is on your local computers clipboard. You wil
 Hyku supports multitenancy using the `apartment` gem. `apartment` works best with a postgres database.
 
 ## Importing
-### Enable Bulkrax:
+### Bulkrax:
 
-- Set bulkrax -> enabled to true in the [config/settings.yml](config/settings.yml) and [.env](.env) files
-- Add `  require bulkrax/application` to app/assets/javascripts/application.js and app/assets/stylesheets/application.css files.
+Bulkrax is enabled by default and CSV, OAI and XML importers can be used in the admin dashboard or through the command line API.
+More info about configuring and using bulkrax can be found [here]()
 
-(in a `docker-compose exec web bash` if you're doing docker otherwise in your terminal)
-```bash
-bundle exec rails db:migrate
-```
+### Commandline Importers
 
-### from CSV:
-
-```bash
-./bin/import_from_csv localhost spec/fixtures/csv/gse_metadata.csv ../hyku-objects
-```
-
-### from purl:
-
-```bash
-./bin/import_from_purl ../hyku-objects bc390xk2647 bc402fk6835 bc483gc9313
-```
+Importing from CSV and PURL directly can be done via Bulkrax and the built in code in Hyku is slated for deletion in the next release.
 
 ## Compatibility
 
-* Ruby 2.4 or the latest 2.3 version is recommended.  Later versions may also work.
-* Rails 5 is required. We recommend the latest Rails 5.1 release.
+* Ruby 2.7 is recommended.  Later versions may also work.
+* Rails 5.2 is required.
 
 ### Product Owner
 

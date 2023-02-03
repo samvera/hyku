@@ -55,3 +55,4 @@ public/uploads
 docker-compose.override.yml
 *~undo-tree~
 .DS_Store
+.vscode/settings.json

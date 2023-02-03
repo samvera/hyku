@@ -71,7 +71,6 @@ jobs:
       FCREPO_TEST_PORT: 8080/fcrepo
       SPEC_OPTS: --tag ~ci:skip --profile 10 --format RspecJunitFormatter --out /tmp/test-results/rspec.xml --format progress
     steps:
-      - browser-tools/install-browser-tools
       - samvera/cached_checkout
       - samvera/bundle:
           ruby_version: << parameters.ruby_version >>
@@ -81,6 +80,7 @@ jobs:
             sed -i '/require .enumerator./d' ./vendor/bundle/ruby/2.7.0/gems/edtf-3.0.8/lib/edtf.rb && \
             sed -i '/require .enumerator./d' ./vendor/bundle/ruby/2.7.0/gems/csl-1.6.0/lib/csl.rb
       - samvera/rubocop
+      - browser-tools/install-browser-tools
       - run: bundle exec rake db:create db:schema:load
       - run: bin/solrcloud-upload-configset.sh solr/conf
       - samvera/parallel_rspec

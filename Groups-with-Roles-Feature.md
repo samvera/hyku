@@ -1,12 +1,49 @@
 # Groups with Roles
 
 ## Table of Contents
+  * [Defining Roles, Users, and Groups](#defining-roles-users-and-groups)
   * [Setup an Existing Application to use Groups with Roles](#setup-an-existing-application-to-use-groups-with-roles)
   * [Role Set Creation Guidelines](#role-set-creation-guidelines)
     * [Search Permissions Notes](#search-permissions-notes)
   * [Using the Feature](#using-the-feature)
 
 ---
+
+## Defining Roles, Users, and Groups
+
+Permissions for users in Hyku are complex and configurable. This guide will outline the default, recommended way of utilizing these features, but other customizations are possible.
+
+First, it is worthwhile to define some basic concepts:
+
+- Role: a specific permission over some aspect of repository management. Hyku includes the roles listed below. Each role inherits the abilities of the roles below it:
+  - Admin	Grants: unrestricted access to this tenant
+  - Collection Editor: Can create, read, and edit any Collection in this tenant	
+  - Collection Manager: Can create, read, edit, and destroy any Collection in this tenant	
+  - Collection Reader: Can read any Collection in this tenant	
+  - User Manager: Can read, edit, invite, and remove any User in this tenant	
+  - User Reader: Can read any User in this tenant	
+  - Work Editor: Can create, read, edit, and approve any Work in this tenant, as well as move Works between Admin Sets and manage Embargoes and Leases
+  - Work Depositor: Can deposit Works into any Admin Set in this tenant. Can read, edit, and manage Embargoes / Leases for Works belonging to them	
+
+- Workflow role: a subset of roles that pertains to the depositing, approving, or managing works within a specific admin set. Roles granted across all repositories are automatically granted different workflow roles over all admin sets:
+  - Managing: can add works, edit admin set configuration, and approve works submitted through a mediated deposit workflow
+    - Those with Admin and Collection Manager roles are automatically admin set managers
+  - Approving: can approve works submitted through a mediated deposit workflow
+    - Those with Collection Editor and Work Editor are automatically able to approve in admin sets
+  - Depositing: can add works to the admin set, whether a mediated or default workflow
+    - Those with the Depositor role can deposit to any admin set
+
+- Group: a predefined set of roles used to create desired classes of users. Groups are how we recommend you control your user permissions. Hyku comes with the following default groups:
+  - Repository Administrators: Users in this group are considered admins for this tenant and have unrestricted access.
+    - Roles: Admin.
+  - Editors: Users in this group are considered admins for this tenant and have unrestricted access.
+    - Roles: Work Editor, Collection Editor, User Reader.
+  - Depositors: Users in this group are allowed to deposit Works into any Admin Set in this tenant.
+    - Roles: Work Depositor.
+  - Registered Users: Contains all users who have signed up in this tenant.
+    - No roles.
+
+- User: individual accounts in Hyku that are assigned specific roles or to a group that has a predefined combination of roles.
 
 ## Setup an Existing Application to use Groups with Roles
 

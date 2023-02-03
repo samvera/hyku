@@ -3,6 +3,8 @@
 ## Table of Contents
   * [Defining Roles, Users, and Groups](#defining-roles-users-and-groups)
   * [Setup an Existing Application to use Groups with Roles](#setup-an-existing-application-to-use-groups-with-roles)
+    * [Migrate existing data](#migrate-existing-data)
+    * [Update Solr Configset](#update-solr-configset)
   * [Role Set Creation Guidelines](#role-set-creation-guidelines)
     * [Search Permissions Notes](#search-permissions-notes)
   * [Using the Feature](#using-the-feature)
@@ -47,6 +49,8 @@ First, it is worthwhile to define some basic concepts:
 
 ## Setup an Existing Application to use Groups with Roles
 
+### Migrate existing data
+
 These rake tasks will create data across all tenants necessary to setup Groups with Roles. **Run them in the order listed below.**
 
 Prerequisites:
@@ -65,6 +69,30 @@ rake hyku:roles:destroy_registered_group_collection_type_participants # optional
 <sup>\*</sup> The `hyku:roles:destroy_registered_group_collection_type_participants` task is technically optional. However, without it, collection readers will be allowed to create Collections.
 
 Default `Role`s and `Hyrax::Group`s are seeded into an account (tenant) at creation time (see [CreateAccount#create_defaults](app/services/create_account.rb)), so these only need to be run once.
+
+### Update Solr Configset
+
+For search permissions to work properly, a new Solr configset (with a unique name) will need to be uploaded.
+
+_In this example, our new configset's name will be `hyku-groups-with-roles`. You can rename this to what makes the most sense for your use case._
+
+```bash
+# bash
+export SOLR_CONFIGSET_NAME_NEW=hyku-groups-with-roles
+SOLR_CONFIGSET_NAME=$SOLR_CONFIGSET_NAME_NEW solrcloud-upload-configset.sh /app/samvera/hyrax-webapp/solr/conf
+```
+
+Next, each `Account`'s solr config needs to be modified with the new name:
+
+```ruby
+# in the rails console
+Account.find_each do |a|
+  result = %x{curl -X POST "#{ENV['SOLR_URL']}admin/collections?action=MODIFYCOLLECTION&collection=#{a.solr_endpoint.collection}&collection.configName=#{ENV['SOLR_CONFIGSET_NAME_NEW']}"}
+  raise "#{a.name} did not update" unless result.match('success')
+end
+```
+
+In the Solr Dashboard, you can confirm the new configset is being used by selecting a Collection in the left sidebar, looking at its Overview page, and finding the Config Name. This should now display the value of `SOLR_CONFIGSET_NAME_NEW`.
 
 ## Role Set Creation Guidelines
 1. Add role names to the [RolesService::DEFAULT_ROLES](app/services/roles_service.rb) constant

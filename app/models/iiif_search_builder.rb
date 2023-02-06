@@ -8,7 +8,6 @@ class IiifSearchBuilder < Blacklight::SearchBuilder
   def ocr_search_params(solr_parameters = {})
     solr_parameters[:facet] = false
     solr_parameters[:hl] = true
-    solr_parameters[:qf] = blacklight_config.iiif_search[:full_text_field]
     solr_parameters[:'hl.fl'] = blacklight_config.iiif_search[:full_text_field]
     solr_parameters[:'hl.fragsize'] = 100
     solr_parameters[:'hl.snippets'] = 10

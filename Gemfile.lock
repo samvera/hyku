@@ -11,8 +11,8 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: 25a43de74ad5bdfab2e756e35b1ffc11ee44c62d
-  branch: i11-job-split-pdfs-into-child-works
+  revision: a8441a18f6023a83b082ccaaca512d2963c993bd
+  branch: reasonably-sized-tiffs
   specs:
     iiif_print (0.0.1)
       blacklight_advanced_search (= 6.4.1)
@@ -141,7 +141,7 @@ GEM
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
       execjs (~> 2.0)
-    bagit (0.4.4)
+    bagit (0.4.5)
       docopt (~> 0.5.0)
       validatable (~> 1.6)
     bcp47 (0.3.3)

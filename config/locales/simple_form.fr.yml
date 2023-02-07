@@ -7,10 +7,33 @@ fr:
     hints:
       account:
         admin_emails: Entrez une adresse e-mail à la fois
+        allow_signup: Autoriser les utilisateurs à s'inscrire à votre référentiel
+        cache_api: Active le cache pour les points de terminaison d'API. Expérimental
+        contact_email: Email destinataire des messages envoyés via le formulaire de contact
+        contact_email_to: Adresse e-mail qui doit recevoir les e-mails de contact
+        doi_reader: Afficher la possibilité de lire à partir de Datacite pour remplir les enregistrements. WIP ne pas utiliser
+        doi_writer: Rédigez des DOI pour les enregistrements. WIP ne pas utiliser
+        email_format: Définissez une liste de domaines de messagerie autorisés à s'inscrire à ce référentiel, par exemple (@ubiquitypress.com @gmail.com). Laissez un seul espace entre chaque domaine.
+        email_subjet_prefix: Chaîne à placer devant les sujets des e-mails système.
+        enable_oai_metadata: Activer ou désactiver le lien OAI
         fcrepo_endpoint:
           base_path: Le chemin de base de Fedora doit commencer par une barre oblique ET ne pas se terminer par une barre oblique
           url: Fedora URL ne devrait pas se terminer par une barre oblique
+        file_acl: Désactiver si vous utilisez un système de fichiers comme samba ou nfs qui ne prend pas en charge la définition de listes de contrôle d'accès
+        file_size_limit: Il doit être défini sur au moins 536870912000
+        geonames_username: Inscrivez-vous sur http://www.geonames.org/manageaccount
+        gtm_id: L'identifiant de votre compte Google Tag Manager
+        is_public: Les utilisateurs peuvent-ils découvrir votre site sur la page d'accueil ou accéder à vos pages sans nom d'utilisateur/mot de passe particulier ?
+        locale_name: 'Le nom du suffixe de paramètres régionaux spécifiques au locataire ajouté à leurs fichiers locale.yml. Seuls les caractères alphabétiques doivent être ajoutés, pas de symboles ni de chiffres, ceux-ci seront alors en majuscules.
+
+          '
+        monthly_email_list: Liste des adresses e-mail pour envoyer le rapport mensuel. Laissez un seul espace entre chaque email
         name: Nom unique ou un trait d'union utilisé pour les aspects techniques du référentiel (par exemple, "acme" ou "acme-bibliothèque").
+        oai_admin_email: Adresse e-mail de contact du point de terminaison OAI
+        shared_login: Activer ou désactiver la connexion partagée
+        ssl_configured: Définissez-le sur vrai si vous utilisez https
+        weekly_email_list: Liste des adresses e-mail pour envoyer le rapport hebdomadaire. Laissez un seul espace entre chaque email
+        yearly_email_list: Liste des adresses e-mail pour envoyer le rapport annuel. Laissez un seul espace entre chaque email
       hyku_group:
         description: Un bref résumé du rôle du groupe
       user:
@@ -22,12 +45,15 @@ fr:
         fcrepo_endpoint:
           base_path: Chemin de base
           url: URL
+        gtm_id: Gestionnaire de balises Google
         name: Nom court
         solr_endpoint:
           url: URL
         tenant: UUID du locataire
       add_user_to_group:
         user_ids: Identifiant d'utilisateur
+      domain_names:
+        cname: Nom de domaine
       group_search:
         q: Chercher
       hyku_group:

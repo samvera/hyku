@@ -16,8 +16,8 @@ RSpec.describe Hyku::Admin::Group::NavigationPresenter do
     let(:params) { base_params.merge(action: action) }
     let(:presenter) { described_class.new(params: params) }
 
-    it 'has 3 tabs' do
-      expect(subject.count).to be(3)
+    it 'has 4 tabs' do
+      expect(subject.count).to be(4)
     end
 
     it 'has the edit tab marked as active' do
@@ -32,8 +32,8 @@ RSpec.describe Hyku::Admin::Group::NavigationPresenter do
     let(:params) { base_params.merge(controller: 'admin/group_users', action: action) }
     let(:presenter) { described_class.new(params: params) }
 
-    it 'has 3 tabs' do
-      expect(subject.count).to be(3)
+    it 'has 4 tabs' do
+      expect(subject.count).to be(4)
     end
 
     it 'has the members tab marked as active' do
@@ -41,18 +41,34 @@ RSpec.describe Hyku::Admin::Group::NavigationPresenter do
     end
   end
 
-  context 'remve page' do
+  context 'roles page' do
+    subject { presenter.tabs }
+
+    let(:action) { 'index' }
+    let(:params) { base_params.merge(controller: 'admin/group_roles', action: action) }
+    let(:presenter) { described_class.new(params: params) }
+
+    it 'has 4 tabs' do
+      expect(subject.count).to be(4)
+    end
+
+    it 'has the roles tab marked as active' do
+      expect(subject.select { |tab| tab.css_class == active_css_class && tab.action == action }.count).to be(1)
+    end
+  end
+
+  context 'remove page' do
     subject { presenter.tabs }
 
     let(:action) { 'remove' }
     let(:params) { base_params.merge(action: action) }
     let(:presenter) { described_class.new(params: params) }
 
-    it 'has 3 tabs' do
-      expect(subject.count).to be(3)
+    it 'has 4 tabs' do
+      expect(subject.count).to be(4)
     end
 
-    it 'has the members tab marked as active' do
+    it 'has the remove tab marked as active' do
       expect(subject.select { |tab| tab.css_class == active_css_class && tab.action == action }.count).to be(1)
     end
   end

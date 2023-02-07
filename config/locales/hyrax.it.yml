@@ -19,7 +19,7 @@ it:
           no_works: Il set amministrativo non contiene alcuna opera.
           title: Elenco di elementi in questo set amministrativo
         edit:
-          header: "Modifica set amministrativo: %{title}"
+          header: 'Modifica set amministrativo: %{title}'
         form:
           cancel: Annulla
           note: Gli utenti a cui è stato assegnato un nuovo ruolo acquisiranno il ruolo solo sulle opere depositate dopo che è stato concesso quel ruolo.
@@ -70,9 +70,9 @@ it:
             title: Gli spettatori
             type: genere
         form_participants:
-          add_group: "Aggiungere gruppo:"
+          add_group: 'Aggiungere gruppo:'
           add_participants: Aggiungi partecipanti
-          add_user: "Aggiungi utente:"
+          add_user: 'Aggiungi utente:'
           current_participants: Partecipanti attuali
         form_visibility:
           cancel: Annulla
@@ -84,19 +84,19 @@ it:
             title: pubblicazione
             varies:
               any: Il depositario può scegliere qualsiasi lunghezza di embargo; sono consentiti contratti di locazione
-              between: "Il depositante può scegliere l'embargo aggiornato:"
-              description: "Consenti al depositante di scegliere le impostazioni:"
+              between: 'Il depositante può scegliere l''embargo aggiornato:'
+              description: 'Consenti al depositante di scegliere le impostazioni:'
               embargo:
                 1yr: 1 anno dopo il deposito
                 2yrs: 2 anni dopo il deposito
                 3yrs: 3 anni dopo il deposito
                 6mos: 6 mesi dopo il deposito
                 select: Seleziona il periodo di embargo.
-              period: "Il depositante può scegliere il periodo di embargo fino a:"
+              period: 'Il depositante può scegliere il periodo di embargo fino a:'
           visibility:
             description: Impostare i criteri di visibilità per il set amministrativo. Impostare onori politiche di embargo sopra.
             everyone: Pubblico - il depositante può solo selezionare l'impostazione di visibilità pubblica
-            institution: "Istituzione: il depositante può selezionare solo l'impostazione di visibilità dell'istituzione"
+            institution: 'Istituzione: il depositante può selezionare solo l''impostazione di visibilità dell''istituzione'
             restricted: Privato - il depositante può selezionare solo privato per visibilità. L'accesso è limitato agli amministratori, ai gestori e ai visualizzatori del repository del set. Deve essere utilizzato con l'impostazione "Nessun embargo" sopra.
             title: Visibilità
             varies: Tutte le impostazioni consentite - il depositante può scegliere. È necessario utilizzare questa opzione per consentire i contratti di locazione.
@@ -164,7 +164,7 @@ it:
           update_notice: Partecipanti aggiornati
         form_settings:
           instructions: Queste impostazioni determinano come gestire e scoprire raccolte di questo tipo.
-          warning: "Avvertenza: queste impostazioni non possono essere modificate dopo la creazione di una raccolta di questo tipo."
+          warning: 'Avvertenza: queste impostazioni non possono essere modificate dopo la creazione di una raccolta di questo tipo.'
         index:
           breadcrumb: Tipi di raccolta
           create_new_button: Crea un nuovo tipo di raccolta
@@ -182,7 +182,7 @@ it:
             actions: Azioni
             name: Nome
         multiple_membership_checker:
-          error_preamble: "Errore: hai specificato più di uno stesso tipo di raccolta a appartenenza singola"
+          error_preamble: 'Errore: hai specificato più di uno stesso tipo di raccolta a appartenenza singola'
           error_type_and_collections: "(tipo: %{type}, collezioni: %{collections})"
         new:
           header: Crea nuovo tipo di raccolta
@@ -220,7 +220,7 @@ it:
       stats:
         deposited_form:
           end_label: end [il valore predefinito è ora]
-          heading: "Visualizza file depositati:"
+          heading: 'Visualizza file depositati:'
           start_label: Inizio
         repository_objects:
           series:
@@ -234,7 +234,7 @@ it:
         works:
           headers:
             main: Statistiche di lavoro
-            total: "Totale opere:"
+            total: 'Totale opere:'
             visibility: Totali per visibilità
       users:
         index:
@@ -242,18 +242,29 @@ it:
           describe_users_html:
             one: C'è <b>un utente %{count}</b> in questo repository.
             other: Ci sono <b>utenti %{count}</b> in questo repository.
+          group_label: Gruppi
           id_label: Nome utente
+          reader_title: Visualizza utenti
           role_label: ruoli
           title: Gestisci utenti
       workflow_roles:
         header: Ruoli del flusso di lavoro
         index:
+          current_group_roles: Ruoli attuali del gruppo
           current_roles: Ruoli attuali
+          current_user_roles: Ruoli utente correnti
           delete:
             confirm: Sei sicuro?
           header:
+            display_name: Nome da visualizzare
+            email: E-mail
+            group_name: Nome del gruppo
+            group_roles: Ruoli del gruppo
             roles: ruoli
             user: Utente
+            user_roles: Ruoli utente
+          new_group_role: Assegna ruolo al gruppo
+          new_role: Assegna ruolo
           new_user_role: Assegna ruolo all'utente
           no_roles: Nessun ruolo
       workflows:
@@ -281,10 +292,10 @@ it:
         default: Devi essere loggato per farlo!
       unprocessable_entity:
         default: La risorsa che hai tentato di modificare non può essere modificata in base alla tua richiesta.
-    background_attribution_html: ""
+    background_attribution_html: ''
     base:
       citations:
-        header: "citazioni:"
+        header: 'citazioni:'
       form_child_work_relationships:
         actions:
           remove: Rimuovi da questo lavoro
@@ -351,7 +362,7 @@ it:
         empty: Questo %{type} non è attualmente in nessuna raccolta.
         header: Le relazioni
       relationships_parent_row:
-        label: "In %{type}:"
+        label: 'In %{type}:'
       show:
         last_modified: Ultima modifica
       social_media:
@@ -363,6 +374,9 @@ it:
       help:
         resource_type: È possibile selezionare più tipi da applicare a tutti i file
         title: Il nome file sarà il titolo predefinito. Fornisci un titolo più significativo e i nomi dei file verranno comunque conservati dal sistema.
+    batch_edits:
+      delete_selected:
+        button_label: Elimina selezionato
     batch_uploads:
       disabled: Funzione disabilitata dall'amministratore
       files:
@@ -423,7 +437,7 @@ it:
         create: Salva
         create_new: Aggiungi a nuova collezione
         no_collections: Non hai accesso ad alcuna raccolta esistente. È possibile creare una nuova raccolta.
-        select_heading: "Seleziona la raccolta a cui aggiungere i tuoi file:"
+        select_heading: 'Seleziona la raccolta a cui aggiungere i tuoi file:'
         title: Aggiungere alla collezione
         update: Salvare le modifiche
     collection_type:
@@ -503,7 +517,7 @@ it:
         select_type_of_collection: Seleziona il tipo di raccolta
       collections:
         edit:
-          header: "Modifica %{type_title}: %{title}"
+          header: 'Modifica %{type_title}: %{title}'
         form:
           permission_update_errors:
             error: Opzione di aggiornamento non valida per il modello di autorizzazione.
@@ -526,6 +540,9 @@ it:
           logo:
             description: Una o più immagini da visualizzare nella parte superiore della pagina di raccolta. Per risultati ottimali, carica un'immagine (JPG, GIF o PNG) alta 40 pixel. Le immagini più grandi verranno ridimensionate a 40 pixel di altezza.
             label: Logo
+          thumbnail:
+            description: Un'immagine da visualizzare nei risultati di ricerca e sulla home page se decidi di mettere in evidenza questa raccolta. L'immagine verrà ritagliata e ridimensionata in vari modi all'interno dell'app, ma per ottenere i migliori risultati utilizza un'immagine (JPG, GIF o PNG) con orientamento orizzontale.
+            label: Miniatura
         form_discovery:
           para1: Queste impostazioni determinano chi è in grado di scoprire e visualizzare la pagina di destinazione di questa raccolta; non influiscono sulla visibilità degli articoli nella collezione.
           para2: Se scegli di non rendere accessibile questa raccolta, puoi comunque condividere la raccolta con utenti e gruppi specifici utilizzando la scheda Condivisione.
@@ -548,6 +565,11 @@ it:
             collection_title: Titolo della raccolta
           this_collection_in_other_collections_description: È possibile aggiungere questa raccolta ad altre raccolte come raccolta secondaria.
         form_share:
+          access_options:
+            creator: Creatore
+            depositor: Depositante
+            manager: Gestore
+            viewer: Spettatore
           add_group: Aggiungere gruppo
           add_sharing: Aggiungi condivisione
           add_user: Aggiungi utente
@@ -640,20 +662,21 @@ it:
           view_collection: Visualizza la raccolta
           work_confirmation: L'eliminazione di un'opera da %{application_name} è permanente. Fai clic su OK per eliminare quest'opera da %{application_name} o su Annulla per annullare questa operazione
         collection_list:
-          description: "Descrizione:"
-          edit_access: "Modifica accesso:"
-          groups: "gruppi:"
+          description: 'Descrizione:'
+          edit_access: 'Modifica accesso:'
+          groups: 'gruppi:'
           managed_access:
             deposit: Depositare
+            edit: Modificare
             manage: Gestire
             view: Visualizza
-          users: "utenti:"
+          users: 'utenti:'
         collections: collezioni
         facet_label:
-          collections: "Filtra raccolte:"
-          highlighted: "Punti salienti del filtro:"
-          shared: "Filtra condivisioni:"
-          works: "Il filtro funziona:"
+          collections: 'Filtra raccolte:'
+          highlighted: 'Punti salienti del filtro:'
+          shared: 'Filtra condivisioni:'
+          works: 'Il filtro funziona:'
         heading:
           access: Accesso
           action: Azioni
@@ -796,8 +819,13 @@ it:
       admin_sets:
         link: Visualizza tutte le raccolte
         tab_label: Esplora le raccolte
-        title: Esplora le raccolte
         thumbnail: miniatura
+        title: Esplora le raccolte
+      featured_collections:
+        document:
+          title_label: Titolo
+        no_collections: Non sono state presentate raccolte.
+        title: Collezioni in primo piano
       featured_researcher:
         missing: Nessun ricercatore è stato descritto.
         tab_label: Ricercatore in primo piano
@@ -906,7 +934,7 @@ it:
         terms_page: Condizioni d'uso
       updated: Pagine aggiornate.
     passive_consent_to_agreement: Salvando questo lavoro accetto il
-    product_name: "Hyku"
+    product_name: Hyku
     product_twitter_handle: "@HydraInABox"
     search:
       button:
@@ -1035,7 +1063,7 @@ it:
       default:
         deposit: Depositare
       load:
-        state_error: "Il flusso di lavoro: %{workflow_name} non è stato aggiornato. Stai rimuovendo uno stato: %{state_name} con entità / i %{entity_count}. Uno stato non può essere rimosso mentre ha entità attive!"
+        state_error: 'Il flusso di lavoro: %{workflow_name} non è stato aggiornato. Stai rimuovendo uno stato: %{state_name} con entità / i %{entity_count}. Uno stato non può essere rimosso mentre ha entità attive!'
       unauthorized: Il lavoro non è attualmente disponibile perché non ha ancora completato il processo di approvazione
     works:
       create:
@@ -1092,7 +1120,7 @@ it:
         require_membership: Un'opera deve appartenere ad almeno una raccolta di questo tipo
         sharable: Consenti agli utenti di assegnare gestori di raccolta, depositanti e visualizzatori per le raccolte che gestiscono
         share_applies_to_new_works: Quando le nuove opere vengono create direttamente nella raccolta, concedere le autorizzazioni di condivisione di utenti e gruppi per la nuova opera in base ai ruoli della raccolta.
-        title: ""
+        title: ''
       defaults:
         based_near: Un nome di luogo correlato all'opera, ad esempio il suo sito di pubblicazione, o la città, lo stato o il paese di cui si tratta. Invita il <a href='http://www.geonames.org'> servizio web GeoNames </a>.
         contributor: Una persona o un gruppo che vuoi riconoscere per avere un ruolo nella creazione dell'opera, ma non il ruolo principale.

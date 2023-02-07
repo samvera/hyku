@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Admin Dashboard', type: :feature do
+require 'rails_helper'
+
+RSpec.describe 'Admin Dashboard', type: :feature, js: true, clean: true do
   context 'as an administrator' do
     let(:user) { FactoryBot.create(:admin) }
     let(:group) { FactoryBot.create(:group) }
@@ -47,10 +49,10 @@ RSpec.describe 'Admin Dashboard', type: :feature do
 
     it 'shows the status page' do
       visit status_path
-      expect(page).to have_content("Fedora OK")
-      expect(page).to have_content("Solr OK")
-      expect(page).to have_content("Redis OK")
-      expect(page).to have_content("Database OK")
+      expect(page).to have_content("Fedora\nOK")
+      expect(page).to have_content("Solr\nOK")
+      expect(page).to have_content("Redis\nOK")
+      expect(page).to have_content("Database\nOK")
     end
 
     it 'displays the add-users-to-groups page without the hidden form field', js: true do

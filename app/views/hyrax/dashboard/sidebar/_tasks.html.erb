@@ -1,19 +1,22 @@
-<% if can? :review, :submissions %>
+<% if menu.show_task? %>
   <li class="h5"><%= t('hyrax.admin.sidebar.tasks') %></li>
+<% end %>
+
+<% if can? :review, :submissions %>
   <%= menu.nav_link(hyrax.admin_workflows_path,
                     onclick: "dontChangeAccordion(event);") do %>
     <span class="fa fa-flag" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.workflow_review') %></span>
   <% end %>
 <% end %>
 
-<% if can? :manage, User %>
+<% if can? :read, User %>
   <%= menu.nav_link(hyrax.admin_users_path,
                     onclick: "dontChangeAccordion(event);") do %>
     <span class="fa fa-user" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.users') %></span>
   <% end %>
 <% end %>
 
-<% if can? :manage, Hyku::Group %>
+<% if can? :read, Hyrax::Group %>
     <%= menu.nav_link(main_app.admin_groups_path) do %>
         <span class="fa fa-users"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.manage_groups') %></span>
     <% end %>

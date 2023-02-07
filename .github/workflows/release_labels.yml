@@ -1,0 +1,25 @@
+name: Verify
+on:
+  pull_request:
+    branches:
+      - '**'
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - labeled
+      - unlabeled
+
+jobs:
+  check_pr_labels:
+    runs-on: ubuntu-latest
+    name: PR has required labels
+    steps:
+      - uses: actions/checkout@v2
+
+      # https://github.com/marketplace/actions/label-checker-for-pull-requests
+      - name: Check PR for Release Notes labels
+        uses: docker://agilepathway/pull-request-label-checker:latest
+        with:
+          one_of: patch-ver,minor-ver,major-ver,ignore-for-release
+          repo_token: ${{ secrets.GITHUB_TOKEN }}

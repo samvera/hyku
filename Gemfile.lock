@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: 465ed13050dc00685a8d4d6f1bdccbee2d0f136f
+  revision: a943382a74de8d24aedeb7eb919dccd321e252c7
   branch: main
   specs:
     iiif_print (0.0.1)
@@ -22,7 +22,6 @@ GIT
       nokogiri (>= 1.13.2)
       rails (~> 5.0)
       rdf-vocab (~> 3.0)
-      sass-rails (~> 5.0)
 
 GIT
   remote: https://github.com/tawan/active-elastic-job.git
@@ -570,7 +569,7 @@ GEM
       rainbow (>= 2.2.2, < 4.0)
       terminal-table (>= 1.5.1)
     ice_nine (0.11.2)
-    iiif-presentation (1.0.0)
+    iiif-presentation (1.1.0)
       activesupport (>= 3.2.18)
       faraday (>= 0.9)
       json

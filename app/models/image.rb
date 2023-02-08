@@ -6,7 +6,6 @@ class Image < ActiveFedora::Base
   include ::Hyrax::WorkBehavior
   include IiifPrint::SetChildFlag
 
-
   property :extent, predicate: ::RDF::Vocab::DC.extent, multiple: true do |index|
     index.as :stored_searchable
   end

@@ -10,5 +10,4 @@ class GenericWorkIndexer < AppIndexer
   #  end
   # end
   include IiifPrint::ChildIndexer
-
 end

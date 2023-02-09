@@ -58,6 +58,7 @@ Prerequisites:
 
 ```bash
 rake hyku:roles:create_default_roles_and_groups
+rake hyku:update_hyrax_group_names
 rake hyku:roles:create_collection_accesses
 rake hyku:roles:create_admin_set_accesses
 rake hyku:roles:create_collection_type_participants

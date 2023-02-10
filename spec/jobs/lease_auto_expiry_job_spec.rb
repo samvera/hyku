@@ -3,6 +3,7 @@
 RSpec.describe LeaseAutoExpiryJob do
   before do
     ActiveJob::Base.queue_adapter = :test
+    FactoryBot.create(:group, name: "public")
   end
 
   after do

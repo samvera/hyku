@@ -5,7 +5,7 @@ RSpec.describe Admin::GroupsController, singletenant: true do
     describe 'GET #index' do
       subject { get :index }
 
-      it { is_expected.to redirect_to root_path }
+      it { is_expected.to redirect_to new_user_session_path }
     end
   end
 
@@ -26,10 +26,10 @@ RSpec.describe Admin::GroupsController, singletenant: true do
     end
 
     describe 'POST #create' do
-      it 'creates a group when it recieves valid attribtes' do
+      it 'creates a group when it receives valid attributes' do
         expect do
-          post :create, params: { hyku_group: FactoryBot.attributes_for(:group) }
-        end.to change(Hyku::Group, :count).by(1)
+          post :create, params: { group: FactoryBot.attributes_for(:group) }
+        end.to change(Hyrax::Group, :count).by(1)
       end
     end
 
@@ -44,9 +44,9 @@ RSpec.describe Admin::GroupsController, singletenant: true do
       end
 
       describe 'PATCH #update' do
-        subject { Hyku::Group.find_by(id: group.id) }
+        subject { Hyrax::Group.find_by(id: group.id) }
 
-        before { patch :update, params: { id: group.id, hyku_group: new_attributes } }
+        before { patch :update, params: { id: group.id, group: new_attributes } }
 
         it 'updates attribtes' do
           expect(subject.name).to eq(new_attributes.fetch(:name))
@@ -61,7 +61,7 @@ RSpec.describe Admin::GroupsController, singletenant: true do
       end
 
       describe 'DELETE #destroy' do
-        subject { Hyku::Group.find_by(id: group.id) }
+        subject { Hyrax::Group.find_by(id: group.id) }
 
         before { delete :destroy, params: { id: group.id } }
 

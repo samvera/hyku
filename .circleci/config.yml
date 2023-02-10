@@ -1,12 +1,13 @@
 version: 2.1
 orbs:
   samvera: samvera/circleci-orb@0
+  browser-tools: circleci/browser-tools@1.1
 jobs:
   bundle_lint_test:
     parameters:
       ruby_version:
         type: string
-        default: 2.7.4
+        default: 2.7.6
       bundler_version:
         type: string
         default: '2.0.1'
@@ -25,7 +26,7 @@ jobs:
         type: string
         default: '4'
     docker:
-      - image: circleci/ruby:<< parameters.ruby_version >>-node-browsers-legacy
+      - image: cimg/ruby:<< parameters.ruby_version >>-browsers
       - image: ualbertalib/docker-fcrepo4:<< parameters.fcrepo_version>>
         environment:
           CATALINA_OPTS: "-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms512m -Xmx1024m -XX:NewSize=256m -XX:MaxNewSize=256m -XX:PermSize=256m -XX:MaxPermSize=256m -XX:+DisableExplicitGC"
@@ -57,6 +58,7 @@ jobs:
       BUNDLE_PATH: vendor/bundle
       BUNDLE_JOBS: 4
       BUNDLE_RETRY: 3
+      HYKU_RESTRICT_CREATE_AND_DESTROY_PERMISSIONS: 'true'
       SOLR_ADMIN_USER: admin
       SOLR_ADMIN_PASSWORD: admin
       SOLR_COLLECTION_NAME: hydra-test
@@ -67,14 +69,18 @@ jobs:
       RAILS_ENV: test
       RACK_ENV: test
       FCREPO_TEST_PORT: 8080/fcrepo
-      SPEC_OPTS: --profile 10 --format RspecJunitFormatter --out /tmp/test-results/rspec.xml --format progress
+      SPEC_OPTS: --tag ~ci:skip --profile 10 --format RspecJunitFormatter --out /tmp/test-results/rspec.xml --format progress
     steps:
       - samvera/cached_checkout
-
       - samvera/bundle:
           ruby_version: << parameters.ruby_version >>
           bundler_version: << parameters.bundler_version >>
+      - run: |
+            sed -i '/require .enumerator./d' /home/circleci/project/vendor/bundle/gems/oai-1.1.0/lib/oai/provider/resumption_token.rb && \
+            sed -i '/require .enumerator./d' /home/circleci/project/vendor/bundle/gems/edtf-3.0.8/lib/edtf.rb && \
+            sed -i '/require .enumerator./d' /home/circleci/project/vendor/bundle/gems/csl-1.6.0/lib/csl.rb
       - samvera/rubocop
+      - browser-tools/install-browser-tools
       - run: bundle exec rake db:create db:schema:load
       - run: bin/solrcloud-upload-configset.sh solr/conf
       - samvera/parallel_rspec
@@ -84,6 +90,6 @@ workflows:
   ci:
     jobs:
       - bundle_lint_test:
-          ruby_version: "2.7.4"
-          name: "ruby2-7-4"
+          ruby_version: "2.7.6"
+          name: "ruby2-7-6"
           solr_config_path: 'solr/conf'

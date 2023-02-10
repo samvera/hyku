@@ -8,6 +8,8 @@ es:
     tagline: La solución de repositorio de próxima generación
   helpers:
     submit:
+      add_role_to_group:
+        submit: Añadir
       add_user_to_group:
         submit: Añadir
       group_search:
@@ -41,17 +43,27 @@ es:
             clear: Reiniciar
         describe_quantity_html: Hay <b>%{number} grupos</b> en este repositorio.
         describe_singular_quantity_html: Hay <b>1 grupo</b> en este repositorio.
+        description:
+          admin: Los usuarios de este grupo se consideran administradores de este inquilino y tienen acceso sin restricciones.
+          depositors: Los usuarios de este grupo pueden depositar trabajos en cualquier conjunto de administración de este inquilino.
+          editors: 'Los usuarios de este grupo pueden leer y editar todas las colecciones y obras de este inquilino. También pueden: crear cobros, depositar y aprobar obras, gestionar embargos y arrendamientos y gestionar importadores y exportadores de Bulkrax.'
+          registered: Contiene todos los usuarios que se han registrado en este inquilino.
         flash:
           create:
             failure: No se pudo crear
             invalid: Los grupos deben tener un nombre
             success: "%{group} creado"
           destroy:
-            failure: "No pudo ser destruido %{group} "
+            failure: 'No pudo ser destruido %{group} '
             success: "%{group} destruido"
+          remove:
+            cannot_destroy_default_group: Los grupos predeterminados no se pueden destruir.
           update:
-            failure: "No se pudo actualizar %{group} "
+            failure: 'No se pudo actualizar %{group} '
             success: "%{group} actualizado"
+        humanized_name:
+          admin: Administradores de repositorios
+          registered: Usuarios Registrados
         label:
           actions: Comportamiento
           created_at: Fecha de creacion
@@ -85,8 +97,19 @@ es:
           list_members: Miembros del grupo actual
           members: Miembros del grupo
           new: Nuevo grupo
+          reader_index: Ver grupos
           remove: Eliminar grupo
           roles: Roles de grupo
+      roles:
+        description:
+          admin: Otorga acceso sin restricciones a este inquilino
+          collection_editor: Puede crear, leer y editar cualquier colección en este inquilino
+          collection_manager: Puede crear, leer, editar y destruir cualquier colección en este inquilino
+          collection_reader: Puede leer cualquier colección en este inquilino
+          user_manager: Puede leer, editar, invitar y eliminar a cualquier usuario en este inquilino
+          user_reader: Puede leer cualquier usuario en este inquilino
+          work_depositor: Puede depositar obras en cualquier conjunto de administración de este inquilino. Puede leer, editar y gestionar embargos / arrendamientos de obras que les pertenecen.
+          work_editor: Puede leer cualquier conjunto de administración en este inquilino. Además, puede crear, leer, editar y aprobar cualquier trabajo en este inquilino, así como mover trabajos entre conjuntos de administración y administrar embargos y arrendamientos.
       title: Administración
       work_types: Tipos de trabajo disponibles
     footer:
@@ -95,7 +118,16 @@ es:
       accounts:
         nav: Cuentas
       users:
+        edit:
+          header: Usuario de edición
+        index:
+          confirm_delete: "¿Está seguro de que desea eliminar este usuario? Esta acción no se puede deshacer."
+          header: Administrar usuarios
+          manage: Gestionar
         nav: Usuarios
+        show:
+          header: Administrar usuario
+          update: Actualizar
     splash:
       account_denied: No estás autorizado para crear inquilinos.
       account_login: Inicia sesión para comenzar
@@ -172,9 +204,15 @@ es:
             active: Activo
             pending: Pendiente
           status_label: Estado
+  permissions:
+    collections:
+      cannot:
+        manage_discovery: No tienes permiso para cambiar la configuración de descubrimiento de esta colección
   proprietor:
     accounts:
       edit:
+        account_settings: Configuración de cuenta
+        data_cite_endpoint: Extremo de DataCite
         fcrepo_endpoint: Punto final de Fedora
         header: Cuenta de edición
         solr_endpoint: Punto final de Solr
@@ -191,10 +229,35 @@ es:
         add: Añadir
         current_admins:
           actions: Acción
+          all_users: Todos los usuarios
+          email: Dirección de correo electrónico
+          header: Administradores de cuenta corriente
           no_admins: No existen administradores
         edit: Editar cuenta
         header: Administrar cuenta
         remove: Eliminar
+        update: Actualizar
+    users:
+      edit:
+        header: editar usuario
+      index:
+        actions: Comportamiento
+        affiliation: Afiliación
+        confirm_delete: "¿Estás seguro de que deseas eliminar a este usuario?"
+        create_new: Crear nuevo
+        department: Departamento
+        display_name: Nombre para mostrar
+        email: Email
+        header: Administrar usuarios
+        manage: Gestionar
+        title: Título
+        view_users: Ver usuarios
+      new:
+        header: Crea un nuevo usuario
+      show:
+        add: Añadir
+        edit: Editar
+        header: Administrar usuario
         update: Actualizar
   status:
     index:

@@ -8,6 +8,8 @@ zh:
     tagline: 下一代存储库解决方案
   helpers:
     submit:
+      add_role_to_group:
+        submit: 加
       add_user_to_group:
         submit: 加
       group_search:
@@ -41,6 +43,11 @@ zh:
             clear: 重启
         describe_quantity_html: 此存储库中有<b>%{number}组</b>。
         describe_singular_quantity_html: 此存储库中有<b> 1组</b>。
+        description:
+          admin: 该组中的用户被视为该租户的管理员，并且具有不受限制的访问权限。
+          depositors: 允许该组中的用户将作品存放到该租户的任何管理集中。
+          editors: 允许该组中的用户阅读和编辑此租户中的所有“收藏夹”和“作品”。他们还可以：创建馆藏，存放和批准作品，管理禁运和租赁，以及管理Bulkrax进口商和出口商。
+          registered: 包含已在此租户中注册的所有用户。
         flash:
           create:
             failure: 无法创建组
@@ -49,9 +56,14 @@ zh:
           destroy:
             failure: "%{group}不能被毁灭"
             success: "%{group}销毁"
+          remove:
+            cannot_destroy_default_group: 默认组不能被销毁
           update:
             failure: "%{group}无法更新"
             success: "%{group}更新"
+        humanized_name:
+          admin: 存储库管理员
+          registered: 注册用户
         label:
           actions: 操作
           created_at: 创建日期
@@ -85,8 +97,19 @@ zh:
           list_members: 当前组成员
           members: 小组成员
           new: 新组
+          reader_index: 查看組
           remove: 删除组
           roles: 组角色
+      roles:
+        description:
+          admin: 授予该租户不受限制的访问权限
+          collection_editor: 可以创建，读取和编辑此租户中的任何收藏集
+          collection_manager: 可以创建，读取，编辑和销毁此租户中的任何收藏集
+          collection_reader: 可以读取此租户中的任何收藏集
+          user_manager: 可以读取，编辑，邀请和删除此租户中的任何用户
+          user_reader: 可以读取此租户中的任何用户
+          work_depositor: 可以将作品存放到该租户的任何管理集中。可以阅读，编辑和管理属于他们的作品的禁运/租赁
+          work_editor: 可以读取此租户中的任何管理集。此外，可以在此租户中创建，阅读，编辑和批准任何作品，以及在管理集之间移动作品以及管理禁运和租赁
       title: 行政
       work_types: 可用的工作类型
     footer:
@@ -95,7 +118,16 @@ zh:
       accounts:
         nav: 帐号
       users:
+        edit:
+          header: 编辑用户
+        index:
+          confirm_delete: 您确定要删除该用户吗？此操作无法撤消。
+          header: 管理用户
+          manage: 管理
         nav: 用户
+        show:
+          header: 管理用户
+          update: 更新
     splash:
       account_denied: 您无权创建租户
       account_login: 登录即可开始使用
@@ -172,9 +204,15 @@ zh:
             active: 活性
             pending: 有待
           status_label: 状态
+  permissions:
+    collections:
+      cannot:
+        manage_discovery: 您无权更改此收藏集的发现设置
   proprietor:
     accounts:
       edit:
+        account_settings: 账户设置
+        data_cite_endpoint: 数据引用端点
         fcrepo_endpoint: Fedora端点
         header: 编辑帐号
         solr_endpoint: Solr端点
@@ -191,11 +229,36 @@ zh:
         add: 加
         current_admins:
           actions: 行动
+          all_users: 全部用户
+          email: 电子邮件地址
+          header: 经常账户管理员
           no_admins: 没有管理员
         edit: 编辑帐户
         header: 管理帐户
         remove: 去掉
         update: 更新资料
+    users:
+      edit:
+        header: 编辑使用者
+      index:
+        actions: 动作
+        affiliation: 聯繫
+        confirm_delete: 您确定要删除此用户吗？
+        create_new: 創建新的
+        department: 部門
+        display_name: 顯示名稱
+        email: 電子郵件
+        header: 管理用户
+        manage: 管理
+        title: 標題
+        view_users: 查看用户
+      new:
+        header: 创建一个新用户
+      show:
+        add: 加
+        edit: 編輯
+        header: 管理用户
+        update: 更新
   status:
     index:
       services: 服务

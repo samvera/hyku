@@ -242,18 +242,29 @@ zh:
           describe_users_html:
             one: 该存储库中有<b>%{count}个用户</b> 。
             other: 此存储库中有<b>%{count}个用户</b> 。
+          group_label: 团体
           id_label: 用户名
+          reader_title: 查看用户
           role_label: 的角色
           title: 管理用户
       workflow_roles:
         header: 工作流程角色
         index:
+          current_group_roles: 目前的小组角色
           current_roles: 现任职务
+          current_user_roles: 当前用户角色
           delete:
             confirm: 你确定吗？
           header:
+            display_name: 显示名称
+            email: 电子邮件
+            group_name: 团队名字
+            group_roles: 组角色
             roles: 的角色
             user: 用户
+            user_roles: 用户角色
+          new_group_role: 将角色分配给组
+          new_role: 分配角色
           new_user_role: 分配角色给用户
           no_roles: 没有角色
       workflows:
@@ -281,7 +292,7 @@ zh:
         default: 你必须先登录才能做到这一点！
       unprocessable_entity:
         default: 您尝试修改的资源无法根据您的请求进行修改。
-    background_attribution_html: ""
+    background_attribution_html: ''
     base:
       citations:
         header: 引文：
@@ -363,6 +374,9 @@ zh:
       help:
         resource_type: 您可以选择多种类型以应用于所有文件
         title: 文件名将是默认标题。请提供更有意义的标题，文件名仍将被系统保留。
+    batch_edits:
+      delete_selected:
+        button_label: 删除所选
     batch_uploads:
       disabled: 管理员已禁用功能
       files:
@@ -526,6 +540,9 @@ zh:
           logo:
             description: 一幅或多幅图像将显示在集合页面的顶部。为了获得最佳效果，请上传40像素高的图像（JPG，GIF或PNG）。较大的图像将被调整为40像素高。
             label: 商标
+          thumbnail:
+            description: 如果您决定展示此系列，将显示在搜索结果和主页上的图像。图像将在整个应用程序中以各种方式裁剪和调整大小，但为获得最佳效果，请使用横向图像（JPG、GIF 或 PNG）。
+            label: 缩略图
         form_discovery:
           para1: 这些设置确定谁可以发现和查看此收藏的登录页面；它们不会影响集合中项目的可见性。
           para2: 如果您选择不使该收藏集成为开放访问权限，您仍然可以使用“共享”选项卡与特定用户和组共享收藏集。
@@ -548,6 +565,11 @@ zh:
             collection_title: 收藏标题
           this_collection_in_other_collections_description: 您可以将此集合作为子集合添加到其他集合。
         form_share:
+          access_options:
+            creator: 造物主
+            depositor: 储户
+            manager: 经理
+            viewer: 查看器
           add_group: 新增群组
           add_sharing: 添加共享
           add_user: 添加用户
@@ -645,6 +667,7 @@ zh:
           groups: 团体：
           managed_access:
             deposit: 存款
+            edit: 编辑
             manage: 管理
             view: 视图
           users: 使用者：
@@ -796,8 +819,13 @@ zh:
       admin_sets:
         link: 查看所有收藏
         tab_label: 探索收藏
-        title: 探索收藏
         thumbnail: 缩略图
+        title: 探索收藏
+      featured_collections:
+        document:
+          title_label: 标题
+        no_collections: 没有精选集。
+        title: 精选系列
       featured_researcher:
         missing: 没有研究人员的特色。
         tab_label: 特色研究员
@@ -906,7 +934,7 @@ zh:
         terms_page: 使用条款
       updated: 页面已更新。
     passive_consent_to_agreement: 保存此作品，我同意
-    product_name: "俳句"
+    product_name: 俳句
     product_twitter_handle: "@HydraInABox"
     search:
       button:
@@ -1092,7 +1120,7 @@ zh:
         require_membership: 一件作品必须至少属于这一类型的收藏
         sharable: 允许用户为他们管理的收藏指派收藏经理，存款人和查看者
         share_applies_to_new_works: 在集合中直接创建新作品时，请根据其收藏角色授予共享用户和组新作品的权限。
-        title: ""
+        title: ''
       defaults:
         based_near: 与该作品相关的地名，例如其出版地或该作品所涉及的城市，州或国家。调用<a href='http://www.geonames.org'> GeoNames Web服务</a>。
         contributor: 您希望因在作品创作中扮演的角色而被认可的个人或团体，而不是主要角色。

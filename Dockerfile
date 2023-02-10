@@ -92,7 +92,7 @@ RUN sh -l -c " \
 COPY --chown=1001:101 $APP_PATH/bin/db-migrate-seed.sh /app/samvera/
 COPY --chown=1001:101 $APP_PATH /app/samvera/hyrax-webapp
 
-RUN RAILS_ENV=production SECRET_KEY_BASE=`bin/rake secret` DB_ADAPTER=nulldb DB_URL='postgresql://fake' bundle exec rake assets:precompile
+RUN RAILS_ENV=production SECRET_KEY_BASE=`bin/rake secret` DB_ADAPTER=nulldb DB_URL='postgresql://fake' bundle exec rake assets:precompile && yarn install
 CMD ./bin/web
 
 FROM hyku-web as hyku-worker

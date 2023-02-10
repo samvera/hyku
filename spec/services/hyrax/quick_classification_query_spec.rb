@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-# OVERRIDE FILE from Hyrax v2.9.0
+# OVERRIDE Hyrax v2.9.0
 RSpec.describe Hyrax::QuickClassificationQuery do
-  let(:user) { create(:user) }
+  # OVERRIDE: add :work_depositor role -- proper testing requires create permission
+  let(:user) { create(:user, roles: [:work_depositor]) }
 
   context "with no options" do
     let(:query) { described_class.new(user) }

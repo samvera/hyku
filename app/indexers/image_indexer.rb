@@ -10,5 +10,4 @@ class ImageIndexer < AppIndexer
   #  end
   # end
   include IiifPrint::ChildIndexer
-
 end

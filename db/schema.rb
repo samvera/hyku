@@ -343,6 +343,14 @@ ActiveRecord::Schema.define(version: 2023_02_06_191801) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "hyrax_groups", id: :serial, force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "humanized_name"
+  end
+
   create_table "iiif_print_derivative_attachments", id: :serial, force: :cascade do |t|
     t.string "fileset_id"
     t.string "path"
@@ -358,12 +366,6 @@ ActiveRecord::Schema.define(version: 2023_02_06_191801) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["file_path"], name: "index_iiif_print_ingest_file_relations_on_file_path"
-  create_table "hyrax_groups", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "humanized_name"
   end
 
   create_table "job_io_wrappers", id: :serial, force: :cascade do |t|

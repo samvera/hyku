@@ -92,7 +92,7 @@ gem 'hyrax', '~> 3.5.0'
 
 gem 'bolognese', '>= 1.9.10'
 gem 'hyrax-doi', git: 'https://github.com/samvera-labs/hyrax-doi.git', branch: 'hyrax_upgrade'
-gem 'iiif_print', git: 'https://github.com/scientist-softserv/iiif_print.git', branch: 'main'
+gem 'iiif_print', git: 'https://github.com/scientist-softserv/iiif_print.git', ref: '2b081d6'
 gem 'postrank-uri', '>= 1.0.24'
 gem 'rsolr', '~> 2.0'
 

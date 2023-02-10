@@ -3,6 +3,8 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+
+  concern :iiif_search, BlacklightIiifSearch::Routes.new
   concern :oai_provider, BlacklightOaiProvider::Routes.new
 
   mount Riiif::Engine => 'images', as: :riiif if Hyrax.config.iiif_image_server?
@@ -41,6 +43,8 @@ Rails.application.routes.draw do
   mount Qa::Engine => '/authorities'
 
   mount Blacklight::Engine => '/'
+  mount BlacklightAdvancedSearch::Engine => '/'
+
   mount Hyrax::Engine, at: '/'
   if ENV.fetch('HYKU_BULKRAX_ENABLED', 'true') == 'true'
     mount Bulkrax::Engine, at: '/'
@@ -59,6 +63,7 @@ Rails.application.routes.draw do
 
   resources :solr_documents, only: [:show], path: '/catalog', controller: 'catalog' do
     concerns :exportable
+    concerns :iiif_search
   end
 
   resources :bookmarks do

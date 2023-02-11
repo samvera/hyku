@@ -10,95 +10,9 @@ GIT
       rails (~> 5.2.4, >= 5.2.4.3)
 
 GIT
-  remote: https://github.com/tawan/active-elastic-job.git
-  revision: ec51c5d9dedc4a1b47f2db41f26d5fceb251e979
-  specs:
-    active_elastic_job (2.0.1)
-      aws-sdk-sqs (~> 1)
-      rails (>= 4.2)
-
-PATH
-  remote: vendor/engines/bulkrax
-  specs:
-    bulkrax (5.0.0)
-      bagit (~> 0.4)
-      coderay
-      iso8601 (~> 0.9.0)
-      kaminari
-      language_list (~> 1.2, >= 1.2.1)
-      libxml-ruby (~> 3.2.4)
-      loofah (>= 2.2.3)
-      oai (>= 0.4, < 2.x)
-      rack (>= 2.0.6)
-      rails (>= 5.1.6)
-      rdf (>= 2.0.2, < 4.0)
-      rubyzip
-      simple_form
-
-PATH
-  remote: vendor/engines/hyrax
-  specs:
-    hyrax (3.5.0)
-      active-fedora (~> 13.1, >= 13.1.2)
-      almond-rails (~> 0.1)
-      awesome_nested_set (~> 3.1)
-      blacklight (~> 6.14)
-      blacklight-gallery (~> 0.7)
-      breadcrumbs_on_rails (~> 3.0)
-      browse-everything (>= 0.16, < 2.0)
-      carrierwave (~> 1.0)
-      clipboard-rails (~> 1.5)
-      draper (~> 4.0)
-      dry-equalizer (~> 0.2)
-      dry-events (~> 0.2.0)
-      dry-monads (< 1.5)
-      dry-struct (~> 1.0)
-      dry-transaction (~> 0.11)
-      dry-validation (~> 1.3)
-      flipflop (~> 2.3)
-      flot-rails (~> 0.0.6)
-      font-awesome-rails (~> 4.2)
-      hydra-derivatives (~> 3.3)
-      hydra-editor (~> 5.0, >= 5.0.4)
-      hydra-file_characterization (~> 1.1.2)
-      hydra-head (~> 11.0, >= 11.0.1)
-      hydra-works (>= 0.16)
-      iiif_manifest (>= 0.3, < 2.0)
-      jquery-datatables-rails (~> 3.4)
-      jquery-ui-rails (~> 6.0)
-      json-ld (< 3.2)
-      json-schema
-      kaminari_route_prefix (~> 0.1.1)
-      legato (~> 0.3)
-      linkeddata
-      mailboxer (~> 0.12)
-      nest (~> 3.1)
-      noid-rails (~> 3.0.0)
-      oauth
-      oauth2 (~> 1.2)
-      posix-spawn
-      power_converter (~> 0.1, >= 0.1.2)
-      psych (~> 3.3)
-      qa (~> 5.5, >= 5.5.1)
-      rails (~> 5.0)
-      rails_autolink (~> 1.1)
-      rdf-rdfxml
-      rdf-vocab (~> 3.0)
-      redis (~> 4.0)
-      redis-namespace (~> 1.5)
-      redlock (>= 0.1.2)
-      reform (~> 2.3)
-      reform-rails (~> 0.2.0)
-      retriable (>= 2.9, < 4.0)
-      samvera-nesting_indexer (~> 2.0)
-      sass-rails (~> 5.0)
-      select2-rails (~> 3.5)
-      signet
-      tinymce-rails (~> 5.10)
-      valkyrie (~> 2, >= 2.1.1)
-
-PATH
-  remote: vendor/engines/iiif_print
+  remote: https://github.com/scientist-softserv/iiif_print.git
+  revision: 9322fbfbe669f238630bfcf39576851746d445ae
+  branch: i98-bulkrax
   specs:
     iiif_print (0.0.1)
       blacklight_advanced_search (= 6.4.1)
@@ -108,6 +22,14 @@ PATH
       nokogiri (>= 1.13.2)
       rails (~> 5.0)
       rdf-vocab (~> 3.0)
+
+GIT
+  remote: https://github.com/tawan/active-elastic-job.git
+  revision: ec51c5d9dedc4a1b47f2db41f26d5fceb251e979
+  specs:
+    active_elastic_job (2.0.1)
+      aws-sdk-sqs (~> 1)
+      rails (>= 4.2)
 
 GEM
   remote: https://rubygems.org/
@@ -299,6 +221,20 @@ GEM
       signet (~> 0.8)
       typhoeus
     builder (3.2.4)
+    bulkrax (5.0.0)
+      bagit (~> 0.4)
+      coderay
+      iso8601 (~> 0.9.0)
+      kaminari
+      language_list (~> 1.2, >= 1.2.1)
+      libxml-ruby (~> 3.2.4)
+      loofah (>= 2.2.3)
+      oai (>= 0.4, < 2.x)
+      rack (>= 2.0.6)
+      rails (>= 5.1.6)
+      rdf (>= 2.0.2, < 4.0)
+      rubyzip
+      simple_form
     byebug (11.1.3)
     cancancan (1.17.0)
     capybara (3.36.0)
@@ -489,7 +425,7 @@ GEM
     geocoder (1.8.1)
     globalid (1.0.0)
       activesupport (>= 5.0)
-    google-apis-core (0.10.0)
+    google-apis-core (0.11.0)
       addressable (~> 2.5, >= 2.5.1)
       googleauth (>= 0.16.2, < 2.a)
       httpclient (>= 2.8.1, < 3.a)
@@ -560,6 +496,64 @@ GEM
       hydra-derivatives (~> 3.6)
       hydra-file_characterization (~> 1.0)
       hydra-pcdm (>= 0.9)
+    hyrax (3.5.0)
+      active-fedora (~> 13.1, >= 13.1.2)
+      almond-rails (~> 0.1)
+      awesome_nested_set (~> 3.1)
+      blacklight (~> 6.14)
+      blacklight-gallery (~> 0.7)
+      breadcrumbs_on_rails (~> 3.0)
+      browse-everything (>= 0.16, < 2.0)
+      carrierwave (~> 1.0)
+      clipboard-rails (~> 1.5)
+      draper (~> 4.0)
+      dry-equalizer (~> 0.2)
+      dry-events (~> 0.2.0)
+      dry-monads (< 1.5)
+      dry-struct (~> 1.0)
+      dry-transaction (~> 0.11)
+      dry-validation (~> 1.3)
+      flipflop (~> 2.3)
+      flot-rails (~> 0.0.6)
+      font-awesome-rails (~> 4.2)
+      hydra-derivatives (~> 3.3)
+      hydra-editor (~> 5.0, >= 5.0.4)
+      hydra-file_characterization (~> 1.1.2)
+      hydra-head (~> 11.0, >= 11.0.1)
+      hydra-works (>= 0.16)
+      iiif_manifest (>= 0.3, < 2.0)
+      jquery-datatables-rails (~> 3.4)
+      jquery-ui-rails (~> 6.0)
+      json-ld (< 3.2)
+      json-schema
+      kaminari_route_prefix (~> 0.1.1)
+      legato (~> 0.3)
+      linkeddata
+      mailboxer (~> 0.12)
+      nest (~> 3.1)
+      noid-rails (~> 3.0.0)
+      oauth
+      oauth2 (~> 1.2)
+      posix-spawn
+      power_converter (~> 0.1, >= 0.1.2)
+      psych (~> 3.3)
+      qa (~> 5.5, >= 5.5.1)
+      rails (~> 5.0)
+      rails_autolink (~> 1.1)
+      rdf-rdfxml
+      rdf-vocab (~> 3.0)
+      redis (~> 4.0)
+      redis-namespace (~> 1.5)
+      redlock (>= 0.1.2)
+      reform (~> 2.3)
+      reform-rails (~> 0.2.0)
+      retriable (>= 2.9, < 4.0)
+      samvera-nesting_indexer (~> 2.0)
+      sass-rails (~> 5.0)
+      select2-rails (~> 3.5)
+      signet
+      tinymce-rails (~> 5.10)
+      valkyrie (~> 2, >= 2.1.1)
     i18n (1.10.0)
       concurrent-ruby (~> 1.0)
     i18n-debug (1.2.0)
@@ -1038,7 +1032,7 @@ GEM
       faraday (>= 0.17.5, < 3.a)
       jwt (>= 1.5, < 3.0)
       multi_json (~> 1.10)
-    simple_form (5.1.0)
+    simple_form (5.2.0)
       actionpack (>= 5.2)
       activemodel (>= 5.2)
     simplecov (0.21.2)
@@ -1152,7 +1146,7 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.6.6)
+    zeitwerk (2.6.7)
 
 PLATFORMS
   ruby
@@ -1167,7 +1161,7 @@ DEPENDENCIES
   blacklight_oai_provider (~> 6.1, >= 6.1.1)
   bolognese (>= 1.9.10)
   bootstrap-datepicker-rails
-  bulkrax!
+  bulkrax (~> 5.0)
   byebug
   capybara
   capybara-screenshot (~> 1.0)
@@ -1186,7 +1180,7 @@ DEPENDENCIES
   fcrepo_wrapper (~> 0.4)
   flipflop (~> 2.3)
   flutie
-  hyrax!
+  hyrax (~> 3.5.0)
   hyrax-doi!
   i18n-debug
   i18n-tasks
@@ -1208,6 +1202,7 @@ DEPENDENCIES
   rails (~> 5.2.5)
   rails-controller-testing
   rdf (~> 3.1.15)
+  redlock (>= 0.1.2, < 2.0)
   riiif (~> 1.1)
   rolify
   rsolr (~> 2.0)

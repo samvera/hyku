@@ -44,3 +44,4 @@ Welcome to the Hyku development wiki!
 * [[Issues with images not rendering]]
 * [[Import from purl]] (Stanford-specific)
 * [[Selecting Custom Themes]]
+* [[Groups with Roles Feature]]

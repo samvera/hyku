@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: 9322fbfbe669f238630bfcf39576851746d445ae
+  revision: 6676caaba6c05166a9390b6ec20097ced8dc48d8
   branch: i98-bulkrax
   specs:
     iiif_print (0.0.1)

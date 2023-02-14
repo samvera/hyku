@@ -7,6 +7,24 @@
 # Terms is the list of fields displayed by app/views/collections/_show_descriptions.html.erb
 module Hyrax
   module CollectionPresenterDecorator
+    def self.decorate(base)
+      base.prepend(self)
+
+      base.redefine_singleton_method(:terms) do
+        # OVERRIDE Hyrax - removed size
+        %i[total_items
+           resource_type
+           creator contributor
+           keyword license
+           publisher
+           date_created
+           subject language
+           identifier
+           based_near
+           related_url]
+      end
+    end
+
     # Add new method to check if a user has permissions to create any works.
     # This is used to restrict who can deposit new works through collections.
     #

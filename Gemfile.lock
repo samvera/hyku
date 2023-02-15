@@ -11,11 +11,10 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: 6676caaba6c05166a9390b6ec20097ced8dc48d8
-  branch: i98-bulkrax
+  revision: 8d1309fe51e258f0b1149325a9a1bd3b9df641e0
+  branch: main
   specs:
     iiif_print (0.0.1)
-      blacklight_advanced_search (= 6.4.1)
       blacklight_iiif_search (~> 1.0)
       dry-monads (~> 1.4.0)
       hyrax (>= 2.5, < 4.0)
@@ -169,9 +168,6 @@ GEM
       bootstrap-sass (~> 3.0)
       openseadragon (>= 0.2.0)
       rails
-    blacklight_advanced_search (6.4.1)
-      blacklight (~> 6.0, >= 6.0.1)
-      parslet
     blacklight_iiif_search (1.0.0)
       blacklight (~> 6.0)
       iiif-presentation

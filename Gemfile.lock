@@ -11,16 +11,18 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: 8d1309fe51e258f0b1149325a9a1bd3b9df641e0
-  branch: main
+  revision: bd725c142f0e682e577195c05592e27c6879e5b5
+  branch: i88-catalog-ocr-search
   specs:
     iiif_print (0.0.1)
+      blacklight_advanced_search (= 6.4.1)
       blacklight_iiif_search (~> 1.0)
       dry-monads (~> 1.4.0)
       hyrax (>= 2.5, < 4.0)
       nokogiri (>= 1.13.2)
       rails (~> 5.0)
       rdf-vocab (~> 3.0)
+      sass-rails (~> 5.0)
 
 GIT
   remote: https://github.com/tawan/active-elastic-job.git
@@ -168,6 +170,9 @@ GEM
       bootstrap-sass (~> 3.0)
       openseadragon (>= 0.2.0)
       rails
+    blacklight_advanced_search (6.4.1)
+      blacklight (~> 6.0, >= 6.0.1)
+      parslet
     blacklight_iiif_search (1.0.0)
       blacklight (~> 6.0)
       iiif-presentation

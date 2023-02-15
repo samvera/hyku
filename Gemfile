@@ -83,7 +83,7 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
-gem 'bulkrax', '~> 3.5.0'
+gem 'bulkrax', '~> 5.0'
 
 gem 'blacklight', '~> 6.7'
 gem 'blacklight_oai_provider', '~> 6.1', '>= 6.1.1'
@@ -94,6 +94,7 @@ gem 'bolognese', '>= 1.9.10'
 gem 'hyrax-doi', git: 'https://github.com/samvera-labs/hyrax-doi.git', branch: 'hyrax_upgrade'
 gem 'iiif_print', git: 'https://github.com/scientist-softserv/iiif_print.git', branch: 'i88-catalog-ocr-search'
 gem 'postrank-uri', '>= 1.0.24'
+gem 'redlock', '>= 0.1.2', '< 2.0' # lock redlock per https://github.com/samvera/hyrax/pull/5961
 gem 'rsolr', '~> 2.0'
 
 gem 'devise'

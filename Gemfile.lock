@@ -11,18 +11,16 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: bd725c142f0e682e577195c05592e27c6879e5b5
-  branch: i88-catalog-ocr-search
+  revision: 8d1309fe51e258f0b1149325a9a1bd3b9df641e0
+  branch: main
   specs:
     iiif_print (0.0.1)
-      blacklight_advanced_search (= 6.4.1)
       blacklight_iiif_search (~> 1.0)
       dry-monads (~> 1.4.0)
       hyrax (>= 2.5, < 4.0)
       nokogiri (>= 1.13.2)
       rails (~> 5.0)
       rdf-vocab (~> 3.0)
-      sass-rails (~> 5.0)
 
 GIT
   remote: https://github.com/tawan/active-elastic-job.git
@@ -141,7 +139,7 @@ GEM
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
       execjs (~> 2.0)
-    bagit (0.4.4)
+    bagit (0.4.5)
       docopt (~> 0.5.0)
       validatable (~> 1.6)
     bcp47 (0.3.3)
@@ -170,9 +168,6 @@ GEM
       bootstrap-sass (~> 3.0)
       openseadragon (>= 0.2.0)
       rails
-    blacklight_advanced_search (6.4.1)
-      blacklight (~> 6.0, >= 6.0.1)
-      parslet
     blacklight_iiif_search (1.0.0)
       blacklight (~> 6.0)
       iiif-presentation
@@ -222,13 +217,13 @@ GEM
       signet (~> 0.8)
       typhoeus
     builder (3.2.4)
-    bulkrax (3.5.1)
+    bulkrax (5.0.0)
       bagit (~> 0.4)
       coderay
       iso8601 (~> 0.9.0)
       kaminari
       language_list (~> 1.2, >= 1.2.1)
-      libxml-ruby (~> 3.1.0)
+      libxml-ruby (~> 3.2.4)
       loofah (>= 2.2.3)
       oai (>= 0.4, < 2.x)
       rack (>= 2.0.6)
@@ -426,7 +421,7 @@ GEM
     geocoder (1.8.1)
     globalid (1.0.1)
       activesupport (>= 5.0)
-    google-apis-core (0.10.0)
+    google-apis-core (0.11.0)
       addressable (~> 2.5, >= 2.5.1)
       googleauth (>= 0.16.2, < 2.a)
       httpclient (>= 2.8.1, < 3.a)
@@ -653,7 +648,7 @@ GEM
       rdf-vocab (~> 3.0)
     legato (0.7.0)
       multi_json
-    libxml-ruby (3.1.0)
+    libxml-ruby (3.2.4)
     link_header (0.0.8)
     linkeddata (3.1.6)
       equivalent-xml (~> 0.6)
@@ -1033,7 +1028,7 @@ GEM
       faraday (>= 0.17.5, < 3.a)
       jwt (>= 1.5, < 3.0)
       multi_json (~> 1.10)
-    simple_form (5.1.0)
+    simple_form (5.2.0)
       actionpack (>= 5.2)
       activemodel (>= 5.2)
     simplecov (0.21.2)
@@ -1147,7 +1142,7 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.6.6)
+    zeitwerk (2.6.7)
 
 PLATFORMS
   ruby
@@ -1162,7 +1157,7 @@ DEPENDENCIES
   blacklight_oai_provider (~> 6.1, >= 6.1.1)
   bolognese (>= 1.9.10)
   bootstrap-datepicker-rails
-  bulkrax (~> 3.5.0)
+  bulkrax (~> 5.0)
   byebug
   capybara
   capybara-screenshot (~> 1.0)
@@ -1203,6 +1198,7 @@ DEPENDENCIES
   rails (~> 5.2.5)
   rails-controller-testing
   rdf (~> 3.1.15)
+  redlock (>= 0.1.2, < 2.0)
   riiif (~> 1.1)
   rolify
   rsolr (~> 2.0)

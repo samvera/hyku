@@ -1,0 +1,199 @@
+version: '3.8'
+
+x-app: &app
+  image: ghcr.io/samvera/hyku:${TAG:-latest}
+  env_file:
+    - .env
+  # NOTE: all common env variables moved to .env
+  volumes:
+    - node_modules:/app/samvera/hyrax-webapp/node_modules:cached
+    - uploads:/app/samvera/hyrax-webapp/public/uploads:cached
+    - assets:/app/samvera/hyrax-webapp/public/assets:cached
+    - cache:/app/samvera/hyrax-webapp/tmp/cache:cached
+    - .:/app/samvera/hyrax-webapp
+  networks:
+    internal:
+
+volumes:
+  assets:
+  cache:
+  db:
+  fcrepo:
+  node_modules:
+  redis:
+  solr:
+  uploads:
+  zk:
+  zoo:
+
+networks:
+  internal:
+
+services:
+  zoo:
+    image: zookeeper:3.6.2
+    ports:
+      - 2181:2181
+      - 7001:7000
+    environment:
+      - ZOO_MY_ID=1
+      - ZOO_SERVERS=server.1=zoo:2888:3888;2181
+      - ZOO_4LW_COMMANDS_WHITELIST=mntr,srvr,ruok,conf
+    volumes:
+      - zoo:/data
+      - zk:/datalog
+    networks:
+      internal:
+    healthcheck:
+      test: ["CMD-SHELL", "echo 'ruok' | nc -w 2 -q 2 localhost 2181 | grep imok || exit 1"]
+      interval: "10s"
+      timeout: "8s"
+
+  solr:
+    image: hyku/solr:8
+    environment:
+      - OOM=script
+      - SOLR_ADMIN_USER=solr
+      - SOLR_ADMIN_PASSWORD=SolrRocks
+      - SOLR_COLLECTION=hydra-development
+      - SOLR_CLOUD_BOOTSTRAP=yes
+      - SOLR_ENABLE_CLOUD_MODE=yes
+      - SOLR_ENABLE_AUTHENTICATION=yes
+      - ZK_HOST=zoo:2181
+      - VIRTUAL_PORT=8983
+      - VIRTUAL_HOST=solr.hyku.test
+    user: root
+    command: bash -c "
+      chown -R 8983:8983 /var/solr
+      && ./bin/solr zk cp file:/var/solr/data/security.json zk:/security.json
+      && runuser -u solr -- solr-foreground"
+    expose:
+      - 8983
+    volumes:
+      - solr:/var/solr
+    networks:
+      internal:
+    healthcheck:
+      test: curl -sf http://$$SOLR_ADMIN_USER:$$SOLR_ADMIN_PASSWORD@solr:8983/solr/admin/cores?action=STATUS || exit 1
+      start_period: 3s
+      interval: 5s
+      timeout: 5s
+      retries: 6
+    depends_on:
+      zoo:
+        condition: service_healthy
+
+  fcrepo:
+    image: ghcr.io/samvera/fcrepo4:4.7.5
+    volumes:
+      - fcrepo:/data:cached
+    env_file:
+      - .env
+    environment:
+      - VIRTUAL_PORT=8080
+      - VIRTUAL_HOST=fcrepo.hyku.test
+      - JAVA_OPTS=${JAVA_OPTS} -Dfcrepo.modeshape.configuration="classpath:/config/jdbc-postgresql/repository.json" -Dfcrepo.postgresql.host=db -Dfcrepo.postgresql.username=${DB_USER} -Dfcrepo.postgresql.password=${DB_PASSWORD:-hyku} -Dfcrepo.object.directory="/data/objects" -Dfcrepo.binary.directory="/data/fcrepo.binary.directory" -Djava.io.tmpdir="/data/tmp"
+    expose:
+      - 8080
+    networks:
+      internal:
+
+  db:
+    image: postgres:11.1
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USER}
+      - VIRTUAL_PORT=5432
+      - VIRTUAL_HOST=db.hyku.test
+    volumes:
+      - db:/var/lib/postgresql/data
+    networks:
+      internal:
+
+  web:
+    <<: *app
+    environment:
+      - VIRTUAL_PORT=3000
+      - VIRTUAL_HOST=.hyku.test
+    depends_on:
+      db:
+        condition: service_started
+      solr:
+        condition: service_started
+      fcrepo:
+        condition: service_started
+      redis:
+        condition: service_started
+      zoo:
+        condition: service_started
+      check_volumes:
+        condition: service_started
+      worker:
+        condition: service_started
+      initialize_app:
+        condition: service_completed_successfully
+    expose:
+      - 3000
+
+  worker:
+    <<: *app
+    image: ghcr.io/samvera/hyku/worker:${TAG:-latest}
+    depends_on:
+      check_volumes:
+        condition: service_completed_successfully
+      initialize_app:
+        condition: service_completed_successfully
+      db:
+        condition: service_started
+      solr:
+        condition: service_started
+      fcrepo:
+        condition: service_started
+      redis:
+        condition: service_started
+      zoo:
+        condition: service_started
+
+  # Do not recurse through all of tmp. derivitives will make booting
+  # very slow and eventually just time out as data grows
+  check_volumes:
+    <<: *app
+    user: root
+    entrypoint: ["sh", "-x", "-c"]
+    command:
+      - >
+        chown -R app:app /app/samvera/hyrax-webapp/public/uploads &&
+        chown -R app:app /app/samvera/hyrax-webapp/public/assets &&
+        chown -R app:app /app/samvera/hyrax-webapp/tmp/cache
+
+  initialize_app:
+    <<: *app
+    environment:
+      - CONFDIR=/app/samvera/hyrax-webapp/solr/conf
+    entrypoint: ["sh", "-c"]
+    command:
+      - >
+        solrcloud-upload-configset.sh /app/samvera/hyrax-webapp/solr/conf &&
+        solrcloud-assign-configset.sh &&
+        SOLR_COLLECTION_NAME=hydra-test solrcloud-assign-configset.sh &&
+        db-migrate-seed.sh
+    depends_on:
+      db:
+        condition: service_started
+      solr:
+        condition: service_healthy
+      fcrepo:
+        condition: service_started
+      redis:
+        condition: service_started
+
+  redis:
+    image: redis:5
+    command: redis-server
+    volumes:
+      - redis:/data
+    networks:
+      internal:

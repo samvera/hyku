@@ -17,8 +17,6 @@ RSpec.describe CreateDerivativesJob do
     file_set.save!
   end
 
-  after { described_class.perform_now(file_set, file.id) }
-
   context "with a pdf file" do
     let(:content) { File.open(File.join(fixture_path, "hyrax/hyrax_test4.pdf")) }
     let(:original_name) { 'hyrax_text4.pdf' }
@@ -31,11 +29,13 @@ RSpec.describe CreateDerivativesJob do
                                               size: '676x986',
                                               url: String,
                                               layer: 0 }])
+      described_class.perform_now(file_set, file.id)
     end
 
     it "runs a full text extract" do
       expect(Hydra::Derivatives::FullTextExtract).to receive(:create)
         .with(/hyrax_text4\.pdf/, outputs: [{ url: RDF::URI, container: "extracted_text" }])
+      described_class.perform_now(file_set, file.id)
     end
   end
 
@@ -51,11 +51,13 @@ RSpec.describe CreateDerivativesJob do
                                         size: '600x450>',
                                         url: String,
                                         layer: 0 }])
+      described_class.perform_now(file_set, file.id)
     end
 
     it "runs a full text extract" do
       expect(Hydra::Derivatives::FullTextExtract).to receive(:create)
         .with(/test\.docx/, outputs: [{ url: RDF::URI, container: "extracted_text" }])
+      described_class.perform_now(file_set, file.id)
     end
   end
 
@@ -71,6 +73,7 @@ RSpec.describe CreateDerivativesJob do
                                         size: '600x450>',
                                         url: String,
                                         layer: 0 }])
+      described_class.perform_now(file_set, file.id)
     end
   end
 end

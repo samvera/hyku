@@ -56,7 +56,7 @@ services:
       timeout: "8s"
 
   solr:
-    image: hyku/solr:8
+    image: ghcr.io/samvera/hyku/solr:${TAG:-latest}
     build:
       context: solr
       dockerfile: Dockerfile

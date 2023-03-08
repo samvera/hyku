@@ -108,6 +108,12 @@ class RolesService # rubocop:disable Metrics/ClassLength
         pt.access_grants.find_or_create_by!(
           access: Hyrax::PermissionTemplateAccess::MANAGE,
           agent_type: Hyrax::PermissionTemplateAccess::GROUP,
+          agent_id: Ability.admin_group_name
+        )
+
+        pt.access_grants.find_or_create_by!(
+          access: Hyrax::PermissionTemplateAccess::MANAGE,
+          agent_type: Hyrax::PermissionTemplateAccess::GROUP,
           agent_id: 'collection_manager'
         )
 

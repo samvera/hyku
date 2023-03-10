@@ -71,12 +71,12 @@ jobs:
       FCREPO_TEST_PORT: 8080/fcrepo
       SPEC_OPTS: --tag ~ci:skip --profile 10 --format RspecJunitFormatter --out /tmp/test-results/rspec.xml --format progress
     steps:
+      - samvera/cached_checkout
       - run: |
             sudo apt update && \
             sudo apt install -y libreoffice libreoffice-l10n-en-gb && \
             sudo mkdir -p /etc/ImageMagick-6/ && \
             sudo cp ops/ImageMagick6-policy.xml /etc/ImageMagick-6/
-      - samvera/cached_checkout
       - samvera/bundle:
           ruby_version: << parameters.ruby_version >>
           bundler_version: << parameters.bundler_version >>

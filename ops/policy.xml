@@ -69,7 +69,7 @@
   <!-- <policy domain="resource" name="throttle" value="0"/> -->
   <!-- <policy domain="resource" name="time" value="3600"/> -->
   <!-- <policy domain="coder" rights="none" pattern="MVG" /> -->
-  <policy domain="module" rights="none" pattern="{PS,PDF,XPS}" />
+  <!-- <policy domain="module" rights="none" pattern="{PS,PDF,XPS}" /> -->
   <!-- <policy domain="path" rights="none" pattern="@*" /> -->
   <!-- <policy domain="cache" name="memory-map" value="anonymous"/> -->
   <!-- <policy domain="cache" name="synchronize" value="True"/> -->
@@ -96,4 +96,5 @@
   <policy domain="coder" rights="none" pattern="EPS" />
   <policy domain="coder" rights="none" pattern="PDF" />
   <policy domain="coder" rights="none" pattern="XPS" />
+  <policy domain="coder" rights="read | write" pattern="PDF" />
 </policymap>

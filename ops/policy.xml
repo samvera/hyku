@@ -69,11 +69,11 @@
   <!-- <policy domain="resource" name="throttle" value="0"/> -->
   <!-- <policy domain="resource" name="time" value="3600"/> -->
   <!-- <policy domain="coder" rights="none" pattern="MVG" /> -->
-  <!-- <policy domain="module" rights="none" pattern="{PS,PDF,XPS}" /> -->
+  <policy domain="module" rights="none" pattern="{PS,PDF,XPS}" />
   <!-- <policy domain="path" rights="none" pattern="@*" /> -->
   <!-- <policy domain="cache" name="memory-map" value="anonymous"/> -->
   <!-- <policy domain="cache" name="synchronize" value="True"/> -->
-  <!-- <policy domain="cache" name="shared-secret" value="passphrase" stealth="true"/>
+  <!-- <policy domain="cache" name="shared-secret" value="passphrase" stealth="true"/> -->
   <!-- <policy domain="system" name="max-memory-request" value="256MiB"/> -->
   <!-- <policy domain="system" name="shred" value="2"/> -->
   <!-- <policy domain="system" name="precision" value="6"/> -->

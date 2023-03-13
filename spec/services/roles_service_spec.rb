@@ -142,6 +142,16 @@ RSpec.describe RolesService, clean: true do
     let!(:collection) { FactoryBot.create(:collection_lw, with_permission_template: true) }
 
     context 'when a Collection already has PermissionTemplateAccess records for all of the collection roles' do
+      # The ##create_collection_accesses! method also grants the admin group manage access.
+      # This does not happen on permission template creation by default, so we simulate it here.
+      before do
+        collection.permission_template.access_grants.find_or_create_by!(
+          access: Hyrax::PermissionTemplateAccess::MANAGE,
+          agent_type: Hyrax::PermissionTemplateAccess::GROUP,
+          agent_id: Ability.admin_group_name
+        )
+      end
+
       it 'does not create any new PermissionTemplateAccess records' do
         expect { roles_service.create_collection_accesses! }
           .not_to change(Hyrax::PermissionTemplateAccess, :count)
@@ -159,10 +169,10 @@ RSpec.describe RolesService, clean: true do
         collection.permission_template.access_grants.map(&:destroy)
       end
 
-      it 'creates a PermissionTemplateAccess record for each collection role' do
+      it 'creates a PermissionTemplateAccess record for the three collection roles and one admin role' do
         expect { roles_service.create_collection_accesses! }
           .to change(Hyrax::PermissionTemplateAccess, :count)
-          .by(3)
+          .by(4)
       end
 
       it 'creates a PermissionTemplateAccess record with MANAGE access for the :collection_manager role' do

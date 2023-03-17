@@ -1,4 +1,4 @@
-namespace :hyku do
+namespace :reset do
   desc 'reset work and collection data across all tenants'
   task all_works_and_collections: [:environment] do
     confirm('You are about to delete all works and collections across all accounts, this is not reversable!')

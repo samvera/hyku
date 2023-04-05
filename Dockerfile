@@ -1,4 +1,4 @@
-ARG HYRAX_IMAGE_VERSION=v4.0.0.beta2
+ARG HYRAX_IMAGE_VERSION=hyrax-v4.0.0.rc1
 FROM ghcr.io/samvera/hyrax/hyrax-base:$HYRAX_IMAGE_VERSION as hyku-base
 
 USER root
@@ -96,5 +96,4 @@ RUN RAILS_ENV=production SECRET_KEY_BASE=`bin/rake secret` DB_ADAPTER=nulldb DB_
 CMD ./bin/web
 
 FROM hyku-web as hyku-worker
-ENV MALLOC_ARENA_MAX=2
 CMD ./bin/worker

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :reset do
   desc 'reset work and collection data across all tenants'
   task all_works_and_collections: [:environment] do
@@ -10,10 +12,10 @@ namespace :reset do
   end
 
   desc 'reset work and collection data from a single tenant, any argument that works with switch!() will work here'
-  task :works_and_collections, [:account] => [:environment] do |t, args|
+  task :works_and_collections, [:account] => [:environment] do |_t, args|
     raise "You must speficy a name, cname or id of an account" if args[:account].blank?
-    
-    confirm('You are about to delete all works and collections from #{args[:account]}, this is not reversable!')
+
+    confirm("You are about to delete all works and collections from #{args[:account]}, this is not reversable!")
     switch!(args[:account])
     Rake::Task["hyrax:reset:works_and_collections"].reenable
     Rake::Task["hyrax:reset:works_and_collections"].invoke

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE: increase size of thumbnails for better viewing in Neutral theme home page
+# OVERRIDE: Hyrax v2.9.0 to increase size of thumbnails for better viewing in Neutral theme home page
 module Hyrax
   module FileSetDerivativesServiceDecorator
     def create_pdf_derivatives(filename)

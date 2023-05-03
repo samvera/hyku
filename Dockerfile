@@ -84,11 +84,8 @@ RUN ln -sf /usr/lib/libmediainfo.so.0 /app/fits/tools/mediainfo/linux/libmediain
 FROM hyku-base as hyku-web
 
 COPY --chown=1001:101 $APP_PATH/Gemfile* /app/samvera/hyrax-webapp/
-RUN sh -l -c " \
-  bundle install --jobs "$(nproc)" && \
-  sed -i '/require .enumerator./d' /usr/local/bundle/gems/oai-1.1.0/lib/oai/provider/resumption_token.rb && \
-  sed -i '/require .enumerator./d' /usr/local/bundle/gems/edtf-3.0.8/lib/edtf.rb && \
-  sed -i '/require .enumerator./d' /usr/local/bundle/gems/csl-1.6.0/lib/csl.rb"
+RUN bundle install --jobs "$(nproc)"
+
 COPY --chown=1001:101 $APP_PATH/bin/db-migrate-seed.sh /app/samvera/
 COPY --chown=1001:101 $APP_PATH /app/samvera/hyrax-webapp
 

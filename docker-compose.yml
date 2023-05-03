@@ -38,9 +38,6 @@ networks:
 services:
   zoo:
     image: zookeeper:3.6.2
-    ports:
-      - 2181:2181
-      - 7001:7000
     environment:
       - ZOO_MY_ID=1
       - ZOO_SERVERS=server.1=zoo:2888:3888;2181
@@ -132,6 +129,8 @@ services:
 
   web:
     <<: *app
+    # Uncommend command to access container with out starting Rails. Useful for debugging
+    # command: sleep infinity
     environment:
       - VIRTUAL_PORT=3000
       - VIRTUAL_HOST=.hyku.test

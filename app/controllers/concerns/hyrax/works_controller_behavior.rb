@@ -373,10 +373,17 @@ module Hyrax
         end
       end
 
+      def format_error_messages(errors)
+        errors.messages.map do |field, messages|
+          field_name = field.to_s.humanize
+          messages.map { |message| "#{field_name} #{message.sub(/^./, &:downcase)}" }
+        end.flatten.join("\n")
+      end
+
       def after_create_error(errors, original_input_params_for_form = nil)
         respond_to do |wants|
           wants.html do
-            flash[:error] = errors.to_s
+            flash[:error] = format_error_messages(errors)
             rebuild_form(original_input_params_for_form) if original_input_params_for_form.present?
             render 'new', status: :unprocessable_entity
           end
@@ -405,7 +412,7 @@ module Hyrax
       def after_update_error(errors)
         respond_to do |wants|
           wants.html do
-            flash[:error] = errors.to_s
+            flash[:error] = format_error_messages(errors)
             build_form unless @form.is_a? Hyrax::ChangeSet
             render 'edit', status: :unprocessable_entity
           end

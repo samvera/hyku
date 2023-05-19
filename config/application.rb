@@ -54,5 +54,27 @@ module Hyku
 
       Object.include(AccountSwitch)
     end
+
+    ##
+    # Psych Allow YAML Classes
+    #
+    # The following configuration addresses errors of the following form:
+    #
+    # ```
+    # Psych::DisallowedClass: Tried to load unspecified class: ActiveSupport::HashWithIndifferentAccess
+    # ```
+    #
+    # Psych::DisallowedClass: Tried to load unspecified class: <Your Class Name Here>
+    config.after_initialize do
+      config.active_record.yaml_column_permitted_classes = [
+        Symbol,
+        Hash,
+        Array,
+        ActiveSupport::HashWithIndifferentAccess,
+        ActiveModel::Attribute.const_get(:FromDatabase),
+        User,
+        Time
+      ]
+    end
   end
 end

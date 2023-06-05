@@ -170,6 +170,22 @@ en:
               confirm: "If your theme doesn't appear to be applying correctly, verify that it isn't being overwritten by Custom CSS."
             favicon:
               hint: "Favicons need to be png files and must be square. The max size used is 228px x 228px."
+            navbar_background_color:
+              hint: 'At 40% opacity.'
+            navbar_link_background_hover_color:
+              hint: 'Applies to the Home, About, Contact and Help buttons on those specific pages only (at 15% opacity).'
+            link_color:
+              hint: 'Affects links on the home and work pages including: breadcrumbs, tabs, titles and terms of service.'
+            primary_button_hover_color:
+              hint: 'Share, search and collection interaction (edit, feature, etc.) buttons. The border of these buttons will also be this color.'
+            default_button_background_color:
+              hint: 'Work interaction (edit, feature, etc.) buttons; work views on collection page and search filter button.'
+            facet_panel_background_color:
+              hint: 'Applies to facets and additional section headers on the work pages in some themes.'
+            facet_panel_text_color:
+              hint: 'Also applies to the color of the caret next to the text and the work title on some themes.'
+            collection_banner_text_color:
+              hint: 'The color for the text (title, and last updated date) inside of the collection banner.'
           tabs:
             banner_image: "Banner Image"
             directory_image: "Directory Image"

@@ -23,23 +23,24 @@ module Hyrax
         }.freeze
 
         DEFAULT_COLORS = {
-          'header_background_color'          => '#3c3c3c',
-          'header_text_color'                => '#dcdcdc',
-          'searchbar_background_color'       => '#000000',
-          'searchbar_background_hover_color' => '#ffffff',
-          'searchbar_text_color'             => '#eeeeee',
-          'searchbar_text_hover_color'       => '#eeeeee',
-          'link_color'                       => '#2e74b2',
-          'link_hover_color'                 => '#215480',
-          'footer_link_color'                => '#ffebcd',
-          'footer_link_hover_color'          => '#ffffff',
-          'primary_button_background_color'  => '#286090',
-          'default_button_background_color'  => '#ffffff',
-          'default_button_border_color'      => '#cccccc',
-          'default_button_text_color'        => '#333333',
-          'active_tabs_background_color'     => '#337ab7',
-          'facet_panel_background_color'     => '#f5f5f5',
-          'facet_panel_text_color'           => '#333333'
+          'header_and_footer_background_color' => '#3c3c3c',
+          'header_and_footer_text_color'       => '#dcdcdc',
+          'navbar_background_color'            => '#000000',
+          'navbar_link_background_hover_color' => '#ffffff',
+          'navbar_link_text_color'             => '#eeeeee',
+          'navbar_link_text_hover_color'       => '#eeeeee',
+          'link_color'                         => '#2e74b2',
+          'link_hover_color'                   => '#215480',
+          'footer_link_color'                  => '#ffebcd',
+          'footer_link_hover_color'            => '#ffffff',
+          'primary_button_hover_color'         => '#286090',
+          'default_button_background_color'    => '#ffffff',
+          'default_button_border_color'        => '#cccccc',
+          'default_button_text_color'          => '#333333',
+          # 'active_tabs_background_color'     => '#337ab7',
+          'facet_panel_background_color'       => '#f5f5f5',
+          'facet_panel_text_color'             => '#333333',
+          'collection_banner_text_color'       => '#000000',
         }.freeze
 
         DEFAULT_VALUES = DEFAULT_FONTS.merge(DEFAULT_COLORS).freeze
@@ -123,6 +124,11 @@ module Hyrax
         # The color for the text in the header bar
         def header_text_color
           block_for('header_text_color')
+        end
+
+        # the color for the text (title and last updated date) inside of the collection banner
+        def collection_banner_text_color
+          block_for('collection_banner_text_color')
         end
 
         # The color for the background of the search navbar
@@ -390,6 +396,7 @@ module Hyrax
             directory_image_text
             default_collection_image_text
             default_work_image_text
+            collection_banner_text_color
           ]
         end
 

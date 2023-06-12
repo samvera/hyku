@@ -484,7 +484,10 @@ body.public-facing {
 }
 
 // make sure constraints are on only one line, even with markdown
-span.constraint-value p, .facet-values p {
+// scss-lint:disable QualifyingElement
+span.constraint-value p,
+.facet-values p {
+  // scss-lint:enable QualifyingElement
   display: inline-block;
   margin-bottom: 0;
 }
@@ -501,14 +504,19 @@ span.constraint-value p, .facet-values p {
 }
 
 // style the analytics button to match citations button
+// scss-lint:disable IdSelector
 #stats {
+  // scss-lint:enable IdSelector
   margin-top: 10px;
+
   @media (min-width: 576px) {
     max-width: 300px;
   }
 }
 
+// scss-lint:disable SelectorFormat
 .catalog_startOverLink {
+  // scss-lint:enable SelectorFormat
   font-size: 1.15em;
   font-weight: bold;
 }
@@ -516,8 +524,8 @@ span.constraint-value p, .facet-values p {
 // collection show page styles
 
 .space-between {
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 }
 
 .mt-5 {
@@ -526,19 +534,23 @@ span.constraint-value p, .facet-values p {
 
 .hyc-banner {
   padding: 15px;
-  .hyc-bugs .hyc-created-by, .hyc-bugs .hyc-last-updated, .hyc-title {
+
+  .hyc-bugs .hyc-created-by,
+  .hyc-bugs .hyc-last-updated,
+  .hyc-title {
     padding: 0;
   }
 
   .hyc-item-count {
-    margin: 0;
     background: rgba(255, 255, 255, 0.75);
-    padding: 10px;
     border-radius: 0.5em;
     color: #333;
+    margin: 0;
+    padding: 10px;
   }
 
-  .hyc-bugs div, div {
+  .hyc-bugs div,
+  div {
     position: relative;
   }
 }

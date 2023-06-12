@@ -146,6 +146,13 @@ body.public-facing .panel-default > .panel-heading {
 body.public-facing .panel-default { border-color: <%= appearance.facet_panel_border_color %>; }
 body.public-facing .panel-heading.collapse-toggle .panel-title:after { color: <%= appearance.facet_panel_text_color %>; }
 
+/* COLLECTION STYLES */
+body.public-facing .hyc-banner .hyc-title h1,
+body.public-facing .hyc-last-updated,
+body.public-facing .hyc-created-by {
+  color: <%= appearance.collection_banner_text_color %>;
+}
+
 <%= appearance.custom_css_block %>
 
 </style>

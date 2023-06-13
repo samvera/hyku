@@ -40,7 +40,7 @@ module Hyrax
           # 'active_tabs_background_color'     => '#337ab7',
           'facet_panel_background_color'       => '#f5f5f5',
           'facet_panel_text_color'             => '#333333',
-          'collection_banner_text_color'       => '#000000',
+          'collection_banner_text_color'       => '#000000'
         }.freeze
 
         DEFAULT_VALUES = DEFAULT_FONTS.merge(DEFAULT_COLORS).freeze

@@ -25,6 +25,7 @@ module Hyrax
         DEFAULT_COLORS = {
           'header_and_footer_background_color' => '#3c3c3c',
           'header_and_footer_text_color'       => '#dcdcdc',
+          'header_background_color'            => '#222222',
           'navbar_background_color'            => '#000000',
           'navbar_link_background_hover_color' => '#ffffff',
           'navbar_link_text_color'             => '#eeeeee',
@@ -37,10 +38,13 @@ module Hyrax
           'default_button_background_color'    => '#ffffff',
           'default_button_border_color'        => '#cccccc',
           'default_button_text_color'          => '#333333',
-          # 'active_tabs_background_color'     => '#337ab7',
+          'active_tabs_background_color'       => '#337ab7',
           'facet_panel_background_color'       => '#f5f5f5',
           'facet_panel_text_color'             => '#333333',
-          'collection_banner_text_color'       => '#000000'
+          'collection_banner_text_color'       => '#000000',
+          'searchbar_background_color'         => '#ffffff',
+          'searchbar_background_hover_color'   => '#F3F3F3',
+          'primary_button_background_color'    => '#337ab7'
         }.freeze
 
         DEFAULT_VALUES = DEFAULT_FONTS.merge(DEFAULT_COLORS).freeze

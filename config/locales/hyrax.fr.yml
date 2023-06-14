@@ -1159,13 +1159,29 @@ fr:
         based_near: Emplacement
         creator: Créateur
         date_created: date créée
+        default_button_background_color: Couleur d'arrière-plan du bouton par défaut
+        default_button_border_color: Couleur de bordure de bouton par défaut
+        default_button_text_color: Couleur du texte du bouton par défaut
         description: Descripción
         embargo_release_date: jusqu'à ce que
+        facet_panel_background_color: Couleur d'arrière-plan du panneau de facettes
+        facet_panel_text_color: Couleur du texte du panneau des facettes
         files: Télécharger un fichier
+        footer_link_color: Couleur du lien de pied de page
+        footer_link_hover_color: Couleur de survol du lien de pied de page
+        header_and_footer_background_color: Couleur d'arrière-plan de l'en-tête et du pied de page
+        header_and_footer_text_color: Couleur du texte de l'en-tête et du pied de page
         keyword: Mot-clé
         lease_expiration_date: jusqu'à ce que
         license: Licence
+        link_color: Couleur du lien
+        link_hover_color: Couleur de survol du lien
         member_of_collection_ids: Ajouter à la collection
+        navbar_background_color: Couleur d'arrière-plan de la barre de navigation
+        navbar_link_background_hover_color: Couleur de survol de l'arrière-plan du lien de la barre de navigation
+        navbar_link_text_color: Couleur du texte du lien de la barre de navigation
+        navbar_link_text_hover_color: Couleur de survol du texte du lien de la barre de navigation
+        primary_button_hover_color: Couleur de survol du bouton principal
         related_url: URL associée
         rights_statement: Déclaration des droits
         title: Titre

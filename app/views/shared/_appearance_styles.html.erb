@@ -26,31 +26,31 @@ body.public-facing #per_page-dropdown .dropdown-toggle { color: <%= appearance.l
 /* MAIN NAV */
 body.public-facing .navbar-inverse .navbar-link { color: <%= appearance.footer_link_color %>; }
 body.public-facing .navbar-inverse .navbar-link:hover { color: <%= appearance.footer_link_hover_color %> }
-body.public-facing .navbar-inverse { background-color: <%= appearance.header_background_color %>; }
+body.public-facing .navbar-inverse { background-color: <%= appearance.header_and_footer_background_color %>; }
 body.public-facing .navbar-inverse .navbar-nav > .open > a,
 body.public-facing .navbar-inverse .navbar-nav > .open > a:hover,
-body.public-facing .navbar-inverse .navbar-nav > .open > a:focus { background-color: <%= appearance.header_background_color %>; }
+body.public-facing .navbar-inverse .navbar-nav > .open > a:focus { background-color: <%= appearance.header_and_footer_background_color %>; }
 body.public-facing .navbar-inverse .navbar-nav > li > a,
 body.public-facing .navbar-inverse .navbar-text,
-body.public-facing .navbar-inverse .navbar-brand { color: <%= appearance.header_text_color %>; }
+body.public-facing .navbar-inverse .navbar-brand { color: <%= appearance.header_and_footer_text_color %>; }
 body.public-facing .navbar-inverse { border-color: <%= appearance.header_background_border_color %>; }
 
 /* HOME PAGE SEARCH BAR NAV */
-body.public-facing .image-masthead .navbar { background-color: <%= appearance.searchbar_background_color_alpha %>; }
+body.public-facing .image-masthead .navbar { background-color: <%= appearance.navbar_background_color_alpha %>; }
 body.public-facing .image-masthead .navbar .active > a,
 body.public-facing .image-masthead .navbar .active > a:hover,
 body.public-facing .image-masthead .navbar .active > a:focus {
-    background-color: <%= appearance.searchbar_background_color_active %>;
-    color: <%= appearance.searchbar_text_color %>;
+    background-color: <%= appearance.navbar_background_color_active %>;
+    color: <%= appearance.navbar_link_text_color %>;
 }
 body.public-facing .image-masthead .navbar .navbar-nav a {
-    color: <%= appearance.searchbar_text_color %>;
+    color: <%= appearance.navbar_link_text_color %>;
 }
 
 body.public-facing .image-masthead .navbar .navbar-nav a:hover,
 body.public-facing .image-masthead .navbar .navbar-nav a:focus {
-    background-color: <%= appearance.searchbar_background_hover_color_alpha %>;
-    color: <%= appearance.searchbar_text_hover_color %>;
+    background-color: <%= appearance.navbar_link_background_hover_color_alpha %>;
+    color: <%= appearance.navbar_link_text_hover_color %>;
 }
 
 /* HOME PAGE NAV-PILL TABS */
@@ -62,7 +62,7 @@ body.public-facing .nav-pills > li.active > a:focus {
 
 /* PRIMARY BUTTON STYLES */
 body.public-facing .btn-primary {
-  background-color: <%= appearance.primary_button_background_color %>;
+  background-color: <%= appearance.primary_button_hover_color %>;
   border-color: <%= appearance.primary_button_border_color %>;
 }
 body.public-facing .btn-primary:focus,
@@ -76,7 +76,7 @@ body.public-facing .btn-primary:hover {
 }
 body.public-facing .btn-primary:active,
 body.public-facing .btn-primary.active {
-  background-color: <%= appearance.primary_button_background_color %>;
+  background-color: <%= appearance.primary_button_hover_color %>;
   border-color: <%= appearance.primary_button_border_color %>;
 }
 body.public-facing .btn-primary:active:hover,
@@ -85,7 +85,7 @@ body.public-facing .btn-primary:active.focus,
 body.public-facing .btn-primary.active:hover,
 body.public-facing .btn-primary.active:focus,
 body.public-facing .btn-primary.active.focus{
-  background-color: <%= appearance.primary_button_background_color %>;
+  background-color: <%= appearance.primary_button_hover_color %>;
   border-color: <%= appearance.primary_button_border_color %>;
 }
 body.public-facing .btn-primary.disabled:hover,
@@ -94,7 +94,7 @@ body.public-facing .btn-primary.disabled.focus,
 body.public-facing .btn-primary[disabled]:hover,
 body.public-facing .btn-primary[disabled]:focus,
 body.public-facing .btn-primary[disabled].focus {
-  background-color: <%= appearance.primary_button_background_color %>;
+  background-color: <%= appearance.primary_button_hover_color %>;
   border-color: <%= appearance.primary_button_border_color %>;
 }
 

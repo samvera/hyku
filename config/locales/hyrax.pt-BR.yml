@@ -1161,13 +1161,29 @@ pt-BR:
         based_near: Localização
         creator: O Criador
         date_created: Data Criada
+        default_button_background_color: Cor de fundo do botão padrão
+        default_button_border_color: Cor padrão da borda do botão
+        default_button_text_color: Cor padrão do texto do botão
         description: Descrição
         embargo_release_date: até
+        facet_panel_background_color: Cor de fundo do painel de facetas
+        facet_panel_text_color: Cor do texto do painel de facetas
         files: Enviar um arquivo
+        footer_link_color: Cor do link do rodapé
+        footer_link_hover_color: Cor do foco do link do rodapé
+        header_and_footer_background_color: Cor de fundo do cabeçalho e rodapé
+        header_and_footer_text_color: Cor do texto do cabeçalho e rodapé
         keyword: Palavra-chave
         lease_expiration_date: até
         license: Licença
+        link_color: Cor do link
+        link_hover_color: Cor do foco do link
         member_of_collection_ids: Adicionar a coleção
+        navbar_background_color: Cor de fundo da barra de navegação
+        navbar_link_background_hover_color: Cor de foco do plano de fundo do link da barra de navegação
+        navbar_link_text_color: Cor do texto do link da barra de navegação
+        navbar_link_text_hover_color: Cor do foco do texto do link da barra de navegação
+        primary_button_hover_color: Cor principal do foco do botão
         related_url: URL relacionado
         rights_statement: Declaração de direitos
         title: Título

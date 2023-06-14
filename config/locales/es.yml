@@ -158,15 +158,28 @@ es:
             custom_css:
               confirm: CSS personalizado siempre anulará otras selecciones de temas. ¿Continuar?
               warning: Si sus personalizaciones de temas no parecen aplicarse correctamente, verifique que CSS personalizado no las sobrescriba.
+            default_button_background_color:
+              hint: Botones de interacción de trabajo (editar, función, etc.); vistas de trabajo en la página de colección y botón de filtro de búsqueda.
             default_images:
               alert: Cargue al menos un archivo antes de enviarlo.
               hint: Para las imágenes predeterminadas, debe usar una imagen (JPG, GIF o PNG) que tenga las mismas dimensiones de alto y ancho (100 píxeles de ancho y 100 píxeles de alto)
             directory_image:
-              hint: Para usar una imagen como imagen de directorio, debe usar una imagen (JPG, GIF o PNG) que no sea más alta que el encabezado ni más ancha que 400 píxeles de ancho.
+            facet_panel_background_color:
+              hint: Se aplica a facetas y encabezados de sección adicionales en las páginas de trabajo en algunos temas.
+            facet_panel_text_color:
+              hint: También se aplica al color del símbolo de intercalación junto al texto y al título de la obra en algunos temas.
             favicon:
               hint: Los favicons deben ser archivos png y deben ser cuadrados. El tamaño máximo utilizado es 228px x 228px.
+            link_color:
+              hint: 'Afecta a los enlaces en las páginas de inicio y trabajo, incluidos: migas de pan, pestañas, títulos y términos de servicio.'
             logo_image:
               hint: Para usar una imagen como logotipo, debe usar una imagen (JPG, GIF o PNG) que no sea más alta que el encabezado ni más ancha que 400 píxeles de ancho.
+            navbar_background_color:
+              hint: Al 40% de opacidad.
+            navbar_link_background_hover_color:
+              hint: Se aplica a los botones Inicio, Acerca de, Contacto y Ayuda solo en esas páginas específicas (al 15 % de opacidad).
+            primary_button_hover_color:
+              hint: Botones para compartir, buscar e interactuar con la colección (editar, presentar, etc.). El borde de estos botones también será de este color.
             themes:
               confirm: Si su tema no parece aplicarse correctamente, verifique que no esté siendo sobrescrito por CSS personalizado.
           hints:

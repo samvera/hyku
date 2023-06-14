@@ -1161,13 +1161,29 @@ it:
         based_near: Posizione
         creator: Creatore
         date_created: data di creazione
+        default_button_background_color: Colore di sfondo del pulsante predefinito
+        default_button_border_color: Colore predefinito del bordo del pulsante
+        default_button_text_color: Colore predefinito del testo del pulsante
         description: Descrizione
         embargo_release_date: fino a
+        facet_panel_background_color: Colore di sfondo del pannello facet
+        facet_panel_text_color: Colore del testo del pannello facet
         files: Caricare un file
+        footer_link_color: Colore del collegamento a piè di pagina
+        footer_link_hover_color: Colore al passaggio del mouse del collegamento a piè di pagina
+        header_and_footer_background_color: Colore di sfondo dell'intestazione e del piè di pagina
+        header_and_footer_text_color: Colore del testo dell'intestazione e del piè di pagina
         keyword: Parola chiave
         lease_expiration_date: fino a
         license: Licenza
+        link_color: Colore del collegamento
+        link_hover_color: Colore del collegamento al passaggio del mouse
         member_of_collection_ids: Aggiungere alla collezione
+        navbar_background_color: Colore di sfondo della barra di navigazione
+        navbar_link_background_hover_color: Colore di sfondo del collegamento della barra di navigazione al passaggio del mouse
+        navbar_link_text_color: Colore del testo del collegamento alla barra di navigazione
+        navbar_link_text_hover_color: Colore al passaggio del mouse del testo del collegamento della barra di navigazione
+        primary_button_hover_color: Colore del pulsante principale al passaggio del mouse
         related_url: URL correlato
         rights_statement: Dichiarazione dei diritti
         title: Titolo

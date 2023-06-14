@@ -158,15 +158,28 @@ it:
             custom_css:
               confirm: I CSS personalizzati sostituiranno sempre altre selezioni di temi. Procedere?
               warning: Se le personalizzazioni dei temi non sembrano essere applicate correttamente, verifica che non vengano sovrascritte dal CSS personalizzato.
+            default_button_background_color:
+              hint: Pulsanti di interazione con il lavoro (modifica, funzionalità, ecc.); viste di lavoro sulla pagina di raccolta e sul pulsante del filtro di ricerca.
             default_images:
               alert: Carica almeno un file prima di inviarlo.
               hint: Per le immagini predefinite, è necessario utilizzare un'immagine (JPG, GIF o PNG) che abbia le stesse dimensioni in altezza e larghezza (100 pixel in larghezza e 100 pixel in altezza)
             directory_image:
-              hint: Per utilizzare un'immagine come immagine di directory, è necessario utilizzare un'immagine (JPG, GIF o PNG) non più alta dell'intestazione e non più larga di 400 pixel.
+            facet_panel_background_color:
+              hint: Si applica ai facet e alle intestazioni di sezione aggiuntive nelle pagine di lavoro in alcuni temi.
+            facet_panel_text_color:
+              hint: Vale anche per il colore del cursore accanto al testo e al titolo dell'opera su alcuni temi.
             favicon:
               hint: Le favicon devono essere file png e devono essere quadrate. La dimensione massima utilizzata è 228px x 228px.
+            link_color:
+              hint: 'Influisce sui collegamenti nelle pagine di casa e di lavoro, inclusi: breadcrumb, schede, titoli e termini di servizio.'
             logo_image:
               hint: Per utilizzare un'immagine come logo, è necessario utilizzare un'immagine (JPG, GIF o PNG) non più alta dell'intestazione e non più larga di 400 pixel.
+            navbar_background_color:
+              hint: Al 40% di opacità.
+            navbar_link_background_hover_color:
+              hint: Si applica ai pulsanti Home, Informazioni, Contatti e Guida solo su quelle pagine specifiche (con un'opacità del 15%).
+            primary_button_hover_color:
+              hint: Pulsanti di interazione di condivisione, ricerca e raccolta (modifica, funzionalità, ecc.). Anche il bordo di questi pulsanti sarà di questo colore.
             themes:
               confirm: Se il tuo tema non sembra essere applicato correttamente, verifica che non venga sovrascritto dal CSS personalizzato.
           hints:

@@ -23,23 +23,23 @@ module Hyrax
         }.freeze
 
         DEFAULT_COLORS = {
-          'header_background_color'          => '#3c3c3c',
-          'header_text_color'                => '#dcdcdc',
-          'searchbar_background_color'       => '#000000',
-          'searchbar_background_hover_color' => '#ffffff',
-          'searchbar_text_color'             => '#eeeeee',
-          'searchbar_text_hover_color'       => '#eeeeee',
-          'link_color'                       => '#2e74b2',
-          'link_hover_color'                 => '#215480',
-          'footer_link_color'                => '#ffebcd',
-          'footer_link_hover_color'          => '#ffffff',
-          'primary_button_background_color'  => '#286090',
-          'default_button_background_color'  => '#ffffff',
-          'default_button_border_color'      => '#cccccc',
-          'default_button_text_color'        => '#333333',
-          'active_tabs_background_color'     => '#337ab7',
-          'facet_panel_background_color'     => '#f5f5f5',
-          'facet_panel_text_color'           => '#333333'
+          'header_and_footer_background_color' => '#3c3c3c',
+          'header_and_footer_text_color'       => '#dcdcdc',
+          'navbar_background_color'            => '#000000',
+          'navbar_link_background_hover_color' => '#ffffff',
+          'navbar_link_text_color'             => '#eeeeee',
+          'navbar_link_text_hover_color'       => '#eeeeee',
+          'link_color'                         => '#2e74b2',
+          'link_hover_color'                   => '#215480',
+          'footer_link_color'                  => '#ffebcd',
+          'footer_link_hover_color'            => '#ffffff',
+          'primary_button_hover_color'         => '#286090',
+          'default_button_background_color'    => '#ffffff',
+          'default_button_border_color'        => '#cccccc',
+          'default_button_text_color'          => '#333333',
+          # 'active_tabs_background_color'     => '#337ab7',
+          'facet_panel_background_color'       => '#f5f5f5',
+          'facet_panel_text_color'             => '#333333'
         }.freeze
 
         DEFAULT_VALUES = DEFAULT_FONTS.merge(DEFAULT_COLORS).freeze
@@ -116,42 +116,42 @@ module Hyrax
         end
 
         # The color for the background of the header and footer bars
-        def header_background_color
-          block_for('header_background_color')
+        def header_and_footer_background_color
+          block_for('header_and_footer_background_color')
         end
 
         # The color for the text in the header bar
-        def header_text_color
-          block_for('header_text_color')
+        def header_and_footer_text_color
+          block_for('header_and_footer_text_color')
         end
 
         # The color for the background of the search navbar
-        def searchbar_background_color
-          block_for('searchbar_background_color')
+        def navbar_background_color
+          block_for('navbar_background_color')
         end
 
-        def searchbar_background_color_alpha
-          convert_to_rgba(searchbar_background_color, 0.4)
+        def navbar_background_color_alpha
+          convert_to_rgba(navbar_background_color, 0.4)
         end
 
-        def searchbar_background_color_active
-          darken_color(searchbar_background_color, 0.35)
+        def navbar_background_color_active
+          darken_color(navbar_background_color, 0.35)
         end
 
-        def searchbar_background_hover_color
-          block_for('searchbar_background_hover_color')
+        def navbar_link_background_hover_color
+          block_for('navbar_link_background_hover_color')
         end
 
-        def searchbar_background_hover_color_alpha
-          convert_to_rgba(searchbar_background_hover_color, 0.15)
+        def navbar_link_background_hover_color_alpha
+          convert_to_rgba(navbar_link_background_hover_color, 0.15)
         end
 
-        def searchbar_text_color
-          block_for('searchbar_text_color')
+        def navbar_link_text_color
+          block_for('navbar_link_text_color')
         end
 
-        def searchbar_text_hover_color
-          block_for('searchbar_text_hover_color')
+        def navbar_link_text_hover_color
+          block_for('navbar_link_text_hover_color')
         end
 
         # The color links
@@ -175,19 +175,19 @@ module Hyrax
         end
 
         # PRIMARY BUTTON COLORS
-        # The background color for "primary" buttons
-        def primary_button_background_color
-          block_for('primary_button_background_color')
+        # The background hover color for "primary" buttons
+        def primary_button_hover_color
+          block_for('primary_button_hover_color')
         end
 
         # The border color for "primary" buttons
         def primary_button_border_color
-          @primary_button_border ||= darken_color(primary_button_background_color, 0.05)
+          @primary_button_border ||= darken_color(primary_button_hover_color, 0.05)
         end
 
         # The mouse over color for "primary" buttons
         def primary_button_hover_background_color
-          darken_color(primary_button_background_color, 0.1)
+          darken_color(primary_button_hover_color, 0.1)
         end
 
         # The mouse over color for the border of "primary" buttons
@@ -197,7 +197,7 @@ module Hyrax
 
         # The color for the background of active "primary" buttons
         def primary_button_active_background_color
-          darken_color(primary_button_background_color, 0.1)
+          darken_color(primary_button_hover_color, 0.1)
         end
 
         # The color for the border of active "primary" buttons
@@ -207,7 +207,7 @@ module Hyrax
 
         # The color for the background of focused "primary" buttons
         def primary_button_focus_background_color
-          darken_color(primary_button_background_color, 0.1)
+          darken_color(primary_button_hover_color, 0.1)
         end
 
         # The color for the border of focused "primary" buttons
@@ -275,7 +275,7 @@ module Hyrax
 
         # The color for the border of navbar-inverse
         def header_background_border_color
-          darken_color(header_background_color, 0.25)
+          darken_color(header_and_footer_background_color, 0.25)
         end
 
         # The color for the facet panel header background color
@@ -367,23 +367,23 @@ module Hyrax
           %i[
             body_font
             headline_font
-            header_background_color
-            header_text_color
+            header_and_footer_background_color
+            header_and_footer_text_color
             link_color
             link_hover_color
             footer_link_color
             footer_link_hover_color
-            primary_button_background_color
+            primary_button_hover_color
             default_button_background_color
             default_button_border_color
             default_button_text_color
             active_tabs_background_color
             facet_panel_background_color
             facet_panel_text_color
-            searchbar_background_color
-            searchbar_background_hover_color
-            searchbar_text_color
-            searchbar_text_hover_color
+            navbar_background_color
+            navbar_link_background_hover_color
+            navbar_link_text_color
+            navbar_link_text_hover_color
             custom_css_block
             logo_image_text
             banner_image_text

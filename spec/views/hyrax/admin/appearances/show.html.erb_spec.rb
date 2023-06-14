@@ -55,7 +55,7 @@ RSpec.describe "hyrax/admin/appearances/show", type: :view do
       # default work image
       assert_select "input#admin_appearance_default_work_image[name=?]", "admin_appearance[default_work_image]"
       # colors
-      assert_select "input#admin_appearance_primary_button_background_color[type=?]", "color"
+      assert_select "input#admin_appearance_primary_button_hover_color[type=?]", "color"
       # fonts
       assert_select "input#admin_appearance_body_font[name=?]", "admin_appearance[body_font]"
       # custom css

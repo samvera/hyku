@@ -157,15 +157,28 @@ de:
             custom_css:
               confirm: Benutzerdefiniertes CSS überschreibt immer andere Themenauswahlen. Vorgehen?
               warning: Wenn Ihre Themenanpassungen nicht korrekt angewendet werden, stellen Sie sicher, dass sie nicht von benutzerdefiniertem CSS überschrieben werden.
+            default_button_background_color:
+              hint: Schaltflächen für die Arbeitsinteraktion (Bearbeiten, Funktionen usw.); Arbeitsansichten auf der Sammlungsseite und Suchfilterschaltfläche.
             default_images:
               alert: Bitte laden Sie vor dem Absenden mindestens eine Datei hoch.
               hint: Für Standardbilder sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das die gleichen Abmessungen für Höhe und Breite aufweist (100 Pixel breit und 100 Pixel hoch).
             directory_image:
-              hint: Um ein Bild als Verzeichnisbild zu verwenden, sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das nicht höher als der Header und nicht breiter als 400 Pixel ist.
+            facet_panel_background_color:
+              hint: Gilt für Facetten und zusätzliche Abschnittsüberschriften auf den Arbeitsseiten einiger Themen.
+            facet_panel_text_color:
+              hint: Gilt bei einigen Themen auch für die Farbe des Caretzeichens neben dem Text und den Werktitel.
             favicon:
               hint: Favicons müssen PNG-Dateien und quadratisch sein. Die maximal verwendete Größe beträgt 228 x 228 Pixel.
+            link_color:
+              hint: 'Betrifft Links auf der Startseite und der Arbeitsseite, einschließlich: Breadcrumbs, Tabs, Titel und Nutzungsbedingungen.'
             logo_image:
               hint: Um ein Bild als Logo zu verwenden, sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das nicht höher als der Header und nicht breiter als 400 Pixel ist.
+            navbar_background_color:
+              hint: Bei 40 % Deckkraft.
+            navbar_link_background_hover_color:
+              hint: Gilt nur für die Schaltflächen „Startseite“, „Info“, „Kontakt“ und „Hilfe“ auf diesen spezifischen Seiten (bei 15 % Deckkraft).
+            primary_button_hover_color:
+              hint: Schaltflächen zum Teilen, Suchen und Sammeln von Interaktionen (Bearbeiten, Funktionen usw.). Der Rand dieser Schaltflächen wird ebenfalls diese Farbe haben.
             themes:
               confirm: Wenn Ihr Thema nicht richtig angewendet wird, stellen Sie sicher, dass es nicht von benutzerdefiniertem CSS überschrieben wird.
           hints:

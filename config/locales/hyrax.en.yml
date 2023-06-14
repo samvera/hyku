@@ -1164,13 +1164,29 @@ en:
         based_near: Location
         creator: Creator
         date_created: Date Created
+        default_button_background_color: Default button background color
+        default_button_border_color: Default button border color
+        default_button_text_color: Default button text color
         description: Description
         embargo_release_date: until
+        facet_panel_background_color: Facet panel background color
+        facet_panel_text_color: Facet panel text color
         files: Upload a file
+        footer_link_color: Footer link color
+        footer_link_hover_color: Footer link hover color
+        header_and_footer_background_color: Header and footer background color
+        header_and_footer_text_color: Header and footer text color
         keyword: Keyword
         lease_expiration_date: until
         license: License
+        link_color: Link color
+        link_hover_color: Link hover color
         member_of_collection_ids: Add to collection
+        navbar_background_color: Navbar background color
+        navbar_link_background_hover_color: Navbar link background hover color
+        navbar_link_text_color: Navbar link text color
+        navbar_link_text_hover_color: Navbar link text hover color
+        primary_button_hover_color: Primary button hover color
         related_url: Related URL
         rights_statement: Rights statement
         title: Title

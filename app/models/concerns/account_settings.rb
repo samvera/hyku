@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# All settings have a presedence order as follows
+# All settings have a precedence order as follows
 # Per Tenant Setting > ENV['HYKU_SETTING_NAME'] > ENV['HYRAX_SETTING_NAME'] > default
 
 module AccountSettings
@@ -26,10 +26,16 @@ module AccountSettings
     setting :email_subject_prefix, type: 'string'
     setting :enable_oai_metadata, type: 'string', disabled: true
     setting :file_size_limit, type: 'string', default: 5.gigabytes.to_s
-    setting :google_analytics_id, type: 'string'
     setting :google_scholarly_work_types, type: 'array', disabled: true
     setting :geonames_username, type: 'string', default: ''
     setting :gtm_id, type: 'string'
+    setting :google_analytics_id, type: 'string'
+    setting :google_oauth_app_name, type: 'string'
+    setting :google_oauth_app_version, type: 'string'
+    setting :google_oauth_private_key_value, type: 'string'
+    setting :google_oauth_private_key_path, type: 'string'
+    setting :google_oauth_private_key_secret, type: 'string'
+    setting :google_oauth_client_email, type: 'string'
     setting :locale_name, type: 'string', disabled: true
     setting :monthly_email_list, type: 'array', disabled: true
     setting :oai_admin_email, type: 'string', default: 'changeme@example.com'
@@ -62,7 +68,7 @@ module AccountSettings
   class_methods do
     def setting(name, args)
       known_type = ['array', 'boolean', 'hash', 'string'].include?(args[:type])
-      raise "Setting type #{args[:type]} is not supported. Can not laod." unless known_type
+      raise "Setting type #{args[:type]} is not supported. Can not load." unless known_type
 
       send("#{args[:type]}_settings") << name
       all_settings[name] = args
@@ -156,11 +162,11 @@ module AccountSettings
     def reload_library_config
       Hyrax.config do |config|
         config.contact_email = contact_email
-        config.analytics = google_analytics_id.present?
-        config.google_analytics_id = google_analytics_id if google_analytics_id.present?
         config.geonames_username = geonames_username
         config.uploader[:maxFileSize] = file_size_limit
       end
+
+      reload_analytics
 
       Devise.mailer_sender = contact_email
 
@@ -186,5 +192,39 @@ module AccountSettings
       return unless ssl_configured
       ActionMailer::Base.default_url_options ||= {}
       ActionMailer::Base.default_url_options[:protocol] = 'https'
+    end
+
+    def reload_analytics
+      # rubocop:disable Style/RedundantSelf
+      # fall back to the default values if they aren't set in the tenant
+      unless self.google_analytics_id.present? &&
+             self.google_oauth_app_name.present? &&
+             self.google_oauth_app_version.present? &&
+             (self.google_oauth_private_key_value.present? || self.google_oauth_private_key_path.present?) &&
+             self.google_oauth_private_key_secret.present? &&
+             self.google_oauth_client_email.present?
+
+        config = Hyrax::Analytics::Config.load_from_yaml
+        self.google_analytics_id = self.google_analytics_id.presence || config.analytics_id
+        self.google_oauth_app_name = self.google_oauth_app_name.presence || config.app_name
+        self.google_oauth_app_version = self.google_oauth_app_version.presence || config.app_version
+        self.google_oauth_private_key_value = self.google_oauth_private_key_value.presence || config.privkey_value
+        self.google_oauth_private_key_path = self.google_oauth_private_key_path.presence || config.privkey_path
+        self.google_oauth_private_key_secret = self.google_oauth_private_key_secret.presence || config.privkey_secret
+        self.google_oauth_client_email = self.google_oauth_client_email.presence || config.client_email
+      end
+
+      # require the analytics to be set per tenant
+      Hyrax::Analytics.config.analytics_id = self.google_analytics_id
+      Hyrax::Analytics.config.app_name = self.google_oauth_app_name
+      Hyrax::Analytics.config.app_version = self.google_oauth_app_version
+      Hyrax::Analytics.config.privkey_value = self.google_oauth_private_key_value
+      Hyrax::Analytics.config.privkey_path = self.google_oauth_private_key_path
+      Hyrax::Analytics.config.privkey_secret = self.google_oauth_private_key_secret
+      Hyrax::Analytics.config.client_email = self.google_oauth_client_email
+
+      # only show analytics partials if analytics are set on the tenant
+      Hyrax.config.analytics = Hyrax::Analytics.config.valid?
+      # rubocop:enable Style/RedundantSelf
     end
 end

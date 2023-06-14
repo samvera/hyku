@@ -196,24 +196,6 @@ module AccountSettings
 
     def reload_analytics
       # rubocop:disable Style/RedundantSelf
-      # fall back to the default values if they aren't set in the tenant
-      unless self.google_analytics_id.present? &&
-             self.google_oauth_app_name.present? &&
-             self.google_oauth_app_version.present? &&
-             (self.google_oauth_private_key_value.present? || self.google_oauth_private_key_path.present?) &&
-             self.google_oauth_private_key_secret.present? &&
-             self.google_oauth_client_email.present?
-
-        config = Hyrax::Analytics::Config.load_from_yaml
-        self.google_analytics_id = self.google_analytics_id.presence || config.analytics_id
-        self.google_oauth_app_name = self.google_oauth_app_name.presence || config.app_name
-        self.google_oauth_app_version = self.google_oauth_app_version.presence || config.app_version
-        self.google_oauth_private_key_value = self.google_oauth_private_key_value.presence || config.privkey_value
-        self.google_oauth_private_key_path = self.google_oauth_private_key_path.presence || config.privkey_path
-        self.google_oauth_private_key_secret = self.google_oauth_private_key_secret.presence || config.privkey_secret
-        self.google_oauth_client_email = self.google_oauth_client_email.presence || config.client_email
-      end
-
       # require the analytics to be set per tenant
       Hyrax::Analytics.config.analytics_id = self.google_analytics_id
       Hyrax::Analytics.config.app_name = self.google_oauth_app_name

@@ -16,8 +16,8 @@ module ApplicationHelper
     @term              = term.to_s
     @record_class      = record_class.to_s.downcase
     work_or_collection = @record_class == 'collection' ? 'collection' : 'defaults'
-    default_locale     = t("simple_form.#{type}.#{work_or_collection}.#{@term}").html_safe
-    locale             = t("hyrax.#{@record_class}.#{type}.#{@term}").html_safe
+    default_locale     = t("simple_form.#{type}.#{work_or_collection}.#{@term}")
+    locale             = t("hyrax.#{@record_class}.#{type}.#{@term}")
 
     return default_locale if missing_translation(locale)
 

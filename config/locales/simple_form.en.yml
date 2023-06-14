@@ -12,6 +12,13 @@ en:
           base_path: Fedora base path should begin with a slash AND not end with a slash
           url: Fedora URL should not end with a slash
         name: A single or hyphenated name used for technical aspects of the repository (e.g., "acme" or "acme-library").
+        google_analytics_id: The ID of your Analytics account
+        google_oauth_app_name: The name of the application
+        google_oauth_app_version: The version of application
+        google_oauth_private_key_secret: The secret provided when you created the key
+        google_oauth_private_key_path: The full path to your p12, key file
+        google_oauth_private_key_value: The value of the p12 file with base64 encryption
+        google_oauth_client_email: OAuth Client email address
         gtm_id: The ID of your Google Tag Manager account
         contact_email: Email recipient of messages sent via the contact form
         weekly_email_list: List of email addresses to email the weekly report. Leave a single space between each email

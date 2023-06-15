@@ -165,8 +165,6 @@ Analytics tracking and reporting features will be turned off by default. To enab
 - Create an OAuth 2.0 Client ID: https://developers.google.com/identity/protocols/oauth2/web-server#creatingcred
 
 #### Set the Account Settings
-(Uncomment the config/analytics.yml file so that any tenant's without the account level settings referenced below can fallback to the default values in the project level environment variables.)
-
 This applies to each of your environments: development/staging/production/etc.
 Dashboard >> Settings >> Account
 

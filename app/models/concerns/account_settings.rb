@@ -194,6 +194,9 @@ module AccountSettings
       ActionMailer::Base.default_url_options[:protocol] = 'https'
     end
 
+    # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/CyclomaticComplexity
+    # rubocop:disable Metrics/PerceivedComplexity
     def reload_analytics
       # rubocop:disable Style/RedundantSelf
       # require the analytics to be set per tenant
@@ -209,4 +212,7 @@ module AccountSettings
       Hyrax.config.analytics = Hyrax::Analytics.config.valid?
       # rubocop:enable Style/RedundantSelf
     end
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/PerceivedComplexity
 end

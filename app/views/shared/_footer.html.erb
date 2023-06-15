@@ -1,3 +1,4 @@
+<% current_year = Time.now.year %>
 <footer class="navbar navbar-inverse site-footer">
   <div class="container-fluid">
     <div class="navbar-text text-left">
@@ -6,7 +7,7 @@
     </div>
     <div class="navbar-right">
       <div class="navbar-text text-right">
-        <p><%= t('hyrax.footer.copyright_html') %></p>
+        <p><%= t('hyrax.footer.copyright_html', current_year: current_year) %></p>
         <p><%= t('hyrax.background_attribution_html') %></p>
         <% if admin_host? && !user_signed_in? %>
           <p><%= link_to t('hyku.footer.admin_login', default: [:'hyrax.toolbar.profile.login']), main_app.new_user_session_path %></p>

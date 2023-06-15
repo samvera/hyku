@@ -809,7 +809,7 @@ de:
       groups_description:
         description_html: Die Liste der Gruppen in der Dropdown-Liste mit der Bezeichnung "Gruppe auswählen" ist eine Liste der vom Benutzer verwalteten Gruppen, in denen Sie Mitglied sind. Sie können eine bestimmte Gruppe auswählen und eine Zugriffsebene für eine Datei in %{application_name} zuweisen, ähnlich wie beim Hinzufügen von Benutzerzugriffsebenen.
     footer:
-      copyright_html: "<strong>Copyright © 2017 Samvera lizenziert</strong> unter der Apache Lizenz, Version 2.0"
+      copyright_html: "<strong>Copyright © 2019 - %{current_year} Samvera lizenziert</strong> unter der Apache Lizenz, Version 2.0"
       service_html: Ein Dienst von <a href="http://samvera.org/" class="navbar-link" target="_blank">Samvera</a> .
     help:
       header: Benutzer-Support

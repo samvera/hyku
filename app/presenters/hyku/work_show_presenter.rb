@@ -1,10 +1,14 @@
 # frozen_string_literal: true
 
 # OVERRIDE here to add featured collection methods and to delegate collection presenters to the member presenter factory
+# OVERRIDE: Hyrax 3.4.0 to add Hyrax IIIF AV
 
 module Hyku
   class WorkShowPresenter < Hyrax::WorkShowPresenter
-    Hyrax::MemberPresenterFactory.file_presenter_class = Hyrax::FileSetPresenter
+    # Hyrax::MemberPresenterFactory.file_presenter_class = Hyrax::FileSetPresenter
+    # Adds behaviors for hyrax-iiif_av plugin.
+    include Hyrax::IiifAv::DisplaysIiifAv
+    Hyrax::MemberPresenterFactory.file_presenter_class = Hyrax::IiifAv::IiifFileSetPresenter
 
     delegate :title_or_label, :extent, to: :solr_document
 
@@ -53,7 +57,26 @@ module Hyku
     end
     # End Featured Collections Methods
 
+    # @return [Boolean] render a IIIF viewer
+    def iiif_viewer?
+      Hyrax.config.iiif_image_server? &&
+        representative_id.present? &&
+        representative_presenter.present? &&
+        iiif_media? &&
+        members_include_viewable?
+    end
+
     private
+
+      def iiif_media?(presenter: representative_presenter)
+        presenter.image? || presenter.video? || presenter.audio? || presenter.pdf?
+      end
+
+      def members_include_viewable?
+        file_set_presenters.any? do |presenter|
+          iiif_media?(presenter: presenter) && current_ability.can?(:read, presenter.id)
+        end
+      end
 
       def extract_from_identifier(rgx)
         if solr_document['identifier_tesim'].present?

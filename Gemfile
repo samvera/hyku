@@ -93,6 +93,7 @@ gem 'hyrax', '~> 3.5.0'
 
 gem 'bolognese', '>= 1.9.10'
 gem 'hyrax-doi', git: 'https://github.com/samvera-labs/hyrax-doi.git', branch: 'hyrax_upgrade'
+gem 'hyrax-iiif_av', git: 'https://github.com/samvera-labs/hyrax-iiif_av.git', branch: 'main'
 gem 'iiif_print', git: 'https://github.com/scientist-softserv/iiif_print.git', branch: 'main'
 gem 'postrank-uri', '>= 1.0.24'
 gem 'redlock', '>= 0.1.2', '< 2.0' # lock redlock per https://github.com/samvera/hyrax/pull/5961

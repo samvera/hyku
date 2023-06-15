@@ -11,6 +11,10 @@ RSpec.describe Hyrax::GenericWorksController do
                                         :original_file)
   end
 
+  it "includes Hyrax::IiifAv::ControllerBehavior" do
+    expect(described_class.include?(Hyrax::IiifAv::ControllerBehavior)).to be true
+  end
+
   describe "#presenter" do
     subject { controller.send :presenter }
 

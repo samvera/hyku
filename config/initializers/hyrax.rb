@@ -43,7 +43,7 @@ Hyrax.config do |config|
   # config.persistent_hostpath = 'http://localhost/files/'
 
   # If you have ffmpeg installed and want to transcode audio and video uncomment this line
-  config.enable_ffmpeg = false
+  config.enable_ffmpeg = true
 
   # Using the database noid minter was too slow when ingesting 1000s of objects (8s per transaction),
   # so switching to UUIDs for the MVP.
@@ -200,6 +200,11 @@ Qa::Authorities::Local.register_subauthority('genres', 'Qa::Authorities::Local::
 if ENV.fetch('HYKU_BULKRAX_ENABLED', 'true') == 'true' && Bulkrax.default_work_type.blank?
   Bulkrax.default_work_type = Hyrax.config.curation_concerns.first.to_s
 end
+
+Hyrax::IiifAv.config.iiif_av_viewer = :universal_viewer
+
+require 'hydra/derivatives'
+Hydra::Derivatives::Processors::Video::Processor.config.video_bitrate = '1500k'
 
 # Stop solr deprecation until ActiveFedora 13.2.8 comes out
 ActiveFedora::SolrService.class_eval do

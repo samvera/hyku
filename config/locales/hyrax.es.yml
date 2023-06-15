@@ -810,7 +810,7 @@ es:
       groups_description:
         description_html: La lista de grupos en el menú desplegable marcado "Seleccionar un grupo" es una lista de grupos administrados por usuarios de los que es miembro. Puede seleccionar un grupo específico y asignar un nivel de acceso para un archivo dentro de %{application_name}, de manera similar a agregar niveles de acceso de usuario.
     footer:
-      copyright_html: "<strong>Copyright &copy; 2019 Samvera</strong> bajo licencia de Apache, Version 2.0"
+      copyright_html: "<strong>Copyright &copy; 2019 - %{current_year} Samvera</strong> bajo licencia de Apache, Version 2.0"
       service_html: Un servicio de <a href="http://samvera.org/" class="navbar-link" target="_blank">Samvera</a>.
     help:
       header: Soporte al usuario

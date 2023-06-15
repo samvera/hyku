@@ -810,7 +810,7 @@ pt-BR:
       groups_description:
         description_html: A lista de grupos no menu suspenso marcado "Selecionar um grupo" é uma lista de Grupos gerenciados por usuários dos quais você é membro. Você pode selecionar um grupo específico e atribuir um nível de acesso a um arquivo no %{application_name}, da mesma forma que adiciona níveis de acesso do usuário.
     footer:
-      copyright_html: "<strong>Copyright © 2017 Samvera Licenciado</strong> sob a Licença Apache, Versão 2.0"
+      copyright_html: "<strong>Copyright © 2019 - %{current_year} Samvera Licenciado</strong> sob a Licença Apache, Versão 2.0"
       service_html: Um serviço de <a href="http://samvera.org/" class="navbar-link" target="_blank">Samvera</a> .
     help:
       header: Suporte ao usuário

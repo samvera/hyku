@@ -89,7 +89,9 @@ module Hyrax
           # OVERRIDE: Hyrax hyrax-v3.5.0 to derive the private_key from config.privkey_value
           private_key = Base64.decode64(config.privkey_value) if config.privkey_value.present?
           if private_key.blank?
-            raise "Private key file for Google analytics was expected at '#{config.privkey_path}', but no file was found." unless File.exist?(config.privkey_path)
+            unless File.exist?(config.privkey_path)
+              raise "Private key file for Google analytics was expected at '#{config.privkey_path}', but no file was found." # rubocop:disable Metrics/LineLength
+            end
 
             private_key = File.read(config.privkey_path)
           end

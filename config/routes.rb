@@ -6,7 +6,8 @@ Rails.application.routes.draw do
 
   concern :iiif_search, BlacklightIiifSearch::Routes.new
   concern :oai_provider, BlacklightOaiProvider::Routes.new
-
+  
+  mount Hyrax::IiifAv::Engine, at: '/'
   mount Riiif::Engine => 'images', as: :riiif if Hyrax.config.iiif_image_server?
 
   authenticate :user, lambda { |u| u.is_superadmin } do

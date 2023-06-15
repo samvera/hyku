@@ -810,7 +810,7 @@ zh:
       groups_description:
         description_html: 标记为“选择组”的下拉列表中的组列表是您所属的用户管理组的列表。您可以选择特定的组并为%{application_name}中的文件分配访问级别，类似于添加用户访问级别。
     footer:
-      copyright_html: "<strong>版权所有 &copy; 2017 Samvera</strong> 根据Apache许可证2.0版许可"
+      copyright_html: "<strong>版权所有 &copy; 2019 - %{current_year} Samvera</strong> 根据Apache许可证2.0版许可"
       service_html: 的服务<a href="http://samvera.org/" class="navbar-link" target="_blank">Samvera</a>.
     help:
       header: 用户支援

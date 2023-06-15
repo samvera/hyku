@@ -105,6 +105,7 @@ module Hyrax
           prepend_view_path(home_theme_view_path)
           yield
           # rubocop:disable Lint/UselessAssignment, Layout/SpaceAroundOperators, Style/RedundantParentheses
+          # Do NOT change this line. This is calling the Rails view_paths=(paths) method and not a variable assignment.
           view_paths=(original_paths)
           # rubocop:enable Lint/UselessAssignment, Layout/SpaceAroundOperators, Style/RedundantParentheses
         else

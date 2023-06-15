@@ -10,11 +10,22 @@ GIT
       rails (~> 5.2.4, >= 5.2.4.3)
 
 GIT
-  remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: 4f6b67276b57bf4648866408eb136905ca644e34
+  remote: https://github.com/samvera-labs/hyrax-iiif_av.git
+  revision: 6273f90016c153d2add33f85cc24285d51a25382
   branch: main
   specs:
-    iiif_print (0.0.1)
+    hyrax-iiif_av (0.2.0)
+      blacklight
+      hyrax (>= 2.9, < 4.0)
+      iiif_manifest (> 0.5)
+      rails (~> 5.1)
+
+GIT
+  remote: https://github.com/scientist-softserv/iiif_print.git
+  revision: 44d96c8e8e633ed56d286851648e9fbdf3feb880
+  branch: main
+  specs:
+    iiif_print (1.0.0)
       blacklight_iiif_search (~> 1.0)
       dry-monads (~> 1.4.0)
       hyrax (>= 2.5, < 4.0)
@@ -801,7 +812,7 @@ GEM
       rails (>= 5.0, < 7.1)
       rdf
     racc (1.6.1)
-    rack (2.2.6.2)
+    rack (2.2.7)
     rack-test (0.7.0)
       rack (>= 1.0, < 3)
     rails (5.2.8)
@@ -1184,6 +1195,7 @@ DEPENDENCIES
   flutie
   hyrax (~> 3.5.0)
   hyrax-doi!
+  hyrax-iiif_av!
   i18n-debug
   i18n-tasks
   iiif_print!

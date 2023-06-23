@@ -129,7 +129,7 @@ services:
 
   web:
     <<: *app
-    # Uncommend command to access container with out starting Rails. Useful for debugging
+    # Uncomment command to access container with out starting Rails. Useful for debugging
     # command: sleep infinity
     environment:
       - VIRTUAL_PORT=3000

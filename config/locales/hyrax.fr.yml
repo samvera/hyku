@@ -808,7 +808,7 @@ fr:
       groups_description:
         description_html: La liste des groupes dans la liste déroulante intitulée «Sélectionnez un groupe» est une liste des groupes gérés par l'utilisateur dont vous êtes membre. Vous pouvez sélectionner un groupe spécifique et attribuer un niveau d'accès à un fichier dans %{application_name}, de la même manière que l'ajout de niveaux d'accès utilisateur.
     footer:
-      copyright_html: "<strong>Copyright © 2017 Samvera</strong> Licence sous Licence Apache, Version 2.0"
+      copyright_html: "<strong>Copyright © 2019 - %{current_year} Samvera</strong> Licence sous Licence Apache, Version 2.0"
       service_html: Un service de <a href="http://samvera.org/" class="navbar-link" target="_blank">Samvera</a> .
     help:
       header: Support utilisateur

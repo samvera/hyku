@@ -1,4 +1,12 @@
 GIT
+  remote: https://github.com/samvera-labs/hyku_knapsack.git
+  revision: b8303288b2ac73b4a50e412d4bb4fabb7c64d80d
+  branch: main
+  specs:
+    hyku_knapsack (0.0.1)
+      rails (>= 5.2.0)
+
+GIT
   remote: https://github.com/samvera-labs/hyrax-doi.git
   revision: d494a50ef8ce3eae594c7ed7148c33b3c977d4a7
   branch: main
@@ -577,7 +585,7 @@ GEM
       signet
       tinymce-rails (~> 5.10)
       valkyrie (~> 2, >= 2.1.1)
-    i18n (1.13.0)
+    i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     i18n-debug (1.2.0)
       i18n (< 2)
@@ -715,9 +723,9 @@ GEM
       activesupport (>= 4)
       railties (>= 4)
       request_store (~> 1.0)
-    loofah (2.20.0)
+    loofah (2.21.3)
       crass (~> 1.0.2)
-      nokogiri (>= 1.5.9)
+      nokogiri (>= 1.12.0)
     mail (2.8.1)
       mini_mime (>= 0.1.1)
       net-imap
@@ -747,7 +755,7 @@ GEM
     mini_magick (4.12.0)
     mini_mime (1.1.2)
     mini_portile2 (2.8.2)
-    minitest (5.18.0)
+    minitest (5.18.1)
     mods (2.4.1)
       edtf
       iso-639
@@ -764,7 +772,7 @@ GEM
       redic
     net-http-persistent (4.0.2)
       connection_pool (~> 2.2)
-    net-imap (0.3.4)
+    net-imap (0.3.6)
       date
       net-protocol
     net-pop (0.1.2)
@@ -839,7 +847,7 @@ GEM
       nokogiri (~> 1.6)
       rails (>= 5.0, < 7.1)
       rdf
-    racc (1.6.2)
+    racc (1.7.1)
     rack (2.2.7)
     rack-test (0.7.0)
       rack (>= 1.0, < 3)
@@ -1135,11 +1143,11 @@ GEM
       execjs (>= 0.3.0, < 3)
     tether-rails (1.4.0)
       rails (>= 3.1)
-    thor (1.2.1)
+    thor (1.2.2)
     thread (0.2.2)
     thread_safe (0.3.6)
     tilt (2.1.0)
-    timeout (0.3.2)
+    timeout (0.4.0)
     tinymce-rails (5.10.7)
       railties (>= 3.1.1)
     turbolinks (5.2.1)
@@ -1230,6 +1238,7 @@ DEPENDENCIES
   fcrepo_wrapper (~> 0.4)
   flipflop (~> 2.3)
   flutie
+  hyku_knapsack!
   hyrax (~> 3.5.0)
   hyrax-doi!
   hyrax-iiif_av!
@@ -1284,4 +1293,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   2.1.4
+   2.4.14

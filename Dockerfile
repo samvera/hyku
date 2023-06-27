@@ -84,11 +84,11 @@ RUN ln -sf /usr/lib/libmediainfo.so.0 /app/fits/tools/mediainfo/linux/libmediain
 
 FROM hyku-base as hyku-web
 
-COPY --chown=1001:101 ./Gemfile* /app/samvera/hyrax-webapp/
+COPY --chown=1001:101 $APP_PATH/Gemfile* /app/samvera/hyrax-webapp/
 RUN bundle install --jobs "$(nproc)"
 
-COPY --chown=1001:101 ./bin/db-migrate-seed.sh /app/samvera/
-COPY --chown=1001:101 . /app/samvera/hyrax-webapp
+COPY --chown=1001:101 $APP_PATH/bin/db-migrate-seed.sh /app/samvera/
+COPY --chown=1001:101 $APP_PATH /app/samvera/hyrax-webapp
 
 RUN RAILS_ENV=production SECRET_KEY_BASE=`bin/rake secret` DB_ADAPTER=nulldb DB_URL='postgresql://fake' bundle exec rake assets:precompile && yarn install
 CMD ./bin/web

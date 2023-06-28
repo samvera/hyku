@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/samvera-labs/hyku_knapsack.git
-  revision: b58e68b69224ffb8fc1d47b294a8ab6db08f814b
+  revision: b820c3bd40fd43fc4e2692fb786fca9ad4f51656
   branch: main
   specs:
     hyku_knapsack (0.0.1)

@@ -5,8 +5,8 @@ x-app: &app
     context: .
     target: hyku-web
     cache_from:
-      - ghcr.io/samvera/hyku/base:${TAG:-latest}
-      - ghcr.io/samvera/hyku:${TAG:-latest}
+      - ghcr.io/samvera/hyku/base:latest
+      - ghcr.io/samvera/hyku:latest
   image: ghcr.io/samvera/hyku:${TAG:-latest}
   env_file:
     - .env
@@ -126,6 +126,8 @@ services:
     build:
       context: .
       target: hyku-base
+      cache_from:
+        - ghcr.io/samvera/hyku/base:latest
 
   web:
     <<: *app
@@ -163,8 +165,9 @@ services:
       context: .
       target: hyku-worker
       cache_from:
-        - ghcr.io/samvera/hyku:${TAG:-latest}
-        - ghcr.io/samvera/hyku/worker:${TAG:-latest}
+        - ghcr.io/samvera/hyku/base:latest
+        - ghcr.io/samvera/hyku:latest
+        - ghcr.io/samvera/hyku/worker:latest
     command: bundle exec sidekiq
     depends_on:
       check_volumes:

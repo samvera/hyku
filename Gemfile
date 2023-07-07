@@ -141,5 +141,6 @@ gem 'tether-rails'
 # Locking it to v1.4.x does not throw an error.
 gem 'dry-monads', '~> 1.4.0'
 
-# This gem does nothing by default, but is instead a tool to ease developer flow and place overrides, themes and deployment code.
+# This gem does nothing by default, but is instead a tool to ease developer flow
+# and place overrides, themes and deployment code.
 gem 'hyku_knapsack', github: 'samvera-labs/hyku_knapsack', branch: 'main'

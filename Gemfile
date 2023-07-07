@@ -131,7 +131,7 @@ gem 'parser', '~> 2.5.3'
 gem 'rdf', '~> 3.1.15' # rdf 3.2.0 removed SerializedTransaction which ldp requires
 gem 'riiif', '~> 1.1'
 gem 'secure_headers'
-gem 'sidekiq'
+gem 'sidekiq', "< 7.0" # sidekiq 7 requires upgrade to redis 6
 gem 'terser' # to support the Safe Navigation / Optional Chaining operator (?.) and avoid uglifier precompile issue
 gem 'tether-rails'
 

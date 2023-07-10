@@ -75,10 +75,6 @@ jobs:
       - samvera/bundle:
           ruby_version: << parameters.ruby_version >>
           bundler_version: << parameters.bundler_version >>
-      - run: |
-            sed -i '/require .enumerator./d' /home/circleci/project/vendor/bundle/gems/oai-1.1.0/lib/oai/provider/resumption_token.rb && \
-            sed -i '/require .enumerator./d' /home/circleci/project/vendor/bundle/gems/edtf-3.0.8/lib/edtf.rb && \
-            sed -i '/require .enumerator./d' /home/circleci/project/vendor/bundle/gems/csl-1.6.0/lib/csl.rb
       - samvera/rubocop
       - browser-tools/install-browser-tools
       - run: bundle exec rake db:create db:schema:load

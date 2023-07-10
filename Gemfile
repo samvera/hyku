@@ -5,8 +5,8 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.5'
 
-gem 'addressable', '2.8.1' # remove once https://github.com/postrank-labs/postrank-uri/issues/49 is fixed
 gem 'activerecord-nulldb-adapter'
+gem 'addressable', '2.8.1' # remove once https://github.com/postrank-labs/postrank-uri/issues/49 is fixed
 # Use sqlite3 as the database for Active Record
 gem 'pg'
 # Use Puma as the app server

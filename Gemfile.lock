@@ -35,11 +35,12 @@ GIT
 
 GIT
   remote: https://github.com/tawan/active-elastic-job.git
-  revision: 092a8102cd38cffd7203d408fa03998cdff9dc03
+  revision: ec51c5d9dedc4a1b47f2db41f26d5fceb251e979
+  branch: ec51c5d9dedc4a1b47f2db41f26d5fceb251e979
   specs:
-    active_elastic_job (3.2.0)
+    active_elastic_job (2.0.1)
       aws-sdk-sqs (~> 1)
-      rails (>= 5.2.6, < 7.1)
+      rails (>= 4.2)
 
 GEM
   remote: https://rubygems.org/
@@ -128,8 +129,8 @@ GEM
     awesome_nested_set (3.5.0)
       activerecord (>= 4.0.0, < 7.1)
     aws-eventstream (1.2.0)
-    aws-partitions (1.759.0)
-    aws-sdk-core (3.171.0)
+    aws-partitions (1.785.0)
+    aws-sdk-core (3.178.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.651.0)
       aws-sigv4 (~> 1.5)
@@ -141,10 +142,10 @@ GEM
       aws-sdk-core (~> 3, >= 3.165.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.4)
-    aws-sdk-sqs (1.53.0)
-      aws-sdk-core (~> 3, >= 3.165.0)
+    aws-sdk-sqs (1.61.0)
+      aws-sdk-core (~> 3, >= 3.177.0)
       aws-sigv4 (~> 1.1)
-    aws-sigv4 (1.5.2)
+    aws-sigv4 (1.6.0)
       aws-eventstream (~> 1, >= 1.0.2)
     babel-source (5.8.35)
     babel-transpiler (0.7.0)
@@ -577,7 +578,7 @@ GEM
       signet
       tinymce-rails (~> 5.10)
       valkyrie (~> 2, >= 2.1.1)
-    i18n (1.13.0)
+    i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     i18n-debug (1.2.0)
       i18n (< 2)
@@ -715,9 +716,9 @@ GEM
       activesupport (>= 4)
       railties (>= 4)
       request_store (~> 1.0)
-    loofah (2.20.0)
+    loofah (2.21.3)
       crass (~> 1.0.2)
-      nokogiri (>= 1.5.9)
+      nokogiri (>= 1.12.0)
     mail (2.8.1)
       mini_mime (>= 0.1.1)
       net-imap
@@ -747,7 +748,7 @@ GEM
     mini_magick (4.12.0)
     mini_mime (1.1.2)
     mini_portile2 (2.8.2)
-    minitest (5.18.0)
+    minitest (5.18.1)
     mods (2.4.1)
       edtf
       iso-639
@@ -764,7 +765,7 @@ GEM
       redic
     net-http-persistent (4.0.2)
       connection_pool (~> 2.2)
-    net-imap (0.3.4)
+    net-imap (0.3.6)
       date
       net-protocol
     net-pop (0.1.2)
@@ -839,7 +840,7 @@ GEM
       nokogiri (~> 1.6)
       rails (>= 5.0, < 7.1)
       rdf
-    racc (1.6.2)
+    racc (1.7.1)
     rack (2.2.7)
     rack-test (0.7.0)
       rack (>= 1.0, < 3)
@@ -860,8 +861,9 @@ GEM
       actionpack (>= 5.0.1.rc1)
       actionview (>= 5.0.1.rc1)
       activesupport (>= 5.0.1.rc1)
-    rails-dom-testing (2.0.3)
-      activesupport (>= 4.2.0)
+    rails-dom-testing (2.1.1)
+      activesupport (>= 5.0.0)
+      minitest
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.5.0)
       loofah (~> 2.19, >= 2.19.1)
@@ -1132,11 +1134,11 @@ GEM
       execjs (>= 0.3.0, < 3)
     tether-rails (1.4.0)
       rails (>= 3.1)
-    thor (1.2.1)
+    thor (1.2.2)
     thread (0.2.2)
     thread_safe (0.3.6)
     tilt (2.1.0)
-    timeout (0.3.2)
+    timeout (0.4.0)
     tinymce-rails (5.10.7)
       railties (>= 3.1.1)
     turbolinks (5.2.1)

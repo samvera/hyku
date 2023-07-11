@@ -109,7 +109,7 @@ gem 'apartment'
 gem 'is_it_working'
 gem 'rolify'
 
-gem 'flipflop', '~> 2.6.0'  # waiting for hyrax 4 upgrade
+gem 'flipflop', '~> 2.6.0' # waiting for hyrax 4 upgrade
 gem 'lograge'
 
 gem 'mods', '~> 2.4'

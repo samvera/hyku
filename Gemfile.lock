@@ -434,9 +434,8 @@ GEM
     fcrepo_wrapper (0.9.0)
       ruby-progressbar
     ffi (1.15.5)
-    flipflop (2.7.1)
+    flipflop (2.6.0)
       activesupport (>= 4.0)
-      terminal-table (>= 1.8)
     flot-rails (0.0.7)
       jquery-rails
     flutie (2.2.0)
@@ -1228,7 +1227,7 @@ DEPENDENCIES
   easy_translate
   factory_bot_rails
   fcrepo_wrapper (~> 0.4)
-  flipflop (~> 2.3)
+  flipflop (~> 2.6.0)
   flutie
   hyrax (~> 3.5.0)
   hyrax-doi!

@@ -109,7 +109,7 @@ gem 'apartment'
 gem 'is_it_working'
 gem 'rolify'
 
-gem 'flipflop', '~> 2.3'
+gem 'flipflop', '~> 2.6.0'  # waiting for hyrax 4 upgrade
 gem 'lograge'
 
 gem 'mods', '~> 2.4'
@@ -119,7 +119,8 @@ group :aws, :test do
 end
 
 group :aws do
-  gem 'active_elastic_job', git: 'https://github.com/tawan/active-elastic-job.git', branch: 'ec51c5d9dedc4a1b47f2db41f26d5fceb251e979'
+  gem 'active_elastic_job', git: 'https://github.com/tawan/active-elastic-job.git',
+                            branch: 'ec51c5d9dedc4a1b47f2db41f26d5fceb251e979'
   gem 'aws-sdk-sqs'
 end
 

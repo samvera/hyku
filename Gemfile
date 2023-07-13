@@ -6,6 +6,7 @@ source 'https://rubygems.org'
 gem 'rails', '~> 5.2.5'
 
 gem 'activerecord-nulldb-adapter'
+gem 'addressable', '2.8.1' # remove once https://github.com/postrank-labs/postrank-uri/issues/49 is fixed
 # Use sqlite3 as the database for Active Record
 gem 'pg'
 # Use Puma as the app server
@@ -108,7 +109,7 @@ gem 'apartment'
 gem 'is_it_working'
 gem 'rolify'
 
-gem 'flipflop', '~> 2.3'
+gem 'flipflop', '~> 2.6.0' # waiting for hyrax 4 upgrade
 gem 'lograge'
 
 gem 'mods', '~> 2.4'
@@ -118,7 +119,8 @@ group :aws, :test do
 end
 
 group :aws do
-  gem 'active_elastic_job', git: 'https://github.com/tawan/active-elastic-job.git'
+  gem 'active_elastic_job', git: 'https://github.com/tawan/active-elastic-job.git',
+                            branch: 'ec51c5d9dedc4a1b47f2db41f26d5fceb251e979'
   gem 'aws-sdk-sqs'
 end
 
@@ -131,7 +133,7 @@ gem 'parser', '~> 2.5.3'
 gem 'rdf', '~> 3.1.15' # rdf 3.2.0 removed SerializedTransaction which ldp requires
 gem 'riiif', '~> 1.1'
 gem 'secure_headers'
-gem 'sidekiq'
+gem 'sidekiq', "< 7.0" # sidekiq 7 requires upgrade to redis 6
 gem 'terser' # to support the Safe Navigation / Optional Chaining operator (?.) and avoid uglifier precompile issue
 gem 'tether-rails'
 

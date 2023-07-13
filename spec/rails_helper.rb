@@ -62,16 +62,16 @@ Capybara.default_driver = :rack_test
 ENV['WEB_HOST'] ||= `hostname -s`.strip
 
 if ENV['CHROME_HOSTNAME'].present?
-  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-    chromeOptions: {
-      args: %w[headless disable-gpu no-sandbox whitelisted-ips window-size=1400,1400]
-    }
-  )
+  options = Selenium::WebDriver::Options.chrome(args: ["headless",
+                                                       "disable-gpu",
+                                                       "no-sandbox",
+                                                       "whitelisted-ips",
+                                                       "window-size=1400,1400"])
 
   Capybara.register_driver :chrome do |app|
     d = Capybara::Selenium::Driver.new(app,
                                        browser: :remote,
-                                       desired_capabilities: capabilities,
+                                       capabilities: options,
                                        url: "http://#{ENV['CHROME_HOSTNAME']}:4444/wd/hub")
     # Fix for capybara vs remote files. Selenium handles this for us
     d.browser.file_detector = lambda do |args|
@@ -84,17 +84,13 @@ if ENV['CHROME_HOSTNAME'].present?
   Capybara.server_port = 3001
   Capybara.app_host = "http://#{ENV['WEB_HOST']}:#{Capybara.server_port}"
 else
-  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-    chromeOptions: {
-      args: %w[headless disable-gpu]
-    }
-  )
+  options = Selenium::WebDriver::Options.chrome(args: ["headless", "disable-gpu"])
 
   Capybara.register_driver :chrome do |app|
     Capybara::Selenium::Driver.new(
       app,
       browser: :chrome,
-      desired_capabilities: capabilities
+      capabilities: options
     )
   end
 end

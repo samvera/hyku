@@ -1,8 +1,8 @@
 <% content_for(:gscholar_meta) do %>
-  <% unless @presenter.doi.blank? %>
+  <% unless @presenter.try(:doi).blank? %>
     <meta name="citation_doi" content="<%= @presenter.doi %>"/>
   <% end %>
-  <% unless @presenter.isbns.blank? %>
+  <% unless @presenter.try(:isbns).blank? %>
     <% @presenter.isbns.each do |isbn| %>
       <meta name="citation_isbn" content="<%= isbn %>"/>
     <% end %>

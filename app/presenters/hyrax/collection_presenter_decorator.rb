@@ -21,7 +21,8 @@ module Hyrax
            subject language
            identifier
            based_near
-           related_url]
+           related_url
+           dog_name]
       end
     end
 

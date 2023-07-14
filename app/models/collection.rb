@@ -4,6 +4,12 @@
 class Collection < ActiveFedora::Base
   include ::Hyrax::CollectionBehavior
   # You can replace these metadata if they're not suitable
+  property :dog_name,
+    predicate: ::RDF::Vocab::VCARD.hasGivenName,
+    multiple: false do |index|
+  index.as :displayable, :stored_searchable
+  end
+
   include Hyrax::BasicMetadata
   self.indexer = CollectionIndexer
   after_update :remove_featured, if: proc { |collection| collection.private? }

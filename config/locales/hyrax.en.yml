@@ -1146,6 +1146,7 @@ en:
       collection:
         size: Size
         total_items: Total items
+        dog_name: Name of Dog
       collection_type:
         allow_multiple_membership: MULTIPLE MEMBERSHIP
         assigns_visibility: VISIBILITY

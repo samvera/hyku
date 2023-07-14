@@ -1,0 +1,9 @@
+terms:
+  - id: eng
+    term: English
+  - id: hst
+    term: History
+  - id: ltn
+    term: Latin
+  - id: zoo
+    term: Zoology

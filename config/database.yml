@@ -8,7 +8,8 @@ login: &login
   database: <%= ENV['DB_NAME'] || 'hyku' %>
   pool: 50
   timeout: 5000
-
+  prepared_statements: <%= ENV.fetch('DB_PREPARED_STATEMENTS', true) %>
+  advisory_locks: <%= ENV.fetch('DB_ADVISORY_LOCKS', true) %>
 
 development:
   <<: *login

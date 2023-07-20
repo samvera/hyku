@@ -53,9 +53,34 @@ if ENV.fetch('HYKU_BULKRAX_ENABLED', 'true') == 'true'
     #   e.g. to exclude date
     #   config.field_mappings["Bulkrax::OaiDcParser"]["date"] = { from: ["date"], excluded: true  }
 
+
     default_field_mapping = {
+      'abstract' => { from: ['abstract'], split: true },
+      'alternative_title' => { from: ['alternative_title'], split: /\s*[|]\s*/ },
+      'based_near' => { from: ['based_near'], split: true },
+      'bibliographic_citation' => { from: ['bibliographic_citation'], split: true },
+      'contributor' => { from: ['contributor'], split: true },
+      'create_date' => { from: ['create_date'], split: true },
+      'children' => { from: ['children'], related_children_field_mapping: true },
+      'creator' => { from: ['creator'], split: true },
+      'date_created' => { from: ['date_created'], split: true },
+      'description' => { from: ['description'], split: true },
+      'extent' => { from: ['extent'], split: true },
+      'file' => { from: ['file'], split: /\s*[|]\s*/ },
+      'identifier' => { from: ['identifier'], split: true },
+      'keyword' => { from: ['keyword'], split: true },
+      'language' => { from: ['language'], split: true },
+      'license' => { from: ['license'], split: /\s*[|]\s*/ },
+      'modified_date' => { from: ['modified_date'], split: true },
       'parents' => { from: ['parents'], related_parents_field_mapping: true },
-      'children' => { from: ['children'], related_children_field_mapping: true }
+      'publisher' => { from: ['publisher'], split: true },
+      'related_url' => { from: ['related_url'], split: /\s* [|]\s*/ },
+      'remote_files' => { from: ['remote_files'], split: /\s*[|]\s*/},
+      'resource_type' => { from: ['resource_type'], split: true },
+      'rights_notes' => { from: ['rights_notes'], split: true },
+      'source' => { from: ['source'], split: true },
+      'subject' => { from: ['subject'], split: true },
+      'title' => { from: ['title'], split: /\s*[|]\s*/ }
     }
 
     config.field_mappings["Bulkrax::BagitParser"] = default_field_mapping.merge({

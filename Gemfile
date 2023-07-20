@@ -85,8 +85,8 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
-gem 'bulkrax', '~> 5.0'
-
+# gem 'bulkrax', '~> 5.0'
+gem 'bulkrax', git: 'https://github.com/samvera-labs/bulkrax.git', branch: 'no_blank_strings_on_split'
 gem 'blacklight', '~> 6.7'
 gem 'blacklight_oai_provider', '~> 6.1', '>= 6.1.1'
 
@@ -145,4 +145,4 @@ gem 'dry-monads', '~> 1.4.0'
 
 # This gem does nothing by default, but is instead a tool to ease developer flow
 # and place overrides, themes and deployment code.
-gem 'hyku_knapsack', github: 'samvera-labs/hyku_knapsack', branch: 'main'
+gem 'hyku_knapsack', github: 'samvera-labs/hyku_knapsack', branch: 'upstream_main'

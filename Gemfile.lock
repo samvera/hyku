@@ -1,7 +1,27 @@
 GIT
+  remote: https://github.com/samvera-labs/bulkrax.git
+  revision: 89300e8316fa45f62b210c0704a66398242f3c70
+  branch: no_blank_strings_on_split
+  specs:
+    bulkrax (5.2.1)
+      bagit (~> 0.4)
+      coderay
+      iso8601 (~> 0.9.0)
+      kaminari
+      language_list (~> 1.2, >= 1.2.1)
+      libxml-ruby (~> 3.2.4)
+      loofah (>= 2.2.3)
+      oai (>= 0.4, < 2.x)
+      rack (>= 2.0.6)
+      rails (>= 5.1.6)
+      rdf (>= 2.0.2, < 4.0)
+      rubyzip
+      simple_form
+
+GIT
   remote: https://github.com/samvera-labs/hyku_knapsack.git
   revision: f89be7dbe6fe1acab36afa86109085da65549aa1
-  branch: main
+  branch: upstream_main
   specs:
     hyku_knapsack (0.0.1)
       rails (>= 5.2.0)
@@ -244,20 +264,6 @@ GEM
       signet (~> 0.8)
       typhoeus
     builder (3.2.4)
-    bulkrax (5.2.1)
-      bagit (~> 0.4)
-      coderay
-      iso8601 (~> 0.9.0)
-      kaminari
-      language_list (~> 1.2, >= 1.2.1)
-      libxml-ruby (~> 3.2.4)
-      loofah (>= 2.2.3)
-      oai (>= 0.4, < 2.x)
-      rack (>= 2.0.6)
-      rails (>= 5.1.6)
-      rdf (>= 2.0.2, < 4.0)
-      rubyzip
-      simple_form
     byebug (11.1.3)
     cancancan (1.17.0)
     capybara (3.39.0)
@@ -754,7 +760,7 @@ GEM
     mime-types-data (3.2023.0218.1)
     mini_magick (4.12.0)
     mini_mime (1.1.2)
-    mini_portile2 (2.8.2)
+    mini_portile2 (2.8.4)
     minitest (5.18.1)
     mods (2.4.1)
       edtf
@@ -1218,7 +1224,7 @@ DEPENDENCIES
   blacklight_oai_provider (~> 6.1, >= 6.1.1)
   bolognese (>= 1.9.10)
   bootstrap-datepicker-rails
-  bulkrax (~> 5.0)
+  bulkrax!
   byebug
   capybara
   capybara-screenshot (~> 1.0)

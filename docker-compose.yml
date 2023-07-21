@@ -1,9 +1,10 @@
 version: '3.8'
-
 x-app: &app
   build:
     context: .
     target: hyku-web
+    args:
+      BUILDKIT_INLINE_CACHE: 1
     cache_from:
       - ghcr.io/samvera/hyku/base:latest
       - ghcr.io/samvera/hyku:latest
@@ -128,6 +129,8 @@ services:
       target: hyku-base
       cache_from:
         - ghcr.io/samvera/hyku/base:latest
+      args:
+        BUILDKIT_INLINE_CACHE: 1
 
   web:
     <<: *app
@@ -164,6 +167,8 @@ services:
     build:
       context: .
       target: hyku-worker
+      args:
+        BUILDKIT_INLINE_CACHE: 1
       cache_from:
         - ghcr.io/samvera/hyku/base:latest
         - ghcr.io/samvera/hyku:latest

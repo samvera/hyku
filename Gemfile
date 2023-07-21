@@ -86,9 +86,9 @@ group :development do
 end
 
 # gem 'bulkrax', '~> 5.0'
-gem 'bulkrax', git: 'https://github.com/samvera-labs/bulkrax.git', branch: 'no_blank_strings_on_split'
 gem 'blacklight', '~> 6.7'
 gem 'blacklight_oai_provider', '~> 6.1', '>= 6.1.1'
+gem 'bulkrax', git: 'https://github.com/samvera-labs/bulkrax.git', branch: 'no_blank_strings_on_split'
 
 gem 'hyrax', '~> 3.5.0'
 

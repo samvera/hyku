@@ -120,7 +120,7 @@ end
 
 group :aws do
   gem 'active_elastic_job', git: 'https://github.com/active-elastic-job/active-elastic-job.git',
-                            branch: 'ec51c5d9dedc4a1b47f2db41f26d5fceb251e979'
+                            ref: 'ec51c5d9dedc4a1b47f2db41f26d5fceb251e979'
   gem 'aws-sdk-sqs'
 end
 

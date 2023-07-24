@@ -1,4 +1,13 @@
 GIT
+  remote: https://github.com/active-elastic-job/active-elastic-job.git
+  revision: ec51c5d9dedc4a1b47f2db41f26d5fceb251e979
+  ref: ec51c5d9dedc4a1b47f2db41f26d5fceb251e979
+  specs:
+    active_elastic_job (2.0.1)
+      aws-sdk-sqs (~> 1)
+      rails (>= 4.2)
+
+GIT
   remote: https://github.com/samvera-labs/hyrax-doi.git
   revision: d494a50ef8ce3eae594c7ed7148c33b3c977d4a7
   branch: main
@@ -32,15 +41,6 @@ GIT
       nokogiri (>= 1.13.2)
       rails (~> 5.0)
       rdf-vocab (~> 3.0)
-
-GIT
-  remote: https://github.com/active-elastic-job/active-elastic-job.git
-  revision: ec51c5d9dedc4a1b47f2db41f26d5fceb251e979
-  branch: ec51c5d9dedc4a1b47f2db41f26d5fceb251e979
-  specs:
-    active_elastic_job (2.0.1)
-      aws-sdk-sqs (~> 1)
-      rails (>= 4.2)
 
 GEM
   remote: https://rubygems.org/

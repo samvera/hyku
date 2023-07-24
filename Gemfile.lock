@@ -34,7 +34,7 @@ GIT
       rdf-vocab (~> 3.0)
 
 GIT
-  remote: https://github.com/tawan/active-elastic-job.git
+  remote: https://github.com/active-elastic-job/active-elastic-job.git
   revision: ec51c5d9dedc4a1b47f2db41f26d5fceb251e979
   branch: ec51c5d9dedc4a1b47f2db41f26d5fceb251e979
   specs:

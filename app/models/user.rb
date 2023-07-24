@@ -37,7 +37,7 @@ class User < ApplicationRecord
   end
 
   def is_admin
-    has_role? :admin || has_role? :admin, Site.instance
+    has_role?(:admin) || has_role?(:admin, Site.instance)
   end
 
   def is_superadmin

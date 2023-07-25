@@ -67,9 +67,9 @@ group :test do
   gem 'rspec-its'
   gem 'rspec-retry'
   gem 'rspec_junit_formatter'
-  gem 'selenium-webdriver'
+  gem 'selenium-webdriver', '4.8.1'
   gem 'shoulda-matchers', '~> 4.0'
-  gem 'webdrivers', '~> 4.0'
+  gem 'webdrivers', '~> 4.7.0'
   gem 'webmock'
 end
 
@@ -119,8 +119,8 @@ group :aws, :test do
 end
 
 group :aws do
-  gem 'active_elastic_job', git: 'https://github.com/tawan/active-elastic-job.git',
-                            branch: 'ec51c5d9dedc4a1b47f2db41f26d5fceb251e979'
+  gem 'active_elastic_job', git: 'https://github.com/active-elastic-job/active-elastic-job.git',
+                            ref: 'ec51c5d9dedc4a1b47f2db41f26d5fceb251e979'
   gem 'aws-sdk-sqs'
 end
 

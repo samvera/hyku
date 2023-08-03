@@ -114,6 +114,13 @@ en:
           user_reader: Can read any User in this tenant
       title: Administration
       work_types: Available Work Types
+      auth_provider:
+        header: Authentication Provider
+        label:
+          provider: Provider
+          client_id: Client ID
+          client_secret: Client Secret
+          idp_sso_service_url: 'IDP SSO Service URL'
     footer:
       admin_login: Administrator login
     proprietor:

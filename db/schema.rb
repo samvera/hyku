@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_31_202855) do
+ActiveRecord::Schema.define(version: 2023_07_27_180717) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,19 @@ ActiveRecord::Schema.define(version: 2023_01_31_202855) do
     t.index ["redis_endpoint_id"], name: "index_accounts_on_redis_endpoint_id", unique: true
     t.index ["settings"], name: "index_accounts_on_settings", using: :gin
     t.index ["solr_endpoint_id"], name: "index_accounts_on_solr_endpoint_id", unique: true
+  end
+
+  create_table "auth_providers", force: :cascade do |t|
+    t.string "provider"
+    t.integer "account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "oidc_client_id"
+    t.string "saml_client_id"
+    t.string "oidc_client_secret"
+    t.string "saml_client_secret"
+    t.string "oidc_idp_sso_service_url"
+    t.string "saml_idp_sso_service_url"
   end
 
   create_table "bookmarks", id: :serial, force: :cascade do |t|
@@ -822,6 +835,8 @@ ActiveRecord::Schema.define(version: 2023_01_31_202855) do
     t.integer "invited_by_id"
     t.string "invited_by_type"
     t.string "preferred_locale"
+    t.string "provider"
+    t.string "uid"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

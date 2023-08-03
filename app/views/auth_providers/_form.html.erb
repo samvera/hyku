@@ -1,0 +1,41 @@
+<div class="panel panel-default">
+  <%= simple_form_for(@auth_provider) do |f| %>
+    <div class="panel-body">
+      <% if @auth_provider.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@auth_provider.errors.count, "error") %> prohibited this authentication provider from being saved:</h2>
+          <ul>
+            <% @auth_provider.errors.messages.each do |key, messages| %>
+              <li><%= key %> &quot;<%= @auth_provider.errors.details[key].first[:value] %>&quot; <%= messages.join(' and ') %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      <%= f.hidden_field :account_id, value: @current_account.id %>
+      <%= f.input :provider, 
+                  collection: [["saml", "SAML"], ["oidc", "OIDC"]],
+                  label_method: :second,
+                  value_method: :first,
+                  label: t('hyku.auth_provider.label.provider'),
+                  required: true %>
+      
+      <div class="provider-fields">
+        <p>Specific fields for provider are available only when the provider is selected</p>
+        <div id="saml-fields">
+          <%= render partial: 'saml', locals: {f: f} %>
+        </div>
+        <div id="oidc-fields">
+          <%= render partial: 'oidc', locals: {f: f} %>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-footer text-right">
+      <% if AuthProvider.count.nonzero? %>
+        <%= link_to 'Delete', auth_provider, method: :delete, data: { confirm: 'Are you sure?' }, class: 
+      'btn btn-danger' %>
+      <% end %>
+      <%= f.submit class: 'btn btn-primary action-save' %>
+    </div>
+  <% end %>
+</div>

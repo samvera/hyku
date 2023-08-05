@@ -16,7 +16,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :invitable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable, omniauth_providers: %i[dynamic]
+         :omniauthable, omniauth_providers: %i[saml openid_connect cas shibboleth]
 
   after_create :add_default_group_membership!
 
@@ -33,7 +33,7 @@ class User < ApplicationRecord
 
   def self.from_omniauth(auth)
     find_or_create_by(provider: auth.provider, uid: auth.uid) do |user|
-      user.email = auth&.info&.email || [auth.uid, '@', Account.email_domain].join if user.email.blank?
+      user.email = auth&.info&.email || [auth.uid, '@', Site.instance.account.email_domain].join if user.email.blank?
       user.password = Devise.friendly_token[0, 20]
       user.display_name = auth&.info&.name # assuming the user model has a name
       # user.image = auth.info.image # assuming the user model has an image

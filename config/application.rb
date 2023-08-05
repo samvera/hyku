@@ -31,7 +31,7 @@ module Hyku
         config.active_elastic_job.secret_key_base = Rails.application.secrets[:secret_key_base]
       end
     end
-    
+
     config.to_prepare do
       # Allows us to use decorator files in the app directory
       Dir.glob(File.join(File.dirname(__FILE__), "../app/**/*_decorator*.rb")).sort.each do |c|

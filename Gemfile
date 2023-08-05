@@ -41,7 +41,6 @@ gem 'hyrax-iiif_av', github: 'samvera-labs/hyrax-iiif_av', branch: 'main'
 gem 'i18n-debug', require: false, group: %i[development test]
 gem 'i18n-tasks', group: %i[development test]
 gem 'iiif_print', github: 'scientist-softserv/iiif_print', branch: 'main'
-gem 'is_it_working'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'launchy', group: %i[test]
@@ -51,6 +50,7 @@ gem 'mods', '~> 2.4'
 gem 'negative_captcha'
 gem 'okcomputer'
 gem 'omniauth-cas', github: 'stanhu/omniauth-cas', ref: '4211e6d05941b4a981f9a36b49ec166cecd0e271'
+gem 'omniauth-multi-provider'
 gem 'omniauth-rails_csrf_protection', '~> 1.0'
 gem 'omniauth-saml', '~> 2.1'
 gem 'omniauth-shibboleth-redux', require: 'omniauth-shibboleth'

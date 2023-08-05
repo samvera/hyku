@@ -11,14 +11,8 @@
           <span class="fa fa-gear"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.account') %></span>
         <% end %>
 
-        <% if AuthProvider.count > 0 %>
-          <%= menu.nav_link(main_app.edit_auth_provider_path(AuthProvider.where(account_id: @current_account.id).first)) do %>
-            <span class="fa fa-key"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.auth_provider') %></span>
-          <% end %>
-        <% else %>
-          <%= menu.nav_link(main_app.new_auth_provider_path) do %>
-            <span class="fa fa-key"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.auth_provider') %></span>
-          <% end %>
+        <%= menu.nav_link(main_app.identity_providers_path) do %>
+          <span class="fa fa-key"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.identity_providers') %></span>
         <% end %>
 
         <%= menu.nav_link(main_app.edit_site_labels_path) do %>

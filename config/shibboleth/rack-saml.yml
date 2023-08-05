@@ -1,0 +1,14 @@
+protected_path: /users/auth/shibboleth/4/callback
+metadata_path: /Shibboleth.sso/Metadata
+assertion_handler: onelogin
+saml_idp: https://samltest.id/saml/idp
+saml_sess_timeout: 1800
+shib_app_id: default
+shibb_ds: https://localhost/discovery/WAYF
+allowed_clock_drift: 60
+validation_error: true
+sp_cert: config/shibboleth/cert.pem
+sp_key: config/shibboleth/key.pem
+want_assertions_encrypted: false
+assertion_consumer_service_uri: https://utk-hyku-test.notch8.cloud/users/auth/shibboleth/4/callback
+saml_sp: https://utk-hyku-test.notch8.cloud/rack-saml-sp

@@ -5,7 +5,7 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
-  resources :auth_providers
+  resources :identity_providers
   concern :iiif_search, BlacklightIiifSearch::Routes.new
   concern :oai_provider, BlacklightOaiProvider::Routes.new
 
@@ -42,9 +42,23 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
 
   root 'hyrax/homepage#index'
 
-  devise_for :users, controllers: { invitations: 'hyku/invitations',
+  devise_for :users, skip: [:omniauth_callbacks], controllers: { invitations: 'hyku/invitations',
                                     registrations: 'hyku/registrations',
                                     omniauth_callbacks: 'users/omniauth_callbacks' }
+  as :user do
+    Devise.omniauth_providers.each do |provider|
+      path_prefix = '/users/auth'
+      match "#{path_prefix}/#{provider}/:id",
+        to: "users/omniauth_callbacks#passthru",
+        as: "user_#{provider}_omniauth_authorize",
+        via: OmniAuth.config.allowed_request_methods
+
+      match "#{path_prefix}/#{provider}/:id/callback",
+        to: "users/omniauth_callbacks##{provider}",
+        as: "user_#{provider}_omniauth_callback",
+        via: [:get, :post]
+    end
+  end
 
   mount Qa::Engine => '/authorities'
 

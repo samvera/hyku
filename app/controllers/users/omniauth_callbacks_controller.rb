@@ -3,7 +3,7 @@ module Users
 
     skip_before_action :verify_authenticity_token
 
-    def dynamic
+    def callback
       # Here you will need to implement your logic for processing the callback
       # for example, finding or creating a user
       @user = User.from_omniauth(request.env['omniauth.auth'])
@@ -16,6 +16,10 @@ module Users
         redirect_to new_user_registration_url
       end
     end
+    alias_method :cas, :callback
+    alias_method :openid_connect, :callback
+    alias_method :saml, :callback
+    alias_method :shibboleth, :callback
 
     def passthru
       render status: 404, plain: 'Not found. Authentication passthru.'

@@ -39,6 +39,13 @@ module Hyku
       end
     end
 
+    config.to_prepare do
+      # Allows us to use decorator files in the app directory
+      Dir.glob(File.join(File.dirname(__FILE__), "../lib/**/*_decorator*.rb")).sort.each do |c|
+        Rails.configuration.cache_classes ? require(c) : load(c)
+      end
+    end
+
     # OAI additions
     Dir.glob(File.join(File.dirname(__FILE__), "../lib/oai/**/*.rb")).sort.each do |c|
       Rails.configuration.cache_classes ? require(c) : load(c)

@@ -23,7 +23,10 @@
         <li><%= link_to 'SAML', 'https://github.com/omniauth/omniauth-saml' %></li>
         <li><%= link_to 'CAS', 'https://github.com/dlindahl/omniauth-cas' %></li>
         <li><%= link_to 'Openid Connect', 'https://github.com/omniauth/omniauth_openid_connect' %></li>
+        <li><%= link_to 'Shibboleth', 'https://github.com/omniauth/omniauth-shibboleth-redux' %></li>
       </ul>
+      <p>Shibboleth metadata is available <%= link_to 'here', "/Shibboleth.sso/Metadata", data: { turbolinks: false } %></p>
+
       <p>We use an additional paramater for SAML - `idp_metadata_url`. If you provide that URL, it will be parsed as shown in <%= link_to 'the SAML docs', 'https://github.com/omniauth/omniauth-saml#idp-metadata' %></p>
       <% if @identity_provider.new_record? %>
         <p>SAML assertion_consumer_service_url will be displayed after record is saved</p>
@@ -34,9 +37,17 @@
           <li><%= dn.cname %>/users/auth/saml/<%= @identity_provider.id %>/callback</li>
         <% end %>
         </ul>
+        <p>Metadata is available <%= link_to 'here', "/users/auth/saml/#{@identity_provider.id}/metadata", data: { turbolinks: false } %></p>
       <% end %>
 
       <%= f.input :options, input_html: {value: @identity_provider.options&.to_json } %>
+
+
+      <%# Upload Logo Image %>
+      <%= f.input :logo_image, as: :file, wrapper: :vertical_file_input, hint: t('hyrax.admin.appearances.show.forms.logo_image.hint') %>
+      <%= f.input :logo_image_text, as: :text %>
+      <%= image_tag f.object.logo_image.url(:medium), class: "img-responsive", alt: f.object.logo_image_text if f.object.logo_image? %>
+
     </div>
 
     <div class="panel-footer text-right">

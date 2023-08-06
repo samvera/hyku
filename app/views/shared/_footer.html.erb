@@ -9,7 +9,7 @@
       <div class="navbar-text text-right">
         <p><%= t('hyrax.footer.copyright_html', current_year: current_year) %></p>
         <p><%= t('hyrax.background_attribution_html') %></p>
-        <% if admin_host? && !user_signed_in? %>
+        <% unless user_signed_in? %>
           <p><%= link_to t('hyku.footer.admin_login', default: [:'hyrax.toolbar.profile.login']), main_app.new_user_session_path %></p>
         <% end %>
       </div>

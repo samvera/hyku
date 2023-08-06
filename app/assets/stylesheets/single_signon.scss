@@ -1,0 +1,53 @@
+// Place all the styles related to the SingleSignon controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.col-centered {
+  margin: 80px auto;
+  text-align: center;
+  background-color: red;
+}
+
+.sso-button {
+  min-height: 300px;
+  padding: 20px 50px;
+  background-color: white;
+  border: 1px solid;
+  margin: 100px 0 200px 0;
+}
+
+.sso-button-fake {
+  margin-top: 100px;
+}
+
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #0A1F61;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+  color: #f3f3f3;
+  font-size: 11px;
+  text-indent: -99999em;
+  margin: 55px auto 150px auto;
+}
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#alertModal .modal-footer button {
+  display: block;
+  margin: 0 auto;
+}
+
+#alertModal .modal-title {
+  color: red;
+}

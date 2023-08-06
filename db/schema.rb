@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_27_180717) do
+ActiveRecord::Schema.define(version: 2023_08_04_073106) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,19 +44,6 @@ ActiveRecord::Schema.define(version: 2023_07_27_180717) do
     t.index ["redis_endpoint_id"], name: "index_accounts_on_redis_endpoint_id", unique: true
     t.index ["settings"], name: "index_accounts_on_settings", using: :gin
     t.index ["solr_endpoint_id"], name: "index_accounts_on_solr_endpoint_id", unique: true
-  end
-
-  create_table "auth_providers", force: :cascade do |t|
-    t.string "provider"
-    t.integer "account_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "oidc_client_id"
-    t.string "saml_client_id"
-    t.string "oidc_client_secret"
-    t.string "saml_client_secret"
-    t.string "oidc_idp_sso_service_url"
-    t.string "saml_idp_sso_service_url"
   end
 
   create_table "bookmarks", id: :serial, force: :cascade do |t|
@@ -362,6 +349,16 @@ ActiveRecord::Schema.define(version: 2023_07_27_180717) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "humanized_name"
+  end
+
+  create_table "identity_providers", force: :cascade do |t|
+    t.string "name"
+    t.string "provider"
+    t.jsonb "options"
+    t.string "logo_image"
+    t.string "logo_image_text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "iiif_print_derivative_attachments", id: :serial, force: :cascade do |t|

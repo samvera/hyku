@@ -55,6 +55,5 @@ if ENV['DB_ADAPTER'] != 'nulldb' && db_created?
     end
   end
 
-  Rails.application.config.middleware.use AccountElevator
-
+  Rails.application.config.middleware.insert_before Warden::Manager, AccountElevator
 end

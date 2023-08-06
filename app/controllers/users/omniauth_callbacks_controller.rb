@@ -9,8 +9,16 @@ module Users
       @user = User.from_omniauth(request.env['omniauth.auth'])
 
       if @user.persisted?
-        sign_in_and_redirect @user, event: :authentication # this will throw if @user is not activated
-        set_flash_message(:notice, :success, kind: params[:provider]) if is_navigational_format?
+        # We need to render a loading page here just to set the sesion properly
+        # otherwise the logged in session gets lost during the redirect
+        if params[:action] == 'saml'
+          set_flash_message(:notice, :success, kind: params[:action]) if is_navigational_format?
+          sign_in @user, event: :authentication # this will throw if @user is not activated
+          render 'complete'
+        else
+          sign_in_and_redirect @user, event: :authentication # this will throw if @user is not activated
+          set_flash_message(:notice, :success, kind: params[:action]) if is_navigational_format?
+        end
       else
         session['devise.user_attributes'] = @user.attributes
         redirect_to new_user_registration_url

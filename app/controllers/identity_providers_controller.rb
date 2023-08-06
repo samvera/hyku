@@ -79,9 +79,11 @@ class IdentityProvidersController < ApplicationController
       @identity_provider_params = params.require(:identity_provider).permit(
         :name,
         :provider,
-        :options
+        :options,
+        :logo_image,
+        :logo_image_text
       )
-      @identity_provider_params['options'] = JSON.parse(@identity_provider_params['options'])
+      @identity_provider_params['options'] = JSON.parse(@identity_provider_params['options']) if @identity_provider_params['options'].present?
       @identity_provider_params
     end
 end

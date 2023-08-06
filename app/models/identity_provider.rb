@@ -1,4 +1,5 @@
 class IdentityProvider < ApplicationRecord
+  mount_uploader :logo_image, LogoUploader
 
   def parsed_options(rack_env = nil)
     @parsed_options = options.with_indifferent_access

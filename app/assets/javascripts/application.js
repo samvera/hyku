@@ -43,6 +43,7 @@
 //= require bulkrax/application
 
 //= require hyrax
+//= require hyrax/conditionally_required_fields
 //= require iiif_print
 
 //= require jquery.flot.pie

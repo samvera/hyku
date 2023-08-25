@@ -3,5 +3,5 @@
     collection: rights_statements.select_active_options,
     include_blank: true,
     item_helper: rights_statements.method(:include_current_value),
-		required: f.object.instance_variable_get('@attributes')['rights_notes'].first.blank?,
+		required: false,
     input_html: { class: 'form-control' } %>

@@ -1,3 +1,4 @@
+<%# OVERRIDE: Hyrax 3.5.0 so this is not a required field by default %>
 <% rights_statements = Hyrax.config.rights_statement_service_class.new %>
 <%= f.input :rights_statement,
     collection: rights_statements.select_active_options,

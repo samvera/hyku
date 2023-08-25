@@ -18,12 +18,12 @@ $(document).on('turbolinks:load', function () {
 $(document).on('turbolinks:load', function () {
   return $('body').on('blur', '#generic_work_rights_notes', function () {
     if (this.value === undefined) return;
-    ($('#generic_work_rights_notes').attr('required', true));
+    $('#generic_work_rights_notes').attr('required', true);
 
-    if(this.value === '') {
-      ($('#generic_work_rights_statement').attr('required', true))
+    if (this.value === '') {
+      $('#generic_work_rights_statement').attr('required', true);
     } else {
-      ($('#generic_work_rights_statement').attr('required', false))
+      $('#generic_work_rights_statement').attr('required', false);
     }
   });
 });
@@ -32,12 +32,12 @@ $(document).on('turbolinks:load', function () {
 $(document).on('turbolinks:load', function () {
   return $('body').on('blur', '#generic_work_rights_statement', function () {
     if (this.value === undefined || !this.value) return;
-    ($('#generic_work_rights_statement').attr('required', true))
+    $('#generic_work_rights_statement').attr('required', true);
 
-    if(this.value === '') {
-      ($('#generic_work_rights_notes').attr('required', true))
+    if (this.value === '') {
+      $('#generic_work_rights_notes').attr('required', true);
     } else {
-      ($('#generic_work_rights_notes').attr('required', false))
+      $('#generic_work_rights_notes').attr('required', false);
     }
   });
 });

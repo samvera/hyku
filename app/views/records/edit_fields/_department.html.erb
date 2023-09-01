@@ -1,0 +1,5 @@
+<%= f.input :department, as: :select,
+    collection: DepartmentsService.select_all_options,
+    include_blank: true,
+    input_html: { class: 'form-control' }
+%>

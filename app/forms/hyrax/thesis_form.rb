@@ -51,6 +51,34 @@ end
 # 
 # EXERCISE 3: Customize the controlled vocabulary field. 
 # Now that you see we have a department field in the form, we want to connect it 
-# to the controlled vocabulary and enable autocomplete.
+# to the controlled vocabulary and enable autocomplete. Finally, create a
+# new work to confirm that the autocomplete works. 
 # ref: 
 # https://gist.github.com/ShanaLMoore/df8562ab13f15ab3a7cc347d61431944#customizing-the-form-field
+# 
+# If you are attaching a file, be sure sidekiq (or the worker container)
+# is running. You can vist the sidekiq dashboard at http://hyku.test/sidekiq to
+# watch the jobs process.
+# 
+# To DISABLE requiring a file, uncomment and set the following config to false: 
+# https://github.com/samvera/hyku/blob/main/config/initializers/hyrax.rb#L101
+# 
+# NOTE: When the work is saved, you will be redirected to the show page. Notice
+# that the new properties are not displayed. This is default behavior. 
+#
+# BONUS EXERCISE: SOLR DASHBOARD
+# If you are curious about the data being indexed in Solr, you can visit
+# the Solr dashboard at http://solr.hyku.test and run queries.
+# The login credentials are in the docker-compose and .env files.
+#
+# Even though the data is not displayable, you should see the values were saved
+# by clicking edit, visiting the solr dashboard, or finding the record in the
+# rails console.
+# Assuming you've created only 1 Thesis record at this point,
+# consider using the following commands from your docker shell:
+# `bundle exec rails c`
+# `switch!(:tenant)`
+# `thesis = Thesis.first`
+# `thesis.contact_email`
+# `thesis.contact_phone`
+# `thesis.department`

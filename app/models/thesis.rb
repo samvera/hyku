@@ -31,10 +31,10 @@ end
 # BASIC AND CORE METADATA
 # Basic metadata are the default properties for all works.
 # ref: 
-# https://github.com/samvera/hyrax/blob/1-0-stable/app/models/concerns/hyrax/basic_metadata.rb
+# https://github.com/samvera/hyrax/blob/main/app/models/concerns/hyrax/basic_metadata.rb
 # Core metadata properties are required and should never be removed! 
 # ref: 
-# https://github.com/samvera/hyrax/blob/1-0-stable/app/models/concerns/hyrax/required_metadata.rb
+# https://github.com/samvera/hyrax/blob/main/app/models/concerns/hyrax/core_metadata.rb
 # 
 # EXERCISE: EXTEND THE MODEL
 # Hint: Look at the basic metadata to see how the current properties are defined.

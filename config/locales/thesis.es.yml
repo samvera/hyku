@@ -1,0 +1,10 @@
+es:
+  hyrax:
+    icons:
+      thesis:     'fa fa-file-text-o'
+    select_type:
+      thesis:
+        # TODO: translate `human_name` into Spanish
+        description:        "Thesis trabajos"
+        name:               "Thesis"
+        # TODO: translate `human_name` into Spanish

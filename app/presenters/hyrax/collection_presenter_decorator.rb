@@ -21,10 +21,14 @@ module Hyrax
            subject language
            identifier
            based_near
-           related_url]
+           related_url
+           department]
       end
     end
 
+    # Metadata Methods
+    delegate :department, to: :solr_document
+``
     # Add new method to check if a user has permissions to create any works.
     # This is used to restrict who can deposit new works through collections.
     #

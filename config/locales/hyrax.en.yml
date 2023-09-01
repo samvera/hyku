@@ -1149,6 +1149,7 @@ en:
       collection:
         size: Size
         total_items: Total items
+        department: Department
       collection_type:
         allow_multiple_membership: MULTIPLE MEMBERSHIP
         assigns_visibility: VISIBILITY

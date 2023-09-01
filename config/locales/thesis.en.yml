@@ -1,3 +1,15 @@
+# One of the generated files includes config/locales/[work-type].en.yml
+# in which many of the labels used on forms and show pages for the new work
+# type are defined. You can modify these labels and also add labels for any
+# new properties defined. 
+# 
+# EXERCISE: In the UI, on the works index page click `Add New Work`.
+# Notice the different available work types and the help text that describes
+# each. Change the description for the thesis work type. Verify the change in
+# the UI.
+# 
+# NOTE: if you don't see the worktype, make sure it's enabled.
+#       - From the admin dashboard, click `Settings` -> `Available Work Types`.
 en:
   hyrax:
     icons:

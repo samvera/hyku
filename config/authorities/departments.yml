@@ -1,0 +1,18 @@
+# Controlled vocabularies can be created in your app and then accessed through
+# the Questioning Authority (QA) gem. These instructions show a simple way to
+# create your own controlled vocabulary via the Local Sub-Authority way.
+# 
+# Authorities are defined as a yml file in config/authorities. Here we will
+# define a departments controlled vocabulary. Once the controlled vocabulary
+# is created, you can use it for autocomplete in the UI. 
+# 
+# See the QA README for details on acessing external authorities.
+terms:
+  - id: eng
+    term: English
+  - id: hst
+    term: History
+  - id: ltn
+    term: Latin
+  - id: zoo
+    term: Zoology

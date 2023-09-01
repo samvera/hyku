@@ -1,4 +1,6 @@
 ---
+# Application specific labels are defined in config/locales/hyrax.en.yml
+# which was created when you generated your Hyrax app.
 en:
   hyrax:
     product_name: "Hyku"

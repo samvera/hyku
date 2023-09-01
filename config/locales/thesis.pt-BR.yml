@@ -1,0 +1,8 @@
+pt-BR:
+  hyrax:
+    icons:
+      thesis:     'fa fa-file-text-o'
+    select_type:
+      thesis:
+        description:        "Thesis obras"
+        name:               "Thesis"

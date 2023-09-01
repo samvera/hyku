@@ -48,4 +48,9 @@ end
 # EXERCISE 2: confirm your changes by running the server and viewing the new/edit
 # forms of the Thesis work type. Note that other work types do not have these
 # properties.
-
+# 
+# EXERCISE 3: Customize the controlled vocabulary field. 
+# Now that you see we have a department field in the form, we want to connect it 
+# to the controlled vocabulary and enable autocomplete.
+# ref: 
+# https://gist.github.com/ShanaLMoore/df8562ab13f15ab3a7cc347d61431944#customizing-the-form-field

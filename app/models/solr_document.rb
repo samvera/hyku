@@ -45,4 +45,16 @@ class SolrDocument
     title: 'title_tesim',
     type: 'human_readable_type_tesim'
   )
+
+  def contact_email
+    self[::ActiveFedora.index_field_mapper.solr_name('contact_email')]
+  end
+
+  def contact_phone
+    self[::ActiveFedora.index_field_mapper.solr_name('contact_phone')]
+  end
+
+  def department
+    self[::ActiveFedora.index_field_mapper.solr_name('department')]
+  end
 end

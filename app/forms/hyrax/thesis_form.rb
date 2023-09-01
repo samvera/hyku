@@ -4,7 +4,8 @@ module Hyrax
   # Generated form for Thesis
   class ThesisForm < Hyrax::Forms::WorkForm
     self.model_class = ::Thesis
-    self.terms += [:resource_type]
+    self.terms += [:resource_type, :contact_email, :contact_phone, :department]
+    self.required_fields += [:department, :contact_email]
   end
 end
 
@@ -29,3 +30,22 @@ end
 # OPTIONALLY, you can REMOVE properties to the set of primary fields.
 # example: 
 #     self.required_fields -= [:keyword, :rights]
+# 
+# DEFAULT FORM FIELD BEHAVIOR
+# By adding the property to self.terms, it will be added to the new/edit form.
+# Without additional customization, the field will be a text input field.
+# For contact_email and department, because we did NOT set multiple: true in the
+# model, there will be only a single value set for this property.
+# For contact_phone, because we DID set multiple: true in the model, there will
+# be an `Add another` link below these fields allowing for multiple values to be
+# set.
+# Because we added contact_email to the required_fields set, it will be
+# displayed as required on the initial display of metadata fields on the form.
+# Because we did NOT add contact_phone and department to the required_fields
+# set, they will only display in the form when you click the `Additional Fields`
+# button.
+# 
+# EXERCISE 2: confirm your changes by running the server and viewing the new/edit
+# forms of the Thesis work type. Note that other work types do not have these
+# properties.
+

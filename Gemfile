@@ -83,6 +83,7 @@ group :development do
   gem 'scss_lint', require: false
   gem 'spring', '~> 1.7'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  # gem 'xray-rails' # this gem causes conflicts with sidekiq. Disable when actively using sidekiq.
 end
 
 gem 'bulkrax', '~> 5.0'

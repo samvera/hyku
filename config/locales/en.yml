@@ -205,10 +205,12 @@ en:
             fonts: "Fonts"
             themes: "Themes"
       sidebar:
+        account: Account
         accounts: Accounts
         activity_summary: Activity Summary
         labels: Labels
         manage_groups: Manage Groups
+        repository_activity: Repository Activity
         system_status: System Status
       users:
         destroy:

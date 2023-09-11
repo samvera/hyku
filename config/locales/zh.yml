@@ -164,6 +164,7 @@ zh:
               alert: 请至少上传一个文件，然后再提交。
               hint: 对于默认图像，您应该使用高度和宽度尺寸（宽度为100像素，高度为100像素）的图像（JPG，GIF或PNG）
             directory_image:
+              hint: 要将图像用作目录图像，应使用高度不超过标题且宽度不超过 400 像素的图像（JPG、GIF 或 PNG）。
             facet_panel_background_color:
               hint: 适用于某些主题中工作页面上的分面和附加节标题。
             facet_panel_text_color:
@@ -198,10 +199,12 @@ zh:
             fonts: 字形
             themes: 主题
       sidebar:
+        account: 帐户
         accounts: 帐号
         activity_summary: 活动摘要
         labels: 标签
         manage_groups: 管理组
+        repository_activity: 存储库活动
         system_status: 系统状态
       users:
         destroy:

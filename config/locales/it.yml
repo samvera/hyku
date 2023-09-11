@@ -164,6 +164,7 @@ it:
               alert: Carica almeno un file prima di inviarlo.
               hint: Per le immagini predefinite, è necessario utilizzare un'immagine (JPG, GIF o PNG) che abbia le stesse dimensioni in altezza e larghezza (100 pixel in larghezza e 100 pixel in altezza)
             directory_image:
+              hint: Per utilizzare un'immagine come immagine della directory, devi utilizzare un'immagine (JPG, GIF o PNG) non più alta dell'intestazione e non più larga di 400 pixel.
             facet_panel_background_color:
               hint: Si applica ai facet e alle intestazioni di sezione aggiuntive nelle pagine di lavoro in alcuni temi.
             facet_panel_text_color:
@@ -198,10 +199,12 @@ it:
             fonts: Font
             themes: Temi
       sidebar:
+        account: Account
         accounts: conti
         activity_summary: Riepilogo attività
         labels: etichette
         manage_groups: Gestisci gruppi
+        repository_activity: Attività di deposito
         system_status: Stato del sistema
       users:
         destroy:

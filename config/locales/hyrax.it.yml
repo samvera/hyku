@@ -694,6 +694,7 @@ it:
         sr:
           batch_checkbox: Seleziona per aggiungere a una raccolta o modificare l'elenco
           check_all_label: Seleziona tutti i file da aggiungere a una raccolta o modificati
+          collections_batch_checkbox: Selezionare per eliminare in batch le raccolte.
           detail_label: Visualizza i dettagli di riepilogo di
           listing: Elenco degli oggetti in cui hai depositato
           press_to: Premere per

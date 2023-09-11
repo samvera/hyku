@@ -130,7 +130,7 @@ services:
   web:
     <<: *app
     # Uncomment command to access container with out starting Rails. Useful for debugging
-    command: sleep infinity
+    # command: sleep infinity
     environment:
       - VIRTUAL_PORT=3000
       - VIRTUAL_HOST=.hyku.test

@@ -3,22 +3,26 @@
 
 <%= menu.nav_link(hyrax.my_collections_path,
                   onclick: "dontChangeAccordion(event);",
-                  also_active_for: hyrax.dashboard_collections_path) do %>
+                  also_active_for: hyrax.dashboard_collections_path,
+                  title: t('hyrax.admin.sidebar.collections')) do %>
   <span class="fa fa-folder-open" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.collections') %></span>
 <% end %>
 
 <%= menu.nav_link(hyrax.my_works_path,
                   onclick: "dontChangeAccordion(event);",
-                  also_active_for: hyrax.dashboard_works_path) do %>
+                  also_active_for: hyrax.dashboard_works_path,
+                  title: t('hyrax.admin.sidebar.works')) do %>
   <span class="fa fa-file" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.works') %></span>
 <% end %>
 
 <% if ENV.fetch('HYKU_BULKRAX_ENABLED', 'true') == 'true' %>
-  <%= menu.nav_link(bulkrax.importers_path) do %>
+  <%= menu.nav_link(bulkrax.importers_path,
+                    title: t('bulkrax.admin.sidebar.importers')) do %>
     <span class="fa fa-cloud-upload" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('bulkrax.admin.sidebar.importers') %></span>
   <% end %>
 
-  <%= menu.nav_link(bulkrax.exporters_path) do %>
+  <%= menu.nav_link(bulkrax.exporters_path,
+                    title: t('bulkrax.admin.sidebar.exporters')) do %>
     <span class="fa fa-cloud-download" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('bulkrax.admin.sidebar.exporters') %></span>
   <% end %>
 <% end %>

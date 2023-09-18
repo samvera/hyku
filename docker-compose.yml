@@ -153,6 +153,8 @@ services:
         condition: service_started
       initialize_app:
         condition: service_completed_successfully
+    # ports:
+    #   - 3000:3000
     expose:
       - 3000
 

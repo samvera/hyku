@@ -163,6 +163,7 @@ de:
               alert: Bitte laden Sie vor dem Absenden mindestens eine Datei hoch.
               hint: Für Standardbilder sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das die gleichen Abmessungen für Höhe und Breite aufweist (100 Pixel breit und 100 Pixel hoch).
             directory_image:
+              hint: Um ein Bild als Verzeichnisbild zu verwenden, sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das nicht höher als der Header und nicht breiter als 400 Pixel ist.
             facet_panel_background_color:
               hint: Gilt für Facetten und zusätzliche Abschnittsüberschriften auf den Arbeitsseiten einiger Themen.
             facet_panel_text_color:
@@ -197,6 +198,7 @@ de:
             fonts: Schriftarten
             themes: Themen
       sidebar:
+        account: Konto
         accounts: Konten
         activity_summary: Aktivitätsübersicht
         content_blocks: Inhaltsblöcke

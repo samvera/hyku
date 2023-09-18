@@ -694,6 +694,7 @@ pt-BR:
         sr:
           batch_checkbox: Marque para adicionar a uma coleção ou editar uma lista
           check_all_label: Selecione todos os arquivos a serem adicionados a uma coleção ou editados
+          collections_batch_checkbox: Marque para excluir coleções em lote.
           detail_label: Exibir detalhes resumidos de
           listing: Lista de itens nos quais você depositou
           press_to: Pressione para

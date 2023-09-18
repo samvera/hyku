@@ -164,6 +164,7 @@ pt-BR:
               alert: Faça upload de pelo menos um arquivo antes de enviar.
               hint: Para imagens padrão, você deve usar uma imagem (JPG, GIF ou PNG) que tenha dimensões iguais de altura e largura (100 pixels de largura e 100 pixels de altura)
             directory_image:
+              hint: Para usar uma imagem como imagem do diretório, você deve usar uma imagem (JPG, GIF ou PNG) que não seja mais alta que o cabeçalho e não tenha mais de 400 pixels de largura.
             facet_panel_background_color:
               hint: Aplica-se a facetas e cabeçalhos de seção adicionais nas páginas de trabalho em alguns temas.
             facet_panel_text_color:
@@ -198,10 +199,12 @@ pt-BR:
             fonts: Fontes
             themes: Temas
       sidebar:
+        account: Conta
         accounts: Contas
         activity_summary: Resumo da atividade
         labels: Etiquetas
         manage_groups: Gerenciar grupos
+        repository_activity: Atividade do repositório
         system_status: Status do sistema
       users:
         destroy:

@@ -57,8 +57,18 @@ dory up
 docker-compose up web
 ```
 
-This command starts the whole stack in individual containers allowing Rails to be started or stopped independent of the other services.  Once that starts (you'll see the line `Passenger core running in multi-application mode.` to indicate a successful boot), you can view your app in a web browser with at either hyku.test or localhost:3000 (see above).  When done `docker-compose stop` shuts down everything.
+This command starts the whole stack in individual containers allowing Rails to be started or stopped independent of the other services.  Once that starts (you'll see the line `Passenger core running in multi-application mode.` or `Listening on tcp://0.0.0.0:3000` to indicate a successful boot), you can view your app in a web browser at either hyku.test or localhost:3000 (see above).  When done `docker-compose stop` shuts down everything.
 
+#### Troubleshooting on Windows
+1. Dory is running but you're unable to access hyku.test:
+    - Run this in the terminal: `ip addr | grep eth0 | grep inet`
+    - Copy the first IP address from the result in your terminal
+    - Use the steps under "Change the File Manually" at [this link](https://www.hostinger.co.uk/tutorials/how-to-edit-hosts-file#:~:text=Change%20the%20File%20Manually,-Press%20Start%20and&text=Once%20in%20Notepad%2C%20go%20to,space%2C%20then%20your%20domain%20name) to open your host file
+    - At the bottom of the host file add this line: `<your-ip-address> hyku.test`
+    - Save (_You may or may not need to restart your server_)
+2. When creating a work and adding a file, you get an internal server error due to ownership/permissions issues of the tmp directory:
+    - Gain root access to the container (in a slightly hacky way, check_volumes container runs from root): `docker compose run check_volumes bash`
+    - Change ownership to app: `chown -R app:app /app/samvera/hyrax-webapp`
 #### Tests in Docker
 
 The full spec suite can be run in docker locally. There are several ways to do this, but one way is to run the following:

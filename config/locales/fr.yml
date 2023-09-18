@@ -164,6 +164,7 @@ fr:
               alert: Veuillez télécharger au moins un fichier avant de soumettre.
               hint: Pour les images par défaut, vous devez utiliser une image (JPG, GIF ou PNG) qui a des dimensions de hauteur et de largeur égales (100 pixels de large et 100 pixels de haut)
             directory_image:
+              hint: Pour utiliser une image comme image de répertoire, vous devez utiliser une image (JPG, GIF ou PNG) qui ne dépasse pas l'en-tête et ne dépasse pas 400 pixels de large.
             facet_panel_background_color:
               hint: S'applique aux facettes et aux en-têtes de section supplémentaires sur les pages de travail dans certains thèmes.
             facet_panel_text_color:
@@ -198,6 +199,7 @@ fr:
             fonts: Les Polices
             themes: Thèmes
       sidebar:
+        account: Compte
         accounts: Comptes
         activity_summary: Résumé de l'activité
         content_blocks: Blocs de contenu

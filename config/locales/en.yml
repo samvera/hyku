@@ -1,5 +1,8 @@
 ---
 en:
+  single_signon:
+   index:
+     sign_in_with_provider: Sign in with %{provider}
   activerecord:
     attributes:
       site:
@@ -114,6 +117,14 @@ en:
           user_reader: Can read any User in this tenant
       title: Administration
       work_types: Available Work Types
+    identity_provider:
+      header: Authentication Identity Provider
+      label:
+        name: Name or Description
+        provider: Provider
+        optoins: Options
+        logo_image: Image for SSO Page
+        logo_image_alt_text: Alt Text for Image
     footer:
       admin_login: Administrator login
     proprietor:
@@ -194,10 +205,12 @@ en:
             fonts: "Fonts"
             themes: "Themes"
       sidebar:
+        account: Account
         accounts: Accounts
         activity_summary: Activity Summary
         labels: Labels
         manage_groups: Manage Groups
+        repository_activity: Repository Activity
         system_status: System Status
       users:
         destroy:

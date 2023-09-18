@@ -22,6 +22,7 @@ module AccountSettings
     setting :doi_reader, type: 'boolean', default: false
     setting :doi_writer, type: 'boolean', default: false
     setting :file_acl, type: 'boolean', default: true, private: true
+    setting :email_domain, type: 'string', default: 'example.com'
     setting :email_format, type: 'array'
     setting :email_subject_prefix, type: 'string'
     setting :enable_oai_metadata, type: 'string', disabled: true

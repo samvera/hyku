@@ -289,7 +289,23 @@ Devise.setup do |config|
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
-  # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
+  # if statement allows loading the app to call the migration that creates the provider
+  # setup for multiprovider SAML options
+  dynamic_options_generator = lambda { |identity_provider_id, rack_env|
+    identity_provider = IdentityProvider.find(identity_provider_id)
+    identity_provider.parsed_options(rack_env)
+  }
+  identity_provider_id_regex = /\d+/
+
+  [:cas, :openid_connect, :saml].each do |provider|
+    path_prefix =  "/users/auth/#{provider}"
+    handler = OmniAuth::MultiProvider::Handler.new(path_prefix: path_prefix,
+      identity_provider_id_regex: identity_provider_id_regex,
+      &dynamic_options_generator)
+    static_options = { path_prefix: path_prefix }
+
+    config.omniauth provider, static_options.merge(handler.provider_options)
+  end
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

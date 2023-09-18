@@ -1,0 +1,22 @@
+<h1 class='text-center'>Select a Single Sign On Provider</h1>
+
+<%- if devise_mapping.omniauthable? %>
+  <%- @identity_providers.each do |ip| %>
+    <div class='col-xs-3 col-centered'>
+      <%= button_to omniauth_authorize_path(resource_name, ip.provider, ip.id), form_class: 'button_to col-centered', class: 'sso-button' do %>
+        <div class='<%= ip.provider %>-box'>
+          <%= image_tag ip.logo_image.url(:medium), class: "img-responsive", alt: ip.logo_image_text if ip.logo_image? %>
+          <br />
+          <%= t('.sign_in_with_provider', provider: ip.name) %><br />
+        </div>
+        <span class='sso-button-fake btn btn-primary'>Sign In</span>
+      <% end %>
+    </div>
+  <% end -%>
+<% end -%>
+
+<% if @identity_providers.count == 1 %>
+<script>
+   $('form.button_to').submit();
+</script>
+<% end %>

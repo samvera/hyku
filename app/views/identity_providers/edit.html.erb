@@ -1,0 +1,5 @@
+<% provide :page_header do %>
+  <h1><span class="fa fa-key"></span> <%= t('hyku.identity_provider.header') %></h1>
+<% end %>
+
+<%= render 'form', identity_provider: @identity_provider %>

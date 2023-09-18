@@ -694,6 +694,7 @@ zh:
         sr:
           batch_checkbox: 检查添加到收藏夹或编辑列表
           check_all_label: 选择所有要添加到集合或编辑的文件
+          collections_batch_checkbox: 勾选批量删除集合。
           detail_label: 显示的摘要详细信息
           listing: 您存放的物品清单
           press_to: 按到
@@ -1164,6 +1165,7 @@ zh:
         default_button_background_color: 默认按钮背景颜色
         default_button_border_color: 默认按钮边框颜色
         default_button_text_color: 默认按钮文字颜色
+        description: 描述
         embargo_release_date: 直到
         facet_panel_background_color: 分面面板背景色
         facet_panel_text_color: 构面面板文本颜色

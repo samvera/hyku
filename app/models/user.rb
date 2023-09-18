@@ -49,6 +49,10 @@ class User < ApplicationRecord
     email
   end
 
+  def is_admin
+    has_role?(:admin) || has_role?(:admin, Site.instance)
+  end
+
   def is_superadmin
     has_role? :superadmin
   end

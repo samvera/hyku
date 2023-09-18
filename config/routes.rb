@@ -12,8 +12,8 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   mount Hyrax::IiifAv::Engine, at: '/'
   mount Riiif::Engine => 'images', as: :riiif if Hyrax.config.iiif_image_server?
 
-  authenticate :user, ->(u) { u.is_superadmin } do
-    mount Sidekiq::Web => '/sidekiq'
+  authenticate :user, ->(u) { u.is_superadmin || u.is_admin } do
+    mount Sidekiq::Web => '/jobs'
   end
 
   if ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_MULTITENANT', false))

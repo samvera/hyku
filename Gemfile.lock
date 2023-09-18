@@ -1,22 +1,11 @@
 GIT
-  remote: https://github.com/samvera-labs/bulkrax.git
-  revision: 89300e8316fa45f62b210c0704a66398242f3c70
-  branch: no_blank_strings_on_split
+  remote: https://github.com/active-elastic-job/active-elastic-job.git
+  revision: ec51c5d9dedc4a1b47f2db41f26d5fceb251e979
+  ref: ec51c5d9dedc4a1b47f2db41f26d5fceb251e979
   specs:
-    bulkrax (5.2.1)
-      bagit (~> 0.4)
-      coderay
-      iso8601 (~> 0.9.0)
-      kaminari
-      language_list (~> 1.2, >= 1.2.1)
-      libxml-ruby (~> 3.2.4)
-      loofah (>= 2.2.3)
-      oai (>= 0.4, < 2.x)
-      rack (>= 2.0.6)
-      rails (>= 5.1.6)
-      rdf (>= 2.0.2, < 4.0)
-      rubyzip
-      simple_form
+    active_elastic_job (2.0.1)
+      aws-sdk-sqs (~> 1)
+      rails (>= 4.2)
 
 GIT
   remote: https://github.com/samvera-labs/hyku_knapsack.git
@@ -183,7 +172,7 @@ GEM
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
       execjs (~> 2.0)
-    bagit (0.4.5)
+    bagit (0.4.6)
       docopt (~> 0.5.0)
       validatable (~> 1.6)
     bcp47 (0.3.3)
@@ -269,6 +258,21 @@ GEM
       signet (~> 0.8)
       typhoeus
     builder (3.2.4)
+    bulkrax (5.3.0)
+      bagit (~> 0.4)
+      coderay
+      dry-monads (~> 1.4.0)
+      iso8601 (~> 0.9.0)
+      kaminari
+      language_list (~> 1.2, >= 1.2.1)
+      libxml-ruby (~> 3.2.4)
+      loofah (>= 2.2.3)
+      oai (>= 0.4, < 2.x)
+      rack (>= 2.0.6)
+      rails (>= 5.1.6)
+      rdf (>= 2.0.2, < 4.0)
+      rubyzip
+      simple_form
     byebug (11.1.3)
     cancancan (1.17.0)
     capybara (3.39.0)
@@ -1295,7 +1299,7 @@ DEPENDENCIES
   blacklight_oai_provider (~> 6.1, >= 6.1.1)
   bolognese (>= 1.9.10)
   bootstrap-datepicker-rails
-  bulkrax!
+  bulkrax (~> 5.3)
   byebug
   capybara
   capybara-screenshot (~> 1.0)

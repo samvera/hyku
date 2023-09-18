@@ -1,0 +1,222 @@
+// OVERRIDE Hyrax v3.5.0 to have a sidebar maximize and minimize based on window size
+
+// Once, javascript is written in a modular format, all initialization
+// code should be called from here.
+Hyrax = {
+    initialize: function () {
+        this.popovers();
+        this.permissions();
+        this.notifications();
+        this.transfers();
+        this.workEditor();
+        this.fileManager();
+        this.selectWorkType();
+        this.selectCollectionType();
+        this.datatable();
+        this.adminSetEditor();
+        this.collectionEditor();
+        this.collectionsV2();
+        this.collectionTypes();
+        this.collectionTypeEditor();
+        this.collectionUtilities();
+        this.adminStatisticsGraphs();
+        this.sortAndPerPage();
+        this.sidebar();
+        this.batchSelect();
+        this.internationalizationHelper();
+    },
+
+    // The AdminSet edit page
+    adminSetEditor: function() {
+      var AdminSetControls = require('hyrax/admin/admin_set_controls');
+      var controls = new AdminSetControls($('#admin-set-controls'));
+    },
+
+    // The collectionType edit page
+    collectionTypeEditor: function() {
+      var CollectionTypeControls = require('hyrax/admin/collection_type_controls');
+      var controls = new CollectionTypeControls($('#collection-types-controls'));
+    },
+
+    // The Collection edit page
+    collectionEditor: function() {
+      var CollectionControls = require('hyrax/collections/editor');
+      var controls = new CollectionControls($('#collection-edit-controls'));
+    },
+
+    // Collections v2 - collections related js should (over time) be moved here
+    // from 'collections.js' to take advantage of shared modules
+    collectionsV2: function() {
+      var CollectionsV2 = require('hyrax/collections_v2');
+      new CollectionsV2();
+    },
+
+    // Collection types
+    collectionTypes: function() {
+      var CollectionTypes = require('hyrax/collection_types');
+      var collection_types = new CollectionTypes($('.collection-types-wrapper'))
+    },
+
+    collectionUtilities: function() {
+      var CollectionUtilities = require('hyrax/collections_utils');
+      new CollectionUtilities();
+    },
+
+    // Pretty graphs on the dashboard page
+    adminStatisticsGraphs: function() {
+        var AdminGraphs = require('hyrax/admin/graphs');
+        new AdminGraphs(Hyrax.statistics);
+    },
+
+    // Sortable/pageable tables
+    datatable: function () {
+        // This keeps the datatable from being added to a table that already has it.
+        // This is a problem when turbolinks is active.
+        if ($('.dataTables_wrapper').length === 0) {
+            $('.datatable').DataTable();
+        }
+    },
+
+    internationalizationHelper: function () {
+        var InternationalizationHelper = require('hyrax/i18n_helper');
+        new InternationalizationHelper();
+    },
+
+    // The work edit page
+    workEditor: function () {
+        var element = $("[data-behavior='work-form']")
+        if (element.length > 0) {
+          var Editor = require('hyrax/editor');
+          new Editor(element).init();
+        }
+    },
+
+    // Popover help modals. Used on the user profile page.
+    popovers: function () {
+        $("a[data-toggle=popover]").popover({html: true})
+            .on("click", function () {
+                return false;
+            });
+    },
+
+    // Add access grants for a user/group to a work/fileset/collection
+    // TODO: This could get moved to workEditor() or similar
+    permissions: function () {
+        var PermissionsControl = require('hyrax/permissions/control');
+        // On the edit work page
+        new PermissionsControl($("#share"), 'tmpl-work-grant');
+        // On the edit fileset page
+        new PermissionsControl($("#permission"), 'tmpl-file-set-grant', { with_visibility_component: true });
+        // On the batch edit page
+        new PermissionsControl($("#form_permissions"), 'tmpl-work-grant');
+        // On the edit collection page
+        new PermissionsControl($("#collection_permissions"), 'tmpl-collection-grant');
+    },
+
+    // ActionCable for user notifications. This is displayed in the navbar.
+    notifications: function() {
+        // Do not create a consumer if user is not logged in
+        if ($("meta[name='current-user']").length === 0)
+            return;
+        <% if Hyrax.config.realtime_notifications? %>
+        var consumer = ActionCable.createConsumer("<%= Hyrax::Engine.routes.url_helpers.notifications_endpoint_path %>");
+        consumer.subscriptions.create("Hyrax::NotificationsChannel", {
+            connected: function(data) {
+                this.perform("update_locale", { locale: $('html').attr('lang') });
+            },
+
+            received: function(data) {
+                var Notification = require('hyrax/notification');
+                new Notification($('.notify-number')).update(data.notifications_count, data.notifications_label);
+            }
+        });
+        <% end %>
+    },
+
+    // Search for a user to transfer a work to
+    transfers: function () {
+        $("#proxy_deposit_request_transfer_to").userSearch();
+    },
+
+    // Popover menu to select the type of work when starting a deposit
+    selectWorkType: function () {
+        var SelectWorkType = require('hyrax/select_work_type');
+        $("[data-behavior=select-work]").each(function () {
+            new SelectWorkType($(this));
+        });
+    },
+
+    // Popover menu to select the type when creating a new collection
+    selectCollectionType: function () {
+        var SelectCollectionType = require('hyrax/select_collection_type');
+        $("[data-behavior=select-collection]").each(function () {
+            new SelectCollectionType($(this)); // eslint-disable-line no-new
+        });
+    },
+
+    // OVERRIDE start
+    // Commented out the original sidebar function and replaced it with the one below it
+    // Minimize/maximize the dashboard sidebar
+    // sidebar: function () {
+    //     $('.sidebar-toggle').on('click', function() {
+    //         $('.sidebar, .main-content').toggleClass('maximized')
+    //     })
+    // },
+
+    // Minimize/maximize the dashboard sidebar
+    sidebar: function () {
+        $('.sidebar-toggle').on('click', function() {
+            $('.sidebar').toggleClass('maximized');
+            if ($(window).width() >= 768) {
+                $('.main-content').toggleClass('maximized');
+            }
+        });
+
+        $('.sidebar').on('mouseenter', function() {
+            if ($(window).width() < 768) {
+                $('.sidebar').addClass('maximized');
+            }
+        });
+
+        $('.sidebar').on('mouseleave', function() {
+            if ($(window).width() < 768) {
+                $('.sidebar').removeClass('maximized');
+            }
+        });
+
+        $(window).on('resize', function() {
+            if ($(window).width() >= 768) {
+                $('.sidebar, .main-content').addClass('maximized');
+            } else {
+                $('.sidebar, .main-content').removeClass('maximized');
+            }
+        }).trigger('resize');
+    },
+    // OVERRIDE end
+
+    // Add and reorder files attached to works
+    fileManager: function () {
+        var FileManager = require('hyrax/file_manager');
+        new FileManager();
+    },
+
+    // Per Page select will submit its form to change records shown
+    sortAndPerPage: function () {
+        var SortAndPerPage = require('hyrax/sort_and_per_page');
+        $('#sort, #per_page').each(function () {
+            new SortAndPerPage($(this));
+        });
+    },
+
+    // Saved so that inline javascript can put data somewhere.
+    statistics: {},
+
+    // initialized in hyrax/config.js
+    config: {},
+
+    // Adds selected items to the batch before any batch operation is performed
+    batchSelect: function () {
+        var BatchSelect = require('hyrax/batch_select');
+        BatchSelect.initialize_batch_selected();
+    }
+};

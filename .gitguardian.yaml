@@ -1,0 +1,5 @@
+secret:
+  ignored-matches:
+  - match: 2ace7433e96955aeed1a310d7dcc61f8761d05fbff91b92d79d860e307d6ea6a
+    name: Generic High Entropy Secret - .env
+version: 2

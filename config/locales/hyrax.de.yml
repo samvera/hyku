@@ -693,6 +693,7 @@ de:
         sr:
           batch_checkbox: Aktivieren Sie diese Option, um sie zu einer Sammlung oder Bearbeitungsliste hinzuzufügen
           check_all_label: Wählen Sie alle Dateien aus, die einer Sammlung hinzugefügt oder bearbeitet werden sollen
+          collections_batch_checkbox: Aktivieren Sie diese Option, um Sammlungen stapelweise zu löschen.
           detail_label: Zeigen Sie zusammenfassende Details von an
           listing: Auflistung der Artikel, in denen Sie hinterlegt haben
           press_to: drücke um zu

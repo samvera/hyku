@@ -1,0 +1,37 @@
+<% content_for :page_header do %>
+  <h1><span class="fa fa-user"></span> <%= t(:'hyrax.admin.sidebar.identity_providers_and_permissions') %></h1>
+<% end %>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <table class="table table-striped datatable">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Provider</th>
+              <th>Updated At</th>
+              <th>Logo</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @identity_providers.each do |u| %>
+              <tr>
+                <td><%= u.name %></td>
+                <td><%= u.provider %></td>
+                <td><%= u.updated_at %></td>
+                <td><%= image_tag u.logo_image.url(:thumb), class: "img-responsive", alt: u.logo_image_text if u.logo_image? %></td>
+                <td class="col-md-2"><%= link_to t('.edit'), edit_identity_provider_path(u) %>&nbsp;|&nbsp;<%= link_to t('helpers.action.delete'), identity_provider_path(u), method: :delete, data: { confirm: t('.confirm_delete') } %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <%= link_to new_identity_provider_path, class: 'btn btn-primary' do %>
+          <span class="fa fa-edit"></span> <%= t('.create_new') %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

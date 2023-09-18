@@ -4,12 +4,15 @@
     <%= menu.collapsable_section t('hyrax.admin.sidebar.repository_activity'),
                                  icon_class: "fa fa-line-chart",
                                  id: 'collapseRepositoryActivity',
-                                 open: menu.repository_activity_section? do %>
-      <%= menu.nav_link(hyrax.dashboard_path) do %>
+                                 open: menu.repository_activity_section?,
+                                 title: t('hyrax.admin.sidebar.repository_activity') do %>
+      <%= menu.nav_link(hyrax.dashboard_path,
+                        title: t('hyrax.admin.sidebar.activity_summary')) do %>
         <span class="fa fa-dashboard"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.activity_summary') %></span>
       <% end %>
       <% if menu.show_admin_menu_items? %>
-        <%= menu.nav_link(main_app.status_path) do %>
+        <%= menu.nav_link(main_app.status_path,
+                          title: t('hyrax.admin.sidebar.system_status')) do %>
           <span class="fa fa-flag"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.system_status') %></span>
         <% end %>
       <% end %>
@@ -20,22 +23,27 @@
     <%= menu.collapsable_section t('hyrax.admin.sidebar.user_activity'),
                                  icon_class: "fa fa-line-chart",
                                  id: 'collapseUserActivity',
-                                 open: menu.user_activity_section? do %>
+                                 open: menu.user_activity_section?,
+                                 title: t('hyrax.admin.sidebar.user_activity') do %>
       <%= menu.nav_link(hyrax.dashboard_profile_path(current_user),
-                        also_active_for: hyrax.edit_dashboard_profile_path(current_user)) do %>
+                        also_active_for: hyrax.edit_dashboard_profile_path(current_user),
+                        title: t('hyrax.admin.sidebar.profile')) do %>
         <span class="fa fa-id-card" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.profile') %></span>
       <% end %>
 
-      <%= menu.nav_link(hyrax.notifications_path) do %>
+      <%= menu.nav_link(hyrax.notifications_path,
+                        title: t('hyrax.admin.sidebar.notifications')) do %>
         <span class="fa fa-bell" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.notifications') %></span>
       <% end %>
 
-      <%= menu.nav_link(hyrax.transfers_path) do %>
+      <%= menu.nav_link(hyrax.transfers_path,
+                        title: t('hyrax.admin.sidebar.transfers')) do %>
         <span class="fa fa-arrows-h" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.transfers') %></span>
       <% end %>
 
       <% if Flipflop.proxy_deposit? %>
-        <%= menu.nav_link(hyrax.depositors_path) do %>
+        <%= menu.nav_link(hyrax.depositors_path,
+                          title: t('hyrax.dashboard.manage_proxies')) do %>
           <span class="fa fa-users" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.dashboard.manage_proxies') %></span>
         <% end %>
       <% end %>
@@ -43,7 +51,8 @@
   </li>
 
   <% if can? :read, :admin_dashboard %>
-    <%= menu.nav_link(hyrax.admin_stats_path) do %>
+    <%= menu.nav_link(hyrax.admin_stats_path,
+                      title: t('hyrax.admin.sidebar.statistics')) do %>
       <span class="fa fa-bar-chart" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.statistics') %></span>
     <% end %>
   <% end %>
@@ -51,18 +60,21 @@
   <% if current_ability.can_create_any_work? && Hyrax.config.analytics? %>
     <li>
       <%= menu.collapsable_section t('hyrax.admin.sidebar.analytics'),
-                                        icon_class: "fa fa-pie-chart",
-                                        id: 'collapseAnalytics',
-                                        open: menu.analytics_reporting_section? do %>
+                                   icon_class: "fa fa-pie-chart",
+                                   id: 'collapseAnalytics',
+                                   open: menu.analytics_reporting_section?,
+                                   title: t('hyrax.admin.sidebar.analytics') do %>
         <% if can? :read, :admin_dashboard %>
           <%= menu.nav_link(hyrax.admin_analytics_collection_reports_path,
-                            onclick: "dontChangeAccordion(event);") do %>
+                            onclick: "dontChangeAccordion(event);",
+                            title: t('hyrax.admin.sidebar.collections_report')) do %>
             <span class="fa fa-folder-open" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.collections_report') %></span>
           <% end %>
         <% end %>
 
         <%= menu.nav_link(hyrax.admin_analytics_work_reports_path,
-                          onclick: "dontChangeAccordion(event);") do %>
+                          onclick: "dontChangeAccordion(event);",
+                          title: t('hyrax.admin.sidebar.works_report')) do %>
           <span class="fa fa-file" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.works_report') %></span>
         <% end %>
 

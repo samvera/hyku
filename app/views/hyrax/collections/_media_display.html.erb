@@ -1,7 +1,7 @@
 <% if presenter.thumbnail_path %>
   <%= image_tag presenter.thumbnail_path,
                 class: "representative-media",
-                alt: "",
+                alt: block_for(name: 'default_collection_image_text'),
                 role: "presentation" %>
 <% else %>
   <%= image_tag(Site.instance.default_collection_image) %>

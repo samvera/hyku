@@ -1,16 +1,18 @@
+# frozen_string_literal: true
+
 # OVERRIDE Hyrax 2.9.0 to add featured collection routes
 
 require 'sidekiq/web'
 
-Rails.application.routes.draw do
-
+Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
+  resources :identity_providers
   concern :iiif_search, BlacklightIiifSearch::Routes.new
   concern :oai_provider, BlacklightOaiProvider::Routes.new
-  
+
   mount Hyrax::IiifAv::Engine, at: '/'
   mount Riiif::Engine => 'images', as: :riiif if Hyrax.config.iiif_image_server?
 
-  authenticate :user, lambda { |u| u.is_superadmin } do
+  authenticate :user, ->(u) { u.is_superadmin } do
     mount Sidekiq::Web => '/sidekiq'
   end
 
@@ -34,20 +36,42 @@ Rails.application.routes.draw do
 
   mount BrowseEverything::Engine => '/browse'
   resource :site, only: [:update] do
-    resources :roles, only: [:index, :update]
-    resource :labels, only: [:edit, :update]
+    resources :roles, only: %i[index update]
+    resource :labels, only: %i[edit update]
   end
 
   root 'hyrax/homepage#index'
 
-  devise_for :users, controllers: { invitations: 'hyku/invitations', registrations: 'hyku/registrations' }
+  devise_for :users, skip: [:omniauth_callbacks], controllers: { invitations: 'hyku/invitations',
+                                    registrations: 'hyku/registrations',
+                                    omniauth_callbacks: 'users/omniauth_callbacks' }
+  as :user do
+    resources :single_signon, only: [:index]
+
+    Devise.omniauth_providers.each do |provider|
+      path_prefix = '/users/auth'
+      match "#{path_prefix}/#{provider}/:id",
+        to: "users/omniauth_callbacks#passthru",
+        as: "user_#{provider}_omniauth_authorize",
+        via: OmniAuth.config.allowed_request_methods
+
+      match "#{path_prefix}/#{provider}/:id/metadata",
+        to: "users/omniauth_callbacks#passthru",
+        as: "user_#{provider}_omniauth_metadata",
+        via: [:get]
+
+      match "#{path_prefix}/#{provider}/:id/callback",
+        to: "users/omniauth_callbacks##{provider}",
+        as: "user_#{provider}_omniauth_callback",
+        via: [:get, :post]
+    end
+  end
+
   mount Qa::Engine => '/authorities'
 
   mount Blacklight::Engine => '/'
   mount Hyrax::Engine, at: '/'
-  if ENV.fetch('HYKU_BULKRAX_ENABLED', 'true') == 'true'
-    mount Bulkrax::Engine, at: '/'
-  end
+  mount Bulkrax::Engine, at: '/' if ENV.fetch('HYKU_BULKRAX_ENABLED', 'true') == 'true'
 
   concern :searchable, Blacklight::Routes::Searchable.new
   concern :exportable, Blacklight::Routes::Exportable.new
@@ -74,8 +98,8 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resource :account, only: [:edit, :update]
-    resource :work_types, only: [:edit, :update]
+    resource :account, only: %i[edit update]
+    resource :work_types, only: %i[edit update]
     resources :users, only: [:destroy]
     resources :groups do
       member do
@@ -92,7 +116,7 @@ Rails.application.routes.draw do
     # Generic collection routes
     resources :collections, only: [] do
       member do
-        resource :featured_collection, only: [:create, :destroy]
+        resource :featured_collection, only: %i[create destroy]
       end
     end
     resources :featured_collection_lists, path: 'featured_collections', only: :create
@@ -101,6 +125,7 @@ Rails.application.routes.draw do
   get 'all_collections' => 'hyrax/homepage#all_collections', as: :all_collections
 
   # Upload a collection thumbnail
-  post "/dashboard/collections/:id/delete_uploaded_thumbnail", to: "hyrax/dashboard/collections#delete_uploaded_thumbnail", as: :delete_uploaded_thumbnail
-
+  post "/dashboard/collections/:id/delete_uploaded_thumbnail",
+       to: "hyrax/dashboard/collections#delete_uploaded_thumbnail",
+       as: :delete_uploaded_thumbnail
 end

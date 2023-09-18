@@ -48,5 +48,18 @@ module Hyku
         can?(:read, Hyrax::Group) ||
         can?(:read, :admin_dashboard)
     end
+
+    # Draw a collaspable menu section. The passed block should contain <li> items.
+    # Override Hyrax 3.5.0 to pass in html_options
+    # rubocop:disable Metrics/ParameterLists
+    def collapsable_section(text, id:, icon_class:, open:, **html_options, &block)
+      # rubocop:enable Metrics/ParameterLists
+      CollapsableSectionPresenter.new(view_context: view_context,
+                                      text: text,
+                                      id: id,
+                                      icon_class: icon_class,
+                                      open: open,
+                                      html_options: html_options).render(&block)
+    end
   end
 end

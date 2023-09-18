@@ -692,6 +692,7 @@ fr:
         sr:
           batch_checkbox: Cocher pour ajouter à une collection ou modifier la liste
           check_all_label: Sélectionnez tous les fichiers à ajouter à une collection ou à modifier
+          collections_batch_checkbox: Cochez pour supprimer les collections par lots.
           detail_label: Afficher les détails du résumé de
           listing: Liste des articles dans lesquels vous avez déposé
           press_to: Appuyez sur pour

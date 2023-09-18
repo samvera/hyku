@@ -131,7 +131,6 @@ services:
     <<: *app
     # Uncomment command to access container with out starting Rails. Useful for debugging
     # command: sleep infinity
-    command: sh -l -c "bundle && bundle exec rails s -b 0.0.0.0"
     environment:
       - VIRTUAL_PORT=3000
       - VIRTUAL_HOST=.hyku.test

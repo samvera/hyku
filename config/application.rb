@@ -35,7 +35,6 @@ module Hyku
 
   class Application < Rails::Application
     # Add this line to load the lib folder first because we need
-    # IiifPrint::SplitPdfs::AdventistPagesToJpgsSplitter
     config.autoload_paths.unshift("#{Rails.root}/lib")
 
     # Settings in config/environments/* take precedence over those specified here.
@@ -62,12 +61,8 @@ module Hyku
 
     config.to_prepare do
 
-      # By default plain text files are not processed for text extraction.  In adding
-      # Adventist::TextFileTextExtractionService to the beginning of the services array we are
-      # enabling text extraction from plain text files.
-      Hyrax::DerivativeService.services = [
-        Adventist::TextFileTextExtractionService,
-        IiifPrint::PluggableDerivativeService]
+      # Add any extra services before IiifPrint::PluggableDerivativeService to enable processing
+      Hyrax::DerivativeService.services = [IiifPrint::PluggableDerivativeService]
 
       # When you are ready to use the derivative rodeo instead of the pluggable uncomment the
       # following and comment out the preceding Hyrax::DerivativeService.service

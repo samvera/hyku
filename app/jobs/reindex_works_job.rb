@@ -2,8 +2,10 @@
 
 class ReindexWorksJob < ApplicationJob
   def perform
-    Hyrax.config.registered_curation_concern_types.each do |work_type|
-      work_type.constantize.find_each(&:update_index)
+    Site.instance.available_works.each do |work_type|
+      work_type.constantize.find_each do |work|
+        ReindexItemJob.perform_later(work)
+      end
     end
   end
 end

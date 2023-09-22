@@ -3,8 +3,7 @@
 class ReindexCollectionsJob < ApplicationJob
   def perform
     Collection.find_each do |collection|
-      collection.try(:reindex_extent=, Hyrax::Adapters::NestingIndexAdapter::LIMITED_REINDEX)
-      collection.update_index
+      ReindexItemJob.perform_later(collection)
     end
   end
 end

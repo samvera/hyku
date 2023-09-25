@@ -6,11 +6,11 @@ module Hyrax
     # override hyrax v2.9.0 added the home_text content block to permitted_params - Adding Themes
     def permitted_params
       params.require(:content_block).permit(:marketing,
-        :announcement,
-        :home_text,
-        :homepage_about_section_heading,
-        :homepage_about_section_content,
-        :researcher)
+                                            :announcement,
+                                            :home_text,
+                                            :homepage_about_section_heading,
+                                            :homepage_about_section_content,
+                                            :researcher)
     end
   end
 end

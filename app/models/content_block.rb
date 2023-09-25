@@ -16,7 +16,9 @@ class ContentBlock < ApplicationRecord
     help: :help_page,
     terms: :terms_page,
     agreement: :agreement_page,
-    home_text: :home_text
+    home_text: :home_text,
+    homepage_about_section_heading: :homepage_about_section_heading,
+    homepage_about_section_content: :homepage_about_section_content
   }.freeze
 
   # NOTE: method defined outside the metaclass wrapper below because
@@ -88,6 +90,22 @@ class ContentBlock < ApplicationRecord
 
     def home_text=(value)
       home_text.update(value: value)
+    end
+
+    def homepage_about_section_heading
+      find_or_create_by(name: 'homepage_about_section_heading')
+    end
+
+    def homepage_about_section_heading=(value)
+      homepage_about_section_heading.update(value: value)
+    end
+
+    def homepage_about_section_content
+      find_or_create_by(name: 'homepage_about_section_content')
+    end
+
+    def homepage_about_section_content=(value)
+      homepage_about_section_content.update(value: value)
     end
 
     def about_page

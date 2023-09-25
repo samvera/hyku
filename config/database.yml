@@ -2,6 +2,7 @@
 
 login: &login
   adapter: <%= ENV['DB_ADAPTER'] || 'postgresql' %>
+  schema_search_path: "public,shared_extensions"
   host: <%= ENV['DB_HOST'] %>
   username: <%= ENV['DB_USER'] %>
   password: <%= ENV['DB_PASSWORD'] %>

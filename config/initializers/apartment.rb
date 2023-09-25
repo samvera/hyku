@@ -39,6 +39,8 @@ if ENV['DB_ADAPTER'] != 'nulldb' && db_created?
     # Any schemas added here will be available along with your selected Tenant.
     #
     # config.persistent_schemas = %w{ hstore }
+    config.persistent_schemas = ['shared_extensions']
+
 
     # <== PostgreSQL only options
     #

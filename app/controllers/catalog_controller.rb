@@ -79,7 +79,7 @@ class CatalogController < ApplicationController
       qt: "search",
       rows: 10,
       qf: IiifPrint.config.metadata_fields.keys.map { |attribute| "#{attribute}_tesim" }
-                   .join(' ') << " title_tesim description_tesim all_text_timv file_set_text_tsimv", # the first space character is necessary!
+                  .join(' ') << " title_tesim description_tesim all_text_timv file_set_text_tsimv", # the first space character is necessary!
       "hl": true,
       "hl.simple.pre": "<span class='highlight'>",
       "hl.simple.post": "</span>",
@@ -283,6 +283,7 @@ class CatalogController < ApplicationController
       field.solr_parameters = {
         "spellcheck.dictionary": "date_created"
       }
+      # TODO: Should this be the above date_fields?
       solr_name = 'created_tesim'
       field.solr_local_parameters = {
         qf: solr_name,

@@ -47,6 +47,11 @@ RUN wget https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.0-57.t
     && rm -rf ImageMagick* \
     && rm -rf /var/cache/apk/*
 
+# Install "best" training data for Tesseract
+RUN echo "📚 Installing Tesseract Best (training data)!" && \
+    cd /usr/share/tessdata/ && \
+    wget https://github.com/tesseract-ocr/tessdata_best/blob/main/eng.traineddata?raw=true -O eng_best.traineddata
+
 ARG VIPS_VERSION=8.11.3
 
 RUN set -x -o pipefail \

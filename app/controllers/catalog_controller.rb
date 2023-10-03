@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class CatalogController < ApplicationController
+  include BlacklightAdvancedSearch::Controller
+  include BlacklightRangeLimit::ControllerOverride
   include Hydra::Catalog
   include Hydra::Controller::ControllerBehavior
   include BlacklightOaiProvider::Controller
@@ -8,12 +10,24 @@ class CatalogController < ApplicationController
   # These before_action filters apply the hydra access controls
   before_action :enforce_show_permissions, only: :show
 
-  def self.uploaded_field
-    'system_create_dtsi'
+  def self.created_field
+    'date_created_ssim'
+  end
+
+  def self.creator_field
+    'creator_ssim'
   end
 
   def self.modified_field
     'system_modified_dtsi'
+  end
+
+  def self.title_field
+    'title_ssim'
+  end
+
+  def self.uploaded_field
+    'system_create_dtsi'
   end
 
   # CatalogController-scope behavior and configuration for BlacklightIiifSearch
@@ -21,7 +35,8 @@ class CatalogController < ApplicationController
 
   configure_blacklight do |config|
     # IiifPrint index fields
-    config.add_index_field 'all_text_tsimv', highlight: true, helper_method: :render_ocr_snippets
+    config.add_index_field 'all_text_timv'
+    config.add_index_field 'file_set_text_tsimv', label: "Item contents", highlight: true, helper_method: :render_ocr_snippets
 
     # configuration for Blacklight IIIF Content Search
     config.iiif_search = {
@@ -44,18 +59,32 @@ class CatalogController < ApplicationController
     config.advanced_search[:url_key] ||= 'advanced'
     config.advanced_search[:query_parser] ||= 'dismax'
     config.advanced_search[:form_solr_parameters] ||= {}
+    config.advanced_search[:form_facet_partial] ||= "advanced_search_facets_as_select"
 
     config.search_builder_class = IiifPrint::CatalogSearchBuilder
+
+    # Use locally customized AdvSearchBuilder so we can enable blacklight_advanced_search
+    # TODO ROB config.search_builder_class = AdvSearchBuilder
 
     # Show gallery view
     config.view.gallery.partials = %i[index_header index]
     config.view.slideshow.partials = [:index]
 
+    # Because too many times on Samvera tech people raise a problem regarding a failed query to SOLR.
+    # Often, it's because they inadvertently exceeded the character limit of a GET request.
+    config.http_method = :post
+
     ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
     config.default_solr_params = {
       qt: "search",
       rows: 10,
-      qf: "title_tesim description_tesim creator_tesim keyword_tesim all_text_timv"
+      qf: IiifPrint.config.metadata_fields.keys.map { |attribute| "#{attribute}_tesim" }
+                   .join(' ') << " title_tesim description_tesim all_text_timv file_set_text_tsimv", # the first space character is necessary!
+      "hl": true,
+      "hl.simple.pre": "<span class='highlight'>",
+      "hl.simple.post": "</span>",
+      "hl.snippets": 30,
+      "hl.fragsize": 100
     }
 
     # Specify which field to use in the tag cloud on the homepage.
@@ -81,10 +110,33 @@ class CatalogController < ApplicationController
     config.add_facet_field 'file_format_sim', limit: 5
     config.add_facet_field 'member_of_collections_ssim', limit: 5, label: 'Collections'
 
+    # TODO: deal with part of facet changes
+    # config.add_facet_field solr_name("part", :facetable), limit: 5, label: 'Part'
+    # config.add_facet_field solr_name("part_of", :facetable), limit: 5
+    # removed # config.add_facet_field solr_name("file_format", :facetable), limit: 5
+    # removed # config.add_facet_field solr_name("contributor", :facetable), label: "Contributor", limit: 5
+    # remvode config.add_facet_field solr_name("refereed", :facetable), limit: 5
+
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
     # handler defaults, or have no facets.
     config.add_facet_fields_to_solr_request!
+
+    # TODO: ROB
+    #     # Prior to this change, the applications specific translations were not loaded. Dogbiscuits were assuming the translations were already loaded.
+    #     Rails.root.glob("config/locales/*.yml").each do |path|
+    #       I18n.load_path << path.to_s
+    #     end
+    #     I18n.backend.reload!
+    #     index_props = DogBiscuits.config.index_properties.collect do |prop|
+    #       { prop => index_options(prop, DogBiscuits.config.property_mappings[prop]) }
+    #     end
+    #     add_index_field config, index_props
+
+    # solr fields to be displayed in the show (single result) view
+    #   The ordering of the field names is the order of the display
+    # show_props = DogBiscuits.config.all_properties
+    # add_show_field config, show_props
 
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display
@@ -150,6 +202,8 @@ class CatalogController < ApplicationController
     # since we aren't specifying it otherwise.
     config.add_search_field('all_fields', label: 'All Fields', include_in_advanced_search: false) do |field|
       all_names = config.show_fields.values.map(&:field).join(" ")
+      # TODO: ROB all_names = (config.show_fields.values.map { |v| v.field.to_s } +
+      #         DogBiscuits.config.all_properties.map { |p| "#{p}_tesim" }).uniq.join(" ")
       title_name = 'title_tesim'
       field.solr_parameters = {
         qf: "#{all_names} file_format_tesim all_text_timv",
@@ -178,6 +232,7 @@ class CatalogController < ApplicationController
     end
 
     config.add_search_field('creator') do |field|
+      # TODO: ROB field.label = "Author"
       field.solr_parameters = { "spellcheck.dictionary": "creator" }
       solr_name = 'creator_tesim'
       field.solr_local_parameters = {
@@ -220,14 +275,15 @@ class CatalogController < ApplicationController
       }
     end
 
+    date_fields = ['date_created_tesim', 'sorted_date_isi', 'sorted_month_isi']
+
     config.add_search_field('date_created') do |field|
       field.solr_parameters = {
         "spellcheck.dictionary": "date_created"
       }
-      solr_name = 'created_tesim'
       field.solr_local_parameters = {
-        qf: solr_name,
-        pf: solr_name
+        qf: date_fields.join(' '),
+        pf: date_fields.join(' ')
       }
     end
 
@@ -343,16 +399,27 @@ class CatalogController < ApplicationController
       }
     end
 
+    config.add_search_field('source') do |field|
+      solr_name = solr_name("source", :stored_searchable)
+      field.solr_local_parameters = {
+        qf: solr_name,
+        pf: solr_name
+      }
+    end
+
     # "sort results by" select (pulldown)
     # label in pulldown is followed by the name of the SOLR field to sort by and
     # whether the sort is ascending or descending (it must be asc or desc
     # except in the relevancy case).
     # label is key, solr field is value
-    config.add_sort_field "score desc, #{uploaded_field} desc", label: "relevance"
-    config.add_sort_field "#{uploaded_field} desc", label: "date uploaded \u25BC"
-    config.add_sort_field "#{uploaded_field} asc", label: "date uploaded \u25B2"
-    config.add_sort_field "#{modified_field} desc", label: "date modified \u25BC"
-    config.add_sort_field "#{modified_field} asc", label: "date modified \u25B2"
+    config.add_sort_field "score desc, #{uploaded_field} desc", label: "Relevance"
+
+    config.add_sort_field "#{title_field} asc", label: "Title"
+    config.add_sort_field "#{creator_field} asc", label: "Author"
+    config.add_sort_field "#{created_field} asc", label: "Published Date (Ascending)"
+    config.add_sort_field "#{created_field} desc", label: "Published Date (Descending)"
+    config.add_sort_field "#{modified_field} asc", label: "Upload Date (Ascending)"
+    config.add_sort_field "#{modified_field} desc", label: "Upload Date (Descending)"
 
     # OAI Config fields
     config.oai = {

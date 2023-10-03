@@ -2,10 +2,13 @@
 
 # OVERRIDE Hyrax 2.9.0 to add featured collection routes
 
-require 'sidekiq/web'
+if ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq') == 'sidekiq'
+  require 'sidekiq/web'
+end
 
 Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   resources :identity_providers
+  concern :range_searchable, BlacklightRangeLimit::Routes::RangeSearchable.new
   concern :iiif_search, BlacklightIiifSearch::Routes.new
   concern :oai_provider, BlacklightOaiProvider::Routes.new
 
@@ -13,7 +16,13 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   mount Riiif::Engine => 'images', as: :riiif if Hyrax.config.iiif_image_server?
 
   authenticate :user, ->(u) { u.is_superadmin || u.is_admin } do
-    mount Sidekiq::Web => '/jobs'
+    queue = ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq')
+    case queue
+      when 'sidekiq'
+        mount Sidekiq::Web => '/jobs'
+    when 'good_job'
+      mount GoodJob::Engine => '/jobs'
+    end
   end
 
   if ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_MULTITENANT', false))
@@ -70,9 +79,10 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   mount Qa::Engine => '/authorities'
 
   mount Blacklight::Engine => '/'
+  mount BlacklightAdvancedSearch::Engine => '/'
   mount Hyrax::Engine, at: '/'
   mount Bulkrax::Engine, at: '/' if ENV.fetch('HYKU_BULKRAX_ENABLED', 'true') == 'true'
-
+  mount HykuKnapsack::Engine, at: '/'
   concern :searchable, Blacklight::Routes::Searchable.new
   concern :exportable, Blacklight::Routes::Exportable.new
 
@@ -82,6 +92,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     concerns :oai_provider
 
     concerns :searchable
+    concerns :range_searchable
   end
 
   resources :solr_documents, only: [:show], path: '/catalog', controller: 'catalog' do

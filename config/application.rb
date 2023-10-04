@@ -37,6 +37,22 @@ module Hyku
     # Add this line to load the lib folder first because we need
     config.autoload_paths.unshift("#{Rails.root}/lib")
 
+    ##
+    # @api public
+    #
+    # @param relative_path [String] lookup the relative paths first in the Knapsack then in Hyku.
+    #
+    # @return [String] the path to the file, favoring those found in the knapsack but falling back
+    #         to those in the Rails.root.
+    def self.path_for(relative_path)
+      if defined?(HykuKnapsack)
+        engine_path = HykuKnapsack::Engine.root.join(relative_path)
+        return engine_path.to_s if engine_path.exist?
+      end
+
+      Rails.root.join(relative_path).to_s
+    end
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.

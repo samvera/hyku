@@ -34,6 +34,21 @@ module Hyku
   end
 
   class Application < Rails::Application
+    ##
+    #   @return [Array<String>] an array of strings in which we should be looking for theme view
+    #           candidates.
+    # @see Hyrax::WorksControllerBehavior
+    # @see Hyrax::ContactFormController
+    # @see Hyrax::PagesController
+    # @see https://api.rubyonrails.org/classes/ActionView/ViewPaths.html#method-i-prepend_view_path
+    #
+    # @see .path_for
+    def self.theme_view_path_roots
+      returning_value = [Rails.root.to_s]
+      returning_value.push HykuKnapsack::Engine.root.to_s if defined?(HykuKnapsack)
+      returning_value
+    end
+
     # Add this line to load the lib folder first because we need
     config.autoload_paths.unshift("#{Rails.root}/lib")
 

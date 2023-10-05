@@ -56,6 +56,18 @@ RSpec.describe CatalogController, type: :request, clean: true, multitenant: true
 
     before do
       host! "http://#{cross_search_tenant_account.cname}/"
+      black_light_config.add_search_field('title') do |field|
+        field.solr_parameters = {
+          "spellcheck.dictionary": "title"
+        }
+        solr_name = 'title_tesim'
+        field.solr_local_parameters = {
+          qf: solr_name,
+          pf: solr_name
+        }
+      end
+      black_light_config.advanced_search ||= Blacklight::OpenStructWithHashAccess.new
+      black_light_config.advanced_search[:query_parser] ||= 'dismax'
     end
 
     context 'can fetch data from other tenants' do
@@ -66,7 +78,7 @@ RSpec.describe CatalogController, type: :request, clean: true, multitenant: true
 
         # get '/catalog', params: { q: '*' }
         # get search_catalog_url, params: { locale: 'en', q: 'test' }
-        get "http://#{cross_search_tenant_account.cname}/catalog?q=test" # , params: { q: 'test' }
+        get "http://#{cross_search_tenant_account.cname}/catalog?q=test", params: { q: 'title' }
         expect(response.status).to eq(200)
       end
     end

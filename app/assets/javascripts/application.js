@@ -26,6 +26,8 @@
 // Required by Blacklight
 //= require blacklight/blacklight
 //= require admin_font_select
+//= require admin_color_select
+//= require blacklight_advanced_search
 
 // Moved the Hyku JS *above* the Hyrax JS to resolve #1187 (following
 // a pattern found in ScholarSphere)
@@ -49,3 +51,12 @@
 //= require flot_graph
 //= require statistics_tab_manager
 //= require blacklight_gallery/default
+
+// Required for blacklight range limit
+//= require blacklight_range_limit/range_limit_distro_facets
+//= require blacklight_range_limit/range_limit_shared
+//= require blacklight_range_limit/range_limit_slider
+//= require bootstrap-slider
+//= require jquery.flot.js
+
+//= require tinymce

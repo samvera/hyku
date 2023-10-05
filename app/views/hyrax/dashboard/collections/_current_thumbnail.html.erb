@@ -1,5 +1,5 @@
 <% thumbnail_path = SolrDocument.find(@collection.id).thumbnail_path %>
- <% if thumbnail_path.include?("uploaded_collection_thumbnails") and File.exist? Rails.root.join("public#{::SolrDocument.find(@collection.id).thumbnail_path}") %>
+ <% if thumbnail_path.include?("uploaded_collection_thumbnails") and File.exist? Hyky::Application.path_for("public#{::SolrDocument.find(@collection.id).thumbnail_path}") %>
   <%= image_tag(thumbnail_path, class: "current-thumbnail") %>
   <p>Current image: <strong><%= @thumbnail_filename %></strong></p>
 <% else %>

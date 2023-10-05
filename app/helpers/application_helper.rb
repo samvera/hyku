@@ -5,6 +5,7 @@ module ApplicationHelper
   include Hyrax::OverrideHelperBehavior
   include GroupNavigationHelper
   include SharedSearchHelper
+  include HykuKnapsack::ApplicationHelper
 
   def hint_for(term:, record_class: nil)
     hint = locale_for(type: 'hints', term: term, record_class: record_class)

@@ -42,8 +42,6 @@ module Hyrax
           'facet_panel_text_color'             => '#333333'
         }.freeze
 
-        DEFAULT_VALUES = DEFAULT_FONTS.merge(DEFAULT_COLORS).freeze
-
         # @param [Hash] attributes the list of parameters from the form
         def initialize(attributes = {})
           @attributes = attributes
@@ -430,8 +428,12 @@ module Hyrax
             "rgba(#{rgb[0]}, #{rgb[1]}, #{rgb[2]}, #{alpha})"
           end
 
+          def default_values
+            @default_values ||= DEFAULT_FONTS.merge(DEFAULT_COLORS)
+          end
+
           def block_for(name, dynamic_default = nil)
-            ContentBlock.block_for(name: name, fallback_value: DEFAULT_VALUES[name] || dynamic_default)
+            ContentBlock.block_for(name: name, fallback_value: default_values[name] || dynamic_default)
           end
 
           # Persist a key/value tuple as a ContentBlock

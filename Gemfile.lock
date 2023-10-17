@@ -258,7 +258,7 @@ GEM
       signet (~> 0.8)
       typhoeus
     builder (3.2.4)
-    bulkrax (5.3.0)
+    bulkrax (5.4.1)
       bagit (~> 0.4)
       coderay
       dry-monads (~> 1.4.0)

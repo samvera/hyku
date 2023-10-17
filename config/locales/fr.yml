@@ -114,6 +114,14 @@ fr:
       work_types: Types de travail disponibles
     footer:
       admin_login: Connexion Administrateur
+    identity_provider:
+      header: Fournisseur d'identité d'authentification
+      label:
+        logo_image: Image de la page SSO
+        logo_image_alt_text: Texte alternatif pour l'image
+        name: Nom ou description
+        optoins: Possibilités
+        provider: Fournisseur
     proprietor:
       accounts:
         nav: Comptes
@@ -280,6 +288,9 @@ fr:
         edit: Modifier
         header: Gérer l'utilisateur
         update: Mettre à jour
+  single_signon:
+    index:
+      sign_in_with_provider: Connectez-vous avec %{provider}
   status:
     index:
       services: Prestations de service

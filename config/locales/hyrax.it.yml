@@ -203,6 +203,7 @@ it:
         configuration: Configurazione
         contact: Contatto
         content_blocks: Blocchi di contenuto
+        identity_provider: Fornitore di identità
         notifications: notifiche
         pages: pagine
         profile: Profilo

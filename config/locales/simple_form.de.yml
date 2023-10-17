@@ -1,75 +1,74 @@
 ---
 de:
   simple_form:
-    cancel: Stornieren
+    cancel: Abbrechen
     error_notification:
-      default_message: 'Bitte überprüfen Sie die folgenden Probleme:'
+      default_message: 'Bitte überprüfen Sie die untenstehenden Probleme:'
     hints:
       account:
         admin_emails: Geben Sie jeweils eine E-Mail-Adresse ein
-        allow_signup: Erlauben Sie Benutzern, sich bei Ihrem Repository anzumelden
-        cache_api: Aktiviert den Cache für API-Endpunkte. Experimental
-        contact_email: E-Mail-Empfänger von Nachrichten, die über das Kontaktformular gesendet werden
-        contact_email_to: E-Mail-Adresse, die Kontakt-E-Mails erhalten soll
-        doi_reader: Zeigen Sie die Fähigkeit, aus Datacite zu lesen, um Datensätze zu füllen. WIP nicht verwenden
-        doi_writer: Schreiben Sie DOIs für Datensätze. WIP nicht verwenden
-        email_format: Legen Sie eine Liste von E-Mail-Domains fest, die sich bei diesem Repository anmelden dürfen, z. B. (@ubiquitypress.com @gmail.com). Lassen Sie zwischen jeder Domäne ein einzelnes Leerzeichen.
-        email_subjet_prefix: Zeichenfolge, die den System-E-Mail-Betreffs vorangestellt werden soll.
-        enable_oai_metadata: OAI-Link aktivieren oder deaktivieren
+        is_public: 'Können Benutzer Ihre Seite auf der Startseite entdecken oder auf Ihre Seiten zugreifen, ohne einen speziellen Benutzernamen/Passwort zu benötigen?'
         fcrepo_endpoint:
-          base_path: Fedora-Basispfad sollte mit einem Schrägstrich beginnen und nicht mit einem Schrägstrich enden
+          base_path: Der Fedora-Basispfad sollte mit einem Schrägstrich beginnen UND nicht mit einem Schrägstrich enden
           url: Fedora-URL sollte nicht mit einem Schrägstrich enden
-        file_acl: Deaktivieren Sie diese Option, wenn Sie ein Dateisystem wie Samba oder NFS verwenden, das das Festlegen von Zugriffssteuerungslisten nicht unterstützt
-        file_size_limit: Dieser sollte mindestens auf 536870912000 eingestellt sein
+        name: Ein einzelner oder durch Bindestriche getrennter Name, der für technische Aspekte des Repositoriums verwendet wird (z.B. "acme" oder "acme-library").
+        gtm_id: Die ID Ihres Google Tag Manager Kontos
+        contact_email: Die E-Mail-Adresse, an die über die Kontaktseite eingereichte Nachrichten gesendet werden
+        weekly_email_list: Liste von E-Mail-Adressen für den wöchentlichen Bericht. Lassen Sie ein einzelnes Leerzeichen zwischen jeder E-Mail
+        monthly_email_list: Liste von E-Mail-Adressen für den monatlichen Bericht. Lassen Sie ein einzelnes Leerzeichen zwischen jeder E-Mail
+        yearly_email_list: Liste von E-Mail-Adressen für den jährlichen Bericht. Lassen Sie ein einzelnes Leerzeichen zwischen jeder E-Mail
+        email_format: Legen Sie eine Liste von E-Mail-Domänen fest, die sich für dieses Repository anmelden dürfen, z.B. (@ubiquitypress.com @gmail.com). Lassen Sie ein einzelnes Leerzeichen zwischen jeder Domain.
+        allow_signup: Benutzern erlauben, sich für Ihr Repository anzumelden
+        enable_oai_metadata: OAI-Link aktivieren oder deaktivieren
+        shared_login: Gemeinsamen Login aktivieren oder deaktivieren
+        file_size_limit: Dies sollte mindestens auf 536870912000 gesetzt werden
+        locale_name: |
+          Der Name des mandantenspezifischen Lokalisierungssuffix, der ihren locale.yml-Dateien hinzugefügt wird. Es sollten nur alphabetische Zeichen hinzugefügt werden, keine Symbole oder Zahlen, diese werden dann großgeschrieben.
+        oai_admin_email: OAI-Endpunkt Kontakt-E-Mail-Adresse
+        doi_reader: Zeigt die Fähigkeit, aus Datacite zu lesen, um Datensätze zu füllen. In Bearbeitung, nicht verwenden
+        doi_writer: DOIs für Datensätze schreiben. In Bearbeitung, nicht verwenden
+        cache_api: Cache für API-Endpunkte aktivieren. Experimentell
+        email_subjet_prefix: Zeichenfolge, die vor den Betreffzeilen von System-E-Mails gesetzt wird.
+        contact_email_to: Die E-Mail-Adresse, von der aus Systembenachrichtigungen gesendet werden. Zusätzliche Konfiguration ist erforderlich, um eine Adresse von anderen Domains als der Domäne der Site hinzuzufügen
         geonames_username: Registrieren Sie sich unter http://www.geonames.org/manageaccount
-        gtm_id: Die ID Ihres Google Tag Manager-Kontos
-        is_public: Können Benutzer Ihre Website auf der Homepage entdecken oder ohne einen speziellen Benutzernamen / ein spezielles Passwort auf Ihre Seiten zugreifen?
-        locale_name: 'Der Name des mandantenspezifischen Gebietsschema-Suffixes, das den locale.yml-Dateien hinzugefügt wurde. Es dürfen nur Buchstaben hinzugefügt werden, keine Symbole oder Zahlen, diese werden dann groß geschrieben.
-
-          '
-        monthly_email_list: Liste der E-Mail-Adressen, an die der Monatsbericht per E-Mail gesendet werden soll. Lassen Sie zwischen jeder E-Mail ein einzelnes Leerzeichen
-        name: Ein einzelner oder mit Bindestrich versehener Name, der für technische Aspekte des Repositorys verwendet wird (z. B. "acme" oder "acme-library").
-        oai_admin_email: Kontakt-E-Mail-Adresse des OAI-Endpunkts
-        shared_login: Aktivieren oder deaktivieren Sie die gemeinsame Anmeldung
-        ssl_configured: Setzen Sie es auf true, wenn Sie https verwenden
-        weekly_email_list: Liste der E-Mail-Adressen, an die der Wochenbericht per E-Mail gesendet werden soll. Lassen Sie zwischen jeder E-Mail ein einzelnes Leerzeichen
-        yearly_email_list: Liste der E-Mail-Adressen, an die der Jahresbericht per E-Mail gesendet werden soll. Lassen Sie zwischen jeder E-Mail ein einzelnes Leerzeichen
+        file_acl: Deaktivieren, wenn Sie ein Dateisystem wie samba oder nfs verwenden, das das Festlegen von Zugriffskontrolllisten nicht unterstützt
+        ssl_configured: Auf wahr setzen, wenn https verwendet wird
       hyku_group:
         description: Eine kurze Zusammenfassung der Rolle der Gruppe
       user:
-        email: Geben Sie jeweils eine E-Mail-Adresse ein. Sie können eine Einladung auch über dieses Formular erneut senden.
+        email: Geben Sie jeweils eine E-Mail-Adresse ein. Sie können auch über dieses Formular eine Einladung erneut senden. Rollen gelten nur für diesen Mandanten.
     labels:
       account:
         admin_emails: Neuen Administrator hinzufügen oder einladen (per E-Mail)
-        cname: Mandanten CNAME
+        cname: Hauptdomänenname
         fcrepo_endpoint:
           base_path: Basispfad
           url: URL
-        gtm_id: Google-Tag-Manager
-        name: Kurzer Name
+        name: Kurzname
         solr_endpoint:
           url: URL
-        tenant: Mandanten UUID
+        tenant: Tenant UUID
+        gtm_id: Google Tag Manager
       add_user_to_group:
-        user_ids: Benutzeridentifikation
+        user_ids: Benutzer-ID
       domain_names:
-        cname: Domänenname
+        cname: Domainname
       group_search:
         q: Suche
       hyku_group:
         description: Beschreibung
       page_size:
-        per: Show
+        per: Anzeigen
       user:
-        display_name: Dein Name
-        email: E-Mail-Addresse
+        display_name: Ihr Name
+        email: E-Mail-Adresse
       user_search:
-        uq: Suche nach Benutzer
-    'no': Nein
+        uq: Benutzer suchen
+    'no': 'Nein'
     placeholders:
       user_search:
         uq: Name oder Benutzername
     required:
       mark: "*"
       text: erforderlich
-    'yes': Ja
+    'yes': 'Ja'

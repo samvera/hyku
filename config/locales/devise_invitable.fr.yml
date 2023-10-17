@@ -21,9 +21,7 @@ fr:
         accept: Accepter l'invitation
         accept_until: Cette invitation sera due en %{due_date}.
         hello: Bonjour %{email}
-        ignore: |-
-          Si vous ne souhaitez pas accepter l'invitation, ignorez ce courriel. 
-          Votre compte ne sera créé que lorsque vous accédez au lien ci-dessus et définissez votre mot de passe.
+        ignore: "Si vous ne souhaitez pas accepter l'invitation, ignorez ce courriel. \nVotre compte ne sera créé que lorsque vous accédez au lien ci-dessus et définissez votre mot de passe."
         someone_invited_you: Quelqu'un vous a invité %{url}, vous pouvez l'accepter par le lien ci-dessous.
         subject: Instructions d'invitation
   time:

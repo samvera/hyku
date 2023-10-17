@@ -3,73 +3,72 @@ it:
   simple_form:
     cancel: Annulla
     error_notification:
-      default_message: 'Leggi i seguenti problemi:'
+      default_message: 'Si prega di rivedere i problemi di seguito:'
     hints:
       account:
         admin_emails: Inserisci un indirizzo email alla volta
-        allow_signup: Consenti agli utenti di registrarsi al tuo repository
-        cache_api: Attiva la cache per gli endpoint API. Sperimentale
-        contact_email: Email destinatario dei messaggi inviati tramite il modulo di contatto
-        contact_email_to: Indirizzo e-mail che dovrebbe ricevere le e-mail di contatto
-        doi_reader: Mostra la capacità di leggere da Datacite per popolare i record. WIP non utilizzare
-        doi_writer: Scrivi DOI per i record. WIP non utilizzare
-        email_format: Impostare un elenco di domini di posta elettronica a cui è consentito registrarsi a questo repository, ad esempio (@ubiquitypress.com @gmail.com). Lascia un singolo spazio tra ogni dominio.
-        email_subjet_prefix: Stringa da mettere davanti agli oggetti delle email di sistema.
-        enable_oai_metadata: Abilita o disabilita il collegamento OAI
+        is_public: 'Gli utenti possono scoprire il tuo sito nella pagina principale o accedere alle tue pagine senza uno username/password speciale?'
         fcrepo_endpoint:
-          base_path: Il percorso base di Fedora dovrebbe iniziare con una barra E non finire con una barra
+          base_path: Il percorso di base di Fedora dovrebbe iniziare con una barra E non finire con una barra
           url: L'URL di Fedora non dovrebbe terminare con una barra
-        file_acl: Disattivare se si utilizza un file system come samba o nfs che non supporta l'impostazione degli elenchi di controllo degli accessi
-        file_size_limit: Questo dovrebbe essere impostato almeno su 536870912000
-        geonames_username: Registrati su http://www.geonames.org/manageaccount
+        name: Un nome singolo o con trattino utilizzato per gli aspetti tecnici del repository (ad es., "acme" o "acme-library").
         gtm_id: L'ID del tuo account Google Tag Manager
-        is_public: Gli utenti possono scoprire il tuo sito sulla home page o accedere alle tue pagine senza un nome utente/password speciale?
-        locale_name: 'Il nome del suffisso locale specifico del tenant aggiunto ai relativi file locale.yml. Dovrebbero essere aggiunti solo caratteri alfabetici, nessun simbolo o numero, questi saranno poi scritti in maiuscolo.
-
-          '
-        monthly_email_list: Elenco di indirizzi e-mail a cui inviare il rapporto mensile. Lascia un singolo spazio tra ogni email
-        name: Un nome singolo o sillabato utilizzato per gli aspetti tecnici del repository (ad es. "Acme" o "acme-library").
-        oai_admin_email: Indirizzo e-mail di contatto dell'endpoint OAI
-        shared_login: Abilita o disabilita l'accesso condiviso
-        ssl_configured: Impostalo su vero se usi https
-        weekly_email_list: Elenco di indirizzi email a cui inviare il report settimanale. Lascia un singolo spazio tra ogni email
-        yearly_email_list: Elenco di indirizzi e-mail a cui inviare il rapporto annuale. Lascia un singolo spazio tra ogni email
+        contact_email: L'indirizzo email a cui vengono inviati i messaggi inviati tramite la pagina di contatto
+        weekly_email_list: Lista di indirizzi email per inviare il rapporto settimanale. Lascia uno spazio tra ogni email
+        monthly_email_list: Lista di indirizzi email per inviare il rapporto mensile. Lascia uno spazio tra ogni email
+        yearly_email_list: Lista di indirizzi email per inviare il rapporto annuale. Lascia uno spazio tra ogni email
+        email_format: Imposta una lista di domini email che possono iscriversi a questo repository es. (@ubiquitypress.com @gmail.com). Lascia uno spazio tra ogni dominio.
+        allow_signup: Permetti agli utenti di iscriversi al tuo repository
+        enable_oai_metadata: Abilita o disabilita il link OAI
+        shared_login: Abilita o disabilita il login condiviso
+        file_size_limit: Questo dovrebbe essere impostato almeno a 536870912000
+        locale_name: |
+          Il nome del suffisso locale specifico del tenant aggiunto ai loro file locale.yml. Aggiungi solo caratteri alfabetici, senza simboli o numeri, questi verranno poi capitalizzati.
+        oai_admin_email: Indirizzo email di contatto dell'endpoint OAI
+        doi_reader: Mostra la capacità di leggere da Datacite per popolare i record. In lavorazione, non usare
+        doi_writer: Scrivi DOIs per i record. In lavorazione, non usare
+        cache_api: Abilita la cache per gli endpoint API. Sperimentale
+        email_subjet_prefix: Stringa da inserire davanti agli oggetti delle email di sistema.
+        contact_email_to: L'indirizzo email da cui verranno inviate le notifiche di sistema. È necessaria una configurazione aggiuntiva per aggiungere un indirizzo da domini diversi dal dominio del sito
+        geonames_username: Registrati su http://www.geonames.org/manageaccount
+        file_acl: Disattiva se stai utilizzando un sistema di file come samba o nfs che non supporta l'impostazione delle liste di controllo degli accessi
+        ssl_configured: Impostalo su vero se stai utilizzando https
       hyku_group:
-        description: Un breve riepilogo del ruolo del gruppo
+        description: Un breve riassunto del ruolo del gruppo
       user:
-        email: Inserisci un indirizzo email alla volta. Puoi anche inviare nuovamente un invito tramite questo modulo.
+        email: Inserisci un indirizzo email alla volta. Puoi anche inviare nuovamente un invito tramite questo modulo. I ruoli si applicano solo a questo tenant.
     labels:
       account:
         admin_emails: Aggiungi o invita un nuovo amministratore (via email)
-        cname: Locatario CNAME
+        cname: Nome di dominio principale
         fcrepo_endpoint:
-          base_path: Percorso di base
+          base_path: Percorso base
           url: URL
-        gtm_id: Gestore dei tag di Google
-        name: Nome corto
+        name: Nome breve
         solr_endpoint:
           url: URL
-        tenant: UUID tenant
+        tenant: UUID del tenant
+        gtm_id: Gestore di tag Google
       add_user_to_group:
         user_ids: ID utente
       domain_names:
-        cname: Nome del dominio
+        cname: Nome dominio
       group_search:
         q: Ricerca
       hyku_group:
         description: Descrizione
       page_size:
-        per: Mostrare
+        per: Mostra
       user:
         display_name: Il tuo nome
         email: Indirizzo email
       user_search:
-        uq: Cerca Utente
+        uq: Cerca utente
     'no': 'No'
     placeholders:
       user_search:
-        uq: Nome o nome utente
+        uq: Nome o username
     required:
       mark: "*"
-      text: necessario
-    'yes': sì
+      text: richiesto
+    'yes': 'Sì'

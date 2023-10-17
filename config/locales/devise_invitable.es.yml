@@ -21,9 +21,7 @@ es:
         accept: Aceptar la invitacion
         accept_until: Esta invitación será %{due_date}.
         hello: Hola %{email}
-        ignore: |-
-          Si no desea aceptar la invitación, ignore este correo electrónico. 
-          Su cuenta no se creará hasta que acceda al enlace anterior y establezca su contraseña.
+        ignore: "Si no desea aceptar la invitación, ignore este correo electrónico. \nSu cuenta no se creará hasta que acceda al enlace anterior y establezca su contraseña."
         someone_invited_you: Alguien te ha invitado a %{url}, puedes aceptarlo a través del siguiente enlace.
         subject: Instrucciones de invitación
   time:

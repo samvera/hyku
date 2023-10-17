@@ -202,6 +202,7 @@ fr:
         collections: Les collections
         configuration: Configuration
         contact: Contact
+        identity_provider: Fournisseur d'identité
         notifications: Notifications
         pages: Pages
         profile: Profil

@@ -114,6 +114,14 @@ zh:
       work_types: 可用的工作类型
     footer:
       admin_login: 管理员登录
+    identity_provider:
+      header: 身份验证身份提供商
+      label:
+        logo_image: SSO 页面的图像
+        logo_image_alt_text: 图像的替代文本
+        name: 名称或描述
+        optoins: 选项
+        provider: 提供者
     proprietor:
       accounts:
         nav: 帐号
@@ -275,6 +283,9 @@ zh:
         edit: 編輯
         header: 管理用户
         update: 更新
+  single_signon:
+    index:
+      sign_in_with_provider: 使用 %{provider} 登录
   status:
     index:
       services: 服务

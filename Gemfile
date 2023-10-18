@@ -59,7 +59,7 @@ gem 'parser', '~> 2.5.3'
 gem 'pg'
 gem 'postrank-uri', '>= 1.0.24'
 gem 'pry-byebug', group: %i[development test]
-gem 'puma', '~> 4.3' # Use Puma as the app server
+gem 'puma', '~> 5.6' # Use Puma as the app server
 gem 'rack-test', '0.7.0', group: %i[test] # rack-test >= 0.71 does not work with older Capybara versions (< 2.17). See #214 for more details
 gem 'rails-controller-testing', group: %i[test]
 gem 'rdf', '~> 3.1.15' # rdf 3.2.0 removed SerializedTransaction which ldp requires

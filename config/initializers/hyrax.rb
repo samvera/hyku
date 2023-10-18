@@ -6,7 +6,7 @@ Hyrax.config do |config|
   # Injected via `rails g hyrax:work Image`
   config.register_curation_concern :image
 
-  # Email recipient of messages sent via the contact form
+  # The email address that messages submitted via the contact page are sent to
   # This is set by account settings
   # config.contact_email = 'changeme@example.com'
 

@@ -14,6 +14,7 @@ module Hyku
       authorize! :grant_admin_role, User if params[:user][:role] == ::RolesService::ADMIN_ROLE
       self.resource = User.find_by(email: params[:user][:email]) || invite_resource
 
+      resource.add_default_group_membership!
       resource.add_role(params[:user][:role], Site.instance) if params[:user][:role].present?
 
       yield resource if block_given?

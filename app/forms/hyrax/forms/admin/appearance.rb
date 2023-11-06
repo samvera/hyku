@@ -439,7 +439,7 @@ module Hyrax
           end
 
           def default_values
-            @default_values ||= DEFAULT_FONTS.merge(DEFAULT_COLORS)
+            @default_values ||= default_fonts.merge(default_colors)
           end
 
           def block_for(name, dynamic_default = nil)

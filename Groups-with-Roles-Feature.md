@@ -1,15 +1,20 @@
 # Groups with Roles
 
 ## Table of Contents
+  * [Using the Feature](#using-the-feature)
   * [Defining Roles, Users, and Groups](#defining-roles-users-and-groups)
   * [Setup an Existing Application to use Groups with Roles](#setup-an-existing-application-to-use-groups-with-roles)
     * [Migrate existing data](#migrate-existing-data)
     * [Update Solr Configset](#update-solr-configset)
   * [Role Set Creation Guidelines](#role-set-creation-guidelines)
     * [Search Permissions Notes](#search-permissions-notes)
-  * [Using the Feature](#using-the-feature)
 
 ---
+
+## Using the feature
+
+### Further documentation
+[Managing Users, Groups and Permissions](https://docs.google.com/document/d/1dQta2JaT0rLPibl9XZNVt5VLskEWL9Ojym8EFKGdHYE/edit#heading=h.rrrlo1kmlxki)
 
 ## Defining Roles, Users, and Groups
 
@@ -136,6 +141,3 @@ In the Solr Dashboard, you can confirm the new configset is being used by select
 - Admin users don't have permission filters injected when searching ([link to code](https://github.com/samvera/hyrax/blob/v2.9.0/app/search_builders/hyrax/search_filters.rb#L15-L20))
 - `SearchBuilder` may be related to when permissions are and aren't enforced 
 - Related discussion in Slack: [inheritance question](https://samvera.slack.com/archives/C0F9JQJDQ/p1614103477032200)
-
-## Using the feature
-[Managing Users, Groups and Permissions](https://docs.google.com/document/d/1dQta2JaT0rLPibl9XZNVt5VLskEWL9Ojym8EFKGdHYE/edit#heading=h.rrrlo1kmlxki)

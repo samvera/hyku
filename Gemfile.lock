@@ -40,16 +40,15 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: 9e7837ce4bd08bf8fff9126455d0e0e2602f6018
+  revision: 5fb1531c2aa4c4797aea5a83c74797148a9fbc32
   branch: main
   specs:
     iiif_print (1.0.0)
-      blacklight_iiif_search (~> 1.0)
+      blacklight_iiif_search (>= 1.0, < 3.0)
       derivative-rodeo (~> 0.5)
-      dry-monads (~> 1.4.0)
-      hyrax (>= 2.5, < 4)
+      hyrax (>= 2.5, < 6)
       nokogiri (>= 1.13.2)
-      rails (~> 5.0)
+      rails (>= 5.0, < 8.0)
       rdf-vocab (~> 3.0)
 
 GIT
@@ -337,7 +336,7 @@ GEM
     declarative-option (0.1.0)
     deprecation (1.1.0)
       activesupport
-    derivative-rodeo (0.5.0)
+    derivative-rodeo (0.5.1)
       activesupport (>= 5)
       aws-sdk-s3
       aws-sdk-sqs

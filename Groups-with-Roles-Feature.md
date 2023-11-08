@@ -17,7 +17,7 @@
 
 #### Deposit and edit access to a single Collection (and Admin Set)
 
-> Person A emails the tenant manager and says, "I work for Institution Z, and I need to be able to deposit works for my institution and edit my colleagues' work." The tenant manager adds Person A to a group called Institution Z Managers. Members of this group can deposit works without approval into the collection called Institution Z Dissertations. In the rest of the tenant, outside the Institution Z Dissertations collection, Person A has the same permissions as any other registered user.
+> Person A emails the tenant manager and says, "I work for Institution Z, and I need to be able to deposit works for my institution and edit my colleagues' work." The tenant manager adds Person A to a group called Institution Z Managers. Members of this group can deposit works without approval into the collection called Institution Z Publications. In the rest of the tenant, outside the Institution Z Publications collection, Person A has the same permissions as any other registered user.
 
 _To configure a tenant to fulfill the above scenario, follow these steps (requires admin privileges):_ 
 
@@ -35,11 +35,11 @@ The Admin Set needs to be configured not to require an approval step for works d
 
 Navigate to Dashboard > Collections. Edit the `Institution Z Admin Set`. Under the Workflow tab, select `Default workflow` (this is Hyku's non-mediated deposit option). Click `Save changes`.
 
-2. Create the Institution Z Dissertations Collection
+2. Create the Institution Z Publications Collection
 
-> Members of this group can deposit works... into the collection called Institution Z Dissertations
+> Members of this group can deposit works... into the collection called Institution Z Publications
 
-Navigate to Dashboard > Collections. Click the `Add New Collection` button at the top right. Select `User Collection` in the "Select type of collection" pop up. Click `Create collection`. Give the Collection the title "Institution Z Dissertations". Click `Save`.
+Navigate to Dashboard > Collections. Click the `Add New Collection` button at the top right. Select `User Collection` in the "Select type of collection" pop up. Click `Create collection`. Give the Collection the title "Institution Z Publications". Click `Save`.
 
 3. Create the Group
 
@@ -55,15 +55,15 @@ Navigate to Dashboard > Manage Groups. Click `Create New Group` in the top right
 
 Navigate to Dashboard > Collections. Edit the `Institution Z Admin Set`. Under the `Participants` tab, grant the Institution Z Managers group the "Manager" role for the admin set. Verify the group appears in the `Managers` table under the `Current Participants` section. 
 
-4b. Access to Institution Z Dissertations collection 
+4b. Access to Institution Z Publications collection 
 
-> Members of this group can deposit... into the collection called Institution Z Dissertations.
+> Members of this group can deposit... into the collection called Institution Z Publications.
 
-Navigate to Dashboard > Collections. Edit the `Institution Z Dissertations` collection. Under the `Sharing` tab, grant the Institution Z Managers group the "Depositor" role for the collection. Verify the group appears in the `Depositors` table under the `Currently Shared With` section.
+Navigate to Dashboard > Collections. Edit the `Institution Z Publications` collection. Under the `Sharing` tab, grant the Institution Z Managers group the "Depositor" role for the collection. Verify the group appears in the `Depositors` table under the `Currently Shared With` section.
 
 4c. Do NOT give the Institution Z Managers group any Roles
 
-> In the rest of the tenant, outside the Institution Z Dissertations collection, Person A has the same permissions as any other registered user.
+> In the rest of the tenant, outside the Institution Z Publications collection, Person A has the same permissions as any other registered user.
 
 Roles granted to a group (i.e. under the `Roles` tab when editing a group) grant permissions across the entire tenant. For example, if a group is given the the `Work Editor` role, all members in that group would be able to edit any work and deposit works into any Admin Set.
 

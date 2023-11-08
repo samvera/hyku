@@ -2,6 +2,10 @@
 
 ## Table of Contents
   * [Using the Feature](#using-the-feature)
+    * [Example use cases](#example-use-cases)
+      * [Deposit and edit access to a single Collection (and Admin Set)](#deposit-and-edit-access-to-a-single-collection-and-admin-set)
+    * [Ability Matrix](#ability-matrix)
+    * [Further documentation](#further-documentation)
   * [Defining Roles, Users, and Groups](#defining-roles-users-and-groups)
   * [Setup an Existing Application to use Groups with Roles](#setup-an-existing-application-to-use-groups-with-roles)
     * [Migrate existing data](#migrate-existing-data)
@@ -71,14 +75,14 @@ Roles granted to a group (i.e. under the `Roles` tab when editing a group) grant
 
 Navigate to Dashboard > Manage Groups. Edit the "Institution Z Managers" group. Under the `Users` tab, search for Person A using their email address (or username) and add them to the group by clicking on the search result. 
 
-##### Person A Ability Matrix
+### Ability Matrix
 
-| Ability | Action | Source of Permission | Where to configure |
-| --- | --- | --- | --- |
-| Can | Deposit works into `Institution Z Admin Set` | Granted `Institution Z Managers` group `Manager` Workflow Role | Admin Set form "Participants" tab |
-| Can | Edit all works in `Institution Z Admin Set` | Granted `Institution Z Managers` group `Manager` Workflow Role | Admin Set form "Participants" tab |
-| Can | Deposit without approval | `Institution Z Admin Set`'s configured Workflow | Admin Set form "Workflow" tab |
-| Can | Deposit works into `Institution Z Publications` Collection | Granted `Institution Z Managers` group `Depositor` Collection role | Collection form "Sharing" tab |
+| Action | Source of permission | Where to configure |
+| --- | --- | --- |
+| Deposit works into a specific Admin Set | Grant group/user `Manager` Workflow Role | Admin Set form's "Participants" tab |
+| Edit all works in a specific Admin Set | Grant group/user `Manager` Workflow Role | Admin Set form's "Participants" tab |
+| Deposit without approval | Admin Set's configured Workflow | Admin Set form's "Workflow" tab |
+| Deposit works into specific Collection | Grant group/user `Depositor` Collection role | Collection form's "Sharing" tab |
 
 ### Further documentation
 [Managing Users, Groups and Permissions](https://docs.google.com/document/d/1dQta2JaT0rLPibl9XZNVt5VLskEWL9Ojym8EFKGdHYE/edit#heading=h.rrrlo1kmlxki)

@@ -4,9 +4,11 @@
 #  `rails generate hyrax:work Image`
 class Image < ActiveFedora::Base
   include ::Hyrax::WorkBehavior
-  include IiifPrint.model_configuration(
-    pdf_split_child_model: self
-  )
+  if ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_IIIF_PRINT', false))
+    include IiifPrint.model_configuration(
+      pdf_split_child_model: self
+    )
+  end
 
   property :extent, predicate: ::RDF::Vocab::DC.extent, multiple: true do |index|
     index.as :stored_searchable

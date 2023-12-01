@@ -90,6 +90,7 @@ ONBUILD RUN git config --global --add safe.directory /app/samvera && \
   bundle install --jobs "$(nproc)"
 
 ONBUILD COPY --chown=1001:101 $APP_PATH /app/samvera/hyrax-webapp
+RUN ln -sf /app/samvera/branding /app/samvera/hyrax-webapp/public/branding
 
 FROM hyku-base as hyku-web
 RUN RAILS_ENV=production SECRET_KEY_BASE=`bin/rake secret` DB_ADAPTER=nulldb DB_URL='postgresql://fake' bundle exec rake assets:precompile && yarn install

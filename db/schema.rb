@@ -13,7 +13,10 @@
 ActiveRecord::Schema.define(version: 2023_08_04_073106) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "hstore"
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
 
   create_table "account_cross_searches", force: :cascade do |t|
     t.bigint "search_account_id"

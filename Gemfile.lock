@@ -653,7 +653,7 @@ GEM
     jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
     json (2.6.3)
-    json-canonicalization (0.3.2)
+    json-canonicalization (0.3.1)
     json-jwt (1.15.3)
       activesupport (>= 4.2)
       aes_key_wrap
@@ -1330,6 +1330,7 @@ DEPENDENCIES
   iiif_print!
   jbuilder (~> 2.5)
   jquery-rails
+  json-canonicalization (= 0.3.1)
   launchy
   listen (>= 3.0.5, < 3.2)
   lograge

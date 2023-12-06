@@ -43,6 +43,8 @@ gem 'i18n-tasks', group: %i[development test]
 gem 'iiif_print', github: 'scientist-softserv/iiif_print', branch: 'main'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails' # Use jquery as the JavaScript library
+# The maintainers yanked 0.3.2 version (see https://github.com/dryruby/json-canonicalization/issues/2)
+gem 'json-canonicalization', "0.3.1"
 gem 'launchy', group: %i[test]
 gem 'listen', '>= 3.0.5', '< 3.2', group: %i[development]
 gem 'lograge'

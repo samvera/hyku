@@ -35,6 +35,7 @@ gem 'factory_bot_rails', group: %i[test]
 gem 'fcrepo_wrapper', '~> 0.4', group: %i[development test]
 gem 'flipflop', '~> 2.6.0' # waiting for hyrax 4 upgrade
 gem 'flutie'
+gem 'good_job'
 gem 'hyrax', '~> 3.5.0'
 gem 'hyrax-doi', github: 'samvera-labs/hyrax-doi', branch: 'main'
 gem 'hyrax-iiif_av', github: 'samvera-labs/hyrax-iiif_av', branch: 'main'

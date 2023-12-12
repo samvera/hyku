@@ -87,7 +87,7 @@ class RolesService # rubocop:disable Metrics/ClassLength
       default_hyrax_groups_with_roles.each do |group_name, group_attrs|
         group_roles = group_attrs.delete(:roles)
         group = Hyrax::Group.find_or_create_by!(name: group_name)
-        group.update_attributes(group_attrs)
+        group.update(group_attrs)
 
         group_roles.each do |role_name|
           next if role_name.blank?

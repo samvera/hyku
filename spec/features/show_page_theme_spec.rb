@@ -13,7 +13,7 @@ RSpec.describe 'Admin can select show page theme', type: :feature, js: true, cle
            user: user)
   end
 
-  let(:admin_set_id) { AdminSet.find_or_create_default_admin_set_id }
+  let(:admin_set_id) { Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id }
   let(:permission_template) { Hyrax::PermissionTemplate.find_or_create_by!(source_id: admin_set_id) }
   let(:workflow) do
     Sipity::Workflow.create!(

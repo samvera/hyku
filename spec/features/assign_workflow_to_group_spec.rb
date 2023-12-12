@@ -25,7 +25,7 @@ RSpec.describe 'Assign workflow to group', type: :feature, js: true, clean: true
     let!(:group) { FactoryBot.create(:group, name: 'flinstones', humanized_name: 'Flinstones') }
     let!(:group_3) { FactoryBot.create(:group, name: 'town_of_bedrock', humanized_name: 'Town of Bedrock') }
 
-    let!(:admin_set_id) { AdminSet.find_or_create_default_admin_set_id }
+    let!(:admin_set_id) { Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id }
     let!(:permission_template) { Hyrax::PermissionTemplate.find_or_create_by!(source_id: admin_set_id) }
 
     it 'admin assigns an approving workflow role to a user' do

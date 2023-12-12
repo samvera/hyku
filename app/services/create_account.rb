@@ -46,7 +46,7 @@ class CreateAccount
     Hyrax::CollectionType.find_or_create_admin_set_type
     return if account.search_only?
 
-    AdminSet.find_or_create_default_admin_set_id
+    Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id
   end
 
   # Workaround for upstream issue https://github.com/samvera/hyrax/issues/3136

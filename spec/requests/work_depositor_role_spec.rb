@@ -15,7 +15,7 @@ RSpec.describe 'Work Depositor role', type: :request, singletenant: true, clean:
   end
 
   describe 'read permissions' do
-    let!(:admin_set_id) { AdminSet.find_or_create_default_admin_set_id }
+    let!(:admin_set_id) { Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id }
 
     before do
       solr = Blacklight.default_index.connection

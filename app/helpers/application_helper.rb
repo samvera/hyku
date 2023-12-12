@@ -24,7 +24,7 @@ module ApplicationHelper
     locale
   end
 
-  def missing_translation(value)
+  def missing_translation(value, options = {})
     value.include?('translation missing')
   end
 end

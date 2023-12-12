@@ -99,6 +99,17 @@ GIT
       view_component (~> 2.74.1)
 
 GIT
+  remote: https://github.com/scientist-softserv/apartment.git
+  revision: 9ad4b0ef2ee6debb956e86ef9e7095c8358fef5e
+  branch: development
+  specs:
+    apartment (2.2.1)
+      activerecord (>= 3.1.2, < 7.0)
+      parallel (>= 0.7.1)
+      public_suffix (>= 2)
+      rack (>= 1.3.6)
+
+GIT
   remote: https://github.com/scientist-softserv/iiif_print.git
   revision: e476998ab453afabf1bcb8afa059b4416af9b705
   branch: main
@@ -119,15 +130,6 @@ GIT
       addressable (~> 2.3)
       nokogiri (~> 1.5)
       omniauth (>= 1.2, < 3)
-
-PATH
-  remote: gems/gems/apartment
-  specs:
-    apartment (2.2.1)
-      activerecord (>= 3.1.2, < 7.0)
-      parallel (>= 0.7.1)
-      public_suffix (>= 2)
-      rack (>= 1.3.6)
 
 GEM
   remote: https://rubygems.org/

@@ -96,5 +96,5 @@ workflows:
     jobs:
       - bundle:
           ruby_version: "3.2.2"
-          name: "ruby2-7-8"
+          name: "ruby3-2-2"
           solr_config_path: 'solr/conf'

@@ -10,8 +10,7 @@ gem 'active-fedora', '~> 14.0'
 gem 'active_elastic_job', github: 'active-elastic-job/active-elastic-job', ref: 'ec51c5d9dedc4a1b47f2db41f26d5fceb251e979', group: %i[aws]
 gem 'activerecord-nulldb-adapter'
 gem 'addressable', '2.8.1' # remove once https://github.com/postrank-labs/postrank-uri/issues/49 is fixed
-# gem 'apartment', github: 'scientist-softserv/apartment', branch: 'development'
-gem 'apartment', path: 'gems/gems/apartment'
+gem 'apartment', github: 'scientist-softserv/apartment', branch: 'development'
 gem 'aws-sdk-sqs', group: %i[aws]
 gem 'blacklight', '~> 7.29'
 gem 'blacklight_oai_provider', '~> 7.0'

@@ -1,5 +1,5 @@
-name: "Build"
-run-name: Build of ${{ github.ref_name }} by @${{ github.actor }}
+name: "Build Lint Test"
+run-name: Build Test Lint of ${{ github.ref_name }} by @${{ github.actor }}
 on:
   push:
     branches:
@@ -20,7 +20,19 @@ jobs:
     uses: scientist-softserv/actions/.github/workflows/build.yaml@v0.0.15
     secrets: inherit
     with:
-      platforms: "linux/amd64" # "linux/amd64,linux/arm64"
+      platforms: "linux/amd64"
       webTarget: hyku-web
-      solrTarget: hyku-solr
+      workerTarget: hyku-worker
+  test:
+    needs: build
+    uses: scientist-softserv/actions/.github/workflows/test.yaml@v0.0.14
+    with:
+      confdir: "/app/samvera/hyrax-webapp/solr/config"
+      webTarget: hyku-web
+      workerTarget: hyku-worker
+  lint:
+    needs: build
+    uses: scientist-softserv/actions/.github/workflows/lint.yaml@v0.0.14
+    with:
+      webTarget: hyku-web
       workerTarget: hyku-worker

@@ -62,8 +62,7 @@ Capybara.default_driver = :rack_test
 ENV['WEB_HOST'] ||= `hostname -s`.strip
 
 if ENV['CHROME_HOSTNAME'].present?
-  options = Selenium::WebDriver::Options.chrome(args: ["headless",
-                                                       "disable-gpu",
+  options = Selenium::WebDriver::Options.chrome(args: ["disable-gpu",
                                                        "no-sandbox",
                                                        "whitelisted-ips",
                                                        "window-size=1400,1400"])

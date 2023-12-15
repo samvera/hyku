@@ -48,12 +48,9 @@ class CatalogController < ApplicationController
       suggester_name: 'iiifSuggester'
     }
 
-    config.view.gallery.partials = %i[index_header index]
-    config.view.masonry.partials = [:index]
-    config.view.slideshow.partials = [:index]
-
     config.show.tile_source_field = :content_metadata_image_iiif_info_ssm
     config.show.partials.insert(1, :openseadragon)
+
     # default advanced config values
     config.advanced_search ||= Blacklight::OpenStructWithHashAccess.new
     # config.advanced_search[:qt] ||= 'advanced'
@@ -69,6 +66,7 @@ class CatalogController < ApplicationController
 
     # Show gallery view
     config.view.gallery.partials = %i[index_header index]
+    config.view.masonry.partials = [:index]
     config.view.slideshow.partials = [:index]
 
     # Because too many times on Samvera tech people raise a problem regarding a failed query to SOLR.
@@ -97,6 +95,18 @@ class CatalogController < ApplicationController
     config.index.display_type_field = 'has_model_ssim'
     config.index.thumbnail_field = 'thumbnail_path_ss'
 
+    # Blacklight 7 additions
+    config.add_results_document_tool(:bookmark, partial: 'bookmark_control', if: :render_bookmarks_control?)
+    config.add_results_collection_tool(:sort_widget)
+    config.add_results_collection_tool(:per_page_widget)
+    config.add_results_collection_tool(:view_type_group)
+    config.add_show_tools_partial(:bookmark, partial: 'bookmark_control', if: :render_bookmarks_control?)
+    config.add_show_tools_partial(:email, callback: :email_action, validator: :validate_email_params)
+    config.add_show_tools_partial(:sms, if: :render_sms_action?, callback: :sms_action, validator: :validate_sms_params)
+    config.add_show_tools_partial(:citation)
+    config.add_nav_action(:bookmark, partial: 'blacklight/nav/bookmark', if: :render_bookmarks_control?)
+    config.add_nav_action(:search_history, partial: 'blacklight/nav/search_history')
+
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
     config.add_facet_field 'human_readable_type_sim', label: "Type", limit: 5
@@ -114,30 +124,11 @@ class CatalogController < ApplicationController
     # TODO: deal with part of facet changes
     # config.add_facet_field solr_name("part", :facetable), limit: 5, label: 'Part'
     # config.add_facet_field solr_name("part_of", :facetable), limit: 5
-    # removed # config.add_facet_field solr_name("file_format", :facetable), limit: 5
-    # removed # config.add_facet_field solr_name("contributor", :facetable), label: "Contributor", limit: 5
-    # remvode config.add_facet_field solr_name("refereed", :facetable), limit: 5
 
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
     # handler defaults, or have no facets.
     config.add_facet_fields_to_solr_request!
-
-    # TODO: ROB
-    #     # Prior to this change, the applications specific translations were not loaded. Dogbiscuits were assuming the translations were already loaded.
-    #     Rails.root.glob("config/locales/*.yml").each do |path|
-    #       I18n.load_path << path.to_s
-    #     end
-    #     I18n.backend.reload!
-    #     index_props = DogBiscuits.config.index_properties.collect do |prop|
-    #       { prop => index_options(prop, DogBiscuits.config.property_mappings[prop]) }
-    #     end
-    #     add_index_field config, index_props
-
-    # solr fields to be displayed in the show (single result) view
-    #   The ordering of the field names is the order of the display
-    # show_props = DogBiscuits.config.all_properties
-    # add_show_field config, show_props
 
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display
@@ -203,8 +194,7 @@ class CatalogController < ApplicationController
     # since we aren't specifying it otherwise.
     config.add_search_field('all_fields', label: 'All Fields', include_in_advanced_search: false) do |field|
       all_names = config.show_fields.values.map(&:field).join(" ")
-      # TODO: ROB all_names = (config.show_fields.values.map { |v| v.field.to_s } +
-      #         DogBiscuits.config.all_properties.map { |p| "#{p}_tesim" }).uniq.join(" ")
+
       title_name = 'title_tesim'
       field.solr_parameters = {
         qf: "#{all_names} file_format_tesim all_text_timv",
@@ -446,7 +436,7 @@ class CatalogController < ApplicationController
 
   # This is overridden just to give us a JSON response for debugging.
   def show
-    _, @document = fetch params[:id]
+    _, @document = search_service.fetch(params[:id])
     render json: @document.to_h
   end
 end

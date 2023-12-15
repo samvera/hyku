@@ -16,7 +16,7 @@ jobs:
         default: 2.4.8
       rails_version:
         type: string
-        default: '5.1.6'
+        default: '6.1.7.6'
       solr_config_path:
         type: string
       fcrepo_version:

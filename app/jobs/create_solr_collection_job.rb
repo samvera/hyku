@@ -22,10 +22,10 @@ class CreateSolrCollectionJob < ApplicationJob
     return if collection_exists?(name)
     if tenant_list.present?
       client.get '/solr/admin/collections', params: collection_options.merge(action: 'CREATEALIAS',
-                                                                             name: name, collections: tenant_list)
+                                                                             name:, collections: tenant_list)
     else
       client.get '/solr/admin/collections', params: collection_options.merge(action: 'CREATE',
-                                                                             name: name)
+                                                                             name:)
     end
   end
 
@@ -106,7 +106,7 @@ class CreateSolrCollectionJob < ApplicationJob
   def perform_for_normal_tenant(account, name)
     unless collection_exists? name
       client.get '/solr/admin/collections', params: collection_options.merge(action: 'CREATE',
-                                                                             name: name)
+                                                                             name:)
     end
     add_solr_endpoint_to_account(account, name)
   end
@@ -128,6 +128,6 @@ class CreateSolrCollectionJob < ApplicationJob
   def create_shared_search_collection(tenant_list, name)
     return true if collection_exists?(name)
     client.get '/solr/admin/collections', params: collection_options.merge(action: 'CREATEALIAS',
-                                                                           name: name, collections: tenant_list)
+                                                                           name:, collections: tenant_list)
   end
 end

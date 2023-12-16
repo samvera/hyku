@@ -5,7 +5,8 @@ inherit_gem:
   bixby: bixby_default.yml
 
 AllCops:
-  TargetRubyVersion: 2.6
+  NewCops: disable
+  TargetRubyVersion: 3.2.2
   DisplayCopNames: true
   Exclude:
     - 'db/**/*'
@@ -13,6 +14,8 @@ AllCops:
     - 'spec/test_app_templates/**/*'
     - 'vendor/**/*'
     - 'lib/hyrax/specs/**/*'
+    - 'bin/graph'
+    - 'bin/import_from_purl'
 
 Lint/ImplicitStringConcatenation:
   Exclude:
@@ -23,7 +26,7 @@ Rails/Output:
     - 'lib/generators/**/*'
 
 Metrics/BlockLength:
-  ExcludedMethods: ['included']
+  IgnoredMethods: ['included']
   Exclude:
     - 'hyrax.gemspec'
     - 'app/models/concerns/hyrax/content_block_behavior.rb'
@@ -65,8 +68,15 @@ Style/SingleLineBlockParams:
 Rails/ApplicationJob:
   Enabled: false
 
+Rails/ApplicationMailer:
+  Enabled: false
+
 Rails/ApplicationRecord:
   Enabled: false
+
+Rails/HasManyOrHasOneDependent:
+  Exclude:
+    - 'app/models/endpoint.rb'
 
 Rails/RakeEnvironment:
   Enabled: false
@@ -93,6 +103,12 @@ Rails/OutputSafety:
     - 'app/presenters/hyrax/presents_attributes.rb'
     - 'app/renderers/hyrax/renderers/attribute_renderer.rb'
     - 'spec/views/hyrax/my/works/_list_works.html.erb_spec.rb'
+
+Rails/UniqueValidationWithoutIndex:
+  Exclude:
+    - 'app/models/account.rb'
+    - 'app/models/domain_name.rb'
+    - 'app/models/hyrax/group.rb'
 
 RSpec/DescribeClass:
   Exclude:

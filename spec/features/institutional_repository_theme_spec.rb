@@ -11,7 +11,7 @@ RSpec.describe 'Admin can select institutional repository theme', type: :feature
            title: ['Llamas and Alpacas'],
            keyword: ['llama', 'alpaca'],
            resource_type: ['Software or Program Code'],
-           user: user)
+           user:)
   end
 
   context 'as a repository admin' do

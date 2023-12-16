@@ -79,7 +79,7 @@ module Hyrax
         filename = File.split(banner_info.first.local_path).last unless banner_info.empty?
         alttext = banner_info.first.alt_text unless banner_info.empty?
         relative_path = "/" + banner_info.first.local_path.split("/")[-4..-1].join("/") unless banner_info.empty?
-        { filename: filename, relative_path: relative_path, alt_text: alttext }
+        { filename:, relative_path:, alt_text: alttext }
       end
     end
 

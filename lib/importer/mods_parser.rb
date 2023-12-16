@@ -52,7 +52,7 @@ module Importer
     end
 
     def record_attributes
-      common_attributes.merge(collection: collection, series_name: series_name)
+      common_attributes.merge(collection:, series_name:)
                        .merge(files)
     end
 
@@ -85,16 +85,16 @@ module Importer
         title: untyped_title,
         alternative: alt_title,
         description: mods_description,
-        subject: subject,
+        subject:,
         extent: mods.physical_description.extent.map { |node| strip_whitespace(node.text) },
-        language: language,
+        language:,
         digital_origin: mods.physical_description.digitalOrigin.map(&:text),
         publisher: mods.origin_info.publisher.map(&:text),
         form_of_work: mods.genre.valueURI.map { |uri| RDF::URI.new(uri) },
-        resource_type: resource_type,
-        citation: citation,
+        resource_type:,
+        citation:,
         notes_attributes: notes,
-        record_origin: record_origin,
+        record_origin:,
         description_standard: mods.record_info.descriptionStandard.map(&:text)
       }
     end
@@ -123,7 +123,7 @@ module Importer
     def locations
       {
         location: mods.subject.geographic.valueURI.map { |uri| RDF::URI.new(uri) },
-        sub_location: sub_location,
+        sub_location:,
         institution: institutional_location,
         place_of_publication: mods.origin_info.place.placeTerm.map(&:text)
       }.merge(coordinates)

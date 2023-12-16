@@ -2,7 +2,7 @@
 
 RSpec.describe ImportWorkFromPurlJob do
   let(:user) { create(:user) }
-  let(:log) { Hyrax::Operation.create!(user: user, operation_type: "Import Purl Metadata") }
+  let(:log) { Hyrax::Operation.create!(user:, operation_type: "Import Purl Metadata") }
   let(:druid) { 'bc390xk2647' }
   before do
     stub_request(:get, "https://purl.stanford.edu/bc390xk2647.xml")

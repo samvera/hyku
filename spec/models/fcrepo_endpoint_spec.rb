@@ -4,7 +4,7 @@ RSpec.describe FcrepoEndpoint do
   let(:base_path) { 'foobar' }
 
   describe '.options' do
-    subject { described_class.new base_path: base_path }
+    subject { described_class.new base_path: }
 
     it 'uses the configured application settings' do
       expect(subject.options[:base_path]).to eq base_path

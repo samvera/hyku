@@ -32,7 +32,7 @@ module Stanford
 
       def identifier
         id = File.basename(filename, '.mods').sub(/\Adruid_/, '')
-        { identifier: Array.wrap(id), id: id }
+        { identifier: Array.wrap(id), id: }
       end
 
       def open_access

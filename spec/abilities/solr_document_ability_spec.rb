@@ -19,7 +19,7 @@ RSpec.describe Hyrax::Ability::SolrDocumentAbility do
       create(
         :collection_lw,
         with_permission_template: true,
-        collection_type_gid: collection_type_gid
+        collection_type_gid:
       )
     end
     let!(:solr_document) { SolrDocument.new(collection.to_solr) }

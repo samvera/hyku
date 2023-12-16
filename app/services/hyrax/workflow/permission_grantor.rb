@@ -12,7 +12,7 @@ module Hyrax
     # @see RolesService
     class PermissionGrantor
       def self.grant_default_workflow_roles!(permission_template:, creating_user: nil)
-        new(permission_template: permission_template, creating_user: creating_user).call
+        new(permission_template:, creating_user:).call
       end
 
       attr_accessor :permission_template, :creating_user
@@ -54,7 +54,7 @@ module Hyrax
           end
         end
 
-        grant_workflow_roles!(workflow_agents: workflow_agents, role_filters: nil)
+        grant_workflow_roles!(workflow_agents:, role_filters: nil)
       end
 
       def grant_workflow_roles_to_editors!
@@ -65,7 +65,7 @@ module Hyrax
           end
         end
 
-        grant_workflow_roles!(workflow_agents: workflow_agents, role_filters: editor_sipity_roles)
+        grant_workflow_roles!(workflow_agents:, role_filters: editor_sipity_roles)
       end
 
       def grant_workflow_roles_to_depositors!
@@ -76,7 +76,7 @@ module Hyrax
           end
         end
 
-        grant_workflow_roles!(workflow_agents: workflow_agents, role_filters: depositor_sipity_role)
+        grant_workflow_roles!(workflow_agents:, role_filters: depositor_sipity_role)
       end
 
       def grant_workflow_roles!(workflow_agents:, role_filters:)
@@ -89,7 +89,7 @@ module Hyrax
         permission_template.available_workflows.each do |workflow|
           role_set.each do |role|
             Hyrax::Workflow::PermissionGenerator.call(roles: role,
-                                                      workflow: workflow,
+                                                      workflow:,
                                                       agents: workflow_agents)
           end
         end

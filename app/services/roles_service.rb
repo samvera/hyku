@@ -71,7 +71,7 @@ class RolesService # rubocop:disable Metrics/ClassLength
       return '`AccountElevator.switch!` into an Account before creating default Roles' if Site.instance.is_a?(NilSite)
 
       DEFAULT_ROLES.each do |role_name|
-        find_or_create_site_role!(role_name: role_name)
+        find_or_create_site_role!(role_name:)
       end
     end
 
@@ -90,7 +90,7 @@ class RolesService # rubocop:disable Metrics/ClassLength
         group_roles.each do |role_name|
           next if role_name.blank?
 
-          group.roles |= [find_or_create_site_role!(role_name: role_name)]
+          group.roles |= [find_or_create_site_role!(role_name:)]
         end
       end
     end
@@ -241,7 +241,7 @@ class RolesService # rubocop:disable Metrics/ClassLength
       stale_guest_users = User.unscoped.where(
         'guest = ? and updated_at < ?',
         true,
-        Time.current - 7.days
+        7.days.ago
       )
       progress = ProgressBar.create(total: stale_guest_users.count)
 
@@ -253,8 +253,9 @@ class RolesService # rubocop:disable Metrics/ClassLength
 
     # rubocop:disable Metrics/MethodLength
     def seed_superadmin!
+      # rubocop:disable Rails/UnknownEnv
       return 'Seed data should not be used in the production environment' if Rails.env.production? || Rails.env.staging?
-
+      # rubocop:enable Rails/UnknownEnv
       user = User.where(email: 'admin@example.com').first_or_initialize do |u|
         if u.new_record?
           u.password = 'testing123'
@@ -279,8 +280,9 @@ class RolesService # rubocop:disable Metrics/ClassLength
 
     # rubocop:disable Metrics/MethodLength
     def seed_qa_users!
+      # rubocop:disable Rails/UnknownEnv
       return 'Seed data should not be used in the production environment' if Rails.env.production? || Rails.env.staging?
-
+      # rubocop:disable Rails/UnknownEnv
       ActiveRecord::Base.transaction do
         DEFAULT_ROLES.each do |role_name|
           user = User.where(email: "#{role_name}@example.com").first_or_initialize do |u|
@@ -297,7 +299,7 @@ class RolesService # rubocop:disable Metrics/ClassLength
 
             unless user.has_role?(role_name, Site.instance)
               user.add_default_group_membership!
-              user.roles << find_or_create_site_role!(role_name: role_name)
+              user.roles << find_or_create_site_role!(role_name:)
             end
           end
 

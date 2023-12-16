@@ -7,7 +7,7 @@ RSpec.describe Importer::Factory::StringLiteralProcessor do
 
   let(:input) do
     { title: ["Stanford residences"],
-      contributor: [{ name: name, type: "corporate" }] }
+      contributor: [{ name:, type: "corporate" }] }
   end
 
   context "with a single name" do

@@ -147,12 +147,12 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
     before do
       create(:permission_template_access,
              :manage,
-             permission_template: permission_template,
+             permission_template:,
              agent_type: 'user',
              agent_id: user.user_key)
       create(:permission_template_access,
              :manage,
-             permission_template: permission_template,
+             permission_template:,
              agent_type: 'group',
              agent_id: 'archivists')
       create(:group, name: 'archivists')
@@ -165,22 +165,22 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
                                           access: "manage").permit!]
       end
       let(:workflow) do
-        create(:workflow, permission_template: permission_template)
+        create(:workflow, permission_template:)
       end
 
       before do
         role = Sipity::Role.create(name: 'approving')
-        workflow.workflow_roles.create(role: role)
+        workflow.workflow_roles.create(role:)
         # We are testing that this workflow role is removed
         Hyrax::Workflow::PermissionGenerator.call(roles: role,
-                                                  workflow: workflow,
+                                                  workflow:,
                                                   agents: user3)
         permission_template.update!(active_workflow: workflow)
       end
 
       def count_workflow_roles_for(user)
         Hyrax::Workflow::PermissionQuery
-          .scope_processing_workflow_roles_for_user_and_workflow(user: user, workflow: workflow)
+          .scope_processing_workflow_roles_for_user_and_workflow(user:, workflow:)
           .size
       end
 
@@ -346,7 +346,7 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
 
     context "for a workflow change" do
       let(:permission_template) { create(:permission_template, source_id: admin_set.id, with_active_workflow: true) }
-      let(:new_workflow) { create(:workflow, permission_template: permission_template, active: false) }
+      let(:new_workflow) { create(:workflow, permission_template:, active: false) }
       let(:input_params) do
         ActionController::Parameters.new(
           workflow_id: new_workflow.id
@@ -367,7 +367,7 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
     end
 
     let(:attributes) { { workflow_id: workflow.id } }
-    let(:workflow) { create(:workflow, permission_template: permission_template, active: true) }
+    let(:workflow) { create(:workflow, permission_template:, active: true) }
     let(:user) { create(:user) }
     let(:role1) { Sipity::Role.create!(name: 'hello') }
     let(:role2) { Sipity::Role.create!(name: 'goodbye') }
@@ -417,11 +417,11 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
       let(:error_code) { nil }
       let(:attributes) do
         {
-          visibility: visibility,
-          release_date: release_date,
-          release_period: release_period,
-          release_varies: release_varies,
-          release_embargo: release_embargo
+          visibility:,
+          release_date:,
+          release_period:,
+          release_varies:,
+          release_embargo:
         }
       end
       let(:ac_params) do
@@ -438,7 +438,7 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
         let(:response) { form.update(ac_params) }
 
         it 'trigger error from #update' do
-          expect(response).to eq(content_tab: "visibility", updated: false, error_code: error_code)
+          expect(response).to eq(content_tab: "visibility", updated: false, error_code:)
           expect(
             I18n.t(
               response[:error_code],

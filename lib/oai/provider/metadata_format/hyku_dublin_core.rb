@@ -4,7 +4,9 @@ module OAI
   module Provider
     module MetadataFormat
       class HykuDublinCore < OAI::Provider::Metadata::Format
+        # rubocop:disable Lint/MissingSuper
         def initialize
+          # rubocop:enable Lint/MissingSuper
           @prefix = 'oai_hyku'
           @schema = 'http://dublincore.org/schemas/xmls/qdc/dcterms.xsd'
           @namespace = 'http://purl.org/dc/terms/'

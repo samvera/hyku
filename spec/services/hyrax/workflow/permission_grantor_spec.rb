@@ -5,8 +5,8 @@ require 'rails_helper'
 RSpec.describe Hyrax::Workflow::PermissionGrantor do
   subject(:permission_grantor) do
     described_class.new(
-      permission_template: permission_template,
-      creating_user: creating_user
+      permission_template:,
+      creating_user:
     )
   end
 
@@ -34,7 +34,7 @@ RSpec.describe Hyrax::Workflow::PermissionGrantor do
     it 'initializes an instance and calls #call on it' do
       expect_any_instance_of(described_class).to receive(:call)
 
-      described_class.grant_default_workflow_roles!(permission_template: permission_template)
+      described_class.grant_default_workflow_roles!(permission_template:)
     end
   end
 

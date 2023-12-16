@@ -17,7 +17,9 @@ Rails.application.load_tasks
 
 begin
   require 'solr_wrapper/rake_task'
+# rubocop:disable Lint/SuppressedException
 rescue LoadError
+  # rubocop:enable Lint/SuppressedException
 end
 
 task :ci do

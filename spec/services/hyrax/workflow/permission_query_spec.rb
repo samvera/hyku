@@ -46,8 +46,8 @@ module Hyrax
         end
         expect(
           described_class.scope_permitted_workflow_actions_available_for_current_state(
-            user: user,
-            entity: entity
+            user:,
+            entity:
           )
         ).to eq(actions)
       end
@@ -56,26 +56,26 @@ module Hyrax
         agents = Array.wrap(agents).map { |agent| PowerConverter.convert_to_sipity_agent(agent) }
         expect(
           described_class.scope_agents_associated_with_entity_and_role(
-            role: role,
-            entity: entity
+            role:,
+            entity:
           )
         ).to contain_exactly(*agents)
       end
 
       def expect_roles_for(entity:, roles:)
         roles = Array.wrap(roles).map { |role| PowerConverter.convert_to_sipity_role(role) }
-        expect(described_class.scope_roles_associated_with_the_given_entity(entity: entity)).to eq(roles)
+        expect(described_class.scope_roles_associated_with_the_given_entity(entity:)).to eq(roles)
       end
 
       def expect_users_for(entity:, roles:, users:)
-        expect(described_class.scope_users_for_entity_and_roles(entity: entity, roles: roles)).to eq(Array.wrap(users))
+        expect(described_class.scope_users_for_entity_and_roles(entity:, roles:)).to eq(Array.wrap(users))
       end
 
       def expect_to_be_authorized(user:, entity:, action:, message: 'should be authorized')
         expect(
           described_class.authorized_for_processing?(
-            user: user,
-            entity: entity, action: action
+            user:,
+            entity:, action:
           )
         ).to be_truthy, message
       end
@@ -83,9 +83,9 @@ module Hyrax
       def expect_to_not_be_authorized(user:, entity:, action:, message: 'should not be authorized')
         expect(
           described_class.authorized_for_processing?(
-            user: user,
-            entity: entity,
-            action: action
+            user:,
+            entity:,
+            action:
           )
         ).to be_falsey, message
       end
@@ -241,7 +241,7 @@ module Hyrax
         end
 
         context 'when user is persisted' do
-          subject { described_class.scope_processing_agents_for(user: user) }
+          subject { described_class.scope_processing_agents_for(user:) }
 
           let(:user) { create(:user) }
           let!(:group) { create(:group, member_users: [user]) }

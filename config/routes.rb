@@ -62,10 +62,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
         as: "user_#{provider}_omniauth_authorize",
         via: OmniAuth.config.allowed_request_methods
 
-      match "#{path_prefix}/#{provider}/:id/metadata",
-        to: "users/omniauth_callbacks#passthru",
-        as: "user_#{provider}_omniauth_metadata",
-        via: [:get]
+      get "#{path_prefix}/#{provider}/:id/metadata", to: "users/omniauth_callbacks#passthru", as: "user_#{provider}_omniauth_metadata"
 
       match "#{path_prefix}/#{provider}/:id/callback",
         to: "users/omniauth_callbacks##{provider}",

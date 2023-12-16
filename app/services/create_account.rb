@@ -57,7 +57,7 @@ class CreateAccount
       oldtitle = c.title
       c.title = I18n.t(c.title.gsub("translation missing: en.", ''))
       c.save
-      Rails.logger.debug "#{oldtitle} changed to #{c.title}"
+      Rails.logger.debug { "#{oldtitle} changed to #{c.title}" }
     end
   end
 
@@ -88,6 +88,6 @@ class CreateAccount
   private
 
   def initialize_account_data
-    Site.update(account: account)
+    Site.update(account:)
   end
 end

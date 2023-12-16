@@ -13,8 +13,8 @@ RSpec.describe Hyku::Admin::Group::NavigationPresenter do
     subject { presenter.tabs }
 
     let(:action) { 'edit' }
-    let(:params) { base_params.merge(action: action) }
-    let(:presenter) { described_class.new(params: params) }
+    let(:params) { base_params.merge(action:) }
+    let(:presenter) { described_class.new(params:) }
 
     it 'has 4 tabs' do
       expect(subject.count).to be(4)
@@ -29,8 +29,8 @@ RSpec.describe Hyku::Admin::Group::NavigationPresenter do
     subject { presenter.tabs }
 
     let(:action) { 'index' }
-    let(:params) { base_params.merge(controller: 'admin/group_users', action: action) }
-    let(:presenter) { described_class.new(params: params) }
+    let(:params) { base_params.merge(controller: 'admin/group_users', action:) }
+    let(:presenter) { described_class.new(params:) }
 
     it 'has 4 tabs' do
       expect(subject.count).to be(4)
@@ -45,8 +45,8 @@ RSpec.describe Hyku::Admin::Group::NavigationPresenter do
     subject { presenter.tabs }
 
     let(:action) { 'index' }
-    let(:params) { base_params.merge(controller: 'admin/group_roles', action: action) }
-    let(:presenter) { described_class.new(params: params) }
+    let(:params) { base_params.merge(controller: 'admin/group_roles', action:) }
+    let(:presenter) { described_class.new(params:) }
 
     it 'has 4 tabs' do
       expect(subject.count).to be(4)
@@ -61,8 +61,8 @@ RSpec.describe Hyku::Admin::Group::NavigationPresenter do
     subject { presenter.tabs }
 
     let(:action) { 'remove' }
-    let(:params) { base_params.merge(action: action) }
-    let(:presenter) { described_class.new(params: params) }
+    let(:params) { base_params.merge(action:) }
+    let(:presenter) { described_class.new(params:) }
 
     it 'has 4 tabs' do
       expect(subject.count).to be(4)

@@ -4,25 +4,25 @@
 RSpec.describe 'collection', type: :feature, js: true, clean: true do
   let(:user) { create(:user) }
 
-  let(:collection1) { create(:public_collection_lw, user: user) }
-  let(:collection2) { create(:public_collection_lw, user: user) }
+  let(:collection1) { create(:public_collection_lw, user:) }
+  let(:collection2) { create(:public_collection_lw, user:) }
 
   describe 'collection show page' do
     let(:collection) do
       create(
         :public_collection_lw,
-        user: user, description: ['collection description'],
+        user:, description: ['collection description'],
         collection_type_settings: :nestable
       )
     end
-    let!(:work1) { create(:work, title: ["King Louie"], member_of_collections: [collection], user: user) }
-    let!(:work2) { create(:work, title: ["King Kong"], member_of_collections: [collection], user: user) }
+    let!(:work1) { create(:work, title: ["King Louie"], member_of_collections: [collection], user:) }
+    let!(:work2) { create(:work, title: ["King Kong"], member_of_collections: [collection], user:) }
     let!(:col1) do
       create(
         :public_collection_lw,
         title: ["Sub-collection 1"],
         member_of_collections: [collection],
-        user: user
+        user:
       )
     end
     let!(:col2) do
@@ -30,7 +30,7 @@ RSpec.describe 'collection', type: :feature, js: true, clean: true do
         :public_collection_lw,
         title: ["Sub-collection 2"],
         member_of_collections: [collection],
-        user: user
+        user:
       )
     end
 
@@ -89,7 +89,7 @@ RSpec.describe 'collection', type: :feature, js: true, clean: true do
       let(:collection) do
         build(
           :public_collection_lw,
-          user: user,
+          user:,
           description: ['collection description'],
           collection_type_settings: :not_nestable,
           with_solr_document: true, with_permission_template: true
@@ -119,7 +119,7 @@ RSpec.describe 'collection', type: :feature, js: true, clean: true do
 
       login_as user
     end
-    let(:collection) { create(:named_collection_lw, user: user) }
+    let(:collection) { create(:named_collection_lw, user:) }
 
     it "shows a collection with a listing of Descriptive Metadata and catalog-style search results" do
       visit "/collections/#{collection.id}"
@@ -141,7 +141,7 @@ RSpec.describe 'collection', type: :feature, js: true, clean: true do
 
       login_as user
     end
-    let(:collection) { create(:named_collection_lw, user: user) }
+    let(:collection) { create(:named_collection_lw, user:) }
 
     it "shows a collection with a listing of Descriptive Metadata and catalog-style search results" do
       visit "/collections/#{collection.id}"
@@ -262,7 +262,7 @@ RSpec.describe 'collection', type: :feature, js: true, clean: true do
 
       before do
         collection.permission_template.access_grants.find_or_create_by!(
-          access: access,
+          access:,
           agent_type: Hyrax::PermissionTemplateAccess::GROUP,
           agent_id: 'admin'
         )

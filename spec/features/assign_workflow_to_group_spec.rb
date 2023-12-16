@@ -16,7 +16,7 @@ RSpec.describe 'Assign workflow to group', type: :feature, js: true, clean: true
       Sipity::Workflow.create!(
         active: true,
         name: 'test-workflow',
-        permission_template: permission_template
+        permission_template:
       )
     end
 

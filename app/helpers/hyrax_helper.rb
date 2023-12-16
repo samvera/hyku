@@ -26,7 +26,7 @@ module HyraxHelper
   end
 
   def block_for(name:)
-    ContentBlock.block_for(name: name, fallback_value: false)
+    ContentBlock.block_for(name:, fallback_value: false)
   end
 
   def directory_image

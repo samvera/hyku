@@ -6,14 +6,14 @@ require 'rails_helper'
 module Hyrax
   RSpec.describe Group, type: :model, clean: true do
     describe 'group with no members' do
-      subject { described_class.new(name: name, description: description) }
+      subject { described_class.new(name:, description:) }
 
       let(:name) { 'Empty Group' }
       let(:description) { 'Add members plz' }
       let(:empty_group_attributes) do
         {
-          name: name,
-          description: description,
+          name:,
+          description:,
           number_of_users: 0
         }
       end

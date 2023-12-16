@@ -213,7 +213,7 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
       it 'can add an existing work to a collection' do
         # Make current_user the depositor because the "Add existing works to this collection"
         # button navigates to the My Works index view
-        work = FactoryBot.create(:work, user: user)
+        work = FactoryBot.create(:work, user:)
         expect(collection.member_work_ids).to be_empty
 
         visit "/dashboard/collections/#{collection.id}"
@@ -461,7 +461,7 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
       it 'can add an existing work to a collection' do
         # Make current_user the depositor because the "Add existing works to this collection"
         # button navigates to the My Works index view
-        work = FactoryBot.create(:work, user: user)
+        work = FactoryBot.create(:work, user:)
         expect(collection.member_work_ids).to be_empty
 
         visit "/dashboard/collections/#{collection.id}"

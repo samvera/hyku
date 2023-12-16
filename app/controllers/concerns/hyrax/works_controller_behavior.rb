@@ -184,7 +184,7 @@ module Hyrax
         transactions['change_set.create_work']
         .with_step_args(
           'work_resource.add_to_parent' => { parent_id: params[:parent_id], user: current_user },
-          'work_resource.add_file_sets' => { uploaded_files: uploaded_files, file_set_params: params[hash_key_for_curation_concern][:file_set] },
+          'work_resource.add_file_sets' => { uploaded_files:, file_set_params: params[hash_key_for_curation_concern][:file_set] },
           'change_set.set_user_as_depositor' => { user: current_user },
           'work_resource.change_depositor' => { user: ::User.find_by_user_key(form.on_behalf_of) }
         )
@@ -198,8 +198,8 @@ module Hyrax
       return after_update_error(form_err_msg(form)) unless form.validate(params[hash_key_for_curation_concern])
       result =
         transactions['change_set.update_work']
-        .with_step_args('work_resource.add_file_sets' => { uploaded_files: uploaded_files, file_set_params: params[hash_key_for_curation_concern][:file_set] },
-                        'work_resource.update_work_members' => { work_members_attributes: work_members_attributes })
+        .with_step_args('work_resource.add_file_sets' => { uploaded_files:, file_set_params: params[hash_key_for_curation_concern][:file_set] },
+                        'work_resource.update_work_members' => { work_members_attributes: })
         .call(form)
       @curation_concern = result.value_or { return after_update_error(transaction_err_msg(result)) }
       after_update_response
@@ -350,7 +350,7 @@ module Hyrax
       uploaded_files = params.fetch(:uploaded_files, [])
       selected_files = params.fetch(:selected_files, {}).values
       browse_everything_urls = uploaded_files &
-                               selected_files.map { |f| f[:url] }
+                               selected_files.pluck(:url)
 
       # we need the hash of files with url and file_name
       browse_everything_files = selected_files
@@ -389,7 +389,7 @@ module Hyrax
           rebuild_form(original_input_params_for_form) if original_input_params_for_form.present?
           render 'new', status: :unprocessable_entity
         end
-        wants.json { render_json_response(response_type: :unprocessable_entity, options: { errors: errors }) }
+        wants.json { render_json_response(response_type: :unprocessable_entity, options: { errors: }) }
       end
     end
 
@@ -418,7 +418,7 @@ module Hyrax
           build_form unless @form.is_a? Hyrax::ChangeSet
           render 'edit', status: :unprocessable_entity
         end
-        wants.json { render_json_response(response_type: :unprocessable_entity, options: { errors: errors }) }
+        wants.json { render_json_response(response_type: :unprocessable_entity, options: { errors: }) }
       end
     end
 
@@ -500,7 +500,7 @@ module Hyrax
           .new(admin_set: admin_set_doc, permission_template: template, permit_sharing: sharing)
       end
 
-      AdminSetSelectionPresenter.new(admin_sets: admin_sets)
+      AdminSetSelectionPresenter.new(admin_sets:)
     end
 
     # added to prepend the show theme views into the view_paths

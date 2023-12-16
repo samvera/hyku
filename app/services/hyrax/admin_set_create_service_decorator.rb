@@ -16,8 +16,8 @@ module Hyrax
           ActiveRecord::Base.transaction do
             permission_template = PermissionTemplate.find_by(source_id: result.id.to_s) ||
                                   permissions_create_service.create_default(collection: result,
-                                                                            creating_user: creating_user)
-            create_workflows_for(permission_template: permission_template)
+                                                                            creating_user:)
+            create_workflows_for(permission_template:)
             # OVERRIDE: Remove call to #create_default_access_for, which granted
             # deposit access to all registered users for the Default Admin Set
           end
@@ -38,12 +38,12 @@ module Hyrax
     end
 
     def create_workflows_for(permission_template:)
-      workflow_importer.call(permission_template: permission_template)
+      workflow_importer.call(permission_template:)
       # OVERRIDE: Extract and expand upon granting Workflow Roles into service object so it can be used in RolesService
       Hyrax::Workflow::PermissionGrantor
-        .grant_default_workflow_roles!(permission_template: permission_template, creating_user: creating_user)
+        .grant_default_workflow_roles!(permission_template:, creating_user:)
       Sipity::Workflow
-        .activate!(permission_template: permission_template, workflow_name: Hyrax.config.default_active_workflow_name)
+        .activate!(permission_template:, workflow_name: Hyrax.config.default_active_workflow_name)
     end
   end
 end

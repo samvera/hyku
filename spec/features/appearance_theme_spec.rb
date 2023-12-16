@@ -12,7 +12,7 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
     create(:generic_work,
            title: ['Llamas and Alpacas'],
            keyword: ['llama', 'alpaca'],
-           user: user)
+           user:)
   end
 
   # rubocop:enable RSpec/LetSetup

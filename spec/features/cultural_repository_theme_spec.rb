@@ -12,7 +12,7 @@ RSpec.describe 'Admin can select cultural repository theme', type: :feature, js:
     create(:generic_work,
            title: ['Llamas and Alpacas'],
            keyword: ['llama', 'alpaca'],
-           user: user)
+           user:)
   end
 
   # rubocop:enable RSpec/LetSetup

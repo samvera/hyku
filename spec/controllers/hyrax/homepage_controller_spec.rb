@@ -86,7 +86,7 @@ RSpec.describe Hyrax::HomepageController, type: :controller do
       it "initializes the presenter with ability and a list of collections" do
         expect(Hyrax::HomepagePresenter).to receive(:new)
                                         .with(controller.current_ability, ["collection results"])
-                                        .and_return(presenter)
+          .and_return(presenter)
         get :index
         expect(response).to be_successful
         expect(assigns(:presenter)).to eq presenter
@@ -94,7 +94,7 @@ RSpec.describe Hyrax::HomepageController, type: :controller do
     end
 
     context "with featured works" do
-      let!(:my_work) { create(:work, user: user) }
+      let!(:my_work) { create(:work, user:) }
 
       before do
         FeaturedWork.create!(work_id: my_work.id)
@@ -150,7 +150,7 @@ RSpec.describe Hyrax::HomepageController, type: :controller do
           allow(controller).to receive(:home_page_theme).and_return('institutional_repository')
         end
         # rubocop:disable RSpec/LetSetup
-        let!(:work_with_resource_type) { create(:work, user: user, resource_type: ['Article']) }
+        let!(:work_with_resource_type) { create(:work, user:, resource_type: ['Article']) }
 
         # rubocop:enable RSpec/LetSetup
 

@@ -46,11 +46,15 @@ class User < ApplicationRecord
     email
   end
 
+  # rubocop:disable Naming/PredicateName
   def is_admin
+    # rubocop:enable Naming/PredicateName
     has_role?(:admin) || has_role?(:admin, Site.instance)
   end
 
+  # rubocop:disable Naming/PredicateName
   def is_superadmin
+    # rubocop:enable Naming/PredicateName
     has_role? :superadmin
   end
 

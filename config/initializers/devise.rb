@@ -301,10 +301,10 @@ Devise.setup do |config|
 
   [:cas, :openid_connect, :saml].each do |provider|
     path_prefix = "/users/auth/#{provider}"
-    handler = OmniAuth::MultiProvider::Handler.new(path_prefix: path_prefix,
-                                                   identity_provider_id_regex: identity_provider_id_regex,
+    handler = OmniAuth::MultiProvider::Handler.new(path_prefix:,
+                                                   identity_provider_id_regex:,
       &dynamic_options_generator)
-    static_options = { path_prefix: path_prefix }
+    static_options = { path_prefix: }
 
     config.omniauth provider, static_options.merge(handler.provider_options)
   end

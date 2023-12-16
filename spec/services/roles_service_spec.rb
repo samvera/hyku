@@ -452,7 +452,7 @@ RSpec.describe RolesService, clean: true do
     context 'when CollectionTypes grant access to other users/groups' do
       before do
         creator_user = FactoryBot.create(:user)
-        FactoryBot.create(:collection_type, creator_user: creator_user)
+        FactoryBot.create(:collection_type, creator_user:)
         FactoryBot.create(:collection_type, creator_group: 'Test Group')
         FactoryBot.create(:collection_type, manager_group: ::Ability.admin_group_name)
         FactoryBot.create(:collection_type, manager_group: ::Ability.registered_group_name)
@@ -629,7 +629,7 @@ RSpec.describe RolesService, clean: true do
     permission_template.access_grants.where(
       agent_type: Hyrax::PermissionTemplateAccess::GROUP,
       agent_id: role,
-      access: access
+      access:
     ).count
   end
 end

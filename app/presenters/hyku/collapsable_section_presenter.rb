@@ -7,7 +7,7 @@ module Hyku
     # rubocop:disable Metrics/ParameterLists
     def initialize(view_context:, text:, id:, icon_class:, open:, html_options: {})
       # rubocop:enable Metrics/ParameterLists
-      super(view_context: view_context, text: text, id: id, icon_class: icon_class, open: open)
+      super(view_context:, text:, id:, icon_class:, open:)
       @html_options = html_options
     end
 

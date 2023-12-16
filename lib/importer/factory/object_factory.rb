@@ -17,7 +17,7 @@ module Importer
       end
 
       def run
-        arg_hash = { id: attributes[:id], name: 'UPDATE', klass: klass }
+        arg_hash = { id: attributes[:id], name: 'UPDATE', klass: }
         @object = find
         if @object
           ActiveSupport::Notifications.instrument('import.importer', arg_hash) { update }
@@ -31,14 +31,14 @@ module Importer
       def update
         raise "Object doesn't exist" unless object
         run_callbacks(:save) do
-          work_actor.update(environment(update_attributes))
+          work_actor.update(environment(update))
         end
         log_updated(object)
       end
 
       def create_attributes
         if klass == Collection
-          { collection_type: collection_type }.merge(transform_attributes)
+          { collection_type: }.merge(transform_attributes)
         else
           transform_attributes
         end

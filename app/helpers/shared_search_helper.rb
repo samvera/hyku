@@ -17,7 +17,7 @@ module SharedSearchHelper
       id = model["id"]
     end
     request_params = %i[protocol host port].map { |method| ["request_#{method}".to_sym, request.send(method)] }.to_h
-    get_url(id: id, request: request_params, account_cname: account_cname, has_model: has_model)
+    get_url(id:, request: request_params, account_cname:, has_model:)
   end
 
   private

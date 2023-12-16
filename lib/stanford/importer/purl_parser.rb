@@ -49,7 +49,7 @@ module Stanford
       end
 
       def record_attributes
-        common_attributes.merge(collection: collection)
+        common_attributes.merge(collection:)
                          .merge(files)
       end
 
@@ -67,7 +67,7 @@ module Stanford
           .merge(dates)
           .merge(locations)
           .merge(rights)
-          .merge(visibility: visibility)
+          .merge(visibility:)
           .merge(identifiers)
           .merge(relations)
       end
@@ -76,11 +76,11 @@ module Stanford
         {
           title: untyped_title,
           description: dc_description,
-          subject: subject,
-          language: language,
+          subject:,
+          language:,
           form_of_work: oai.xpath('./dc:format', DC_NS).map(&:text),
-          resource_type: resource_type,
-          record_origin: record_origin
+          resource_type:,
+          record_origin:
         }
       end
 

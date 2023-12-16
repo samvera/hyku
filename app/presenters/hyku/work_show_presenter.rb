@@ -72,7 +72,7 @@ module Hyku
 
     def members_include_viewable?
       file_set_presenters.any? do |presenter|
-        iiif_media?(presenter: presenter) && current_ability.can?(:read, presenter.id)
+        iiif_media?(presenter:) && current_ability.can?(:read, presenter.id)
       end
     end
 

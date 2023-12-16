@@ -3,7 +3,7 @@
 module AccountSwitch
   extend ActiveSupport::Concern
 
-  DOMAIN_REGEXP = %r{^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,8}(:[0-9]{1,5})?(/.*)?$}ix.freeze
+  DOMAIN_REGEXP = %r{^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,8}(:[0-9]{1,5})?(/.*)?$}ix
 
   class_methods do
     # rubocop:disable Metrics/MethodLength

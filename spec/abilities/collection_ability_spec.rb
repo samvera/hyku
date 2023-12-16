@@ -21,7 +21,7 @@ RSpec.describe Ability::CollectionAbility do
         :collection_lw,
         id: 'col_au',
         with_permission_template: true,
-        collection_type_gid: collection_type_gid
+        collection_type_gid:
       )
     end
 
@@ -54,7 +54,7 @@ RSpec.describe Ability::CollectionAbility do
       create(
         :collection_lw,
         with_permission_template: true,
-        collection_type_gid: collection_type_gid
+        collection_type_gid:
       )
     end
 
@@ -139,7 +139,7 @@ RSpec.describe Ability::CollectionAbility do
       create(
         :collection_lw,
         with_permission_template: true,
-        collection_type_gid: collection_type_gid
+        collection_type_gid:
       )
     end
 
@@ -226,7 +226,7 @@ RSpec.describe Ability::CollectionAbility do
       create(
         :collection_lw,
         with_permission_template: true,
-        collection_type_gid: collection_type_gid
+        collection_type_gid:
       )
     end
 
@@ -311,7 +311,7 @@ RSpec.describe Ability::CollectionAbility do
       create(
         :collection_lw,
         with_permission_template: true,
-        collection_type_gid: collection_type_gid
+        collection_type_gid:
       )
     end
 
@@ -356,7 +356,7 @@ RSpec.describe Ability::CollectionAbility do
       create(
         :collection_lw,
         with_permission_template: true,
-        collection_type_gid: collection_type_gid
+        collection_type_gid:
       )
     end
 
@@ -403,7 +403,7 @@ RSpec.describe Ability::CollectionAbility do
       create(
         :collection_lw,
         with_permission_template: true,
-        collection_type_gid: collection_type_gid
+        collection_type_gid:
       )
     end
 
@@ -451,7 +451,7 @@ RSpec.describe Ability::CollectionAbility do
       create(
         :collection_lw,
         with_permission_template: true,
-        collection_type_gid: collection_type_gid
+        collection_type_gid:
       )
     end
 

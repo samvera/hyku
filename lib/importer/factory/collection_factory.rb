@@ -14,7 +14,7 @@ module Importer
 
       def update
         raise "Collection doesn't exist" unless object
-        object.attributes = update_attributes
+        object.attributes = update
         run_callbacks(:save) do
           object.save!
         end

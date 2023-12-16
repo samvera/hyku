@@ -25,7 +25,7 @@ RSpec.describe 'Work Depositor role', type: :request, singletenant: true, clean:
 
     %w[open authenticated].each do |visibility|
       context "with #{visibility} visibility" do
-        let(:work) { create(:work, visibility: visibility, admin_set_id: admin_set_id) }
+        let(:work) { create(:work, visibility:, admin_set_id:) }
 
         it "can see the work's public show page" do
           get hyrax_generic_work_path(work)
@@ -43,7 +43,7 @@ RSpec.describe 'Work Depositor role', type: :request, singletenant: true, clean:
     end
 
     context 'with restricted visibility' do
-      let(:work) { create(:work, visibility: 'restricted', admin_set_id: admin_set_id) }
+      let(:work) { create(:work, visibility: 'restricted', admin_set_id:) }
 
       it "cannot see the work's show page" do
         get hyrax_generic_work_path(work)

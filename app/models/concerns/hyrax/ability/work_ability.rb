@@ -32,7 +32,7 @@ module Hyrax
 
         return false if ids.empty?
 
-        Hyrax.custom_queries.find_ids_by_model(model: Hyrax::AdministrativeSet, ids: ids).any?
+        Hyrax.custom_queries.find_ids_by_model(model: Hyrax::AdministrativeSet, ids:).any?
       end
     end
   end

@@ -29,18 +29,24 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  # rubocop:disable Naming/PredicateName
   def is_hidden
+    # rubocop:enable Naming/PredicateName
     current_account.persisted? && !current_account.is_public?
   end
 
+  # rubocop:disable Naming/PredicateName
   def is_api_or_pdf
+    # rubocop:enable Naming/PredicateName
     request.format.to_s.match('json') ||
       params[:print] ||
       request.path.include?('api') ||
       request.path.include?('pdf')
   end
 
+  # rubocop:disable Naming/PredicateName
   def is_staging
+    # rubocop:enable Naming/PredicateName
     ['staging'].include?(Rails.env)
   end
 
@@ -49,10 +55,11 @@ class ApplicationController < ActionController::Base
   def authenticate_if_needed
     # Disable this extra authentication in test mode
     return true if Rails.env.test?
-    if (is_hidden || is_staging) && !is_api_or_pdf
-      authenticate_or_request_with_http_basic do |username, password|
-        username == "samvera" && password == "hyku"
-      end
+    # rubocop:disable Naming/PredicateName
+    return unless (is_hidden || is_staging) && !is_api_or_pdf
+    # rubocop:enable Naming/PredicateName
+    authenticate_or_request_with_http_basic do |username, password|
+      username == "samvera" && password == "hyku"
     end
   end
 

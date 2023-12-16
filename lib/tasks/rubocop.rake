@@ -7,5 +7,7 @@ begin
     task.requires << 'rubocop-rspec'
     task.fail_on_error = true
   end
+# rubocop:disable Lint/SuppressedException
 rescue LoadError
+  # rubocop: enable Lint/SuppressedException
 end

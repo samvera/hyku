@@ -85,7 +85,7 @@ class ImportWorkFromPurlJob < ApplicationJob
       retry if (retries += 1) < 3
       raise e
     end
-    attributes[:member_of_collection_attributes] = [{ id: id }]
+    attributes[:member_of_collection_attributes] = [{ id: }]
   end
 
   # Override this method if you have a different rubric for choosing the model

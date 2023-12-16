@@ -86,9 +86,8 @@ module Hyrax
         form
         collection_type
         # Gets original filename of an uploaded thumbnail. See #update
-        if ::SolrDocument.find(@collection.id).thumbnail_path.include? "uploaded_collection_thumbnails" && uploaded_thumbnail?
-          @thumbnail_filename = File.basename(uploaded_thumbnail_files.reject { |f| File.basename(f).include? @collection.id }.first)
-        end
+        return unless ::SolrDocument.find(@collection.id).thumbnail_path.include?("uploaded_collection_thumbnails" && uploaded_thumbnail?)
+        @thumbnail_filename = File.basename(uploaded_thumbnail_files.reject { |f| File.basename(f).include? @collection.id }.first)
       end
 
       def uploaded_thumbnail?
@@ -182,7 +181,7 @@ module Hyrax
             flash[:notice] = t('hyrax.dashboard.my.action.collection_delete_fail')
             render :edit, status: :unprocessable_entity
           end
-          format.json { render json: { id: id }, status: :unprocessable_entity, location: dashboard_collection_path(@collection) }
+          format.json { render json: { id: }, status: :unprocessable_entity, location: dashboard_collection_path(@collection) }
         end
       end
 
@@ -212,7 +211,7 @@ module Hyrax
       # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
       def files
         params[:q] = '' unless params[:q]
-        builder = Hyrax::CollectionMemberSearchBuilder.new(scope: self, collection: collection, search_includes_models: :works)
+        builder = Hyrax::CollectionMemberSearchBuilder.new(scope: self, collection:, search_includes_models: :works)
         # get the default work image because we do not want to show any works in this
         # dropdown that only have the default work image. this indicates that they have
         # no files attached, and will throw an error if selected.
@@ -223,7 +222,9 @@ module Hyrax
         result = response.documents.reject do |document|
                    document["thumbnail_path_ss"].blank? || document["thumbnail_path_ss"].include?(default_work_thumbnail_path) ||
                      document["thumbnail_path_ss"].include?(work_with_no_files_thumbnail_path)
+                   # rubocop:disable Style/MultilineBlockChain
                  end.map do |document|
+          # rubocop:enable Style/MultilineBlockChain
           { id: document["thumbnail_path_ss"].split('/').last.gsub(/\?.*/, ''), text: document["title_tesim"].first }
         end
         reset_thumbnail_option = {
@@ -497,7 +498,7 @@ module Hyrax
         participants = []
         permissions.each do |p|
           access = access(p)
-          participants << { agent_type: agent_type(p), agent_id: p["name"], access: access } if access
+          participants << { agent_type: agent_type(p), agent_id: p["name"], access: } if access
         end
         participants
       end
@@ -526,7 +527,7 @@ module Hyrax
         collection_id ||= (collection.try(:id) || @collection.id)
 
         Hyrax::Collections::CollectionMemberService
-          .add_members_by_ids(collection_id: collection_id,
+          .add_members_by_ids(collection_id:,
                               new_member_ids: batch,
                               user: current_user)
       end
@@ -595,7 +596,7 @@ module Hyrax
 
       # Instantiate the membership query service
       def collection_member_service
-        @collection_member_service ||= membership_service_class.new(scope: self, collection: collection, params: params_for_query)
+        @collection_member_service ||= membership_service_class.new(scope: self, collection:, params: params_for_query)
       end
 
       def member_works
@@ -614,7 +615,7 @@ module Hyrax
       def parent_collections
         page = params[:parent_collection_page].to_i
         query = Hyrax::Collections::NestedCollectionQueryService
-        collection.parent_collections = query.parent_collections(child: collection_object, scope: self, page: page)
+        collection.parent_collections = query.parent_collections(child: collection_object, scope: self, page:)
       end
 
       def collection_object
@@ -675,7 +676,7 @@ module Hyrax
             render 'new', status: :unprocessable_entity
           end
           wants.json do
-            render_json_response(response_type: :unprocessable_entity, options: { errors: errors })
+            render_json_response(response_type: :unprocessable_entity, options: { errors: })
           end
         end
       end
@@ -705,7 +706,7 @@ module Hyrax
             flash[:error] = errors.to_s
             render 'edit', status: :unprocessable_entity
           end
-          wants.json { render_json_response(response_type: :unprocessable_entity, options: { errors: errors }) }
+          wants.json { render_json_response(response_type: :unprocessable_entity, options: { errors: }) }
         end
       end
 

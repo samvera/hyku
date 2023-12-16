@@ -226,7 +226,9 @@ module Hyrax
         # The custom css module
         def custom_css_block
           # we want to be able to read the css
+          # rubocop:disable Rails/OutputSafety
           block_for('custom_css_block', '/* custom stylesheet */').html_safe
+          # rubocop:enable Rails/OutputSafety
         end
 
         # DEFAULT BUTTON COLORS
@@ -445,21 +447,23 @@ module Hyrax
         end
 
         def block_for(name, dynamic_default = nil)
-          ContentBlock.block_for(name: name, fallback_value: default_values[name] || dynamic_default)
+          ContentBlock.block_for(name:, fallback_value: default_values[name] || dynamic_default)
         end
 
         # Persist a key/value tuple as a ContentBlock
         # @param [Symbol] name the identifier for the ContentBlock
         # @param [String] value the value to set
         def update_block(name, value)
-          ContentBlock.update_block(name: name, value: value)
+          ContentBlock.update_block(name:, value:)
         end
 
         def format_font_names(font_style)
           # the fonts come with `Font Name:font-weight` - this removes the weight
           parts = font_style.split(':')
           # Google fonts use `+` in place of spaces. This fixes it for CSS.
+          # rubocop:disable Rails/OutputSafety
           parts[0].tr('+', ' ').html_safe
+          # rubocop:enable Rails/OutputSafety
         end
       end
     end

@@ -43,19 +43,19 @@ RSpec.describe "hyrax/content_blocks/edit", type: :view do
   # find a way to read the text from the yaml to test this
   it "renders the announcement instructions" do
     text = "Announcement Text displays on the homepage."
-    expect(rendered).to have_xpath('//p[@class="content-block-instructions" ]', text: text)
+    expect(rendered).to have_xpath('//p[@class="content-block-instructions" ]', text:)
   end
 
   it "renders the banner instructions" do
     text = "Banner Text refers to the text that is displayed over banner image on the homepage."
-    expect(rendered).to have_xpath('//p[@class="content-block-instructions" ]', text: text)
+    expect(rendered).to have_xpath('//p[@class="content-block-instructions" ]', text:)
   end
 
   it "renders the featured researcher instructions" do
     text = "Featured Researcher is a space to enter information and on"
     text += " the home page reserved for highlighting repository users."
     expect(rendered).to have_xpath('//p[@class="content-block-instructions" ]',
-                                   text: text)
+                                   text:)
   end
 
   # Copied from Hyrax v2.9.0 to add home_text form - Adding themes
@@ -66,6 +66,6 @@ RSpec.describe "hyrax/content_blocks/edit", type: :view do
     text += " that either requires or allows home page text. We recommend"
     text += " no more than 3 sentences in this area."
     expect(rendered).to have_xpath('//p[@class="content-block-instructions" ]',
-                                   text: text)
+                                   text:)
   end
 end

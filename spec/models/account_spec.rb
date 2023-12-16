@@ -348,7 +348,7 @@ RSpec.describe Account, type: :model do
     let!(:account) { FactoryBot.create(:account, tenant: "59500a46-b1fb-412d-94d6-b928e91ef4d9") }
 
     before do
-      Site.update(account: account)
+      Site.update(account:)
       Site.instance.admin_emails = ["test@test.com", "test@test.org"]
     end
 
@@ -362,7 +362,7 @@ RSpec.describe Account, type: :model do
     let!(:account) { FactoryBot.create(:account, tenant: "02839e1d-b4a4-451a-ab83-4b8968621f1e") }
 
     before do
-      Site.update(account: account)
+      Site.update(account:)
       Site.instance.admin_emails = ["test@test.com", "test@test.org"]
     end
 

@@ -133,17 +133,17 @@ RSpec.describe Hyku::MenuPresenter do
     before do
       allow(Hyku::CollapsableSectionPresenter).to receive(:new).with(
         view_context: context,
-        text: text,
-        id: id,
-        icon_class: icon_class,
-        open: open,
-        html_options: html_options
+        text:,
+        id:,
+        icon_class:,
+        open:,
+        html_options:
       ).and_return(presenter)
     end
 
     it "calls the render method on the CollapsableSectionPresenter with the given block" do
       expect(presenter).to receive(:render)
-      instance.collapsable_section(text, id: id, icon_class: icon_class, open: open, **html_options, &block)
+      instance.collapsable_section(text, id:, icon_class:, open:, **html_options, &block)
     end
   end
 end

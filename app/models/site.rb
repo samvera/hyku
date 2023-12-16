@@ -61,7 +61,7 @@ class Site < ApplicationRecord
     end
     # For new users, send invitation and add to role
     (emails - existing_emails).each do |email|
-      u = User.invite!(email: email)
+      u = User.invite!(email:)
       u.add_role :admin, self
     end
   end

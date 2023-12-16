@@ -51,7 +51,7 @@ if ENV['DB_ADAPTER'] != 'nulldb' && db_created?
     # Therefore cannot be used as effectively as ActiveRecord hooks.
     Apartment::Tenant.adapter.class.set_callback :switch, :after, lambda {
       account = Account.find_by(tenant: current)
-      account.switch! if account
+      account&.switch!
     }
   end
 

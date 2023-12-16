@@ -45,13 +45,13 @@ module Hyrax
         IIIFManifest::V3::DisplayContent.new(
           Hyrax::IiifAv::Engine.routes.url_helpers.iiif_av_content_url(
             solr_document.id,
-            label: label,
+            label:,
             host: request.base_url
           ),
-          label: label,
-          width: width,
-          height: height,
-          duration: duration,
+          label:,
+          width:,
+          height:,
+          duration:,
           type: 'Video',
           format: solr_document.mime_type
         )
@@ -63,11 +63,11 @@ module Hyrax
         IIIFManifest::V3::DisplayContent.new(
           Hyrax::IiifAv::Engine.routes.url_helpers.iiif_av_content_url(
             solr_document.id,
-            label: label,
+            label:,
             host: request.base_url
           ),
-          label: label,
-          duration: duration,
+          label:,
+          duration:,
           type: 'Sound',
           format: solr_document.mime_type
         )

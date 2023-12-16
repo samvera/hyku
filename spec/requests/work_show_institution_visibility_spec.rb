@@ -9,7 +9,7 @@ RSpec.describe "Users trying to access an Institution Work's show page", type: :
     WebMock.disable!
     Apartment::Tenant.create(account.tenant)
     Apartment::Tenant.switch(account.tenant) do
-      Site.update(account: account)
+      Site.update(account:)
       work
     end
   end

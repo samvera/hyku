@@ -106,7 +106,7 @@ module Hyrax
 
     # Return 6 collections, sorts by title
     def collections(rows: 6)
-    (response, documents) = Hyrax::CollectionsService.new(self).search_results do |builder|
+      Hyrax::CollectionsService.new(self).search_results do |builder|
         builder.rows(rows)
         builder.merge(sort: "title_ssi")
       end
@@ -150,13 +150,14 @@ module Hyrax
     end
 
     # add this method to vary blacklight config and user_params
-    def search_service(*args)
+    def search_service(*_args)
       Hyrax::SearchService.new(
-        config: ::CatalogController.new.blacklight_config, 
-        user_params: params.except(:q, :page), 
+        config: ::CatalogController.new.blacklight_config,
+        user_params: params.except(:q, :page),
         scope: self,
-        current_ability: current_ability,
-        search_builder_class: search_builder_class)
+        current_ability:,
+        search_builder_class:
+      )
     end
   end
 end

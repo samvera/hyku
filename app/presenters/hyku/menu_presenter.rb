@@ -54,12 +54,12 @@ module Hyku
     # rubocop:disable Metrics/ParameterLists
     def collapsable_section(text, id:, icon_class:, open:, **html_options, &block)
       # rubocop:enable Metrics/ParameterLists
-      CollapsableSectionPresenter.new(view_context: view_context,
-                                      text: text,
-                                      id: id,
-                                      icon_class: icon_class,
-                                      open: open,
-                                      html_options: html_options).render(&block)
+      CollapsableSectionPresenter.new(view_context:,
+                                      text:,
+                                      id:,
+                                      icon_class:,
+                                      open:,
+                                      html_options:).render(&block)
     end
   end
 end

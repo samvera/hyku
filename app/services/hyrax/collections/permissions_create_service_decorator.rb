@@ -58,9 +58,11 @@ module Hyrax
               access: Hyrax::PermissionTemplateAccess::VIEW
             }
           end
+          # rubocop:disable Lint/Void
           attribute_list
+          # rubocop:enable Lint/Void
           # OVERRIDE END
-        end + managers_of_collection_type(collection_type: collection_type) + grants
+        end + managers_of_collection_type(collection_type:) + grants
       end
       private :access_grants_attributes
     end

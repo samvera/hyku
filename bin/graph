@@ -53,7 +53,7 @@ class GraphWriter
   end
 
   def write_edge(initial, terminal, label)
-    graph.add_edges(nodes[initial], nodes[terminal], label: label)
+    graph.add_edges(nodes[initial], nodes[terminal], label:)
   end
 
   def attach_edges

@@ -127,7 +127,7 @@ module Hyrax
         # If you wish to override the default CSS styles (position: absolute; left: -2000px;)
         # used to position the fields off-screen
         css: "display: none",
-        params: params
+        params:
       )
     end
   end

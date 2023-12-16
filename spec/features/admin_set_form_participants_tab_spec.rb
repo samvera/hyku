@@ -16,7 +16,7 @@ RSpec.describe 'AdminSet form Participants tab', type: :feature, js: true, clean
       Sipity::Workflow.create!(
         active: true,
         name: 'test-workflow',
-        permission_template: permission_template
+        permission_template:
       )
 
       login_as admin

@@ -1,4 +1,4 @@
-# # frozen_string_literal: true
+# frozen_string_literal: true
 
 # OVERRIDE Hyrax 5.0 to hide features via flipper
 # hide featured researcher

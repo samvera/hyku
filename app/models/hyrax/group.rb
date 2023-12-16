@@ -43,7 +43,7 @@ module Hyrax
       if query.present? && member_class == DEFAULT_MEMBER_CLASS
         members.where("email LIKE :q OR display_name LIKE :q", q: "%#{query}%")
       else
-        members(member_class: member_class)
+        members(member_class:)
       end
     end
 

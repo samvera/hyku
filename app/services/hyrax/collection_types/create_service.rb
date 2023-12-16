@@ -167,7 +167,7 @@ module Hyrax
       # @return [Hyrax::CollectionType] the newly created collection type instance
       def self.create_collection_type(machine_id:, title:, options: {})
         opts = DEFAULT_OPTIONS.merge(options).except(:participants)
-        ct = Hyrax::CollectionType.create!(opts.merge(machine_id: machine_id, title: title))
+        ct = Hyrax::CollectionType.create!(opts.merge(machine_id:, title:))
         participants = options[:participants].presence || DEFAULT_OPTIONS[:participants]
         add_participants(ct.id, participants)
         ct

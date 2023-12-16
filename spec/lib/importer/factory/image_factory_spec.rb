@@ -12,7 +12,7 @@ RSpec.describe Importer::Factory::ImageFactory, :clean do
     let(:attributes) do
       {
         collection: { id: coll.id },
-        files: files,
+        files:,
         identifier: ['123'],
         title: ['Test image'],
         read_groups: ['public'],

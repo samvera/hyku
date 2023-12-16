@@ -16,7 +16,7 @@ module Wings
       #
       # @return [Enumerable<Valkyrie::ID>]
       def find_ids_by_model(model:, ids: :all) # rubocop:disable Metrics/MethodLength
-        return enum_for(:find_ids_by_model, model: model, ids: ids) unless block_given?
+        return enum_for(:find_ids_by_model, model:, ids:) unless block_given?
         model_name = ModelRegistry.lookup(model).model_name
 
         solr_query = "_query_:\"{!raw f=has_model_ssim}#{model_name}\""

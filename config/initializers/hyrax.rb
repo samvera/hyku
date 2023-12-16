@@ -119,7 +119,7 @@ Hyrax.config do |config|
     if Site.account&.s3_bucket
       "uploads/#{Apartment::Tenant.current}"
     else
-      ENV['HYRAX_UPLOAD_PATH'].present? ? Pathname.new(File.join(ENV['HYRAX_UPLOAD_PATH'], Apartment::Tenant.current)) : Rails.root.join('public', 'uploads', Apartment::Tenant.current)
+      ENV['HYRAX_UPLOAD_PATH'].present? ? Pathname.new(File.join(ENV['HYRAX_UPLOAD_PATH'], Apartment::Tenant.current)) : Rails.public_path.join('uploads', Apartment::Tenant.current)
     end
   }
 
@@ -178,7 +178,7 @@ Hyrax.config do |config|
     # Issue with Hyrax v 2.9.0 where IIIF has mixed content error when running with SSL enabled
     # See Samvera Slack thread https://samvera.slack.com/archives/C0F9JQJDQ/p1596718417351200?thread_ts=1596717896.350700&cid=C0F9JQJDQ
     base_url = base_url.sub(/\Ahttp:/, 'https:')
-    Riiif::Engine.routes.url_helpers.image_url(file_id, host: base_url, size: size)
+    Riiif::Engine.routes.url_helpers.image_url(file_id, host: base_url, size:)
   end
 
   config.iiif_info_url_builder = lambda do |file_id, base_url|

@@ -10,7 +10,7 @@ RSpec.describe 'Admin can select show page theme', type: :feature, js: true, cle
     create(:generic_work,
            title: ['Giant Pandas and Red Pandas'],
            keyword: ['panda'],
-           user: user)
+           user:)
   end
 
   let(:admin_set_id) { Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id }
@@ -19,7 +19,7 @@ RSpec.describe 'Admin can select show page theme', type: :feature, js: true, cle
     Sipity::Workflow.create!(
       active: true,
       name: 'test-workflow',
-      permission_template: permission_template
+      permission_template:
     )
   end
 

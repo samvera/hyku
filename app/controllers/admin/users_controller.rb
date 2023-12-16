@@ -20,9 +20,9 @@ module Admin
       user.password = ENV.fetch('HYKU_USER_DEFAULT_PASSWORD', 'password')
 
       if user.save && user.accept_invitation!
-        redirect_to hyrax.admin_users_path, notice: t('hyrax.admin.users.activate.success', user: user)
+        redirect_to hyrax.admin_users_path, notice: t('hyrax.admin.users.activate.success', user:)
       else
-        redirect_to hyrax.admin_users_path, flash: { error: t('hyrax.admin.users.activate.failure', user: user) }
+        redirect_to hyrax.admin_users_path, flash: { error: t('hyrax.admin.users.activate.failure', user:) }
       end
     end
 

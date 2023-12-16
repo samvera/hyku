@@ -30,7 +30,7 @@ module Hyrax
       return '' if id.blank?
 
       protocol = Site.account.ssl_configured ? 'https' : 'http'
-      Rails.application.routes.url_helpers.polymorphic_url([:manifest, model], host: hostname, protocol: protocol)
+      Rails.application.routes.url_helpers.polymorphic_url([:manifest, model], host: hostname, protocol:)
     end
 
     def iiif_version

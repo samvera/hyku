@@ -5,7 +5,7 @@ RSpec.describe SharedSearchHelper do
 
   context "shared search records" do
     let(:cname) { 'hyku-me.test' }
-    let(:account) { build(:search_only_account, cname: cname) }
+    let(:account) { build(:search_only_account, cname:) }
 
     let(:uuid) { SecureRandom.uuid }
     let(:request) { instance_double(ActionDispatch::Request, port: 3000, protocol: "https://", host: account.cname) }

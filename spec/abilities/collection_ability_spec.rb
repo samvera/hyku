@@ -10,7 +10,7 @@ RSpec.describe Ability::CollectionAbility do
   let(:ability) { Ability.new(current_user) }
   let(:user) { create(:user) }
   let(:current_user) { user }
-  let(:collection_type_gid) { create(:collection_type).gid }
+  let(:collection_type_gid) { create(:collection_type).to_global_id.to_s }
   let(:solr_document) { SolrDocument.new(collection.to_solr) }
   let(:id) { collection.id }
 
@@ -321,7 +321,7 @@ RSpec.describe Ability::CollectionAbility do
              permission_template: collection.permission_template,
              agent_type: 'user',
              agent_id: user.user_key)
-      collection.reset_access_controls!
+      collection.permission_template.reset_access_controls_for(collection: collection)
     end
 
     it 'allows most abilities' do
@@ -366,7 +366,7 @@ RSpec.describe Ability::CollectionAbility do
              permission_template: collection.permission_template,
              agent_type: 'user',
              agent_id: user.user_key)
-      collection.reset_access_controls!
+      collection.permission_template.reset_access_controls_for(collection: collection)
     end
 
     it 'allows deposit related abilities' do
@@ -413,7 +413,7 @@ RSpec.describe Ability::CollectionAbility do
              permission_template: collection.permission_template,
              agent_type: 'user',
              agent_id: user.user_key)
-      collection.reset_access_controls!
+      collection.permission_template.reset_access_controls_for(collection: collection)
     end
 
     it 'allows viewing only ability' do

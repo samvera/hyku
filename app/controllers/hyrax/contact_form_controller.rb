@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE: Hyrax v3.4.0
+# OVERRIDE: Hyrax v5.0.0
 # - add inject_theme_views method for theming
 # - add homepage presenter for access to feature flippers
 # - add access to content blocks in the show method
@@ -8,64 +8,58 @@
 
 module Hyrax
   class ContactFormController < ApplicationController
-    # OVERRIDE: Hyrax v3.4.0 Add for theming
+    # OVERRIDE: Add for theming
     # Adds Hydra behaviors into the application controller
     include Blacklight::SearchContext
     include Blacklight::AccessControls::Catalog
     before_action :build_contact_form
     layout 'homepage'
+
     # OVERRIDE: Adding inject theme views method for theming
     around_action :inject_theme_views
     class_attribute :model_class
     self.model_class = Hyrax::ContactForm
     before_action :setup_negative_captcha, only: %i[new create]
-    # OVERRIDE: Hyrax v3.4.0 Add for theming
+
+    # OVERRIDE: Add for theming
     # The search builder for finding recent documents
     # Override of Blacklight::RequestBuilders
     def search_builder_class
       Hyrax::HomepageSearchBuilder
     end
 
-    # OVERRIDE: Hyrax v3.4.0 Add for theming
+    # OVERRIDE: Add for theming
     class_attribute :presenter_class
-    # OVERRIDE: Hyrax v3.4.0 Add for theming
     self.presenter_class = Hyrax::HomepagePresenter
 
     helper Hyrax::ContentBlockHelper
 
     def new
-      # OVERRIDE: Hyrax v3.4.0 Add for theming
+      # OVERRIDE: Add for theming
       @presenter = presenter_class.new(current_ability, collections)
       @featured_researcher = ContentBlock.for(:researcher)
       @marketing_text = ContentBlock.for(:marketing)
       @home_text = ContentBlock.for(:home_text)
       @featured_work_list = FeaturedWorkList.new
-      # OVERRIDE: Hyrax 3.4.0 add @featured_collection_list
       @featured_collection_list = FeaturedCollectionList.new
       @announcement_text = ContentBlock.for(:announcement)
     end
 
-    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     def create
-      # not spam, form is valid, and captcha is valid
-      @captcha.values[:category] = params[:contact_form][:category]
-      @captcha.values[:contact_method] = params[:contact_form][:contact_method]
-      @captcha.values[:subject] = params[:contact_form][:subject]
-      @contact_form = model_class.new(@captcha.values)
-      if @contact_form.valid? && @captcha.valid?
+      # not spam and a valid form
+      if @contact_form.valid?
         ContactMailer.contact(@contact_form).deliver_now
         flash.now[:notice] = 'Thank you for your message!'
         after_deliver
+        @contact_form = model_class.new
       else
         flash.now[:error] = 'Sorry, this message was not sent successfully. ' +
-                            @contact_form.errors.full_messages.map(&:to_s).join(", ") +
-                            "" + @captcha.error
+                            @contact_form.errors.full_messages.map(&:to_s).join(", ")
       end
       render :new
     rescue RuntimeError => exception
       handle_create_exception(exception)
     end
-    # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
     def handle_create_exception(exception)
       logger.error("Contact form failed to send: #{exception.inspect}")
@@ -90,11 +84,12 @@ module Hyrax
     end
 
     # OVERRIDE: return collections for theming
+    # Return 6 collections, sorts by title
     def collections(rows: 6)
-      builder = Hyrax::CollectionSearchBuilder.new(self)
-                                              .rows(rows)
-      response = repository.search(builder)
-      response.documents
+      Hyrax::CollectionsService.new(self).search_results do |builder|
+        builder.rows(rows)
+        builder.merge(sort: "title_ssi")
+      end
     rescue Blacklight::Exceptions::ECONNREFUSED, Blacklight::Exceptions::InvalidRequest
       []
     end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE: Hyrax v3.4.0
+# OVERRIDE: Hyrax v5.0.0
 # - add inject_theme_views method for theming
 # - add homepage presenter for access to feature flippers
 # - add access to content blocks in the show method
@@ -12,7 +12,7 @@ module Hyrax
     load_and_authorize_resource class: ContentBlock, except: :show
     layout :pages_layout
 
-    # OVERRIDE: Hyrax v3.4.0 Add for theming
+    # OVERRIDE: Add for theming
     # Adds Hydra behaviors into the application controller
     include Blacklight::SearchContext
     include Blacklight::AccessControls::Catalog
@@ -20,7 +20,7 @@ module Hyrax
     # OVERRIDE: Adding inject theme views method for theming
     around_action :inject_theme_views
 
-    # OVERRIDE: Hyrax v3.4.0 Add for theming
+    # OVERRIDE: Add for theming
     # The search builder for finding recent documents
     # Override of Blacklight::RequestBuilders
     def search_builder_class
@@ -29,20 +29,19 @@ module Hyrax
 
     # OVERRIDE: Hyrax v3.4.0 Add for theming
     class_attribute :presenter_class
-    # OVERRIDE: Hyrax v3.4.0 Add for theming
     self.presenter_class = Hyrax::HomepagePresenter
 
     helper Hyrax::ContentBlockHelper
 
     def show
       @page = ContentBlock.for(params[:key])
-      # OVERRIDE: Hyrax v3.4.0 Add for theming
+
+      # OVERRIDE: Additional for theming
       @presenter = presenter_class.new(current_ability, collections)
       @featured_researcher = ContentBlock.for(:researcher)
       @marketing_text = ContentBlock.for(:marketing)
       @home_text = ContentBlock.for(:home_text)
       @featured_work_list = FeaturedWorkList.new
-      # OVERRIDE here to add featured collection list to show page
       @featured_collection_list = FeaturedCollectionList.new
       @announcement_text = ContentBlock.for(:announcement)
     end
@@ -87,11 +86,12 @@ module Hyrax
     end
 
     # OVERRIDE: return collections for theming
+    # Return 6 collections, sorts by title
     def collections(rows: 6)
-      builder = Hyrax::CollectionSearchBuilder.new(self)
-                                              .rows(rows)
-      response = repository.search(builder)
-      response.documents
+      Hyrax::CollectionsService.new(self).search_results do |builder|
+        builder.rows(rows)
+        builder.merge(sort: "title_ssi")
+      end
     rescue Blacklight::Exceptions::ECONNREFUSED, Blacklight::Exceptions::InvalidRequest
       []
     end

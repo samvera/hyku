@@ -23,7 +23,7 @@ module Stanford
 
       def conn
         @conn ||= Faraday.new(url: 'https://purl.stanford.edu') do |faraday|
-          faraday.adapter :httpclient
+          faraday.adapter Faraday.default_adapter
           faraday.use Faraday::Response::RaiseError # raise exceptions on 40x, 50x responses
         end
       end

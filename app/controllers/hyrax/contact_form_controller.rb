@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 # OVERRIDE: Hyrax v5.0.0
-# - add inject_theme_views method for theming
-# - add homepage presenter for access to feature flippers
-# - add access to content blocks in the show method
-# - add @featured_collection_list to new method
+# - adds inject_theme_views method for theming
+# - adds homepage presenter for access to feature flippers
+# - adds access to content blocks in the show method
+# - adds @featured_collection_list to new method
+# - adds captcha
 
 module Hyrax
   class ContactFormController < ApplicationController
@@ -47,11 +48,15 @@ module Hyrax
 
     def create
       # not spam and a valid form
-      if @contact_form.valid?
+      # Override to include captcha
+      @captcha.values[:category] = params[:contact_form][:category]
+      @captcha.values[:contact_method] = params[:contact_form][:contact_method]
+      @captcha.values[:subject] = params[:contact_form][:subject]
+      @contact_form = model_class.new(@captcha.values)
+      if @contact_form.valid? && @captcha.valid?
         ContactMailer.contact(@contact_form).deliver_now
         flash.now[:notice] = 'Thank you for your message!'
         after_deliver
-        @contact_form = model_class.new
       else
         flash.now[:error] = 'Sorry, this message was not sent successfully. ' +
                             @contact_form.errors.full_messages.map(&:to_s).join(", ")

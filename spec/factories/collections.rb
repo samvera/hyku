@@ -52,7 +52,7 @@ FactoryBot.define do
         attributes = evaluator.with_permission_template.merge(attributes) if evaluator.with_permission_template.respond_to?(:merge) # rubocop:disable Metrics/LineLength
 
         create(:permission_template, attributes) unless Hyrax::PermissionTemplate.find_by(source_id: collection.id)
-        collection.permission_template.reset_access_controls_for(collection: collection)
+        collection.permission_template.reset_access_controls_for(collection:)
       end
     end
 
@@ -71,7 +71,7 @@ FactoryBot.define do
   # Everything below this point in the file was brought over from Hyrax 5.0.0.
   # Work needs to be done to reconcile these two factories.
   # ---
- # Tests that create a Fedora Object are very slow.  This factory lets you control which parts of the object ecosystem
+  # Tests that create a Fedora Object are very slow.  This factory lets you control which parts of the object ecosystem
   # get built.
   #
   # PREFERRED: Use build whenever possible.  You can control the creation of the permission template, collection type, and
@@ -169,7 +169,7 @@ FactoryBot.define do
     end
 
     after(:create) do |collection, _evaluator|
-      collection.permission_template.reset_access_controls_for(collection: collection, interpret_visibility: true)
+      collection.permission_template.reset_access_controls_for(collection:, interpret_visibility: true)
     end
 
     factory :public_collection_lw, traits: [:public_lw]

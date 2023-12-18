@@ -14,7 +14,7 @@ RSpec.describe Hyrax::Ability::SolrDocumentAbility do
 
   # OVERRIDE: add specs for custom ability logic
   context 'with Collection solr doc' do
-    let(:collection_type_gid) { create(:collection_type).gid }
+    let(:collection_type_gid) { create(:collection_type).to_global_id }
     let(:collection) do
       create(
         :collection_lw,

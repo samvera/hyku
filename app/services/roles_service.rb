@@ -128,7 +128,7 @@ class RolesService # rubocop:disable Metrics/ClassLength
           agent_id: 'collection_reader'
         )
 
-        pt.reset_access_controls_for(collection: col) if pt.access_grants.count != original_access_grants_count
+        pt.reset_access_controls_for(collection: c) if pt.access_grants.count != original_access_grants_count
       end
     end
     # rubocop:enable Metrics/MethodLength

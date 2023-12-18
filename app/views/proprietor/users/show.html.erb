@@ -4,14 +4,14 @@
 
 <div class="row">
   <div class="col-md-12">
-    <div class="panel panel-default">
-      <div class="panel-heading">
+    <div class="card">
+      <div class="card-header">
         <div class="row">
           <div class="col-sm-10">
             <h2><%= @user.display_name %> (<%= @user.email %>)</h2>
           </div>
           <div class="col-sm-2">
-            <div class="pull-right">
+            <div class="float-right">
               <%= link_to edit_proprietor_user_path(@user), class: 'btn btn-primary' do %>
                 <span class="fa fa-edit"></span> <%= t('.edit') %>
               <% end %>
@@ -19,7 +19,7 @@
           </div>
         </div>
       </div>
-      <div class="panel-body">
+      <div class="card-body">
         <%= simple_form_for @user, url: [:proprietor, @user], html: { class: 'form' } do |f| %>
           <div class="form-group">
             <%= f.association :roles, as: :check_boxes %>

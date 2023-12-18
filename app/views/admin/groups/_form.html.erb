@@ -5,15 +5,15 @@
     target_path = admin_group_path(@group)
   end
 %>
-<div class="panel panel-default">
+<div class="card">
   <%= simple_form_for @group, url: target_path do |f| %>
-    <div class="panel-body">
+    <div class="card-body">
       <%= f.input :humanized_name, label: t('hyku.admin.groups.label.humanized_name'), required: true %>
       <%= f.input :description, as: :text, label: t('hyku.admin.groups.label.description'), hint: '' %>
     </div>
-    <div class="panel-footer text-right">
+    <div class="card-footer text-right">
       <%= link_to t('simple_form.cancel'), admin_groups_path, class: 'btn btn-link action-cancel' %>
-      <%= f.submit class: 'btn btn-primary action-save' %>
+      <%= f.submit class: 'btn btn-secondary action-save' %>
     </div>
   <% end %>
 </div>

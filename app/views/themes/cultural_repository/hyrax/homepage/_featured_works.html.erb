@@ -1,17 +1,17 @@
-<% # April's note: overriding Hyrax 2.9 for client theming %>
+<% # April's note: overriding Hyrax v5.0.0rc2 for client theming %>
 <h2 class="sr-only"><%= t('hyrax.homepage.featured_works.title') %></h2>
 <% if @featured_work_list.empty? %>
   <p><%= t('hyrax.homepage.featured_works.no_works') %></p>
 <% elsif can? :update, FeaturedWork %>
   <%= form_for [hyrax, @featured_work_list] do |f| %>
-    <div class="panel-group dd" id="dd">
+    <div class="accordion" id="accordionFeaturedWorks">
       <ol id="featured_works" class="cultural-repository">
         <%= f.fields_for :featured_works do |featured| %>
           <%= render 'sortable_featured', f: featured %>
         <% end %>
       </ol>
     </div>
-    <%= f.submit("Save order", class: 'btn btn-default') %>
+    <%= f.submit("Save order", class: 'btn btn-primary') %>
   <% end %>
 <% else %>
   <div class="row cultural-repository" id="featured_works">

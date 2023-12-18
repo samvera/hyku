@@ -7,33 +7,33 @@
 <% end %>
 
 <%= render '/admin/groups/nav' %>
-<div class="panel panel-default group-user-listing">
-  <div class="panel-body">
+<div class="card group-user-listing">
+  <div class="card-body">
 
     <p class="lead"><%= t('hyku.admin.groups.action.members.description') %></p>
 
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title"><%= t('hyku.admin.groups.title.add_user') %></h3>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"><%= t('hyku.admin.groups.title.add_user') %></h3>
       </div>
-      <div class="panel-body">
-        <%= simple_form_for :user_search, url: hyrax.users_path, method: :get, html: { class: 'form-inline pull-left js-group-user-search' } do |f| %>
+      <div class="card-body">
+        <%= simple_form_for :user_search, url: hyrax.users_path, method: :get, html: { class: 'form-inline float-left js-group-user-search' } do |f| %>
           <%= f.input :uq, name: :uq, required: false, input_html: { class: 'js-group-user-search__query', value: params[:uq] } %>
-          <%= f.submit class: 'btn btn-default js-group-user-search__submit' %>
+          <%= f.submit class: 'btn btn-secondary js-group-user-search__submit' %>
         <% end %>
 
-        <%= simple_form_for :add_user_to_group, url: admin_group_users_path(group_id: @group.to_param), method: :post, html: { class: 'form-inline pull-left js-group-user-add' } do |f| %>
+        <%= simple_form_for :add_user_to_group, url: admin_group_users_path(group_id: @group.to_param), method: :post, html: { class: 'form-inline float-left js-group-user-add' } do |f| %>
           <%= f.input :user_id, required: false, input_html: { class: 'js-group-user-add__id', name: :user_id } %>
           <%= f.submit class: 'btn btn-primary js-group-user-add__submit' %>
         <% end %>
       </div>
     </div>
 
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title"><%= t('hyku.admin.groups.title.list_members') %></h3>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"><%= t('hyku.admin.groups.title.list_members') %></h3>
       </div>
-      <div class="panel-body">
+      <div class="card-body">
         <div class="container-fluid full-width-container">
           <div class="row">
             <div class="col-sm-6">
@@ -85,7 +85,7 @@
           </table>
         </div>
 
-        <nav class="pull-right">
+        <nav class="float-right">
           <%= paginate @users %>
         </nav>
       </div>

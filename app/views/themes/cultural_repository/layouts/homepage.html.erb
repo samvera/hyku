@@ -1,4 +1,4 @@
-<% # OVERRIDE: Hyrax 2.9 template to remove the render of the /controls partial, removed the background gradient span, and added share your work btn %>
+<% # OVERRIDE: Hyrax v5.0.0rc2 template to remove the render of the /controls partial, removed the background gradient span, and added share your work btn %>
 <% content_for(:navbar) do %>
   <div class="image-masthead cultural-homepage">
     <!-- cultural repository homepage -->
@@ -6,13 +6,13 @@
 
     <div class="container">
       <% if controller_name == 'homepage' %>
-      <div class="col-md-3 facet-panel-background-color mt-40 mb-40-0">
+      <div class="col-md-3 facet-panel-background-color mt-3 mb-0">
         <%= render 'themes/cultural_repository/facets' %>
       </div>
       <% end %>
 
-      <div class="col-md-8 col-md-offset-1 site-title-container">
-        <div class="site-title h1 mb-40-0">
+      <div class="col-md-8 offset-md-1 site-title-container">
+        <div class="site-title h1 mb-0">
           <%= render "hyrax/homepage/marketing" %>
         </div>
       </div>

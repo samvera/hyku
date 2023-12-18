@@ -12,23 +12,27 @@
       <%= link_to "Skip to Content", "#skip-to-content" %>
     </div>
 
-    <%= render '/masthead' %>
+    <%= render '/masthead', placement_class: nil %>
     <%= content_for(:navbar) %>
     <%= content_for(:precontainer_content) %>
     <div id="content-wrapper" class="container" role="main">
       <% if display_content_block? @home_text %>
-        <div class="col-sm-12 col-md-8">
-            <%= render '/flash_msg' %>
+        <div class="row">
+          <div class="col-md-8">
+              <%= render '/flash_msg' %>
+          </div>
         </div>
       <% else %>
-        <div class="col-sm-12">
-            <%= render '/flash_msg' %>
+        <div class="row">
+          <div class="col-md-12">
+              <%= render '/flash_msg' %>
+          </div>
         </div>
       <% end %>
-      <%= render_breadcrumbs builder: Hyrax::BootstrapBreadcrumbsBuilder %>
+      <%= render_breadcrumbs builder: Hyrax.config.breadcrumb_builder %>
       <% if content_for?(:page_header) %>
         <div class="row">
-          <div class="col-xs-12 main-header">
+          <div class="col-12 main-header">
             <%= yield(:page_header) %>
           </div>
         </div>

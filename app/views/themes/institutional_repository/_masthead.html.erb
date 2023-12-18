@@ -1,27 +1,26 @@
-<% # OVERRIDE: Hyrax 2.9 - added the search bar and removed the /login and locale nav menu and moved to the /controls partial for theming %>
-<nav id="masthead" class="navbar navbar-inverse navbar-static-top institutional-repsitory-nav" role="navigation">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-navbar-collapse" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <div class="hidden-lg hidden-md"><%= render '/logo' %></div>
-    </div>
-    <div class="collapse navbar-collapse" id="top-navbar-collapse">
-      <div class="hidden-xs hidden-sm"><%= render '/logo' %></div>
-
-      <div class="institutional-repository-application-name col-sm-2">
-        <span><%= application_name %></span>
+<% # OVERRIDE: Hyrax v5.0.0rc2 - added the search bar and removed the /login and locale nav menu and moved to the /controls partial for theming %>
+<header aria-label="header" class="top-header">
+  <nav id="masthead" class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between cultural-repository-nav <%= placement_class %>" role="navigation" aria-label="masthead">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#top-navbar-collapse" aria-controls="top-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="d-lg-none d-md-none"><%= render '/logo' %></div>
       </div>
+      <div class="collapse navbar-collapse" id="top-navbar-collapse">
+        <div class="d-none d-lg-block d-md-block"><%= render '/logo' %></div>
 
-      <div class="searchbar-right navbar-right col-sm-5">
-        <%= render partial: 'catalog/search_form' %>
+        <div class="col-lg-2 col-md-2">
+          <span><%= application_name %></span>
+        </div>
+
+        <div class="navbar-right col-lg-5 col-md-5">
+          <%= render partial: 'catalog/search_form' %>
+        </div>
       </div>
     </div>
-  </div>
-</nav>
+  </nav>
+</header>
 <%= render '/controls' %>

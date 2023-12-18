@@ -10,12 +10,10 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require codemirror
-//= require codemirror-autorefresh
-//= require codemirror/modes/css
 //= require jquery3
 //= require rails-ujs
 //= require popper
+//= require twitter/typeahead
 //= require bootstrap
 //= require jquery.fontselect
 //= require jquery.dataTables
@@ -47,6 +45,11 @@
 //= require bulkrax/application
 
 //= require hyrax
+
+//= require codemirror
+//= require codemirror-autorefresh
+//= require codemirror/modes/css
+
 //= require iiif_print
 
 //= require jquery.flot.pie

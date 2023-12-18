@@ -4,8 +4,8 @@
 
 <div class="row">
   <div class="col-md-12">
-    <div class="panel panel-default">
-      <div class="panel-body">
+    <div class="card">
+      <div class="card-body">
         <table class="table table-striped datatable">
           <thead>
             <tr>
@@ -19,11 +19,11 @@
                 <td><%= u.email %></td>
                 <td>
                   <%= simple_form_for u, wrapper: :horizontal_form, url: site_role_path(u.id) do |f| %>
-                    <label>
-                      <span class="sr-only">Roles</span>
+                    <div class="form-group">
+                      <label class="sr-only">Roles</label>
                       <%= f.collection_select :site_roles, Role.site, :name, :name, { selected: u.site_roles.pluck(:name) }, { multiple: true, class: 'form-control' } %>
-                    </label>
-                    <%= f.submit class: 'btn btn-primary' %>
+                    </div>
+                    <%= f.submit 'Update', class: 'btn btn-primary' %>
                   <% end %>
                 </td>
               </tr>

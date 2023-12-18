@@ -12,15 +12,15 @@
     <div class="skip-to-content">
       <%= link_to "Skip to Content", "#skip-to-content" %>
     </div>
-    <%= render '/masthead' %>
+    <%= render '/masthead', placement_class: nil %>
     <%= content_for(:navbar) %>
     <%= content_for(:precontainer_content) %>
     <div id="content-wrapper" class="container" role="main">
       <%= render '/flash_msg' %>
-      <%= render_breadcrumbs builder: Hyrax::BootstrapBreadcrumbsBuilder %>
+      <%= render_breadcrumbs builder: Hyrax.config.breadcrumb_builder %>
       <% if content_for?(:page_header) %>
         <div class="row">
-          <div class="col-xs-12 main-header">
+          <div class="col-12 main-header">
             <%= yield(:page_header) %>
           </div>
         </div>

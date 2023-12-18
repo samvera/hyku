@@ -4,14 +4,14 @@
 
 <div class="row">
   <div class="col-md-12">
-    <div class="panel panel-default">
-      <div class="panel-heading">
+    <div class="card">
+      <div class="card-header">
         <div class="row">
-          <div class="col-sm-10">
+          <div class="col-md-10">
             <h2><%= @account.cname %></h2>
           </div>
-          <div class="col-sm-2">
-            <div class="pull-right">
+          <div class="col-md-2">
+            <div class="float-right">
               <%= link_to edit_proprietor_account_path(@account), class: 'btn btn-primary' do %>
                 <span class="fa fa-edit"></span> <%= t('.edit') %>
               <% end %>
@@ -19,7 +19,7 @@
           </div>
         </div>
       </div>
-      <div class="panel-body">
+      <div class="card-body">
         <%= simple_form_for @account, url: [:proprietor, @account], namespace: "add_form", html: { class: 'form' } do |f| %>
           <div class="form-group">
             <%= f.label :admin_emails, class: "control-label" %>
@@ -41,21 +41,21 @@
 
 <div class="row">
   <div class="col-md-12">
-    <div class="panel panel-default">
-      <ul class="nav nav-tabs">
-        <li class="active">
-          <a href="#current-admins-tab">
-            <h2 class="panel-title display-page"><%= t('.current_admins.header') %></h2>
+    <div class="card">
+      <ul class="nav nav-tabs" id="accountTabs" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="current-admins-tab-link" data-toggle="tab" href="#current-admins-tab" role="tab" aria-controls="current-admins" aria-selected="true">
+            <%= t('.current_admins.header') %>
           </a>
         </li>
-        <li>
-          <a href="#all-users-tab">
-            <h2 class="panel-title display-page"><%= t('.current_admins.all_users') %></h2>
+        <li class="nav-item">
+          <a class="nav-link" id="all-users-tab-link" data-toggle="tab" href="#all-users-tab" role="tab" aria-controls="all-users" aria-selected="false">
+            <%= t('.current_admins.all_users') %>
           </a>
         </li>
       </ul>
 
-      <div class="panel-body">
+      <div class="card-body">
         <div class="tab-content clearfix">
           <div class="tab-pane active" id="current-admins-tab">
           <% if @current_superusers.present? %>

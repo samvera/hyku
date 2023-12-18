@@ -6,9 +6,9 @@
     <p><%= t('application.tagline') %></p>
     <p>
       <% if !admin_only_tenant_creation? || can?(:manage, Account) %>
-        <%= link_to t('hyku.splash.account_signup'), account_sign_up_path, class: 'btn btn-lg btn-sign-up' %>
+        <%= link_to t('hyku.splash.account_signup'), account_sign_up_path, class: 'btn btn-lg btn-primary' %>
       <% elsif !user_signed_in? %>
-        <%= link_to t('hyku.splash.account_login'), main_app.new_user_session_path, class: 'btn btn-lg btn-sign-up' %>
+        <%= link_to t('hyku.splash.account_login'), main_app.new_user_session_path, class: 'btn btn-lg btn-primary' %>
       <% else %>
         <%= t('hyku.splash.account_denied') %>
       <% end %>
@@ -17,22 +17,22 @@
 </section>
 
 <section class="product-features">
-  <div class="row grid-row">
-    <div class="col-xs-12 col-sm-4 grid-item">
+  <div class="row">
+    <div class="col-12 col-md-4">
       <h2 class="heading"><%= t('hyku.splash.left_heading') %></h2>
       <p>
           <%= t('hyku.splash.left_text') %>
       </p>
     </div>
 
-    <div class="col-xs-12 col-sm-4 grid-item">
+    <div class="col-12 col-md-4">
       <h2 class="heading"><%= t('hyku.splash.center_heading') %></h2>
       <p>
           <%= t('hyku.splash.center_text') %>
       </p>
     </div>
 
-    <div class="col-xs-12 col-sm-4 grid-item">
+    <div class="col-12 col-md-4">
       <h2 class="heading"><%= t('hyku.splash.right_heading') %></h2>
       <p>
           <%= t('hyku.splash.right_text') %>

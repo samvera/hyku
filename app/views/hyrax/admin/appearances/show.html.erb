@@ -4,88 +4,88 @@
 
 <div class="row">
   <div class="col-md-12">
-    <div class="panel panel-default tabs" id="admin-set-controls">
+    <div class="card tabs" id="admin-set-controls">
       <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-          <a href="#logo_image" role="tab" data-toggle="tab"><%= t('.tabs.logo') %></a>
+        <li class="nav-item">
+          <a class="nav-link active" href="#logo_image" role="tab" data-toggle="tab"><%= t('.tabs.logo') %></a>
         </li>
-        <li>
-          <a href="#favicon" role="tab" data-toggle="tab"><%= t('.tabs.favicon') %></a>
+        <li class="nav-item">
+          <a class="nav-link" href="#favicon" role="tab" data-toggle="tab"><%= t('.tabs.favicon') %></a>
         </li>
-        <li>
-          <a href="#banner_image" role="tab" data-toggle="tab"><%= t('.tabs.banner_image') %></a>
+        <li class="nav-item">
+          <a class="nav-link" href="#banner_image" role="tab" data-toggle="tab"><%= t('.tabs.banner_image') %></a>
         </li>
-        <li>
-          <a href="#directory_image" role="tab" data-toggle="tab"><%= t('.tabs.directory_image') %></a>
+        <li class="nav-item">
+          <a class="nav-link" href="#directory_image" role="tab" data-toggle="tab"><%= t('.tabs.directory_image') %></a>
         </li>
-        <li>
-          <a href="#default_images" role="tab" data-toggle="tab"><%= t('.tabs.default_images') %></a>
+        <li class="nav-item">
+          <a class="nav-link" href="#default_images" role="tab" data-toggle="tab"><%= t('.tabs.default_images') %></a>
         </li>
-        <li>
-          <a href="#color" role="tab" data-toggle="tab"><%= t('.tabs.colors') %></a>
+        <li class="nav-item">
+          <a class="nav-link" href="#color" role="tab" data-toggle="tab"><%= t('.tabs.colors') %></a>
         </li>
-        <li>
-          <a href="#font" role="tab" data-toggle="tab"><%= t('.tabs.fonts') %></a>
+        <li class="nav-item">
+          <a class="nav-link" href="#font" role="tab" data-toggle="tab"><%= t('.tabs.fonts') %></a>
         </li>
-        <li>
-          <a href="#css" role="tab" data-toggle="tab"><%= t('.tabs.custom_css') %></a>
+        <li class="nav-item">
+          <a class="nav-link" href="#css" role="tab" data-toggle="tab"><%= t('.tabs.custom_css') %></a>
         </li>
-        <li>
-          <a href="#themes" role="tab" data-toggle="tab"><%= t('.tabs.themes') %></a>
+        <li class="nav-item">
+          <a class="nav-link" href="#themes" role="tab" data-toggle="tab"><%= t('.tabs.themes') %></a>
         </li>
       </ul>
       <div class="tab-content">
 
         <div id="logo_image" class="tab-pane active">
-          <div class="panel panel-default labels">
+          <div class="card">
             <%= render 'logo_image_form' %>
           </div>
         </div>
 
         <div id="favicon" class="tab-pane">
-          <div class="panel panel-default labels">
+          <div class="card">
             <%= render 'favicon_form' %>
           </div>
         </div>
 
         <div id="banner_image" class="tab-pane">
-          <div class="panel panel-default labels">
+          <div class="card">
             <%= render 'banner_image_form' %>
           </div>
         </div>
 
         <div id="directory_image" class="tab-pane">
-          <div class="panel panel-default labels">
+          <div class="card">
             <%= render 'directory_image_form' %>
           </div>
         </div>
 
         <div id="default_images" class="tab-pane" data-alert="<%= I18n.t('hyrax.admin.appearances.show.forms.default_images.alert') %>">
-          <div class="panel panel-default labels">
+          <div class="card">
             <%= render 'default_images_form' %>
           </div>
         </div>
 
         <div id="color" class="tab-pane">
-          <div class="panel panel-default labels">
+          <div class="card">
             <%= render 'default_colors_form' %>
           </div>
         </div>
 
         <div id="font" class="tab-pane">
-          <div class="panel panel-default labels">
+          <div class="card">
             <%= render 'default_fonts_form' %>
           </div>
         </div>
 
         <div id="css" class="tab-pane">
-          <div class="panel panel-default labels">
+          <div class="card">
             <%= render 'custom_css_form' %>
           </div>
         </div>
 
         <div id="themes" class="tab-pane">
-          <div class="panel panel-default labels">
+          <div class="card">
             <%= render 'theme_form' %>
           </div>
         </div>

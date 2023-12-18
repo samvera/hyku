@@ -1,12 +1,12 @@
 <% current_year = Time.now.year %>
-<footer class="navbar navbar-inverse site-footer">
+<footer class="navbar navbar-dark bg-dark site-footer">
   <div class="container-fluid">
-    <div class="navbar-text text-left">
-        <p><%= t('hyrax.footer.service_html') %></p>
-        <p>Hyku v<%= Hyku::VERSION %></p>
+    <div class="navbar-text d-flex justify-content-start">
+      <p><%= t('hyrax.footer.service_html') %></p>
+      <p>Hyku v<%= Hyku::VERSION %></p>
     </div>
-    <div class="navbar-right">
-      <div class="navbar-text text-right">
+    <div class="ml-auto">
+      <div class="navbar-text d-flex justify-content-end">
         <p><%= t('hyrax.footer.copyright_html', current_year: current_year) %></p>
         <p><%= t('hyrax.background_attribution_html') %></p>
         <% unless user_signed_in? %>

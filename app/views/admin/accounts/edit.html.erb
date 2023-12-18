@@ -4,9 +4,9 @@
 
 <div class="row">
   <div class="col-md-12">
-    <div class="panel panel-default account-form">
+    <div class="card account-form">
       <%= simple_form_for([:admin, @account], url: admin_account_path, :html => { class: 'form' }) do |f| %>
-        <div class="panel-body">
+        <div class="card-body">
           <% if @account.errors.any? %>
             <div id="error_explanation">
               <h2><%= pluralize(@account.errors.count, "error") %> prohibited this account from being saved:</h2>
@@ -24,11 +24,11 @@
           </div>
 
           <% current_account.public_settings.each do |key, value| %>
-            <%= render 'shared/settings', f:f, key: key, value: value %>
+            <%= render 'shared/settings', f: f, key: key, value: value %>
           <% end %>
 
-          <div class="panel-footer">
-            <%= f.submit class: 'btn btn-primary pull-right' %>
+          <div class="card-footer">
+            <%= f.submit class: 'btn btn-secondary float-right' %>
           </div>
         </div>
       <% end %>

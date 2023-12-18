@@ -96,6 +96,7 @@ gem 'spring-watcher-listen', '~> 2.0.0', group: %i[development]
 gem 'terser' # to support the Safe Navigation / Optional Chaining operator (?.) and avoid uglifier precompile issue
 gem 'tether-rails'
 gem 'turbolinks', '~> 5'
+gem 'twitter-typeahead-rails', '0.11.1.pre.corejavascript'
 gem 'web-console', '>= 3.3.0', group: %i[development] # <%= console %> in views
 gem 'webdrivers', '~> 4.7.0', group: %i[test]
 gem 'webmock', group: %i[test]

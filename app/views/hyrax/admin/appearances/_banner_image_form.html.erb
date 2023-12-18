@@ -1,17 +1,18 @@
 <%= simple_form_for @form, url: admin_appearance_path do |f| %>
-  <div class="panel-body">
+  <div class="card-body">
     <% require_image = @form.banner_image? ? false : true %>
     <%# Upload Banner Image %>
     <%= f.input :banner_image, as: :file, wrapper: :vertical_file_input, required: require_image, hint: t('hyrax.admin.appearances.show.forms.banner_image.hint') %>
     <%= f.input :banner_image_text, required: true, as: :text, label: 'Banner image alt text' %>
-    <%= image_tag @form.banner_image.url, class: "img-responsive" if @form.banner_image? %>
+    <%= image_tag @form.banner_image.url, class: "img-fluid" if @form.banner_image? %>
   </div>
-  <div class="panel-footer">
-    <%= f.submit class: 'btn btn-primary pull-right' %>
+  <div class="card-footer">
+    <%= f.submit class: 'btn btn-primary float-right' %>
   </div>
 <% end %>
+
 <% if @form.banner_image? %>
-  <div class="panel-footer">
+  <div class="card-footer">
     <%= simple_form_for @form.site, url: main_app.site_path(@form.site) do |f| %>
       <%= f.submit 'Remove banner image', class: 'btn btn-danger', name: :remove_banner_image %>
     <% end %>

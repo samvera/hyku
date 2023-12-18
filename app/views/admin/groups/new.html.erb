@@ -7,19 +7,19 @@
 <% end %>
 <div class="panel-tab-wrapper">
   <ul class="nav nav-tabs">
-    <li role="presentation" class="active">
-      <a href="javascript:void(0);"><%= t('hyku.admin.groups.nav.attributes') %></a>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link active" href="javascript:void(0);"><%= t('hyku.admin.groups.nav.attributes') %></a>
     </li>
-    <li role="presentation" class="disabled">
-      <a href="javascript:void(0);"><%= t('hyku.admin.groups.nav.members') %></a>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link disabled" href="javascript:void(0);"><%= t('hyku.admin.groups.nav.members') %></a>
     </li>
-    <li role="presentation" class="disabled">
-      <a href="javascript:void(0);"><%= t('hyku.admin.groups.nav.roles') %></a>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link disabled" href="javascript:void(0);"><%= t('hyku.admin.groups.nav.roles') %></a>
     </li>
-    <li role="presentation" class="disabled">
-      <a href="javascript:void(0);"><%= t('hyku.admin.groups.nav.delete') %></a>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link disabled" href="javascript:void(0);"><%= t('hyku.admin.groups.nav.delete') %></a>
     </li>
   </ul>
-  <%= link_to t('hyku.admin.groups.nav.index'), admin_groups_path, class: 'pull-right nav-escape-link' %>
+  <%= link_to t('hyku.admin.groups.nav.index'), admin_groups_path, class: 'float-right nav-escape-link' %>
 </div>
 <%= render 'form' %>

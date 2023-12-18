@@ -1,32 +1,44 @@
-<%# Copied from Hyrax v2.9.0 to add home_text content block form - Adding themes %>
+<%# Copied from Hyrax v5.0.0rc2 to add home_text content block form - Adding themes %>
 <%# imported from hyrax 3.0.0.pre.rc1 %>
 <%= render "shared/nav_safety_modal" %>
-<div class="panel panel-default tabs">
+<div class="card tabs">
   <ul class="nav nav-tabs" role="tablist">
-    <li class="active">
-      <a href="#announcement_text" role="tab" data-toggle="tab" class="nav-safety-confirm"><%= t(:'hyrax.content_blocks.tabs.announcement_text') %></a>
+    <li id="announcement-nav-item" class="nav-item">
+      <a href="#announcement_text" role="tab" data-toggle="tab" class="nav-link active nav-safety-confirm">
+        <%= t(:'hyrax.content_blocks.tabs.announcement_text') %>
+      </a>
     </li>
-    <li>
-      <a href="#marketing" role="tab" data-toggle="tab" class="nav-safety-confirm"><%= t(:'hyrax.content_blocks.tabs.marketing_text') %></a>
+    <li id="marketing-nav-item" class="nav-item">
+      <a href="#marketing" role="tab" data-toggle="tab" class="nav-link nav-safety-confirm">
+        <%= t(:'hyrax.content_blocks.tabs.marketing_text') %>
+      </a>
     </li>
-    <li>
-      <a href="#home_text" role="tab" data-toggle="tab" class="nav-safety-confirm"><%= t(:'hyrax.content_blocks.tabs.home_text') %></a>
+    <li id="home-text-nav-item" class="nav-item">
+      <a href="#home_text" role="tab" data-toggle="tab" class="nav-safety-confirm">
+        <%= t(:'hyrax.content_blocks.tabs.home_text') %>
+      </a>
     </li>
-    <li>
-      <a href="#researcher" role="tab" data-toggle="tab" class="nav-safety-confirm"><%= t(:'hyrax.content_blocks.tabs.featured_researcher') %></a>
+    <li id="researcher-nav-item" class="nav-item">
+      <a href="#researcher" role="tab" data-toggle="tab" class="nav-link nav-safety-confirm">
+        <%= t(:'hyrax.content_blocks.tabs.featured_researcher') %>
+      </a>
     </li>
-    <li>
-      <a href="#homepage_about_section_heading" role="tab" data-toggle="tab" class="nav-safety-confirm"><%= t(:'hyrax.content_blocks.tabs.homepage_about_section_heading') %></a>
+    <li id="homepage-about-heading-nav-item" class="nav-item">
+      <a href="#homepage_about_section_heading" role="tab" data-toggle="tab" class="nav-safety-confirm">
+        <%= t(:'hyrax.content_blocks.tabs.homepage_about_section_heading') %>
+      </a>
     </li>
-    <li>
-      <a href="#homepage_about_section_content" role="tab" data-toggle="tab" class="nav-safety-confirm"><%= t(:'hyrax.content_blocks.tabs.homepage_about_section_content') %></a>
+    <li id="homepage-about-content-nav-item" class="nav-item">
+      <a href="#homepage_about_section_content" role="tab" data-toggle="tab" class="nav-safety-confirm">
+        <%= t(:'hyrax.content_blocks.tabs.homepage_about_section_content') %>
+      </a>
     </li>
   </ul>
   <div class="tab-content">
-    <div id="announcement_text" class="tab-pane active">
-      <div class="panel panel-default labels">
+    <div id="announcement_text" class="tab-pane show active">
+      <div class="card labels">
         <%= simple_form_for ContentBlock.for(:announcement), url: hyrax.content_block_path(ContentBlock.for(:announcement)), html: {class: 'nav-safety'} do |f| %>
-          <div class="panel-body">
+          <div class="card-body">
             <div class="field form-group">
                 <%= f.label :announcement %><br />
                 <%# the following line was changed from hyrax to give some context for what this context block does %>
@@ -34,17 +46,17 @@
                 <%= f.text_area :announcement, value: f.object.value, class: 'form-control tinymce', rows: 20, cols: 120 %>
             </div>
           </div>
-          <div class="panel-footer">
-            <%= link_to t(:'hyrax.content_blocks.cancel'), hyrax.admin_admin_sets_path, class: 'btn btn-default pull-right' %>
-            <%= f.button :submit, class: 'btn btn-primary pull-right' %>
+          <div class="card-footer d-flex justify-content-end">
+            <%= f.button :submit, class: 'btn btn-primary text-white mr-2' %>
+            <%= link_to t(:'hyrax.content_blocks.cancel'), hyrax.admin_admin_sets_path, class: 'btn btn-light' %>
           </div>
         <% end %>
       </div>
     </div>
     <div id="marketing" class="tab-pane">
-      <div class="panel panel-default labels">
+      <div class="card labels">
         <%= simple_form_for ContentBlock.for(:marketing), url: hyrax.content_block_path(ContentBlock.for(:marketing)), html: {class: 'nav-safety'} do |f| %>
-          <div class="panel-body">
+          <div class="card-body">
             <div class="field form-group">
                 <%= f.label :marketing %><br />
                 <%# the following line was changed from hyrax to give some context for what this context block does %>
@@ -52,18 +64,18 @@
                 <%= f.text_area :marketing, value: f.object.value, class: 'form-control tinymce', rows: 20, cols: 120 %>
             </div>
           </div>
-          <div class="panel-footer">
-            <%= link_to t(:'hyrax.content_blocks.cancel'), hyrax.admin_admin_sets_path, class: 'btn btn-default pull-right' %>
-            <%= f.button :submit, class: 'btn btn-primary pull-right' %>
+          <div class="card-footer d-flex justify-content-end">
+            <%= f.button :submit, class: 'btn btn-primary text-white mr-2' %>
+            <%= link_to t(:'hyrax.content_blocks.cancel'), hyrax.admin_admin_sets_path, class: 'btn btn-light' %>
           </div>
         <% end %>
       </div>
     </div>
     <%# Copied from Hyrax v2.9.0 to add home_text content block form - Adding themes %>
     <div id="home_text" class="tab-pane">
-      <div class="panel panel-default labels">
+      <div class="card labels">
         <%= simple_form_for ContentBlock.for(:home_text), url: hyrax.content_block_path(ContentBlock.for(:home_text)), html: {class: 'nav-safety'} do |f| %>
-          <div class="panel-body">
+          <div class="card-body">
             <div class="field form-group">
                 <%= f.label :home_text %><br />
                 <%# the following line was added to hyku for home page text for themes that use or allow home page text %>
@@ -71,17 +83,17 @@
                 <%= f.text_area :home_text, value: f.object.value, class: 'form-control tinymce', rows: 20, cols: 120 %>
             </div>
           </div>
-          <div class="panel-footer">
-            <%= link_to t(:'hyrax.content_blocks.cancel'), hyrax.admin_admin_sets_path, class: 'btn btn-default pull-right' %>
-            <%= f.button :submit, class: 'btn btn-primary pull-right' %>
+          <div class="card-footer d-flex justify-content-end">
+            <%= f.button :submit, class: 'btn btn-primary text-white mr-2' %>
+            <%= link_to t(:'hyrax.content_blocks.cancel'), hyrax.admin_admin_sets_path, class: 'btn btn-light' %>
           </div>
         <% end %>
       </div>
     </div>
     <div id="researcher" class="tab-pane">
-      <div class="panel panel-default labels">
+      <div class="card labels">
         <%= simple_form_for ContentBlock.for(:researcher), url: hyrax.content_block_path(ContentBlock.for(:researcher)), html: {class: 'nav-safety'} do |f| %>
-          <div class="panel-body">
+          <div class="card-body">
             <div class="field form-group">
                 <%= f.label :researcher %><br />
                 <%# the following line was changed from hyrax to give some context for what this context block does %>
@@ -89,17 +101,17 @@
                 <%= f.text_area :researcher, value: f.object.value, class: 'form-control tinymce', rows: 20, cols: 120 %>
             </div>
           </div>
-          <div class="panel-footer">
-            <%= link_to t(:'hyrax.content_blocks.cancel'), hyrax.admin_admin_sets_path, class: 'btn btn-default pull-right' %>
-            <%= f.button :submit, class: 'btn btn-primary pull-right' %>
+          <div class="card-footer d-flex justify-content-end">
+            <%= f.button :submit, class: 'btn btn-primary text-white mr-2' %>
+            <%= link_to t(:'hyrax.content_blocks.cancel'), hyrax.admin_admin_sets_path, class: 'btn btn-light' %>
           </div>
         <% end %>
       </div>
     </div>
     <div id="homepage_about_section_heading" class="tab-pane">
-      <div class="panel panel-default labels">
+      <div class="card labels">
         <%= simple_form_for ContentBlock.for(:homepage_about_section_heading), url: hyrax.content_block_path(ContentBlock.for(:homepage_about_section_heading)), html: {class: 'nav-safety'} do |f| %>
-          <div class="panel-body">
+          <div class="card-body">
             <div class="field form-group">
                 <%= f.label :homepage_about_section_heading %><br />
                 <%# the following line was changed from hyrax to give some context for what this context block does %>
@@ -107,17 +119,17 @@
                 <%= f.text_area :homepage_about_section_heading, value: f.object.value, class: 'form-control tinymce', rows: 20, cols: 120 %>
             </div>
           </div>
-          <div class="panel-footer">
-            <%= link_to t(:'hyrax.content_blocks.cancel'), hyrax.admin_admin_sets_path, class: 'btn btn-default pull-right' %>
-            <%= f.button :submit, class: 'btn btn-primary pull-right' %>
+          <div class="card-footer d-flex justify-content-end">
+            <%= f.button :submit, class: 'btn btn-primary text-white mr-2' %>
+            <%= link_to t(:'hyrax.content_blocks.cancel'), hyrax.admin_admin_sets_path, class: 'btn btn-light' %>
           </div>
         <% end %>
       </div>
     </div>
     <div id="homepage_about_section_content" class="tab-pane">
-      <div class="panel panel-default labels">
+      <div class="card labels">
         <%= simple_form_for ContentBlock.for(:homepage_about_section_content), url: hyrax.content_block_path(ContentBlock.for(:homepage_about_section_content)), html: {class: 'nav-safety'} do |f| %>
-          <div class="panel-body">
+          <div class="card-body">
             <div class="field form-group">
                 <%= f.label :homepage_about_section_content %><br />
                 <%# the following line was changed from hyrax to give some context for what this context block does %>
@@ -125,9 +137,9 @@
                 <%= f.text_area :homepage_about_section_content, value: f.object.value, class: 'form-control tinymce', rows: 20, cols: 120 %>
             </div>
           </div>
-          <div class="panel-footer">
-            <%= link_to t(:'hyrax.content_blocks.cancel'), hyrax.admin_admin_sets_path, class: 'btn btn-default pull-right' %>
-            <%= f.button :submit, class: 'btn btn-primary pull-right' %>
+          <div class="card-footer d-flex justify-content-end">
+            <%= f.button :submit, class: 'btn btn-primary text-white mr-2' %>
+            <%= link_to t(:'hyrax.content_blocks.cancel'), hyrax.admin_admin_sets_path, class: 'btn btn-light' %>
           </div>
         <% end %>
       </div>

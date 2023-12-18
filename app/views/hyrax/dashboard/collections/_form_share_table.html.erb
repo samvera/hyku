@@ -1,36 +1,39 @@
-<%# OVERRIDE Hyrax v3.4.2 Filter out Role accesses as they should never be removed %>
-<h3><%= t(".#{access}.title") %></h3>
-<p><%= t(".#{access}.help") %></p>
-<p><%= t(".#{access}.help_with_works", type_title: @collection.collection_type.title) if @collection.share_applies_to_new_works? && access != 'depositors' %></p>
-<%# OVERRIDE: use custom filtering method to filter out access_grants for Collection Roles %>
-<% if @form.filter_access_grants_by_access(filter).any? %>
-  <%# OVERRIDE: use custom access-specific class in order to differentiate between access tables %>
-  <table class='table table-striped share-status <%= "#{access}-table" %>'>
-    <thead>
-      <tr>
-        <th><%= t(".#{access}.agent_name") %></th>
-        <th><%= t(".#{access}.type") %></th>
-        <th><%= t(".#{access}.action") %></th>
-      </tr>
-    </thead>
-    <tbody>
-    <%# OVERRIDE: use custom filtering method to filter out access_grants for Collection Roles %>
-    <% @form.filter_access_grants_by_access(filter).each do |g| %>
-      <tr>
-        <td data-agent="<%= g.agent_id %>"><%= g.label %></td>
-        <td><%= g.agent_type.titleize %></td>
-        <td>
-          <%# OVERRIDE: only disable button if it is for the admin group's MANAGE access %>
-          <% if g.admin_group? && g.access == Hyrax::PermissionTemplateAccess::MANAGE %>
-            <%= link_to t(".#{access}.remove"), hyrax.admin_permission_template_access_path(g), method: :delete, class: 'btn btn-sm btn-danger disabled', disabled: true, title: t('hyrax.admin.admin_sets.form.permission_destroy_errors.admin_group') %>
-          <% else %>
-            <%= link_to t(".#{access}.remove"), hyrax.admin_permission_template_access_path(g), method: :delete, class: 'btn btn-sm btn-danger' %>
-          <% end %>
-        </td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
-<% else %>
-  <p><em><%= t(".#{access}.empty") %></em></p>
-<% end %>
+<%# OVERRIDE Hyrax v5.0.0rc2 Filter out Role accesses as they should never be removed %>
+<div class="mb-4">
+
+  <h3 class="h4"><%= t(".#{access}.title") %></h3>
+  <p><%= t(".#{access}.help") %></p>
+  <p><%= t(".#{access}.help_with_works", type_title: @collection_type.title) if @collection_type.share_applies_to_new_works? && access != 'depositors' %></p>
+  <%# OVERRIDE: use custom filtering method to filter out access_grants for Collection Roles %>
+  <% if @form.filter_access_grants_by_access(filter).any? %>
+    <%# OVERRIDE: use custom access-specific class in order to differentiate between access tables %>
+    <table class='table table-striped share-status <%= "#{access}-table" %>'>
+      <thead>
+        <tr>
+          <th><%= t(".#{access}.agent_name") %></th>
+          <th><%= t(".#{access}.type") %></th>
+          <th><%= t(".#{access}.action") %></th>
+        </tr>
+      </thead>
+      <tbody>
+      <%# OVERRIDE: use custom filtering method to filter out access_grants for Collection Roles %>
+      <% @form.filter_access_grants_by_access(filter).each do |g| %>
+        <tr>
+          <td data-agent="<%= g.agent_id %>"><%= g.label %></td>
+          <td><%= g.agent_type.titleize %></td>
+          <td>
+            <%# OVERRIDE: only disable button if it is for the admin group's MANAGE access %>
+            <% if g.admin_group? && g.access == Hyrax::PermissionTemplateAccess::MANAGE %>
+              <%= link_to t(".#{access}.remove"), hyrax.admin_permission_template_access_path(g), method: :delete, class: 'btn btn-sm btn-danger disabled', disabled: true, title: t('hyrax.admin.admin_sets.form.permission_destroy_errors.admin_group') %>
+            <% else %>
+              <%= link_to t(".#{access}.remove"), hyrax.admin_permission_template_access_path(g), method: :delete, class: 'btn btn-sm btn-danger' %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p><em><%= t(".#{access}.empty") %></em></p>
+  <% end %>
+</div>

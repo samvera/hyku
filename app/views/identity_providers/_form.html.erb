@@ -1,6 +1,6 @@
-<div class="panel panel-default">
-  <%= simple_form_for(@identity_provider) do |f| %>
-    <div class="panel-body">
+<%= simple_form_for(@identity_provider) do |f| %>
+  <div class="card">
+    <div class="card-body">
       <% if @identity_provider.errors.any? %>
         <div id="error_explanation">
           <h2><%= pluralize(@identity_provider.errors.count, "error") %> prohibited this authentication provider from being saved:</h2>
@@ -48,12 +48,11 @@
 
     </div>
 
-    <div class="panel-footer text-right">
+    <div class="card-footer text-right">
       <% if IdentityProvider.count.nonzero? %>
-        <%= link_to 'Delete', identity_provider, method: :delete, data: { confirm: 'Are you sure?' }, class:
-      'btn btn-danger' %>
+        <%= link_to 'Delete', identity_provider, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
       <% end %>
       <%= f.submit class: 'btn btn-primary action-save' %>
     </div>
-  <% end %>
-</div>
+  </div>
+<% end %>

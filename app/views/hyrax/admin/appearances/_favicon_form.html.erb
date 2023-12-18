@@ -1,15 +1,15 @@
 <%= simple_form_for @form, url: admin_appearance_path do |f| %>
-  <div class="panel-body">
+  <div class="card-body">
     <% require_image = @form.favicon? ? false : true %>
     <%= f.input :favicon, as: :file, wrapper: :vertical_file_input, hint: t('hyrax.admin.appearances.show.forms.favicon.hint') %>
-    <%= image_tag @form.favicon.url, class: "img-responsive" if @form.favicon? %>
+    <%= image_tag @form.favicon.url, class: "img-fluid" if @form.favicon? %>
   </div>
-  <div class="panel-footer">
-    <%= f.submit class: 'btn btn-primary pull-right' %>
+  <div class="card-footer">
+    <%= f.submit class: 'btn btn-primary float-right' %>
   </div>
 <% end %>
 <% if @form.favicon? %>
-  <div class="panel-footer">
+  <div class="card-footer">
     <%= simple_form_for @form.site, url: main_app.site_path(@form.site) do |f| %>
       <%= f.submit 'Remove favicon', class: 'btn btn-danger', name: :remove_favicon %>
     <% end %>

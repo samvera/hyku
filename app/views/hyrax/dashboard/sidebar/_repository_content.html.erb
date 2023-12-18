@@ -1,7 +1,8 @@
 <%# override from bulkrax to make bulkrax a feature flipper %>
-<li class="h5"><%= t('hyrax.admin.sidebar.repository_objects') %></li>
+<li class="h5 nav-item"><%= t('hyrax.admin.sidebar.repository_objects') %></li>
 
 <%= menu.nav_link(hyrax.my_collections_path,
+                  class: "nav-link",
                   onclick: "dontChangeAccordion(event);",
                   also_active_for: hyrax.dashboard_collections_path,
                   title: t('hyrax.admin.sidebar.collections')) do %>
@@ -9,6 +10,7 @@
 <% end %>
 
 <%= menu.nav_link(hyrax.my_works_path,
+                  class: "nav-link",
                   onclick: "dontChangeAccordion(event);",
                   also_active_for: hyrax.dashboard_works_path,
                   title: t('hyrax.admin.sidebar.works')) do %>
@@ -17,11 +19,13 @@
 
 <% if ENV.fetch('HYKU_BULKRAX_ENABLED', 'true') == 'true' %>
   <%= menu.nav_link(bulkrax.importers_path,
+                    class: "nav-link",
                     title: t('bulkrax.admin.sidebar.importers')) do %>
     <span class="fa fa-cloud-upload" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('bulkrax.admin.sidebar.importers') %></span>
   <% end %>
 
   <%= menu.nav_link(bulkrax.exporters_path,
+                    class: "nav-link",
                     title: t('bulkrax.admin.sidebar.exporters')) do %>
     <span class="fa fa-cloud-download" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('bulkrax.admin.sidebar.exporters') %></span>
   <% end %>

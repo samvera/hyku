@@ -1,4 +1,4 @@
-<%# OVERRIDE Hyrax v3.4.2 Restrict who can remove subcollections from collection %>
+<%# OVERRIDE Hyrax v5.0.0rc2 Restrict who can remove subcollections from collection %>
 <% if @subcollection_docs.nil? || @subcollection_docs.empty? %>
 <div class="alert alert-warning" role="alert"><%= t('hyrax.collections.show.no_visible_subcollections') %></div>
 <% else %>
@@ -15,7 +15,7 @@
       </div>
       <%# OVERRIDE: add :manage_items_in_collection check %>
       <% if can?(:edit, document.id) && can?(:manage_items_in_collection, id) %>
-        <button class="btn btn-xs btn-danger remove-subcollection-button"><%= t('hyrax.collections.show.buttons.remove_this_sub_collection') %></button>
+      <button class="btn btn-sm btn-danger remove-subcollection-button"><%= t('hyrax.collections.show.buttons.remove_this_sub_collection') %></button>
       <% end %>
     </div>
   </li>
@@ -25,5 +25,5 @@
 <% end %>
 
 <% if can? :edit, id %>
-  <%= render 'modal_remove_sub_collection' %>
+<%= render 'modal_remove_sub_collection' %>
 <% end %>

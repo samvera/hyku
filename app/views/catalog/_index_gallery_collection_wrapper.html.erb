@@ -1,5 +1,5 @@
-<%# OVERRIDE Hyrax 3.4.1: make collection thumbnail a link so it matches works %>
-<div class="document col-xs-6 col-md-3">
+<%# OVERRIDE Hyrax v5.0.0rc2: make collection thumbnail a link so it matches works %>
+<div class="document col-6 col-md-3">
   <div class="thumbnail">
     <% value = collection_thumbnail(document, {}, counter: document_counter_with_offset(document_counter)) %>
     <%= link_to value, generate_work_url(document.to_h, request)%>

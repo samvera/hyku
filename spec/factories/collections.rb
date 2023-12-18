@@ -264,8 +264,11 @@ FactoryBot.define do
 
     # @param [Hash] permission_template_attributes where names identify the role and value are the user keys for that role
     # @returns array of user keys
+    # OVERRIDE: add default PermissionTemplateAccess group with :manage access for :collection_manager role
     def self.group_managers(permission_template_attributes)
-      permission_from_template(permission_template_attributes, :manage_groups)
+      group_managers = permission_from_template(permission_template_attributes, :manage_groups)
+      group_managers |= ['collection_manager']
+      group_managers
     end
 
     # @param [Hash] permission_template_attributes where names identify the role and value are the user keys for that role
@@ -288,8 +291,12 @@ FactoryBot.define do
 
     # @param [Hash] permission_template_attributes where names identify the role and value are the user keys for that role
     # @returns array of user keys
+    # OVERRIDE: add default PermissionTemplateAccess groups with
+    # :view access for :collection_editor and :collection_reader roles
     def self.group_viewers(permission_template_attributes)
-      permission_from_template(permission_template_attributes, :view_groups)
+      group_viewers = permission_from_template(permission_template_attributes, :view_groups)
+      group_viewers |= ['collection_editor', 'collection_reader']
+      group_viewers
     end
 
     # Process the collection_type_settings transient property such that...
@@ -319,6 +326,9 @@ FactoryBot.define do
       collection.id ||= FactoryBot.generate(:object_id)
       attributes = { source_id: collection.id }
       attributes[:manage_users] = user_managers(evaluator.with_permission_template, evaluator.user)
+      # OVERRIDE: add default group PermissionTemplateAccess for collection roles
+      attributes[:manage_groups] = group_managers(evaluator.with_permission_template)
+      attributes[:view_groups] = group_viewers(evaluator.with_permission_template)
       attributes = evaluator.with_permission_template.merge(attributes) if evaluator.with_permission_template.respond_to?(:merge)
       FactoryBot.create(:permission_template, attributes) unless Hyrax::PermissionTemplate.find_by(source_id: collection.id)
     end

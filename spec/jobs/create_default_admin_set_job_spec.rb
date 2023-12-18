@@ -5,7 +5,7 @@ RSpec.describe CreateDefaultAdminSetJob do
 
   describe '#perform' do
     it 'creates a new admin set for an account' do
-      expect{ described_class.perform_now(account) }.to change(AdminSet, :count).by(1)
+      expect { described_class.perform_now(account) }.to change(AdminSet, :count).by(1)
     end
   end
 end

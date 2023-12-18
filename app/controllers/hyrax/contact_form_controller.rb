@@ -46,6 +46,7 @@ module Hyrax
       @announcement_text = ContentBlock.for(:announcement)
     end
 
+    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     def create
       # not spam and a valid form
       # Override to include captcha
@@ -65,6 +66,7 @@ module Hyrax
     rescue RuntimeError => exception
       handle_create_exception(exception)
     end
+    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
     def handle_create_exception(exception)
       logger.error("Contact form failed to send: #{exception.inspect}")

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Role < ApplicationRecord
-  has_many :users, through: :users_roles
+  has_and_belongs_to_many :users, join_table: :users_roles
   has_many :group_roles, dependent: :destroy
   has_many :groups, through: :group_roles
 

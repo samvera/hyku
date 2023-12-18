@@ -74,6 +74,10 @@ Rails/ApplicationMailer:
 Rails/ApplicationRecord:
   Enabled: false
 
+Rails/HasAndBelongsToMany:
+  Exclude:
+    - 'app/models/role.rb'
+
 Rails/HasManyOrHasOneDependent:
   Exclude:
     - 'app/models/endpoint.rb'

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax 3.4.0 ot add custom theming
+# OVERRIDE Hyrax 3.4.0 to add custom theming
 
 # rubocop:disable Metrics/ClassLength
 module Hyrax
@@ -17,12 +17,21 @@ module Hyrax
         delegate :default_collection_image, :default_collection_image?, to: :site
         delegate :default_work_image, :default_work_image?, to: :site
 
-        DEFAULT_FONTS = {
+        ##
+        # @!group Class Attributes
+        #
+        # @!attribute default_fonts
+        #   @return [Hash<String, String>] there should be at least the key "body_font" and
+        #           "headline_font"
+        class_attribute :default_fonts, default: {
           'body_font'     => 'Helvetica Neue, Helvetica, Arial, sans-serif;',
           'headline_font' => 'Helvetica Neue, Helvetica, Arial, sans-serif;'
-        }.freeze
+        }
 
-        DEFAULT_COLORS = {
+        ##
+        # @!attribute default_colors
+        #   @return [Hash<String, String>]
+        class_attribute :default_colors, default: {
           'header_and_footer_background_color' => '#3c3c3c',
           'header_and_footer_text_color'       => '#dcdcdc',
           'navbar_background_color'            => '#000000',
@@ -40,9 +49,8 @@ module Hyrax
           # 'active_tabs_background_color'     => '#337ab7',
           'facet_panel_background_color'       => '#f5f5f5',
           'facet_panel_text_color'             => '#333333'
-        }.freeze
-
-        DEFAULT_VALUES = DEFAULT_FONTS.merge(DEFAULT_COLORS).freeze
+        }
+        # @!endgroup Class Attributes
 
         # @param [Hash] attributes the list of parameters from the form
         def initialize(attributes = {})
@@ -430,8 +438,12 @@ module Hyrax
             "rgba(#{rgb[0]}, #{rgb[1]}, #{rgb[2]}, #{alpha})"
           end
 
+          def default_values
+            @default_values ||= default_fonts.merge(default_colors)
+          end
+
           def block_for(name, dynamic_default = nil)
-            ContentBlock.block_for(name: name, fallback_value: DEFAULT_VALUES[name] || dynamic_default)
+            ContentBlock.block_for(name: name, fallback_value: default_values[name] || dynamic_default)
           end
 
           # Persist a key/value tuple as a ContentBlock

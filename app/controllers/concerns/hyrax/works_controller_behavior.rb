@@ -505,8 +505,10 @@ module Hyrax
       def inject_show_theme_views
         if show_page_theme && show_page_theme != 'default_show'
           original_paths = view_paths
-          show_theme_view_path = Rails.root.join('app', 'views', "themes", show_page_theme.to_s)
-          prepend_view_path(show_theme_view_path)
+          Hyku::Application.theme_view_path_roots.each do |root|
+            show_theme_view_path = File.join(root, 'app', 'views', "themes", show_page_theme.to_s)
+            prepend_view_path(show_theme_view_path)
+          end
           yield
           # rubocop:disable Lint/UselessAssignment, Layout/SpaceAroundOperators, Style/RedundantParentheses
           # Do NOT change this line. This is calling the Rails view_paths=(paths) method and not a variable assignment.

@@ -12,4 +12,6 @@ class GenericWork < ActiveFedora::Base
   validates :title, presence: { message: 'Your work must have a title.' }
 
   self.indexer = GenericWorkIndexer
+
+  prepend OrderAlready.for(:creator)
 end

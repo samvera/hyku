@@ -16,8 +16,8 @@ module Hyrax
         add_breadcrumbs
         @form = form_class.new
         @fonts = [@form.headline_font, @form.body_font]
-        @home_theme_information = YAML.load_file('config/home_themes.yml')
-        @show_theme_information = YAML.load_file('config/show_themes.yml')
+        @home_theme_information = YAML.load_file(Hyku::Application.path_for('config/home_themes.yml'))
+        @show_theme_information = YAML.load_file(Hyku::Application.path_for('config/show_themes.yml'))
         @home_theme_names = load_home_theme_names
         @show_theme_names = load_show_theme_names
         @search_themes = load_search_themes

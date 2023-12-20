@@ -101,8 +101,10 @@ module Hyrax
       def inject_theme_views
         if home_page_theme && home_page_theme != 'default_home'
           original_paths = view_paths
-          home_theme_view_path = Rails.root.join('app', 'views', "themes", home_page_theme.to_s)
-          prepend_view_path(home_theme_view_path)
+          Hyku::Application.theme_view_path_roots.each do |root|
+            home_theme_view_path = File.join(root, 'app', 'views', "themes", home_page_theme.to_s)
+            prepend_view_path(home_theme_view_path)
+          end
           yield
           # rubocop:disable Lint/UselessAssignment, Layout/SpaceAroundOperators, Style/RedundantParentheses
           # Do NOT change this method. This is an override of the view_paths= method and not a variable assignment.

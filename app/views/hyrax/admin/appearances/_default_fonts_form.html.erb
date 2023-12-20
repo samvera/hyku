@@ -1,6 +1,6 @@
 <%= simple_form_for @form, url: admin_appearance_path do |f| %>
   <div class="panel-body defaultable-fonts">
-    <% df = @form.class::DEFAULT_FONTS %>
+    <% df = @form.default_fonts %>
     <% font = f.object.body_font %>
 
     <%= f.input :body_font, label: 'Select Body Font', required: false, input_html: { class: 'font-fields', data: { default_value: df['body_font'] } } %>

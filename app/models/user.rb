@@ -14,9 +14,7 @@ class User < ApplicationRecord
   include Blacklight::User
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :invitable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable, omniauth_providers: %i[saml openid_connect cas]
+  devise(*Hyku::Application.user_devise_parameters)
 
   after_create :add_default_group_membership!
 

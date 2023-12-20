@@ -1,5 +1,17 @@
 # frozen_string_literal: true
 
+#########################################################################################
+#########################################################################################
+#
+#
+# HACK: We have copied over the Hyrax::HomepageController to address Hyku specific
+#       customizations.  This controller needs significant refactoring and reconciliation
+#       with Hyrax prime.  Note, we are inheriting differently than Hyrax does and
+#       there are other adjustments.
+#
+#
+#########################################################################################
+#########################################################################################
 # OVERRIDE: Hyrax v2.9.0 to add home_text content block to the index method - Adding themes
 # OVERRIDE: Hyrax v2.9.0 from Hyrax v2.9.0 to add facets to home page - inheriting from
 # CatalogController rather than ApplicationController
@@ -18,10 +30,11 @@ module Hyrax
     include Blacklight::SearchHelper
     include Blacklight::AccessControls::Catalog
 
+    # OVERRIDE: account for Hyku themes
     around_action :inject_theme_views
 
     # The search builder for finding recent documents
-    # Override of Blacklight::RequestBuilders
+    # Override of Blacklight::RequestBuilders and default CatalogController behavior
     def search_builder_class
       Hyrax::HomepageSearchBuilder
     end
@@ -31,20 +44,23 @@ module Hyrax
     layout 'homepage'
     helper Hyrax::ContentBlockHelper
 
-    # override hyrax v2.9.0 added @home_text - Adding Themes
     def index
+      # BEGIN copy Hyrax prime's Hyrax::HomepageController#index
       @presenter = presenter_class.new(current_ability, collections)
       @featured_researcher = ContentBlock.for(:researcher)
       @marketing_text = ContentBlock.for(:marketing)
-      @home_text = ContentBlock.for(:home_text)
       @featured_work_list = FeaturedWorkList.new
-      # OVERRIDE here to add featured collection list
-      @featured_collection_list = FeaturedCollectionList.new
       @announcement_text = ContentBlock.for(:announcement)
       recent
+      # END copy
+
+      # BEGIN OVERRIDE
+      # What follows is Hyku specific overrides
+      @home_text = ContentBlock.for(:home_text) # hyrax v3.5.0 added @home_text - Adding Themes
+      @featured_collection_list = FeaturedCollectionList.new # OVERRIDE here to add featured collection list
+
       ir_counts if home_page_theme == 'institutional_repository'
 
-      # override hyrax v2.9.0 added for facets on homepage - Adding Themes
       (@response, @document_list) = search_results(params)
 
       respond_to do |format|
@@ -103,11 +119,11 @@ module Hyrax
         @recent_documents = []
       end
 
-      # OVERRIDE: Hyrax v2.9.0 to add facet counts for resource types for IR theme
       def ir_counts
         @ir_counts = get_facet_field_response('resource_type_sim', {}, "f.resource_type_sim.facet.limit" => "-1")
       end
 
+      # COPIED from Hyrax::HomepageController
       def sort_field
         "date_uploaded_dtsi desc"
       end

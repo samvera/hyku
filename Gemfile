@@ -13,10 +13,12 @@ gem 'addressable', '2.8.1' # remove once https://github.com/postrank-labs/postra
 gem 'apartment'
 gem 'aws-sdk-sqs', group: %i[aws]
 gem 'blacklight', '~> 6.7'
+gem 'blacklight_advanced_search'
 gem 'blacklight_oai_provider', '~> 6.1', '>= 6.1.1'
+gem 'blacklight_range_limit', '6.5.0'
 gem 'bolognese', '>= 1.9.10'
 gem 'bootstrap-datepicker-rails'
-gem 'bulkrax', '~> 5.3'
+gem 'bulkrax', '~> 5.4'
 gem 'byebug', group: %i[development test]
 gem 'capybara', group: %i[test]
 gem 'capybara-screenshot', '~> 1.0', group: %i[test]
@@ -35,6 +37,7 @@ gem 'factory_bot_rails', group: %i[test]
 gem 'fcrepo_wrapper', '~> 0.4', group: %i[development test]
 gem 'flipflop', '~> 2.6.0' # waiting for hyrax 4 upgrade
 gem 'flutie'
+gem 'good_job'
 gem 'hyrax', '~> 3.5.0'
 gem 'hyrax-doi', github: 'samvera-labs/hyrax-doi', branch: 'main'
 gem 'hyrax-iiif_av', github: 'samvera-labs/hyrax-iiif_av', branch: 'main'
@@ -56,6 +59,7 @@ gem 'omniauth-multi-provider'
 gem 'omniauth-rails_csrf_protection', '~> 1.0'
 gem 'omniauth-saml', '~> 2.1'
 gem 'omniauth_openid_connect'
+gem 'order_already'
 gem 'parser', '~> 2.5.3'
 gem 'pg'
 gem 'postrank-uri', '>= 1.0.24'

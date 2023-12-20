@@ -34,8 +34,66 @@ module Hyku
   end
 
   class Application < Rails::Application
+    ##
+    # @!group Class Attributes
+    #
+    # @!attribute html_head_title
+    #   The title to render for the application's HTML > HEAD > TITLE element.
+    #   @return [String]
+    class_attribute :html_head_title, default: "Hyku", attr_accessor: false
+
+    # @!attribute user_devise_parameters
+    #   @return [Object]
+    #
+    #   This is a value that you want to set in the before_initialize block.
+    class_attribute :user_devise_parameters, instance_accessor: false, default: [
+                      :database_authenticatable,
+                      :invitable,
+                      :registerable,
+                      :recoverable,
+                      :rememberable,
+                      :trackable,
+                      :validatable,
+                      :omniauthable, { omniauth_providers: %i[saml openid_connect cas] }]
+
+    # @!endgroup Class Attributes
+
     # Add this line to load the lib folder first because we need
+    # IiifPrint::SplitPdfs::AdventistPagesToJpgsSplitter
     config.autoload_paths.unshift("#{Rails.root}/lib")
+
+    ##
+    #   @return [Array<String>] an array of strings in which we should be looking for theme view
+    #           candidates.
+    # @see Hyrax::WorksControllerBehavior
+    # @see Hyrax::ContactFormController
+    # @see Hyrax::PagesController
+    # @see https://api.rubyonrails.org/classes/ActionView/ViewPaths.html#method-i-prepend_view_path
+    #
+    # @see .path_for
+    # @see
+    def self.theme_view_path_roots
+      returning_value = [Rails.root.to_s]
+      returning_value.push HykuKnapsack::Engine.root.to_s if defined?(HykuKnapsack)
+      returning_value
+    end
+
+    ##
+    # @api public
+    #
+    # @param relative_path [String] lookup the relative paths first in the Knapsack then in Hyku.
+    #
+    # @return [String] the path to the file, favoring those found in the knapsack but falling back
+    #         to those in the Rails.root.
+    # @see .theme_view_path_roots
+    def self.path_for(relative_path)
+      if defined?(HykuKnapsack)
+        engine_path = HykuKnapsack::Engine.root.join(relative_path)
+        return engine_path.to_s if engine_path.exist?
+      end
+
+      Rails.root.join(relative_path).to_s
+    end
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -61,8 +119,12 @@ module Hyku
 
     config.to_prepare do
 
-      # Add any extra services before IiifPrint::PluggableDerivativeService to enable processing
-      Hyrax::DerivativeService.services = [IiifPrint::PluggableDerivativeService]
+      # By default plain text files are not processed for text extraction.  In adding
+      # Adventist::TextFileTextExtractionService to the beginning of the services array we are
+      # enabling text extraction from plain text files.
+      Hyrax::DerivativeService.services = [
+        IiifPrint::PluggableDerivativeService
+      ]
 
       # When you are ready to use the derivative rodeo instead of the pluggable uncomment the
       # following and comment out the preceding Hyrax::DerivativeService.service
@@ -72,7 +134,7 @@ module Hyku
       #   IiifPrint::DerivativeRodeoService,
       #   Hyrax::FileSetDerivativesService]
 
-      DerivativeRodeo::Generators::HocrGenerator.additional_tessearct_options = "-l eng_best"
+      DerivativeRodeo::Generators::HocrGenerator.additional_tessearct_options = nil
 
       # Allows us to use decorator files
       Dir.glob(File.join(File.dirname(__FILE__), "../app/**/*_decorator*.rb")).sort.each do |c|

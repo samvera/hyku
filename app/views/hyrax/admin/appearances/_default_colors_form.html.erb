@@ -1,6 +1,6 @@
 <%= simple_form_for @form, url: admin_appearance_path do |f| %>
   <div class="panel-body defaultable-colors">
-    <% @form.class::DEFAULT_COLORS.each do |color_name, hex| %>
+    <% @form.default_colors.each do |color_name, hex| %>
       <%= render 'color_input', f: f, color_name: color_name, hex: hex %>
     <% end %>
   </div>

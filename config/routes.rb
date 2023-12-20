@@ -43,7 +43,6 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
 
   mount BrowseEverything::Engine => '/browse'
   resource :site, only: [:update] do
-    resources :roles, only: %i[index update]
     resource :labels, only: %i[edit update]
   end
 

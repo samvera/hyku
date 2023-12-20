@@ -26,32 +26,32 @@ RSpec.describe AdvSearchBuilder do
       # When we had those duplicates, the :add_advanced_parse_q_to_solr obliterated the join logic
       # for files.
       %i[
-        default_solr_parameters
-        add_query_to_solr
-        add_facet_fq_to_solr
-        add_facetting_to_solr
-        add_solr_fields_to_query
-        add_paging_to_solr
-        add_sorting_to_solr
-        add_group_config_to_solr
-        add_facet_paging_to_solr
-        add_range_limit_params
+        add_access_controls_to_solr_params
+        add_access_controls_to_solr_params
         add_advanced_parse_q_to_solr
         add_advanced_search_to_solr
-        add_access_controls_to_solr_params
-        filter_models
-        only_active_works
-        add_access_controls_to_solr_params
-        show_works_or_works_that_contain_files
-        show_only_active_records
-        filter_collection_facet_for_access
+        add_facet_fq_to_solr
+        add_facet_paging_to_solr
+        add_facetting_to_solr
+        add_group_config_to_solr
+        add_paging_to_solr
+        add_query_to_solr
+        add_range_limit_params
+        add_solr_fields_to_query
+        add_sorting_to_solr
+        default_solr_parameters
         exclude_models
+        filter_collection_facet_for_access
+        filter_models
         highlight_search_params
-        show_parents_only
         include_allinson_flex_fields
+        only_active_works
+        show_only_active_records
+        show_parents_only
+        show_works_or_works_that_contain_files
       ]
     end
 
-    it { is_expected.to eq(expected_default_processor_chain) }
+    it { is_expected.to match_array(expected_default_processor_chain) }
   end
 end

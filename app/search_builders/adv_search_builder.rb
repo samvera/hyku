@@ -19,6 +19,7 @@ class AdvSearchBuilder < IiifPrint::CatalogSearchBuilder
     solr_p["rows"]         = "0"
 
     # Anything set in config as a literal
-    solr_p.merge!(blacklight_config.advanced_search[:form_solr_parameters]) if blacklight_config.advanced_search[:form_solr_parameters]
+    return unless blacklight_config.advanced_search[:form_solr_parameters]
+    solr_p.merge!(blacklight_config.advanced_search[:form_solr_parameters])
   end
 end

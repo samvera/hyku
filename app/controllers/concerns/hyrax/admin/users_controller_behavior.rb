@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v3.4.2 Authorize User access and set up roles dropdown
+# OVERRIDE Hyrax v5.0.0rc2 Authorize User access and set up roles dropdown
 module Hyrax
   module Admin
     module UsersControllerBehavior
       extend ActiveSupport::Concern
       include Blacklight::SearchContext
       included do
-        # OVERRIDE Hyrax v3.4.2 Replace :ensure_admin! with :ensure_access! to leverage User abilities.
+        # OVERRIDE Hyrax v5.0.0rc2 Replace :ensure_admin! with :ensure_access! to leverage User abilities.
         # @see app/models/concerns/hyrax/ability/user_ability.rb
         before_action :ensure_access!
         with_themed_layout 'dashboard'
@@ -19,7 +19,7 @@ module Hyrax
         add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
         add_breadcrumb t(:'hyrax.admin.users.index.title'), hyrax.admin_users_path
         @presenter = Hyrax::Admin::UsersPresenter.new
-        # OVERRIDE Hyrax v3.4.2 Sets up a list of role names to be used by a dropdown input that
+        # OVERRIDE Hyrax v5.0.0rc2 Sets up a list of role names to be used by a dropdown input that
         # allows users to be invited with a specific role.
         @invite_roles_options = if current_ability.admin?
                                   ::RolesService::DEFAULT_ROLES
@@ -30,7 +30,7 @@ module Hyrax
 
       private
 
-      # OVERRIDE Hyrax v3.4.2 Replace :ensure_admin! with :ensure_access! to leverage User abilities.
+      # OVERRIDE Hyrax v5.0.0rc2 Replace :ensure_admin! with :ensure_access! to leverage User abilities.
       # @see app/models/concerns/hyrax/ability/user_ability.rb
       def ensure_access!
         authorize! :read, ::User

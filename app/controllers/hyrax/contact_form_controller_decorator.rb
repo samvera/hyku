@@ -1,26 +1,31 @@
 # frozen_string_literal: true
 
-# OVERRIDE: Hyrax v5.0.0
+# OVERRIDE: Hyrax v5.0.0rc2
 # - adds inject_theme_views method for theming
 # - adds homepage presenter for access to feature flippers
 # - adds access to content blocks in the show method
 # - adds @featured_collection_list to new method
 # - adds captcha
-
 module Hyrax
-  class ContactFormController < ApplicationController
+  module ContactFormControllerDecorator
+    extend ActiveSupport::Concern
+
     # OVERRIDE: Add for theming
     # Adds Hydra behaviors into the application controller
     include Blacklight::SearchContext
     include Blacklight::AccessControls::Catalog
-    before_action :build_contact_form
-    layout 'homepage'
 
-    # OVERRIDE: Adding inject theme views method for theming
-    around_action :inject_theme_views
-    class_attribute :model_class
-    self.model_class = Hyrax::ContactForm
-    before_action :setup_negative_captcha, only: %i[new create]
+    prepended do
+      # OVERRIDE: Adding inject theme views method for theming
+      around_action :inject_theme_views
+      before_action :setup_negative_captcha, only: %i[new create]
+
+      # OVERRIDE: Add for theming
+      class_attribute :presenter_class
+      self.presenter_class = Hyrax::HomepagePresenter
+
+      helper Hyrax::ContentBlockHelper
+    end
 
     # OVERRIDE: Add for theming
     # The search builder for finding recent documents
@@ -28,12 +33,6 @@ module Hyrax
     def search_builder_class
       Hyrax::HomepageSearchBuilder
     end
-
-    # OVERRIDE: Add for theming
-    class_attribute :presenter_class
-    self.presenter_class = Hyrax::HomepagePresenter
-
-    helper Hyrax::ContentBlockHelper
 
     def new
       # OVERRIDE: Add for theming
@@ -68,27 +67,7 @@ module Hyrax
     end
     # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
-    def handle_create_exception(exception)
-      logger.error("Contact form failed to send: #{exception.inspect}")
-      flash.now[:error] = 'Sorry, this message was not delivered.'
-      render :new
-    end
-
-    # Override this method if you want to perform additional operations
-    # when a email is successfully sent, such as sending a confirmation
-    # response to the user.
-    def after_deliver; end
-
     private
-
-    def build_contact_form
-      @contact_form = model_class.new(contact_form_params)
-    end
-
-    def contact_form_params
-      return {} unless params.key?(:contact_form)
-      params.require(:contact_form).permit(:contact_method, :category, :name, :email, :subject, :message)
-    end
 
     # OVERRIDE: return collections for theming
     # Return 6 collections, sorts by title
@@ -134,3 +113,5 @@ module Hyrax
     end
   end
 end
+
+Hyrax::ContactFormController.prepend(Hyrax::ContactFormControllerDecorator)

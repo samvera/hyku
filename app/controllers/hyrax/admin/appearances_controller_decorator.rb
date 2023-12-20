@@ -1,15 +1,10 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax 3.4 to add selectable themes
+# OVERRIDE Hyrax v5.0.0rc2 to add selectable themes
 
 module Hyrax
   module Admin
-    class AppearancesController < ApplicationController
-      before_action :require_permissions
-      with_themed_layout 'dashboard'
-      class_attribute :form_class
-      self.form_class = Hyrax::Forms::Admin::Appearance
-
+    module AppearancesControllerDecorator
       def show
         # TODO: make selected font the font that show in select box
         # TODO add body and headline font to the import url
@@ -43,14 +38,6 @@ module Hyrax
       end
 
       private
-
-      def update_params
-        params.require(:admin_appearance).permit(form_class.permitted_params)
-      end
-
-      def require_permissions
-        authorize! :update, :appearance
-      end
 
       def add_breadcrumbs
         add_breadcrumb t(:'hyrax.controls.home'), root_path
@@ -88,3 +75,5 @@ module Hyrax
     end
   end
 end
+
+Hyrax::Admin::AppearancesController.prepend(Hyrax::Admin::AppearancesControllerDecorator)

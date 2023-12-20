@@ -61,6 +61,7 @@ jobs:
       BUNDLE_PATH: vendor/bundle
       BUNDLE_JOBS: 4
       BUNDLE_RETRY: 3
+      HYKU_CACHE_ROOT: /tmp/hyku-cache
       HYKU_RESTRICT_CREATE_AND_DESTROY_PERMISSIONS: 'true'
       SOLR_ADMIN_USER: admin
       SOLR_ADMIN_PASSWORD: admin

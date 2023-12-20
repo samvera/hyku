@@ -4,6 +4,7 @@ RSpec.describe CreateAccount do
   subject { described_class.new(account) }
 
   let(:account) { FactoryBot.build(:sign_up_account) }
+  let(:stubbed_admin_set) { double(AdminSet, id: "admin_set/id") }
 
   describe '#create_tenant' do
     it 'creates a new apartment tenant' do
@@ -15,7 +16,7 @@ RSpec.describe CreateAccount do
       expect(Apartment::Tenant).to receive(:create).with(any_args) do |&block|
         block.call
       end
-      expect(AdminSet).to receive(:find_or_create_default_admin_set_id)
+      expect(Hyrax::AdminSetCreateService).to receive(:find_or_create_default_admin_set).and_return(stubbed_admin_set)
       subject.save
       expect(Site.reload.account).to eq account
     end
@@ -59,7 +60,7 @@ RSpec.describe CreateAccount do
       expect(RolesService).to receive(:create_default_hyrax_groups_with_roles!)
       expect(Hyrax::CollectionType).to receive(:find_or_create_default_collection_type)
       expect(Hyrax::CollectionType).to receive(:find_or_create_admin_set_type)
-      expect(AdminSet).to receive(:find_or_create_default_admin_set_id)
+      expect(Hyrax::AdminSetCreateService).to receive(:find_or_create_default_admin_set).and_return(stubbed_admin_set)
 
       account.create_defaults
     end

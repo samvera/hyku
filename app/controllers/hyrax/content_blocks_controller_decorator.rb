@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v3.4.0 to add home_text to permitted_params - Adding themes
+# OVERRIDE Hyrax v5.0.0rc2 to add home_text to permitted_params - Adding themes
+
 module Hyrax
   module ContentBlocksControllerDecorator
-    # override hyrax v2.9.0 added the home_text content block to permitted_params - Adding Themes
+    private
+
     def permitted_params
       params.require(:content_block).permit(:marketing,
                                             :announcement,

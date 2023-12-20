@@ -80,7 +80,9 @@ jobs:
           ruby_version: << parameters.ruby_version >>
           bundler_version: << parameters.bundler_version >>
       - samvera/rubocop
-      - browser-tools/install-chrome
+      - browser-tools/install-chrome:
+          chrome-version: 114.0.5735.90 # see https://github.com/CircleCI-Public/browser-tools-orb/pull/96
+          replace-existing: true
       - browser-tools/install-chromedriver
       - run:
           name: Check Chrome install

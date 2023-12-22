@@ -17,7 +17,7 @@ RSpec.describe 'Admin Dashboard', type: :feature, js: true, clean: true do
         expect(page).to have_link('Activity Summary')
         expect(page).to have_link('System Status')
         expect(page).to have_link("Your activity")
-        expect(page).to have_link('Reports')
+        expect(page).to have_link('Reports') if Hyrax.config.analytics?
         # Need to click link to open collapsed menu
         click_link "Your activity"
         expect(page).to have_link('Profile')

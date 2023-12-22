@@ -94,10 +94,9 @@ jobs:
       - samvera/parallel_rspec
       - store_artifacts:
           path: coverage
+      - run: mkdir ~/rspec
       - run:
-          name: Run tests and prepare for rerun of failed tests
           command: |
-            mkdir ~/rspec
             circleci tests glob "spec/**/*_spec.rb" | circleci tests run --command="xargs bundle exec rspec --format progress --format RspecJunitFormatter -o ~/rspec/rspec.xml" --verbose --split-by=timings
       - store_test_results:
           path: ~/rspec

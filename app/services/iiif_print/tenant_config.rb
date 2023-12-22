@@ -66,7 +66,7 @@ module IiifPrint
 
       %i[create_derivatives cleanup_derivatives].each do |method_name|
         define_method(method_name) do |*args|
-          raise LeakyAbstractionError.new(klass: self.class, method_name: method_name) unless use_iiif_print?
+          raise LeakyAbstractionError.new(klass: self.class, method_name:) unless use_iiif_print?
 
           iiif_print_service_instance.public_send(method_name, *args)
         end
@@ -176,7 +176,7 @@ module IiifPrint
 
       def members_include_iiif_viewable?
         iiif_presentable_member_presenters.any? do |presenter|
-          iiif_media?(presenter: presenter) && current_ability.can?(:read, presenter.id)
+          iiif_media?(presenter:) && current_ability.can?(:read, presenter.id)
         end
       end
 

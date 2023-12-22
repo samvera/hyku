@@ -10,7 +10,7 @@ module ApplicationHelper
   include HykuKnapsack::ApplicationHelper
 
   def label_for(term:, record_class: nil)
-    locale_for(type: 'labels', term: term, record_class: record_class)
+    locale_for(type: 'labels', term:, record_class:)
   end
 
   def hint_for(term:, record_class: nil)

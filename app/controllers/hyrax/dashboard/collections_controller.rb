@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # OVERRIDE Hyrax v3.4.2
 # - Fix file upload in logo and banner
 # - Use work titles for collection thumbnail select & to add an option to reset to the default thumbnail
@@ -46,8 +48,8 @@ module Hyrax
       self.membership_service_class = Collections::CollectionMemberSearchService
 
       load_and_authorize_resource except: [:index, :create],
-        instance_name: :collection,
-        class: Hyrax.config.collection_model
+                                  instance_name: :collection,
+                                  class: Hyrax.config.collection_model
 
       def deny_collection_access(exception)
         if exception.action == :edit
@@ -86,9 +88,11 @@ module Hyrax
         form
         collection_type
         # Gets original filename of an uploaded thumbnail. See #update
-        if ::SolrDocument.find(@collection.id).thumbnail_path.include? "uploaded_collection_thumbnails" and uploaded_thumbnail?
+        # rubocop:disable Style/GuardClause
+        if ::SolrDocument.find(@collection.id).thumbnail_path.include?("uploaded_collection_thumbnails") && uploaded_thumbnail?
           @thumbnail_filename = File.basename(uploaded_thumbnail_files.reject { |f| File.basename(f).include? @collection.id }.first)
         end
+        # rubocop:enable Style/GuardClause
       end
 
       def uploaded_thumbnail?
@@ -149,7 +153,7 @@ module Hyrax
       def process_branding
         process_banner_input
         process_logo_input
-        # TODO does this still work?
+        # TODO: does this still work?
         process_uploaded_thumbnail(params[:collection][:thumbnail_upload]) if params[:collection][:thumbnail_upload]
       end
 
@@ -182,7 +186,7 @@ module Hyrax
             flash[:notice] = t('hyrax.dashboard.my.action.collection_delete_fail')
             render :edit, status: :unprocessable_entity
           end
-          format.json { render json: { id: id }, status: :unprocessable_entity, location: dashboard_collection_path(@collection) }
+          format.json { render json: { id: }, status: :unprocessable_entity, location: dashboard_collection_path(@collection) }
         end
       end
 
@@ -209,17 +213,25 @@ module Hyrax
       # Renders a JSON response with a list of files in this collection
       # This is used by the edit form to populate the thumbnail_id dropdown
       # OVERRIDE: Hyrax 2.9 to use work titles for collection thumbnail select & to add an option to reset to the default thumbnail
+      # rubocop:disable Metrics/MethodLength
+      # rubocop:disable Metrics/AbcSize
       def files
         params[:q] = '' unless params[:q]
-        builder = Hyrax::CollectionMemberSearchBuilder.new(scope: self, collection: collection, search_includes_models: :works)
-        # get the default work image because we do not want to show any works in this dropdown that only have the default work image. this indicates that they have no files attached, and will throw an error if selected.
+        builder = Hyrax::CollectionMemberSearchBuilder.new(scope: self, collection:, search_includes_models: :works)
+        # get the default work image because we do not want to show any works in this dropdown that
+        # only have the default work image. this indicates that they have no files attached, and
+        # will throw an error if selected.
         default_work_thumbnail_path = Site.instance.default_work_image&.url.presence || ActionController::Base.helpers.image_path('default.png')
         work_with_no_files_thumbnail_path = ActionController::Base.helpers.image_path('work.png')
         response = repository.search(builder.where(params[:q]).query)
         # only return the works that have files, because these will be the only ones with a viable thumbnail
-        result = response.documents.reject { |document| document["thumbnail_path_ss"].blank? || document["thumbnail_path_ss"].include?(default_work_thumbnail_path) || document["thumbnail_path_ss"].include?(work_with_no_files_thumbnail_path) }.map do |document|
-          { id: document["thumbnail_path_ss"].split('/').last.gsub(/\?.*/, ''), text: document["title_tesim"].first }
+        result = response.documents.reject do |document|
+          document["thumbnail_path_ss"].blank? ||
+            document["thumbnail_path_ss"].include?(default_work_thumbnail_path) ||
+            document["thumbnail_path_ss"].include?(work_with_no_files_thumbnail_path)
         end
+
+        result.map! { |document| { id: document["thumbnail_path_ss"].split('/').last.gsub(/\?.*/, ''), text: document["title_tesim"].first } }
         reset_thumbnail_option = {
           id: '',
           text: 'Default thumbnail'
@@ -227,6 +239,8 @@ module Hyrax
         result << reset_thumbnail_option
         render json: result
       end
+      # rubocop:enable Metrics/MethodLength
+      # rubocop:enable Metrics/AbcSize
 
       private
 
@@ -278,14 +292,14 @@ module Hyrax
         return after_update_errors(form_err_msg(form)) unless form.validate(collection_params)
 
         result = transactions['change_set.update_collection']
-          .with_step_args(
+                 .with_step_args(
             'collection_resource.save_collection_banner' => { update_banner_file_ids: params["banner_files"],
-              banner_unchanged_indicator: params["banner_unchanged"] },
+                                                              banner_unchanged_indicator: params["banner_unchanged"] },
             'collection_resource.save_collection_logo' => { update_logo_file_ids: params["logo_files"],
-              alttext_values: params["alttext"],
-              linkurl_values: params["linkurl"] }
+                                                            alttext_values: params["alttext"],
+                                                            linkurl_values: params["linkurl"] }
           )
-          .call(form)
+                 .call(form)
         @collection = result.value_or { return after_update_errors(result.failure.first) }
 
         process_member_changes
@@ -323,8 +337,8 @@ module Hyrax
       def link_parent_collection(parent_id)
         child = collection.respond_to?(:valkyrie_resource) ? collection.valkyrie_resource : collection
         Hyrax::Collections::CollectionMemberService.add_member(collection_id: parent_id,
-          new_member: child,
-          user: current_user)
+                                                               new_member: child,
+                                                               user: current_user)
       end
 
       def uploaded_files(uploaded_file_ids)
@@ -475,9 +489,9 @@ module Hyrax
           form_class.model_attributes(params[:collection])
         else
           params.permit(collection: {})[:collection]
-            .merge(params.permit(:collection_type_gid)
+                .merge(params.permit(:collection_type_gid)
               .with_defaults(collection_type_gid: default_collection_type_gid))
-            .merge(member_of_collection_ids: Array(params[:parent_id]))
+                .merge(member_of_collection_ids: Array(params[:parent_id]))
         end
       end
 
@@ -490,7 +504,7 @@ module Hyrax
         participants = []
         permissions.each do |p|
           access = access(p)
-          participants << { agent_type: agent_type(p), agent_id: p["name"], access: access } if access
+          participants << { agent_type: agent_type(p), agent_id: p["name"], access: } if access
         end
         participants
       end
@@ -519,16 +533,16 @@ module Hyrax
         collection_id ||= (collection.try(:id) || @collection.id)
 
         Hyrax::Collections::CollectionMemberService
-          .add_members_by_ids(collection_id: collection_id,
-            new_member_ids: batch,
-            user: current_user)
+          .add_members_by_ids(collection_id:,
+                              new_member_ids: batch,
+                              user: current_user)
       end
 
       def remove_members_from_collection
         Hyrax::Collections::CollectionMemberService
           .remove_members_by_ids(collection_id: @collection.id,
-            member_ids: batch,
-            user: current_user)
+                                 member_ids: batch,
+                                 user: current_user)
       end
 
       def move_members_between_collections
@@ -588,7 +602,7 @@ module Hyrax
 
       # Instantiate the membership query service
       def collection_member_service
-        @collection_member_service ||= membership_service_class.new(scope: self, collection: collection, params: params_for_query)
+        @collection_member_service ||= membership_service_class.new(scope: self, collection:, params: params_for_query)
       end
 
       def member_works
@@ -607,7 +621,7 @@ module Hyrax
       def parent_collections
         page = params[:parent_collection_page].to_i
         query = Hyrax::Collections::NestedCollectionQueryService
-        collection.parent_collections = query.parent_collections(child: collection_object, scope: self, page: page)
+        collection.parent_collections = query.parent_collections(child: collection_object, scope: self, page:)
       end
 
       def collection_object
@@ -668,7 +682,7 @@ module Hyrax
             render 'new', status: :unprocessable_entity
           end
           wants.json do
-            render_json_response(response_type: :unprocessable_entity, options: { errors: errors })
+            render_json_response(response_type: :unprocessable_entity, options: { errors: })
           end
         end
       end
@@ -698,18 +712,19 @@ module Hyrax
             flash[:error] = errors.to_s
             render 'edit', status: :unprocessable_entity
           end
-          wants.json { render_json_response(response_type: :unprocessable_entity, options: { errors: errors }) }
+          wants.json { render_json_response(response_type: :unprocessable_entity, options: { errors: }) }
         end
       end
 
+      # rubocop:disable Metrics/MethodLength
       def process_uploaded_thumbnail(uploaded_file)
         dir_name = UploadedCollectionThumbnailPathService.upload_dir(@collection)
         saved_file = Rails.root.join(dir_name, uploaded_file.original_filename)
         # Create directory if it doesn't already exist
-        unless File.directory?(dir_name)
-          FileUtils.mkdir_p(dir_name)
-        else # clear contents
+        if File.directory?(dir_name) # clear contents
           delete_uploaded_thumbnail
+        else
+          FileUtils.mkdir_p(dir_name)
         end
         File.open(saved_file, 'wb') do |file|
           file.write(uploaded_file.read)
@@ -718,16 +733,17 @@ module Hyrax
         # Save two versions of the image: one for homepage feature cards and one for regular thumbnail
         image.resize('500x900').format("jpg").write("#{dir_name}/#{@collection.id}_card.jpg")
         image.resize('150x300').format("jpg").write("#{dir_name}/#{@collection.id}_thumbnail.jpg")
-        File.chmod(0664,"#{dir_name}/#{@collection.id}_thumbnail.jpg")
-        File.chmod(0664,"#{dir_name}/#{@collection.id}_card.jpg")
+        File.chmod(0o664, "#{dir_name}/#{@collection.id}_thumbnail.jpg")
+        File.chmod(0o664, "#{dir_name}/#{@collection.id}_card.jpg")
       end
+      # rubocop:enable Metrics/MethodLength
 
       ## OVERRIDE Hyrax 3.4.0 handle file locations
       def process_file_location(f)
-        if f.file_url =~ /^http/
+        if /^http/.match?(f.file_url)
           f.file.download!(f.file_url)
           f.file_url
-        elsif f.file_url =~ %r{^\/}
+        elsif %r{^\/}.match?(f.file_url)
           f.file.path
         else
           f.file_url

@@ -4,6 +4,9 @@
 
 module Hyrax
   module SearchServiceDecorator
+    # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/CyclomaticComplexity
+    # rubocop:disable Metrics/PerceivedComplexity
     def search_results
       builder = search_builder.with(user_params)
       builder.page = user_params[:page] if user_params[:page]
@@ -22,6 +25,9 @@ module Hyrax
         [response, response.documents]
       end
     end
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/PerceivedComplexity
+    # rubocop:enable Metrics/AbcSize
   end
 end
 

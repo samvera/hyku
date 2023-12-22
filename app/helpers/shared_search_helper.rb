@@ -17,7 +17,7 @@ module SharedSearchHelper
       id = model["id"]
     end
     request_params = %i[protocol host port].map { |method| ["request_#{method}".to_sym, request.send(method)] }.to_h
-    url = get_url(id: id, request: request_params, account_cname: account_cname, has_model: has_model)
+    url = get_url(id:, request: request_params, account_cname:, has_model:)
 
     # pass search query params to work show page; this helps pass the original query string to UV
     # which will then render highlighted matches for the original query.

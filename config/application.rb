@@ -158,7 +158,7 @@ module Hyku
       Object.include(AccountSwitch)
     end
 
-    config.autoload_paths << "#{Rails.root}/app/controllers/api"
+    config.autoload_paths << Rails.root.join("app", "controllers", "api")
 
     # copies tinymce assets directly into public/assets
     config.tinymce.install = :copy

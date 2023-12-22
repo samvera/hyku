@@ -16,13 +16,13 @@ module Hyrax
         defined?(super) ? super : @ability
       end
 
+      Request = Struct.new(:base_url, keyword_init: true)
+
       def request
         Request.new(base_url: hostname)
       end
 
       private
-
-      Request = Struct.new(:base_url, keyword_init: true)
 
       def image_content
         return nil unless latest_file_id
@@ -37,28 +37,50 @@ module Hyrax
         image_content_v3(url)
       end
 
+      ##
+      # @note In the case where we have stream_urls, we'll assume the URL is correct.  In the case
+      #       where we're deferring to the document, we'll use {.iiif_video_labels_and_mime_types}
+      def video_content
+        # @see https://github.com/samvera-labs/iiif_manifest
+        streams = stream_urls
+        if streams.present?
+          streams.collect { |label, url| video_display_content(url, label) }
+        else
+          Hyku::Application.iiif_video_labels_and_mime_types.map do |label, mime_type|
+            url = Hyku::Application.iiif_video_url_builder.call(document: solr_document, label:, host: request.base_url)
+            video_display_content(url, label, mime_type:)
+          end
+        end
+      end
+
       # rubocop:disable Metrics/MethodLength
-      def video_display_content(_url, label = '')
+      def video_display_content(url, label = '', mime_type: solr_document.mime_type)
         width = solr_document.width&.try(:to_i) || 320
         height = solr_document.height&.try(:to_i) || 240
         duration = conformed_duration_in_seconds
         IIIFManifest::V3::DisplayContent.new(
-          Hyrax::IiifAv::Engine.routes.url_helpers.iiif_av_content_url(
-            solr_document.id,
-            label:,
-            host: request.base_url
-          ),
+          url,
           label:,
           width:,
           height:,
           duration:,
           type: 'Video',
-          format: solr_document.mime_type
+          format: mime_type
         )
       end
-      # rubocop:enable Metrics/MethodLength
 
-      def audio_display_content(_url, label = '')
+      def audio_content
+        streams = stream_urls
+        if streams.present?
+          streams.collect { |label, url| audio_display_content(url, label) }
+        else
+          Hyku::Application.iiif_audio_labels_and_mime_types.map do |label, mime_type|
+            audio_display_content(download_path(label), label, mime_type:)
+          end
+        end
+      end
+
+      def audio_display_content(_url, label = '', mime_type: solr_document.mime_type)
         duration = conformed_duration_in_seconds
         IIIFManifest::V3::DisplayContent.new(
           Hyrax::IiifAv::Engine.routes.url_helpers.iiif_av_content_url(
@@ -69,7 +91,7 @@ module Hyrax
           label:,
           duration:,
           type: 'Sound',
-          format: solr_document.mime_type
+          format: mime_type
         )
       end
 

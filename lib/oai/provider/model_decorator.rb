@@ -4,6 +4,7 @@ module OAI
   module Provider
     module ModelDecorator
       # Map Qualified Dublin Core (Terms) fields to PALNI/PALCI fields
+      # rubocop:disable Metrics/MethodLength
       def map_oai_hyku
         {
           abstract: :abstract,
@@ -33,6 +34,7 @@ module OAI
           title: :title
         }
       end
+      # rubocop:enable Metrics/MethodLength
     end
   end
 end

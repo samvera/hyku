@@ -9,7 +9,7 @@ RSpec.describe 'Creating a new Work', type: :feature, clean: true do
     FactoryBot.create(:admin_group)
     FactoryBot.create(:editors_group)
     FactoryBot.create(:depositors_group)
-    AdminSet.find_or_create_default_admin_set_id
+    Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id
     login_as user, scope: :user
   end
 

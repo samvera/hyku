@@ -2,14 +2,14 @@
   <h1><span class="fa fa-address-book"></span> <%= t('hyku.admin.work_types') %></h1>
 <% end %>
 
-<div class="panel panel-default">
-  <div class="panel-body">
+<div class="card">
+  <div class="card-body">
     <%= simple_form_for @site, url: '/admin/work_types' do |f| %>
       <% Hyrax.config.registered_curation_concern_types.each do |type| %>
-        <div class="checkbox">
-          <label for="input-<%= type %>">
-            <%= check_box_tag 'available_works[]', type, @site.available_works&.include?(type), id: "input-#{type}" %>
-            <span><%= type %></span><br />
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="<%= type %>" id="input-<%= type %>" name="available_works[]" <%= 'checked' if @site.available_works&.include?(type) %>>
+          <label class="form-check-label" for="input-<%= type %>">
+            <%= type %>
           </label>
         </div>
       <% end %>

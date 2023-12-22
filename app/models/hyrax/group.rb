@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v3.4.2 Expand functionality for Groups with Roles Feature
+# OVERRIDE Hyrax v5.0.0rc2 Expand functionality for Groups with Roles Feature
 # @see https://github.com/samvera/hyku/wiki/Groups-with-Roles-Feature
 module Hyrax
   class Group < ApplicationRecord
@@ -15,6 +15,26 @@ module Hyrax
     has_many :roles, through: :group_roles
     before_destroy :can_destroy?
     after_destroy :remove_all_members
+
+    ##
+    # What is going on here?  In Hyrax proper, the Group model is a plain old Ruby object (PORO). In
+    # Hyku, the {Hyrax::Group} is based on ActiveRecord.
+    #
+    # The Hyrax version instantiates with a single string parameter.  Importantly, we want to re-use
+    # the Hyrax::Workflow::PermissionQuery logic, without re-writing it.  In particular we want to
+    # consider the Hyrax::Workflow::PermissionQuery#scope_processing_agents_for which casts the
+    # group to a Sipity::Agent
+    #
+    # @see https://github.com/samvera/hyrax/blob/main/app/models/hyrax/group.rb
+    # @see https://github.com/samvera/hyrax/blob/main/app/services/hyrax/workflow/permission_query.rb
+    def self.new(*args)
+      # This logic path is likely coming from Hyrax specific code; in which it expects a string.
+      if args.size == 1 && args.first.is_a?(String)
+        find_by(name: args.first) || super(name: args.first)
+      else
+        super
+      end
+    end
 
     def self.name_prefix
       DEFAULT_NAME_PREFIX
@@ -43,7 +63,7 @@ module Hyrax
       if query.present? && member_class == DEFAULT_MEMBER_CLASS
         members.where("email LIKE :q OR display_name LIKE :q", q: "%#{query}%")
       else
-        members(member_class: member_class)
+        members(member_class:)
       end
     end
 
@@ -85,7 +105,7 @@ module Hyrax
 
     def description_label
       label = description || I18n.t("hyku.admin.groups.description.#{name}")
-      return '' if label =~ /^translation missing:/
+      return '' if /^translation missing:/.match?(label)
 
       label
     end
@@ -98,22 +118,22 @@ module Hyrax
 
     private
 
-      def can_destroy?
-        return false if default_group?
+    def can_destroy?
+      return false if default_group?
 
-        true
-      end
+      true
+    end
 
-      def remove_all_members
-        members.map { |m| m.remove_role(MEMBERSHIP_ROLE, self) }
-      end
+    def remove_all_members
+      members.map { |m| m.remove_role(MEMBERSHIP_ROLE, self) }
+    end
 
-      def sipity_agent
-        Sipity::Agent.find_by(proxy_for_id: name, proxy_for_type: self.class.name)
-      end
+    def sipity_agent
+      Sipity::Agent.find_by(proxy_for_id: name, proxy_for_type: self.class.name)
+    end
 
-      def create_sipity_agent!
-        Sipity::Agent.create!(proxy_for_id: name, proxy_for_type: self.class.name)
-      end
+    def create_sipity_agent!
+      Sipity::Agent.create!(proxy_for_id: name, proxy_for_type: self.class.name)
+    end
   end
 end

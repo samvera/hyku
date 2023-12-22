@@ -44,23 +44,23 @@ module Admin
 
     private
 
-      def load_group
-        @group = Hyrax::Group.find_by(id: params[:group_id])
-      end
+    def load_group
+      @group = Hyrax::Group.find_by(id: params[:group_id])
+    end
 
-      def redirect_not_found
-        flash[:error] = 'Unable to find Group Role with that ID'
-        redirect_to admin_group_roles_path(@group)
-      end
+    def redirect_not_found
+      flash[:error] = 'Unable to find Group Role with that ID'
+      redirect_to admin_group_roles_path(@group)
+    end
 
-      def cannot_remove_admin_role_from_admin_group
-        role = Role.find_by(id: params[:role_id])
-        return unless @group.name == ::Ability.admin_group_name && role.name == 'admin'
+    def cannot_remove_admin_role_from_admin_group
+      role = Role.find_by(id: params[:role_id])
+      return unless @group.name == ::Ability.admin_group_name && role.name == 'admin'
 
-        redirect_back(
-          fallback_location: edit_admin_group_path(@group),
-          flash: { error: "Admin role cannot be removed from this group" }
-        )
-      end
+      redirect_back(
+        fallback_location: edit_admin_group_path(@group),
+        flash: { error: "Admin role cannot be removed from this group" }
+      )
+    end
   end
 end

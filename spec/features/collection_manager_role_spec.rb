@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'actions permitted by the collection_manager role', type: :feature, js: true, clean: true, ci: 'skip' do # rubocop:disable Metrics/LineLength
+RSpec.describe 'actions permitted by the collection_manager role', type: :feature, js: true, clean: true, ci: 'skip' do # rubocop:disable Layout/LineLength
   let!(:role) { FactoryBot.create(:role, :collection_manager) }
   let!(:collection) { FactoryBot.create(:private_collection_lw, with_permission_template: true) }
   let(:user) { FactoryBot.create(:user) }
@@ -213,7 +213,7 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
       it 'can add an existing work to a collection' do
         # Make current_user the depositor because the "Add existing works to this collection"
         # button navigates to the My Works index view
-        work = FactoryBot.create(:work, user: user)
+        work = FactoryBot.create(:work, user:)
         expect(collection.member_work_ids).to be_empty
 
         visit "/dashboard/collections/#{collection.id}"
@@ -461,7 +461,7 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
       it 'can add an existing work to a collection' do
         # Make current_user the depositor because the "Add existing works to this collection"
         # button navigates to the My Works index view
-        work = FactoryBot.create(:work, user: user)
+        work = FactoryBot.create(:work, user:)
         expect(collection.member_work_ids).to be_empty
 
         visit "/dashboard/collections/#{collection.id}"

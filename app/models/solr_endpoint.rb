@@ -29,6 +29,9 @@ class SolrEndpoint < Endpoint
 
   # Remove the solr collection then destroy this record
   def remove!
+    # NOTE: Other end points first call switch!; is that an oversight?  Perhaps not as we're relying
+    # on a scheduled job to do the destructive work.
+
     # Spin off as a job, so that it can fail and be retried separately from the other logic.
     if account.search_only?
       RemoveSolrCollectionJob.perform_later(collection, connection_options, 'cross_search_tenant')

@@ -8,7 +8,7 @@ class HykuMailer < ActionMailer::Base
 
   private
 
-    def host_for_tenant
-      Account.find_by(tenant: Apartment::Tenant.current)&.cname || Account.admin_host
-    end
+  def host_for_tenant
+    Account.find_by(tenant: Apartment::Tenant.current)&.cname || Account.admin_host
+  end
 end

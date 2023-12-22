@@ -15,7 +15,7 @@ class LeaseAutoExpiryJob < ApplicationJob
 
   private
 
-    def reenqueue(account)
-      LeaseAutoExpiryJob.set(wait_until: Date.tomorrow.midnight).perform_later(account)
-    end
+  def reenqueue(account)
+    LeaseAutoExpiryJob.set(wait_until: Date.tomorrow.midnight).perform_later(account)
+  end
 end

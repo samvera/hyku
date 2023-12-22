@@ -1,31 +1,29 @@
 <%= simple_form_for @form, url: admin_appearance_path do |f| %>
-  <div class="panel-body">
+  <div class="card-body">
     <% require_image = @form.banner_image? ? false : true %>
     <%# Upload Banner Image %>
     <%= f.input :banner_image, as: :file, wrapper: :vertical_file_input, required: require_image, hint: t('hyrax.admin.appearances.show.forms.banner_image.hint').html_safe, input_html: { name: 'admin_appearance[banner_image]' } %>
     <%= f.input :banner_image_text, required: true, as: :text, label: 'Banner image alt text' %>
-
     <!-- Image preview and cropping area -->
     <button type="button" id="activate-cropper" class="btn btn-primary" style=<%= @form.banner_image.url ? "display:block;" : "display:none;" %>>Crop Image</button>
     <br />
     <div id="image-preview" style="width: 100%; height: auto;">
-      <img id="image" src="<%= @form.banner_image.url || Hyrax.config.banner_image %>" alt="Banner Image Preview Area" class="img-responsive" />
+      <img id="image" src="<%= @form.banner_image.url || Hyrax.config.banner_image %>" alt="Banner Image Preview Area" class="img-fluid" />
     </div>
+    <%= image_tag @form.banner_image.url, class: "img-fluid" if @form.banner_image? %>
   </div>
-
   <div class="panel-footer">
-    <%= f.submit class: 'btn btn-primary pull-right banner-submit' %>
+    <%= f.submit class: 'btn btn-primary float-right banner-submit' %>
   </div>
 <% end %>
 
 <% if @form.banner_image? %>
-  <div class="panel-footer">
+  <div class="card-footer">
     <%= simple_form_for @form.site, url: main_app.site_path(@form.site) do |f| %>
       <%= f.submit 'Remove banner image', class: 'btn btn-danger pull-right', name: :remove_banner_image %>
     <% end %>
   </div>
 <% end %>
-
 <%# TODO: move this into the assets folder and make it work %>
 <script>
   var cropper;

@@ -3,17 +3,17 @@
   <div class="dd-handle dd3-handle">
     <%= t 'hyrax.homepage.featured_works.drag' %>
   </div>
-  <div class="dd3-content panel panel-default">
+  <div class="dd3-content card">
     <%= f.hidden_field :id %>
     <%= f.hidden_field :order, data: { property: "order" } %>
-    <div class="main row">
-      <div class="col-sm-12">
+    <div class="card-body row">
+      <div class="col-md-12">
         <% if can? :destroy, FeaturedCollection %>
-          <h3 class="pull-right">
+          <h3 class="float-right">
             <%= link_to main_app.featured_collection_path(presenter, format: :json),
               title: "Remove collection from feature section",
               data: {behavior: 'unfeature'} do %>
-              <i class='glyphicon glyphicon-remove'></i>
+              <i class='fas fa-times'></i>
             <% end %>
             <p class="sr-only"><%= t 'helpers.action.remove' %></p>
           </h3>

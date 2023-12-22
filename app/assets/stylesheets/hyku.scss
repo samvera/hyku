@@ -16,7 +16,7 @@
   }
 }
 
-@media (min-width: $screen-sm-min) {
+@media (min-width: 768px) {
   .logo-set {
     display: flex;
     flex-direction: column;
@@ -63,6 +63,7 @@
     margin-bottom: 20px;
   }
 
+  // TODO: Do we need this style or could we fallback on btn-primary
   .btn-sign-up {
     @include button-variant(
       $classic-white,
@@ -133,7 +134,7 @@ footer.navbar {
 
 .sidebar {
   .h5 {
-    padding: $nav-link-padding;
+    padding: 10px 15px;
   }
 
   &.maximized {
@@ -277,7 +278,7 @@ footer.navbar {
 }
 
 .callout-danger {
-  background-color: $well-bg;
+  background-color: #f5f5f5;
   border-color: $brand-danger;
 
   h1,
@@ -376,7 +377,7 @@ a.btn.btn-default.restore-default-color.with-color-hint {
   height: auto;
 }
 
-@media (min-width: $screen-lg-min) {
+@media (min-width: 1200px) {
   a.restore-default-color {
     margin-top: 2em;
   }
@@ -390,7 +391,7 @@ a.btn.btn-default.restore-default-color.with-color-hint {
   display: inline-block;
 }
 
-@media (max-width: $screen-md-min) {
+@media (max-width: 992px) {
   .product-features {
     .grid-item {
       width: 50%;
@@ -398,7 +399,7 @@ a.btn.btn-default.restore-default-color.with-color-hint {
   }
 }
 
-@media (max-width: $screen-sm-min) {
+@media (max-width: 768px) {
   .product-features {
     .grid-item {
       width: 100%;
@@ -446,7 +447,7 @@ body.public-facing {
 }
 
 // FEATURED COLLECTIONS
-@media (max-width: $screen-sm-min) {
+@media (max-width: 768px) {
   .admin-show-page
     .collection-title-row-wrapper
     .collection-title-row-content

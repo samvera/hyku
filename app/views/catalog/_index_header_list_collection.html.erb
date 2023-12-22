@@ -1,4 +1,8 @@
-<div class="search-results-title-row">
-  <h4 class="search-result-title"><%= link_to document.title_or_label, generate_work_url(document.to_h, request) %></h4>
+<%# OVERRIDE Hyrax v5.0.0rc2 %>
+
+<div class="search-results-title-row col-12 d-flex flex-row align-items-center pb-2">
+  <%# OVERRIDE begin %>
+  <h3 class="search-result-title mb-0 pr-3"><%= link_to document.title_or_label, generate_work_url(document.to_h, request) %></h3>
+  <%# OVERRIDE end %>
   <%= Hyrax::CollectionPresenter.new(document, current_ability).collection_type_badge %>
 </div>

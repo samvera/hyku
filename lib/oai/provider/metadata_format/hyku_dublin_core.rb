@@ -4,7 +4,9 @@ module OAI
   module Provider
     module MetadataFormat
       class HykuDublinCore < OAI::Provider::Metadata::Format
+        # rubocop:disable Lint/MissingSuper
         def initialize
+          # rubocop:enable Lint/MissingSuper
           @prefix = 'oai_hyku'
           @schema = 'http://dublincore.org/schemas/xmls/qdc/dcterms.xsd'
           @namespace = 'http://purl.org/dc/terms/'
@@ -21,6 +23,7 @@ module OAI
         end
 
         # Override to strip namespace and header out
+        # rubocop:disable Metrics/MethodLength
         def encode(model, record)
           xml = Builder::XmlMarkup.new
           map = model.respond_to?("map_#{prefix}") ? model.send("map_#{prefix}") : {}
@@ -41,7 +44,9 @@ module OAI
           end
           xml.target!
         end
+        # rubocop:enable Metrics/MethodLength
 
+        # rubocop:disable Metrics/MethodLength
         def add_public_file_urls(xml, record)
           return if record[:file_set_ids_ssim].blank?
 
@@ -61,6 +66,7 @@ module OAI
             xml.tag! 'file_url', file_download_path
           end
         end
+        # rubocop:enable Metrics/MethodLength
 
         def header_specification
           {

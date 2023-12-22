@@ -27,7 +27,7 @@ class FcrepoEndpoint < Endpoint
   def remove!
     switch!
     # Preceding slash must be removed from base_path when calling delete()
-    path = base_path.sub!(%r{^/}, '')
+    path = base_path.sub(%r{^/}, '')
     ActiveFedora.fedora.connection.delete(path)
     destroy
   end

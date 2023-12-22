@@ -16,4 +16,6 @@ class GenericWork < ActiveFedora::Base
 
   include ::Hyrax::BasicMetadata
   self.indexer = GenericWorkIndexer
+
+  prepend OrderAlready.for(:creator)
 end

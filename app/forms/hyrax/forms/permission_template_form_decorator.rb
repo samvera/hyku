@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax 3.4.1 to fix Hyrax::Groups args
+# OVERRIDE Hyrax v5.0.0rc2 to fix Hyrax::Groups args
 module Hyrax
   module Forms
     module PermissionTemplateFormDecorator

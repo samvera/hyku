@@ -2,10 +2,10 @@
 <div class="panel-tab-wrapper">
   <ul class="nav nav-tabs">
     <% navigation_presenter.tabs.each do |tab| %>
-      <%= content_tag :li, role: 'presentation', class: tab.css_class do %>
-        <%= link_to tab.name, tab.path %>
-      <% end %>
+      <li class="nav-item" role="presentation">
+        <%= link_to tab.name, tab.path, class: "nav-link #{'active' if tab.css_class == 'active'}" %>
+      </li>
     <% end %>
   </ul>
-  <%= link_to t('hyku.admin.groups.nav.index'), admin_groups_path, class: 'pull-right nav-escape-link' %>
+  <%= link_to t('hyku.admin.groups.nav.index'), admin_groups_path, class: 'float-right nav-escape-link' %>
 </div>

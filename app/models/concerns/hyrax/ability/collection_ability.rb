@@ -1,12 +1,15 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v3.4.2 Alter abilities for Groups with Roles feature
+# OVERRIDE Hyrax v5.0.0rc2 Alter abilities for Groups with Roles feature
 module Hyrax
   module Ability
+    # rubocop:disable Metrics/ModuleLength
     module CollectionAbility
       # rubocop:disable Metrics/MethodLength
       # rubocop:disable Metrics/BlockLength
       # rubocop:disable Metrics/AbcSize
+      # rubocop:disable Metrics/PerceivedComplexity
+      # rubocop:disable Metrics/CyclomaticComplexity
       def collection_abilities
         models = [Hyrax::PcdmCollection, Hyrax.config.collection_class].uniq
         if admin?
@@ -157,6 +160,9 @@ module Hyrax
       # rubocop:enable Metrics/MethodLength
       # rubocop:enable Metrics/BlockLength
       # rubocop:enable Metrics/AbcSize
+      # rubocop:enable Metrics/PerceivedComplexity
+      # rubocop:enable Metrics/CyclomaticComplexity
     end
+    # rubocop:enable Metrics/ModuleLength
   end
 end

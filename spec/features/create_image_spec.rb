@@ -10,13 +10,13 @@ RSpec.describe 'Create a Image', type: :feature, js: true, clean: true do
 
   context 'a logged in user with the :work_depositor role' do
     let(:user) { create(:user, roles: [:work_depositor]) }
-    let(:admin_set_id) { AdminSet.find_or_create_default_admin_set_id }
+    let(:admin_set_id) { Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id }
     let(:permission_template) { Hyrax::PermissionTemplate.find_or_create_by!(source_id: admin_set_id) }
     let(:workflow) do
       Sipity::Workflow.create!(
         active: true,
         name: 'test-workflow',
-        permission_template: permission_template
+        permission_template:
       )
     end
 
@@ -26,7 +26,7 @@ RSpec.describe 'Create a Image', type: :feature, js: true, clean: true do
       create(:editors_group)
       create(:depositors_group)
       # Create a single action that can be taken
-      Sipity::WorkflowAction.create!(name: 'submit', workflow: workflow)
+      Sipity::WorkflowAction.create!(name: 'submit', workflow:)
 
       # Grant the user access to deposit into the admin set.
       Hyrax::PermissionTemplateAccess.create!(
@@ -64,9 +64,9 @@ RSpec.describe 'Create a Image', type: :feature, js: true, clean: true do
       select('In Copyright', from: 'Rights statement')
 
       page.choose('image_visibility_open')
-      # rubocop:disable Metrics/LineLength
+      # rubocop:disable Layout/LineLength
       expect(page).to have_content('Please note, making something visible to the world (i.e. marking this as Public) may be viewed as publishing which could impact your ability to')
-      # rubocop:enable Metrics/LineLength
+      # rubocop:enable Layout/LineLength
       find('#agreement').click
 
       click_on('Save')

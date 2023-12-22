@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # Customer organization account
+# rubocop:disable Metrics/ClassLength
 class Account < ApplicationRecord
   include AccountEndpoints
   include AccountSettings
@@ -110,6 +111,8 @@ class Account < ApplicationRecord
     Hyrax::Engine.routes.default_url_options[:host] = cname
   end
 
+  DEFAULT_FILE_CACHE_STORE = ENV.fetch('HYKU_CACHE_ROOT', '/app/samvera/file_cache')
+
   def setup_tenant_cache(is_enabled)
     Rails.application.config.action_controller.perform_caching = is_enabled
     ActionController::Base.perform_caching = is_enabled
@@ -117,7 +120,7 @@ class Account < ApplicationRecord
     if is_enabled
       Rails.application.config.cache_store = :redis_cache_store, { url: Redis.current.id }
     else
-      Rails.application.config.cache_store = :file_store, ENV.fetch('HYKU_CACHE_ROOT', '/app/samvera/file_cache')
+      Rails.application.config.cache_store = :file_store, DEFAULT_FILE_CACHE_STORE
     end
     # rubocop:enable Style/ConditionalAssignment
     Rails.cache = ActiveSupport::Cache.lookup_store(Rails.application.config.cache_store)
@@ -144,3 +147,4 @@ class Account < ApplicationRecord
     cache_api
   end
 end
+# rubocop:enable Metrics/ClassLength

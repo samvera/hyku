@@ -9,14 +9,11 @@ class User < ApplicationRecord
   include Hyrax::User
   include Hyrax::UserUsageStats
 
-  attr_accessible :email, :password, :password_confirmation if Blacklight::Utils.needs_attr_accessible?
   # Connects this user object to Blacklights Bookmarks.
   include Blacklight::User
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :invitable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable, omniauth_providers: %i[saml openid_connect cas]
+  devise(*Hyku::Application.user_devise_parameters)
 
   after_create :add_default_group_membership!
 
@@ -25,7 +22,7 @@ class User < ApplicationRecord
     where(guest: false)
   end
 
-  scope :for_repository, -> {
+  scope :for_repository, lambda {
     joins(:roles)
   }
 
@@ -49,11 +46,15 @@ class User < ApplicationRecord
     email
   end
 
+  # rubocop:disable Naming/PredicateName
   def is_admin
+    # rubocop:enable Naming/PredicateName
     has_role?(:admin) || has_role?(:admin, Site.instance)
   end
 
+  # rubocop:disable Naming/PredicateName
   def is_superadmin
+    # rubocop:enable Naming/PredicateName
     has_role? :superadmin
   end
 
@@ -99,7 +100,8 @@ class User < ApplicationRecord
   #   u.hyrax_groups
   #   => [#<Hyrax::Group id: 2, name: "registered", description: nil,...>]
   def hyrax_groups
-    roles.where(name: 'member', resource_type: 'Hyrax::Group').map(&:resource).uniq
+    # Why compact?  In theory we shouldn't need this.  But in tests we're seeing a case
+    roles.where(name: 'member', resource_type: 'Hyrax::Group').map(&:resource).uniq.compact
   end
 
   # Override method from hydra-access-controls v11.0.0 to use Hyrax::Groups.
@@ -107,6 +109,13 @@ class User < ApplicationRecord
   # @return [Array] Hyrax::Group names the User is a member of
   def groups
     hyrax_groups.map(&:name)
+  rescue NoMethodError
+    # Not quite raising the same exception, but this code is here to catch a flakey spec.  What we're
+    # seeing is that an element in `hyrax_groups` is `nil` and which does not respond to `#name`.
+    # Looking at `#hyrax_groups` method, it's unclear how we'd find `nil`.
+    #
+    # Perhaps the `Hyrax::Group` is in a tenant and `Role` is not?  Hmm.
+    raise "Hyrax::Groups: #{roles.where(name: 'member', resource_type: 'Hyrax::Group').all.inspect}\nRoles: #{roles.all.inspect}"
   end
 
   # NOTE: This is an alias for #groups to clarify what the method is doing.

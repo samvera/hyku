@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Hyrax
-  # This decorator is used to override logic found in Hyrax v3.4.2
+  # This decorator is used to override logic found in Hyrax v5.0.0rc2
   #
   # Because Hyku has converted the Hyrax::Group model from a PORO to a db-backed active record object,
   # we have to query for existing Hyrax groups instead of initializing empty ones.
@@ -16,8 +16,8 @@ module Hyrax
           ActiveRecord::Base.transaction do
             permission_template = PermissionTemplate.find_by(source_id: result.id.to_s) ||
                                   permissions_create_service.create_default(collection: result,
-                                                                            creating_user: creating_user)
-            create_workflows_for(permission_template: permission_template)
+                                                                            creating_user:)
+            create_workflows_for(permission_template:)
             # OVERRIDE: Remove call to #create_default_access_for, which granted
             # deposit access to all registered users for the Default Admin Set
           end
@@ -27,23 +27,25 @@ module Hyrax
       updated_admin_set
     end
 
+    private
+
     def workflow_agents
       [
         # OVERRIDE: replace #new with #find_by(:name)
-        Hyrax::Group.find_by(name: admin_group_name)
+        Sipity::Agent(Hyrax::Group.find_by(name: admin_group_name))
       ].tap do |agent_list|
         # The default admin set does not have a creating user
-        agent_list << creating_user if creating_user
+        agent_list << Sipity::Agent(creating_user) if creating_user
       end
     end
 
     def create_workflows_for(permission_template:)
-      workflow_importer.call(permission_template: permission_template)
+      workflow_importer.call(permission_template:)
       # OVERRIDE: Extract and expand upon granting Workflow Roles into service object so it can be used in RolesService
       Hyrax::Workflow::PermissionGrantor
-        .grant_default_workflow_roles!(permission_template: permission_template, creating_user: creating_user)
+        .grant_default_workflow_roles!(permission_template:, creating_user:)
       Sipity::Workflow
-        .activate!(permission_template: permission_template, workflow_name: Hyrax.config.default_active_workflow_name)
+        .activate!(permission_template:, workflow_name: Hyrax.config.default_active_workflow_name)
     end
   end
 end

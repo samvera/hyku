@@ -16,9 +16,7 @@ FactoryBot.define do
         attributes[:manage_groups] = [Ability.admin_group_name]
         attributes[:deposit_groups] = ['work_editor', 'work_depositor']
         attributes[:view_groups] = ['work_editor']
-        if evaluator.with_permission_template.respond_to?(:merge)
-          attributes = evaluator.with_permission_template.merge(attributes)
-        end
+        attributes = evaluator.with_permission_template.merge(attributes) if evaluator.with_permission_template.respond_to?(:merge)
         # There is a unique constraint on permission_templates.source_id; I don't want to
         # create a permission template if one already exists for this admin_set
         create(:permission_template, attributes) unless Hyrax::PermissionTemplate.find_by(source_id: admin_set.id)

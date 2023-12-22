@@ -9,14 +9,14 @@
 <% end %>
 
 <% if can? :create, User %>
-  <div class="panel panel-default users-invite">
-    <div class="panel-heading">
+  <div class="card users-invite">
+    <div class="card-header">
         <%= t('.invite_users') %>
     </div>
 
-    <div class="panel-body">
+    <div class="card-body">
       <%# user_invitation_path is provided by devise_invitable %>
-      <%= simple_form_for :user,  url: main_app.user_invitation_path, html: { class: 'form-inline pull-left' } do |f| %>
+      <%= simple_form_for :user,  url: main_app.user_invitation_path, html: { class: 'form-inline d-inline-flex' } do |f| %>
         <div class="form-group">
           <%= f.hint :email %>
           <%= f.label :email, class: "control-label", required: false %>
@@ -33,12 +33,12 @@
   </div>
 <% end %>
 
-<div class="panel panel-default users-listing">
-  <div class="panel-heading">
+<div class="card users-listing">
+  <div class="card-header">
       <%= t('hyrax.admin.users.index.describe_users_html', count: @presenter.user_count) %>
   </div>
 
-  <div class="panel-body">
+  <div class="card-body">
     <div class="table-responsive">
       <table class="table table-striped datatable">
         <thead>

@@ -1,4 +1,4 @@
-<%# OVERRIDE Hyrax 3.5.0 to add appropriate alt tag %>
+<%# OVERRIDE Hyrax v5.0.0rc2 to add appropriate alt tag %>
 
 <tr id="document_<%= document.id %>">
 
@@ -9,14 +9,14 @@
 
   <td>
     <div class='media'>
+      <%# OVERRIDE begin %>
       <%= link_to [main_app, document], class: 'media-left' do %>
         <%= render_thumbnail_tag document, { class: 'hidden-xs file_listing_thumbnail', alt: block_for(name: 'default_work_image_text') || "#{document.title_or_label} #{t('hyrax.homepage.admin_sets.thumbnail')}" }, { suppress_link: true } %>
       <% end %>
+      <%# OVERRIDE end %>
 
       <div class='media-body'>
-        <div class='media-heading'>
-
-          <%= link_to [main_app, document], id: "src_copy_link#{document.id}", class: 'document-title' do %>
+        <%= link_to [main_app, document], id: "src_copy_link#{document.id}", class: 'document-title' do %>
             <span class="sr-only">
               <%= t("hyrax.dashboard.my.sr.show_label") %>
             </span>
@@ -25,8 +25,6 @@
 
           <br />
           <%= render_collection_links(document) %>
-
-        </div>
       </div>
     </div>
   </td>

@@ -49,19 +49,11 @@ module Hyrax
     # @return String the access label (e.g. Manage, Deposit, View)
     def managed_access
       # OVERRIDE: Change check for manage access from :edit to :destroy
-      if current_ability.can?(:destroy, solr_document)
-        return I18n.t('hyrax.dashboard.my.collection_list.managed_access.manage')
-      end
+      return I18n.t('hyrax.dashboard.my.collection_list.managed_access.manage') if current_ability.can?(:destroy, solr_document)
       # OVERRIDE: Add label for Edit access
-      if current_ability.can?(:edit, solr_document)
-        return I18n.t('hyrax.dashboard.my.collection_list.managed_access.edit')
-      end
-      if current_ability.can?(:deposit, solr_document)
-        return I18n.t('hyrax.dashboard.my.collection_list.managed_access.deposit')
-      end
-      if current_ability.can?(:read, solr_document)
-        return I18n.t('hyrax.dashboard.my.collection_list.managed_access.view')
-      end
+      return I18n.t('hyrax.dashboard.my.collection_list.managed_access.edit') if current_ability.can?(:edit, solr_document)
+      return I18n.t('hyrax.dashboard.my.collection_list.managed_access.deposit') if current_ability.can?(:deposit, solr_document)
+      return I18n.t('hyrax.dashboard.my.collection_list.managed_access.view') if current_ability.can?(:read, solr_document)
       ''
     end
 
@@ -87,7 +79,7 @@ module Hyrax
         filename = File.split(banner_info.first.local_path).last unless banner_info.empty?
         alttext = banner_info.first.alt_text unless banner_info.empty?
         relative_path = "/" + banner_info.first.local_path.split("/")[-4..-1].join("/") unless banner_info.empty?
-        { filename: filename, relative_path: relative_path, alt_text: alttext }
+        { filename:, relative_path:, alt_text: alttext }
       end
     end
 
@@ -125,9 +117,7 @@ module Hyrax
 
     def collection_featured?
       # only look this up if it's not boolean; ||= won't work here
-      if @collection_featured.nil?
-        @collection_featured = FeaturedCollection.where(collection_id: solr_document.id).exists?
-      end
+      @collection_featured = FeaturedCollection.where(collection_id: solr_document.id).exists? if @collection_featured.nil?
       @collection_featured
     end
 

@@ -66,9 +66,7 @@ module Hyku
 
     def collection_featured?
       # only look this up if it's not boolean; ||= won't work here
-      if @collection_featured.nil?
-        @collection_featured = FeaturedCollection.where(collection_id: solr_document.id).exists?
-      end
+      @collection_featured = FeaturedCollection.where(collection_id: solr_document.id).exists? if @collection_featured.nil?
       @collection_featured
     end
 
@@ -114,17 +112,27 @@ module Hyku
 
     private
 
-      def extract_video_embed_presence
-        solr_document[:video_embed_tesim]&.first&.present?
-      end
+    def extract_video_embed_presence
+      solr_document[:video_embed_tesim]&.first&.present?
+    end
 
-      def extract_from_identifier(rgx)
-        if solr_document['identifier_tesim'].present?
-          ref = solr_document['identifier_tesim'].map do |str|
-            str.scan(rgx)
-          end
-        end
-        ref
+    def iiif_media?(presenter: representative_presenter)
+      presenter.image? || presenter.video? || presenter.audio? || presenter.pdf?
+    end
+
+    def members_include_viewable?
+      file_set_presenters.any? do |presenter|
+        iiif_media?(presenter:) && current_ability.can?(:read, presenter.id)
       end
+    end
+
+    def extract_from_identifier(rgx)
+      if solr_document['identifier_tesim'].present?
+        ref = solr_document['identifier_tesim'].map do |str|
+          str.scan(rgx)
+        end
+      end
+      ref
+    end
   end
 end

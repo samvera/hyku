@@ -158,7 +158,7 @@ RSpec.describe RolesService, clean: true do
       end
 
       it "does not reset the Collection's access controls unnecessarily" do
-        expect_any_instance_of(Collection).not_to receive(:reset_access_controls!)
+        expect_any_instance_of(Hyrax::PermissionTemplate).not_to receive(:reset_access_controls_for)
 
         roles_service.create_collection_accesses!
       end
@@ -236,7 +236,7 @@ RSpec.describe RolesService, clean: true do
       end
 
       it "resets the Collection's access controls" do
-        expect_any_instance_of(Collection).to receive(:reset_access_controls!).once
+        expect_any_instance_of(Hyrax::PermissionTemplate).to receive(:reset_access_controls_for).once
 
         roles_service.create_collection_accesses!
       end
@@ -253,7 +253,7 @@ RSpec.describe RolesService, clean: true do
       end
 
       it "does not reset the AdminSet's access controls unnecessarily" do
-        expect_any_instance_of(AdminSet).not_to receive(:reset_access_controls!)
+        expect_any_instance_of(Hyrax::PermissionTemplate).not_to receive(:reset_access_controls_for)
 
         roles_service.create_admin_set_accesses!
       end
@@ -351,7 +351,7 @@ RSpec.describe RolesService, clean: true do
       end
 
       it "resets the AdminSet's access controls" do
-        expect_any_instance_of(AdminSet).to receive(:reset_access_controls!).once
+        expect_any_instance_of(Hyrax::PermissionTemplate).to receive(:reset_access_controls_for).once
 
         roles_service.create_admin_set_accesses!
       end
@@ -452,7 +452,7 @@ RSpec.describe RolesService, clean: true do
     context 'when CollectionTypes grant access to other users/groups' do
       before do
         creator_user = FactoryBot.create(:user)
-        FactoryBot.create(:collection_type, creator_user: creator_user)
+        FactoryBot.create(:collection_type, creator_user:)
         FactoryBot.create(:collection_type, creator_group: 'Test Group')
         FactoryBot.create(:collection_type, manager_group: ::Ability.admin_group_name)
         FactoryBot.create(:collection_type, manager_group: ::Ability.registered_group_name)
@@ -629,7 +629,7 @@ RSpec.describe RolesService, clean: true do
     permission_template.access_grants.where(
       agent_type: Hyrax::PermissionTemplateAccess::GROUP,
       agent_id: role,
-      access: access
+      access:
     ).count
   end
 end

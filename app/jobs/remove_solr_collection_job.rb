@@ -15,8 +15,8 @@ class RemoveSolrCollectionJob < ApplicationJob
 
   private
 
-    def solr_client(connection_options)
-      # We remove the adapter, otherwise RSolr 2 will try to use it as a Faraday middleware
-      RSolr.connect(connection_options.without('adapter'))
-    end
+  def solr_client(connection_options)
+    # We remove the adapter, otherwise RSolr 2 will try to use it as a Faraday middleware
+    RSolr.connect(connection_options.without('adapter'))
+  end
 end

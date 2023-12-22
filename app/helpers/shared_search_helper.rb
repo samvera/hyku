@@ -19,21 +19,22 @@ module SharedSearchHelper
     request_params = %i[protocol host port].map { |method| ["request_#{method}".to_sym, request.send(method)] }.to_h
     url = get_url(id: id, request: request_params, account_cname: account_cname, has_model: has_model)
 
-    # pass search query params to work show page
+    # pass search query params to work show page; this helps pass the original query string to UV
+    # which will then render highlighted matches for the original query.
     params[:q].present? ? "#{url}?q=#{params[:q]}" : url
   end
 
   private
 
-    def get_url(id:, request:, account_cname:, has_model:)
-      new_url = "#{request[:request_protocol]}#{account_cname || request[:request_host]}"
-      new_url += ":#{request[:request_port]}" if Rails.env.development? || Rails.env.test?
-      new_url += case has_model
-                 when "collections"
-                   "/#{has_model}/#{id}"
-                 else
-                   "/concern/#{has_model}/#{id}"
-                 end
-      new_url
-    end
+  def get_url(id:, request:, account_cname:, has_model:)
+    new_url = "#{request[:request_protocol]}#{account_cname || request[:request_host]}"
+    new_url += ":#{request[:request_port]}" if Rails.env.development? || Rails.env.test?
+    new_url += case has_model
+               when "collections"
+                 "/#{has_model}/#{id}"
+               else
+                 "/concern/#{has_model}/#{id}"
+               end
+    new_url
+  end
 end

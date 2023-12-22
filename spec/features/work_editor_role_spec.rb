@@ -21,7 +21,7 @@ RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, ci: 's
   let!(:admin_set) do
     admin_set = AdminSet.new(title: ['Test Admin Set'])
     allow(Hyrax.config).to receive(:default_active_workflow_name).and_return('default')
-    Hyrax::AdminSetCreateService.new(admin_set: admin_set, creating_user: nil).create
+    Hyrax::AdminSetCreateService.new(admin_set:, creating_user: nil).create
     admin_set.reload
   end
   let!(:work) { process_through_actor_stack(build(:work), work_depositor, admin_set.id, visibility) }
@@ -100,9 +100,9 @@ RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, ci: 's
       select('In Copyright', from: 'Rights statement')
 
       page.choose('generic_work_visibility_open')
-      # rubocop:disable Metrics/LineLength
+      # rubocop:disable Layout/LineLength
       expect(page).to have_content('Please note, making something visible to the world (i.e. marking this as Public) may be viewed as publishing which could impact your ability to')
-      # rubocop:enable Metrics/LineLength
+      # rubocop:enable Layout/LineLength
       find('#agreement').click
 
       expect { click_on('Save') }

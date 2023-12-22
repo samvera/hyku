@@ -15,7 +15,7 @@ class EmbargoAutoExpiryJob < ApplicationJob
 
   private
 
-    def reenqueue(account)
-      EmbargoAutoExpiryJob.set(wait_until: Date.tomorrow.midnight).perform_later(account)
-    end
+  def reenqueue(account)
+    EmbargoAutoExpiryJob.set(wait_until: Date.tomorrow.midnight).perform_later(account)
+  end
 end

@@ -5,7 +5,7 @@ module GoogleTagManagerHelper
     return '' if current_account.gtm_id.blank?
 
     # rubocop:disable Rails/OutputSafety
-    <<-HTML.strip_heredoc.html_safe
+    <<~HTML.html_safe
       <!-- Google Tag Manager -->
       <script>
        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -23,7 +23,7 @@ module GoogleTagManagerHelper
     # render 'layouts/google/gtm_body'
     return '' if current_account.gtm_id.blank?
     # rubocop:disable Rails/OutputSafety
-    <<-HTML.strip_heredoc.html_safe
+    <<~HTML.html_safe
        <!-- Google Tag Manager (noscript) -->
 
       <noscript><iframe src='https://www.googletagmanager.com/ns.html?id="#{current_account.gtm_id}"'

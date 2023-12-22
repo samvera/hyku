@@ -2,7 +2,7 @@
 
 RSpec.describe "OAI PMH Support", type: :feature do
   let(:user) { create(:user) }
-  let(:work) { create(:work, user: user) }
+  let(:work) { create(:work, user:) }
   let(:identifier) { work.id }
 
   before do
@@ -26,7 +26,7 @@ RSpec.describe "OAI PMH Support", type: :feature do
         end
 
         it 'retrieves a single record' do
-          visit oai_catalog_path(verb: 'GetRecord', metadataPrefix: metadata_prefix, identifier: identifier)
+          visit oai_catalog_path(verb: 'GetRecord', metadataPrefix: metadata_prefix, identifier:)
           expect(page).to have_content("hyku:#{identifier}")
           expect(page).to have_content(work.title.first)
         end

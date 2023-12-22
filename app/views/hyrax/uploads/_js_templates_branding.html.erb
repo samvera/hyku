@@ -1,8 +1,8 @@
- <!-- OVERRIDE Hyrax v3.4.0 to add text for collection banner image -->
+<!-- OVERRIDE Hyrax v5.0.0rc2 to add text for collection banner image -->
 <!-- The template to display files available for upload -->
 <script id="template-upload" type="text/x-tmpl">
 {% for (var i=0, file; file=o.files[i]; i++) { %}
-    <tr class="template-upload fade">
+    <tr class="template-upload fade show">
       <td>
         <span class="preview"></span>
       </td>
@@ -38,7 +38,7 @@
 <!-- The template to display the banner once upload is complete -->
 <script id="template-download" type="text/x-tmpl">
 {% for (var i=0, file; file=o.files[i]; i++) { %}
-        <span class="template-download fade">
+        <span class="template-download fade show">
           <div id="banner">
             <div class="row branding-banner-row">
               <div class="col-sm-3">
@@ -47,20 +47,18 @@
                   <input type="hidden" name="banner_files[]" value="{%=file.id%}">
                 </span>
                 {% if (file.error) { %}
-                  <span><span class="label label-danger"><%= t('.error') %></span> {%=file.error%}</span>
+                  <span><span class="badge badge-danger"><%= t('.error') %></span> {%=file.error%}</span>
                 {% } %}
               </div>
 
-
               <div class="col-sm-4 branding-banner-input">
-                <label for="banner_text"><%= t('.alt_text') %>
-                  <input id="banner_text" type="text" name="banner_text[]" class="branding-banner-input" single>
-                </label>
+                <label for="banner_text"><%= t('.alt_text') %></label>
+                <input id="banner_text" type="text" name="banner_text[]" class="form-control branding-banner-input" single>
               </div>
 
               <div class="col-sm-2">
                 <button class="btn btn-link remove branding-banner-remove" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}" onclick=$("#banner").remove(); {% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
-                  <span class="glyphicon glyphicon-remove"></span>
+                  <span class="fa fa-times"></span>
                   <span class="controls-remove-text"><%= t('.remove') %></span>
                   <span class="sr-only">
                     <%= t('.previous') %>
@@ -77,7 +75,7 @@
 <!-- The template to display logo in the table once upload is complete -->
 <script id="logo-template-download" type="text/x-tmpl">
 {% for (var i=0, file; file=o.files[i]; i++) { %}
-            <span class="template-download fade">
+            <span class="template-download fade show">
             <div class="row branding-logo-row">
               <div class="col-sm-3">
                 <span class="preview">
@@ -96,7 +94,7 @@
                 </span>
 
                 {% if (file.error) { %}
-                    <span><span class="label label-danger">Error</span> {%=file.error%}</span>
+                    <span><span class="badge badge-danger">Error</span> {%=file.error%}</span>
                 {% } %}
               </div>
 
@@ -112,7 +110,7 @@
               <div class="col-sm-2 text-right">
                 <span class="input-group-btn field-controls">
             <button class="btn btn-sm btn-danger delete branding-logo-remove" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
-                    <span class="glyphicon glyphicon-remove"></span>
+                    <span class="fa fa-times"></span>
                     <span class="controls-remove-text">Remove</span>
                     <span class="sr-only">
                       <%= t('.previous') %>

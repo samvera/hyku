@@ -21,7 +21,7 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
         creator: ['depositor@example.com'],
         keyword: ['asdf'],
         rights_statement: 'http://rightsstatements.org/vocab/CNE/1.0/',
-        visibility: visibility,
+        visibility:,
         admin_set_id: admin_set.id
       }
     }
@@ -29,7 +29,7 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
   let!(:admin_set) do
     admin_set = AdminSet.new(title: ['Test Admin Set'])
     allow(Hyrax.config).to receive(:default_active_workflow_name).and_return('default')
-    Hyrax::AdminSetCreateService.new(admin_set: admin_set, creating_user: nil).create
+    Hyrax::AdminSetCreateService.new(admin_set:, creating_user: nil).create
     admin_set.reload
   end
   let!(:work) { process_through_actor_stack(build(:work), work_depositor, admin_set.id, visibility) }

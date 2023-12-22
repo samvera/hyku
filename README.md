@@ -340,7 +340,7 @@ More info about configuring and using bulkrax can be found [here](https://github
 
 ### Commandline Importers
 
-Importing from CSV and PURL directly can be done via Bulkrax and the built in code in Hyku is slated for deletion in the next release.
+Importing from CSV and PURL directly can be done via Bulkrax.
 
 ## Compatibility
 

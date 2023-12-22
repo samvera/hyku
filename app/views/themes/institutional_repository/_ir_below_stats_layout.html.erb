@@ -1,11 +1,11 @@
 <div class="row">
-  <div class="col-xs-12 col-md-8 institutional-repository collections-container mb-40">
-    <div class="col-sm-12">
+  <div class="col-12 col-md-8 institutional-repository collections-container mb-40">
+    <div class="col-12">
       <h3>Featured Collections</h3>
       <%= render 'featured_collection_section' %>
     </div>
   </div>
-  <div class="col-xs-12 col-md-4 institutional-repository">
+  <div class="col-12 col-md-4 institutional-repository">
     <% if display_content_block? @home_text %>
       <%= render 'themes/institutional_repository/home_text' if controller_name == 'homepage' %>
     <% end %>

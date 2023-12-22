@@ -10,16 +10,16 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require codemirror
-//= require codemirror-autorefresh
-//= require codemirror/modes/css
 //= require jquery3
-//= require jquery_ujs
+//= require rails-ujs
+//= require popper
+//= require twitter/typeahead
+//= require bootstrap
 //= require jquery.fontselect
 //= require cropper.min
 
-//= require dataTables/jquery.dataTables
-//= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
+//= require jquery.dataTables
+//= require dataTables.bootstrap4
 //= require stat_slider
 //= require turbolinks
 //= require cocoon
@@ -27,6 +27,9 @@
 //= require tether
 // Required by Blacklight
 //= require blacklight/blacklight
+//= require blacklight_gallery
+//= require admin_color_select
+//= require blacklight_advanced_search
 
 // Moved the Hyku JS *above* the Hyrax JS to resolve #1187 (following
 // a pattern found in ScholarSphere)
@@ -44,9 +47,23 @@
 //= require bulkrax/application
 
 //= require hyrax
+
+//= require codemirror
+//= require codemirror-autorefresh
+//= require codemirror/modes/css
+
 //= require iiif_print
 
 //= require jquery.flot.pie
 //= require flot_graph
 //= require statistics_tab_manager
 //= require blacklight_gallery/default
+
+// Required for blacklight range limit
+//= require blacklight_range_limit/range_limit_distro_facets
+//= require blacklight_range_limit/range_limit_shared
+//= require blacklight_range_limit/range_limit_slider
+//= require bootstrap-slider
+//= require jquery.flot.js
+
+//= require tinymce

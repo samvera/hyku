@@ -1,4 +1,4 @@
-<% # OVERRIDE: Hyrax 2.9 template to remove the gradient overlay span, removed /controls partial, and added the share your work button for themeing %>
+<% # OVERRIDE: Hyrax v5.0.0rc2 template to remove the gradient overlay span, removed /controls partial, and added the share your work button for theming %>
 <% content_for(:navbar) do %>
   <div class="image-masthead">
   <!-- institutional repository homepage -->
@@ -11,24 +11,24 @@
       <div class="share-your-work-button">
         <% if @presenter&.display_share_button? %>
           <div class="institutional-repository home_share_work row">
-            <div class="col-sm-12 text-center">
+            <div class="col-12 text-center">
               <% if signed_in? %>
                 <% if @presenter.create_many_work_types? %>
                   <%= link_to '#',
                     class: "btn btn-primary btn-lg",
                     data: { behavior: 'select-work', target: '#worktypes-to-create', 'create-type' => 'single' } do %>
-                    <i class="glyphicon glyphicon-upload" aria-hidden="true"></i> <%= t('hyrax.share_button') %>
+                    <i class="fa fa-upload" aria-hidden="true"></i> <%= t('hyrax.share_button') %>
                   <% end %>
                 <% else # simple link to the first work type %>
                   <%= link_to new_polymorphic_path([main_app, @presenter.first_work_type]),
                         class: 'btn btn-primary' do %>
-                    <i class="glyphicon glyphicon-upload" aria-hidden="true"></i> <%= t('hyrax.share_button') %>
+                    <i class="fa fa-upload" aria-hidden="true"></i> <%= t('hyrax.share_button') %>
                   <% end %>
                 <% end %>
               <% else %>
                 <%= link_to hyrax.my_works_path,
                   class: "btn btn-primary btn-lg" do %>
-                  <i class="glyphicon glyphicon-upload" aria-hidden="true"></i> <%= t('hyrax.share_button') %>
+                  <i class="fa fa-upload" aria-hidden="true"></i> <%= t('hyrax.share_button') %>
                 <% end %>
               <% end %>
               <p><%= link_to t(:'hyrax.pages.tabs.terms_page'), hyrax.terms_path %></p>

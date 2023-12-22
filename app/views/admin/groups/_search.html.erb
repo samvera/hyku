@@ -5,11 +5,11 @@
   <% if params[:page].present? %>
     <%= f.input :page, as: :hidden, input_html: { name: :page, value: params[:page] } %>
   <% end %>
-  <div class="form-group list-scope">
-    <%= f.input :q, required: false, input_html: { class: 'list-scope__query', name: :q, value: params[:q] }, wrapper_html: { class: 'list-scope__query-wrapper'} %>
+  <div class="form-group mb-2 list-scope">
+    <%= f.input :q, required: false, input_html: { class: 'form-control list-scope__query', name: :q, value: params[:q] }, wrapper_html: { class: 'list-scope__query-wrapper'} %>
     <% if params[:q].present? %>
-      <%= link_to content_tag(:span, '&times;'.html_safe, :'aria-hidden' => true),  @target, class: 'close list-scope__reset', :'aria-label' => t('hyku.admin.groups.action.search.clear') %>
+      <%= link_to content_tag(:span, '&times;'.html_safe, :'aria-hidden' => true),  @target, class: 'btn btn-sm btn-secondary close list-scope__reset', :'aria-label' => t('hyku.admin.groups.action.search.clear') %>
     <% end %>
   </div>
-  <%= f.submit class: 'btn btn-primary list-scope__submit' %>
+  <%= f.submit class: 'btn btn-primary mb-2 list-scope__submit' %>
 <% end %>

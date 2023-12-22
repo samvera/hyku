@@ -10,6 +10,11 @@ module Hyrax
         model_instance.agent = group.to_sipity_agent
       end
 
+      ##
+      # This method is necessary for the HTML form fields to have the correct name (e.g. `<input
+      # name="sipity_workflow_responsibility[group_id]">`).
+      #
+      # @see ActiveModel::Naming
       def model_instance
         @model ||= Sipity::WorkflowResponsibility.new
       end

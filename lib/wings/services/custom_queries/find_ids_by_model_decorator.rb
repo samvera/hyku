@@ -15,8 +15,8 @@ module Wings
       # @param ids [Enumerable<#to_s>, Symbol]
       #
       # @return [Enumerable<Valkyrie::ID>]
-      def find_ids_by_model(model:, ids: :all)
-        return enum_for(:find_ids_by_model, model: model, ids: ids) unless block_given?
+      def find_ids_by_model(model:, ids: :all) # rubocop:disable Metrics/MethodLength
+        return enum_for(:find_ids_by_model, model:, ids:) unless block_given?
         model_name = ModelRegistry.lookup(model).model_name
 
         solr_query = "_query_:\"{!raw f=has_model_ssim}#{model_name}\""
@@ -29,12 +29,15 @@ module Wings
           response_docs.each { |doc| yield doc['id'] }
 
           break if (solr_response['start'] + solr_response['docs'].count) >= solr_response['numFound']
-          solr_response = ActiveFedora::SolrService.post(solr_query,
-                                                         fl: 'id',
-                                                         rows: @query_rows,
-                                                         start: solr_response['start'] + @query_rows)['response']
+          solr_response = ActiveFedora::SolrService.post(
+            solr_query,
+            fl: 'id',
+            rows: @query_rows,
+            start: solr_response['start'] + @query_rows
+          )['response']
         end
       end
+      # rubocop:enable Metrics/MethodLength
     end
   end
 end

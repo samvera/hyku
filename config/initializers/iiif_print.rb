@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 IiifPrint.config do |config|
   # NOTE: WorkTypes and models are used synonymously here.
   # Add models to be excluded from search so the user

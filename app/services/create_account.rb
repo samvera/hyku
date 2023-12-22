@@ -46,18 +46,18 @@ class CreateAccount
     Hyrax::CollectionType.find_or_create_admin_set_type
     return if account.search_only?
 
-    AdminSet.find_or_create_default_admin_set_id
+    Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id
   end
 
   # Workaround for upstream issue https://github.com/samvera/hyrax/issues/3136
   def fillin_translations
     collection_types = Hyrax::CollectionType.all
     collection_types.each do |c|
-      next unless c.title =~ /^translation missing/
+      next unless /^translation missing/.match?(c.title)
       oldtitle = c.title
       c.title = I18n.t(c.title.gsub("translation missing: en.", ''))
       c.save
-      Rails.logger.debug "#{oldtitle} changed to #{c.title}"
+      Rails.logger.debug { "#{oldtitle} changed to #{c.title}" }
     end
   end
 
@@ -87,7 +87,7 @@ class CreateAccount
 
   private
 
-    def initialize_account_data
-      Site.update(account: account)
-    end
+  def initialize_account_data
+    Site.update(account:)
+  end
 end

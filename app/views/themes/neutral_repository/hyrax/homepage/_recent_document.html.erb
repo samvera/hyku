@@ -1,9 +1,8 @@
-<%# OVERRIDE Hyrax 3.4.1 template for client theming and shared search %>
+<%# OVERRIDE Hyrax v5.0.0rc2 template for client theming and shared search %>
 <h3 class="sr-only"><%= t('hyrax.homepage.recently_uploaded.document.title_label') %></h3>
-  <div class="recently-uploaded pb-30 col-xs-6 col-md-6">
-    <%= render_thumbnail_tag recent_document, {class: 'img-responsive center-block'}, {suppress_link: true} %>
-    <div class="recent-doc-title">
-      <%= link_to recent_document.title_or_label, generate_work_url(recent_document.to_h, request) %>
-    </div>
+<div class="recently-uploaded pb-3 col-6 col-md-6">
+  <%= render_thumbnail_tag recent_document, {class: 'img-fluid mx-auto d-block'}, {suppress_link: true} %>
+  <div class="recent-doc-title">
+    <%= link_to recent_document.title_or_label, generate_work_url(recent_document.to_h, request) %>
   </div>
 </div>

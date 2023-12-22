@@ -3,7 +3,7 @@
 module OAI
   module Provider
     module ModelDecorator
-      # Map Qualified Dublin Core (Terms) fields to PALNI/PALCI fields
+      # # OVERRIDE OAI v1.2.1 to map Qualified Dublin Core (Terms) fields to PALNI/PALCI fields
       # rubocop:disable Metrics/MethodLength
       def map_oai_hyku
         {

@@ -1,27 +1,18 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v3.4.1
+# OVERRIDE Hyrax v5.0.0rc2
 # - Add collection methods to collection presenter and override to return
 #   full banner_file data, rather than only download path to file.
 # - Alter permissions-related behavior.
 # Terms is the list of fields displayed by app/views/collections/_show_descriptions.html.erb
 module Hyrax
   module CollectionPresenterDecorator
-    def self.decorate(base)
-      base.prepend(self)
+    extend ActiveSupport::Concern
 
-      base.redefine_singleton_method(:terms) do
+    class_methods do
+      def terms
         # OVERRIDE Hyrax - removed size
-        %i[total_items
-           resource_type
-           creator contributor
-           keyword license
-           publisher
-           date_created
-           subject language
-           identifier
-           based_near
-           related_url]
+        super - [:size]
       end
     end
 
@@ -33,6 +24,7 @@ module Hyrax
       create_work_presenter.authorized_models.any?
     end
 
+    # OVERRIDE Hyrax - remove size
     def [](key)
       case key
       when :total_items
@@ -109,4 +101,4 @@ module Hyrax
   end
 end
 
-Hyrax::CollectionPresenterDecorator.decorate(Hyrax::CollectionPresenter)
+Hyrax::CollectionPresenter.prepend(Hyrax::CollectionPresenterDecorator)

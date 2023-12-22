@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # OVERRIDE here to add featured collection methods and to delegate collection presenters to the member presenter factory
-# OVERRIDE: Hyrax 3.4.0 to add Hyrax IIIF AV
+# OVERRIDE: Hyrax 5.0.0rc2 to add Hyrax IIIF AV
 
 module Hyku
   class WorkShowPresenter < Hyrax::WorkShowPresenter
@@ -12,7 +12,7 @@ module Hyku
 
     delegate :title_or_label, :extent, to: :solr_document
 
-    # OVERRIDE Hyrax v2.9.0 here to make featured collections work
+    # OVERRIDE Hyrax v5.0.0rc2 here to make featured collections work
     delegate :collection_presenters, to: :member_presenter_factory
 
     # assumes there can only be one doi

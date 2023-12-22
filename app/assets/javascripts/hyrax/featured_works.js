@@ -1,4 +1,4 @@
-//OVERRIDE this file to add the selector for featured collections (ff) at the bottom in addition to the selector for featured works (dd)
+//OVERRIDE Hyrax 5.0.0rc2 to add the selector for featured collections (ff) at the bottom in addition to the selector for featured works (dd)
 
 // /* find the input element with data-property="order" that is nested under the given node */
 function setWeight(node, weight, property) {

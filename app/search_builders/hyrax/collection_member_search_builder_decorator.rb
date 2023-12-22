@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE: Hyrax 3.4.1 adds filesets to search to allow full text search results on the Collection show pages
+# OVERRIDE: Hyrax 5.0.0rc2 adds filesets to search to allow full text search results on the Collection show pages
 module Hyrax
   module CollectionMemberSearchBuilderDecorator
     Hyrax::CollectionMemberSearchBuilder.default_processor_chain += [:show_works_or_works_that_contain_files]

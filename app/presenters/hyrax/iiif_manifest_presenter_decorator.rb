@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax 3.4.0 to check the site's ssl_configured when setting protocols
+# OVERRIDE Hyrax v5.0.0rc2 to check the site's ssl_configured when setting protocols
 module Hyrax
   module IiifManifestPresenterDecorator
     attr_writer :iiif_version

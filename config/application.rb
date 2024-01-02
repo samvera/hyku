@@ -234,6 +234,10 @@ module Hyku
       # Seems at some point `ActiveRecord::Base.yaml_column_permitted_classes` loses all the values we set above
       # so we need to set it again here.
       ActiveRecord::Base.yaml_column_permitted_classes = yaml_column_permitted_classes
+
+      # Because we're loading local translations early in the to_prepare block for our decorators,
+      # the I18n.load_path is out of order.  This line ensures that we load local translations last.
+      I18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.yml')]
     end
   end
 end

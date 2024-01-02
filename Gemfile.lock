@@ -28,7 +28,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera-labs/hyrax-iiif_av.git
-  revision: 66a94059f192a295bfb4503d247986f16b183330
+  revision: 4723b8fd0961fa179caf787532bd7922a44957ec
   branch: rails_hyrax_upgrade
   specs:
     hyrax-iiif_av (0.2.0)
@@ -111,8 +111,8 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: 2dfd14b0fc9805c362b5442fcb90d7eaa58ae630
-  branch: main
+  revision: cad2cf33fc07ec2abb5b6834a858b5ed74903c12
+  branch: rails_hyrax_upgrade
   specs:
     iiif_print (1.0.0)
       blacklight_iiif_search (>= 1.0, < 3.0)

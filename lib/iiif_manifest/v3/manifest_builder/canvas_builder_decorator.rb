@@ -6,6 +6,8 @@ module IIIFManifest
   module V3
     module ManifestBuilderDecorator
       module CanvasBuilderDecorator
+        private
+
         def apply_record_properties
           super
           canvas.label = (ManifestBuilder.language_map(record['parent_title_tesim']&.first || record.to_s) if record.to_s.present?)

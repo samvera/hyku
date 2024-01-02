@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE: class ActiveFedora::SolrService from Fedora 12.1.1
+# OVERRIDE: class ActiveFedora::SolrService from Fedora v14.0.1
 module ActiveFedora
   module SolrServiceDecorator
     # Get the count of records that match the query

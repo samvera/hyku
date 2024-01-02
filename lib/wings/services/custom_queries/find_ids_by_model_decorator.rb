@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax 3.5 to use post instead of get for Solr requests
+# OVERRIDE Hyrax v5.0.0rc2 to use post instead of get for Solr requests
 
 module Wings
   module CustomQueries

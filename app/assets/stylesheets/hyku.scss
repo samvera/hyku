@@ -423,6 +423,7 @@ nav.navbar.navbar-default.navbar-static-top .container-fluid .row {
 body.public-facing {
   .btn {
     &.btn-primary,
+    &.btn-secondary,
     &.btn-danger {
       color: #fff;
     }
@@ -486,4 +487,14 @@ body.public-facing {
 
 .mt-20 {
   margin-top: 20px;
+}
+
+.navbar-toggler-icon {
+  background: no-repeat center center;
+  background-size: 100% 100%;
+  content: "";
+  display: inline-block;
+  height: 1.5em;
+  vertical-align: middle;
+  width: 1.5em;
 }

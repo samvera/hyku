@@ -65,7 +65,7 @@ if ENV['CHROME_HOSTNAME'].present?
   options = Selenium::WebDriver::Options.chrome(args: ["disable-gpu",
                                                        "no-sandbox",
                                                        "whitelisted-ips",
-                                                       "window-size=1400,1400"])
+                                                       "window-size=1920,1080"])
 
   Capybara.register_driver :chrome do |app|
     d = Capybara::Selenium::Driver.new(app,
@@ -83,7 +83,9 @@ if ENV['CHROME_HOSTNAME'].present?
   Capybara.server_port = 3001
   Capybara.app_host = "http://#{ENV['WEB_HOST']}:#{Capybara.server_port}"
 else
-  options = Selenium::WebDriver::Options.chrome(args: ["headless", "disable-gpu"])
+  options = Selenium::WebDriver::Options.chrome(args: ["headless",
+                                                       "disable-gpu",
+                                                       "window-size=1920,1080"])
 
   Capybara.register_driver :chrome do |app|
     Capybara::Selenium::Driver.new(

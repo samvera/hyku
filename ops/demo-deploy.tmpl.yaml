@@ -35,7 +35,13 @@ extraVolumeMounts: &volMounts
 
 ingress:
   enabled: true
+  {{- $beta := semverCompare "<1.19-0" (default .Capabilities.KubeVersion.Version .Values.kubeVersion) -}}
+  {{- if $beta }}
+  apiVersion: networking.k8s.io/v1beta1
+  {{- else }}
   apiVersion: networking.k8s.io/v1
+  {{- end }}
+  kind: Ingress
   hosts:
     - host: hyku-demo.$BASE_URL
       paths:

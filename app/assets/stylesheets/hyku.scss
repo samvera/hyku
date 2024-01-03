@@ -423,6 +423,7 @@ nav.navbar.navbar-default.navbar-static-top .container-fluid .row {
 body.public-facing {
   .btn {
     &.btn-primary,
+    &.btn-secondary,
     &.btn-danger {
       color: #fff;
     }

@@ -1,4 +1,3 @@
-# Hyku Test Plan
 ## Global Index / Institution List Page
 
 ![image4](https://github.com/samvera/hyku/assets/19597776/4e6c6681-39e3-491a-ab7d-64f995d775b4)

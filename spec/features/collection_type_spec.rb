@@ -376,11 +376,7 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
 
     context 'when collections exist of this type' do
       before do
-        create(
-          :public_collection_lw,
-          user: build(:user),
-          collection_type_gid: exhibit_collection_type.gid
-        )
+        FactoryBot.create(:public_collection_lw, user: build(:user), collection_type: exhibit_collection_type)
 
         exhibit_collection_type
         login_as admin_user
@@ -388,7 +384,7 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
       end
 
       it 'all settings are disabled', :js do
-        expect(exhibit_collection_type.collections?).to be true
+        expect(exhibit_collection_type.collections.any?).to be true
 
         click_link('Settings', href: '#settings')
 
@@ -446,7 +442,7 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
         create(
           :public_collection_lw,
           user: admin_user,
-          collection_type_gid: not_empty_collection_type.gid
+          collection_type: not_empty_collection_type
         )
       end
       # OVERRIDE: split deny_delete_modal_text into two variables since the test was failing over the newline character
@@ -474,7 +470,7 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
         end
 
         # forwards to Dashboard -> Collections -> All Collections
-        within('li.active') do
+        within('.nav-tabs li.nav-item') do
           expect(page).to have_link('All Collections')
         end
 
@@ -492,8 +488,7 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
   end
 
   # OVERRIDE: new (non-hyrax) test cases below
-
-  describe 'default collection type participants', ci: 'skip' do
+  describe 'default collection type participants' do
     let(:title) { 'Title Test' }
 
     before do

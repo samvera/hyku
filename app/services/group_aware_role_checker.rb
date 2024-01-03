@@ -12,16 +12,16 @@ module GroupAwareRoleChecker
 
   private
 
-    # Check for the presence of the passed role_name in the User's Roles and
-    # the User's Hyrax::Group's Roles.
-    def has_group_aware_role?(role_name) # rubocop:disable Naming/PredicateName
-      return false if current_user.new_record?
-      return true if current_user.has_role?(role_name, Site.instance)
+  # Check for the presence of the passed role_name in the User's Roles and
+  # the User's Hyrax::Group's Roles.
+  def has_group_aware_role?(role_name) # rubocop:disable Naming/PredicateName
+    return false if current_user.new_record?
+    return true if current_user.has_role?(role_name, Site.instance)
 
-      current_user.hyrax_groups.each do |group|
-        return true if group.has_site_role?(role_name)
-      end
-
-      false
+    current_user.hyrax_groups.each do |group|
+      return true if group.has_site_role?(role_name)
     end
+
+    false
+  end
 end

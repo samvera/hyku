@@ -40,7 +40,7 @@ FactoryBot.define do
       domain_names_count { 1 }
     end
     after(:create) do |account, evaluator|
-      create_list(:domain_name, evaluator.domain_names_count, account: account)
+      create_list(:domain_name, evaluator.domain_names_count, account:)
     end
 
     trait(:public_schema) do
@@ -62,7 +62,7 @@ FactoryBot.define do
       domain_names_count { 1 }
     end
     after(:create) do |account, evaluator|
-      create_list(:domain_name, evaluator.domain_names_count, account: account)
+      create_list(:domain_name, evaluator.domain_names_count, account:)
     end
   end
 end

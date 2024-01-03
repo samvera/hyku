@@ -120,7 +120,7 @@ zh:
         logo_image: SSO 页面的图像
         logo_image_alt_text: 图像的替代文本
         name: 名称或描述
-        optoins: 选项
+        options: 选项
         provider: 提供者
     proprietor:
       accounts:

@@ -2,16 +2,16 @@
   <div class="sr-only">
     <%= t('hyrax.homepage.featured_collections.document.title_label') %>
   </div>
-    <div class= 'homepage-work-thumbnail'>
+  <div class='homepage-work-thumbnail'>
+    <%= link_to [hyrax, featured] do %>
+      <%= render_thumbnail_tag(featured.solr_document, {suppress_link: true}) %>
+    <% end %>
+  </div>
+  <div>
+    <h5>
       <%= link_to [hyrax, featured] do %>
-          <%= render_thumbnail_tag(featured.solr_document, {suppress_link: true}) %>
-        <% end %>
-    </div>
-    <div>
-      <h5>
-        <%= link_to [hyrax, featured] do %>
-          <%= featured.title.first %>
-        <% end %>
-      </h5>
-    </div>
+        <%= featured.title.first %>
+      <% end %>
+    </h5>
+  </div>
 </div>

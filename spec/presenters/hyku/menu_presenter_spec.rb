@@ -125,7 +125,7 @@ RSpec.describe Hyku::MenuPresenter do
     let(:id) { "sample_id" }
     let(:icon_class) { "sample-icon-class" }
     let(:open) { true }
-    let(:html_options) { { class: "sample-class", data: { test: "test" } } }
+    let(:title) { "Cats" }
     let(:block) { proc { "<li>Item</li>" } }
 
     let(:presenter) { instance_double("CollapsableSectionPresenter") }
@@ -133,17 +133,17 @@ RSpec.describe Hyku::MenuPresenter do
     before do
       allow(Hyku::CollapsableSectionPresenter).to receive(:new).with(
         view_context: context,
-        text: text,
-        id: id,
-        icon_class: icon_class,
-        open: open,
-        html_options: html_options
+        text:,
+        id:,
+        icon_class:,
+        open:,
+        title:
       ).and_return(presenter)
     end
 
     it "calls the render method on the CollapsableSectionPresenter with the given block" do
       expect(presenter).to receive(:render)
-      instance.collapsable_section(text, id: id, icon_class: icon_class, open: open, **html_options, &block)
+      instance.collapsable_section(text, id:, icon_class:, open:, title:, &block)
     end
   end
 end

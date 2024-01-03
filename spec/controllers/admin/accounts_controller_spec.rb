@@ -23,7 +23,7 @@ RSpec.describe Admin::AccountsController, type: :controller do
     let(:account) { FactoryBot.create(:account) }
 
     before do
-      Site.update(account: account)
+      Site.update(account:)
     end
 
     describe "GET #edit" do

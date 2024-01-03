@@ -1,6 +1,6 @@
 <% presenter.title.each_with_index do |title, index| %>
   <div class="row">
-    <div class="col-sm-12 text-show-title">
+    <div class="col-12 text-show-title">
       <% if index == 0 %>
         <h2><%= title %>
           <small class="text-muted"><%= presenter.permission_badge %> <%= presenter.workflow.badge %></small>

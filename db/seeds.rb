@@ -17,7 +17,7 @@ unless ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_MULTITENANT', false))
   AccountElevator.switch!(single_tenant_default.cname)
 
   puts "\n== Creating default admin set"
-  admin_set = AdminSet.find(AdminSet.find_or_create_default_admin_set_id)
+  admin_set = AdminSet.find(Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id)
 
   puts "\n== Creating default collection types"
   Hyrax::CollectionType.find_or_create_default_collection_type

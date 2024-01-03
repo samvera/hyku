@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 # NOTE: This is a modified version of simple_form's default config file.
 #       The only changes were to move the inputs to after the hints and errors.
 
 # Use this setup block to configure all options available in SimpleForm.
 
+# rubocop:disable Metrics/BlockLength
 SimpleForm.setup do |config|
   config.error_notification_class = 'alert alert-danger'
   config.button_class = 'btn btn-default'
@@ -148,3 +151,4 @@ SimpleForm.setup do |config|
     time: :multi_select
   }
 end
+# rubocop:enable Metrics/BlockLength

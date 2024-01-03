@@ -5,18 +5,17 @@
 */
 @import "variables";
 @import "bootstrap-default-overrides";
-@import "bootstrap-sprockets";
 @import "bootstrap";
 @import "blacklight/blacklight";
+@import "blacklight_gallery/gallery";
+@import "blacklight_gallery/masonry";
+@import "blacklight_gallery/slideshow";
+@import "blacklight_gallery/osd_viewer";
+@import "hyrax/blacklight_gallery";
 @import "font-awesome";
 @import "hyrax/hyrax";
 @import "hyku";
 @import "accounts";
 @import "viewer";
-
-@import "blacklight_gallery/gallery";
-@import "blacklight_gallery/masonry";
-@import "blacklight_gallery/slideshow";
-@import "blacklight_gallery/osd_viewer";
 
 @import "themes/*";

@@ -51,26 +51,26 @@ class Site < ApplicationRecord
 
   private
 
-    # Add/invite admins via email address
-    # @param [Array<String>] Array of user emails
-    def add_admins_by_email(emails)
-      # For users that already have accounts, add to role immediately
-      existing_emails = User.where(email: emails).map do |u|
-        u.add_role :admin, self
-        u.email
-      end
-      # For new users, send invitation and add to role
-      (emails - existing_emails).each do |email|
-        u = User.invite!(email: email)
-        u.add_role :admin, self
-      end
+  # Add/invite admins via email address
+  # @param [Array<String>] Array of user emails
+  def add_admins_by_email(emails)
+    # For users that already have accounts, add to role immediately
+    existing_emails = User.where(email: emails).map do |u|
+      u.add_role :admin, self
+      u.email
     end
+    # For new users, send invitation and add to role
+    (emails - existing_emails).each do |email|
+      u = User.invite!(email:)
+      u.add_role :admin, self
+    end
+  end
 
-    # Remove specific administrators
-    # @param [Array<String>] Array of user emails
-    def remove_admins_by_email(emails)
-      User.where(email: emails).find_each do |u|
-        u.remove_role :admin, self
-      end
+  # Remove specific administrators
+  # @param [Array<String>] Array of user emails
+  def remove_admins_by_email(emails)
+    User.where(email: emails).find_each do |u|
+      u.remove_role :admin, self
     end
+  end
 end

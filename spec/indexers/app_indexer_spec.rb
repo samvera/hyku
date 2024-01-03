@@ -15,7 +15,7 @@ RSpec.describe AppIndexer do
       end
 
       Apartment::Tenant.switch!(account.tenant) do
-        Site.update(account: account)
+        Site.update(account:)
         work
       end
     end

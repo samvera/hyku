@@ -19,36 +19,36 @@ class SitesController < ApplicationController
 
   private
 
-    def set_site
-      @site ||= Site.instance
-    end
+  def set_site
+    @site ||= Site.instance
+  end
 
-    def update_params
-      params.permit(:remove_banner_image,
-                    :remove_favicon,
-                    :remove_logo_image,
-                    :remove_directory_image,
-                    :remove_default_collection_image,
-                    :remove_default_work_image)
-    end
+  def update_params
+    params.permit(:remove_banner_image,
+                  :remove_favicon,
+                  :remove_logo_image,
+                  :remove_directory_image,
+                  :remove_default_collection_image,
+                  :remove_default_work_image)
+  end
 
-    def site_theme_params
-      params.require(:site).permit(:home_theme, :search_theme, :show_theme)
-    end
+  def site_theme_params
+    params.require(:site).permit(:home_theme, :search_theme, :show_theme)
+  end
 
-    REMOVE_TEXT_MAPS = {
-      "remove_logo_image"               => "logo_image_text",
-      "remove_banner_image"             => "banner_image_text",
-      "remove_directory_image"          => "directory_image_text",
-      "remove_default_collection_image" => "default_collection_image_text",
-      "remove_default_work_image"       => "default_work_image_text"
-    }.freeze
+  REMOVE_TEXT_MAPS = {
+    "remove_logo_image" => "logo_image_text",
+    "remove_banner_image" => "banner_image_text",
+    "remove_directory_image" => "directory_image_text",
+    "remove_default_collection_image" => "default_collection_image_text",
+    "remove_default_work_image" => "default_work_image_text"
+  }.freeze
 
-    def remove_appearance_text(update_params)
-      image_text_keys = update_params.keys
-      image_text_keys.each do |image_text_key|
-        block = ContentBlock.find_by(name: REMOVE_TEXT_MAPS[image_text_key])
-        block.delete if block&.value.present?
-      end
+  def remove_appearance_text(update_params)
+    image_text_keys = update_params.keys
+    image_text_keys.each do |image_text_key|
+      block = ContentBlock.find_by(name: REMOVE_TEXT_MAPS[image_text_key])
+      block.delete if block&.value.present?
     end
+  end
 end

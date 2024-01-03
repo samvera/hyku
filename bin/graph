@@ -1,13 +1,14 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 # This script creates png images to visualize a Hyrax workflow
 # Usage: bin/graph <workflow_name>
 #
 # Example: bin/graph one_step_mediated_deposit
 #
-# This script requires that you have Graphviz installed and the 
+# This script requires that you have Graphviz installed and the
 # ruby-graphviz gem.
-# 
+#
 # gem install 'ruby-graphviz'
 #
 #
@@ -31,9 +32,7 @@ unless workflow
   exit(1)
 end
 
-
 class GraphWriter
-
   attr_reader :workflow, :nodes, :initial_state
 
   def initialize(workflow)
@@ -42,7 +41,7 @@ class GraphWriter
 
   # Create a new graph
   def graph
-    @g ||= GraphViz.new(:G, :type => :digraph)
+    @g ||= GraphViz.new(:G, type: :digraph)
   end
 
   def attach_nodes
@@ -54,14 +53,14 @@ class GraphWriter
   end
 
   def write_edge(initial, terminal, label)
-    graph.add_edges( nodes[initial], nodes[terminal], label: label)
+    graph.add_edges(nodes[initial], nodes[terminal], label:)
   end
 
   def attach_edges
     # Create edges
     workflow.workflow_actions.each do |wa|
       terminal = wa.resulting_workflow_state_id
-      if wa.workflow_state_actions.count == 0 
+      if wa.workflow_state_actions.count == 0
         # Initial action
         write_edge(initial_state.id, terminal, wa.name)
       end
@@ -88,4 +87,3 @@ class GraphWriter
 end
 
 GraphWriter.new(workflow).write
-

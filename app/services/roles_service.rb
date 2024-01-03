@@ -71,15 +71,13 @@ class RolesService # rubocop:disable Metrics/ClassLength
       return '`AccountElevator.switch!` into an Account before creating default Roles' if Site.instance.is_a?(NilSite)
 
       DEFAULT_ROLES.each do |role_name|
-        find_or_create_site_role!(role_name: role_name)
+        find_or_create_site_role!(role_name:)
       end
     end
 
     def create_default_hyrax_groups_with_roles!
       # Prevent Hyrax::Groups from being created in the public schema
-      if Site.instance.is_a?(NilSite)
-        return '`AccountElevator.switch!` into an Account before creating default Hyrax::Groups'
-      end
+      return '`AccountElevator.switch!` into an Account before creating default Hyrax::Groups' if Site.instance.is_a?(NilSite)
 
       default_hyrax_groups_with_roles =
         DEFAULT_HYRAX_GROUPS_WITH_ATTRIBUTES.deep_merge(DEFAULT_ROLES_FOR_DEFAULT_HYRAX_GROUPS)
@@ -87,12 +85,12 @@ class RolesService # rubocop:disable Metrics/ClassLength
       default_hyrax_groups_with_roles.each do |group_name, group_attrs|
         group_roles = group_attrs.delete(:roles)
         group = Hyrax::Group.find_or_create_by!(name: group_name)
-        group.update_attributes(group_attrs)
+        group.update(group_attrs)
 
         group_roles.each do |role_name|
           next if role_name.blank?
 
-          group.roles |= [find_or_create_site_role!(role_name: role_name)]
+          group.roles |= [find_or_create_site_role!(role_name:)]
         end
       end
     end
@@ -100,6 +98,7 @@ class RolesService # rubocop:disable Metrics/ClassLength
     # Because each collection role has some level of access to every Collection within a tenant,
     # creating a Hyrax::PermissionTemplateAccess record (combined with Ability#user_groups)
     # means all Collections will show up in Blacklight / Solr queries.
+    # rubocop:disable Metrics/MethodLength
     def create_collection_accesses!
       Collection.find_each do |c|
         pt = Hyrax::PermissionTemplate.find_or_create_by!(source_id: c.id)
@@ -129,12 +128,14 @@ class RolesService # rubocop:disable Metrics/ClassLength
           agent_id: 'collection_reader'
         )
 
-        c.reset_access_controls! if pt.access_grants.count != original_access_grants_count
+        pt.reset_access_controls_for(collection: c) if pt.access_grants.count != original_access_grants_count
       end
     end
+    # rubocop:enable Metrics/MethodLength
 
     # Creating a Hyrax::PermissionTemplateAccess record (combined with Ability#user_groups)
     # will allow Works in all AdminSets to show up in Blacklight / Solr queries.
+    # rubocop:disable Metrics/MethodLength
     def create_admin_set_accesses!
       AdminSet.find_each do |as|
         pt = Hyrax::PermissionTemplate.find_or_create_by!(source_id: as.id)
@@ -164,9 +165,10 @@ class RolesService # rubocop:disable Metrics/ClassLength
           agent_id: 'work_editor'
         )
 
-        as.reset_access_controls! if pt.access_grants.count != original_access_grants_count
+        pt.reset_access_controls_for(collection: as) if pt.access_grants.count != original_access_grants_count
       end
     end
+    # rubocop:enable Metrics/MethodLength
 
     # Because some of the collection roles have access to every Collection within a tenant, create a
     # Hyrax::CollectionTypeParticipant record for them on every Hyrax::CollectionType (except the AdminSet)
@@ -239,7 +241,7 @@ class RolesService # rubocop:disable Metrics/ClassLength
       stale_guest_users = User.unscoped.where(
         'guest = ? and updated_at < ?',
         true,
-        Time.current - 7.days
+        7.days.ago
       )
       progress = ProgressBar.create(total: stale_guest_users.count)
 
@@ -249,9 +251,11 @@ class RolesService # rubocop:disable Metrics/ClassLength
       end
     end
 
+    # rubocop:disable Metrics/MethodLength
     def seed_superadmin!
+      # rubocop:disable Rails/UnknownEnv
       return 'Seed data should not be used in the production environment' if Rails.env.production? || Rails.env.staging?
-
+      # rubocop:enable Rails/UnknownEnv
       user = User.where(email: 'admin@example.com').first_or_initialize do |u|
         if u.new_record?
           u.password = 'testing123'
@@ -272,10 +276,13 @@ class RolesService # rubocop:disable Metrics/ClassLength
 
       user
     end
+    # rubocop:enable Metrics/MethodLength
 
+    # rubocop:disable Metrics/MethodLength
     def seed_qa_users!
+      # rubocop:disable Rails/UnknownEnv
       return 'Seed data should not be used in the production environment' if Rails.env.production? || Rails.env.staging?
-
+      # rubocop:disable Rails/UnknownEnv
       ActiveRecord::Base.transaction do
         DEFAULT_ROLES.each do |role_name|
           user = User.where(email: "#{role_name}@example.com").first_or_initialize do |u|
@@ -292,7 +299,7 @@ class RolesService # rubocop:disable Metrics/ClassLength
 
             unless user.has_role?(role_name, Site.instance)
               user.add_default_group_membership!
-              user.roles << find_or_create_site_role!(role_name: role_name)
+              user.roles << find_or_create_site_role!(role_name:)
             end
           end
 
@@ -300,5 +307,6 @@ class RolesService # rubocop:disable Metrics/ClassLength
         end
       end
     end
+    # rubocop:enable Metrics/MethodLength
   end
 end

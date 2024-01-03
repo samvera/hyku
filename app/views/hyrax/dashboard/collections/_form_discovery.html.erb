@@ -1,4 +1,4 @@
-<%# OVERRIDE Hyrax v3.4.2
+<%# OVERRIDE Hyrax v5.0.0rc2
     - Handle new :manage_discovery ability
     - Reformat input tags for legibility %>
 
@@ -9,55 +9,64 @@
 
   <%# OVERRIDE: add conditional title %>
   <div class="form-group" <% if cannot?(:manage_discovery, @collection) %>title="<%= t('permissions.collections.cannot.manage_discovery') %>"<% end %>>
-    <label class="radio">
+    <div class="custom-control custom-radio">
       <input
         type="radio"
         id="visibility_open"
         name="<%= f.object_name %>[visibility]"
         value="<%= Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC %>"
+        class="custom-control-input"
         <% if @collection.open_access? %>
-          checked="true"
+          checked="checked"
         <% end %>
         <%# OVERRIDE: add conditional disable %>
         <% if cannot?(:manage_discovery, @collection) %>
           disabled="disabled"
         <% end %>
       />
-      <strong><%= t('hyrax.visibility.open.text') %></strong> - <%= t('hyrax.visibility.open.note_html') %>
-    </label>
+      <label class="custom-control-label" for="visibility_open">
+        <strong><%= t('hyrax.visibility.open.text') %></strong> - <%= t('hyrax.visibility.open.note_html') %>
+      </label>
+    </div>
 
-    <label class="radio">
+    <div class="custom-control custom-radio">
       <input
         type="radio"
         id="visibility_registered"
         name="<%= f.object_name %>[visibility]"
         value="<%= Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED %>"
+        class="custom-control-input"
         <% if @collection.authenticated_only_access? %>
-          checked="true"
+          checked="checked"
         <% end %>
         <%# OVERRIDE: add conditional disable %>
         <% if cannot?(:manage_discovery, @collection) %>
           disabled="disabled"
         <% end %>
       />
-      <strong><%= t('hyrax.visibility.authenticated.text', institution: institution_name) %></strong> - <%= t('hyrax.visibility.authenticated.note_html', institution: institution_name) %>
-    </label>
+      <label class="custom-control-label" for="visibility_registered">
+        <strong><%= t('hyrax.visibility.authenticated.text', institution: institution_name) %></strong> - <%= t('hyrax.visibility.authenticated.note_html', institution: institution_name) %>
+      </label>
+    </div>
 
-    <label class="radio">
+    <div class="custom-control custom-radio">
       <input
         type="radio"
         id="visibility_restricted"
         name="<%= f.object_name %>[visibility]"
         value="<%= Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE %>"
+        class="custom-control-input"
         <% if @collection.private_access? %>
-          checked="true"
+          checked="checked"
         <% end %>
         <%# OVERRIDE: add conditional disable %>
         <% if cannot?(:manage_discovery, @collection) %>
           disabled="disabled"
         <% end %>
       />
-      <strong><%= t('hyrax.visibility.restricted.text') %></strong>- <%= t('hyrax.visibility.restricted.note_html') %>
-    </label>
+      <label class="custom-control-label" for="visibility_restricted">
+        <strong><%= t('hyrax.visibility.restricted.text') %></strong> - <%= t('hyrax.visibility.restricted.note_html') %>
+      </label>
+    </div>
   </div>
 </div>

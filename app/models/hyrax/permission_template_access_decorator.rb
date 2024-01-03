@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v3.4.2 #titleize agent_id for groups since we are displaying their humanized names in the dropdown
+# OVERRIDE Hyrax v5.0.0rc2 #titleize agent_id for groups since we are displaying their humanized names in the dropdown
 module Hyrax
   module PermissionTemplateAccessDecorator
     def label

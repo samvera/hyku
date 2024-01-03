@@ -3,37 +3,37 @@
 <%= render 'shared/citations' %>
 <%= render './shared/additional_citations' %>
 <div class="row">
-  <div itemscope itemtype="http://schema.org/CreativeWork" class="col-xs-12">
-    <div class="panel panel-default">
-      <div class="panel-heading">
+  <div itemscope itemtype="http://schema.org/CreativeWork" class="col-12">
+    <div class="card">
+      <div class="card-header">
         <%= render 'work_title', presenter: @presenter %>
       </div>
-      <div class="panel-body">
+      <div class="card-body">
         <div class="row">
           <%= render 'workflow_actions_widget', presenter: @presenter %>
-          <% if @presenter.universal_viewer? %>
-            <div class="col-sm-12 centered-media">
+          <% if @presenter.iiif_viewer? %>
+            <div class="col-12 centered-media">
               <%= render 'representative_media', presenter: @presenter, viewer: true %>
             </div>
           <% end %>
-          <div class="col-sm-12">
+          <div class="col-12">
             <%= render "show_actions", presenter: @presenter %>
           </div>
-          <div class="centered-media <%= !@presenter.universal_viewer? ? 'col-sm-6 text-center' : '' %>">
-            <%= render 'representative_media', presenter: @presenter, viewer: false unless @presenter.universal_viewer? %>
+          <div class="centered-media <%= !@presenter.iiif_viewer? ? 'col-md-6 text-center' : '' %>">
+            <%= render 'representative_media', presenter: @presenter, viewer: false unless @presenter.iiif_viewer? %>
           </div>
-          <div class="<%= @presenter.universal_viewer? ? 'col-sm-6' : 'col-sm-6' %>">
+          <div class="<%= @presenter.iiif_viewer? ? 'col-md-6' : 'col-md-6' %>">
             <%= render 'work_description', presenter: @presenter %>
             <%= render 'metadata', presenter: @presenter %>
           </div>
-          <div class="col-xs-12 relationships-container">
+          <div class="col-12 relationships-container">
             <div class='relationships-box'>
               <%= render 'relationships', presenter: @presenter %>
             </div>
           </div>
-          <div class="col-sm-12 work-show-items">
+          <div class="col-12 work-show-items">
             <%= render 'items', presenter: @presenter %>
-            <%# TODO: we may consider adding these partials in the future %>
+            <%# TODO: Consider adding these partials in the future %>
             <%# = render 'sharing_with', presenter: @presenter %>
             <%# = render 'user_activity', presenter: @presenter %>
           </div>

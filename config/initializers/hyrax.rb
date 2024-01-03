@@ -1,6 +1,8 @@
+# frozen_string_literal: true
 # Set nested indexer to graph by default. Remove after Hyrax 4.0 upgrade
 ENV['HYRAX_USE_SOLR_GRAPH_NESTING'].present? || ENV['HYRAX_USE_SOLR_GRAPH_NESTING'] = "true"
 
+# rubocop:disable Metrics/BlockLength
 Hyrax.config do |config|
   config.register_curation_concern :generic_work
   # Injected via `rails g hyrax:work Image`
@@ -27,7 +29,6 @@ Hyrax.config do |config|
 
   # Specify a Google Analytics tracking ID to gather usage statistics
   # This is set by account settings
-  # config.google_analytics_id = 'UA-99999999-1'
 
   # Specify a date you wish to start collecting Google Analytic statistics for.
   # config.analytic_start_date = DateTime.new(2014,9,10)
@@ -114,17 +115,17 @@ Hyrax.config do |config|
 
   # Temporary path to hold uploads before they are ingested into FCrepo.
   # This must be a lambda that returns a Pathname
-  config.upload_path = ->() do
+  config.upload_path = lambda {
     if Site.account&.s3_bucket
       "uploads/#{Apartment::Tenant.current}"
     else
-      ENV['HYRAX_UPLOAD_PATH'].present? ? Pathname.new(File.join(ENV['HYRAX_UPLOAD_PATH'], Apartment::Tenant.current)) : Rails.root.join('public', 'uploads', Apartment::Tenant.current)
+      ENV['HYRAX_UPLOAD_PATH'].present? ? Pathname.new(File.join(ENV['HYRAX_UPLOAD_PATH'], Apartment::Tenant.current)) : Rails.public_path.join('uploads', Apartment::Tenant.current)
     end
-  end
+  }
 
   # Location on local file system where derivatives will be stored.
   # If you use a multi-server architecture, this MUST be a shared volume.
-  config.derivatives_path = ENV['HYRAX_DERIVATIVES_PATH'].present? ? ENV['HYRAX_DERIVATIVES_PATH'] :  File.join(Rails.root, 'tmp', 'derivatives')
+  config.derivatives_path = ENV['HYRAX_DERIVATIVES_PATH'].presence || Rails.root.join('tmp', 'derivatives').to_s
 
   # Should schema.org microdata be displayed?
   # config.display_microdata = true
@@ -177,7 +178,7 @@ Hyrax.config do |config|
     # Issue with Hyrax v 2.9.0 where IIIF has mixed content error when running with SSL enabled
     # See Samvera Slack thread https://samvera.slack.com/archives/C0F9JQJDQ/p1596718417351200?thread_ts=1596717896.350700&cid=C0F9JQJDQ
     base_url = base_url.sub(/\Ahttp:/, 'https:')
-    Riiif::Engine.routes.url_helpers.image_url(file_id, host: base_url, size: size)
+    Riiif::Engine.routes.url_helpers.image_url(file_id, host: base_url, size:)
   end
 
   config.iiif_info_url_builder = lambda do |file_id, base_url|
@@ -188,7 +189,14 @@ Hyrax.config do |config|
     # See Samvera Slack thread https://samvera.slack.com/archives/C0F9JQJDQ/p1596718417351200?thread_ts=1596717896.350700&cid=C0F9JQJDQ
     uri.sub(/\Ahttp:/, 'https:')
   end
+
+  ##
+  # A Valkyrie::Identifier is not a string but can be cast to a string.  What we have here is in
+  # essence a "super" method.
+  original_translator = config.translate_id_to_uri
+  config.translate_id_to_uri = ->(id) { original_translator.call(id.to_s) }
 end
+# rubocop:enable Metrics/BlockLength
 
 Date::DATE_FORMATS[:standard] = "%m/%d/%Y"
 
@@ -197,9 +205,7 @@ Qa::Authorities::Local.register_subauthority('languages', 'Qa::Authorities::Loca
 Qa::Authorities::Local.register_subauthority('genres', 'Qa::Authorities::Local::TableBasedAuthority')
 
 # set bulkrax default work type to first curation_concern if it isn't already set
-if ENV.fetch('HYKU_BULKRAX_ENABLED', 'true') == 'true' && Bulkrax.default_work_type.blank?
-  Bulkrax.default_work_type = Hyrax.config.curation_concerns.first.to_s
-end
+Bulkrax.default_work_type = Hyrax.config.curation_concerns.first.to_s if ENV.fetch('HYKU_BULKRAX_ENABLED', 'true') == 'true' && Bulkrax.default_work_type.blank?
 
 Hyrax::IiifAv.config.iiif_av_viewer = :universal_viewer
 

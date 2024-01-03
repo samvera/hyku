@@ -5,7 +5,7 @@ module AdminStatsHelper
     content_tag :div, class: 'graph-container',
                       data: { graph_data: data.to_json,
                               graph_options: options } do
-      content_tag :div, nil, class: 'graph', id: id
+      content_tag :div, nil, class: 'graph', id:
     end
   end
 end

@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength, Metrics/BlockLength
 class CatalogController < ApplicationController
+  include BlacklightAdvancedSearch::Controller
+  include BlacklightRangeLimit::ControllerOverride
   include Hydra::Catalog
   include Hydra::Controller::ControllerBehavior
   include BlacklightOaiProvider::Controller
@@ -8,20 +11,45 @@ class CatalogController < ApplicationController
   # These before_action filters apply the hydra access controls
   before_action :enforce_show_permissions, only: :show
 
-  def self.uploaded_field
-    'system_create_dtsi'
+  def self.created_field
+    'date_created_ssim'
+  end
+
+  def self.creator_field
+    'creator_ssim'
   end
 
   def self.modified_field
     'system_modified_dtsi'
   end
 
+  def self.title_field
+    'title_ssim'
+  end
+
+  def self.uploaded_field
+    'system_create_dtsi'
+  end
+
   # CatalogController-scope behavior and configuration for BlacklightIiifSearch
   include BlacklightIiifSearch::Controller
 
   configure_blacklight do |config|
+    ##
+    # Blacklight 7.35.0 's default document_component is `nil`, see:
+    #
+    # - https://github.com/projectblacklight/blacklight/blob/ac5fa8b300c5ad5c35b1663ef0f15372ffa2be0f/lib/blacklight/configuration.rb#L213
+    # - https://github.com/projectblacklight/blacklight/blob/ac5fa8b300c5ad5c35b1663ef0f15372ffa2be0f/lib/blacklight/configuration.rb#L186
+    #
+    # Digging around in the wiki, you might find (only found because I cloned the repo):
+    #
+    # - https://github.com/projectblacklight/blacklight/wiki/Configuration---Results-View
+    config.index.document_component = Blacklight::DocumentComponent
+    config.show.document_component = Blacklight::DocumentComponent
+
     # IiifPrint index fields
-    config.add_index_field 'all_text_tsimv', highlight: true, helper_method: :render_ocr_snippets
+    config.add_index_field 'all_text_timv'
+    config.add_index_field 'file_set_text_tsimv', label: "Item contents", highlight: true, helper_method: :render_ocr_snippets
 
     # configuration for Blacklight IIIF Content Search
     config.iiif_search = {
@@ -32,30 +60,42 @@ class CatalogController < ApplicationController
       suggester_name: 'iiifSuggester'
     }
 
-    config.view.gallery.partials = %i[index_header index]
-    config.view.masonry.partials = [:index]
-    config.view.slideshow.partials = [:index]
-
     config.show.tile_source_field = :content_metadata_image_iiif_info_ssm
     config.show.partials.insert(1, :openseadragon)
+
     # default advanced config values
     config.advanced_search ||= Blacklight::OpenStructWithHashAccess.new
     # config.advanced_search[:qt] ||= 'advanced'
     config.advanced_search[:url_key] ||= 'advanced'
     config.advanced_search[:query_parser] ||= 'dismax'
     config.advanced_search[:form_solr_parameters] ||= {}
+    config.advanced_search[:form_facet_partial] ||= "advanced_search_facets_as_select"
 
     config.search_builder_class = IiifPrint::CatalogSearchBuilder
 
+    # Use locally customized AdvSearchBuilder so we can enable blacklight_advanced_search
+    config.search_builder_class = AdvSearchBuilder
+
     # Show gallery view
     config.view.gallery.partials = %i[index_header index]
+    config.view.masonry.partials = [:index]
     config.view.slideshow.partials = [:index]
+
+    # Because too many times on Samvera tech people raise a problem regarding a failed query to SOLR.
+    # Often, it's because they inadvertently exceeded the character limit of a GET request.
+    config.http_method = :post
 
     ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
     config.default_solr_params = {
       qt: "search",
       rows: 10,
-      qf: "title_tesim description_tesim creator_tesim keyword_tesim all_text_timv"
+      qf: IiifPrint.config.metadata_fields.keys.map { |attribute| "#{attribute}_tesim" }
+                   .join(' ') << " title_tesim description_tesim all_text_timv file_set_text_tsimv", # the first space character is necessary!
+      "hl": true,
+      "hl.simple.pre": "<span class='highlight'>",
+      "hl.simple.post": "</span>",
+      "hl.snippets": 30,
+      "hl.fragsize": 100
     }
 
     # Specify which field to use in the tag cloud on the homepage.
@@ -66,6 +106,18 @@ class CatalogController < ApplicationController
     config.index.title_field = 'title_tesim'
     config.index.display_type_field = 'has_model_ssim'
     config.index.thumbnail_field = 'thumbnail_path_ss'
+
+    # Blacklight 7 additions
+    config.add_results_document_tool(:bookmark, partial: 'bookmark_control', if: :render_bookmarks_control?)
+    config.add_results_collection_tool(:sort_widget)
+    config.add_results_collection_tool(:per_page_widget)
+    config.add_results_collection_tool(:view_type_group)
+    config.add_show_tools_partial(:bookmark, partial: 'bookmark_control', if: :render_bookmarks_control?)
+    config.add_show_tools_partial(:email, callback: :email_action, validator: :validate_email_params)
+    config.add_show_tools_partial(:sms, if: :render_sms_action?, callback: :sms_action, validator: :validate_sms_params)
+    config.add_show_tools_partial(:citation)
+    config.add_nav_action(:bookmark, partial: 'blacklight/nav/bookmark', if: :render_bookmarks_control?)
+    config.add_nav_action(:search_history, partial: 'blacklight/nav/search_history')
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
@@ -80,6 +132,10 @@ class CatalogController < ApplicationController
     config.add_facet_field 'publisher_sim', limit: 5
     config.add_facet_field 'file_format_sim', limit: 5
     config.add_facet_field 'member_of_collections_ssim', limit: 5, label: 'Collections'
+
+    # TODO: deal with part of facet changes
+    # config.add_facet_field solr_name("part", :facetable), limit: 5, label: 'Part'
+    # config.add_facet_field solr_name("part_of", :facetable), limit: 5
 
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
@@ -220,14 +276,15 @@ class CatalogController < ApplicationController
       }
     end
 
+    date_fields = ['date_created_tesim', 'sorted_date_isi', 'sorted_month_isi']
+
     config.add_search_field('date_created') do |field|
       field.solr_parameters = {
         "spellcheck.dictionary": "date_created"
       }
-      solr_name = 'created_tesim'
       field.solr_local_parameters = {
-        qf: solr_name,
-        pf: solr_name
+        qf: date_fields.join(' '),
+        pf: date_fields.join(' ')
       }
     end
 
@@ -343,16 +400,27 @@ class CatalogController < ApplicationController
       }
     end
 
+    config.add_search_field('source') do |field|
+      solr_name = solr_name("source", :stored_searchable)
+      field.solr_local_parameters = {
+        qf: solr_name,
+        pf: solr_name
+      }
+    end
+
     # "sort results by" select (pulldown)
     # label in pulldown is followed by the name of the SOLR field to sort by and
     # whether the sort is ascending or descending (it must be asc or desc
     # except in the relevancy case).
     # label is key, solr field is value
-    config.add_sort_field "score desc, #{uploaded_field} desc", label: "relevance"
-    config.add_sort_field "#{uploaded_field} desc", label: "date uploaded \u25BC"
-    config.add_sort_field "#{uploaded_field} asc", label: "date uploaded \u25B2"
-    config.add_sort_field "#{modified_field} desc", label: "date modified \u25BC"
-    config.add_sort_field "#{modified_field} asc", label: "date modified \u25B2"
+    config.add_sort_field "score desc, #{uploaded_field} desc", label: "Relevance"
+
+    config.add_sort_field "#{title_field} asc", label: "Title"
+    config.add_sort_field "#{creator_field} asc", label: "Author"
+    config.add_sort_field "#{created_field} asc", label: "Published Date (Ascending)"
+    config.add_sort_field "#{created_field} desc", label: "Published Date (Descending)"
+    config.add_sort_field "#{modified_field} asc", label: "Upload Date (Ascending)"
+    config.add_sort_field "#{modified_field} desc", label: "Upload Date (Descending)"
 
     # OAI Config fields
     config.oai = {
@@ -360,8 +428,8 @@ class CatalogController < ApplicationController
         repository_name: ->(controller) { controller.send(:current_account)&.name.presence },
         # repository_url:  ->(controller) { controller.oai_catalog_url },
         record_prefix: ->(controller) { controller.send(:current_account).oai_prefix },
-        admin_email:   ->(controller) { controller.send(:current_account).oai_admin_email },
-        sample_id:     ->(controller) { controller.send(:current_account).oai_sample_identifier }
+        admin_email: ->(controller) { controller.send(:current_account).oai_admin_email },
+        sample_id: ->(controller) { controller.send(:current_account).oai_sample_identifier }
       },
       document: {
         limit: 100, # number of records returned with each request, default: 15
@@ -378,7 +446,8 @@ class CatalogController < ApplicationController
 
   # This is overridden just to give us a JSON response for debugging.
   def show
-    _, @document = fetch params[:id]
+    _, @document = search_service.fetch(params[:id])
     render json: @document.to_h
   end
 end
+# rubocop:enable Metrics/ClassLength, Metrics/BlockLength

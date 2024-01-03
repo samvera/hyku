@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rake'
-load 'app/models/site.rb'
+load Rails.root.join('app', 'models', 'site.rb')
 
 RSpec.describe "Rake tasks" do
   before(:all) do

@@ -120,7 +120,7 @@ pt-BR:
         logo_image: Imagem para página SSO
         logo_image_alt_text: Texto alternativo para imagem
         name: Nome ou Descrição
-        optoins: Opções
+        options: Opções
         provider: Fornecedor
     proprietor:
       accounts:

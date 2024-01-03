@@ -61,4 +61,13 @@ RSpec.describe SolrEndpoint do
       expect(subject.ping).to eq false
     end
   end
+
+  describe '#remove!' do
+    it 'schedules the removal and deletes the end point' do
+      instance = described_class.create!
+      allow(instance).to receive(:account).and_return(double(Account, search_only?: true))
+      expect(RemoveSolrCollectionJob).to receive(:perform_later)
+      expect { instance.remove! }.to change(described_class, :count).by(-1)
+    end
+  end
 end

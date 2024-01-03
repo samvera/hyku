@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   samvera: samvera/circleci-orb@1
-  browser-tools: circleci/browser-tools@1.3
+  browser-tools: circleci/browser-tools@1.4.6
   ruby: circleci/ruby@2
   node: circleci/node@5
 
@@ -10,13 +10,13 @@ jobs:
     parameters:
       ruby_version:
         type: string
-        default: 2.7.8
+        default: 3.2.2
       bundler_version:
         type: string
         default: 2.4.8
       rails_version:
         type: string
-        default: '5.1.6'
+        default: '6.1.7.6'
       solr_config_path:
         type: string
       fcrepo_version:
@@ -61,6 +61,7 @@ jobs:
       BUNDLE_PATH: vendor/bundle
       BUNDLE_JOBS: 4
       BUNDLE_RETRY: 3
+      HYKU_CACHE_ROOT: /tmp/hyku-cache
       HYKU_RESTRICT_CREATE_AND_DESTROY_PERMISSIONS: 'true'
       SOLR_ADMIN_USER: admin
       SOLR_ADMIN_PASSWORD: admin
@@ -79,7 +80,9 @@ jobs:
           ruby_version: << parameters.ruby_version >>
           bundler_version: << parameters.bundler_version >>
       - samvera/rubocop
-      - browser-tools/install-chrome
+      - browser-tools/install-chrome:
+          chrome-version: 114.0.5735.90 # see https://github.com/CircleCI-Public/browser-tools-orb/pull/96
+          replace-existing: true
       - browser-tools/install-chromedriver
       - run:
           name: Check Chrome install
@@ -95,6 +98,6 @@ workflows:
   ci:
     jobs:
       - bundle:
-          ruby_version: "2.7.8"
-          name: "ruby2-7-8"
+          ruby_version: "3.2.2"
+          name: "ruby3-2-2"
           solr_config_path: 'solr/conf'

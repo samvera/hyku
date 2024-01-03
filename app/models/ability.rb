@@ -25,7 +25,7 @@ class Ability
     self.ability_logic += %i[everyone_can_create_curation_concerns]
   end
 
-  # OVERRIDE METHOD from blacklight-access_controls v0.6.2
+  # OVERRIDE METHOD from blacklight-access_controls v6.0.1
   #
   # NOTE: DO NOT RENAME THIS METHOD - it is required for permissions to function properly.
   #

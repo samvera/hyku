@@ -31,7 +31,7 @@ RSpec.describe 'Insitution visiblity work access', type: :request, clean: true, 
     WebMock.disable!
     Apartment::Tenant.create(account.tenant)
     Apartment::Tenant.switch(account.tenant) do
-      Site.update(account: account)
+      Site.update(account:)
       work
     end
     Apartment::Tenant.create(account2.tenant)

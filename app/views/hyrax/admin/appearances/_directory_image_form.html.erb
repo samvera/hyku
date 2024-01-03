@@ -1,17 +1,17 @@
 <%= simple_form_for @form, url: admin_appearance_path do |f| %>
-  <div class="panel-body">
+  <div class="card-body">
     <% require_image = @form.directory_image? ? false : true %>
     <%# Upload Directory Image %>
     <%= f.input :directory_image, as: :file, wrapper: :vertical_file_input, required: require_image, hint: t('hyrax.admin.appearances.show.forms.directory_image.hint') %>
     <%= f.input :directory_image_text, required: true, as: :text, label: 'Directory image alt text' %>
-    <%= image_tag @form.directory_image.url, class: "img-responsive" if @form.directory_image? %>
+    <%= image_tag @form.directory_image.url, class: "img-fluid" if @form.directory_image? %>
   </div>
-  <div class="panel-footer">
-    <%= f.submit class: 'btn btn-primary pull-right' %>
+  <div class="card-footer">
+    <%= f.submit class: 'btn btn-primary float-right' %>
   </div>
 <% end %>
 <% if @form.directory_image? %>
-  <div class="panel-footer">
+  <div class="card-footer">
     <%= simple_form_for @form.site, url: main_app.site_path(@form.site) do |f| %>
       <%= f.submit 'Remove directory image', class: 'btn btn-danger', name: :remove_directory_image %>
     <% end %>

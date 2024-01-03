@@ -122,9 +122,13 @@ en:
       label:
         name: Name or Description
         provider: Provider
-        optoins: Options
+        options: Options
+        logo: Logo
+        updated_at: Updated At
         logo_image: Image for SSO Page
         logo_image_alt_text: Alt Text for Image
+        create_new: New
+        edit: Edit
     footer:
       admin_login: Administrator login
     proprietor:

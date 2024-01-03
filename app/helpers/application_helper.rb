@@ -5,9 +5,10 @@ module ApplicationHelper
   include Hyrax::OverrideHelperBehavior
   include GroupNavigationHelper
   include SharedSearchHelper
+  include HykuKnapsack::ApplicationHelper
 
   def hint_for(term:, record_class: nil)
-    hint = locale_for(type: 'hints', term: term, record_class: record_class)
+    hint = locale_for(type: 'hints', term:, record_class:)
 
     return hint unless missing_translation(hint)
   end
@@ -24,7 +25,8 @@ module ApplicationHelper
     locale
   end
 
-  def missing_translation(value)
-    value.include?('translation missing')
+  def missing_translation(value, _options = {})
+    return true if value.try(:false?)
+    false
   end
 end

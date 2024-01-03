@@ -1,4 +1,6 @@
+# frozen_string_literal: true
 require_relative 'boot'
+require_relative '../app/middleware/no_cache_middleware'
 
 require 'rails/all'
 require 'i18n/debug' if ENV['I18N_DEBUG']
@@ -34,8 +36,105 @@ module Hyku
   end
 
   class Application < Rails::Application
+    ##
+    # @!group Class Attributes
+    #
+    # @!attribute html_head_title
+    #   The title to render for the application's HTML > HEAD > TITLE element.
+    #   @return [String]
+    class_attribute :html_head_title, default: "Hyku", instance_accessor: false
+
+    # @!attribute user_devise_parameters
+    #   @return [Object]
+    #
+    #   This is a value that you want to set in the before_initialize block.
+    class_attribute :user_devise_parameters, instance_accessor: false, default: [
+      :database_authenticatable,
+      :invitable,
+      :registerable,
+      :recoverable,
+      :rememberable,
+      :trackable,
+      :validatable,
+      :omniauthable, { omniauth_providers: %i[saml openid_connect cas] }
+    ]
+
+    ##
+    # @!attribute iiif_audio_labels_and_mime_types [r|w]
+    #   @see Hyrax::IiifAv::DisplaysContentDecorator
+    #   @return [Hash<String,String>] Hash of valid audio labels and their mime types.
+    class_attribute :iiif_audio_labels_and_mime_types, default: { "ogg" => "audio/ogg", "mp3" => "audio/mpeg" }
+
+    ##
+    # @!attribute iiif_video_labels_and_mime_types [r|w]
+    #   @see Hyrax::IiifAv::DisplaysContentDecorator
+    #   @return [Hash<String,String>] Hash of valid video labels and their mime types.
+    class_attribute :iiif_video_labels_and_mime_types, default: { "mp4" => "video/mpeg", "webm" => "audio/webm" }
+
+    ##
+    # @!attribute iiif_video_url_builder [r|w]
+    #   @param document [SolrDocument]
+    #   @param label [String]
+    #   @param host [String] (e.g. samvera.org)
+    #   @return [String] the fully qualified URL.
+    #   @see Hyrax::IiifAv::DisplaysContentDecorator
+    #
+    #   @example
+    #     # The below example will build a URL taht will download directly from Hyrax as the
+    #     # video resource.  This is a hack to address the processing times of video derivatives;
+    #     # namely in certain setups/configurations of Hyku, video processing is laggy—as in days.
+    #     #
+    #     # The draw back of using this method is that we're pointing to the original video file.
+    #     # This is acceptable if the original file has already been processed out of band (e.g.
+    #     # before uploading to Hyku/Hyrax).  When we're dealing with a raw video, this is likely
+    #     # not ideal for streaming.
+    #     Hyrax::IiifAv::DisplaysContent.iiif_video_url_builder = ->(document:, label:, host:) do
+    #       Hyrax::Engine.routes.url_helpers.download_url(document, host:, protocol: 'https')
+    #     end
+    class_attribute :iiif_video_url_builder,
+                                               default: ->(document:, label:, host:) { Hyrax::IiifAv::Engine.routes.url_helpers.iiif_av_content_url(document.id, label:, host:) }
+
+    # @!endgroup Class Attributes
+
     # Add this line to load the lib folder first because we need
-    config.autoload_paths.unshift("#{Rails.root}/lib")
+    # IiifPrint::SplitPdfs::AdventistPagesToJpgsSplitter
+    config.autoload_paths.unshift(Rails.root.join('lib'))
+
+    # Add the middleware directory to the eager load paths
+    config.eager_load_paths << Rails.root.join('app', 'middleware')
+
+    ##
+    #   @return [Array<String>] an array of strings in which we should be looking for theme view
+    #           candidates.
+    # @see Hyrax::WorksControllerBehavior
+    # @see Hyrax::ContactFormController
+    # @see Hyrax::PagesController
+    # @see https://api.rubyonrails.org/classes/ActionView/ViewPaths.html#method-i-prepend_view_path
+    #
+    # @see .path_for
+    # @see
+    def self.theme_view_path_roots
+      returning_value = [Rails.root.to_s]
+      returning_value.push HykuKnapsack::Engine.root.to_s if defined?(HykuKnapsack)
+      returning_value
+    end
+
+    ##
+    # @api public
+    #
+    # @param relative_path [String] lookup the relative paths first in the Knapsack then in Hyku.
+    #
+    # @return [String] the path to the file, favoring those found in the knapsack but falling back
+    #         to those in the Rails.root.
+    # @see .theme_view_path_roots
+    def self.path_for(relative_path)
+      if defined?(HykuKnapsack)
+        engine_path = HykuKnapsack::Engine.root.join(relative_path)
+        return engine_path.to_s if engine_path.exist?
+      end
+
+      Rails.root.join(relative_path).to_s
+    end
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -46,23 +145,24 @@ module Hyku
     config.middleware.use Rack::Deflater
 
     # The locale is set by a query parameter, so if it's not found render 404
-    config.action_dispatch.rescue_responses.merge!(
-      "I18n::InvalidLocale" => :not_found
-    )
+    config.action_dispatch.rescue_responses["I18n::InvalidLocale"] = :not_found
 
     if defined?(ActiveElasticJob) && ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', '') == 'elastic'
       Rails.application.configure do
         process_jobs = ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_ELASTIC_JOBS', false))
         config.active_elastic_job.process_jobs = process_jobs
-        config.active_elastic_job.aws_credentials = lambda { Aws::InstanceProfileCredentials.new }
+        config.active_elastic_job.aws_credentials = -> { Aws::InstanceProfileCredentials.new }
         config.active_elastic_job.secret_key_base = Rails.application.secrets[:secret_key_base]
       end
     end
 
     config.to_prepare do
-
-      # Add any extra services before IiifPrint::PluggableDerivativeService to enable processing
-      Hyrax::DerivativeService.services = [IiifPrint::PluggableDerivativeService]
+      # By default plain text files are not processed for text extraction.  In adding
+      # Adventist::TextFileTextExtractionService to the beginning of the services array we are
+      # enabling text extraction from plain text files.
+      Hyrax::DerivativeService.services = [
+        IiifPrint::PluggableDerivativeService
+      ]
 
       # When you are ready to use the derivative rodeo instead of the pluggable uncomment the
       # following and comment out the preceding Hyrax::DerivativeService.service
@@ -72,7 +172,10 @@ module Hyku
       #   IiifPrint::DerivativeRodeoService,
       #   Hyrax::FileSetDerivativesService]
 
-      DerivativeRodeo::Generators::HocrGenerator.additional_tessearct_options = "-l eng_best"
+      DerivativeRodeo::Generators::HocrGenerator.additional_tessearct_options = nil
+
+      # Load locales early so decorators can use them during initialization
+      I18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.yml')]
 
       # Allows us to use decorator files
       Dir.glob(File.join(File.dirname(__FILE__), "../app/**/*_decorator*.rb")).sort.each do |c|
@@ -97,7 +200,7 @@ module Hyku
         Rails.application.configure do
           process_jobs = ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_ELASTIC_JOBS', false))
           config.active_elastic_job.process_jobs = process_jobs
-          config.active_elastic_job.aws_credentials = lambda { Aws::InstanceProfileCredentials.new }
+          config.active_elastic_job.aws_credentials = -> { Aws::InstanceProfileCredentials.new }
           config.active_elastic_job.secret_key_base = Rails.application.secrets[:secret_key_base]
         end
       end
@@ -118,7 +221,7 @@ module Hyku
     #
     # Psych::DisallowedClass: Tried to load unspecified class: <Your Class Name Here>
     config.after_initialize do
-      config.active_record.yaml_column_permitted_classes = [
+      yaml_column_permitted_classes = [
         Symbol,
         Hash,
         Array,
@@ -127,6 +230,14 @@ module Hyku
         User,
         Time
       ]
+      config.active_record.yaml_column_permitted_classes = yaml_column_permitted_classes
+      # Seems at some point `ActiveRecord::Base.yaml_column_permitted_classes` loses all the values we set above
+      # so we need to set it again here.
+      ActiveRecord::Base.yaml_column_permitted_classes = yaml_column_permitted_classes
+
+      # Because we're loading local translations early in the to_prepare block for our decorators,
+      # the I18n.load_path is out of order.  This line ensures that we load local translations last.
+      I18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.yml')]
     end
   end
 end

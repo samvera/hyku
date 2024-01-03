@@ -1,6 +1,6 @@
 <% content_for :page_header do %>
   <h1><span class="fa fa-gears"></span> <%= t('.header') %></h1>
-  <div class="pull-right">
+  <div class="float-right">
     <%= link_to new_proprietor_user_path, class: 'btn btn-primary' do %>
       <span class="fa fa-edit"></span> <%= t('.create_new') %>
     <% end %>
@@ -9,8 +9,8 @@
 
 <div class="row">
   <div class="col-md-12">
-    <div class="panel panel-default">
-      <div class="panel-body">
+    <div class="card">
+      <div class="card-body">
         <table class="table table-striped datatable">
           <thead>
             <tr>
@@ -33,7 +33,11 @@
                 <td><%= user.title %></td>
                 <td><%= user.affiliation %></td>
                 <td><%= user.is_superadmin %></td>
-                <td class="col-md-2"><%= link_to t('.manage'), proprietor_user_path(user) %>&nbsp;|&nbsp;<%= link_to t('helpers.action.edit'), edit_proprietor_user_path(user) %>&nbsp;|&nbsp;<%= link_to t('helpers.action.delete'), proprietor_user_path(user), method: :delete, data: { confirm: t('.confirm_delete') } %></td>
+                <td class="col-md-2">
+                  <%= link_to t('.manage'), proprietor_user_path(user) %>&nbsp;|&nbsp;
+                  <%= link_to t('helpers.action.edit'), edit_proprietor_user_path(user) %>&nbsp;|&nbsp;
+                  <%= link_to t('helpers.action.delete'), proprietor_user_path(user), method: :delete, data: { confirm: t('.confirm_delete') } %>
+                </td>
               </tr>
             <% end %>
           </tbody>

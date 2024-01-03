@@ -1,129 +1,147 @@
-# Turn on RSpec cops
-require: rubocop-rspec
-inherit_from: .rubocop_todo.yml
+inherit_from:
+  - .rubocop_fixme.yml
 
-# With the rubocop 0.47.0 and rubocop-rspec 1.8.0 the following stderr message was sent:
-#   An error occurred while RSpec/DescribedClass cop was inspecting path/to/file
-RSpec/DescribedClass:
-  Enabled: false
+inherit_gem:
+  bixby: bixby_default.yml
 
 AllCops:
+  NewCops: disable
+  TargetRubyVersion: 3.2.2
   DisplayCopNames: true
-  TargetRubyVersion: 2.3
   Exclude:
-    - 'bin/**/*'
     - 'db/**/*'
-    - 'config/**/*'
-    - 'vendor/**/*'
-    - '.internal_test_app/**/*'
-    - 'spec/fixtures/**/*'
-    - 'spec/internal/**/*'
+    - 'script/**/*'
     - 'spec/test_app_templates/**/*'
-    - 'Rakefile'
-    - 'lib/tasks/rubocop.rake'
-    # disabling collections controller as most of the rubocop errors are in hyrax
-    - 'app/controllers/hyrax/dashboard/collections_controller.rb'
+    - 'vendor/**/*'
+    - 'lib/hyrax/specs/**/*'
+    - 'bin/graph'
+    - 'bin/import_from_purl'
 
-Rails:
-  Enabled: true
-
-Rails/DynamicFindBy:
-  Whitelist:
-    - find_by_user_key
+Lint/ImplicitStringConcatenation:
   Exclude:
-    - 'lib/importer/factory/object_factory.rb'
+    - 'lib/generators/hyrax/**/*'
 
-Rails/UnknownEnv:
-  Environments:
-    - development
-    - production
-    - staging
-    - test
-
-Metrics/LineLength:
-  Max: 120
+Rails/Output:
   Exclude:
-    - 'app/controllers/catalog_controller.rb'
-    - 'spec/controllers/curation_concerns/generic_works_controller_spec.rb'
-    - 'spec/services/iiif_collection_thumbnail_path_service_spec.rb'
-    - 'spec/services/iiif_work_thumbnail_path_service_spec.rb'
-    - 'spec/routing/proprietor/accounts_routing_spec.rb'
+    - 'lib/generators/**/*'
 
-Layout/IndentationConsistency:
-  EnforcedStyle: rails
+Metrics/BlockLength:
+  IgnoredMethods: ['included']
+  Exclude:
+    - 'hyrax.gemspec'
+    - 'app/models/concerns/hyrax/content_block_behavior.rb'
+    - 'app/services/hyrax/workflow/workflow_schema.rb'
+    - 'config/initializers/simple_form.rb'
+    - 'config/features.rb'
+    - 'config/routes.rb'
+    - 'lib/generators/hyrax/templates/catalog_controller.rb'
+    - 'lib/generators/hyrax/templates/config/initializers/simple_form_bootstrap.rb'
+    - 'lib/hyrax/rails/routes.rb'
+    - 'lib/tasks/*.rake'
+    - 'spec/**/*.rb'
+    - 'tasks/benchmark.rake'
 
-Layout/DotPosition:
-  EnforcedStyle: leading
-
-Style/Documentation:
+Style/AsciiComments:
   Enabled: false
 
-Style/StringLiterals:
+# rubocop suggests !thing.nil? instead, but that is NOT equivalent
+Style/DoubleNegation:
   Enabled: false
 
-Style/WordArray:
+Style/CollectionMethods:
+  PreferredMethods:
+    collect: 'map'
+    collect!: 'map!'
+    inject: 'reduce'
+    detect: 'find'
+    find_all: 'select'
+
+Style/SymbolArray:
   Enabled: false
 
-Metrics/ClassLength:
-  Exclude:
-    - 'app/controllers/catalog_controller.rb'
+Style/ClassAndModuleChildren:
+  Enabled: false
 
-Metrics/ModuleLength:
-  Max: 200
+Style/SingleLineBlockParams:
+  Enabled: false
+
+Rails/ApplicationJob:
+  Enabled: false
+
+Rails/ApplicationMailer:
+  Enabled: false
+
+Rails/ApplicationRecord:
+  Enabled: false
 
 Rails/HasAndBelongsToMany:
   Exclude:
     - 'app/models/role.rb'
 
-RSpec/AnyInstance:
+Rails/HasManyOrHasOneDependent:
+  Exclude:
+    - 'app/models/endpoint.rb'
+
+Rails/RakeEnvironment:
   Enabled: false
 
-RSpec/InstanceVariable:
-  Exclude:
-    - 'spec/controllers/hyku/registrations_controller_spec.rb'
-
-RSpec/NamedSubject:
+# We define custom methods like `find_by_user_key`,
+# `find_by_created_date`, etc
+Rails/DynamicFindBy:
   Enabled: false
-
-RSpec/DescribeClass:
-  Exclude:
-    - 'spec/requests/**/*'
-    - 'spec/features/**/*'
-    - 'spec/views/**/*'
-    - 'spec/routing/**/*'
-    - 'spec/tasks/**/*'
 
 Rails/FilePath:
   Exclude:
-    - 'spec/routing/**/*'
+    - 'spec/abilities/**/*'
+
+Rails/OutputSafety:
+  Exclude:
+    - 'app/builders/hyrax/form_builder.rb'
+    - 'app/helpers/hyrax/citations_behaviors/formatters/apa_formatter.rb'
+    - 'app/helpers/hyrax/citations_behaviors/formatters/chicago_formatter.rb'
+    - 'app/helpers/hyrax/citations_behaviors/formatters/mla_formatter.rb'
+    - 'app/helpers/hyrax/collections_helper.rb'
+    - 'app/helpers/hyrax/content_block_helper_behavior.rb'
+    - 'app/helpers/hyrax/hyrax_helper_behavior.rb'
+    - 'app/presenters/hyrax/fixity_status_presenter.rb'
+    - 'app/presenters/hyrax/presents_attributes.rb'
+    - 'app/renderers/hyrax/renderers/attribute_renderer.rb'
+    - 'spec/views/hyrax/my/works/_list_works.html.erb_spec.rb'
+
+Rails/UniqueValidationWithoutIndex:
+  Exclude:
+    - 'app/models/account.rb'
+    - 'app/models/domain_name.rb'
+    - 'app/models/hyrax/group.rb'
+
+RSpec/DescribeClass:
+  Exclude:
+    - 'spec/abilities/**/*'
+    - 'spec/config/hyrax_events_spec.rb'
+    - 'spec/conversions/**/*'
+    - 'spec/features/**/*'
+    - 'spec/inputs/**/*'
+    - 'spec/javascripts/jasmine_spec.rb'
+    - 'spec/tasks/rake_spec.rb'
+    - 'spec/views/**/*'
+
+# # By default RSpec/MessageSpies has the following:
+# #   Prefer have_received for setting message expectations. Setup form as a spy using allow or instance_spy.
+# # The default assumes EnforcedStyle is 'have_received'. Most of our specs are 'receive'
+RSpec/MessageSpies:
+  Enabled: false
 
 RSpec/ExpectActual:
-  Exclude:
-    - 'spec/routing/**/*'
+  Enabled: false
 
-RSpec/VerifiedDoubles:
+RSpec/LetSetup:
   Enabled: false
 
 RSpec/MessageExpectation:
   Enabled: false
 
-# By default RSpec/MessageSpies has the following:
-#   Prefer have_received for setting message expectations. Setup form as a spy using allow or instance_spy.
-RSpec/MessageSpies:
-  Enabled: true
-  EnforcedStyle: receive
-
-RSpec/ExampleLength:
-  Max: 20
-
 RSpec/NestedGroups:
-  Max: 4
-
-RSpec/MultipleExpectations:
   Enabled: false
 
-Metrics/BlockLength:
-  Exclude:
-    - 'spec/**/*.rb'
-    - 'lib/tasks/*.rake'
-    - 'app/controllers/catalog_controller.rb'
+RSpec/LeadingSubject:
+  Enabled: false

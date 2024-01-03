@@ -5,15 +5,27 @@ require 'rails_helper'
 # rubocop:disable Metrics/ModuleLength
 module Hyrax
   RSpec.describe Group, type: :model, clean: true do
+    describe '.new' do
+      context 'when provided a string' do
+        it 'instantiates with the string as the name' do
+          expect(described_class.new("Boaty McBoatFace").name).to eq('Boaty McBoatFace')
+        end
+      end
+      context 'when provided a hash' do
+        it 'instantiates' do
+          expect(described_class.new(name: "Boaty McBoatFace").name).to eq('Boaty McBoatFace')
+        end
+      end
+    end
     describe 'group with no members' do
-      subject { described_class.new(name: name, description: description) }
+      subject { described_class.new(name:, description:) }
 
       let(:name) { 'Empty Group' }
       let(:description) { 'Add members plz' }
       let(:empty_group_attributes) do
         {
-          name: name,
-          description: description,
+          name:,
+          description:,
           number_of_users: 0
         }
       end

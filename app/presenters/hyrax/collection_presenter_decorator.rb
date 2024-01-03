@@ -1,27 +1,18 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v3.4.1
+# OVERRIDE Hyrax v5.0.0rc2
 # - Add collection methods to collection presenter and override to return
 #   full banner_file data, rather than only download path to file.
 # - Alter permissions-related behavior.
 # Terms is the list of fields displayed by app/views/collections/_show_descriptions.html.erb
 module Hyrax
   module CollectionPresenterDecorator
-    def self.decorate(base)
-      base.prepend(self)
+    extend ActiveSupport::Concern
 
-      base.redefine_singleton_method(:terms) do
+    class_methods do
+      def terms
         # OVERRIDE Hyrax - removed size
-        %i[total_items
-           resource_type
-           creator contributor
-           keyword license
-           publisher
-           date_created
-           subject language
-           identifier
-           based_near
-           related_url]
+        super - [:size]
       end
     end
 
@@ -33,6 +24,7 @@ module Hyrax
       create_work_presenter.authorized_models.any?
     end
 
+    # OVERRIDE Hyrax - remove size
     def [](key)
       case key
       when :total_items
@@ -49,19 +41,11 @@ module Hyrax
     # @return String the access label (e.g. Manage, Deposit, View)
     def managed_access
       # OVERRIDE: Change check for manage access from :edit to :destroy
-      if current_ability.can?(:destroy, solr_document)
-        return I18n.t('hyrax.dashboard.my.collection_list.managed_access.manage')
-      end
+      return I18n.t('hyrax.dashboard.my.collection_list.managed_access.manage') if current_ability.can?(:destroy, solr_document)
       # OVERRIDE: Add label for Edit access
-      if current_ability.can?(:edit, solr_document)
-        return I18n.t('hyrax.dashboard.my.collection_list.managed_access.edit')
-      end
-      if current_ability.can?(:deposit, solr_document)
-        return I18n.t('hyrax.dashboard.my.collection_list.managed_access.deposit')
-      end
-      if current_ability.can?(:read, solr_document)
-        return I18n.t('hyrax.dashboard.my.collection_list.managed_access.view')
-      end
+      return I18n.t('hyrax.dashboard.my.collection_list.managed_access.edit') if current_ability.can?(:edit, solr_document)
+      return I18n.t('hyrax.dashboard.my.collection_list.managed_access.deposit') if current_ability.can?(:deposit, solr_document)
+      return I18n.t('hyrax.dashboard.my.collection_list.managed_access.view') if current_ability.can?(:read, solr_document)
       ''
     end
 
@@ -87,7 +71,7 @@ module Hyrax
         filename = File.split(banner_info.first.local_path).last unless banner_info.empty?
         alttext = banner_info.first.alt_text unless banner_info.empty?
         relative_path = "/" + banner_info.first.local_path.split("/")[-4..-1].join("/") unless banner_info.empty?
-        { filename: filename, relative_path: relative_path, alt_text: alttext }
+        { filename:, relative_path:, alt_text: alttext }
       end
     end
 
@@ -106,9 +90,7 @@ module Hyrax
 
     def collection_featured?
       # only look this up if it's not boolean; ||= won't work here
-      if @collection_featured.nil?
-        @collection_featured = FeaturedCollection.where(collection_id: solr_document.id).exists?
-      end
+      @collection_featured = FeaturedCollection.where(collection_id: solr_document.id).exists? if @collection_featured.nil?
       @collection_featured
     end
 
@@ -119,4 +101,4 @@ module Hyrax
   end
 end
 
-Hyrax::CollectionPresenterDecorator.decorate(Hyrax::CollectionPresenter)
+Hyrax::CollectionPresenter.prepend(Hyrax::CollectionPresenterDecorator)

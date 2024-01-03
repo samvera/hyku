@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Hyrax
-  # This decorator is used to override logic found in Hyrax v3.4.1
+  # This decorator is used to override logic found in Hyrax v5.0.0rc2
   #
   # Because Hyku has converted the Hyrax::Group model from a PORO to a db-backed active record object,
   # we have to query for existing Hyrax groups instead of initializing empty ones.
@@ -16,6 +16,8 @@ module Hyrax
   # Because of this, we also add queries for Role permissions in addition to Group permissions
   # as part of these overrides.
   module PermissionManagerDecorator
+    private
+
     def update_groups_for(mode:, groups:)
       groups = groups.map(&:to_s)
 

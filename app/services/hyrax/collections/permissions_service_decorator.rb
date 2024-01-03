@@ -12,7 +12,7 @@ module Hyrax
       # to have a whole method JUST for that... maybe make #manage_access_to_collection
       # public or use #send to call the private method directly?
       def can_manage_collection?(collection_id:, ability:)
-        manage_access_to_collection?(collection_id: collection_id, ability: ability)
+        manage_access_to_collection?(collection_id:, ability:)
       end
     end
   end

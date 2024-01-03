@@ -130,7 +130,7 @@ RSpec.describe Account, type: :model do
       it "reverts to using file store when cache is off" do
         account.settings[:cache_api] = false
         account.switch!
-        expect(Rails.application.config.cache_store).to eq([:file_store, "/app/samvera/file_cache"])
+        expect(Rails.application.config.cache_store).to eq([:file_store, described_class::DEFAULT_FILE_CACHE_STORE])
       end
     end
 
@@ -140,7 +140,7 @@ RSpec.describe Account, type: :model do
       it "uses the file store" do
         expect(Rails.application.config.action_controller.perform_caching).to be_falsey
         expect(ActionController::Base.perform_caching).to be_falsey
-        expect(Rails.application.config.cache_store).to eq([:file_store, "/app/samvera/file_cache"])
+        expect(Rails.application.config.cache_store).to eq([:file_store, described_class::DEFAULT_FILE_CACHE_STORE])
       end
     end
 
@@ -339,7 +339,7 @@ RSpec.describe Account, type: :model do
       it 'solr_endpoint' do
         account2 = described_class.new(name: 'other', solr_endpoint: endpoint)
         expect { account2.save }.to raise_error(ActiveRecord::RecordNotUnique)
-        # Note: this is different than just populating account2.errors, because it is a FK
+        # NOTE: this is different than just populating account2.errors, because it is a FK
       end
     end
   end
@@ -348,7 +348,7 @@ RSpec.describe Account, type: :model do
     let!(:account) { FactoryBot.create(:account, tenant: "59500a46-b1fb-412d-94d6-b928e91ef4d9") }
 
     before do
-      Site.update(account: account)
+      Site.update(account:)
       Site.instance.admin_emails = ["test@test.com", "test@test.org"]
     end
 
@@ -362,7 +362,7 @@ RSpec.describe Account, type: :model do
     let!(:account) { FactoryBot.create(:account, tenant: "02839e1d-b4a4-451a-ab83-4b8968621f1e") }
 
     before do
-      Site.update(account: account)
+      Site.update(account:)
       Site.instance.admin_emails = ["test@test.com", "test@test.org"]
     end
 

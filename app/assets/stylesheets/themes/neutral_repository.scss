@@ -152,13 +152,13 @@
 
   ////// Media Queries //////
 
-  @media (max-width: $screen-md-min) {
+  @media (max-width: 992px) {
     div.neutral-repository-collections:nth-of-type(2n+3) {
       clear: left;
     }
   }
 
-  @media (min-width: $screen-md-min) {
+  @media (min-width: 992px) {
     div.neutral-repository-collections:nth-of-type(3n+4) {
       clear: left;
     }

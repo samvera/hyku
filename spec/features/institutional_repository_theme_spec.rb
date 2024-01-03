@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Admin can select institutional repository theme', type: :feature, js: true, clean: true do # rubocop:disable Metrics/LineLength
+RSpec.describe 'Admin can select institutional repository theme', type: :feature, js: true, clean: true do # rubocop:disable Layout/LineLength
   let(:account) { FactoryBot.create(:account) }
   let(:admin) { FactoryBot.create(:admin, email: 'admin@example.com', display_name: 'Adam Admin') }
   let(:user) { create :user }
@@ -11,7 +11,7 @@ RSpec.describe 'Admin can select institutional repository theme', type: :feature
            title: ['Llamas and Alpacas'],
            keyword: ['llama', 'alpaca'],
            resource_type: ['Software or Program Code'],
-           user: user)
+           user:)
   end
 
   context 'as a repository admin' do
@@ -44,14 +44,14 @@ RSpec.describe 'Admin can select institutional repository theme', type: :feature
       allow_any_instance_of(ApplicationController).to receive(:current_account).and_return(account)
       visit '/'
       expect(page).to have_css('body.institutional_repository')
-      expect(page).to have_css('nav.navbar.navbar-inverse.navbar-static-top.institutional-repsitory-nav')
+      expect(page).to have_css('nav#masthead.navbar.institutional-repository-nav')
       expect(page).to have_css('div.ir-stats')
       expect(page).to have_css('div.institutional-repository-featured-researcher')
       expect(page).to have_css('div.institutional-repository-recent-uploads')
-      expect(page).to have_css('div.col-xs-12.col-md-8.institutional-repository.collections-container')
+      expect(page).to have_css('div.col-12.col-md-8.institutional-repository.collections-container')
       expect(page).not_to have_css('ul#homeTabs')
       expect(page).not_to have_css('ul.nav.nav-pills')
-      expect(page).not_to have_css('nav.navbar.navbar-inverse.navbar-static-top.cultural-repository-nav')
+      expect(page).not_to have_css('nav.navbar.cultural-repository-nav')
       expect(page).not_to have_css('background-container-gradient')
     end
 

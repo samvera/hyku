@@ -7,12 +7,12 @@ require 'rails_helper'
 
 RSpec.describe Hyrax::ImagesController do
   let(:user) { FactoryBot.create(:user) }
-  let(:work) { FactoryBot.create(:work_with_one_file, user: user) }
+  let(:work) { FactoryBot.create(:work_with_one_file, user:) }
   let(:file_set) { work.ordered_members.to_a.first }
 
   before do
     Hydra::Works::AddFileToFileSet.call(file_set,
-                                        fixture_file('images/world.png'),
+                                        fixture_file_upload('images/world.png'),
                                         :original_file)
   end
 

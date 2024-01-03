@@ -1,21 +1,29 @@
 <% content_for :page_header do %>
   <h1><span class="fa fa-edit"></span> Statistics for <%= application_name %></h1>
 <% end %>
-  
-  <div class="panel panel-default tabs">
+
+  <div class="card tabs">
     <!-- Nav tabs -->
     <ul id="statistics-tabs" class="nav nav-tabs" role="tablist">
-      <li role="presentation" class="active"><a href="#collections" aria-controls="collections" role="tab" data-toggle="tab">Collections</a></li>
-      <li role="presentation"><a href="#works" aria-controls="works" role="tab" data-toggle="tab">Works</a></li>
-      <li role="presentation"><a href="#downloads" aria-controls="downloads" role="tab" data-toggle="tab">Downloads</a></li>
-      <li role="presentation"><a href="#users" aria-controls="users" role="tab" data-toggle="tab">Users</a></li>
+      <li class="nav-item">
+        <a class="nav-link active" href="#collections" role="tab" data-toggle="tab">Collections</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#works" role="tab" data-toggle="tab">Works</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#downloads" role="tab" data-toggle="tab">Downloads</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#users" role="tab" data-toggle="tab">Users</a>
+      </li>
     </ul>
 
     <!-- Tab panes -->
     <div class="tab-content">
-      <div role="tabpanel" class="tab-pane active" id="collections">
-        <div class="panel panel-default labels">
-          <div class="panel-body">
+      <div class="tab-pane active" id="collections">
+        <div class="card labels">
+          <div class="card-body">
             <h2>Collections over time</h2>
             <%=
               graph_tag('collection-graph', [Hyrax::Statistics::Collections::OverTime.new.points], {
@@ -34,8 +42,8 @@
         </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="works">
-        <div class="panel panel-default labels">
-          <div class="panel-body">
+        <div class="card labels">
+          <div class="card-body">
             <h2>Works over time</h2>
             <%=
               graph_tag('works-graph', [Hyrax::Statistics::Works::OverTime.new.points], {
@@ -62,21 +70,20 @@
         </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="downloads">
-        <div class="panel panel-default labels">
-          <div class="panel-body">
+        <div class="card labels">
+          <div class="card-body">
             ...
           </div>
         </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="users">
-        <div class="panel panel-default labels">
-          <div class="panel-body">
+        <div class="card labels">
+          <div class="card-body">
             <%= render "hyrax/admin/stats/stats_by_date" %>
             <%= render "hyrax/admin/stats/top_data" %>
           </div>
         </div>
       </div>
-    </div>
       <script>
         Blacklight.onLoad(function() {
           var stats = require('statistics_tab_manager');
@@ -84,5 +91,5 @@
           new stats.Tab('#works');
         });
       </script>
-
+    </div>
   </div>

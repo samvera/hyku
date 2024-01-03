@@ -4,6 +4,7 @@ module HyraxHelper
   include ::BlacklightHelper
   include Hyrax::BlacklightOverride
   include Hyrax::HyraxHelperBehavior
+  include Hyku::BlacklightHelperBehavior
 
   def application_name
     Site.application_name || super
@@ -26,7 +27,7 @@ module HyraxHelper
   end
 
   def block_for(name:)
-    ContentBlock.block_for(name: name, fallback_value: false)
+    ContentBlock.block_for(name:, fallback_value: false)
   end
 
   def directory_image

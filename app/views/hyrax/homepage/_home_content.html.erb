@@ -5,7 +5,7 @@
   also, to render featured collections
 %>
 
-<div class="<%= @presenter.display_featured_works? || @presenter.display_recently_uploaded? ? 'home-tabs-left col-md-6' : '' %>">
+<div class="<%= @presenter.display_featured_works? || @presenter.display_recently_uploaded? ? 'col-md-6' : '' %>">
   <ul id="homeTabs" class="nav nav-tabs" role="list">
     <%# add check for featured works %>
     <% if @presenter.display_featured_works? %>
@@ -41,10 +41,10 @@
   </div>
 </div><!-- /.col-md-6 -->
 
-<div class="home-tabs-right col-md-6">
+<div class="col-md-6">
   <ul class="nav nav-tabs" role="list">
-    <li class="nav-item active">
-      <a class="nav-link" aria-expanded="true" href="#tab-col2-first" data-toggle="tab">
+    <li class="nav-item">
+      <a class="nav-link active" aria-expanded="true" href="#tab-col2-first" data-toggle="tab">
         <%= t('hyrax.homepage.admin_sets.title') %>
       </a>
     </li>

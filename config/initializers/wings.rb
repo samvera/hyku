@@ -90,4 +90,11 @@ Rails.application.config.to_prepare do
       klass_name.constantize
     end
   end
+
+  # TEMPORARY HACK!
+  #   This will just temporarily get us to the dashboard route so we
+  #   can work on other things until we can figure this part out
+  Valkyrie::IndexingAdapter.register(
+    SolrEndpoint.new, :solr_index
+  )
 end

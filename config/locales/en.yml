@@ -278,6 +278,7 @@ en:
         manage: Manage
         title: Title
         affiliation: Affiliation
+        superadmin: SuperAdmin
         actions: Actions
         header: Manage Users
         confirm_delete: Are you sure you wish to delete this user?

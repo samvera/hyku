@@ -46,22 +46,18 @@ class User < ApplicationRecord
     email
   end
 
-  # rubocop:disable Naming/PredicateName
-  def is_admin
-    # rubocop:enable Naming/PredicateName
+  def admin?
     has_role?(:admin) || has_role?(:admin, Site.instance)
   end
 
-  # rubocop:disable Naming/PredicateName
-  def is_superadmin
-    # rubocop:enable Naming/PredicateName
+  def superadmin?
     has_role? :superadmin
   end
 
   # This comes from a checkbox in the proprietor interface
   # Rails checkboxes are often nil or "0" so we handle that
   # case directly
-  def is_superadmin=(value)
+  def superadmin=(value)
     value = ActiveModel::Type::Boolean.new.cast(value)
     if value
       add_role :superadmin

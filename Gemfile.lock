@@ -125,8 +125,8 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: b7891b758411c59f71ff54212e0d250fcc47e35f
-  branch: double_combo
+  revision: 25066985be7bdc39b21b3ab5a8a0ac9927a745b1
+  branch: double-combo-ingress
   specs:
     hyrax (5.0.0.rc2)
       active-fedora (~> 14.0)

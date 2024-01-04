@@ -197,7 +197,7 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: cad2cf33fc07ec2abb5b6834a858b5ed74903c12
+  revision: cc105d061727988e016c32235459f4cb82bd3ad6
   branch: rails_hyrax_upgrade
   specs:
     iiif_print (1.0.0)

@@ -7,6 +7,10 @@ Hyrax.config do |config|
   config.register_curation_concern :generic_work
   # Injected via `rails g hyrax:work Image`
   config.register_curation_concern :image
+  # Injected via `rails g hyrax:work_resource GenericWorkResource`
+  config.register_curation_concern :generic_work_resource
+  # Injected via `rails g hyrax:work_resource ImageResource`
+  config.register_curation_concern :image_resource
 
   # The email address that messages submitted via the contact page are sent to
   # This is set by account settings

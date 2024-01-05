@@ -21,4 +21,13 @@
 # Generated via
 #  `rails generate hyrax:work_resource ImageResource`
 
-attributes: {}
+attributes:
+  extent:
+    type: string
+    multiple: true
+    index_keys:
+      - "extent_tesim"
+    form:
+      required: false
+      primary: false
+      multiple: true

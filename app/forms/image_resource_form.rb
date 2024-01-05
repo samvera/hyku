@@ -5,7 +5,7 @@
 #
 # @see https://github.com/samvera/hyrax/wiki/Hyrax-Valkyrie-Usage-Guide#forms
 # @see https://github.com/samvera/valkyrie/wiki/ChangeSets-and-Dirty-Tracking
-class ImageResourceForm < Hyrax::Forms::PcdmObjectForm(ImageResource)
+class ImageResourceForm < Hyrax::Forms::ResourceForm(ImageResource)
   include Hyrax::FormFields(:basic_metadata)
   include Hyrax::FormFields(:image_resource)
 

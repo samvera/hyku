@@ -11,7 +11,7 @@ class SolrEndpoint < Endpoint
   # @return [Hash] options for the RSolr connection.
   def connection_options
     bl_defaults = Blacklight.connection_config
-    af_defaults = ActiveFedora::SolrService.instance.conn.options
+    af_defaults = Hyrax::SolrService.instance.conn.options
     switchable_options.reverse_merge(bl_defaults).reverse_merge(af_defaults)
   end
 
@@ -22,7 +22,8 @@ class SolrEndpoint < Endpoint
   end
 
   def switch!
-    ActiveFedora::SolrService.instance.conn = connection
+    Hyrax::SolrService.instance.conn = connection
+    Valkyrie::IndexingAdapter.adapters[:solr_index].connection = connection
     Blacklight.connection_config = connection_options
     Blacklight.default_index = nil
   end
@@ -42,7 +43,7 @@ class SolrEndpoint < Endpoint
   end
 
   def self.reset!
-    ActiveFedora::SolrService.reset!
+    Hyrax::SolrService.reset!
     Blacklight.connection_config = Blacklight.blacklight_yml[::Rails.env].symbolize_keys
     Blacklight.default_index = nil
   end

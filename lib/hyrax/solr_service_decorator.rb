@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# OVERRIDE: class ActiveFedora::SolrService from Fedora v14.0.1
-module ActiveFedora
+# OVERRIDE: class Hyrax::SolrService from Hyrax 5.0
+module Hyrax
   module SolrServiceDecorator
     # Get the count of records that match the query
     # @param [String] query a solr query
@@ -11,10 +11,16 @@ module ActiveFedora
     #
     # OVERRIDE: use `post` rather than `get` to handle larger query sizes
     def count(query, args = {})
-      args = args.merge(rows: 0)
-      SolrService.post(query, args)['response']['numFound'].to_i
+      args = args.merge({ rows: 0, method: :post })
+      query_result(query, **args)['response']['numFound'].to_i
+    end
+
+    # TODO: does Valkyrie Solr Service need to be reset in some way?
+    def reset!
+      @old_service.reset! if @old_service
+      valkyrie_index.connection = valkyrie_index.default_connection
     end
   end
 end
 
-ActiveFedora::SolrService.singleton_class.send(:prepend, ActiveFedora::SolrServiceDecorator)
+Hyrax::SolrService.singleton_class.send(:prepend, Hyrax::SolrServiceDecorator)

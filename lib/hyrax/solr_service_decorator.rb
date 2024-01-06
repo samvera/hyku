@@ -18,7 +18,11 @@ module Hyrax
     # TODO: does Valkyrie Solr Service need to be reset in some way?
     def reset!
       @old_service.reset! if @old_service
-      valkyrie_index.connection = valkyrie_index.default_connection
+
+      # The proprietor page runs through this as well but valkyrie_index is not defined
+      if defined?(valkyrie_index)
+        valkyrie_index.connection = valkyrie_index.default_connection
+      end
     end
   end
 end

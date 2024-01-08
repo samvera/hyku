@@ -19,10 +19,7 @@ module Hyrax
     def reset!
       @old_service.reset! if @old_service
 
-      # The proprietor page runs through this as well but valkyrie_index is not defined
-      if defined?(valkyrie_index)
-        valkyrie_index.connection = valkyrie_index.default_connection
-      end
+      Hyrax.index_adapter&.reset!
     end
   end
 end

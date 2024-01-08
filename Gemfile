@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 # rubocop:disable Metrics/LineLength
+# for knapsack overrides of gems. See https://github.com/ManageIQ/bundler-inject
+# set BUNDLE_BUNDLER_INJECT__GEM_PATH in your knapsack to point at the knapsack override file.
+plugin 'bundler-inject'
+require File.join(Bundler::Plugin.index.load_paths("bundler-inject")[0], "bundler-inject") rescue nil
+
+# rubocop:disable Layout/LineLength
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

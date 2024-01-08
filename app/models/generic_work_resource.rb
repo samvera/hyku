@@ -5,4 +5,5 @@
 class GenericWorkResource < Hyrax::Work
   include Hyrax::Schema(:basic_metadata)
   include Hyrax::Schema(:generic_work_resource)
+  include Hyrax::ArResource
 end

@@ -59,6 +59,63 @@ module Hyku
       :omniauthable, { omniauth_providers: %i[saml openid_connect cas] }
     ]
 
+    ##
+    # @!attribute iiif_audio_labels_and_mime_types [r|w]
+    #   @see Hyrax::IiifAv::DisplaysContentDecorator
+    #   @return [Hash<String,String>] Hash of valid audio labels and their mime types.
+    class_attribute :iiif_audio_labels_and_mime_types, default: { "ogg" => "audio/ogg", "mp3" => "audio/mpeg" }
+
+    ##
+    # @!attribute iiif_video_labels_and_mime_types [r|w]
+    #   @see Hyrax::IiifAv::DisplaysContentDecorator
+    #   @return [Hash<String,String>] Hash of valid video labels and their mime types.
+    class_attribute :iiif_video_labels_and_mime_types, default: { "mp4" => "video/mpeg", "webm" => "audio/webm" }
+
+    ##
+    # @!attribute iiif_video_url_builder [r|w]
+    #   @param document [SolrDocument]
+    #   @param label [String]
+    #   @param host [String] (e.g. samvera.org)
+    #   @return [String] the fully qualified URL.
+    #   @see Hyrax::IiifAv::DisplaysContentDecorator
+    #
+    #   @example
+    #     # The below example will build a URL taht will download directly from Hyrax as the
+    #     # video resource.  This is a hack to address the processing times of video derivatives;
+    #     # namely in certain setups/configurations of Hyku, video processing is laggy—as in days.
+    #     #
+    #     # The draw back of using this method is that we're pointing to the original video file.
+    #     # This is acceptable if the original file has already been processed out of band (e.g.
+    #     # before uploading to Hyku/Hyrax).  When we're dealing with a raw video, this is likely
+    #     # not ideal for streaming.
+    #     Hyrax::IiifAv::DisplaysContent.iiif_video_url_builder = ->(document:, label:, host:) do
+    #       Hyrax::Engine.routes.url_helpers.download_url(document, host:, protocol: 'https')
+    #     end
+    class_attribute :iiif_video_url_builder,
+                    default: ->(document:, label:, host:) { Hyrax::IiifAv::Engine.routes.url_helpers.iiif_av_content_url(document.id, label:, host:) }
+
+    ##
+    # @!attribute iiif_audio_url_builder [r|w]
+    #   @param document [SolrDocument]
+    #   @param label [String]
+    #   @param host [String] (e.g. samvera.org)
+    #   @return [String] the fully qualified URL.
+    #   @see Hyrax::IiifAv::DisplaysContentDecorator
+    #
+    #   @example
+    #     # The below example will build a URL taht will download directly from Hyrax as the
+    #     # audio resource.  This is a hack to address the processing times of audio derivatives;
+    #     # namely in certain setups/configurations of Hyku, audio processing is laggy.
+    #     #
+    #     # The draw back of using this method is that we're pointing to the original audio file.
+    #     # This is acceptable if the original file has already been processed out of band (e.g.
+    #     # before uploading to Hyku/Hyrax).  When we're dealing with a raw audio, this may not
+    #     # be ideal for streaming.
+    #     Hyrax::IiifAv::DisplaysContent.iiif_audio_url_builder = ->(document:, label:, host:) do
+    #       Hyrax::Engine.routes.url_helpers.download_url(document, host:, protocol: 'https')
+    #     end
+    class_attribute :iiif_audio_url_builder,
+                    default: ->(document:, label:, host:) { Hyrax::IiifAv::Engine.routes.url_helpers.iiif_av_content_url(document.id, label:, host:) }
     # @!endgroup Class Attributes
 
     # Add this line to load the lib folder first because we need

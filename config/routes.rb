@@ -5,6 +5,15 @@
 require 'sidekiq/web' if ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq') == 'sidekiq'
 
 Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
+  Hyrax.config.curation_concerns.each do |resource|
+    next if resource.to_s.match?(/.+Resource\z/)
+
+    resource = resource.to_s.underscore
+
+    get "/concern/#{resource}s/:id/edit", to: redirect("/concern/#{resource}_resources/%{id}/edit")
+    get "/concern/#{resource}s/:id", to: redirect("/concern/#{resource}_resources/%{id}")
+  end
+
   resources :identity_providers
   concern :range_searchable, BlacklightRangeLimit::Routes::RangeSearchable.new
   concern :iiif_search, BlacklightIiifSearch::Routes.new

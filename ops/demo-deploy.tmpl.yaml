@@ -201,6 +201,11 @@ redis:
 solr:
   enabled: false
 
+fits:
+  enabled: true
+  servicePort: 8080
+  subPath: /fits
+
 externalFcrepoHost: fcrepo.staging-fcrepo.svc.cluster.local
 
 externalPostgresql:
@@ -214,7 +219,7 @@ externalSolrCollection: "hyku-demo"
 externalSolrPassword: $SOLR_ADMIN_PASSWORD
 
 global:
-  hyraxName: hyku-demo-hyrax
+  hyraxHostName:: hyku-demo-hyrax
 
 nginx:
   enabled: false

@@ -20,7 +20,7 @@ module HykuHelper
     ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_ADMIN_ONLY_TENANT_CREATION', false))
   end
 
-  def turbolinks_enabled?
-    ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_ALLOW_REDIRECT_TO_VALKYRIE_RESOURCE', true))
+  def block_valkyrie_redirect?
+    !ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_ALLOW_REDIRECT_TO_VALKYRIE_RESOURCE', true))
   end
 end

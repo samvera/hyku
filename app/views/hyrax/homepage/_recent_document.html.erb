@@ -5,7 +5,7 @@
         <span class="sr-only"><%= t('hyrax.homepage.recently_uploaded.document.title_label') %></span>
         <h3>
           <%= render_thumbnail_tag recent_document, {}, {suppress_link: true} %>
-          <%= link_to recent_document.title_or_label, generate_work_url(recent_document.to_h, request), data: { turbolinks: turbolinks_enabled? } %>
+          <%= link_to recent_document.title_or_label, generate_work_url(recent_document.to_h, request), data: { turbolinks: block_valkyrie_redirect? } %>
         </h3>
         <p class="recent-field">
           <span class="recent-label"><%= t('hyrax.homepage.recently_uploaded.document.depositor_label') %>:</span> <%= link_to_profile recent_document.depositor(t('hyrax.homepage.recently_uploaded.document.depositor_missing')) %>

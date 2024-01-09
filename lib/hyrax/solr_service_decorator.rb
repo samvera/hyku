@@ -17,7 +17,7 @@ module Hyrax
 
     # TODO: does Valkyrie Solr Service need to be reset in some way?
     def reset!
-      @old_service.reset! if @old_service
+      @old_service&.reset!
 
       Hyrax.index_adapter&.reset!
     end

@@ -164,6 +164,8 @@ extraEnvVars: &envVars
     value: $SECRET_KEY_BASE
   - name: SENTRY_DSN
     value: $SENTRY_DSN
+  - name: TURBOLINKS_FOR_VALKYRIE
+    value: "false"
 
 worker:
   replicaCount: 1

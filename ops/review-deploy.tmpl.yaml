@@ -122,6 +122,8 @@ extraEnvVars: &envVars
     value: hyrax
   - name: SOLR_CONFIGSET_NAME
     value: $CI_COMMIT_SHORT_SHA
+  - name: TURBOLINKS_FOR_VALKYRIE
+    value: "false"
 
 worker:
   replicaCount: 1

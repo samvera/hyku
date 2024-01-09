@@ -168,7 +168,7 @@ extraEnvVars: &envVars
     value: $SENTRY_DSN
   - name: SENTRY_ENVIRONMENT
     value: $SENTRY_ENVIRONMENT
-  - name: TURBOLINKS_FOR_VALKYRIE
+  - name: HYKU_ALLOW_REDIRECT_TO_VALKYRIE_RESOURCE
     value: "false"
 worker:
   replicaCount: 1

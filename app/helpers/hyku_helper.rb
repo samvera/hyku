@@ -21,6 +21,6 @@ module HykuHelper
   end
 
   def turbolinks_enabled?
-    ActiveModel::Type::Boolean.new.cast(ENV.fetch('TURBOLINKS_FOR_VALKYRIE', true))
+    ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_ALLOW_REDIRECT_TO_VALKYRIE_RESOURCE', true))
   end
 end

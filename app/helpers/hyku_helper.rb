@@ -19,4 +19,8 @@ module HykuHelper
   def admin_only_tenant_creation?
     ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_ADMIN_ONLY_TENANT_CREATION', false))
   end
+
+  def turbolinks_enabled?
+    ActiveModel::Type::Boolean.new.cast(ENV.fetch('TURBOLINKS_FOR_VALKYRIE', true))
+  end
 end

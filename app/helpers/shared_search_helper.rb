@@ -17,7 +17,10 @@ module SharedSearchHelper
       id = model["id"]
     end
     request_params = %i[protocol host port].map { |method| ["request_#{method}".to_sym, request.send(method)] }.to_h
-    get_url(id:, request: request_params, account_cname:, has_model:)
+    url = get_url(id:, request: request_params, account_cname:, has_model:)
+
+    # pass search query params to work show page
+    params[:q].present? ? "#{url}?q=#{params[:q]}" : url
   end
 
   private

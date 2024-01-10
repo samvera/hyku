@@ -35,9 +35,11 @@ ingress:
     - host: hyku-$CI_MERGE_REQUEST_ID.example.com
       paths:
         - path: /
+          pathType: ImplementationSpecific
     - host: "*.hyku-$CI_MERGE_REQUEST_ID.example.com"
       paths:
         - path: /
+          pathType: ImplementationSpecific
 
 extraEnvVars: &envVars
   - name: CONFDIR

@@ -68,7 +68,9 @@ RSpec.describe 'hyrax/admin/users/index.html.erb', type: :view do
       (5..6).each do |i|
         expect(page).to have_content("admin#{i}@example.com")
       end
-      expect(page).to have_selector("div.users-listing td.roles li", text: 'Admin', count: 4)
+
+      expect(page).to have_selector("div.users-listing td.site-roles li", text: 'Admin', count: 2)
+      expect(page).to have_selector("div.users-listing td.group-roles li", text: 'Admin', count: 2)
     end
   end
 

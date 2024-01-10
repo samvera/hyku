@@ -1,5 +1,12 @@
 ---
 fr:
+  errors:
+    messages:
+      valid_embed_url: "doit être une URL d'incorporation valide de YouTube ou Vimeo."
+  activefedora:
+    models:
+      generic_work: Travail
+      image: Image
   activerecord:
     attributes:
       site:
@@ -7,6 +14,8 @@ fr:
   application:
     tagline: La solution de dépôt de nouvelle génération
   helpers:
+    action:
+      become: Devenir
     submit:
       add_role_to_group:
         submit: Ajouter
@@ -163,6 +172,8 @@ fr:
           forms:
             banner_image:
               hint: Pour utiliser une image comme arrière-plan d'une bannière Masthead, vous devez utiliser une image (JPG, GIF ou PNG) d'au moins 120 pixels de haut et 1 200 pixels de large. Pour de meilleurs résultats, utilisez une image d'au moins 1800 pixels de large.
+            collection_banner_text_color:
+              hint: La couleur du texte (titre et date de la dernière mise à jour) à l'intérieur de la bannière de collection.
             custom_css:
               confirm: Le CSS personnalisé remplacera toujours les autres sélections de thèmes. Procéder?
               warning: Si vos personnalisations de thème ne semblent pas s'appliquer correctement, vérifiez qu'elles ne sont pas écrasées par CSS personnalisé.
@@ -172,7 +183,7 @@ fr:
               alert: Veuillez télécharger au moins un fichier avant de soumettre.
               hint: Pour les images par défaut, vous devez utiliser une image (JPG, GIF ou PNG) qui a des dimensions de hauteur et de largeur égales (100 pixels de large et 100 pixels de haut)
             directory_image:
-              hint: Pour utiliser une image comme image de répertoire, vous devez utiliser une image (JPG, GIF ou PNG) qui ne dépasse pas l'en-tête et ne dépasse pas 400 pixels de large.
+              hint: L'image du répertoire doit utiliser une image (JPG, GIF ou PNG). La largeur de l'image ne doit pas être plus large que 2x la hauteur.
             facet_panel_background_color:
               hint: S'applique aux facettes et aux en-têtes de section supplémentaires sur les pages de travail dans certains thèmes.
             facet_panel_text_color:
@@ -185,6 +196,8 @@ fr:
               hint: Pour utiliser une image comme logo, vous devez utiliser une image (JPG, GIF ou PNG) qui n'est pas plus haute que l'en-tête et pas plus large que 400 pixels de large.
             navbar_background_color:
               hint: À 40% d'opacité.
+            navbar_link_background_color:
+              hint: S'applique à la couleur d'arrière-plan des boutons Accueil, À propos, Contact et Aide.
             navbar_link_background_hover_color:
               hint: S'applique aux boutons Accueil, À propos, Contact et Aide de ces pages spécifiques uniquement (à 15 % d'opacité).
             primary_button_hover_color:
@@ -207,7 +220,6 @@ fr:
             fonts: Les Polices
             themes: Thèmes
       sidebar:
-        account: Compte
         accounts: Comptes
         activity_summary: Résumé de l'activité
         content_blocks: Blocs de contenu
@@ -237,6 +249,9 @@ fr:
             active: actif
             pending: en attendant
           status_label: Statut
+        roles:
+          remove:
+            confirmation: Êtes-vous sûr de vouloir supprimer le rôle « %{role} » de l'utilisateur « %{user} » ?
   permissions:
     collections:
       cannot:

@@ -1,6 +1,5 @@
 <h2>Browse by Collection</h2>
-<% top_level_collections = @collections.select{ |c| c['nesting_collection__deepest_nested_depth_isi'] == 1 } %>
-<% top_level_collections.each do |collection| %>
+<% @top_level_collections.each do |collection| %>
   <div class="col-12">
     <div>
       <ul class="list-unstyled all-collection-list">

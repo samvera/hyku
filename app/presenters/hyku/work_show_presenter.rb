@@ -8,9 +8,17 @@ module Hyku
     # Hyrax::MemberPresenterFactory.file_presenter_class = Hyrax::FileSetPresenter
     # Adds behaviors for hyrax-iiif_av plugin.
     include Hyrax::IiifAv::DisplaysIiifAv
+
+    ##
+    # NOTE: IIIF Print prepends a IiifPrint::WorkShowPresenterDecorator to Hyrax::WorkShowPresenter
+    # However, with the above `include Hyrax::IiifAv::DisplaysIiifAv` we obliterate that logic.  So
+    # we need to re-introduce that logic.
+    prepend IiifPrint::TenantConfig::WorkShowPresenterDecorator
+
     Hyrax::MemberPresenterFactory.file_presenter_class = Hyrax::IiifAv::IiifFileSetPresenter
 
-    delegate :title_or_label, :extent, to: :solr_document
+    delegate :title_or_label, :extent, :source, :bibliographic_citation, :date,
+             :show_pdf_viewer, :show_pdf_download_button, to: :solr_document
 
     # OVERRIDE Hyrax v5.0.0rc2 here to make featured collections work
     delegate :collection_presenters, to: :member_presenter_factory
@@ -28,6 +36,18 @@ module Hyku
                     ((?:[0-9][-]*){9}[ -]*[xX])|(^(?:[0-9][-]*){10}$)/x
       isbns = extract_from_identifier(isbn_regex)
       isbns&.flatten&.compact
+    end
+
+    # OVERRIDE FILE from Hyrax v2.9.0
+    # @return [String] title update for GenericWork
+    Hyrax::WorkShowPresenter.class_eval do
+      def page_title
+        if human_readable_type == "Generic Work"
+          "#{title.first} | ID: #{id} | #{I18n.t('hyrax.product_name')}"
+        else
+          "#{human_readable_type} | #{title.first} | ID: #{id} | #{I18n.t('hyrax.product_name')}"
+        end
+      end
     end
 
     # OVERRIDE here for featured collection methods
@@ -55,26 +75,49 @@ module Hyku
     end
     # End Featured Collections Methods
 
-    # @return [Boolean] render a IIIF viewer
-    def iiif_viewer?
-      Hyrax.config.iiif_image_server? &&
-        representative_id.present? &&
-        representative_presenter.present? &&
-        iiif_media? &&
-        members_include_viewable?
+    def show_pdf_viewer?
+      return unless Flipflop.default_pdf_viewer?
+      return unless show_pdf_viewer
+      return unless file_set_presenters.any?(&:pdf?)
+
+      show_pdf_viewer.first.to_i.positive?
+    end
+
+    def show_pdf_download_button?
+      return unless file_set_presenters.any?(&:pdf?)
+      return unless show_pdf_download_button
+
+      show_pdf_download_button.first.to_i.positive?
+    end
+
+    def viewer?
+      iiif_viewer? || video_embed_viewer? || show_pdf_viewer?
+    end
+
+    def parent_works(current_user = nil)
+      @parent_works ||= begin
+                          docs = solr_document.load_parent_docs
+
+                          if current_user
+                            docs.select { |doc| current_user.ability.can?(:read, doc) }
+                          else
+                            docs.select(&:public?)
+                          end
+                        end
+    end
+
+    def video_embed_viewer?
+      extract_video_embed_presence
     end
 
     private
-
-    def iiif_media?(presenter: representative_presenter)
-      presenter.image? || presenter.video? || presenter.audio? || presenter.pdf?
-    end
 
     def members_include_viewable?
       file_set_presenters.any? do |presenter|
         iiif_media?(presenter:) && current_ability.can?(:read, presenter.id)
       end
     end
+
 
     def extract_from_identifier(rgx)
       if solr_document['identifier_tesim'].present?
@@ -83,6 +126,10 @@ module Hyku
         end
       end
       ref
+    end
+
+    def extract_video_embed_presence
+      solr_document[:video_embed_tesim]&.first&.present?
     end
   end
 end

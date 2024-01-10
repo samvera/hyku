@@ -6,42 +6,43 @@ es:
       default_message: 'Repase los problemas abajo, por favor:'
     hints:
       account:
-        admin_emails: Introduce una dirección de correo electrónico a la vez
-        allow_signup: Permita que los usuarios se registren en su repositorio
-        cache_api: Activa la memoria caché para los puntos finales de la API. Experimental
-        contact_email: Dirección de correo electrónico que debe recibir correos electrónicos de contacto
-        contact_email_to: Destinatario de correo electrónico de los mensajes enviados a través del formulario de contacto
-        doi_reader: Mostrar la capacidad de leer de Datacite para completar registros. WIP no usar
-        doi_writer: Escriba DOI para los registros. WIP no usar
-        email_format: Establezca una lista de dominios de correo electrónico que pueden registrarse en este repositorio, por ejemplo, (@ubiquitypress.com @gmail.com). Deje un solo espacio entre cada dominio.
-        email_subjet_prefix: Cadena para colocar delante de los asuntos de correo electrónico del sistema.
+        admin_emails: Introduzca una dirección de correo electrónico a la vez
+        allow_signup: Permitir a los usuarios registrarse en su repositorio
+        cache_api: Activa la caché para puntos finales de API. Experimental
+        contact_email: La dirección de correo electrónico desde la que se enviarán las notificaciones del sistema. Se requiere una configuración adicional para agregar una dirección de dominios distintos al dominio del sitio
+        contact_email_to: La dirección de correo electrónico a la que se envían los mensajes enviados a través de la página de contacto
+        doi_reader: Mostrar la capacidad de leer de Datacite para rellenar registros. WIP no usar
+        doi_writer: Escribir DOIs para registros. WIP no usar
+        email_format: Establezca una lista de dominios de correo electrónico que pueden registrarse en este repositorio, por ejemplo (@ubiquitypress.com @gmail.com). Deje un espacio entre cada dominio.
+        email_subjet_prefix: Cadena para poner al frente de los asuntos de correo electrónico del sistema.
         enable_oai_metadata: Habilitar o deshabilitar el enlace OAI
         fcrepo_endpoint:
-          base_path: Fedora base ruta debe comenzar con una barra y no terminar con una barra
+          base_path: La ruta base de Fedora debe comenzar con una barra y NO terminar con una barra
           url: La URL de Fedora no debe terminar con una barra
-        file_acl: Desactívelo si usa un sistema de archivos como samba o nfs que no admita la configuración de listas de control de acceso
-        file_size_limit: Esto debe establecerse en al menos 536870912000
+        file_acl: Desactívelo si usa un sistema de archivos como samba o nfs que no admite listas de control de acceso
+        file_size_limit: Esto debe establecerse al menos en 536870912000
         geonames_username: Regístrese en http://www.geonames.org/manageaccount
-        gtm_id: El ID de su cuenta de Google Tag Manager
-        is_public: "¿Los usuarios pueden descubrir su sitio en la página de inicio o acceder a sus páginas sin un nombre de usuario/contraseña especiales?"
-        locale_name: 'El nombre del sufijo de configuración regional específico del arrendatario agregado a sus archivos locale.yml. Solo se deben agregar caracteres alfabéticos, sin símbolos ni números, estos se escribirán en mayúscula.
+        google_analytics_id: La ID de su cuenta de Google Analytics
+        gtm_id: La ID de su cuenta de Google Tag Manager
+        is_public: "¿Pueden los usuarios descubrir su sitio en la página principal o acceder a sus páginas sin un nombre de usuario/contraseña especial?"
+        locale_name: 'El nombre del sufijo de configuración regional específico del inquilino añadido a sus archivos locale.yml. Solo se deben agregar caracteres alfabéticos, no símbolos o números, estos se capitalizarán.
 
           '
-        monthly_email_list: Lista de direcciones de correo electrónico para enviar por correo electrónico el informe mensual. Deje un solo espacio entre cada correo electrónico
-        name: Un nombre único o con guión utilizado para los aspectos técnicos del repositorio (por ejemplo, "acme" o "acme-library").
-        oai_admin_email: Dirección de correo electrónico de contacto del terminal OAI
-        shared_login: Habilitar o deshabilitar el inicio de sesión compartido
-        ssl_configured: Establézcalo en verdadero si usa https
-        weekly_email_list: Lista de direcciones de correo electrónico para enviar por correo electrónico el informe semanal. Deje un solo espacio entre cada correo electrónico
-        yearly_email_list: Lista de direcciones de correo electrónico para enviar por correo electrónico el informe anual. Deje un solo espacio entre cada correo electrónico
+        monthly_email_list: Lista de direcciones de correo electrónico para enviar el informe mensual. Deje un espacio entre cada correo electrónico
+        name: Un nombre único o con guiones utilizado para aspectos técnicos del repositorio (por ejemplo, "acme" o "acme-biblioteca").
+        oai_admin_email: Dirección de correo electrónico de contacto del punto final OAI
+        shared_login: Habilitar o deshabilitar inicio de sesión compartido
+        ssl_configured: Establézcalo como verdadero si está utilizando https
+        weekly_email_list: Lista de direcciones de correo electrónico para enviar el informe semanal. Deje un espacio entre cada correo electrónico
+        yearly_email_list: Lista de direcciones de correo electrónico para enviar el informe anual. Deje un espacio entre cada correo electrónico
       hyku_group:
-        description: Un breve resumen de la función del grupo
+        description: Un breve resumen del papel del grupo
       user:
-        email: Introduzca una dirección de correo electrónico a la vez. También puede reenviar una invitación a través de este formulario.
+        email: Introduzca una dirección de correo electrónico a la vez. También puede reenviar una invitación a través de este formulario. Los roles solo se aplican a este inquilino.
     labels:
       account:
-        admin_emails: Agregar o invitar al nuevo administrador (por correo electrónico)
-        cname: Inquilino CNAME
+        admin_emails: Añadir o invitar a un nuevo administrador (por correo electrónico)
+        cname: Nombre de dominio principal
         fcrepo_endpoint:
           base_path: Ruta base
           url: URL
@@ -51,7 +52,7 @@ es:
           url: URL
         tenant: Inquilino UUID
       add_user_to_group:
-        user_ids: Identidad de usuario
+        user_ids: ID de usuario
       domain_names:
         cname: Nombre de dominio
       group_search:
@@ -61,7 +62,7 @@ es:
       page_size:
         per: Mostrar
       user:
-        display_name: Tu nombre
+        display_name: Su nombre
         email: Dirección de correo electrónico
       user_search:
         uq: Buscar usuario
@@ -71,5 +72,5 @@ es:
         uq: Nombre o nombre de usuario
     required:
       mark: "*"
-      text: obligatorio
+      text: requerido
     'yes': Sí

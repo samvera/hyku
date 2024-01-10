@@ -39,10 +39,10 @@
           class: presenter.display_feature_link? ? 'btn btn-secondary collapse' : 'btn btn-secondary' %>
   <% end %>
   <% if Hyrax.config.analytics? %>
-      <% # turbolinks needs to be turned off or the page will use the cache and the %>
-      <% # analytics graph will not show unless the page is refreshed. %>
-      <%= link_to t('.analytics'), presenter.stats_path, id: 'stats', class: 'btn btn-secondary', data: { turbolinks: false } %>
-    <% end %>
+    <% # turbolinks needs to be turned off or the page will use the cache and the %>
+    <% # analytics graph will not show unless the page is refreshed. %>
+    <%= link_to t('.analytics'), presenter.stats_path, id: 'stats', class: 'btn btn-secondary', data: { turbolinks: false } %>
+  <% end %>
 </div>
 
 <!-- COinS hook for Zotero -->

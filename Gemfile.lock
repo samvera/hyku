@@ -95,8 +95,8 @@ GIT
 
 GIT
   remote: https://github.com/samvera-labs/hyku_knapsack.git
-  revision: 14f688b61afab9ee886f5f7fa26a76a37bced597
-  branch: upstream_main
+  revision: 5a7c54cace96881a3963ab2fd881ca6ea3f57372
+  branch: required_for_knapsack_instances
   specs:
     hyku_knapsack (0.0.1)
       rails (>= 5.2.0)
@@ -125,7 +125,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: f25c6f8960ec85fc460ba48f9a0ec4802d5751f7
+  revision: b7891b758411c59f71ff54212e0d250fcc47e35f
   branch: double_combo
   specs:
     hyrax (5.0.0.rc2)
@@ -1090,6 +1090,7 @@ GEM
     rdf-xsd (3.3.0)
       rdf (~> 3.3)
       rexml (~> 3.2)
+    redcarpet (3.6.0)
     redic (1.5.3)
       hiredis
     redis (4.8.1)
@@ -1469,6 +1470,7 @@ DEPENDENCIES
   rails (~> 6.0)!
   rails-controller-testing
   rdf (~> 3.2)
+  redcarpet
   redis-namespace (~> 1.10)
   redlock (>= 0.1.2, < 2.0)
   riiif (~> 2.0)

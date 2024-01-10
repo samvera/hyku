@@ -100,36 +100,7 @@ class RolesService # rubocop:disable Metrics/ClassLength
     # means all Collections will show up in Blacklight / Solr queries.
     # rubocop:disable Metrics/MethodLength
     def create_collection_accesses!
-      Collection.find_each do |c|
-        pt = Hyrax::PermissionTemplate.find_or_create_by!(source_id: c.id)
-        original_access_grants_count = pt.access_grants.count
-
-        pt.access_grants.find_or_create_by!(
-          access: Hyrax::PermissionTemplateAccess::MANAGE,
-          agent_type: Hyrax::PermissionTemplateAccess::GROUP,
-          agent_id: Ability.admin_group_name
-        )
-
-        pt.access_grants.find_or_create_by!(
-          access: Hyrax::PermissionTemplateAccess::MANAGE,
-          agent_type: Hyrax::PermissionTemplateAccess::GROUP,
-          agent_id: 'collection_manager'
-        )
-
-        pt.access_grants.find_or_create_by!(
-          access: Hyrax::PermissionTemplateAccess::VIEW,
-          agent_type: Hyrax::PermissionTemplateAccess::GROUP,
-          agent_id: 'collection_editor'
-        )
-
-        pt.access_grants.find_or_create_by!(
-          access: Hyrax::PermissionTemplateAccess::VIEW,
-          agent_type: Hyrax::PermissionTemplateAccess::GROUP,
-          agent_id: 'collection_reader'
-        )
-
-        pt.reset_access_controls_for(collection: c) if pt.access_grants.count != original_access_grants_count
-      end
+      CreateCollectionAccessesJob.perform_now
     end
     # rubocop:enable Metrics/MethodLength
 
@@ -137,61 +108,14 @@ class RolesService # rubocop:disable Metrics/ClassLength
     # will allow Works in all AdminSets to show up in Blacklight / Solr queries.
     # rubocop:disable Metrics/MethodLength
     def create_admin_set_accesses!
-      AdminSet.find_each do |as|
-        pt = Hyrax::PermissionTemplate.find_or_create_by!(source_id: as.id)
-        original_access_grants_count = pt.access_grants.count
-
-        pt.access_grants.find_or_create_by!(
-          access: Hyrax::PermissionTemplateAccess::MANAGE,
-          agent_type: Hyrax::PermissionTemplateAccess::GROUP,
-          agent_id: Ability.admin_group_name
-        )
-
-        pt.access_grants.find_or_create_by!(
-          access: Hyrax::PermissionTemplateAccess::DEPOSIT,
-          agent_type: Hyrax::PermissionTemplateAccess::GROUP,
-          agent_id: 'work_depositor'
-        )
-
-        pt.access_grants.find_or_create_by!(
-          access: Hyrax::PermissionTemplateAccess::DEPOSIT,
-          agent_type: Hyrax::PermissionTemplateAccess::GROUP,
-          agent_id: 'work_editor'
-        )
-
-        pt.access_grants.find_or_create_by!(
-          access: Hyrax::PermissionTemplateAccess::VIEW,
-          agent_type: Hyrax::PermissionTemplateAccess::GROUP,
-          agent_id: 'work_editor'
-        )
-
-        pt.reset_access_controls_for(collection: as) if pt.access_grants.count != original_access_grants_count
-      end
+      CreateAdminSetAccessesJob.perform_now
     end
     # rubocop:enable Metrics/MethodLength
 
     # Because some of the collection roles have access to every Collection within a tenant, create a
     # Hyrax::CollectionTypeParticipant record for them on every Hyrax::CollectionType (except the AdminSet)
     def create_collection_type_participants!
-      Hyrax::CollectionType.find_each do |ct|
-        next if ct.admin_set?
-
-        # The :collection_manager role will automatically get a Hyrax::PermissionTemplateAccess
-        # record when a Collection is created, giving them manage access to that Collection.
-        ct.collection_type_participants.find_or_create_by!(
-          access: Hyrax::CollectionTypeParticipant::MANAGE_ACCESS,
-          agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
-          agent_id: 'collection_manager'
-        )
-
-        # The :collection_editor role will automatically get a Hyrax::PermissionTemplateAccess
-        # record when a Collection is created, giving them create access to that Collection.
-        ct.collection_type_participants.find_or_create_by!(
-          access: Hyrax::CollectionTypeParticipant::CREATE_ACCESS,
-          agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
-          agent_id: 'collection_editor'
-        )
-      end
+      CreateCollectionTypeParticipantsJob.perform_now
     end
 
     # Because the collection roles are used to explicitly grant Collection creation permissions,
@@ -229,10 +153,7 @@ class RolesService # rubocop:disable Metrics/ClassLength
     #
     # NOTE: All AdminSets must have a permission template or this will fail. Run #create_admin_set_accesses first.
     def grant_workflow_roles_for_all_admin_sets!
-      AdminSet.find_each do |admin_set|
-        Hyrax::Workflow::PermissionGrantor
-          .grant_default_workflow_roles!(permission_template: admin_set.permission_template)
-      end
+      GrantWorkflowRolesForAllAdminSetsJob.perform_now
     end
 
     # This method is inspired by the devise_guests:delete_old_guest_users rake task in the devise-guests gem:
@@ -308,5 +229,121 @@ class RolesService # rubocop:disable Metrics/ClassLength
       end
     end
     # rubocop:enable Metrics/MethodLength
+  end
+
+  class GrantWorkflowRolesForAllAdminSetsJob < Hyrax::ApplicationJob
+    def perform
+      AdminSet.find_each do |admin_set|
+        Hyrax::Workflow::PermissionGrantor
+          .grant_default_workflow_roles!(permission_template: admin_set.permission_template)
+      end
+    end
+  end
+
+  class CreateCollectionAccessesJob < Hyrax::ApplicationJob
+    # rubocop:disable Metrics/MethodLength
+    def perform
+      Collection.find_each do |c|
+        pt = Hyrax::PermissionTemplate.find_or_create_by!(source_id: c.id)
+        original_access_grants_count = pt.access_grants.count
+
+        pt.access_grants.find_or_create_by!(
+          access: Hyrax::PermissionTemplateAccess::MANAGE,
+          agent_type: Hyrax::PermissionTemplateAccess::GROUP,
+          agent_id: Ability.admin_group_name
+        )
+
+        pt.access_grants.find_or_create_by!(
+          access: Hyrax::PermissionTemplateAccess::MANAGE,
+          agent_type: Hyrax::PermissionTemplateAccess::GROUP,
+          agent_id: 'collection_manager'
+        )
+
+        pt.access_grants.find_or_create_by!(
+          access: Hyrax::PermissionTemplateAccess::VIEW,
+          agent_type: Hyrax::PermissionTemplateAccess::GROUP,
+          agent_id: 'collection_editor'
+        )
+
+        pt.access_grants.find_or_create_by!(
+          access: Hyrax::PermissionTemplateAccess::VIEW,
+          agent_type: Hyrax::PermissionTemplateAccess::GROUP,
+          agent_id: 'collection_reader'
+        )
+
+        pt.reset_access_controls_for(collection: c) if pt.access_grants.count != original_access_grants_count
+      end
+    end
+    # rubocop:enable Metrics/MethodLength
+  end
+
+  class CreateAdminSetAccessesJob < Hyrax::ApplicationJob
+    # rubocop:disable Metrics/MethodLength
+    def perform
+      AdminSet.find_each do |as|
+        pt = Hyrax::PermissionTemplate.find_or_create_by!(source_id: as.id)
+        original_access_grants_count = pt.access_grants.count
+
+        pt.access_grants.find_or_create_by!(
+          access: Hyrax::PermissionTemplateAccess::MANAGE,
+          agent_type: Hyrax::PermissionTemplateAccess::GROUP,
+          agent_id: Ability.admin_group_name
+        )
+
+        pt.access_grants.find_or_create_by!(
+          access: Hyrax::PermissionTemplateAccess::DEPOSIT,
+          agent_type: Hyrax::PermissionTemplateAccess::GROUP,
+          agent_id: 'work_depositor'
+        )
+
+        pt.access_grants.find_or_create_by!(
+          access: Hyrax::PermissionTemplateAccess::DEPOSIT,
+          agent_type: Hyrax::PermissionTemplateAccess::GROUP,
+          agent_id: 'work_editor'
+        )
+
+        pt.access_grants.find_or_create_by!(
+          access: Hyrax::PermissionTemplateAccess::VIEW,
+          agent_type: Hyrax::PermissionTemplateAccess::GROUP,
+          agent_id: 'work_editor'
+        )
+
+        pt.reset_access_controls_for(collection: as) if pt.access_grants.count != original_access_grants_count
+      end
+    end
+    # rubocop:enable Metrics/MethodLength
+  end
+
+  class CreateCollectionTypeParticipantsJob < Hyrax::ApplicationJob
+    def perform
+      Hyrax::CollectionType.find_each do |ct|
+        next if ct.admin_set?
+
+        # The :collection_manager role will automatically get a Hyrax::PermissionTemplateAccess
+        # record when a Collection is created, giving them manage access to that Collection.
+        ct.collection_type_participants.find_or_create_by!(
+          access: Hyrax::CollectionTypeParticipant::MANAGE_ACCESS,
+          agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
+          agent_id: 'collection_manager'
+        )
+
+        # The :collection_editor role will automatically get a Hyrax::PermissionTemplateAccess
+        # record when a Collection is created, giving them create access to that Collection.
+        ct.collection_type_participants.find_or_create_by!(
+          access: Hyrax::CollectionTypeParticipant::CREATE_ACCESS,
+          agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
+          agent_id: 'collection_editor'
+        )
+      end
+    end
+  end
+
+  def self.valid_jobs
+    ActiveSupport::HashWithIndifferentAccess.new(
+      create_collection_accesses: CreateCollectionAccessesJob,
+      create_admin_set_accesses: CreateAdminSetAccessesJob,
+      create_collection_type_participants: CreateCollectionTypeParticipantsJob,
+      grant_workflow_roles_for_all_admin_sets: GrantWorkflowRolesForAllAdminSetsJob
+    )
   end
 end

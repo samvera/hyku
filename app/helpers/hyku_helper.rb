@@ -19,4 +19,10 @@ module HykuHelper
   def admin_only_tenant_creation?
     ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_ADMIN_ONLY_TENANT_CREATION', false))
   end
+
+  def parent_path(parent_doc)
+    model = parent_doc['has_model_ssim'].first
+    path = "hyrax_#{model.underscore}_path"
+    main_app.send(path, parent_doc.id)
+  end
 end

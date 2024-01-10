@@ -91,6 +91,24 @@ RSpec.describe Ability do
     it { is_expected.to be_able_to(:manage, :all) }
   end
 
+  describe 'a user_manager user' do
+    let(:user) { FactoryBot.create(:user) }
+    let(:ordinary_role) { FactoryBot.create(:role, name: 'ordinary_role') }
+
+    before do
+      user.add_role :user_manager, Site.instance
+    end
+
+    context 'when managing User and Role' do
+      it 'can create, read, update, and edit User and Role' do
+        expect(ability).to be_able_to(:create, User.new)
+        expect(ability).to be_able_to(:read, User.new)
+        expect(ability).to be_able_to(:update, User.new)
+        expect(ability).to be_able_to(:edit, User.new)
+      end
+    end
+  end
+
   # Brought over from blacklight-access_controls v0.6.2
   describe '#user_groups' do
     subject { ability.user_groups }

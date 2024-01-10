@@ -2,8 +2,7 @@
 <% content_for(:navbar) do %>
   <div class="image-masthead cultural-homepage">
     <!-- cultural repository homepage -->
-    <div class="background-container" style="background-image: url('<%= banner_image %>')" title="<%= block_for(name: 'banner_image_text') %>"></div>
-
+    <div class="background-container" title="<%= block_for(name: 'banner_image_text') %>" style="background-image: url('<%= "#{banner_image}?#{Time.now.to_i}" %>')"></div>
     <div class="container">
       <% if controller_name == 'homepage' %>
       <div class="col-md-3 facet-panel-background-color mt-3 mb-0">

@@ -112,5 +112,10 @@ if ENV.fetch('HYKU_BULKRAX_ENABLED', 'true') == 'true'
   end
   # rubocop:enable Metrics/BlockLength
 
+  # Sidebar for hyrax 3+ support
+  if Object.const_defined?(:Hyrax) && ::Hyrax::DashboardController&.respond_to?(:sidebar_partials)
+    Hyrax::DashboardController.sidebar_partials[:repository_content] << "hyrax/dashboard/sidebar/bulkrax_sidebar_additions"
+  end
+
   Bulkrax::CreateRelationshipsJob.update_child_records_works_file_sets = true
 end

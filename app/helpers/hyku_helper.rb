@@ -20,7 +20,9 @@ module HykuHelper
     ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_ADMIN_ONLY_TENANT_CREATION', false))
   end
 
-  def block_valkyrie_redirect?
-    !ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_ALLOW_REDIRECT_TO_VALKYRIE_RESOURCE', true))
+  # We don't want to use Turbolinks because it blocks the redirects from AF works to Valyrie works in the edit and show
+  # TODO: When there are no more AF works, we can remove this
+  def enable_valkyrie_turbolink?
+    false
   end
 end

@@ -170,8 +170,6 @@ extraEnvVars: &envVars
     value: $SENTRY_DSN
   - name: SENTRY_ENVIRONMENT
     value: $SENTRY_ENVIRONMENT
-  - name: HYKU_ALLOW_REDIRECT_TO_VALKYRIE_RESOURCE
-    value: "true"
 
 worker:
   replicaCount: 1

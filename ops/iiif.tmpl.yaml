@@ -164,8 +164,6 @@ extraEnvVars: &envVars
     value: $SECRET_KEY_BASE
   - name: SENTRY_DSN
     value: $SENTRY_DSN
-  - name: HYKU_ALLOW_REDIRECT_TO_VALKYRIE_RESOURCE
-    value: "true"
 
 worker:
   replicaCount: 1

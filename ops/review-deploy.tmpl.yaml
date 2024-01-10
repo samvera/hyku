@@ -122,8 +122,6 @@ extraEnvVars: &envVars
     value: hyrax
   - name: SOLR_CONFIGSET_NAME
     value: $CI_COMMIT_SHORT_SHA
-  - name: HYKU_ALLOW_REDIRECT_TO_VALKYRIE_RESOURCE
-    value: "true"
 
 worker:
   replicaCount: 1

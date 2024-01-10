@@ -223,6 +223,7 @@ en:
             custom_css: Custom CSS
             favicon: Favicon
             fonts: "Fonts"
+            logo: "Logo"
             themes: "Themes"
       roles_service_jobs:
         header: Data Repair Jobs

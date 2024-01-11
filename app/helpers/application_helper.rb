@@ -4,9 +4,12 @@ module ApplicationHelper
   # Yep, we're ignoring the advice; because the translations are safe as is the markdown converter.
   # rubocop:disable Rails/OutputSafety
   include ::HyraxHelper
-  include GroupNavigationHelper
   include SharedSearchHelper
   include HykuKnapsack::ApplicationHelper
+
+  def group_navigation_presenter
+    @group_navigation_presenter ||= Hyku::Admin::Group::NavigationPresenter.new(params:)
+  end
 
   def collection_thumbnail(_document, _image_options = {}, _url_options = {})
     return super if Site.instance.default_collection_image.blank?

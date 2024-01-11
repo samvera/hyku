@@ -19,6 +19,7 @@
 .dashboard .form-tab-content label {
   font-weight: 700;
 }
+
 @media (min-width: 768px) {
   .logo-set {
     display: flex;
@@ -535,6 +536,7 @@ span.constraint-value p, .facet-values p {
 // style the analytics button to match citations button
 #stats {
   margin-top: 10px;
+
   @media (min-width: 576px) {
     max-width: 300px;
   }
@@ -552,25 +554,28 @@ span.constraint-value p, .facet-values p {
 // collection show page styles
 
 .space-between {
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 }
 
 .hyc-banner {
   padding: 15px;
-  .hyc-bugs .hyc-created-by, .hyc-bugs .hyc-last-updated, .hyc-title {
+  .hyc-bugs .hyc-created-by,
+  .hyc-bugs .hyc-last-updated,
+  .hyc-title {
     padding: 0;
   }
 
   .hyc-item-count {
-    margin: 0;
     background: rgba(255, 255, 255, 0.75);
-    padding: 10px;
     border-radius: 0.5em;
     color: #333;
+    margin: 0;
+    padding: 10px;
   }
 
-  .hyc-bugs div, div {
+  .hyc-bugs div,
+  div {
     position: relative;
   }
 }
@@ -591,7 +596,7 @@ span.constraint-value p, .facet-values p {
 }
 
 .mb-2 {
-  margin-bottom: .5em;
+  margin-bottom: 0.5em;
 }
 
 .mb-5 {
@@ -608,13 +613,13 @@ span.constraint-value p, .facet-values p {
 }
 
 .py-0 {
-  padding-top: 0;
   padding-bottom: 0;
+  padding-top: 0;
 }
 
 .py-4 {
-  padding-top: 2em;
   padding-bottom: 2em;
+  padding-top: 2em;
 }
 
 .d-block {

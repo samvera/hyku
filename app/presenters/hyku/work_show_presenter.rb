@@ -118,7 +118,6 @@ module Hyku
       end
     end
 
-
     def extract_from_identifier(rgx)
       if solr_document['identifier_tesim'].present?
         ref = solr_document['identifier_tesim'].map do |str|

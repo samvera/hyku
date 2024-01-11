@@ -61,11 +61,11 @@ module Hyrax
             end
             # OVERRIDE: add rules -- only users who have manage access can destroy
             can :destroy, collection_model do |collection|
-              Hyrax::Collections::PermissionsService.can_manage_collection?(ability: self, collection_id: collection.id)
+              Hyrax::Collections::PermissionsService.manage_access_to_collection?(ability: self, collection_id: collection.id)
             end
             can :destroy, ::SolrDocument do |solr_doc|
               if solr_doc.collection?
-                Hyrax::Collections::PermissionsService.can_manage_collection?(
+                Hyrax::Collections::PermissionsService.manage_access_to_collection?(
                   ability: self,
                   collection_id: solr_doc.id
                 )
@@ -81,7 +81,7 @@ module Hyrax
 
             # OVERRIDE: add ability to restrict who can change a Collection's discovery setting
             can :manage_discovery, collection_model do |collection| # Discovery tab on edit form
-              Hyrax::Collections::PermissionsService.can_manage_collection?(
+              Hyrax::Collections::PermissionsService.manage_access_to_collection?(
                 ability: self,
                 collection_id: collection.id
               )
@@ -90,16 +90,16 @@ module Hyrax
             # OVERRIDE: add ability to restrict who can add works and subcollections to /
             # remove works and subcollections from a Collection
             can :manage_items_in_collection, collection_model do |collection|
-              Hyrax::Collections::PermissionsService.can_manage_collection?(ability: self, collection_id: collection.id)
+              Hyrax::Collections::PermissionsService.manage_access_to_collection?(ability: self, collection_id: collection.id)
             end
             can :manage_items_in_collection, ::SolrDocument do |solr_doc|
-              Hyrax::Collections::PermissionsService.can_manage_collection?(
+              Hyrax::Collections::PermissionsService.manage_access_to_collection?(
                 ability: self,
                 collection_id: solr_doc.id
               )
             end
             can :manage_items_in_collection, ::String do |id|
-              Hyrax::Collections::PermissionsService.can_manage_collection?(ability: self, collection_id: id)
+              Hyrax::Collections::PermissionsService.manage_access_to_collection?(ability: self, collection_id: id)
             end
           end
           # "Undo" permission restrictions added by the Groups with Roles feature,

@@ -94,7 +94,7 @@ module Proprietor
 
       params.require(:user).permit(:email,
                                    :password,
-                                   :is_superadmin,
+                                   :superadmin,
                                    :facebook_handle,
                                    :twitter_handle,
                                    :googleplus_handle,

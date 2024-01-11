@@ -1,0 +1,17 @@
+<%# Overridden from Hyrax 3.5.0 - To add extra download restrictions %>
+<% if display_media_download_link?(file_set: file_set) && (Site.account.settings[:allow_downloads].nil? || Site.account.settings[:allow_downloads].to_i.nonzero?) %>
+  <div>
+      <h2 class="sr-only"><%= t('hyrax.file_set.show.downloadable_content.heading') %></h2>
+      <%= image_tag thumbnail_url(file_set),
+                    class: "representative-media",
+                    alt: "",
+                    role: "presentation" %>
+    </div>
+<% else %>
+    <div>
+      <%= image_tag thumbnail_url(file_set),
+                    class: "representative-media",
+                    alt: "",
+                    role: "presentation" %>
+    </div>
+<% end %>

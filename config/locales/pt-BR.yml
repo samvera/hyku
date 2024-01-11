@@ -1,5 +1,12 @@
 ---
 pt-BR:
+  errors:
+    messages:
+      valid_embed_url: "deve ser uma URL de incorporação válida do YouTube ou Vimeo."
+  activefedora:
+    models:
+      generic_work: Trabalhar
+      image: Imagem
   activerecord:
     attributes:
       site:
@@ -7,6 +14,8 @@ pt-BR:
   application:
     tagline: A solução de repos
   helpers:
+    action:
+      become: Tornar-se
     submit:
       add_role_to_group:
         submit: Adicionar
@@ -163,6 +172,8 @@ pt-BR:
           forms:
             banner_image:
               hint: Para usar uma imagem como plano de fundo do cabeçalho, você deve usar uma imagem (JPG, GIF ou PNG) com pelo menos 120 pixels de altura e 1200 pixels de largura. Para obter melhores resultados, use uma imagem com pelo menos 1800 pixels de largura.
+            collection_banner_text_color:
+              hint: A cor do texto (título e data da última atualização) dentro do banner da coleção.
             custom_css:
               confirm: CSS personalizado sempre substituirá outras seleções de temas. Continuar?
               warning: Se suas personalizações de temas não parecem estar sendo aplicadas corretamente, verifique se elas não estão sendo substituídas pelo CSS personalizado.
@@ -172,7 +183,7 @@ pt-BR:
               alert: Faça upload de pelo menos um arquivo antes de enviar.
               hint: Para imagens padrão, você deve usar uma imagem (JPG, GIF ou PNG) que tenha dimensões iguais de altura e largura (100 pixels de largura e 100 pixels de altura)
             directory_image:
-              hint: Para usar uma imagem como imagem do diretório, você deve usar uma imagem (JPG, GIF ou PNG) que não seja mais alta que o cabeçalho e não tenha mais de 400 pixels de largura.
+              hint: A imagem do diretório deve usar uma imagem (JPG, GIF ou PNG). A largura da imagem não deve ser maior que 2x a altura.
             facet_panel_background_color:
               hint: Aplica-se a facetas e cabeçalhos de seção adicionais nas páginas de trabalho em alguns temas.
             facet_panel_text_color:
@@ -185,6 +196,8 @@ pt-BR:
               hint: Para usar uma imagem como logotipo, use uma imagem (JPG, GIF ou PNG) que não seja mais alta que o cabeçalho e que não tenha mais que 400 pixels de largura.
             navbar_background_color:
               hint: Com 40% de opacidade.
+            navbar_link_background_color:
+              hint: Aplica-se à cor de fundo dos botões Página inicial, Sobre, Contato e Ajuda
             navbar_link_background_hover_color:
               hint: Aplica-se apenas aos botões Início, Sobre, Contato e Ajuda nessas páginas específicas (com 15% de opacidade).
             primary_button_hover_color:
@@ -207,7 +220,6 @@ pt-BR:
             fonts: Fontes
             themes: Temas
       sidebar:
-        account: Conta
         accounts: Contas
         activity_summary: Resumo da atividade
         labels: Etiquetas
@@ -232,6 +244,9 @@ pt-BR:
             active: Ativo
             pending: Pendente
           status_label: Status
+        roles:
+          remove:
+            confirmation: Tem certeza de que deseja remover a função "%{role}" do usuário "%{user}"?
   permissions:
     collections:
       cannot:

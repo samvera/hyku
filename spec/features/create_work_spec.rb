@@ -36,12 +36,10 @@ RSpec.describe 'Creating a new Work', type: :feature, clean: true do
       before do
         create(:permission_template_access,
                :deposit,
-               permission_template: create(
-                 :permission_template,
-                 source_id: admin_set_2.id,
-                 with_admin_set: true,
-                 with_active_workflow: true
-               ),
+               permission_template: create(:permission_template,
+                                           source_id: admin_set_2.id,
+                                           with_admin_set: true,
+                                           with_active_workflow: true),
                agent_type: 'user',
                agent_id: user.user_key)
       end
@@ -62,12 +60,10 @@ RSpec.describe 'Creating a new Work', type: :feature, clean: true do
       before do
         create(:permission_template_access,
                :deposit,
-               permission_template: create(
-                 :permission_template,
-                 source_id: admin_set_3.id,
-                 with_admin_set: true,
-                 with_active_workflow: true
-               ),
+               permission_template: create(:permission_template,
+                                           source_id: admin_set_3.id,
+                                           with_admin_set: true,
+                                           with_active_workflow: true),
                agent_type: 'group',
                agent_id: depositors_group.name)
       end

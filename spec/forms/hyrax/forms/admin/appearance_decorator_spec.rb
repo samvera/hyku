@@ -3,6 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe Hyrax::Forms::Admin::Appearance, type: :decorator do
+  let(:instance) { described_class.new }
   describe '.default_fonts' do
     subject { described_class.default_fonts }
 
@@ -26,8 +27,16 @@ RSpec.describe Hyrax::Forms::Admin::Appearance, type: :decorator do
   end
 
   describe '#banner_image' do
-    subject { described_class.new.banner_image }
+    subject { instance.banner_image }
 
     it { is_expected.to be_a(Hyrax::AvatarUploader) }
+  end
+
+  described_class.instance_methods.grep(/_color$/).each do |color_method_name|
+    describe "##{color_method_name}" do
+      subject { instance.send(color_method_name) }
+
+      it { is_expected.to match(/^#[0-9A-F]{6}/i) }
+    end
   end
 end

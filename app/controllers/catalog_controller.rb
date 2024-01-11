@@ -89,8 +89,10 @@ class CatalogController < ApplicationController
     config.default_solr_params = {
       qt: "search",
       rows: 10,
-      qf: IiifPrint.config.metadata_fields.keys.map { |attribute| "#{attribute}_tesim" }
-                   .join(' ') << " title_tesim description_tesim all_text_timv file_set_text_tsimv", # the first space character is necessary!
+      qf: (
+        IiifPrint.config.metadata_fields.keys.map { |attribute| "#{attribute}_tesim" } +
+        ["title_tesim", "description_tesim", "all_text_timv", "file_set_text_tsimv"]
+      ).uniq.join(' '),
       "hl": true,
       "hl.simple.pre": "<span class='highlight'>",
       "hl.simple.post": "</span>",

@@ -5,9 +5,6 @@
 .viewer {
   height: 100%;
   padding: 10px;
-  iframe {
-    // position: absolute;
-  }
 }
 
 #viewer-modal {
@@ -20,4 +17,9 @@
   button.close {
     margin-bottom: 10px;
   }
+}
+
+.video-embed-viewer {
+  aspect-ratio: 16 / 9;
+  width: 100%;
 }

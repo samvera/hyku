@@ -6,70 +6,71 @@ pt-BR:
       default_message: 'Por favor, reveja os problemas abaixo:'
     hints:
       account:
-        admin_emails: Digite um endereço de email de cada vez
-        allow_signup: Permitir que os usuários se inscrevam em seu repositório
-        cache_api: Ativa o cache para terminais de API. Experimental
-        contact_email: Endereço de e-mail que deve receber e-mails de contato
-        contact_email_to: Destinatário de e-mail de mensagens enviadas por meio do formulário de contato
-        doi_reader: Mostrar capacidade de ler do Datacite para preencher registros. WIP não use
-        doi_writer: Escreva DOIs para registros. WIP não use
-        email_format: Defina uma lista de domínios de e-mail que podem se inscrever neste repositório, por exemplo (@ubiquitypress.com @gmail.com). Deixe um único espaço entre cada domínio.
-        email_subjet_prefix: String a ser colocada antes dos assuntos do e-mail do sistema.
-        enable_oai_metadata: Ativar ou desativar o link OAI
+        admin_emails: Insira um endereço de e-mail por vez
+        allow_signup: Permitir que usuários se inscrevam no seu repositório
+        cache_api: Ativar cache para pontos finais de API. Experimental
+        contact_email: O endereço de e-mail do qual as notificações do sistema serão enviadas. Uma configuração adicional é necessária para adicionar um endereço de domínios diferentes do domínio do site
+        contact_email_to: O endereço de e-mail para o qual as mensagens enviadas via página de contato são enviadas
+        doi_reader: Mostrar capacidade de ler da Datacite para preencher registros. Em desenvolvimento, não use
+        doi_writer: Escrever DOIs para registros. Em desenvolvimento, não use
+        email_format: Defina uma lista de domínios de e-mail que são permitidos para se inscrever neste repositório, por exemplo (@ubiquitypress.com @gmail.com). Deixe um espaço único entre cada domínio.
+        email_subjet_prefix: String para colocar na frente dos assuntos dos e-mails do sistema.
+        enable_oai_metadata: Habilitar ou desabilitar link OAI
         fcrepo_endpoint:
-          base_path: O caminho base do Fedora deve começar com uma barra E não terminar com uma barra
-          url: O URL do Fedora não deve terminar com uma barra
-        file_acl: Desligue se estiver usando um sistema de arquivos como samba ou nfs que não suporta a configuração de listas de controle de acesso
-        file_size_limit: Isso deve ser definido para pelo menos 536870912000
+          base_path: O caminho base do Fedora deve começar com uma barra e NÃO terminar com uma barra
+          url: A URL do Fedora não deve terminar com uma barra
+        file_acl: Desative se estiver usando um sistema de arquivos como samba ou nfs que não suporta listas de controle de acesso
+        file_size_limit: Isso deve ser configurado para pelo menos 536870912000
         geonames_username: Registre-se em http://www.geonames.org/manageaccount
-        gtm_id: O ID da sua conta do Gerenciador de tags do Google
+        google_analytics_id: O ID da sua conta no Google Analytics
+        gtm_id: O ID da sua conta no Google Tag Manager
         is_public: Os usuários podem descobrir seu site na página inicial ou acessar suas páginas sem um nome de usuário/senha especial?
-        locale_name: 'O nome do sufixo de localidade específico do locatário incluído em seus arquivos locale.yml. Apenas caracteres alfabéticos devem ser adicionados, sem símbolos ou números, estes serão então maiúsculos.
+        locale_name: 'O nome do sufixo específico do inquilino adicionado aos seus arquivos locale.yml. Apenas caracteres alfabéticos devem ser adicionados, sem símbolos ou números, estes serão então capitalizados.
 
           '
-        monthly_email_list: Lista de endereços de e-mail para enviar o relatório mensal por e-mail. Deixe um único espaço entre cada e-mail
-        name: Um nome único ou hifenizado usado para aspectos técnicos do repositório (por exemplo, "acme" ou "acme-library").
-        oai_admin_email: Endereço de e-mail de contato do terminal OAI
+        monthly_email_list: Lista de endereços de e-mail para enviar o relatório mensal. Deixe um espaço único entre cada e-mail
+        name: Um nome simples ou hifenizado usado para aspectos técnicos do repositório (por exemplo, "acme" ou "acme-biblioteca").
+        oai_admin_email: Endereço de e-mail de contato do ponto final OAI
         shared_login: Habilitar ou desabilitar login compartilhado
         ssl_configured: Defina como verdadeiro se estiver usando https
-        weekly_email_list: Lista de endereços de e-mail para enviar o relatório semanal. Deixe um único espaço entre cada e-mail
-        yearly_email_list: Lista de endereços de e-mail para enviar o relatório anual. Deixe um único espaço entre cada e-mail
+        weekly_email_list: Lista de endereços de e-mail para enviar o relatório semanal. Deixe um espaço único entre cada e-mail
+        yearly_email_list: Lista de endereços de e-mail para enviar o relatório anual. Deixe um espaço único entre cada e-mail
       hyku_group:
         description: Um breve resumo do papel do grupo
       user:
-        email: Digite um endereço de e-mail por vez. Você também pode reenviar um convite por meio deste formulário.
+        email: Insira um endereço de e-mail por vez. Você também pode reenviar um convite por meio deste formulário. Funções aplicam-se apenas a este inquilino.
     labels:
       account:
-        admin_emails: Adicionar ou convidar novo administrador (via email)
-        cname: CNAME do inquilino
+        admin_emails: Adicionar ou convidar novo administrador (via e-mail)
+        cname: Nome de Domínio Primário
         fcrepo_endpoint:
-          base_path: Caminho base
+          base_path: Caminho Base
           url: URL
-        gtm_id: Gerenciador de tags do Google
         name: Nome curto
         solr_endpoint:
           url: URL
-        tenant: Inquilino UUID
+        tenant: UUID do inquilino
+        gtm_id: Google Tag Manager
       add_user_to_group:
         user_ids: ID do usuário
       domain_names:
-        cname: Nome do domínio
+        cname: Nome de Domínio
       group_search:
-        q: Pesquisa
+        q: Pesquisar
       hyku_group:
         description: Descrição
       page_size:
-        per: exposição
+        per: Mostrar
       user:
         display_name: Seu nome
         email: Endereço de e-mail
       user_search:
-        uq: Pesquisar usuário
+        uq: Pesquisar por usuário
     'no': Não
     placeholders:
       user_search:
         uq: Nome ou nome de usuário
     required:
       mark: "*"
-      text: requeridos
-    'yes': sim
+      text: obrigatório
+    'yes': Sim

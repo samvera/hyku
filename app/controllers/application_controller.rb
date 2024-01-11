@@ -29,35 +29,25 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  # rubocop:disable Naming/PredicateName
-  def is_hidden
-    # rubocop:enable Naming/PredicateName
+  def hidden?
     current_account.persisted? && !current_account.is_public?
   end
 
-  # rubocop:disable Naming/PredicateName
-  def is_api_or_pdf
-    # rubocop:enable Naming/PredicateName
+  def api_or_pdf?
     request.format.to_s.match('json') ||
       params[:print] ||
       request.path.include?('api') ||
       request.path.include?('pdf')
   end
 
-  # rubocop:disable Naming/PredicateName
-  def is_staging
-    # rubocop:enable Naming/PredicateName
-    ['staging'].include?(Rails.env)
+  def staging?
+    Rails.env.staging? # rubocop:disable Rails/UnknownEnv
   end
 
-  ##
-  # Extra authentication for palni-palci during development phase
   def authenticate_if_needed
     # Disable this extra authentication in test mode
     return true if Rails.env.test?
-    # rubocop:disable Naming/PredicateName
-    return unless (is_hidden || is_staging) && !is_api_or_pdf
-    # rubocop:enable Naming/PredicateName
+    return unless (hidden? || staging?) && !api_or_pdf?
     authenticate_or_request_with_http_basic do |username, password|
       username == "samvera" && password == "hyku"
     end

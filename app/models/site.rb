@@ -49,6 +49,14 @@ class Site < ApplicationRecord
     remove_admins_by_email(removed_admin_emails) if removed_admin_emails
   end
 
+  def institution_label
+    if Site.instance&.institution_name&.present?
+      Site.instance.institution_name.to_s
+    else
+      Site.instance&.account&.cname
+    end
+  end
+
   private
 
   # Add/invite admins via email address

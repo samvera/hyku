@@ -1,0 +1,14 @@
+<% if can?(:download, file_set_id) && (Site.account.settings[:allow_downloads].nil? || Site.account.settings[:allow_downloads].to_i.nonzero?) %>
+  <div class="download-pdf-controls">
+    <% if @presenter.representative_presenter.present? && presenter.file_set_presenters.any?(&:pdf?) %>
+      <%= button_tag type: 'button',
+                     id: "download-pdf-button",
+                     data: { label: @presenter.representative_presenter.id,
+                             path: hyrax.download_path(presenter.representative_presenter) },
+                     class: "btn btn-success btn-block download-pdf-button center-block",
+                     onclick: "window.open(this.dataset.path, '_blank');" do %>
+        Download PDF
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

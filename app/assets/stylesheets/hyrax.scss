@@ -19,3 +19,9 @@
 @import "viewer";
 
 @import "themes/*";
+
+// for catalog search result snippets
+.highlight {
+    background: #ffff00;
+  font-weight: 700;
+}

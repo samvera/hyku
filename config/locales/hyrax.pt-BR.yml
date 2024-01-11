@@ -244,9 +244,11 @@ pt-BR:
             one: Há <b>um usuário %{count}</b> neste repositório.
             other: Existem <b>usuários %{count}</b> neste repositório.
           group_label: Grupos
+          group_role_label: Funções do grupo
           id_label: Nome do usuário
           reader_title: Ver usuários
           role_label: Funções
+          site_role_label: Funções do site
           title: Gerenciar usuários
       workflow_roles:
         header: Funções de fluxo de trabalho
@@ -296,7 +298,7 @@ pt-BR:
     background_attribution_html: ''
     base:
       citations:
-        header: 'Citações:'
+        header: 'Citaçõ:'
       form_child_work_relationships:
         actions:
           remove: Remover deste trabalho
@@ -359,6 +361,8 @@ pt-BR:
         title: Título
         unauthorized: Não há itens disponíveis publicamente neste %{type}.
         visibility: Visibilidade
+      part_of:
+        label: 'Parte de:'
       relationships:
         empty: Atualmente, este %{type} não está em nenhuma coleção.
         header: Relacionamentos
@@ -1097,7 +1101,7 @@ pt-BR:
         description: Uma breve descrição abrangente que se aplica a todos os trabalhos coletados neste conjunto. Por exemplo, "Teses e arquivos complementares criados pelos alunos de graduação da Escola de Ciências da Terra".
         title: Um nome para ajudar na identificação do Conjunto Administrativo e para distingui-lo de outros Conjuntos Administrativos no repositório.
       collection:
-        based_near: Um nome de local relacionado à coleção, como o site da publicação ou a cidade, estado ou país em que o conteúdo da coleção se refere. Solicita o <a href='http://www.geonames.org'> serviço da web GeoNames </a>.
+        based_near: Um nome de local relacionado ao trabalho, como seu site de publicação, ou a cidade, estado ou país sobre o qual o conteúdo do trabalho se refere. Solicita <a href='http://www.geonames.org' >Serviço da web GeoNames</a>. Observe que você deve configurar seu nome de usuário geonames nas configurações da conta, ou este campo terá um erro de carregamento.</br> </br><b>Passos para habilitar este campo:</b><br/>1. Crie uma conta gratuita na <a href='http://www.geonames.org'>página do serviço web Geonames.</a></br>2. Acesse suas <a href='http://www.geonames.org/manageaccount'>configurações de conta de geonames</a> e selecione a opção na parte inferior para habilitar serviços gratuitos.</br>3. Acesse as configurações da sua conta hyku no <a href='/admin/account/edit?locale=en'>painel.</a></br>4. Digite seu nome de usuário geonames nas configurações da conta hyrax.<br/>5. Agora você deve conseguir ver a lista de locais neste menu suspenso
         contributor: Uma pessoa ou grupo que você deseja reconhecer por desempenhar um papel na criação da coleção, mas não o papel principal.
         creator: A pessoa ou grupo responsável pela coleção. Normalmente, este é o autor do conteúdo. Os nomes pessoais devem ser inseridos com o sobrenome primeiro, p. "Smith, John".
         date_created: A data em que a coleção foi criada.
@@ -1124,7 +1128,7 @@ pt-BR:
         share_applies_to_new_works: Quando novos trabalhos são criados diretamente na coleção, conceda aos usuários e grupos de compartilhamento permissões para o novo trabalho, de acordo com suas funções de coleção.
         title: ''
       defaults:
-        based_near: Um nome de local relacionado ao trabalho, como o site da publicação ou a cidade, estado ou país em que o conteúdo do trabalho se refere. Solicita o <a href='http://www.geonames.org'> serviço da web GeoNames </a>.
+        based_near: Um nome de local relacionado ao trabalho, como seu site de publicação, ou a cidade, estado ou país sobre o qual o conteúdo do trabalho se refere. Solicita <a href='http://www.geonames.org' >Serviço da web GeoNames</a>. Observe que você deve configurar seu nome de usuário geonames nas configurações da conta, ou este campo terá um erro de carregamento.</br> </br><b>Passos para habilitar este campo:</b><br/>1. Crie uma conta gratuita na <a href='http://www.geonames.org'>página do serviço web Geonames.</a></br>2. Acesse suas <a href='http://www.geonames.org/manageaccount'>configurações de conta de geonames</a> e selecione a opção na parte inferior para habilitar serviços gratuitos.</br>3. Acesse as configurações da sua conta hyku no <a href='/admin/account/edit?locale=en'>painel.</a></br>4. Digite seu nome de usuário geonames nas configurações da conta hyrax.<br/>5. Agora você deve conseguir ver a lista de locais neste menu suspenso
         contributor: Uma pessoa ou grupo que você deseja reconhecer por desempenhar um papel na criação do trabalho, mas não o papel principal.
         creator: A pessoa ou grupo responsável pelo trabalho. Normalmente, este é o autor do conteúdo. Os nomes pessoais devem ser inseridos com o sobrenome primeiro, p. "Smith, John".
         date_created: A data em que o trabalho foi criado.
@@ -1139,6 +1143,7 @@ pt-BR:
         resource_type: Categorias predefinidas para descrever o tipo de conteúdo que está sendo carregado, como "artigo" ou "conjunto de dados". Mais de um tipo pode ser selecionado.
         subject: Cabeçalhos ou termos do índice que descrevem o que é o trabalho; estes precisam estar em conformidade com um vocabulário existente.
         title: Um nome para ajudar na identificação de um trabalho.
+        video_embed: Se você inserir um link incorporado para um vídeo, ele deverá ser um URL formatado corretamente, começando com 'http://' ou 'https://'. Ele também precisa conter um link válido para um vídeo hospedado que possa aparecer em um iframe. <br /><br /><i>Exemplos:<br/>https://player.vimeo.com/video/467264493?h=b089de0eab<br/>https://www.youtube.com/embed/ Znf73dsFdC8</i>
       labels:
         extent: Extensão
     labels:
@@ -1175,6 +1180,7 @@ pt-BR:
         footer_link_hover_color: Cor do foco do link do rodapé
         header_and_footer_background_color: Cor de fundo do cabeçalho e rodapé
         header_and_footer_text_color: Cor do texto do cabeçalho e rodapé
+        identifier: Identificador
         keyword: Palavra-chave
         lease_expiration_date: até
         license: Licença

@@ -43,7 +43,13 @@ body.public-facing .image-masthead .navbar .active > a:focus {
     background-color: <%= appearance.navbar_background_color_active %>;
     color: <%= appearance.navbar_link_text_color %>;
 }
+
+body.public-facing .image-masthead .navbar .navbar-nav li.active a {
+    background-color: <%= appearance.navbar_link_background_color_active %>;
+}
+
 body.public-facing .image-masthead .navbar .navbar-nav a {
+    background-color: <%= appearance.navbar_link_background_color %>;
     color: <%= appearance.navbar_link_text_color %>;
 }
 

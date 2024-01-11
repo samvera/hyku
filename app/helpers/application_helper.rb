@@ -4,10 +4,15 @@ module ApplicationHelper
   # Yep, we're ignoring the advice; because the translations are safe as is the markdown converter.
   # rubocop:disable Rails/OutputSafety
   include ::HyraxHelper
-  include Hyrax::OverrideHelperBehavior
   include GroupNavigationHelper
   include SharedSearchHelper
   include HykuKnapsack::ApplicationHelper
+
+  def collection_thumbnail(_document, _image_options = {}, _url_options = {})
+    return super if Site.instance.default_collection_image.blank?
+
+    image_tag(Site.instance.default_collection_image&.url)
+  end
 
   def label_for(term:, record_class: nil)
     locale_for(type: 'labels', term:, record_class:)

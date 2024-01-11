@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyku::MenuPresenter do
+RSpec.describe Hyrax::MenuPresenter do
   let(:instance) { described_class.new(context) }
   let(:context) { double }
   let(:controller_name) { controller.controller_name }
@@ -131,7 +131,7 @@ RSpec.describe Hyku::MenuPresenter do
     let(:presenter) { instance_double("CollapsableSectionPresenter") }
 
     before do
-      allow(Hyku::CollapsableSectionPresenter).to receive(:new).with(
+      allow(Hyrax::CollapsableSectionPresenter).to receive(:new).with(
         view_context: context,
         text:,
         id:,

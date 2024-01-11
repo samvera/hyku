@@ -1,14 +1,8 @@
 # frozen_string_literal: true
 
-module Hyku
+module Hyrax
   # view-model for the admin menu
-  class MenuPresenter < Hyrax::MenuPresenter
-    # Returns true if the current controller happens to be one of the controllers that deals
-    # with settings.  This is used to keep the parent section on the sidebar open.
-    def settings_section?
-      %w[appearances content_blocks labels features pages].include?(controller_name)
-    end
-
+  module MenuPresenterDecorator
     # Returns true if the current controller happens to be one of the controllers that deals
     # with roles and permissions.  This is used to keep the parent section on the sidebar open.
     def roles_and_permissions_section?
@@ -48,18 +42,8 @@ module Hyku
         can?(:read, Hyrax::Group) ||
         can?(:read, :admin_dashboard)
     end
-
-    # Draw a collaspable menu section. The passed block should contain <li> items.
-    # Override Hyrax v5.0.0rc2 to pass in title attribute
-    # rubocop:disable Metrics/ParameterLists
-    def collapsable_section(text, id:, icon_class:, title:, open:, &block)
-      # rubocop:enable Metrics/ParameterLists
-      CollapsableSectionPresenter.new(view_context:,
-                                      text:,
-                                      id:,
-                                      icon_class:,
-                                      title:,
-                                      open:).render(&block)
-    end
   end
 end
+
+Hyrax::MenuPresenter.section_controller_names = %w[appearances content_blocks labels features pages]
+Hyrax::MenuPresenter.prepend(Hyrax::MenuPresenterDecorator)

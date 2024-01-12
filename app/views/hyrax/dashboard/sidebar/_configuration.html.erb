@@ -10,8 +10,8 @@
         <% end %>
 
         <% if Flipflop.show_identity_provider_in_admin_dashboard? %>
-          <%= menu.nav_link(main_app.identity_providers_path, class: 'nav-link', title: t('hyrax.admin.sidebar.identity_providers')) do %>
-            <span class="fa fa-key"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.identity_providers') %></span>
+          <%= menu.nav_link(main_app.identity_providers_path, class: 'nav-link', title: t('hyrax.admin.sidebar.identity_provider')) do %>
+            <span class="fa fa-key"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.identity_provider') %></span>
           <% end %>
         <% end %>
 

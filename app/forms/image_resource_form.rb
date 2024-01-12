@@ -8,6 +8,8 @@
 class ImageResourceForm < Hyrax::Forms::ResourceForm(ImageResource)
   include Hyrax::FormFields(:basic_metadata)
   include Hyrax::FormFields(:image_resource)
+  include PdfFormBehavior
+  include VideoEmbedFormBehavior
 
   # Define custom form fields using the Valkyrie::ChangeSet interface
   #

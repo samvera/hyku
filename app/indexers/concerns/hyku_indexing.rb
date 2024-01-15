@@ -6,8 +6,8 @@ module HykuIndexing
   #      to a more conventional method def (e.g. `def to_solr`).  However, we need to tap into two
   #      different inheritance paths based on ActiveFedora or Valkyrie
   [:generate_solr_document, :to_solr].each do |method_name|
-    define_method method_name do
-      super.tap do |solr_doc|
+    define_method method_name do |*args, **kwargs, &block|
+      super(*args, **kwargs, &block).tap do |solr_doc|
         solr_doc['account_cname_tesim'] = Site.instance&.account&.cname
         solr_doc['bulkrax_identifier_tesim'] = object.bulkrax_identifier if object.respond_to?(:bulkrax_identifier)
         solr_doc['account_institution_name_ssim'] = Site.instance.institution_label

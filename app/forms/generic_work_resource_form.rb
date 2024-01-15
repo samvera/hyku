@@ -8,8 +8,8 @@
 class GenericWorkResourceForm < Hyrax::Forms::ResourceForm(GenericWorkResource)
   include Hyrax::FormFields(:basic_metadata)
   include Hyrax::FormFields(:generic_work_resource)
-  include PdfFormBehavior
-  include VideoEmbedFormBehavior
+  # include PdfFormBehavior
+  # include VideoEmbedFormBehavior
 
   # Define custom form fields using the Valkyrie::ChangeSet interface
   #

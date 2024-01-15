@@ -18,31 +18,32 @@ module Hyrax
   module PermissionManagerDecorator
     private
 
-    def update_groups_for(mode:, groups:)
-      groups = groups.map(&:to_s)
+#     def update_groups_for(mode:, groups:)
+#       groups = groups.map(&:to_s)
+# debugger
+#       acl.permissions.each do |permission|
+#         next unless permission.mode.to_sym == mode
+#         next unless permission.agent.starts_with?(Hyrax::Group.name_prefix)
 
-      acl.permissions.each do |permission|
-        next unless permission.mode.to_sym == mode
-        next unless permission.agent.starts_with?(Hyrax::Group.name_prefix)
+#         group_name = permission.agent.gsub(Hyrax::Group.name_prefix, '')
+#         next if groups.include?(group_name)
+# debugger
+#         # OVERRIDE:
+#         #   - Replace Group#new with Group#find_by(:name)
+#         #   - Add fallback on Role, which has the same agent_type as Group
+#         group_or_role = Group.find_by(name: group_name) || Role.find_by(name: group_name)
+#         acl.revoke(mode).from(group_or_role)
+#       end
 
-        group_name = permission.agent.gsub(Hyrax::Group.name_prefix, '')
-        next if groups.include?(group_name)
-
-        # OVERRIDE:
-        #   - Replace Group#new with Group#find_by(:name)
-        #   - Add fallback on Role, which has the same agent_type as Group
-        group_or_role = Group.find_by(name: group_name) || Role.find_by(name: group_name)
-        acl.revoke(mode).from(group_or_role)
-      end
-
-      groups.each do |g|
-        # OVERRIDE:
-        #   - Replace Group#new with Group#find_by(:name)
-        #   - Add fallback on Role, which has the same agent_type as Group
-        group_or_role = Group.find_by(name: g) || Role.find_by(name: g)
-        acl.grant(mode).to(group_or_role)
-      end
-    end
+#       groups.each do |g|
+# debugger
+#         # OVERRIDE:
+#         #   - Replace Group#new with Group#find_by(:name)
+#         #   - Add fallback on Role, which has the same agent_type as Group
+#         group_or_role = Group.find_by(name: g) || Role.find_by(name: g)
+#         acl.grant(mode).to(group_or_role)
+#       end
+#     end
   end
 end
 

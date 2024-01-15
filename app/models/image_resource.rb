@@ -6,4 +6,5 @@ class ImageResource < Hyrax::Work
   include Hyrax::Schema(:basic_metadata)
   include Hyrax::Schema(:image_resource)
   include Hyrax::ArResource
+  include Hyrax::Works::ValkyrieMigration
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require 'title_validator'
 
-class ImageChangeSet < Valkyrie::ChangeSet
+class ImageResourceChangeSet < Hyrax::ChangeSet
   property :title, multiple: true, required: true
 
   # validating change_sets => https://github.com/samvera/valkyrie/wiki/Validating-change-sets

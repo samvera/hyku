@@ -125,7 +125,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: fd1c5840d8123550cbfe66a537475ad8e46c3338
+  revision: 1a15450217810fca7062d99822690fc66e757027
   branch: double_combo
   specs:
     hyrax (5.0.0.rc2)
@@ -1402,6 +1402,7 @@ GEM
 
 PLATFORMS
   aarch64-linux-musl
+  arm64-darwin-23
   x86_64-linux-musl
 
 DEPENDENCIES

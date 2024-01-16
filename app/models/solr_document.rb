@@ -49,11 +49,33 @@ class SolrDocument
   )
 
   def show_pdf_viewer
-    self['show_pdf_viewer_tesim']
+    # NOTE: We want to move towards persisting a boolean.  In the ActiveFedora implementation we are
+    # storing things as Strings; in Valkyrie we want to move towards boolean.  This logic is
+    # necessary as we move the underlying persistence towards a boolean field.
+    value = if key?('show_pdf_viewer_bsi')
+              self['show_pdf_viewer_bsi']
+            else
+              self['show_pdf_viewer_tsi'] ||
+                Array.wrap(self['show_pdf_viewer_tesim']).first
+            end
+    # Nil is not cast to false in the following Boolean operation.
+    return false if value.nil?
+    ActiveModel::Type::Boolean.new.cast(value)
   end
 
   def show_pdf_download_button
-    self['show_pdf_download_button_tesim']
+    # NOTE: We want to move towards persisting a boolean.  In the ActiveFedora implementation we are
+    # storing things as Strings; in Valkyrie we want to move towards boolean.  This logic is
+    # necessary as we move the underlying persistence towards a boolean field.
+    value = if key?('show_pdf_download_button_bsi')
+              self['show_pdf_download_button_bsi']
+            else
+              self['show_pdf_download_button_tsi'] ||
+                Array.wrap(self['show_pdf_download_button_tesim']).first
+            end
+    # Nil is not cast to false in the following Boolean operation.
+    return false if value.nil?
+    ActiveModel::Type::Boolean.new.cast(value)
   end
 
   # @return [Array<SolrDocument>] a list of solr documents in no particular order

@@ -5,6 +5,8 @@
 class ImageResourceIndexer < Hyrax::ValkyrieWorkIndexer
   include Hyrax::Indexer(:basic_metadata)
   include Hyrax::Indexer(:image_resource)
+  include Hyrax::Indexer(:with_pdf_viewer)
+  include Hyrax::Indexer(:with_video_embed)
 
   include HykuIndexing
   # Uncomment this block if you want to add custom indexing behavior:

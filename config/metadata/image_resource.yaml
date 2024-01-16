@@ -31,3 +31,4 @@ attributes:
       required: false
       primary: false
       multiple: true
+    predicate: http://purl.org/dc/terms/extent   

@@ -11,4 +11,13 @@ class ImageResourceForm < Hyrax::Forms::ResourceForm(ImageResource)
   include Hyrax::FormFields(:with_pdf_viewer)
   include Hyrax::FormFields(:with_video_embed)
   include VideoEmbedBehavior::Validation
+
+  if ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_IIIF_PRINT', false))
+    include IiifPrint.model_configuration(
+      pdf_split_child_model: GenericWork,
+      pdf_splitter_service: IiifPrint::TenantConfig::PdfSplitter
+    )
+  end
+
+  prepend OrderAlready.for(:creator)
 end

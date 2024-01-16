@@ -16,4 +16,6 @@ class GenericWorkResource < Hyrax::Work
       pdf_splitter_service: IiifPrint::TenantConfig::PdfSplitter
     )
   end
+
+  prepend OrderAlready.for(:creator)
 end

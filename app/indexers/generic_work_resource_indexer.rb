@@ -5,6 +5,8 @@
 class GenericWorkResourceIndexer < Hyrax::ValkyrieWorkIndexer
   include Hyrax::Indexer(:basic_metadata)
   include Hyrax::Indexer(:generic_work_resource)
+  include Hyrax::Indexer(:with_pdf_viewer)
+  include Hyrax::Indexer(:with_video_embed)
 
   include HykuIndexing
   # Uncomment this block if you want to add custom indexing behavior:

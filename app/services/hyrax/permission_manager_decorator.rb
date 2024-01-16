@@ -16,32 +16,44 @@ module Hyrax
   # Because of this, we also add queries for Role permissions in addition to Group permissions
   # as part of these overrides.
   module PermissionManagerDecorator
-    #     def update_groups_for(mode:, groups:)
-    #       groups = groups.map(&:to_s)
-    # debugger
-    #       acl.permissions.each do |permission|
-    #         next unless permission.mode.to_sym == mode
-    #         next unless permission.agent.starts_with?(Hyrax::Group.name_prefix)
+    SPECIAL_GROUPS = ["public"]
 
-    #         group_name = permission.agent.gsub(Hyrax::Group.name_prefix, '')
-    #         next if groups.include?(group_name)
-    # debugger
-    #         # OVERRIDE:
-    #         #   - Replace Group#new with Group#find_by(:name)
-    #         #   - Add fallback on Role, which has the same agent_type as Group
-    #         group_or_role = Group.find_by(name: group_name) || Role.find_by(name: group_name)
-    #         acl.revoke(mode).from(group_or_role)
-    #       end
+    private
 
-    #       groups.each do |g|
-    # debugger
-    #         # OVERRIDE:
-    #         #   - Replace Group#new with Group#find_by(:name)
-    #         #   - Add fallback on Role, which has the same agent_type as Group
-    #         group_or_role = Group.find_by(name: g) || Role.find_by(name: g)
-    #         acl.grant(mode).to(group_or_role)
-    #       end
-    #     end
+    def update_groups_for(mode:, groups:)
+      groups = groups.map(&:to_s)
+
+      acl.permissions.each do |permission|
+        next unless permission.mode.to_sym == mode
+        next unless permission.agent.starts_with?(Hyrax::Group.name_prefix)
+
+        group_name = permission.agent.gsub(Hyrax::Group.name_prefix, '')
+        next if groups.include?(group_name)
+
+        # OVERRIDE:
+        group_or_role = group_or_role(name: g)
+        next unless group_or_role
+        acl.revoke(mode).from(group_or_role)
+      end
+
+      groups.each do |g|
+        # OVERRIDE:
+        group_or_role = group_or_role(name: g)
+        next unless group_or_role
+        acl.grant(mode).to(group_or_role)
+      end
+    end
+
+    # OVERRIDE:
+    #   - Replace Group#new with Group#find_by(:name)
+    #   - Add fallback on Role, which has the same agent_type as Group
+    #   - Fallback to Group.new() for "public" but don't save group
+    def group_or_role(name:)
+      group_or_role = Group.find_by(name:) || Role.find_by(name:)
+      return group_or_role if group_or_role
+      return Group.new(name:) if SPECIAL_GROUPS.include?(name)
+      nil
+    end
   end
 end
 

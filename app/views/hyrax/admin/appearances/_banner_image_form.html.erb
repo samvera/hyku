@@ -2,19 +2,83 @@
   <div class="card-body">
     <% require_image = @form.banner_image? ? false : true %>
     <%# Upload Banner Image %>
-    <%= f.input :banner_image, as: :file, wrapper: :vertical_file_input, required: require_image, hint: t('hyrax.admin.appearances.show.forms.banner_image.hint') %>
+    <%= f.input :banner_image, as: :file, wrapper: :vertical_file_input, required: require_image, hint: t('hyrax.admin.appearances.show.forms.banner_image.hint').html_safe, input_html: { name: 'admin_appearance[banner_image]' } %>
     <%= f.input :banner_image_text, required: true, as: :text, label: 'Banner image alt text' %>
-    <%= image_tag @form.banner_image.url, class: "img-fluid" if @form.banner_image? %>
+    <!-- Image preview and cropping area -->
+    <button type="button" id="activate-cropper" class="btn btn-primary" style=<%= @form.banner_image.url ? "display:block;" : "display:none;" %>>Crop Image</button>
+    <br />
+    <div id="image-preview" style="width: 100%; height: auto;">
+      <img id="image" src="<%= @form.banner_image.url || Hyrax.config.banner_image %>" alt="Banner Image Preview Area" class="img-fluid" />
+    </div>
   </div>
   <div class="card-footer">
-    <%= f.submit class: 'btn btn-primary float-right' %>
+    <%= f.submit class: 'btn btn-primary float-right banner-submit' %>
   </div>
 <% end %>
 
 <% if @form.banner_image? %>
   <div class="card-footer">
     <%= simple_form_for @form.site, url: main_app.site_path(@form.site) do |f| %>
-      <%= f.submit 'Remove banner image', class: 'btn btn-danger', name: :remove_banner_image %>
+      <%= f.submit 'Remove banner image', class: 'btn btn-danger pull-right', name: :remove_banner_image %>
     <% end %>
   </div>
 <% end %>
+<%# TODO: move this into the assets folder and make it work %>
+<script>
+ var cropper;
+
+ document.getElementById('activate-cropper').addEventListener('click', function() {
+   var image = document.getElementById('image');
+   if (image.src) {
+     cropper = new Cropper(image, {
+       initialAspectRatio: 16 / 9,
+       aspectRatio: NaN,
+       zoomOnWheel: false
+     });
+   }
+ });
+
+ var inputImage = document.querySelector('[name="form[banner_image]"]');
+
+ inputImage.addEventListener('change', function(e) {
+   var files = e.target.files;
+   if (files && files.length) {
+     var reader = new FileReader();
+     reader.onload = function(e) {
+       var image = document.getElementById('image');
+       image.src = e.target.result;
+       if (cropper) {
+         cropper.destroy();
+       }
+       cropper = new Cropper(image, {
+         initialAspectRatio: 16 / 9,
+         aspectRatio: NaN,
+         zoomOnWheel: false
+       });
+     };
+     reader.readAsDataURL(files[0]);
+   }
+ });
+
+ document.querySelector('.banner-submit').addEventListener('click', function(e) {
+   e.preventDefault();
+   if (cropper) {
+     cropper.getCroppedCanvas().toBlob(function(blob) {
+       var formData = new FormData(document.querySelector('form'));
+       formData.append('admin_appearance[banner_image]', blob, 'cropped.jpg');  // Adjusted this line
+       $.ajax('/admin/appearance', {
+         method: 'POST',
+         data: formData,
+         processData: false,
+         contentType: false,
+         success() {
+           console.log('Upload success');
+         },
+         error() {
+           console.log('Upload error');
+         },
+       });
+     });
+   }
+ });
+</script>

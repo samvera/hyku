@@ -39,9 +39,11 @@ ingress:
     - host: hyku-demo.$BASE_URL
       paths:
         - path: /
+          pathType: ImplementationSpecific
     - host: "*.hyku-demo.$BASE_URL"
       paths:
         - path: /
+          pathType: ImplementationSpecific
   annotations: {
     kubernetes.io/ingress.class: "nginx",
     nginx.ingress.kubernetes.io/proxy-body-size: "0",
@@ -97,7 +99,7 @@ extraEnvVars: &envVars
   - name: PASSENGER_APP_ENV
     value: production
   - name: RAILS_CACHE_STORE_URL
-    value: redis://:staging@hyku-demo-redis-master:6379/demo
+    value: redis://:staging@hyku-demo-redis-master:6379/0
   - name: RAILS_ENV
     value: production
   - name: RAILS_LOG_TO_STDOUT
@@ -109,7 +111,7 @@ extraEnvVars: &envVars
   - name: REDIS_HOST
     value: hyku-demo-redis-master
   - name: REDIS_URL
-    value: redis://:staging@hyku-demo-redis-master:6379/demo
+    value: redis://:staging@hyku-demo-redis-master:6379/0
   - name: HYRAX_ACTIVE_JOB_QUEUE
     value: sidekiq
   - name: HYKU_BULKRAX_ENABLED
@@ -195,9 +197,12 @@ fcrepo:
 postgresql:
   enabled: false
 redis:
-  cluster:
-    enabled: false
-  password: staging
+  enabled: true
+  architecture: standalone
+  auth:
+    password: staging
+
+
 solr:
   enabled: false
 

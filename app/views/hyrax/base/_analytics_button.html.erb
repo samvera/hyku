@@ -1,0 +1,5 @@
+<% if Hyrax.config.analytics? %>
+  <% # turbolinks needs to be turned off or the page will use the cache and the %>
+  <% # analytics graph will not show unless the page is refreshed. %>
+  <%= link_to t('.analytics'), @presenter.stats_path, id: 'stats', class: 'btn btn-default btn-block center-block', data: { turbolinks: false } %>
+<% end %>

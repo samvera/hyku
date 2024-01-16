@@ -31,6 +31,8 @@
   // allows full width if tabs are turned off with feature flipper
   .home-content {
     display: flex;
+    justify-content: normal;
+    padding: 0 20px;
   }
   .home-tabs-left {
     min-width: 50%;
@@ -418,9 +420,20 @@ a.btn.btn-default.restore-default-color.with-color-hint {
 nav.navbar.navbar-default.navbar-static-top .container-fluid .row {
   margin-left: 0;
   margin-right: 0;
-
   nav.navbar-nav.col-sm-5 {
     padding-right: 0;
+  }
+}
+
+//these styles modify the theming for the citations section
+div#collapse-citations {
+  text-align: left;
+  word-wrap: break-word;
+}
+
+@media (min-width: 576px) {
+  .citations-button .download-pdf-button {
+    max-width: 300px;
   }
 }
 
@@ -501,4 +514,120 @@ body.public-facing {
   height: 1.5em;
   vertical-align: middle;
   width: 1.5em;
+}
+
+// make sure constraints are on only one line, even with markdown
+span.constraint-value p, .facet-values p {
+  display: inline-block;
+  margin-bottom: 0;
+}
+
+// make the facet counts appear at the end of the facet panel
+.facet-content .panel-body .facet-values p {
+  display: flex;
+  justify-content: space-between;
+}
+
+// button to remove a filter should be red instead of white
+.remove.dropdown-toggle .glyphicon.glyphicon-remove {
+  color: #c4302b;
+}
+
+// style the analytics button to match citations button
+#stats {
+  margin-top: 10px;
+
+  @media (min-width: 576px) {
+    max-width: 300px;
+  }
+}
+
+#download-pdf-button {
+  margin: 10px 0 10px 0;
+}
+
+.catalog_startOverLink {
+  font-size: 1.15em;
+  font-weight: bold;
+}
+
+// collection show page styles
+
+.space-between {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hyc-banner {
+  padding: 15px;
+  .hyc-bugs .hyc-created-by,
+  .hyc-bugs .hyc-last-updated,
+  .hyc-title {
+    padding: 0;
+  }
+
+  .hyc-item-count {
+    background: rgba(255, 255, 255, 0.75);
+    border-radius: 0.5em;
+    color: #333;
+    margin: 0;
+    padding: 10px;
+  }
+
+  .hyc-bugs div,
+  div {
+    position: relative;
+  }
+}
+
+// these margin classes can be removed when Hyku is eventually updated to Bootstrap 4 upon upgrading to Hyrax 4.
+// These correspond directly to bootstrap 4 classes.
+
+.mb-0 {
+  margin-bottom: 0;
+}
+
+.mt-5 {
+  margin-top: 3em;
+}
+
+.mt-2 {
+  margin-top: 0.5em;
+}
+
+.mb-2 {
+  margin-bottom: 0.5em;
+}
+
+.mb-5 {
+  margin-bottom: 3em;
+}
+
+.mx-3 {
+  margin-right: 1em;
+  margin-left: 1em;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.py-0 {
+  padding-bottom: 0;
+  padding-top: 0;
+}
+
+.py-4 {
+  padding-bottom: 2em;
+  padding-top: 2em;
+}
+
+.d-block {
+  display: block;
+}
+
+// hide iiif-print feature flipper
+
+tr[data-feature="use-iiif-print"] {
+  display: none;
 }

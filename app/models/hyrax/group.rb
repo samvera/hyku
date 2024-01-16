@@ -105,12 +105,15 @@ module Hyrax
 
     def description_label
       label = description || I18n.t("hyku.admin.groups.description.#{name}")
+      # NOTE: Depending on configuration of I18n, we might have a translation missing or a false
+      # value; we're noticing `false` cases with upgrades of Rails.
+      return '' if label == false
       return '' if /^translation missing:/.match?(label)
 
       label
     end
 
-    def has_site_role?(role_name) # rubocop:disable Naming/PredicateName
+    def site_role?(role_name)
       site_roles = roles.select { |role| role.resource_type == 'Site' }
 
       site_roles.map(&:name).include?(role_name.to_s)

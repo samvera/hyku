@@ -3,11 +3,15 @@ default: &default
 content_block:
   <<: *default
   menubar: false
-  toolbar1: styleselect | bold italic | undo redo
-  toolbar2: table | fullscreen | image
+  image_uploadtab: true
+  toolbar1: styleselect fontselect fontsizeselect | backcolor forecolor | bold italic underline
+  toolbar2: indent outdent | alignleft aligncenter alignright | table | fullscreen | link hr image | undo redo  | code
   plugins:
     - table
     - fullscreen
+    - link
+    - autolink
     - image
+    - code
 custom:
   <<: *default

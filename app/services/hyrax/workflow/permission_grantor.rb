@@ -48,7 +48,7 @@ module Hyrax
         workflow_agents = [Hyrax::Group.find_by!(name: ::Ability.admin_group_name)]
         # The default admin set does not have a creating user
         workflow_agents << creating_user if creating_user
-        workflow_agents |= Hyrax::Group.select { |g| g.has_site_role?(:admin) }.tap do |agent_list|
+        workflow_agents |= Hyrax::Group.select { |g| g.site_role?(:admin) }.tap do |agent_list|
           ::User.find_each do |u|
             agent_list << u if u.has_role?(:admin, Site.instance)
           end
@@ -59,7 +59,7 @@ module Hyrax
 
       def grant_workflow_roles_to_editors!
         editor_sipity_roles = [Hyrax::RoleRegistry::APPROVING, Hyrax::RoleRegistry::DEPOSITING]
-        workflow_agents = Hyrax::Group.select { |g| g.has_site_role?(:work_editor) }.tap do |agent_list|
+        workflow_agents = Hyrax::Group.select { |g| g.site_role?(:work_editor) }.tap do |agent_list|
           ::User.find_each do |u|
             agent_list << u if u.has_role?(:work_editor, Site.instance)
           end
@@ -70,7 +70,7 @@ module Hyrax
 
       def grant_workflow_roles_to_depositors!
         depositor_sipity_role = [Hyrax::RoleRegistry::DEPOSITING]
-        workflow_agents = Hyrax::Group.select { |g| g.has_site_role?(:work_depositor) }.tap do |agent_list|
+        workflow_agents = Hyrax::Group.select { |g| g.site_role?(:work_depositor) }.tap do |agent_list|
           ::User.find_each do |u|
             agent_list << u if u.has_role?(:work_depositor, Site.instance)
           end

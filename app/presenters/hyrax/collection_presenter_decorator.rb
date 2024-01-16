@@ -80,6 +80,25 @@ module Hyrax
       user_can_feature_collection? && solr_document.public?
     end
 
+    ##
+    # OVERRIDE to handle search_only tenant's not having access to the collection type badge from
+    # the document's home tenant.
+    #
+    # @return [String]
+    #
+    # @see https://github.com/scientist-softserv/palni-palci/issues/951
+    # @see https://github.com/samvera/hyku/issues/1815
+    def collection_type_badge
+      return "" unless Site.account&.present?
+      return "" if Site.account.search_only?
+
+      super
+    rescue ActiveRecord::RecordNotFound
+      # This is a fail-safe if we deleted the underlying Hyrax::CollectionType but have not yet
+      # cleaned up the SOLR records.
+      ""
+    end
+
     def display_feature_collection_link?
       collection_featurable? && FeaturedCollection.can_create_another? && !collection_featured?
     end

@@ -57,6 +57,7 @@ class Ability
 
     super
     can [:manage], [Site, Role, User]
+    can [:update], RolesService
 
     can [:read, :update], Account do |account|
       account == Site.account

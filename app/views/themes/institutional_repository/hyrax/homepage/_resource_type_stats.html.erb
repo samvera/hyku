@@ -3,9 +3,11 @@
     <% next if v[0].zero? %>
     <div class="col-12 col-sm-4 col-md-2">
       <div class="text-center">
-        <i class='<%= "#{v[1]}" %>' aria-hidden="true"></i>
-        <h5><%= k %></h5>
-        <p><%= v[0] %></p>
+        <%= link_to "/catalog?f[resource_type_sim][]=#{k}", style: "color: inherit;" do %>
+          <i class='<%= "#{v[1]}" %>' aria-hidden="true"></i>
+          <h5><%= k %></h5>
+          <p><%= v[0] %></p>
+        <% end %>
       </div>
     </div>
   <% end %>

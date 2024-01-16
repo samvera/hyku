@@ -11,18 +11,25 @@
       <div class="card-body">
         <div class="row">
           <%= render 'workflow_actions_widget', presenter: @presenter %>
-          <% if @presenter.iiif_viewer? %>
-            <div class="col-12 centered-media">
-              <%= render 'representative_media', presenter: @presenter, viewer: true %>
-            </div>
-          <% end %>
           <div class="col-12">
             <%= render "show_actions", presenter: @presenter %>
           </div>
-          <div class="centered-media <%= !@presenter.iiif_viewer? ? 'col-md-6 text-center' : '' %>">
-            <%= render 'representative_media', presenter: @presenter, viewer: false unless @presenter.iiif_viewer? %>
-          </div>
-          <div class="<%= @presenter.iiif_viewer? ? 'col-md-6' : 'col-md-6' %>">
+          <% if @presenter.video_embed_viewer? %>
+            <%= render 'video_embed_viewer', presenter: @presenter %>
+          <% elsif @presenter.iiif_viewer? %>
+            <div class="col-12 centered-media">
+              <%= render 'representative_media', presenter: @presenter, viewer: true %>
+            </div>
+          <% elsif @presenter.show_pdf_viewer? %>
+            <div class="col-12">
+              <%= render 'pdf_js', file_set_presenter: pdf_file_set_presenter(@presenter) %>
+            </div>
+          <% else %>
+            <div class="centered-media <%= !@presenter.viewer? ? 'col-md-6 text-center' : '' %>">
+              <%= render 'representative_media', presenter: @presenter, viewer: false %>
+            </div>
+          <% end %>
+          <div class="col-md-8">
             <%= render 'work_description', presenter: @presenter %>
             <%= render 'metadata', presenter: @presenter %>
           </div>
@@ -30,13 +37,18 @@
             <div class='relationships-box'>
               <%= render 'relationships', presenter: @presenter %>
             </div>
+            <%= render('download_pdf', presenter: @presenter, file_set_id: @presenter.file_set_presenters.first.id) if @presenter.show_pdf_download_button? %>
+            <%= render 'citations', presenter: @presenter %>
+            <!-- analytics_button is disabled until future fix -->
+            <%#= render 'analytics_button', presenter: @presenter %>
           </div>
           <div class="col-12 work-show-items">
             <%= render 'items', presenter: @presenter %>
-            <%# TODO: Consider adding these partials in the future %>
-            <%# = render 'sharing_with', presenter: @presenter %>
-            <%# = render 'user_activity', presenter: @presenter %>
           </div>
+          <span class='hide analytics-event' data-category="work" data-action="work-view" data-name="<%= @presenter.id %>" >
+            <% @presenter.member_of_collection_ids.each do |collection_id| %>
+              <span class='hide analytics-event' data-category="work-in-collection" data-action="work-in-collection-view" data-name="<%= collection_id %>" >
+            <% end %>
         </div>
       </div>
     </div>

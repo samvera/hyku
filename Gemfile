@@ -70,6 +70,7 @@ gem 'puma', '~> 5.6' # Use Puma as the app server
 gem 'rack-test', '0.7.0', group: %i[test] # rack-test >= 0.71 does not work with older Capybara versions (< 2.17). See #214 for more details
 gem 'rails-controller-testing', group: %i[test]
 gem 'rdf', '~> 3.2'
+gem 'redcarpet' # for Markdown constant
 gem 'redis-namespace', '~> 1.10' # Hyrax v5 relies on 1.5; but we'd like to have the #clear method so we need 1.10 or greater.
 gem 'redlock', '>= 0.1.2', '< 2.0' # lock redlock per https://github.com/samvera/hyrax/pull/5961
 gem 'riiif', '~> 2.0'
@@ -105,6 +106,23 @@ gem 'webmock', group: %i[test]
 
 # This gem does nothing by default, but is instead a tool to ease developer flow
 # and place overrides, themes and deployment code.
-gem 'hyku_knapsack', github: 'samvera-labs/hyku_knapsack', branch: 'upstream_main'
+#
+# When you use a knapsack for Hyku development, which we recommend, you'll want to ensure that your
+# local knapsack repository has a `'required_for_knapsack_instances'` branch (which it should by
+# default).  Due to some tomfoolery, of knapsack, the branch name
+# (e.g. `required_for_knapsack_instances`) must be checked out locally in the knapsack environment
+# that you use to build Docker.
+#
+# Why not use `main`?  We need a stable SHA for building HykuKnapsack prime
+# (e.g. samvera-labs/hyku_knapsack).  Why the stable SHA?  Because when we bundle a knapsack, the
+# Hyku submodule uses the SHA of the locally checked out branch specified in the gem spec.  Which
+# can create a chicken and egg issue; namely I need to update Hyku with a new SHA for Knapsack, but
+# to update Knapsack's submodule reference to Hyku, I need a new SHA for knapsack.  Thus, I can never
+# use a "regular branch".  Instead we need to use a separate more stable for Knapsack.
+#
+# Thus the hopefully descriptive `required_for_knapsack_instances`.
+#
+# tl;dr - Have a local `required_for_knapsack_instances` branch on your knapsack repository
+gem 'hyku_knapsack', github: 'samvera-labs/hyku_knapsack', branch: 'required_for_knapsack_instances'
 
 # rubocop:enable Layout/LineLength

@@ -16,8 +16,15 @@
       <div class="card-body">
         <div class="row">
           <%= render 'workflow_actions_widget', presenter: @presenter %>
-          <% if @presenter.iiif_viewer? %>
-            <div class="col-12">
+          <% if @presenter.video_embed_viewer? %>
+            <%= render 'video_embed_viewer', presenter: @presenter %>
+            <div class="col-sm-12">
+              <div class="image-show-description">
+                <%= render 'work_description', presenter: @presenter %>
+              </div>
+            </div>
+          <% elsif @presenter.iiif_viewer? %>
+            <div class="col-sm-12 centered-media">
               <%= render 'representative_media', presenter: @presenter, viewer: true %>
             </div>
             <div class="col-12">
@@ -25,9 +32,13 @@
                 <%= render 'work_description', presenter: @presenter %>
               </div>
             </div>
+          <% elsif @presenter.show_pdf_viewer? %>
+            <div class="col-sm-12">
+              <%= render 'pdf_js', file_set_presenter: pdf_file_set_presenter(@presenter) %>
+            </div>
           <% else %>
             <div class="col-sm-3 mb-1">
-              <%= render 'representative_media', presenter: @presenter, viewer: false unless @presenter.iiif_viewer? %>
+              <%= render 'representative_media', presenter: @presenter, viewer: false %>
             </div>
             <div class="col-sm-9">
               <%= render 'work_description', presenter: @presenter %>
@@ -35,10 +46,18 @@
           <% end %>
         </div>
         <div class="row">
-          <div class="col-12 image-show-metadata">
+          <div class="col-sm-9 image-show-metadata">
             <%= render 'metadata', presenter: @presenter %>
           </div>
-          <div class="col-12">
+          <div class="col-sm-3">
+            <%= render('download_pdf', presenter: @presenter, file_set_id: @presenter.file_set_presenters.first.id) if @presenter.show_pdf_download_button? %>
+            <%= render 'citations', presenter: @presenter %>
+            <!-- analytics_button is disabled until future fix -->
+            <%#= render 'analytics_button', presenter: @presenter %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-8">
             <%= render 'relationships', presenter: @presenter %>
             <%= render 'items', presenter: @presenter %>
             <%# TODO: consider adding 'sharing_with' and 'user_activity' partials in the future %>
@@ -46,5 +65,9 @@
         </div>
       </div>
     </div>
+    <span class='hide analytics-event' data-category="work" data-action="work-view" data-name="<%= @presenter.id %>" >
+    <% @presenter.member_of_collection_ids.each do |collection_id| %>
+      <span class='hide analytics-event' data-category="work-in-collection" data-action="work-in-collection-view" data-name="<%= collection_id %>" >
+    <% end %>
   </div>
 </div>

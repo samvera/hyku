@@ -4,4 +4,5 @@
 
 Hyrax::AdministrativeSet.class_eval do
   include Hyrax::ArResource
+  include Hyrax::Permissions::Readable
 end

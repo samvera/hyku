@@ -70,6 +70,8 @@ extraEnvVars: &envVars
     value: hyku-$CI_MERGE_REQUEST_ID.example.com
   - name: HYKU_ADMIN_ONLY_TENANT_CREATION
     value: "true"
+  - name: HYKU_BLOCK_VALKYRIE_REDIRECT
+    value: "false"
   - name: HYKU_CONTACT_EMAIL
     value: samvera@example.com
   - name: HYKU_DEFAULT_HOST

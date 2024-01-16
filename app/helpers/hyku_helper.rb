@@ -20,6 +20,13 @@ module HykuHelper
     ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_ADMIN_ONLY_TENANT_CREATION', false))
   end
 
+  # We don't want to use Turbolinks because it blocks the
+  # redirects from AF works to Valkyrie works in the edit and show
+  # TODO: When there are no more AF works, we can remove this and remove the ENV variable
+  def block_valkyrie_redirect?
+    ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_BLOCK_VALKYRIE_REDIRECT', true))
+  end
+
   def parent_path(parent_doc)
     model = parent_doc['has_model_ssim'].first
     path = "hyrax_#{model.underscore}_path"

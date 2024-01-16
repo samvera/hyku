@@ -27,9 +27,11 @@ class SolrDocument
   # Do content negotiation for AF models.
   use_extension(Hydra::ContentNegotiation)
 
+  attribute :account_cname, Solr::Array, 'account_cname_tesim'
+  attribute :account_institution_name, Solr::Array, 'account_institution_name_ssim'
   attribute :extent, Solr::Array, 'extent_tesim'
   attribute :rendering_ids, Solr::Array, 'hasFormat_ssim'
-  attribute :account_cname, Solr::Array, 'account_cname_tesim'
+  attribute :video_embed, Solr::String, 'video_embed_tesim'
 
   field_semantics.merge!(
     contributor: 'contributor_tesim',
@@ -45,4 +47,24 @@ class SolrDocument
     title: 'title_tesim',
     type: 'human_readable_type_tesim'
   )
+
+  def show_pdf_viewer
+    self['show_pdf_viewer_tesim']
+  end
+
+  def show_pdf_download_button
+    self['show_pdf_download_button_tesim']
+  end
+
+  # @return [Array<SolrDocument>] a list of solr documents in no particular order
+  def load_parent_docs
+    query("member_ids_ssim: #{id}", rows: 1000)
+      .map { |res| ::SolrDocument.new(res) }
+  end
+
+  # Query solr using POST so that the query doesn't get too large for a URI
+  def query(query, **opts)
+    result = Hyrax::SolrService.post(query, **opts)
+    result.fetch('response').fetch('docs', [])
+  end
 end

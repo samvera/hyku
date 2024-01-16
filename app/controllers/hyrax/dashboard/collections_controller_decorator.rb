@@ -8,6 +8,23 @@ module Hyrax
     ## Shows a list of all collections to the admins
     # rubocop:disable Metrics/ModuleLength
     module CollectionsControllerDecorator
+      def show
+        configure_show_sort_fields
+
+        super
+      end
+
+      private
+
+      def configure_show_sort_fields
+        # In the CollectionsControllerDecorator, we clear the sort fields and add our own to have
+        # the ability to sort the index with custom fields. However, this also affects the show page.
+        # Here we set the sort fields back to the defaults for the show page.
+        blacklight_config.sort_fields = CatalogController.blacklight_config.sort_fields
+      end
+
+      public
+
       def edit
         form
         collection_type

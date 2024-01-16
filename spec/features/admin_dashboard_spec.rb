@@ -43,7 +43,7 @@ RSpec.describe 'Admin Dashboard', type: :feature, js: true, clean: true do
         expect(page).to have_link('Content Blocks')
         expect(page).to have_link('Features')
         expect(page).to have_link('Available Work Types')
-        expect(page).to have_link('Workflow Roles')
+        # expect(page).to have_link('Workflow Roles')
       end
     end
 

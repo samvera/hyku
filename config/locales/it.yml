@@ -1,5 +1,12 @@
 ---
 it:
+  errors:
+    messages:
+      valid_embed_url: "deve essere un URL di incorporamento valido di YouTube o Vimeo."
+  activefedora:
+    models:
+      generic_work: Lavoro
+      image: Immagine
   activerecord:
     attributes:
       site:
@@ -7,6 +14,8 @@ it:
   application:
     tagline: La soluzione di repository di nuova generazione
   helpers:
+    action:
+      become: Diventare
     submit:
       add_role_to_group:
         submit: Inserisci
@@ -163,6 +172,8 @@ it:
           forms:
             banner_image:
               hint: Per utilizzare un'immagine come sfondo di masthead, è necessario utilizzare un'immagine (JPG, GIF o PNG) alta almeno 120 pixel e larga 1200 pixel. Per risultati ottimali, utilizzare un'immagine larga almeno 1800 pixel.
+            collection_banner_text_color:
+              hint: Il colore del testo (titolo e data dell'ultimo aggiornamento) all'interno del banner della raccolta.
             custom_css:
               confirm: I CSS personalizzati sostituiranno sempre altre selezioni di temi. Procedere?
               warning: Se le personalizzazioni dei temi non sembrano essere applicate correttamente, verifica che non vengano sovrascritte dal CSS personalizzato.
@@ -172,7 +183,7 @@ it:
               alert: Carica almeno un file prima di inviarlo.
               hint: Per le immagini predefinite, è necessario utilizzare un'immagine (JPG, GIF o PNG) che abbia le stesse dimensioni in altezza e larghezza (100 pixel in larghezza e 100 pixel in altezza)
             directory_image:
-              hint: Per utilizzare un'immagine come immagine della directory, devi utilizzare un'immagine (JPG, GIF o PNG) non più alta dell'intestazione e non più larga di 400 pixel.
+              hint: L'immagine della directory deve utilizzare un'immagine (JPG, GIF o PNG). La larghezza dell'immagine non dovrebbe essere più ampia di 2 volte l'altezza.
             facet_panel_background_color:
               hint: Si applica ai facet e alle intestazioni di sezione aggiuntive nelle pagine di lavoro in alcuni temi.
             facet_panel_text_color:
@@ -185,6 +196,8 @@ it:
               hint: Per utilizzare un'immagine come logo, è necessario utilizzare un'immagine (JPG, GIF o PNG) non più alta dell'intestazione e non più larga di 400 pixel.
             navbar_background_color:
               hint: Al 40% di opacità.
+            navbar_link_background_color:
+              hint: Si applica al colore di sfondo dei pulsanti Home, Informazioni, Contatti e Guida
             navbar_link_background_hover_color:
               hint: Si applica ai pulsanti Home, Informazioni, Contatti e Guida solo su quelle pagine specifiche (con un'opacità del 15%).
             primary_button_hover_color:
@@ -207,12 +220,10 @@ it:
             fonts: Font
             themes: Temi
       sidebar:
-        account: Account
         accounts: conti
         activity_summary: Riepilogo attività
         labels: etichette
         manage_groups: Gestisci gruppi
-        repository_activity: Attività di deposito
         system_status: Stato del sistema
       users:
         activate:
@@ -232,6 +243,9 @@ it:
             active: Attivo
             pending: in attesa di
           status_label: Stato
+        roles:
+          remove:
+            confirmation: Sei sicuro di voler rimuovere il ruolo "%{role}" dall'utente "%{user}"?
   permissions:
     collections:
       cannot:

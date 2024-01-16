@@ -46,7 +46,8 @@
             <th></th>
             <th><%= t('.id_label') %></th>
             <th><%= t('.group_label') %></th>
-            <th><%= t('.role_label') %></th>
+            <th><%= t('.group_role_label') %></th>
+            <th><%= t('.site_role_label') %></th>
             <th><%= t('.access_label') %></th>
             <th><%= t('.status_label') %></th>
             <% if can? :destroy, User %>
@@ -54,7 +55,7 @@
             <% end %>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="manage-users-table">
           <% @presenter.users.each do |user| %>
             <tr id="<%= user.email.parameterize %>">
               <td><%= link_to hyrax.user_path(user) do %>
@@ -71,12 +72,28 @@
                   </ul>
               </td>
 
-              <td class="roles"><% roles = @presenter.user_roles(user) %>
+              <td class="group-roles"><% roles = @presenter.user_group_roles(user) %>
                   <ul><% roles.each do |role| %>
-                    <li><%= role.titleize %></li>
+                    <li><%= role.name.titleize %></li>
                     <% end %>
                   </ul>
               </td>
+
+              <td class="site-roles"><% roles = @presenter.user_site_roles(user) %>
+                <ul>
+                  <% roles.each do |role| %>
+                    <li>
+                      <%= role.name.titleize %>
+                      <%= link_to main_app.remove_role_admin_user_path(id: user.id, role_id: role.id), method: :delete, data: { confirm: t('hyrax.admin.users.roles.remove.confirmation', user: user.email, role: role.name.titleize) } do %>
+                        <% if current_ability.admin? || (can?(:edit, User) && role.name != 'admin') %>
+                          <span class="glyphicon glyphicon-remove"></span>
+                        <% end %>
+                      <% end %>
+                    </li>
+                  <% end %>
+                </ul>
+              </td>
+
               <td>
                 <%# in the case that a user is created who never signs in, this is necessary %>
                 <relative-time datetime="<%= @presenter.last_accessed(user).getutc.iso8601 %>" title="<%= @presenter.last_accessed(user).to_formatted_s(:standard) %>">

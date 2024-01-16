@@ -13,6 +13,8 @@ en:
           url: Fedora URL should not end with a slash
         name: A single or hyphenated name used for technical aspects of the repository (e.g., "acme" or "acme-library").
         gtm_id: The ID of your Google Tag Manager account
+        google_analytics_id: The ID of your Google Analytics account
+        contact_email_to: The email address that messages submitted via the contact page are sent to
         weekly_email_list: List of email addresses to email the weekly report. Leave a single space between each email
         monthly_email_list: List of email addresses to email the monthly report. Leave a single space between each email
         yearly_email_list: List of email addresses to email the yearly report. Leave a single space between each email

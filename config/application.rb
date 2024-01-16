@@ -92,8 +92,30 @@ module Hyku
     #       Hyrax::Engine.routes.url_helpers.download_url(document, host:, protocol: 'https')
     #     end
     class_attribute :iiif_video_url_builder,
-                                               default: ->(document:, label:, host:) { Hyrax::IiifAv::Engine.routes.url_helpers.iiif_av_content_url(document.id, label:, host:) }
+                    default: ->(document:, label:, host:) { Hyrax::IiifAv::Engine.routes.url_helpers.iiif_av_content_url(document.id, label:, host:) }
 
+    ##
+    # @!attribute iiif_audio_url_builder [r|w]
+    #   @param document [SolrDocument]
+    #   @param label [String]
+    #   @param host [String] (e.g. samvera.org)
+    #   @return [String] the fully qualified URL.
+    #   @see Hyrax::IiifAv::DisplaysContentDecorator
+    #
+    #   @example
+    #     # The below example will build a URL taht will download directly from Hyrax as the
+    #     # audio resource.  This is a hack to address the processing times of audio derivatives;
+    #     # namely in certain setups/configurations of Hyku, audio processing is laggy.
+    #     #
+    #     # The draw back of using this method is that we're pointing to the original audio file.
+    #     # This is acceptable if the original file has already been processed out of band (e.g.
+    #     # before uploading to Hyku/Hyrax).  When we're dealing with a raw audio, this may not
+    #     # be ideal for streaming.
+    #     Hyrax::IiifAv::DisplaysContent.iiif_audio_url_builder = ->(document:, label:, host:) do
+    #       Hyrax::Engine.routes.url_helpers.download_url(document, host:, protocol: 'https')
+    #     end
+    class_attribute :iiif_audio_url_builder,
+                    default: ->(document:, label:, host:) { Hyrax::IiifAv::Engine.routes.url_helpers.iiif_av_content_url(document.id, label:, host:) }
     # @!endgroup Class Attributes
 
     # Add this line to load the lib folder first because we need
@@ -208,6 +230,8 @@ module Hyku
       Object.include(AccountSwitch)
     end
 
+    config.autoload_paths << Rails.root.join("app", "controllers", "api")
+
     # copies tinymce assets directly into public/assets
     config.tinymce.install = :copy
     ##
@@ -238,6 +262,20 @@ module Hyku
       # Because we're loading local translations early in the to_prepare block for our decorators,
       # the I18n.load_path is out of order.  This line ensures that we load local translations last.
       I18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.yml')]
+
+      ##
+      # The first "#valid?" service is the one that we'll use for generating derivatives.
+      Hyrax::DerivativeService.services = [
+        IiifPrint::TenantConfig::DerivativeService,
+        Hyrax::FileSetDerivativesService
+      ]
+
+      ##
+      # This needs to be in the after initialize so that the IiifPrint gem can do it's decoration.
+      #
+      # @see https://github.com/scientist-softserv/iiif_print/blob/9e7837ce4bd08bf8fff9126455d0e0e2602f6018/lib/iiif_print/engine.rb#L54 Where we do the override.
+      Hyrax::Actors::FileSetActor.prepend(IiifPrint::TenantConfig::FileSetActorDecorator)
+      Hyrax::WorkShowPresenter.prepend(IiifPrint::TenantConfig::WorkShowPresenterDecorator)
     end
   end
 end

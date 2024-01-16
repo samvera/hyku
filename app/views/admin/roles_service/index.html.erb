@@ -1,0 +1,21 @@
+<% content_for :page_title, construct_page_title(t('hyrax.admin.roles_service_jobs.header'), t('hyku.admin.title')) %>
+<% provide :page_header do %>
+  <h1><span class="fa fa-wrench" aria-hidden="true"></span>
+  <%= t('hyrax.admin.roles_service_jobs.header') %></h1>
+<% end %>
+
+<div class='panel panel-default'>
+  <div class='panel-body'>
+    <div class='table-responsive'>
+      <table class='table table-striped datatable'>
+        <tbody>
+          <% RolesService.valid_jobs.each do |key, klass| %>
+            <tr>
+              <td><%= button_to t("hyrax.admin.roles_service_jobs.jobs.#{key}.label"), main_app.admin_update_roles_path(job_name_key: key), method: :post, class: 'btn btn-danger' %></td>
+              <td><%= t("hyrax.admin.roles_service_jobs.jobs.#{key}.description") %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+  </div>
+</div>

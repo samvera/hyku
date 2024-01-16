@@ -18,6 +18,7 @@
 //= require jquery.fontselect
 //= require jquery.dataTables
 //= require dataTables.bootstrap4
+//= require cropper.min
 //= require stat_slider
 //= require turbolinks
 //= require cocoon

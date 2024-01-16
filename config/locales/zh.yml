@@ -1,5 +1,12 @@
 ---
 zh:
+  errors:
+    messages:
+      valid_embed_url: "必须是有效的YouTube或Vimeo嵌入URL。"
+  activefedora:
+    models:
+      generic_work: 工作
+      image: 图像
   activerecord:
     attributes:
       site:
@@ -7,6 +14,8 @@ zh:
   application:
     tagline: 下一代存储库解决方案
   helpers:
+    action:
+      become: 成為
     submit:
       add_role_to_group:
         submit: 加
@@ -163,6 +172,8 @@ zh:
           forms:
             banner_image:
               hint: 要将图像用作标头广告背景，您应该使用至少120像素高和1200像素宽的图像（JPG，GIF或PNG）。为了获得最佳效果，请使用至少1800像素宽的图像。
+            collection_banner_text_color:
+              hint: 集合横幅内文本（标题和上次更新日期）的颜色。
             custom_css:
               confirm: 自定义CSS将始终覆盖其他主题选择。继续？
               warning: 如果您的主题自定义设置似乎无法正确应用，请确认自定义CSS不会覆盖它们。
@@ -185,6 +196,8 @@ zh:
               hint: 要将图像用作徽标，应使用不大于标题且宽度不超过400像素的图像（JPG，GIF或PNG）。
             navbar_background_color:
               hint: 不透明度为 40%。
+            navbar_link_background_color:
+              hint: 适用于“主页”、“关于”、“联系人”和“帮助”按钮背景颜色
             navbar_link_background_hover_color:
               hint: 仅适用于这些特定页面上的“主页”、“关于”、“联系方式”和“帮助”按钮（不透明度为 15%）。
             primary_button_hover_color:
@@ -207,7 +220,6 @@ zh:
             fonts: 字形
             themes: 主题
       sidebar:
-        account: 帐户
         accounts: 帐号
         activity_summary: 活动摘要
         labels: 标签
@@ -232,6 +244,9 @@ zh:
             active: 活性
             pending: 有待
           status_label: 状态
+        roles:
+          remove:
+            confirmation: 您确定要从用户“%{user}”中删除角色“%{role}”吗？
   permissions:
     collections:
       cannot:

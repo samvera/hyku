@@ -76,8 +76,11 @@ class CreateAccount
     CreateAccountInlineJob.perform_now(account)
   end
 
+  ##
   # Schedules jobs that will run automatically after
   # the first time they are called
+  #
+  # @todo The first time these are scheduled, they hang and block other jobs for running.
   def schedule_recurring_jobs
     return if account.search_only?
 

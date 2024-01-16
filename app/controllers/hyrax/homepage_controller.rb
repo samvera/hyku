@@ -47,21 +47,12 @@ module Hyrax
 
     # rubocop:disable Metrics/MethodLength
     def index
-      # BEGIN copy Hyrax prime's Hyrax::HomepageController#index
-      @presenter = presenter_class.new(current_ability, collections)
       @featured_researcher = ContentBlock.for(:researcher)
-      @marketing_text = ContentBlock.for(:marketing)
-      @featured_work_list = FeaturedWorkList.new
-      @announcement_text = ContentBlock.for(:announcement)
-      recent
-      # END copy
-
-      # BEGIN OVERRIDE
-      # What follows is Hyku specific overrides
       @home_text = ContentBlock.for(:home_text) # hyrax v3.5.0 added @home_text - Adding Themes
+      @featured_work_list = FeaturedWorkList.new
       @featured_collection_list = FeaturedCollectionList.new # OVERRIDE here to add featured collection list
-
-      ir_counts if home_page_theme == 'institutional_repository'
+      load_shared_info
+      recent
 
       (@response, @document_list) = search_service.search_results
 
@@ -84,11 +75,7 @@ module Hyrax
     def browserconfig; end
 
     def all_collections
-      @presenter = presenter_class.new(current_ability, collections)
-      @marketing_text = ContentBlock.for(:marketing)
-      @announcement_text = ContentBlock.for(:announcement)
-      @collections = collections(rows: 100_000)
-      ir_counts if home_page_theme == 'institutional_repository'
+      load_shared_info
     end
 
     # Added from Blacklight 6.23.0 to change url for facets on home page
@@ -103,6 +90,26 @@ module Hyrax
     end
 
     private
+
+    # shared methods for index and all_collections routes
+    def load_shared_info
+      @presenter = presenter_class.new(current_ability, collections)
+      @marketing_text = ContentBlock.for(:marketing)
+      @announcement_text = ContentBlock.for(:announcement)
+      @collections = collections(rows: 100_000)
+      # rubocop:disable Style/GuardClause
+      # TODO: Why not make these helper methods?  As is we rely on a theme to set instance
+      # variables.  Which is fragile.
+      if home_page_theme == 'institutional_repository'
+        ir_counts
+        @top_level_collections ||= load_top_level_collections(@collections)
+      end
+      # rubocop:enable Style/GuardClause
+    end
+
+    def load_top_level_collections(colls)
+      colls.select { |c| c['member_of_collection_ids_ssim'].nil? }
+    end
 
     # Return 6 collections, sorts by title
     def collections(rows: 6)

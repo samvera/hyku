@@ -1,6 +1,22 @@
 # frozen_string_literal: true
 
 class SolrEndpoint < Endpoint
+  ##
+  # This module exposes {#switch!}, a method common to both {NilSolrEndpoint} and {SolrEndpoint}.
+  #
+  # In the case of the {NilSolrEndpoint} the configuration options are invalid; yet we still want to
+  # perform the switch!  The act of switching end points does not raise an error, but later
+  # accessing that end-point will raise an error.
+  module SwitchMethod
+    def switch!
+      Hyrax::SolrService.instance.conn = connection
+      Valkyrie::IndexingAdapter.adapters[:solr_index].connection = connection
+      Blacklight.connection_config = connection_options
+      Blacklight.default_index = nil
+    end
+  end
+  include SwitchMethod
+
   store :options, accessors: %i[url collection]
 
   def connection
@@ -15,17 +31,11 @@ class SolrEndpoint < Endpoint
     switchable_options.reverse_merge(bl_defaults).reverse_merge(af_defaults)
   end
 
+
   def ping
     connection.get('admin/ping')['status']
   rescue RSolr::Error::Http, RSolr::Error::ConnectionRefused
     false
-  end
-
-  def switch!
-    Hyrax::SolrService.instance.conn = connection
-    Valkyrie::IndexingAdapter.adapters[:solr_index].connection = connection
-    Blacklight.connection_config = connection_options
-    Blacklight.default_index = nil
   end
 
   # Remove the solr collection then destroy this record

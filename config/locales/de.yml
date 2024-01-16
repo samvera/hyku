@@ -1,5 +1,12 @@
 ---
 de:
+  errors:
+    messages:
+      valid_embed_url: "muss eine gültige YouTube- oder Vimeo-Einbettungs-URL sein."
+  activefedora:
+    models:
+      generic_work: Arbeiten
+      image: Bild
   activerecord:
     attributes:
       site:
@@ -7,6 +14,8 @@ de:
   application:
     tagline: Die Next-Generation Repository-Lösung
   helpers:
+    action:
+      become: Werden
     submit:
       add_role_to_group:
         submit: Hinzufügen
@@ -162,6 +171,8 @@ de:
           forms:
             banner_image:
               hint: Um ein Bild als Masthead-Hintergrund zu verwenden, sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das mindestens 120 Pixel hoch und 1200 Pixel breit ist. Verwenden Sie für optimale Ergebnisse ein Bild mit einer Breite von mindestens 1800 Pixel.
+            collection_banner_text_color:
+              hint: Die Farbe für den Text (Titel und Datum der letzten Aktualisierung) im Sammlungsbanner.
             custom_css:
               confirm: Benutzerdefiniertes CSS überschreibt immer andere Themenauswahlen. Vorgehen?
               warning: Wenn Ihre Themenanpassungen nicht korrekt angewendet werden, stellen Sie sicher, dass sie nicht von benutzerdefiniertem CSS überschrieben werden.
@@ -171,7 +182,7 @@ de:
               alert: Bitte laden Sie vor dem Absenden mindestens eine Datei hoch.
               hint: Für Standardbilder sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das die gleichen Abmessungen für Höhe und Breite aufweist (100 Pixel breit und 100 Pixel hoch).
             directory_image:
-              hint: Um ein Bild als Verzeichnisbild zu verwenden, sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das nicht höher als der Header und nicht breiter als 400 Pixel ist.
+              hint: Das Verzeichnisbild sollte ein Bild (JPG, GIF oder PNG) verwenden. Die Breite des Bildes sollte nicht größer als die doppelte Höhe sein.
             facet_panel_background_color:
               hint: Gilt für Facetten und zusätzliche Abschnittsüberschriften auf den Arbeitsseiten einiger Themen.
             facet_panel_text_color:
@@ -184,6 +195,8 @@ de:
               hint: Um ein Bild als Logo zu verwenden, sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das nicht höher als der Header und nicht breiter als 400 Pixel ist.
             navbar_background_color:
               hint: Bei 40 % Deckkraft.
+            navbar_link_background_color:
+              hint: Gilt für die Hintergrundfarbe der Schaltflächen „Startseite“, „Info“, „Kontakt“ und „Hilfe“.
             navbar_link_background_hover_color:
               hint: Gilt nur für die Schaltflächen „Startseite“, „Info“, „Kontakt“ und „Hilfe“ auf diesen spezifischen Seiten (bei 15 % Deckkraft).
             primary_button_hover_color:
@@ -206,7 +219,6 @@ de:
             fonts: Schriftarten
             themes: Themen
       sidebar:
-        account: Konto
         accounts: Konten
         activity_summary: Aktivitätsübersicht
         content_blocks: Inhaltsblöcke
@@ -235,6 +247,9 @@ de:
             active: Aktiv
             pending: noch ausstehend
           status_label: Status
+        roles:
+          remove:
+            confirmation: Sind Sie sicher, dass Sie die Rolle „%{role}“ vom Benutzer „%{user}“ entfernen möchten?
   permissions:
     collections:
       cannot:

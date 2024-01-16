@@ -12,6 +12,15 @@ Hyrax.config do |config|
   # Injected via `rails g hyrax:work_resource ImageResource`
   config.register_curation_concern :image_resource
 
+  # Identify the model class name that will be used for Collections in your app
+  # (i.e. ::Collection for ActiveFedora, Hyrax::PcdmCollection for Valkyrie)
+  # config.collection_model = '::Collection'
+  config.collection_model = 'Hyrax::PcdmCollection'
+
+  # Identify the model class name that will be used for Admin Sets in your app
+  # (i.e. AdminSet for ActiveFedora, Hyrax::AdministrativeSet for Valkyrie)
+  # config.admin_set_model = 'AdminSet'
+  config.admin_set_model = 'Hyrax::AdministrativeSet'
   # The email address that messages submitted via the contact page are sent to
   # This is set by account settings
   # config.contact_email = 'changeme@example.com'
@@ -103,7 +112,7 @@ Hyrax.config do |config|
   # Should work creation require file upload, or can a work be created first
   # and a file added at a later time?
   # The default is true.
-  # config.work_requires_files = true
+  config.work_requires_files = false
 
   # Should a button with "Share my work" show on the front page to all users (even those not logged in)?
   # config.display_share_button_when_not_logged_in = true

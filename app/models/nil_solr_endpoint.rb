@@ -5,17 +5,11 @@ class NilSolrEndpoint < NilEndpoint
   # @note Yes, we're switching to a nil end point with an invalidate {#connection}.  If we did not
   #       switch, to this bogus end-point then later calls to the connection/ping would hit the
   #       prior end-point.
-  def switch!
-    ActiveFedora::SolrService.instance.conn = connection
-    Blacklight.connection_config = connection_options
-    Blacklight.default_index = nil
-  end
+  include SolrEndpoint::SwitchMethod
 
   def url
     'Solr not initialized'
   end
-
-  private
 
   # Return an RSolr connection, that points at an invalid endpoint
   # Note: We could have returned a NilRSolrConnection here, but Blacklight

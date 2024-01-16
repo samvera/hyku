@@ -11,6 +11,6 @@ class Collection < ActiveFedora::Base
   prepend OrderAlready.for(:creator)
 
   def remove_featured
-    FeaturedCollection.where(collection_id: id).destroy_all
+    FeaturedCollection.destroy_for(collection: self)
   end
 end

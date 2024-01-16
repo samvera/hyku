@@ -231,3 +231,5 @@ ActiveFedora::SolrService.class_eval do
     @options = { timeout: 120, open_timeout: 120, url: 'http://localhost:8080/solr' }.merge(options)
   end
 end
+
+Hyrax.publisher.subscribe(HyraxListener.new)

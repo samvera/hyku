@@ -17,6 +17,10 @@ class FeaturedCollection < ApplicationRecord
 
   default_scope { order(:order) }
 
+  def self.destroy_for(collection:)
+    where(collection_id: collection.id).destroy_all
+  end
+
   def count_within_limit
     return if FeaturedCollection.can_create_another?
     errors.add(:base, "Limited to #{feature_limit} featured collections.")
@@ -24,9 +28,7 @@ class FeaturedCollection < ApplicationRecord
 
   attr_accessor :presenter
 
-  class << self
-    def can_create_another?
-      FeaturedCollection.count < feature_limit
-    end
+  def self.can_create_another?
+    FeaturedCollection.count < feature_limit
   end
 end

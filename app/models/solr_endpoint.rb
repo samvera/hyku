@@ -31,7 +31,6 @@ class SolrEndpoint < Endpoint
     switchable_options.reverse_merge(bl_defaults).reverse_merge(af_defaults)
   end
 
-
   def ping
     connection.get('admin/ping')['status']
   rescue RSolr::Error::Http, RSolr::Error::ConnectionRefused

@@ -5,6 +5,8 @@
 class ImageResource < Hyrax::Work
   include Hyrax::Schema(:basic_metadata)
   include Hyrax::Schema(:image_resource)
+  include Hyrax::Schema(:with_pdf_viewer)
+  include Hyrax::Schema(:with_video_embed)
   include Hyrax::ArResource
   include Hyrax::Works::ValkyrieMigration
 

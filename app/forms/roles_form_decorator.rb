@@ -5,26 +5,26 @@
 # for Roles should never be allowed to be removed.
 #
 # @see app/views/hyrax/dashboard/collections/_form_share_table.html.erb
-  module RolesFormDecorator
-    def filter_access_grants_by_access(access)
-      roles_to_filter = ::RolesService::COLLECTION_ROLES + ::RolesService::WORK_ROLES
+module RolesFormDecorator
+  def filter_access_grants_by_access(access)
+    roles_to_filter = ::RolesService::COLLECTION_ROLES + ::RolesService::WORK_ROLES
 
-      filtered_access_grants = permission_template.access_grants.select(&access)
-      filtered_access_grants.reject! { |ag| roles_to_filter.include?(ag.agent_id) }
+    filtered_access_grants = permission_template.access_grants.select(&access)
+    filtered_access_grants.reject! { |ag| roles_to_filter.include?(ag.agent_id) }
 
-      filtered_access_grants || []
-    end
+    filtered_access_grants || []
+  end
 
     private
 
-    def permission_template
-       Hyrax::PermissionTemplate.find_by(source_id: id)
-    end
-
-    def collection
-      Hyrax.query_service.find_by(id:)
-    end
+  def permission_template
+    Hyrax::PermissionTemplate.find_by(source_id: id)
   end
+
+  def collection
+    Hyrax.query_service.find_by(id:)
+  end
+end
 
 Hyrax::Forms::PcdmCollectionForm.prepend(RolesFormDecorator)
 Hyrax::Forms::AdministrativeSetForm.prepend(RolesFormDecorator)

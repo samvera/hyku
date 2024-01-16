@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # OVERRIDE Hyrax 5.0 to add basic metadata and AF methods to collection
 
 Hyrax::PcdmCollection.class_eval do

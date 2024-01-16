@@ -29,7 +29,7 @@ module Hyrax
       # We can leverage
       def search
         super.for_repository.uniq
-        #::User.registered.for_repository.without_system_accounts.uniq
+        # ::User.registered.for_repository.without_system_accounts.uniq
       end
     end
   end

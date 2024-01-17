@@ -6,25 +6,19 @@ module Hyrax
   # Because Hyku has converted the Hyrax::Group model from a PORO to a db-backed active record object,
   # we have to query for existing Hyrax groups instead of initializing empty ones.
   module AdminSetCreateServiceDecorator
-    # Creates an admin set, setting the creator and the default access controls.
-    # @return [Hyrax::AdministrativeSet] The fully created admin set.
-    # @raise [RuntimeError] if admin set cannot be persisted
     def create!
-      admin_set.creator = [creating_user.user_key] if creating_user
-      updated_admin_set = Hyrax.persister.save(resource: admin_set).tap do |result|
-        if result
-          ActiveRecord::Base.transaction do
-            permission_template = PermissionTemplate.find_by(source_id: result.id.to_s) ||
-                                  permissions_create_service.create_default(collection: result,
-                                                                            creating_user:)
-            create_workflows_for(permission_template:)
-            # OVERRIDE: Remove call to #create_default_access_for, which granted
-            # deposit access to all registered users for the Default Admin Set
-          end
-        end
-      end
-      Hyrax.publisher.publish('collection.metadata.updated', collection: updated_admin_set, user: creating_user)
-      updated_admin_set
+      # This may need to be contributed back upstream to Hyrax.
+      #
+      # If we don't nullify this value we get the following error:
+      # `primary key column can not save with the given ID admin_set/default`
+      admin_set.id = nil if admin_set.id == AdminSetCreateService::DEFAULT_ID
+      super
+    end
+
+    # OVERRIDE: In baseline Hyrax this method grants deposit access into the Default Admin Set for
+    # all registered users.
+    def create_default_access_for(*)
+      true
     end
 
     private

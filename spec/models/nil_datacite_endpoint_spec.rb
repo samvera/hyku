@@ -10,5 +10,4 @@ RSpec.describe NilDataCiteEndpoint do
       expect { described_class.new.switch! }.not_to raise_error
     end
   end
-
 end

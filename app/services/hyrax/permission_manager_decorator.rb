@@ -16,6 +16,14 @@ module Hyrax
   # Because of this, we also add queries for Role permissions in addition to Group permissions
   # as part of these overrides.
   module PermissionManagerDecorator
+    # NOTE: The fallback to Group.new for special groups is necessary due to a fundamental
+    #       change in between behavior in Valkyrie models vs ActiveFedora models. In 
+    #       ActiveFedora, the "public" access is granted some other way, but the
+    #       "public" groups now go through the access_control_list module, and
+    #       the group gets assigned to the objects here. Because Hyku persists
+    #       groups and "public" is not a real group, this errored because the group was
+    #       not found. We have added a fallback to handle it like Hyrax does. In case
+    #       of permission errors, this is a point to investigate.
     SPECIAL_GROUPS = ["public"].freeze
 
     private

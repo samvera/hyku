@@ -3,6 +3,8 @@
 RSpec.describe SolrEndpoint do
   subject(:instance) { described_class.new url: 'http://example.com/solr/' }
 
+  it { should have_one(:account).with_foreign_key(:solr_endpoint_id) }
+
   describe '#connection_options' do
     subject(:options) { instance.connection_options }
 

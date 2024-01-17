@@ -4,6 +4,8 @@ RSpec.describe FcrepoEndpoint do
   let(:base_path) { 'foobar' }
   subject { described_class.new base_path: }
 
+  it { should have_one(:account).with_foreign_key(:fcrepo_endpoint_id) }
+
   describe '.options' do
     it 'uses the configured application settings' do
       expect(subject.options[:base_path]).to eq base_path

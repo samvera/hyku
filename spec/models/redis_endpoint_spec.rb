@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.describe RedisEndpoint do
+  it { should have_one(:account).with_foreign_key(:redis_endpoint_id) }
+
   let(:namespace) { 'foobar' }
   let(:faux_redis_instance) { double(Hyrax::RedisEventStore, ping: 'PONG', clear: true) }
   before { allow(subject).to receive(:redis_instance).and_return(faux_redis_instance) }

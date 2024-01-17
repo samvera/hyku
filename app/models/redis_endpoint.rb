@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class RedisEndpoint < Endpoint
+  has_one :account, dependent: nil, foreign_key: :redis_endpoint_id # rubocop:disable Rails/RedundantForeignKey
   store :options, accessors: [:namespace]
 
   def switch!
@@ -22,7 +23,7 @@ class RedisEndpoint < Endpoint
   def remove!
     switch!
     # redis-namespace v1.10.0 introduced clear https://github.com/resque/redis-namespace/pull/202
-    redis_instance.clear
+    redis_instance.connection.clear
     destroy
   end
 

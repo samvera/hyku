@@ -16,10 +16,11 @@ module Hyrax
   # Because of this, we also add queries for Role permissions in addition to Group permissions
   # as part of these overrides.
   module PermissionManagerDecorator
-    SPECIAL_GROUPS = ["public"]
+    SPECIAL_GROUPS = ["public"].freeze
 
     private
 
+    # rubocop:disable Metrics/MethodLength
     def update_groups_for(mode:, groups:)
       groups = groups.map(&:to_s)
 
@@ -43,6 +44,7 @@ module Hyrax
         acl.grant(mode).to(group_or_role)
       end
     end
+    # rubocop:enable Metrics/MethodLength
 
     # OVERRIDE:
     #   - Replace Group#new with Group#find_by(:name)

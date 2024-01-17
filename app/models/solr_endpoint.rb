@@ -17,6 +17,8 @@ class SolrEndpoint < Endpoint
   end
   include SwitchMethod
 
+  has_one :account, dependent: nil, foreign_key: :solr_endpoint_id # rubocop:disable Rails/RedundantForeignKey
+
   store :options, accessors: %i[url collection]
 
   def connection

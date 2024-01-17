@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 module Wings
   module CustomQueries
+    # Custom query override specific to Wings
+    # Use:
+    #   Hyrax.custom_queries.find_by_bulkrax_identifier(identifier: identifier, models: [ModelClass])
     class FindByBulkraxIdentifier
-      # Custom query override specific to Wings
-      # Use:
-      #   Hyrax.custom_queries.find_bulkrax_id(identifier: identifier, models: [ModelClass])
-
       def self.queries
         [:find_by_bulkrax_identifier]
       end

@@ -40,7 +40,7 @@ module Hyrax
         next if groups.include?(group_name)
 
         # OVERRIDE:
-        group_or_role = group_or_role(name: g)
+        group_or_role = group_or_role(name: group_name)
         next unless group_or_role
         acl.revoke(mode).from(group_or_role)
       end

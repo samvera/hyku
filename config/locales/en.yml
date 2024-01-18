@@ -272,6 +272,7 @@ en:
           action_label: Action
           add: Invite user
           delete: Delete
+          activate: Activate
           invite_users: Add or Invite user via email
           status:
             active: Active

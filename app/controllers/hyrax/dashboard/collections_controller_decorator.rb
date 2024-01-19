@@ -197,3 +197,4 @@ module Hyrax
 end
 
 Hyrax::Dashboard::CollectionsController.prepend(Hyrax::Dashboard::CollectionsControllerDecorator)
+Hyrax::Dashboard::CollectionsController.form_class = Hyrax::Forms::PcdmCollectionForm

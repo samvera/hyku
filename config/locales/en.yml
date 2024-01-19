@@ -83,6 +83,7 @@ en:
         humanized_name:
           admin: Repository Administrators
           registered: Registered Users
+          group/public: Unauthorized Users
         label:
           actions: Actions
           created_at: Date Created

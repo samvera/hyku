@@ -70,7 +70,7 @@
     <% next if agents_to_skip.include? agent.agent_name.downcase %>
     <tr>
       <%# OVERRIDE: display access for admin group in a way that does not allow access to be removed or access level to be changed %>
-      <% if agent.type == 'group' && agent.agent_name == Ability.admin_group_name %>
+      <% if agent.agent_name == "#{Hyrax::Group::DEFAULT_NAME_PREFIX}#{Ability.admin_group_name}" %>
         <td><%= Hyrax.config.permission_levels.key(agent.access) %></td>
         <td><b><%= display_hyrax_group_name(agent.agent_name) %></b></td>
       <% else %>
@@ -80,10 +80,10 @@
         <td>
           <%= permission_fields.label :agent_name, class: "control-label" do %>
             <%# OVERRIDE: use separate method to display group agents %>
-            <% if agent.type == 'person' %>
-              <%= user_display_name_and_key(agent.agent_name) %>
-            <% else %>
+            <% if agent.agent_name.start_with? Hyrax::Group::DEFAULT_NAME_PREFIX %>
               <%= display_hyrax_group_name(agent.agent_name) %>
+            <% else %>
+              <%= user_display_name_and_key(agent.agent_name) %>
             <% end %>
           <% end %>
           <button class="btn close remove_perm" data-index="<%= permission_fields.index %>">&times;</button>

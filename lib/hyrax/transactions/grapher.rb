@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hyrax
   module Transactions
     ##
@@ -15,18 +17,18 @@ module Hyrax
     #              "steps" => [] }}}}
     class Grapher
       # A best guess at how to find the published events within the source code of the transactions.
-      REGEXP_FOR_PUBLISH = %r{\.publish[\(\s]?['"]([\w\.]+)['"]}.freeze
+      REGEXP_FOR_PUBLISH = %r{\.publish[\(\s]?['"]([\w\.]+)['"]}
 
       # Because some transactions launch other transactions within their 'call'
-      REGEXP_FOR_INNER_STEPS = %r{ontainer\[['"]([\w\.]+)['"]\]}.freeze
+      REGEXP_FOR_INNER_STEPS = %r{ontainer\[['"]([\w\.]+)['"]\]}
 
       ##
       # @return [Hash<String, Hash>] a graph of the transaction steps.
       def self.call(container: Hyrax::Transactions::Container)
-        new(container: container).call
+        new(container:).call
       end
 
-      def initialize(container: )
+      def initialize(container:)
         @container = container
       end
       attr_reader :container
@@ -35,9 +37,10 @@ module Hyrax
       # @return [Hash<String,Hash>]
       def call
         steps = extract_steps
-        treeify(steps: steps)
+        treeify(steps:)
       end
 
+      # rubocop:disable Metrics/MethodLength
       def extract_steps
         # First we gather all of the registered transactions.
         steps = {}
@@ -69,7 +72,7 @@ module Hyrax
           unvisited_transactions.delete(key)
           sub_steps = []
           details["steps"].each do |step|
-            sub_steps << extract_substeps_from(dictionary: steps, current_step: step, unvisited_transactions: unvisited_transactions)
+            sub_steps << extract_substeps_from(dictionary: steps, current_step: step, unvisited_transactions:)
           end
 
           tree << { "name" => key, "class_name" => details["class_name"], "events" => details["events"], "steps" => sub_steps }
@@ -81,6 +84,7 @@ module Hyrax
 
         tree
       end
+      # rubocop:enable Metrics/MethodLength
 
       def extract_substeps_from(dictionary:, current_step:, unvisited_transactions:)
         # We want to avoid changing the dictionary as we're looping through points of reference
@@ -90,7 +94,7 @@ module Hyrax
         if sub_step["steps"].present?
           sub_step_steps = []
           sub_step["steps"].each_with_object(sub_step_steps) do |st, array|
-            array << extract_substeps_from(dictionary: dictionary, current_step: st, unvisited_transactions: unvisited_transactions)
+            array << extract_substeps_from(dictionary:, current_step: st, unvisited_transactions:)
           end
 
           sub_step["steps"] = sub_step_steps

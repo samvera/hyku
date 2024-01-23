@@ -1,7 +1,7 @@
 # This migration comes from iiif_print (originally 20181214181358)
 class CreateIiifPrintDerivativeAttachments < ActiveRecord::Migration[5.0]
   def change
-    unless unless table_exists?(:iiif_print_derivative_attachments) 
+    unless table_exists?(:iiif_print_derivative_attachments) 
       create_table :iiif_print_derivative_attachments do |t|
         t.string :fileset_id
         t.string :path

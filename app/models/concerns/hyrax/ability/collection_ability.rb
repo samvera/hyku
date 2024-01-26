@@ -11,7 +11,7 @@ module Hyrax
       # rubocop:disable Metrics/PerceivedComplexity
       # rubocop:disable Metrics/CyclomaticComplexity
       def collection_abilities
-        models = [Hyrax::PcdmCollection, Hyrax.config.collection_class].uniq
+        models = [Collection, Hyrax::PcdmCollection, Hyrax.config.collection_class].uniq
         if admin?
           models.each do |collection_model|
             can :manage, collection_model
@@ -107,8 +107,10 @@ module Hyrax
           unless ActiveModel::Type::Boolean.new.cast(
             ENV.fetch('HYKU_RESTRICT_CREATE_AND_DESTROY_PERMISSIONS', nil)
           )
-            can %i[destroy manage_discovery manage_items_in_collection], Hyrax::PcdmCollection do |collection|
-              test_edit(collection.id)
+            models.each do |collection_model|
+              can %i[destroy manage_discovery manage_items_in_collection], collection_model do |collection|
+                test_edit(collection.id)
+              end
             end
           end
         end

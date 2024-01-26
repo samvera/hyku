@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+# Generated via
+#  `rails generate hyrax:collection_resource CollectionResource`
+require 'rails_helper'
+require 'hyrax/specs/shared_specs/hydra_works'
 
-RSpec.describe Hyrax::PcdmCollection do
+RSpec.describe CollectionResource do
   subject(:collection) { described_class.new }
 
   it_behaves_like 'a Hyrax::PcdmCollection'

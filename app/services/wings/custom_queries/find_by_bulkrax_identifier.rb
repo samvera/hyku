@@ -17,7 +17,7 @@ module Wings
       end
 
       def find_by_bulkrax_identifier(identifier:, use_valkyrie: true)
-        af_object = ActiveFedora::Base.where("bulkrax_identifier_sim:#{identifier}").first
+        af_object = ActiveFedora::Base.where("bulkrax_identifier_sim:#{identifier}").first || ActiveFedora::Base.where("bulkrax_identifier_tesim:#{identifier}").first
 
         return af_object unless use_valkyrie
 

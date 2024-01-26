@@ -249,7 +249,6 @@ class RolesService # rubocop:disable Metrics/ClassLength
       models = [Collection, Hyrax::PcdmCollection, Hyrax.config.collection_class].uniq
       models.each do |collection_model|
         Hyrax.query_service.find_all_of_model(model: collection_model) do |c|
-
           pt = Hyrax::PermissionTemplate.find_or_create_by!(source_id: c.id)
           original_access_grants_count = pt.access_grants.count
 

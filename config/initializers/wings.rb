@@ -11,8 +11,10 @@ Rails.application.config.after_initialize do
   end
   Wings::ModelRegistry.register(Collection, Collection)
   Wings::ModelRegistry.register(Hyrax::PcdmCollection, Collection)
+  Wings::ModelRegistry.register(CollectionResource, Collection)
   Wings::ModelRegistry.register(Hyrax::AdministrativeSet, AdminSet)
   Wings::ModelRegistry.register(AdminSet, AdminSet)
+  Wings::ModelRegistry.register(AdminSetResource, AdminSet)
 
   Valkyrie::MetadataAdapter.register(
     Freyja::MetadataAdapter.new,
@@ -83,9 +85,9 @@ Rails.application.config.to_prepare do
     ].include?(klass_name)
       "#{klass_name}Resource".constantize
     elsif 'Collection' == klass_name
-      Hyrax::PcdmCollection
+      CollectionResource
     elsif 'AdminSet' == klass_name
-      Hyrax::AdministrativeSet
+      AdminSetResource
     else
       klass_name.constantize
     end

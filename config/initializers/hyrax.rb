@@ -22,6 +22,11 @@ Hyrax.config do |config|
   # (i.e. AdminSet for ActiveFedora, Hyrax::AdministrativeSet for Valkyrie)
   # config.admin_set_model = 'AdminSet'
   config.admin_set_model = 'AdminSetResource'
+  # Identify the form that will be used for Admin Sets
+  config.administrative_set_form = 'AdminSetResourceForm'
+  # Identify the indexer that will be used for Admin Sets
+  config.administrative_set_indexer = 'AdminSetResourceIndexer'
+
   # The email address that messages submitted via the contact page are sent to
   # This is set by account settings
   # config.contact_email = 'changeme@example.com'

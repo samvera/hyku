@@ -8,7 +8,8 @@ class ImageResource < Hyrax::Work
   include Hyrax::Schema(:with_pdf_viewer)
   include Hyrax::Schema(:with_video_embed)
   include Hyrax::ArResource
-  include Hyrax::Works::ValkyrieMigration
+
+  Hyrax::ValkyrieLazyMigration.migrating(self, from: Image)
 
   if ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_IIIF_PRINT', false))
     include IiifPrint.model_configuration(

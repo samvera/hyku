@@ -13,7 +13,6 @@ module HykuIndexing
         object = resource if object.kind_of?(Valkyrie::Resource)
 
         solr_doc['account_cname_tesim'] = Site.instance&.account&.cname
-        solr_doc['bulkrax_identifier_tesim'] = object.bulkrax_identifier if object.respond_to?(:bulkrax_identifier)
         solr_doc['account_institution_name_ssim'] = Site.instance.institution_label
         # TODO: Reinstate once valkyrie fileset work is complete - https://github.com/scientist-softserv/hykuup_knapsack/issues/34
         solr_doc['all_text_tsimv'] = full_text(object.file_sets.first&.id) if object.kind_of?(ActiveFedora::Base)

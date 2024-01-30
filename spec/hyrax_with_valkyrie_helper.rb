@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'hyrax/specs/shared_specs/hydra_works'
 
 ## We copied the below from Hyrax's spec_helper.

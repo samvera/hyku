@@ -8,6 +8,7 @@ class GenericWorkResource < Hyrax::Work
   include Hyrax::Schema(:with_pdf_viewer)
   include Hyrax::Schema(:with_video_embed)
   include Hyrax::ArResource
+  include Hyrax::NestedWorks
 
   Hyrax::ValkyrieLazyMigration.migrating(self, from: GenericWork)
 

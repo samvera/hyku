@@ -5,9 +5,10 @@
 module Hyrax
   module SolrDocumentBehaviorDecorator
     def hydra_model(classifier: nil)
-      if human_readable_type&.downcase&.strip&.ends_with?('resource')
-        human_readable_type.titleize.delete(' ')&.safe_constantize ||
-          model_classifier(classifier).classifier(self).best_model
+      if valkyrie?
+        # In the future when we don't have Valkyrie migration objects,
+        # we wouldn't have the SomethingResource naming convention, so we use super
+        (first('has_model_ssim') + 'Resource')&.safe_constantize || super
       else
         super
       end

@@ -29,7 +29,7 @@ RSpec.describe Hyrax::SolrDocumentBehavior, type: :decorator do
     end
 
     context 'with a Valkyrie migration model name' do
-      let(:solr_hash) { { 'has_model_ssim' => 'GenericWork', 'human_readable_type_tesim' => 'Generic work resource' } }
+      let(:solr_hash) { { 'has_model_ssim' => 'GenericWork', 'valkyrie_bsi' => true } }
 
       it 'resolves the correct model name' do
         expect(solr_document.to_model.to_partial_path).to eq 'hyrax/generic_work_resources/generic_work_resource'
@@ -59,7 +59,7 @@ RSpec.describe Hyrax::SolrDocumentBehavior, type: :decorator do
     end
 
     context 'with a Valkyrie migration model name' do
-      let(:solr_hash) { { 'has_model_ssim' => 'GenericWork', 'human_readable_type_tesim' => 'Generic work resource' } }
+      let(:solr_hash) { { 'has_model_ssim' => 'GenericWork', 'valkyrie_bsi' => true } }
 
       it 'resolves the correct model name' do
         expect(solr_document.hydra_model).to eq GenericWorkResource

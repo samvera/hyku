@@ -1,12 +1,16 @@
 # frozen_string_literal: true
+
+# TODO: Make more dynamic. Possibly move to Bulkrax. 
+
 module Wings
   module CustomQueries
-    # Custom query override specific to Wings
-    # Use:
-    #   Hyrax.custom_queries.find_by_bulkrax_identifier(identifier: identifier, models: [ModelClass])
-    class FindByBulkraxIdentifier
+    class FindBySourceIdentifier
+      # Custom query override specific to Wings
+      # Use:
+      #   Hyrax.custom_queries.find_bulkrax_id(identifier: identifier, models: [ModelClass])
+
       def self.queries
-        [:find_by_bulkrax_identifier]
+        [:find_by_source_identifier]
       end
 
       attr_reader :query_service
@@ -16,7 +20,7 @@ module Wings
         @query_service = query_service
       end
 
-      def find_by_bulkrax_identifier(identifier:, use_valkyrie: true)
+      def find_by_source_identifier(identifier:, use_valkyrie: true)
         af_object = ActiveFedora::Base.where("bulkrax_identifier_sim:#{identifier}").first
 
         return af_object unless use_valkyrie

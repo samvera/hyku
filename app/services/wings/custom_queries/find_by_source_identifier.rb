@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# TODO: Make more dynamic. Possibly move to Bulkrax. 
+# TODO: Make more dynamic. Possibly move to Bulkrax.
 
 module Wings
   module CustomQueries

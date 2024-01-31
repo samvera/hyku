@@ -29,7 +29,7 @@ Rails.application.config.after_initialize do
   )
   Valkyrie.config.storage_adapter  = :disk
   Valkyrie.config.indexing_adapter = :solr_index
-  
+
   # load all the sql based custom queries
   [
     Hyrax::CustomQueries::Navigators::CollectionMembers,
@@ -45,7 +45,7 @@ Rails.application.config.after_initialize do
     Hyrax::CustomQueries::FindManyByAlternateIds,
     Hyrax::CustomQueries::FindModelsByAccess,
     Hyrax::CustomQueries::FindCountBy,
-    Hyrax::CustomQueries::FindByDateRange, 
+    Hyrax::CustomQueries::FindByDateRange,
     Hyrax::CustomQueries::FindBySourceIdentifier
   ].each do |handler|
     Hyrax.query_service.services[0].custom_queries.register_query_handler(handler)

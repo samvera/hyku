@@ -45,9 +45,16 @@ Rails.application.config.after_initialize do
     Hyrax::CustomQueries::FindManyByAlternateIds,
     Hyrax::CustomQueries::FindModelsByAccess,
     Hyrax::CustomQueries::FindCountBy,
-    Hyrax::CustomQueries::FindByDateRange
+    Hyrax::CustomQueries::FindByDateRange,
+    Hyrax::CustomQueries::FindByBulkraxIdentifier
   ].each do |handler|
     Hyrax.query_service.services[0].custom_queries.register_query_handler(handler)
+  end
+
+  [
+    Wings::CustomQueries::FindByBulkraxIdentifier
+  ].each do |handler|
+    Hyrax.query_service.services[1].custom_queries.register_query_handler(handler)
   end
 
   Wings::ModelRegistry.register(GenericWorkResource, GenericWork)

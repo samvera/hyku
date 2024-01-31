@@ -70,7 +70,7 @@ RSpec.describe "OAI PMH Support", type: :feature do
       context 'when the work has public file sets' do
         before do
           # Mock two public file set ids returned by Solr
-          allow(ActiveFedora::SolrService)
+          allow(Hyrax::SolrService)
             .to receive(:query)
             .and_return([{ 'id' => 'my-file-set-id-1' }, { 'id' => 'my-file-set-id-2' }])
         end
@@ -90,7 +90,7 @@ RSpec.describe "OAI PMH Support", type: :feature do
       context 'when the work has non-public file sets' do
         before do
           # Mock zero public file set ids returned by Solr
-          allow(ActiveFedora::SolrService)
+          allow(Hyrax::SolrService)
             .to receive(:query)
             .and_return([])
         end
@@ -110,7 +110,7 @@ RSpec.describe "OAI PMH Support", type: :feature do
       context 'when the work has public and non-public file sets' do
         before do
           # Mock one public file set ids returned by Solr
-          allow(ActiveFedora::SolrService)
+          allow(Hyrax::SolrService)
             .to receive(:query)
             .and_return([{ 'id' => 'my-file-set-id-1' }])
         end

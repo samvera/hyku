@@ -21,25 +21,25 @@ RSpec.describe CatalogController, type: :request, clean: true, multitenant: true
     WebMock.disable!
     allow(AccountElevator).to receive(:switch!).with(cross_search_tenant_account.cname).and_return('public')
     allow(Apartment::Tenant.adapter).to receive(:connect_to_new).and_return('')
-    ActiveFedora::SolrService.instance.conn = sample_solr_connection
-    ActiveFedora::SolrService.add(hyku_sample_work.to_solr)
-    ActiveFedora::SolrService.commit
+    Hyrax::SolrService.instance.conn = sample_solr_connection
+    Hyrax::SolrService.add(hyku_sample_work.to_solr)
+    Hyrax::SolrService.commit
 
-    ActiveFedora::SolrService.reset!
-    ActiveFedora::SolrService.add(work.to_solr)
-    ActiveFedora::SolrService.commit
+    Hyrax::SolrService.reset!
+    Hyrax::SolrService.add(work.to_solr)
+    Hyrax::SolrService.commit
   end
 
   after do
     WebMock.enable!
 
-    ActiveFedora::SolrService.instance.conn = sample_solr_connection
-    ActiveFedora::SolrService.delete(hyku_sample_work.id)
-    ActiveFedora::SolrService.commit
+    Hyrax::SolrService.instance.conn = sample_solr_connection
+    Hyrax::SolrService.delete(hyku_sample_work.id)
+    Hyrax::SolrService.commit
 
-    ActiveFedora::SolrService.reset!
-    ActiveFedora::SolrService.delete(work.id)
-    ActiveFedora::SolrService.commit
+    SolrEndpoint.reset!
+    Hyrax::SolrService.delete(work.id)
+    Hyrax::SolrService.commit
   end
 
   describe 'Cross Tenant Search' do

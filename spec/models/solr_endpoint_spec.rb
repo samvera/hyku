@@ -31,7 +31,7 @@ RSpec.describe SolrEndpoint do
     before do
       # Stubbing conn, because it could trigger RSolr.connect if it hadn't alredy
       # been called. This caused an error prior to stubbing for certain test seeds.
-      allow(ActiveFedora::SolrService.instance).to receive(:conn)
+      allow(Hyrax::SolrService.instance).to receive(:conn)
         .and_return(double(options: af_options))
       allow(RSolr).to receive(:connect)
         .with(hash_including("read_timeout" => 120,

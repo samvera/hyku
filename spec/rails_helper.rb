@@ -150,7 +150,7 @@ RSpec.configure do |config|
   config.before do |example|
     # make sure we are on the default fedora config
     ActiveFedora::Fedora.reset!
-    ActiveFedora::SolrService.reset!
+    SolrEndpoint.reset!
     # Pass `:clean' (or hyrax's convention of :clean_repo) to destroy objects in fedora/solr and
     # start from scratch
     if example.metadata[:clean] || example.metadata[:clean_repo] || example.metadata[:type] == :feature

@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class SolrEndpoint < Endpoint
+  # @see https://github.com/samvera/hyku/wiki/Updating-Hyku-6-with-Hyrax-5-Developer-Notes#indexing-considerations
+  SOLR_SERVICE = ::ActiveFedora::SolrService # DO NOT CHANGE For Hyrax 5 implementations
+
   ##
   # This module exposes {#switch!}, a method common to both {NilSolrEndpoint} and {SolrEndpoint}.
   #
@@ -9,7 +12,8 @@ class SolrEndpoint < Endpoint
   # accessing that end-point will raise an error.
   module SwitchMethod
     def switch!
-      Hyrax::SolrService.instance.conn = connection
+      # This must remain Hyrax::SolrService; as Hyrax::SolrService
+      SOLR_SERVICE.instance.conn = connection
       Valkyrie::IndexingAdapter.adapters[:solr_index].connection = connection
       Blacklight.connection_config = connection_options
       Blacklight.default_index = nil
@@ -29,7 +33,7 @@ class SolrEndpoint < Endpoint
   # @return [Hash] options for the RSolr connection.
   def connection_options
     bl_defaults = Blacklight.connection_config
-    af_defaults = Hyrax::SolrService.instance.conn.options
+    af_defaults = SOLR_SERVICE.instance.conn.options
     switchable_options.reverse_merge(bl_defaults).reverse_merge(af_defaults)
   end
 
@@ -54,7 +58,7 @@ class SolrEndpoint < Endpoint
   end
 
   def self.reset!
-    Hyrax::SolrService.reset!
+    SOLR_SERVICE.reset!
     Blacklight.connection_config = Blacklight.blacklight_yml[::Rails.env].symbolize_keys
     Blacklight.default_index = nil
   end

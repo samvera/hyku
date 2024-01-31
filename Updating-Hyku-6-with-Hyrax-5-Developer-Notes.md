@@ -60,3 +60,18 @@ When starting from Valkyrie:
 
 We also have available to us all of the Hyrax `spec/factories` to extend  
 
+# Indexing Considerations
+
+**Problem:** The implementation of `Hyrax::SolrService` and `ActiveFedora::SolrService` is not identical.  Which means there are implications on Hyku switches the solr connection for each tenant.
+
+**Design Goal:** The primary goal is that we want to ensure that the different mechanisms for querying Solr are abiding by the tenant switching logic.
+
+**Connection Sources:** In reviewing how we are interacting with Solr, there are three primary mechanisms:
+
+-   **`ActiveFedora::SolrService`:** Older code favors this implementation.
+-   **`Hyrax::SolrService`:** This *almost* a direct replacement of `ActiveFedora::SolrService`, but there are interface differences.  We have begun moving code to use this service class.
+-   **`Hyrax.index_adapter`:** This is part of reading/writing to Valkyrie.
+
+When `Hyrax.config.query_index_from_valkyrie` is true, the `Hyrax::SolrService` uses `Hyrax.indexing_adapter`.
+
+When `Hyrax.config.query_index_from_valkyrie` is false, the `Hyrax::SolrService` uses `ActiveFedora::SolrService`.

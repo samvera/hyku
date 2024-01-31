@@ -217,8 +217,8 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: cc105d061727988e016c32235459f4cb82bd3ad6
-  branch: rails_hyrax_upgrade
+  revision: 45f441e0381ff44bff5ba0eb06aff752fcb8fa3e
+  branch: main
   specs:
     iiif_print (1.0.0)
       blacklight_iiif_search (>= 1.0, < 3.0)

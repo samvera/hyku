@@ -75,3 +75,35 @@ We also have available to us all of the Hyrax `spec/factories` to extend
 When `Hyrax.config.query_index_from_valkyrie` is true, the `Hyrax::SolrService` uses `Hyrax.indexing_adapter`.
 
 When `Hyrax.config.query_index_from_valkyrie` is false, the `Hyrax::SolrService` uses `ActiveFedora::SolrService`.
+
+## Difference between Hyrax's and ActiveFedora's SolrService
+
+There are differences between the `Hyrax::SolrService` and `ActiveFedora::SolrService`.  One key consideration is that `ActiveFedora::SolrService` is a singleton class and `Hyrax::QueryService` is not.
+
+The difference is important.  In the ActiveFedora case, we’d instantiate it once and then throughout the application always call that one instance.  Whereas with Hyrax, that query service is instantiated with each call to class methods.
+
+Below is how `Hyrax::SolrService` implements it’s class methods (e.g. `.add`, `.commit`, etc.); namely it delegates the class methods to the `.new` method.  Meaning each time we call `Hyrax::SolrService.query` we are instantiating a new object.
+
+```ruby
+class Hyrax::SolrService
+  def initialize(use_valkyrie: Hyrax.config.query_index_from_valkyrie)
+    @old_service = ActiveFedora::SolrService
+    @use_valkyrie = use_valkyrie
+  end
+
+  class << self
+    ##
+    # We don't implement `.select_path` instead configuring this at the Hyrax
+    # level
+    def select_path
+      raise NotImplementedError, 'This method is not available on this subclass.' \
+                                 'Use `Hyrax.config.solr_select_path` instead'
+    end
+
+    delegate :add, :commit, :count, :delete, :get, :instance, :ping, :post,
+             :query, :query_result, :delete_by_query, :search_by_id, :wipe!, to: :new
+  end
+end
+```
+
+We still have the concept of `Hyrax::SolrService.instance`, though it delegates’s to `.new`; thus creating new connections each time.

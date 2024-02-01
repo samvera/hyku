@@ -10,7 +10,7 @@ module HykuIndexing
     define_method method_name do |*args, **kwargs, &block|
       super(*args, **kwargs, &block).tap do |solr_doc|
         # rubocop:disable Style/ClassCheck
-        
+
         # specs refer to object as @object
         object ||= @object || resource
 

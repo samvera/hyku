@@ -10,7 +10,9 @@ module HykuIndexing
     define_method method_name do |*args, **kwargs, &block|
       super(*args, **kwargs, &block).tap do |solr_doc|
         # rubocop:disable Style/ClassCheck
-        object ||= resource
+        
+        # specs refer to object as @object
+        object ||= @object || resource
 
         solr_doc['account_cname_tesim'] = Site.instance&.account&.cname
         solr_doc['bulkrax_identifier_tesim'] = object.bulkrax_identifier if object.respond_to?(:bulkrax_identifier)

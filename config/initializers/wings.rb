@@ -10,9 +10,7 @@ Rails.application.config.after_initialize do
     Wings::ModelRegistry.register(klass, klass)
   end
   Wings::ModelRegistry.register(Collection, Collection)
-  Wings::ModelRegistry.register(Hyrax::PcdmCollection, Collection)
   Wings::ModelRegistry.register(CollectionResource, Collection)
-  Wings::ModelRegistry.register(Hyrax::AdministrativeSet, AdminSet)
   Wings::ModelRegistry.register(AdminSet, AdminSet)
   Wings::ModelRegistry.register(AdminSetResource, AdminSet)
 
@@ -58,11 +56,11 @@ end
 # rubocop:enable Metrics/BlockLength
 
 Rails.application.config.to_prepare do
-  Hyrax::AdministrativeSet.class_eval do
+  AdminSetResource.class_eval do
     attribute :internal_resource, Valkyrie::Types::Any.default("AdminSet"), internal: true
   end
 
-  Hyrax::PcdmCollection.class_eval do
+  CollectionResource.class_eval do
     attribute :internal_resource, Valkyrie::Types::Any.default("Collection"), internal: true
   end
 

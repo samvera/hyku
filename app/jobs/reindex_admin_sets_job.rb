@@ -2,6 +2,8 @@
 
 class ReindexAdminSetsJob < ApplicationJob
   def perform
-    AdminSet.find_each(&:update_index)
+    AdministrativeSet.find_each do |admin_set|
+      ReindexItemJob.perform_later(admin_set)
+    end
   end
 end

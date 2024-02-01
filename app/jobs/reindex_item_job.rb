@@ -2,6 +2,6 @@
 
 class ReindexItemJob < ApplicationJob
   def perform(item)
-    item.update_index
+    Hyrax.index_adapter.save(resource: item)
   end
 end

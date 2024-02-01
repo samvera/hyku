@@ -125,7 +125,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/bulkrax.git
-  revision: 2ada4ec9fb88e8d9bf6e8ba9f176e218e3f672e4
+  revision: 91583af624b3f6ea918b62f2cdfee85069b3a3de
   branch: hyrax-4-valkyrie-support
   specs:
     bulkrax (6.0.1)
@@ -145,7 +145,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: 26c037bb69c49666600240200ebdd597ac550775
+  revision: 21dd6652f5f42efcd1587f43cb654c009edb0fb3
   branch: double_combo
   specs:
     hyrax (5.0.0.rc2)
@@ -217,8 +217,8 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: cc105d061727988e016c32235459f4cb82bd3ad6
-  branch: rails_hyrax_upgrade
+  revision: 45f441e0381ff44bff5ba0eb06aff752fcb8fa3e
+  branch: main
   specs:
     iiif_print (1.0.0)
       blacklight_iiif_search (>= 1.0, < 3.0)

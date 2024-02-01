@@ -231,11 +231,4 @@ Hyrax::IiifAv.config.iiif_av_viewer = :universal_viewer
 require 'hydra/derivatives'
 Hydra::Derivatives::Processors::Video::Processor.config.video_bitrate = '1500k'
 
-# Stop solr deprecation until ActiveFedora 13.2.8 comes out
-ActiveFedora::SolrService.class_eval do
-  def initialize(options = {})
-    @options = { timeout: 120, open_timeout: 120, url: 'http://localhost:8080/solr' }.merge(options)
-  end
-end
-
 Hyrax.publisher.subscribe(HyraxListener.new)

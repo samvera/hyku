@@ -103,6 +103,9 @@ if ENV.fetch('HYKU_BULKRAX_ENABLED', 'true') == 'true'
                                                                                 # add or remove custom mappings for this parser here
                                                                               })
 
+    config.object_factory = Bulkrax::ValkyrieObjectFactory
+    config.factory_class_name_coercer = Bulkrax::FactoryClassFinder::ValkyrieMigrationCoercer
+
     # To duplicate a set of mappings from one parser to another
     #   config.field_mappings["Bulkrax::OaiOmekaParser"] = {}
     #   config.field_mappings["Bulkrax::OaiDcParser"].each {|key,value| config.field_mappings["Bulkrax::OaiOmekaParser"][key] = value }

@@ -125,7 +125,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/bulkrax.git
-  revision: afcfc3d9b0949fef7379f9e59c3a1e6c8c755de0
+  revision: 4844893a49abec8ed6f98151cd3de2bcfc288537
   branch: hyrax-4-valkyrie-support
   specs:
     bulkrax (6.0.1)
@@ -217,7 +217,7 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: 7037a9bca27619ede8b05da0f4e2f7183e2d8432
+  revision: a74ffef1977d7cbe7c400b5a863117755f6c1787
   branch: main
   specs:
     iiif_print (1.0.0)

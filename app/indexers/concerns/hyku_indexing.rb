@@ -10,7 +10,7 @@ module HykuIndexing
     define_method method_name do |*args, **kwargs, &block|
       super(*args, **kwargs, &block).tap do |solr_doc|
         # rubocop:disable Style/ClassCheck
-        
+
         # specs refer to object as @object
         object ||= @object || resource
 
@@ -18,6 +18,7 @@ module HykuIndexing
         solr_doc['bulkrax_identifier_tesim'] = object.bulkrax_identifier if object.respond_to?(:bulkrax_identifier)
         solr_doc['account_institution_name_ssim'] = Site.instance.institution_label
         solr_doc['valkyrie_bsi'] = object.kind_of?(Valkyrie::Resource)
+        solr_doc['member_ids_ssim'] = object.member_ids.map(&:id)
         # TODO: Reinstate once valkyrie fileset work is complete - https://github.com/scientist-softserv/hykuup_knapsack/issues/34
         solr_doc['all_text_tsimv'] = full_text(object.file_sets.first&.id) if object.kind_of?(ActiveFedora::Base)
         # rubocop:enable Style/ClassCheck

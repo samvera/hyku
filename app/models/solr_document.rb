@@ -80,7 +80,7 @@ class SolrDocument
 
   # @return [Array<SolrDocument>] a list of solr documents in no particular order
   def load_parent_docs
-    query("member_ids_ssim: #{id}", rows: 1000)
+    query("member_ids_ssim:#{id}", rows: 1000)
       .map { |res| ::SolrDocument.new(res) }
   end
 

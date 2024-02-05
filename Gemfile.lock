@@ -145,7 +145,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: 21dd6652f5f42efcd1587f43cb654c009edb0fb3
+  revision: 8f167c56e90733ebf72da6a260bce41d851e7922
   branch: double_combo
   specs:
     hyrax (5.0.0.rc2)
@@ -217,7 +217,7 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: a74ffef1977d7cbe7c400b5a863117755f6c1787
+  revision: de5cc76b9e4e8aba6b57969e5f50365293e7b8b2
   branch: main
   specs:
     iiif_print (1.0.0)

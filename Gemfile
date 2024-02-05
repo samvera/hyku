@@ -103,6 +103,8 @@ gem 'twitter-typeahead-rails', '0.11.1.pre.corejavascript'
 gem 'web-console', '>= 3.3.0', group: %i[development] # <%= console %> in views
 gem 'webdrivers', '~> 4.7.0', group: %i[test]
 gem 'webmock', group: %i[test]
+# Enabling the following gem breaks sidekiq. To Enable: assets.debug must be set to true in config/development.rb
+# gem "xray-rails", git: "https://github.com/brentd/xray-rails.git", branch: "bugs/ruby-3.0.0", group: %i[development]
 
 # This gem does nothing by default, but is instead a tool to ease developer flow
 # and place overrides, themes and deployment code.

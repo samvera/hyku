@@ -2,6 +2,10 @@
 
 class ReindexItemJob < ApplicationJob
   def perform(item)
-    item.update_index
+    if item.is_a?(Valkyrie::Resource)
+      Hyrax.index_adapter.save(resource: item)
+    else
+      item.update_index
+    end
   end
 end

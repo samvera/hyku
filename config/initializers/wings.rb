@@ -76,6 +76,7 @@ Rails.application.config.to_prepare do
   end
 
   Valkyrie.config.resource_class_resolver = lambda do |resource_klass_name|
+    # TODO: Can we use some kind of lookup.
     klass_name = resource_klass_name.gsub(/Resource$/, '')
     if %w[
       GenericWork
@@ -86,6 +87,10 @@ Rails.application.config.to_prepare do
       CollectionResource
     elsif 'AdminSet' == klass_name
       AdminSetResource
+    # Without this mapping, we'll see cases of Postgres Valkyrie adapter attempting to write to
+    # Fedora.  Yeah!
+    elsif 'Hydra::AccessControl' == klass_name
+      Hyrax::AccessControl
     else
       klass_name.constantize
     end

@@ -60,7 +60,6 @@ Rails.application.config.after_initialize do
   Wings::ModelRegistry.register(GenericWorkResource, GenericWork)
   Wings::ModelRegistry.register(ImageResource, Image)
 end
-# rubocop:enable Metrics/BlockLength
 
 Rails.application.config.to_prepare do
   Hyrax::AdministrativeSet.class_eval do
@@ -96,3 +95,4 @@ Rails.application.config.to_prepare do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

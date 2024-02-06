@@ -54,8 +54,8 @@ RSpec.describe EmbargoAutoExpiryJob, clean: true do
         ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
         EmbargoAutoExpiryJob.perform_now(account)
       end.to change { GenericWorkResource.find(work_with_expired_embargo.id).visibility }
-               .from('restricted')
-               .to('open')
+        .from('restricted')
+        .to('open')
     end
 
     it 'Expires embargos on file sets with expired embargos' do
@@ -75,7 +75,7 @@ RSpec.describe EmbargoAutoExpiryJob, clean: true do
         ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
         EmbargoAutoExpiryJob.perform_now(account)
       end.not_to change { GenericWorkResource.find(embargoed_work.id).visibility }
-               .from('restricted')
+        .from('restricted')
     end
   end
 end

@@ -12,12 +12,10 @@ class GenericWorkResource < Hyrax::Work
 
   Hyrax::ValkyrieLazyMigration.migrating(self, from: GenericWork)
 
-  if ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_IIIF_PRINT', false))
-    include IiifPrint.model_configuration(
-      pdf_split_child_model: GenericWorkResource,
-      pdf_splitter_service: IiifPrint::TenantConfig::PdfSplitter
-    )
-  end
+  include IiifPrint.model_configuration(
+    pdf_split_child_model: GenericWorkResource,
+    pdf_splitter_service: IiifPrint::TenantConfig::PdfSplitter
+  )
 
   prepend OrderAlready.for(:creator)
 end

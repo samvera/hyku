@@ -5,12 +5,10 @@ class GenericWork < ActiveFedora::Base
   include PdfBehavior
   include VideoEmbedBehavior
 
-  if ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_IIIF_PRINT', false))
-    include IiifPrint.model_configuration(
-      pdf_split_child_model: GenericWork,
-      pdf_splitter_service: IiifPrint::TenantConfig::PdfSplitter
-    )
-  end
+  include IiifPrint.model_configuration(
+    pdf_split_child_model: GenericWork,
+    pdf_splitter_service: IiifPrint::TenantConfig::PdfSplitter
+  )
 
   validates :title, presence: { message: 'Your work must have a title.' }
 

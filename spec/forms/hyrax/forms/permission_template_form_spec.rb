@@ -186,11 +186,15 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
       end
 
       it "adds edit_access to the AdminSet itself and grants workflow roles" do
-        expect { subject }.to change { permission_template.access_grants.count }.by(1)
+        expect do
+          expect do
+            expect { subject }.to change { permission_template.access_grants.count }.by(1)
+          end.not_to change { admin_set.reload.edit_users.to_a } # Because of the double combo lazy migration
+        end.to change { Hyrax.query_service.find_by(id: admin_set.id).edit_users }
+          .to([user2.user_key, user.user_key])
         expect(count_workflow_roles_for(user)).to eq 1
         expect(count_workflow_roles_for(user2)).to eq 1
         expect(count_workflow_roles_for(user3)).to eq 0
-        expect(admin_set.reload.edit_users).to match_array [user2.user_key, user.user_key]
       end
     end
 
@@ -204,8 +208,12 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
       it "also adds edit_access to the AdminSet itself" do
         FactoryBot.create(:group, name: 'admin')
         FactoryBot.create(:group, name: 'bob')
-        expect { subject }.to change { permission_template.access_grants.count }.by(1)
-        expect(admin_set.reload.edit_groups).to match_array ['bob', 'archivists']
+        expect do
+          expect do
+            expect { subject }.to change { permission_template.access_grants.count }.by(1)
+          end.not_to change { admin_set.reload.edit_groups.to_a } # Because of the double combo lazy migration
+        end.to change { Hyrax.query_service.find_by(id: admin_set.id).edit_groups.to_a }
+          .to(['archivists', 'bob'])
       end
     end
 
@@ -217,8 +225,12 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
       end
 
       it "doesn't adds edit_access to the AdminSet itself" do
-        expect { subject }.to change { permission_template.access_grants.count }.by(1)
-        expect(admin_set.reload.edit_users).to match_array [user.user_key] # MANAGE user added in before do
+        expect do
+          expect do
+            expect { subject }.to change { permission_template.access_grants.count }.by(1)
+          end.not_to change { admin_set.reload.edit_users.to_a } # Because of the double combo lazy migration
+        end.to change { Hyrax.query_service.find_by(id: admin_set.id).edit_users.to_a }
+          .to([user.user_key]) # MANAGE user added in before block
       end
     end
 

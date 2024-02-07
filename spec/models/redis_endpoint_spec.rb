@@ -4,7 +4,8 @@ RSpec.describe RedisEndpoint do
   it { should have_one(:account).with_foreign_key(:redis_endpoint_id) }
 
   let(:namespace) { 'foobar' }
-  let(:faux_redis_instance) { double(Hyrax::RedisEventStore, ping: 'PONG', clear: true) }
+  let(:faux_redis_instance) { double(Hyrax::RedisEventStore, ping: 'PONG', clear: true, connection: connection) }
+  let(:connection) { double() }
   before { allow(subject).to receive(:redis_instance).and_return(faux_redis_instance) }
   subject { described_class.new(namespace:) }
 
@@ -30,7 +31,7 @@ RSpec.describe RedisEndpoint do
     subject { described_class.create! }
 
     it 'clears the namespace and deletes itself' do
-      expect(faux_redis_instance).to receive(:clear)
+      expect(faux_redis_instance.connection).to receive(:clear)
       expect do
         subject.remove!
       end.to change(described_class, :count).by(-1)

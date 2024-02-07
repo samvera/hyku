@@ -55,16 +55,26 @@ RSpec.describe EmbargoAutoExpiryJob, clean: true do
         EmbargoAutoExpiryJob.perform_now(account)
       end.to change { GenericWorkResource.find(work_with_expired_embargo.id).visibility }
         .from('restricted')
-        .to('open')
+               .to('open')
+
+      # Yes, the underlying Fedora object does not change.  We've migrated it to Valkyrie
+      work_with_expired_embargo.reload
+      expect(work_with_expired_embargo.visibility).to eq('restricted')
     end
 
     it 'Expires embargos on file sets with expired embargos' do
+      expect(file_set_with_expired_embargo).to be_kind_of(FileSet)
       expect(file_set_with_expired_embargo.visibility).to eq('restricted')
-      ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
-      EmbargoAutoExpiryJob.perform_now(account)
+      expect do
+        ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
+        EmbargoAutoExpiryJob.perform_now(account)
+      end.to change { Hyrax.query_service.find_by(id: file_set_with_expired_embargo.id).visibility }
+               .from('restricted')
+               .to('open')
 
+      # Yes, the underlying Fedora object does not change.  We've migrated it to Valkyrie
       file_set_with_expired_embargo.reload
-      expect(file_set_with_expired_embargo.visibility).to eq('open')
+      expect(file_set_with_expired_embargo.visibility).to eq('restricted')
     end
 
     it "Does not expire embargo when embargo is still active", active_fedora_to_valkyrie: true do
@@ -76,6 +86,8 @@ RSpec.describe EmbargoAutoExpiryJob, clean: true do
         EmbargoAutoExpiryJob.perform_now(account)
       end.not_to change { GenericWorkResource.find(embargoed_work.id).visibility }
         .from('restricted')
+      embargoed_work.reload
+      expect(embargoed_work.visibility).to eq('restricted')
     end
   end
 end

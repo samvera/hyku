@@ -107,3 +107,112 @@ end
 ```
 
 We still have the concept of `Hyrax::SolrService.instance`, though it delegates’s to `.new`; thus creating new connections each time.
+
+# Access Control List (ACL) Considerations
+
+A resources's ACLs are stored as a separate object in the persistence layer.
+
+In the case of data that starts in Fedora (and created in ActiveFedora) we must consider that we might update an ACL object but not the assocated resource.  This is something that is done during lease and embargo expiry.
+
+In the case of the Frigg and Freyja adapters:
+
+- We look up objects first in Valkyrie then via ActiveFedora.
+- When we expire a lease or embargo, we write/update the record in Valkyrie and do not touch the ActiveFedora object.
+
+What this means is that the ACL in Valkyrie is different from ActiveFedora, yet were we to load the Work via ActiveFedora *or* via Frigg/Freyja, we'd only find the work via ActiveFedora.  Which, by default loads the ACL from ActiveFedora; something that is now out of sync.
+
+<details>
+<summary>Spec I used to track down ACL issues</summary>
+
+From the [spec/jobs/lease_auto_expiry_job_spec.rb](https://github.com/samvera/hyku/blob/fc459450422815810aac37e13569bd2daf006117/spec/jobs/lease_auto_expiry_job_spec.rb).
+
+The below spec failed on the Hyrax `double_combo` branch before [fdcabe651](https://github.com/samvera/hyrax/commit/fdcabe651).  [PR #6671](https://github.com/samvera/hyrax/pull/6671) provides the solution.
+
+```ruby
+it "Expires the lease on a work with expired lease", active_fedora_to_valkyrie: true do
+  # Before we expire the lease:
+  #
+  # Work start in Fedora; then through Freyja we can find the work (by querying first Postgres then finding it in Fedora)
+  # Lease start in Fedora; then through Freyja we can find the lease (by querying first Postgres then finding it in Fedora)
+
+  # When we expire the lease:
+  # We find in Fedora, and save via Freyja meaning we write to Postgres and do not update Fedora
+  # Note, we do not update the ACL's resource (e.g. the work), which means it's only in Fedora and not postgres.
+
+  # After when we check the lease:
+  # We find the work in Fedora via Freyja, eg. it's not in Posgres
+  # We should find the ACL in Postgres...why are we not seeing the update when we check?
+
+  expect(work_with_expired_lease).to be_a_kind_of(GenericWork)
+  expect(work_with_expired_lease.visibility).to eq('open')
+  gwr = GenericWorkResource.find(work_with_expired_lease.id)
+
+  expect(work_with_expired_lease.embargo_id == gwr.embargo_id).to eq(true)
+  expect(work_with_expired_lease.lease_id == gwr.lease_id).to eq(true)
+  expect(work_with_expired_lease.access_control_id == gwr.access_control_id).to eq(true)
+
+  expect { Hyrax.query_service.services[0].find_by(id: gwr.lease_id) }.to raise_error(Valkyrie::Persistence::ObjectNotFoundError)
+  expect { Hyrax.query_service.services[0].find_by(id: gwr.access_control_id) }.to raise_error(Valkyrie::Persistence::ObjectNotFoundError)
+  expect(Hyrax.query_service.services[1].find_by(id: gwr.lease_id)).to be_a Hyrax::Lease
+  expect(Hyrax.query_service.services[1].find_by(id: gwr.access_control_id)).to be_a Hyrax::AccessControl
+
+  expect do
+    expect do
+      expect do
+        expect do
+          expect do
+            ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
+            LeaseAutoExpiryJob.perform_now(account)
+          end.not_to change { GenericWorkResource.find(work_with_expired_lease.id).lease_id }
+        end.not_to change { GenericWorkResource.find(work_with_expired_lease.id).embargo_id }
+      end.not_to change { GenericWorkResource.find(work_with_expired_lease.id).access_control_id }
+      # Yes, these are Hydra::AccessControl objects because that's their internal_resource name
+      # TODO: Find the map to get the right model for the Hyrax::AccessControl
+    end.to change { Hyrax.query_service.services[0].count_all_of_model(model: Hydra::AccessControl) }.by(1)
+  end.to change {  GenericWorkResource.find(work_with_expired_lease.id).visibility }
+           .from('open')
+           .to('restricted')
+
+  # @orangewolf: Are we expecting to write the Leases into Postgres.  I assume so.
+
+  # After update of the lease...
+  # ...the work will not be in Postgres
+  expect { Hyrax.query_service.services[0].find_by(id: work_with_expired_lease.id) }.to raise_error
+  # ...the work will be in Fedora and accessible via the Wings adapter
+  generic_work_from_wings = Hyrax.query_service.services[1].find_by(id: work_with_expired_lease.id)
+  expect(generic_work_from_wings).to be_a(GenericWorkResource)
+
+  # Here's the problem:
+  #
+  # - Work and ACL in Fedora but not Postgres
+  # - We update the lease, which write the lease to postgres; but not write the work to Postgres
+  # - We query the work; it's in Fedora and wings converts it to a Resource but then used the
+  #   Fedora ACL (that is the one we didn't update)
+
+
+  # Verifying that the underlying access control model and the corresponding change_set are
+  # identical.  This is the implementation details of the Hyrax::AccessControlList model.
+  # access_control_model = Hyrax::AccessControl.for(resource: GenericWorkResource.find(work_with_expired_lease.id))
+  # access_control_model_change_set = Hyrax::ChangeSet.for(access_control_model)
+  # expect(access_control_model.permissions).to eq(access_control_model_change_set.permissions)
+
+  gwr = GenericWorkResource.find(work_with_expired_lease.id)
+
+  acl = Hyrax.query_service.services[0].find_by(id: gwr.access_control_id)
+  gwr_acl = gwr.permission_manager.acl
+
+  # Here we have the failing spec.
+  # The access control model says one thing but what we get from the cached permission manager.
+  expect(gwr_acl.permissions).to eq(Set.new(gwr_acl.send(:access_control_model).permissions))
+
+  # The ACL's written to service[0] are equal to the permissions that we derive from a fresh
+  # Hyrax::AccessControlList
+  expect(Set.new(acl.permissions)).to eq(Hyrax::AccessControlList.new(resource: gwr).permissions)
+
+  # The ACLs in the system should be correct.  And the underlying permission manager fetches the
+  # correct access_control_mdoel.
+  expect(Set.new(acl.permissions)).to eq(Set.new(gwr_acl.send(:access_control_model).permissions))
+end
+```
+
+</summary>

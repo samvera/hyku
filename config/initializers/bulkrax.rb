@@ -103,6 +103,8 @@ if ENV.fetch('HYKU_BULKRAX_ENABLED', 'true') == 'true'
                                                                                 # add or remove custom mappings for this parser here
                                                                               })
 
+    # Because Hyku now uses and assumes Valkyrie to query the repository layer, we need to match the
+    # object factory to use Valkyrie.
     config.object_factory = Bulkrax::ValkyrieObjectFactory
     config.factory_class_name_coercer = Bulkrax::FactoryClassFinder::ValkyrieMigrationCoercer
 

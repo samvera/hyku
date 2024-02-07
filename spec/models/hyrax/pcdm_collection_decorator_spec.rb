@@ -8,9 +8,8 @@ RSpec.describe Hyrax::PcdmCollection do
   it_behaves_like 'a Hyrax::PcdmCollection'
 
   context 'with Hyrax::Permissions::Readable' do
-    subject { described_class.new }
     it { is_expected.to respond_to :public? }
     it { is_expected.to respond_to :private? }
-    it { is_expected.to respond_to :restricted? }
+    it { is_expected.to respond_to :registered? }
   end
 end

@@ -22,6 +22,10 @@ RSpec.describe "Users trying to access a Public Work's show page", type: :reques
   context 'an unauthenticated user' do
     it 'is allowed' do
       get "http://#{account.cname}/concern/generic_works/#{work.id}"
+      expect(response.status).to eq(301)
+      expect(response.location).to eq("http://#{account.cname}/concern/generic_work_resources/#{work.id}")
+
+      get response.location
       expect(response.status).to eq(200)
     end
   end
@@ -39,6 +43,10 @@ RSpec.describe "Users trying to access a Public Work's show page", type: :reques
     it 'is authorized' do
       login_as @tenant_user # rubocop:disable RSpec/InstanceVariable
       get "http://#{account.cname}/concern/generic_works/#{work.id}"
+      expect(response.status).to eq(301)
+      expect(response.location).to eq("http://#{account.cname}/concern/generic_work_resources/#{work.id}")
+
+      get response.location
       expect(response.status).to eq(200)
     end
   end
@@ -60,6 +68,10 @@ RSpec.describe "Users trying to access a Public Work's show page", type: :reques
     it 'is authorized' do
       login_as @tenant_admin # rubocop:disable RSpec/InstanceVariable
       get "http://#{account.cname}/concern/generic_works/#{work.id}"
+      expect(response.status).to eq(301)
+      expect(response.location).to eq("http://#{account.cname}/concern/generic_work_resources/#{work.id}")
+
+      get response.location
       expect(response.status).to eq(200)
     end
   end

@@ -21,8 +21,7 @@ RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, ci: 's
   let!(:admin_set) do
     admin_set = AdminSet.new(title: ['Test Admin Set'])
     allow(Hyrax.config).to receive(:default_active_workflow_name).and_return('default')
-    Hyrax::AdminSetCreateService.new(admin_set:, creating_user: nil).create
-    admin_set.reload
+    Hyrax::AdminSetCreateService.call!(admin_set:, creating_user: nil)
   end
   let!(:work) { process_through_actor_stack(build(:work), work_depositor, admin_set.id, visibility) }
 

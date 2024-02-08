@@ -5,6 +5,7 @@ module ApplicationHelper
   # rubocop:disable Rails/OutputSafety
   include ::HyraxHelper
   include SharedSearchHelper
+  include Bulkrax::ApplicationHelper
   include HykuKnapsack::ApplicationHelper
 
   def group_navigation_presenter

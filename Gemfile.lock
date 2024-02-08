@@ -125,7 +125,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/bulkrax.git
-  revision: c8f87ad3df9ab9963730e67b1e0ed70138e5ddde
+  revision: 22eb48efad3f92175800ecf1f79e8b72e85951fa
   branch: hyrax-4-valkyrie-support
   specs:
     bulkrax (6.0.1)

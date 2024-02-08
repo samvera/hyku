@@ -55,12 +55,19 @@ RSpec.describe 'Insitution visiblity work access', type: :request, clean: true, 
     it 'allows access for users of the tenant' do
       login_as tenant_user, scope: :user
       get "http://#{account.cname}/concern/generic_works/#{work.id}"
+      expect(response.status).to eq(301)
+      expect(response.location).to eq("http://#{account.cname}/concern/generic_work_resources/#{work.id}")
+      get response.location
       expect(response.status).to eq(200)
     end
 
     it 'does not allow access for users of other tenants' do
       login_as tenant2_user, scope: :user
       get "http://#{account.cname}/concern/generic_works/#{work.id}"
+      expect(response.status).to eq(301)
+      expect(response.location).to eq("http://#{account.cname}/concern/generic_work_resources/#{work.id}")
+      get response.location
+
       expect(response.status).to eq(401)
     end
   end
@@ -76,6 +83,10 @@ RSpec.describe 'Insitution visiblity work access', type: :request, clean: true, 
     it 'now allows access for users of the tenant' do
       login_as tenant2_user, scope: :user
       get "http://#{account.cname}/concern/generic_works/#{work.id}"
+      expect(response.status).to eq(301)
+      expect(response.location).to eq("http://#{account.cname}/concern/generic_work_resources/#{work.id}")
+      get response.location
+
       expect(response.status).to eq(200)
     end
   end

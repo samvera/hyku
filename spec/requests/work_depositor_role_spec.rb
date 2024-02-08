@@ -19,35 +19,48 @@ RSpec.describe 'Work Depositor role', type: :request, singletenant: true, clean:
 
     before do
       solr = Blacklight.default_index.connection
+
       solr.add(work.to_solr)
       solr.commit
     end
 
     %w[open authenticated].each do |visibility|
       context "with #{visibility} visibility" do
-        let(:work) { create(:work, visibility:, admin_set_id:) }
+        let(:work) { FactoryBot.create(:generic_work_resource, title: "Lacey and Ollie Forever", visibility_setting: visibility, admin_set_id:) }
 
         it "can see the work's public show page" do
           get hyrax_generic_work_path(work)
+
+          expect(response.status).to eq(301)
+          expect(response.location).to end_with(hyrax_generic_work_resource_path(work))
+
+          get response.location
 
           expect(response).to have_http_status(:success)
         end
 
         it 'can see the work in search results' do
+          work
+
           get search_catalog_path
 
           expect(response).to have_http_status(:success)
+
           expect(response.body).to include(work.title.first)
         end
       end
     end
 
     context 'with restricted visibility' do
-      let(:work) { create(:work, visibility: 'restricted', admin_set_id:) }
+      let(:work) { FactoryBot.create(:generic_work_resource, title: "Lacey and Ollie Forever", visibility_setting: 'restricted', admin_set_id:) }
 
       it "cannot see the work's show page" do
         get hyrax_generic_work_path(work)
 
+        expect(response.status).to eq(301)
+        expect(response.location).to end_with(hyrax_generic_work_resource_path(work))
+
+        get response.location
         expect(response).to have_http_status(:unauthorized)
       end
 
@@ -63,7 +76,7 @@ RSpec.describe 'Work Depositor role', type: :request, singletenant: true, clean:
   describe 'create permissions' do
     let(:valid_work_params) do
       {
-        generic_work: {
+        generic_work_resource: {
           title: ['Test Work'],
           creator: [work_depositor.email],
           keyword: ['asdf'],
@@ -82,8 +95,8 @@ RSpec.describe 'Work Depositor role', type: :request, singletenant: true, clean:
     end
 
     it 'can create a work' do
-      expect { post hyrax_generic_works_path, params: valid_work_params }
-        .to change(GenericWork, :count).by(1)
+      expect { post hyrax_generic_work_resources_path, params: valid_work_params }
+        .to change { Hyrax.query_service.count_all_of_model(model: GenericWork) }.by(1)
     end
   end
 

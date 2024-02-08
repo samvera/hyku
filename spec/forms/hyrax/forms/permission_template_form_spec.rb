@@ -190,7 +190,7 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
           expect do
             expect { subject }.to change { permission_template.access_grants.count }.by(1)
           end.not_to change { admin_set.reload.edit_users.to_a } # Because of the double combo lazy migration
-        end.to change { Hyrax.query_service.find_by(id: admin_set.id).edit_users }
+        end.to change { Hyrax.query_service.find_by(id: admin_set.id).edit_users.to_a }
           .to([user2.user_key, user.user_key])
         expect(count_workflow_roles_for(user)).to eq 1
         expect(count_workflow_roles_for(user2)).to eq 1

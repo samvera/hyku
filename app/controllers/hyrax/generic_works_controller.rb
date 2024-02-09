@@ -16,6 +16,6 @@ module Hyrax
     self.work_form_service = Hyrax::FormFactory.new
 
     # Use this line if you want to use a custom presenter
-    self.show_presenter = Hyrax::GenericWorkResourcePresenter
+    self.show_presenter = Hyrax::GenericWorkPresenter
   end
 end

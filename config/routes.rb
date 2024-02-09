@@ -5,21 +5,6 @@
 require 'sidekiq/web' if ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq') == 'sidekiq'
 
 Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
-  Hyrax.config.curation_concerns.each do |resource|
-    # TODO: We have a magic string baked in here.  We may want to look into our mapping of
-    # constants.
-    next if resource.to_s.match?(/.+Resource\z/)
-
-    resource = resource.to_s.underscore
-    # We need this to be a dynamic constraint to support specs; but also to reflect the dynamic
-    # nature of toggling on and off use_valkyrie; something unlikely to happen in production but
-    # definitely something we might toggle for testing.
-    constraints(->(*) { Hyrax.config.use_valkyrie? }) do
-      get "/concern/#{resource}s/:id/edit", to: redirect("/concern/#{resource}_resources/%{id}/edit")
-      get "/concern/#{resource}s/:id", to: redirect("/concern/#{resource}_resources/%{id}")
-    end
-  end
-
   resources :identity_providers
   concern :range_searchable, BlacklightRangeLimit::Routes::RangeSearchable.new
   concern :iiif_search, BlacklightIiifSearch::Routes.new

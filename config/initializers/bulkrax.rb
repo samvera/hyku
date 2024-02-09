@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-if ENV.fetch('HYKU_BULKRAX_ENABLED', 'true') == 'true'
+if Hyku.bulkrax_enabled?
   # rubocop:disable Metrics/BlockLength
   Bulkrax.setup do |config|
     # Add local parsers

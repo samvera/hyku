@@ -35,6 +35,10 @@ module Hyku
       .delete("\xEF\xBB\xBF")
   end
 
+  def self.bulkrax_enabled?
+    ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_BULKRAX_ENABLED', true))
+  end
+
   class Application < Rails::Application
     ##
     # @!group Class Attributes
@@ -179,6 +183,9 @@ module Hyku
     end
 
     config.to_prepare do
+      # set bulkrax default work type to first curation_concern if it isn't already set
+      Bulkrax.default_work_type = Hyrax.config.curation_concerns.first.to_s if Hyku.bulkrax_enabled? && Bulkrax.default_work_type.blank?
+
       # By default plain text files are not processed for text extraction.  In adding
       # Adventist::TextFileTextExtractionService to the beginning of the services array we are
       # enabling text extraction from plain text files.

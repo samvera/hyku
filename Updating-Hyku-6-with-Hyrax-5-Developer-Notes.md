@@ -119,13 +119,15 @@ When we render a form for a given work type there are two primary considerations
 
 The `generic_work` portion of the `input[name]` comes from the form object's model_name's `@param_key`.  We derive the `form[action]` from the object's model_name's `@singular` for update/delete actions and `@plural` create actions.
 
-## Conjecture
+## Conjecture (Now Confirmed)
 
-The conjecture is that we should:
+For Hyku we will:
 
 - configure the `GenericWorkController` to use `GenericWorkResource` 
 - ensure that a `GenericWorkResource` and `GenericWork` produce the same routes, `form[action]`, and `input[name]`; this might be as simple as overwriting `GenericWorkResource.model_name` to call `GenericWork.model_name`; or for that glorious moment when `GenericWork` goes away maybe hand craft our own model name.
 - ensure that when we edit things via the `GenericWorkController` we are editing the `GenericWorkResource`
+
+This means that we are not registering `generic_work_resource` as a curation concern and instead relying on `generic_work` as the registered concern.  This way we won't have duplications in the UI for selecting the curation concern.
 
 # Indexing Considerations
 

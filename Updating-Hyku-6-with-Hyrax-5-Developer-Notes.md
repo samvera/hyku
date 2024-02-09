@@ -18,6 +18,8 @@ Further, we need to consider the foundational AdminSet; this follows the same lo
 
 When we create a tenant using Valkyrie, with a Frigg/Freyja adapter, we create an admin set.  The admin set will be written to the “first” storage layer (<abbr title="example given">e.g.</abbr> Postgres or Fedora6) but not the “second” layer (<abbr title="example given">e.g.</abbr> Fedora 4).  What that means is when we go to create an ActiveFedora::Base work, we are attempting to write the work to Fedora 4 within the AdminSet’s node.  However, since the admin set was not created in Fedora 4, we encounter an error.
 
+By configuration and convention, each ActiveFedora::Base work type will have a corresponding Valkyrie::Resource.  Consider that `GenericWork < ActiveFedora::Base`, we'll have `GenericWorkResource < Valkyrie::Resource`.
+
 ## Example Spec Problem
 
 ```ruby
@@ -59,6 +61,71 @@ When starting from Valkyrie:
 -   We create works via the Transaction stack (see the hot new `Hyrax::Action::CreateValkyrieWork` in `double_combo`)
 
 We also have available to us all of the Hyrax `spec/factories` to extend  
+
+# User Interface Considerations
+
+As Hyku moves to use the Goddess adapters of the [Double Combo pull request](https://github.com/samvera/hyrax/pull/6221), we want to have all Create/Read/Update/Delete (CRUD) operators performed on the conceptual work type's `Valkyrie::Resource`.  That is to say, if we had a `GenericWork` with `ID=1234-5678-abcd` when we operate on a work via the User Interface (UI) we want to operate on the `Valkyrie::Resource`.
+
+To accomplish this, we need to consider three elements:
+
+- Controller configuration
+- Routing
+- Form configuration
+
+## Controller Configuration
+
+At present, there's no compeling reason to have one controller for `GenericWork` and one controller for `GenericWorkResource`; in particular given that we do not want to expose a UI means of operating on a `GenericWork`.
+
+Let's look at the `Hyrax::GenericWorksController`:
+
+```ruby
+  # frozen_string_literal: true
+
+  # Generated via
+  #  `rails generate hyrax:work GenericWork`
+  module Hyrax
+    # Generated controller for GenericWork
+    class GenericWorksController < ApplicationController
+      # Adds Hyrax behaviors to the controller.
+      include Hyrax::WorksControllerBehavior
+      include Hyku::WorksControllerBehavior
+      include Hyrax::BreadcrumbsForWorks
+      self.curation_concern_type = ::GenericWork
+
+      # Use this line if you want to use a custom presenter
+      self.show_presenter = Hyrax::GenericWorkPresenter
+    end
+  end
+```
+
+The two significant changes for each type of work is in the `class_attribute` configuration of `self.curation_concern_type=` and `self.show_presenter`.
+
+If you need custom logic for your work, you can add it to the controller.  But in the author's experience ([@jeremyf](https://github.com/jeremyf), I don’t think I’ve seen customizations beyond the `class_attribute` configurations.
+
+**Action Item:** Look to what all configuration options are available and reconfigure the controller to use the `GenericWorkResource` and it's corresponding expections.
+
+## Routing Considerations
+
+Ideally we would route both a `GenericWork` and a `GenericWorkResource` to the same controller...the one configured to handle the `GenericWorkResource`.
+
+Further, we'd preserve the prior helper methods (e.g. `hyrax_generic_work_path(resource)`) as well as the polymorphic path for a resource (e.g. `polymoprhic_path([hyrax, resource])`).
+
+## Form Configuration
+
+When we render a form for a given work type there are two primary considerations:
+
+- The `FORM` element and it's `action` attribute (in CSS selector speak that is `form[action]`).  This describes which URL we'll hit, and thus what route we hit.
+- The `INPUT` elements `name` attribute (or `input[name]`).  For example `generic_work[title]` when we submit the form we'll see a `ApplicationController#params` that looks something like this: `{ generic_work: { title: 'Given Title' }`.
+
+The `generic_work` portion of the `input[name]` comes from the form object's model_name's `@param_key`.  We derive the `form[action]` from the object's model_name's `@singular` for update/delete actions and `@plural` create actions.
+
+## Conjecture
+
+The conjecture is that we should:
+
+- configure the `GenericWorkController` to use `GenericWorkResource` 
+- ensure that a `GenericWorkResource` and `GenericWork` produce the same routes, `form[action]`, and `input[name]`; this might be as simple as overwriting `GenericWorkResource.model_name` to call `GenericWork.model_name`; or for that glorious moment when `GenericWork` goes away maybe hand craft our own model name.
+- ensure that when we edit things via the `GenericWorkController` we are editing the `GenericWorkResource`
 
 # Indexing Considerations
 

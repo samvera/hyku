@@ -4,13 +4,18 @@ ENV['HYRAX_USE_SOLR_GRAPH_NESTING'].present? || ENV['HYRAX_USE_SOLR_GRAPH_NESTIN
 
 # rubocop:disable Metrics/BlockLength
 Hyrax.config do |config|
+  # Note: We do not want to resgister the new resources as the lazy migration approach accounts for
+  # that.  Were we to register generic_work_resource and generic_work, given Hyrax's implementation
+  # we would see the duplicated option to create a generic work and a generic work.  The magic of
+  # what we create/operate on is defined in the controller.
+  #
+  # See for details on how we generate routes from registered curation concern:
+  #   https://github.com/samvera/hyrax/blob/main/lib/hyrax/rails/routes.rb
+  #
+  # See Hyrax::ValkyrieLazyMigration for details of how we make GenericWork and GenericWorkResource
+  #     quack the same.
   config.register_curation_concern :generic_work
-  # Injected via `rails g hyrax:work Image`
   config.register_curation_concern :image
-  # Injected via `rails g hyrax:work_resource GenericWorkResource`
-  config.register_curation_concern :generic_work_resource
-  # Injected via `rails g hyrax:work_resource ImageResource`
-  config.register_curation_concern :image_resource
 
   # Identify the model class name that will be used for Collections in your app
   # (i.e. ::Collection for ActiveFedora, Hyrax::PcdmCollection for Valkyrie)

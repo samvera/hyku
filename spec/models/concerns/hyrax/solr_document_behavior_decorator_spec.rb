@@ -23,8 +23,10 @@ RSpec.describe Hyrax::SolrDocumentBehavior, type: :decorator do
     context 'with a Valkyrie model name' do
       let(:solr_hash) { { 'has_model_ssim' => 'GenericWorkResource' } }
 
+      # Yes, a GenericWorkResource will resolves to the `hyrax/generic_works/generic_work` because
+      # we're migrating from GenericWork.
       it 'resolves the correct model name' do
-        expect(solr_document.to_model.to_partial_path).to eq 'hyrax/generic_work_resources/generic_work_resource'
+        expect(solr_document.to_model.to_partial_path).to eq 'hyrax/generic_works/generic_work'
       end
     end
 
@@ -32,7 +34,7 @@ RSpec.describe Hyrax::SolrDocumentBehavior, type: :decorator do
       let(:solr_hash) { { 'has_model_ssim' => 'GenericWork', 'valkyrie_bsi' => true } }
 
       it 'resolves the correct model name' do
-        expect(solr_document.to_model.to_partial_path).to eq 'hyrax/generic_work_resources/generic_work_resource'
+        expect(solr_document.to_model.to_partial_path).to eq 'hyrax/generic_works/generic_work'
       end
     end
   end

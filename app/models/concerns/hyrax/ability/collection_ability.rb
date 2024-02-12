@@ -5,32 +5,35 @@ module Hyrax
   module Ability
     # rubocop:disable Metrics/ModuleLength
     module CollectionAbility
+      def collection_models
+        @collection_models ||= [Collection, Hyrax::PcdmCollection, Hyrax.config.collection_class].uniq
+      end
+
       # rubocop:disable Metrics/MethodLength
       # rubocop:disable Metrics/BlockLength
       # rubocop:disable Metrics/AbcSize
       # rubocop:disable Metrics/PerceivedComplexity
       # rubocop:disable Metrics/CyclomaticComplexity
       def collection_abilities
-        models = [Hyrax::PcdmCollection, Hyrax.config.collection_class].uniq
         if admin?
-          models.each do |collection_model|
+          collection_models.each do |collection_model|
             can :manage, collection_model
             can :manage_any, collection_model
             can :create_any, collection_model
             can :view_admin_show_any, collection_model
           end
         else
-          models.each { |collection_model| can :manage_any, collection_model } if
+          collection_models.each { |collection_model| can :manage_any, collection_model } if
             Hyrax::Collections::PermissionsService.can_manage_any_collection?(ability: self)
 
-          models.each { |collection_model| can :create_any, collection_model } if
+          collection_models.each { |collection_model| can :create_any, collection_model } if
             Hyrax::CollectionTypes::PermissionsService.can_create_any_collection_type?(ability: self)
 
-          models.each { |collection_model| can :view_admin_show_any, collection_model } if
+          collection_models.each { |collection_model| can :view_admin_show_any, collection_model } if
           Hyrax::Collections::PermissionsService.can_view_admin_show_for_any_collection?(ability: self)
 
           # OVERRIDE: remove :destroy -- users who only have edit access cannot destroy
-          models.each do |collection_model|
+          collection_models.each do |collection_model|
             can [:edit, :update], collection_model do |collection|
               test_edit(collection.id)
             end
@@ -107,8 +110,10 @@ module Hyrax
           unless ActiveModel::Type::Boolean.new.cast(
             ENV.fetch('HYKU_RESTRICT_CREATE_AND_DESTROY_PERMISSIONS', nil)
           )
-            can %i[destroy manage_discovery manage_items_in_collection], Hyrax::PcdmCollection do |collection|
-              test_edit(collection.id)
+            collection_models.each do |model|
+              can %i[destroy manage_discovery manage_items_in_collection], model do |collection|
+                test_edit(collection.id)
+              end
             end
           end
         end
@@ -118,10 +123,8 @@ module Hyrax
       # Permissions are overwritten if given explicit access; e.g. if a collection reader is added
       # as a manager of a Collection, they should be able to manage that Collection.
       def collection_roles
-        # Can create, read, edit/update, destroy, and change visibility (discovery) of all Collections
-        models = [Hyrax::PcdmCollection, Hyrax.config.collection_class].uniq
         if collection_manager?
-          models.each do |collection_model|
+          collection_models.each do |collection_model|
             # Permit all actions (same collection permissions as admin users)
             can :manage, collection_model
             can :manage, ::SolrDocument, &:collection?
@@ -133,13 +136,13 @@ module Hyrax
           end
         # Can create, read, and edit/update all Collections
         elsif collection_editor?
-          models.each { |collection_model| can %i[edit update create create_any], collection_model }
+          collection_models.each { |collection_model| can %i[edit update create create_any], collection_model }
           can %i[edit update], ::SolrDocument, &:collection?
           can %i[edit update], ::String do |id|
             doc = permissions_doc(id)
             doc.collection?
           end
-          models.each { |collection_model| can %i[read read_any view_admin_show view_admin_show_any], collection_model }
+          collection_models.each { |collection_model| can %i[read read_any view_admin_show view_admin_show_any], collection_model }
           can %i[read read_any view_admin_show view_admin_show_any], ::SolrDocument, &:collection?
           can %i[read read_any view_admin_show view_admin_show_any], ::String do |id|
             doc = permissions_doc(id)
@@ -149,7 +152,7 @@ module Hyrax
 
         # Can read all Collections
         elsif collection_reader?
-          models.each { |collection_model| can %i[read read_any view_admin_show view_admin_show_any], collection_model }
+          collection_models.each { |collection_model| can %i[read read_any view_admin_show view_admin_show_any], collection_model }
           can %i[read read_any view_admin_show view_admin_show_any], ::SolrDocument, &:collection?
           can %i[read read_any view_admin_show view_admin_show_any], ::String do |id|
             doc = permissions_doc(id)

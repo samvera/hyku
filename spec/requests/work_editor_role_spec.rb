@@ -27,16 +27,10 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
     }
   end
 
-  # This setup for admin_set, work, and not using Valkyrie is the previous assumptions for the
-  # tests.  Namely we create ActiveFedora objects then fetch those objects from ActiveFedora.
-  #
-  # Were `Hyrax.config.use_valkyrie?` to be true, we would create an ActiveFedora::Base object and
-  # Valkyrie object and each would have different IDs; thus these two works are not associated.
   let!(:admin_set) do
     FactoryBot.create(:admin_set, title: ['Test Admin Set'], with_permission_template: { with_workflows: true })
   end
-  let!(:work) { process_through_actor_stack(build(:work), work_depositor, admin_set.id, visibility) }
-  before { allow(Hyrax.config).to receive(:use_valkyrie?).and_return(false) }
+  let(:work) { process_through_actor_stack(build(:work), work_depositor, admin_set.id, visibility) }
 
   describe 'read permissions' do
     %w[open authenticated restricted].each do |visibility|
@@ -86,7 +80,7 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
     it 'can create a work' do
       login_as work_editor
       expect { post hyrax_generic_works_path, params: valid_work_params }
-        .to change(GenericWork, :count).by(1)
+        .to change { Hyrax.query_service.count_all_of_model(model: GenericWork) }.by(1)
     end
   end
 

@@ -30,7 +30,6 @@ RSpec.describe GenericWorkResource do
     its(:migrating_from) { is_expected.to eq(GenericWork) }
     its(:migrating_to) { is_expected.to eq(GenericWorkResource) }
 
-
     describe '.model_name' do
       subject { described_class.model_name }
 
@@ -40,7 +39,7 @@ RSpec.describe GenericWorkResource do
       its(:singular) { is_expected.to eq "generic_work" }
       its(:plural) { is_expected.to eq "generic_works" }
       its(:element) { is_expected.to eq "generic_work" }
-      its(:human) { is_expected.to eq "Generic Work"}
+      its(:human) { is_expected.to eq "Generic Work" }
       its(:collection) { is_expected.to eq "generic_works" }
       its(:param_key) { is_expected.to eq "generic_work" }
       its(:i18n_key) { is_expected.to eq :generic_work }

@@ -18,7 +18,7 @@ RSpec.describe GenericWork do
       its(:singular) { is_expected.to eq "generic_work" }
       its(:plural) { is_expected.to eq "generic_works" }
       its(:element) { is_expected.to eq "generic_work" }
-      its(:human) { is_expected.to eq "Generic work"}
+      its(:human) { is_expected.to eq "Generic work" }
       its(:collection) { is_expected.to eq "generic_works" }
       its(:param_key) { is_expected.to eq "generic_work" }
       its(:i18n_key) { is_expected.to eq :generic_work }

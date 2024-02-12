@@ -36,7 +36,7 @@ RSpec.describe ImageResource do
       its(:singular) { is_expected.to eq "image" }
       its(:plural) { is_expected.to eq "images" }
       its(:element) { is_expected.to eq "image" }
-      its(:human) { is_expected.to eq "Image"}
+      its(:human) { is_expected.to eq "Image" }
       its(:collection) { is_expected.to eq "images" }
       its(:param_key) { is_expected.to eq "image" }
       its(:i18n_key) { is_expected.to eq :image }

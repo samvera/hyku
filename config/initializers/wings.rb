@@ -11,8 +11,10 @@ Rails.application.config.after_initialize do
   end
   Wings::ModelRegistry.register(Collection, Collection)
   Wings::ModelRegistry.register(Hyrax::PcdmCollection, Collection)
-  Wings::ModelRegistry.register(Hyrax::AdministrativeSet, AdminSet)
   Wings::ModelRegistry.register(AdminSet, AdminSet)
+  Wings::ModelRegistry.register(Hyrax::AdministrativeSet, AdminSet)
+  Wings::ModelRegistry.register(FileSet, FileSet)
+  Wings::ModelRegistry.register(Hyrax::FileSet, FileSet)
 
   Valkyrie::MetadataAdapter.register(
     Freyja::MetadataAdapter.new,
@@ -90,6 +92,8 @@ Rails.application.config.to_prepare do
     # Fedora.  Yeah!
     elsif 'Hydra::AccessControl' == klass_name
       Hyrax::AccessControl
+    elsif 'FileSet' == klass_name
+      Hyrax::FileSet
     else
       klass_name.constantize
     end

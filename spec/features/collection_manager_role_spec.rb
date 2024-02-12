@@ -16,6 +16,7 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
     it 'can create a Collection' do
       visit '/dashboard/collections/new'
       fill_in('Title', with: 'Collection Manager Test')
+      fill_in('collection_creator', with: 'Somebody New and Special')
       click_button 'Save'
 
       expect(page).to have_content('Collection was successfully created.')
@@ -35,6 +36,7 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
     it 'can edit and update a Collection' do
       visit "/dashboard/collections/#{collection.id}/edit"
       fill_in('Title', with: 'New Collection Title')
+      fill_in('collection_creator', with: 'Somebody New and Special')
       click_button 'Save'
 
       expect(page).to have_content('Collection was successfully updated.')
@@ -150,6 +152,7 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
         sleep 10
 
         fill_in('Title', with: 'CM-created subcollection')
+        fill_in('collection_creator', with: 'Somebody New and Special')
         click_button 'Save'
 
         expect(page).to have_content('Collection was successfully created.')
@@ -280,6 +283,7 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
     it 'can create a Collection' do
       visit '/dashboard/collections/new'
       fill_in('Title', with: 'Collection Manager Test')
+      fill_in('collection_creator', with: 'Somebody New and Special')
       click_button 'Save'
 
       expect(page).to have_content('Collection was successfully created.')
@@ -299,6 +303,7 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
     it 'can edit and update a Collection' do
       visit "/dashboard/collections/#{collection.id}/edit"
       fill_in('Title', with: 'New Collection Title')
+      fill_in('collection_creator', with: 'Somebody New and Special')
       click_button 'Save'
 
       expect(page).to have_content('Collection was successfully updated.')
@@ -398,6 +403,7 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
         sleep 10
 
         fill_in('Title', with: 'CM-created subcollection')
+        fill_in('collection_creator', with: 'Somebody New and Special')
         click_button 'Save'
 
         expect(page).to have_content('Collection was successfully created.')

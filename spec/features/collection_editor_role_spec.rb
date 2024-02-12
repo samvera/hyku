@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe 'actions permitted by the collection_editor role', type: :feature, js: true, clean: true, ci: 'skip' do # rubocop:disable Layout/LineLength
-  let!(:role) { FactoryBot.create(:role, :collection_editor) }
-  let!(:collection) { FactoryBot.create(:private_collection_lw, with_permission_template: true) }
+  let(:role) { FactoryBot.create(:role, :collection_editor) }
+  let(:collection) { FactoryBot.create(:private_collection_lw, with_permission_template: true) }
   let(:user) { FactoryBot.create(:user) }
 
   context 'a User that has the collection_editor role' do
@@ -15,13 +15,16 @@ RSpec.describe 'actions permitted by the collection_editor role', type: :feature
 
     it 'can create a Collection' do
       visit '/dashboard/collections/new'
-      fill_in('Title', with: 'Collection Editor Test')
+      # Ensure that you are filling out all of the required attributes
+      fill_in('collection_title', with: 'Collection Editor Test')
+      fill_in('collection_creator', with: 'Someone special')
       click_button 'Save'
 
       expect(page).to have_content('Collection was successfully created.')
     end
 
     it 'can view all Collections' do
+      collection
       visit '/dashboard/collections'
       expect(find('table#collections-list-table'))
         .to have_selector(:id, "document_#{collection.id}")
@@ -34,7 +37,8 @@ RSpec.describe 'actions permitted by the collection_editor role', type: :feature
 
     it 'can edit and update a Collection' do
       visit "/dashboard/collections/#{collection.id}/edit"
-      fill_in('Title', with: 'New Collection Title')
+      fill_in('collection_title', with: 'Collection Editor Test')
+      fill_in('collection_creator', with: 'Someone special')
       click_button 'Save'
 
       expect(page).to have_content('Collection was successfully updated.')
@@ -43,6 +47,7 @@ RSpec.describe 'actions permitted by the collection_editor role', type: :feature
     # This test is heavily inspired by a test in Hyrax v2.9.0, see
     # https://github.com/samvera/hyrax/blob/v2.9.0/spec/features/dashboard/collection_spec.rb#L463-L476
     it 'cannot destroy an individual Collection from the Dashboard index view' do
+      collection
       visit '/dashboard/collections'
 
       expect(page).to have_content(collection.title.first)
@@ -61,6 +66,7 @@ RSpec.describe 'actions permitted by the collection_editor role', type: :feature
     end
 
     it 'cannot destroy batches of Collections from the Dashboard index view' do
+      collection
       visit '/dashboard/collections'
 
       expect(find('tr#document_' + collection.id).first('input[type=checkbox]'))
@@ -180,13 +186,15 @@ RSpec.describe 'actions permitted by the collection_editor role', type: :feature
 
     it 'can create a Collection' do
       visit '/dashboard/collections/new'
-      fill_in('Title', with: 'Collection Editor Test')
+      fill_in('collection_title', with: 'Collection Editor Test')
+      fill_in('collection_creator', with: 'Special Person')
       click_button 'Save'
 
       expect(page).to have_content('Collection was successfully created.')
     end
 
     it 'can view all Collections' do
+      collection
       visit '/dashboard/collections'
       expect(find('table#collections-list-table'))
         .to have_selector(:id, "document_#{collection.id}")
@@ -199,7 +207,8 @@ RSpec.describe 'actions permitted by the collection_editor role', type: :feature
 
     it 'can edit and update a Collection' do
       visit "/dashboard/collections/#{collection.id}/edit"
-      fill_in('Title', with: 'New Collection Title')
+      fill_in('collection_title', with: 'New Collection Title')
+      fill_in('collection_creator', with: 'Somebody made this')
       click_button 'Save'
 
       expect(page).to have_content('Collection was successfully updated.')
@@ -208,6 +217,7 @@ RSpec.describe 'actions permitted by the collection_editor role', type: :feature
     # This test is heavily inspired by a test in Hyrax v2.9.0, see
     # https://github.com/samvera/hyrax/blob/v2.9.0/spec/features/dashboard/collection_spec.rb#L463-L476
     it 'cannot destroy a Collection from the Dashboard index view' do
+      collection
       visit '/dashboard/collections'
 
       expect(page).to have_content(collection.title.first)

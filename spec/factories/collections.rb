@@ -153,6 +153,7 @@ FactoryBot.define do
       with_solr_document { false }
     end
     sequence(:title) { |n| ["Collection Title #{n}"] }
+    sequence(:creator) { |n| ["Collection Creator #{n}"] }
 
     after(:build) do |collection, evaluator|
       collection.collection_type_gid = evaluator.collection_type.to_global_id if evaluator.collection_type&.id.present?

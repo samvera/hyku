@@ -27,7 +27,6 @@ module Hyrax
 
       def edit
         form
-        collection_type
         # Gets original filename of an uploaded thumbnail. See #update
         return unless ::SolrDocument.find(@collection.id).thumbnail_path.include?("uploaded_collection_thumbnails") && uploaded_thumbnail?
         @thumbnail_filename = File.basename(uploaded_thumbnail_files.reject { |f| File.basename(f).include? @collection.id }.first)

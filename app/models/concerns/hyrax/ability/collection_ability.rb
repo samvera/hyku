@@ -80,7 +80,6 @@ module Hyrax
             can :manage_items_in_collection, collection_model do |collection|
               Hyrax::Collections::PermissionsService.manage_access_to_collection?(ability: self, collection_id: collection.id)
             end
-
           end
 
           can :manage_items_in_collection, ::SolrDocument do |solr_doc|

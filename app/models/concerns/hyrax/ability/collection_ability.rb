@@ -66,21 +66,6 @@ module Hyrax
             can :destroy, collection_model do |collection|
               Hyrax::Collections::PermissionsService.manage_access_to_collection?(ability: self, collection_id: collection.id)
             end
-            can :destroy, ::SolrDocument do |solr_doc|
-              if solr_doc.collection?
-                Hyrax::Collections::PermissionsService.manage_access_to_collection?(
-                  ability: self,
-                  collection_id: solr_doc.id
-                )
-              end
-            end
-
-            can :deposit, ::SolrDocument do |solr_doc|
-              Hyrax::Collections::PermissionsService.can_deposit_in_collection?(
-                ability: self,
-                collection_id: solr_doc.id
-              ) # checks collections and admin_sets
-            end
 
             # OVERRIDE: add ability to restrict who can change a Collection's discovery setting
             can :manage_discovery, collection_model do |collection| # Discovery tab on edit form
@@ -95,16 +80,36 @@ module Hyrax
             can :manage_items_in_collection, collection_model do |collection|
               Hyrax::Collections::PermissionsService.manage_access_to_collection?(ability: self, collection_id: collection.id)
             end
-            can :manage_items_in_collection, ::SolrDocument do |solr_doc|
+
+          end
+
+          can :manage_items_in_collection, ::SolrDocument do |solr_doc|
+            Hyrax::Collections::PermissionsService.manage_access_to_collection?(
+              ability: self,
+              collection_id: solr_doc.id
+            )
+          end
+
+          can :manage_items_in_collection, ::String do |id|
+            Hyrax::Collections::PermissionsService.manage_access_to_collection?(ability: self, collection_id: id)
+          end
+
+          can :destroy, ::SolrDocument do |solr_doc|
+            if solr_doc.collection?
               Hyrax::Collections::PermissionsService.manage_access_to_collection?(
                 ability: self,
                 collection_id: solr_doc.id
               )
             end
-            can :manage_items_in_collection, ::String do |id|
-              Hyrax::Collections::PermissionsService.manage_access_to_collection?(ability: self, collection_id: id)
-            end
           end
+
+          can :deposit, ::SolrDocument do |solr_doc|
+            Hyrax::Collections::PermissionsService.can_deposit_in_collection?(
+              ability: self,
+              collection_id: solr_doc.id
+            ) # checks collections and admin_sets
+          end
+
           # "Undo" permission restrictions added by the Groups with Roles feature,
           # effectively reverting them back to default Hyrax behavior
           unless ActiveModel::Type::Boolean.new.cast(

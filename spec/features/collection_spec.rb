@@ -167,7 +167,9 @@ RSpec.describe 'collection', type: :feature, js: true, clean: true do
       before do
         visit 'dashboard/collections/new'
 
-        fill_in('Title', with: 'Default Sharing Test')
+        # Make sure you have filled out all of the required attributes:
+        fill_in('collection_title', with: 'Default Sharing Test')
+        fill_in('collection_creator', with: 'Somebody Special')
         click_button 'Save'
 
         click_link 'Sharing'

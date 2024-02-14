@@ -33,7 +33,7 @@ module Hyrax
         return false if ids.empty?
 
         Hyrax::ModelRegistry.admin_set_classes.each do |model|
-          return true if Hyrax.custom_queries.find_ids_by_model(model: model, ids:).any?
+          return true if Hyrax.custom_queries.find_ids_by_model(model:, ids:).any?
         end
 
         false

@@ -29,7 +29,7 @@ module AccountSettings
     setting :file_size_limit, type: 'string', default: 5.gigabytes.to_s
     setting :google_analytics_id, type: 'string'
     setting :google_scholarly_work_types, type: 'array', disabled: true
-    setting :geonames_username, type: 'string', default: ''
+    setting :geonames_username, type: 'string', default: ENV['HYKU_GEONAMES_USERNAME']
     setting :gtm_id, type: 'string'
     setting :locale_name, type: 'string', disabled: true
     setting :monthly_email_list, type: 'array', disabled: true
@@ -159,7 +159,7 @@ module AccountSettings
         config.contact_email = contact_email
         config.analytics = google_analytics_id.present?
         config.google_analytics_id = google_analytics_id if google_analytics_id.present?
-        config.geonames_username = geonames_username
+        config.geonames_username = geonames_username if geonames_username.present?
         config.uploader[:maxFileSize] = file_size_limit
       end
 

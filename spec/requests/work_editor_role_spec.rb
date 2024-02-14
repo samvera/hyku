@@ -79,8 +79,10 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
 
     it 'can create a work' do
       login_as work_editor
-      expect { post hyrax_generic_works_path, params: valid_work_params }
-        .to change { Hyrax.query_service.count_all_of_model(model: GenericWork) }.by(1)
+      expect(Ability.new(work_editor).can?(:create, GenericWorkResource)).to be_truthy
+      expect do
+        post hyrax_generic_works_path, params: valid_work_params
+      end.to change { Hyrax.query_service.count_all_of_model(model: GenericWorkResource) }.by(1)
     end
   end
 
@@ -95,6 +97,7 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
     it 'can edit works it deposited' do
       login_as work_editor
       my_work = process_through_actor_stack(build(:work), work_editor, admin_set.id, visibility)
+      expect(Ability.new(work_editor).can?(:edit, my_work)).to be_truthy
       get edit_hyrax_generic_work_path(my_work)
 
       expect(response).to have_http_status(:success)
@@ -105,7 +108,7 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
     it 'cannot destroy the work' do
       login_as work_editor
       expect { delete hyrax_generic_work_path(work) }
-        .not_to change(GenericWork, :count)
+        .not_to change { Hyrax.query_service.count_all_of_model(model: GenericWorkResource) }
     end
   end
 end

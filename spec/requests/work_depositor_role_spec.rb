@@ -31,11 +31,6 @@ RSpec.describe 'Work Depositor role', type: :request, singletenant: true, clean:
         it "can see the work's public show page" do
           get hyrax_generic_work_path(work)
 
-          expect(response.status).to eq(301)
-          expect(response.location).to end_with(hyrax_generic_work_resource_path(work))
-
-          get response.location
-
           expect(response).to have_http_status(:success)
         end
 
@@ -57,10 +52,6 @@ RSpec.describe 'Work Depositor role', type: :request, singletenant: true, clean:
       it "cannot see the work's show page" do
         get hyrax_generic_work_path(work)
 
-        expect(response.status).to eq(301)
-        expect(response.location).to end_with(hyrax_generic_work_resource_path(work))
-
-        get response.location
         expect(response).to have_http_status(:unauthorized)
       end
 
@@ -76,7 +67,7 @@ RSpec.describe 'Work Depositor role', type: :request, singletenant: true, clean:
   describe 'create permissions' do
     let(:valid_work_params) do
       {
-        generic_work_resource: {
+        generic_work: {
           title: ['Test Work'],
           creator: [work_depositor.email],
           keyword: ['asdf'],
@@ -87,26 +78,21 @@ RSpec.describe 'Work Depositor role', type: :request, singletenant: true, clean:
 
     it 'can see the work form' do
       get new_hyrax_generic_work_path
-      expect(response.status).to eq(301)
-      expect(response.location).to end_with(new_hyrax_generic_work_resource_path)
-
-      get response.location
       expect(response).to have_http_status(:success)
     end
 
     it 'can create a work' do
-      expect { post hyrax_generic_work_resources_path, params: valid_work_params }
-        .to change { Hyrax.query_service.count_all_of_model(model: GenericWork) }.by(1)
+      expect(Ability.new(work_depositor).can?(:create, GenericWorkResource)).to be_truthy
+
+      expect do
+        post hyrax_generic_works_path, params: valid_work_params
+      end.to change { Hyrax.query_service.count_all_of_model(model: GenericWorkResource) }.by(1)
     end
   end
 
   describe 'edit permissions' do
     it 'cannot edit the work' do
       get edit_hyrax_generic_work_path(work)
-      expect(response.status).to eq(301)
-      expect(response.location).to end_with(edit_hyrax_generic_work_resource_path(work))
-
-      get response.location
       expect(response).to have_http_status(:unauthorized)
     end
   end

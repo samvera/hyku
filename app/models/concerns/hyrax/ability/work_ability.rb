@@ -4,7 +4,7 @@ module Hyrax
   module Ability
     module WorkAbility
       def work_roles
-        all_work_types_and_files = Hyrax.config.curation_concerns + [::FileSet]
+        all_work_types_and_files = Hyrax::ModelRegistry.work_classes + Hyrax::ModelRegistry.file_set_classes
 
         if work_editor?
           can %i[read create edit update], all_work_types_and_files
@@ -32,7 +32,11 @@ module Hyrax
 
         return false if ids.empty?
 
-        Hyrax.custom_queries.find_ids_by_model(model: Hyrax::AdministrativeSet, ids:).any?
+        Hyrax::ModelRegistry.admin_set_classes.each do |model|
+          return true if Hyrax.custom_queries.find_ids_by_model(model: model, ids:).any?
+        end
+
+        false
       end
     end
   end

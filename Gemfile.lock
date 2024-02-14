@@ -14,7 +14,9 @@ GIT
   specs:
     hyku_knapsack (0.0.1)
       rails (>= 5.2.0)
-      sentry-raven
+      sentry-rails
+      sentry-ruby
+      sentry-sidekiq
 
 GIT
   remote: https://github.com/samvera-labs/hyrax-doi.git
@@ -1153,8 +1155,14 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
-    sentry-raven (2.13.0)
-      faraday (>= 0.7.6, < 1.0)
+    sentry-rails (5.16.1)
+      railties (>= 5.0)
+      sentry-ruby (~> 5.16.1)
+    sentry-ruby (5.16.1)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+    sentry-sidekiq (5.16.1)
+      sentry-ruby (~> 5.16.1)
+      sidekiq (>= 3.0)
     shacl (0.1.1)
       json-ld (~> 3.1, >= 3.1.7)
       rdf (~> 3.1, >= 3.1.8)

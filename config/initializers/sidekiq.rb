@@ -5,6 +5,9 @@ if ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq') == 'sidekiq'
 
   Sidekiq.configure_server do |s|
     s.redis = redis_config
+    s.error_handlers << lambda do |exception, context|
+      Sentry.capture_exception(exception, extra: context)
+    end
   end
 
   Sidekiq.configure_client do |s|

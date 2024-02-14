@@ -1,5 +1,5 @@
 require_relative 'boot'
-
+require 'sentry-rails'
 require 'rails/all'
 require 'i18n/debug' if ENV['I18N_DEBUG']
 

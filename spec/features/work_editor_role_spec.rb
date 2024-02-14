@@ -13,17 +13,19 @@ RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, ci: 's
     FactoryBot.create(:editors_group)
     FactoryBot.create(:depositors_group)
 
+    admin_set
+
     login_as work_editor
   end
   let(:work_editor) { FactoryBot.create(:user, roles: [:work_editor]) }
   let(:work_depositor) { FactoryBot.create(:user, roles: [:work_depositor]) }
   let(:visibility) { 'open' }
-  let!(:admin_set) do
+  let(:admin_set) do
     admin_set = AdminSet.new(title: ['Test Admin Set'])
     allow(Hyrax.config).to receive(:default_active_workflow_name).and_return('default')
     Hyrax::AdminSetCreateService.call!(admin_set:, creating_user: nil)
   end
-  let!(:work) { process_through_actor_stack(build(:work), work_depositor, admin_set.id, visibility) }
+  let!(:work) { FactoryBoty.create(:generic_work_resource, depositor: work_depositor, visibility_set: visibility, with_admin_set: { admin_set: }) }
 
   describe 'read permissions' do
     before do
@@ -35,6 +37,7 @@ RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, ci: 's
         let(:visibility) { visibility }
 
         it 'can see the work in search results' do
+          work
           visit search_catalog_path
 
           expect(page).to have_content(work.title.first)
@@ -49,6 +52,7 @@ RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, ci: 's
         end
 
         it 'can see works deposited by other users in the dashboard' do
+          work
           visit '/dashboard/my/works'
           click_link 'Managed Works' # switch tab
 

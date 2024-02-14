@@ -14,6 +14,7 @@ RSpec.describe Hyrax::Ability::WorkAbility do
       FactoryBot.create(:editors_group, member_users: [user])
     end
 
+    # TODO: We need to create factories for GenericWorkResource and ImageResource.
     (Hyrax.config.curation_concerns + [::FileSet]).each do |model|
       context "#{model} permissions" do
         let(:model_instance) { FactoryBot.create(model.to_s.underscore.to_sym, title: ["#{model} instance"]) }

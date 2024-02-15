@@ -20,10 +20,12 @@ RSpec.describe GenericWorkResource do
     end
 
     context 'with an admin set' do
+      let(:depositor) { FactoryBot.create(:user, roles: [:work_depositor]) }
+      let(:visibility_setting) { 'open' }
       it 'creates a resource' do
+        # Do this before we create the admin set.
         Hyrax::Group.find_or_create_by!(name: ::Ability.admin_group_name)
-        admin_set = Hyrax::AdminSetCreateService.find_or_create_default_admin_set
-        resource = FactoryBot.valkyrie_create(:generic_work_resource, :with_admin_set, admin_set:)
+        resource = FactoryBot.valkyrie_create(:generic_work_resource, :with_default_admin_set, depositor: depositor.user_key, visibility_setting:)
         expect(GenericWorkResource.find(resource.id)).to be_a(GenericWorkResource)
       end
     end

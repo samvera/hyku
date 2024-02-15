@@ -10,5 +10,11 @@ FactoryBot.modify do
       deposit_groups { ['work_editor', 'work_depositor'] }
       view_groups { ['work_editor'] }
     end
+
+    trait :with_no_groups do
+      manage_groups { [] }
+      deposit_groups { [] }
+      view_groups { [] }
+    end
   end
 end

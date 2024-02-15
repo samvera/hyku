@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
-FactoryBot.define do
-  # Valkyrie AdminSet
-  factory :hyku_admin_set, parent: :hyrax_admin_set do
+require Hyrax::Engine.root.join("spec/factories/administrative_sets").to_s
+FactoryBot.modify do
+  # Use: FactoryBot.valkyrie_create(:hyrax_admin_set)
+  factory :hyrax_admin_set do
     transient do
       with_permission_template { true }
+      # We need FactoryBot declaration, otherwise we use the same strategy
+      # (e.g. FactoryBot.valkyrie_create), and stumble into a nightmare.
       user { FactoryBot.create(:user) }
     end
 
@@ -12,4 +15,8 @@ FactoryBot.define do
       Hyrax::Group.find_or_create_by!(name: ::Ability.admin_group_name)
     end
   end
+end
+
+FactoryBot.define do
+  factory :hyku_admin_set, parent: :hyrax_admin_set
 end

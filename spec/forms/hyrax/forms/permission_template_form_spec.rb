@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
 RSpec.describe Hyrax::Forms::PermissionTemplateForm do
-  subject { form }
+  subject(:form) { described_class.new(permission_template) }
 
-  let(:permission_template) { create(:permission_template) }
-  let(:form) { described_class.new(permission_template) }
+  let(:admin_set) { FactoryBot.valkyrie_create(:hyku_admin_set, with_permission_template: false) }
+  let(:permission_template) { FactoryBot.create(:permission_template, :with_no_groups, with_admin_set: true, source_id: admin_set.id) }
   let(:today) { Time.zone.today }
-  let(:admin_set) { create(:hyku_admin_set) }
   let(:collection) { build(:collection_lw) }
 
   it { is_expected.to delegate_method(:available_workflows).to(:model) }
@@ -35,8 +34,6 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
       )
     end
 
-    let(:permission_template) { create(:permission_template, with_admin_set: true, with_workflows: true) }
-
     before do
       # Create MANAGING role manually
       Sipity::Role[Hyrax::RoleRegistry::MANAGING]
@@ -62,7 +59,6 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
       let(:access_level) { 'manage' }
 
       it 'adds the expected permission template accesses and workflow responsibilities' do
-        FactoryBot.create(:group, name: 'admin')
         FactoryBot.create(:group, name: 'bob')
         expect { subject }.to change {
           count_template_accesses_for(user, access_level)
@@ -72,7 +68,6 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
       end
 
       it 'removes workflow responsibilities' do
-        FactoryBot.create(:group, name: 'admin')
         FactoryBot.create(:group, name: 'bob')
         subject
         expect do
@@ -138,7 +133,7 @@ RSpec.describe Hyrax::Forms::PermissionTemplateForm do
     let(:input_params) do
       ActionController::Parameters.new(access_grants_attributes: grant_attributes).permit!
     end
-    let(:permission_template) { create(:permission_template, source_id: admin_set.id) }
+    let(:permission_template) { FactoryBot.valkyrie_create(:permission_template) }
 
     let(:user) { create(:user) }
     let(:user1) { create(:user) }

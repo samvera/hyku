@@ -1486,7 +1486,7 @@ DEPENDENCIES
   rspec
   rspec-activemodel-mocks
   rspec-its
-  rspec-rails (~> 6.0)
+  rspec-rails (>= 3.6.0)
   rspec-retry
   rspec_junit_formatter
   rubocop (= 1.28.2)

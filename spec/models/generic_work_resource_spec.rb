@@ -11,6 +11,24 @@ RSpec.describe GenericWorkResource do
   # TODO: Register a test adapter
   # it_behaves_like 'a Hyrax::Work'
 
+  context 'factory' do
+    context 'without an admin set' do
+      it 'creates a resource' do
+        resource = FactoryBot.valkyrie_create(:generic_work_resource)
+        expect(GenericWorkResource.find_by(id: resource.id)).to be_a(GenericWorkResource)
+      end
+    end
+
+    context 'with an admin set' do
+      it 'creates a resource' do
+        Hyrax::Group.find_or_create_by!(name: ::Ability.admin_group_name)
+        admin_set = Hyrax::AdminSetCreateService.find_or_create_default_admin_set
+        resource = FactoryBot.valkyrie_create(:generic_work_resource, :with_admin_set, admin_set: admin_set)
+        expect(GenericWorkResource.find(resource.id)).to be_a(GenericWorkResource)
+      end
+    end
+  end
+
   describe '#creator' do
     it 'is ordered by user input' do
       work.creator = ["Jeremy", "Shana"]

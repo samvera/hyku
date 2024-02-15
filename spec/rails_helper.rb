@@ -24,6 +24,11 @@ require 'database_cleaner'
 require 'active_fedora/cleaner'
 require 'webdrivers'
 require 'shoulda/matchers'
+
+# Hyrax's lib/hyrax/spec/factories provides the helpful support of the established factories of
+# Hyrax, meaning we can then inherit from those
+require 'hyrax/specs/factories'
+
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in

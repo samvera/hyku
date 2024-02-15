@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :hyku_admin_set, parent: :admin_set do
+  # Valkyrie AdminSet
+  factory :hyku_admin_set, parent: :hyrax_admin_set do
     transient do
-      permission_template_attributes do
-        {
-          manage_groups: [Ability.admin_group_name],
-          deposit_groups: ['work_editor', 'work_depositor'],
-          view_groups: ['work_editor']
-        }
-      end
+      with_permission_template { true }
+      user { FactoryBot.create(:user) }
+    end
+
+    before(:create) do |admin_set, evaluator|
+      Hyrax::Group.find_or_create_by!(name: ::Ability.admin_group_name)
     end
   end
 end

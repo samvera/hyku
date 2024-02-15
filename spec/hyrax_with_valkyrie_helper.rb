@@ -23,7 +23,6 @@ Valkyrie::StorageAdapter.register(
   :fixture_disk
 )
 
-
 require 'hyrax/specs/shared_specs/factories/strategies/valkyrie_resource'
 
 FactoryBot.register_strategy(:valkyrie_create, ValkyrieCreateStrategy)

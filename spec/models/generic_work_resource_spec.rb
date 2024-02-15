@@ -23,7 +23,7 @@ RSpec.describe GenericWorkResource do
       it 'creates a resource' do
         Hyrax::Group.find_or_create_by!(name: ::Ability.admin_group_name)
         admin_set = Hyrax::AdminSetCreateService.find_or_create_default_admin_set
-        resource = FactoryBot.valkyrie_create(:generic_work_resource, :with_admin_set, admin_set: admin_set)
+        resource = FactoryBot.valkyrie_create(:generic_work_resource, :with_admin_set, admin_set:)
         expect(GenericWorkResource.find(resource.id)).to be_a(GenericWorkResource)
       end
     end

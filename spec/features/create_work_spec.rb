@@ -30,7 +30,7 @@ RSpec.describe 'Creating a new Work', type: :feature, clean: true do
     context 'who has deposit access for a specific admin set' do
       let(:admin_set_2) do
         create(:hyku_admin_set, title: ["Another Admin Set"],
-               description: ["A description"])
+                                description: ["A description"])
       end
 
       before do
@@ -53,7 +53,7 @@ RSpec.describe 'Creating a new Work', type: :feature, clean: true do
     context 'who belongs to a group with deposit access for a specific admin set' do
       let(:admin_set_3) do
         create(:hyku_admin_set, title: ["Yet Another Admin Set"],
-                           description: ["A description"])
+                                description: ["A description"])
       end
       let(:depositors_group) { create(:depositors_group, name: 'deposit', member_users: [user]) }
 

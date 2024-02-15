@@ -244,7 +244,7 @@ RSpec.describe RolesService, clean: true do
   end
 
   describe '#create_admin_set_accesses!' do
-    let!(:admin_set) { FactoryBot.create(:admin_set, with_permission_template: true) }
+    let!(:admin_set) { FactoryBot.create(:hyku_admin_set, with_permission_template: true) }
 
     context 'when an AdminSet already has PermissionTemplateAccess records for all of the work roles' do
       it 'does not create any new PermissionTemplateAccess records' do
@@ -561,7 +561,7 @@ RSpec.describe RolesService, clean: true do
   describe '#grant_workflow_roles_for_all_admin_sets!' do
     before do
       3.times do
-        FactoryBot.create(:admin_set, with_permission_template: true)
+        FactoryBot.create(:hyku_admin_set, with_permission_template: true)
       end
     end
 

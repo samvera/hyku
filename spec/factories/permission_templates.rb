@@ -14,10 +14,10 @@ FactoryBot.define do
             begin
               AdminSet.find(source_id)
             rescue ActiveFedora::ObjectNotFoundError
-              create(:admin_set, id: source_id)
+              create(:hyku_admin_set, id: source_id)
             end
           else
-            create(:admin_set)
+            create(:hyku_admin_set)
           end
         permission_template.source_id = admin_set.id
       elsif evaluator.with_collection

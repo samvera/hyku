@@ -72,7 +72,7 @@ module Hyrax
         path = build_path(id)
         path = build_path(id, force: true) unless File.exist?(path) # Ensures the file is locally available
       end
-      RiiifFile.new(path, id: id)
+      RiiifFile.new(path, id:)
     end
 
     # tracks individual file locks
@@ -89,7 +89,7 @@ module Hyrax
     def build_path(id, force: false)
       Riiif::Image.cache.fetch("riiif:" + Digest::MD5.hexdigest("path:#{id}"),
                                expires_in: Riiif::Image.expires_in,
-                               force: force) do
+                               force:) do
         load_file(id)
       end
     end
@@ -98,7 +98,7 @@ module Hyrax
       benchmark "RiiifFileResolver loaded #{id}", level: :debug do
         fs_id = id.sub(/\A([^\/]*)\/.*/, '\1')
         file_set = Hyrax.query_service.find_by(id: fs_id)
-        file_metadata = Hyrax.custom_queries.find_original_file(file_set: file_set)
+        file_metadata = Hyrax.custom_queries.find_original_file(file_set:)
         file_metadata.file.disk_path.to_s # Stores a local copy in tmpdir
       end
     end

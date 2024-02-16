@@ -9,7 +9,7 @@ module SharedSearchHelper
       account_cname = request.server_name
     else
       model_hash = model.to_h.with_indifferent_access
-   
+
       base_route_name = model_hash["has_model_ssim"].first.constantize.model_name.plural
       id = model_hash["id"]
       account_cname = Array.wrap(model_hash["account_cname_tesim"]).first

@@ -24,5 +24,6 @@ Valkyrie::StorageAdapter.register(
 )
 
 require 'hyrax/specs/shared_specs/factories/strategies/valkyrie_resource'
+require 'hyrax/specs/shared_specs/factories/strategies/json_strategy'
 
-FactoryBot.register_strategy(:valkyrie_create, ValkyrieCreateStrategy)
+FactoryBot.register_strategy(:json, JsonStrategy)

@@ -2,6 +2,7 @@
 
 require Hyrax::Engine.root.join("spec/factories/administrative_sets").to_s
 FactoryBot.modify do
+  # Modifying https://github.com/samvera/hyrax/blob/main/spec/factories/administrative_sets.rb
   # Use: FactoryBot.valkyrie_create(:hyrax_admin_set)
   factory :hyrax_admin_set do
     transient do

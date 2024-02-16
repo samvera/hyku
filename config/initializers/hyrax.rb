@@ -20,12 +20,14 @@ Hyrax.config do |config|
   # Identify the model class name that will be used for Collections in your app
   # (i.e. ::Collection for ActiveFedora, Hyrax::PcdmCollection for Valkyrie)
   # config.collection_model = '::Collection'
-  config.collection_model = 'Hyrax::PcdmCollection'
+   # Injected via `rails g hyrax:collection_resource CollectionResource`
+   config.collection_model = 'CollectionResource'
 
   # Identify the model class name that will be used for Admin Sets in your app
   # (i.e. AdminSet for ActiveFedora, Hyrax::AdministrativeSet for Valkyrie)
   # config.admin_set_model = 'AdminSet'
-  config.admin_set_model = 'Hyrax::AdministrativeSet'
+   config.admin_set_model = 'AdminSetResource'
+
   # The email address that messages submitted via the contact page are sent to
   # This is set by account settings
   # config.contact_email = 'changeme@example.com'

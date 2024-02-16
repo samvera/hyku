@@ -15,6 +15,7 @@ module AccountSettings
       {}
     end
 
+    setting :allow_downloads, type: 'boolean', default: true
     setting :allow_signup, type: 'boolean', default: true
     setting :bulkrax_validations, type: 'boolean', disabled: true
     setting :cache_api, type: 'boolean', default: false
@@ -160,6 +161,8 @@ module AccountSettings
   # rubocop:disable Metrics/AbcSize
   def reload_library_config
     Hyrax.config do |config|
+      # A short-circuit of showing download links
+      config.display_media_download_link = allow_downloads.nil? || ActiveModel::Type::Boolean.new.cast(allow_downloads)
       config.contact_email = contact_email
       config.geonames_username = geonames_username
       config.uploader[:maxFileSize] = file_size_limit.to_i

@@ -233,9 +233,9 @@ class RolesService # rubocop:disable Metrics/ClassLength
 
   class GrantWorkflowRolesForAllAdminSetsJob < Hyrax::ApplicationJob
     def perform
-      AdminSet.find_each do |admin_set|
-        Hyrax::Workflow::PermissionGrantor
-          .grant_default_workflow_roles!(permission_template: admin_set.permission_template)
+      Hyrax.query_service.find_all_of_model(model: Hyrax.config.admin_set_class).each do |admin_set|
+        permission_template = Hyrax::PermissionTemplate.find_or_create_by!(source_id: admin_set.id)
+        Hyrax::Workflow::PermissionGrantor.grant_default_workflow_roles!(permission_template:)
       end
     end
   end
@@ -243,8 +243,8 @@ class RolesService # rubocop:disable Metrics/ClassLength
   class CreateCollectionAccessesJob < Hyrax::ApplicationJob
     # rubocop:disable Metrics/MethodLength
     def perform
-      Collection.find_each do |c|
-        pt = Hyrax::PermissionTemplate.find_or_create_by!(source_id: c.id)
+      Hyrax.query_service.find_all_of_model(model: Hyrax.config.collection_class).each do |collection|
+        pt = Hyrax::PermissionTemplate.find_or_create_by!(source_id: collection.id)
         original_access_grants_count = pt.access_grants.count
 
         pt.access_grants.find_or_create_by!(
@@ -271,7 +271,7 @@ class RolesService # rubocop:disable Metrics/ClassLength
           agent_id: 'collection_reader'
         )
 
-        pt.reset_access_controls_for(collection: c) if pt.access_grants.count != original_access_grants_count
+        pt.reset_access_controls_for(collection:) if pt.access_grants.count != original_access_grants_count
       end
     end
     # rubocop:enable Metrics/MethodLength
@@ -280,8 +280,8 @@ class RolesService # rubocop:disable Metrics/ClassLength
   class CreateAdminSetAccessesJob < Hyrax::ApplicationJob
     # rubocop:disable Metrics/MethodLength
     def perform
-      AdminSet.find_each do |as|
-        pt = Hyrax::PermissionTemplate.find_or_create_by!(source_id: as.id)
+      Hyrax.query_service.find_all_of_model(model: Hyrax.config.admin_set_class).each do |admin_set|
+        pt = Hyrax::PermissionTemplate.find_or_create_by!(source_id: admin_set.id)
         original_access_grants_count = pt.access_grants.count
 
         pt.access_grants.find_or_create_by!(
@@ -308,7 +308,7 @@ class RolesService # rubocop:disable Metrics/ClassLength
           agent_id: 'work_editor'
         )
 
-        pt.reset_access_controls_for(collection: as) if pt.access_grants.count != original_access_grants_count
+        pt.reset_access_controls_for(collection: admin_set) if pt.access_grants.count != original_access_grants_count
       end
     end
     # rubocop:enable Metrics/MethodLength

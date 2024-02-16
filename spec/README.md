@@ -22,3 +22,12 @@ In addition to the baseline `FactoryBot.build` and `FactoryBot.create` Hyrax pro
 
 - `FactoryBot.create_valkyrie` :: For creating a Valkyrie-only object, that is never writing the object via ActiveFedora.
 - `FactoryBot.json` :: For creating a JSON object; a read of the Hyrax specs shows that this strategy is used as part of other factories.
+
+### AdminSet and PermissionTemplate
+
+The default Permission Template for Hyku is a bit more complicated than Hyrax.  When you want a properly created factory of permission template and admin set use the following:
+
+```ruby
+let(:permission_template) { FactoryBot.create(:permission_template, with_admin_set: true, source_id: admin_set.id) }
+let(:admin_set) { FactoryBot.valkyrie_create(:hyku_admin_set) }
+```

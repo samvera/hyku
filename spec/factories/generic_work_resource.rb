@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :generic_work_resource, parent: :hyrax_work, class: 'GenericWorkResource'
 
-  before(:create) do |work, _e|
+  before(:create) do |_work, _e|
     Hyrax::Group.find_or_create_by!(name: ::Ability.admin_group_name)
   end
 end

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe RolesService, clean: true do
   subject(:roles_service) { described_class }
-
+  let(:admin_group) { Hyrax::Group.find_by!(name: ::Ability.admin_group_name) }
   let(:default_role_count) { described_class::DEFAULT_ROLES.count }
   let(:default_hyrax_group_count) { described_class::DEFAULT_HYRAX_GROUPS_WITH_ATTRIBUTES.keys.count }
 
@@ -176,63 +176,21 @@ RSpec.describe RolesService, clean: true do
       end
 
       it 'creates a PermissionTemplateAccess record with MANAGE access for the :collection_manager role' do
-        expect(
-          access_count_for(
-            'collection_manager',
-            collection.permission_template,
-            Hyrax::PermissionTemplateAccess::MANAGE
-          )
-        ).to eq(0)
-
-        roles_service.create_collection_accesses!
-
-        expect(
-          access_count_for(
-            'collection_manager',
-            collection.permission_template,
-            Hyrax::PermissionTemplateAccess::MANAGE
-          )
-        ).to eq(1)
+        expect { roles_service.create_collection_accesses! }
+          .to change { access_count_for('collection_manager', collection.permission_template, Hyrax::PermissionTemplateAccess::MANAGE) }
+          .from(0).to(1)
       end
 
       it 'creates a PermissionTemplateAccess record with VIEW access for the :collection_editor role' do
-        expect(
-          access_count_for(
-            'collection_editor',
-            collection.permission_template,
-            Hyrax::PermissionTemplateAccess::VIEW
-          )
-        ).to eq(0)
-
-        roles_service.create_collection_accesses!
-
-        expect(
-          access_count_for(
-            'collection_editor',
-            collection.permission_template,
-            Hyrax::PermissionTemplateAccess::VIEW
-          )
-        ).to eq(1)
+        expect { roles_service.create_collection_accesses! }
+          .to change { access_count_for('collection_editor', collection.permission_template, Hyrax::PermissionTemplateAccess::VIEW) }
+          .from(0).to(1)
       end
 
       it 'creates a PermissionTemplateAccess record with VIEW access for the :collection_reader role' do
-        expect(
-          access_count_for(
-            'collection_reader',
-            collection.permission_template,
-            Hyrax::PermissionTemplateAccess::VIEW
-          )
-        ).to eq(0)
-
-        roles_service.create_collection_accesses!
-
-        expect(
-          access_count_for(
-            'collection_reader',
-            collection.permission_template,
-            Hyrax::PermissionTemplateAccess::VIEW
-          )
-        ).to eq(1)
+        expect { roles_service.create_collection_accesses! }
+          .to change { access_count_for('collection_reader', collection.permission_template, Hyrax::PermissionTemplateAccess::VIEW) }
+          .from(0).to(1)
       end
 
       it "resets the Collection's access controls" do
@@ -244,12 +202,13 @@ RSpec.describe RolesService, clean: true do
   end
 
   describe '#create_admin_set_accesses!' do
-    let!(:admin_set) { FactoryBot.create(:hyku_admin_set, with_permission_template: true) }
+    let!(:permission_template) { FactoryBot.create(:permission_template, with_admin_set: true, source_id: admin_set.id) }
+    let(:admin_set) { FactoryBot.valkyrie_create(:hyku_admin_set) }
 
     context 'when an AdminSet already has PermissionTemplateAccess records for all of the work roles' do
       it 'does not create any new PermissionTemplateAccess records' do
         expect { roles_service.create_admin_set_accesses! }
-          .not_to change(Hyrax::PermissionTemplateAccess, :count)
+          .not_to change { permission_template.access_grants.count }
       end
 
       it "does not reset the AdminSet's access controls unnecessarily" do
@@ -261,7 +220,7 @@ RSpec.describe RolesService, clean: true do
 
     context 'when an AdminSet does not have access records for the work roles' do
       before do
-        admin_set.permission_template.access_grants.map(&:destroy)
+        permission_template.access_grants.map(&:destroy)
       end
 
       it 'creates four new PermissionTemplateAccess records' do
@@ -271,83 +230,27 @@ RSpec.describe RolesService, clean: true do
       end
 
       it 'creates a PermissionTemplateAccess record with MANAGE access for the admin group' do
-        expect(
-          access_count_for(
-            Ability.admin_group_name,
-            admin_set.permission_template,
-            Hyrax::PermissionTemplateAccess::MANAGE
-          )
-        ).to eq(0)
-
-        roles_service.create_admin_set_accesses!
-
-        expect(
-          access_count_for(
-            Ability.admin_group_name,
-            admin_set.permission_template,
-            Hyrax::PermissionTemplateAccess::MANAGE
-          )
-        ).to eq(1)
+        expect { roles_service.create_admin_set_accesses! }
+          .to change { access_count_for(Ability.admin_group_name, permission_template, Hyrax::PermissionTemplateAccess::MANAGE) }
+          .from(0).to(1)
       end
 
       it 'creates a PermissionTemplateAccess record with DEPOSIT access for the :work_editor role' do
-        expect(
-          access_count_for(
-            'work_editor',
-            admin_set.permission_template,
-            Hyrax::PermissionTemplateAccess::DEPOSIT
-          )
-        ).to eq(0)
-
-        roles_service.create_admin_set_accesses!
-
-        expect(
-          access_count_for(
-            'work_editor',
-            admin_set.permission_template,
-            Hyrax::PermissionTemplateAccess::DEPOSIT
-          )
-        ).to eq(1)
+        expect { roles_service.create_admin_set_accesses! }
+          .to change { access_count_for('work_editor', permission_template, Hyrax::PermissionTemplateAccess::DEPOSIT) }
+          .from(0).to(1)
       end
 
       it 'creates a PermissionTemplateAccess record with DEPOSIT access for the :work_depositor role' do
-        expect(
-          access_count_for(
-            'work_depositor',
-            admin_set.permission_template,
-            Hyrax::PermissionTemplateAccess::DEPOSIT
-          )
-        ).to eq(0)
-
-        roles_service.create_admin_set_accesses!
-
-        expect(
-          access_count_for(
-            'work_depositor',
-            admin_set.permission_template,
-            Hyrax::PermissionTemplateAccess::DEPOSIT
-          )
-        ).to eq(1)
+        expect { roles_service.create_admin_set_accesses! }
+          .to change { access_count_for('work_depositor', permission_template, Hyrax::PermissionTemplateAccess::DEPOSIT) }
+          .from(0).to(1)
       end
 
       it 'creates a PermissionTemplateAccess record with VIEW access for the :work_editor role' do
-        expect(
-          access_count_for(
-            'work_editor',
-            admin_set.permission_template,
-            Hyrax::PermissionTemplateAccess::VIEW
-          )
-        ).to eq(0)
-
-        roles_service.create_admin_set_accesses!
-
-        expect(
-          access_count_for(
-            'work_editor',
-            admin_set.permission_template,
-            Hyrax::PermissionTemplateAccess::VIEW
-          )
-        ).to eq(1)
+        expect { roles_service.create_admin_set_accesses! }
+          .to change { access_count_for('work_editor', permission_template, Hyrax::PermissionTemplateAccess::VIEW) }
+          .from(0).to(1)
       end
 
       it "resets the AdminSet's access controls" do
@@ -383,43 +286,25 @@ RSpec.describe RolesService, clean: true do
       end
 
       it 'creates a CollectionTypeParticipant record with MANAGE_ACCESS for the :collection_manager role' do
-        expect(
-          collection_type.collection_type_participants.where(
-            agent_id: 'collection_manager',
-            agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
-            access: Hyrax::CollectionTypeParticipant::MANAGE_ACCESS
-          ).count
-        ).to eq(0)
-
-        roles_service.create_collection_type_participants!
-
-        expect(
-          collection_type.collection_type_participants.where(
-            agent_id: 'collection_manager',
-            agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
-            access: Hyrax::CollectionTypeParticipant::MANAGE_ACCESS
-          ).count
-        ).to eq(1)
+        expect { roles_service.create_collection_type_participants! }
+          .to change {
+                collection_type.collection_type_participants.where(
+                agent_id: 'collection_manager',
+                agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
+                access: Hyrax::CollectionTypeParticipant::MANAGE_ACCESS
+              ).count
+              }.from(0).to(1)
       end
 
       it 'creates a CollectionTypeParticipant record with CREATE_ACCESS for the :collection_editor role' do
-        expect(
-          collection_type.collection_type_participants.where(
-            agent_id: 'collection_editor',
-            agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
-            access: Hyrax::CollectionTypeParticipant::CREATE_ACCESS
-          ).count
-        ).to eq(0)
-
-        roles_service.create_collection_type_participants!
-
-        expect(
-          collection_type.collection_type_participants.where(
-            agent_id: 'collection_editor',
-            agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
-            access: Hyrax::CollectionTypeParticipant::CREATE_ACCESS
-          ).count
-        ).to eq(1)
+        expect { roles_service.create_collection_type_participants! }
+          .to change {
+                collection_type.collection_type_participants.where(
+                agent_id: 'collection_editor',
+                agent_type: Hyrax::CollectionTypeParticipant::GROUP_TYPE,
+                access: Hyrax::CollectionTypeParticipant::CREATE_ACCESS
+              ).count
+              }.from(0).to(1)
       end
     end
 
@@ -466,7 +351,6 @@ RSpec.describe RolesService, clean: true do
   end
 
   describe '#create_admin_group_memberships!' do
-    let(:admin_group) { create(:admin_group) }
     let(:registered_group) { Hyrax::Group.find_by(name: Ability.registered_group_name) }
 
     context 'when a user has the admin role' do

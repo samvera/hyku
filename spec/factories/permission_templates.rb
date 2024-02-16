@@ -1,5 +1,5 @@
-# Hyrax's lib/hyrax/spec/factories provides the helpful support of the established factories of
-# Hyrax, meaning we can then inherit from those
+# frozen_string_literal: true
+
 require Hyrax::Engine.root.join("spec/factories/permission_templates").to_s
 
 FactoryBot.modify do

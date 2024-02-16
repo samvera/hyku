@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require Hyrax::Engine.root.join("spec/factories/collection_types").to_s
-
 FactoryBot.modify do
   # Hyku assumes a collection editor and collection manager
   factory :collection_type do

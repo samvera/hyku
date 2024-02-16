@@ -219,7 +219,10 @@ module Hyku
       Dir.glob(File.join(File.dirname(__FILE__), "../lib/oai/**/*.rb")).sort.each do |c|
         Rails.configuration.cache_classes ? require(c) : load(c)
       end
+
     end
+
+    config.factory_bot.definition_file_paths = []
 
     # resolve reloading issue in dev mode
     config.paths.add 'app/helpers', eager_load: true

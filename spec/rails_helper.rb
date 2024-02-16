@@ -13,21 +13,25 @@ ENV['HYKU_MULTITENANT'] = 'true'
 
 require 'simplecov'
 SimpleCov.start('rails')
-
 require File.expand_path('../config/environment', __dir__)
+require 'spec_helper'
+
+# First find the Hyrax factories; then find the local factories (which extend/modify Hyrax
+# factories).
+FactoryBot.definition_file_paths = [
+  Hyrax::Engine.root.join("spec/factories/").to_s,
+  File.expand_path("../factories", __FILE__)
+]
+FactoryBot.find_definitions
+
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
-require 'spec_helper'
 require 'rspec/rails'
 require 'capybara/rails'
 require 'database_cleaner'
 require 'active_fedora/cleaner'
 require 'webdrivers'
 require 'shoulda/matchers'
-
-# Hyrax's lib/hyrax/spec/factories provides the helpful support of the established factories of
-# Hyrax, meaning we can then inherit from those
-require 'hyrax/specs/factories'
 
 # Add additional requires below this line. Rails is not loaded until this point!
 

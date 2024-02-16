@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require Hyrax::Engine.root.join("spec/factories/permission_templates").to_s
-
 FactoryBot.modify do
   # Modifying https://github.com/samvera/hyrax/blob/main/spec/factories/permission_templates.rb
   factory :permission_template do

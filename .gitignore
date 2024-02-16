@@ -17,6 +17,7 @@ rerun.txt
 pickle-email-*.html
 solr_db_initialized
 fits.log
+/storage/files
 
 ## Environment normalization:
 /.bundle

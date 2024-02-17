@@ -219,7 +219,6 @@ module Hyku
       Dir.glob(File.join(File.dirname(__FILE__), "../lib/oai/**/*.rb")).sort.each do |c|
         Rails.configuration.cache_classes ? require(c) : load(c)
       end
-
     end
 
     config.factory_bot.definition_file_paths = []

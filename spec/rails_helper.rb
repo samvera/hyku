@@ -16,7 +16,6 @@ SimpleCov.start('rails')
 require File.expand_path('../config/environment', __dir__)
 require 'spec_helper'
 
-
 # We're going to need this for our factories
 require Hyrax::Engine.root.join("spec/support/simple_work").to_s
 
@@ -34,7 +33,6 @@ def RoleMapper.add(user:, groups:)
     user.add_role(group.to_sym, Site.instance)
   end
 end
-
 
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?

@@ -16,6 +16,10 @@ SimpleCov.start('rails')
 require File.expand_path('../config/environment', __dir__)
 require 'spec_helper'
 
+
+# We're going to need this for our factories
+require Hyrax::Engine.root.join("spec/support/simple_work").to_s
+
 # First find the Hyrax factories; then find the local factories (which extend/modify Hyrax
 # factories).
 FactoryBot.definition_file_paths = [
@@ -23,6 +27,14 @@ FactoryBot.definition_file_paths = [
   File.expand_path("../factories", __FILE__)
 ]
 FactoryBot.find_definitions
+
+# Appeasing the Hyrax user factory interface.
+def RoleMapper.add(user:, groups:)
+  groups.each do |group|
+    user.add_role(group.to_sym, Site.instance)
+  end
+end
+
 
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?

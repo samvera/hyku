@@ -9,10 +9,6 @@ FactoryBot.modify do
       # (e.g. FactoryBot.valkyrie_create), and stumble into a nightmare.
       user { FactoryBot.create(:user) }
     end
-
-    before(:create) do |_admin_set, _evaluator|
-      Hyrax::Group.find_or_create_by!(name: ::Ability.admin_group_name)
-    end
   end
 end
 

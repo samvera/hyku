@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe RolesService, clean: true do
   subject(:roles_service) { described_class }
-  let(:admin_group) { Hyrax::Group.find_by!(name: ::Ability.admin_group_name) }
+  let(:admin_group) { FactoryBot.create(:admin_group) }
   let(:default_role_count) { described_class::DEFAULT_ROLES.count }
   let(:default_hyrax_group_count) { described_class::DEFAULT_HYRAX_GROUPS_WITH_ATTRIBUTES.keys.count }
 
@@ -139,12 +139,14 @@ RSpec.describe RolesService, clean: true do
   end
 
   describe '#create_collection_accesses!' do
-    let!(:collection) { FactoryBot.create(:collection_lw, with_permission_template: true) }
+    let(:permission_template) { FactoryBot.create(:permission_template, source_id: collection.id) }
+    let(:collection) { FactoryBot.create(:collection_lw) }
 
     context 'when a Collection already has PermissionTemplateAccess records for all of the collection roles' do
       # The ##create_collection_accesses! method also grants the admin group manage access.
       # This does not happen on permission template creation by default, so we simulate it here.
       before do
+        admin_group # We need to create this creature for this spec
         collection.permission_template.access_grants.find_or_create_by!(
           access: Hyrax::PermissionTemplateAccess::MANAGE,
           agent_type: Hyrax::PermissionTemplateAccess::GROUP,

@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Hyrax::PcdmCollection do
+RSpec.describe CollectionResource do
   subject(:collection) { described_class.new }
 
   it_behaves_like 'a Hyrax::PcdmCollection'

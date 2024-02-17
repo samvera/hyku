@@ -17,8 +17,8 @@
     <div class="card-body">
       <%# user_invitation_path is provided by devise_invitable %>
       <%= simple_form_for :user,  url: main_app.user_invitation_path, html: { class: 'form-inline d-inline-flex' } do |f| %>
+        <%= f.hint :email %>
         <div class="form-group">
-          <%= f.hint :email %>
           <%= f.label :email, class: "control-label", required: false %>
           <%= f.input_field :email, class: "form-control", value: "" %>
           <%= f.select :role,

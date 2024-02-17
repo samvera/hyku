@@ -10,9 +10,9 @@ Rails.application.config.after_initialize do
     Wings::ModelRegistry.register(klass, klass)
   end
   Wings::ModelRegistry.register(Collection, Collection)
-  Wings::ModelRegistry.register(Hyrax::PcdmCollection, Collection)
+  Wings::ModelRegistry.register(CollectionResource, Collection)
   Wings::ModelRegistry.register(AdminSet, AdminSet)
-  Wings::ModelRegistry.register(Hyrax::AdministrativeSet, AdminSet)
+  Wings::ModelRegistry.register(AdminSetResource, AdminSet)
   Wings::ModelRegistry.register(FileSet, FileSet)
   Wings::ModelRegistry.register(Hyrax::FileSet, FileSet)
 
@@ -64,11 +64,11 @@ Rails.application.config.after_initialize do
 end
 
 Rails.application.config.to_prepare do
-  Hyrax::AdministrativeSet.class_eval do
+  AdminSetResource.class_eval do
     attribute :internal_resource, Valkyrie::Types::Any.default("AdminSet"), internal: true
   end
 
-  Hyrax::PcdmCollection.class_eval do
+  CollectionResource.class_eval do
     attribute :internal_resource, Valkyrie::Types::Any.default("Collection"), internal: true
   end
 
@@ -85,9 +85,9 @@ Rails.application.config.to_prepare do
     ].include?(klass_name)
       "#{klass_name}Resource".constantize
     elsif 'Collection' == klass_name
-      Hyrax::PcdmCollection
+      CollectionResource
     elsif 'AdminSet' == klass_name
-      Hyrax::AdministrativeSet
+      AdminSetResource
     # Without this mapping, we'll see cases of Postgres Valkyrie adapter attempting to write to
     # Fedora.  Yeah!
     elsif 'Hydra::AccessControl' == klass_name

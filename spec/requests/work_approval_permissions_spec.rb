@@ -17,7 +17,7 @@ RSpec.describe 'Work approval permissions', type: :request, singletenant: true, 
     }
   end
   # These `let!` statements and the following `before` are order-dependent
-  let!(:admin_group) { FactoryBot.create(:admin_group) }
+  let!(:admin_group) { Hyrax::Group.find_or_create_by!(name: ::Ability.admin_group_name) }
   let!(:registered_group) { FactoryBot.create(:registered_group) } # rubocop:disable RSpec/LetSetup
   let!(:editors_group) { FactoryBot.create(:editors_group) }
   let!(:depositors_group) { FactoryBot.create(:depositors_group) }
@@ -26,7 +26,8 @@ RSpec.describe 'Work approval permissions', type: :request, singletenant: true, 
     admin_set = Hyrax.config.admin_set_class.new(title: ['Mediated Deposit Admin Set'])
     Hyrax::AdminSetCreateService.call!(admin_set:, creating_user: nil)
   end
-  let!(:work) { process_through_actor_stack(build(:work), work_creator, admin_set.id, 'open') }
+  let(:visibility_setting) { 'open' }
+  let!(:work) { FactoryBot.valkyrie_create(:generic_work_resource, :with_admin_set, admin_set:, visibility_setting:, depositor: work_creator.user_key) }
 
   before do
     login_as user

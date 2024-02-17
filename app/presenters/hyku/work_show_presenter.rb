@@ -84,6 +84,7 @@ module Hyku
     end
 
     def show_pdf_download_button?
+      return unless Hyrax.config.display_media_download_link?
       return unless file_set_presenters.any?(&:pdf?)
       return unless show_pdf_download_button
 

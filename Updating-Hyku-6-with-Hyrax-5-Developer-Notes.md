@@ -20,6 +20,19 @@ When we create a tenant using Valkyrie, with a Frigg/Freyja adapter, we create a
 
 By configuration and convention, each ActiveFedora::Base work type will have a corresponding Valkyrie::Resource.  Consider that `GenericWork < ActiveFedora::Base`, we'll have `GenericWorkResource < Valkyrie::Resource`.
 
+## `.internal_resource` and `.to_rdf_representation`
+
+To leverage the existing Solr index without a migration means you'll want to ensure that the Valkyrie class's read and write similar Solr documents.  In paricular two attributes:
+
+- `has_model` :: The specific conceptual model (e.g. Article, Monograph, AdminSet, Collection)
+- `generic_type` :: The general conceptual model (e.g. Work, Work, AdminSet, Collection)
+
+There's inconsistency between ActiveFedora and Valkyrie's index field for generic_type: `generic_type_sim` and `generic_type_si` respectively.
+
+Hyrax has concistently used `has_model_ssim` as the Solr key.
+
+To leverage the `double_combo` ensure that your Valkyrie::Resource models have `.internal_resource` and `.to_rdf_representation` that reflects the class you're migrating from.  The `double_combo` branch provides the `Hyrax::ValkyrieLazyMigration.migrating` class method to do the heavy lifting.
+
 ## Example Spec Problem
 
 ```ruby

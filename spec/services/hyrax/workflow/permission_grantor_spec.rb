@@ -40,7 +40,7 @@ RSpec.describe Hyrax::Workflow::PermissionGrantor do
 
   describe '#call' do
     let(:permission_template) { create(:permission_template, with_admin_set: true, with_active_workflow: true) }
-    let(:admin_group) { Hyrax::Group.find_or_create_by!(name: ::Ability.admin_group_name) }
+    let!(:admin_group) { Hyrax::Group.find_or_create_by!(name: ::Ability.admin_group_name) }
 
     it 'creates default sipity roles' do
       expect { permission_grantor.call }.to change(Sipity::Role, :count).by(3)

@@ -222,7 +222,7 @@ RSpec.describe RolesService, clean: true do
 
     context 'when an AdminSet does not have access records for the work roles' do
       before do
-        permission_template.access_grants.map(&:destroy)
+        permission_template.access_grants.destroy_all
       end
 
       it 'creates four new PermissionTemplateAccess records' do

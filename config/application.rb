@@ -221,7 +221,8 @@ module Hyku
       end
     end
 
-    config.factory_bot.definition_file_paths = []
+    # When running tests we don't want to auto-specify factories
+    config.factory_bot.definition_file_paths = [] if config.respond_to?(:factory_bot)
 
     # resolve reloading issue in dev mode
     config.paths.add 'app/helpers', eager_load: true

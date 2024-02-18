@@ -7,7 +7,7 @@ RSpec.describe GenericWorkResourceForm do
   let(:base_attributes) { { title: "My TItle", creator: "Jeremy" } }
   let(:work) { GenericWorkResource.new(base_attributes.merge(attributes)) }
 
-  let(:default_admin_set) { instance_double(Hyrax::AdministrativeSet, title: "DEFAULT_ADMINSET", id: "DEFAULT_ADMINSET_ID") }
+  let(:default_admin_set) { instance_double(AdminSetResource, title: "DEFAULT_ADMINSET", id: "DEFAULT_ADMINSET_ID") }
   before { allow(Hyrax::AdminSetCreateService).to receive(:find_or_create_default_admin_set).and_return(default_admin_set) }
 
   describe '#validate!' do

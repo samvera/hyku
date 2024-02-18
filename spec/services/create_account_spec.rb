@@ -4,7 +4,7 @@ RSpec.describe CreateAccount, clean: true do
   subject { described_class.new(account) }
 
   let(:account) { FactoryBot.build(:sign_up_account) }
-  let(:stubbed_admin_set) { double(AdminSet, id: "admin_set/id") }
+  let(:stubbed_admin_set) { double(AdminSetResource, id: "admin_set/id") }
 
   describe '#create_tenant' do
     it 'creates a new apartment tenant' do

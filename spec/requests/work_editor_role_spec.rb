@@ -28,7 +28,7 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
   end
 
   let!(:admin_set) do
-    FactoryBot.create(:hyku_admin_set, title: ['Test Admin Set'], with_permission_template: { with_workflows: true })
+    FactoryBot.valkyrie_create(:hyku_admin_set, title: ['Test Admin Set'], with_permission_template: { with_workflows: true })
   end
   let(:work) { process_through_actor_stack(build(:work), work_depositor, admin_set.id, visibility) }
 

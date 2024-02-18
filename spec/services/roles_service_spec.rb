@@ -140,7 +140,7 @@ RSpec.describe RolesService, clean: true do
 
   describe '#create_collection_accesses!' do
     let(:permission_template) { FactoryBot.create(:permission_template, source_id: collection.id) }
-    let(:collection) { FactoryBot.create(:collection_lw) }
+    let(:collection) { FactoryBot.valkyrie_create(:hyrax_collection) }
 
     context 'when a Collection already has PermissionTemplateAccess records for all of the collection roles' do
       # The ##create_collection_accesses! method also grants the admin group manage access.

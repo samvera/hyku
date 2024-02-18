@@ -14,5 +14,8 @@ class CollectionResource < Hyrax::PcdmCollection
   # on architecture.
   # @see https://samvera.slack.com/archives/C0F9JQJDQ/p1705421588370699 Slack discussion thread.
   include Hyrax::Permissions::Readable
+
+  include WithPermissionTemplateShim
+
   prepend OrderAlready.for(:creator)
 end

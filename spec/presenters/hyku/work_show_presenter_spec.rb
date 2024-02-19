@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Hyku::WorkShowPresenter do
-  let(:work) { FactoryBot.create(:work_with_one_file) }
+  let(:work) { FactoryBot.create(:generic_work_resource, :with_one_file_set) }
   let(:document) { work.to_solr }
   let(:solr_document) { SolrDocument.new(document) }
   let(:request) { double(base_url: 'http://test.host', host: 'http://test.host') }
@@ -79,7 +79,7 @@ RSpec.describe Hyku::WorkShowPresenter do
   end
 
   context "when the work has valid doi and isbns" do
-    # the values are set in generic_works factory
+    # the values are set in generic_work_resource factory
     describe "#doi" do
       it "extracts the DOI from the identifiers" do
         expect(presenter.doi).to eq('10.1038/nphys1170')

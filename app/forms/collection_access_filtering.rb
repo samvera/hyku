@@ -15,8 +15,6 @@ module CollectionAccessFiltering
     filtered_access_grants || []
   end
 
-    private
-
   def permission_template
     Hyrax::PermissionTemplate.find_by(source_id: id)
   end

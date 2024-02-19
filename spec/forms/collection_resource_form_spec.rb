@@ -6,7 +6,7 @@ require 'rails_helper'
 require 'valkyrie/specs/shared_specs'
 
 RSpec.describe CollectionResourceForm do
-  let(:change_set) { described_class.new(resource) }
+  let(:change_set) { described_class.new(resource: resource) }
   let(:resource)   { CollectionResource.new }
 
   it_behaves_like 'a Valkyrie::ChangeSet'

@@ -233,7 +233,7 @@ class RolesService # rubocop:disable Metrics/ClassLength
 
   class GrantWorkflowRolesForAllAdminSetsJob < Hyrax::ApplicationJob
     def perform
-      Hyrax.query_service.find_all_of_model(model: Hyrax.config.admin_set_class) do |admin_set|
+      Hyrax.query_service.find_all_of_model(model: Hyrax.config.admin_set_class).each do |admin_set|
         Hyrax::Workflow::PermissionGrantor
           .grant_default_workflow_roles!(permission_template: admin_set.permission_template)
       end

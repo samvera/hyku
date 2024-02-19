@@ -4,7 +4,7 @@ require 'spec_helper'
 
 RSpec.describe HyraxListener do
   let(:instance) { HyraxListener.new }
-  let(:collection) { Hyrax::PcdmCollection.new }
+  let(:collection) { FactoryBot.build(:hyku_collection) }
   let(:event) { Dry::Events::Event.new(event_type, { collection: }) }
 
   describe "on_collection_deleted" do

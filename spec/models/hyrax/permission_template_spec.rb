@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Hyrax::PermissionTemplate do
+RSpec.describe Hyrax::PermissionTemplate, clean: true do
   describe 'spec factories' do
     it 'creates the permission template and can create workflows and a corresponding admin_set' do
       permission_template = FactoryBot.create(:permission_template, with_admin_set: true, with_workflows: true)

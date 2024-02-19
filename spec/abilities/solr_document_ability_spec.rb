@@ -16,8 +16,7 @@ RSpec.describe Hyrax::Ability::SolrDocumentAbility do
   context 'with Collection solr doc' do
     let(:collection_type_gid) { create(:collection_type).to_global_id }
     let(:collection) do
-      create(
-        :collection_lw,
+      FactoryBot.create(:hyku_collection,
         with_permission_template: true,
         collection_type_gid:
       )

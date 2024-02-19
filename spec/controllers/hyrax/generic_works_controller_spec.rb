@@ -5,7 +5,6 @@ require 'rails_helper'
 RSpec.describe Hyrax::GenericWorksController do
   let(:user) { FactoryBot.create(:user) }
   let(:work) { FactoryBot.valkyrie_create(:generic_work_resource, :with_one_file_set, depositor: user.user_key) }
-  let(:file_set) { Hyrax.query_service.find_members(resource: work).first }
 
   it "includes Hyrax::IiifAv::ControllerBehavior" do
     expect(described_class.include?(Hyrax::IiifAv::ControllerBehavior)).to be true
@@ -25,6 +24,7 @@ RSpec.describe Hyrax::GenericWorksController do
       expect(subject.manifest_url).to eq "http://test.host/concern/generic_works/#{solr_document.id}/manifest"
 
       get :manifest, params: { id: solr_document.id }
+      expect(response.status).to eq(200)
     end
   end
 end

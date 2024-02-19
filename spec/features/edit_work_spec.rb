@@ -6,6 +6,7 @@ RSpec.describe 'Editing an existing Work', type: :feature, js: true, clean: true
   let(:work) { FactoryBot.valkyrie_create(:generic_work_resource) }
 
   before do
+    FactoryBot.create(:admin_group)
     login_as admin_user
   end
 

@@ -21,6 +21,7 @@ RSpec.describe 'Create a Image', type: :feature, js: true, clean: true do
     end
 
     before do
+      create(:admin_group)
       create(:registered_group)
       create(:editors_group)
       create(:depositors_group)

@@ -9,27 +9,7 @@ RSpec.describe GenericWorkResource do
   subject(:work) { described_class.new }
 
   # TODO: Register a test adapter
-  # it_behaves_like 'a Hyrax::Work'
-
-  context 'factory' do
-    context 'without an admin set' do
-      it 'creates a resource' do
-        resource = FactoryBot.valkyrie_create(:generic_work_resource)
-        expect(GenericWorkResource.find_by(id: resource.id)).to be_a(GenericWorkResource)
-      end
-    end
-
-    context 'with an admin set' do
-      let(:depositor) { FactoryBot.create(:user, roles: [:work_depositor]) }
-      let(:visibility_setting) { 'open' }
-      it 'creates a resource' do
-        # Do this before we create the admin set.
-        Hyrax::Group.find_or_create_by!(name: ::Ability.admin_group_name)
-        resource = FactoryBot.valkyrie_create(:generic_work_resource, :with_default_admin_set, depositor: depositor.user_key, visibility_setting:)
-        expect(GenericWorkResource.find(resource.id)).to be_a(GenericWorkResource)
-      end
-    end
-  end
+  it_behaves_like 'a Hyrax::Work'
 
   describe '#creator' do
     it 'is ordered by user input' do

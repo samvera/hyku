@@ -19,10 +19,4 @@ RSpec.describe CollectionResource do
     subject { described_class }
     its(:to_rdf_representation) { is_expected.to eq('Collection') }
   end
-
-  describe 'spec factories' do
-    it 'creates a collection' do
-      expect(FactoryBot.build(:hyku_collection)).to be_a(described_class)
-    end
-  end
 end

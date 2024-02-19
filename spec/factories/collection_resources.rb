@@ -6,7 +6,7 @@ FactoryBot.modify do
       # By default a Hyrax collection creates members with :hyrax_work; we don't likely want to
       # create that, so let's override that.
       transient do
-        members { [valkyrie_create(:generic_work_resource), valkyrie_create(:generic_work_resource)] }
+        members { [FactoryBot.valkyrie_create(:generic_work_resource), FactoryBot.valkyrie_create(:generic_work_resource)] }
       end
     end
   end

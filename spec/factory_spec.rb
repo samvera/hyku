@@ -38,8 +38,8 @@ RSpec.describe "Factories" do
         collection = FactoryBot.valkyrie_create(:hyku_collection)
         resource = FactoryBot.valkyrie_create(:generic_work_resource, :as_collection_member, member_of_collection_ids: [collection.id], visibility_setting:)
 
-        expect(Hyrax.query_service.custom_queries.find_collections_for(resource: resource)).to match_array([collection])
-        expect(Hyrax.query_service.custom_queries.find_members_of(collection: collection)).to match_array([resource])
+        expect(Hyrax.query_service.custom_queries.find_collections_for(resource:)).to match_array([collection])
+        expect(Hyrax.query_service.custom_queries.find_members_of(collection:)).to match_array([resource])
       end
     end
   end
@@ -59,7 +59,7 @@ RSpec.describe "Factories" do
       end.to change { Hyrax.query_service.count_all_of_model(model: klass) }.by(1)
     end
   end
-  
+
   describe ':hyku_collection and progeny' do
     let(:klass) { Hyrax.config.collection_class }
     it 'creates a collection that is by default private' do

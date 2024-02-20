@@ -332,7 +332,7 @@ RSpec.describe 'actions permitted by the collection_editor role', type: :feature
 
       it 'cannot remove any works from a collection' do
         public_work, institutional_work, private_work = ['open', 'authenticated', 'restricted'].map do |visibility_setting|
-          FactoryBot.valkyrie_create(:generic_work_resource, :as_collection_member, member_of_collection_ids: [collection.id], visibility_setting:,)
+          FactoryBot.valkyrie_create(:generic_work_resource, :as_collection_member, member_of_collection_ids: [collection.id], visibility_setting:)
         end
 
         expect(collection.members_of).to match_array([public_work, institutional_work, private_work])

@@ -18,8 +18,7 @@ RSpec.describe Hyrax::Ability::SolrDocumentAbility do
     let(:collection) do
       FactoryBot.create(:hyku_collection,
         with_permission_template: true,
-        collection_type_gid:
-      )
+        collection_type_gid:)
     end
     let!(:solr_document) { SolrDocument.new(collection.to_solr) }
 

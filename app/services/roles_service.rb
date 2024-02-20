@@ -241,6 +241,7 @@ class RolesService # rubocop:disable Metrics/ClassLength
   end
 
   class CreateCollectionAccessesJob < Hyrax::ApplicationJob
+    # rubocop:disable Metrics/MethodLength
     def self.create_access_for(collection:)
       pt = Hyrax::PermissionTemplate.find_or_create_by!(source_id: collection.id)
       original_access_grants_count = pt.access_grants.count
@@ -269,16 +270,15 @@ class RolesService # rubocop:disable Metrics/ClassLength
         agent_id: 'collection_reader'
       )
 
-      pt.reset_access_controls_for(collection: ) if pt.access_grants.count != original_access_grants_count
+      pt.reset_access_controls_for(collection:) if pt.access_grants.count != original_access_grants_count
     end
+    # rubocop:enable Metrics/MethodLength
 
-    # rubocop:disable Metrics/MethodLength
     def perform
       Hyrax.query_service.find_all_of_model(model: Hyrax.config.collection_class).each do |c|
         self.class.create_access_for(collection: c)
       end
     end
-    # rubocop:enable Metrics/MethodLength
   end
 
   class CreateAdminSetAccessesJob < Hyrax::ApplicationJob

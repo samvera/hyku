@@ -29,69 +29,69 @@ module Hyrax
 
           # OVERRIDE: remove :destroy -- users who only have edit access cannot destroy
           can [:edit, :update], collection_models do |collection|
-            test_edit(collection.id)
+            test_edit(collection.id.to_s)
           end
 
           can :view_admin_show, collection_models do |collection| # admin show page
             Hyrax::Collections::PermissionsService.can_view_admin_show_for_collection?(
               ability: self,
-              collection_id: collection.id
+              collection_id: collection.id.to_s
             )
           end
 
           can :view_admin_show, ::SolrDocument do |solr_doc| # admin show page
             Hyrax::Collections::PermissionsService.can_view_admin_show_for_collection?(
               ability: self,
-              collection_id: solr_doc.id
+              collection_id: solr_doc.id.to_s
             ) # checks collections and admin_sets
           end
 
           can :read, collection_models do |collection| # public show page
-            test_read(collection.id)
+            test_read(collection.id.to_s)
           end
 
           can :deposit, collection_models do |collection|
             Hyrax::Collections::PermissionsService.can_deposit_in_collection?(
               ability: self,
-              collection_id: collection.id
+              collection_id: collection.id.to_s
             )
           end
 
           # OVERRIDE: add rules -- only users who have manage access can destroy
           can :destroy, collection_models do |collection|
-            Hyrax::Collections::PermissionsService.manage_access_to_collection?(ability: self, collection_id: collection.id)
+            Hyrax::Collections::PermissionsService.manage_access_to_collection?(ability: self, collection_id: collection.id.to_s)
           end
 
           # OVERRIDE: add ability to restrict who can change a Collection's discovery setting
           can :manage_discovery, collection_models do |collection| # Discovery tab on edit form
             Hyrax::Collections::PermissionsService.manage_access_to_collection?(
               ability: self,
-              collection_id: collection.id
+              collection_id: collection.id.to_s
             )
           end
 
           # OVERRIDE: add ability to restrict who can add works and subcollections to /
           # remove works and subcollections from a Collection
           can :manage_items_in_collection, collection_models do |collection|
-            Hyrax::Collections::PermissionsService.manage_access_to_collection?(ability: self, collection_id: collection.id)
+            Hyrax::Collections::PermissionsService.manage_access_to_collection?(ability: self, collection_id: collection.id.to_s)
           end
 
           can :manage_items_in_collection, ::SolrDocument do |solr_doc|
             Hyrax::Collections::PermissionsService.manage_access_to_collection?(
               ability: self,
-              collection_id: solr_doc.id
+              collection_id: solr_doc.id.to_s
             )
           end
 
-          can :manage_items_in_collection, ::String do |id|
-            Hyrax::Collections::PermissionsService.manage_access_to_collection?(ability: self, collection_id: id)
+          can :manage_items_in_collection, [::String, Valkyrie::ID] do |id|
+            Hyrax::Collections::PermissionsService.manage_access_to_collection?(ability: self, collection_id: id.to_s)
           end
 
           can :destroy, ::SolrDocument do |solr_doc|
             if solr_doc.collection?
               Hyrax::Collections::PermissionsService.manage_access_to_collection?(
                 ability: self,
-                collection_id: solr_doc.id
+                collection_id: solr_doc.id.to_s
               )
             end
           end
@@ -99,7 +99,7 @@ module Hyrax
           can :deposit, ::SolrDocument do |solr_doc|
             Hyrax::Collections::PermissionsService.can_deposit_in_collection?(
               ability: self,
-              collection_id: solr_doc.id
+              collection_id: solr_doc.id.to_s
             ) # checks collections and admin_sets
           end
 
@@ -109,7 +109,7 @@ module Hyrax
             ENV.fetch('HYKU_RESTRICT_CREATE_AND_DESTROY_PERMISSIONS', nil)
           )
             can %i[destroy manage_discovery manage_items_in_collection], collection_models do |collection|
-              test_edit(collection.id)
+              test_edit(collection.id.to_s)
             end
           end
         end
@@ -123,8 +123,8 @@ module Hyrax
           # Permit all actions (same collection permissions as admin users)
           can :manage, collection_models
           can :manage, ::SolrDocument, &:collection?
-          can :manage, ::String do |id|
-            doc = permissions_doc(id)
+          can :manage, [::String, Valkyrie::ID] do |id|
+            doc = permissions_doc(id.to_s)
             doc.collection?
           end
           can :create_collection_type, CollectionType
@@ -132,14 +132,14 @@ module Hyrax
         elsif collection_editor?
           can %i[edit update create create_any], collection_models
           can %i[edit update], ::SolrDocument, &:collection?
-          can %i[edit update], ::String do |id|
-            doc = permissions_doc(id)
+          can %i[edit update], [::String, Valkyrie::ID] do |id|
+            doc = permissions_doc(id.to_s)
             doc.collection?
           end
           can %i[read read_any view_admin_show view_admin_show_any], collection_models
           can %i[read read_any view_admin_show view_admin_show_any], ::SolrDocument, &:collection?
-          can %i[read read_any view_admin_show view_admin_show_any], ::String do |id|
-            doc = permissions_doc(id)
+          can %i[read read_any view_admin_show view_admin_show_any], [::String, Valkyrie::ID] do |id|
+            doc = permissions_doc(id.to_s)
             doc.collection?
           end
           can :create_collection_type, CollectionType
@@ -148,8 +148,8 @@ module Hyrax
         elsif collection_reader?
           can %i[read read_any view_admin_show view_admin_show_any], collection_models
           can %i[read read_any view_admin_show view_admin_show_any], ::SolrDocument, &:collection?
-          can %i[read read_any view_admin_show view_admin_show_any], ::String do |id|
-            doc = permissions_doc(id)
+          can %i[read read_any view_admin_show view_admin_show_any], [::String, Valkyrie::ID] do |id|
+            doc = permissions_doc(id.to_s)
             doc.collection?
           end
         end

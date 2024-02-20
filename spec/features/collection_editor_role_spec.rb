@@ -4,7 +4,8 @@ require 'rails_helper'
 
 RSpec.describe 'actions permitted by the collection_editor role', type: :feature, js: true, clean: true, ci: 'skip' do # rubocop:disable Layout/LineLength
   let(:role) { FactoryBot.create(:role, :collection_editor) }
-  let(:collection) { FactoryBot.valkyrie_create(:hyku_collection, depositor: user.user_key) }
+  let(:collection) { FactoryBot.valkyrie_create(:hyku_collection, collection_type_gid:) }
+  let(:collection_type_gid) { create(:collection_type).to_global_id.to_s }
   let(:user) { FactoryBot.create(:user) }
 
   context 'a User that has the collection_editor role' do
@@ -37,8 +38,8 @@ RSpec.describe 'actions permitted by the collection_editor role', type: :feature
 
     it 'can view all Collections and the individual collection' do
       collection
-
       visit '/dashboard/collections'
+
       expect(find('table#collections-list-table'))
         .to have_selector(:id, "document_#{collection.id}")
 
@@ -46,7 +47,7 @@ RSpec.describe 'actions permitted by the collection_editor role', type: :feature
       expect(page).to have_content(collection.title.first)
     end
 
-  it 'can edit and update a Collection' do
+    it 'can edit and update a Collection' do
       visit "/dashboard/collections/#{collection.id}/edit"
       fill_in('collection_title', with: 'Collection Editor Test')
       fill_in('collection_creator', with: 'Someone special')

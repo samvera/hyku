@@ -85,17 +85,16 @@ RSpec.describe "Factories" do
       ability = Ability.new(user)
 
       collection = FactoryBot.valkyrie_create(:hyku_collection)
-      require 'byebug'; byebug
 
-      expect(ability.can? :create, Hyrax.config.collection_class).to be_truthy
+      expect(ability.can?(:create, Hyrax.config.collection_class)).to be_truthy
 
       # There will be direct checks on the object
-      expect(ability.can? :show, collection).to be_truthy
-      expect(ability.can? :edit, collection).to be_truthy
+      expect(ability.can?(:show, collection)).to be_truthy
+      expect(ability.can?(:edit, collection)).to be_truthy
 
       # And there are checks on the solr document; which is done by looking at the ID.
-      expect(ability.can? :show, collection.id).to be_truthy
-      expect(ability.can? :edit, collection.id).to be_truthy
+      expect(ability.can?(:show, collection.id)).to be_truthy
+      expect(ability.can?(:edit, collection.id)).to be_truthy
     end
   end
 end

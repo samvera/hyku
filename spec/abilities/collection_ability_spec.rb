@@ -198,21 +198,23 @@ RSpec.describe Ability::CollectionAbility do
 
   context 'when manager of a collection' do
     before do
-      create(:permission_template_access,
-             :manage,
-             permission_template: collection.permission_template,
-             agent_type: 'user',
-             agent_id: user.user_key)
-      collection.permission_template.reset_access_controls_for(collection:)
+      [collection, valkyrie_native].each do |record|
+        create(:permission_template_access,
+               :manage,
+               permission_template: record.permission_template,
+               agent_type: 'user',
+               agent_id: user.user_key)
+        record.permission_template.reset_access_controls_for(collection: record)
+      end
     end
 
     it 'allows most abilities but denies general Collection management' do
       is_expected.to be_able_to(:manage_any, Collection)
       is_expected.to be_able_to(:view_admin_show_any, Collection)
       is_expected.not_to be_able_to(:manage, Collection)
-      # TODO: This fails for valkyrie_native
+
       # We cannot use ID because the document is not actually in Solr to find then cast to a resource
-      [collection, valkyrie_found, valkyrie_conversion, solr_document].each do |obj|
+      [collection, valkyrie_found, valkyrie_conversion, solr_document, valkyrie_native].each do |obj|
         is_expected.to be_able_to(:edit, obj)
         is_expected.to be_able_to(:update, obj)
         is_expected.to be_able_to(:destroy, obj)
@@ -229,21 +231,15 @@ RSpec.describe Ability::CollectionAbility do
   end
 
   context 'when collection depositor' do
-    let(:collection) do
-      create(
-        :old_collection_lw,
-        with_permission_template: true,
-        collection_type_gid:
-      )
-    end
-
     before do
-      create(:permission_template_access,
-             :deposit,
-             permission_template: collection.permission_template,
-             agent_type: 'user',
-             agent_id: user.user_key)
-      collection.permission_template.reset_access_controls_for(collection:)
+      [collection, valkyrie_native].each do |record|
+        create(:permission_template_access,
+               :deposit,
+               permission_template: record.permission_template,
+               agent_type: 'user',
+               agent_id: user.user_key)
+        record.permission_template.reset_access_controls_for(collection: record)
+      end
     end
 
     it 'allows deposit related abilities and denies non-deposit related abilities' do
@@ -251,9 +247,8 @@ RSpec.describe Ability::CollectionAbility do
       is_expected.not_to be_able_to(:manage, Collection)
       is_expected.not_to be_able_to(:manage_any, Collection)
 
-      # TODO: This fails for valkyrie_native
       # We cannot use ID because the document is not actually in Solr to find then cast to a resource
-      [collection, valkyrie_found, valkyrie_conversion, solr_document].each do |obj|
+      [collection, valkyrie_found, valkyrie_conversion, solr_document, valkyrie_native].each do |obj|
         is_expected.to be_able_to(:deposit, obj)
         is_expected.to be_able_to(:view_admin_show, obj)
         is_expected.to be_able_to(:read, obj)
@@ -267,21 +262,15 @@ RSpec.describe Ability::CollectionAbility do
   end
 
   context 'when collection viewer' do
-    let(:collection) do
-      create(
-        :old_collection_lw,
-        with_permission_template: true,
-        collection_type_gid:
-      )
-    end
-
     before do
-      create(:permission_template_access,
-             :view,
-             permission_template: collection.permission_template,
-             agent_type: 'user',
-             agent_id: user.user_key)
-      collection.permission_template.reset_access_controls_for(collection:)
+      [collection, valkyrie_native].each do |record|
+        create(:permission_template_access,
+               :view,
+               permission_template: record.permission_template,
+               agent_type: 'user',
+               agent_id: user.user_key)
+        record.permission_template.reset_access_controls_for(collection: record)
+      end
     end
 
     it 'allows viewing only ability and denise the others' do
@@ -289,9 +278,8 @@ RSpec.describe Ability::CollectionAbility do
       is_expected.not_to be_able_to(:manage, Collection)
       is_expected.not_to be_able_to(:manage_any, Collection)
 
-      # TODO: This fails for valkyrie_native
       # We cannot use ID because the document is not actually in Solr to find then cast to a resource
-      [collection, valkyrie_found, valkyrie_conversion, solr_document].each do |obj|
+      [collection, valkyrie_found, valkyrie_conversion, solr_document, valkyrie_native].each do |obj|
         is_expected.to be_able_to(:view_admin_show, obj)
         is_expected.to be_able_to(:read, obj)
 
@@ -305,14 +293,6 @@ RSpec.describe Ability::CollectionAbility do
   end
 
   context 'when user has no special access' do
-    let(:collection) do
-      create(
-        :old_collection_lw,
-        with_permission_template: true,
-        collection_type_gid:
-      )
-    end
-
     it 'denies all abilities' do # rubocop:disable RSpec/ExampleLength
       is_expected.not_to be_able_to(:manage, Collection)
       is_expected.not_to be_able_to(:manage_any, Collection)

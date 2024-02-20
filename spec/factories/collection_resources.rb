@@ -16,11 +16,12 @@ FactoryBot.modify do
       read_users { [] }
     end
 
-    before(:create) do |collection, evaluator|
+    before(:create) do |_collection, evaluator|
       (Array.wrap(evaluator.edit_groups) + Array.wrap(evaluator.read_groups)).each do |group|
         FactoryBot.create(:role, group.to_sym)
       end
     end
+
     after(:build) do |collection, evaluator|
       if collection.collection_type_gid.present?
         # Do nothing

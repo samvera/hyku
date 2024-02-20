@@ -11,8 +11,8 @@ module Hyrax
           can %i[read edit update], ::SolrDocument do |solr_doc|
             all_work_types_and_files.include?(solr_doc.hydra_model)
           end
-          can %i[read edit update], ::String do |id|
-            doc = permissions_doc(id)
+          can %i[read edit update], [::String, ::Valkyrie::ID] do |id|
+            doc = permissions_doc(id.to_s)
             all_work_types_and_files.include?(doc.hydra_model)
           end
         elsif work_depositor? || admin_set_with_deposit?

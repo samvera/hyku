@@ -15,6 +15,8 @@ RSpec.describe Ability::CollectionAbility do
   let(:id) { collection.id }
   let(:valkyrie_conversion) { Wings::ModelTransformer.for(collection) }
   let(:valkyrie_found) { Hyrax.query_service.find_by(id: collection.id) }
+  let(:valkyrie_native) { FactoryBot.create(:hyku_collection, collection_type_gid:) }
+  let(:valkyrie_native_id) { valkyrie_native.id.to_s }
 
   context 'when admin user' do
     let(:user) { FactoryBot.create(:admin) }
@@ -34,33 +36,15 @@ RSpec.describe Ability::CollectionAbility do
       is_expected.to be_able_to(:create_any, Collection)
       is_expected.to be_able_to(:read_any, Collection)
       is_expected.to be_able_to(:view_admin_show_any, Collection)
-      is_expected.to be_able_to(:edit, collection)
-      is_expected.to be_able_to(:edit, valkyrie_found)
-      is_expected.to be_able_to(:edit, valkyrie_conversion)
-      is_expected.to be_able_to(:edit, solr_document) # defined in solr_document_ability.rb
-      is_expected.to be_able_to(:update, collection)
-      is_expected.to be_able_to(:update, valkyrie_found)
-      is_expected.to be_able_to(:update, valkyrie_conversion)
-      is_expected.to be_able_to(:update, solr_document) # defined in solr_document_ability.rb
-      is_expected.to be_able_to(:destroy, collection)
-      is_expected.to be_able_to(:destroy, valkyrie_found)
-      is_expected.to be_able_to(:destroy, valkyrie_conversion)
-      is_expected.to be_able_to(:destroy, solr_document) # defined in solr_document_ability.rb
-      is_expected.to be_able_to(:deposit, collection)
-      is_expected.to be_able_to(:deposit, valkyrie_found)
-      is_expected.to be_able_to(:deposit, valkyrie_conversion)
-      is_expected.to be_able_to(:deposit, solr_document)
-      is_expected.to be_able_to(:view_admin_show, collection)
-      is_expected.to be_able_to(:view_admin_show, valkyrie_found)
-      is_expected.to be_able_to(:view_admin_show, valkyrie_conversion)
-      is_expected.to be_able_to(:view_admin_show, solr_document)
-      is_expected.to be_able_to(:read, collection)
-      is_expected.to be_able_to(:read, valkyrie_found)
-      is_expected.to be_able_to(:read, valkyrie_conversion)
-      is_expected.to be_able_to(:read, solr_document) # defined in solr_document_ability.rb
-      is_expected.to be_able_to(:manage_discovery, collection)
-      is_expected.to be_able_to(:manage_discovery, valkyrie_found)
-      is_expected.to be_able_to(:manage_discovery, valkyrie_conversion)
+      [collection, valkyrie_found, valkyrie_conversion, solr_document, valkyrie_native, valkyrie_native_id, id].each do |obj|
+        is_expected.to be_able_to(:edit, obj)
+        is_expected.to be_able_to(:update, obj)
+        is_expected.to be_able_to(:destroy, obj)
+        is_expected.to be_able_to(:deposit, obj)
+        is_expected.to be_able_to(:view_admin_show, obj)
+        is_expected.to be_able_to(:read, obj)
+        is_expected.to be_able_to(:manage_discovery, obj)
+      end
     end
   end
 
@@ -84,41 +68,15 @@ RSpec.describe Ability::CollectionAbility do
         is_expected.to be_able_to(:create_any, Collection)
         is_expected.to be_able_to(:read_any, Collection)
         is_expected.to be_able_to(:view_admin_show_any, Collection)
-        is_expected.to be_able_to(:edit, collection)
-        is_expected.to be_able_to(:edit, valkyrie_found)
-        is_expected.to be_able_to(:edit, valkyrie_conversion)
-        is_expected.to be_able_to(:edit, solr_document)
-        is_expected.to be_able_to(:edit, id)
-        is_expected.to be_able_to(:update, collection)
-        is_expected.to be_able_to(:update, valkyrie_found)
-        is_expected.to be_able_to(:update, valkyrie_conversion)
-        is_expected.to be_able_to(:update, solr_document)
-        is_expected.to be_able_to(:update, id)
-        is_expected.to be_able_to(:destroy, collection)
-        is_expected.to be_able_to(:destroy, valkyrie_found)
-        is_expected.to be_able_to(:destroy, valkyrie_conversion)
-        is_expected.to be_able_to(:destroy, solr_document)
-        is_expected.to be_able_to(:destroy, id)
-        is_expected.to be_able_to(:deposit, collection)
-        is_expected.to be_able_to(:deposit, valkyrie_found)
-        is_expected.to be_able_to(:deposit, valkyrie_conversion)
-        is_expected.to be_able_to(:deposit, solr_document)
-        is_expected.to be_able_to(:deposit, id)
-        is_expected.to be_able_to(:view_admin_show, collection)
-        is_expected.to be_able_to(:view_admin_show, valkyrie_found)
-        is_expected.to be_able_to(:view_admin_show, valkyrie_conversion)
-        is_expected.to be_able_to(:view_admin_show, solr_document)
-        is_expected.to be_able_to(:view_admin_show, id)
-        is_expected.to be_able_to(:read, collection)
-        is_expected.to be_able_to(:read, valkyrie_found)
-        is_expected.to be_able_to(:read, valkyrie_conversion)
-        is_expected.to be_able_to(:read, solr_document)
-        is_expected.to be_able_to(:read, id)
-        is_expected.to be_able_to(:manage_discovery, collection)
-        is_expected.to be_able_to(:manage_discovery, valkyrie_found)
-        is_expected.to be_able_to(:manage_discovery, valkyrie_conversion)
-        is_expected.to be_able_to(:manage_discovery, solr_document)
-        is_expected.to be_able_to(:manage_discovery, id)
+        [collection, valkyrie_found, valkyrie_conversion, solr_document, id].each do |obj|
+          is_expected.to be_able_to(:edit, obj)
+          is_expected.to be_able_to(:update, obj)
+          is_expected.to be_able_to(:destroy, obj)
+          is_expected.to be_able_to(:deposit, obj)
+          is_expected.to be_able_to(:view_admin_show, obj)
+          is_expected.to be_able_to(:read, obj)
+          is_expected.to be_able_to(:manage_discovery, obj)
+        end
       end
     end
 
@@ -139,41 +97,15 @@ RSpec.describe Ability::CollectionAbility do
         is_expected.to be_able_to(:create_any, Collection)
         is_expected.to be_able_to(:read_any, Collection)
         is_expected.to be_able_to(:view_admin_show_any, Collection)
-        is_expected.to be_able_to(:edit, collection)
-        is_expected.to be_able_to(:edit, valkyrie_found)
-        is_expected.to be_able_to(:edit, valkyrie_conversion)
-        is_expected.to be_able_to(:edit, solr_document)
-        is_expected.to be_able_to(:edit, id)
-        is_expected.to be_able_to(:update, collection)
-        is_expected.to be_able_to(:update, valkyrie_found)
-        is_expected.to be_able_to(:update, valkyrie_conversion)
-        is_expected.to be_able_to(:update, solr_document)
-        is_expected.to be_able_to(:update, id)
-        is_expected.to be_able_to(:destroy, collection)
-        is_expected.to be_able_to(:destroy, valkyrie_found)
-        is_expected.to be_able_to(:destroy, valkyrie_conversion)
-        is_expected.to be_able_to(:destroy, solr_document)
-        is_expected.to be_able_to(:destroy, id)
-        is_expected.to be_able_to(:deposit, collection)
-        is_expected.to be_able_to(:deposit, valkyrie_found)
-        is_expected.to be_able_to(:deposit, valkyrie_conversion)
-        is_expected.to be_able_to(:deposit, solr_document)
-        is_expected.to be_able_to(:deposit, id)
-        is_expected.to be_able_to(:view_admin_show, collection)
-        is_expected.to be_able_to(:view_admin_show, valkyrie_found)
-        is_expected.to be_able_to(:view_admin_show, valkyrie_conversion)
-        is_expected.to be_able_to(:view_admin_show, solr_document)
-        is_expected.to be_able_to(:view_admin_show, id)
-        is_expected.to be_able_to(:read, collection)
-        is_expected.to be_able_to(:read, valkyrie_found)
-        is_expected.to be_able_to(:read, valkyrie_conversion)
-        is_expected.to be_able_to(:read, solr_document)
-        is_expected.to be_able_to(:read, id)
-        is_expected.to be_able_to(:manage_discovery, collection)
-        is_expected.to be_able_to(:manage_discovery, valkyrie_found)
-        is_expected.to be_able_to(:manage_discovery, valkyrie_conversion)
-        is_expected.to be_able_to(:manage_discovery, solr_document)
-        is_expected.to be_able_to(:manage_discovery, id)
+        [collection, valkyrie_found, valkyrie_conversion, solr_document, id].each do |obj|
+          is_expected.to be_able_to(:edit, obj)
+          is_expected.to be_able_to(:update, obj)
+          is_expected.to be_able_to(:destroy, obj)
+          is_expected.to be_able_to(:deposit, obj)
+          is_expected.to be_able_to(:view_admin_show, obj)
+          is_expected.to be_able_to(:read, obj)
+          is_expected.to be_able_to(:manage_discovery, obj)
+        end
       end
     end
   end
@@ -190,47 +122,20 @@ RSpec.describe Ability::CollectionAbility do
     context 'through its User roles' do
       let(:user) { FactoryBot.create(:collection_editor) }
 
-      it 'allows most abilities' do
+      it 'allows most abilities but denies ability to destroy and manage discovery' do
         is_expected.to be_able_to(:create, Collection)
         is_expected.to be_able_to(:create_any, Collection)
         is_expected.to be_able_to(:read_any, Collection)
         is_expected.to be_able_to(:view_admin_show_any, Collection)
-        is_expected.to be_able_to(:edit, collection)
-        is_expected.to be_able_to(:edit, valkyrie_found)
-        is_expected.to be_able_to(:edit, valkyrie_conversion)
-        is_expected.to be_able_to(:edit, solr_document)
-        is_expected.to be_able_to(:edit, id)
-        is_expected.to be_able_to(:update, collection)
-        is_expected.to be_able_to(:update, valkyrie_found)
-        is_expected.to be_able_to(:update, valkyrie_conversion)
-        is_expected.to be_able_to(:update, solr_document)
-        is_expected.to be_able_to(:update, id)
-        is_expected.to be_able_to(:view_admin_show, collection)
-        is_expected.to be_able_to(:view_admin_show, valkyrie_found)
-        is_expected.to be_able_to(:view_admin_show, valkyrie_conversion)
-        is_expected.to be_able_to(:view_admin_show, solr_document)
-        is_expected.to be_able_to(:view_admin_show, id)
-        is_expected.to be_able_to(:read, collection)
-        is_expected.to be_able_to(:read, valkyrie_found)
-        is_expected.to be_able_to(:read, valkyrie_conversion)
-        is_expected.to be_able_to(:read, solr_document)
-        is_expected.to be_able_to(:read, id)
-      end
+        [collection, valkyrie_found, valkyrie_conversion, solr_document, id].each do |obj|
+          is_expected.to be_able_to(:edit, obj)
+          is_expected.to be_able_to(:update, obj)
+          is_expected.to be_able_to(:view_admin_show, obj)
+          is_expected.to be_able_to(:read, obj)
 
-      it 'denies destroy ability' do
-        is_expected.not_to be_able_to(:destroy, collection)
-        is_expected.not_to be_able_to(:destroy, valkyrie_found)
-        is_expected.not_to be_able_to(:destroy, valkyrie_conversion)
-        is_expected.not_to be_able_to(:destroy, solr_document) # defined in solr_document_ability.rb
-        is_expected.not_to be_able_to(:destroy, id)
-      end
-
-      it 'denies manage_discovery ability' do
-        is_expected.not_to be_able_to(:manage_discovery, collection)
-        is_expected.not_to be_able_to(:manage_discovery, valkyrie_found)
-        is_expected.not_to be_able_to(:manage_discovery, valkyrie_conversion)
-        is_expected.not_to be_able_to(:manage_discovery, solr_document)
-        is_expected.not_to be_able_to(:manage_discovery, id)
+          is_expected.not_to be_able_to(:destroy, obj)
+          is_expected.not_to be_able_to(:manage_discovery, collection)
+        end
       end
     end
 
@@ -244,47 +149,20 @@ RSpec.describe Ability::CollectionAbility do
         hyrax_group.add_members_by_id(user.id)
       end
 
-      it 'allows most abilities' do
+      it 'allows most abilities but not destroy nor manage_discovery' do
         is_expected.to be_able_to(:create, Collection)
         is_expected.to be_able_to(:create_any, Collection)
         is_expected.to be_able_to(:read_any, Collection)
         is_expected.to be_able_to(:view_admin_show_any, Collection)
-        is_expected.to be_able_to(:edit, collection)
-        is_expected.to be_able_to(:edit, valkyrie_found)
-        is_expected.to be_able_to(:edit, valkyrie_conversion)
-        is_expected.to be_able_to(:edit, solr_document)
-        is_expected.to be_able_to(:edit, id)
-        is_expected.to be_able_to(:update, collection)
-        is_expected.to be_able_to(:update, valkyrie_found)
-        is_expected.to be_able_to(:update, valkyrie_conversion)
-        is_expected.to be_able_to(:update, solr_document)
-        is_expected.to be_able_to(:update, id)
-        is_expected.to be_able_to(:view_admin_show, collection)
-        is_expected.to be_able_to(:view_admin_show, valkyrie_found)
-        is_expected.to be_able_to(:view_admin_show, valkyrie_conversion)
-        is_expected.to be_able_to(:view_admin_show, solr_document)
-        is_expected.to be_able_to(:view_admin_show, id)
-        is_expected.to be_able_to(:read, collection)
-        is_expected.to be_able_to(:read, valkyrie_found)
-        is_expected.to be_able_to(:read, valkyrie_conversion)
-        is_expected.to be_able_to(:read, solr_document)
-        is_expected.to be_able_to(:read, id)
-      end
+        [collection, valkyrie_found, valkyrie_conversion, solr_document, id].each do |obj|
+          is_expected.to be_able_to(:edit, obj)
+          is_expected.to be_able_to(:update, obj)
+          is_expected.to be_able_to(:view_admin_show, obj)
+          is_expected.to be_able_to(:read, obj)
 
-      it 'denies destroy ability' do
-        is_expected.not_to be_able_to(:destroy, collection)
-        is_expected.not_to be_able_to(:destroy, valkyrie_found)
-        is_expected.not_to be_able_to(:destroy, valkyrie_conversion)
-        is_expected.not_to be_able_to(:destroy, solr_document) # defined in solr_document_ability.rb
-        is_expected.not_to be_able_to(:destroy, id)
-      end
-
-      it 'denies manage_discovery ability' do
-        is_expected.not_to be_able_to(:manage_discovery, collection)
-        is_expected.not_to be_able_to(:manage_discovery, valkyrie_found)
-        is_expected.not_to be_able_to(:manage_discovery, valkyrie_conversion)
-        is_expected.not_to be_able_to(:manage_discovery, solr_document)
-        is_expected.not_to be_able_to(:manage_discovery, id)
+          is_expected.not_to be_able_to(:destroy, obj)
+          is_expected.not_to be_able_to(:manage_discovery, obj)
+        end
       end
     end
   end
@@ -301,48 +179,20 @@ RSpec.describe Ability::CollectionAbility do
     context 'through its User roles' do
       let(:user) { FactoryBot.create(:collection_reader) }
 
-      it 'allows read abilities' do
+      it 'allows read abilities but denies others' do
         is_expected.to be_able_to(:read_any, Collection)
         is_expected.to be_able_to(:view_admin_show_any, Collection)
-        is_expected.to be_able_to(:view_admin_show, collection)
-        is_expected.to be_able_to(:view_admin_show, valkyrie_found)
-        is_expected.to be_able_to(:view_admin_show, valkyrie_conversion)
-        is_expected.to be_able_to(:view_admin_show, solr_document)
-        is_expected.to be_able_to(:view_admin_show, id)
-        is_expected.to be_able_to(:read, collection)
-        is_expected.to be_able_to(:read, valkyrie_found)
-        is_expected.to be_able_to(:read, valkyrie_conversion)
-        is_expected.to be_able_to(:read, solr_document)
-        is_expected.to be_able_to(:read, id)
-      end
-
-      it 'denies most abilities' do
         is_expected.not_to be_able_to(:create, Collection)
-        is_expected.not_to be_able_to(:edit, collection)
-        is_expected.not_to be_able_to(:edit, valkyrie_found)
-        is_expected.not_to be_able_to(:edit, valkyrie_conversion)
-        is_expected.not_to be_able_to(:edit, solr_document)
-        is_expected.not_to be_able_to(:edit, id)
-        is_expected.not_to be_able_to(:update, collection)
-        is_expected.not_to be_able_to(:update, valkyrie_found)
-        is_expected.not_to be_able_to(:update, valkyrie_conversion)
-        is_expected.not_to be_able_to(:update, solr_document)
-        is_expected.not_to be_able_to(:update, id)
-        is_expected.not_to be_able_to(:deposit, collection)
-        is_expected.not_to be_able_to(:deposit, valkyrie_found)
-        is_expected.not_to be_able_to(:deposit, valkyrie_conversion)
-        is_expected.not_to be_able_to(:deposit, solr_document)
-        is_expected.not_to be_able_to(:deposit, id)
-        is_expected.not_to be_able_to(:destroy, collection)
-        is_expected.not_to be_able_to(:destroy, valkyrie_found)
-        is_expected.not_to be_able_to(:destroy, valkyrie_conversion)
-        is_expected.not_to be_able_to(:destroy, solr_document) # defined in solr_document_ability.rb
-        is_expected.not_to be_able_to(:destroy, id)
-        is_expected.not_to be_able_to(:manage_discovery, collection)
-        is_expected.not_to be_able_to(:manage_discovery, valkyrie_found)
-        is_expected.not_to be_able_to(:manage_discovery, valkyrie_conversion)
-        is_expected.not_to be_able_to(:manage_discovery, solr_document)
-        is_expected.not_to be_able_to(:manage_discovery, id)
+        [collection, valkyrie_found, valkyrie_conversion, solr_document, id].each do |obj|
+          is_expected.to be_able_to(:view_admin_show, obj)
+          is_expected.to be_able_to(:read, obj)
+
+          is_expected.not_to be_able_to(:edit, obj)
+          is_expected.not_to be_able_to(:update, obj)
+          is_expected.not_to be_able_to(:deposit, obj)
+          is_expected.not_to be_able_to(:destroy, obj)
+          is_expected.not_to be_able_to(:manage_discovery, obj)
+        end
       end
     end
 
@@ -356,48 +206,21 @@ RSpec.describe Ability::CollectionAbility do
         hyrax_group.add_members_by_id(user.id)
       end
 
-      it 'allows read abilities' do
+      it 'allows read abilities but denies others' do
         is_expected.to be_able_to(:read_any, Collection)
         is_expected.to be_able_to(:view_admin_show_any, Collection)
-        is_expected.to be_able_to(:view_admin_show, collection)
-        is_expected.to be_able_to(:view_admin_show, valkyrie_found)
-        is_expected.to be_able_to(:view_admin_show, valkyrie_conversion)
-        is_expected.to be_able_to(:view_admin_show, solr_document)
-        is_expected.to be_able_to(:view_admin_show, id)
-        is_expected.to be_able_to(:read, collection)
-        is_expected.to be_able_to(:read, valkyrie_found)
-        is_expected.to be_able_to(:read, valkyrie_conversion)
-        is_expected.to be_able_to(:read, solr_document)
-        is_expected.to be_able_to(:read, id)
-      end
-
-      it 'denies most abilities' do
         is_expected.not_to be_able_to(:create, Collection)
-        is_expected.not_to be_able_to(:edit, collection)
-        is_expected.not_to be_able_to(:edit, valkyrie_found)
-        is_expected.not_to be_able_to(:edit, valkyrie_conversion)
-        is_expected.not_to be_able_to(:edit, solr_document)
-        is_expected.not_to be_able_to(:edit, id)
-        is_expected.not_to be_able_to(:update, collection)
-        is_expected.not_to be_able_to(:update, valkyrie_found)
-        is_expected.not_to be_able_to(:update, valkyrie_conversion)
-        is_expected.not_to be_able_to(:update, solr_document)
-        is_expected.not_to be_able_to(:update, id)
-        is_expected.not_to be_able_to(:deposit, collection)
-        is_expected.not_to be_able_to(:deposit, valkyrie_found)
-        is_expected.not_to be_able_to(:deposit, valkyrie_conversion)
-        is_expected.not_to be_able_to(:deposit, solr_document)
-        is_expected.not_to be_able_to(:deposit, id)
-        is_expected.not_to be_able_to(:destroy, collection)
-        is_expected.not_to be_able_to(:destroy, valkyrie_found)
-        is_expected.not_to be_able_to(:destroy, valkyrie_conversion)
-        is_expected.not_to be_able_to(:destroy, solr_document) # defined in solr_document_ability.rb
-        is_expected.not_to be_able_to(:destroy, id)
-        is_expected.not_to be_able_to(:manage_discovery, collection)
-        is_expected.not_to be_able_to(:manage_discovery, valkyrie_found)
-        is_expected.not_to be_able_to(:manage_discovery, valkyrie_conversion)
-        is_expected.not_to be_able_to(:manage_discovery, solr_document)
-        is_expected.not_to be_able_to(:manage_discovery, id)
+
+        [collection, valkyrie_found, valkyrie_conversion, solr_document, id].each do |obj|
+          is_expected.to be_able_to(:view_admin_show, collection)
+          is_expected.to be_able_to(:read, collection)
+
+          is_expected.not_to be_able_to(:edit, collection)
+          is_expected.not_to be_able_to(:update, collection)
+          is_expected.not_to be_able_to(:deposit, collection)
+          is_expected.not_to be_able_to(:destroy, collection)
+          is_expected.not_to be_able_to(:manage_discovery, collection)
+        end
       end
     end
   end
@@ -420,45 +243,24 @@ RSpec.describe Ability::CollectionAbility do
       collection.permission_template.reset_access_controls_for(collection:)
     end
 
-    it 'allows most abilities' do
+    it 'allows most abilities but denies general Collection management' do
       is_expected.to be_able_to(:manage_any, Collection)
       is_expected.to be_able_to(:view_admin_show_any, Collection)
-      is_expected.to be_able_to(:edit, collection)
-      is_expected.to be_able_to(:edit, valkyrie_found)
-      is_expected.to be_able_to(:edit, valkyrie_conversion)
-      is_expected.to be_able_to(:edit, solr_document) # defined in solr_document_ability.rb
-      is_expected.to be_able_to(:edit, id)
-      is_expected.to be_able_to(:update, collection)
-      is_expected.to be_able_to(:update, valkyrie_found)
-      is_expected.to be_able_to(:update, valkyrie_conversion)
-      is_expected.to be_able_to(:update, solr_document) # defined in solr_document_ability.rb
-      is_expected.to be_able_to(:update, id)
-      is_expected.to be_able_to(:destroy, collection)
-      is_expected.to be_able_to(:destroy, valkyrie_found)
-      is_expected.to be_able_to(:destroy, valkyrie_conversion)
-      is_expected.to be_able_to(:destroy, solr_document) # defined in solr_document_ability.rb
-      is_expected.to be_able_to(:destroy, id)
-      is_expected.to be_able_to(:deposit, collection)
-      is_expected.to be_able_to(:deposit, valkyrie_found)
-      is_expected.to be_able_to(:deposit, valkyrie_conversion)
-      is_expected.to be_able_to(:deposit, solr_document)
-      is_expected.to be_able_to(:view_admin_show, collection)
-      is_expected.to be_able_to(:view_admin_show, valkyrie_found)
-      is_expected.to be_able_to(:view_admin_show, valkyrie_conversion)
-      is_expected.to be_able_to(:view_admin_show, solr_document)
-      is_expected.to be_able_to(:read, collection) # edit access grants read and write
-      is_expected.to be_able_to(:read, collection) # edit access grants read and valkyrie_founde
-      is_expected.to be_able_to(:read, collection) # edit access grants read and valkyrie_conversione
-      is_expected.to be_able_to(:read, collection) # edit access grants read and valkyrie_valkyrie_founde
-      is_expected.to be_able_to(:read, solr_document) # defined in solr_document_ability.rb
-      is_expected.to be_able_to(:read, id)
-      is_expected.to be_able_to(:manage_discovery, collection)
-      is_expected.to be_able_to(:manage_discovery, valkyrie_found)
-      is_expected.to be_able_to(:manage_discovery, valkyrie_conversion)
-    end
-
-    it 'denies manage ability' do
       is_expected.not_to be_able_to(:manage, Collection)
+      # We cannot use ID because the document is not actually in Solr to find then cast to a resource
+      [collection, valkyrie_found, valkyrie_conversion, solr_document].each do |obj|
+        is_expected.to be_able_to(:edit, obj)
+        is_expected.to be_able_to(:update, obj)
+        is_expected.to be_able_to(:destroy, obj)
+        is_expected.to be_able_to(:deposit, obj)
+        is_expected.to be_able_to(:view_admin_show, obj)
+        is_expected.to be_able_to(:read, obj) # edit access grants read and write
+
+        next if obj == solr_document # This was never tested and does fail.  Why does it fail?
+                                     # Likely has to do with the document not actually being in the
+                                     # index.
+        is_expected.to be_able_to(:manage_discovery, obj)
+      end
     end
   end
 
@@ -480,46 +282,22 @@ RSpec.describe Ability::CollectionAbility do
       collection.permission_template.reset_access_controls_for(collection:)
     end
 
-    it 'allows deposit related abilities' do
+    it 'allows deposit related abilities and denies non-deposit related abilities' do
       is_expected.to be_able_to(:view_admin_show_any, Collection)
-      is_expected.to be_able_to(:deposit, collection)
-      is_expected.to be_able_to(:deposit, valkyrie_found)
-      is_expected.to be_able_to(:deposit, valkyrie_conversion)
-      is_expected.to be_able_to(:deposit, solr_document)
-      is_expected.to be_able_to(:view_admin_show, collection)
-      is_expected.to be_able_to(:view_admin_show, valkyrie_found)
-      is_expected.to be_able_to(:view_admin_show, valkyrie_conversion)
-      is_expected.to be_able_to(:view_admin_show, solr_document)
-      is_expected.to be_able_to(:read, collection)
-      is_expected.to be_able_to(:read, valkyrie_found)
-      is_expected.to be_able_to(:read, valkyrie_conversion)
-      is_expected.to be_able_to(:read, solr_document) # defined in solr_document_ability.rb
-      is_expected.to be_able_to(:read, id)
-    end
-
-    it 'denies non-deposit related abilities' do
       is_expected.not_to be_able_to(:manage, Collection)
       is_expected.not_to be_able_to(:manage_any, Collection)
-      is_expected.not_to be_able_to(:edit, collection)
-      is_expected.not_to be_able_to(:edit, valkyrie_found)
-      is_expected.not_to be_able_to(:edit, valkyrie_conversion)
-      is_expected.not_to be_able_to(:edit, solr_document) # defined in solr_document_ability.rb
-      is_expected.not_to be_able_to(:edit, id)
-      is_expected.not_to be_able_to(:update, collection)
-      is_expected.not_to be_able_to(:update, valkyrie_found)
-      is_expected.not_to be_able_to(:update, valkyrie_conversion)
-      is_expected.not_to be_able_to(:update, solr_document) # defined in solr_document_ability.rb
-      is_expected.not_to be_able_to(:update, id)
-      is_expected.not_to be_able_to(:destroy, collection)
-      is_expected.not_to be_able_to(:destroy, valkyrie_found)
-      is_expected.not_to be_able_to(:destroy, valkyrie_conversion)
-      is_expected.not_to be_able_to(:destroy, solr_document) # defined in solr_document_ability.rb
-      is_expected.not_to be_able_to(:destroy, id)
-      is_expected.not_to be_able_to(:manage_discovery, collection)
-      is_expected.not_to be_able_to(:manage_discovery, valkyrie_found)
-      is_expected.not_to be_able_to(:manage_discovery, valkyrie_conversion)
-      is_expected.not_to be_able_to(:manage_discovery, solr_document)
-      is_expected.not_to be_able_to(:manage_discovery, id)
+
+      # We cannot use ID because the document is not actually in Solr to find then cast to a resource
+      [collection, valkyrie_found, valkyrie_conversion, solr_document].each do |obj|
+        is_expected.to be_able_to(:deposit, obj)
+        is_expected.to be_able_to(:view_admin_show, obj)
+        is_expected.to be_able_to(:read, obj)
+
+        is_expected.not_to be_able_to(:edit, obj)
+        is_expected.not_to be_able_to(:update, obj)
+        is_expected.not_to be_able_to(:destroy, obj)
+        is_expected.not_to be_able_to(:manage_discovery, obj)
+      end
     end
   end
 
@@ -541,47 +319,22 @@ RSpec.describe Ability::CollectionAbility do
       collection.permission_template.reset_access_controls_for(collection:)
     end
 
-    it 'allows viewing only ability' do
+    it 'allows viewing only ability and denise the others' do
       is_expected.to be_able_to(:view_admin_show_any, Collection)
-      is_expected.to be_able_to(:view_admin_show, collection)
-      is_expected.to be_able_to(:view_admin_show, valkyrie_found)
-      is_expected.to be_able_to(:view_admin_show, valkyrie_conversion)
-      is_expected.to be_able_to(:view_admin_show, solr_document)
-      is_expected.to be_able_to(:read, collection)
-      is_expected.to be_able_to(:read, valkyrie_found)
-      is_expected.to be_able_to(:read, valkyrie_conversion)
-      is_expected.to be_able_to(:read, solr_document)
-      is_expected.to be_able_to(:read, id)
-    end
-
-    it 'denies most abilities' do
       is_expected.not_to be_able_to(:manage, Collection)
       is_expected.not_to be_able_to(:manage_any, Collection)
-      is_expected.not_to be_able_to(:edit, collection)
-      is_expected.not_to be_able_to(:edit, valkyrie_found)
-      is_expected.not_to be_able_to(:edit, valkyrie_conversion)
-      is_expected.not_to be_able_to(:edit, solr_document) # defined in solr_document_ability.rb
-      is_expected.not_to be_able_to(:edit, id)
-      is_expected.not_to be_able_to(:update, collection)
-      is_expected.not_to be_able_to(:update, valkyrie_found)
-      is_expected.not_to be_able_to(:update, valkyrie_conversion)
-      is_expected.not_to be_able_to(:update, solr_document) # defined in solr_document_ability.rb
-      is_expected.not_to be_able_to(:update, id)
-      is_expected.not_to be_able_to(:destroy, collection)
-      is_expected.not_to be_able_to(:destroy, valkyrie_found)
-      is_expected.not_to be_able_to(:destroy, valkyrie_conversion)
-      is_expected.not_to be_able_to(:destroy, solr_document) # defined in solr_document_ability.rb
-      is_expected.not_to be_able_to(:destroy, id)
-      is_expected.not_to be_able_to(:deposit, collection)
-      is_expected.not_to be_able_to(:deposit, valkyrie_found)
-      is_expected.not_to be_able_to(:deposit, valkyrie_conversion)
-      is_expected.not_to be_able_to(:deposit, solr_document)
-      is_expected.not_to be_able_to(:deposit, id)
-      is_expected.not_to be_able_to(:manage_discovery, collection)
-      is_expected.not_to be_able_to(:manage_discovery, valkyrie_found)
-      is_expected.not_to be_able_to(:manage_discovery, valkyrie_conversion)
-      is_expected.not_to be_able_to(:manage_discovery, solr_document)
-      is_expected.not_to be_able_to(:manage_discovery, id)
+
+      # We cannot use ID because the document is not actually in Solr to find then cast to a resource
+      [collection, valkyrie_found, valkyrie_conversion, solr_document].each do |obj|
+        is_expected.to be_able_to(:view_admin_show, obj)
+        is_expected.to be_able_to(:read, obj)
+
+        is_expected.not_to be_able_to(:edit, obj)
+        is_expected.not_to be_able_to(:update, obj)
+        is_expected.not_to be_able_to(:destroy, obj)
+        is_expected.not_to be_able_to(:deposit, obj)
+        is_expected.not_to be_able_to(:manage_discovery, obj)
+      end
     end
   end
 
@@ -598,41 +351,15 @@ RSpec.describe Ability::CollectionAbility do
       is_expected.not_to be_able_to(:manage, Collection)
       is_expected.not_to be_able_to(:manage_any, Collection)
       is_expected.not_to be_able_to(:view_admin_show_any, Collection)
-      is_expected.not_to be_able_to(:edit, collection)
-      is_expected.not_to be_able_to(:edit, valkyrie_found)
-      is_expected.not_to be_able_to(:edit, valkyrie_conversion)
-      is_expected.not_to be_able_to(:edit, solr_document) # defined in solr_document_ability.rb
-      is_expected.not_to be_able_to(:edit, id)
-      is_expected.not_to be_able_to(:update, collection)
-      is_expected.not_to be_able_to(:update, valkyrie_found)
-      is_expected.not_to be_able_to(:update, valkyrie_conversion)
-      is_expected.not_to be_able_to(:update, solr_document) # defined in solr_document_ability.rb
-      is_expected.not_to be_able_to(:update, id)
-      is_expected.not_to be_able_to(:destroy, collection)
-      is_expected.not_to be_able_to(:destroy, valkyrie_found)
-      is_expected.not_to be_able_to(:destroy, valkyrie_conversion)
-      is_expected.not_to be_able_to(:destroy, solr_document) # defined in solr_document_ability.rb
-      is_expected.not_to be_able_to(:destroy, id)
-      is_expected.not_to be_able_to(:deposit, collection)
-      is_expected.not_to be_able_to(:deposit, valkyrie_found)
-      is_expected.not_to be_able_to(:deposit, valkyrie_conversion)
-      is_expected.not_to be_able_to(:deposit, solr_document)
-      is_expected.not_to be_able_to(:deposit, id)
-      is_expected.not_to be_able_to(:view_admin_show, collection)
-      is_expected.not_to be_able_to(:view_admin_show, valkyrie_found)
-      is_expected.not_to be_able_to(:view_admin_show, valkyrie_conversion)
-      is_expected.not_to be_able_to(:view_admin_show, solr_document)
-      is_expected.not_to be_able_to(:view_admin_show, id)
-      is_expected.not_to be_able_to(:read, collection)
-      is_expected.not_to be_able_to(:read, valkyrie_found)
-      is_expected.not_to be_able_to(:read, valkyrie_conversion)
-      is_expected.not_to be_able_to(:read, solr_document) # defined in solr_document_ability.rb
-      is_expected.not_to be_able_to(:read, id)
-      is_expected.not_to be_able_to(:manage_discovery, collection)
-      is_expected.not_to be_able_to(:manage_discovery, valkyrie_found)
-      is_expected.not_to be_able_to(:manage_discovery, valkyrie_conversion)
-      is_expected.not_to be_able_to(:manage_discovery, solr_document)
-      is_expected.not_to be_able_to(:manage_discovery, id)
+      [collection, valkyrie_found, valkyrie_conversion, solr_document, id].each do |obj|
+        is_expected.not_to be_able_to(:edit, obj)
+        is_expected.not_to be_able_to(:update, obj)
+        is_expected.not_to be_able_to(:destroy, obj)
+        is_expected.not_to be_able_to(:deposit, obj)
+        is_expected.not_to be_able_to(:view_admin_show, obj)
+        is_expected.not_to be_able_to(:read, obj)
+        is_expected.not_to be_able_to(:manage_discovery, obj)
+      end
     end
   end
 

@@ -22,10 +22,14 @@ class CollectionResource < Hyrax::PcdmCollection
   ##
   # @!group Methods to Extract
   def member_of_collection_ids
+    return [] unless persisted?
+
     Hyrax.query_service.custom_queries.find_child_collection_ids(resource: self).to_a
   end
 
   def members_of
+    return [] unless persisted?
+
     Hyrax.query_service.custom_queries.find_members_of(collection: self)
   end
   # @!endgroup Class Attributes

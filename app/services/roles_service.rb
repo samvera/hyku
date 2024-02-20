@@ -241,37 +241,41 @@ class RolesService # rubocop:disable Metrics/ClassLength
   end
 
   class CreateCollectionAccessesJob < Hyrax::ApplicationJob
+    def self.create_access_for(collection:)
+      pt = Hyrax::PermissionTemplate.find_or_create_by!(source_id: collection.id)
+      original_access_grants_count = pt.access_grants.count
+
+      pt.access_grants.find_or_create_by!(
+        access: Hyrax::PermissionTemplateAccess::MANAGE,
+        agent_type: Hyrax::PermissionTemplateAccess::GROUP,
+        agent_id: Ability.admin_group_name
+      )
+
+      pt.access_grants.find_or_create_by!(
+        access: Hyrax::PermissionTemplateAccess::MANAGE,
+        agent_type: Hyrax::PermissionTemplateAccess::GROUP,
+        agent_id: 'collection_manager'
+      )
+
+      pt.access_grants.find_or_create_by!(
+        access: Hyrax::PermissionTemplateAccess::VIEW,
+        agent_type: Hyrax::PermissionTemplateAccess::GROUP,
+        agent_id: 'collection_editor'
+      )
+
+      pt.access_grants.find_or_create_by!(
+        access: Hyrax::PermissionTemplateAccess::VIEW,
+        agent_type: Hyrax::PermissionTemplateAccess::GROUP,
+        agent_id: 'collection_reader'
+      )
+
+      pt.reset_access_controls_for(collection: ) if pt.access_grants.count != original_access_grants_count
+    end
+
     # rubocop:disable Metrics/MethodLength
     def perform
       Hyrax.query_service.find_all_of_model(model: Hyrax.config.collection_class).each do |c|
-        pt = Hyrax::PermissionTemplate.find_or_create_by!(source_id: c.id)
-        original_access_grants_count = pt.access_grants.count
-
-        pt.access_grants.find_or_create_by!(
-          access: Hyrax::PermissionTemplateAccess::MANAGE,
-          agent_type: Hyrax::PermissionTemplateAccess::GROUP,
-          agent_id: Ability.admin_group_name
-        )
-
-        pt.access_grants.find_or_create_by!(
-          access: Hyrax::PermissionTemplateAccess::MANAGE,
-          agent_type: Hyrax::PermissionTemplateAccess::GROUP,
-          agent_id: 'collection_manager'
-        )
-
-        pt.access_grants.find_or_create_by!(
-          access: Hyrax::PermissionTemplateAccess::VIEW,
-          agent_type: Hyrax::PermissionTemplateAccess::GROUP,
-          agent_id: 'collection_editor'
-        )
-
-        pt.access_grants.find_or_create_by!(
-          access: Hyrax::PermissionTemplateAccess::VIEW,
-          agent_type: Hyrax::PermissionTemplateAccess::GROUP,
-          agent_id: 'collection_reader'
-        )
-
-        pt.reset_access_controls_for(collection: c) if pt.access_grants.count != original_access_grants_count
+        self.class.create_access_for(collection: c)
       end
     end
     # rubocop:enable Metrics/MethodLength

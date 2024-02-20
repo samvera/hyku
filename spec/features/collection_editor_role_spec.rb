@@ -4,13 +4,25 @@ require 'rails_helper'
 
 RSpec.describe 'actions permitted by the collection_editor role', type: :feature, js: true, clean: true, ci: 'skip' do # rubocop:disable Layout/LineLength
   let(:role) { FactoryBot.create(:role, :collection_editor) }
-  let(:collection) { FactoryBot.valkyrie_create(:hyku_collection, with_permission_template: true) }
+  let(:collection) { FactoryBot.valkyrie_create(:hyku_collection, depositor: user.user_key) }
   let(:user) { FactoryBot.create(:user) }
 
   context 'a User that has the collection_editor role' do
     before do
       user.add_role(role.name, Site.instance)
       login_as user
+    end
+
+    it 'has the proper abilities' do
+      # This spec is a canary in a coal mine, if it fails it likely means the other specs are going
+      # to fail.
+      ability = Ability.new(user)
+      collection
+      expect(ability.can?(:create, Hyrax.config.collection_class)).to be_truthy
+      expect(ability.can?(:show, collection)).to be_truthy
+      expect(ability.can?(:show, collection.id)).to be_truthy
+      expect(ability.can?(:edit, collection)).to be_truthy
+      expect(ability.can?(:edit, collection.id)).to be_truthy
     end
 
     it 'can create a Collection' do
@@ -23,19 +35,18 @@ RSpec.describe 'actions permitted by the collection_editor role', type: :feature
       expect(page).to have_content('Collection was successfully created.')
     end
 
-    it 'can view all Collections' do
+    it 'can view all Collections and the individual collection' do
       collection
+
       visit '/dashboard/collections'
       expect(find('table#collections-list-table'))
         .to have_selector(:id, "document_#{collection.id}")
-    end
 
-    it 'can view an individual Collection' do
       visit "/dashboard/collections/#{collection.id}"
       expect(page).to have_content(collection.title.first)
     end
 
-    it 'can edit and update a Collection' do
+  it 'can edit and update a Collection' do
       visit "/dashboard/collections/#{collection.id}/edit"
       fill_in('collection_title', with: 'Collection Editor Test')
       fill_in('collection_creator', with: 'Someone special')

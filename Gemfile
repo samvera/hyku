@@ -49,7 +49,7 @@ gem 'fcrepo_wrapper', '~> 0.4', group: %i[development test]
 gem 'flutie'
 gem 'good_job', '~> 2.99'
 gem 'googleauth', '= 1.8.1' # 1.9.0 got yanked from rubygems, hard pinning until we can upgrade
-gem 'hyrax', path: "vendor/gems" # github: 'samvera/hyrax', branch: 'double_combo'
+gem 'hyrax', github: 'samvera/hyrax', branch: 'double_combo'
 gem 'hyrax-doi', github: 'samvera-labs/hyrax-doi', branch: 'rails_hyrax_upgrade'
 gem 'hyrax-iiif_av', github: 'samvera-labs/hyrax-iiif_av', branch: 'rails_hyrax_upgrade'
 gem 'i18n-debug', require: false, group: %i[development test]

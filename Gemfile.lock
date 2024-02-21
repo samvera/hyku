@@ -144,60 +144,9 @@ GIT
       simple_form
 
 GIT
-  remote: https://github.com/scientist-softserv/apartment.git
-  revision: 9ad4b0ef2ee6debb956e86ef9e7095c8358fef5e
-  branch: development
-  specs:
-    apartment (2.2.1)
-      activerecord (>= 3.1.2, < 7.0)
-      parallel (>= 0.7.1)
-      public_suffix (>= 2)
-      rack (>= 1.3.6)
-
-GIT
-  remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: b39296dc066867a0017f0ab1dbfcf44d7e656e50
-  branch: main
-  specs:
-    iiif_print (1.0.0)
-      blacklight_iiif_search (>= 1.0, < 3.0)
-      derivative-rodeo (~> 0.5)
-      hyrax (>= 2.5, < 6)
-      nokogiri (>= 1.13.2)
-      rdf-vocab (~> 3.0)
-
-GIT
-  remote: https://github.com/scientist-softserv/valkyrie.git
-  revision: e9313b1d1744215b6b965814aaf0d38ac3b77107
-  ref: e9313b1d1744215b6b965814aaf0d38ac3b77107
-  specs:
-    valkyrie (3.1.3)
-      activemodel
-      activesupport
-      dry-struct
-      dry-types (~> 1.0)
-      faraday (>= 0.9, < 3, != 2.0.0)
-      faraday-multipart
-      json
-      json-ld
-      railties
-      rdf (~> 3.0, >= 3.0.10)
-      rdf-vocab
-      reform (~> 2.2)
-      reform-rails
-
-GIT
-  remote: https://github.com/stanhu/omniauth-cas.git
-  revision: 4211e6d05941b4a981f9a36b49ec166cecd0e271
-  ref: 4211e6d05941b4a981f9a36b49ec166cecd0e271
-  specs:
-    omniauth-cas (2.0.0)
-      addressable (~> 2.3)
-      nokogiri (~> 1.5)
-      omniauth (>= 1.2, < 3)
-
-PATH
-  remote: vendor/gems
+  remote: https://github.com/samvera/hyrax.git
+  revision: 26d0f39419b8c4074da03bad1ceca4663ea206a9
+  branch: double_combo
   specs:
     hyrax (5.0.0.rc2)
       active-fedora (~> 14.0)
@@ -254,6 +203,59 @@ PATH
       tinymce-rails (~> 5.10)
       valkyrie (~> 3.1.1)
       view_component (~> 2.74.1)
+
+GIT
+  remote: https://github.com/scientist-softserv/apartment.git
+  revision: 9ad4b0ef2ee6debb956e86ef9e7095c8358fef5e
+  branch: development
+  specs:
+    apartment (2.2.1)
+      activerecord (>= 3.1.2, < 7.0)
+      parallel (>= 0.7.1)
+      public_suffix (>= 2)
+      rack (>= 1.3.6)
+
+GIT
+  remote: https://github.com/scientist-softserv/iiif_print.git
+  revision: b39296dc066867a0017f0ab1dbfcf44d7e656e50
+  branch: main
+  specs:
+    iiif_print (1.0.0)
+      blacklight_iiif_search (>= 1.0, < 3.0)
+      derivative-rodeo (~> 0.5)
+      hyrax (>= 2.5, < 6)
+      nokogiri (>= 1.13.2)
+      rdf-vocab (~> 3.0)
+
+GIT
+  remote: https://github.com/scientist-softserv/valkyrie.git
+  revision: e9313b1d1744215b6b965814aaf0d38ac3b77107
+  ref: e9313b1d1744215b6b965814aaf0d38ac3b77107
+  specs:
+    valkyrie (3.1.3)
+      activemodel
+      activesupport
+      dry-struct
+      dry-types (~> 1.0)
+      faraday (>= 0.9, < 3, != 2.0.0)
+      faraday-multipart
+      json
+      json-ld
+      railties
+      rdf (~> 3.0, >= 3.0.10)
+      rdf-vocab
+      reform (~> 2.2)
+      reform-rails
+
+GIT
+  remote: https://github.com/stanhu/omniauth-cas.git
+  revision: 4211e6d05941b4a981f9a36b49ec166cecd0e271
+  ref: 4211e6d05941b4a981f9a36b49ec166cecd0e271
+  specs:
+    omniauth-cas (2.0.0)
+      addressable (~> 2.3)
+      nokogiri (~> 1.5)
+      omniauth (>= 1.2, < 3)
 
 GEM
   remote: https://rubygems.org/

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe "Factories" do
+RSpec.describe "Factories", clean: true do
   before { Hyrax::Group.find_or_create_by!(name: ::Ability.admin_group_name) }
 
   describe ':generic_work_resource' do
@@ -62,6 +62,17 @@ RSpec.describe "Factories" do
 
   describe ':hyku_collection and progeny' do
     let(:klass) { Hyrax.config.collection_class }
+
+    it 'is part of a collection type' do
+      collection_type = FactoryBot.create(:collection_type, title: 'Not Empty Type')
+      collection = FactoryBot.valkyrie_create(:hyku_collection, collection_type_gid: collection_type.to_global_id.to_s)
+
+      collection_ids = Hyrax::SolrService.query("#{Hyrax.config.collection_type_index_field.to_sym}:\"#{collection_type.to_global_id}\"").map { |doc| doc.id }
+      expect(collection_ids).to match_array([collection.id.to_s])
+      expect(collection.collection_type).to eq(collection_type)
+
+      expect(collection_type.collections.to_a).to match_array([collection])
+    end
 
     it 'creates a collection that is by default private' do
       collection = FactoryBot.valkyrie_create(:hyku_collection)

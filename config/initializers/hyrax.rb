@@ -230,3 +230,6 @@ require 'hydra/derivatives'
 Hydra::Derivatives::Processors::Video::Processor.config.video_bitrate = '1500k'
 
 Hyrax.publisher.subscribe(HyraxListener.new)
+
+Hyrax::MemberPresenterFactory.file_presenter_class = Hyrax::IiifAv::IiifFileSetPresenter
+Hyrax::PcdmMemberPresenterFactory.file_presenter_class = Hyrax::IiifAv::IiifFileSetPresenter

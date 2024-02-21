@@ -20,21 +20,21 @@
   <%# OVERRIDE: conditionally disable option %>
   <div class="form-check">
     <label class="form-check-label <%= disabled %>">
-      <%= f.radio_button :visibility,Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC %>
+      <%= f.radio_button :visibility,Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC, disabled: disabled %>
       <strong><%= t('hyrax.visibility.open.text') %></strong> - <%= t('hyrax.visibility.open.note_html') %>
     </label>
   </div>
   <%# OVERRIDE: conditionally disable option %>
   <div class="form-check">
     <label class="form-check-label <%= disabled %>">
-      <%= f.radio_button :visibility, Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED %>
+      <%= f.radio_button :visibility, Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED, disabled: disabled %>
       <strong><%= t('hyrax.visibility.authenticated.text', institution: institution_name) %></strong> - <%= t('hyrax.visibility.authenticated.note_html', institution: institution_name) %>
     </label>
   </div>
   <%# OVERRIDE: conditionally disable option %>
   <div class="form-check">
     <label class="form-check-label <%= disabled %>">
-      <%= f.radio_button :visibility, Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE %>
+      <%= f.radio_button :visibility, Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE, disabled: disabled %>
       <strong><%= t('hyrax.visibility.restricted.text') %></strong>- <%= t('hyrax.visibility.restricted.note_html') %>
     </label>
   </div>

@@ -3,8 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe 'actions permitted by the collection_manager role', type: :feature, js: true, clean: true, ci: 'skip' do # rubocop:disable Layout/LineLength
-  let!(:role) { FactoryBot.create(:role, :collection_manager) }
-  let!(:collection) { FactoryBot.create(:private_collection_lw, with_permission_template: true) }
+  let(:role) { FactoryBot.create(:role, :collection_manager) }
+  let(:collection) { FactoryBot.valkyrie_create(:hyku_collection, collection_type_gid:) }
+  let(:collection_type_gid) { create(:collection_type).to_global_id.to_s }
   let(:user) { FactoryBot.create(:user) }
 
   context 'a User that has the collection_manager role' do
@@ -467,8 +468,8 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
       it 'can add an existing work to a collection' do
         # Make current_user the depositor because the "Add existing works to this collection"
         # button navigates to the My Works index view
-        work = FactoryBot.create(:work, user:)
-        expect(collection.member_work_ids).to be_empty
+        work = FactoryBot.valkyrie_create(:generic_work_resource, depositor: user.user_key, visibility_setting: 'open')
+        expect(collection.members_of.to_a).to eq([]) # Not in the collection yet...but it will be soon
 
         visit "/dashboard/collections/#{collection.id}"
         click_link 'Add existing works to this collection'
@@ -481,7 +482,8 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
 
         expect(page).to have_content('Collection was successfully updated.')
         expect(page).to have_content(work.title.first)
-        expect(collection.member_work_ids).to eq([work.id])
+        # Failure?  Why?  Where did this end up at?
+        expect(collection.members_of.to_a).to eq([work])
       end
 
       it 'cannot deposit a new work through a collection' do
@@ -490,28 +492,34 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
       end
 
       it 'can remove a public work from a collection' do
-        work = FactoryBot.create(:work, member_of_collections: [collection], visibility: 'open')
-        expect(collection.member_work_ids).to eq([work.id])
+        # TODO This requires more review as there might be a confirmation dialog that is
+        # interfering.
+        work = FactoryBot.valkyrie_create(:generic_work_resource, :as_collection_member, member_of_collection_ids: [collection.id], visibility_setting: 'open')
+        expect(collection.members_of.to_a).to eq([work])
 
         visit "/dashboard/collections/#{collection.id}"
-        expect { find("tr#document_#{work.id}").find('.collection-remove.btn-danger').click }
-          .to change(collection, :member_work_ids).to eq([])
+        find("tr#document_#{work.id}").find('.collection-remove.btn-danger').click
         expect(page).to have_content('Collection was successfully updated.')
+
+        expect(collection.members_of.to_a).to eq([])
       end
 
       it 'can remove an institutional work from a collection' do
-        work = FactoryBot.create(:work, member_of_collections: [collection], visibility: 'authenticated')
-        expect(collection.member_work_ids).to eq([work.id])
+        # TODO This requires more review as there might be a confirmation dialog that is
+        # interfering.
+        work = FactoryBot.valkyrie_create(:generic_work_resource, :as_collection_member, member_of_collection_ids: [collection.id], visibility_setting: 'authenticated')
+        expect(collection.members_of.to_a).to eq([work])
 
         visit "/dashboard/collections/#{collection.id}"
-        expect { find("tr#document_#{work.id}").find('.collection-remove.btn-danger').click }
-          .to change(collection, :member_work_ids).to eq([])
+        find("tr#document_#{work.id}").find('.collection-remove.btn-danger').click
         expect(page).to have_content('Collection was successfully updated.')
+
+        expect(collection.members_of.to_a).to eq([])
       end
 
       it 'cannot see private works in a collection' do
-        work = FactoryBot.create(:work, member_of_collections: [collection], visibility: 'restricted')
-        expect(collection.member_work_ids).to eq([work.id])
+        work = FactoryBot.valkyrie_create(:generic_work_resource, :as_collection_member, member_of_collection_ids: [collection.id], visibility_setting: 'restricted')
+        expect(collection.members_of.to_a).to eq([work])
 
         visit "/dashboard/collections/#{collection.id}"
         expect(page).not_to have_selector("tr#document_#{work.id}")

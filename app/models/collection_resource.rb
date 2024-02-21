@@ -21,12 +21,17 @@ class CollectionResource < Hyrax::PcdmCollection
 
   ##
   # @!group Methods to Extract
+
+  ##
+  # @return [Enumerator]
   def members_of
     return [] unless persisted?
 
     Hyrax.query_service.custom_queries.find_members_of(collection: self)
   end
 
+  ##
+  # @return [Array]
   def member_collection_ids
     return [] unless persisted?
 

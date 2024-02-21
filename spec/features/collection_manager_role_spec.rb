@@ -492,7 +492,7 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
       end
 
       it 'can remove a public work from a collection' do
-        # TODO This requires more review as there might be a confirmation dialog that is
+        # TODO: This requires more review as there might be a confirmation dialog that is
         # interfering.
         work = FactoryBot.valkyrie_create(:generic_work_resource, :as_collection_member, member_of_collection_ids: [collection.id], visibility_setting: 'open')
         expect(collection.members_of.to_a).to eq([work])
@@ -505,7 +505,7 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
       end
 
       it 'can remove an institutional work from a collection' do
-        # TODO This requires more review as there might be a confirmation dialog that is
+        # TODO: This requires more review as there might be a confirmation dialog that is
         # interfering.
         work = FactoryBot.valkyrie_create(:generic_work_resource, :as_collection_member, member_of_collection_ids: [collection.id], visibility_setting: 'authenticated')
         expect(collection.members_of.to_a).to eq([work])

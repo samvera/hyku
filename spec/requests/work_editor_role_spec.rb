@@ -27,21 +27,35 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
     }
   end
 
+  let(:depositor) { work_depositor.user_key }
+
   let!(:admin_set) do
     FactoryBot.valkyrie_create(:hyku_admin_set, title: ['Test Admin Set'], with_permission_template: { with_workflows: true })
   end
-  let(:work) { process_through_actor_stack(build(:work), work_depositor, admin_set.id, visibility) }
+  let(:work) do
+    FactoryBot.valkyrie_create(:generic_work_resource,
+                               :with_admin_set,
+                               visibility_setting: visibility,
+                               depositor: work_depositor.user_key,
+                               admin_set:)
+  end
 
   describe 'read permissions' do
     %w[open authenticated restricted].each do |visibility|
       context "with #{visibility} visibility" do
         let(:visibility) { visibility }
+        let(:my_work) do FactoryBot.valkyrie_create(:generic_work_resource,
+                                                    :with_admin_set,
+                                                    visibility_setting: visibility,
+                                                    depositor: work_editor.user_key,
+                                                    admin_set:)
+        end
 
         before do
           login_as work_editor
         end
+
         it 'can see the show page for works it deposited' do
-          my_work = process_through_actor_stack(build(:work), work_editor, admin_set.id, visibility)
           get hyrax_generic_work_path(my_work)
 
           expect(response).to have_http_status(:success)
@@ -54,13 +68,14 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
         end
 
         it 'can see works it deposited in the dashboard' do
-          process_through_actor_stack(build(:work), work_editor, admin_set.id, visibility)
+          my_work
           get '/dashboard/my/works'
 
           expect(response).to have_http_status(:success)
         end
 
         it 'can see works deposited by other users in the dashboard' do
+          work
           get '/dashboard/works'
 
           expect(response).to have_http_status(:success)

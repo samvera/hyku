@@ -55,7 +55,8 @@ RSpec.describe 'collection', type: :feature, js: true, clean: true do
         permission_template.access_grants.find_or_create_by!(
           access:,
           agent_type: Hyrax::PermissionTemplateAccess::GROUP,
-          agent_id: 'admin')
+          agent_id: 'admin'
+        )
       end
 
       before do
@@ -69,7 +70,7 @@ RSpec.describe 'collection', type: :feature, js: true, clean: true do
 
         it 'renders a disabled remove button' do
           manager_row = find(:css, 'table.managers-table td[data-agent="admin"]')
-                          .find(:xpath, '..')
+                        .find(:xpath, '..')
           delete_access_grant_link = manager_row.find(:css, "a.btn.btn-danger.disabled[data-method=delete]")
 
           expect(delete_access_grant_link['DISABLED']).to be_present
@@ -82,7 +83,7 @@ RSpec.describe 'collection', type: :feature, js: true, clean: true do
 
         it 'renders an enabled remove button' do
           depositors_row = find(:css, 'table.depositors-table td[data-agent="admin"]')
-                              .find(:xpath, '..')
+                           .find(:xpath, '..')
           delete_access_grant_link = depositors_row.find(:css, "a.btn.btn-danger[data-method=delete]")
 
           expect(delete_access_grant_link["HREF"]).to match(%r{/admin/permission_template_accesses/#{access_grant.id}})
@@ -96,7 +97,7 @@ RSpec.describe 'collection', type: :feature, js: true, clean: true do
           # Would be nice if the data-agent were on the TR instead of the TD, but such is the way of
           # things.
           viewer_row = find(:css, 'table.viewers-table td[data-agent="admin"]')
-                              .find(:xpath, '..')
+                       .find(:xpath, '..')
           delete_access_grant_link = viewer_row.find(:css, "a.btn.btn-danger[data-method=delete]")
           expect(delete_access_grant_link["HREF"]).to match(%r{/admin/permission_template_accesses/#{access_grant.id}})
         end

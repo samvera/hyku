@@ -67,7 +67,7 @@ RSpec.describe "Factories", clean: true do
       collection_type = FactoryBot.create(:collection_type, title: 'Not Empty Type')
       collection = FactoryBot.valkyrie_create(:hyku_collection, collection_type_gid: collection_type.to_global_id.to_s)
 
-      collection_ids = Hyrax::SolrService.query("#{Hyrax.config.collection_type_index_field.to_sym}:\"#{collection_type.to_global_id}\"").map { |doc| doc.id }
+      collection_ids = Hyrax::SolrService.query("#{Hyrax.config.collection_type_index_field.to_sym}:\"#{collection_type.to_global_id}\"").map(&:id)
       expect(collection_ids).to match_array([collection.id.to_s])
       expect(collection.collection_type).to eq(collection_type)
 

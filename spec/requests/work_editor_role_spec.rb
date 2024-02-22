@@ -44,7 +44,8 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
     %w[open authenticated restricted].each do |visibility|
       context "with #{visibility} visibility" do
         let(:visibility) { visibility }
-        let(:my_work) do FactoryBot.valkyrie_create(:generic_work_resource,
+        let(:my_work) do
+          FactoryBot.valkyrie_create(:generic_work_resource,
                                                     :with_admin_set,
                                                     visibility_setting: visibility,
                                                     depositor: work_editor.user_key,

@@ -35,6 +35,26 @@ RSpec.describe FeaturedCollectionList, type: :model do
         expect(presenter.id).to eq collection2.id
       end
     end
+
+    context 'when sorting the featured collections' do
+      let(:instance) { described_class.new }
+
+      context 'when the featured collections have not been manually ordered' do
+        it 'is sorted by title' do
+          allow(instance).to receive(:manually_ordered?).and_return(false)
+
+          expect(instance.featured_collections.map(&:presenter).map(&:title).flatten).to eq [collection1.title.first, collection2.title.first]
+        end
+      end
+
+      context 'when the featured collections have been manually ordered' do
+        it 'is not sorted by title' do
+          allow(instance).to receive(:manually_ordered?).and_return(true)
+
+          expect(instance.featured_collections.map(&:presenter).map(&:title).flatten).to eq [collection2.title.first, collection1.title.first]
+        end
+      end
+    end
   end
 
   describe '#featured_collections_attributes=' do

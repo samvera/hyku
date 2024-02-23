@@ -9,6 +9,8 @@ RSpec.describe Hyrax::ContactForm, type: :model do
           from: "from@email.com"
         )
       end
+
+      allow(Hyrax.config).to receive(:contact_email).and_return('hyrax@email.com')
     end
 
     context 'no email set' do

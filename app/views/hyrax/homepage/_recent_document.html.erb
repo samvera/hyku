@@ -1,10 +1,10 @@
-<%# OVERRIDE Hyrax 3.4.1 to allow links to support shared search and add ENV to control turbolinks %>
+<%# OVERRIDE Hyrax 3.4.1 to allow links to support shared search and add ENV to control turbolinks,  enable markdown in the work title %>
 <li class="recent-item">
     <div class="row">
       <div class="col-sm-12">
         <span class="sr-only"><%= t('hyrax.homepage.recently_uploaded.document.title_label') %></span>
         <h3>
-          <%= render_thumbnail_tag recent_document, {}, {suppress_link: true} %>
+          <%=  markdown("#render_thumbnail_tag recent_document, {}, {suppress_link: true}") %>
           <%= link_to recent_document.title_or_label, generate_work_url(recent_document.to_h, request), data: { turbolinks: block_valkyrie_redirect? } %>
         </h3>
         <p class="recent-field">

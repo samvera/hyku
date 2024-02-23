@@ -1,0 +1,7 @@
+---
+:concurrency: <%= ENV['AUXILIARY_WORKER_THREAD_COUNT'] %>
+:queues:
+  - auxiliary
+  - default
+  - import
+  - export

@@ -1,0 +1,28 @@
+<%# OVERRIDE Hyrax 3.5 to temporarily disable analytics. it takes too long to load %>
+<% provide :page_header do %>
+  <h1><%= t("hyrax.dashboard.title") %></h1>
+<% end %>
+
+<div class="spaced-rows">
+  <div class="row">
+    <div class="col">
+     <%= render 'repository_growth' %>
+    </div>
+  </div>
+
+  <div class="row mx-3">
+    <div class="col">
+      <%= render 'visibility_graph' %>
+    </div>
+    <div class="col">
+      <%= render 'work_type_graph' %>
+    </div>
+    <div class="col">
+      <%= render "resource_type_graph" %>
+    </div>
+  </div>
+</div>
+
+<div class="clearfix mt-5">
+  <%= render 'tabs' %>
+</div>

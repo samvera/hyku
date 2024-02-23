@@ -22,6 +22,10 @@ module HyraxHelper
     Site.instance.banner_image? ? Site.instance.banner_image.url : super
   end
 
+  def favicon
+    Site.instance.favicon? ? Site.instance.favicon.url : super
+  end
+
   def logo_image
     Site.instance.logo_image? ? Site.instance.logo_image.url : false
   end

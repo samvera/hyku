@@ -1,0 +1,33 @@
+<%# OVERRIDE Blacklight Advanced Search gem v6.4.1 to remove the facet search from the bottom of the partial. %>
+
+<% unless (search_context_str = render_search_to_s( advanced_search_context)).blank? %>
+  <div class="constraints well search_history">
+    <h4><%= t 'blacklight_advanced_search.form.search_context' %></h4>
+    <%= search_context_str %>
+  </div>
+<% end %>
+
+<%= form_tag search_catalog_path, :class => 'advanced form-horizontal', :method => :get do  %>
+
+  <%= render_hash_as_hidden_fields(advanced_search_context) %>
+
+  <div class="input-criteria">
+
+      <div class="query-criteria">
+        <h3 class="query-criteria-heading">
+          <%= t('blacklight_advanced_search.form.query_criteria_heading_html', :select_menu =>  select_menu_for_field_operator ) %>
+        </h3>
+
+        <div id="advanced_search">
+          <%= render 'advanced/advanced_search_fields' %>
+        </div>
+      </div>
+  </div>
+
+  <hr>
+
+  <div class="sort-submit-buttons clearfix">
+    <%= render 'advanced_search_submit_btns' %>
+  </div>
+
+<% end %>

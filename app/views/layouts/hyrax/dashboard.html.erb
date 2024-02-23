@@ -1,0 +1,41 @@
+<%# OVERRIDE from Hyrax 3.6.0 to hide broken flash messages on the dashboard edit work pages %>
+
+<!DOCTYPE html>
+<html lang="<%= I18n.locale.to_s %>" prefix="og:http://ogp.me/ns#">
+  <head>
+    <%= render partial: 'layouts/head_tag_content' %>
+    <%= content_for(:head) %>
+  </head>
+
+  <body class="dashboard">
+    <div class="skip-to-content">
+      <%= link_to "Skip to Content", "#skip-to-content" %>
+    </div>
+    <%= render '/masthead' %>
+    <%= content_for(:navbar) %>
+    <div id="content-wrapper" role="main">
+      <div class="sidebar maximized">
+        <%= render 'hyrax/dashboard/sidebar' %>
+      </div>
+      <div class="main-content maximized">
+        <%# OVERRIDE here to hide broken flash messages on the dashboard edit work pages. %>
+        <%# regex includes only the paths for works since this is the only known place flash messages are broken. %>
+          <%= render '/flash_msg' %>
+        <%= render_breadcrumbs builder: Hyrax::BootstrapBreadcrumbsBuilder %>
+        <% if content_for?(:page_header) %>
+          <div class="row">
+            <div class="col-xs-12 main-header">
+              <%= yield(:page_header) %>
+            </div>
+          </div>
+        <% end %>
+
+          <a name="skip-to-content" id="skip-to-content"></a>
+          <%= content_for?(:content) ? yield(:content) : yield %>
+
+      </div>
+
+    </div><!-- /#content-wrapper -->
+    <%= render 'shared/ajax_modal' %>
+  </body>
+</html>

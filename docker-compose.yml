@@ -157,6 +157,8 @@ services:
         condition: service_started
       worker:
         condition: service_started
+      worker_auxiliary:
+        condition: service_started
       initialize_app:
         condition: service_completed_successfully
     # ports:
@@ -193,6 +195,10 @@ services:
         condition: service_started
       zoo:
         condition: service_started
+
+  worker_auxiliary:
+    <<: *app-worker
+    command: sh -l -c 'bundle && bundle exec sidekiq -C config/sidekiq_auxiliary.yml'
 
   # Do not recurse through all of tmp. derivitives will make booting
   # very slow and eventually just time out as data grows

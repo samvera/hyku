@@ -24,6 +24,8 @@ class FeaturedCollectionList
       collection.destroy if collection.presenter.blank?
       collection.presenter.blank?
     end
+    sort_by_title! unless manually_ordered?
+    @collections
   end
 
   delegate :empty?, to: :featured_collections
@@ -47,7 +49,15 @@ class FeaturedCollectionList
                                       presenter_args: ability)
   end
 
-  def collection_with_id(id)
-    @collections.find { |c| c.collection_id == id }
-  end
+    def collection_with_id(id)
+      @collections.find { |c| c.collection_id == id }
+    end
+
+    def manually_ordered?
+      !@collections.all? { |c| c.order == FeaturedCollection::FEATURE_LIMIT }
+    end
+
+    def sort_by_title!
+      @collections.sort_by! { |c| c.presenter.title.first.downcase }
+    end
 end

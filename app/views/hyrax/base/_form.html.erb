@@ -1,0 +1,24 @@
+<%# OVERRIDE Hyrax 3.6.0 to remove the broken error alerts from form validations %>
+
+<%= simple_form_for [main_app, @form],
+                    html: {
+                      data: { behavior: 'work-form',
+                              'param-key' => @form.model_name.param_key },
+                      multipart: true
+                    } do |f| %>
+  <%# OVERRIDE Here to remove broken error alert from form validation %>
+  <% if Flipflop.batch_upload? && !f.object.persisted? %>
+    <% provide :metadata_tab do %>
+      <p class="switch-upload-type"><%= t('.batch_upload_hint') %> <%= link_to t('.batch_link'), hyrax.new_batch_upload_path(payload_concern: @form.model.class) %></p>
+    <% end %>
+  <% end %>
+  <%= render 'hyrax/base/guts4form', f: f, tabs: form_tabs_for(form: f.object) %>
+<% end %>
+
+<script type="text/javascript">
+  Blacklight.onLoad(function() {
+    <%# This causes the page to switch back to the default template if they've
+        previously visited the batch download page in this Turbolinks session %>
+    $("#fileupload").fileupload('option', 'downloadTemplateId', 'template-download')
+  });
+</script>

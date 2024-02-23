@@ -4,6 +4,8 @@ module ApplicationHelper
   # Yep, we're ignoring the advice; because the translations are safe as is the markdown converter.
   # rubocop:disable Rails/OutputSafety
   include ::HyraxHelper
+  include Hyrax::OverrideHelperBehavior
+  include GroupNavigationHelper
   include SharedSearchHelper
   include Bulkrax::ApplicationHelper
   include HykuKnapsack::ApplicationHelper

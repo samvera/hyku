@@ -1,4 +1,4 @@
-<%# OVERRIDE from Hyrax v5.0.0rc2 to add featured collection functionality %>
+<%# OVERRIDE from Hyrax v5.0.0rc2 to add featured collection functionality, enable markdown for collection title %>
 
 <% featured_collection = f.object.presenter %>
 <tr>
@@ -14,7 +14,7 @@
       </div>
       <div>
         <%= link_to [hyrax, featured_collection] do %>
-          <%= featured_collection.title.first %>
+          <%= markdown(featured_collection.title.first) %>
         <% end %>
       </div>
     </div>

@@ -7,9 +7,17 @@ class CatalogController < ApplicationController
   include Hydra::Catalog
   include Hydra::Controller::ControllerBehavior
   include BlacklightOaiProvider::Controller
-
+  before_action :sort_alphabetical
   # These before_action filters apply the hydra access controls
   before_action :enforce_show_permissions, only: :show
+
+  def sort_alphabetical
+    params[:sort] = 'title_ssi asc' if params[:f].present?
+  end
+
+  def self.uploaded_field
+    'system_create_dtsi'
+  end
 
   def self.created_field
     'date_created_ssim'
@@ -133,7 +141,9 @@ class CatalogController < ApplicationController
     config.add_facet_field 'based_near_label_sim', limit: 5
     config.add_facet_field 'publisher_sim', limit: 5
     config.add_facet_field 'file_format_sim', limit: 5
+    config.add_facet_field 'date_ssi', label: 'Date Created', range: { num_segments: 10, assumed_boundaries: [1100, Time.zone.now.year + 2], segments: false, slider_js: false, maxlength: 4 }
     config.add_facet_field 'member_of_collections_ssim', limit: 5, label: 'Collections'
+    config.add_facet_field 'account_institution_name_ssim', label: 'Institution', limit: 5
 
     # TODO: deal with part of facet changes
     # config.add_facet_field solr_name("part", :facetable), limit: 5, label: 'Part'

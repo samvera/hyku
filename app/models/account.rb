@@ -23,6 +23,11 @@ class Account < ApplicationRecord
            inverse_of: :full_account
   has_many :search_accounts, class_name: 'Account', through: :search_account_cross_searches
 
+  belongs_to :solr_endpoint, dependent: :delete
+  belongs_to :fcrepo_endpoint, dependent: :delete
+  belongs_to :redis_endpoint, dependent: :delete
+
+  accepts_nested_attributes_for :solr_endpoint, :fcrepo_endpoint, :redis_endpoint, update_only: true
   accepts_nested_attributes_for :domain_names, allow_destroy: true
   accepts_nested_attributes_for :full_accounts
   accepts_nested_attributes_for :full_account_cross_searches, allow_destroy: true
@@ -42,6 +47,14 @@ class Account < ApplicationRecord
                      format: { with: /\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/ },
                      unless: proc { |a| a.tenant == 'public' || a.tenant == 'single' }
 
+  SUPERADMIN_SETTINGS = [:analytics_provider, :contact_email, :file_acl,
+                         :file_size_limit, :oai_prefix,
+                         :oai_sample_identifier, :s3_bucket].freeze
+
+  def self.superadmin_settings
+    SUPERADMIN_SETTINGS
+  end
+
   def self.admin_host
     host = ENV.fetch('HYKU_ADMIN_HOST', nil)
     host ||= ENV['HOST']
@@ -60,6 +73,15 @@ class Account < ApplicationRecord
     return Account.all if tenant_list.blank?
     joins(:domain_names).where(domain_names: { cname: tenant_list })
   end
+
+  # @return [Account]
+    def self.from_request(request)
+      from_cname(request.host)
+    end
+
+    def self.from_cname(cname)
+      joins(:domain_names).find_by(domain_names: { is_active: true, cname: canonical_cname(cname) })
+    end
 
   # @return [Account] a placeholder account using the default connections configured by the application
   def self.single_tenant_default
@@ -145,6 +167,14 @@ class Account < ApplicationRecord
 
   def cache_api?
     cache_api
+  end
+
+  def institution_name
+    sites.first&.institution_name || cname
+  end
+
+  def institution_id_data
+    {}
   end
 end
 # rubocop:enable Metrics/ClassLength

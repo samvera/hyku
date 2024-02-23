@@ -4,6 +4,7 @@
 ./coverage
 ./docker
 ./fcrepo
+./importer
 ./log
 ./pg
 ./public/assets

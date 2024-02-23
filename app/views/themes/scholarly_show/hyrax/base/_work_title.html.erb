@@ -6,7 +6,7 @@
           <small class="text-muted"><%= presenter.permission_badge %> <%= presenter.workflow.badge %></small>
         </h2>
       <% else %>
-        <h2><%= title %></h2>
+        <h2><%= markdown(title) %></h2>
       <% end %>
     </div>
     <div class="col-md-6 text-md-right">

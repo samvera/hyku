@@ -17,6 +17,7 @@ gem 'rails', '~> 6.0', github: 'rails/rails', branch: '6-1-stable'
 
 gem 'active_elastic_job', github: 'active-elastic-job/active-elastic-job', ref: 'ec51c5d9dedc4a1b47f2db41f26d5fceb251e979', group: %i[aws]
 gem 'active-fedora', '~> 14.0'
+gem 'activejob-scheduler', github: 'notch8/activejob-scheduler'
 gem 'activerecord-nulldb-adapter'
 gem 'addressable', '2.8.1' # remove once https://github.com/postrank-labs/postrank-uri/issues/49 is fixed
 gem 'apartment', github: 'scientist-softserv/apartment', branch: 'development'
@@ -98,6 +99,7 @@ gem 'sass-rails', '~> 6.0' # Use SCSS for stylesheets
 gem 'scss_lint', require: false, group: %i[development]
 gem 'secure_headers'
 gem 'selenium-webdriver', '4.8.1', group: %i[test]
+gem 'semaphore_test_boosters', group: %i[test]
 gem 'shoulda-matchers', '~> 4.0', group: %i[test]
 gem 'sidekiq', "< 7.0" # sidekiq 7 requires upgrade to redis 6
 gem 'simplecov', require: false, group: %i[development test]

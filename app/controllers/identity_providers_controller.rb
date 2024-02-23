@@ -37,6 +37,12 @@ class IdentityProvidersController < ApplicationController
         format.json { render json: @identity_provider.errors, status: :unprocessable_entity }
       end
     end
+  rescue JSON::ParserError => e
+    @identity_provider.add_error(:options, "Invalid JSON #{e.message}")
+    respond_to do |format|
+      format.html { render :new, status: :unprocessable_entity }
+      format.json { render json: @identity_provider.errors, status: :unprocessable_entity }
+    end
   end
 
   # PATCH/PUT /identity_providers/1 or /identity_providers/1.json
@@ -52,6 +58,12 @@ class IdentityProvidersController < ApplicationController
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @identity_provider.errors, status: :unprocessable_entity }
       end
+    end
+  rescue JSON::ParserError => e
+    @identity_provider.add_error(:options, "Invalid JSON #{e.message}")
+    respond_to do |format|
+      format.html { render :new, status: :unprocessable_entity }
+      format.json { render json: @identity_provider.errors, status: :unprocessable_entity }
     end
   end
 

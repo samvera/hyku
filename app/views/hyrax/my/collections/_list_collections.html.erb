@@ -1,4 +1,4 @@
-<%# OVERRIDE Hyrax v5.0.0rc2 to add appropriate alt tag %>
+<%# OVERRIDE Hyrax v5.0.0rc2 to add appropriate alt tag,  enable markdown for collection titles  %>
 
 <% # used by Your Collections tab %>
 <% id = collection_presenter.id %>
@@ -34,7 +34,7 @@
       </div>
       <%= link_to collection_presenter.show_path, id: "src_copy_link#{id}" do %>
         <span class="sr-only"><%= t("hyrax.dashboard.my.sr.show_label") %></span>
-        <%= collection_presenter.title_or_label %>
+        <%= markdown(collection_presenter.title_or_label) %>
       <% end %>
 
       <%# Expand arrow %>

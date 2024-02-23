@@ -25,3 +25,10 @@
     background: #ffff00;
   font-weight: 700;
 }
+
+.dl-horizontal .search-only-institution-link {
+  display: block; /* Change from inline display to block */
+  text-align: center; /* Center the text */
+  width: 100%; /* Take the full width of the container */
+  margin-top: 10px; /* Optional: Add some space above the element */
+}

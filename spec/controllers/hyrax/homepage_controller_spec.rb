@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+# Copied from Hyrax v2.9.0 to add home_text content block to the index method - Adding themes
 RSpec.describe Hyrax::HomepageController, type: :controller do
   routes { Hyrax::Engine.routes }
 
@@ -36,6 +37,16 @@ RSpec.describe Hyrax::HomepageController, type: :controller do
       assigns(:marketing_text).tap do |marketing|
         expect(marketing).to be_kind_of ContentBlock
         expect(marketing.name).to eq 'marketing_text'
+      end
+    end
+
+    # override hyrax v2.9.0 added @home_text - Adding Themes
+    it "sets home page text" do
+      get :index
+      expect(response).to be_success
+      assigns(:home_text).tap do |home|
+        expect(home).to be_kind_of ContentBlock
+        expect(home.name).to eq 'home_text'
       end
     end
 

@@ -43,11 +43,26 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     end
   end
 
+
+  # routes for the  api
+  namespace :api, defaults: { format: :json } do
+    resource :sushi do
+      collection do
+        get 'r51/status', to: 'sushi#server_status'
+        get 'r51/reports', to: 'sushi#report_list'
+        get 'r51/reports/pr', to: 'sushi#platform_report'
+        get 'r51/reports/pr_p1', to: 'sushi#platform_usage'
+        get 'r51/reports/ir', to: 'sushi#item_report'
+      end
+    end
+  end
+
   get 'status', to: 'status#index'
 
   mount BrowseEverything::Engine => '/browse'
 
   resource :site, only: [:update] do
+    resources :roles, only: %i[index update]
     resource :labels, only: %i[edit update]
   end
 

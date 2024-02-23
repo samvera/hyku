@@ -11,5 +11,6 @@ class CreateIiifPrintDerivativeAttachments < ActiveRecord::Migration[5.0]
       end
       add_index :iiif_print_derivative_attachments, :fileset_id
     end
+    add_index :iiif_print_derivative_attachments, :fileset_id
   end
 end

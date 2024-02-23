@@ -125,12 +125,13 @@ GIT
 
 GIT
   remote: https://github.com/samvera/bulkrax.git
-  revision: 22eb48efad3f92175800ecf1f79e8b72e85951fa
+  revision: 6d5517d808f2261a032aee506cfb79477edaac83
   branch: hyrax-4-valkyrie-support
   specs:
     bulkrax (6.0.1)
       bagit (~> 0.4.6)
       coderay
+      denormalize_fields
       iso8601 (~> 0.9.0)
       kaminari
       language_list (~> 1.2, >= 1.2.1)
@@ -217,7 +218,7 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: b39296dc066867a0017f0ab1dbfcf44d7e656e50
+  revision: ddf6138187fa7b985f6dfdaef03405c03e4b994a
   branch: main
   specs:
     iiif_print (1.0.0)
@@ -480,6 +481,8 @@ GEM
     database_cleaner-core (2.0.1)
     date (3.3.4)
     declarative (0.0.20)
+    denormalize_fields (1.3.0)
+      activerecord (>= 4.1.14, < 8.0.0)
     deprecation (1.1.0)
       activesupport
     derivative-rodeo (0.5.3)

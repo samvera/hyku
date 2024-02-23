@@ -16,6 +16,7 @@ RSpec.describe CreateAccount, clean: true do
       expect(Apartment::Tenant).to receive(:create).with(any_args) do |&block|
         block.call
       end
+      expect(AdminSet).to receive(:find_or_create_default_admin_set_id)
       subject.save
       expect(Site.reload.account).to eq account
     end

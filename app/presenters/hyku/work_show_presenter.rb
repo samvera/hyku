@@ -15,7 +15,6 @@ module Hyku
     # we need to re-introduce that logic.
     prepend IiifPrint::TenantConfig::WorkShowPresenterDecorator
 
-
     delegate :title_or_label, :extent, :source, :bibliographic_citation, :date,
              :show_pdf_viewer, :show_pdf_download_button, to: :solr_document
 

@@ -44,10 +44,17 @@ RSpec.describe "Factories", clean: true do
     end
   end
 
-  describe ':hyku_admin_set' do
-    let(:klass) { Hyrax.config.admin_set_class }
+  describe ':hyrax_admin_set' do
     it 'is an AdminSetResource' do
-      expect(FactoryBot.build(:hyku_admin_set)).to be_a_kind_of(klass)
+      expect(Hyrax.config.admin_set_class).to eq(AdminSetResource)
+      expect(FactoryBot.build(:hyrax_admin_set)).to be_a_kind_of(AdminSetResource)
+    end
+  end
+
+  describe ':hyku_admin_set' do
+    it 'is an AdminSetResource' do
+      expect(Hyrax.config.admin_set_class).to eq(AdminSetResource)
+      expect(FactoryBot.build(:hyku_admin_set)).to be_a_kind_of(AdminSetResource)
     end
 
     it "creates an admin set and can create it's permission template" do
@@ -56,7 +63,7 @@ RSpec.describe "Factories", clean: true do
         expect(admin_set.permission_template).to be_a(Hyrax::PermissionTemplate)
         # It cannot create workflows
         expect(admin_set.permission_template.available_workflows).not_to be_present
-      end.to change { Hyrax.query_service.count_all_of_model(model: klass) }.by(1)
+      end.to change { Hyrax.query_service.count_all_of_model(model: AdminSetResource) }.by(1)
     end
   end
 
@@ -106,6 +113,17 @@ RSpec.describe "Factories", clean: true do
       # And there are checks on the solr document; which is done by looking at the ID.
       expect(ability.can?(:show, collection.id)).to be_truthy
       expect(ability.can?(:edit, collection.id)).to be_truthy
+    end
+  end
+
+  describe ':permission_template' do
+    it 'creates the permission template and can create workflows and a corresponding admin_set' do
+      # The permission template is defined in Hyrax.  It should be creating an object of the correct
+      # configuration.
+      permission_template = FactoryBot.create(:permission_template, with_admin_set: true, with_workflows: true)
+      expect(permission_template.active_workflow).to be_present
+      expect(permission_template.source).to be_a AdminSetResource # A bit of hard-coding to see about snaring a bug.
+      expect(permission_template.source).to be_a Hyrax.config.admin_set_class
     end
   end
 end

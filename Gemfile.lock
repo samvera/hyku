@@ -8,6 +8,17 @@ GIT
       rails (>= 4.2)
 
 GIT
+  remote: https://github.com/notch8/activejob-scheduler.git
+  revision: 22850499dd0ab046eff2e1c113261782e7b8d8dc
+  specs:
+    activejob-scheduler (1.0.0.pre)
+      actionmailer (> 5, < 7)
+      activejob (> 5, < 7)
+      activesupport (> 5, < 7)
+      fugit (~> 1.3)
+      travis-release (~> 0)
+
+GIT
   remote: https://github.com/rails/rails.git
   revision: d16199e507086e3d54d94253b7e1d87ead394d9f
   branch: 6-1-stable
@@ -125,12 +136,13 @@ GIT
 
 GIT
   remote: https://github.com/samvera/bulkrax.git
-  revision: 22eb48efad3f92175800ecf1f79e8b72e85951fa
+  revision: 6d5517d808f2261a032aee506cfb79477edaac83
   branch: hyrax-4-valkyrie-support
   specs:
     bulkrax (6.0.1)
       bagit (~> 0.4.6)
       coderay
+      denormalize_fields
       iso8601 (~> 0.9.0)
       kaminari
       language_list (~> 1.2, >= 1.2.1)
@@ -144,60 +156,9 @@ GIT
       simple_form
 
 GIT
-  remote: https://github.com/scientist-softserv/apartment.git
-  revision: 9ad4b0ef2ee6debb956e86ef9e7095c8358fef5e
-  branch: development
-  specs:
-    apartment (2.2.1)
-      activerecord (>= 3.1.2, < 7.0)
-      parallel (>= 0.7.1)
-      public_suffix (>= 2)
-      rack (>= 1.3.6)
-
-GIT
-  remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: b39296dc066867a0017f0ab1dbfcf44d7e656e50
-  branch: main
-  specs:
-    iiif_print (1.0.0)
-      blacklight_iiif_search (>= 1.0, < 3.0)
-      derivative-rodeo (~> 0.5)
-      hyrax (>= 2.5, < 6)
-      nokogiri (>= 1.13.2)
-      rdf-vocab (~> 3.0)
-
-GIT
-  remote: https://github.com/scientist-softserv/valkyrie.git
-  revision: e9313b1d1744215b6b965814aaf0d38ac3b77107
-  ref: e9313b1d1744215b6b965814aaf0d38ac3b77107
-  specs:
-    valkyrie (3.1.3)
-      activemodel
-      activesupport
-      dry-struct
-      dry-types (~> 1.0)
-      faraday (>= 0.9, < 3, != 2.0.0)
-      faraday-multipart
-      json
-      json-ld
-      railties
-      rdf (~> 3.0, >= 3.0.10)
-      rdf-vocab
-      reform (~> 2.2)
-      reform-rails
-
-GIT
-  remote: https://github.com/stanhu/omniauth-cas.git
-  revision: 4211e6d05941b4a981f9a36b49ec166cecd0e271
-  ref: 4211e6d05941b4a981f9a36b49ec166cecd0e271
-  specs:
-    omniauth-cas (2.0.0)
-      addressable (~> 2.3)
-      nokogiri (~> 1.5)
-      omniauth (>= 1.2, < 3)
-
-PATH
-  remote: vendor/gems
+  remote: https://github.com/samvera/hyrax.git
+  revision: 7872cb5b7bdc1069c142ee3dc3fb67f82150167e
+  branch: double_combo
   specs:
     hyrax (5.0.0.rc2)
       active-fedora (~> 14.0)
@@ -254,6 +215,39 @@ PATH
       tinymce-rails (~> 5.10)
       valkyrie (~> 3.1.1)
       view_component (~> 2.74.1)
+
+GIT
+  remote: https://github.com/scientist-softserv/apartment.git
+  revision: 9ad4b0ef2ee6debb956e86ef9e7095c8358fef5e
+  branch: development
+  specs:
+    apartment (2.2.1)
+      activerecord (>= 3.1.2, < 7.0)
+      parallel (>= 0.7.1)
+      public_suffix (>= 2)
+      rack (>= 1.3.6)
+
+GIT
+  remote: https://github.com/scientist-softserv/iiif_print.git
+  revision: ddf6138187fa7b985f6dfdaef03405c03e4b994a
+  branch: main
+  specs:
+    iiif_print (1.0.0)
+      blacklight_iiif_search (>= 1.0, < 3.0)
+      derivative-rodeo (~> 0.5)
+      hyrax (>= 2.5, < 6)
+      nokogiri (>= 1.13.2)
+      rdf-vocab (~> 3.0)
+
+GIT
+  remote: https://github.com/stanhu/omniauth-cas.git
+  revision: 4211e6d05941b4a981f9a36b49ec166cecd0e271
+  ref: 4211e6d05941b4a981f9a36b49ec166cecd0e271
+  specs:
+    omniauth-cas (2.0.0)
+      addressable (~> 2.3)
+      nokogiri (~> 1.5)
+      omniauth (>= 1.2, < 3)
 
 GEM
   remote: https://rubygems.org/
@@ -478,6 +472,8 @@ GEM
     database_cleaner-core (2.0.1)
     date (3.3.4)
     declarative (0.0.20)
+    denormalize_fields (1.3.0)
+      activerecord (>= 4.1.14, < 8.0.0)
     deprecation (1.1.0)
       activesupport
     derivative-rodeo (0.5.3)
@@ -1238,6 +1234,10 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    semaphore_cucumber_booster_config (1.4.2)
+      thor (>= 0.19.1, < 2.0)
+    semaphore_test_boosters (2.7.1)
+      semaphore_cucumber_booster_config (~> 1.4.2)
     shacl (0.3.0)
       json-ld (~> 3.2)
       rdf (~> 3.2, >= 3.2.8)
@@ -1348,6 +1348,9 @@ GEM
     tinymce-rails (5.10.9)
       railties (>= 3.1.1)
     trailblazer-option (0.1.2)
+    travis-release (0.0.4)
+      bundler
+      rake
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
@@ -1370,6 +1373,20 @@ GEM
     validate_url (1.0.15)
       activemodel (>= 3.0.0)
       public_suffix
+    valkyrie (3.1.3)
+      activemodel
+      activesupport
+      dry-struct
+      dry-types (~> 1.0)
+      faraday (>= 0.9, < 3, != 2.0.0)
+      faraday-multipart
+      json
+      json-ld
+      railties
+      rdf (~> 3.0, >= 3.0.10)
+      rdf-vocab
+      reform (~> 2.2)
+      reform-rails
     version_gem (1.1.3)
     view_component (2.74.1)
       activesupport (>= 5.0.0, < 8.0)
@@ -1413,11 +1430,13 @@ GEM
 PLATFORMS
   aarch64-linux-musl
   arm64-darwin-23
+  ruby
   x86_64-linux-musl
 
 DEPENDENCIES
   active-fedora (~> 14.0)
   active_elastic_job!
+  activejob-scheduler!
   activerecord-nulldb-adapter
   addressable (= 2.8.1)
   apartment!
@@ -1500,6 +1519,7 @@ DEPENDENCIES
   scss_lint
   secure_headers
   selenium-webdriver (= 4.8.1)
+  semaphore_test_boosters
   shoulda-matchers (~> 4.0)
   sidekiq (< 7.0)
   simplecov
@@ -1511,7 +1531,6 @@ DEPENDENCIES
   tether-rails
   turbolinks (~> 5)
   twitter-typeahead-rails (= 0.11.1.pre.corejavascript)
-  valkyrie!
   web-console (>= 3.3.0)
   webdrivers (~> 4.7.0)
   webmock

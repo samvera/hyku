@@ -49,6 +49,18 @@ RSpec.describe "Factories", clean: true do
       expect(Hyrax.config.admin_set_class).to eq(AdminSetResource)
       expect(FactoryBot.build(:hyrax_admin_set)).to be_a_kind_of(AdminSetResource)
     end
+
+    it 'can create a permission template and active workflow' do
+      expect do
+        expect do
+          expect do
+            FactoryBot.valkyrie_create(:hyku_admin_set, title: ['Test Admin Set'], with_permission_template: { with_workflows: true })
+          end.to change { Hyrax.query_service.count_all_of_model(model: AdminSetResource) }.by(1)
+        end.to change { Hyrax::PermissionTemplate.count }.by(1)
+      end.to change { Sipity::Workflow.count }.from(0) # We'll create at least one
+      permission_template = Hyrax::PermissionTemplate.last
+      expect(permission_template.active_workflow).to be_present
+    end
   end
 
   describe ':hyku_admin_set' do

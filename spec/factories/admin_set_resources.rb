@@ -8,6 +8,18 @@ FactoryBot.modify do
       # (e.g. FactoryBot.valkyrie_create), and stumble into a nightmare.
       user { FactoryBot.create(:user) }
     end
+
+    after(:create) do |admin_set, evaluator|
+      if evaluator.with_permission_template &&
+         evaluator.with_permission_template.is_a?(Hash) &&
+         evaluator.with_permission_template[:with_workflows] ||
+         evaluator.with_permission_template['with_workflows']
+
+        permission_template = Hyrax::PermissionTemplate.find_by(source_id: admin_set.id.to_s)
+        Hyrax::Workflow::WorkflowImporter.load_workflow_for(permission_template:)
+        Sipity::Workflow.activate!(permission_template:, workflow_id: permission_template.available_workflows.pick(:id))
+      end
+    end
   end
 end
 

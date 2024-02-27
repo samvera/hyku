@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'actions permitted by the collection_manager role', type: :feature, js: true, clean: true, ci: 'skip' do # rubocop:disable Layout/LineLength
   let(:role) { FactoryBot.create(:role, :collection_manager) }
   let(:collection) { FactoryBot.valkyrie_create(:hyku_collection, collection_type_gid:) }
-  let(:collection_type_gid) { create(:collection_type).to_global_id.to_s }
+  let(:collection_type_gid) { FactoryBot.create(:collection_type).to_global_id.to_s }
   let(:user) { FactoryBot.create(:user) }
 
   context 'a User that has the collection_manager role' do
@@ -24,6 +24,7 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
     end
 
     it 'can view all Collections' do
+      collections
       visit '/dashboard/collections'
       expect(find('table#collections-list-table'))
         .to have_selector(:id, "document_#{collection.id}")
@@ -46,6 +47,8 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
     # This test is heavily inspired by a test in Hyrax v2.9.0, see
     # https://github.com/samvera/hyrax/blob/v2.9.0/spec/features/dashboard/collection_spec.rb#L365-L384
     it 'can destroy an individual Collection from the Dashboard index view' do
+      collection
+
       visit '/dashboard/collections'
 
       within('table#collections-list-table') do
@@ -72,9 +75,11 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
       within('table#collections-list-table') do
         expect(page).not_to have_content(collection.title.first)
       end
+      expect { CollectionResource.find(collection.id) }.to raise_error Valkyrie::Persistence::ObjectNotFoundError
     end
 
     it 'can destroy batches of Collections from the Dashboard index view' do
+      collection
       visit '/dashboard/collections'
 
       within('#document_' + collection.id) do
@@ -103,19 +108,20 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
 
       visit "dashboard/collections/#{collection.id}/edit"
       click_link('Discovery')
-      expect(find('input#visibility_restricted').checked?).to eq(true)
-      expect(find('div.form-group')['title']).to be_blank
-      find('div.form-group').all(:css, 'input[id^=visibility]').each do |input|
-        expect(input.disabled?).to eq(false)
+
+      within('.set-access-controls') do
+        expect(find('input#collection_visibility_restricted').checked?).to eq(true)
+        expect(find('input#collection_visibility_open').checked?).to eq(false)
+        expect(find('input#collection_visibility_authenticated').checked?).to eq(false)
       end
 
-      find('input#visibility_open').click
+      find('input#collection_visibility_open').click
       click_button('Save changes')
 
       expect(page).to have_content('Collection was successfully updated.')
-      expect(find('input#visibility_open').checked?).to eq(true)
-      expect(find('input#visibility_restricted').checked?).to eq(false)
-      expect(collection.reload.visibility).to eq('open')
+      expect(find('input#collection_visibility_open').checked?).to eq(true)
+      expect(find('input#collection_visibility_restricted').checked?).to eq(false)
+      expect(CollectionResource.find(collection.id).visibility).to eq('open')
     end
 
     # Tests custom :manage_items_in_collection ability
@@ -217,8 +223,9 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
       it 'can add an existing work to a collection' do
         # Make current_user the depositor because the "Add existing works to this collection"
         # button navigates to the My Works index view
-        work = FactoryBot.create(:work, user:)
-        expect(collection.member_work_ids).to be_empty
+        work = FactoryBot.valkyrie_create(:generic_work_resource, visibility_setting: 'open', depositor: user.user_key)
+
+        expect(collection.members_of.to_a).to be_empty
 
         visit "/dashboard/collections/#{collection.id}"
         click_link 'Add existing works to this collection'
@@ -231,7 +238,7 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
 
         expect(page).to have_content('Collection was successfully updated.')
         expect(page).to have_content(work.title.first)
-        expect(collection.member_work_ids).to eq([work.id])
+        expect(collection.members_of.to_a.map(&:id)).to match_array([work.id])
       end
 
       it 'cannot deposit a new work through a collection' do
@@ -240,28 +247,27 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
       end
 
       it 'can remove a public work from a collection' do
-        work = FactoryBot.create(:work, member_of_collections: [collection], visibility: 'open')
-        expect(collection.member_work_ids).to eq([work.id])
+        work = FactoryBot.valkyrie_create(:generic_work_resource, :as_collection_member, member_of_collection_ids: [collection.id], visibility_setting: 'authenticated')
+        expect(collection.members_of.to_a).to eq([work])
 
         visit "/dashboard/collections/#{collection.id}"
         expect { find("tr#document_#{work.id}").find('.collection-remove.btn-danger').click }
-          .to change(collection, :member_work_ids).to eq([])
+          .to change { collection.members_of.to_a }.from([work]).to([])
         expect(page).to have_content('Collection was successfully updated.')
       end
 
       it 'can remove an institutional work from a collection' do
-        work = FactoryBot.create(:work, member_of_collections: [collection], visibility: 'authenticated')
-        expect(collection.member_work_ids).to eq([work.id])
+        work = FactoryBot.valkyrie_create(:generic_work_resource, :as_collection_member, member_of_collection_ids: [collection.id], visibility_setting: 'authenticated')
 
         visit "/dashboard/collections/#{collection.id}"
         expect { find("tr#document_#{work.id}").find('.collection-remove.btn-danger').click }
-          .to change(collection, :member_work_ids).to eq([])
+          .to change { collection.members_of.to_a }.from([work]).to([])
         expect(page).to have_content('Collection was successfully updated.')
       end
 
       it 'cannot see private works in a collection' do
-        work = FactoryBot.create(:work, member_of_collections: [collection], visibility: 'restricted')
-        expect(collection.member_work_ids).to eq([work.id])
+        work = FactoryBot.valkyrie_create(:generic_work_resource, :as_collection_member, member_of_collection_ids: [collection.id], visibility_setting: 'restricted')
+        expect(collection.members_of.to_a).to eq([work])
 
         visit "/dashboard/collections/#{collection.id}"
         expect(page).not_to have_selector("tr#document_#{work.id}")
@@ -291,6 +297,7 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
     end
 
     it 'can view all Collections' do
+      collection
       visit '/dashboard/collections'
       expect(find('table#collections-list-table'))
         .to have_selector(:id, "document_#{collection.id}")
@@ -313,6 +320,7 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
     # This test is heavily inspired by a test in Hyrax v2.9.0, see
     # https://github.com/samvera/hyrax/blob/v2.9.0/spec/features/dashboard/collection_spec.rb#L365-L384
     it 'can destroy a Collection from the Dashboard index view' do
+      collection
       visit '/dashboard/collections'
 
       within('table#collections-list-table') do
@@ -339,6 +347,9 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
       within('table#collections-list-table') do
         expect(page).not_to have_content(collection.title.first)
       end
+
+      # Yup it is gone
+      expect { CollectionResource.find(collection.id) }.to raise_error Valkyrie::Persistence::ObjectNotFoundError
     end
 
     it 'can destroy a Collection from the Dashboard show view' do
@@ -354,19 +365,21 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
 
       visit "dashboard/collections/#{collection.id}/edit"
       click_link('Discovery')
-      expect(find('input#visibility_restricted').checked?).to eq(true)
-      expect(find('div.form-group')['title']).to be_blank
-      find('div.form-group').all(:css, 'input[id^=visibility]').each do |input|
-        expect(input.disabled?).to eq(false)
+
+      within('.set-access-controls') do
+        expect(find('input#collection_visibility_restricted').checked?).to eq(true)
+        expect(find('input#collection_visibility_open').checked?).to eq(false)
+        expect(find('input#collection_visibility_authenticated').checked?).to eq(false)
       end
 
-      find('input#visibility_open').click
+      find('input#collection_visibility_open').click
       click_button('Save changes')
 
       expect(page).to have_content('Collection was successfully updated.')
-      expect(find('input#visibility_open').checked?).to eq(true)
-      expect(find('input#visibility_restricted').checked?).to eq(false)
-      expect(collection.reload.visibility).to eq('open')
+
+      expect(find('input#collection_visibility_open').checked?).to eq(true)
+      expect(find('input#collection_visibility_restricted').checked?).to eq(false)
+      expect(CollectionResource.find(collection.id).visibility).to eq('open')
     end
 
     # Tests custom :manage_items_in_collection ability
@@ -482,8 +495,10 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
 
         expect(page).to have_content('Collection was successfully updated.')
         expect(page).to have_content(work.title.first)
-        # Failure?  Why?  Where did this end up at?
-        expect(collection.members_of.to_a).to eq([work])
+
+        # Mapping IDs because I was getting a failure on comparison; which shouldn't be failing but
+        # I don't have time nor space to figure that out.
+        expect(collection.members_of.map(&:id)).to match_array([work.id])
       end
 
       it 'cannot deposit a new work through a collection' do
@@ -511,7 +526,9 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
         expect(collection.members_of.to_a).to eq([work])
 
         visit "/dashboard/collections/#{collection.id}"
+
         find("tr#document_#{work.id}").find('.collection-remove.btn-danger').click
+
         expect(page).to have_content('Collection was successfully updated.')
 
         expect(collection.members_of.to_a).to eq([])

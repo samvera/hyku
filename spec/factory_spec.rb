@@ -26,7 +26,6 @@ RSpec.describe "Factories", clean: true do
       let(:depositor) { FactoryBot.create(:user, roles: [:work_depositor]) }
       let(:admin_set) { FactoryBot.valkyrie_create(:hyku_admin_set, title: ['Test Admin Set'], with_permission_template: { with_workflows: true }) }
       let(:resource) { FactoryBot.valkyrie_create(:generic_work_resource, :with_admin_set, depositor: depositor.user_key, visibility_setting:, admin_set:) }
-
       context 'with open visibility' do
         let(:visibility_setting) { 'open' }
 
@@ -35,7 +34,7 @@ RSpec.describe "Factories", clean: true do
 
           expect(GenericWorkResource.find(resource.id)).to be_a(GenericWorkResource)
           template = Hyrax::PermissionTemplate.find_by!(source_id: admin_set.id)
-
+          expect(Sipity::Entity(resource)).to be_a(Sipity::Entity)
           expect(resource.permission_manager.edit_groups.to_a).to include(*template.agent_ids_for(agent_type: 'group', access: 'manage'))
 
           # Because we have a public work, the template's agent is obliterated.
@@ -51,6 +50,7 @@ RSpec.describe "Factories", clean: true do
           # Do this before we create the admin set.
 
           expect(GenericWorkResource.find(resource.id)).to be_a(GenericWorkResource)
+          expect(Sipity::Entity(resource)).to be_a(Sipity::Entity)
           template = Hyrax::PermissionTemplate.find_by!(source_id: admin_set.id)
 
           expect(resource.permission_manager.edit_groups.to_a).to include(*template.agent_ids_for(agent_type: 'group', access: 'manage'))

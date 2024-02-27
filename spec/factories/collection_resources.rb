@@ -3,6 +3,7 @@
 FactoryBot.modify do
   factory :hyrax_collection do
     collection_type_gid { nil }
+    creator { ["An Interesting Person"] }
     transient do
       # The `with_permission_template` transient does create a permission template, but it's
       # configuration is rather cumbersome.

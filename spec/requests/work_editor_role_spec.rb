@@ -6,6 +6,7 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
 
   # `before`s and `let!`s are order-dependent -- do not move this `before` from the top
   before do
+    allow(Hyrax.config).to receive(:default_active_workflow_name).and_return('default')
     FactoryBot.create(:admin_group)
     FactoryBot.create(:registered_group)
     FactoryBot.create(:editors_group)
@@ -57,8 +58,20 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
         end
 
         it 'can see the show page for works it deposited' do
-          get hyrax_generic_work_path(my_work)
+          # We're testing existing AF objects and Valkyrie objects.  They both should pass.
+          af_admin_set = FactoryBot.create(:admin_set, with_permission_template: { with_workflows: true })
+          af_work = process_through_actor_stack(build(:work), work_editor, af_admin_set.id, visibility)
 
+          my_work = FactoryBot.valkyrie_create(:generic_work_resource,
+                                               :with_admin_set,
+                                               admin_set: admin_set,
+                                               depositor: work_editor.user_key,
+                                               visibility_setting: visibility)
+
+          get hyrax_generic_work_path(af_work)
+          expect(response).to have_http_status(:success)
+
+          get hyrax_generic_work_path(my_work)
           expect(response).to have_http_status(:success)
         end
 
@@ -111,9 +124,12 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
     end
 
     it 'can edit works it deposited' do
-      login_as work_editor
-      my_work = process_through_actor_stack(build(:work), work_editor, admin_set.id, visibility)
+      my_work = FactoryBot.valkyrie_create(:generic_work_resource, :with_admin_set, admin_set:, visibility_setting: visibility, depositor: work_editor.user_key)
+
       expect(Ability.new(work_editor).can?(:edit, my_work)).to be_truthy
+
+      login_as work_editor
+
       get edit_hyrax_generic_work_path(my_work)
 
       expect(response).to have_http_status(:success)
@@ -122,6 +138,8 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
 
   describe 'destroy permissions' do
     it 'cannot destroy the work' do
+      work # We need to instantiate this before we try to destroy it
+      expect(Ability.new(work_editor).can?(:destroy, work)).to be_falsey
       login_as work_editor
       expect { delete hyrax_generic_work_path(work) }
         .not_to change { Hyrax.query_service.count_all_of_model(model: GenericWorkResource) }

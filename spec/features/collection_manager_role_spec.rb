@@ -24,7 +24,7 @@ RSpec.describe 'actions permitted by the collection_manager role', type: :featur
     end
 
     it 'can view all Collections' do
-      collections
+      collection
       visit '/dashboard/collections'
       expect(find('table#collections-list-table'))
         .to have_selector(:id, "document_#{collection.id}")

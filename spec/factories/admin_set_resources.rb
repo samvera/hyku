@@ -12,8 +12,8 @@ FactoryBot.modify do
     after(:create) do |admin_set, evaluator|
       if evaluator.with_permission_template &&
          evaluator.with_permission_template.is_a?(Hash) &&
-         evaluator.with_permission_template[:with_workflows] ||
-         evaluator.with_permission_template['with_workflows']
+         (evaluator.with_permission_template[:with_workflows] ||
+          evaluator.with_permission_template['with_workflows'])
 
         permission_template = Hyrax::PermissionTemplate.find_by(source_id: admin_set.id.to_s)
         Hyrax::Workflow::WorkflowImporter.load_workflow_for(permission_template:)

@@ -10,6 +10,5 @@ class CreateIiifPrintIngestFileRelations < ActiveRecord::Migration[5.0]
       end
       add_index :iiif_print_ingest_file_relations, :file_path
     end
-    add_index :iiif_print_ingest_file_relations, :file_path
   end
 end

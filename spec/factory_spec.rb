@@ -24,11 +24,40 @@ RSpec.describe "Factories", clean: true do
 
     context 'with an admin set' do
       let(:depositor) { FactoryBot.create(:user, roles: [:work_depositor]) }
-      let(:visibility_setting) { 'open' }
-      it 'creates a resource' do
-        # Do this before we create the admin set.
-        resource = FactoryBot.valkyrie_create(:generic_work_resource, :with_default_admin_set, depositor: depositor.user_key, visibility_setting:)
-        expect(GenericWorkResource.find(resource.id)).to be_a(GenericWorkResource)
+      let(:admin_set) { FactoryBot.valkyrie_create(:hyku_admin_set, title: ['Test Admin Set'], with_permission_template: { with_workflows: true }) }
+      let(:resource) { FactoryBot.valkyrie_create(:generic_work_resource, :with_admin_set, depositor: depositor.user_key, visibility_setting:, admin_set:) }
+
+      context 'with open visibility' do
+        let(:visibility_setting) { 'open' }
+
+        it 'creates a resource with correct permissions' do
+          # Do this before we create the admin set.
+
+          expect(GenericWorkResource.find(resource.id)).to be_a(GenericWorkResource)
+          template = Hyrax::PermissionTemplate.find_by!(source_id: admin_set.id)
+
+          expect(resource.permission_manager.edit_groups.to_a).to include(*template.agent_ids_for(agent_type: 'group', access: 'manage'))
+
+          # Because we have a public work, the template's agent is obliterated.
+          expect(resource.permission_manager.read_groups.to_a).not_to include(*template.agent_ids_for(agent_type: 'group', access: 'view'))
+          expect(resource.permission_manager.read_groups.to_a).to include("public")
+        end
+      end
+
+      context 'with restricted visibility' do
+        let(:visibility_setting) { 'authenticated' }
+
+                it 'creates a resource with correct permissions' do
+          # Do this before we create the admin set.
+
+          expect(GenericWorkResource.find(resource.id)).to be_a(GenericWorkResource)
+          template = Hyrax::PermissionTemplate.find_by!(source_id: admin_set.id)
+
+          expect(resource.permission_manager.edit_groups.to_a).to include(*template.agent_ids_for(agent_type: 'group', access: 'manage'))
+
+          expect(resource.permission_manager.read_groups.to_a).to include(*template.agent_ids_for(agent_type: 'group', access: 'view'))
+          expect(resource.permission_manager.read_groups.to_a).not_to include("public")
+        end
       end
     end
 

@@ -19,6 +19,10 @@ require 'spec_helper'
 # We're going to need this for our factories
 require Hyrax::Engine.root.join("spec/support/simple_work").to_s
 
+# I want to set this so that our factory finder will have the right values.
+Hyrax.config.admin_set_model = "AdminSetResource"
+Hyrax.config.collection_model = "CollectionResource"
+
 # First find the Hyrax factories; then find the local factories (which extend/modify Hyrax
 # factories).
 FactoryBot.definition_file_paths = [

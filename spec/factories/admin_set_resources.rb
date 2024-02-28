@@ -10,8 +10,7 @@ FactoryBot.modify do
     end
 
     after(:create) do |admin_set, evaluator|
-      if evaluator.with_permission_template &&
-         evaluator.with_permission_template.is_a?(Hash) &&
+      if evaluator.with_permission_template&.is_a?(Hash) &&
          (evaluator.with_permission_template[:with_workflows] ||
           evaluator.with_permission_template['with_workflows'])
 

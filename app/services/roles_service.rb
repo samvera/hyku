@@ -283,6 +283,7 @@ class RolesService # rubocop:disable Metrics/ClassLength
   end
 
   class CreateAdminSetAccessesJob < Hyrax::ApplicationJob
+    # rubocop:disable Metrics/MethodLength
     def self.create_access_for(admin_set:)
       # TODO: Extract a class attribute for configuration of these values
       pt = Hyrax::PermissionTemplate.find_or_create_by!(source_id: admin_set.id)
@@ -314,6 +315,7 @@ class RolesService # rubocop:disable Metrics/ClassLength
 
       pt.reset_access_controls_for(collection: admin_set) if pt.access_grants.count != original_access_grants_count
     end
+    # rubocop:enable Metrics/MethodLength
 
     # rubocop:disable Metrics/MethodLength
     def perform

@@ -64,7 +64,7 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
 
           my_work = FactoryBot.valkyrie_create(:generic_work_resource,
                                                :with_admin_set,
-                                               admin_set: admin_set,
+                                               admin_set:,
                                                depositor: work_editor.user_key,
                                                visibility_setting: visibility)
 

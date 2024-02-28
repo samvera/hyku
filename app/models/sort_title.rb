@@ -5,6 +5,7 @@ class SortTitle
     @title = title
   end
 
+  # rubocop:disable Metrics/MethodLength
   def alphabetical
     title = @title.downcase
     title = title.gsub(/^an(?:[[:space:]])/, '')
@@ -24,4 +25,5 @@ class SortTitle
     title = new_title.join(' ')
     title.strip
   end
+  # rubocop:enable Metrics/MethodLength
 end

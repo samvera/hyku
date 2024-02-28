@@ -43,7 +43,6 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     end
   end
 
-
   # routes for the  api
   namespace :api, defaults: { format: :json } do
     resource :sushi do

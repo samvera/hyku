@@ -7,13 +7,13 @@ module Hyrax
   module WorkflowActionsControllerDecorator
     private
 
-      def after_update_response
-        respond_to do |wants|
-          redirect_path = session[:from_admin_workflows] ? admin_workflows_path : [main_app, curation_concern]
-          wants.html { redirect_to redirect_path, notice: "The #{curation_concern.class.human_readable_type} has been updated." }
-          wants.json { render 'hyrax/base/show', status: :ok, location: polymorphic_path([main_app, curation_concern]) }
-        end
+    def after_update_response
+      respond_to do |wants|
+        redirect_path = session[:from_admin_workflows] ? admin_workflows_path : [main_app, curation_concern]
+        wants.html { redirect_to redirect_path, notice: "The #{curation_concern.class.human_readable_type} has been updated." }
+        wants.json { render 'hyrax/base/show', status: :ok, location: polymorphic_path([main_app, curation_concern]) }
       end
+    end
   end
 end
 

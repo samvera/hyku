@@ -17,7 +17,7 @@ module Hyrax
       end
       # OVERRIDE Hyrax hyrax-v3.5.0
       profile.hyrax__pageview(sort: 'date',
-                              start_date: start_date,
+                              start_date:,
                               end_date: Date.yesterday,
                               limit: 10_000)
              .for_path(path)

@@ -14,13 +14,13 @@
 class WorkAuthorization < ActiveRecord::Base # rubocop:disable ApplicationRecord
   class WorkNotFoundError < StandardError
     def initialize(user:, work:)
-      "Unable to authorize #{user.class} #{user.user_key.inspect} for work with ID=#{work.id} because work does not exist."
+      super "Unable to authorize #{user.class} #{user.user_key.inspect} for work with ID=#{work.id} because work does not exist."
     end
   end
 
   class GroupNotFoundError < StandardError
     def initialize(user:, group:)
-      "Unable to authorize #{user.class} #{user.user_key.inspect} for group with name=#{group.name.inspect} because group does not exist."
+      super "Unable to authorize #{user.class} #{user.user_key.inspect} for group with name=#{group.name.inspect} because group does not exist."
     end
   end
 
@@ -46,23 +46,21 @@ class WorkAuthorization < ActiveRecord::Base # rubocop:disable ApplicationRecord
   def self.handle_signin_for!(user:, authorize_until: 1.day.from_now, work_pid: nil, scope: nil, revoke_expirations_before: Time.zone.now)
     Rails.logger.info("#{self.class}.#{__method__} granting authorization to work_pid: #{work_pid.inspect} and scope: #{scope.inspect}.")
 
-    pids = Array.wrap(work_pid) + extract_pids_from(scope: scope)
+    pids = Array.wrap(work_pid) + extract_pids_from(scope:)
 
     # Maybe we get multiple pids; let's handle that accordingly
     pids.each do |pid|
-      begin
-        work = ActiveFedora::Base.where(id: pid).first
-        group = Hyrax::Group.find_by(name: pid)
-        authorize!(user: user, work: work, group: group, expires_at: authorize_until)
-      rescue WorkNotFoundError, GroupNotFoundError
-        Rails.logger.info("Unable to find work_pid of #{pid.inspect}.")
-      end
+      work = ActiveFedora::Base.where(id: pid).first
+      group = Hyrax::Group.find_by(name: pid)
+      authorize!(user:, work:, group:, expires_at: authorize_until)
+    rescue WorkNotFoundError, GroupNotFoundError
+      Rails.logger.info("Unable to find work_pid of #{pid.inspect}.")
     end
 
     # We re-authorized the above pids, so it should not be in this query.
     where("user_id = :user_id AND expires_at <= :expires_at", user_id: user.id, expires_at: revoke_expirations_before).pluck(:work_pid).each do |pid|
       work = ActiveFedora::Base.where(id: pid).first
-      revoke!(user: user, work: work)
+      revoke!(user:, work:)
     end
   end
   # rubocop:enable Rails/FindBy
@@ -127,12 +125,12 @@ class WorkAuthorization < ActiveRecord::Base # rubocop:disable ApplicationRecord
   #
   # @see .revoke!
   def self.authorize!(user:, work:, group:, expires_at: 1.day.from_now)
-    raise WorkNotFoundError.new(user: user, work: work) unless work
-    raise GroupNotFoundError.new(user: user, group: group) unless group
+    raise WorkNotFoundError.new(user:, work:) unless work
+    raise GroupNotFoundError.new(user:, group:) unless group
 
     transaction do
       authorization = find_or_create_by!(user_id: user.id, work_pid: work.id)
-      authorization.update!(work_title: work.title, expires_at: expires_at)
+      authorization.update!(work_title: work.title, expires_at:)
 
       group.add_members_by_id(user.id)
     end
@@ -183,7 +181,7 @@ class WorkAuthorization < ActiveRecord::Base # rubocop:disable ApplicationRecord
     # rubocop:disable Style/GuardClause
     def prepare_for_conditional_work_authorization!(given_url = nil)
       if given_url.nil?
-        # Note: Accessing `stored_location_for` clears that location from the session; so we need to
+        # NOTE: Accessing `stored_location_for` clears that location from the session; so we need to
         # grab it and then set it again.
         url = stored_location_for(:user)
         store_location_for(:user, url)

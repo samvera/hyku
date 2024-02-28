@@ -2,6 +2,7 @@
 
 namespace :tenants do
   # how much space, works, files, per each tenant?
+  # rubocop:disable Metrics/BlockNesting
   task calculate_usage: :environment do
     @results = []
     Account.where(search_only: false).find_each do |account|
@@ -24,7 +25,7 @@ namespace :tenants do
                   file_sizes.push(f.to_h['file_size_lts']) unless f.to_h['file_size_lts'].nil?
                 else
                   files_sizes.push(0)
-                 end
+                end
               end
               if file_sizes.any?
                 file_sizes_total_bytes = file_sizes.inject(0, :+)
@@ -53,4 +54,5 @@ namespace :tenants do
       end
     end
   end
+  # rubocop:enable Metrics/BlockNesting
 end

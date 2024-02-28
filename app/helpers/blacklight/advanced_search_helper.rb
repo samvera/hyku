@@ -39,12 +39,12 @@ module Blacklight
 
     private
 
-      # Fetches the service for a given key.
-      #
-      # @param key [String] the key used to determine the service name
-      # @return [Class, nil] the service class based on the key, or nil if it does not exist
-      def fetch_service_for(key)
-        "Hyrax::#{key.camelize}Service".safe_constantize || "Hyrax::#{key.pluralize.camelize}Service".safe_constantize
-      end
+    # Fetches the service for a given key.
+    #
+    # @param key [String] the key used to determine the service name
+    # @return [Class, nil] the service class based on the key, or nil if it does not exist
+    def fetch_service_for(key)
+      "Hyrax::#{key.camelize}Service".safe_constantize || "Hyrax::#{key.pluralize.camelize}Service".safe_constantize
+    end
   end
 end

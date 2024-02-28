@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe SortTitle, type: :model do
   describe "Alphabetical" do
     it "Titlecase title and remove 'The', 'And' and 'A'" do

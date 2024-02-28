@@ -4,7 +4,6 @@
 
 module Hyrax
   module QaSelectServiceDecorator
-    
     def active?(id)
       result = authority.find(id)
       return false if result.empty?

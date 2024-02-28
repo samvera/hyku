@@ -2,7 +2,7 @@
 
 RSpec.describe Sushi::ServerStatus do
   describe '#server_status' do
-    subject { described_class.new(account: account).server_status }
+    subject { described_class.new(account:).server_status }
 
     let(:account) { double(Account, cname: 'pitt.hyku.test') }
 

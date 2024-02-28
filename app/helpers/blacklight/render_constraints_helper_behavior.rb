@@ -7,6 +7,6 @@ require_dependency Blacklight::Engine.root.join('app', 'helpers', 'blacklight', 
 Blacklight::RenderConstraintsHelperBehavior.class_eval do
   # OVERRIDE to enable markdown in the facet constraints
   def render_constraint_element(label, value, options = {})
-    render(partial: "catalog/constraints_element", locals: { label: label, value: markdown(value), options: options })
+    render(partial: "catalog/constraints_element", locals: { label:, value: markdown(value), options: })
   end
 end

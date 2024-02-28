@@ -75,13 +75,13 @@ class Account < ApplicationRecord
   end
 
   # @return [Account]
-    def self.from_request(request)
-      from_cname(request.host)
-    end
+  def self.from_request(request)
+    from_cname(request.host)
+  end
 
-    def self.from_cname(cname)
-      joins(:domain_names).find_by(domain_names: { is_active: true, cname: canonical_cname(cname) })
-    end
+  def self.from_cname(cname)
+    joins(:domain_names).find_by(domain_names: { is_active: true, cname: canonical_cname(cname) })
+  end
 
   # @return [Account] a placeholder account using the default connections configured by the application
   def self.single_tenant_default

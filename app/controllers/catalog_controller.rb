@@ -15,10 +15,6 @@ class CatalogController < ApplicationController
     params[:sort] = 'title_ssi asc' if params[:f].present?
   end
 
-  def self.uploaded_field
-    'system_create_dtsi'
-  end
-
   def self.created_field
     'date_created_ssim'
   end

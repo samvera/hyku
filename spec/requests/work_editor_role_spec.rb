@@ -62,12 +62,6 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
           af_admin_set = FactoryBot.create(:admin_set, with_permission_template: { with_workflows: true })
           af_work = process_through_actor_stack(build(:work), work_editor, af_admin_set.id, visibility)
 
-          my_work = FactoryBot.valkyrie_create(:generic_work_resource,
-                                               :with_admin_set,
-                                               admin_set:,
-                                               depositor: work_editor.user_key,
-                                               visibility_setting: visibility)
-
           get hyrax_generic_work_path(af_work)
           expect(response).to have_http_status(:success)
 

@@ -44,7 +44,7 @@ RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, ci: 's
         end
 
         it 'can see works it deposited in the dashboard' do
-          my_work = FactoryBot.create(:generic_work_resource, :with_admin_set, depositor: work_editor.user_key, visibility_setting:, admin_set:)
+          my_work = FactoryBot.valkyrie_create(:generic_work_resource, :with_admin_set, depositor: work_editor.user_key, visibility_setting:, admin_set:)
           visit '/dashboard/my/works'
 
           expect(page).to have_content('works you own in the repository')

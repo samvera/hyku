@@ -26,7 +26,7 @@ RSpec.describe 'Work Depositor role', type: :request, singletenant: true, clean:
 
     %w[open authenticated].each do |visibility|
       context "with #{visibility} visibility" do
-        let(:work) { FactoryBot.create(:generic_work_resource, title: "Lacey and Ollie Forever", visibility_setting: visibility, admin_set_id:) }
+        let(:work) { FactoryBot.valkyrie_create(:generic_work_resource, title: "Lacey and Ollie Forever", visibility_setting: visibility, admin_set_id:) }
 
         it "can see the work's public show page" do
           get hyrax_generic_work_path(work)
@@ -47,7 +47,7 @@ RSpec.describe 'Work Depositor role', type: :request, singletenant: true, clean:
     end
 
     context 'with restricted visibility' do
-      let(:work) { FactoryBot.create(:generic_work_resource, title: "Lacey and Ollie Forever", visibility_setting: 'restricted', admin_set_id:) }
+      let(:work) { FactoryBot.valkyrie_create(:generic_work_resource, title: "Lacey and Ollie Forever", visibility_setting: 'restricted', admin_set_id:) }
 
       it "cannot see the work's show page" do
         get hyrax_generic_work_path(work)

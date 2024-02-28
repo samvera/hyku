@@ -243,6 +243,7 @@ class RolesService # rubocop:disable Metrics/ClassLength
   class CreateCollectionAccessesJob < Hyrax::ApplicationJob
     # rubocop:disable Metrics/MethodLength
     def self.create_access_for(collection:)
+      # TODO: Extract a class attribute for configuration of these values
       pt = Hyrax::PermissionTemplate.find_or_create_by!(source_id: collection.id)
       original_access_grants_count = pt.access_grants.count
 
@@ -283,39 +284,46 @@ class RolesService # rubocop:disable Metrics/ClassLength
 
   class CreateAdminSetAccessesJob < Hyrax::ApplicationJob
     # rubocop:disable Metrics/MethodLength
+    def self.create_access_for(admin_set:)
+      # TODO: Extract a class attribute for configuration of these values
+      pt = Hyrax::PermissionTemplate.find_or_create_by!(source_id: admin_set.id)
+      original_access_grants_count = pt.access_grants.count
+
+      pt.access_grants.find_or_create_by!(
+        access: Hyrax::PermissionTemplateAccess::MANAGE,
+        agent_type: Hyrax::PermissionTemplateAccess::GROUP,
+        agent_id: Ability.admin_group_name
+      )
+
+      pt.access_grants.find_or_create_by!(
+        access: Hyrax::PermissionTemplateAccess::DEPOSIT,
+        agent_type: Hyrax::PermissionTemplateAccess::GROUP,
+        agent_id: 'work_depositor'
+      )
+
+      pt.access_grants.find_or_create_by!(
+        access: Hyrax::PermissionTemplateAccess::DEPOSIT,
+        agent_type: Hyrax::PermissionTemplateAccess::GROUP,
+        agent_id: 'work_editor'
+      )
+
+      pt.access_grants.find_or_create_by!(
+        access: Hyrax::PermissionTemplateAccess::VIEW,
+        agent_type: Hyrax::PermissionTemplateAccess::GROUP,
+        agent_id: 'work_editor'
+      )
+
+      pt.reset_access_controls_for(collection: admin_set) if pt.access_grants.count != original_access_grants_count
+    end
+    # rubocop:enable Metrics/MethodLength
+
+    # rubocop:disable Metrics/MethodLength
     def perform
       models = [Hyrax.config.admin_set_class].uniq
 
       models.each do |admin_set_model|
-        Hyrax.query_service.find_all_of_model(model: admin_set_model).each do |as|
-          pt = Hyrax::PermissionTemplate.find_or_create_by!(source_id: as.id)
-          original_access_grants_count = pt.access_grants.count
-
-          pt.access_grants.find_or_create_by!(
-            access: Hyrax::PermissionTemplateAccess::MANAGE,
-            agent_type: Hyrax::PermissionTemplateAccess::GROUP,
-            agent_id: Ability.admin_group_name
-          )
-
-          pt.access_grants.find_or_create_by!(
-            access: Hyrax::PermissionTemplateAccess::DEPOSIT,
-            agent_type: Hyrax::PermissionTemplateAccess::GROUP,
-            agent_id: 'work_depositor'
-          )
-
-          pt.access_grants.find_or_create_by!(
-            access: Hyrax::PermissionTemplateAccess::DEPOSIT,
-            agent_type: Hyrax::PermissionTemplateAccess::GROUP,
-            agent_id: 'work_editor'
-          )
-
-          pt.access_grants.find_or_create_by!(
-            access: Hyrax::PermissionTemplateAccess::VIEW,
-            agent_type: Hyrax::PermissionTemplateAccess::GROUP,
-            agent_id: 'work_editor'
-          )
-
-          pt.reset_access_controls_for(collection: as) if pt.access_grants.count != original_access_grants_count
+        Hyrax.query_service.find_all_of_model(model: admin_set_model).each do |admin_set|
+          self.class.create_access_for(admin_set:)
         end
       end
     end

@@ -6,7 +6,7 @@
 require 'rails_helper'
 
 RSpec.describe Hyrax::ImagesController do
-  let(:image_resource) { FactoryBot.create(:image_resource, :with_one_file_set, depositor: 'somebody') }
+  let(:image_resource) { FactoryBot.valkyrie_create(:image_resource, :with_one_file_set, depositor: 'somebody') }
 
   describe "#presenter" do
     subject { controller.send :presenter }

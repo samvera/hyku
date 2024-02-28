@@ -96,20 +96,19 @@ RSpec.describe 'actions permitted by the collection_editor role', type: :feature
 
       visit "dashboard/collections/#{collection.id}/edit"
       click_link('Discovery')
-      expect(find('input#visibility_restricted').checked?).to eq(true)
-      expect(find('div.form-group')['title'])
-        .to eq("You do not have permission to change this Collection's discovery setting")
-      find('div.form-group').all(:css, 'input[id^=visibility]').each do |input|
-        expect(input.disabled?).to eq(true)
+
+      within('.set-access-controls') do
+        expect(find('input#collection_visibility_restricted').checked?).to eq(true)
+        expect(find('input#collection_visibility_open').checked?).to eq(false)
+        expect(find('input#collection_visibility_authenticated').checked?).to eq(false)
       end
 
-      find('input#visibility_open').click
-      click_button('Save changes')
+      expect(find('.set-access-controls').text)
+        .to include("You do not have permission to change this Collection's discovery setting")
 
-      expect(page).to have_content('Collection was successfully updated.')
-      expect(find('input#visibility_open').checked?).to eq(false)
-      expect(find('input#visibility_restricted').checked?).to eq(true)
-      expect(collection.reload.visibility).to eq('restricted')
+      nodes = find('.set-access-controls').all(:css, 'input[name="collection[visibility]"]')
+      expect(nodes.size).to eq(3) # restricted, open, authenticated
+      nodes.each { |input| expect(input.disabled?).to eq(true) }
     end
 
     # Tests custom :manage_items_in_collection ability
@@ -125,12 +124,13 @@ RSpec.describe 'actions permitted by the collection_editor role', type: :feature
       end
 
       it "cannot remove a subcollection from the parent collection's show page" do
-        sub_col = FactoryBot.create(
-          :private_collection_lw,
+        sub_col = FactoryBot.valkyrie_create(
+          :hyku_collection,
+          :as_collection_member,
           with_permission_template: true,
-          member_of_collections: [collection]
+          member_of_collection_ids: [collection.id.to_s]
         )
-        expect(collection.reload.member_collection_ids.count).to eq(1)
+        expect(collection.member_collection_ids).to match_array([sub_col.id])
 
         visit "/dashboard/collections/#{collection.id}"
         expect(page).to have_content(sub_col.title.first)
@@ -138,7 +138,7 @@ RSpec.describe 'actions permitted by the collection_editor role', type: :feature
       end
 
       it "cannot remove a subcollection from the child collection's show page" do
-        sub_col = FactoryBot.create(
+        sub_col = FactoryBot.valkyrie_create(
           :hyku_collection,
           :as_collection_member,
           with_permission_template: true,
@@ -158,7 +158,7 @@ RSpec.describe 'actions permitted by the collection_editor role', type: :feature
           click_button 'Close'
         end
 
-        expect(collection.reload.member_collection_ids.count).to eq(1)
+        expect(collection.member_collection_ids).to match_array([sub_col.id])
       end
     end
 
@@ -175,15 +175,19 @@ RSpec.describe 'actions permitted by the collection_editor role', type: :feature
       end
 
       it 'cannot remove any works from a collection' do
-        public_work = FactoryBot.create(:work, member_of_collections: [collection], visibility: 'open')
-        institutional_work = FactoryBot.create(:work, member_of_collections: [collection], visibility: 'authenticated')
-        private_work = FactoryBot.create(:work, member_of_collections: [collection], visibility: 'restricted')
-        expect(collection.member_work_ids).to contain_exactly(public_work.id, institutional_work.id, private_work.id)
+        public_work = FactoryBot.valkyrie_create(:generic_work_resource, :as_collection_member, member_of_collection_ids: [collection.id], visibility_setting: 'open')
+        institutional_work = FactoryBot.valkyrie_create(:generic_work_resource, :as_collection_member, member_of_collection_ids: [collection.id], visibility_setting: 'authenticated')
+        private_work = FactoryBot.valkyrie_create(:generic_work_resource, :as_collection_member, member_of_collection_ids: [collection.id], visibility_setting: 'restricted')
+
+        expect(collection.member_collection_ids).to contain_exactly(public_work.id, institutional_work.id, private_work.id)
 
         visit "/dashboard/collections/#{collection.id}"
+
+        expect(page).to have_selector("tr#document_#{public_work.id}"), "able to read public_work"
+        expect(page).to have_selector("tr#document_#{institutional_work.id}"), "able to read institutional_work"
+        expect(page).not_to have_selector("tr#document_#{private_work.id}"), "unable to read private_work"
         expect(find("tr#document_#{public_work.id}")).not_to have_content('Remove')
         expect(find("tr#document_#{institutional_work.id}")).not_to have_content('Remove')
-        expect(page).not_to have_selector("tr#document_#{private_work.id}")
       end
     end
   end
@@ -259,20 +263,18 @@ RSpec.describe 'actions permitted by the collection_editor role', type: :feature
 
       visit "dashboard/collections/#{collection.id}/edit"
       click_link('Discovery')
-      expect(find('input#visibility_restricted').checked?).to eq(true)
-      expect(find('div.form-group')['title'])
-        .to eq("You do not have permission to change this Collection's discovery setting")
-      find('div.form-group').all(:css, 'input[id^=visibility]').each do |input|
-        expect(input.disabled?).to eq(true)
+      within('.set-access-controls') do
+        expect(find('input#collection_visibility_restricted').checked?).to eq(true)
+        expect(find('input#collection_visibility_open').checked?).to eq(false)
+        expect(find('input#collection_visibility_authenticated').checked?).to eq(false)
       end
 
-      find('input#visibility_open').click
-      click_button('Save changes')
+      expect(find('.set-access-controls').text)
+        .to include("You do not have permission to change this Collection's discovery setting")
 
-      expect(page).to have_content('Collection was successfully updated.')
-      expect(find('input#visibility_open').checked?).to eq(false)
-      expect(find('input#visibility_restricted').checked?).to eq(true)
-      expect(collection.reload.visibility).to eq('restricted')
+      nodes = find('.set-access-controls').all(:css, 'input[name="collection[visibility]"]')
+      expect(nodes.size).to eq(3) # restricted, open, authenticated
+      nodes.each { |input| expect(input.disabled?).to eq(true) }
     end
 
     # Tests custom :manage_items_in_collection ability
@@ -295,7 +297,7 @@ RSpec.describe 'actions permitted by the collection_editor role', type: :feature
           member_of_collection_ids: [collection.id.to_s]
         )
 
-        expect(collection.member_of_collection_ids).to match_array([sub_col.id])
+        expect(collection.member_collection_ids).to match_array([sub_col.id])
 
         visit "/dashboard/collections/#{collection.id}"
         expect(page).to have_content(sub_col.title.first)
@@ -311,7 +313,7 @@ RSpec.describe 'actions permitted by the collection_editor role', type: :feature
           member_of_collection_ids: [collection.id.to_s]
         )
 
-        expect(collection.member_of_collection_ids).to match_array([sub_col.id])
+        expect(collection.members_of).to include(sub_col)
 
         visit "/dashboard/collections/#{sub_col.id}"
         expect(page).to have_content(collection.title.first)

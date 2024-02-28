@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Hyku::WorkShowPresenter do
-  let(:work) { FactoryBot.create(:generic_work_resource, :with_one_file_set) }
+  let(:work) { FactoryBot.valkyrie_create(:generic_work_resource, :with_one_file_set) }
   let(:document) { work.to_solr }
   let(:solr_document) { SolrDocument.new(document) }
   let(:request) { double(base_url: 'http://test.host', host: 'http://test.host') }

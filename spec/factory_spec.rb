@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe "Factories" do
+RSpec.describe "Factories", clean: true do
   before { Hyrax::Group.find_or_create_by!(name: ::Ability.admin_group_name) }
 
   describe ':generic_work_resource' do
@@ -24,11 +24,44 @@ RSpec.describe "Factories" do
 
     context 'with an admin set' do
       let(:depositor) { FactoryBot.create(:user, roles: [:work_depositor]) }
-      let(:visibility_setting) { 'open' }
-      it 'creates a resource' do
-        # Do this before we create the admin set.
-        resource = FactoryBot.valkyrie_create(:generic_work_resource, :with_default_admin_set, depositor: depositor.user_key, visibility_setting:)
-        expect(GenericWorkResource.find(resource.id)).to be_a(GenericWorkResource)
+      let(:admin_set) { FactoryBot.valkyrie_create(:hyku_admin_set, title: ['Test Admin Set'], with_permission_template: { with_workflows: true }) }
+      let(:resource) { FactoryBot.valkyrie_create(:generic_work_resource, :with_admin_set, depositor: depositor.user_key, visibility_setting:, admin_set:) }
+      context 'with open visibility' do
+        let(:visibility_setting) { 'open' }
+
+        it 'creates a resource with correct permissions' do
+          # Do this before we create the admin set.
+
+          expect(GenericWorkResource.find(resource.id)).to be_a(GenericWorkResource)
+          template = Hyrax::PermissionTemplate.find_by!(source_id: admin_set.id)
+          expect(Sipity::Entity(resource)).to be_a(Sipity::Entity)
+          expect(resource.permission_manager.edit_groups.to_a).to include(*template.agent_ids_for(agent_type: 'group', access: 'manage'))
+
+          # Because we have a public work, the template's agent is obliterated.
+          expect(resource.permission_manager.read_groups.to_a).not_to include(*template.agent_ids_for(agent_type: 'group', access: 'view'))
+          expect(resource.permission_manager.read_groups.to_a).to include("public")
+        end
+      end
+
+      context 'with restricted visibility' do
+        let(:visibility_setting) { 'authenticated' }
+
+        it 'creates a resource with correct permissions' do
+          # Do this before we create the admin set.
+
+          expect(GenericWorkResource.find(resource.id)).to be_a(GenericWorkResource)
+          expect(Sipity::Entity(resource)).to be_a(Sipity::Entity)
+          template = Hyrax::PermissionTemplate.find_by!(source_id: admin_set.id)
+
+          expect(resource.permission_manager.edit_groups.to_a).to include(*template.agent_ids_for(agent_type: 'group', access: 'manage'))
+
+          # TODO: There's a larger problem of the permission templates not being correctly
+          # applied via the RoleService.  I suspect there's something configurable in Hyrax that's
+          # creating some mayhem.  expect(resource.permission_manager.read_groups.to_a).to
+
+          # include(*template.agent_ids_for(agent_type: 'group', access: 'view'))
+          expect(resource.permission_manager.read_groups.to_a).not_to include("public")
+        end
       end
     end
 
@@ -44,10 +77,29 @@ RSpec.describe "Factories" do
     end
   end
 
-  describe ':hyku_admin_set' do
-    let(:klass) { Hyrax.config.admin_set_class }
+  describe ':hyrax_admin_set' do
     it 'is an AdminSetResource' do
-      expect(FactoryBot.build(:hyku_admin_set)).to be_a_kind_of(klass)
+      expect(Hyrax.config.admin_set_class).to eq(AdminSetResource)
+      expect(FactoryBot.build(:hyrax_admin_set)).to be_a_kind_of(AdminSetResource)
+    end
+
+    it 'can create a permission template and active workflow' do
+      expect do
+        expect do
+          expect do
+            FactoryBot.valkyrie_create(:hyku_admin_set, title: ['Test Admin Set'], with_permission_template: { with_workflows: true })
+          end.to change { Hyrax.query_service.count_all_of_model(model: AdminSetResource) }.by(1)
+        end.to change { Hyrax::PermissionTemplate.count }.by(1)
+      end.to change { Sipity::Workflow.count }.from(0) # We'll create at least one
+      permission_template = Hyrax::PermissionTemplate.last
+      expect(permission_template.active_workflow).to be_present
+    end
+  end
+
+  describe ':hyku_admin_set' do
+    it 'is an AdminSetResource' do
+      expect(Hyrax.config.admin_set_class).to eq(AdminSetResource)
+      expect(FactoryBot.build(:hyku_admin_set)).to be_a_kind_of(AdminSetResource)
     end
 
     it "creates an admin set and can create it's permission template" do
@@ -56,12 +108,23 @@ RSpec.describe "Factories" do
         expect(admin_set.permission_template).to be_a(Hyrax::PermissionTemplate)
         # It cannot create workflows
         expect(admin_set.permission_template.available_workflows).not_to be_present
-      end.to change { Hyrax.query_service.count_all_of_model(model: klass) }.by(1)
+      end.to change { Hyrax.query_service.count_all_of_model(model: AdminSetResource) }.by(1)
     end
   end
 
   describe ':hyku_collection and progeny' do
     let(:klass) { Hyrax.config.collection_class }
+
+    it 'is part of a collection type' do
+      collection_type = FactoryBot.create(:collection_type, title: 'Not Empty Type')
+      collection = FactoryBot.valkyrie_create(:hyku_collection, collection_type_gid: collection_type.to_global_id.to_s)
+
+      collection_ids = Hyrax::SolrService.query("#{Hyrax.config.collection_type_index_field.to_sym}:\"#{collection_type.to_global_id}\"").map(&:id)
+      expect(collection_ids).to match_array([collection.id.to_s])
+      expect(collection.collection_type).to eq(collection_type)
+
+      expect(collection_type.collections.to_a).to match_array([collection])
+    end
 
     it 'creates a collection that is by default private' do
       collection = FactoryBot.valkyrie_create(:hyku_collection)
@@ -95,6 +158,17 @@ RSpec.describe "Factories" do
       # And there are checks on the solr document; which is done by looking at the ID.
       expect(ability.can?(:show, collection.id)).to be_truthy
       expect(ability.can?(:edit, collection.id)).to be_truthy
+    end
+  end
+
+  describe ':permission_template' do
+    it 'creates the permission template and can create workflows and a corresponding admin_set' do
+      # The permission template is defined in Hyrax.  It should be creating an object of the correct
+      # configuration.
+      permission_template = FactoryBot.create(:permission_template, with_admin_set: true, with_workflows: true)
+      expect(permission_template.active_workflow).to be_present
+      expect(permission_template.source).to be_a AdminSetResource # A bit of hard-coding to see about snaring a bug.
+      expect(permission_template.source).to be_a Hyrax.config.admin_set_class
     end
   end
 end

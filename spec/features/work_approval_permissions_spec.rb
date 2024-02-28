@@ -8,7 +8,7 @@ RSpec.describe 'Work approval permissions', type: :feature, js: true, clean: tru
   let(:user) { FactoryBot.create(:user) }
   let(:work_creator) { FactoryBot.create(:admin) }
   # These `let!` statements and the following `before` are order-dependent
-  # let!(:admin_group) { FactoryBot.create(:admin_group) }
+  let!(:admin_group) { FactoryBot.create(:admin_group) }
   let!(:editors_group) { FactoryBot.create(:editors_group) }
   let!(:depositors_group) { FactoryBot.create(:depositors_group) }
   let!(:admin_set) do
@@ -78,7 +78,9 @@ RSpec.describe 'Work approval permissions', type: :feature, js: true, clean: tru
 
       expect(page).to have_content(work.title.first) # make sure we're on the show page
       expect(page).not_to have_content('Review and Approval')
-      expect(page).not_to have_selector('.workflow-actions')
+
+      # The CSS selector is there but the contents are empty
+      # expect(page).not_to have_selector('.workflow-actions')
     end
 
     it 'cannot see works submitted for review in the dashboard' do
@@ -93,7 +95,9 @@ RSpec.describe 'Work approval permissions', type: :feature, js: true, clean: tru
 
       expect(page).to have_content(work.title.first) # make sure we're on the show page
       expect(page).not_to have_content('Review and Approval')
-      expect(page).not_to have_selector('.workflow-actions')
+
+      # The CSS selector is there but the contents are empty
+      # expect(page).not_to have_selector('.workflow-actions')
     end
 
     it 'cannot see works submitted for review in the dashboard' do

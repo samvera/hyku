@@ -3,10 +3,12 @@
 FactoryBot.modify do
   factory :hyrax_collection do
     collection_type_gid { nil }
+    creator { ["An Interesting Person"] }
     transient do
       # The `with_permission_template` transient does create a permission template, but it's
-      # configuration is rather cumbersome.  Instead rely on with_hyku_permission_template
+      # configuration is rather cumbersome.
       with_permission_template { true }
+
       collection_type_settings { nil }
 
       # See RolesService::CreateCollectionAccessesJob

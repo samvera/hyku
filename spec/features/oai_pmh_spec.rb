@@ -56,7 +56,7 @@ RSpec.describe "OAI PMH Support", type: :feature do
     end
 
     describe '#add_public_file_urls' do
-      let(:record) { { file_set_ids_ssim: ['my-file-set-id-1', 'my-file-set-id-2'] } }
+      let(:record) { { member_ids_ssim: ['my-file-set-id-1', 'my-file-set-id-2'] } }
       let(:xml) { Builder::XmlMarkup.new }
 
       # We use Site.instance.account.cname to build the download links.

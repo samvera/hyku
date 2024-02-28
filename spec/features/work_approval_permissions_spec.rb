@@ -53,8 +53,6 @@ RSpec.describe 'Work approval permissions', type: :feature, js: true, clean: tru
     it "can see the workflow actions widget on the work's show page" do
       visit hyrax_generic_work_path(work)
 
-      File.open(Rails.root.join('test.html').to_s, 'w+') { |f| f.puts page.html }
-
       expect(page).to have_content('Review and Approval')
       expect(page).to have_selector('.workflow-actions')
     end

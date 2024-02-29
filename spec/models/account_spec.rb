@@ -145,7 +145,7 @@ RSpec.describe Account, type: :model do
     end
 
     it 'switches the ActiveFedora solr connection' do
-      expect(Hyrax::SolrService.instance.conn.uri.to_s).to eq 'http://example.com/solr/'
+      expect(Hyrax::SolrService.connection.uri.to_s).to eq 'http://example.com/solr/'
     end
 
     it 'switches the ActiveFedora fcrepo connection' do
@@ -163,7 +163,7 @@ RSpec.describe Account, type: :model do
   end
 
   describe '#switch' do
-    let!(:previous_solr_url) { Hyrax::SolrService.instance.conn.uri.to_s }
+    let!(:previous_solr_url) { Hyrax::SolrService.connection.uri.to_s }
     let!(:previous_redis_namespace) { 'hyrax' }
     let!(:previous_fedora_host) { ActiveFedora.fedora.host }
     let!(:previous_data_cite_mode) { Hyrax::DOI::DataCiteRegistrar.mode }
@@ -185,7 +185,7 @@ RSpec.describe Account, type: :model do
 
     it 'switches to the account-specific connection' do
       subject.switch do
-        expect(Hyrax::SolrService.instance.conn.uri.to_s).to eq 'http://example.com/solr/'
+        expect(Hyrax::SolrService.connection.uri.to_s).to eq 'http://example.com/solr/'
         expect(ActiveFedora.fedora.host).to eq 'http://example.com/fedora'
         expect(ActiveFedora.fedora.base_path).to eq '/dev'
         expect(Hyrax.config.redis_namespace).to eq 'foobaz'
@@ -201,7 +201,7 @@ RSpec.describe Account, type: :model do
       subject.switch do
         # no-op
       end
-      expect(Hyrax::SolrService.instance.conn.uri.to_s).to eq previous_solr_url
+      expect(Hyrax::SolrService.connection.uri.to_s).to eq previous_solr_url
       expect(ActiveFedora.fedora.host).to eq previous_fedora_host
       expect(Hyrax.config.redis_namespace).to eq previous_redis_namespace
       # datacite mode is reset to test in between for safety.
@@ -217,7 +217,7 @@ RSpec.describe Account, type: :model do
         subject.solr_endpoint = nil
         expect(subject.solr_endpoint).to be_kind_of NilSolrEndpoint
         subject.switch do
-          expect { Hyrax::SolrService.instance.conn.get 'foo' }.to raise_error RSolr::Error::ConnectionRefused
+          expect { Hyrax::SolrService.connection.get 'foo' }.to raise_error RSolr::Error::ConnectionRefused
         end
       end
 

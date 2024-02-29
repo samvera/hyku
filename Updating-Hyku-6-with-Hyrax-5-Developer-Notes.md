@@ -6,6 +6,81 @@ When we read from a Valkyrie double combo adapter we perform the following: `fir
 
 When we write/save/update a Valkyrie double combo adapter we perform the following: `first_layer.write`.  We never update the second layer.
 
+## Goddess Adapter Documentation
+
+The Freyja and Frigg strategies implement the Valkyrie interface for Querying and Persistence.  These two strategies “wrap” two underlying strategies that themselves implement the Valkyrie interface.
+
+-   Freyja’s services are Postgres via Valkyrie, then Wings’s ActiveFedora adapter.
+-   Frigg’s services are Fedora via Valkyrie, then Wings’s ActiveFedora adapter.
+
+The Goddess module is the common logic that is used by Freyja and Frigg to negotiate with these two services.
+
+Let’s compare how a Goddess strategy differs from a singular strategy (e.g. we’ll query Postgres for the data).
+
+Consider the following function: `Hyrax.query_service.find_by(id: "SOME-ID")`
+
+In the singular case, we query Postgres and if we don’t find the record we raise an exception.
+
+In the Goddess strategy, we would query our first service and if we don’t find that record we then query the second service.  That is check Postgres and failing that check Fedora 4.  And when we don’t find an entry in either, raise an exception.  This strategy is negotiated in the [Goddess::Query::MethodMissingMachinations module](https://github.com/samvera/hyrax/blob/06c071339f727d2661daea761a9c595c1d819283/lib/goddess/query.rb#L14).
+
+There are three significant complications:
+
+-   A Valkyrie query container foible.  Namely that there are two containers for query methods.  Those directly on `Hyrax.query_service` and those in `Hyrax.query_service.custom_queries`.
+-   The Goddess module’s need to coerce queries that look for specific models.  When we query for GenericWorkResource, we want query for GenericWork (as that was how it was written in the second service as well as the index).
+-   Many of the custom queries reference a `@query_service` object.  That will, by convention and design, not be a Goddess service but will instead be one of the “wrapped” services.
+
+Consider the following “abbreviation” program: `Goddess.custom_queries.find_obtusely(resource:)`
+
+This expands, roughly to the following:
+
+```ruby
+returned_value = nil
+Goddess.custom_queries.services.each do |service|
+  returned_value = service.custom_queries.find_obtusely(resource:)
+  break if returned_value
+end
+return returned_value
+```
+
+Let’s look at an example implementation of a Custom Query; [source code available here](https://github.com/samvera/hyrax/blob/06c071339f727d2661daea761a9c595c1d819283/app/services/hyrax/custom_queries/find_access_control.rb#L1-L28).  In the below case the `@query_service` is not the Goddess service but is instead one of the services yielded in `Goddess.custom_queries.services`.  In other-words, once inside the custom query logic, you will only be querying one persistence location (e.g. Postgres *or* Fedora 4).
+
+<details>
+<summary>Implementation of `find_access_control_for`</summary>
+
+```ruby
+# frozen_string_literal: true
+module Hyrax
+  module CustomQueries
+    # @example
+    #   Hyrax.custom_queries.find_access_control_for(resource: resource)
+    class FindAccessControl
+      def self.queries
+        [:find_access_control_for]
+      end
+
+      def initialize(query_service:)
+        @query_service = query_service
+      end
+
+      attr_reader :query_service
+      delegate :resource_factory, to: :query_service
+
+      def find_access_control_for(resource:)
+        query_service
+          .find_inverse_references_by(resource: resource, property: :access_to)
+          .find { |r| r.is_a?(Hyrax::AccessControl) } ||
+          raise(Valkyrie::Persistence::ObjectNotFoundError)
+      rescue ArgumentError # some adapters raise ArgumentError for missing resources
+        raise(Valkyrie::Persistence::ObjectNotFoundError)
+      end
+    end
+  end
+end
+```
+
+</details>
+
+
 # State of Data Considerations
 
 With the above intro to the persistence layer strategy we need to consider that existing Hyku applications already have data.  And there are three scenarios we must address:

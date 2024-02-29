@@ -79,13 +79,13 @@ Navigate to Dashboard > Manage Groups. Edit the "Institution Z Managers" group. 
 
 _This table currently does not reflect all possible permission configurations_
 
-| Action | Source of permission | Where to configure |
-| --- | --- | --- |
-| Deposit works into a specific Admin Set | Grant group/user `Manager` Workflow Role | Admin Set form's "Participants" tab |
-| Edit all works in a specific Admin Set | Grant group/user `Manager` Workflow Role | Admin Set form's "Participants" tab |
-| Deposit without approval | Admin Set's configured Workflow | Admin Set form's "Workflow" tab |
-| Deposit works into specific Collection | Grant group/user `Depositor` Collection role | Collection form's "Sharing" tab |
-| Deposit works into **any** Admin Set | Grant group/user `Work Depositor` Role | Group form's "Roles" tab |
+| Action                                  | Source of permission                         | Where to configure                  |
+|-----------------------------------------|----------------------------------------------|-------------------------------------|
+| Deposit works into a specific Admin Set | Grant group/user `Manager` Workflow Role     | Admin Set form's "Participants" tab |
+| Edit all works in a specific Admin Set  | Grant group/user `Manager` Workflow Role     | Admin Set form's "Participants" tab |
+| Deposit without approval                | Admin Set's configured Workflow              | Admin Set form's "Workflow" tab     |
+| Deposit works into specific Collection  | Grant group/user `Depositor` Collection role | Collection form's "Sharing" tab     |
+| Deposit works into **any** Admin Set    | Grant group/user `Work Depositor` Role       | Group form's "Roles" tab            |
 
 ### Further documentation
 [Managing Users, Groups and Permissions](https://docs.google.com/document/d/1dQta2JaT0rLPibl9XZNVt5VLskEWL9Ojym8EFKGdHYE/edit#heading=h.rrrlo1kmlxki)

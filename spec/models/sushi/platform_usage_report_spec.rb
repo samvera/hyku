@@ -13,7 +13,7 @@ RSpec.describe Sushi::PlatformUsageReport do
   describe '#as_json' do
     before { create_hyrax_countermetric_objects }
 
-    subject { described_class.new(params, created:, account:).as_json }
+    subject { described_class.new(params, created: created, account: account).as_json }
 
     context 'with only required params' do
       let(:params) { required_parameters }
@@ -51,7 +51,7 @@ RSpec.describe Sushi::PlatformUsageReport do
     let(:params) { { other: 'nope' } }
 
     it 'raises an error' do
-      expect { described_class.new(params, created:, account:).as_json }.to raise_error(Sushi::Error::UnrecognizedParameterError)
+      expect { described_class.new(params, created: created, account: account).as_json }.to raise_error(Sushi::Error::UnrecognizedParameterError)
     end
   end
 end

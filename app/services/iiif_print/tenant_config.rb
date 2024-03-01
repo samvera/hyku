@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/LineLength
+# rubocop:disable Layout/LineLength
 module IiifPrint
   ##
   # This module encapsulates the logic for whether or not we'll use the IIIF Print services for the
@@ -199,4 +199,4 @@ module IiifPrint
     end
   end
 end
-# rubocop:enable Metrics/LineLength
+# rubocop:enable Layout/LineLength

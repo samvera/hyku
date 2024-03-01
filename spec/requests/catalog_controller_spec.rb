@@ -21,7 +21,8 @@ RSpec.describe CatalogController, type: :request, clean: true, multitenant: true
     WebMock.disable!
     allow(AccountElevator).to receive(:switch!).with(cross_search_tenant_account.cname).and_return('public')
     allow(Apartment::Tenant.adapter).to receive(:connect_to_new).and_return('')
-    Hyrax::SolrService.instance.conn = sample_solr_connection
+    allow_any_instance_of(Hyrax::SolrService).to receive(:connection).and_return(sample_solr_connection)
+
     Hyrax::SolrService.add(hyku_sample_work.to_solr)
     Hyrax::SolrService.commit
 
@@ -33,7 +34,6 @@ RSpec.describe CatalogController, type: :request, clean: true, multitenant: true
   after do
     WebMock.enable!
 
-    Hyrax::SolrService.instance.conn = sample_solr_connection
     Hyrax::SolrService.delete(hyku_sample_work.id)
     Hyrax::SolrService.commit
 

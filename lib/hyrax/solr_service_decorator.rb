@@ -3,6 +3,13 @@
 # OVERRIDE: class Hyrax::SolrService from Hyrax 5.0
 module Hyrax
   module SolrServiceDecorator
+    extend ActiveSupport::Concern
+
+    class_methods do
+      # Follows pattern of delegation to new in the Hyrax::SolrService baseline.
+      delegate :reset!, :connection, to: :new
+    end
+
     # Get the count of records that match the query
     # @param [String] query a solr query
     # @param [Hash] args arguments to pass through to `args' param of SolrService.query
@@ -24,4 +31,4 @@ module Hyrax
   end
 end
 
-Hyrax::SolrService.singleton_class.send(:prepend, Hyrax::SolrServiceDecorator)
+Hyrax::SolrService.prepend(Hyrax::SolrServiceDecorator)

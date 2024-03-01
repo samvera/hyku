@@ -69,6 +69,7 @@ RSpec.describe "Factories", clean: true do
       let(:visibility_setting) { 'open' }
       it 'creates a resource that is part of the collection' do
         collection = FactoryBot.valkyrie_create(:hyku_collection)
+        expect(collection).to be_a(CollectionResource)
         resource = FactoryBot.valkyrie_create(:generic_work_resource, :as_collection_member, member_of_collection_ids: [collection.id], visibility_setting:)
 
         expect(Hyrax.query_service.custom_queries.find_collections_for(resource:)).to match_array([collection])
@@ -166,8 +167,8 @@ RSpec.describe "Factories", clean: true do
       # The permission template is defined in Hyrax.  It should be creating an object of the correct
       # configuration.
       permission_template = FactoryBot.create(:permission_template, with_admin_set: true, with_workflows: true)
-      expect(permission_template.active_workflow).to be_present
       expect(permission_template.source).to be_a AdminSetResource # A bit of hard-coding to see about snaring a bug.
+      expect(permission_template.active_workflow).to be_present
       expect(permission_template.source).to be_a Hyrax.config.admin_set_class
     end
   end

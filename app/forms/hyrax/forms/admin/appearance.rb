@@ -1,153 +1,89 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v5.0.0rc2 to add custom theming
+# OVERRIDE Hyrax 3.4.0 ot add custom theming
 
-# rubocop:disable Metrics/ModuleLength
+# rubocop:disable Metrics/ClassLength
 module Hyrax
   module Forms
     module Admin
       # An object to model and persist the form data for the appearance
       # customization menu
-      module AppearanceDecorator
-        extend ActiveSupport::Concern
+      class Appearance
+        extend ActiveModel::Naming
+        delegate :banner_image, :banner_image?, to: :site
+        delegate :logo_image, :logo_image?, to: :site
+        delegate :favicon, :favicon?, to: :site
+        delegate :directory_image, :directory_image?, to: :site
+        delegate :directory_image_alt_text, to: :site
+        delegate :default_collection_image, :default_collection_image?, to: :site
+        delegate :default_work_image, :default_work_image?, to: :site
 
-        # rubocop:disable Metrics/BlockLength
-        prepended do
-          delegate :banner_image, :banner_image?, :banner_image=, to: :site
-          delegate :logo_image, :logo_image?, :logo_image, to: :site
-          delegate :favicon, :favicon?, to: :site
-          delegate :directory_image, :directory_image?, to: :site
-          delegate :default_collection_image, :default_collection_image?, to: :site
-          delegate :default_work_image, :default_work_image?, to: :site
+        DEFAULT_FONTS = {
+          'body_font'     => 'Helvetica Neue, Helvetica, Arial, sans-serif;',
+          'headline_font' => 'Helvetica Neue, Helvetica, Arial, sans-serif;'
+        }.freeze
 
-          ##
-          # @!group Class Attributes
-          #
-          # @!attribute default_fonts
-          #   @return [Hash<String, String>] there should be at least the key "body_font" and
-          #           "headline_font"
-          class_attribute :default_fonts, default: {
-            'body_font' => 'Helvetica Neue, Helvetica, Arial, sans-serif;',
-            'headline_font' => 'Helvetica Neue, Helvetica, Arial, sans-serif;'
-          }
+        DEFAULT_COLORS = {
+          'header_and_footer_background_color' => '#3c3c3c',
+          'header_and_footer_text_color'       => '#dcdcdc',
+          'navbar_background_color'            => '#000000',
+          'navbar_link_background_color'       => '#375f8c',
+          'navbar_link_background_hover_color' => '#ffffff',
+          'navbar_link_text_color'             => '#eeeeee',
+          'navbar_link_text_hover_color'       => '#eeeeee',
+          'link_color'                         => '#2e74b2',
+          'link_hover_color'                   => '#215480',
+          'footer_link_color'                  => '#ffebcd',
+          'footer_link_hover_color'            => '#ffffff',
+          'primary_button_hover_color'         => '#286090',
+          'default_button_background_color'    => '#ffffff',
+          'default_button_border_color'        => '#cccccc',
+          'default_button_text_color'          => '#333333',
+          # 'active_tabs_background_color'     => '#337ab7',
+          'facet_panel_background_color'       => '#f5f5f5',
+          'facet_panel_text_color'             => '#333333',
+          'collection_banner_text_color'       => '#000000'
+        }.freeze
 
-          ##
-          # @!attribute default_colors
-          #   @return [Hash<String, String>]
-          class_attribute :default_colors, default: {
-            'active_tabs_background_color' => '#337ab7',
-            'collection_banner_text_color'       => '#000000',
-            'default_button_background_color' => '#ffffff',
-            'default_button_border_color' => '#cccccc',
-            'default_button_text_color' => '#333333',
-            'facet_panel_background_color' => '#f5f5f5',
-            'facet_panel_text_color' => '#333333',
-            'footer_link_color' => '#ffebcd',
-            'footer_link_hover_color' => '#ffffff',
-            'header_and_footer_text_color' => '#dcdcdc',
-            'header_and_footer_background_color' => '#3c3c3c',
-            'link_color' => '#2e74b2',
-            'link_hover_color' => '#215480',
-            'navbar_background_color' => '#000000',
-            'navbar_link_background_color' => '#375f8c',
-            'navbar_link_background_hover_color' => '#ffffff',
-            'navbar_link_text_color' => '#eeeeee',
-            'navbar_link_text_hover_color' => '#eeeeee',
-            'primary_button_hover_color' => '#286090',
-            'header_and_footer_background_color' => '#3c3c3c'
-          }
-          # @!endgroup Class Attributes
+        DEFAULT_VALUES = DEFAULT_FONTS.merge(DEFAULT_COLORS).freeze
+
+        # @param [Hash] attributes the list of parameters from the form
+        def initialize(attributes = {})
+          @attributes = attributes
         end
 
-        class_methods do
-          # Override this method if your form takes more than just the customization_params
-          def permitted_params
-            customization_params + image_params
-          end
+        attr_reader :attributes
+        private :attributes
 
-          def image_params
-            %i[favicon banner_image logo_image directory_image default_collection_image default_work_image]
-          end
-
-          # @return [Array<Symbol>] a list of fields that are related to the banner
-          def banner_fields
-            %i[
-              banner_image banner_label
-            ]
-          end
-
-          def favicon_fields
-            [:favicon]
-          end
-
-          # @return [Array<Symbol>] a list of fields that are related to the logo
-          def logo_fields
-            %i[
-              logo_image logo_label
-            ]
-          end
-
-          # @return [Array<Symbol>] a list of fields that are related to the directory
-          def directory_fields
-            %i[
-              directory_image directory_image_label
-            ]
-          end
-
-          # @return [Array<Symbol>] a list of fields that are related to default works & collections
-          def default_image_fields
-            %i[
-              default_collection_image
-              default_work_image
-              default_collection_label
-              default_work_label
-            ]
-          end
-
-          # A list of parameters that are related to customizations
-          # rubocop:disable Metrics/MethodLength
-          def customization_params
-            %i[
-              active_tabs_background_color
-              body_font
-              banner_image_text
-              collection_banner_text_color
-              custom_css_block
-              default_button_background_color
-              default_button_border_color
-              default_button_text_color
-              default_collection_image_text
-              default_work_image_text
-              directory_image_alt_text
-              facet_panel_background_color
-              facet_panel_text_color
-              footer_link_color
-              footer_link_hover_color
-              header_and_footer_background_color
-              header_and_footer_text_color
-              headline_font
-              link_color
-              link_hover_color
-              logo_image_text
-              navbar_background_color
-              navbar_link_background_color
-              navbar_link_background_hover_color
-              navbar_link_text_color
-              navbar_link_text_hover_color
-              primary_button_hover_color
-              ]
-          end
-          # rubocop:enable Metrics/MethodLength
+        # This allows this object to route to the correct path
+        def self.model_name
+          ActiveModel::Name.new(self, Hyrax, "Hyrax::Admin::Appearance")
         end
-        # rubocop:enable Metrics/BlockLength
+
+        # Override this method if your form takes more than just the customization_params
+        def self.permitted_params
+          customization_params + image_params
+        end
+
+        def self.image_params
+          %i[favicon banner_image logo_image directory_image directory_image_alt_text default_collection_image default_work_image]
+        end
 
         def site
           @site ||= Site.instance
         end
 
-        def collection_banner_text_color
-          block_for('collection_banner_text_color')
+        # Required to back a form
+        def to_key
+          []
         end
+
+        # Required to back a form (for route determination)
+        def persisted?
+          true
+        end
+
+        delegate :banner_image=, to: :site
 
         # The alt text for the logo image
         def logo_image_text
@@ -160,8 +96,8 @@ module Hyrax
         end
 
         # The alt text for the directory image
-        def directory_image_text
-          block_for('directory_image_text')
+        def directory_image_alt_text
+          block_for('directory_image_alt_text')
         end
 
         # The alt text for the default_collection image
@@ -192,6 +128,11 @@ module Hyrax
         # The color for the text in the header bar
         def header_and_footer_text_color
           block_for('header_and_footer_text_color')
+        end
+
+        # the color for the text (title and last updated date) inside of the collection banner
+        def collection_banner_text_color
+          block_for('collection_banner_text_color')
         end
 
         # The color for the background of the search navbar
@@ -267,9 +208,19 @@ module Hyrax
           darken_color(primary_button_hover_color, 0.1)
         end
 
+        # The mouse over color for the border of "primary" buttons
+        def primary_button_hover_border_color
+          darken_color(primary_button_border_color, 0.12)
+        end
+
         # The color for the background of active "primary" buttons
         def primary_button_active_background_color
           darken_color(primary_button_hover_color, 0.1)
+        end
+
+        # The color for the border of active "primary" buttons
+        def primary_button_active_border_color
+          darken_color(primary_button_border_color, 0.12)
         end
 
         # The color for the background of focused "primary" buttons
@@ -277,12 +228,15 @@ module Hyrax
           darken_color(primary_button_hover_color, 0.1)
         end
 
+        # The color for the border of focused "primary" buttons
+        def primary_button_focus_border_color
+          darken_color(primary_button_border_color, 0.25)
+        end
+
         # The custom css module
         def custom_css_block
           # we want to be able to read the css
-          # rubocop:disable Rails/OutputSafety
           block_for('custom_css_block', '/* custom stylesheet */').html_safe
-          # rubocop:enable Rails/OutputSafety
         end
 
         # DEFAULT BUTTON COLORS
@@ -379,6 +333,41 @@ module Hyrax
           attributes.slice(*self.class.default_image_fields)
         end
 
+        # @return [Array<Symbol>] a list of fields that are related to the banner
+        def self.banner_fields
+          %i[
+            banner_image banner_label
+          ]
+        end
+
+        def self.favicon_fields
+          [:favicon]
+        end
+
+        # @return [Array<Symbol>] a list of fields that are related to the logo
+        def self.logo_fields
+          %i[
+            logo_image logo_label
+          ]
+        end
+
+        # @return [Array<Symbol>] a list of fields that are related to the directory
+        def self.directory_fields
+          %i[
+            directory_image directory_image_label directory_image_alt_text
+          ]
+        end
+
+        # @return [Array<Symbol>] a list of fields that are related to default works & collections
+        def self.default_image_fields
+          %i[
+            default_collection_image
+            default_work_image
+            default_collection_label
+            default_work_label
+          ]
+        end
+
         # Persist the form values
         def update!
           self.class.customization_params.each do |field|
@@ -389,6 +378,39 @@ module Hyrax
                                         .merge(favicon_attributes)
                                         .merge(directory_attributes)
                                         .merge(default_image_attributes))
+        end
+
+        # A list of parameters that are related to customizations
+        def self.customization_params
+          %i[
+            body_font
+            headline_font
+            header_and_footer_background_color
+            header_and_footer_text_color
+            link_color
+            link_hover_color
+            footer_link_color
+            footer_link_hover_color
+            primary_button_hover_color
+            default_button_background_color
+            default_button_border_color
+            default_button_text_color
+            active_tabs_background_color
+            facet_panel_background_color
+            facet_panel_text_color
+            navbar_background_color
+            navbar_link_background_color
+            navbar_link_background_hover_color
+            navbar_link_text_color
+            navbar_link_text_hover_color
+            custom_css_block
+            logo_image_text
+            banner_image_text
+            directory_image_alt_text
+            default_collection_image_text
+            default_work_image_text
+            collection_banner_text_color
+          ]
         end
 
         def font_import_body_url
@@ -412,49 +434,43 @@ module Hyrax
 
         private
 
-        def darken_color(hex_color, adjustment = 0.2)
-          amount = 1.0 - adjustment
-          hex_color = hex_color.delete('#')
-          rgb = hex_color.scan(/../).map { |color| (color.to_i(16) * amount).round }
-          rgb[0] = (rgb[0].to_i * amount).round
-          rgb[1] = (rgb[1].to_i * amount).round
-          rgb[2] = (rgb[2].to_i * amount).round
-          format("#%02x%02x%02x", *rgb)
-        end
+          def darken_color(hex_color, adjustment = 0.2)
+            amount = 1.0 - adjustment
+            hex_color = hex_color.delete('#')
+            rgb = hex_color.scan(/../).map { |color| (color.to_i(16) * amount).round }
+            rgb[0] = (rgb[0].to_i * amount).round
+            rgb[1] = (rgb[1].to_i * amount).round
+            rgb[2] = (rgb[2].to_i * amount).round
+            format("#%02x%02x%02x", *rgb)
+          end
 
-        def convert_to_rgba(hex_color, alpha = 0.5)
-          hex_color = hex_color.delete('#')
-          rgb = hex_color.scan(/../).map(&:hex)
-          "rgba(#{rgb[0]}, #{rgb[1]}, #{rgb[2]}, #{alpha})"
-        end
+          def convert_to_rgba(hex_color, alpha = 0.5)
+            hex_color = hex_color.delete('#')
+            rgb = hex_color.scan(/../).map(&:hex)
+            "rgba(#{rgb[0]}, #{rgb[1]}, #{rgb[2]}, #{alpha})"
+          end
 
-        def default_values
-          @default_values ||= default_fonts.merge(default_colors)
-        end
+          def block_for(name, dynamic_default = nil)
+            block = ContentBlock.find_by(name: name)
+            has_value = block&.value.present?
+            has_value ? block.value : DEFAULT_VALUES[name] || dynamic_default
+          end
 
-        def block_for(name, dynamic_default = nil)
-          ContentBlock.block_for(name:, fallback_value: default_values[name] || dynamic_default)
-        end
+          # Persist a key/value tuple as a ContentBlock
+          # @param [Symbol] name the identifier for the ContentBlock
+          # @param [String] value the value to set
+          def update_block(name, value)
+            ContentBlock.find_or_create_by(name: name.to_s).update!(value: value)
+          end
 
-        # Persist a key/value tuple as a ContentBlock
-        # @param [Symbol] name the identifier for the ContentBlock
-        # @param [String] value the value to set
-        def update_block(name, value)
-          ContentBlock.update_block(name:, value:)
-        end
-
-        def format_font_names(font_style)
-          # the fonts come with `Font Name:font-weight` - this removes the weight
-          parts = font_style.split(':')
-          # Google fonts use `+` in place of spaces. This fixes it for CSS.
-          # rubocop:disable Rails/OutputSafety
-          parts[0].tr('+', ' ').html_safe
-          # rubocop:enable Rails/OutputSafety
-        end
+          def format_font_names(font_style)
+            # the fonts come with `Font Name:font-weight` - this removes the weight
+            parts = font_style.split(':')
+            # Google fonts use `+` in place of spaces. This fixes it for CSS.
+            parts[0].tr('+', ' ').html_safe
+          end
       end
     end
   end
 end
-# rubocop:enable Metrics/ModuleLength
-
-Hyrax::Forms::Admin::Appearance.prepend(Hyrax::Forms::Admin::AppearanceDecorator)
+# rubocop:enable Metrics/ClassLength

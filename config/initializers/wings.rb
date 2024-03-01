@@ -94,6 +94,10 @@ Rails.application.config.to_prepare do
       Hyrax::AccessControl
     elsif 'FileSet' == klass_name
       Hyrax::FileSet
+    elsif 'Hydra::AccessControls::Embargo' == klass_name
+      Hyrax::Embargo
+    elsif 'Hydra::AccessControls::Lease' == klass_name
+      Hyrax::Lease
     else
       klass_name.constantize
     end

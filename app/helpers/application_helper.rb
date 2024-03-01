@@ -4,7 +4,6 @@ module ApplicationHelper
   # Yep, we're ignoring the advice; because the translations are safe as is the markdown converter.
   # rubocop:disable Rails/OutputSafety
   include ::HyraxHelper
-  include Hyrax::OverrideHelperBehavior
   include GroupNavigationHelper
   include SharedSearchHelper
   include Bulkrax::ApplicationHelper
@@ -57,6 +56,10 @@ module ApplicationHelper
     ]
     text ||= ""
     Markdown.new(text, *options).to_html.html_safe
+  end
+
+  def truncate_and_iconify_auto_link(*args)
+    iconify_auto_link(*args).truncate(230, separator: ' ')
   end
   # rubocop:enable Rails/OutputSafety
 end

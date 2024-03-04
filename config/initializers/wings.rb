@@ -74,24 +74,6 @@ Rails.application.config.to_prepare do
     attribute :internal_resource, Valkyrie::Types::Any.default("Collection"), internal: true
   end
 
-  Hyrax::FileSet.class_eval do
-    class_attribute :to_rdf_representation, default: "FileSet"
-    attribute :internal_resource, Valkyrie::Types::Any.default("FileSet"), internal: true
-
-    def self.internal_resource
-      to_rdf_representation
-    end
-  end
-
-  Hyrax::FileMetadata.class_eval do
-    class_attribute :to_rdf_representation, default: "Hydra::PCDM::File"
-
-    def self.internal_resource
-      to_rdf_representation
-    end
-    alias internal_resource to_rdf_representation
-  end
-
   Valkyrie.config.resource_class_resolver = lambda do |resource_klass_name|
     # TODO: Can we use some kind of lookup.
     klass_name = resource_klass_name.gsub(/Resource$/, '')

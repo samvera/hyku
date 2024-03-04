@@ -69,7 +69,8 @@ document.querySelector('.banner-submit').addEventListener('click', function(e) {
   if (cropper) {
     cropper.getCroppedCanvas().toBlob(function(blob) {
       var formData = new FormData(document.querySelector('form'));
-      formData.append('admin_appearance[banner_image]', blob, 'cropped.jpg');
+      var currentAccountName = "<%= current_account.name %>";
+      formData.append('admin_appearance[banner_image]', blob, `${currentAccountName}-cropped.jpg`);
 
       $.ajax('/admin/appearance', {
         method: 'POST',

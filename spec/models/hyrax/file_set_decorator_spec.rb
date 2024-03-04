@@ -20,7 +20,6 @@ RSpec.describe Hyrax::FileSet do
     file_set_resource = Hyrax.query_service.find_by(id: af_file_set.id)
     expect(file_set_resource).to be_a(Hyrax::FileSet)
 
-
     af_file_id = af_file_set.original_file.id
     expect { Hyrax.query_service.services.first.find_by(id: af_file_id) }.to raise_error(Valkyrie::Persistence::ObjectNotFoundError)
     # We should be able to find this "thing" in the ActiveFedora storage
@@ -48,7 +47,7 @@ RSpec.describe Hyrax::FileSet do
     file_identifier_id = converted_file_set.original_file.file_identifier.id
     # Verify that the original file is now on disk (e.g. where we write files in
     # the test environment)
-    expect(file_identifier_id).to start_with("disk://#{Rails.root.to_s}")
+    expect(file_identifier_id).to start_with("disk://#{Rails.root}")
 
     # Verify that the file actually exists there!
     expect(File.exist?(file_identifier_id.sub("disk://", ""))).to be_truthy

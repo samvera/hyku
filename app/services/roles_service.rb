@@ -223,8 +223,6 @@ class RolesService # rubocop:disable Metrics/ClassLength
               user.roles << find_or_create_site_role!(role_name:)
             end
           end
-
-          puts "Email: #{user.email}\nRoles: #{user.roles.map(&:name)}\n\n" # rubocop:disable Rails/Output
         end
       end
     end

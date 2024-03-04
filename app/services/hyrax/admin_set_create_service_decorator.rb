@@ -23,16 +23,6 @@ module Hyrax
 
     private
 
-    def workflow_agents
-      [
-        # OVERRIDE: replace #new with #find_by(:name)
-        Sipity::Agent(Hyrax::Group.find_by(name: admin_group_name))
-      ].tap do |agent_list|
-        # The default admin set does not have a creating user
-        agent_list << Sipity::Agent(creating_user) if creating_user
-      end
-    end
-
     def create_workflows_for(permission_template:)
       workflow_importer.call(permission_template:)
       # OVERRIDE: Extract and expand upon granting Workflow Roles into service object so it can be used in RolesService

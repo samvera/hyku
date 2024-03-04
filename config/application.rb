@@ -205,6 +205,11 @@ module Hyku
       end
     end
 
+    config.before_initialize do
+      Hyrax.config.collection_model = 'CollectionResource'
+      Hyrax.config.admin_set_model = 'AdminSetResource'
+    end
+
     config.to_prepare do
       # set bulkrax default work type to first curation_concern if it isn't already set
       Bulkrax.default_work_type = Hyrax.config.curation_concerns.first.to_s if Hyku.bulkrax_enabled? && Bulkrax.default_work_type.blank?

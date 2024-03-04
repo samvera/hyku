@@ -15,6 +15,8 @@ Rails.application.config.after_initialize do
   Wings::ModelRegistry.register(AdminSetResource, AdminSet)
   Wings::ModelRegistry.register(FileSet, FileSet)
   Wings::ModelRegistry.register(Hyrax::FileSet, FileSet)
+  Wings::ModelRegistry.register(Hydra::PCDM::File, Hydra::PCDM::File)
+  Wings::ModelRegistry.register(Hyrax::FileMetadata, Hydra::PCDM::File)
 
   Valkyrie::MetadataAdapter.register(
     Freyja::MetadataAdapter.new,
@@ -72,10 +74,6 @@ Rails.application.config.to_prepare do
     attribute :internal_resource, Valkyrie::Types::Any.default("Collection"), internal: true
   end
 
-  Hyrax::FileSet.class_eval do
-    attribute :internal_resource, Valkyrie::Types::Any.default("FileSet"), internal: true
-  end
-
   Valkyrie.config.resource_class_resolver = lambda do |resource_klass_name|
     # TODO: Can we use some kind of lookup.
     klass_name = resource_klass_name.gsub(/Resource$/, '')
@@ -94,6 +92,12 @@ Rails.application.config.to_prepare do
       Hyrax::AccessControl
     elsif 'FileSet' == klass_name
       Hyrax::FileSet
+    elsif 'Hydra::AccessControls::Embargo' == klass_name
+      Hyrax::Embargo
+    elsif 'Hydra::AccessControls::Lease' == klass_name
+      Hyrax::Lease
+    elsif 'Hydra::PCDM::File' == klass_name
+      Hyrax::FileMetadata
     else
       klass_name.constantize
     end

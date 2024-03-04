@@ -61,5 +61,9 @@ class SolrEndpoint < Endpoint
     SOLR_SERVICE.reset!
     Blacklight.connection_config = Blacklight.blacklight_yml[::Rails.env].symbolize_keys
     Blacklight.default_index = nil
+
+    # This must happen after the Blacklight.connection_config because we use
+    # that configuration information to inform how Valkyrie builds it's URL.
+    Valkyrie::IndexingAdapter.adapters[:solr_index].reset!
   end
 end

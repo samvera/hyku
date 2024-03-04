@@ -28,7 +28,6 @@ module HykuHelper
   end
 
   def parent_path(parent_doc)
-    
     model = case parent_doc
             when Hyrax::Resource, ActiveFedora::Base
               parent_doc

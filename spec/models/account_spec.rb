@@ -184,17 +184,20 @@ RSpec.describe Account, type: :model do
     end
 
     it 'switches to the account-specific connection' do
-      subject.switch do
-        expect(Hyrax::SolrService.connection.uri.to_s).to eq 'http://example.com/solr/'
-        expect(ActiveFedora.fedora.host).to eq 'http://example.com/fedora'
-        expect(ActiveFedora.fedora.base_path).to eq '/dev'
-        expect(Hyrax.config.redis_namespace).to eq 'foobaz'
-        expect(Hyrax::DOI::DataCiteRegistrar.mode).to eq 'test'
-        expect(Hyrax::DOI::DataCiteRegistrar.prefix).to eq '10.1234'
-        expect(Hyrax::DOI::DataCiteRegistrar.username).to eq 'user123'
-        expect(Hyrax::DOI::DataCiteRegistrar.password).to eq 'pass123'
-        expect(Rails.application.routes.default_url_options[:host]).to eq account.cname
-      end
+      expect(Hyrax::SolrService.connection.uri.to_s).not_to eq 'http://example.com/solr/'
+      expect do
+        subject.switch do
+          expect(Hyrax::SolrService.connection.uri.to_s).to eq 'http://example.com/solr/'
+          expect(ActiveFedora.fedora.host).to eq 'http://example.com/fedora'
+          expect(ActiveFedora.fedora.base_path).to eq '/dev'
+          expect(Hyrax.config.redis_namespace).to eq 'foobaz'
+          expect(Hyrax::DOI::DataCiteRegistrar.mode).to eq 'test'
+          expect(Hyrax::DOI::DataCiteRegistrar.prefix).to eq '10.1234'
+          expect(Hyrax::DOI::DataCiteRegistrar.username).to eq 'user123'
+          expect(Hyrax::DOI::DataCiteRegistrar.password).to eq 'pass123'
+          expect(Rails.application.routes.default_url_options[:host]).to eq account.cname
+        end
+      end.not_to change { Hyrax::SolrService.connection.uri.to_s }
     end
 
     it 'resets the active connections back to the defaults' do

@@ -6,7 +6,7 @@ FactoryBot.define do
     trait :with_target do
       access_to { valkyrie_create(:hyrax_resource).id }
 
-      permissions { build(:permission, access_to: access_to) }
+      permissions { build(:permission, access_to:) }
     end
   end
 end

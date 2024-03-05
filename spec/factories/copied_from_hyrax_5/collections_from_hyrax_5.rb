@@ -98,7 +98,7 @@ FactoryBot.define do
     end
 
     after(:create) do |collection, _evaluator|
-      collection.permission_template.reset_access_controls_for(collection: collection, interpret_visibility: true)
+      collection.permission_template.reset_access_controls_for(collection:, interpret_visibility: true)
     end
 
     factory :public_collection_lw, traits: [:public_lw]

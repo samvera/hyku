@@ -84,7 +84,7 @@ FactoryBot.define do
 
       after(:create) do |file_metadata, evaluator|
         Hyrax::ValkyrieUpload.new.add_file_to_file_set(file_set: evaluator.file_set,
-                                                       file_metadata: file_metadata,
+                                                       file_metadata:,
                                                        user: evaluator.user)
       end
     end

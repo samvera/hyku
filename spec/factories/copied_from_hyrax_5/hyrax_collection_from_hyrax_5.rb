@@ -42,7 +42,7 @@ FactoryBot.define do
         end
       end
       if evaluator.with_permission_template
-        Hyrax::Collections::PermissionsCreateService.create_default(collection: collection,
+        Hyrax::Collections::PermissionsCreateService.create_default(collection:,
                                                                     creating_user: evaluator.user,
                                                                     grants: evaluator.access_grants)
         collection.permission_manager.edit_groups = collection.permission_manager.edit_groups.to_a +

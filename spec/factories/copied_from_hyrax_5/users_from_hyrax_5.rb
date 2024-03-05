@@ -11,7 +11,7 @@ FactoryBot.define do
     end
 
     after(:build) do |user, evaluator|
-      User.group_service.add(user: user, groups: evaluator.groups)
+      User.group_service.add(user:, groups: evaluator.groups)
     end
 
     factory :admin do

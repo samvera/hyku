@@ -109,7 +109,7 @@ FactoryBot.define do
         after(:create) do |file_set, evaluator|
           evaluator.ios.each do |file|
             filename = File.basename(file.path).to_s
-            Hyrax::ValkyrieUpload.file(filename: filename, file_set: file_set, io: file)
+            Hyrax::ValkyrieUpload.file(filename:, file_set:, io: file)
           end
         end
       end

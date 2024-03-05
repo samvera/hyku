@@ -36,12 +36,12 @@ FactoryBot.define do
 
     after(:create) do |permission_template, evaluator|
       if evaluator.with_workflows
-        Hyrax::Workflow::WorkflowImporter.load_workflow_for(permission_template: permission_template)
-        Sipity::Workflow.activate!(permission_template: permission_template, workflow_id: permission_template.available_workflows.pick(:id))
+        Hyrax::Workflow::WorkflowImporter.load_workflow_for(permission_template:)
+        Sipity::Workflow.activate!(permission_template:, workflow_id: permission_template.available_workflows.pick(:id))
       end
       if evaluator.with_active_workflow
-        workflow = create(:workflow, active: true, permission_template: permission_template)
-        create(:workflow_action, workflow: workflow) # Need to create a single action that can be taken
+        workflow = create(:workflow, active: true, permission_template:)
+        create(:workflow_action, workflow:) # Need to create a single action that can be taken
       end
       AccessHelper.create_access(permission_template, 'user', :manage, evaluator.manage_users) if evaluator.manage_users.present?
       AccessHelper.create_access(permission_template, 'group', :manage, evaluator.manage_groups) if evaluator.manage_groups.present?
@@ -71,8 +71,8 @@ FactoryBot.define do
         FactoryBot.create(:permission_template_access,
                           access,
                           permission_template: permission_template_id,
-                          agent_type: agent_type,
-                          agent_id: agent_id)
+                          agent_type:,
+                          agent_id:)
       end
     end
   end

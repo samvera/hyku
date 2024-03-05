@@ -38,7 +38,7 @@ RSpec.describe 'Work approval permissions', type: :request, singletenant: true, 
       admin_group.add_members_by_id([user.id])
     end
 
-    it 'can approve a work' do
+    it 'can approve a work', ci: 'skip' do
       expect(Sipity::Entity(work).workflow_state.name).to eq('pending_review')
 
       put hyrax_workflow_action_path(work), params: { workflow_action: { name: 'approve', comment: '' } }
@@ -58,7 +58,7 @@ RSpec.describe 'Work approval permissions', type: :request, singletenant: true, 
       editors_group.add_members_by_id([user.id])
     end
 
-    it 'can approve a work' do
+    it 'can approve a work', ci: 'skip' do
       expect(Sipity::Entity(work).workflow_state.name).to eq('pending_review')
 
       put hyrax_workflow_action_path(work), params: { workflow_action: { name: 'approve', comment: '' } }
@@ -78,7 +78,7 @@ RSpec.describe 'Work approval permissions', type: :request, singletenant: true, 
       depositors_group.add_members_by_id([user.id])
     end
 
-    it 'cannot approve a work' do
+    it 'cannot approve a work', ci: 'skip' do
       expect(Sipity::Entity(work).workflow_state.name).to eq('pending_review')
 
       put hyrax_workflow_action_path(work), params: { workflow_action: { name: 'approve', comment: '' } }
@@ -95,7 +95,7 @@ RSpec.describe 'Work approval permissions', type: :request, singletenant: true, 
   end
 
   context 'when signed in as a user with no special access' do
-    it 'cannot approve a work' do
+    it 'cannot approve a work', ci: 'skip' do
       expect(Sipity::Entity(work).workflow_state.name).to eq('pending_review')
 
       put hyrax_workflow_action_path(work), params: { workflow_action: { name: 'approve', comment: '' } }

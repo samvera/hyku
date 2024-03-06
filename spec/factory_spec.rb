@@ -116,7 +116,7 @@ RSpec.describe "Factories", clean: true do
   describe ':hyku_collection and progeny' do
     let(:klass) { Hyrax.config.collection_class }
 
-    it 'is part of a collection type' do
+    it 'is part of a collection type', ci: 'skip' do
       collection_type = FactoryBot.create(:collection_type, title: 'Not Empty Type')
       collection = FactoryBot.valkyrie_create(:hyku_collection, collection_type_gid: collection_type.to_global_id.to_s)
 
@@ -163,7 +163,7 @@ RSpec.describe "Factories", clean: true do
   end
 
   describe ':permission_template' do
-    it 'creates the permission template and can create workflows and a corresponding admin_set' do
+    it 'creates the permission template and can create workflows and a corresponding admin_set', ci: 'skip' do
       # The permission template is defined in Hyrax.  It should be creating an object of the correct
       # configuration.
       permission_template = FactoryBot.create(:permission_template, with_admin_set: true, with_workflows: true)

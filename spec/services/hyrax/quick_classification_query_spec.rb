@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # OVERRIDE Hyrax v2.9.0
-RSpec.describe Hyrax::QuickClassificationQuery do
+RSpec.describe Hyrax::QuickClassificationQuery, clean_repo: true do
   # OVERRIDE: add :work_depositor role -- proper testing requires create permission
   let(:user) { create(:user, roles: [:work_depositor]) }
 

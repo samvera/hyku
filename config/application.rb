@@ -39,6 +39,7 @@ module Hyku
     ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_BULKRAX_ENABLED', true))
   end
 
+  # rubocop:disable Metrics/ClassLength
   class Application < Rails::Application
     ##
     # @!group Class Attributes
@@ -141,7 +142,7 @@ module Hyku
       # I'm providing quite a few fallbacks, as this URL is used on the first page you'll see in a
       # new Hyku instance.
       ENV["HYKU_CROSS_TENANT_SEARCH_HOST"].presence ||
-      Account.where(search_only: true).limit(1).pluck(:cname)&.first ||
+        Account.where(search_only: true).limit(1).pluck(:cname)&.first ||
         "search.hykucommons.org"
     end
 
@@ -328,7 +329,8 @@ module Hyku
       # - https://github.com/samvera-labs/bulkrax/pull/855
       # - https://github.com/samvera-labs/allinson_flex/pull/122
       paths = ActionController::Base.view_paths.collect(&:to_s)
-      ActionController::Base.view_paths = paths.unshift(Rails.root.join("app/views").to_s).uniq
+      ActionController::Base.view_paths = paths.unshift(Rails.root.join("app", "views").to_s).uniq
     end
   end
+  # rubocop:enable Metrics/ClassLength
 end

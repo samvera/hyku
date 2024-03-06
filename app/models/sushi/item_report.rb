@@ -6,6 +6,7 @@
 # any provided begin_date will be moved to the beginning of the month
 # any provided end_date will be moved to the end of the month
 module Sushi
+  # rubocop:disable Metrics/ClassLength
   class ItemReport
     attr_reader :account, :attributes_to_show, :created
     include Sushi
@@ -21,7 +22,7 @@ module Sushi
     include Sushi::YearOfPublicationCoercion
 
     ALLOWED_REPORT_ATTRIBUTES_TO_SHOW = [
-      'Access_Method',
+      'Access_Method'
       # These are all the counter compliant query attributes, they are not currently supported in this implementation.
       # 'Institution_Name',
       # 'Customer_ID',
@@ -81,6 +82,8 @@ module Sushi
       @attributes_to_show = params.fetch(:attributes_to_show, ['Access_Method']) & ALLOWED_REPORT_ATTRIBUTES_TO_SHOW
     end
 
+    # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/AbcSize
     def as_json(_options = {})
       report_hash = {
         'Report_Header' => {
@@ -116,9 +119,12 @@ module Sushi
 
       report_hash
     end
+    # rubocop:enable Metrics/AbcSize
+    # rubocop:enable Metrics/MethodLength
 
     alias to_hash as_json
 
+    # rubocop:disable Metrics/MethodLength
     def report_items
       data_for_resource_types.map do |record|
         {
@@ -141,15 +147,17 @@ module Sushi
         }
       end
     end
+    # rubocop:enable Metrics/MethodLength
 
     def performance(record)
-      metric_types.each_with_object({}) do |metric_type, returning_hash|
-        returning_hash[metric_type] = record.performance.each_with_object({}) do |cell, hash|
+      metric_types.index_with do |metric_type|
+        record.performance.each_with_object({}) do |cell, hash|
           hash[cell.fetch('year_month')] = cell.fetch(metric_type)
         end
       end
     end
 
+    # rubocop:disable Metrics/MethodLength
     def data_for_resource_types
       relation = Hyrax::CounterMetric
                  .select(:work_id, :resource_type, :worktype, :author,
@@ -177,5 +185,7 @@ module Sushi
 
       relation
     end
+    # rubocop:enable Metrics/MethodLength
   end
+  # rubocop:enable Metrics/ClassLength
 end

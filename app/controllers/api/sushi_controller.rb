@@ -4,15 +4,15 @@ module API
   class SushiController < ApplicationController
     private
 
-      ##
-      # We have encountered an error in their request, this might be an invalid date or a missing
-      # required parameter.  The end user can adjust the request and try again.
-      #
-      # @param [Exception]
-      def render_sushi_exception(error)
-        render json: error, status: 422
-      end
-      rescue_from Sushi::Error::Exception, with: :render_sushi_exception
+    ##
+    # We have encountered an error in their request, this might be an invalid date or a missing
+    # required parameter.  The end user can adjust the request and try again.
+    #
+    # @param [Exception]
+    def render_sushi_exception(error)
+      render json: error, status: :unprocessable_entity
+    end
+    rescue_from Sushi::Error::Exception, with: :render_sushi_exception
 
     public
 

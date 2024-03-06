@@ -6,6 +6,7 @@
 # any provided begin_date will be moved to the beginning of the month
 # any provided end_date will be moved to the end of the month
 module Sushi
+  # rubocop:disable Metrics/ClassLength
   class PlatformReport
     attr_reader :created, :account, :attributes_to_show
     include Sushi
@@ -18,7 +19,7 @@ module Sushi
     include Sushi::PlatformCoercion
 
     ALLOWED_REPORT_ATTRIBUTES_TO_SHOW = [
-      "Access_Method",
+      "Access_Method"
       # These are all the counter compliant query attributes, they are not currently supported in this implementation.
       # "Institution_Name",
       # "Customer_ID",
@@ -34,7 +35,7 @@ module Sushi
       "Total_Item_Investigations",
       "Total_Item_Requests",
       "Unique_Item_Investigations",
-      "Unique_Item_Requests",
+      "Unique_Item_Requests"
       # Unique_Title metrics exist to count how many chapters or sections are accessed for Book resource types in a given user session.
       # This implementation currently does not support historical data from individual chapters/sections of Books,
       # so these metrics will not be shown.
@@ -82,6 +83,8 @@ module Sushi
       @attributes_to_show = params.fetch(:attributes_to_show, ["Access_Method"]) & ALLOWED_REPORT_ATTRIBUTES_TO_SHOW
     end
 
+    # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/MethodLength
     def as_json(_options = {})
       report_hash = {
         "Report_Header" => {
@@ -116,6 +119,8 @@ module Sushi
 
       report_hash
     end
+    # rubocop:enable Metrics/AbcSize
+    # rubocop:enable Metrics/MethodLength
 
     alias to_hash as_json
 
@@ -135,6 +140,7 @@ module Sushi
       end
     end
 
+    # rubocop:disable Metrics/MethodLength
     def attribute_performance_for_platform
       return [] if metric_type_in_params && metric_types.exclude?("Searches_Platform")
       return [] if data_type_in_params && !data_types.find { |dt| dt.casecmp("Platform").zero? }
@@ -155,6 +161,7 @@ module Sushi
         }
       }]
     end
+    # rubocop:enable Metrics/MethodLength
 
     def performance(record)
       metric_types.each_with_object({}) do |metric_type, returning_hash|
@@ -181,6 +188,7 @@ module Sushi
     # also, note that unique_item_requests and unique_item_investigations should be counted for Hyrax::CounterMetrics that have unique dates, and unique work IDs.
     # see the docs for counting unique items here: https://cop5.projectcounter.org/en/5.1/07-processing/03-counting-unique-items.html
     # rubocop:disable Metrics/LineLength
+    # rubocop:disable Metrics/MethodLength
     def data_for_resource_types
       # We're capturing this relation/query because in some cases, we need to chain another where
       # clause onto the relation.
@@ -206,6 +214,7 @@ module Sushi
 
       relation.where("LOWER(resource_type) IN (?)", data_types)
     end
+    # rubocop:enable Metrics/MethodLength
     # rubocop:enable Metrics/LineLength
 
     def data_for_platform
@@ -218,4 +227,5 @@ module Sushi
         .group("date_trunc('month', date)")
     end
   end
+  # rubocop:enable Metrics/ClassLength
 end

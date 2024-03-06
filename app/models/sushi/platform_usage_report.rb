@@ -5,6 +5,7 @@
 # dates will be filtered by including the begin_date, and excluding the end_date
 # e.g. if you want to full month, begin_date should be the first day of that month, and end_date should be the first day of the following month.
 module Sushi
+  # rubocop:disable Metrics/ClassLength
   class PlatformUsageReport
     attr_reader :created, :account
     include Sushi
@@ -42,6 +43,8 @@ module Sushi
       @account = account
     end
 
+    # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/AbcSize
     def as_json(_options = {})
       report_hash = {
         "Report_Header" => {
@@ -72,6 +75,8 @@ module Sushi
 
       report_hash
     end
+    # rubocop:enable Metrics/MethodLength
+    # rubocop:enable Metrics/AbcSize
     alias to_hash as_json
 
     def attribute_performance_for_resource_types
@@ -119,6 +124,7 @@ module Sushi
     #       query result value would be "2023-01-01T00:00" (e.g. the first moment of the first of the
     #       month).
     # rubocop:disable Metrics/LineLength
+    # rubocop:disable Metrics/MethodLength
     def data_for_resource_types
       # We're capturing this relation/query because in some cases, we need to chain another where
       # clause onto the relation.
@@ -145,6 +151,7 @@ module Sushi
 
       relation.where("LOWER(resource_type) IN (?)", data_types)
     end
+    # rubocop:enable Metrics/MethodLength
     # rubocop:enable Metrics/LineLength
 
     def data_for_platform
@@ -157,4 +164,5 @@ module Sushi
         .group("date_trunc('month', date)")
     end
   end
+  # rubocop:enable Metrics/ClassLength
 end

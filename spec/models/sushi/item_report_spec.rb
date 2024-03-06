@@ -1,7 +1,7 @@
 # frozen_string_literal:true
 
 RSpec.describe Sushi::ItemReport do
-  subject { described_class.new(params, created: created, account: account).as_json }
+  subject { described_class.new(params, created:, account:).as_json }
 
   let(:account) { double(Account, institution_name: 'Pitt', institution_id_data: {}, cname: 'pitt.hyku.test') }
   let(:created) { Time.zone.now }
@@ -95,7 +95,7 @@ RSpec.describe Sushi::ItemReport do
       end
 
       it 'raises an error' do
-        expect { described_class.new(params, created: created, account: account).as_json }.to raise_error(Sushi::Error::InvalidReportFilterValueError)
+        expect { described_class.new(params, created:, account:).as_json }.to raise_error(Sushi::Error::InvalidReportFilterValueError)
       end
     end
   end
@@ -136,7 +136,7 @@ RSpec.describe Sushi::ItemReport do
         end
 
         it 'raises an error' do
-          expect { described_class.new(params, created: created, account: account).as_json }.to raise_error(Sushi::Error::NoUsageAvailableForRequestedDatesError)
+          expect { described_class.new(params, created:, account:).as_json }.to raise_error(Sushi::Error::NoUsageAvailableForRequestedDatesError)
         end
       end
     end
@@ -151,7 +151,7 @@ RSpec.describe Sushi::ItemReport do
       end
 
       it 'raises an error' do
-        expect { described_class.new(params, created: created, account: account).as_json }.to raise_error(Sushi::Error::InvalidReportFilterValueError)
+        expect { described_class.new(params, created:, account:).as_json }.to raise_error(Sushi::Error::InvalidReportFilterValueError)
       end
     end
   end
@@ -179,7 +179,7 @@ RSpec.describe Sushi::ItemReport do
       end
 
       it 'raises an error' do
-        expect { described_class.new(params, created: created, account: account).as_json }.to raise_error(Sushi::Error::InvalidReportFilterValueError)
+        expect { described_class.new(params, created:, account:).as_json }.to raise_error(Sushi::Error::InvalidReportFilterValueError)
       end
     end
   end
@@ -207,7 +207,7 @@ RSpec.describe Sushi::ItemReport do
       end
 
       it 'raises an error' do
-        expect { described_class.new(params, created: created, account: account).as_json }.to raise_error(Sushi::Error::InvalidReportFilterValueError)
+        expect { described_class.new(params, created:, account:).as_json }.to raise_error(Sushi::Error::InvalidReportFilterValueError)
       end
     end
   end
@@ -236,7 +236,7 @@ RSpec.describe Sushi::ItemReport do
       end
 
       it 'raises an error' do
-        expect { described_class.new(params, created: created, account: account).as_json }.to raise_error(Sushi::Error::InvalidReportFilterValueError)
+        expect { described_class.new(params, created:, account:).as_json }.to raise_error(Sushi::Error::InvalidReportFilterValueError)
       end
     end
   end
@@ -245,7 +245,7 @@ RSpec.describe Sushi::ItemReport do
     let(:params) { { other: 'nope' } }
 
     it 'raises an error' do
-      expect { described_class.new(params, created: created, account: account).as_json }.to raise_error(Sushi::Error::UnrecognizedParameterError)
+      expect { described_class.new(params, created:, account:).as_json }.to raise_error(Sushi::Error::UnrecognizedParameterError)
     end
   end
 end

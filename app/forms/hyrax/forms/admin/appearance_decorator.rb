@@ -17,6 +17,7 @@ module Hyrax
           delegate :logo_image, :logo_image?, :logo_image, to: :site
           delegate :favicon, :favicon?, to: :site
           delegate :directory_image, :directory_image?, to: :site
+          delegate :directory_image_alt_text, to: :site
           delegate :default_collection_image, :default_collection_image?, to: :site
           delegate :default_work_image, :default_work_image?, to: :site
 
@@ -36,7 +37,7 @@ module Hyrax
           #   @return [Hash<String, String>]
           class_attribute :default_colors, default: {
             'active_tabs_background_color' => '#337ab7',
-            'collection_banner_text_color'       => '#000000',
+            'collection_banner_text_color' => '#000000',
             'default_button_background_color' => '#ffffff',
             'default_button_border_color' => '#cccccc',
             'default_button_text_color' => '#333333',
@@ -53,8 +54,7 @@ module Hyrax
             'navbar_link_background_hover_color' => '#ffffff',
             'navbar_link_text_color' => '#eeeeee',
             'navbar_link_text_hover_color' => '#eeeeee',
-            'primary_button_hover_color' => '#286090',
-            'header_and_footer_background_color' => '#3c3c3c'
+            'primary_button_hover_color' => '#286090'
           }
           # @!endgroup Class Attributes
         end
@@ -135,7 +135,7 @@ module Hyrax
               navbar_link_text_color
               navbar_link_text_hover_color
               primary_button_hover_color
-              ]
+            ]
           end
           # rubocop:enable Metrics/MethodLength
         end

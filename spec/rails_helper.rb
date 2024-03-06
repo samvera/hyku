@@ -26,8 +26,8 @@ Hyrax.config.collection_model = "CollectionResource"
 # First find the Hyrax factories; then find the local factories (which extend/modify Hyrax
 # factories).
 FactoryBot.definition_file_paths = [
-  File.expand_path("../factories/copied_from_hyrax_5", __FILE__),
-  File.expand_path("../factories/for_hyku", __FILE__)
+  Hyrax::Engine.root.join("spec/factories/").to_s,
+  File.expand_path("../factories", __FILE__)
 ]
 FactoryBot.find_definitions
 

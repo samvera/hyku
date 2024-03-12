@@ -28,7 +28,6 @@ Hyrax.config do |config|
   # config.admin_set_model = 'AdminSet'
   config.admin_set_model = 'AdminSetResource'
 
-
   # Identify the model class name that will be used for FileSets in your app
   #
   # TODO: We may need to add similar model_name overrides so that parameters and

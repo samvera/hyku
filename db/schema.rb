@@ -820,6 +820,7 @@ ActiveRecord::Schema.define(version: 2024_02_29_234258) do
     t.string "home_theme"
     t.string "show_theme"
     t.string "search_theme"
+    t.string "directory_image_alt_text"
     t.string "favicon"
   end
 

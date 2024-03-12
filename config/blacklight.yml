@@ -4,6 +4,9 @@ development:
 test: &test
   adapter: solr
   url: <%= ENV['SOLR_URL'] ? ENV['SOLR_URL'] + 'hydra-test' : "http://127.0.0.1:#{ENV.fetch('SOLR_TEST_PORT', 8985)}/solr/hydra-test" %>
+staging:
+  adapter: solr
+  url: <%= ENV['SOLR_URL'] || "http://127.0.0.1:8983/solr/blacklight-core" %>
 production:
   adapter: solr
   url: <%= ENV['SOLR_URL'] || "http://127.0.0.1:8983/solr/blacklight-core" %>

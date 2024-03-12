@@ -8,6 +8,17 @@ GIT
       rails (>= 4.2)
 
 GIT
+  remote: https://github.com/notch8/activejob-scheduler.git
+  revision: 22850499dd0ab046eff2e1c113261782e7b8d8dc
+  specs:
+    activejob-scheduler (1.0.0.pre)
+      actionmailer (> 5, < 7)
+      activejob (> 5, < 7)
+      activesupport (> 5, < 7)
+      fugit (~> 1.3)
+      travis-release (~> 0)
+
+GIT
   remote: https://github.com/rails/rails.git
   revision: d16199e507086e3d54d94253b7e1d87ead394d9f
   branch: 6-1-stable
@@ -227,26 +238,6 @@ GIT
       hyrax (>= 2.5, < 6)
       nokogiri (>= 1.13.2)
       rdf-vocab (~> 3.0)
-
-GIT
-  remote: https://github.com/scientist-softserv/valkyrie.git
-  revision: e9313b1d1744215b6b965814aaf0d38ac3b77107
-  ref: e9313b1d1744215b6b965814aaf0d38ac3b77107
-  specs:
-    valkyrie (3.1.3)
-      activemodel
-      activesupport
-      dry-struct
-      dry-types (~> 1.0)
-      faraday (>= 0.9, < 3, != 2.0.0)
-      faraday-multipart
-      json
-      json-ld
-      railties
-      rdf (~> 3.0, >= 3.0.10)
-      rdf-vocab
-      reform (~> 2.2)
-      reform-rails
 
 GIT
   remote: https://github.com/stanhu/omniauth-cas.git
@@ -1243,6 +1234,10 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    semaphore_cucumber_booster_config (1.4.2)
+      thor (>= 0.19.1, < 2.0)
+    semaphore_test_boosters (2.7.1)
+      semaphore_cucumber_booster_config (~> 1.4.2)
     shacl (0.3.0)
       json-ld (~> 3.2)
       rdf (~> 3.2, >= 3.2.8)
@@ -1353,6 +1348,9 @@ GEM
     tinymce-rails (5.10.9)
       railties (>= 3.1.1)
     trailblazer-option (0.1.2)
+    travis-release (0.0.4)
+      bundler
+      rake
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
@@ -1375,6 +1373,20 @@ GEM
     validate_url (1.0.15)
       activemodel (>= 3.0.0)
       public_suffix
+    valkyrie (3.1.3)
+      activemodel
+      activesupport
+      dry-struct
+      dry-types (~> 1.0)
+      faraday (>= 0.9, < 3, != 2.0.0)
+      faraday-multipart
+      json
+      json-ld
+      railties
+      rdf (~> 3.0, >= 3.0.10)
+      rdf-vocab
+      reform (~> 2.2)
+      reform-rails
     version_gem (1.1.3)
     view_component (2.74.1)
       activesupport (>= 5.0.0, < 8.0)
@@ -1418,11 +1430,13 @@ GEM
 PLATFORMS
   aarch64-linux-musl
   arm64-darwin-23
+  ruby
   x86_64-linux-musl
 
 DEPENDENCIES
   active-fedora (~> 14.0)
   active_elastic_job!
+  activejob-scheduler!
   activerecord-nulldb-adapter
   addressable (= 2.8.1)
   apartment!
@@ -1505,6 +1519,7 @@ DEPENDENCIES
   scss_lint
   secure_headers
   selenium-webdriver (= 4.8.1)
+  semaphore_test_boosters
   shoulda-matchers (~> 4.0)
   sidekiq (< 7.0)
   simplecov
@@ -1516,7 +1531,6 @@ DEPENDENCIES
   tether-rails
   turbolinks (~> 5)
   twitter-typeahead-rails (= 0.11.1.pre.corejavascript)
-  valkyrie!
   web-console (>= 3.3.0)
   webdrivers (~> 4.7.0)
   webmock

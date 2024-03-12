@@ -1,0 +1,16 @@
+<%# OVERRIDE Hyrax 3.5.0 to handle multitenancy %>
+
+<% tenant_ga_id = current_account.google_analytics_id if current_account.id %>
+<% ids = [Settings.google_analytics_id, tenant_ga_id].compact.reject(&:empty?).uniq %>
+<script async src="https://www.googletagmanager.com/gtag/js?id=<%= ids.first %>"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  <% ids.each do |id| %>
+    gtag('config', '<%= id %>');
+  <% end %>
+</script>
+
+<meta name="analytics-provider" content="ga4">

@@ -1,0 +1,5 @@
+<%# OVERRIDE Hyrax 3.4.2 to enable markdown in the work description, and remove autolink to search in description on show page %>
+
+<% presenter.description.each do |description| %>
+    <p class="work_description"><%= markdown(description) %></p>
+<% end %>

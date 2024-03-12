@@ -56,5 +56,9 @@ module ApplicationHelper
     text ||= ""
     Markdown.new(text, *options).to_html.html_safe
   end
+
+  def truncate_and_iconify_auto_link(*args)
+    iconify_auto_link(*args).truncate(230, separator: ' ')
+  end
   # rubocop:enable Rails/OutputSafety
 end

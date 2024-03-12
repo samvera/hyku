@@ -17,6 +17,7 @@ module Hyrax
           delegate :logo_image, :logo_image?, :logo_image, to: :site
           delegate :favicon, :favicon?, to: :site
           delegate :directory_image, :directory_image?, to: :site
+          delegate :directory_image_alt_text, to: :site
           delegate :default_collection_image, :default_collection_image?, to: :site
           delegate :default_work_image, :default_work_image?, to: :site
 
@@ -36,6 +37,7 @@ module Hyrax
           #   @return [Hash<String, String>]
           class_attribute :default_colors, default: {
             'active_tabs_background_color' => '#337ab7',
+            'collection_banner_text_color' => '#000000',
             'default_button_background_color' => '#ffffff',
             'default_button_border_color' => '#cccccc',
             'default_button_text_color' => '#333333',
@@ -44,6 +46,7 @@ module Hyrax
             'footer_link_color' => '#ffebcd',
             'footer_link_hover_color' => '#ffffff',
             'header_and_footer_text_color' => '#dcdcdc',
+            'header_and_footer_background_color' => '#3c3c3c',
             'link_color' => '#2e74b2',
             'link_hover_color' => '#215480',
             'navbar_background_color' => '#000000',
@@ -51,8 +54,7 @@ module Hyrax
             'navbar_link_background_hover_color' => '#ffffff',
             'navbar_link_text_color' => '#eeeeee',
             'navbar_link_text_hover_color' => '#eeeeee',
-            'primary_button_hover_color' => '#286090',
-            'header_and_footer_background_color' => '#3c3c3c'
+            'primary_button_hover_color' => '#286090'
           }
           # @!endgroup Class Attributes
         end
@@ -106,31 +108,33 @@ module Hyrax
           # rubocop:disable Metrics/MethodLength
           def customization_params
             %i[
+              active_tabs_background_color
               body_font
-              headline_font
-              header_and_footer_background_color
-              header_and_footer_text_color
-              link_color
-              link_hover_color
-              footer_link_color
-              footer_link_hover_color
-              primary_button_hover_color
+              banner_image_text
+              collection_banner_text_color
+              custom_css_block
               default_button_background_color
               default_button_border_color
               default_button_text_color
-              active_tabs_background_color
+              default_collection_image_text
+              default_work_image_text
+              directory_image_alt_text
               facet_panel_background_color
               facet_panel_text_color
+              footer_link_color
+              footer_link_hover_color
+              header_and_footer_background_color
+              header_and_footer_text_color
+              headline_font
+              link_color
+              link_hover_color
+              logo_image_text
               navbar_background_color
+              navbar_link_background_color
               navbar_link_background_hover_color
               navbar_link_text_color
               navbar_link_text_hover_color
-              custom_css_block
-              logo_image_text
-              banner_image_text
-              directory_image_text
-              default_collection_image_text
-              default_work_image_text
+              primary_button_hover_color
             ]
           end
           # rubocop:enable Metrics/MethodLength
@@ -139,6 +143,10 @@ module Hyrax
 
         def site
           @site ||= Site.instance
+        end
+
+        def collection_banner_text_color
+          block_for('collection_banner_text_color')
         end
 
         # The alt text for the logo image

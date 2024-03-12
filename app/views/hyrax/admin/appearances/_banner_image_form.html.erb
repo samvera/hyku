@@ -60,25 +60,35 @@
    }
  });
 
- document.querySelector('.banner-submit').addEventListener('click', function(e) {
-   e.preventDefault();
-   if (cropper) {
-     cropper.getCroppedCanvas().toBlob(function(blob) {
-       var formData = new FormData(document.querySelector('form'));
-       formData.append('admin_appearance[banner_image]', blob, 'cropped.jpg');  // Adjusted this line
-       $.ajax('/admin/appearance', {
-         method: 'POST',
-         data: formData,
-         processData: false,
-         contentType: false,
-         success() {
-           console.log('Upload success');
-         },
-         error() {
-           console.log('Upload error');
-         },
-       });
-     });
-   }
- });
+document.querySelector('.banner-submit').addEventListener('click', function(e) {
+  e.preventDefault();
+
+  // Show the spinner
+  $('#spinner').show();
+
+  if (cropper) {
+    cropper.getCroppedCanvas().toBlob(function(blob) {
+      var formData = new FormData(document.querySelector('form'));
+      formData.append('admin_appearance[banner_image]', blob, 'cropped.jpg');
+
+      $.ajax('/admin/appearance', {
+        method: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success() {
+          console.log('Upload success');
+          // Hide the spinner
+          $('#spinner').hide();
+        },
+        error() {
+          console.log('Upload error');
+          // Hide the spinner
+          $('#spinner').hide();
+        },
+      });
+    });
+  }
+});
+
 </script>

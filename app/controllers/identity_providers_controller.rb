@@ -23,6 +23,7 @@ class IdentityProvidersController < ApplicationController
   end
 
   # POST /identity_providers or /identity_providers.json
+  # rubocop:disable Metrics/MethodLength
   def create
     @identity_provider = IdentityProvider.new(identity_provider_params)
     respond_to do |format|
@@ -37,9 +38,17 @@ class IdentityProvidersController < ApplicationController
         format.json { render json: @identity_provider.errors, status: :unprocessable_entity }
       end
     end
+  rescue JSON::ParserError => e
+    @identity_provider.add_error(:options, "Invalid JSON #{e.message}")
+    respond_to do |format|
+      format.html { render :new, status: :unprocessable_entity }
+      format.json { render json: @identity_provider.errors, status: :unprocessable_entity }
+    end
   end
+  # rubocop:enable Metrics/MethodLength
 
   # PATCH/PUT /identity_providers/1 or /identity_providers/1.json
+  # rubocop:disable Metrics/MethodLength
   def update
     respond_to do |format|
       if @identity_provider.update(identity_provider_params)
@@ -53,7 +62,14 @@ class IdentityProvidersController < ApplicationController
         format.json { render json: @identity_provider.errors, status: :unprocessable_entity }
       end
     end
+  rescue JSON::ParserError => e
+    @identity_provider.add_error(:options, "Invalid JSON #{e.message}")
+    respond_to do |format|
+      format.html { render :new, status: :unprocessable_entity }
+      format.json { render json: @identity_provider.errors, status: :unprocessable_entity }
+    end
   end
+  # rubocop:enable Metrics/MethodLength
 
   # DELETE /identity_providers/1 or /identity_providers/1.json
   def destroy

@@ -7,9 +7,13 @@ class CatalogController < ApplicationController
   include Hydra::Catalog
   include Hydra::Controller::ControllerBehavior
   include BlacklightOaiProvider::Controller
-
+  before_action :sort_alphabetical
   # These before_action filters apply the hydra access controls
   before_action :enforce_show_permissions, only: :show
+
+  def sort_alphabetical
+    params[:sort] = 'title_ssi asc' if params[:f].present?
+  end
 
   def self.created_field
     'date_created_ssim'
@@ -133,7 +137,9 @@ class CatalogController < ApplicationController
     config.add_facet_field 'based_near_label_sim', limit: 5
     config.add_facet_field 'publisher_sim', limit: 5
     config.add_facet_field 'file_format_sim', limit: 5
+    config.add_facet_field 'date_ssi', label: 'Date Created', range: { num_segments: 10, assumed_boundaries: [1100, Time.zone.now.year + 2], segments: false, slider_js: false, maxlength: 4 }
     config.add_facet_field 'member_of_collections_ssim', limit: 5, label: 'Collections'
+    config.add_facet_field 'account_institution_name_ssim', label: 'Institution', limit: 5
 
     # TODO: deal with part of facet changes
     # config.add_facet_field solr_name("part", :facetable), limit: 5, label: 'Part'
@@ -147,7 +153,7 @@ class CatalogController < ApplicationController
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display
     config.add_index_field 'title_tesim', label: "Title", itemprop: 'name', if: false
-    config.add_index_field 'description_tesim', itemprop: 'description', helper_method: :iconify_auto_link
+    config.add_index_field 'description_tesim', itemprop: 'description', helper_method: :truncate_and_iconify_auto_link
     config.add_index_field 'keyword_tesim', itemprop: 'keywords', link_to_search: 'keyword_sim'
     config.add_index_field 'subject_tesim', itemprop: 'about', link_to_search: 'subject_sim'
     config.add_index_field 'creator_tesim', itemprop: 'creator', link_to_search: 'creator_sim'

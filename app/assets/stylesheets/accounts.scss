@@ -19,3 +19,11 @@
   border-radius: $border-radius-base;
   margin-top: 5px;
 }
+
+.blacklight-account_institution_name_ssim {
+  display: none;
+}
+
+body.search-only .blacklight-account_institution_name_ssim {
+  display: block;
+}

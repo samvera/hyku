@@ -1,0 +1,5 @@
+<%# OVERRIDE Hyrax 3.4.2 to enable markdown in description %>
+
+<% presenter.description.each do |description| %>
+  <%= markdown(description) %>
+<% end %>

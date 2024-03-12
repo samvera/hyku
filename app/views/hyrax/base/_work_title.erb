@@ -1,0 +1,15 @@
+<%# OVERRIDE Hyrax 3.4.2 to enable markdown in the work title %>
+
+<div class="work-title-wrapper">
+  <% presenter.title.each_with_index do |title, index| %>
+    <% if index == 0 %>
+      <div class="title-with-badges">
+        <h1><%= markdown(title) %></h1>
+        <%= presenter.permission_badge %>
+        <%= presenter.workflow.badge %>
+      </div>
+    <% else %>
+      <h1><%= markdown(title) %></h1>
+    <% end %>
+  <% end %>
+</div>

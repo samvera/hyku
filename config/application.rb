@@ -39,6 +39,7 @@ module Hyku
     ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_BULKRAX_ENABLED', true))
   end
 
+  # rubocop:disable Metrics/ClassLength
   class Application < Rails::Application
     ##
     # @!group Class Attributes
@@ -121,6 +122,29 @@ module Hyku
     class_attribute :iiif_audio_url_builder,
                     default: ->(document:, label:, host:) { Hyrax::IiifAv::Engine.routes.url_helpers.iiif_av_content_url(document.id, label:, host:) }
     # @!endgroup Class Attributes
+
+    ##
+    # @return [String] the URL to use for searching across all tenants.
+    #
+    # @see .cross_tenant_search_host
+    # @see https://github.com/scientist-softserv/palni-palci/issues/947
+    def self.cross_tenant_search_url
+      # Do not include the scheme (e.g. http or https) but instead let the browser apply the correct
+      # scheme.
+      "//#{cross_tenant_search_host}/catalog"
+    end
+
+    ##
+    # @api private
+    #
+    # @return [String] the host (e.g. "search.hykucommons.org") for cross-tenant search.
+    def self.cross_tenant_search_host
+      # I'm providing quite a few fallbacks, as this URL is used on the first page you'll see in a
+      # new Hyku instance.
+      ENV["HYKU_CROSS_TENANT_SEARCH_HOST"].presence ||
+        Account.where(search_only: true).limit(1).pluck(:cname)&.first ||
+        "search.hykucommons.org"
+    end
 
     # Add this line to load the lib folder first because we need
     # IiifPrint::SplitPdfs::AdventistPagesToJpgsSplitter
@@ -261,13 +285,14 @@ module Hyku
     # Psych::DisallowedClass: Tried to load unspecified class: <Your Class Name Here>
     config.after_initialize do
       yaml_column_permitted_classes = [
-        Symbol,
-        Hash,
-        Array,
-        ActiveSupport::HashWithIndifferentAccess,
         ActiveModel::Attribute.const_get(:FromDatabase),
-        User,
-        Time
+        ActiveSupport::HashWithIndifferentAccess,
+        Array,
+        Date,
+        Hash,
+        Symbol,
+        Time,
+        User
       ]
       config.active_record.yaml_column_permitted_classes = yaml_column_permitted_classes
       # Seems at some point `ActiveRecord::Base.yaml_column_permitted_classes` loses all the values we set above
@@ -291,6 +316,21 @@ module Hyku
       # @see https://github.com/scientist-softserv/iiif_print/blob/9e7837ce4bd08bf8fff9126455d0e0e2602f6018/lib/iiif_print/engine.rb#L54 Where we do the override.
       Hyrax::Actors::FileSetActor.prepend(IiifPrint::TenantConfig::FileSetActorDecorator)
       Hyrax::WorkShowPresenter.prepend(IiifPrint::TenantConfig::WorkShowPresenterDecorator)
+
+      ##
+      # What the what?  There are bugs in three gems (Bulkrax, Hyrax::DOI, and AllinsonFlex) in
+      # which the application's view path is not the first in the view paths.  The result is that
+      # those upstream engines's views could be rendered instead of those views defined in the
+      # application.
+      #
+      # TODO: Remove when we're on a version of Bulkrax and Hyrax::DOI that resolves the following
+      # PRs:
+      #
+      # - https://github.com/samvera-labs/bulkrax/pull/855
+      # - https://github.com/samvera-labs/allinson_flex/pull/122
+      paths = ActionController::Base.view_paths.collect(&:to_s)
+      ActionController::Base.view_paths = paths.unshift(Rails.root.join("app", "views").to_s).uniq
     end
   end
+  # rubocop:enable Metrics/ClassLength
 end

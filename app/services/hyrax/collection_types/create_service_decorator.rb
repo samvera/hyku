@@ -148,5 +148,5 @@ module Hyrax
 end
 
 Hyrax::CollectionTypes::CreateService.singleton_class.send(:prepend, Hyrax::CollectionTypes::CreateServiceDecorator)
-Hyrax::CollectionTypes::CreateService::DEFAULT_OPTIONS = Hyrax::CollectionTypes::CreateServiceDecorator::DEFAULT_OPTIONS
-Hyrax::CollectionTypes::CreateService::USER_COLLECTION_OPTIONS = Hyrax::CollectionTypes::CreateServiceDecorator::USER_COLLECTION_OPTIONS
+# Hyrax::CollectionTypes::CreateService::DEFAULT_OPTIONS = Hyrax::CollectionTypes::CreateServiceDecorator::DEFAULT_OPTIONS
+# Hyrax::CollectionTypes::CreateService::USER_COLLECTION_OPTIONS = Hyrax::CollectionTypes::CreateServiceDecorator::USER_COLLECTION_OPTIONS

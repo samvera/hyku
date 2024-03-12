@@ -11,4 +11,15 @@ class AccountElevator < Apartment::Elevators::Generic
     account || Account.new.reset! # reset everything if no account is present
     account&.tenant
   end
+
+  def self.switch!(cname)
+    account = Account.from_cname(cname)
+    if account
+      Apartment::Tenant.switch!(account.tenant)
+    elsif Account.any?
+      raise "No tenant found for #{cname}"
+    else
+      Rails.logger.info "It looks like we're in single tenant mode. No tenant found for #{cname}"
+    end
+  end
 end

@@ -1,10 +1,10 @@
-<%# OVERRIDE Hyrax v5.0.0rc2 to support shared search %>
+<%# OVERRIDE Hyrax v5.0.0rc2 to support shared search  & enable markdown on search result titles  %>
 <% model = document.hydra_model %>
 <div class="search-results-title-row col-12 d-flex flex-row align-items-center pb-2">
   <% if model == Hyrax::PcdmCollection || model < Hyrax::PcdmCollection %>
-    <h4 class="search-result-title"><%= link_to document.title_or_label, generate_work_url(document, request) %></h4>
+    <h4 class="search-result-title"><%= markdown(link_to document.title_or_label, generate_work_url(document, request)) %></h4>
     <%= Hyrax::CollectionPresenter.new(document, current_ability).collection_type_badge %>
   <% else %>
-    <h4 class="search-result-title"><%= link_to document.title_or_label, generate_work_url(document, request) %></h4>
+    <h4 class="search-result-title"><%= markdown(link_to document.title_or_label, generate_work_url(document, request)) %></h4>
   <% end %>
 </div>

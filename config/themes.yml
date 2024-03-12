@@ -1,0 +1,21 @@
+# These settings are to provide information about your theme
+# and should follow the format   
+# default:
+#   name: Default theme
+#   
+default_home:
+  banner_image: true
+  featured_researcher: true
+  home_page_text: false
+  marketing_text: true
+  name: Default home
+cultural_repository:
+  banner_image: true
+  featured_researcher: false
+  home_page_text: true
+  marketing_text: true
+  name: Cultural Repository
+  
+  
+  
+  

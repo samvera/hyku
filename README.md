@@ -77,6 +77,15 @@ The full spec suite can be run in docker locally. There are several ways to do t
 docker-compose exec web rake
 ```
 
+#### Docker with an M1 chip
+- You may run into issues with Selenium with an M1 chip. If so, use the override file provided called `docker-compose-override.yml`
+- To see selenium grid running in the browser and check that selenium is connected properly, visit `localhost:4444`
+- To see selenium tests running in the browser, you will need a VNC. Macs have a built in VNC app called Screen Sharing.
+  - Spotlight search: open Screen Sharing app
+  - enter the following address to watch your tests: vnc://localhost:6900
+  - if prompted for a password, the default is "secret"
+  - you should now be able to see selenium tests run in the browser.
+
 ### With out Docker
 
 Please note that this is unused by most contributors at this point and will likely become unsupported in a future release of Hyku unless someone in the community steps up to maintain it.
@@ -155,18 +164,34 @@ switch!('myaccount')
 ## Analytics Feature
 Hyku currently only supports the configuration of one Google Analytics account for the basic functionality of this feature. Hyku currently only support Google Analytics with the Universal Analytics property for this feature.
 
-Note: Google has announced they will stop processing data using the Universal Analytics property on July 1, 2023  or July 1, 2024 for Analytics 360 properties.
+Analytics is comprised of two aspects:
 
-To enable analytics tracking and reporting features within Hyku, please follow the directions below.
+- *Sending* data to the analytics end-point
+- *Fetching* and reporting data from the analytics end-point
 
-### Setup a Google Analytics Account
+For a more exhaustive discusion, see [Resolve Sending Google Analytics Data for Tenant and Proprietor · Issue #910 · scientist-softserv/palni-palci](https://github.com/scientist-softserv/palni-palci/issues/910).
+
+### Google
+
+Both the *sending* and *fetching* functionality require that you [create a Service Account](#setup-a-google-analytics-account).  But only the *fetching* functionality requires that you set the OAuth credentials.
+
+The *fetching* aspect is configured at the proprietor level via environment variables.  See [./config/analytics.yml](./config/analytics.yml).
+
+The *sending* aspect can be configured at both:
+
+- the proprietor level, via the `./config/analytics.yml` mentioned above.
+- the tenant level by going to the tenant's Dashboard >> Settings >> Account
+
+Analytics tracking and reporting features will be turned off by default. To enable them within Hyku, please follow the directions below.
+
+#### Setup a Google Analytics Account
 - Create a Service Account: https://cloud.google.com/iam/docs/creating-managing-service-accounts
   - Note the service account email
   - When making a service account key, make sure the key type is set to p12
   - Note the service account private key secret
 - Create an OAuth 2.0 Client ID: https://developers.google.com/identity/protocols/oauth2/web-server#creatingcred
 - Create an Analytics account: https://support.google.com/analytics/answer/10269537?hl=en
-  - Note Google Universal Analytics ID number
+  - Note Google Analytics 4 ID number
 - Add service account email  as User, and grant "View" access: https://support.google.com/analytics/answer/1009702?hl=en#Add&zippy=%2Cin-this-article
 - Enable the "Google Analytics API": https://developers.google.com/identity/protocols/oauth2/web-server#enable-apis
 - Enable the "IAM Service Account Credentials API": https://developers.google.com/identity/protocols/oauth2/web-server#enable-apis
@@ -187,6 +212,10 @@ analytics:
     client_email: <%= ENV['GOOGLE_OAUTH_CLIENT_EMAIL'] %>
 ```
 
+- To get the `GOOGLE_OAUTH_PRIVATE_KEY_VALUE` value, you need the path to the p12 file you got from setting up your Service Account and run the following in your console locally.
+  - `base64 -i path/to/file.p12 | pbcopy`
+  - Once you run this script the value is on your local computers clipboard. You will need to paste this into the corresponding account setting.
+- You can use the `GOOGLE_OAUTH_PRIVATE_KEY_VALUE` OR `GOOGLE_OAUTH_PRIVATE_KEY_PATH` value. VALUE takes precedence.
 - For local development please see the .env file and see the "Enable Google Analytics" section.
 
 ```yaml

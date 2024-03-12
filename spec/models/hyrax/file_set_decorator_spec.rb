@@ -1,6 +1,18 @@
 # frozen_string_literal: true
 
 RSpec.describe Hyrax::FileSet do
+  describe '.model_name' do
+    subject { described_class.model_name }
+  end
+
+  subject { described_class.new }
+  its(:internal_resource) { is_expected.to eq('FileSet') }
+
+  context 'class configuration' do
+    subject { described_class }
+    its(:to_rdf_representation) { is_expected.to eq('FileSet') }
+  end
+
   # given an existing AF FileSet
   let(:af_file_set) do
     fs = FileSet.create(creator: ['test'], title: ['file set test'])
@@ -10,7 +22,8 @@ RSpec.describe Hyrax::FileSet do
     fs
   end
 
-  it "converts an AF FileSet to a Valkyrie::FileSet" do
+  # Because we're running a job, we need to specify a tenant
+  it "converts an AF FileSet to a Valkyrie::FileSet", :singletenant do
     ## Preamble to test a "Created in ActiveFedora FileSet"
     expect { Hyrax.query_service.services.first.find_by(id: af_file_set.id) }.to raise_error(Valkyrie::Persistence::ObjectNotFoundError)
     # We are lazyily migrating a FileSet to a Hyrax::FileSet
@@ -30,8 +43,11 @@ RSpec.describe Hyrax::FileSet do
     # The file is in Fedora!
     expect(file_set_resource.original_file.file_identifier.id).to start_with("fedora://")
 
-    ## Do the "migration" task
-    Hyrax.persister.save(resource: file_set_resource)
+    ## Do the "migration" task, it will conditionally enqueue; if we don't
+    ## process the queue the statements after this will fail.
+    perform_enqueued_jobs do
+      Hyrax.persister.save(resource: file_set_resource)
+    end
 
     # We found it in Postgresql
     converted_file_set = Hyrax.query_service.services.first.find_by(id: af_file_set.id)

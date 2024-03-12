@@ -28,6 +28,15 @@ Hyrax.config do |config|
   # config.admin_set_model = 'AdminSet'
   config.admin_set_model = 'AdminSetResource'
 
+  # Identify the model class name that will be used for FileSets in your app
+  #
+  # TODO: We may need to add similar model_name overrides so that parameters and
+  # keys are the same for FileSet and Hyrax::FileSet.  We do this for
+  # GenericWorkResoure via Hyrax::ValkyrieLazyMigration.migrating(self, from:
+  # GenericWork).  That may or may not work for FileSet but does provide the
+  # breadcrumbs.
+  config.file_set_model = 'Hyrax::FileSet'
+
   # The email address that messages submitted via the contact page are sent to
   # This is set by account settings
   # config.contact_email = 'changeme@example.com'

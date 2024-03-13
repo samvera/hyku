@@ -211,8 +211,12 @@ module Hyku
     end
 
     config.to_prepare do
-      # set bulkrax default work type to first curation_concern if it isn't already set
-      Bulkrax.default_work_type = Hyku::Application.work_types.first.to_s if Hyku.bulkrax_enabled? && Bulkrax.default_work_type.blank?
+      if Hyku.bulkrax_enabled?
+        # set bulkrax default work type to first curation_concern if it isn't already set
+        Bulkrax.default_work_type = Hyku::Application.work_types.first.to_s if Bulkrax.default_work_type.blank?
+        Bulkrax.collection_model_class = Hyrax.config.collection_class
+        Bulkrax.file_model_class = Hyrax.config.file_set_class
+      end
 
       # By default plain text files are not processed for text extraction.  In adding
       # Adventist::TextFileTextExtractionService to the beginning of the services array we are

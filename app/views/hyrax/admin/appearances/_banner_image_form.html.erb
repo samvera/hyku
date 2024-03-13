@@ -61,6 +61,17 @@
  });
 
 document.querySelector('.banner-submit').addEventListener('click', function(e) {
+  // Get all required fields
+  var requiredFields = document.querySelectorAll('input[required],textarea[required],select[required]');
+
+  // Check if all required fields are filled
+  for (var i = 0; i < requiredFields.length; i++) {
+    if (!requiredFields[i].value) {
+      // return early if not all required fields have been filled out
+      return;
+    }
+  }
+
   e.preventDefault();
 
   // Show the spinner

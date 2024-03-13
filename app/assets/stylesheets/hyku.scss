@@ -451,6 +451,10 @@ body.public-facing {
   }
 }
 
+body.splash.splash-index.public-facing.default_home.list_view.default_show {
+  margin-bottom: 0;
+}
+
 // FEATURED COLLECTIONS
 @media (max-width: 768px) {
   .admin-show-page

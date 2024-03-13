@@ -7,7 +7,10 @@ module Hyrax
     # writing/creating ImageResource and GenericWorkResource, we need to amend the newly arrived
     # {Hyrax::ModelRegistry}.
     def work_class_names
-      @work_class_names ||= super.flat_map { |name| name.end_with?("Resource") ? [name] : [name, "#{name}Resource"] }
+      # NOTE: It's unclear if we need both "GenericWork" and
+      # "GenericWorkResource".  So if it turns out we only need one or the
+      # other, no worries.
+      @work_class_names ||= (super + Hyku::Application.work_types.map(&:to_s)).uniq
     end
   end
 end

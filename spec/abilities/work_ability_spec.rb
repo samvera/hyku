@@ -15,6 +15,9 @@ RSpec.describe Hyrax::Ability::WorkAbility do
     end
 
     # TODO: We need to create factories for GenericWorkResource and ImageResource.
+    # NOTE: This assumes that all curation_conerns are ActiveFedora based.
+    # FactoryBot.create is for ActiveFedora models.  And
+    # FactoryBot.valkyrie_create is for Valkyrie models.
     (Hyrax.config.curation_concerns + [::FileSet]).each do |model|
       context "#{model} permissions" do
         let(:model_instance) { FactoryBot.create(model.to_s.underscore.to_sym, title: ["#{model} instance"]) }
@@ -47,6 +50,9 @@ RSpec.describe Hyrax::Ability::WorkAbility do
       FactoryBot.create(:depositors_group, member_users: [user])
     end
 
+    # NOTE: This assumes that all curation_conerns are ActiveFedora based.
+    # FactoryBot.create is for ActiveFedora models.  And
+    # FactoryBot.valkyrie_create is for Valkyrie models.
     (Hyrax.config.curation_concerns + [::FileSet]).each do |model|
       context "#{model} permissions" do
         let(:model_instance) { FactoryBot.create(model.to_s.underscore.to_sym, title: ["#{model} instance"]) }

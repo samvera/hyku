@@ -44,4 +44,11 @@ RSpec.describe Hyku::Application do
     subject { described_class.iiif_audio_url_builder }
     it { is_expected.to be_a(Proc) }
   end
+
+  describe '.work_types' do
+    subject { described_class.work_types }
+
+    # These are the default
+    it { is_expected.to eq([GenericWorkResource, ImageResource]) }
+  end
 end

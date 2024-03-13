@@ -39,6 +39,7 @@ module Hyku
     ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_BULKRAX_ENABLED', true))
   end
 
+  # rubocop:disable Metrics/ClassLength
   class Application < Rails::Application
     ##
     # @!group Class Attributes
@@ -162,6 +163,28 @@ module Hyku
       Rails.root.join(relative_path).to_s
     end
 
+    ##
+    # Because of Hyku using the Goddess adapter of Hyrax 5.x, we want to have a
+    # canonical answer for what are the Work Types that we want to manage.
+    #
+    # We don't want to rely on `Hyrax.config.curation_concerns`, as these are
+    # the ActiveFedora implementations.
+    #
+    # @return [Array<Class>]
+    def self.work_types
+      Hyrax.config.curation_concerns.map do |cc|
+        if cc.to_s.end_with?("Resource")
+          cc
+        else
+          # We may encounter a case where we don't have an old ActiveFedora
+          # model that we're mapping to.  For example, let's say we add Game as
+          # a curation concern.  And Game has only ever been written/modeled via
+          # Valkyrie.  We don't want to also have a GameResource.
+          "#{cc}Resource".safe_constantize || cc
+        end
+      end
+    end
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -189,7 +212,7 @@ module Hyku
 
     config.to_prepare do
       # set bulkrax default work type to first curation_concern if it isn't already set
-      Bulkrax.default_work_type = Hyrax.config.curation_concerns.first.to_s if Hyku.bulkrax_enabled? && Bulkrax.default_work_type.blank?
+      Bulkrax.default_work_type = Hyku::Application.work_types.first.to_s if Hyku.bulkrax_enabled? && Bulkrax.default_work_type.blank?
 
       # By default plain text files are not processed for text extraction.  In adding
       # Adventist::TextFileTextExtractionService to the beginning of the services array we are
@@ -293,4 +316,5 @@ module Hyku
       Hyrax::WorkShowPresenter.prepend(IiifPrint::TenantConfig::WorkShowPresenterDecorator)
     end
   end
+  # rubocop:enable Metrics/ClassLength
 end

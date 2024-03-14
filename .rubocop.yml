@@ -1,4 +1,5 @@
 inherit_from:
+  - .rubocop_todo.yml
   - .rubocop_fixme.yml
 
 inherit_gem:

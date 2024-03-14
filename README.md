@@ -57,7 +57,9 @@ dory up
 docker-compose up web
 ```
 
-This command starts the whole stack in individual containers allowing Rails to be started or stopped independent of the other services.  Once that starts (you'll see the line `Passenger core running in multi-application mode.` or `Listening on tcp://0.0.0.0:3000` to indicate a successful boot), you can view your app in a web browser at either hyku.test or localhost:3000 (see above).  When done `docker-compose stop` shuts down everything.
+This command starts the whole stack in individual containers allowing Rails to be started or stopped independent of the other services.  Once that starts (you'll see the line `Passenger core running in multi-application mode.` or `Listening on tcp://0.0.0.0:3000` to indicate a successful boot), you can view your app in a web browser at either [hyku.test](http://hyku.test) or [localhost:3000](http://localhost:3000) (see above). There is basic authentication on the server configurable in `app/controllers/application_controller.rb`. Use username: `samvera` and password: `hyku` to bypass basic authentication.
+
+When done `docker-compose stop` shuts down everything.
 
 #### Troubleshooting on Windows
 1. Dory is running but you're unable to access hyku.test:

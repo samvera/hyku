@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 require 'singleton'
 
-class Reprocessor
+class Reprocessor # rubocop:disable Metrics/ClassLength
   include Singleton
 
-  SETTINGS = %w[header_lines batch_size current_location limit incremental_save log_dir]
+  SETTINGS = %w[header_lines batch_size current_location limit incremental_save log_dir].freeze
 
-  attr_accessor *SETTINGS
+  attr_accessor(*SETTINGS)
   def initialize
     @header_lines = 1
     @batch_size   = 1000
@@ -32,13 +34,13 @@ class Reprocessor
     end
   end
 
-  def self.load(log_dir=Rails.root.join('tmp/imports').to_s)
+  def self.load(log_dir = Rails.root.join('tmp', 'imports').to_s)
     state = JSON.parse(File.read("#{log_dir}/work_processor.json"))
     SETTINGS.each do |setting|
       instance.send("#{setting}=", state[setting])
     end
   rescue Errno::ENOENT
-    puts "no save file to load"
+    puts 'no save file to load' # rubocop:disable Rails/Output
     instance.log_dir = log_dir
   end
 
@@ -71,9 +73,9 @@ class Reprocessor
   def caputre_with_solr(search)
     count = Hyrax::SolrService.count(search)
     progress(count)
-    while(self.current_location < count) do
-      break if limit && self.current_location >= limit
-      ids = Hyrax::SolrService.query(search, fl: 'id', rows: batch_size, start: self.current_location)
+    while current_location < count
+      break if limit && current_location >= limit
+      ids = Hyrax::SolrService.query(search, fl: 'id', rows: batch_size, start: current_location)
       self.current_location += batch_size
       ids.each do |i|
         id_log.error(i['id'])
@@ -95,7 +97,7 @@ class Reprocessor
       i += 1
       self.current_location += 1
       Reprocessor.save if incremental_save
-     end
+    end
   end
 
   def process_ids(lamb)
@@ -141,7 +143,7 @@ class Reprocessor
   end
 
   def id_line_size
-    @id_line_size ||= %x{wc -l #{id_path}}.split.first.to_i
+    @id_line_size ||= `wc -l #{id_path}`.split.first.to_i
   end
 
   def with_id_lines
@@ -153,29 +155,29 @@ class Reprocessor
   end
 
   def lambda_create_relationships
-    @lambda_create_relationships ||= lambda { |line, progress|
+    @lambda_create_relationships ||= lambda { |line, _progress|
       id = line.strip
       e = Bulkrax::Entry.find(id)
-      ::SEEN ||= []
+      ::SEEN ||= [] # rubocop:disable Style/MutableConstant
       unless ::SEEN.include?(e.importer.id)
         ::SEEN << e.importer.id
-        e.parser.create_parent_child_relationships 
+        e.parser.create_parent_child_relationships
       end
     }
   end
 
   def lambda_save
-    @lambda_save ||= lambda { |line, progress|
+    @lambda_save ||= lambda { |line, _progress|
       id = line.strip
-      w = Hyrax.query_service.find_by(id: id)
+      w = Hyrax.query_service.find_by(id:)
       w.save
     }
   end
 
   def lambda_index
-    @lambda_save ||= lambda { |line, progress|
+    @lambda_save ||= lambda { |line, _progress|
       id = line.strip
-      w = Hyrax.query_service.find_by(id: id)
+      w = Hyrax.query_service.find_by(id:)
       Hyrax.index_adapter.save(resource: w)
     }
   end
@@ -187,12 +189,12 @@ class Reprocessor
     }
   end
 
-  def progress(total=nil)
+  def progress(total = nil)
     if total
-      @progress = ProgressBar.create(total: total,
-        format:"%a %b\u{15E7}%i %c/%C %p%% %t",
-        progress_mark: ' ',
-        remainder_mark: "\u{FF65}")
+      @progress = ProgressBar.create(total:,
+                                     format: "%a %b\u{15E7}%i %c/%C %p%% %t",
+                                     progress_mark: ' ',
+                                     remainder_mark: "\u{FF65}")
     else
       @progress
     end

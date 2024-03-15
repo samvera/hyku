@@ -211,6 +211,33 @@ module Hyku
     end
 
     config.to_prepare do
+      # Load locales early so decorators can use them during initialization
+      I18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.yml')]
+
+      # Allows us to use decorator files
+      Dir.glob(File.join(File.dirname(__FILE__), "../app/**/*_decorator*.rb")).sort.each do |c|
+        Rails.configuration.cache_classes ? require(c) : load(c)
+      end
+
+      Dir.glob(File.join(File.dirname(__FILE__), "../lib/**/*_decorator*.rb")).sort.each do |c|
+        Rails.configuration.cache_classes ? require(c) : load(c)
+      end
+
+      # OAI additions
+      Dir.glob(File.join(File.dirname(__FILE__), "../lib/oai/**/*.rb")).sort.each do |c|
+        Rails.configuration.cache_classes ? require(c) : load(c)
+      end
+
+      if defined?(HykuKnapsack)
+        Dir.glob(File.join(File.dirname(__FILE__), "../../app/**/*_decorator*.rb")).sort.each do |c|
+          Rails.configuration.cache_classes ? require(c) : load(c)
+        end
+
+        Dir.glob(File.join(File.dirname(__FILE__), "../lib/**/*_decorator*.rb")).sort.each do |c|
+          Rails.configuration.cache_classes ? require(c) : load(c)
+        end
+      end
+
       if Hyku.bulkrax_enabled?
         # set bulkrax default work type to first curation_concern if it isn't already set
         Bulkrax.default_work_type = Hyku::Application.work_types.first.to_s if Bulkrax.default_work_type.blank?
@@ -234,23 +261,6 @@ module Hyku
       #   Hyrax::FileSetDerivativesService]
 
       DerivativeRodeo::Generators::HocrGenerator.additional_tessearct_options = nil
-
-      # Load locales early so decorators can use them during initialization
-      I18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.yml')]
-
-      # Allows us to use decorator files
-      Dir.glob(File.join(File.dirname(__FILE__), "../app/**/*_decorator*.rb")).sort.each do |c|
-        Rails.configuration.cache_classes ? require(c) : load(c)
-      end
-
-      Dir.glob(File.join(File.dirname(__FILE__), "../lib/**/*_decorator*.rb")).sort.each do |c|
-        Rails.configuration.cache_classes ? require(c) : load(c)
-      end
-
-      # OAI additions
-      Dir.glob(File.join(File.dirname(__FILE__), "../lib/oai/**/*.rb")).sort.each do |c|
-        Rails.configuration.cache_classes ? require(c) : load(c)
-      end
     end
 
     # When running tests we don't want to auto-specify factories

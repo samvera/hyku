@@ -136,6 +136,6 @@ gem 'webmock', group: %i[test]
 #
 # tl;dr - Have a local `required_for_knapsack_instances` branch on your knapsack repository and 99%
 #         of the time use the `samvera-labs/hyku_knapsack` remote branch.
-# gem 'hyku_knapsack', github: 'samvera-labs/hyku_knapsack', branch: 'required_for_knapsack_instances'
+gem 'hyku_knapsack', github: 'samvera-labs/hyku_knapsack', branch: 'required_for_knapsack_instances'
 
 # rubocop:enable Layout/LineLength

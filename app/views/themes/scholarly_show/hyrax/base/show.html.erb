@@ -35,6 +35,11 @@
           <% elsif @presenter.show_pdf_viewer? %>
             <div class="col-sm-12">
               <%= render 'pdf_js', file_set_presenter: pdf_file_set_presenter(@presenter) %>
+            </div>           
+            <div class="col-sm-12">
+              <div class="image-show-description">
+                <%= render 'work_description', presenter: @presenter %>
+              </div>
             </div>
           <% else %>
             <div class="col-sm-3 mb-1">

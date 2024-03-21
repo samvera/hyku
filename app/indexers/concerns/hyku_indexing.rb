@@ -36,12 +36,23 @@ module HykuIndexing
   end
 
   def add_date(solr_doc)
-    # The allowed date formats are either YYYY, YYYY-MM, or YYYY-MM-DD
-    # the date must be formatted as a 4 digit year in order to be sorted.
-    valid_date_formats = /\A(\d{4})(?:-\d{2}(?:-\d{2})?)?\z/
     date_string = solr_doc['date_created_tesim']&.first
-    year = date_string&.match(valid_date_formats)&.captures&.first
-    solr_doc['date_tesi'] = year if year
-    solr_doc['date_ssi'] = year if year
+    return unless date_string
+
+    date_string = pad_date_with_zero(date_string) if date_string.include?('-')
+
+    # The allowed date formats are either YYYY, YYYY-MM, or YYYY-MM-DD
+    valid_date_formats = /\A(\d{4}(?:-\d{2}(?:-\d{2})?)?)\z/
+    date = date_string&.match(valid_date_formats)&.captures&.first
+
+    # If the date is not in the correct format, index the original date string
+    date ||= date_string
+
+    solr_doc['date_tesi'] = date if date
+    solr_doc['date_ssi'] = date if date
+  end
+
+  def pad_date_with_zero(date_string)
+    date_string.split('-').map { |d| d.rjust(2, '0') }.join('-')
   end
 end

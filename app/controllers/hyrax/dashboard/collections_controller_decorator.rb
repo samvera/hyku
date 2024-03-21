@@ -145,18 +145,6 @@ module Hyrax
         logo_info
       end
 
-      def collection_params
-        if Hyrax.config.collection_class < ActiveFedora::Base
-          @participants = extract_old_style_permission_attributes(params[:collection])
-          form_class.model_attributes(params[:collection])
-        else
-          params.permit(collection: {})[:collection]
-                .merge(params.permit(:collection_type_gid)
-              .with_defaults(collection_type_gid: default_collection_type_gid))
-                .merge(member_of_collection_ids: Array(params[:parent_id]))
-        end
-      end
-
       # rubocop:disable Metrics/MethodLength
       def process_uploaded_thumbnail(uploaded_file)
         dir_name = UploadedCollectionThumbnailPathService.upload_dir(@collection)

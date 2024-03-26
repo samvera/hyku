@@ -10,5 +10,6 @@ class GenericWorkResourceForm < Hyrax::Forms::ResourceForm(GenericWorkResource)
   include Hyrax::FormFields(:generic_work_resource)
   include Hyrax::FormFields(:with_pdf_viewer)
   include Hyrax::FormFields(:with_video_embed)
+  include PdfBehavior
   include VideoEmbedBehavior::Validation
 end

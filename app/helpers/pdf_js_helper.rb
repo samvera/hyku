@@ -21,12 +21,16 @@ module PdfJsHelper
   end
 
   def render_show_pdf_behavior_checkbox?
-    return unless Flipflop.default_pdf_viewer?
-    return if params[:id].nil?
+    # we are showing PDF.js based on the FlipFlop value
+    # instead of checking for the property value.
+    # TODO: Valkyrize PDF.js feature
+    false
+    # return unless Flipflop.default_pdf_viewer?
+    # return if params[:id].nil?
 
-    doc = SolrDocument.find params[:id]
+    # doc = SolrDocument.find params[:id]
 
-    presenter = @_controller.show_presenter.new(doc, current_ability)
-    presenter.file_set_presenters.any?(&:pdf?)
+    # presenter = @_controller.show_presenter.new(doc, current_ability)
+    # presenter.file_set_presenters.any?(&:pdf?)
   end
 end

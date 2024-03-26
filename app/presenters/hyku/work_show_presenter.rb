@@ -74,11 +74,13 @@ module Hyku
     # End Featured Collections Methods
 
     def show_pdf_viewer?
-      return unless Flipflop.default_pdf_viewer?
-      return unless show_pdf_viewer
-      return unless file_set_presenters.any?(&:pdf?)
+      Flipflop.default_pdf_viewer?
+      # TODO: Valkyrize PDF.js feature
+      # return unless Flipflop.default_pdf_viewer?
+      # return unless show_pdf_viewer
+      # return unless file_set_presenters.any?(&:pdf?)
 
-      show_pdf_viewer.first.to_i.positive?
+      # show_pdf_viewer.first.to_i.positive?
     end
 
     def show_pdf_download_button?

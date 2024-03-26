@@ -87,6 +87,6 @@ class Site < ApplicationRecord
   def default_work_type_is_available
     return true if available_works.include?(default_work_type)
 
-    raise StandardError, "#{default_work_type} is not enabled in this tenant. Available work types are: #{available_works.join(', ')}"
+    errors.add(:default_work_type, "#{default_work_type} is not enabled in this tenant. Available work types are: #{available_works.join(', ')}")
   end
 end

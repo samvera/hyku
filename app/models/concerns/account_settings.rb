@@ -165,6 +165,11 @@ module AccountSettings
       config.uploader[:maxFileSize] = file_size_limit.to_i
     end
 
+    # We need to tell Bulkrax which is the default work_type.
+    if ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_BULKRAX_ENABLED', true))
+      Bulkrax.default_work_type = Site.instance&.default_work_type ||
+                                  Hyrax.config.registered_curation_concern_types.first
+    end
     Devise.mailer_sender = contact_email
 
     if s3_bucket.present?

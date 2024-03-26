@@ -4,6 +4,7 @@ class Site < ApplicationRecord
   resourcify
 
   validates :application_name, presence: true, allow_nil: true
+  validate :default_work_type_is_available
 
   # Allow for uploading of site's banner image
   mount_uploader :banner_image, Hyrax::AvatarUploader
@@ -30,6 +31,7 @@ class Site < ApplicationRecord
       return NilSite.instance if Account.global_tenant?
       first_or_create do |site|
         site.available_works = Hyrax.config.registered_curation_concern_types
+        site.default_work_type = Hyrax.config.registered_curation_concern_types.first
       end
     end
   end
@@ -80,5 +82,11 @@ class Site < ApplicationRecord
     User.where(email: emails).find_each do |u|
       u.remove_role :admin, self
     end
+  end
+
+  def default_work_type_is_available
+    return true if available_works.include?(default_work_type)
+
+    raise StandardError, "#{default_work_type} is not enabled in this tenant. Available work types are: #{available_works.join(', ')}"
   end
 end

@@ -12,6 +12,7 @@ module Admin
       site
     end
 
+    # TODO: extend to handle :default_work_type
     def update
       site.available_works = params[:available_works]
       if site.save

@@ -5,34 +5,31 @@
 <div class="card">
   <div class="card-body">
     <%= simple_form_for @site, url: '/admin/work_types' do |f| %>
-      <% Hyrax.config.registered_curation_concern_types.each do |type| %>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="<%= type %>" id="input-<%= type %>" name="available_works[]" <%= 'checked' if @site.available_works&.include?(type) %>>
-          <label class="form-check-label" for="input-<%= type %>">
-            <%= type %>
-          </label>
-        </div>
-      <% end %>
-      <%= f.submit class: 'btn btn-primary' %>
-    <% end %>
-  </div>
-</div>
+      <fieldset>
+	<legend>Choose the available work types:</legend>
+	<% Hyrax.config.registered_curation_concern_types.each do |type| %>
+	  <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="<%= type %>" id="input-<%= type %>" name="site[available_works][]" <%= 'checked' if @site.available_works&.include?(type) %>>
+            <label class="form-check-label" for="input-<%= type %>">
+              <%= type %>
+            </label>
+	  </div>
+	<% end %>
+      </fieldset>
 
-<%# FIXME: make an i18n %>
-<h3>Default Work Type</h3>
-<div class="card">
-  <div class="card-body">
-    <%= simple_form_for @site, url: '/admin/work_types' do |f| %>
-      <% Hyrax.config.registered_curation_concern_types.each do |type| %>
-        <div class="form-radio">
-          <% checked = @site.default_work_type == type ? 'checked' : nil  %>
-          <% disabled = @site.available_works.exclude?(type) ? 'disabled' : nil  %>
-          <input class="form-radio-input" type="radio" value="<%= type %>" id="input-<%= type %>-radio" name="default_work_type" <%= checked %> <%= disabled %>>
-          <label class="form-radio-label" for="input-<%= type %>-radio">
-            <%= type %>
-          </label>
-        </div>
-      <% end %>
+      <fieldset>
+	<legend>Choose the default work type for this site:</legend>
+	<% Hyrax.config.registered_curation_concern_types.each do |type| %>
+	  <div class="form-radio">
+            <% checked = @site.default_work_type == type ? 'checked' : nil  %>
+            <% disabled = @site.available_works.exclude?(type) ? 'disabled' : nil  %>
+            <input class="form-radio-input" type="radio" value="<%= type %>" id="input-<%= type %>-radio" name="site[default_work_type]" <%= checked %> <%= disabled %>>
+            <label class="form-radio-label" for="input-<%= type %>-radio">
+              <%= type %>
+            </label>
+	  </div>
+	<% end %>
+      </fieldset>
       <%= f.submit class: 'btn btn-primary' %>
     <% end %>
   </div>

@@ -165,6 +165,15 @@ module AccountSettings
       config.uploader[:maxFileSize] = file_size_limit.to_i
     end
 
+    # We need to tell Bulkrax which is the default work_type.
+    if ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_BULKRAX_ENABLED', true))
+      # We need the try instead &. operator because we added a migration that
+      # creates the field; but other migrations in that batch might reference
+      # this reload_library_config method and the ActiveRecord::Base column
+      # cache has not been updated, so we encounter a method missing.
+      Bulkrax.default_work_type = Site.instance.try(:default_work_type) ||
+                                  Hyrax.config.registered_curation_concern_types.first
+    end
     Devise.mailer_sender = contact_email
 
     if s3_bucket.present?

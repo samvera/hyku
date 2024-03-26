@@ -12,9 +12,9 @@ module Admin
       site
     end
 
+    # TODO: extend to handle :default_work_type
     def update
-      site.available_works = params[:available_works]
-      if site.save
+      if site.update(site_params)
         flash[:notice] = "Work types have been successfully updated"
       else
         flash[:error] = "Work types were not updated"
@@ -26,6 +26,10 @@ module Admin
 
     def site
       @site ||= Site.first
+    end
+
+    def site_params
+      params.require(:site).permit(:default_work_type, available_works: [])
     end
   end
 end

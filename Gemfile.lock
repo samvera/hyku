@@ -231,10 +231,10 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/valkyrie.git
-  revision: e9313b1d1744215b6b965814aaf0d38ac3b77107
-  ref: e9313b1d1744215b6b965814aaf0d38ac3b77107
+  revision: da8e2daa1f83b6db04043b1189bb95e8d725a7e2
+  ref: da8e2daa1f83b6db04043b1189bb95e8d725a7e2
   specs:
-    valkyrie (3.1.3)
+    valkyrie (3.1.4)
       activemodel
       activesupport
       dry-struct
@@ -1419,6 +1419,7 @@ GEM
 PLATFORMS
   aarch64-linux-musl
   arm64-darwin-23
+  ruby
   x86_64-linux-musl
 
 DEPENDENCIES

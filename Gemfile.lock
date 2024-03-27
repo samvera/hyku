@@ -207,6 +207,26 @@ GIT
       view_component (~> 2.74.1)
 
 GIT
+  remote: https://github.com/samvera/valkyrie.git
+  revision: fab15e5818ba7bd1e9688a8013be491a09a4494e
+  tag: v3.1.4
+  specs:
+    valkyrie (3.1.4)
+      activemodel
+      activesupport
+      dry-struct
+      dry-types (~> 1.0)
+      faraday (>= 0.9, < 3, != 2.0.0)
+      faraday-multipart
+      json
+      json-ld
+      railties
+      rdf (~> 3.0, >= 3.0.10)
+      rdf-vocab
+      reform (~> 2.2)
+      reform-rails
+
+GIT
   remote: https://github.com/scientist-softserv/apartment.git
   revision: 9ad4b0ef2ee6debb956e86ef9e7095c8358fef5e
   branch: development
@@ -228,26 +248,6 @@ GIT
       hyrax (>= 2.5, < 6)
       nokogiri (>= 1.13.2)
       rdf-vocab (~> 3.0)
-
-GIT
-  remote: https://github.com/scientist-softserv/valkyrie.git
-  revision: da8e2daa1f83b6db04043b1189bb95e8d725a7e2
-  ref: da8e2daa1f83b6db04043b1189bb95e8d725a7e2
-  specs:
-    valkyrie (3.1.4)
-      activemodel
-      activesupport
-      dry-struct
-      dry-types (~> 1.0)
-      faraday (>= 0.9, < 3, != 2.0.0)
-      faraday-multipart
-      json
-      json-ld
-      railties
-      rdf (~> 3.0, >= 3.0.10)
-      rdf-vocab
-      reform (~> 2.2)
-      reform-rails
 
 GIT
   remote: https://github.com/stanhu/omniauth-cas.git

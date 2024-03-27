@@ -109,7 +109,7 @@ gem 'terser' # to support the Safe Navigation / Optional Chaining operator (?.) 
 gem 'tether-rails'
 gem 'turbolinks', '~> 5'
 gem 'twitter-typeahead-rails', '0.11.1.pre.corejavascript'
-gem 'valkyrie', github: "scientist-softserv/valkyrie", ref: 'da8e2daa1f83b6db04043b1189bb95e8d725a7e2'
+gem 'valkyrie', git: 'https://github.com/samvera/valkyrie.git', tag: 'v3.1.4'
 gem 'web-console', '>= 3.3.0', group: %i[development] # <%= console %> in views
 gem 'webdrivers', '~> 4.7.0', group: %i[test]
 gem 'webmock', group: %i[test]

@@ -26,6 +26,8 @@ task index_collections: :environment do
   end
 end
 
+# TODO: handle valkyrie reindex once admin sets have been valkyrized
+# ref: https://github.com/scientist-softserv/hykuup_knapsack/issues/94
 desc "reindex just the admin_sets in the background"
 task index_admin_sets: :environment do
   Account.find_each do |account|

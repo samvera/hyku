@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class FcrepoEndpoint < Endpoint
+  has_one :account, dependent: nil, foreign_key: :fcrepo_endpoint_id # rubocop:disable Rails/RedundantForeignKey
+
   store :options, accessors: %i[url base_path]
 
   def url

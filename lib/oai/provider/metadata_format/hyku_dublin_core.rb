@@ -48,10 +48,10 @@ module OAI
 
         # rubocop:disable Metrics/MethodLength
         def add_public_file_urls(xml, record)
-          return if record[:file_set_ids_ssim].blank?
+          return if record[:member_ids_ssim].blank?
 
-          fs_ids = record[:file_set_ids_ssim].join('" OR "')
-          public_fs_ids = ActiveFedora::SolrService.query(
+          fs_ids = record[:member_ids_ssim].join('" OR "')
+          public_fs_ids = Hyrax::SolrService.query(
             "id:(\"#{fs_ids}\") AND " \
             "has_model_ssim:FileSet AND " \
             "visibility_ssi:#{Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC}",

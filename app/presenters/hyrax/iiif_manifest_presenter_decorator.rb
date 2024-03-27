@@ -21,7 +21,7 @@ module Hyrax
             else
               Rails.application.routes.url_helpers.solr_document_url(id, host: hostname)
             end
-      Site.account.ssl_configured ? url.sub(/\Ahttp:/, 'https:') : url
+      Site.account&.ssl_configured ? url.sub(/\Ahttp:/, 'https:') : url
     end
 
     ##
@@ -29,7 +29,7 @@ module Hyrax
     def manifest_url
       return '' if id.blank?
 
-      protocol = Site.account.ssl_configured ? 'https' : 'http'
+      protocol = Site.account&.ssl_configured ? 'https' : 'http'
       Rails.application.routes.url_helpers.polymorphic_url([:manifest, model], host: hostname, protocol:)
     end
 

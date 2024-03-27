@@ -19,6 +19,8 @@ require 'webmock/rspec'
 require 'i18n/debug' if ENV['I18N_DEBUG']
 require 'rspec/its'
 
+require 'hyrax_with_valkyrie_helper'
+
 RSpec.configure do |config|
   config.before(:suite) do
     WebMock.disable_net_connect!(allow_localhost: true,

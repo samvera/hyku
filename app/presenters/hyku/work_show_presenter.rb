@@ -15,8 +15,6 @@ module Hyku
     # we need to re-introduce that logic.
     prepend IiifPrint::TenantConfig::WorkShowPresenterDecorator
 
-    Hyrax::MemberPresenterFactory.file_presenter_class = Hyrax::IiifAv::IiifFileSetPresenter
-
     delegate :title_or_label, :extent, :source, :bibliographic_citation, :date,
              :show_pdf_viewer, :show_pdf_download_button, to: :solr_document
 
@@ -76,14 +74,17 @@ module Hyku
     # End Featured Collections Methods
 
     def show_pdf_viewer?
-      return unless Flipflop.default_pdf_viewer?
-      return unless show_pdf_viewer
-      return unless file_set_presenters.any?(&:pdf?)
+      Flipflop.default_pdf_viewer? && file_set_presenters.any?(&:pdf?)
+      # TODO: Valkyrize PDF.js feature
+      # return unless Flipflop.default_pdf_viewer?
+      # return unless show_pdf_viewer
+      # return unless file_set_presenters.any?(&:pdf?)
 
-      show_pdf_viewer.first.to_i.positive?
+      # show_pdf_viewer.first.to_i.positive?
     end
 
     def show_pdf_download_button?
+      return unless Hyrax.config.display_media_download_link?
       return unless file_set_presenters.any?(&:pdf?)
       return unless show_pdf_download_button
 

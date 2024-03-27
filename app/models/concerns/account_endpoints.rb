@@ -15,9 +15,6 @@ module AccountEndpoints
                                   update_only: true
   end
 
-  class_methods do
-  end
-
   def solr_endpoint
     super || NilSolrEndpoint.new
   end

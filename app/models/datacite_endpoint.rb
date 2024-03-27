@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class DataCiteEndpoint < ::Endpoint
+  has_one :account, dependent: nil, foreign_key: :data_cite_endpoint_id # rubocop:disable Rails/RedundantForeignKey
+
   store :options, accessors: %i[mode prefix username password]
 
   def switch!

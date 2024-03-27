@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-if ENV.fetch('HYKU_BULKRAX_ENABLED', 'true') == 'true'
+if Hyku.bulkrax_enabled?
   # rubocop:disable Metrics/BlockLength
   Bulkrax.setup do |config|
     # Add local parsers
@@ -102,6 +102,11 @@ if ENV.fetch('HYKU_BULKRAX_ENABLED', 'true') == 'true'
     config.field_mappings["Bulkrax::XmlParser"] = default_field_mapping.merge({
                                                                                 # add or remove custom mappings for this parser here
                                                                               })
+
+    # Because Hyku now uses and assumes Valkyrie to query the repository layer, we need to match the
+    # object factory to use Valkyrie.
+    config.object_factory = Bulkrax::ValkyrieObjectFactory
+    config.factory_class_name_coercer = Bulkrax::FactoryClassFinder::ValkyrieMigrationCoercer
 
     # To duplicate a set of mappings from one parser to another
     #   config.field_mappings["Bulkrax::OaiOmekaParser"] = {}

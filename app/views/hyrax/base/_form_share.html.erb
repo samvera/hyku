@@ -5,16 +5,13 @@
 
 <% depositor = f.object.depositor %>
 
-<div class="alert alert-info hidden" id="save_perm_note">Permissions are
-  <strong>not</strong> saved until the &quot;Save&quot; button is pressed at the bottom of the page.</div>
+<div class="alert alert-info hidden" id="save_perm_note"><%= t('.permissions_save_note_html') %></div>
 
 <div class="alert alert-warning hidden" role="alert" id="permissions_error">
   <span id="permissions_error_text"></span>
 </div>
 
-<p class="sr-only">Use the add button to give access to one <%= t('hyrax.account_label') %> at a time (it will be added to the list below).
-  Select the user, by name or <%= t('hyrax.account_label') %>. Then select the access level you wish to grant and click on Add this
-  <%= t('hyrax.account_label') %> to complete adding the permission.
+<p class="sr-only"><%= t('.use_add_button', account_label:  t('hyrax.account_label')) %>
 </p>
 
 <fieldset class="form-group row permission-add-group">
@@ -30,7 +27,7 @@
     <%= select_tag 'new_group_permission_skel', options_for_select(Hyrax.config.permission_options), class: 'form-control' %>
 
     <button class="btn btn-secondary ml-2" id="add_new_group_skel">
-      <span>Add<span class="sr-only"> this group</span></span>
+      <span><%= t(".add_this_group_html") %></span>
     </button>
     <br /><span id="directory_group_result"></span>
   </div>
@@ -41,9 +38,9 @@
     <%= t('hyrax.admin.admin_sets.form_participants.add_user') %>
   </legend>
   <div class="col-sm-9 form-inline">
-    <label for="new_user_name_skel" class="sr-only"><%= t('hyrax.account_label') %> (without the <%= t('hyrax.directory.suffix') %> part)</label>
+    <label for="new_user_name_skel" class="sr-only"><%= t('.account_label_without_suffix', account_label: t('hyrax.account_label'), suffix: t('hyrax.directory.suffix')) %> </label>
     <%= text_field_tag 'new_user_name_skel', nil %>
-    <label for="new_user_permission_skel" class="sr-only">Access type to grant</label>
+    <label for="new_user_permission_skel" class="sr-only"><%= t('.access_type_to_grant') %></label>
     <%= select_tag 'new_user_permission_skel', options_for_select(Hyrax.config.permission_options), class: 'form-control' %>
     <button class="btn btn-secondary ml-2" id="add_new_user_skel">
       <span>Add<span class="sr-only"> this <%= t('hyrax.account_label') %></span></span>
@@ -73,7 +70,7 @@
     <% next if agents_to_skip.include? agent.agent_name.downcase %>
     <tr>
       <%# OVERRIDE: display access for admin group in a way that does not allow access to be removed or access level to be changed %>
-      <% if agent.type == 'group' && agent.agent_name == Ability.admin_group_name %>
+      <% if agent.agent_name == "#{Hyrax::Group::DEFAULT_NAME_PREFIX}#{Ability.admin_group_name}" %>
         <td><%= Hyrax.config.permission_levels.key(agent.access) %></td>
         <td><b><%= display_hyrax_group_name(agent.agent_name) %></b></td>
       <% else %>
@@ -83,10 +80,10 @@
         <td>
           <%= permission_fields.label :agent_name, class: "control-label" do %>
             <%# OVERRIDE: use separate method to display group agents %>
-            <% if agent.type == 'person' %>
-              <%= user_display_name_and_key(agent.agent_name) %>
-            <% else %>
+            <% if agent.agent_name.start_with? Hyrax::Group::DEFAULT_NAME_PREFIX %>
               <%= display_hyrax_group_name(agent.agent_name) %>
+            <% else %>
+              <%= user_display_name_and_key(agent.agent_name) %>
             <% end %>
           <% end %>
           <button class="btn close remove_perm" data-index="<%= permission_fields.index %>">&times;</button>

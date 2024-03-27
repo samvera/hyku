@@ -56,7 +56,7 @@ RSpec.describe "OAI PMH Support", type: :feature do
     end
 
     describe '#add_public_file_urls' do
-      let(:record) { { file_set_ids_ssim: ['my-file-set-id-1', 'my-file-set-id-2'] } }
+      let(:record) { { member_ids_ssim: ['my-file-set-id-1', 'my-file-set-id-2'] } }
       let(:xml) { Builder::XmlMarkup.new }
 
       # We use Site.instance.account.cname to build the download links.
@@ -70,7 +70,7 @@ RSpec.describe "OAI PMH Support", type: :feature do
       context 'when the work has public file sets' do
         before do
           # Mock two public file set ids returned by Solr
-          allow(ActiveFedora::SolrService)
+          allow(Hyrax::SolrService)
             .to receive(:query)
             .and_return([{ 'id' => 'my-file-set-id-1' }, { 'id' => 'my-file-set-id-2' }])
         end
@@ -90,7 +90,7 @@ RSpec.describe "OAI PMH Support", type: :feature do
       context 'when the work has non-public file sets' do
         before do
           # Mock zero public file set ids returned by Solr
-          allow(ActiveFedora::SolrService)
+          allow(Hyrax::SolrService)
             .to receive(:query)
             .and_return([])
         end
@@ -110,7 +110,7 @@ RSpec.describe "OAI PMH Support", type: :feature do
       context 'when the work has public and non-public file sets' do
         before do
           # Mock one public file set ids returned by Solr
-          allow(ActiveFedora::SolrService)
+          allow(Hyrax::SolrService)
             .to receive(:query)
             .and_return([{ 'id' => 'my-file-set-id-1' }])
         end

@@ -11,6 +11,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   concern :oai_provider, BlacklightOaiProvider::Routes.new
 
   mount Hyrax::IiifAv::Engine, at: '/'
+  mount IiifPrint::Engine, at: '/'
   mount Riiif::Engine => 'images', as: :riiif if Hyrax.config.iiif_image_server?
 
   authenticate :user, ->(u) { u.superadmin? || u.admin? } do
@@ -80,7 +81,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   mount Blacklight::Engine => '/'
   mount BlacklightAdvancedSearch::Engine => '/'
   mount Hyrax::Engine, at: '/'
-  mount Bulkrax::Engine, at: '/' if ENV.fetch('HYKU_BULKRAX_ENABLED', 'true') == 'true'
+  mount Bulkrax::Engine, at: '/' if Hyku.bulkrax_enabled?
   mount HykuKnapsack::Engine, at: '/'
   concern :searchable, Blacklight::Routes::Searchable.new
   concern :exportable, Blacklight::Routes::Exportable.new

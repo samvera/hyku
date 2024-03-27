@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
-# OVERRIDE: Hyrax v5.0.0rc2 to add inject_show_theme_views - Hyku theming
-#           and correct hostname of manifests
-#           and to add Hyrax IIIF AV
+# OVERRIDE: Hyrax v5.0.0rc2 to:
+#           - add inject_show_theme_views - Hyku theming
+#           - correct hostname of manifests
+#           - add Hyrax IIIF AV
+#           - override for bug https://github.com/samvera/hyrax/issues/5904
+#           - use Hyku::WorkShowPresenter rather than Hyrax's presenter
 module Hyku
   # include this module after including Hyrax::WorksControllerBehavior to override
   # Hyrax::WorksControllerBehavior methods with the ones defined here
@@ -15,6 +18,7 @@ module Hyku
     included do
       # add around action to load theme show page views
       around_action :inject_show_theme_views, except: :delete
+      self.show_presenter = Hyku::WorkShowPresenter
     end
 
     def json_manifest
@@ -27,33 +31,6 @@ module Hyku
       Hyrax::IiifManifestPresenter.new(search_result_document(id: params[:id])).tap do |p|
         p.hostname = request.hostname
         p.ability = current_ability
-      end
-    end
-
-    def format_error_messages(errors)
-      errors.messages.map do |field, messages|
-        field_name = field.to_s.humanize
-        messages.map { |message| "#{field_name} #{message.sub(/^./, &:downcase)}" }
-      end.flatten.join("\n")
-    end
-
-    # Creating a form object that can re-render most of the submitted parameters.
-    # Required for ActiveFedora::Base objects only.
-    def rebuild_form(original_input_params_for_form)
-      build_form
-      @form = Hyrax::Forms::FailedSubmissionFormWrapper
-              .new(form: @form,
-                   input_params: original_input_params_for_form)
-    end
-
-    def after_update_error(errors)
-      respond_to do |wants|
-        wants.html do
-          flash[:error] = format_error_messages(errors)
-          build_form unless @form.is_a? Hyrax::ChangeSet
-          render 'edit', status: :unprocessable_entity
-        end
-        wants.json { render_json_response(response_type: :unprocessable_entity, options: { errors: }) }
       end
     end
 

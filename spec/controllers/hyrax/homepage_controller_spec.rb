@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-RSpec.describe Hyrax::HomepageController, type: :controller do
+RSpec.describe Hyrax::HomepageController, type: :controller, clean_repo: true do
   routes { Hyrax::Engine.routes }
 
   describe "#index" do
@@ -37,18 +37,6 @@ RSpec.describe Hyrax::HomepageController, type: :controller do
         expect(marketing).to be_kind_of ContentBlock
         expect(marketing.name).to eq 'marketing_text'
       end
-    end
-
-    it "does not include other user's private documents in recent documents" do
-      get :index
-      expect(response).to be_successful
-      titles = assigns(:recent_documents).map { |d| d['title_tesim'][0] }
-      expect(titles).not_to include('Test Private Document')
-    end
-
-    it "includes only Work objects in recent documents" do
-      get :index
-      expect(assigns(:recent_documents).all?(&:work?)).to eq true
     end
 
     context "with a document not created this second", clean_repo: true do

@@ -20,4 +20,11 @@ RSpec.describe NilSolrEndpoint do
 
     it { is_expected.to eq 'Solr not initialized' }
   end
+
+  describe '#switch!' do
+    it "does not raise an error" do
+      expect(instance).to receive(:connection).at_least(1).times.and_call_original
+      expect { instance.switch! }.not_to raise_error
+    end
+  end
 end

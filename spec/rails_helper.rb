@@ -13,17 +13,40 @@ ENV['HYKU_MULTITENANT'] = 'true'
 
 require 'simplecov'
 SimpleCov.start('rails')
-
 require File.expand_path('../config/environment', __dir__)
+require 'spec_helper'
+
+# We're going to need this for our factories
+require Hyrax::Engine.root.join("spec/support/simple_work").to_s
+
+# I want to set this so that our factory finder will have the right values.
+Hyrax.config.admin_set_model = "AdminSetResource"
+Hyrax.config.collection_model = "CollectionResource"
+
+# First find the Hyrax factories; then find the local factories (which extend/modify Hyrax
+# factories).
+FactoryBot.definition_file_paths = [
+  Hyrax::Engine.root.join("spec/factories/").to_s,
+  File.expand_path("../factories", __FILE__)
+]
+FactoryBot.find_definitions
+
+# Appeasing the Hyrax user factory interface.
+def RoleMapper.add(user:, groups:)
+  groups.each do |group|
+    user.add_role(group.to_sym, Site.instance)
+  end
+end
+
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
-require 'spec_helper'
 require 'rspec/rails'
 require 'capybara/rails'
 require 'database_cleaner'
 require 'active_fedora/cleaner'
 require 'webdrivers'
 require 'shoulda/matchers'
+
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -40,16 +63,6 @@ require 'shoulda/matchers'
 # require only the support files necessary.
 #
 Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
-
-# Ensure the Hyrax::Admin constant is loaded. Because testing is done using autoloading,
-# the order of the test run determines where the constants are loaded from.  Prior to
-# this change we were seeing intermittent errors like:
-#   uninitialized constant Admin::UserActivityPresenter
-# This can probably be removed once https://github.com/projecthydra-labs/hyrax/pull/440
-# is merged
-# rubocop:disable Lint/Void
-Hyrax::Admin
-# rubocop:enable Lint/Void
 
 # Checks for pending migration and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
@@ -150,7 +163,7 @@ RSpec.configure do |config|
   config.before do |example|
     # make sure we are on the default fedora config
     ActiveFedora::Fedora.reset!
-    ActiveFedora::SolrService.reset!
+    SolrEndpoint.reset!
     # Pass `:clean' (or hyrax's convention of :clean_repo) to destroy objects in fedora/solr and
     # start from scratch
     if example.metadata[:clean] || example.metadata[:clean_repo] || example.metadata[:type] == :feature

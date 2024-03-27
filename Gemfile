@@ -29,7 +29,7 @@ gem 'blacklight_range_limit'
 gem 'bolognese', '>= 1.9.10'
 gem 'bootstrap', '~> 4.6'
 gem 'bootstrap-datepicker-rails'
-gem 'bulkrax', '~> 5.4'
+gem 'bulkrax', github: 'samvera/bulkrax', branch: 'hyrax-4-valkyrie-support'
 gem 'byebug', group: %i[development test]
 gem 'capybara', group: %i[test]
 gem 'capybara-screenshot', '~> 1.0', group: %i[test]
@@ -54,7 +54,7 @@ gem 'hyrax-doi', github: 'samvera-labs/hyrax-doi', branch: 'rails_hyrax_upgrade'
 gem 'hyrax-iiif_av', github: 'samvera-labs/hyrax-iiif_av', branch: 'rails_hyrax_upgrade'
 gem 'i18n-debug', require: false, group: %i[development test]
 gem 'i18n-tasks', group: %i[development test]
-gem 'iiif_print', github: 'scientist-softserv/iiif_print', branch: 'rails_hyrax_upgrade'
+gem 'iiif_print', github: 'scientist-softserv/iiif_print', branch: 'main'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 # The maintainers yanked 0.3.2 version (see https://github.com/dryruby/json-canonicalization/issues/2)
@@ -109,9 +109,12 @@ gem 'terser' # to support the Safe Navigation / Optional Chaining operator (?.) 
 gem 'tether-rails'
 gem 'turbolinks', '~> 5'
 gem 'twitter-typeahead-rails', '0.11.1.pre.corejavascript'
+gem 'valkyrie', git: 'https://github.com/samvera/valkyrie.git', tag: 'v3.1.4'
 gem 'web-console', '>= 3.3.0', group: %i[development] # <%= console %> in views
 gem 'webdrivers', '~> 4.7.0', group: %i[test]
 gem 'webmock', group: %i[test]
+# Enabling the following gem breaks sidekiq. To Enable: assets.debug must be set to true in config/development.rb
+# gem "xray-rails", git: "https://github.com/brentd/xray-rails.git", branch: "bugs/ruby-3.0.0", group: %i[development]
 
 # This gem does nothing by default, but is instead a tool to ease developer flow
 # and place overrides, themes and deployment code.
@@ -131,7 +134,8 @@ gem 'webmock', group: %i[test]
 #
 # Thus the hopefully descriptive `required_for_knapsack_instances`.
 #
-# tl;dr - Have a local `required_for_knapsack_instances` branch on your knapsack repository
+# tl;dr - Have a local `required_for_knapsack_instances` branch on your knapsack repository and 99%
+#         of the time use the `samvera-labs/hyku_knapsack` remote branch.
 gem 'hyku_knapsack', github: 'samvera-labs/hyku_knapsack', branch: 'required_for_knapsack_instances'
 
 # rubocop:enable Layout/LineLength

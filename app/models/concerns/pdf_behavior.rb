@@ -12,19 +12,20 @@ end
 
 module PdfBehavior
   extend ActiveSupport::Concern
+  # TODO: Valkyrize PDF.js feature
 
   included do
     property :show_pdf_viewer, predicate: RDF::CustomShowPdfViewerTerm.show_pdf_viewer, multiple: false do |index|
-      index.as :stored_searchable
+      # index.as :stored_searchable
     end
 
     # rubocop:disable Metrics/LineLength
     property :show_pdf_download_button, predicate: RDF::CustomShowPdfDownloadButtonTerm.show_pdf_download_button, multiple: false do |index|
-      index.as :stored_searchable
+      # index.as :stored_searchable
     end
     # rubocop:enable Metrics/LineLength
 
-    after_initialize :set_default_show_pdf_viewer, :set_default_show_pdf_download_button
+    # after_initialize :set_default_show_pdf_viewer, :set_default_show_pdf_download_button
   end
 
   private

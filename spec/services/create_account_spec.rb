@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-RSpec.describe CreateAccount do
+RSpec.describe CreateAccount, clean: true do
   subject { described_class.new(account) }
 
   let(:account) { FactoryBot.build(:sign_up_account) }
-  let(:stubbed_admin_set) { double(AdminSet, id: "admin_set/id") }
+  let(:stubbed_admin_set) { double(AdminSetResource, id: "admin_set/id") }
 
   describe '#create_tenant' do
     it 'creates a new apartment tenant' do
@@ -16,7 +16,6 @@ RSpec.describe CreateAccount do
       expect(Apartment::Tenant).to receive(:create).with(any_args) do |&block|
         block.call
       end
-      expect(Hyrax::AdminSetCreateService).to receive(:find_or_create_default_admin_set).and_return(stubbed_admin_set)
       subject.save
       expect(Site.reload.account).to eq account
     end

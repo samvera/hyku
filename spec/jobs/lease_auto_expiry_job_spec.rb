@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-RSpec.describe LeaseAutoExpiryJob do
+require 'freyja/persister'
+RSpec.describe LeaseAutoExpiryJob, clean: true do
   before do
     ActiveJob::Base.queue_adapter = :test
     FactoryBot.create(:group, name: "public")
@@ -15,7 +16,7 @@ RSpec.describe LeaseAutoExpiryJob do
 
   let(:account) { create(:account_with_public_schema) }
 
-  let!(:leased_work) do
+  let(:leased_work) do
     build(:work, lease_expiration_date: future_date.to_s,
                  visibility_during_lease: 'open',
                  visibility_after_lease: 'restricted').tap do |work|
@@ -24,7 +25,7 @@ RSpec.describe LeaseAutoExpiryJob do
     end
   end
 
-  let!(:work_with_expired_lease) do
+  let(:work_with_expired_lease) do
     build(:work, lease_expiration_date: past_date.to_s,
                  visibility_during_lease: 'open',
                  visibility_after_lease: 'restricted',
@@ -33,7 +34,7 @@ RSpec.describe LeaseAutoExpiryJob do
     end
   end
 
-  let!(:file_set_with_expired_lease) do
+  let(:file_set_with_expired_lease) do
     build(:file_set, lease_expiration_date: past_date.to_s,
                      visibility_during_lease: 'open',
                      visibility_after_lease: 'restricted',
@@ -49,27 +50,44 @@ RSpec.describe LeaseAutoExpiryJob do
   end
 
   describe '#perform' do
-    it "Expires the lease on a work with expired lease" do
+    it "Expires the lease on a work with expired lease", active_fedora_to_valkyrie: true do
+      expect(work_with_expired_lease).to be_a_kind_of(GenericWork)
       expect(work_with_expired_lease.visibility).to eq('open')
-      ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
-      LeaseAutoExpiryJob.perform_now(account)
-      work_with_expired_lease.reload
-      expect(work_with_expired_lease.visibility).to eq('restricted')
+
+      expect do
+        expect do
+          ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
+          LeaseAutoExpiryJob.perform_now(account)
+        end.not_to change { work_with_expired_lease.reload.visibility } # because of double combo
+      end.to change { GenericWorkResource.find(work_with_expired_lease.id).visibility }
+        .from('open')
+        .to('restricted')
     end
 
     it 'Expires leases on file sets with expired leases' do
+      expect(file_set_with_expired_lease).to be_a_kind_of(ActiveFedora::Base)
       expect(file_set_with_expired_lease.visibility).to eq('open')
-      ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
-      LeaseAutoExpiryJob.perform_now(account)
-      file_set_with_expired_lease.reload
-      expect(file_set_with_expired_lease.visibility).to eq('restricted')
+      expect do
+        expect do
+          ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
+          LeaseAutoExpiryJob.perform_now(account)
+        end.not_to change { file_set_with_expired_lease.reload.visibility } # because of double combo
+      end.to change { Hyrax.query_service.find_by(id: file_set_with_expired_lease.id).visibility }
+        .from('open')
+        .to('restricted')
     end
 
-    it "Does not expire lease when lease is still active" do
+    it "Does not expire lease when lease is still active", active_fedora_to_valkyrie: true do
+      expect(leased_work).to be_a_kind_of(GenericWork)
       expect(leased_work.visibility).to eq('open')
-      ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
-      LeaseAutoExpiryJob.perform_now(account)
-      expect(leased_work.visibility).to eq('open')
+
+      expect do
+        expect do
+          ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
+          LeaseAutoExpiryJob.perform_now(account)
+        end.not_to change { leased_work.reload.visibility } # because of double combo
+      end.not_to change { GenericWorkResource.find(leased_work.id).visibility }
+        .from('open')
     end
   end
 end

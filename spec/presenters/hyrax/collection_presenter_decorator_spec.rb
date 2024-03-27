@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Hyrax::CollectionPresenter do
+RSpec.describe Hyrax::CollectionPresenter, type: :decorator do
   describe '.terms' do
     it 'does not include size' do
       expect(described_class.terms.size).to be_positive

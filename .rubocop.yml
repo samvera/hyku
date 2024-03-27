@@ -41,6 +41,7 @@ Metrics/BlockLength:
     - 'lib/tasks/*.rake'
     - 'spec/**/*.rb'
     - 'tasks/benchmark.rake'
+    - 'config/application.rb'
 
 Style/AsciiComments:
   Enabled: false

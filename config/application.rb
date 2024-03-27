@@ -35,6 +35,11 @@ module Hyku
       .delete("\xEF\xBB\xBF")
   end
 
+  def self.bulkrax_enabled?
+    ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_BULKRAX_ENABLED', true))
+  end
+
+  # rubocop:disable Metrics/ClassLength
   class Application < Rails::Application
     ##
     # @!group Class Attributes
@@ -158,6 +163,28 @@ module Hyku
       Rails.root.join(relative_path).to_s
     end
 
+    ##
+    # Because of Hyku using the Goddess adapter of Hyrax 5.x, we want to have a
+    # canonical answer for what are the Work Types that we want to manage.
+    #
+    # We don't want to rely on `Hyrax.config.curation_concerns`, as these are
+    # the ActiveFedora implementations.
+    #
+    # @return [Array<Class>]
+    def self.work_types
+      Hyrax.config.curation_concerns.map do |cc|
+        if cc.to_s.end_with?("Resource")
+          cc
+        else
+          # We may encounter a case where we don't have an old ActiveFedora
+          # model that we're mapping to.  For example, let's say we add Game as
+          # a curation concern.  And Game has only ever been written/modeled via
+          # Valkyrie.  We don't want to also have a GameResource.
+          "#{cc}Resource".safe_constantize || cc
+        end
+      end
+    end
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -178,9 +205,12 @@ module Hyku
       end
     end
 
-    config.to_prepare do
-      DerivativeRodeo::Generators::HocrGenerator.additional_tessearct_options = nil
+    config.before_initialize do
+      Hyrax.config.collection_model = 'CollectionResource'
+      Hyrax.config.admin_set_model = 'AdminSetResource'
+    end
 
+    config.to_prepare do
       # Load locales early so decorators can use them during initialization
       I18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.yml')]
 
@@ -197,7 +227,44 @@ module Hyku
       Dir.glob(File.join(File.dirname(__FILE__), "../lib/oai/**/*.rb")).sort.each do |c|
         Rails.configuration.cache_classes ? require(c) : load(c)
       end
+
+      if defined?(HykuKnapsack)
+        Dir.glob(File.join(File.dirname(__FILE__), "../../app/**/*_decorator*.rb")).sort.each do |c|
+          Rails.configuration.cache_classes ? require(c) : load(c)
+        end
+
+        Dir.glob(File.join(File.dirname(__FILE__), "../lib/**/*_decorator*.rb")).sort.each do |c|
+          Rails.configuration.cache_classes ? require(c) : load(c)
+        end
+      end
+
+      if Hyku.bulkrax_enabled?
+        # set bulkrax default work type to first curation_concern if it isn't already set
+        Bulkrax.default_work_type = Hyku::Application.work_types.first.to_s if Bulkrax.default_work_type.blank?
+        Bulkrax.collection_model_class = Hyrax.config.collection_class
+        Bulkrax.file_model_class = Hyrax.config.file_set_class
+      end
+
+      # By default plain text files are not processed for text extraction.  In adding
+      # Adventist::TextFileTextExtractionService to the beginning of the services array we are
+      # enabling text extraction from plain text files.
+      Hyrax::DerivativeService.services = [
+        IiifPrint::PluggableDerivativeService
+      ]
+
+      # When you are ready to use the derivative rodeo instead of the pluggable uncomment the
+      # following and comment out the preceding Hyrax::DerivativeService.service
+      #
+      # Hyrax::DerivativeService.services = [
+      #   Adventist::TextFileTextExtractionService,
+      #   IiifPrint::DerivativeRodeoService,
+      #   Hyrax::FileSetDerivativesService]
+
+      DerivativeRodeo::Generators::HocrGenerator.additional_tessearct_options = nil
     end
+
+    # When running tests we don't want to auto-specify factories
+    config.factory_bot.definition_file_paths = [] if config.respond_to?(:factory_bot)
 
     # resolve reloading issue in dev mode
     config.paths.add 'app/helpers', eager_load: true
@@ -263,4 +330,5 @@ module Hyku
       Hyrax::WorkShowPresenter.prepend(IiifPrint::TenantConfig::WorkShowPresenterDecorator)
     end
   end
+  # rubocop:enable Metrics/ClassLength
 end

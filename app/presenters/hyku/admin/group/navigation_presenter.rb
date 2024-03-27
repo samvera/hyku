@@ -3,6 +3,8 @@
 module Hyku
   module Admin
     module Group
+      ##
+      # A class to help orchestrate the tabs for the given group.
       class NavigationPresenter
         def initialize(params:)
           @params = params

@@ -20,7 +20,7 @@ module Wings
         model_name = ModelRegistry.lookup(model).model_name
 
         solr_query = "_query_:\"{!raw f=has_model_ssim}#{model_name}\""
-        solr_response = ActiveFedora::SolrService.post(solr_query, fl: 'id', rows: @query_rows)['response']
+        solr_response = Hyrax::SolrService.post(solr_query, fl: 'id', rows: @query_rows)['response']
 
         loop do
           response_docs = solr_response['docs']
@@ -29,7 +29,7 @@ module Wings
           response_docs.each { |doc| yield doc['id'] }
 
           break if (solr_response['start'] + solr_response['docs'].count) >= solr_response['numFound']
-          solr_response = ActiveFedora::SolrService.post(
+          solr_response = Hyrax::SolrService.post(
             solr_query,
             fl: 'id',
             rows: @query_rows,

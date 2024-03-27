@@ -41,7 +41,7 @@ class ApplicationController < ActionController::Base
   end
 
   def staging?
-    ['staging'].include?(Rails.env)
+    Rails.env.staging? # rubocop:disable Rails/UnknownEnv
   end
 
   def authenticate_if_needed

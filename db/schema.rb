@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_15_215708) do
+ActiveRecord::Schema.define(version: 2024_02_29_234258) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -73,7 +73,8 @@ ActiveRecord::Schema.define(version: 2023_12_15_215708) do
     t.datetime "last_succeeded_at"
     t.string "importerexporter_type", default: "Bulkrax::Importer"
     t.integer "import_attempts", default: 0
-    t.index ["identifier"], name: "index_bulkrax_entries_on_identifier"
+    t.string "status_message", default: "Pending"
+    t.index ["identifier", "importerexporter_id", "importerexporter_type"], name: "bulkrax_identifier_idx"
     t.index ["importerexporter_id", "importerexporter_type"], name: "bulkrax_entries_importerexporter_idx"
     t.index ["type"], name: "index_bulkrax_entries_on_type"
   end
@@ -108,6 +109,7 @@ ActiveRecord::Schema.define(version: 2023_12_15_215708) do
     t.string "workflow_status"
     t.boolean "include_thumbnails", default: false
     t.boolean "generated_metadata", default: false
+    t.string "status_message", default: "Pending"
     t.index ["user_id"], name: "index_bulkrax_exporters_on_user_id"
   end
 
@@ -148,6 +150,7 @@ ActiveRecord::Schema.define(version: 2023_12_15_215708) do
     t.boolean "validate_only"
     t.datetime "last_error_at"
     t.datetime "last_succeeded_at"
+    t.string "status_message", default: "Pending"
     t.index ["user_id"], name: "index_bulkrax_importers_on_user_id"
   end
 
@@ -445,6 +448,9 @@ ActiveRecord::Schema.define(version: 2023_12_15_215708) do
     t.string "child_order", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "parent_model"
+    t.string "child_model"
+    t.string "file_id"
     t.index ["parent_id"], name: "index_iiif_print_pending_relationships_on_parent_id"
   end
 
@@ -536,6 +542,18 @@ ActiveRecord::Schema.define(version: 2023_12_15_215708) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["namespace"], name: "index_minter_states_on_namespace", unique: true
+  end
+
+  create_table "orm_resources", id: :text, default: -> { "(uuid_generate_v4())::text" }, force: :cascade do |t|
+    t.jsonb "metadata", default: {}, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "internal_resource"
+    t.integer "lock_version"
+    t.index ["internal_resource"], name: "index_orm_resources_on_internal_resource"
+    t.index ["metadata"], name: "index_orm_resources_on_metadata", using: :gin
+    t.index ["metadata"], name: "index_orm_resources_on_metadata_jsonb_path_ops", opclass: :jsonb_path_ops, using: :gin
+    t.index ["updated_at"], name: "index_orm_resources_on_updated_at"
   end
 
   create_table "permission_template_accesses", id: :serial, force: :cascade do |t|

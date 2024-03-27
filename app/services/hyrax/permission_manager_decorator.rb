@@ -16,8 +16,18 @@ module Hyrax
   # Because of this, we also add queries for Role permissions in addition to Group permissions
   # as part of these overrides.
   module PermissionManagerDecorator
+    # NOTE: The fallback to Group.new for special groups is necessary due to a fundamental
+    #       change in between behavior in Valkyrie models vs ActiveFedora models. In
+    #       "public" groups now go through the access_control_list module, and
+    #       the group gets assigned to the objects here. Because Hyku persists
+    #       groups and "public" is not a real group, this errored because the group was
+    #       not found. We have added a fallback to handle it like Hyrax does. In case
+    #       of permission errors, this is a point to investigate.
+    SPECIAL_GROUPS = ["public"].freeze
+
     private
 
+    # rubocop:disable Metrics/MethodLength
     def update_groups_for(mode:, groups:)
       groups = groups.map(&:to_s)
 
@@ -29,19 +39,29 @@ module Hyrax
         next if groups.include?(group_name)
 
         # OVERRIDE:
-        #   - Replace Group#new with Group#find_by(:name)
-        #   - Add fallback on Role, which has the same agent_type as Group
-        group_or_role = Group.find_by(name: group_name) || Role.find_by(name: group_name)
+        group_or_role = group_or_role(name: group_name)
+        next unless group_or_role
         acl.revoke(mode).from(group_or_role)
       end
 
       groups.each do |g|
         # OVERRIDE:
-        #   - Replace Group#new with Group#find_by(:name)
-        #   - Add fallback on Role, which has the same agent_type as Group
-        group_or_role = Group.find_by(name: g) || Role.find_by(name: g)
+        group_or_role = group_or_role(name: g)
+        next unless group_or_role
         acl.grant(mode).to(group_or_role)
       end
+    end
+    # rubocop:enable Metrics/MethodLength
+
+    # OVERRIDE:
+    #   - Replace Group#new with Group#find_by(:name)
+    #   - Add fallback on Role, which has the same agent_type as Group
+    #   - Fallback to Group.new() for "public" but don't save group
+    def group_or_role(name:)
+      group_or_role = Group.find_by(name:) || Role.find_by(name:)
+      return group_or_role if group_or_role
+      return Group.new(name:) if SPECIAL_GROUPS.include?(name)
+      nil
     end
   end
 end

@@ -9,7 +9,8 @@ module Hyrax
         if admin?
           can [:manage], ::SolrDocument
         else
-          # OVERRIDE: remove :destroy -- only users with manage access can destroy
+          # OVERRIDE: remove :destroy -- only users with manage access can destroy This is brought
+          # about by the permission restrictions added by the Groups with Roles feature,
           can [:edit, :update], ::SolrDocument do |solr_doc|
             test_edit(solr_doc.id)
           end
@@ -17,8 +18,7 @@ module Hyrax
             test_read(solr_doc.id)
           end
 
-          # "Undo" permission restrictions added by the Groups with Roles feature,
-          # effectively reverting them back to default Hyrax behavior
+          # To "Undo" the above override (e.g. return to default Hyrax behavior) set the below ENV.
           unless ActiveModel::Type::Boolean.new.cast(
             ENV.fetch('HYKU_RESTRICT_CREATE_AND_DESTROY_PERMISSIONS', nil)
           )

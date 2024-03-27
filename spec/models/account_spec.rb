@@ -145,7 +145,7 @@ RSpec.describe Account, type: :model do
     end
 
     it 'switches the ActiveFedora solr connection' do
-      expect(ActiveFedora::SolrService.instance.conn.uri.to_s).to eq 'http://example.com/solr/'
+      expect(Hyrax::SolrService.connection.uri.to_s).to eq 'http://example.com/solr/'
     end
 
     it 'switches the ActiveFedora fcrepo connection' do
@@ -163,7 +163,7 @@ RSpec.describe Account, type: :model do
   end
 
   describe '#switch' do
-    let!(:previous_solr_url) { ActiveFedora::SolrService.instance.conn.uri.to_s }
+    let!(:previous_solr_url) { Hyrax::SolrService.connection.uri.to_s }
     let!(:previous_redis_namespace) { 'hyrax' }
     let!(:previous_fedora_host) { ActiveFedora.fedora.host }
     let!(:previous_data_cite_mode) { Hyrax::DOI::DataCiteRegistrar.mode }
@@ -184,24 +184,27 @@ RSpec.describe Account, type: :model do
     end
 
     it 'switches to the account-specific connection' do
-      subject.switch do
-        expect(ActiveFedora::SolrService.instance.conn.uri.to_s).to eq 'http://example.com/solr/'
-        expect(ActiveFedora.fedora.host).to eq 'http://example.com/fedora'
-        expect(ActiveFedora.fedora.base_path).to eq '/dev'
-        expect(Hyrax.config.redis_namespace).to eq 'foobaz'
-        expect(Hyrax::DOI::DataCiteRegistrar.mode).to eq 'test'
-        expect(Hyrax::DOI::DataCiteRegistrar.prefix).to eq '10.1234'
-        expect(Hyrax::DOI::DataCiteRegistrar.username).to eq 'user123'
-        expect(Hyrax::DOI::DataCiteRegistrar.password).to eq 'pass123'
-        expect(Rails.application.routes.default_url_options[:host]).to eq account.cname
-      end
+      expect(Hyrax::SolrService.connection.uri.to_s).not_to eq 'http://example.com/solr/'
+      expect do
+        subject.switch do
+          expect(Hyrax::SolrService.connection.uri.to_s).to eq 'http://example.com/solr/'
+          expect(ActiveFedora.fedora.host).to eq 'http://example.com/fedora'
+          expect(ActiveFedora.fedora.base_path).to eq '/dev'
+          expect(Hyrax.config.redis_namespace).to eq 'foobaz'
+          expect(Hyrax::DOI::DataCiteRegistrar.mode).to eq 'test'
+          expect(Hyrax::DOI::DataCiteRegistrar.prefix).to eq '10.1234'
+          expect(Hyrax::DOI::DataCiteRegistrar.username).to eq 'user123'
+          expect(Hyrax::DOI::DataCiteRegistrar.password).to eq 'pass123'
+          expect(Rails.application.routes.default_url_options[:host]).to eq account.cname
+        end
+      end.not_to change { Hyrax::SolrService.connection.uri.to_s }
     end
 
     it 'resets the active connections back to the defaults' do
       subject.switch do
         # no-op
       end
-      expect(ActiveFedora::SolrService.instance.conn.uri.to_s).to eq previous_solr_url
+      expect(Hyrax::SolrService.connection.uri.to_s).to eq previous_solr_url
       expect(ActiveFedora.fedora.host).to eq previous_fedora_host
       expect(Hyrax.config.redis_namespace).to eq previous_redis_namespace
       # datacite mode is reset to test in between for safety.
@@ -217,7 +220,7 @@ RSpec.describe Account, type: :model do
         subject.solr_endpoint = nil
         expect(subject.solr_endpoint).to be_kind_of NilSolrEndpoint
         subject.switch do
-          expect { ActiveFedora::SolrService.instance.conn.get 'foo' }.to raise_error RSolr::Error::ConnectionRefused
+          expect { Hyrax::SolrService.connection.get 'foo' }.to raise_error RSolr::Error::ConnectionRefused
         end
       end
 

@@ -54,8 +54,7 @@ module Hyrax
       load_shared_info
       recent
 
-      # override hyrax v2.9.0 added for facets on homepage - Adding Themes
-      (@response, @document_list) = search_results(params)
+      (@response, @document_list) = search_service.search_results
 
       respond_to do |format|
         format.html { store_preferred_view }

@@ -471,6 +471,24 @@ body.public-facing {
   padding: 0;
 }
 
+.dd3-handle {
+  position: absolute; margin: 0; left: 0; top: 0; cursor: pointer; width: 30px;
+  text-indent: 100px;
+  white-space: nowrap; overflow: hidden;
+  border: 1px solid #aaa;
+  background: #ddd;
+  background: -webkit-linear-gradient(top, #ddd 0%, #bbb 100%);
+  background:    -moz-linear-gradient(top, #ddd 0%, #bbb 100%);
+  background:         linear-gradient(top, #ddd 0%, #bbb 100%);
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  z-index: 1;
+}
+
+.dd3-content .card-body {
+  background: transparent;
+}
+
 .d-flex {
   display: flex;
 }

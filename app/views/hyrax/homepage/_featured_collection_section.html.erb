@@ -2,7 +2,7 @@
   <p id='no-collections'><%= t('hyrax.homepage.featured_collections.no_collections') %></p>
 <% elsif can? :update, FeaturedCollection %>
   <%= form_for [main_app, @featured_collection_list] do |f| %>
-    <div class="card-group dd" id="ff">
+    <div class="dd" id="ff">
       <ol id="featured_works">
         <%= f.fields_for :featured_collections do |featured| %>
           <%= render 'sortable_featured_collections', f: featured %>

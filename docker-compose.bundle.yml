@@ -7,5 +7,5 @@ services:
   web:
     command: sh -l -c "bundle && bundle exec puma -v -b tcp://0.0.0.0:3000"
   worker:
-    command: sh -l -c "bundle && bundle exec good_job"
+    command: sh -l -c "bundle && bundle exec sidekiq"
 

@@ -34,7 +34,17 @@ class SolrEndpoint < Endpoint
   def connection_options
     bl_defaults = Blacklight.connection_config
     af_defaults = SOLR_SERVICE.instance.conn.options
-    switchable_options.reverse_merge(bl_defaults).reverse_merge(af_defaults)
+    base_options = switchable_options
+
+    # Because of code in Valkyrie::Indexing::Solr::IndexingAdapter we may want
+    # to include the 'core' key in this hash.
+    #
+    # https://github.com/samvera/hyrax/blob/a5a0ae9e56df857a92fc53ae86216cbb007db47a/lib/valkyrie/indexing/solr/indexing_adapter.rb#L83-L101
+    base_options['core'] ||= switchable_options['collection']
+
+    # NOTE: the switchable_options includes two keys: "collection" and "url"
+    #       The "url" should be used to make the connection to Solr.
+    base_options.reverse_merge(bl_defaults).reverse_merge(af_defaults)
   end
 
   def ping

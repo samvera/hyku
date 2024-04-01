@@ -8,6 +8,19 @@ class SitesController < ApplicationController
   def update
     # FIXME: Pull these strings out to i18n locale
     if @site.update(update_params)
+
+      # If updating work or collection default image, works and/or collections should be reindexed
+      # as they are when the default image is added. See AppearancesControllerDecorator#update
+      if update_params['remove_default_collection_image']
+        # Reindex all Collections and AdminSets to apply new default collection image
+        ReindexCollectionsJob.perform_later
+        ReindexAdminSetsJob.perform_later
+      end
+
+      if update_params['remove_default_work_image']
+        # Reindex all Works to apply new default work image
+        ReindexWorksJob.perform_later
+      end
       remove_appearance_text(update_params)
       redirect_to hyrax.admin_appearance_path, notice: 'The appearance was successfully updated.'
     else

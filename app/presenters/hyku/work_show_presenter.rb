@@ -15,9 +15,6 @@ module Hyku
     # we need to re-introduce that logic.
     prepend IiifPrint::TenantConfig::WorkShowPresenterDecorator
 
-    delegate :title_or_label, :extent, :source, :bibliographic_citation, :date,
-             :show_pdf_viewer, :show_pdf_download_button, to: :solr_document
-
     # OVERRIDE Hyrax v5.0.0rc2 here to make featured collections work
     delegate :collection_presenters, to: :member_presenter_factory
 

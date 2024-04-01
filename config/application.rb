@@ -205,11 +205,6 @@ module Hyku
       end
     end
 
-    config.before_initialize do
-      Hyrax.config.collection_model = 'CollectionResource'
-      Hyrax.config.admin_set_model = 'AdminSetResource'
-    end
-
     config.to_prepare do
       # Load locales early so decorators can use them during initialization
       I18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.yml')]

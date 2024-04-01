@@ -109,8 +109,8 @@ gem 'terser' # to support the Safe Navigation / Optional Chaining operator (?.) 
 gem 'tether-rails'
 gem 'turbolinks', '~> 5'
 gem 'twitter-typeahead-rails', '0.11.1.pre.corejavascript'
-gem 'valkyrie', git: 'https://github.com/samvera/valkyrie.git', tag: 'v3.1.4'
 gem 'web-console', '>= 3.3.0', group: %i[development] # <%= console %> in views
+gem 'valkyrie', '~> 3.0', '>= 3.1.4' # There's a patch in 3.1.4 that we want
 gem 'webdrivers', '~> 4.7.0', group: %i[test]
 gem 'webmock', group: %i[test]
 # Enabling the following gem breaks sidekiq. To Enable: assets.debug must be set to true in config/development.rb

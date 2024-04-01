@@ -14,7 +14,7 @@ module Hyrax
         # rubocop:disable Metrics/BlockLength
         prepended do
           delegate :banner_image, :banner_image?, :banner_image=, to: :site
-          delegate :logo_image, :logo_image?, :logo_image, to: :site
+          delegate :logo_image, :logo_image?, :logo_image=, to: :site
           delegate :favicon, :favicon?, to: :site
           delegate :directory_image, :directory_image?, to: :site
           delegate :default_collection_image, :default_collection_image?, to: :site

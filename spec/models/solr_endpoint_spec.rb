@@ -13,7 +13,8 @@ RSpec.describe SolrEndpoint do
         "timeout" => 120,
         "open_timeout" => 120,
         "url" => "http://example.com/solr/",
-        "adapter" => "solr"
+        "adapter" => "solr",
+        "core" => nil
       )
     end
   end

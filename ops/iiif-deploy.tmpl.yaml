@@ -32,6 +32,9 @@ extraVolumeMounts: &volMounts
   - name: uploads
     mountPath: /app/samvera/hyrax-webapp/tmp/network_files
     subPath: network-files
+  - name: uploads
+    mountPath: /app/samvera/hyrax-webapp/storage/files
+    subPath: storage-files
 
 ingress:
   enabled: true

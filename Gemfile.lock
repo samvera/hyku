@@ -128,10 +128,10 @@ GIT
 
 GIT
   remote: https://github.com/samvera/bulkrax.git
-  revision: d52800a3c899ed12f54d1d94c205bca73d98c712
-  branch: hyrax-4-valkyrie-support
+  revision: 1048453a4d99a6fba4b10531c2dc3a67a51c4c50
+  branch: main
   specs:
-    bulkrax (7.0.0)
+    bulkrax (8.0.0)
       bagit (~> 0.4.6)
       coderay
       denormalize_fields

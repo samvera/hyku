@@ -28,6 +28,11 @@ module Hyrax
 
       Hyrax.index_adapter&.reset!
     end
+
+    # Override Hyrax SolrService connection method to always use Hyku's connection method.
+    def connection
+      SolrEndpoint.new.connection
+    end
   end
 end
 

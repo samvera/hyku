@@ -16,8 +16,4 @@ Flipflop.configure do
   feature :show_recently_uploaded,
           default: true,
           description: "Shows the Recently Uploaded tab on the homepage."
-  # Flipflop.default_pdf_viewer? returning `true` means we use PDF.js and `false` means we use IIIF Print.
-  feature :default_pdf_viewer,
-          default: true,
-          description: "Choose PDF.js or Universal Viewer to render PDFs. UV uses IIIF Print and requires PDF splitting with OCR. Switching from PDF.js to the UV may require re-ingesting of the PDF."
 end

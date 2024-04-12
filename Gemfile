@@ -36,6 +36,7 @@ gem 'cocoon'
 gem 'codemirror-rails'
 gem 'coffee-rails', '~> 4.2' # Use CoffeeScript for .coffee assets and views
 gem 'database_cleaner', group: %i[test]
+gem 'derivative-rodeo', "~> 0.5.3"
 gem 'devise'
 gem 'devise-guests', '~> 0.3'
 gem 'devise-i18n'
@@ -52,7 +53,7 @@ gem 'hyrax-doi', github: 'samvera-labs/hyrax-doi', branch: 'main'
 gem 'hyrax-iiif_av', github: 'samvera-labs/hyrax-iiif_av', branch: 'main'
 gem 'i18n-debug', require: false, group: %i[development test]
 gem 'i18n-tasks', group: %i[development test]
-gem 'iiif_print', github: 'scientist-softserv/iiif_print', branch: 'main'
+gem 'iiif_print', github: 'scientist-softserv/iiif_print', branch: 'adventist-custom-queue'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 # The maintainers yanked 0.3.2 version (see https://github.com/dryruby/json-canonicalization/issues/2)

@@ -343,7 +343,7 @@ GEM
     declarative-option (0.1.0)
     deprecation (1.1.0)
       activesupport
-    derivative-rodeo (0.5.1)
+    derivative-rodeo (0.5.3)
       activesupport (>= 5)
       aws-sdk-s3
       aws-sdk-sqs
@@ -673,7 +673,7 @@ GEM
     jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
     json (2.6.3)
-    json-canonicalization (0.3.2)
+    json-canonicalization (0.3.3)
     json-jwt (1.15.3)
       activesupport (>= 4.2)
       aes_key_wrap
@@ -1336,6 +1336,7 @@ DEPENDENCIES
   codemirror-rails
   coffee-rails (~> 4.2)
   database_cleaner
+  derivative-rodeo (~> 0.5.3)
   devise
   devise-guests (~> 0.3)
   devise-i18n

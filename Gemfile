@@ -38,6 +38,7 @@ gem 'cocoon'
 gem 'codemirror-rails'
 gem 'coffee-rails', '~> 4.2' # Use CoffeeScript for .coffee assets and views
 gem 'database_cleaner', group: %i[test]
+gem 'derivative-rodeo', '~>0.5', '>= 0.5.3'
 gem 'devise'
 gem 'devise-guests', '~> 0.3'
 gem 'devise-i18n'

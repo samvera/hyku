@@ -98,6 +98,6 @@ gem 'webmock', group: %i[test]
 
 # This gem does nothing by default, but is instead a tool to ease developer flow
 # and place overrides, themes and deployment code.
-gem 'hyku_knapsack', github: 'samvera-labs/hyku_knapsack', branch: 'upstream_main'
+gem 'hyku_knapsack', github: 'scientist-softserv/adventist_knapsack', branch: 'adventist-main-0ccf1dfea'
 
 # rubocop:enable Metrics/LineLength

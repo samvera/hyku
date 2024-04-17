@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_29_234258) do
+ActiveRecord::Schema.define(version: 2024_03_07_053156) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -550,6 +550,7 @@ ActiveRecord::Schema.define(version: 2024_02_29_234258) do
     t.datetime "updated_at", null: false
     t.string "internal_resource"
     t.integer "lock_version"
+    t.index "(((metadata -> 'bulkrax_identifier'::text) ->> 0))", name: "index_on_bulkrax_identifier", where: "((metadata -> 'bulkrax_identifier'::text) IS NOT NULL)"
     t.index ["internal_resource"], name: "index_orm_resources_on_internal_resource"
     t.index ["metadata"], name: "index_orm_resources_on_metadata", using: :gin
     t.index ["metadata"], name: "index_orm_resources_on_metadata_jsonb_path_ops", opclass: :jsonb_path_ops, using: :gin

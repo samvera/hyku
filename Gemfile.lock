@@ -230,6 +230,16 @@ GIT
       rdf-vocab (~> 3.0)
 
 GIT
+  remote: https://github.com/scientist-softserv/willow_sword.git
+  revision: 3530dda7958f536caa5f4e09ace97c66a071fa15
+  branch: main
+  specs:
+    willow_sword (0.2.0)
+      bagit (~> 0.4.1)
+      rails (>= 5.1.6)
+      rubyzip (>= 1.0.0)
+
+GIT
   remote: https://github.com/stanhu/omniauth-cas.git
   revision: 4211e6d05941b4a981f9a36b49ec166cecd0e271
   ref: 4211e6d05941b4a981f9a36b49ec166cecd0e271
@@ -1516,6 +1526,7 @@ DEPENDENCIES
   web-console (>= 3.3.0)
   webdrivers (~> 4.7.0)
   webmock
+  willow_sword!
 
 BUNDLED WITH
    2.4.21

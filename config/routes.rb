@@ -13,6 +13,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   mount Hyrax::IiifAv::Engine, at: '/'
   mount IiifPrint::Engine, at: '/'
   mount Riiif::Engine => 'images', as: :riiif if Hyrax.config.iiif_image_server?
+  mount WillowSword::Engine => '/sword'
 
   authenticate :user, ->(u) { u.superadmin? || u.admin? } do
     queue = ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq')

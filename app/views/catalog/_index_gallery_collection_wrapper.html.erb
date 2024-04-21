@@ -2,7 +2,7 @@
 <div class="document col-xs-6 col-md-3">
   <div class="thumbnail">
     <% value = collection_thumbnail(document, {}, counter: document_counter_with_offset(document_counter)) %>
-    <%= link_to value, generate_work_url(document.to_h, request)%>
+    <%= link_to value, generate_work_url(document, request)%>
     <div class="caption">
       <%= render_document_partials document, blacklight_config.view_config(:gallery).partials, :document_counter => document_counter %>
     </div>

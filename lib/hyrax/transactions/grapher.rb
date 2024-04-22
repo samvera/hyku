@@ -6,7 +6,7 @@ module Hyrax
     # The purpose of this support class is to generate a tree of transactions and events.
     #
     # @example
-    #   irb: Hyrax::Transactions::Grapher.call
+    #   $ bundle exec rails runner "pp Hyrax::Transactions::Grapher.call"
     #   => {"publish" => {
     #          "class_name" => "Publish",
     #          "events" => ["on_publish"],
@@ -15,6 +15,18 @@ module Hyrax
     #              "class_name" => "SendNotice",
     #              "events" => [],
     #              "steps" => [] }}}}
+    # @example
+    #   # In cases where you've customized a container and want to see how it looks.
+    #   $ bundle exec rails runner "pp Hyrax::Transactions::Grapher.call(container: Your::Application::Container)"
+    #   => {"publish" => {
+    #          "class_name" => "Publish",
+    #          "events" => ["on_publish"],
+    #          "steps" => {
+    #            "send_notice" => {
+    #              "class_name" => "SendNotice",
+    #              "events" => [],
+    #              "steps" => [] }}}}
+
     class Grapher
       # A best guess at how to find the published events within the source code of the transactions.
       REGEXP_FOR_PUBLISH = %r{\.publish[\(\s]?['"]([\w\.]+)['"]}

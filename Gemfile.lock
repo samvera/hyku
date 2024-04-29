@@ -125,7 +125,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/bulkrax.git
-  revision: 1048453a4d99a6fba4b10531c2dc3a67a51c4c50
+  revision: bf7bc5ca422ca3d8961607d4eb558fce55517e90
   branch: main
   specs:
     bulkrax (8.0.0)
@@ -491,7 +491,7 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
-    devise-guests (0.8.1)
+    devise-guests (0.8.2)
       devise
     devise-i18n (1.12.0)
       devise (>= 4.9.0)

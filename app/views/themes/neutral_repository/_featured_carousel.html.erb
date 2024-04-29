@@ -17,7 +17,7 @@
         <div class="carousel-caption">
           <h3 class="carousel-opacity p-10">
             <%= link_to [main_app, work] do %>
-              <%= work.title.first %>
+              <%= markdown(work.title.first) %>
             <% end %>
           </h3>
         </div>

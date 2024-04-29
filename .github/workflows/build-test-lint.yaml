@@ -17,7 +17,7 @@ on:
 
 jobs:
   build:
-    uses: scientist-softserv/actions/.github/workflows/build.yaml@v0.0.15
+    uses: scientist-softserv/actions/.github/workflows/build.yaml@v0.0.21
     secrets: inherit
     with:
       platforms: "linux/amd64" # "linux/amd64,linux/arm64"

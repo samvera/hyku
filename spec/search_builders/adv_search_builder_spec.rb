@@ -18,16 +18,19 @@ RSpec.describe AdvSearchBuilder do
     subject { described_class.default_processor_chain }
 
     let(:expected_default_processor_chain) do
-      # Yes there's a duplicate for add_access_controls_to_solr_params; but that does not appear to
-      # be causing a problem like the duplication and order of the now removed additional
-      # :add_advanced_parse_q_to_solr, :add_advanced_search_to_solr filters.  Those existed in their
-      # current position and at the end of the array.
+      # Yes there's a duplicate for add_access_controls_to_solr_params; but that
+      # does not appear to be causing a problem like the duplication and order
+      # of the now removed additional :add_advanced_parse_q_to_solr,
+      # :add_advanced_search_to_solr filters.  Those existed in their current
+      # position and at the end of the array.  When they were at the end of the
+      # processor chain we encountered problems.
       #
-      # When we had those duplicates, the :add_advanced_parse_q_to_solr obliterated the join logic
-      # for files.
+      # When we had those duplicates, the :add_advanced_parse_q_to_solr
+      # obliterated the join logic for files.
       #
-      # Is the order immutable?  No.  But it does highlight that you must consider what the changes
-      # might mean and double check that join logic on files.
+      # Is the order immutable?  No.  But it does highlight that you must
+      # consider what the changes might mean and double check that join logic on
+      # files.
       %i[
         default_solr_parameters
         add_search_field_default_parameters

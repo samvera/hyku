@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
 class ApplicationController < ActionController::Base
-  include HykuHelper
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception, prepend: true
@@ -16,6 +16,8 @@ class ApplicationController < ActionController::Base
 
   include Hyrax::ThemedLayoutController
   with_themed_layout '1_column'
+
+  include HykuHelper
 
   helper_method :current_account, :admin_host?, :home_page_theme, :show_page_theme, :search_results_theme
   before_action :authenticate_if_needed
@@ -44,12 +46,24 @@ class ApplicationController < ActionController::Base
     Rails.env.staging? # rubocop:disable Rails/UnknownEnv
   end
 
+  ##
+  # @!attribute http_basic_auth_username [r|w]
+  #   @return [String]
+  #   @see ApplicationController#authenticate_if_needed
+  class_attribute :http_basic_auth_username, default: 'samvera'
+
+  ##
+  # @!attribute http_basic_auth_password [r|w]
+  #   @return [String]
+  #   @see ApplicationController#authenticate_if_needed
+  class_attribute :http_basic_auth_password, default: 'hyku'
+
   def authenticate_if_needed
     # Disable this extra authentication in test mode
     return true if Rails.env.test?
     return unless (hidden? || staging?) && !api_or_pdf?
     authenticate_or_request_with_http_basic do |username, password|
-      username == "samvera" && password == "hyku"
+      username == http_basic_auth_username && password == http_basic_auth_password
     end
   end
 
@@ -57,6 +71,28 @@ class ApplicationController < ActionController::Base
     users = Role.find_by(name: 'superadmin')&.users.to_a
     users << current_user if current_user && !users.include?(current_user)
     users
+  end
+
+  # Override method from devise-guests v0.8.2 to prevent the application from
+  # attempting to create duplicate guest users; namely by adding the
+  # User.unscoped
+  def guest_user
+    return @guest_user if @guest_user
+    if session[:guest_user_id]
+      # Override - added #unscoped to include guest users who are filtered out of User queries by default
+      @guest_user = begin
+                      User.unscoped.find_by(User.authentication_keys.first => session[:guest_user_id])
+                    rescue
+                      nil
+                    end
+      @guest_user = nil if @guest_user.respond_to?(:guest) && !@guest_user.guest
+    end
+    @guest_user ||= begin
+                      u = create_guest_user(session[:guest_user_id])
+                      session[:guest_user_id] = u.send(User.authentication_keys.first)
+                      u
+                    end
+    @guest_user
   end
 
   private
@@ -126,3 +162,4 @@ class ApplicationController < ActionController::Base
     payload[:account_id] = current_account.cname if current_account
   end
 end
+# rubocop:enable Metrics/ClassLength

@@ -28,17 +28,37 @@ class User < ApplicationRecord
 
   scope :registered, -> { for_repository.group(:id).where(guest: false) }
 
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/PerceivedComplexity
   def self.from_omniauth(auth)
-    find_or_create_by(provider: auth.provider, uid: auth.uid) do |user|
-      user.email = auth&.info&.email || [auth.uid, '@', Site.instance.account.email_domain].join if user.email.blank?
-      user.password = Devise.friendly_token[0, 20]
-      user.display_name = auth&.info&.name # assuming the user model has a name
-      # user.image = auth.info.image # assuming the user model has an image
-      # If you are using confirmable and the provider(s) you use validate emails,
-      # uncomment the line below to skip the confirmation emails.
-      # user.skip_confirmation!
-    end
+    u = find_by(provider: auth.provider, uid: auth.uid)
+    return u if u
+
+    u = find_by(email: auth&.info&.email&.downcase)
+    u ||= new
+    u.provider = auth.provider
+    u.uid = auth.uid
+    u.email = auth&.info&.email
+    u.email ||= auth.uid
+    # rubocop:disable Performance/RedundantMatch
+    u.email = [auth.uid, '@', Site.instance.account.email_domain].join unless u.email.match?('@')
+    # rubocop:enable Performance/RedundantMatch
+
+    # Passwords are required for all records, but in the case of OmniAuth,
+    # we're relying on the other auth provider.  Hence we're creating a random
+    # password.
+    u.password = Devise.friendly_token[0, 20] if u.new_record?
+
+    # assuming the user model has a name
+    u.display_name = auth&.info&.name
+    u.display_name ||= "#{auth&.info&.first_name} #{auth&.info&.last_name}" if auth&.info&.first_name && auth&.info&.last_name
+    u.save
+    u
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/PerceivedComplexity
 
   # Method added by Blacklight; Blacklight uses #to_s on your
   # user class to get a user-displayable login/identifier.
@@ -50,9 +70,15 @@ class User < ApplicationRecord
     has_role?(:admin) || has_role?(:admin, Site.instance)
   end
 
+  # Favor admin? over is_admin? but provided for backwards compatability.
+  alias is_admin? admin?
+
   def superadmin?
     has_role? :superadmin
   end
+
+  # Favor admin? over is_admin? but provided for backwards compatability.
+  alias is_superadmin? superadmin?
 
   # This comes from a checkbox in the proprietor interface
   # Rails checkboxes are often nil or "0" so we handle that

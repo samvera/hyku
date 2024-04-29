@@ -4,6 +4,7 @@
 #  `rails generate hyrax:work_resource ImageResource`
 class ImageResource < Hyrax::Work
   include Hyrax::Schema(:basic_metadata)
+  include Hyrax::Schema(:bulkrax_metadata)
   include Hyrax::Schema(:image_resource)
   include Hyrax::Schema(:with_pdf_viewer)
   include Hyrax::Schema(:with_video_embed)

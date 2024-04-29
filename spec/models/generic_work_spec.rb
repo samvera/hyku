@@ -6,6 +6,16 @@ RSpec.describe GenericWork do
   describe 'class configuration' do
     subject { described_class }
 
+    describe '#iiif_print_config#pdf_splitter_service' do
+      subject { described_class.new.iiif_print_config.pdf_splitter_service }
+
+      it { is_expected.to eq(IiifPrint::TenantConfig::PdfSplitter) }
+    end
+
+    describe "metadata" do
+      it { is_expected.to have_property(:bulkrax_identifier) }
+    end
+
     its(:migrating_from) { is_expected.to eq(GenericWork) }
     its(:migrating_to) { is_expected.to eq(GenericWorkResource) }
 

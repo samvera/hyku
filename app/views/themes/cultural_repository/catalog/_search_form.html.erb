@@ -16,11 +16,14 @@
         <button type="submit" class="btn btn-primary" id="search-submit-header">
           <%= t('hyrax.search.button.html') %>
         </button>
+        <%# OVERRIDE here to include the advanced search button in the search bar %>
+        <%= link_to "Advanced", "/advanced", class: 'btn btn-default', id: 'advanced-top-button' %>
         <% if current_user %>
           <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
 
             <span class="sr-only" data-search-element="label"><%= t("hyrax.search.form.option.all.label_long", application_name: application_name) %></span>
             <span aria-hidden="true"><%= t("hyrax.search.form.option.all.label_short") %></span>
+            <span class="caret"></span>
           </button>
 
           <ul class="dropdown-menu dropdown-menu-right">

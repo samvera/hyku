@@ -15,7 +15,7 @@
       <% end %>
       <div class="media-body">
         <p class="media-heading">
-          <strong><%= link_to document.title_or_label, [main_app, document], id: "src_copy_link#{id}", class: "#{'document-title' if document.title_or_label == document.label}", data: { turbolinks: block_valkyrie_redirect? } %></strong>
+          <strong><%= link_to markdown(document.title_or_label), [main_app, document], id: "src_copy_link#{id}", class: "#{'document-title' if document.title_or_label == document.label}", data: { turbolinks: block_valkyrie_redirect? } %></strong>
           <a href="#" class="small" title="Click for more details"><i id="expand_<%= id %>" class="fa fa-chevron-right"></i></a>
         </p>
         <%= render_other_collection_links(document, @presenter.id) %>

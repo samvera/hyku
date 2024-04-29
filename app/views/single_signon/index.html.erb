@@ -1,3 +1,8 @@
+<div id="splash">
+  <h1>Please wait while we redirect you...</h1>
+  <div class="loader"></div>
+</div>
+
 <h1 class='text-center'>Select a Single Sign On Provider</h1>
 
 <% if devise_mapping.omniauthable? %>
@@ -19,6 +24,7 @@
 
 <% if @identity_providers.count == 1 %>
   <script>
+    $('#splash').addClass('active');
     $('form.button_to').submit();
   </script>
 <% end %>

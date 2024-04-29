@@ -18,11 +18,11 @@ module PdfBehavior
       index.as :stored_searchable
     end
 
-    # rubocop:disable Metrics/LineLength
+    # rubocop:disable Layout/LineLength
     property :show_pdf_download_button, predicate: RDF::CustomShowPdfDownloadButtonTerm.show_pdf_download_button, multiple: false do |index|
       index.as :stored_searchable
     end
-    # rubocop:enable Metrics/LineLength
+    # rubocop:enable Layout/LineLength
 
     after_initialize :set_default_show_pdf_viewer, :set_default_show_pdf_download_button
   end

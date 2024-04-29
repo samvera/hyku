@@ -1,0 +1,665 @@
+{
+  "timezone": {
+    "gmtOffset": -8,
+    "timeZoneId": "America/Los_Angeles",
+    "dstOffset": -7
+  },
+  "bbox": {
+    "east": -116.905723,
+    "south": 32.534870999999995,
+    "north": 33.114185,
+    "west": -117.30979700000002,
+    "accuracyLevel": 0
+  },
+  "asciiName": "San Diego",
+  "astergdem": 22,
+  "countryId": "6252001",
+  "fcl": "P",
+  "srtm3": 20,
+  "adminId2": "5391832",
+  "countryCode": "US",
+  "adminCodes1": {
+    "ISO3166_2": "CA"
+  },
+  "adminId1": "5332921",
+  "lat": "32.71571",
+  "fcode": "PPLA2",
+  "continentCode": "NA",
+  "elevation": 20,
+  "adminCode2": "073",
+  "adminCode1": "CA",
+  "lng": "-117.16472",
+  "geonameId": 5391811,
+  "toponymName": "San Diego",
+  "population": 1394928,
+  "wikipediaURL": "en.wikipedia.org/wiki/San_Diego",
+  "adminName5": "",
+  "adminName4": "",
+  "adminName3": "",
+  "alternateNames": [
+    {
+      "isPreferredName": true,
+      "name": "샌디에고",
+      "lang": "ko"
+    },
+    {
+      "name": "샌디에이고",
+      "lang": "ko"
+    },
+    {
+      "name": "92101",
+      "lang": "post"
+    },
+    {
+      "name": "92102",
+      "lang": "post"
+    },
+    {
+      "name": "92103",
+      "lang": "post"
+    },
+    {
+      "name": "92104",
+      "lang": "post"
+    },
+    {
+      "name": "92105",
+      "lang": "post"
+    },
+    {
+      "name": "92106",
+      "lang": "post"
+    },
+    {
+      "name": "92107",
+      "lang": "post"
+    },
+    {
+      "name": "92108",
+      "lang": "post"
+    },
+    {
+      "name": "92109",
+      "lang": "post"
+    },
+    {
+      "name": "92110",
+      "lang": "post"
+    },
+    {
+      "name": "92111",
+      "lang": "post"
+    },
+    {
+      "name": "92112",
+      "lang": "post"
+    },
+    {
+      "name": "92113",
+      "lang": "post"
+    },
+    {
+      "name": "92114",
+      "lang": "post"
+    },
+    {
+      "name": "92115",
+      "lang": "post"
+    },
+    {
+      "name": "92116",
+      "lang": "post"
+    },
+    {
+      "name": "92117",
+      "lang": "post"
+    },
+    {
+      "name": "92119",
+      "lang": "post"
+    },
+    {
+      "name": "92120",
+      "lang": "post"
+    },
+    {
+      "name": "92121",
+      "lang": "post"
+    },
+    {
+      "name": "92122",
+      "lang": "post"
+    },
+    {
+      "name": "92123",
+      "lang": "post"
+    },
+    {
+      "name": "92124",
+      "lang": "post"
+    },
+    {
+      "name": "92126",
+      "lang": "post"
+    },
+    {
+      "name": "92127",
+      "lang": "post"
+    },
+    {
+      "name": "92128",
+      "lang": "post"
+    },
+    {
+      "name": "92129",
+      "lang": "post"
+    },
+    {
+      "name": "92130",
+      "lang": "post"
+    },
+    {
+      "name": "92131",
+      "lang": "post"
+    },
+    {
+      "name": "92132",
+      "lang": "post"
+    },
+    {
+      "name": "92134",
+      "lang": "post"
+    },
+    {
+      "name": "92135",
+      "lang": "post"
+    },
+    {
+      "name": "92136",
+      "lang": "post"
+    },
+    {
+      "name": "92137",
+      "lang": "post"
+    },
+    {
+      "name": "92138",
+      "lang": "post"
+    },
+    {
+      "name": "92139",
+      "lang": "post"
+    },
+    {
+      "name": "92140",
+      "lang": "post"
+    },
+    {
+      "name": "92142",
+      "lang": "post"
+    },
+    {
+      "name": "92145",
+      "lang": "post"
+    },
+    {
+      "name": "92147",
+      "lang": "post"
+    },
+    {
+      "name": "92149",
+      "lang": "post"
+    },
+    {
+      "name": "92150",
+      "lang": "post"
+    },
+    {
+      "name": "92152",
+      "lang": "post"
+    },
+    {
+      "name": "92153",
+      "lang": "post"
+    },
+    {
+      "name": "92154",
+      "lang": "post"
+    },
+    {
+      "name": "92155",
+      "lang": "post"
+    },
+    {
+      "name": "92158",
+      "lang": "post"
+    },
+    {
+      "name": "92159",
+      "lang": "post"
+    },
+    {
+      "name": "92160",
+      "lang": "post"
+    },
+    {
+      "name": "92161",
+      "lang": "post"
+    },
+    {
+      "name": "92163",
+      "lang": "post"
+    },
+    {
+      "name": "92165",
+      "lang": "post"
+    },
+    {
+      "name": "92166",
+      "lang": "post"
+    },
+    {
+      "name": "92167",
+      "lang": "post"
+    },
+    {
+      "name": "92168",
+      "lang": "post"
+    },
+    {
+      "name": "92169",
+      "lang": "post"
+    },
+    {
+      "name": "92170",
+      "lang": "post"
+    },
+    {
+      "name": "92171",
+      "lang": "post"
+    },
+    {
+      "name": "92172",
+      "lang": "post"
+    },
+    {
+      "name": "92174",
+      "lang": "post"
+    },
+    {
+      "name": "92175",
+      "lang": "post"
+    },
+    {
+      "name": "92176",
+      "lang": "post"
+    },
+    {
+      "name": "92177",
+      "lang": "post"
+    },
+    {
+      "name": "92179",
+      "lang": "post"
+    },
+    {
+      "name": "92182",
+      "lang": "post"
+    },
+    {
+      "name": "92186",
+      "lang": "post"
+    },
+    {
+      "name": "92187",
+      "lang": "post"
+    },
+    {
+      "name": "92190",
+      "lang": "post"
+    },
+    {
+      "name": "92191",
+      "lang": "post"
+    },
+    {
+      "name": "92192",
+      "lang": "post"
+    },
+    {
+      "name": "92193",
+      "lang": "post"
+    },
+    {
+      "name": "92195",
+      "lang": "post"
+    },
+    {
+      "name": "92196",
+      "lang": "post"
+    },
+    {
+      "name": "92197",
+      "lang": "post"
+    },
+    {
+      "name": "92198",
+      "lang": "post"
+    },
+    {
+      "name": "92199",
+      "lang": "post"
+    },
+    {
+      "name": "Davis' Folly"
+    },
+    {
+      "name": "Didacopolis",
+      "lang": "la"
+    },
+    {
+      "name": "Graytown"
+    },
+    {
+      "name": "http://id.loc.gov/authorities/names/n79056560",
+      "lang": "link"
+    },
+    {
+      "name": "https://en.wikipedia.org/wiki/San_Diego",
+      "lang": "link"
+    },
+    {
+      "name": "https://ru.wikipedia.org/wiki/%D0%A1%D0%B0%D0%BD-%D0%94%D0%B8%D0%B5%D0%B3%D0%BE_%28%D0%9A%D0%B0%D0%BB%D0%B8%D1%84%D0%BE%D1%80%D0%BD%D0%B8%D1%8F%29",
+      "lang": "link"
+    },
+    {
+      "name": "Lungsod ng San Diego",
+      "lang": "tl"
+    },
+    {
+      "name": "New San Diego"
+    },
+    {
+      "name": "Q16552",
+      "lang": "wkdt"
+    },
+    {
+      "name": "SAN",
+      "lang": "iata"
+    },
+    {
+      "name": "San Diegas",
+      "lang": "lt"
+    },
+    {
+      "name": "San Diego",
+      "lang": "af"
+    },
+    {
+      "name": "San Diego",
+      "lang": "cs"
+    },
+    {
+      "name": "San Diego",
+      "lang": "da"
+    },
+    {
+      "name": "San Diego",
+      "lang": "de"
+    },
+    {
+      "isPreferredName": true,
+      "name": "San Diego",
+      "lang": "en"
+    },
+    {
+      "name": "San Diego",
+      "lang": "es"
+    },
+    {
+      "name": "San Diego",
+      "lang": "eu"
+    },
+    {
+      "name": "San Diego",
+      "lang": "fi"
+    },
+    {
+      "name": "San Diego",
+      "lang": "fr"
+    },
+    {
+      "name": "San Diego",
+      "lang": "hu"
+    },
+    {
+      "name": "San Diego",
+      "lang": "id"
+    },
+    {
+      "name": "San Diego",
+      "lang": "it"
+    },
+    {
+      "name": "San Diego",
+      "lang": "nl"
+    },
+    {
+      "name": "San Diego",
+      "lang": "no"
+    },
+    {
+      "name": "San Diego",
+      "lang": "pl"
+    },
+    {
+      "name": "San Diego",
+      "lang": "pt"
+    },
+    {
+      "name": "San Diego",
+      "lang": "ro"
+    },
+    {
+      "name": "San Diego",
+      "lang": "sk"
+    },
+    {
+      "name": "San Diego",
+      "lang": "sv"
+    },
+    {
+      "name": "San Diego",
+      "lang": "tl"
+    },
+    {
+      "name": "San Diego",
+      "lang": "tr"
+    },
+    {
+      "name": "San Diego",
+      "lang": "vi"
+    },
+    {
+      "name": "San-Diego",
+      "lang": "eo"
+    },
+    {
+      "name": "San Diegu",
+      "lang": "scn"
+    },
+    {
+      "name": "San-Dieqo",
+      "lang": "az"
+    },
+    {
+      "name": "San Diyégo",
+      "lang": "ug"
+    },
+    {
+      "name": "Sandjego",
+      "lang": "lv"
+    },
+    {
+      "name": "San Miguel"
+    },
+    {
+      "name": "USSAN",
+      "lang": "unlc"
+    },
+    {
+      "name": "USSYL",
+      "lang": "unlc"
+    },
+    {
+      "name": "Σαν Ντιέγκο",
+      "lang": "el"
+    },
+    {
+      "name": "Сан Диего",
+      "lang": "bg"
+    },
+    {
+      "name": "Сан Диего",
+      "lang": "mk"
+    },
+    {
+      "name": "Сан Диего",
+      "lang": "sah"
+    },
+    {
+      "name": "Сан Диего",
+      "lang": "tg"
+    },
+    {
+      "name": "Сан-Диего",
+      "lang": "ce"
+    },
+    {
+      "name": "Сан-Диего",
+      "lang": "kk"
+    },
+    {
+      "name": "Сан-Диего",
+      "lang": "mrj"
+    },
+    {
+      "name": "Сан-Диего",
+      "lang": "os"
+    },
+    {
+      "name": "Сан-Диего",
+      "lang": "ru"
+    },
+    {
+      "name": "Сан Дијего",
+      "lang": "sr"
+    },
+    {
+      "name": "Сан-Дієго",
+      "lang": "uk"
+    },
+    {
+      "name": "Сан-Дыега",
+      "lang": "be"
+    },
+    {
+      "name": "სან-დიეგო",
+      "lang": "ka"
+    },
+    {
+      "name": "სან-დიეგო",
+      "lang": "xmf"
+    },
+    {
+      "name": "Սան Դիեգո",
+      "lang": "hy"
+    },
+    {
+      "name": "סאן דיעגא",
+      "lang": "yi"
+    },
+    {
+      "name": "סן דייגו",
+      "lang": "he"
+    },
+    {
+      "name": "سان دييغو",
+      "lang": "ar"
+    },
+    {
+      "name": "سان ڈیاگو",
+      "lang": "pnb"
+    },
+    {
+      "name": "سان ڈیگو",
+      "lang": "ur"
+    },
+    {
+      "name": "سن دیگو",
+      "lang": "fa"
+    },
+    {
+      "name": "ሳንዲየጎ",
+      "lang": "am"
+    },
+    {
+      "name": "सॅन डियेगो",
+      "lang": "mr"
+    },
+    {
+      "name": "सैन डिएगो",
+      "lang": "hi"
+    },
+    {
+      "name": "स्यान डिएगो",
+      "lang": "new"
+    },
+    {
+      "name": "সান ডিয়াগো",
+      "lang": "bn"
+    },
+    {
+      "name": "ਸਾਨ ਦੀਏਗੋ",
+      "lang": "pa"
+    },
+    {
+      "name": "சான் டியேகோ",
+      "lang": "ta"
+    },
+    {
+      "name": "శాన్ డియాగో",
+      "lang": "te"
+    },
+    {
+      "name": "แซนดีเอโก",
+      "lang": "th"
+    },
+    {
+      "name": "サンディエゴ",
+      "lang": "ja"
+    },
+    {
+      "name": "聖地牙哥",
+      "lang": "gan"
+    },
+    {
+      "name": "聖地牙哥",
+      "lang": "yue"
+    },
+    {
+      "name": "聖地牙哥",
+      "lang": "zh"
+    },
+    {
+      "name": "聖地牙哥",
+      "lang": "zh-TW"
+    }
+  ],
+  "adminName2": "San Diego",
+  "name": "San Diego",
+  "fclName": "city, village,...",
+  "countryName": "United States",
+  "fcodeName": "seat of a second-order administrative division",
+  "adminName1": "California"
+}

@@ -14,7 +14,13 @@ module Hyrax
         # OVERRIDE Hyrax - removed size
         super - [:size]
       end
+
+      def primary_terms
+        %i[title description collection_subtitle]
+      end
     end
+
+    delegate :collection_subtitle, to: :solr_document
 
     # Add new method to check if a user has permissions to create any works.
     # This is used to restrict who can deposit new works through collections.
@@ -66,13 +72,13 @@ module Hyrax
     # override banner_file in hyrax to include all banner information rather than just relative_path
     def banner_file
       @banner_file ||= begin
-        # Find Banner filename
-        banner_info = CollectionBrandingInfo.where(collection_id: id, role: "banner")
-        filename = File.split(banner_info.first.local_path).last unless banner_info.empty?
-        alttext = banner_info.first.alt_text unless banner_info.empty?
-        relative_path = "/" + banner_info.first.local_path.split("/")[-4..-1].join("/") unless banner_info.empty?
-        { filename:, relative_path:, alt_text: alttext }
-      end
+                         # Find Banner filename
+                         banner_info = CollectionBrandingInfo.where(collection_id: id, role: "banner")
+                         filename = File.split(banner_info.first.local_path).last unless banner_info.empty?
+                         alttext = banner_info.first.alt_text unless banner_info.empty?
+                         relative_path = "/" + banner_info.first.local_path.split("/")[-4..-1].join("/") unless banner_info.empty?
+                         { filename:, relative_path:, alt_text: alttext }
+                       end
     end
 
     # Begin Featured Collections Methods

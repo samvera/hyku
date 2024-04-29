@@ -7,7 +7,7 @@
   <div class="collection-item-title">
     <%= link_to [hyrax, featured_collection] do %>
       <h3>
-        <%= featured_collection.title.first %>
+        <%= markdown(featured_collection.title.first) %>
       </h3>
     <% end %>
   </div>

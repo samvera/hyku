@@ -1,0 +1,205 @@
+{
+  "totalResultsCount": 7698,
+  "geonames": [
+    {
+      "adminCode1": "CA",
+      "lng": "-117.16472",
+      "geonameId": 5391811,
+      "toponymName": "San Diego",
+      "countryId": "6252001",
+      "fcl": "P",
+      "population": 1394928,
+      "countryCode": "US",
+      "name": "San Diego",
+      "fclName": "city, village,...",
+      "adminCodes1": {
+        "ISO3166_2": "CA"
+      },
+      "countryName": "United States",
+      "fcodeName": "seat of a second-order administrative division",
+      "adminName1": "California",
+      "lat": "32.71571",
+      "fcode": "PPLA2"
+    },
+    {
+      "adminCode1": "CA",
+      "lng": "-117.0842",
+      "geonameId": 5336899,
+      "toponymName": "Chula Vista",
+      "countryId": "6252001",
+      "fcl": "P",
+      "population": 265757,
+      "countryCode": "US",
+      "name": "Chula Vista",
+      "fclName": "city, village,...",
+      "adminCodes1": {
+        "ISO3166_2": "CA"
+      },
+      "countryName": "United States",
+      "fcodeName": "populated place",
+      "adminName1": "California",
+      "lat": "32.64005",
+      "fcode": "PPL"
+    },
+    {
+      "adminCode1": "CA",
+      "lng": "-117.37948",
+      "geonameId": 5378771,
+      "toponymName": "Oceanside",
+      "countryId": "6252001",
+      "fcl": "P",
+      "population": 175691,
+      "countryCode": "US",
+      "name": "Oceanside",
+      "fclName": "city, village,...",
+      "adminCodes1": {
+        "ISO3166_2": "CA"
+      },
+      "countryName": "United States",
+      "fcodeName": "populated place",
+      "adminName1": "California",
+      "lat": "33.19587",
+      "fcode": "PPL"
+    },
+    {
+      "adminCode1": "CA",
+      "lng": "-117.08642",
+      "geonameId": 5346827,
+      "toponymName": "Escondido",
+      "countryId": "6252001",
+      "fcl": "P",
+      "population": 151038,
+      "countryCode": "US",
+      "name": "Escondido",
+      "fclName": "city, village,...",
+      "adminCodes1": {
+        "ISO3166_2": "CA"
+      },
+      "countryName": "United States",
+      "fcodeName": "populated place",
+      "adminName1": "California",
+      "lat": "33.11921",
+      "fcode": "PPL"
+    },
+    {
+      "adminCode1": "CA",
+      "lng": "-117.35059",
+      "geonameId": 5334223,
+      "toponymName": "Carlsbad",
+      "countryId": "6252001",
+      "fcl": "P",
+      "population": 114746,
+      "countryCode": "US",
+      "name": "Carlsbad",
+      "fclName": "city, village,...",
+      "adminCodes1": {
+        "ISO3166_2": "CA"
+      },
+      "countryName": "United States",
+      "fcodeName": "populated place",
+      "adminName1": "California",
+      "lat": "33.15809",
+      "fcode": "PPL"
+    },
+    {
+      "adminCode1": "CA",
+      "lng": "-117.15855",
+      "geonameId": 6955118,
+      "toponymName": "San Diego-Carlsbad-San Marcos",
+      "countryId": "6252001",
+      "fcl": "L",
+      "population": 3001072,
+      "countryCode": "US",
+      "name": "San Diego-Carlsbad-San Marcos",
+      "fclName": "parks,area, ...",
+      "adminCodes1": {
+        "ISO3166_2": "CA"
+      },
+      "countryName": "United States",
+      "fcodeName": "economic region",
+      "adminName1": "California",
+      "lat": "32.71307",
+      "fcode": "RGNE"
+    },
+    {
+      "adminCode1": "CA",
+      "lng": "-117.16614",
+      "geonameId": 5392368,
+      "toponymName": "San Marcos",
+      "countryId": "6252001",
+      "fcl": "P",
+      "population": 92931,
+      "countryCode": "US",
+      "name": "San Marcos",
+      "fclName": "city, village,...",
+      "adminCodes1": {
+        "ISO3166_2": "CA"
+      },
+      "countryName": "United States",
+      "fcodeName": "populated place",
+      "adminName1": "California",
+      "lat": "33.14337",
+      "fcode": "PPL"
+    },
+    {
+      "adminCode1": "CA",
+      "lng": "-117.24254",
+      "geonameId": 5406602,
+      "toponymName": "Vista",
+      "countryId": "6252001",
+      "fcl": "P",
+      "population": 100890,
+      "countryCode": "US",
+      "name": "Vista",
+      "fclName": "city, village,...",
+      "adminCodes1": {
+        "ISO3166_2": "CA"
+      },
+      "countryName": "United States",
+      "fcodeName": "populated place",
+      "adminName1": "California",
+      "lat": "33.20004",
+      "fcode": "PPL"
+    },
+    {
+      "adminCode1": "CA",
+      "lng": "-116.96253",
+      "geonameId": 5345529,
+      "toponymName": "El Cajon",
+      "countryId": "6252001",
+      "fcl": "P",
+      "population": 103679,
+      "countryCode": "US",
+      "name": "El Cajon",
+      "fclName": "city, village,...",
+      "adminCodes1": {
+        "ISO3166_2": "CA"
+      },
+      "countryName": "United States",
+      "fcodeName": "populated place",
+      "adminName1": "California",
+      "lat": "32.79477",
+      "fcode": "PPL"
+    },
+    {
+      "adminCode1": "CA",
+      "lng": "-117.2742",
+      "geonameId": 5363943,
+      "toponymName": "La Jolla",
+      "countryId": "6252001",
+      "fcl": "P",
+      "population": 42808,
+      "countryCode": "US",
+      "name": "La Jolla",
+      "fclName": "city, village,...",
+      "adminCodes1": {
+        "ISO3166_2": "CA"
+      },
+      "countryName": "United States",
+      "fcodeName": "section of populated place",
+      "adminName1": "California",
+      "lat": "32.84727",
+      "fcode": "PPLX"
+    }
+  ]
+}

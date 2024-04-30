@@ -16,6 +16,10 @@ class Image < ActiveFedora::Base
     index.as :stored_searchable
   end
 
+  property :bulkrax_identifier, predicate: ::RDF::URI("https://hykucommons.org/terms/bulkrax_identifier"), multiple: false do |index|
+    index.as :stored_searchable, :facetable
+  end
+
   # This must come after the properties because it finalizes the metadata
   # schema (by adding accepts_nested_attributes)
   include ::Hyrax::BasicMetadata

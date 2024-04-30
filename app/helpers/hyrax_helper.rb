@@ -22,6 +22,19 @@ module HyraxHelper
     Site.instance.banner_image? ? Site.instance.banner_image.url : super
   end
 
+  def favicon(size)
+    icon = Site.instance.favicon
+    if icon
+      case icon
+      when FaviconUploader
+        return Site.instance.favicon.url(size)
+      when String
+        return Site.instance.favicon
+      end
+    end
+    nil
+  end
+
   def logo_image
     Site.instance.logo_image? ? Site.instance.logo_image.url : false
   end

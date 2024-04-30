@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# this class must inherit from the IiifPrint builder so it can be set to the config.search_builder_class and
+# include all necessary methods
 class AdvSearchBuilder < IiifPrint::CatalogSearchBuilder
   include Blacklight::Solr::SearchBuilderBehavior
   include BlacklightAdvancedSearch::AdvancedSearchBuilder

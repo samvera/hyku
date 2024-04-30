@@ -1,0 +1,12 @@
+attributes:
+  is_derived:
+    type: string
+    predicate: https://hykucommons.org/terms/isDerived
+    multiple: false
+    form:
+      display: false
+      primary: false
+      required: false
+      multiple: false
+    index_keys:
+      - "is_derived_ssi"

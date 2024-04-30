@@ -1,4 +1,4 @@
-<%# OVERRIDE Hyrax 2.9.1 add show actions buttons to collection show page %>
+<%# OVERRIDE Hyrax 5.0.1 add show actions buttons to collection show page %>
 
 <% provide :page_title, construct_page_title(@presenter.title) %>
 <div class="hyc-container" itemscope itemtype="http://schema.org/CollectionPage">
@@ -12,7 +12,7 @@
       <% end %>
 
       <div class="hyc-title">
-        <h1><%= @presenter.title.first %></h1>
+        <h1><%= markdown(@presenter.title.first) %></h1>
         <%= @presenter.collection_type_badge %>
         <%= @presenter.permission_badge %>
       </div>

@@ -17,6 +17,7 @@ gem 'rails', '~> 6.0', github: 'rails/rails', branch: '6-1-stable'
 
 gem 'active_elastic_job', github: 'active-elastic-job/active-elastic-job', ref: 'ec51c5d9dedc4a1b47f2db41f26d5fceb251e979', group: %i[aws]
 gem 'active-fedora', '~> 14.0'
+gem 'activejob-scheduler', git: 'https://github.com/tubbo/activejob-scheduler.git'
 gem 'activerecord-nulldb-adapter'
 gem 'addressable', '2.8.1' # remove once https://github.com/postrank-labs/postrank-uri/issues/49 is fixed
 gem 'apartment', github: 'scientist-softserv/apartment', branch: 'development'
@@ -74,6 +75,7 @@ gem 'order_already'
 gem 'parser', '>= 3.1.0.0'
 gem 'pg'
 gem 'postrank-uri', '>= 1.0.24'
+gem 'progress_bar'
 gem 'pry-byebug', group: %i[development test]
 gem 'puma', '~> 5.6' # Use Puma as the app server
 gem 'rack-test', '0.7.0', group: %i[test] # rack-test >= 0.71 does not work with older Capybara versions (< 2.17). See #214 for more details
@@ -113,6 +115,8 @@ gem 'valkyrie', '~> 3.0', '>= 3.1.4' # There's a patch in 3.1.4 that we want
 gem 'web-console', '>= 3.3.0', group: %i[development] # <%= console %> in views
 gem 'webdrivers', '~> 4.7.0', group: %i[test]
 gem 'webmock', group: %i[test]
+gem 'willow_sword', github: 'scientist-softserv/willow_sword', branch: 'main'
+
 # Enabling the following gem breaks sidekiq. To Enable: assets.debug must be set to true in config/development.rb
 # gem "xray-rails", git: "https://github.com/brentd/xray-rails.git", branch: "bugs/ruby-3.0.0", group: %i[development]
 

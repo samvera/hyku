@@ -91,4 +91,35 @@ RSpec.describe Site, type: :model do
       end
     end
   end
+
+  describe '#institution_label' do
+    let(:site) { FactoryBot.create(:site) }
+
+    before do
+      allow(Site).to receive(:instance).and_return(site)
+    end
+
+    context 'when institution_name is present' do
+      before do
+        allow(site).to receive(:institution_name).and_return('My University')
+      end
+
+      it 'returns the custom institution label' do
+        expect(site.institution_label).to eq 'My University'
+      end
+    end
+
+    context 'when institution_name is not present' do
+      let(:account) { instance_double("Account", cname: 'myuniversity.edu') }
+
+      before do
+        allow(site).to receive(:institution_name).and_return(nil)
+        allow(site).to receive(:account).and_return(account)
+      end
+
+      it 'returns the cname of the associated account' do
+        expect(site.institution_label).to eq 'myuniversity.edu'
+      end
+    end
+  end
 end

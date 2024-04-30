@@ -3,10 +3,11 @@
 module Hyrax
   module Transactions
     ##
-    # The purpose of this support class is to generate a tree of transactions and events.
+    # The purpose of this support class is to generate a tree of transactions
+    # and events.
     #
     # @example
-    #   irb: Hyrax::Transactions::Grapher.call
+    #   $ bundle exec rails runner -e development "pp Hyrax::Transactions::Grapher.call"
     #   => {"publish" => {
     #          "class_name" => "Publish",
     #          "events" => ["on_publish"],
@@ -15,8 +16,21 @@ module Hyrax
     #              "class_name" => "SendNotice",
     #              "events" => [],
     #              "steps" => [] }}}}
+    # @example
+    #   # In cases where you've customized a container and want to see how it looks.
+    #   $ bundle exec rails runner "pp Hyrax::Transactions::Grapher.call(container: Your::Application::Container)"
+    #   => {"publish" => {
+    #          "class_name" => "Publish",
+    #          "events" => ["on_publish"],
+    #          "steps" => {
+    #            "send_notice" => {
+    #              "class_name" => "SendNotice",
+    #              "events" => [],
+    #              "steps" => [] }}}}
+
     class Grapher
-      # A best guess at how to find the published events within the source code of the transactions.
+      # A best guess at how to find the published events within the source code
+      # of the transactions.
       REGEXP_FOR_PUBLISH = %r{\.publish[\(\s]?['"]([\w\.]+)['"]}
 
       # Because some transactions launch other transactions within their 'call'
@@ -56,7 +70,9 @@ module Hyrax
           step_source.scan(REGEXP_FOR_PUBLISH) do |match|
             events << match[0]
           end
-          steps[key] = { "class_name" => step.class.to_s, "steps" => sub_steps, "events" => events.to_a }
+          steps[key] = { "class_name" => step.class.to_s,
+                         "steps" => sub_steps,
+                         "events" => events.to_a }
         end
         steps
       end
@@ -64,18 +80,23 @@ module Hyrax
       def treeify(steps:)
         unvisited_transactions = steps.keys.deep_dup
 
-        # Now we want to tree-ify the steps; so that we can see the graph of transactions and events
-        # published.
+        # Now we want to tree-ify the steps; so that we can see the graph of
+        # transactions and events published.
         tree = []
         steps.each_pair do |key, details|
           next if details["steps"].empty?
           unvisited_transactions.delete(key)
           sub_steps = []
           details["steps"].each do |step|
-            sub_steps << extract_substeps_from(dictionary: steps, current_step: step, unvisited_transactions:)
+            sub_steps << extract_substeps_from(dictionary: steps,
+                                               current_step: step,
+                                               unvisited_transactions:)
           end
 
-          tree << { "name" => key, "class_name" => details["class_name"], "events" => details["events"], "steps" => sub_steps }
+          tree << { "name" => key,
+                    "class_name" => details["class_name"],
+                    "events" => details["events"],
+                    "steps" => sub_steps }
         end
 
         unvisited_transactions.each do |key|
@@ -87,14 +108,17 @@ module Hyrax
       # rubocop:enable Metrics/MethodLength
 
       def extract_substeps_from(dictionary:, current_step:, unvisited_transactions:)
-        # We want to avoid changing the dictionary as we're looping through points of reference
+        # We want to avoid changing the dictionary as we're looping through
+        # points of reference
         sub_step = dictionary.fetch(current_step).deep_dup
         sub_step["name"] = current_step
         unvisited_transactions.delete(current_step)
         if sub_step["steps"].present?
           sub_step_steps = []
           sub_step["steps"].each_with_object(sub_step_steps) do |st, array|
-            array << extract_substeps_from(dictionary:, current_step: st, unvisited_transactions:)
+            array << extract_substeps_from(dictionary:,
+                                           current_step: st,
+                                           unvisited_transactions:)
           end
 
           sub_step["steps"] = sub_step_steps

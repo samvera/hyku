@@ -15,8 +15,14 @@ module AccountSettings
       {}
     end
 
+    ##
+    # Consider the configured superadmin_settings only available for those with
+    # the superadmin role.
+    class_attribute :superadmin_settings, default: []
+
     setting :allow_downloads, type: 'boolean', default: true
     setting :allow_signup, type: 'boolean', default: true
+    setting :analytics_provider, type: 'string'
     setting :bulkrax_validations, type: 'boolean', disabled: true
     setting :cache_api, type: 'boolean', default: false
     setting :contact_email, type: 'string', default: 'change-me-in-settings@example.com'
@@ -42,7 +48,7 @@ module AccountSettings
     setting :shared_login, type: 'boolean', disabled: true
     setting :smtp_settings, type: 'hash', private: true, default: {}
     setting :solr_collection_options, type: 'hash', default: solr_collection_options
-    setting :ssl_configured, type: 'boolean', default: false, private: true
+    setting :ssl_configured, type: 'boolean', default: true, private: true
     setting :weekly_email_list, type: 'array', disabled: true
     setting :yearly_email_list, type: 'array', disabled: true
 
@@ -106,8 +112,12 @@ module AccountSettings
   end
   # rubocop:enable Metrics/BlockLength
 
-  def public_settings
-    all_settings.reject { |k, v| Account.private_settings.include?(k.to_s) || v[:disabled] }
+  def public_settings(is_superadmin: false)
+    all_settings.reject do |key, value|
+      value[:disabled] ||
+        self.class.private_settings.include?(key.to_s) ||
+        (!is_superadmin && superadmin_settings.include?(key.to_sym))
+    end
   end
 
   def live_settings

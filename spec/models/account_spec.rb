@@ -82,6 +82,7 @@ RSpec.describe Account, type: :model do
       allow(ENV).to receive(:[]).and_call_original
       allow(ENV).to receive(:[]).with('HOST').and_return('system-host')
       expect(described_class.admin_host).to eq 'system-host'
+      allow(ENV).to receive(:[]).and_call_original # "un-stub" ENV
     end
 
     it 'falls back to localhost' do
@@ -90,6 +91,7 @@ RSpec.describe Account, type: :model do
       allow(ENV).to receive(:[]).and_call_original
       allow(ENV).to receive(:[]).with('HOST').and_return(nil)
       expect(described_class.admin_host).to eq 'localhost'
+      allow(ENV).to receive(:[]).and_call_original # "un-stub" ENV
     end
   end
 

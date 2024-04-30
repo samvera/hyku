@@ -125,7 +125,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/bulkrax.git
-  revision: 1048453a4d99a6fba4b10531c2dc3a67a51c4c50
+  revision: bf7bc5ca422ca3d8961607d4eb558fce55517e90
   branch: main
   specs:
     bulkrax (8.0.0)
@@ -230,6 +230,16 @@ GIT
       rdf-vocab (~> 3.0)
 
 GIT
+  remote: https://github.com/scientist-softserv/willow_sword.git
+  revision: 528c8c2d6f327f3e593668b28df1613494376346
+  branch: main
+  specs:
+    willow_sword (0.2.0)
+      bagit (~> 0.4.1)
+      rails (~> 6.1)
+      rubyzip (>= 1.0.0)
+
+GIT
   remote: https://github.com/stanhu/omniauth-cas.git
   revision: 4211e6d05941b4a981f9a36b49ec166cecd0e271
   ref: 4211e6d05941b4a981f9a36b49ec166cecd0e271
@@ -238,6 +248,17 @@ GIT
       addressable (~> 2.3)
       nokogiri (~> 1.5)
       omniauth (>= 1.2, < 3)
+
+GIT
+  remote: https://github.com/tubbo/activejob-scheduler.git
+  revision: efe54965e08252da5232412df5bae98732cd045c
+  specs:
+    activejob-scheduler (1.0.0.pre)
+      actionmailer (> 5, < 7)
+      activejob (> 5, < 7)
+      activesupport (> 5, < 7)
+      fugit (~> 1.3)
+      travis-release (~> 0)
 
 GEM
   remote: https://rubygems.org/
@@ -481,7 +502,7 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
-    devise-guests (0.8.1)
+    devise-guests (0.8.2)
       devise
     devise-i18n (1.12.0)
       devise (>= 4.9.0)
@@ -961,6 +982,7 @@ GEM
     openseadragon (0.6.0)
       rails (> 3.2.0)
     optimist (3.1.0)
+    options (2.3.2)
     order_already (0.3.1)
       rails-html-sanitizer (~> 1.4)
     orm_adapter (0.5.0)
@@ -978,6 +1000,9 @@ GEM
       addressable (>= 2.4.0)
       nokogiri (>= 1.8.0)
       public_suffix (>= 4.0.0, < 5)
+    progress_bar (1.3.3)
+      highline (>= 1.6, < 3)
+      options (~> 2.3.0)
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -1334,6 +1359,9 @@ GEM
     tinymce-rails (5.10.9)
       railties (>= 3.1.1)
     trailblazer-option (0.1.2)
+    travis-release (0.0.4)
+      bundler
+      rake
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
@@ -1419,6 +1447,7 @@ PLATFORMS
 DEPENDENCIES
   active-fedora (~> 14.0)
   active_elastic_job!
+  activejob-scheduler!
   activerecord-nulldb-adapter
   addressable (= 2.8.1)
   apartment!
@@ -1476,6 +1505,7 @@ DEPENDENCIES
   parser (>= 3.1.0.0)
   pg
   postrank-uri (>= 1.0.24)
+  progress_bar
   pry-byebug
   puma (~> 5.6)
   rack-test (= 0.7.0)
@@ -1516,6 +1546,7 @@ DEPENDENCIES
   web-console (>= 3.3.0)
   webdrivers (~> 4.7.0)
   webmock
+  willow_sword!
 
 BUNDLED WITH
    2.4.21

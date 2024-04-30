@@ -44,7 +44,7 @@
       <%# Upload Logo Image %>
       <%= f.input :logo_image, label: t('hyku.identity_provider.label.logo_image'), as: :file, wrapper: :vertical_file_input, hint: t('hyrax.admin.appearances.show.forms.logo_image.hint') %>
       <%= f.input :logo_image_text, label: t('hyku.identity_provider.label.logo_image_alt_text'), as: :text %>
-      <%= image_tag f.object.logo_image.url(:medium), class: "img-responsive", alt: f.object.logo_image_text if f.object.logo_image? %>
+      <%= image_tag f.object.logo_image.url(:medium), class: "img-fluid", alt: f.object.logo_image_text if f.object.logo_image? %>
 
     </div>
 

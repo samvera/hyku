@@ -106,36 +106,86 @@ module Hyrax
           # rubocop:disable Metrics/MethodLength
           def customization_params
             %i[
+              active_tabs_background_color
+              banner_image_text
               body_font
-              headline_font
-              header_and_footer_background_color
-              header_and_footer_text_color
-              link_color
-              link_hover_color
-              footer_link_color
-              footer_link_hover_color
-              primary_button_hover_color
+              collection_banner_text_color
+              custom_css_block
               default_button_background_color
               default_button_border_color
               default_button_text_color
-              active_tabs_background_color
+              default_collection_image_text
+              default_work_image_text
+              directory_image_alt_text
+              directory_image_text
               facet_panel_background_color
               facet_panel_text_color
+              footer_link_color
+              footer_link_hover_color
+              header_and_footer_background_color
+              header_and_footer_text_color
+              headline_font
+              link_color
+              link_hover_color
+              logo_image_text
               navbar_background_color
+              navbar_link_background_color
               navbar_link_background_hover_color
               navbar_link_text_color
               navbar_link_text_hover_color
-              custom_css_block
-              logo_image_text
-              banner_image_text
-              directory_image_text
-              default_collection_image_text
-              default_work_image_text
+              primary_button_hover_color
             ]
           end
           # rubocop:enable Metrics/MethodLength
+
+          # @return [Array<Symbol>] a list of fields that are related to the banner
+          def banner_fields
+            %i[
+              banner_image banner_label
+            ]
+          end
+
+          def favicon_fields
+            %i[
+              favicon
+            ]
+          end
+
+          # @return [Array<Symbol>] a list of fields that are related to the logo
+          def logo_fields
+            %i[
+              logo_image logo_label
+            ]
+          end
+
+          # @return [Array<Symbol>] a list of fields that are related to the directory
+          def directory_fields
+            %i[
+              directory_image directory_image_label directory_image_alt_text
+            ]
+          end
+
+          # @return [Array<Symbol>] a list of fields that are related to default works & collections
+          def default_image_fields
+            %i[
+              default_collection_image
+              default_work_image
+              default_collection_label
+              default_work_label
+            ]
+          end
         end
         # rubocop:enable Metrics/BlockLength
+
+        # Required to back a form
+        def to_key
+          []
+        end
+
+        # Required to back a form (for route determination)
+        def persisted?
+          true
+        end
 
         def site
           @site ||= Site.instance
@@ -252,6 +302,21 @@ module Hyrax
         # The border color for "primary" buttons
         def primary_button_border_color
           @primary_button_border ||= darken_color(primary_button_hover_color, 0.05)
+        end
+
+        # The mouse over color for the border of "primary" buttons
+        def primary_button_hover_border_color
+          darken_color(primary_button_border_color, 0.12)
+        end
+
+        # The color for the border of active "primary" buttons
+        def primary_button_active_border_color
+          darken_color(primary_button_border_color, 0.12)
+        end
+
+        # The color for the border of focused "primary" buttons
+        def primary_button_focus_border_color
+          darken_color(primary_button_border_color, 0.25)
         end
 
         # The mouse over color for "primary" buttons

@@ -124,3 +124,53 @@
             </span>
 {% } %}
 </script>
+
+<!-- The template to display thumbnail in the table once upload is complete -->
+<script id="thumbnail-template-download" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+            <span class="template-download fade">
+            <div class="row branding-thumbnail-row">
+              <div class="col-sm-3">
+                <span class="preview">
+                    {% if (file.thumbnailUrl) { %}
+                        <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" data-gallery><img src="{%=file.thumbnailUrl%}"></a>
+                    {% } %}
+                </span>
+
+                <span class="name">
+                    {% if (file.url) { %}
+                        <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
+                    {% } else { %}
+                        <span>{%=file.name%}</span>
+                    {% } %}
+                    <input type="hidden" name="thumbnail_files[]" value="{%=file.id%}">
+                </span>
+
+                {% if (file.error) { %}
+                    <span><span class="label label-danger">Error</span> {%=file.error%}</span>
+                {% } %}
+              </div>
+
+              <div class="col-sm-4 branding-thumbnail-input">
+                <label for="alttext"><%= t('.alt_text') %>
+                  <input id="alttext" class="branding-thumbnail-input" type="text" name="alttext[]"></input>
+                </label>
+              </div>
+
+              <div class="col-sm-2 text-right">
+                <span class="input-group-btn field-controls">
+            <button class="btn btn-sm btn-danger delete branding-thumbnail-remove" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <span class="controls-remove-text">Remove</span>
+                    <span class="sr-only">
+                      <%= t('.previous') %>
+                      <span class="controls-field-name-text"><%= t('.remove_new_thumbnail') %></span>
+                    </span>
+                  </button>
+                </span>
+              </div>
+
+            </div>
+            </span>
+{% } %}
+</script>

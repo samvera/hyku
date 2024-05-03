@@ -145,12 +145,25 @@ Hyrax.config do |config|
   # Temporary path to hold uploads before they are ingested into FCrepo.
   # This must be a lambda that returns a Pathname
   config.upload_path = lambda {
-    if Site.account&.s3_bucket
+    if Site.account&.s3_bucket.present?
+      # For S3, no need to create directories
       "uploads/#{Apartment::Tenant.current}"
     else
-      ENV['HYRAX_UPLOAD_PATH'].present? ? Pathname.new(File.join(ENV['HYRAX_UPLOAD_PATH'], Apartment::Tenant.current)) : Rails.public_path.join('uploads', Apartment::Tenant.current)
+      # Determine the base upload path
+      base_path = if ENV['HYRAX_UPLOAD_PATH'].present?
+                    Pathname.new(File.join(ENV['HYRAX_UPLOAD_PATH'], Apartment::Tenant.current))
+                  else
+                    Rails.root.join('uploads', Apartment::Tenant.current)
+                  end
+  
+      # Create the directory if it doesn't exist
+      FileUtils.mkdir_p(base_path) unless Dir.exist?(base_path)
+  
+      # Return the path
+      base_path
     end
   }
+  
 
   # Location on local file system where derivatives will be stored.
   # If you use a multi-server architecture, this MUST be a shared volume.

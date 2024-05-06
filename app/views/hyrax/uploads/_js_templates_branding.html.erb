@@ -124,3 +124,40 @@
             </span>
 {% } %}
 </script>
+
+<!-- The template to display thumbnail in the table once upload is complete -->
+<script id="thumbnail-template-download" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+        <span class="template-download fade show">
+          <div id="thumbnail">
+            <div class="row branding-thumbnail-row">
+              <div class="col-sm-3">
+                <span class="name">
+                  <span>{%=file.name%}</span>
+                  <input type="hidden" name="thumbnail_files[]" value="{%=file.id%}">
+                </span>
+                {% if (file.error) { %}
+                  <span><span class="badge badge-danger"><%= t('.error') %></span> {%=file.error%}</span>
+                {% } %}
+              </div>
+
+              <div class="col-sm-4 branding-thumbnail-input">
+                <label for="thumbnail_text"><%= t('.alt_text') %></label>
+                <input id="thumbnail_text" type="text" name="thumbnail_text[]" class="form-control branding-thumbnail-input" single>
+              </div>
+
+              <div class="col-sm-2">
+                <button class="btn btn-link remove branding-thumbnail-remove" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}" onclick=$("#thumbnail").remove(); {% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
+                  <span class="fa fa-times"></span>
+                  <span class="controls-remove-text"><%= t('.remove') %></span>
+                  <span class="sr-only">
+                    <%= t('.previous') %>
+                    <span class="controls-field-name-text"><%= t('.remove_new_thumbnail') %></span>
+                  </span>
+                </button>
+              </div> <!-- end col-sm-2 -->
+            </div> <!-- row branding-thumbnail-row -->
+          </div> <!-- end container thumbnail -->
+        </span>
+{% }  $("div#thumbnail").remove(); %}
+</script>

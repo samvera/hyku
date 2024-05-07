@@ -5,7 +5,7 @@
 module Hyrax
   module ThumbnailPathServiceDecorator
     def call(object)
-      return super unless object.collection?
+      return super unless object.try(:collection?)
 
       collection_thumbnail = CollectionBrandingInfo.where(collection_id: object.id.to_s, role: "thumbnail").first
       return collection_thumbnail.local_path.gsub(Rails.public_path.to_s, '') if collection_thumbnail

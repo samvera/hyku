@@ -647,21 +647,22 @@ tr[data-feature="use-iiif-print"] {
 }
 
 // collection branding thumbnail
-div.branding-thumbnail-row {
+.branding-thumbnail-row {
   border-top: solid 1px #dddddd;
   padding-top: 10px;
 }
 
-input.branding-thumbnail-input {
-  width: 250px;
-}
-
-div.branding-thumbnail-input {
+.branding-thumbnail-input {
   text-align: right;
+  width: 250px;
+
+  input {
+    text-align: left;
+  }
 }
 
-button.branding-thumbnail-remove,
-button.branding-thumbnail-remove:hover {
+.branding-thumbnail-remove,
+.branding-thumbnail-remove:hover {
   background-color: #ffffff;
   border-color: #ffffff;
   color: $brand-danger;

@@ -19,17 +19,25 @@ module Hyrax
         # @return [Dry::Monads::Result] `Failure` if the thumbnail info fails to save;
         #   `Success(input)`, otherwise.
         def call(collection_resource, update_thumbnail_file_ids: nil, thumbnail_unchanged_indicator: true, alttext_values: nil)
-          return Success(collection_resource) if ActiveModel::Type::Boolean.new.cast(thumbnail_unchanged_indicator)
           collection_id = collection_resource.id.to_s
-          process_thumbnail_input(collection_id:, update_thumbnail_file_ids:, alttext_values:)
+          process_thumbnail_input(collection_id:, update_thumbnail_file_ids:, thumbnail_unchanged_indicator:, alttext_values:)
           Success(collection_resource)
         end
 
         private
 
-        def process_thumbnail_input(collection_id:, update_thumbnail_file_ids:, alttext_values:)
-          remove_thumbnail(collection_id:)
-          add_new_thumbnail(collection_id:, uploaded_file_ids: update_thumbnail_file_ids, alttext_values:) if update_thumbnail_file_ids
+        def process_thumbnail_input(collection_id:, update_thumbnail_file_ids:, thumbnail_unchanged_indicator:, alttext_values:)
+          if !update_thumbnail_file_ids && !alttext_values
+            remove_thumbnail(collection_id:)
+          elsif update_thumbnail_file_ids && thumbnail_unchanged_indicator.nil?
+            remove_thumbnail(collection_id:)
+            add_new_thumbnail(collection_id:, uploaded_file_ids: update_thumbnail_file_ids, alttext_values:)
+          else
+            CollectionBrandingInfo
+              .where(collection_id:, role: 'thumbnail')
+              .first
+              .update_column(:alt_text, alttext_values.first) # rubocop:disable Rails/SkipsModelValidations
+          end
         end
 
         def remove_thumbnail(collection_id:)
@@ -43,7 +51,7 @@ module Hyrax
             collection_id:,
             filename: File.split(file.file_url).last,
             role: "thumbnail",
-            alt_txt: alttext_values.first,
+            alt_txt: alttext_values&.first || "",
             target_url: "TODO: link to the collection"
           )
           thumbnail_info.save file.file_url

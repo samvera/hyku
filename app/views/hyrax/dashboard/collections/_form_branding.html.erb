@@ -164,6 +164,9 @@
     </div> <!-- end row branding-logo-list -->
   </div> <!-- end fileuploadlogo -->
 
+  <label><strong><%= t('.thumbnail.label') %></strong></label>
+  <p><%= t('.thumbnail.description') %></p>
+
   <div id="fileuploadthumbnail">
     <!-- Redirect browsers with JavaScript disabled to the origin page -->
     <noscript><input type="hidden" name="redirect" value="<%= main_app.root_path %>" /></noscript>
@@ -203,7 +206,7 @@
                   <i><%= image_tag(f.object.thumbnail_info[:relative_path],
                        height: "36",
                        alt: f.object.thumbnail_info[:alttext].presence || f.object.thumbnail_info[:file]) %></i>
-                  <span><%= f.object.thumbnail_info[:file] %></span>                  
+                  <span><%= f.object.thumbnail_info[:file] %></span>
                   <input type="hidden" name="thumbnail_unchanged" value="true" />
                 </span>
               </div>
@@ -236,5 +239,5 @@
       </div> <!-- end row branding-thumbnail-list -->
     </div> <!-- end row branding-thumbnail-list -->
   </div> <!-- fileuploadthumbnail -->
-  
+
 </div> <!-- end set-access-controls -->

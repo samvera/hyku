@@ -1034,6 +1034,13 @@ de:
       permissions_message: Dateiberechtigungen aktualisieren. Das kann ein paar minuten dauern. Möglicherweise möchten Sie Ihren Browser aktualisieren oder später zu diesem Datensatz zurückkehren, um die aktualisierten Dateiberechtigungen anzuzeigen.
       processing: Datei wird verarbeitet; Sie können bearbeiten, wenn die Verarbeitung abgeschlossen ist
     user_profile:
+      email_frequency:
+        daily: Täglich
+        label: <i class="fa fa-calendar"></i> Häufigkeit von Batch-E-Mails
+        monthly: Monatlich
+        never: Niemals
+        not_set: Noch nicht festgelegt
+        weekly: Wöchentlich
       orcid:
         alt: ORCID-Symbol
         label: ORCID-Profil

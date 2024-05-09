@@ -1,8 +1,5 @@
 ---
 pt-BR:
-  errors:
-    messages:
-      valid_embed_url: "deve ser uma URL de incorporação válida do YouTube ou Vimeo."
   activefedora:
     models:
       generic_work: Trabalhar
@@ -13,6 +10,9 @@ pt-BR:
         institution_name_full: Nome completo da instituição
   application:
     tagline: A solução de repos
+  errors:
+    messages:
+      valid_embed_url: deve ser uma URL de incorporação válida do YouTube ou Vimeo.
   helpers:
     action:
       become: Tornar-se
@@ -72,6 +72,7 @@ pt-BR:
             success: "%{group} atualizado"
         humanized_name:
           admin: Administradores de repositório
+          group/public: Usuários não autorizados
           registered: Usuários registrados
         label:
           actions: Ações
@@ -126,11 +127,15 @@ pt-BR:
     identity_provider:
       header: Provedor de identidade de autenticação
       label:
+        create_new: Novo
+        edit: Editar
+        logo: Logotipo
         logo_image: Imagem para página SSO
         logo_image_alt_text: Texto alternativo para imagem
         name: Nome ou Descrição
         options: Opções
         provider: Fornecedor
+        updated_at: Atualizado em
     proprietor:
       accounts:
         nav: Contas
@@ -218,13 +223,30 @@ pt-BR:
             directory_image: Imagem do diretório
             favicon: favicon
             fonts: Fontes
+            logo: Logotipo
             themes: Temas
+      roles_service_jobs:
+        header: Trabalhos de reparo de dados
+        jobs:
+          create_admin_set_accesses:
+            description: A criação de um registro Hyrax::PermissionTemplateAccess (combinado com Ability#user_groups) permitirá que Works em todos os AdminSets apareçam em consultas Blacklight/Solr.
+            label: Criar acessos ao conjunto de administradores
+          create_collection_accesses:
+            description: Como cada função de coleção tem algum nível de acesso a cada coleção dentro de um locatário, criar um registro Hyrax::PermissionTemplateAccess (combinado com Ability#user_groups) significa que todas as coleções aparecerão nas consultas Blacklight/Solr.
+            label: Criar acessos à coleção
+          create_collection_type_participants:
+            description: Como algumas das funções de coleção têm acesso a todas as coleções dentro de um locatário, crie um registro Hyrax::CollectionTypeParticipant para elas em cada Hyrax::CollectionType (exceto AdminSet)
+            label: Criar participantes do tipo de coleção
+          grant_workflow_roles_for_all_admin_sets:
+            description: 'As permissões para depositar trabalhos são controladas por funções de fluxo de trabalho em AdminSets individuais. Para que os registros Hyrax::Group e User que possuem a função ''Editor de trabalho'' ou ''Depositador de trabalho'' tenham as permissões corretas para Works, concedemos a eles funções de fluxo de trabalho para todos os AdminSets. NOTA: Todos os AdminSets devem ter um modelo de permissão ou isso falhará. Execute ''Criar acessos ao conjunto de administradores'' primeiro.'
+            label: Administrador definir funções de fluxo de trabalho
       sidebar:
         accounts: Contas
         activity_summary: Resumo da atividade
         labels: Etiquetas
         manage_groups: Gerenciar grupos
         repository_activity: Atividade do repositório
+        roles_service_jobs: Reparo de dados
         system_status: Status do sistema
       users:
         activate:
@@ -237,6 +259,7 @@ pt-BR:
           success: O usuário "%{user}" foi excluído com sucesso.
         index:
           action_label: Açao
+          activate: Ativar
           add: Convidar Usuário
           delete: Excluir
           invite_users: Adicionar ou Convidar usuário por email
@@ -293,6 +316,7 @@ pt-BR:
         email: Email
         header: Gerenciar usuários
         manage: Gerir
+        superadmin: Superadministrador
         title: Título
         view_users: Ver usuários
       new:

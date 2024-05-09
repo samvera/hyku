@@ -31,7 +31,7 @@
       <%= render 'shared/read_only' if Flipflop.read_only? %>
       <%= content_for?(:content) ? yield(:content) : yield %>
     </div><!-- /#content-wrapper -->
-    <% unless controller.controller_name == 'splash' %>
+    <% if controller.controller_name == 'splash' || controller.controller_name == 'homepage' %>
       <%= render 'shared/footer' %>
     <% end %>
     <%= render 'shared/modal' %>

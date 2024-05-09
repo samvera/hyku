@@ -57,7 +57,7 @@ if Hyku.bulkrax_enabled?
     default_field_mapping = {
       'abstract' => { from: ['abstract'], split: true },
       'alternative_title' => { from: ['alternative_title'], split: /\s*[|]\s*/ },
-      'based_near' => { from: ['based_near'], split: true },
+      'based_near' => { from: ['location'], split: '\|' },
       'bibliographic_citation' => { from: ['bibliographic_citation'], split: true },
       'contributor' => { from: ['contributor'], split: true },
       'create_date' => { from: ['create_date'], split: true },

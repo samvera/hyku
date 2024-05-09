@@ -1,8 +1,5 @@
 ---
 de:
-  errors:
-    messages:
-      valid_embed_url: "muss eine gültige YouTube- oder Vimeo-Einbettungs-URL sein."
   activefedora:
     models:
       generic_work: Arbeiten
@@ -13,6 +10,9 @@ de:
         institution_name_full: Vollständiger Name der Institution
   application:
     tagline: Die Next-Generation Repository-Lösung
+  errors:
+    messages:
+      valid_embed_url: muss eine gültige YouTube- oder Vimeo-Einbettungs-URL sein.
   helpers:
     action:
       become: Werden
@@ -72,6 +72,7 @@ de:
             success: "%{group} aktualisiert"
         humanized_name:
           admin: Repository-Administratoren
+          group/public: Unbefugte Benutzer
           registered: Registrierte Benutzer
         label:
           actions: Aktionen
@@ -126,11 +127,15 @@ de:
     identity_provider:
       header: Authentifizierungsidentitätsanbieter
       label:
+        create_new: Neu
+        edit: Bearbeiten
+        logo: Logo
         logo_image: Bild für die SSO-Seite
         logo_image_alt_text: Alternativtext für Bild
         name: Name oder Beschreibung
         options: Optionen
         provider: Anbieter
+        updated_at: Aktualisiert am
     proprietor:
       accounts:
         nav: Konten
@@ -217,7 +222,23 @@ de:
             directory_image: Verzeichnis Bild
             favicon: favicon
             fonts: Schriftarten
+            logo: Logo
             themes: Themen
+      roles_service_jobs:
+        header: Datenreparaturjobs
+        jobs:
+          create_admin_set_accesses:
+            description: Durch das Erstellen eines Hyrax::PermissionTemplateAccess-Datensatzes (kombiniert mit Ability#user_groups) können Werke in allen AdminSets in Blacklight-/Solr-Abfragen angezeigt werden.
+            label: Erstellen von Admin-Set-Zugriffen
+          create_collection_accesses:
+            description: Da jede Sammlungsrolle über eine gewisse Zugriffsebene auf jede Sammlung innerhalb eines Mandanten verfügt, werden beim Erstellen eines Hyrax::PermissionTemplateAccess-Datensatzes (kombiniert mit Ability#user_groups) alle Sammlungen in Blacklight-/Solr-Abfragen angezeigt.
+            label: Sammlungszugänge erstellen
+          create_collection_type_participants:
+            description: Da einige der Sammlungsrollen Zugriff auf jede Sammlung innerhalb eines Mandanten haben, erstellen Sie für sie einen Hyrax::CollectionTypeParticipant-Datensatz für jeden Hyrax::CollectionType (außer dem AdminSet).
+            label: Teilnehmer des Sammlungstyps erstellen
+          grant_workflow_roles_for_all_admin_sets:
+            description: 'Die Berechtigungen zum Hinterlegen von Werken werden durch Workflow-Rollen in einzelnen AdminSets gesteuert. Damit Hyrax::Group- und Benutzerdatensätze, die entweder die Rolle „Werkeditor“ oder „Werkhinterleger“ haben, die richtigen Berechtigungen für Werke haben, erteilen wir ihnen Workflow-Rollen für alle AdminSets. HINWEIS: Alle AdminSets müssen eine Berechtigungsvorlage haben, sonst schlägt dies fehl. Führen Sie zuerst „Admin-Set-Zugriffe erstellen“ aus.'
+            label: Vom Administrator festgelegte Workflow-Rollen
       sidebar:
         accounts: Konten
         activity_summary: Aktivitätsübersicht
@@ -228,6 +249,7 @@ de:
         manage_users: Benutzer verwalten
         repository_activity: Repository-Aktivität
         roles_and_permissions: Benutzer und Gruppen
+        roles_service_jobs: Datenreparatur
         system_status: Systemstatus
       users:
         activate:
@@ -240,6 +262,7 @@ de:
           success: Der Benutzer "%{user}" wurde erfolgreich gelöscht.
         index:
           action_label: Aktion
+          activate: aktivieren Sie
           add: Nutzer einladen
           delete: Löschen
           invite_users: Benutzer hinzufügen oder via Email einladen
@@ -296,6 +319,7 @@ de:
         email: Email
         header: Benutzer verwalten
         manage: Verwalten
+        superadmin: Höchster Vorgesetzter
         title: Titel
         view_users: Benutzer anzeigen
       new:

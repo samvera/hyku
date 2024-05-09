@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 RSpec.describe User, type: :model do
+  subject { FactoryBot.create(:user) }
+
   it 'validates email and password' do
     is_expected.to validate_presence_of(:email)
     is_expected.to validate_presence_of(:password)
   end
 
   context 'the first created user in global tenant' do
-    subject { FactoryBot.create(:user) }
-
     before do
       allow(Account).to receive(:global_tenant?).and_return true
     end
@@ -21,8 +21,6 @@ RSpec.describe User, type: :model do
   end
 
   context 'the first created user on a tenant' do
-    subject { FactoryBot.create(:user) }
-
     it 'is not given the admin role' do
       expect(subject).not_to have_role :admin
       expect(subject).not_to have_role :admin, Site.instance
@@ -48,8 +46,6 @@ RSpec.describe User, type: :model do
   end
 
   describe '#site_roles=' do
-    subject { FactoryBot.create(:user) }
-
     it 'assigns global roles to the user' do
       expect(subject.site_roles.pluck(:name)).to be_empty
 
@@ -66,8 +62,6 @@ RSpec.describe User, type: :model do
   end
 
   describe '#hyrax_groups' do
-    subject { FactoryBot.create(:user) }
-
     it 'returns an array of Hyrax::Groups' do
       expect(subject.hyrax_groups).to be_an_instance_of(Array)
       expect(subject.hyrax_groups.first).to be_an_instance_of(Hyrax::Group)
@@ -75,8 +69,6 @@ RSpec.describe User, type: :model do
   end
 
   describe '#groups' do
-    subject { FactoryBot.create(:user) }
-
     before do
       FactoryBot.create(:group, name: 'group1', member_users: [subject])
     end
@@ -87,8 +79,6 @@ RSpec.describe User, type: :model do
   end
 
   describe '#hyrax_group_names' do
-    subject { FactoryBot.create(:user) }
-
     before do
       FactoryBot.create(:group, name: 'group1', member_users: [subject])
     end
@@ -133,6 +123,29 @@ RSpec.describe User, type: :model do
         subject.save!
 
         expect(subject.hyrax_group_names).to contain_exactly('registered')
+      end
+    end
+  end
+
+  describe '#mark_all_undelivered_messages_as_delivered!' do
+    let(:receipt) { create(:mailboxer_receipt, receiver: subject) }
+
+    before do
+      # ensure we have a undelivered receipt
+      receipt.update(is_delivered: false)
+    end
+
+    context 'when batch_email_frequency is set to never' do
+      it 'marks all undelivered messages as delivered' do
+        subject.update(batch_email_frequency: 'never')
+        expect(receipt.reload.is_delivered).to be true
+      end
+    end
+
+    context 'when batch_email_frequency is not set to never' do
+      it 'does not mark all undelivered messages as delivered' do
+        subject.update(batch_email_frequency: 'daily')
+        expect(receipt.reload.is_delivered).to be false
       end
     end
   end

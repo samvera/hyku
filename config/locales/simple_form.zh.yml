@@ -46,11 +46,11 @@ zh:
         fcrepo_endpoint:
           base_path: 基本路径
           url: URL
+        gtm_id: Google标签管理器
         name: 简称
         solr_endpoint:
           url: URL
         tenant: 租户UUID
-        gtm_id: Google标签管理器
       add_user_to_group:
         user_ids: 用户名
       domain_names:

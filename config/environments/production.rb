@@ -14,7 +14,7 @@ Rails.application.configure do
   config.eager_load = true
 
   # Full error reports are disabled and caching is turned on.
-  config.consider_all_requests_local       = false
+  config.consider_all_requests_local = ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_SHOW_BACKTRACE', 'false'))
   config.action_controller.perform_caching = true
 
   # Disable serving static files from the `/public` folder by default since
@@ -66,6 +66,7 @@ Rails.application.configure do
   config.active_job.queue_adapter = ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq')
   # config.active_job.queue_name_prefix = "hyku_#{Rails.env}"
 
+  config.action_mailer.default_options = { from: ENV.fetch('HYKU_CONTACT_EMAIL', 'changeme@example.com') }
   if ENV['SMTP_ENABLED'].present? && ENV['SMTP_ENABLED'].to_s == 'true'
     config.action_mailer.smtp_settings = {
       user_name: ENV['SMTP_USER_NAME'],
@@ -73,7 +74,7 @@ Rails.application.configure do
       address: ENV['SMTP_ADDRESS'],
       domain: ENV['SMTP_DOMAIN'],
       port: ENV['SMTP_PORT'],
-      enable_starttls_auto: true,
+      enable_starttls_auto: ActiveModel::Type::Boolean.new.cast(ENV.fetch('SMTP_STARTTLS', true)),
       authentication: ENV['SMTP_TYPE']
     }
     # ActionMailer Config

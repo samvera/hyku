@@ -46,11 +46,11 @@ pt-BR:
         fcrepo_endpoint:
           base_path: Caminho Base
           url: URL
+        gtm_id: Google Tag Manager
         name: Nome curto
         solr_endpoint:
           url: URL
         tenant: UUID do inquilino
-        gtm_id: Google Tag Manager
       add_user_to_group:
         user_ids: ID do usuário
       domain_names:

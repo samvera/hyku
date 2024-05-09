@@ -1035,6 +1035,13 @@ es:
       permissions_message: Actualización de permisos de archivos. Esto puede tomar unos pocos minutos. Es posible que desee actualizar su navegador o volver a este registro más adelante para ver los permisos de archivos actualizados.
       processing: El archivo está siendo procesado; puede editar cuando se complete el procesamiento
     user_profile:
+      email_frequency:
+        daily: A diario
+        label: <i class="fa fa-calendar"></i> Frecuencia de correo electrónico por lotes
+        monthly: Mensual
+        never: Nunca
+        not_set: Aún no especificado
+        weekly: Semanalmente
       orcid:
         alt: Icono ORCID
         label: Perfil ORCID

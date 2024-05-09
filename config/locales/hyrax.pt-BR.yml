@@ -1035,6 +1035,13 @@ pt-BR:
       permissions_message: Atualizando permissões de arquivo. Isso pode levar alguns minutos. Você pode atualizar o navegador ou retornar a esse registro posteriormente para ver as permissões de arquivo atualizadas.
       processing: O arquivo está sendo processado; você pode editar quando o processamento for concluído
     user_profile:
+      email_frequency:
+        daily: Diário
+        label: <i class="fa fa-calendar"></i> Frequência de e-mails em lote
+        monthly: Por mês
+        never: Nunca
+        not_set: Ainda não especificado
+        weekly: Semanalmente
       orcid:
         alt: Ícone ORCID
         label: Perfil ORCID
@@ -1166,6 +1173,7 @@ pt-BR:
       defaults:
         admin_set_id: Conjunto administrativo
         based_near: Localização
+        contributor: Contribuinte
         creator: O Criador
         date_created: Data Criada
         default_button_background_color: Cor de fundo do botão padrão
@@ -1192,8 +1200,10 @@ pt-BR:
         navbar_link_text_color: Cor do texto do link da barra de navegação
         navbar_link_text_hover_color: Cor do foco do texto do link da barra de navegação
         primary_button_hover_color: Cor principal do foco do botão
+        publisher: Editor
         related_url: URL relacionado
         rights_statement: Declaração de direitos
+        source: Fonte
         title: Título
         visibility_after_embargo: depois abra
         visibility_after_lease: então restrinja-o a

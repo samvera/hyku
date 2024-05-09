@@ -219,7 +219,7 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: eed88649c00e7b78f33425151fafe793db75ac82
+  revision: 122e86634f17c8f40d9ae4d59d2d7deca00f1694
   branch: main
   specs:
     iiif_print (1.0.0)
@@ -248,17 +248,6 @@ GIT
       addressable (~> 2.3)
       nokogiri (~> 1.5)
       omniauth (>= 1.2, < 3)
-
-GIT
-  remote: https://github.com/tubbo/activejob-scheduler.git
-  revision: efe54965e08252da5232412df5bae98732cd045c
-  specs:
-    activejob-scheduler (1.0.0.pre)
-      actionmailer (> 5, < 7)
-      activejob (> 5, < 7)
-      activesupport (> 5, < 7)
-      fugit (~> 1.3)
-      travis-release (~> 0)
 
 GEM
   remote: https://rubygems.org/
@@ -982,7 +971,6 @@ GEM
     openseadragon (0.6.0)
       rails (> 3.2.0)
     optimist (3.1.0)
-    options (2.3.2)
     order_already (0.3.1)
       rails-html-sanitizer (~> 1.4)
     orm_adapter (0.5.0)
@@ -1000,9 +988,6 @@ GEM
       addressable (>= 2.4.0)
       nokogiri (>= 1.8.0)
       public_suffix (>= 4.0.0, < 5)
-    progress_bar (1.3.3)
-      highline (>= 1.6, < 3)
-      options (~> 2.3.0)
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -1359,9 +1344,6 @@ GEM
     tinymce-rails (5.10.9)
       railties (>= 3.1.1)
     trailblazer-option (0.1.2)
-    travis-release (0.0.4)
-      bundler
-      rake
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
@@ -1447,7 +1429,6 @@ PLATFORMS
 DEPENDENCIES
   active-fedora (~> 14.0)
   active_elastic_job!
-  activejob-scheduler!
   activerecord-nulldb-adapter
   addressable (= 2.8.1)
   apartment!
@@ -1505,7 +1486,6 @@ DEPENDENCIES
   parser (>= 3.1.0.0)
   pg
   postrank-uri (>= 1.0.24)
-  progress_bar
   pry-byebug
   puma (~> 5.6)
   rack-test (= 0.7.0)

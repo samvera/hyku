@@ -1033,6 +1033,13 @@ fr:
       permissions_message: Mise à jour des autorisations de fichier. Cela peut prendre quelques minutes. Vous pouvez actualiser votre navigateur ou revenir à cet enregistrement plus tard pour voir les autorisations de fichier mises à jour.
       processing: Le fichier est en cours de traitement; vous pouvez modifier une fois le traitement terminé
     user_profile:
+      email_frequency:
+        daily: Tous les jours
+        label: <i class="fa fa-calendar"></i> Fréquence des e-mails par lots
+        monthly: Mensuel
+        never: Jamais
+        not_set: Pas encore précisé
+        weekly: Hebdomadaire
       orcid:
         alt: Icône ORCID
         label: Profil ORCID
@@ -1164,6 +1171,7 @@ fr:
       defaults:
         admin_set_id: Ensemble administratif
         based_near: Emplacement
+        contributor: Donateur
         creator: Créateur
         date_created: date créée
         default_button_background_color: Couleur d'arrière-plan du bouton par défaut

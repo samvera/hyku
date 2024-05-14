@@ -153,7 +153,7 @@ Hyrax.config do |config|
       base_path = if ENV['HYRAX_UPLOAD_PATH'].present?
                     Pathname.new(File.join(ENV['HYRAX_UPLOAD_PATH'], Apartment::Tenant.current))
                   else
-                    Rails.root.join('uploads', Apartment::Tenant.current)
+                    Rails.root.join('public', 'uploads', Apartment::Tenant.current)
                   end
 
       # Create the directory if it doesn't exist

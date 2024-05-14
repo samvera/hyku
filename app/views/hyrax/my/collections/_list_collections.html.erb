@@ -28,7 +28,7 @@
           <span class="<%= Hyrax::ModelIcon.css_class_for(::Collection) %> collection-icon-small"></span>
         <% else %>
           <%# OVERRIDE begin %>
-          <%= image_tag(collection_presenter.thumbnail_path, alt: collection_presenter.thumbnail_record.first[:alttext] || block_for(name: 'default_collection_image_text') || "#{collection_presenter.title_or_label} #{t('hyrax.dashboard.my.sr.thumbnail')}") %>
+          <%= image_tag(collection_presenter.thumbnail_path, alt: collection_presenter.thumbnail_file.first&.[](:alttext) || block_for(name: 'default_collection_image_text') || "#{collection_presenter.title_or_label} #{t('hyrax.dashboard.my.sr.thumbnail')}") %>
           <%# OVERRIDE end %>
         <% end %>
       </div>

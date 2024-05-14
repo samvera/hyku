@@ -14,7 +14,7 @@ module Hyrax
         new_steps = ['change_set.apply',
                      'collection_resource.save_collection_banner',
                      'collection_resource.save_collection_logo',
-                     'collection_resource.save_collection_thumbnail', # Your new step
+                     'collection_resource.save_collection_thumbnail',
                      'collection_resource.save_acl'].freeze
 
         # Use the new steps array if steps argument is nil, else use provided steps

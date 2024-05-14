@@ -21,21 +21,12 @@ namespace :hyku do
           filename: File.basename(original_thumbnail_path),
           role: "thumbnail",
           alt_txt: "",
-          target_url: "TODO: link to the collection"
+          target_url: ""
         ).save(original_thumbnail_path)
 
         # update solr document
         Hyrax.index_adapter.save(resource: collection_resource)
       end
-    end
-  end
-
-  def in_each_account
-    Account.find_each do |account|
-      puts "=============== #{account.name}============"
-      next if account.name == "search"
-      switch!(account)
-      yield
     end
   end
 end

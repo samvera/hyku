@@ -11,6 +11,8 @@ module Hyrax
     ## Shows a list of all collections to the admins
     # rubocop:disable Metrics/ModuleLength
     module CollectionsControllerDecorator
+      include Hyku::CollectionBrandingBehavior
+
       def show
         configure_show_sort_fields
 
@@ -189,19 +191,6 @@ module Hyrax
         File.chmod(0o664, "#{dir_name}/#{@collection.id}_card.jpg")
       end
       # rubocop:enable Metrics/MethodLength
-
-      ## OVERRIDE Hyrax v5.0.0rc2 handle file locations
-      def process_file_location(f)
-        if /^http/.match?(f.file_url)
-          f.file.download!(f.file_url)
-          f.file_url
-        elsif %r{^\/}.match?(f.file_url)
-          f.file.path
-        else
-          f.file_url
-        end
-      end
-      ## END OVERRIDE
     end
   end
 end

@@ -57,4 +57,3 @@ docker-compose.override.yml
 *~undo-tree~
 .DS_Store
 /bundler.d/
-/uploads

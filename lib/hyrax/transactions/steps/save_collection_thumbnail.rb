@@ -10,6 +10,7 @@ module Hyrax
       #
       class SaveCollectionThumbnail
         include Dry::Monads[:result]
+        include Hyku::CollectionBrandingBehavior
 
         ##
         # @param [Hyrax::ChangeSet] change_set
@@ -47,14 +48,16 @@ module Hyrax
 
         def add_new_thumbnail(collection_id:, uploaded_file_ids:, alttext_values:)
           file = uploaded_files(uploaded_file_ids).first
+          file_location = process_file_location(file)
+
           thumbnail_info = CollectionBrandingInfo.new(
             collection_id:,
             filename: File.split(file.file_url).last,
             role: "thumbnail",
             alt_txt: alttext_values&.first || "",
-            target_url: "TODO: link to the collection"
+            target_url: ""
           )
-          thumbnail_info.save file.file_url
+          thumbnail_info.save file_location
         end
 
         def uploaded_files(uploaded_file_ids)

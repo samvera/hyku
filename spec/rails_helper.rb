@@ -78,7 +78,7 @@ if ENV['CHROME_HOSTNAME'].present?
   options = Selenium::WebDriver::Options.chrome(args: ["disable-gpu",
                                                        "no-sandbox",
                                                        "whitelisted-ips",
-                                                       "window-size=1920,1080"])
+                                                       "window-size=1200,800"])
 
   Capybara.register_driver :chrome do |app|
     d = Capybara::Selenium::Driver.new(app,

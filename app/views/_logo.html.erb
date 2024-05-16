@@ -1,7 +1,6 @@
 <% unless controller.controller_name == 'splash' %>
   <% if logo_image %>
     <a id="logo" href="<%= hyrax.root_path %>" data-no-turbolink="true">
-      <span class="glyphicon glyphicon-globe" role="img" aria-label="<%= application_name %>" aria-hidden="true"></span>
       <%= image_tag logo_image, alt_text: block_for(name: 'logo_image_text') %>
     </a>
   <% else %>

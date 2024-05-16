@@ -23,6 +23,11 @@ class Account < ApplicationRecord
            inverse_of: :full_account
   has_many :search_accounts, class_name: 'Account', through: :search_account_cross_searches
 
+  belongs_to :solr_endpoint, dependent: :delete
+  belongs_to :fcrepo_endpoint, dependent: :delete
+  belongs_to :redis_endpoint, dependent: :delete
+
+  accepts_nested_attributes_for :solr_endpoint, :fcrepo_endpoint, :redis_endpoint, update_only: true
   accepts_nested_attributes_for :domain_names, allow_destroy: true
   accepts_nested_attributes_for :full_accounts
   accepts_nested_attributes_for :full_account_cross_searches, allow_destroy: true
@@ -47,6 +52,15 @@ class Account < ApplicationRecord
     host ||= ENV['HOST']
     host ||= 'localhost'
     canonical_cname(host)
+  end
+
+  # @return [Account]
+  def self.from_request(request)
+    from_cname(request.host)
+  end
+
+  def self.from_cname(cname)
+    joins(:domain_names).find_by(domain_names: { is_active: true, cname: canonical_cname(cname) })
   end
 
   def self.root_host
@@ -145,6 +159,14 @@ class Account < ApplicationRecord
 
   def cache_api?
     cache_api
+  end
+
+  def institution_name
+    sites.first&.institution_name || cname
+  end
+
+  def institution_id_data
+    {}
   end
 end
 # rubocop:enable Metrics/ClassLength

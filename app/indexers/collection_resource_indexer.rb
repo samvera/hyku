@@ -4,6 +4,7 @@
 #  `rails generate hyrax:collection_resource CollectionResource`
 class CollectionResourceIndexer < Hyrax::Indexers::PcdmCollectionIndexer
   include Hyrax::Indexer(:basic_metadata)
+  include Hyrax::Indexer(:bulkrax_metadata)
   include Hyrax::Indexer(:collection_resource)
 
   def to_solr

@@ -22,6 +22,12 @@ module Hyrax
     def loof(text)
       CGI.unescapeHTML(Loofah.fragment(text.to_s).scrub!(:prune).to_s)
     end
+
+    def sanitize_v3(hash:, presenter:, solr_doc_hits:)
+      returning_hash = super
+      returning_hash['viewingHint'] = 'paged'
+      returning_hash
+    end
   end
 end
 

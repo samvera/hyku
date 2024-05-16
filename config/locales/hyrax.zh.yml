@@ -1035,6 +1035,13 @@ zh:
       permissions_message: 更新文件权限。这可能需要几分钟的时间。您可能需要刷新浏览器或稍后返回此记录以查看更新的文件权限。
       processing: 文件正在处理；您可以在处理完成后进行编辑
     user_profile:
+      email_frequency:
+        daily: 日常的
+        label: <i class="fa fa-calendar"></i> 批量电子邮件频率
+        monthly: 每月
+        never: 绝不
+        not_set: 尚未指定
+        weekly: 每周
       orcid:
         alt: ORCID图标
         label: ORCID个人资料
@@ -1166,6 +1173,7 @@ zh:
       defaults:
         admin_set_id: 行政套装
         based_near: 位置
+        contributor: 撰稿人
         creator: 创作者
         date_created: 创建日期
         default_button_background_color: 默认按钮背景颜色

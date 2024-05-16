@@ -125,6 +125,8 @@ extraEnvVars: &envVars
     value: "false"
   - name: HYRAX_FITS_PATH
     value: /app/fits/fits.sh
+  - name: HYRAX_VALKYRIE
+    value: "true"
   - name: HYKU_ADMIN_HOST
     value: hyku-staging.$BASE_URL
   - name: HYKU_ADMIN_ONLY_TENANT_CREATION
@@ -139,24 +141,28 @@ extraEnvVars: &envVars
     value: "true"
   - name: HYKU_ROOT_HOST
     value: hyku-staging.$BASE_URL
+  - name: HYKU_SHOW_BACKTRACE
+    value: "true"
   - name: HYKU_USER_DEFAULT_PASSWORD
     value: password
   - name: NEGATIVE_CAPTCHA_SECRET
     value: $NEGATIVE_CAPTCHA_SECRET
+  - name: SMTP_ADDRESS
+    value: "maildev-smtp.maildev.svc.cluster.local"
+  - name: SMTP_DOMAIN
+    value: "maildev-smtp.maildev.svc.cluster.local"
   - name: SMTP_ENABLED
     value: "true"
+  - name: SMTP_PORT
+    value: "1025"
+  - name: SMTP_TYPE
+    value: "plain"
   - name: SMTP_USER_NAME
-    value: $SMTP_USER_NAME
+    value: "admin"
+  - name: SMTP_STARTTLS
+    value: "false"
   - name: SMTP_PASSWORD
     value: $SMTP_PASSWORD
-  - name: SMTP_ADDRESS
-    value: smtp.mailtrap.io
-  - name: SMTP_DOMAIN
-    value: smtp.mailtrap.io
-  - name: SMTP_PORT
-    value: "2525"
-  - name: SMTP_TYPE
-    value: cram_md5
   - name: SOLR_ADMIN_USER
     value: admin
   - name: SOLR_ADMIN_PASSWORD

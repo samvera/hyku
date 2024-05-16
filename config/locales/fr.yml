@@ -1,8 +1,5 @@
 ---
 fr:
-  errors:
-    messages:
-      valid_embed_url: "doit être une URL d'incorporation valide de YouTube ou Vimeo."
   activefedora:
     models:
       generic_work: Travail
@@ -13,6 +10,9 @@ fr:
         institution_name_full: Nom complet de l'établissement
   application:
     tagline: La solution de dépôt de nouvelle génération
+  errors:
+    messages:
+      valid_embed_url: doit être une URL d'incorporation valide de YouTube ou Vimeo.
   helpers:
     action:
       become: Devenir
@@ -72,6 +72,7 @@ fr:
             success: "%{group} a mis à jour"
         humanized_name:
           admin: Administrateurs de référentiel
+          group/public: Utilisateurs non autorisés
           registered: Utilisateurs enregistrés
         label:
           actions: actes
@@ -126,11 +127,15 @@ fr:
     identity_provider:
       header: Fournisseur d'identité d'authentification
       label:
+        create_new: Nouveau
+        edit: Modifier
+        logo: Logo
         logo_image: Image de la page SSO
         logo_image_alt_text: Texte alternatif pour l'image
         name: Nom ou description
         options: Possibilités
         provider: Fournisseur
+        updated_at: Mis à jour à
     proprietor:
       accounts:
         nav: Comptes
@@ -218,7 +223,23 @@ fr:
             directory_image: Image du répertoire
             favicon: Icône de favori
             fonts: Les Polices
+            logo: Logo
             themes: Thèmes
+      roles_service_jobs:
+        header: Travaux de réparation de données
+        jobs:
+          create_admin_set_accesses:
+            description: La création d'un enregistrement Hyrax::PermissionTemplateAccess (combiné avec Ability#user_groups) permettra aux travaux de tous les AdminSets d'apparaître dans les requêtes Blacklight/Solr.
+            label: Créer des accès aux ensembles d'administrateurs
+          create_collection_accesses:
+            description: Étant donné que chaque rôle de collection a un certain niveau d'accès à chaque collection au sein d'un locataire, la création d'un enregistrement Hyrax::PermissionTemplateAccess (combiné avec Ability#user_groups) signifie que toutes les collections apparaîtront dans les requêtes Blacklight/Solr.
+            label: Créer des accès à la collection
+          create_collection_type_participants:
+            description: Étant donné que certains rôles de collection ont accès à chaque collection au sein d'un locataire, créez un enregistrement Hyrax::CollectionTypeParticipant pour eux sur chaque Hyrax::CollectionType (sauf AdminSet).
+            label: Créer des participants de type de collection
+          grant_workflow_roles_for_all_admin_sets:
+            description: 'Les autorisations de dépôt d''œuvres sont contrôlées par les rôles de workflow sur les AdminSets individuels. Afin que les enregistrements Hyrax::Group et User qui ont le rôle « Éditeur de travaux » ou « Déposant de travaux » disposent des autorisations appropriées pour les travaux, nous leur accordons des rôles de flux de travail pour tous les AdminSets. REMARQUE : Tous les AdminSets doivent avoir un modèle d''autorisation, sinon cela échouera. Exécutez d''abord « Créer des accès aux ensembles d''administrateurs ».'
+            label: L'administrateur définit les rôles de flux de travail
       sidebar:
         accounts: Comptes
         activity_summary: Résumé de l'activité
@@ -229,6 +250,7 @@ fr:
         manage_users: Gérer les utilisateurs
         repository_activity: Activité de dépôt
         roles_and_permissions: Utilisateurs et groupes
+        roles_service_jobs: Réparation de données
         system_status: État du système
         technical: Technique
       users:
@@ -242,6 +264,7 @@ fr:
           success: L'utilisateur "%{user}" a été supprimé avec succès.
         index:
           action_label: action
+          activate: Activer
           add: Inviter un utilisateur
           delete: Effacer
           invite_users: Ajouter ou inviter un utilisateur par courrier électronique
@@ -298,6 +321,7 @@ fr:
         email: Email
         header: gérer les utilisateurs
         manage: Gérer
+        superadmin: Superadministrateur
         title: Titre
         view_users: Afficher les utilisateurs
       new:

@@ -29,6 +29,9 @@
             <div class="col-sm-12">
               <%= render 'pdf_js', file_set_presenter: pdf_file_set_presenter(@presenter) %>
             </div>
+            <div class="col-sm-12">
+              <%= render 'work_description', presenter: @presenter %>
+            </div>
           <% else %>
             <div class="col-sm-3 mb-1">
               <%= render 'representative_media', presenter: @presenter, viewer: false unless @presenter.universal_viewer? || @presenter.show_pdf_viewer? %>

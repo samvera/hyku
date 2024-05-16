@@ -2,11 +2,11 @@
   <div class="row">
     <div class="col-12 text-show-title">
       <% if index == 0 %>
-        <h2><%= title %>
+        <h2><%= markdown(title) %>
           <small class="text-muted"><%= presenter.permission_badge %> <%= presenter.workflow.badge %></small>
         </h2>
       <% else %>
-        <h2><%= title %></h2>
+        <h2><%= markdown(title) %></h2>
       <% end %>
     </div>
   </div>

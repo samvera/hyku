@@ -15,7 +15,9 @@ module Hyku
     # we need to re-introduce that logic.
     prepend IiifPrint::TenantConfig::WorkShowPresenterDecorator
 
-    # OVERRIDE Hyrax v5.0.0rc2 here to make featured collections work
+    Hyrax::MemberPresenterFactory.file_presenter_class = Hyrax::IiifAv::IiifFileSetPresenter
+
+    # OVERRIDE Hyrax v2.9.0 here to make featured collections work
     delegate :collection_presenters, to: :member_presenter_factory
 
     # assumes there can only be one doi

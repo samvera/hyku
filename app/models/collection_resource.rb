@@ -4,6 +4,7 @@
 #  `rails generate hyrax:collection_resource CollectionResource`
 class CollectionResource < Hyrax::PcdmCollection
   include Hyrax::Schema(:basic_metadata)
+  include Hyrax::Schema(:bulkrax_metadata)
   include Hyrax::Schema(:collection_resource)
   include Hyrax::ArResource
   include HykuIndexing

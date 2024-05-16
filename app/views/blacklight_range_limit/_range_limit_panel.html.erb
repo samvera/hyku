@@ -108,7 +108,9 @@
           <% end %>
         <% end %>
 
-        <% if (stats = stats_for_field(field_name)) %>
+
+
+        <% if (stats = stats_for_field(field_name)) && (stats["missing"] > 0) && (controller_name != 'advanced') %>
           <ul class="missing list-unstyled facet-values subsection">
             <li>
               <span class="facet-label">

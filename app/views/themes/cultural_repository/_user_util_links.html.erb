@@ -25,18 +25,22 @@
       <% end %>
       <div class="dropdown-menu dropdown-menu-right" role="menu">
         <a class="dropdown-item" href="<%= hyrax.dashboard_path %>"><%= t("hyrax.toolbar.dashboard.menu") %></a>
-        <div class="dropdown-divider"></div>
-        <% if Devise.mappings[:user]&.registerable? %>
-          <a class="dropdown-item" href="<%= main_app.edit_user_registration_path %>"><%= t("hyku.toolbar.profile.edit_registration") %></a>
-        <% end %>
-        <a class="dropdown-item" href="<%= main_app.destroy_user_session_path %>"><%= t("hyrax.toolbar.profile.logout") %></a>
+	<% if Flipflop.show_login_link? || current_ability.user_groups.include?('admin') %>
+          <div class="dropdown-divider"></div>
+	  <% if Devise.mappings[:user]&.registerable? %>
+            <a class="dropdown-item" href="<%= main_app.edit_user_registration_path %>"><%= t("hyku.toolbar.profile.edit_registration") %></a>
+          <% end %>
+          <a class="dropdown-item" href="<%= main_app.destroy_user_session_path %>"><%= t("hyrax.toolbar.profile.logout") %></a>
+	<% end %>
       </div>
     </li><!-- /.dropdown -->
   <% else %>
-    <li class="nav-item">
-      <%= link_to main_app.new_user_session_path, class: 'nav-link' do %>
-        <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> <%= t("hyrax.toolbar.profile.login") %>
-      <% end %>
-    </li>
+    <% if Flipflop.show_login_link? %>
+      <li class="nav-item">
+        <%= link_to main_app.single_signon_index_path, class: 'nav-link' do %>
+          <span class="fa fa-sign-in" aria-hidden="true"></span> <%= t("hyrax.toolbar.profile.login") %>
+        <% end %>
+      </li>
+    <% end %>
   <% end %>
 </ul>

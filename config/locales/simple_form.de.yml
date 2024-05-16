@@ -46,11 +46,11 @@ de:
         fcrepo_endpoint:
           base_path: Basispfad
           url: URL
+        gtm_id: Google Tag Manager
         name: Kurzname
         solr_endpoint:
           url: URL
         tenant: Mandant UUID
-        gtm_id: Google Tag Manager
       add_user_to_group:
         user_ids: Benutzer-ID
       domain_names:

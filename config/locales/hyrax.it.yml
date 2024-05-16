@@ -1035,6 +1035,13 @@ it:
       permissions_message: Aggiornamento delle autorizzazioni per i file. Questo potrebbe richiedere alcuni minuti. È possibile che si desideri aggiornare il browser o tornare a questo record in un secondo momento per visualizzare le autorizzazioni dei file aggiornate.
       processing: Il file è in elaborazione; è possibile modificare al termine dell'elaborazione
     user_profile:
+      email_frequency:
+        daily: Quotidiano
+        label: <i class="fa fa-calendar"></i> Frequenza email in batch
+        monthly: Mensile
+        never: Mai
+        not_set: Non ancora specificato
+        weekly: settimanalmente
       orcid:
         alt: Icona ORCID
         label: Profilo ORCID
@@ -1166,6 +1173,7 @@ it:
       defaults:
         admin_set_id: Set amministrativo
         based_near: Posizione
+        contributor: Collaboratore
         creator: Creatore
         date_created: data di creazione
         default_button_background_color: Colore di sfondo del pulsante predefinito

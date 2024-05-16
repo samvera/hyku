@@ -48,6 +48,10 @@ module ApplicationHelper
   end
 
   def markdown(text)
+    return text unless Flipflop.treat_some_user_inputs_as_markdown?
+
+    # Consider extracting these options to a Hyku::Application
+    # configuration/class attribute.
     options = %i[
       hard_wrap autolink no_intra_emphasis tables fenced_code_blocks
       disable_indented_code_blocks strikethrough lax_spacing space_after_headers

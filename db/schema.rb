@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_29_234258) do
+ActiveRecord::Schema.define(version: 2024_05_02_230546) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -550,6 +550,7 @@ ActiveRecord::Schema.define(version: 2024_02_29_234258) do
     t.datetime "updated_at", null: false
     t.string "internal_resource"
     t.integer "lock_version"
+    t.index "(((metadata -> 'bulkrax_identifier'::text) ->> 0))", name: "index_on_bulkrax_identifier", where: "((metadata -> 'bulkrax_identifier'::text) IS NOT NULL)"
     t.index ["internal_resource"], name: "index_orm_resources_on_internal_resource"
     t.index ["metadata"], name: "index_orm_resources_on_metadata", using: :gin
     t.index ["metadata"], name: "index_orm_resources_on_metadata_jsonb_path_ops", opclass: :jsonb_path_ops, using: :gin
@@ -913,6 +914,8 @@ ActiveRecord::Schema.define(version: 2024_02_29_234258) do
     t.string "preferred_locale"
     t.string "provider"
     t.string "uid"
+    t.string "batch_email_frequency", default: "never"
+    t.datetime "last_emailed_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

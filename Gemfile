@@ -113,6 +113,8 @@ gem 'valkyrie', '~> 3.0', '>= 3.1.4' # There's a patch in 3.1.4 that we want
 gem 'web-console', '>= 3.3.0', group: %i[development] # <%= console %> in views
 gem 'webdrivers', '~> 4.7.0', group: %i[test]
 gem 'webmock', group: %i[test]
+gem 'willow_sword', github: 'scientist-softserv/willow_sword', branch: 'main'
+
 # Enabling the following gem breaks sidekiq. To Enable: assets.debug must be set to true in config/development.rb
 # gem "xray-rails", git: "https://github.com/brentd/xray-rails.git", branch: "bugs/ruby-3.0.0", group: %i[development]
 

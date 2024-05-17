@@ -3,11 +3,14 @@
 # Generated via
 #  `rails generate hyrax:work_resource GenericWorkResource`
 class GenericWorkResource < Hyrax::Work
-  include Hyrax::Schema(:basic_metadata)
-  include Hyrax::Schema(:bulkrax_metadata)
-  include Hyrax::Schema(:generic_work_resource)
-  include Hyrax::Schema(:with_pdf_viewer)
-  include Hyrax::Schema(:with_video_embed)
+  if "GenericWorkResourceDecorator".safe_constantize.nil?
+    include Hyrax::Schema(:basic_metadata)
+    include Hyrax::Schema(:bulkrax_metadata)
+    include Hyrax::Schema(:generic_work_resource)
+    include Hyrax::Schema(:with_pdf_viewer)
+    include Hyrax::Schema(:with_video_embed)
+  end
+
   include Hyrax::ArResource
   include Hyrax::NestedWorks
 

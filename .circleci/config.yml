@@ -1,7 +1,6 @@
 version: 2.1
 orbs:
   samvera: samvera/circleci-orb@1
-  browser-tools: circleci/browser-tools@1.4.6
   ruby: circleci/ruby@2
   node: circleci/node@5
 
@@ -80,10 +79,17 @@ jobs:
           ruby_version: << parameters.ruby_version >>
           bundler_version: << parameters.bundler_version >>
       - samvera/rubocop
-      - browser-tools/install-chrome:
-          chrome-version: 114.0.5735.90 # see https://github.com/CircleCI-Public/browser-tools-orb/pull/96
-          replace-existing: true
-      - browser-tools/install-chromedriver
+      - run:
+          name: Install Chrome and Chromedriver
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y wget gnupg2 software-properties-common unzip
+            wget -q -O google-chrome-stable_114.0.5735.90-1_amd64.deb https://mirror.cs.uchicago.edu/google-chrome/pool/main/g/google-chrome-stable/google-chrome-stable_114.0.5735.90-1_amd64.deb
+            sudo dpkg -i google-chrome-stable_114.0.5735.90-1_amd64.deb || sudo apt-get -f install -y
+            rm google-chrome-stable_114.0.5735.90-1_amd64.deb
+            wget -N https://chromedriver.storage.googleapis.com/114.0.5735.90/chromedriver_linux64.zip
+            sudo unzip chromedriver_linux64.zip -d /usr/local/bin
+            rm chromedriver_linux64.zip
       - run:
           name: Check Chrome install
           command: |

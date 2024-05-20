@@ -10,6 +10,7 @@ class ImageResource < Hyrax::Work
     include Hyrax::Schema(:with_pdf_viewer)
     include Hyrax::Schema(:with_video_embed)
   end
+
   include Hyrax::ArResource
   include Hyrax::NestedWorks
 

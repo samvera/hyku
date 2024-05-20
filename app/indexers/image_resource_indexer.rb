@@ -3,11 +3,13 @@
 # Generated via
 #  `rails generate hyrax:work_resource ImageResource`
 class ImageResourceIndexer < Hyrax::ValkyrieWorkIndexer
-  include Hyrax::Indexer(:basic_metadata)
-  include Hyrax::Indexer(:bulkrax_metadata)
-  include Hyrax::Indexer(:image_resource)
-  include Hyrax::Indexer(:with_pdf_viewer)
-  include Hyrax::Indexer(:with_video_embed)
+  if "ImageResourceIndexerDecorator".safe_constantize.nil?
+    include Hyrax::Indexer(:basic_metadata)
+    include Hyrax::Indexer(:bulkrax_metadata)
+    include Hyrax::Indexer(:image_resource)
+    include Hyrax::Indexer(:with_pdf_viewer)
+    include Hyrax::Indexer(:with_video_embed)
+  end
 
   include HykuIndexing
   # Uncomment this block if you want to add custom indexing behavior:

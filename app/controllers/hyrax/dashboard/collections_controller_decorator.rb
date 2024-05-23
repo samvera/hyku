@@ -3,27 +3,52 @@
 # OVERRIDE Hyrax v5.0.0rc2
 # - Fix file upload in logo and banner
 # - Use work titles for collection thumbnail select & to add an option to reset to the default thumbnail
+
+# OVERRIDE Hyrax v5.0.0 to add the ability to upload a collection thumbnail
+
 module Hyrax
   module Dashboard
     ## Shows a list of all collections to the admins
     # rubocop:disable Metrics/ModuleLength
     module CollectionsControllerDecorator
+      include Hyku::CollectionBrandingBehavior
+
       def show
         configure_show_sort_fields
 
         super
       end
 
-      private
-
-      def configure_show_sort_fields
-        # In the CollectionsControllerDecorator, we clear the sort fields and add our own to have
-        # the ability to sort the index with custom fields. However, this also affects the show page.
-        # Here we set the sort fields back to the defaults for the show page.
-        blacklight_config.sort_fields = CatalogController.blacklight_config.sort_fields
+      # OVERRIDE Hyrax v5.0.0 to add the ability to upload a collection thumbnail - START
+      def process_branding
+        process_banner_input
+        process_logo_input
+        process_thumbnail_input
       end
 
-      public
+      # rubocop:disable Metrics/AbcSize
+      def update_valkyrie_collection
+        return after_update_errors(form_err_msg(form)) unless form.validate(collection_params)
+
+        result = transactions['change_set.update_collection']
+                 .with_step_args(
+                          'collection_resource.save_collection_banner' => { update_banner_file_ids: params["banner_files"],
+                                                                            banner_unchanged_indicator: params["banner_unchanged"] },
+                          'collection_resource.save_collection_logo' => { update_logo_file_ids: params["logo_files"],
+                                                                          alttext_values: params["alttext"],
+                                                                          linkurl_values: params["linkurl"] },
+                          'collection_resource.save_collection_thumbnail' => { update_thumbnail_file_ids: params["thumbnail_files"],
+                                                                               thumbnail_unchanged_indicator: params["thumbnail_unchanged"],
+                                                                               alttext_values: params["thumbnail_text"] }
+                        )
+                 .call(form)
+        @collection = result.value_or { return after_update_errors(result.failure.first) }
+
+        process_member_changes
+        after_update_response
+      end
+      # rubocop:enable Metrics/AbcSize
+      # OVERRIDE Hyrax v5.0.0 to add the ability to upload a collection thumbnail - END
 
       def edit
         form
@@ -45,13 +70,6 @@ module Hyrax
         authorize! :manage_discovery, @collection if collection_params[:visibility].present? && @collection.visibility != collection_params[:visibility]
 
         super
-      end
-
-      def process_branding
-        super
-
-        # TODO: does this still work?
-        process_uploaded_thumbnail(params[:collection][:thumbnail_upload]) if params[:collection][:thumbnail_upload]
       end
 
       # Deletes any previous thumbnails. The thumbnail indexer (see services/hyrax/indexes_thumbnails)
@@ -98,6 +116,13 @@ module Hyrax
       # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
       private
+
+      def configure_show_sort_fields
+        # In the CollectionsControllerDecorator, we clear the sort fields and add our own to have
+        # the ability to sort the index with custom fields. However, this also affects the show page.
+        # Here we set the sort fields back to the defaults for the show page.
+        blacklight_config.sort_fields = CatalogController.blacklight_config.sort_fields
+      end
 
       # branding specific methods
       def process_banner_input
@@ -166,19 +191,6 @@ module Hyrax
         File.chmod(0o664, "#{dir_name}/#{@collection.id}_card.jpg")
       end
       # rubocop:enable Metrics/MethodLength
-
-      ## OVERRIDE Hyrax v5.0.0rc2 handle file locations
-      def process_file_location(f)
-        if /^http/.match?(f.file_url)
-          f.file.download!(f.file_url)
-          f.file_url
-        elsif %r{^\/}.match?(f.file_url)
-          f.file.path
-        else
-          f.file_url
-        end
-      end
-      ## END OVERRIDE
     end
   end
 end

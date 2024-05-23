@@ -145,10 +145,22 @@ Hyrax.config do |config|
   # Temporary path to hold uploads before they are ingested into FCrepo.
   # This must be a lambda that returns a Pathname
   config.upload_path = lambda {
-    if Site.account&.s3_bucket
+    if Site.account&.s3_bucket.present?
+      # For S3, no need to create directories
       "uploads/#{Apartment::Tenant.current}"
     else
-      ENV['HYRAX_UPLOAD_PATH'].present? ? Pathname.new(File.join(ENV['HYRAX_UPLOAD_PATH'], Apartment::Tenant.current)) : Rails.public_path.join('uploads', Apartment::Tenant.current)
+      # Determine the base upload path
+      base_path = if ENV['HYRAX_UPLOAD_PATH'].present?
+                    Pathname.new(File.join(ENV['HYRAX_UPLOAD_PATH'], Apartment::Tenant.current))
+                  else
+                    Rails.root.join('public', 'uploads', Apartment::Tenant.current)
+                  end
+
+      # Create the directory if it doesn't exist
+      FileUtils.mkdir_p(base_path) unless Dir.exist?(base_path)
+
+      # Return the path
+      base_path
     end
   }
 
@@ -242,3 +254,7 @@ Hyrax.publisher.subscribe(HyraxListener.new)
 
 Hyrax::MemberPresenterFactory.file_presenter_class = Hyrax::IiifAv::IiifFileSetPresenter
 Hyrax::PcdmMemberPresenterFactory.file_presenter_class = Hyrax::IiifAv::IiifFileSetPresenter
+
+Hyrax::Transactions::Container.namespace('collection_resource') do |ops|
+  ops.register 'save_collection_thumbnail', Hyrax::Transactions::Steps::SaveCollectionThumbnail.new
+end

@@ -645,3 +645,27 @@ span.constraint-value p, .facet-values p {
 tr[data-feature="use-iiif-print"] {
   display: none;
 }
+
+// collection branding thumbnail
+.branding-thumbnail-row {
+  border-top: solid 1px #dddddd;
+  padding-top: 10px;
+}
+
+.branding-thumbnail-input {
+  text-align: right;
+  width: 250px;
+
+  input {
+    text-align: left;
+  }
+}
+
+.branding-thumbnail-remove,
+.branding-thumbnail-remove:hover {
+  background-color: #ffffff;
+  border-color: #ffffff;
+  color: $brand-danger;
+  font-weight: normal;
+  text-decoration: underline;
+}

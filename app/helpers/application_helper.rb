@@ -12,7 +12,8 @@ module ApplicationHelper
     @group_navigation_presenter ||= Hyku::Admin::Group::NavigationPresenter.new(params:)
   end
 
-  def collection_thumbnail(_document, _image_options = {}, _url_options = {})
+  def collection_thumbnail(document, _image_options = {}, _url_options = {})
+    return image_tag(document['thumbnail_path_ss']) if document['thumbnail_path_ss'].present?
     return super if Site.instance.default_collection_image.blank?
 
     image_tag(Site.instance.default_collection_image&.url)

@@ -223,16 +223,6 @@ module Hyku
         Rails.configuration.cache_classes ? require(c) : load(c)
       end
 
-      if defined?(HykuKnapsack)
-        Dir.glob(File.join(File.dirname(__FILE__), "../../app/**/*_decorator*.rb")).sort.each do |c|
-          Rails.configuration.cache_classes ? require(c) : load(c)
-        end
-
-        Dir.glob(File.join(File.dirname(__FILE__), "../lib/**/*_decorator*.rb")).sort.each do |c|
-          Rails.configuration.cache_classes ? require(c) : load(c)
-        end
-      end
-
       if Hyku.bulkrax_enabled?
         # set bulkrax default work type to first curation_concern if it isn't already set
         Bulkrax.default_work_type = Hyku::Application.work_types.first.to_s if Bulkrax.default_work_type.blank?

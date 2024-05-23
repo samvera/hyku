@@ -83,6 +83,11 @@ RUN ln -sf /usr/lib/libmediainfo.so.0 /app/fits/tools/mediainfo/linux/libmediain
 
 COPY --chown=1001:101 ./bin/db-migrate-seed.sh /app/samvera/
 
+# Ensure the directory exists and create the symbolic link
+RUN mkdir -p /app/samvera/hyrax-webapp/public && \
+    mkdir -p /app/samvera/branding && \
+    ln -snf /app/samvera/branding /app/samvera/hyrax-webapp/public/branding
+
 ONBUILD ARG APP_PATH=.
 ONBUILD COPY --chown=1001:101 $APP_PATH/Gemfile* /app/samvera/hyrax-webapp/
 ONBUILD RUN git config --global --add safe.directory /app/samvera && \

@@ -52,7 +52,7 @@ newgrp docker
     ```
 ### Configuration
 
-Hyku configuration is primarily found in the `.env` file, which will get you running out of the box. To customize your configuration, see the [Configuration Guide](/configuration.md).
+Hyku configuration is primarily found in the `.env` file, which will get you running out of the box. To customize your configuration, see the [Configuration Guide](./configuration.md).
 
 ### Running the Application
 
@@ -108,7 +108,7 @@ The [samvera-vagrant project](https://github.com/samvera-labs/samvera-vagrant) p
 
 ## Kubernetes
 
-Hyku relies on the helm charts provided by Hyrax. See [Deployment Info](https://github.com/samvera/hyrax/blob/main/CONTAINERS.md#deploying-to-production) for more information. We also provide a basic helm [deployment script](bin/helm_deploy). Hyku currently needs some additional volumes and ENV vars over the base Hyrax. See (ops/review-deploy.tmpl.yaml) for an example of what that might look like.
+Hyku relies on the helm charts provided by Hyrax. See [Deployment Info](https://github.com/samvera/hyrax/blob/main/CONTAINERS.md#deploying-to-production) for more information. We also provide a basic helm [deployment script](/bin/helm_deploy). Hyku currently needs some additional volumes and ENV vars over the base Hyrax. See (ops/review-deploy.tmpl.yaml) for an example of what that might look like.
 
 ## AWS
 

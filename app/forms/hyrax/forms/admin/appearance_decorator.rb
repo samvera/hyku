@@ -206,6 +206,11 @@ module Hyrax
           block_for('directory_image_text')
         end
 
+        # The alt text for the directory image
+        def directory_image_alt_text
+          block_for('directory_image_alt_text')
+        end
+
         # The alt text for the default_collection image
         def default_collection_image_text
           block_for('default_collection_image_text')

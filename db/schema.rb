@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_05_02_230546) do
+ActiveRecord::Schema.define(version: 2024_05_28_232441) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -822,6 +822,7 @@ ActiveRecord::Schema.define(version: 2024_05_02_230546) do
     t.string "show_theme"
     t.string "search_theme"
     t.string "favicon"
+    t.string "directory_image_alt_text"
   end
 
   create_table "subject_local_authority_entries", id: :serial, force: :cascade do |t|

@@ -20,6 +20,20 @@ class HykuMailer < ActionMailer::Base
          template_name: 'summary_email')
   end
 
+  def depositor_email(user, statistics, account)
+    @user = user
+    @statistics = statistics
+    @account = account
+    @url = notifications_url_for(@account)
+    @application_name = account.sites.application_name
+
+    mail(to: @user.email,
+         subject: "Monthly Downloads Summary for #{@application_name}",
+         from: @account.contact_email,
+         template_path: 'hyku_mailer',
+         template_name: 'depositor_email')
+  end
+
   private
 
   def host_for_tenant

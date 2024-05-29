@@ -87,6 +87,7 @@ class CreateAccount
     EmbargoAutoExpiryJob.perform_later(account)
     LeaseAutoExpiryJob.perform_later(account)
     BatchEmailNotificationJob.perform_later(account)
+    DepositorEmailNotificationJob.perform_later(account)
   end
 
   private

@@ -24,7 +24,7 @@ class HykuMailer < ActionMailer::Base
     @user = user
     @statistics = statistics
     @account = account
-    @url = notifications_url_for(@account)
+    @url = dashboard_url_for(@account)
     @application_name = account.sites.application_name
 
     mail(to: @user.email,
@@ -42,5 +42,9 @@ class HykuMailer < ActionMailer::Base
 
   def notifications_url_for(account)
     "https://#{account.cname}/notifications"
+  end
+
+  def dashboard_url_for(account)
+    "https://#{account.cname}/dashboard"
   end
 end

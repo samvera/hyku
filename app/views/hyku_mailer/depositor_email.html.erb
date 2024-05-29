@@ -20,13 +20,14 @@
 <body>
   <div class="email-container">
     <p>Dear Author,</p>
-    <p>You had <%= @statistics[:new_downloads] %> new download in December 2023 across your <%= @statistics[:papers_count] %> papers in MUShare. Your current readership:</p>
+    <p>You had <%= pluralize(@statistics[:new_file_downloads], 'download') %> in <%= Date.today.prev_month.strftime("%B %Y") %> across your <%= pluralize(@statistics[:new_work_views], 'work') %> in <%= @application_name %>. Your current readership:</p>
     <ul>
-      <li><%= @statistics[:total_downloads] %> Total Downloads</li>
+      <li><%= pluralize(@statistics[:total_file_downloads], 'Total File Download') %></li>
+      <li><%= pluralize(@statistics[:total_work_views], 'Total Work View') %></li>
     </ul>
-    <a href="url" class="button">VISIT MY DASHBOARD</a>
+    <a href="<%= @url %>" class="button">VISIT MY DASHBOARD</a>
     <div class="footer">
-      <p>These monthly reports are provided to you by bepress on behalf of MUShare. For questions, comments, or to add more content and increase your readership and visibility as an author, please contact your repository administrator.</p>
+      <p>These monthly reports are provided to you by bepress on behalf of <%= @application_name %>. For questions, comments, or to add more content and increase your readership and visibility as an author, please contact your repository administrator.</p>
     </div>
   </div>
 </body>

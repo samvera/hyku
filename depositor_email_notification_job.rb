@@ -1,5 +1,11 @@
 # frozen_literal: true
 
+# TODO
+# How do we collect all of the counts for the past month only?
+# Do we expect user.stats to return multiple UserStat objects. How does this work?
+# How often Hyrax::UserStatImporter job run? - Is Rob setting up a job to run 
+# the rake task. Task needs to work for all tenants. 
+# Specs
 class DepositorEmailNotificationJob < ApplicationJob
   non_tenant_job
 

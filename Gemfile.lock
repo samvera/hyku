@@ -232,7 +232,7 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/willow_sword.git
-  revision: 528c8c2d6f327f3e593668b28df1613494376346
+  revision: 38a0906647fae2020e8b0b08e296f85c457fcb34
   branch: main
   specs:
     willow_sword (0.2.0)
@@ -658,22 +658,12 @@ GEM
       representable (~> 3.0)
       retriable (>= 2.0, < 4.a)
       rexml
-    google-apis-drive_v3 (0.51.0)
-      google-apis-core (>= 0.15.0, < 2.a)
-    google-cloud-core (1.7.0)
-      google-cloud-env (>= 1.0, < 3.a)
-      google-cloud-errors (~> 1.0)
+      webrick
+    google-apis-drive_v3 (0.46.0)
+      google-apis-core (>= 0.11.0, < 2.a)
     google-cloud-env (2.1.1)
       faraday (>= 1.0, < 3.a)
-    google-cloud-errors (1.4.0)
-    google-protobuf (3.25.3)
-    googleapis-common-protos (1.5.0)
-      google-protobuf (~> 3.18)
-      googleapis-common-protos-types (~> 1.7)
-      grpc (~> 1.41)
-    googleapis-common-protos-types (1.14.0)
-      google-protobuf (~> 3.18)
-    googleauth (1.11.0)
+    googleauth (1.9.2)
       faraday (>= 1.0, < 3.a)
       google-cloud-env (~> 2.1)
       jwt (>= 1.4, < 3.0)
@@ -1495,8 +1485,7 @@ DEPENDENCIES
   fcrepo_wrapper (~> 0.4)
   flutie
   good_job (~> 2.99)
-  google-protobuf
-  grpc
+  googleauth (~> 1.9.0)
   hyku_knapsack!
   hyrax!
   hyrax-doi!

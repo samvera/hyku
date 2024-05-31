@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
 class User < ApplicationRecord
   # Includes lib/rolify from the rolify gem
   rolify
@@ -174,7 +175,7 @@ class User < ApplicationRecord
   end
 
   # Returns hash summary of user statistics for a date range... uses the prior month by default
-  def statistics_for(start_date: (Time.now - 1.month).beginning_of_month, end_date: (Time.now - 1.month).end_of_month)
+  def statistics_for(start_date: (Time.zone.now - 1.month).beginning_of_month, end_date: (Time.zone.now - 1.month).end_of_month)
     stats_period = start_date..end_date
     last_month_stats = stats.where(date: stats_period)
 
@@ -183,9 +184,10 @@ class User < ApplicationRecord
     {
       new_file_downloads: last_month_stats.sum(:file_downloads),
       new_work_views: last_month_stats.sum(:work_views),
-      total_file_views: total_file_views,
-      total_file_downloads: total_file_downloads, 
-      total_work_views: total_work_views
+      total_file_views:,
+      total_file_downloads:,
+      total_work_views:
     }
   end
 end
+# rubocop:enable Metrics/ClassLength

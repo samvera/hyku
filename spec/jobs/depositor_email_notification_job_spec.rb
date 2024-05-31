@@ -21,7 +21,7 @@ RSpec.describe DepositorEmailNotificationJob do
     end
 
     context 'when the user has new statistics' do
-      let(:statistics) { {:new_file_downloads=>2, :new_work_views=>3, :total_file_downloads=>6, :total_file_views=>7, :total_work_views=>16} }
+      let(:statistics) { { new_file_downloads: 2, new_work_views: 3, total_file_downloads: 6, total_file_views: 7, total_work_views: 16 } }
 
       before do
         allow(User).to receive(:all).and_return([user])

@@ -28,23 +28,23 @@ RSpec.describe User, type: :model do
       let!(:stat_yesterday) { UserStat.create!(user_id: subject.id, date: 1.day.ago, file_views: 1, file_downloads: 2, work_views: 3) }
       let!(:someone_elses_user_id) { subject.id + 1 }
       let!(:not_my_stat) { UserStat.create!(user_id: someone_elses_user_id, date: 1.month.ago, file_views: 10, file_downloads: 11) }
-      let(:user_stats) { {:new_file_downloads=>3, :new_work_views=>12, :total_file_downloads=>6, :total_file_views=>7, :total_work_views=>16} }
-      let(:yesterday_stats) { {:new_file_downloads=>2, :new_work_views=>3, :total_file_downloads=>6, :total_file_views=>7, :total_work_views=>16} }
+      let(:user_stats) { { new_file_downloads: 3, new_work_views: 12, total_file_downloads: 6, total_file_views: 7, total_work_views: 16 } }
+      let(:yesterday_stats) { { new_file_downloads: 2, new_work_views: 3, total_file_downloads: 6, total_file_views: 7, total_work_views: 16 } }
 
       it 'returns a summary hash of prior months stats' do
         expect(subject.statistics_for).to eq(user_stats)
       end
 
       it 'summarizes stats for specified date range' do
-        expect(subject.statistics_for(start_date: Time.now-2.days, end_date: Time.now)).to eq(yesterday_stats)
+        expect(subject.statistics_for(start_date: Time.zone.now - 2.days, end_date: Time.zone.now)).to eq(yesterday_stats)
       end
 
       it 'returns nil if no statistics in specified date range' do
-        expect(subject.statistics_for(start_date: Time.now-4.months, end_date: Time.now-5.months)).to be nil
+        expect(subject.statistics_for(start_date: Time.zone.now - 4.months, end_date: Time.zone.now - 5.months)).to be nil
       end
 
       it 'returns nil if start and end dates the same' do
-        expect(subject.statistics_for(start_date: Time.now-5.months, end_date: Time.now-5.months)).to be nil
+        expect(subject.statistics_for(start_date: Time.zone.now - 5.months, end_date: Time.zone.now - 5.months)).to be nil
       end
     end
   end

@@ -1,4 +1,4 @@
-# frozen_literal: true
+# frozen_string_literal: true
 
 class DepositorEmailNotificationJob < ApplicationJob
   non_tenant_job
@@ -23,6 +23,6 @@ class DepositorEmailNotificationJob < ApplicationJob
   # private
 
   def reenqueue(account)
-    DepositorEmailNotificationJob.set(wait_until: ((Time.now+1.month).beginning_of_month)).perform_later(account)
+    DepositorEmailNotificationJob.set(wait_until: (Time.zone.now + 1.month).beginning_of_month).perform_later(account)
   end
 end

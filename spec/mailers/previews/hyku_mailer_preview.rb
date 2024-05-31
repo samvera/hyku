@@ -25,12 +25,12 @@ class HykuMailerPreview < ActionMailer::Preview
   def depositor_email
     # Creating mock statistics
     statistics = {
-        new_file_downloads: 1,
-        new_work_views: 6,
-        total_file_views: 20,
-        total_file_downloads: 20, 
-        total_work_views: 100
-      }
+      new_file_downloads: 1,
+      new_work_views: 6,
+      total_file_views: 20,
+      total_file_downloads: 20,
+      total_work_views: 100
+    }
 
     # Mock user
     user = Struct.new(:email, :name).new('depositor@example.com', 'Depositor Name')
@@ -43,5 +43,5 @@ class HykuMailerPreview < ActionMailer::Preview
 
     # Calling the depositor_email method of the HykuMailer with mock data
     HykuMailer.new.depositor_email(user, statistics, account)
-  end  
+  end
 end

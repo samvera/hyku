@@ -23,6 +23,6 @@ class DepositorEmailNotificationJob < ApplicationJob
   # private
 
   def reenqueue(account)
-    DepositorEmailNotificationJob.set(wait_until: Date.next_month.beginning_of_month).perform_later(account)
+    DepositorEmailNotificationJob.set(wait_until: ((Time.now+1.month).beginning_of_month)).perform_later(account)
   end
 end

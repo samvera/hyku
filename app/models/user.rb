@@ -174,7 +174,7 @@ class User < ApplicationRecord
   end
 
   # Returns hash summary of user statistics for a date range... uses the prior month by default
-  def statistics_for(start_date: (Date.today - 1.month).beginning_of_month, end_date: (Date.today - 1.month).end_of_month)
+  def statistics_for(start_date: (Time.now - 1.month).beginning_of_month, end_date: (Time.now - 1.month).end_of_month)
     stats_period = start_date..end_date
     last_month_stats = stats.where(date: stats_period)
 

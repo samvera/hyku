@@ -172,4 +172,20 @@ class User < ApplicationRecord
       receipt.update(is_delivered: true)
     end
   end
+
+  # Returns hash summary of user statistics for a date range... uses the prior month by default
+  def statistics_for(start_date: (Date.today - 1.month).beginning_of_month, end_date: (Date.today - 1.month).end_of_month)
+    stats_period = start_date..end_date
+    last_month_stats = stats.where(date: stats_period)
+
+    return nil if last_month_stats.empty?
+
+    {
+      new_file_downloads: last_month_stats.sum(:file_downloads),
+      new_work_views: last_month_stats.sum(:work_views),
+      total_file_views: total_file_views,
+      total_file_downloads: total_file_downloads, 
+      total_work_views: total_work_views
+    }
+  end
 end

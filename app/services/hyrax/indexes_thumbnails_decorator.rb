@@ -6,10 +6,14 @@ module Hyrax
   module IndexesThumbnailsDecorator
     # Returns the value for the thumbnail path to put into the solr document
     def thumbnail_path
+      object ||= @object || resource
+      file_path = CollectionResourceIndexer.thumbnail_path_service.call(object)
       if object.try(:collection?) && UploadedCollectionThumbnailPathService.uploaded_thumbnail?(object)
         UploadedCollectionThumbnailPathService.call(object)
+      elsif file_path&.include?('/branding')
+        file_path.gsub(/.*?(\/branding)/, '\1')
       else
-        super
+        file_path
       end
     end
   end

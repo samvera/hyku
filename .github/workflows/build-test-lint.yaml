@@ -15,12 +15,37 @@ on:
         required: false
         default: false
 
+env:
+  REGISTRY: ghcr.io
+  DOCKER_BUILDKIT: 1
+  COMPOSE_DOCKER_CLI_BUILD: 1
+
 jobs:
   build:
-    uses: scientist-softserv/actions/.github/workflows/build.yaml@v0.0.21
+    uses: scientist-softserv/actions/.github/workflows/build.yaml@v0.0.22
     secrets: inherit
     with:
       platforms: "linux/amd64" # "linux/amd64,linux/arm64"
       webTarget: hyku-web
       solrTarget: hyku-solr
       workerTarget: hyku-worker
+
+  lint:
+    needs: build
+    uses: scientist-softserv/actions/.github/workflows/lint.yaml@v0.0.22
+    with:
+      webTarget: hyku-web
+      workerTarget: hyku-worker
+      rubocop_cmd: "bundle exec rubocop --parallel --format progress"
+
+  test:
+    needs: build
+    uses: scientist-softserv/actions/.github/workflows/test.yaml@v0.0.22
+    with:
+      confdir: '/app/samvera/hyrax-webapp/solr/conf'
+      rspec_cmd: "gem install semaphore_test_boosters && bundle && rspec_booster --job $CI_NODE_INDEX/$CI_NODE_TOTAL"
+
+  reports:
+    if: always()
+    needs: [test, lint]
+    uses: scientist-softserv/actions/.github/workflows/report.yaml@v0.0.22

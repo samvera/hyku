@@ -48,10 +48,9 @@ gem 'factory_bot_rails', group: %i[test]
 gem 'fcrepo_wrapper', '~> 0.4', group: %i[development test]
 gem 'flutie'
 gem 'good_job', '~> 2.99'
+gem 'googleauth', '~> 1.9.0'
 gem 'google-protobuf', force_ruby_platform: true # required because google-protobuf is not compatible with Alpine linux
 gem 'grpc', force_ruby_platform: true # required because google-protobuf is not compatible with Alpine linux
-gem 'openssl', '>= 3.2.0'
-gem 'googleauth', '~> 1.9.0'
 gem 'hyrax', github: 'samvera/hyrax', branch: 'double_combo'
 gem 'hyrax-doi', github: 'samvera-labs/hyrax-doi', branch: 'rails_hyrax_upgrade'
 gem 'hyrax-iiif_av', github: 'samvera-labs/hyrax-iiif_av', branch: 'rails_hyrax_upgrade'
@@ -60,6 +59,7 @@ gem 'i18n-tasks', group: %i[development test]
 gem 'iiif_print', github: 'scientist-softserv/iiif_print', branch: 'main'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails' # Use jquery as the JavaScript library
+gem 'openssl', '>= 3.2.0'
 # The maintainers yanked 0.3.2 version (see https://github.com/dryruby/json-canonicalization/issues/2)
 gem 'json-canonicalization', "0.3.1"
 gem 'launchy', group: %i[test]

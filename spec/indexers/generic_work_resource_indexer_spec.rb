@@ -7,7 +7,7 @@ require 'hyrax/specs/shared_specs/indexers'
 
 RSpec.describe GenericWorkResourceIndexer do
   let(:indexer_class) { described_class }
-  let(:resource) { GenericWorkResource.new }
+  let!(:resource) { Hyrax.persister.save(resource: GenericWorkResource.new) }
 
   it_behaves_like 'a Hyrax::Resource indexer'
 end

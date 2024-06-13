@@ -28,7 +28,7 @@ en:
         oai_admin_email: OAI endpoint contact email address
         doi_reader: Show ability to read from Datacite to populate records. WIP do not use
         doi_writer: Write DOIs for records. WIP do not use
-        cache_api: Turns on cache for API endpoints. Experimental
+        cache_api: Use Redis instead of disk for caching
         email_subjet_prefix: String to put in front of system email subjects.
         contact_email: The email address that system notifications will be sent from. Additional configuration is required to add an address from domains other than the site's domain
         contact_email_to: The email address that messages submitted via the contact page are sent to

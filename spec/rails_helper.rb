@@ -41,6 +41,9 @@ require 'shoulda/matchers'
 #
 Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
 
+# loads Knapsack factories
+Dir[File.join(HykuKnapsack::Engine.root, 'spec', 'factories', '**', '*.rb')].each { |f| require f }
+
 # Ensure the Hyrax::Admin constant is loaded. Because testing is done using autoloading,
 # the order of the test run determines where the constants are loaded from.  Prior to
 # this change we were seeing intermittent errors like:

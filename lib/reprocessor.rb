@@ -194,16 +194,16 @@ class Reprocessor # rubocop:disable Metrics/ClassLength
   def lambda_save
     @lambda_save ||= lambda { |line, _progress|
       id = line.strip
-      w = Hyrax.query_service.find_by(id:)
+      w = Hyrax.query_service.find_by(id: id)
       w.save
     }
   end
 
   # because this takes an arg, we dont memoize
-  def lambda_job(job_klass)
-    @lambda_job = lambda { |line, _progress, job_klass|
+  def lambda_reindex_job
+    @lambda_job = lambda { |line, _progress|
       id = line.strip
-      job_klass.perform_later(id)
+      ReindexItemJob.perform_later(id)
     }
   end
 
@@ -218,7 +218,7 @@ class Reprocessor # rubocop:disable Metrics/ClassLength
   def lambda_index
     @lambda_index ||= lambda { |line, _progress|
       id = line.strip
-      w = Hyrax.query_service.find_by(id:)
+      w = Hyrax.query_service.find_by(id: id)
       Hyrax.index_adapter.save(resource: w)
     }
   end
@@ -232,7 +232,7 @@ class Reprocessor # rubocop:disable Metrics/ClassLength
 
   def progress(total = nil)
     if total
-      @progress = ProgressBar.create(total:,
+      @progress = ProgressBar.create(total: total,
                                      format: "%a %b\u{15E7}%i %c/%C %p%% %t",
                                      progress_mark: ' ',
                                      remainder_mark: "\u{FF65}")

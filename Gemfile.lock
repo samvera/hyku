@@ -147,8 +147,8 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: 6447872e0bcea17abfc1aab477f2eea57639298f
-  branch: double_combo
+  revision: 8b95caf61771403aefdfe1bf74241c024818c2c9
+  branch: flexible_double_combo
   specs:
     hyrax (5.0.1)
       active-fedora (~> 14.0)
@@ -168,6 +168,7 @@ GIT
       dry-logic (~> 1.5)
       dry-monads (~> 1.6)
       dry-validation (~> 1.10)
+      faraday (= 2.9.1)
       flipflop (~> 2.3)
       flot-rails (~> 0.0.6)
       font-awesome-rails (~> 4.2)
@@ -586,10 +587,8 @@ GEM
     factory_bot_rails (6.4.2)
       factory_bot (~> 6.4)
       railties (>= 5.0.0)
-    faraday (2.7.12)
-      base64
-      faraday-net_http (>= 2.0, < 3.1)
-      ruby2_keywords (>= 0.0.4)
+    faraday (2.9.1)
+      faraday-net_http (>= 2.0, < 3.2)
     faraday-encoding (0.0.5)
       faraday
     faraday-excon (2.1.0)

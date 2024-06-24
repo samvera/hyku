@@ -137,7 +137,7 @@ services:
     # Uncomment command to access container with out starting bin/web. Useful for debugging
     # command: sleep infinity
     environment:
-      - VIRTUAL_PORT=3000
+      - VIRTUAL_PORT=3003
       - VIRTUAL_HOST=.hyku.test
     depends_on:
       db:
@@ -159,9 +159,9 @@ services:
       initialize_app:
         condition: service_completed_successfully
     # ports:
-    #   - 3000:3000
+    #   - 3003:3003
     expose:
-      - 3000
+      - 3003
 
   worker:
     <<: *app

@@ -114,7 +114,7 @@ services:
   web:
     <<: *app
     environment:
-      - VIRTUAL_PORT=3000
+      - VIRTUAL_PORT=3003
       - VIRTUAL_HOST=.hyku.test
     depends_on:
       db:
@@ -134,7 +134,7 @@ services:
       initialize_app:
         condition: service_completed_successfully
     expose:
-      - 3000
+      - 3003
 
   worker:
     <<: *app

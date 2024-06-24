@@ -27,10 +27,10 @@ module Hyrax
 
     def create_pdf_derivatives(filename)
       Hydra::Derivatives::PdfDerivatives.create(filename, outputs: [{ label: :thumbnail,
-                                                                        format: 'jpg',
-                                                                        size: '676x986',
-                                                                        url: derivative_url('thumbnail'),
-                                                                        layer: 0 }])
+                                                                      format: 'jpg',
+                                                                      size: '676x986',
+                                                                      url: derivative_url('thumbnail'),
+                                                                      layer: 0 }])
 
       # @todo: Fix extract_full_text & wrap above in if missing_thumbnail? check
       #        commented out because it is failing resulting in RuntimeError (blank file detected)

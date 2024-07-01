@@ -221,8 +221,8 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: fb07dcdafdf1b2e7e05ebd34a50187bf69b46474
-  branch: main
+  revision: 8d949ea88f0d68cb8e5fbc297c1e179b70cb6668
+  branch: i84-support-dynamic-metadata
   specs:
     iiif_print (2.0.1)
       blacklight_iiif_search (>= 1.0, < 3.0)

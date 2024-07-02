@@ -3,11 +3,11 @@
 # Generated via
 #  `rails generate hyrax:work_resource GenericWorkResource`
 class GenericWorkResourceIndexer < Hyrax::ValkyrieWorkIndexer
-  include Hyrax::Indexer(:basic_metadata)
-  include Hyrax::Indexer(:bulkrax_metadata)
-  include Hyrax::Indexer(:generic_work_resource)
-  include Hyrax::Indexer(:with_pdf_viewer)
-  include Hyrax::Indexer(:with_video_embed)
+  include Hyrax::Indexer(:basic_metadata) unless Hyrax.config.flexible?
+  include Hyrax::Indexer(:bulkrax_metadata) unless Hyrax.config.flexible?
+  include Hyrax::Indexer(:generic_work_resource) unless Hyrax.config.flexible?
+  include Hyrax::Indexer(:with_pdf_viewer) unless Hyrax.config.flexible?
+  include Hyrax::Indexer(:with_video_embed) unless Hyrax.config.flexible?
 
   include HykuIndexing
   # Uncomment this block if you want to add custom indexing behavior:

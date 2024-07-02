@@ -31,6 +31,11 @@ unless ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_MULTITENANT', false))
   puts "\n== Finished creating single tenant resources"
 end
 
+if Hyrax.config.flexible?
+  puts "\n== Loading basic metata profile"
+  Hyrax::RequiredDataSeeders::FlexibleProfileSeeder.generate_seeds(logger: Logger.new(STDOUT))
+end
+
 Account.find_each do |account|
   Apartment::Tenant.switch!(account.tenant)
   next if Site.instance.available_works.present?

@@ -147,8 +147,8 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: 6447872e0bcea17abfc1aab477f2eea57639298f
-  branch: double_combo
+  revision: 9e65f4a91ff44ba889ba9f5413e94d8be63cc668
+  branch: flexible_double_combo
   specs:
     hyrax (5.0.1)
       active-fedora (~> 14.0)
@@ -168,6 +168,7 @@ GIT
       dry-logic (~> 1.5)
       dry-monads (~> 1.6)
       dry-validation (~> 1.10)
+      faraday (= 2.9.1)
       flipflop (~> 2.3)
       flot-rails (~> 0.0.6)
       font-awesome-rails (~> 4.2)
@@ -220,8 +221,8 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: fb07dcdafdf1b2e7e05ebd34a50187bf69b46474
-  branch: main
+  revision: 8d949ea88f0d68cb8e5fbc297c1e179b70cb6668
+  branch: i84-support-dynamic-metadata
   specs:
     iiif_print (2.0.1)
       blacklight_iiif_search (>= 1.0, < 3.0)
@@ -586,10 +587,8 @@ GEM
     factory_bot_rails (6.4.2)
       factory_bot (~> 6.4)
       railties (>= 5.0.0)
-    faraday (2.7.12)
-      base64
-      faraday-net_http (>= 2.0, < 3.1)
-      ruby2_keywords (>= 0.0.4)
+    faraday (2.9.1)
+      faraday-net_http (>= 2.0, < 3.2)
     faraday-encoding (0.0.5)
       faraday
     faraday-excon (2.1.0)

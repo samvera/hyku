@@ -32,7 +32,7 @@ unless ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_MULTITENANT', false))
 end
 
 if Hyrax.config.flexible?
-  puts "\n== Loading basic metata profile"
+  puts "\n== Loading basic metadata profile"
   Hyrax::RequiredDataSeeders::FlexibleProfileSeeder.generate_seeds(logger: Logger.new(STDOUT))
 end
 

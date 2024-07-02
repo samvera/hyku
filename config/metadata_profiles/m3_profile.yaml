@@ -949,7 +949,6 @@ properties:
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
     - PDF
-
   # Image-specific metadata from image_resource.yaml
   extent:
     available_on:
@@ -1539,7 +1538,6 @@ properties:
     sample_values:
     - University of Example
     - Example State University  
-  format:
   # Bulkrax metadata from bulkrax_metadata.yaml
   bulkrax_identifier:
     available_on:

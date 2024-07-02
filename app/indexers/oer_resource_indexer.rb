@@ -8,6 +8,7 @@ class OerResourceIndexer < Hyrax::ValkyrieWorkIndexer
   include Hyrax::Indexer(:oer_resource) unless Hyrax.config.flexible?
   include Hyrax::Indexer(:with_pdf_viewer) unless Hyrax.config.flexible?
   include Hyrax::Indexer(:with_video_embed) unless Hyrax.config.flexible?
+  include Hyrax::Indexer('OerResource') if Hyrax.config.flexible?
 
   include HykuIndexing
 

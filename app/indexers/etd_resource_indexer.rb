@@ -8,6 +8,7 @@ class EtdResourceIndexer < Hyrax::ValkyrieWorkIndexer
   include Hyrax::Indexer(:etd_resource) unless Hyrax.config.flexible?
   include Hyrax::Indexer(:with_pdf_viewer) unless Hyrax.config.flexible?
   include Hyrax::Indexer(:with_video_embed) unless Hyrax.config.flexible?
+  include Hyrax::Indexer('EtdResource') if Hyrax.config.flexible?
 
   include HykuIndexing
 

@@ -18,6 +18,10 @@ classes:
   AdminSetResource:
     display_label: AdminSetResource
   CollectionResource:
+    display_label: pcdmcollection
+  Hyrax::FileSet:
+    display_label: FileSet
+  Hyrax::PcdmCollection:
     display_label: PcdmCollection
 contexts:
   flexible_context:
@@ -38,6 +42,7 @@ properties:
     available_on:
       class:
       - AdminSetResource
+      - Hyrax::FileSet
       - CollectionResource
       - GenericWorkResource
       - ImageResource
@@ -82,6 +87,7 @@ properties:
     available_on:
       class:
       - AdminSetResource
+      - Hyrax::FileSet
       - CollectionResource
       - GenericWorkResource
       - ImageResource
@@ -111,6 +117,7 @@ properties:
     available_on:
       class:
       - AdminSetResource
+      - Hyrax::FileSet
       - CollectionResource
       - GenericWorkResource
       - ImageResource
@@ -130,6 +137,7 @@ properties:
     available_on:
       class:
       - AdminSetResource
+      - Hyrax::FileSet
       - CollectionResource
       - GenericWorkResource
       - ImageResource
@@ -156,6 +164,7 @@ properties:
     available_on:
       class:
       - AdminSetResource
+      - Hyrax::FileSet
       - CollectionResource
       - GenericWorkResource
       - ImageResource
@@ -187,6 +196,7 @@ properties:
   license:
     available_on:
       class:
+      - Hyrax::FileSet
       - CollectionResource
       - GenericWorkResource
       - ImageResource
@@ -217,6 +227,7 @@ properties:
   abstract:
     available_on:
       class:
+      - Hyrax::FileSet
       - CollectionResource
       - GenericWorkResource
       - ImageResource
@@ -332,6 +343,7 @@ properties:
   based_near:
     available_on:
       class:
+      - Hyrax::FileSet
       - CollectionResource
       - GenericWorkResource
       - ImageResource
@@ -391,6 +403,7 @@ properties:
   contributor:
     available_on:
       class:
+      - Hyrax::FileSet
       - CollectionResource
       - GenericWorkResource
       - ImageResource
@@ -421,6 +434,7 @@ properties:
   date_created:
     available_on:
       class:
+      - Hyrax::FileSet
       - CollectionResource
       - GenericWorkResource
       - ImageResource
@@ -452,6 +466,7 @@ properties:
   description:
     available_on:
       class:
+      - Hyrax::FileSet
       - CollectionResource
       - GenericWorkResource
       - ImageResource
@@ -479,6 +494,7 @@ properties:
   identifier:
     available_on:
       class:
+      - Hyrax::FileSet
       - CollectionResource
       - GenericWorkResource
       - ImageResource
@@ -532,6 +548,7 @@ properties:
   keyword:
     available_on:
       class:
+      - Hyrax::FileSet
       - CollectionResource
       - GenericWorkResource
       - ImageResource
@@ -563,6 +580,7 @@ properties:
   label:
     available_on:
       class:
+      - Hyrax::FileSet
       - CollectionResource
       - GenericWorkResource
       - ImageResource
@@ -591,6 +609,7 @@ properties:
   language:
     available_on:
       class:
+      - Hyrax::FileSet
       - CollectionResource
       - GenericWorkResource
       - ImageResource
@@ -622,6 +641,7 @@ properties:
   publisher:
     available_on:
       class:
+      - Hyrax::FileSet
       - CollectionResource
       - GenericWorkResource
       - ImageResource
@@ -652,6 +672,7 @@ properties:
   related_url:
     available_on:
       class:
+      - Hyrax::FileSet
       - CollectionResource
       - GenericWorkResource
       - ImageResource
@@ -682,6 +703,7 @@ properties:
   relative_path:
     available_on:
       class:
+      - Hyrax::FileSet
       - CollectionResource
       - GenericWorkResource
       - ImageResource
@@ -704,6 +726,7 @@ properties:
   resource_type:
     available_on:
       class:
+      - Hyrax::FileSet
       - CollectionResource
       - GenericWorkResource
       - ImageResource
@@ -735,6 +758,7 @@ properties:
   rights_notes:
     available_on:
       class:
+      - Hyrax::FileSet
       - CollectionResource
       - GenericWorkResource
       - ImageResource
@@ -764,6 +788,7 @@ properties:
   rights_statement:
     available_on:
       class:
+      - Hyrax::FileSet
       - CollectionResource
       - GenericWorkResource
       - ImageResource
@@ -794,6 +819,7 @@ properties:
   source:
     available_on:
       class:
+      - Hyrax::FileSet
       - CollectionResource
       - GenericWorkResource
       - ImageResource
@@ -824,6 +850,7 @@ properties:
   subject:
     available_on:
       class:
+      - Hyrax::FileSet
       - CollectionResource
       - GenericWorkResource
       - ImageResource
@@ -900,6 +927,7 @@ properties:
   bulkrax_identifier:
     available_on:
       class:
+      - Hyrax::FileSet
       - CollectionResource
       - GenericWorkResource
       - ImageResource

@@ -11,6 +11,10 @@ classes:
     display_label: Generic Work
   ImageResource:
     display_label: Image
+  OerResource:
+    display_label: OER
+  EtdResource:
+    display_label: ETD
   AdminSetResource:
     display_label: AdminSetResource
   CollectionResource:
@@ -42,6 +46,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 1
     multi_value: true
@@ -85,6 +91,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
       maximum: 1
@@ -113,6 +121,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
       maximum: 1
@@ -131,6 +141,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
       maximum: 1
@@ -156,6 +168,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 1
     multi_value: true
@@ -186,6 +200,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
     multi_value: true
@@ -215,6 +231,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
     multi_value: true
@@ -242,6 +260,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
     multi_value: true
@@ -270,6 +290,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
     multi_value: true
@@ -300,6 +322,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
       maximum: 1
@@ -323,6 +347,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
     multi_value: true
@@ -351,6 +377,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
     multi_value: true
@@ -379,6 +407,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
     multi_value: true
@@ -408,6 +438,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
     multi_value: true
@@ -438,6 +470,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
     multi_value: true
@@ -464,6 +498,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
     multi_value: true
@@ -493,6 +529,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
       maximum: 1
@@ -514,6 +552,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
     multi_value: true
@@ -544,6 +584,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
       maximum: 1
@@ -571,6 +613,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
     multi_value: true
@@ -601,6 +645,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
     multi_value: true
@@ -630,6 +676,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
     multi_value: true
@@ -659,6 +707,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
       maximum: 1
@@ -680,6 +730,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
     multi_value: true
@@ -710,6 +762,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
     multi_value: true
@@ -738,6 +792,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
     multi_value: true
@@ -767,6 +823,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
     multi_value: true
@@ -796,6 +854,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
     multi_value: true
@@ -871,6 +931,8 @@ properties:
       - CollectionResource
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
       maximum: 1
@@ -896,6 +958,8 @@ properties:
       class:
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
       maximum: 1
@@ -920,6 +984,8 @@ properties:
       class:
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
       maximum: 1
@@ -944,6 +1010,8 @@ properties:
       class:
       - GenericWorkResource
       - ImageResource
+      - OerResource
+      - EtdResource
     cardinality:
       minimum: 0
       maximum: 1
@@ -963,3 +1031,52 @@ properties:
       required: false
       primary: false
       multi_value: false
+  is_child: 
+    available_on:
+      class:
+      - GenericWorkResource
+      - ImageResource
+      - OerResource
+      - EtdResource
+    cardinality:
+      minimum: 0
+      maximum: 1
+    multi_value: false
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#bool
+      sources:
+      - 'null'
+    property_uri: http://id.loc.gov/vocabulary/identifiers/isChild
+    range: http://www.w3.org/2001/XMLSchema#bool
+    indexing:
+      - is_child_bsi
+    form:
+      display: false
+      required: false
+      primary: false
+      multi_value: false
+  split_from_pdf_id: 
+    available_on:
+      class:
+      - GenericWorkResource
+      - ImageResource
+      - OerResource
+      - EtdResource
+    cardinality:
+      minimum: 0
+      maximum: 1
+    multi_value: false
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+      - 'null'
+    property_uri: http://id.loc.gov/vocabulary/identifiers/splitFromPdfId
+    range: http://www.w3.org/2001/XMLSchema#string
+    indexing:
+      - split_from_pdf_id_ssi
+    form:
+      display: false
+      required: false
+      primary: false
+      multi_value: false
+  

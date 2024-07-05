@@ -809,6 +809,7 @@ properties:
     - rights_statement_tesim
     form:
       primary: true
+      required: true
     property_uri: http://www.europeana.eu/schemas/edm/rights
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
@@ -1078,6 +1079,8 @@ properties:
     sample_values:
     - This is an admin note.
     - Another example of an admin note.
+    view:
+      html_dl: true
   additional_information:
     available_on:
       class:
@@ -1150,6 +1153,9 @@ properties:
     sample_values:
     - Student
     - Instructor
+    view:
+      html_dl: true
+      render_as: "faceted"
   date:
     available_on:
       class:
@@ -1197,6 +1203,9 @@ properties:
     sample_values:
     - "Languages - Spanish"
     - "Natural Sciences - Physics"
+    view:
+      html_dl: true
+      render_as: "faceted"
   education_level:
     available_on:
       class:
@@ -1222,6 +1231,9 @@ properties:
     sample_values:
     - "Community college / Lower division"
     - "College / Upper division"
+    view:
+      html_dl: true
+      render_as: "faceted"
   learning_resource_type:
     available_on:
       class:
@@ -1247,6 +1259,9 @@ properties:
     sample_values:
     - "Activity/lab"
     - "Assessment (test, quizzes, etc.)"
+    view:
+      html_dl: true
+      render_as: "faceted"
   newer_version_id:
     available_on:
       class:
@@ -1463,6 +1478,8 @@ properties:
     sample_values:
     - Bachelor of Science
     - Master of Arts
+    view:
+      html_dl: true
   degree_level:
     available_on:
       class:
@@ -1488,6 +1505,8 @@ properties:
     sample_values:
     - Undergraduate
     - Graduate
+    view:
+      html_dl: true
   degree_discipline:
     available_on:
       class:
@@ -1513,6 +1532,8 @@ properties:
     sample_values:
     - Computer Science
     - Biology
+    view:
+      html_dl: true
   degree_grantor:
     available_on:
       class:
@@ -1537,7 +1558,9 @@ properties:
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
     - University of Example
-    - Example State University  
+    - Example State University
+    view:
+      html_dl: true
   # Bulkrax metadata from bulkrax_metadata.yaml
   bulkrax_identifier:
     available_on:

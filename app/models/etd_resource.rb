@@ -19,7 +19,7 @@ class EtdResource < Hyrax::Work
     pdf_splitter_service: IiifPrint::TenantConfig::PdfSplitter
   )
 
-  prepend OrderAlready.for(:creator)
+  prepend OrderAlready.for(:creator) unless Hyrax.config.flexible?
 
   def human_readable_type
     super.upcase

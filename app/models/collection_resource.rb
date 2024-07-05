@@ -19,7 +19,7 @@ class CollectionResource < Hyrax::PcdmCollection
 
   include WithPermissionTemplateShim
 
-  prepend OrderAlready.for(:creator)
+  prepend OrderAlready.for(:creator) unless Hyrax.config.flexible?
 
   ##
   # @!group Methods to Extract

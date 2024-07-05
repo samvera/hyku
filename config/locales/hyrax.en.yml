@@ -707,6 +707,7 @@ en:
           highlighted: Highlighted
           items: Items
           last_modified: Last modified
+          profile_version: Profile Version
           title: Title
           type: Type
           visibility: Visibility

@@ -12,7 +12,6 @@ Rails.application.configure do
                          else
                            false
                          end
-  config.reload_classes_only_on_change = false
 
   # Do not eager load code on boot.
   config.eager_load = false

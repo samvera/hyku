@@ -19,6 +19,8 @@ classes:
     display_label: AdminSetResource
   CollectionResource:
     display_label: pcdmcollection
+  Hyrax::AdministrativeSet:
+    display_label: Administrative Set
   Hyrax::FileSet:
     display_label: FileSet
   Hyrax::PcdmCollection:

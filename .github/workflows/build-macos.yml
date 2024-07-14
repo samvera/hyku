@@ -7,6 +7,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
+  REPO: '${{ github.repository }}'
 
 jobs:
   build:
@@ -14,11 +15,6 @@ jobs:
     steps:
       - name: Set env
         run: echo "TAG=${GITHUB_SHA::8}" >> $GITHUB_ENV
-      - name: Downcase repo
-        run: |
-          echo "REPO_LOWER=${REPO,,}" >> $GITHUB_ENV
-        env:
-          REPO: '${{ github.repository }}'
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Set up QEMU
@@ -38,27 +34,27 @@ jobs:
           target: hyku-base
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.REPO_LOWER }}/macos/hyku-base:${{ env.TAG }}
-            ${{ env.REGISTRY }}/${{ env.REPO_LOWER }}/macos/hyku-base:${{ github.ref_name }}
+            ${{ env.REGISTRY }}/${{ env.REPO }}/macos/hyku-base:${{ env.TAG }}
+            ${{ env.REGISTRY }}/${{ env.REPO }}/macos/hyku-base:${{ github.ref_name }}
       - name: Build and push hyku-web
         uses: docker/build-push-action@v3
         with:
           context: .
           target: hyku-web
           cache-from: |
-            ${{ env.REGISTRY }}/${{ env.REPO_LOWER }}:${TAG}
+            ${{ env.REGISTRY }}/${{ env.REPO }}:${TAG}
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.REPO_LOWER }}/macos/hyku-web:${{ env.TAG }}
-            ${{ env.REGISTRY }}/${{ env.REPO_LOWER }}/macos/hyku-web:${{ github.ref_name }}
+            ${{ env.REGISTRY }}/${{ env.REPO }}/macos/hyku-web:${{ env.TAG }}
+            ${{ env.REGISTRY }}/${{ env.REPO }}/macos/hyku-web:${{ github.ref_name }}
       - name: Build and push hyku-worker
         uses: docker/build-push-action@v3
         with:
           context: .
           target: hyku-worker
           cache-from: |
-            ${{ env.REGISTRY }}/${{ env.REPO_LOWER }}:${TAG}
+            ${{ env.REGISTRY }}/${{ env.REPO }}:${TAG}
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.REPO_LOWER }}/macos/hyku-worker:${{ env.TAG }}
-            ${{ env.REGISTRY }}/${{ env.REPO_LOWER }}/macos/hyku-worker:${{ github.ref_name }}
+            ${{ env.REGISTRY }}/${{ env.REPO }}/macos/hyku-worker:${{ env.TAG }}
+            ${{ env.REGISTRY }}/${{ env.REPO }}/macos/hyku-worker:${{ github.ref_name }}

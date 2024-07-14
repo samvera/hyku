@@ -1,6 +1,9 @@
 name: Build Docker images (MacOS)
 on:
   workflow_dispatch:
+  pull_request:
+    branches:
+      - main
 
 env:
   REGISTRY: ghcr.io

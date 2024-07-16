@@ -8,7 +8,7 @@ RSpec.describe 'migrate_hyku_commons_collection_thumbnails_to_valkyrie' do
   let(:old_thumbnail_path) { Rails.root.join(File.join('public', thumbnail_path)) }
 
   before do
-    Rails.application.load_tasks
+    Rails.application.load_tasks if Rake::Task.tasks.empty?
     FileUtils.mkdir_p(File.dirname(old_thumbnail_path))
     FileUtils.touch(old_thumbnail_path)
     allow(Apartment::Tenant).to receive(:switch!).with(account.tenant) { |&block| block&.call }

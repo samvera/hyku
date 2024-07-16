@@ -2,6 +2,8 @@
 
 # OVERRIDE Hyrax v2.9.0
 RSpec.describe Hyrax::QuickClassificationQuery, clean_repo: true do
+  # Ensure Hyrax::ModelRegistry.work_classes is loaded so this spec doesn't leak into other specs
+  let!(:work_classes) { Hyrax::ModelRegistry.work_classes }
   # OVERRIDE: add :work_depositor role -- proper testing requires create permission
   let(:user) { create(:user, roles: [:work_depositor]) }
 

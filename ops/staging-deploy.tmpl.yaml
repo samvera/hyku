@@ -186,7 +186,7 @@ extraEnvVars: &envVars
   - name: SENTRY_ENVIRONMENT
     value: $SENTRY_ENVIRONMENT
   - name: VALKYRIE_TRANSITION
-    value: true
+    value: "true"
 
 worker:
   replicaCount: 1

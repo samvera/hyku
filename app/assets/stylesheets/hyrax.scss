@@ -25,9 +25,3 @@
     background: #ffff00;
   font-weight: 700;
 }
-
-// break long links in catalog search results
-.catalog-index .caption-area .document-metadata a,
-.catalog-index .search-result-wrapper p a {
-  word-break: break-all;
-}

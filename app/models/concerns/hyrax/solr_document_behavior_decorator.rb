@@ -1,22 +1,10 @@
 # frozen_string_literal: true
-# OVERRIDE: Hyrax v5.0.1 to fix a bug
-# previously presenter.file_set_presenters didn't know it
-# had any files to display.
+
+# OVERRIDE Hyrax v5.0.1 for correct return on #hydra_model
+
 module Hyrax
-  ##
-  # @api public
-  #
-  # Hyrax extensions for +Blacklight+'s generated +SolrDocument+.
-  #
-  # @example using with +Blacklight::Solr::Document+
-  #   class SolrDocument
-  #     include Blacklight::Solr::Document
-  #     include Hyrax::SolrDocumentBehavior
-  #   end
-  #
-  # @see https://github.com/projectblacklight/blacklight/wiki/Understanding-Rails-and-Blacklight#models
   module SolrDocumentBehaviorDecorator
-    # Method to return the model
+    # Remove this once https://github.com/samvera/hyrax/pull/6860 is merged
     def hydra_model(classifier: nil)
       model = first('has_model_ssim')&.safe_constantize
       model = (first('has_model_ssim')&.+ 'Resource')&.safe_constantize if Hyrax.config.valkyrie_transition?

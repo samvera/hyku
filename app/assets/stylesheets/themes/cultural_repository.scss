@@ -1,5 +1,54 @@
 .cultural_repository {
   ////// Navbar //////
+  .navbar-expand-lg .navbar-collapse {
+    @media (min-width: 992px) {
+      display: flex !important;
+      flex-basis: auto;
+      flex-direction: column;
+    }
+  }
+
+  .cultural-repository.facets.sidenav {
+    padding: 16px 8px;
+  }
+
+  .card.facet-limit {
+    border-color: transparent !important;
+    background-color: #fff !important;
+    border-bottom: 1px solid transparent !important;
+    border-left: 1px solid transparent !important;
+    border-radius: 0 !important;
+    border-right: 1px solid transparent !important;
+    border-top: 1px solid #ddd !important;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0) !important;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0) !important;
+    margin-bottom: 0 !important;
+
+    .card-header {
+      border-bottom: 0 !important;
+      background-color: #ffffff !important;
+      border-color: #ddd !important;
+    }
+  }
+
+  .cultural-repository.recent-works-container {
+    .list-group {
+      flex-direction: row;
+    }
+  }
+
+  .navbar-toggler-icon, .facets-toggle.navbar-toggler {
+    display: none;
+  }
+
+  .search-items {
+    padding: 0;
+    margin: 8px -16px 8px 0px
+  }
+
+  .cultural-homepage > .container {
+    display: flex;
+  }
 
   .clear-right {
     clear: right !important;
@@ -20,7 +69,7 @@
 
   }
 
-  div.form-group > label.control-label.col-sm-4 {
+  div.form-group > label.col-sm-4.col-form-label {
     color: #dcdcdc;
     font-weight: 400 !important;
   }
@@ -80,12 +129,20 @@
     margin-top: 20px;
   }
 
-  .mt-40 {
+  .mt-4 {
     margin-top: 40px;
   }
 
-  .mb-40 {
+  .mb-4 {
     margin-bottom: 40px;
+  }
+
+  .mt-6 {
+    margin-top: 60px;
+  }
+
+  .mb-6 {
+    margin-bottom: 60px;
   }
 
   .pt-30 {
@@ -106,6 +163,10 @@
 
   .mb-40-0 {
     margin-bottom: 40px;
+  }
+
+  .image-masthead {
+    overflow: auto;
   }
 
   .image-masthead .background-container {
@@ -182,39 +243,6 @@
     .panel + .panel {
       margin-top: 0 !important;
     }
-  }
-
-  // Note: copied over to override * line 254, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_panels.scss */
-  .panel-default {
-    border-color: transparent !important;
-    // prevent cultural repository theme override to the workflow actions header background
-    .panel-workflow .panel-heading {
-      background-color: #e6ab5f !important;
-    }
-
-    .panel-heading {
-      background-color: #ffffff !important;
-      border-color: #ddd  !important;
-    }
-  }
-
-  // Note: copied over to override /* line 7, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_panels.scss */
-  .panel {
-    background-color: #fff !important;
-    border-bottom: 1px solid transparent !important;
-    border-left: 1px solid transparent !important;
-    border-radius: 0 !important;
-    border-right: 1px solid transparent !important;
-    border-top: 1px solid #ddd !important;
-    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0) !important;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0) !important;
-    margin-bottom: 0 !important;
-  }
-
-  // Note: copied over to override /* line 22, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_panels.scss */
-  .panel-heading {
-    border-bottom: 0 !important;
-    padding: 10px 15px !important;
   }
 
   // Note: copied over to override /* line 238, /usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_panels.scss */

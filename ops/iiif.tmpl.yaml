@@ -169,6 +169,8 @@ extraEnvVars: &envVars
     value: $SECRET_KEY_BASE
   - name: SENTRY_DSN
     value: $SENTRY_DSN
+  - name: VALKYRIE_TRANSITION
+    value: "true"
 
 worker:
   replicaCount: 1

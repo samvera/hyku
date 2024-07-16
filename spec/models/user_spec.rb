@@ -1,6 +1,16 @@
 # frozen_string_literal: true
 
 RSpec.describe User, type: :model do
+  include ActiveSupport::Testing::TimeHelpers
+
+  before do
+    travel_to Time.zone.local(2024, 6, 15, 12, 0, 0)
+  end
+
+  after do
+    travel_back
+  end
+
   subject { FactoryBot.create(:user) }
 
   it 'validates email and password' do
@@ -32,6 +42,8 @@ RSpec.describe User, type: :model do
       let(:yesterday_stats) { { new_file_downloads: 2, new_work_views: 3, total_file_downloads: 6, total_file_views: 7, total_work_views: 16 } }
 
       it 'returns a summary hash of prior months stats' do
+        # requires time traveling because the :stat_yesterday will be included which is the expected behavior
+        # but just throws the specs off on the first of the month
         expect(subject.statistics_for).to eq(user_stats)
       end
 

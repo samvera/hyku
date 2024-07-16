@@ -68,7 +68,6 @@ if Hyku.bulkrax_enabled?
       'audience' => { from: ['audience'], split: '\|' },
       'based_near' => { from: ['location'], split: '\|' },
       'bibliographic_citation' => { from: ['bibliographic_citation'], split: true },
-      'bulkrax_identifier' => { from: ['source_identifier'], source_identifier: true, generated: true },
       'contributor' => { from: ['contributor'], split: true },
       'create_date' => { from: ['create_date'], split: true },
       'children' => { from: ['children'], related_children_field_mapping: true },

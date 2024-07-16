@@ -1,4 +1,13 @@
 .neutral_repository {
+  .theme-container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .carousel-item.active {
+    display: flex;
+    justify-content: center;
+  }
 
   ////// Basic Apperance Styles //////
 

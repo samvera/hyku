@@ -30,9 +30,16 @@
 
   ////// Navbar //////
 
+  .navbar-collapse {
+    justify-content: space-between;
+  }
+
   // styles the top nav menu application name that is centered
   .institutional-repository-application-name {
     text-align: center;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 
     span {
       color: #fff;
@@ -137,7 +144,7 @@
   .stats-color-block {
     background-color: #f8f8f8;
     border-bottom: 1px solid #ddd;
-    margin-top: -25px;
+    margin-top: -20px;
   }
 
   .fa-chevron-right,
@@ -163,6 +170,13 @@
       .right {
         margin-right: 0;
       }
+    }
+
+    .carousel-item.active {
+      display: flex;
+      padding-top: 1em;
+      padding-left: 10em;
+      padding-right: 10em;
     }
   }
 

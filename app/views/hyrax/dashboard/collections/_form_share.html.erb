@@ -28,6 +28,7 @@
                  Hyrax::Group.all.map { |g| [g.humanized_name, g.name] },
                  { prompt: "Select a group..." },
                  class: 'form-control' %>
+                <label class="mx-2">as</label> 
                 <%= builder.select :access,
                  access_options,
                  { prompt: "Select a role..." },
@@ -54,6 +55,7 @@
                   <%= builder.hidden_field :agent_type %>
                   <%= builder.text_field :agent_id,
                    placeholder: "Search for a user..." %>
+                  <label class="mx-2">as</label>
                   <%= builder.select :access,
                    access_options,
                    { prompt: "Select a role..." },

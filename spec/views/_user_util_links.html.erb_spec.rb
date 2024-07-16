@@ -6,6 +6,8 @@ RSpec.describe '/_user_util_links.html.erb', type: :view do
   let(:admin_ability) { double(user_groups: ['admin']) }
   let(:user_ability) { double(user_groups: []) }
 
+  after { test_strategy.switch!(:show_login_link, true) }
+
   context 'when feature flipper is on' do
     before { test_strategy.switch!(:show_login_link, true) }
 

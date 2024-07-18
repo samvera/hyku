@@ -10,7 +10,6 @@ RUN apk --no-cache upgrade && \
     exiftool \
     ffmpeg \
     git \
-    imagemagick \
     less \
     libreoffice \
     libreoffice-lang-uk \
@@ -29,6 +28,17 @@ RUN apk --no-cache upgrade && \
     tesseract-ocr \
     vim \
     yarn \
+    build-base \
+    imagemagick \
+    imagemagick-dev \
+    imagemagick-libs \
+    imagemagick-heic \
+    imagemagick-jpeg \
+    imagemagick-jxl \
+    imagemagick-pdf \
+    imagemagick-svg \
+    imagemagick-tiff \
+    imagemagick-webp \
   && echo "******** Packages Installed *********"
 
 # Build and install ImageMagick

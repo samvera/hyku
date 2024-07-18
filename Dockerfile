@@ -1,4 +1,4 @@
-ARG HYRAX_IMAGE_VERSION=hyrax-v5.0.0.rc1
+ARG HYRAX_IMAGE_VERSION=hyrax-v5.0.1
 FROM ghcr.io/samvera/hyrax/hyrax-base:$HYRAX_IMAGE_VERSION as hyku-base
 
 USER root
@@ -29,36 +29,31 @@ RUN apk --no-cache upgrade && \
     tesseract-ocr \
     vim \
     yarn \
-  && \
-  # curl https://sh.rustup.rs -sSf | sh -s -- -y && \
-  # source "$HOME/.cargo/env" && \
-  # cargo install rbspy && \
-  echo "******** Packages Installed *********"
+  && echo "******** Packages Installed *********"
 
+# Build and install ImageMagick
 RUN wget https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.0-57.tar.gz \
     && tar xf 7.1.0-57.tar.gz \
-    && apk --no-cache add \
-      libjpeg-turbo openjpeg libpng tiff librsvg libgsf libimagequant poppler-qt5-dev \
-    && cd ImageMagick* \
+    && cd ImageMagick-7.1.0-57 \
     && ./configure \
+    && make \
     && make install \
     && cd $OLDPWD \
-    && rm -rf ImageMagick* \
-    && rm -rf /var/cache/apk/*
+    && rm -rf ImageMagick-7.1.0-57 \
+    && rm -rf 7.1.0-57.tar.gz
 
 # Install "best" training data for Tesseract
 RUN echo "📚 Installing Tesseract Best (training data)!" && \
     cd /usr/share/tessdata/ && \
-    wget https://github.com/tesseract-ocr/tessdata_best/blob/main/eng.traineddata?raw=true -O eng_best.traineddata
+    wget https://github.com/tesseract-ocr/tessdata_best/raw/main/eng.traineddata -O eng_best.traineddata
 
 ARG VIPS_VERSION=8.11.3
 
 RUN set -x -o pipefail \
     && wget -O- https://github.com/libvips/libvips/releases/download/v${VIPS_VERSION}/vips-${VIPS_VERSION}.tar.gz | tar xzC /tmp \
     && apk --no-cache add \
-     libjpeg-turbo openjpeg libpng tiff librsvg libgsf libimagequant poppler-qt5-dev \
-    && apk add --virtual vips-dependencies build-base \
      libjpeg-turbo-dev libpng-dev tiff-dev librsvg-dev libgsf-dev libimagequant-dev \
+    && apk add --virtual vips-dependencies build-base \
     && cd /tmp/vips-${VIPS_VERSION} \
     && ./configure --prefix=/usr \
                    --disable-static \

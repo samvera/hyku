@@ -22,10 +22,19 @@
     padding-bottom: 40px;
   }
 
+  .image-masthead {
+    margin-bottom: 2.25em;
+  }
+
   // removes the blur on the banner image
   .image-masthead .background-container {
     -webkit-filter: none;
     filter: none;
+    top: 1em;
+  }
+
+  .marketing-text-share-button-container {
+    padding-top: 4em;
   }
 
   ////// Navbar //////

@@ -5,7 +5,7 @@
 #   full banner_file data, rather than only download path to file.
 # - Alter permissions-related behavior.
 # Terms is the list of fields displayed by app/views/collections/_show_descriptions.html.erb
-module Hyrax
+module Hyku
   module CollectionPresenterDecorator
     extend ActiveSupport::Concern
 
@@ -131,4 +131,4 @@ module Hyrax
   end
 end
 
-Hyrax::CollectionPresenter.prepend(Hyrax::CollectionPresenterDecorator)
+Hyrax::CollectionPresenter.prepend(Hyku::CollectionPresenterDecorator)

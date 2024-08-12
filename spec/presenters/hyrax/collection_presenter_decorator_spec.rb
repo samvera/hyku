@@ -21,7 +21,7 @@ RSpec.describe Hyrax::CollectionPresenter, type: :decorator do
         def collection_type_badge
           "<span>"
         end
-        prepend Hyrax::CollectionPresenterDecorator
+        prepend Hyku::CollectionPresenterDecorator
       end
     end
     let(:presenter) { base_class.new }

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # for knapsack overrides of gems. See https://github.com/ManageIQ/bundler-inject
-# set BUNDLE_BUNDLER_INJECT__GEM_PATH in your knapsack to point at the knapsack override file.
+# bundler inject reads from ~/.bundler.d and ./bundler.d  ~/.bundler.d maps to the bundler.d directory in your knapsack.
 plugin 'bundler-inject'
 begin
   require File.join(Bundler::Plugin.index.load_paths("bundler-inject")[0], "bundler-inject")

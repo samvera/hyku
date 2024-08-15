@@ -30,9 +30,7 @@ module Hyrax
     # Adds Hydra behaviors into the application controller
     include Blacklight::SearchContext
     include Blacklight::AccessControls::Catalog
-
-    # OVERRIDE: account for Hyku themes
-    around_action :inject_theme_views
+    include Hyku::HomePageThemesBehavior
 
     # The search builder for finding recent documents
     # Override of Blacklight::RequestBuilders and default CatalogController behavior
@@ -138,22 +136,6 @@ module Hyrax
     # COPIED from Hyrax::HomepageController
     def sort_field
       "date_uploaded_dtsi desc"
-    end
-
-    # Add this method to prepend the theme views into the view_paths
-    def inject_theme_views
-      if home_page_theme && home_page_theme != 'default_home'
-        original_paths = view_paths
-        home_theme_view_path = Rails.root.join('app', 'views', "themes", home_page_theme.to_s)
-        prepend_view_path(home_theme_view_path)
-        yield
-        # rubocop:disable Lint/UselessAssignment, Layout/SpaceAroundOperators, Style/RedundantParentheses
-        # Do NOT change this line. This is calling the Rails view_paths=(paths) method and not a variable assignment.
-        view_paths=(original_paths)
-        # rubocop:enable Lint/UselessAssignment, Layout/SpaceAroundOperators, Style/RedundantParentheses
-      else
-        yield
-      end
     end
 
     # add this method to vary blacklight config and user_params

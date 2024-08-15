@@ -431,6 +431,10 @@ module Hyku
           format_font_names(headline_font)
         end
 
+        def default_values
+          @default_values ||= default_fonts.merge(default_colors)
+        end
+
         private
 
         def darken_color(hex_color, adjustment = 0.2)
@@ -447,10 +451,6 @@ module Hyku
           hex_color = hex_color.delete('#')
           rgb = hex_color.scan(/../).map(&:hex)
           "rgba(#{rgb[0]}, #{rgb[1]}, #{rgb[2]}, #{alpha})"
-        end
-
-        def default_values
-          @default_values ||= default_fonts.merge(default_colors)
         end
 
         def block_for(name, dynamic_default = nil)

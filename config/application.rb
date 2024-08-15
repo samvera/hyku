@@ -142,7 +142,7 @@ module Hyku
     # @see
     def self.theme_view_path_roots
       returning_value = [Rails.root.to_s]
-      returning_value.push HykuKnapsack::Engine.root.to_s if defined?(HykuKnapsack)
+      returning_value.unshift HykuKnapsack::Engine.root.to_s if defined?(HykuKnapsack)
       returning_value
     end
 

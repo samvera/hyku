@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_05_30_205142) do
+ActiveRecord::Schema.define(version: 2024_08_06_161142) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -851,6 +851,7 @@ ActiveRecord::Schema.define(version: 2024_05_30_205142) do
     t.string "file_set_uri"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "filename"
     t.index ["file_set_uri"], name: "index_uploaded_files_on_file_set_uri"
     t.index ["user_id"], name: "index_uploaded_files_on_user_id"
   end

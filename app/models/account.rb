@@ -168,5 +168,23 @@ class Account < ApplicationRecord
   def institution_id_data
     {}
   end
+
+  def find_job(klass)
+    ActiveJob::Base.find_job(klass: klass, tenant_id: self.tenant)
+  end
+
+  def find_or_schedule_jobs
+    account = Site.account
+    AccountElevator.switch!(self)
+    [
+      EmbargoAutoExpiryJob,
+      LeaseAutoExpiryJob,
+      BatchEmailNotificationJob,
+      DepositorEmailNotificationJob
+    ].each do |klass|
+      klass.perform_later unless find_job(klass)
+    end
+    account ? AccountElevator.switch!(account) : reset!
+  end
 end
 # rubocop:enable Metrics/ClassLength

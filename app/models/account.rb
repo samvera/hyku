@@ -180,7 +180,8 @@ class Account < ApplicationRecord
       EmbargoAutoExpiryJob,
       LeaseAutoExpiryJob,
       BatchEmailNotificationJob,
-      DepositorEmailNotificationJob
+      DepositorEmailNotificationJob,
+      UserStatCollectionJob
     ].each do |klass|
       klass.perform_later unless find_job(klass)
     end

@@ -3,7 +3,7 @@
     margin-left: 10px;
 
     img {
-      max-height: 50px;
+      max-height: 40px;
     }
   }
 
@@ -474,8 +474,9 @@ body.public-facing {
   border: 1px solid #aaa;
   background: #ddd;
   background: -webkit-linear-gradient(top, #ddd 0%, #bbb 100%);
-  background:    -moz-linear-gradient(top, #ddd 0%, #bbb 100%);
-  background:         linear-gradient(top, #ddd 0%, #bbb 100%);
+  background: -moz-linear-gradient(top, #ddd 0%, #bbb 100%);
+  background: -o-linear-gradient(to bottom, #ddd 0%, #bbb 100%);
+  background: linear-gradient(to bottom, #ddd 0%, #bbb 100%);
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   z-index: 1;
@@ -671,4 +672,26 @@ tr[data-feature="use-iiif-print"] {
 
 .carousel-control-next-icon {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath d='M2.75 0L1.25 1.5 3.75 4 1.25 6.5 2.75 8l4-4-4-4z'/%3e%3c/svg%3e");
+}
+
+// OVERRIDE Hyrax v5.0.1 to fix sidebar position
+.sidebar {
+  padding-bottom: calc(2rem + 3rem);
+  position: fixed;
+  height: 100%;
+  overflow-x: hidden;
+
+  &.maximized {
+    .sidebar-toggle {
+      transition: 0.1s;
+      position: fixed;
+      left: 252px;
+    }
+  }
+
+  .sidebar-toggle {
+    position: fixed;
+    left: 32px;
+    transition: 0.1s;
+  }
 }

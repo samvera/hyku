@@ -1,4 +1,4 @@
-<%# OVERRIDE Hyrax v5.0.0rc2 add account settings and title attributes %>
+<%# OVERRIDE Hyrax v5.0.1 add account settings and title attributes %>
 
 <% if menu.show_configuration? %>
   <li class="h5 nav-item"><%= t('hyrax.admin.sidebar.configuration') %></li>
@@ -30,7 +30,7 @@
           <% end %>
         <% end %>
         <% if can?(:manage, Hyrax::Feature) %>
-	  <%= menu.nav_link(hyrax.edit_pages_path, class: "nav-link", title: t('hyrax.admin.sidebar.pages')) do %>
+          <%= menu.nav_link(hyrax.edit_pages_path, class: "nav-link", title: t('hyrax.admin.sidebar.pages')) do %>
             <span class="fa fa-file-text-o" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.pages') %></span>
           <% end %>
           <%= menu.nav_link(hyrax.edit_content_blocks_path, class: "nav-link", title: t('hyrax.admin.sidebar.content_blocks')) do %>
@@ -43,20 +43,21 @@
             <span class="fa  fa-address-book"></span> <span class="sidebar-action-text"><%= t('hyku.admin.work_types') %></span>
           <% end %>
         <% end %>
-
-	<% if Flipflop.show_workflow_roles_menu_item_in_admin_dashboard_sidebar? && can?(:manage, Sipity::WorkflowResponsibility) %>
-	  <%= menu.nav_link(hyrax.admin_workflow_roles_path, class: "nav-link", title: t('hyrax.admin.sidebar.workflow_roles')) do %>
-	    <span class="fa fa-users" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.workflow_roles') %></span>
-	  <% end %>
-	<% end %>
-
-	<% if can?(:update, RolesService) %>
-	  <%= menu.nav_link(main_app.admin_roles_service_jobs_path, class: "nav-link", title: t('hyrax.admin.sidebar.roles_service_jobs')) do %>
-	    <span class="fa fa-users" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.roles_service_jobs') %></span>
-          <% end %>
-	<% end %>
       <% end %>
     </li>
   <% end %>
+
+  <% if Flipflop.show_workflow_roles_menu_item_in_admin_dashboard_sidebar? && can?(:manage, Sipity::WorkflowResponsibility) %>
+    <%= menu.nav_link(hyrax.admin_workflow_roles_path, class: "nav-link", title: t('hyrax.admin.sidebar.workflow_roles')) do %>
+      <span class="fa fa-users" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.workflow_roles') %></span>
+    <% end %>
+  <% end %>
+
+	<% if can?(:update, RolesService) %>
+    <%= menu.nav_link(main_app.admin_roles_service_jobs_path, class: "nav-link", title: t('hyrax.admin.sidebar.roles_service_jobs')) do %>
+      <span class="fa fa-users" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.roles_service_jobs') %></span>
+    <% end %>
+	<% end %>
+
   <%= render 'hyrax/dashboard/sidebar/menu_partials', menu: menu, section: :configuration %>
 <% end %>

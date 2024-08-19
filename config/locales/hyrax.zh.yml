@@ -244,9 +244,11 @@ zh:
             one: 该存储库中有<b>%{count}个用户</b> 。
             other: 此存储库中有<b>%{count}个用户</b> 。
           group_label: 团体
+          group_role_label: 团体角色
           id_label: 用户名
           reader_title: 查看用户
           role_label: 的角色
+          site_role_label: 站点角色
           title: 管理用户
       workflow_roles:
         header: 工作流程角色
@@ -296,7 +298,7 @@ zh:
     background_attribution_html: ''
     base:
       citations:
-        header: 引文：
+        header: 引文
       form_child_work_relationships:
         actions:
           remove: 从这项工作中删除
@@ -359,6 +361,8 @@ zh:
         title: 标题
         unauthorized: 此%{type}中没有公开可用的项目。
         visibility: 能见度
+      part_of:
+        label: 部分：
       relationships:
         empty: 该%{type}当前不在任何集合中。
         header: 人际关系
@@ -940,7 +944,7 @@ zh:
     product_twitter_handle: "@HydraInABox"
     search:
       button:
-        html: <span class="glyphicon glyphicon-search"></span>走
+        html: <span class="fa fa-search"></span>走
         text: 搜索
       form:
         option:
@@ -1031,6 +1035,13 @@ zh:
       permissions_message: 更新文件权限。这可能需要几分钟的时间。您可能需要刷新浏览器或稍后返回此记录以查看更新的文件权限。
       processing: 文件正在处理；您可以在处理完成后进行编辑
     user_profile:
+      email_frequency:
+        daily: 日常的
+        label: <i class="fa fa-calendar"></i> 批量电子邮件频率
+        monthly: 每月
+        never: 绝不
+        not_set: 尚未指定
+        weekly: 每周
       orcid:
         alt: ORCID图标
         label: ORCID个人资料
@@ -1097,7 +1108,7 @@ zh:
         description: 简短的总体描述，适用于本系列中收集的所有作品。例如，“地球科学学院研究生创建的论文和补充文件”。
         title: 一个名称，以帮助标识管理集并将其与存储库中的其他管理集区分开。
       collection:
-        based_near: 与馆藏相关的地名，例如馆藏的出版地点，馆藏内容所在的城市，州或国家。调用<a href='http://www.geonames.org'> GeoNames Web服务</a>。
+        based_near: 与作品相关的地名，例如其出版地点，或作品内容所涉及的城市、州或国家。调用 <a href='http://www.geonames.org' >GeoNames Web 服务</a>。请注意，您必须在帐户设置中配置您的 geonames 用户名，否则此字段将出现加载错误。</br> </br><b>启用此字段的步骤：</b><br/>1.在 <a href='http://www.geonames.org'>Geonames 网络服务页面</a></br>创建一个免费帐户。2.转到您的 <a href='http://www.geonames.org/manageaccount'>geonames 帐户设置</a>，然后选择底部的选项以启用免费服务。</br>3.在<a href='/admin/account/edit?locale=en'>仪表板中进入您的 hyku 帐户设置。</a></br>4.在 hyrax 帐户设置中输入您的 geonames 用户名。<br/>5.您现在应该能够在此下拉列表中看到位置列表
         contributor: 您想通过在集合创建过程中扮演的角色而被认可的个人或团体，而不是主要角色。
         creator: 负责收集的个人或团体。通常，这是内容的作者。输入的个人名字应使用姓氏，例如“约翰·史密斯”。
         date_created: 集合创建的日期。
@@ -1124,7 +1135,7 @@ zh:
         share_applies_to_new_works: 在集合中直接创建新作品时，请根据其收藏角色授予共享用户和组新作品的权限。
         title: ''
       defaults:
-        based_near: 与该作品相关的地名，例如其出版地或该作品所涉及的城市，州或国家。调用<a href='http://www.geonames.org'> GeoNames Web服务</a>。
+        based_near: 与作品相关的地名，例如其出版地点，或作品内容所涉及的城市、州或国家。调用 <a href='http://www.geonames.org' >GeoNames Web 服务</a>。请注意，您必须在帐户设置中配置您的 geonames 用户名，否则此字段将出现加载错误。</br> </br><b>启用此字段的步骤：</b><br/>1.在 <a href='http://www.geonames.org'>Geonames 网络服务页面</a></br>创建一个免费帐户。2.转到您的 <a href='http://www.geonames.org/manageaccount'>geonames 帐户设置</a>，然后选择底部的选项以启用免费服务。</br>3.在<a href='/admin/account/edit?locale=en'>仪表板中进入您的 hyku 帐户设置。</a></br>4.在 hyrax 帐户设置中输入您的 geonames 用户名。<br/>5.您现在应该能够在此下拉列表中看到位置列表
         contributor: 您希望因在作品创作中扮演的角色而被认可的个人或团体，而不是主要角色。
         creator: 负责工作的个人或团体。通常，这是内容的作者。输入的个人名字应使用姓氏，例如“约翰·史密斯”。
         date_created: 工作创建的日期。
@@ -1139,6 +1150,7 @@ zh:
         resource_type: 用于描述要上载的内容类型的预定义类别，例如“商品”，“商品”，“商品”，或“数据集”。可以选择一种以上的类型。
         subject: 描述工作内容的标题或索引词；这些确实需要符合现有词汇。
         title: 有助于识别作品的名称。
+        video_embed: 如果您输入视频的嵌入链接，它必须是格式正确、以“http://”或“https://”开头的网址。它还需要包含指向可显示在 iframe 中的托管视频的有效链接。 <br /><br /><i>示例：<br/>https://player.vimeo.com/video/467264493?h=b089de0eab<br/>https://www.youtube.com/embed/ Znf73dsFdC8</i>
       labels:
         extent: 程度
     labels:
@@ -1161,6 +1173,7 @@ zh:
       defaults:
         admin_set_id: 行政套装
         based_near: 位置
+        contributor: 撰稿人
         creator: 创作者
         date_created: 创建日期
         default_button_background_color: 默认按钮背景颜色
@@ -1175,6 +1188,7 @@ zh:
         footer_link_hover_color: 页脚链接悬停颜色
         header_and_footer_background_color: 页眉和页脚背景颜色
         header_and_footer_text_color: 页眉和页脚文本颜色
+        identifier: 识别码
         keyword: 关键词
         lease_expiration_date: 直到
         license: 执照
@@ -1186,8 +1200,10 @@ zh:
         navbar_link_text_color: 导航栏链接文字颜色
         navbar_link_text_hover_color: 导航栏链接文本悬停颜色
         primary_button_hover_color: 主按钮悬停颜色
+        publisher: 发行人
         related_url: 相关网址
         rights_statement: 权利声明
+        source: 资源
         title: 标题
         visibility_after_embargo: 然后打开它
         visibility_after_lease: 然后将其限制为
@@ -1200,5 +1216,3 @@ zh:
       defaults:
         find_child_work: 正在搜寻作品…
         member_of_collection_ids: 选择一个收藏夹…
-    required:
-      html: <span class="label label-info required-tag">需要</span>

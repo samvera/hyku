@@ -18,12 +18,12 @@ RSpec.describe 'admin/groups/edit', type: :view do
     end
 
     it 'has the "description" tab in an active state' do
-      expect(rendered).to have_selector('.nav-tabs .active a', text: 'Description')
+      expect(rendered).to have_selector('.nav-tabs .nav-item .nav-link.active', text: 'Description')
     end
 
     it 'has tabs for other actions on the group' do
-      expect(rendered).to have_selector('.nav-tabs li a', text: 'Users')
-      expect(rendered).to have_selector('.nav-tabs li a', text: 'Remove')
+      expect(rendered).to have_selector('.nav-tabs .nav-item a', text: 'Users')
+      expect(rendered).to have_selector('.nav-tabs .nav-item a', text: 'Remove')
     end
 
     it 'has an input for name' do

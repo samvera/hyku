@@ -7,3 +7,9 @@ RSpec.shared_examples "work_form" do
     end
   end
 end
+
+RSpec.shared_examples 'includes OrderMetadataValues' do
+  it 'includes the OrderMetadataValues concern' do
+    described_class.include?(OrderMetadataValues)
+  end
+end

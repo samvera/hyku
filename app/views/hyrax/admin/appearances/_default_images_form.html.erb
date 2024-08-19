@@ -1,20 +1,20 @@
 <%= simple_form_for @form, url: admin_appearance_path do |f| %>
-  <div class="panel-body">
+  <div class="card-body">
     <%= f.input :default_collection_image, as: :file, wrapper: :vertical_file_input, hint: t('hyrax.admin.appearances.show.forms.default_images.hint'), required: false %>
     <%= f.input :default_collection_image_text, as: :text, label: 'Default collection image alt text', required: false %>
-    <%= image_tag @form.default_collection_image.url, class: "img-responsive" if @form.default_collection_image? %>
+    <%= image_tag @form.default_collection_image.url, class: "img-fluid" if @form.default_collection_image? %>
 
     <%= f.input :default_work_image, as: :file, wrapper: :vertical_file_input, hint: t('hyrax.admin.appearances.show.forms.default_images.hint'), required: false %>
     <%= f.input :default_work_image_text, as: :text, label: 'Default work image alt text', required: false %>
-    <%= image_tag @form.default_work_image.url, class: "img-responsive" if @form.default_work_image? %>
+    <%= image_tag @form.default_work_image.url, class: "img-fluid" if @form.default_work_image? %>
   </div>
-  <div class="panel-footer">
-    <%= f.submit class: 'btn btn-primary pull-right' %>
+  <div class="card-footer">
+    <%= f.submit class: 'btn btn-primary float-right' %>
   </div>
 <% end %>
 
 <% if @form.default_collection_image? || @form.default_work_image? %>
-  <div class="panel-footer">
+  <div class="card-footer">
     <% if @form.default_collection_image? %>
       <%= simple_form_for @form.site, url: main_app.site_path(@form.site) do |f| %>
         <%= f.submit 'Remove default collection image', class: 'btn btn-danger', name: :remove_default_collection_image %>

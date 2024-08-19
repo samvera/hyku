@@ -10,12 +10,12 @@ RSpec.describe 'admin/groups/new', type: :view do
     end
 
     it 'has the "description" tab in an active state' do
-      expect(rendered).to have_selector('.nav-tabs .active a', text: 'Description')
+      expect(rendered).to have_selector('.nav-tabs .nav-item .nav-link.active', text: 'Description')
     end
 
     it 'has disable tabs for actions that require a group to have been created' do
-      expect(rendered).to have_selector('.nav-tabs .disabled a', text: 'Users')
-      expect(rendered).to have_selector('.nav-tabs .disabled a', text: 'Remove')
+      expect(rendered).to have_selector('.nav-tabs .nav-item a.nav-link.disabled', text: 'Users')
+      expect(rendered).to have_selector('.nav-tabs .nav-item a.nav-link.disabled', text: 'Remove')
     end
 
     it 'has an input for name' do

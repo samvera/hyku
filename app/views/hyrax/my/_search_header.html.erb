@@ -1,0 +1,17 @@
+<%# OVERRIDE Hyrax 3.6.0 to add catalog/sort_widget %>
+<%= render 'did_you_mean' %>
+
+<%= render 'facets' %>
+<%= render 'constraints' %>
+
+<div class="row">
+  <div class="col-sm-5">
+    <%= render 'hyrax/my/sort_and_per_page' %>
+    <%= render 'catalog/sort_widget' %>
+  </div>
+  <div class="col-sm-7">
+    <%= render 'search_form' %>
+  </div>
+</div>
+
+<%= render 'batch_actions' %>

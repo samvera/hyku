@@ -1,21 +1,9 @@
 # frozen_string_literal: true
 
+# One of these must run per tenant
 class EmbargoAutoExpiryJob < ApplicationJob
-  non_tenant_job
-  after_perform do |job|
-    reenqueue(job.arguments.first)
+  def perform
+    EmbargoExpiryJob.perform_now
+    EmbargoAutoExpiryJob.set(wait_until: Date.tomorrow.midnight).perform_later
   end
-
-  def perform(account)
-    Apartment::Tenant.switch(account.tenant) do
-      # From Hyrax app/jobs/embargo_expiry_job
-      EmbargoExpiryJob.perform_now
-    end
-  end
-
-  private
-
-    def reenqueue(account)
-      EmbargoAutoExpiryJob.set(wait_until: Date.tomorrow.midnight).perform_later(account)
-    end
 end

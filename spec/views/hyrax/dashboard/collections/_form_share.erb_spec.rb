@@ -8,11 +8,15 @@ RSpec.describe 'hyrax/dashboard/collections/_form_share.html.erb', type: :view d
                     to_key: template.to_key,
                     access_grants: template.access_grants)
   end
-  let(:collection) { stub_model(Collection, share_applies_to_new_works?: false) }
+  let(:collection) { stub_model(Collection) }
+  let(:collection_type) { stub_model(Hyrax::CollectionType, share_applies_to_new_works?: false) }
 
   before do
     assign(:collection, collection)
-    @form = instance_double(Hyrax::Forms::CollectionForm,
+    # We have a helper method defined in the controller
+    view.singleton_class.attr_reader(:collection_type)
+    allow(view).to receive(:collection_type).and_return(collection_type)
+    @form = instance_double(CollectionResourceForm,
                             to_model: collection,
                             permission_template: pt_form,
                             id: '1234xyz',

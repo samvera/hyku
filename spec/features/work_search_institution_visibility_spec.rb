@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Users trying to search for an Institution Work', type: :feature, clean: true, js: true do # rubocop:disable Metrics/LineLength
+RSpec.describe 'Users trying to search for an Institution Work', type: :feature, clean: true, js: true do # rubocop:disable Layout/LineLength
   let(:fake_solr_document) do
     {
       'has_model_ssim': ['GenericWork'],

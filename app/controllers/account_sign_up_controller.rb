@@ -27,24 +27,24 @@ class AccountSignUpController < ProprietorController
 
   private
 
-    def ensure_admin!
-      # Require Admin access to perform any actions
-      authorize! :read, :admin_dashboard
-    end
+  def ensure_admin!
+    # Require Admin access to perform any actions
+    authorize! :read, :admin_dashboard
+  end
 
-    def admin_only_tenant_creation?
-      ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_ADMIN_ONLY_TENANT_CREATION', false))
-    end
+  def admin_only_tenant_creation?
+    ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_ADMIN_ONLY_TENANT_CREATION', false))
+  end
 
-    def first_user_registration_url
-      if current_user
-        new_user_session_url(host: @account.cname)
-      else
-        new_user_registration_url(host: @account.cname)
-      end
+  def first_user_registration_url
+    if current_user
+      new_user_session_url(host: @account.cname)
+    else
+      new_user_registration_url(host: @account.cname)
     end
+  end
 
-    def create_params
-      params.require(:account).permit(:name)
-    end
+  def create_params
+    params.require(:account).permit(:name)
+  end
 end

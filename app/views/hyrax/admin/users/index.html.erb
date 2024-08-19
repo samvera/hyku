@@ -9,16 +9,16 @@
 <% end %>
 
 <% if can? :create, User %>
-  <div class="panel panel-default users-invite">
-    <div class="panel-heading">
+  <div class="card users-invite">
+    <div class="card-header">
         <%= t('.invite_users') %>
     </div>
 
-    <div class="panel-body">
+    <div class="card-body">
       <%# user_invitation_path is provided by devise_invitable %>
-      <%= simple_form_for :user,  url: main_app.user_invitation_path, html: { class: 'form-inline pull-left' } do |f| %>
+      <%= simple_form_for :user,  url: main_app.user_invitation_path, html: { class: 'form-inline d-inline-flex' } do |f| %>
+        <%= f.hint :email %>
         <div class="form-group">
-          <%= f.hint :email %>
           <%= f.label :email, class: "control-label", required: false %>
           <%= f.input_field :email, class: "form-control", value: "" %>
           <%= f.select :role,
@@ -33,12 +33,12 @@
   </div>
 <% end %>
 
-<div class="panel panel-default users-listing">
-  <div class="panel-heading">
+<div class="card users-listing">
+  <div class="card-header">
       <%= t('hyrax.admin.users.index.describe_users_html', count: @presenter.user_count) %>
   </div>
 
-  <div class="panel-body">
+  <div class="card-body">
     <div class="table-responsive">
       <table class="table table-striped datatable">
         <thead>
@@ -46,7 +46,8 @@
             <th></th>
             <th><%= t('.id_label') %></th>
             <th><%= t('.group_label') %></th>
-            <th><%= t('.role_label') %></th>
+            <th><%= t('.group_role_label') %></th>
+            <th><%= t('.site_role_label') %></th>
             <th><%= t('.access_label') %></th>
             <th><%= t('.status_label') %></th>
             <% if can? :destroy, User %>
@@ -54,7 +55,7 @@
             <% end %>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="manage-users-table">
           <% @presenter.users.each do |user| %>
             <tr id="<%= user.email.parameterize %>">
               <td><%= link_to hyrax.user_path(user) do %>
@@ -71,12 +72,28 @@
                   </ul>
               </td>
 
-              <td class="roles"><% roles = @presenter.user_roles(user) %>
+              <td class="group-roles"><% roles = @presenter.user_group_roles(user) %>
                   <ul><% roles.each do |role| %>
-                    <li><%= role.titleize %></li>
+                    <li><%= role.name.titleize %></li>
                     <% end %>
                   </ul>
               </td>
+
+              <td class="site-roles"><% roles = @presenter.user_site_roles(user) %>
+                <ul>
+                  <% roles.each do |role| %>
+                    <li>
+                      <%= role.name.titleize %>
+                      <%= link_to main_app.remove_role_admin_user_path(id: user.id, role_id: role.id), method: :delete, data: { confirm: t('hyrax.admin.users.roles.remove.confirmation', user: user.email, role: role.name.titleize) } do %>
+                        <% if current_ability.admin? || (can?(:edit, User) && role.name != 'admin') %>
+                          <span class="fa fa-remove"></span>
+                        <% end %>
+                      <% end %>
+                    </li>
+                  <% end %>
+                </ul>
+              </td>
+
               <td>
                 <%# in the case that a user is created who never signs in, this is necessary %>
                 <relative-time datetime="<%= @presenter.last_accessed(user).getutc.iso8601 %>" title="<%= @presenter.last_accessed(user).to_formatted_s(:standard) %>">

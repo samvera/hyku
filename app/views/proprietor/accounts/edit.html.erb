@@ -4,9 +4,9 @@
 
 <div class="row">
   <div class="col-md-12">
-    <div class="panel panel-default account-form">
+    <div class="card account-form">
       <%= simple_form_for @account, url: [:proprietor, @account], html: { class: 'form' } do |f| %>
-        <div class="panel-body">
+        <div class="card-body">
           <% if @account.errors.any? %>
             <div id="error_explanation" class="alert alert-danger">
               <h2><%= pluralize(@account.errors.count, "error") %> prohibited this account from being saved:</h2>
@@ -28,7 +28,7 @@
             <%= f.simple_fields_for :domain_names do |domain_name| %>
               <%= render 'domain_name_fields', f: domain_name %>
             <% end %>
-            <div 'class='links'>
+            <div class='links'>
               <%= link_to_add_association 'add domain name', f, :domain_names %>
             </div>
           </div>
@@ -44,7 +44,7 @@
               <%= f.simple_fields_for :full_account_cross_searches do |full_account_cross_search| %>
                 <%= render 'full_account_cross_search_fields', f: full_account_cross_search %>
               <% end %>
-              <div 'class='links'>
+              <div class='links'>
                 <%= link_to_add_association 'Add account to search', f, :full_account_cross_searches %>
               </div>
             </div>
@@ -52,12 +52,12 @@
 
           <% unless @account.search_only? %>
             <h3><%= t(".data_cite_endpoint") %></h3>
-					  <%= f.simple_fields_for :data_cite_endpoint do |s| %>
-						  <%= s.input :mode, collection: ['test', 'production'], required: false  %>
-						  <%= s.input :prefix, required: false  %>
-						  <%= s.input :username, required: false  %>
-						  <%= s.input :password, input_html: { value: @account.data_cite_endpoint.password }, required: false  %>
-					  <% end %>
+            <%= f.simple_fields_for :data_cite_endpoint do |s| %>
+              <%= s.input :mode, collection: ['test', 'production'], required: false  %>
+              <%= s.input :prefix, required: false  %>
+              <%= s.input :username, required: false  %>
+              <%= s.input :password, input_html: { value: @account.data_cite_endpoint.password }, required: false  %>
+            <% end %>
           <% end %>
 
           <h3><%= t(".solr_endpoint") %></h3>
@@ -73,6 +73,8 @@
             <% end %>
           <% end %>
 
+        </div>
+        <div class="card-footer">
           <%= f.submit class: 'btn btn-primary' %>
           <%= link_to t('simple_form.cancel'), proprietor_accounts_path, class: 'btn btn-link action-cancel' %>
         </div>

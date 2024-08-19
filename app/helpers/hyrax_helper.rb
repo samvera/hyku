@@ -4,6 +4,7 @@ module HyraxHelper
   include ::BlacklightHelper
   include Hyrax::BlacklightOverride
   include Hyrax::HyraxHelperBehavior
+  include Hyku::BlacklightHelperBehavior
 
   def application_name
     Site.application_name || super
@@ -21,12 +22,25 @@ module HyraxHelper
     Site.instance.banner_image? ? Site.instance.banner_image.url : super
   end
 
+  def favicon(size)
+    icon = Site.instance.favicon
+    if icon
+      case icon
+      when FaviconUploader
+        return Site.instance.favicon.url(size)
+      when String
+        return Site.instance.favicon
+      end
+    end
+    nil
+  end
+
   def logo_image
     Site.instance.logo_image? ? Site.instance.logo_image.url : false
   end
 
   def block_for(name:)
-    ContentBlock.block_for(name: name, fallback_value: false)
+    ContentBlock.block_for(name:, fallback_value: false)
   end
 
   def directory_image

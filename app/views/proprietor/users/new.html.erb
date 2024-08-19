@@ -4,26 +4,26 @@
 
 <div class="row">
   <div class="col-md-12">
-    <div class="panel panel-default user-form">
+    <div class="card user-form">
       <%= simple_form_for @user, url: [:proprietor, @user], html: { class: 'form' } do |f| %>
-        <div class="panel-body">
-            <% if @user.errors.any? %>
-              <div id="error_explanation" class="alert alert-danger">
-                <%= pluralize(@user.errors.count, "error") %> prohibited this repository from being saved:
-                <ul>
-                  <% @user.errors.messages.each do |key, messages| %>
-                    <% next unless messages.present? %>
-                    <li><%= key %> <%= messages.join(' and ') %></li>
-                  <% end %>
-                </ul>
-              </div>
-            <% end %>
+        <div class="card-body">
+          <% if @user.errors.any? %>
+            <div id="error_explanation" class="alert alert-danger">
+              <%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:
+              <ul>
+                <% @user.errors.messages.each do |key, messages| %>
+                  <% next unless messages.present? %>
+                  <li><%= key %> <%= messages.join(' and ') %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
 
-            <%= render 'form', user: @user, f: f %>
+          <%= render 'form', user: @user, f: f %>
 
-            <%= f.submit class: 'btn btn-primary' %>
-            <%= link_to t('simple_form.cancel'), proprietor_users_path, class: 'btn btn-link action-cancel' %>
-          </div>
+          <%= f.submit class: 'btn btn-primary' %>
+          <%= link_to t('simple_form.cancel'), proprietor_users_path, class: 'btn btn-link action-cancel' %>
+        </div>
       <% end %>
     </div>
   </div>

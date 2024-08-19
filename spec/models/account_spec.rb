@@ -82,6 +82,7 @@ RSpec.describe Account, type: :model do
       allow(ENV).to receive(:[]).and_call_original
       allow(ENV).to receive(:[]).with('HOST').and_return('system-host')
       expect(described_class.admin_host).to eq 'system-host'
+      allow(ENV).to receive(:[]).and_call_original # "un-stub" ENV
     end
 
     it 'falls back to localhost' do
@@ -90,6 +91,7 @@ RSpec.describe Account, type: :model do
       allow(ENV).to receive(:[]).and_call_original
       allow(ENV).to receive(:[]).with('HOST').and_return(nil)
       expect(described_class.admin_host).to eq 'localhost'
+      allow(ENV).to receive(:[]).and_call_original # "un-stub" ENV
     end
   end
 
@@ -130,7 +132,7 @@ RSpec.describe Account, type: :model do
       it "reverts to using file store when cache is off" do
         account.settings[:cache_api] = false
         account.switch!
-        expect(Rails.application.config.cache_store).to eq([:file_store, "/app/samvera/file_cache"])
+        expect(Rails.application.config.cache_store).to eq([:file_store, described_class::DEFAULT_FILE_CACHE_STORE])
       end
     end
 
@@ -140,12 +142,12 @@ RSpec.describe Account, type: :model do
       it "uses the file store" do
         expect(Rails.application.config.action_controller.perform_caching).to be_falsey
         expect(ActionController::Base.perform_caching).to be_falsey
-        expect(Rails.application.config.cache_store).to eq([:file_store, "/app/samvera/file_cache"])
+        expect(Rails.application.config.cache_store).to eq([:file_store, described_class::DEFAULT_FILE_CACHE_STORE])
       end
     end
 
     it 'switches the ActiveFedora solr connection' do
-      expect(ActiveFedora::SolrService.instance.conn.uri.to_s).to eq 'http://example.com/solr/'
+      expect(Hyrax::SolrService.connection.uri.to_s).to eq 'http://example.com/solr/'
     end
 
     it 'switches the ActiveFedora fcrepo connection' do
@@ -163,7 +165,7 @@ RSpec.describe Account, type: :model do
   end
 
   describe '#switch' do
-    let!(:previous_solr_url) { ActiveFedora::SolrService.instance.conn.uri.to_s }
+    let!(:previous_solr_url) { Hyrax::SolrService.connection.uri.to_s }
     let!(:previous_redis_namespace) { 'hyrax' }
     let!(:previous_fedora_host) { ActiveFedora.fedora.host }
     let!(:previous_data_cite_mode) { Hyrax::DOI::DataCiteRegistrar.mode }
@@ -184,24 +186,27 @@ RSpec.describe Account, type: :model do
     end
 
     it 'switches to the account-specific connection' do
-      subject.switch do
-        expect(ActiveFedora::SolrService.instance.conn.uri.to_s).to eq 'http://example.com/solr/'
-        expect(ActiveFedora.fedora.host).to eq 'http://example.com/fedora'
-        expect(ActiveFedora.fedora.base_path).to eq '/dev'
-        expect(Hyrax.config.redis_namespace).to eq 'foobaz'
-        expect(Hyrax::DOI::DataCiteRegistrar.mode).to eq 'test'
-        expect(Hyrax::DOI::DataCiteRegistrar.prefix).to eq '10.1234'
-        expect(Hyrax::DOI::DataCiteRegistrar.username).to eq 'user123'
-        expect(Hyrax::DOI::DataCiteRegistrar.password).to eq 'pass123'
-        expect(Rails.application.routes.default_url_options[:host]).to eq account.cname
-      end
+      expect(Hyrax::SolrService.connection.uri.to_s).not_to eq 'http://example.com/solr/'
+      expect do
+        subject.switch do
+          expect(Hyrax::SolrService.connection.uri.to_s).to eq 'http://example.com/solr/'
+          expect(ActiveFedora.fedora.host).to eq 'http://example.com/fedora'
+          expect(ActiveFedora.fedora.base_path).to eq '/dev'
+          expect(Hyrax.config.redis_namespace).to eq 'foobaz'
+          expect(Hyrax::DOI::DataCiteRegistrar.mode).to eq 'test'
+          expect(Hyrax::DOI::DataCiteRegistrar.prefix).to eq '10.1234'
+          expect(Hyrax::DOI::DataCiteRegistrar.username).to eq 'user123'
+          expect(Hyrax::DOI::DataCiteRegistrar.password).to eq 'pass123'
+          expect(Rails.application.routes.default_url_options[:host]).to eq account.cname
+        end
+      end.not_to change { Hyrax::SolrService.connection.uri.to_s }
     end
 
     it 'resets the active connections back to the defaults' do
       subject.switch do
         # no-op
       end
-      expect(ActiveFedora::SolrService.instance.conn.uri.to_s).to eq previous_solr_url
+      expect(Hyrax::SolrService.connection.uri.to_s).to eq previous_solr_url
       expect(ActiveFedora.fedora.host).to eq previous_fedora_host
       expect(Hyrax.config.redis_namespace).to eq previous_redis_namespace
       # datacite mode is reset to test in between for safety.
@@ -217,7 +222,7 @@ RSpec.describe Account, type: :model do
         subject.solr_endpoint = nil
         expect(subject.solr_endpoint).to be_kind_of NilSolrEndpoint
         subject.switch do
-          expect { ActiveFedora::SolrService.instance.conn.get 'foo' }.to raise_error RSolr::Error::ConnectionRefused
+          expect { Hyrax::SolrService.connection.get 'foo' }.to raise_error RSolr::Error::ConnectionRefused
         end
       end
 
@@ -339,7 +344,7 @@ RSpec.describe Account, type: :model do
       it 'solr_endpoint' do
         account2 = described_class.new(name: 'other', solr_endpoint: endpoint)
         expect { account2.save }.to raise_error(ActiveRecord::RecordNotUnique)
-        # Note: this is different than just populating account2.errors, because it is a FK
+        # NOTE: this is different than just populating account2.errors, because it is a FK
       end
     end
   end
@@ -348,7 +353,7 @@ RSpec.describe Account, type: :model do
     let!(:account) { FactoryBot.create(:account, tenant: "59500a46-b1fb-412d-94d6-b928e91ef4d9") }
 
     before do
-      Site.update(account: account)
+      Site.update(account:)
       Site.instance.admin_emails = ["test@test.com", "test@test.org"]
     end
 
@@ -362,7 +367,7 @@ RSpec.describe Account, type: :model do
     let!(:account) { FactoryBot.create(:account, tenant: "02839e1d-b4a4-451a-ab83-4b8968621f1e") }
 
     before do
-      Site.update(account: account)
+      Site.update(account:)
       Site.instance.admin_emails = ["test@test.com", "test@test.org"]
     end
 

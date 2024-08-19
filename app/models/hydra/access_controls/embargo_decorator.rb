@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hydra-access-controls 12.0.1
+# OVERRIDE Hydra-access-controls v12.1.0
 # Fix releasing embargos on the day they are expired - this solves a 1 second bug around how
 # midnights are calculated, which causes day of embargos to incorrectly set the permissions to private
 module Hydra

@@ -32,6 +32,9 @@ extraVolumeMounts: &volMounts
   - name: uploads
     mountPath: /app/samvera/hyrax-webapp/tmp/network_files
     subPath: network-files
+  - name: uploads
+    mountPath: /app/samvera/hyrax-webapp/storage/files
+    subPath: storage-files
 
 ingress:
   enabled: true
@@ -39,9 +42,11 @@ ingress:
     - host: hyku-demo.$BASE_URL
       paths:
         - path: /
+          pathType: ImplementationSpecific
     - host: "*.hyku-demo.$BASE_URL"
       paths:
         - path: /
+          pathType: ImplementationSpecific
   annotations: {
     kubernetes.io/ingress.class: "nginx",
     nginx.ingress.kubernetes.io/proxy-body-size: "0",
@@ -97,7 +102,7 @@ extraEnvVars: &envVars
   - name: PASSENGER_APP_ENV
     value: production
   - name: RAILS_CACHE_STORE_URL
-    value: redis://:staging@hyku-demo-redis-master:6379/demo
+    value: redis://:staging@hyku-demo-redis-master:6379/0
   - name: RAILS_ENV
     value: production
   - name: RAILS_LOG_TO_STDOUT
@@ -109,7 +114,7 @@ extraEnvVars: &envVars
   - name: REDIS_HOST
     value: hyku-demo-redis-master
   - name: REDIS_URL
-    value: redis://:staging@hyku-demo-redis-master:6379/demo
+    value: redis://:staging@hyku-demo-redis-master:6379/0
   - name: HYRAX_ACTIVE_JOB_QUEUE
     value: sidekiq
   - name: HYKU_BULKRAX_ENABLED
@@ -120,10 +125,14 @@ extraEnvVars: &envVars
     value: "false"
   - name: HYRAX_FITS_PATH
     value: /app/fits/fits.sh
+  - name: HYRAX_VALKYRIE
+    value: "true"
   - name: HYKU_ADMIN_HOST
     value: hyku-demo.$BASE_URL
   - name: HYKU_ADMIN_ONLY_TENANT_CREATION
     value: "true"
+  - name: HYKU_BLOCK_VALKYRIE_REDIRECT
+    value: "false"
   - name: HYKU_ALLOW_SIGNUP
     value: "false"
   - name: HYKU_DEFAULT_HOST
@@ -132,22 +141,26 @@ extraEnvVars: &envVars
     value: "true"
   - name: HYKU_ROOT_HOST
     value: hyku-demo.$BASE_URL
+  - name: HYKU_SHOW_BACKTRACE
+    value: "true"
   - name: HYKU_USER_DEFAULT_PASSWORD
     value: password
+  - name: SMTP_ADDRESS
+    value: "maildev-smtp.maildev.svc.cluster.local"
+  - name: SMTP_DOMAIN
+    value: "maildev-smtp.maildev.svc.cluster.local"
   - name: SMTP_ENABLED
     value: "true"
+  - name: SMTP_PORT
+    value: "1025"
+  - name: SMTP_TYPE
+    value: "plain"
   - name: SMTP_USER_NAME
-    value: $SMTP_USER_NAME
+    value: "admin"
+  - name: SMTP_STARTTLS
+    value: "false"
   - name: SMTP_PASSWORD
     value: $SMTP_PASSWORD
-  - name: SMTP_ADDRESS
-    value: smtp.mailtrap.io
-  - name: SMTP_DOMAIN
-    value: smtp.mailtrap.io
-  - name: SMTP_PORT
-    value: "2525"
-  - name: SMTP_TYPE
-    value: cram_md5
   - name: SOLR_ADMIN_USER
     value: admin
   - name: SOLR_ADMIN_PASSWORD
@@ -168,6 +181,8 @@ extraEnvVars: &envVars
     value: $SENTRY_DSN
   - name: SENTRY_ENVIRONMENT
     value: $SENTRY_ENVIRONMENT
+  - name: VALKYRIE_TRANSITION
+    value: "true"
 worker:
   replicaCount: 1
   extraVolumeMounts: *volMounts
@@ -193,9 +208,12 @@ fcrepo:
 postgresql:
   enabled: false
 redis:
-  cluster:
-    enabled: false
-  password: staging
+  enabled: true
+  architecture: standalone
+  auth:
+    password: staging
+
+
 solr:
   enabled: false
 

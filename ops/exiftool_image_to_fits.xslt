@@ -5,13 +5,13 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:import href="exiftool_common_to_fits.xslt"/>
 <xsl:template match="/">
 
-    <fits xmlns="http://hul.harvard.edu/ois/xml/ns/fits/fits_output">   
+    <fits xmlns="http://hul.harvard.edu/ois/xml/ns/fits/fits_output">
 
     <xsl:apply-imports/>
-    
+
     <metadata>
     <image>
-    <!-- 
+    <!--
       <exifByteOrder>
         <xsl:value-of select="exiftool/ExifByteOrder"/>
       </exifByteOrder>
@@ -32,28 +32,28 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
               <xsl:value-of select="string('JPEG')"/>
             </xsl:when>
             <xsl:otherwise>
-              <xsl:value-of select="exiftool/Compression[1]"/>		
+              <xsl:value-of select="exiftool/Compression[1]"/>
             </xsl:otherwise>
           </xsl:choose>
         </compressionScheme>
       </xsl:if>
       <imageWidth>
         <xsl:choose>
-          <xsl:when test="exiftool/ExifImageWidth">
-            <xsl:value-of select="exiftool/ExifImageWidth[1]"/>
+          <xsl:when test="exiftool/ImageWidth">
+            <xsl:value-of select="exiftool/ImageWidth[1]"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="exiftool/ImageWidth[1]"/>	
+            <xsl:value-of select="exiftool/ExifImageWidth[1]"/>
           </xsl:otherwise>
         </xsl:choose>
       </imageWidth>
       <imageHeight>
         <xsl:choose>
-          <xsl:when test="exiftool/ExifImageHeight">
-            <xsl:value-of select="exiftool/ExifImageHeight[1]"/>
+          <xsl:when test="exiftool/ImageHeight">
+            <xsl:value-of select="exiftool/ImageHeight[1]"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="exiftool/ImageHeight[1]"/>	
+            <xsl:value-of select="exiftool/ExifImageHeight[1]"/>
           </xsl:otherwise>
         </xsl:choose>
       </imageHeight>
@@ -71,7 +71,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
             </xsl:if>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="exiftool/PhotometricInterpretation[1]"/>	
+            <xsl:value-of select="exiftool/PhotometricInterpretation[1]"/>
           </xsl:otherwise>
         </xsl:choose>
       </colorSpace>
@@ -94,7 +94,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
       <YCbCrPositioning>
         <xsl:value-of select="exiftool/YCbCrPositioning[1]"/>
       </YCbCrPositioning>
-      
+
       <!--  orientation -->
       <orientation>
         <xsl:variable name="orientation" select="exiftool/Orientation[1]"/>
@@ -128,8 +128,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
           </xsl:otherwise> -->
         </xsl:choose>
       </orientation>
-      
-      
+
+
       <xsl:choose>
           <xsl:when test="string(exiftool/CaptureXResolutionUnit[1])">
             <samplingFrequencyUnit>
@@ -150,7 +150,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                         <xsl:otherwise>
                         <xsl:value-of select="exiftool/ResolutionUnit[1]"/>
                       </xsl:otherwise>
-                  </xsl:choose> 
+                  </xsl:choose>
           </samplingFrequencyUnit>
           </xsl:when>
       </xsl:choose>
@@ -165,7 +165,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
               <xsl:value-of select="exiftool/XResolution[1]"/>
           </xSamplingFrequency>
           </xsl:when>
-      </xsl:choose>			
+      </xsl:choose>
       <xsl:choose>
           <xsl:when test="string(exiftool/CaptureYResolution[1])">
             <ySamplingFrequency>
@@ -177,11 +177,11 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
               <xsl:value-of select="exiftool/YResolution[1]"/>
           </ySamplingFrequency>
           </xsl:when>
-      </xsl:choose>	
+      </xsl:choose>
       <!--  bits per sample -->
         <xsl:choose>
           <xsl:when test="exiftool/ColorComponents">
-              <bitsPerSample>        
+              <bitsPerSample>
                 <xsl:call-template name="precisioncomponents">
                   <xsl:with-param name="components" select="exiftool/ColorComponents"/>
                   <xsl:with-param name="precision"  select="exiftool/BitsPerSample[last()]"/>
@@ -194,7 +194,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                   <xsl:value-of select="translate(exiftool/BitsPerSample[1],',','')"/>
                 </bitsPerSample>
               </xsl:otherwise>
-          </xsl:choose>	
+          </xsl:choose>
       <samplesPerPixel>
         <xsl:value-of select="exiftool/SamplesPerPixel[1]"/>
       </samplesPerPixel>
@@ -204,16 +204,16 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
       <colorMap>
         <xsl:value-of select="exiftool/ColorMap[1]"/>
       </colorMap>
-      
+
       <!-- GrayResponseCurve is repeatable -->
-      <!-- 
+      <!--
       <xsl:for-each select="exiftool/GrayResponseCurve">
         <grayResponseCurve>
             <xsl:value-of select="."/>
         </grayResponseCurve>
       </xsl:for-each>
       -->
-      
+
       <grayResponseUnit>
         <xsl:value-of select="exiftool/GrayResponseUnit[1]"/>
       </grayResponseUnit>
@@ -223,38 +223,38 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
       <whitePointYValue>
         <xsl:value-of select='substring-after(exiftool/WhitePoint[1]," ")'/>
       </whitePointYValue>
-      
+
       <!-- parse through PrimaryChromaticities for the 6 pieces -->
       <xsl:variable name="pc" select="exiftool/PrimaryChromaticities[1]"/>
       <primaryChromaticitiesRedX>
         <xsl:value-of select='substring-before($pc,", ")'/>
       </primaryChromaticitiesRedX>
-      
-      <xsl:variable name="afterRedX" select='substring-after($pc,", ")'/>		
+
+      <xsl:variable name="afterRedX" select='substring-after($pc,", ")'/>
       <primaryChromaticitiesRedY>
         <xsl:value-of select='substring-before($afterRedX,", ")'/>
       </primaryChromaticitiesRedY>
-      
+
       <xsl:variable name="afterRedY" select='substring-after($afterRedX,", ")'/>
       <primaryChromaticitiesGreenX>
         <xsl:value-of select='substring-before($afterRedY,", ")'/>
       </primaryChromaticitiesGreenX>
-      
+
       <xsl:variable name="afterGreenX" select='substring-after($afterRedY,", ")'/>
       <primaryChromaticitiesGreenY>
         <xsl:value-of select='substring-before($afterGreenX,", ")'/>
       </primaryChromaticitiesGreenY>
-      
+
       <xsl:variable name="afterGreenY" select='substring-after($afterGreenX,", ")'/>
       <primaryChromaticitiesBlueX>
         <xsl:value-of select='substring-before($afterGreenY,", ")'/>
       </primaryChromaticitiesBlueX>
-            
+
       <xsl:variable name="afterBlueX" select='substring-after($afterGreenY,", ")'/>
       <primaryChromaticitiesBlueY>
         <xsl:value-of select='$afterBlueX'/>
       </primaryChromaticitiesBlueY>
-      
+
       <xsl:variable name="source" select="exiftool/FileSource[1]"/>
       <captureDevice>
         <xsl:choose>
@@ -266,8 +266,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
           </xsl:otherwise>
         </xsl:choose>
       </captureDevice>
-      
-      <!--  make and model are ambiguous for identifying 
+
+      <!--  make and model are ambiguous for identifying
             a digital camera or scanner source
             so only use them as digital camera values
             if the file source or shutter speed is specified,
@@ -288,7 +288,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
           <digitalCameraModelName>
               <xsl:value-of select="exiftool/Model[1]"/>
           </digitalCameraModelName>
-        </xsl:when>		
+        </xsl:when>
         <xsl:otherwise>
           <scannerManufacturer>
             <xsl:value-of select="exiftool/Make[1]"/>
@@ -298,7 +298,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
           </scannerModelName>
         </xsl:otherwise>
       </xsl:choose>
-      
+
       <scanningSoftwareName>
         <xsl:value-of select="exiftool/Software[1]"/>
       </scanningSoftwareName>
@@ -359,7 +359,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
       </spectralSensitivity>
       <isoSpeedRating>
         <xsl:value-of select="exiftool/ISO[1]"/>
-      </isoSpeedRating>			
+      </isoSpeedRating>
       <oECF>
         <xsl:value-of select="exiftool/Opto-ElectricConvFactor[1]"/>
       </oECF>
@@ -517,10 +517,10 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         </xsl:choose>
       </flash>
       <focalLength>
-        <xsl:value-of select="replace(exiftool/FocalLength[1],' mm','')"/>				
+        <xsl:value-of select="replace(exiftool/FocalLength[1],' mm','')"/>
       </focalLength>
       <flashEnergy>
-        <xsl:value-of select="exiftool/FlashEnergy[1]"/>			
+        <xsl:value-of select="exiftool/FlashEnergy[1]"/>
       </flashEnergy>
       <exposureIndex>
         <xsl:value-of select="exiftool/ExposureIndex[1]"/>
@@ -554,13 +554,13 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
       <cfaPattern2>
         <xsl:value-of select="exiftool/CFAPattern2[1]"/>
       </cfaPattern2>
-            
+
       <!-- GPS FIELDS -->
       <gpsVersionID>
         <xsl:value-of select="exiftool/GPSVersionID[1]"/>
       </gpsVersionID>
-      
-      
+
+
       <gpsLatitudeRef>
         <xsl:variable name="gpsLatRef" select="exiftool/GPSLatitudeRef"/>
         <xsl:choose>
@@ -572,11 +572,11 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
           </xsl:when>
         </xsl:choose>
       </gpsLatitudeRef>
-          
+
       <gpsLatitude>
         <xsl:value-of select="exiftool/GPSLatitude[last()]"/>
-      </gpsLatitude>			
-      
+      </gpsLatitude>
+
       <gpsLongitudeRef>
         <xsl:variable name="gpsLonRef" select="exiftool/GPSLongitudeRef"/>
         <xsl:choose>
@@ -588,11 +588,11 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
           </xsl:when>
         </xsl:choose>
       </gpsLongitudeRef>
-          
+
       <gpsLongitude>
         <xsl:value-of select="exiftool/GPSLongitude[last()]"/>
-      </gpsLongitude>	
-      
+      </gpsLongitude>
+
       <gpsAltitudeRef>
         <xsl:variable name="gpsAltRef" select="exiftool/GPSAltitudeRef"/>
         <xsl:choose>
@@ -693,7 +693,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
       </gpsDestLatitudeRef>
       <gpsDestLatitude>
         <xsl:value-of select="exiftool/GPSDestLatitude[1]"/>
-      </gpsDestLatitude>		
+      </gpsDestLatitude>
       <gpsDestLongitudeRef>
         <xsl:variable name="gpsDestLonRef" select="exiftool/GPSDestLongitudeRef[1]"/>
         <xsl:choose>
@@ -707,7 +707,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
       </gpsDestLongitudeRef>
       <gpsDestLongitude>
         <xsl:value-of select="exiftool/GPSDestLongitude[1]"/>
-      </gpsDestLongitude>			
+      </gpsDestLongitude>
       <gpsDestBearingRef>
         <xsl:variable name="gpsLatRef" select="exiftool/GPSDestBearingRef[1]"/>
         <xsl:choose>
@@ -759,9 +759,9 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
           </xsl:when>
         </xsl:choose>
       </gpsDifferential>
-    </image>				
+    </image>
     </metadata>
-  </fits>	
+  </fits>
 
 </xsl:template>
 

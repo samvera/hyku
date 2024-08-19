@@ -19,6 +19,13 @@ require 'webmock/rspec'
 require 'i18n/debug' if ENV['I18N_DEBUG']
 require 'rspec/its'
 
+hyrax_valkyrie_helper_file = 'hyrax_with_valkyrie_helper'
+if defined?(HykuKnapsack)
+  require_relative Rails.root.join('spec', hyrax_valkyrie_helper_file)
+else
+  require hyrax_valkyrie_helper_file
+end
+
 RSpec.configure do |config|
   config.before(:suite) do
     WebMock.disable_net_connect!(allow_localhost: true,

@@ -1,0 +1,29 @@
+---
+it:
+  hyrax:
+    etd:
+      labels:
+        admin_note: Note Amministrative
+        committee_member: membro del Comitato
+        creator: Autore
+        date_created: Data
+        degree_discipline: Disciplina
+        degree_grantor: Concedente
+        degree_level: Livello
+        degree_name: Grado
+        description: Descrizione
+        related_url: Relazione
+        resource_type: genere
+        rights_statement: Diritti
+    icons:
+      etd: fa fa-file-text-o
+    select_type:
+      etd:
+        description: ETD opere
+        name: ETD
+  simple_form:
+    labels:
+      defaults:
+        advisor: Consulente
+        department: Dipartimento
+        format: Formato

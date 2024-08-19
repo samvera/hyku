@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# rubocop:disable Metrics/BlockLength
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -11,7 +14,7 @@ Rails.application.configure do
   config.eager_load = true
 
   # Full error reports are disabled and caching is turned on.
-  config.consider_all_requests_local       = false
+  config.consider_all_requests_local = ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_SHOW_BACKTRACE', 'false'))
   config.action_controller.perform_caching = true
 
   # Disable serving static files from the `/public` folder by default since
@@ -19,7 +22,7 @@ Rails.application.configure do
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
   config.public_file_server.headers = {
     'Cache-Control' => 'public, s-maxage=31536000, maxage=15552000',
-    'Expires' => "#{1.year.from_now.to_formatted_s(:rfc822)}"
+    'Expires' => 1.year.from_now.to_formatted_s(:rfc822).to_s
   }
   config.middleware.insert_before ActionDispatch::Static, NoCacheMiddleware, [/dashboard\/collections\/.*\/edit/, /uploaded_collection_thumbnails/]
   # Compress JavaScripts and CSS.
@@ -44,23 +47,26 @@ Rails.application.configure do
   # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  # config.force_ssl = true
+  config.force_ssl = true
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
   config.log_level = :debug
 
   # Prepend all log lines with the following tags.
-  config.log_tags = [ :request_id ]
+  config.log_tags = [:request_id]
 
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
 
+  config.cache_store = :redis_cache_store, { url: ENV['RAILS_CACHE_STORE_URL'] } if /^redis/.match?(ENV.fetch('RAILS_CACHE_STORE_URL', ''))
+
   # Use a real queuing backend for Active Job (and separate queues per environment)
   require 'active_job/queue_adapters/better_active_elastic_job_adapter'
-  config.active_job.queue_adapter     = ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq')
+  config.active_job.queue_adapter = ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq')
   # config.active_job.queue_name_prefix = "hyku_#{Rails.env}"
 
+  config.action_mailer.default_options = { from: ENV.fetch('HYKU_CONTACT_EMAIL', 'changeme@example.com') }
   if ENV['SMTP_ENABLED'].present? && ENV['SMTP_ENABLED'].to_s == 'true'
     config.action_mailer.smtp_settings = {
       user_name: ENV['SMTP_USER_NAME'],
@@ -68,7 +74,7 @@ Rails.application.configure do
       address: ENV['SMTP_ADDRESS'],
       domain: ENV['SMTP_DOMAIN'],
       port: ENV['SMTP_PORT'],
-      enable_starttls_auto: true,
+      enable_starttls_auto: ActiveModel::Type::Boolean.new.cast(ENV.fetch('SMTP_STARTTLS', true)),
       authentication: ENV['SMTP_TYPE']
     }
     # ActionMailer Config
@@ -113,3 +119,4 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 end
+# rubocop:enable Metrics/BlockLength

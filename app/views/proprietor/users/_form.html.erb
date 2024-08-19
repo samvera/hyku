@@ -1,8 +1,8 @@
 <div class="form-inputs">
   <%= f.input :display_name, label: 'Display Name' %>
   <%= f.input :email, required: true, hint: '' %>
-  <%= f.input :is_superadmin, as: :boolean %>
-  <%= f.input :password, required: f.object.new_record? ? true : false %>
+  <%= f.input :superadmin?, as: :boolean %>
+  <%= f.input :password, required: f.object.new_record? ? true : false, hint: 'Only if creating or changing' %>
   <%= f.input :facebook_handle %>
   <%= f.input :twitter_handle %>
   <%= f.input :googleplus_handle %>

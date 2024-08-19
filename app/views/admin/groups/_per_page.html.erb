@@ -5,7 +5,7 @@
   <% if params[:page].present? %>
     <%= f.input :page, as: :hidden, input_html: { name: :page, value: params[:page] } %>
   <% end %>
-  <%= f.input :per, collection: [10, 25, 100], include_blank: false, required: false, selected: params[:per], input_html: { class: 'js-per-page__select', name: :per } %>
+  <%= f.input :per, collection: [10, 25, 100], include_blank: false, required: false, selected: params[:per], input_html: { class: 'js-per-page__select custom-select', name: :per } %>
   <%= t('hyku.admin.groups.label.per_page') %>
-  <%= f.submit class: 'btn btn-default js-per-page__submit' %>
+  <%= f.submit class: 'btn btn-secondary js-per-page__submit' %>
 <% end %>

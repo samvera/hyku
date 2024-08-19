@@ -33,12 +33,12 @@ RSpec.describe 'admin/groups/users', type: :view do
     end
 
     it 'has the "users" tab in an active state' do
-      expect(rendered).to have_selector('.nav-tabs .active a', text: 'Users')
+      expect(rendered).to have_selector('.nav-tabs .nav-item a.nav-link.active', text: 'Users')
     end
 
     it 'has tabs for other actions on the group' do
-      expect(rendered).to have_selector('.nav-tabs li a', text: 'Description')
-      expect(rendered).to have_selector('.nav-tabs li a', text: 'Remove')
+      expect(rendered).to have_selector('.nav-tabs .nav-item a.nav-link', text: 'Description')
+      expect(rendered).to have_selector('.nav-tabs .nav-item a.nav-link', text: 'Remove')
     end
 
     it 'has a user search control' do

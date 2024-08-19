@@ -1,10 +1,10 @@
-<%# OVERRIDE Hyrax v3.4.2 Use Hyrax::Groups for groups select box %>
+<%# OVERRIDE Hyrax v5.0.0rc2 Use Hyrax::Groups for groups select box %>
 <div id="participants" class="tab-pane">
-  <div class="panel panel-default labels">
-    <div class="panel-body">
-      <h2><%= t('.add_participants') %></h2>
+  <div class="card labels edit-sharing-tab">
+    <div class="card-body">
+      <h2 class="h3"><%= t('.add_participants') %></h2>
       <% access_options = options_for_select([['Manager', 'manage'], ['Depositor', 'deposit'], ['Viewer', 'view']]) %>
-      <%= simple_form_for @form.permission_template,
+      <%= simple_form_for collection_permission_template_form_for(form: @form),
                           url: [hyrax, :admin, @form, :permission_template],
                           html: { id: 'group-participants-form' } do |f| %>
         <div class="clearfix spacer">
@@ -27,14 +27,14 @@
                           { prompt: "Select a role..." },
                           class: 'form-control' %>
 
-              <%= f.submit t('helpers.submit.hyrax_permission_template_access.create'), class: 'btn btn-info' %>
+              <%= f.submit t('helpers.submit.hyrax_permission_template_access.create'), class: 'btn btn-secondary ml-2' %>
             </div>
           </div>
         <% end %>
         </div>
       <% end %>
 
-      <%= simple_form_for @form.permission_template,
+      <%= simple_form_for collection_permission_template_form_for(form: @form),
                           url: [hyrax, :admin, @form, :permission_template],
                           html: { id: 'user-participants-form' } do |f| %>
         <%= f.fields_for 'access_grants_attributes',
@@ -53,19 +53,19 @@
                             { prompt: "Select a role..." },
                             class: 'form-control' %>
 
-              <%= f.submit t('helpers.submit.hyrax_permission_template_access.create'), class: 'btn btn-info' %>
-              <p class="help-block"><%= t('hyrax.admin.admin_sets.form.note') %></p>
+              <%= f.submit t('helpers.submit.hyrax_permission_template_access.create'), class: 'btn btn-secondary ml-2' %>
+              <p class="form-text"><%= t('hyrax.admin.admin_sets.form.note') %></p>
             </div>
           </div>
         <% end %>
       <% end %>
 
-      <fieldset class="admin-set-participants">
-        <legend><%= t(".current_participants") %></legend>
+      <h2 class="h3"><%= t(".current_participants") %></h2>
+      <fieldset class="admin-set-participants section-collection-sharing">
         <%= render 'form_participant_table', access: 'managers', filter: :manage? %>
         <%= render 'form_participant_table', access: 'depositors', filter: :deposit? %>
         <%= render 'form_participant_table', access: 'viewers', filter: :view? %>
       </fieldset>
-    </div>
+    </div><!-- /.card-body -->
   </div>
 </div>

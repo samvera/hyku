@@ -1,4 +1,4 @@
- <!-- OVERRIDE Hyrax v3.4.1 to add text for collection banner image 
+ <!-- OVERRIDE Hyrax v5.0.0rc2 to add text for collection banner image
     also added image tags to show logo images... js templates branding to show them seems to be broken
     uses Hyrax::Forms::CollectionForm -->
 
@@ -15,29 +15,30 @@
 
     <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
     <div class="row fileupload-buttonbar">
-      <div class="col-sm-3">
+      <div class="col-4">
         <!-- The fileinput-button span is used to style the file input field as button -->
         <span class="btn btn-success fileinput-button">
-          <span class="glyphicon glyphicon-plus"></span>
+          <span class="fa fa-plus"></span>
           <span><%= t('.choose_file') %></span>
           <input type="file" name="files[]" single />
         </span>
-      </div> <!-- end col-xs-4 -->
+      </div> <!-- end col-4 -->
 
       <!-- The global progress state -->
-      <div class="col-xs-8 fileupload-progress branding-banner-progress fade">
+      <div class="col-8 fileupload-progress branding-banner-progress fade">
         <!-- The global progress bar -->
-        <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-          <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+        <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width:0%;"></div>
         </div>
         <!-- The extended global progress state -->
         <div class="progress-extended">&nbsp;</div>
-      </div> <!-- end col-xs-5 fileupload-progress fade -->
+      </div> <!-- end col-8 fileupload-progress fade -->
     </div> <!-- end row fileupload-buttonbar -->
 
     <div class="row branding-banner-list">
-      <div class="col-xs-12">
+      <div class="col-12">
         <div class="container">
+        <%# Where the request to display the branding comes from. %>
         <% if f.object.banner_info[:file] %>
           <div id="banner">
             <div class="row branding-banner-row">
@@ -55,7 +56,7 @@
 
               <div class="col-sm-2">
                 <button class="btn btn-danger delete branding-banner-remove" data-type="DELETE" data-url="/" onclick=$("#banner").remove();>
-                  <span class="glyphicon glyphicon-remove"></span>
+                  <span class="fa fa-times"></span>
                   <span class="controls-remove-text"><%= t('.remove') %></span>
                   <span class="sr-only">
                     <%= t('.previous') %>
@@ -68,7 +69,7 @@
             <% if f.object.banner_info[:relative_path] %>
             <div class="banner-image">
               <i><%= image_tag(f.object.banner_info[:relative_path],
-                               height: "100",
+                               size: "800x100",
                                alt: f.object.banner_info[:alttext].presence || f.object.banner_info[:file]) %></i>
             </div>
             <% end %>
@@ -97,28 +98,28 @@
 
     <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
     <div class="row fileupload-buttonbar">
-      <div class="col-xs-4">
+      <div class="col-4">
         <!-- The fileinput-button span is used to style the file input field as button -->
         <span class="btn btn-success fileinput-button">
-          <span class="glyphicon glyphicon-plus"></span>
+          <span class="fa fa-plus"></span>
           <span><%= t('.choose_file') %></span>
           <input type="file" name="files[]" single />
         </span>
-      </div> <!-- end col-xs-4 -->
+      </div> <!-- end col-4 -->
 
       <!-- The global progress state -->
-      <div class="col-xs-8 fileupload-progress branding-logo-progress fade">
+      <div class="col-8 fileupload-progress branding-logo-progress fade">
         <!-- The global progress bar -->
-        <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-          <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+        <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width:0%;"></div>
         </div>
         <!-- The extended global progress state -->
         <div class="progress-extended">&nbsp;</div>
-      </div> <!-- end col-xs-8 fileupload-progress branding-logo-progress fade -->
+      </div> <!-- end col-8 fileupload-progress branding-logo-progress fade -->
     </div> <!-- end row fileupload-buttonbar -->
 
     <div class="row branding-logo-list">
-      <div class="col-xs-12">
+      <div class="col-12">
         <div class="container">
           <% i = 0 %>
           <% f.object.logo_info.each_with_index do |linfo, i| %>
@@ -144,7 +145,7 @@
 
               <div class="col-sm-2">
                 <button class="btn btn-danger delete branding-logo-remove" data-type="DELETE" data-url="/" onclick=$("#logorow_<%= i %>").remove();>
-                  <span class="glyphicon glyphicon-remove"></span>
+                  <span class="fa fa-times"></span>
                   <span class="controls-remove-text"><%= t('.remove') %></span>
                    <span class="sr-only">
                     <%= t('.previous') %>
@@ -159,7 +160,84 @@
 
         <!-- The global file processing state -->
         <span class="fileupload-process"></span>
-      </div> <!-- end col-xs-12 -->
+      </div> <!-- end col-12 -->
     </div> <!-- end row branding-logo-list -->
   </div> <!-- end fileuploadlogo -->
+
+  <label><strong><%= t('.thumbnail.label') %></strong></label>
+  <p><%= t('.thumbnail.description') %></p>
+
+  <div id="fileuploadthumbnail">
+    <!-- Redirect browsers with JavaScript disabled to the origin page -->
+    <noscript><input type="hidden" name="redirect" value="<%= main_app.root_path %>" /></noscript>
+    <!-- The table listing the files available for upload/download -->
+
+    <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+    <div class="row fileupload-buttonbar">
+      <div class="col-4">
+        <!-- The fileinput-button span is used to style the file input field as button -->
+        <span class="btn btn-success fileinput-button">
+          <span class="fa fa-plus"></span>
+          <span><%= t('.choose_file') %></span>
+          <input type="file" name="files[]" single />
+        </span>
+      </div> <!-- end col-4 -->
+
+      <!-- The global progress state -->
+      <div class="col-8 fileupload-progress branding-thumbnail-progress fade">
+        <!-- The global progress bar -->
+        <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width:0%;"></div>
+        </div>
+        <!-- The extended global progress state -->
+        <div class="progress-extended">&nbsp;</div>
+      </div> <!-- end col-8 fileupload-progress fade -->
+    </div> <!-- end row fileupload-buttonbar -->
+
+    <div class="row branding-thumbnail-list">
+      <div class="col-12">
+        <div class="container">
+        <%# Where the request to display the branding comes from. %>
+        <% if f.object.thumbnail_info[:file] %>
+          <div id="thumbnail">
+            <div class="row branding-thumbnail-row">
+              <div class="col-sm-3">
+                <span class="name">
+                  <i><%= image_tag(f.object.thumbnail_info[:relative_path],
+                       height: "36",
+                       alt: f.object.thumbnail_info[:alttext].presence || f.object.thumbnail_info[:file]) %></i>
+                  <span><%= f.object.thumbnail_info[:file] %></span>
+                  <input type="hidden" name="thumbnail_unchanged" value="true" />
+                </span>
+              </div>
+              <div class="col-sm-4 branding-thumbnail-input">
+                <label for="thumbnail_text"><%= t('.alt_text') %>
+                   <input id="thumbnail_text" class="branding-thumbnail-input" type="text" name="thumbnail_text[]" value="<%= f.object.thumbnail_info[:alttext] %>" />
+                </label>
+              </div>
+
+              <div class="col-sm-2">
+                <button class="btn btn-danger delete branding-thumbnail-remove" data-type="DELETE" data-url="/" onclick=$("#thumbnail").remove();>
+                  <span class="fa fa-times"></span>
+                  <span class="controls-remove-text"><%= t('.remove') %></span>
+                  <span class="sr-only">
+                    <%= t('.previous') %>
+                    <span class="controls-field-name-text"><%= t('.remove_current_thumbnail') %></span>
+                  </span>
+                </button>
+              </div> <!-- end col-sm-2 -->
+            </div> <!-- row branding-thumbnail-row -->
+          </div> <!-- end thumbnail -->
+          <div role="presentation" class="table table-striped"><span class="files"></span></div>
+        <% else %>
+          <div role="presentation" class="table table-striped"><span class="files"></span></div>
+        <% end %>
+
+          <!-- The global file processing state -->
+          <span class="fileupload-process"></span>
+        </div> <!-- end container -->
+      </div> <!-- end row branding-thumbnail-list -->
+    </div> <!-- end row branding-thumbnail-list -->
+  </div> <!-- fileuploadthumbnail -->
+
 </div> <!-- end set-access-controls -->

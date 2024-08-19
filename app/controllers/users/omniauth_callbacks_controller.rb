@@ -5,6 +5,7 @@ module Users
     skip_before_action :verify_authenticity_token
 
     def callback
+      logger.info("=@=@=@=@  auth: #{request.env['omniauth.auth']}, params: #{params.inspect}")
       # Here you will need to implement your logic for processing the callback
       # for example, finding or creating a user
       @user = User.from_omniauth(request.env['omniauth.auth'])
@@ -30,11 +31,11 @@ module Users
     alias saml callback
 
     def passthru
-      render status: 404, plain: 'Not found. Authentication passthru.'
+      render status: :not_found, plain: 'Not found. Authentication passthru.'
     end
 
-    # def failure
-    #   #redirect_to root_path
-    # end
+    def failure
+      redirect_to root_path, flash: { error: 'Authentication Failed. Something is wrong with the SSO configuration.' }
+    end
   end
 end

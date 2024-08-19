@@ -243,9 +243,11 @@ de:
             one: In diesem Repository befindet sich ein <b>%{count}-Benutzer</b> .
             other: In diesem Repository befinden sich <b>%{count}-Benutzer</b> .
           group_label: Gruppen
+          group_role_label: Gruppenrollen
           id_label: Nutzername
           reader_title: Benutzer anzeigen
           role_label: Rollen
+          site_role_label: Site-Rollen
           title: Benutzer verwalten
       workflow_roles:
         header: Workflow-Rollen
@@ -295,7 +297,7 @@ de:
     background_attribution_html: ''
     base:
       citations:
-        header: 'Zitate:'
+        header: Zitate
       form_child_work_relationships:
         actions:
           remove: Aus dieser Arbeit entfernen
@@ -358,6 +360,8 @@ de:
         title: Titel
         unauthorized: Es gibt keine öffentlich verfügbaren Artikel in diesem %{type}.
         visibility: Sichtweite
+      part_of:
+        label: 'Teil von:'
       relationships:
         empty: Dieses %{type} befindet sich derzeit in keiner Sammlung.
         header: Beziehungen
@@ -939,7 +943,7 @@ de:
     product_twitter_handle: "@HydraInABox"
     search:
       button:
-        html: <span class="glyphicon glyphicon-search"></span> Gehen
+        html: <span class="fa fa-search"></span> Gehen
         text: Suche
       form:
         option:
@@ -1030,6 +1034,13 @@ de:
       permissions_message: Dateiberechtigungen aktualisieren. Das kann ein paar minuten dauern. Möglicherweise möchten Sie Ihren Browser aktualisieren oder später zu diesem Datensatz zurückkehren, um die aktualisierten Dateiberechtigungen anzuzeigen.
       processing: Datei wird verarbeitet; Sie können bearbeiten, wenn die Verarbeitung abgeschlossen ist
     user_profile:
+      email_frequency:
+        daily: Täglich
+        label: <i class="fa fa-calendar"></i> Häufigkeit von Batch-E-Mails
+        monthly: Monatlich
+        never: Niemals
+        not_set: Noch nicht festgelegt
+        weekly: Wöchentlich
       orcid:
         alt: ORCID-Symbol
         label: ORCID-Profil
@@ -1096,7 +1107,7 @@ de:
         description: Eine kurze übergreifende Beschreibung, die für alle in diesem Set gesammelten Werke gilt. Zum Beispiel "Thesen und ergänzende Dateien, die von Absolventen der School of Earth Sciences erstellt wurden."
         title: Ein Name, der die Identifizierung des Verwaltungssatzes erleichtert und ihn von anderen Verwaltungssätzen im Repository unterscheidet.
       collection:
-        based_near: Ein Ortsname, der sich auf die Sammlung bezieht, z. B. der Veröffentlichungsort oder die Stadt, das Bundesland oder das Land, um das es in der Sammlung geht. Ruft den <a href='http://www.geonames.org'> GeoNames-Webdienst </a> auf.
+        based_near: Ein Ortsname, der sich auf das Werk bezieht, z. B. der Ort der Veröffentlichung oder die Stadt, das Bundesland oder das Land, um das es in den Inhalten des Werks geht. Ruft die <a href='http://www.geonames.org‘ auf. >GeoNames-Webdienst</a>. Bitte beachten Sie, dass Sie Ihren Geonames-Benutzernamen in den Kontoeinstellungen konfigurieren müssen, da sonst in diesem Feld ein Ladefehler auftritt.</br> </br><b>Schritte zum Aktivieren dieses Feldes:</b><br/>1. Erstellen Sie ein kostenloses Konto auf der <a href='http://www.geonames.org'>Geonames-Webdienstseite.</a></br>2. Gehen Sie zu Ihren <a href='http://www.geonames.org/manageaccount'>Geonames-Kontoeinstellungen</a> und wählen Sie unten die Option aus, um kostenlose Dienste zu aktivieren.</br>3. Gehen Sie im <a href='/admin/account/edit?locale=en'>Dashboard</a></br> zu den Einstellungen Ihres Hyku-Kontos. Geben Sie Ihren Geonames-Benutzernamen in den Hyrax-Kontoeinstellungen ein.<br/>5. Sie sollten nun die Liste der Standorte in diesem Dropdown-Menü sehen können.
         contributor: Eine Person oder Gruppe, die Sie als eine Rolle bei der Erstellung der Sammlung erkennen möchten, jedoch nicht als primäre Rolle.
         creator: Die Person oder Gruppe, die für die Sammlung verantwortlich ist. Normalerweise ist dies der Autor des Inhalts. Persönliche Namen sollten mit dem Nachnamen zuerst eingegeben werden, z. "Smith, John".
         date_created: Das Datum, an dem die Sammlung erstellt wurde.
@@ -1123,7 +1134,7 @@ de:
         share_applies_to_new_works: Wenn neue Werke direkt in der Sammlung erstellt werden, erteilen Sie Benutzern und Gruppen Berechtigungen für das neue Werk entsprechend ihrer Sammlungsrollen.
         title: ''
       defaults:
-        based_near: Ein Ortsname, der sich auf das Werk bezieht, z. B. der Veröffentlichungsort oder die Stadt, das Bundesland oder das Land, um das es in dem Arbeitsinhalt geht. Ruft den <a href='http://www.geonames.org'> GeoNames-Webdienst </a> auf.
+        based_near: Ein Ortsname, der sich auf das Werk bezieht, z. B. der Ort der Veröffentlichung oder die Stadt, das Bundesland oder das Land, um das es in den Inhalten des Werks geht. Ruft die <a href='http://www.geonames.org‘ auf. >GeoNames-Webdienst</a>. Bitte beachten Sie, dass Sie Ihren Geonames-Benutzernamen in den Kontoeinstellungen konfigurieren müssen, da sonst in diesem Feld ein Ladefehler auftritt.</br> </br><b>Schritte zum Aktivieren dieses Feldes:</b><br/>1. Erstellen Sie ein kostenloses Konto auf der <a href='http://www.geonames.org'>Geonames-Webdienstseite.</a></br>2. Gehen Sie zu Ihren <a href='http://www.geonames.org/manageaccount'>Geonames-Kontoeinstellungen</a> und wählen Sie unten die Option aus, um kostenlose Dienste zu aktivieren.</br>3. Gehen Sie im <a href='/admin/account/edit?locale=en'>Dashboard</a></br> zu den Einstellungen Ihres Hyku-Kontos. Geben Sie Ihren Geonames-Benutzernamen in den Hyrax-Kontoeinstellungen ein.<br/>5. Sie sollten nun die Liste der Standorte in diesem Dropdown-Menü sehen können.
         contributor: Eine Person oder Gruppe, die Sie als eine Rolle bei der Erstellung der Arbeit erkennen möchten, jedoch nicht die primäre Rolle.
         creator: Die Person oder Gruppe, die für die Arbeit verantwortlich ist. Normalerweise ist dies der Autor des Inhalts. Persönliche Namen sollten mit dem Nachnamen zuerst eingegeben werden, z. "Smith, John".
         date_created: Das Datum, an dem die Arbeit erstellt wurde.
@@ -1138,6 +1149,7 @@ de:
         resource_type: Vordefinierte Kategorien zur Beschreibung der Art des hochgeladenen Inhalts, z. B. "Artikel". oder "Datensatz". Es kann mehr als ein Typ ausgewählt werden.
         subject: Überschriften oder Indexbegriffe, die beschreiben, worum es in der Arbeit geht; Diese müssen einem vorhandenen Wortschatz entsprechen.
         title: Ein Name, der bei der Identifizierung eines Werks hilft.
+        video_embed: Wenn Sie einen Einbettungslink für ein Video eingeben, muss es sich um eine ordnungsgemäß formatierte URL handeln, die mit „http://“ oder „https://“ beginnt. Es muss außerdem einen gültigen Link zu einem gehosteten Video enthalten, das in einem Iframe angezeigt werden kann. <br /><br /><i>Beispiele:<br/>https://player.vimeo.com/video/467264493?h=b089de0eab<br/>https://www.youtube.com/embed/ Znf73dsFdC8</i>
       labels:
         extent: Umfang
     labels:
@@ -1160,6 +1172,7 @@ de:
       defaults:
         admin_set_id: Verwaltungsset
         based_near: Ort
+        contributor: Mitwirkender
         creator: Schöpfer
         date_created: Datum erstellt
         default_button_background_color: Standardhintergrundfarbe der Schaltfläche
@@ -1174,6 +1187,7 @@ de:
         footer_link_hover_color: Hover-Farbe des Fußzeilen-Links
         header_and_footer_background_color: Hintergrundfarbe für Kopf- und Fußzeile
         header_and_footer_text_color: Textfarbe für Kopf- und Fußzeile
+        identifier: Kennung
         keyword: Stichwort
         lease_expiration_date: bis um
         license: Lizenz
@@ -1185,8 +1199,10 @@ de:
         navbar_link_text_color: Textfarbe für Navigationsleisten-Links
         navbar_link_text_hover_color: Hover-Farbe des Navigationsleisten-Linktextes
         primary_button_hover_color: Hover-Farbe der primären Schaltfläche
+        publisher: Verleger
         related_url: Verwandte URL
         rights_statement: Rechteerklärung
+        source: Quelle
         title: Titel
         visibility_after_embargo: dann öffne es bis
         visibility_after_lease: dann beschränken Sie es auf
@@ -1199,5 +1215,3 @@ de:
       defaults:
         find_child_work: Suche nach einer Arbeit…
         member_of_collection_ids: Sammlung auswählen…
-    required:
-      html: <span class="label label-info required-tag">erforderlich</span>

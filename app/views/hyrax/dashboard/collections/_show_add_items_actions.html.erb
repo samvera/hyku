@@ -1,4 +1,4 @@
-<%# OVERRIDE Hyrax v3.4.2 Restrict who can deposit new works through collections %>
+<%# OVERRIDE Hyrax v5.0.0rc2 Restrict who can deposit new works through collections %>
 <h2 class="sr-only"><%= t('hyrax.collection.actions.header') %></h2>
 <div class="text-right">
   <%# OVERRIDE: add check for :manage_items_in_collection permission %>
@@ -8,7 +8,7 @@
         <%= link_to t('hyrax.collection.actions.add_new_work.label'),
                     '#',
                     title: t('hyrax.collection.actions.add_new_work.desc'),
-                    data: { behavior: "select-work", target: "#worktypes-to-create", 'create-type' => 'single', add_works_to_collection: presenter.id },
+                    data: { behavior: "select-work", toggle: 'modal', target: "#worktypes-to-create", 'create-type' => 'single', add_works_to_collection: presenter.id },
                     class: 'btn btn-primary deposit-new-work-through-collection' %>
       <%# OVERRIDE: add #create_any_work_types? check %>
       <% elsif @presenter.create_any_work_types? # simple link to the first work type %>

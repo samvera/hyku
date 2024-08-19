@@ -37,6 +37,10 @@ module Hyku
         can?(:manage, Hyrax::Group)
     end
 
+    def display_workflow_roles_menu_item_in_admin_dashboard_sidebar?
+      Flipflop.show_workflow_roles_menu_item_in_admin_dashboard_sidebar?
+    end
+
     # Returns true if we ought to show the user Admin-only areas of the menu
     def show_admin_menu_items?
       can?(:read, :admin_dashboard)
@@ -47,19 +51,6 @@ module Hyku
         can?(:read, User) ||
         can?(:read, Hyrax::Group) ||
         can?(:read, :admin_dashboard)
-    end
-
-    # Draw a collaspable menu section. The passed block should contain <li> items.
-    # Override Hyrax 3.5.0 to pass in html_options
-    # rubocop:disable Metrics/ParameterLists
-    def collapsable_section(text, id:, icon_class:, open:, **html_options, &block)
-      # rubocop:enable Metrics/ParameterLists
-      CollapsableSectionPresenter.new(view_context: view_context,
-                                      text: text,
-                                      id: id,
-                                      icon_class: icon_class,
-                                      open: open,
-                                      html_options: html_options).render(&block)
     end
   end
 end

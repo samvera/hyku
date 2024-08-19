@@ -28,12 +28,12 @@ module Admin
 
     private
 
-      def account_params
-        params.require(:account).permit(:name, :cname, :title, *@account.public_settings.keys)
-      end
+    def account_params
+      params.require(:account).permit(:name, :cname, :title, *@account.public_settings.keys)
+    end
 
-      def set_current_account
-        @account = Site.account
-      end
+    def set_current_account
+      @account = Site.account
+    end
   end
 end

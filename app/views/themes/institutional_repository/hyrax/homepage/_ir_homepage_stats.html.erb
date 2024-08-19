@@ -1,7 +1,7 @@
 <%# get the facet counts for resource types from the controller %>
 <%# facet_counts => {resource_type: count} %>
 <% facet_counts = {} %>
-<% @ir_counts['facet_counts']['facet_fields']['resource_type_sim'].each_slice(2) do | key, value| %>
+<% @ir_counts['facet_counts']['facet_fields']['resource_type_sim'].each_slice(2) do |key, value| %>
   <% facet_counts[key] = value %>
 <% end %>
 
@@ -38,7 +38,7 @@
 <% end %>
 
 <% if count_of_resource_types_greater_than_zero > 0 %>
-  <div class='stats-color-block container-fluid pt-30 pb-30 mb-40'>
+  <div class='stats-color-block container-fluid pt-3 pb-3 mb-4'>
     <div class="row">
       <div class="col-md-12">
         <% if count_of_resource_types_greater_than_zero <= 6 %>

@@ -17,32 +17,34 @@ RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, ci: 's
   end
   let(:work_editor) { FactoryBot.create(:user, roles: [:work_editor]) }
   let(:work_depositor) { FactoryBot.create(:user, roles: [:work_depositor]) }
-  let(:visibility) { 'open' }
-  let!(:admin_set) do
+  let(:visibility_setting) { 'open' }
+  let(:admin_set) do
     admin_set = AdminSet.new(title: ['Test Admin Set'])
     allow(Hyrax.config).to receive(:default_active_workflow_name).and_return('default')
-    Hyrax::AdminSetCreateService.new(admin_set: admin_set, creating_user: nil).create
-    admin_set.reload
+    Hyrax::AdminSetCreateService.call!(admin_set:, creating_user: nil)
   end
-  let!(:work) { process_through_actor_stack(build(:work), work_depositor, admin_set.id, visibility) }
+  let!(:work) do
+    FactoryBot.valkyrie_create(:generic_work_resource, :with_admin_set, admin_set:, depositor: work_depositor.user_key, visibility_setting:)
+  end
 
   describe 'read permissions' do
     before do
       login_as work_editor
     end
 
-    %w[open authenticated restricted].each do |visibility|
-      context "with #{visibility} visibility" do
-        let(:visibility) { visibility }
+    %w[open authenticated restricted].each do |visibility_setting|
+      context "with #{visibility_setting} visibility_setting" do
+        let(:visibility_setting) { 'open' }
 
         it 'can see the work in search results' do
+          work
           visit search_catalog_path
 
           expect(page).to have_content(work.title.first)
         end
 
         it 'can see works it deposited in the dashboard' do
-          my_work = process_through_actor_stack(build(:work), work_editor, admin_set.id, visibility)
+          my_work = FactoryBot.valkyrie_create(:generic_work_resource, :with_admin_set, depositor: work_editor.user_key, visibility_setting:, admin_set:)
           visit '/dashboard/my/works'
 
           expect(page).to have_content('works you own in the repository')
@@ -50,6 +52,7 @@ RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, ci: 's
         end
 
         it 'can see works deposited by other users in the dashboard' do
+          work
           visit '/dashboard/my/works'
           click_link 'Managed Works' # switch tab
 
@@ -97,12 +100,14 @@ RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, ci: 's
       fill_in('Creator', with: 'Test Creator')
       click_on('Additional fields')
       fill_in('Keyword', with: 'testing')
-      select('In Copyright', from: 'Rights statement')
+      select('In Copyright', from: 'Rights Statement')
 
+      # This might be generic_work_visibility_open or generic_work_visibility_setting_open
       page.choose('generic_work_visibility_open')
-      # rubocop:disable Metrics/LineLength
+
+      # rubocop:disable Layout/LineLength
       expect(page).to have_content('Please note, making something visible to the world (i.e. marking this as Public) may be viewed as publishing which could impact your ability to')
-      # rubocop:enable Metrics/LineLength
+      # rubocop:enable Metrics/MethodLength
       find('#agreement').click
 
       expect { click_on('Save') }
@@ -123,7 +128,7 @@ RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, ci: 's
     end
 
     it 'can see the edit button for works it creates on the dashboard index page' do
-      process_through_actor_stack(build(:work), work_editor, admin_set.id, visibility)
+      FactoryBot.valkyrie_create(:generic_work_resource, :with_admin_set, admin_set:, visibility_setting:, depositor: work_editor.user_key)
       visit '/dashboard/my/works'
 
       click_button('Select')
@@ -150,7 +155,8 @@ RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, ci: 's
     end
 
     it 'cannot see the delete button for works it creates on the dashboard index page' do
-      process_through_actor_stack(build(:work), work_editor, admin_set.id, visibility)
+      FactoryBot.valkyrie_create(:generic_work_resource, :with_admin_set, admin_set:, visibility_setting:, depositor: work_editor.user_key)
+
       visit '/dashboard/my/works'
 
       click_button('Select')

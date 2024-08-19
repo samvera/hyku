@@ -1,12 +1,21 @@
 ---
 de:
+  activefedora:
+    models:
+      generic_work: Arbeiten
+      image: Bild
   activerecord:
     attributes:
       site:
         institution_name_full: Vollständiger Name der Institution
   application:
     tagline: Die Next-Generation Repository-Lösung
+  errors:
+    messages:
+      valid_embed_url: muss eine gültige YouTube- oder Vimeo-Einbettungs-URL sein.
   helpers:
+    action:
+      become: Werden
     submit:
       add_role_to_group:
         submit: Hinzufügen
@@ -63,6 +72,7 @@ de:
             success: "%{group} aktualisiert"
         humanized_name:
           admin: Repository-Administratoren
+          group/public: Unbefugte Benutzer
           registered: Registrierte Benutzer
         label:
           actions: Aktionen
@@ -117,11 +127,15 @@ de:
     identity_provider:
       header: Authentifizierungsidentitätsanbieter
       label:
+        create_new: Neu
+        edit: Bearbeiten
+        logo: Logo
         logo_image: Bild für die SSO-Seite
         logo_image_alt_text: Alternativtext für Bild
         name: Name oder Beschreibung
-        optoins: Optionen
+        options: Optionen
         provider: Anbieter
+        updated_at: Aktualisiert am
     proprietor:
       accounts:
         nav: Konten
@@ -162,6 +176,8 @@ de:
           forms:
             banner_image:
               hint: Um ein Bild als Masthead-Hintergrund zu verwenden, sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das mindestens 120 Pixel hoch und 1200 Pixel breit ist. Verwenden Sie für optimale Ergebnisse ein Bild mit einer Breite von mindestens 1800 Pixel.
+            collection_banner_text_color:
+              hint: Die Farbe für den Text (Titel und Datum der letzten Aktualisierung) im Sammlungsbanner.
             custom_css:
               confirm: Benutzerdefiniertes CSS überschreibt immer andere Themenauswahlen. Vorgehen?
               warning: Wenn Ihre Themenanpassungen nicht korrekt angewendet werden, stellen Sie sicher, dass sie nicht von benutzerdefiniertem CSS überschrieben werden.
@@ -171,7 +187,7 @@ de:
               alert: Bitte laden Sie vor dem Absenden mindestens eine Datei hoch.
               hint: Für Standardbilder sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das die gleichen Abmessungen für Höhe und Breite aufweist (100 Pixel breit und 100 Pixel hoch).
             directory_image:
-              hint: Um ein Bild als Verzeichnisbild zu verwenden, sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das nicht höher als der Header und nicht breiter als 400 Pixel ist.
+              hint: Das Verzeichnisbild sollte ein Bild (JPG, GIF oder PNG) verwenden. Die Breite des Bildes sollte nicht größer als die doppelte Höhe sein.
             facet_panel_background_color:
               hint: Gilt für Facetten und zusätzliche Abschnittsüberschriften auf den Arbeitsseiten einiger Themen.
             facet_panel_text_color:
@@ -184,6 +200,8 @@ de:
               hint: Um ein Bild als Logo zu verwenden, sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das nicht höher als der Header und nicht breiter als 400 Pixel ist.
             navbar_background_color:
               hint: Bei 40 % Deckkraft.
+            navbar_link_background_color:
+              hint: Gilt für die Hintergrundfarbe der Schaltflächen „Startseite“, „Info“, „Kontakt“ und „Hilfe“.
             navbar_link_background_hover_color:
               hint: Gilt nur für die Schaltflächen „Startseite“, „Info“, „Kontakt“ und „Hilfe“ auf diesen spezifischen Seiten (bei 15 % Deckkraft).
             primary_button_hover_color:
@@ -204,9 +222,24 @@ de:
             directory_image: Verzeichnis Bild
             favicon: favicon
             fonts: Schriftarten
+            logo: Logo
             themes: Themen
+      roles_service_jobs:
+        header: Datenreparaturjobs
+        jobs:
+          create_admin_set_accesses:
+            description: Durch das Erstellen eines Hyrax::PermissionTemplateAccess-Datensatzes (kombiniert mit Ability#user_groups) können Werke in allen AdminSets in Blacklight-/Solr-Abfragen angezeigt werden.
+            label: Erstellen von Admin-Set-Zugriffen
+          create_collection_accesses:
+            description: Da jede Sammlungsrolle über eine gewisse Zugriffsebene auf jede Sammlung innerhalb eines Mandanten verfügt, werden beim Erstellen eines Hyrax::PermissionTemplateAccess-Datensatzes (kombiniert mit Ability#user_groups) alle Sammlungen in Blacklight-/Solr-Abfragen angezeigt.
+            label: Sammlungszugänge erstellen
+          create_collection_type_participants:
+            description: Da einige der Sammlungsrollen Zugriff auf jede Sammlung innerhalb eines Mandanten haben, erstellen Sie für sie einen Hyrax::CollectionTypeParticipant-Datensatz für jeden Hyrax::CollectionType (außer dem AdminSet).
+            label: Teilnehmer des Sammlungstyps erstellen
+          grant_workflow_roles_for_all_admin_sets:
+            description: 'Die Berechtigungen zum Hinterlegen von Werken werden durch Workflow-Rollen in einzelnen AdminSets gesteuert. Damit Hyrax::Group- und Benutzerdatensätze, die entweder die Rolle „Werkeditor“ oder „Werkhinterleger“ haben, die richtigen Berechtigungen für Werke haben, erteilen wir ihnen Workflow-Rollen für alle AdminSets. HINWEIS: Alle AdminSets müssen eine Berechtigungsvorlage haben, sonst schlägt dies fehl. Führen Sie zuerst „Admin-Set-Zugriffe erstellen“ aus.'
+            label: Vom Administrator festgelegte Workflow-Rollen
       sidebar:
-        account: Konto
         accounts: Konten
         activity_summary: Aktivitätsübersicht
         content_blocks: Inhaltsblöcke
@@ -216,6 +249,7 @@ de:
         manage_users: Benutzer verwalten
         repository_activity: Repository-Aktivität
         roles_and_permissions: Benutzer und Gruppen
+        roles_service_jobs: Datenreparatur
         system_status: Systemstatus
       users:
         activate:
@@ -228,6 +262,7 @@ de:
           success: Der Benutzer "%{user}" wurde erfolgreich gelöscht.
         index:
           action_label: Aktion
+          activate: aktivieren Sie
           add: Nutzer einladen
           delete: Löschen
           invite_users: Benutzer hinzufügen oder via Email einladen
@@ -235,6 +270,9 @@ de:
             active: Aktiv
             pending: noch ausstehend
           status_label: Status
+        roles:
+          remove:
+            confirmation: Sind Sie sicher, dass Sie die Rolle „%{role}“ vom Benutzer „%{user}“ entfernen möchten?
   permissions:
     collections:
       cannot:
@@ -281,6 +319,7 @@ de:
         email: Email
         header: Benutzer verwalten
         manage: Verwalten
+        superadmin: Höchster Vorgesetzter
         title: Titel
         view_users: Benutzer anzeigen
       new:

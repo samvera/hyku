@@ -4,8 +4,8 @@ require "spec_helper"
 
 RSpec.describe CatalogController, type: :request, clean: true, multitenant: true do
   let(:user) { create(:user, email: 'test_user@repo-sample.edu') }
-  let(:work) { build(:work, title: ['welcome test'], id: SecureRandom.uuid, user: user) }
-  let(:hyku_sample_work) { build(:work, title: ['sample test'], id: SecureRandom.uuid, user: user) }
+  let(:work) { build(:work, title: ['welcome test'], id: SecureRandom.uuid, user:) }
+  let(:hyku_sample_work) { build(:work, title: ['sample test'], id: SecureRandom.uuid, user:) }
   let(:sample_solr_connection) { RSolr.connect url: "#{ENV['SOLR_URL']}hydra-sample" }
 
   let(:cross_search_solr) { create(:solr_endpoint, url: "#{ENV['SOLR_URL']}hydra-cross-search-tenant") }
@@ -21,25 +21,25 @@ RSpec.describe CatalogController, type: :request, clean: true, multitenant: true
     WebMock.disable!
     allow(AccountElevator).to receive(:switch!).with(cross_search_tenant_account.cname).and_return('public')
     allow(Apartment::Tenant.adapter).to receive(:connect_to_new).and_return('')
-    ActiveFedora::SolrService.instance.conn = sample_solr_connection
-    ActiveFedora::SolrService.add(hyku_sample_work.to_solr)
-    ActiveFedora::SolrService.commit
+    allow_any_instance_of(Hyrax::SolrServiceDecorator).to receive(:connection).and_return(sample_solr_connection)
 
-    ActiveFedora::SolrService.reset!
-    ActiveFedora::SolrService.add(work.to_solr)
-    ActiveFedora::SolrService.commit
+    Hyrax::SolrService.add(hyku_sample_work.to_solr)
+    Hyrax::SolrService.commit
+
+    Hyrax::SolrService.reset!
+    Hyrax::SolrService.add(work.to_solr)
+    Hyrax::SolrService.commit
   end
 
   after do
     WebMock.enable!
 
-    ActiveFedora::SolrService.instance.conn = sample_solr_connection
-    ActiveFedora::SolrService.delete(hyku_sample_work.id)
-    ActiveFedora::SolrService.commit
+    Hyrax::SolrService.delete(hyku_sample_work.id)
+    Hyrax::SolrService.commit
 
-    ActiveFedora::SolrService.reset!
-    ActiveFedora::SolrService.delete(work.id)
-    ActiveFedora::SolrService.commit
+    SolrEndpoint.reset!
+    Hyrax::SolrService.delete(work.id)
+    Hyrax::SolrService.commit
   end
 
   describe 'Cross Tenant Search' do
@@ -56,6 +56,18 @@ RSpec.describe CatalogController, type: :request, clean: true, multitenant: true
 
     before do
       host! "http://#{cross_search_tenant_account.cname}/"
+      black_light_config.add_search_field('title') do |field|
+        field.solr_parameters = {
+          "spellcheck.dictionary": "title"
+        }
+        solr_name = 'title_tesim'
+        field.solr_local_parameters = {
+          qf: solr_name,
+          pf: solr_name
+        }
+      end
+      black_light_config.advanced_search ||= Blacklight::OpenStructWithHashAccess.new
+      black_light_config.advanced_search[:query_parser] ||= 'dismax'
     end
 
     context 'can fetch data from other tenants' do
@@ -66,7 +78,7 @@ RSpec.describe CatalogController, type: :request, clean: true, multitenant: true
 
         # get '/catalog', params: { q: '*' }
         # get search_catalog_url, params: { locale: 'en', q: 'test' }
-        get "http://#{cross_search_tenant_account.cname}/catalog?q=test" # , params: { q: 'test' }
+        get "http://#{cross_search_tenant_account.cname}/catalog?q=test", params: { q: 'title' }
         expect(response.status).to eq(200)
       end
     end

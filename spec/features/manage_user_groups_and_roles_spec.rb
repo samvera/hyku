@@ -36,10 +36,11 @@ RSpec.describe "The Manage Users table", type: :feature, js: true, clean: true d
 
     it "lists each user's associated direct and inherited roles" do
       expect(page).to have_content('Manage Users')
-      expect(page).to have_css 'th', text: 'Roles'
-      expect(find("tr##{admin.email.parameterize} td.roles")).to have_text(admin_role.name.titlecase)
-      expect(find("tr##{user.email.parameterize} td.roles")).to have_text(user_manager_role.name.titlecase)
-      expect(find("tr##{user.email.parameterize} td.roles")).to have_text(collection_manager_role.name.titlecase)
+      expect(page).to have_css 'th', text: 'Group roles'
+      expect(page).to have_css 'th', text: 'Site roles'
+      expect(find("tr##{admin.email.parameterize} td.group-roles")).to have_text(admin_role.name.titlecase)
+      expect(find("tr##{user.email.parameterize} td.group-roles")).to have_text(user_manager_role.name.titlecase)
+      expect(find("tr##{user.email.parameterize} td.site-roles")).to have_text(collection_manager_role.name.titlecase)
     end
 
     it 'can visit Manage Users and invite users with the admin role' do

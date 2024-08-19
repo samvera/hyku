@@ -1,12 +1,17 @@
 #!/usr/local/bin/ruby
-if ENV['GOOGLE_OAUTH_PRIVATE_KEY_VALUE'] && !ENV['GOOGLE_OAUTH_PRIVATE_KEY_VALUE'].empty?
-  %x{echo "$GOOGLE_OAUTH_PRIVATE_KEY_VALUE" | base64 -d > prod-cred.p12}
-end
+# frozen_string_literal: true
+`echo "$GOOGLE_OAUTH_PRIVATE_KEY_VALUE" | base64 -d > prod-cred.p12` unless ENV['GOOGLE_OAUTH_PRIVATE_KEY_VALUE'].to_s.strip.empty?
 
-if ENV['DATABASE_URL'] && !ENV['DATABASE_URL'].empty?
-  ENV['DATABASE_URL'] = ENV['DATABASE_URL'].gsub('pool=5', 'pool=30')
-else
+if ENV['DATABASE_URL'].to_s.strip.empty?
   puts 'DATABASE_URL not set, no pool change needed'
+else
+  ENV['DATABASE_URL'] = ENV['DATABASE_URL'].gsub('pool=5', 'pool=30')
 end
 
-exec "echo $DATABASE_URL && bundle exec sidekiq"
+queue = ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq')
+case queue
+when 'sidekiq'
+  exec "echo $DATABASE_URL && bundle exec sidekiq"
+when 'good_job'
+  exec "echo $DATABASE_URL && bundle exec good_job start"
+end

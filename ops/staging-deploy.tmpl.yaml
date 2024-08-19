@@ -183,6 +183,8 @@ extraEnvVars: &envVars
     value: $SENTRY_DSN
   - name: SENTRY_ENVIRONMENT
     value: $SENTRY_ENVIRONMENT
+  - name: VALKYRIE_TRANSITION
+    value: "true"
 
 worker:
   replicaCount: 1

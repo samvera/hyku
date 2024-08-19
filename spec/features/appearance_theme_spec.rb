@@ -71,7 +71,7 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
       select('Gallery view', from: 'Search Results Page Theme')
       # rubocop:disable Layout/LineLength
       expect(page).to have_content('This will select a default view for the search results page. Users can select their preferred views on the search results page that will override this selection')
-      # rubocop:enable Layout/LineLength
+      # rubocop:enable Metrics/MethodLength
       find('body').click
       click_on('Save')
       site = Site.last

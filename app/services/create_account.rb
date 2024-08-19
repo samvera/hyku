@@ -79,14 +79,9 @@ class CreateAccount
   ##
   # Schedules jobs that will run automatically after
   # the first time they are called
-  #
-  # @todo The first time these are scheduled, they hang and block other jobs for running.
   def schedule_recurring_jobs
     return if account.search_only?
-
-    EmbargoAutoExpiryJob.perform_later(account)
-    LeaseAutoExpiryJob.perform_later(account)
-    BatchEmailNotificationJob.perform_later(account)
+    account.find_or_schedule_jobs
   end
 
   private

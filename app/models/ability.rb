@@ -110,4 +110,23 @@ class Ability
   def can_export_works?
     can_create_any_work?
   end
+
+  ##
+  # @api public
+  #
+  # Overrides hydra-head, (and restores the method from blacklight-access-controls)
+  def download_permissions
+    can :download, [::String, ::Valkyrie::ID] do |id|
+      test_download(id.to_s)
+    end
+
+    can :download, ::SolrDocument do |obj|
+      if obj.pdf? && !obj.show_pdf_download_button
+        false
+      else
+        cache.put(obj.id, obj)
+        test_download(obj.id)
+      end
+    end
+  end
 end

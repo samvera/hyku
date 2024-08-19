@@ -1,0 +1,5 @@
+source_identifier,model,title,previous_version,newer_version,alternate_version,related_item
+oer_1,Oer,Oer 1,oer_4;oer_3,,,
+oer_2,Oer,Oer 2,oer_1,oer_3,,
+oer_3,Oer,Oer 3,,,oer_2|oer_4,
+oer_4,Oer,Oer 4,,,oer_2,oer_1

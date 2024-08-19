@@ -8,7 +8,7 @@ attributes:
     # For historic reasons, this is the predicate
     predicate: http://id.loc.gov/vocabulary/identifiers/show_pdf_viewer
     form:
-      display: true
+      display: false
       primary: false
       required: false
       multiple: false
@@ -21,7 +21,7 @@ attributes:
     # For historic reasons, this is the predicate
     predicate: http://id.loc.gov/vocabulary/identifiers/show_pdf_download_button
     form:
-      display: true
+      display: false
       primary: false
       required: false
       multiple: false

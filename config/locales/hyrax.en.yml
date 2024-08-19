@@ -16,6 +16,8 @@ en:
       models:
         generic_work: "Work"
         image: "Image"
+        etd: "ETD"
+        oer: "OER"
     active_consent_to_agreement: I have read and agree to the
     admin:
       admin_sets:
@@ -949,7 +951,7 @@ en:
     passive_consent_to_agreement: By saving this work I agree to the
     search:
       button:
-        html: <span class="glyphicon glyphicon-search"></span> Go
+        html: <span class="fa fa-search"></span> Go
         text: Search
       form:
         option:
@@ -1221,3 +1223,5 @@ en:
       defaults:
         find_child_work: Search for a work…
         member_of_collection_ids: Select a collection…
+    required:
+      html: <span class="badge badge-info required-tag">required</span>

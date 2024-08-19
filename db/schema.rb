@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_05_02_230546) do
+ActiveRecord::Schema.define(version: 2024_08_06_161142) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -822,6 +822,7 @@ ActiveRecord::Schema.define(version: 2024_05_02_230546) do
     t.string "show_theme"
     t.string "search_theme"
     t.string "favicon"
+    t.string "directory_image_alt_text"
   end
 
   create_table "subject_local_authority_entries", id: :serial, force: :cascade do |t|
@@ -850,6 +851,7 @@ ActiveRecord::Schema.define(version: 2024_05_02_230546) do
     t.string "file_set_uri"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "filename"
     t.index ["file_set_uri"], name: "index_uploaded_files_on_file_set_uri"
     t.index ["user_id"], name: "index_uploaded_files_on_user_id"
   end
@@ -916,6 +918,8 @@ ActiveRecord::Schema.define(version: 2024_05_02_230546) do
     t.string "uid"
     t.string "batch_email_frequency", default: "never"
     t.datetime "last_emailed_at"
+    t.string "api_key"
+    t.index ["api_key"], name: "index_users_on_api_key"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

@@ -22,19 +22,13 @@
   <td>
     <div class="thumbnail-title-wrapper">
       <div class="thumbnail-wrapper">
-        <% if (collection_presenter.thumbnail_path == nil) %>
-          <%= image_tag(Site.instance.default_collection_image) %>
-        <% else %>
-          <%# OVERRIDE begin %>
-          <%= image_tag(collection_presenter.thumbnail_path, alt: block_for(name: 'default_collection_image_text') || "#{collection_presenter.title_or_label} #{t('hyrax.dashboard.my.sr.thumbnail')}") %>
-          <%# OVERRIDE end %>
-        <% end %>
+        <%# Use appropriate collection thumbnail + alttext %>
+        <%= collection_thumbnail(collection_presenter.solr_document) %>
       </div>
       <%= link_to collection_presenter.show_path do %>
           <span class="sr-only"><%= t("hyrax.dashboard.my.sr.show_label") %> </span>
           <%= markdown(collection_presenter.title_or_label) %>
       <% end %>
-
       <%# Expand arrow %>
       <a href="#" class="small show-more" title="Click for more details">
         <i id="expand_<%= id %>" class="fa fa-chevron-right" aria-hidden="true"></i>

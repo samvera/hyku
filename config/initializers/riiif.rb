@@ -1,4 +1,12 @@
 # frozen_string_literal: true
+
+# Loading these constants during runtime would freeze the web service in development.
+# Adding the requires here to load them on initialize.
+require 'riiif/imagemagick_transformer'
+require 'riiif/imagemagick_command_factory'
+require 'riiif/crop'
+require 'riiif/resize'
+
 Rails.application.reloader.to_prepare do
   Riiif::Image.info_service = lambda do |id, _file|
     # id will look like a path to a pcdm:file

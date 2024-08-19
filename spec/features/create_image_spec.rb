@@ -61,12 +61,12 @@ RSpec.describe 'Create a Image', type: :feature, js: true, clean: true do
       fill_in('Creator', with: 'Doe, Jane')
       click_on('Additional fields')
       fill_in('Keyword', with: 'testing')
-      select('In Copyright', from: 'Rights statement')
+      select('In Copyright', from: 'Rights Statement')
 
       page.choose('image_visibility_open')
       # rubocop:disable Layout/LineLength
       expect(page).to have_content('Please note, making something visible to the world (i.e. marking this as Public) may be viewed as publishing which could impact your ability to')
-      # rubocop:enable Layout/LineLength
+      # rubocop:enable Metrics/MethodLength
       find('#agreement').click
 
       click_on('Save')

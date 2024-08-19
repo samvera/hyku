@@ -944,7 +944,7 @@ pt-BR:
     product_twitter_handle: "@HydraInABox"
     search:
       button:
-        html: <span class="glyphicon glyphicon-search"></span> Ir
+        html: <span class="fa fa-search"></span> Ir
         text: Procurar
       form:
         option:

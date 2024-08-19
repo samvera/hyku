@@ -1,4 +1,7 @@
-<%# OVERRIDE Hyrax 5.0.1 add show actions buttons to collection show page %>
+<%# OVERRIDE Hyrax 5.0.1: %>
+<%# add show actions buttons to collection show page %>
+<%# add branding text for banner image %>
+<%# remove duplicate items count originating in Hyrax view %>
 
 <% provide :page_title, construct_page_title(@presenter.title) %>
 <div class="hyc-container" itemscope itemtype="http://schema.org/CollectionPage">
@@ -36,16 +39,15 @@
       <% unless @presenter.total_viewable_items.blank? %>
           <div class="hyc-bugs">
             <div class="hyc-item-count">
-              <b><%= @presenter.total_viewable_items %></b>
               <%= pluralize(@presenter.total_viewable_items, t('.item_count')) %></div>
 
-            <% unless @presenter.creator.blank? %>
-                <div class="hyc-created-by">Created by: <%= @presenter.creator.first %></div>
-            <% end %>
+              <% unless @presenter.creator.blank? %>
+                  <div class="hyc-created-by">Created by: <%= @presenter.creator.first %></div>
+              <% end %>
 
-            <% unless @presenter.modified_date.blank? %>
-                <div class="hyc-last-updated">Last Updated: <%= @presenter.modified_date %></div>
-            <% end %>
+              <% unless @presenter.modified_date.blank? %>
+                  <div class="hyc-last-updated">Last Updated: <%= @presenter.modified_date %></div>
+              <% end %>
           </div>
       <% end %>
 

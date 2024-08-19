@@ -43,10 +43,10 @@ import ConfirmRemoveDialog from 'hyrax/relationships/confirm_remove_dialog'
 
     // Hides the row and adds a _destroy=true field to the form
     removeResource(evt) {
-       evt.preventDefault();
-       let button = $(evt.target);
-       this.view.addClass('hidden'); // do not show the block
-       this.destroyed = true
-       this.registry.showSaveNote();
-    }
+      evt.preventDefault();
+      let button = $(evt.target);
+      this.view.attr("hidden", ""); // do not show the block
+      this.destroyed = true
+      this.registry.showSaveNote();
+   }
 }

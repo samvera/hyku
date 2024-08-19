@@ -13,6 +13,8 @@ require 'spec_helper'
 RSpec.describe 'Tenant Config for IIIF Print' do
   let!(:test_strategy) { Flipflop::FeatureSet.current.test! }
 
+  after { test_strategy.switch!(:default_pdf_viewer, true) }
+
   describe IiifPrint::TenantConfig do
     describe '.use_iiif_print?' do
       subject { described_class.use_iiif_print? }

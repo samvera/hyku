@@ -86,7 +86,7 @@
                       <%= role.name.titleize %>
                       <%= link_to main_app.remove_role_admin_user_path(id: user.id, role_id: role.id), method: :delete, data: { confirm: t('hyrax.admin.users.roles.remove.confirmation', user: user.email, role: role.name.titleize) } do %>
                         <% if current_ability.admin? || (can?(:edit, User) && role.name != 'admin') %>
-                          <span class="glyphicon glyphicon-remove"></span>
+                          <span class="fa fa-remove"></span>
                         <% end %>
                       <% end %>
                     </li>

@@ -101,6 +101,11 @@ module IiifPrint
       self.iiif_print_splitter = ::IiifPrint::SplitPdfs::PagesToJpgsSplitter
 
       ##
+      def self.never_split_pdfs?
+        !TenantConfig.use_iiif_print?
+      end
+
+      ##
       # @api public
       def self.call(*args)
         return [] unless TenantConfig.use_iiif_print?
@@ -147,6 +152,12 @@ module IiifPrint
     # In Hyrax::WorkShowPresenter we're only looking at the underlying file_sets.  But IiifPrint
     # needs to look at multiple places.
     module WorkShowPresenterDecorator
+      ##
+      # @return [Boolean] Identifies whether IiifPrint PDF splitting is active for this work's tenant
+      def split_pdfs?
+        TenantConfig.use_iiif_print?
+      end
+
       ##
       # @return [Array<Symbol>] predicate methods (e.g. ending in "?") that reflect the types
       #         of files we want to consider for showing in the IIIF Viewer.
@@ -199,4 +210,4 @@ module IiifPrint
     end
   end
 end
-# rubocop:enable Layout/LineLength
+# rubocop:enable Metrics/MethodLength

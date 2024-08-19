@@ -944,7 +944,7 @@ zh:
     product_twitter_handle: "@HydraInABox"
     search:
       button:
-        html: <span class="glyphicon glyphicon-search"></span>走
+        html: <span class="fa fa-search"></span>走
         text: 搜索
       form:
         option:

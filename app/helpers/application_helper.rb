@@ -12,15 +12,31 @@ module ApplicationHelper
     @group_navigation_presenter ||= Hyku::Admin::Group::NavigationPresenter.new(params:)
   end
 
-  def collection_thumbnail(document, _image_options = {}, _url_options = {})
-    return image_tag(document['thumbnail_path_ss']) if document['thumbnail_path_ss'].present?
-    return super if Site.instance.default_collection_image.blank?
+  # Return collection thumbnail formatted for display:
+  #  - use collection's branding thumbnail if it exists
+  #  - use site's default collection image if one exists
+  #  - fallback to Hyrax's default image
+  def collection_thumbnail(document, _image_options = {}, url_options = {})
+    view_class = url_options[:class]
+    # The correct thumbnail SHOULD be indexed on the object
+    return image_tag(document['thumbnail_path_ss'], class: view_class, alt: alttext_for(document)) if document['thumbnail_path_ss'].present?
 
-    image_tag(Site.instance.default_collection_image&.url)
+    # If nothing is indexed, we just fall back to site default
+    return image_tag(Site.instance.default_collection_image&.url, alt: alttext_for(document), class: view_class) if Site.instance.default_collection_image.present?
+
+    # fall back to Hyrax default if no site default
+    tag.span("", class: [Hyrax::ModelIcon.css_class_for(::Collection), view_class],
+                 alt: alttext_for(document))
   end
 
   def label_for(term:, record_class: nil)
     locale_for(type: 'labels', term:, record_class:)
+  end
+
+  def alttext_for(collection)
+    thumbnail = CollectionBrandingInfo.where(collection_id: collection.id, role: "thumbnail")&.first
+    return thumbnail.alt_text if thumbnail
+    block_for(name: 'default_collection_image_text') || "#{collection.title_or_label} #{t('hyrax.dashboard.my.sr.thumbnail')}"
   end
 
   def hint_for(term:, record_class: nil)

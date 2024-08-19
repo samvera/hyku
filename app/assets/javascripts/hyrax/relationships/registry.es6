@@ -46,11 +46,16 @@ export default class Registry {
   }
 
   addHiddenField(index, key, value) {
-      $('<input>').attr({
-          type: 'hidden',
-          name: `${this.fieldPrefix(index)}[${key}]`,
-          value: value
-      }).appendTo(this.element);
+    // Check if the value is an object and not null
+    if (typeof value === 'object' && value !== null) {
+        value = JSON.stringify(value);
+    }
+
+    $('<input>').attr({
+        type: 'hidden',
+        name: `${this.fieldPrefix(index)}[${key}]`,
+        value: value
+    }).appendTo(this.element);
   }
 
   // ADDED RELATIONSHIP

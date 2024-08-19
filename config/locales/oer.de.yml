@@ -1,0 +1,123 @@
+---
+de:
+  hyrax:
+    icons:
+      oer: fa fa-file-text-o
+    oer:
+      hints:
+        description: Kurze Beschreibung des Inhalts der Ressource ohne Inhaltsverzeichnis.
+        resource_type: Vordefinierte Kategorien, um die Art des hochgeladenen Inhalts zu beschreiben. Es können mehr als ein Typ ausgewählt werden.
+        table_of_contents: Inhaltsverzeichnis einer Arbeit.
+      labels:
+        admin_note: Verwaltungshinweise
+        description: Beschreibung
+        resource_type: Art
+      show:
+        related_items: Verwandte Versionen und Elemente
+      works:
+        form:
+          related_versions: Verwandte Versionen
+    oers:
+      form_alternate_version:
+        actions:
+          add: Hinzufügen
+          remove: Entfernen Sie aus dieser Arbeit
+        add: Hinzufügen
+        caption: Verweis auf eine aktualisierte Version der Ressource, die diese ersetzen soll
+        confirm:
+          actions: Aktion
+          cancel: Stornieren
+          header:
+          remove: Entfernen
+          text: Durch das Entfernen dieser alternativen Version wird sie nicht aus dem Repository entfernt, sondern nur aus dieser Arbeit. Möchten Sie diese alternative Version wirklich entfernen?
+          title: Arbeitstitel
+        header:
+          actions: Aktion
+          title: Arbeitstitel
+      form_newer_version:
+        actions:
+          add: Hinzufügen
+          remove: Entfernen Sie aus dieser Arbeit
+        add: Hinzufügen
+        caption: Verweis auf eine aktualisierte Version der Ressource, die diese ersetzen soll
+        confirm:
+          cancel: Stornieren
+          remove: Entfernen
+          text: Durch das Entfernen dieser neueren Version wird sie nicht aus dem Repository entfernt, sondern nur aus dieser Arbeit. Möchten Sie diese neuere Version wirklich entfernen?
+        header:
+          actions: Aktion
+          title: Arbeitstitel
+      form_previous_version:
+        actions:
+          add: Hinzufügen
+          remove: Entfernen Sie aus dieser Arbeit
+        add: Hinzufügen
+        caption: Diese Arbeit enthält derzeit diese vorherige Version
+        confirm:
+          cancel: Stornieren
+          remove: Entfernen
+          text: Wenn Sie diese vorherige Version entfernen, wird sie nicht aus dem Repository entfernt, sondern nur aus dieser Arbeit. Möchten Sie diese frühere Version wirklich entfernen?
+        header:
+          actions: Aktion
+          title: Arbeitstitel
+      form_related_item:
+        actions:
+          remove: Entfernen Sie aus dieser Arbeit
+        add: Hinzufügen
+        caption: Verweis auf eine Ressource, die sich allgemein auf die beschriebene Ressource bezieh
+        confirm:
+          cancel: Stornieren
+          remove: Entfernen
+          text: Durch das Entfernen dieser alternativen Version wird sie nicht aus dem Repository entfernt, sondern nur aus dieser Arbeit. Möchten Sie diese alternative Version wirklich entfernen?
+        header:
+          actions: Aktion
+          title: Arbeitstitel
+      related_items:
+        date_uploaded: Datum Hochgeladen
+        empty: Diese "%{type}" hat keine Dateien zugeordnet. Klicken Sie auf „Bearbeiten“, um weitere Dateien hinzuzufügen.
+        relationship_type: Beziehungstyp
+        thumbnail: Miniaturansicht
+        title: Titel
+        unauthorized: Es gibt keine öffentlich verfügbaren Elemente in diesem "%{type}".
+        visibility: Sichtbarkeit
+    select_type:
+      oer:
+        description: Open Education Resources (OER) sind kostenlose und offen lizenzierte Unterrichtsmaterialien, die zum Lehren, Lernen, Forschen und für andere Zwecke verwendet werden können.
+        name: OER
+  simple_form:
+    hints:
+      defaults:
+        accessibility_feature: Zugängliche Funktionen der Arbeit.
+        accessibility_hazard: Eigenschaften der Arbeit, die für einige Benutzer physiologisch gefährlich sein können.
+        accessibility_summary: Eine Zusammenfassung der spezifischen Barrierefreiheitsfunktionen oder -mängel.
+        additional_information: Informationen zu anderen Rechten, die nicht durch den Status vermittelt werden, wie z. B. Lizenzbedingungen oder Kontaktinformationen.
+        alternative_title: Alternativer Titel für die Ressource.
+        audience: as beabsichtigte Ziel für die Arbeit.
+        date: Das Datum, an dem das Werk erstellt, veröffentlicht oder anderweitig ausgestellt wurde.
+        discipline: Der Bildungsbereich, dem die Ressource dienen soll.
+        education_level: Das Bildungsniveau, für das die Arbeit bestimmt ist.
+        learning_resource_type: Die spezifische Art der beschriebenen Bildungsressource.
+        oer_size: Größe oder Dauer der Arbeit.
+        rights_holder: Person oder Gruppe, die die Rechte an dem Werk besitzt, sofern bekannt.
+        table_of_contents: Inhaltsverzeichnis einer Arbeit.
+    labels:
+      defaults:
+        accessibility_feature: Eingabehilfen
+        accessibility_hazard: Zugänglichkeitsgefahr
+        accessibility_summary: Barrierefreiheitsübersicht
+        additional_information: Zusätzliche Informationen zu Rechten
+        alternative_title: Alternativer Titel
+        audience: Publikum
+        date: Datum
+        discipline: die Ausbildung
+        education_level: Bildungsniveau
+        learning_resource_type: Lernressourcentyp
+        oer_size: Größe
+        rights_holder: Rechteinhaber
+        table_of_contents: Inhaltsverzeichnis
+    placeholders:
+      defaults:
+        alternate_version_id: Suche nach einer Arbeit ...
+        newer_version_id: Suche nach einer Arbeit ...
+        previous_version_id: Suche nach einer Arbeit ...
+        related_item_id: Suche nach einer Arbeit ...

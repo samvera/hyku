@@ -81,14 +81,9 @@ module Hyrax
                        end
     end
 
+    # use either the indexed thumbnail or find the branding for the collection
     def thumbnail_file
-      @thumbnail_file ||= CollectionBrandingInfo.where(collection_id: id, role: "thumbnail")
-                                                .select(:local_path, :alt_text, :target_url).map do |thumbnail|
-        { alttext: thumbnail.alt_text,
-          file: File.split(thumbnail.local_path).last,
-          file_location: "/#{thumbnail.local_path.split('/')[-4..-1].join('/')}",
-          linkurl: thumbnail.target_url }
-      end
+      @thumbnail_file ||= collection_thumbnail(solr_document)
     end
 
     # Begin Featured Collections Methods

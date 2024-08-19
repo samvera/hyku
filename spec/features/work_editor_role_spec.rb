@@ -100,14 +100,14 @@ RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, ci: 's
       fill_in('Creator', with: 'Test Creator')
       click_on('Additional fields')
       fill_in('Keyword', with: 'testing')
-      select('In Copyright', from: 'Rights statement')
+      select('In Copyright', from: 'Rights Statement')
 
       # This might be generic_work_visibility_open or generic_work_visibility_setting_open
       page.choose('generic_work_visibility_open')
 
       # rubocop:disable Layout/LineLength
       expect(page).to have_content('Please note, making something visible to the world (i.e. marking this as Public) may be viewed as publishing which could impact your ability to')
-      # rubocop:enable Layout/LineLength
+      # rubocop:enable Metrics/MethodLength
       find('#agreement').click
 
       expect { click_on('Save') }

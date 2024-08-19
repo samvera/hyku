@@ -140,6 +140,7 @@ module Sushi
       end
     end
 
+    # rubocop:disable Metrics/MethodLength
     def attribute_performance_for_platform
       return [] if metric_type_in_params && metric_types.exclude?("Searches_Platform")
       return [] if data_type_in_params && !data_types.find { |dt| dt.casecmp("Platform").zero? }
@@ -160,6 +161,7 @@ module Sushi
         }
       }]
     end
+    # rubocop:enable Metrics/MethodLength
 
     def performance(record)
       metric_types.each_with_object({}) do |metric_type, returning_hash|
@@ -186,6 +188,7 @@ module Sushi
     # also, note that unique_item_requests and unique_item_investigations should be counted for Hyrax::CounterMetrics that have unique dates, and unique work IDs.
     # see the docs for counting unique items here: https://cop5.projectcounter.org/en/5.1/07-processing/03-counting-unique-items.html
     # rubocop:disable Layout/LineLength
+    # rubocop:disable Metrics/MethodLength
     def data_for_resource_types
       # We're capturing this relation/query because in some cases, we need to chain another where
       # clause onto the relation.
@@ -212,6 +215,7 @@ module Sushi
       relation.where("LOWER(resource_type) IN (?)", data_types)
     end
     # rubocop:enable Layout/LineLength
+    # rubocop:enable Metrics/MethodLength
 
     def data_for_platform
       Hyrax::CounterMetric

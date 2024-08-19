@@ -49,7 +49,7 @@ RSpec.describe Hyku::Application do
     subject { described_class.work_types }
 
     # These are the default
-    it { is_expected.to eq([GenericWorkResource, ImageResource]) }
+    it { is_expected.to eq([GenericWorkResource, ImageResource, EtdResource, OerResource]) }
   end
 
   describe 'Hyrax configuration' do

@@ -13,6 +13,8 @@ RSpec.describe GenericWork do
     end
 
     describe "metadata" do
+      subject { described_class.new }
+
       it { is_expected.to have_property(:bulkrax_identifier) }
     end
 

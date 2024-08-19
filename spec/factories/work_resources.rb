@@ -9,9 +9,16 @@ FactoryBot.define do
       ]
     end
   end
+
   factory :generic_work_resource, parent: :hyku_work, class: 'GenericWorkResource' do
   end
 
   factory :image_resource, parent: :hyku_work, class: 'ImageResource' do
+  end
+
+  factory :etd_resource, parent: :hyku_work, class: 'EtdResource' do
+  end
+
+  factory :oer_resource, parent: :hyku_work, class: 'OerResource' do
   end
 end

@@ -942,7 +942,7 @@ fr:
     product_twitter_handle: "@HydraInABox"
     search:
       button:
-        html: <span class="glyphicon glyphicon-search"></span> Aller
+        html: <span class="fa fa-search"></span> Aller
         text: Chercher
       form:
         option:

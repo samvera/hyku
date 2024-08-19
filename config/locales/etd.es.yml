@@ -1,0 +1,29 @@
+---
+es:
+  hyrax:
+    etd:
+      labels:
+        admin_note: Notas Administrativas
+        committee_member: miembro del Comité
+        creator: Autor
+        date_created: Fecha
+        degree_discipline: Disciplina
+        degree_grantor: Cedente
+        degree_level: Nivel
+        degree_name: La licenciatura
+        description: Descripción
+        related_url: Relación
+        resource_type: Tipo
+        rights_statement: Derechos
+    icons:
+      etd: fa fa-file-text-o
+    select_type:
+      etd:
+        description: ETD trabajos
+        name: ETD
+  simple_form:
+    labels:
+      defaults:
+        advisor: Tutor
+        department: Departamento
+        format: Formato

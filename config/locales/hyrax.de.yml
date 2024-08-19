@@ -943,7 +943,7 @@ de:
     product_twitter_handle: "@HydraInABox"
     search:
       button:
-        html: <span class="glyphicon glyphicon-search"></span> Gehen
+        html: <span class="fa fa-search"></span> Gehen
         text: Suche
       form:
         option:

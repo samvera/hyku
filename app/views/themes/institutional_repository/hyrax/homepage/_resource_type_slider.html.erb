@@ -7,7 +7,7 @@
   <div class="carousel-inner">
     <% resource_types.each.with_index do |(k,v), i| %>
       <% next if v[0].zero? %>
-      <div class="carousel-item <%= 'active' if i.zero? %>">
+      <div class="carousel-item <%= 'active' if i == 1 %>">
         <div class="col-sm-3 col-md-2 text-center">
           <%= link_to "/catalog?f[resource_type_sim][]=#{k}", style: "color: inherit;" do %>
             <i class='<%= "#{v[1]}" %>' aria-hidden="true"></i>
@@ -18,12 +18,12 @@
       </div>
     <% end %>
   </div>
-<a class="carousel-control-prev" href="#carousel-tilenav" role="button" data-slide="prev">
-  <span class="fa fa-chevron-left carousel-control-prev-icon" aria-hidden="true"></span>
-  <span class="sr-only">Previous</span>
-</a>
-<a class="carousel-control-next" href="#carousel-tilenav" role="button" data-slide="next">
-  <span class="fa fa-chevron-right carousel-control-next-icon" aria-hidden="true"></span>
-  <span class="sr-only">Next</span>
-</a>
+  <a class="carousel-control-prev" href="#carousel-tilenav" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carousel-tilenav" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
 </div>

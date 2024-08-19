@@ -1,7 +1,17 @@
 # frozen_string_literal: true
 
 require 'singleton'
+require 'ruby-progressbar'
 
+## Reprocessor for iterating through large sets of ids
+# There are two steps for any reprocessing:
+# 1. Store all the ids for processing to a ids.log file.
+# 2. Run a lambda against every id.
+# No matter whether it is the first run or not, a run of the Reprocessor should always start with Reprocessor.load('tmp/imports/SOME_UNIQUE_NAME')
+# This creates a context for the Reprocessor to run. After that, calling Reprocessor.capture_ids (or capture_work_ids, capture_file_set_ids or capture collection_ids)
+# will record all the ids in a file.
+# Finally, once all the ids are split, calling Reprocessor.process_ids with a lambda (like Reprocessor.process_ids(Reprocessor.save)) to call the process on each item
+# At any point, the process can be stopped (or killed) and then resumed by doing Reprocessor.load(SAME_PATH) and then calling #process_ids again.
 class Reprocessor # rubocop:disable Metrics/ClassLength
   include Singleton
 
@@ -18,10 +28,26 @@ class Reprocessor # rubocop:disable Metrics/ClassLength
     super
   end
 
-  [:capture_ids, :process_ids].each do |method|
-    define_singleton_method(method) do |*args|
-      instance.send(method, *args)
+  # Missing methods will be delegated to `instance` if an implementation is available.
+  # Else `NoMethodError` will be raised via call to `super`
+  def self.method_missing(method_name, *args)
+    if instance.respond_to? method_name
+      # rubocop:disable Rails/Output
+      puts "** Defining new method: '#{method_name}'"
+      # rubocop:enable Rails/Output
+      (class << self; self; end).instance_eval do
+        define_method(method_name) do |*method_args|
+          instance.send(method_name, *method_args)
+        end
+      end
+      instance.send(method_name, *args)
+    else
+      super
     end
+  end
+
+  def self.respond_to_missing?(method_name, include_private = false)
+    instance.respond_to?(method_name) || super
   end
 
   SETTINGS.each do |method|
@@ -50,6 +76,12 @@ class Reprocessor # rubocop:disable Metrics/ClassLength
       state[setting] = instance.send(setting)
     end
     File.write("#{instance.log_dir}/work_processor.json", state.to_json)
+  end
+
+  def capture_ids
+    capture_collection_ids
+    capture_work_ids
+    capture_file_set_ids
   end
 
   def capture_work_ids
@@ -174,8 +206,24 @@ class Reprocessor # rubocop:disable Metrics/ClassLength
     }
   end
 
+  # because this takes an arg, we dont memoize
+  def lambda_job(_job_klass)
+    @lambda_job = lambda { |line, _progress, job_klass|
+      id = line.strip
+      job_klass.perform_later(id)
+    }
+  end
+
+  def lambda_af_index
+    @lambda_af_index ||= lambda { |line, _progress|
+      id = line.strip
+      w = ActiveFedora::Base.find(id)
+      w.update_index
+    }
+  end
+
   def lambda_index
-    @lambda_save ||= lambda { |line, _progress|
+    @lambda_index ||= lambda { |line, _progress|
       id = line.strip
       w = Hyrax.query_service.find_by(id:)
       Hyrax.index_adapter.save(resource: w)
@@ -183,7 +231,7 @@ class Reprocessor # rubocop:disable Metrics/ClassLength
   end
 
   def lambda_print
-    @lambda_save ||= lambda { |line, progress|
+    @lambda_print ||= lambda { |line, progress|
       id = line.strip
       progress.log id
     }

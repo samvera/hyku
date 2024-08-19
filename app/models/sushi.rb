@@ -24,7 +24,7 @@ module Sushi
 
         # rubocop:disable Layout/LineLength
         info << Sushi::Info.new(data: date.to_s, message: "The day of the month is not taken into consideration when providing metrics. The date provided was amended to account for the full month.").as_json if match[2]
-        # rubocop:enable Layout/LineLength
+        # rubocop:enable Metrics/MethodLength
       end
 
       true
@@ -195,14 +195,14 @@ module Sushi
       if @begin_date < earliest_date
         # rubocop:disable Layout/LineLength
         raise Sushi::Error::UsageNoLongerAvailableForRequestedDatesError.new(data: "Unable to complete the request because the begin_date of #{params[:begin_date]} is for a month that has incomplete data.  That month's data starts on #{earliest_date.iso8601}.")
-        # rubocop:enable Layout/LineLength
+        # rubocop:enable Metrics/MethodLength
       end
 
       latest_date = Hyrax::CounterMetric.order(date: :desc).first.date
       if @end_date > latest_date
         # rubocop:disable Layout/LineLength
         raise Sushi::Error::UsageNotReadyForRequestedDatesError.new(data: "Unable to complete the request because the end_date of #{params[:end_date]} is for a month that has incomplete data.  That month's data ends on #{latest_date.iso8601}.")
-        # rubocop:enable Layout/LineLength
+        # rubocop:enable Metrics/MethodLength
       end
     rescue ActionController::ParameterMissing, KeyError => e
       raise Sushi::Error::InsufficientInformationToProcessRequestError.new(data: e.message)
@@ -234,6 +234,7 @@ module Sushi
       attr_reader :metric_types, :metric_type_in_params
     end
 
+    # rubocop:disable Metrics/MethodLength
     def coerce_metric_types(params = {}, allowed_types: ALLOWED_METRIC_TYPES)
       metric_types_from_params = Array.wrap(params[:metric_type]&.split('|'))
       return @metric_types = allowed_types if metric_types_from_params.empty?
@@ -256,6 +257,7 @@ module Sushi
         metric_type.titleize.tr(' ', '_') if allowed_types.any? { |allowed_type| allowed_type.downcase == normalized_metric_type }
       end.compact
     end
+    # rubocop:enable Metrics/MethodLength
   end
 
   module AccessMethodCoercion
@@ -304,7 +306,7 @@ module Sushi
 
       # rubocop:disable Layout/LineLength
       raise Sushi::Error::InvalidReportFilterValueError.new(data: "The given parameter `item_id=#{params[:item_id]}` does not exist. Please provide an existing item_id, or none at all.") unless Hyrax::CounterMetric.exists?(work_id: params[:item_id])
-      # rubocop:enable Layout/LineLength
+      # rubocop:enable Metrics/MethodLength
 
       @item_id = params[:item_id]
       @item_id_in_params = true
@@ -421,7 +423,7 @@ module Sushi
 
       # rubocop:disable Layout/LineLength
       raise Sushi::Error::InvalidReportFilterValueError.new(data: "The given author #{author.inspect} was not found in the metrics.") unless Hyrax::CounterMetric.where(author_as_where_parameters).exists?
-      # rubocop:enable Layout/LineLength
+      # rubocop:enable Metrics/MethodLength
 
       @author_in_params = true
     end
@@ -465,6 +467,7 @@ module Sushi
     # @note No special consideration is made for date ranges that start with a later date and end with
     #       an earlier date (e.g. "1999-1994" will be "date >= 1999 AND date <= 1994"; which will
     #       return no entries.)
+    # rubocop:disable Metrics/MethodLength
     def coerce_yop(params = {})
       return unless params.key?(:yop)
 
@@ -491,7 +494,8 @@ module Sushi
     rescue ArgumentError
       # rubocop:disable Layout/LineLength
       raise Sushi::Error::InvalidDateArgumentError.new(data: "The given parameter `yop=#{yop}` was malformed.  You can provide a range (e.g. 'YYYY-YYYY') or a single date (e.g. 'YYYY').  You can separate ranges/values with a '|'.")
-      # rubocop:enable Layout/LineLength
+      # rubocop:enable Metrics/MethodLength
     end
+    # rubocop: Metrics/MethodLength
   end
 end

@@ -6,6 +6,7 @@ class CollectionResourceIndexer < Hyrax::Indexers::PcdmCollectionIndexer
   include Hyrax::Indexer(:basic_metadata)
   include Hyrax::Indexer(:bulkrax_metadata)
   include Hyrax::Indexer(:collection_resource)
+  include Hyrax::IndexesThumbnails
 
   def to_solr
     super.tap do |index_document|

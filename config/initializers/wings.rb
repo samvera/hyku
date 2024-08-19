@@ -3,7 +3,9 @@
 Rails.application.config.after_initialize do
   [
     GenericWork,
-    Image
+    Image,
+    Etd,
+    Oer
   ].each do |klass|
     Wings::ModelRegistry.register("#{klass}Resource".constantize, klass)
     # we register itself so we can pre-translate the class in Freyja instead of having to translate in each query_service
@@ -18,10 +20,13 @@ Rails.application.config.after_initialize do
   Wings::ModelRegistry.register(Hydra::PCDM::File, Hydra::PCDM::File)
   Wings::ModelRegistry.register(Hyrax::FileMetadata, Hydra::PCDM::File)
 
-  Valkyrie::MetadataAdapter.register(
-    Freyja::MetadataAdapter.new,
-    :freyja
-  )
+  unless Valkyrie::MetadataAdapter.adapters.include?(:freyja)
+    Valkyrie::MetadataAdapter.register(
+      Freyja::MetadataAdapter.new,
+      :freyja
+    )
+  end
+
   Valkyrie.config.metadata_adapter = :freyja
   Hyrax.config.query_index_from_valkyrie = true
   Hyrax.config.index_adapter = :solr_index
@@ -63,6 +68,8 @@ Rails.application.config.after_initialize do
 
   Wings::ModelRegistry.register(GenericWorkResource, GenericWork)
   Wings::ModelRegistry.register(ImageResource, Image)
+  Wings::ModelRegistry.register(EtdResource, Etd)
+  Wings::ModelRegistry.register(OerResource, Oer)
 end
 
 Rails.application.config.to_prepare do
@@ -80,6 +87,8 @@ Rails.application.config.to_prepare do
     if %w[
       GenericWork
       Image
+      Etd
+      Oer
     ].include?(klass_name)
       "#{klass_name}Resource".constantize
     elsif 'Collection' == klass_name

@@ -1,0 +1,121 @@
+---
+fr:
+  hyrax:
+    icons:
+      oer: fa fa-file-text-o
+    oer:
+      hints:
+        description: Brève description du contenu de la ressource, sans table des matières.
+        resource_type: Des catégories prédéfinies pour décrire le type de contenu en cours de chargement. Plus d'un type peut être sélectionné.
+        table_of_contents: Table des matières d'une oeuvre.
+      labels:
+        admin_note: Remarques administratives
+        description: La description
+        resource_type: Type
+      show:
+        related_items: Versions et articles connexes
+      works:
+        form:
+          related_versions: Versions connexes
+    oers:
+      form_alternate_version:
+        actions:
+          remove: Supprimer de ce travail
+        add: Ajouter
+        caption: Référence à une version mise à jour de la ressource destinée à la remplacer
+        confirm:
+          actions: Action
+          cancel: Annuler
+          header:
+          remove: Retirer
+          text: La suppression de cette version alternative ne la supprimera pas du référentiel, uniquement de ce travail. Voulez-vous vraiment supprimer cette version alternative?
+          title: Titre de l'oeuvre
+        header:
+          actions: action
+          title: Titre de l'oeuvre
+      form_newer_version:
+        actions:
+          remove: Supprimer de ce travail
+        add: Ajouter
+        caption: Référence à une version mise à jour de la ressource destinée à la remplacer
+        confirm:
+          cancel: Annuler
+          remove: Retirer
+          text: La suppression de cette version plus récente ne la supprimera pas du référentiel, mais uniquement de ce travail. Êtes-vous sûr de vouloir supprimer cette version plus récente?
+        header:
+          actions: Action
+          title: Titre de l'oeuvre
+      form_previous_version:
+        actions:
+          add: Ajouter
+          remove: Supprimer de ce travail
+        add: Ajouter
+        caption: Ce travail contient actuellement cette version précédente
+        confirm:
+          cancel: Annuler
+          remove: Retirer
+          text: La suppression de cette version précédente ne la supprimera pas du référentiel, mais uniquement de ce travail. Êtes-vous sûr de vouloir supprimer cette version précédente?
+        header:
+          actions: Action
+          title: Titre de l'oeuvre
+      form_related_item:
+        actions:
+          remove: Supprimer de ce travail
+        add: Ajouter
+        caption: Référence à une ressource généralement liée à la ressource décrite
+        confirm:
+          cancel: Annuler
+          remove: Retirer
+          text: La suppression de cette version alternative ne la supprimera pas du référentiel, uniquement de ce travail. Voulez-vous vraiment supprimer cette version alternative?
+        header:
+          actions: Action
+          title: Titre de l'oeuvre
+      related_items:
+        date_uploaded: Date de téléchargement
+        empty: Ce %{type} n'a aucun fichier associé. Cliquez sur "modifier" pour ajouter d'autres fichiers.
+        relationship_type: Type de relation
+        thumbnail: La vignette
+        title: Titre
+        unauthorized: Il n'y a pas d'objets disponibles publiquement dans ce %{type}.
+        visibility: Visibilité
+    select_type:
+      oer:
+        description: Les ressources éducatives libres (REL) sont un matériel éducatif gratuit et sous licence ouverte qui peut être utilisé à des fins d'enseignement, d'apprentissage, de recherche et autres.
+        name: OER
+  simple_form:
+    hints:
+      defaults:
+        accessibility_feature: Caractéristiques accessibles du travail.
+        accessibility_hazard: Caractéristiques du travail pouvant être physiologiquement dangereuses pour certains utilisateurs.
+        accessibility_summary: Un résumé des caractéristiques ou des problèmes d’accessibilité spécifiques.
+        additional_information: Autres informations sur les droits non indiquées par statut, telles que les conditions de licence ou les informations de contact.
+        alternative_title: Titre alternatif pour la ressource.
+        audience: La cible visée pour le travail.
+        date: La date à laquelle l'œuvre a été créée, publiée ou autrement publiée.
+        discipline: Domaine éducatif que la ressource est destinée à servir.
+        education_level: Le niveau d'éducation auquel le travail est destiné.
+        learning_resource_type: Le type spécifique de ressource pédagogique décrit.
+        oer_size: Taille ou durée du travail.
+        rights_holder: Personne ou groupe qui détient les droits sur l'œuvre si elle est connue.
+        table_of_contents: Table des matières d'une oeuvre.
+    labels:
+      defaults:
+        accessibility_feature: Fonction d'accessibilité
+        accessibility_hazard: Risque d'accessibilité
+        accessibility_summary: Résumé d'accessibilité
+        additional_information: Informations supplémentaires sur les droits
+        alternative_title: Titre alternatif
+        audience: Public
+        date: Date
+        discipline: La discipline
+        education_level: iveau d'éducation
+        learning_resource_type: Type de ressource d'apprentissage
+        oer_size: Taille
+        rights_holder: Titulaire des droits
+        table_of_contents: Table des matières
+    placeholders:
+      defaults:
+        alternate_version_id: Rechercher une œuvre ...
+        newer_version_id: Rechercher une œuvre ...
+        previous_version_id: Rechercher une œuvre ...
+        related_item_id: Rechercher une œuvre ...

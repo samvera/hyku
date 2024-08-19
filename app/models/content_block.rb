@@ -104,22 +104,6 @@ class ContentBlock < ApplicationRecord
       homepage_about_section_content.update(value:)
     end
 
-    def homepage_about_section_heading
-      find_or_create_by(name: 'homepage_about_section_heading')
-    end
-
-    def homepage_about_section_heading=(value)
-      homepage_about_section_heading.update(value: value)
-    end
-
-    def homepage_about_section_content
-      find_or_create_by(name: 'homepage_about_section_content')
-    end
-
-    def homepage_about_section_content=(value)
-      homepage_about_section_content.update(value: value)
-    end
-
     def about_page
       find_or_create_by(name: 'about_page')
     end

@@ -1,0 +1,76 @@
+<%
+  # OVERRIDE Hyrax 3.6.0 to make the default PDF viewer switch more intuitive and some styling changes.
+  # Instead of saying on/off it says PDF.js/IIIF Print.
+%>
+
+<% provide :page_header do %>
+  <h1><span class="fa fa-wrench" aria-hidden="true"></span> <%= t('.header') %></h1>
+<% end %>
+<div class="flip row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th></th>
+                <th class="name"><%= t('.feature') %></th>
+                <th class="description"><%= t('.description') %></th>
+                <th class="action"><%= t('.action') %></th>
+              </tr>
+            </thead>
+            <tbody>
+            <% @feature_set.grouped_features.each do |group, features| -%>
+              <% if @feature_set.grouped? -%>
+                <tr class="group">
+                  <td></td>
+                  <td class="name" colspan="<%= 2 + @feature_set.strategies.size -%>">
+                    <h2>
+                      <%= t(group ? group.name : :default, scope: [:flipflop, :groups], default: group ? group.title : nil) -%>
+                    </h2>
+                  </td>
+                </tr>
+              <% end -%>
+              <% features.each do |feature| %>
+              <tr data-feature="<%= feature.name.dasherize.parameterize %>">
+                <td class="status">
+		  <span class="badge badge-<%= @feature_set.status(feature) -%>"><%= status_for(feature) -%></span>
+                </td>
+                <td class="name"><%= feature.name.humanize -%></td>
+                <td class="description"><%= feature.description -%></td>
+
+                <% @feature_set.strategies.each do |strategy| -%>
+                  <% next unless strategy.is_a? Flipflop::Strategies::ActiveRecordStrategy %>
+                  <%# OVERRIDE to add min-width so Actions column can display all toggles on the same line %>
+                  <%# adjust min-width as needed for future overrides %>
+                  <td class="toggle" style="min-width: 110px;" data-strategy="<%= strategy.name.dasherize.parameterize %>">
+                    <div class="toolbar">
+                      <%= form_tag(hyrax.admin_feature_strategy_path(feature.key, strategy.key), method: :put) do -%>
+                        <div class="btn-group">
+                          <%# OVERRIDE to use helper, see FeaturesHelper %>
+                          <%= submit_tag on(feature.name.to_sym),
+                            type: "submit",
+                            class: Flipflop.enabled?(feature.name.to_sym) ? 'active' : nil,
+                            disabled: !strategy.switchable? -%>
+
+                          <%# OVERRIDE to use helper, see FeaturesHelper %>
+                          <%= submit_tag off(feature.name.to_sym),
+                            type: "submit",
+                            class: Flipflop.enabled?(feature.name.to_sym) ? nil : 'active',
+                            disabled: !strategy.switchable? -%>
+                        </div>
+                      <% end -%>
+                    </div>
+                  </td>
+                <% end -%>
+              </tr>
+              <% end -%>
+            <% end -%>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

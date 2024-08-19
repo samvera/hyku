@@ -14,8 +14,8 @@ RSpec.describe 'hyrax/admin/users/index.html.erb', type: :view do
         :user,
         display_name: "user#{i}",
         email: "email#{i}@example.com",
-        last_sign_in_at: Time.zone.now - 15.minutes,
-        created_at: Time.zone.now - 3.days
+        last_sign_in_at: 15.minutes.ago,
+        created_at: 3.days.ago
       )
     end
     FactoryBot.create(:admin_group, member_users: [users[0]])
@@ -58,8 +58,8 @@ RSpec.describe 'hyrax/admin/users/index.html.erb', type: :view do
         users << FactoryBot.create(:admin,
                                    display_name: "admin-user#{i}",
                                    email: "admin#{i}@example.com",
-                                   last_sign_in_at: Time.zone.now - 15.minutes,
-                                   created_at: Time.zone.now - 3.days)
+                                   last_sign_in_at: 15.minutes.ago,
+                                   created_at: 3.days.ago)
       end
       render
     end
@@ -68,7 +68,9 @@ RSpec.describe 'hyrax/admin/users/index.html.erb', type: :view do
       (5..6).each do |i|
         expect(page).to have_content("admin#{i}@example.com")
       end
-      expect(page).to have_selector("div.users-listing td.roles li", text: 'Admin', count: 4)
+
+      expect(page).to have_selector("div.users-listing td.site-roles li", text: 'Admin', count: 2)
+      expect(page).to have_selector("div.users-listing td.group-roles li", text: 'Admin', count: 2)
     end
   end
 
@@ -79,8 +81,8 @@ RSpec.describe 'hyrax/admin/users/index.html.erb', type: :view do
         users << FactoryBot.create(:invited_user,
                                    display_name: "invitee#{i}",
                                    email: "invitee#{i}@example.com",
-                                   last_sign_in_at: Time.zone.now - 15.minutes,
-                                   created_at: Time.zone.now - 3.days)
+                                   last_sign_in_at: 15.minutes.ago,
+                                   created_at: 3.days.ago)
       end
       render
     end

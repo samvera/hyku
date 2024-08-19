@@ -1,0 +1,121 @@
+---
+zh:
+  hyrax:
+    icons:
+      oer: fa fa-file-text-o
+    oer:
+      hints:
+        description: 资源内容的简要说明，不包括目录。
+        resource_type: 预定类型用于描述上传内容类型。可以选择多项类型。
+        table_of_contents: 作品目录。
+      labels:
+        admin_note: 行政笔记
+        description: 描述
+        resource_type: 类型
+      show:
+        related_items: 相关版本和项目
+      works:
+        form:
+          related_versions: 相关版本
+    oers:
+      form_alternate_version:
+        actions:
+          remove: 从这项工作中删除
+        add: 加
+        caption: 引用旨在替换它的资源的更新版本
+        confirm:
+          actions: 行动
+          cancel: 取消
+          header:
+          remove: 去掉
+          text: 刪除此替代版本不會將其從存儲庫中刪除，僅會從此工作中刪除。您確定要刪除此備用版本嗎？
+          title: 作品名称
+        header:
+          actions: 行动
+          title: 作品名称
+      form_newer_version:
+        actions:
+          remove: 从这项工作中删除
+        add: 加
+        caption: 引用旨在替换它的资源的更新版本
+        confirm:
+          cancel: 取消
+          remove: 去掉
+          text: 删除此较新版本不会仅从此项工作中将其从存储库中删除。您确定要删除此较新版本吗？
+        header:
+          actions: 行动
+          title: 作品名称
+      form_previous_version:
+        actions:
+          add: 加
+          remove: 从这项工作中删除
+        add: 加
+        caption: 该作品当前包含此先前版本
+        confirm:
+          cancel: 取消
+          remove: 去掉
+          text: 删除此先前版本不会将其从资源库中删除，仅会从此工作中删除。您确定要删除此先前版本吗？
+        header:
+          actions: 行动
+          title: 作品名称
+      form_related_item:
+        actions:
+          remove: 从这项工作中删除
+        add: 加
+        caption: 引用通常与所描述资源有关的资源
+        confirm:
+          cancel: 取消
+          remove: 去掉
+          text: 删除此替代版本不会将其从存储库中删除，仅会从此工作中删除。您确定要删除此备用版本吗？
+        header:
+          actions: 行动
+          title: 作品名称
+      related_items:
+        date_uploaded: 上传日期
+        empty: 该 %{type} 没有相关文件。 请点击'编辑'添加更多文件。
+        relationship_type: 关系类型
+        thumbnail: 缩略图
+        title: 标题
+        unauthorized: 这个%{type}中没有公开可用的项目。
+        visibility: 公开度
+    select_type:
+      oer:
+        description: 开放式教育资源（OER）是免费的和开放许可的教育材料，可用于教学，学习，研究和其他目的。
+        name: OER
+  simple_form:
+    hints:
+      defaults:
+        accessibility_feature: 作品的無障礙功能
+        accessibility_hazard: 對某些使用者可能造成生理危險的作品特徵
+        accessibility_summary: 特定輔助功能或缺陷的摘要
+        additional_information: 未按状态传达的其他权利信息，例如许可条款或联系信息。
+        alternative_title: 资源的备用标题。
+        audience: 工作的预期目标。
+        date: T创建，发布或发布作品的日期。
+        discipline: 资源旨在服务的教育领域。
+        education_level: 预期工作的教育水平。
+        learning_resource_type: 描述的特定类型的教育资源。
+        oer_size: 工作的规模或持续时间。
+        rights_holder: 作品的大小或持续时间。拥有作品权利的个人或团体（如果知道）。
+        table_of_contents: 作品目录。
+    labels:
+      defaults:
+        accessibility_feature: 輔助功能
+        accessibility_hazard: 可達性危害
+        accessibility_summary: 輔助功能摘要
+        additional_information: 附加权利信息
+        alternative_title: 替代标题
+        audience: 听众
+        date: 日期
+        discipline: 学科
+        education_level: 教育程度
+        learning_resource_type: 学习资源类型
+        oer_size: 尺寸
+        rights_holder: 权利人
+        table_of_contents: 目录
+    placeholders:
+      defaults:
+        alternate_version_id: 搜寻作品...
+        newer_version_id: 搜寻作品...
+        previous_version_id: 搜寻作品...
+        related_item_id: 搜寻作品...

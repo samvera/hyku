@@ -13,7 +13,8 @@ en:
           url: Fedora URL should not end with a slash
         name: A single or hyphenated name used for technical aspects of the repository (e.g., "acme" or "acme-library").
         gtm_id: The ID of your Google Tag Manager account
-        contact_email: Email recipient of messages sent via the contact form
+        google_analytics_id: The ID of your Google Analytics account
+        contact_email_to: The email address that messages submitted via the contact page are sent to
         weekly_email_list: List of email addresses to email the weekly report. Leave a single space between each email
         monthly_email_list: List of email addresses to email the monthly report. Leave a single space between each email
         yearly_email_list: List of email addresses to email the yearly report. Leave a single space between each email
@@ -29,7 +30,8 @@ en:
         doi_writer: Write DOIs for records. WIP do not use
         cache_api: Turns on cache for API endpoints. Experimental
         email_subjet_prefix: String to put in front of system email subjects.
-        contact_email_to: Email address that should receive contact emails
+        contact_email: The email address that system notifications will be sent from. Additional configuration is required to add an address from domains other than the site's domain
+        contact_email_to: The email address that messages submitted via the contact page are sent to
         geonames_username: Register at http://www.geonames.org/manageaccount
         file_acl: Turn off if using a file system like samba or nfs that does not support setting access control lists
         ssl_configured: Set it true if using https

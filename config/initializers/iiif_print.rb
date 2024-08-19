@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 IiifPrint.config do |config|
   # NOTE: WorkTypes and models are used synonymously here.
   # Add models to be excluded from search so the user
@@ -20,4 +21,6 @@ IiifPrint.config do |config|
   # @example
   #   config.sort_iiif_manifest_canvases_by = :date_published
   config.default_iiif_manifest_version = 3
+  config.persistence_adapter = IiifPrint::PersistenceLayer::ValkyrieAdapter
+  config.additional_tesseract_options = "-l eng_best"
 end

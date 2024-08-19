@@ -39,7 +39,7 @@ RSpec.describe Proprietor::UsersController, type: :controller, multitenant: true
     let(:account) { FactoryBot.create(:account) }
 
     before do
-      Site.update(account: account)
+      Site.update(account:)
     end
 
     describe "GET #index" do

@@ -7,6 +7,7 @@ class IdentityProvidersController < ApplicationController
   before_action :set_identity_provider, only: %i[edit update destroy]
 
   def index
+    add_breadcrumbs
     @identity_providers = IdentityProvider.all
   end
 
@@ -36,6 +37,12 @@ class IdentityProvidersController < ApplicationController
         format.json { render json: @identity_provider.errors, status: :unprocessable_entity }
       end
     end
+  rescue JSON::ParserError => e
+    @identity_provider.add_error(:options, "Invalid JSON #{e.message}")
+    respond_to do |format|
+      format.html { render :new, status: :unprocessable_entity }
+      format.json { render json: @identity_provider.errors, status: :unprocessable_entity }
+    end
   end
 
   # PATCH/PUT /identity_providers/1 or /identity_providers/1.json
@@ -51,6 +58,12 @@ class IdentityProvidersController < ApplicationController
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @identity_provider.errors, status: :unprocessable_entity }
       end
+    end
+  rescue JSON::ParserError => e
+    @identity_provider.add_error(:options, "Invalid JSON #{e.message}")
+    respond_to do |format|
+      format.html { render :new, status: :unprocessable_entity }
+      format.json { render json: @identity_provider.errors, status: :unprocessable_entity }
     end
   end
 
@@ -72,27 +85,27 @@ class IdentityProvidersController < ApplicationController
 
   private
 
-    # Use callbacks to share common setup or constraints between actions.
-    def set_identity_provider
-      @identity_provider = IdentityProvider.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_identity_provider
+    @identity_provider = IdentityProvider.find(params[:id])
+  end
 
-    def ensure_admin!
-      authorize! :read, :admin_dashboard
-    end
+  def ensure_admin!
+    authorize! :read, :admin_dashboard
+  end
 
-    # Only allow a list of trusted parameters through.
-    def identity_provider_params
-      return @identity_provider_params if @identity_provider_params
-      @identity_provider_params = params.require(:identity_provider).permit(
-        :name,
-        :provider,
-        :options,
-        :logo_image,
-        :logo_image_text
-      )
-      @identity_provider_params['options'].presence &&
-        @identity_provider_params['options'] = JSON.parse(@identity_provider_params['options'])
-      @identity_provider_params
-    end
+  # Only allow a list of trusted parameters through.
+  def identity_provider_params
+    return @identity_provider_params if @identity_provider_params
+    @identity_provider_params = params.require(:identity_provider).permit(
+      :name,
+      :provider,
+      :options,
+      :logo_image,
+      :logo_image_text
+    )
+    @identity_provider_params['options'].presence &&
+      @identity_provider_params['options'] = JSON.parse(@identity_provider_params['options'])
+    @identity_provider_params
+  end
 end

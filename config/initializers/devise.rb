@@ -1,5 +1,7 @@
+# frozen_string_literal: true
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
+# rubocop:disable Metrics/BlockLength
 Devise.setup do |config|
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
@@ -298,11 +300,11 @@ Devise.setup do |config|
   identity_provider_id_regex = /\d+/
 
   [:cas, :openid_connect, :saml].each do |provider|
-    path_prefix =  "/users/auth/#{provider}"
-    handler = OmniAuth::MultiProvider::Handler.new(path_prefix: path_prefix,
-      identity_provider_id_regex: identity_provider_id_regex,
+    path_prefix = "/users/auth/#{provider}"
+    handler = OmniAuth::MultiProvider::Handler.new(path_prefix:,
+                                                   identity_provider_id_regex:,
       &dynamic_options_generator)
-    static_options = { path_prefix: path_prefix }
+    static_options = { path_prefix: }
 
     config.omniauth provider, static_options.merge(handler.provider_options)
   end
@@ -330,3 +332,4 @@ Devise.setup do |config|
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
 end
+# rubocop:enable Metrics/BlockLength

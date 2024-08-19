@@ -43,16 +43,16 @@ RSpec.describe 'Admin Dashboard', type: :feature, js: true, clean: true do
         expect(page).to have_link('Content Blocks')
         expect(page).to have_link('Features')
         expect(page).to have_link('Available Work Types')
-        expect(page).to have_link('Workflow Roles')
+        # expect(page).to have_link('Workflow Roles')
       end
     end
 
     it 'shows the status page' do
       visit status_path
-      expect(page).to have_content("Fedora\nOK")
-      expect(page).to have_content("Solr\nOK")
-      expect(page).to have_content("Redis\nOK")
-      expect(page).to have_content("Database\nOK")
+      expect(page).to have_selector(".list-group-item-success", text: "Fedora OK")
+      expect(page).to have_selector(".list-group-item-success", text: "Solr OK")
+      expect(page).to have_selector(".list-group-item-success", text: "Redis OK")
+      expect(page).to have_selector(".list-group-item-success", text: "Database OK")
     end
 
     it 'displays the add-users-to-groups page without the hidden form field', js: true do

@@ -1,0 +1,12 @@
+attributes:
+  video_embed:
+    type: string
+    predicate: https://atla.com/terms/video_embed
+    multiple: false
+    form:
+      display: true
+      primary: false
+      required: false
+      multiple: false
+    index_keys:
+      - "video_embed_tesi"

@@ -1,4 +1,4 @@
-<%# OVERRIDE Hyrax 3.5.0 to add appropriate alt tag %>
+<%# OVERRIDE Hyrax v5.0.0rc2 to add appropriate alt tag %>
 
 <% # used by All and Managed Collections tabs %>
 <% id = collection_presenter.id %>
@@ -22,22 +22,16 @@
   <td>
     <div class="thumbnail-title-wrapper">
       <div class="thumbnail-wrapper">
-        <% if (collection_presenter.thumbnail_path == nil) %>
-          <span class="<%= Hyrax::ModelIcon.css_class_for(::Collection) %> collection-icon-small"></span>
-        <% else %>
-          <%# OVERRIDE begin %>
-          <%= image_tag(collection_presenter.thumbnail_path, alt: block_for(name: 'default_collection_image_text') || "#{collection_presenter.title_or_label} #{t('hyrax.dashboard.my.sr.thumbnail')}") %>
-          <%# OVERRIDE end %>
-        <% end %>
+        <%# Use appropriate collection thumbnail + alttext %>
+        <%= collection_thumbnail(collection_presenter.solr_document) %>
       </div>
       <%= link_to collection_presenter.show_path do %>
           <span class="sr-only"><%= t("hyrax.dashboard.my.sr.show_label") %> </span>
-          <%= collection_presenter.title_or_label %>
+          <%= markdown(collection_presenter.title_or_label) %>
       <% end %>
-
       <%# Expand arrow %>
       <a href="#" class="small show-more" title="Click for more details">
-        <i id="expand_<%= id %>" class="glyphicon glyphicon-chevron-right" aria-hidden="true"></i>
+        <i id="expand_<%= id %>" class="fa fa-chevron-right" aria-hidden="true"></i>
         <span class="sr-only"> <%= "#{t("hyrax.dashboard.my.sr.detail_label")} #{collection_presenter.title_or_label}" %></span>
       </a>
     </div>
@@ -67,10 +61,10 @@
   <td class="collection_type">
     <%= collection_presenter.collection_type_badge %>
   </td>
-  <td class="date"><%= collection_presenter.modified_date %></td>
+  <td class="text-center date"><%= collection_presenter.modified_date.try(:to_formatted_s, :standard) %> </td>
   <td><%= collection_presenter.total_viewable_items %></td>
-  <td><%= collection_presenter.permission_badge %>  </td>
-  <td>
+  <td class="text-center"><%= collection_presenter.permission_badge %>  </td>
+  <td class="text-center">
     <% if collection_presenter.solr_document.admin_set? %>
       <%= render '/hyrax/my/admin_set_action_menu', admin_set_presenter: collection_presenter %>
     <% else %>

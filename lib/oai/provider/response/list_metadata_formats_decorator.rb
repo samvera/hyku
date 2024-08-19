@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-# rubocop:disable Style/ClassAndModuleChildren
+# OVERRIDE OAI v1.2.1 to add support for oai_hyku metadata format
+
 module OAI::Provider::Response::ListMetadataFormatsDecorator
   def record_supports(record, prefix)
     (prefix == 'oai_dc') ||
@@ -9,6 +10,5 @@ module OAI::Provider::Response::ListMetadataFormatsDecorator
       record.respond_to?("map_#{prefix}")
   end
 end
-# rubocop:enable Style/ClassAndModuleChildren
 
 OAI::Provider::Response::ListMetadataFormats.prepend(OAI::Provider::Response::ListMetadataFormatsDecorator)

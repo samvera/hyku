@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class FcrepoEndpoint < Endpoint
+  has_one :account, dependent: nil, foreign_key: :fcrepo_endpoint_id # rubocop:disable Rails/RedundantForeignKey
+
   store :options, accessors: %i[url base_path]
 
   def url
@@ -27,7 +29,7 @@ class FcrepoEndpoint < Endpoint
   def remove!
     switch!
     # Preceding slash must be removed from base_path when calling delete()
-    path = base_path.sub!(%r{^/}, '')
+    path = base_path.sub(%r{^/}, '')
     ActiveFedora.fedora.connection.delete(path)
     destroy
   end

@@ -1,0 +1,12 @@
+<dt><%= t('hyrax.base.part_of.label') %></td></dt>
+<dd>
+  <td>
+    <ul class="tabular">
+      <% presenter.parent_works(current_user).each do |parent_doc| %>
+        <li class='attribute attribute-title'>
+          <%= link_to parent_doc.title.first, parent_path(parent_doc) %>
+        </li>
+      <% end %>
+    </ul>
+  </td>
+</dd>

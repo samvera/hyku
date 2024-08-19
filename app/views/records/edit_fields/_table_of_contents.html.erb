@@ -1,0 +1,5 @@
+<% if curation_concern.to_rdf_representation == 'Oer' %>
+  <%= f.input :table_of_contents, as: :multi_value,
+    hint: t("hyrax.oer.hints.table_of_contents"),
+    input_html: { rows: '14', type: 'textarea'}, required: f.object.required?(key) %>
+<% end %>

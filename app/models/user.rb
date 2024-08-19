@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
 class User < ApplicationRecord
   # Includes lib/rolify from the rolify gem
   rolify
@@ -9,39 +10,57 @@ class User < ApplicationRecord
   include Hyrax::User
   include Hyrax::UserUsageStats
 
-  attr_accessible :email, :password, :password_confirmation if Blacklight::Utils.needs_attr_accessible?
   # Connects this user object to Blacklights Bookmarks.
   include Blacklight::User
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :invitable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable, omniauth_providers: %i[saml openid_connect cas]
+  devise(*Hyku::Application.user_devise_parameters)
 
   after_create :add_default_group_membership!
+  after_update :mark_all_undelivered_messages_as_delivered!, if: -> { batch_email_frequency == 'never' }
 
   # set default scope to exclude guest users
   def self.default_scope
     where(guest: false)
   end
 
-  scope :for_repository, -> {
+  scope :for_repository, lambda {
     joins(:roles)
   }
 
   scope :registered, -> { for_repository.group(:id).where(guest: false) }
 
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/PerceivedComplexity
   def self.from_omniauth(auth)
-    find_or_create_by(provider: auth.provider, uid: auth.uid) do |user|
-      user.email = auth&.info&.email || [auth.uid, '@', Site.instance.account.email_domain].join if user.email.blank?
-      user.password = Devise.friendly_token[0, 20]
-      user.display_name = auth&.info&.name # assuming the user model has a name
-      # user.image = auth.info.image # assuming the user model has an image
-      # If you are using confirmable and the provider(s) you use validate emails,
-      # uncomment the line below to skip the confirmation emails.
-      # user.skip_confirmation!
-    end
+    u = find_by(provider: auth.provider, uid: auth.uid)
+    return u if u
+
+    u = find_by(email: auth&.info&.email&.downcase)
+    u ||= new
+    u.provider = auth.provider
+    u.uid = auth.uid
+    u.email = auth&.info&.email
+    u.email ||= auth.uid
+    # rubocop:disable Performance/RedundantMatch
+    u.email = [auth.uid, '@', Site.instance.account.email_domain].join unless u.email.match?('@')
+    # rubocop:enable Performance/RedundantMatch
+
+    # Passwords are required for all records, but in the case of OmniAuth,
+    # we're relying on the other auth provider.  Hence we're creating a random
+    # password.
+    u.password = Devise.friendly_token[0, 20] if u.new_record?
+
+    # assuming the user model has a name
+    u.display_name = auth&.info&.name
+    u.display_name ||= "#{auth&.info&.first_name} #{auth&.info&.last_name}" if auth&.info&.first_name && auth&.info&.last_name
+    u.save
+    u
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/PerceivedComplexity
 
   # Method added by Blacklight; Blacklight uses #to_s on your
   # user class to get a user-displayable login/identifier.
@@ -49,18 +68,24 @@ class User < ApplicationRecord
     email
   end
 
-  def is_admin
+  def admin?
     has_role?(:admin) || has_role?(:admin, Site.instance)
   end
 
-  def is_superadmin
+  # Favor admin? over is_admin? but provided for backwards compatability.
+  alias is_admin? admin?
+
+  def superadmin?
     has_role? :superadmin
   end
+
+  # Favor admin? over is_admin? but provided for backwards compatability.
+  alias is_superadmin? superadmin?
 
   # This comes from a checkbox in the proprietor interface
   # Rails checkboxes are often nil or "0" so we handle that
   # case directly
-  def is_superadmin=(value)
+  def superadmin=(value)
     value = ActiveModel::Type::Boolean.new.cast(value)
     if value
       add_role :superadmin
@@ -99,7 +124,8 @@ class User < ApplicationRecord
   #   u.hyrax_groups
   #   => [#<Hyrax::Group id: 2, name: "registered", description: nil,...>]
   def hyrax_groups
-    roles.where(name: 'member', resource_type: 'Hyrax::Group').map(&:resource).uniq
+    # Why compact?  In theory we shouldn't need this.  But in tests we're seeing a case
+    roles.where(name: 'member', resource_type: 'Hyrax::Group').map(&:resource).uniq.compact
   end
 
   # Override method from hydra-access-controls v11.0.0 to use Hyrax::Groups.
@@ -107,6 +133,13 @@ class User < ApplicationRecord
   # @return [Array] Hyrax::Group names the User is a member of
   def groups
     hyrax_groups.map(&:name)
+  rescue NoMethodError
+    # Not quite raising the same exception, but this code is here to catch a flakey spec.  What we're
+    # seeing is that an element in `hyrax_groups` is `nil` and which does not respond to `#name`.
+    # Looking at `#hyrax_groups` method, it's unclear how we'd find `nil`.
+    #
+    # Perhaps the `Hyrax::Group` is in a tenant and `Role` is not?  Hmm.
+    raise "Hyrax::Groups: #{roles.where(name: 'member', resource_type: 'Hyrax::Group').all.inspect}\nRoles: #{roles.all.inspect}"
   end
 
   # NOTE: This is an alias for #groups to clarify what the method is doing.
@@ -132,4 +165,29 @@ class User < ApplicationRecord
 
     Hyrax::Group.find_or_create_by!(name: Ability.registered_group_name).add_members_by_id(id)
   end
+
+  # When the user sets their batch email frequency to 'never' then we want to mark all the messages
+  # (really the receipts of the messages) to is_delivered tru
+  def mark_all_undelivered_messages_as_delivered!
+    mailbox.receipts.where(is_delivered: false).find_each do |receipt|
+      receipt.update(is_delivered: true)
+    end
+  end
+
+  # Returns hash summary of user statistics for a date range... uses the prior month by default
+  def statistics_for(start_date: (Time.zone.now - 1.month).beginning_of_month, end_date: (Time.zone.now - 1.month).end_of_month)
+    stats_period = start_date..end_date
+    last_month_stats = stats.where(date: stats_period)
+
+    return nil if last_month_stats.empty?
+
+    {
+      new_file_downloads: last_month_stats.sum(:file_downloads),
+      new_work_views: last_month_stats.sum(:work_views),
+      total_file_views:,
+      total_file_downloads:,
+      total_work_views:
+    }
+  end
 end
+# rubocop:enable Metrics/ClassLength

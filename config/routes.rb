@@ -2,18 +2,27 @@
 
 # OVERRIDE Hyrax 2.9.0 to add featured collection routes
 
-require 'sidekiq/web'
+require 'sidekiq/web' if ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq') == 'sidekiq'
 
 Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   resources :identity_providers
+  concern :range_searchable, BlacklightRangeLimit::Routes::RangeSearchable.new
   concern :iiif_search, BlacklightIiifSearch::Routes.new
   concern :oai_provider, BlacklightOaiProvider::Routes.new
+  mount WillowSword::Engine => '/sword'
 
   mount Hyrax::IiifAv::Engine, at: '/'
+  mount IiifPrint::Engine, at: '/'
   mount Riiif::Engine => 'images', as: :riiif if Hyrax.config.iiif_image_server?
 
-  authenticate :user, ->(u) { u.is_superadmin || u.is_admin } do
-    mount Sidekiq::Web => '/jobs'
+  authenticate :user, ->(u) { u.superadmin? || u.admin? } do
+    queue = ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq')
+    case queue
+    when 'sidekiq'
+      mount Sidekiq::Web => '/jobs'
+    when 'good_job'
+      mount GoodJob::Engine => '/jobs'
+    end
   end
 
   if ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_MULTITENANT', false))
@@ -27,24 +36,42 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
 
       namespace :proprietor do
         resources :accounts
-        resources :users
+        resources :users do
+          member do
+            post :become
+          end
+        end
       end
     end
   end
 
   get 'status', to: 'status#index'
 
+  # routes for the  api
+  namespace :api, defaults: { format: :json } do
+    resource :sushi do
+      collection do
+        get 'r51/status', to: 'sushi#server_status'
+        get 'r51/reports', to: 'sushi#report_list'
+        get 'r51/reports/pr', to: 'sushi#platform_report'
+        get 'r51/reports/pr_p1', to: 'sushi#platform_usage'
+        get 'r51/reports/ir', to: 'sushi#item_report'
+      end
+    end
+  end
+
   mount BrowseEverything::Engine => '/browse'
+
   resource :site, only: [:update] do
-    resources :roles, only: %i[index update]
     resource :labels, only: %i[edit update]
+    resources :roles, only: %i[index update]
   end
 
   root 'hyrax/homepage#index'
 
   devise_for :users, skip: [:omniauth_callbacks], controllers: { invitations: 'hyku/invitations',
-                                    registrations: 'hyku/registrations',
-                                    omniauth_callbacks: 'users/omniauth_callbacks' }
+                                                                 registrations: 'hyku/registrations',
+                                                                 omniauth_callbacks: 'users/omniauth_callbacks' }
   as :user do
     resources :single_signon, only: [:index]
 
@@ -55,10 +82,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
         as: "user_#{provider}_omniauth_authorize",
         via: OmniAuth.config.allowed_request_methods
 
-      match "#{path_prefix}/#{provider}/:id/metadata",
-        to: "users/omniauth_callbacks#passthru",
-        as: "user_#{provider}_omniauth_metadata",
-        via: [:get]
+      get "#{path_prefix}/#{provider}/:id/metadata", to: "users/omniauth_callbacks#passthru", as: "user_#{provider}_omniauth_metadata"
 
       match "#{path_prefix}/#{provider}/:id/callback",
         to: "users/omniauth_callbacks##{provider}",
@@ -70,9 +94,10 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   mount Qa::Engine => '/authorities'
 
   mount Blacklight::Engine => '/'
+  mount BlacklightAdvancedSearch::Engine => '/'
   mount Hyrax::Engine, at: '/'
-  mount Bulkrax::Engine, at: '/' if ENV.fetch('HYKU_BULKRAX_ENABLED', 'true') == 'true'
-
+  mount Bulkrax::Engine, at: '/' if Hyku.bulkrax_enabled?
+  mount HykuKnapsack::Engine, at: '/'
   concern :searchable, Blacklight::Routes::Searchable.new
   concern :exportable, Blacklight::Routes::Exportable.new
 
@@ -82,6 +107,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     concerns :oai_provider
 
     concerns :searchable
+    concerns :range_searchable
   end
 
   resources :solr_documents, only: [:show], path: '/catalog', controller: 'catalog' do
@@ -100,7 +126,10 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   namespace :admin do
     resource :account, only: %i[edit update]
     resource :work_types, only: %i[edit update]
-    resources :users, only: [:destroy]
+    resources :users, only: [:index, :destroy] do
+      post 'activate', on: :member
+      delete 'remove_role/:role_id', on: :member, to: 'users#remove_role', as: :remove_role
+    end
     resources :groups do
       member do
         get :remove
@@ -109,6 +138,8 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
       resources :users, only: %i[index create destroy], param: :user_id, controller: 'group_users'
       resources :roles, only: %i[index create destroy], param: :role_id, controller: 'group_roles'
     end
+    post "roles_service/:job_name_key", to: "roles_service#update_roles", as: :update_roles
+    get "roles_service", to: "roles_service#index", as: :roles_service_jobs
   end
 
   # OVERRIDE here to add featured collection routes

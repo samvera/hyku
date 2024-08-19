@@ -1,19 +1,19 @@
-<%# OVERRIDE Hyrax v3.4.2 Add workflow roles to groups %>
+<%# OVERRIDE Hyrax v5.0.0rc2 Add workflow roles to groups %>
 <% provide :page_header do %>
   <h1><span class="fa fa-users" aria-hidden="true"></span>  <%= t("hyrax.admin.workflow_roles.header") %></h1>
 <% end %>
 
 <div class="row">
   <div class="col-md-12">
-    <div class="panel panel-default">
-      <div class='panel-body'>
+    <div class="card">
+      <div class='card-body'>
         <%# OVERRIDE: New form for adding workflow roles to groups %>
         <!-- BEGIN Assign Role to Group -->
-        <div class='panel panel-default'>
-          <div class='panel-heading'>
-            <h2 class='panel-title h2'><%= t('.new_group_role') %></h2>
+        <div class='card'>
+          <div class='card-header'>
+            <h2 class='card-title h2'><%= t('.new_group_role') %></h2>
           </div>
-          <div class='panel-body'>
+          <div class='card-body'>
             <%= simple_form_for Hyrax::Forms::WorkflowResponsibilityGroupForm.new, url: hyrax.admin_workflow_roles_path, html: { id: :new_sipity_group_workflow_responsibility } do |f| %>
               <%= f.input :group_id, as: :select, collection: f.object.group_options, label_method: :humanized_name, value_method: :id %>
               <%= f.input :workflow_role_id, as: :select, collection: f.object.workflow_role_options, input_html: { id: :sipity_workflow_responsibility_group_workflow_role_id } %>
@@ -24,11 +24,11 @@
         <!-- END Assign Role to Group -->
 
         <!-- BEGIN Assign Role to User -->
-        <div class='panel panel-default'>
-          <div class='panel-heading'>
-            <h2 class='panel-title h2'><%= t('.new_user_role') %></h2>
+        <div class='card'>
+          <div class='card-header'>
+            <h2 class='card-title h2'><%= t('.new_user_role') %></h2>
           </div>
-          <div class='panel-body'>
+          <div class='card-body'>
             <%= simple_form_for Hyrax::Forms::WorkflowResponsibilityForm.new, url: hyrax.admin_workflow_roles_path do |f| %>
               <%= f.input :user_id, as: :select, collection: f.object.user_options %>
               <%= f.input :workflow_role_id, as: :select, collection: f.object.workflow_role_options %>
@@ -44,15 +44,15 @@
 
 <div class="row">
   <div class="col-md-12">
-    <div class="panel panel-default">
-      <div class='panel-body'>
+    <div class="card">
+      <div class='card-body'>
         <%# OVERRIDE: Add section for current group roles %>
         <!-- BEGIN Current Group Roles -->
-        <div class='panel panel-default'>
-          <div class='panel-heading'>
-            <h2 class='panel-title h2'><%= t('.current_group_roles') %></h2>
+        <div class='card'>
+          <div class='card-header'>
+            <h2 class='card-title h2'><%= t('.current_group_roles') %></h2>
           </div>
-          <div class='panel-body'>
+          <div class='card-body'>
             <table class='table table-striped datatable group-workflow-roles-table'>
               <thead>
                 <th><%= t('.header.group_name') %></th>
@@ -89,11 +89,11 @@
         <!-- END Current Group Roles -->
 
         <!-- BEGIN Current User Roles -->
-        <div class='panel panel-default'>
-          <div class='panel-heading'>
-            <h2 class='panel-title h2'><%= t('.current_user_roles') %></h2>
+        <div class='card'>
+          <div class='card-header'>
+            <h2 class='card-title h2'><%= t('.current_user_roles') %></h2>
           </div>
-          <div class='panel-body'>
+          <div class='card-body'>
             <table class='table table-striped datatable user-workflow-roles-table'>
               <thead>
                 <th><%= t('.header.email') %></th>

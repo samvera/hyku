@@ -1,0 +1,121 @@
+---
+it:
+  hyrax:
+    icons:
+      oer: fa fa-file-text-o
+    oer:
+      hints:
+        description: Breve descrizione del contenuto della risorsa, escluso un sommario.
+        resource_type: Categorie predefinite per descrivere il tipo di contenuto che viene caricato. Possono essere selezionati più di un tipo.
+        table_of_contents: Indice di un'opera.
+      labels:
+        admin_note: Note Amministrative
+        description: Descrizione
+        resource_type: genere
+      show:
+        related_items: Versioni ed elementi correlati
+      works:
+        form:
+          related_versions: Versioni correlate
+    oers:
+      form_alternate_version:
+        actions:
+          remove: Rimuovi da questo lavoro
+        add: Inserisci
+        caption: Riferimento a una versione aggiornata della risorsa destinata a sostituirla
+        confirm:
+          actions: Azione
+          cancel: Annulla
+          header:
+          remove: Rimuovere
+          text: La rimozione di questa versione alternativa non la rimuoverà dal repository, ma solo da questo lavoro. Sei sicuro di voler rimuovere questa versione alternativa?
+          title: Titolo dell'opera
+        header:
+          actions: Azione
+          title: Titolo dell'opera
+      form_newer_version:
+        actions:
+          remove: Rimuovi da questo lavoro
+        add: Inserisci
+        caption: Riferimento a una versione aggiornata della risorsa destinata a sostituirla
+        confirm:
+          cancel: Annulla
+          remove: Rimuovere
+          text: La rimozione di questa nuova versione non la rimuoverà dal repository, ma solo da questo lavoro. Sei sicuro di voler rimuovere questa versione più recente?
+        header:
+          actions: Azione
+          title: Titolo dell'opera
+      form_previous_version:
+        actions:
+          add: Inserisci
+          remove: Rimuovi da questo lavoro
+        add: Inserisci
+        caption: Questo lavoro contiene attualmente questa versione precedente
+        confirm:
+          cancel: Annulla
+          remove: Rimuovere
+          text: La rimozione di questa versione precedente non la rimuoverà dal repository, ma solo da questo lavoro. Sei sicuro di voler rimuovere questa versione precedente?
+        header:
+          actions: Azione
+          title: Titolo dell'opera
+      form_related_item:
+        actions:
+          remove: Rimuovi da questo lavoro
+        add: Inserisci
+        caption: Riferimento a una risorsa generalmente correlata alla risorsa descritta
+        confirm:
+          cancel: Annulla
+          remove: Rimuovere
+          text: La rimozione di questa versione alternativa non la rimuoverà dal repository, ma solo da questo lavoro. Sei sicuro di voler rimuovere questa versione alternativa?
+        header:
+          actions: Azione
+          title: Titolo dell'opera
+      related_items:
+        date_uploaded: Data caricata
+        empty: Questo %{type} non ha nessun file associato ad esso. Fai clic su "modifica" per aggiungere altri file.
+        relationship_type: Tipo di relazione
+        thumbnail: Thumbnail
+        title: Titolo
+        unauthorized: Non ci sono articoli disponibili pubblicamente in questo %{type}.
+        visibility: Visibilità
+    select_type:
+      oer:
+        description: Le risorse didattiche aperte (OER) sono materiali didattici gratuiti e con licenza aperta che possono essere utilizzati per insegnare, apprendere, ricercare e per altri scopi.
+        name: OER
+  simple_form:
+    hints:
+      defaults:
+        accessibility_feature: Funzionalità accessibili dell'opera.
+        accessibility_hazard: Caratteristiche del lavoro che possono essere fisiologicamente pericolose per alcuni utenti.
+        accessibility_summary: Un riepilogo di specifiche caratteristiche o carenze dell'accessibilità.
+        additional_information: Altre informazioni sui diritti non trasmesse dallo stato come condizioni di licenza o informazioni di contatto.
+        alternative_title: Titolo alternativo per la risorsa.
+        audience: L'obiettivo previsto per il lavoro.
+        date: La data in cui l'opera è stata creata, pubblicata o altrimenti pubblicata.
+        discipline: Il dominio educativo che la risorsa è destinata a servire.
+        education_level: Il livello di istruzione a cui è destinato il lavoro.
+        learning_resource_type: Il tipo specifico di risorsa educativa descritta.
+        oer_size: Dimensione o durata del lavoro.
+        rights_holder: Persona o gruppo che detiene i diritti sull'opera, se noto.
+        table_of_contents: Indice di un'opera.
+    labels:
+      defaults:
+        accessibility_feature: Funzionalità di accessibilità
+        accessibility_hazard: Rischio di accessibilità
+        accessibility_summary: Riepilogo dell'accessibilità
+        additional_information: Ulteriori informazioni sui diritti
+        alternative_title: Titolo alternativo
+        audience: Pubblico
+        date: Data
+        discipline: Disciplina
+        education_level: Livello scolastico
+        learning_resource_type: Tipo di risorsa di apprendimento
+        oer_size: Taglia
+        rights_holder: Titolare dei diritti
+        table_of_contents: Sommario
+    placeholders:
+      defaults:
+        alternate_version_id: Cerca un'opera ...
+        newer_version_id: Cerca un'opera ...
+        previous_version_id: Cerca un'opera ...
+        related_item_id: Cerca un'opera ...

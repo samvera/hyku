@@ -1,12 +1,21 @@
 ---
 zh:
+  activefedora:
+    models:
+      generic_work: 工作
+      image: 图像
   activerecord:
     attributes:
       site:
         institution_name_full: 完整的机构名称
   application:
     tagline: 下一代存储库解决方案
+  errors:
+    messages:
+      valid_embed_url: 必须是有效的YouTube或Vimeo嵌入URL。
   helpers:
+    action:
+      become: 成為
     submit:
       add_role_to_group:
         submit: 加
@@ -63,6 +72,7 @@ zh:
             success: "%{group}更新"
         humanized_name:
           admin: 存储库管理员
+          group/public: 未授权用户
           registered: 注册用户
         label:
           actions: 操作
@@ -114,6 +124,18 @@ zh:
       work_types: 可用的工作类型
     footer:
       admin_login: 管理员登录
+    identity_provider:
+      header: 身份验证身份提供商
+      label:
+        create_new: 新的
+        edit: 编辑
+        logo: 标识
+        logo_image: SSO 页面的图像
+        logo_image_alt_text: 图像的替代文本
+        name: 名称或描述
+        options: 选项
+        provider: 提供者
+        updated_at: 更新于
     proprietor:
       accounts:
         nav: 帐号
@@ -155,6 +177,8 @@ zh:
           forms:
             banner_image:
               hint: 要将图像用作标头广告背景，您应该使用至少120像素高和1200像素宽的图像（JPG，GIF或PNG）。为了获得最佳效果，请使用至少1800像素宽的图像。
+            collection_banner_text_color:
+              hint: 集合横幅内文本（标题和上次更新日期）的颜色。
             custom_css:
               confirm: 自定义CSS将始终覆盖其他主题选择。继续？
               warning: 如果您的主题自定义设置似乎无法正确应用，请确认自定义CSS不会覆盖它们。
@@ -177,6 +201,8 @@ zh:
               hint: 要将图像用作徽标，应使用不大于标题且宽度不超过400像素的图像（JPG，GIF或PNG）。
             navbar_background_color:
               hint: 不透明度为 40%。
+            navbar_link_background_color:
+              hint: 适用于“主页”、“关于”、“联系人”和“帮助”按钮背景颜色
             navbar_link_background_hover_color:
               hint: 仅适用于这些特定页面上的“主页”、“关于”、“联系方式”和“帮助”按钮（不透明度为 15%）。
             primary_button_hover_color:
@@ -197,22 +223,43 @@ zh:
             directory_image: 目录图像
             favicon: 图标
             fonts: 字形
+            logo: 标识
             themes: 主题
+      roles_service_jobs:
+        header: 数据修复工作
+        jobs:
+          create_admin_set_accesses:
+            description: 创建 Hyrax::PermissionTemplateAccess 记录（与 Ability#user_groups 结合）将允许所有 AdminSet 中的 Works 显示在 Blacklight / Solr 查询中。
+            label: 创建管理集访问权限
+          create_collection_accesses:
+            description: 由于每个集合角色对租户内的每个集合都具有一定程度的访问权限，因此创建 Hyrax::PermissionTemplateAccess 记录（与 Ability#user_groups 结合）意味着所有集合都将显示在 Blacklight / Solr 查询中。
+            label: 创建集合访问
+          create_collection_type_participants:
+            description: 由于某些集合角色有权访问租户内的每个集合，因此在每个 Hyrax::CollectionType（AdminSet 除外）上为他们创建一个 Hyrax::CollectionTypeParticipant 记录
+            label: 创建收藏类型参与者
+          grant_workflow_roles_for_all_admin_sets:
+            description: 存放作品的权限由各个 AdminSet 上的工作流程角色控制。为了让具有“作品编辑者”或“作品存放者”角色的 Hyrax::Group 和用户记录拥有正确的作品权限，我们授予他们所有 AdminSet 的工作流程角色。注意：所有 AdminSet 都必须具有权限模板，否则将失败。首先运行“创建管理集访问权限”。
+            label: 管理员设置工作流角色
       sidebar:
-        account: 帐户
         accounts: 帐号
         activity_summary: 活动摘要
         labels: 标签
         manage_groups: 管理组
         repository_activity: 存储库活动
+        roles_service_jobs: 数据修复
         system_status: 系统状态
       users:
+        activate:
+          confirmation: 您确定要激活用户“%{user}”吗？
+          failure: 无法激活用户“%{user}”。
+          success: 用户“%{user}”已成功激活。
         destroy:
           confirmation: 您确定要删除用户“%{user}”吗？这一行动是不可逆转的。
           failure: 无法删除用户“%{user}”。
           success: 用户“%{user}”已成功删除。
         index:
           action_label: 行动
+          activate: 启用
           add: 邀请用户
           delete: 删除
           invite_users: 通过电子邮件添加或邀请用户
@@ -220,6 +267,9 @@ zh:
             active: 活性
             pending: 有待
           status_label: 状态
+        roles:
+          remove:
+            confirmation: 您确定要从用户“%{user}”中删除角色“%{role}”吗？
   permissions:
     collections:
       cannot:
@@ -266,6 +316,7 @@ zh:
         email: 電子郵件
         header: 管理用户
         manage: 管理
+        superadmin: 超级管理员
         title: 標題
         view_users: 查看用户
       new:
@@ -275,6 +326,9 @@ zh:
         edit: 編輯
         header: 管理用户
         update: 更新
+  single_signon:
+    index:
+      sign_in_with_provider: 使用 %{provider} 登录
   status:
     index:
       services: 服务

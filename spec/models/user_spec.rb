@@ -1,14 +1,67 @@
 # frozen_string_literal: true
 
 RSpec.describe User, type: :model do
+  include ActiveSupport::Testing::TimeHelpers
+
+  before do
+    travel_to Time.zone.local(2024, 6, 15, 12, 0, 0)
+  end
+
+  after do
+    travel_back
+  end
+
+  subject { FactoryBot.create(:user) }
+
   it 'validates email and password' do
     is_expected.to validate_presence_of(:email)
     is_expected.to validate_presence_of(:password)
   end
 
-  context 'the first created user in global tenant' do
-    subject { FactoryBot.create(:user) }
+  context '#stistics_for' do
+    let(:account) { FactoryBot.create(:account) }
 
+    before do
+      allow(Apartment::Tenant).to receive(:switch).and_yield
+    end
+
+    describe 'no statistics' do
+      it 'returns nil' do
+        expect(subject.statistics_for).to be nil
+      end
+    end
+
+    describe 'with user statistics' do
+      let!(:stat_1_prior_month) { UserStat.create!(user_id: subject.id, date: 1.month.ago, file_views: 3, file_downloads: 2, work_views: 5) }
+      let!(:stat_2_prior_month) { UserStat.create!(user_id: subject.id, date: 1.month.ago, file_views: 2, file_downloads: 1, work_views: 7) }
+      let!(:stat_2_months_ago) { UserStat.create!(user_id: subject.id, date: 2.months.ago, file_views: 1, file_downloads: 1, work_views: 1) }
+      let!(:stat_yesterday) { UserStat.create!(user_id: subject.id, date: 1.day.ago, file_views: 1, file_downloads: 2, work_views: 3) }
+      let!(:someone_elses_user_id) { subject.id + 1 }
+      let!(:not_my_stat) { UserStat.create!(user_id: someone_elses_user_id, date: 1.month.ago, file_views: 10, file_downloads: 11) }
+      let(:user_stats) { { new_file_downloads: 3, new_work_views: 12, total_file_downloads: 6, total_file_views: 7, total_work_views: 16 } }
+      let(:yesterday_stats) { { new_file_downloads: 2, new_work_views: 3, total_file_downloads: 6, total_file_views: 7, total_work_views: 16 } }
+
+      it 'returns a summary hash of prior months stats' do
+        # requires time traveling because the :stat_yesterday will be included which is the expected behavior
+        # but just throws the specs off on the first of the month
+        expect(subject.statistics_for).to eq(user_stats)
+      end
+
+      it 'summarizes stats for specified date range' do
+        expect(subject.statistics_for(start_date: Time.zone.now - 2.days, end_date: Time.zone.now)).to eq(yesterday_stats)
+      end
+
+      it 'returns nil if no statistics in specified date range' do
+        expect(subject.statistics_for(start_date: Time.zone.now - 4.months, end_date: Time.zone.now - 5.months)).to be nil
+      end
+
+      it 'returns nil if start and end dates the same' do
+        expect(subject.statistics_for(start_date: Time.zone.now - 5.months, end_date: Time.zone.now - 5.months)).to be nil
+      end
+    end
+  end
+
+  context 'the first created user in global tenant' do
     before do
       allow(Account).to receive(:global_tenant?).and_return true
     end
@@ -21,8 +74,6 @@ RSpec.describe User, type: :model do
   end
 
   context 'the first created user on a tenant' do
-    subject { FactoryBot.create(:user) }
-
     it 'is not given the admin role' do
       expect(subject).not_to have_role :admin
       expect(subject).not_to have_role :admin, Site.instance
@@ -48,8 +99,6 @@ RSpec.describe User, type: :model do
   end
 
   describe '#site_roles=' do
-    subject { FactoryBot.create(:user) }
-
     it 'assigns global roles to the user' do
       expect(subject.site_roles.pluck(:name)).to be_empty
 
@@ -66,8 +115,6 @@ RSpec.describe User, type: :model do
   end
 
   describe '#hyrax_groups' do
-    subject { FactoryBot.create(:user) }
-
     it 'returns an array of Hyrax::Groups' do
       expect(subject.hyrax_groups).to be_an_instance_of(Array)
       expect(subject.hyrax_groups.first).to be_an_instance_of(Hyrax::Group)
@@ -75,8 +122,6 @@ RSpec.describe User, type: :model do
   end
 
   describe '#groups' do
-    subject { FactoryBot.create(:user) }
-
     before do
       FactoryBot.create(:group, name: 'group1', member_users: [subject])
     end
@@ -87,8 +132,6 @@ RSpec.describe User, type: :model do
   end
 
   describe '#hyrax_group_names' do
-    subject { FactoryBot.create(:user) }
-
     before do
       FactoryBot.create(:group, name: 'group1', member_users: [subject])
     end
@@ -133,6 +176,29 @@ RSpec.describe User, type: :model do
         subject.save!
 
         expect(subject.hyrax_group_names).to contain_exactly('registered')
+      end
+    end
+  end
+
+  describe '#mark_all_undelivered_messages_as_delivered!' do
+    let(:receipt) { create(:mailboxer_receipt, receiver: subject) }
+
+    before do
+      # ensure we have a undelivered receipt
+      receipt.update(is_delivered: false)
+    end
+
+    context 'when batch_email_frequency is set to never' do
+      it 'marks all undelivered messages as delivered' do
+        subject.update(batch_email_frequency: 'never')
+        expect(receipt.reload.is_delivered).to be true
+      end
+    end
+
+    context 'when batch_email_frequency is not set to never' do
+      it 'does not mark all undelivered messages as delivered' do
+        subject.update(batch_email_frequency: 'daily')
+        expect(receipt.reload.is_delivered).to be false
       end
     end
   end

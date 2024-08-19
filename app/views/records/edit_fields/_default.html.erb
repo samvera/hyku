@@ -1,0 +1,19 @@
+<%# OVERRIDE: HydraEditor 5.0.5 support dynamic labels and hints for custom worktypes %>
+<%# Avoid NoMethod error when rendering partial in Collection or batch edit form %>
+<%# Hide unwanted fields from the form %>
+<% return if f.object.try(:hidden?, key) %>
+
+<% record = f.object.model %>
+<% if f.object.multiple? key %>
+  <%= f.input key,
+      as: :multi_value,
+      label: label_for(term: key, record_class: record.class),
+      hint: hint_for(term: key, record_class: record.class),
+      input_html: { class: 'form-control' },
+      required: f.object.required?(key) %>
+<% else %>
+  <%= f.input key,
+      label: label_for(term: key, record_class: record.class),
+      hint: hint_for(term: key, record_class: record.class),
+      required: f.object.required?(key) %>
+<% end %>

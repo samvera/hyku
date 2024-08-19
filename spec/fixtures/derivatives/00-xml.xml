@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v2#">
+  <Description>
+    <MeasurementUnit>pixel</MeasurementUnit>
+  </Description>
+  <Layout>
+    <Page ID="ID1" PHYSICAL_IMG_NR="1" HEIGHT="3685" WIDTH="2457">
+      <PrintSpace HEIGHT="3685" WIDTH="2457" HPOS="0" VPOS="0">
+        <TextBlock ID="ID1a" HEIGHT="3685" WIDTH="2457" HPOS="0" VPOS="0">
+          <TextLine HEIGHT="3685" WIDTH="2457" HPOS="0" VPOS="0">
+            <String CONTENT=" &#10;     &#10;    &#10;   &#10;  &#10; &#10;&#10;" WIDTH="1616" HEIGHT="3128" HPOS="466" VPOS="276"></String>
+            <String CONTENT=" &#10;     &#10;    &#10;   &#10;  &#10; &#10;&#10;" WIDTH="1616" HEIGHT="3128" HPOS="466" VPOS="276"></String>
+            <String CONTENT=" &#10;     &#10;    &#10;   &#10;  &#10; &#10;&#10;" WIDTH="1616" HEIGHT="3128" HPOS="466" VPOS="276"></String>
+            <String CONTENT=" &#10;     &#10;    &#10;   &#10;  &#10; &#10;&#10;" WIDTH="1616" HEIGHT="3128" HPOS="466" VPOS="276"></String>
+            <String CONTENT=" &#10;     &#10;    &#10;   &#10;  &#10; &#10;&#10;" WIDTH="1616" HEIGHT="3128" HPOS="466" VPOS="276"></String>
+            <String CONTENT=" &#10;     &#10;    &#10;   &#10;  &#10; &#10;&#10;" WIDTH="1616" HEIGHT="3128" HPOS="466" VPOS="276"></String>
+            <String CONTENT=" &#10;     &#10;    &#10;   &#10;  &#10; &#10;&#10;" WIDTH="1616" HEIGHT="3128" HPOS="466" VPOS="276"></String>
+          </TextLine>
+        </TextBlock>
+      </PrintSpace>
+    </Page>
+  </Layout>
+</alto>

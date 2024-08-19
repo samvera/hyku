@@ -22,7 +22,7 @@ zh:
         accept_until: 此邀请将到期 %{due_date}.
         hello: 你好 %{email}
         ignore: |-
-          如果您不想接受邀请，请忽略此电子邮件。<br />
+          如果您不想接受邀请，请忽略此电子邮件。
           在您访问以上链接并设置密码之前，您的帐户将不会被创建。
         someone_invited_you: 有人邀请你到 %{url}，您可以通过以下链接接受。
         subject: 邀请说明

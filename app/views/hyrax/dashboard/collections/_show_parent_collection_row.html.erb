@@ -1,4 +1,4 @@
-<%# OVERRIDE Hyrax v3.4.2 Restrict who can remove parent collections from subcollections %>
+<%# OVERRIDE Hyrax v5.0.0rc2 Restrict who can remove parent collections from subcollections %>
 <li
   data-id="<%= id %>"
   data-parent-id="<%= document.id %>"
@@ -10,10 +10,10 @@
     <% if can? :edit, id %>
       <%# OVERRIDE: add check for :manage_items_in_collection %>
       <% if can?(:edit, document.id) && can?(:manage_items_in_collection, document.id) %>
-        <button class="btn btn-xs btn-danger remove-from-collection-button"><%= t('hyrax.collections.show.buttons.remove_from_collection') %></button>
+        <button class="btn btn-sm btn-danger remove-from-collection-button"><%= t('hyrax.collections.show.buttons.remove_from_collection') %></button>
       <% else %>
         <%= link_to "#",
-                    class: 'btn btn-xs btn-danger remove-parent-from-collection-deny-button',
+                    class: 'btn btn-sm btn-danger remove-parent-from-collection-deny-button',
                     title: t('hyrax.collections.show.buttons.remove_from_collection') do %>
             <%= t('hyrax.collections.show.buttons.remove_from_collection') %>
         <% end %>

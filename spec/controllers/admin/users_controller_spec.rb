@@ -17,14 +17,14 @@ RSpec.describe Admin::UsersController, type: :controller do
   end
 
   context 'as an admin user' do
-    let(:user) { FactoryBot.create(:user) }
-
     before do
       sign_in create(:admin)
     end
 
     describe 'DELETE #destroy' do
       subject { User.find_by(id: user.id) }
+
+      let(:user) { FactoryBot.create(:user) }
 
       before do
         delete :destroy, params: { id: user.to_param }
@@ -36,6 +36,25 @@ RSpec.describe Admin::UsersController, type: :controller do
           expect(subject.roles).to be_blank
         end
         expect(flash[:notice]).to eq "User \"#{user.email}\" has been successfully deleted."
+      end
+    end
+
+    describe 'POST #activate' do
+      let(:user) { User.invite!(email: 'invited@example.com', skip_invitation: true) }
+
+      before do
+        post :activate, params: { id: user.id }
+      end
+
+      it 'accepts the invitation for the user' do
+        expect(user).not_to be_accepted_or_not_invited
+        user.reload
+        expect(user).to be_accepted_or_not_invited
+      end
+
+      it 'redirects to the admin users path with a success notice' do
+        expect(response).to redirect_to(admin_users_path)
+        expect(flash[:notice]).to eq "User \"#{user.email}\" has been successfully activated."
       end
     end
   end

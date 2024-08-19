@@ -1,5 +1,4 @@
-ARG HYRAX_IMAGE_VERSION=hyrax-v4.0.0.rc1
-ARG RUBY_VERSION=2.7.7
+ARG HYRAX_IMAGE_VERSION=hyrax-v5.0.0.rc1
 FROM ghcr.io/samvera/hyrax/hyrax-base:$HYRAX_IMAGE_VERSION as hyku-base
 
 USER root
@@ -47,6 +46,11 @@ RUN wget https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.0-57.t
     && rm -rf ImageMagick* \
     && rm -rf /var/cache/apk/*
 
+# Install "best" training data for Tesseract
+RUN echo "📚 Installing Tesseract Best (training data)!" && \
+    cd /usr/share/tessdata/ && \
+    wget https://github.com/tesseract-ocr/tessdata_best/blob/main/eng.traineddata?raw=true -O eng_best.traineddata
+
 ARG VIPS_VERSION=8.11.3
 
 RUN set -x -o pipefail \
@@ -91,10 +95,9 @@ ONBUILD RUN git config --global --add safe.directory /app/samvera && \
 
 ONBUILD COPY --chown=1001:101 $APP_PATH /app/samvera/hyrax-webapp
 
-ONBUILD RUN RAILS_ENV=production SECRET_KEY_BASE=`bin/rake secret` DB_ADAPTER=nulldb DB_URL='postgresql://fake' bundle exec rake assets:precompile && yarn install
-
-
 FROM hyku-base as hyku-web
+RUN RAILS_ENV=production SECRET_KEY_BASE=`bin/rake secret` DB_ADAPTER=nulldb DB_URL='postgresql://fake' bundle exec rake assets:precompile && yarn install
+
 CMD ./bin/web
 
 FROM hyku-web as hyku-worker

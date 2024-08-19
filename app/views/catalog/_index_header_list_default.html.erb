@@ -1,10 +1,7 @@
-<%# OVERRIDE Hyrax 3.4.0 to support shared search %>
-<% model = document.hydra_model %>
-<div class="search-results-title-row">
-    <% if model == Hyrax::PcdmCollection || model < Hyrax::PcdmCollection %>
-        <h4 class="search-result-title"><%= link_to document.title_or_label, generate_work_url(document, request) %></h4>
-        <%= Hyrax::CollectionPresenter.new(document, current_ability).collection_type_badge %>
-    <% else %>
-        <h4 class="search-result-title"><%= link_to document.title_or_label, generate_work_url(document, request) %></h4>
-    <% end %>
+<%# OVERRIDE Hyrax v5.0.1 to collection badge and markdown of links %>
+<div class="search-results-title-row col-12 d-flex flex-row align-items-center pb-2">
+  <h4 class="search-result-title"><%= link_to markdown(document.title_or_label), generate_work_url(document, request) %></h4>
+  <% if document.hydra_model == Hyrax.config.collection_class || document.hydra_model < Hyrax.config.collection_class %>
+    <%= Hyrax::CollectionPresenter.new(document, current_ability).collection_type_badge %>
+  <% end %>
 </div>

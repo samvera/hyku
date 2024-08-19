@@ -1,4 +1,4 @@
-// OVERRIDE: Hyrax 2.9 to use work titles for collection thumbnail select
+// OVERRIDE: Hyrax 5.0.0rc2 to use work titles for collection thumbnail select
 
 // Dynamically load the file options into the "Thumbnail" select field.
 export default class {

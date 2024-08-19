@@ -16,8 +16,8 @@ unless ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_MULTITENANT', false))
   end
   AccountElevator.switch!(single_tenant_default.cname)
 
-  puts "\n== Creating default admin set"
-  admin_set = AdminSet.find(AdminSet.find_or_create_default_admin_set_id)
+  puts "\n== Creating default admin set with permission template"
+  Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id
 
   puts "\n== Creating default collection types"
   Hyrax::CollectionType.find_or_create_default_collection_type
@@ -27,14 +27,6 @@ unless ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_MULTITENANT', false))
   Hyrax::Workflow::WorkflowImporter.load_workflows
   errors = Hyrax::Workflow::WorkflowImporter.load_errors
   abort("Failed to process all workflows:\n  #{errors.join('\n  ')}") unless errors.empty?
-
-  puts "\n== Creating permission template"
-  begin
-    permission_template = admin_set.permission_template
-  # If the permission template is missing we will need to run the creete service
-  rescue
-    Hyrax::AdminSetCreateService.new(admin_set: admin_set, creating_user: nil).create
-  end
 
   puts "\n== Finished creating single tenant resources"
 end

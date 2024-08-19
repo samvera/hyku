@@ -13,10 +13,8 @@ RSpec.describe CreateAccount, clean: true do
     end
 
     it 'initializes the Site configuration with a link back to the Account' do
-      expect(Apartment::Tenant).to receive(:create).with(any_args) do |&block|
-        block.call
-      end
       subject.save
+      switch!(account)
       expect(Site.reload.account).to eq account
     end
   end
@@ -114,10 +112,15 @@ RSpec.describe CreateAccount, clean: true do
 
   describe '#schedule_recurring_jobs' do
     it "Enqueues Recurring jobs" do
-      expect(EmbargoAutoExpiryJob).to receive(:perform_later).with(account)
-      expect(LeaseAutoExpiryJob).to receive(:perform_later).with(account)
-      expect(BatchEmailNotificationJob).to receive(:perform_later).with(account)
-      expect(DepositorEmailNotificationJob).to receive(:perform_later).with(account)
+      [
+        EmbargoAutoExpiryJob,
+        LeaseAutoExpiryJob,
+        BatchEmailNotificationJob,
+        DepositorEmailNotificationJob
+      ].each do |klass|
+        expect(account).to receive(:find_job).with(klass).and_return(false)
+        expect(klass).to receive(:perform_later)
+      end
       subject.schedule_recurring_jobs
     end
   end

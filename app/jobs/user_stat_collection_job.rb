@@ -1,7 +1,8 @@
+# frozen_string_literal: true
 class UserStatCollectionJob < ApplicationJob
   queue_as :default
 
-  def perform(*args)
+  def perform(*_args)
     # Do something later
     importer = Hyrax::UserStatImporter.new(verbose: true, logging: true)
     importer.import

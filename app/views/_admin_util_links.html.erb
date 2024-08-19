@@ -1,22 +1,24 @@
 <% if user_signed_in? %>
   <% if can? :manage, Account %>
-    <ul class="nav navbar-nav">
-      <li>
-        <%= link_to main_app.proprietor_accounts_path do %>
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <%= link_to main_app.proprietor_accounts_path, class: 'nav-link' do %>
           <span class="fa fa-gears"></span> <%= t("hyku.proprietor.accounts.nav") %>
         <% end %>
       </li>
-      <li>
-        <%= link_to main_app.proprietor_users_path do %>
+      <li class="nav-item">
+        <%= link_to main_app.proprietor_users_path, class: 'nav-link' do %>
           <span class="fa fa-users"></span> <%= t("hyku.proprietor.users.nav") %>
         <% end %>
       </li>
     </ul>
   <% end %>
 <% end %>
-<ul id="user_utility_links" class="nav navbar-nav navbar-right">
+<ul id="user_utility_links" class="navbar-nav ml-auto">
   <%= render 'shared/locale_picker' if available_translations.size > 1 %>
   <% if user_signed_in? %>
-    <li><%= link_to t("hyrax.toolbar.profile.logout"), main_app.destroy_user_session_path %></li>
+    <li class="nav-item">
+      <%= link_to t("hyrax.toolbar.profile.logout"), main_app.destroy_user_session_path, class: 'nav-link' %>
+    </li>
   <% end %>
 </ul>

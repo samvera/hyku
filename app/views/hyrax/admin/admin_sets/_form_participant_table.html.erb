@@ -1,38 +1,40 @@
-<%# OVERRIDE Hyrax v3.4.2 Filter out Role accesses as they should never be removed %>
-<h3><%= t(".#{access}.title") %></h3>
-<p><%= t(".#{access}.help") %></p>
-<%# OVERRIDE: use custom method to filter by access as well as filter out rolify Roles %>
-<% if @form.filter_access_grants_by_access(filter).any? %>
-  <%# OVERRIDE: use custom access-specific class in order to differentiate between access tables %>
-  <table class='table table-striped share-status <%= "#{access}-table" %>'>
-    <thead>
-      <tr>
-        <th><%= t(".#{access}.agent_name") %></th>
-        <th><%= t(".#{access}.type") %></th>
-        <th><%= t(".#{access}.action") %></th>
-      </tr>
-    </thead>
-    <tbody>
-      <%# OVERRIDE: use custom method to filter by access as well as filter out rolify Roles %>
-      <% @form.filter_access_grants_by_access(filter).each do |g| %>
+<%# OVERRIDE Hyrax v5.0.0rc2 Filter out Role accesses as they should never be removed %>
+<div class="mb-4">
+  <h3 class="h4"><%= t(".#{access}.title") %></h3>
+  <p><%= t(".#{access}.help") %></p>
+  <%# OVERRIDE: use custom method to filter by access as well as filter out rolify Roles %>
+  <% if @form.filter_access_grants_by_access(filter).any? %>
+    <%# OVERRIDE: use custom access-specific class in order to differentiate between access tables %>
+    <table class='table table-striped share-status <%= "#{access}-table" %>'>
+      <thead>
         <tr>
-          <td data-agent="<%= g.agent_id %>"><%= g.label %></td>
-          <td><%= g.agent_type.titleize %></td>
-          <td>
-            <%# OVERRIDE: remove disabled class from button to fix styling %>
-            <% if g.admin_group? && g.access == Hyrax::PermissionTemplateAccess::MANAGE %>
-              <%= button_to t(".#{access}.remove"), hyrax.admin_permission_template_access_path(g), method: :delete, class: 'btn btn-danger', disabled: true, title: t('hyrax.admin.admin_sets.form.permission_destroy_errors.admin_group') %>
-            <% else %>
-              <%= button_to t(".#{access}.remove"), hyrax.admin_permission_template_access_path(g), method: :delete, class: 'btn btn-danger' %>
-            <% end %>
-          </td>
+          <th><%= t(".#{access}.agent_name") %></th>
+          <th><%= t(".#{access}.type") %></th>
+          <th><%= t(".#{access}.action") %></th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% else %>
-  <p><em><%= t(".#{access}.empty") %></em></p>
-<% end %>
-<%= button_tag t('.allow_all_registered'),
-                class: 'btn btn-info',
-                data: { behavior: 'add-registered-users' } if access == 'depositors' %>
+      </thead>
+      <tbody>
+        <%# OVERRIDE: use custom method to filter by access as well as filter out rolify Roles %>
+        <% @form.filter_access_grants_by_access(filter).each do |g| %>
+          <tr>
+            <td data-agent="<%= g.agent_id %>"><%= g.label %></td>
+            <td><%= g.agent_type.titleize %></td>
+            <td>
+              <%# OVERRIDE: remove disabled class from button to fix styling %>
+              <% if g.admin_group? && g.access == Hyrax::PermissionTemplateAccess::MANAGE %>
+                <%= button_to t(".#{access}.remove"), hyrax.admin_permission_template_access_path(g), method: :delete, class: 'btn btn-sm btn-danger disabled', disabled: true, title: t('hyrax.admin.admin_sets.form.permission_destroy_errors.admin_group') %>
+              <% else %>
+                <%= button_to t(".#{access}.remove"), hyrax.admin_permission_template_access_path(g), method: :delete, class: 'btn btn-sm btn-danger' %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p><em><%= t(".#{access}.empty") %></em></p>
+  <% end %>
+  <%= button_tag t('.allow_all_registered'),
+                  class: 'btn btn-primary',
+                  data: { behavior: 'add-registered-users' } if access == 'depositors' %>
+</div>

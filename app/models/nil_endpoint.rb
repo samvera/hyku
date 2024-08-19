@@ -2,6 +2,10 @@
 
 # @abstract
 class NilEndpoint
+  def self.reset!
+    false
+  end
+
   def ping
     false
   end
@@ -15,6 +19,10 @@ class NilEndpoint
   end
 
   def assign_attributes(_attr)
+    false
+  end
+
+  def switch!
     false
   end
 end

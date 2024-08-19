@@ -7,77 +7,78 @@
 <% end %>
 
 <%= render '/admin/groups/nav' %>
-<div class='panel panel-default'>
-  <div class='panel-body'>
+<div class='card'>
+  <div class='card-body'>
     <p class='lead'><%= t('hyku.admin.groups.action.members.description') %></p>
 
-  <!-- BEGIN Current Group Roles -->
-  <div class='panel panel-default'>
-    <div class='panel-heading'>
-      <h3 class='panel-title'><%= t('hyku.admin.groups.roles.title.current_group_roles') %></h3>
-    </div>
-
-    <div class='panel-body'>
-      <div class='table-responsive'>
-        <table class='table table-striped datatable group-roles-table current-group-roles'>
-          <thead>
-            <th><%= t('hyku.admin.groups.roles.label.name') %></th>
-            <th><%= t('hyku.admin.groups.roles.label.description') %></th>
-            <th><%= t('hyku.admin.groups.roles.label.action') %></th>
-          </thead>
-
-          <tbody>
-            <% @group.roles&.each do |role| %>
-              <tr id=<%= "assigned-role-#{role.id}" %>>
-                <td><%= role.name.titleize %></td>
-                <td><%= role.description_label %>
-                <td>
-                <%= simple_form_for :remove_role_from_group, url: admin_group_role_path(group_id: @group.to_param, role_id: role.id), method: :delete, html: { class: 'form' } do |f| %>
-                  <%= f.submit class: 'btn btn-danger', disabled: @group.name == ::Ability.admin_group_name && role.name == 'admin', id: "remove-role-#{role.id}-from-group" %>
-                <% end %>
-                </td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
+    <!-- BEGIN Current Group Roles -->
+    <div class='card'>
+      <div class='card-header'>
+        <h3 class='card-title'><%= t('hyku.admin.groups.roles.title.current_group_roles') %></h3>
       </div>
-    </div>
-  </div>
-  <!-- END Current Group Roles -->
 
-  <!-- BEGIN Add Role to Group -->
-  <div class='panel panel-default'>
-    <div class='panel-heading'>
-      <h3 class='panel-title'><%= t('hyku.admin.groups.roles.title.add_group_roles') %></h3>
-    </div>
+      <div class='card-body'>
+        <div class='table-responsive'>
+          <table class='table table-striped datatable group-roles-table current-group-roles'>
+            <thead>
+              <th><%= t('hyku.admin.groups.roles.label.name') %></th>
+              <th><%= t('hyku.admin.groups.roles.label.description') %></th>
+              <th><%= t('hyku.admin.groups.roles.label.action') %></th>
+            </thead>
 
-    <div class='panel-body'>
-      <div class='table-responsive'>
-        <table class='table table-striped datatable group-roles-table add-group-roles'>
-          <thead>
-            <th><%= t('hyku.admin.groups.roles.label.name') %></th>
-            <th><%= t('hyku.admin.groups.roles.label.description') %></th>
-            <th><%= t('hyku.admin.groups.roles.label.action') %></th>
-          </thead>
-
-          <tbody>
-            <% @roles&.each do |role| %>
-              <tr id=<%= "available-role-#{role.id}" %>>
-                <td><%= role.name.titleize %></td>
-                <td><%= role.description_label %>
-                <td>
-                  <%= simple_form_for :add_role_to_group, url: admin_group_roles_path(group_id: @group.to_param, role_id: role.id), method: :post, html: { class: 'form' } do |f| %>
-                    <%= f.submit class: 'btn btn-success', id: "add-role-#{role.id}-to-group" %>
+            <tbody>
+              <% @group.roles&.each do |role| %>
+                <tr id=<%= "assigned-role-#{role.id}" %>>
+                  <td><%= role.name.titleize %></td>
+                  <td><%= role.description_label %>
+                  <td>
+                  <%= simple_form_for :remove_role_from_group, url: admin_group_role_path(group_id: @group.to_param, role_id: role.id), method: :delete, html: { class: 'form' } do |f| %>
+                    <%= f.submit class: 'btn btn-danger', disabled: @group.name == ::Ability.admin_group_name && role.name == 'admin', id: "remove-role-#{role.id}-from-group" %>
                   <% end %>
-                </td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
+    <!-- END Current Group Roles -->
+
+    <!-- BEGIN Add Role to Group -->
+    <div class='card'>
+      <div class='card-header'>
+        <h3 class='card-title'><%= t('hyku.admin.groups.roles.title.add_group_roles') %></h3>
+      </div>
+
+      <div class='card-body'>
+        <div class='table-responsive'>
+          <table class='table table-striped datatable group-roles-table add-group-roles'>
+            <thead>
+              <th><%= t('hyku.admin.groups.roles.label.name') %></th>
+              <th><%= t('hyku.admin.groups.roles.label.description') %></th>
+              <th><%= t('hyku.admin.groups.roles.label.action') %></th>
+            </thead>
+
+            <tbody>
+              <% @roles&.each do |role| %>
+                <tr id=<%= "available-role-#{role.id}" %>>
+                  <td><%= role.name.titleize %></td>
+                  <td><%= role.description_label %>
+                  <td>
+                    <%= simple_form_for :add_role_to_group, url: admin_group_roles_path(group_id: @group.to_param, role_id: role.id), method: :post, html: { class: 'form' } do |f| %>
+                      <%= f.submit class: 'btn btn-success', id: "add-role-#{role.id}-to-group" %>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- END Add Role to Group -->
   </div>
-  <!-- END Add Role to Group -->
 </div>
 
 <script>

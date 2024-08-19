@@ -7,8 +7,9 @@
   },
   "scripts": {
     "preinstall": "rm -rf ./public/uv",
-    "postinstall": "yarn run uv-install && yarn run uv-config",
+    "postinstall": "yarn run uv-install && yarn run uv-config && yarn run knapsack-uv-config",
     "uv-install": "cp -r ./node_modules/universalviewer/dist ./public/uv",
-    "uv-config": "cp ./config/uv/uv.html ./public/uv/uv.html & cp ./config/uv/uv-config.json ./public/uv/"
+    "uv-config": "cp ./config/uv/uv.html ./public/uv/uv.html & cp ./config/uv/uv-config.json ./public/uv/",
+    "knapsack-uv-config": "if [ $(ls -A ../config/uv/ 2>/dev/null | wc -l) -gt 0 ]; then cp -r ../config/uv/* ./public/uv/; fi"
   }
 }

@@ -1,6 +1,6 @@
 <% content_for :page_title, construct_page_title(t('hyku.admin.groups.title.index'), t('hyku.admin.title')) %>
 <% provide :page_header do %>
-  <%if can? :edit, Hyrax::Group %>
+  <% if can? :edit, Hyrax::Group %>
     <h1>
       <span class="fa fa-users"></span>
       <%= t('hyku.admin.groups.title.index') %>
@@ -13,8 +13,8 @@
   <% end %>
 <% end %>
 
-<div class="panel panel-default group-listing">
-  <div class="panel-heading">
+<div class="card group-listing">
+  <div class="card-header">
     <% group_count = Hyrax::Group.count %>
     <% if group_count == 1 %>
       <%= t('hyku.admin.groups.describe_singular_quantity_html') %>
@@ -22,16 +22,16 @@
       <%= t('hyku.admin.groups.describe_quantity_html', number: group_count ) %>
     <% end %>
     <% if can? :create, Hyrax::Group %>
-      <%= link_to t('hyku.admin.groups.action.create'), new_admin_group_path, class: 'btn btn-primary pull-right new-group' %>
+      <%= link_to t('hyku.admin.groups.action.create'), new_admin_group_path, class: 'btn btn-primary float-right new-group' %>
     <% end %>
   </div>
-  <div class="panel-body">
+  <div class="card-body">
     <div class="container-fluid full-width-container">
       <div class="row">
-        <div class="col-sm-6">
+        <div class="col-md-6">
           <%= render 'per_page', target: admin_groups_path %>
         </div>
-        <div class="col-sm-6 text-right">
+        <div class="col-md-6 text-right">
           <%= render 'search', target: admin_groups_path %>
         </div>
       </div>
@@ -53,7 +53,7 @@
             <tr id=<%= "#{group.name}" %>>
               <td>
                 <b><%= group.humanized_name %></b>
-                <p class='help-block'>
+                <p class='form-text text-muted'>
                   <%= group.description_label %>
                 </p>
               </td>
@@ -71,7 +71,7 @@
               </td>
               <td>
                 <% if can? :edit, Hyrax::Group %>
-                  <%= link_to t('hyku.admin.groups.action.edit'), edit_admin_group_path(group), id: "edit-#{group.name}-group", class: 'btn btn-default' %>
+                  <%= link_to t('hyku.admin.groups.action.edit'), edit_admin_group_path(group), id: "edit-#{group.name}-group", class: 'btn btn-secondary' %>
                 <% end %>
               </td>
             </tr>
@@ -80,7 +80,7 @@
       </table>
     </div>
 
-    <nav class="pull-right">
+    <nav class="float-right">
       <%= paginate @groups %>
     </nav>
   </div>

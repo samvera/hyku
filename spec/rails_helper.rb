@@ -10,20 +10,44 @@ ENV['HYKU_ROOT_HOST'] = 'test.host'
 ENV['HYKU_ADMIN_ONLY_TENANT_CREATION'] = nil
 ENV['HYKU_DEFAULT_HOST'] = nil
 ENV['HYKU_MULTITENANT'] = 'true'
+ENV['VALKYRIE_TRANSITION'] = 'true'
 
 require 'simplecov'
 SimpleCov.start('rails')
-
 require File.expand_path('../config/environment', __dir__)
+require 'spec_helper'
+
+# We're going to need this for our factories
+require Hyrax::Engine.root.join("spec/support/simple_work").to_s
+
+# I want to set this so that our factory finder will have the right values.
+Hyrax.config.admin_set_model = "AdminSetResource"
+Hyrax.config.collection_model = "CollectionResource"
+
+# First find the Hyrax factories; then find the local factories (which extend/modify Hyrax
+# factories).
+FactoryBot.definition_file_paths = [
+  Hyrax::Engine.root.join("lib/hyrax/specs/shared_specs/factories").to_s,
+  File.expand_path("../factories", __FILE__)
+]
+FactoryBot.find_definitions
+
+# Appeasing the Hyrax user factory interface.
+def RoleMapper.add(user:, groups:)
+  groups.each do |group|
+    user.add_role(group.to_sym, Site.instance)
+  end
+end
+
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
-require 'spec_helper'
 require 'rspec/rails'
 require 'capybara/rails'
 require 'database_cleaner'
 require 'active_fedora/cleaner'
 require 'webdrivers'
 require 'shoulda/matchers'
+
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -41,16 +65,6 @@ require 'shoulda/matchers'
 #
 Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
 
-# Ensure the Hyrax::Admin constant is loaded. Because testing is done using autoloading,
-# the order of the test run determines where the constants are loaded from.  Prior to
-# this change we were seeing intermittent errors like:
-#   uninitialized constant Admin::UserActivityPresenter
-# This can probably be removed once https://github.com/projecthydra-labs/hyrax/pull/440
-# is merged
-# rubocop:disable Lint/Void
-Hyrax::Admin
-# rubocop:enable Lint/Void
-
 # Checks for pending migration and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.maintain_test_schema!
@@ -62,11 +76,10 @@ Capybara.default_driver = :rack_test
 ENV['WEB_HOST'] ||= `hostname -s`.strip
 
 if ENV['CHROME_HOSTNAME'].present?
-  options = Selenium::WebDriver::Options.chrome(args: ["headless",
-                                                       "disable-gpu",
+  options = Selenium::WebDriver::Options.chrome(args: ["disable-gpu",
                                                        "no-sandbox",
                                                        "whitelisted-ips",
-                                                       "window-size=1400,1400"])
+                                                       "window-size=1200,800"])
 
   Capybara.register_driver :chrome do |app|
     d = Capybara::Selenium::Driver.new(app,
@@ -84,7 +97,9 @@ if ENV['CHROME_HOSTNAME'].present?
   Capybara.server_port = 3001
   Capybara.app_host = "http://#{ENV['WEB_HOST']}:#{Capybara.server_port}"
 else
-  options = Selenium::WebDriver::Options.chrome(args: ["headless", "disable-gpu"])
+  options = Selenium::WebDriver::Options.chrome(args: ["headless",
+                                                       "disable-gpu",
+                                                       "window-size=1920,1080"])
 
   Capybara.register_driver :chrome do |app|
     Capybara::Selenium::Driver.new(
@@ -105,6 +120,7 @@ NegativeCaptcha.test_mode = true
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.file_fixture_path = "#{::Rails.root}/spec/fixtures"
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
@@ -132,7 +148,6 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 
   config.include Devise::Test::ControllerHelpers, type: :controller
-  config.include Fixtures::FixtureFileUpload
   config.include FactoryBot::Syntax::Methods
   config.include ApplicationHelper, type: :view
   config.include Warden::Test::Helpers, type: :feature
@@ -149,9 +164,15 @@ RSpec.configure do |config|
   config.before do |example|
     # make sure we are on the default fedora config
     ActiveFedora::Fedora.reset!
-    ActiveFedora::SolrService.reset!
-    # Pass `:clean' to destroy objects in fedora/solr and start from scratch
-    ActiveFedora::Cleaner.clean! if example.metadata[:clean]
+    SolrEndpoint.reset!
+    # Pass `:clean' (or hyrax's convention of :clean_repo) to destroy objects in fedora/solr and
+    # start from scratch
+    if example.metadata[:clean] || example.metadata[:clean_repo] || example.metadata[:type] == :feature
+      ## We don't need to do `Hyrax::SolrService.wipe!` so long as we're using `ActiveFedora.clean!`;
+      ## but Valkyrie is coming so be prepared.
+      # Hyrax::SolrService.wipe!
+      ActiveFedora::Cleaner.clean!
+    end
     if example.metadata[:type] == :feature && Capybara.current_driver != :rack_test
       DatabaseCleaner.strategy = :truncation
     else
@@ -162,7 +183,7 @@ RSpec.configure do |config|
 
   config.after(:each, type: :feature) do |example|
     # rubocop:disable Lint/Debugger
-    save_and_open_page if example.exception.present?
+    save_and_open_page if example.exception.present? && !ENV['CI']
     # rubocop:enable Lint/Debugger
     Warden.test_reset!
     Capybara.reset_sessions!
@@ -170,11 +191,9 @@ RSpec.configure do |config|
   end
 
   config.after do
-    begin
-      DatabaseCleaner.clean
-    rescue NoMethodError
-      'This can happen which the database is gone, which depends on load order of tests'
-    end
+    DatabaseCleaner.clean
+  rescue NoMethodError
+    'This can happen which the database is gone, which depends on load order of tests'
   end
 end
 

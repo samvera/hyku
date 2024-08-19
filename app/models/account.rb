@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # Customer organization account
+# rubocop:disable Metrics/ClassLength
 class Account < ApplicationRecord
   include AccountEndpoints
   include AccountSettings
@@ -22,6 +23,11 @@ class Account < ApplicationRecord
            inverse_of: :full_account
   has_many :search_accounts, class_name: 'Account', through: :search_account_cross_searches
 
+  belongs_to :solr_endpoint, dependent: :delete
+  belongs_to :fcrepo_endpoint, dependent: :delete
+  belongs_to :redis_endpoint, dependent: :delete
+
+  accepts_nested_attributes_for :solr_endpoint, :fcrepo_endpoint, :redis_endpoint, update_only: true
   accepts_nested_attributes_for :domain_names, allow_destroy: true
   accepts_nested_attributes_for :full_accounts
   accepts_nested_attributes_for :full_account_cross_searches, allow_destroy: true
@@ -46,6 +52,15 @@ class Account < ApplicationRecord
     host ||= ENV['HOST']
     host ||= 'localhost'
     canonical_cname(host)
+  end
+
+  # @return [Account]
+  def self.from_request(request)
+    from_cname(request.host)
+  end
+
+  def self.from_cname(cname)
+    joins(:domain_names).find_by(domain_names: { is_active: true, cname: canonical_cname(cname) })
   end
 
   def self.root_host
@@ -110,6 +125,8 @@ class Account < ApplicationRecord
     Hyrax::Engine.routes.default_url_options[:host] = cname
   end
 
+  DEFAULT_FILE_CACHE_STORE = ENV.fetch('HYKU_CACHE_ROOT', '/app/samvera/file_cache')
+
   def setup_tenant_cache(is_enabled)
     Rails.application.config.action_controller.perform_caching = is_enabled
     ActionController::Base.perform_caching = is_enabled
@@ -117,7 +134,7 @@ class Account < ApplicationRecord
     if is_enabled
       Rails.application.config.cache_store = :redis_cache_store, { url: Redis.current.id }
     else
-      Rails.application.config.cache_store = :file_store, ENV.fetch('HYKU_CACHE_ROOT', '/app/samvera/file_cache')
+      Rails.application.config.cache_store = :file_store, DEFAULT_FILE_CACHE_STORE
     end
     # rubocop:enable Style/ConditionalAssignment
     Rails.cache = ActiveSupport::Cache.lookup_store(Rails.application.config.cache_store)
@@ -143,4 +160,31 @@ class Account < ApplicationRecord
   def cache_api?
     cache_api
   end
+
+  def institution_name
+    sites.first&.institution_name || cname
+  end
+
+  def institution_id_data
+    {}
+  end
+
+  def find_job(klass)
+    ActiveJob::Base.find_job(klass: klass, tenant_id: self.tenant)
+  end
+
+  def find_or_schedule_jobs
+    account = Site.account
+    AccountElevator.switch!(self)
+    [
+      EmbargoAutoExpiryJob,
+      LeaseAutoExpiryJob,
+      BatchEmailNotificationJob,
+      DepositorEmailNotificationJob
+    ].each do |klass|
+      klass.perform_later unless find_job(klass)
+    end
+    account ? AccountElevator.switch!(account) : reset!
+  end
 end
+# rubocop:enable Metrics/ClassLength

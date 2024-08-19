@@ -17,6 +17,7 @@ rerun.txt
 pickle-email-*.html
 solr_db_initialized
 fits.log
+/storage/files
 
 ## Environment normalization:
 /.bundle
@@ -55,3 +56,4 @@ public/uploads
 docker-compose.override.yml
 *~undo-tree~
 .DS_Store
+/bundler.d/

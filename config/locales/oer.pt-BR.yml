@@ -1,0 +1,120 @@
+---
+pt-BR:
+  hyrax:
+    icons:
+      oer: fa fa-file-text-o
+    oer:
+      hints:
+        description: Breve descrição do conteúdo do recurso, sem incluir um índice.
+        resource_type: Categorias pré-definidas para descrever o tipo de conteúdo que está sendo carregado. Mais de um tipo pode ser selecionado.
+        table_of_contents: Sumário de um trabalho.
+      labels:
+        admin_note: Notas Administrativas
+        description: Descrição
+        resource_type: Tipo
+      show:
+        related_items: Versões e itens relacionados
+      works:
+        form:
+          related_versions: Versões relacionadas
+    oers:
+      form_alternate_version:
+        actions:
+          remove: Remover deste trabalho
+        add: acrescentar
+        caption: Referência a uma versão atualizada do recurso destinado a substituí-lo
+        confirm:
+          actions: Açao
+          cancel: Cancelar
+          header:
+          remove: Retirar
+          text: A remoção desta versão alternativa não a removerá do repositório, apenas deste trabalho. Tem certeza de que deseja remover esta versão alternativa?
+          title: Título do trabalho
+        header:
+          actions: Açao
+          title: Título do trabalho
+      form_newer_version:
+        actions:
+          remove: Remover deste trabalho
+        add: acrescentar
+        caption: Referência a uma versão atualizada do recurso destinado a substituí-lo
+        confirm:
+          cancel: Cancelar
+          remove: Retirar
+          text: A remoção desta versão mais recente não a removerá do repositório, apenas deste trabalho. Tem certeza de que deseja remover esta versão mais recente?
+        header:
+          actions: Açao
+          title: Título do trabalho
+      form_previous_version:
+        actions:
+          remove: Remover deste trabalho
+        add: acrescentar
+        caption: Este trabalho contém atualmente esta versão anterior
+        confirm:
+          cancel: Cancelar
+          remove: Retirar
+          text: A remoção desta versão anterior não a removerá do repositório, apenas deste trabalho. Tem certeza de que deseja remover esta versão anterior?
+        header:
+          actions: Açao
+          title: Título do trabalho
+      form_related_item:
+        actions:
+          remove: Remover deste trabalho
+        add: acrescentar
+        caption: Referência a um recurso geralmente relacionado ao recurso descrito
+        confirm:
+          cancel: Cancelar
+          remove: Retirar
+          text: A remoção desta versão alternativa não a removerá do repositório, apenas deste trabalho. Tem certeza de que deseja remover esta versão alternativa?
+        header:
+          actions: Açao
+          title: Título do trabalho
+      related_items:
+        date_uploaded: Data de carga
+        empty: Este %{type} não possui arquivos associados a ele. Clique em "editar" para acrescentar mais arquivos.
+        relationship_type: Tipo de Relacionamento
+        thumbnail: Miniatura
+        title: Título
+        unauthorized: Não há itens publicados neste %{type}.
+        visibility: Acesso
+    select_type:
+      oer:
+        description: Os recursos educacionais abertos (REA) são materiais educacionais gratuitos e com licença aberta, que podem ser usados ​​para ensino, aprendizado, pesquisa e outros propósitos.
+        name: OER
+  simple_form:
+    hints:
+      defaults:
+        accessibility_feature: Recursos acessíveis do trabalho.
+        accessibility_hazard: Características do trabalho que pode ser fisiologicamente perigoso para alguns usuários.
+        accessibility_summary: Um resumo de recursos ou deficiências específicas de acessibilidade.
+        additional_information: Outras informações sobre direitos não transmitidas por status, como termos de licença ou informações de contato.
+        alternative_title: Título alternativo para o recurso.
+        audience: O alvo pretendido para o trabalho.
+        date: A data em que o trabalho foi criado, publicado ou emitido.
+        discipline: O domínio educacional ao qual o recurso se destina.
+        education_level: O nível de educação para o qual o trabalho é destinado.
+        learning_resource_type: O tipo específico de recurso educacional descrito.
+        oer_size: Tamanho ou duração do trabalho.
+        rights_holder: Pessoa ou grupo que detém os direitos do trabalho, se conhecido.
+        table_of_contents: Sumário de um trabalho.
+    labels:
+      defaults:
+        accessibility_feature: Recurso de acessibilidade
+        accessibility_hazard: Risco de acessibilidade
+        accessibility_summary: Resumo de Acessibilidade
+        additional_information: Informações Adicionais sobre Direitos
+        alternative_title: Título alternativo
+        audience: Público
+        date: Encontro
+        discipline: Disciplina
+        education_level: Nível de educação
+        learning_resource_type: Tipo de recurso de aprendizagem
+        oer_size: Tamanho
+        rights_holder: Detentor dos direitos
+        table_of_contents: Índice
+    placeholders:
+      defaults:
+        alternate_version_id: Pesquise um trabalho ...
+        newer_version_id: Pesquise um trabalho ...
+        previous_version_id: Pesquise um trabalho ...
+        related_item_id: Pesquise um trabalho ...

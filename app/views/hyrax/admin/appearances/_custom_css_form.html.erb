@@ -1,5 +1,5 @@
 <%= simple_form_for @form, url: admin_appearance_path do |f| %>
-  <div class="panel-body">
+  <div class="card-body">
     <%= f.input :custom_css_block, required: false, as: :text, label: 'Add Custom CSS Below' %>
     <script>
       var custom_css_block = document.getElementById('admin_appearance_custom_css_block')
@@ -12,7 +12,7 @@
       });
     </script>
   </div>
-  <div class="panel-footer">
-    <%= f.submit class: 'btn btn-primary pull-right', data: { confirm: t('hyrax.admin.appearances.show.forms.custom_css.confirm') } %>
+  <div class="card-footer">
+    <%= f.submit class: 'btn btn-primary float-right', data: { confirm: t('hyrax.admin.appearances.show.forms.custom_css.confirm') } %>
   </div>
 <% end %>

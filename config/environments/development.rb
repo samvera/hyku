@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
+# rubocop:disable Metrics/BlockLength
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
-  if ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq') == 'sidekiq'
-    config.cache_classes = !!Sidekiq.server?
-  else
-    config.cache_classes = false
-  end
-
+  config.cache_classes = if ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq') == 'sidekiq'
+                           !!Sidekiq.server?
+                         else
+                           false
+                         end
 
   # Do not eager load code on boot.
   config.eager_load = false
@@ -18,7 +20,7 @@ Rails.application.configure do
   config.consider_all_requests_local = true
 
   # Enable/disable caching. By default caching is disabled.
-  if Rails.root.join('tmp/caching-dev.txt').exist?
+  if Rails.root.join('tmp', 'caching-dev.txt').exist?
     config.action_controller.perform_caching = true
 
     config.cache_store = :memory_store
@@ -63,9 +65,13 @@ Rails.application.configure do
     config.logger = ActiveSupport::TaggedLogging.new(logger)
   end
 
-  config.active_job.queue_adapter     = ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq')
+  config.active_job.queue_adapter = ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq')
 
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   # config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+  # adding `.` wildcard to allow for subdomains
+  config.hosts << "." + ENV['HYKU_ADMIN_HOST']
 end
+# rubocop:enable Metrics/BlockLength

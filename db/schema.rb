@@ -2,15 +2,15 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_08_04_073106) do
+ActiveRecord::Schema.define(version: 2024_08_06_161142) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -73,7 +73,8 @@ ActiveRecord::Schema.define(version: 2023_08_04_073106) do
     t.datetime "last_succeeded_at"
     t.string "importerexporter_type", default: "Bulkrax::Importer"
     t.integer "import_attempts", default: 0
-    t.index ["identifier"], name: "index_bulkrax_entries_on_identifier"
+    t.string "status_message", default: "Pending"
+    t.index ["identifier", "importerexporter_id", "importerexporter_type"], name: "bulkrax_identifier_idx"
     t.index ["importerexporter_id", "importerexporter_type"], name: "bulkrax_entries_importerexporter_idx"
     t.index ["type"], name: "index_bulkrax_entries_on_type"
   end
@@ -108,6 +109,7 @@ ActiveRecord::Schema.define(version: 2023_08_04_073106) do
     t.string "workflow_status"
     t.boolean "include_thumbnails", default: false
     t.boolean "generated_metadata", default: false
+    t.string "status_message", default: "Pending"
     t.index ["user_id"], name: "index_bulkrax_exporters_on_user_id"
   end
 
@@ -148,6 +150,7 @@ ActiveRecord::Schema.define(version: 2023_08_04_073106) do
     t.boolean "validate_only"
     t.datetime "last_error_at"
     t.datetime "last_succeeded_at"
+    t.string "status_message", default: "Pending"
     t.index ["user_id"], name: "index_bulkrax_importers_on_user_id"
   end
 
@@ -372,6 +375,25 @@ ActiveRecord::Schema.define(version: 2023_08_04_073106) do
     t.index ["machine_id"], name: "index_hyrax_collection_types_on_machine_id", unique: true
   end
 
+  create_table "hyrax_counter_metrics", force: :cascade do |t|
+    t.string "worktype"
+    t.string "resource_type"
+    t.string "work_id"
+    t.date "date"
+    t.integer "total_item_investigations"
+    t.integer "total_item_requests"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "title"
+    t.integer "year_of_publication"
+    t.string "publisher"
+    t.string "author"
+    t.index ["date"], name: "index_hyrax_counter_metrics_on_date"
+    t.index ["resource_type"], name: "index_hyrax_counter_metrics_on_resource_type"
+    t.index ["work_id"], name: "index_hyrax_counter_metrics_on_work_id"
+    t.index ["worktype"], name: "index_hyrax_counter_metrics_on_worktype"
+  end
+
   create_table "hyrax_default_administrative_set", force: :cascade do |t|
     t.string "default_admin_set_id", null: false
     t.datetime "created_at", null: false
@@ -426,6 +448,9 @@ ActiveRecord::Schema.define(version: 2023_08_04_073106) do
     t.string "child_order", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "parent_model"
+    t.string "child_model"
+    t.string "file_id"
     t.index ["parent_id"], name: "index_iiif_print_pending_relationships_on_parent_id"
   end
 
@@ -517,6 +542,19 @@ ActiveRecord::Schema.define(version: 2023_08_04_073106) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["namespace"], name: "index_minter_states_on_namespace", unique: true
+  end
+
+  create_table "orm_resources", id: :text, default: -> { "(uuid_generate_v4())::text" }, force: :cascade do |t|
+    t.jsonb "metadata", default: {}, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "internal_resource"
+    t.integer "lock_version"
+    t.index "(((metadata -> 'bulkrax_identifier'::text) ->> 0))", name: "index_on_bulkrax_identifier", where: "((metadata -> 'bulkrax_identifier'::text) IS NOT NULL)"
+    t.index ["internal_resource"], name: "index_orm_resources_on_internal_resource"
+    t.index ["metadata"], name: "index_orm_resources_on_metadata", using: :gin
+    t.index ["metadata"], name: "index_orm_resources_on_metadata_jsonb_path_ops", opclass: :jsonb_path_ops, using: :gin
+    t.index ["updated_at"], name: "index_orm_resources_on_updated_at"
   end
 
   create_table "permission_template_accesses", id: :serial, force: :cascade do |t|
@@ -784,6 +822,7 @@ ActiveRecord::Schema.define(version: 2023_08_04_073106) do
     t.string "show_theme"
     t.string "search_theme"
     t.string "favicon"
+    t.string "directory_image_alt_text"
   end
 
   create_table "subject_local_authority_entries", id: :serial, force: :cascade do |t|
@@ -812,6 +851,7 @@ ActiveRecord::Schema.define(version: 2023_08_04_073106) do
     t.string "file_set_uri"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "filename"
     t.index ["file_set_uri"], name: "index_uploaded_files_on_file_set_uri"
     t.index ["user_id"], name: "index_uploaded_files_on_user_id"
   end
@@ -876,6 +916,10 @@ ActiveRecord::Schema.define(version: 2023_08_04_073106) do
     t.string "preferred_locale"
     t.string "provider"
     t.string "uid"
+    t.string "batch_email_frequency", default: "never"
+    t.datetime "last_emailed_at"
+    t.string "api_key"
+    t.index ["api_key"], name: "index_users_on_api_key"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hyku
-  VERSION = '5.0.1'.freeze
+  VERSION = '6.0.0'
 end

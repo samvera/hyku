@@ -2,35 +2,37 @@
 
 module SharedSearchHelper
   def generate_work_url(model, request)
-    # needed because some attributes eg id is a symbol 7 others are string
+    # handle the various types of info we receive:
     if model.class == Hyrax::IiifAv::IiifFileSetPresenter
-      has_model = model.model_name.plural
+      base_route_name = model.model_name.plural
       id = model.id
       account_cname = request.server_name
     else
-      model = model.to_h.with_indifferent_access
+      model_hash = model.to_h.with_indifferent_access
 
-      cname = model["account_cname_tesim"]
-      account_cname = Array.wrap(cname).first
-
-      has_model = model["has_model_ssim"].first.underscore.pluralize
-      id = model["id"]
+      base_route_name = model_hash["has_model_ssim"].first.constantize.model_name.plural
+      id = model_hash["id"]
+      account_cname = Array.wrap(model_hash["account_cname_tesim"]).first
     end
+
     request_params = %i[protocol host port].map { |method| ["request_#{method}".to_sym, request.send(method)] }.to_h
-    get_url(id: id, request: request_params, account_cname: account_cname, has_model: has_model)
+    url = get_url(id:, request: request_params, account_cname:, base_route_name:)
+
+    # pass search query params to work show page
+    params[:q].present? ? "#{url}?q=#{params[:q]}" : url
   end
 
   private
 
-    def get_url(id:, request:, account_cname:, has_model:)
-      new_url = "#{request[:request_protocol]}#{account_cname || request[:request_host]}"
-      new_url += ":#{request[:request_port]}" if Rails.env.development? || Rails.env.test?
-      new_url += case has_model
-                 when "collections"
-                   "/#{has_model}/#{id}"
-                 else
-                   "/concern/#{has_model}/#{id}"
-                 end
-      new_url
-    end
+  def get_url(id:, request:, account_cname:, base_route_name:)
+    new_url = "#{request[:request_protocol]}#{account_cname || request[:request_host]}"
+    new_url += ":#{request[:request_port]}" if Rails.env.development? || Rails.env.test?
+    new_url += case base_route_name
+               when "collections"
+                 "/#{base_route_name}/#{id}"
+               else
+                 "/concern/#{base_route_name}/#{id}"
+               end
+    new_url
+  end
 end

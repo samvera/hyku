@@ -13,8 +13,8 @@ module Hyrax
 
     private
 
-      def list_params
-        params.require(:featured_collection_list).permit(featured_collections_attributes: %i[id order])
-      end
+    def list_params
+      params.require(:featured_collection_list).permit(featured_collections_attributes: %i[id order])
+    end
   end
 end

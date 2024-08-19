@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notifications</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <h2>Hello, <%= @user.name %></h2>
+  <p>You have the following notifications:</p>
+  <p>Click <a href="<%= @url %>">here</a> to view them on <%= @application_name %>.</p>
+  <table>
+    <tr>
+      <th>Date</th>
+      <th>Subject</th>
+      <th>Message</th>
+    </tr>
+    <% @messages.each do |message| %>
+    <tr>
+      <td><%= message.created_at.to_date %></td>
+      <td><%= message.subject %></td>
+      <td><%= message.body.gsub('href="', "href=\"#{URI(@url).origin}").html_safe %></td>
+    </tr>
+    <% end %>
+  </table>
+</body>
+</html>

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'AdminSet form Participants tab', type: :feature, js: true, clean: true, ci: 'skip' do
+RSpec.describe 'AdminSet form Participants tab', type: :feature, js: true, clean: true do
   include Warden::Test::Helpers
 
   context 'as an admin user' do
@@ -16,14 +16,14 @@ RSpec.describe 'AdminSet form Participants tab', type: :feature, js: true, clean
       Sipity::Workflow.create!(
         active: true,
         name: 'test-workflow',
-        permission_template: permission_template
+        permission_template:
       )
 
       login_as admin
     end
 
     let(:admin) { FactoryBot.create(:admin) }
-    let!(:admin_set_id) { AdminSet.find_or_create_default_admin_set_id }
+    let!(:admin_set_id) { Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id }
     let!(:permission_template) { Hyrax::PermissionTemplate.find_or_create_by!(source_id: admin_set_id) }
 
     context 'add group participants' do
@@ -63,7 +63,7 @@ RSpec.describe 'AdminSet form Participants tab', type: :feature, js: true, clean
             text: group.humanized_name
           ).click
           find('select#permission_template_access_grants_attributes_0_access option', text: 'Manager').click
-          find('input.btn-info').click
+          find('input.btn-secondary').click
         end
 
         expect(find('table.managers-table')).to have_content(group.name.titleize)
@@ -86,7 +86,7 @@ RSpec.describe 'AdminSet form Participants tab', type: :feature, js: true, clean
             text: group.humanized_name
           ).click
           find('select#permission_template_access_grants_attributes_0_access option', text: 'Depositor').click
-          find('input.btn-info').click
+          find('input.btn-secondary').click
         end
 
         expect(find('table.managers-table')).not_to have_content(group.name.titleize)
@@ -109,7 +109,7 @@ RSpec.describe 'AdminSet form Participants tab', type: :feature, js: true, clean
             text: group.humanized_name
           ).click
           find('select#permission_template_access_grants_attributes_0_access option', text: 'Viewer').click
-          find('input.btn-info').click
+          find('input.btn-secondary').click
         end
 
         expect(find('table.managers-table')).not_to have_content(group.name.titleize)
@@ -136,10 +136,9 @@ RSpec.describe 'AdminSet form Participants tab', type: :feature, js: true, clean
                            .find(:xpath, '//td[@data-agent="admin"]')
                            .find(:xpath, '..')['innerHTML']
         expect(manager_row_html).to include('<td data-agent="admin">Repository Administrators</td>')
-        expect(manager_row_html).to include(
-          '<input class="btn btn-danger" disabled="disabled" ' \
-          'title="The repository administrators group cannot be removed" type="submit" value="Remove">'
-        )
+        # rubocop:disable Layout/LineLength
+        expect(manager_row_html).to include('<input class="btn btn-sm btn-danger disabled" disabled="disabled" title="The repository administrators group cannot be removed" type="submit" value="Remove">')
+        # rubocop:enable Metrics/MethodLength
       end
 
       it 'shows an enabled remove button next to Repository Administrator group as a Depositor' do
@@ -149,14 +148,14 @@ RSpec.describe 'AdminSet form Participants tab', type: :feature, js: true, clean
             text: "Repository Administrators"
           ).click
           find('select#permission_template_access_grants_attributes_0_access option', text: 'Depositor').click
-          find('input.btn-info').click
+          find('input.btn-secondary').click
         end
 
         depositor_row_html = find('table.depositors-table')
                              .find(:xpath, './/td[@data-agent="admin"]')
                              .find(:xpath, '..')['innerHTML']
         expect(depositor_row_html).to include('<td data-agent="admin">Repository Administrators</td>')
-        expect(depositor_row_html).to include('<input class="btn btn-danger" type="submit" value="Remove">')
+        expect(depositor_row_html).to include('<input class="btn btn-sm btn-danger" type="submit" value="Remove">')
       end
 
       it 'shows an enabled remove button next to Repository Administrator group as a Viewer' do
@@ -166,14 +165,14 @@ RSpec.describe 'AdminSet form Participants tab', type: :feature, js: true, clean
             text: "Repository Administrators"
           ).click
           find('select#permission_template_access_grants_attributes_0_access option', text: 'Viewer').click
-          find('input.btn-info').click
+          find('input.btn-secondary').click
         end
 
         viewer_row_html = find('table.viewers-table')
                           .find(:xpath, './/td[@data-agent="admin"]')
                           .find(:xpath, '..')['innerHTML']
         expect(viewer_row_html).to include('<td data-agent="admin">Repository Administrators</td>')
-        expect(viewer_row_html).to include('<input class="btn btn-danger" type="submit" value="Remove">')
+        expect(viewer_row_html).to include('<input class="btn btn-sm btn-danger" type="submit" value="Remove">')
       end
     end
   end

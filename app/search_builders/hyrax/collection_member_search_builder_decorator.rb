@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE: Hyrax 3.4.1 adds filesets to search to allow full text search results on the Collection show pages
+# OVERRIDE: Hyrax 5.0.0rc2 adds filesets to search to allow full text search results on the Collection show pages
 module Hyrax
   module CollectionMemberSearchBuilderDecorator
     Hyrax::CollectionMemberSearchBuilder.default_processor_chain += [:show_works_or_works_that_contain_files]
@@ -30,7 +30,7 @@ module Hyrax
 
     # join from file id to work relationship solrized file_set_ids_ssim
     def join_for_works_from_files
-      "{!join from=#{Hyrax.config.id_field} to=file_set_ids_ssim}#{dismax_query}"
+      "{!join from=#{Hyrax.config.id_field} to=member_ids_ssim}#{dismax_query}"
     end
   end
 end

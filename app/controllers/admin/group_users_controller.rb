@@ -32,25 +32,25 @@ module Admin
 
     private
 
-      def load_group
-        @group = Hyrax::Group.find_by(id: params[:group_id])
-      end
+    def load_group
+      @group = Hyrax::Group.find_by(id: params[:group_id])
+    end
 
-      def page_number
-        params.fetch(:page, 1).to_i
-      end
+    def page_number
+      params.fetch(:page, 1).to_i
+    end
 
-      def page_size
-        params.fetch(:per, 10).to_i
-      end
+    def page_size
+      params.fetch(:per, 10).to_i
+    end
 
-      def cannot_remove_admin_users_from_admin_group
-        return unless @group.name == ::Ability.admin_group_name
+    def cannot_remove_admin_users_from_admin_group
+      return unless @group.name == ::Ability.admin_group_name
 
-        redirect_back(
-          fallback_location: edit_admin_group_path(@group),
-          flash: { error: "Admin users cannot be removed from this group" }
-        )
-      end
+      redirect_back(
+        fallback_location: edit_admin_group_path(@group),
+        flash: { error: "Admin users cannot be removed from this group" }
+      )
+    end
   end
 end

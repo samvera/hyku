@@ -1,42 +1,44 @@
-<% # OVERRIDE: Hyrax 2.9 template to remove the gradient overlay span, removed /controls partial, and added the share your work button for themeing %>
+<% # OVERRIDE: Hyrax v5.0.0rc2 template to remove the gradient overlay span, removed /controls partial, and added the share your work button for theming %>
 <% content_for(:navbar) do %>
-  <div class="image-masthead">
+  <div class="image-masthead mt-n3">
   <!-- institutional repository homepage -->
-    <div class="background-container" style="background-image: url('<%= banner_image %>')" title="<%= block_for(name: 'banner_image_text') %>"></div>
+    <div class="background-container" title="<%= block_for(name: 'banner_image_text') %>" style="background-image: url('<%= "#{banner_image}?#{Time.now.to_i}" %>')"></div>
 
     <div class="container site-title-container">
-      <div class="site-title h1" style="text-align: center;">
-        <%= render "hyrax/homepage/marketing" if controller_name == 'homepage' || controller_name == 'hyrax_contact_form' || controller_name == 'pages' %>
-      </div>
-      <div class="share-your-work-button">
-        <% if @presenter&.display_share_button? %>
-          <div class="institutional-repository home_share_work row">
-            <div class="col-sm-12 text-center">
-              <% if signed_in? %>
-                <% if @presenter.create_many_work_types? %>
-                  <%= link_to '#',
-                    class: "btn btn-primary btn-lg",
-                    data: { behavior: 'select-work', target: '#worktypes-to-create', 'create-type' => 'single' } do %>
-                    <i class="glyphicon glyphicon-upload" aria-hidden="true"></i> <%= t('hyrax.share_button') %>
+      <div class="marketing-text-share-button-container">
+        <div class="site-title h1" style="text-align: center;">
+          <%= render "hyrax/homepage/marketing" if controller_name == 'homepage' || controller_name == 'hyrax_contact_form' || controller_name == 'pages' %>
+        </div>
+        <div class="share-your-work-button">
+          <% if @presenter&.display_share_button? %>
+            <div class="institutional-repository home_share_work row">
+              <div class="col-12 text-center">
+                <% if signed_in? %>
+                  <% if @presenter.create_many_work_types? %>
+                    <%= link_to '#',
+                      class: "btn btn-primary btn-lg",
+                      data: { behavior: 'select-work', target: '#worktypes-to-create', 'create-type' => 'single' } do %>
+                      <i class="fa fa-upload" aria-hidden="true"></i> <%= t('hyrax.share_button') %>
+                    <% end %>
+                  <% else # simple link to the first work type %>
+                    <%= link_to new_polymorphic_path([main_app, @presenter.first_work_type]),
+                          class: 'btn btn-primary' do %>
+                      <i class="fa fa-upload" aria-hidden="true"></i> <%= t('hyrax.share_button') %>
+                    <% end %>
                   <% end %>
-                <% else # simple link to the first work type %>
-                  <%= link_to new_polymorphic_path([main_app, @presenter.first_work_type]),
-                        class: 'btn btn-primary' do %>
-                    <i class="glyphicon glyphicon-upload" aria-hidden="true"></i> <%= t('hyrax.share_button') %>
+                <% else %>
+                  <%= link_to hyrax.my_works_path,
+                    class: "btn btn-primary btn-lg" do %>
+                    <i class="fa fa-upload" aria-hidden="true"></i> <%= t('hyrax.share_button') %>
                   <% end %>
                 <% end %>
-              <% else %>
-                <%= link_to hyrax.my_works_path,
-                  class: "btn btn-primary btn-lg" do %>
-                  <i class="glyphicon glyphicon-upload" aria-hidden="true"></i> <%= t('hyrax.share_button') %>
-                <% end %>
-              <% end %>
-              <p><%= link_to t(:'hyrax.pages.tabs.terms_page'), hyrax.terms_path %></p>
+                <p><%= link_to t(:'hyrax.pages.tabs.terms_page'), hyrax.terms_path %></p>
+              </div>
             </div>
-          </div>
-        <% end %>
+          <% end %>
 
-        <%= render '/shared/select_work_type_modal', create_work_presenter: @presenter&.create_work_presenter if @presenter&.draw_select_work_modal? %>
+          <%= render '/shared/select_work_type_modal', create_work_presenter: @presenter&.create_work_presenter if @presenter&.draw_select_work_modal? %>
+        </div>
       </div>
     </div>
   </div>

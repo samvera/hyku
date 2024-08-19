@@ -1,0 +1,340 @@
+# Simple yaml config-driven schema which is used to define model attributes,
+# index key names, and form properties.
+#
+# Attributes must have a type but all other configuration options are optional.
+# Please note: If using Valkyrie's Fedora Metadata Adapter, predicates for attributes
+# must be placed here.
+#
+# attributes:
+#   attribute_name:
+#     type: string
+#     multiple: false
+#     index_keys:
+#       - "attribute_name_sim"
+#     form:
+#       required: true
+#       primary: true
+#       multiple: false
+#
+# @see config/metadata/basic_metadata.yaml for an example configuration
+#
+# Generated via
+#  `rails generate hyrax:work_resource EtdResource`
+
+attributes:
+  creator:
+    type: string
+    multiple: true
+    form:
+      required: true
+      primary: true
+    index_keys:
+      - "creator_sim"
+      - "creator_tesim"
+    predicate: http://purl.org/dc/elements/1.1/creator
+  keyword:
+    type: string
+    multiple: true
+    index_keys:
+      - "keyword_sim"
+      - "keyword_tesim"
+    form:
+      primary: true
+      required: true
+    predicate: http://schema.org/keywords
+  rights_statement:
+    type: string
+    multiple: true
+    form:
+      primary: true
+      required: true
+    index_keys:
+      - "rights_statement_sim"
+      - "rights_statement_tesim"
+    predicate: http://www.europeana.eu/schemas/edm/rights
+  date:
+    type: string
+    multiple: true
+    index_keys:
+      - "date_tesim"
+      - "date_sim"
+    form:
+      required: true
+      primary: true
+      multiple: true
+    predicate: https://hykucommons.org/terms/date
+  degree_name:
+    type: string
+    multiple: true
+    index_keys:
+      - "degree_name_tesim"
+    form:
+      required: true
+      primary: true
+      multiple: true
+    predicate: https://hykucommons.org/terms/degree_name
+  degree_level:
+    type: string
+    multiple: true
+    index_keys:
+      - "degree_level_tesim"
+    form:
+      required: true
+      primary: true
+      multiple: true
+    predicate: https://hykucommons.org/terms/degree_level
+  degree_discipline:
+    type: string
+    multiple: true
+    index_keys:
+      - "degree_discipline_tesim"
+    form:
+      required: true
+      primary: true
+      multiple: true
+    predicate: https://hykucommons.org/terms/degree_discipline
+  degree_grantor:
+    type: string
+    multiple: true
+    index_keys:
+      - "degree_grantor_tesim"
+    form:
+      required: true
+      primary: true
+      multiple: true
+    predicate: https://hykucommons.org/terms/degree_grantor
+  resource_type:
+    type: string
+    multiple: true
+    form:
+      primary: true
+      multiple: true
+      required: true
+    index_keys:
+      - "resource_type_sim"
+      - "resource_type_tesim"
+    predicate: http://purl.org/dc/terms/type
+  license:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "license_sim"
+      - "license_tesim"
+    predicate: http://purl.org/dc/terms/license
+  abstract:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "abstract_sim"
+      - "abstract_tesim"
+    predicate: http://purl.org/dc/terms/abstract
+  access_right:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "access_right_sim"
+      - "access_right_tesim"
+    predicate: http://purl.org/dc/terms/accessRights
+  additional_information:
+    type: string
+    multiple: true
+    index_keys:
+      - "additional_information_tesim"
+    form:
+      required: false
+      primary: false
+      multiple: true
+    predicate: http://purl.org/dc/terms/accessRights
+  admin_note:
+    type: string
+    multiple: false
+    index_keys:
+      - "admin_note_tesim"
+    form:
+      required: false
+      primary: false
+      multiple: false
+    predicate: http://schema.org/positiveNotes
+  advisor:
+    type: string
+    multiple: true
+    index_keys:
+      - "advisor_tesim"
+    form:
+      required: false
+      primary: false
+      multiple: true
+    predicate: https://hykucommons.org/terms/advisor
+  alternative_title:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "alternative_title_sim"
+      - "alternative_title_tesim"
+    predicate: http://purl.org/dc/terms/alternative
+  based_near:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "based_near_sim"
+      - "based_near_tesim"
+    predicate: http://xmlns.com/foaf/0.1/based_near
+  bibliographic_citation:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "bibliographic_citation_sim"
+      - "bibliographic_citation_tesim"
+    predicate: http://purl.org/dc/terms/bibliographicCitation
+  committee_member:
+    type: string
+    multiple: true
+    index_keys:
+      - "committee_member_tesim"
+    form:
+      required: false
+      primary: false
+      multiple: true
+    predicate: https://hykucommons.org/terms/committee_member
+  contributor:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "contributor_tesim"
+      - "contributor_sim"
+    predicate: http://purl.org/dc/elements/1.1/contributor
+  department:
+    type: string
+    multiple: true
+    index_keys:
+      - "department_tesim"
+    form:
+      required: false
+      primary: false
+      multiple: true
+    predicate: https://hykucommons.org/terms/department
+  description:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "description_sim"
+      - "description_tesim"
+    predicate: http://purl.org/dc/elements/1.1/description
+  format:
+    type: string
+    multiple: true
+    index_keys:
+      - "format_tesim"
+    form:
+      required: false
+      primary: false
+      multiple: true
+    predicate: http://purl.org/dc/terms/format
+  identifier:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "identifier_sim"
+      - "identifier_tesim"
+    predicate: http://purl.org/dc/terms/identifier
+  language:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "language_sim"
+      - "language_tesim"
+    predicate: http://purl.org/dc/elements/1.1/language
+  publisher:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "publisher_sim"
+      - "publisher_tesim"
+    predicate: http://purl.org/dc/elements/1.1/publisher
+  related_url:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "related_url_sim"
+      - "related_url_tesim"
+    predicate: http://www.w3.org/2000/01/rdf-schema#seeAlso
+  rights_notes:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "rights_notes_sim"
+      - "rights_notes_tesim"
+    predicate: http://purl.org/dc/elements/1.1/rights
+  source:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "source_sim"
+      - "source_tesim"
+    predicate: http://purl.org/dc/terms/source
+  subject:
+    type: string
+    multiple: true
+    index_keys:
+      - "subject_sim"
+      - "subject_tesim"
+    form:
+      primary: false
+    predicate: http://purl.org/dc/elements/1.1/subject
+  arkivo_checksum:
+    type: string
+    multiple: false
+    # form:
+    #   primary: false
+    predicate: http://scholarsphere.psu.edu/ns#arkivoChecksum
+  date_created:
+    type: date_time
+    multiple: true
+    # form:
+    #   primary: false
+    index_keys:
+      - "date_created_sim"
+      - "date_created_tesim"
+    predicate: http://purl.org/dc/terms/created
+  import_url:
+    type: string
+    predicate: http://scholarsphere.psu.edu/ns#importUrl
+  label:
+    type: string
+    # form:
+    #   primary: false
+    index_keys:
+      - "label_sim"
+      - "label_tesim"
+    predicate: info:fedora/fedora-system:def/model#downloadFilename
+  relative_path:
+    type: string
+    predicate: http://scholarsphere.psu.edu/ns#relativePath

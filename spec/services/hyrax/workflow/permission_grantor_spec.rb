@@ -5,8 +5,8 @@ require 'rails_helper'
 RSpec.describe Hyrax::Workflow::PermissionGrantor do
   subject(:permission_grantor) do
     described_class.new(
-      permission_template: permission_template,
-      creating_user: creating_user
+      permission_template:,
+      creating_user:
     )
   end
 
@@ -34,13 +34,13 @@ RSpec.describe Hyrax::Workflow::PermissionGrantor do
     it 'initializes an instance and calls #call on it' do
       expect_any_instance_of(described_class).to receive(:call)
 
-      described_class.grant_default_workflow_roles!(permission_template: permission_template)
+      described_class.grant_default_workflow_roles!(permission_template:)
     end
   end
 
   describe '#call' do
     let(:permission_template) { create(:permission_template, with_admin_set: true, with_active_workflow: true) }
-    let!(:admin_group) { create(:admin_group) }
+    let!(:admin_group) { Hyrax::Group.find_or_create_by!(name: ::Ability.admin_group_name) }
 
     it 'creates default sipity roles' do
       expect { permission_grantor.call }.to change(Sipity::Role, :count).by(3)

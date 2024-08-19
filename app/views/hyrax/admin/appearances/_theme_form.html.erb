@@ -1,5 +1,5 @@
 <%= simple_form_for @form.site, url: main_app.site_path(@form.site) do |f| %>
-  <div class="panel-body">
+  <div class="card-body">
     <div class="row">
       <div class="col-sm-6">
         <% home_options = @home_theme_names.map { |g| [g[0], g[1], {'data-image' => image_path("themes/#{g[1]}/#{g[1]}.jpg")}] } %>
@@ -23,12 +23,12 @@
         </ul>
       </div>
       <div id="home-wireframe" class="col-sm-6">
-        <%= image_tag "themes/default_home/default_home", class: "img-responsive" %>
+        <%= image_tag "themes/default_home/default_home", class: "img-fluid" %>
       </div>
     </div>
     <hr />
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <% search_options = @search_themes.map { |s| [s[0], s[1], { 'data-image' => image_path("themes/search/#{s[1]}.jpg") }] } %>
         <%= f.input :search_theme, label: 'Search Results Page Theme' do %>
           <%= f.select :search_theme, search_options, {}, { prompt: 'Select search results page theme...', class: 'form-control' } %>
@@ -38,8 +38,8 @@
           <li>This will select a default view for the search results page. Users can select their preferred views on the search results page that will override this selection.</li>
         </ul>
       </div>
-      <div id="search-wireframe" class="col-sm-6">
-        <%= image_tag "themes/search/list_view.jpg", class: "img-responsive" %>
+      <div id="search-wireframe" class="col-md-6">
+        <%= image_tag "themes/search/list_view.jpg", class: "img-fluid" %>
       </div>
     </div>
     <hr />
@@ -56,12 +56,12 @@
         </ul>
       </div>
       <div id="show-wireframe" class="col-sm-6">
-        <%= image_tag "themes/default_show/default_show", class: "img-responsive" %>
+        <%= image_tag "themes/default_show/default_show", class: "img-fluid" %>
       </div>
     </div>
     <hr />
   </div>
-  <div class="panel-footer">
-    <%= f.submit class: 'btn btn-primary pull-right' %>
+  <div class="card-footer text-right">
+    <%= f.submit class: 'btn btn-secondary' %>
   </div>
 <% end %>

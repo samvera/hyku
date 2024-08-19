@@ -1,9 +1,12 @@
+<%# OVERRIDE Hyrax v5.0.0rc2 to add Groups and title attributes %>
+
 <% if menu.show_task? %>
-  <li class="h5"><%= t('hyrax.admin.sidebar.tasks') %></li>
+  <li class="h5 nav-item"><%= t('hyrax.admin.sidebar.tasks') %></li>
 <% end %>
 
 <% if can? :review, :submissions %>
   <%= menu.nav_link(hyrax.admin_workflows_path,
+                    class: "nav-link",
                     onclick: "dontChangeAccordion(event);",
                     title: t('hyrax.admin.sidebar.workflow_review')) do %>
     <span class="fa fa-flag" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.workflow_review') %></span>
@@ -12,6 +15,7 @@
 
 <% if can? :read, User %>
   <%= menu.nav_link(hyrax.admin_users_path,
+                    class: "nav-link",
                     onclick: "dontChangeAccordion(event);",
                     title: t('hyrax.admin.sidebar.users')) do %>
     <span class="fa fa-user" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.users') %></span>
@@ -20,6 +24,7 @@
 
 <% if can? :read, Hyrax::Group %>
     <%= menu.nav_link(main_app.admin_groups_path,
+                      class: "nav-link",
                       title: t('hyrax.admin.sidebar.manage_groups')) do %>
         <span class="fa fa-users"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.manage_groups') %></span>
     <% end %>
@@ -27,12 +32,14 @@
 
 <% if can? :read, :admin_dashboard %>
   <%= menu.nav_link(hyrax.embargoes_path,
+                    class: "nav-link",
                     onclick: "dontChangeAccordion(event);",
                     title: t('hyrax.embargoes.index.manage_embargoes')) do %>
     <span class="fa fa-flag" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.embargoes.index.manage_embargoes') %></span>
   <% end %>
 
   <%= menu.nav_link(hyrax.leases_path,
+                    class: "nav-link",
                     onclick: "dontChangeAccordion(event);",
                     title: t('hyrax.leases.index.manage_leases')) do %>
     <span class="fa fa-flag" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.leases.index.manage_leases') %></span>

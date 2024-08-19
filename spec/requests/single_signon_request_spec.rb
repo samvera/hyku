@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe "SingleSignons", type: :request do
+RSpec.describe "SingleSignons", type: :request, singletenant: true do
   describe "GET single_signon#index" do
     describe "with no IdentityProviders" do
       it "redirects to sign in" do

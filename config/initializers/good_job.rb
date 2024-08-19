@@ -6,7 +6,7 @@ if ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq') == 'good_job'
     # Configure options individually...
     config.good_job.preserve_job_records = true
     config.good_job.retry_on_unhandled_error = false
-    config.good_job.on_thread_error = ->(exception) { Raven.capture_exception(exception) }
+    config.good_job.on_thread_error = ->(exception) { Sentry.capture_exception(exception) }
     config.good_job.execution_mode = :external
     # config.good_job.queues = '*'
     config.good_job.shutdown_timeout = 60 # seconds

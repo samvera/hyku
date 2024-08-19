@@ -1,9 +1,10 @@
-config = YAML.load(ERB.new(IO.read(Rails.root + 'config' + 'redis.yml')).result)[Rails.env].with_indifferent_access
-sentinels = config[:sentinel] && config[:sentinel][:host].present? ? { sentinels: [config[:sentinel]] } : {}
-redis_config = config.except(:sentinel).merge(thread_safe: true).merge(sentinels)
+# frozen_string_literal: true
 require 'redis'
-Redis.current = begin
-                  Redis.new(redis_config)
-                rescue
-                  nil
-                end
+require 'connection_pool'
+config = YAML.safe_load(ERB.new(IO.read(Rails.root.join('config', 'redis.yml'))).result)[Rails.env].with_indifferent_access
+
+size = ENV.fetch("HYRAX_REDIS_POOL_SIZE", 10)
+timeout = ENV.fetch("HYRAX_REDIS_TIMEOUT", 10)
+
+Hyrax.config.redis_connection =
+  ConnectionPool::Wrapper.new(size:, timeout:) { Redis.new(config) }

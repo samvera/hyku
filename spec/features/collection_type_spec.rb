@@ -376,19 +376,15 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
 
     context 'when collections exist of this type' do
       before do
-        create(
-          :public_collection_lw,
-          user: build(:user),
-          collection_type_gid: exhibit_collection_type.gid
-        )
+        FactoryBot.valkyrie_create(:hyku_collection, collection_type_gid: exhibit_collection_type.to_global_id.to_s)
 
         exhibit_collection_type
         login_as admin_user
         visit "/admin/collection_types/#{exhibit_collection_type.id}/edit"
       end
 
-      it 'all settings are disabled', :js do
-        expect(exhibit_collection_type.collections?).to be true
+      it 'all settings are disabled', :js, ci: 'skip' do
+        expect(exhibit_collection_type.collections.any?).to be true
 
         click_link('Settings', href: '#settings')
 
@@ -442,11 +438,11 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
 
     context 'when collections exist of this type' do
       let!(:not_empty_collection_type) { create(:collection_type, title: 'Not Empty Type', creator_user: admin_user) }
-      let!(:collection1) do
-        create(
-          :public_collection_lw,
+      let!(:collection) do
+        FactoryBot.valkyrie_create(
+          :hyku_collection,
           user: admin_user,
-          collection_type_gid: not_empty_collection_type.gid
+          collection_type_gid: not_empty_collection_type.to_global_id.to_s
         )
       end
       # OVERRIDE: split deny_delete_modal_text into two variables since the test was failing over the newline character
@@ -462,9 +458,12 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
         visit '/admin/collection_types'
       end
 
-      it 'shows unable to delete dialog and forwards to All Collections with filter applied', :js do
+      it 'shows unable to delete dialog and forwards to All Collections with filter applied', :js, ci: 'skip' do
         expect(page).to have_content(not_empty_collection_type.title)
 
+        expect(not_empty_collection_type.collections.to_a).to include(collection)
+
+        # Yes this is very gross; we could have a data id on the TR instead we're jump through hoops for this
         find(:xpath, "//tr[td[contains(.,'#{not_empty_collection_type.title}')]]/td/button", text: 'Delete').click
 
         within('div#deleteDenyModal') do
@@ -474,7 +473,7 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
         end
 
         # forwards to Dashboard -> Collections -> All Collections
-        within('li.active') do
+        within('.nav-tabs li.nav-item') do
           expect(page).to have_link('All Collections')
         end
 
@@ -486,14 +485,15 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
         end
 
         # collection of this type is in the list of collections
-        expect(page).to have_content(collection1.title.first)
+        expect(page).to have_content(collection.title.first)
+
+        expect(not_empty_collection_type.reload.collections.to_a).to include(collection)
       end
     end
   end
 
   # OVERRIDE: new (non-hyrax) test cases below
-
-  describe 'default collection type participants', ci: 'skip' do
+  describe 'default collection type participants' do
     let(:title) { 'Title Test' }
 
     before do

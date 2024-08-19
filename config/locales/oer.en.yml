@@ -1,0 +1,117 @@
+en:
+  hyrax:
+    icons:
+      oer: "fa fa-file-text-o"
+    select_type:
+      oer:
+        description: "Open educational resources (OER) are free and openly licensed educational materials that can be used for teaching, learning, research, and other purposes."
+        name: "OER"
+    oer:
+      hints:
+        description: "Brief description of the content of the resource, not including a table of contents."
+        resource_type: "Pre-defined categories to describe the type of content being uploaded. More than one type may be selected."
+        table_of_contents: "Table of contents of a work."
+      labels:
+        resource_type: "Type"
+        description: "Description"
+        admin_note: "Administrative Notes"
+      show:
+        related_items: "Related Versions and Items"
+      works:
+        form:
+          related_versions: "Related Versions"
+    oers:
+      form_alternate_version:
+        actions:
+          remove: Remove from this work
+        add: Add
+        caption: Reference to an updated version of the resource intended to replace it
+        confirm:
+          cancel: Cancel
+          remove: Remove
+          text: Removing this alternate version will not remove it from the repository, only from this work.  Are you sure you want to remove this alternate version?
+        header:
+          actions: Action
+          title: Work title
+      form_newer_version:
+        actions:
+          remove: Remove from this work
+        add: Add
+        caption: Reference to an updated version of the resource intended to replace it
+        confirm:
+          cancel: Cancel
+          remove: Remove
+          text: Removing this newer version will not remove it from the repository, only from this work.  Are you sure you want to remove this newer version?
+        header:
+          actions: Action
+          title: Work title
+      form_previous_version:
+        actions:
+          remove: Remove from this work
+        add: Add
+        caption: This work currently contains this previous version
+        confirm:
+          cancel: Cancel
+          remove: Remove
+          text: Removing this previous version will not remove it from the repository, only from this work.  Are you sure you want to remove this previous version?
+        header:
+          actions: Action
+          title: Work title
+      form_related_item:
+        actions:
+          remove: Remove from this work
+        add: Add
+        caption: Reference to a resource generally related to the resource described
+        confirm:
+          cancel: Cancel
+          remove: Remove
+          text: Removing this alternate version will not remove it from the repository, only from this work.  Are you sure you want to remove this alternate version?
+        header:
+          actions: Action
+          title: Work title
+      related_items:
+        date_uploaded: Date Uploaded
+        empty: This %{type} has no files associated with it. Click "edit" to add more files.
+        relationship_type: Relationship Type
+        thumbnail: Thumbnail
+        title: Title
+        unauthorized: There are no publicly available items in this %{type}.
+        visibility: Visibility
+  simple_form:
+    hints:
+      defaults:
+        accessibility_feature: "Accessible features of the work."
+        accessibility_hazard: "Characteristics of the work that may be physiologically dangerous to some users."
+        accessibility_summary: "A summary of specific accessibility features or deficiencies."
+        additional_information: "Other rights information not conveyed by status such as license terms or contact information."
+        alternative_title: "Alternative title for the resource."
+        audience: "The intended target for the work."
+        date: "The date on which the work was created, published or otherwise issued."
+        discipline: "The educational domain the resource is intended to serve."
+        education_level: "The level of education for which the work is intended."
+        learning_resource_type: "The specific type of educational resource described."
+        oer_size: "Size or duration of the work."
+        rights_holder: "Person or group that holds the rights to the work if known."
+        table_of_contents: "Table of contents of a work."
+    labels:
+      defaults:
+        accessibility_feature: "Accessibility Feature"
+        accessibility_hazard: "Accessibility Hazard"
+        accessibility_summary: "Accessibility Summary"
+        additional_information: "Additional Rights Information"
+        alternative_title: "Alternative Title"
+        audience: "Audience"
+        date: "Date"
+        discipline: "Discipline"
+        education_level: "Education Level"
+        learning_resource_type: "Learning Resource Type"
+        oer_size: "Size"
+        rights_statement: "Rights Statement"
+        rights_holder: "Rights Holder"
+        table_of_contents: "Table of Contents"
+    placeholders:
+      defaults:
+        alternate_version_id: "Search for a work..."
+        newer_version_id: "Search for a work..."
+        previous_version_id: "Search for a work..."
+        related_item_id: "Search for a work..."

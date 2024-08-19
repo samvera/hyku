@@ -32,7 +32,8 @@ FactoryBot.define do
         gtm_id: "GTM-123456", shared_login: "true",
         email_format: ["@pacificu.edu", "@ubiquitypress.com", "@test.com"],
         allow_signup: "true",
-        google_analytics_id: 'UA-123456-12'
+        google_analytics_id: 'UA-123456-12',
+        geonames_username: 'geonames'
       }
     end
 
@@ -40,7 +41,7 @@ FactoryBot.define do
       domain_names_count { 1 }
     end
     after(:create) do |account, evaluator|
-      create_list(:domain_name, evaluator.domain_names_count, account: account)
+      create_list(:domain_name, evaluator.domain_names_count, account:)
     end
 
     trait(:public_schema) do
@@ -62,7 +63,7 @@ FactoryBot.define do
       domain_names_count { 1 }
     end
     after(:create) do |account, evaluator|
-      create_list(:domain_name, evaluator.domain_names_count, account: account)
+      create_list(:domain_name, evaluator.domain_names_count, account:)
     end
   end
 end

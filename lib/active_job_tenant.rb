@@ -42,7 +42,6 @@ module ActiveJobTenant
         Rails.logger.error("Job engine #{queue} does not support recurring jobs")
       end
     end
-
   end
 
   def serialize

@@ -246,7 +246,11 @@ module Hyku
       #   Hyrax::FileSetDerivativesService]
 
       DerivativeRodeo::Generators::HocrGenerator.additional_tessearct_options = nil
-      TenantMaintenanceJob.perform_later unless ActiveJob::Base.find_job(klass: TenantMaintenanceJob)
+      begin
+        TenantMaintenanceJob.perform_later unless ActiveJob::Base.find_job(klass: TenantMaintenanceJob)
+      rescue Redis::CannotConnectError
+        Rails.logger.error('No background job queue connection, skipping add of TenantMaintenanceJob')
+      end
     end
 
     # When running tests we don't want to auto-specify factories

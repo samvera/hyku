@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 SecureHeaders::Configuration.default do |config|
   config.cookies = {
     secure: ActiveRecord::Type::Boolean.new.cast(ENV.fetch('HYKU_SSL_CONFIGURED', false)) || SecureHeaders::OPT_OUT,

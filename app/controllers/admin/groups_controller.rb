@@ -83,16 +83,16 @@ module Admin
 
     private
 
-      def group_params
-        params.require(:group).permit(:name, :humanized_name, :description)
-      end
+    def group_params
+      params.require(:group).permit(:name, :humanized_name, :description)
+    end
 
-      def page_number
-        params.fetch(:page, 1).to_i
-      end
+    def page_number
+      params.fetch(:page, 1).to_i
+    end
 
-      def page_size
-        params.fetch(:per, 10).to_i
-      end
+    def page_size
+      params.fetch(:per, 10).to_i
+    end
   end
 end

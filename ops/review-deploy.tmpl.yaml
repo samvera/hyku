@@ -28,6 +28,9 @@ extraVolumeMounts: &volMounts
   - name: uploads
     mountPath: /app/samvera/hyrax-webapp/tmp/network_files
     subPath: network-files
+  - name: uploads
+    mountPath: /app/samvera/hyrax-webapp/storage/files
+    subPath: storage-files
 
 ingress:
   enabled: true
@@ -35,9 +38,11 @@ ingress:
     - host: hyku-$CI_MERGE_REQUEST_ID.example.com
       paths:
         - path: /
+          pathType: ImplementationSpecific
     - host: "*.hyku-$CI_MERGE_REQUEST_ID.example.com"
       paths:
         - path: /
+          pathType: ImplementationSpecific
 
 extraEnvVars: &envVars
   - name: CONFDIR
@@ -68,6 +73,8 @@ extraEnvVars: &envVars
     value: hyku-$CI_MERGE_REQUEST_ID.example.com
   - name: HYKU_ADMIN_ONLY_TENANT_CREATION
     value: "true"
+  - name: HYKU_BLOCK_VALKYRIE_REDIRECT
+    value: "false"
   - name: HYKU_CONTACT_EMAIL
     value: samvera@example.com
   - name: HYKU_DEFAULT_HOST
@@ -76,6 +83,8 @@ extraEnvVars: &envVars
     value: "true"
   - name: HYKU_ROOT_HOST
     value: hyku-$CI_MERGE_REQUEST_ID.example.com
+  - name: HYKU_USER_DEFAULT_PASSWORD
+    value: password
   - name: HYRAX_ACTIVE_JOB_QUEUE
     value: sidekiq
   - name: HYRAX_FITS_PATH

@@ -7,15 +7,15 @@
 <% end %>
 
 <%= render 'nav' %>
-<div class="panel panel-default">
-  <div class="panel-body">
-    <blockquote class="callout callout-danger callout-with-action">
+<div class="card">
+  <div class="card-body">
+    <blockquote class="callout callout-danger">
       <h3><%= t('hyku.admin.groups.title.delete', group: @group.humanized_name) %></h3>
       <p>
-      <%= t('hyku.admin.groups.action.remove.description') %>
+        <%= t('hyku.admin.groups.action.remove.description') %>
       </p>
       <div class="callout-action">
-        <%= link_to t('hyku.admin.groups.action.remove.submit'),  admin_group_path(@group), class: "btn btn-danger action-delete #{'disabled' if @group.default_group?}", method: :delete, data: { confirm: t('hyku.admin.groups.action.remove.confirmation') } %>
+        <%= link_to t('hyku.admin.groups.action.remove.submit'), admin_group_path(@group), class: "btn btn-danger action-delete #{'disabled' if @group.default_group?}", method: :delete, data: { confirm: t('hyku.admin.groups.action.remove.confirmation') } %>
       </div>
     </blockquote>
   </div>

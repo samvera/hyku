@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# OVERRIDE OmniAuth v2.1.1
+
 # monkey patch to support metadata paths - hacked version of:
 #    https://github.com/salsify/omniauth-multi-provider/issues/4#issuecomment-366452170
 #

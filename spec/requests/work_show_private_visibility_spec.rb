@@ -9,7 +9,7 @@ RSpec.describe "Users trying to access a Private Work's show page", type: :reque
     WebMock.disable!
     Apartment::Tenant.create(account.tenant)
     Apartment::Tenant.switch(account.tenant) do
-      Site.update(account: account)
+      Site.update(account:)
       work
     end
   end
@@ -57,7 +57,7 @@ RSpec.describe "Users trying to access a Private Work's show page", type: :reque
       end
     end
 
-    it 'is authorized' do
+    it 'is redirected and then authorized' do
       login_as @tenant_admin # rubocop:disable RSpec/InstanceVariable
       get "http://#{account.cname}/concern/generic_works/#{work.id}"
       expect(response.status).to eq(200)

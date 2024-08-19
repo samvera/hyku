@@ -21,7 +21,7 @@ class Role < ApplicationRecord
 
   def description_label
     label = description || I18n.t("hyku.admin.roles.description.#{name}")
-    return '' if label =~ /^translation missing:/
+    return '' if /^translation missing:/.match?(label)
 
     label
   end
@@ -29,13 +29,13 @@ class Role < ApplicationRecord
   def set_sort_value
     self.sort_value = if name == 'admin'
                         0
-                      elsif name =~ /manager/
+                      elsif /manager/.match?(name)
                         1
-                      elsif name =~ /editor/
+                      elsif /editor/.match?(name)
                         2
-                      elsif name =~ /depositor/
+                      elsif /depositor/.match?(name)
                         3
-                      elsif name =~ /reader/
+                      elsif /reader/.match?(name)
                         4
                       else
                         99

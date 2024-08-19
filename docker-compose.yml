@@ -1,4 +1,3 @@
-version: '3.8'
 x-app: &app
   build:
     context: .
@@ -135,7 +134,7 @@ services:
 
   web:
     <<: *app
-    # Uncomment command to access container with out starting Rails. Useful for debugging
+    # Uncomment command to access container with out starting bin/web. Useful for debugging
     # command: sleep infinity
     environment:
       - VIRTUAL_PORT=3000
@@ -167,6 +166,8 @@ services:
   worker:
     <<: *app
     image: ghcr.io/samvera/hyku/worker:${TAG:-latest}
+    # Uncomment command to access container with out starting bin/worker. Useful for debugging
+    # command: sleep infinity
     build:
       context: .
       target: hyku-worker
@@ -176,7 +177,6 @@ services:
         - ghcr.io/samvera/hyku/base:latest
         - ghcr.io/samvera/hyku:latest
         - ghcr.io/samvera/hyku/worker:latest
-    command: bundle exec sidekiq
     depends_on:
       check_volumes:
         condition: service_completed_successfully
@@ -215,6 +215,7 @@ services:
         solrcloud-upload-configset.sh /app/samvera/hyrax-webapp/solr/conf &&
         solrcloud-assign-configset.sh &&
         SOLR_COLLECTION_NAME=hydra-test solrcloud-assign-configset.sh &&
+        bundle &&
         db-migrate-seed.sh
     depends_on:
       db:

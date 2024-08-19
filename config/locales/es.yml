@@ -1,12 +1,21 @@
 ---
 es:
+  activefedora:
+    models:
+      generic_work: Trabajar
+      image: Imagen
   activerecord:
     attributes:
       site:
         institution_name_full: El nombre de la institución
   application:
     tagline: La solución de repositorio de próxima generación
+  errors:
+    messages:
+      valid_embed_url: debe ser una URL de incrustación válida de YouTube o Vimeo.
   helpers:
+    action:
+      become: Volverse
     submit:
       add_role_to_group:
         submit: Añadir
@@ -63,6 +72,7 @@ es:
             success: "%{group} actualizado"
         humanized_name:
           admin: Administradores de repositorios
+          group/public: Usuarios no autorizados
           registered: Usuarios Registrados
         label:
           actions: Comportamiento
@@ -114,6 +124,18 @@ es:
       work_types: Tipos de trabajo disponibles
     footer:
       admin_login: Acceso del administrador
+    identity_provider:
+      header: Proveedor de identidad de autenticación
+      label:
+        create_new: Nuevo
+        edit: Editar
+        logo: Logo
+        logo_image: Imagen para la página SSO
+        logo_image_alt_text: Texto alternativo para imagen
+        name: Nombre o descripción
+        options: Opciones
+        provider: Proveedor
+        updated_at: Actualizado en
     proprietor:
       accounts:
         nav: Cuentas
@@ -155,6 +177,8 @@ es:
           forms:
             banner_image:
               hint: Para usar una imagen como fondo de cabecera, debe usar una imagen (JPG, GIF o PNG) que tenga al menos 120 píxeles de alto y 1200 píxeles de ancho. Para obtener mejores resultados, use una imagen de al menos 1800 píxeles de ancho.
+            collection_banner_text_color:
+              hint: El color del texto (título y fecha de última actualización) dentro del banner de la colección.
             custom_css:
               confirm: CSS personalizado siempre anulará otras selecciones de temas. ¿Continuar?
               warning: Si sus personalizaciones de temas no parecen aplicarse correctamente, verifique que CSS personalizado no las sobrescriba.
@@ -164,7 +188,7 @@ es:
               alert: Cargue al menos un archivo antes de enviarlo.
               hint: Para las imágenes predeterminadas, debe usar una imagen (JPG, GIF o PNG) que tenga las mismas dimensiones de alto y ancho (100 píxeles de ancho y 100 píxeles de alto)
             directory_image:
-              hint: Para usar una imagen como imagen de directorio, debe usar una imagen (JPG, GIF o PNG) que no sea más alta que el encabezado ni más ancha que 400 píxeles de ancho.
+              hint: La imagen del directorio debe usar una imagen (JPG, GIF o PNG). El ancho de la imagen no debe ser más ancho que el doble de la altura.
             facet_panel_background_color:
               hint: Se aplica a facetas y encabezados de sección adicionales en las páginas de trabajo en algunos temas.
             facet_panel_text_color:
@@ -177,6 +201,8 @@ es:
               hint: Para usar una imagen como logotipo, debe usar una imagen (JPG, GIF o PNG) que no sea más alta que el encabezado ni más ancha que 400 píxeles de ancho.
             navbar_background_color:
               hint: Al 40% de opacidad.
+            navbar_link_background_color:
+              hint: Se aplica al color de fondo de los botones Inicio, Acerca de, Contacto y Ayuda.
             navbar_link_background_hover_color:
               hint: Se aplica a los botones Inicio, Acerca de, Contacto y Ayuda solo en esas páginas específicas (al 15 % de opacidad).
             primary_button_hover_color:
@@ -197,22 +223,43 @@ es:
             directory_image: Imagen de directorio
             favicon: icono de favoritos
             fonts: Fuentes
+            logo: Logo
             themes: Temas
+      roles_service_jobs:
+        header: Trabajos de reparación de datos
+        jobs:
+          create_admin_set_accesses:
+            description: La creación de un registro Hyrax::PermissionTemplateAccess (combinado con Ability#user_groups) permitirá que Works en todos los AdminSets aparezca en consultas Blacklight/Solr.
+            label: Crear accesos al conjunto de administradores
+          create_collection_accesses:
+            description: Debido a que cada función de colección tiene algún nivel de acceso a cada colección dentro de un inquilino, la creación de un registro Hyrax::PermissionTemplateAccess (combinado con Ability#user_groups) significa que todas las colecciones aparecerán en las consultas de Blacklight/Solr.
+            label: Crear accesos a la colección
+          create_collection_type_participants:
+            description: Debido a que algunos de los roles de colección tienen acceso a cada colección dentro de un inquilino, cree un registro Hyrax::CollectionTypeParticipant para ellos en cada Hyrax::CollectionType (excepto AdminSet).
+            label: Crear participantes del tipo de colección
+          grant_workflow_roles_for_all_admin_sets:
+            description: 'Los permisos para depositar trabajos están controlados por roles de flujo de trabajo en AdminSets individuales. Para que los registros de Hyrax::Group y User que tienen el rol ''Editor de trabajo'' o ''Depositante de trabajo'' tengan los permisos correctos para Works, les otorgamos roles de flujo de trabajo para todos los AdminSets. NOTA: Todos los AdminSets deben tener una plantilla de permisos o esto fallará. Primero ejecute ''Crear accesos al conjunto de administradores''.'
+            label: Administrador establecer roles de flujo de trabajo
       sidebar:
-        account: Cuenta
         accounts: Cuentas
         activity_summary: Resumen de la actividad
         labels: Etiquetas
         manage_groups: Administrar Grupos
         repository_activity: Actividad del repositorio
+        roles_service_jobs: Reparación de datos
         system_status: Estado del sistema
       users:
+        activate:
+          confirmation: ¿Estás seguro de que deseas activar el usuario "%{user}"?
+          failure: No se pudo activar el usuario "%{user}".
+          success: El usuario "%{user}" se ha activado correctamente.
         destroy:
           confirmation: ¿Estás seguro de que deseas eliminar el usuario "%{user}"? Esta acción es irreversible.
           failure: El usuario "%{user}" no pudo ser eliminado.
           success: El usuario "%{user}" ha sido eliminado exitosamente.
         index:
           action_label: Acción
+          activate: Activar
           add: Invitar al usuario
           delete: Borrar
           invite_users: Agregar o invitar al usuario por correo electrónico
@@ -220,6 +267,9 @@ es:
             active: Activo
             pending: Pendiente
           status_label: Estado
+        roles:
+          remove:
+            confirmation: ¿Está seguro de que desea eliminar el rol "%{role}" del usuario "%{user}"?
   permissions:
     collections:
       cannot:
@@ -266,6 +316,7 @@ es:
         email: Email
         header: Administrar usuarios
         manage: Gestionar
+        superadmin: Superadministrador
         title: Título
         view_users: Ver usuarios
       new:
@@ -275,6 +326,9 @@ es:
         edit: Editar
         header: Administrar usuario
         update: Actualizar
+  single_signon:
+    index:
+      sign_in_with_provider: Iniciar sesión con %{provider}
   status:
     index:
       services: Servicios

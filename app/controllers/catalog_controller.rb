@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength, Metrics/BlockLength
 class CatalogController < ApplicationController
   include BlacklightAdvancedSearch::Controller
   include BlacklightRangeLimit::ControllerOverride
@@ -34,6 +35,10 @@ class CatalogController < ApplicationController
   include BlacklightIiifSearch::Controller
 
   configure_blacklight do |config|
+    config.view.gallery(document_component: Blacklight::Gallery::DocumentComponent)
+    config.view.masonry(document_component: Blacklight::Gallery::DocumentComponent)
+    config.view.slideshow(document_component: Blacklight::Gallery::SlideshowComponent)
+
     # IiifPrint index fields
     config.add_index_field 'all_text_timv'
     config.add_index_field 'file_set_text_tsimv', label: "Item contents", highlight: true, helper_method: :render_ocr_snippets
@@ -47,12 +52,9 @@ class CatalogController < ApplicationController
       suggester_name: 'iiifSuggester'
     }
 
-    config.view.gallery.partials = %i[index_header index]
-    config.view.masonry.partials = [:index]
-    config.view.slideshow.partials = [:index]
-
     config.show.tile_source_field = :content_metadata_image_iiif_info_ssm
     config.show.partials.insert(1, :openseadragon)
+
     # default advanced config values
     config.advanced_search ||= Blacklight::OpenStructWithHashAccess.new
     # config.advanced_search[:qt] ||= 'advanced'
@@ -64,10 +66,11 @@ class CatalogController < ApplicationController
     config.search_builder_class = IiifPrint::CatalogSearchBuilder
 
     # Use locally customized AdvSearchBuilder so we can enable blacklight_advanced_search
-    # TODO ROB config.search_builder_class = AdvSearchBuilder
+    config.search_builder_class = AdvSearchBuilder
 
     # Show gallery view
     config.view.gallery.partials = %i[index_header index]
+    config.view.masonry.partials = [:index]
     config.view.slideshow.partials = [:index]
 
     # Because too many times on Samvera tech people raise a problem regarding a failed query to SOLR.
@@ -78,8 +81,10 @@ class CatalogController < ApplicationController
     config.default_solr_params = {
       qt: "search",
       rows: 10,
-      qf: IiifPrint.config.metadata_fields.keys.map { |attribute| "#{attribute}_tesim" }
-                   .join(' ') << " title_tesim description_tesim all_text_timv file_set_text_tsimv", # the first space character is necessary!
+      qf: (
+        IiifPrint.config.metadata_fields.keys.map { |attribute| "#{attribute}_tesim" } +
+        ["title_tesim", "description_tesim", "all_text_timv", "file_set_text_tsimv"]
+      ).uniq.join(' '),
       "hl": true,
       "hl.simple.pre": "<span class='highlight'>",
       "hl.simple.post": "</span>",
@@ -96,9 +101,21 @@ class CatalogController < ApplicationController
     config.index.display_type_field = 'has_model_ssim'
     config.index.thumbnail_field = 'thumbnail_path_ss'
 
+    # Blacklight 7 additions
+    config.add_results_document_tool(:bookmark, partial: 'bookmark_control', if: :render_bookmarks_control?)
+    config.add_results_collection_tool(:sort_widget)
+    config.add_results_collection_tool(:per_page_widget)
+    config.add_results_collection_tool(:view_type_group)
+    config.add_show_tools_partial(:bookmark, partial: 'bookmark_control', if: :render_bookmarks_control?)
+    config.add_show_tools_partial(:email, callback: :email_action, validator: :validate_email_params)
+    config.add_show_tools_partial(:sms, if: :render_sms_action?, callback: :sms_action, validator: :validate_sms_params)
+    config.add_show_tools_partial(:citation)
+    config.add_nav_action(:bookmark, partial: 'blacklight/nav/bookmark', if: :render_bookmarks_control?)
+    config.add_nav_action(:search_history, partial: 'blacklight/nav/search_history')
+
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
-    config.add_facet_field 'human_readable_type_sim', label: "Type", limit: 5
+    config.add_facet_field 'generic_type_sim', label: "Type", limit: 5
     config.add_facet_field 'resource_type_sim', label: "Resource Type", limit: 5
     config.add_facet_field 'creator_sim', limit: 5
     config.add_facet_field 'contributor_sim', label: "Contributor", limit: 5
@@ -108,35 +125,17 @@ class CatalogController < ApplicationController
     config.add_facet_field 'based_near_label_sim', limit: 5
     config.add_facet_field 'publisher_sim', limit: 5
     config.add_facet_field 'file_format_sim', limit: 5
+    config.add_facet_field 'contributing_library_sim', limit: 5
     config.add_facet_field 'member_of_collections_ssim', limit: 5, label: 'Collections'
 
     # TODO: deal with part of facet changes
-    # config.add_facet_field solr_name("part", :facetable), limit: 5, label: 'Part'
-    # config.add_facet_field solr_name("part_of", :facetable), limit: 5
-    # removed # config.add_facet_field solr_name("file_format", :facetable), limit: 5
-    # removed # config.add_facet_field solr_name("contributor", :facetable), label: "Contributor", limit: 5
-    # remvode config.add_facet_field solr_name("refereed", :facetable), limit: 5
+    # config.add_facet_field 'part_sim', limit: 5, label: 'Part'
+    # config.add_facet_field 'part_of_sim', limit: 5
 
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
     # handler defaults, or have no facets.
     config.add_facet_fields_to_solr_request!
-
-    # TODO: ROB
-    #     # Prior to this change, the applications specific translations were not loaded. Dogbiscuits were assuming the translations were already loaded.
-    #     Rails.root.glob("config/locales/*.yml").each do |path|
-    #       I18n.load_path << path.to_s
-    #     end
-    #     I18n.backend.reload!
-    #     index_props = DogBiscuits.config.index_properties.collect do |prop|
-    #       { prop => index_options(prop, DogBiscuits.config.property_mappings[prop]) }
-    #     end
-    #     add_index_field config, index_props
-
-    # solr fields to be displayed in the show (single result) view
-    #   The ordering of the field names is the order of the display
-    # show_props = DogBiscuits.config.all_properties
-    # add_show_field config, show_props
 
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display
@@ -145,6 +144,7 @@ class CatalogController < ApplicationController
     config.add_index_field 'keyword_tesim', itemprop: 'keywords', link_to_search: 'keyword_sim'
     config.add_index_field 'subject_tesim', itemprop: 'about', link_to_search: 'subject_sim'
     config.add_index_field 'creator_tesim', itemprop: 'creator', link_to_search: 'creator_sim'
+    config.add_index_field 'date_tesim', itemprop: 'date'
     config.add_index_field 'contributor_tesim', itemprop: 'contributor', link_to_search: 'contributor_sim'
     config.add_index_field 'proxy_depositor_ssim', label: "Depositor", helper_method: :link_to_profile
     config.add_index_field 'depositor_tesim', label: "Owner", helper_method: :link_to_profile
@@ -161,6 +161,10 @@ class CatalogController < ApplicationController
     config.add_index_field 'identifier_tesim', helper_method: :index_field_link, field_name: 'identifier'
     config.add_index_field 'embargo_release_date_dtsi', label: "Embargo release date", helper_method: :human_readable_date
     config.add_index_field 'lease_expiration_date_dtsi', label: "Lease expiration date", helper_method: :human_readable_date
+    config.add_index_field 'learning_resource_type_tesim', label: "Learning resource type"
+    config.add_index_field 'education_level_tesim', label: "Education level"
+    config.add_index_field 'audience_tesim', label: "Audience"
+    config.add_index_field 'discipline_tesim', label: "Discipline"
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
@@ -182,6 +186,27 @@ class CatalogController < ApplicationController
     config.add_show_field 'format_tesim'
     config.add_show_field 'identifier_tesim'
     config.add_show_field 'extent_tesim'
+    config.add_show_field 'admin_note_tesim', label: "Administrative Notes"
+    config.add_show_field "alternative_title_tesim", label: "Alternative title"
+    config.add_show_field "related_url_tesim"
+    config.add_show_field 'learning_resource_type_tesim'
+    config.add_show_field 'education_level_tesim'
+    config.add_show_field 'audience_tesim'
+    config.add_show_field 'discipline_tesim'
+    config.add_show_field "date_tesim", label: "Date", helper_method: :human_readable_date
+    config.add_show_field "table_of_contents_tesim", label: "Table of contents"
+    config.add_show_field "rights_holder_tesim", label: "Rights holder"
+    config.add_show_field "additional_information_tesim", label: "Additional information"
+    config.add_show_field "oer_size_tesim", label: "Size"
+    config.add_show_field 'accessibility_feature_tesim'
+    config.add_show_field 'accessibility_hazard_tesim'
+    config.add_show_field 'accessibility_summary_tesim', label: "Accessibility summary"
+    config.add_show_field 'previous_version_id_tesim'
+    config.add_show_field 'newer_version_id_tesim'
+    config.add_show_field 'related_item_id_tesim'
+    config.add_show_field 'contributing_library_tesim'
+    config.add_show_field 'library_catalog_identifier_tesim'
+    config.add_show_field 'chronology_note_tesim'
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields
@@ -202,8 +227,6 @@ class CatalogController < ApplicationController
     # since we aren't specifying it otherwise.
     config.add_search_field('all_fields', label: 'All Fields', include_in_advanced_search: false) do |field|
       all_names = config.show_fields.values.map(&:field).join(" ")
-      # TODO: ROB all_names = (config.show_fields.values.map { |v| v.field.to_s } +
-      #         DogBiscuits.config.all_properties.map { |p| "#{p}_tesim" }).uniq.join(" ")
       title_name = 'title_tesim'
       field.solr_parameters = {
         qf: "#{all_names} file_format_tesim all_text_timv",
@@ -232,7 +255,6 @@ class CatalogController < ApplicationController
     end
 
     config.add_search_field('creator') do |field|
-      # TODO: ROB field.label = "Author"
       field.solr_parameters = { "spellcheck.dictionary": "creator" }
       solr_name = 'creator_tesim'
       field.solr_local_parameters = {
@@ -275,14 +297,15 @@ class CatalogController < ApplicationController
       }
     end
 
+    date_fields = ['date_created_tesim', 'sorted_date_isi', 'sorted_month_isi']
+
     config.add_search_field('date_created') do |field|
       field.solr_parameters = {
         "spellcheck.dictionary": "date_created"
       }
-      solr_name = 'created_tesim'
       field.solr_local_parameters = {
-        qf: solr_name,
-        pf: solr_name
+        qf: date_fields.join(' '),
+        pf: date_fields.join(' ')
       }
     end
 
@@ -399,7 +422,167 @@ class CatalogController < ApplicationController
     end
 
     config.add_search_field('source') do |field|
-      solr_name = solr_name("source", :stored_searchable)
+      solr_name = 'source_tesim'
+      field.solr_local_parameters = {
+        qf: solr_name,
+        pf: solr_name
+      }
+    end
+
+    config.add_search_field('advisor') do |field|
+      solr_name = 'advisor_tesim'
+      field.solr_local_parameters = {
+        qf: solr_name,
+        pf: solr_name
+      }
+    end
+
+    config.add_search_field('accessibility_feature') do |field|
+      solr_name = 'accessibility_feature_tesim'
+      field.solr_local_parameters = {
+        qf: solr_name,
+        pf: solr_name
+      }
+    end
+
+    config.add_search_field('accessibility_hazard') do |field|
+      solr_name = 'accessibility_hazard_tesim'
+      field.solr_local_parameters = {
+        qf: solr_name,
+        pf: solr_name
+      }
+    end
+
+    config.add_search_field('accessibility_summary') do |field|
+      solr_name = 'accessibility_summary_tesim'
+      field.solr_local_parameters = {
+        qf: solr_name,
+        pf: solr_name
+      }
+    end
+
+    config.add_search_field('additional_information') do |field|
+      solr_name = 'additional_information_tesim'
+      field.solr_local_parameters = {
+        qf: solr_name,
+        pf: solr_name
+      }
+    end
+
+    config.add_search_field('alternative_title') do |field|
+      solr_name = 'alternative_title_tesim'
+      field.solr_local_parameters = {
+        qf: solr_name,
+        pf: solr_name
+      }
+    end
+
+    config.add_search_field('audience') do |field|
+      solr_name = 'audience_tesim'
+      field.solr_local_parameters = {
+        qf: solr_name,
+        pf: solr_name
+      }
+    end
+
+    config.add_search_field('bibliographic_citation') do |field|
+      solr_name = 'bibliographic_citation_tesim'
+      field.solr_local_parameters = {
+        qf: solr_name,
+        pf: solr_name
+      }
+    end
+
+    config.add_search_field('committee_member') do |field|
+      solr_name = 'committee_member_tesim'
+      field.solr_local_parameters = {
+        qf: solr_name,
+        pf: solr_name
+      }
+    end
+
+    config.add_search_field('department') do |field|
+      solr_name = 'department_tesim'
+      field.solr_local_parameters = {
+        qf: solr_name,
+        pf: solr_name
+      }
+    end
+
+    config.add_search_field('degree_discipline') do |field|
+      solr_name = 'degree_discipline_tesim'
+      field.solr_local_parameters = {
+        qf: solr_name,
+        pf: solr_name
+      }
+    end
+
+    config.add_search_field('education_level') do |field|
+      solr_name = 'education_level_tesim'
+      field.solr_local_parameters = {
+        qf: solr_name,
+        pf: solr_name
+      }
+    end
+
+    config.add_search_field('degree_grantor') do |field|
+      solr_name = 'degree_grantor_tesim'
+      field.solr_local_parameters = {
+        qf: solr_name,
+        pf: solr_name
+      }
+    end
+
+    config.add_search_field('learning_resource_type') do |field|
+      solr_name = 'learning_resource_type_tesim'
+      field.solr_local_parameters = {
+        qf: solr_name,
+        pf: solr_name
+      }
+    end
+
+    config.add_search_field('degree_level') do |field|
+      solr_name = 'degree_level_tesim'
+      field.solr_local_parameters = {
+        qf: solr_name,
+        pf: solr_name
+      }
+    end
+
+    config.add_search_field('related_url') do |field|
+      solr_name = 'related_url_tesim'
+      field.solr_local_parameters = {
+        qf: solr_name,
+        pf: solr_name
+      }
+    end
+
+    config.add_search_field('rights_holder') do |field|
+      solr_name = 'rights_holder_tesim'
+      field.solr_local_parameters = {
+        qf: solr_name,
+        pf: solr_name
+      }
+    end
+
+    config.add_search_field('rights_notes') do |field|
+      solr_name = 'rights_notes_tesim'
+      field.solr_local_parameters = {
+        qf: solr_name,
+        pf: solr_name
+      }
+    end
+
+    config.add_search_field('size') do |field|
+      solr_name = 'size_tesim'
+      field.solr_local_parameters = {
+        qf: solr_name,
+        pf: solr_name
+      }
+    end
+
+    config.add_search_field('table_of_contents') do |field|
+      solr_name = 'table_of_contents_tesim'
       field.solr_local_parameters = {
         qf: solr_name,
         pf: solr_name
@@ -426,8 +609,8 @@ class CatalogController < ApplicationController
         repository_name: ->(controller) { controller.send(:current_account)&.name.presence },
         # repository_url:  ->(controller) { controller.oai_catalog_url },
         record_prefix: ->(controller) { controller.send(:current_account).oai_prefix },
-        admin_email:   ->(controller) { controller.send(:current_account).oai_admin_email },
-        sample_id:     ->(controller) { controller.send(:current_account).oai_sample_identifier }
+        admin_email: ->(controller) { controller.send(:current_account).oai_admin_email },
+        sample_id: ->(controller) { controller.send(:current_account).oai_sample_identifier }
       },
       document: {
         limit: 100, # number of records returned with each request, default: 15
@@ -444,7 +627,16 @@ class CatalogController < ApplicationController
 
   # This is overridden just to give us a JSON response for debugging.
   def show
-    _, @document = fetch params[:id]
+    _, @document = search_service.fetch(params[:id])
     render json: @document.to_h
   end
+
+  # The styling is off when the bookmark checkbox renders, plus there's no way for a user to get
+  # to the /bookmarks route anyway.  For now we're following Hyrax's opinion and turning it off.
+  #
+  # https://github.com/samvera/hyrax/blob/abeb5aff99d8ff6a7d32f6e8234538d7bef15fbd/.dassie/app/controllers/catalog_controller.rb#L304-L309
+  def render_bookmarks_control?
+    false
+  end
 end
+# rubocop:enable Metrics/ClassLength, Metrics/BlockLength

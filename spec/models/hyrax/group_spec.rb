@@ -5,15 +5,27 @@ require 'rails_helper'
 # rubocop:disable Metrics/ModuleLength
 module Hyrax
   RSpec.describe Group, type: :model, clean: true do
+    describe '.new' do
+      context 'when provided a string' do
+        it 'instantiates with the string as the name' do
+          expect(described_class.new("Boaty McBoatFace").name).to eq('Boaty McBoatFace')
+        end
+      end
+      context 'when provided a hash' do
+        it 'instantiates' do
+          expect(described_class.new(name: "Boaty McBoatFace").name).to eq('Boaty McBoatFace')
+        end
+      end
+    end
     describe 'group with no members' do
-      subject { described_class.new(name: name, description: description) }
+      subject { described_class.new(name:, description:) }
 
       let(:name) { 'Empty Group' }
       let(:description) { 'Add members plz' }
       let(:empty_group_attributes) do
         {
-          name: name,
-          description: description,
+          name:,
+          description:,
           number_of_users: 0
         }
       end
@@ -242,7 +254,7 @@ module Hyrax
         end
       end
 
-      describe '#has_site_role?' do
+      describe '#site_role?' do
         subject(:group) { FactoryBot.build(:group) }
 
         before do
@@ -253,7 +265,7 @@ module Hyrax
           let(:role) { FactoryBot.build(:role, name: 'non-site role', resource_type: 'non-site type') }
 
           it 'returns false' do
-            expect(group.has_site_role?('non-site role')).to eq(false)
+            expect(group.site_role?('non-site role')).to eq(false)
           end
         end
 
@@ -261,11 +273,11 @@ module Hyrax
           let(:role) { FactoryBot.build(:role, name: 'my_role', resource_type: 'Site') }
 
           it 'returns true' do
-            expect(group.has_site_role?('my_role')).to eq(true)
+            expect(group.site_role?('my_role')).to eq(true)
           end
 
           it 'handles being passed a symbol' do
-            expect(group.has_site_role?(:my_role)).to eq(true)
+            expect(group.site_role?(:my_role)).to eq(true)
           end
         end
 
@@ -273,7 +285,7 @@ module Hyrax
           let(:role) { FactoryBot.build(:role, name: 'my_role', resource_type: 'Site') }
 
           it 'returns false' do
-            expect(group.has_site_role?('your_role')).to eq(false)
+            expect(group.site_role?('your_role')).to eq(false)
           end
         end
       end

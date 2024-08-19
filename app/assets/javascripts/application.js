@@ -10,14 +10,16 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require codemirror
-//= require codemirror-autorefresh
-//= require codemirror/modes/css
 //= require jquery3
-//= require jquery_ujs
+//= require rails-ujs
+//= require popper
+//= require twitter/typeahead
+//= require bootstrap
 //= require jquery.fontselect
-//= require dataTables/jquery.dataTables
-//= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
+//= require jquery.dataTables
+//= require dataTables.bootstrap4
+//= require cropper.min
+
 //= require stat_slider
 //= require turbolinks
 //= require cocoon
@@ -25,7 +27,7 @@
 //= require tether
 // Required by Blacklight
 //= require blacklight/blacklight
-//= require admin_font_select
+//= require blacklight_gallery
 //= require admin_color_select
 //= require blacklight_advanced_search
 
@@ -45,6 +47,11 @@
 //= require bulkrax/application
 
 //= require hyrax
+
+//= require codemirror
+//= require codemirror-autorefresh
+//= require codemirror/modes/css
+
 //= require iiif_print
 
 //= require jquery.flot.pie
@@ -58,5 +65,4 @@
 //= require blacklight_range_limit/range_limit_slider
 //= require bootstrap-slider
 //= require jquery.flot.js
-
 //= require tinymce

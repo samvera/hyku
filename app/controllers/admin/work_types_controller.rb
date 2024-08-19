@@ -24,8 +24,8 @@ module Admin
 
     private
 
-      def site
-        @site ||= Site.first
-      end
+    def site
+      @site ||= Site.first
+    end
   end
 end

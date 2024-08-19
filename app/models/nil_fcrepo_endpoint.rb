@@ -15,7 +15,7 @@ class NilFcrepoEndpoint < NilEndpoint
 
   private
 
-    def options
-      { url: 'http://127.0.0.1:99999/nil_fcrepo_endpoint' }
-    end
+  def options
+    { url: 'http://127.0.0.1:99999/nil_fcrepo_endpoint' }
+  end
 end

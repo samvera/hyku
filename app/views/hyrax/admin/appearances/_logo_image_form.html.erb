@@ -1,17 +1,17 @@
 <%= simple_form_for @form, url: admin_appearance_path do |f| %>
-  <div class="panel-body">
+  <div class="card-body">
     <% require_image = @form.logo_image? ? false : true %>
     <%# Upload Logo Image %>
     <%= f.input :logo_image, as: :file, wrapper: :vertical_file_input, required: require_image, hint: t('hyrax.admin.appearances.show.forms.logo_image.hint') %>
     <%= f.input :logo_image_text, required: true, as: :text, label: 'Logo image alt text' %>
-    <%= image_tag @form.logo_image.url, class: "img-responsive" if @form.logo_image? %>
+    <%= image_tag @form.logo_image.url, class: "img-fluid" if @form.logo_image? %>
   </div>
-  <div class="panel-footer">
-    <%= f.submit class: 'btn btn-primary pull-right' %>
+  <div class="card-footer">
+    <%= f.submit class: 'btn btn-primary float-right' %>
   </div>
 <% end %>
 <% if @form.logo_image? %>
-  <div class="panel-footer">
+  <div class="card-footer">
     <%= simple_form_for @form.site, url: main_app.site_path(@form.site) do |f| %>
       <%= f.submit 'Remove logo image', class: 'btn btn-danger', name: :remove_logo_image %>
     <% end %>

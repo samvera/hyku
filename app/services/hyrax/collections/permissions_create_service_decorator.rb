@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v3.4.2 Grants certain roles access to either all AdminSets or
-#                       all Collections (depending on the role) at create time.
+# OVERRIDE Hyrax v5.0.0rc2 Grants certain roles access to either all AdminSets or
+#                          all Collections (depending on the role) at create time.
 module Hyrax
   module Collections
     module PermissionsCreateServiceDecorator
@@ -58,9 +58,11 @@ module Hyrax
               access: Hyrax::PermissionTemplateAccess::VIEW
             }
           end
+          # rubocop:disable Lint/Void
           attribute_list
+          # rubocop:enable Lint/Void
           # OVERRIDE END
-        end + managers_of_collection_type(collection_type: collection_type) + grants
+        end + managers_of_collection_type(collection_type:) + grants
       end
       private :access_grants_attributes
     end

@@ -1,6 +1,6 @@
 // jQuery Slider
 $(document).on('turbolinks:load', function() {
-  $('.institutional-repository-carousel .item').each(function(){
+  $('.institutional-repository-carousel .carousel-item').each(function(){
     var itemToClone = $(this);
 
     for (var i = 1; i < 6; i++) {

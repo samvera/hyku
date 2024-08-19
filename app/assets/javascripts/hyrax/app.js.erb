@@ -1,4 +1,4 @@
-// OVERRIDE Hyrax v3.5.0 to have a sidebar maximize and minimize based on window size
+// OVERRIDE Hyrax v5.0.0rc2 to have a sidebar maximize and minimize based on window size
 
 // Once, javascript is written in a modular format, all initialization
 // code should be called from here.
@@ -167,25 +167,25 @@ Hyrax = {
     sidebar: function () {
         $('.sidebar-toggle').on('click', function() {
             $('.sidebar').toggleClass('maximized');
-            if ($(window).width() >= 768) {
+            if ($(window).width() >= 992) {
                 $('.main-content').toggleClass('maximized');
             }
         });
 
         $('.sidebar').on('mouseenter', function() {
-            if ($(window).width() < 768) {
+            if ($(window).width() < 992) {
                 $('.sidebar').addClass('maximized');
             }
         });
 
         $('.sidebar').on('mouseleave', function() {
-            if ($(window).width() < 768) {
+            if ($(window).width() < 992) {
                 $('.sidebar').removeClass('maximized');
             }
         });
 
         $(window).on('resize', function() {
-            if ($(window).width() >= 768) {
+            if ($(window).width() >= 992) {
                 $('.sidebar, .main-content').addClass('maximized');
             } else {
                 $('.sidebar, .main-content').removeClass('maximized');

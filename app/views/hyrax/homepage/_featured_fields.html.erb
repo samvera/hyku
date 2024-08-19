@@ -1,17 +1,23 @@
-<%# OVERRIDE Hyrax 2.9.1 to remove the hardcorded image width %>
+<%# OVERRIDE Hyrax v5.0.0rc2 to remove the hardcorded image width and add ENV to control turbolinks %>
 <div>
   <div class="featured-item-title">
     <span class="sr-only"><%= t('hyrax.homepage.featured_works.document.title_label') %></span>
     <h3>
-      <%= link_to [main_app, featured] do %>
+      <%= link_to [main_app, featured], data: { turbolinks: block_valkyrie_redirect? } do %>
+        <%# OVERRIDE begin %>
         <%= render_thumbnail_tag(featured, {alt: "#{featured.title.first.to_s} #{ t('hyrax.homepage.admin_sets.thumbnail')}" }, {suppress_link: true}) + featured.title.first %>
+        <%# OVERRIDE end %>
       <% end %>
     </h3>
   </div>
-  <div class="featured-field featured-item-depositor">
-    <span class="featured-label"><%= t('hyrax.homepage.featured_works.document.depositor_label') %>:</span> <%= link_to_profile featured.depositor(t('hyrax.homepage.featured_works.document.depositor_missing')) %>
-  </div>
-  <div class="featured-field featured-item-keywords">
-    <span class="featured-label"><%= t('hyrax.homepage.featured_works.document.keyword_label') %>:</span> <%= link_to_facet_list(featured.keyword, 'keyword', t('hyrax.homepage.featured_works.document.keyword_missing')) %>
-  </div>
+  <% if Flipflop.home_page_recent_document_show_depositor? %>
+    <div class="featured-field featured-item-depositor">
+      <span class="featured-label"><%= t('hyrax.homepage.featured_works.document.depositor_label') %>:</span> <%= link_to_profile featured.depositor(t('hyrax.homepage.featured_works.document.depositor_missing')) %>
+    </div>
+  <% end %>
+  <% if Flipflop.home_page_recent_document_show_keyword? %>
+    <div class="featured-field featured-item-keywords">
+      <span class="featured-label"><%= t('hyrax.homepage.featured_works.document.keyword_label') %>:</span> <%= link_to_facet_list(featured.keyword, 'keyword', t('hyrax.homepage.featured_works.document.keyword_missing')) %>
+    </div>
+  <% end %>
 </div>

@@ -12,23 +12,27 @@
       <%= link_to "Skip to Content", "#skip-to-content" %>
     </div>
 
-    <%= render '/masthead' %>
+    <%= render '/masthead', placement_class: nil %>
     <%= content_for(:navbar) %>
     <%= content_for(:precontainer_content) %>
     <div id="content-wrapper" class="container" role="main">
       <% if display_content_block? @home_text %>
-        <div class="col-sm-12 col-md-8">
-            <%= render '/flash_msg' %>
+        <div class="row">
+          <div class="col-md-8">
+              <%= render '/flash_msg' %>
+          </div>
         </div>
       <% else %>
-        <div class="col-sm-12">
-            <%= render '/flash_msg' %>
+        <div class="row">
+          <div class="col-md-12">
+              <%= render '/flash_msg' %>
+          </div>
         </div>
       <% end %>
-      <%= render_breadcrumbs builder: Hyrax::BootstrapBreadcrumbsBuilder %>
+      <%= render_breadcrumbs builder: Hyrax.config.breadcrumb_builder %>
       <% if content_for?(:page_header) %>
         <div class="row">
-          <div class="col-xs-12 main-header">
+          <div class="col-12 main-header">
             <%= yield(:page_header) %>
           </div>
         </div>
@@ -38,8 +42,10 @@
         <%= content_for?(:content) ? yield(:content) : yield %>
 
     </div><!-- /#content-wrapper -->
-    <%= render 'shared/footer' %>
+    <% unless controller.controller_name == 'splash' %>
+      <%= render 'shared/footer' %>
+    <% end %>
     <%= render '/shared/select_work_type_modal', create_work_presenter: @presenter&.create_work_presenter if @presenter&.draw_select_work_modal? %>
-    <%= render 'shared/ajax_modal' %>
+    <%= render 'shared/modal' %>
   </body>
 </html>

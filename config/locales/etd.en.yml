@@ -1,0 +1,28 @@
+en:
+  simple_form:
+    labels:
+      defaults:
+        advisor: Advisor
+        department: Department
+        format: Format
+  hyrax:
+    icons:
+      etd: "fa fa-file-text-o"
+    select_type:
+      etd:
+        description: "Electronic Theses & Dissertations"
+        name: "ETD"
+    etd:
+      labels:
+        committee_member: "Committee member"
+        creator: "Creator"
+        date_created: "Date"
+        degree_discipline: "Discipline"
+        degree_grantor: "Grantor"
+        degree_level: "Level"
+        degree_name: "Degree"
+        description: "Description"
+        related_url: "Related URL"
+        resource_type: "Type"
+        rights_statement: "Rights"
+        admin_note: "Administrative Notes"

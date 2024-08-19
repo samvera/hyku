@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe "Users trying to access an Institution Work's show page", type: :request, clean: true, multitenant: true do # rubocop:disable Metrics/LineLength
+RSpec.describe "Users trying to access an Institution Work's show page", type: :request, clean: true, multitenant: true do # rubocop:disable Layout/LineLength
   let(:account) { create(:account) }
   let(:work) { create(:work, visibility: 'authenticated') }
   let(:tenant_user_attributes) { attributes_for(:user) }
@@ -9,7 +9,7 @@ RSpec.describe "Users trying to access an Institution Work's show page", type: :
     WebMock.disable!
     Apartment::Tenant.create(account.tenant)
     Apartment::Tenant.switch(account.tenant) do
-      Site.update(account: account)
+      Site.update(account:)
       work
     end
   end

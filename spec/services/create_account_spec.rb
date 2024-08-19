@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
-RSpec.describe CreateAccount do
+RSpec.describe CreateAccount, clean: true do
   subject { described_class.new(account) }
 
   let(:account) { FactoryBot.build(:sign_up_account) }
+  let(:stubbed_admin_set) { double(AdminSetResource, id: "admin_set/id") }
 
   describe '#create_tenant' do
     it 'creates a new apartment tenant' do
@@ -12,11 +13,8 @@ RSpec.describe CreateAccount do
     end
 
     it 'initializes the Site configuration with a link back to the Account' do
-      expect(Apartment::Tenant).to receive(:create).with(any_args) do |&block|
-        block.call
-      end
-      expect(AdminSet).to receive(:find_or_create_default_admin_set_id)
       subject.save
+      switch!(account)
       expect(Site.reload.account).to eq account
     end
   end
@@ -59,7 +57,7 @@ RSpec.describe CreateAccount do
       expect(RolesService).to receive(:create_default_hyrax_groups_with_roles!)
       expect(Hyrax::CollectionType).to receive(:find_or_create_default_collection_type)
       expect(Hyrax::CollectionType).to receive(:find_or_create_admin_set_type)
-      expect(AdminSet).to receive(:find_or_create_default_admin_set_id)
+      expect(Hyrax::AdminSetCreateService).to receive(:find_or_create_default_admin_set).and_return(stubbed_admin_set)
 
       account.create_defaults
     end
@@ -113,9 +111,16 @@ RSpec.describe CreateAccount do
   end
 
   describe '#schedule_recurring_jobs' do
-    it "Enques Embargo and Lease Expiry jobs" do
-      expect(EmbargoAutoExpiryJob).to receive(:perform_later).with(account)
-      expect(LeaseAutoExpiryJob).to receive(:perform_later).with(account)
+    it "Enqueues Recurring jobs" do
+      [
+        EmbargoAutoExpiryJob,
+        LeaseAutoExpiryJob,
+        BatchEmailNotificationJob,
+        DepositorEmailNotificationJob
+      ].each do |klass|
+        expect(account).to receive(:find_job).with(klass).and_return(false)
+        expect(klass).to receive(:perform_later)
+      end
       subject.schedule_recurring_jobs
     end
   end

@@ -1,3 +1,6 @@
+<%# OVERRIDE: Hyrax 3.4.1 to remove social media %>
+<%# to add work-show class to works pages %>
+
 <% content_for(:extra_body_classes, 'works-show ') %>
 
 <% provide :page_title, @presenter.page_title %>
@@ -8,45 +11,61 @@
   <div class="col-sm-12">
     <%= render 'work_type', presenter: @presenter %>
   </div>
-  <div itemscope itemtype="http://schema.org/CreativeWork" class="col-xs-12">
+  <div itemscope itemtype="http://schema.org/CreativeWork" class="col-12">
     <%= render 'work_title', presenter: @presenter %>
     <%= render 'show_actions', presenter: @presenter %>
-    <div class="panel panel-default">
-      <div class="panel-body">
+    <div class="card">
+      <div class="card-body">
         <div class="row">
           <%= render 'workflow_actions_widget', presenter: @presenter %>
-          <% if @presenter.iiif_viewer? %>
+          <% if @presenter.video_embed_viewer? %>
+            <%= render 'video_embed_viewer', presenter: @presenter %>
+          <% elsif @presenter.iiif_viewer? %>
             <div class="col-sm-12">
               <%= render 'representative_media', presenter: @presenter, viewer: true %>
             </div>
+          <% elsif @presenter.show_pdf_viewer? %>
+            <div class="col-sm-12">
+              <%= render 'pdf_js', file_set_presenter: pdf_file_set_presenter(@presenter) %>
+            </div>
+          <% else %>
+            <div class="col-sm-3 text-center">
+              <%= render 'representative_media', presenter: @presenter, viewer: false %>
+              <%= render('download_pdf', presenter: @presenter, file_set_id: @presenter.file_set_presenters.first.id) if @presenter.show_pdf_download_button? %>
+              <%= render 'citations', presenter: @presenter %>
+            </div>
           <% end %>
-          <div class="col-sm-3 text-center">
-            <%= render 'representative_media', presenter: @presenter, viewer: false unless @presenter.iiif_viewer? %>
-            <%= render 'citations', presenter: @presenter %>
-            <%= render 'social_media' %>
-          </div>
+          <% if @presenter.viewer? %>
+            <div class="col-sm-3 text-center">
+              <%= render('download_pdf', presenter: @presenter, file_set_id: @presenter.file_set_presenters.first.id) if @presenter.show_pdf_download_button? %>
+              <%= render 'citations', presenter: @presenter %>
+              <!-- analytics_button is disabled until future fix -->
+              <%#= render 'analytics_button', presenter: @presenter %>
+            </div>
+          <% end %>
           <div class="col-sm-9">
             <%= render 'work_description', presenter: @presenter %>
             <%= render 'metadata', presenter: @presenter %>
           </div>
         </div>
       </div>
-    </div><!-- /panel -->
+    </div><!-- /card -->
 
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h1 class="panel-title"><%= t('hyrax.base.show.relationships') %></h1>
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title"><%= t('hyrax.base.show.relationships') %></h2>
       </div>
-      <div class="panel-body">
+      <div class="card-body">
         <%= render 'relationships', presenter: @presenter %>
+        <%= render 'related_items', presenter: @presenter %>
       </div>
     </div>
 
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h1 class="panel-title"><%= t('.items') %></h1>
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title"><%= t('.items') %></h2>
       </div>
-      <div class="panel-body">
+      <div class="card-body">
         <%= render 'items', presenter: @presenter %>
       </div>
     </div>
@@ -55,11 +74,10 @@
     <%# = render 'sharing_with', presenter: @presenter %>
     <%# = render 'user_activity', presenter: @presenter %>
 
-    <span class='hide analytics-event' data-category="work" data-action="work-view" data-name="<%= @presenter.id %>" >
-      <% @presenter.member_of_collection_ids.each do |collection_id| %>
-        <span class='hide analytics-event' data-category="work-in-collection" data-action="work-in-collection-view" data-name="<%= collection_id %>" />
-      <% end %>
-    </span>
+    <span class='hide analytics-event' data-category="work" data-action="work-view" data-name="<%= @presenter.id %>" ></span>
+    <% @presenter.member_of_collection_ids.each do |collection_id| %>
+      <span class='hide analytics-event' data-category="work-in-collection" data-action="work-in-collection-view" data-name="<%= collection_id %>" ></span>
+    <% end %>
 
   </div>
 </div>

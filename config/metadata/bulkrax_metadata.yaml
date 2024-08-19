@@ -1,0 +1,19 @@
+attributes:
+  bulkrax_identifier:
+    type: string
+    predicate: https://hykucommons.org/terms/bulkrax_identifier
+    multiple: false
+    form:
+      display: false
+      primary: false
+      required: false
+      multiple: false
+    index_keys:
+      # NOTE: For backwards compatibility, we specify `bulkrax_identifier_tesim`
+      #       however if we want singular (which we do) and to have exact match
+      #       (which we do) we don't want to use Text English Stored Indexed
+      #       Multiple (e.g. _tesim suffix).  Instead we want String Stored
+      #       Index (e.g. _ssi).  However, until we get all of our efforts
+      #       coordinated; we'll continue to contend with this misalignment.
+      - "bulkrax_identifier_tesim"
+      - "bulkrax_identifier_ssi"

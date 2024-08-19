@@ -25,7 +25,7 @@ class Ability
     self.ability_logic += %i[everyone_can_create_curation_concerns]
   end
 
-  # OVERRIDE METHOD from blacklight-access_controls v0.6.2
+  # OVERRIDE METHOD from blacklight-access_controls v6.0.1
   #
   # NOTE: DO NOT RENAME THIS METHOD - it is required for permissions to function properly.
   #
@@ -57,6 +57,7 @@ class Ability
 
     super
     can [:manage], [Site, Role, User]
+    can [:update], RolesService
 
     can [:read, :update], Account do |account|
       account == Site.account
@@ -108,5 +109,24 @@ class Ability
 
   def can_export_works?
     can_create_any_work?
+  end
+
+  ##
+  # @api public
+  #
+  # Overrides hydra-head, (and restores the method from blacklight-access-controls)
+  def download_permissions
+    can :download, [::String, ::Valkyrie::ID] do |id|
+      test_download(id.to_s)
+    end
+
+    can :download, ::SolrDocument do |obj|
+      if obj.pdf? && !obj.show_pdf_download_button
+        false
+      else
+        cache.put(obj.id, obj)
+        test_download(obj.id)
+      end
+    end
   end
 end

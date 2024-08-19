@@ -1,8 +1,3 @@
-<% if presenter.thumbnail_path %>
-  <%= image_tag presenter.thumbnail_path,
-                class: "representative-media",
-                alt: block_for(name: 'default_collection_image_text'),
-                role: "presentation" %>
-<% else %>
-  <%= image_tag(Site.instance.default_collection_image) %>
-<% end %>
+<%# OVERRIDE Hyrax 6.0: %>
+<%# show uploaded thumbnail or default with alttext %>
+<%= collection_thumbnail(presenter.solr_document, "", {class: "representative-media"}) %>

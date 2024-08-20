@@ -5,6 +5,7 @@
 module Hyrax
   module ContentBlocksControllerDecorator
     private
+
     def permitted_params
       params.require(:content_block).permit(:marketing,
                                             :announcement,

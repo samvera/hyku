@@ -116,7 +116,8 @@ RSpec.describe CreateAccount, clean: true do
         EmbargoAutoExpiryJob,
         LeaseAutoExpiryJob,
         BatchEmailNotificationJob,
-        DepositorEmailNotificationJob
+        DepositorEmailNotificationJob,
+        UserStatCollectionJob
       ].each do |klass|
         expect(account).to receive(:find_job).with(klass).and_return(false)
         expect(klass).to receive(:perform_later)

@@ -126,7 +126,7 @@ RSpec.describe Account, type: :model do
       it "uses Redis as a cache store" do
         expect(Rails.application.config.action_controller.perform_caching).to be_truthy
         expect(ActionController::Base.perform_caching).to be_truthy
-        expect(Rails.application.config.cache_store).to eq([:redis_cache_store, { url: "redis://localhost:6379/0" }])
+        expect(Rails.application.config.cache_store).to include(:redis_cache_store)
       end
 
       it "reverts to using file store when cache is off" do

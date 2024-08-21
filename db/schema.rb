@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_08_06_161142) do
+ActiveRecord::Schema.define(version: 2024_08_20_200440) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -405,6 +405,12 @@ ActiveRecord::Schema.define(version: 2024_08_06_161142) do
     t.boolean "enabled", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "hyrax_flexible_schemas", force: :cascade do |t|
+    t.text "profile"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "hyrax_groups", id: :serial, force: :cascade do |t|
@@ -856,6 +862,14 @@ ActiveRecord::Schema.define(version: 2024_08_06_161142) do
     t.index ["user_id"], name: "index_uploaded_files_on_user_id"
   end
 
+  create_table "user_batch_emails", force: :cascade do |t|
+    t.bigint "user_id"
+    t.datetime "last_emailed_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_user_batch_emails_on_user_id"
+  end
+
   create_table "user_stats", id: :serial, force: :cascade do |t|
     t.integer "user_id"
     t.datetime "date"
@@ -917,7 +931,6 @@ ActiveRecord::Schema.define(version: 2024_08_06_161142) do
     t.string "provider"
     t.string "uid"
     t.string "batch_email_frequency", default: "never"
-    t.datetime "last_emailed_at"
     t.string "api_key"
     t.index ["api_key"], name: "index_users_on_api_key"
     t.index ["email"], name: "index_users_on_email", unique: true

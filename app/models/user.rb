@@ -2,6 +2,8 @@
 
 # rubocop:disable Metrics/ClassLength
 class User < ApplicationRecord
+  has_one :user_batch_email, dependent: :destroy
+
   # Includes lib/rolify from the rolify gem
   rolify
   # Connects this user object to Hydra behaviors.
@@ -188,6 +190,14 @@ class User < ApplicationRecord
       total_file_downloads:,
       total_work_views:
     }
+  end
+
+  def last_emailed_at
+    UserBatchEmail.find_or_create_by(user: self).last_emailed_at
+  end
+
+  def last_emailed_at=(value)
+    UserBatchEmail.find_or_create_by(user: self).update(last_emailed_at:  value)
   end
 end
 # rubocop:enable Metrics/ClassLength

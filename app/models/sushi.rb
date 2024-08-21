@@ -204,7 +204,9 @@ module Sushi
         raise Sushi::Error::UsageNotReadyForRequestedDatesError.new(data: "Unable to complete the request because the end_date of #{params[:end_date]} is for a month that has incomplete data.  That month's data ends on #{latest_date.iso8601}.")
         # rubocop:enable Metrics/MethodLength
       end
+    # rubocop:disable Lint/ShadowedException
     rescue ActionController::ParameterMissing, KeyError => e
+      # rubocop:enable Lint/ShadowedException
       raise Sushi::Error::InsufficientInformationToProcessRequestError.new(data: e.message)
     end
   end

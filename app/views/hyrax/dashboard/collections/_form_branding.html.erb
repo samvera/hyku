@@ -198,7 +198,7 @@
       <div class="col-12">
         <div class="container">
         <%# Where the request to display the branding comes from. %>
-        <% if f.object.thumbnail_info[:file] %>
+        <% if f.object.thumbnail_info && f.object.thumbnail_info[:file] %>
           <div id="thumbnail">
             <div class="row branding-thumbnail-row">
               <div class="col-sm-3">

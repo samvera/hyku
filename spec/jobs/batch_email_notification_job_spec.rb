@@ -5,7 +5,7 @@ RSpec.describe BatchEmailNotificationJob do
   let(:receipt) { FactoryBot.create(:mailboxer_receipt, receiver: user) }
   let!(:message) { receipt.notification }
   let!(:user) { FactoryBot.create(:user, batch_email_frequency: frequency) }
-  let(:user_batch_email) { double(last_emailed_at: last_emailed)}
+  let(:user_batch_email) { double(last_emailed_at: last_emailed) }
 
   before do
     allow(Apartment::Tenant).to receive(:switch).and_yield

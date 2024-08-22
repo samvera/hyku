@@ -407,12 +407,6 @@ ActiveRecord::Schema.define(version: 2024_08_20_200440) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "hyrax_flexible_schemas", force: :cascade do |t|
-    t.text "profile"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "hyrax_groups", id: :serial, force: :cascade do |t|
     t.string "name"
     t.text "description"

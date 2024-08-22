@@ -25,7 +25,7 @@ class BatchEmailNotificationJob < ApplicationJob
         end
       end
 
-      user.update(last_emailed_at: Time.current)
+      user.last_emailed_at = Time.current
     end
     BatchEmailNotificationJob.set(wait_until: Date.tomorrow.midnight).perform_later
   end

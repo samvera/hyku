@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 RSpec.describe BatchEmailNotificationJob do
+  let(:subject) { BatchEmailNotificationJob.perform_now }
   let(:account) { create(:account_with_public_schema) }
   let(:receipt) { FactoryBot.create(:mailboxer_receipt, receiver: user) }
   let!(:message) { receipt.notification }
   let!(:user) { FactoryBot.create(:user, batch_email_frequency: frequency) }
-  let(:user_batch_email) { double(last_emailed_at: last_emailed) }
 
   before do
     allow(Apartment::Tenant).to receive(:switch).and_yield
@@ -19,25 +19,28 @@ RSpec.describe BatchEmailNotificationJob do
 
   describe '#perform' do
     before do
-      allow(UserBatchEmail).to receive(:find_or_create_by).and_return(user_batch_email)
+      UserBatchEmail.find_or_create_by(user: user).update(last_emailed_at: last_emailed)
     end
 
-    let(:frequency) { 'daily' }
-    let(:last_emailed) { nil }
+    context 'basic job behavior' do
+      let(:frequency) { 'daily' }
+      let(:last_emailed) { nil }
 
-    it 'marks the message as delivered' do
-      expect { BatchEmailNotificationJob.perform_now }.to change { message.receipts.first.is_delivered }.from(false).to(true)
-    end
+      it 'marks the message as delivered' do
+        expect { subject }.to change { message.receipts.first.is_delivered }.from(false).to(true)
+      end
 
-    it 're-enqueues the job' do
-      expect { BatchEmailNotificationJob.perform_now }.to have_enqueued_job(BatchEmailNotificationJob)
+      it 're-enqueues the job' do
+        expect { subject }.to have_enqueued_job(BatchEmailNotificationJob)
+      end
     end
 
     context 'when the user has a daily frequency' do
       let(:frequency) { 'daily' }
+      let(:last_emailed) { 1.days.ago }
 
       it 'sends email to users with batch_email_frequency set' do
-        expect { BatchEmailNotificationJob.perform_now }.to change { ActionMailer::Base.deliveries.count }.by(1)
+        expect { subject }.to change { ActionMailer::Base.deliveries.count }.by(1)
       end
     end
 
@@ -49,7 +52,7 @@ RSpec.describe BatchEmailNotificationJob do
         let(:last_emailed) { 5.days.ago }
 
         it 'does not send an email to users with batch_email_frequency set' do
-          expect { BatchEmailNotificationJob.perform_now }.to_not change { ActionMailer::Base.deliveries.count }
+          expect { subject }.to_not change { ActionMailer::Base.deliveries.count }
         end
       end
 
@@ -57,7 +60,7 @@ RSpec.describe BatchEmailNotificationJob do
         let(:last_emailed) { 8.days.ago }
 
         it 'sends email to users with batch_email_frequency set' do
-          expect { BatchEmailNotificationJob.perform_now }.to change { ActionMailer::Base.deliveries.count }.by(1)
+          expect { subject }.to change { ActionMailer::Base.deliveries.count }.by(1)
         end
       end
     end
@@ -70,7 +73,7 @@ RSpec.describe BatchEmailNotificationJob do
         let(:last_emailed) { 20.days.ago }
 
         it 'does not send an email to users with batch_email_frequency set' do
-          expect { BatchEmailNotificationJob.perform_now(account) }.to_not change { ActionMailer::Base.deliveries.count }
+          expect { subject }.to_not change { ActionMailer::Base.deliveries.count }
         end
       end
 
@@ -78,7 +81,7 @@ RSpec.describe BatchEmailNotificationJob do
         let(:last_emailed) { 40.days.ago }
 
         it 'sends email to users with batch_email_frequency set' do
-          expect { BatchEmailNotificationJob.perform_now }.to change { ActionMailer::Base.deliveries.count }.by(1)
+          expect { subject }.to change { ActionMailer::Base.deliveries.count }.by(1)
         end
       end
     end

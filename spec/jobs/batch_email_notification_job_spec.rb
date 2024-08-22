@@ -37,7 +37,7 @@ RSpec.describe BatchEmailNotificationJob do
 
     context 'when the user has a daily frequency' do
       let(:frequency) { 'daily' }
-      let(:last_emailed) { 1.days.ago }
+      let(:last_emailed) { 1.day.ago }
 
       it 'sends email to users with batch_email_frequency set' do
         expect { subject }.to change { ActionMailer::Base.deliveries.count }.by(1)

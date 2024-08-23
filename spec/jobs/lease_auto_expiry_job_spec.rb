@@ -45,7 +45,8 @@ RSpec.describe LeaseAutoExpiryJob, clean: true do
 
   describe '#reenqueue' do
     it 'Enques an LeaseExpiryJob after perform' do
-      expect { LeaseAutoExpiryJob.perform_now(account) }.to have_enqueued_job(LeaseAutoExpiryJob)
+      switch!(account)
+      expect { LeaseAutoExpiryJob.perform_now }.to have_enqueued_job(LeaseAutoExpiryJob)
     end
   end
 
@@ -57,7 +58,8 @@ RSpec.describe LeaseAutoExpiryJob, clean: true do
       expect do
         expect do
           ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
-          LeaseAutoExpiryJob.perform_now(account)
+          switch!(account)
+          LeaseAutoExpiryJob.perform_now
         end.not_to change { work_with_expired_lease.reload.visibility } # because of double combo
       end.to change { GenericWorkResource.find(work_with_expired_lease.id).visibility }
         .from('open')
@@ -70,7 +72,8 @@ RSpec.describe LeaseAutoExpiryJob, clean: true do
       expect do
         expect do
           ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
-          LeaseAutoExpiryJob.perform_now(account)
+          switch!(account)
+          LeaseAutoExpiryJob.perform_now
         end.not_to change { file_set_with_expired_lease.reload.visibility } # because of double combo
       end.to change { Hyrax.query_service.find_by(id: file_set_with_expired_lease.id).visibility }
         .from('open')
@@ -84,7 +87,8 @@ RSpec.describe LeaseAutoExpiryJob, clean: true do
       expect do
         expect do
           ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
-          LeaseAutoExpiryJob.perform_now(account)
+          switch!(account)
+          LeaseAutoExpiryJob.perform_now
         end.not_to change { leased_work.reload.visibility } # because of double combo
       end.not_to change { GenericWorkResource.find(leased_work.id).visibility }
         .from('open')

@@ -20,10 +20,13 @@ Rails.application.config.after_initialize do
   Wings::ModelRegistry.register(Hydra::PCDM::File, Hydra::PCDM::File)
   Wings::ModelRegistry.register(Hyrax::FileMetadata, Hydra::PCDM::File)
 
-  Valkyrie::MetadataAdapter.register(
-    Freyja::MetadataAdapter.new,
-    :freyja
-  )
+  unless Valkyrie::MetadataAdapter.adapters.include?(:freyja)
+    Valkyrie::MetadataAdapter.register(
+      Freyja::MetadataAdapter.new,
+      :freyja
+    )
+  end
+
   Valkyrie.config.metadata_adapter = :freyja
   Hyrax.config.query_index_from_valkyrie = true
   Hyrax.config.index_adapter = :solr_index

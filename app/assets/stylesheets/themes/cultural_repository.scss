@@ -1,5 +1,10 @@
 .cultural_repository {
   ////// Navbar //////
+  .navbar-header {
+    display: flex;
+    margin-left: -10px;
+  }
+
   .navbar-expand-lg .navbar-collapse {
     @media (min-width: 992px) {
       display: flex !important;

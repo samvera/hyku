@@ -132,7 +132,7 @@ class Account < ApplicationRecord
     ActionController::Base.perform_caching = is_enabled
     # rubocop:disable Style/ConditionalAssignment
     if is_enabled
-      Rails.application.config.cache_store = :redis_cache_store, { url: Redis.current.id }
+      Rails.application.config.cache_store = :redis_cache_store, { redis: Hyrax::RedisEventStore.instance }
     else
       Rails.application.config.cache_store = :file_store, DEFAULT_FILE_CACHE_STORE
     end
@@ -167,6 +167,25 @@ class Account < ApplicationRecord
 
   def institution_id_data
     {}
+  end
+
+  def find_job(klass)
+    ActiveJob::Base.find_job(klass: klass, tenant_id: self.tenant)
+  end
+
+  def find_or_schedule_jobs
+    account = Site.account
+    AccountElevator.switch!(self)
+    [
+      EmbargoAutoExpiryJob,
+      LeaseAutoExpiryJob,
+      BatchEmailNotificationJob,
+      DepositorEmailNotificationJob,
+      UserStatCollectionJob
+    ].each do |klass|
+      klass.perform_later unless find_job(klass)
+    end
+    account ? AccountElevator.switch!(account) : reset!
   end
 end
 # rubocop:enable Metrics/ClassLength

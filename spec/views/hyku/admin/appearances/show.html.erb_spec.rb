@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe "hyrax/admin/appearances/show", type: :view do
-  let(:form) { Hyrax::Forms::Admin::Appearance.new }
+  let(:form) { Hyku::Forms::Admin::Appearance.new }
 
   before do
     without_partial_double_verification do

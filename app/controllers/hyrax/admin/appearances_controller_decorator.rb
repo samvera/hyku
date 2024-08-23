@@ -80,3 +80,4 @@ module Hyrax
 end
 
 Hyrax::Admin::AppearancesController.prepend(Hyrax::Admin::AppearancesControllerDecorator)
+Hyrax::Admin::AppearancesController.form_class = Hyku::Forms::Admin::Appearance

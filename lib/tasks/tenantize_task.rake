@@ -17,4 +17,4 @@ namespace :tenantize do
     end
   end
 end
-# rubocop:enable Layout/LineLength
+# rubocop:enable Metrics/MethodLength

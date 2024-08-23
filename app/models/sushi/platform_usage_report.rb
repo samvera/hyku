@@ -124,6 +124,7 @@ module Sushi
     #       query result value would be "2023-01-01T00:00" (e.g. the first moment of the first of the
     #       month).
     # rubocop:disable Layout/LineLength
+    # rubocop:disable Metrics/MethodLength
     def data_for_resource_types
       # We're capturing this relation/query because in some cases, we need to chain another where
       # clause onto the relation.
@@ -151,6 +152,7 @@ module Sushi
       relation.where("LOWER(resource_type) IN (?)", data_types)
     end
     # rubocop:enable Layout/LineLength
+    # rubocop:enable Metrics/MethodLength
 
     def data_for_platform
       Hyrax::CounterMetric

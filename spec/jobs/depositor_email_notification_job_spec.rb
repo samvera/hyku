@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe DepositorEmailNotificationJob do
-  let(:account) { FactoryBot.create(:account) }
+  let(:account) { create(:account_with_public_schema) }
   let(:receipt) { FactoryBot.create(:mailboxer_receipt, receiver: user) }
   let!(:message) { receipt.notification }
   let!(:user) { FactoryBot.create(:user) }
@@ -17,7 +17,8 @@ RSpec.describe DepositorEmailNotificationJob do
 
   describe '#perform' do
     it 're-enqueues the job' do
-      expect { DepositorEmailNotificationJob.perform_now(account) }.to have_enqueued_job(DepositorEmailNotificationJob).with(account)
+      switch!(account)
+      expect { DepositorEmailNotificationJob.perform_now }.to have_enqueued_job(DepositorEmailNotificationJob)
     end
 
     context 'when the user has new statistics' do
@@ -29,7 +30,8 @@ RSpec.describe DepositorEmailNotificationJob do
       end
 
       it 'sends email to users' do
-        expect { described_class.perform_now(account) }.to change { ActionMailer::Base.deliveries.count }.by(1)
+        switch!(account)
+        expect { described_class.perform_now }.to change { ActionMailer::Base.deliveries.count }.by(1)
       end
     end
 
@@ -37,7 +39,8 @@ RSpec.describe DepositorEmailNotificationJob do
       let(:statistics) { nil }
 
       it 'sends does not send email to user' do
-        expect { DepositorEmailNotificationJob.perform_now(account) }.to_not change { ActionMailer::Base.deliveries.count }
+        switch!(account)
+        expect { DepositorEmailNotificationJob.perform_now }.to_not change { ActionMailer::Base.deliveries.count }
       end
     end
   end

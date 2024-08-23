@@ -124,6 +124,7 @@ module Sushi
 
     alias to_hash as_json
 
+    # rubocop:disable Metrics/MethodLength
     def report_items
       data_for_resource_types.map do |record|
         {
@@ -146,6 +147,7 @@ module Sushi
         }
       end
     end
+    # rubocop:enable Metrics/MethodLength
 
     def performance(record)
       metric_types.index_with do |metric_type|

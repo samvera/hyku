@@ -41,7 +41,8 @@ RSpec.describe EmbargoAutoExpiryJob, clean: true do
 
   describe '#reenqueue' do
     it 'Enques an EmbargoExpiryJob after perform' do
-      expect { EmbargoAutoExpiryJob.perform_now(account) }.to have_enqueued_job(EmbargoAutoExpiryJob)
+      switch!(account)
+      expect { EmbargoAutoExpiryJob.perform_now }.to have_enqueued_job(EmbargoAutoExpiryJob)
     end
   end
 
@@ -52,7 +53,8 @@ RSpec.describe EmbargoAutoExpiryJob, clean: true do
 
       expect do
         ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
-        EmbargoAutoExpiryJob.perform_now(account)
+        switch!(account)
+        EmbargoAutoExpiryJob.perform_now
       end.to change { GenericWorkResource.find(work_with_expired_embargo.id).visibility }
         .from('restricted')
         .to('open')
@@ -67,7 +69,8 @@ RSpec.describe EmbargoAutoExpiryJob, clean: true do
       expect(file_set_with_expired_embargo.visibility).to eq('restricted')
       expect do
         ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
-        EmbargoAutoExpiryJob.perform_now(account)
+        switch!(account)
+        EmbargoAutoExpiryJob.perform_now
       end.to change { Hyrax.query_service.find_by(id: file_set_with_expired_embargo.id).visibility }
         .from('restricted')
         .to('open')
@@ -83,7 +86,8 @@ RSpec.describe EmbargoAutoExpiryJob, clean: true do
 
       expect do
         ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
-        EmbargoAutoExpiryJob.perform_now(account)
+        switch!(account)
+        EmbargoAutoExpiryJob.perform_now
       end.not_to change { GenericWorkResource.find(embargoed_work.id).visibility }
         .from('restricted')
       embargoed_work.reload

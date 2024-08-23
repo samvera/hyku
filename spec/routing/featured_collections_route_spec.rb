@@ -15,5 +15,5 @@ RSpec.describe "file routes", type: :routing do
     expect(featured_collection_lists_path).to eq '/featured_collections'
     expect(post: '/featured_collections').to route_to(controller: 'hyrax/featured_collection_lists', action: 'create')
   end
-  # rubocop:enable Layout/LineLength
+  # rubocop:enable Metrics/MethodLength
 end

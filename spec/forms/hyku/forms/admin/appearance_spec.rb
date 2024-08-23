@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Hyrax::Forms::Admin::Appearance, type: :decorator do
+RSpec.describe Hyku::Forms::Admin::Appearance do
   let(:instance) { described_class.new }
   describe '.default_fonts' do
     subject { described_class.default_fonts }

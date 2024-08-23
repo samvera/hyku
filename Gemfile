@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # for knapsack overrides of gems. See https://github.com/ManageIQ/bundler-inject
-# set BUNDLE_BUNDLER_INJECT__GEM_PATH in your knapsack to point at the knapsack override file.
+# bundler inject reads from ~/.bundler.d and ./bundler.d  ~/.bundler.d maps to the bundler.d directory in your knapsack.
 plugin 'bundler-inject'
 begin
   require File.join(Bundler::Plugin.index.load_paths("bundler-inject")[0], "bundler-inject")
@@ -12,16 +12,17 @@ end
 # rubocop:disable Layout/LineLength
 source 'https://rubygems.org'
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.1.7.8'
+# Refer to this rails version to resolve compatibility issues with good_job
+gem 'rails', '~> 6.0', github: 'rails/rails', branch: '6-1-stable', ref: 'd16199e507086e3d54d94253b7e1d87ead394d9f'
 
 gem 'active_elastic_job', github: 'active-elastic-job/active-elastic-job', ref: 'ec51c5d9dedc4a1b47f2db41f26d5fceb251e979', group: %i[aws]
 gem 'active-fedora', '~> 14.0'
 gem 'activerecord-nulldb-adapter'
+gem 'activesupport', '>= 4.2.0', group: %i[development test]
 gem 'addressable', '2.8.1' # remove once https://github.com/postrank-labs/postrank-uri/issues/49 is fixed
 gem 'apartment', github: 'scientist-softserv/apartment', branch: 'development'
 gem 'aws-sdk-sqs', group: %i[aws]
-gem 'bixby', '~> 5.0', '>= 5.0.2', group: %i[development test]
+gem 'bixby', group: %i[development test]
 gem 'blacklight', '~> 7.29'
 gem 'blacklight_advanced_search'
 gem 'blacklight_oai_provider', '~> 7.0'
@@ -38,6 +39,7 @@ gem 'cocoon'
 gem 'codemirror-rails'
 gem 'coffee-rails', '~> 4.2' # Use CoffeeScript for .coffee assets and views
 gem 'database_cleaner', group: %i[test]
+gem 'derivative-rodeo', '~>0.5', '>= 0.5.3'
 gem 'devise'
 gem 'devise-guests', '~> 0.3'
 gem 'devise-i18n'
@@ -94,7 +96,9 @@ gem 'rspec-its', group: %i[test]
 gem 'rspec_junit_formatter', group: %i[test]
 gem 'rspec-rails', '>= 3.6.0', group: %i[development test]
 gem 'rspec-retry', group: %i[test]
-gem 'rubocop', '1.28.2', group: %i[development test]
+gem 'rubocop', '~> 1.61.0', group: %i[development test]
+gem 'rubocop-capybara', group: %i[development test]
+gem 'rubocop-factory_bot', group: %i[development test]
 gem 'rubocop-rails', '~> 2.15', group: %i[development test]
 gem 'rubocop-rspec', '~> 1.22', '<= 1.22.2', group: %i[development test]
 gem 'sass-rails', '~> 6.0' # Use SCSS for stylesheets
@@ -143,4 +147,4 @@ gem 'willow_sword', github: 'scientist-softserv/willow_sword', branch: 'main'
 #         of the time use the `samvera-labs/hyku_knapsack` remote branch.
 gem 'hyku_knapsack', github: 'samvera-labs/hyku_knapsack', branch: 'required_for_knapsack_instances'
 
-# rubocop:enable Layout/LineLength
+# rubocop:enable Metrics/MethodLength

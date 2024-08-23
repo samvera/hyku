@@ -3,6 +3,7 @@
 # OVERRIDE blacklight 6 to allow full url for show links for shared search thumbnail
 module Blacklight
   module CatalogHelperBehaviorDecorator
+    # rubocop:disable Metrics/MethodLength
     def render_thumbnail_tag(document, image_options = {}, url_options = {})
       value = if blacklight_config.view_config(document_index_view_type).thumbnail_method
                 send(blacklight_config.view_config(document_index_view_type).thumbnail_method, document, image_options)
@@ -15,7 +16,7 @@ module Blacklight
       if value
         if url_options == false
           Deprecation.warn(self, "passing false as the second argument to render_thumbnail_tag is deprecated. Use suppress_link: true instead. This behavior will be removed in Blacklight 7")
-          # rubocop:enable Layout/LineLength
+          # rubocop:enable Metrics/MethodLength
           url_options = { suppress_link: true }
         end
         if url_options[:suppress_link]
@@ -30,6 +31,7 @@ module Blacklight
       end
       # rubocop:enable Style/GuardClause
     end
+    # rubocop:enable Metrics/MethodLength
   end
 end
 

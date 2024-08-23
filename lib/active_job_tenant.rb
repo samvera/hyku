@@ -24,6 +24,24 @@ module ActiveJobTenant
     def non_tenant_job
       @non_tenant_job = true
     end
+
+    def find_job(klass:, tenant_id: nil, queue_name: :default)
+      queue = ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq')
+      if queue == 'sidekiq'
+        default_queue = Sidekiq::Queue.new(queue_name)
+        default_queue.find do |job|
+          if tenant_id.present?
+            job.args.first['job_class'] == klass.to_s && job.args.first['tenant'] == tenant_id
+          else
+            job.args.first['job_class'] == klass.to_s
+          end
+        end
+      elsif queue == 'good_job'
+        GoodJob
+      else
+        Rails.logger.error("Job engine #{queue} does not support recurring jobs")
+      end
+    end
   end
 
   def serialize

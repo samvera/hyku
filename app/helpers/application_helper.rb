@@ -18,12 +18,14 @@ module ApplicationHelper
   #  - fallback to Hyrax's default image
   def collection_thumbnail(document, _image_options = {}, url_options = {})
     view_class = url_options[:class]
-    # The correct thumbnail SHOULD be indexed on the object
-    return image_tag(document['thumbnail_path_ss'], class: view_class, alt: alttext_for(document)) if document['thumbnail_path_ss'].present?
-
-    # If nothing is indexed, we just fall back to site default
+    # use the site's default image if one is set
     return image_tag(Site.instance.default_collection_image&.url, alt: alttext_for(document), class: view_class) if Site.instance.default_collection_image.present?
 
+    # if a site default isn't set, use the application's default img
+    # see thumbnail_path_service.rb#default_collection_image
+    return image_tag(document['thumbnail_path_ss'], class: view_class, alt: alttext_for(document)) if document['thumbnail_path_ss'].present?
+
+    Hyrax::ModelIcon.css_class_for(::Collection)
     # fall back to Hyrax default if no site default
     tag.span("", class: [Hyrax::ModelIcon.css_class_for(::Collection), view_class],
                  alt: alttext_for(document))

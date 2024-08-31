@@ -10,7 +10,6 @@ class MigrateResourcesJob < ApplicationJob
     models.each do |model|
       model.constantize.find_each do |item|
         res = Hyrax.query_service.find_by(id: item.id)
-        puts "🦋🦋 Migrating #{model} #{res.title.first}, id: #{res.id.to_s} 🦋🦋"
         # start with a form for the resource
         fm = form_for(model:).constantize.new(resource: res)
         # save the form
@@ -26,6 +25,6 @@ class MigrateResourcesJob < ApplicationJob
   end
 
   def collection_models_list
-    %w(AdminSet Collection)
+    %w[AdminSet Collection]
   end
 end

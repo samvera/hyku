@@ -8,6 +8,7 @@
 class OerResourceForm < Hyrax::Forms::ResourceForm(OerResource)
   # Commented out basic_metadata because these terms were added to etd_resource so we can customize it.
   # include Hyrax::FormFields(:basic_metadata)
+  include Hyrax::FormFields(:bulkrax_metadata)
   include Hyrax::FormFields(:oer_resource)
   include Hyrax::FormFields(:with_pdf_viewer)
   include Hyrax::FormFields(:with_video_embed)

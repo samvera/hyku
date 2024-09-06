@@ -3,7 +3,8 @@
 # Generated via
 #  `rails generate hyrax:work_resource OerResource`
 class OerResourceIndexer < Hyrax::ValkyrieWorkIndexer
-  include Hyrax::Indexer(:basic_metadata)
+  # Commented out basic_metadata because these terms were added to etd_resource so we can customize it.
+  # include Hyrax::Indexer(:basic_metadata)
   include Hyrax::Indexer(:bulkrax_metadata)
   include Hyrax::Indexer(:oer_resource)
   include Hyrax::Indexer(:with_pdf_viewer)

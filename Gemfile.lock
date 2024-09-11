@@ -1458,7 +1458,7 @@ GEM
       psych (>= 3.3)
       rdf (~> 3.2, >= 3.2.9)
       rdf-xsd (~> 3.2)
-    yard (0.9.34)
+    yard (0.9.36)
     zeitwerk (2.6.12)
     zlib (2.1.1)
 

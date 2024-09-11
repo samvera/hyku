@@ -915,7 +915,7 @@ GEM
     mime-types-data (3.2023.1205)
     mini_magick (4.12.0)
     mini_mime (1.1.5)
-    mini_portile2 (2.8.5)
+    mini_portile2 (2.8.7)
     minitest (5.20.0)
     mods (2.4.1)
       edtf
@@ -1042,7 +1042,7 @@ GEM
       rails (>= 5.0, < 7.2)
       rdf
     raabro (1.4.0)
-    racc (1.7.3)
+    racc (1.8.1)
     rack (2.2.8)
     rack-oauth2 (2.2.0)
       activesupport
@@ -1173,7 +1173,7 @@ GEM
     retriable (3.1.2)
     reverse_markdown (2.1.1)
       nokogiri
-    rexml (3.2.6)
+    rexml (3.3.7)
     riiif (2.4.0)
       deprecation (>= 1.0.0)
       iiif-image-api (>= 0.1.0)
@@ -1246,7 +1246,7 @@ GEM
       multipart-post
       oauth2
     ruby-progressbar (1.13.0)
-    ruby-saml (1.16.0)
+    ruby-saml (1.17.0)
       nokogiri (>= 1.13.10)
       rexml
     ruby2_keywords (0.0.5)

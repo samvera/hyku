@@ -22,7 +22,7 @@ module HykuIndexing
         solr_doc['valkyrie_bsi'] = object.kind_of?(Valkyrie::Resource)
         solr_doc['member_ids_ssim'] = object.member_ids.map(&:id) if object.kind_of?(Valkyrie::Resource)
         # TODO: Reinstate once valkyrie fileset work is complete - https://github.com/scientist-softserv/hykuup_knapsack/issues/34
-        solr_doc['all_text_tsimv'] = full_text(object.file_sets.first&.id) if object.kind_of?(ActiveFedora::Base)
+        solr_doc['all_text_tsimv'] = full_text(Hyrax.custom_queries.find_child_file_sets(resource: resource).first.id.to_s)
         # rubocop:enable Style/ClassCheck
         solr_doc['title_ssim'] = SortTitle.new(object.title.first).alphabetical
         solr_doc['depositor_ssi'] = object.depositor

@@ -14,7 +14,7 @@ class MigrateResourcesJob < ApplicationJob
         fm = form_for(model:).constantize.new(resource: res)
         # save the form
         result = Hyrax::Transactions::Container[collection_model_event_mapping[model]]
-                 .call(fm)
+                 .with_step_args(**collection_model_steps_mapping[model]).call(fm)
         result.value!
       end
     end
@@ -32,6 +32,16 @@ class MigrateResourcesJob < ApplicationJob
     {
       'AdminSet' => 'admin_set_resource.update',
       'Collection' => 'change_set.update_collection'
+    }
+  end
+
+  def collection_model_steps_mapping
+    {
+      'AdminSet' => {},
+      'Collection' => {
+        'collection_resource.save_collection_banner' => { banner_unchanged_indicator: true },
+        'collection_resource.save_collection_logo' => { logo_unchanged_indicator: true }
+      }
     }
   end
 end

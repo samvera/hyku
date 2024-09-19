@@ -1,0 +1,12 @@
+attributes:
+  thumbnail_id:
+    type: string
+    predicate: http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#hasRelatedImage
+    multiple: false
+    form:
+      display: false
+      primary: false
+      required: false
+      multiple: false
+    index_keys:
+     - "thumbnail_id_ssim"

@@ -21,8 +21,7 @@ module HykuIndexing
         solr_doc['account_institution_name_ssim'] = Site.instance.institution_label
         solr_doc['valkyrie_bsi'] = object.kind_of?(Valkyrie::Resource)
         solr_doc['member_ids_ssim'] = object.member_ids.map(&:id) if object.kind_of?(Valkyrie::Resource)
-        # TODO: Reinstate once valkyrie fileset work is complete - https://github.com/scientist-softserv/hykuup_knapsack/issues/34
-        solr_doc['all_text_tsimv'] = full_text(object.file_sets.first&.id) if object.kind_of?(ActiveFedora::Base)
+        solr_doc['all_text_tsimv'] = extract_full_text(object)
         # rubocop:enable Style/ClassCheck
         solr_doc['title_ssim'] = SortTitle.new(object.title.first).alphabetical
         solr_doc['depositor_ssi'] = object.depositor
@@ -38,10 +37,37 @@ module HykuIndexing
 
   private
 
-  def full_text(file_set_id)
-    return if !Flipflop.default_pdf_viewer? || file_set_id.blank?
+  def extract_full_text(object)
+    child_works = Hyrax.custom_queries.find_child_works(resource: object)
+
+    if child_works.empty?
+      extract_text_from_pdf_directly(object)
+    else
+      file_set_texts = child_works_file_sets(child_works).map { |fs| all_text(fs) }.select(&:present?)
+      if file_set_texts.join.blank?
+        extract_text_from_pdf_directly(object)
+      else
+        file_set_texts.join("\n---------------------------\n")
+      end
+    end
+  end
+
+  def extract_text_from_pdf_directly(object)
+    file_set_id = Hyrax.custom_queries.find_child_file_sets(resource: object).first&.id&.to_s
+    return if file_set_id.blank?
 
     SolrDocument.find(file_set_id)['all_text_tsimv']
+  end
+
+  def child_works_file_sets(child_works)
+    child_works.map { |child_work| Hyrax.custom_queries.find_child_file_sets(resource: child_work) }.flatten
+  end
+
+  def all_text(fs)
+    text = IiifPrint::Data::WorkDerivatives.data(from: fs, of_type: 'txt') || ''
+    return text if text.empty?
+
+    text.tr("\n", ' ').squeeze(' ')
   end
 
   def add_date(solr_doc)

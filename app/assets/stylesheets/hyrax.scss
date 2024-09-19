@@ -25,3 +25,8 @@
     background: #ffff00;
   font-weight: 700;
 }
+
+// to make collection form labels bold
+#collection-edit-controls label.control-label {
+  font-weight: bold !important;
+}

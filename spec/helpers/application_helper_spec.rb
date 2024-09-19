@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe ApplicationHelper do
+RSpec.describe ApplicationHelper, type: :helper do
   describe "#markdown" do
     let(:header) { '# header' }
     let(:bold) { '*bold*' }
@@ -13,8 +13,9 @@ RSpec.describe ApplicationHelper do
 
   describe '#local_for' do
     context 'when term is missing' do
-      subject { helper.locale_for(type: 'labels', record_class: "account", term: :very_much_missing) }
-      it { is_expected.to be_a(String) }
+      it 'returns nil' do
+        expect(helper.locale_for(type: 'labels', record_class: "account", term: :very_much_missing)).to be_nil
+      end
     end
   end
 end

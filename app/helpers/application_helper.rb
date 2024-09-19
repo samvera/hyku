@@ -48,11 +48,11 @@ module ApplicationHelper
   def locale_for(type:, term:, record_class:)
     term              = term.to_s
     record_class      = record_class.to_s.downcase
-    work_or_collection = record_class == 'collection' ? 'collection' : 'defaults'
+    work_or_collection = record_class == Hyrax.config.collection_model.downcase ? 'collection' : 'defaults'
     locale             = t("hyrax.#{record_class}.#{type}.#{term}")
 
     if missing_translation(locale)
-      (t("simple_form.#{type}.#{work_or_collection}.#{term}") || term.titleize) .html_safe
+      (t("simple_form.#{type}.#{work_or_collection}.#{term}")).try(:html_safe)
     else
       locale.html_safe
     end

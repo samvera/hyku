@@ -30,7 +30,7 @@ gem 'blacklight_range_limit'
 gem 'bolognese', '>= 1.9.10'
 gem 'bootstrap', '~> 4.6'
 gem 'bootstrap-datepicker-rails'
-gem 'bulkrax', github: 'samvera/bulkrax', branch: 'main'
+gem 'bulkrax', '~> 8.0'
 gem 'byebug', group: %i[development test]
 gem 'capybara', group: %i[test]
 gem 'capybara-screenshot', '~> 1.0', group: %i[test]
@@ -75,7 +75,7 @@ gem 'omniauth-multi-provider'
 gem 'omniauth_openid_connect'
 gem 'omniauth-rails_csrf_protection', '~> 1.0'
 gem 'omniauth-saml', '~> 2.1'
-gem 'order_already'
+gem 'order_already', '~> 0.3.2'
 gem 'parser', '>= 3.1.0.0'
 gem 'pg'
 gem 'postrank-uri', '>= 1.0.24'

@@ -62,20 +62,17 @@ RSpec.describe 'Create a Etd', type: :feature, js: true, clean: true, cohort: 'b
       fill_in('Keyword', with: 'testing')
       select('In Copyright', from: 'Rights')
       fill_in('Date', with: '01/27/2021')
-      fill_in('Degree Name', with: 'Bachelor of Science')
-      fill_in('Degree Level', with: 'Undergraduate')
-      fill_in('Degree Discipline', with: 'Computer Science')
-      fill_in('Degree Grantor', with: 'University of Technology')
-      fill_in('Level', with: 'High')
-      fill_in('Discipline', with: 'Com Sci')
-      fill_in('Grantor', with: 'PALNI/PALCI')
+      fill_in('Degree name', with: 'Bachelor of Science')
+      fill_in('Degree level', with: 'Undergraduate')
+      fill_in('Degree discipline', with: 'Computer Science')
+      fill_in('Degree grantor', with: 'University of Technology')
       select('Article', from: 'Resource type')
 
       page.choose('etd_visibility_open')
       expect(page).to have_content('Please note, making something visible to the world (i.e. marking this as Public) may be viewed as publishing which could impact your ability to')
       find('#agreement').click
 
-      click_on('Save')
+      click_button('with_files_submit')
       expect(page).to have_content('My Test Work')
       expect(page).to have_content("Your files are being processed by Hyku in the background.")
     end

@@ -324,7 +324,7 @@ GEM
     bibtex-ruby (6.0.0)
       latex-decode (~> 0.0)
     bigdecimal (3.1.5)
-    bindata (2.4.15)
+    bindata (2.5.0)
     bindex (0.8.1)
     bixby (5.0.0)
       rubocop (>= 1, < 2)
@@ -590,7 +590,8 @@ GEM
       zlib (~> 2.1)
     faraday-multipart (1.0.4)
       multipart-post (~> 2)
-    faraday-net_http (3.0.2)
+    faraday-net_http (3.1.1)
+      net-http
     faraday-retry (2.2.1)
       faraday (~> 2.0)
     fcrepo_wrapper (0.9.0)
@@ -731,7 +732,7 @@ GEM
       hydra-derivatives (~> 3.6)
       hydra-file_characterization (~> 1.0)
       hydra-pcdm (>= 0.9)
-    i18n (1.14.1)
+    i18n (1.14.6)
       concurrent-ruby (~> 1.0)
     i18n-debug (1.2.0)
       i18n (< 2)
@@ -775,9 +776,10 @@ GEM
       thor (>= 0.14, < 2.0)
     json (2.7.1)
     json-canonicalization (0.3.1)
-    json-jwt (1.16.3)
+    json-jwt (1.16.6)
       activesupport (>= 4.2)
       aes_key_wrap
+      base64
       bindata
       faraday (~> 2.0)
       faraday-follow_redirects
@@ -916,7 +918,7 @@ GEM
     mini_magick (4.12.0)
     mini_mime (1.1.5)
     mini_portile2 (2.8.7)
-    minitest (5.20.0)
+    minitest (5.25.1)
     mods (2.4.1)
       edtf
       iso-639
@@ -931,6 +933,8 @@ GEM
       activesupport
     nest (3.2.0)
       redic
+    net-http (0.4.1)
+      uri
     net-http-persistent (4.0.2)
       connection_pool (~> 2.2)
     net-imap (0.4.9)
@@ -1402,6 +1406,7 @@ GEM
     unicode-display_width (2.5.0)
     unicode-types (1.9.0)
     unicode_utils (1.4.0)
+    uri (0.13.1)
     validatable (1.6.7)
     validate_email (0.1.6)
       activemodel (>= 3.0)
@@ -1460,7 +1465,7 @@ GEM
       rdf (~> 3.2, >= 3.2.9)
       rdf-xsd (~> 3.2)
     yard (0.9.36)
-    zeitwerk (2.6.12)
+    zeitwerk (2.6.18)
     zlib (2.1.1)
 
 PLATFORMS

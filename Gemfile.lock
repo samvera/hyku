@@ -973,7 +973,7 @@ GEM
       bigdecimal (>= 3.0)
     oj_mimic_json (1.0.1)
     okcomputer (1.18.5)
-    omniauth (2.1.1)
+    omniauth (2.1.2)
       hashie (>= 3.4.6)
       rack (>= 2.2.3)
       rack-protection
@@ -982,9 +982,9 @@ GEM
     omniauth-rails_csrf_protection (1.0.1)
       actionpack (>= 4.2)
       omniauth (~> 2.0)
-    omniauth-saml (2.1.0)
-      omniauth (~> 2.0)
-      ruby-saml (~> 1.12)
+    omniauth-saml (2.1.2)
+      omniauth (~> 2.1)
+      ruby-saml (~> 1.17)
     omniauth_openid_connect (0.7.1)
       omniauth (>= 1.9, < 3)
       openid_connect (~> 2.2)
@@ -1043,7 +1043,7 @@ GEM
       rdf
     raabro (1.4.0)
     racc (1.8.1)
-    rack (2.2.8)
+    rack (2.2.9)
     rack-oauth2 (2.2.0)
       activesupport
       attr_required
@@ -1051,7 +1051,8 @@ GEM
       faraday-follow_redirects
       json-jwt (>= 1.11.0)
       rack (>= 2.1.0)
-    rack-protection (3.1.0)
+    rack-protection (3.2.0)
+      base64 (>= 0.1.0)
       rack (~> 2.2, >= 2.2.4)
     rack-test (0.7.0)
       rack (>= 1.0, < 3)

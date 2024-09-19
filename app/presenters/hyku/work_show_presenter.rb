@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # OVERRIDE here to add featured collection methods and to delegate collection presenters to the member presenter factory
-# OVERRIDE: Hyrax 5.0.0rc2 to add Hyrax IIIF AV
+# OVERRIDE: Hyrax 5 to add Hyrax IIIF AV and manage logic for which viewer to display
 
 module Hyku
   class WorkShowPresenter < Hyrax::WorkShowPresenter
@@ -72,6 +72,11 @@ module Hyku
     end
     # End Featured Collections Methods
 
+    ##
+    # Begin viewer determination logic
+    # note: iiif_viewer is defined in TenantConfig
+
+    # @return [Boolean] Use PDF.js viewer
     def show_pdf_viewer?
       return unless Flipflop.default_pdf_viewer?
       return unless show_pdf_viewer
@@ -80,16 +85,28 @@ module Hyku
       show_for_pdf?(show_pdf_viewer)
     end
 
+    # @return [Boolean] Use video embed viewer
+    def video_embed_viewer?
+      extract_video_embed_presence
+    end
+
+    # @return [Boolean] use any viewer
+    def viewer?
+      iiif_viewer? || video_embed_viewer? || show_pdf_viewer?
+    end
+
+    # The use of universal_viewer has been removed, but leaving
+    # an alias in case any knapsack apps use it
+    # @todo: is this method obsolete?
+    alias universal_viewer? iiif_viewer?
+
+    # @return [Boolean] allow download via button below viewer
     def show_pdf_download_button?
       return unless Hyrax.config.display_media_download_link?
       return unless file_set_presenters.any?(&:pdf?)
       return unless show_pdf_download_button
 
       show_for_pdf?(show_pdf_download_button)
-    end
-
-    def viewer?
-      iiif_viewer? || video_embed_viewer? || show_pdf_viewer?
     end
 
     def parent_works(current_user = nil)
@@ -104,12 +121,9 @@ module Hyku
                         end
     end
 
-    def video_embed_viewer?
-      extract_video_embed_presence
-    end
-
     private
 
+    # @todo: is this method obsolete?
     def members_include_viewable?
       file_set_presenters.any? do |presenter|
         iiif_media?(presenter:) && current_ability.can?(:read, presenter.id)

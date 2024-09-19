@@ -1,4 +1,11 @@
 # frozen_string_literal: true
+
+if ActiveModel::Type::Boolean.new.cast(ENV.fetch("REPOSITORY_S3_STORAGE", false))
+  require "shrine/storage/s3"
+  require "valkyrie/storage/shrine"
+  require "valkyrie/shrine/checksum/s3"
+end
+
 # rubocop:disable Metrics/BlockLength
 Rails.application.config.after_initialize do
   [
@@ -31,12 +38,33 @@ Rails.application.config.after_initialize do
   Hyrax.config.query_index_from_valkyrie = true
   Hyrax.config.index_adapter = :solr_index
 
-  Valkyrie::StorageAdapter.register(
-    Valkyrie::Storage::Disk.new(base_path: Rails.root.join("storage", "files"),
-                                file_mover: FileUtils.method(:cp)),
-    :disk
-  )
-  Valkyrie.config.storage_adapter  = :disk
+  if ActiveModel::Type::Boolean.new.cast(ENV.fetch("REPOSITORY_S3_STORAGE", false))
+    shrine_s3_options = {
+      bucket: ENV.fetch("REPOSITORY_S3_BUCKET") { "nurax_pg#{Rails.env}" },
+      region: ENV.fetch("REPOSITORY_S3_REGION", "us-east-1"),
+      access_key_id: (ENV["REPOSITORY_S3_ACCESS_KEY"] || ENV["MINIO_ACCESS_KEY"]),
+      secret_access_key: (ENV["REPOSITORY_S3_SECRET_KEY"] || ENV["MINIO_SECRET_KEY"])
+    }
+
+    if ENV["MINIO_ENDPOINT"].present?
+      shrine_s3_options[:endpoint] = "http://#{ENV["MINIO_ENDPOINT"]}:#{ENV.fetch("MINIO_PORT", 9000)}"
+      shrine_s3_options[:force_path_style] = true
+    end
+
+    Valkyrie::StorageAdapter.register(
+      Valkyrie::Storage::Shrine.new(Shrine::Storage::S3.new(**shrine_s3_options)),
+      :repository_s3
+    )
+
+    Valkyrie.config.storage_adapter = :repository_s3
+  else
+    Valkyrie::StorageAdapter.register(
+      Valkyrie::Storage::Disk.new(base_path: Rails.root.join("storage", "files"),
+        file_mover: FileUtils.method(:cp)),
+      :disk
+    )
+    Valkyrie.config.storage_adapter  = :disk
+  end
   Valkyrie.config.indexing_adapter = :solr_index
 
   # load all the sql based custom queries

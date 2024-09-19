@@ -47,7 +47,7 @@ Rails.application.config.after_initialize do
     }
 
     if ENV["REPOSITORY_S3_ENDPOINT"].present?
-      shrine_s3_options[:endpoint] = "http://#{ENV["REPOSITORY_S3_ENDPOINT"]}:#{ENV.fetch("REPOSITORY_S3_PORT", 9000)}"
+      shrine_s3_options[:endpoint] = "http://#{ENV['REPOSITORY_S3_ENDPOINT']}:#{ENV.fetch('REPOSITORY_S3_PORT', 9000)}"
       shrine_s3_options[:force_path_style] = true
     end
 
@@ -60,10 +60,10 @@ Rails.application.config.after_initialize do
   else
     Valkyrie::StorageAdapter.register(
       Valkyrie::Storage::Disk.new(base_path: Rails.root.join("storage", "files"),
-        file_mover: FileUtils.method(:cp)),
+                                  file_mover: FileUtils.method(:cp)),
       :disk
     )
-    Valkyrie.config.storage_adapter  = :disk
+    Valkyrie.config.storage_adapter = :disk
   end
   Valkyrie.config.indexing_adapter = :solr_index
 

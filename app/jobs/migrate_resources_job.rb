@@ -22,7 +22,6 @@ class MigrateResourcesJob < ApplicationJob
         errors << result unless result.success?
       end
     end
-    raise errors.inspect unless errors.blank?
+    raise errors.inspect if errors.present?
   end
-
 end

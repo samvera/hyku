@@ -82,6 +82,13 @@ Hyku is primarily configured using environment variables. The default configurat
 | REDIS_HOST | Host location of redis | redis | no |
 | REDIS_PASSWORD | Password for redis, optional | - | no |
 | REDIS_URL | Optional explicit redis url, build from host/passsword if not specified | redis://:staging@redis:6397/ | no |
+| REPOSITORY_S3_STORAGE | Whether to turn on S3 or S3 like storage for Valkyrie or not | false | no |
+| REPOSITORY_S3_BUCKET | If storing file uploads in S3, what bucket should they be put in | - | no |
+| REPOSITORY_S3_REGION | Region code for S3 like storage  | - | no |
+| REPOSITORY_S3_ACCESS_KEY | Access key for S3 like storage | - | no |
+| REPOSITORY_S3_SECRET_KEY | The secret key for S3 like storage | - | no |
+| REPOSITORY_S3_ENDPOINT | Needed for S3 like storage such as Minio or custom S3 endpoints | - | no |
+| REPOSITORY_S3_PORT | Only needed for S3 like storage like Minio | - | no |
 | SECRET_KEY_BASE | Used by Rails to secure sessions, should be a 128 character hex | - | no |
 | SMTP_ADDRESS | Address of the smtp endpoint for sending email | - | no |
 | SMTP_DOMAIN | Domain for sending email | - | no |
@@ -198,3 +205,7 @@ You can log all of the I18n lookups to the Rails logger by setting the I18N_DEBU
 ```console
 $ I18N_DEBUG=true bin/rails server
 ```
+
+## S3 Like Storage
+
+You can upload your primary works to S3 in Valkyrie mode by turning on `REPOSITORY_S3_STORAGE` and setting the accompanying bucket and credentials variables. This enables both AWS S3 and other S3 like storage engines such as Minio. As of this writing this only affects Valkyrie resources and only the primary storage. Derivatives, uploads and branding assets all still go to the shared storage directories.

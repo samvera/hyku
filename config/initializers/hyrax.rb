@@ -242,6 +242,8 @@ Hyrax.config do |config|
   # essence a "super" method.
   original_translator = config.translate_id_to_uri
   config.translate_id_to_uri = ->(id) { original_translator.call(id.to_s) }
+
+  config.file_set_indexer = Hyku::Indexers::FileSetIndexer
 end
 # rubocop:enable Metrics/BlockLength
 

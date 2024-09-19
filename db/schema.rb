@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_08_23_173525) do
+ActiveRecord::Schema.define(version: 2024_09_16_182823) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -151,6 +151,8 @@ ActiveRecord::Schema.define(version: 2024_08_23_173525) do
     t.datetime "last_error_at"
     t.datetime "last_succeeded_at"
     t.string "status_message", default: "Pending"
+    t.datetime "last_imported_at"
+    t.datetime "next_import_at"
     t.index ["user_id"], name: "index_bulkrax_importers_on_user_id"
   end
 

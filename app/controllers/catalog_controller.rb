@@ -41,7 +41,7 @@ class CatalogController < ApplicationController
 
     # IiifPrint index fields
     config.add_index_field 'all_text_timv'
-    config.add_index_field 'file_set_text_tsimv', label: "Item contents", highlight: true, helper_method: :render_ocr_snippets
+    config.add_index_field 'all_text_tsimv', label: "Item contents", highlight: true, helper_method: :render_ocr_snippets, if: :query_present?
 
     # configuration for Blacklight IIIF Content Search
     config.iiif_search = {
@@ -83,7 +83,7 @@ class CatalogController < ApplicationController
       rows: 10,
       qf: (
         IiifPrint.config.metadata_fields.keys.map { |attribute| "#{attribute}_tesim" } +
-        ["title_tesim", "description_tesim", "all_text_timv", "file_set_text_tsimv"]
+        ["title_tesim", "description_tesim", "all_text_timv", "all_text_tsimv"]
       ).uniq.join(' '),
       "hl": true,
       "hl.simple.pre": "<span class='highlight'>",
@@ -637,6 +637,10 @@ class CatalogController < ApplicationController
   # https://github.com/samvera/hyrax/blob/abeb5aff99d8ff6a7d32f6e8234538d7bef15fbd/.dassie/app/controllers/catalog_controller.rb#L304-L309
   def render_bookmarks_control?
     false
+  end
+
+  def query_present?
+    params[:q].present?
   end
 end
 # rubocop:enable Metrics/ClassLength, Metrics/BlockLength

@@ -206,6 +206,13 @@ class Reprocessor # rubocop:disable Metrics/ClassLength
     }
   end
 
+  def lambda_migrate_resources
+    @lambda_migrate_resources = lambda { |line, _progress|
+      id = line.strip
+      MigrateResourcesJob.perform_later(ids: [id])
+    }
+  end
+
   # because this takes an arg, we dont memoize
   def lambda_job(_job_klass)
     @lambda_job = lambda { |line, _progress, job_klass|

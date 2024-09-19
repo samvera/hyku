@@ -11,7 +11,8 @@ RSpec.describe MigrateResourcesJob, clean: true do
     clear_enqueued_jobs
   end
 
-  let(:account) { create(:account_with_public_schema) }
+  let(:account)        { create(:account_with_public_schema) }
+  let(:af_file_set)       { create(:file_set, title: ['TestFS']) }
 
   let!(:af_admin_set) do
     as = AdminSet.new(title: ['AF Admin Set'])
@@ -28,6 +29,16 @@ RSpec.describe MigrateResourcesJob, clean: true do
       MigrateResourcesJob.perform_now
 
       expect(Valkyrie::Persistence::Postgres::ORM::Resource.find_by(id: af_admin_set.id.to_s)).to be_present
+    end
+
+    it "migrates a file set by its id", active_fedora_to_valkyrie: true do
+      expect(Valkyrie::Persistence::Postgres::ORM::Resource.find_by(id: af_file_set.id.to_s)).to be_nil
+
+      ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
+      switch!(account)
+      MigrateResourcesJob.perform_now(ids: [af_file_set.id])
+
+      expect(Valkyrie::Persistence::Postgres::ORM::Resource.find_by(id: af_file_set.id.to_s)).to be_present
     end
   end
 end

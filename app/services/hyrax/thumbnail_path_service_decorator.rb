@@ -10,7 +10,18 @@ module Hyrax
       collection_thumbnail = CollectionBrandingInfo.where(collection_id: object.id.to_s, role: "thumbnail").first
       return collection_thumbnail.local_path.gsub(Hyrax.config.branding_path.to_s, '/branding') if collection_thumbnail
 
-      default_collection_image
+      return default_image if object.try(:thumbnail_id).blank?
+
+      thumb = fetch_thumbnail(object)
+      return default_collection_image unless thumb
+      return call(thumb) unless thumb.file_set?
+      if audio?(thumb)
+        audio_image
+      elsif thumbnail?(thumb)
+        thumbnail_path(thumb)
+      else
+        default_collection_image
+      end
     end
 
     def default_collection_image

@@ -11,7 +11,7 @@ module HykuIndexing
       super(*args, **kwargs, &block).tap do |solr_doc|
         # rubocop:disable Style/ClassCheck
 
-        # Active Fedora refers to objce
+        # Active Fedora refers to object
         # Specs refer to object as @object
         # Valkyrie refers to resource
         object ||= @object || resource
@@ -20,7 +20,7 @@ module HykuIndexing
         solr_doc['bulkrax_identifier_tesim'] = object.bulkrax_identifier if object.respond_to?(:bulkrax_identifier)
         solr_doc['account_institution_name_ssim'] = Site.instance.institution_label
         solr_doc['valkyrie_bsi'] = object.kind_of?(Valkyrie::Resource)
-        solr_doc['member_ids_ssim'] = object.member_ids.map(&:id) if object.kind_of?(Valkyrie::Resource)
+        solr_doc['member_ids_ssim'] = object.member_ids.map(&:to_s)
         solr_doc['all_text_tsimv'] = extract_full_text(object)
         # rubocop:enable Style/ClassCheck
         solr_doc['title_ssi'] = SortTitle.new(object.title.first).alphabetical

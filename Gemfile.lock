@@ -193,6 +193,18 @@ GIT
       rack (>= 1.3.6)
 
 GIT
+  remote: https://github.com/scientist-softserv/iiif_print.git
+  revision: 02f68fc6d93b44b05d826b29645ef182534a51b5
+  branch: main
+  specs:
+    iiif_print (3.0.1)
+      blacklight_iiif_search (>= 1.0, < 3.0)
+      derivative-rodeo (~> 0.5)
+      hyrax (>= 2.5, < 6)
+      nokogiri (>= 1.13.2)
+      rdf-vocab (~> 3.0)
+
+GIT
   remote: https://github.com/scientist-softserv/willow_sword.git
   revision: 904313fcb669837b363d7095db8e6b7a818d0e21
   branch: main
@@ -330,10 +342,11 @@ GEM
     blacklight_advanced_search (7.0.0)
       blacklight (~> 7.0)
       parslet
-    blacklight_iiif_search (2.0.0)
+    blacklight_iiif_search (2.1.0)
       blacklight (~> 7.0)
+      ffi (~> 1.16.3)
       iiif-presentation
-      rails (>= 5.1, < 7)
+      rails (>= 6, < 7.3)
     blacklight_oai_provider (7.0.2)
       blacklight (~> 7.0)
       oai (~> 1.2)
@@ -752,12 +765,6 @@ GEM
       json
     iiif_manifest (1.3.1)
       activesupport (>= 4)
-    iiif_print (3.0.1)
-      blacklight_iiif_search (>= 1.0, < 3.0)
-      derivative-rodeo (~> 0.5)
-      hyrax (>= 2.5, < 6)
-      nokogiri (>= 1.13.2)
-      rdf-vocab (~> 3.0)
     iso-639 (0.3.6)
     iso8601 (0.9.1)
     jaro_winkler (1.5.6)
@@ -1516,7 +1523,7 @@ DEPENDENCIES
   hyrax-iiif_av!
   i18n-debug
   i18n-tasks
-  iiif_print
+  iiif_print!
   jbuilder (~> 2.5)
   jquery-rails
   json-canonicalization (= 0.3.1)

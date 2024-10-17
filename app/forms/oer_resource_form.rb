@@ -6,13 +6,17 @@
 # @see https://github.com/samvera/hyrax/wiki/Hyrax-Valkyrie-Usage-Guide#forms
 # @see https://github.com/samvera/valkyrie/wiki/ChangeSets-and-Dirty-Tracking
 class OerResourceForm < Hyrax::Forms::ResourceForm(OerResource)
-  # Commented out basic_metadata because these terms were added to etd_resource so we can customize it.
+  # Commented out basic_metadata because the terms were added to the resource's yaml
+  # so we can customize it
   # include Hyrax::FormFields(:basic_metadata)
   include Hyrax::FormFields(:bulkrax_metadata)
   include Hyrax::FormFields(:oer_resource)
   include Hyrax::FormFields(:with_pdf_viewer)
   include Hyrax::FormFields(:with_video_embed)
   include VideoEmbedBehavior::Validation
+  # this duplicates Hyrax::BasicMetadataFormFieldsBehavior behavior which previously
+  # came in dynamically via lib/hyrax/form_fields.rb
+  include BasedNearFormFieldsBehavior
   # Define custom form fields using the Valkyrie::ChangeSet interface
   #
   # property :my_custom_form_field

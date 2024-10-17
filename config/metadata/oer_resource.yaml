@@ -362,6 +362,8 @@ attributes:
   based_near:
     type: string
     multiple: true
+    form:
+      primary: false
     index_keys:
       - "based_near_sim"
       - "based_near_tesim"

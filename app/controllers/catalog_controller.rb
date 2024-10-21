@@ -41,7 +41,11 @@ class CatalogController < ApplicationController
 
     # IiifPrint index fields
     config.add_index_field 'all_text_timv'
-    config.add_index_field 'all_text_tsimv', label: "Item contents", highlight: true, helper_method: :render_ocr_snippets, if: :query_present?
+    config.add_index_field 'all_text_tsimv',
+      label: "Item contents",
+      highlight: true,
+      helper_method: :render_ocr_snippets,
+      values: ->(field_config, document, _context) { document.highlight_field(field_config.field).map(&:html_safe) if document.has_highlight_field? field_config.field }
 
     # configuration for Blacklight IIIF Content Search
     config.iiif_search = {
@@ -637,10 +641,6 @@ class CatalogController < ApplicationController
   # https://github.com/samvera/hyrax/blob/abeb5aff99d8ff6a7d32f6e8234538d7bef15fbd/.dassie/app/controllers/catalog_controller.rb#L304-L309
   def render_bookmarks_control?
     false
-  end
-
-  def query_present?
-    params[:q].present?
   end
 end
 # rubocop:enable Metrics/ClassLength, Metrics/BlockLength

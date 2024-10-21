@@ -19,7 +19,7 @@ module SharedSearchHelper
     url = get_url(id:, request: request_params, account_cname:, base_route_name:)
 
     # pass search query params to work show page
-    params[:q].present? ? "#{url}?q=#{params[:q]}" : url
+    (params[:q].present? && params[:highlight]) ? "#{url}?q=#{params[:q]}" : url
   end
 
   private

@@ -8,20 +8,15 @@ end
 
 # rubocop:disable Metrics/BlockLength
 Rails.application.config.after_initialize do
-  [
-    GenericWork,
-    Image,
-    Etd,
-    Oer
-  ].each do |klass|
+  # Add all concerns that are migrating from ActiveFedora here
+  WINGS_CONCERNS ||= [AdminSet, Collection, Etd, GenericWork, Image, Oer].freeze
+
+  WINGS_CONCERNS.each do |klass|
     Wings::ModelRegistry.register("#{klass}Resource".constantize, klass)
     # we register itself so we can pre-translate the class in Freyja instead of having to translate in each query_service
     Wings::ModelRegistry.register(klass, klass)
   end
-  Wings::ModelRegistry.register(Collection, Collection)
-  Wings::ModelRegistry.register(CollectionResource, Collection)
-  Wings::ModelRegistry.register(AdminSet, AdminSet)
-  Wings::ModelRegistry.register(AdminSetResource, AdminSet)
+
   Wings::ModelRegistry.register(FileSet, FileSet)
   Wings::ModelRegistry.register(Hyrax::FileSet, FileSet)
   Wings::ModelRegistry.register(Hydra::PCDM::File, Hydra::PCDM::File)
@@ -110,34 +105,8 @@ Rails.application.config.to_prepare do
   end
 
   Valkyrie.config.resource_class_resolver = lambda do |resource_klass_name|
-    # TODO: Can we use some kind of lookup.
-    klass_name = resource_klass_name.gsub(/Resource$/, '')
-    if %w[
-      GenericWork
-      Image
-      Etd
-      Oer
-    ].include?(klass_name)
-      "#{klass_name}Resource".constantize
-    elsif 'Collection' == klass_name
-      CollectionResource
-    elsif 'AdminSet' == klass_name
-      AdminSetResource
-    # Without this mapping, we'll see cases of Postgres Valkyrie adapter attempting to write to
-    # Fedora.  Yeah!
-    elsif 'Hydra::AccessControl' == klass_name
-      Hyrax::AccessControl
-    elsif 'FileSet' == klass_name
-      Hyrax::FileSet
-    elsif 'Hydra::AccessControls::Embargo' == klass_name
-      Hyrax::Embargo
-    elsif 'Hydra::AccessControls::Lease' == klass_name
-      Hyrax::Lease
-    elsif 'Hydra::PCDM::File' == klass_name
-      Hyrax::FileMetadata
-    else
-      klass_name.constantize
-    end
+    klass = resource_klass_name.gsub(/Resource$/, '').constantize
+    Wings::ModelRegistry.reverse_lookup(klass) || klass
   end
 end
 # rubocop:enable Metrics/BlockLength

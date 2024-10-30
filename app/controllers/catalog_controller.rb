@@ -82,6 +82,7 @@ class CatalogController < ApplicationController
     config.http_method = :post
 
     ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
+    #  Max fragsize is needed to not cut off full text search at default 51,000 characters
     config.default_solr_params = {
       qt: "search",
       rows: 10,
@@ -93,7 +94,8 @@ class CatalogController < ApplicationController
       "hl.simple.pre": "<span class='highlight'>",
       "hl.simple.post": "</span>",
       "hl.snippets": 30,
-      "hl.fragsize": 100
+      "hl.fragsize": 100,
+      "hl.maxAnalyzedChars": 5100000
     }
 
     # Specify which field to use in the tag cloud on the homepage.

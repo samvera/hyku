@@ -95,7 +95,7 @@ class CatalogController < ApplicationController
       "hl.simple.post": "</span>",
       "hl.snippets": 30,
       "hl.fragsize": 100,
-      "hl.maxAnalyzedChars": 5100000
+      "hl.maxAnalyzedChars": 5_100_000
     }
 
     # Specify which field to use in the tag cloud on the homepage.

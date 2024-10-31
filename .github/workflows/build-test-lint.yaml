@@ -9,11 +9,16 @@ on:
       - main
   workflow_dispatch:
     inputs:
-      debug_enabled:
-        type: boolean
-        description: "Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)"
+      debug_step:
         required: false
-        default: false
+        description: "Pause the selected step to debug using tmate"
+        type: choice
+        default: ""
+        options:
+          - ""
+          - build
+          - test
+          - lint
 
 env:
   REGISTRY: ghcr.io

@@ -11,7 +11,7 @@
         <% if should_render_index_field?(document, field) && field_value.present? %>
           <div class="row">
             <dt class="col-5 text-right" data-solr-field-name="<%= field_name %>"><%= render_index_field_label document, field: field_name %></dt>
-            <dd class="col-7"><%= markdown(doc_presenter.field_value field) %></dd>
+            <dd class="col-7"><%= markdown(field_value) %></dd>
           </div>
         <% end %>
       <% end %>

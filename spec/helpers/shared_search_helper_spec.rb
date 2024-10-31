@@ -28,8 +28,9 @@ RSpec.describe SharedSearchHelper do
 
       it 'returns #generate_work_url with a query' do
         allow(params).to receive(:[]).with(:q).and_return('foo')
+        allow(work_hash).to receive(:any_highlighting_in_all_text_fields?).and_return(false)
 
-        url = "#{request.protocol}#{cname}/concern/generic_works/#{uuid}?q=foo"
+        url = "#{request.protocol}#{cname}/concern/generic_works/#{uuid}"
         expect(helper.generate_work_url(work_hash, request, params)).to eq(url)
       end
 
@@ -50,12 +51,12 @@ RSpec.describe SharedSearchHelper do
         expect(helper.generate_work_url(work_hash, request)).to eq(url)
       end
 
-      it 'returns #generate_work_url with a query' do
+      it 'returns #generate_work_url if given a query but no highlighting' do
         allow(params).to receive(:[]).with(:q).and_return('foo')
-
-        url = "#{request.protocol}#{account.cname}:#{request.port}/concern/generic_works/#{uuid}?q=foo"
-        expect(helper.generate_work_url(work_hash, request, params)).to eq(url)
         allow(work_hash).to receive(:any_highlighting_in_all_text_fields?).and_return(false)
+
+        url = "#{request.protocol}#{account.cname}:#{request.port}/concern/generic_works/#{uuid}"
+        expect(helper.generate_work_url(work_hash, request, params)).to eq(url)
       end
 
       it 'returns #generate_work_url with a query and highlight true for UV' do

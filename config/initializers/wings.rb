@@ -33,8 +33,7 @@ Rails.application.config.after_initialize do
   Hyrax.config.query_index_from_valkyrie = true
   Hyrax.config.index_adapter = :solr_index
   Valkyrie::StorageAdapter.register(
-    Valkyrie::Storage::Disk.new(base_path: Rails.root.join("storage", "files"),
-      file_mover: FileUtils.method(:cp)),
+    Valkyrie::Storage::Disk.new(base_path: Rails.root.join("storage", "files"), file_mover: FileUtils.method(:cp)),
     :disk
   )
 

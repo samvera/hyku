@@ -32,6 +32,11 @@ Rails.application.config.after_initialize do
   Valkyrie.config.metadata_adapter = :freyja
   Hyrax.config.query_index_from_valkyrie = true
   Hyrax.config.index_adapter = :solr_index
+  Valkyrie::StorageAdapter.register(
+    Valkyrie::Storage::Disk.new(base_path: Rails.root.join("storage", "files"),
+      file_mover: FileUtils.method(:cp)),
+    :disk
+  )
 
   if ActiveModel::Type::Boolean.new.cast(ENV.fetch("REPOSITORY_S3_STORAGE", false))
     shrine_s3_options = {
@@ -53,11 +58,6 @@ Rails.application.config.after_initialize do
 
     Valkyrie.config.storage_adapter = :repository_s3
   else
-    Valkyrie::StorageAdapter.register(
-      Valkyrie::Storage::Disk.new(base_path: Rails.root.join("storage", "files"),
-                                  file_mover: FileUtils.method(:cp)),
-      :disk
-    )
     Valkyrie.config.storage_adapter = :disk
   end
   Valkyrie.config.indexing_adapter = :solr_index

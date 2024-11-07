@@ -95,6 +95,9 @@ GIT
   specs:
     hyku_knapsack (0.0.1)
       rails (>= 5.2.0)
+      sentry-rails
+      sentry-ruby
+      sentry-sidekiq
 
 GIT
   remote: https://github.com/samvera-labs/hyrax-doi.git
@@ -194,7 +197,7 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: 9c4783a8301c645b04f062a3e4ca4d3e8cdefc33
+  revision: a1905e2f5ce9598c4a743eedeaa7a7ee54cb4ce4
   branch: main
   specs:
     iiif_print (3.0.1)
@@ -1280,6 +1283,15 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    sentry-rails (5.21.0)
+      railties (>= 5.0)
+      sentry-ruby (~> 5.21.0)
+    sentry-ruby (5.21.0)
+      bigdecimal
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+    sentry-sidekiq (5.21.0)
+      sentry-ruby (~> 5.21.0)
+      sidekiq (>= 3.0)
     shacl (0.3.0)
       json-ld (~> 3.2)
       rdf (~> 3.2, >= 3.2.8)

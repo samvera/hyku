@@ -18,6 +18,8 @@ class Reprocessor # rubocop:disable Metrics/ClassLength
   SETTINGS = %w[header_lines batch_size current_location limit incremental_save log_dir].freeze
 
   attr_accessor(*SETTINGS)
+  attr_accessor :instance.error_log, :id_line_size, :id_log, :id_path
+
   def initialize
     @header_lines = 1
     @batch_size   = 1000
@@ -65,6 +67,10 @@ class Reprocessor # rubocop:disable Metrics/ClassLength
     SETTINGS.each do |setting|
       instance.send("#{setting}=", state[setting])
     end
+    instance.error_log = nil
+    instance.id_line_size = nil
+    instance.id_log = nil
+    instance.id_path = nil
   rescue Errno::ENOENT
     puts 'no save file to load' # rubocop:disable Rails/Output
     instance.log_dir = log_dir

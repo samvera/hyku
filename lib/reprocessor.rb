@@ -18,7 +18,7 @@ class Reprocessor # rubocop:disable Metrics/ClassLength
   SETTINGS = %w[header_lines batch_size current_location limit incremental_save log_dir].freeze
 
   attr_accessor(*SETTINGS)
-  attr_accessor :instance.error_log, :id_line_size, :id_log, :id_path
+  attr_writer :error_log, :id_line_size, :id_log, :id_path
 
   def initialize
     @header_lines = 1
@@ -93,30 +93,31 @@ class Reprocessor # rubocop:disable Metrics/ClassLength
   def capture_work_ids
     Hyrax.config.query_index_from_valkyrie = false
     search = "has_model_ssim:(#{Bulkrax.curation_concerns.join(' OR ')})"
-    caputre_with_solr(search)
+    capture_with_solr(search)
   end
 
   def capture_file_set_ids
     Hyrax.config.query_index_from_valkyrie = false
     search = "has_model_ssim:(FileSet)"
-    caputre_with_solr(search)
+    capture_with_solr(search)
   end
 
   def capture_collection_ids
     Hyrax.config.query_index_from_valkyrie = false
     search = "has_model_ssim:(Collection)"
-    caputre_with_solr(search)
+    capture_with_solr(search)
   end
 
-  def caputre_with_solr(search)
+  def capture_with_solr(search)
     count = Hyrax::SolrService.count(search)
     progress(count)
     while current_location < count
       break if limit && current_location >= limit
-      ids = Hyrax::SolrService.query(search, fl: 'id', rows: batch_size, start: current_location)
+      ids = Hyrax::SolrService.query(search, fl: 'id,fedora_id_ssi', rows: batch_size, start: current_location)
       self.current_location += batch_size
       ids.each do |i|
         id_log.error(i['id'])
+        id_log.error(i['fedora_id_ssi'])
       end
       progress.progress = [self.current_location, count].min
       Reprocessor.save if incremental_save

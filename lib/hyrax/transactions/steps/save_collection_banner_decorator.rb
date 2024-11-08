@@ -8,7 +8,8 @@ module Hyrax
       module SaveCollectionBannerDecorator
         include Hyku::CollectionBrandingBehavior
 
-        def call(collection_resource, update_banner_file_ids: nil, alttext: nil)
+        def call(collection_resource, update_banner_file_ids: nil, alttext: nil, banner_unchanged_indicator: true)
+          return Success(collection_resource) if ActiveModel::Type::Boolean.new.cast(banner_unchanged_indicator)
           collection_id = collection_resource.id.to_s
           process_banner_input(collection_id:, update_banner_file_ids:, alttext:)
           Success(collection_resource)

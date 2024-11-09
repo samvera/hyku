@@ -13,8 +13,8 @@ class MigrateResourceService
 
   def call
     prep_resource
-    Hyrax::Transactions::Container[collection_model_event_mapping[model]]
-      .with_step_args(**collection_model_steps_mapping[model]).call(resource_form)
+    Hyrax::Transactions::Container[model_events(model)]
+      .with_step_args(**model_steps(model)).call(resource_form)
   end
 
   def prep_resource
@@ -28,15 +28,15 @@ class MigrateResourceService
     @resource_form ||= Hyrax::Forms::ResourceForm.for(resource: resource)
   end
 
-  def collection_model_event_mapping
+  def model_events(model)
     {
       'AdminSet' => 'admin_set_resource.update',
       'Collection' => 'change_set.update_collection',
       'FileSet' => 'change_set.update_file_set'
-    }
+    }[model] || 'change_set.update_work'
   end
 
-  def collection_model_steps_mapping
+  def model_steps(model)
     {
       'AdminSet' => {},
       'Collection' => {
@@ -46,6 +46,10 @@ class MigrateResourceService
       'FileSet' => {
         'file_set.save_acl' => {}
       }
+    }[model] || {
+      'work_resource.add_file_sets' => { uploaded_files: [], file_set_params: [] },
+      'work_resource.update_work_members' => { work_members_attributes: [] },
+      'work_resource.save_acl' => { permissions_params: [] }
     }
   end
 end

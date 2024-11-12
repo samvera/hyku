@@ -23,6 +23,7 @@ module AccountSettings
     setting :allow_downloads, type: 'boolean', default: true
     setting :allow_signup, type: 'boolean', default: true
     setting :analytics_provider, type: 'string'
+    setting :bulkrax_split_pattern, type: 'string', default: Bulkrax.multi_value_element_split_on.source
     setting :bulkrax_validations, type: 'boolean', disabled: true
     setting :cache_api, type: 'boolean', default: false
     setting :contact_email, type: 'string', default: 'change-me-in-settings@example.com'
@@ -58,7 +59,7 @@ module AccountSettings
     validates :contact_email, :oai_admin_email,
               format: { with: URI::MailTo::EMAIL_REGEXP },
               allow_blank: true
-    validate :validate_email_format, :validate_contact_emails
+    validate :validate_email_format, :validate_contact_emails, :validate_split_pattern_regex
     validates :google_analytics_id,
               format: { with: /((UA|YT|MO)-\d+-\d+|G-[A-Z0-9]{10})/i },
               allow_blank: true
@@ -152,6 +153,16 @@ module AccountSettings
       settings[key].each do |email|
         errors.add(:"#{key}") unless email.match?(URI::MailTo::EMAIL_REGEXP)
       end
+    end
+  end
+
+  def validate_split_pattern_regex
+    return if settings['bulkrax_split_pattern'].blank?
+
+    begin
+      Regexp.new(settings['bulkrax_split_pattern'])
+    rescue RegexpError => e
+      errors.add(:bulkrax_split_pattern, e.message)
     end
   end
 

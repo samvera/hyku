@@ -50,7 +50,7 @@ Rails.application.configure do
   config.force_ssl = true
   config.ssl_options = {
     redirect: {
-      exclude: -> request { request.path == '/healthz' }
+      exclude: ->(request) { request.path == '/healthz' }
     }
   }
   # Use the lowest log level to ensure availability of diagnostic information

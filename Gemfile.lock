@@ -120,8 +120,8 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: e56340c729064b95611452211e3235a5eb5f85b1
-  branch: send-string-ids-to-job
+  revision: abd5955f325b966ebd21d0de8d96b61cf0421cf3
+  branch: main
   specs:
     hyrax (5.0.1)
       active-fedora (~> 14.0)

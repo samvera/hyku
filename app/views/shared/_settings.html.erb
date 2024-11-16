@@ -1,8 +1,24 @@
 <% if value[:type] == 'array' %>
-  <% current_account.send(key).each do |sub_value| %>
+  <% @account.send(key).each do |sub_value| %>
     <%= f.input key, value: sub_value %>
   <% end %>
 <% elsif value[:type] == 'hash' %>
+<% elsif value[:type] == 'json_editor' %>
+  <%= f.input key, as: :text, required: false, input_html: { value: @account.send(key) }, label: key.to_s.titleize %>
+  <script>
+    document.addEventListener('turbolinks:load', () => {
+      const input_textarea = document.getElementById('<%= "account_#{key}" %>')
+      if (input_textarea) {
+        CodeMirror.fromTextArea(input_textarea, {
+          mode: 'application/json',
+          autofocus: true,
+          lineNumbers: true,
+          theme: 'neat',
+          autoRefresh: true
+        });
+      };
+    });
+  </script>
 <% else %>
   <%= f.input key, as: value[:type] %>
 <% end %>

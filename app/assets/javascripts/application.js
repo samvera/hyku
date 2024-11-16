@@ -49,8 +49,9 @@
 //= require hyrax
 
 //= require codemirror
-//= require codemirror-autorefresh
 //= require codemirror/modes/css
+//= require codemirror/modes/javascript
+//= require codemirror-autorefresh
 
 //= require iiif_print
 

@@ -164,6 +164,8 @@ module AccountSettings
 
   def validate_json
     json_editor_settings.each do |key|
+      next unless settings[key].present?
+
       begin
         JSON.parse(settings[key])
       rescue JSON::ParserError => e

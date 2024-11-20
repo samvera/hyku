@@ -140,7 +140,7 @@ module AccountSettings
     when 'json_editor'
       begin
         JSON.pretty_generate(JSON.parse(value))
-      rescue JSON::ParserError => e
+      rescue JSON::ParserError
         value
       end
     end
@@ -164,7 +164,7 @@ module AccountSettings
 
   def validate_json
     json_editor_settings.each do |key|
-      next unless settings[key].present?
+      next if settings[key].blank?
 
       begin
         JSON.parse(settings[key])

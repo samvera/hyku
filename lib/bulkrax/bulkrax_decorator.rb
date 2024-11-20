@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PerTenantFieldMappings
   # OVERRIDE: [Bulkrax v8.2.0] Use tenant-specific field mappings if present
   def field_mappings

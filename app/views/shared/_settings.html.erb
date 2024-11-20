@@ -1,5 +1,12 @@
 <% if value[:type] == 'array' %>
-  <% @account.send(key).each do |sub_value| %>
+  <%# FIXME:
+      I think current_account here should be @account. @account is present both within the tenant
+      as well as in the proprietor views, while current_account is only present within a tenant.
+      Changing it to @account causes a spec in spec/features/accounts_spec.rb to fail, I think due
+      to the form sending inputs that should be treated as arrays as strings.
+      @see AccountSettings#validate_email_format
+    %>
+  <% current_account.send(key).each do |sub_value| %>
     <%= f.input key, value: sub_value %>
   <% end %>
 <% elsif value[:type] == 'hash' %>

@@ -28,10 +28,12 @@ module Hyrax
         result = transactions['change_set.update_collection']
                  .with_step_args(
                           'collection_resource.save_collection_banner' => { update_banner_file_ids: params["banner_files"],
-                                                                            alttext: params["banner_text"]&.first },
+                                                                            alttext: params["banner_text"]&.first,
+                                                                            banner_unchanged_indicator: params["banner_unchanged"] },
                           'collection_resource.save_collection_logo' => { update_logo_file_ids: params["logo_files"],
                                                                           alttext_values: params["alttext"],
-                                                                          linkurl_values: params["linkurl"] },
+                                                                          linkurl_values: params["linkurl"],
+                                                                          logo_unchanged_indicator: false },
                           'collection_resource.save_collection_thumbnail' => { update_thumbnail_file_ids: params["thumbnail_files"],
                                                                                thumbnail_unchanged_indicator: params["thumbnail_unchanged"],
                                                                                alttext_values: params["thumbnail_text"] }

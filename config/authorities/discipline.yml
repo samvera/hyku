@@ -127,3 +127,5 @@ terms:
     term: Engineering - Industrial
   - id: Law
     term: Law
+  - id: Other
+    term: Other

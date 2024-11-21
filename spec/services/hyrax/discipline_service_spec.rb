@@ -5,7 +5,7 @@ RSpec.describe Hyrax::DisciplineService do
 
     it "has a select list" do
       expect(subject.first).to eq ["Languages - Spanish", "Languages - Spanish"]
-      expect(subject.size).to eq 64
+      expect(subject.size).to eq 65
     end
   end
 

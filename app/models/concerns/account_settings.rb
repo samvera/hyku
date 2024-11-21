@@ -8,7 +8,7 @@ module AccountSettings
   extend ActiveSupport::Concern
   # rubocop:disable Metrics/BlockLength
   included do
-    cattr_accessor :array_settings, :boolean_settings, :hash_settings, :string_settings, :private_settings do
+    cattr_accessor :array_settings, :boolean_settings, :hash_settings, :json_editor_settings, :string_settings, :private_settings do
       []
     end
     cattr_accessor :all_settings do
@@ -23,6 +23,7 @@ module AccountSettings
     setting :allow_downloads, type: 'boolean', default: true
     setting :allow_signup, type: 'boolean', default: true
     setting :analytics_provider, type: 'string'
+    setting :bulkrax_field_mappings, type: 'json_editor', default: Bulkrax.field_mappings.to_json
     setting :bulkrax_validations, type: 'boolean', disabled: true
     setting :cache_api, type: 'boolean', default: false
     setting :contact_email, type: 'string', default: 'change-me-in-settings@example.com'
@@ -58,7 +59,7 @@ module AccountSettings
     validates :contact_email, :oai_admin_email,
               format: { with: URI::MailTo::EMAIL_REGEXP },
               allow_blank: true
-    validate :validate_email_format, :validate_contact_emails
+    validate :validate_email_format, :validate_contact_emails, :validate_json
     validates :google_analytics_id,
               format: { with: /((UA|YT|MO)-\d+-\d+|G-[A-Z0-9]{10})/i },
               allow_blank: true
@@ -70,7 +71,7 @@ module AccountSettings
   # rubocop:disable Metrics/BlockLength
   class_methods do
     def setting(name, args)
-      known_type = ['array', 'boolean', 'hash', 'string'].include?(args[:type])
+      known_type = ['array', 'boolean', 'hash', 'string', 'json_editor'].include?(args[:type])
       raise "Setting type #{args[:type]} is not supported. Can not laod." unless known_type
 
       send("#{args[:type]}_settings") << name
@@ -136,6 +137,12 @@ module AccountSettings
       value.is_a?(String) ? JSON.parse(value) : value
     when 'string'
       value.to_s
+    when 'json_editor'
+      begin
+        JSON.pretty_generate(JSON.parse(value))
+      rescue JSON::ParserError
+        value
+      end
     end
   end
 
@@ -151,6 +158,18 @@ module AccountSettings
       next if settings[key].blank?
       settings[key].each do |email|
         errors.add(:"#{key}") unless email.match?(URI::MailTo::EMAIL_REGEXP)
+      end
+    end
+  end
+
+  def validate_json
+    json_editor_settings.each do |key|
+      next if settings[key].blank?
+
+      begin
+        JSON.parse(settings[key])
+      rescue JSON::ParserError => e
+        errors.add(:"#{key}", e.message)
       end
     end
   end

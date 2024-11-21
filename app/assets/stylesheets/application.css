@@ -13,6 +13,7 @@
  *= require bulkrax/application
  *= require fontselect
  *= require codemirror
+ *= require codemirror/themes/neat
  *= require codemirror-theme
  *= require hyrax
  *= require dataTables.bootstrap4

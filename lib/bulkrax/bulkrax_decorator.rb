@@ -6,7 +6,7 @@ module PerTenantFieldMappings
     if Site.account.present? && Site.account.bulkrax_field_mappings.present?
       JSON.parse(Site.account.bulkrax_field_mappings).with_indifferent_access
     else
-      super
+      Hyku.default_bulkrax_field_mappings.presence || super
     end
   end
 end

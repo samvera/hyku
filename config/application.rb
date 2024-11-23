@@ -39,11 +39,20 @@ module Hyku
     ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_BULKRAX_ENABLED', true))
   end
 
+  def self.default_bulkrax_field_mappings=(value)
+    err_msg = 'Hyku.default_bulkrax_field_mappings must respond to #with_indifferent_access'
+    raise err_msg unless value.respond_to?(:with_indifferent_access)
+
+    @default_bulkrax_field_mappings = value.with_indifferent_access
+  end
+
   # This represents the default Bulkrax field mappings that new Accounts will be initialized with.
   # Bulkrax field mappings should not be configured within the Bulkrax initializer in Hyku.
   # @see lib/bulkrax/bulkrax_decorator.rb
   # @see https://github.com/samvera/bulkrax/wiki/Configuring-Bulkrax#field-mappings
   def self.default_bulkrax_field_mappings
+    return @default_bulkrax_field_mappings if @default_bulkrax_field_mappings.present?
+
     default_bulkrax_fm = {}
     defaults = {
       'abstract' => { from: ['abstract'], split: true },
@@ -111,24 +120,24 @@ module Hyku
     }
 
     default_bulkrax_fm['Bulkrax::BagitParser'] = defaults.merge({
-      # add or remove custom mappings for this parser here
-    })
+                                                                  # add or remove custom mappings for this parser here
+                                                                })
 
     default_bulkrax_fm['Bulkrax::CsvParser'] = defaults.merge({
-      # add or remove custom mappings for this parser here
-    })
+                                                                # add or remove custom mappings for this parser here
+                                                              })
 
     default_bulkrax_fm['Bulkrax::OaiDcParser'] = defaults.merge({
-      # add or remove custom mappings for this parser here
-    })
+                                                                  # add or remove custom mappings for this parser here
+                                                                })
 
     default_bulkrax_fm['Bulkrax::OaiQualifiedDcParser'] = defaults.merge({
-      # add or remove custom mappings for this parser here
-    })
+                                                                           # add or remove custom mappings for this parser here
+                                                                         })
 
     default_bulkrax_fm['Bulkrax::XmlParser'] = defaults.merge({
-      # add or remove custom mappings for this parser here
-    })
+                                                                # add or remove custom mappings for this parser here
+                                                              })
 
     default_bulkrax_fm.with_indifferent_access
   end

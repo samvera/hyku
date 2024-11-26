@@ -48,7 +48,7 @@ jobs:
     uses: scientist-softserv/actions/.github/workflows/test.yaml@v0.0.23
     with:
       confdir: "/app/samvera/hyrax-webapp/solr/conf"
-      rspec_cmd: "gem install semaphore_test_boosters && bundle && TB_RSPEC_OPTIONS='--seed=14318' rspec_booster --job $CI_NODE_INDEX/$CI_NODE_TOTAL"
+      rspec_cmd: "gem install semaphore_test_boosters && bundle && rspec_booster --job $CI_NODE_INDEX/$CI_NODE_TOTAL"
 
   reports:
     if: always()

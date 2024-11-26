@@ -39,6 +39,109 @@ module Hyku
     ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_BULKRAX_ENABLED', true))
   end
 
+  def self.default_bulkrax_field_mappings=(value)
+    err_msg = 'Hyku.default_bulkrax_field_mappings must respond to #with_indifferent_access'
+    raise err_msg unless value.respond_to?(:with_indifferent_access)
+
+    @default_bulkrax_field_mappings = value.with_indifferent_access
+  end
+
+  # This represents the default Bulkrax field mappings that new Accounts will be initialized with.
+  # Bulkrax field mappings should not be configured within the Bulkrax initializer in Hyku.
+  # @see lib/bulkrax/bulkrax_decorator.rb
+  # @see https://github.com/samvera/bulkrax/wiki/Configuring-Bulkrax#field-mappings
+  def self.default_bulkrax_field_mappings
+    return @default_bulkrax_field_mappings if @default_bulkrax_field_mappings.present?
+
+    default_bulkrax_fm = {}
+    defaults = {
+      'abstract' => { from: ['abstract'], split: true },
+      'accessibility_feature' => { from: ['accessibility_feature'], split: '\|' },
+      'accessibility_hazard' => { from: ['accessibility_hazard'], split: '\|' },
+      'accessibility_summary' => { from: ['accessibility_summary'] },
+      'additional_information' => { from: ['additional_information'], split: '\|', generated: true },
+      'admin_note' => { from: ['admin_note'] },
+      'admin_set_id' => { from: ['admin_set_id'], generated: true },
+      'alternate_version' => { from: ['alternate_version'], split: '\|' },
+      'alternative_title' => { from: ['alternative_title'], split: '\|', generated: true },
+      'arkivo_checksum' => { from: ['arkivo_checksum'], split: '\|', generated: true },
+      'audience' => { from: ['audience'], split: '\|' },
+      'based_near' => { from: ['location'], split: '\|' },
+      'bibliographic_citation' => { from: ['bibliographic_citation'], split: true },
+      'contributor' => { from: ['contributor'], split: true },
+      'create_date' => { from: ['create_date'], split: true },
+      'children' => { from: ['children'], related_children_field_mapping: true },
+      'committee_member' => { from: ['committee_member'], split: '\|' },
+      'creator' => { from: ['creator'], split: true },
+      'date_created' => { from: ['date_created'], split: true },
+      'date_uploaded' => { from: ['date_uploaded'], generated: true },
+      'degree_discipline' => { from: ['discipline'], split: '\|' },
+      'degree_grantor' => { from: ['grantor'], split: '\|' },
+      'degree_level' => { from: ['level'], split: '\|' },
+      'degree_name' => { from: ['degree'], split: '\|' },
+      'depositor' => { from: ['depositor'], split: '\|', generated: true },
+      'description' => { from: ['description'], split: true },
+      'discipline' => { from: ['discipline'], split: '\|' },
+      'education_level' => { from: ['education_level'], split: '\|' },
+      'embargo_id' => { from: ['embargo_id'], generated: true },
+      'extent' => { from: ['extent'], split: true },
+      'file' => { from: ['file'], split: /\s*[|]\s*/ },
+      'identifier' => { from: ['identifier'], split: true },
+      'import_url' => { from: ['import_url'], split: '\|', generated: true },
+      'keyword' => { from: ['keyword'], split: true },
+      'label' => { from: ['label'], generated: true },
+      'language' => { from: ['language'], split: true },
+      'lease_id' => { from: ['lease_id'], generated: true },
+      'library_catalog_identifier' => { from: ['library_catalog_identifier'], split: '\|' },
+      'license' => { from: ['license'], split: /\s*[|]\s*/ },
+      'modified_date' => { from: ['modified_date'], split: true },
+      'newer_version' => { from: ['newer_version'], split: '\|' },
+      'oer_size' => { from: ['oer_size'], split: '\|' },
+      'on_behalf_of' => { from: ['on_behalf_of'], generated: true },
+      'owner' => { from: ['owner'], generated: true },
+      'parents' => { from: ['parents'], related_parents_field_mapping: true },
+      'previous_version' => { from: ['previous_version'], split: '\|' },
+      'publisher' => { from: ['publisher'], split: true },
+      'related_item' => { from: ['related_item'], split: '\|' },
+      'relative_path' => { from: ['relative_path'], split: '\|', generated: true },
+      'related_url' => { from: ['related_url', 'relation'], split: /\s* [|]\s*/ },
+      'remote_files' => { from: ['remote_files'], split: /\s*[|]\s*/ },
+      'rendering_ids' => { from: ['rendering_ids'], split: '\|', generated: true },
+      'resource_type' => { from: ['resource_type'], split: true },
+      'rights_holder' => { from: ['rights_holder'], split: '\|' },
+      'rights_notes' => { from: ['rights_notes'], split: true },
+      'rights_statement' => { from: ['rights', 'rights_statement'], split: '\|', generated: true },
+      'source' => { from: ['source'], split: true },
+      'state' => { from: ['state'], generated: true },
+      'subject' => { from: ['subject'], split: true },
+      'table_of_contents' => { from: ['table_of_contents'], split: '\|' },
+      'title' => { from: ['title'], split: /\s*[|]\s*/ },
+      'video_embed' => { from: ['video_embed'] }
+    }
+
+    default_bulkrax_fm['Bulkrax::BagitParser'] = defaults.merge({
+                                                                  # add or remove custom mappings for this parser here
+                                                                })
+
+    default_bulkrax_fm['Bulkrax::CsvParser'] = defaults.merge({
+                                                                # add or remove custom mappings for this parser here
+                                                              })
+
+    default_bulkrax_fm['Bulkrax::OaiDcParser'] = defaults.merge({
+                                                                  # add or remove custom mappings for this parser here
+                                                                })
+
+    default_bulkrax_fm['Bulkrax::OaiQualifiedDcParser'] = defaults.merge({
+                                                                           # add or remove custom mappings for this parser here
+                                                                         })
+
+    default_bulkrax_fm['Bulkrax::XmlParser'] = defaults.merge({
+                                                                # add or remove custom mappings for this parser here
+                                                              })
+
+    default_bulkrax_fm.with_indifferent_access
+  end
+
   # rubocop:disable Metrics/ClassLength
   class Application < Rails::Application
     ##

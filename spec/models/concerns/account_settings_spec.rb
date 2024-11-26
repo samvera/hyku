@@ -53,11 +53,11 @@ RSpec.describe AccountSettings do
 
   describe '#bulkrax_field_mappings' do
     context 'when the setting is blank' do
-      it 'returns the default field mappings configured in Bulkrax' do
+      it 'returns the default field mappings configured in Hyku' do
         expect(account.settings['bulkrax_field_mappings']).to be_nil
-        # For parity, parse Bulkrax field mappings from JSON. #to_json will stringify keys as
+        # For parity, parse field mappings from JSON. #to_json will stringify keys as
         # well as turn a regex like /\|/ into (?-mix:\\|)
-        default_bulkrax_mappings = JSON.parse(Bulkrax.field_mappings.to_json)
+        default_bulkrax_mappings = JSON.parse(Hyku.default_bulkrax_field_mappings.to_json)
         default_tenant_mappings = JSON.parse(account.bulkrax_field_mappings)
 
         expect(default_tenant_mappings).to eq(default_bulkrax_mappings)

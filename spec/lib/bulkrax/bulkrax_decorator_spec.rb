@@ -8,12 +8,32 @@ RSpec.describe PerTenantFieldMappings, type: :decorator do
   context 'when the current Account does not have any tenant-specific field mappings' do
     let(:account) { build(:account) }
 
-    it "returns Bulkrax's default field mappings" do
-      default_bulkrax_mapping_keys = ['Bulkrax::OaiDcParser', 'Bulkrax::OaiQualifiedDcParser', 'Bulkrax::CsvParser', 'Bulkrax::BagitParser', 'Bulkrax::XmlParser']
+    context 'when Hyku.default_bulkrax_mapping_keys is unset' do
+      before do
+        allow(Hyku).to receive(:default_bulkrax_field_mappings).and_return nil
+      end
 
-      expect(Site.account.settings['bulkrax_field_mappings']).to be_nil
-      expect(Bulkrax.field_mappings).to be_a(Hash)
-      expect(Bulkrax.field_mappings.keys.sort).to eq(default_bulkrax_mapping_keys.sort)
+      it "returns Bulkrax's default field mappings" do
+        default_bulkrax_mapping_keys = ['Bulkrax::OaiDcParser', 'Bulkrax::OaiQualifiedDcParser', 'Bulkrax::CsvParser', 'Bulkrax::BagitParser', 'Bulkrax::XmlParser']
+
+        expect(Site.account.settings['bulkrax_field_mappings']).to be_nil
+        expect(Bulkrax.field_mappings).to be_a(Hash)
+        expect(Bulkrax.field_mappings.keys.sort).to eq(default_bulkrax_mapping_keys.sort)
+      end
+    end
+
+    context 'when Hyku.default_bulkrax_mapping_keys is set' do
+      before do
+        allow(Site.account).to receive(:bulkrax_field_mappings).and_return nil
+      end
+
+      it "returns Hyku's default field mappings" do
+        Hyku.default_bulkrax_field_mappings = { this: 'is fine' }
+
+        expect(Site.account.settings['bulkrax_field_mappings']).to be_nil
+        expect(Bulkrax.field_mappings).to be_a(Hash)
+        expect(Bulkrax.field_mappings).to eq({ this: 'is fine' }.with_indifferent_access)
+      end
     end
   end
 

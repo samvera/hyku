@@ -27,6 +27,12 @@ RSpec.describe PerTenantFieldMappings, type: :decorator do
         allow(Site.account).to receive(:bulkrax_field_mappings).and_return nil
       end
 
+      around do |example|
+        initialized_defaults = Hyku.default_bulkrax_field_mappings
+        example.run
+        Hyku.default_bulkrax_field_mappings = initialized_defaults
+      end
+
       it "returns Hyku's default field mappings" do
         Hyku.default_bulkrax_field_mappings = { this: 'is fine' }
 

@@ -36,6 +36,9 @@ Welcome to the Hyku development wiki!
 ## Custom Themes
 * [[Creating Custom Themes]]
 
+## Bulkrax: Import & Export
+* [[Field Mappings]]
+
 # Management
 * [[Create super admin user]]
 * [[Super Admin vs Admin]]

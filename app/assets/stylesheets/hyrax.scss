@@ -50,17 +50,31 @@
   margin-top: 10px;
 }
 
+.hyc-bl-results {
+  margin: 2em 0 2em;
+}
+
 .hyrax-collections-show {
   .document-metadata {
     dd {
       word-break: break-all;
     }
   }
+
+  table.table-striped {
+    th {
+      &:not(:nth-child(1)):not(:nth-child(2)) {
+        text-align: center;
+      }
+      border-top: none;
+    }
+  }
 }
 
-#hyc-collection-metadata-total_items,
-#hyc-collection-metadata-creator {
-  align-items: baseline;
+dd {
+  /* margin-bottom: .5rem; */
+  margin-left: 0;
+  margin-bottom: 0;
 }
 
 // collections gallery view

@@ -19,6 +19,7 @@ en:
       etd: "ETD"
       oer: "OER"
   blacklight:
+    slideshow_info: "Select an image to start the slideshow"
     search:
       fields:
         facet:

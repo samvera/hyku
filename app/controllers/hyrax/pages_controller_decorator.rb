@@ -59,7 +59,7 @@ module Hyrax
 
     # OVERRIDE: Hyrax v5.0.1 to add facet counts for resource types for IR theme
     def ir_counts
-      @ir_counts = get_facet_field_response('resource_type_sim', {}, "f.resource_type_sim.facet.limit" => "-1")
+      @ir_counts = search_service.facet_field_response('resource_type_sim', "f.resource_type_sim.facet.limit" => "-1")
     end
   end
 end

@@ -135,6 +135,11 @@
     </div>
 
     <div class="hyc-blacklight hyc-bl-results">
+      <% if document_index_view_type == :slideshow %>
+        <div class="slideshow-info">
+          <h4><%= t('blacklight.slideshow_info') %></h4>
+        </div>
+      <% end %>
       <%= render_document_index @member_docs %>
     </div>
 

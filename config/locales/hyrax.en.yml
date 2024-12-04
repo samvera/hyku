@@ -1182,6 +1182,7 @@ en:
         based_near: Location
         contributor: Contributor
         creator: Creator
+        collection_banner_text_color: Collection banner text color
         date_created: Date Created
         default_button_background_color: Default button background color
         default_button_border_color: Default button border color

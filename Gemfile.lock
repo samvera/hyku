@@ -90,10 +90,10 @@ GIT
 
 GIT
   remote: https://github.com/samvera-labs/bulkrax.git
-  revision: 77528bf27940441206beae95fc6902168707115f
-  branch: main
+  revision: 562ca9ce898d47e5377679c525f2e2c13c7d9959
+  tag: v8.3.0
   specs:
-    bulkrax (8.2.0)
+    bulkrax (8.3.0)
       bagit (~> 0.4.6)
       coderay
       denormalize_fields
@@ -1500,7 +1500,7 @@ DEPENDENCIES
   bolognese (>= 1.9.10)
   bootstrap (~> 4.6)
   bootstrap-datepicker-rails
-  bulkrax!
+  bulkrax (= 8.3.0)!
   byebug
   capybara
   capybara-screenshot (~> 1.0)

@@ -1,9 +1,15 @@
+# frozen_string_literal: true
+
 module DeviseGuestControllersHelpersDecorator
   def guest_user
     return @guest_user if @guest_user
 
     if session[:guest_user_id]
-      @guest_user = User.unscoped.find_by(User.authentication_keys.first => session[:guest_user_id]) rescue nil
+      begin
+        @guest_user = User.unscoped.find_by(User.authentication_keys.first => session[:guest_user_id])
+      rescue
+        @guest_user = nil
+      end
       @guest_user = nil if @guest_user.respond_to? :guest and !@guest_user.guest
     end
 

@@ -30,7 +30,7 @@ module Hyku
         # @!attribute default_colors
         #   @return [Hash<String, String>]
         class_attribute :default_colors, default: {
-          'active_tabs_background_color' => '#337ab7',
+          'active_tabs_background_color' => '#f5f5f5',
           'collection_banner_text_color' => '#000000',
           'default_button_background_color' => '#ffffff',
           'default_button_border_color' => '#cccccc',

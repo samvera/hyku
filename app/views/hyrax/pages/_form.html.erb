@@ -1,4 +1,4 @@
-<%# Copied from Hyrax v5.0.1 to correct button coloring since simpleform overrides hyku classes. %>
+<%# OVERRIDE from Hyrax v5.0.1 to correct button coloring since simpleform overrides hyku classes. %>
 <%= render "shared/nav_safety_modal" %>
 <div class="card tabs">
 
@@ -52,7 +52,7 @@
             </div>
           </div>
           <div class="card-footer d-flex justify-content-end">
-            <%= f.submit t(:'hyrax.pages.update'), class: 'btn btn-primary text-white mr-2' %>
+            <%= f.submit t(:'hyrax.pages.update'), class: 'btn btn-primary text-white mr-2' # OVERRIDE button to submit %>
             <%= link_to t(:'hyrax.pages.cancel'), hyrax.admin_admin_sets_path, class: 'btn btn-light' %>
           </div>
         <% end %>
@@ -68,7 +68,7 @@
             </div>
           </div>
           <div class="card-footer d-flex justify-content-end">
-            <%= f.submit t(:'hyrax.pages.update'), class: 'btn btn-primary text-white mr-2' %>
+            <%= f.submit t(:'hyrax.pages.update'), class: 'btn btn-primary text-white mr-2' # OVERRIDE button to submit %>
             <%= link_to t(:'hyrax.pages.cancel'), hyrax.admin_admin_sets_path, class: 'btn btn-light' %>
           </div>
         <% end %>
@@ -84,7 +84,7 @@
             </div>
           </div>
           <div class="card-footer d-flex justify-content-end">
-            <%= f.submit t(:'hyrax.pages.update'), class: 'btn btn-primary text-white mr-2' %>
+            <%= f.submit t(:'hyrax.pages.update'), class: 'btn btn-primary text-white mr-2' # OVERRIDE button to submit %>
             <%= link_to t(:'hyrax.pages.cancel'), hyrax.admin_admin_sets_path, class: 'btn btn-light' %>
           </div>
         <% end %>

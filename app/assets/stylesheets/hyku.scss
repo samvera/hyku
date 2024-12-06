@@ -78,6 +78,12 @@
   }
 }
 
+// active hightlight on sort/per page on catalog page
+.dropdown-item:active,
+.dropdown-item.active {
+  background-color: #9bafbf;
+}
+
 footer.navbar {
   border-radius: 0;
   font-size: 0.9em;
@@ -441,11 +447,13 @@ div#collapse-citations {
 body.public-facing {
   .btn {
     &.btn-primary,
-    &.btn-secondary,
-    &.btn-danger {
+    &.btn-secondary {
       color: #fff;
     }
 
+    &.btn-danger {
+      color: #fff !important;
+    }
     &.btn-primary {
       background-color: #337ab7;
     }
@@ -559,11 +567,6 @@ span.constraint-value p, .facet-values p {
 
 #file_download {
   margin: 10px 0 10px 0;
-}
-
-.catalog_startOverLink {
-  font-size: 1.15em;
-  font-weight: bold;
 }
 
 // collection show page styles
@@ -707,3 +710,94 @@ tr[data-feature="use-iiif-print"] {
   flex-wrap: wrap;
   justify-content: space-between;
 }
+
+/* Collection show page */
+
+// nav search header
+#search-form-header {
+  // adds bootstrap class to element
+  label[for="search-field-header"] {
+    @extend .sr-only;
+  }
+
+  .form-group {
+    justify-content: right;
+  }
+}
+
+.hyc-bugs {
+  margin-top: 10px;
+}
+
+.hyc-bl-results {
+  margin: 2em 0 2em;
+}
+
+.hyrax-collections-show {
+  .document-metadata {
+    dd {
+      word-break: break-all;
+    }
+  }
+
+  table.table-striped {
+    th {
+      &:not(:nth-child(1)):not(:nth-child(2)) {
+        text-align: center;
+      }
+      border-top: none;
+    }
+  }
+}
+
+dd {
+  /* margin-bottom: .5rem; */
+  margin-left: 0;
+  margin-bottom: 0;
+}
+
+// collections gallery view
+#documents {
+
+  // hide the bookmark button
+  .caption-area {
+    input[name="commit"] {
+      display: none;
+    }
+  }
+
+  .document {
+    margin-top: 6px;
+    padding-top: 6px;
+
+    .document-thumbnail {
+      .img-thumbnail {
+        padding: 0.25rem;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+      }
+    }
+  }
+}
+
+// adds bootstrap class to element
+.documents-gallery {
+  @extend .row-cols-lg-4;
+}
+
+// pagination
+.hyc-bl-pager {
+  .pagination {
+    display: flex;
+  }
+}
+
+@media (max-width: 768px) {
+  .hyc-banner {
+    .hyc-bugs {
+      flex-wrap: wrap;
+    }
+  }
+}
+/* End Collection show page */

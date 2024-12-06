@@ -48,7 +48,8 @@ module Hyku
           'navbar_link_background_hover_color' => '#ffffff',
           'navbar_link_text_color' => '#eeeeee',
           'navbar_link_text_hover_color' => '#eeeeee',
-          'primary_button_hover_color' => '#286090'
+          'primary_button_hover_color' => '#286090',
+          'primary_button_text_color' => '#ffffff'
         }
 
         # rubocop:disable Metrics/BlockLength
@@ -94,6 +95,7 @@ module Hyku
               navbar_link_text_color
               navbar_link_text_hover_color
               primary_button_hover_color
+              primary_button_text_color
             ]
           end
           # rubocop:enable Metrics/MethodLength
@@ -264,9 +266,14 @@ module Hyku
         end
 
         # PRIMARY BUTTON COLORS
-        # The background hover color for "primary" buttons
+        # The background hover color for "primary" buttons and basis for other primary button options
         def primary_button_hover_color
           block_for('primary_button_hover_color')
+        end
+
+        # The text color for "primary" buttons
+        def primary_button_text_color
+          block_for('primary_button_text_color')
         end
 
         # The border color for "primary" buttons

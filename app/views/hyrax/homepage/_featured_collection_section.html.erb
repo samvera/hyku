@@ -10,7 +10,7 @@
           <% end %>
         </ol>
       </div>
-      <%= f.submit("Save order", class: 'btn btn-primary') %>
+      <%= f.submit("Save order", class: 'btn btn-secondary') %>
     <% end %>
   <% else %>
     <table class="table table-striped collection-highlights">
@@ -28,6 +28,6 @@
     <li>
       <%= link_to t('hyrax.homepage.admin_sets.link'),
                   main_app.search_catalog_path(f: { generic_type_sim: ["Collection"]}),
-                  class: 'btn btn-primary mt-1' %>
+                  class: 'btn btn-secondary mt-1' %>
     </li>
   </ul>

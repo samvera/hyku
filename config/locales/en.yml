@@ -235,6 +235,8 @@ en:
               hint: 'Affects links on the home and work pages including: breadcrumbs, tabs, titles and terms of service.'
             primary_button_hover_color:
               hint: 'Share, search and collection interaction (edit, feature, etc.) buttons. The border of these buttons will also be this color.'
+            primary_button_text_color:
+              hint: 'Text color for share, search and collection interaction buttons'
             default_button_background_color:
               hint: 'Work interaction (edit, feature, etc.) buttons; work views on collection page and search filter button.'
             facet_panel_background_color:

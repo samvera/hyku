@@ -120,18 +120,6 @@ services:
     networks:
       internal:
 
-  # Used exclusively for building and caching the base image to reduce build times
-  base:
-    <<: *app
-    image: ghcr.io/samvera/hyku/base:${TAG:-latest}
-    build:
-      context: .
-      target: hyku-base
-      cache_from:
-        - ghcr.io/samvera/hyku/base:latest
-      args:
-        BUILDKIT_INLINE_CACHE: 1
-
   web:
     <<: *app
     # Uncomment command to access container with out starting bin/web. Useful for debugging

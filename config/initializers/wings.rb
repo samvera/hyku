@@ -20,6 +20,11 @@ Rails.application.config.after_initialize do
   Wings::ModelRegistry.register(Hydra::PCDM::File, Hydra::PCDM::File)
   Wings::ModelRegistry.register(Hyrax::FileMetadata, Hydra::PCDM::File)
 
+  Wings::ModelRegistry.register(GenericWorkResource, GenericWork)
+  Wings::ModelRegistry.register(ImageResource, Image)
+  Wings::ModelRegistry.register(EtdResource, Etd)
+  Wings::ModelRegistry.register(OerResource, Oer)
+
   Valkyrie::MetadataAdapter.register(
     Freyja::MetadataAdapter.new,
     :freyja
@@ -35,38 +40,9 @@ Rails.application.config.after_initialize do
   )
   Valkyrie.config.storage_adapter  = :disk
   Valkyrie.config.indexing_adapter = :solr_index
-
-  # load all the sql based custom queries
-  [
-    Hyrax::CustomQueries::Navigators::CollectionMembers,
-    Hyrax::CustomQueries::Navigators::ChildCollectionsNavigator,
-    Hyrax::CustomQueries::Navigators::ParentCollectionsNavigator,
-    Hyrax::CustomQueries::Navigators::ChildFileSetsNavigator,
-    Hyrax::CustomQueries::Navigators::ChildWorksNavigator,
-    Hyrax::CustomQueries::Navigators::FindFiles,
-    Hyrax::CustomQueries::FindAccessControl,
-    Hyrax::CustomQueries::FindCollectionsByType,
-    Hyrax::CustomQueries::FindFileMetadata,
-    Hyrax::CustomQueries::FindIdsByModel,
-    Hyrax::CustomQueries::FindManyByAlternateIds,
-    Hyrax::CustomQueries::FindModelsByAccess,
-    Hyrax::CustomQueries::FindCountBy,
-    Hyrax::CustomQueries::FindByDateRange,
-    Hyrax::CustomQueries::FindBySourceIdentifier
-  ].each do |handler|
-    Hyrax.query_service.services[0].custom_queries.register_query_handler(handler)
-  end
-
-  [
-    Wings::CustomQueries::FindBySourceIdentifier
-  ].each do |handler|
-    Hyrax.query_service.services[1].custom_queries.register_query_handler(handler)
-  end
-
-  Wings::ModelRegistry.register(GenericWorkResource, GenericWork)
-  Wings::ModelRegistry.register(ImageResource, Image)
-  Wings::ModelRegistry.register(EtdResource, Etd)
-  Wings::ModelRegistry.register(OerResource, Oer)
+  # TODO move these to bulkrax somehow
+  Hyrax.query_service.services[0].custom_queries.register_query_handler(Hyrax::CustomQueries::FindBySourceIdentifier)
+  Hyrax.query_service.services[1].custom_queries.register_query_handler(Wings::CustomQueries::FindBySourceIdentifier)
 end
 
 Rails.application.config.to_prepare do
@@ -76,37 +52,6 @@ Rails.application.config.to_prepare do
 
   CollectionResource.class_eval do
     attribute :internal_resource, Valkyrie::Types::Any.default("Collection"), internal: true
-  end
-
-  Valkyrie.config.resource_class_resolver = lambda do |resource_klass_name|
-    # TODO: Can we use some kind of lookup.
-    klass_name = resource_klass_name.gsub(/Resource$/, '')
-    if %w[
-      GenericWork
-      Image
-      Etd
-      Oer
-    ].include?(klass_name)
-      "#{klass_name}Resource".constantize
-    elsif 'Collection' == klass_name
-      CollectionResource
-    elsif 'AdminSet' == klass_name
-      AdminSetResource
-    # Without this mapping, we'll see cases of Postgres Valkyrie adapter attempting to write to
-    # Fedora.  Yeah!
-    elsif 'Hydra::AccessControl' == klass_name
-      Hyrax::AccessControl
-    elsif 'FileSet' == klass_name
-      Hyrax::FileSet
-    elsif 'Hydra::AccessControls::Embargo' == klass_name
-      Hyrax::Embargo
-    elsif 'Hydra::AccessControls::Lease' == klass_name
-      Hyrax::Lease
-    elsif 'Hydra::PCDM::File' == klass_name
-      Hyrax::FileMetadata
-    else
-      klass_name.constantize
-    end
   end
 end
 # rubocop:enable Metrics/BlockLength

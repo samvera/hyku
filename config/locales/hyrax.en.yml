@@ -1183,6 +1183,7 @@ en:
         based_near: Location
         contributor: Contributor
         creator: Creator
+        collection_banner_text_color: Collection banner text color
         date_created: Date Created
         default_button_background_color: Default button background color
         default_button_border_color: Default button border color
@@ -1208,6 +1209,7 @@ en:
         navbar_link_text_color: Navbar link text color
         navbar_link_text_hover_color: Navbar link text hover color
         primary_button_hover_color: Primary button hover color
+        primary_button_text_color: Primary button text color
         publisher: Publisher
         related_url: Related URL
         rights_statement: Rights statement

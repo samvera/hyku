@@ -30,7 +30,8 @@ module Hyku
         # @!attribute default_colors
         #   @return [Hash<String, String>]
         class_attribute :default_colors, default: {
-          'active_tabs_background_color' => '#337ab7',
+          'active_tabs_background_color' => '#f5f5f5',
+          'collection_banner_text_color' => '#000000',
           'default_button_background_color' => '#ffffff',
           'default_button_border_color' => '#cccccc',
           'default_button_text_color' => '#333333',
@@ -38,6 +39,7 @@ module Hyku
           'facet_panel_text_color' => '#333333',
           'footer_link_color' => '#ffebcd',
           'footer_link_hover_color' => '#ffffff',
+          'header_and_footer_background_color' => '#3c3c3c',
           'header_and_footer_text_color' => '#dcdcdc',
           'link_color' => '#2e74b2',
           'link_hover_color' => '#215480',
@@ -47,7 +49,7 @@ module Hyku
           'navbar_link_text_color' => '#eeeeee',
           'navbar_link_text_hover_color' => '#eeeeee',
           'primary_button_hover_color' => '#286090',
-          'header_and_footer_background_color' => '#3c3c3c'
+          'primary_button_text_color' => '#ffffff'
         }
 
         # rubocop:disable Metrics/BlockLength
@@ -93,6 +95,7 @@ module Hyku
               navbar_link_text_color
               navbar_link_text_hover_color
               primary_button_hover_color
+              primary_button_text_color
             ]
           end
           # rubocop:enable Metrics/MethodLength
@@ -148,6 +151,11 @@ module Hyku
 
         def site
           @site ||= Site.instance
+        end
+
+        # The color for the collection banner text
+        def collection_banner_text_color
+          block_for('collection_banner_text_color')
         end
 
         # The alt text for the logo image
@@ -258,9 +266,14 @@ module Hyku
         end
 
         # PRIMARY BUTTON COLORS
-        # The background hover color for "primary" buttons
+        # The background hover color for "primary" buttons and basis for other primary button options
         def primary_button_hover_color
           block_for('primary_button_hover_color')
+        end
+
+        # The text color for "primary" buttons
+        def primary_button_text_color
+          block_for('primary_button_text_color')
         end
 
         # The border color for "primary" buttons

@@ -161,8 +161,8 @@
                 <%= f.text_area :homepage_about_section_heading, value: f.object.value, class: 'form-control tinymce', rows: 20, cols: 120 %>
             </div>
           </div>
-          <div class="panel-footer">
-            <%= link_to t(:'hyrax.content_blocks.cancel'), hyrax.admin_admin_sets_path, class: 'btn btn-default pull-right' %>
+          <div class="card-footer">
+            <%= link_to t(:'hyrax.content_blocks.cancel'), hyrax.admin_admin_sets_path, class: 'btn btn-secondary pull-right' %>
             <%= f.button :submit, class: 'btn btn-primary pull-right' %>
           </div>
         <% end %>
@@ -179,8 +179,8 @@
                 <%= f.text_area :homepage_about_section_content, value: f.object.value, class: 'form-control tinymce', rows: 20, cols: 120 %>
             </div>
           </div>
-          <div class="panel-footer">
-            <%= link_to t(:'hyrax.content_blocks.cancel'), hyrax.admin_admin_sets_path, class: 'btn btn-default pull-right' %>
+          <div class="card-footer">
+            <%= link_to t(:'hyrax.content_blocks.cancel'), hyrax.admin_admin_sets_path, class: 'btn btn-secondary pull-right' %>
             <%= f.button :submit, class: 'btn btn-primary pull-right' %>
           </div>
         <% end %>

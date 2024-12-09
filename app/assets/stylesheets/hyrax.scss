@@ -3,6 +3,7 @@
  *= require select2
  *= require_self
 */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Montserrat&display=swap');
 @import "variables";
 @import "bootstrap-default-overrides";
 @import "bootstrap";
@@ -30,95 +31,3 @@
 #collection-edit-controls label.control-label {
   font-weight: bold !important;
 }
-
-/* Collection show page */
-// Contribute back to Hyrax?
-
-// nav search header
-#search-form-header {
-  // adds bootstrap class to element
-  label[for="search-field-header"] {
-    @extend .sr-only;
-  }
-
-  .form-group {
-    justify-content: right;
-  }
-}
-
-.hyc-bugs {
-  margin-top: 10px;
-}
-
-.hyc-bl-results {
-  margin: 2em 0 2em;
-}
-
-.hyrax-collections-show {
-  .document-metadata {
-    dd {
-      word-break: break-all;
-    }
-  }
-
-  table.table-striped {
-    th {
-      &:not(:nth-child(1)):not(:nth-child(2)) {
-        text-align: center;
-      }
-      border-top: none;
-    }
-  }
-}
-
-dd {
-  /* margin-bottom: .5rem; */
-  margin-left: 0;
-  margin-bottom: 0;
-}
-
-// collections gallery view
-#documents {
-
-  // hide the bookmark button
-  .caption-area {
-    input[name="commit"] {
-      display: none;
-    }
-  }
-
-  .document {
-    margin-top: 6px;
-    padding-top: 6px;
-
-    .document-thumbnail {
-      .img-thumbnail {
-        padding: 0.25rem;
-        background-color: #fff;
-        border: 1px solid #dee2e6;
-        border-radius: 0.25rem;
-      }
-    }
-  }
-}
-
-// adds bootstrap class to element
-.documents-gallery {
-  @extend .row-cols-lg-4;
-}
-
-// pagination
-.hyc-bl-pager {
-  .pagination {
-    display: flex;
-  }
-}
-
-@media (max-width: 768px) {
-  .hyc-banner {
-    .hyc-bugs {
-      flex-wrap: wrap;
-    }
-  }
-}
-/* End Collection show page */

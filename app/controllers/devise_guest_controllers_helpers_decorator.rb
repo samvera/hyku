@@ -10,7 +10,7 @@ module DeviseGuestControllersHelpersDecorator
       rescue
         @guest_user = nil
       end
-      @guest_user = nil if @guest_user.respond_to? :guest && !@guest_user.guest
+      @guest_user = nil if @guest_user.respond_to?(:guest) && !@guest_user.guest
     end
 
     @guest_user ||= begin

@@ -110,4 +110,4 @@ RSpec.describe 'Hyrax::UploadedFile' do # rubocop:disable RSpec/DescribeClass
     end
   end
 end
-# rubocop:enable Layout/LineLength
+# rubocop:enable Metrics/MethodLength

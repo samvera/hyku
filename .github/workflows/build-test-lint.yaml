@@ -1,4 +1,4 @@
-name: "Build"
+name: "build-test-lint"
 run-name: Build of ${{ github.ref_name }} by @${{ github.actor }}
 on:
   push:
@@ -11,11 +11,11 @@ on:
     inputs:
       debug_step:
         required: false
-        description: 'Pause the selected step to debug using tmate'
+        description: "Pause the selected step to debug using tmate"
         type: choice
-        default: ''
+        default: ""
         options:
-          - ''
+          - ""
           - build
           - test
           - lint
@@ -47,7 +47,7 @@ jobs:
     needs: build
     uses: scientist-softserv/actions/.github/workflows/test.yaml@choose-which-step-to-debug-with-tmate
     with:
-      confdir: '/app/samvera/hyrax-webapp/solr/conf'
+      confdir: "/app/samvera/hyrax-webapp/solr/conf"
       rspec_cmd: "gem install semaphore_test_boosters && bundle && rspec_booster --job $CI_NODE_INDEX/$CI_NODE_TOTAL"
 
   reports:

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_06_06_205216) do
+ActiveRecord::Schema.define(version: 2024_08_20_200440) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -858,8 +858,17 @@ ActiveRecord::Schema.define(version: 2024_06_06_205216) do
     t.string "file_set_uri"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "filename"
     t.index ["file_set_uri"], name: "index_uploaded_files_on_file_set_uri"
     t.index ["user_id"], name: "index_uploaded_files_on_user_id"
+  end
+
+  create_table "user_batch_emails", force: :cascade do |t|
+    t.bigint "user_id"
+    t.datetime "last_emailed_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_user_batch_emails_on_user_id"
   end
 
   create_table "user_stats", id: :serial, force: :cascade do |t|
@@ -923,7 +932,6 @@ ActiveRecord::Schema.define(version: 2024_06_06_205216) do
     t.string "provider"
     t.string "uid"
     t.string "batch_email_frequency", default: "never"
-    t.datetime "last_emailed_at"
     t.string "api_key"
     t.index ["api_key"], name: "index_users_on_api_key"
     t.index ["email"], name: "index_users_on_email", unique: true

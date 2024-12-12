@@ -1,63 +1,57 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v5.0.0rc2 to add custom theming
-
 # rubocop:disable Metrics/ModuleLength
-module Hyrax
+module Hyku
   module Forms
     module Admin
       # An object to model and persist the form data for the appearance
       # customization menu
-      module AppearanceDecorator
-        extend ActiveSupport::Concern
+      # rubocop:disable Metrics/ClassLength
+      class Appearance < Hyrax::Forms::Admin::Appearance
+        delegate :banner_image, :banner_image?, :banner_image=, to: :site
+        delegate :logo_image, :logo_image?, :logo_image=, to: :site
+        delegate :favicon, :favicon?, to: :site
+        delegate :directory_image, :directory_image?, to: :site
+        delegate :default_collection_image, :default_collection_image?, to: :site
+        delegate :default_work_image, :default_work_image?, to: :site
+
+        ##
+        # @!group Class Attributes
+        #
+        # @!attribute default_fonts
+        #   @return [Hash<String, String>] there should be at least the key "body_font" and
+        #           "headline_font"
+        class_attribute :default_fonts, default: {
+          'body_font' => 'Helvetica Neue, Helvetica, Arial, sans-serif;',
+          'headline_font' => 'Helvetica Neue, Helvetica, Arial, sans-serif;'
+        }
+
+        ##
+        # @!attribute default_colors
+        #   @return [Hash<String, String>]
+        class_attribute :default_colors, default: {
+          'active_tabs_background_color' => '#337ab7',
+          'default_button_background_color' => '#ffffff',
+          'default_button_border_color' => '#cccccc',
+          'default_button_text_color' => '#333333',
+          'facet_panel_background_color' => '#f5f5f5',
+          'facet_panel_text_color' => '#333333',
+          'footer_link_color' => '#ffebcd',
+          'footer_link_hover_color' => '#ffffff',
+          'header_and_footer_text_color' => '#dcdcdc',
+          'link_color' => '#2e74b2',
+          'link_hover_color' => '#215480',
+          'navbar_background_color' => '#000000',
+          'navbar_link_background_color' => '#375f8c',
+          'navbar_link_background_hover_color' => '#ffffff',
+          'navbar_link_text_color' => '#eeeeee',
+          'navbar_link_text_hover_color' => '#eeeeee',
+          'primary_button_hover_color' => '#286090',
+          'header_and_footer_background_color' => '#3c3c3c'
+        }
 
         # rubocop:disable Metrics/BlockLength
-        prepended do
-          delegate :banner_image, :banner_image?, :banner_image=, to: :site
-          delegate :logo_image, :logo_image?, :logo_image=, to: :site
-          delegate :favicon, :favicon?, to: :site
-          delegate :directory_image, :directory_image?, to: :site
-          delegate :default_collection_image, :default_collection_image?, to: :site
-          delegate :default_work_image, :default_work_image?, to: :site
-
-          ##
-          # @!group Class Attributes
-          #
-          # @!attribute default_fonts
-          #   @return [Hash<String, String>] there should be at least the key "body_font" and
-          #           "headline_font"
-          class_attribute :default_fonts, default: {
-            'body_font' => 'Helvetica Neue, Helvetica, Arial, sans-serif;',
-            'headline_font' => 'Helvetica Neue, Helvetica, Arial, sans-serif;'
-          }
-
-          ##
-          # @!attribute default_colors
-          #   @return [Hash<String, String>]
-          class_attribute :default_colors, default: {
-            'active_tabs_background_color' => '#337ab7',
-            'default_button_background_color' => '#ffffff',
-            'default_button_border_color' => '#cccccc',
-            'default_button_text_color' => '#333333',
-            'facet_panel_background_color' => '#f5f5f5',
-            'facet_panel_text_color' => '#333333',
-            'footer_link_color' => '#ffebcd',
-            'footer_link_hover_color' => '#ffffff',
-            'header_and_footer_text_color' => '#dcdcdc',
-            'link_color' => '#2e74b2',
-            'link_hover_color' => '#215480',
-            'navbar_background_color' => '#000000',
-            'navbar_link_background_color' => '#375f8c',
-            'navbar_link_background_hover_color' => '#ffffff',
-            'navbar_link_text_color' => '#eeeeee',
-            'navbar_link_text_hover_color' => '#eeeeee',
-            'primary_button_hover_color' => '#286090',
-            'header_and_footer_background_color' => '#3c3c3c'
-          }
-          # @!endgroup Class Attributes
-        end
-
-        class_methods do
+        class << self
           # Override this method if your form takes more than just the customization_params
           def permitted_params
             customization_params + image_params
@@ -65,41 +59,6 @@ module Hyrax
 
           def image_params
             %i[favicon banner_image logo_image directory_image default_collection_image default_work_image]
-          end
-
-          # @return [Array<Symbol>] a list of fields that are related to the banner
-          def banner_fields
-            %i[
-              banner_image banner_label
-            ]
-          end
-
-          def favicon_fields
-            [:favicon]
-          end
-
-          # @return [Array<Symbol>] a list of fields that are related to the logo
-          def logo_fields
-            %i[
-              logo_image logo_label
-            ]
-          end
-
-          # @return [Array<Symbol>] a list of fields that are related to the directory
-          def directory_fields
-            %i[
-              directory_image directory_image_label
-            ]
-          end
-
-          # @return [Array<Symbol>] a list of fields that are related to default works & collections
-          def default_image_fields
-            %i[
-              default_collection_image
-              default_work_image
-              default_collection_label
-              default_work_label
-            ]
           end
 
           # A list of parameters that are related to customizations
@@ -472,6 +431,10 @@ module Hyrax
           format_font_names(headline_font)
         end
 
+        def default_values
+          @default_values ||= default_fonts.merge(default_colors)
+        end
+
         private
 
         def darken_color(hex_color, adjustment = 0.2)
@@ -488,10 +451,6 @@ module Hyrax
           hex_color = hex_color.delete('#')
           rgb = hex_color.scan(/../).map(&:hex)
           "rgba(#{rgb[0]}, #{rgb[1]}, #{rgb[2]}, #{alpha})"
-        end
-
-        def default_values
-          @default_values ||= default_fonts.merge(default_colors)
         end
 
         def block_for(name, dynamic_default = nil)
@@ -514,9 +473,8 @@ module Hyrax
           # rubocop:enable Rails/OutputSafety
         end
       end
+      # rubocop:enable Metrics/ClassLength
     end
   end
 end
 # rubocop:enable Metrics/ModuleLength
-
-Hyrax::Forms::Admin::Appearance.prepend(Hyrax::Forms::Admin::AppearanceDecorator)

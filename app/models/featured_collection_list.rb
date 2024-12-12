@@ -13,7 +13,7 @@ class FeaturedCollectionList
       existing_record = FeaturedCollection.find(attributes['id'])
       existing_record.update(attributes.except('id'))
     end
-    # rubocop:enable Layout/LineLength
+    # rubocop:enable Metrics/MethodLength
   end
 
   def featured_collections

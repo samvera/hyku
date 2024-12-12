@@ -21,6 +21,7 @@ module Hyrax
       end
 
       # rubocop:disable Metrics/AbcSize
+      # rubocop:disable Metrics/MethodLength
       def update_valkyrie_collection
         return after_update_errors(form_err_msg(form)) unless form.validate(collection_params)
 
@@ -42,6 +43,7 @@ module Hyrax
         after_update_response
       end
       # rubocop:enable Metrics/AbcSize
+      # rubocop:enable Metrics/MethodLength
 
       def edit
         form

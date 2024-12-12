@@ -142,7 +142,7 @@ module Hyku
     # @see
     def self.theme_view_path_roots
       returning_value = [Rails.root.to_s]
-      returning_value.push HykuKnapsack::Engine.root.to_s if defined?(HykuKnapsack)
+      returning_value.unshift HykuKnapsack::Engine.root.to_s if defined?(HykuKnapsack)
       returning_value
     end
 
@@ -246,6 +246,11 @@ module Hyku
       #   Hyrax::FileSetDerivativesService]
 
       DerivativeRodeo::Generators::HocrGenerator.additional_tessearct_options = nil
+      begin
+        TenantMaintenanceJob.perform_later unless ActiveJob::Base.find_job(klass: TenantMaintenanceJob)
+      rescue Redis::CannotConnectError
+        Rails.logger.error('No background job queue connection, skipping add of TenantMaintenanceJob')
+      end
     end
 
     # When running tests we don't want to auto-specify factories

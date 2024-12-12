@@ -8,7 +8,7 @@ module Hyrax
       return super unless object.try(:collection?)
 
       collection_thumbnail = CollectionBrandingInfo.where(collection_id: object.id.to_s, role: "thumbnail").first
-      return collection_thumbnail.local_path.gsub(Rails.public_path.to_s, '') if collection_thumbnail
+      return collection_thumbnail.local_path.gsub(Hyrax.config.branding_path.to_s, '/branding') if collection_thumbnail
 
       default_collection_image
     end

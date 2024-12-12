@@ -2,13 +2,13 @@
 
 require 'rails_helper'
 
-RSpec.describe FeaturedCollectionList, type: :model do
+RSpec.describe FeaturedCollectionList, :clean_repo, type: :model do
   subject { described_class.new }
 
   let(:user) { create(:user).tap { |u| u.add_role(:admin, Site.instance) } }
   let(:account) { create(:account) }
-  let(:collection1) { create(:collection, user:) }
-  let(:collection2) { create(:collection, user:) }
+  let(:collection1) { create(:collection, user:, title: ["Collection Title 1"]) }
+  let(:collection2) { create(:collection, user:, title: ["Collection Title 2"]) }
 
   describe 'featured_collections' do
     before do

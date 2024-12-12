@@ -3,7 +3,7 @@
 # counter compliant format for ReportList: https://countermetrics.stoplight.io/docs/counter-sushi-api/af75bac10e789-report-list
 module Sushi
   class ReportList
-    # rubocop:disable Layout/MethodLength, Layout/LineLength
+    # rubocop:disable Metrics/MethodLength, Layout/LineLength
     def as_json(_options = nil)
       [
         {
@@ -50,6 +50,6 @@ module Sushi
       ]
     end
     alias to_hash as_json
-    # rubocop:enable Layout/MethodLength, Layout/LineLength
+    # rubocop:enable Metrics/MethodLength, Layout/LineLength
   end
 end

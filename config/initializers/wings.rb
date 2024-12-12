@@ -1,20 +1,22 @@
 # frozen_string_literal: true
+
+if ActiveModel::Type::Boolean.new.cast(ENV.fetch("REPOSITORY_S3_STORAGE", false))
+  require "shrine/storage/s3"
+  require "valkyrie/storage/shrine"
+  require "valkyrie/shrine/checksum/s3"
+end
+
 # rubocop:disable Metrics/BlockLength
 Rails.application.config.after_initialize do
-  [
-    GenericWork,
-    Image,
-    Etd,
-    Oer
-  ].each do |klass|
+  # Add all concerns that are migrating from ActiveFedora here
+  WINGS_CONCERNS ||= [AdminSet, Collection, Etd, GenericWork, Image, Oer].freeze
+
+  WINGS_CONCERNS.each do |klass|
     Wings::ModelRegistry.register("#{klass}Resource".constantize, klass)
     # we register itself so we can pre-translate the class in Freyja instead of having to translate in each query_service
     Wings::ModelRegistry.register(klass, klass)
   end
-  Wings::ModelRegistry.register(Collection, Collection)
-  Wings::ModelRegistry.register(CollectionResource, Collection)
-  Wings::ModelRegistry.register(AdminSet, AdminSet)
-  Wings::ModelRegistry.register(AdminSetResource, AdminSet)
+
   Wings::ModelRegistry.register(FileSet, FileSet)
   Wings::ModelRegistry.register(Hyrax::FileSet, FileSet)
   Wings::ModelRegistry.register(Hydra::PCDM::File, Hydra::PCDM::File)
@@ -30,13 +32,33 @@ Rails.application.config.after_initialize do
   Valkyrie.config.metadata_adapter = :freyja
   Hyrax.config.query_index_from_valkyrie = true
   Hyrax.config.index_adapter = :solr_index
-
   Valkyrie::StorageAdapter.register(
-    Valkyrie::Storage::Disk.new(base_path: Rails.root.join("storage", "files"),
-                                file_mover: FileUtils.method(:cp)),
+    Valkyrie::Storage::Disk.new(base_path: Rails.root.join("storage", "files"), file_mover: FileUtils.method(:cp)),
     :disk
   )
-  Valkyrie.config.storage_adapter  = :disk
+
+  if ActiveModel::Type::Boolean.new.cast(ENV.fetch("REPOSITORY_S3_STORAGE", false))
+    shrine_s3_options = {
+      bucket: ENV.fetch("REPOSITORY_S3_BUCKET") { "nurax_pg#{Rails.env}" },
+      region: ENV.fetch("REPOSITORY_S3_REGION", "us-east-1"),
+      access_key_id: ENV["REPOSITORY_S3_ACCESS_KEY"],
+      secret_access_key: ENV["REPOSITORY_S3_SECRET_KEY"]
+    }
+
+    if ENV["REPOSITORY_S3_ENDPOINT"].present?
+      shrine_s3_options[:endpoint] = "http://#{ENV['REPOSITORY_S3_ENDPOINT']}:#{ENV.fetch('REPOSITORY_S3_PORT', 9000)}"
+      shrine_s3_options[:force_path_style] = true
+    end
+
+    Valkyrie::StorageAdapter.register(
+      Valkyrie::Storage::Shrine.new(Shrine::Storage::S3.new(**shrine_s3_options)),
+      :repository_s3
+    )
+
+    Valkyrie.config.storage_adapter = :repository_s3
+  else
+    Valkyrie.config.storage_adapter = :disk
+  end
   Valkyrie.config.indexing_adapter = :solr_index
   # TODO move these to bulkrax somehow
   Hyrax.query_service.services[0].custom_queries.register_query_handler(Hyrax::CustomQueries::FindBySourceIdentifier)
@@ -50,6 +72,11 @@ Rails.application.config.to_prepare do
 
   CollectionResource.class_eval do
     attribute :internal_resource, Valkyrie::Types::Any.default("Collection"), internal: true
+  end
+
+  Valkyrie.config.resource_class_resolver = lambda do |resource_klass_name|
+    klass = resource_klass_name.gsub(/Resource$/, '').constantize
+    Wings::ModelRegistry.reverse_lookup(klass) || klass
   end
 end
 # rubocop:enable Metrics/BlockLength

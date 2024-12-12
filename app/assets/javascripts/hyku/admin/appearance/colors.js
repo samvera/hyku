@@ -9,7 +9,7 @@ $(document).on('turbolinks:load', function() {
     input.val(input.data('default-value'));
   });
 
-  $('.panel-footer a.restore-all-default-colors').click(function(e) {
+  $('.card-footer a.restore-all-default-colors').click(function(e) {
     e.preventDefault();
 
     var allColorInputs = $("input[name*='color']");

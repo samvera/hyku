@@ -2,10 +2,10 @@
   <div class="download-pdf-controls">
     <% if @presenter.representative_presenter.present? && presenter.file_set_presenters.any?(&:pdf?) %>
       <%= button_tag type: 'button',
-                     id: "download-pdf-button",
+                     id: "file_download",
                      data: { label: @presenter.representative_presenter.id,
                              path: hyrax.download_path(presenter.representative_presenter) },
-                     class: "btn btn-success btn-block download-pdf-button center-block",
+                     class: "btn btn-success btn-block file_download center-block",
                      onclick: "window.open(this.dataset.path, '_blank');" do %>
         Download PDF
       <% end %>

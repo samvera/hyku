@@ -12,11 +12,11 @@ class CatalogController < ApplicationController
   before_action :enforce_show_permissions, only: :show
 
   def self.created_field
-    'date_created_ssim'
+    'date_created_ssi'
   end
 
   def self.creator_field
-    'creator_ssim'
+    'creator_ssi'
   end
 
   def self.modified_field
@@ -24,7 +24,7 @@ class CatalogController < ApplicationController
   end
 
   def self.title_field
-    'title_ssim'
+    'title_ssi'
   end
 
   def self.uploaded_field
@@ -41,7 +41,11 @@ class CatalogController < ApplicationController
 
     # IiifPrint index fields
     config.add_index_field 'all_text_timv'
-    config.add_index_field 'file_set_text_tsimv', label: "Item contents", highlight: true, helper_method: :render_ocr_snippets
+    config.add_index_field 'all_text_tsimv',
+      label: "Item contents",
+      highlight: true,
+      helper_method: :render_ocr_snippets,
+      values: ->(field_config, document, _context) { document.highlight_field(field_config.field).map(&:html_safe) if document.has_highlight_field? field_config.field }
 
     # configuration for Blacklight IIIF Content Search
     config.iiif_search = {
@@ -78,18 +82,20 @@ class CatalogController < ApplicationController
     config.http_method = :post
 
     ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
+    #  Max fragsize is needed to not cut off full text search at default 51,000 characters
     config.default_solr_params = {
       qt: "search",
       rows: 10,
       qf: (
         IiifPrint.config.metadata_fields.keys.map { |attribute| "#{attribute}_tesim" } +
-        ["title_tesim", "description_tesim", "all_text_timv", "file_set_text_tsimv"]
+        ["title_tesim", "description_tesim", "all_text_timv", "all_text_tsimv"]
       ).uniq.join(' '),
       "hl": true,
       "hl.simple.pre": "<span class='highlight'>",
       "hl.simple.post": "</span>",
       "hl.snippets": 30,
-      "hl.fragsize": 100
+      "hl.fragsize": 100,
+      "hl.maxAnalyzedChars": 5_100_000
     }
 
     # Specify which field to use in the tag cloud on the homepage.
@@ -141,23 +147,23 @@ class CatalogController < ApplicationController
     #   The ordering of the field names is the order of the display
     config.add_index_field 'title_tesim', label: "Title", itemprop: 'name', if: false
     config.add_index_field 'description_tesim', itemprop: 'description', helper_method: :iconify_auto_link
-    config.add_index_field 'keyword_tesim', itemprop: 'keywords', link_to_search: 'keyword_sim'
-    config.add_index_field 'subject_tesim', itemprop: 'about', link_to_search: 'subject_sim'
-    config.add_index_field 'creator_tesim', itemprop: 'creator', link_to_search: 'creator_sim'
+    config.add_index_field 'keyword_tesim', itemprop: 'keywords', link_to_facet: 'keyword_sim'
+    config.add_index_field 'subject_tesim', itemprop: 'about', link_to_facet: 'subject_sim'
+    config.add_index_field 'creator_tesim', itemprop: 'creator', link_to_facet: 'creator_sim'
     config.add_index_field 'date_tesim', itemprop: 'date'
-    config.add_index_field 'contributor_tesim', itemprop: 'contributor', link_to_search: 'contributor_sim'
+    config.add_index_field 'contributor_tesim', itemprop: 'contributor', link_to_facet: 'contributor_sim'
     config.add_index_field 'proxy_depositor_ssim', label: "Depositor", helper_method: :link_to_profile
     config.add_index_field 'depositor_tesim', label: "Owner", helper_method: :link_to_profile
-    config.add_index_field 'publisher_tesim', itemprop: 'publisher', link_to_search: 'publisher_sim'
-    config.add_index_field 'based_near_label_tesim', itemprop: 'contentLocation', link_to_search: 'based_near_label_sim'
-    config.add_index_field 'language_tesim', itemprop: 'inLanguage', link_to_search: 'language_sim'
+    config.add_index_field 'publisher_tesim', itemprop: 'publisher', link_to_facet: 'publisher_sim'
+    config.add_index_field 'based_near_label_tesim', itemprop: 'contentLocation', link_to_facet: 'based_near_label_sim'
+    config.add_index_field 'language_tesim', itemprop: 'inLanguage', link_to_facet: 'language_sim'
     config.add_index_field 'date_uploaded_dtsi', itemprop: 'datePublished', helper_method: :human_readable_date
     config.add_index_field 'date_modified_dtsi', itemprop: 'dateModified', helper_method: :human_readable_date
     config.add_index_field 'date_created_tesim', itemprop: 'dateCreated'
     config.add_index_field 'rights_statement_tesim', helper_method: :rights_statement_links
     config.add_index_field 'license_tesim', helper_method: :license_links
-    config.add_index_field 'resource_type_tesim', label: "Resource Type", link_to_search: 'resource_type_sim'
-    config.add_index_field 'file_format_tesim', link_to_search: 'file_format_sim'
+    config.add_index_field 'resource_type_tesim', label: "Resource Type", link_to_facet: 'resource_type_sim'
+    config.add_index_field 'file_format_tesim', link_to_facet: 'file_format_sim'
     config.add_index_field 'identifier_tesim', helper_method: :index_field_link, field_name: 'identifier'
     config.add_index_field 'embargo_release_date_dtsi', label: "Embargo release date", helper_method: :human_readable_date
     config.add_index_field 'lease_expiration_date_dtsi', label: "Lease expiration date", helper_method: :human_readable_date
@@ -229,7 +235,7 @@ class CatalogController < ApplicationController
       all_names = config.show_fields.values.map(&:field).join(" ")
       title_name = 'title_tesim'
       field.solr_parameters = {
-        qf: "#{all_names} file_format_tesim all_text_timv",
+        qf: "#{all_names} file_format_tesim all_text_tsimv all_text_tsimv",
         pf: title_name.to_s
       }
     end

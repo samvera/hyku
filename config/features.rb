@@ -43,6 +43,6 @@ Flipflop.configure do
           description: "Show General Login Link at Top Right of Page."
 
   feature :treat_some_user_inputs_as_markdown,
-          default: true,
+          default: false,
           description: "Treat some user inputs (e.g. titles and descriptions) as markdown."
 end

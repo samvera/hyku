@@ -27,9 +27,8 @@
 //= require tether
 // Required by Blacklight
 //= require blacklight/blacklight
-//= require blacklight_gallery
-//= require admin_color_select
 //= require blacklight_advanced_search
+//= require blacklight_gallery/default
 
 // Moved the Hyku JS *above* the Hyrax JS to resolve #1187 (following
 // a pattern found in ScholarSphere)
@@ -49,15 +48,15 @@
 //= require hyrax
 
 //= require codemirror
-//= require codemirror-autorefresh
 //= require codemirror/modes/css
+//= require codemirror/modes/javascript
+//= require codemirror-autorefresh
 
 //= require iiif_print
 
 //= require jquery.flot.pie
 //= require flot_graph
 //= require statistics_tab_manager
-//= require blacklight_gallery/default
 
 // Required for blacklight range limit
 //= require blacklight_range_limit/range_limit_distro_facets

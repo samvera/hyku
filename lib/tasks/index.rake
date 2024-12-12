@@ -30,6 +30,13 @@ task index_file_sets: :environment do
   end
 end
 
+desc "migrate all collections & admin sets to valkyrie in the background"
+task migrate_collections: :environment do
+  in_each_account do
+    MigrateResourcesJob.perform_later
+  end
+end
+
 def in_each_account
   Account.find_each do |account|
     puts "=============== #{account.name}============"

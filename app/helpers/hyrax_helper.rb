@@ -6,6 +6,18 @@ module HyraxHelper
   include Hyrax::HyraxHelperBehavior
   include Hyku::BlacklightHelperBehavior
 
+  # OVERRIDE Hyrax 5.0 to rescue from invalid dates w/o blowing up the page
+  # A Blacklight helper_method
+  # @param [Hash] options from blacklight invocation of helper_method
+  # @see #index_field_link params
+  # @return [Date]
+  def human_readable_date(options)
+    value = options[:value].first
+    Date.parse(value).to_formatted_s(:standard)
+  rescue
+    value
+  end
+
   def application_name
     Site.application_name || super
   end

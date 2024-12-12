@@ -1,8 +1,31 @@
 <% if value[:type] == 'array' %>
+  <%# FIXME:
+      I think current_account here should be @account. @account is present both within the tenant
+      as well as in the proprietor views, while current_account is only present within a tenant.
+      Changing it to @account causes a spec in spec/features/accounts_spec.rb to fail, I think due
+      to the form sending inputs that should be treated as arrays as strings.
+      @see AccountSettings#validate_email_format
+    %>
   <% current_account.send(key).each do |sub_value| %>
     <%= f.input key, value: sub_value %>
   <% end %>
 <% elsif value[:type] == 'hash' %>
+<% elsif value[:type] == 'json_editor' %>
+  <%= f.input key, as: :text, required: false, input_html: { value: @account.send(key) }, label: key.to_s.titleize %>
+  <script>
+    document.addEventListener('turbolinks:load', () => {
+      const input_textarea = document.getElementById('<%= "account_#{key}" %>')
+      if (input_textarea) {
+        CodeMirror.fromTextArea(input_textarea, {
+          mode: 'application/json',
+          autofocus: true,
+          lineNumbers: true,
+          theme: 'neat',
+          autoRefresh: true
+        });
+      };
+    });
+  </script>
 <% else %>
   <%= f.input key, as: value[:type] %>
 <% end %>

@@ -25,6 +25,18 @@ module Hyrax
     end
 
     ##
+    # OVERRIDE to find child work's filesets for IiifPrint
+    # @return [Array<#to_s>]
+    def member_ids
+      m = model.is_a?(::SolrDocument) ? model.hydra_model : model.class
+      m < Hyrax::Resource ? Array.wrap(file_ids) : Hyrax::SolrDocument::OrderedMembers.decorate(model).ordered_member_ids
+    end
+
+    def file_ids
+      model["descendent_member_ids_ssim"] || model.member_ids
+    end
+
+    ##
     # @return [String] the URL where the manifest can be found
     def manifest_url
       return '' if id.blank?

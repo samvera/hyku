@@ -3,6 +3,7 @@
  *= require select2
  *= require_self
 */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Montserrat&display=swap');
 @import "variables";
 @import "bootstrap-default-overrides";
 @import "bootstrap";
@@ -22,6 +23,11 @@
 
 // for catalog search result snippets
 .highlight {
-    background: #ffff00;
+  background: #ffff00;
   font-weight: 700;
+}
+
+// to make collection form labels bold
+#collection-edit-controls label.control-label {
+  font-weight: bold !important;
 }

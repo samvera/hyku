@@ -9,6 +9,7 @@ class CollectionResourceIndexer < Hyrax::Indexers::PcdmCollectionIndexer
   include Hyrax::Indexer('CollectionResource') if Hyrax.config.flexible?
 
   include Hyrax::IndexesThumbnails
+  include HykuIndexing
 
   def to_solr
     super.tap do |index_document|

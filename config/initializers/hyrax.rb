@@ -39,6 +39,10 @@ Hyrax.config do |config|
   # breadcrumbs.
   config.file_set_model = 'Hyrax::FileSet'
 
+  # The default method used for Solr queries. Values are :get or :post.
+  # Post is suggested to prevent issues with URL length.
+  config.solr_default_method = :post
+
   # The email address that messages submitted via the contact page are sent to
   # This is set by account settings
   # config.contact_email = 'changeme@example.com'
@@ -238,6 +242,8 @@ Hyrax.config do |config|
   # essence a "super" method.
   original_translator = config.translate_id_to_uri
   config.translate_id_to_uri = ->(id) { original_translator.call(id.to_s) }
+
+  config.file_set_indexer = Hyku::Indexers::FileSetIndexer
 end
 # rubocop:enable Metrics/BlockLength
 

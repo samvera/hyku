@@ -1,6 +1,6 @@
 // Default Images form
 $(document).on('turbolinks:load', function() {
-  $('#default_images .panel-footer input[name="commit"]').click(function(e) {
+  $('#default_images .card-footer input[name="commit"]').click(function(e) {
     // Prevent ActionController::ParameterMissing error by not
     // allowing a blank form to be submit. Blank inputs are allowed,
     // as long as at least one input has a value.

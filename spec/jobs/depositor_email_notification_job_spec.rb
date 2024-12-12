@@ -35,6 +35,21 @@ RSpec.describe DepositorEmailNotificationJob do
       end
     end
 
+    context 'when the user has zero new counts in statistics' do
+      let(:statistics) { { new_file_downloads: 0, new_work_views: 0, total_file_downloads: 6, total_file_views: 7, total_work_views: 16 } }
+
+      before do
+        allow(User).to receive(:all).and_return([user])
+        allow(user).to receive(:statistics_for).and_return(statistics)
+      end
+
+      it 'does not send emails to users' do
+        switch!(account)
+        described_class.perform_now
+        expect(ActionMailer::Base.deliveries.count).to eq(0)
+      end
+    end
+
     context 'when the user has no new statistics' do
       let(:statistics) { nil }
 

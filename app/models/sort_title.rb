@@ -6,6 +6,8 @@ class SortTitle
   end
 
   def alphabetical
+    return if @title.blank?
+
     title = @title.downcase
     title = title.gsub(/^an(?:[[:space:]])/, '')
                  .gsub(/^a(?:[[:space:]])/, '')

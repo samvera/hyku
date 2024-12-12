@@ -34,7 +34,7 @@
           </div>
 
           <h3><%= t(".account_settings") %></h3>
-          <% current_account.live_settings.each do |key, value| %>
+          <% @account.live_settings.each do |key, value| %>
             <%= render 'shared/settings', f: f, key: key, value: value %>
           <% end %>
 

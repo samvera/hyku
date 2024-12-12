@@ -60,9 +60,33 @@ Rails.application.config.after_initialize do
     Valkyrie.config.storage_adapter = :disk
   end
   Valkyrie.config.indexing_adapter = :solr_index
-  # TODO move these to bulkrax somehow
-  Hyrax.query_service.services[0].custom_queries.register_query_handler(Hyrax::CustomQueries::FindBySourceIdentifier)
-  Hyrax.query_service.services[1].custom_queries.register_query_handler(Wings::CustomQueries::FindBySourceIdentifier)
+
+  # load all the sql based custom queries
+  [
+    Hyrax::CustomQueries::Navigators::CollectionMembers,
+    Hyrax::CustomQueries::Navigators::ChildCollectionsNavigator,
+    Hyrax::CustomQueries::Navigators::ParentCollectionsNavigator,
+    Hyrax::CustomQueries::Navigators::ChildFileSetsNavigator,
+    Hyrax::CustomQueries::Navigators::ChildWorksNavigator,
+    Hyrax::CustomQueries::Navigators::FindFiles,
+    Hyrax::CustomQueries::FindAccessControl,
+    Hyrax::CustomQueries::FindCollectionsByType,
+    Hyrax::CustomQueries::FindFileMetadata,
+    Hyrax::CustomQueries::FindIdsByModel,
+    Hyrax::CustomQueries::FindManyByAlternateIds,
+    Hyrax::CustomQueries::FindModelsByAccess,
+    Hyrax::CustomQueries::FindCountBy,
+    Hyrax::CustomQueries::FindByDateRange,
+    Hyrax::CustomQueries::FindBySourceIdentifier
+  ].each do |handler|
+    Hyrax.query_service.services[0].custom_queries.register_query_handler(handler)
+  end
+
+  [
+    Wings::CustomQueries::FindBySourceIdentifier
+  ].each do |handler|
+    Hyrax.query_service.services[1].custom_queries.register_query_handler(handler)
+  end
 end
 
 Rails.application.config.to_prepare do

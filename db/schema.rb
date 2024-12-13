@@ -950,20 +950,6 @@ ActiveRecord::Schema.define(version: 2024_09_16_182823) do
     t.datetime "updated_at"
   end
 
-  create_table "work_authorizations", force: :cascade do |t|
-    t.string "work_title"
-    t.bigint "user_id"
-    t.datetime "expires_at"
-    t.string "work_pid", null: false
-    t.string "scope"
-    t.string "error"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["expires_at"], name: "index_work_authorizations_on_expires_at"
-    t.index ["user_id"], name: "index_work_authorizations_on_user_id"
-    t.index ["work_pid"], name: "index_work_authorizations_on_work_pid"
-  end
-
   create_table "work_view_stats", id: :serial, force: :cascade do |t|
     t.datetime "date"
     t.integer "work_views"

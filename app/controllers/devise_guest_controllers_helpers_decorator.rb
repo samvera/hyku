@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# OVERRIDE devise-invitable 2.0.9 to unscope user look up
 module DeviseGuestControllersHelpersDecorator
   def guest_user
     return @guest_user if @guest_user

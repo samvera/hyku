@@ -119,9 +119,31 @@ GIT
       rails (>= 5.1, < 8.0)
 
 GIT
+  remote: https://github.com/samvera/bulkrax.git
+  revision: f408ab592b8c7d061bde0fb18f3811dc0b7c7e96
+  branch: bootstrap_card_fixes
+  specs:
+    bulkrax (8.3.0)
+      bagit (~> 0.4.6)
+      coderay
+      denormalize_fields
+      iso8601 (~> 0.9.0)
+      kaminari
+      language_list (~> 1.2, >= 1.2.1)
+      libxml-ruby (~> 5.0)
+      loofah (>= 2.2.3)
+      marcel
+      oai (>= 0.4, < 2.x)
+      rack (>= 2.0.6)
+      rails (>= 5.1.6)
+      rdf (>= 2.0.2, < 4.0)
+      rubyzip
+      simple_form
+
+GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: abd5955f325b966ebd21d0de8d96b61cf0421cf3
-  branch: main
+  revision: 96c867a33c3e6442f1a322f50d3d8e9ffd1fa9e2
+  branch: flexible_double_combo
   specs:
     hyrax (5.0.1)
       active-fedora (~> 14.0)
@@ -194,8 +216,8 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: acef382ce710d6aad63e11cfa83b5803a9f30fa2
-  branch: main
+  revision: 63ef540419fcb3aabc73d61c0010638b173c11aa
+  branch: i84-support-dynamic-metadata
   specs:
     iiif_print (3.0.1)
       blacklight_iiif_search (>= 1.0, < 3.0)
@@ -206,11 +228,11 @@ GIT
 
 GIT
   remote: https://github.com/scientist-softserv/willow_sword.git
-  revision: 64d0b818bc2a31c158baa80cc6af107715b50a94
+  revision: e4edebde9a29636d74c794efca423535db296880
   branch: main
   specs:
     willow_sword (0.2.0)
-      bagit (~> 0.4.1)
+      bagit (~> 0.4)
       rails (~> 6.1)
       rubyzip (>= 1.0.0)
 
@@ -336,17 +358,16 @@ GEM
       blacklight (> 6.0, < 8)
       cancancan (>= 1.8)
       deprecation (~> 1.0)
-    blacklight-gallery (4.4.0)
+    blacklight-gallery (4.5.1)
       blacklight (>= 7.17, < 9)
       rails (>= 6.1, < 8)
     blacklight_advanced_search (7.0.0)
       blacklight (~> 7.0)
       parslet
-    blacklight_iiif_search (2.1.0)
+    blacklight_iiif_search (2.0.0)
       blacklight (~> 7.0)
-      ffi (~> 1.16.3)
       iiif-presentation
-      rails (>= 6, < 7.3)
+      rails (>= 5.1, < 7)
     blacklight_oai_provider (7.0.2)
       blacklight (~> 7.0)
       oai (~> 1.2)
@@ -379,9 +400,10 @@ GEM
       rdf-rdfxml (~> 3.1)
       rdf-turtle (~> 3.1)
       thor (>= 0.19)
-    bootstrap (4.6.2.1)
+    bootstrap (4.6.2)
       autoprefixer-rails (>= 9.1.0)
       popper_js (>= 1.16.1, < 2)
+      sassc-rails (>= 2.0.0)
     bootstrap-datepicker-rails (1.10.0.1)
       railties (>= 3.0)
     breadcrumbs_on_rails (3.0.1)
@@ -396,22 +418,6 @@ GEM
       signet (~> 0.8)
       typhoeus
     builder (3.2.4)
-    bulkrax (8.3.0)
-      bagit (~> 0.4.6)
-      coderay
-      denormalize_fields
-      iso8601 (~> 0.9.0)
-      kaminari
-      language_list (~> 1.2, >= 1.2.1)
-      libxml-ruby (~> 5.0)
-      loofah (>= 2.2.3)
-      marcel
-      oai (>= 0.4, < 2.x)
-      rack (>= 2.0.6)
-      rails (>= 5.1.6)
-      rdf (>= 2.0.2, < 4.0)
-      rubyzip
-      simple_form
     byebug (11.1.3)
     cancancan (3.6.1)
     capybara (3.39.2)
@@ -515,7 +521,7 @@ GEM
     dropbox_api (0.1.21)
       faraday (< 3.0)
       oauth2 (~> 1.1)
-    dry-configurable (1.1.0)
+    dry-configurable (1.2.0)
       dry-core (~> 1.0, < 2)
       zeitwerk (~> 2.6)
     dry-container (0.11.0)
@@ -641,31 +647,31 @@ GEM
       thor (>= 0.14.1)
       webrick (>= 1.3)
       zeitwerk (>= 2.0)
-    google-analytics-data (0.6.0)
+    google-analytics-data (0.6.1)
       google-analytics-data-v1beta (>= 0.11, < 2.a)
       google-cloud-core (~> 1.6)
-    google-analytics-data-v1beta (0.12.0)
+    google-analytics-data-v1beta (0.13.0)
       gapic-common (>= 0.21.1, < 2.a)
       google-cloud-errors (~> 1.0)
-    google-apis-core (0.15.0)
+    google-apis-core (0.15.1)
       addressable (~> 2.5, >= 2.5.1)
       googleauth (~> 1.9)
-      httpclient (>= 2.8.1, < 3.a)
+      httpclient (>= 2.8.3, < 3.a)
       mini_mime (~> 1.0)
+      mutex_m
       representable (~> 3.0)
       retriable (>= 2.0, < 4.a)
-      rexml
-    google-apis-drive_v3 (0.51.0)
+    google-apis-drive_v3 (0.54.0)
       google-apis-core (>= 0.15.0, < 2.a)
-    google-cloud-core (1.7.0)
+    google-cloud-core (1.7.1)
       google-cloud-env (>= 1.0, < 3.a)
       google-cloud-errors (~> 1.0)
     google-cloud-env (2.1.1)
       faraday (>= 1.0, < 3.a)
     google-cloud-errors (1.4.0)
-    google-protobuf (3.25.5)
-    googleapis-common-protos (1.5.0)
-      google-protobuf (~> 3.18)
+    google-protobuf (3.25.3)
+    googleapis-common-protos (1.6.0)
+      google-protobuf (>= 3.18, < 5.a)
       googleapis-common-protos-types (~> 1.7)
       grpc (~> 1.41)
     googleapis-common-protos-types (1.14.0)
@@ -778,10 +784,9 @@ GEM
       thor (>= 0.14, < 2.0)
     json (2.7.1)
     json-canonicalization (0.3.1)
-    json-jwt (1.16.6)
+    json-jwt (1.16.3)
       activesupport (>= 4.2)
       aes_key_wrap
-      base64
       bindata
       faraday (~> 2.0)
       faraday-follow_redirects
@@ -795,7 +800,7 @@ GEM
     json-ld-preloaded (3.2.2)
       json-ld (~> 3.2)
       rdf (~> 3.2)
-    json-schema (4.3.0)
+    json-schema (4.3.1)
       addressable (>= 2.8)
     jsonlint (0.3.0)
       oj (~> 3)
@@ -919,7 +924,7 @@ GEM
     mime-types-data (3.2023.1205)
     mini_magick (4.12.0)
     mini_mime (1.1.5)
-    mini_portile2 (2.8.7)
+    mini_portile2 (2.8.5)
     minitest (5.20.0)
     mods (2.4.1)
       edtf
@@ -929,6 +934,7 @@ GEM
     multi_json (1.15.0)
     multi_xml (0.6.0)
     multipart-post (2.3.0)
+    mutex_m (0.2.0)
     namae (1.1.1)
     negative_captcha (0.5)
       actionpack
@@ -946,7 +952,7 @@ GEM
       timeout
     net-smtp (0.4.0)
       net-protocol
-    nio4r (2.7.3)
+    nio4r (2.7.0)
     noid (0.9.0)
     noid-rails (3.1.0)
       actionpack (>= 5.0.0, < 7.1)
@@ -977,7 +983,7 @@ GEM
       bigdecimal (>= 3.0)
     oj_mimic_json (1.0.1)
     okcomputer (1.18.5)
-    omniauth (2.1.2)
+    omniauth (2.1.1)
       hashie (>= 3.4.6)
       rack (>= 2.2.3)
       rack-protection
@@ -986,9 +992,9 @@ GEM
     omniauth-rails_csrf_protection (1.0.1)
       actionpack (>= 4.2)
       omniauth (~> 2.0)
-    omniauth-saml (2.1.2)
-      omniauth (~> 2.1)
-      ruby-saml (~> 1.17)
+    omniauth-saml (2.1.0)
+      omniauth (~> 2.0)
+      ruby-saml (~> 1.12)
     omniauth_openid_connect (0.7.1)
       omniauth (>= 1.9, < 3)
       openid_connect (~> 2.2)
@@ -1005,8 +1011,8 @@ GEM
       validate_email
       validate_url
       webfinger (~> 2.0)
-    openseadragon (0.6.0)
-      rails (> 3.2.0)
+    openseadragon (0.7.0)
+      rails (> 6.1.0)
     openssl (3.2.0)
     optimist (3.1.0)
     order_already (0.3.2)
@@ -1034,9 +1040,9 @@ GEM
       pry (>= 0.13, < 0.15)
     psych (3.3.4)
     public_suffix (4.0.7)
-    puma (5.6.9)
+    puma (5.6.7)
       nio4r (~> 2.0)
-    qa (5.11.0)
+    qa (5.12.0)
       activerecord-import
       deprecation
       faraday (< 3.0, != 2.0.0)
@@ -1046,8 +1052,8 @@ GEM
       rails (>= 5.0, < 7.2)
       rdf
     raabro (1.4.0)
-    racc (1.8.1)
-    rack (2.2.9)
+    racc (1.7.3)
+    rack (2.2.8)
     rack-oauth2 (2.2.0)
       activesupport
       attr_required
@@ -1055,8 +1061,7 @@ GEM
       faraday-follow_redirects
       json-jwt (>= 1.11.0)
       rack (>= 2.1.0)
-    rack-protection (3.2.0)
-      base64 (>= 0.1.0)
+    rack-protection (3.1.0)
       rack (~> 2.2, >= 2.2.4)
     rack-test (0.7.0)
       rack (>= 1.0, < 3)
@@ -1178,7 +1183,7 @@ GEM
     retriable (3.1.2)
     reverse_markdown (2.1.1)
       nokogiri
-    rexml (3.3.7)
+    rexml (3.2.6)
     riiif (2.4.0)
       deprecation (>= 1.0.0)
       iiif-image-api (>= 0.1.0)
@@ -1251,7 +1256,7 @@ GEM
       multipart-post
       oauth2
     ruby-progressbar (1.13.0)
-    ruby-saml (1.17.0)
+    ruby-saml (1.16.0)
       nokogiri (>= 1.13.10)
       rexml
     ruby2_keywords (0.0.5)
@@ -1470,7 +1475,7 @@ GEM
       psych (>= 3.3)
       rdf (~> 3.2, >= 3.2.9)
       rdf-xsd (~> 3.2)
-    yard (0.9.36)
+    yard (0.9.34)
     zeitwerk (2.6.12)
     zlib (2.1.1)
 
@@ -1494,7 +1499,7 @@ DEPENDENCIES
   bolognese (>= 1.9.10)
   bootstrap (~> 4.6)
   bootstrap-datepicker-rails
-  bulkrax (~> 8.3)
+  bulkrax!
   byebug
   capybara
   capybara-screenshot (~> 1.0)

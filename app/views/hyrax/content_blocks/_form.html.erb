@@ -151,9 +151,9 @@
       </div>
     </div>
     <div id="homepage_about_section_heading" class="tab-pane">
-      <div class="panel panel-default labels">
+      <div class="card card-default labels">
         <%= simple_form_for ContentBlock.for(:homepage_about_section_heading), url: hyrax.content_block_path(ContentBlock.for(:homepage_about_section_heading)), html: {class: 'nav-safety'} do |f| %>
-          <div class="panel-body">
+          <div class="card-body">
             <div class="field form-group">
                 <%= f.label :homepage_about_section_heading %><br />
                 <%# the following line was changed from hyrax to give some context for what this context block does %>
@@ -169,9 +169,9 @@
       </div>
     </div>
     <div id="homepage_about_section_content" class="tab-pane">
-      <div class="panel panel-default labels">
+      <div class="card card-default labels">
         <%= simple_form_for ContentBlock.for(:homepage_about_section_content), url: hyrax.content_block_path(ContentBlock.for(:homepage_about_section_content)), html: {class: 'nav-safety'} do |f| %>
-          <div class="panel-body">
+          <div class="card-body">
             <div class="field form-group">
                 <%= f.label :homepage_about_section_content %><br />
                 <%# the following line was changed from hyrax to give some context for what this context block does %>

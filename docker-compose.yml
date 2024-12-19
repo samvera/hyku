@@ -123,7 +123,7 @@ services:
   # Used exclusively for building and caching the base image to reduce build times
   base:
     <<: *app
-    image: ghcr.io/samvera/hyku/base:${TAG:-latest}
+    image: ghcr.io/samvera/hyku/base:${BASE_TAG:-latest}
     build:
       context: .
       target: hyku-base
@@ -131,6 +131,7 @@ services:
         - ghcr.io/samvera/hyku/base:latest
       args:
         BUILDKIT_INLINE_CACHE: 1
+    command: bash -l -c "echo 'base is only used for building base images, which in turn reduces image build times. It does not need to be run'"
 
   web:
     <<: *app

@@ -63,6 +63,7 @@ class Reprocessor # rubocop:disable Metrics/ClassLength
   end
 
   def self.load(log_dir = Rails.root.join('tmp', 'imports').to_s)
+    FileUtils.mkdir_p(log_dir)
     state = JSON.parse(File.read("#{log_dir}/work_processor.json"))
     SETTINGS.each do |setting|
       instance.send("#{setting}=", state[setting])
@@ -94,18 +95,21 @@ class Reprocessor # rubocop:disable Metrics/ClassLength
     Hyrax.config.query_index_from_valkyrie = false
     search = "has_model_ssim:(#{Bulkrax.curation_concerns.join(' OR ')})"
     capture_with_solr(search)
+    self.current_location = 0
   end
 
   def capture_file_set_ids
     Hyrax.config.query_index_from_valkyrie = false
     search = "has_model_ssim:(FileSet)"
     capture_with_solr(search)
+    self.current_location = 0
   end
 
   def capture_collection_ids
     Hyrax.config.query_index_from_valkyrie = false
-    search = "has_model_ssim:(Collection)"
+    search = "has_model_ssim:(Collection OR AdminSet)"
     capture_with_solr(search)
+    self.current_location = 0
   end
 
   def capture_with_solr(search)
@@ -116,8 +120,8 @@ class Reprocessor # rubocop:disable Metrics/ClassLength
       ids = Hyrax::SolrService.query(search, fl: 'id,fedora_id_ssi', rows: batch_size, start: current_location)
       self.current_location += batch_size
       ids.each do |i|
-        id_log.error(i['id'])
-        id_log.error(i['fedora_id_ssi'])
+        id = i['fedora_id_ssi'] || i['id']
+        id_log.error(id)
       end
       progress.progress = [self.current_location, count].min
       Reprocessor.save if incremental_save

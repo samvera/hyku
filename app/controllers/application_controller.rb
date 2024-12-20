@@ -18,6 +18,7 @@ class ApplicationController < ActionController::Base
   with_themed_layout '1_column'
 
   include HykuHelper
+  include DeviseGuestControllersHelpersDecorator
 
   helper_method :current_account, :admin_host?, :home_page_theme, :show_page_theme, :search_results_theme
   before_action :authenticate_if_needed

@@ -2,8 +2,8 @@
 # OVERRIDE Hyraxv5.0.0 to add the ability to upload a collection thumbnail
 
 Hyrax::Forms::PcdmCollectionForm.class_eval do
-  include Hyrax::FormFields(:basic_metadata)
-  include Hyrax::FormFields(:bulkrax_metadata)
+  include Hyrax::FormFields(:basic_metadata) unless Hyrax.config.flexible?
+  include Hyrax::FormFields(:bulkrax_metadata) unless Hyrax.config.flexible?
   include CollectionAccessFiltering
 
   ThumbnailInfoPrepopulator = lambda do |_options = nil|

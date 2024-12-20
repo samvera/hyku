@@ -176,7 +176,7 @@ footer.navbar {
     padding-left: 1em;
   }
 
-  .panel-heading {
+  .card-heading {
     line-height: 2.4em;
   }
 
@@ -334,8 +334,8 @@ footer.navbar {
   padding: 0;
 }
 
-#users > .panel {
-  .panel-body {
+#users > .card {
+  .card-body {
     padding-left: 0;
   }
 
@@ -544,7 +544,7 @@ span.constraint-value p, .facet-values p {
 }
 
 // make the facet counts appear at the end of the facet panel
-.facet-content .panel-body .facet-values p {
+.facet-content .card-body .facet-values p {
   display: flex;
   justify-content: space-between;
 }

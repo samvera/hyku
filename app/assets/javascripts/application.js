@@ -43,9 +43,8 @@
 //= require bootstrap_carousel
 //= require bootstrap-datepicker
 
-//= require bulkrax/application
-
 //= require hyrax
+//= require bulkrax/application
 
 //= require codemirror
 //= require codemirror/modes/css

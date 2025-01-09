@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_09_16_182823) do
+ActiveRecord::Schema.define(version: 2024_12_05_212513) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -74,7 +74,9 @@ ActiveRecord::Schema.define(version: 2024_09_16_182823) do
     t.string "importerexporter_type", default: "Bulkrax::Importer"
     t.integer "import_attempts", default: 0
     t.string "status_message", default: "Pending"
+    t.string "error_class"
     t.index ["identifier", "importerexporter_id", "importerexporter_type"], name: "bulkrax_identifier_idx"
+    t.index ["importerexporter_id", "importerexporter_type", "id"], name: "index_bulkrax_entries_on_importerexporter_id_type_and_id"
     t.index ["importerexporter_id", "importerexporter_type"], name: "bulkrax_entries_importerexporter_idx"
     t.index ["type"], name: "index_bulkrax_entries_on_type"
   end
@@ -110,6 +112,7 @@ ActiveRecord::Schema.define(version: 2024_09_16_182823) do
     t.boolean "include_thumbnails", default: false
     t.boolean "generated_metadata", default: false
     t.string "status_message", default: "Pending"
+    t.string "error_class"
     t.index ["user_id"], name: "index_bulkrax_exporters_on_user_id"
   end
 
@@ -153,6 +156,7 @@ ActiveRecord::Schema.define(version: 2024_09_16_182823) do
     t.string "status_message", default: "Pending"
     t.datetime "last_imported_at"
     t.datetime "next_import_at"
+    t.string "error_class"
     t.index ["user_id"], name: "index_bulkrax_importers_on_user_id"
   end
 
@@ -948,20 +952,6 @@ ActiveRecord::Schema.define(version: 2024_09_16_182823) do
     t.string "committer_login"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "work_authorizations", force: :cascade do |t|
-    t.string "work_title"
-    t.bigint "user_id"
-    t.datetime "expires_at"
-    t.string "work_pid", null: false
-    t.string "scope"
-    t.string "error"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["expires_at"], name: "index_work_authorizations_on_expires_at"
-    t.index ["user_id"], name: "index_work_authorizations_on_user_id"
-    t.index ["work_pid"], name: "index_work_authorizations_on_work_pid"
   end
 
   create_table "work_view_stats", id: :serial, force: :cascade do |t|

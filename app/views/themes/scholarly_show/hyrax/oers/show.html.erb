@@ -9,11 +9,11 @@
     <%= render 'work_type', presenter: @presenter %>
   </div>
   <div itemscope itemtype="http://schema.org/CreativeWork" class="col-xs-12">
-    <div class="panel panel-default">
-      <div class="panel-heading">
+    <div class="card card-default">
+      <div class="card-heading">
         <%= render 'work_title', presenter: @presenter %>
       </div>
-      <div class="panel-body">
+      <div class="card-body">
         <div class="row">
           <%= render 'workflow_actions_widget', presenter: @presenter %>
           <% if @presenter.iiif_viewer? %>

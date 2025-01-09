@@ -10,7 +10,6 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
- *= require bulkrax/application
  *= require fontselect
  *= require codemirror
  *= require codemirror/themes/neat
@@ -22,6 +21,7 @@
  *= require blacklight_advanced_search
  *= require blacklight_range_limit
  *= require cropper.min
+ *= require bulkrax/application
  *= require_self
  *= require hyku_knapsack/application
  */

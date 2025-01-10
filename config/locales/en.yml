@@ -226,6 +226,8 @@ en:
               confirm: "If your theme doesn't appear to be applying correctly, verify that it isn't being overwritten by Custom CSS."
             favicon:
               hint: "Favicons need to be png files and must be square. The max size used is 228px x 228px."
+            active_tabs_background_color:
+              hint: 'Hover color for homepage tabs.'
             navbar_background_color:
               hint: 'At 40% opacity.'
             navbar_link_background_color:

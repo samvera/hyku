@@ -420,7 +420,7 @@ module Sushi
       return true unless params.key?(:author)
       @author = params[:author]
 
-      # See https://github.com/scientist-softserv/palni-palci/issues/721#issuecomment-1734215004 for details of this little nuance
+      # See https://github.com/notch8/palni-palci/issues/721#issuecomment-1734215004 for details of this little nuance
       raise Sushi::Error::InvalidReportFilterValueError.new(data: "You may not query for multiple authors (as specified by the `#{DELIMITER}' delimiter.)") if @author.include?(DELIMITER)
 
       # rubocop:disable Layout/LineLength

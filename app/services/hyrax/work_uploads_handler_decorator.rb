@@ -6,7 +6,7 @@ module Hyrax
     ##
     # OVERRIDE
     #
-    # @see https://github.com/scientist-softserv/palni-palci/blob/29f7e331a76751cf2c237e7fb2121bea38a9056b/app/jobs/attach_files_to_work_job.rb#L22
+    # @see https://github.com/notch8/palni-palci/blob/29f7e331a76751cf2c237e7fb2121bea38a9056b/app/jobs/attach_files_to_work_job.rb#L22
     def file_set_args(file)
       hash = super
       # NOTE: The respond to is me (Jeremy) being cautios.  I checked the

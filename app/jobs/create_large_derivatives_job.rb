@@ -10,7 +10,7 @@
 #
 # @see CreateDerivativesJobDecorator
 # @see Hydra::Derivatives::Processors::Ffmpeg
-# @see https://github.com/scientist-softserv/palni-palci/issues/852
+# @see https://github.com/notch8/palni-palci/issues/852
 class CreateLargeDerivativesJob < CreateDerivativesJob
   queue_as :auxiliary
 end

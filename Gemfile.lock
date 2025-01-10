@@ -8,6 +8,39 @@ GIT
       rails (>= 4.2)
 
 GIT
+  remote: https://github.com/notch8/apartment.git
+  revision: 9ad4b0ef2ee6debb956e86ef9e7095c8358fef5e
+  branch: development
+  specs:
+    apartment (2.2.1)
+      activerecord (>= 3.1.2, < 7.0)
+      parallel (>= 0.7.1)
+      public_suffix (>= 2)
+      rack (>= 1.3.6)
+
+GIT
+  remote: https://github.com/notch8/iiif_print.git
+  revision: acef382ce710d6aad63e11cfa83b5803a9f30fa2
+  branch: main
+  specs:
+    iiif_print (3.0.1)
+      blacklight_iiif_search (>= 1.0, < 3.0)
+      derivative-rodeo (~> 0.5)
+      hyrax (>= 2.5, < 6)
+      nokogiri (>= 1.13.2)
+      rdf-vocab (~> 3.0)
+
+GIT
+  remote: https://github.com/notch8/willow_sword.git
+  revision: e4edebde9a29636d74c794efca423535db296880
+  branch: main
+  specs:
+    willow_sword (0.2.0)
+      bagit (~> 0.4)
+      rails (~> 6.1)
+      rubyzip (>= 1.0.0)
+
+GIT
   remote: https://github.com/rails/rails.git
   revision: d16199e507086e3d54d94253b7e1d87ead394d9f
   ref: d16199e507086e3d54d94253b7e1d87ead394d9f
@@ -180,39 +213,6 @@ GIT
       tinymce-rails (~> 5.10)
       valkyrie (~> 3.3)
       view_component (~> 2.74.1)
-
-GIT
-  remote: https://github.com/scientist-softserv/apartment.git
-  revision: 9ad4b0ef2ee6debb956e86ef9e7095c8358fef5e
-  branch: development
-  specs:
-    apartment (2.2.1)
-      activerecord (>= 3.1.2, < 7.0)
-      parallel (>= 0.7.1)
-      public_suffix (>= 2)
-      rack (>= 1.3.6)
-
-GIT
-  remote: https://github.com/scientist-softserv/iiif_print.git
-  revision: acef382ce710d6aad63e11cfa83b5803a9f30fa2
-  branch: main
-  specs:
-    iiif_print (3.0.1)
-      blacklight_iiif_search (>= 1.0, < 3.0)
-      derivative-rodeo (~> 0.5)
-      hyrax (>= 2.5, < 6)
-      nokogiri (>= 1.13.2)
-      rdf-vocab (~> 3.0)
-
-GIT
-  remote: https://github.com/scientist-softserv/willow_sword.git
-  revision: e4edebde9a29636d74c794efca423535db296880
-  branch: main
-  specs:
-    willow_sword (0.2.0)
-      bagit (~> 0.4)
-      rails (~> 6.1)
-      rubyzip (>= 1.0.0)
 
 GIT
   remote: https://github.com/stanhu/omniauth-cas.git

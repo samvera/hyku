@@ -29,7 +29,7 @@ RSpec.xdescribe 'Admin can select feature flags', type: :feature, js: true, clea
   # rubocop:enable RSpec/LetSetup
 
   context 'as a repository admin' do
-    skip 'TODO: This consistently fails the CI pipeline, but passes locally. https://github.com/scientist-softserv/palni-palci/issues/933'
+    skip 'TODO: This consistently fails the CI pipeline, but passes locally. https://github.com/notch8/palni-palci/issues/933'
     it 'has a setting for featured works' do
       login_as admin
       visit 'admin/features'
@@ -46,7 +46,7 @@ RSpec.xdescribe 'Admin can select feature flags', type: :feature, js: true, clea
       expect(page).to have_content 'Pandas'
     end
 
-    skip 'TODO: This consistently fails the CI pipeline, but passes locally. https://github.com/scientist-softserv/palni-palci/issues/933'
+    skip 'TODO: This consistently fails the CI pipeline, but passes locally. https://github.com/notch8/palni-palci/issues/933'
     it 'has a setting for recently uploaded' do
       login_as admin
       visit 'admin/features'
@@ -65,7 +65,7 @@ RSpec.xdescribe 'Admin can select feature flags', type: :feature, js: true, clea
       expect(page).to have_css('div#recently_uploaded')
     end
 
-    skip 'TODO: This consistently fails the CI pipeline, but passes locally. https://github.com/scientist-softserv/palni-palci/issues/933'
+    skip 'TODO: This consistently fails the CI pipeline, but passes locally. https://github.com/notch8/palni-palci/issues/933'
     it 'has settings for the default PDF viewer with a custom toggle switch' do
       login_as admin
       visit 'admin/features'
@@ -78,7 +78,7 @@ RSpec.xdescribe 'Admin can select feature flags', type: :feature, js: true, clea
   end
 
   context 'when all home tabs and share work features are turned off' do
-    skip 'TODO: This consistently fails the CI pipeline, but passes locally. https://github.com/scientist-softserv/palni-palci/issues/933'
+    skip 'TODO: This consistently fails the CI pipeline, but passes locally. https://github.com/notch8/palni-palci/issues/933'
     it 'the page only shows the collections tab' do
       login_as admin
       visit 'admin/features'

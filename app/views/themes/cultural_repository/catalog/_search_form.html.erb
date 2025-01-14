@@ -1,4 +1,4 @@
-<% # OVERRIDE: Hyrax v5.0.0rc2 template to change the size of the column on line 8 from col-sm-3 to col-sm-4 %>
+<% # OVERRIDE: Hyrax v5.0.1 template to change the size of the column on line 8 from col-sm-3 to col-sm-4 %>
 
 <%= form_tag search_form_action, method: :get, class: "cultural-repository form-horizontal search-form", id: "search-form-header", role: "search" do %>
   <%= render Blacklight::HiddenSearchStateComponent.new(params: search_state.params_for_search.except(:q, :search_field, :qt, :page, :utf8)) %>

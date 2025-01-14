@@ -153,7 +153,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: abd5955f325b966ebd21d0de8d96b61cf0421cf3
+  revision: b6dcb8af85ab346b475c05e6e68b93da7825d319
   branch: main
   specs:
     hyrax (5.0.1)
@@ -174,7 +174,6 @@ GIT
       dry-logic (~> 1.5)
       dry-monads (~> 1.6)
       dry-validation (~> 1.10)
-      faraday (= 2.9.1)
       flipflop (~> 2.3)
       flot-rails (~> 0.0.6)
       font-awesome-rails (~> 4.2)
@@ -193,7 +192,7 @@ GIT
       noid-rails (~> 3.0)
       oauth
       oauth2 (~> 1.2)
-      openseadragon
+      openseadragon (~> 0.9)
       posix-spawn
       qa (~> 5.5, >= 5.5.1)
       rails (~> 6.1)
@@ -211,7 +210,7 @@ GIT
       signet
       sprockets (= 3.7.2)
       tinymce-rails (~> 5.10)
-      valkyrie (~> 3.3)
+      valkyrie (~> 3.5)
       view_component (~> 2.74.1)
 
 GIT
@@ -1005,8 +1004,8 @@ GEM
       validate_email
       validate_url
       webfinger (~> 2.0)
-    openseadragon (0.6.0)
-      rails (> 3.2.0)
+    openseadragon (0.9.0)
+      rails (> 6.1.0)
     openssl (3.2.0)
     optimist (3.1.0)
     order_already (0.3.2)
@@ -1416,7 +1415,7 @@ GEM
     validate_url (1.0.15)
       activemodel (>= 3.0.0)
       public_suffix
-    valkyrie (3.3.0)
+    valkyrie (3.5.0)
       activemodel
       activesupport
       dry-struct

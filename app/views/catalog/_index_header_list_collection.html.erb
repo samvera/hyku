@@ -1,8 +1,8 @@
-<%# OVERRIDE Hyrax v5.0.0rc2 %>
+<%# OVERRIDE Hyrax v5.0.1 to use markdown and adjust h3 utility classes %>
 
-<div class="search-results-title-row col-12 d-flex flex-row align-items-center pb-2 mb-3">
+<div class="search-results-title-row col-12 d-flex flex-row align-items-center pb-2">
   <%# OVERRIDE begin %>
-  <h3 class="search-result-title mb-n2"><%= link_to markdown(document.title_or_label), generate_work_url(document, request) %></h3>
+  <h3 class="search-result-title"><%= link_to markdown(document.title_or_label), generate_work_url(document, request) %></h3>
   <%# OVERRIDE end %>
   <%= Hyrax::CollectionPresenter.new(document, current_ability).collection_type_badge %>
 </div>

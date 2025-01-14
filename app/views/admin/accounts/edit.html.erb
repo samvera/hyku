@@ -1,7 +1,6 @@
 <% content_for :page_header do %>
   <h1><span class="fa fa-gears"></span> Editing Account</h1>
 <% end %>
-
 <div class="row">
   <div class="col-md-12">
     <div class="card account-form">
@@ -17,16 +16,14 @@
               </ul>
             </div>
           <% end %>
-
           <div class="form-group">
             <%= f.label :tenant %><br>
             <%= f.text_field :tenant, class: 'form-control', readonly: @account.persisted? %>
           </div>
-
-          <% current_account.public_settings.each do |key, value| %>
+          <% is_superadmin = current_ability.superadmin? %>
+          <% current_account.public_settings(is_superadmin: is_superadmin).each do |key, value| %>
             <%= render 'shared/settings', f: f, key: key, value: value %>
           <% end %>
-
           <div class="card-footer">
             <%= f.submit class: 'btn btn-secondary float-right' %>
           </div>

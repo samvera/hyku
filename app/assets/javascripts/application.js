@@ -28,7 +28,7 @@
 // Required by Blacklight
 //= require blacklight/blacklight
 //= require blacklight_advanced_search
-//= require blacklight_gallery/default
+//= require blacklight_gallery/blacklight-gallery
 
 // Moved the Hyku JS *above* the Hyrax JS to resolve #1187 (following
 // a pattern found in ScholarSphere)

@@ -17,7 +17,10 @@ body.public-facing h5,
 body.public-facing h6 { font-family: <%= appearance.font_headline_family %>; }
 
 /* LINK COLORS */
-body.public-facing a { color: <%= appearance.link_color %>; }
+body.public-facing a,
+body.public-facing .dropdown-menu a { 
+  color: <%= appearance.link_color %>;
+}
 body.public-facing a:hover,
 body.public-facing a:focus { color: <%= appearance.link_hover_color %>; }
 
@@ -28,8 +31,7 @@ body.public-facing footer.navbar {
 }
 body.public-facing footer.navbar .navbar-link { color: <%= appearance.footer_link_color %>; }
 body.public-facing footer.navbar .navbar-link:hover { color: <%= appearance.footer_link_hover_color %>; }
-body.public-facing footer.navbar .navbar-text,
-body.public-facing .navbar.navbar-expand-lg .navbar-nav a { 
+body.public-facing footer.navbar .navbar-text { 
   color: <%= appearance.header_and_footer_text_color %> !important;
 }
 body.public-facing .navbar.navbar-expand-lg { border-color: <%= appearance.header_background_border_color %> !important; }

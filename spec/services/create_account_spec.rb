@@ -6,6 +6,11 @@ RSpec.describe CreateAccount, clean: true do
   let(:account) { FactoryBot.build(:sign_up_account) }
   let(:stubbed_admin_set) { double(AdminSetResource, id: "admin_set/id") }
 
+  after do
+    # Ensure we reset to the default tenant after each test
+    Apartment::Tenant.switch!(Apartment.default_tenant)
+  end
+
   describe '#create_tenant' do
     it 'creates a new apartment tenant' do
       expect(Apartment::Tenant).to receive(:create).with(account.tenant)

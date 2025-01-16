@@ -3,6 +3,10 @@
   dl.work-show dd {
     border-bottom: 1px solid #ddd;
 
+    &:last-child {
+      border-bottom: none; /* Removes border for the last dd element */
+    }
+
     .tabular {
       border-bottom: 0;
     }

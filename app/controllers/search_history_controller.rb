@@ -3,5 +3,5 @@
 class SearchHistoryController < ApplicationController
   include Blacklight::SearchHistory
   helper BlacklightAdvancedSearch::RenderConstraintsOverride
-  helper RangeLimitHelper
+  helper BlacklightRangeLimit::ControllerOverride
 end

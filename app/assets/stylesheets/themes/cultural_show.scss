@@ -49,6 +49,11 @@
     }
   }
 
+  .citations-container {
+    display: flex;
+    justify-content: center;
+  }
+
   li.attribute,
   td.attribute {
     font-size: 18px;

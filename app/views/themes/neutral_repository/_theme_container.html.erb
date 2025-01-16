@@ -34,7 +34,7 @@
     <% if display_content_block? @home_text %>
       <div class="d-none d-md-block">
         <div class="row">
-          <div class="pl-15 col-12">
+          <div class="col-12">
             <%= render 'themes/neutral_repository/home_text' if controller_name == 'homepage' %>
           </div>
         </div>
@@ -43,7 +43,7 @@
 
     <% if @presenter.display_featured_researcher? %>
       <div class="row">
-        <div class="pl-15 col-12">
+        <div class="col-12">
           <%= render 'themes/neutral_repository/hyrax/homepage/featured_researcher' %>
         </div>
       </div>
@@ -51,7 +51,7 @@
 
     <% if @presenter.display_recently_uploaded? %>
       <div class="row">
-        <div class="pl-15 col-12">
+        <div class="col-12">
           <%= render 'recently_uploaded', recent_documents: @recent_documents %>
         </div>
       </div>

@@ -11,9 +11,6 @@
       <div class="card-body">
         <div class="row">
           <%= render 'workflow_actions_widget', presenter: @presenter %>
-          <div class="col-12">
-            <%= render "show_actions", presenter: @presenter %>
-          </div>
           <% if @presenter.video_embed_viewer? %>
             <%= render 'video_embed_viewer', presenter: @presenter %>
           <% elsif @presenter.iiif_viewer? %>
@@ -29,6 +26,9 @@
               <%= render 'representative_media', presenter: @presenter, viewer: false %>
             </div>
           <% end %>
+          <div class="col-12">
+            <%= render "show_actions", presenter: @presenter %>
+          </div>
           <div class="col-md-8">
             <%= render 'work_description', presenter: @presenter %>
             <%= render 'metadata', presenter: @presenter %>
@@ -38,7 +38,9 @@
               <%= render 'relationships', presenter: @presenter %>
             </div>
             <%= render('download_pdf', presenter: @presenter, file_set_id: @presenter.file_set_presenters.first.id) if @presenter.show_pdf_download_button? %>
-            <%= render 'citations', presenter: @presenter %>
+            <div class="citations-container">
+              <%= render 'citations', presenter: @presenter %>
+            </div>
             <!-- analytics_button is disabled until future fix -->
             <%#= render 'analytics_button', presenter: @presenter %>
           </div>

@@ -7,6 +7,7 @@ RSpec.describe Hyku::WorkShowPresenter do
   let(:request) { double(base_url: 'http://test.host', host: 'http://test.host') }
   let(:ability) { nil }
   let(:presenter) { described_class.new(solr_document, ability, request) }
+  let(:default_pdf_viewer_value) { Flipflop::FeatureSet.current.feature(:default_pdf_viewer).default }
 
   describe "#manifest_url" do
     subject { presenter.manifest_url }
@@ -39,6 +40,8 @@ RSpec.describe Hyku::WorkShowPresenter do
       let!(:test_strategy) { Flipflop::FeatureSet.current.test! }
 
       before { allow_any_instance_of(Hyrax::IiifAv::IiifFileSetPresenter).to receive(:pdf?).and_return true }
+      # Return state of the tenant to the default after test suite
+      after { test_strategy.switch!(:default_pdf_viewer, default_pdf_viewer_value) }
 
       context 'when the tenant is not configured to use IIIF Print' do
         before { test_strategy.switch!(:default_pdf_viewer, true) }

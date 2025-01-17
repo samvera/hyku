@@ -20,7 +20,7 @@ gem 'active-fedora', '~> 14.0'
 gem 'activerecord-nulldb-adapter'
 gem 'activesupport', '>= 4.2.0', group: %i[development test]
 gem 'addressable', '2.8.1' # remove once https://github.com/postrank-labs/postrank-uri/issues/49 is fixed
-gem 'apartment', github: 'scientist-softserv/apartment', branch: 'development'
+gem 'apartment', github: 'notch8/apartment', branch: 'development'
 gem 'aws-sdk-sqs', group: %i[aws]
 gem 'bixby', group: %i[development test]
 gem 'blacklight', '~> 7.29'
@@ -58,7 +58,7 @@ gem 'hyrax-doi', github: 'samvera-labs/hyrax-doi', branch: 'rails_hyrax_upgrade'
 gem 'hyrax-iiif_av', github: 'samvera-labs/hyrax-iiif_av', branch: 'rails_hyrax_upgrade'
 gem 'i18n-debug', require: false, group: %i[development test]
 gem 'i18n-tasks', group: %i[development test]
-gem 'iiif_print', github: 'scientist-softserv/iiif_print', branch: 'i84-support-dynamic-metadata'
+gem 'iiif_print', github: 'notch8/iiif_print', branch: 'i84-support-dynamic-metadata'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'openssl', '>= 3.2.0'
@@ -121,7 +121,7 @@ gem 'valkyrie-shrine'
 gem 'web-console', '>= 3.3.0', group: %i[development] # <%= console %> in views
 gem 'webdrivers', '~> 4.7.0', group: %i[test]
 gem 'webmock', group: %i[test]
-gem 'willow_sword', github: 'scientist-softserv/willow_sword', branch: 'main'
+gem 'willow_sword', github: 'notch8/willow_sword', branch: 'main'
 
 # Enabling the following gem breaks sidekiq. To Enable: assets.debug must be set to true in config/development.rb
 # gem "xray-rails", git: "https://github.com/brentd/xray-rails.git", branch: "bugs/ruby-3.0.0", group: %i[development]

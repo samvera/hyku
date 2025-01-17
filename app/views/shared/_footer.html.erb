@@ -10,7 +10,7 @@
         <p><%= t('hyrax.footer.copyright_html', current_year: current_year) %></p>
         <p><%= t('hyrax.background_attribution_html') %></p>
         <% unless user_signed_in? %>
-          <p><%= link_to t('hyku.footer.admin_login', default: [:'hyrax.toolbar.profile.login']), main_app.new_user_session_path %></p>
+          <p><%= link_to t('hyku.footer.admin_login', default: [:'hyrax.toolbar.profile.login']), main_app.new_user_session_path, class: 'navbar-link' %></p>
         <% end %>
       </div>
     </div>

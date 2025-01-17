@@ -97,7 +97,7 @@ module Hyrax
     #
     # @return [String]
     #
-    # @see https://github.com/scientist-softserv/palni-palci/issues/951
+    # @see https://github.com/notch8/palni-palci/issues/951
     # @see https://github.com/samvera/hyku/issues/1815
     def collection_type_badge
       return "" unless Site.account&.present?

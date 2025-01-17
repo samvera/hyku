@@ -28,7 +28,7 @@ module Hyku
   # @see https://sentry.io/organizations/scientist-inc/issues/3773392603/?project=6745020&query=is%3Aunresolved&referrer=issue-stream
   # @see https://github.com/samvera-labs/bulkrax/pull/689
   # @see https://github.com/samvera-labs/bulkrax/issues/688
-  # @see https://github.com/scientist-softserv/adventist-dl/issues/179
+  # @see https://github.com/notch8/adventist-dl/issues/179
   def self.utf_8_encode(string)
     string
       .encode(Encoding.find('UTF-8'), invalid: :replace, undef: :replace, replace: "?")
@@ -418,7 +418,7 @@ module Hyku
       ##
       # This needs to be in the after initialize so that the IiifPrint gem can do it's decoration.
       #
-      # @see https://github.com/scientist-softserv/iiif_print/blob/9e7837ce4bd08bf8fff9126455d0e0e2602f6018/lib/iiif_print/engine.rb#L54 Where we do the override.
+      # @see https://github.com/notch8/iiif_print/blob/9e7837ce4bd08bf8fff9126455d0e0e2602f6018/lib/iiif_print/engine.rb#L54 Where we do the override.
       Hyrax::Actors::FileSetActor.prepend(IiifPrint::TenantConfig::FileSetActorDecorator)
       Hyrax::WorkShowPresenter.prepend(IiifPrint::TenantConfig::WorkShowPresenterDecorator)
     end

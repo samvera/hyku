@@ -104,7 +104,7 @@ RSpec.describe Hyrax::HomepageController, type: :controller, clean_repo: true do
       end
     end
 
-    xcontext "without solr" do # skip: see https://github.com/scientist-softserv/palni-palci/issues/154
+    xcontext "without solr" do # skip: see https://github.com/notch8/palni-palci/issues/154
       before do
         allow_any_instance_of(Hyrax::SearchService).to receive(:search_results).and_raise Blacklight::Exceptions::InvalidRequest
       end

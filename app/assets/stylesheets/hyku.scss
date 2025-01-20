@@ -37,6 +37,11 @@
   .home-tabs-left {
     margin: 0 10px;
   }
+
+  .row-cols-md-3>* {
+    flex: 0 0 33.33%;
+    max-width: 33.33%;
+  }
 }
 
 #banner.jumbotron {
@@ -773,9 +778,6 @@ dd {
   }
 
   .document {
-    margin-top: 6px;
-    padding-top: 6px;
-
     .document-thumbnail {
       .img-thumbnail {
         padding: 0.25rem;
@@ -807,4 +809,3 @@ dd {
   }
 }
 /* End Collection show page */
-

@@ -38,8 +38,8 @@
               <%= render 'relationships', presenter: @presenter %>
             </div>
             <%= render('download_pdf', presenter: @presenter, file_set_id: @presenter.file_set_presenters.first.id) if @presenter.show_pdf_download_button? %>
-            <div class="d-flex justify-content-center">
-            <%= render 'citations', presenter: @presenter %>
+            <div class="citations-container">
+              <%= render 'citations', presenter: @presenter %>
             </div>
             <!-- analytics_button is disabled until future fix -->
             <%#= render 'analytics_button', presenter: @presenter %>

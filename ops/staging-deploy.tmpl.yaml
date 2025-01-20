@@ -64,7 +64,7 @@ extraEnvVars: &envVars
   - name: DB_ADAPTER
     value: postgresql
   - name: DB_HOST
-    value: pg-postgresql.postgres.svc.cluster.local
+    value: postgres-postgresql.postgres.svc.cluster.local
   - name: DB_NAME
     value: hyku-staging
   - name: DB_USER
@@ -222,7 +222,7 @@ solr:
 externalFcrepoHost: fcrepo.fcrepo.svc.cluster.local
 
 externalPostgresql:
-  host: pg-postgresql.postgres.svc.cluster.local
+  host: postgres-postgresql.postgres.svc.cluster.local
   username: postgres
   password: $POSTGRES_PASSWORD
 

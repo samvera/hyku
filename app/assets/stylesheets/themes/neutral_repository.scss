@@ -15,6 +15,10 @@
 
   ////// Basic Apperance Styles //////
 
+  .mt-4 {
+    margin-top: 40px;
+  }
+
   .mb-40 {
     margin-bottom: 40px;
   }
@@ -109,9 +113,10 @@
     border: 1px solid #ddd;
   }
 
-  ////// Carousel //////
+  ////// Carousel & Featured Works //////
 
-  #featured-carousel {
+
+  .featured-works-section {
     border: 1px solid #ccc;
     padding: 1em;
   }

@@ -17,7 +17,10 @@ body.public-facing h5,
 body.public-facing h6 { font-family: <%= appearance.font_headline_family %>; }
 
 /* LINK COLORS */
-body.public-facing a { color: <%= appearance.link_color %>; }
+body.public-facing a,
+body.public-facing .dropdown-menu a { 
+  color: <%= appearance.link_color %>;
+}
 body.public-facing a:hover,
 body.public-facing a:focus { color: <%= appearance.link_hover_color %>; }
 

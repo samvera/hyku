@@ -515,6 +515,10 @@ body.public-facing {
   width: unset;
 }
 
+.featured-collection-section {
+  border: 1px solid #ccc;
+}
+
 .mb-30 {
   margin-bottom: 30px;
 }
@@ -709,7 +713,7 @@ tr[data-feature="use-iiif-print"] {
 #featured_collections {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: left;
 }
 
 // slideshow heading

@@ -64,7 +64,7 @@ extraEnvVars: &envVars
   - name: DB_ADAPTER
     value: postgresql
   - name: DB_HOST
-    value: pg-postgresql.staging-postgres.svc.cluster.local
+    value: postgres-postgresql.postgres.svc.cluster.local
   - name: DB_NAME
     value: hyku-staging
   - name: DB_USER
@@ -72,7 +72,7 @@ extraEnvVars: &envVars
   - name: FCREPO_BASE_PATH
     value: /hykustaging
   - name: FCREPO_HOST
-    value: fcrepo.staging-fcrepo.svc.cluster.local
+    value: fcrepo.fcrepo.svc.cluster.local
   - name: FCREPO_PORT
     value: "8080"
   - name: FCREPO_REST_PATH
@@ -125,6 +125,8 @@ extraEnvVars: &envVars
     value: "false"
   - name: HYRAX_FITS_PATH
     value: /app/fits/fits.sh
+  - name: HYRAX_FLEXIBLE
+    value: "true"
   - name: HYRAX_VALKYRIE
     value: "true"
   - name: HYKU_ADMIN_HOST
@@ -172,11 +174,11 @@ extraEnvVars: &envVars
   - name: SOLR_CONFIGSET_NAME
     value: hyku-staging
   - name: SOLR_HOST
-    value: solr.staging-solr
+    value: solr.solr
   - name: SOLR_PORT
     value: "8983"
   - name: SOLR_URL
-    value: http://admin:$SOLR_ADMIN_PASSWORD@solr.staging-solr:8983/solr/
+    value: http://admin:$SOLR_ADMIN_PASSWORD@solr.solr:8983/solr/
   - name: SECRET_KEY_BASE
     value: $SECRET_KEY_BASE
   - name: SENTRY_DSN
@@ -217,14 +219,14 @@ redis:
 solr:
   enabled: false
 
-externalFcrepoHost: fcrepo.staging-fcrepo.svc.cluster.local
+externalFcrepoHost: fcrepo.fcrepo.svc.cluster.local
 
 externalPostgresql:
-  host: pg-postgresql.staging-postgres.svc.cluster.local
+  host: postgres-postgresql.postgres.svc.cluster.local
   username: postgres
   password: $POSTGRES_PASSWORD
 
-externalSolrHost: solr.staging-solr.svc.cluster.local
+externalSolrHost: solr.solr.svc.cluster.local
 externalSolrUser: admin
 externalSolrCollection: "hyku-staging"
 externalSolrPassword: $SOLR_ADMIN_PASSWORD

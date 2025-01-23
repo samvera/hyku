@@ -13,10 +13,27 @@ RSpec.describe UserStatCollectionJob, type: :job do
 
   let(:account) { create(:account_with_public_schema) }
 
-  describe '#reenqueue' do
-    it 'Enques an TenantMaintenanceJob after perform' do
-      switch!(account)
-      expect { UserStatCollectionJob.perform_now }.to have_enqueued_job(UserStatCollectionJob)
+  describe '#perform' do
+    context 'when UserStat records exist' do
+      before do
+        FactoryBot.create(:user_stat) # Ensure a UserStat record exists
+      end
+      after do
+        # Ensure we reset to the default tenant after each test
+        Apartment::Tenant.switch!(Apartment.default_tenant)
+      end
+
+      it 'enqueues UserStatCollectionJob after perform' do
+        switch!(account)
+        expect { UserStatCollectionJob.perform_now }.to have_enqueued_job(UserStatCollectionJob)
+      end
+    end
+
+    context 'when no UserStat records exist' do
+      it 'does not enqueue UserStatCollectionJob' do
+        switch!(account)
+        expect { UserStatCollectionJob.perform_now }.not_to have_enqueued_job(UserStatCollectionJob)
+      end
     end
   end
 end

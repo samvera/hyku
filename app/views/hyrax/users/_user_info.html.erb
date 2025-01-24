@@ -81,7 +81,9 @@
   <% end %>
 
   <!-- OVERRIDE Hyrax 5.0: Display batch email frequency -->
-  <dt><%= t("hyrax.user_profile.email_frequency.label").html_safe %></dt>
-  <% frequency = user.batch_email_frequency || 'not_set' %>
-  <dd><%= t("hyrax.user_profile.email_frequency.#{frequency}") %></dd>
+  <% if current_account.batch_email_notifications %>
+    <dt><%= t("hyrax.user_profile.email_frequency.label").html_safe %></dt>
+    <% frequency = user.batch_email_frequency || 'not_set' %>
+    <dd><%= t("hyrax.user_profile.email_frequency.#{frequency}") %></dd>
+  <% end %>
 </dl>

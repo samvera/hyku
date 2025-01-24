@@ -8,17 +8,17 @@
   @import url(//<%= appearance.font_import_headline_url %>);
 <% end %>
 
-body.public-facing { font-family: <%= appearance.font_body_family %>; }
+body.public-facing { font-family: <%= appearance.font_body_family %> !important; }
 body.public-facing h1,
 body.public-facing h2,
 body.public-facing h3,
 body.public-facing h4,
 body.public-facing h5,
-body.public-facing h6 { font-family: <%= appearance.font_headline_family %>; }
+body.public-facing h6 { font-family: <%= appearance.font_headline_family %> !important; }
 
 /* LINK COLORS */
 body.public-facing a,
-body.public-facing .dropdown-menu a { 
+body.public-facing .dropdown-menu a {
   color: <%= appearance.link_color %>;
 }
 body.public-facing a:hover,

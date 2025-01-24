@@ -519,6 +519,15 @@ body.public-facing {
   border: 1px solid #ccc;
 }
 
+.new_featured_collection_list {
+  width: 100%;
+}
+
+// align featured collections with featured works
+#featured_collections {
+  margin-top: -5px;
+}
+
 .mb-30 {
   margin-bottom: 30px;
 }
@@ -714,6 +723,10 @@ tr[data-feature="use-iiif-print"] {
   display: flex;
   flex-wrap: wrap;
   justify-content: left;
+
+  h3 {
+    font-size: inherit;
+  }
 }
 
 // slideshow heading

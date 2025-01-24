@@ -47,6 +47,8 @@ class Account < ApplicationRecord
                      format: { with: /\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/ },
                      unless: proc { |a| a.tenant == 'public' || a.tenant == 'single' }
 
+  after_save :schedule_jobs_if_settings_changed
+
   def self.admin_host
     host = ENV.fetch('HYKU_ADMIN_HOST', nil)
     host ||= ENV['HOST']
@@ -182,7 +184,6 @@ class Account < ApplicationRecord
       LeaseAutoExpiryJob
     ]
 
-    # Add conditional checks based on a config or environment variable
     jobs_to_schedule << BatchEmailNotificationJob if batch_email_notifications
     jobs_to_schedule << DepositorEmailNotificationJob if depositor_email_notifications
     jobs_to_schedule << UserStatCollectionJob if user_analytics
@@ -192,6 +193,25 @@ class Account < ApplicationRecord
     end
 
     account ? AccountElevator.switch!(account) : reset!
+  end
+
+  private
+
+  def schedule_jobs_if_settings_changed
+    return unless self.class.column_names.include?('settings')
+
+    relevant_settings = [
+      'batch_email_notifications',
+      'depositor_email_notifications',
+      'user_analytics'
+    ]
+
+    return unless saved_changes['settings']
+    old_settings = saved_changes['settings'][0] || {}
+    new_settings = saved_changes['settings'][1] || {}
+
+    return unless old_settings.slice(*relevant_settings) != new_settings.slice(*relevant_settings)
+    find_or_schedule_jobs
   end
 end
 # rubocop:enable Metrics/ClassLength

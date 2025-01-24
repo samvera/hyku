@@ -176,15 +176,21 @@ class Account < ApplicationRecord
   def find_or_schedule_jobs
     account = Site.account
     AccountElevator.switch!(self)
-    [
+
+    jobs_to_schedule = [
       EmbargoAutoExpiryJob,
-      LeaseAutoExpiryJob,
-      BatchEmailNotificationJob,
-      DepositorEmailNotificationJob,
-      UserStatCollectionJob
-    ].each do |klass|
+      LeaseAutoExpiryJob
+    ]
+
+    # Add conditional checks based on a config or environment variable
+    jobs_to_schedule << BatchEmailNotificationJob if ENV['ENABLE_BATCH_EMAIL'] == 'true'
+    jobs_to_schedule << DepositorEmailNotificationJob if ENV['ENABLE_DEPOSITOR_EMAIL'] == 'true'
+    jobs_to_schedule << UserStatCollectionJob if ENV['ENABLE_USER_STAT'] == 'true'
+
+    jobs_to_schedule.each do |klass|
       klass.perform_later unless find_job(klass)
     end
+
     account ? AccountElevator.switch!(account) : reset!
   end
 end

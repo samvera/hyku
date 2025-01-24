@@ -198,7 +198,7 @@ class Account < ApplicationRecord
   private
 
   def schedule_jobs_if_settings_changed
-    return unless self.class.column_names.include?('settings')
+    return unless settings
 
     relevant_settings = [
       'batch_email_notifications',
@@ -210,7 +210,10 @@ class Account < ApplicationRecord
     old_settings = saved_changes['settings'][0] || {}
     new_settings = saved_changes['settings'][1] || {}
 
-    return unless old_settings.slice(*relevant_settings) != new_settings.slice(*relevant_settings)
+    old_relevant_settings = old_settings.slice(*relevant_settings)
+    new_relevant_settings = new_settings.slice(*relevant_settings)
+
+    return unless old_relevant_settings != new_relevant_settings
     find_or_schedule_jobs
   end
 end

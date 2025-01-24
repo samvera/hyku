@@ -146,13 +146,11 @@ RSpec.describe CreateAccount, clean: true do
       end
 
       it "only enqueues embargo and lease jobs" do
-        # These jobs should always run regardless of settings
         [EmbargoAutoExpiryJob, LeaseAutoExpiryJob].each do |klass|
           expect(account).to receive(:find_job).with(klass).and_return(false)
           expect(klass).to receive(:perform_later)
         end
 
-        # These jobs should not run when settings are disabled
         [
           BatchEmailNotificationJob,
           DepositorEmailNotificationJob,

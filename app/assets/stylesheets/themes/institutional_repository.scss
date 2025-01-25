@@ -164,31 +164,29 @@
     z-index: 5;
   }
 
-  //// Resources Carousel ////
+  ///// Resources Carousel /////
 
   .institutional-repository-carousel {
     .resource-container {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      // overflow: hidden;
-      // width: 100%;
       position: relative;
     }
-    
+
     .resource-wrapper {
       overflow: hidden;
-      width: calc(6 * 160px); /* Requires the width of each item including margins */
+      width: calc(6 * 160px); /* Requires the width of each resource-item including margins */
     }
-    
+
     .resource-row {
       display: flex;
       transition: transform 0.3s ease;
-      width: max-content; /* Ensures the row expands with more icons */
+      width: max-content;
     }
-    
+
     .resource-item {
-      margin: 5px;
+      margin: 30px 5px 0 5px;
       width: 150px;
       text-align: center;
     }
@@ -198,7 +196,6 @@
     }
   }
 
-
   ////// All Collections //////
 
   // browse by collection page
@@ -207,3 +204,5 @@
     list-style-type: none;
   }
 }
+
+

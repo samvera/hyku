@@ -116,18 +116,52 @@ RSpec.describe CreateAccount, clean: true do
   end
 
   describe '#schedule_recurring_jobs' do
-    it "Enqueues Recurring jobs" do
-      [
-        EmbargoAutoExpiryJob,
-        LeaseAutoExpiryJob,
-        BatchEmailNotificationJob,
-        DepositorEmailNotificationJob,
-        UserStatCollectionJob
-      ].each do |klass|
-        expect(account).to receive(:find_job).with(klass).and_return(false)
-        expect(klass).to receive(:perform_later)
+    context 'when settings are enabled' do
+      before do
+        allow(account).to receive(:batch_email_notifications).and_return(true)
+        allow(account).to receive(:depositor_email_notifications).and_return(true)
+        allow(account).to receive(:user_analytics).and_return(true)
       end
-      subject.schedule_recurring_jobs
+
+      it "enqueues recurring jobs" do
+        [
+          EmbargoAutoExpiryJob,
+          LeaseAutoExpiryJob,
+          BatchEmailNotificationJob,
+          DepositorEmailNotificationJob,
+          UserStatCollectionJob
+        ].each do |klass|
+          expect(account).to receive(:find_job).with(klass).and_return(false)
+          expect(klass).to receive(:perform_later)
+        end
+        subject.schedule_recurring_jobs
+      end
+    end
+
+    context 'when settings are disabled' do
+      before do
+        allow(account).to receive(:batch_email_notifications).and_return(false)
+        allow(account).to receive(:depositor_email_notifications).and_return(false)
+        allow(account).to receive(:user_analytics).and_return(false)
+      end
+
+      it "only enqueues embargo and lease jobs" do
+        [EmbargoAutoExpiryJob, LeaseAutoExpiryJob].each do |klass|
+          expect(account).to receive(:find_job).with(klass).and_return(false)
+          expect(klass).to receive(:perform_later)
+        end
+
+        [
+          BatchEmailNotificationJob,
+          DepositorEmailNotificationJob,
+          UserStatCollectionJob
+        ].each do |klass|
+          expect(account).not_to receive(:find_job).with(klass)
+          expect(klass).not_to receive(:perform_later)
+        end
+
+        subject.schedule_recurring_jobs
+      end
     end
   end
 end

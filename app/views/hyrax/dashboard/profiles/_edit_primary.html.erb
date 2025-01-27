@@ -56,12 +56,14 @@
   </div><!-- .form-group -->
 
   <!-- OVERRIDE: Add batch email frequency to edit -->
-  <div class="form-group row">
-    <%= f.label :batch_email_frequency, t("hyrax.user_profile.email_frequency.label").html_safe, class: 'col-4 col-form-label' %>
-    <div class="col-8">
-      <%= f.select :batch_email_frequency, controller.frequency_options, {}, { class: "form-control" } %>
-    </div>
-  </div><!-- .form-group -->
+  <% if current_account.batch_email_notifications %>
+    <div class="form-group row">
+      <%= f.label :batch_email_frequency, t("hyrax.user_profile.email_frequency.label").html_safe, class: 'col-4 col-form-label' %>
+      <div class="col-8">
+        <%= f.select :batch_email_frequency, controller.frequency_options, {}, { class: "form-control" } %>
+      </div>
+    </div><!-- .form-group -->
+  <% end %>
 
   <%= render 'trophy_edit', trophies: @trophies %>
 

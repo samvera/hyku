@@ -1,6 +1,6 @@
 .institutional_repository {
 
-  ////// Basic Apperance Styles //////
+  ////// Basic Appearance Styles //////
 
   .mt-40 {
     margin-top: 40px;
@@ -163,30 +163,36 @@
     z-index: 5;
   }
 
+  ///// Resources Carousel /////
+
   .institutional-repository-carousel {
-    .carousel-control {
-      background-image: none;
-      width: 4%;
-
-      .left {
-        margin-left: 0;
-      }
-
-      .right {
-        margin-right: 0;
-      }
-    }
-
-    .carousel-item.active {
+    .resource-container {
       display: flex;
-      padding-top: 1em;
-      padding-left: 10em;
-      padding-right: 10em;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
     }
-  }
 
-  .carousel .item .col-xs-12 {
-    padding: 0;
+    .resource-wrapper {
+      overflow: hidden;
+      width: calc(6 * 160px); /* Requires the width of each resource-item including margins */
+    }
+
+    .resource-row {
+      display: flex;
+      transition: transform 0.3s ease;
+      width: max-content;
+    }
+
+    .resource-item {
+      margin: 30px 5px 0 5px;
+      width: 150px;
+      text-align: center;
+    }
+
+    .resource-item a {
+      text-decoration: none;
+    }
   }
 
   ////// All Collections //////
@@ -196,115 +202,6 @@
     font-size: 1.5em;
     list-style-type: none;
   }
-
-  ////// Stats Carousel Media Queries //////
-
-  @media (max-width: 767px) {
-    .institutional-repository-carousel .cloneditem-1,
-    .institutional-repository-carousel .cloneditem-2,
-    .institutional-repository-carousel .cloneditem-3 {
-      display: none;
-    }
-  }
-
-  @media only screen and (max-width: 992px) {
-    .carousel .item .col-xs-12:nth-last-child(-n+2) {
-      display: none;
-    }
-  }
-
-  @media all and (min-width: 768px) {
-    .institutional-repository-carousel .carousel-inner > .active.left,
-    .institutional-repository-carousel .carousel-inner > .prev {
-      left: -50%;
-    }
-
-    .institutional-repository-carousel .carousel-inner > .active.right,
-    .institutional-repository-carousel .carousel-inner > .next {
-      left: 50%;
-    }
-
-    .institutional-repository-carousel .carousel-inner > .left,
-    .institutional-repository-carousel .carousel-inner > .prev.right,
-    .institutional-repository-carousel .carousel-inner > .active {
-      left: 0;
-    }
-
-    .institutional-repository-carousel .carousel-inner .cloneditem-1 {
-      display: block;
-    }
-  }
-
-  @media all and (min-width: 768px) and (transform-3d),
-  all and (min-width: 768px) and (-webkit-transform-3d) {
-    .institutional-repository-carousel .carousel-inner > .item.active.right,
-    .institutional-repository-carousel .carousel-inner > .item.next {
-      left: 0;
-      -webkit-transform: translate3d(50%, 0, 0);
-      transform: translate3d(50%, 0, 0);
-    }
-
-    .institutional-repository-carousel .carousel-inner > .item.active.left,
-    .institutional-repository-carousel .carousel-inner > .item.prev {
-      left: 0;
-      -webkit-transform: translate3d(-50%, 0, 0);
-      transform: translate3d(-50%, 0, 0);
-    }
-
-    .institutional-repository-carousel .carousel-inner > .item.left,
-    .institutional-repository-carousel .carousel-inner > .item.prev.right,
-    .institutional-repository-carousel .carousel-inner > .item.active {
-      left: 0;
-      -webkit-transform: translate3d(0, 0, 0);
-      transform: translate3d(0, 0, 0);
-    }
-  }
-
-  @media all and (min-width: 992px) {
-    .institutional-repository-carousel .carousel-inner > .active.left,
-    .institutional-repository-carousel .carousel-inner > .prev {
-      left: -16.6%;
-    }
-
-    .institutional-repository-carousel .carousel-inner > .active.right,
-    .institutional-repository-carousel .carousel-inner > .next {
-      left: 16.6%;
-    }
-
-    .institutional-repository-carousel .carousel-inner > .left,
-    .institutional-repository-carousel .carousel-inner > .prev.right,
-    .institutional-repository-carousel .carousel-inner > .active {
-      left: 0;
-    }
-
-    .institutional-repository-carousel .carousel-inner .cloneditem-2,
-    .institutional-repository-carousel .carousel-inner .cloneditem-3 {
-      display: block;
-    }
-  }
-
-  @media all and (min-width: 992px) and (transform-3d),
-  all and (min-width: 992px) and (-webkit-transform-3d) {
-    .institutional-repository-carousel .carousel-inner > .item.active.right,
-    .institutional-repository-carousel .carousel-inner > .item.next {
-      left: 0;
-      -webkit-transform: translate3d(16.6%, 0, 0);
-      transform: translate3d(16.6%, 0, 0);
-    }
-
-    .institutional-repository-carousel .carousel-inner > .item.active.left,
-    .institutional-repository-carousel .carousel-inner > .item.prev {
-      left: 0;
-      -webkit-transform: translate3d(-16.6%, 0, 0);
-      transform: translate3d(-16.6%, 0, 0);
-    }
-
-    .institutional-repository-carousel .carousel-inner > .item.left,
-    .institutional-repository-carousel .carousel-inner > .item.prev.right,
-    .institutional-repository-carousel .carousel-inner > .item.active {
-      left: 0;
-      -webkit-transform: translate3d(0, 0, 0);
-      transform: translate3d(0, 0, 0);
-    }
-  }
 }
+
+

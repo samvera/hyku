@@ -1,32 +1,31 @@
 <%# Override Hyrax 5.0.1
   - add privacy policy partial
   - add login & logout link
-  - add Hyku version
-  - navbar-inverse class %>
+  - add Hyku version %>
 <% current_year = Time.now.year %>
-<footer class="navbar navbar-inverse navbar-dark bg-dark site-footer w-100">
-  <div class="container-fluid">
-    <div class="navbar-text d-flex justify-content-between w-100">
-      <!-- Left Column -->
-      <div class="d-flex flex-column">
-        <div class='p-2'><%= t('hyrax.footer.service_html') %></div>
-        <div class='p-2'>Hyku v<%= Hyku::VERSION %> with Hyrax v<%= Hyrax::VERSION %></div>
+
+<footer class="navbar navbar-dark container-fluid">
+  <div class="row navbar-text text-center">
+
+    <div class="col-12 col-lg-6 text-lg-left">
+      <div class="p-2"><%= t('hyrax.footer.service_html') %></div>
+      <div class="p-2">Hyku v<%= Hyku::VERSION %> with Hyrax v<%= Hyrax::VERSION %></div>
+    </div>
+
+    <div class="col-12 col-lg-6 text-lg-right">
+      <div class="p-2">
+        <%= t('hyrax.footer.copyright_html', current_year: current_year) %>
+        <%= t('hyrax.background_attribution_html') %>
       </div>
-      <!-- Right Column -->
-      <div class="d-flex flex-column align-items-end flex-fill">
-        <div class='p-2'>
-          <%= t('hyrax.footer.copyright_html', current_year: current_year) %>
-          <%= t('hyrax.background_attribution_html') %>
-        </div>
-        <div class='p-2'>
-          <% if user_signed_in? %>
-            <%= link_to t("hyrax.toolbar.profile.logout"), main_app.destroy_user_session_path, class: 'navbar-link' %>
-          <% else %>
-            <%= link_to t('hyku.footer.admin_login', default: [:'hyrax.toolbar.profile.login']), main_app.new_user_session_path, class: 'navbar-link' %>
-          <% end %>
-          <span class='navbar-link'><%= render 'hyrax/base/privacy_policy' %></span>
-        </div>
+      <div class="p-2">
+        <% if user_signed_in? %>
+          <%= link_to t('hyrax.toolbar.profile.logout'), main_app.destroy_user_session_path, class: 'navbar-link' %>
+        <% else %>
+          <%= link_to t('hyku.footer.admin_login', default: [:'hyrax.toolbar.profile.login']), main_app.new_user_session_path, class: 'navbar-link' %>
+        <% end %>
+        <span class="navbar-link"><%= render 'hyrax/base/privacy_policy' %></span>
       </div>
     </div>
+
   </div>
 </footer>

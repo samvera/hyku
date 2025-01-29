@@ -1,4 +1,4 @@
-<ul id="user_utility_links" class="cultural-repository nav navbar-nav ml-auto">
+<ul id="user_utility_links" class="cultural-repository navbar-nav ml-auto text-right">
   <%= render 'shared/locale_picker' if available_translations.size > 1 %>
   <li class="nav-item <%= 'active' if current_page?(hyrax.root_path) %>">
     <%= link_to t(:'hyrax.controls.home'), hyrax.root_path, class: 'nav-link', aria: current_page?(hyrax.root_path) ? {current: 'page'} : nil %>

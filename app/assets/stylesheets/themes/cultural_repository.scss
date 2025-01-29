@@ -1,9 +1,6 @@
 .cultural_repository {
+  
   ////// Navbar //////
-  .navbar-header {
-    display: flex;
-    margin-left: -10px;
-  }
 
   .navbar-expand-lg .navbar-collapse {
     @media (min-width: 992px) {
@@ -44,11 +41,6 @@
 
   .navbar-toggler-icon, .facets-toggle.navbar-toggler {
     display: none;
-  }
-
-  .search-items {
-    padding: 0;
-    margin: 8px -16px 8px 0px
   }
 
   .cultural-homepage > .container {
@@ -303,16 +295,20 @@
     body.dashboard {
       padding-top: 0 !important;
     }
-
-    .facet-panel-background-color {
-      background-color: transparent;
-    }
   }
 
-  @media (max-width: 768px) {
-    // Note: copied over to override /* line 163, /usr/local/bundle/gems/blacklight-6.23.0/app/assets/stylesheets/blacklight/_facets.scss */
+  @media (max-width: 992px) {
     #facets .top-card-heading {
-      border: 1px solid #999999 !important;
+      border: 1px solid #fff;
+      background-color: #fff;
+    }
+
+    #facets .facet-panel-background-color {
+      background-color: transparent;
+    }
+
+    #facets .facets-heading {
+      margin-top: 8px;
     }
   }
 }

@@ -3,10 +3,10 @@
     <% df = @form.default_fonts %>
     <% font = f.object.body_font %>
 
-    <%= f.input :body_font, label: 'Select Body Font', required: false, input_html: { class: 'font-fields', data: { default_value: df['body_font'] } } %>
+    <%= f.input :body_font, label: 'Select Body Font', required: false, label_html: { class: 'text-left' }, input_html: { class: 'font-fields', data: { default_value: df['body_font'] } } %>
     <%= link_to 'Restore Default', '#font', class: 'btn btn-secondary restore-default-font', data: { default_target: 'body_font' } %>
 
-    <%= f.input :headline_font, label: 'Select Header Font', required: false, input_html: { class: 'font-fields', data: { default_value: df['headline_font'] } } %>
+    <%= f.input :headline_font, label: 'Select Header Font', required: false, label_html: { class: 'text-left' }, input_html: { class: 'font-fields', data: { default_value: df['headline_font'] } } %>
     <%= link_to 'Restore Default', '#font', class: 'btn btn-secondary restore-default-font', data: { default_target: 'headline_font' } %>
 
   </div>

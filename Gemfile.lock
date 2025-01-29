@@ -175,15 +175,15 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: dd6f355b7864a3523ca0b2e6d2c0683a4d2eb18a
-  branch: main
+  revision: 3788d40be037a82f1759e724d846e385f5ff5465
+  branch: main_before_rails_72
   specs:
     hyrax (5.0.1)
       active-fedora (~> 14.0)
       almond-rails (~> 0.1)
       awesome_nested_set (~> 3.1)
       blacklight (~> 7.29)
-      blacklight-gallery (~> 4.0)
+      blacklight-gallery (~> 4.7.0)
       breadcrumbs_on_rails (~> 3.0)
       browse-everything (>= 0.16, < 2.0)
       carrierwave (~> 1.0)
@@ -357,7 +357,7 @@ GEM
       blacklight (> 6.0, < 8)
       cancancan (>= 1.8)
       deprecation (~> 1.0)
-    blacklight-gallery (4.8.1)
+    blacklight-gallery (4.7.0)
       blacklight (>= 7.17, < 9)
       rails (>= 6.1, < 9)
     blacklight_advanced_search (7.0.0)

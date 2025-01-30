@@ -1,6 +1,6 @@
 <% # OVERRIDE: Hyrax v5.0.0rc2 - added the admin login menu from _user_util_links partial for theming %>
-<nav class="navbar navbar-light bg-light navbar-expand-sm justify-content-between align-items-center px-2 py-3 border-bottom" role="navigation" aria-label="Root Menu">
-  <ul class="nav navbar-nav col-sm-5">
+<nav class="navbar navbar-light bg-light navbar-expand-sm justify-content-between align-items-center px-2 py-3 border-bottom flex-wrap" role="navigation" aria-label="Root Menu">
+  <ul class="navbar-nav col-sm-5">
     <li class="nav-item <%= 'active' if current_page?(hyrax.root_path) %>">
       <%= link_to t(:'hyrax.controls.home'), hyrax.root_path, class: "nav-link", aria: current_page?(hyrax.root_path) ? {current: 'page'} : nil %></li>
     <li class="nav-item <%= 'active' if current_page?(hyrax.about_path) %>">

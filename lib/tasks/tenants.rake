@@ -18,30 +18,26 @@ namespace :tenants do
         tenant_file_sizes = [] # Declare and initialize within the block
 
         works.each do |work|
-          begin
-            document = SolrDocument.find(work.id)
-            files = document._source["file_set_ids_ssim"] || []
+          document = SolrDocument.find(work.id)
+          files = document._source["file_set_ids_ssim"] || []
 
-            if files.any?
-              file_sizes = files.map do |file|
-                begin
-                  f = SolrDocument.find(file.to_s)
-                  f.to_h['file_size_lts'] || 0
-                rescue Blacklight::Exceptions::RecordNotFound => e
-                  puts "Warning: File #{file} not found. Skipping. Error: #{e.message}"
-                  0
-                end
-              end
-
-              total_file_size_bytes = file_sizes.inject(0, :+)
-              tenant_file_sizes << (total_file_size_bytes / 1.0.megabyte).round(2)
-            else
-              tenant_file_sizes << 0
+          if files.any?
+            file_sizes = files.map do |file|
+              f = SolrDocument.find(file.to_s)
+              f.to_h['file_size_lts'] || 0
+            rescue Blacklight::Exceptions::RecordNotFound => e
+              puts "Warning: File #{file} not found. Skipping. Error: #{e.message}"
+              0
             end
-          rescue Blacklight::Exceptions::RecordNotFound => e
-            puts "Warning: Work #{work.id} not found. Skipping. Error: #{e.message}"
+
+            total_file_size_bytes = file_sizes.inject(0, :+)
+            tenant_file_sizes << (total_file_size_bytes / 1.0.megabyte).round(2)
+          else
             tenant_file_sizes << 0
           end
+        rescue Blacklight::Exceptions::RecordNotFound => e
+          puts "Warning: Work #{work.id} not found. Skipping. Error: #{e.message}"
+          tenant_file_sizes << 0
         end
 
         total_mb = tenant_file_sizes.inject(0, :+)

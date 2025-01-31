@@ -15,7 +15,7 @@
     <div class="card card-default">
       <div class="card-heading">
         <%= render 'work_title', presenter: @presenter %>
-        <%= render 'show_actions', presenter: @presenter %> 
+        <%= render 'show_actions', presenter: @presenter %>
       </div>
       <div class="card-body">
         <div class="row">
@@ -34,8 +34,6 @@
           <div class="col-sm-3 text-center">
             <%= render 'representative_media', presenter: @presenter, viewer: false unless @presenter.iiif_viewer? || @presenter.show_pdf_viewer? %>
             <%= render 'citations', presenter: @presenter %>
-            <!-- analytics_button is disabled until future fix -->
-            <%#= render 'analytics_button', presenter: @presenter %>
           </div>
           <% end %>
           <% if @presenter.viewer? %>

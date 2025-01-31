@@ -8,16 +8,16 @@
   <div class="row navbar-text text-center">
 
     <div class="col-12 col-lg-6 text-lg-left">
-      <div class="p-2"><%= t('hyrax.footer.service_html') %></div>
-      <div class="p-2">Hyku v<%= Hyku::VERSION %> with Hyrax v<%= Hyrax::VERSION %></div>
+      <div class="p-1 p-lg-2"><%= t('hyrax.footer.service_html') %></div>
+      <div class="p-1 p-lg-2">Hyku v<%= Hyku::VERSION %> with Hyrax v<%= Hyrax::VERSION %></div>
     </div>
 
     <div class="col-12 col-lg-6 text-lg-right">
-      <div class="p-2">
+      <div class="p-1 p-lg-2">
         <%= t('hyrax.footer.copyright_html', current_year: current_year) %>
         <%= t('hyrax.background_attribution_html') %>
       </div>
-      <div class="p-2">
+      <div class="p-1 p-lg-2">
         <% if user_signed_in? %>
           <%= link_to t('hyrax.toolbar.profile.logout'), main_app.destroy_user_session_path, class: 'navbar-link' %>
         <% else %>

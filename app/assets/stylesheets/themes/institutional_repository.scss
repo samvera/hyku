@@ -39,20 +39,12 @@
 
   ////// Navbar //////
 
-  .navbar-collapse {
-    justify-content: space-between;
-  }
-
-  // styles the top nav menu application name that is centered
+  // styles the top nav menu application name
   .institutional-repository-application-name {
-    text-align: center;
-
-    span {
-      color: #fff;
-      font-size: 20px;
-      line-height: 50px !important;
-      vertical-align: middle;
-    }
+    color: #fff;
+    font-size: 20px;
+    line-height: 50px !important;
+    vertical-align: middle;
   }
 
   // styles the search bar label in the navbar

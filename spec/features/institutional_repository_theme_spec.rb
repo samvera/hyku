@@ -44,7 +44,7 @@ RSpec.describe 'Admin can select institutional repository theme', type: :feature
       allow_any_instance_of(ApplicationController).to receive(:current_account).and_return(account)
       visit '/'
       expect(page).to have_css('body.institutional_repository')
-      expect(page).to have_css('nav#masthead.navbar.institutional-repository-nav')
+      expect(page).to have_css('nav#masthead.institutional-repository-nav')
       expect(page).to have_css('div.ir-stats')
       expect(page).to have_css('div.institutional-repository-featured-researcher')
       expect(page).to have_css('div.institutional-repository-recent-uploads')

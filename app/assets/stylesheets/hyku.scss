@@ -89,19 +89,39 @@
   background-color: #9bafbf;
 }
 
+///// FOOTER /////
+
+// overrides Hyrax styles that prevent footer from sitting at the bottom of the page
+body.neutral_repository {
+  margin-bottom: 0;
+}
+
+// overrides Hyrax styles that prevent footer from sitting at the bottom of the page
+.default_home, .cultural_repository, .institutional_repository {
+  footer {
+    position: absolute;
+    bottom: 0;
+  }
+}
+
 footer.navbar {
-  border-radius: 0;
+  display: block;
   font-size: 0.9em;
-  min-height: 40px;
-  vertical-align: middle;
 
-  p {
-    margin: 10px;
-    text-align: center;
+  .navbar-text {
+    display: flex;
+  }
 
-    strong {
-      font-weight: 500;
-    }
+  strong {
+    font-weight: 500;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  @media (max-width: 992px) {
+    justify-content: center;
   }
 }
 
@@ -523,11 +543,6 @@ body.public-facing {
   width: 100%;
 }
 
-// align featured collections with featured works
-#featured_collections {
-  margin-top: -5px;
-}
-
 .mb-30 {
   margin-bottom: 30px;
 }
@@ -720,10 +735,6 @@ tr[data-feature="use-iiif-print"] {
 
 // Featured collection
 #featured_collections {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: left;
-
   h3 {
     font-size: inherit;
   }

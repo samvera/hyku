@@ -10,12 +10,10 @@ RSpec.describe AccountSettings do
         expect(account.public_settings(is_superadmin: true).keys.sort).to eq %i[allow_downloads
                                                                                 allow_signup
                                                                                 analytics_provider
-                                                                                batch_email_notifications
                                                                                 bulkrax_field_mappings
                                                                                 cache_api
                                                                                 contact_email
                                                                                 contact_email_to
-                                                                                depositor_email_notifications
                                                                                 doi_reader
                                                                                 doi_writer
                                                                                 email_domain
@@ -32,8 +30,7 @@ RSpec.describe AccountSettings do
                                                                                 s3_bucket
                                                                                 smtp_settings
                                                                                 solr_collection_options
-                                                                                ssl_configured
-                                                                                user_analytics]
+                                                                                ssl_configured]
       end
       # rubocop:enable RSpec/ExampleLength
     end

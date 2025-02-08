@@ -31,3 +31,21 @@
 #collection-edit-controls label.control-label {
   font-weight: bold !important;
 }
+
+// Overrides to prevent long titles from breaking out of their container
+// OVERRIDE: Hyrax for show page
+.work-title-wrapper .title-with-badges {
+  overflow-wrap: anywhere;
+  align-items: baseline;
+}
+
+// override Blacklight for catalog search
+.document-title-heading {
+  overflow-wrap: anywhere;
+}
+
+// Override Bootstrap for list results
+a {
+  overflow-wrap: anywhere;
+}
+

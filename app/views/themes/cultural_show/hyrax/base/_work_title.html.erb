@@ -1,11 +1,15 @@
-<% presenter.title.each_with_index do |title, index| %>
-  <div class="row">
-    <div class="col-12 text-show-title d-flex">
-      <% if index == 0 %>
-        <h2><%= markdown(title) %></h2><span class="ml-2 mt-2"><%= presenter.permission_badge %> <%= presenter.workflow.badge %></span>
-      <% else %>
-        <h2><%= markdown(title) %></h2>
-      <% end %>
-    </div>
+<div class="work-title-wrapper">
+  <div class="title-with-badges">
+    <% presenter.title.each_with_index do |title, index| %>
+      <div class="row">
+        <div class="col-12 text-show-title d-flex">
+          <% if index == 0 %>
+            <h2><%= markdown(title) %></h2><span class="ml-2 mt-2"><%= presenter.permission_badge %> <%= presenter.workflow.badge %></span>
+          <% else %>
+            <h2><%= markdown(title) %></h2>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
   </div>
-<% end %>
+</div>

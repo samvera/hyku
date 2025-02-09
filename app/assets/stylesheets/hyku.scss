@@ -443,9 +443,9 @@ a.btn.btn-secondary.restore-default-color.with-color-hint {
   }
 }
 
-// make sure that URLs don't go outside the container on all work-show pages
+// make sure that URLs and titles don't go outside the container on all work-show pages
 .work-show ul.tabular li {
-  word-wrap: break-word;
+  overflow-wrap: anywhere;
 }
 
 // removes the extra whitespace extending past the sides of the page

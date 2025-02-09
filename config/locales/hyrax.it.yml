@@ -6,8 +6,10 @@ it:
     active_consent_to_agreement: Ho letto e accetto la
     activefedora:
       models:
+        etd: ETD
         generic_work: Lavoro
         image: Immagine
+        oer: Risorse educative aperte
     admin:
       admin_sets:
         delete:
@@ -490,11 +492,15 @@ it:
         announcement_instructions: Il testo dell'annuncio viene visualizzato sulla home page. È importante che messaggi importanti o tempestivi siano resi ben visibili a tutti i visitatori della home page. Sarebbe opportuno inserire qui un annuncio, ad esempio, per avvisare gli utenti di un'imminente interruzione programmata della manutenzione del sistema.
         featured_researcher_instructions: Il ricercatore in primo piano è uno spazio per inserire informazioni e nella home page riservato per evidenziare gli utenti del repository.
         home_text_instructions: Il testo della pagina iniziale si riferisce alla messaggistica personalizzata visualizzata nella pagina iniziale nel blocco eroe o in un'altra sezione della pagina iniziale. Questo testo viene visualizzato quando si seleziona un tema che richiede o consente il testo della home page. Raccomandiamo non più di 3 frasi in quest'area.
+        homepage_about_section_content_instructions: Questo contenuto non è utilizzato da nessuno dei temi Hyku predefiniti. Può essere utilizzato per temi personalizzati.
+        homepage_about_section_heading_instructions: Questa intestazione non è usata da nessuno dei temi Hyku predefiniti. Può essere usata per temi personalizzati.
         marketing_instructions: Il testo del banner si riferisce al testo visualizzato sull'immagine del banner nella home page. Si consiglia di non più di circa 30 caratteri o spazi in questa area di testo.
       tabs:
         announcement_text: Testo dell'annuncio
         featured_researcher: Ricercatore in primo piano
         home_text: Testo della home page
+        homepage_about_section_content: Informazioni sul contenuto della sezione
+        homepage_about_section_heading: Informazioni sull'intestazione della sezione
         marketing_text: Testo di marketing
       updated: Blocchi di contenuto aggiornati.
     controls:
@@ -938,6 +944,7 @@ it:
         agreement_page: Accordo di deposito
         help_page: Pagina di aiuto
         terms_page: Condizioni d'uso
+      update: Salvare le modifiche
       updated: Pagine aggiornate.
     passive_consent_to_agreement: Salvando questo lavoro accetto il
     product_name: Hyku
@@ -1173,6 +1180,7 @@ it:
       defaults:
         admin_set_id: Set amministrativo
         based_near: Posizione
+        collection_banner_text_color: Colore del testo del banner della raccolta
         contributor: Collaboratore
         creator: Creatore
         date_created: data di creazione
@@ -1200,6 +1208,7 @@ it:
         navbar_link_text_color: Colore del testo del collegamento alla barra di navigazione
         navbar_link_text_hover_color: Colore al passaggio del mouse del testo del collegamento della barra di navigazione
         primary_button_hover_color: Colore del pulsante principale al passaggio del mouse
+        primary_button_text_color: Colore del testo del pulsante primario
         publisher: Editore
         related_url: URL correlato
         rights_statement: Dichiarazione dei diritti
@@ -1216,3 +1225,5 @@ it:
       defaults:
         find_child_work: Cerca un'opera ...
         member_of_collection_ids: Seleziona una collezione ...
+    required:
+      html: <span class="badge badge-info required-tag">necessario</span>

@@ -14,21 +14,46 @@ en:
           publisher_sim: Publisher
           subject_sim: Subject
         index:
+          accessibility_feature_tesim: Accessibility Feature
+          accessibility_hazard_tesim: Accessibility Hazard
+          accessibility_summary_tesim: Accessibility Summary
+          additional_information_tesim: Additional Information
+          admin_note_tesim: Admin Note
+          alternative_title_tesim: Alternative Title
+          audience_tesim: Audience
           based_near_label_tesim: Location
+          chronology_note_tesim: Chronology Note
+          contributing_library_tesim: Contributing Library
           contributor_tesim: Contributor
           creator_tesim: Creator
           date_created_tesim: Date Created
           date_modified_dtsi: Date Modified
+          date_tesim: Date
           date_uploaded_dtsi: Date Uploaded
           description_tesim: Description
+          discipline_tesim: Discipline
+          education_level_tesim: Education Level
           extent_tesim: Extent
           file_format_tesim: File Format
+          format_tesim: Format
           identifier_tesim: Identifier
           keyword_tesim: Keyword
           language_tesim: Language
+          learning_resource_type_tesim: Learning Resource Type
+          library_catalog_identifier_tesim: Library Catalog Identifier
+          license_tesim: License
+          newer_version_id_tesim: Newer Version Id
+          oer_size_tesim: Oer Size
+          previous_version_id_tesim: Previous Version Id
           publisher_tesim: Publisher
+          related_item_id_tesim: Related Item Id
+          related_url_tesim: Related URL
+          resource_type_tesim: Resource Type
+          rights_holder_tesim: Rights Holder
+          rights_statement_tesim: Rights Statement
           rights_tesim: Rights
           subject_tesim: Subject
+          table_of_contents_tesim: Table Of Contents
         show:
           based_near_label_tesim: Location
           contributor_tesim: Contributor

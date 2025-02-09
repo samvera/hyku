@@ -2,14 +2,28 @@
 it:
   activefedora:
     models:
+      etd: ETD
       generic_work: Lavoro
       image: Immagine
+      oer: Risorse educative aperte
   activerecord:
     attributes:
       site:
         institution_name_full: Nome dell'istituto completo
   application:
     tagline: La soluzione di repository di nuova generazione
+  blacklight:
+    search:
+      fields:
+        facet:
+          contributing_library_sim: Biblioteca di contributo
+          contributor_sim: Collaboratore
+          human_readable_type_sim: Tipo
+          member_of_collections_sim: Collezioni
+          resource_type_sim: Tipo di risorsa
+        show:
+          additional_information: Informazioni aggiuntive sui diritti
+    slideshow_info: Seleziona un'immagine per avviare la presentazione
   errors:
     messages:
       valid_embed_url: deve essere un URL di incorporamento valido di YouTube o Vimeo.
@@ -175,6 +189,8 @@ it:
       appearances:
         show:
           forms:
+            active_tabs_background_color:
+              hint: Colore al passaggio del mouse sulle schede della home page.
             banner_image:
               hint: Per utilizzare un'immagine come sfondo di masthead, è necessario utilizzare un'immagine (JPG, GIF o PNG) alta almeno 120 pixel e larga 1200 pixel. Per risultati ottimali, utilizzare un'immagine larga almeno 1800 pixel.
             collection_banner_text_color:
@@ -207,6 +223,8 @@ it:
               hint: Si applica ai pulsanti Home, Informazioni, Contatti e Guida solo su quelle pagine specifiche (con un'opacità del 15%).
             primary_button_hover_color:
               hint: Pulsanti di interazione di condivisione, ricerca e raccolta (modifica, funzionalità, ecc.). Anche il bordo di questi pulsanti sarà di questo colore.
+            primary_button_text_color:
+              hint: Colore del testo per i pulsanti di interazione di condivisione, ricerca e raccolta
             themes:
               confirm: Se il tuo tema non sembra essere applicato correttamente, verifica che non venga sovrascritto dal CSS personalizzato.
           hints:

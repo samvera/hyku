@@ -2,14 +2,28 @@
 fr:
   activefedora:
     models:
+      etd: ETD
       generic_work: Travail
       image: Image
+      oer: REL
   activerecord:
     attributes:
       site:
         institution_name_full: Nom complet de l'établissement
   application:
     tagline: La solution de dépôt de nouvelle génération
+  blacklight:
+    search:
+      fields:
+        facet:
+          contributing_library_sim: Bibliothèque contributive
+          contributor_sim: Donateur
+          human_readable_type_sim: Taper
+          member_of_collections_sim: Collections
+          resource_type_sim: Type de ressource
+        show:
+          additional_information: Informations complémentaires sur les droits
+    slideshow_info: Sélectionnez une image pour démarrer le diaporama
   errors:
     messages:
       valid_embed_url: doit être une URL d'incorporation valide de YouTube ou Vimeo.
@@ -175,6 +189,8 @@ fr:
       appearances:
         show:
           forms:
+            active_tabs_background_color:
+              hint: Couleur de survol pour les onglets de la page d'accueil.
             banner_image:
               hint: Pour utiliser une image comme arrière-plan d'une bannière Masthead, vous devez utiliser une image (JPG, GIF ou PNG) d'au moins 120 pixels de haut et 1 200 pixels de large. Pour de meilleurs résultats, utilisez une image d'au moins 1800 pixels de large.
             collection_banner_text_color:
@@ -207,6 +223,8 @@ fr:
               hint: S'applique aux boutons Accueil, À propos, Contact et Aide de ces pages spécifiques uniquement (à 15 % d'opacité).
             primary_button_hover_color:
               hint: Boutons de partage, de recherche et d'interaction de collecte (édition, fonctionnalité, etc.). La bordure de ces boutons sera également de cette couleur.
+            primary_button_text_color:
+              hint: Couleur du texte pour les boutons d'interaction de partage, de recherche et de collecte
             themes:
               confirm: Si votre thème ne semble pas s'appliquer correctement, vérifiez qu'il n'est pas écrasé par le CSS personnalisé.
           hints:

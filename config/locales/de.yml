@@ -2,14 +2,28 @@
 de:
   activefedora:
     models:
+      etd: ETD
       generic_work: Arbeiten
       image: Bild
+      oer: OER
   activerecord:
     attributes:
       site:
         institution_name_full: Vollständiger Name der Institution
   application:
     tagline: Die Next-Generation Repository-Lösung
+  blacklight:
+    search:
+      fields:
+        facet:
+          contributing_library_sim: Mitwirkende Bibliothek
+          contributor_sim: Mitwirkender
+          human_readable_type_sim: Typ
+          member_of_collections_sim: Sammlungen
+          resource_type_sim: Ressourcentyp
+        show:
+          additional_information: Weitere Rechteinformationen
+    slideshow_info: Wählen Sie ein Bild aus, um die Diashow zu starten
   errors:
     messages:
       valid_embed_url: muss eine gültige YouTube- oder Vimeo-Einbettungs-URL sein.
@@ -174,6 +188,8 @@ de:
       appearances:
         show:
           forms:
+            active_tabs_background_color:
+              hint: Hover-Farbe für Homepage-Tabs.
             banner_image:
               hint: Um ein Bild als Masthead-Hintergrund zu verwenden, sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das mindestens 120 Pixel hoch und 1200 Pixel breit ist. Verwenden Sie für optimale Ergebnisse ein Bild mit einer Breite von mindestens 1800 Pixel.
             collection_banner_text_color:
@@ -206,6 +222,8 @@ de:
               hint: Gilt nur für die Schaltflächen „Startseite“, „Info“, „Kontakt“ und „Hilfe“ auf diesen spezifischen Seiten (bei 15 % Deckkraft).
             primary_button_hover_color:
               hint: Schaltflächen zum Teilen, Suchen und Sammeln von Interaktionen (Bearbeiten, Funktionen usw.). Der Rand dieser Schaltflächen wird ebenfalls diese Farbe haben.
+            primary_button_text_color:
+              hint: Textfarbe für die Interaktionsschaltflächen „Teilen“, „Suchen“ und „Sammeln“
             themes:
               confirm: Wenn Ihr Thema nicht richtig angewendet wird, stellen Sie sicher, dass es nicht von benutzerdefiniertem CSS überschrieben wird.
           hints:

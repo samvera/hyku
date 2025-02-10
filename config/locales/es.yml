@@ -2,14 +2,28 @@
 es:
   activefedora:
     models:
+      etd: Fecha de finalización estimada
       generic_work: Trabajar
       image: Imagen
+      oer: REA
   activerecord:
     attributes:
       site:
         institution_name_full: El nombre de la institución
   application:
     tagline: La solución de repositorio de próxima generación
+  blacklight:
+    search:
+      fields:
+        facet:
+          contributing_library_sim: Biblioteca colaboradora
+          contributor_sim: Contribuyente
+          human_readable_type_sim: Tipo
+          member_of_collections_sim: Colecciones
+          resource_type_sim: Tipo de recurso
+        show:
+          additional_information: Información adicional sobre derechos
+    slideshow_info: Seleccione una imagen para iniciar la presentación de diapositivas
   errors:
     messages:
       valid_embed_url: debe ser una URL de incrustación válida de YouTube o Vimeo.
@@ -175,6 +189,8 @@ es:
       appearances:
         show:
           forms:
+            active_tabs_background_color:
+              hint: Color al pasar el mouse sobre las pestañas de la página de inicio.
             banner_image:
               hint: Para usar una imagen como fondo de cabecera, debe usar una imagen (JPG, GIF o PNG) que tenga al menos 120 píxeles de alto y 1200 píxeles de ancho. Para obtener mejores resultados, use una imagen de al menos 1800 píxeles de ancho.
             collection_banner_text_color:
@@ -207,6 +223,8 @@ es:
               hint: Se aplica a los botones Inicio, Acerca de, Contacto y Ayuda solo en esas páginas específicas (al 15 % de opacidad).
             primary_button_hover_color:
               hint: Botones para compartir, buscar e interactuar con la colección (editar, presentar, etc.). El borde de estos botones también será de este color.
+            primary_button_text_color:
+              hint: Color del texto para los botones de interacción de compartir, buscar y recopilar
             themes:
               confirm: Si su tema no parece aplicarse correctamente, verifique que no esté siendo sobrescrito por CSS personalizado.
           hints:

@@ -90,7 +90,6 @@ module ApplicationHelper
     # if we pass text containing no links, it just returns text.
     auto_link(html_escape(text)) do |value|
       "<span class='fa fa-external-link'></span>#{('&nbsp;' + value) if show_link}"
-    end
-    text.truncate(230, separator: ' ')
+    end.truncate(230, separator: ' ')
   end
 end

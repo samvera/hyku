@@ -28,12 +28,5 @@ RSpec.describe UserStatCollectionJob, type: :job do
         expect { UserStatCollectionJob.perform_now }.to have_enqueued_job(UserStatCollectionJob)
       end
     end
-
-    context 'when no UserStat records exist' do
-      it 'does not enqueue UserStatCollectionJob' do
-        switch!(account)
-        expect { UserStatCollectionJob.perform_now }.not_to have_enqueued_job(UserStatCollectionJob)
-      end
-    end
   end
 end

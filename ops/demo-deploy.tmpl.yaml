@@ -47,11 +47,12 @@ ingress:
       paths:
         - path: /
           pathType: ImplementationSpecific
-  annotations: {
-    kubernetes.io/ingress.class: "nginx",
-    nginx.ingress.kubernetes.io/proxy-body-size: "0",
-    cert-manager.io/cluster-issuer: letsencrypt-production-dns
-  }
+  annotations:
+    {
+      kubernetes.io/ingress.class: "nginx",
+      nginx.ingress.kubernetes.io/proxy-body-size: "0",
+      cert-manager.io/cluster-issuer: letsencrypt-production-dns,
+    }
   tls:
     - hosts:
         - hyku-demo.$BASE_URL
@@ -77,12 +78,16 @@ extraEnvVars: &envVars
     value: "8080"
   - name: FCREPO_REST_PATH
     value: rest
+  - name: GOOGLE_ACCOUNT_JSON
+    value: $GOOGLE_ACCOUNT_JSON
   - name: GOOGLE_ANALYTICS_ID
     value: $GOOGLE_ANALYTICS_ID
+  - name: GOOGLE_ANALYTICS_PROPERTY_ID
+    value: $GOOGLE_ANALYTICS_PROPERTY_ID
   - name: GOOGLE_OAUTH_APP_NAME
     value: hyku-demo
   - name: GOOGLE_OAUTH_APP_VERSION
-    value: '1.0'
+    value: "1.0"
   - name: GOOGLE_OAUTH_PRIVATE_KEY_SECRET
     value: $GOOGLE_OAUTH_PRIVATE_KEY_SECRET
   - name: GOOGLE_OAUTH_PRIVATE_KEY_PATH
@@ -91,12 +96,6 @@ extraEnvVars: &envVars
     value: $GOOGLE_OAUTH_PRIVATE_KEY_VALUE
   - name: GOOGLE_OAUTH_CLIENT_EMAIL
     value: hyku-demo@hyku-demo.iam.gserviceaccount.com
-  - name: GOOGLE_ACCOUNT_JSON
-    value: $GOOGLE_ACCOUNT_JSON
-  - name: GOOGLE_ANALYTICS_ID
-    value: $GOOGLE_ANALYTICS_ID
-  - name: GOOGLE_ANALYTICS_PROPERTY_ID
-    value: $GOOGLE_ANALYTICS_PROPERTY_ID
   - name: INITIAL_ADMIN_EMAIL
     value: support@notch8.com
   - name: INITIAL_ADMIN_PASSWORD
@@ -226,7 +225,6 @@ redis:
   architecture: standalone
   auth:
     password: staging
-
 
 solr:
   enabled: false

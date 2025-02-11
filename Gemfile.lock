@@ -162,6 +162,68 @@ GIT
       simple_form
 
 GIT
+  remote: https://github.com/samvera/hyrax.git
+  revision: b3633ad1ca977277e0f425aa97c8f11a45e189a2
+  ref: v5.0.4
+  specs:
+    hyrax (5.0.4)
+      active-fedora (~> 14.0)
+      almond-rails (~> 0.1)
+      awesome_nested_set (~> 3.1)
+      blacklight (~> 7.29)
+      blacklight-gallery (~> 4.7.0)
+      breadcrumbs_on_rails (~> 3.0)
+      browse-everything (>= 0.16, < 2.0)
+      carrierwave (~> 1.0)
+      clipboard-rails (~> 1.5)
+      concurrent-ruby (= 1.3.4)
+      connection_pool (~> 2.4)
+      draper (~> 4.0)
+      dry-container (~> 0.11)
+      dry-events (~> 1.0, >= 1.0.1)
+      dry-logic (~> 1.5)
+      dry-monads (~> 1.6)
+      dry-validation (~> 1.10)
+      flipflop (~> 2.3)
+      flot-rails (~> 0.0.6)
+      font-awesome-rails (~> 4.2)
+      google-analytics-data (~> 0.6)
+      hydra-derivatives (~> 3.3)
+      hydra-editor (~> 6.0)
+      hydra-file_characterization (~> 1.1)
+      hydra-head (~> 12.0)
+      hydra-works (>= 0.16)
+      iiif_manifest (>= 0.3, < 2.0)
+      json-schema
+      legato (~> 0.3)
+      linkeddata
+      mailboxer (~> 0.12)
+      nest (~> 3.1)
+      noid-rails (~> 3.0)
+      oauth
+      oauth2 (~> 1.2)
+      openseadragon (~> 0.9)
+      posix-spawn
+      qa (~> 5.5, >= 5.5.1)
+      rails (~> 6.1)
+      rails_autolink (~> 1.1)
+      rdf-rdfxml
+      rdf-vocab (~> 3.0)
+      redis (~> 4.0)
+      redis-namespace (~> 1.5)
+      redlock (>= 0.1.2, < 2.0)
+      reform (~> 2.3)
+      reform-rails (~> 0.2.0)
+      retriable (>= 2.9, < 4.0)
+      sass-rails (~> 6.0)
+      select2-rails (~> 3.5)
+      signet
+      sprockets (= 3.7.2)
+      tinymce-rails (~> 5.10)
+      valkyrie (~> 3.5)
+      view_component (~> 2.74.1)
+
+GIT
   remote: https://github.com/stanhu/omniauth-cas.git
   revision: 4211e6d05941b4a981f9a36b49ec166cecd0e271
   ref: 4211e6d05941b4a981f9a36b49ec166cecd0e271
@@ -671,62 +733,6 @@ GEM
       hydra-derivatives (>= 3.6)
       hydra-file_characterization (~> 1.0)
       hydra-pcdm (>= 0.9)
-    hyrax (5.0.4)
-      active-fedora (~> 14.0)
-      almond-rails (~> 0.1)
-      awesome_nested_set (~> 3.1)
-      blacklight (~> 7.29)
-      blacklight-gallery (~> 4.7.0)
-      breadcrumbs_on_rails (~> 3.0)
-      browse-everything (>= 0.16, < 2.0)
-      carrierwave (~> 1.0)
-      clipboard-rails (~> 1.5)
-      concurrent-ruby (= 1.3.4)
-      connection_pool (~> 2.4)
-      draper (~> 4.0)
-      dry-container (~> 0.11)
-      dry-events (~> 1.0, >= 1.0.1)
-      dry-logic (~> 1.5)
-      dry-monads (~> 1.6)
-      dry-validation (~> 1.10)
-      flipflop (~> 2.3)
-      flot-rails (~> 0.0.6)
-      font-awesome-rails (~> 4.2)
-      google-analytics-data (~> 0.6)
-      hydra-derivatives (~> 3.3)
-      hydra-editor (~> 6.0)
-      hydra-file_characterization (~> 1.1)
-      hydra-head (~> 12.0)
-      hydra-works (>= 0.16)
-      iiif_manifest (>= 0.3, < 2.0)
-      json-schema
-      legato (~> 0.3)
-      linkeddata
-      mailboxer (~> 0.12)
-      nest (~> 3.1)
-      noid-rails (~> 3.0)
-      oauth
-      oauth2 (~> 1.2)
-      openseadragon (~> 0.9)
-      posix-spawn
-      qa (~> 5.5, >= 5.5.1)
-      rails (~> 6.1)
-      rails_autolink (~> 1.1)
-      rdf-rdfxml
-      rdf-vocab (~> 3.0)
-      redis (~> 4.0)
-      redis-namespace (~> 1.5)
-      redlock (>= 0.1.2, < 2.0)
-      reform (~> 2.3)
-      reform-rails (~> 0.2.0)
-      retriable (>= 2.9, < 4.0)
-      sass-rails (~> 6.0)
-      select2-rails (~> 3.5)
-      signet
-      sprockets (= 3.7.2)
-      tinymce-rails (~> 5.10)
-      valkyrie (~> 3.5)
-      view_component (~> 2.74.1)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     i18n-debug (1.2.0)
@@ -1513,7 +1519,7 @@ DEPENDENCIES
   googleauth (~> 1.9.0)
   grpc
   hyku_knapsack!
-  hyrax (~> 5.0.4)
+  hyrax (= 5.0.4)!
   hyrax-doi!
   hyrax-iiif_av!
   i18n-debug

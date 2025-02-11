@@ -91,6 +91,12 @@ extraEnvVars: &envVars
     value: $GOOGLE_OAUTH_PRIVATE_KEY_VALUE
   - name: GOOGLE_OAUTH_CLIENT_EMAIL
     value: hyku-demo@hyku-demo.iam.gserviceaccount.com
+  - name: GOOGLE_ACCOUNT_JSON
+    value: $GOOGLE_ACCOUNT_JSON
+  - name: GOOGLE_ANALYTICS_ID
+    value: $GOOGLE_ANALYTICS_ID
+  - name: GOOGLE_ANALYTICS_PROPERTY_ID
+    value: $GOOGLE_ANALYTICS_PROPERTY_ID
   - name: INITIAL_ADMIN_EMAIL
     value: support@notch8.com
   - name: INITIAL_ADMIN_PASSWORD
@@ -123,6 +129,12 @@ extraEnvVars: &envVars
     value: support@notch8.com
   - name: HYKU_FILE_ACL
     value: "false"
+  - name: HYRAX_ANALYTICS
+    value: "true"
+  - name: HYRAX_ANALYTICS_PROVIDER
+    value: "ga4"
+  - name: HYRAX_ANALYTICS_REPORTING
+    value: "true"
   - name: HYRAX_FITS_PATH
     value: /app/fits/fits.sh
   - name: HYRAX_FLEXIBLE

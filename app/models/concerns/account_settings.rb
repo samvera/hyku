@@ -23,13 +23,13 @@ module AccountSettings
     setting :allow_downloads, type: 'boolean', default: true
     setting :allow_signup, type: 'boolean', default: true
     setting :analytics_provider, type: 'string'
-    setting :batch_email_notifications, type: 'boolean', default: false, disabled: true
+    setting :batch_email_notifications, type: 'boolean', default: false
     setting :bulkrax_field_mappings, type: 'json_editor', default: Hyku.default_bulkrax_field_mappings.to_json
     setting :bulkrax_validations, type: 'boolean', disabled: true
     setting :cache_api, type: 'boolean', default: false
     setting :contact_email, type: 'string', default: 'change-me-in-settings@example.com'
     setting :contact_email_to, type: 'string', default: 'change-me-in-settings@example.com'
-    setting :depositor_email_notifications, type: 'boolean', default: false, disabled: true
+    setting :depositor_email_notifications, type: 'boolean', default: false
     setting :doi_reader, type: 'boolean', default: false
     setting :doi_writer, type: 'boolean', default: false
     setting :file_acl, type: 'boolean', default: true, private: true
@@ -52,7 +52,7 @@ module AccountSettings
     setting :smtp_settings, type: 'hash', private: true, default: {}
     setting :solr_collection_options, type: 'hash', default: solr_collection_options
     setting :ssl_configured, type: 'boolean', default: true, private: true
-    setting :user_analytics, type: 'boolean', default: false, disabled: true
+    setting :user_analytics, type: 'boolean', default: false
     setting :weekly_email_list, type: 'array', disabled: true
     setting :yearly_email_list, type: 'array', disabled: true
 

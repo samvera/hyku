@@ -1,4 +1,4 @@
-<%# Override Hyrax 6.0.0 to use multiple analytics configs, one app wide one and one tenant override %>
+<%# Override Hyrax v5.0.3 to use multiple analytics configs, one app wide one and one tenant override %>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=<%= Hyrax::Analytics.config.analytics_id %>"></script>
 <script>
@@ -6,10 +6,15 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', '<%= Hyrax::Analytics.config.analytics_id %>');
-  <% if ENV.fetch('GOOGLE_ANALYTICS_ID', Hyrax::Analytics.config.analytics_id) != Hyrax::Analytics.config.analytics_id %>
-    gtag('config', '<%= ENV.fetch('GOOGLE_ANALYTICS_ID') %>');
+  <% if Hyrax::Analytics.config.analytics_id.present? %>
+    gtag('config', '<%= Hyrax::Analytics.config.analytics_id %>');
   <% end %>
- window.analytics = gtag;
+
+  <% if current_account.settings[:google_analytics_id].present? &&
+        current_account.settings[:google_analytics_id] != Hyrax::Analytics.config.analytics_id %>
+    gtag('config', '<%= current_account.settings[:google_analytics_id] %>');
+  <% end %>
+
+  window.analytics = gtag;
 </script>
 <meta name="analytics-provider" content="ga4">

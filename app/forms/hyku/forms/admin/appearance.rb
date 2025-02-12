@@ -48,6 +48,8 @@ module Hyku
           'navbar_link_background_hover_color' => '#ffffff',
           'navbar_link_text_color' => '#eeeeee',
           'navbar_link_text_hover_color' => '#eeeeee',
+          'primary_button_background_color' => '#286090',
+          'primary_button_border_color' => '#245682',
           'primary_button_hover_color' => '#286090',
           'primary_button_text_color' => '#ffffff'
         }
@@ -94,6 +96,8 @@ module Hyku
               navbar_link_background_hover_color
               navbar_link_text_color
               navbar_link_text_hover_color
+              primary_button_background_color
+              primary_button_border_color
               primary_button_hover_color
               primary_button_text_color
             ]
@@ -266,7 +270,16 @@ module Hyku
         end
 
         # PRIMARY BUTTON COLORS
-        # The background hover color for "primary" buttons and basis for other primary button options
+        # The background color for "primary" buttons
+        def primary_button_background_color
+          block_for('primary_button_background_color')
+        end
+
+        # The border color for "primary" buttons
+        def primary_button_border_color
+          block_for('primary_button_border_color')
+        end
+
         def primary_button_hover_color
           block_for('primary_button_hover_color')
         end
@@ -274,11 +287,6 @@ module Hyku
         # The text color for "primary" buttons
         def primary_button_text_color
           block_for('primary_button_text_color')
-        end
-
-        # The border color for "primary" buttons
-        def primary_button_border_color
-          @primary_button_border ||= darken_color(primary_button_hover_color, 0.05)
         end
 
         # The mouse over color for the border of "primary" buttons
@@ -298,17 +306,17 @@ module Hyku
 
         # The mouse over color for "primary" buttons
         def primary_button_hover_background_color
-          darken_color(primary_button_hover_color, 0.1)
+          darken_color(primary_button_background_color, 0.1)
         end
 
         # The color for the background of active "primary" buttons
         def primary_button_active_background_color
-          darken_color(primary_button_hover_color, 0.1)
+          darken_color(primary_button_background_color, 0.1)
         end
 
         # The color for the background of focused "primary" buttons
         def primary_button_focus_background_color
-          darken_color(primary_button_hover_color, 0.1)
+          darken_color(primary_button_background_color, 0.1)
         end
 
         # The custom css module

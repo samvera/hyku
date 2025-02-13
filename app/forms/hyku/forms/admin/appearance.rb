@@ -157,6 +157,12 @@ module Hyku
           @site ||= Site.instance
         end
 
+        def custom_theme_colors
+          @home_theme_information ||= YAML.load_file(Hyku::Application.path_for('config/home_themes.yml'))
+          current_theme = site&.home_theme || 'default_home'
+          @home_theme_information.dig(current_theme, 'theme_custom_colors') || {}
+        end
+
         # The color for the collection banner text
         def collection_banner_text_color
           block_for('collection_banner_text_color')

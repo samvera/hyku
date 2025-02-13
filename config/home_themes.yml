@@ -2,6 +2,14 @@
 # and should follow the format
 # default:
 #   name: Default theme
+# An optional configuration for theme colors can be defined, which will add
+# a button to the appearance colors section of the admin dashboard, allowing
+# the user to easily set the custom colors. Only colors which are included
+# will be overwritten from the defaults.
+#   theme_custom_colors:
+#     collection_banner_text_color: '#000000'
+#     default_button_background_color: '#FFFFFF'
+#     default_button_border_color: '#5B5B5B'
 #
 default_home:
   banner_image: true

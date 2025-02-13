@@ -9,7 +9,8 @@ RSpec.describe AccountSettings do
       it 'returns all settings except private and disabled settings' do
         expect(account.public_settings(is_superadmin: true).keys.sort).to eq %i[allow_downloads
                                                                                 allow_signup
-                                                                                analytics_provider
+                                                                                analytics
+                                                                                analytics_reporting
                                                                                 batch_email_notifications
                                                                                 bulkrax_field_mappings
                                                                                 cache_api
@@ -25,6 +26,7 @@ RSpec.describe AccountSettings do
                                                                                 file_size_limit
                                                                                 geonames_username
                                                                                 google_analytics_id
+                                                                                google_analytics_property_id
                                                                                 gtm_id
                                                                                 oai_admin_email
                                                                                 oai_prefix

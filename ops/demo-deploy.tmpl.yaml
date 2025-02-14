@@ -116,7 +116,7 @@ extraEnvVars: &envVars
   - name: REDIS_URL
     value: redis://:staging@hyku-demo-redis-master:6379/0
   - name: HYRAX_ACTIVE_JOB_QUEUE
-    value: sidekiq
+    value: good_job
   - name: HYKU_BULKRAX_ENABLED
     value: "true"
   - name: HYKU_CONTACT_EMAIL

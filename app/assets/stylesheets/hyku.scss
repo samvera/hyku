@@ -595,8 +595,9 @@ span.constraint-value p, .facet-values p {
 }
 
 #file_download {
-  margin: 10px 0 10px 0;
-}
+  // margin: 10px 0 10px 0; // commented out because button does not align with row
+    word-wrap: break-word; // adding overflow-wrap elsewhere made this necessary
+  }
 
 // collection show page styles
 

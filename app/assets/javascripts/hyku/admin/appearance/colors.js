@@ -18,4 +18,17 @@ $(document).on('turbolinks:load', function() {
       $(this).val($(this).data('default-value'));
     });
   });
+
+  $('.card-footer a.apply-theme-colors').click(function(e) {
+    e.preventDefault();
+
+    var themeColors = $(this).data('theme-colors');
+    
+    Object.keys(themeColors).forEach(function(colorName) {
+      var input = $("input[name='admin_appearance[" + colorName + "]']");
+      if (input.length) {
+        input.val(themeColors[colorName]);
+      }
+    });
+  });
 });

@@ -26,8 +26,9 @@ RSpec.describe BatchEmailNotificationJob do
       let(:frequency) { 'daily' }
       let(:last_emailed) { nil }
 
-      it 'marks the message as delivered' do
+      it 'marks the message as delivered and read' do
         expect { subject }.to change { message.receipts.first.is_delivered }.from(false).to(true)
+        expect(message.receipts.first.is_read).to be true
       end
 
       it 're-enqueues the job' do
@@ -82,6 +83,88 @@ RSpec.describe BatchEmailNotificationJob do
 
         it 'sends email to users with batch_email_frequency set' do
           expect { subject }.to change { ActionMailer::Base.deliveries.count }.by(1)
+        end
+      end
+    end
+
+    context 'when the user has a never frequency' do
+      let(:frequency) { 'never' }
+      let(:last_emailed) { nil }
+
+      it 'does not send any emails' do
+        expect { subject }.not_to change { ActionMailer::Base.deliveries.count }
+      end
+
+      it 'marks messages as delivered' do
+        subject
+        expect(receipt.reload.is_delivered).to be true
+      end
+    end
+
+    context 'notification inclusion tests' do
+      let(:frequency) { 'daily' }
+      let(:last_emailed) { nil }
+
+      context 'with multiple unread notifications' do
+        let!(:receipt2) { FactoryBot.create(:mailboxer_receipt, receiver: user) }
+        let!(:receipt3) { FactoryBot.create(:mailboxer_receipt, receiver: user) }
+        let!(:message2) { receipt2.notification }
+        let!(:message3) { receipt3.notification }
+
+        it 'includes all unread notifications in the email' do
+          expect(HykuMailer).to receive(:summary_email).with(user, containing_exactly(message, message2, message3), account).and_call_original
+          subject
+        end
+
+        it 'marks all notifications as delivered and read' do
+          subject
+          expect(receipt.reload.is_delivered).to be true
+          expect(receipt2.reload.is_delivered).to be true
+          expect(receipt3.reload.is_delivered).to be true
+          expect(receipt.reload.is_read).to be true
+          expect(receipt2.reload.is_read).to be true
+          expect(receipt3.reload.is_read).to be true
+        end
+
+        context 'with a mix of read and unread notifications' do
+          before do
+            receipt2.update(is_read: true) # Read
+            receipt3.update(is_read: false) # Unread
+          end
+
+          it 'only includes unread notifications in the email' do
+            expect(HykuMailer).to receive(:summary_email).with(user, containing_exactly(message, message3), account).and_call_original
+            subject
+          end
+
+          it 'marks all notifications as delivered and read' do
+            subject
+            expect(receipt.reload.is_delivered).to be true
+            expect(receipt3.reload.is_delivered).to be true
+            expect(receipt.reload.is_read).to be true
+            expect(receipt3.reload.is_read).to be true
+          end
+
+          it 'includes correct notifications in email body' do
+            subject
+            email_body = ActionMailer::Base.deliveries.last.body.encoded
+            expect(email_body).to include(message.body) # Should include unread message
+            expect(email_body).not_to include(message2.body)   # Should not include read message
+            expect(email_body).to include(message3.body)       # Should include unread message
+          end
+        end
+      end
+
+      context 'when user has no unread notifications' do
+        let(:frequency) { 'daily' }
+        let(:last_emailed) { nil }
+
+        before do
+          receipt.update(is_read: true)
+        end
+
+        it 'does not send an email' do
+          expect { subject }.not_to change { ActionMailer::Base.deliveries.count }
         end
       end
     end

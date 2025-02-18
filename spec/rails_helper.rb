@@ -11,6 +11,7 @@ ENV['HYKU_ADMIN_ONLY_TENANT_CREATION'] = nil
 ENV['HYKU_DEFAULT_HOST'] = nil
 ENV['HYKU_MULTITENANT'] = 'true'
 ENV['VALKYRIE_TRANSITION'] = 'true'
+ENV['HYRAX_ANALYTICS_REPORTING'] = 'false'
 
 require 'simplecov'
 SimpleCov.start('rails')

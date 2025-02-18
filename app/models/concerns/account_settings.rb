@@ -22,14 +22,15 @@ module AccountSettings
 
     setting :allow_downloads, type: 'boolean', default: true
     setting :allow_signup, type: 'boolean', default: true
-    setting :analytics_provider, type: 'string'
-    setting :batch_email_notifications, type: 'boolean', default: false, disabled: true
+    setting :analytics, type: 'boolean', default: true
+    setting :analytics_reporting, type: 'boolean', default: true
+    setting :batch_email_notifications, type: 'boolean', default: false
     setting :bulkrax_field_mappings, type: 'json_editor', default: Hyku.default_bulkrax_field_mappings.to_json
     setting :bulkrax_validations, type: 'boolean', disabled: true
     setting :cache_api, type: 'boolean', default: false
     setting :contact_email, type: 'string', default: 'change-me-in-settings@example.com'
     setting :contact_email_to, type: 'string', default: 'change-me-in-settings@example.com'
-    setting :depositor_email_notifications, type: 'boolean', default: false, disabled: true
+    setting :depositor_email_notifications, type: 'boolean', default: false
     setting :doi_reader, type: 'boolean', default: false
     setting :doi_writer, type: 'boolean', default: false
     setting :file_acl, type: 'boolean', default: true, private: true
@@ -38,7 +39,8 @@ module AccountSettings
     setting :email_subject_prefix, type: 'string'
     setting :enable_oai_metadata, type: 'string', disabled: true
     setting :file_size_limit, type: 'string', default: 5.gigabytes.to_s
-    setting :google_analytics_id, type: 'string'
+    setting :google_analytics_id, type: 'string', default: ENV.fetch('GOOGLE_ANALYTICS_ID', '')
+    setting :google_analytics_property_id, type: 'string', default: ENV.fetch('GOOGLE_ANALYTICS_PROPERTY_ID', '')
     setting :google_scholarly_work_types, type: 'array', disabled: true
     setting :geonames_username, type: 'string', default: ''
     setting :gtm_id, type: 'string'
@@ -52,7 +54,7 @@ module AccountSettings
     setting :smtp_settings, type: 'hash', private: true, default: {}
     setting :solr_collection_options, type: 'hash', default: solr_collection_options
     setting :ssl_configured, type: 'boolean', default: true, private: true
-    setting :user_analytics, type: 'boolean', default: false, disabled: true
+    setting :user_analytics, type: 'boolean', default: false
     setting :weekly_email_list, type: 'array', disabled: true
     setting :yearly_email_list, type: 'array', disabled: true
 
@@ -86,6 +88,7 @@ module AccountSettings
         value = super()
         value = value.nil? ? ENV.fetch("HYKU_#{name.upcase}", nil) : value
         value = value.nil? ? ENV.fetch("HYRAX_#{name.upcase}", nil) : value
+        value = value.nil? ? ENV.fetch(name.upcase.to_s, nil) : value
         value = value.nil? ? args[:default] : value
         set_type(value, (args[:type]).to_s)
       end
@@ -198,7 +201,11 @@ module AccountSettings
       config.contact_email = contact_email
       config.geonames_username = geonames_username
       config.uploader[:maxFileSize] = file_size_limit.to_i
+      config.analytics = analytics
+      config.analytics_reporting = analytics_reporting
     end
+
+    reload_hyrax_analytics
 
     Devise.mailer_sender = contact_email
 
@@ -226,5 +233,10 @@ module AccountSettings
     ActionMailer::Base.default_url_options[:protocol] = 'https'
   end
   # rubocop:enable Metrics/AbcSize
+
+  def reload_hyrax_analytics
+    Hyrax::Analytics.config.analytics_id = google_analytics_id
+    Hyrax::Analytics.config.property_id = google_analytics_property_id if Hyrax::Analytics.config.respond_to? :property_id=
+  end
 end
 # rubocop:enable Metrics/ModuleLength

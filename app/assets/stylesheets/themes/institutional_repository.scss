@@ -135,7 +135,7 @@
   // home page stats not in carousel
   .ir-stats {
     display: flex;
-    justify-content: center;
+    overflow: auto;
   }
 
   .stats-color-block {

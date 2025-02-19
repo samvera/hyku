@@ -206,9 +206,10 @@ worker:
     fsGroup: 101
     fsGroupChangePolicy: "OnRootMismatch"
 podSecurityContext:
-  runAsUser: 1001
-  runAsGroup: 101
-  fsGroup: 101
+  runAsUser: 50002
+  runAsGroup: 50002
+  fsGroup: 50002
+  fsGroupChangePolicy: "OnRootMismatch"
   fsGroupChangePolicy: "OnRootMismatch"
 
 embargoRelease:

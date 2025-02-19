@@ -1,4 +1,4 @@
-<div id="featured-carousel" class="carousel slide" data-ride="carousel">
+<div id="featured-carousel" class="carousel slide h-400" data-ride="carousel">
   <!-- Indicators -->
   <ol class="carousel-indicators">
     <% @featured_work_list.featured_works.each.with_index(0) do |featured_work, order| %>
@@ -7,15 +7,15 @@
   </ol>
 
   <!-- Wrapper for slides -->
-  <div class="carousel-inner" role="listbox">
+  <div class="carousel-inner h-100" role="listbox">
     <% @featured_work_list.featured_works.each.with_index(0) do |featured_work, order| %>
       <% work = SolrDocument.find(featured_work.work_id) %>
-      <div class="carousel-item <%= order.zero? ? 'active' : '' %>">
+      <div class="carousel-item h-100 bg-light <%= order.zero? ? 'active' : '' %>">
         <%= link_to [main_app, work] do %>
-          <%= render_thumbnail_tag(work, {suppress_link: true}) %>
+          <%= render_thumbnail_tag(work, {suppress_link: true, class: 'w-100 h-100'}) %>
         <% end %>
         <div class="carousel-caption">
-          <h3 class="carousel-opacity p-10">
+          <h3 class="carousel-opacity p-2">
             <%= link_to [main_app, work] do %>
               <%= markdown(work.title.first) %>
             <% end %>

@@ -193,50 +193,99 @@ module AccountSettings
     )
   end
 
-  # rubocop:disable Metrics/AbcSize
   def reload_library_config
+    configure_hyrax
+    reload_hyrax_analytics
+    configure_devise
+    configure_carrierwave
+    configure_ssl
+  end
+
+  def configure_hyrax
     Hyrax.config do |config|
       # A short-circuit of showing download links
       config.display_media_download_link = allow_downloads.nil? || ActiveModel::Type::Boolean.new.cast(allow_downloads)
       config.contact_email = contact_email
       config.geonames_username = geonames_username
       config.uploader[:maxFileSize] = file_size_limit.to_i
-      config.analytics = analytics
-      config.analytics_reporting = analytics_reporting
+      configure_hyrax_analytics_settings(config)
     end
+  end
 
-    reload_hyrax_analytics
-
-    Devise.mailer_sender = contact_email
-
-    if s3_bucket.present?
-      CarrierWave.configure do |config|
-        config.storage = :aws
-        config.aws_bucket = s3_bucket
-        config.aws_acl = 'bucket-owner-full-control'
-      end
-    elsif !file_acl
-      CarrierWave.configure do |config|
-        config.permissions = nil
-        config.directory_permissions = nil
-      end
+  def configure_hyrax_analytics_settings(config)
+    if analytics_credentials_present?
+      config.analytics = true
+      config.analytics_reporting = true
     else
-      CarrierWave.configure do |config|
-        config.storage = :file
-        config.permissions = 420
-        config.directory_permissions = 493
+      config.analytics = false
+      config.analytics_reporting = false
+    end
+  end
+
+  def configure_devise
+    Devise.mailer_sender = contact_email
+  end
+
+  def configure_carrierwave
+    CarrierWave.configure do |config|
+      if s3_bucket.present?
+        configure_s3_storage(config)
+      elsif !file_acl
+        configure_no_permissions(config)
+      else
+        configure_file_storage(config)
       end
     end
+  end
 
+  def configure_s3_storage(config)
+    config.storage = :aws
+    config.aws_bucket = s3_bucket
+    config.aws_acl = 'bucket-owner-full-control'
+  end
+
+  def configure_no_permissions(config)
+    config.permissions = nil
+    config.directory_permissions = nil
+  end
+
+  def configure_file_storage(config)
+    config.storage = :file
+    config.permissions = 420
+    config.directory_permissions = 493
+  end
+
+  def configure_ssl
     return unless ssl_configured
     ActionMailer::Base.default_url_options ||= {}
     ActionMailer::Base.default_url_options[:protocol] = 'https'
   end
-  # rubocop:enable Metrics/AbcSize
+
+  def analytics_credentials_present?
+    google_analytics_id.present? &&
+      google_analytics_property_id.present? &&
+      (ENV.fetch('GOOGLE_ACCOUNT_JSON', '').present? || ENV.fetch('GOOGLE_ACCOUNT_JSON_PATH', '').present?)
+  end
 
   def reload_hyrax_analytics
-    Hyrax::Analytics.config.analytics_id = google_analytics_id
-    Hyrax::Analytics.config.property_id = google_analytics_property_id if Hyrax::Analytics.config.respond_to? :property_id=
+    # Configure analytics if all required settings are present
+    if google_analytics_id.present? &&
+       google_analytics_property_id.present? &&
+       (ENV.fetch('GOOGLE_ACCOUNT_JSON', '').present? || ENV.fetch('GOOGLE_ACCOUNT_JSON_PATH', '').present?)
+
+      Hyrax::Analytics.config.analytics_id = google_analytics_id
+      Hyrax::Analytics.config.property_id = google_analytics_property_id
+
+    else
+      # Disable analytics if any required settings are missing
+      Hyrax.config.analytics = false
+      Hyrax.config.analytics_reporting = false
+    end
+  rescue StandardError => e
+    # Log the error but don't crash the application
+    Rails.logger.error "Failed to configure analytics: #{e.message}"
+    Hyrax.config.analytics = false
+    Hyrax.config.analytics_reporting = false
   end
 end
 # rubocop:enable Metrics/ModuleLength

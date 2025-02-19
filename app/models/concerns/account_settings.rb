@@ -201,8 +201,17 @@ module AccountSettings
       config.contact_email = contact_email
       config.geonames_username = geonames_username
       config.uploader[:maxFileSize] = file_size_limit.to_i
-      config.analytics = analytics
-      config.analytics_reporting = analytics_reporting
+      
+      # Only enable analytics if we have all required settings
+      if google_analytics_id.present? && 
+         google_analytics_property_id.present? && 
+         (ENV.fetch('GOOGLE_ACCOUNT_JSON', '').present? || ENV.fetch('GOOGLE_ACCOUNT_JSON_PATH', '').present?)
+        config.analytics = true
+        config.analytics_reporting = true
+      else
+        config.analytics = false
+        config.analytics_reporting = false
+      end
     end
 
     reload_hyrax_analytics
@@ -235,8 +244,24 @@ module AccountSettings
   # rubocop:enable Metrics/AbcSize
 
   def reload_hyrax_analytics
-    Hyrax::Analytics.config.analytics_id = google_analytics_id
-    Hyrax::Analytics.config.property_id = google_analytics_property_id if Hyrax::Analytics.config.respond_to? :property_id=
+    # Configure analytics if all required settings are present
+    if google_analytics_id.present? && 
+       google_analytics_property_id.present? && 
+       (ENV.fetch('GOOGLE_ACCOUNT_JSON', '').present? || ENV.fetch('GOOGLE_ACCOUNT_JSON_PATH', '').present?)
+      
+      Hyrax::Analytics.config.analytics_id = google_analytics_id
+      Hyrax::Analytics.config.property_id = google_analytics_property_id
+
+    else
+      # Disable analytics if any required settings are missing
+      Hyrax.config.analytics = false
+      Hyrax.config.analytics_reporting = false
+    end
+  rescue StandardError => e
+    # Log the error but don't crash the application
+    Rails.logger.error "Failed to configure analytics: #{e.message}"
+    Hyrax.config.analytics = false
+    Hyrax.config.analytics_reporting = false
   end
 end
 # rubocop:enable Metrics/ModuleLength

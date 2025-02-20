@@ -1,0 +1,35 @@
+<%# OVERRIDE Hyrax v5.0.4 for theming - neutral repository homepage featured collections uses a grid layout %>
+
+<div id="featured_collections">
+  <% if @featured_collection_list.empty? %>
+    <p id="no-collections"><%= t('hyrax.homepage.featured_collections.no_collections') %></p>
+  <% elsif can? :update, FeaturedCollection %>
+    <%= form_for [main_app, @featured_collection_list] do |f| %>
+      <div class="dd" id="ff">
+        <ol id="featured_works">
+          <%= f.fields_for :featured_collections do |featured| %>
+            <%= render 'hyrax/homepage/sortable_featured_collections', f: featured %>
+          <% end %>
+        </ol>
+      </div>
+      <%= f.submit('Save order', class: 'btn btn-secondary') %>
+    <% end %>
+  <% else %>
+    <div class="container">
+        <%= form_for [main_app, @featured_collection_list] do |f| %>
+          <div class="row">
+            <%= f.fields_for :featured_collections do |featured| %>
+              <%= render 'explore_collections', f: featured %>
+            <% end %>
+          </div>
+        <% end %>
+    </div>
+  <% end %>
+</div>
+<ul class="list-inline collection-highlights-list">
+  <li>
+    <%= link_to t('hyrax.homepage.admin_sets.link'),
+                main_app.search_catalog_path(f: { generic_type_sim: ['Collection']}),
+                class: 'btn btn-secondary mt-1' %>
+  </li>
+</ul>

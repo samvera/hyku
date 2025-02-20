@@ -20,7 +20,7 @@ GIT
 
 GIT
   remote: https://github.com/notch8/willow_sword.git
-  revision: 8c97a00679b04115d0ebd3bb083359360b1a2071
+  revision: 79d22663ce8046f3a56cac03c5f632d5d9ba56bd
   branch: main
   specs:
     willow_sword (0.2.0)
@@ -163,7 +163,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: 95795c589d7fa419e742467be69897957e392569
+  revision: d4b8f81de06794a69d1213273375a4a9d9ccd15e
   branch: main_before_rails_72
   specs:
     hyrax (5.0.4)

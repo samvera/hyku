@@ -34,8 +34,7 @@ RSpec.describe AccountSettings do
                                                                                 s3_bucket
                                                                                 smtp_settings
                                                                                 solr_collection_options
-                                                                                ssl_configured
-                                                                                user_analytics]
+                                                                                ssl_configured]
       end
       # rubocop:enable RSpec/ExampleLength
     end

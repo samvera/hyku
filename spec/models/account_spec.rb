@@ -585,4 +585,89 @@ RSpec.describe Account, type: :model do
       end
     end
   end
+
+  describe '#find_or_schedule_jobs' do
+    let(:account) { create(:account) }
+    let(:site_account) { create(:account) }
+
+    before do
+      allow(Site).to receive(:account).and_return(site_account)
+      allow(AccountElevator).to receive(:switch!)
+    end
+
+    it 'schedules default jobs' do
+      expect(EmbargoAutoExpiryJob).to receive(:perform_later)
+      expect(LeaseAutoExpiryJob).to receive(:perform_later)
+      
+      account.find_or_schedule_jobs
+    end
+
+    it 'does not schedule jobs that already exist' do
+      allow(account).to receive(:find_job).with(EmbargoAutoExpiryJob).and_return(true)
+      allow(account).to receive(:find_job).with(LeaseAutoExpiryJob).and_return(true)
+
+      expect(EmbargoAutoExpiryJob).not_to receive(:perform_later)
+      expect(LeaseAutoExpiryJob).not_to receive(:perform_later)
+      
+      account.find_or_schedule_jobs
+    end
+
+    context 'with batch email notifications enabled' do
+      before do
+        account.settings['batch_email_notifications'] = true
+        # Stub default jobs to prevent the error
+        allow(account).to receive(:find_job).with(EmbargoAutoExpiryJob).and_return(false)
+        allow(account).to receive(:find_job).with(LeaseAutoExpiryJob).and_return(false)
+      end
+
+      it 'schedules BatchEmailNotificationJob' do
+        allow(account).to receive(:find_job).with(BatchEmailNotificationJob).and_return(false)
+        expect(BatchEmailNotificationJob).to receive(:perform_later)
+        account.find_or_schedule_jobs
+      end
+
+      it 'does not schedule if job already exists' do
+        allow(account).to receive(:find_job).with(BatchEmailNotificationJob).and_return(true)
+        expect(BatchEmailNotificationJob).not_to receive(:perform_later)
+        account.find_or_schedule_jobs
+      end
+    end
+
+    context 'with analytics enabled' do
+      before do
+        account.settings['analytics_reporting'] = true
+        allow(Hyrax.config).to receive(:analytics_reporting?).and_return(true)
+      end
+
+      it 'schedules UserStatCollectionJob' do
+        expect(UserStatCollectionJob).to receive(:perform_later)
+        account.find_or_schedule_jobs
+      end
+
+      context 'with depositor email notifications enabled' do
+        before do
+          account.settings['depositor_email_notifications'] = true
+        end
+
+        it 'schedules DepositorEmailNotificationJob' do
+          expect(DepositorEmailNotificationJob).to receive(:perform_later)
+          account.find_or_schedule_jobs
+        end
+      end
+    end
+
+    it 'switches back to original account' do
+      expect(AccountElevator).to receive(:switch!).with(account)
+      expect(AccountElevator).to receive(:switch!).with(site_account)
+      
+      account.find_or_schedule_jobs
+    end
+
+    it 'resets when no original account exists' do
+      allow(Site).to receive(:account).and_return(nil)
+      expect(account).to receive(:reset!)
+      
+      account.find_or_schedule_jobs
+    end
+  end
 end

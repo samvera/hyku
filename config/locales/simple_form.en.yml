@@ -22,6 +22,7 @@ en:
         allow_signup: Allow users to sign up to your repository
         analytics: Enable or disable Google Analytics 4 to track user interactions, including clicks.
         analytics_reporting: Enable or disable reporting from Google Analytics 4 to display analytics data in the dashboard. Requires developer support for setup.
+        depositor_email_notifications: Enable or disable email notifications to depositors a summary of statistics for their submissions. Analytics reporting must be enabled to use this feature.
         enable_oai_metadata: Enable or disable OAI link
         shared_login: Enable or disable shared login
         file_size_limit: This should be set to at least 536870912000

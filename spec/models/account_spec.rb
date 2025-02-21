@@ -598,7 +598,7 @@ RSpec.describe Account, type: :model do
     it 'schedules default jobs' do
       expect(EmbargoAutoExpiryJob).to receive(:perform_later)
       expect(LeaseAutoExpiryJob).to receive(:perform_later)
-      
+
       account.find_or_schedule_jobs
     end
 
@@ -608,7 +608,7 @@ RSpec.describe Account, type: :model do
 
       expect(EmbargoAutoExpiryJob).not_to receive(:perform_later)
       expect(LeaseAutoExpiryJob).not_to receive(:perform_later)
-      
+
       account.find_or_schedule_jobs
     end
 
@@ -659,14 +659,14 @@ RSpec.describe Account, type: :model do
     it 'switches back to original account' do
       expect(AccountElevator).to receive(:switch!).with(account)
       expect(AccountElevator).to receive(:switch!).with(site_account)
-      
+
       account.find_or_schedule_jobs
     end
 
     it 'resets when no original account exists' do
       allow(Site).to receive(:account).and_return(nil)
       expect(account).to receive(:reset!)
-      
+
       account.find_or_schedule_jobs
     end
   end

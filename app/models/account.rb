@@ -185,7 +185,7 @@ class Account < ApplicationRecord
     ]
 
     jobs_to_schedule << BatchEmailNotificationJob if batch_email_notifications
-    
+
     if analytics_reporting && Hyrax.config.analytics_reporting?
       jobs_to_schedule << DepositorEmailNotificationJob if depositor_email_notifications
       jobs_to_schedule << UserStatCollectionJob

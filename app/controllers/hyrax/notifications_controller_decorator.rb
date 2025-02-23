@@ -30,3 +30,5 @@ module Hyrax
     end
   end
 end
+
+Hyrax::NotificationsController.prepend Hyrax::NotificationsControllerDecorator

@@ -185,8 +185,11 @@ class Account < ApplicationRecord
     ]
 
     jobs_to_schedule << BatchEmailNotificationJob if batch_email_notifications
-    jobs_to_schedule << DepositorEmailNotificationJob if depositor_email_notifications
-    jobs_to_schedule << UserStatCollectionJob if user_analytics
+
+    if analytics_reporting && Hyrax.config.analytics_reporting?
+      jobs_to_schedule << DepositorEmailNotificationJob if depositor_email_notifications
+      jobs_to_schedule << UserStatCollectionJob
+    end
 
     jobs_to_schedule.each do |klass|
       klass.perform_later unless find_job(klass)
@@ -203,7 +206,7 @@ class Account < ApplicationRecord
     relevant_settings = [
       'batch_email_notifications',
       'depositor_email_notifications',
-      'user_analytics'
+      'analytics_reporting'
     ]
 
     return unless saved_changes['settings']

@@ -22,8 +22,8 @@ module AccountSettings
 
     setting :allow_downloads, type: 'boolean', default: true
     setting :allow_signup, type: 'boolean', default: true
-    setting :analytics, type: 'boolean', default: true
-    setting :analytics_reporting, type: 'boolean', default: true
+    setting :analytics, type: 'boolean', default: false
+    setting :analytics_reporting, type: 'boolean', default: false
     setting :batch_email_notifications, type: 'boolean', default: false
     setting :bulkrax_field_mappings, type: 'json_editor', default: Hyku.default_bulkrax_field_mappings.to_json
     setting :bulkrax_validations, type: 'boolean', disabled: true
@@ -54,7 +54,6 @@ module AccountSettings
     setting :smtp_settings, type: 'hash', private: true, default: {}
     setting :solr_collection_options, type: 'hash', default: solr_collection_options
     setting :ssl_configured, type: 'boolean', default: true, private: true
-    setting :user_analytics, type: 'boolean', default: false
     setting :weekly_email_list, type: 'array', disabled: true
     setting :yearly_email_list, type: 'array', disabled: true
 

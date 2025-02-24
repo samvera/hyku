@@ -120,7 +120,8 @@ RSpec.describe CreateAccount, clean: true do
       before do
         allow(account).to receive(:batch_email_notifications).and_return(true)
         allow(account).to receive(:depositor_email_notifications).and_return(true)
-        allow(account).to receive(:user_analytics).and_return(true)
+        allow(account).to receive(:analytics_reporting).and_return(true)
+        allow(Hyrax.config).to receive(:analytics_reporting?).and_return(true)
       end
 
       it "enqueues recurring jobs" do
@@ -142,7 +143,7 @@ RSpec.describe CreateAccount, clean: true do
       before do
         allow(account).to receive(:batch_email_notifications).and_return(false)
         allow(account).to receive(:depositor_email_notifications).and_return(false)
-        allow(account).to receive(:user_analytics).and_return(false)
+        allow(account).to receive(:analytics_reporting).and_return(false)
       end
 
       it "only enqueues embargo and lease jobs" do

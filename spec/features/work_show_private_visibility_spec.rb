@@ -1,16 +1,19 @@
 # frozen_string_literal: true
 
 RSpec.describe "Users trying to access a Private Work's show page", type: :feature, clean: true, js: true do # rubocop:disable Layout/LineLength
+  let(:id) { SecureRandom.uuid }
+  let(:visibility) { Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE }
+  let(:work) { double(GenericWork, id: id, visibility: visibility) }
   let(:fake_solr_document) do
     {
       'has_model_ssim': ['GenericWork'],
-      id: SecureRandom.uuid,
-      'title_tesim': ['Private GenericWork'],
+      id: id,
+      'title_tesim':  ['Private GenericWork'],
       'admin_set_tesim': ['Default Admin Set'],
       'suppressed_bsi': false,
       'edit_access_group_ssim': ['admin'],
       'edit_access_person_ssim': ['fake@example.com'],
-      'visibility_ssi': 'restricted'
+      'visibility_ssi': visibility
     }
   end
 
@@ -18,6 +21,7 @@ RSpec.describe "Users trying to access a Private Work's show page", type: :featu
     solr = Blacklight.default_index.connection
     solr.add(fake_solr_document)
     solr.commit
+    allow(Hyrax.query_service).to receive(:find_by).with(id: id).and_return(work)
   end
 
   context 'an unauthenticated user' do

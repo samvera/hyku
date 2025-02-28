@@ -4,7 +4,6 @@ module Hyku
   module Indexers
     class FileSetIndexer < Hyrax::Indexers::FileSetIndexer
       include Hyrax::Indexer(:bulkrax_metadata)
-      include Hyrax::Indexer(:hyku_file_set_metadata)
 
       def to_solr
         return super unless Flipflop.default_pdf_viewer?

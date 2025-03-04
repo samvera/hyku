@@ -1048,7 +1048,7 @@ GEM
       rdf
     raabro (1.4.0)
     racc (1.8.1)
-    rack (2.2.9)
+    rack (2.2.12)
     rack-oauth2 (2.2.0)
       activesupport
       attr_required

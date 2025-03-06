@@ -141,8 +141,8 @@ GIT
 
 GIT
   remote: https://github.com/samvera/bulkrax.git
-  revision: f185e6918959870122657eca872625f5534077ca
-  branch: main
+  revision: 7a5f4f1fbe6ee4964fcf0df046a7f517ab9ca209
+  branch: remove-spaces-from-file-names
   specs:
     bulkrax (9.0.2)
       bagit (~> 0.6.0)

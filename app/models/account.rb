@@ -217,7 +217,9 @@ class Account < ApplicationRecord
     new_relevant_settings = new_settings.slice(*relevant_settings)
 
     return unless old_relevant_settings != new_relevant_settings
-    find_or_schedule_jobs
+    Apartment::Tenant.switch(self.tenant) do
+      find_or_schedule_jobs
+    end
   end
 end
 # rubocop:enable Metrics/ClassLength

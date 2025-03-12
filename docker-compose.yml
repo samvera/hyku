@@ -8,6 +8,7 @@ x-app: &app
       - ghcr.io/samvera/hyku/base:latest
       - ghcr.io/samvera/hyku:latest
   image: ghcr.io/samvera/hyku:${TAG:-latest}
+  user: root
   env_file:
     - .env
   # NOTE: all common env variables moved to .env
@@ -48,7 +49,11 @@ services:
     networks:
       internal:
     healthcheck:
-      test: ["CMD-SHELL", "echo 'ruok' | nc -w 2 -q 2 localhost 2181 | grep imok || exit 1"]
+      test:
+        [
+          "CMD-SHELL",
+          "echo 'ruok' | nc -w 2 -q 2 localhost 2181 | grep imok || exit 1",
+        ]
       interval: "10s"
       timeout: "8s"
 
@@ -194,7 +199,7 @@ services:
       zoo:
         condition: service_started
 
-  # Do not recurse through all of tmp. derivitives will make booting
+  # Do not recurse through all of tmp. derivatives will make booting
   # very slow and eventually just time out as data grows
   check_volumes:
     <<: *app

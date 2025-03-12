@@ -2,12 +2,11 @@ name: Build and push docker image
 on:
   workflow_dispatch:
   release:
-  push:
-    branches:
-      - build_images_on_release
+    types: [published]
 
 env:
   REGISTRY: ghcr.io
+  IMAGE_NAME: samvera/hyku
 
 jobs:
   build:
@@ -18,7 +17,13 @@ jobs:
       - name: Downcase repo
         run: echo "REPO_LOWER=${REPO,,}" >> $GITHUB_ENV
         env:
-          REPO: '${{ github.repository }}'
+          REPO: "${{ github.repository }}"
+      - name: Set release type
+        run: |
+          if [[ "${{ github.event.release.prerelease }}" == "true" ]]; then
+            echo "RELEASE_TAG=prerelease" >> $GITHUB_ENV
+          else
+            echo "RELEASE_TAG=latest" >> $GITHUB_ENV
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Set up QEMU
@@ -31,7 +36,18 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push
+      - name: Build and push solr
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          target: hyky-solr
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/solr:${{ env.TAG }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/solr:${{ github.ref_name }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/solr:${{ env.RELEASE_TAG }}
+      - name: Build and push base
         uses: docker/build-push-action@v3
         with:
           context: .
@@ -39,8 +55,9 @@ jobs:
           target: hyky-base
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.REPO_LOWER }}/hyku-base:${{ env.TAG }}
-            ${{ env.REGISTRY }}/${{ env.REPO_LOWER }}/hyku-base:${{ github.ref_name }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/base:${{ env.TAG }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/base:${{ github.ref_name }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/base:${{ env.RELEASE_TAG }}
       - name: Build and push hyku-web
         uses: docker/build-push-action@v3
         with:
@@ -48,11 +65,12 @@ jobs:
           platforms: linux/amd64,linux/arm64
           target: hyku-web
           cache-from: |
-            ${{ env.REGISTRY }}/${{ env.REPO_LOWER }}:${TAG}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.REPO_LOWER }}/hyku-web:${{ env.TAG }}
-            ${{ env.REGISTRY }}/${{ env.REPO_LOWER }}/hyku-web:${{ github.ref_name }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.RELEASE_TAG }}
       - name: Build and push hyku-worker
         uses: docker/build-push-action@v3
         with:
@@ -60,8 +78,9 @@ jobs:
           platforms: linux/amd64,linux/arm64
           target: hyku-worker
           cache-from: |
-            ${{ env.REGISTRY }}/${{ env.REPO_LOWER }}:${TAG}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.REPO_LOWER }}/hyku-worker:${{ env.TAG }}
-            ${{ env.REGISTRY }}/${{ env.REPO_LOWER }}/hyku-worker:${{ github.ref_name }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/worker:${{ env.TAG }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/worker:${{ github.ref_name }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/worker:${{ env.RELEASE_TAG }}

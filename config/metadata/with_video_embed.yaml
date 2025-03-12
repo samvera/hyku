@@ -9,4 +9,4 @@ attributes:
       required: false
       multiple: false
     index_keys:
-      - "video_embed_tesi"
+      - "video_embed_tesim"

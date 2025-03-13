@@ -4,7 +4,7 @@ FROM ghcr.io/samvera/hyrax/hyrax-base:$HYRAX_IMAGE_VERSION as hyku-base
 USER root
 
 RUN apk --no-cache upgrade && \
-  apk --no-cache add \
+    apk --no-cache add \
     bash \
     cmake \
     exiftool \
@@ -29,16 +29,16 @@ RUN apk --no-cache upgrade && \
     tesseract-ocr \
     vim \
     yarn \
-  && \
-  # curl https://sh.rustup.rs -sSf | sh -s -- -y && \
-  # source "$HOME/.cargo/env" && \
-  # cargo install rbspy && \
-  echo "******** Packages Installed *********"
+    && \
+    # curl https://sh.rustup.rs -sSf | sh -s -- -y && \
+    # source "$HOME/.cargo/env" && \
+    # cargo install rbspy && \
+    echo "******** Packages Installed *********"
 
 RUN wget https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.0-57.tar.gz \
     && tar xf 7.1.0-57.tar.gz \
     && apk --no-cache add \
-      libjpeg-turbo openjpeg libpng tiff librsvg libgsf libimagequant poppler-qt5-dev \
+    libjpeg-turbo openjpeg libpng tiff librsvg libgsf libimagequant poppler-qt5-dev \
     && cd ImageMagick* \
     && ./configure \
     && make install \
@@ -56,14 +56,14 @@ ARG VIPS_VERSION=8.11.3
 RUN set -x -o pipefail \
     && wget -O- https://github.com/libvips/libvips/releases/download/v${VIPS_VERSION}/vips-${VIPS_VERSION}.tar.gz | tar xzC /tmp \
     && apk --no-cache add \
-     libjpeg-turbo openjpeg libpng tiff librsvg libgsf libimagequant poppler-qt5-dev \
+    libjpeg-turbo openjpeg libpng tiff librsvg libgsf libimagequant poppler-qt5-dev \
     && apk add --virtual vips-dependencies build-base \
-     libjpeg-turbo-dev libpng-dev tiff-dev librsvg-dev libgsf-dev libimagequant-dev \
+    libjpeg-turbo-dev libpng-dev tiff-dev librsvg-dev libgsf-dev libimagequant-dev \
     && cd /tmp/vips-${VIPS_VERSION} \
     && ./configure --prefix=/usr \
-                   --disable-static \
-                   --disable-dependency-tracking \
-                   --enable-silent-rules \
+    --disable-static \
+    --disable-dependency-tracking \
+    --enable-silent-rules \
     && make -s install-strip \
     && cd $OLDPWD \
     && rm -rf /tmp/vips-${VIPS_VERSION} \
@@ -84,14 +84,14 @@ ENV PATH="${PATH}:/app/fits"
 COPY --chown=1001:101 ./ops/fits.xml /app/fits/xml/fits.xml
 COPY --chown=1001:101 ./ops/exiftool_image_to_fits.xslt /app/fits/xml/exiftool/exiftool_image_to_fits.xslt
 RUN ln -sf /usr/lib/libmediainfo.so.0 /app/fits/tools/mediainfo/linux/libmediainfo.so.0 && \
-  ln -sf /usr/lib/libzen.so.0 /app/fits/tools/mediainfo/linux/libzen.so.0
+    ln -sf /usr/lib/libzen.so.0 /app/fits/tools/mediainfo/linux/libzen.so.0
 
 COPY --chown=1001:101 ./bin/db-migrate-seed.sh /app/samvera/
 
 ONBUILD ARG APP_PATH=.
 ONBUILD COPY --chown=1001:101 $APP_PATH/Gemfile* /app/samvera/hyrax-webapp/
 ONBUILD RUN git config --global --add safe.directory /app/samvera && \
-  bundle install --jobs "$(nproc)"
+    bundle install --jobs "$(nproc)"
 
 ONBUILD COPY --chown=1001:101 $APP_PATH /app/samvera/hyrax-webapp
 
@@ -102,3 +102,10 @@ CMD ./bin/web
 
 FROM hyku-web as hyku-worker
 CMD ./bin/worker
+
+FROM solr:8.3 as hyku-solr
+ENV SOLR_USER="solr" \
+    SOLR_GROUP="solr"
+USER root
+COPY --chown=solr:solr solr/security.json /var/solr/data/security.json
+USER $SOLR_USER

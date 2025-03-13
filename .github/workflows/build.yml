@@ -10,7 +10,15 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        component: ["solr", "base", "web", "worker"]
+        os: ["ubuntu-latest", "ubuntu-24.04-arm"]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    permissions: write-all
     steps:
       - name: Set env
         run: echo "TAG=${GITHUB_SHA::8}" >> $GITHUB_ENV
@@ -25,10 +33,15 @@ jobs:
           else
             echo "RELEASE_TAG=latest" >> $GITHUB_ENV
           fi
+      - name: Set platform from matrix
+        run: |
+          if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
+            echo "PLATFORM_TAG=amd64" >> $GITHUB_ENV
+          else
+            echo "PLATFORM_TAG=arm64" >> $GITHUB_ENV
+          fi
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Github Container Login
@@ -37,51 +50,33 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push solr
+      - name: Build and push ${{ matrix.component }} on ${{ matrix.os }}
         uses: docker/build-push-action@v3
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
-          target: hyku-solr
+          platforms: linux/${{ env.PLATFORM_TAG }}
+          target: hyku-${{ matrix.component }}
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/solr:${{ env.TAG }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/solr:${{ github.ref_name }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/solr:${{ env.RELEASE_TAG }}
-      - name: Build and push base
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          platforms: linux/amd64,linux/arm64
-          target: hyku-base
-          push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/base:${{ env.TAG }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/base:${{ github.ref_name }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/base:${{ env.RELEASE_TAG }}
-      - name: Build and push hyku-web
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          platforms: linux/amd64,linux/arm64
-          target: hyku-web
-          cache-from: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
-          push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.RELEASE_TAG }}
-      - name: Build and push hyku-worker
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          platforms: linux/amd64,linux/arm64
-          target: hyku-worker
-          cache-from: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
-          push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/worker:${{ env.TAG }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/worker:${{ github.ref_name }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/worker:${{ env.RELEASE_TAG }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${{ matrix.component }}:${{ env.TAG }}-${{ env.PLATFORM_TAG }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${{ matrix.component }}:${{ github.ref_name }}-${{ env.PLATFORM_TAG }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${{ matrix.component }}:${{ env.RELEASE_TAG }}-${{ env.PLATFORM_TAG }}
+  push:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create multiarch manifests
+        run: |
+          for component in base solr web worker; do
+            docker buildx imagetools create -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/$component:${{ env.TAG }} \
+              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/$component:${{ env.TAG }}-amd64 \
+              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/$component:${{ env.TAG }}-arm64
+
+            docker buildx imagetools create -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/$component:${{ env.RELEASE_TAG }} \
+              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/$component:${{ env.RELEASE_TAG }}-amd64 \
+              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/$component:${{ env.RELEASE_TAG }}-arm64
+
+            docker buildx imagetools create -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/$component:${{ github.ref_name }} \
+              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/$component:${{ github.ref_name }}-amd64 \
+              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/$component:${{ github.ref_name }}-arm64
+          done

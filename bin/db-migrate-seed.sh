@@ -2,20 +2,24 @@
 
 require 'open3'
 require 'bundler'
+DIR = File.dirname(__FILE__)
 
 def service_wait(address)
-  system("service-wait.sh #{address}")
+  run_command("service-wait.sh #{address}")
 end
 
 def run_command(command)
   stdout, stderr, status = Open3.capture3(command)
   raise stderr unless status.success?
+  puts stdout
   stdout
 end
 
 def migrations_list(query)
   result = run_command(query)
   result.split("\n").map(&:strip).reject(&:empty?)
+rescue
+  []
 end
 
 def bundled_migrations

@@ -34,6 +34,7 @@ RUN apt update && \
     libwebp-dev \
     libxml2-dev \
     mediainfo \
+    netcat-traditional \
     nodejs \
     openjdk-17-jre \
     perl \
@@ -77,7 +78,6 @@ RUN useradd -m -u 1001 -U -s /bin/bash --home-dir /app app && \
 USER app
 WORKDIR /app/samvera/hyrax-webapp
 
-COPY --chown=1001:101 ./bin/db-migrate-seed.sh /app/samvera/
 # Bundle the gems once in base to make faster builds
 COPY --chown=1001:101 Gemfile /app/samvera/hyrax-webapp/
 COPY --chown=1001:101 Gemfile.lock /app/samvera/hyrax-webapp/

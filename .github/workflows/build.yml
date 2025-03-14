@@ -57,8 +57,8 @@ jobs:
           platforms: linux/${{ env.PLATFORM_TAG }}
           target: hyku-${{ matrix.component }}
           cache-from: |
-            type=registry,ref=ghcr.io/samvera/hyku/${{ matrix.component }}:buildcache
-          cache-to: type=registry,ref=ghcr.io/samvera/hyku/${{ matrix.component }}:buildcache,mode=max
+            type=registry,ref=ghcr.io/samvera/hyku/${{ matrix.component }}:latest
+          cache-to: type=inline
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${{ matrix.component }}:${{ env.TAG }}-${{ env.PLATFORM_TAG }}

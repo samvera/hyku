@@ -5,9 +5,9 @@ x-app: &app
     args:
       BUILDKIT_INLINE_CACHE: 1
     cache_from:
-      - ghcr.io/samvera/hyku/base:latest
-      - ghcr.io/samvera/hyku:latest
-  image: ghcr.io/samvera/hyku:${TAG:-latest}
+      - ghcr.io/samvera/hyku/base:buildcache
+      - ghcr.io/samvera/hyku/web:buildcache
+  image: ghcr.io/samvera/hyku/web:${TAG:-latest}
   user: root
   env_file:
     - .env
@@ -60,9 +60,12 @@ services:
   solr:
     image: ghcr.io/samvera/hyku/solr:${TAG:-latest}
     build:
-      context: solr
-      dockerfile: Dockerfile
+      context: .
       target: hyku-solr
+      args:
+        BUILDKIT_INLINE_CACHE: 1
+      cache_from:
+        - ghcr.io/samvera/hyku/solr:buildcache
     environment:
       - OOM=script
       - SOLR_ADMIN_USER=solr
@@ -133,7 +136,7 @@ services:
       context: .
       target: hyku-base
       cache_from:
-        - ghcr.io/samvera/hyku/base:latest
+        - ghcr.io/samvera/hyku/base:buildcache
       args:
         BUILDKIT_INLINE_CACHE: 1
     command: bash -l -c "echo 'base is only used for building base images, which in turn reduces image build times. It does not need to be run'"
@@ -180,9 +183,9 @@ services:
       args:
         BUILDKIT_INLINE_CACHE: 1
       cache_from:
-        - ghcr.io/samvera/hyku/base:latest
-        - ghcr.io/samvera/hyku:latest
-        - ghcr.io/samvera/hyku/worker:latest
+        - ghcr.io/samvera/hyku/base:buildcache
+        - ghcr.io/samvera/hyku/web:buildcache
+        - ghcr.io/samvera/hyku/worker:buildcache
     depends_on:
       check_volumes:
         condition: service_completed_successfully

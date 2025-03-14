@@ -26,7 +26,7 @@ jobs:
         run: echo "REPO_LOWER=${REPO,,}" >> $GITHUB_ENV
         env:
           REPO: "${{ github.repository }}"
-      - name: Set release type
+      - name: Set release tag
         run: |
           if [[ "${{ github.event.release.prerelease }}" == "true" ]]; then
             echo "RELEASE_TAG=prerelease" >> $GITHUB_ENV
@@ -56,6 +56,7 @@ jobs:
           context: .
           platforms: linux/${{ env.PLATFORM_TAG }}
           target: hyku-${{ matrix.component }}
+          cache-from: ghcr.io/samvera/hyku/${{ matrix.component }}:latest
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${{ matrix.component }}:${{ env.TAG }}-${{ env.PLATFORM_TAG }}
@@ -65,6 +66,19 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Set env
+        run: echo "TAG=${GITHUB_SHA::8}" >> $GITHUB_ENV
+      - name: Downcase repo
+        run: echo "REPO_LOWER=${REPO,,}" >> $GITHUB_ENV
+        env:
+          REPO: "${{ github.repository }}"
+      - name: Set release tag
+        run: |
+          if [[ "${{ github.event.release.prerelease }}" == "true" ]]; then
+            echo "RELEASE_TAG=prerelease" >> $GITHUB_ENV
+          else
+            echo "RELEASE_TAG=latest" >> $GITHUB_ENV
+          fi
       - name: Create multiarch manifests
         run: |
           for component in base solr web worker; do

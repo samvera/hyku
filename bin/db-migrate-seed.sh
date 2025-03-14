@@ -5,7 +5,7 @@ require 'bundler'
 DIR = File.dirname(__FILE__)
 
 def service_wait(address)
-  run_command("service-wait.sh #{address}")
+  run_command("#{DIR}/service-wait.sh #{address}")
 end
 
 def run_command(command)

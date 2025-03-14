@@ -22,7 +22,7 @@ jobs:
       - name: Set env
         run: echo "TAG=${GIT_SHA::8}" >> $GITHUB_ENV
         env:
-          GIT_SHA: ${{ steps.gitsha.outputs.result }}
+          GIT_SHA: ${{ steps.gitsha.outputs.value }}
       - name: Downcase repo
         run: echo "REPO_LOWER=${REPO,,}" >> $GITHUB_ENV
         env:

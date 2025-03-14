@@ -34,7 +34,7 @@ RUN apt update && \
     libwebp-dev \
     libxml2-dev \
     mediainfo \
-    netcat-traditional \
+    netcat-openbsd \
     nodejs \
     openjdk-17-jre \
     perl \

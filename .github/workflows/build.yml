@@ -12,8 +12,17 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+      - name: Determine git sha to checkout
+        uses: haya14busa/action-cond@v1
+        id: gitsha
+        with:
+          cond: ${{ github.event_name == 'pull_request' }}
+          if_true: ${{ github.event.pull_request.head.sha }}
+          if_false: ${{ github.sha }}
       - name: Set env
-        run: echo "TAG=${GITHUB_SHA::8}" >> $GITHUB_ENV
+        run: echo "TAG=${GIT_SHA::8}" >> $GITHUB_ENV
+        env:
+          GIT_SHA: ${{ steps.gitsha.outputs.result }}
       - name: Downcase repo
         run: echo "REPO_LOWER=${REPO,,}" >> $GITHUB_ENV
         env:

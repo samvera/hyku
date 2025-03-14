@@ -6,8 +6,9 @@ x-app: &app
       BUILDKIT_INLINE_CACHE: 1
     cache_from:
       - ghcr.io/samvera/hyku/base:latest
-      - ghcr.io/samvera/hyku:latest
-  image: ghcr.io/samvera/hyku:${TAG:-latest}
+      - ghcr.io/samvera/hyku/web:latest
+  image: ghcr.io/samvera/hyku/web:${TAG:-latest}
+  user: root
   env_file:
     - .env
   # NOTE: all common env variables moved to .env
@@ -48,16 +49,23 @@ services:
     networks:
       internal:
     healthcheck:
-      test: ["CMD-SHELL", "echo 'ruok' | nc -w 2 -q 2 localhost 2181 | grep imok || exit 1"]
+      test:
+        [
+          "CMD-SHELL",
+          "echo 'ruok' | nc -w 2 -q 2 localhost 2181 | grep imok || exit 1",
+        ]
       interval: "10s"
       timeout: "8s"
 
   solr:
     image: ghcr.io/samvera/hyku/solr:${TAG:-latest}
     build:
-      context: solr
-      dockerfile: Dockerfile
+      context: .
       target: hyku-solr
+      args:
+        BUILDKIT_INLINE_CACHE: 1
+      cache_from:
+        - ghcr.io/samvera/hyku/solr:latest
     environment:
       - OOM=script
       - SOLR_ADMIN_USER=solr
@@ -176,7 +184,7 @@ services:
         BUILDKIT_INLINE_CACHE: 1
       cache_from:
         - ghcr.io/samvera/hyku/base:latest
-        - ghcr.io/samvera/hyku:latest
+        - ghcr.io/samvera/hyku/web:latest
         - ghcr.io/samvera/hyku/worker:latest
     depends_on:
       check_volumes:
@@ -194,7 +202,7 @@ services:
       zoo:
         condition: service_started
 
-  # Do not recurse through all of tmp. derivitives will make booting
+  # Do not recurse through all of tmp. derivatives will make booting
   # very slow and eventually just time out as data grows
   check_volumes:
     <<: *app
@@ -213,11 +221,11 @@ services:
     entrypoint: ["sh", "-c"]
     command:
       - >
-        solrcloud-upload-configset.sh /app/samvera/hyrax-webapp/solr/conf &&
-        solrcloud-assign-configset.sh &&
-        SOLR_COLLECTION_NAME=hydra-test solrcloud-assign-configset.sh &&
+        ./bin/solrcloud-upload-configset.sh /app/samvera/hyrax-webapp/solr/conf &&
+        ./bin/solrcloud-assign-configset.sh &&
+        SOLR_COLLECTION_NAME=hydra-test ./bin/solrcloud-assign-configset.sh &&
         bundle &&
-        db-migrate-seed.sh
+        ./bin/db-migrate-seed.sh
     depends_on:
       db:
         condition: service_started

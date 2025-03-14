@@ -1,0 +1,53 @@
+name: Release Images
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: samvera/hyku
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Determine git sha to checkout
+        uses: haya14busa/action-cond@v1
+        id: gitsha
+        with:
+          cond: ${{ github.event_name == 'pull_request' }}
+          if_true: ${{ github.event.pull_request.head.sha }}
+          if_false: ${{ github.sha }}
+      - name: Set env
+        run: echo "TAG=${GIT_SHA::8}" >> $GITHUB_ENV
+        env:
+          GIT_SHA: ${{ steps.gitsha.outputs.value }}
+      - name: Downcase repo
+        run: echo "REPO_LOWER=${REPO,,}" >> $GITHUB_ENV
+        env:
+          REPO: "${{ github.repository }}"
+      - name: Set release tag
+        run: |
+          if [[ "${{ github.event.release.prerelease }}" == "true" ]]; then
+            echo "RELEASE_TAG=prerelease" >> $GITHUB_ENV
+          else
+            echo "RELEASE_TAG=latest" >> $GITHUB_ENV
+          fi
+      - name: Github Container Login
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create multiarch manifests
+        run: |
+          for component in base solr web worker; do
+            docker buildx imagetools create -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/$component:${{ env.RELEASE_TAG }} \
+              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/$component:${{ env.TAG }}-amd64 \
+              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/$component:${{ env.TAG }}-arm64
+
+            docker buildx imagetools create -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/$component:${{ github.ref_name }} \
+              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/$component:${{ env.TAG }}-amd64 \
+              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/$component:${{ env.TAG }}-arm64
+          done

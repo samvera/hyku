@@ -81,6 +81,12 @@ jobs:
           else
             echo "RELEASE_TAG=latest" >> $GITHUB_ENV
           fi
+      - name: Github Container Login
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Create multiarch manifests
         run: |
           for component in base solr web worker; do

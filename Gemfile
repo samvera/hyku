@@ -146,6 +146,6 @@ gem 'willow_sword', github: 'notch8/willow_sword', branch: 'main'
 #
 # tl;dr - Have a local `required_for_knapsack_instances` branch on your knapsack repository and 99%
 #         of the time use the `samvera-labs/hyku_knapsack` remote branch.
-gem 'hyku_knapsack', github: 'samvera-labs/hyku_knapsack', branch: 'main'
+gem 'hyku_knapsack', github: 'samvera-labs/hyku_knapsack', branch: 'required_for_knapsack_instances'
 
 # rubocop:enable Metrics/MethodLength

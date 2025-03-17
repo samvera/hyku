@@ -36,7 +36,6 @@ RUN apt update && \
     mediainfo \
     netcat-openbsd \
     nodejs \
-    openjdk-17-jre \
     perl \
     poppler-utils \
     postgresql-client \

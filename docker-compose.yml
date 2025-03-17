@@ -98,6 +98,13 @@ services:
       zoo:
         condition: service_healthy
 
+  fits:
+    image: ghcr.io/samvera/fitsservlet:1.6.0
+    ports:
+      - 8080
+    networks:
+      internal:
+
   fcrepo:
     image: ghcr.io/samvera/fcrepo4:4.7.5
     volumes:
@@ -153,6 +160,8 @@ services:
         condition: service_started
       solr:
         condition: service_started
+      fits:
+        condition: service_started
       fcrepo:
         condition: service_started
       redis:
@@ -194,6 +203,8 @@ services:
       db:
         condition: service_started
       solr:
+        condition: service_started
+      fits:
         condition: service_started
       fcrepo:
         condition: service_started

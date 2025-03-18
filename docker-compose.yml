@@ -232,11 +232,11 @@ services:
     entrypoint: ["sh", "-c"]
     command:
       - >
-        ./bin/solrcloud-upload-configset.sh /app/samvera/hyrax-webapp/solr/conf &&
-        ./bin/solrcloud-assign-configset.sh &&
-        SOLR_COLLECTION_NAME=hydra-test ./bin/solrcloud-assign-configset.sh &&
+        solrcloud-upload-configset.sh /app/samvera/hyrax-webapp/solr/conf &&
+        solrcloud-assign-configset.sh &&
+        SOLR_COLLECTION_NAME=hydra-test solrcloud-assign-configset.sh &&
         bundle &&
-        ./bin/db-migrate-seed.sh
+        db-migrate-seed.sh
     depends_on:
       db:
         condition: service_started

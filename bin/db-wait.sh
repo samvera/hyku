@@ -12,7 +12,6 @@ do
 done
 
 # Reset the PATH environment variable
-PATH=/usr/local/bin:$PATH
-export PATH
+`echo "export PATH='/usr/local/bundle/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'"`
 
 exec "$@"

@@ -105,6 +105,7 @@ FROM hyku-base AS hyku-web
 
 # Create symbolic link to make the script accessible from anywhere
 USER root
+RUN ln -s /app/samvera/hyrax-webapp/bin/db-wait.sh /usr/local/bin/
 RUN ln -s /app/samvera/hyrax-webapp/bin/service-wait.sh /usr/local/bin/
 RUN ln -s /app/samvera/hyrax-webapp/bin/db-migrate-seed.sh /usr/local/bin/
 RUN ln -s /app/samvera/hyrax-webapp/bin/solrcloud-assign-configset.sh /usr/local/bin/

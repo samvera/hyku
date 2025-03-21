@@ -195,6 +195,10 @@ services:
         - ghcr.io/samvera/hyku/base:latest
         - ghcr.io/samvera/hyku/web:latest
         - ghcr.io/samvera/hyku/worker:latest
+    entrypoint: ["sh", "-c"]
+    command:
+    - >
+      echo 'running migrations'; ./bin/db-migrate-seed.sh
     depends_on:
       check_volumes:
         condition: service_completed_successfully
@@ -229,14 +233,13 @@ services:
     <<: *app
     environment:
       - CONFDIR=/app/samvera/hyrax-webapp/solr/conf
+      - PATH=/app/samvera/hyrax-webapp/bin:${PATH}
     entrypoint: ["sh", "-c"]
     command:
       - >
         solrcloud-upload-configset.sh /app/samvera/hyrax-webapp/solr/conf &&
         solrcloud-assign-configset.sh &&
-        SOLR_COLLECTION_NAME=hydra-test solrcloud-assign-configset.sh &&
-        bundle &&
-        db-migrate-seed.sh
+        SOLR_COLLECTION_NAME=hydra-test solrcloud-assign-configset.sh
     depends_on:
       db:
         condition: service_started

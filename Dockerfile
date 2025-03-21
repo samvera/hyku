@@ -73,6 +73,7 @@ RUN echo "📚 Installing Tesseract Best (training data)!" && \
 RUN useradd -m -u 1001 -U -s /bin/bash --home-dir /app app && \
     mkdir -p /app/samvera/hyrax-webapp && \
     chown -R app:app /app
+
 USER app
 WORKDIR /app/samvera/hyrax-webapp
 
@@ -81,6 +82,20 @@ COPY --chown=1001:101 Gemfile /app/samvera/hyrax-webapp/
 COPY --chown=1001:101 Gemfile.lock /app/samvera/hyrax-webapp/
 RUN git config --global --add safe.directory /app/samvera && \
     bundle install --jobs "$(nproc)"
+
+# RUN mkdir -p /app/fits && \
+#     cd /app/fits && \
+#     wget https://github.com/harvard-lts/fits/releases/download/1.5.5/fits-1.5.5.zip -O fits.zip && \
+#     unzip fits.zip && \
+#     rm fits.zip && \
+#     chmod a+x /app/fits/fits.sh
+# ENV PATH="${PATH}:/app/fits"
+# # Change the order so exif tool is better positioned and use the biggest size if more than one
+# # size exists in an image file (pyramidal tifs mostly)
+# COPY --chown=1001:101 ./ops/fits.xml /app/fits/xml/fits.xml
+# COPY --chown=1001:101 ./ops/exiftool_image_to_fits.xslt /app/fits/xml/exiftool/exiftool_image_to_fits.xslt
+# RUN ln -sf /usr/lib/libmediainfo.so.0 /app/fits/tools/mediainfo/linux/libmediainfo.so.0 && \
+#     ln -sf /usr/lib/libzen.so.0 /app/fits/tools/mediainfo/linux/libzen.so.0
 
 ONBUILD ARG APP_PATH=.
 ONBUILD COPY --chown=1001:101 $APP_PATH /app/samvera/hyrax-webapp

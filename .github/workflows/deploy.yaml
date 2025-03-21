@@ -58,22 +58,11 @@ jobs:
     steps:
       - id: setup
         name: Setup
-        uses: notch8/actions/setup-env@v0.0.6
+        uses: notch8/actions/setup-env@v0.0.25
         with:
           tag: ${{ inputs.tag }}
           image_name: ${{ inputs.image_name }}
           token: ${{ secrets.CHECKOUT_TOKEN || secrets.GITHUB_TOKEN }}
-      - name: Determine git sha to checkout
-        uses: haya14busa/action-cond@v1
-        id: gitsha
-        with:
-          cond: ${{ github.event_name == 'pull_request' }}
-          if_true: ${{ github.event.pull_request.head.sha }}
-          if_false: ${{ github.sha }}
-      - name: Set env
-        run: echo "TAG=${GIT_SHA::8}" >> $GITHUB_ENV
-        env:
-          GIT_SHA: ${{ steps.gitsha.outputs.result }}
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
@@ -84,6 +73,6 @@ jobs:
           echo $KUBECONFIG_FILE | base64 -d > $KUBECONFIG;
           DOLLAR=$ envsubst < ops/${{ inputs.environment }}-deploy.tmpl.yaml > ops/${{ inputs.environment }}-deploy.yaml;
           export DEPLOY_TAG=${TAG};
-          export DEPLOY_IMAGE=ghcr.io/${REPO_LOWER};
+          export DEPLOY_IMAGE=ghcr.io/${REPO_LOWER}/web;
           export WORKER_IMAGE=ghcr.io/${REPO_LOWER}/worker;
           ./bin/helm_deploy ${{ inputs.k8s-release-name || format('{0}-{1}', github.event.repository.name, inputs.environment) }} ${{ inputs.k8s-namespace || format('{0}-{1}', github.event.repository.name, inputs.environment) }}

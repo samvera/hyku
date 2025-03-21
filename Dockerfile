@@ -72,7 +72,8 @@ RUN echo "📚 Installing Tesseract Best (training data)!" && \
 
 RUN useradd -m -u 1001 -U -s /bin/bash --home-dir /app app && \
     mkdir -p /app/samvera/hyrax-webapp && \
-    chown -R app:app /app
+    chown -R app:app /app && \
+    echo "export PATH=/app/samvera/hyrax-webapp/bin:${PATH}" >> /etc/bash.bashrc
 
 USER app
 WORKDIR /app/samvera/hyrax-webapp

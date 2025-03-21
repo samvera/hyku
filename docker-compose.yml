@@ -232,7 +232,7 @@ services:
     <<: *app
     environment:
       - CONFDIR=/app/samvera/hyrax-webapp/solr/conf
-      # - PATH=/app/samvera/hyrax-webapp/bin:/usr/local/bundle/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+      - PATH=/app/samvera/hyrax-webapp/bin:/usr/local/bundle/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
     entrypoint: ["sh", "-c"]
     command:
       - >

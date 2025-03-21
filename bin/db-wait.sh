@@ -11,7 +11,4 @@ do
   sleep 1
 done
 
-# Reset the PATH environment variable
-`echo "export PATH='/usr/local/bundle/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'"`
-
 exec "$@"

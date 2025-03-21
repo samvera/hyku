@@ -59,12 +59,6 @@ begin
   migrations_fs = bundled_migrations
 
   if (migrations_fs - migrations_run).size > 0
-    # Set bundle environment variables
-    ENV['BUNDLE_BIN_PATH'] = '/usr/local/bundle/bin/bundle'
-    ENV['BUNDLE_GEMFILE'] = '/app/samvera/hyrax-webapp/Gemfile'
-    ENV['PATH'] = "/usr/local/bin:#{ENV['PATH']}"
-    bundle_path = '/usr/local/bin/bundle'
-    # Now the regular bundle commands will work
     run_command('bundle exec rails db:create')
     run_command('bundle exec rails db:migrate')
     run_command('bundle exec rails db:seed')
@@ -74,4 +68,4 @@ rescue => e
   exit 1
 end
 
-puts 'All migrations have been run successfully'
+puts 'all migrations have been run'

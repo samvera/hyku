@@ -103,15 +103,6 @@ ONBUILD RUN bundle install --jobs "$(nproc)"
 
 FROM hyku-base AS hyku-web
 
-# Create symbolic link to make the script accessible from anywhere
-USER root
-RUN ln -s /app/samvera/hyrax-webapp/bin/db-wait.sh /usr/local/bin/
-RUN ln -s /app/samvera/hyrax-webapp/bin/service-wait.sh /usr/local/bin/
-RUN ln -s /app/samvera/hyrax-webapp/bin/db-migrate-seed.sh /usr/local/bin/
-RUN ln -s /app/samvera/hyrax-webapp/bin/solrcloud-assign-configset.sh /usr/local/bin/
-RUN ln -s /app/samvera/hyrax-webapp/bin/solrcloud-upload-configset.sh /usr/local/bin/
-
-USER app
 RUN RAILS_ENV=production SECRET_KEY_BASE=`bin/rake secret` DB_ADAPTER=nulldb DB_URL='postgresql://fake' bundle exec rake assets:precompile && yarn install
 CMD ./bin/web
 

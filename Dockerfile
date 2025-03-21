@@ -109,6 +109,7 @@ RUN ln -s /app/samvera/hyrax-webapp/bin/service-wait.sh /usr/local/bin/
 RUN ln -s /app/samvera/hyrax-webapp/bin/db-migrate-seed.sh /usr/local/bin/
 RUN ln -s /app/samvera/hyrax-webapp/bin/solrcloud-assign-configset.sh /usr/local/bin/
 RUN ln -s /app/samvera/hyrax-webapp/bin/solrcloud-upload-configset.sh /usr/local/bin/
+ENV PATH="/app/samvera/hyrax-webapp/bin:${PATH}"
 
 USER app
 RUN RAILS_ENV=production SECRET_KEY_BASE=`bin/rake secret` DB_ADAPTER=nulldb DB_URL='postgresql://fake' bundle exec rake assets:precompile && yarn install

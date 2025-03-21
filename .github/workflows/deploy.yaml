@@ -70,10 +70,6 @@ jobs:
           limit-access-to-actor: true
       - name: Do deploy
         run: |
-          echo $TAG
-          echo ${GIT_SHA::8}
-          echo ${{ env.TAG }}
-          echo $GITHUB_ENV
           echo $KUBECONFIG_FILE | base64 -d > $KUBECONFIG;
           DOLLAR=$ envsubst < ops/${{ inputs.environment }}-deploy.tmpl.yaml > ops/${{ inputs.environment }}-deploy.yaml;
           export DEPLOY_TAG=${TAG};

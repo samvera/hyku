@@ -155,6 +155,7 @@ services:
     environment:
       - VIRTUAL_PORT=3000
       - VIRTUAL_HOST=.hyku.test
+      - PATH=/usr/local/bundle/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
     depends_on:
       db:
         condition: service_started
@@ -195,6 +196,8 @@ services:
         - ghcr.io/samvera/hyku/base:latest
         - ghcr.io/samvera/hyku/web:latest
         - ghcr.io/samvera/hyku/worker:latest
+    environment:
+      - PATH=/usr/local/bundle/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
     depends_on:
       check_volumes:
         condition: service_completed_successfully
@@ -229,7 +232,7 @@ services:
     <<: *app
     environment:
       - CONFDIR=/app/samvera/hyrax-webapp/solr/conf
-      - PATH=/app/samvera/hyrax-webapp/bin:${PATH}
+      - PATH=/app/samvera/hyrax-webapp/bin:/usr/local/bundle/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
     entrypoint: ["sh", "-c"]
     command:
       - >

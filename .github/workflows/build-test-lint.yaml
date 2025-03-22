@@ -129,6 +129,8 @@ jobs:
     with:
       confdir: "/app/samvera/hyrax-webapp/solr/conf"
       rspec_cmd: "gem install semaphore_test_boosters && bundle && rspec_booster --job $CI_NODE_INDEX/$CI_NODE_TOTAL"
+      node_total: "[4]"
+      node_index: "[0, 1, 2, 3]"
 
   reports:
     if: always()

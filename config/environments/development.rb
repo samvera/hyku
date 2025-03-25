@@ -72,6 +72,6 @@ Rails.application.configure do
   # config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   # adding `.` wildcard to allow for subdomains
-  config.hosts << "." + ENV['HYKU_ADMIN_HOST']
+  config.hosts << "." + ENV['HYKU_ROOT_HOST']
 end
 # rubocop:enable Metrics/BlockLength

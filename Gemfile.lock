@@ -20,7 +20,7 @@ GIT
 
 GIT
   remote: https://github.com/notch8/willow_sword.git
-  revision: 79d22663ce8046f3a56cac03c5f632d5d9ba56bd
+  revision: 0d48ba8bb98a7acad3088fe3fa75bc2dc8b7b6f6
   branch: main
   specs:
     willow_sword (0.2.0)
@@ -1486,6 +1486,7 @@ GEM
 PLATFORMS
   aarch64-linux
   aarch64-linux-musl
+  arm64-darwin-23
   arm64-darwin-24
   x86_64-linux
 

@@ -33,8 +33,7 @@ volumes:
 
 networks:
   default:
-    name: network.direct
-    external: true
+    name: stackcar
 
 services:
   zoo:

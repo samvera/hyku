@@ -11,6 +11,7 @@ ENV['HYKU_ADMIN_ONLY_TENANT_CREATION'] = nil
 ENV['HYKU_DEFAULT_HOST'] = nil
 ENV['HYKU_MULTITENANT'] = 'true'
 ENV['VALKYRIE_TRANSITION'] = 'true'
+ENV['HYRAX_ANALYTICS_REPORTING'] = 'false'
 
 require 'simplecov'
 SimpleCov.start('rails')
@@ -173,7 +174,9 @@ RSpec.configure do |config|
       # Hyrax::SolrService.wipe!
       ActiveFedora::Cleaner.clean!
     end
-    if example.metadata[:type] == :feature && Capybara.current_driver != :rack_test
+
+    # Only use truncation for JS-enabled feature specs
+    if example.metadata[:js] && example.metadata[:type] == :feature
       DatabaseCleaner.strategy = :truncation
     else
       DatabaseCleaner.strategy = :transaction
@@ -192,8 +195,12 @@ RSpec.configure do |config|
 
   config.after do
     DatabaseCleaner.clean
-  rescue NoMethodError
-    'This can happen which the database is gone, which depends on load order of tests'
+  rescue StandardError => e
+    Rails.logger.error "DatabaseCleaner error: #{e.message}"
+    # Only switch to truncation if we hit a deadlock
+    raise e unless e.message.include?('deadlock detected')
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.clean
   end
 end
 

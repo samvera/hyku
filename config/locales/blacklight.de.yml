@@ -15,21 +15,46 @@ de:
           publisher_sim: Herausgeber
           subject_sim: Fach
         index:
+          accessibility_feature_tesim: Zugänglichkeitsfunktion
+          accessibility_hazard_tesim: Zugänglichkeitsrisiko
+          accessibility_summary_tesim: Zusammenfassung zur Barrierefreiheit
+          additional_information_tesim: Weitere Informationen
+          admin_note_tesim: Administratorhinweis
+          alternative_title_tesim: Alternativer Titel
+          audience_tesim: Publikum
           based_near_label_tesim: Ort
+          chronology_note_tesim: Chronologie-Hinweis
+          contributing_library_tesim: Mitwirkende Bibliothek
           contributor_tesim: Mitwirkender
           creator_tesim: Schöpfer
           date_created_tesim: Datum erstellt
           date_modified_dtsi: Datum geändert
+          date_tesim: Datum
           date_uploaded_dtsi: Datum hochgeladen
           description_tesim: Beschreibung
+          discipline_tesim: Disziplin
+          education_level_tesim: Bildungsniveau
           extent_tesim: Umfang
           file_format_tesim: Datei Format
+          format_tesim: Format
           identifier_tesim: Identifikator
           keyword_tesim: Stichwort
           language_tesim: Sprache
+          learning_resource_type_tesim: Lernressourcentyp
+          library_catalog_identifier_tesim: Bibliothekskatalog-ID
+          license_tesim: Lizenz
+          newer_version_id_tesim: Neuere Versions-ID
+          oer_size_tesim: Oer Größe
+          previous_version_id_tesim: Vorherige Versions-ID
           publisher_tesim: Herausgeber
+          related_item_id_tesim: Zugehörige Artikel-ID
+          related_url_tesim: Verwandte URL
+          resource_type_tesim: Ressourcentyp
+          rights_holder_tesim: Rechteinhaber
+          rights_statement_tesim: Rechteerklärung
           rights_tesim: Rechte
           subject_tesim: Fach
+          table_of_contents_tesim: Inhaltsverzeichnis
         show:
           based_near_label_tesim: Ort
           contributor_tesim: Mitwirkender

@@ -9,11 +9,14 @@ RSpec.describe AccountSettings do
       it 'returns all settings except private and disabled settings' do
         expect(account.public_settings(is_superadmin: true).keys.sort).to eq %i[allow_downloads
                                                                                 allow_signup
-                                                                                analytics_provider
+                                                                                analytics
+                                                                                analytics_reporting
+                                                                                batch_email_notifications
                                                                                 bulkrax_field_mappings
                                                                                 cache_api
                                                                                 contact_email
                                                                                 contact_email_to
+                                                                                depositor_email_notifications
                                                                                 doi_reader
                                                                                 doi_writer
                                                                                 email_domain
@@ -23,6 +26,7 @@ RSpec.describe AccountSettings do
                                                                                 file_size_limit
                                                                                 geonames_username
                                                                                 google_analytics_id
+                                                                                google_analytics_property_id
                                                                                 gtm_id
                                                                                 oai_admin_email
                                                                                 oai_prefix
@@ -33,21 +37,6 @@ RSpec.describe AccountSettings do
                                                                                 ssl_configured]
       end
       # rubocop:enable RSpec/ExampleLength
-    end
-
-    context 'when we have a field marked as superadmin only' do
-      before { account.superadmin_settings = %i[analytics_provider] }
-      context 'and we are not a super admin' do
-        it 'does not include that field' do
-          expect(account.public_settings(is_superadmin: false).keys).not_to include(:analytics_provider)
-        end
-      end
-
-      context 'and we are a super admin' do
-        it 'includes that field' do
-          expect(account.public_settings(is_superadmin: true).keys).to include(:analytics_provider)
-        end
-      end
     end
   end
 

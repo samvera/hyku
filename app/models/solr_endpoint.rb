@@ -41,6 +41,8 @@ class SolrEndpoint < Endpoint
     #
     # https://github.com/samvera/hyrax/blob/a5a0ae9e56df857a92fc53ae86216cbb007db47a/lib/valkyrie/indexing/solr/indexing_adapter.rb#L83-L101
     base_options['core'] ||= switchable_options['collection']
+    # Ensure we have the solr adapter set
+    base_options['adapter'] ||= 'solr'
 
     # NOTE: the switchable_options includes two keys: "collection" and "url"
     #       The "url" should be used to make the connection to Solr.

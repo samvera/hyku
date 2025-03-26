@@ -6,8 +6,10 @@ zh:
     active_consent_to_agreement: 我已经阅读并且同意
     activefedora:
       models:
+        etd: 紧急断电
         generic_work: 工作
         image: 图片
+        oer: 开放教育资源
     admin:
       admin_sets:
         delete:
@@ -490,11 +492,15 @@ zh:
         announcement_instructions: 公告文本显示在主页上。重要或及时的消息必须显眼地显示给所有主页访问者。在此处输入一个公告是适当的，例如，以通知用户即将进行的计划中的系统维护中断。
         featured_researcher_instructions: Featured Researcher是一个用于输入信息的空间，并且在主页上保留以突出显示存储库用户。
         home_text_instructions: 主页文本是指在主页上的英雄块或主页的其他部分中显示的自定义消息。选择需要或允许主页文本的主题时，将显示此文本。我们建议在此区域内不要超过3个句子。
+        homepage_about_section_content_instructions: 任何默认 Hyku 主题均未使用此内容。它可用于自定义主题。
+        homepage_about_section_heading_instructions: 任何默认 Hyku 主题均不使用此标题。它可用于自定义主题。
         marketing_instructions: 标语文本是指在首页上标语图像上方显示的文本。我们建议在此文本区域中不要超过30个字符或空格。
       tabs:
         announcement_text: 公告文字
         featured_researcher: 特色研究员
         home_text: 主页文字
+        homepage_about_section_content: 关于部分内容
+        homepage_about_section_heading: 关于章节标题
         marketing_text: 营销文字
       updated: 内容块已更新。
     controls:
@@ -938,6 +944,7 @@ zh:
         agreement_page: 存款协议
         help_page: 帮助页面
         terms_page: 使用条款
+      update: 保存更改
       updated: 页面已更新。
     passive_consent_to_agreement: 保存此作品，我同意
     product_name: 俳句
@@ -1173,6 +1180,7 @@ zh:
       defaults:
         admin_set_id: 行政套装
         based_near: 位置
+        collection_banner_text_color: 集合横幅文字颜色
         contributor: 撰稿人
         creator: 创作者
         date_created: 创建日期
@@ -1200,6 +1208,7 @@ zh:
         navbar_link_text_color: 导航栏链接文字颜色
         navbar_link_text_hover_color: 导航栏链接文本悬停颜色
         primary_button_hover_color: 主按钮悬停颜色
+        primary_button_text_color: 主要按钮文本颜色
         publisher: 发行人
         related_url: 相关网址
         rights_statement: 权利声明
@@ -1216,3 +1225,5 @@ zh:
       defaults:
         find_child_work: 正在搜寻作品…
         member_of_collection_ids: 选择一个收藏夹…
+    required:
+      html: <span class="badge badge-info required-tag">必需的</span>

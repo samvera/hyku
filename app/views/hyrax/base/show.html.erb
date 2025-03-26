@@ -39,9 +39,6 @@
             <div class="col-sm-3 text-center">
               <%= render('download_pdf', presenter: @presenter, file_set_id: @presenter.file_set_presenters.first.id) if @presenter.show_pdf_download_button? %>
               <%= render 'citations', presenter: @presenter %>
-              <!-- OVERRIDE: analytics_button is disabled until future fix -->
-              <%#= render 'analytics_button', presenter: @presenter %>
-              <!-- OVERRIDE: remove social_media -->
             </div>
           <% end %>
           <div class="col-sm-9">

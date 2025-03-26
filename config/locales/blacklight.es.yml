@@ -15,21 +15,46 @@ es:
           publisher_sim: Editor
           subject_sim: Tema
         index:
+          accessibility_feature_tesim: Función de accesibilidad
+          accessibility_hazard_tesim: Riesgo de accesibilidad
+          accessibility_summary_tesim: Resumen de accesibilidad
+          additional_information_tesim: información adicional
+          admin_note_tesim: Nota de administración
+          alternative_title_tesim: Título alternativo
+          audience_tesim: Audiencia
           based_near_label_tesim: Ubicación
+          chronology_note_tesim: Nota cronológica
+          contributing_library_tesim: Biblioteca colaboradora
           contributor_tesim: Contribuidor
           creator_tesim: Creador
           date_created_tesim: Fecha de Creacion
           date_modified_dtsi: Fecha Modificada
+          date_tesim: Fecha
           date_uploaded_dtsi: Fecha de Subida
           description_tesim: Descripción
+          discipline_tesim: Disciplina
+          education_level_tesim: Nivel de educación
           extent_tesim: Grado
           file_format_tesim: Formato de Archivo
+          format_tesim: Formato
           identifier_tesim: Identificador
           keyword_tesim: Palabra clave
           language_tesim: Idioma
+          learning_resource_type_tesim: Tipo de recurso de aprendizaje
+          library_catalog_identifier_tesim: Identificador del catálogo de la biblioteca
+          license_tesim: Licencia
+          newer_version_id_tesim: Identificación de versión más nueva
+          oer_size_tesim: Tamaño Oer
+          previous_version_id_tesim: Id. de versión anterior
           publisher_tesim: Editor
+          related_item_id_tesim: Id. de artículo relacionado
+          related_url_tesim: URL relacionada
+          resource_type_tesim: Tipo de recurso
+          rights_holder_tesim: Titular de los derechos
+          rights_statement_tesim: Declaración de derechos
           rights_tesim: Derechos
           subject_tesim: Tema
+          table_of_contents_tesim: Tabla de contenido
         show:
           based_near_label_tesim: Ubicación
           contributor_tesim: Contribuidor

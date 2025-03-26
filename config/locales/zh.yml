@@ -2,14 +2,28 @@
 zh:
   activefedora:
     models:
+      etd: 紧急断电
       generic_work: 工作
       image: 图像
+      oer: 开放教育资源
   activerecord:
     attributes:
       site:
         institution_name_full: 完整的机构名称
   application:
     tagline: 下一代存储库解决方案
+  blacklight:
+    search:
+      fields:
+        facet:
+          contributing_library_sim: 贡献库
+          contributor_sim: 撰稿人
+          human_readable_type_sim: 类型
+          member_of_collections_sim: 收藏
+          resource_type_sim: 资源类型
+        show:
+          additional_information: 附加权利信息
+    slideshow_info: 选择一张图片开始幻灯片放映
   errors:
     messages:
       valid_embed_url: 必须是有效的YouTube或Vimeo嵌入URL。
@@ -175,6 +189,8 @@ zh:
       appearances:
         show:
           forms:
+            active_tabs_background_color:
+              hint: 主页标签的悬停颜色。
             banner_image:
               hint: 要将图像用作标头广告背景，您应该使用至少120像素高和1200像素宽的图像（JPG，GIF或PNG）。为了获得最佳效果，请使用至少1800像素宽的图像。
             collection_banner_text_color:
@@ -207,6 +223,8 @@ zh:
               hint: 仅适用于这些特定页面上的“主页”、“关于”、“联系方式”和“帮助”按钮（不透明度为 15%）。
             primary_button_hover_color:
               hint: 共享、搜索和收藏交互（编辑、功能等）按钮。这些按钮的边框也将是这种颜色。
+            primary_button_text_color:
+              hint: 分享、搜索和收藏交互按钮的文字颜色
             themes:
               confirm: 如果您的主题似乎没有正确应用，请确认该主题未被Custom CSS覆盖。
           hints:

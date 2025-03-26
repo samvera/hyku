@@ -186,4 +186,12 @@ SimpleForm.setup do |config|
       end
     end
   end
+
+  config.wrappers :inline, tag: 'span', class: 'form-group inline', error_class: 'has-error' do |b|
+    b.use :html5
+    b.use :placeholder
+    b.use :label, class: 'control-label mr-1'
+    b.use :input, class: 'form-control mr-1'
+    b.use :error, wrap_with: { tag: 'span', class: 'help-block' }
+  end
 end

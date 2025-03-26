@@ -89,19 +89,39 @@
   background-color: #9bafbf;
 }
 
+///// FOOTER /////
+
+// overrides Hyrax styles that prevent footer from sitting at the bottom of the page
+body.neutral_repository {
+  margin-bottom: 0;
+}
+
+// overrides Hyrax styles that prevent footer from sitting at the bottom of the page
+.default_home, .cultural_repository, .institutional_repository {
+  footer {
+    position: absolute;
+    bottom: 0;
+  }
+}
+
 footer.navbar {
-  border-radius: 0;
+  display: block;
   font-size: 0.9em;
-  min-height: 40px;
-  vertical-align: middle;
 
-  p {
-    margin: 10px;
-    text-align: center;
+  .navbar-text {
+    display: flex;
+  }
 
-    strong {
-      font-weight: 500;
-    }
+  strong {
+    font-weight: 500;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  @media (max-width: 992px) {
+    justify-content: center;
   }
 }
 
@@ -423,9 +443,9 @@ a.btn.btn-secondary.restore-default-color.with-color-hint {
   }
 }
 
-// make sure that URLs don't go outside the container on all work-show pages
+// make sure that URLs and titles don't go outside the container on all work-show pages
 .work-show ul.tabular li {
-  word-wrap: break-word;
+  overflow-wrap: anywhere;
 }
 
 // removes the extra whitespace extending past the sides of the page
@@ -515,6 +535,14 @@ body.public-facing {
   width: unset;
 }
 
+.featured-collection-section {
+  border: 1px solid #ccc;
+}
+
+.new_featured_collection_list {
+  width: 100%;
+}
+
 .mb-30 {
   margin-bottom: 30px;
 }
@@ -567,8 +595,9 @@ span.constraint-value p, .facet-values p {
 }
 
 #file_download {
-  margin: 10px 0 10px 0;
-}
+  // margin: 10px 0 10px 0; // commented out because button does not align with row
+    word-wrap: break-word; // adding overflow-wrap elsewhere made this necessary
+  }
 
 // collection show page styles
 
@@ -707,9 +736,9 @@ tr[data-feature="use-iiif-print"] {
 
 // Featured collection
 #featured_collections {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  h3 {
+    font-size: inherit;
+  }
 }
 
 // slideshow heading

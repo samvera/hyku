@@ -1,5 +1,5 @@
 <div class="theme-container">
-  <div class="col-md-8 mb-30">
+  <div class="col-12 col-lg-8 mb-30 pr-4">
     <!-- Adding a mobile style for the homepage text content block, hidden on md and lg -->
     <% if display_content_block? @home_text %>
       <div class="d-block d-md-none">
@@ -15,7 +15,7 @@
 
     <% if @presenter.display_featured_works? %>
       <div class="row">
-        <div class="col-12">
+        <div class="col-12 featured-works-section">
           <%= render 'themes/neutral_repository/hyrax/homepage/featured_works' %>
         </div>
       </div>
@@ -23,13 +23,13 @@
 
     <div class="row mb-30 mt-4">
       <div class="col-12 featured-collection-section">
-        <h3>Collections</h3>
+        <h2 class='mt-4'>Collections</h2>
         <%= render 'featured_collection_section' %>
       </div>
     </div>
   </div>
 
-  <div class="col-md-4">
+  <div class="col-lg-4">
     <!-- Adding a desktop style for the homepage text content block, hidden on sm and xs -->
     <% if display_content_block? @home_text %>
       <div class="d-none d-md-block">

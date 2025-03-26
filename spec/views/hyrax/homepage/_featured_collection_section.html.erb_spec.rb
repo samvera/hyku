@@ -26,7 +26,7 @@ RSpec.describe "hyrax/homepage/_featured_collection_section.html.erb", type: :vi
 
     before do
       allow(view).to receive(:can?).with(:update, FeaturedCollection).and_return(false)
-      allow(view).to receive(:render_thumbnail_tag).with(presenter, any_args).and_return("thumbnail")
+      allow(view).to receive(:render_thumbnail_tag).with(presenter, any_args).and_return('thumbnail')
       allow(list).to receive(:empty?).and_return(false)
       allow(list).to receive(:featured_collections).and_return([featured_collection])
       allow(featured_collection).to receive(:presenter).and_return(presenter)

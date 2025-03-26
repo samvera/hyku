@@ -30,8 +30,6 @@
                 <br/>
                   <%= render('download_pdf', presenter: @presenter, file_set_id: @presenter.file_set_presenters.first.id) if @presenter.show_pdf_download_button? %>
                   <%= render 'citations', presenter: @presenter %>
-                  <!-- analytics_button is disabled until future fix -->
-                  <%#= render 'analytics_button', presenter: @presenter %>
                 <br/>
               </div>
             <% end %>
@@ -54,8 +52,6 @@
                   <br/>
                     <%= render('download_pdf', presenter: @presenter, file_set_id: @presenter.file_set_presenters.first.id) if @presenter.show_pdf_download_button? %>
                     <%= render 'citations', presenter: @presenter %>
-                    <!-- analytics_button is disabled until future fix -->
-                    <%#= render 'analytics_button', presenter: @presenter %>
                   <br/>
                 </div>
               <% end %>

@@ -174,8 +174,7 @@ class CatalogController < ApplicationController
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
-    config.add_show_field 'title_tesim'
-    config.add_show_field 'description_tesim'
+    config.add_show_field 'description_tesim', helper_method: :truncate_and_iconify_auto_link
     config.add_show_field 'keyword_tesim'
     config.add_show_field 'subject_tesim'
     config.add_show_field 'creator_tesim'
@@ -186,15 +185,15 @@ class CatalogController < ApplicationController
     config.add_show_field 'date_uploaded_tesim'
     config.add_show_field 'date_modified_tesim'
     config.add_show_field 'date_created_tesim'
-    config.add_show_field 'rights_statement_tesim'
-    config.add_show_field 'license_tesim'
+    config.add_show_field 'rights_statement_tesim', helper_method: :rights_statement_links
+    config.add_show_field 'license_tesim', helper_method: :license_links
     config.add_show_field 'resource_type_tesim', label: "Resource Type"
     config.add_show_field 'format_tesim'
     config.add_show_field 'identifier_tesim'
     config.add_show_field 'extent_tesim'
     config.add_show_field 'admin_note_tesim', label: "Administrative Notes"
     config.add_show_field "alternative_title_tesim", label: "Alternative title"
-    config.add_show_field "related_url_tesim"
+    config.add_show_field "related_url_tesim", helper_method: :truncate_and_iconify_auto_link
     config.add_show_field 'learning_resource_type_tesim'
     config.add_show_field 'education_level_tesim'
     config.add_show_field 'audience_tesim'
@@ -235,7 +234,7 @@ class CatalogController < ApplicationController
       all_names = config.show_fields.values.map(&:field).join(" ")
       title_name = 'title_tesim'
       field.solr_parameters = {
-        qf: "#{all_names} file_format_tesim all_text_tsimv all_text_tsimv",
+        qf: "#{all_names} #{title_name} file_format_tesim all_text_tsimv all_text_tsimv",
         pf: title_name.to_s
       }
     end

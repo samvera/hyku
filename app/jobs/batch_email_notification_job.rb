@@ -6,10 +6,15 @@ class BatchEmailNotificationJob < ApplicationJob
     users = User.where.not(batch_email_frequency: "never")
     users.each do |user|
       next unless send_email_today?(user)
-      # Find all undelivered messages within the frequency range of a user and any emails that haven't been sent
+      # Find all unread and undelivered messages within the frequency range of a user
       undelivered_messages =
         Mailboxer::Message.joins(:receipts)
-                          .where(mailboxer_receipts: { receiver_id: user.id, receiver_type: 'User', is_delivered: false })
+                          .where(mailboxer_receipts: {
+                                   receiver_id: user.id,
+                                   receiver_type: 'User',
+                                   is_delivered: false,
+                                   is_read: false
+                                 })
                           .where('mailboxer_notifications.created_at >= ?', frequency_date(user.batch_email_frequency))
                           .select('mailboxer_notifications.*')
                           .distinct
@@ -18,10 +23,10 @@ class BatchEmailNotificationJob < ApplicationJob
       next if undelivered_messages.blank?
       send_email(user, undelivered_messages, current_account)
 
-      # Mark the as read
+      # Mark the messages as delivered and read
       undelivered_messages.each do |message|
         message.receipts.each do |receipt|
-          receipt.update(is_delivered: true)
+          receipt.update(is_delivered: true, is_read: true)
         end
       end
 

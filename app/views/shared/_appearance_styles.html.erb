@@ -8,16 +8,19 @@
   @import url(//<%= appearance.font_import_headline_url %>);
 <% end %>
 
-body.public-facing { font-family: <%= appearance.font_body_family %>; }
+body.public-facing { font-family: <%= appearance.font_body_family %> !important; }
 body.public-facing h1,
 body.public-facing h2,
 body.public-facing h3,
 body.public-facing h4,
 body.public-facing h5,
-body.public-facing h6 { font-family: <%= appearance.font_headline_family %>; }
+body.public-facing h6 { font-family: <%= appearance.font_headline_family %> !important; }
 
 /* LINK COLORS */
-body.public-facing a { color: <%= appearance.link_color %>; }
+body.public-facing a,
+body.public-facing .dropdown-menu a {
+  color: <%= appearance.link_color %>;
+}
 body.public-facing a:hover,
 body.public-facing a:focus { color: <%= appearance.link_hover_color %>; }
 
@@ -29,7 +32,7 @@ body.public-facing footer.navbar {
 body.public-facing footer.navbar .navbar-link { color: <%= appearance.footer_link_color %>; }
 body.public-facing footer.navbar .navbar-link:hover { color: <%= appearance.footer_link_hover_color %>; }
 body.public-facing footer.navbar .navbar-text,
-body.public-facing .navbar.navbar-expand-lg .navbar-nav a {
+body.public-facing .navbar-dark .navbar-nav .nav-link {
   color: <%= appearance.header_and_footer_text_color %> !important;
 }
 body.public-facing .navbar.navbar-expand-lg { border-color: <%= appearance.header_background_border_color %> !important; }
@@ -70,7 +73,7 @@ body.public-facing .nav-tabs > li.nav-item > a:focus {
 
 /* PRIMARY BUTTON STYLES */
 body.public-facing .btn-primary {
-  background-color: <%= appearance.primary_button_hover_color %> !important;
+  background-color: <%= appearance.primary_button_background_color %> !important;
   border-color: <%= appearance.primary_button_border_color %> !important;
   color: <%= appearance.primary_button_text_color %> !important;
 }
@@ -201,6 +204,9 @@ body.public-facing .card > .card-header,
 body.public-facing .card-header > .btn.w-100 {
   color: <%= appearance.facet_panel_text_color %>;
   background-color: <%= appearance.facet_panel_background_color %> !important;
+}
+body.public-facing .card {
+  border-color: <%= appearance.facet_panel_border_color  %> !important;
 }
 body.public-facing .card-body > .facet-limit-active {
   color: <%= appearance.facet_panel_text_color %> !important;

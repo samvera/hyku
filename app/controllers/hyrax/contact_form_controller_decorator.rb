@@ -47,12 +47,17 @@ module Hyrax
 
     # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     def create
-      # not spam and a valid form
       # Override to include captcha
-      @captcha.values[:category] = params[:contact_form][:category]
-      @captcha.values[:contact_method] = params[:contact_form][:contact_method]
-      @captcha.values[:subject] = params[:contact_form][:subject]
-      @contact_form = model_class.new(@captcha.values)
+      # Negative captcha handles text inputs (name, email, subject, message) to prevent spam
+      # Select/dropdown fields (category, contact_method) are processed normally since they:
+      # 1. Have predefined values making them less vulnerable to spam
+      # 2. Don't work well with negative captcha's encryption
+      form_values = @captcha.values.merge(
+        category: params.dig(:contact_form, :category),
+        contact_method: params.dig(:contact_form, :contact_method)
+      )
+
+      @contact_form = model_class.new(form_values)
       if @contact_form.valid? && @captcha.valid?
         ContactMailer.contact(@contact_form).deliver_now
         flash.now[:notice] = 'Thank you for your message!'
@@ -89,7 +94,8 @@ module Hyrax
         # A secret key entered in environment.rb. 'rake secret' will give you a good one.
         secret: ENV.fetch('NEGATIVE_CAPTCHA_SECRET', 'default-value-change-me'),
         spinner: request.remote_ip,
-        # Whatever fields are in your form
+        # Only protect text input fields with negative captcha
+        # Select/dropdown fields are handled separately in the create action
         fields: %i[name email subject message],
         # If you wish to override the default CSS styles (position: absolute; left: -2000px;)
         # used to position the fields off-screen

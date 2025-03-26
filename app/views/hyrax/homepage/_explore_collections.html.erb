@@ -2,21 +2,21 @@
 
 <% featured_collection = f.object.presenter %>
 <tr>
-  <td>
+  <td class="p-2">
     <div class="d-flex">
       <div>
         <%= link_to [hyrax, featured_collection] do %>
           <%= render_thumbnail_tag(featured_collection,
-                                   { class: 'img-fluid d-none d-sm-block file_listing_thumbnail', alt: "#{featured_collection.title_or_label} #{ t('hyrax.homepage.admin_sets.thumbnail')}" },
+                                   { class: 'img-fluid d-none d-sm-block file_listing_thumbnail mt-0', alt: "#{featured_collection.title_or_label} #{ t('hyrax.homepage.admin_sets.thumbnail')}" },
                                    {suppress_link: true}
           ) %>
         <% end %>
       </div>
-      <div>
+      <h3>
         <%= link_to [hyrax, featured_collection] do %>
           <%= markdown(featured_collection.title.first) %>
         <% end %>
-      </div>
+      </h3>
     </div>
   </td>
 </tr>

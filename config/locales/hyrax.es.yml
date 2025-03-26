@@ -6,8 +6,10 @@ es:
     active_consent_to_agreement: he leído y estoy de acuerdo con
     activefedora:
       models:
+        etd: Fecha de finalización estimada
         generic_work: Trabajo
         image: Imagen
+        oer: REA
     admin:
       admin_sets:
         delete:
@@ -490,11 +492,15 @@ es:
         announcement_instructions: El texto del anuncio aparece en la página de inicio. Es para que los mensajes importantes u oportunos sean visibles de manera prominente para todos los visitantes de la página de inicio. Sería apropiado ingresar un anuncio aquí, por ejemplo, para notificar a los usuarios sobre una próxima interrupción de mantenimiento planificada del sistema.
         featured_researcher_instructions: Investigador destacado es un espacio para ingresar información y en la página de inicio reservada para resaltar usuarios del repositorio.
         home_text_instructions: El texto de la página de inicio se refiere a la mensajería personalizada que se muestra en la página de inicio, ya sea en el bloque de héroe o en otra sección de la página de inicio. Este texto aparece al seleccionar un tema que requiere o permite el texto de la página de inicio. Recomendamos no más de 3 frases en esta área.
+        homepage_about_section_content_instructions: Este contenido no lo utiliza ninguno de los temas predeterminados de Hyku. Puede utilizarse para temas personalizados.
+        homepage_about_section_heading_instructions: Este encabezado no lo utiliza ninguno de los temas predeterminados de Hyku. Puede utilizarse para temas personalizados.
         marketing_instructions: El texto del banner se refiere al texto que se muestra sobre la imagen del banner en la página de inicio. Recomendamos no más de aproximadamente 30 caracteres o espacios en esta área de texto.
       tabs:
         announcement_text: Texto de anuncio
         featured_researcher: Investigador destacado
         home_text: Texto de la página de inicio
+        homepage_about_section_content: Acerca del contenido de la sección
+        homepage_about_section_heading: Acerca del encabezado de sección
         marketing_text: Texto de marketing
       updated: Bloques de contenido actualizados.
     controls:
@@ -938,6 +944,7 @@ es:
         agreement_page: Acuerdo de depósito
         help_page: Página de ayuda
         terms_page: Términos de Uso
+      update: Guardar cambios
       updated: Páginas actualizadas.
     passive_consent_to_agreement: Al guardar este trabajo, acepto el
     product_name: Hyku
@@ -1173,6 +1180,7 @@ es:
       defaults:
         admin_set_id: Conjunto administrativo
         based_near: Ubicación
+        collection_banner_text_color: Color del texto del banner de colección
         contributor: Contribuyente
         creator: Creador
         date_created: fecha de creacion
@@ -1200,6 +1208,7 @@ es:
         navbar_link_text_color: Color del texto del enlace de la barra de navegación
         navbar_link_text_hover_color: Color de desplazamiento del texto del vínculo de la barra de navegación
         primary_button_hover_color: Color de desplazamiento del botón principal
+        primary_button_text_color: Color del texto del botón principal
         publisher: Editor
         related_url: URL relacionada
         rights_statement: Declaración de derechos
@@ -1216,3 +1225,5 @@ es:
       defaults:
         find_child_work: Busca trabajo ...
         member_of_collection_ids: Seleccione una colección ...
+    required:
+      html: <span class="badge badge-info required-tag">requerido</span>

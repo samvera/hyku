@@ -28,17 +28,6 @@ en:
           human_readable_type_sim: "Type"
           member_of_collections_sim: "Collections"
           resource_type_sim: "Resource Type"
-        index:
-          audience_tesim: "Audience"
-          date_tesim: "Date"
-          description_tesim: "Description"
-          depositor_tesim: "Owner"
-          discipline_tesim: "Discipline"
-          education_level_tesim: "Education level"
-          learning_resource_type_tesim: "Learning resource type"
-          license: "License"
-          resource_type_tesim: "Type"
-          rights_statement_tesim: "Rights statement"
         show:
           additional_information: "Additional rights information"
   devise:
@@ -236,10 +225,8 @@ en:
               hint: 'Applies to the Home, About, Contact and Help buttons on those specific pages only (at 15% opacity).'
             link_color:
               hint: 'Affects links on the home and work pages including: breadcrumbs, tabs, titles and terms of service.'
-            primary_button_hover_color:
-              hint: 'Share, search and collection interaction (edit, feature, etc.) buttons. The border of these buttons will also be this color.'
-            primary_button_text_color:
-              hint: 'Text color for share, search and collection interaction buttons'
+            primary_button_background_color:
+              hint: 'Background color for the share, search and collection interaction buttons.'
             default_button_background_color:
               hint: 'Work interaction (edit, feature, etc.) buttons; work views on collection page and search filter button.'
             facet_panel_background_color:

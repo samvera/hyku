@@ -15,21 +15,46 @@ fr:
           publisher_sim: Éditeur
           subject_sim: Assujettir
         index:
+          accessibility_feature_tesim: Fonctionnalité d'accessibilité
+          accessibility_hazard_tesim: Risque d'accessibilité
+          accessibility_summary_tesim: Résumé sur l'accessibilité
+          additional_information_tesim: Informations Complémentaires
+          admin_note_tesim: Note de l'administrateur
+          alternative_title_tesim: Titre alternatif
+          audience_tesim: Public
           based_near_label_tesim: Emplacement
+          chronology_note_tesim: Note sur la chronologie
+          contributing_library_tesim: Bibliothèque contributive
           contributor_tesim: Donateur
           creator_tesim: Créateur
           date_created_tesim: date créée
           date_modified_dtsi: Date modifiée
+          date_tesim: Date
           date_uploaded_dtsi: Date de téléchargement
           description_tesim: La description
+          discipline_tesim: Discipline
+          education_level_tesim: Niveau d'éducation
           extent_tesim: Ampleur
           file_format_tesim: Format de fichier
+          format_tesim: Format
           identifier_tesim: Identificateur
           keyword_tesim: Mot-clé
           language_tesim: La langue
+          learning_resource_type_tesim: Type de ressource d'apprentissage
+          library_catalog_identifier_tesim: Identifiant du catalogue de la bibliothèque
+          license_tesim: Licence
+          newer_version_id_tesim: ID de la nouvelle version
+          oer_size_tesim: Taille de l'Oer
+          previous_version_id_tesim: ID de la version précédente
           publisher_tesim: Éditeur
+          related_item_id_tesim: ID de l'élément associé
+          related_url_tesim: URL associée
+          resource_type_tesim: Type de ressource
+          rights_holder_tesim: Titulaire des droits
+          rights_statement_tesim: Déclaration des droits
           rights_tesim: Droits
           subject_tesim: Assujettir
+          table_of_contents_tesim: Table des matières
         show:
           based_near_label_tesim: Emplacement
           contributor_tesim: Donateur

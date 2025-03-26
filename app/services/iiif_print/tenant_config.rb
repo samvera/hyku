@@ -107,10 +107,10 @@ module IiifPrint
 
       ##
       # @api public
-      def self.call(*args)
+      def self.call(path, **kwargs)
         return [] unless TenantConfig.use_iiif_print?
 
-        iiif_print_splitter.call(*args)
+        iiif_print_splitter.call(path, **kwargs)
       end
     end
 

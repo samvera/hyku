@@ -212,7 +212,7 @@ module AccountSettings
   end
 
   def configure_hyrax_analytics_settings(config)
-    if analytics_credentials_present?
+    if ActiveModel::Type::Boolean.new.cast(analytics_reporting) && analytics_credentials_present?
       config.analytics = true
       config.analytics_reporting = true
     else

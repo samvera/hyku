@@ -2,7 +2,6 @@
 
 - [Docker (Recommended)](#docker)
 - [Locally without Docker](#locally-without-docker)
-- [Vagrant](#vagrant)
 - [Kubernetes](#kubernetes)
 - [AWS](#aws)
 
@@ -29,20 +28,21 @@ newgrp docker
 
 2) **Set up DNS:**
 
-    Hyku makes heavy use of domain names to determine which tenant to serve. On MacOS/Linux, it is recommended to use [Dory](https://github.com/FreedomBen/dory) to handle the necessary DNS changes.
+    Hyku makes heavy use of domain names to determine which tenant to serve. On MacOS/Linux, it is recommended to use [Stack Car](https://github.com/notch8/stack_car) to handle the necessary SSL certs and proxy setup.
 
-    #### Dory Installation
+    #### Stack Car Installation
 
     ```bash
-    gem install dory
-    dory up
+    gem install stack_car
+    sc proxy cert # Only need this once per stack_car version
+    sc proxy up
     ```
 
-    #### Running Without Dory
+    #### Running Without Proxy
 
-    By copying `docker-compose.override-nodory.yml` to `docker-compose.override.yml`, you can run Hyku without Dory, but you will have to set up your own DNS entries.
+    By copying `docker-compose.override-noproxy.yml` to `docker-compose.override.yml`, you can run Hyku without Dory, but you will have to set up your own DNS entries.
     ```bash
-    cp docker-compose.override-nodory.yml docker-compose.override.yml
+    cp docker-compose.override-noproxy.yml docker-compose.override.yml
     ```
 
 3) **Build the Docker images:**
@@ -62,9 +62,9 @@ Hyku configuration is primarily found in the `.env` file, which will get you run
 docker compose up web
 ```
 
-It will take some time for the application to start up, and a bit longer if it's the first startup. When you see `Passenger core running in multi-application mode.` or `Listening on tcp://0.0.0.0:3000` in the logs, the application is ready.
+It will take some time for the application to start up, and a bit longer if it's the first startup. When you see `Listening on tcp://0.0.0.0:3000` in the logs, the application is ready.
 
-If you used Dory, the application will be available from the browser at `http://hyku.test`.
+If you used `sc proxy`, the application will be available from the browser at `https://admin-${APP_NAME}.localhost.direct`. APP_NAME defaults to `hyku`. You can also see the other services as listed in the docker-compose.yml file.
 
 **You are now ready to start using Hyku! Please refer to  [Using Hyku](./using-hyku.md) for instructions on getting your first tenant set up.**
 
@@ -97,14 +97,10 @@ fcrepo_wrapper
 postgres -D ./db/postgres
 redis-server /usr/local/etc/redis.conf
 bin/setup
-DISABLE_REDIS_CLUSTER=true bundle exec sidekiq
-DISABLE_REDIS_CLUSTER=true bundle exec rails server -b 0.0.0.0
+DISABLE_REDIS_CLUSTER=true ./bin/worker
+DISABLE_REDIS_CLUSTER=true ./bin/web
 ```
 
-
-## Vagrant
-
-The [samvera-vagrant project](https://github.com/samvera-labs/samvera-vagrant) provides another simple way to get started "kicking the tires" of Hyku (and [Hyrax](http://hyr.ax/)), making it easy and quick to spin up Hyku. (Note that this is not for production or production-like installations.) It requires [VirtualBox](https://www.virtualbox.org/) and [Vagrant](https://www.vagrantup.com/).
 
 ## Kubernetes
 
@@ -119,12 +115,6 @@ https://github.com/hybox/aws
 # Troubleshooting
 
 ## Troubleshooting on Windows
-1. Dory is running but you're unable to access hyku.test:
-    - Run this in the terminal: `ip addr | grep eth0 | grep inet`
-    - Copy the first IP address from the result in your terminal
-    - Use the steps under "Change the File Manually" at [this link](https://www.hostinger.co.uk/tutorials/how-to-edit-hosts-file#:~:text=Change%20the%20File%20Manually,-Press%20Start%20and&text=Once%20in%20Notepad%2C%20go%20to,space%2C%20then%20your%20domain%20name) to open your host file
-    - At the bottom of the host file add this line: `<your-ip-address> hyku.test`
-    - Save (_You may or may not need to restart your server_)
-2. When creating a work and adding a file, you get an internal server error due to ownership/permissions issues of the tmp directory:
+1. When creating a work and adding a file, you get an internal server error due to ownership/permissions issues of the tmp directory:
     - Gain root access to the container (in a slightly hacky way, check_volumes container runs from root): `docker compose run check_volumes bash`
     - Change ownership to app: `chown -R app:app /app/samvera/hyrax-webapp`

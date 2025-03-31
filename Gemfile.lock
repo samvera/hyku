@@ -20,10 +20,10 @@ GIT
 
 GIT
   remote: https://github.com/notch8/iiif_print.git
-  revision: 63ef540419fcb3aabc73d61c0010638b173c11aa
-  branch: i84-support-dynamic-metadata
+  revision: 533895d27711ff1ec43237222a594af139c403c2
+  branch: main
   specs:
-    iiif_print (3.0.1)
+    iiif_print (3.0.4)
       blacklight_iiif_search (>= 1.0, < 3.0)
       derivative-rodeo (~> 0.5)
       hyrax (>= 2.5, < 6)
@@ -175,7 +175,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: 600f8f4ac16ae964abbbcefdae8437185dace0a8
+  revision: 8e9629b23809e2ad3a5fcbfdb6f1d1eb140127f8
   branch: flexible_double_combo
   specs:
     hyrax (5.0.4)
@@ -1483,6 +1483,7 @@ GEM
 PLATFORMS
   aarch64-linux
   arm64-darwin-23
+  ruby
   x86_64-linux
 
 DEPENDENCIES

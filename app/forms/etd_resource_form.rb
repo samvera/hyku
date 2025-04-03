@@ -14,9 +14,7 @@ class EtdResourceForm < Hyrax::Forms::ResourceForm(EtdResource)
   include Hyrax::FormFields(:with_pdf_viewer) unless Hyrax.config.flexible?
   include Hyrax::FormFields(:with_video_embed) unless Hyrax.config.flexible?
   include VideoEmbedBehavior::Validation
-  # this duplicates Hyrax::BasicMetadataFormFieldsBehavior behavior which previously
-  # came in dynamically via lib/hyrax/form_fields.rb
-  include BasedNearFormFieldsBehavior
+  include Hyrax::BasedNearFieldBehavior unless Hyrax.config.flexible?
   # Define custom form fields using the Valkyrie::ChangeSet interface
   #
   # property :my_custom_form_field

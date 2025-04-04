@@ -39,11 +39,11 @@ extraVolumeMounts: &volMounts
 ingress:
   enabled: true
   hosts:
-    - host: hyku-demo.$BASE_URL
+    - host: hykudemo.org
       paths:
         - path: /
           pathType: ImplementationSpecific
-    - host: "*.hyku-demo.$BASE_URL"
+    - host: "*.hykudemo.org"
       paths:
         - path: /
           pathType: ImplementationSpecific
@@ -55,8 +55,8 @@ ingress:
     }
   tls:
     - hosts:
-        - hyku-demo.$BASE_URL
-        - "*.hyku-demo.$BASE_URL"
+        - hykudemo.org
+        - "*.hykudemo.org"
       secretName: hykudemo-tls
 
 extraEnvVars: &envVars
@@ -141,7 +141,7 @@ extraEnvVars: &envVars
   - name: HYRAX_VALKYRIE
     value: "true"
   - name: HYKU_ADMIN_HOST
-    value: hyku-demo.$BASE_URL
+    value: hykudemo.org
   - name: HYKU_ADMIN_ONLY_TENANT_CREATION
     value: "true"
   - name: HYKU_BLOCK_VALKYRIE_REDIRECT
@@ -149,11 +149,13 @@ extraEnvVars: &envVars
   - name: HYKU_ALLOW_SIGNUP
     value: "false"
   - name: HYKU_DEFAULT_HOST
-    value: "%{tenant}.hyku-demo.$BASE_URL"
+    value: "%{tenant}.hykudemo.org"
+  - name: HYKU_FOOTER_EXTRA
+    value: "Sponsored by <a href=;https://notch8.com'>Notch8</a>"
   - name: HYKU_MULTITENANT
     value: "true"
   - name: HYKU_ROOT_HOST
-    value: hyku-demo.$BASE_URL
+    value: hykudemo.org
   - name: HYKU_SHOW_BACKTRACE
     value: "true"
   - name: HYKU_USER_DEFAULT_PASSWORD

@@ -138,7 +138,7 @@ services:
   # Used exclusively for building and caching the base image to reduce build times
   base:
     <<: *app
-    image: ghcr.io/samvera/hyku/base:${TAG:-latest}
+    image: ghcr.io/samvera/hyku/base:${BASE_TAG:-latest}
     build:
       context: .
       target: hyku-base

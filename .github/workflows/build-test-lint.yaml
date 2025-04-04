@@ -13,9 +13,8 @@ on:
         required: false
         description: "Pause the selected step to debug using tmate"
         type: choice
-        default: ""
+        default: "build"
         options:
-          - ""
           - build
           - test
           - lint
@@ -109,7 +108,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Create multiarch manifests
         run: |
-          for component in solr web worker; do
+          for component in base solr web worker; do
             docker buildx imagetools create -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/$component:${{ env.TAG }} \
               ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/$component:${{ env.TAG }}-amd64 \
               ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/$component:${{ env.TAG }}-arm64

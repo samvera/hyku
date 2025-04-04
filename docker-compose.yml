@@ -138,7 +138,7 @@ services:
   # Used exclusively for building and caching the base image to reduce build times
   base:
     <<: *app
-    image: ghcr.io/samvera/hyku/base:${BASE_TAG:-latest}
+    image: ghcr.io/samvera/hyku/base:${TAG:-latest}
     build:
       context: .
       target: hyku-base
@@ -154,7 +154,10 @@ services:
     # command: sleep infinity
     environment:
       - VIRTUAL_PORT=3000
-      - VIRTUAL_HOST=.hyku.test
+      - VIRTUAL_HOST=.localhost
+      - HYKU_ADMIN_HOST=localhost
+      - HYKU_DEFAULT_HOST=%{tenant}.localhost
+      - HYKU_ROOT_HOST=localhost
     depends_on:
       db:
         condition: service_started
@@ -176,10 +179,10 @@ services:
         condition: service_started
       initialize_app:
         condition: service_completed_successfully
-    # ports:
-    #   - 3000:3000
-    expose:
-      - 3000
+    ports:
+      - 3000:3000
+    # expose:
+    #   - 3000
 
   worker:
     <<: *app

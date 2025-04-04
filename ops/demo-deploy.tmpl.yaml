@@ -151,7 +151,7 @@ extraEnvVars: &envVars
   - name: HYKU_DEFAULT_HOST
     value: "%{tenant}.hykudemo.org"
   - name: HYKU_FOOTER_EXTRA
-    value: "Sponsored by <a href=;https://notch8.com'>Notch8</a>"
+    value: "Sponsored by <a href='https://notch8.com' class='navbar-link' target='_blank'>Notch8</a>"
   - name: HYKU_MULTITENANT
     value: "true"
   - name: HYKU_ROOT_HOST

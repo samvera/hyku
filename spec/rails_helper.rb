@@ -19,7 +19,7 @@ require File.expand_path('../config/environment', __dir__)
 require 'spec_helper'
 
 # We're going to need this for our factories
-require Hyrax::Engine.root.join("spec/support/simple_work").to_s
+require Hyrax::Engine.root.join("lib/hyrax/specs/shared_specs/simple_work.rb").to_s
 
 # I want to set this so that our factory finder will have the right values.
 Hyrax.config.admin_set_model = "AdminSetResource"
@@ -120,8 +120,8 @@ NegativeCaptcha.test_mode = true
 
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = "#{::Rails.root}/spec/fixtures"
-  config.file_fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.fixture_path = Rails.root.join('spec', 'fixtures', 'fixtures').to_s
+  config.file_fixture_path = Rails.root.join('spec', 'fixtures', 'fixtures').to_s
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false

@@ -154,10 +154,7 @@ services:
     # command: sleep infinity
     environment:
       - VIRTUAL_PORT=3000
-      - VIRTUAL_HOST=.localhost
-      - HYKU_ADMIN_HOST=localhost
-      - HYKU_DEFAULT_HOST=%{tenant}.localhost
-      - HYKU_ROOT_HOST=localhost
+      - VIRTUAL_HOST=.hyku.test
     depends_on:
       db:
         condition: service_started
@@ -179,10 +176,10 @@ services:
         condition: service_started
       initialize_app:
         condition: service_completed_successfully
-    ports:
-      - 3000:3000
-    # expose:
-    #   - 3000
+    # ports:
+    #   - 3000:3000
+    expose:
+      - 3000
 
   worker:
     <<: *app

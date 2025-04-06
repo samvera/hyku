@@ -28,7 +28,8 @@ newgrp docker
 
 2) **Set up DNS:**
 
-    Hyku makes heavy use of domain names to determine which tenant to serve. On MacOS/Linux, it is recommended to use [Stack Car](https://github.com/notch8/stack_car) to handle the necessary SSL certs and proxy setup.
+    Hyku makes heavy use of domain names to determine which tenant to serve. On MacOS/Linux, it is recommended to use [Stack Car](https://github.com/notch8/stack_car) to handle the necessary SSL certs and proxy setup. When you install or update stack_car you may need to add the localhost.direct cert to your keychain. In order to do this, find the password [here](https://github.com/Upinel/localhost.direct?tab=readme-ov-file#a-non-public-ca-certificate-if-you-have-admin-right-on-your-development-environment-you-can-use-the-following-10-years-long-pre-generated-self-signed-certificate) before running `sc proxy cert`.
+
 
     #### Stack Car Installation
 

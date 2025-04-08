@@ -11,5 +11,6 @@ class GenericWorkResourceForm < Hyrax::Forms::ResourceForm(GenericWorkResource)
   include Hyrax::FormFields(:generic_work_resource) unless Hyrax.config.flexible?
   include Hyrax::FormFields(:with_pdf_viewer) unless Hyrax.config.flexible?
   include Hyrax::FormFields(:with_video_embed) unless Hyrax.config.flexible?
+  include Hyrax::BasedNearFieldBehavior unless Hyrax.config.flexible?
   include VideoEmbedBehavior::Validation
 end

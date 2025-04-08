@@ -3,7 +3,8 @@
 <%# hyrax-doi doesn't work post hyrax v3.0.0 %>
 <% if Hyrax.config.flexible? %>
   <% view_options_for(presenter).each do |field, options| %>
-    <%= presenter.attribute_to_html(conform_field(field, options), conform_options(field, options)) %>
+    <% value = presenter.attribute(conform_field(field, options)) %>
+    <%= presenter.attribute_to_html(conform_field(field, options), conform_options(field, options)) if value.present? && value.any?(&:present?) %>
   <% end %>
 <% else %>
   <%# Copied from hyrax-doi v0.2.0 %>

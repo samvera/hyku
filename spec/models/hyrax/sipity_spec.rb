@@ -20,15 +20,12 @@ RSpec.describe Sipity do
     let(:work_resource) { Hyrax.query_service.find_by(id: work.id) }
     let(:migrated_entity) { Sipity::Entity.find_by(id: saved_entity.id) }
 
-    before do
-      saved_entity
-    end
-
     context 'on a generic work with lazy migration: true' do
       let(:work) { create(:generic_work, user: user) }
 
       before do
         allow(Hyrax.config).to receive(:valkyrie_transition?).and_return(true)
+        saved_entity
       end
 
       it 'will find the entity' do
@@ -41,6 +38,7 @@ RSpec.describe Sipity do
 
       before do
         allow(Hyrax.config).to receive(:valkyrie_transition?).and_return(false)
+        saved_entity
       end
 
       it 'will find the entity' do
@@ -73,6 +71,8 @@ RSpec.describe Sipity do
 
     context 'with a native Valkyrie work' do
       let(:work) { FactoryBot.valkyrie_create(:generic_work_resource) }
+
+      before { saved_entity }
 
       it 'will find the entity' do
         expect(subject).to eq(saved_entity)

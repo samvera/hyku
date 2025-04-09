@@ -45,8 +45,9 @@ module Sipity
                  # rubocop:enable Lint/RedundantStringCoercion
                  Entity(item)
                else
-                 Hyrax.logger.debug("Entity() got a SolrDocument, retrying on #{input.to_model}")
-                 Entity(input.to_model)
+                 model = input.to_model
+                 Hyrax.logger.debug("Entity() got a SolrDocument, retrying on #{Hyrax::GlobalID(model)}")
+                 Entity(Hyrax::GlobalID(model))
                end
              when Draper::Decorator
                Hyrax.logger.debug("Entity() got a Decorator, retrying on #{input.model}")

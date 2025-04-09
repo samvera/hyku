@@ -3,14 +3,15 @@
 FROM ruby:3.2-bookworm AS hyku-base
 USER root
 
-RUN apt update && \
+RUN apt-get update && \
     curl -sL https://deb.nodesource.com/setup_20.x | bash - && \
-    apt install -y --no-install-recommends \
+    apt-get install -y --no-install-recommends \
     build-essential \
     curl \
     exiftool \
     ffmpeg \
     git \
+    ghostscript \
     imagemagick \
     less \
     libgsf-1-dev \

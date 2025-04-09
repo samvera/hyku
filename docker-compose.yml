@@ -18,8 +18,6 @@ x-app: &app
     - assets:/app/samvera/hyrax-webapp/public/assets:cached
     - cache:/app/samvera/hyrax-webapp/tmp/cache:cached
     - .:/app/samvera/hyrax-webapp
-  networks:
-    internal:
 
 volumes:
   assets:
@@ -34,7 +32,8 @@ volumes:
   zoo:
 
 networks:
-  internal:
+  default:
+    name: stackcar
 
 services:
   zoo:
@@ -46,8 +45,6 @@ services:
     volumes:
       - zoo:/data
       - zk:/datalog
-    networks:
-      internal:
     healthcheck:
       test:
         [
@@ -77,6 +74,12 @@ services:
       - ZK_HOST=zoo:2181
       - VIRTUAL_PORT=8983
       - VIRTUAL_HOST=solr.hyku.test
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.solr-${APP_NAME}.tls=true"
+      - "traefik.http.routers.solr-${APP_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.solr-${APP_NAME}.rule=Host(`solr-${APP_NAME}.localhost.direct`)"
+      - "traefik.http.services.solr-${APP_NAME}.loadbalancer.server.port=8983"
     user: root
     command: bash -c "
       chown -R 8983:8983 /var/solr
@@ -86,8 +89,6 @@ services:
       - 8983
     volumes:
       - solr:/var/solr
-    networks:
-      internal:
     healthcheck:
       test: curl -sf http://$$SOLR_ADMIN_USER:$$SOLR_ADMIN_PASSWORD@solr:8983/solr/admin/cores?action=STATUS || exit 1
       start_period: 3s
@@ -102,8 +103,12 @@ services:
     image: ghcr.io/samvera/fitsservlet:1.6.0
     ports:
       - 8080
-    networks:
-      internal:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.fits-${APP_NAME}.tls=true"
+      - "traefik.http.routers.fits-${APP_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.fits-${APP_NAME}.rule=Host(`fits-${APP_NAME}.localhost.direct`)"
+      - "traefik.http.services.fits-${APP_NAME}.loadbalancer.server.port=8080"
 
   fcrepo:
     image: ghcr.io/samvera/fcrepo4:4.7.5
@@ -115,15 +120,21 @@ services:
       - VIRTUAL_PORT=8080
       - VIRTUAL_HOST=fcrepo.hyku.test
       - JAVA_OPTS=${JAVA_OPTS} -Dfcrepo.modeshape.configuration="classpath:/config/file-simple/repository.json" -Dfcrepo.object.directory="/data/objects" -Dfcrepo.binary.directory="/data/binaries"
-    expose:
+    ports:
       - 8080
-    networks:
-      internal:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.fcrepo-${APP_NAME}.tls=true"
+      - "traefik.http.routers.fcrepo-${APP_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.fcrepo-${APP_NAME}.rule=Host(`fcrepo-${APP_NAME}.localhost.direct`)"
+      - "traefik.http.services.fcrepo-${APP_NAME}.loadbalancer.server.port=8080"
 
   db:
     image: postgres:11.1
     env_file:
       - .env
+    ports:
+      - 5432
     environment:
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
@@ -132,8 +143,18 @@ services:
       - VIRTUAL_HOST=db.hyku.test
     volumes:
       - db:/var/lib/postgresql/data
-    networks:
-      internal:
+
+  adminer:
+    image: adminer
+    environment:
+      - VIRTUAL_PORT=8080
+      - VIRTUAL_HOST=admin.hyku.test
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.adminer-${APP_NAME}.tls=true"
+      - "traefik.http.routers.adminer-${APP_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.adminer-${APP_NAME}.rule=Host(`adminer-${APP_NAME}.localhost.direct`)"
+      - "traefik.http.services.adminer-${APP_NAME}.loadbalancer.server.port=8080"
 
   # Used exclusively for building and caching the base image to reduce build times
   base:
@@ -155,8 +176,17 @@ services:
     environment:
       - VIRTUAL_PORT=3000
       - VIRTUAL_HOST=.hyku.test
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.web-${APP_NAME}.tls=true"
+      - "traefik.http.routers.web-${APP_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.web-${APP_NAME}.priority=10"
+      - "traefik.http.routers.web-${APP_NAME}.rule=HostRegexp(`.+-${APP_NAME}.localhost.direct`)"
+      - "traefik.http.services.web-${APP_NAME}.loadbalancer.server.port=3000"
     depends_on:
       db:
+        condition: service_started
+      adminer:
         condition: service_started
       solr:
         condition: service_started
@@ -201,6 +231,8 @@ services:
       initialize_app:
         condition: service_completed_successfully
       db:
+        condition: service_started
+      adminer:
         condition: service_started
       solr:
         condition: service_started
@@ -252,8 +284,6 @@ services:
     command: redis-server
     volumes:
       - redis:/data
-    networks:
-      internal:
 
   chrome:
     # password is 'secret'
@@ -263,9 +293,13 @@ services:
     volumes:
       - /dev/shm:/dev/shm
     shm_size: 3G
-    networks:
-      internal:
     environment:
       - JAVA_OPTS=-Dwebdriver.chrome.whitelistedIps=
       - VIRTUAL_PORT=7900
       - VIRTUAL_HOST=chrome.hyku.test
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.chrome-${APP_NAME}.tls=true"
+      - "traefik.http.routers.chrome-${APP_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.chrome-${APP_NAME}.rule=Host(`chrome-${APP_NAME}.localhost.direct`)"
+      - "traefik.http.services.chrome-${APP_NAME}.loadbalancer.server.port=7900"

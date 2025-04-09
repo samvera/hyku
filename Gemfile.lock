@@ -32,7 +32,7 @@ GIT
 
 GIT
   remote: https://github.com/notch8/willow_sword.git
-  revision: 0d48ba8bb98a7acad3088fe3fa75bc2dc8b7b6f6
+  revision: 4119de80efbb59d7a86b07e6e384dac182f2fe23
   branch: main
   specs:
     willow_sword (0.2.0)

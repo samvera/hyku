@@ -39,8 +39,6 @@ RSpec.describe Sipity do
 
       before do
         allow(Hyrax.config).to receive(:valkyrie_transition?).and_return(false)
-        puts "DEBUG: Creating entity with proxy_string: #{proxy_string}"
-        puts "DEBUG: Standard GID string for work: #{work.to_global_id.to_s}"
         saved_entity
       end
 

@@ -36,7 +36,9 @@ module Sipity
                input
              when URI::GID, GlobalID
                Hyrax.logger.debug("Entity() got a GID, searching by proxy")
-               Entity.find_by(proxy_for_global_id: input.to_s)
+               gid_string = input.to_s
+               Hyrax.logger.debug("  Searching for GID: #{gid_string}")
+               Entity.find_by(proxy_for_global_id: gid_string)
              when SolrDocument
                if Hyrax.config.valkyrie_transition? # we need the actual model, not the mapped "Resource" model
                  item = Hyrax.query_service.find_by(id: input.id)
@@ -59,11 +61,16 @@ module Sipity
                Hyrax.logger.debug("Entity() got a Resource, retrying on #{Hyrax::GlobalID(input)}")
                Entity(Hyrax::GlobalID(input))
              else
-               Hyrax.logger.debug("Entity() got something else, testing #to_global_id")
-               Entity(input.to_global_id) if input.respond_to?(:to_global_id)
+               Hyrax.logger.debug("Entity() got something else (#{input.class}), testing #to_global_id")
+               if input.respond_to?(:to_global_id)
+                 the_gid_obj = input.to_global_id
+                 Hyrax.logger.debug("  Generated GID object: #{the_gid_obj.inspect}")
+                 Hyrax.logger.debug("  Calling Entity recursively with GID object.")
+                 Entity(the_gid_obj)
+               end
              end
 
-    Hyrax.logger.debug("Entity(): attempting conversion on #{result}")
+    Hyrax.logger.debug("Entity(): attempting conversion on input: #{input.inspect} with result: #{result.inspect}")
     handle_conversion(input, result, :to_sipity_entity, &block)
   rescue URI::GID::MissingModelIdError
     Entity(nil)

@@ -14,6 +14,12 @@ RSpec.describe Hyrax::FileSet do
   end
 
   context 'lazy migration' do
+    let(:logger) { instance_double(Logger) }
+
+    before do
+      allow_any_instance_of(MigrateFilesToValkyrieJob).to receive(:logger).and_return(logger)
+    end
+
     # given an existing AF FileSet
     let(:af_file_set) do
       fs = FileSet.create(creator: ['test'], title: ['file set test'], label: 'sample.csv')

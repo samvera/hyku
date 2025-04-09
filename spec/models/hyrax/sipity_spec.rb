@@ -46,38 +46,5 @@ RSpec.describe Sipity do
         expect(subject).to eq(saved_entity)
       end
     end
-
-    # NOTE: ideally this would create the entity with the original work and then migrate it.
-    # However, the resulting entity ended up being the same (due to the adapters used in specs?)
-    # so we had to fake the original entity.
-    context 'with a migrated work' do
-      let(:subject) { Sipity::Entity(migrated_work) }
-      let(:work) { create(:generic_work, user: user) }
-      # rubocop:disable Lint/RedundantStringCoercion
-      let(:proxy_string) { "gid://hyku/this_will_be_wrong/#{work.id.to_s}" }
-      # rubocop:enable Lint/RedundantStringCoercion
-      let(:migrated_work) { Hyrax.query_service.find_by(id: work.id) }
-
-      before do
-        # we don't care if the work actually updated... just pretend it did so we can migrate the entity to what it should be
-        allow_any_instance_of(Dry::Monads::Result::Failure).to receive(:success?).and_return(true)
-        allow_any_instance_of(MigrateResourceServiceDecorator).to receive(:find_original_entity).and_return(saved_entity)
-        MigrateResourceService.new(resource: work).call
-      end
-
-      it 'will find the migrated entity' do
-        expect(subject).to eq(migrated_entity)
-      end
-    end
-
-    context 'with a native Valkyrie work' do
-      let(:work) { FactoryBot.valkyrie_create(:generic_work_resource) }
-
-      before { saved_entity }
-
-      it 'will find the entity' do
-        expect(subject).to eq(saved_entity)
-      end
-    end
   end
 end

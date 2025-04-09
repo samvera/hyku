@@ -2,7 +2,7 @@
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
-
+ENV['HYRAX_FLEXIBLE'] = 'false'
 # In test most, unset some variables that can cause trouble
 # before booting up Rails
 ENV['HYKU_ADMIN_HOST'] = 'test.host'
@@ -120,8 +120,8 @@ NegativeCaptcha.test_mode = true
 
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = Rails.root.join('spec', 'fixtures', 'fixtures').to_s
-  config.file_fixture_path = Rails.root.join('spec', 'fixtures', 'fixtures').to_s
+  config.fixture_path = Rails.root.join('spec', 'fixtures').to_s
+  config.file_fixture_path = Rails.root.join('spec', 'fixtures').to_s
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false

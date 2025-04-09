@@ -46,8 +46,8 @@ module Sipity
                  Entity(item)
                else
                  model = input.to_model
-                 Hyrax.logger.debug("Entity() got a SolrDocument, retrying on #{Hyrax::GlobalID(model)}")
-                 Entity(Hyrax::GlobalID(model))
+                 Hyrax.logger.debug("Entity() got a SolrDocument, retrying on #{model}")
+                 Entity(model)
                end
              when Draper::Decorator
                Hyrax.logger.debug("Entity() got a Decorator, retrying on #{input.model}")

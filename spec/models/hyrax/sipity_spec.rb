@@ -10,6 +10,7 @@ RSpec.describe Sipity do
     let(:workflow_state) { FactoryBot.create(:workflow_state) }
     let(:solr_document) { SolrDocument.new(id: work.id, has_model_ssim: ["GenericWork"]) }
     # rubocop:disable Lint/RedundantStringCoercion
+    # Use Hyrax::GlobalID as it handles both AF and Valkyrie objects
     let(:proxy_string) { Hyrax::GlobalID(work).to_s }
     # rubocop:enable Lint/RedundantStringCoercion
     let(:saved_entity) do

@@ -163,8 +163,8 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: f315516d1e3b673c574daed379accf63dc8982e8
-  branch: main_before_rails_72
+  revision: 3487049155a31773aa5774e401c4d1801c71571a
+  branch: flexible_double_combo
   specs:
     hyrax (5.0.4)
       active-fedora (~> 14.0)

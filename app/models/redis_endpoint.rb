@@ -7,7 +7,7 @@ class RedisEndpoint < Endpoint
   def switch!
     Hyrax.config.redis_namespace = switchable_options[:namespace]
     queue_adapter = Valkyrie::IndexingAdapter.find(:redis_queue)
-    return unless queue_adapter
+    return if queue_adapter.nil? || account.nil?
     queue_adapter.index_queue_name = "toindex#{account.tenant}"
     queue_adapter.delete_queue_name = "todelete#{account.tenant}"
   end

@@ -74,7 +74,8 @@ RUN echo "📚 Installing Tesseract Best (training data)!" && \
 RUN useradd -m -u 1001 -U -s /bin/bash --home-dir /app app && \
     mkdir -p /app/samvera/hyrax-webapp && \
     chown -R app:app /app && \
-    echo "export PATH=/app/samvera/hyrax-webapp/bin:${PATH}" >> /etc/bash.bashrc
+    echo "export PATH=/app/samvera/hyrax-webapp/bin:${PATH}" >> /etc/bash.bashrc && \
+    git config --global --add safe.directory \*
 
 USER app
 WORKDIR /app/samvera/hyrax-webapp
@@ -82,7 +83,7 @@ WORKDIR /app/samvera/hyrax-webapp
 # Bundle the gems once in base to make faster builds
 COPY --chown=1001:101 Gemfile /app/samvera/hyrax-webapp/
 COPY --chown=1001:101 Gemfile.lock /app/samvera/hyrax-webapp/
-RUN git config --global --add safe.directory /app/samvera && \
+RUN git config --global --add safe.directory \* && \
     bundle install --jobs "$(nproc)"
 
 # RUN mkdir -p /app/fits && \

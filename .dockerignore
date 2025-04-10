@@ -12,6 +12,8 @@
 ./public/system
 ./public/uploads
 ./tmp/*
+vendor/engines
+vendor/bundle
 .coveralls.yml
 .ebextensions
 .fcrepo_wrapper

@@ -10,6 +10,9 @@ class RedisEndpoint < Endpoint
     return if queue_adapter.nil? || account.nil?
     queue_adapter.index_queue_name = "toindex#{account.tenant}"
     queue_adapter.delete_queue_name = "todelete#{account.tenant}"
+  rescue KeyError
+    # If Redis queue indexing adapter not found, do nothing
+    Rails.logger.warn "Redis queue indexing adapter not found"
   end
 
   # Reset the Redis namespace back to the default value
@@ -19,6 +22,9 @@ class RedisEndpoint < Endpoint
     return unless queue_adapter
     queue_adapter.index_queue_name = "toindex"
     queue_adapter.delete_queue_name = "todelete"
+  rescue KeyError
+    # If Redis queue indexing adapter not found, do nothing
+    Rails.logger.warn "Redis queue indexing adapter not found"
   end
 
   def ping

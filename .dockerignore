@@ -11,7 +11,9 @@
 ./public/packs
 ./public/system
 ./public/uploads
-./tmp
+./tmp/*
+vendor/engines
+vendor/bundle
 .coveralls.yml
 .ebextensions
 .fcrepo_wrapper
@@ -30,3 +32,4 @@ pg/*
 Dockerfile*
 fits.log
 ImageMagick*
+storage/*

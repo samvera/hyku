@@ -4,9 +4,44 @@ ENV['HYRAX_USE_SOLR_GRAPH_NESTING'].present? || ENV['HYRAX_USE_SOLR_GRAPH_NESTIN
 
 # rubocop:disable Metrics/BlockLength
 Hyrax.config do |config|
+  # NOTE: We do not want to resgister the new resources as the lazy migration approach accounts for
+  # that.  Were we to register generic_work_resource and generic_work, given Hyrax's implementation
+  # we would see the duplicated option to create a generic work and a generic work.  The magic of
+  # what we create/operate on is defined in the controller.
+  #
+  # See for details on how we generate routes from registered curation concern:
+  #   https://github.com/samvera/hyrax/blob/main/lib/hyrax/rails/routes.rb
+  #
+  # See Hyrax::ValkyrieLazyMigration for details of how we make GenericWork and GenericWorkResource
+  #     quack the same.
   config.register_curation_concern :generic_work
-  # Injected via `rails g hyrax:work Image`
   config.register_curation_concern :image
+  config.register_curation_concern :etd
+  config.register_curation_concern :oer
+
+  # Identify the model class name that will be used for Collections in your app
+  # (i.e. ::Collection for ActiveFedora, Hyrax::PcdmCollection for Valkyrie)
+  # config.collection_model = '::Collection'
+  # Injected via `rails g hyrax:collection_resource CollectionResource`
+  config.collection_model = 'CollectionResource'
+
+  # Identify the model class name that will be used for Admin Sets in your app
+  # (i.e. AdminSet for ActiveFedora, Hyrax::AdministrativeSet for Valkyrie)
+  # config.admin_set_model = 'AdminSet'
+  config.admin_set_model = 'AdminSetResource'
+
+  # Identify the model class name that will be used for FileSets in your app
+  #
+  # TODO: We may need to add similar model_name overrides so that parameters and
+  # keys are the same for FileSet and Hyrax::FileSet.  We do this for
+  # GenericWorkResoure via Hyrax::ValkyrieLazyMigration.migrating(self, from:
+  # GenericWork).  That may or may not work for FileSet but does provide the
+  # breadcrumbs.
+  config.file_set_model = 'Hyrax::FileSet'
+
+  # The default method used for Solr queries. Values are :get or :post.
+  # Post is suggested to prevent issues with URL length.
+  config.solr_default_method = :post
 
   # The email address that messages submitted via the contact page are sent to
   # This is set by account settings
@@ -99,7 +134,7 @@ Hyrax.config do |config|
   # Should work creation require file upload, or can a work be created first
   # and a file added at a later time?
   # The default is true.
-  # config.work_requires_files = true
+  config.work_requires_files = false
 
   # Should a button with "Share my work" show on the front page to all users (even those not logged in)?
   # config.display_share_button_when_not_logged_in = true
@@ -116,10 +151,22 @@ Hyrax.config do |config|
   # Temporary path to hold uploads before they are ingested into FCrepo.
   # This must be a lambda that returns a Pathname
   config.upload_path = lambda {
-    if Site.account&.s3_bucket
+    if Site.account&.s3_bucket.present?
+      # For S3, no need to create directories
       "uploads/#{Apartment::Tenant.current}"
     else
-      ENV['HYRAX_UPLOAD_PATH'].present? ? Pathname.new(File.join(ENV['HYRAX_UPLOAD_PATH'], Apartment::Tenant.current)) : Rails.public_path.join('uploads', Apartment::Tenant.current)
+      # Determine the base upload path
+      base_path = if ENV['HYRAX_UPLOAD_PATH'].present?
+                    Pathname.new(File.join(ENV['HYRAX_UPLOAD_PATH'], Apartment::Tenant.current))
+                  else
+                    Rails.root.join('public', 'uploads', Apartment::Tenant.current)
+                  end
+
+      # Create the directory if it doesn't exist
+      FileUtils.mkdir_p(base_path) unless Dir.exist?(base_path)
+
+      # Return the path
+      base_path
     end
   }
 
@@ -195,26 +242,37 @@ Hyrax.config do |config|
   # essence a "super" method.
   original_translator = config.translate_id_to_uri
   config.translate_id_to_uri = ->(id) { original_translator.call(id.to_s) }
+
+  config.file_set_indexer = Hyku::Indexers::FileSetIndexer
 end
 # rubocop:enable Metrics/BlockLength
 
 Date::DATE_FORMATS[:standard] = "%m/%d/%Y"
 
-Qa::Authorities::Local.register_subauthority('subjects', 'Qa::Authorities::Local::TableBasedAuthority')
-Qa::Authorities::Local.register_subauthority('languages', 'Qa::Authorities::Local::TableBasedAuthority')
-Qa::Authorities::Local.register_subauthority('genres', 'Qa::Authorities::Local::TableBasedAuthority')
-
-# set bulkrax default work type to first curation_concern if it isn't already set
-Bulkrax.default_work_type = Hyrax.config.curation_concerns.first.to_s if ENV.fetch('HYKU_BULKRAX_ENABLED', 'true') == 'true' && Bulkrax.default_work_type.blank?
+Qa::Authorities::Local.register_subauthority('audience', 'Qa::Authorities::Local::FileBasedAuthority')
+Qa::Authorities::Local.register_subauthority('discipline', 'Qa::Authorities::Local::FileBasedAuthority')
+Qa::Authorities::Local.register_subauthority('education_levels', 'Qa::Authorities::Local::FileBasedAuthority')
+Qa::Authorities::Local.register_subauthority('learning_resource_types', 'Qa::Authorities::Local::FileBasedAuthority')
+Qa::Authorities::Local.register_subauthority('oer_types', 'Qa::Authorities::Local::FileBasedAuthority')
 
 Hyrax::IiifAv.config.iiif_av_viewer = :universal_viewer
 
 require 'hydra/derivatives'
 Hydra::Derivatives::Processors::Video::Processor.config.video_bitrate = '1500k'
 
-# Stop solr deprecation until ActiveFedora 13.2.8 comes out
-ActiveFedora::SolrService.class_eval do
-  def initialize(options = {})
-    @options = { timeout: 120, open_timeout: 120, url: 'http://localhost:8080/solr' }.merge(options)
-  end
+Hyrax.publisher.subscribe(HyraxListener.new)
+
+Hyrax::MemberPresenterFactory.file_presenter_class = Hyrax::IiifAv::IiifFileSetPresenter
+Hyrax::PcdmMemberPresenterFactory.file_presenter_class = Hyrax::IiifAv::IiifFileSetPresenter
+
+Hyrax::Transactions::Container.namespace('collection_resource') do |ops|
+  ops.register 'save_collection_thumbnail', Hyrax::Transactions::Steps::SaveCollectionThumbnail.new
 end
+
+Hyrax::Resource.delegate(
+  :visibility_during_embargo, :visibility_after_embargo, :embargo_release_date, to: :embargo, allow_nil: true
+)
+
+Hyrax::Resource.delegate(
+  :visibility_during_lease, :visibility_after_lease, :lease_expiration_date, to: :lease, allow_nil: true
+)

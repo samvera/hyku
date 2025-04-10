@@ -13,6 +13,10 @@ FactoryBot.define do
       resource_type { 'Site' }
     end
 
+    trait :public do
+      name { 'public' }
+    end
+
     trait :admin do
       name { 'admin' }
       site_role

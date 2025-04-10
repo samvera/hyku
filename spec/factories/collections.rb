@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   # TODO: swap this out for hyrax's collection_lw: see TODO(bkiahstroud) below
-  factory :collection do
+  factory :old_collection, class: Collection do
     transient do
       user { create(:user) }
       # allow defaulting to default user collection
@@ -56,13 +56,13 @@ FactoryBot.define do
       end
     end
 
-    factory :public_collection, traits: [:public]
+    factory :old_public_collection, traits: [:public]
 
     trait :public do
       visibility { Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC }
     end
 
-    factory :private_collection do
+    factory :old_private_collection do
       visibility { Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE }
     end
   end
@@ -143,7 +143,7 @@ FactoryBot.define do
   #   let(:collection_type) { create(:collection_lw_type, settings) }
   #   let(:collection) { build(:collection_lw, collection_type: collection_type) }
 
-  factory :collection_lw, class: Collection do
+  factory :old_collection_lw, class: Collection do
     transient do
       user { create(:user) }
 
@@ -172,17 +172,17 @@ FactoryBot.define do
       collection.permission_template.reset_access_controls_for(collection:, interpret_visibility: true)
     end
 
-    factory :public_collection_lw, traits: [:public_lw]
+    factory :old_public_collection_lw, traits: [:public_lw]
 
-    factory :private_collection_lw do
+    factory :old_private_collection_lw do
       visibility { Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE }
     end
 
-    factory :institution_collection_lw do
+    factory :old_institution_collection_lw do
       visibility { Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED }
     end
 
-    factory :named_collection_lw do
+    factory :old_named_collection_lw do
       title { ['collection title'] }
       description { ['collection description'] }
     end
@@ -204,7 +204,7 @@ FactoryBot.define do
     end
   end
 
-  factory :user_collection_lw, class: Collection do
+  factory :old_user_collection_lw, class: Collection do
     transient do
       user { create(:user) }
       collection_type { create(:user_collection_type) }
@@ -217,7 +217,7 @@ FactoryBot.define do
     end
   end
 
-  factory :typeless_collection_lw, class: Collection do
+  factory :old_typeless_collection_lw, class: Collection do
     # To create a pre-Hyrax 2.1.0 collection without a collection type gid...
     #   col = build(:typeless_collection, ...)
     #   col.save(validate: false)

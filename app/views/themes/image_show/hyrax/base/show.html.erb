@@ -9,14 +9,14 @@
     <%= render 'work_type', presenter: @presenter %>
   </div>
   <div itemscope itemtype="http://schema.org/CreativeWork" class="col-xs-12">
-    <div class="panel panel-default">
-      <div class="panel-heading">
+    <div class="card card-default">
+      <div class="card-heading">
         <%= render 'work_title', presenter: @presenter %>
       </div>
-      <div class="panel-body">
+      <div class="card-body">
         <div class="row">
           <%= render 'workflow_actions_widget', presenter: @presenter %>
-          <% if @presenter.universal_viewer? %>
+          <% if @presenter.iiif_viewer? %>
             <div class="col-sm-12">
               <%= render 'representative_media', presenter: @presenter, viewer: true %>
             </div>
@@ -25,13 +25,16 @@
                 <%= render 'work_description', presenter: @presenter %>
               </div>
             </div>
-          <% elsif Flipflop.default_pdf_viewer? && @presenter.show_pdf_viewer? && @presenter.file_set_presenters.any?(&:pdf?) %>
+          <% elsif @presenter.show_pdf_viewer? %>
             <div class="col-sm-12">
               <%= render 'pdf_js', file_set_presenter: pdf_file_set_presenter(@presenter) %>
             </div>
+            <div class="col-sm-12">
+              <%= render 'work_description', presenter: @presenter %>
+            </div>
           <% else %>
             <div class="col-sm-3 mb-1">
-              <%= render 'representative_media', presenter: @presenter, viewer: false unless @presenter.universal_viewer? || @presenter.show_pdf_viewer? %>
+              <%= render 'representative_media', presenter: @presenter, viewer: false unless @presenter.iiif_viewer? || @presenter.show_pdf_viewer? %>
             </div>
             <div class="col-sm-9">
               <%= render 'work_description', presenter: @presenter %>
@@ -45,8 +48,6 @@
           <div class="col-sm-3 citations-social text-right">
             <%= render('download_pdf', presenter: @presenter, file_set_id: @presenter.file_set_presenters.first.id) if @presenter.show_pdf_download_button? %>
             <%= render 'citations', presenter: @presenter %>
-            <!-- analytics_button is disabled until future fix -->
-            <%#= render 'analytics_button', presenter: @presenter %>
           </div>
           <div class="col-sm-12">
             <%= render 'relationships', presenter: @presenter %>

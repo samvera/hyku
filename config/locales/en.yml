@@ -4,8 +4,8 @@ en:
     messages:
       valid_embed_url: "must be a valid YouTube or Vimeo Embed URL."
   single_signon:
-   index:
-     sign_in_with_provider: Sign in with %{provider}
+    index:
+      sign_in_with_provider: Sign in with %{provider}
   activerecord:
     attributes:
       site:
@@ -16,11 +16,24 @@ en:
     models:
       generic_work: "Work"
       image: "Image"
+      etd: "ETD"
+      oer: "OER"
+  blacklight:
+    slideshow_info: "Select an image to start the slideshow"
+    search:
+      fields:
+        facet:
+          contributing_library_sim: 'Contributing Library'
+          contributor_sim: "Contributor"
+          human_readable_type_sim: "Type"
+          member_of_collections_sim: "Collections"
+          resource_type_sim: "Resource Type"
+        show:
+          additional_information: "Additional rights information"
   devise:
     mailer:
       invitation_instructions:
         ignore: "If you don't want to accept the invitation, please ignore this email. Your account won't be created until you access the link above and set your password."
-
   helpers:
     action:
       become: Become
@@ -83,6 +96,7 @@ en:
         humanized_name:
           admin: Repository Administrators
           registered: Registered Users
+          group/public: Unauthorized Users
         label:
           actions: Actions
           created_at: Date Created
@@ -201,6 +215,8 @@ en:
               confirm: "If your theme doesn't appear to be applying correctly, verify that it isn't being overwritten by Custom CSS."
             favicon:
               hint: "Favicons need to be png files and must be square. The max size used is 228px x 228px."
+            active_tabs_background_color:
+              hint: 'Hover color for homepage tabs.'
             navbar_background_color:
               hint: 'At 40% opacity.'
             navbar_link_background_color:
@@ -209,8 +225,8 @@ en:
               hint: 'Applies to the Home, About, Contact and Help buttons on those specific pages only (at 15% opacity).'
             link_color:
               hint: 'Affects links on the home and work pages including: breadcrumbs, tabs, titles and terms of service.'
-            primary_button_hover_color:
-              hint: 'Share, search and collection interaction (edit, feature, etc.) buttons. The border of these buttons will also be this color.'
+            primary_button_background_color:
+              hint: 'Background color for the share, search and collection interaction buttons.'
             default_button_background_color:
               hint: 'Work interaction (edit, feature, etc.) buttons; work views on collection page and search filter button.'
             facet_panel_background_color:
@@ -272,6 +288,7 @@ en:
           action_label: Action
           add: Invite user
           delete: Delete
+          activate: Activate
           invite_users: Add or Invite user via email
           status:
             active: Active

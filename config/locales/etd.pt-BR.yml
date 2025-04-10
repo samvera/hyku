@@ -1,0 +1,29 @@
+---
+pt-BR:
+  hyrax:
+    etd:
+      labels:
+        admin_note: Notas Administrativas
+        committee_member: membro do Comitê
+        creator: Autor
+        date_created: Encontro
+        degree_discipline: Disciplina
+        degree_grantor: Concedente
+        degree_level: Nível
+        degree_name: Grau
+        description: Descrição
+        related_url: Relação
+        resource_type: Tipo
+        rights_statement: Direitos
+    icons:
+      etd: fa fa-file-text-o
+    select_type:
+      etd:
+        description: ETD trabalhos
+        name: ETD
+  simple_form:
+    labels:
+      defaults:
+        advisor: Orientador
+        department: Departamento
+        format: Formato

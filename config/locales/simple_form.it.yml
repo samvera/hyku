@@ -46,8 +46,8 @@ it:
         fcrepo_endpoint:
           base_path: Percorso base
           url: URL
-        name: Nome breve
         gtm_id: Gestore dei tag di Google
+        name: Nome breve
         solr_endpoint:
           url: URL
         tenant: UUID tenant

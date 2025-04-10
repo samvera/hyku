@@ -15,21 +15,46 @@ it:
           publisher_sim: Editore
           subject_sim: Soggetto
         index:
+          accessibility_feature_tesim: Funzione di accessibilità
+          accessibility_hazard_tesim: Pericolo di accessibilità
+          accessibility_summary_tesim: Riepilogo accessibilità
+          additional_information_tesim: Informazioni aggiuntive
+          admin_note_tesim: Nota dell'amministratore
+          alternative_title_tesim: Titolo alternativo
+          audience_tesim: Pubblico
           based_near_label_tesim: luogo
+          chronology_note_tesim: Nota cronologica
+          contributing_library_tesim: Biblioteca di contributo
           contributor_tesim: Collaboratore
           creator_tesim: Creatore
           date_created_tesim: data di creazione
           date_modified_dtsi: Data modificata
+          date_tesim: Data
           date_uploaded_dtsi: Data caricata
           description_tesim: Descrizione
+          discipline_tesim: Disciplina
+          education_level_tesim: Livello di istruzione
           extent_tesim: Estensione
           file_format_tesim: Formato del file
+          format_tesim: Formato
           identifier_tesim: Identifier
           keyword_tesim: Parola chiave
           language_tesim: Lingua
+          learning_resource_type_tesim: Tipo di risorsa di apprendimento
+          library_catalog_identifier_tesim: Identificatore del catalogo della biblioteca
+          license_tesim: Licenza
+          newer_version_id_tesim: ID versione più recente
+          oer_size_tesim: Dimensioni dell'oer
+          previous_version_id_tesim: ID versione precedente
           publisher_tesim: Editore
+          related_item_id_tesim: ID elemento correlato
+          related_url_tesim: URL correlato
+          resource_type_tesim: Tipo di risorsa
+          rights_holder_tesim: Titolare dei diritti
+          rights_statement_tesim: Dichiarazione sui diritti
           rights_tesim: Diritti
           subject_tesim: Soggetto
+          table_of_contents_tesim: Sommario
         show:
           based_near_label_tesim: luogo
           contributor_tesim: Collaboratore

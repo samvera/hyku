@@ -1,17 +1,10 @@
-<div class="featured-item-title d-flex">
-  <div class="sr-only">
-    <%= t('hyrax.homepage.featured_collections.document.title_label') %>
-  </div>
-  <div class='homepage-work-thumbnail'>
-    <%= link_to [hyrax, featured] do %>
-      <%= render_thumbnail_tag(featured.solr_document, {suppress_link: true}) %>
-    <% end %>
-  </div>
-  <div>
-    <h5>
+<div>
+  <div class="featured-item-title">
+    <span class="sr-only"><%= t('hyrax.homepage.featured_collections.document.title_label') %></span>
+    <h3>
       <%= link_to [hyrax, featured] do %>
-        <%= featured.title.first %>
+        <%= render_thumbnail_tag(featured.solr_document, {alt: "#{featured.title.first.to_s} #{ t('hyrax.homepage.admin_sets.thumbnail')}" }, {suppress_link: true})%><%= markdown(featured.title.first) %>
       <% end %>
-    </h5>
+    </h3>
   </div>
 </div>

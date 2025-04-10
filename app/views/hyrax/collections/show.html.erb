@@ -1,87 +1,104 @@
-<%# OVERRIDE Hyrax 2.9.1 add show actions buttons to collection show page %>
+<%# OVERRIDE Hyrax 5.0.1: %>
+<%# add show actions buttons to collection show page %>
+<%# add branding text for banner image %>
+<%# remove duplicate items count originating in Hyrax view %>
+<%# contribute more from pals update layout to be more visually appealing %>
 
 <% provide :page_title, construct_page_title(@presenter.title) %>
 <div class="hyc-container" itemscope itemtype="http://schema.org/CollectionPage">
   <div class="row hyc-header">
     <div class="col-md-12">
-    
+
       <% if @presenter.banner_file.present? %>
         <div class="hyc-banner" style="background-image:url(<%= @presenter.banner_file[:relative_path] %>)" title="<%= @presenter.banner_file[:alt_text] %>">
       <% else %>
         <div class="hyc-generic">
       <% end %>
+      <div class="d-flex space-between">
+        <div class="hyc-title">
+          <h1><%= markdown(@presenter.title.first) %></h1>
+          <%= @presenter.collection_type_badge %>
+          <%= @presenter.permission_badge %>
+        </div>
+        <div class="hyc-item-count">
+          <%= pluralize(@presenter.total_viewable_items, t('.item_count')) %>
+        </div>
+      </div>
 
-      <div class="hyc-title">
-        <h1><%= @presenter.title.first %></h1>
-        <%= @presenter.collection_type_badge %>
-        <%= @presenter.permission_badge %>
+      <%# OVERRIDE here to add admin actions buttons to show page %>
+      <div class='show-actions-container'>
+        <% id = @presenter.id %>
+        <section class="collection-title-row-wrapper"
+          data-source="show"
+          data-id="<%= id %>"
+          data-colls-hash="<%= available_parent_collections_data(collection: @presenter) %>"
+          data-post-url="<%= hyrax.dashboard_create_nest_collection_within_path(id) %>"
+          data-post-delete-url="<%= hyrax.dashboard_collection_path(id) %>">
+          <div class="collection-title-row-content">
+            <%= render 'hyrax/dashboard/collections/show_actions', presenter: @presenter %>
+          </div>
+        </section>
+      </div>
+      <%# end OVERRIDE %>
+
+      <!-- Search bar -->
+      <div class='row'>
+        <div class="col-sm-8 mt-5">
+          <%= render 'search_form', presenter: @presenter, url: hyrax.collection_path(@presenter.id) %>
+        </div>
       </div>
 
       <% unless @presenter.logo_record.blank? %>
-          <div class="hyc-logos">
+          <div class="hyc-logos mt-5">
             <% @presenter.logo_record.each_with_index  do |lr, i| %>
+
                 <% if lr[:linkurl].blank? %>
                     <img alt="<%= lr[:alttext] %>" src="<%= lr[:file_location] %>" onerror="this.style.display='none'"/>
                 <% else %>
                     <a href="<%= lr[:linkurl] %>">
-                     <img alt="<%= lr[:alttext] %>" src="<%= lr[:file_location] %>" onerror="this.style.display='none'"/>
+                      <img alt="<%= lr[:alttext] %>" src="<%= lr[:file_location] %>" onerror="this.style.display='none'"/>
                     </a>
                 <% end %>
+
             <% end %>
           </div>
       <% end %>
+
       <% unless @presenter.total_viewable_items.blank? %>
-          <div class="hyc-bugs">
-            <div class="hyc-item-count">
-              <%= pluralize(@presenter.total_viewable_items, t('.item_count')) %></div>
-            <% unless @presenter.creator.blank? %>
-                <div class="hyc-created-by">Created by: <%= @presenter.creator.first %></div>
-            <% end %>
-            <% unless @presenter.modified_date.blank? %>
-                <div class="hyc-last-updated">Last Updated: <%= @presenter.modified_date %></div>
-            <% end %>
-          </div>
+        <div class="hyc-bugs d-flex space-between">
+          <% unless @presenter.creator.blank? %>
+              <div class="hyc-created-by">Created by: <%= @presenter.creator.first %></div>
+          <% end %>
+          <% unless @presenter.modified_date.blank? %>
+              <div class="hyc-last-updated">Last Updated: <%= @presenter.modified_date %></div>
+          <% end %>
+        </div>
       <% end %>
 
       </div>
 
     </div>
   </div>
-  <%# OVERRIDE here to add admin actions buttons to show page %>
-  <div class='show-actions-container'>
-    <% id = @presenter.id %>
-    <section class="collection-title-row-wrapper"
-      data-source="show"
-      data-id="<%= id %>"
-      data-colls-hash="<%= available_parent_collections_data(collection: @presenter) %>"
-      data-post-url="<%= hyrax.dashboard_create_nest_collection_within_path(id) %>"
-      data-post-delete-url="<%= hyrax.dashboard_collection_path(id) %>">
-      <div class="collection-title-row-content">
-        <%= render 'hyrax/dashboard/collections/show_actions', presenter: @presenter %>
-      </div>
-    </section>
-  </div>
-  <%# end OVERRIDE %>
+
   <div class="row hyc-body">
-    <div class="col-md-8 hyc-description">
-      <%= render 'collection_description', presenter: @presenter %>
-      <% if @presenter.collection_type_is_nestable? && @presenter.total_parent_collections > 0 %>
-          <div class="hyc-blacklight hyc-bl-title">
-            <h2>
-              <%= t('.parent_collection_header') %> (<%= @presenter.total_parent_collections %>)
-            </h2>
-          </div>
-          <div class="hyc-blacklight hyc-bl-results">
-            <%= render 'show_parent_collections', presenter: @presenter %>
-          </div>
-      <% end %>
-
-    </div>
-    <div class="col-md-4 hyc-metadata">
+    <div class='col-md-3'>
       <%= render 'hyrax/collections/media_display', presenter: @presenter %>
+    </div>
+    <div class="col-md-9 hyc-metadata">
+      <h2><%= t('hyrax.dashboard.collections.show.metadata_header') %></h2>
+      <%= render 'collection_description', presenter: @presenter %>
       <% unless collection_search_parameters? %>
-          <h2><%= t('hyrax.dashboard.collections.show.metadata_header') %></h2>
-          <%= render 'show_descriptions' %>
+        <%= render 'show_descriptions' %>
+      <% end %>
+      <% if @presenter.collection_type_is_nestable? && @presenter.total_parent_collections > 0 %>
+        <div class="hyc-blacklight hyc-bl-title">
+          <h2>
+            <%= t('.parent_collection_header') %> (<%= @presenter.total_parent_collections %>)
+          </h2>
+        </div>
+        <div class="hyc-blacklight hyc-bl-results">
+          <%= render 'show_parent_collections', presenter: @presenter %>
+        </div>
       <% end %>
     </div>
   </div>
@@ -97,40 +114,38 @@
     </div>
   <% end %>
 
-  <!-- Search bar -->
-  <div class="hyc-blacklight hyc-bl-search hyc-body row">
-    <div class="col-sm-8">
-      <%= render 'search_form', presenter: @presenter, url: hyrax.collection_path(@presenter.id) %>
-    </div>
-  </div>
-
   <!-- Subcollections -->
   <% if @presenter.collection_type_is_nestable? && @subcollection_count > 0 %>
-      <div class="hyc-blacklight hyc-bl-title">
-        <h2><%= t('.subcollection_count') %> (<%= @subcollection_count %>)</h2>
-      </div>
-      <div class="hyc-blacklight hyc-bl-results">
-        <%= render 'subcollection_list', collection: @subcollection_docs %>
-      </div>
+    <div class="hyc-blacklight hyc-bl-title">
+      <h2><%= t('.subcollection_count') %> (<%= @subcollection_count %>)</h2>
+    </div>
+    <div class="hyc-blacklight hyc-bl-results">
+      <%= render 'subcollection_list', collection: @subcollection_docs %>
+    </div>
   <% end %>
 
   <!-- Works -->
   <% if @members_count > 0 %>
-      <div class="hyc-blacklight hyc-bl-title">
-        <h2><%= t('.works_in_collection') %> (<%= @members_count %>)</h2>
-      </div>
+    <div class="hyc-blacklight hyc-bl-title">
+      <h2><%= t('.works_in_collection') %> (<%= @members_count %>)</h2>
+    </div>
 
-      <div class="hyc-blacklight hyc-bl-sort">
-        <%= render 'sort_and_per_page', collection: @presenter %>
-      </div>
+    <div class="hyc-blacklight hyc-bl-sort">
+      <%= render 'sort_and_per_page', collection: @presenter %>
+    </div>
 
-      <div class="hyc-blacklight hyc-bl-results">
-        <%= render_document_index @member_docs %>
-      </div>
+    <div class="hyc-blacklight hyc-bl-results">
+      <% if document_index_view_type == :slideshow %>
+        <div class="slideshow-info">
+          <h4><%= t('blacklight.slideshow_info') %></h4>
+        </div>
+      <% end %>
+      <%= render_document_index @member_docs %>
+    </div>
 
-      <div class="hyc-blacklight hyc-bl-pager">
-        <%= render 'paginate' %>
-      </div>
+    <div class="hyc-blacklight hyc-bl-pager">
+      <%= render 'paginate' %>
+    </div>
   <% end # if @members_count > 0 %>
 </div>
 

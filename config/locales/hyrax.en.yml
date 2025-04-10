@@ -16,6 +16,8 @@ en:
       models:
         generic_work: "Work"
         image: "Image"
+        etd: "ETD"
+        oer: "OER"
     active_consent_to_agreement: I have read and agree to the
     admin:
       admin_sets:
@@ -505,11 +507,15 @@ en:
         featured_researcher: Featured Researcher
         home_text: Home Page Text
         marketing_text: Marketing Text
+        homepage_about_section_heading: About Section Heading
+        homepage_about_section_content: About Section Content
       instructions:
         announcement_instructions: Announcement Text displays on the homepage. It is for important or timely messages to be made prominently visible to all home page visitors. It would be appropriate to enter an announcement here, for example, to notify users about an upcoming planned maintenance outage of the system.
         featured_researcher_instructions: Featured Researcher is a space to enter information and on the home page reserved for highlighting repository users.
         home_text_instructions: Home Page Text refers to the custom messaging that is displayed on the home page either in the hero block or another section of the home page. This text appears when selecting a theme that either requires or allows home page text. We recommend no more than 3 sentences in this area.
         marketing_instructions: Banner Text refers to the text that is displayed over banner image on the homepage. We recommend no more than approximately 30 characters or spaces in this text area.
+        homepage_about_section_heading_instructions: This heading is not used by any of the default Hyku themes. It may be used for custom themes.
+        homepage_about_section_content_instructions: This content is not used by any of the default Hyku themes. It may be used for custom themes.
       updated: Content blocks updated.
     controls:
       about: About
@@ -940,6 +946,7 @@ en:
       change_tab_message: Are you sure you want to leave this tab?  Any unsaved data will be lost.
     pages:
       cancel: Cancel
+      update: Save changes
       tabs:
         about_page: About Page
         agreement_page: Deposit Agreement
@@ -949,7 +956,7 @@ en:
     passive_consent_to_agreement: By saving this work I agree to the
     search:
       button:
-        html: <span class="glyphicon glyphicon-search"></span> Go
+        html: <span class="fa fa-search"></span> Go
         text: Search
       form:
         option:
@@ -1040,6 +1047,13 @@ en:
       permissions_message: Updating file permissions. This may take a few minutes. You may want to refresh your browser or return to this record later to see the updated file permissions.
       processing: File is being processed; you may edit when processing has completed
     user_profile:
+      email_frequency:
+        label: <i class="fa fa-calendar"></i> Batch Email Frequency
+        daily: Daily
+        monthly: Monthly
+        never: Never
+        weekly: Weekly
+        not_set: Not yet specified
       orcid:
         alt: ORCID icon
         label: ORCID Profile
@@ -1173,10 +1187,11 @@ en:
         based_near: Location
         contributor: Contributor
         creator: Creator
+        collection_banner_text_color: Collection banner text color
         date_created: Date Created
-        default_button_background_color: Default button background color
-        default_button_border_color: Default button border color
-        default_button_text_color: Default button text color
+        default_button_background_color: Secondary button background color
+        default_button_border_color: Secondary button border color
+        default_button_text_color: Secondary button text color
         description: Description
         embargo_release_date: until
         facet_panel_background_color: Facet panel background color
@@ -1198,6 +1213,9 @@ en:
         navbar_link_text_color: Navbar link text color
         navbar_link_text_hover_color: Navbar link text hover color
         primary_button_hover_color: Primary button hover color
+        primary_button_text_color: Primary button text color
+        primary_button_background_color: Primary button background color
+        primary_button_border_color: Primary button border color
         publisher: Publisher
         related_url: Related URL
         rights_statement: Rights statement
@@ -1214,3 +1232,5 @@ en:
       defaults:
         find_child_work: Search for a work…
         member_of_collection_ids: Select a collection…
+    required:
+      html: <span class="badge badge-info required-tag">required</span>

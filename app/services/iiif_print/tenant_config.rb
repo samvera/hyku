@@ -14,10 +14,10 @@ module IiifPrint
   #       it is hopefully easier to understand the configuration requirements and scope to this
   #       change.  At some point, this might make sense to bring into IIIF Print directly.
   #
-  # @see https://github.com/scientist-softserv/palni-palci/issues/656 palni-palci#656
-  # @see https://github.com/scientist-softserv/palni-palci/issues/657 palni-palci#657
-  # @see https://github.com/scientist-softserv/palni-palci/issues/658 palni-palci#658
-  # @see https://github.com/scientist-softserv/palni-palci/issues/659 palni-palci#659
+  # @see https://github.com/notch8/palni-palci/issues/656 palni-palci#656
+  # @see https://github.com/notch8/palni-palci/issues/657 palni-palci#657
+  # @see https://github.com/notch8/palni-palci/issues/658 palni-palci#658
+  # @see https://github.com/notch8/palni-palci/issues/659 palni-palci#659
   module TenantConfig
     ##
     # When we were not planning on calling the underlying IiifPrint service but did due to some kind
@@ -94,23 +94,28 @@ module IiifPrint
     #      derivative_service_plugins: [ IiifPrint::TextExtractionDerivativeService ])
     #  end
     #
-    # @see https://github.com/scientist-softserv/iiif_print/blob/9e7837ce4bd08bf8fff9126455d0e0e2602f6018/lib/iiif_print.rb#L86-L138 Documentation for configuring
-    # @see https://github.com/scientist-softserv/adventist-dl/blob/d7676bdac2c672f09b28086d7145b68306978950/app/models/image.rb#L14-L20 Example implementation
+    # @see https://github.com/notch8/iiif_print/blob/9e7837ce4bd08bf8fff9126455d0e0e2602f6018/lib/iiif_print.rb#L86-L138 Documentation for configuring
+    # @see https://github.com/notch8/adventist-dl/blob/d7676bdac2c672f09b28086d7145b68306978950/app/models/image.rb#L14-L20 Example implementation
     module PdfSplitter
       mattr_accessor :iiif_print_splitter
       self.iiif_print_splitter = ::IiifPrint::SplitPdfs::PagesToJpgsSplitter
 
       ##
+      def self.never_split_pdfs?
+        !TenantConfig.use_iiif_print?
+      end
+
+      ##
       # @api public
-      def self.call(*args)
+      def self.call(path, **kwargs)
         return [] unless TenantConfig.use_iiif_print?
 
-        iiif_print_splitter.call(*args)
+        iiif_print_splitter.call(path, **kwargs)
       end
     end
 
     ##
-    # @see https://github.com/scientist-softserv/iiif_print/blob/9e7837ce4bd08bf8fff9126455d0e0e2602f6018/lib/iiif_print/split_pdfs/child_work_creation_from_pdf_service.rb#L10-L46 Interface of FileSetActor#service
+    # @see https://github.com/notch8/iiif_print/blob/9e7837ce4bd08bf8fff9126455d0e0e2602f6018/lib/iiif_print/split_pdfs/child_work_creation_from_pdf_service.rb#L10-L46 Interface of FileSetActor#service
     module SkipSplittingPdfService
       ##
       # @return [Symbol] Always :tenant_does_not_split_pdfs
@@ -129,7 +134,7 @@ module IiifPrint
     # a relatively singular place for all of the configurations.
     module FileSetActorDecorator
       ##
-      # @see https://github.com/scientist-softserv/iiif_print/blob/9e7837ce4bd08bf8fff9126455d0e0e2602f6018/app/actors/iiif_print/actors/file_set_actor_decorator.rb#L33-L35 Method we're overriding
+      # @see https://github.com/notch8/iiif_print/blob/9e7837ce4bd08bf8fff9126455d0e0e2602f6018/app/actors/iiif_print/actors/file_set_actor_decorator.rb#L33-L35 Method we're overriding
       def service
         return TenantConfig::SkipSplittingPdfService unless TenantConfig.use_iiif_print?
 
@@ -147,6 +152,12 @@ module IiifPrint
     # In Hyrax::WorkShowPresenter we're only looking at the underlying file_sets.  But IiifPrint
     # needs to look at multiple places.
     module WorkShowPresenterDecorator
+      ##
+      # @return [Boolean] Identifies whether IiifPrint PDF splitting is active for this work's tenant
+      def split_pdfs?
+        TenantConfig.use_iiif_print?
+      end
+
       ##
       # @return [Array<Symbol>] predicate methods (e.g. ending in "?") that reflect the types
       #         of files we want to consider for showing in the IIIF Viewer.
@@ -190,7 +201,7 @@ module IiifPrint
       # long-standing decision is that this field will have both file_set IDs and child work IDs.
       def iiif_presentable_member_presenters
         if TenantConfig.use_iiif_print?
-          presentable_member_ids = Array.wrap(solr_document.try(:file_set_ids) || solr_document.try(:[], 'file_set_ids_ssim'))
+          presentable_member_ids = Array.wrap(solr_document.try(:member_ids) || solr_document.try(:[], 'member_ids_ssim'))
           member_presenters(presentable_member_ids)
         else
           file_set_presenters
@@ -199,4 +210,4 @@ module IiifPrint
     end
   end
 end
-# rubocop:enable Layout/LineLength
+# rubocop:enable Metrics/MethodLength

@@ -14,7 +14,7 @@ Rails.application.configure do
   config.eager_load = true
 
   # Full error reports are disabled and caching is turned on.
-  config.consider_all_requests_local       = false
+  config.consider_all_requests_local = ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_SHOW_BACKTRACE', 'false'))
   config.action_controller.perform_caching = true
 
   # Disable serving static files from the `/public` folder by default since
@@ -24,7 +24,7 @@ Rails.application.configure do
     'Cache-Control' => 'public, s-maxage=31536000, maxage=15552000',
     'Expires' => 1.year.from_now.to_formatted_s(:rfc822).to_s
   }
-  config.middleware.insert_before ActionDispatch::Static, NoCacheMiddleware, [/dashboard\/collections\/.*\/edit/, /uploaded_collection_thumbnails/]
+  config.middleware.use NoCacheMiddleware, [/dashboard\/collections\/.*\/edit/, /uploaded_collection_thumbnails/]
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :terser
   # config.assets.css_compressor = :sass
@@ -48,7 +48,11 @@ Rails.application.configure do
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = true
-
+  config.ssl_options = {
+    redirect: {
+      exclude: ->(request) { request.path == '/healthz' }
+    }
+  }
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
   config.log_level = :debug
@@ -59,11 +63,14 @@ Rails.application.configure do
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
 
+  config.cache_store = :redis_cache_store, { url: ENV['RAILS_CACHE_STORE_URL'] } if /^redis/.match?(ENV.fetch('RAILS_CACHE_STORE_URL', ''))
+
   # Use a real queuing backend for Active Job (and separate queues per environment)
   require 'active_job/queue_adapters/better_active_elastic_job_adapter'
   config.active_job.queue_adapter = ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq')
   # config.active_job.queue_name_prefix = "hyku_#{Rails.env}"
 
+  config.action_mailer.default_options = { from: ENV.fetch('HYKU_CONTACT_EMAIL', 'changeme@example.com') }
   if ENV['SMTP_ENABLED'].present? && ENV['SMTP_ENABLED'].to_s == 'true'
     config.action_mailer.smtp_settings = {
       user_name: ENV['SMTP_USER_NAME'],
@@ -71,7 +78,7 @@ Rails.application.configure do
       address: ENV['SMTP_ADDRESS'],
       domain: ENV['SMTP_DOMAIN'],
       port: ENV['SMTP_PORT'],
-      enable_starttls_auto: true,
+      enable_starttls_auto: ActiveModel::Type::Boolean.new.cast(ENV.fetch('SMTP_STARTTLS', true)),
       authentication: ENV['SMTP_TYPE']
     }
     # ActionMailer Config

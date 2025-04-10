@@ -9,8 +9,10 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   concern :range_searchable, BlacklightRangeLimit::Routes::RangeSearchable.new
   concern :iiif_search, BlacklightIiifSearch::Routes.new
   concern :oai_provider, BlacklightOaiProvider::Routes.new
+  mount WillowSword::Engine => '/sword'
 
   mount Hyrax::IiifAv::Engine, at: '/'
+  mount IiifPrint::Engine, at: '/'
   mount Riiif::Engine => 'images', as: :riiif if Hyrax.config.iiif_image_server?
 
   authenticate :user, ->(u) { u.superadmin? || u.admin? } do
@@ -45,10 +47,24 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
 
   get 'status', to: 'status#index'
 
+  # routes for the  api
+  namespace :api, defaults: { format: :json } do
+    resource :sushi do
+      collection do
+        get 'r51/status', to: 'sushi#server_status'
+        get 'r51/reports', to: 'sushi#report_list'
+        get 'r51/reports/pr', to: 'sushi#platform_report'
+        get 'r51/reports/pr_p1', to: 'sushi#platform_usage'
+        get 'r51/reports/ir', to: 'sushi#item_report'
+      end
+    end
+  end
+
   mount BrowseEverything::Engine => '/browse'
 
   resource :site, only: [:update] do
     resource :labels, only: %i[edit update]
+    resources :roles, only: %i[index update]
   end
 
   root 'hyrax/homepage#index'
@@ -80,7 +96,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   mount Blacklight::Engine => '/'
   mount BlacklightAdvancedSearch::Engine => '/'
   mount Hyrax::Engine, at: '/'
-  mount Bulkrax::Engine, at: '/' if ENV.fetch('HYKU_BULKRAX_ENABLED', 'true') == 'true'
+  mount Bulkrax::Engine, at: '/' if Hyku.bulkrax_enabled?
   mount HykuKnapsack::Engine, at: '/'
   concern :searchable, Blacklight::Routes::Searchable.new
   concern :exportable, Blacklight::Routes::Exportable.new

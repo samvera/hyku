@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 Flipflop.configure do
+  feature :home_page_recent_document_show_depositor,
+          default: false, # Default to false as this is PALNI/PALCI preference
+          description: "Shows the depositor of each homepage's recent documents."
+
+  feature :home_page_recent_document_show_keyword,
+          default: false, # Default to false as this is PALNI/PALCI preference
+          description: "Shows the keywords of each homepage's recent documents."
+
   feature :show_workflow_roles_menu_item_in_admin_dashboard_sidebar,
           default: false,
           description: "Shows the Workflow Roles menu item in the admin dashboard sidebar."
@@ -33,4 +41,8 @@ Flipflop.configure do
   feature :show_login_link,
           default: true,
           description: "Show General Login Link at Top Right of Page."
+
+  feature :treat_some_user_inputs_as_markdown,
+          default: false,
+          description: "Treat some user inputs (e.g. titles and descriptions) as markdown."
 end

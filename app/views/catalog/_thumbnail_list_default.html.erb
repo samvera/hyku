@@ -1,0 +1,21 @@
+<!-- OVERRIDE Hyrax v5.0 to allow passign options to the thumbnail tag
+     to allow carrying along the query to the universal viewer -->
+<% model = document.hydra_model %>
+
+<% if params['q'].present? && document.any_highlighting_in_all_text_fields? %>
+  <% additional_options = params.slice('q').merge( { :highlight=>'true' } ) %>
+<% elsif params['q'].present? %>
+  <% additional_options  = params.slice('q') %>
+<% else %>
+  <% additional_options = {} %>
+<% end %>
+
+<div class="col-md-3">
+  <% if model == Hyrax::PcdmCollection || model < Hyrax::PcdmCollection %>
+    <%= document_presenter(document)&.thumbnail&.thumbnail_tag({}, suppress_link: true) %>
+  <% else %>
+    <div class="list-thumbnail">
+      <%= document_presenter(document)&.thumbnail&.thumbnail_tag({}, additional_options ) %>
+    </div>
+  <% end %>
+</div>

@@ -23,6 +23,11 @@ class Account < ApplicationRecord
            inverse_of: :full_account
   has_many :search_accounts, class_name: 'Account', through: :search_account_cross_searches
 
+  belongs_to :solr_endpoint, dependent: :delete
+  belongs_to :fcrepo_endpoint, dependent: :delete
+  belongs_to :redis_endpoint, dependent: :delete
+
+  accepts_nested_attributes_for :solr_endpoint, :fcrepo_endpoint, :redis_endpoint, update_only: true
   accepts_nested_attributes_for :domain_names, allow_destroy: true
   accepts_nested_attributes_for :full_accounts
   accepts_nested_attributes_for :full_account_cross_searches, allow_destroy: true
@@ -42,11 +47,22 @@ class Account < ApplicationRecord
                      format: { with: /\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/ },
                      unless: proc { |a| a.tenant == 'public' || a.tenant == 'single' }
 
+  after_save :schedule_jobs_if_settings_changed
+
   def self.admin_host
     host = ENV.fetch('HYKU_ADMIN_HOST', nil)
     host ||= ENV['HOST']
     host ||= 'localhost'
     canonical_cname(host)
+  end
+
+  # @return [Account]
+  def self.from_request(request)
+    from_cname(request.host)
+  end
+
+  def self.from_cname(cname)
+    joins(:domain_names).find_by(domain_names: { is_active: true, cname: canonical_cname(cname) })
   end
 
   def self.root_host
@@ -118,7 +134,7 @@ class Account < ApplicationRecord
     ActionController::Base.perform_caching = is_enabled
     # rubocop:disable Style/ConditionalAssignment
     if is_enabled
-      Rails.application.config.cache_store = :redis_cache_store, { url: Redis.current.id }
+      Rails.application.config.cache_store = :redis_cache_store, { redis: Hyrax::RedisEventStore.instance }
     else
       Rails.application.config.cache_store = :file_store, DEFAULT_FILE_CACHE_STORE
     end
@@ -145,6 +161,70 @@ class Account < ApplicationRecord
 
   def cache_api?
     cache_api
+  end
+
+  def institution_name
+    sites.first&.institution_name || cname
+  end
+
+  def institution_id_data
+    {}
+  end
+
+  def find_job(klass)
+    ActiveJob::Base.find_job(klass: klass, tenant_id: self.tenant)
+  end
+
+  def find_or_schedule_jobs
+    account = Site.account
+    AccountElevator.switch!(self)
+
+    jobs_to_schedule = [
+      EmbargoAutoExpiryJob,
+      LeaseAutoExpiryJob
+    ]
+
+    jobs_to_schedule << BatchEmailNotificationJob if batch_email_notifications
+
+    if ActiveModel::Type::Boolean.new.cast(ENV.fetch("HYKU_USE_QUEUED_INDEX", false))
+      jobs_to_schedule << Hyrax::QueuedIndexJob
+      jobs_to_schedule << Hyrax::QueuedDeleteJob
+    end
+
+    if analytics_reporting && Hyrax.config.analytics_reporting?
+      jobs_to_schedule << DepositorEmailNotificationJob if depositor_email_notifications
+      jobs_to_schedule << UserStatCollectionJob
+    end
+
+    jobs_to_schedule.each do |klass|
+      klass.perform_later unless find_job(klass)
+    end
+
+    account ? AccountElevator.switch!(account) : reset!
+  end
+
+  private
+
+  def schedule_jobs_if_settings_changed
+    return unless settings
+
+    relevant_settings = [
+      'batch_email_notifications',
+      'depositor_email_notifications',
+      'analytics_reporting'
+    ]
+
+    return unless saved_changes['settings']
+    old_settings = saved_changes['settings'][0] || {}
+    new_settings = saved_changes['settings'][1] || {}
+
+    old_relevant_settings = old_settings.slice(*relevant_settings)
+    new_relevant_settings = new_settings.slice(*relevant_settings)
+
+    return unless old_relevant_settings != new_relevant_settings
+    Apartment::Tenant.switch(self.tenant) do
+      find_or_schedule_jobs
+    end
   end
 end
 # rubocop:enable Metrics/ClassLength

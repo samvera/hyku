@@ -1,18 +1,32 @@
 ---
 it:
-  errors:
-    messages:
-      valid_embed_url: "deve essere un URL di incorporamento valido di YouTube o Vimeo."
   activefedora:
     models:
+      etd: ETD
       generic_work: Lavoro
       image: Immagine
+      oer: Risorse educative aperte
   activerecord:
     attributes:
       site:
         institution_name_full: Nome dell'istituto completo
   application:
     tagline: La soluzione di repository di nuova generazione
+  blacklight:
+    search:
+      fields:
+        facet:
+          contributing_library_sim: Biblioteca di contributo
+          contributor_sim: Collaboratore
+          human_readable_type_sim: Tipo
+          member_of_collections_sim: Collezioni
+          resource_type_sim: Tipo di risorsa
+        show:
+          additional_information: Informazioni aggiuntive sui diritti
+    slideshow_info: Seleziona un'immagine per avviare la presentazione
+  errors:
+    messages:
+      valid_embed_url: deve essere un URL di incorporamento valido di YouTube o Vimeo.
   helpers:
     action:
       become: Diventare
@@ -72,6 +86,7 @@ it:
             success: "%{group} aggiornato"
         humanized_name:
           admin: Amministratori di repository
+          group/public: Utenti non autorizzati
           registered: utente registrato
         label:
           actions: Azioni
@@ -126,11 +141,15 @@ it:
     identity_provider:
       header: Provider di identità di autenticazione
       label:
+        create_new: Nuovo
+        edit: Modificare
+        logo: Logo
         logo_image: Immagine per la pagina SSO
         logo_image_alt_text: Testo alternativo per l'immagine
         name: Nome o descrizione
         options: Opzioni
         provider: Fornitore
+        updated_at: Aggiornato a
     proprietor:
       accounts:
         nav: conti
@@ -170,6 +189,8 @@ it:
       appearances:
         show:
           forms:
+            active_tabs_background_color:
+              hint: Colore al passaggio del mouse sulle schede della home page.
             banner_image:
               hint: Per utilizzare un'immagine come sfondo di masthead, è necessario utilizzare un'immagine (JPG, GIF o PNG) alta almeno 120 pixel e larga 1200 pixel. Per risultati ottimali, utilizzare un'immagine larga almeno 1800 pixel.
             collection_banner_text_color:
@@ -202,6 +223,8 @@ it:
               hint: Si applica ai pulsanti Home, Informazioni, Contatti e Guida solo su quelle pagine specifiche (con un'opacità del 15%).
             primary_button_hover_color:
               hint: Pulsanti di interazione di condivisione, ricerca e raccolta (modifica, funzionalità, ecc.). Anche il bordo di questi pulsanti sarà di questo colore.
+            primary_button_text_color:
+              hint: Colore del testo per i pulsanti di interazione di condivisione, ricerca e raccolta
             themes:
               confirm: Se il tuo tema non sembra essere applicato correttamente, verifica che non venga sovrascritto dal CSS personalizzato.
           hints:
@@ -218,12 +241,30 @@ it:
             directory_image: Immagine della directory
             favicon: favicon
             fonts: Font
+            logo: Logo
             themes: Temi
+      roles_service_jobs:
+        header: Lavori di riparazione dati
+        jobs:
+          create_admin_set_accesses:
+            description: La creazione di un record Hyrax::PermissionTemplateAccess (combinato con Ability#user_groups) consentirà ai Works in tutti gli AdminSet di essere visualizzati nelle query Blacklight/Solr.
+            label: Crea accessi set di amministrazione
+          create_collection_accesses:
+            description: Poiché ogni ruolo di raccolta ha un certo livello di accesso a ogni raccolta all'interno di un tenant, la creazione di un record Hyrax::PermissionTemplateAccess (combinato con Ability#user_groups) significa che tutte le raccolte verranno visualizzate nelle query Blacklight/Solr.
+            label: Crea accessi alla raccolta
+          create_collection_type_participants:
+            description: Poiché alcuni ruoli della raccolta hanno accesso a ogni raccolta all'interno di un tenant, creare per loro un record Hyrax::CollectionTypeParticipant su ogni Hyrax::CollectionType (eccetto AdminSet)
+            label: Crea partecipanti al tipo di raccolta
+          grant_workflow_roles_for_all_admin_sets:
+            description: 'Le autorizzazioni per depositare opere sono controllate dai ruoli del flusso di lavoro sui singoli AdminSet. Affinché i record Hyrax::Group e Utente che hanno il ruolo ''Editor di lavoro'' o ''Depositatore di lavoro'' dispongano delle autorizzazioni corrette per Works, concediamo loro ruoli di flusso di lavoro per tutti gli AdminSet. NOTA: tutti gli AdminSet devono avere un modello di autorizzazione altrimenti l''operazione non funzionerà. Eseguire prima "Crea accessi set di amministrazione".'
+            label: L'amministratore imposta i ruoli del flusso di lavoro
       sidebar:
         accounts: conti
         activity_summary: Riepilogo attività
         labels: etichette
         manage_groups: Gestisci gruppi
+        repository_activity: Attività di deposito
+        roles_service_jobs: Riparazione dati
         system_status: Stato del sistema
       users:
         activate:
@@ -236,6 +277,7 @@ it:
           success: L'utente "%{user}" è stato cancellato con successo.
         index:
           action_label: Azione
+          activate: Attivare
           add: Invita utente
           delete: Elimina
           invite_users: Aggiungi o invita l'utente via email
@@ -292,6 +334,7 @@ it:
         email: Email
         header: Gestisci utenti
         manage: Gestire
+        superadmin: SuperAmministratore
         title: Titolo
         view_users: Visualizza utenti
       new:

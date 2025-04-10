@@ -1,39 +1,10 @@
-<%# OVERRIDE Hyrax 2.9 to make relationships only show if they exist %>
-<% if !current_user && presenter.grouped_presenters.present? %>
-  <%# Collection %>
-  <div class="work-show">
-    <h2><%= t('hyrax.base.show.relationships') %></h2>
-    <%= render 'relationships_parent_rows', presenter: presenter %>
-  </div>
-<% end %>
+<%# OVERRIDE Hyrax 6 to include parent works %>
+<dl class="work-show">
+  <%= render 'relationships_parent_rows', presenter: presenter %>
+</dl>
 
-<% if current_user %>
-  <div class="work-show">
-    <h2><%= t('hyrax.base.show.relationships') %></h2>
-    <%# Admin Set %>
-    <%= presenter.attribute_to_html(:admin_set, render_as: :faceted, html_dl: true) %>
-
-    <%# Collection %>
-    <% presenter.grouped_presenters(except: presenter.presenter_types).each_pair do |model_name, items| %>
-      <%= render 'relationships_parent_row', type: model_name, items: items, presenter: presenter %>
-    <% end %>
-    <%# Render grouped presenters. Show rows if there are any items of that type %>
-    <% presenter.presenter_types.each do |type| %>
-      <% presenter.grouped_presenters(filtered_by: type).each_pair do |_, items| %>
-        <%= render 'relationships_parent_row', type: type, items: items, presenter: presenter %>
-      <% end %>
-    <% end %>
-
-    <%# Parent Work %>
-    <%# Render a link back to its parent works %>
-    <% if presenter.parent_works(current_user).present? %>
-      <%= render 'relationships_parent_works_rows', presenter: presenter %>
-    <% end %>
-  </div>
-<% else %>
-  <%# Parent Work %>
-  <%# Render a link back to its parent works %>
-  <% if presenter.parent_works(current_user).present? %>
-    <%= render 'relationships_parent_works_rows', presenter: presenter %>
-  <% end %>
+<%# Parent Work %>
+<%# Render a link back to its parent works %>
+<% if presenter.parent_works(current_user).present? %>
+  <%= render 'relationships_parent_works_rows', presenter: presenter %>
 <% end %>

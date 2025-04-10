@@ -29,7 +29,8 @@ module Admin
     private
 
     def account_params
-      params.require(:account).permit(:name, :cname, :title, *@account.public_settings.keys)
+      is_superadmin = current_ability.superadmin?
+      params.require(:account).permit(:name, :cname, :title, *@account.public_settings(is_superadmin: is_superadmin).keys)
     end
 
     def set_current_account

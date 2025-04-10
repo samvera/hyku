@@ -5,11 +5,16 @@ inherit_from:
 inherit_gem:
   bixby: bixby_default.yml
 
+Layout/IndentationWidth:
+  Width: 2
+
 AllCops:
   NewCops: disable
   TargetRubyVersion: 3.2.2
   DisplayCopNames: true
+  SuggestExtensions: false
   Exclude:
+    - 'gems/**/*'
     - 'db/**/*'
     - 'script/**/*'
     - 'spec/test_app_templates/**/*'
@@ -17,6 +22,7 @@ AllCops:
     - 'lib/hyrax/specs/**/*'
     - 'bin/graph'
     - 'bin/import_from_purl'
+    - 'spec/features/**/*'
 
 Lint/ImplicitStringConcatenation:
   Exclude:
@@ -27,7 +33,7 @@ Rails/Output:
     - 'lib/generators/**/*'
 
 Metrics/BlockLength:
-  IgnoredMethods: ['included']
+  AllowedMethods: ['included']
   Exclude:
     - 'hyrax.gemspec'
     - 'app/models/concerns/hyrax/content_block_behavior.rb'
@@ -41,6 +47,7 @@ Metrics/BlockLength:
     - 'lib/tasks/*.rake'
     - 'spec/**/*.rb'
     - 'tasks/benchmark.rake'
+    - 'config/application.rb'
 
 Style/AsciiComments:
   Enabled: false

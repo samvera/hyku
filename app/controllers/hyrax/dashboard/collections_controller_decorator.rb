@@ -2,34 +2,55 @@
 
 # OVERRIDE Hyrax v5.0.0rc2
 # - Fix file upload in logo and banner
-# - Use work titles for collection thumbnail select & to add an option to reset to the default thumbnail
+# - ensure user is allowed to change visibility
+# - add the ability to upload a collection thumbnail
+# - add altext to collection banner
+# @TODO clean up of unnecessary methods now that we are using Valkyrie transactions to set branding
+
 module Hyrax
   module Dashboard
     ## Shows a list of all collections to the admins
     # rubocop:disable Metrics/ModuleLength
     module CollectionsControllerDecorator
+      include Hyku::CollectionBrandingBehavior
+
       def show
         configure_show_sort_fields
 
         super
       end
 
-      private
+      # rubocop:disable Metrics/AbcSize
+      # rubocop:disable Metrics/MethodLength
+      def update_valkyrie_collection
+        return after_update_errors(form_err_msg(form)) unless form.validate(collection_params)
 
-      def configure_show_sort_fields
-        # In the CollectionsControllerDecorator, we clear the sort fields and add our own to have
-        # the ability to sort the index with custom fields. However, this also affects the show page.
-        # Here we set the sort fields back to the defaults for the show page.
-        blacklight_config.sort_fields = CatalogController.blacklight_config.sort_fields
+        result = transactions['change_set.update_collection']
+                 .with_step_args(
+                          'collection_resource.save_collection_banner' => { update_banner_file_ids: params["banner_files"],
+                                                                            alttext: params["banner_text"]&.first,
+                                                                            banner_unchanged_indicator: params["banner_unchanged"] },
+                          'collection_resource.save_collection_logo' => { update_logo_file_ids: params["logo_files"],
+                                                                          alttext_values: params["alttext"],
+                                                                          linkurl_values: params["linkurl"],
+                                                                          logo_unchanged_indicator: false },
+                          'collection_resource.save_collection_thumbnail' => { update_thumbnail_file_ids: params["thumbnail_files"],
+                                                                               thumbnail_unchanged_indicator: params["thumbnail_unchanged"],
+                                                                               alttext_values: params["thumbnail_text"] }
+                        )
+                 .call(form)
+        @collection = result.value_or { return after_update_errors(result.failure.first) }
+
+        process_member_changes
+        after_update_response
       end
-
-      public
+      # rubocop:enable Metrics/AbcSize
+      # rubocop:enable Metrics/MethodLength
 
       def edit
         form
-        collection_type
         # Gets original filename of an uploaded thumbnail. See #update
-        return unless ::SolrDocument.find(@collection.id).thumbnail_path.include?("uploaded_collection_thumbnails") && uploaded_thumbnail?
+        return unless ::SolrDocument.find(@collection.id).thumbnail_path&.include?("uploaded_collection_thumbnails") && uploaded_thumbnail?
         @thumbnail_filename = File.basename(uploaded_thumbnail_files.reject { |f| File.basename(f).include? @collection.id }.first)
       end
 
@@ -48,11 +69,12 @@ module Hyrax
         super
       end
 
+      # OVERRIDE Hyrax v5.0.0 to add the ability to upload a collection thumbnail
+      # Not used with Valkyrie
       def process_branding
-        super
-
-        # TODO: does this still work?
-        process_uploaded_thumbnail(params[:collection][:thumbnail_upload]) if params[:collection][:thumbnail_upload]
+        process_banner_input
+        process_logo_input
+        process_thumbnail_input
       end
 
       # Deletes any previous thumbnails. The thumbnail indexer (see services/hyrax/indexes_thumbnails)
@@ -100,7 +122,14 @@ module Hyrax
 
       private
 
-      # branding specific methods
+      def configure_show_sort_fields
+        # In the CollectionsControllerDecorator, we clear the sort fields and add our own to have
+        # the ability to sort the index with custom fields. However, this also affects the show page.
+        # Here we set the sort fields back to the defaults for the show page.
+        blacklight_config.sort_fields = CatalogController.blacklight_config.sort_fields
+      end
+
+      ## Branding Methods not used with Valkyrie
       def process_banner_input
         return update_existing_banner if params["banner_unchanged"] == "true"
         remove_banner
@@ -146,18 +175,6 @@ module Hyrax
         logo_info
       end
 
-      def collection_params
-        if Hyrax.config.collection_class < ActiveFedora::Base
-          @participants = extract_old_style_permission_attributes(params[:collection])
-          form_class.model_attributes(params[:collection])
-        else
-          params.permit(collection: {})[:collection]
-                .merge(params.permit(:collection_type_gid)
-              .with_defaults(collection_type_gid: default_collection_type_gid))
-                .merge(member_of_collection_ids: Array(params[:parent_id]))
-        end
-      end
-
       # rubocop:disable Metrics/MethodLength
       def process_uploaded_thumbnail(uploaded_file)
         dir_name = UploadedCollectionThumbnailPathService.upload_dir(@collection)
@@ -179,21 +196,9 @@ module Hyrax
         File.chmod(0o664, "#{dir_name}/#{@collection.id}_card.jpg")
       end
       # rubocop:enable Metrics/MethodLength
-
-      ## OVERRIDE Hyrax v5.0.0rc2 handle file locations
-      def process_file_location(f)
-        if /^http/.match?(f.file_url)
-          f.file.download!(f.file_url)
-          f.file_url
-        elsif %r{^\/}.match?(f.file_url)
-          f.file.path
-        else
-          f.file_url
-        end
-      end
-      ## END OVERRIDE
     end
   end
 end
 
 Hyrax::Dashboard::CollectionsController.prepend(Hyrax::Dashboard::CollectionsControllerDecorator)
+Hyrax::Dashboard::CollectionsController.form_class = Hyrax::Forms::PcdmCollectionForm

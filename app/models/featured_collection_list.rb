@@ -13,7 +13,7 @@ class FeaturedCollectionList
       existing_record = FeaturedCollection.find(attributes['id'])
       existing_record.update(attributes.except('id'))
     end
-    # rubocop:enable Layout/LineLength
+    # rubocop:enable Metrics/MethodLength
   end
 
   def featured_collections
@@ -24,6 +24,8 @@ class FeaturedCollectionList
       collection.destroy if collection.presenter.blank?
       collection.presenter.blank?
     end
+    sort_by_title! unless manually_ordered?
+    @collections
   end
 
   delegate :empty?, to: :featured_collections
@@ -45,6 +47,14 @@ class FeaturedCollectionList
     Hyrax::PresenterFactory.build_for(ids:,
                                       presenter_class: Hyku::WorkShowPresenter,
                                       presenter_args: ability)
+  end
+
+  def manually_ordered?
+    !@collections.all? { |c| c.order == FeaturedCollection.feature_limit }
+  end
+
+  def sort_by_title!
+    @collections.sort_by! { |c| c.presenter.title.first.downcase }
   end
 
   def collection_with_id(id)

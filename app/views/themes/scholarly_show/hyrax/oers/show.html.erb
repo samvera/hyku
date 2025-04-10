@@ -1,0 +1,66 @@
+<% content_for(:extra_body_classes, 'works-show ') %>
+
+<% provide :page_title, @presenter.page_title %>
+
+<%= render 'shared/citations' %>
+<%= render './shared/additional_citations' %>
+<div class="row work-type">
+  <div class="col-xs-12">
+    <%= render 'work_type', presenter: @presenter %>
+  </div>
+  <div itemscope itemtype="http://schema.org/CreativeWork" class="col-xs-12">
+    <div class="card card-default">
+      <div class="card-heading">
+        <%= render 'work_title', presenter: @presenter %>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <%= render 'workflow_actions_widget', presenter: @presenter %>
+          <% if @presenter.iiif_viewer? %>
+            <div class="col-sm-12">
+              <%= render 'representative_media', presenter: @presenter, viewer: true %>
+            </div>
+            <div class="col-sm-12">
+              <div class="image-show-description">
+                <%= render 'work_description', presenter: @presenter %>
+              </div>
+            </div>
+          <% elsif Flipflop.default_pdf_viewer? && @presenter.show_pdf_viewer? && @presenter.file_set_presenters.any?(&:pdf?) %>
+            <div class="col-sm-12">
+              <%= render 'pdf_js', file_set_presenter: pdf_file_set_presenter(@presenter) %>
+            </div>
+            <div class="col-sm-12">
+              <%= render 'work_description', presenter: @presenter %>
+            </div>
+          <% else %>
+            <div class="col-sm-3 mb-1">
+              <%= render 'representative_media', presenter: @presenter, viewer: false unless @presenter.iiif_viewer? || @presenter.file_set_presenters.any?(&:pdf?) %>
+            </div>
+            <div class="col-sm-9">
+              <%= render 'work_description', presenter: @presenter %>
+            </div>
+          <% end %>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 image-show-metadata">
+            <%= render 'metadata', presenter: @presenter %>
+          </div>
+          <div class="col-sm-6">
+            <%= render('download_pdf', presenter: @presenter, file_set_id: @presenter.file_set_presenters.first.id) if @presenter.show_pdf_download_button? %>
+            <%= render 'citations', presenter: @presenter %>
+          </div>
+          <div class="col-sm-12">
+            <%= render 'relationships', presenter: @presenter %>
+            <% if @presenter.class == Hyrax::OerPresenter %>
+              <%= render 'hyrax/oers/related_items', presenter: @presenter %>
+            <% end %>
+            <%= render 'items', presenter: @presenter %>
+            <%# TODO: we may consider adding these partials in the future %>
+            <%# = render 'sharing_with', presenter: @presenter %>
+            <%# = render 'user_activity', presenter: @presenter %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -5,6 +5,7 @@
     <%= render partial: 'layouts/head_tag_content' %>
     <%= content_for(:head) %>
   </head>
+  <% content_for(:extra_body_classes, 'public-facing') %>
 
   <body class="<%= body_class %> <%= home_page_theme %> <%= search_results_theme %> <%= show_page_theme %>">
     <div class="skip-to-content">
@@ -28,7 +29,9 @@
       <%= render 'shared/read_only' if Flipflop.read_only? %>
       <%= content_for?(:content) ? yield(:content) : yield %>
     </div><!-- /#content-wrapper -->
-    <%= render 'shared/footer' %>
+    <% unless controller.controller_name == 'splash' %>
+      <%= render 'shared/footer' %>
+    <% end %>
     <%= render 'shared/modal' %>
   </body>
 </html>

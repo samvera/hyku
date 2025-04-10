@@ -21,7 +21,19 @@ module Hyrax
             else
               Rails.application.routes.url_helpers.solr_document_url(id, host: hostname)
             end
-      Site.account.ssl_configured ? url.sub(/\Ahttp:/, 'https:') : url
+      Site.account&.ssl_configured ? url.sub(/\Ahttp:/, 'https:') : url
+    end
+
+    ##
+    # OVERRIDE to find child work's filesets for IiifPrint
+    # @return [Array<#to_s>]
+    def member_ids
+      m = model.is_a?(::SolrDocument) ? model.hydra_model : model.class
+      m < Hyrax::Resource ? Array.wrap(file_ids) : Hyrax::SolrDocument::OrderedMembers.decorate(model).ordered_member_ids
+    end
+
+    def file_ids
+      model["descendent_member_ids_ssim"] || model.member_ids
     end
 
     ##
@@ -29,7 +41,7 @@ module Hyrax
     def manifest_url
       return '' if id.blank?
 
-      protocol = Site.account.ssl_configured ? 'https' : 'http'
+      protocol = Site.account&.ssl_configured ? 'https' : 'http'
       Rails.application.routes.url_helpers.polymorphic_url([:manifest, model], host: hostname, protocol:)
     end
 

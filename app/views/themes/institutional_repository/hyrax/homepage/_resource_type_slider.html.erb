@@ -3,27 +3,31 @@
   <meta name="turbolinks-cache-control" content="no-cache">
 <% end %>
 
-<div class="carousel slide institutional-repository-carousel" id="carousel-tilenav" data-ride="carousel" data-interval="false">
-  <div class="carousel-inner">
-    <% resource_types.each.with_index do |(k,v), i| %>
-      <% next if v[0].zero? %>
-      <div class="carousel-item <%= 'active' if i.zero? %>">
-        <div class="col-sm-3 col-md-2 text-center">
-          <%= link_to "/catalog?f[resource_type_sim][]=#{k}", style: "color: inherit;" do %>
-            <i class='<%= "#{v[1]}" %>' aria-hidden="true"></i>
-            <h5><%= k %></h5>
-            <p><%= v[0] %></p>
-          <% end %>
-        </div>
+<div class="institutional-repository-carousel">
+  <div class="resource-container">
+    <a role="button" onclick="scrollResources('previous')">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <div class="resource-wrapper">
+      <div class="resource-row">
+        <% resource_types.each do |resource_type, value| %>
+          <% resource_count = value[0] %>
+          <% resource_icon = value[1] %>
+          <% next if resource_count.zero? %>
+          <div class="resource-item">
+            <%= link_to "/catalog?f[resource_type_sim][]=#{resource_type}", style: "color: inherit;" do %>
+              <i class='<%= "#{resource_icon}" %>' aria-hidden="true"></i>
+              <h6><%= resource_type %></h6>
+              <p><%= resource_count %></p>
+            <% end %>
+          </div>
+        <% end %>
       </div>
-    <% end %>
+    </div>
+    <a role="button" onclick="scrollResources('next')">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
   </div>
-<a class="carousel-control-prev" href="#carousel-tilenav" role="button" data-slide="prev">
-  <span class="fa fa-chevron-left carousel-control-prev-icon" aria-hidden="true"></span>
-  <span class="sr-only">Previous</span>
-</a>
-<a class="carousel-control-next" href="#carousel-tilenav" role="button" data-slide="next">
-  <span class="fa fa-chevron-right carousel-control-next-icon" aria-hidden="true"></span>
-  <span class="sr-only">Next</span>
-</a>
 </div>

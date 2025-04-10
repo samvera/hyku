@@ -8,7 +8,10 @@
     <button type="button" id="activate-cropper" class="btn btn-primary" style=<%= @form.banner_image.url ? "display:block;" : "display:none;" %>>Crop Image</button>
     <br />
     <div id="image-preview" style="width: 100%; height: auto;">
-      <img id="image" src="<%= @form.banner_image.url || Hyrax.config.banner_image %>" alt="Banner Image Preview Area" class="img-fluid" />
+      <img id="image" src="<%= "#{@form.banner_image.url || Hyrax.config.banner_image}?#{Time.now.to_i}" %>" alt="Banner Image Preview Area" class="img-fluid" />
+    </div>
+    <div id="spinner" style="display: none;" class="pull-right">
+      <%= image_tag("loading-progress.gif", alt: "Loading...") %>
     </div>
   </div>
   <div class="card-footer">
@@ -38,7 +41,7 @@
    }
  });
 
- var inputImage = document.querySelector('[name="form[banner_image]"]');
+ var inputImage = document.querySelector('[name="admin_appearance[banner_image]"]');
 
  inputImage.addEventListener('change', function(e) {
    var files = e.target.files;
@@ -60,25 +63,47 @@
    }
  });
 
- document.querySelector('.banner-submit').addEventListener('click', function(e) {
-   e.preventDefault();
-   if (cropper) {
-     cropper.getCroppedCanvas().toBlob(function(blob) {
-       var formData = new FormData(document.querySelector('form'));
-       formData.append('admin_appearance[banner_image]', blob, 'cropped.jpg');  // Adjusted this line
-       $.ajax('/admin/appearance', {
-         method: 'POST',
-         data: formData,
-         processData: false,
-         contentType: false,
-         success() {
-           console.log('Upload success');
-         },
-         error() {
-           console.log('Upload error');
-         },
-       });
-     });
-   }
- });
+document.querySelector('.banner-submit').addEventListener('click', function(e) {
+  // Get all required fields
+  var requiredFields = document.querySelectorAll('input[required],textarea[required],select[required]');
+
+  // Check if all required fields are filled
+  for (var i = 0; i < requiredFields.length; i++) {
+    if (!requiredFields[i].value) {
+      // return early if not all required fields have been filled out
+      return;
+    }
+  }
+
+  e.preventDefault();
+
+  // Show the spinner
+  $('#spinner').show();
+
+  if (cropper) {
+    cropper.getCroppedCanvas().toBlob(function(blob) {
+      var formData = new FormData(document.querySelector('form'));
+      var currentAccountName = "<%= current_account.name %>";
+      formData.append('admin_appearance[banner_image]', blob, `${currentAccountName}-cropped.jpg`);
+
+      $.ajax('/admin/appearance', {
+        method: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success() {
+          console.log('Upload success');
+          // Hide the spinner
+          $('#spinner').hide();
+        },
+        error() {
+          console.log('Upload error');
+          // Hide the spinner
+          $('#spinner').hide();
+        },
+      });
+    });
+  }
+});
+
 </script>

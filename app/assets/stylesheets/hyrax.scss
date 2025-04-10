@@ -3,6 +3,7 @@
  *= require select2
  *= require_self
 */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Montserrat&display=swap');
 @import "variables";
 @import "bootstrap-default-overrides";
 @import "bootstrap";
@@ -22,6 +23,29 @@
 
 // for catalog search result snippets
 .highlight {
-  background: yellow;
+  background: #ffff00;
   font-weight: 700;
 }
+
+// to make collection form labels bold
+#collection-edit-controls label.control-label {
+  font-weight: bold !important;
+}
+
+// Overrides to prevent long titles from breaking out of their container
+// OVERRIDE: Hyrax for show page
+.work-title-wrapper .title-with-badges {
+  overflow-wrap: anywhere;
+  align-items: baseline;
+}
+
+// override Blacklight for catalog search
+.document-title-heading {
+  overflow-wrap: anywhere;
+}
+
+// Override Bootstrap for list results
+a {
+  overflow-wrap: anywhere;
+}
+

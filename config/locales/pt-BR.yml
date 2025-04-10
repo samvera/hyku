@@ -1,18 +1,32 @@
 ---
 pt-BR:
-  errors:
-    messages:
-      valid_embed_url: "deve ser uma URL de incorporação válida do YouTube ou Vimeo."
   activefedora:
     models:
+      etd: ETD
       generic_work: Trabalhar
       image: Imagem
+      oer: REA
   activerecord:
     attributes:
       site:
         institution_name_full: Nome completo da instituição
   application:
     tagline: A solução de repos
+  blacklight:
+    search:
+      fields:
+        facet:
+          contributing_library_sim: Biblioteca Contribuinte
+          contributor_sim: Contribuinte
+          human_readable_type_sim: Tipo
+          member_of_collections_sim: Coleções
+          resource_type_sim: Tipo de recurso
+        show:
+          additional_information: Informações adicionais sobre direitos
+    slideshow_info: Selecione uma imagem para iniciar a apresentação de slides
+  errors:
+    messages:
+      valid_embed_url: deve ser uma URL de incorporação válida do YouTube ou Vimeo.
   helpers:
     action:
       become: Tornar-se
@@ -72,6 +86,7 @@ pt-BR:
             success: "%{group} atualizado"
         humanized_name:
           admin: Administradores de repositório
+          group/public: Usuários não autorizados
           registered: Usuários registrados
         label:
           actions: Ações
@@ -126,11 +141,15 @@ pt-BR:
     identity_provider:
       header: Provedor de identidade de autenticação
       label:
+        create_new: Novo
+        edit: Editar
+        logo: Logotipo
         logo_image: Imagem para página SSO
         logo_image_alt_text: Texto alternativo para imagem
         name: Nome ou Descrição
         options: Opções
         provider: Fornecedor
+        updated_at: Atualizado em
     proprietor:
       accounts:
         nav: Contas
@@ -170,6 +189,8 @@ pt-BR:
       appearances:
         show:
           forms:
+            active_tabs_background_color:
+              hint: Cor de foco para abas da página inicial.
             banner_image:
               hint: Para usar uma imagem como plano de fundo do cabeçalho, você deve usar uma imagem (JPG, GIF ou PNG) com pelo menos 120 pixels de altura e 1200 pixels de largura. Para obter melhores resultados, use uma imagem com pelo menos 1800 pixels de largura.
             collection_banner_text_color:
@@ -202,6 +223,8 @@ pt-BR:
               hint: Aplica-se apenas aos botões Início, Sobre, Contato e Ajuda nessas páginas específicas (com 15% de opacidade).
             primary_button_hover_color:
               hint: Botões de compartilhamento, pesquisa e interação de coleção (editar, recurso, etc.). A borda desses botões também será dessa cor.
+            primary_button_text_color:
+              hint: Cor do texto para botões de interação de compartilhamento, pesquisa e coleção
             themes:
               confirm: Se o seu tema não parece estar sendo aplicado corretamente, verifique se ele não está sendo substituído pelo CSS personalizado.
           hints:
@@ -218,13 +241,30 @@ pt-BR:
             directory_image: Imagem do diretório
             favicon: favicon
             fonts: Fontes
+            logo: Logotipo
             themes: Temas
+      roles_service_jobs:
+        header: Trabalhos de reparo de dados
+        jobs:
+          create_admin_set_accesses:
+            description: A criação de um registro Hyrax::PermissionTemplateAccess (combinado com Ability#user_groups) permitirá que Works em todos os AdminSets apareçam em consultas Blacklight/Solr.
+            label: Criar acessos ao conjunto de administradores
+          create_collection_accesses:
+            description: Como cada função de coleção tem algum nível de acesso a cada coleção dentro de um locatário, criar um registro Hyrax::PermissionTemplateAccess (combinado com Ability#user_groups) significa que todas as coleções aparecerão nas consultas Blacklight/Solr.
+            label: Criar acessos à coleção
+          create_collection_type_participants:
+            description: Como algumas das funções de coleção têm acesso a todas as coleções dentro de um locatário, crie um registro Hyrax::CollectionTypeParticipant para elas em cada Hyrax::CollectionType (exceto AdminSet)
+            label: Criar participantes do tipo de coleção
+          grant_workflow_roles_for_all_admin_sets:
+            description: 'As permissões para depositar trabalhos são controladas por funções de fluxo de trabalho em AdminSets individuais. Para que os registros Hyrax::Group e User que possuem a função ''Editor de trabalho'' ou ''Depositador de trabalho'' tenham as permissões corretas para Works, concedemos a eles funções de fluxo de trabalho para todos os AdminSets. NOTA: Todos os AdminSets devem ter um modelo de permissão ou isso falhará. Execute ''Criar acessos ao conjunto de administradores'' primeiro.'
+            label: Administrador definir funções de fluxo de trabalho
       sidebar:
         accounts: Contas
         activity_summary: Resumo da atividade
         labels: Etiquetas
         manage_groups: Gerenciar grupos
         repository_activity: Atividade do repositório
+        roles_service_jobs: Reparo de dados
         system_status: Status do sistema
       users:
         activate:
@@ -237,6 +277,7 @@ pt-BR:
           success: O usuário "%{user}" foi excluído com sucesso.
         index:
           action_label: Açao
+          activate: Ativar
           add: Convidar Usuário
           delete: Excluir
           invite_users: Adicionar ou Convidar usuário por email
@@ -293,6 +334,7 @@ pt-BR:
         email: Email
         header: Gerenciar usuários
         manage: Gerir
+        superadmin: Superadministrador
         title: Título
         view_users: Ver usuários
       new:

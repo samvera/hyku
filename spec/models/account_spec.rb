@@ -82,6 +82,7 @@ RSpec.describe Account, type: :model do
       allow(ENV).to receive(:[]).and_call_original
       allow(ENV).to receive(:[]).with('HOST').and_return('system-host')
       expect(described_class.admin_host).to eq 'system-host'
+      allow(ENV).to receive(:[]).and_call_original # "un-stub" ENV
     end
 
     it 'falls back to localhost' do
@@ -90,6 +91,7 @@ RSpec.describe Account, type: :model do
       allow(ENV).to receive(:[]).and_call_original
       allow(ENV).to receive(:[]).with('HOST').and_return(nil)
       expect(described_class.admin_host).to eq 'localhost'
+      allow(ENV).to receive(:[]).and_call_original # "un-stub" ENV
     end
   end
 
@@ -124,7 +126,7 @@ RSpec.describe Account, type: :model do
       it "uses Redis as a cache store" do
         expect(Rails.application.config.action_controller.perform_caching).to be_truthy
         expect(ActionController::Base.perform_caching).to be_truthy
-        expect(Rails.application.config.cache_store).to eq([:redis_cache_store, { url: "redis://localhost:6379/0" }])
+        expect(Rails.application.config.cache_store).to include(:redis_cache_store)
       end
 
       it "reverts to using file store when cache is off" do
@@ -145,7 +147,7 @@ RSpec.describe Account, type: :model do
     end
 
     it 'switches the ActiveFedora solr connection' do
-      expect(ActiveFedora::SolrService.instance.conn.uri.to_s).to eq 'http://example.com/solr/'
+      expect(Hyrax::SolrService.connection.uri.to_s).to eq 'http://example.com/solr/'
     end
 
     it 'switches the ActiveFedora fcrepo connection' do
@@ -163,7 +165,7 @@ RSpec.describe Account, type: :model do
   end
 
   describe '#switch' do
-    let!(:previous_solr_url) { ActiveFedora::SolrService.instance.conn.uri.to_s }
+    let!(:previous_solr_url) { Hyrax::SolrService.connection.uri.to_s }
     let!(:previous_redis_namespace) { 'hyrax' }
     let!(:previous_fedora_host) { ActiveFedora.fedora.host }
     let!(:previous_data_cite_mode) { Hyrax::DOI::DataCiteRegistrar.mode }
@@ -184,24 +186,27 @@ RSpec.describe Account, type: :model do
     end
 
     it 'switches to the account-specific connection' do
-      subject.switch do
-        expect(ActiveFedora::SolrService.instance.conn.uri.to_s).to eq 'http://example.com/solr/'
-        expect(ActiveFedora.fedora.host).to eq 'http://example.com/fedora'
-        expect(ActiveFedora.fedora.base_path).to eq '/dev'
-        expect(Hyrax.config.redis_namespace).to eq 'foobaz'
-        expect(Hyrax::DOI::DataCiteRegistrar.mode).to eq 'test'
-        expect(Hyrax::DOI::DataCiteRegistrar.prefix).to eq '10.1234'
-        expect(Hyrax::DOI::DataCiteRegistrar.username).to eq 'user123'
-        expect(Hyrax::DOI::DataCiteRegistrar.password).to eq 'pass123'
-        expect(Rails.application.routes.default_url_options[:host]).to eq account.cname
-      end
+      expect(Hyrax::SolrService.connection.uri.to_s).not_to eq 'http://example.com/solr/'
+      expect do
+        subject.switch do
+          expect(Hyrax::SolrService.connection.uri.to_s).to eq 'http://example.com/solr/'
+          expect(ActiveFedora.fedora.host).to eq 'http://example.com/fedora'
+          expect(ActiveFedora.fedora.base_path).to eq '/dev'
+          expect(Hyrax.config.redis_namespace).to eq 'foobaz'
+          expect(Hyrax::DOI::DataCiteRegistrar.mode).to eq 'test'
+          expect(Hyrax::DOI::DataCiteRegistrar.prefix).to eq '10.1234'
+          expect(Hyrax::DOI::DataCiteRegistrar.username).to eq 'user123'
+          expect(Hyrax::DOI::DataCiteRegistrar.password).to eq 'pass123'
+          expect(Rails.application.routes.default_url_options[:host]).to eq account.cname
+        end
+      end.not_to change { Hyrax::SolrService.connection.uri.to_s }
     end
 
     it 'resets the active connections back to the defaults' do
       subject.switch do
         # no-op
       end
-      expect(ActiveFedora::SolrService.instance.conn.uri.to_s).to eq previous_solr_url
+      expect(Hyrax::SolrService.connection.uri.to_s).to eq previous_solr_url
       expect(ActiveFedora.fedora.host).to eq previous_fedora_host
       expect(Hyrax.config.redis_namespace).to eq previous_redis_namespace
       # datacite mode is reset to test in between for safety.
@@ -217,7 +222,7 @@ RSpec.describe Account, type: :model do
         subject.solr_endpoint = nil
         expect(subject.solr_endpoint).to be_kind_of NilSolrEndpoint
         subject.switch do
-          expect { ActiveFedora::SolrService.instance.conn.get 'foo' }.to raise_error RSolr::Error::ConnectionRefused
+          expect { Hyrax::SolrService.connection.get 'foo' }.to raise_error RSolr::Error::ConnectionRefused
         end
       end
 
@@ -578,6 +583,91 @@ RSpec.describe Account, type: :model do
         shared_search_account.full_account_ids = []
         expect(shared_search_account.full_accounts.size).to eq 0
       end
+    end
+  end
+
+  describe '#find_or_schedule_jobs' do
+    let(:account) { create(:account) }
+    let(:site_account) { create(:account) }
+
+    before do
+      allow(Site).to receive(:account).and_return(site_account)
+      allow(AccountElevator).to receive(:switch!)
+    end
+
+    it 'schedules default jobs' do
+      expect(EmbargoAutoExpiryJob).to receive(:perform_later)
+      expect(LeaseAutoExpiryJob).to receive(:perform_later)
+
+      account.find_or_schedule_jobs
+    end
+
+    it 'does not schedule jobs that already exist' do
+      allow(account).to receive(:find_job).with(EmbargoAutoExpiryJob).and_return(true)
+      allow(account).to receive(:find_job).with(LeaseAutoExpiryJob).and_return(true)
+
+      expect(EmbargoAutoExpiryJob).not_to receive(:perform_later)
+      expect(LeaseAutoExpiryJob).not_to receive(:perform_later)
+
+      account.find_or_schedule_jobs
+    end
+
+    context 'with batch email notifications enabled' do
+      before do
+        account.settings['batch_email_notifications'] = true
+        # Stub default jobs to prevent the error
+        allow(account).to receive(:find_job).with(EmbargoAutoExpiryJob).and_return(false)
+        allow(account).to receive(:find_job).with(LeaseAutoExpiryJob).and_return(false)
+      end
+
+      it 'schedules BatchEmailNotificationJob' do
+        allow(account).to receive(:find_job).with(BatchEmailNotificationJob).and_return(false)
+        expect(BatchEmailNotificationJob).to receive(:perform_later)
+        account.find_or_schedule_jobs
+      end
+
+      it 'does not schedule if job already exists' do
+        allow(account).to receive(:find_job).with(BatchEmailNotificationJob).and_return(true)
+        expect(BatchEmailNotificationJob).not_to receive(:perform_later)
+        account.find_or_schedule_jobs
+      end
+    end
+
+    context 'with analytics enabled' do
+      before do
+        account.settings['analytics_reporting'] = true
+        allow(Hyrax.config).to receive(:analytics_reporting?).and_return(true)
+      end
+
+      it 'schedules UserStatCollectionJob' do
+        expect(UserStatCollectionJob).to receive(:perform_later)
+        account.find_or_schedule_jobs
+      end
+
+      context 'with depositor email notifications enabled' do
+        before do
+          account.settings['depositor_email_notifications'] = true
+        end
+
+        it 'schedules DepositorEmailNotificationJob' do
+          expect(DepositorEmailNotificationJob).to receive(:perform_later)
+          account.find_or_schedule_jobs
+        end
+      end
+    end
+
+    it 'switches back to original account' do
+      expect(AccountElevator).to receive(:switch!).with(account)
+      expect(AccountElevator).to receive(:switch!).with(site_account)
+
+      account.find_or_schedule_jobs
+    end
+
+    it 'resets when no original account exists' do
+      allow(Site).to receive(:account).and_return(nil)
+      expect(account).to receive(:reset!)
+
+      account.find_or_schedule_jobs
     end
   end
 end

@@ -17,6 +17,8 @@ module Proprietor
     # GET /accounts/1
     # GET /accounts/1.json
     def show
+      @users = User.accessible_by(current_ability)
+
       add_breadcrumb t(:'hyrax.controls.home'), root_path
       add_breadcrumb t(:'hyrax.admin.sidebar.accounts'), proprietor_accounts_path
       add_breadcrumb @account.tenant, edit_proprietor_account_path(@account)
@@ -93,20 +95,20 @@ module Proprietor
 
     # Never trust parameters from the scary internet, only allow the permitted parameters through.
     def edit_account_params
-      params.require(:account).permit(:name,
-                                      :cname,
-                                      :title,
-                                      :is_public,
-                                      :search_only,
-                                      *@account.live_settings.keys,
-                                      admin_emails: [],
-                                      full_account_cross_searches_attributes: [:id,
-                                                                               :_destroy,
-                                                                               :full_account_id,
-                                                                               full_account_attributes: [:id]],
-                                      solr_endpoint_attributes: %i[id url],
-                                      fcrepo_endpoint_attributes: %i[id url base_path],
-                                      data_cite_endpoint_attributes: %i[mode prefix username password])
+      params.require(:account).permit(
+        :name,
+        :cname,
+        :title,
+        :is_public,
+        :search_only,
+        *@account.live_settings.keys,
+        admin_emails: [],
+        full_account_cross_searches_attributes: [:id, :_destroy, :full_account_id, full_account_attributes: [:id]],
+        solr_endpoint_attributes: %i[id url],
+        fcrepo_endpoint_attributes: %i[id url base_path],
+        data_cite_endpoint_attributes: %i[mode prefix username password],
+        domain_names_attributes: %i[id tenant cname is_active _destroy]
+      )
     end
 
     def account_params

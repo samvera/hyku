@@ -1,0 +1,63 @@
+<%# OVERRIDE: Hyrax 2.5.2 to add Relationships partial for Oer worktype %>
+<%# (geezy): No more ghosts? %>
+<% content_for(:extra_body_classes, 'works-show ') %>
+
+<% provide :page_title, @presenter.page_title %>
+
+<%= render 'shared/citations' %>
+<%= render './shared/additional_citations' %>
+<div class="row work-type">
+  <div class="col-xs-12">
+    <%= render 'work_type', presenter: @presenter %>
+  </div>
+  <div class="col-xs-12">&nbsp;</div>
+  <div itemscope itemtype="http://schema.org/CreativeWork" class="col-xs-12">
+    <div class="card card-default">
+      <div class="card-heading">
+        <%= render 'work_title', presenter: @presenter %>
+        <%= render 'show_actions', presenter: @presenter %>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <%= render 'workflow_actions_widget', presenter: @presenter %>
+          <% if @presenter.video_embed_viewer? %>
+            <%= render 'video_embed_viewer', presenter: @presenter %>
+          <% elsif @presenter.iiif_viewer? %>
+            <div class="col-sm-12">
+              <%= render 'representative_media', presenter: @presenter, viewer: true %>
+            </div>
+          <% elsif @presenter.show_pdf_viewer? %>
+            <div class="col-sm-12">
+              <%= render 'pdf_js', file_set_presenter: pdf_file_set_presenter(@presenter) %>
+            </div>
+          <% else %>
+          <div class="col-sm-3 text-center">
+            <%= render 'representative_media', presenter: @presenter, viewer: false unless @presenter.iiif_viewer? || @presenter.show_pdf_viewer? %>
+            <%= render 'citations', presenter: @presenter %>
+          </div>
+          <% end %>
+          <% if @presenter.viewer? %>
+            <div class="col-sm-3 text-center">
+              <%= render('download_pdf', presenter: @presenter, file_set_id: @presenter.file_set_presenters.first.id) if @presenter.show_pdf_download_button? %>
+              <%= render 'citations', presenter: @presenter %>
+            </div>
+          <% end %>
+          <div class="col-sm-9">
+            <%= render 'work_description', presenter: @presenter %>
+            <%= render 'metadata', presenter: @presenter %>
+          </div>
+          <div class="col-sm-12">
+            <%= render 'relationships', presenter: @presenter %>
+            <% if @presenter.class == Hyrax::OerPresenter %>
+              <%= render 'hyrax/oers/related_items', presenter: @presenter %>
+            <% end %>
+            <%= render 'items', presenter: @presenter %>
+            <%# TODO: we may consider adding these partials in the future %>
+            <%# = render 'sharing_with', presenter: @presenter %>
+            <%# = render 'user_activity', presenter: @presenter %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -28,6 +28,9 @@ extraVolumeMounts: &volMounts
   - name: uploads
     mountPath: /app/samvera/hyrax-webapp/tmp/network_files
     subPath: network-files
+  - name: uploads
+    mountPath: /app/samvera/hyrax-webapp/storage/files
+    subPath: storage-files
 
 ingress:
   enabled: true
@@ -70,6 +73,8 @@ extraEnvVars: &envVars
     value: hyku-$CI_MERGE_REQUEST_ID.example.com
   - name: HYKU_ADMIN_ONLY_TENANT_CREATION
     value: "true"
+  - name: HYKU_BLOCK_VALKYRIE_REDIRECT
+    value: "false"
   - name: HYKU_CONTACT_EMAIL
     value: samvera@example.com
   - name: HYKU_DEFAULT_HOST
@@ -81,7 +86,7 @@ extraEnvVars: &envVars
   - name: HYKU_USER_DEFAULT_PASSWORD
     value: password
   - name: HYRAX_ACTIVE_JOB_QUEUE
-    value: sidekiq
+    value: good_job
   - name: HYRAX_FITS_PATH
     value: /app/fits/fits.sh
   - name: INITIAL_ADMIN_EMAIL

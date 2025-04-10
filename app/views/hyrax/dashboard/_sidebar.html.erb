@@ -1,5 +1,3 @@
-<%# OVERIDE Hyrax v5.0.0rc2 to use Hyku::MenuPresenter and add title attribute to link %>
-
 <% menu = Hyku::MenuPresenter.new(self) %>
 <div class="sidebar-toggle"><span class="fa fa-chevron-circle-right"></span></div>
 <nav aria-label="sidebar-nav">
@@ -15,9 +13,7 @@
       </div>
     </li>
     <li class="nav-item">
-      <%= link_to hyrax.dashboard_path,
-                  class: "nav-link",
-                  title: t('hyrax.admin.sidebar.dashboard') do %>
+      <%= link_to hyrax.dashboard_path, class: "nav-link", title: t('hyrax.admin.sidebar.dashboard') do %>
         <span class="fa fa-home" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.dashboard') %></span>
       <% end %>
     </li>

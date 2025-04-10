@@ -1,6 +1,23 @@
 .neutral_repository {
+  .theme-container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .carousel-item.active {
+    display: flex;
+    justify-content: center;
+  }
+
+  .site-title-container {
+    padding: 1.5em 0;
+  }
 
   ////// Basic Apperance Styles //////
+
+  .mt-4 {
+    margin-top: 40px;
+  }
 
   .mb-40 {
     margin-bottom: 40px;
@@ -96,24 +113,29 @@
     border: 1px solid #ddd;
   }
 
-  ////// Carousel //////
+  ////// Carousel & Featured Works //////
 
-  #featured-carousel {
+  .featured-works-section {
     border: 1px solid #ccc;
     padding: 1em;
   }
 
-  .carousel-opacity {
-    background-color: rgba(102, 102, 102, 0.5) !important;
+  // Custom height class for the carousel
+  .h-400 {
+    height: 400px;
   }
 
-  .carousel-inner > .item > img,
-  .carousel-inner > .item > a > img {
-    display: block;
-    height: 350px;
-    margin: auto;
-    max-width: 100%;
-    width: auto;
+  // Ensure smooth image transitions
+  .carousel-item {
+    img {
+      object-fit: contain;
+      object-position: center;
+      transition: transform .6s ease-in-out;
+    }
+  }
+
+  .carousel-opacity {
+    background-color: rgba(102, 102, 102, 0.5) !important;
   }
 
   div.carousel-caption {
@@ -155,6 +177,9 @@
   @media (max-width: 992px) {
     div.neutral-repository-collections:nth-of-type(2n+3) {
       clear: left;
+    }
+    .theme-container {
+      display: block;
     }
   }
 

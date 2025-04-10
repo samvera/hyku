@@ -1,0 +1,382 @@
+# Simple yaml config-driven schema which is used to define model attributes,
+# index key names, and form properties.
+#
+# Attributes must have a type but all other configuration options are optional.
+# Please note: If using Valkyrie's Fedora Metadata Adapter, predicates for attributes
+# must be placed here.
+#
+# attributes:
+#   attribute_name:
+#     type: string
+#     multiple: false
+#     index_keys:
+#       - "attribute_name_sim"
+#     form:
+#       required: true
+#       primary: true
+#       multiple: false
+#
+# @see config/metadata/basic_metadata.yaml for an example configuration
+#
+# Generated via
+#  `rails generate hyrax:work_resource OerResource`
+
+attributes:
+  creator:
+    type: string
+    multiple: true
+    form:
+      required: true
+      primary: true
+    index_keys:
+      - "creator_sim"
+      - "creator_tesim"
+    predicate: http://purl.org/dc/elements/1.1/creator
+  resource_type:
+    type: string
+    multiple: true
+    form:
+      required: true
+      primary: true
+    index_keys:
+      - "resource_type_sim"
+      - "resource_type_tesim"
+    predicate: http://purl.org/dc/terms/type
+  date_created:
+    type: string
+    multiple: true
+    form:
+      required: true
+      primary: true
+    index_keys:
+      - "date_created_tesim"
+    predicate: http://purl.org/dc/terms/date
+  audience:
+    type: string
+    multiple: true
+    form:
+      required: true
+      primary: true
+    index_keys:
+      - "audience_tesim"
+      - "audience_sim"
+    predicate: http://schema.org/EducationalAudience
+  education_level:
+    type: string
+    multiple: true
+    form:
+      required: true
+      primary: true
+    index_keys:
+      - "education_level_tesim"
+      - "education_level_sim"
+    predicate: http://purl.org/dc/terms/educationLevel
+  learning_resource_type:
+    type: string
+    multiple: true
+    form:
+      required: true
+      primary: true
+    index_keys:
+      - "learning_resource_type_tesim"
+      - "learning_resource_type_sim"
+    predicate: http://schema.org/learningResourceType
+  discipline:
+    type: string
+    multiple: true
+    form:
+      required: true
+      primary: true
+    index_keys:
+      - "discipline_tesim"
+    predicate: https://hykucommons.org/terms/degree_discipline
+  rights_statement:
+    type: string
+    multiple: true
+    form:
+      required: true
+      primary: true
+    index_keys:
+      - "rights_statement_sim"
+      - "rights_statement_tesim"
+    predicate: http://www.europeana.eu/schemas/edm/rights
+  license:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "license_sim"
+      - "license_tesim"
+    predicate: http://purl.org/dc/terms/license
+  abstract:
+    type: string
+    multiple: true
+    form:
+      primary: false
+      multiple: true
+    index_keys:
+      - "abstract_sim"
+      - "abstract_tesim"
+    predicate: http://purl.org/dc/terms/abstract
+  accessibility_feature:
+    type: string
+    multiple: true
+    form:
+      primary: false
+      multiple: true
+    index_keys:
+      - "accessibility_feature_tesim"
+      - "accessibility_feature_sim"
+    predicate: http://schema.org/accessibilityFeature
+  accessibility_hazard:
+    type: string
+    multiple: true
+    form:
+      primary: false
+      multiple: true
+    index_keys:
+      - "accessibility_hazard_tesim"
+      - "accessibility_hazard_sim"
+    predicate: http://schema.org/accessibilityHazard
+  accessibility_summary:
+    type: string
+    multiple: false
+    form:
+      primary: false
+      multiple: false
+    index_keys:
+      - "accessibility_summary_tesim"
+      - "accessibility_summary_sim"
+    predicate: http://schema.org/accessibilitySummary
+  additional_information:
+    type: string
+    multiple: true
+    form:
+      primary: false
+      multiple: true
+    index_keys:
+      - "additional_information_tesim"
+    predicate: http://purl.org/dc/terms/accessRights
+  admin_note:
+    type: string
+    multiple: false
+    form:
+      primary: false
+      multiple: false
+    index_keys:
+      - "admin_note_tesim"
+    predicate: http://schema.org/positiveNotes
+  alternative_title:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "alternative_title_sim"
+      - "alternative_title_tesim"
+    predicate: http://purl.org/dc/terms/alternative
+  bibliographic_citation:
+    type: string
+    multiple: true
+    form:
+      primary: false
+      multiple: true
+    index_keys:
+      - "bibliographic_citation_sim"
+      - "bibliographic_citation_tesim"
+    predicate: http://purl.org/dc/terms/bibliographicCitation
+  contributor:
+    type: string
+    multiple: true
+    form:
+      primary: false
+      multiple: true
+    index_keys:
+      - "contributor_tesim"
+      - "contributor_sim"
+    predicate: http://purl.org/dc/elements/1.1/contributor
+  description:
+    type: string
+    multiple: true
+    form:
+      primary: false
+      multiple: true
+    index_keys:
+      - "description_sim"
+      - "description_tesim"
+    predicate: http://purl.org/dc/elements/1.1/description
+  identifier:
+    type: string
+    multiple: true
+    form:
+      primary: false
+      multiple: true
+    index_keys:
+      - "identifier_sim"
+      - "identifier_tesim"
+    predicate: http://purl.org/dc/terms/identifier
+  keyword:
+    type: string
+    multiple: true
+    index_keys:
+      - "keyword_sim"
+      - "keyword_tesim"
+    form:
+      primary: false
+      multiple: true
+    predicate: http://schema.org/keywords
+  language:
+    type: string
+    multiple: true
+    form:
+      primary: false
+      multiple: true
+    index_keys:
+      - "language_sim"
+      - "language_tesim"
+    predicate: http://purl.org/dc/elements/1.1/language
+  oer_size:
+    type: string
+    multiple: true
+    form:
+      primary: false
+      multiple: true
+    index_keys:
+      - "oer_size_tesim"
+    predicate: http://purl.org/dc/terms/extent
+  publisher:
+    type: string
+    multiple: true
+    form:
+      primary: false
+      multiple: true
+    index_keys:
+      - "publisher_sim"
+      - "publisher_tesim"
+    predicate: http://purl.org/dc/elements/1.1/publisher
+  related_url:
+    type: string
+    multiple: true
+    form:
+      primary: false
+      multiple: true
+    index_keys:
+      - "related_url_sim"
+      - "related_url_tesim"
+    predicate: http://www.w3.org/2000/01/rdf-schema#seeAlso
+  rights_holder:
+    type: string
+    multiple: true
+    form:
+      primary: false
+      multiple: true
+    index_keys:
+      - "rights_holder_tesim"
+      - "rights_holder_sim"
+    predicate: http://purl.org/dc/terms/rightsHolder
+  rights_notes:
+    type: string
+    multiple: true
+    form:
+      primary: false
+      multiple: true
+    index_keys:
+      - "rights_notes_tesim"
+    predicate: https://hykucommons.org/terms/rights_notes
+  source:
+    type: string
+    multiple: true
+    form:
+      primary: false
+      multiple: true
+    index_keys:
+      - "source_sim"
+      - "source_tesim"
+    predicate: http://purl.org/dc/terms/source
+  subject:
+    type: string
+    multiple: true
+    index_keys:
+      - "subject_sim"
+      - "subject_tesim"
+    form:
+      primary: false
+      multiple: true
+    predicate: http://purl.org/dc/elements/1.1/subject
+  table_of_contents:
+    type: string
+    multiple: true
+    form:
+      primary: false
+      multiple: true
+    index_keys:
+      - "table_of_contents_tesim"
+    predicate: http://purl.org/dc/terms/tableOfContents
+  previous_version_id:
+    type: string
+    multiple: true
+    index_keys:
+      - "previous_version_id_tesim"
+      - "previous_version_id_sim"
+    predicate: http://purl.org/dc/terms/replaces
+  newer_version_id:
+    type: string
+    multiple: true
+    index_keys:
+      - "newer_version_id_tesim"
+      - "newer_version_id_sim"
+    predicate: http://purl.org/dc/terms/isReplacedBy
+  alternate_version_id:
+    type: string
+    multiple: true
+    index_keys:
+      - "alternate_version_id_tesim"
+      - "alternate_version_id_sim"
+    predicate: http://purl.org/dc/terms/hasVersion
+  related_item_id:
+    type: string
+    multiple: true
+    index_keys:
+      - "related_item_id_tesim"
+      - "related_item_id_sim"
+    predicate: http://purl.org/dc/terms/relation
+  date:
+    type: string
+    multiple: false
+    index_keys:
+      - "date_tesim"
+      - "date_sim"
+    predicate: https://hykucommons.org/terms/date
+  access_right:
+    type: string
+    multiple: true
+    index_keys:
+      - "access_right_sim"
+      - "access_right_tesim"
+    predicate: http://purl.org/dc/terms/accessRights
+  arkivo_checksum:
+    type: string
+    multiple: false
+    predicate: http://scholarsphere.psu.edu/ns#arkivoChecksum
+  based_near:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "based_near_sim"
+      - "based_near_tesim"
+    predicate: http://xmlns.com/foaf/0.1/based_near
+  import_url:
+    type: string
+    predicate: http://scholarsphere.psu.edu/ns#importUrl
+  label:
+    type: string
+    index_keys:
+      - "label_sim"
+      - "label_tesim"
+    predicate: info:fedora/fedora-system:def/model#downloadFilename
+  relative_path:
+    type: string
+    predicate: http://scholarsphere.psu.edu/ns#relativePath

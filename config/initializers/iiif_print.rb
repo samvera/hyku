@@ -21,4 +21,6 @@ IiifPrint.config do |config|
   # @example
   #   config.sort_iiif_manifest_canvases_by = :date_published
   config.default_iiif_manifest_version = 3
+  config.persistence_adapter = IiifPrint::PersistenceLayer::ValkyrieAdapter
+  config.additional_tesseract_options = "-l eng_best"
 end

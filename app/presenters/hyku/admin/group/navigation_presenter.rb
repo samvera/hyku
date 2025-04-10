@@ -3,6 +3,8 @@
 module Hyku
   module Admin
     module Group
+      ##
+      # A class to help orchestrate the tabs for the given group.
       class NavigationPresenter
         def initialize(params:)
           @params = params
@@ -27,7 +29,7 @@ module Hyku
             name: I18n.t('hyku.admin.groups.nav.attributes'),
             controller: 'admin/groups',
             action: 'edit',
-            path: Rails.application.routes.url_helpers.edit_admin_group_path(group_id),
+            path: Rails.application.routes.url_helpers.edit_admin_group_path(group_id, locale: I18n.locale),
             context: params
           )
         end
@@ -37,7 +39,7 @@ module Hyku
             name: I18n.t('hyku.admin.groups.nav.members'),
             controller: 'admin/group_users',
             action: 'index',
-            path: Rails.application.routes.url_helpers.admin_group_users_path(group_id),
+            path: Rails.application.routes.url_helpers.admin_group_users_path(group_id, locale: I18n.locale),
             context: params
           )
         end
@@ -47,7 +49,7 @@ module Hyku
             name: I18n.t('hyku.admin.groups.nav.roles'),
             controller: 'admin/group_roles',
             action: 'index',
-            path: Rails.application.routes.url_helpers.admin_group_roles_path(group_id),
+            path: Rails.application.routes.url_helpers.admin_group_roles_path(group_id, locale: I18n.locale),
             context: params
           )
         end
@@ -57,7 +59,7 @@ module Hyku
             name: I18n.t('hyku.admin.groups.nav.delete'),
             controller: 'admin/groups',
             action: 'remove',
-            path: Rails.application.routes.url_helpers.remove_admin_group_path(group_id),
+            path: Rails.application.routes.url_helpers.remove_admin_group_path(group_id, locale: I18n.locale),
             context: params
           )
         end

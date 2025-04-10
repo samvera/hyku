@@ -3,7 +3,7 @@
 
   <h3 class="h4"><%= t(".#{access}.title") %></h3>
   <p><%= t(".#{access}.help") %></p>
-  <p><%= t(".#{access}.help_with_works", type_title: @collection_type.title) if @collection_type.share_applies_to_new_works? && access != 'depositors' %></p>
+  <p><%= t(".#{access}.help_with_works", type_title: collection_type.title) if collection_type.share_applies_to_new_works? && access != 'depositors' %></p>
   <%# OVERRIDE: use custom filtering method to filter out access_grants for Collection Roles %>
   <% if @form.filter_access_grants_by_access(filter).any? %>
     <%# OVERRIDE: use custom access-specific class in order to differentiate between access tables %>

@@ -1,0 +1,29 @@
+---
+fr:
+  hyrax:
+    etd:
+      labels:
+        admin_note: Remarques administratives
+        committee_member: membre du comité
+        creator: Auteur
+        date_created: Date
+        degree_discipline: La discipline
+        degree_grantor: Concédant
+        degree_level: Niveau
+        degree_name: Diplôme
+        description: Description
+        related_url: Relation
+        resource_type: Type
+        rights_statement: Droits
+    icons:
+      etd: fa fa-file-text-o
+    select_type:
+      etd:
+        description: ETD œuvres
+        name: ETD
+  simple_form:
+    labels:
+      defaults:
+        advisor: Conseiller
+        department: département
+        format: Format

@@ -14,10 +14,9 @@ module Hyrax
     # Adds Hydra behaviors into the application controller
     include Blacklight::SearchContext
     include Blacklight::AccessControls::Catalog
+    include Hyku::HomePageThemesBehavior
 
     prepended do
-      # OVERRIDE: Adding inject theme views method for theming
-      around_action :inject_theme_views
       before_action :setup_negative_captcha, only: %i[new create]
 
       # OVERRIDE: Add for theming
@@ -43,16 +42,22 @@ module Hyrax
       @featured_work_list = FeaturedWorkList.new
       @featured_collection_list = FeaturedCollectionList.new
       @announcement_text = ContentBlock.for(:announcement)
+      ir_counts if home_page_theme == 'institutional_repository'
     end
 
     # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     def create
-      # not spam and a valid form
       # Override to include captcha
-      @captcha.values[:category] = params[:contact_form][:category]
-      @captcha.values[:contact_method] = params[:contact_form][:contact_method]
-      @captcha.values[:subject] = params[:contact_form][:subject]
-      @contact_form = model_class.new(@captcha.values)
+      # Negative captcha handles text inputs (name, email, subject, message) to prevent spam
+      # Select/dropdown fields (category, contact_method) are processed normally since they:
+      # 1. Have predefined values making them less vulnerable to spam
+      # 2. Don't work well with negative captcha's encryption
+      form_values = @captcha.values.merge(
+        category: params.dig(:contact_form, :category),
+        contact_method: params.dig(:contact_form, :contact_method)
+      )
+
+      @contact_form = model_class.new(form_values)
       if @contact_form.valid? && @captcha.valid?
         ContactMailer.contact(@contact_form).deliver_now
         flash.now[:notice] = 'Thank you for your message!'
@@ -69,6 +74,10 @@ module Hyrax
 
     private
 
+    def ir_counts
+      @ir_counts = search_service.facet_field_response('resource_type_sim', "f.resource_type_sim.facet.limit" => "-1")
+    end
+
     # OVERRIDE: return collections for theming
     # Return 6 collections, sorts by title
     def collections(rows: 6)
@@ -80,30 +89,13 @@ module Hyrax
       []
     end
 
-    # OVERRIDE: Adding to prepend the theme views into the view_paths
-    def inject_theme_views
-      if home_page_theme && home_page_theme != 'default_home'
-        original_paths = view_paths
-        Hyku::Application.theme_view_path_roots.each do |root|
-          home_theme_view_path = File.join(root, 'app', 'views', "themes", home_page_theme.to_s)
-          prepend_view_path(home_theme_view_path)
-        end
-        yield
-        # rubocop:disable Lint/UselessAssignment, Layout/SpaceAroundOperators, Style/RedundantParentheses
-        # Do NOT change this line. This is calling the Rails view_paths=(paths) method and not a variable assignment.
-        view_paths=(original_paths)
-        # rubocop:enable Lint/UselessAssignment, Layout/SpaceAroundOperators, Style/RedundantParentheses
-      else
-        yield
-      end
-    end
-
     def setup_negative_captcha
       @captcha = NegativeCaptcha.new(
         # A secret key entered in environment.rb. 'rake secret' will give you a good one.
         secret: ENV.fetch('NEGATIVE_CAPTCHA_SECRET', 'default-value-change-me'),
         spinner: request.remote_ip,
-        # Whatever fields are in your form
+        # Only protect text input fields with negative captcha
+        # Select/dropdown fields are handled separately in the create action
         fields: %i[name email subject message],
         # If you wish to override the default CSS styles (position: absolute; left: -2000px;)
         # used to position the fields off-screen

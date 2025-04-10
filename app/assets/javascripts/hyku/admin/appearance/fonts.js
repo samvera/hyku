@@ -17,7 +17,7 @@ Blacklight.onLoad(function() {
     inputDisplay.text(defaultValue);
   });
 
-  $('.panel-footer a.restore-all-default-fonts').click(function(e) {
+  $('.card-footer a.restore-all-default-fonts').click(function(e) {
     e.preventDefault();
 
     var allFontInputs = $("input[name*='font']");

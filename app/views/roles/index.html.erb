@@ -1,0 +1,36 @@
+<% content_for :page_header do %>
+  <h1><span class="fa fa-user"></span> <%= t(:'hyrax.admin.sidebar.roles_and_permissions') %></h1>
+<% end %>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card card-default">
+      <div class="card-body">
+        <table class="table table-striped datatable">
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Roles</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @users.each do |u| %>
+              <tr>
+                <td><%= u.email %></td>
+                <td>
+                  <%= simple_form_for u, wrapper: :horizontal_form, url: site_role_path(u.id) do |f| %>
+                    <label>
+                      <span class="sr-only">Roles</span>
+                      <%= f.collection_select :site_roles, Role.site, :name, :name, { selected: u.site_roles.pluck(:name) }, { multiple: true, class: 'form-control' } %>
+                    </label>
+                    <%= f.submit class: 'btn btn-primary' %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

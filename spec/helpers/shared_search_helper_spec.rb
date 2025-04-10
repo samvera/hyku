@@ -9,7 +9,7 @@ RSpec.describe SharedSearchHelper do
 
     let(:uuid) { SecureRandom.uuid }
     let(:request) { instance_double(ActionDispatch::Request, port: 3000, protocol: "https://", host: account.cname) }
-    let(:work_hash) { { id: uuid, 'has_model_ssim': ['GenericWork'], 'account_cname_tesim': account.cname } }
+    let(:work_hash) { SolrDocument.new(id: uuid, 'has_model_ssim': ['GenericWork'], 'account_cname_tesim': account.cname) }
 
     before do
       allow(helper).to receive(:current_account) { account }
@@ -28,9 +28,18 @@ RSpec.describe SharedSearchHelper do
 
       it 'returns #generate_work_url with a query' do
         allow(params).to receive(:[]).with(:q).and_return('foo')
+        allow(work_hash).to receive(:any_highlighting_in_all_text_fields?).and_return(false)
 
-        url = "#{request.protocol}#{cname}/concern/generic_works/#{uuid}?q=foo"
-        expect(helper.generate_work_url(work_hash, request)).to eq(url)
+        url = "#{request.protocol}#{cname}/concern/generic_works/#{uuid}"
+        expect(helper.generate_work_url(work_hash, request, params)).to eq(url)
+      end
+
+      it 'returns #generate_work_url with a query and highlight true for UV' do
+        allow(params).to receive(:[]).with(:q).and_return('cat')
+        allow(work_hash).to receive(:any_highlighting_in_all_text_fields?).and_return(true)
+
+        url = "#{request.protocol}#{cname}/concern/generic_works/#{uuid}?parent_query=cat&highlight=true"
+        expect(helper.generate_work_url(work_hash, request, params)).to eq(url)
       end
     end
 
@@ -42,11 +51,20 @@ RSpec.describe SharedSearchHelper do
         expect(helper.generate_work_url(work_hash, request)).to eq(url)
       end
 
-      it 'returns #generate_work_url with a query' do
+      it 'returns #generate_work_url if given a query but no highlighting' do
         allow(params).to receive(:[]).with(:q).and_return('foo')
+        allow(work_hash).to receive(:any_highlighting_in_all_text_fields?).and_return(false)
 
-        url = "#{request.protocol}#{account.cname}:#{request.port}/concern/generic_works/#{uuid}?q=foo"
-        expect(helper.generate_work_url(work_hash, request)).to eq(url)
+        url = "#{request.protocol}#{account.cname}:#{request.port}/concern/generic_works/#{uuid}"
+        expect(helper.generate_work_url(work_hash, request, params)).to eq(url)
+      end
+
+      it 'returns #generate_work_url with a query and highlight true for UV' do
+        allow(params).to receive(:[]).with(:q).and_return('cat')
+        allow(work_hash).to receive(:any_highlighting_in_all_text_fields?).and_return(true)
+
+        url = "#{request.protocol}#{account.cname}:#{request.port}/concern/generic_works/#{uuid}?parent_query=cat&highlight=true"
+        expect(helper.generate_work_url(work_hash, request, params)).to eq(url)
       end
     end
   end

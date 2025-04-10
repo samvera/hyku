@@ -15,11 +15,9 @@ module Hyrax
     # Adds Hydra behaviors into the application controller
     include Blacklight::SearchContext
     include Blacklight::AccessControls::Catalog
+    include Hyku::HomePageThemesBehavior
 
     prepended do
-      # OVERRIDE: Adding inject theme views method for theming
-      around_action :inject_theme_views
-
       # OVERRIDE: Hyrax v5.0.0rc2 Add for theming
       class_attribute :presenter_class
       self.presenter_class = Hyrax::HomepagePresenter
@@ -43,6 +41,7 @@ module Hyrax
       @featured_work_list = FeaturedWorkList.new
       @featured_collection_list = FeaturedCollectionList.new
       @announcement_text = ContentBlock.for(:announcement)
+      ir_counts if home_page_theme == 'institutional_repository'
     end
 
     private
@@ -58,22 +57,9 @@ module Hyrax
       []
     end
 
-    # OVERRIDE: Adding to prepend the theme views into the view_paths
-    def inject_theme_views
-      if home_page_theme && home_page_theme != 'default_home'
-        original_paths = view_paths
-        Hyku::Application.theme_view_path_roots.each do |root|
-          home_theme_view_path = File.join(root, 'app', 'views', "themes", home_page_theme.to_s)
-          prepend_view_path(home_theme_view_path)
-        end
-        yield
-        # rubocop:disable Lint/UselessAssignment, Layout/SpaceAroundOperators, Style/RedundantParentheses
-        # Do NOT change this method. This is an override of the view_paths= method and not a variable assignment.
-        view_paths=(original_paths)
-        # rubocop:enable Lint/UselessAssignment, Layout/SpaceAroundOperators, Style/RedundantParentheses
-      else
-        yield
-      end
+    # OVERRIDE: Hyrax v5.0.1 to add facet counts for resource types for IR theme
+    def ir_counts
+      @ir_counts = search_service.facet_field_response('resource_type_sim', "f.resource_type_sim.facet.limit" => "-1")
     end
   end
 end

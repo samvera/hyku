@@ -1,0 +1,39 @@
+<%  previous_members = presenter.member_presenters(presenter.previous_versions) %>
+<%  newer_members = presenter.member_presenters(presenter.newer_versions) %>
+<%  alternate_members = presenter.member_presenters(presenter.alternate_versions) %>
+<%  related_items = presenter.member_presenters(presenter.related_items) %>
+<% if previous_members.present? || newer_members.present? || alternate_members.present? || related_items.present? %>
+  <h2><%= t('hyrax.oer.show.related_items') %></h2>
+  <table class="table table-striped related-files">
+    <thead>
+      <tr>
+        <th><%= t('.thumbnail') %></th>
+        <th><%= t('.title') %></th>
+        <th><%= t('.date_uploaded') %></th>
+        <th><%= t('.visibility') %></th>
+        <th><%= t('.relationship_type')%></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% previous_members.each do |member| %>
+        <%= render partial: 'related_item', locals: { member: member, relationship: "previous version" } %>
+      <% end %>
+      <% newer_members.each do |member| %>
+        <%= render partial: 'related_item', locals: { member: member, relationship: "newer version" } %>
+      <% end %>
+      <% alternate_members.each do |member| %>
+        <%= render partial: 'related_item', locals: { member: member, relationship: "alternate version" } %>
+      <% end %>
+      <% related_items.each do |member| %>
+        <%= render partial: 'related_item', locals: { member: member, relationship: "related item" } %>
+      <% end %>
+    </tbody>
+  </table>
+  <div class="row">
+    <% if presenter.total_pages > 1 %>
+        <div class="row record-padding col-md-9">
+          <%= paginate presenter.list_of_item_ids_to_display, outer_window: 2, theme: 'blacklight', param_name: :page, route_set: main_app %>
+        </div><!-- /pager -->
+    <% end %>
+  </div>
+<% end %>

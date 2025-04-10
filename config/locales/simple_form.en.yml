@@ -20,6 +20,9 @@ en:
         yearly_email_list: List of email addresses to email the yearly report. Leave a single space between each email
         email_format: Set a list of email domains that are allowed sign up to this repository e.g (@ubiquitypress.com @gmail.com). Leave a single space between each domain.
         allow_signup: Allow users to sign up to your repository
+        analytics: Enable or disable Google Analytics 4 to track user interactions, including clicks.
+        analytics_reporting: Enable or disable reporting from Google Analytics 4 to display analytics data in the dashboard. Requires developer support for setup.
+        depositor_email_notifications: Enable or disable email notifications that send depositors a summary of statistics for their submissions. This feature requires analytics reporting to be enabled.
         enable_oai_metadata: Enable or disable OAI link
         shared_login: Enable or disable shared login
         file_size_limit: This should be set to at least 536870912000
@@ -28,7 +31,7 @@ en:
         oai_admin_email: OAI endpoint contact email address
         doi_reader: Show ability to read from Datacite to populate records. WIP do not use
         doi_writer: Write DOIs for records. WIP do not use
-        cache_api: Turns on cache for API endpoints. Experimental
+        cache_api: Use Redis instead of disk for caching
         email_subjet_prefix: String to put in front of system email subjects.
         contact_email: The email address that system notifications will be sent from. Additional configuration is required to add an address from domains other than the site's domain
         contact_email_to: The email address that messages submitted via the contact page are sent to

@@ -3,6 +3,10 @@
   dl.work-show dd {
     border-bottom: 1px solid #ddd;
 
+    &:last-child {
+      border-bottom: none; /* Removes border for the last dd element */
+    }
+
     .tabular {
       border-bottom: 0;
     }
@@ -20,6 +24,7 @@
 
   .relationships-container {
     margin-bottom: 60px;
+    max-width: 33%;
 
     .relationships-box {
 
@@ -42,6 +47,11 @@
         word-break: break-word;
       }
     }
+  }
+
+  .citations-container {
+    display: flex;
+    justify-content: center;
   }
 
   li.attribute,

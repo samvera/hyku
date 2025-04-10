@@ -1,61 +1,60 @@
-<div class="theme-container col-md-8 mb-30">
-
-  <!-- Adding a mobile style for the homepage text content block, hidden on md and lg -->
-  <% if display_content_block? @home_text %>
-    <div class="d-block d-md-none">
-      <div class="row">
-        <div class="col-12">
-          <%= render 'themes/neutral_repository/home_text' if controller_name == 'homepage' %>
+<div class="theme-container">
+  <div class="col-12 col-lg-8 mb-30 pr-4">
+    <!-- Adding a mobile style for the homepage text content block, hidden on md and lg -->
+    <% if display_content_block? @home_text %>
+      <div class="d-block d-md-none">
+        <div class="row">
+          <div class="col-12">
+            <%= render 'themes/neutral_repository/home_text' if controller_name == 'homepage' %>
+          </div>
         </div>
       </div>
-    </div>
-  <% end %>
+    <% end %>
 
-  <%= render 'themes/neutral_repository/layouts/share_your_work_row' if controller_name == 'homepage' %>
+    <%= render 'themes/neutral_repository/layouts/share_your_work_row' if controller_name == 'homepage' %>
 
-  <% if @presenter.display_featured_works? %>
-    <div class="row">
-      <div class="col-12">
-        <%= render 'themes/neutral_repository/hyrax/homepage/featured_works' %>
+    <% if @presenter.display_featured_works? %>
+      <div class="row">
+        <div class="col-12 featured-works-section">
+          <%= render 'themes/neutral_repository/hyrax/homepage/featured_works' %>
+        </div>
       </div>
-    </div>
-  <% end %>
+    <% end %>
 
-  <div class="row mb-30">
-    <div class="col-12 featured-collection-section">
-      <div class="pb-30">
-        <h3>Collections</h3>
+    <div class="row mb-30 mt-4">
+      <div class="col-12 featured-collection-section">
+        <h2 class='mt-4'>Collections</h2>
         <%= render 'featured_collection_section' %>
       </div>
     </div>
   </div>
-</div>
 
-<div class="col-md-4">
-  <!-- Adding a desktop style for the homepage text content block, hidden on sm and xs -->
-  <% if display_content_block? @home_text %>
-    <div class="d-none d-md-block">
-      <div class="row">
-        <div class="col-12">
-          <%= render 'themes/neutral_repository/home_text' if controller_name == 'homepage' %>
+  <div class="col-lg-4">
+    <!-- Adding a desktop style for the homepage text content block, hidden on sm and xs -->
+    <% if display_content_block? @home_text %>
+      <div class="d-none d-md-block">
+        <div class="row">
+          <div class="col-12">
+            <%= render 'themes/neutral_repository/home_text' if controller_name == 'homepage' %>
+          </div>
         </div>
       </div>
-    </div>
-  <% end %>
+    <% end %>
 
-  <% if @presenter.display_featured_researcher? %>
-    <div class="row">
-      <div class="col-12">
-        <%= render 'themes/neutral_repository/hyrax/homepage/featured_researcher' %>
+    <% if @presenter.display_featured_researcher? %>
+      <div class="row">
+        <div class="col-12">
+          <%= render 'themes/neutral_repository/hyrax/homepage/featured_researcher' %>
+        </div>
       </div>
-    </div>
-  <% end %>
+    <% end %>
 
-  <% if @presenter.display_recently_uploaded? %>
-    <div class="row">
-      <div class="col-12">
-        <%= render 'recently_uploaded', recent_documents: @recent_documents %>
+    <% if @presenter.display_recently_uploaded? %>
+      <div class="row">
+        <div class="col-12">
+          <%= render 'recently_uploaded', recent_documents: @recent_documents %>
+        </div>
       </div>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
 </div>

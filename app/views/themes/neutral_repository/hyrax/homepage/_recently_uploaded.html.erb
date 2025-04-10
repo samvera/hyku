@@ -5,7 +5,9 @@
       <p><%= t('.no_public') %></p>
     <% else %>
       <h3>Recent Uploads</h3>
-      <%= render partial: "themes/neutral_repository/hyrax/homepage/recent_document", collection: recent_documents %>
+      <div class="d-flex flex-wrap justify-content-between">
+        <%= render partial: "themes/neutral_repository/hyrax/homepage/recent_document", collection: recent_documents %>
+      </div>
     <% end %>
   </div>
 </div>

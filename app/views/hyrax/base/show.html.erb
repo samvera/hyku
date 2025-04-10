@@ -1,11 +1,10 @@
-<%# OVERRIDE: Hyrax 3.4.1 to remove social media %>
-<%# to add work-show class to works pages %>
+<%# OVERRIDE: Hyrax 5, see below for details %>
 
+<%# OVERRIDE: add works-show class %>
 <% content_for(:extra_body_classes, 'works-show ') %>
-
 <% provide :page_title, @presenter.page_title %>
-
 <%= render 'shared/citations' %>
+<%# OVERRIDE: additional citations %>
 <%= render 'shared/additional_citations' %>
 <div class="row work-type">
   <div class="col-sm-12">
@@ -18,6 +17,7 @@
       <div class="card-body">
         <div class="row">
           <%= render 'workflow_actions_widget', presenter: @presenter %>
+          <%# OVERRIDE: add pdf viewer & adjust viewer logic %>
           <% if @presenter.video_embed_viewer? %>
             <%= render 'video_embed_viewer', presenter: @presenter %>
           <% elsif @presenter.iiif_viewer? %>
@@ -39,8 +39,6 @@
             <div class="col-sm-3 text-center">
               <%= render('download_pdf', presenter: @presenter, file_set_id: @presenter.file_set_presenters.first.id) if @presenter.show_pdf_download_button? %>
               <%= render 'citations', presenter: @presenter %>
-              <!-- analytics_button is disabled until future fix -->
-              <%#= render 'analytics_button', presenter: @presenter %>
             </div>
           <% end %>
           <div class="col-sm-9">
@@ -57,6 +55,7 @@
       </div>
       <div class="card-body">
         <%= render 'relationships', presenter: @presenter %>
+        <%= render 'related_items', presenter: @presenter %>
       </div>
     </div>
 

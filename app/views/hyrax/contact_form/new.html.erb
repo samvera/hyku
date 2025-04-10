@@ -6,7 +6,7 @@
 </div>
 
 <h1>
-    <%= t('hyrax.contact_form.header') %>
+  <%= t('hyrax.contact_form.header') %>
 </h1>
 
 <% if user_signed_in? %>
@@ -39,8 +39,8 @@
   </div>
 
   <div class="form-group row">
-    <%= f.label :subject, t('hyrax.contact_form.subject_label'), class: "col-sm-2 col-form-label" %>
-    <div class="col-sm-10"><%= f.text_field :subject, class: 'form-control', required: true %></div>
+    <%= negative_label_tag(@captcha, :subject, t('hyrax.contact_form.subject_label'), class: "col-sm-2 col-form-label") %>
+    <div class="col-sm-10"><%= negative_text_field_tag(@captcha, :subject, class: 'form-control', required: true) %></div>
   </div>
 
   <div class="form-group row">

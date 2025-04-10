@@ -5,7 +5,7 @@
   also, to render featured collections
 %>
 
-<div class="<%= @presenter.display_featured_works? || @presenter.display_recently_uploaded? ? 'col-md-6' : '' %>">
+<div class="<%= @presenter.display_featured_works? || @presenter.display_recently_uploaded? ? 'col-md-6 mb-4' : '' %>">
   <ul id="homeTabs" class="nav nav-tabs" role="list">
     <%# add check for featured works %>
     <% if @presenter.display_featured_works? %>

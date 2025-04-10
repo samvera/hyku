@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body { font-family: Arial, sans-serif; line-height: 1.6; }
+      .email-container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ccc; }
+      .footer { font-size: 12px; color: #666; margin-top: 20px; }
+      .highlight { color: #0056b3; }
+      .button {
+        display: inline-block;
+        padding: 10px 20px;
+        margin: 10px 0;
+        background-color: #0056b3;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <p>Dear Author,</p>
+      <p>You had <%= "#{@statistics[:new_file_downloads]} new files downloaded" %> in <%= Date.today.prev_month.strftime("%B %Y") %> and <%= "#{@statistics[:new_work_views]} new works viewed" %> in <%= @application_name %>. Your current readership:</p>
+      <ul>
+        <li><%= pluralize(@statistics[:total_file_downloads], 'Total File Download') %></li>
+        <li><%= pluralize(@statistics[:total_work_views], 'Total Work View') %></li>
+      </ul>
+      <a href="<%= @url %>" class="button">VISIT MY DASHBOARD</a>
+      <div class="footer">
+        <p>These monthly reports are provided to you on behalf of <%= @application_name %>. For questions, comments, or to add more content and increase your readership and visibility as an author, please contact your repository administrator.</p>
+      </div>
+    </div>
+  </body>
+</html>

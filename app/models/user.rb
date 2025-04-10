@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
 class User < ApplicationRecord
+  has_one :user_batch_email, dependent: :destroy
+
   # Includes lib/rolify from the rolify gem
   rolify
   # Connects this user object to Hydra behaviors.
@@ -16,6 +19,7 @@ class User < ApplicationRecord
   devise(*Hyku::Application.user_devise_parameters)
 
   after_create :add_default_group_membership!
+  after_update :mark_all_undelivered_messages_as_delivered!, if: -> { batch_email_frequency == 'never' }
 
   # set default scope to exclude guest users
   def self.default_scope
@@ -28,17 +32,37 @@ class User < ApplicationRecord
 
   scope :registered, -> { for_repository.group(:id).where(guest: false) }
 
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/PerceivedComplexity
   def self.from_omniauth(auth)
-    find_or_create_by(provider: auth.provider, uid: auth.uid) do |user|
-      user.email = auth&.info&.email || [auth.uid, '@', Site.instance.account.email_domain].join if user.email.blank?
-      user.password = Devise.friendly_token[0, 20]
-      user.display_name = auth&.info&.name # assuming the user model has a name
-      # user.image = auth.info.image # assuming the user model has an image
-      # If you are using confirmable and the provider(s) you use validate emails,
-      # uncomment the line below to skip the confirmation emails.
-      # user.skip_confirmation!
-    end
+    u = find_by(provider: auth.provider, uid: auth.uid)
+    return u if u
+
+    u = find_by(email: auth&.info&.email&.downcase)
+    u ||= new
+    u.provider = auth.provider
+    u.uid = auth.uid
+    u.email = auth&.info&.email
+    u.email ||= auth.uid
+    # rubocop:disable Performance/RedundantMatch
+    u.email = [auth.uid, '@', Site.instance.account.email_domain].join unless u.email.match?('@')
+    # rubocop:enable Performance/RedundantMatch
+
+    # Passwords are required for all records, but in the case of OmniAuth,
+    # we're relying on the other auth provider.  Hence we're creating a random
+    # password.
+    u.password = Devise.friendly_token[0, 20] if u.new_record?
+
+    # assuming the user model has a name
+    u.display_name = auth&.info&.name
+    u.display_name ||= "#{auth&.info&.first_name} #{auth&.info&.last_name}" if auth&.info&.first_name && auth&.info&.last_name
+    u.save
+    u
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/PerceivedComplexity
 
   # Method added by Blacklight; Blacklight uses #to_s on your
   # user class to get a user-displayable login/identifier.
@@ -50,9 +74,15 @@ class User < ApplicationRecord
     has_role?(:admin) || has_role?(:admin, Site.instance)
   end
 
+  # Favor admin? over is_admin? but provided for backwards compatability.
+  alias is_admin? admin?
+
   def superadmin?
     has_role? :superadmin
   end
+
+  # Favor admin? over is_admin? but provided for backwards compatability.
+  alias is_superadmin? superadmin?
 
   # This comes from a checkbox in the proprietor interface
   # Rails checkboxes are often nil or "0" so we handle that
@@ -137,4 +167,37 @@ class User < ApplicationRecord
 
     Hyrax::Group.find_or_create_by!(name: Ability.registered_group_name).add_members_by_id(id)
   end
+
+  # When the user sets their batch email frequency to 'never' then we want to mark all the messages
+  # (really the receipts of the messages) to is_delivered tru
+  def mark_all_undelivered_messages_as_delivered!
+    mailbox.receipts.where(is_delivered: false).find_each do |receipt|
+      receipt.update(is_delivered: true)
+    end
+  end
+
+  # Returns hash summary of user statistics for a date range... uses the prior month by default
+  def statistics_for(start_date: (Time.zone.now - 1.month).beginning_of_month, end_date: (Time.zone.now - 1.month).end_of_month)
+    stats_period = start_date..end_date
+    last_month_stats = stats.where(date: stats_period)
+
+    return nil if last_month_stats.empty?
+
+    {
+      new_file_downloads: last_month_stats.sum(:file_downloads),
+      new_work_views: last_month_stats.sum(:work_views),
+      total_file_views:,
+      total_file_downloads:,
+      total_work_views:
+    }
+  end
+
+  def last_emailed_at
+    UserBatchEmail.find_or_create_by(user: self).last_emailed_at
+  end
+
+  def last_emailed_at=(value)
+    UserBatchEmail.find_or_create_by(user: self).update(last_emailed_at:  value)
+  end
 end
+# rubocop:enable Metrics/ClassLength

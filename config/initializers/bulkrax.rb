@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-if ENV.fetch('HYKU_BULKRAX_ENABLED', 'true') == 'true'
+if Hyku.bulkrax_enabled?
   # rubocop:disable Metrics/BlockLength
   Bulkrax.setup do |config|
     # Add local parsers
@@ -45,63 +45,18 @@ if ENV.fetch('HYKU_BULKRAX_ENABLED', 'true') == 'true'
     # config.collection_field_mapping['Bulkrax::RdfEntry'] = 'http://opaquenamespace.org/ns/set'
 
     # Field mappings
-    # Create a completely new set of mappings by replacing the whole set as follows
-    #   config.field_mappings = {
-    #     "Bulkrax::OaiDcParser" => { **individual field mappings go here*** }
-    #   }
+    # NOTE: Bulkrax field mappings are configured on a per-tenant basis in the Account settings.
+    # The default set of field mappings that new tenants will be initialized with can be found
+    # and/or modified in config/application.rb (Hyku#default_bulkrax_field_mappings)
+    # @see config/application.rb
+    # @see app/models/concerns/account_settings.rb
+    # WARN: Modifying Bulkrax's field mappings in this file will not work as expected
+    # @see lib/bulkrax/bulkrax_decorator.rb
 
-    # Add to, or change existing mappings as follows
-    #   e.g. to exclude date
-    #   config.field_mappings["Bulkrax::OaiDcParser"]["date"] = { from: ["date"], excluded: true  }
-
-    default_field_mapping = {
-      'abstract' => { from: ['abstract'], split: true },
-      'alternative_title' => { from: ['alternative_title'], split: /\s*[|]\s*/ },
-      'based_near' => { from: ['based_near'], split: true },
-      'bibliographic_citation' => { from: ['bibliographic_citation'], split: true },
-      'contributor' => { from: ['contributor'], split: true },
-      'create_date' => { from: ['create_date'], split: true },
-      'children' => { from: ['children'], related_children_field_mapping: true },
-      'creator' => { from: ['creator'], split: true },
-      'date_created' => { from: ['date_created'], split: true },
-      'description' => { from: ['description'], split: true },
-      'extent' => { from: ['extent'], split: true },
-      'file' => { from: ['file'], split: /\s*[|]\s*/ },
-      'identifier' => { from: ['identifier'], split: true },
-      'keyword' => { from: ['keyword'], split: true },
-      'language' => { from: ['language'], split: true },
-      'license' => { from: ['license'], split: /\s*[|]\s*/ },
-      'modified_date' => { from: ['modified_date'], split: true },
-      'parents' => { from: ['parents'], related_parents_field_mapping: true },
-      'publisher' => { from: ['publisher'], split: true },
-      'related_url' => { from: ['related_url'], split: /\s* [|]\s*/ },
-      'remote_files' => { from: ['remote_files'], split: /\s*[|]\s*/ },
-      'resource_type' => { from: ['resource_type'], split: true },
-      'rights_notes' => { from: ['rights_notes'], split: true },
-      'source' => { from: ['source'], split: true },
-      'subject' => { from: ['subject'], split: true },
-      'title' => { from: ['title'], split: /\s*[|]\s*/ }
-    }
-
-    config.field_mappings["Bulkrax::BagitParser"] = default_field_mapping.merge({
-                                                                                  # add or remove custom mappings for this parser here
-                                                                                })
-
-    config.field_mappings["Bulkrax::CsvParser"] = default_field_mapping.merge({
-                                                                                # add or remove custom mappings for this parser here
-                                                                              })
-
-    config.field_mappings["Bulkrax::OaiDcParser"] = default_field_mapping.merge({
-                                                                                  # add or remove custom mappings for this parser here
-                                                                                })
-
-    config.field_mappings["Bulkrax::OaiQualifiedDcParser"] = default_field_mapping.merge({
-                                                                                           # add or remove custom mappings for this parser here
-                                                                                         })
-
-    config.field_mappings["Bulkrax::XmlParser"] = default_field_mapping.merge({
-                                                                                # add or remove custom mappings for this parser here
-                                                                              })
+    # Because Hyku now uses and assumes Valkyrie to query the repository layer, we need to match the
+    # object factory to use Valkyrie.
+    config.object_factory = Bulkrax::ValkyrieObjectFactory
+    config.factory_class_name_coercer = Bulkrax::FactoryClassFinder::ValkyrieMigrationCoercer
 
     # To duplicate a set of mappings from one parser to another
     #   config.field_mappings["Bulkrax::OaiOmekaParser"] = {}

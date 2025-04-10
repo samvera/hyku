@@ -1,13 +1,25 @@
 # frozen_string_literal: true
 
 require 'singleton'
+require 'ruby-progressbar'
 
+## Reprocessor for iterating through large sets of ids
+# There are two steps for any reprocessing:
+# 1. Store all the ids for processing to a ids.log file.
+# 2. Run a lambda against every id.
+# No matter whether it is the first run or not, a run of the Reprocessor should always start with Reprocessor.load('tmp/imports/SOME_UNIQUE_NAME')
+# This creates a context for the Reprocessor to run. After that, calling Reprocessor.capture_ids (or capture_work_ids, capture_file_set_ids or capture collection_ids)
+# will record all the ids in a file.
+# Finally, once all the ids are split, calling Reprocessor.process_ids with a lambda (like Reprocessor.process_ids(Reprocessor.save)) to call the process on each item
+# At any point, the process can be stopped (or killed) and then resumed by doing Reprocessor.load(SAME_PATH) and then calling #process_ids again.
 class Reprocessor # rubocop:disable Metrics/ClassLength
   include Singleton
 
   SETTINGS = %w[header_lines batch_size current_location limit incremental_save log_dir].freeze
 
   attr_accessor(*SETTINGS)
+  attr_writer :error_log, :id_line_size, :id_log, :id_path
+
   def initialize
     @header_lines = 1
     @batch_size   = 1000
@@ -18,10 +30,26 @@ class Reprocessor # rubocop:disable Metrics/ClassLength
     super
   end
 
-  [:capture_ids, :process_ids].each do |method|
-    define_singleton_method(method) do |*args|
-      instance.send(method, *args)
+  # Missing methods will be delegated to `instance` if an implementation is available.
+  # Else `NoMethodError` will be raised via call to `super`
+  def self.method_missing(method_name, *args)
+    if instance.respond_to? method_name
+      # rubocop:disable Rails/Output
+      puts "** Defining new method: '#{method_name}'"
+      # rubocop:enable Rails/Output
+      (class << self; self; end).instance_eval do
+        define_method(method_name) do |*method_args|
+          instance.send(method_name, *method_args)
+        end
+      end
+      instance.send(method_name, *args)
+    else
+      super
     end
+  end
+
+  def self.respond_to_missing?(method_name, include_private = false)
+    instance.respond_to?(method_name) || super
   end
 
   SETTINGS.each do |method|
@@ -35,10 +63,15 @@ class Reprocessor # rubocop:disable Metrics/ClassLength
   end
 
   def self.load(log_dir = Rails.root.join('tmp', 'imports').to_s)
+    FileUtils.mkdir_p(log_dir)
     state = JSON.parse(File.read("#{log_dir}/work_processor.json"))
     SETTINGS.each do |setting|
       instance.send("#{setting}=", state[setting])
     end
+    instance.error_log = nil
+    instance.id_line_size = nil
+    instance.id_log = nil
+    instance.id_path = nil
   rescue Errno::ENOENT
     puts 'no save file to load' # rubocop:disable Rails/Output
     instance.log_dir = log_dir
@@ -52,33 +85,43 @@ class Reprocessor # rubocop:disable Metrics/ClassLength
     File.write("#{instance.log_dir}/work_processor.json", state.to_json)
   end
 
+  def capture_ids
+    capture_collection_ids
+    capture_work_ids
+    capture_file_set_ids
+  end
+
   def capture_work_ids
     Hyrax.config.query_index_from_valkyrie = false
     search = "has_model_ssim:(#{Bulkrax.curation_concerns.join(' OR ')})"
-    caputre_with_solr(search)
+    capture_with_solr(search)
+    self.current_location = 0
   end
 
   def capture_file_set_ids
     Hyrax.config.query_index_from_valkyrie = false
     search = "has_model_ssim:(FileSet)"
-    caputre_with_solr(search)
+    capture_with_solr(search)
+    self.current_location = 0
   end
 
   def capture_collection_ids
     Hyrax.config.query_index_from_valkyrie = false
-    search = "has_model_ssim:(Collection)"
-    caputre_with_solr(search)
+    search = "has_model_ssim:(Collection OR AdminSet)"
+    capture_with_solr(search)
+    self.current_location = 0
   end
 
-  def caputre_with_solr(search)
+  def capture_with_solr(search)
     count = Hyrax::SolrService.count(search)
     progress(count)
     while current_location < count
       break if limit && current_location >= limit
-      ids = Hyrax::SolrService.query(search, fl: 'id', rows: batch_size, start: current_location)
+      ids = Hyrax::SolrService.query(search, fl: 'id,fedora_id_ssi', rows: batch_size, start: current_location)
       self.current_location += batch_size
       ids.each do |i|
-        id_log.error(i['id'])
+        id = i['fedora_id_ssi'] || i['id']
+        id_log.error(id)
       end
       progress.progress = [self.current_location, count].min
       Reprocessor.save if incremental_save
@@ -174,8 +217,31 @@ class Reprocessor # rubocop:disable Metrics/ClassLength
     }
   end
 
+  def lambda_migrate_resources
+    @lambda_migrate_resources = lambda { |line, _progress|
+      id = line.strip
+      MigrateResourcesJob.perform_later(ids: [id])
+    }
+  end
+
+  # because this takes an arg, we dont memoize
+  def lambda_job(_job_klass)
+    @lambda_job = lambda { |line, _progress, job_klass|
+      id = line.strip
+      job_klass.perform_later(id)
+    }
+  end
+
+  def lambda_af_index
+    @lambda_af_index ||= lambda { |line, _progress|
+      id = line.strip
+      w = ActiveFedora::Base.find(id)
+      w.update_index
+    }
+  end
+
   def lambda_index
-    @lambda_save ||= lambda { |line, _progress|
+    @lambda_index ||= lambda { |line, _progress|
       id = line.strip
       w = Hyrax.query_service.find_by(id:)
       Hyrax.index_adapter.save(resource: w)
@@ -183,7 +249,7 @@ class Reprocessor # rubocop:disable Metrics/ClassLength
   end
 
   def lambda_print
-    @lambda_save ||= lambda { |line, progress|
+    @lambda_print ||= lambda { |line, progress|
       id = line.strip
       progress.log id
     }

@@ -1,0 +1,131 @@
+terms:
+  - id: Languages - Spanish
+    term: Languages - Spanish
+  - id: Languages - French
+    term: Languages - French
+  - id: Languages - German
+    term: Languages - German
+  - id: Communication - Public Relations
+    term: Communication - Public Relations
+  - id: Communication - Journalism
+    term: Communication - Journalism
+  - id: Communication - Public Speaking
+    term: Communication - Public Speaking
+  - id: Math - Calculus
+    term: Math - Calculus
+  - id: Math - Statistics
+    term: Math - Statistics
+  - id: Math - Algebra
+    term: Math - Algebra
+  - id: Math - Geometry
+    term: Math - Geometry
+  - id: Math - Trigonometry
+    term: Math - Trigonometry
+  - id: Math - Foundations of Mathematics
+    term: Math - Foundations of Mathematics
+  - id: Natural Sciences - Chemistry
+    term: Natural Sciences - Chemistry
+  - id: Natural Sciences - Biology
+    term: Natural Sciences - Biology
+  - id: Natural Sciences - Physics
+    term: Natural Sciences - Physics
+  - id: Natural Sciences - Astronomy
+    term: Natural Sciences - Astronomy
+  - id: Natural Sciences - Geoscience
+    term: Natural Sciences - Geoscience
+  - id: Natural Sciences - Agricultural Science
+    term: Natural Sciences - Agricultural Science
+  - id: Social and Behavioral Sciences - Sociology
+    term: Social and Behavioral Sciences - Sociology
+  - id: Social and Behavioral Sciences - Political Science
+    term: Social and Behavioral Sciences - Political Science
+  - id: Social and Behavioral Sciences - Education
+    term: Social and Behavioral Sciences - Education
+  - id: Social and Behavioral Sciences - Economics
+    term: Social and Behavioral Sciences - Economics
+  - id: Social and Behavioral Sciences - Anthropology
+    term: Social and Behavioral Sciences - Anthropology
+  - id: Social and Behavioral Sciences - Criminal Justice
+    term: Social and Behavioral Sciences - Criminal Justice
+  - id: Social and Behavioral Sciences - Women and Gender Studies
+    term: Social and Behavioral Sciences - Women and Gender Studies
+  - id: Social and Behavioral Sciences - African American Studies
+    term: Social and Behavioral Sciences - African American Studies
+  - id: Arts and Humanities - Music
+    term: Arts and Humanities - Music
+  - id: Arts and Humanities - Philosophy
+    term: Arts and Humanities - Philosophy
+  - id: Arts and Humanities - Ethics
+    term: Arts and Humanities - Ethics
+  - id: Arts and Humanities - Art
+    term: Arts and Humanities - Art
+  - id: Arts and Humanities - Literature
+    term: Arts and Humanities - Literature
+  - id: Arts and Humanities - Poetry
+    term: Arts and Humanities - Poetry
+  - id: Arts and Humanities - Classics
+    term: Arts and Humanities - Classics
+  - id: Arts and Humanities - History
+    term: Arts and Humanities - History
+  - id: Arts and Humanities - Theater
+    term: Arts and Humanities - Theater
+  - id: Arts and Humanities - Architecture
+    term: Arts and Humanities - Architecture
+  - id: Arts and Humanities - English Composition
+    term: Arts and Humanities - English Composition
+  - id: Computing and Information - Computer Science
+    term: Computing and Information - Computer Science
+  - id: Computing and Information - Cybersecurity
+    term: Computing and Information - Cybersecurity
+  - id: Computing and Information - Human Computer Interaction
+    term: Computing and Information - Human Computer Interaction
+  - id: Computing and Information - Information and Data Science
+    term: Computing and Information - Information and Data Science
+  - id: Business - Accounting
+    term: Business - Accounting
+  - id: Business - Finance
+    term: Business - Finance
+  - id: Business - Marketing
+    term: Business - Marketing
+  - id: Business - Management
+    term: Business - Management
+  - id: Health Science - Anatomy and Physiology
+    term: Health Science - Anatomy and Physiology
+  - id: Health Science - Nursing
+    term: Health Science - Nursing
+  - id: Health Science - Communication Science & Disorders
+    term: Health Science - Communication Science & Disorders
+  - id: Health Science - Psychology
+    term: Health Science - Psychology
+  - id: Health Science - Medicine
+    term: Health Science - Medicine
+  - id: Health Science - Rehabilitation Science
+    term: Health Science - Rehabilitation Science
+  - id: Health Science - Nutrition
+    term: Health Science - Nutrition
+  - id: Health Science - Kinesiology
+    term: Health Science - Kinesiology
+  - id: Health Science - Sports Management
+    term: Health Science - Sports Management
+  - id: Health Science - Dentistry
+    term: Health Science - Dentistry
+  - id: Health Science - Neuroscience
+    term: Health Science - Neuroscience
+  - id: Engineering - Mechanical
+    term: Engineering - Mechanical
+  - id: Engineering - Chemical
+    term: Engineering - Chemical
+  - id: Engineering - Civil
+    term: Engineering - Civil
+  - id: Engineering - Nuclear
+    term: Engineering - Nuclear
+  - id: Engineering - Aerospace
+    term: Engineering - Aerospace
+  - id: Engineering - Electrical
+    term: Engineering - Electrical
+  - id: Engineering - Industrial
+    term: Engineering - Industrial
+  - id: Law
+    term: Law
+  - id: Other
+    term: Other

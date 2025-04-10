@@ -1,18 +1,24 @@
-<%# OVERRIDE Hyrax 3.4.1 to allow links to support shared search %>
+<%# OVERRIDE Hyrax 5.0.01 to allow links to support shared search %>
+<%# OVERRIDE add conditional for controlling turbolinks %>
 <li class="recent-item">
-    <div class="row">
-      <div class="col-sm-12">
-        <span class="sr-only"><%= t('hyrax.homepage.recently_uploaded.document.title_label') %></span>
-        <h3>
-          <%= render_thumbnail_tag recent_document, {}, {suppress_link: true} %>
-          <%= link_to recent_document.title_or_label, generate_work_url(recent_document.to_h, request) %>
-        </h3>
+  <div class="row">
+    <div class="col-sm-12">
+      <span class="sr-only"><%= t('hyrax.homepage.recently_uploaded.document.title_label') %></span>
+      <h3>
+        <%= link_to generate_work_url(recent_document, request),  data: { turbolinks: block_valkyrie_redirect? } do %>
+          <%= render_thumbnail_tag(recent_document, {width: 90}, {suppress_link: true}) + " " + markdown(recent_document.title_or_label) %> 
+        <% end %>
+      </h3>
+      <% if Flipflop.home_page_recent_document_show_depositor? %>
         <p class="recent-field">
           <span class="recent-label"><%= t('hyrax.homepage.recently_uploaded.document.depositor_label') %>:</span> <%= link_to_profile recent_document.depositor(t('hyrax.homepage.recently_uploaded.document.depositor_missing')) %>
         </p>
+      <% end %>
+      <% if Flipflop.home_page_recent_document_show_keyword? %>
         <p class="recent-field">
           <span class="recent-label"><%= t('hyrax.homepage.recently_uploaded.document.keyword_label') %>:</span> <%= link_to_facet_list(recent_document.keyword, 'keyword', t('hyrax.homepage.recently_uploaded.document.keyword_missing')).html_safe %>
         </p>
-      </div>
+      <% end %>
     </div>
+  </div>
 </li>

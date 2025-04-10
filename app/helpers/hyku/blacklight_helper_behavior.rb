@@ -44,7 +44,7 @@ module Hyku
       # pull solr_document from input if we don't already have a solr_document
       document = doc&.try(:solr_document) || doc
       Deprecation.silence(Blacklight::UrlHelperBehavior) do
-        link_to label, generate_work_url(document, request), document_link_params(document, opts)
+        link_to label, generate_work_url(document, request, params), document_link_params(document, opts)
       end
     end
     # rubocop:enable Metrics/MethodLength
@@ -56,7 +56,7 @@ module Hyku
     # method `session_tracking_params`so that instead of a path we have a URL
     # @private
     def document_link_params(_doc, opts)
-      opts.except(:label, :counter)
+      opts.except(:label, :counter, :q, :highlight)
     end
     private :document_link_params
   end

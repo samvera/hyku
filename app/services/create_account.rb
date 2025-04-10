@@ -76,13 +76,12 @@ class CreateAccount
     CreateAccountInlineJob.perform_now(account)
   end
 
+  ##
   # Schedules jobs that will run automatically after
   # the first time they are called
   def schedule_recurring_jobs
     return if account.search_only?
-
-    EmbargoAutoExpiryJob.perform_later(account)
-    LeaseAutoExpiryJob.perform_later(account)
+    account.find_or_schedule_jobs
   end
 
   private

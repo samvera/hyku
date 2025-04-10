@@ -1,18 +1,32 @@
 ---
 fr:
-  errors:
-    messages:
-      valid_embed_url: "doit être une URL d'incorporation valide de YouTube ou Vimeo."
   activefedora:
     models:
+      etd: ETD
       generic_work: Travail
       image: Image
+      oer: REL
   activerecord:
     attributes:
       site:
         institution_name_full: Nom complet de l'établissement
   application:
     tagline: La solution de dépôt de nouvelle génération
+  blacklight:
+    search:
+      fields:
+        facet:
+          contributing_library_sim: Bibliothèque contributive
+          contributor_sim: Donateur
+          human_readable_type_sim: Taper
+          member_of_collections_sim: Collections
+          resource_type_sim: Type de ressource
+        show:
+          additional_information: Informations complémentaires sur les droits
+    slideshow_info: Sélectionnez une image pour démarrer le diaporama
+  errors:
+    messages:
+      valid_embed_url: doit être une URL d'incorporation valide de YouTube ou Vimeo.
   helpers:
     action:
       become: Devenir
@@ -72,6 +86,7 @@ fr:
             success: "%{group} a mis à jour"
         humanized_name:
           admin: Administrateurs de référentiel
+          group/public: Utilisateurs non autorisés
           registered: Utilisateurs enregistrés
         label:
           actions: actes
@@ -126,11 +141,15 @@ fr:
     identity_provider:
       header: Fournisseur d'identité d'authentification
       label:
+        create_new: Nouveau
+        edit: Modifier
+        logo: Logo
         logo_image: Image de la page SSO
         logo_image_alt_text: Texte alternatif pour l'image
         name: Nom ou description
         options: Possibilités
         provider: Fournisseur
+        updated_at: Mis à jour à
     proprietor:
       accounts:
         nav: Comptes
@@ -170,6 +189,8 @@ fr:
       appearances:
         show:
           forms:
+            active_tabs_background_color:
+              hint: Couleur de survol pour les onglets de la page d'accueil.
             banner_image:
               hint: Pour utiliser une image comme arrière-plan d'une bannière Masthead, vous devez utiliser une image (JPG, GIF ou PNG) d'au moins 120 pixels de haut et 1 200 pixels de large. Pour de meilleurs résultats, utilisez une image d'au moins 1800 pixels de large.
             collection_banner_text_color:
@@ -202,6 +223,8 @@ fr:
               hint: S'applique aux boutons Accueil, À propos, Contact et Aide de ces pages spécifiques uniquement (à 15 % d'opacité).
             primary_button_hover_color:
               hint: Boutons de partage, de recherche et d'interaction de collecte (édition, fonctionnalité, etc.). La bordure de ces boutons sera également de cette couleur.
+            primary_button_text_color:
+              hint: Couleur du texte pour les boutons d'interaction de partage, de recherche et de collecte
             themes:
               confirm: Si votre thème ne semble pas s'appliquer correctement, vérifiez qu'il n'est pas écrasé par le CSS personnalisé.
           hints:
@@ -218,7 +241,23 @@ fr:
             directory_image: Image du répertoire
             favicon: Icône de favori
             fonts: Les Polices
+            logo: Logo
             themes: Thèmes
+      roles_service_jobs:
+        header: Travaux de réparation de données
+        jobs:
+          create_admin_set_accesses:
+            description: La création d'un enregistrement Hyrax::PermissionTemplateAccess (combiné avec Ability#user_groups) permettra aux travaux de tous les AdminSets d'apparaître dans les requêtes Blacklight/Solr.
+            label: Créer des accès aux ensembles d'administrateurs
+          create_collection_accesses:
+            description: Étant donné que chaque rôle de collection a un certain niveau d'accès à chaque collection au sein d'un locataire, la création d'un enregistrement Hyrax::PermissionTemplateAccess (combiné avec Ability#user_groups) signifie que toutes les collections apparaîtront dans les requêtes Blacklight/Solr.
+            label: Créer des accès à la collection
+          create_collection_type_participants:
+            description: Étant donné que certains rôles de collection ont accès à chaque collection au sein d'un locataire, créez un enregistrement Hyrax::CollectionTypeParticipant pour eux sur chaque Hyrax::CollectionType (sauf AdminSet).
+            label: Créer des participants de type de collection
+          grant_workflow_roles_for_all_admin_sets:
+            description: 'Les autorisations de dépôt d''œuvres sont contrôlées par les rôles de workflow sur les AdminSets individuels. Afin que les enregistrements Hyrax::Group et User qui ont le rôle « Éditeur de travaux » ou « Déposant de travaux » disposent des autorisations appropriées pour les travaux, nous leur accordons des rôles de flux de travail pour tous les AdminSets. REMARQUE : Tous les AdminSets doivent avoir un modèle d''autorisation, sinon cela échouera. Exécutez d''abord « Créer des accès aux ensembles d''administrateurs ».'
+            label: L'administrateur définit les rôles de flux de travail
       sidebar:
         accounts: Comptes
         activity_summary: Résumé de l'activité
@@ -229,6 +268,7 @@ fr:
         manage_users: Gérer les utilisateurs
         repository_activity: Activité de dépôt
         roles_and_permissions: Utilisateurs et groupes
+        roles_service_jobs: Réparation de données
         system_status: État du système
         technical: Technique
       users:
@@ -242,6 +282,7 @@ fr:
           success: L'utilisateur "%{user}" a été supprimé avec succès.
         index:
           action_label: action
+          activate: Activer
           add: Inviter un utilisateur
           delete: Effacer
           invite_users: Ajouter ou inviter un utilisateur par courrier électronique
@@ -298,6 +339,7 @@ fr:
         email: Email
         header: gérer les utilisateurs
         manage: Gérer
+        superadmin: Superadministrateur
         title: Titre
         view_users: Afficher les utilisateurs
       new:

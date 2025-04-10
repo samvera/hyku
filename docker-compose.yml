@@ -1,4 +1,3 @@
-version: '3.8'
 x-app: &app
   build:
     context: .
@@ -7,8 +6,9 @@ x-app: &app
       BUILDKIT_INLINE_CACHE: 1
     cache_from:
       - ghcr.io/samvera/hyku/base:latest
-      - ghcr.io/samvera/hyku:latest
-  image: ghcr.io/samvera/hyku:${TAG:-latest}
+      - ghcr.io/samvera/hyku/web:latest
+  image: ghcr.io/samvera/hyku/web:${TAG:-latest}
+  user: root
   env_file:
     - .env
   # NOTE: all common env variables moved to .env
@@ -18,8 +18,6 @@ x-app: &app
     - assets:/app/samvera/hyrax-webapp/public/assets:cached
     - cache:/app/samvera/hyrax-webapp/tmp/cache:cached
     - .:/app/samvera/hyrax-webapp
-  networks:
-    internal:
 
 volumes:
   assets:
@@ -34,7 +32,8 @@ volumes:
   zoo:
 
 networks:
-  internal:
+  default:
+    name: stackcar
 
 services:
   zoo:
@@ -46,19 +45,24 @@ services:
     volumes:
       - zoo:/data
       - zk:/datalog
-    networks:
-      internal:
     healthcheck:
-      test: ["CMD-SHELL", "echo 'ruok' | nc -w 2 -q 2 localhost 2181 | grep imok || exit 1"]
+      test:
+        [
+          "CMD-SHELL",
+          "echo 'ruok' | nc -w 2 -q 2 localhost 2181 | grep imok || exit 1",
+        ]
       interval: "10s"
       timeout: "8s"
 
   solr:
     image: ghcr.io/samvera/hyku/solr:${TAG:-latest}
     build:
-      context: solr
-      dockerfile: Dockerfile
+      context: .
       target: hyku-solr
+      args:
+        BUILDKIT_INLINE_CACHE: 1
+      cache_from:
+        - ghcr.io/samvera/hyku/solr:latest
     environment:
       - OOM=script
       - SOLR_ADMIN_USER=solr
@@ -70,6 +74,12 @@ services:
       - ZK_HOST=zoo:2181
       - VIRTUAL_PORT=8983
       - VIRTUAL_HOST=solr.hyku.test
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.solr-${APP_NAME:-hyku}.tls=true"
+      - "traefik.http.routers.solr-${APP_NAME:-hyku}.entrypoints=websecure"
+      - "traefik.http.routers.solr-${APP_NAME:-hyku}.rule=Host(`solr-${APP_NAME:-hyku}.localhost.direct`)"
+      - "traefik.http.services.solr-${APP_NAME:-hyku}.loadbalancer.server.port=8983"
     user: root
     command: bash -c "
       chown -R 8983:8983 /var/solr
@@ -79,8 +89,6 @@ services:
       - 8983
     volumes:
       - solr:/var/solr
-    networks:
-      internal:
     healthcheck:
       test: curl -sf http://$$SOLR_ADMIN_USER:$$SOLR_ADMIN_PASSWORD@solr:8983/solr/admin/cores?action=STATUS || exit 1
       start_period: 3s
@@ -90,6 +98,17 @@ services:
     depends_on:
       zoo:
         condition: service_healthy
+
+  fits:
+    image: ghcr.io/samvera/fitsservlet:1.6.0
+    ports:
+      - 8080
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.fits-${APP_NAME:-hyku}.tls=true"
+      - "traefik.http.routers.fits-${APP_NAME:-hyku}.entrypoints=websecure"
+      - "traefik.http.routers.fits-${APP_NAME:-hyku}.rule=Host(`fits-${APP_NAME:-hyku}.localhost.direct`)"
+      - "traefik.http.services.fits-${APP_NAME:-hyku}.loadbalancer.server.port=8080"
 
   fcrepo:
     image: ghcr.io/samvera/fcrepo4:4.7.5
@@ -101,15 +120,21 @@ services:
       - VIRTUAL_PORT=8080
       - VIRTUAL_HOST=fcrepo.hyku.test
       - JAVA_OPTS=${JAVA_OPTS} -Dfcrepo.modeshape.configuration="classpath:/config/file-simple/repository.json" -Dfcrepo.object.directory="/data/objects" -Dfcrepo.binary.directory="/data/binaries"
-    expose:
+    ports:
       - 8080
-    networks:
-      internal:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.fcrepo-${APP_NAME:-hyku}.tls=true"
+      - "traefik.http.routers.fcrepo-${APP_NAME:-hyku}.entrypoints=websecure"
+      - "traefik.http.routers.fcrepo-${APP_NAME:-hyku}.rule=Host(`fcrepo-${APP_NAME:-hyku}.localhost.direct`)"
+      - "traefik.http.services.fcrepo-${APP_NAME:-hyku}.loadbalancer.server.port=8080"
 
   db:
     image: postgres:11.1
     env_file:
       - .env
+    ports:
+      - 5432
     environment:
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
@@ -118,13 +143,23 @@ services:
       - VIRTUAL_HOST=db.hyku.test
     volumes:
       - db:/var/lib/postgresql/data
-    networks:
-      internal:
+
+  adminer:
+    image: adminer
+    environment:
+      - VIRTUAL_PORT=8080
+      - VIRTUAL_HOST=admin.hyku.test
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.adminer-${APP_NAME:-hyku}.tls=true"
+      - "traefik.http.routers.adminer-${APP_NAME:-hyku}.entrypoints=websecure"
+      - "traefik.http.routers.adminer-${APP_NAME:-hyku}.rule=Host(`adminer-${APP_NAME:-hyku}.localhost.direct`)"
+      - "traefik.http.services.adminer-${APP_NAME:-hyku}.loadbalancer.server.port=8080"
 
   # Used exclusively for building and caching the base image to reduce build times
   base:
     <<: *app
-    image: ghcr.io/samvera/hyku/base:${TAG:-latest}
+    image: ghcr.io/samvera/hyku/base:${BASE_TAG:-latest}
     build:
       context: .
       target: hyku-base
@@ -132,6 +167,7 @@ services:
         - ghcr.io/samvera/hyku/base:latest
       args:
         BUILDKIT_INLINE_CACHE: 1
+    command: bash -l -c "echo 'base is only used for building base images, which in turn reduces image build times. It does not need to be run'"
 
   web:
     <<: *app
@@ -140,10 +176,21 @@ services:
     environment:
       - VIRTUAL_PORT=3000
       - VIRTUAL_HOST=.hyku.test
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.web-${APP_NAME:-hyku}.tls=true"
+      - "traefik.http.routers.web-${APP_NAME:-hyku}.entrypoints=websecure"
+      - "traefik.http.routers.web-${APP_NAME:-hyku}.priority=10"
+      - "traefik.http.routers.web-${APP_NAME:-hyku}.rule=HostRegexp(`.+-${APP_NAME:-hyku}.localhost.direct`)"
+      - "traefik.http.services.web-${APP_NAME:-hyku}.loadbalancer.server.port=3000"
     depends_on:
       db:
         condition: service_started
+      adminer:
+        condition: service_started
       solr:
+        condition: service_started
+      fits:
         condition: service_started
       fcrepo:
         condition: service_started
@@ -176,7 +223,7 @@ services:
         BUILDKIT_INLINE_CACHE: 1
       cache_from:
         - ghcr.io/samvera/hyku/base:latest
-        - ghcr.io/samvera/hyku:latest
+        - ghcr.io/samvera/hyku/web:latest
         - ghcr.io/samvera/hyku/worker:latest
     depends_on:
       check_volumes:
@@ -185,7 +232,11 @@ services:
         condition: service_completed_successfully
       db:
         condition: service_started
+      adminer:
+        condition: service_started
       solr:
+        condition: service_started
+      fits:
         condition: service_started
       fcrepo:
         condition: service_started
@@ -194,7 +245,7 @@ services:
       zoo:
         condition: service_started
 
-  # Do not recurse through all of tmp. derivitives will make booting
+  # Do not recurse through all of tmp. derivatives will make booting
   # very slow and eventually just time out as data grows
   check_volumes:
     <<: *app
@@ -233,8 +284,6 @@ services:
     command: redis-server
     volumes:
       - redis:/data
-    networks:
-      internal:
 
   chrome:
     # password is 'secret'
@@ -244,9 +293,13 @@ services:
     volumes:
       - /dev/shm:/dev/shm
     shm_size: 3G
-    networks:
-      internal:
     environment:
       - JAVA_OPTS=-Dwebdriver.chrome.whitelistedIps=
       - VIRTUAL_PORT=7900
       - VIRTUAL_HOST=chrome.hyku.test
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.chrome-${APP_NAME:-hyku}.tls=true"
+      - "traefik.http.routers.chrome-${APP_NAME:-hyku}.entrypoints=websecure"
+      - "traefik.http.routers.chrome-${APP_NAME:-hyku}.rule=Host(`chrome-${APP_NAME:-hyku}.localhost.direct`)"
+      - "traefik.http.services.chrome-${APP_NAME:-hyku}.loadbalancer.server.port=7900"

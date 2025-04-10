@@ -23,6 +23,7 @@ module Hyrax
       def update
         form = form_class.new(update_params)
         form.banner_image = update_params[:banner_image] if update_params[:banner_image].present?
+        form.logo_image = update_params[:logo_image] if update_params[:logo_image].present?
         form.update!
 
         if update_params['default_collection_image']
@@ -79,3 +80,4 @@ module Hyrax
 end
 
 Hyrax::Admin::AppearancesController.prepend(Hyrax::Admin::AppearancesControllerDecorator)
+Hyrax::Admin::AppearancesController.form_class = Hyku::Forms::Admin::Appearance

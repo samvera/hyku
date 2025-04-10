@@ -6,8 +6,10 @@ fr:
     active_consent_to_agreement: j'ai lu et accepté les
     activefedora:
       models:
+        etd: ETD
         generic_work: Travail
         image: Image
+        oer: REL
     admin:
       admin_sets:
         delete:
@@ -488,11 +490,15 @@ fr:
         announcement_instructions: Le texte de l'annonce s'affiche sur la page d'accueil. C'est pour que les messages importants ou opportuns soient rendus bien visibles par tous les visiteurs de la page d'accueil. Il serait approprié de saisir une annonce ici, par exemple, pour informer les utilisateurs d'une interruption de maintenance planifiée à venir du système.
         featured_researcher_instructions: Chercheur en vedette est un espace pour entrer des informations et sur la page d'accueil réservé pour mettre en évidence les utilisateurs du référentiel.
         home_text_instructions: Le texte de la page d'accueil fait référence à la messagerie personnalisée qui s'affiche sur la page d'accueil soit dans le bloc héros, soit dans une autre section de la page d'accueil. Ce texte apparaît lors de la sélection d'un thème qui requiert ou autorise le texte de la page d'accueil. Nous ne recommandons pas plus de 3 phrases dans ce domaine.
+        homepage_about_section_content_instructions: Ce contenu n'est utilisé par aucun des thèmes Hyku par défaut. Il peut être utilisé pour des thèmes personnalisés.
+        homepage_about_section_heading_instructions: Ce titre n'est utilisé par aucun des thèmes Hyku par défaut. Il peut être utilisé pour des thèmes personnalisés.
         marketing_instructions: Le texte de la bannière fait référence au texte qui s'affiche sur l'image de la bannière sur la page d'accueil. Nous ne recommandons pas plus d'environ 30 caractères ou espaces dans cette zone de texte.
       tabs:
         announcement_text: Texte de l'annonce
         featured_researcher: Chercheur en vedette
         home_text: Texte de la page d'accueil
+        homepage_about_section_content: À propos du contenu de la section
+        homepage_about_section_heading: À propos de l'en-tête de section
         marketing_text: Texte marketing
       updated: Blocs de contenu mis à jour.
     controls:
@@ -936,13 +942,14 @@ fr:
         agreement_page: Accord de dépôt
         help_page: Page d'aide
         terms_page: Conditions d'utilisation
+      update: Enregistrer les modifications
       updated: Pages mises à jour.
     passive_consent_to_agreement: En enregistrant ce travail, j'accepte les
     product_name: Hyku
     product_twitter_handle: "@HydraInABox"
     search:
       button:
-        html: <span class="glyphicon glyphicon-search"></span> Aller
+        html: <span class="fa fa-search"></span> Aller
         text: Chercher
       form:
         option:
@@ -1033,6 +1040,13 @@ fr:
       permissions_message: Mise à jour des autorisations de fichier. Cela peut prendre quelques minutes. Vous pouvez actualiser votre navigateur ou revenir à cet enregistrement plus tard pour voir les autorisations de fichier mises à jour.
       processing: Le fichier est en cours de traitement; vous pouvez modifier une fois le traitement terminé
     user_profile:
+      email_frequency:
+        daily: Tous les jours
+        label: <i class="fa fa-calendar"></i> Fréquence des e-mails par lots
+        monthly: Mensuel
+        never: Jamais
+        not_set: Pas encore précisé
+        weekly: Hebdomadaire
       orcid:
         alt: Icône ORCID
         label: Profil ORCID
@@ -1164,6 +1178,8 @@ fr:
       defaults:
         admin_set_id: Ensemble administratif
         based_near: Emplacement
+        collection_banner_text_color: Couleur du texte de la bannière de collection
+        contributor: Donateur
         creator: Créateur
         date_created: date créée
         default_button_background_color: Couleur d'arrière-plan du bouton par défaut
@@ -1190,6 +1206,7 @@ fr:
         navbar_link_text_color: Couleur du texte du lien de la barre de navigation
         navbar_link_text_hover_color: Couleur de survol du texte du lien de la barre de navigation
         primary_button_hover_color: Couleur de survol du bouton principal
+        primary_button_text_color: Couleur du texte du bouton principal
         publisher: Éditeur
         related_url: URL associée
         rights_statement: Déclaration des droits
@@ -1206,3 +1223,5 @@ fr:
       defaults:
         find_child_work: Rechercher une œuvre…
         member_of_collection_ids: Sélectionnez une collection…
+    required:
+      html: <span class="badge badge-info required-tag">requis</span>

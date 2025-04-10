@@ -1,0 +1,10 @@
+# Copy file to docker-compose.override.yml to override docker-compose.yml
+# Only use for local development
+services:
+  # Uncomment to allow for the use of a ruby debugger (byebug, pry, etc) in Docker.
+  # See http://playbook-staging.notch8.com/en/devops/docker_debugger for more info.
+  web:
+    command: sh -l -c "bundle && bundle exec puma -v -b tcp://0.0.0.0:3000"
+  worker:
+    command: sh -l -c "bundle && bundle exec sidekiq"
+

@@ -105,6 +105,9 @@ module Hyrax
 
     def description_label
       label = description || I18n.t("hyku.admin.groups.description.#{name}")
+      # NOTE: Depending on configuration of I18n, we might have a translation missing or a false
+      # value; we're noticing `false` cases with upgrades of Rails.
+      return '' if label == false
       return '' if /^translation missing:/.match?(label)
 
       label

@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Deploy to Environment'
+        description: "Deploy to Environment"
         require: true
-        default: 'staging'
+        default: "staging"
         type: choice
         options:
           - demo
@@ -14,7 +14,7 @@ on:
           - staging
       debug_enabled:
         type: boolean
-        description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'
+        description: "Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)"
         required: false
         default: false
 
@@ -35,6 +35,8 @@ jobs:
       DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
+      GOOGLE_ANALYTICS_PROPERTY_ID: ${{ secrets.GOOGLE_ANALYTICS_PROPERTY_ID }}
+      GOOGLE_ACCOUNT_JSON: ${{ secrets.GOOGLE_ACCOUNT_JSON }}
       GOOGLE_FONTS_KEY: ${{ secrets.GOOGLE_FONTS_KEY }}
       GOOGLE_OAUTH_PRIVATE_KEY_SECRET: ${{ secrets.GOOGLE_OAUTH_PRIVATE_KEY_SECRET }}
       GOOGLE_OAUTH_PRIVATE_KEY_VALUE: ${{ secrets.GOOGLE_OAUTH_PRIVATE_KEY_VALUE }}
@@ -56,7 +58,7 @@ jobs:
     steps:
       - id: setup
         name: Setup
-        uses: scientist-softserv/actions/setup-env@v0.0.6
+        uses: notch8/actions/setup-env@v0.0.25
         with:
           tag: ${{ inputs.tag }}
           image_name: ${{ inputs.image_name }}
@@ -71,6 +73,6 @@ jobs:
           echo $KUBECONFIG_FILE | base64 -d > $KUBECONFIG;
           DOLLAR=$ envsubst < ops/${{ inputs.environment }}-deploy.tmpl.yaml > ops/${{ inputs.environment }}-deploy.yaml;
           export DEPLOY_TAG=${TAG};
-          export DEPLOY_IMAGE=ghcr.io/${REPO_LOWER};
+          export DEPLOY_IMAGE=ghcr.io/${REPO_LOWER}/web;
           export WORKER_IMAGE=ghcr.io/${REPO_LOWER}/worker;
           ./bin/helm_deploy ${{ inputs.k8s-release-name || format('{0}-{1}', github.event.repository.name, inputs.environment) }} ${{ inputs.k8s-namespace || format('{0}-{1}', github.event.repository.name, inputs.environment) }}

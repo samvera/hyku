@@ -1,0 +1,70 @@
+<% content_for(:extra_body_classes, 'works-show text-show-theme-partial ') %>
+<% provide :page_title, @presenter.page_title %>
+<%= render 'shared/citations' %>
+<%= render './shared/additional_citations' %>
+<div class="row">
+  <div itemscope itemtype="http://schema.org/CreativeWork" class="col-xs-12">
+    <div class="card">
+      <div class="card-header">
+        <%= render 'work_title', presenter: @presenter %>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <%= render 'workflow_actions_widget', presenter: @presenter %>
+          <% if @presenter.iiif_viewer? %>
+            <div class="col-sm-12">
+              <%= render 'representative_media', presenter: @presenter, viewer: true %>
+            </div>
+          <% elsif Flipflop.default_pdf_viewer? && @presenter.show_pdf_viewer? && @presenter.file_set_presenters.any?(&:pdf?) %>
+            <div class="col-sm-12">
+              <%= render 'pdf_js', file_set_presenter: pdf_file_set_presenter(@presenter) %>
+            </div>
+          <% end %>
+          <div class="col-sm-12">
+            <%= render "show_actions", presenter: @presenter %>
+          </div>
+          <div class="centered-media <%= !@presenter.iiif_viewer? ? 'col-sm-6 text-center' : '' %>">
+            <%= render 'representative_media', presenter: @presenter, viewer: false unless @presenter.iiif_viewer? || @presenter.show_pdf_viewer? %>
+            <% if !@presenter.iiif_viewer? %>
+              <div>
+                <br/>
+                  <%= render('download_pdf', presenter: @presenter, file_set_id: @presenter.file_set_presenters.first.id) if @presenter.show_pdf_download_button? %>
+                  <%= render 'citations', presenter: @presenter %>
+                <br/>
+              </div>
+            <% end %>
+          </div>
+          <div class="<%= @presenter.iiif_viewer? ? 'col-sm-8' : 'col-sm-6' %>">
+            <%= render 'work_description', presenter: @presenter %>
+            <%= render 'metadata', presenter: @presenter %>
+          </div>
+          <div class="<%= @presenter.iiif_viewer? ? 'col-sm-4' : 'col-sm-12' %>  relationships-container">
+            <div class='relationships-box'>
+              <%= render 'relationships', presenter: @presenter %>
+              </div>
+              <% if @presenter.class == Hyrax::OerPresenter %>
+                <div class='relationships-box'>
+                  <%= render 'related_items', presenter: @presenter %>
+                </div>
+              <% end %>
+              <% if @presenter.iiif_viewer? %>
+                <div>
+                  <br/>
+                    <%= render('download_pdf', presenter: @presenter, file_set_id: @presenter.file_set_presenters.first.id) if @presenter.show_pdf_download_button? %>
+                    <%= render 'citations', presenter: @presenter %>
+                  <br/>
+                </div>
+              <% end %>
+            </div>
+          </div>
+          <div class="col-sm-12">
+            <%= render 'items', presenter: @presenter %>
+            <%# TODO: we may consider adding these partials in the future %>
+            <%# = render 'sharing_with', presenter: @presenter %>
+            <%# = render 'user_activity', presenter: @presenter %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

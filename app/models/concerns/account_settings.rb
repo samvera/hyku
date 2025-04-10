@@ -8,18 +8,29 @@ module AccountSettings
   extend ActiveSupport::Concern
   # rubocop:disable Metrics/BlockLength
   included do
-    cattr_accessor :array_settings, :boolean_settings, :hash_settings, :string_settings, :private_settings do
+    cattr_accessor :array_settings, :boolean_settings, :hash_settings, :json_editor_settings, :string_settings, :private_settings do
       []
     end
     cattr_accessor :all_settings do
       {}
     end
 
+    ##
+    # Consider the configured superadmin_settings only available for those with
+    # the superadmin role.
+    class_attribute :superadmin_settings, default: []
+
+    setting :allow_downloads, type: 'boolean', default: true
     setting :allow_signup, type: 'boolean', default: true
+    setting :analytics, type: 'boolean', default: false
+    setting :analytics_reporting, type: 'boolean', default: false
+    setting :batch_email_notifications, type: 'boolean', default: false
+    setting :bulkrax_field_mappings, type: 'json_editor', default: Hyku.default_bulkrax_field_mappings.to_json
     setting :bulkrax_validations, type: 'boolean', disabled: true
     setting :cache_api, type: 'boolean', default: false
     setting :contact_email, type: 'string', default: 'change-me-in-settings@example.com'
     setting :contact_email_to, type: 'string', default: 'change-me-in-settings@example.com'
+    setting :depositor_email_notifications, type: 'boolean', default: false
     setting :doi_reader, type: 'boolean', default: false
     setting :doi_writer, type: 'boolean', default: false
     setting :file_acl, type: 'boolean', default: true, private: true
@@ -28,7 +39,8 @@ module AccountSettings
     setting :email_subject_prefix, type: 'string'
     setting :enable_oai_metadata, type: 'string', disabled: true
     setting :file_size_limit, type: 'string', default: 5.gigabytes.to_s
-    setting :google_analytics_id, type: 'string'
+    setting :google_analytics_id, type: 'string', default: ENV.fetch('GOOGLE_ANALYTICS_ID', '')
+    setting :google_analytics_property_id, type: 'string', default: ENV.fetch('GOOGLE_ANALYTICS_PROPERTY_ID', '')
     setting :google_scholarly_work_types, type: 'array', disabled: true
     setting :geonames_username, type: 'string', default: ''
     setting :gtm_id, type: 'string'
@@ -41,7 +53,7 @@ module AccountSettings
     setting :shared_login, type: 'boolean', disabled: true
     setting :smtp_settings, type: 'hash', private: true, default: {}
     setting :solr_collection_options, type: 'hash', default: solr_collection_options
-    setting :ssl_configured, type: 'boolean', default: false, private: true
+    setting :ssl_configured, type: 'boolean', default: true, private: true
     setting :weekly_email_list, type: 'array', disabled: true
     setting :yearly_email_list, type: 'array', disabled: true
 
@@ -51,7 +63,7 @@ module AccountSettings
     validates :contact_email, :oai_admin_email,
               format: { with: URI::MailTo::EMAIL_REGEXP },
               allow_blank: true
-    validate :validate_email_format, :validate_contact_emails
+    validate :validate_email_format, :validate_contact_emails, :validate_json
     validates :google_analytics_id,
               format: { with: /((UA|YT|MO)-\d+-\d+|G-[A-Z0-9]{10})/i },
               allow_blank: true
@@ -63,7 +75,7 @@ module AccountSettings
   # rubocop:disable Metrics/BlockLength
   class_methods do
     def setting(name, args)
-      known_type = ['array', 'boolean', 'hash', 'string'].include?(args[:type])
+      known_type = ['array', 'boolean', 'hash', 'string', 'json_editor'].include?(args[:type])
       raise "Setting type #{args[:type]} is not supported. Can not laod." unless known_type
 
       send("#{args[:type]}_settings") << name
@@ -75,6 +87,7 @@ module AccountSettings
         value = super()
         value = value.nil? ? ENV.fetch("HYKU_#{name.upcase}", nil) : value
         value = value.nil? ? ENV.fetch("HYRAX_#{name.upcase}", nil) : value
+        value = value.nil? ? ENV.fetch(name.upcase.to_s, nil) : value
         value = value.nil? ? args[:default] : value
         set_type(value, (args[:type]).to_s)
       end
@@ -105,8 +118,12 @@ module AccountSettings
   end
   # rubocop:enable Metrics/BlockLength
 
-  def public_settings
-    all_settings.reject { |k, v| Account.private_settings.include?(k.to_s) || v[:disabled] }
+  def public_settings(is_superadmin: false)
+    all_settings.reject do |key, value|
+      value[:disabled] ||
+        self.class.private_settings.include?(key.to_s) ||
+        (!is_superadmin && superadmin_settings.include?(key.to_sym))
+    end
   end
 
   def live_settings
@@ -125,6 +142,12 @@ module AccountSettings
       value.is_a?(String) ? JSON.parse(value) : value
     when 'string'
       value.to_s
+    when 'json_editor'
+      begin
+        JSON.pretty_generate(JSON.parse(value))
+      rescue JSON::ParserError
+        value
+      end
     end
   end
 
@@ -144,6 +167,18 @@ module AccountSettings
     end
   end
 
+  def validate_json
+    json_editor_settings.each do |key|
+      next if settings[key].blank?
+
+      begin
+        JSON.parse(settings[key])
+      rescue JSON::ParserError => e
+        errors.add(:"#{key}", e.message)
+      end
+    end
+  end
+
   def initialize_settings
     return true unless self.class.column_names.include?('settings')
     set_smtp_settings
@@ -157,39 +192,99 @@ module AccountSettings
     )
   end
 
-  # rubocop:disable Metrics/AbcSize
   def reload_library_config
+    configure_hyrax
+    reload_hyrax_analytics
+    configure_devise
+    configure_carrierwave
+    configure_ssl
+  end
+
+  def configure_hyrax
     Hyrax.config do |config|
+      # A short-circuit of showing download links
+      config.display_media_download_link = allow_downloads.nil? || ActiveModel::Type::Boolean.new.cast(allow_downloads)
       config.contact_email = contact_email
       config.geonames_username = geonames_username
       config.uploader[:maxFileSize] = file_size_limit.to_i
+      configure_hyrax_analytics_settings(config)
     end
+  end
 
-    Devise.mailer_sender = contact_email
-
-    if s3_bucket.present?
-      CarrierWave.configure do |config|
-        config.storage = :aws
-        config.aws_bucket = s3_bucket
-        config.aws_acl = 'bucket-owner-full-control'
-      end
-    elsif !file_acl
-      CarrierWave.configure do |config|
-        config.permissions = nil
-        config.directory_permissions = nil
-      end
+  def configure_hyrax_analytics_settings(config)
+    if ActiveModel::Type::Boolean.new.cast(analytics_reporting) && analytics_credentials_present?
+      config.analytics = true
+      config.analytics_reporting = true
     else
-      CarrierWave.configure do |config|
-        config.storage = :file
-        config.permissions = 420
-        config.directory_permissions = 493
+      config.analytics = false
+      config.analytics_reporting = false
+    end
+  end
+
+  def configure_devise
+    Devise.mailer_sender = contact_email
+  end
+
+  def configure_carrierwave
+    CarrierWave.configure do |config|
+      if s3_bucket.present?
+        configure_s3_storage(config)
+      elsif !file_acl
+        configure_no_permissions(config)
+      else
+        configure_file_storage(config)
       end
     end
+  end
 
+  def configure_s3_storage(config)
+    config.storage = :aws
+    config.aws_bucket = s3_bucket
+    config.aws_acl = 'bucket-owner-full-control'
+  end
+
+  def configure_no_permissions(config)
+    config.permissions = nil
+    config.directory_permissions = nil
+  end
+
+  def configure_file_storage(config)
+    config.storage = :file
+    config.permissions = 420
+    config.directory_permissions = 493
+  end
+
+  def configure_ssl
     return unless ssl_configured
     ActionMailer::Base.default_url_options ||= {}
     ActionMailer::Base.default_url_options[:protocol] = 'https'
   end
-  # rubocop:enable Metrics/AbcSize
+
+  def analytics_credentials_present?
+    google_analytics_id.present? &&
+      google_analytics_property_id.present? &&
+      (ENV.fetch('GOOGLE_ACCOUNT_JSON', '').present? || ENV.fetch('GOOGLE_ACCOUNT_JSON_PATH', '').present?)
+  end
+
+  def reload_hyrax_analytics
+    # Configure analytics if all required settings are present
+    if google_analytics_id.present? &&
+       google_analytics_property_id.present? &&
+       (ENV.fetch('GOOGLE_ACCOUNT_JSON', '').present? || ENV.fetch('GOOGLE_ACCOUNT_JSON_PATH', '').present?)
+
+      Hyrax::Analytics.config.analytics_id = google_analytics_id
+      Hyrax::Analytics.config.property_id = google_analytics_property_id
+
+    else
+      # Disable analytics if any required settings are missing
+      Hyrax.config.analytics = false
+      Hyrax.config.analytics_reporting = false
+    end
+  rescue StandardError => e
+    # Log the error but don't crash the application
+    Rails.logger.error "Failed to configure analytics: #{e.message}"
+    Hyrax.config.analytics = false
+    Hyrax.config.analytics_reporting = false
+  end
 end
 # rubocop:enable Metrics/ModuleLength

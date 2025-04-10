@@ -32,6 +32,9 @@ extraVolumeMounts: &volMounts
   - name: uploads
     mountPath: /app/samvera/hyrax-webapp/tmp/network_files
     subPath: network-files
+  - name: uploads
+    mountPath: /app/samvera/hyrax-webapp/storage/files
+    subPath: storage-files
 
 ingress:
   enabled: true
@@ -113,7 +116,7 @@ extraEnvVars: &envVars
   - name: REDIS_URL
     value: redis://:staging@hyku-iiif-redis-master:6379/iiif
   - name: HYRAX_ACTIVE_JOB_QUEUE
-    value: sidekiq
+    value: good_job
   - name: HYKU_BULKRAX_ENABLED
     value: "true"
   - name: HYKU_CONTACT_EMAIL
@@ -126,6 +129,8 @@ extraEnvVars: &envVars
     value: hyku-iiif.$BASE_URL
   - name: HYKU_ADMIN_ONLY_TENANT_CREATION
     value: "true"
+  - name: HYKU_BLOCK_VALKYRIE_REDIRECT
+    value: "false"
   - name: HYKU_ALLOW_SIGNUP
     value: "false"
   - name: HYKU_DEFAULT_HOST
@@ -170,6 +175,8 @@ extraEnvVars: &envVars
     value: $SENTRY_DSN
   - name: SENTRY_ENVIRONMENT
     value: $SENTRY_ENVIRONMENT
+  - name: VALKYRIE_TRANSITION
+    value: "true"
 
 worker:
   replicaCount: 1

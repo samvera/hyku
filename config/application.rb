@@ -28,13 +28,121 @@ module Hyku
   # @see https://sentry.io/organizations/scientist-inc/issues/3773392603/?project=6745020&query=is%3Aunresolved&referrer=issue-stream
   # @see https://github.com/samvera-labs/bulkrax/pull/689
   # @see https://github.com/samvera-labs/bulkrax/issues/688
-  # @see https://github.com/scientist-softserv/adventist-dl/issues/179
+  # @see https://github.com/notch8/adventist-dl/issues/179
   def self.utf_8_encode(string)
     string
       .encode(Encoding.find('UTF-8'), invalid: :replace, undef: :replace, replace: "?")
       .delete("\xEF\xBB\xBF")
   end
 
+  def self.bulkrax_enabled?
+    ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_BULKRAX_ENABLED', true))
+  end
+
+  def self.default_bulkrax_field_mappings=(value)
+    err_msg = 'Hyku.default_bulkrax_field_mappings must respond to #with_indifferent_access'
+    raise err_msg unless value.respond_to?(:with_indifferent_access)
+
+    @default_bulkrax_field_mappings = value.with_indifferent_access
+  end
+
+  # This represents the default Bulkrax field mappings that new Accounts will be initialized with.
+  # Bulkrax field mappings should not be configured within the Bulkrax initializer in Hyku.
+  # @see lib/bulkrax/bulkrax_decorator.rb
+  # @see https://github.com/samvera/bulkrax/wiki/Configuring-Bulkrax#field-mappings
+  def self.default_bulkrax_field_mappings
+    return @default_bulkrax_field_mappings if @default_bulkrax_field_mappings.present?
+
+    default_bulkrax_fm = {}
+    defaults = {
+      'abstract' => { from: ['abstract'], split: true },
+      'accessibility_feature' => { from: ['accessibility_feature'], split: '\|' },
+      'accessibility_hazard' => { from: ['accessibility_hazard'], split: '\|' },
+      'accessibility_summary' => { from: ['accessibility_summary'] },
+      'additional_information' => { from: ['additional_information'], split: '\|', generated: true },
+      'admin_note' => { from: ['admin_note'] },
+      'admin_set_id' => { from: ['admin_set_id'], generated: true },
+      'alternate_version' => { from: ['alternate_version'], split: '\|' },
+      'alternative_title' => { from: ['alternative_title'], split: '\|', generated: true },
+      'arkivo_checksum' => { from: ['arkivo_checksum'], split: '\|', generated: true },
+      'audience' => { from: ['audience'], split: '\|' },
+      'based_near' => { from: ['location'], split: '\|' },
+      'bibliographic_citation' => { from: ['bibliographic_citation'], split: true },
+      'contributor' => { from: ['contributor'], split: true },
+      'create_date' => { from: ['create_date'], split: true },
+      'children' => { from: ['children'], related_children_field_mapping: true },
+      'committee_member' => { from: ['committee_member'], split: '\|' },
+      'creator' => { from: ['creator'], split: true },
+      'date_created' => { from: ['date_created'], split: true },
+      'date_uploaded' => { from: ['date_uploaded'], generated: true },
+      'degree_discipline' => { from: ['discipline'], split: '\|' },
+      'degree_grantor' => { from: ['grantor'], split: '\|' },
+      'degree_level' => { from: ['level'], split: '\|' },
+      'degree_name' => { from: ['degree'], split: '\|' },
+      'depositor' => { from: ['depositor'], split: '\|', generated: true },
+      'description' => { from: ['description'], split: true },
+      'discipline' => { from: ['discipline'], split: '\|' },
+      'education_level' => { from: ['education_level'], split: '\|' },
+      'embargo_id' => { from: ['embargo_id'], generated: true },
+      'extent' => { from: ['extent'], split: true },
+      'file' => { from: ['file'], split: /\s*[|]\s*/ },
+      'identifier' => { from: ['identifier'], split: true },
+      'import_url' => { from: ['import_url'], split: '\|', generated: true },
+      'keyword' => { from: ['keyword'], split: true },
+      'label' => { from: ['label'], generated: true },
+      'language' => { from: ['language'], split: true },
+      'lease_id' => { from: ['lease_id'], generated: true },
+      'library_catalog_identifier' => { from: ['library_catalog_identifier'], split: '\|' },
+      'license' => { from: ['license'], split: /\s*[|]\s*/ },
+      'modified_date' => { from: ['modified_date'], split: true },
+      'newer_version' => { from: ['newer_version'], split: '\|' },
+      'oer_size' => { from: ['oer_size'], split: '\|' },
+      'on_behalf_of' => { from: ['on_behalf_of'], generated: true },
+      'owner' => { from: ['owner'], generated: true },
+      'parents' => { from: ['parents'], related_parents_field_mapping: true },
+      'previous_version' => { from: ['previous_version'], split: '\|' },
+      'publisher' => { from: ['publisher'], split: true },
+      'related_item' => { from: ['related_item'], split: '\|' },
+      'relative_path' => { from: ['relative_path'], split: '\|', generated: true },
+      'related_url' => { from: ['related_url', 'relation'], split: /\s* [|]\s*/ },
+      'remote_files' => { from: ['remote_files'], split: /\s*[|]\s*/ },
+      'rendering_ids' => { from: ['rendering_ids'], split: '\|', generated: true },
+      'resource_type' => { from: ['resource_type'], split: true },
+      'rights_holder' => { from: ['rights_holder'], split: '\|' },
+      'rights_notes' => { from: ['rights_notes'], split: true },
+      'rights_statement' => { from: ['rights', 'rights_statement'], split: '\|', generated: true },
+      'source' => { from: ['source'], split: true },
+      'state' => { from: ['state'], generated: true },
+      'subject' => { from: ['subject'], split: true },
+      'table_of_contents' => { from: ['table_of_contents'], split: '\|' },
+      'title' => { from: ['title'], split: /\s*[|]\s*/ },
+      'video_embed' => { from: ['video_embed'] }
+    }
+
+    default_bulkrax_fm['Bulkrax::BagitParser'] = defaults.merge({
+                                                                  # add or remove custom mappings for this parser here
+                                                                })
+
+    default_bulkrax_fm['Bulkrax::CsvParser'] = defaults.merge({
+                                                                # add or remove custom mappings for this parser here
+                                                              })
+
+    default_bulkrax_fm['Bulkrax::OaiDcParser'] = defaults.merge({
+                                                                  # add or remove custom mappings for this parser here
+                                                                })
+
+    default_bulkrax_fm['Bulkrax::OaiQualifiedDcParser'] = defaults.merge({
+                                                                           # add or remove custom mappings for this parser here
+                                                                         })
+
+    default_bulkrax_fm['Bulkrax::XmlParser'] = defaults.merge({
+                                                                # add or remove custom mappings for this parser here
+                                                              })
+
+    default_bulkrax_fm.with_indifferent_access
+  end
+
+  # rubocop:disable Metrics/ClassLength
   class Application < Rails::Application
     ##
     # @!group Class Attributes
@@ -137,7 +245,7 @@ module Hyku
     # @see
     def self.theme_view_path_roots
       returning_value = [Rails.root.to_s]
-      returning_value.push HykuKnapsack::Engine.root.to_s if defined?(HykuKnapsack)
+      returning_value.unshift HykuKnapsack::Engine.root.to_s if defined?(HykuKnapsack)
       returning_value
     end
 
@@ -156,6 +264,28 @@ module Hyku
       end
 
       Rails.root.join(relative_path).to_s
+    end
+
+    ##
+    # Because of Hyku using the Goddess adapter of Hyrax 5.x, we want to have a
+    # canonical answer for what are the Work Types that we want to manage.
+    #
+    # We don't want to rely on `Hyrax.config.curation_concerns`, as these are
+    # the ActiveFedora implementations.
+    #
+    # @return [Array<Class>]
+    def self.work_types
+      Hyrax.config.curation_concerns.map do |cc|
+        if cc.to_s.end_with?("Resource")
+          cc
+        else
+          # We may encounter a case where we don't have an old ActiveFedora
+          # model that we're mapping to.  For example, let's say we add Game as
+          # a curation concern.  And Game has only ever been written/modeled via
+          # Valkyrie.  We don't want to also have a GameResource.
+          "#{cc}Resource".safe_constantize || cc
+        end
+      end
     end
 
     # Settings in config/environments/* take precedence over those specified here.
@@ -179,8 +309,6 @@ module Hyku
     end
 
     config.to_prepare do
-      DerivativeRodeo::Generators::HocrGenerator.additional_tessearct_options = nil
-
       # Load locales early so decorators can use them during initialization
       I18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.yml')]
 
@@ -197,7 +325,39 @@ module Hyku
       Dir.glob(File.join(File.dirname(__FILE__), "../lib/oai/**/*.rb")).sort.each do |c|
         Rails.configuration.cache_classes ? require(c) : load(c)
       end
+
+      if Hyku.bulkrax_enabled?
+        # set bulkrax default work type to first curation_concern if it isn't already set
+        Bulkrax.default_work_type = Hyku::Application.work_types.first.to_s if Bulkrax.default_work_type.blank?
+        Bulkrax.collection_model_class = Hyrax.config.collection_class
+        Bulkrax.file_model_class = Hyrax.config.file_set_class
+      end
+
+      # By default plain text files are not processed for text extraction.  In adding
+      # Adventist::TextFileTextExtractionService to the beginning of the services array we are
+      # enabling text extraction from plain text files.
+      Hyrax::DerivativeService.services = [
+        IiifPrint::PluggableDerivativeService
+      ]
+
+      # When you are ready to use the derivative rodeo instead of the pluggable uncomment the
+      # following and comment out the preceding Hyrax::DerivativeService.service
+      #
+      # Hyrax::DerivativeService.services = [
+      #   Adventist::TextFileTextExtractionService,
+      #   IiifPrint::DerivativeRodeoService,
+      #   Hyrax::FileSetDerivativesService]
+
+      DerivativeRodeo::Generators::HocrGenerator.additional_tessearct_options = nil
+      begin
+        TenantMaintenanceJob.perform_later unless ActiveJob::Base.find_job(klass: TenantMaintenanceJob)
+      rescue
+        Rails.logger.error('No background job queue connection, skipping add of TenantMaintenanceJob')
+      end
     end
+
+    # When running tests we don't want to auto-specify factories
+    config.factory_bot.definition_file_paths = [] if config.respond_to?(:factory_bot)
 
     # resolve reloading issue in dev mode
     config.paths.add 'app/helpers', eager_load: true
@@ -258,9 +418,10 @@ module Hyku
       ##
       # This needs to be in the after initialize so that the IiifPrint gem can do it's decoration.
       #
-      # @see https://github.com/scientist-softserv/iiif_print/blob/9e7837ce4bd08bf8fff9126455d0e0e2602f6018/lib/iiif_print/engine.rb#L54 Where we do the override.
+      # @see https://github.com/notch8/iiif_print/blob/9e7837ce4bd08bf8fff9126455d0e0e2602f6018/lib/iiif_print/engine.rb#L54 Where we do the override.
       Hyrax::Actors::FileSetActor.prepend(IiifPrint::TenantConfig::FileSetActorDecorator)
       Hyrax::WorkShowPresenter.prepend(IiifPrint::TenantConfig::WorkShowPresenterDecorator)
     end
   end
+  # rubocop:enable Metrics/ClassLength
 end

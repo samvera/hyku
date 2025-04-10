@@ -12,11 +12,15 @@ pg_upgrade_*.log
 /node_modules
 /coverage/
 /spec/tmp
+vendor/engines
+vendor/bundle
+.tools-versions
 **.orig
 rerun.txt
 pickle-email-*.html
 solr_db_initialized
 fits.log
+/storage/files
 
 ## Environment normalization:
 /.bundle

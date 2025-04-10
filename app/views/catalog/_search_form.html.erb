@@ -1,0 +1,39 @@
+<% # OVERRIDE: Hyrax v5.0.1 template to include the advanced_search button %>
+<%= form_tag search_form_action, method: :get, class: "search-form", id: "search-form-header", role: "search" do %>
+  <%= render Blacklight::HiddenSearchStateComponent.new(params: search_state.params_for_search.except(:q, :search_field, :qt, :page, :utf8)) %>
+  <%= hidden_field_tag :search_field, 'all_fields' %>
+  <div class="form-group row pt-4 pt-sm-0">
+
+    <label class="col-sm-3 mb-0" for="search-field-header">
+      <%= t("hyrax.search.form.q.label", application_name: application_name) %>
+    </label>
+
+    <div class="input-group">
+      <%= text_field_tag :q, current_search_parameters , 'aria-label': 'Search', class: "q form-control", id: "search-field-header", placeholder: t("hyrax.search.form.q.placeholder") %>
+
+      <div class="input-group-append">
+        <button type="submit" class="btn btn-primary" id="search-submit-header">
+          <%= t('hyrax.search.button.html') %>
+        </button>
+        <%# OVERRIDE here to include the advanced search button in the search bar %>
+        <%= link_to "Advanced", "/advanced", class: 'btn btn-secondary', id: 'advanced-top-button' %>
+        <% if current_user %>
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+
+            <span class="sr-only" data-search-element="label"><%= t("hyrax.search.form.option.all.label_long", application_name: application_name) %></span>
+            <span aria-hidden="true"><%= t("hyrax.search.form.option.all.label_short") %></span>
+          </button>
+          <div class="dropdown-menu dropdown-menu-right">
+            <%= link_to t("hyrax.search.form.option.all.label_long", application_name: application_name), "#", class: "dropdown-item",
+                data: { "search-option" => main_app.search_catalog_path, "search-label" => t("hyrax.search.form.option.all.label_short") } %>
+            <%= link_to t("hyrax.search.form.option.my_works.label_long"), "#", class: "dropdown-item",
+                data: { "search-option" => hyrax.my_works_path, "search-label" => t("hyrax.search.form.option.my_works.label_short") } %>
+            <%= link_to t("hyrax.search.form.option.my_collections.label_long"), "#", class: "dropdown-item",
+                data: { "search-option" => hyrax.my_collections_path, "search-label" => t("hyrax.search.form.option.my_collections.label_short") } %>
+          </div>
+        <% end %>
+      </div><!-- /.input-group-btn -->
+    </div><!-- /.input-group -->
+
+  </div><!-- /.form-group -->
+<% end %>

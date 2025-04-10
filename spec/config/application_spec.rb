@@ -44,4 +44,30 @@ RSpec.describe Hyku::Application do
     subject { described_class.iiif_audio_url_builder }
     it { is_expected.to be_a(Proc) }
   end
+
+  describe '.work_types' do
+    subject { described_class.work_types }
+
+    # These are the default
+    it { is_expected.to eq([GenericWorkResource, ImageResource, EtdResource, OerResource]) }
+  end
+
+  describe 'Hyrax configuration' do
+    subject { Hyrax.config }
+
+    its(:file_set_class) { is_expected.to eq(Hyrax::FileSet) }
+    its(:admin_set_class) { is_expected.to eq(AdminSetResource) }
+    its(:collection_class) { is_expected.to eq(CollectionResource) }
+  end
+
+  describe 'Bulkrax configuration' do
+    subject { Bulkrax }
+
+    it 'is enabled by default' do
+      expect(Hyku.bulkrax_enabled?).to be_truthy
+    end
+
+    its(:file_model_class) { is_expected.to eq(Hyrax::FileSet) }
+    its(:collection_model_class) { is_expected.to eq(CollectionResource) }
+  end
 end

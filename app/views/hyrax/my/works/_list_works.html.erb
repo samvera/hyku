@@ -28,6 +28,9 @@
       </div>
     </div>
   </td>
+  <% if Hyrax.config.flexible? %>
+    <td class='text-center'><%= document.schema_version.to_f if document.schema_version %></td>
+  <% end %>
   <td class="date text-center"><%= document.date_modified %></td>
   <td class='text-center'>
     <span class="fa <%= current_user.trophies.where(work_id: document.id).exists? ? 'fa-star highlighted-work' : 'fa-star-o trophy-off' %>" aria-hidden="true"></span>

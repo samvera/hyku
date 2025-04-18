@@ -19,6 +19,17 @@ module Hyku
       # add around action to load theme show page views
       around_action :inject_show_theme_views, except: :delete
       self.show_presenter = Hyku::WorkShowPresenter
+
+      # These cache wrapper methods need to be in the top level so that they override other modules
+      def show
+        expires_in 1.hour, public: true
+        super
+      end
+
+      def manifest
+        expires_in 1.hour, public: true
+        super
+      end
     end
 
     def json_manifest

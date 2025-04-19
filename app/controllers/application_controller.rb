@@ -26,11 +26,27 @@ class ApplicationController < ActionController::Base
   before_action :set_account_specific_connections!
   before_action :elevate_single_tenant!, if: :singletenant?
 
+  after_action :clear_session_cookie
+
   rescue_from Apartment::TenantNotFound do
     raise ActionController::RoutingError, 'Not Found'
   end
 
   protected
+
+  def clear_session_cookie
+    return if current_user || !cached_route?(request.path)
+
+    if response.headers["Cache-Control"].blank? || !(response.headers["Cache-Control"].include?('no-store') || response.headers["Cache-Control"].include?('no-cache'))
+      # this skips sending a session cookie # (a session cookie will cause cloudflare to avoid caching it)
+      # NOTE: the session cookie contains the csrf token so verification fails on requests following these ones
+      request.session_options[:skip] = true
+    end
+  end
+
+  def cached_route?(path)
+    path.start_with?('/concern', '/catalog')
+  end
 
   def hidden?
     current_account.persisted? && !current_account.is_public?

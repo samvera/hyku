@@ -39,7 +39,6 @@ class ApplicationController < ActionController::Base
 
     if response.headers["Cache-Control"].blank? || !(response.headers["Cache-Control"].include?('no-store') || response.headers["Cache-Control"].include?('no-cache'))
       # this skips sending a session cookie # (a session cookie will cause cloudflare to avoid caching it)
-      # NOTE: the session cookie contains the csrf token so verification fails on requests following these ones
       request.session_options[:skip] = true
     end
   end

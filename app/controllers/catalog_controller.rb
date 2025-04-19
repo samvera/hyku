@@ -648,7 +648,7 @@ class CatalogController < ApplicationController
   protected
 
   def cache_control
-    expires_in 1.hour, public: true
+    expires_in 1.hour, public: true unless Rails.env.test?
   end
 end
 # rubocop:enable Metrics/ClassLength, Metrics/BlockLength

@@ -23,13 +23,13 @@ module Hyku
       # These cache wrapper methods need to be in the top level so that they override other modules
       def show
         fresh_when presenter
-        expires_in 1.hour, public: true
+        expires_in 1.hour, public: true unless Rails.env.test?
         super
       end
 
       def manifest
         fresh_when iiif_manifest_presenter
-        expires_in 1.hour, public: true
+        expires_in 1.hour, public: true unless Rails.env.test?
         super
       end
     end

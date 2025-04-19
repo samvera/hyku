@@ -37,10 +37,9 @@ class ApplicationController < ActionController::Base
   def clear_session_cookie
     return if current_user || !cached_route?(request.path)
 
-    if response.headers["Cache-Control"].blank? || !(response.headers["Cache-Control"].include?('no-store') || response.headers["Cache-Control"].include?('no-cache'))
-      # this skips sending a session cookie # (a session cookie will cause cloudflare to avoid caching it)
-      request.session_options[:skip] = true
-    end
+    return unless response.headers["Cache-Control"].blank? || !(response.headers["Cache-Control"].include?('no-store') || response.headers["Cache-Control"].include?('no-cache'))
+    # this skips sending a session cookie # (a session cookie will cause cloudflare to avoid caching it)
+    request.session_options[:skip] = true
   end
 
   def cached_route?(path)

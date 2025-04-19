@@ -14,40 +14,40 @@ AllCops:
   DisplayCopNames: true
   SuggestExtensions: false
   Exclude:
-    - 'gems/**/*'
-    - 'db/**/*'
-    - 'script/**/*'
-    - 'spec/test_app_templates/**/*'
-    - 'vendor/**/*'
-    - 'lib/hyrax/specs/**/*'
-    - 'bin/graph'
-    - 'bin/import_from_purl'
-    - 'spec/features/**/*'
+    - "gems/**/*"
+    - "db/**/*"
+    - "script/**/*"
+    - "spec/test_app_templates/**/*"
+    - "vendor/**/*"
+    - "lib/hyrax/specs/**/*"
+    - "bin/graph"
+    - "bin/import_from_purl"
+    - "spec/features/**/*"
 
 Lint/ImplicitStringConcatenation:
   Exclude:
-    - 'lib/generators/hyrax/**/*'
+    - "lib/generators/hyrax/**/*"
 
 Rails/Output:
   Exclude:
-    - 'lib/generators/**/*'
+    - "lib/generators/**/*"
 
 Metrics/BlockLength:
-  AllowedMethods: ['included']
+  AllowedMethods: ["included"]
   Exclude:
-    - 'hyrax.gemspec'
-    - 'app/models/concerns/hyrax/content_block_behavior.rb'
-    - 'app/services/hyrax/workflow/workflow_schema.rb'
-    - 'config/initializers/simple_form.rb'
-    - 'config/features.rb'
-    - 'config/routes.rb'
-    - 'lib/generators/hyrax/templates/catalog_controller.rb'
-    - 'lib/generators/hyrax/templates/config/initializers/simple_form_bootstrap.rb'
-    - 'lib/hyrax/rails/routes.rb'
-    - 'lib/tasks/*.rake'
-    - 'spec/**/*.rb'
-    - 'tasks/benchmark.rake'
-    - 'config/application.rb'
+    - "hyrax.gemspec"
+    - "app/models/concerns/hyrax/content_block_behavior.rb"
+    - "app/services/hyrax/workflow/workflow_schema.rb"
+    - "config/initializers/simple_form.rb"
+    - "config/features.rb"
+    - "config/routes.rb"
+    - "lib/generators/hyrax/templates/catalog_controller.rb"
+    - "lib/generators/hyrax/templates/config/initializers/simple_form_bootstrap.rb"
+    - "lib/hyrax/rails/routes.rb"
+    - "lib/tasks/*.rake"
+    - "spec/**/*.rb"
+    - "tasks/benchmark.rake"
+    - "config/application.rb"
 
 Style/AsciiComments:
   Enabled: false
@@ -58,11 +58,11 @@ Style/DoubleNegation:
 
 Style/CollectionMethods:
   PreferredMethods:
-    collect: 'map'
-    collect!: 'map!'
-    inject: 'reduce'
-    detect: 'find'
-    find_all: 'select'
+    collect: "map"
+    collect!: "map!"
+    inject: "reduce"
+    detect: "find"
+    find_all: "select"
 
 Style/SymbolArray:
   Enabled: false
@@ -84,11 +84,11 @@ Rails/ApplicationRecord:
 
 Rails/HasAndBelongsToMany:
   Exclude:
-    - 'app/models/role.rb'
+    - "app/models/role.rb"
 
 Rails/HasManyOrHasOneDependent:
   Exclude:
-    - 'app/models/endpoint.rb'
+    - "app/models/endpoint.rb"
 
 Rails/RakeEnvironment:
   Enabled: false
@@ -100,38 +100,38 @@ Rails/DynamicFindBy:
 
 Rails/FilePath:
   Exclude:
-    - 'spec/abilities/**/*'
+    - "spec/abilities/**/*"
 
 Rails/OutputSafety:
   Exclude:
-    - 'app/builders/hyrax/form_builder.rb'
-    - 'app/helpers/hyrax/citations_behaviors/formatters/apa_formatter.rb'
-    - 'app/helpers/hyrax/citations_behaviors/formatters/chicago_formatter.rb'
-    - 'app/helpers/hyrax/citations_behaviors/formatters/mla_formatter.rb'
-    - 'app/helpers/hyrax/collections_helper.rb'
-    - 'app/helpers/hyrax/content_block_helper_behavior.rb'
-    - 'app/helpers/hyrax/hyrax_helper_behavior.rb'
-    - 'app/presenters/hyrax/fixity_status_presenter.rb'
-    - 'app/presenters/hyrax/presents_attributes.rb'
-    - 'app/renderers/hyrax/renderers/attribute_renderer.rb'
-    - 'spec/views/hyrax/my/works/_list_works.html.erb_spec.rb'
+    - "app/builders/hyrax/form_builder.rb"
+    - "app/helpers/hyrax/citations_behaviors/formatters/apa_formatter.rb"
+    - "app/helpers/hyrax/citations_behaviors/formatters/chicago_formatter.rb"
+    - "app/helpers/hyrax/citations_behaviors/formatters/mla_formatter.rb"
+    - "app/helpers/hyrax/collections_helper.rb"
+    - "app/helpers/hyrax/content_block_helper_behavior.rb"
+    - "app/helpers/hyrax/hyrax_helper_behavior.rb"
+    - "app/presenters/hyrax/fixity_status_presenter.rb"
+    - "app/presenters/hyrax/presents_attributes.rb"
+    - "app/renderers/hyrax/renderers/attribute_renderer.rb"
+    - "spec/views/hyrax/my/works/_list_works.html.erb_spec.rb"
 
 Rails/UniqueValidationWithoutIndex:
   Exclude:
-    - 'app/models/account.rb'
-    - 'app/models/domain_name.rb'
-    - 'app/models/hyrax/group.rb'
+    - "app/models/account.rb"
+    - "app/models/domain_name.rb"
+    - "app/models/hyrax/group.rb"
 
 RSpec/DescribeClass:
   Exclude:
-    - 'spec/abilities/**/*'
-    - 'spec/config/hyrax_events_spec.rb'
-    - 'spec/conversions/**/*'
-    - 'spec/features/**/*'
-    - 'spec/inputs/**/*'
-    - 'spec/javascripts/jasmine_spec.rb'
-    - 'spec/tasks/rake_spec.rb'
-    - 'spec/views/**/*'
+    - "spec/abilities/**/*"
+    - "spec/config/hyrax_events_spec.rb"
+    - "spec/conversions/**/*"
+    - "spec/features/**/*"
+    - "spec/inputs/**/*"
+    - "spec/javascripts/jasmine_spec.rb"
+    - "spec/tasks/rake_spec.rb"
+    - "spec/views/**/*"
 
 # # By default RSpec/MessageSpies has the following:
 # #   Prefer have_received for setting message expectations. Setup form as a spy using allow or instance_spy.
@@ -153,3 +153,10 @@ RSpec/NestedGroups:
 
 RSpec/LeadingSubject:
   Enabled: false
+
+Rails/UnknownEnv:
+  Environments:
+    - development
+    - production
+    - staging
+    - test

@@ -12,8 +12,6 @@ derivativesVolume:
 uploadsVolume:
   storageClass: aws-efs
   size: 200Gi
-logs:
-  storageClass: efs-sc
 
 # imagePullSecrets:
 #  - name: github
@@ -37,7 +35,7 @@ extraVolumeMounts: &volMounts
   - name: uploads
     mountPath: /app/samvera/hyrax-webapp/storage/files
     subPath: storage-files
-  - name: logs
+  - name: uploads
     mountPath: /app/samvera/hyrax-webapp/log/rack_attack
     subPath: rack-attack
 

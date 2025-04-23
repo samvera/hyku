@@ -10,6 +10,7 @@ unless throttle_off
     req.ip if req.path.starts_with?('/catalog')
   end
 
+  FileUtils.mkdir_p(Rails.root.join('log', 'rack_attack'))
   throttle_logger = ActiveSupport::Logger.new(
     Rails.root.join('log', 'rack_attack', 'throttled_requests.log'),
     'daily'

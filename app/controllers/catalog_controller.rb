@@ -11,6 +11,7 @@ class CatalogController < ApplicationController
 
   # These before_action filters apply the hydra access controls
   before_action :enforce_show_permissions, only: :show
+  after_action :cache_control, only: :index
 
   def self.created_field
     'date_created_ssi'
@@ -643,6 +644,12 @@ class CatalogController < ApplicationController
   # https://github.com/samvera/hyrax/blob/abeb5aff99d8ff6a7d32f6e8234538d7bef15fbd/.dassie/app/controllers/catalog_controller.rb#L304-L309
   def render_bookmarks_control?
     false
+  end
+
+  protected
+
+  def cache_control
+    expires_in 1.hour, public: true unless Rails.env.test?
   end
 end
 # rubocop:enable Metrics/ClassLength, Metrics/BlockLength

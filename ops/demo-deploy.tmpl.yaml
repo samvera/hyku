@@ -35,6 +35,9 @@ extraVolumeMounts: &volMounts
   - name: uploads
     mountPath: /app/samvera/hyrax-webapp/storage/files
     subPath: storage-files
+  - name: logs
+    mountPath: /app/samvera/hyrax-webapp/log/rack_attack
+    subPath: rack-attack
 
 ingress:
   enabled: true

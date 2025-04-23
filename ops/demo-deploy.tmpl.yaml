@@ -12,6 +12,8 @@ derivativesVolume:
 uploadsVolume:
   storageClass: aws-efs
   size: 200Gi
+logs:
+  storageClass: efs-sc
 
 # imagePullSecrets:
 #  - name: github

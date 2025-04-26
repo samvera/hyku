@@ -646,7 +646,7 @@ class CatalogController < ApplicationController
   end
 
   def render_in_tenant?(field_config, _doc)
-    return true unless Site.account&.hidden_index_fields.present?
+    return true if Site.account&.hidden_index_fields.blank?
 
     field_name_components = field_config.key.split('_')
     field_name_components.pop # remove solr suffix

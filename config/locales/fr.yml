@@ -221,6 +221,8 @@ fr:
               hint: S'applique à la couleur d'arrière-plan des boutons Accueil, À propos, Contact et Aide.
             navbar_link_background_hover_color:
               hint: S'applique aux boutons Accueil, À propos, Contact et Aide de ces pages spécifiques uniquement (à 15 % d'opacité).
+            primary_button_background_color:
+              hint: Couleur d'arrière-plan pour les boutons d'interaction de partage, de recherche et de collecte.
             primary_button_hover_color:
               hint: Boutons de partage, de recherche et d'interaction de collecte (édition, fonctionnalité, etc.). La bordure de ces boutons sera également de cette couleur.
             primary_button_text_color:

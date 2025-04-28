@@ -220,6 +220,8 @@ de:
               hint: Gilt für die Hintergrundfarbe der Schaltflächen „Startseite“, „Info“, „Kontakt“ und „Hilfe“.
             navbar_link_background_hover_color:
               hint: Gilt nur für die Schaltflächen „Startseite“, „Info“, „Kontakt“ und „Hilfe“ auf diesen spezifischen Seiten (bei 15 % Deckkraft).
+            primary_button_background_color:
+              hint: Hintergrundfarbe für die Interaktionsschaltflächen „Teilen“, „Suchen“ und „Sammeln“.
             primary_button_hover_color:
               hint: Schaltflächen zum Teilen, Suchen und Sammeln von Interaktionen (Bearbeiten, Funktionen usw.). Der Rand dieser Schaltflächen wird ebenfalls diese Farbe haben.
             primary_button_text_color:

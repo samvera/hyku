@@ -188,7 +188,7 @@ module Hyku
     #   @see Hyrax::IiifAv::DisplaysContentDecorator
     #
     #   @example
-    #     # The below example will build a URL taht will download directly from Hyrax as the
+    #     # The below example will build a URL that will download directly from Hyrax as the
     #     # video resource.  This is a hack to address the processing times of video derivatives;
     #     # namely in certain setups/configurations of Hyku, video processing is laggy—as in days.
     #     #
@@ -211,7 +211,7 @@ module Hyku
     #   @see Hyrax::IiifAv::DisplaysContentDecorator
     #
     #   @example
-    #     # The below example will build a URL taht will download directly from Hyrax as the
+    #     # The below example will build a URL that will download directly from Hyrax as the
     #     # audio resource.  This is a hack to address the processing times of audio derivatives;
     #     # namely in certain setups/configurations of Hyku, audio processing is laggy.
     #     #

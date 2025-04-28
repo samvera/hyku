@@ -1207,6 +1207,8 @@ pt-BR:
         navbar_link_background_hover_color: Cor de foco do plano de fundo do link da barra de navegação
         navbar_link_text_color: Cor do texto do link da barra de navegação
         navbar_link_text_hover_color: Cor do foco do texto do link da barra de navegação
+        primary_button_background_color: Cor de fundo do botão principal
+        primary_button_border_color: Cor da borda do botão primário
         primary_button_hover_color: Cor principal do foco do botão
         primary_button_text_color: Cor do texto do botão primário
         publisher: Editor

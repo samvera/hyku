@@ -8,9 +8,12 @@ fr:
       account:
         admin_emails: Entrez une adresse e-mail à la fois
         allow_signup: Autoriser les utilisateurs à s'inscrire à votre dépôt
+        analytics: Activez ou désactivez Google Analytics 4 pour suivre les interactions des utilisateurs, y compris les clics.
+        analytics_reporting: Activez ou désactivez les rapports de Google Analytics 4 pour afficher les données d'analyse dans le tableau de bord. Nécessite l'assistance d'un développeur pour la configuration.
         cache_api: Active le cache pour les points d'accès API. Expérimental
         contact_email: L'adresse e-mail à partir de laquelle les notifications système seront envoyées. Une configuration supplémentaire est nécessaire pour ajouter une adresse provenant de domaines autres que le domaine du site
         contact_email_to: L'adresse e-mail à laquelle les messages soumis via la page de contact sont envoyés
+        depositor_email_notifications: Activez ou désactivez les notifications par e-mail qui envoient aux déposants un résumé des statistiques de leurs dépôts. Cette fonctionnalité nécessite l'activation des rapports d'analyse.
         doi_reader: Afficher la capacité à lire depuis Datacite pour remplir les enregistrements. WIP ne pas utiliser
         doi_writer: Écrire des DOIs pour les enregistrements. WIP ne pas utiliser
         email_format: Définissez une liste de domaines de messagerie autorisés à s'inscrire à ce dépôt, par exemple (@ubiquitypress.com @gmail.com). Laissez un espace entre chaque domaine.
@@ -24,6 +27,7 @@ fr:
         geonames_username: Inscrivez-vous sur http://www.geonames.org/manageaccount
         google_analytics_id: L'ID de votre compte Google Analytics
         gtm_id: L'ID de votre compte Google Tag Manager
+        hidden_index_fields: Séparé par des virgules. Casse serpent. Exclure les suffixes Solr (par exemple, « titre, déclaration_de_droits »).
         is_public: Les utilisateurs peuvent-ils découvrir votre site sur la page d'accueil ou accéder à vos pages sans identifiant/mot de passe spécifique?
         locale_name: 'Le nom du suffixe de locale spécifique au locataire ajouté à leurs fichiers locale.yml. Seuls les caractères alphabétiques doivent être ajoutés, pas de symboles ou de chiffres, ceux-ci seront alors mis en majuscule.
 

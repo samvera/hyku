@@ -187,7 +187,7 @@ class Account < ApplicationRecord
     jobs_to_schedule << BatchEmailNotificationJob if batch_email_notifications
 
     if ActiveModel::Type::Boolean.new.cast(ENV.fetch("HYKU_USE_QUEUED_INDEX", false))
-      jobs_to_schedule << Hyrax::QueuedIndexJob
+      jobs_to_schedule << Hyrax::QueuedIndexingJob
       jobs_to_schedule << Hyrax::QueuedDeleteJob
     end
 

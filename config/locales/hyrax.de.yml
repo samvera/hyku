@@ -1206,6 +1206,8 @@ de:
         navbar_link_background_hover_color: Hintergrundfarbe des Navigationsleisten-Links
         navbar_link_text_color: Textfarbe für Navigationsleisten-Links
         navbar_link_text_hover_color: Hover-Farbe des Navigationsleisten-Linktextes
+        primary_button_background_color: Hintergrundfarbe der primären Schaltfläche
+        primary_button_border_color: Primäre Schaltflächenrahmenfarbe
         primary_button_hover_color: Hover-Farbe der primären Schaltfläche
         primary_button_text_color: Textfarbe der primären Schaltfläche
         publisher: Verleger

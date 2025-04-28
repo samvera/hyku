@@ -1207,6 +1207,8 @@ zh:
         navbar_link_background_hover_color: 导航栏链接背景悬停颜色
         navbar_link_text_color: 导航栏链接文字颜色
         navbar_link_text_hover_color: 导航栏链接文本悬停颜色
+        primary_button_background_color: 主要按钮背景颜色
+        primary_button_border_color: 主要按钮边框颜色
         primary_button_hover_color: 主按钮悬停颜色
         primary_button_text_color: 主要按钮文本颜色
         publisher: 发行人

@@ -221,6 +221,8 @@ zh:
               hint: 适用于“主页”、“关于”、“联系人”和“帮助”按钮背景颜色
             navbar_link_background_hover_color:
               hint: 仅适用于这些特定页面上的“主页”、“关于”、“联系方式”和“帮助”按钮（不透明度为 15%）。
+            primary_button_background_color:
+              hint: 分享、搜索和收藏交互按钮的背景颜色。
             primary_button_hover_color:
               hint: 共享、搜索和收藏交互（编辑、功能等）按钮。这些按钮的边框也将是这种颜色。
             primary_button_text_color:

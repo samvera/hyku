@@ -7,7 +7,7 @@ throttle_off = ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_ATTACK_RATE_T
 
 unless throttle_off
   Rack::Attack.throttle('throttle catalog requests by ip', limit: limit, period: period) do |req|
-    if req.path.starts_with?('/catalog')
+    if req.path.starts_with?('/catalog') # rubocop:disable Style/IfUnlessModifier
       req.get_header('HTTP_X_ORIGINAL_FORWARDED_FOR') || req.ip
     end
   end

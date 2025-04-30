@@ -7,7 +7,9 @@ throttle_off = ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_ATTACK_RATE_T
 
 unless throttle_off
   Rack::Attack.throttle('throttle catalog requests by ip', limit: limit, period: period) do |req|
-    req.ip if req.path.starts_with?('/catalog')
+    if req.path.starts_with?('/catalog')
+      req.get_header('HTTP_X_ORIGINAL_FORWARDED_FOR') || req.ip
+    end
   end
 
   FileUtils.mkdir_p(Rails.root.join('log', 'rack_attack'))
@@ -21,10 +23,11 @@ unless throttle_off
 
   ActiveSupport::Notifications.subscribe('throttle.rack_attack') do |_name, _start, _finish, _request_id, payload|
     req = payload[:request]
+    origin_ip = req.get_header('HTTP_X_ORIGINAL_FORWARDED_FOR') || req.ip
 
     throttle_logger.info(
-      "#{req.ip} " \
       "#{req.env['rack.attack.match_type']} " \
+      "#{origin_ip} " \
       "#{req.env['rack.attack.match_data'][:count]}/#{req.env['rack.attack.match_data'][:limit]} " \
       "#{req.env['rack.attack.match_data'][:period]}s " \
       "#{req.request_method} " \

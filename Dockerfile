@@ -67,8 +67,8 @@ RUN wget https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.0-57.t
 
 # Install "best" training data for Tesseract
 RUN echo "📚 Installing Tesseract Best (training data)!" && \
-    mkdir -p /usr/share/tessdata/ && \
-    cd /usr/share/tessdata/ && \
+    mkdir -p /usr/share/tesseract-ocr/5/tessdata/ && \
+    cd /usr/share/tesseract-ocr/5/tessdata/ && \
     wget https://github.com/tesseract-ocr/tessdata_best/blob/main/eng.traineddata?raw=true -O eng_best.traineddata
 
 RUN useradd -m -u 1001 -U -s /bin/bash --home-dir /app app && \

@@ -140,7 +140,7 @@ module Hyku
     end
 
     def extract_video_embed_presence
-      solr_document[:video_embed_tesim]&.first&.present?
+      solr_document.video_embed.present?
     end
 
     def show_for_pdf?(field)

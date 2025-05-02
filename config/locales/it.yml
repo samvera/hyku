@@ -221,6 +221,8 @@ it:
               hint: Si applica al colore di sfondo dei pulsanti Home, Informazioni, Contatti e Guida
             navbar_link_background_hover_color:
               hint: Si applica ai pulsanti Home, Informazioni, Contatti e Guida solo su quelle pagine specifiche (con un'opacità del 15%).
+            primary_button_background_color:
+              hint: Colore di sfondo per i pulsanti di interazione di condivisione, ricerca e raccolta.
             primary_button_hover_color:
               hint: Pulsanti di interazione di condivisione, ricerca e raccolta (modifica, funzionalità, ecc.). Anche il bordo di questi pulsanti sarà di questo colore.
             primary_button_text_color:

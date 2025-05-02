@@ -8,9 +8,12 @@ pt-BR:
       account:
         admin_emails: Insira um endereço de e-mail por vez
         allow_signup: Permitir que usuários se inscrevam no seu repositório
+        analytics: Ative ou desative o Google Analytics 4 para rastrear interações do usuário, incluindo cliques.
+        analytics_reporting: Habilite ou desabilite os relatórios do Google Analytics 4 para exibir dados analíticos no painel. Requer suporte do desenvolvedor para configuração.
         cache_api: Ativar cache para pontos finais de API. Experimental
         contact_email: O endereço de e-mail do qual as notificações do sistema serão enviadas. Uma configuração adicional é necessária para adicionar um endereço de domínios diferentes do domínio do site
         contact_email_to: O endereço de e-mail para o qual as mensagens enviadas via página de contato são enviadas
+        depositor_email_notifications: Habilite ou desabilite as notificações por e-mail que enviam aos depositantes um resumo das estatísticas de seus envios. Este recurso requer a ativação dos relatórios analíticos.
         doi_reader: Mostrar capacidade de ler da Datacite para preencher registros. Em desenvolvimento, não use
         doi_writer: Escrever DOIs para registros. Em desenvolvimento, não use
         email_format: Defina uma lista de domínios de e-mail que são permitidos para se inscrever neste repositório, por exemplo (@ubiquitypress.com @gmail.com). Deixe um espaço único entre cada domínio.
@@ -24,6 +27,7 @@ pt-BR:
         geonames_username: Registre-se em http://www.geonames.org/manageaccount
         google_analytics_id: O ID da sua conta no Google Analytics
         gtm_id: O ID da sua conta no Google Tag Manager
+        hidden_index_fields: 'Separado por vírgulas. Excluir sufixos Solr (ex.: "título,declaração_de_direitos")'
         is_public: Os usuários podem descobrir seu site na página inicial ou acessar suas páginas sem um nome de usuário/senha especial?
         locale_name: 'O nome do sufixo específico do inquilino adicionado aos seus arquivos locale.yml. Apenas caracteres alfabéticos devem ser adicionados, sem símbolos ou números, estes serão então capitalizados.
 

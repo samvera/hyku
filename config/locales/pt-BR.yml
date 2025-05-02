@@ -221,6 +221,8 @@ pt-BR:
               hint: Aplica-se à cor de fundo dos botões Página inicial, Sobre, Contato e Ajuda
             navbar_link_background_hover_color:
               hint: Aplica-se apenas aos botões Início, Sobre, Contato e Ajuda nessas páginas específicas (com 15% de opacidade).
+            primary_button_background_color:
+              hint: Cor de fundo para os botões de interação de compartilhamento, pesquisa e coleção.
             primary_button_hover_color:
               hint: Botões de compartilhamento, pesquisa e interação de coleção (editar, recurso, etc.). A borda desses botões também será dessa cor.
             primary_button_text_color:

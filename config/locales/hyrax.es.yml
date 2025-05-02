@@ -1207,6 +1207,8 @@ es:
         navbar_link_background_hover_color: Color de desplazamiento del fondo del vínculo de la barra de navegación
         navbar_link_text_color: Color del texto del enlace de la barra de navegación
         navbar_link_text_hover_color: Color de desplazamiento del texto del vínculo de la barra de navegación
+        primary_button_background_color: Color de fondo del botón principal
+        primary_button_border_color: Color del borde del botón principal
         primary_button_hover_color: Color de desplazamiento del botón principal
         primary_button_text_color: Color del texto del botón principal
         publisher: Editor

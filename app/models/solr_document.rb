@@ -62,7 +62,7 @@ class SolrDocument
   attribute :library_catalog_identifier, Solr::String, 'library_catalog_identifier_tesim'
   attribute :chronology_note, Solr::String, 'chronology_note_tesim'
   attribute :based_near, Solr::Array, 'based_near_tesim'
-  attribute :video_embed, Solr::String, 'video_embed_tesim'
+  attribute :video_embed, Solr::String, 'video_embed_tesi'
 
   field_semantics.merge!(
     contributor: 'contributor_tesim',

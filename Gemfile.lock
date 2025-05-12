@@ -153,7 +153,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/bulkrax.git
-  revision: d0c93d8ee9c8dbb9338f4ab9a289fee9294aba1e
+  revision: 204acd1249de24cffc5ed71c5674eac3166f6bbc
   branch: main
   specs:
     bulkrax (9.0.2)
@@ -175,8 +175,13 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
+<<<<<<< HEAD
   revision: 8042d93759d1748081a8d766405ed1659ef64ce3
   branch: flexible_double_combo
+=======
+  revision: 632b44b299097989a0198526c195856403cb400d
+  branch: main_before_rails_72
+>>>>>>> main
   specs:
     hyrax (5.0.4)
       active-fedora (~> 14.0)

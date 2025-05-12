@@ -37,6 +37,8 @@ module HykuIndexing
 
   private
 
+  # @TODO: This method only supports Valkyrie, and does not support ActiveFedora, even
+  #        though it is used in the ActiveFedora indexer.
   def extract_full_text(object)
     child_works = Hyrax.custom_queries.find_child_works(resource: object)
 
@@ -53,10 +55,14 @@ module HykuIndexing
   end
 
   def extract_text_from_pdf_directly(object)
-    file_set_id = Hyrax.custom_queries.find_child_file_sets(resource: object).first&.id&.to_s
+    file_set = Hyrax.custom_queries.find_child_file_sets(resource: object).first
+    file_set_id = file_set&.id&.to_s
     return if file_set_id.blank?
 
     SolrDocument.find(file_set_id)['all_text_tsimv']
+  rescue Blacklight::Exceptions::RecordNotFound
+    file_set_doc = Hyrax::Indexers::ResourceIndexer.for(resource: file_set).to_solr
+    return file_set_doc&.[]('all_text_tsimv')
   end
 
   def child_works_file_sets(child_works)

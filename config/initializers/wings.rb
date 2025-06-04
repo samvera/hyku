@@ -31,7 +31,12 @@ Rails.application.config.after_initialize do
 
   Valkyrie.config.metadata_adapter = :freyja
   Hyrax.config.query_index_from_valkyrie = true
-  Hyrax.config.index_adapter = :solr_index
+  Hyrax.config.index_adapter = if ActiveModel::Type::Boolean.new.cast(ENV.fetch("HYKU_USE_QUEUED_INDEX", false))
+                                 :redis_queue
+                               else
+                                 :solr_index
+                               end
+
   Valkyrie::StorageAdapter.register(
     Valkyrie::Storage::Disk.new(base_path: Rails.root.join("storage", "files"), file_mover: FileUtils.method(:cp)),
     :disk
@@ -59,7 +64,6 @@ Rails.application.config.after_initialize do
   else
     Valkyrie.config.storage_adapter = :disk
   end
-  Valkyrie.config.indexing_adapter = :solr_index
 
   # load all the sql based custom queries
   [
@@ -77,7 +81,8 @@ Rails.application.config.after_initialize do
     Hyrax::CustomQueries::FindModelsByAccess,
     Hyrax::CustomQueries::FindCountBy,
     Hyrax::CustomQueries::FindByDateRange,
-    Hyrax::CustomQueries::FindBySourceIdentifier
+    Hyrax::CustomQueries::FindBySourceIdentifier,
+    Hyrax::CustomQueries::FindByModelAndPropertyValue
   ].each do |handler|
     Hyrax.query_service.services[0].custom_queries.register_query_handler(handler)
   end

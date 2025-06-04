@@ -1207,6 +1207,8 @@ it:
         navbar_link_background_hover_color: Colore di sfondo del collegamento della barra di navigazione al passaggio del mouse
         navbar_link_text_color: Colore del testo del collegamento alla barra di navigazione
         navbar_link_text_hover_color: Colore al passaggio del mouse del testo del collegamento della barra di navigazione
+        primary_button_background_color: Colore di sfondo del pulsante primario
+        primary_button_border_color: Colore del bordo del pulsante primario
         primary_button_hover_color: Colore del pulsante principale al passaggio del mouse
         primary_button_text_color: Colore del testo del pulsante primario
         publisher: Editore

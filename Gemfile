@@ -51,8 +51,8 @@ gem 'fcrepo_wrapper', '~> 0.4', group: %i[development test]
 gem 'flutie'
 gem 'good_job', '~> 2.99'
 gem 'googleauth', '~> 1.9.0'
-gem 'google-protobuf', force_ruby_platform: true # required because google-protobuf is not compatible with Alpine linux
-gem 'grpc', force_ruby_platform: true # required because google-protobuf is not compatible with Alpine linux
+gem 'google-protobuf'
+gem 'grpc'
 gem 'hyrax', github: 'samvera/hyrax', branch: 'main_before_rails_72'
 gem 'hyrax-doi', github: 'samvera-labs/hyrax-doi', branch: 'rails_hyrax_upgrade'
 gem 'hyrax-iiif_av', github: 'samvera-labs/hyrax-iiif_av', branch: 'rails_hyrax_upgrade'
@@ -81,10 +81,12 @@ gem 'pg'
 gem 'postrank-uri', '>= 1.0.24'
 gem 'pry-byebug', group: %i[development test]
 gem 'puma', '~> 5.6' # Use Puma as the app server
+gem 'rack-attack'
 gem 'rack-test', '0.7.0', group: %i[test] # rack-test >= 0.71 does not work with older Capybara versions (< 2.17). See #214 for more details
 gem 'rails-controller-testing', group: %i[test]
 gem 'rdf', '~> 3.2'
 gem 'redcarpet' # for Markdown constant
+gem 'redis-actionpack'
 gem 'redis-namespace', '~> 1.10' # Hyrax v5 relies on 1.5; but we'd like to have the #clear method so we need 1.10 or greater.
 gem 'redlock', '>= 0.1.2', '< 2.0' # lock redlock per https://github.com/samvera/hyrax/pull/5961
 gem 'riiif', '~> 2.0'

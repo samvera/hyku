@@ -136,3 +136,13 @@ Hyrax::QueuedIndexingJob.requeue_frequency = 10.seconds (when they requeue after
 Hyrax::QueuedIndexingJob.perform_later
 ```
 Indexing jobs respawn themselves, so eventually these jobs need to be killed. The TenantConfigJob will start new jobs if queued indexing is in use and no jobs exist.
+
+#### Verify Results
+
+As data migrates to Valkyrie, they are considered new works (because we are creating them in the Valkyrie database). So in your dashboard, the works will all have new `last_modified` dates showing in the dashboard. 
+
+Works may fail to migrate, and may not throw job errors. One known cause of silent failures is when a model has required metadata that is not included in the work.
+
+#### Bulkrax Considerations
+
+When using `valkyrie_transition` Bulkrax cannot edit or delete works which are not yet migrated.

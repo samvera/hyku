@@ -1,5 +1,7 @@
 # Migrating to Valkyrie
 
+*Note* In most instances, Notch8 uses Rancher for managing our server deployment, and GoodJob as our ActiveJob backend. The following documentation is based on this setup.
+
 The migration process runs the same logic as the lazy migration that occurs in the freyja persister, based on the `valkyrie_transition?` setting. Prior to migrating works, it is important to migrate all admin sets and collections. This is done by submitting MigrateResourcesJob.perform_later. Default behavior submits migration for models AdminSet and Collection. If the models are named differently, you can specify the models to migrate in the job.
 
 Correct migration of the all collections should be verified prior to beginning to migrate works. Compare the number of admin sets and collections overall to the number that exist in the resource table `Valkyrie::Persistence::Postgres::ORM::Resource` to ensure that all were migrated correctly.
@@ -11,7 +13,7 @@ Queued indexing can also be set up to speed up the overall process. The queued i
 ### The Hyku Reprocessor
 
 The Hyku Reprocessor allows iterating through large sets of ids. There are two steps for any reprocessing:
-1. Store all the ides for processing to an `id.logs` file
+1. Store all the ids for processing to an `id.logs` file
 2. Run a lambda against every id.
 
 ### Using the Reprocessor for a migration

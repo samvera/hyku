@@ -98,7 +98,7 @@ RSpec.describe AccountSettings do
 
       it 'adds an error to the setting' do
         expect(account.valid?).to eq(false)
-        expect(account.errors.messages[:bulkrax_field_mappings]).to eq(["unexpected token at 'hello world'"])
+        expect(account.errors.messages[:bulkrax_field_mappings]).to eq(["unexpected character: 'hello' at line 1 column 1"])
       end
     end
   end

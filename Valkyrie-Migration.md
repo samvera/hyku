@@ -1,6 +1,6 @@
 # Migrating to Valkyrie
 
-**Note:** In most instances, Notch8 uses Rancher for managing our server deployment, and GoodJob as our ActiveJob backend. The following documentation is based on this setup.
+(**Note:** In most instances, Notch8 uses Rancher for managing our server deployment, and GoodJob as our ActiveJob backend. The following documentation references these products.)
 
 The migration process runs the same logic as the lazy migration that occurs in the freyja persister, based on the `valkyrie_transition?` setting. Prior to migrating works, it is important to migrate all admin sets and collections. This is done by submitting MigrateResourcesJob.perform_later. Default behavior submits migration for models AdminSet and Collection. If the models are named differently, you can specify the models to migrate in the job.
 

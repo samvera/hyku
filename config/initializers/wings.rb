@@ -92,11 +92,6 @@ Rails.application.config.after_initialize do
   ].each do |handler|
     Hyrax.query_service.services[1].custom_queries.register_query_handler(handler)
   end
-
-  Wings::ModelRegistry.register(GenericWorkResource, GenericWork)
-  Wings::ModelRegistry.register(ImageResource, Image)
-  Wings::ModelRegistry.register(EtdResource, Etd)
-  Wings::ModelRegistry.register(OerResource, Oer)
 end
 
 Rails.application.config.to_prepare do

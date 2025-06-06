@@ -7,6 +7,7 @@ class CatalogController < ApplicationController
   include Hydra::Catalog
   include Hydra::Controller::ControllerBehavior
   include BlacklightOaiProvider::Controller
+  include Hyrax::FlexibleCatalogBehavior if Hyrax.config.flexible?
 
   # These before_action filters apply the hydra access controls
   before_action :enforce_show_permissions, only: :show

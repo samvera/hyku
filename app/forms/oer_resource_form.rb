@@ -9,14 +9,12 @@ class OerResourceForm < Hyrax::Forms::ResourceForm(OerResource)
   # Commented out basic_metadata because the terms were added to the resource's yaml
   # so we can customize it
   # include Hyrax::FormFields(:basic_metadata)
-  include Hyrax::FormFields(:bulkrax_metadata)
-  include Hyrax::FormFields(:oer_resource)
-  include Hyrax::FormFields(:with_pdf_viewer)
-  include Hyrax::FormFields(:with_video_embed)
+  include Hyrax::FormFields(:bulkrax_metadata) unless Hyrax.config.flexible?
+  include Hyrax::FormFields(:oer_resource) unless Hyrax.config.flexible?
+  include Hyrax::FormFields(:with_pdf_viewer) unless Hyrax.config.flexible?
+  include Hyrax::FormFields(:with_video_embed) unless Hyrax.config.flexible?
   include VideoEmbedBehavior::Validation
-  # this duplicates Hyrax::BasicMetadataFormFieldsBehavior behavior which previously
-  # came in dynamically via lib/hyrax/form_fields.rb
-  include BasedNearFormFieldsBehavior
+  include Hyrax::BasedNearFieldBehavior unless Hyrax.config.flexible?
   # Define custom form fields using the Valkyrie::ChangeSet interface
   #
   # property :my_custom_form_field

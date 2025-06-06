@@ -30,7 +30,7 @@ gem 'blacklight_range_limit'
 gem 'bolognese', '>= 1.9.10'
 gem 'bootstrap', '~> 4.6'
 gem 'bootstrap-datepicker-rails'
-gem 'bulkrax', github: 'samvera/bulkrax', branch: 'main'
+gem 'bulkrax', '~> 9.1'
 gem 'byebug', group: %i[development test]
 gem 'capybara', group: %i[test]
 gem 'capybara-screenshot', '~> 1.0', group: %i[test]
@@ -51,14 +51,14 @@ gem 'fcrepo_wrapper', '~> 0.4', group: %i[development test]
 gem 'flutie'
 gem 'good_job', '~> 2.99'
 gem 'googleauth', '~> 1.9.0'
-gem 'google-protobuf'
-gem 'grpc'
-gem 'hyrax', github: 'samvera/hyrax', branch: 'main_before_rails_72'
+gem 'google-protobuf', force_ruby_platform: true # required because google-protobuf is not compatible with Alpine linux
+gem 'grpc', force_ruby_platform: true # required because google-protobuf is not compatible with Alpine linux
+gem 'hyrax', github: 'samvera/hyrax', branch: '5.0-flexible'
 gem 'hyrax-doi', github: 'samvera-labs/hyrax-doi', branch: 'rails_hyrax_upgrade'
 gem 'hyrax-iiif_av', github: 'samvera-labs/hyrax-iiif_av', branch: 'rails_hyrax_upgrade'
 gem 'i18n-debug', require: false, group: %i[development test]
 gem 'i18n-tasks', group: %i[development test]
-gem 'iiif_print', '~> 3.0'
+gem 'iiif_print', '~> 3.0.5'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'openssl', '>= 3.2.0'

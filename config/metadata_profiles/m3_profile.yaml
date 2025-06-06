@@ -1,0 +1,1783 @@
+---
+m3_version: 1.0.beta2
+profile:
+  date_modified: "2024-06-01"
+  responsibility: https://samvera.org
+  responsibility_statement: Hyku Initial Profile
+  type: Hyku Initial Profile
+  version: 1
+classes:
+  GenericWorkResource:
+    display_label: Generic Work
+  ImageResource:
+    display_label: Image
+  OerResource:
+    display_label: OER
+  EtdResource:
+    display_label: ETD
+  AdminSetResource:
+    display_label: AdminSetResource
+  CollectionResource:
+    display_label: pcdmcollection
+  Hyrax::AdministrativeSet:
+    display_label: Administrative Set
+  Hyrax::FileSet:
+    display_label: FileSet
+  Hyrax::PcdmCollection:
+    display_label: PcdmCollection
+contexts:
+  flexible_context:
+    display_label: Flexible Metadata Example
+  special_context:
+    display_label: Special Context
+mappings:
+  blacklight:
+    name: Additional Blacklight Solr Mappings
+  metatags:
+    name: Metatags
+  mods_oai_pmh:
+    name: MODS OAI PMH
+  qualified_dc_pmh:
+    name: Qualified DC OAI PMH
+  simple_dc_pmh:
+    name: Simple DC OAI PMH
+properties:
+  title:
+    available_on:
+      class:
+        - AdminSetResource
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 1
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    definition:
+      default:
+        Enter a standardized title for display. If only one title is needed,
+        transcribe the title from the source itself.
+    display_label:
+      default: Title
+    index_documentation: displayable, searchable
+    indexing:
+      - title_sim
+      - title_tesim
+    form:
+      required: true
+      primary: true
+      multi_value: true
+    mappings:
+      metatags: twitter:title, og:title
+      mods_oai_pmh: mods:titleInfo/mods:title
+      qualified_dc_pmh: dcterms:title
+      simple_dc_pmh: dc:title
+    property_uri: http://purl.org/dc/terms/title
+    range: http://www.w3.org/2001/XMLSchema#string
+    requirement: required
+    sample_values:
+      - Pencil drawn portrait study of woman
+    view:
+      label:
+        en: "Title"
+        es: "Título"
+      html_dl: true
+  date_modified:
+    available_on:
+      class:
+        - AdminSetResource
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+      maximum: 1
+    multi_value: false
+    display_label:
+      default: Date Modified
+    property_uri: http://purl.org/dc/terms/modified
+    range: http://www.w3.org/2001/XMLSchema#dateTime
+    sample_values:
+      - "2024-06-06 21:06:51 +0000"
+    view:
+      label:
+        de: "Zuletzt geändert"
+        en: "Last modified"
+        es: "Última modificación"
+        fr: "Dernière modification"
+        it: "Ultima modifica"
+        pt-BR: "Última modificação"
+        zh: "最新修改"
+      html_dl: true
+  date_uploaded:
+    available_on:
+      class:
+        - AdminSetResource
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+      maximum: 1
+    multi_value: false
+    display_label:
+      default: Date Uploaded
+    property_uri: http://purl.org/dc/terms/dateSubmitted
+    range: http://www.w3.org/2001/XMLSchema#dateTime
+    sample_values:
+      - "2024-06-06 21:06:51 +0000"
+  depositor:
+    available_on:
+      class:
+        - AdminSetResource
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+      maximum: 1
+    multi_value: false
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Depositor
+    index_documentation: searchable
+    indexing:
+      - depositor_tesim
+    property_uri: http://id.loc.gov/vocabulary/relators/dpt
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Julie Allinson
+  creator:
+    available_on:
+      class:
+        - AdminSetResource
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 1
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Creator
+    index_documentation: displayable, searchable
+    indexing:
+      - creator_sim
+      - creator_tesim
+    form:
+      required: true
+      primary: true
+    property_uri: http://purl.org/dc/elements/1.1/creator
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Julie Allinson
+    view:
+      render_as: "faceted"
+      html_dl: true
+  license:
+    available_on:
+      class:
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: License
+    index_documentation: displayable, searchable
+    indexing:
+      - license_sim
+      - license_tesim
+    form:
+      primary: false
+    property_uri: http://purl.org/dc/terms/license
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - http://creativecommons.org/licenses/by/3.0/us/
+    view:
+      render_as: "external_link"
+      html_dl: true
+  abstract:
+    available_on:
+      class:
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Abstract
+    index_documentation: displayable, searchable
+    indexing:
+      - abstract_sim
+      - abstract_tesim
+    form:
+      primary: false
+    property_uri: http://purl.org/dc/terms/abstract
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - This is an abstract.
+    view:
+      html_dl: true
+  access_right:
+    available_on:
+      class:
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Access Right
+    index_documentation: displayable, searchable
+    indexing:
+      - access_right_sim
+      - access_right_tesim
+    form:
+      primary: false
+    property_uri: http://purl.org/dc/terms/accessRights
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Open Access
+    view:
+      html_dl: true
+  alternative_title:
+    available_on:
+      class:
+        - AdminSetResource
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Alternative Title
+    index_documentation: displayable, searchable
+    indexing:
+      - alternative_title_sim
+      - alternative_title_tesim
+    form:
+      primary: false
+    property_uri: http://purl.org/dc/terms/alternative
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Alternate Title Example
+    view:
+      label:
+        en: "Alternative Title"
+        es: "Título Alternativo"
+      html_dl: true
+  arkivo_checksum:
+    available_on:
+      class:
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+      maximum: 1
+    multi_value: false
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Arkivo Checksum
+    form:
+      primary: false
+    property_uri: http://scholarsphere.psu.edu/ns#arkivoChecksum
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - c0855931b7f1aefedb91d31af76873c0
+  based_near:
+    available_on:
+      class:
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Location
+    index_documentation: displayable, searchable
+    indexing:
+      - based_near_sim
+      - based_near_tesim
+    form:
+      primary: false
+    property_uri: http://xmlns.com/foaf/0.1/based_near
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - San Diego, California, United States
+    view:
+      label: Based Near
+      render_term: "based_near_label"
+      html_dl: true
+  bibliographic_citation:
+    available_on:
+      class:
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Bibliographic Citation
+    index_documentation: displayable, searchable
+    indexing:
+      - bibliographic_citation_sim
+      - bibliographic_citation_tesim
+    form:
+      primary: false
+    property_uri: http://purl.org/dc/terms/bibliographicCitation
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Doe, J. (2024). Example Citation. Journal of Examples, 12(3), 45-67.
+    view:
+      html_dl: true
+  contributor:
+    available_on:
+      class:
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Contributor
+    index_documentation: displayable, searchable
+    indexing:
+      - contributor_tesim
+      - contributor_sim
+    form:
+      primary: false
+    property_uri: http://purl.org/dc/elements/1.1/contributor
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Julie Allinson
+    view:
+      render_as: "faceted"
+      html_dl: true
+  date_created:
+    available_on:
+      class:
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#dateTime
+      sources:
+        - "null"
+    display_label:
+      default: Date Created
+    index_documentation: displayable, searchable
+    indexing:
+      - date_created_sim
+      - date_created_tesim
+    form:
+      primary: false
+    property_uri: http://purl.org/dc/terms/created
+    range: http://www.w3.org/2001/XMLSchema#dateTime
+    sample_values:
+      - "2024-06-06 21:06:51 +0000"
+    view:
+      render_as: "linked"
+      search_field: "date_created_tesim"
+      html_dl: true
+  description:
+    available_on:
+      class:
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Description
+    index_documentation: displayable, searchable
+    indexing:
+      - description_sim
+      - description_tesim
+    form:
+      primary: false
+    property_uri: http://purl.org/dc/elements/1.1/description
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - This is a description.
+  identifier:
+    available_on:
+      class:
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Identifier
+    index_documentation: displayable, searchable
+    indexing:
+      - identifier_sim
+      - identifier_tesim
+    form:
+      primary: false
+    property_uri: http://purl.org/dc/terms/identifier
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - abc123
+    view:
+      render_as: "linked"
+      search_field: "identifier_tesim"
+      html_dl: true
+  import_url:
+    available_on:
+      class:
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+      maximum: 1
+    multi_value: false
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Import URL
+    property_uri: http://scholarsphere.psu.edu/ns#importUrl
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - http://example.com/resource1
+  keyword:
+    available_on:
+      class:
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Keyword
+    index_documentation: displayable, searchable
+    indexing:
+      - keyword_sim
+      - keyword_tesim
+    form:
+      primary: false
+    property_uri: http://schema.org/keywords
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Metadata
+      - Repository
+    view:
+      render_as: "faceted"
+      html_dl: true
+  label:
+    available_on:
+      class:
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+      maximum: 1
+    multi_value: false
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Label
+    index_documentation: displayable, searchable
+    indexing:
+      - label_sim
+      - label_tesim
+    form:
+      primary: false
+    property_uri: info:fedora/fedora-system:def/model#downloadFilename
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - file_label.txt
+  language:
+    available_on:
+      class:
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Language
+    index_documentation: displayable, searchable
+    indexing:
+      - language_sim
+      - language_tesim
+    form:
+      primary: false
+    property_uri: http://purl.org/dc/elements/1.1/language
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - English
+      - Spanish
+    view:
+      render_as: "faceted"
+      html_dl: true
+  publisher:
+    available_on:
+      class:
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Publisher
+    index_documentation: displayable, searchable
+    indexing:
+      - publisher_sim
+      - publisher_tesim
+    form:
+      primary: false
+    property_uri: http://purl.org/dc/elements/1.1/publisher
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Scholastic
+    view:
+      render_as: "faceted"
+      html_dl: true
+  related_url:
+    available_on:
+      class:
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Related URL
+    index_documentation: displayable, searchable
+    indexing:
+      - related_url_sim
+      - related_url_tesim
+    form:
+      primary: false
+    property_uri: http://www.w3.org/2000/01/rdf-schema#seeAlso
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - http://example.com/resource1
+    view:
+      render_as: "external_link"
+      html_dl: true
+  relative_path:
+    available_on:
+      class:
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+      maximum: 1
+    multi_value: false
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Relative Path
+    property_uri: http://scholarsphere.psu.edu/ns#relativePath
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - "/path/to/resource"
+  resource_type:
+    available_on:
+      class:
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Resource Type
+    index_documentation: displayable, searchable
+    indexing:
+      - resource_type_sim
+      - resource_type_tesim
+    form:
+      primary: false
+    property_uri: http://purl.org/dc/terms/type
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Article
+      - Conference Proceeding
+    view:
+      render_as: "faceted"
+      html_dl: true
+  rights_notes:
+    available_on:
+      class:
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Rights Notes
+    index_documentation: displayable, searchable
+    indexing:
+      - rights_notes_sim
+      - rights_notes_tesim
+    form:
+      primary: false
+    property_uri: http://purl.org/dc/elements/1.1/rights
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Creative Commons license.
+    view:
+      html_dl: true
+  rights_statement:
+    available_on:
+      class:
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Rights Statement
+    index_documentation: displayable, searchable
+    indexing:
+      - rights_statement_sim
+      - rights_statement_tesim
+    form:
+      primary: true
+      required: true
+    property_uri: http://www.europeana.eu/schemas/edm/rights
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - http://rightsstatements.org/vocab/InC/1.0/
+    view:
+      html_dl: true
+      render_as: "rights_statement"
+  source:
+    available_on:
+      class:
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Source
+    index_documentation: displayable, searchable
+    indexing:
+      - source_sim
+      - source_tesim
+    form:
+      primary: false
+    property_uri: http://purl.org/dc/terms/source
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Original Manuscript
+      - Digital Archive
+    view:
+      html_dl: true
+  subject:
+    available_on:
+      class:
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Subject
+    index_documentation: displayable, searchable
+    indexing:
+      - subject_sim
+      - subject_tesim
+    form:
+      primary: false
+    property_uri: http://purl.org/dc/elements/1.1/subject
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Art
+      - Science
+    view:
+      render_as: "faceted"
+      html_dl: true
+  department:
+    available_on:
+      class:
+        - CollectionResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+      maximum: 1
+    multi_value: false
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Department
+    form:
+      primary: true
+    property_uri: http://hyrax-example.com/department
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Mathematics
+      - History
+    view:
+      html_dl: true
+  course:
+    available_on:
+      class:
+        - CollectionResource
+    cardinality:
+      minimum: 0
+      maximum: 1
+    multi_value: false
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Course
+    form:
+      primary: false
+    property_uri: http://hyrax-example.com/course
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Computer Science 50
+    view:
+      html_dl: true
+  format:
+    available_on:
+      class:
+        - EtdResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Format
+    index_documentation: searchable
+    indexing:
+      - "format_tesim"
+    form:
+      required: false
+      primary: false
+      multiple: true
+    property_uri: http://purl.org/dc/terms/format
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - PDF
+  # Image-specific metadata from image_resource.yaml
+  extent:
+    available_on:
+      class:
+        - ImageResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Extent
+    index_documentation: searchable
+    indexing:
+      - "extent_tesim"
+    form:
+      required: false
+      primary: false
+      multiple: true
+    property_uri: http://purl.org/dc/terms/extent
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - "300 dpi"
+      - "1024x768 pixels"
+  # OER-specific metadata from oer_resource.yaml
+  accessibility_feature:
+    available_on:
+      class:
+        - OerResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Accessibility Feature
+    index_documentation: displayable, searchable
+    indexing:
+      - "accessibility_feature_tesim"
+      - "accessibility_feature_sim"
+    form:
+      primary: false
+      multiple: true
+    property_uri: http://schema.org/accessibilityFeature
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Subtitles
+      - Audio Description
+      - Transcripts
+  accessibility_hazard:
+    available_on:
+      class:
+        - OerResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Accessibility Hazard
+    index_documentation: displayable, searchable
+    indexing:
+      - "accessibility_hazard_tesim"
+      - "accessibility_hazard_sim"
+    form:
+      primary: false
+      multiple: true
+    property_uri: http://schema.org/accessibilityHazard
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Motion Simulation
+  accessibility_summary:
+    available_on:
+      class:
+        - OerResource
+    cardinality:
+      minimum: 0
+      maximum: 1
+    multi_value: false
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Accessibility Summary
+    index_documentation: displayable, searchable
+    indexing:
+      - "accessibility_summary_tesim"
+      - "accessibility_summary_sim"
+    form:
+      primary: false
+      multiple: false
+    property_uri: http://schema.org/accessibilitySummary
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - This resource includes subtitles for all video content.
+      - The resource provides text descriptions for all images.
+  admin_note:
+    available_on:
+      class:
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+      maximum: 1
+    multi_value: false
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Admin Note
+    index_documentation: searchable
+    indexing:
+      - "admin_note_tesim"
+    form:
+      primary: false
+      multiple: false
+    property_uri: http://schema.org/positiveNotes
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - This is an admin note.
+      - Another example of an admin note.
+    view:
+      html_dl: true
+  additional_information:
+    available_on:
+      class:
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Additional Information
+    index_documentation: searchable
+    indexing:
+      - "additional_information_tesim"
+    form:
+      primary: false
+      multiple: true
+    property_uri: http://purl.org/dc/terms/accessRights
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - This is some additional information.
+      - More details and context.
+  alternate_version_id:
+    available_on:
+      class:
+        - OerResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Alternate Version ID
+    index_documentation: displayable, searchable
+    indexing:
+      - "alternate_version_id_tesim"
+      - "alternate_version_id_sim"
+    property_uri: http://purl.org/dc/terms/hasVersion
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - alt_version_1
+      - alt_version_2
+  audience:
+    available_on:
+      class:
+        - OerResource
+    cardinality:
+      minimum: 1
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Audience
+    index_documentation: displayable, searchable
+    indexing:
+      - "audience_tesim"
+      - "audience_sim"
+    form:
+      required: true
+      primary: true
+    property_uri: http://schema.org/EducationalAudience
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Student
+      - Instructor
+    view:
+      html_dl: true
+      render_as: "faceted"
+  date:
+    available_on:
+      class:
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Date
+    index_documentation: displayable, searchable
+    indexing:
+      - "date_tesim"
+      - "date_sim"
+    property_uri: https://hykucommons.org/terms/date
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - "2024-06-07"
+      - "2023-05-12"
+  discipline:
+    available_on:
+      class:
+        - OerResource
+    cardinality:
+      minimum: 1
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Discipline
+    index_documentation: searchable
+    indexing:
+      - "discipline_tesim"
+    form:
+      required: true
+      primary: true
+    property_uri: https://hykucommons.org/terms/degree_discipline
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - "Languages - Spanish"
+      - "Natural Sciences - Physics"
+    view:
+      html_dl: true
+      render_as: "faceted"
+  education_level:
+    available_on:
+      class:
+        - OerResource
+    cardinality:
+      minimum: 1
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Education Level
+    index_documentation: displayable, searchable
+    indexing:
+      - "education_level_tesim"
+      - "education_level_sim"
+    form:
+      required: true
+      primary: true
+    property_uri: http://purl.org/dc/terms/educationLevel
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - "Community college / Lower division"
+      - "College / Upper division"
+    view:
+      html_dl: true
+      render_as: "faceted"
+  learning_resource_type:
+    available_on:
+      class:
+        - OerResource
+    cardinality:
+      minimum: 1
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Learning Resource Type
+    index_documentation: displayable, searchable
+    indexing:
+      - "learning_resource_type_tesim"
+      - "learning_resource_type_sim"
+    form:
+      required: true
+      primary: true
+    property_uri: http://schema.org/learningResourceType
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - "Activity/lab"
+      - "Assessment (test, quizzes, etc.)"
+    view:
+      html_dl: true
+      render_as: "faceted"
+  newer_version_id:
+    available_on:
+      class:
+        - OerResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Newer Version ID
+    index_documentation: displayable, searchable
+    indexing:
+      - "newer_version_id_tesim"
+      - "newer_version_id_sim"
+    property_uri: http://purl.org/dc/terms/isReplacedBy
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - new_version_1
+      - new_version_2
+  oer_size:
+    available_on:
+      class:
+        - OerResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: OER Size
+    index_documentation: searchable
+    indexing:
+      - "oer_size_tesim"
+    form:
+      primary: false
+      multiple: true
+    property_uri: http://purl.org/dc/terms/extent
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - 15MB
+      - 200 pages
+  previous_version_id:
+    available_on:
+      class:
+        - OerResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Previous Version ID
+    index_documentation: displayable, searchable
+    indexing:
+      - "previous_version_id_tesim"
+      - "previous_version_id_sim"
+    property_uri: http://purl.org/dc/terms/replaces
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - prev_version_1
+      - prev_version_2
+  related_item_id:
+    available_on:
+      class:
+        - OerResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Related Item ID
+    index_documentation: displayable, searchable
+    indexing:
+      - "related_item_id_tesim"
+      - "related_item_id_sim"
+    property_uri: http://purl.org/dc/terms/relation
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - related_item_1
+      - related_item_2
+  rights_holder:
+    available_on:
+      class:
+        - OerResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Rights Holder
+    index_documentation: displayable, searchable
+    indexing:
+      - "rights_holder_tesim"
+      - "rights_holder_sim"
+    form:
+      primary: false
+      multiple: true
+    property_uri: http://purl.org/dc/terms/rightsHolder
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - John Doe
+      - Jane Smith
+  table_of_contents:
+    available_on:
+      class:
+        - OerResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Table of Contents
+    index_documentation: searchable
+    indexing:
+      - "table_of_contents_tesim"
+    form:
+      primary: false
+      multiple: true
+    property_uri: http://purl.org/dc/terms/tableOfContents
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - "Chapter 1: Introduction"
+      - "Chapter 2: Literature Review"
+      - "Chapter 3: Methodology"
+  # ETD-specific metadata - etd_resource.yaml
+  advisor:
+    available_on:
+      class:
+        - EtdResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Advisor
+    index_documentation: searchable
+    indexing:
+      - "advisor_tesim"
+    form:
+      required: false
+      primary: false
+      multiple: true
+    property_uri: https://hykucommons.org/terms/advisor
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Dr. John Doe
+      - Dr. Jane Smith
+  committee_member:
+    available_on:
+      class:
+        - EtdResource
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Committee Member
+    index_documentation: searchable
+    indexing:
+      - "committee_member_tesim"
+    form:
+      required: false
+      primary: false
+      multiple: true
+    property_uri: https://hykucommons.org/terms/committee_member
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Dr. John Doe
+      - Dr. Jane Smith
+  degree_name:
+    available_on:
+      class:
+        - EtdResource
+    cardinality:
+      minimum: 1
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Degree Name
+    index_documentation: searchable
+    indexing:
+      - "degree_name_tesim"
+    form:
+      required: true
+      primary: true
+      multiple: true
+    property_uri: https://hykucommons.org/terms/degree_name
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Bachelor of Science
+      - Master of Arts
+    view:
+      html_dl: true
+  degree_level:
+    available_on:
+      class:
+        - EtdResource
+    cardinality:
+      minimum: 1
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Degree Level
+    index_documentation: searchable
+    indexing:
+      - "degree_level_tesim"
+    form:
+      required: true
+      primary: true
+      multiple: true
+    property_uri: https://hykucommons.org/terms/degree_level
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Undergraduate
+      - Graduate
+    view:
+      html_dl: true
+  degree_discipline:
+    available_on:
+      class:
+        - EtdResource
+    cardinality:
+      minimum: 1
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Degree Discipline
+    index_documentation: searchable
+    indexing:
+      - "degree_discipline_tesim"
+    form:
+      required: true
+      primary: true
+      multiple: true
+    property_uri: https://hykucommons.org/terms/degree_discipline
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Computer Science
+      - Biology
+    view:
+      html_dl: true
+  degree_grantor:
+    available_on:
+      class:
+        - EtdResource
+    cardinality:
+      minimum: 1
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Degree Grantor
+    index_documentation: searchable
+    indexing:
+      - "degree_grantor_tesim"
+    form:
+      required: true
+      primary: true
+      multiple: true
+    property_uri: https://hykucommons.org/terms/degree_grantor
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - University of Example
+      - Example State University
+    view:
+      html_dl: true
+  # Bulkrax metadata from bulkrax_metadata.yaml
+  bulkrax_identifier:
+    available_on:
+      class:
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+      maximum: 1
+    multi_value: false
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Bulkrax Identifier
+    index_documentation: displayable, searchable
+    indexing:
+      - "bulkrax_identifier_tesi"
+      - "bulkrax_identifier_ssi"
+    form:
+      display: false
+      primary: false
+      required: false
+      multiple: false
+    property_uri: https://hykucommons.org/terms/bulkrax_identifier
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - example-bulkrax-identifier
+  # PDF.js metadata from with_pdf_viewer.yaml
+  show_pdf_viewer:
+    available_on:
+      class:
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+      maximum: 1
+    multi_value: false
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#bool
+      sources:
+        - "null"
+    display_label:
+      default: Show PDF Viewer
+    index_documentation: displayable, searchable
+    indexing:
+      - "show_pdf_viewer_bsi"
+    form:
+      display: false
+      primary: false
+      required: false
+      multiple: false
+    property_uri: http://id.loc.gov/vocabulary/identifiers/show_pdf_viewer
+    range: http://www.w3.org/2001/XMLSchema#bool
+    sample_values:
+      - "0"
+      - "1"
+  show_pdf_download_button:
+    available_on:
+      class:
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+      maximum: 1
+    multi_value: false
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#bool
+      sources:
+        - "null"
+    display_label:
+      default: Show PDF Download Button
+    index_documentation: displayable, searchable
+    indexing:
+      - "show_pdf_download_button_bsi"
+    form:
+      display: false
+      primary: false
+      required: false
+      multiple: false
+    property_uri: http://id.loc.gov/vocabulary/identifiers/show_pdf_download_button
+    range: http://www.w3.org/2001/XMLSchema#bool
+    sample_values:
+      - "0"
+      - "1"
+  # Video Embed metadata - with_video_embed.yaml
+  video_embed:
+    available_on:
+      class:
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+      maximum: 1
+    multi_value: false
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Video Embed
+    index_documentation: searchable
+    indexing:
+      - "video_embed_tesi"
+    form:
+      display: true
+      primary: false
+      required: false
+      multiple: false
+    property_uri: https://atla.com/terms/video_embed
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - "https://player.vimeo.com/video/467264493?h=b089de0eab"
+      - "https://www.youtube.com/embed/Znf73dsFdC8"
+  # IiifPrint metadata - child_works_from_pdf_splitting.yaml
+  is_child:
+    available_on:
+      class:
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+      maximum: 1
+    multi_value: false
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#bool
+      sources:
+        - "null"
+    display_label:
+      default: Is Child
+    index_documentation: displayable, searchable
+    indexing:
+      - "is_child_bsi"
+    form:
+      display: false
+      required: false
+      primary: false
+      multiple: false
+    property_uri: http://id.loc.gov/vocabulary/identifiers/isChild
+    range: http://www.w3.org/2001/XMLSchema#bool
+    sample_values:
+      - true
+      - false
+  split_from_pdf_id:
+    available_on:
+      class:
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+      maximum: 1
+    multi_value: false
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Split from PDF ID
+    index_documentation: searchable
+    indexing:
+      - "split_from_pdf_id_ssi"
+    form:
+      display: false
+      required: false
+      primary: false
+      multiple: false
+    property_uri: http://id.loc.gov/vocabulary/identifiers/splitFromPdfId
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - example-split-from-pdf-id
+  dimensions:
+    available_on:
+      class:
+        - ImageResource
+      context:
+        - special_context
+    cardinality:
+      minimum: 0
+    multi_value: true
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Dimensions
+    index_documentation: displayable, searchable
+    indexing:
+      - dimensions_sim
+      - dimensions_tesim
+    form:
+      primary: false
+    property_uri: http://purl.org/dc/terms/format
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - 50" x 20"
+      - 5 m x 10 m x 8 m
+    view:
+      render_as: "faceted"
+      html_dl: true

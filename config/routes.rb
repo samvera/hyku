@@ -159,4 +159,12 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   post "/dashboard/collections/:id/delete_uploaded_thumbnail",
        to: "hyrax/dashboard/collections#delete_uploaded_thumbnail",
        as: :delete_uploaded_thumbnail
+
+  if ENV.fetch('HYRAX_FLEXIBLE', false)
+    # Metadata profiles routes
+    resources :metadata_profiles, except: [:update, :show, :destroy] do
+      collection { post :import }
+      get 'export'
+    end
+  end
 end

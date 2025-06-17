@@ -15,7 +15,7 @@ require 'ruby-progressbar'
 class Reprocessor # rubocop:disable Metrics/ClassLength
   include Singleton
 
-  SETTINGS = %w[header_lines batch_size current_location limit incremental_save log_dir].freeze
+  SETTINGS = %w[header_lines batch_size single_batch current_location limit incremental_save log_dir].freeze
 
   attr_accessor(*SETTINGS)
   attr_writer :error_log, :id_line_size, :id_log, :id_path
@@ -23,6 +23,7 @@ class Reprocessor # rubocop:disable Metrics/ClassLength
   def initialize
     @header_lines = 1
     @batch_size   = 1000
+    @single_batch = false
     @current_location = 0
     @limit = nil
     @incremental_save = true
@@ -146,6 +147,7 @@ class Reprocessor # rubocop:disable Metrics/ClassLength
   def process_ids(lamb)
     progress(id_line_size)
     line_counter = 0
+    current_limit(reset: true)
     with_id_lines do |lines|
       lines.each do |line|
         line_counter += 1
@@ -153,7 +155,7 @@ class Reprocessor # rubocop:disable Metrics/ClassLength
           progress.increment
           next
         end
-        break if limit && current_location >= limit
+        break if current_limit && current_location >= current_limit
         begin
           lamb.call(line, progress)
         rescue => e
@@ -164,8 +166,13 @@ class Reprocessor # rubocop:disable Metrics/ClassLength
         Reprocessor.save if incremental_save
       end
       # double break to get out of the lazy loop
-      break if limit && current_location >= limit
+      break if current_limit && current_location >= current_limit
     end
+  end
+
+  def current_limit(reset: false)
+    return @current_limit if @current_limit && !reset
+    @current_limit = single_batch ? current_location + batch_size : limit
   end
 
   def error(line, exception)

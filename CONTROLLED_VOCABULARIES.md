@@ -86,6 +86,11 @@ Remote vocabularies query external services through the Questioning Authority ge
 
 ### Discogs (Requires Setup)
 
+> **Note:**  
+> Discogs integration in Hyku is not supported out-of-the-box. The Questioning Authority gem is outdated and does not support Discogs authentication methods required by new Discogs applications.  
+> To use Discogs authorities, you will need to update or patch the gem to support Personal Access Token authentication or the current OAuth flow.  
+> If you need Discogs support, be prepared to extend or adapt the implementation for your needs.
+
 Discogs music database authorities are available but require API credentials:
 
 - `discogs/all` - All Discogs types
@@ -93,11 +98,12 @@ Discogs music database authorities are available but require API credentials:
 - `discogs/artist` - Artists
 - `discogs/label` - Record labels
 
-To enable Discogs authorities:
+To enable Discogs authorities (not supported out-of-the-box):
 
 1. Register for a Discogs developer account at https://www.discogs.com/settings/developers
-2. Configure API credentials in your application
-3. Uncomment the Discogs authorities in `app/helpers/hyrax/form_helper_behavior.rb`
+2. **Note:** The Questioning Authority gem does not support the authentication methods required by new Discogs applications.
+3. You will need to update or patch the gem to support Personal Access Token authentication or the current OAuth flow.
+4. If you implement the necessary changes, uncomment the Discogs authorities in `app/helpers/hyrax/form_helper_behavior.rb` **and ensure your account settings allow users to set their Discogs Personal Access Token or credentials.**
 
 **Note**: Authority names use the slash format consistent with Questioning Authority documentation. These match exactly with the configured mappings in the application.
 

@@ -80,14 +80,10 @@ module Hyrax
           url: "/authorities/search/discogs/release",
           type: 'autocomplete'
         },
-        'discogs/artist' => {
-          url: "/authorities/search/discogs/artist",
+        'discogs/master' => {
+          url: "/authorities/search/discogs/master",
           type: 'autocomplete'
         },
-        'discogs/label' => {
-          url: "/authorities/search/discogs/label",
-          type: 'autocomplete'
-        }
       }
       
       remote_authorities[source_name]
@@ -141,14 +137,16 @@ module Hyrax
     private
 
     def ensure_discogs_credentials
-      return unless Site.instance.respond_to?(:discogs_key) && Site.instance.respond_to?(:discogs_secret)
+      return unless Site.instance.respond_to?(:discogs_user_token)
       
-      discogs_key = Site.instance.discogs_key
-      discogs_secret = Site.instance.discogs_secret
-      
-      if discogs_key.present? && discogs_secret.present?
-        Qa::Authorities::Discogs::GenericAuthority.discogs_key = discogs_key
-        Qa::Authorities::Discogs::GenericAuthority.discogs_secret = discogs_secret
+      # Try Personal Access Token first (preferred)
+      if Site.instance.discogs_user_token.present?
+        Qa::Authorities::Discogs::GenericAuthority.discogs_user_token = Site.instance.discogs_user_token
+      elsif Site.instance.respond_to?(:discogs_key) && Site.instance.respond_to?(:discogs_secret) &&
+            Site.instance.discogs_key.present? && Site.instance.discogs_secret.present?
+        # Fall back to OAuth credentials
+        Qa::Authorities::Discogs::GenericAuthority.discogs_key = Site.instance.discogs_key
+        Qa::Authorities::Discogs::GenericAuthority.discogs_secret = Site.instance.discogs_secret
       end
     end
   end

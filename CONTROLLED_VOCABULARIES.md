@@ -67,55 +67,54 @@ Remote vocabularies query external services through the Questioning Authority ge
 
 ### Available Remote Vocabularies
 
-- `loc/subjects` - Library of Congress Subject Headings
-- `loc/names` - Library of Congress Name Authority File
-- `loc/genre_forms` - Library of Congress Genre/Form Terms
-- `loc/countries` - Library of Congress Countries
-- `getty/aat` - Getty Art & Architecture Thesaurus
-- `getty/tgn` - Getty Thesaurus of Geographic Names
-- `getty/ulan` - Getty Union List of Artist Names
-- `geonames` - GeoNames geographical database
-- `fast` - OCLC FAST (Faceted Application of Subject Terminology) - topical subjects
-- `fast/all` - OCLC FAST - all subjects
-- `fast/personal` - OCLC FAST - personal names
-- `fast/corporate` - OCLC FAST - corporate names
-- `fast/geographic` - OCLC FAST - geographic names
-- `mesh` - Medical Subject Headings (MeSH)
 
 **Note**: Authority names use the slash format consistent with Questioning Authority documentation. These match exactly with the configured mappings in the application.
 
 ### Discogs (Requires Setup)
 
-Discogs music database authorities are available but require API credentials:
+> **Note:**  
+> Discogs integration in Hyku requires a Personal Access Token from your Discogs account. The Questioning Authority gem's OAuth implementation is outdated for new Discogs applications.
+
+Discogs music database authorities are available with proper setup:
 
 - `discogs` - All Discogs types
 - `discogs/release` - Music releases
-- `discogs/artist` - Artists
-- `discogs/label` - Record labels
+- `discogs/master` - Master releases
 
-**Configuration Options:**
-
-**Option 1: Account Settings (Recommended)**
+**Setup Instructions:**
 
 1. Register for a Discogs developer account at https://www.discogs.com/settings/developers
-2. Create a new application to get your API key and secret
-3. Go to your tenant's admin settings in Hyku
-4. Configure the Discogs credentials in the account settings
+2. Generate a **Personal Access Token** (not an OAuth application)
+3. In your Hyku tenant's Account Settings, set the `Discogs user token` field to your Personal Access Token
+4. The integration will automatically use your token for API requests
 
-**Option 2: Environment Variables**
-Set the following environment variables:
+**What works:**
 
-```bash
-HYKU_DISCOGS_KEY=your_discogs_api_key
-HYKU_DISCOGS_SECRET=your_discogs_api_secret
-```
+- Music release autocomplete (searches release titles, not artist names)
+- Master release autocomplete
+- Search terms like "Abbey Road", "Live", "Greatest Hits" work well
 
-**Option 3: Direct Environment Variables**
+**What doesn't work:**
 
-```bash
-DISCOGS_KEY=your_discogs_api_key
-DISCOGS_SECRET=your_discogs_api_secret
-```
+- Artist and label authorities (not supported by current QA gem version)
+- OAuth Consumer Key/Secret authentication (deprecated for new apps)
+
+### GeoNames (Requires Setup)
+
+GeoNames geographical database integration requires a free username:
+
+**Setup Instructions:**
+
+1. Register for a free GeoNames account at http://www.geonames.org/manageaccount
+2. Enable web services for your account (this may take up to an hour after registration)
+3. In your Hyku tenant's Account Settings, set the `Geonames username` field to your GeoNames username
+4. The integration will automatically use your username for API requests
+
+**What it provides:**
+
+- Geographical place name autocomplete
+- Global coverage of cities, countries, regions, and landmarks
+- Standardized geographic authority data
 
 ### Usage in Profile YAML
 
@@ -251,19 +250,6 @@ properties:
         - discogs/release
     display_label:
       default: Music Release
-    multi_value: true
-
-  # Discogs artists
-  music_artist:
-    available_on:
-      class:
-        - GenericWorkResource
-    controlled_values:
-      format: http://www.w3.org/2001/XMLSchema#string
-      sources:
-        - discogs/artist
-    display_label:
-      default: Music Artist
     multi_value: true
 ```
 

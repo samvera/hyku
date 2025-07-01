@@ -43,6 +43,8 @@ module AccountSettings
     setting :google_analytics_property_id, type: 'string', default: ENV.fetch('GOOGLE_ANALYTICS_PROPERTY_ID', '')
     setting :google_scholarly_work_types, type: 'array', disabled: true
     setting :geonames_username, type: 'string', default: ''
+    setting :discogs_key, type: 'string', default: '', private: true
+    setting :discogs_secret, type: 'string', default: '', private: true
     setting :gtm_id, type: 'string'
     setting :hidden_index_fields, type: 'string', default: 'title'
     setting :locale_name, type: 'string', disabled: true
@@ -208,6 +210,9 @@ module AccountSettings
       config.contact_email = contact_email
       config.geonames_username = geonames_username
       config.uploader[:maxFileSize] = file_size_limit.to_i
+      # Configure Discogs API credentials for Questioning Authority
+      Qa::Authorities::Discogs::GenericAuthority.discogs_key = discogs_key if discogs_key.present?
+      Qa::Authorities::Discogs::GenericAuthority.discogs_secret = discogs_secret if discogs_secret.present?
       configure_hyrax_analytics_settings(config)
     end
   end

@@ -88,18 +88,34 @@ Remote vocabularies query external services through the Questioning Authority ge
 
 Discogs music database authorities are available but require API credentials:
 
-- `discogs/all` - All Discogs types
+- `discogs` - All Discogs types
 - `discogs/release` - Music releases
 - `discogs/artist` - Artists
 - `discogs/label` - Record labels
 
-To enable Discogs authorities:
+**Configuration Options:**
+
+**Option 1: Account Settings (Recommended)**
 
 1. Register for a Discogs developer account at https://www.discogs.com/settings/developers
-2. Configure API credentials in your application
-3. Uncomment the Discogs authorities in `app/helpers/hyrax/form_helper_behavior.rb`
+2. Create a new application to get your API key and secret
+3. Go to your tenant's admin settings in Hyku
+4. Configure the Discogs credentials in the account settings
 
-**Note**: Authority names use the slash format consistent with Questioning Authority documentation. These match exactly with the configured mappings in the application.
+**Option 2: Environment Variables**
+Set the following environment variables:
+
+```bash
+HYKU_DISCOGS_KEY=your_discogs_api_key
+HYKU_DISCOGS_SECRET=your_discogs_api_secret
+```
+
+**Option 3: Direct Environment Variables**
+
+```bash
+DISCOGS_KEY=your_discogs_api_key
+DISCOGS_SECRET=your_discogs_api_secret
+```
 
 ### Usage in Profile YAML
 

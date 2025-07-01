@@ -71,25 +71,23 @@ module Hyrax
         'mesh' => {
           url: "/authorities/search/mesh",
           type: 'autocomplete'
+        },
+        'discogs' => {
+          url: "/authorities/search/discogs/all",
+          type: 'autocomplete'
+        },
+        'discogs/release' => {
+          url: "/authorities/search/discogs/release",
+          type: 'autocomplete'
+        },
+        'discogs/artist' => {
+          url: "/authorities/search/discogs/artist",
+          type: 'autocomplete'
+        },
+        'discogs/label' => {
+          url: "/authorities/search/discogs/label",
+          type: 'autocomplete'
         }
-        # NOTE: Discogs authorities require API credentials to be configured
-        # See: https://github.com/samvera/questioning_authority#discogs
-        # 'discogs' => {
-        #   url: "/authorities/search/discogs/all",
-        #   type: 'autocomplete'
-        # },
-        # 'discogs/release' => {
-        #   url: "/authorities/search/discogs/release",
-        #   type: 'autocomplete'
-        # },
-        # 'discogs/artist' => {
-        #   url: "/authorities/search/discogs/artist",
-        #   type: 'autocomplete'
-        # },
-        # 'discogs/label' => {
-        #   url: "/authorities/search/discogs/label",
-        #   type: 'autocomplete'
-        # }
       }
       
       remote_authorities[source_name]
@@ -108,6 +106,11 @@ module Hyrax
       # Get the first non-null source and trim whitespace
       source = sources.find { |s| s != 'null' }&.strip
       return nil unless source
+
+      # Ensure Discogs credentials are available for Discogs authorities
+      if source.start_with?('discogs')
+        ensure_discogs_credentials
+      end
 
       # Check if it's a local service first
       service = controlled_vocabulary_service_for(source)
@@ -133,6 +136,20 @@ module Hyrax
       end
 
       nil
+    end
+
+    private
+
+    def ensure_discogs_credentials
+      return unless Site.instance.respond_to?(:discogs_key) && Site.instance.respond_to?(:discogs_secret)
+      
+      discogs_key = Site.instance.discogs_key
+      discogs_secret = Site.instance.discogs_secret
+      
+      if discogs_key.present? && discogs_secret.present?
+        Qa::Authorities::Discogs::GenericAuthority.discogs_key = discogs_key
+        Qa::Authorities::Discogs::GenericAuthority.discogs_secret = discogs_secret
+      end
     end
   end
 end 

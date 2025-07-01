@@ -7,6 +7,7 @@ module ApplicationHelper
   include SharedSearchHelper
   include Bulkrax::ApplicationHelper
   include HykuKnapsack::ApplicationHelper
+  include Hyrax::FormHelperBehavior
 
   def group_navigation_presenter
     @group_navigation_presenter ||= Hyku::Admin::Group::NavigationPresenter.new(params:)

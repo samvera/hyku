@@ -16,32 +16,48 @@ module Hyrax
 
     def remote_authority_config_for(source_name)
       remote_authorities = {
-        'loc_subjects' => {
+        'loc/subjects' => {
           url: "/authorities/search/loc/subjects",
           type: 'autocomplete'
         },
-        'loc_names' => {
+        'loc/names' => {
           url: "/authorities/search/loc/names", 
           type: 'autocomplete'
         },
-        'loc_genre_forms' => {
+        'loc/genre_forms' => {
           url: "/authorities/search/loc/genreForms",
+          type: 'autocomplete'
+        },
+        'loc/countries' => {
+          url: "/authorities/search/loc/countries",
           type: 'autocomplete'
         },
         'mesh' => {
           url: "/authorities/search/mesh",
           type: 'autocomplete'
         },
-        'aat' => {
+        'getty/aat' => {
           url: "/authorities/search/getty/aat",
+          type: 'autocomplete'
+        },
+        'getty/tgn' => {
+          url: "/authorities/search/getty/tgn",
+          type: 'autocomplete'
+        },
+        'getty/ulan' => {
+          url: "/authorities/search/getty/ulan",
           type: 'autocomplete'
         },
         'geonames' => {
           url: "/authorities/search/geonames",
           type: 'autocomplete'
         },
-        'fast_topics' => {
-          url: "/authorities/search/oclc_fast/topic",
+        'fast' => {
+          url: "/authorities/search/fast",
+          type: 'autocomplete'
+        },
+        'discogs' => {
+          url: "/authorities/search/discogs",
           type: 'autocomplete'
         }
       }

@@ -1,6 +1,31 @@
 # Controlled Vocabularies in Hyku
 
-Hyku supports both local and remote controlled vocabularies for form fields. You can specify these in your metadata profile YAML files.
+Hyku supports both local and remote controlled vocabularies for form fields through the flexible metadata system. When `HYRAX_FLEXIBLE` is enabled, you can specify controlled vocabularies directly in your metadata profile YAML files by configuring the `controlled_values.sources` array for any property.
+
+## How It Works
+
+The flexible metadata system automatically detects controlled vocabularies based on the `sources` configuration:
+
+1. **Profile Import**: When you import a metadata profile, the system reads the `controlled_values.sources` array
+2. **Form Generation**: The form builder checks if the source is a local authority file or remote authority service
+3. **Rendering**:
+   - Local vocabularies render as dropdown select fields with predefined options
+   - Remote authorities render as autocomplete text inputs that query external services
+4. **Data Attributes**: Remote authorities get `data-autocomplete` and `data-autocomplete-url` attributes for JavaScript functionality
+
+## Configuration Syntax
+
+To make any property use a controlled vocabulary, update its `controlled_values.sources` array in your metadata profile:
+
+```yaml
+properties:
+  your_property:
+    # ... other property configuration ...
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - authority_name # Instead of ["null"]
+```
 
 ## Local Controlled Vocabularies
 
@@ -19,40 +44,66 @@ Local vocabularies are stored as YAML files in `config/authorities/` and provide
 ```yaml
 properties:
   discipline:
+    available_on:
+      class:
+        - OerResource
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - discipline # References config/authorities/discipline.yml
+    display_label:
+      default: Discipline
+    form:
+      required: true
+      primary: true
+    multi_value: true
 ```
 
-This will render as a dropdown select field with options from the discipline vocabulary.
+This will render as a dropdown select field with options from the discipline vocabulary file.
 
 ## Remote Controlled Vocabularies
 
-Remote vocabularies query external services and provide autocomplete/typeahead functionality.
+Remote vocabularies query external services through the Questioning Authority gem and provide autocomplete/typeahead functionality.
 
 ### Available Remote Vocabularies
 
-- `loc_subjects` - Library of Congress Subject Headings
-- `loc_names` - Library of Congress Name Authority File
-- `loc_genre_forms` - Library of Congress Genre/Form Terms
+- `loc/subjects` - Library of Congress Subject Headings
+- `loc/names` - Library of Congress Name Authority File
+- `loc/genre_forms` - Library of Congress Genre/Form Terms
+- `loc/countries` - Library of Congress Countries
+- `getty/aat` - Getty Art & Architecture Thesaurus
+- `getty/tgn` - Getty Thesaurus of Geographic Names
+- `getty/ulan` - Getty Union List of Artist Names
 - `geonames` - GeoNames geographical database
-- `fast_topics` - OCLC FAST (Faceted Application of Subject Terminology) topics
+- `fast` - OCLC FAST (Faceted Application of Subject Terminology)
+- `mesh` - Medical Subject Headings (MeSH)
+- `discogs` - Discogs music database
+
+**Note**: Authority names use the slash format consistent with Questioning Authority documentation. These match exactly with the configured mappings in the application.
 
 ### Usage in Profile YAML
 
 ```yaml
 properties:
   subject:
+    available_on:
+      class:
+        - GenericWorkResource
+        - OerResource
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - loc_subjects # Library of Congress Subject Headings
+        - loc/subjects # Library of Congress Subject Headings
+    display_label:
+      default: Subject
+    form:
+      primary: false
+    multi_value: true
 ```
 
 This will render as an autocomplete field that queries the Library of Congress Subject Headings service as the user types.
 
-## Example Profile Section
+## Complete Example Profile Section
 
 ```yaml
 properties:
@@ -62,6 +113,7 @@ properties:
       class:
         - OerResource
     controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - discipline
     display_label:
@@ -78,8 +130,9 @@ properties:
         - GenericWorkResource
         - OerResource
     controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - loc_subjects
+        - loc/subjects
     display_label:
       default: Subject
     form:
@@ -92,34 +145,108 @@ properties:
       class:
         - GenericWorkResource
     controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - geonames
     display_label:
       default: Location
     multi_value: true
+
+  # Medical subjects
+  medical_subject:
+    available_on:
+      class:
+        - GenericWorkResource
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - mesh
+    display_label:
+      default: Medical Subject
+    multi_value: true
+
+  # Art & Architecture terms
+  art_subject:
+    available_on:
+      class:
+        - ImageResource
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - getty/aat
+    display_label:
+      default: Art Subject
+    multi_value: true
+
+  # FAST topics
+  fast_subject:
+    available_on:
+      class:
+        - GenericWorkResource
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - fast
+    display_label:
+      default: FAST Subject
+    multi_value: true
 ```
+
+## No Controlled Vocabulary (Default)
+
+To specify that a property should NOT use controlled vocabulary (free text input), use:
+
+```yaml
+properties:
+  description:
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null" # No controlled vocabulary
+```
+
+## Managing Local Vocabularies
+
+### Current Method
+
+Local authority files are managed by editing the YAML files directly in `config/authorities/`. After making changes, restart the application for changes to take effect.
+
+### File Structure
+
+```yaml
+# config/authorities/discipline.yml
+terms:
+  - id: "Mathematics"
+    term: "Mathematics"
+  - id: "Biology"
+    term: "Biology"
+```
+
+### Future Enhancement
+
+A UI for managing local vocabularies through the admin dashboard is planned to make vocabulary management more user-friendly for repository administrators.
 
 ## Adding New Vocabularies
 
 ### Adding Local Vocabularies
 
-1. Create a YAML file in `config/authorities/` (e.g., `my_vocabulary.yml`)
-2. Add the vocabulary mapping to `controlled_vocabulary_service_for` in `app/helpers/hyrax/form_helper_behavior.rb`
-3. Create a corresponding service class following the pattern of existing services
+1. Create a YAML file in `config/authorities/` following the existing pattern
+2. Reference the file name (without .yml extension) in your metadata profile's `sources` array
+3. Restart the application
 
 ### Adding Remote Vocabularies
 
 1. Ensure the Questioning Authority gem supports the remote service
-2. Add the configuration to `remote_authority_config_for` in `app/helpers/hyrax/form_helper_behavior.rb`
-3. The URL should follow the QA pattern: `/qa/search/{authority}/{subauthority}`
+2. Add the authority mapping to the `remote_authority_config_for` method in `app/helpers/hyrax/form_helper_behavior.rb`
+3. Use the authority name in your metadata profile's `sources` array
 
-## How It Works
+## Technical Implementation
 
-1. **Profile Import**: When you import a metadata profile, the system reads the `controlled_values.sources`
-2. **Form Generation**: The form builder checks if the source maps to a local service or remote authority
-3. **Rendering**:
-   - Local vocabularies render as `<select>` dropdowns with predefined options
-   - Remote authorities render as text inputs with autocomplete functionality
-4. **Data Attributes**: Remote authorities get `data-autocomplete` and `data-autocomplete-url` attributes that the JavaScript autocomplete widget uses
+The flexible metadata system processes controlled vocabularies as follows:
 
-The system automatically handles both single and multi-value fields for both local and remote vocabularies.
+1. **Profile Processing**: `Hyrax::FlexibleSchema` reads the `controlled_values.sources` from the YAML profile
+2. **Form Rendering**: The form metadata partial checks each property's configuration
+3. **Dynamic Rendering**: Properties with `sources` other than `["null"]` are rendered as controlled vocabulary fields
+4. **Authority URLs**: Remote authorities automatically get the correct autocomplete URL pattern
+
+This system automatically handles both single and multi-value fields for both local and remote vocabularies, providing a seamless experience for repository administrators and depositors.

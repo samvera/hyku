@@ -28,6 +28,14 @@ module Hyrax
           url: "/authorities/search/loc/genreForms",
           type: 'autocomplete'
         },
+        'mesh' => {
+          url: "/authorities/search/mesh",
+          type: 'autocomplete'
+        },
+        'aat' => {
+          url: "/authorities/search/getty/aat",
+          type: 'autocomplete'
+        },
         'geonames' => {
           url: "/authorities/search/geonames",
           type: 'autocomplete'

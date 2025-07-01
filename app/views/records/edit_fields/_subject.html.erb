@@ -11,14 +11,21 @@
         input_html: { class: 'form-control', multiple: true },
         required: f.object.required?(key) %>
   <% elsif controlled_vocab_config[:type] == 'autocomplete' %>
-    <%# Render remote authority as autocomplete field %>
+    <%# Render remote authority as restrictive controlled vocabulary field %>
     <%= f.input key,
         as: :multi_value,
         input_html: {
           class: 'form-control',
           data: { 
             'autocomplete-url' => controlled_vocab_config[:url],
-            'autocomplete' => key.to_s
+            'autocomplete' => key.to_s,
+            'autocomplete-type' => 'linked'
+          }
+        },
+        wrapper_html: { 
+          data: { 
+            'autocomplete-url' => controlled_vocab_config[:url],
+            'field-name' => key.to_s 
           }
         },
         required: f.object.required?(key) %>

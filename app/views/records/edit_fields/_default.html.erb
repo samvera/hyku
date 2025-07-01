@@ -27,7 +27,7 @@
           required: f.object.required?(key) %>
     <% end %>
   <% elsif controlled_vocab_config[:type] == 'autocomplete' %>
-    <%# Render remote authority as autocomplete field %>
+    <%# Render remote authority as restrictive controlled vocabulary field %>
     <% if f.object.multiple? key %>
       <%= f.input key,
           as: :multi_value,
@@ -36,17 +36,32 @@
           input_html: { 
             class: 'form-control',
             'data-autocomplete' => key.to_s,
-            'data-autocomplete-url' => controlled_vocab_config[:url]
+            'data-autocomplete-url' => controlled_vocab_config[:url],
+            'data-autocomplete-type' => 'linked'
+          },
+          wrapper_html: { 
+            data: { 
+              'autocomplete-url' => controlled_vocab_config[:url],
+              'field-name' => key.to_s 
+            }
           },
           required: f.object.required?(key) %>
     <% else %>
       <%= f.input key,
+          as: :controlled_vocabulary,
           label: label_for(term: key, record_class: record.class),
           hint: hint_for(term: key, record_class: record.class),
           input_html: { 
             class: 'form-control',
             'data-autocomplete' => key.to_s,
-            'data-autocomplete-url' => controlled_vocab_config[:url]
+            'data-autocomplete-url' => controlled_vocab_config[:url],
+            'data-autocomplete-type' => 'linked'
+          },
+          wrapper_html: { 
+            data: { 
+              'autocomplete-url' => controlled_vocab_config[:url],
+              'field-name' => key.to_s 
+            }
           },
           required: f.object.required?(key) %>
     <% end %>

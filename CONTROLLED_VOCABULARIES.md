@@ -75,9 +75,29 @@ Remote vocabularies query external services through the Questioning Authority ge
 - `getty/tgn` - Getty Thesaurus of Geographic Names
 - `getty/ulan` - Getty Union List of Artist Names
 - `geonames` - GeoNames geographical database
-- `fast` - OCLC FAST (Faceted Application of Subject Terminology)
+- `fast` - OCLC FAST (Faceted Application of Subject Terminology) - topical subjects
+- `fast/all` - OCLC FAST - all subjects
+- `fast/personal` - OCLC FAST - personal names
+- `fast/corporate` - OCLC FAST - corporate names
+- `fast/geographic` - OCLC FAST - geographic names
 - `mesh` - Medical Subject Headings (MeSH)
-- `discogs` - Discogs music database
+
+**Note**: Authority names use the slash format consistent with Questioning Authority documentation. These match exactly with the configured mappings in the application.
+
+### Discogs (Requires Setup)
+
+Discogs music database authorities are available but require API credentials:
+
+- `discogs/all` - All Discogs types
+- `discogs/release` - Music releases
+- `discogs/artist` - Artists
+- `discogs/label` - Record labels
+
+To enable Discogs authorities:
+
+1. Register for a Discogs developer account at https://www.discogs.com/settings/developers
+2. Configure API credentials in your application
+3. Uncomment the Discogs authorities in `app/helpers/hyrax/form_helper_behavior.rb`
 
 **Note**: Authority names use the slash format consistent with Questioning Authority documentation. These match exactly with the configured mappings in the application.
 
@@ -189,6 +209,45 @@ properties:
         - fast
     display_label:
       default: FAST Subject
+    multi_value: true
+
+  # FAST geographic names
+  fast_geographic:
+    available_on:
+      class:
+        - GenericWorkResource
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - fast/geographic
+    display_label:
+      default: Geographic Subject
+    multi_value: true
+
+  # Discogs music releases
+  music_release:
+    available_on:
+      class:
+        - GenericWorkResource
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - discogs/release
+    display_label:
+      default: Music Release
+    multi_value: true
+
+  # Discogs artists
+  music_artist:
+    available_on:
+      class:
+        - GenericWorkResource
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - discogs/artist
+    display_label:
+      default: Music Artist
     multi_value: true
 ```
 

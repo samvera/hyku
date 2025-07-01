@@ -32,10 +32,6 @@ module Hyrax
           url: "/authorities/search/loc/countries",
           type: 'autocomplete'
         },
-        'mesh' => {
-          url: "/authorities/search/mesh",
-          type: 'autocomplete'
-        },
         'getty/aat' => {
           url: "/authorities/search/getty/aat",
           type: 'autocomplete'
@@ -53,13 +49,47 @@ module Hyrax
           type: 'autocomplete'
         },
         'fast' => {
-          url: "/authorities/search/fast",
+          url: "/authorities/search/assign_fast/topical",
           type: 'autocomplete'
         },
-        'discogs' => {
-          url: "/authorities/search/discogs",
+        'fast/all' => {
+          url: "/authorities/search/assign_fast/all",
+          type: 'autocomplete'
+        },
+        'fast/personal' => {
+          url: "/authorities/search/assign_fast/personal",
+          type: 'autocomplete'
+        },
+        'fast/corporate' => {
+          url: "/authorities/search/assign_fast/corporate",
+          type: 'autocomplete'
+        },
+        'fast/geographic' => {
+          url: "/authorities/search/assign_fast/geographic",
+          type: 'autocomplete'
+        },
+        'mesh' => {
+          url: "/authorities/search/mesh",
           type: 'autocomplete'
         }
+        # NOTE: Discogs authorities require API credentials to be configured
+        # See: https://github.com/samvera/questioning_authority#discogs
+        # 'discogs' => {
+        #   url: "/authorities/search/discogs/all",
+        #   type: 'autocomplete'
+        # },
+        # 'discogs/release' => {
+        #   url: "/authorities/search/discogs/release",
+        #   type: 'autocomplete'
+        # },
+        # 'discogs/artist' => {
+        #   url: "/authorities/search/discogs/artist",
+        #   type: 'autocomplete'
+        # },
+        # 'discogs/label' => {
+        #   url: "/authorities/search/discogs/label",
+        #   type: 'autocomplete'
+        # }
       }
       
       remote_authorities[source_name]

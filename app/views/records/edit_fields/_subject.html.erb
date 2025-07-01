@@ -1,0 +1,36 @@
+<%# OVERRIDE: Use dynamic controlled vocabulary system for subject field %>
+<% record = f.object.model %>
+<% controlled_vocab_config = controlled_vocabulary_options_for(key, record.class) %>
+
+<% if controlled_vocab_config.present? %>
+  <% if controlled_vocab_config[:type] == 'select' %>
+    <%# Render local controlled vocabulary as select field %>
+    <%= f.input key,
+        as: :select,
+        collection: controlled_vocab_config[:options],
+        input_html: { class: 'form-control', multiple: true },
+        required: f.object.required?(key) %>
+  <% elsif controlled_vocab_config[:type] == 'autocomplete' %>
+    <%# Render remote authority as autocomplete field %>
+    <%= f.input key,
+        as: :multi_value,
+        input_html: {
+          class: 'form-control',
+          data: { 
+            'autocomplete-url' => controlled_vocab_config[:url],
+            'autocomplete' => key.to_s
+          }
+        },
+        required: f.object.required?(key) %>
+  <% end %>
+<% else %>
+  <%# Fallback to standard multi-value field %>
+  <%= f.input key,
+      as: :multi_value,
+      input_html: {
+        class: 'form-control',
+        data: { 'autocomplete-url' => "/authorities/search/local/subjects",
+                'autocomplete' => key }
+      },
+      required: f.object.required?(key) %>
+<% end %> 

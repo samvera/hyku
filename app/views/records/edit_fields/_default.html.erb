@@ -4,26 +4,52 @@
 <% return if f.object.try(:hidden?, key) %>
 
 <% record = f.object.model %>
-<% controlled_vocab_options = controlled_vocabulary_options_for(key, record.class) %>
+<% controlled_vocab_config = controlled_vocabulary_options_for(key, record.class) %>
 
-<% if controlled_vocab_options.present? %>
-  <%# Render controlled vocabulary as select field %>
-  <% if f.object.multiple? key %>
-    <%= f.input key,
-        as: :select,
-        collection: controlled_vocab_options,
-        label: label_for(term: key, record_class: record.class),
-        hint: hint_for(term: key, record_class: record.class),
-        input_html: { class: 'form-control', multiple: true },
-        required: f.object.required?(key) %>
-  <% else %>
-    <%= f.input key,
-        as: :select,
-        collection: controlled_vocab_options,
-        label: label_for(term: key, record_class: record.class),
-        hint: hint_for(term: key, record_class: record.class),
-        input_html: { class: 'form-control' },
-        required: f.object.required?(key) %>
+<% if controlled_vocab_config.present? %>
+  <% if controlled_vocab_config[:type] == 'select' %>
+    <%# Render local controlled vocabulary as select field %>
+    <% if f.object.multiple? key %>
+      <%= f.input key,
+          as: :select,
+          collection: controlled_vocab_config[:options],
+          label: label_for(term: key, record_class: record.class),
+          hint: hint_for(term: key, record_class: record.class),
+          input_html: { class: 'form-control', multiple: true },
+          required: f.object.required?(key) %>
+    <% else %>
+      <%= f.input key,
+          as: :select,
+          collection: controlled_vocab_config[:options],
+          label: label_for(term: key, record_class: record.class),
+          hint: hint_for(term: key, record_class: record.class),
+          input_html: { class: 'form-control' },
+          required: f.object.required?(key) %>
+    <% end %>
+  <% elsif controlled_vocab_config[:type] == 'autocomplete' %>
+    <%# Render remote authority as autocomplete field %>
+    <% if f.object.multiple? key %>
+      <%= f.input key,
+          as: :multi_value,
+          label: label_for(term: key, record_class: record.class),
+          hint: hint_for(term: key, record_class: record.class),
+          input_html: { 
+            class: 'form-control',
+            'data-autocomplete' => key.to_s,
+            'data-autocomplete-url' => controlled_vocab_config[:url]
+          },
+          required: f.object.required?(key) %>
+    <% else %>
+      <%= f.input key,
+          label: label_for(term: key, record_class: record.class),
+          hint: hint_for(term: key, record_class: record.class),
+          input_html: { 
+            class: 'form-control',
+            'data-autocomplete' => key.to_s,
+            'data-autocomplete-url' => controlled_vocab_config[:url]
+          },
+          required: f.object.required?(key) %>
+    <% end %>
   <% end %>
 <% elsif f.object.multiple? key %>
   <%# Render standard multi-value field %>

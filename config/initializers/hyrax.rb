@@ -263,6 +263,9 @@ rescue Qa::ConfigDirectoryNotFound, NameError => e
   Rails.logger.warn("Hyrax config unable to find qa local authorities directory: #{e.message}")
 end
 
+# Note: Remote authorities like LOC don't need explicit registration
+# They are available by default through the QA engine routes
+
 Hyrax::IiifAv.config.iiif_av_viewer = :universal_viewer
 
 require 'hydra/derivatives'

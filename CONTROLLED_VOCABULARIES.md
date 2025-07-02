@@ -142,7 +142,7 @@ The integration is automatically enabled when the `Discogs user token` is set an
 **What doesn't work:**
 
 - Artist and label authorities (not supported by current QA gem version)
-- OAuth Consumer Key/Secret authentication (deprecated for new apps)
+- OAuth Consumer Key/Secret authentication is supported by Discogs but is unnecessarily complex for controlled vocabulary use cases. Personal Access Tokens are simpler and recommended for this integration.
 
 ### The `based_near` Property (Location)
 

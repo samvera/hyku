@@ -38,6 +38,9 @@ Local vocabularies are stored as YAML files in `config/authorities/` and provide
 - `education_levels` - Educational levels (K-12, undergraduate, etc.)
 - `learning_resource_types` - Types of educational resources
 - `oer_types` - Open Educational Resource types
+- `licenses` - Creative Commons and other license options for the work
+- `resource_types` - Types of resources, such as "Article" or "Image"
+- `rights_statements` - Rights statements indicating the copyright status of the work
 
 ### Usage in Profile YAML
 
@@ -75,12 +78,15 @@ Remote vocabularies query external services through the Questioning Authority ge
 - `getty/tgn` - Getty Thesaurus of Geographic Names
 - `getty/ulan` - Getty Union List of Artist Names
 - `geonames` - GeoNames geographical database
-- `fast` - OCLC FAST (Faceted Application of Subject Terminology) - topical subjects
-- `fast/all` - OCLC FAST - all subjects
-- `fast/personal` - OCLC FAST - personal names
-- `fast/corporate` - OCLC FAST - corporate names
-- `fast/geographic` - OCLC FAST - geographic names
+- `fast` - OCLC FAST (Faceted Application of Subject Terminology) – topical subjects
+- `fast/all` - OCLC FAST – all subjects
+- `fast/personal` - OCLC FAST – personal names
+- `fast/corporate` - OCLC FAST – corporate names
+- `fast/geographic` - OCLC FAST – geographic names
 - `mesh` - Medical Subject Headings (MeSH)
+- `discogs` - All Discogs types
+- `discogs/release` - Music releases
+- `discogs/master` - Master releases
 
 **Note**: Authority names use the slash format consistent with Questioning Authority documentation. These match exactly with the configured mappings in the application.
 
@@ -106,25 +112,64 @@ Once set up, you can use `mesh` as a source in your metadata profiles, and it wi
 ### Discogs (Requires Setup)
 
 > **Note:**  
-> Discogs integration in Hyku is not supported out-of-the-box. The Questioning Authority gem is outdated and does not support Discogs authentication methods required by new Discogs applications.  
-> To use Discogs authorities, you will need to update or patch the gem to support Personal Access Token authentication or the current OAuth flow.  
-> If you need Discogs support, be prepared to extend or adapt the implementation for your needs.
+> Discogs integration in Hyku requires a Personal Access Token from your Discogs account. The Questioning Authority gem's OAuth implementation is outdated for new Discogs applications.
 
-Discogs music database authorities are available but require API credentials:
+Discogs music database authorities are available with proper setup:
 
-- `discogs/all` - All Discogs types
+- `discogs` - All Discogs types
 - `discogs/release` - Music releases
-- `discogs/artist` - Artists
-- `discogs/label` - Record labels
+- `discogs/master` - Master releases
 
-To enable Discogs authorities (not supported out-of-the-box):
+**Setup Instructions:**
 
 1. Register for a Discogs developer account at https://www.discogs.com/settings/developers
-2. **Note:** The Questioning Authority gem does not support the authentication methods required by new Discogs applications.
-3. You will need to update or patch the gem to support Personal Access Token authentication or the current OAuth flow.
-4. If you implement the necessary changes, uncomment the Discogs authorities in `app/helpers/hyrax/form_helper_behavior.rb` **and ensure your account settings allow users to set their Discogs Personal Access Token or credentials.**
+2. Generate a **Personal Access Token** (not an OAuth application).
+3. Generate the discogs formats and genres YAML files by running the following command:
+   ```
+   RAILS_ENV=production rails generate qa:discogs
+   bundle exec rails generate qa:discogs
+   ```
+4. In your Hyku tenant's Account Settings, set the `Discogs user token` field to your Personal Access Token.
 
-**Note**: Authority names use the slash format consistent with [Questioning Authority documentation](https://github.com/samvera/questioning_authority/wiki). These match exactly with the configured mappings in the application.
+The integration is automatically enabled when the `Discogs user token` is set and both `discogs-formats.yml` and `discogs-genres.yml` are present in your application's `config/` directory.
+
+**What works:**
+
+- Music release autocomplete (searches release titles, not artist names)
+- Master release autocomplete
+- Search terms like "Abbey Road", "Live", "Greatest Hits" work well
+
+**What doesn't work:**
+
+- Artist and label authorities (not supported by current QA gem version)
+- OAuth Consumer Key/Secret authentication (deprecated for new apps)
+
+### The `based_near` Property (Location)
+
+The `based_near` property has special handling in Hyrax. It must be included in your metadata profile to appear on forms, but its controlled vocabulary behavior is hardcoded in Hyrax to use GeoNames via a specific view partial (`app/views/records/edit_fields/_based_near.html.erb`).
+
+This means:
+
+- You should include `based_near` in your profile YAML to make it appear on the form.
+- The field will always render with autocomplete functionality using the **GeoNames** authority, regardless of the `sources` configuration in the profile. You can set `sources: ["null"]`.
+- For the autocomplete to work, you must set up GeoNames integration as described in the next section.
+
+### GeoNames (Requires Setup)
+
+GeoNames geographical database integration requires a free username:
+
+**Setup Instructions:**
+
+1. Register for a free GeoNames account at http://www.geonames.org/manageaccount
+2. Enable web services for your account (this may take up to an hour after registration)
+3. In your Hyku tenant's Account Settings, set the `Geonames username` field to your GeoNames username
+4. The integration will automatically use your username for API requests
+
+**What it provides:**
+
+- Geographical place name autocomplete
+- Global coverage of cities, countries, regions, and landmarks
+- Standardized geographic authority data
 
 ### Usage in Profile YAML
 
@@ -184,7 +229,8 @@ properties:
       primary: false
     multi_value: true
 
-  # Geographic names with autocomplete
+  # Geographic names with autocomplete.
+  # The `based_near` field has special handling in Hyrax. See the note above.
   based_near:
     available_on:
       class:
@@ -192,7 +238,7 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - geonames
+        - "null"
     display_label:
       default: Location
     multi_value: true
@@ -260,19 +306,6 @@ properties:
         - discogs/release
     display_label:
       default: Music Release
-    multi_value: true
-
-  # Discogs artists
-  music_artist:
-    available_on:
-      class:
-        - GenericWorkResource
-    controlled_values:
-      format: http://www.w3.org/2001/XMLSchema#string
-      sources:
-        - discogs/artist
-    display_label:
-      default: Music Artist
     multi_value: true
 ```
 

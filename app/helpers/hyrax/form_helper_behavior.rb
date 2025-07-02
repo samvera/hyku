@@ -8,7 +8,10 @@ module Hyrax
         'discipline' => Hyrax::DisciplineService,
         'education_levels' => Hyrax::EducationLevelsService,
         'learning_resource_types' => Hyrax::LearningResourceTypesService,
-        'oer_types' => Hyrax::OerTypesService
+        'oer_types' => Hyrax::OerTypesService,
+        'licenses' => Hyrax::LicenseService,
+        'resource_types' => Hyrax::ResourceTypesService,
+        'rights_statements' => Hyrax::RightsStatementService
       }
       
       service_mapping[source_name]
@@ -71,25 +74,19 @@ module Hyrax
         'mesh' => {
           url: "/authorities/search/mesh",
           type: 'autocomplete'
-        }
-        # NOTE: Discogs authorities require API credentials to be configured
-        # See: https://github.com/samvera/questioning_authority#discogs
-        # 'discogs' => {
-        #   url: "/authorities/search/discogs/all",
-        #   type: 'autocomplete'
-        # },
-        # 'discogs/release' => {
-        #   url: "/authorities/search/discogs/release",
-        #   type: 'autocomplete'
-        # },
-        # 'discogs/artist' => {
-        #   url: "/authorities/search/discogs/artist",
-        #   type: 'autocomplete'
-        # },
-        # 'discogs/label' => {
-        #   url: "/authorities/search/discogs/label",
-        #   type: 'autocomplete'
-        # }
+        },
+        'discogs' => {
+          url: "/authorities/search/discogs/all",
+          type: 'autocomplete'
+        },
+        'discogs/release' => {
+          url: "/authorities/search/discogs/release",
+          type: 'autocomplete'
+        },
+        'discogs/master' => {
+          url: "/authorities/search/discogs/master",
+          type: 'autocomplete'
+        },
       }
       
       remote_authorities[source_name]
@@ -109,13 +106,20 @@ module Hyrax
       source = sources.find { |s| s != 'null' }&.strip
       return nil unless source
 
+      # Ensure Discogs credentials are available for Discogs authorities
+      if source.start_with?('discogs')
+        ensure_discogs_credentials
+      end
+
       # Check if it's a local service first
-      service = controlled_vocabulary_service_for(source)
-      if service
+      service_lookup = controlled_vocabulary_service_for(source)
+      if service_lookup
         begin
+          service = service_lookup.is_a?(Class) ? service_lookup.new : service_lookup
           return {
             type: 'select',
-            options: service.select_all_options
+            options: service.select_all_options,
+            service: service
           }
         rescue => e
           Rails.logger.warn "Failed to load controlled vocabulary for #{source}: #{e.message}"
@@ -133,6 +137,22 @@ module Hyrax
       end
 
       nil
+    end
+
+    private
+
+    def ensure_discogs_credentials
+      return unless Site.instance.respond_to?(:discogs_user_token)
+      
+      # Try Personal Access Token first (preferred)
+      if Site.instance.discogs_user_token.present?
+        Qa::Authorities::Discogs::GenericAuthority.discogs_user_token = Site.instance.discogs_user_token
+      elsif Site.instance.respond_to?(:discogs_key) && Site.instance.respond_to?(:discogs_secret) &&
+            Site.instance.discogs_key.present? && Site.instance.discogs_secret.present?
+        # Fall back to OAuth credentials
+        Qa::Authorities::Discogs::GenericAuthority.discogs_key = Site.instance.discogs_key
+        Qa::Authorities::Discogs::GenericAuthority.discogs_secret = Site.instance.discogs_secret
+      end
     end
   end
 end 

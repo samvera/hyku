@@ -15,7 +15,9 @@
           collection: controlled_vocab_config[:options],
           label: label_for(term: key, record_class: record.class),
           hint: hint_for(term: key, record_class: record.class),
-          input_html: { class: 'form-control', multiple: true },
+          input_html: { class: 'form-control', name: "#{f.object_name}[#{key}][]" },
+          include_blank: true,
+          selected: f.object.send(key).first,
           required: f.object.required?(key) %>
     <% else %>
       <%= f.input key,
@@ -23,6 +25,7 @@
           collection: controlled_vocab_config[:options],
           label: label_for(term: key, record_class: record.class),
           hint: hint_for(term: key, record_class: record.class),
+          include_blank: true,
           input_html: { class: 'form-control' },
           required: f.object.required?(key) %>
     <% end %>
@@ -33,16 +36,16 @@
           as: :multi_value,
           label: label_for(term: key, record_class: record.class),
           hint: hint_for(term: key, record_class: record.class),
-          input_html: { 
+          input_html: {
             class: 'form-control',
             'data-autocomplete' => key.to_s,
             'data-autocomplete-url' => controlled_vocab_config[:url],
             'data-autocomplete-type' => 'linked'
           },
-          wrapper_html: { 
-            data: { 
+          wrapper_html: {
+            data: {
               'autocomplete-url' => controlled_vocab_config[:url],
-              'field-name' => key.to_s 
+              'field-name' => key.to_s
             }
           },
           required: f.object.required?(key) %>
@@ -51,16 +54,16 @@
           as: :controlled_vocabulary,
           label: label_for(term: key, record_class: record.class),
           hint: hint_for(term: key, record_class: record.class),
-          input_html: { 
+          input_html: {
             class: 'form-control',
             'data-autocomplete' => key.to_s,
             'data-autocomplete-url' => controlled_vocab_config[:url],
             'data-autocomplete-type' => 'linked'
           },
-          wrapper_html: { 
-            data: { 
+          wrapper_html: {
+            data: {
               'autocomplete-url' => controlled_vocab_config[:url],
-              'field-name' => key.to_s 
+              'field-name' => key.to_s
             }
           },
           required: f.object.required?(key) %>

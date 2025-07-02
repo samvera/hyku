@@ -122,7 +122,11 @@ Discogs music database authorities are available with proper setup:
 1. Register for a Discogs developer account at https://www.discogs.com/settings/developers
 2. Generate a **Personal Access Token** (not an OAuth application)
 3. In your Hyku tenant's Account Settings, set the `Discogs user token` field to your Personal Access Token
-4. The integration will automatically use your token for API requests
+4. Generate the discogs formats and genres YAML files using the following command:
+   ```
+   RAILS_ENV=production rails generate qa:discogs
+   ```
+5. The integration will automatically use your token for API requests
 
 **What works:**
 

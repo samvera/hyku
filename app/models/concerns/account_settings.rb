@@ -43,10 +43,6 @@ module AccountSettings
     setting :google_analytics_property_id, type: 'string', default: ENV.fetch('GOOGLE_ANALYTICS_PROPERTY_ID', '')
     setting :google_scholarly_work_types, type: 'array', disabled: true
     setting :geonames_username, type: 'string', default: ''
-    # Discogs credentials
-    # discogs_key and discogs_secret are deprecated in favor of discogs_user_token
-    setting :discogs_key, type: 'string', disabled: true
-    setting :discogs_secret, type: 'string', disabled: true
     setting :discogs_user_token, type: 'string', private: true
     setting :gtm_id, type: 'string'
     setting :hidden_index_fields, type: 'string', default: 'title'

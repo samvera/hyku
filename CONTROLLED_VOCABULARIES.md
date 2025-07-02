@@ -124,7 +124,7 @@ To enable Discogs authorities (not supported out-of-the-box):
 3. You will need to update or patch the gem to support Personal Access Token authentication or the current OAuth flow.
 4. If you implement the necessary changes, uncomment the Discogs authorities in `app/helpers/hyrax/form_helper_behavior.rb` **and ensure your account settings allow users to set their Discogs Personal Access Token or credentials.**
 
-**Note**: Authority names use the slash format consistent with Questioning Authority documentation. These match exactly with the configured mappings in the application.
+**Note**: Authority names use the slash format consistent with [Questioning Authority documentation](https://github.com/samvera/questioning_authority/wiki). These match exactly with the configured mappings in the application.
 
 ### Usage in Profile YAML
 

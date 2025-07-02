@@ -38,6 +38,9 @@ Local vocabularies are stored as YAML files in `config/authorities/` and provide
 - `education_levels` - Educational levels (K-12, undergraduate, etc.)
 - `learning_resource_types` - Types of educational resources
 - `oer_types` - Open Educational Resource types
+- `licenses` - Creative Commons and other license options for the work
+- `resource_types` - Types of resources, such as "Article" or "Image"
+- `rights_statements` - Rights statements indicating the copyright status of the work
 
 ### Usage in Profile YAML
 
@@ -139,6 +142,16 @@ Discogs music database authorities are available with proper setup:
 - Artist and label authorities (not supported by current QA gem version)
 - OAuth Consumer Key/Secret authentication (deprecated for new apps)
 
+### The `based_near` Property (Location)
+
+The `based_near` property has special handling in Hyrax. It must be included in your metadata profile to appear on forms, but its controlled vocabulary behavior is hardcoded in Hyrax to use GeoNames via a specific view partial (`app/views/records/edit_fields/_based_near.html.erb`).
+
+This means:
+
+- You should include `based_near` in your profile YAML to make it appear on the form.
+- The field will always render with autocomplete functionality using the **GeoNames** authority, regardless of the `sources` configuration in the profile. You can set `sources: ["null"]`.
+- For the autocomplete to work, you must set up GeoNames integration as described in the next section.
+
 ### GeoNames (Requires Setup)
 
 GeoNames geographical database integration requires a free username:
@@ -214,7 +227,8 @@ properties:
       primary: false
     multi_value: true
 
-  # Geographic names with autocomplete
+  # Geographic names with autocomplete.
+  # The `based_near` field has special handling in Hyrax. See the note above.
   based_near:
     available_on:
       class:
@@ -222,7 +236,7 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - geonames
+        - "null"
     display_label:
       default: Location
     multi_value: true

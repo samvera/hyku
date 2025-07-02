@@ -8,7 +8,10 @@ module Hyrax
         'discipline' => Hyrax::DisciplineService,
         'education_levels' => Hyrax::EducationLevelsService,
         'learning_resource_types' => Hyrax::LearningResourceTypesService,
-        'oer_types' => Hyrax::OerTypesService
+        'oer_types' => Hyrax::OerTypesService,
+        'licenses' => Hyrax::LicenseService,
+        'resource_types' => Hyrax::ResourceTypesService,
+        'rights_statements' => Hyrax::RightsStatementService
       }
       
       service_mapping[source_name]
@@ -109,12 +112,14 @@ module Hyrax
       end
 
       # Check if it's a local service first
-      service = controlled_vocabulary_service_for(source)
-      if service
+      service_lookup = controlled_vocabulary_service_for(source)
+      if service_lookup
         begin
+          service = service_lookup.is_a?(Class) ? service_lookup.new : service_lookup
           return {
             type: 'select',
-            options: service.select_all_options
+            options: service.select_all_options,
+            service: service
           }
         rescue => e
           Rails.logger.warn "Failed to load controlled vocabulary for #{source}: #{e.message}"

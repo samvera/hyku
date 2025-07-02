@@ -45,6 +45,7 @@ module AccountSettings
     setting :geonames_username, type: 'string', default: ''
     # Discogs credentials
     # discogs_key and discogs_secret are deprecated in favor of discogs_user_token
+    setting :enable_discogs, type: 'boolean', default: false
     setting :discogs_key, type: 'string', disabled: true
     setting :discogs_secret, type: 'string', disabled: true
     setting :discogs_user_token, type: 'string', private: true
@@ -214,13 +215,15 @@ module AccountSettings
       config.geonames_username = geonames_username
       config.uploader[:maxFileSize] = file_size_limit.to_i
       # Configure Discogs API credentials for Questioning Authority
-      if discogs_user_token.present?
-        # Use Personal Access Token (simpler)
-        Qa::Authorities::Discogs::GenericAuthority.discogs_user_token = discogs_user_token
-      elsif discogs_key.present? && discogs_secret.present?
-        # Fall back to OAuth if user token not available
-        Qa::Authorities::Discogs::GenericAuthority.discogs_key = discogs_key
-        Qa::Authorities::Discogs::GenericAuthority.discogs_secret = discogs_secret
+      if enable_discogs
+        if discogs_user_token.present?
+          # Use Personal Access Token (simpler)
+          Qa::Authorities::Discogs::GenericAuthority.discogs_user_token = discogs_user_token
+        elsif discogs_key.present? && discogs_secret.present?
+          # Fall back to OAuth if user token not available
+          Qa::Authorities::Discogs::GenericAuthority.discogs_key = discogs_key
+          Qa::Authorities::Discogs::GenericAuthority.discogs_secret = discogs_secret
+        end
       end
       configure_hyrax_analytics_settings(config)
     end

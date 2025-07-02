@@ -70,6 +70,25 @@ Remote vocabularies query external services through the Questioning Authority ge
 
 **Note**: Authority names use the slash format consistent with Questioning Authority documentation. These match exactly with the configured mappings in the application.
 
+### MeSH (Requires Setup)
+
+> **Note:**
+> Using the MeSH controlled vocabulary requires a one-time setup by a developer to download and import the data. The MeSH vocabulary is not queried live from an external source; instead, it is loaded into the application's database from a data file.
+
+To set up the MeSH vocabulary:
+
+1.  **Download the MeSH data file.** The required file can be obtained from the [National Library of Medicine (NLM)](https://www.nlm.nih.gov/databases/download/mesh.html). You will need to download one of the ASCII (`.bin`) or XML (`.xml`) formats and convert it to a plain text file where each line is a single term. For example, if you download `d2023.bin`, you may need to process it to extract just the MeSH Headings (`MH` fields).
+
+2.  **Run the import Rake task.** Place the processed text file in a location accessible to your application. Then, from your application's root directory, run the following command, replacing `path/to/mesh.txt` with the actual path to your file:
+
+    ```bash
+    RAILS_ENV='production' MESH_FILE=path/to/mesh.txt bundle exec rake qa:mesh:import
+    ```
+
+3.  **Restart the application.** After the import is complete, restart your Hyku application for the MeSH vocabulary to be available.
+
+Once set up, you can use `mesh` as a source in your metadata profiles, and it will provide an autocomplete search against the imported terms.
+
 ### Discogs (Requires Setup)
 
 > **Note:**  

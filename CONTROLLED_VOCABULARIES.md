@@ -67,6 +67,23 @@ Remote vocabularies query external services through the Questioning Authority ge
 
 ### Available Remote Vocabularies
 
+- `loc/subjects` - Library of Congress Subject Headings
+- `loc/names` - Library of Congress Name Authority File
+- `loc/genre_forms` - Library of Congress Genre/Form Terms
+- `loc/countries` - Library of Congress Countries
+- `getty/aat` - Getty Art & Architecture Thesaurus
+- `getty/tgn` - Getty Thesaurus of Geographic Names
+- `getty/ulan` - Getty Union List of Artist Names
+- `geonames` - GeoNames geographical database
+- `fast` - OCLC FAST (Faceted Application of Subject Terminology) – topical subjects
+- `fast/all` - OCLC FAST – all subjects
+- `fast/personal` - OCLC FAST – personal names
+- `fast/corporate` - OCLC FAST – corporate names
+- `fast/geographic` - OCLC FAST – geographic names
+- `mesh` - Medical Subject Headings (MeSH)
+- `discogs` - All Discogs types
+- `discogs/release` - Music releases
+- `discogs/master` - Master releases
 
 **Note**: Authority names use the slash format consistent with Questioning Authority documentation. These match exactly with the configured mappings in the application.
 

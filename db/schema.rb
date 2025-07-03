@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_07_01_163138) do
+ActiveRecord::Schema.define(version: 2025_07_03_165813) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -232,6 +232,17 @@ ActiveRecord::Schema.define(version: 2025_07_01_163138) do
     t.string "external_key"
     t.integer "site_id"
     t.index ["site_id"], name: "index_content_blocks_on_site_id"
+  end
+
+  create_table "controlled_vocabularies", force: :cascade do |t|
+    t.string "name"
+    t.string "vocabulary_type"
+    t.string "service_class"
+    t.jsonb "configuration"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_controlled_vocabularies_on_name", unique: true
+    t.index ["vocabulary_type"], name: "index_controlled_vocabularies_on_vocabulary_type"
   end
 
   create_table "curation_concerns_operations", id: :serial, force: :cascade do |t|

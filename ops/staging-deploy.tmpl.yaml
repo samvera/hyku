@@ -219,9 +219,10 @@ fcrepo:
 postgresql:
   enabled: false
 redis:
-  cluster:
-    enabled: false
-  password: staging
+  enabled: true
+  architecture: standalone
+  auth:
+    password: staging
 solr:
   enabled: false
 

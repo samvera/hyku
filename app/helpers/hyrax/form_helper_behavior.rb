@@ -3,11 +3,13 @@
 module Hyrax
   module FormHelperBehavior
     def controlled_vocabulary_service_for(source_name)
-      Hyrax::ControlledVocabularies::SERVICES[source_name]&.safe_constantize
+      vocab = ControlledVocabulary.find_by(name: source_name, vocabulary_type: 'local')
+      vocab&.service_class&.safe_constantize
     end
 
     def remote_authority_config_for(source_name)
-      Hyrax::ControlledVocabularies::REMOTE_AUTHORITIES[source_name]
+      vocab = ControlledVocabulary.find_by(name: source_name, vocabulary_type: 'remote')
+      vocab&.configuration&.with_indifferent_access
     end
 
     def controlled_vocabulary_options_for(property_name, _record_class)

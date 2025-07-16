@@ -1,0 +1,83 @@
+# frozen_string_literal: true
+
+RSpec.describe Hyrax::FlexibleSchemaValidatorService do
+  subject(:service) { Hyrax::FlexibleSchemaValidatorService.new(profile:) }
+  let(:profile) { YAML.safe_load_file(yaml) }
+  let(:yaml) { Rails.root.join('spec', 'fixtures', 'files', 'm3_profile.yaml').to_s }
+
+  describe '#validate' do
+    context 'with a valid schema' do
+      before { service.validate! }
+
+      it 'does not have any errors' do
+        expect(service.errors).to be_empty
+      end
+    end
+
+    context 'with an invalid schema' do
+      context 'when it does not have the required classes' do
+        before do
+          service.required_classes.each do |klass|
+            profile['classes'].delete(klass)
+          end
+          service.validate!
+        end
+
+        it 'is invalid' do
+          expect(service.errors.first).to eq "Missing required classes: #{service.required_classes.join(', ')}."
+        end
+      end
+
+      context 'when it has invalid classes' do
+        before do
+          profile['classes']['InvalidWorkType'] = { 'display_label' => 'Invalid Work Type' }
+          profile['properties']['title']['available_on']['class'] = ['AnotherInvalidWorkType']
+          service.validate!
+        end
+
+        it 'is invalid' do
+          expect(service.errors.first).to eq "Invalid classes: InvalidWorkType, AnotherInvalidWorkType."
+        end
+      end
+
+      context 'when title is not multi_value' do
+        before do
+          profile['properties']['title']['multi_value'] = false
+          service.validate!
+        end
+
+        it 'is invalid' do
+          expect(service.errors.first).to eq 'Title must be multi value.'
+        end
+      end
+
+      context 'when a property is missing an available_on' do
+        before do
+          profile['properties']['title']['available_on']['class'] = nil
+          profile['properties']['creator'].delete('available_on')
+          service.validate!
+        end
+
+        it 'is invalid' do
+          expect(service.errors.size).to eq 2
+          expect(service.errors.first).to include('Data pointer: /properties/title/available_on/class')
+          expect(service.errors.last).to include('Data pointer: /properties/creator')
+        end
+      end
+
+      context 'when a property is missing a range' do
+        before do
+          profile['properties']['title']['range'] = nil
+          profile['properties']['creator'].delete('range')
+          service.validate!
+        end
+
+        it 'is invalid' do
+          expect(service.errors.size).to eq 2
+          expect(service.errors.first).to include('Data pointer: /properties/title/range')
+          expect(service.errors.last).to include('Data pointer: /properties/creator')
+        end
+      end
+    end
+  end
+end

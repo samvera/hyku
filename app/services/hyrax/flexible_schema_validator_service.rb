@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'json_schemer'
+require_relative 'core_metadata_validator'
 
 module Hyrax
   class FlexibleSchemaValidatorService
@@ -25,7 +26,7 @@ module Hyrax
       validate_class_availability
       validate_schema
       validate_label_prop
-      validate_core_metadata_properties
+      CoreMetadataValidator.new(profile: profile, errors: @errors).validate!
     end
 
     def default_schema
@@ -90,52 +91,6 @@ module Hyrax
       return if available_on_classes&.include?('Hyrax::FileSet')
 
       @errors << "Label must be available on Hyrax::FileSet."
-    end
-
-    def validate_core_metadata_properties
-      core_metadata['attributes'].each do |property, config|
-        next unless validate_property_exists(property)
-
-        validate_property_multi_value(property, config)
-        validate_property_indexing(property, config)
-        validate_property_predicate(property, config)
-      end
-    end
-
-    def core_metadata
-      @core_metadata ||= YAML.safe_load(File.open(Hyrax::Engine.root.join('config', 'metadata', 'core_metadata.yaml'))).with_indifferent_access
-    end
-
-    def validate_property_exists(property)
-      return true if profile['properties'][property].present?
-
-      @errors << "Missing required property: #{property}."
-      false
-    end
-
-    def validate_property_multi_value(property, config)
-      return unless config.key?('multiple')
-      return if profile.dig('properties', property, 'multi_value') == config['multiple']
-
-      @errors << "Property '#{property}' must have multi_value set to #{config['multiple']}."
-    end
-
-    def validate_property_indexing(property, config)
-      return unless config.key?('index_keys')
-
-      profile_indexing = profile.dig('properties', property, 'indexing') || []
-      missing_keys = config['index_keys'] - profile_indexing
-
-      return if missing_keys.empty?
-
-      @errors << "Property '#{property}' is missing required indexing: #{missing_keys.join(', ')}."
-    end
-
-    def validate_property_predicate(property, config)
-      return unless config.key?('predicate')
-      return if profile.dig('properties', property, 'property_uri') == config['predicate']
-
-      @errors << "Property '#{property}' must have property_uri set to #{config['predicate']}."
     end
   end
 end

@@ -102,52 +102,6 @@ RSpec.describe Hyrax::FlexibleSchemaValidatorService do
           end
         end
       end
-
-      context 'when core metadata properties are misconfigured' do
-        context 'when a required property is missing' do
-          before do
-            profile['properties'].delete('depositor')
-            service.validate!
-          end
-
-          it 'is invalid' do
-            expect(service.errors).to include('Missing required property: depositor.')
-          end
-        end
-
-        context 'when multi_value is incorrect' do
-          before do
-            profile['properties']['title']['multi_value'] = false
-            service.validate!
-          end
-
-          it 'is invalid' do
-            expect(service.errors).to include("Property 'title' must have multi_value set to true.")
-          end
-        end
-
-        context 'when indexing is missing keys' do
-          before do
-            profile['properties']['depositor']['indexing'] = ['depositor_tesim']
-            service.validate!
-          end
-
-          it 'is invalid' do
-            expect(service.errors).to include("Property 'depositor' is missing required indexing: depositor_ssim.")
-          end
-        end
-
-        context 'when predicate (property_uri) is incorrect' do
-          before do
-            profile['properties']['title']['property_uri'] = 'http://example.com/wrong-predicate'
-            service.validate!
-          end
-
-          it 'is invalid' do
-            expect(service.errors).to include("Property 'title' must have property_uri set to http://purl.org/dc/terms/title.")
-          end
-        end
-      end
     end
   end
 end

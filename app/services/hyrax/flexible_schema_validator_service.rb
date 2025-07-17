@@ -22,7 +22,7 @@ module Hyrax
 
     def validate!
       validate_required_classes
-      validate_classes
+      validate_class_availability
       validate_schema
       validate_label_prop
       validate_core_metadata_properties
@@ -43,7 +43,9 @@ module Hyrax
         pointer = error['data_pointer']
         type = error['type']
 
-        if type == 'required'
+        if pointer.end_with?('/available_on') && error['data'].nil? && type == 'object'
+          @errors << "Schema error at `#{pointer}`: `available_on` cannot be empty and must have a `class` or `context` sub-property."
+        elsif type == 'required'
           missing_keys = error.dig('details', 'missing_keys')&.join("', '")
           @errors << "Schema error at `#{pointer}`: Missing required properties: '#{missing_keys}'."
         else
@@ -59,7 +61,7 @@ module Hyrax
       @errors << "Missing required classes: #{missing_classes.join(', ')}."
     end
 
-    def validate_classes
+    def validate_class_availability
       profile_classes = profile['classes'].keys
       properties = profile['properties']
       available_on_classes = properties.keys.flat_map do |key|

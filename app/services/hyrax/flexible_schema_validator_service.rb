@@ -25,6 +25,7 @@ module Hyrax
       validate_classes
       validate_title_multi_value
       validate_schema
+      validate_label_prop
     end
 
     def default_schema
@@ -78,6 +79,19 @@ module Hyrax
       return if profile['properties']['title']['multi_value'] == true
 
       @errors << "Title must be multi value."
+    end
+
+    def validate_label_prop
+      label_prop = profile.dig('properties', 'label')
+      unless label_prop
+        @errors << "A `label` property is required."
+        return
+      end
+
+      available_on_classes = label_prop.dig('available_on', 'class')
+      return if available_on_classes&.include?('Hyrax::FileSet')
+
+      @errors << "Label must be available on Hyrax::FileSet."
     end
   end
 end

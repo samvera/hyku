@@ -78,6 +78,41 @@ RSpec.describe Hyrax::FlexibleSchemaValidatorService do
           expect(service.errors.last).to include('Data pointer: /properties/creator')
         end
       end
+
+      context 'when the label property is misconfigured' do
+        context 'when it is missing' do
+          before do
+            profile['properties'].delete('label')
+            service.validate!
+          end
+
+          it 'is invalid' do
+            expect(service.errors.first).to eq 'A `label` property is required.'
+          end
+        end
+
+        context 'when it is not available on Hyrax::FileSet' do
+          before do
+            profile['properties']['label']['available_on']['class'] = ['GenericWorkResource']
+            service.validate!
+          end
+
+          it 'is invalid' do
+            expect(service.errors.first).to eq 'Label must be available on Hyrax::FileSet.'
+          end
+        end
+
+        context 'when it is available on Hyrax::FileSet and other classes' do
+          before do
+            profile['properties']['label']['available_on']['class'] = ['Hyrax::FileSet', 'GenericWorkResource']
+            service.validate!
+          end
+
+          it 'is valid' do
+            expect(service.errors).to be_empty
+          end
+        end
+      end
     end
   end
 end

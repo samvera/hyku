@@ -23,9 +23,9 @@ module Hyrax
     def validate!
       validate_required_classes
       validate_classes
-      validate_title_multi_value
       validate_schema
       validate_label_prop
+      validate_core_metadata_properties
     end
 
     def default_schema
@@ -40,13 +40,15 @@ module Hyrax
 
     def validate_schema
       schemer.validate(profile).to_a&.each do |error|
-        @errors << <<~ERROR.strip
-          Data: #{error['data']}
-          Data pointer: #{error['data_pointer']}
-          Schema: #{error['schema']}
-          Schema pointer: #{error['schema_pointer']}
-          Type: #{error['type']}
-        ERROR
+        pointer = error['data_pointer']
+        type = error['type']
+
+        if type == 'required'
+          missing_keys = error.dig('details', 'missing_keys')&.join("', '")
+          @errors << "Schema error at `#{pointer}`: Missing required properties: '#{missing_keys}'."
+        else
+          @errors << "Schema error at `#{pointer}`: Invalid value `#{error['data'].inspect}` for type `#{type}`."
+        end
       end
     end
 
@@ -75,12 +77,6 @@ module Hyrax
       @errors << "Invalid classes: #{invalid_classes.join(', ')}."
     end
 
-    def validate_title_multi_value
-      return if profile['properties']['title']['multi_value'] == true
-
-      @errors << "Title must be multi value."
-    end
-
     def validate_label_prop
       label_prop = profile.dig('properties', 'label')
       unless label_prop
@@ -92,6 +88,52 @@ module Hyrax
       return if available_on_classes&.include?('Hyrax::FileSet')
 
       @errors << "Label must be available on Hyrax::FileSet."
+    end
+
+    def validate_core_metadata_properties
+      core_metadata['attributes'].each do |property, config|
+        next unless validate_property_exists(property)
+
+        validate_property_multi_value(property, config)
+        validate_property_indexing(property, config)
+        validate_property_predicate(property, config)
+      end
+    end
+
+    def core_metadata
+      @core_metadata ||= YAML.safe_load(File.open(Hyrax::Engine.root.join('config', 'metadata', 'core_metadata.yaml'))).with_indifferent_access
+    end
+
+    def validate_property_exists(property)
+      return true if profile['properties'][property].present?
+
+      @errors << "Missing required property: #{property}."
+      false
+    end
+
+    def validate_property_multi_value(property, config)
+      return unless config.key?('multiple')
+      return if profile.dig('properties', property, 'multi_value') == config['multiple']
+
+      @errors << "Property '#{property}' must have multi_value set to #{config['multiple']}."
+    end
+
+    def validate_property_indexing(property, config)
+      return unless config.key?('index_keys')
+
+      profile_indexing = profile.dig('properties', property, 'indexing') || []
+      missing_keys = config['index_keys'] - profile_indexing
+
+      return if missing_keys.empty?
+
+      @errors << "Property '#{property}' is missing required indexing: #{missing_keys.join(', ')}."
+    end
+
+    def validate_property_predicate(property, config)
+      return unless config.key?('predicate')
+      return if profile.dig('properties', property, 'property_uri') == config['predicate']
+
+      @errors << "Property '#{property}' must have property_uri set to #{config['predicate']}."
     end
   end
 end

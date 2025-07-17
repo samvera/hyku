@@ -270,14 +270,11 @@
           },
           "indexing": {
             "type": "array",
-            "description": "a list of Solr dynamic field names following the pattern property_name + suffix",
             "items": {
               "type": "string",
-              "pattern": "^[a-z_]+_(tesi|tesim|teim|ssi|sim|ssm|bsi|isi|dts|dtsi|ti|si|ss|is|bs|dt)$"
+              "pattern": "^[a-z_]+_(tesi|tesim|teim|ssi|sim|ssm|bsi|isi|dts|dtsi|ti|si|ss|is|bs|dt|ssim)$"
             },
-            "examples": [
-              ["creator_tesim", "title_sim", "date_created_dtsi"]
-            ]
+            "description": "Solr index key to map to."
           },
           "definition": {
             "type": "object",

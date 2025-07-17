@@ -127,6 +127,7 @@ properties:
       default: Depositor
     indexing:
       - "depositor_tesim"
+      - "depositor_ssim"
     property_uri: http://id.loc.gov/vocabulary/relators/dpt
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:

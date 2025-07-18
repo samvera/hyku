@@ -1,0 +1,99 @@
+# frozen_string_literal: true
+
+require 'json_schemer'
+require_relative 'core_metadata_validator'
+
+module Hyrax
+  class FlexibleSchemaValidatorService
+    DEFAULT_SCHEMA = Rails.root.join('lib', 'flexible', 'm3_json_schema.json')
+    REQUIRED_CLASSES = [
+      Hyrax.config.admin_set_model,
+      Hyrax.config.collection_model,
+      Hyrax.config.file_set_model
+    ].map { |str| str.gsub(/^::/, '') }
+
+    attr_reader :profile, :schema, :schemer, :errors
+
+    def initialize(profile:, schema: default_schema)
+      @profile = profile
+      @schema = schema
+      @schemer = JSONSchemer.schema(schema)
+      @errors = []
+    end
+
+    def validate!
+      validate_required_classes
+      validate_class_availability
+      validate_schema
+      validate_label_prop
+      CoreMetadataValidator.new(profile: profile, errors: @errors).validate!
+    end
+
+    def default_schema
+      DEFAULT_SCHEMA
+    end
+
+    def required_classes
+      REQUIRED_CLASSES
+    end
+
+    private
+
+    def validate_schema
+      schemer.validate(profile).to_a&.each do |error|
+        pointer = error['data_pointer']
+        type = error['type']
+
+        if pointer.end_with?('/available_on') && error['data'].nil? && type == 'object'
+          @errors << "Schema error at `#{pointer}`: `available_on` cannot be empty and must have a `class` or `context` sub-property."
+        elsif type == 'required'
+          missing_keys = error.dig('details', 'missing_keys')&.join("', '")
+          @errors << "Schema error at `#{pointer}`: Missing required properties: '#{missing_keys}'."
+        else
+          @errors << "Schema error at `#{pointer}`: Invalid value `#{error['data'].inspect}` for type `#{type}`."
+        end
+      end
+    end
+
+    def validate_required_classes
+      missing_classes = required_classes - profile['classes'].keys
+      return if missing_classes.empty?
+
+      @errors << "Missing required classes: #{missing_classes.join(', ')}."
+    end
+
+    def validate_class_availability
+      profile_classes = profile['classes'].keys
+      properties = profile['properties']
+      available_on_classes = properties.keys.flat_map do |key|
+        properties[key].fetch('available_on', nil)&.fetch('class', nil)
+      end.compact.uniq
+
+      combined_classes = profile_classes + available_on_classes
+      unique_classes = combined_classes.uniq
+      filtered_classes = unique_classes - required_classes
+      classes = filtered_classes.map { |klass| klass.gsub(/(?<=.)Resource$/, '') }
+
+      invalid_classes = classes.filter_map do |klass|
+        klass unless Hyrax.config.registered_curation_concern_types.include?(klass)
+      end
+
+      return if invalid_classes.empty?
+
+      @errors << "Invalid classes: #{invalid_classes.join(', ')}."
+    end
+
+    def validate_label_prop
+      label_prop = profile.dig('properties', 'label')
+      unless label_prop
+        @errors << "A `label` property is required."
+        return
+      end
+
+      available_on_classes = label_prop.dig('available_on', 'class')
+      return if available_on_classes&.include?('Hyrax::FileSet')
+
+      @errors << "Label must be available on Hyrax::FileSet."
+    end
+  end
+end

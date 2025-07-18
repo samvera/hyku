@@ -4,6 +4,7 @@ x-app: &app
     target: hyku-web
     args:
       BUILDKIT_INLINE_CACHE: 1
+      APP_NAME: hyku
     cache_from:
       - ghcr.io/samvera/hyku/base:latest
       - ghcr.io/samvera/hyku/web:latest

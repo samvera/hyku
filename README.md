@@ -1,11 +1,12 @@
 # Hyku, the Hydra-in-a-Box Repository Application
 
-Code:
-[![Build Status](https://circleci.com/gh/samvera/hyku.svg?style=svg)](https://circleci.com/gh/samvera/hyku)
-[![Coverage Status](https://coveralls.io/repos/samvera/hyku/badge.svg?branch=master&service=github)](https://coveralls.io/github/samvera/hyku?branch=master)
-[![Stories in Ready](https://img.shields.io/waffle/label/samvera/hyku/ready.svg)](https://waffle.io/samvera/hyku)
+## Code
 
-Docs:
+[![GitHub CI](https://github.com/samvera/hyku/actions/workflows/build-test-lint.yaml/badge.svg)](https://github.com/samvera/hyku/actions/workflows/build-test-lint.yaml)
+[![codecov](https://codecov.io/gh/samvera/hyku/branch/main/graph/badge.svg)](https://codecov.io/gh/samvera/hyku)
+
+
+## Docs
 [![Development Docs](http://img.shields.io/badge/DOCUMENTATION-wiki-blue.svg)](https://github.com/samvera/hyku/wiki)
 [![Contribution Guidelines](http://img.shields.io/badge/CONTRIBUTING-Guidelines-blue.svg)](./CONTRIBUTING.md)
 [![Apache 2.0 License](http://img.shields.io/badge/APACHE2-license-blue.svg)](./LICENSE)

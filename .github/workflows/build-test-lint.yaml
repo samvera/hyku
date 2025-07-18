@@ -134,3 +134,33 @@ jobs:
     if: always()
     needs: [test, lint]
     uses: notch8/actions/.github/workflows/report.yaml@v0.0.23
+
+  merge-coverage:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Download all coverage artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: coverage_artifacts
+
+      - name: Merge SimpleCov coverage results
+        run: |
+          gem install simplecov
+          mkdir merged
+          find coverage_artifacts -name .resultset.json -exec cp {} merged/ \;
+          ruby -e "
+            require 'simplecov';
+            SimpleCov.collate Dir['merged/*.json'], 'rails' do
+              enable_coverage :branch
+            end
+          "
+
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          # token: ${{ secrets.CODECOV_TOKEN }}  # Omit if public
+          files: coverage/index.json

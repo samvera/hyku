@@ -117,7 +117,7 @@ jobs:
 
   lint:
     needs: push
-    uses: notch8/actions/.github/workflows/lint.yaml@v0.0.23
+    uses: notch8/actions/.github/workflows/lint.yaml@add-codecov
     with:
       webTarget: hyku-web
       workerTarget: hyku-worker
@@ -125,15 +125,10 @@ jobs:
 
   test:
     needs: push
-    uses: notch8/actions/.github/workflows/test.yaml@v0.0.23
+    uses: notch8/actions/.github/workflows/test.yaml@add-codecov
     with:
       confdir: "/app/samvera/hyrax-webapp/solr/conf"
       rspec_cmd: "gem install semaphore_test_boosters && bundle && rspec_booster --job $CI_NODE_INDEX/$CI_NODE_TOTAL"
-
-  reports:
-    if: always()
-    needs: [test, lint]
-    uses: notch8/actions/.github/workflows/report.yaml@v0.0.23
 
   merge-coverage:
     needs: test
@@ -162,5 +157,10 @@ jobs:
       - name: Upload to Codecov
         uses: codecov/codecov-action@v4
         with:
-          # token: ${{ secrets.CODECOV_TOKEN }}  # Omit if public
           files: coverage/index.json
+          fail_ci_if_error: true
+
+  reports:
+    if: always()
+    needs: [test, lint, merge-coverage]
+    uses: notch8/actions/.github/workflows/report.yaml@add-codecov

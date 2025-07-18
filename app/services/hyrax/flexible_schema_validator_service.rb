@@ -69,7 +69,10 @@ module Hyrax
         properties[key].fetch('available_on', nil)&.fetch('class', nil)
       end.compact.uniq
 
-      classes = ((profile_classes + available_on_classes).uniq - required_classes).map { |klass| klass.gsub(/(?<=.)Resource$/, '') }
+      combined_classes = profile_classes + available_on_classes
+      unique_classes = combined_classes.uniq
+      filtered_classes = unique_classes - required_classes
+      classes = filtered_classes.map { |klass| klass.gsub(/(?<=.)Resource$/, '') }
 
       invalid_classes = classes.filter_map do |klass|
         klass unless Hyrax.config.registered_curation_concern_types.include?(klass)

@@ -29,7 +29,7 @@ module Hyrax
     attr_reader :profile, :errors
 
     def core_metadata
-      @core_metadata ||= YAML.safe_load(File.open(Hyrax::Engine.root.join('config', 'metadata', 'core_metadata.yaml'))).with_indifferent_access
+      @core_metadata ||= YAML.safe_load(File.read(Hyrax::Engine.root.join('config', 'metadata', 'core_metadata.yaml'))).with_indifferent_access
     end
 
     def validate_property_exists(property)

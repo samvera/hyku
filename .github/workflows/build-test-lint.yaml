@@ -147,11 +147,15 @@ jobs:
       - name: Download all coverage artifacts
         uses: actions/download-artifact@v4
         with:
-          pattern: simplecov-*
+          pattern: coverage-*
           path: merged
 
       - name: Show downloaded coverage files
-        run: ls -R merged
+        run: |
+          echo "Downloaded artifacts:"
+          find merged -type f 2>/dev/null || echo "No files found"
+          echo "Directory structure:"
+          ls -la merged/ 2>/dev/null || echo "No merged directory"
 
       - name: Install Ruby + dependencies
         uses: ruby/setup-ruby@v1
@@ -159,8 +163,23 @@ jobs:
           ruby-version: '3.2'
           bundler-cache: true
 
+      - name: Setup coverage directory
+        run: |
+          mkdir -p tmp/coverage
+          # Move downloaded coverage files to the expected location
+          find merged -name "*.json" -exec cp {} tmp/coverage/ \;
+          echo "Coverage files in tmp/coverage:"
+          find tmp/coverage -type f 2>/dev/null || echo "No coverage files found"
+
       - name: Merge coverage results via Rake
         run: bundle exec rake coverage:report
+
+      - name: Debug coverage output
+        run: |
+          echo "Final coverage directory contents:"
+          find tmp/coverage -type f 2>/dev/null || echo "No coverage files found"
+          echo "Coverage HTML report:"
+          ls -la tmp/coverage/ 2>/dev/null || echo "No coverage directory"
 
       - name: Upload to Codecov
         uses: codecov/codecov-action@v4

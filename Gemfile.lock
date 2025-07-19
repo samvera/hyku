@@ -1617,6 +1617,7 @@ DEPENDENCIES
   sidekiq (< 7.0)
   simplecov
   simplecov-json
+  simplecov_json_formatter
   solargraph
   solr_wrapper (~> 2.0)
   spring (~> 1.7)

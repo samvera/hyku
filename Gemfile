@@ -113,6 +113,7 @@ gem 'shoulda-matchers', '~> 4.0', group: %i[test]
 gem 'sidekiq', "< 7.0" # sidekiq 7 requires upgrade to redis 6
 gem 'simplecov', require: false, group: %i[development test]
 gem 'simplecov-json', require: false, group: %i[development test]
+gem 'simplecov_json_formatter', require: false, group: %i[development test]
 gem 'solargraph', group: %i[development]
 gem 'solr_wrapper', '~> 2.0', group: %i[development test]
 gem 'spring', '~> 1.7', group: %i[development]

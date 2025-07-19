@@ -5,7 +5,19 @@ namespace :coverage do
     require 'simplecov'
     require 'simplecov_json_formatter'
 
-    SimpleCov.collate Dir["tmp/coverage/**/.resultset.json"] do
+    # Find all coverage result files
+    coverage_files = Dir["tmp/coverage/**/.resultset.json"]
+    
+    if coverage_files.empty?
+      puts "No coverage files found in tmp/coverage/**/.resultset.json"
+      puts "Available files in tmp/coverage:"
+      system("find tmp/coverage -type f 2>/dev/null || echo 'No tmp/coverage directory found'")
+      exit 1
+    end
+
+    puts "Found coverage files: #{coverage_files.join(', ')}"
+
+    SimpleCov.collate coverage_files do
       formatter SimpleCov::Formatter::MultiFormatter.new([
                                                            SimpleCov::Formatter::JSONFormatter,
                                                            SimpleCov::Formatter::HTMLFormatter

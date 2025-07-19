@@ -3,7 +3,9 @@
 ## Code
 
 [![GitHub CI](https://github.com/samvera/hyku/actions/workflows/build-test-lint.yaml/badge.svg)](https://github.com/samvera/hyku/actions/workflows/build-test-lint.yaml)
-[![codecov](https://codecov.io/gh/samvera/hyku/branch/main/graph/badge.svg)](https://codecov.io/gh/samvera/hyku)
+[![codecov](https://codecov.io/gh/samvera/hyku/branch/add-codecov/graph/badge.svg)](https://codecov.io/gh/samvera/hyku)
+
+Main: [![codecov](https://codecov.io/gh/samvera/hyku/branch/main/graph/badge.svg)](https://codecov.io/gh/samvera/hyku)
 
 
 ## Docs

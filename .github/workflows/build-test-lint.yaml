@@ -131,6 +131,7 @@ jobs:
       rspec_cmd: "gem install semaphore_test_boosters && bundle && rspec_booster --job $CI_NODE_INDEX/$CI_NODE_TOTAL"
 
   merge-coverage:
+    if: always()
     needs: test
     runs-on: ubuntu-latest
     steps:
@@ -146,15 +147,21 @@ jobs:
         run: |
           mkdir merged
           find coverage_artifacts -name .resultset.json -exec cp {} merged/ \;
-          ruby -e "
-            require 'simplecov';
-            SimpleCov.collate Dir['merged/*.json'], 'rails' do
-              enable_coverage :branch
-            end
-          "
+          if [ "$(ls -A merged)" ]; then
+            ruby -e "
+              require 'simplecov';
+              SimpleCov.collate Dir['merged/*.json'], 'rails' do
+                enable_coverage :branch
+              end
+            "
+          else
+            echo '⚠️ No coverage results found to merge.'
+          fi
 
-      - name: Show merged coverage index
-        run: ls -lh coverage/index.json && head coverage/index.json
+      - name: Show merged coverage report summary
+        run: |
+          echo "Coverage report files:"
+          find coverage -type f
 
   reports:
     if: always()

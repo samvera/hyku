@@ -137,41 +137,44 @@ jobs:
       rspec_cmd: "gem install semaphore_test_boosters && bundle && rspec_booster --job $CI_NODE_INDEX/$CI_NODE_TOTAL"
 
   merge-coverage:
-    if: always()
     needs: test
     runs-on: ubuntu-latest
+    if: always()
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout source
+        uses: actions/checkout@v4
 
       - name: Download all coverage artifacts
         uses: actions/download-artifact@v4
         with:
-          path: coverage_artifacts
+          pattern: simplecov-*
+          path: merged
 
-      - name: Merge SimpleCov coverage results
+      - name: Show downloaded coverage files
+        run: ls -R merged
+
+      - name: Install Ruby + dependencies
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2' # or your app's Ruby version
+          bundler-cache: true
+
+      - name: Merge coverage results
         run: |
-          mkdir merged
-          find coverage_artifacts -name .resultset.json -exec cp {} merged/ \;
+          mkdir -p coverage
           ruby -e "
             require 'simplecov';
-            SimpleCov.collate Dir['merged/*.json'], 'rails' do
+            SimpleCov.collate Dir['merged/**/.resultset.json'], 'rails' do
               enable_coverage :branch
             end
           "
 
-      - name: Debug merged coverage contents
-        run: |
-          echo "Coverage index.json preview:"
-          ls -lh coverage/index.json || echo "index.json missing"
-          head coverage/index.json || true
-
-      - name: Upload coverage to Codecov
+      - name: Upload to Codecov
         uses: codecov/codecov-action@v4
         with:
-          files: coverage/index.json
+          # token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
-          verbose: true
+          directory: ./coverage
 
   reports:
     if: always()

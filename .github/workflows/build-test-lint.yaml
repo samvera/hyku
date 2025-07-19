@@ -161,6 +161,7 @@ jobs:
 
       - name: Merge coverage results
         run: |
+          gem install simplecov
           mkdir -p coverage
           ruby -e "
             require 'simplecov';

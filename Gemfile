@@ -36,7 +36,6 @@ gem 'capybara', group: %i[test]
 gem 'capybara-screenshot', '~> 1.0', group: %i[test]
 gem 'carrierwave-aws', '~> 1.3', group: %i[aws test]
 gem 'cocoon'
-gem 'codecov', require: false, group: %i[development test]
 gem 'codemirror-rails'
 gem 'coffee-rails', '~> 4.2' # Use CoffeeScript for .coffee assets and views
 gem 'database_cleaner', group: %i[test]

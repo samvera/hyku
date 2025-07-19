@@ -5,7 +5,7 @@ namespace :coverage do
     require 'simplecov'
     require 'simplecov_json_formatter'
 
-    SimpleCov.collate Dir["merged/**/.resultset.json"] do
+    SimpleCov.collate Dir["tmp/coverage/**/.resultset.json"] do
       formatter SimpleCov::Formatter::MultiFormatter.new([
                                                            SimpleCov::Formatter::JSONFormatter,
                                                            SimpleCov::Formatter::HTMLFormatter

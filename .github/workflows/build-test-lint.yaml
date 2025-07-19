@@ -156,24 +156,15 @@ jobs:
       - name: Install Ruby + dependencies
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.2' # or your app's Ruby version
+          ruby-version: '3.2'
           bundler-cache: true
 
-      - name: Merge coverage results
-        run: |
-          gem install simplecov
-          mkdir -p coverage
-          ruby -e "
-            require 'simplecov';
-            SimpleCov.collate Dir['merged/**/.resultset.json'], 'rails' do
-              enable_coverage :branch
-            end
-          "
+      - name: Merge coverage results via Rake
+        run: bundle exec rake coverage:report
 
       - name: Upload to Codecov
         uses: codecov/codecov-action@v4
         with:
-          # token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
           directory: ./coverage
 

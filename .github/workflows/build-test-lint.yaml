@@ -144,7 +144,6 @@ jobs:
 
       - name: Merge SimpleCov coverage results
         run: |
-          gem install simplecov
           mkdir merged
           find coverage_artifacts -name .resultset.json -exec cp {} merged/ \;
           ruby -e "
@@ -154,17 +153,8 @@ jobs:
             end
           "
 
-      - name: Upload merged index
-        uses: actions/upload-artifact@v4
-        with:
-          name: merged-simplecov-index
-          path: coverage/index.json
-
-      - name: Upload to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          files: coverage/index.json
-          fail_ci_if_error: true
+      - name: Show merged coverage index
+        run: ls -lh coverage/index.json && head coverage/index.json
 
   reports:
     if: always()

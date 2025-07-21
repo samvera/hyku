@@ -59,6 +59,26 @@ RSpec.describe Hyrax::CoreMetadataValidator do
           expect(errors).to include("Property 'title' must have property_uri set to http://purl.org/dc/terms/title.")
         end
       end
+
+      context 'when a property is not available on all classes' do
+        before do
+          # The full list of classes for title is:
+          # - AdminSetResource
+          # - CollectionResource
+          # - Hyrax::FileSet
+          # - GenericWorkResource
+          # - ImageResource
+          # - EtdResource
+          # - OerResource
+          # Popping the last one off for this test.
+          profile['properties']['title']['available_on']['class'].pop
+          service.validate!
+        end
+
+        it 'is invalid' do
+          expect(errors).to include("Property 'title' must be available on all classes, but is missing from: OerResource.")
+        end
+      end
     end
   end
 end

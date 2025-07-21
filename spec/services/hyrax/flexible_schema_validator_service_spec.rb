@@ -48,9 +48,12 @@ RSpec.describe Hyrax::FlexibleSchemaValidatorService do
         end
 
         it 'is invalid' do
-          expect(service.errors.size).to eq 2
-          expect(service.errors.first).to eq "Schema error at `/properties/title/available_on/class`: Invalid value `nil` for type `array`."
-          expect(service.errors.last).to eq "Schema error at `/properties/creator`: Missing required properties: 'available_on'."
+          expect(service.errors).to contain_exactly(
+            "Schema error at `/properties/title/available_on/class`: Invalid value `nil` for type `array`.",
+            "Schema error at `/properties/creator`: Missing required properties: 'available_on'.",
+            "Property 'title' must be available on all classes, but is missing from: AdminSetResource, " \
+            "CollectionResource, Hyrax::FileSet, GenericWorkResource, ImageResource, EtdResource, OerResource."
+          )
         end
       end
 

@@ -21,6 +21,7 @@ module Hyrax
         validate_property_multi_value(property, config)
         validate_property_indexing(property, config)
         validate_property_predicate(property, config)
+        validate_property_available_on(property)
       end
     end
 
@@ -30,6 +31,10 @@ module Hyrax
 
     def core_metadata
       @core_metadata ||= YAML.safe_load(File.read(Hyrax::Engine.root.join('config', 'metadata', 'core_metadata.yaml'))).with_indifferent_access
+    end
+
+    def defined_classes
+      @defined_classes ||= profile['classes'].keys
     end
 
     def validate_property_exists(property)
@@ -62,6 +67,14 @@ module Hyrax
       return if profile.dig('properties', property, 'property_uri') == config['predicate']
 
       errors << "Property '#{property}' must have property_uri set to #{config['predicate']}."
+    end
+
+    def validate_property_available_on(property)
+      available_on_classes = profile.dig('properties', property, 'available_on', 'class') || []
+      missing_classes = defined_classes - available_on_classes
+
+      return if missing_classes.empty?
+      errors << "Property '#{property}' must be available on all classes, but is missing from: #{missing_classes.join(', ')}."
     end
   end
 end

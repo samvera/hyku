@@ -27,14 +27,14 @@ RSpec.describe Hyrax::CoreMetadataValidator do
         end
       end
 
-      context 'when multi_value is incorrect' do
+      context 'when data_type is incorrect' do
         before do
-          profile['properties']['title']['multi_value'] = false
+          profile['properties']['title']['data_type'] = nil
           service.validate!
         end
 
         it 'is invalid' do
-          expect(errors).to include("Property 'title' must have multi_value set to true.")
+          expect(errors).to include("Property 'title' must have data_type set to 'array'.")
         end
       end
 
@@ -77,6 +77,30 @@ RSpec.describe Hyrax::CoreMetadataValidator do
 
         it 'is invalid' do
           expect(errors).to include("Property 'title' must be available on all classes, but is missing from: OerResource.")
+        end
+      end
+
+      context 'when title is not required' do
+        context 'because `cardinality.minimum` is 0' do
+          before do
+            profile['properties']['title']['cardinality']['minimum'] = '0'
+            service.validate!
+          end
+
+          it 'is invalid' do
+            expect(errors).to include("Property 'title' must have a cardinality minimum of at least 1.")
+          end
+        end
+
+        context 'because `cardinality` is missing' do
+          before do
+            profile['properties']['title'].delete('cardinality')
+            service.validate!
+          end
+
+          it 'is invalid' do
+            expect(errors).to include("Property 'title' must have a cardinality minimum of at least 1.")
+          end
         end
       end
     end

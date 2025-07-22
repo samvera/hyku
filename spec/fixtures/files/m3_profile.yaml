@@ -46,6 +46,8 @@ properties:
         - ImageResource
         - EtdResource
         - OerResource
+    cardinality:
+      minimum: 1
     data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
@@ -83,7 +85,7 @@ properties:
         - ImageResource
         - EtdResource
         - OerResource
-    multi_value: false
+    data_type: string
     display_label:
       default: Date Modified
     property_uri: http://purl.org/dc/terms/modified
@@ -100,7 +102,7 @@ properties:
         - ImageResource
         - EtdResource
         - OerResource
-    multi_value: false
+    data_type: string
     display_label:
       default: Date Uploaded
     property_uri: http://purl.org/dc/terms/dateSubmitted
@@ -117,7 +119,7 @@ properties:
         - ImageResource
         - EtdResource
         - OerResource
-    multi_value: false
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -135,7 +137,7 @@ properties:
     available_on:
       class:
         - Hyrax::FileSet
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -157,7 +159,7 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: false
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:

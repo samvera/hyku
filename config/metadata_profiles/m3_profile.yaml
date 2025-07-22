@@ -26,6 +26,17 @@ contexts:
     display_label: Flexible Metadata Example
   special_context:
     display_label: Special Context
+mappings:
+  blacklight:
+    name: Additional Blacklight Solr Mappings
+  metatags:
+    name: Metatags
+  mods_oai_pmh:
+    name: MODS OAI PMH
+  qualified_dc_pmh:
+    name: Qualified DC OAI PMH
+  simple_dc_pmh:
+    name: Simple DC OAI PMH
 properties:
   title:
     available_on:
@@ -37,6 +48,8 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
+    cardinality:
+      minimum: 1
     data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
@@ -48,13 +61,18 @@ properties:
         transcribe the title from the source itself.
     display_label:
       default: Title
+    index_documentation: displayable, searchable
     indexing:
       - title_sim
       - title_tesim
     form:
       required: true
       primary: true
-      data_type: array
+    mappings:
+      metatags: twitter:title, og:title
+      mods_oai_pmh: mods:titleInfo/mods:title
+      qualified_dc_pmh: dcterms:title
+      simple_dc_pmh: dc:title
     property_uri: http://purl.org/dc/terms/title
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
@@ -74,7 +92,10 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: false
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
     display_label:
       default: Date Modified
     property_uri: http://purl.org/dc/terms/modified
@@ -101,7 +122,10 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: false
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
     display_label:
       default: Date Uploaded
     property_uri: http://purl.org/dc/terms/dateSubmitted
@@ -118,13 +142,17 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: false
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Depositor
+    index_documentation: searchable
     indexing:
       - depositor_tesim
       - depositor_ssim
@@ -142,13 +170,16 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Creator
+    index_documentation: displayable, searchable
     indexing:
       - creator_sim
       - creator_tesim
@@ -171,13 +202,16 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: License
+    index_documentation: displayable, searchable
     indexing:
       - license_sim
       - license_tesim
@@ -199,13 +233,16 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Abstract
+    index_documentation: displayable, searchable
     indexing:
       - abstract_sim
       - abstract_tesim
@@ -225,13 +262,16 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Access Right
+    index_documentation: displayable, searchable
     indexing:
       - access_right_sim
       - access_right_tesim
@@ -252,13 +292,16 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Alternative Title
+    index_documentation: displayable, searchable
     indexing:
       - alternative_title_sim
       - alternative_title_tesim
@@ -281,7 +324,10 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: false
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -303,13 +349,16 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Location
+    index_documentation: displayable, searchable
     indexing:
       - based_near_sim
       - based_near_tesim
@@ -331,13 +380,16 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Bibliographic Citation
+    index_documentation: displayable, searchable
     indexing:
       - bibliographic_citation_sim
       - bibliographic_citation_tesim
@@ -358,13 +410,16 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Contributor
+    index_documentation: displayable, searchable
     indexing:
       - contributor_tesim
       - contributor_sim
@@ -386,13 +441,16 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#dateTime
       sources:
         - "null"
     display_label:
       default: Date Created
+    index_documentation: displayable, searchable
     indexing:
       - date_created_sim
       - date_created_tesim
@@ -415,13 +473,16 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Description
+    index_documentation: displayable, searchable
     indexing:
       - description_sim
       - description_tesim
@@ -440,13 +501,16 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Identifier
+    index_documentation: displayable, searchable
     indexing:
       - identifier_sim
       - identifier_tesim
@@ -468,7 +532,10 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: false
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -488,13 +555,16 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Keyword
+    index_documentation: displayable, searchable
     indexing:
       - keyword_sim
       - keyword_tesim
@@ -517,13 +587,17 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: false
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Label
+    index_documentation: displayable, searchable
     indexing:
       - label_sim
       - label_tesim
@@ -542,13 +616,16 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Language
+    index_documentation: displayable, searchable
     indexing:
       - language_sim
       - language_tesim
@@ -571,13 +648,16 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Publisher
+    index_documentation: displayable, searchable
     indexing:
       - publisher_sim
       - publisher_tesim
@@ -599,13 +679,16 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Related URL
+    index_documentation: displayable, searchable
     indexing:
       - related_url_sim
       - related_url_tesim
@@ -627,7 +710,10 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: false
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -647,13 +733,16 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Resource Type
+    index_documentation: displayable, searchable
     indexing:
       - resource_type_sim
       - resource_type_tesim
@@ -676,13 +765,16 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Rights Notes
+    index_documentation: displayable, searchable
     indexing:
       - rights_notes_sim
       - rights_notes_tesim
@@ -703,13 +795,16 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Rights Statement
+    index_documentation: displayable, searchable
     indexing:
       - rights_statement_sim
       - rights_statement_tesim
@@ -732,13 +827,16 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Source
+    index_documentation: displayable, searchable
     indexing:
       - source_sim
       - source_tesim
@@ -760,13 +858,16 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Subject
+    index_documentation: displayable, searchable
     indexing:
       - subject_sim
       - subject_tesim
@@ -785,7 +886,10 @@ properties:
       class:
         - CollectionResource
         - EtdResource
-    multi_value: false
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -805,7 +909,10 @@ properties:
     available_on:
       class:
         - CollectionResource
-    multi_value: false
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -824,13 +931,16 @@ properties:
     available_on:
       class:
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Format
+    index_documentation: searchable
     indexing:
       - "format_tesim"
     form:
@@ -846,13 +956,16 @@ properties:
     available_on:
       class:
         - ImageResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Extent
+    index_documentation: searchable
     indexing:
       - "extent_tesim"
     form:
@@ -869,13 +982,16 @@ properties:
     available_on:
       class:
         - OerResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Accessibility Feature
+    index_documentation: displayable, searchable
     indexing:
       - "accessibility_feature_tesim"
       - "accessibility_feature_sim"
@@ -892,13 +1008,16 @@ properties:
     available_on:
       class:
         - OerResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Accessibility Hazard
+    index_documentation: displayable, searchable
     indexing:
       - "accessibility_hazard_tesim"
       - "accessibility_hazard_sim"
@@ -913,13 +1032,17 @@ properties:
     available_on:
       class:
         - OerResource
-    multi_value: false
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Accessibility Summary
+    index_documentation: displayable, searchable
     indexing:
       - "accessibility_summary_tesim"
       - "accessibility_summary_sim"
@@ -936,13 +1059,17 @@ properties:
       class:
         - OerResource
         - EtdResource
-    multi_value: false
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Admin Note
+    index_documentation: searchable
     indexing:
       - "admin_note_tesim"
     form:
@@ -960,13 +1087,16 @@ properties:
       class:
         - OerResource
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Additional Information
+    index_documentation: searchable
     indexing:
       - "additional_information_tesim"
     form:
@@ -981,13 +1111,16 @@ properties:
     available_on:
       class:
         - OerResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Alternate Version ID
+    index_documentation: displayable, searchable
     indexing:
       - "alternate_version_id_tesim"
       - "alternate_version_id_sim"
@@ -1000,13 +1133,16 @@ properties:
     available_on:
       class:
         - OerResource
-    multi_value: true
+    cardinality:
+      minimum: 1
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Audience
+    index_documentation: displayable, searchable
     indexing:
       - "audience_tesim"
       - "audience_sim"
@@ -1026,13 +1162,16 @@ properties:
       class:
         - OerResource
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Date
+    index_documentation: displayable, searchable
     indexing:
       - "date_tesim"
       - "date_sim"
@@ -1045,13 +1184,16 @@ properties:
     available_on:
       class:
         - OerResource
-    multi_value: true
+    cardinality:
+      minimum: 1
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Discipline
+    index_documentation: searchable
     indexing:
       - "discipline_tesim"
     form:
@@ -1069,13 +1211,16 @@ properties:
     available_on:
       class:
         - OerResource
-    multi_value: true
+    cardinality:
+      minimum: 1
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Education Level
+    index_documentation: displayable, searchable
     indexing:
       - "education_level_tesim"
       - "education_level_sim"
@@ -1094,13 +1239,16 @@ properties:
     available_on:
       class:
         - OerResource
-    multi_value: true
+    cardinality:
+      minimum: 1
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Learning Resource Type
+    index_documentation: displayable, searchable
     indexing:
       - "learning_resource_type_tesim"
       - "learning_resource_type_sim"
@@ -1119,13 +1267,16 @@ properties:
     available_on:
       class:
         - OerResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Newer Version ID
+    index_documentation: displayable, searchable
     indexing:
       - "newer_version_id_tesim"
       - "newer_version_id_sim"
@@ -1138,13 +1289,16 @@ properties:
     available_on:
       class:
         - OerResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: OER Size
+    index_documentation: searchable
     indexing:
       - "oer_size_tesim"
     form:
@@ -1159,13 +1313,16 @@ properties:
     available_on:
       class:
         - OerResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Previous Version ID
+    index_documentation: displayable, searchable
     indexing:
       - "previous_version_id_tesim"
       - "previous_version_id_sim"
@@ -1178,13 +1335,16 @@ properties:
     available_on:
       class:
         - OerResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Related Item ID
+    index_documentation: displayable, searchable
     indexing:
       - "related_item_id_tesim"
       - "related_item_id_sim"
@@ -1197,13 +1357,16 @@ properties:
     available_on:
       class:
         - OerResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Rights Holder
+    index_documentation: displayable, searchable
     indexing:
       - "rights_holder_tesim"
       - "rights_holder_sim"
@@ -1219,13 +1382,16 @@ properties:
     available_on:
       class:
         - OerResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Table of Contents
+    index_documentation: searchable
     indexing:
       - "table_of_contents_tesim"
     form:
@@ -1242,13 +1408,16 @@ properties:
     available_on:
       class:
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Advisor
+    index_documentation: searchable
     indexing:
       - "advisor_tesim"
     form:
@@ -1264,13 +1433,16 @@ properties:
     available_on:
       class:
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Committee Member
+    index_documentation: searchable
     indexing:
       - "committee_member_tesim"
     form:
@@ -1286,13 +1458,16 @@ properties:
     available_on:
       class:
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 1
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Degree Name
+    index_documentation: searchable
     indexing:
       - "degree_name_tesim"
     form:
@@ -1310,13 +1485,16 @@ properties:
     available_on:
       class:
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 1
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Degree Level
+    index_documentation: searchable
     indexing:
       - "degree_level_tesim"
     form:
@@ -1334,13 +1512,16 @@ properties:
     available_on:
       class:
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 1
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Degree Discipline
+    index_documentation: searchable
     indexing:
       - "degree_discipline_tesim"
     form:
@@ -1358,13 +1539,16 @@ properties:
     available_on:
       class:
         - EtdResource
-    multi_value: true
+    cardinality:
+      minimum: 1
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Degree Grantor
+    index_documentation: searchable
     indexing:
       - "degree_grantor_tesim"
     form:
@@ -1388,13 +1572,17 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: false
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Bulkrax Identifier
+    index_documentation: displayable, searchable
     indexing:
       - "bulkrax_identifier_tesi"
       - "bulkrax_identifier_ssi"
@@ -1415,13 +1603,17 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: false
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#bool
       sources:
         - "null"
     display_label:
       default: Show PDF Viewer
+    index_documentation: displayable, searchable
     indexing:
       - "show_pdf_viewer_bsi"
     form:
@@ -1441,13 +1633,17 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: false
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#bool
       sources:
         - "null"
     display_label:
       default: Show PDF Download Button
+    index_documentation: displayable, searchable
     indexing:
       - "show_pdf_download_button_bsi"
     form:
@@ -1468,13 +1664,17 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: false
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Video Embed
+    index_documentation: searchable
     indexing:
       - "video_embed_tesi"
     form:
@@ -1495,13 +1695,17 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: false
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#bool
       sources:
         - "null"
     display_label:
       default: Is Child
+    index_documentation: displayable, searchable
     indexing:
       - "is_child_bsi"
     form:
@@ -1521,13 +1725,17 @@ properties:
         - ImageResource
         - OerResource
         - EtdResource
-    multi_value: false
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Split from PDF ID
+    index_documentation: searchable
     indexing:
       - "split_from_pdf_id_ssi"
     form:
@@ -1545,13 +1753,16 @@ properties:
         - ImageResource
       context:
         - special_context
-    multi_value: true
+    cardinality:
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - "null"
     display_label:
       default: Dimensions
+    index_documentation: displayable, searchable
     indexing:
       - dimensions_sim
       - dimensions_tesim

@@ -22,6 +22,7 @@ module Hyrax
         validate_property_indexing(property, config)
         validate_property_predicate(property, config)
         validate_property_available_on(property)
+        validate_property_cardinality(property, config)
       end
     end
 
@@ -49,14 +50,23 @@ module Hyrax
 
       property_config = profile.dig('properties', property) || {}
 
-      # Require explicit `data_type` value reflecting multiplicity.
       required_data_type = config['multiple'] ? 'array' : 'string'
 
-      actual_data_type = property_config['data_type'] || (property_config['multi_value'] ? 'array' : 'string')
+      actual_data_type = determine_data_type_from_config(property_config)
 
       return if actual_data_type == required_data_type
 
       errors << "Property '#{property}' must have data_type set to '#{required_data_type}'."
+    end
+
+    def determine_data_type_from_config(property_config)
+      if property_config['data_type']
+        property_config['data_type']
+      elsif property_config['multi_value']
+        'array'
+      else
+        'string'
+      end
     end
 
     def validate_property_indexing(property, config)
@@ -83,6 +93,22 @@ module Hyrax
 
       return if missing_classes.empty?
       errors << "Property '#{property}' must be available on all classes, but is missing from: #{missing_classes.join(', ')}."
+    end
+
+    def validate_property_cardinality(property, _config)
+      # Ensure that the `title` property is always required by enforcing
+      # a cardinality minimum of at least 1.  According to the M3 profile
+      # specification, `cardinality.minimum` > 0 is interpreted as
+      # "required".
+      return unless property.to_s == 'title'
+
+      minimum = profile.dig('properties', property, 'cardinality', 'minimum')
+
+      # Treat missing `cardinality` or `minimum` as 0 (i.e., not required).
+      required = minimum.to_i.positive?
+      return if required
+
+      errors << "Property 'title' must have a cardinality minimum of at least 1."
     end
   end
 end

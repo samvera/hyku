@@ -45,10 +45,18 @@ module Hyrax
     end
 
     def validate_property_multi_value(property, config)
-      return unless config.key?('multiple')
-      return if profile.dig('properties', property, 'multi_value') == config['multiple']
+      return unless config.key?("multiple")
 
-      errors << "Property '#{property}' must have multi_value set to #{config['multiple']}."
+      property_config = profile.dig('properties', property) || {}
+
+      # Require explicit `data_type` value reflecting multiplicity.
+      required_data_type = config['multiple'] ? 'array' : 'string'
+
+      actual_data_type = property_config['data_type'] || (property_config['multi_value'] ? 'array' : 'string')
+
+      return if actual_data_type == required_data_type
+
+      errors << "Property '#{property}' must have data_type set to '#{required_data_type}'."
     end
 
     def validate_property_indexing(property, config)

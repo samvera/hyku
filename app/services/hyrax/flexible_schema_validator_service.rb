@@ -24,6 +24,7 @@ module Hyrax
     def validate!
       validate_required_classes
       validate_class_availability
+      validate_available_on_classes_defined
       validate_schema
       validate_label_prop
       validate_enabled_work_types
@@ -96,6 +97,26 @@ module Hyrax
       return if invalid_classes.empty?
 
       @errors << "Invalid classes: #{invalid_classes.join(', ')}."
+    end
+
+    # Validates that every class referenced under `available_on.class` is also
+    # defined in the profile's top-level `classes` section.
+    #
+    # This guards against a common mistake where a class is removed from the
+    # `classes` section but lingering references remain in one or more
+    # properties, which would otherwise lead to runtime errors.
+    def validate_available_on_classes_defined
+      properties = profile['properties'] || {}
+
+      referenced_classes = properties.values.flat_map do |prop|
+        prop.dig('available_on', 'class')
+      end.compact.uniq
+
+      undefined_classes = referenced_classes - profile['classes'].keys
+
+      return if undefined_classes.empty?
+
+      @errors << "Classes referenced in `available_on` but not defined in `classes`: #{undefined_classes.join(', ')}."
     end
 
     def validate_label_prop

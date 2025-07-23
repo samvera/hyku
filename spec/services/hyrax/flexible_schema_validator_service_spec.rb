@@ -134,5 +134,19 @@ RSpec.describe Hyrax::FlexibleSchemaValidatorService do
         expect(service.errors).to include('Profile includes work types that are not enabled: Image, Etd, Oer.')
       end
     end
+
+    context 'when a property references a class not defined in the classes section' do
+      before do
+        # Remove a valid class definition but leave references in `available_on`
+        profile['classes'].delete('GenericWorkResource')
+        service.validate!
+      end
+
+      it 'is invalid' do
+        expect(service.errors).to include(
+          'Classes referenced in `available_on` but not defined in `classes`: GenericWorkResource.'
+        )
+      end
+    end
   end
 end

@@ -26,6 +26,7 @@ module Hyrax
       validate_class_availability
       validate_schema
       validate_label_prop
+      validate_enabled_work_types
       CoreMetadataValidator.new(profile: profile, errors: @errors).validate!
     end
 
@@ -38,6 +39,20 @@ module Hyrax
     end
 
     private
+
+    def validate_enabled_work_types
+      enabled_work_types = Site.instance.available_works
+      all_work_types = Hyrax.config.registered_curation_concern_types
+      profile_work_types = profile['classes'].keys.map { |klass| klass.gsub(/Resource$/, '') } & all_work_types
+
+      missing_from_profile = enabled_work_types - profile_work_types
+      @errors << "Enabled work types not in profile: #{missing_from_profile.join(', ')}." if missing_from_profile.any?
+
+      not_enabled_in_site = profile_work_types - enabled_work_types
+      return if not_enabled_in_site.empty?
+
+      @errors << "Profile includes work types that are not enabled: #{not_enabled_in_site.join(', ')}."
+    end
 
     def validate_schema
       schemer.validate(profile).to_a&.each do |error|

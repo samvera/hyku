@@ -15,6 +15,17 @@ RSpec.describe Hyrax::CoreMetadataValidator do
       end
     end
 
+    context 'when keyword data_type is incorrect' do
+      before do
+        profile['properties']['keyword']['data_type'] = 'string'
+        service.validate!
+      end
+
+      it 'is invalid' do
+        expect(errors).to include("Property 'keyword' must have data_type set to 'array'.")
+      end
+    end
+
     context 'when core metadata properties are misconfigured' do
       context 'when a required property is missing' do
         before do

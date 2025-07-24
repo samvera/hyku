@@ -28,6 +28,7 @@ module Hyrax
         validate_property_available_on(property)
         validate_property_cardinality(property, config)
       end
+      validate_keyword_property
     end
 
     private
@@ -140,6 +141,19 @@ module Hyrax
       return if profile.dig('properties', property, 'property_uri') == config['predicate']
 
       errors << "Property '#{property}' must have property_uri set to #{config['predicate']}."
+    end
+
+    # Validates that if the `keyword` property is present, it is correctly
+    # configured as a multi-valued field.
+    #
+    # @return [void]
+    def validate_keyword_property
+      keyword_prop = profile.dig('properties', 'keyword')
+      return unless keyword_prop
+
+      return if keyword_prop['data_type'] == 'array'
+
+      errors << "Property 'keyword' must have data_type set to 'array'."
     end
 
     # Checks that the property is available on all classes defined in the profile.

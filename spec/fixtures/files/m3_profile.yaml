@@ -182,3 +182,35 @@ properties:
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
       - file_label.txt
+  keyword:
+    available_on:
+      class:
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+    data_type: array
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Keyword
+    index_documentation: displayable, searchable
+    indexing:
+      - keyword_sim
+      - keyword_tesim
+    form:
+      primary: false
+    property_uri: http://schema.org/keywords
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Metadata
+      - Repository
+    view:
+      render_as: "faceted"
+      html_dl: true

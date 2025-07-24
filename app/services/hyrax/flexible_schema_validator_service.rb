@@ -37,7 +37,6 @@ module Hyrax
       validate_available_on_classes_defined
       validate_schema
       validate_label_prop
-      validate_enabled_work_types
       CoreMetadataValidator.new(profile: profile, errors: @errors).validate!
     end
 
@@ -56,25 +55,6 @@ module Hyrax
     end
 
     private
-
-    # Validates that the profile's work types correspond to the site's
-    # enabled work types, adding human-readable error messages for any
-    # discrepancies.
-    #
-    # @return [void]
-    def validate_enabled_work_types
-      enabled_work_types = Site.instance.available_works
-      all_work_types = Hyrax.config.registered_curation_concern_types
-      profile_work_types = profile['classes'].keys.map { |klass| klass.gsub(/Resource$/, '') } & all_work_types
-
-      missing_from_profile = enabled_work_types - profile_work_types
-      @errors << "Enabled work types not in profile: #{missing_from_profile.join(', ')}." if missing_from_profile.any?
-
-      not_enabled_in_site = profile_work_types - enabled_work_types
-      return if not_enabled_in_site.empty?
-
-      @errors << "Profile includes work types that are not enabled: #{not_enabled_in_site.join(', ')}."
-    end
 
     # Runs JSON schema validation and translates resulting errors into
     # user-friendly messages appended to {#errors}.

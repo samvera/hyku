@@ -109,34 +109,6 @@ RSpec.describe Hyrax::FlexibleSchemaValidatorService do
       end
     end
 
-    context 'when an enabled work type is not in the profile' do
-      let(:site) { Site.create(available_works: ['GenericWork', 'OerResource']) }
-
-      before do
-        allow(Site).to receive(:instance).and_return(site)
-
-        profile['classes'].delete('OerResource')
-        service.validate!
-      end
-
-      it 'is invalid' do
-        expect(service.errors).to include('Enabled work types not in profile: OerResource.')
-      end
-    end
-
-    context 'when a work type in the profile is not enabled' do
-      let(:site) { Site.create(available_works: ['GenericWork']) }
-
-      before do
-        allow(Site).to receive(:instance).and_return(site)
-        service.validate!
-      end
-
-      it 'is invalid' do
-        expect(service.errors).to include('Profile includes work types that are not enabled: Image, Etd, Oer.')
-      end
-    end
-
     context 'when a property references a class not defined in the classes section' do
       before do
         # Remove a valid class definition but leave references in `available_on`

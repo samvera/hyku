@@ -39,7 +39,24 @@ module Hyrax
     #
     # @return [Hash] the core metadata configuration with indifferent access
     def core_metadata
-      @core_metadata ||= YAML.safe_load(File.read(Hyrax::Engine.root.join('config', 'metadata', 'core_metadata.yaml'))).with_indifferent_access
+      return @core_metadata if @core_metadata
+
+      @core_metadata = YAML.safe_load(
+        File.read(Hyrax::Engine.root.join('config', 'metadata', 'core_metadata.yaml'))
+      ).with_indifferent_access
+
+      # Ensure the `creator` attribute is always treated as core metadata even
+      # when it is not present in the YAML definition shipped with Hyrax.
+      @core_metadata['attributes'] ||= {}
+
+      @core_metadata['attributes']['creator'] ||= {
+        'type' => 'string',
+        'multiple' => true,
+        'index_keys' => ['creator_sim', 'creator_tesim'],
+        'predicate' => 'http://purl.org/dc/elements/1.1/creator'
+      }
+
+      @core_metadata
     end
 
     # Memoized convenience accessor that returns the class keys defined in

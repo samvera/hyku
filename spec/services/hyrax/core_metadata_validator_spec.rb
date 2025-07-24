@@ -27,6 +27,28 @@ RSpec.describe Hyrax::CoreMetadataValidator do
         end
       end
 
+      context 'when the creator property is missing' do
+        before do
+          profile['properties'].delete('creator')
+          service.validate!
+        end
+
+        it 'is invalid' do
+          expect(errors).to include('Missing required property: creator.')
+        end
+      end
+
+      context 'when creator data_type is incorrect' do
+        before do
+          profile['properties']['creator']['data_type'] = 'string'
+          service.validate!
+        end
+
+        it 'is invalid' do
+          expect(errors).to include("Property 'creator' must have data_type set to 'array'.")
+        end
+      end
+
       context 'when data_type is incorrect' do
         before do
           profile['properties']['title']['data_type'] = nil

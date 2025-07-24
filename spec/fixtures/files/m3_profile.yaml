@@ -136,7 +136,13 @@ properties:
   creator:
     available_on:
       class:
+        - AdminSetResource
+        - CollectionResource
         - Hyrax::FileSet
+        - GenericWorkResource
+        - ImageResource
+        - EtdResource
+        - OerResource
     data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
@@ -145,6 +151,7 @@ properties:
     display_label:
       default: Creator
     indexing:
+      - "creator_sim"
       - "creator_tesim"
     property_uri: http://purl.org/dc/elements/1.1/creator
     range: http://www.w3.org/2001/XMLSchema#string

@@ -52,6 +52,8 @@ RSpec.describe Hyrax::FlexibleSchemaValidatorService do
             "Schema error at `/properties/title/available_on/class`: Invalid value `nil` for type `array`.",
             "Schema error at `/properties/creator`: Missing required properties: 'available_on'.",
             "Property 'title' must be available on all classes, but is missing from: AdminSetResource, " \
+            "CollectionResource, Hyrax::FileSet, GenericWorkResource, ImageResource, EtdResource, OerResource.",
+            "Property 'creator' must be available on all classes, but is missing from: AdminSetResource, " \
             "CollectionResource, Hyrax::FileSet, GenericWorkResource, ImageResource, EtdResource, OerResource."
           )
         end

@@ -2,14 +2,47 @@
   <h1><span class="fa fa-address-book"></span> <%= t('hyku.admin.work_types') %></h1>
 <% end %>
 
+<% 
+  # Check if there are any work types that will be disabled (not in profile)
+  has_disabled_work_types = false
+  if Hyrax.config.flexible? && @profile_work_types
+    has_disabled_work_types = Hyrax.config.registered_curation_concern_types.any? do |type|
+      !@profile_work_types.include?(type)
+    end
+  end
+%>
+
+<% if has_disabled_work_types %>
+  <div class="alert alert-info" role="alert">
+    <strong>Note:</strong> Work types grayed out below are not included in the current metadata profile. 
+    To enable them, please add them to your metadata profile first.
+  </div>
+<% end %>
+
 <div class="card">
   <div class="card-body">
     <%= simple_form_for @site, url: '/admin/work_types' do |f| %>
       <% Hyrax.config.registered_curation_concern_types.each do |type| %>
-        <div class="form-check">
+        <% 
+          is_in_profile = !Hyrax.config.flexible? || @profile_work_types&.include?(type)
+          is_checked = @site.available_works&.include?(type)
+          is_disabled = Hyrax.config.flexible? && !is_in_profile
+        %>
+        <div class="form-check <%= 'text-muted' if is_disabled %>">
           <label class="form-check-label" for="input-<%= type %>">
-            <input class="form-check-input" type="checkbox" value="<%= type %>" id="input-<%= type %>" name="available_works[]" <%= 'checked' if @site.available_works&.include?(type) %>>
+            <input 
+              class="form-check-input" 
+              type="checkbox" 
+              value="<%= type %>" 
+              id="input-<%= type %>" 
+              name="available_works[]" 
+              <%= 'checked' if is_checked %>
+              <%= 'disabled' if is_disabled %>
+            >
             <span><%= type %></span>
+            <% if is_disabled %>
+              <small class="text-muted d-block">Not included in metadata profile</small>
+            <% end %>
           </label>
         </div>
       <% end %>

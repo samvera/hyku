@@ -14,6 +14,12 @@ module Hyrax
 
     attr_reader :profile, :schema, :schemer, :errors
 
+    # Initializes a new FlexibleSchemaValidatorService.
+    #
+    # @param profile [Hash] the flexible metadata profile to validate
+    # @param schema [Pathname, String] the JSON schema to validate against.
+    #   Defaults to {DEFAULT_SCHEMA}.
+    # @return [void]
     def initialize(profile:, schema: default_schema)
       @profile = profile
       @schema = schema
@@ -21,24 +27,39 @@ module Hyrax
       @errors = []
     end
 
+    # Execute all validation routines and populate {#errors} with any
+    # issues discovered.
+    #
+    # @return [void]
     def validate!
       validate_required_classes
       validate_class_availability
+      validate_available_on_classes_defined
       validate_schema
       validate_label_prop
       CoreMetadataValidator.new(profile: profile, errors: @errors).validate!
     end
 
+    # The default JSON schema used when no custom schema is provided.
+    #
+    # @return [Pathname]
     def default_schema
       DEFAULT_SCHEMA
     end
 
+    # Classes that MUST be present in every flexible metadata profile.
+    #
+    # @return [Array<String>]
     def required_classes
       REQUIRED_CLASSES
     end
 
     private
 
+    # Runs JSON schema validation and translates resulting errors into
+    # user-friendly messages appended to {#errors}.
+    #
+    # @return [void]
     def validate_schema
       schemer.validate(profile).to_a&.each do |error|
         pointer = error['data_pointer']
@@ -55,6 +76,9 @@ module Hyrax
       end
     end
 
+    # Ensures that all required classes are defined in the profile.
+    #
+    # @return [void]
     def validate_required_classes
       missing_classes = required_classes - profile['classes'].keys
       return if missing_classes.empty?
@@ -62,6 +86,10 @@ module Hyrax
       @errors << "Missing required classes: #{missing_classes.join(', ')}."
     end
 
+    # Checks that any class referenced in the profile is a registered
+    # Hyrax curation concern type.
+    #
+    # @return [void]
     def validate_class_availability
       profile_classes = profile['classes'].keys
       properties = profile['properties']
@@ -83,6 +111,31 @@ module Hyrax
       @errors << "Invalid classes: #{invalid_classes.join(', ')}."
     end
 
+    # Validates that every class referenced under `available_on.class` is also
+    # defined in the profile's top-level `classes` section.
+    #
+    # This guards against a common mistake where a class is removed from the
+    # `classes` section but lingering references remain in one or more
+    # properties, which would otherwise lead to runtime errors.
+    # @return [void]
+    def validate_available_on_classes_defined
+      properties = profile['properties'] || {}
+
+      referenced_classes = properties.values.flat_map do |prop|
+        prop.dig('available_on', 'class')
+      end.compact.uniq
+
+      undefined_classes = referenced_classes - profile['classes'].keys
+
+      return if undefined_classes.empty?
+
+      @errors << "Classes referenced in `available_on` but not defined in `classes`: #{undefined_classes.join(', ')}."
+    end
+
+    # Validates that a `label` property exists and that it is available on
+    # `Hyrax::FileSet`.
+    #
+    # @return [void]
     def validate_label_prop
       label_prop = profile.dig('properties', 'label')
       unless label_prop

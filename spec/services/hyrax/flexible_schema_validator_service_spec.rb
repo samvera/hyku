@@ -52,6 +52,8 @@ RSpec.describe Hyrax::FlexibleSchemaValidatorService do
             "Schema error at `/properties/title/available_on/class`: Invalid value `nil` for type `array`.",
             "Schema error at `/properties/creator`: Missing required properties: 'available_on'.",
             "Property 'title' must be available on all classes, but is missing from: AdminSetResource, " \
+            "CollectionResource, Hyrax::FileSet, GenericWorkResource, ImageResource, EtdResource, OerResource.",
+            "Property 'creator' must be available on all classes, but is missing from: AdminSetResource, " \
             "CollectionResource, Hyrax::FileSet, GenericWorkResource, ImageResource, EtdResource, OerResource."
           )
         end
@@ -104,6 +106,20 @@ RSpec.describe Hyrax::FlexibleSchemaValidatorService do
             expect(service.errors).to be_empty
           end
         end
+      end
+    end
+
+    context 'when a property references a class not defined in the classes section' do
+      before do
+        # Remove a valid class definition but leave references in `available_on`
+        profile['classes'].delete('GenericWorkResource')
+        service.validate!
+      end
+
+      it 'is invalid' do
+        expect(service.errors).to include(
+          'Classes referenced in `available_on` but not defined in `classes`: GenericWorkResource.'
+        )
       end
     end
   end

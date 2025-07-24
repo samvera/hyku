@@ -382,11 +382,12 @@
           },
           "data_type": {
             "type": "string",
-            "format": "uri",
-            "description": "Type constraint on the property's value. If there is no value provided, the assumed default data_type is http://www.w3.org/2001/XMLSchema#string. If multiple data types are possible, general best practice is to use the most specific type that applies to all values.  If multiple types are listed, the lowest common denominator will be used for validation.",
-            "default": "http://www.w3.org/2001/XMLSchema#string",
+            "enum": ["array", "string"],
+            "description": "Indicates whether the property can accept multiple values (\"array\") or a single value (\"string\").",
+            "default": "string",
             "examples": [
-              "http://www.w3.org/2001/XMLSchema#string"
+              "array",
+              "string"
             ]
           },
           "syntax": {

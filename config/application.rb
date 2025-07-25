@@ -177,53 +177,39 @@ module Hyku
     # @!attribute iiif_video_labels_and_mime_types [r|w]
     #   @see Hyrax::IiifAv::DisplaysContentDecorator
     #   @return [Hash<String,String>] Hash of valid video labels and their mime types.
-    class_attribute :iiif_video_labels_and_mime_types, default: { "mp4" => "video/mpeg", "webm" => "audio/webm" }
+    class_attribute :iiif_video_labels_and_mime_types, default: { "mp4" => "video/mp4" }
 
     ##
-    # @!attribute iiif_video_url_builder [r|w]
+    # @!attribute iiif_av_url_builder [r|w]
     #   @param document [SolrDocument]
-    #   @param label [String]
+    #   @param label [String] the file extension
     #   @param host [String] (e.g. samvera.org)
+    #   @param mime_type [String] the MIME type of the audio/video file
     #   @return [String] the fully qualified URL.
     #   @see Hyrax::IiifAv::DisplaysContentDecorator
     #
     #   @example
-    #     # The below example will build a URL that will download directly from Hyrax as the
-    #     # video resource.  This is a hack to address the processing times of video derivatives;
-    #     # namely in certain setups/configurations of Hyku, video processing is laggy—as in days.
+    #     # The below example will build a URL that downloads directly from Hyrax as the
+    #     # audio/video resource using the standard downloads controller. This approach uses
+    #     # the file parameter to specify the desired format and includes the mime_type
+    #     # for proper content handling.
     #     #
-    #     # The draw back of using this method is that we're pointing to the original video file.
-    #     # This is acceptable if the original file has already been processed out of band (e.g.
-    #     # before uploading to Hyku/Hyrax).  When we're dealing with a raw video, this is likely
-    #     # not ideal for streaming.
-    #     Hyrax::IiifAv::DisplaysContent.iiif_video_url_builder = ->(document:, label:, host:) do
-    #       Hyrax::Engine.routes.url_helpers.download_url(document, host:, protocol: 'https')
+    #     # This method points to the original or processed audio/video file via Hyrax's
+    #     # download endpoint, which can handle format conversion and streaming as
+    #     # configured in the downloads controller.
+    #     Hyrax::IiifAv::DisplaysContent.iiif_audio_url_builder = ->(document:, label:, host:, mime_type:) do
+    #       Hyrax::Engine.routes.url_helpers.download_url(document.id, host:, file: label, mime_type:)
     #     end
-    class_attribute :iiif_video_url_builder,
-                    default: ->(document:, label:, host:) { Hyrax::IiifAv::Engine.routes.url_helpers.iiif_av_content_url(document.id, label:, host:) }
-
-    ##
-    # @!attribute iiif_audio_url_builder [r|w]
-    #   @param document [SolrDocument]
-    #   @param label [String]
-    #   @param host [String] (e.g. samvera.org)
-    #   @return [String] the fully qualified URL.
-    #   @see Hyrax::IiifAv::DisplaysContentDecorator
+    #     Hyrax::IiifAv::DisplaysContent.iiif_video_url_builder = ->(document:, label:, host:, mime_type:) do
+    #       Hyrax::Engine.routes.url_helpers.download_url(document.id, host:, file: label, mime_type:)
+    #     end
     #
-    #   @example
-    #     # The below example will build a URL that will download directly from Hyrax as the
-    #     # audio resource.  This is a hack to address the processing times of audio derivatives;
-    #     # namely in certain setups/configurations of Hyku, audio processing is laggy.
-    #     #
-    #     # The draw back of using this method is that we're pointing to the original audio file.
-    #     # This is acceptable if the original file has already been processed out of band (e.g.
-    #     # before uploading to Hyku/Hyrax).  When we're dealing with a raw audio, this may not
-    #     # be ideal for streaming.
-    #     Hyrax::IiifAv::DisplaysContent.iiif_audio_url_builder = ->(document:, label:, host:) do
-    #       Hyrax::Engine.routes.url_helpers.download_url(document, host:, protocol: 'https')
-    #     end
-    class_attribute :iiif_audio_url_builder,
-                    default: ->(document:, label:, host:) { Hyrax::IiifAv::Engine.routes.url_helpers.iiif_av_content_url(document.id, label:, host:) }
+    #   @see Hyrax::IiifAv::DisplaysContentDecorator#video_content
+    #   @see Hyrax::IiifAv::DisplaysContentDecorator#audio_content
+    class_attribute :iiif_av_url_builder,
+                    default: lambda { |document:, label:, host:, mime_type:|
+                      Hyrax::Engine.routes.url_helpers.download_url(document.id, host:, file: label, mime_type:)
+                    }
     # @!endgroup Class Attributes
 
     # Add this line to load the lib folder first because we need

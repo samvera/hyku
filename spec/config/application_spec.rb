@@ -35,13 +35,8 @@ RSpec.describe Hyku::Application do
     it { is_expected.to be_a(Hash) }
   end
 
-  describe '.iiif_video_url_builder' do
-    subject { described_class.iiif_video_url_builder }
-    it { is_expected.to be_a(Proc) }
-  end
-
-  describe '.iiif_audio_url_builder' do
-    subject { described_class.iiif_audio_url_builder }
+  describe '.iiif_av_url_builder' do
+    subject { described_class.iiif_av_url_builder }
     it { is_expected.to be_a(Proc) }
   end
 

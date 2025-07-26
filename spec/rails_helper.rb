@@ -16,11 +16,11 @@ ENV['HYRAX_ANALYTICS_REPORTING'] = 'false'
 require 'simplecov'
 
 SimpleCov.command_name "CI_NODE_#{ENV['CI_NODE_INDEX'] || 0}"
-SimpleCov.coverage_dir "tmp/coverage/#{ENV['CI_NODE_INDEX'] || 0}"
+SimpleCov.coverage_dir "coverage/#{ENV['CI_NODE_INDEX'] || 0}"
 
 SimpleCov.start('rails') do
   enable_coverage :branch
-  
+
   # Add formatters for better CI integration
   if ENV['CI']
     formatter SimpleCov::Formatter::MultiFormatter.new([

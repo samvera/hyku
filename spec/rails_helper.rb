@@ -24,9 +24,9 @@ SimpleCov.start('rails') do
   # Add formatters for better CI integration
   if ENV['CI']
     formatter SimpleCov::Formatter::MultiFormatter.new([
-      SimpleCov::Formatter::JSONFormatter,
-      SimpleCov::Formatter::HTMLFormatter
-    ])
+                                                         SimpleCov::Formatter::JSONFormatter,
+                                                         SimpleCov::Formatter::HTMLFormatter
+                                                       ])
   end
 end
 

@@ -19,9 +19,9 @@ namespace :coverage do
 
     SimpleCov.collate coverage_files do
       formatter SimpleCov::Formatter::MultiFormatter.new([
-        SimpleCov::Formatter::JSONFormatter,
-        SimpleCov::Formatter::HTMLFormatter
-      ])
+                                                           SimpleCov::Formatter::JSONFormatter,
+                                                           SimpleCov::Formatter::HTMLFormatter
+                                                         ])
       refuse_coverage_drop
     end
   end

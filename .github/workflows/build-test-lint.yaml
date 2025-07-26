@@ -134,6 +134,7 @@ jobs:
     uses: notch8/actions/.github/workflows/test.yaml@add-codecov
     with:
       confdir: "/app/samvera/hyrax-webapp/solr/conf"
+      coverage_path: "/app/samvera/hyrax-webapp/coverage/.resultset.json"
       rspec_cmd: "gem install semaphore_test_boosters && bundle && rspec_booster --job $CI_NODE_INDEX/$CI_NODE_TOTAL"
 
   merge-coverage:

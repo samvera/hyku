@@ -5,13 +5,13 @@ namespace :coverage do
     require 'simplecov'
     require 'simplecov_json_formatter'
 
-    # Find all coverage result files
-    coverage_files = Dir["tmp/coverage/**/.resultset.json"]
-    
+    # Look in merged dir from artifact downloads
+    coverage_files = Dir["merged/**/.resultset.json"]
+
     if coverage_files.empty?
-      puts "No coverage files found in tmp/coverage/**/.resultset.json"
-      puts "Available files in tmp/coverage:"
-      system("find tmp/coverage -type f 2>/dev/null || echo 'No tmp/coverage directory found'")
+      puts "No coverage files found in merged/**/.resultset.json"
+      puts "Available files in merged:"
+      system("find merged -type f 2>/dev/null || echo 'No merged directory found'")
       exit 1
     end
 
@@ -19,9 +19,9 @@ namespace :coverage do
 
     SimpleCov.collate coverage_files do
       formatter SimpleCov::Formatter::MultiFormatter.new([
-                                                           SimpleCov::Formatter::JSONFormatter,
-                                                           SimpleCov::Formatter::HTMLFormatter
-                                                         ])
+        SimpleCov::Formatter::JSONFormatter,
+        SimpleCov::Formatter::HTMLFormatter
+      ])
       refuse_coverage_drop
     end
   end

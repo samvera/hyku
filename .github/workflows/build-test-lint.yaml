@@ -147,7 +147,7 @@ jobs:
       - name: Download all coverage artifacts
         uses: actions/download-artifact@v4
         with:
-          pattern: coverage-*
+          pattern: simplecov-coverage-*
           path: merged
 
       - name: Show downloaded coverage files

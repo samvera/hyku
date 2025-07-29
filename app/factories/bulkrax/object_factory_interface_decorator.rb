@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# TODO: remove when issue https://github.com/notch8/hykuup_knapsack/issues/387 has been addressed and updated into this repo
+
 module Bulkrax
   module ObjectFactoryInterfaceDecorator
     # Perform a work-type sanity check before the factory creates/updates the

@@ -157,9 +157,9 @@ module Sample
         # ActiveFedora approach
         work.member_of_collections << collection
       else
-        # Valkyrie approach
-        collection.member_ids += [work.id]
-        Hyrax.persister.save(resource: collection)
+        # Valkyrie approach - set collection membership on the work
+        work.member_of_collection_ids = [collection.id]
+        Hyrax.persister.save(resource: work)
       end
     end
   end

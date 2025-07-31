@@ -3,30 +3,57 @@
 namespace :db do
   namespace :seed do
     namespace :sample do
-      desc 'Create sample Active Fedora works with file attachments for a specific tenant'
-      task :create, [:tenant, :quantity] => :environment do |t, args|
+      desc 'Create sample works with file attachments for a specific tenant'
+      task :create, [:tenant, :type, :quantity] => :environment do |_t, args|
         if args[:tenant].blank?
           puts "ERROR: Tenant name is required!"
-          puts "Usage: bundle exec rake db:seed:sample:create[tenant_name,quantity]"
-          puts "Example: bundle exec rake db:seed:sample:create[myuniversity.edu,100]"
-          puts "Example: bundle exec rake db:seed:sample:create[myuniversity.edu] (defaults to 50)"
+          puts "Usage: bundle exec rake db:seed:sample:create[tenant_name,quantity,type]"
+          puts "Examples:"
+          puts "  bundle exec rake db:seed:sample:create[myuniversity.edu,100,activefedora]"
+          puts "  bundle exec rake db:seed:sample:create[myuniversity.edu,50,valkyrie]"
+          puts "  bundle exec rake db:seed:sample:create[myuniversity.edu] (defaults: 50, activefedora)"
+          puts "Types: 'activefedora' (default) or 'valkyrie'"
           exit 1
         end
 
         quantity = args[:quantity] || 50
-        Sample::ActiveFedoraService.new(args[:tenant], quantity).create_sample_data
+        type = args[:type] || 'activefedora'
+
+        case type.downcase
+        when 'activefedora', 'af'
+          Sample::ActiveFedoraService.new(args[:tenant], quantity).create_sample_data
+        when 'valkyrie', 'val'
+          Sample::ValkyrieService.new(args[:tenant], quantity).create_sample_data
+        else
+          puts "ERROR: Unknown type '#{type}'. Valid types are 'activefedora' or 'valkyrie'"
+          exit 1
+        end
       end
 
       desc 'Remove all sample data for a specific tenant'
-      task :clean, [:tenant] => :environment do |t, args|
+      task :clean, [:tenant, :type] => :environment do |_t, args|
         if args[:tenant].blank?
           puts "ERROR: Tenant name is required!"
-          puts "Usage: bundle exec rake db:seed:sample:clean[tenant_name]"
-          puts "Example: bundle exec rake db:seed:sample:clean[myuniversity.edu]"
+          puts "Usage: bundle exec rake db:seed:sample:clean[tenant_name,type]"
+          puts "Examples:"
+          puts "  bundle exec rake db:seed:sample:clean[myuniversity.edu,activefedora]"
+          puts "  bundle exec rake db:seed:sample:clean[myuniversity.edu,valkyrie]"
+          puts "  bundle exec rake db:seed:sample:clean[myuniversity.edu] (defaults to activefedora)"
+          puts "Types: 'activefedora' (default) or 'valkyrie'"
           exit 1
         end
 
-        Sample::ActiveFedoraService.new(args[:tenant]).clean_sample_data
+        type = args[:type] || 'activefedora'
+
+        case type.downcase
+        when 'activefedora', 'af'
+          Sample::ActiveFedoraService.new(args[:tenant]).clean_sample_data
+        when 'valkyrie', 'val'
+          Sample::ValkyrieService.new(args[:tenant]).clean_sample_data
+        else
+          puts "ERROR: Unknown type '#{type}'. Valid types are 'activefedora' or 'valkyrie'"
+          exit 1
+        end
       end
     end
   end

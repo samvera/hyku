@@ -1,0 +1,216 @@
+---
+m3_version: 1.0.beta2
+profile:
+  date_modified: "2024-06-01"
+  responsibility: https://samvera.org
+  responsibility_statement: Hyrax Initial Profile
+  type: Initial Profile
+  version: 1
+classes:
+  AdminSetResource:
+    display_label: Admin Set
+  CollectionResource:
+    display_label: Collection
+  Hyrax::FileSet:
+    display_label: File Set
+  GenericWorkResource:
+    display_label: Generic Work
+  ImageResource:
+    display_label: Image
+  EtdResource:
+    display_label: ETD
+  OerResource:
+    display_label: OER
+contexts:
+  flexible_context:
+    display_label: Flexible Metadata Example
+mappings:
+  blacklight:
+    name: Additional Blacklight Solr Mappings
+  metatags:
+    name: Metatags
+  mods_oai_pmh:
+    name: MODS OAI PMH
+  qualified_dc_pmh:
+    name: Qualified DC OAI PMH
+  simple_dc_pmh:
+    name: Simple DC OAI PMH
+properties:
+  title:
+    available_on:
+      class:
+        - AdminSetResource
+        - CollectionResource
+        - Hyrax::FileSet
+        - GenericWorkResource
+        - ImageResource
+        - EtdResource
+        - OerResource
+    cardinality:
+      minimum: 1
+    data_type: array
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    definition:
+      default: Enter a standardized title for display. If only one
+        title is needed, transcribe the title from the source
+        itself.
+    display_label:
+      default: Title
+    indexing:
+      - "title_sim"
+      - "title_tesim"
+    form:
+      required: true
+      primary: true
+      data_type: array
+    mappings:
+      metatags: twitter:title, og:title
+      mods_oai_pmh: mods:titleInfo/mods:title
+      qualified_dc_pmh: dcterms:title
+      simple_dc_pmh: dc:title
+    property_uri: http://purl.org/dc/terms/title
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Pencil drawn portrait study of woman
+  date_modified:
+    available_on:
+      class:
+        - AdminSetResource
+        - CollectionResource
+        - Hyrax::FileSet
+        - GenericWorkResource
+        - ImageResource
+        - EtdResource
+        - OerResource
+    data_type: string
+    display_label:
+      default: Date Modified
+    property_uri: http://purl.org/dc/terms/modified
+    range: http://www.w3.org/2001/XMLSchema#dateTime
+    sample_values:
+      - "2024-06-06 21:06:51 +0000"
+  date_uploaded:
+    available_on:
+      class:
+        - AdminSetResource
+        - CollectionResource
+        - Hyrax::FileSet
+        - GenericWorkResource
+        - ImageResource
+        - EtdResource
+        - OerResource
+    data_type: string
+    display_label:
+      default: Date Uploaded
+    property_uri: http://purl.org/dc/terms/dateSubmitted
+    range: http://www.w3.org/2001/XMLSchema#dateTime
+    sample_values:
+      - "2024-06-06 21:06:51 +0000"
+  depositor:
+    available_on:
+      class:
+        - AdminSetResource
+        - CollectionResource
+        - Hyrax::FileSet
+        - GenericWorkResource
+        - ImageResource
+        - EtdResource
+        - OerResource
+    data_type: string
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Depositor
+    indexing:
+      - "depositor_tesim"
+      - "depositor_ssim"
+    property_uri: http://id.loc.gov/vocabulary/relators/dpt
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Julie Allinson
+  creator:
+    available_on:
+      class:
+        - AdminSetResource
+        - CollectionResource
+        - Hyrax::FileSet
+        - GenericWorkResource
+        - ImageResource
+        - EtdResource
+        - OerResource
+    data_type: array
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Creator
+    indexing:
+      - "creator_sim"
+      - "creator_tesim"
+    property_uri: http://purl.org/dc/elements/1.1/creator
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Julie Allinson
+  label:
+    available_on:
+      class:
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    data_type: string
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Label
+    indexing:
+      - label_sim
+      - label_tesim
+    form:
+      primary: false
+    property_uri: info:fedora/fedora-system:def/model#downloadFilename
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - file_label.txt
+  keyword:
+    available_on:
+      class:
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+    data_type: array
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Keyword
+    index_documentation: displayable, searchable
+    indexing:
+      - keyword_sim
+      - keyword_tesim
+    form:
+      primary: false
+    property_uri: http://schema.org/keywords
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Metadata
+      - Repository
+    view:
+      render_as: "faceted"
+      html_dl: true

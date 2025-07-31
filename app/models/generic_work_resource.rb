@@ -3,11 +3,11 @@
 # Generated via
 #  `rails generate hyrax:work_resource GenericWorkResource`
 class GenericWorkResource < Hyrax::Work
-  include Hyrax::Schema(:basic_metadata)
-  include Hyrax::Schema(:bulkrax_metadata)
-  include Hyrax::Schema(:generic_work_resource)
-  include Hyrax::Schema(:with_pdf_viewer)
-  include Hyrax::Schema(:with_video_embed)
+  include Hyrax::Schema(:basic_metadata) unless Hyrax.config.flexible?
+  include Hyrax::Schema(:bulkrax_metadata) unless Hyrax.config.flexible?
+  include Hyrax::Schema(:generic_work_resource) unless Hyrax.config.flexible?
+  include Hyrax::Schema(:with_pdf_viewer) unless Hyrax.config.flexible?
+  include Hyrax::Schema(:with_video_embed) unless Hyrax.config.flexible?
   include Hyrax::ArResource
   include Hyrax::NestedWorks
 
@@ -18,5 +18,5 @@ class GenericWorkResource < Hyrax::Work
     pdf_splitter_service: IiifPrint::TenantConfig::PdfSplitter
   )
 
-  prepend OrderAlready.for(:creator)
+  prepend OrderAlready.for(:creator) unless Hyrax.config.flexible?
 end

@@ -5,10 +5,10 @@
 class OerResource < Hyrax::Work
   # Commented out basic_metadata because these terms were added to etd_resource so we can customize it.
   # include Hyrax::Schema(:basic_metadata)
-  include Hyrax::Schema(:oer_resource)
-  include Hyrax::Schema(:bulkrax_metadata)
-  include Hyrax::Schema(:with_pdf_viewer)
-  include Hyrax::Schema(:with_video_embed)
+  include Hyrax::Schema(:oer_resource) unless Hyrax.config.flexible?
+  include Hyrax::Schema(:bulkrax_metadata) unless Hyrax.config.flexible?
+  include Hyrax::Schema(:with_pdf_viewer) unless Hyrax.config.flexible?
+  include Hyrax::Schema(:with_video_embed) unless Hyrax.config.flexible?
   include Hyrax::ArResource
   include Hyrax::NestedWorks
 
@@ -19,7 +19,7 @@ class OerResource < Hyrax::Work
     pdf_splitter_service: IiifPrint::TenantConfig::PdfSplitter
   )
 
-  prepend OrderAlready.for(:creator)
+  prepend OrderAlready.for(:creator) unless Hyrax.config.flexible?
 
   def previous_version
     @previous_version ||= Hyrax.query_service.find_many_by_ids(ids: previous_version_id) if previous_version_id.present?

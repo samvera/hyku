@@ -3,8 +3,8 @@
 # Generated via
 #  `rails generate hyrax:collection_resource CollectionResource`
 class CollectionResourceForm < Hyrax::Forms::PcdmCollectionForm
-  include Hyrax::FormFields(:basic_metadata)
-  include Hyrax::FormFields(:bulkrax_metadata)
-  include Hyrax::FormFields(:collection_resource)
+  include Hyrax::FormFields(:basic_metadata) unless Hyrax.config.flexible?
+  include Hyrax::FormFields(:bulkrax_metadata) unless Hyrax.config.flexible?
+  include Hyrax::FormFields(:collection_resource) unless Hyrax.config.flexible?
   include CollectionAccessFiltering
 end

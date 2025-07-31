@@ -47,8 +47,8 @@ module ApplicationHelper
 
   def locale_for(type:, term:, record_class:)
     term              = term.to_s
-    record_class      = record_class.to_s.downcase
-    work_or_collection = record_class == Hyrax.config.collection_model.downcase ? 'collection' : 'defaults'
+    record_class      = record_class.to_s.underscore
+    work_or_collection = record_class == Hyrax.config.collection_model.underscore ? 'collection' : 'defaults'
     locale             = t("hyrax.#{record_class}.#{type}.#{term}")
 
     if missing_translation(locale)

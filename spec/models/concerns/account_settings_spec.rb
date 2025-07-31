@@ -28,6 +28,7 @@ RSpec.describe AccountSettings do
                                                                                 google_analytics_id
                                                                                 google_analytics_property_id
                                                                                 gtm_id
+                                                                                hidden_index_fields
                                                                                 oai_admin_email
                                                                                 oai_prefix
                                                                                 oai_sample_identifier
@@ -97,7 +98,7 @@ RSpec.describe AccountSettings do
 
       it 'adds an error to the setting' do
         expect(account.valid?).to eq(false)
-        expect(account.errors.messages[:bulkrax_field_mappings]).to eq(["unexpected token at 'hello world'"])
+        expect(account.errors.messages[:bulkrax_field_mappings]).to eq(["unexpected character: 'hello' at line 1 column 1"])
       end
     end
   end

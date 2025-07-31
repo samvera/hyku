@@ -8,9 +8,12 @@ zh:
       account:
         admin_emails: 一次输入一个电子邮件地址
         allow_signup: 允许用户注册您的存储库
+        analytics: 启用或禁用 Google Analytics 4 来跟踪用户互动，包括点击。
+        analytics_reporting: 启用或停用 Google Analytics 4 的报告功能，以便在信息中心显示分析数据。需要开发者支持才能进行设置。
         cache_api: 打开API端点的缓存。实验性
         contact_email: 系统通知将从其中发送的电子邮件地址。需要额外的配置才能从网站域以外的域添加地址
         contact_email_to: 通过联系页面提交的消息发送到的电子邮件地址
+        depositor_email_notifications: 启用或禁用电子邮件通知，以便向存款人发送其提交内容的统计摘要。此功能需要启用分析报告。
         doi_reader: 显示从Datacite读取以填充记录的能力。仍在进行中，请勿使用
         doi_writer: 为记录编写DOIs。仍在进行中，请勿使用
         email_format: 设置允许注册此存储库的电子邮件域的列表，例如(@ubiquitypress.com @gmail.com)。每个域之间留一个空格。
@@ -24,6 +27,7 @@ zh:
         geonames_username: 在http://www.geonames.org/manageaccount上注册
         google_analytics_id: 您的Google Analytics帐户ID
         gtm_id: 您的Google标签管理器帐户ID
+        hidden_index_fields: 逗号分隔。蛇形命名法。不包括 Solr 后缀（例如“title,rights_statement”）
         is_public: 用户可以在主页上发现您的网站，或者不需要特殊的用户名/密码就可以访问您的页面吗？
         locale_name: '添加到其locale.yml文件的租户特定语言环境后缀的名称。只应添加字母字符，不应添加符号或数字，这些将随后大写。
 

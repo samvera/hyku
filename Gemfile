@@ -30,7 +30,7 @@ gem 'blacklight_range_limit'
 gem 'bolognese', '>= 1.9.10'
 gem 'bootstrap', '~> 4.6'
 gem 'bootstrap-datepicker-rails'
-gem 'bulkrax', github: 'samvera/bulkrax', branch: 'main'
+gem 'bulkrax', '~> 9.1'
 gem 'byebug', group: %i[development test]
 gem 'capybara', group: %i[test]
 gem 'capybara-screenshot', '~> 1.0', group: %i[test]
@@ -53,14 +53,15 @@ gem 'good_job', '~> 2.99'
 gem 'googleauth', '~> 1.9.0'
 gem 'google-protobuf'
 gem 'grpc'
-gem 'hyrax', github: 'samvera/hyrax', branch: 'flexible_double_combo'
+gem 'hyrax', github: 'samvera/hyrax', branch: '5.0-flexible'
 gem 'hyrax-doi', github: 'samvera-labs/hyrax-doi', branch: 'rails_hyrax_upgrade'
 gem 'hyrax-iiif_av', github: 'samvera-labs/hyrax-iiif_av', branch: 'rails_hyrax_upgrade'
 gem 'i18n-debug', require: false, group: %i[development test]
 gem 'i18n-tasks', group: %i[development test]
-gem 'iiif_print', '~> 3.0'
+gem 'iiif_print', '~> 3.0.5'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails' # Use jquery as the JavaScript library
+gem 'json_schemer' # Required for m3 schema validation
 gem 'openssl', '>= 3.2.0'
 # The maintainers yanked 0.3.2 version (see https://github.com/dryruby/json-canonicalization/issues/2)
 gem 'json-canonicalization', "0.3.1"
@@ -81,10 +82,12 @@ gem 'pg'
 gem 'postrank-uri', '>= 1.0.24'
 gem 'pry-byebug', group: %i[development test]
 gem 'puma', '~> 5.6' # Use Puma as the app server
+gem 'rack-attack'
 gem 'rack-test', '0.7.0', group: %i[test] # rack-test >= 0.71 does not work with older Capybara versions (< 2.17). See #214 for more details
 gem 'rails-controller-testing', group: %i[test]
 gem 'rdf', '~> 3.2'
 gem 'redcarpet' # for Markdown constant
+gem 'redis-actionpack'
 gem 'redis-namespace', '~> 1.10' # Hyrax v5 relies on 1.5; but we'd like to have the #clear method so we need 1.10 or greater.
 gem 'redlock', '>= 0.1.2', '< 2.0' # lock redlock per https://github.com/samvera/hyrax/pull/5961
 gem 'riiif', '~> 2.0'

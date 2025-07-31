@@ -21,7 +21,14 @@ module VideoEmbedBehavior
                              I18n.t('errors.messages.valid_embed_url',
                                                             default: 'must be a valid YouTube or Vimeo Embed URL.')
                            }
-                }
+                },
+                if: :responds_to_video_embed?
+    end
+
+    private
+
+    def responds_to_video_embed?
+      respond_to?(:video_embed)
     end
   end
 end

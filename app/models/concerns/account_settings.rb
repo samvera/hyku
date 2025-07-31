@@ -44,6 +44,7 @@ module AccountSettings
     setting :google_scholarly_work_types, type: 'array', disabled: true
     setting :geonames_username, type: 'string', default: ''
     setting :gtm_id, type: 'string'
+    setting :hidden_index_fields, type: 'string', default: 'title'
     setting :locale_name, type: 'string', disabled: true
     setting :monthly_email_list, type: 'array', disabled: true
     setting :oai_admin_email, type: 'string', default: 'changeme@example.com'
@@ -74,6 +75,8 @@ module AccountSettings
 
   # rubocop:disable Metrics/BlockLength
   class_methods do
+    # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/AbcSize
     def setting(name, args)
       known_type = ['array', 'boolean', 'hash', 'string', 'json_editor'].include?(args[:type])
       raise "Setting type #{args[:type]} is not supported. Can not laod." unless known_type
@@ -85,12 +88,17 @@ module AccountSettings
       # watch out because false is a valid value to return here
       define_method(name) do
         value = super()
+        if name == :analytics_reporting || name == :analytics
+          return value.nil? ? args[:default] : set_type(value, (args[:type]).to_s)
+        end
         value = value.nil? ? ENV.fetch("HYKU_#{name.upcase}", nil) : value
         value = value.nil? ? ENV.fetch("HYRAX_#{name.upcase}", nil) : value
         value = value.nil? ? ENV.fetch(name.upcase.to_s, nil) : value
         value = value.nil? ? args[:default] : value
         set_type(value, (args[:type]).to_s)
       end
+      # rubocop:enable Metrics/AbcSize
+      # rubocop:enable Metrics/MethodLength
     end
 
     # rubocop:disable Metrics/MethodLength

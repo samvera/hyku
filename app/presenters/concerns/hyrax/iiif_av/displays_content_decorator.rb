@@ -47,7 +47,7 @@ module Hyrax
           streams.collect { |label, url| video_display_content(url, label) }
         else
           Hyku::Application.iiif_video_labels_and_mime_types.map do |label, mime_type|
-            url = Hyku::Application.iiif_video_url_builder.call(document: solr_document, label:, host: request.base_url)
+            url = Hyku::Application.iiif_av_url_builder.call(document: solr_document, label:, host: request.base_url, mime_type:)
             video_display_content(url, label, mime_type:)
           end
         end
@@ -78,7 +78,7 @@ module Hyrax
           streams.collect { |label, url| audio_display_content(url, label) }
         else
           Hyku::Application.iiif_audio_labels_and_mime_types.map do |label, mime_type|
-            url = Hyku::Application.iiif_audio_url_builder.call(document: solr_document, label:, host: request.base_url)
+            url = Hyku::Application.iiif_av_url_builder.call(document: solr_document, label:, host: request.base_url, mime_type:)
             audio_display_content(url, label, mime_type:)
           end
         end

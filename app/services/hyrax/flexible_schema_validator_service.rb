@@ -2,6 +2,8 @@
 
 require 'json_schemer'
 require_relative 'core_metadata_validator'
+require_relative 'flexible_schema_validators/schema_validator'
+require_relative 'flexible_schema_validators/class_validator'
 
 module Hyrax
   class FlexibleSchemaValidatorService
@@ -35,9 +37,10 @@ module Hyrax
       validate_required_classes
       validate_class_availability
       validate_available_on_classes_defined
+      validate_existing_records_classes_defined
       validate_schema
       validate_label_prop
-      CoreMetadataValidator.new(profile: profile, errors: @errors).validate!
+      validate_core_metadata
     end
 
     # The default JSON schema used when no custom schema is provided.
@@ -56,24 +59,22 @@ module Hyrax
 
     private
 
+    # Validates core metadata requirements using the CoreMetadataValidator.
+    #
+    # This delegates to CoreMetadataValidator to check that essential metadata
+    # properties are properly configured across all classes in the profile.
+    #
+    # @return [void]
+    def validate_core_metadata
+      CoreMetadataValidator.new(profile: profile, errors: @errors).validate!
+    end
+
     # Runs JSON schema validation and translates resulting errors into
     # user-friendly messages appended to {#errors}.
     #
     # @return [void]
     def validate_schema
-      schemer.validate(profile).to_a&.each do |error|
-        pointer = error['data_pointer']
-        type = error['type']
-
-        if pointer.end_with?('/available_on') && error['data'].nil? && type == 'object'
-          @errors << "Schema error at `#{pointer}`: `available_on` cannot be empty and must have a `class` or `context` sub-property."
-        elsif type == 'required'
-          missing_keys = error.dig('details', 'missing_keys')&.join("', '")
-          @errors << "Schema error at `#{pointer}`: Missing required properties: '#{missing_keys}'."
-        else
-          @errors << "Schema error at `#{pointer}`: Invalid value `#{error['data'].inspect}` for type `#{type}`."
-        end
-      end
+      FlexibleSchemaValidators::SchemaValidator.new(schemer, profile, @errors).validate!
     end
 
     # Ensures that all required classes are defined in the profile.
@@ -91,45 +92,22 @@ module Hyrax
     #
     # @return [void]
     def validate_class_availability
-      profile_classes = profile['classes'].keys
-      properties = profile['properties']
-      available_on_classes = properties.keys.flat_map do |key|
-        properties[key].fetch('available_on', nil)&.fetch('class', nil)
-      end.compact.uniq
-
-      combined_classes = profile_classes + available_on_classes
-      unique_classes = combined_classes.uniq
-      filtered_classes = unique_classes - required_classes
-      classes = filtered_classes.map { |klass| klass.gsub(/(?<=.)Resource$/, '') }
-
-      invalid_classes = classes.filter_map do |klass|
-        klass unless Hyrax.config.registered_curation_concern_types.include?(klass)
-      end
-
-      return if invalid_classes.empty?
-
-      @errors << "Invalid classes: #{invalid_classes.join(', ')}."
+      FlexibleSchemaValidators::ClassValidator.new(profile, required_classes, @errors).validate_availability!
     end
 
     # Validates that every class referenced under `available_on.class` is also
     # defined in the profile's top-level `classes` section.
     #
-    # This guards against a common mistake where a class is removed from the
-    # `classes` section but lingering references remain in one or more
-    # properties, which would otherwise lead to runtime errors.
     # @return [void]
     def validate_available_on_classes_defined
-      properties = profile['properties'] || {}
+      FlexibleSchemaValidators::ClassValidator.new(profile, required_classes, @errors).validate_references!
+    end
 
-      referenced_classes = properties.values.flat_map do |prop|
-        prop.dig('available_on', 'class')
-      end.compact.uniq
-
-      undefined_classes = referenced_classes - profile['classes'].keys
-
-      return if undefined_classes.empty?
-
-      @errors << "Classes referenced in `available_on` but not defined in `classes`: #{undefined_classes.join(', ')}."
+    # Validates that classes with existing records in the repository are not removed from the profile.
+    #
+    # @return [void]
+    def validate_existing_records_classes_defined
+      FlexibleSchemaValidators::ClassValidator.new(profile, required_classes, @errors).validate_existing_records!
     end
 
     # Validates that a `label` property exists and that it is available on

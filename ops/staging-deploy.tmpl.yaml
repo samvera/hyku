@@ -35,27 +35,31 @@ extraVolumeMounts: &volMounts
   - name: uploads
     mountPath: /app/samvera/hyrax-webapp/storage/files
     subPath: storage-files
+  - name: uploads
+    mountPath: /app/samvera/hyrax-webapp/log/rack_attack
+    subPath: rack-attack
 
 ingress:
   enabled: true
   hosts:
-    - host: hyku-staging.$BASE_URL
+    - host: hykustaging.org
       paths:
         - path: /
           pathType: ImplementationSpecific
-    - host: "*.hyku-staging.$BASE_URL"
+    - host: "*.hykustaging.org"
       paths:
         - path: /
           pathType: ImplementationSpecific
-  annotations: {
-    kubernetes.io/ingress.class: "nginx",
-    nginx.ingress.kubernetes.io/proxy-body-size: "0",
-    cert-manager.io/cluster-issuer: letsencrypt-production-dns
-  }
+  annotations:
+    {
+      kubernetes.io/ingress.class: "nginx",
+      nginx.ingress.kubernetes.io/proxy-body-size: "0",
+      cert-manager.io/cluster-issuer: letsencrypt-production-dns,
+    }
   tls:
     - hosts:
-        - hyku-staging.$BASE_URL
-        - "*.hyku-staging.$BASE_URL"
+        - hykustaging.org
+        - "*.hykustaging.org"
       secretName: hykustaging-tls
 
 extraEnvVars: &envVars
@@ -82,7 +86,7 @@ extraEnvVars: &envVars
   - name: GOOGLE_OAUTH_APP_NAME
     value: hyku-staging
   - name: GOOGLE_OAUTH_APP_VERSION
-    value: '1.0'
+    value: "1.0"
   - name: GOOGLE_OAUTH_PRIVATE_KEY_SECRET
     value: $GOOGLE_OAUTH_PRIVATE_KEY_SECRET
   - name: GOOGLE_OAUTH_PRIVATE_KEY_PATH
@@ -102,7 +106,7 @@ extraEnvVars: &envVars
   - name: PASSENGER_APP_ENV
     value: production
   - name: RAILS_CACHE_STORE_URL
-    value: redis://:staging@hyku-staging-redis-master:6379/staging
+    value: redis://:mysecret@hyku-staging-redis-master:6379/0
   - name: RAILS_ENV
     value: production
   - name: RAILS_LOG_TO_STDOUT
@@ -114,7 +118,7 @@ extraEnvVars: &envVars
   - name: REDIS_HOST
     value: hyku-staging-redis-master
   - name: REDIS_URL
-    value: redis://:staging@hyku-staging-redis-master:6379/staging
+    value: redis://:mysecret@hyku-staging-redis-master:6379/0
   - name: HYRAX_ACTIVE_JOB_QUEUE
     value: good_job
   - name: HYKU_BULKRAX_ENABLED
@@ -130,7 +134,7 @@ extraEnvVars: &envVars
   - name: HYRAX_VALKYRIE
     value: "true"
   - name: HYKU_ADMIN_HOST
-    value: hyku-staging.$BASE_URL
+    value: hykustaging.org
   - name: HYKU_ADMIN_ONLY_TENANT_CREATION
     value: "true"
   - name: HYKU_BLOCK_VALKYRIE_REDIRECT
@@ -138,11 +142,13 @@ extraEnvVars: &envVars
   - name: HYKU_ALLOW_SIGNUP
     value: "false"
   - name: HYKU_DEFAULT_HOST
-    value: "%{tenant}.hyku-staging.$BASE_URL"
+    value: "%{tenant}.hykustaging.org"
+  - name: HYKU_FOOTER_EXTRA
+    value: "Sponsored by <a href='https://notch8.com' class='navbar-link' target='_blank'>Notch8</a>"
   - name: HYKU_MULTITENANT
     value: "true"
   - name: HYKU_ROOT_HOST
-    value: hyku-staging.$BASE_URL
+    value: hykustaging.org
   - name: HYKU_SHOW_BACKTRACE
     value: "true"
   - name: HYKU_USER_DEFAULT_PASSWORD

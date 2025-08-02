@@ -10,6 +10,7 @@ module Sample
       setup_dependencies
       begin
         setup_job_configuration
+        Hydra::Derivatives.config.output_file_service = Hyrax::PersistDerivatives
         ENV['HYRAX_VALKYRIE'] = 'false'
         Hyrax.config.use_valkyrie = false
 
@@ -23,6 +24,7 @@ module Sample
 
         print_completion_summary(collections, images, generic_works, total_works)
       ensure
+        Hydra::Derivatives.config.output_file_service = Hyrax::ValkyriePersistDerivatives
         restore_job_configuration
       end
     end

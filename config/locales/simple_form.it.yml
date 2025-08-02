@@ -8,9 +8,12 @@ it:
       account:
         admin_emails: Inserisci un indirizzo email alla volta
         allow_signup: Permetti agli utenti di iscriversi al tuo repository
+        analytics: Abilita o disabilita Google Analytics 4 per monitorare le interazioni degli utenti, inclusi i clic.
+        analytics_reporting: Abilita o disabilita i report di Google Analytics 4 per visualizzare i dati analitici nella dashboard. Richiede il supporto degli sviluppatori per la configurazione.
         cache_api: Abilita la cache per gli endpoint API. Sperimentale
         contact_email: L'indirizzo email da cui saranno inviate le notifiche di sistema. È richiesta una configurazione aggiuntiva per aggiungere un indirizzo da domini diversi dal dominio del sito
         contact_email_to: L'indirizzo email al quale i messaggi inviati tramite la pagina di contatto sono inviati
+        depositor_email_notifications: Abilita o disabilita le notifiche email che inviano ai depositanti un riepilogo delle statistiche relative ai loro invii. Questa funzione richiede l'abilitazione dei report analitici.
         doi_reader: Mostra la capacità di leggere da Datacite per popolare i record. Lavoro in corso, non utilizzare
         doi_writer: Scrivi DOI per i record. Lavoro in corso, non utilizzare
         email_format: Imposta una lista di domini email che possono iscriversi a questo repository es. (@ubiquitypress.com @gmail.com). Lascia uno spazio tra ogni dominio.
@@ -24,6 +27,7 @@ it:
         geonames_username: Registrati su http://www.geonames.org/manageaccount
         google_analytics_id: L'ID del tuo account Google Analytics
         gtm_id: L'ID del tuo account Google Tag Manager
+        hidden_index_fields: Separato da virgole. Maiuscolo/minuscolo. Escludere i suffissi Solr (ad esempio "title,rights_statement").
         is_public: Gli utenti possono scoprire il tuo sito nella pagina principale o accedere alle tue pagine senza un nome utente/password speciale?
         locale_name: 'Il nome del suffisso specifico del tenant aggiunto ai loro file locale.yml. Aggiungi solo caratteri alfabetici, niente simboli o numeri, questi saranno poi capitalizzati.
 

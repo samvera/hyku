@@ -20,7 +20,7 @@ GIT
 
 GIT
   remote: https://github.com/notch8/willow_sword.git
-  revision: 4119de80efbb59d7a86b07e6e384dac182f2fe23
+  revision: 05cdbdebc83239647becd6fa4b4f81237c183055
   branch: main
   specs:
     willow_sword (0.2.0)
@@ -141,10 +141,10 @@ GIT
 
 GIT
   remote: https://github.com/samvera/bulkrax.git
-  revision: 03d7e8bf87e52777321ae2d572bd5d221ca40f5c
+  revision: 3c285347f3a11215ceb65b219942553eb3a1f5e9
   branch: main
   specs:
-    bulkrax (9.0.2)
+    bulkrax (9.1.0)
       bagit (~> 0.6.0)
       coderay
       denormalize_fields
@@ -156,14 +156,14 @@ GIT
       marcel
       oai (>= 0.4, < 2.x)
       rack (>= 2.0.6)
-      rails (>= 5.1.6)
+      rails (>= 5.1.6, < 7.0.0)
       rdf (>= 2.0.2, < 4.0)
       rubyzip
       simple_form
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: 632b44b299097989a0198526c195856403cb400d
+  revision: ab4d108114289822b186579cd73a53d68c145a73
   branch: main_before_rails_72
   specs:
     hyrax (5.0.4)
@@ -462,7 +462,7 @@ GEM
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
-    date (3.3.4)
+    date (3.4.1)
     declarative (0.0.20)
     denormalize_fields (1.3.0)
       activerecord (>= 4.1.14, < 8.0.0)
@@ -766,7 +766,7 @@ GEM
       json
     iiif_manifest (1.3.1)
       activesupport (>= 4)
-    iiif_print (3.0.4)
+    iiif_print (3.0.7)
       blacklight_iiif_search (>= 1.0, < 3.0)
       derivative-rodeo (~> 0.5)
       hyrax (>= 2.5, < 6)
@@ -927,7 +927,7 @@ GEM
     mime-types-data (3.2023.1205)
     mini_magick (4.12.0)
     mini_mime (1.1.5)
-    mini_portile2 (2.8.7)
+    mini_portile2 (2.8.8)
     minitest (5.20.0)
     mods (2.4.1)
       edtf
@@ -946,7 +946,7 @@ GEM
       redic
     net-http-persistent (4.0.5)
       connection_pool (~> 2.2)
-    net-imap (0.4.9)
+    net-imap (0.4.20)
       date
       net-protocol
     net-pop (0.1.2)
@@ -986,7 +986,7 @@ GEM
       bigdecimal (>= 3.0)
     oj_mimic_json (1.0.1)
     okcomputer (1.18.5)
-    omniauth (2.1.2)
+    omniauth (2.1.3)
       hashie (>= 3.4.6)
       rack (>= 2.2.3)
       rack-protection
@@ -995,9 +995,9 @@ GEM
     omniauth-rails_csrf_protection (1.0.1)
       actionpack (>= 4.2)
       omniauth (~> 2.0)
-    omniauth-saml (2.1.2)
+    omniauth-saml (2.1.3)
       omniauth (~> 2.1)
-      ruby-saml (~> 1.17)
+      ruby-saml (~> 1.18)
     omniauth_openid_connect (0.7.1)
       omniauth (>= 1.9, < 3)
       openid_connect (~> 2.2)
@@ -1056,7 +1056,9 @@ GEM
       rdf
     raabro (1.4.0)
     racc (1.8.1)
-    rack (2.2.9)
+    rack (2.2.14)
+    rack-attack (6.7.0)
+      rack (>= 1.0, < 4)
     rack-oauth2 (2.2.0)
       activesupport
       attr_required
@@ -1067,6 +1069,8 @@ GEM
     rack-protection (3.2.0)
       base64 (>= 0.1.0)
       rack (~> 2.2, >= 2.2.4)
+    rack-session (1.0.2)
+      rack (< 3)
     rack-test (0.7.0)
       rack (>= 1.0, < 3)
     rails-controller-testing (1.0.5)
@@ -1163,8 +1167,17 @@ GEM
     redic (1.5.3)
       hiredis
     redis (4.8.1)
+    redis-actionpack (5.5.0)
+      actionpack (>= 5)
+      redis-rack (>= 2.1.0, < 4)
+      redis-store (>= 1.1.0, < 2)
     redis-namespace (1.11.0)
       redis (>= 4)
+    redis-rack (3.0.0)
+      rack-session (>= 0.2.0)
+      redis-store (>= 1.2, < 2)
+    redis-store (1.11.0)
+      redis (>= 4, < 6)
     redlock (1.3.2)
       redis (>= 3.0.0, < 6.0)
     reform (2.6.2)
@@ -1187,7 +1200,7 @@ GEM
     retriable (3.1.2)
     reverse_markdown (2.1.1)
       nokogiri
-    rexml (3.3.9)
+    rexml (3.4.1)
     riiif (2.4.0)
       deprecation (>= 1.0.0)
       iiif-image-api (>= 0.1.0)
@@ -1260,7 +1273,7 @@ GEM
       multipart-post
       oauth2
     ruby-progressbar (1.13.0)
-    ruby-saml (1.17.0)
+    ruby-saml (1.18.0)
       nokogiri (>= 1.13.10)
       rexml
     ruby2_keywords (0.0.5)
@@ -1399,7 +1412,7 @@ GEM
     thread (0.2.2)
     thread_safe (0.3.6)
     tilt (2.3.0)
-    timeout (0.4.1)
+    timeout (0.4.3)
     tinymce-rails (5.10.9)
       railties (>= 3.1.1)
     trailblazer-option (0.1.2)
@@ -1557,11 +1570,13 @@ DEPENDENCIES
   postrank-uri (>= 1.0.24)
   pry-byebug
   puma (~> 5.6)
+  rack-attack
   rack-test (= 0.7.0)
   rails (~> 6.0)!
   rails-controller-testing
   rdf (~> 3.2)
   redcarpet
+  redis-actionpack
   redis-namespace (~> 1.10)
   redlock (>= 0.1.2, < 2.0)
   riiif (~> 2.0)

@@ -3,14 +3,15 @@
 FROM ruby:3.2-bookworm AS hyku-base
 USER root
 
-RUN apt update && \
+RUN apt-get update && \
     curl -sL https://deb.nodesource.com/setup_20.x | bash - && \
-    apt install -y --no-install-recommends \
+    apt-get install -y --no-install-recommends \
     build-essential \
     curl \
     exiftool \
     ffmpeg \
     git \
+    ghostscript \
     imagemagick \
     less \
     libgsf-1-dev \
@@ -66,14 +67,15 @@ RUN wget https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.0-57.t
 
 # Install "best" training data for Tesseract
 RUN echo "📚 Installing Tesseract Best (training data)!" && \
-    mkdir -p /usr/share/tessdata/ && \
-    cd /usr/share/tessdata/ && \
+    mkdir -p /usr/share/tesseract-ocr/5/tessdata/ && \
+    cd /usr/share/tesseract-ocr/5/tessdata/ && \
     wget https://github.com/tesseract-ocr/tessdata_best/blob/main/eng.traineddata?raw=true -O eng_best.traineddata
 
 RUN useradd -m -u 1001 -U -s /bin/bash --home-dir /app app && \
     mkdir -p /app/samvera/hyrax-webapp && \
     chown -R app:app /app && \
-    echo "export PATH=/app/samvera/hyrax-webapp/bin:${PATH}" >> /etc/bash.bashrc
+    echo "export PATH=/app/samvera/hyrax-webapp/bin:${PATH}" >> /etc/bash.bashrc && \
+    git config --global --add safe.directory \*
 
 USER app
 WORKDIR /app/samvera/hyrax-webapp
@@ -81,7 +83,7 @@ WORKDIR /app/samvera/hyrax-webapp
 # Bundle the gems once in base to make faster builds
 COPY --chown=1001:101 Gemfile /app/samvera/hyrax-webapp/
 COPY --chown=1001:101 Gemfile.lock /app/samvera/hyrax-webapp/
-RUN git config --global --add safe.directory /app/samvera && \
+RUN git config --global --add safe.directory \* && \
     bundle install --jobs "$(nproc)"
 
 # RUN mkdir -p /app/fits && \

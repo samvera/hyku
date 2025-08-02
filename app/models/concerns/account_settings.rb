@@ -44,6 +44,7 @@ module AccountSettings
     setting :google_scholarly_work_types, type: 'array', disabled: true
     setting :geonames_username, type: 'string', default: ''
     setting :gtm_id, type: 'string'
+    setting :hidden_index_fields, type: 'string', default: 'title'
     setting :locale_name, type: 'string', disabled: true
     setting :monthly_email_list, type: 'array', disabled: true
     setting :oai_admin_email, type: 'string', default: 'changeme@example.com'

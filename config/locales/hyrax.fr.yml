@@ -1205,6 +1205,8 @@ fr:
         navbar_link_background_hover_color: Couleur de survol de l'arrière-plan du lien de la barre de navigation
         navbar_link_text_color: Couleur du texte du lien de la barre de navigation
         navbar_link_text_hover_color: Couleur de survol du texte du lien de la barre de navigation
+        primary_button_background_color: Couleur d'arrière-plan du bouton principal
+        primary_button_border_color: Couleur de bordure du bouton principal
         primary_button_hover_color: Couleur de survol du bouton principal
         primary_button_text_color: Couleur du texte du bouton principal
         publisher: Éditeur

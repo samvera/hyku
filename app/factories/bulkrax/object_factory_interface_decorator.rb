@@ -19,36 +19,53 @@ module Bulkrax
     # @param work_type [Class] the Valkyrie/ActiveFedora work class
     # @raise [StandardError] when the work type is invalid for the profile or tenant
     def validate_work_type!(work_type)
-      full_name = work_type.to_s                   # e.g. "GenericWorkResource"
-      base_name = full_name.gsub(/Resource$/, '')  # e.g. "GenericWork"
+      full_name = work_type.to_s
+      base_name = full_name.gsub(/Resource$/, '')
 
-      # 0) System-level models are always valid
-      return if [Hyrax.config.admin_set_model,
-                 Hyrax.config.collection_model,
-                 Hyrax.config.file_set_model].map(&:to_s).include?(full_name)
+      return if system_level_model?(full_name)
 
-      # 1) Profile validation (only when Flexible Metadata is active)
-      if Hyrax.config.flexible?
-        profile = Hyrax::FlexibleSchema.current_version
-        if profile
-          profile_classes    = profile.dig('classes')&.keys || []
-          profile_work_types = profile_classes.map { |klass| klass.gsub(/Resource$/, '') }
+      validate_profile!(full_name, base_name) if flexible_metadata_enabled?
+      validate_tenant!(full_name, base_name)
+    end
 
-          unless profile_work_types.include?(base_name)
-            raise StandardError,
-                  "Work type '#{full_name}' is not defined in the current metadata profile. " \
-                  'Please add it to the profile.'
-          end
-        end
-      end
+    def system_level_model?(full_name)
+      system_models = [
+        Hyrax.config.admin_set_model,
+        Hyrax.config.collection_model,
+        Hyrax.config.file_set_model
+      ].map(&:to_s)
 
-      # 2) Tenant validation (must be listed in Site.available_works)
-      unless Site.instance.available_works.include?(full_name) ||
-             Site.instance.available_works.include?(base_name)
-        raise StandardError,
-              "Work type '#{full_name}' is not enabled for this tenant. " \
-              "Please enable it via the 'Available Work Types' setting of the Admin Dashboard."
-      end
+      system_models.include?(full_name)
+    end
+
+    def flexible_metadata_enabled?
+      Hyrax.config.flexible?
+    end
+
+    def validate_profile!(full_name, base_name)
+      profile = Hyrax::FlexibleSchema.current_version
+      return unless profile
+
+      profile_work_types = extract_profile_work_types(profile)
+      return if profile_work_types.include?(base_name)
+
+      raise StandardError,
+            "Work type '#{full_name}' is not defined in the current metadata profile. " \
+            'Please add it to the profile.'
+    end
+
+    def extract_profile_work_types(profile)
+      profile_classes = profile.dig('classes')&.keys || []
+      profile_classes.map { |klass| klass.gsub(/Resource$/, '') }
+    end
+
+    def validate_tenant!(full_name, base_name)
+      available_works = Site.instance.available_works
+      return if available_works.include?(full_name) || available_works.include?(base_name)
+
+      raise StandardError,
+            "Work type '#{full_name}' is not enabled for this tenant. " \
+            "Please enable it via the 'Available Work Types' setting of the Admin Dashboard."
     end
   end
 end

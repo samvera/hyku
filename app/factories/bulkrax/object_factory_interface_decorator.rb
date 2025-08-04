@@ -22,6 +22,11 @@ module Bulkrax
       full_name = work_type.to_s                   # e.g. "GenericWorkResource"
       base_name = full_name.gsub(/Resource$/, '')  # e.g. "GenericWork"
 
+      # 0) System-level models are always valid
+      return if [Hyrax.config.admin_set_model,
+                 Hyrax.config.collection_model,
+                 Hyrax.config.file_set_model].map(&:to_s).include?(full_name)
+
       # 1) Profile validation (only when Flexible Metadata is active)
       if Hyrax.config.flexible?
         profile = Hyrax::FlexibleSchema.current_version

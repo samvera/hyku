@@ -146,12 +146,12 @@ module Sample
 
     def find_or_create_admin_set
       admin_set_id = 'sample_admin_set'
-      admin_set = Hyrax.query_service.find_by(id: admin_set_id)
+      Hyrax.query_service.find_by(id: admin_set_id)
     rescue Valkyrie::Persistence::ObjectNotFoundError
 
       admin_set = Hyrax.config.admin_set_class.new(id: admin_set_id, title: 'Sample Admin Set')
       admin_set_result = Hyrax::AdminSetCreateService.call!(admin_set: admin_set, creating_user: @user)
-      admin_set
+      admin_set_result
     end
 
     def create_collections(count)

@@ -14,6 +14,8 @@ module Sample
         ENV['HYRAX_VALKYRIE'] = 'false'
         Hyrax.config.use_valkyrie = false
 
+        # we have to create the admin set after we switch modes
+        self.admin_set = find_or_create_admin_set
         collections = create_collections(quantity)
         images = create_images(quantity, collections)
         generic_works = create_generic_works(quantity, collections)
@@ -50,8 +52,83 @@ module Sample
     private
 
     def setup_dependencies
-      @user = User.first
+      self.user = User.first
       Rails.logger.debug "Creating #{quantity} sample Active Fedora works for tenant '#{tenant_name}'..."
+    end
+
+    def find_or_create_admin_set
+      admin_set = AdminSet.where(id: AdminSet::DEFAULT_ID)&.first
+      return admin_set if admin_set.present?
+      admin_set = AdminSet.new(id: AdminSet::DEFAULT_ID, title: Array.wrap(AdminSet::DEFAULT_TITLE))
+      admin_set.creator = [user.user_key] if user
+      admin_set.save.tap do |result|
+        if result
+          ActiveRecord::Base.transaction do
+            permission_template = create_permission_template
+            workflow = create_workflows_for(permission_template: permission_template)
+            create_default_access_for(permission_template: permission_template, workflow: workflow)
+          end
+        end
+      end
+      admin_set
+    end
+
+    def access_grants_attributes
+      [
+        { agent_type: 'group', agent_id: admin_group_name, access: Hyrax::PermissionTemplateAccess::MANAGE }
+      ].tap do |attribute_list|
+        # Grant manage access to the user if it exists. Should exist for all but default Admin Set
+        attribute_list << { agent_type: 'user', agent_id: user.user_key, access: Hyrax::PermissionTemplateAccess::MANAGE } if user
+      end
+    end
+
+    def admin_group_name
+      ::Ability.admin_group_name
+    end
+
+    def create_permission_template
+      permission_template = Hyrax::PermissionTemplate.create!(source_id: admin_set.id, access_grants_attributes: access_grants_attributes)
+      permission_template.reset_access_controls_for(collection: admin_set, interpret_visibility: true)
+      permission_template
+    end
+
+    def create_workflows_for(permission_template:)
+      Hyrax::Workflow::WorkflowImporter.method(:load_workflow_for).call(permission_template: permission_template)
+      grant_all_workflow_roles_to_creating_user_and_admins!(permission_template: permission_template)
+      Sipity::Workflow.activate!(permission_template: permission_template, workflow_name: Hyrax.config.default_active_workflow_name)
+    end
+
+    # Force creation of registered MANAGING role if it doesn't exist
+    def register_managing_role!
+      Sipity::Role[Hyrax::RoleRegistry::MANAGING]
+    end
+
+    def grant_all_workflow_roles_to_creating_user_and_admins!(permission_template:)
+      # This code must be invoked before calling `Sipity::Role.all` or the managing role won't be there
+      register_managing_role!
+      # Grant all workflow roles to the creating_user and the admin group
+      permission_template.available_workflows.each do |workflow|
+        Sipity::Role.all.each do |role|
+          workflow.update_responsibilities(role: role,
+                                           agents: workflow_agents)
+        end
+      end
+    end
+
+    def workflow_agents
+      [
+        Hyrax::Group.new(admin_group_name)
+      ].tap do |agent_list|
+        # The default admin set does not have a creating user
+        agent_list << user if user
+      end
+    end
+
+    # Gives deposit access to registered users to default AdminSet
+    def create_default_access_for(permission_template:, workflow:)
+      permission_template.access_grants.create(agent_type: 'group', agent_id: ::Ability.registered_group_name, access: Hyrax::PermissionTemplateAccess::DEPOSIT)
+      deposit = Sipity::Role[Hyrax::RoleRegistry::DEPOSITING]
+      workflow.update_responsibilities(role: deposit, agents: Hyrax::Group.new('registered'))
     end
 
     def create_collections(count)
@@ -127,7 +204,8 @@ module Sample
         description: [sample_data[:descriptions][index % sample_data[:descriptions].length]],
         creator: sample_data[:creators][index % sample_data[:creators].length],
         subject: sample_data[:subjects][index % sample_data[:subjects].length],
-        visibility: Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
+        visibility: Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC,
+        admin_set: admin_set
       )
       work.apply_depositor_metadata(user.user_key)
       work

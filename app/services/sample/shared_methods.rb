@@ -2,17 +2,19 @@
 
 module Sample
   module SharedMethods # rubocop:disable Metrics/ModuleLength
+    attr_accessor :admin_set, :user
+    attr_reader :tenant_name, :sample_files_dir, :sample_data, :quantity
+
     def initialize(tenant_name, quantity = 50)
       @tenant_name = tenant_name
       @quantity = quantity.to_i
       @sample_files_dir = Rails.root.join('db', 'seeds', 'sample')
       @sample_data = {}
       @user = nil
+      @admin_set = nil
     end
 
     private
-
-    attr_reader :tenant_name, :sample_files_dir, :sample_data, :user, :quantity
 
     def confirm_cleanup # rubocop:disable Metrics/AbcSize
       # Skip confirmation if CONFIRM environment variable is set to 'true'
@@ -94,7 +96,7 @@ module Sample
     end
 
     def setup_dependencies
-      @user = User.first
+      self.user = User.first
       Rails.logger.debug "Creating #{quantity} sample works for tenant '#{tenant_name}'..."
     end
 

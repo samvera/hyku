@@ -16,6 +16,8 @@ module Sample
         ENV['HYRAX_VALKYRIE'] = 'true'
         Hyrax.config.use_valkyrie = true
 
+        # we have to create the admin set after we switch modes
+        self.admin_set = find_or_create_admin_set
         collections = create_collections(quantity)
         images = create_images(quantity, collections)
         generic_works = create_generic_works(quantity, collections)
@@ -142,6 +144,16 @@ module Sample
       Rails.logger.debug "Creating #{quantity} sample Valkyrie resources for tenant '#{tenant_name}'..."
     end
 
+    def find_or_create_admin_set
+      admin_set_id = 'sample_admin_set'
+      admin_set = Hyrax.query_service.find_by(id: admin_set_id)
+    rescue Valkyrie::Persistence::ObjectNotFoundError
+
+      admin_set = Hyrax.config.admin_set_class.new(id: admin_set_id, title: 'Sample Admin Set')
+      admin_set_result = Hyrax::AdminSetCreateService.call!(admin_set: admin_set, creating_user: @user)
+      admin_set
+    end
+
     def create_collections(count)
       Rails.logger.debug "Creating Collections..."
       default_collection_type = Hyrax::CollectionType.find_or_create_default_collection_type
@@ -218,7 +230,8 @@ module Sample
         creator: sample_data[:creators][index % sample_data[:creators].length],
         subject: sample_data[:subjects][index % sample_data[:subjects].length],
         visibility: Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC,
-        depositor: user.user_key
+        depositor: user.user_key,
+        admin_set_id: admin_set.id
       }
 
       work = Hyrax.persister.save(resource: work_class.new(work_attrs))

@@ -130,7 +130,7 @@ extraEnvVars: &envVars
   - name: HYRAX_FITS_PATH
     value: /app/fits/fits.sh
   - name: HYRAX_FLEXIBLE
-    value: "true"
+    value: "false"
   - name: HYRAX_VALKYRIE
     value: "true"
   - name: HYKU_ADMIN_HOST

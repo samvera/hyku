@@ -105,6 +105,8 @@ ONBUILD COPY --chown=1001:101 $APP_PATH /app/samvera/hyrax-webapp
 ONBUILD RUN bundle install --jobs "$(nproc)"
 
 FROM hyku-base AS hyku-web
+# ✅ Fix Git hardlink error in CI
+ENV BUNDLER_NO_HARDLINK=1
 RUN RAILS_ENV=production SECRET_KEY_BASE=`bin/rake secret` DB_ADAPTER=nulldb DB_URL='postgresql://fake' bundle exec rake assets:precompile && yarn install
 CMD ./bin/web
 

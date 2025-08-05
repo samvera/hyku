@@ -2,6 +2,8 @@
 
 # TODO: remove when issue https://github.com/notch8/hykuup_knapsack/issues/387 has been addressed and updated into this repo
 
+# OVERRIDES BULKRAXv9.1.0 to validate work types against the profile and tenant
+
 module Bulkrax
   module ObjectFactoryInterfaceDecorator
     # Perform a work-type sanity check before the factory creates/updates the
@@ -68,6 +70,23 @@ module Bulkrax
             "Please enable it via the 'Available Work Types' setting of the Admin Dashboard."
     end
   end
+
+  # Decorator for ValkyrieObjectFactory to ensure validation runs for Valkyrie objects
+  # since ValkyrieObjectFactory overrides create/update and bypasses the run method
+  module ValkyrieObjectFactoryDecorator
+    def create
+      validate_work_type!(klass)
+      super
+    end
+
+    def update
+      validate_work_type!(klass)
+      super
+    end
+
+    include ObjectFactoryInterfaceDecorator
+  end
 end
 
 ::Bulkrax::ObjectFactoryInterface.prepend(Bulkrax::ObjectFactoryInterfaceDecorator)
+::Bulkrax::ValkyrieObjectFactory.prepend(Bulkrax::ValkyrieObjectFactoryDecorator)

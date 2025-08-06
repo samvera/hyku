@@ -64,7 +64,7 @@ module Sample
       admin_set.save.tap do |result|
         if result
           ActiveRecord::Base.transaction do
-            permission_template = create_permission_template
+            permission_template = create_permission_template(result)
             workflow = create_workflows_for(permission_template: permission_template)
             create_default_access_for(permission_template: permission_template, workflow: workflow)
           end
@@ -86,7 +86,7 @@ module Sample
       ::Ability.admin_group_name
     end
 
-    def create_permission_template
+    def create_permission_template(admin_set)
       permission_template = Hyrax::PermissionTemplate.create!(source_id: admin_set.id, access_grants_attributes: access_grants_attributes)
       permission_template.reset_access_controls_for(collection: admin_set, interpret_visibility: true)
       permission_template

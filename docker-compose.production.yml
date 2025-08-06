@@ -1,5 +1,5 @@
 x-app: &app
-  image: ghcr.io/samvera/hyku:${TAG:-latest}
+  image: ghcr.io/samvera/hyku/web:${TAG:-latest}
   env_file:
     - .env
   # NOTE: all common env variables moved to .env
@@ -43,12 +43,16 @@ services:
     networks:
       internal:
     healthcheck:
-      test: ["CMD-SHELL", "echo 'ruok' | nc -w 2 -q 2 localhost 2181 | grep imok || exit 1"]
+      test:
+        [
+          "CMD-SHELL",
+          "echo 'ruok' | nc -w 2 -q 2 localhost 2181 | grep imok || exit 1",
+        ]
       interval: "10s"
       timeout: "8s"
 
   solr:
-    image: hyku/solr:8
+    image: ghcr.io/samvera/hyku/solr:${TAG:-latest}
     environment:
       - OOM=script
       - SOLR_ADMIN_USER=solr
@@ -155,7 +159,7 @@ services:
       zoo:
         condition: service_started
 
-  # Do not recurse through all of tmp. derivitives will make booting
+  # Do not recurse through all of tmp. derivatives will make booting
   # very slow and eventually just time out as data grows
   check_volumes:
     <<: *app
@@ -177,6 +181,7 @@ services:
         solrcloud-upload-configset.sh /app/samvera/hyrax-webapp/solr/conf &&
         solrcloud-assign-configset.sh &&
         SOLR_COLLECTION_NAME=hydra-test solrcloud-assign-configset.sh &&
+        bundle &&
         db-migrate-seed.sh
     depends_on:
       db:

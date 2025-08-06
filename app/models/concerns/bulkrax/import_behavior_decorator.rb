@@ -1,14 +1,38 @@
 # frozen_string_literal: true
 
-# TODO: remove when issue https://github.com/notch8/hykuup_knapsack/issues/387 has been addressed and updated into this repo
-
+# OVERRIDES BULKRAX v9.1.0
+#
+# Validates the work type for a given entry at the beginning of the import
+# process. This ensures that we don't attempt to process an entry for a work
+# type that isn't enabled for the tenant or defined in the current metadata
+# profile, which would otherwise result in a cryptic KeyError.
 module Bulkrax
-  module ObjectFactoryInterfaceDecorator
-    # Perform a work-type sanity check before the factory creates/updates the
-    # object.  Any failure is rescued by Bulkrax and recorded on the Entry.
-    def run(&block)
-      validate_work_type!(klass)
-      super(&block)
+  module ImportBehaviorDecorator
+    # Overriding the entire method to inject validation at the correct place.
+    def build_for_importer
+      begin
+        # OVERRIDE begin
+        validate_work_type!(factory_class)
+        # OVERRIDE end
+
+        build_metadata
+        unless importerexporter.validate_only
+          raise CollectionsCreatedError unless collections_created?
+          @item = factory.run!
+          add_user_to_permission_templates!
+          parent_jobs if parsed_metadata[related_parents_parsed_mapping]&.join.present?
+          child_jobs if parsed_metadata[related_children_parsed_mapping]&.join.present?
+        end
+      rescue RSolr::Error::Http, CollectionsCreatedError => e
+        raise e
+      rescue StandardError => e
+        set_status_info(e)
+      else
+        set_status_info
+      ensure
+        save!
+      end
+      return @item
     end
 
     private
@@ -22,6 +46,7 @@ module Bulkrax
       full_name = work_type.to_s
       base_name = full_name.gsub(/Resource$/, '')
 
+      # System-level models like Collections and FileSets don't need validation.
       return if system_level_model?(full_name)
 
       validate_profile!(full_name, base_name) if flexible_metadata_enabled?
@@ -39,7 +64,7 @@ module Bulkrax
     end
 
     def flexible_metadata_enabled?
-      Hyrax.config.flexible?
+      defined?(Hyrax.config.flexible?) && Hyrax.config.flexible?
     end
 
     def validate_profile!(full_name, base_name)
@@ -70,4 +95,4 @@ module Bulkrax
   end
 end
 
-::Bulkrax::ObjectFactoryInterface.prepend(Bulkrax::ObjectFactoryInterfaceDecorator)
+Bulkrax::ImportBehavior.prepend(Bulkrax::ImportBehaviorDecorator)

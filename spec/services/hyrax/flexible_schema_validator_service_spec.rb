@@ -122,5 +122,25 @@ RSpec.describe Hyrax::FlexibleSchemaValidatorService do
         )
       end
     end
+    context 'when the repository already contains records of a class the profile removes' do
+      before do
+        allow(Hyrax.query_service).to receive(:count_all_of_model).and_return(0)
+        allow(Hyrax.query_service).to receive(:count_all_of_model)
+          .with(model: ImageResource).and_return(1)
+
+        profile['classes'].delete('ImageResource')
+        profile['properties'].each_value do |prop_details|
+          prop_details.dig('available_on', 'class')&.delete('ImageResource')
+        end
+
+        service.validate!
+      end
+
+      it 'is invalid' do
+        expect(service.errors).to include(
+          'Classes with existing records cannot be removed from the profile: ImageResource.'
+        )
+      end
+    end
   end
 end

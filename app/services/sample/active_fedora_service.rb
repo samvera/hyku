@@ -64,7 +64,7 @@ module Sample
       admin_set.save.tap do |result|
         if result
           ActiveRecord::Base.transaction do
-            permission_template = create_permission_template(result)
+            permission_template = create_permission_template(admin_set)
             workflow = create_workflows_for(permission_template: permission_template)
             create_default_access_for(permission_template: permission_template, workflow: workflow)
           end
@@ -204,6 +204,7 @@ module Sample
         description: [sample_data[:descriptions][index % sample_data[:descriptions].length]],
         creator: sample_data[:creators][index % sample_data[:creators].length],
         subject: sample_data[:subjects][index % sample_data[:subjects].length],
+        bulkrax_identifier: "Sample#{work_class}#{index}",
         visibility: Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC,
         admin_set: admin_set
       )

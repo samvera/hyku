@@ -7,12 +7,12 @@ namespace :db do
       task :create, [:tenant, :type, :quantity] => :environment do |_t, args|
         if args[:tenant].blank?
           puts "ERROR: Tenant name is required!"
-          puts "Usage: bundle exec rake db:seed:sample:create[tenant_name,quantity,type]"
+          puts "Usage: bundle exec rake db:seed:sample:create[tenant_name,type,quantity]"
           puts "Examples:"
-          puts "  bundle exec rake db:seed:sample:create[myuniversity.edu,100,activefedora]"
-          puts "  bundle exec rake db:seed:sample:create[myuniversity.edu,50,valkyrie]"
-          puts "  bundle exec rake db:seed:sample:create[myuniversity.edu] (defaults: 50, activefedora)"
-          puts "Types: 'activefedora' (default) or 'valkyrie'"
+          puts "  bundle exec rake db:seed:sample:create[tenant_name,activefedora,100]"
+          puts "  bundle exec rake db:seed:sample:create[tenant_name,valkyrie,50]"
+          puts "  bundle exec rake db:seed:sample:create[tenant_name] (defaults: activefedora, 50)"
+          puts "Types: 'activefedora' of 'af' (default) or 'valkyrie' or 'val'"
           exit 1
         end
 

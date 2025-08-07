@@ -2,7 +2,7 @@
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
-ENV['HYRAX_FLEXIBLE'] = 'false'
+ENV['HYRAX_FLEXIBLE'] ||= 'false'
 # In test most, unset some variables that can cause trouble
 # before booting up Rails
 ENV['HYKU_ADMIN_HOST'] = 'test.host'

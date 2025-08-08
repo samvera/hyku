@@ -230,6 +230,7 @@ module Sample
         creator: sample_data[:creators][index % sample_data[:creators].length],
         subject: sample_data[:subjects][index % sample_data[:subjects].length],
         visibility: Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC,
+        bulkrax_identifier: "SampleValk-#{work_class}#{index}",
         depositor: user.user_key,
         admin_set_id: admin_set.id
       }

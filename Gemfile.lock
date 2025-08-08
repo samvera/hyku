@@ -141,7 +141,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/bulkrax.git
-  revision: 3c285347f3a11215ceb65b219942553eb3a1f5e9
+  revision: fe825f98347c38c45cecb567c06cb0ee6c9a2ebd
   branch: main
   specs:
     bulkrax (9.1.0)
@@ -163,7 +163,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: ab4d108114289822b186579cd73a53d68c145a73
+  revision: b37c517787a2143ab28e3a07bfc5f58fbfe2b3db
   branch: main_before_rails_72
   specs:
     hyrax (5.0.4)

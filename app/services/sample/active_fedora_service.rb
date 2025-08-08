@@ -59,7 +59,7 @@ module Sample
     def find_or_create_admin_set
       admin_set = AdminSet.where(id: AdminSet::DEFAULT_ID)&.first
       return admin_set if admin_set.present?
-      admin_set = AdminSet.new(id: AdminSet::DEFAULT_ID, title: Array.wrap(AdminSet::DEFAULT_TITLE))
+      admin_set = AdminSet.new(id: AdminSet::DEFAULT_ID, title: Array.wrap('Fedora Sample Admin Set'))
       admin_set.creator = [user.user_key] if user
       admin_set.save.tap do |result|
         if result

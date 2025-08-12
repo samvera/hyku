@@ -181,7 +181,6 @@ services:
         solrcloud-upload-configset.sh /app/samvera/hyrax-webapp/solr/conf &&
         solrcloud-assign-configset.sh &&
         SOLR_COLLECTION_NAME=hydra-test solrcloud-assign-configset.sh &&
-        bundle &&
         db-migrate-seed.sh
     depends_on:
       db:

@@ -124,7 +124,8 @@ module Hyrax
       return unless config.key?('index_keys')
 
       profile_indexing = profile.dig('properties', property, 'indexing') || []
-      missing_keys = config['index_keys'] - profile_indexing
+      required_keys = config['index_keys'].reject { |key| key == 'title_sim' }
+      missing_keys = required_keys - profile_indexing
 
       return if missing_keys.empty?
 

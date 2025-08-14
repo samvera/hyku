@@ -63,7 +63,6 @@ properties:
       default: Title
     index_documentation: displayable, searchable
     indexing:
-      - title_sim
       - title_tesim
     form:
       required: true

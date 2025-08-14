@@ -60,7 +60,6 @@ properties:
     display_label:
       default: Title
     indexing:
-      - "title_sim"
       - "title_tesim"
     form:
       required: true

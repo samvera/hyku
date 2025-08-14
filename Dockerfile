@@ -9,6 +9,7 @@ ENV LD_PRELOAD=/usr/lib/libjemalloc.so.2
 ENV MALLOC_CONF='dirty_decay_ms:1000,narenas:2,background_thread:true'
 
 ENV TESSDATA_PREFIX=/app/samvera/tessdata
+ENV HOME=/app/samvera
 ADD https://github.com/tesseract-ocr/tessdata_best/blob/main/eng.traineddata?raw=true /app/samvera/tessdata/eng_best.traineddata
 # Bundle the gems once in base to make faster builds
 COPY --chown=1001:101 Gemfile /app/samvera/hyrax-webapp/
@@ -18,7 +19,6 @@ RUN git config --global --add safe.directory \* && \
 
 ARG APP_PATH=.
 COPY --chown=1001:101 $APP_PATH /app/samvera/hyrax-webapp
-RUN bundle install --jobs "$(nproc)"
 
 RUN RAILS_ENV=production SECRET_KEY_BASE=`bin/rake secret` DB_ADAPTER=nulldb DB_URL='postgresql://fake' bundle exec rake assets:precompile && yarn install
 CMD ./bin/web

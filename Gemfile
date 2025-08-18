@@ -123,7 +123,7 @@ gem 'valkyrie-shrine'
 gem 'web-console', '>= 3.3.0', group: %i[development] # <%= console %> in views
 gem 'webdrivers', '~> 4.7.0', group: %i[test]
 gem 'webmock', group: %i[test]
-gem 'willow_sword', github: 'notch8/willow_sword', branch: 'main'
+gem 'willow_sword', github: 'notch8/willow_sword', tag: 'v0.4.0'
 
 # Enabling the following gem breaks sidekiq. To Enable: assets.debug must be set to true in config/development.rb
 # gem "xray-rails", git: "https://github.com/brentd/xray-rails.git", branch: "bugs/ruby-3.0.0", group: %i[development]

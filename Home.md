@@ -8,7 +8,7 @@ Welcome to the Hyku development wiki!
   * [Custom Themes](#custom-themes)
 * [Management](#management)
 
-# Development
+## Development
 * [[Hyku Development Guide]]
 
 ## Multi-tenancy
@@ -25,7 +25,7 @@ Welcome to the Hyku development wiki!
 * [[ActiveJob on SQS]]
 * [[View Solr and Zookeeper dashboards in AWS]]
 
-### Cleanup
+## Cleanup
 * [[Cleaning out bad data]]
 * [[How Broke Is It? (Production data debugging scratchpad)]]
 
@@ -39,7 +39,10 @@ Welcome to the Hyku development wiki!
 ## Bulkrax: Import & Export
 * [[Field Mappings]]
 
-# Management
+## Flexible Metadata
+* [Documentation](https://samvera.atlassian.net/wiki/spaces/hyku/pages/3185541198/Flexible+Metadata+v6.2)
+
+## Management
 * [[Create super admin user]]
 * [[Super Admin vs Admin]]
 * [[Set email addresses]]

@@ -183,6 +183,7 @@ properties:
     indexing:
       - creator_sim
       - creator_tesim
+      - facetable
     form:
       required: true
       primary: true
@@ -423,6 +424,7 @@ properties:
     indexing:
       - contributor_tesim
       - contributor_sim
+      - facetable
     form:
       primary: false
     property_uri: http://purl.org/dc/elements/1.1/contributor
@@ -568,6 +570,7 @@ properties:
     indexing:
       - keyword_sim
       - keyword_tesim
+      - facetable
     form:
       primary: false
     property_uri: http://schema.org/keywords
@@ -629,6 +632,7 @@ properties:
     indexing:
       - language_sim
       - language_tesim
+      - facetable
     form:
       primary: false
     property_uri: http://purl.org/dc/elements/1.1/language
@@ -661,6 +665,7 @@ properties:
     indexing:
       - publisher_sim
       - publisher_tesim
+      - facetable
     form:
       primary: false
     property_uri: http://purl.org/dc/elements/1.1/publisher
@@ -746,6 +751,7 @@ properties:
     indexing:
       - resource_type_sim
       - resource_type_tesim
+      - facetable
     form:
       primary: false
     property_uri: http://purl.org/dc/terms/type
@@ -871,6 +877,7 @@ properties:
     indexing:
       - subject_sim
       - subject_tesim
+      - facetable
     form:
       primary: false
     property_uri: http://purl.org/dc/elements/1.1/subject

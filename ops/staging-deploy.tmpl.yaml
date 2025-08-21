@@ -196,6 +196,13 @@ extraEnvVars: &envVars
 
 worker:
   replicaCount: 1
+  extraInitContainers:
+    - name: db-wait
+      image: "{{ .Values.worker.image.repository }}:{{ .Values.worker.image.tag | default .Chart.AppVersion }}"
+      command:
+        - sh
+        - -c
+        - /app/samvera/hyrax-webapp/bin/db-wait.sh "$REDIS_HOST:6379"
   extraVolumeMounts: *volMounts
   extraEnvVars: *envVars
   podSecurityContext:

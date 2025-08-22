@@ -20,10 +20,10 @@ GIT
 
 GIT
   remote: https://github.com/notch8/willow_sword.git
-  revision: 1e6039e54aad32911943d979972614d871363f8c
-  tag: v0.4.1
+  revision: e52a27a13b2e8c2de7e89e200ce7f8e8228c2632
+  tag: v0.5.0
   specs:
-    willow_sword (0.4.1)
+    willow_sword (0.5.0)
       bagit (~> 0.4)
       rails (~> 6.1)
       rubyzip (>= 1.0.0)

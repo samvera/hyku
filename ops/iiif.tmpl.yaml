@@ -221,9 +221,9 @@ global:
 nginx:
   enabled: true
   image:
-    registry: registry.gitlab.com
-    repository: notch8/scripts/bitnami-nginx
-    tag: 1.21.5-debian-10-r4
+    registry: ghcr.io
+    repository: notch8/scripts/bitnamilegacy-nginx
+    tag: 1.21.6-debian-11-r21
   serverBlock: |-
     upstream rails_app {
       server {{ .Values.global.hyraxName }};

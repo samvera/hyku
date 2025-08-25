@@ -1,96 +1,119 @@
 # Getting Started
 
-- [Docker (Recommended)](#docker)
-- [Locally without Docker](#locally-without-docker)
+- [Docker Development Environment (Start Here)](#docker-development-environment)
 - [Kubernetes](#kubernetes)
 - [AWS](#aws)
+- [Troubleshooting](#troubleshooting)
 
-## Docker
-
-We distribute two `docker-compose.yml` configuration files.  The first is set up for development / running the specs. The other, `docker-compose.production.yml` is for running the Hyku stack in a production setting.
-
-*Note: You may need to add your user to the "docker" group:*
-
-```bash
-sudo gpasswd -a $USER docker
-newgrp docker
-```
+## Docker Development Environment
+Start off by setting up a local development environment where you can experiment with Hyku features and capabilities. This will help familiarize you with terminology and configuration, even if you plan on installing Hyku in your own cloud or data center later.
 
 ### Installation
 
-1) **Clone the repository and checkout the last release:**
+1) **Clone the repository and checkout the latest release:**
 
     ```bash
     git clone https://github.com/samvera/hyku.git
     cd hyku
-    git checkout tags/v5.2.0
+    git checkout tags/v6.2.0
     ```
 
-2) **Set up DNS:**
+2) **Set up DNS and TLS certificates using Stack Car:**
 
-    Hyku makes heavy use of domain names to determine which tenant to serve. On MacOS/Linux, it is recommended to use [Stack Car](https://github.com/notch8/stack_car) to handle the necessary SSL certs and proxy setup. When you install or update stack_car you may need to add the localhost.direct cert to your keychain. In order to do this, find the password [here](https://github.com/Upinel/localhost.direct?tab=readme-ov-file#a-non-public-ca-certificate-if-you-have-admin-right-on-your-development-environment-you-can-use-the-following-10-years-long-pre-generated-self-signed-certificate) before running `sc proxy cert`.
+    Hyku makes heavy use of domain names to determine which tenant(s) to serve. On MacOS/Linux, 
+    we recommended using [Stack Car](https://github.com/notch8/stack_car) to handle the necessary proxy setup including
+    SSL certstificates.<br/><br/>
 
-
-    #### Stack Car Installation
+    During the certificate installation, you will be prompted for two passwords.
+    The first is to unzip the wildcard certificate, you can find that password
+    [here](https://github.com/Upinel/localhost.direct?tab=readme-ov-file#a-non-public-ca-certificate-if-you-have-admin-right-on-your-development-environment-you-can-use-the-following-10-years-long-pre-generated-self-signed-certificate).
+    The second is your local system password to add the certificate to your local keychain.
 
     ```bash
     gem install stack_car
-    sc proxy cert # Only need this once per stack_car version
+    sc proxy cert # Only need this once per stack_car version, requires passwords
     sc proxy up
-    ```
-
-    #### Running Without Proxy
-
-    By copying `docker-compose.override-noproxy.yml` to `docker-compose.override.yml`, you can run Hyku without Dory, but you will have to set up your own DNS entries.
-    ```bash
-    cp docker-compose.override-noproxy.yml docker-compose.override.yml
     ```
 
 3) **Build the Docker images:**
 
+    Downloading the base images your first time may take up to 10 minutes on a 100Mbit connection. 
+    If you're on a slower connection, please be patient.
+
     ```bash
     docker compose build
     ```
-### Configuration
-
-Hyku configuration is primarily found in the `.env` file, which will get you running out of the box. To customize your configuration, see the [Configuration Guide](./configuration.md).
-
 ### Running the Application
 
-#### Starting
+1. **Starting**
 
-```bash
-docker compose up web
-```
+    The first time you start the application, the system will initialize the required containers 
+    from the images downloaded during the build process. This may take 3-5 minutes on a 
+    relatively fast connection.  After the first run, stopping and starting the containers will be 
+    significantly faster (typically under a minute).
+    ```bash
+    docker compose up web
+    ```
+    When you see `Listening on tcp://0.0.0.0:3000` in the logs, the application is ready.
 
-It will take some time for the application to start up, and a bit longer if it's the first startup. When you see `Listening on tcp://0.0.0.0:3000` in the logs, the application is ready.
+    #### Congratulations!!!
 
-If you used `sc proxy`, the application will be available from the browser at `https://admin-${APP_NAME}.localhost.direct`. APP_NAME defaults to `hyku`. You can also see the other services as listed in the docker-compose.yml file.
+   You can access the admin app in your browser at
+   [https://admin-hyku.localhost.direct](https://admin-hyku.localhost.direct).
+   > :thumbsup: You are now ready to start using Hyku! Please refer to **[Using Hyku](./using-hyku.md)**
+   > for instructions on getting your first tenant set up.
 
-**You are now ready to start using Hyku! Please refer to  [Using Hyku](./using-hyku.md) for instructions on getting your first tenant set up.**
+2. **Stopping (stop)**
 
-#### Stopping
+    If you ran `docker compose up` in the foreground, you can use *Control + C* to stop the running 
+    containers. If you're running in the background - e.g. `docker compose up -d`, you can stop the 
+    containers using:
+    ```bash
+    docker compose stop
+    ```
+   
+3. **Stopping & releasing resources (down)**
 
-```bash
-docker compose down
-```
+    Stop halts the runnining containers but does not tear down ephemeral resources used by Docker.
+    If you want to release resources associated with your containers, for instance to rebuild from 
+    a newer commit, you can use the "down" command:
 
-### Testing
+    ```bash
+    docker compose down
+    ```
 
-The full spec suite can be run in docker locally. There are several ways to do this, but one way is to run the following:
+### Additional Docker Options
 
-```bash
-docker compose exec web rake
-```
+#### Configuration
 
-## Locally without Docker
+Hyku configuration is primarily found in the `.env` file. Using the defaults checked out from
+GitHub will get you running out of the box. To customize your configuration later,
+see the [Configuration Guide](./configuration.md).
 
-Please note that this is unused by most contributors at this point and will likely become unsupported in a future release of Hyku unless someone in the community steps up to maintain it.
+#### Application name in URL
 
-### Compatibility
+The APP_NAME environment variable defaults to `hyku`, You can set this to another value in your
+local environment - e.g. `export APP_NAME=sandbox` - or via the `.env` file. The application path 
+will be "https://admin-${APP_NAME}.localhost.direct" - e.g. 
+[https://admin-**sandbox**.localhost.direct](https://admin-sandbox.localhost.direct).
 
-* Ruby 2.7 is recommended.  Later versions may also work.
-* Rails 5.2 is required.
+#### DNS & Certificates
+
+Stack Car provides DNS and TLS from local development using the `localhost.direct` domain.
+To use your own DNS you can run the application without Stack Car by
+copying `docker-compose.override-noproxy.yml` to `docker-compose.override.yml`,
+This lets you run Hyku without Dory, but you will have to set up your own DNS entries.
+>```bash
+>cp docker-compose.override-noproxy.yml docker-compose.override.yml
+>```
+
+#### Local development without Docker
+
+You may be able to run the application locally without docker by ensuring you have met the following
+requirements:
+
+* Ruby 3.2.x is requried.  Later versions may also work.
+* Rails 6.x is required.
 
 ```bash
 solr_wrapper
@@ -102,7 +125,6 @@ DISABLE_REDIS_CLUSTER=true ./bin/worker
 DISABLE_REDIS_CLUSTER=true ./bin/web
 ```
 
-
 ## Kubernetes
 
 Hyku relies on the helm charts provided by Hyrax. See [Deployment Info](https://github.com/samvera/hyrax/blob/main/CONTAINERS.md#deploying-to-production) for more information. We also provide a basic helm [deployment script](/bin/helm_deploy). Hyku currently needs some additional volumes and ENV vars over the base Hyrax. See (ops/review-deploy.tmpl.yaml) for an example of what that might look like.
@@ -113,9 +135,50 @@ AWS CloudFormation templates for the Hyku stack are available in a separate repo
 
 https://github.com/hybox/aws
 
-# Troubleshooting
+## Troubleshooting
 
-## Troubleshooting on Windows
+1. **Browser displays "404 Page not found"** OR **"Bad gateway" error**
+
+   This can occur after your containers have started, and before the rails (web) application has
+   finished initialization. Wait until you see this line in your terminal or log:
+   ```
+   web-1  | * Listening on http://0.0.0.0:3000
+   ```
+   If this issue persists for more than a minute or two, and you see activity from containers
+   in your terminal window, you may want to start over from scratch.
+
+2. **Nothing is working, I want to start over**
+   - **Gentle**
+     ```
+     # type Control+C to stop your running containers
+     docker compose up
+     ```
+   - **Firmer** 
+     ```
+     docker compose down
+     docker compose up web
+     ```
+   - **Sledgehammer**
+     ```
+     docker compose down
+     docker system prune --all --force
+     docker compose build
+     docker compose up web
+     ```
+   - **Nu-clear**
+     ```
+     docker compose down
+     docker system prune --all --force --volumes
+     cd ..
+     rm -rf hyku
+     git clone https://github.com/samvera/hyku.git
+     cd hyku
+     git checkout tags/v6.2.0 # or the release, branch, or commit of your choice
+     docker compose build
+     docker compose up web
+     ```
+
+### Windows Specific Issues
 1. When creating a work and adding a file, you get an internal server error due to ownership/permissions issues of the tmp directory:
     - Gain root access to the container (in a slightly hacky way, check_volumes container runs from root): `docker compose run check_volumes bash`
     - Change ownership to app: `chown -R app:app /app/samvera/hyrax-webapp`

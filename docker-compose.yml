@@ -75,10 +75,10 @@ services:
       - VIRTUAL_HOST=solr.hyku.test
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.solr-${APP_NAME:-hyku}.tls=true"
-      - "traefik.http.routers.solr-${APP_NAME:-hyku}.entrypoints=websecure"
-      - "traefik.http.routers.solr-${APP_NAME:-hyku}.rule=Host(`solr-${APP_NAME:-hyku}.localhost.direct`)"
-      - "traefik.http.services.solr-${APP_NAME:-hyku}.loadbalancer.server.port=8983"
+      - "traefik.http.routers.solr-${APP_NAME}.tls=true"
+      - "traefik.http.routers.solr-${APP_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.solr-${APP_NAME}.rule=Host(`solr-${APP_NAME}.localhost.direct`)"
+      - "traefik.http.services.solr-${APP_NAME}.loadbalancer.server.port=8983"
     user: root
     command: bash -c "
       chown -R 8983:8983 /var/solr
@@ -104,10 +104,10 @@ services:
       - 8080
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.fits-${APP_NAME:-hyku}.tls=true"
-      - "traefik.http.routers.fits-${APP_NAME:-hyku}.entrypoints=websecure"
-      - "traefik.http.routers.fits-${APP_NAME:-hyku}.rule=Host(`fits-${APP_NAME:-hyku}.localhost.direct`)"
-      - "traefik.http.services.fits-${APP_NAME:-hyku}.loadbalancer.server.port=8080"
+      - "traefik.http.routers.fits-${APP_NAME}.tls=true"
+      - "traefik.http.routers.fits-${APP_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.fits-${APP_NAME}.rule=Host(`fits-${APP_NAME}.localhost.direct`)"
+      - "traefik.http.services.fits-${APP_NAME}.loadbalancer.server.port=8080"
 
   fcrepo:
     image: ghcr.io/samvera/fcrepo4:4.7.5
@@ -123,10 +123,10 @@ services:
       - 8080
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.fcrepo-${APP_NAME:-hyku}.tls=true"
-      - "traefik.http.routers.fcrepo-${APP_NAME:-hyku}.entrypoints=websecure"
-      - "traefik.http.routers.fcrepo-${APP_NAME:-hyku}.rule=Host(`fcrepo-${APP_NAME:-hyku}.localhost.direct`)"
-      - "traefik.http.services.fcrepo-${APP_NAME:-hyku}.loadbalancer.server.port=8080"
+      - "traefik.http.routers.fcrepo-${APP_NAME}.tls=true"
+      - "traefik.http.routers.fcrepo-${APP_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.fcrepo-${APP_NAME}.rule=Host(`fcrepo-${APP_NAME}.localhost.direct`)"
+      - "traefik.http.services.fcrepo-${APP_NAME}.loadbalancer.server.port=8080"
 
   db:
     image: postgres:11.1
@@ -150,10 +150,10 @@ services:
       - VIRTUAL_HOST=admin.hyku.test
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.adminer-${APP_NAME:-hyku}.tls=true"
-      - "traefik.http.routers.adminer-${APP_NAME:-hyku}.entrypoints=websecure"
-      - "traefik.http.routers.adminer-${APP_NAME:-hyku}.rule=Host(`adminer-${APP_NAME:-hyku}.localhost.direct`)"
-      - "traefik.http.services.adminer-${APP_NAME:-hyku}.loadbalancer.server.port=8080"
+      - "traefik.http.routers.adminer-${APP_NAME}.tls=true"
+      - "traefik.http.routers.adminer-${APP_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.adminer-${APP_NAME}.rule=Host(`adminer-${APP_NAME}.localhost.direct`)"
+      - "traefik.http.services.adminer-${APP_NAME}.loadbalancer.server.port=8080"
 
   web:
     <<: *app
@@ -164,11 +164,11 @@ services:
       - VIRTUAL_HOST=.hyku.test
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.web-${APP_NAME:-hyku}.tls=true"
-      - "traefik.http.routers.web-${APP_NAME:-hyku}.entrypoints=websecure"
-      - "traefik.http.routers.web-${APP_NAME:-hyku}.priority=10"
-      - "traefik.http.routers.web-${APP_NAME:-hyku}.rule=HostRegexp(`.+-${APP_NAME:-hyku}.localhost.direct`)"
-      - "traefik.http.services.web-${APP_NAME:-hyku}.loadbalancer.server.port=3000"
+      - "traefik.http.routers.web-${APP_NAME}.tls=true"
+      - "traefik.http.routers.web-${APP_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.web-${APP_NAME}.priority=10"
+      - "traefik.http.routers.web-${APP_NAME}.rule=HostRegexp(`.+-${APP_NAME}.localhost.direct`)"
+      - "traefik.http.services.web-${APP_NAME}.loadbalancer.server.port=3000"
     depends_on:
       db:
         condition: service_started
@@ -284,7 +284,7 @@ services:
       - VIRTUAL_HOST=chrome.hyku.test
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.chrome-${APP_NAME:-hyku}.tls=true"
-      - "traefik.http.routers.chrome-${APP_NAME:-hyku}.entrypoints=websecure"
-      - "traefik.http.routers.chrome-${APP_NAME:-hyku}.rule=Host(`chrome-${APP_NAME:-hyku}.localhost.direct`)"
-      - "traefik.http.services.chrome-${APP_NAME:-hyku}.loadbalancer.server.port=7900"
+      - "traefik.http.routers.chrome-${APP_NAME}.tls=true"
+      - "traefik.http.routers.chrome-${APP_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.chrome-${APP_NAME}.rule=Host(`chrome-${APP_NAME}.localhost.direct`)"
+      - "traefik.http.services.chrome-${APP_NAME}.loadbalancer.server.port=7900"

@@ -121,6 +121,12 @@ Hyku supports Google Analytics 4 for tracking user interactions and generating a
 
 ### Quick Setup Overview
 
+**📋 Setup Sequence (MUST be done in this order):**
+
+1. **Global Admin**: Set up Google Cloud + GA4 properties
+2. **Developer**: Configure global environment variables + restart app
+3. **Tenants**: Configure individual tenant analytics settings
+
 #### 1. 🌐 Global Administrator Setup
 
 **Google Cloud Console:**
@@ -138,32 +144,69 @@ Hyku supports Google Analytics 4 for tracking user interactions and generating a
 
 #### 2. 🔧 Developer Environment Setup
 
-**Required Environment Variables:**
+⚠️ **CRITICAL:** These global environment variables **must be configured BEFORE** tenants can set up their individual analytics properties.
+
+**Required Global Environment Variables:**
 
 ```bash
-# Enable GA4 globally
+# Enable GA4 globally across all tenants
 HYRAX_ANALYTICS=true
 HYRAX_ANALYTICS_REPORTING=true
 HYRAX_ANALYTICS_PROVIDER=ga4
 
-# Global fallback IDs (optional)
-GOOGLE_ANALYTICS_ID=G-XXXXXXXXXX
-GOOGLE_ANALYTICS_PROPERTY_ID=123456789
+# Global Service Account JSON (REQUIRED - obtained from step 1)
+GOOGLE_ACCOUNT_JSON='{"type":"service_account","project_id":"your-project-name","private_key_id":"PRIVATE_KEY_ID_HERE","private_key":"-----BEGIN PRIVATE KEY-----\nYOUR_PRIVATE_KEY_CONTENT_HERE\n-----END PRIVATE KEY-----\n","client_email":"your-service-account@your-project-name.iam.gserviceaccount.com","client_id":"CLIENT_ID_HERE","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_x509_cert_url":"https://www.googleapis.com/robot/v1/metadata/x509/your-service-account%40your-project-name.iam.gserviceaccount.com","universe_domain":"googleapis.com"}'
 
-# Service Account JSON (required)
-GOOGLE_ACCOUNT_JSON='{"type":"service_account","project_id":"...","private_key":"-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n","client_email":"your-service@project.iam.gserviceaccount.com",...}'
+# Optional: Global fallback analytics IDs (if not set per-tenant)
+GOOGLE_ANALYTICS_ID=G-XXXXXXXXXX
+GOOGLE_ANALYTICS_PROPERTY_ID=NUMERIC_PROPERTY_ID
 ```
 
-**For Docker Compose:** Add to your `docker-compose.yml` or `.env` file.
-**For Production:** Set as environment variables or secrets.
+**How to Set These Variables:**
+
+**For Docker Compose Development:**
+Create or update your `.env` file in the project root:
+
+```bash
+echo 'HYRAX_ANALYTICS=true' >> .env
+echo 'HYRAX_ANALYTICS_REPORTING=true' >> .env
+echo 'HYRAX_ANALYTICS_PROVIDER=ga4' >> .env
+echo 'GOOGLE_ACCOUNT_JSON={"type":"service_account","project_id":"YOUR_PROJECT",...}' >> .env
+```
+
+**For Docker Compose (docker-compose.yml):**
+
+```yaml
+services:
+  web:
+    environment:
+      - HYRAX_ANALYTICS=true
+      - HYRAX_ANALYTICS_REPORTING=true
+      - HYRAX_ANALYTICS_PROVIDER=ga4
+      - GOOGLE_ACCOUNT_JSON={"type":"service_account","project_id":"YOUR_PROJECT",...}
+```
+
+**For Production Deployment:**
+
+- Set as environment variables in your hosting platform
+- Store `GOOGLE_ACCOUNT_JSON` as a secure secret (not in plain text config)
+- Consider using external secret management (Kubernetes secrets, AWS Secrets Manager, etc.)
 
 #### 3. 🏢 Tenant Configuration
+
+⚠️ **Prerequisites:**
+
+- Global environment variables must be set (step 2)
+- Application must be restarted after setting global variables
+- Service account must have access to the tenant's GA4 property
 
 Each tenant configures their specific GA4 property in **Admin → Settings:**
 
 - **Google Analytics ID**: Measurement ID (`G-XXXXXXXXXX`)
-- **Google Analytics Property ID**: Numeric Property ID (`123456789`)
+- **Google Analytics Property ID**: Numeric Property ID (`NUMERIC_PROPERTY_ID`)
 - Enable **Analytics** and **Analytics Reporting** checkboxes
+
+**Important:** Each tenant needs their own dedicated GA4 property for data isolation. The global service account must be added to each tenant's GA4 property with Viewer access.
 
 ### 🔐 Security & Access
 

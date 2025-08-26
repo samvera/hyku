@@ -21,9 +21,10 @@
           </div>
           <div class="card-body text-center">
             <p><%= t('.registered_users') %>: <%= @presenter.user_count(@start_date.to_date, @end_date.to_date) %></p>
-            <p><%= t('.new_visitors') %>: <%= Hyrax::Analytics.new_visitors('range', "#{@start_date},#{@end_date}") %></p>
-            <p><%= t('.returning_visitors') %>: <%= Hyrax::Analytics.returning_visitors('range', "#{@start_date},#{@end_date}") %></p>
-            <p><%= t('.total_visitors') %>: <%= Hyrax::Analytics.total_visitors('range', "#{@start_date},#{@end_date}") %></p>
+            <% tenant_id = current_account&.tenant || 'default' %>
+            <p><%= t('.new_visitors') %>: <%= Hyrax::Analytics.new_visitors('range', "#{@start_date},#{@end_date}", tenant_id: tenant_id) %></p>
+            <p><%= t('.returning_visitors') %>: <%= Hyrax::Analytics.returning_visitors('range', "#{@start_date},#{@end_date}", tenant_id: tenant_id) %></p>
+            <p><%= t('.total_visitors') %>: <%= Hyrax::Analytics.total_visitors('range', "#{@start_date},#{@end_date}", tenant_id: tenant_id) %></p>
           </div>
         </div>
       </div>

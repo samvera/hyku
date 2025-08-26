@@ -86,7 +86,9 @@ fr:
             success: "%{group} a mis à jour"
         humanized_name:
           admin: Administrateurs de référentiel
+          group/admin: Administrateur
           group/public: Utilisateurs non autorisés
+          group/work_editor: Rédacteur en chef
           registered: Utilisateurs enregistrés
         label:
           actions: actes

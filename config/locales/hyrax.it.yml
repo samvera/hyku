@@ -697,6 +697,7 @@ it:
           highlighted: evidenziato
           items: Elementi
           last_modified: Ultima modifica
+          profile_version: Versione del profilo
           title: Titolo
           type: genere
           visibility: Visibilità

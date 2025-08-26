@@ -3,7 +3,7 @@ it:
   simple_form:
     cancel: Annulla
     error_notification:
-      default_message: 'Si prega di rivedere i problemi di seguito:'
+      default_message: "Si prega di rivedere i problemi di seguito:"
     hints:
       account:
         admin_emails: Inserisci un indirizzo email alla volta
@@ -25,13 +25,15 @@ it:
         file_acl: Disattiva se stai utilizzando un sistema di file come samba o nfs che non supporta le liste di controllo degli accessi
         file_size_limit: Questo dovrebbe essere impostato almeno a 536870912000
         geonames_username: Registrati su http://www.geonames.org/manageaccount
-        google_analytics_id: L'ID del tuo account Google Analytics
+        google_analytics_id: ID di misurazione Google Analytics (es. G-XXXXXXXXXX). Importante: devi aggiungere l'account di servizio globale alla gestione accessi di questa proprietà GA4 con almeno permessi di visualizzatore.
+        google_analytics_property_id: ID numerico della proprietà per l'API di reporting GA4 (es. 123456789)
         gtm_id: L'ID del tuo account Google Tag Manager
         hidden_index_fields: Separato da virgole. Maiuscolo/minuscolo. Escludere i suffissi Solr (ad esempio "title,rights_statement").
         is_public: Gli utenti possono scoprire il tuo sito nella pagina principale o accedere alle tue pagine senza un nome utente/password speciale?
-        locale_name: 'Il nome del suffisso specifico del tenant aggiunto ai loro file locale.yml. Aggiungi solo caratteri alfabetici, niente simboli o numeri, questi saranno poi capitalizzati.
+        locale_name:
+          "Il nome del suffisso specifico del tenant aggiunto ai loro file locale.yml. Aggiungi solo caratteri alfabetici, niente simboli o numeri, questi saranno poi capitalizzati.
 
-          '
+          "
         monthly_email_list: Lista di indirizzi email ai quali inviare il rapporto mensile. Lascia uno spazio tra ogni email
         name: Un nome singolo o con trattino usato per gli aspetti tecnici del repository (ad es., "acme" o "acme-biblioteca").
         oai_admin_email: Indirizzo email di contatto dell'endpoint OAI
@@ -70,11 +72,11 @@ it:
         email: Indirizzo email
       user_search:
         uq: Ricerca utente
-    'no': 'No'
+    "no": "No"
     placeholders:
       user_search:
         uq: Nome o nome utente
     required:
       mark: "*"
       text: richiesto
-    'yes': Sì
+    "yes": Sì

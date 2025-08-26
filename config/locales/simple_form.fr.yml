@@ -3,7 +3,7 @@ fr:
   simple_form:
     cancel: Annuler
     error_notification:
-      default_message: 'Veuillez examiner les problèmes ci-dessous:'
+      default_message: "Veuillez examiner les problèmes ci-dessous:"
     hints:
       account:
         admin_emails: Entrez une adresse e-mail à la fois
@@ -25,13 +25,15 @@ fr:
         file_acl: Désactivez si vous utilisez un système de fichiers comme samba ou nfs qui ne prend pas en charge les listes de contrôle d'accès
         file_size_limit: Ceci doit être réglé à au moins 536870912000
         geonames_username: Inscrivez-vous sur http://www.geonames.org/manageaccount
-        google_analytics_id: L'ID de votre compte Google Analytics
+        google_analytics_id: ID de mesure Google Analytics (ex. G-XXXXXXXXXX). Important : vous devez ajouter le compte de service global à la gestion d'accès de cette propriété GA4 avec au moins des droits de visualisateur.
+        google_analytics_property_id: ID numérique de propriété pour l'API de rapport GA4 (ex. 123456789)
         gtm_id: L'ID de votre compte Google Tag Manager
         hidden_index_fields: Séparé par des virgules. Casse serpent. Exclure les suffixes Solr (par exemple, « titre, déclaration_de_droits »).
         is_public: Les utilisateurs peuvent-ils découvrir votre site sur la page d'accueil ou accéder à vos pages sans identifiant/mot de passe spécifique?
-        locale_name: 'Le nom du suffixe de locale spécifique au locataire ajouté à leurs fichiers locale.yml. Seuls les caractères alphabétiques doivent être ajoutés, pas de symboles ou de chiffres, ceux-ci seront alors mis en majuscule.
+        locale_name:
+          "Le nom du suffixe de locale spécifique au locataire ajouté à leurs fichiers locale.yml. Seuls les caractères alphabétiques doivent être ajoutés, pas de symboles ou de chiffres, ceux-ci seront alors mis en majuscule.
 
-          '
+          "
         monthly_email_list: Liste des adresses e-mail pour envoyer le rapport mensuel. Laissez un espace entre chaque e-mail
         name: Un nom simple ou avec des tirets utilisé pour les aspects techniques du dépôt (par exemple, "acme" ou "acme-bibliothèque").
         oai_admin_email: Adresse e-mail de contact du point d'accès OAI
@@ -70,11 +72,11 @@ fr:
         email: Adresse électronique
       user_search:
         uq: Recherche d'utilisateur
-    'no': Non
+    "no": Non
     placeholders:
       user_search:
         uq: Nom ou nom d'utilisateur
     required:
       mark: "*"
       text: requis
-    'yes': Oui
+    "yes": Oui

@@ -25,13 +25,15 @@ zh:
         file_acl: 如果使用不支持设置访问控制列表的文件系统（如samba或nfs），请关闭它
         file_size_limit: 此值应至少设置为536870912000
         geonames_username: 在http://www.geonames.org/manageaccount上注册
-        google_analytics_id: 您的Google Analytics帐户ID
+        google_analytics_id: Google Analytics测量ID (例如 G-XXXXXXXXXX)。重要：必须将全局服务账户添加到此GA4属性的访问管理中，至少需要查看者权限。
+        google_analytics_property_id: GA4报告API的数字属性ID (例如 123456789)
         gtm_id: 您的Google标签管理器帐户ID
         hidden_index_fields: 逗号分隔。蛇形命名法。不包括 Solr 后缀（例如“title,rights_statement”）
         is_public: 用户可以在主页上发现您的网站，或者不需要特殊的用户名/密码就可以访问您的页面吗？
-        locale_name: '添加到其locale.yml文件的租户特定语言环境后缀的名称。只应添加字母字符，不应添加符号或数字，这些将随后大写。
+        locale_name:
+          "添加到其locale.yml文件的租户特定语言环境后缀的名称。只应添加字母字符，不应添加符号或数字，这些将随后大写。
 
-          '
+          "
         monthly_email_list: 每月报告的电子邮件地址列表。每个电子邮件之间留一个空格
         name: 用于存储技术方面的单一或连字符名称（例如，“acme”或“acme-library”）。
         oai_admin_email: OAI端点联系电子邮件地址
@@ -70,11 +72,11 @@ zh:
         email: 电子邮件地址
       user_search:
         uq: 用户搜索
-    'no': 否
+    "no": 否
     placeholders:
       user_search:
         uq: 名称或用户名
     required:
       mark: "*"
       text: 必填
-    'yes': 是
+    "yes": 是

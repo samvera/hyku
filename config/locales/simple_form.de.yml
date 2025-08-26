@@ -3,7 +3,7 @@ de:
   simple_form:
     cancel: Abbrechen
     error_notification:
-      default_message: 'Bitte überprüfen Sie die untenstehenden Probleme:'
+      default_message: "Bitte überprüfen Sie die untenstehenden Probleme:"
     hints:
       account:
         admin_emails: Geben Sie jeweils eine E-Mail-Adresse ein
@@ -25,13 +25,15 @@ de:
         file_acl: Deaktivieren Sie dies, wenn Sie ein Dateisystem wie Samba oder NFS verwenden, das das Festlegen von Zugriffssteuerungslisten nicht unterstützt
         file_size_limit: Dies sollte mindestens auf 536870912000 eingestellt sein
         geonames_username: Registrieren Sie sich unter http://www.geonames.org/manageaccount
-        google_analytics_id: Die ID Ihres Google Analytics-Kontos
+        google_analytics_id: Google Analytics Mess-ID (z.B. G-XXXXXXXXXX). Wichtig: Sie müssen das globale Dienstkonto zur Zugriffsverwaltung dieser GA4-Property mit mindestens Betrachter-Berechtigungen hinzufügen.
+        google_analytics_property_id: Numerische Property-ID für GA4 Reporting API (z.B. 123456789)
         gtm_id: Die ID Ihres Google Tag Manager-Kontos
         hidden_index_fields: Komma-getrennt. Snake Case. Solr-Suffixe ausschließen (z. B. „title,rights_statement“)
         is_public: Können Benutzer Ihre Seite auf der Startseite entdecken oder auf Ihre Seiten zugreifen, ohne einen speziellen Benutzernamen / Passwort?
-        locale_name: 'Der Name des mandantenspezifischen Gebietsschemasuffix, der ihren locale.yml-Dateien hinzugefügt wird. Es sollten nur alphabetische Zeichen hinzugefügt werden, keine Symbole oder Zahlen, diese werden dann großgeschrieben.
+        locale_name:
+          "Der Name des mandantenspezifischen Gebietsschemasuffix, der ihren locale.yml-Dateien hinzugefügt wird. Es sollten nur alphabetische Zeichen hinzugefügt werden, keine Symbole oder Zahlen, diese werden dann großgeschrieben.
 
-          '
+          "
         monthly_email_list: Liste von E-Mail-Adressen, an die der monatliche Bericht gesendet wird. Lassen Sie jeweils ein Leerzeichen zwischen den E-Mails
         name: Ein einzelner oder mit Bindestrichen versehener Name, der für technische Aspekte des Repositories verwendet wird (z.B. "acme" oder "acme-bibliothek").
         oai_admin_email: OAI-Endpunkt-Kontakt-E-Mail-Adresse
@@ -70,11 +72,11 @@ de:
         email: E-Mail-Adresse
       user_search:
         uq: Benutzer suchen
-    'no': Nein
+    "no": Nein
     placeholders:
       user_search:
         uq: Name oder Benutzername
     required:
       mark: "*"
       text: erforderlich
-    'yes': Ja
+    "yes": Ja

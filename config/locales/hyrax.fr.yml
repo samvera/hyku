@@ -695,6 +695,7 @@ fr:
           highlighted: Souligné
           items: Articles
           last_modified: Dernière modification
+          profile_version: Version du profil
           title: Titre
           type: Type
           visibility: Visibilité

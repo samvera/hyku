@@ -86,7 +86,9 @@ zh:
             success: "%{group}更新"
         humanized_name:
           admin: 存储库管理员
+          group/admin: 行政
           group/public: 未授权用户
+          group/work_editor: 工作编辑
           registered: 注册用户
         label:
           actions: 操作

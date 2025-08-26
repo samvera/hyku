@@ -86,7 +86,9 @@ it:
             success: "%{group} aggiornato"
         humanized_name:
           admin: Amministratori di repository
+          group/admin: Amministratore
           group/public: Utenti non autorizzati
+          group/work_editor: Redattore del lavoro
           registered: utente registrato
         label:
           actions: Azioni

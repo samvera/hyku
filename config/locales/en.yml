@@ -97,6 +97,8 @@ en:
           admin: Repository Administrators
           registered: Registered Users
           group/public: Unauthorized Users
+          group/admin: Admin
+          group/work_editor: Work Editor
         label:
           actions: Actions
           created_at: Date Created

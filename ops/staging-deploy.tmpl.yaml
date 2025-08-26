@@ -81,20 +81,20 @@ extraEnvVars: &envVars
     value: "8080"
   - name: FCREPO_REST_PATH
     value: rest
+  # Google Analytics 4 (GA4) Configuration
+  - name: HYRAX_ANALYTICS
+    value: $HYRAX_ANALYTICS
+  - name: HYRAX_ANALYTICS_REPORTING
+    value: $HYRAX_ANALYTICS_REPORTING
+  - name: HYRAX_ANALYTICS_PROVIDER
+    value: "ga4"
+  - name: GOOGLE_ACCOUNT_JSON
+    value: $GOOGLE_ACCOUNT_JSON
+  # Optional: Global fallback analytics IDs (if not set per-tenant)
   - name: GOOGLE_ANALYTICS_ID
     value: $GOOGLE_ANALYTICS_ID
-  - name: GOOGLE_OAUTH_APP_NAME
-    value: hyku-staging
-  - name: GOOGLE_OAUTH_APP_VERSION
-    value: "1.0"
-  - name: GOOGLE_OAUTH_PRIVATE_KEY_SECRET
-    value: $GOOGLE_OAUTH_PRIVATE_KEY_SECRET
-  - name: GOOGLE_OAUTH_PRIVATE_KEY_PATH
-    value: prod-cred.p12
-  - name: GOOGLE_OAUTH_PRIVATE_KEY_VALUE
-    value: $GOOGLE_OAUTH_PRIVATE_KEY_VALUE
-  - name: GOOGLE_OAUTH_CLIENT_EMAIL
-    value: hyku-staging@hyku-staging.iam.gserviceaccount.com
+  - name: GOOGLE_ANALYTICS_PROPERTY_ID
+    value: $GOOGLE_ANALYTICS_PROPERTY_ID
   - name: INITIAL_ADMIN_EMAIL
     value: support@notch8.com
   - name: INITIAL_ADMIN_PASSWORD

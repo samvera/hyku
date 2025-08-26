@@ -25,7 +25,7 @@ fr:
         file_acl: Désactivez si vous utilisez un système de fichiers comme samba ou nfs qui ne prend pas en charge les listes de contrôle d'accès
         file_size_limit: Ceci doit être réglé à au moins 536870912000
         geonames_username: Inscrivez-vous sur http://www.geonames.org/manageaccount
-        google_analytics_id: ID de mesure Google Analytics (ex. G-XXXXXXXXXX). Important : vous devez ajouter le compte de service global à la gestion d'accès de cette propriété GA4 avec au moins des droits de visualisateur.
+        google_analytics_id: "ID de mesure Google Analytics (ex. G-XXXXXXXXXX). Important : vous devez ajouter le compte de service global à la gestion d'accès de cette propriété GA4 avec au moins des droits de visualisateur."
         google_analytics_property_id: ID numérique de propriété pour l'API de rapport GA4 (ex. 123456789)
         gtm_id: L'ID de votre compte Google Tag Manager
         hidden_index_fields: Séparé par des virgules. Casse serpent. Exclure les suffixes Solr (par exemple, « titre, déclaration_de_droits »).

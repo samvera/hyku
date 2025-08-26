@@ -25,7 +25,7 @@ de:
         file_acl: Deaktivieren Sie dies, wenn Sie ein Dateisystem wie Samba oder NFS verwenden, das das Festlegen von Zugriffssteuerungslisten nicht unterstützt
         file_size_limit: Dies sollte mindestens auf 536870912000 eingestellt sein
         geonames_username: Registrieren Sie sich unter http://www.geonames.org/manageaccount
-        google_analytics_id: Google Analytics Mess-ID (z.B. G-XXXXXXXXXX). Wichtig: Sie müssen das globale Dienstkonto zur Zugriffsverwaltung dieser GA4-Property mit mindestens Betrachter-Berechtigungen hinzufügen.
+        google_analytics_id: "Google Analytics Mess-ID (z.B. G-XXXXXXXXXX). Wichtig: Sie müssen das globale Dienstkonto zur Zugriffsverwaltung dieser GA4-Property mit mindestens Betrachter-Berechtigungen hinzufügen."
         google_analytics_property_id: Numerische Property-ID für GA4 Reporting API (z.B. 123456789)
         gtm_id: Die ID Ihres Google Tag Manager-Kontos
         hidden_index_fields: Komma-getrennt. Snake Case. Solr-Suffixe ausschließen (z. B. „title,rights_statement“)

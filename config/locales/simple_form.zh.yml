@@ -25,7 +25,7 @@ zh:
         file_acl: 如果使用不支持设置访问控制列表的文件系统（如samba或nfs），请关闭它
         file_size_limit: 此值应至少设置为536870912000
         geonames_username: 在http://www.geonames.org/manageaccount上注册
-        google_analytics_id: Google Analytics测量ID (例如 G-XXXXXXXXXX)。重要：必须将全局服务账户添加到此GA4属性的访问管理中，至少需要查看者权限。
+        google_analytics_id: "Google Analytics测量ID (例如 G-XXXXXXXXXX)。重要：必须将全局服务账户添加到此GA4属性的访问管理中，至少需要查看者权限。"
         google_analytics_property_id: GA4报告API的数字属性ID (例如 123456789)
         gtm_id: 您的Google标签管理器帐户ID
         hidden_index_fields: 逗号分隔。蛇形命名法。不包括 Solr 后缀（例如“title,rights_statement”）

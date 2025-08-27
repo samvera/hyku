@@ -1,5 +1,18 @@
 // OVERRIDE Hyrax v5.0.0 analytics events to include tenant identifier for multi-tenant analytics isolation
 
+// Override the GA4 pageview to include the tenant_id
+function trackPageView(provider) {
+  if(provider !== 'ga4'){
+    window.trackingTags.analytics().push([window.trackingTags.pageView()]);
+  }
+  else {
+    var tenantId = $('meta[name="analytics-tenant"]').prop('content');
+    gtag('event', 'page_view', {
+      'tenant_id': tenantId,
+    });
+  }
+}
+
 // Override the analytics event tracking to include tenant ID
 function trackAnalyticsEventsWithTenant(provider) {
   var tenantId = $('meta[name="analytics-tenant"]').prop('content');

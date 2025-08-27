@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE from Hyrax v5.0.1
-# - Added tenant_id to daily_events calls
+# OVERRIDE from Hyrax v5.0.1 to Add tenant_id to analyticscalls
 module Hyrax
   module Admin
     module Analytics

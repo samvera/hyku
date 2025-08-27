@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v5.0.1
-# This decorator fixes an ArgumentError in the Hyrax::Analytics::Ga4::Events class.
-# The original `initialize` method did not pass its arguments to the parent class's
-# `initialize` method, causing a crash when creating new event queries.
+# OVERRIDE Hyrax v5.0.1 to pass arguments to the parent class's `initialize` method
 module Hyrax
   module Analytics
     module Ga4

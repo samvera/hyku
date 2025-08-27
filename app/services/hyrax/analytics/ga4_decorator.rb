@@ -16,11 +16,11 @@ module Hyrax
     # the GA4 methods as instance methods. We need them as class methods instead.
     # So we extend the module directly to get the class methods like `client`.
     extend Hyrax::Analytics::Ga4
-    
+
     # OVERRIDE: Force the GA4 module to have the required class methods and Config class
     # In Docker environments, ActiveSupport::Concern class methods aren't being properly loaded
     # So we manually define the essential methods and classes here
-    
+
     # Define the Config class if it doesn't exist
     unless defined?(Hyrax::Analytics::Ga4::Config)
       module Hyrax::Analytics::Ga4
@@ -28,13 +28,13 @@ module Hyrax
           def self.load_from_yaml
             filename = Rails.root.join('config', 'analytics.yml')
             return new({}) unless File.exist?(filename)
-            
+
             yaml = YAML.safe_load(ERB.new(File.read(filename)).result)
             return new({}) unless yaml
-            
+
             config = yaml.fetch('analytics')&.fetch('ga4', nil)
             return new({}) unless config
-            
+
             new(config)
           end
 
@@ -61,20 +61,20 @@ module Hyrax
                 Rails.logger.error "No Google Analytics credentials found"
                 "{}"
               end
-            rescue => e
-              Rails.logger.error "Failed to read account JSON: #{e.message}"
-              "{}"
+                                   rescue => e
+                                     Rails.logger.error "Failed to read account JSON: #{e.message}"
+                                     "{}"
             end
           end
 
           def account_info
             @account_info ||= begin
-              if account_json_string.is_a? Hash
-                parsed = account_json_string
-              else
-                parsed = JSON.parse(account_json_string)
-              end
-              
+              parsed = if account_json_string.is_a? Hash
+                         account_json_string
+                       else
+                         JSON.parse(account_json_string)
+                       end
+
               # Validate that we have the required keys for Google Auth
               required_keys = ['type', 'private_key', 'client_email']
               missing_keys = required_keys - parsed.keys
@@ -82,16 +82,14 @@ module Hyrax
                 Rails.logger.error "Missing required keys in Google Analytics credentials: #{missing_keys}"
                 return {}
               end
-              
+
               # Fix common private key formatting issues
-              if parsed['private_key'] && parsed['private_key'].include?('\\n')
-                parsed['private_key'] = parsed['private_key'].gsub('\\n', "\n")
-              end
-              
+              parsed['private_key'] = parsed['private_key'].gsub('\\n', "\n") if parsed['private_key']&.include?('\\n')
+
               parsed
-            rescue => e
-              Rails.logger.error "Failed to parse account_info: #{e.message}"
-              {}
+                              rescue => e
+                                Rails.logger.error "Failed to parse account_info: #{e.message}"
+                                {}
             end
           end
 
@@ -101,14 +99,14 @@ module Hyrax
         end
       end
     end
-    
+
     # Define the essential class methods if they don't exist
     unless Hyrax::Analytics::Ga4.respond_to?(:config)
       module Hyrax::Analytics::Ga4
         def self.config
           @config ||= Config.load_from_yaml
         end
-        
+
         def self.client
           @client ||= begin
             # Check if we have valid credentials first
@@ -117,62 +115,62 @@ module Hyrax
               Rails.logger.warn "Google Analytics credentials not configured - analytics disabled"
               return nil
             end
-            
+
             # Ensure the Google Analytics gem is loaded
             require "google/analytics/data/v1beta"
             ::Google::Analytics::Data::V1beta::AnalyticsData::Client.new do |conf|
               conf.credentials = account_info
             end
-          rescue LoadError => e
-            Rails.logger.error "Google Analytics gem not available: #{e.message}"
-            nil
-          rescue OpenSSL::PKey::RSAError => e
-            Rails.logger.error "Invalid Google Analytics credentials (RSA key error): #{e.message}"
-            Rails.logger.error "Please check your GOOGLE_ACCOUNT_JSON or GOOGLE_ACCOUNT_JSON_PATH configuration"
-            nil
-          rescue => e
-            Rails.logger.error "Failed to create analytics client: #{e.class} - #{e.message}"
-            nil
+                      rescue LoadError => e
+                        Rails.logger.error "Google Analytics gem not available: #{e.message}"
+                        nil
+                      rescue OpenSSL::PKey::RSAError => e
+                        Rails.logger.error "Invalid Google Analytics credentials (RSA key error): #{e.message}"
+                        Rails.logger.error "Please check your GOOGLE_ACCOUNT_JSON or GOOGLE_ACCOUNT_JSON_PATH configuration"
+                        nil
+                      rescue => e
+                        Rails.logger.error "Failed to create analytics client: #{e.class} - #{e.message}"
+                        nil
           end
         end
-        
+
         def self.property
           "properties/#{config.property_id}"
         end
-        
+
         def self.default_date_range
           "#{Hyrax.config.analytics_start_date},#{Time.zone.today + 1.day}"
         end
-        
+
         def self.daily_events(action, date = default_date_range)
           date = date.split(",")
           EventsDaily.summary(date[0], date[1], action)
         end
-        
+
         def self.daily_events_for_id(id, action, date = default_date_range)
           date = date.split(",")
           EventsDaily.by_id(date[0], date[1], id, action)
         end
-        
+
         def self.top_events(action, date = default_date_range)
           date = date.split(",")
           Events.list(date[0], date[1], action)
         end
-        
-        def self.unique_visitors_for_id(id, date = default_date_range)
+
+        def self.unique_visitors_for_id(_id, _date = default_date_range)
           # This method isn't implemented in GA4 yet, return empty result
           []
         end
       end
     end
-    
+
     # Ensure the main Analytics module has the client method and proper delegations
     unless Hyrax::Analytics.respond_to?(:client)
       module Hyrax::Analytics
         def self.client
           Hyrax::Analytics::Ga4.client
         end
-        
+
         def self.daily_events(*args)
           result = Hyrax::Analytics::Ga4.daily_events(*args)
           # Ensure the result responds to the methods the view expects
@@ -180,46 +178,49 @@ module Hyrax
             def result.all
               self
             end
+
             def result.empty?
               false
             end
           end
           result
         end
-        
+
         def self.daily_events_for_id(*args)
           result = Hyrax::Analytics::Ga4.daily_events_for_id(*args)
           if result && !result.respond_to?(:all)
             def result.all
               self
             end
+
             def result.empty?
               false
             end
           end
           result
         end
-        
+
         def self.top_events(*args)
           Hyrax::Analytics::Ga4.top_events(*args)
         end
-        
-        def self.unique_visitors_for_id(*args)
+
+        def self.unique_visitors_for_id(*_args)
           # Return a default result that responds to expected methods
           result = []
           def result.all
             self
           end
+
           def result.empty?
             true
           end
           result
         end
-        
+
         def self.property
           Hyrax::Analytics::Ga4.property
         end
-        
+
         def self.default_date_range
           Hyrax::Analytics::Ga4.default_date_range
         end
@@ -312,4 +313,3 @@ end
 # to ensure our tenant-aware methods are used everywhere.
 Hyrax::Analytics::Ga4.singleton_class.prepend(Hyrax::Analytics::Ga4Decorator)
 Hyrax::Analytics.singleton_class.prepend(Hyrax::Analytics::Ga4Decorator)
-

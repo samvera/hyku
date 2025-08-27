@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v5.0.1
-# Add tenant-specific analytics filtering for collection reports to prevent data spillover between tenants
+# OVERRIDE Hyrax v5.0.1 to add tenant-specific analytics filtering for
+# collection reports to prevent data spillover between tenants
 module Hyrax
   module Admin
     module Analytics

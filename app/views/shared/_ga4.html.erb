@@ -2,40 +2,58 @@
 <!-- Google tag (gtag.js) -->
 <% if Hyrax.config.analytics? %>
   <%
-    # Tenant analytics ID is fetched from Hyrax::Analytics.config if available.
-    # This is only expected to be available in a tenant context.
-    tenant_analytics_id = nil
-    if Hyrax::Analytics.respond_to?(:config) && Hyrax::Analytics.config&.respond_to?(:analytics_id)
-      tenant_analytics_id = Hyrax::Analytics.config.analytics_id.presence
-    end
+    # Get the tenant-specific analytics ID directly from the current account
+    tenant_analytics_id = current_account&.google_analytics_id&.presence
 
-    # Global analytics ID is fetched from environment variables.
-    global_analytics_id = ENV.fetch('GOOGLE_ANALYTICS_ID', nil)
+          global_analytics_id = ENV.fetch('GOOGLE_ANALYTICS_ID', nil)
+      # Determine which analytics ID to load the gtag.js library with (prefer tenant, fallback to global)
+      primary_analytics_id = tenant_analytics_id.present? ? tenant_analytics_id : global_analytics_id
 
-    # Determine which analytics ID to use. For tenants, prefer the tenant-specific one.
-    # For admin/global pages, or tenants without a specific ID, use the global one.
-    analytics_id = tenant_analytics_id || global_analytics_id
-  %>
+      tenant_value = (current_account&.tenant || "default")
+    %>
 
-  <% if analytics_id.present? %>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=<%= analytics_id %>"></script>
+  <% if primary_analytics_id.present? %>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=<%= primary_analytics_id %>"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
+      function gtag(){ dataLayer.push(arguments); }
       gtag('js', new Date());
 
-      // Set the tenant_id for all subsequent GA4 events on this page
-      gtag('set', { 'tenant_id': '<%= current_account&.tenant || "default" %>' });
+      // Store the original gtag function
+      const originalGtag = gtag;
+      
+      // Create a wrapper that automatically injects our custom parameters
+      window.gtag = function() {
+        const args = Array.from(arguments);
+        
+        // If this is an 'event' call, inject our custom parameters
+        if (args[0] === 'event' && typeof args[2] === 'object') {
+          args[2] = args[2] || {};
+          args[2].debug_mode = true;
+          args[2].tenant_id = '<%= tenant_value %>';
+        }
+        
+        // Call the original gtag function with the modified arguments
+        return originalGtag.apply(this, args);
+      };
 
-      gtag('config', '<%= analytics_id %>');
 
-      <%# If there is a separate global ID and we are on a tenant page, configure it as well. %>
-      <% if tenant_analytics_id.present? && global_analytics_id.present? && tenant_analytics_id != global_analytics_id %>
-        gtag('config', '<%= global_analytics_id %>');
+<% if tenant_analytics_id.present? %>
+        gtag('config', '<%= tenant_analytics_id %>', { 'send_page_view': false });
       <% end %>
+
+      // Configure the global property (if available and different from tenant)
+      <% if global_analytics_id.present? %>
+        gtag('config', '<%= global_analytics_id %>', { 'send_page_view': false });
+      <% end %>
+
+      // Now send our own page_view event with the parameters
+      gtag('event', 'page_view', {});
+
+      // Optional: make gtag accessible elsewhere
       window.analytics = gtag;
     </script>
     <meta name="analytics-provider" content="ga4">
-    <meta name="analytics-tenant" content="<%= current_account&.tenant || 'default' %>">
+    <meta name="analytics-tenant" content="<%= tenant_value %>">
   <% end %>
 <% end %>

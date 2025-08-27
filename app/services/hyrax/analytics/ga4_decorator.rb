@@ -33,7 +33,7 @@ module Hyrax
       # Overrides the original top_events to filter by tenant_id.
       def top_events(action, date = default_date_range, tenant_id: nil)
         date_parts = date.is_a?(String) ? date.split(',') : date
-        query = Events.new(start_date: date_parts[0], end_date: date_parts[1])
+        query = Hyrax::Analytics::Ga4::Events.new(start_date: date_parts[0], end_date: date_parts[1])
         query.add_filter(dimension: 'eventName', values: [action])
         query.add_tenant_filter(tenant_id) if tenant_id
 
@@ -61,3 +61,7 @@ class Hyrax::Analytics::Ga4::Base
 end
 
 Hyrax::Analytics::Ga4.singleton_class.prepend(Hyrax::Analytics::Ga4Decorator)
+
+# Also prepend to the main Hyrax::Analytics module to ensure the methods are available there too
+Hyrax::Analytics.singleton_class.prepend(Hyrax::Analytics::Ga4Decorator)
+

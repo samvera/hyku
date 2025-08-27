@@ -1,19 +1,41 @@
 <%# Override Hyrax 5.0.3 to use multiple analytics configs, one app wide one and one tenant override %>
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=<%= Hyrax::Analytics.config.analytics_id.presence || ENV.fetch('GOOGLE_ANALYTICS_ID')%>"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+<% if Hyrax.config.analytics? %>
+  <%
+    # Tenant analytics ID is fetched from Hyrax::Analytics.config if available.
+    # This is only expected to be available in a tenant context.
+    tenant_analytics_id = nil
+    if Hyrax::Analytics.respond_to?(:config) && Hyrax::Analytics.config&.respond_to?(:analytics_id)
+      tenant_analytics_id = Hyrax::Analytics.config.analytics_id.presence
+    end
 
-  // Set the tenant_id for all subsequent GA4 events on this page
-  gtag('set', { 'tenant_id': '<%= current_account&.tenant || "default" %>' });
+    # Global analytics ID is fetched from environment variables.
+    global_analytics_id = ENV.fetch('GOOGLE_ANALYTICS_ID', nil)
 
-  gtag('config', '<%= Hyrax::Analytics.config.analytics_id %>');
-  <% if ENV.fetch('GOOGLE_ANALYTICS_ID', Hyrax::Analytics.config.analytics_id) != Hyrax::Analytics.config.analytics_id %>
-    gtag('config', '<%= ENV.fetch('GOOGLE_ANALYTICS_ID') %>');
+    # Determine which analytics ID to use. For tenants, prefer the tenant-specific one.
+    # For admin/global pages, or tenants without a specific ID, use the global one.
+    analytics_id = tenant_analytics_id || global_analytics_id
+  %>
+
+  <% if analytics_id.present? %>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=<%= analytics_id %>"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      // Set the tenant_id for all subsequent GA4 events on this page
+      gtag('set', { 'tenant_id': '<%= current_account&.tenant || "default" %>' });
+
+      gtag('config', '<%= analytics_id %>');
+
+      <%# If there is a separate global ID and we are on a tenant page, configure it as well. %>
+      <% if tenant_analytics_id.present? && global_analytics_id.present? && tenant_analytics_id != global_analytics_id %>
+        gtag('config', '<%= global_analytics_id %>');
+      <% end %>
+      window.analytics = gtag;
+    </script>
+    <meta name="analytics-provider" content="ga4">
+    <meta name="analytics-tenant" content="<%= current_account&.tenant || 'default' %>">
   <% end %>
- window.analytics = gtag;
-</script>
-<meta name="analytics-provider" content="ga4">
-<meta name="analytics-tenant" content="<%= current_account&.tenant || 'default' %>">
+<% end %>

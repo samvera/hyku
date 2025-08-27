@@ -280,8 +280,10 @@ module AccountSettings
        google_analytics_property_id.present? &&
        (ENV.fetch('GOOGLE_ACCOUNT_JSON', '').present? || ENV.fetch('GOOGLE_ACCOUNT_JSON_PATH', '').present?)
 
-      Hyrax::Analytics.config.analytics_id = google_analytics_id
-      Hyrax::Analytics.config.property_id = google_analytics_property_id
+      # The config object lives on the GA4 provider, not the main Analytics module.
+      # This was the root cause of the analytics methods not being loaded.
+      Hyrax::Analytics::Ga4.config.analytics_id = google_analytics_id
+      Hyrax::Analytics::Ga4.config.property_id = google_analytics_property_id
 
     else
       # Disable analytics if any required settings are missing

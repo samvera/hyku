@@ -6,6 +6,9 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
+  // Set the tenant_id for all subsequent GA4 events on this page
+  gtag('set', { 'tenant_id': '<%= current_account&.tenant || "default" %>' });
+
   gtag('config', '<%= Hyrax::Analytics.config.analytics_id %>');
   <% if ENV.fetch('GOOGLE_ANALYTICS_ID', Hyrax::Analytics.config.analytics_id) != Hyrax::Analytics.config.analytics_id %>
     gtag('config', '<%= ENV.fetch('GOOGLE_ANALYTICS_ID') %>');

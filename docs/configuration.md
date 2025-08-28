@@ -199,21 +199,40 @@ services:
 
 - Global environment variables must be set (step 2)
 - Application must be restarted after setting global variables
-- Service account must have access to the tenant's GA4 property
+- **CRITICAL**: Each tenant must grant access to the administrator's service account
 
-Each tenant configures their specific GA4 property in **Admin → Settings:**
+**Required Tenant Action - Grant Access to Administrator:**
+
+After the global administrator sets up the service account, **each tenant must manually add the administrator's service account email to their GA4 property access management:**
+
+1. **Get the Service Account Email**: The administrator should provide tenants with the service account email (format: `something@project-name.iam.gserviceaccount.com`)
+2. **Add to GA4 Property**: Each tenant must go to their GA4 property → Admin → Property Access Management
+3. **Grant Viewer Access**: Add the service account email with **Viewer** role access
+4. **Wait for Propagation**: Access changes may take up to 24 hours to fully propagate
+
+**Why This is Required:**
+
+- The global service account (configured by the administrator) needs access to each tenant's GA4 property to fetch analytics data
+- Without this access, analytics will fail silently and no data will be displayed
+- This is a Google Analytics security requirement - external accounts cannot access GA4 data without explicit permission
+
+**Complete Tenant Setup in Hyku:**
+
+Once access is granted, each tenant configures their specific GA4 property in **Admin → Settings:**
 
 - **Google Analytics ID**: Measurement ID (`G-XXXXXXXXXX`)
 - **Google Analytics Property ID**: Numeric Property ID (`NUMERIC_PROPERTY_ID`)
 - Enable **Analytics** and **Analytics Reporting** checkboxes
 
-**Important:** Each tenant needs their own dedicated GA4 property for data isolation. The global service account must be added to each tenant's GA4 property with Viewer access.
+**Important:** Each tenant needs their own dedicated GA4 property for data isolation. The global service account must have Viewer access to each tenant's GA4 property for the integration to work.
 
 ### 🔐 Security & Access
 
 - **Service Account** must have **Viewer** access to each GA4 property
 - **JSON key** should be stored securely (environment variables, not in code)
 - Each tenant gets isolated analytics data from their dedicated GA4 property
+- **Tenant Responsibility**: Each tenant must explicitly grant the administrator's service account access to their GA4 property
+- **Access Propagation**: Google Analytics access changes may take up to 24 hours to fully activate
 
 ### 🐛 Troubleshooting
 
@@ -227,7 +246,17 @@ Each tenant configures their specific GA4 property in **Admin → Settings:**
 
 - Verify the JSON key is valid and properly formatted
 - Check that Google Analytics Data API is enabled in Google Cloud Console
-- Ensure the service account email exists in GA4 property access management
+- **Most Common Issue**: Ensure the service account email exists in GA4 property access management
+- Verify the service account has **Viewer** access (not Editor or Admin)
+- Check that access was granted at the **Property** level, not just the Account level
+- Remember that access changes can take up to 24 hours to propagate
+
+**No data showing (most common issue):**
+
+- **Check Service Account Access**: Verify the administrator's service account has been added to the tenant's GA4 property with Viewer access
+- **Verify Property ID**: Ensure the Property ID is numeric (not the Measurement ID)
+- **Check Tenant Settings**: Confirm Analytics and Analytics Reporting are enabled in Admin → Settings
+- **Wait for Propagation**: If access was just granted, wait up to 24 hours for Google Analytics to fully activate the permissions
 
 ### 📊 Analytics Features
 

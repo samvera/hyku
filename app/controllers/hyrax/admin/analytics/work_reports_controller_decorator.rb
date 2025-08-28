@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE from Hyrax v5.0.1 to Add tenant_id to analyticscalls
+# OVERRIDE from Hyrax v5.0.1 to Add tenant_id to analytics calls
 module Hyrax
   module Admin
     module Analytics

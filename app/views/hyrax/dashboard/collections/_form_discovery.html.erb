@@ -35,7 +35,14 @@
   <div class="form-check">
     <label class="form-check-label <%= disabled %>">
       <%= f.radio_button :visibility, Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE, disabled: disabled %>
-      <strong><%= t('hyrax.visibility.restricted.text') %></strong>- <%= t('hyrax.visibility.restricted.note_html') %>
+      <strong><%= t('hyrax.visibility.restricted.text') %></strong> - <%= t('hyrax.visibility.restricted.note_html') %>
+    </label>
+  </div>
+  <%# Hide from catalog search option %>
+  <div class="form-check mt-3">
+    <label class="form-check-label <%= disabled %>">
+      <%= f.check_box :hide_from_catalog_search, { disabled: disabled } %>
+      <strong>Hide from catalog search</strong> - When checked, this collection will not appear in catalog search results.
     </label>
   </div>
 </div>

@@ -1,0 +1,39 @@
+<%# OVERRIDE Hyrax v5.0.1 %>
+<%# This override fixes a bug where @file_sizes was being reset inside the loop %>
+<%# and nil file_size values were causing TypeError in the work_counts partial %>
+<div class="card">
+  <div class="card-header">
+    <h4><%= t('.title') %></h4>
+  </div>
+  <div class="card-body">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>&nbsp;</th>
+        <th></th>
+        <th><%= t('.total_downloads') %> (YTD)</th>
+      </tr>
+      </thead>
+      <tbody>
+
+      <% @file_sizes = [] %>
+      <% @files.each do |file| %>
+        <% f = SolrDocument.find(file) %>
+        <% if f %>
+          <% @file_sizes.push(f.file_size) if f.file_size %>
+          <tr>
+            <td><%= f %></td>
+            <td><%= f.id %></td>
+            <td><%= Hyrax::Analytics.daily_events_for_id(@document.id, 'file_set_in_work_download').all %></td>
+          </tr>
+        <% end %>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="card-footer">
+    <div class="float-right">
+      <%= paginate @files, outer_window: 2, theme: 'blacklight' %>
+    </div>
+  </div>
+</div>

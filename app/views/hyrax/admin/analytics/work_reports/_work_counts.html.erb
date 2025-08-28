@@ -1,0 +1,21 @@
+<%# OVERRIDE Hyrax v5.0.1 %>
+<%# This override fixes TypeError caused by nil values in @file_sizes array %>
+<%# and corrects HTML structure issues in the original template %>
+<div class="row">
+  <div class="col-12 work-counts">
+    <div class="work-count-border col-sm-2 offset-sm-3 float-left text-center">
+       <% @file_sizes_total_bytes = (@file_sizes || []).compact.inject(0, :+) %>
+       <% @file_size_total = (@file_sizes_total_bytes / 1.0.megabyte).round(2) %>
+      <h4 class="work-count-title"><%= @file_size_total %>MB</h4>
+      <p><%= t('.total_size') %></p>
+    </div>
+    <div class="work-count-border col-sm-2 float-left text-center">
+      <h4 class="work-count-title"></h4>
+      <p><%= t('.child_works') %></p>
+    </div>
+    <div class="work-count-border col-sm-2 float-left text-center">
+      <h4 class="work-count-title"><%= @files.count %></h4>
+      <p><%= t('.files') %></p>
+    </div>
+  </div>
+</div>

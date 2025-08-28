@@ -43,11 +43,11 @@ RSpec.describe Hyrax::Admin::Analytics::WorkReportsController, type: :controller
     it "calls the analytics service with the correct tenant_id for show action" do
       get :show, params: { id: work.id }
       expect(Hyrax::Analytics).to have_received(:daily_events_for_id)
-        .with(work.id, 'work-view', tenant_id: 'FakeTenant')
+        .with(work.id, 'work-view', Hyrax::Analytics.default_date_range, tenant_id: 'FakeTenant')
       expect(Hyrax::Analytics).to have_received(:unique_visitors_for_id)
-        .with(work.id, tenant_id: 'FakeTenant')
+        .with(work.id, Hyrax::Analytics.default_date_range, tenant_id: 'FakeTenant')
       expect(Hyrax::Analytics).to have_received(:daily_events_for_id)
-        .with(work.id, 'file_set_in_work_download', tenant_id: 'FakeTenant')
+        .with(work.id, 'file_set_in_work_download', Hyrax::Analytics.default_date_range, tenant_id: 'FakeTenant')
     end
 
     it "only calls analytics when user is admin" do

@@ -142,6 +142,7 @@ Hyku supports Google Analytics 4 for tracking user interactions and generating a
 1. Create GA4 **Properties** (one per tenant for data isolation)
 2. Add your **Service Account email** to each property with **Viewer** access
 3. Note the **Measurement ID** (`G-XXXXXXXXXX`) and **Property ID** (numeric) for each
+4. **Configure Required Custom Dimensions** (see section below)
 
 #### 2. 🔧 Developer Environment Setup
 
@@ -193,6 +194,50 @@ services:
 - Store `GOOGLE_ACCOUNT_JSON` as a secure secret (not in plain text config)
 - Consider using external secret management (Kubernetes secrets, AWS Secrets Manager, etc.)
 
+#### 2.5. 📊 Required GA4 Custom Dimensions Setup
+
+⚠️ **CRITICAL**: Each GA4 property **must** have these custom dimensions configured for Hyku analytics to work properly.
+
+**Why Custom Dimensions Are Required:**
+
+- **Tenant Isolation**: The `tenant_id` dimension ensures analytics data is properly isolated between tenants in multi-tenant installations
+- **Content Tracking**: Hyku tracks different types of content (works, collections, file sets) and needs proper dimensioning
+- **Backwards Compatibility**: Without these dimensions, analytics reports will fail with "invalid dimension" errors
+
+**Required Custom Dimensions:**
+
+| Parameter Name | Display Name | Description                                | Scope | Required For                   |
+| -------------- | ------------ | ------------------------------------------ | ----- | ------------------------------ |
+| `tenant_id`    | Tenant ID    | Multi-tenant identifier for data isolation | Event | **Multi-tenant** installations |
+
+**Note:** `content_id` and `content_type` are standard GA4 event parameters and should be available automatically. You only need to manually create the `tenant_id` custom dimension for multi-tenant installations.
+
+**How to Create Custom Dimensions:**
+
+1. **Go to GA4 Property**: Admin → Custom definitions → Custom dimensions
+2. **Create the tenant_id dimension** with the exact parameter name above
+3. **Verify Setup**: Check that the tenant_id dimension appears in your custom dimensions list
+
+**Step-by-Step Instructions:**
+
+1. In GA4, navigate to **Admin** → **Custom definitions** → **Custom dimensions**
+2. Click **"Create custom dimension"**
+3. For the **tenant_id dimension**:
+   - **Dimension name**: "Tenant ID"
+   - **Scope**: Select "Event"
+   - **Parameter name**: `tenant_id` (case-sensitive)
+   - **Description**: "Multi-tenant identifier for data isolation"
+4. Click **"Save"**
+
+**⚠️ Common Mistakes:**
+
+- **Wrong parameter name**: Must be exactly `tenant_id` (case-sensitive)
+- **Wrong scope**: Must be "Event" scope, not "User" or "Item" scope
+- **Only for multi-tenant**: Single-tenant installations don't need this dimension
+
+**Verification:**
+After creating the dimension, you should see `tenant_id` in your GA4 property's custom dimensions list. If missing, analytics reports will fail.
+
 #### 3. 🏢 Tenant Configuration
 
 ⚠️ **Prerequisites:**
@@ -241,6 +286,7 @@ Once access is granted, each tenant configures their specific GA4 property in **
 - Verify service account has access to the GA4 property
 - Check that the Measurement ID format is correct (`G-XXXXXXXXXX`)
 - Ensure `GOOGLE_ACCOUNT_JSON` environment variable is properly escaped
+- **Verify custom dimensions**: Ensure all required custom dimensions (`tenant_id`, `content_id`, `content_type`) are created in GA4
 
 **Authentication errors:**
 
@@ -257,6 +303,16 @@ Once access is granted, each tenant configures their specific GA4 property in **
 - **Verify Property ID**: Ensure the Property ID is numeric (not the Measurement ID)
 - **Check Tenant Settings**: Confirm Analytics and Analytics Reporting are enabled in Admin → Settings
 - **Wait for Propagation**: If access was just granted, wait up to 24 hours for Google Analytics to fully activate the permissions
+
+**"Invalid dimension" or "Field X is not a valid dimension" errors:**
+
+- **Most Common Cause**: Missing or incorrectly named custom dimensions in GA4
+- **Solution**: Verify all three required custom dimensions are created with exact parameter names:
+  - `tenant_id` (for multi-tenant installations)
+  - `content_id` (required for all installations)
+  - `content_type` (required for all installations)
+- **Check**: Go to GA4 → Admin → Custom definitions → Custom dimensions to verify
+- **Note**: Parameter names are case-sensitive and must match exactly
 
 ### 📊 Analytics Features
 

@@ -28,9 +28,9 @@ module Hyrax
 
         def show
           tenant_id = current_account&.tenant || 'default'
-          @pageviews = Hyrax::Analytics.daily_events_for_id(@document.id, 'work-view', tenant_id: tenant_id)
-          @uniques = Hyrax::Analytics.unique_visitors_for_id(@document.id, tenant_id: tenant_id)
-          @downloads = Hyrax::Analytics.daily_events_for_id(@document.id, 'file_set_in_work_download', tenant_id: tenant_id)
+          @pageviews = Hyrax::Analytics.daily_events_for_id(@document.id, 'work-view', Hyrax::Analytics.default_date_range, tenant_id: tenant_id)
+          @uniques = Hyrax::Analytics.unique_visitors_for_id(@document.id, Hyrax::Analytics.default_date_range, tenant_id: tenant_id)
+          @downloads = Hyrax::Analytics.daily_events_for_id(@document.id, 'file_set_in_work_download', Hyrax::Analytics.default_date_range, tenant_id: tenant_id)
           @files = paginate(@document._source["member_ids_ssim"], rows: 5)
           respond_to do |format|
             format.html

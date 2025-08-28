@@ -9,7 +9,10 @@ RSpec.describe 'shared/_ga4', type: :view do
     allow(view).to receive(:current_account).and_return(account)
     # Mock the account's google_analytics_id method with a valid GA4 format
     allow(account).to receive(:google_analytics_id).and_return('G-ABCDE12345')
-    stub_const('ENV', ENV.to_hash.merge('GOOGLE_ANALYTICS_ID' => 'ENV_GA_ID'))
+    stub_const('ENV', ENV.to_hash.merge(
+      'GOOGLE_ANALYTICS_ID' => 'ENV_GA_ID',
+      'HYRAX_ANALYTICS' => 'true'
+    ))
   end
 
   it 'includes the analytics-tenant meta tag with tenant ID' do
@@ -34,6 +37,7 @@ RSpec.describe 'shared/_ga4', type: :view do
   context 'when current_account is nil' do
     before do
       allow(view).to receive(:current_account).and_return(nil)
+      stub_const('ENV', ENV.to_hash.merge('HYRAX_ANALYTICS' => 'true'))
     end
 
     it 'uses default tenant ID' do
@@ -51,6 +55,7 @@ RSpec.describe 'shared/_ga4', type: :view do
       account.save!
       allow(view).to receive(:current_account).and_return(account)
       allow(account).to receive(:google_analytics_id).and_return('G-ABCDE12345')
+      stub_const('ENV', ENV.to_hash.merge('HYRAX_ANALYTICS' => 'true'))
     end
 
     it 'uses the actual tenant ID' do

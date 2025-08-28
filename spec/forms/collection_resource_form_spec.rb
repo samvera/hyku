@@ -17,7 +17,7 @@ RSpec.describe CollectionResourceForm do
     context 'Valkyrie resource model' do
       # hide_from_catalog_search is an attribute in the collection_resource.yaml
       it 'is an attribute on the resource' do
-        resource.respond_to?(:hide_from_catalog_search)
+        expect(change_set.respond_to?(:hide_from_catalog_search)).to be true
       end
 
       it 'defaults as nil' do
@@ -35,8 +35,8 @@ RSpec.describe CollectionResourceForm do
 
     context 'change_set form' do
       it 'can get and set values' do
-        change_set.respond_to?(:hide_from_catalog_search)
-        change_set.respond_to?(:hide_from_catalog_search=)
+        expect(change_set.respond_to?(:hide_from_catalog_search)).to be true
+        expect(change_set.respond_to?(:hide_from_catalog_search=)).to be true
       end
 
       it 'can be set the value to true when the box is checked' do

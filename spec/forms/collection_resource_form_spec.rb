@@ -48,6 +48,26 @@ RSpec.describe CollectionResourceForm do
         change_set.hide_from_catalog_search = false
         expect(change_set.hide_from_catalog_search).to be false
       end
+
+      it 'converts string "1" to true (checkbox checked)' do
+        change_set.hide_from_catalog_search = "1"
+        expect(change_set.hide_from_catalog_search).to eq(true)
+      end
+
+      it 'converts string "0" to false (checkbox unchecked)' do
+        change_set.hide_from_catalog_search = "0"
+        expect(change_set.hide_from_catalog_search).to eq(false)
+      end
+
+      it 'converts string "true" to true (checkbox checked)' do
+        change_set.hide_from_catalog_search = "true"
+        expect(change_set.hide_from_catalog_search).to eq(true)
+      end
+
+      it 'converts string "false" to false (checkbox unchecked)' do
+        change_set.hide_from_catalog_search = "false"
+        expect(change_set.hide_from_catalog_search).to eq(false)
+      end
     end
   end
 end

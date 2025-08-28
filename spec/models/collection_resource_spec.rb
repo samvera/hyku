@@ -19,4 +19,25 @@ RSpec.describe CollectionResource do
     subject { described_class }
     its(:to_rdf_representation) { is_expected.to eq('Collection') }
   end
+
+  describe 'hide_from_catalog_search attribute' do
+    it 'can get and set values' do
+      expect(collection).to respond_to(:hide_from_catalog_search)
+      expect(collection).to respond_to(:hide_from_catalog_search=)
+    end
+
+    it 'defaults to nil' do
+      expect(collection.hide_from_catalog_search).to be nil
+    end
+
+    it 'can be set to true' do
+      collection.hide_from_catalog_search = true
+      expect(collection.hide_from_catalog_search).to be true
+    end
+
+    it 'can be set to false' do
+      collection.hide_from_catalog_search = false
+      expect(collection.hide_from_catalog_search).to be false
+    end
+  end
 end

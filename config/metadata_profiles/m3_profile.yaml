@@ -1783,3 +1783,30 @@ properties:
     view:
       render_as: "faceted"
       html_dl: true
+  hide_from_catalog_search:
+    available_on:
+      class:
+        - CollectionResource
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#bool
+      sources:
+        - "null"
+    display_label:
+      default: Hide from Catalog Search
+    index_documentation: displayable, searchable
+    indexing:
+      - hide_from_catalog_search_bsi
+      - hide_from_catalog_search_tesim
+    form:
+      primary: false
+      required: false
+      multiple: false
+    property_uri: https://hykucommons.org/terms/hide_from_catalog_search
+    range: http://www.w3.org/2001/XMLSchema#bool
+    sample_values:
+      - true
+      - false

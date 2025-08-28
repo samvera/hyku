@@ -242,12 +242,11 @@ module Hyrax
 
       # Overrides the original daily_events to filter by tenant_id.
       def daily_events(action, date = default_date_range, tenant_id: nil)
-        # Use a simpler query for daily summaries to avoid dimension conflicts with the tenant_id filter.
-        # We only need the date and the event count.
+        # Include required dimensions for results_array to work properly
         query = Hyrax::Analytics::Ga4::EventsDaily.new(
           start_date: date.split(',')[0],
           end_date: date.split(',')[1],
-          dimensions: [{ name: 'date' }]
+          dimensions: [{ name: 'date' }, { name: 'eventName' }]
         )
         query.add_filter(dimension: 'eventName', values: [action])
         add_tenant_filter(query, tenant_id) if tenant_id

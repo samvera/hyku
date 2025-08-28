@@ -4,7 +4,7 @@ class RemoveAnalyticsReportingFromAccountSettings < ActiveRecord::Migration[6.1]
     Account.find_each do |account|
       if account.settings&.key?('analytics_reporting')
         # If analytics_reporting was enabled, ensure analytics is also enabled
-        if account.settings['analytics_reporting'] == '1' && account.settings['analytics'] != '1'
+        if ActiveModel::Type::Boolean.new.cast(account.settings['analytics_reporting']) && !ActiveModel::Type::Boolean.new.cast(account.settings['analytics'])
           account.settings['analytics'] = '1'
         end
         

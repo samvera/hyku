@@ -152,7 +152,6 @@ Hyku supports Google Analytics 4 for tracking user interactions and generating a
 ```bash
 # Enable GA4 globally across all tenants
 HYRAX_ANALYTICS=true
-HYRAX_ANALYTICS_REPORTING=true
 HYRAX_ANALYTICS_PROVIDER=ga4
 
 # Global Service Account JSON (REQUIRED - obtained from step 1)
@@ -170,7 +169,6 @@ Create or update your `.env` file in the project root:
 
 ```bash
 echo 'HYRAX_ANALYTICS=true' >> .env
-echo 'HYRAX_ANALYTICS_REPORTING=true' >> .env
 echo 'HYRAX_ANALYTICS_PROVIDER=ga4' >> .env
 echo 'GOOGLE_ACCOUNT_JSON={"type":"service_account","project_id":"YOUR_PROJECT",...}' >> .env
 ```
@@ -182,7 +180,6 @@ services:
   web:
     environment:
       - HYRAX_ANALYTICS=true
-      - HYRAX_ANALYTICS_REPORTING=true
       - HYRAX_ANALYTICS_PROVIDER=ga4
       - GOOGLE_ACCOUNT_JSON={"type":"service_account","project_id":"YOUR_PROJECT",...}
 ```
@@ -222,7 +219,9 @@ Once access is granted, each tenant configures their specific GA4 property in **
 
 - **Google Analytics ID**: Measurement ID (`G-XXXXXXXXXX`)
 - **Google Analytics Property ID**: Numeric Property ID (`NUMERIC_PROPERTY_ID`)
-- Enable **Analytics** and **Analytics Reporting** checkboxes
+- Enable **Google Analytics** checkbox
+
+> **💡 Simplified Setup**: The single "Google Analytics" checkbox now controls both user interaction tracking and dashboard reporting. When enabled, it automatically activates both features when proper credentials are configured.
 
 **Important:** Each tenant needs their own dedicated GA4 property for data isolation. The global service account must have Viewer access to each tenant's GA4 property for the integration to work.
 
@@ -255,7 +254,7 @@ Once access is granted, each tenant configures their specific GA4 property in **
 
 - **Check Service Account Access**: Verify the administrator's service account has been added to the tenant's GA4 property with Viewer access
 - **Verify Property ID**: Ensure the Property ID is numeric (not the Measurement ID)
-- **Check Tenant Settings**: Confirm Analytics and Analytics Reporting are enabled in Admin → Settings
+- **Check Tenant Settings**: Confirm Google Analytics is enabled in Admin → Settings
 - **Wait for Propagation**: If access was just granted, wait up to 24 hours for Google Analytics to fully activate the permissions
 
 ### 📊 Analytics Features

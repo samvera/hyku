@@ -104,6 +104,7 @@ class Account < ApplicationRecord
     data_cite_endpoint.switch!
     switch_host!(cname)
     setup_tenant_cache(cache_api?) if self.class.column_names.include?('settings')
+    reload_library_config
   end
 
   def switch
@@ -175,6 +176,10 @@ class Account < ApplicationRecord
     ActiveJob::Base.find_job(klass: klass, tenant_id: self.tenant)
   end
 
+  def analytics_enabled?
+    analytics && analytics_credentials_present?
+  end
+
   def find_or_schedule_jobs
     account = Site.account
     AccountElevator.switch!(self)
@@ -191,7 +196,7 @@ class Account < ApplicationRecord
       jobs_to_schedule << Hyrax::QueuedDeleteJob
     end
 
-    if analytics_reporting && Hyrax.config.analytics_reporting?
+    if analytics_enabled?
       jobs_to_schedule << DepositorEmailNotificationJob if depositor_email_notifications
       jobs_to_schedule << UserStatCollectionJob
     end
@@ -211,7 +216,7 @@ class Account < ApplicationRecord
     relevant_settings = [
       'batch_email_notifications',
       'depositor_email_notifications',
-      'analytics_reporting'
+      'analytics'
     ]
 
     return unless saved_changes['settings']

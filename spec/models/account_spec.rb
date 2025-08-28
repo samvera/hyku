@@ -635,7 +635,7 @@ RSpec.describe Account, type: :model do
 
     context 'with analytics enabled' do
       before do
-        account.settings['analytics_reporting'] = true
+        account.settings['analytics'] = true
         allow(Hyrax.config).to receive(:analytics_reporting?).and_return(true)
       end
 

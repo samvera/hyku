@@ -84,8 +84,6 @@ extraEnvVars: &envVars
   # Google Analytics 4 (GA4) Configuration
   - name: HYRAX_ANALYTICS
     value: $HYRAX_ANALYTICS
-  - name: HYRAX_ANALYTICS_REPORTING
-    value: $HYRAX_ANALYTICS_REPORTING
   - name: HYRAX_ANALYTICS_PROVIDER
     value: "ga4"
   - name: GOOGLE_ACCOUNT_JSON

@@ -10,7 +10,6 @@ RSpec.describe AccountSettings do
         expect(account.public_settings(is_superadmin: true).keys.sort).to eq %i[allow_downloads
                                                                                 allow_signup
                                                                                 analytics
-                                                                                analytics_reporting
                                                                                 batch_email_notifications
                                                                                 bulkrax_field_mappings
                                                                                 cache_api

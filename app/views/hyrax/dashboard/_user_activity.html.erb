@@ -4,7 +4,7 @@
     <%= t('.title') %>
   </div>
   <div class="card-body d-flex justify-content-center">
-  <% if current_account.analytics_reporting %>
+  <% if current_account.analytics %>
     <%
       # Set default date range if not provided
       @start_date ||= 30.days.ago.to_date

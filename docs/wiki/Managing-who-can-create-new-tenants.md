@@ -1,7 +1,7 @@
 
 ## Default: Admin-only tenant creation
 
-By default, only a superadmin can create a new tenant. If you don't yet have a superadmin, see [[Create super admin user]].
+By default, only a superadmin can create a new tenant. If you don't yet have a superadmin, see [Create super admin user](Create-super-admin-user.md).
 
 After logging in as a superadmin, you'll see a "Get Started" option to create your first tenant. Alternatively, you can create/manage tenants via the "Accounts" menu.
 

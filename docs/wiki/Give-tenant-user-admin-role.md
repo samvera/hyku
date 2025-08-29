@@ -2,7 +2,7 @@ To give an existing user the tenant admin role. This role allows the user to man
 
 ## Via SuperAdmin UI
 
-1. Login to global tenant as a superadmin user. If you don't yet have a superadmin, see [[Create super admin user]]
+1. Login to global tenant as a superadmin user. If you don't yet have a superadmin, see [Create super admin user](Create-super-admin-user.md)
 2. Click on the "Accounts" menu in the header
 3. Find the tenant in the list of tenants, and click the "Manage" button next to that tenant.
 4. You will now see a list of all current tenant administrators, along with an option to "Add or invite new administrator (via email)"

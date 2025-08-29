@@ -1,0 +1,34 @@
+<% if @analytics_error.present? %>
+  <div class="alert alert-warning" role="alert">
+    <div class="d-flex">
+      <div class="flex-shrink-0">
+        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+      </div>
+      <div class="flex-grow-1 ms-3">
+        <h5 class="alert-heading"><%= @analytics_error %></h5>
+        <% if @analytics_details.present? %>
+          <p class="mb-0">
+            <%= @analytics_details %>
+            <% if @analytics_details.include?('Enable the Google Analytics Data API by visiting:') %>
+              <br><br>
+              <strong>Action Required:</strong> Click the link above to enable the API in Google Cloud Console, then wait a few minutes for the changes to propagate.
+            <% elsif @analytics_details.include?('tenant_id custom dimension is missing') %>
+              <br><br>
+              <strong>Action Required:</strong> 
+              <ol>
+                <li>Go to your Google Analytics 4 property</li>
+                <li>Navigate to Admin → Custom definitions → Custom dimensions</li>
+                <li>Click "Create custom dimensions"</li>
+                <li>Set Dimension name to: <code>tenant_id</code></li>
+                <li>Set Scope to: <code>Event</code></li>
+                <li>Click "Save"</li>
+                <li>Wait up to 24 hours for the dimension to become available</li>
+              </ol>
+              <a href="https://support.google.com/analytics/answer/9322042" target="_blank" rel="noopener noreferrer">Learn more about custom dimensions</a>
+            <% end %>
+          </p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

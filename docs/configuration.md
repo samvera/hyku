@@ -279,7 +279,118 @@ Once access is granted, each tenant configures their specific GA4 property in **
 - **Tenant Responsibility**: Each tenant must explicitly grant the administrator's service account access to their GA4 property
 - **Access Propagation**: Google Analytics access changes may take up to 24 hours to fully activate
 
-### 🐛 Troubleshooting
+### 🚨 Common Error Resolution
+
+#### 1. Google Analytics Data API Permission Error
+
+**Error Message:**
+
+```
+Google::Cloud::PermissionDeniedError: Google Analytics Data API has not been used in project [PROJECT_ID] before or it is disabled.
+```
+
+**Solution:**
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Select your project
+3. Navigate to **APIs & Services** → **Library**
+4. Search for "Google Analytics Data API"
+5. Click on it and press **Enable**
+6. Wait a few minutes for the API to become active
+
+**Alternative Quick Link:**
+
+- Replace `[PROJECT_ID]` with your actual project ID in this URL:
+  `https://console.developers.google.com/apis/api/analyticsdata.googleapis.com/overview?project=[PROJECT_ID]`
+
+#### 2. Custom Dimension Missing Error
+
+**Error Message:**
+
+```
+Google::Cloud::InvalidArgumentError: Field customEvent:tenant_id is not a valid dimension.
+```
+
+**Solution:**
+
+1. Go to your Google Analytics 4 property
+2. Navigate to **Admin** → **Custom definitions** → **Custom dimensions**
+3. Click **"Create custom dimensions"**
+4. Set **Dimension name** to: `tenant_id`
+5. Set **Scope** to: `Event`
+6. Click **"Save"**
+7. **Important:** Wait up to 24 hours for the dimension to become available
+
+**Why This is Required:**
+
+- The `tenant_id` custom dimension is essential for multi-tenant analytics isolation
+- Without it, analytics queries will fail with "invalid dimension" errors
+- This dimension must be created at the GA4 property level
+
+#### 3. Service Account Access Issues
+
+**Error Message:**
+
+```
+Google::Cloud::PermissionDeniedError: Access denied to Google Analytics property
+```
+
+**Solution:**
+
+1. Ensure your service account has **Viewer** access to the GA4 property
+2. Go to **GA4 Admin** → **Property Access Management**
+3. Add your service account email with **Viewer** role
+4. Wait up to 24 hours for access changes to propagate
+
+#### 4. JSON Credentials Format Issues
+
+**Error Message:**
+
+```
+JSON::ParserError: invalid ASCII control character in string
+```
+
+**Solution:**
+
+1. Ensure your `GOOGLE_ACCOUNT_JSON` environment variable is properly escaped
+2. Use the provided Ruby script to format the JSON correctly:
+   ```bash
+   ruby format_google_account_json.rb path/to/your/service-account.json
+   ```
+3. Copy the output and set it as your environment variable
+
+**Ruby Script for JSON Formatting:**
+Create a file called `format_google_account_json.rb` with this content:
+
+```ruby
+#!/usr/bin/env ruby
+require "json"
+
+def format_google_account_json(json_file_path)
+  raw = File.read(json_file_path)
+  parsed = JSON.parse(raw)
+  min = JSON.generate(parsed)
+  escaped = min.gsub('"', '\"')
+  puts %(export GOOGLE_ACCOUNT_JSON="#{escaped}")
+end
+
+if ARGV.length != 1
+  warn "Usage: #{$0} <json_file>"
+  exit 1
+end
+
+format_google_account_json(ARGV[0])
+```
+
+Then run it with your service account JSON file:
+
+```bash
+ruby format_google_account_json.rb path/to/your-service-account.json
+```
+
+Copy the output and use it to set your environment variable.
+
+### 🐛 General Troubleshooting
 
 **No data showing:**
 

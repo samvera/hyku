@@ -42,7 +42,7 @@
   <div class="form-check mt-3">
     <label class="form-check-label <%= disabled %>">
       <%= f.check_box :hide_from_catalog_search, { disabled: disabled } %>
-      <strong>Hide from catalog search</strong> - When checked, this collection will not appear in catalog search results.
+      <%= t('.hide_from_catalog_search_html') %>
     </label>
   </div>
 </div>

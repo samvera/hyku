@@ -571,6 +571,7 @@ en:
         form_discovery:
           para1: These settings determine who is able to discover and view this collection's landing page; they do not affect the visibility of items in the collection.
           para2: If you chose not to make this collection open access, you can still share the collection with specific users and groups using the Sharing tab.
+          hide_from_catalog_search_html: <strong>Hide from catalog search</strong> - When checked, this collection will not appear in catalog search results.
         form_relationships:
           add_other_collections_as_sub_collections_description: You can manage the sub-collections of this collection.
           buttons:

@@ -315,13 +315,13 @@ class Hyrax::Analytics::Ga4::Base
       r[date] += unwrap_metric(result)  # Fixed: was unwrap_metric(r)
     end
     result = Hyrax::Analytics::Results.new(r.to_a)
-    
+
     # Ensure the result responds to methods views expect
     unless result.respond_to?(:all)
       def result.all
         self
       end
-      
+
       def result.empty?
         false
       end

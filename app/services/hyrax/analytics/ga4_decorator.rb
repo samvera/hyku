@@ -158,8 +158,8 @@ module Hyrax
         end
 
         def self.unique_visitors_for_id(_id, _date = default_date_range)
-          # This method isn't implemented in GA4 yet, return empty result
-          []
+          # This method isn't implemented in GA4 yet, return proper Results object
+          Hyrax::Analytics::Results.new([])
         end
       end
     end
@@ -205,16 +205,9 @@ module Hyrax
         end
 
         def self.unique_visitors_for_id(*_args)
-          # Return a default result that responds to expected methods
-          result = []
-          def result.all
-            self
-          end
-
-          def result.empty?
-            true
-          end
-          result
+          # Return a proper Results object with empty data
+          # The Results class already has day, week, month, year methods
+          Hyrax::Analytics::Results.new([])
         end
 
         def self.property
@@ -228,17 +221,9 @@ module Hyrax
     end
 
     module Ga4Decorator
-      # A mapping of Hyrax event names to the custom dimension that should be used for grouping.
-      # This is necessary because different reports need to be grouped by different IDs (e.g., work ID vs. collection ID).
-      EVENT_DIMENSION_MAP = {
-        'work-view' => 'contentId',
-        'collection-page-view' => 'contentId',
-        'file-set-download' => 'contentId',
-        'work-in-collection-view' => 'collectionId',
-        'work-in-collection-download' => 'collectionId',
-        'file-set-in-work-download' => 'workId'
-      }.freeze
-      private_constant :EVENT_DIMENSION_MAP
+      # Default dimension used for grouping analytics events by content ID
+      DEFAULT_CONTENT_DIMENSION = 'contentId'
+      private_constant :DEFAULT_CONTENT_DIMENSION
 
       # Overrides the original daily_events to filter by tenant_id.
       def daily_events(action, date = default_date_range, tenant_id: nil)
@@ -255,10 +240,16 @@ module Hyrax
 
       # Overrides the original daily_events_for_id to filter by tenant_id.
       def daily_events_for_id(id, action, date = default_date_range, tenant_id: nil)
-        query = daily_events(action, date, tenant_id: tenant_id)
-        dimension = EVENT_DIMENSION_MAP.fetch(action, 'contentId')
-        query.add_filter(dimension: dimension, values: [id])
-        query
+        # Create the query directly rather than calling daily_events which returns Results
+        query = Hyrax::Analytics::Ga4::EventsDaily.new(
+          start_date: date.split(',')[0],
+          end_date: date.split(',')[1],
+          dimensions: [{ name: 'date' }, { name: 'eventName' }]
+        )
+        query.add_filter(dimension: 'eventName', values: [action])
+        query.add_filter(dimension: DEFAULT_CONTENT_DIMENSION, values: [id])
+        add_tenant_filter(query, tenant_id) if tenant_id
+        query.results_array
       end
 
       # Overrides the original top_events to correctly handle dimensions and filter by tenant_id.
@@ -305,6 +296,47 @@ class Hyrax::Analytics::Ga4::Base
         client.run_report(report).rows
       end
     end
+  end
+
+  # OVERRIDE Hyrax v5.0.1
+  # Fix bug in results_array method where unwrap_metric was called with wrong parameter
+  def results_array(target_type = nil)
+    r = {}
+    # prefill dates so that all dates at least have 0
+    (start_date..end_date).each do |date|
+      r[date] = 0
+    end
+    results.each do |result|
+      date = unwrap_dimension(metric: result, dimension: 0)
+      type = unwrap_dimension(metric: result, dimension: 1)
+      next if date.nil? || type.nil?
+      next if target_type && type != target_type
+      date = date.to_date
+      r[date] += unwrap_metric(result)  # Fixed: was unwrap_metric(r)
+    end
+    result = Hyrax::Analytics::Results.new(r.to_a)
+    
+    # Ensure the result responds to methods views expect
+    unless result.respond_to?(:all)
+      def result.all
+        self
+      end
+      
+      def result.empty?
+        false
+      end
+    end
+    result
+  end
+
+  protected
+
+  def unwrap_dimension(metric:, dimension: 0)
+    metric.dimension_values[dimension]&.value
+  end
+
+  def unwrap_metric(metric)
+    metric&.metric_values&.first&.value.to_i
   end
 end
 

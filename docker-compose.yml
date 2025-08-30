@@ -162,6 +162,7 @@ services:
     environment:
       - VIRTUAL_PORT=3000
       - VIRTUAL_HOST=.hyku.test
+      - CHROME_HOSTNAME=chrome
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.web-${APP_NAME}.tls=true"
@@ -210,6 +211,8 @@ services:
       cache_from:
         - ghcr.io/samvera/hyku/web:latest
         - ghcr.io/samvera/hyku/worker:latest
+    environment:
+      - CHROME_HOSTNAME=chrome
     depends_on:
       check_volumes:
         condition: service_completed_successfully

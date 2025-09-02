@@ -63,12 +63,16 @@ module Hyrax
     end
 
     def ensure_discogs_credentials
-      return unless Site.instance.respond_to?(:discogs_user_token)
+      return unless current_account.respond_to?(:discogs_user_token)
 
-      # Try Personal Access Token first (preferred)
-      return if Site.instance.discogs_user_token.blank?
+      # Clear token if current tenant doesn't have one configured
+      if current_account.discogs_user_token.blank?
+        Qa::Authorities::Discogs::GenericAuthority.discogs_user_token = nil
+        return
+      end
 
-      Qa::Authorities::Discogs::GenericAuthority.discogs_user_token = Site.instance.discogs_user_token
+      # Set token for current tenant
+      Qa::Authorities::Discogs::GenericAuthority.discogs_user_token = current_account.discogs_user_token
     end
   end
 end

@@ -1802,6 +1802,7 @@ properties:
       - hide_from_catalog_search_bsi
       - hide_from_catalog_search_tesim
     form:
+      display: false
       primary: false
       required: false
       multiple: false

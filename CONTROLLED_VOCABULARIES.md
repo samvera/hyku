@@ -97,15 +97,44 @@ Remote vocabularies query external services through the Questioning Authority ge
 
 To set up the MeSH vocabulary:
 
-1.  **Download the MeSH data file.** The required file can be obtained from the [National Library of Medicine (NLM)](https://www.nlm.nih.gov/databases/download/mesh.html). You will need to download one of the ASCII (`.bin`) or XML (`.xml`) formats and convert it to a plain text file where each line is a single term. For example, if you download `d2023.bin`, you may need to process it to extract just the MeSH Headings (`MH` fields).
+1.  **Download the MeSH data file.** The required file can be obtained from the [National Library of Medicine (NLM)](https://www.nlm.nih.gov/databases/download/mesh.html). Download the ASCII (`.bin`) format (e.g., `d2025.bin`).
 
-2.  **Run the import Rake task.** Place the processed text file in a location accessible to your application. Then, from your application's root directory, run the following command, replacing `path/to/mesh.txt` with the actual path to your file:
+2.  **Convert the MeSH data file.** Use the provided conversion script to extract MeSH terms from the binary file:
 
     ```bash
-    RAILS_ENV='production' MESH_FILE=path/to/mesh.txt bundle exec rake qa:mesh:import
+    ruby scripts/convert_mesh.rb ~/Downloads/d2025.bin mesh_terms.txt
     ```
 
-3.  **Restart the application.** After the import is complete, restart your Hyku application for the MeSH vocabulary to be available.
+    This creates a plain text file (`mesh_terms.txt`) with one MeSH term per line.
+
+3.  **Import MeSH data for each tenant.** Since Hyku is multi-tenant, you need to import MeSH data for each tenant separately. Use the custom rake task:
+
+    ```bash
+    # For the 'dev' tenant
+    bundle exec rake mesh:import_tenant[dev,mesh_terms.txt]
+
+    # For other tenants (replace 'tenant_name' with actual tenant name)
+    bundle exec rake mesh:import_tenant[tenant_name,mesh_terms.txt]
+    ```
+
+4.  **Verify the import.** Check that the data was imported correctly:
+
+    ```bash
+    # Test search functionality
+    bundle exec rake mesh:test_search[dev]
+
+    # Check status of all tenants
+    bundle exec rake mesh:status
+    ```
+
+5.  **Restart the application.** After the import is complete, restart your Hyku application for the MeSH vocabulary to be available.
+
+**Important Notes:**
+
+- MeSH data is tenant-specific and must be imported for each tenant
+- The `mesh_terms.txt` file should not be committed to the repository (it's in `.gitignore`)
+- The custom MeSH authority class (`app/authorities/qa/authorities/mesh.rb`) handles the autocomplete functionality
+- The endpoint `/authorities/search/local/mesh` provides the autocomplete API
 
 Once set up, you can use `mesh` as a source in your metadata profiles, and it will provide an autocomplete search against the imported terms.
 

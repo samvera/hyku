@@ -263,6 +263,9 @@ rescue Qa::ConfigDirectoryNotFound, NameError => e
   Rails.logger.warn("Hyrax config unable to find qa local authorities directory: #{e.message}")
 end
 
+# Register custom MeSH authority
+Qa::Authorities::Local.register_subauthority('mesh', 'Qa::Authorities::Mesh')
+
 # NOTE: Remote authorities like LOC don't need explicit registration
 # They are available by default through the QA engine routes
 

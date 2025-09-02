@@ -67,7 +67,7 @@ module Hyrax
         type: 'autocomplete'
       },
       'mesh' => {
-        url: "/authorities/search/mesh",
+        url: "/authorities/search/local/mesh",
         type: 'autocomplete'
       },
       'discogs' => {

@@ -13,6 +13,8 @@ The flexible metadata system automatically detects controlled vocabularies based
    - Remote authorities render as autocomplete text inputs that query external services
 4. **Data Attributes**: Remote authorities get `data-autocomplete` and `data-autocomplete-url` attributes for JavaScript functionality
 
+**Important Limitation**: Hyku currently supports only **one vocabulary source per field**. If you specify multiple sources in the `sources` array, only the first non-null source will be used. To use different vocabulary sources, create separate fields for each source.
+
 ## Configuration Syntax
 
 To make any property use a controlled vocabulary, update its `controlled_values.sources` array in your metadata profile:
@@ -24,8 +26,10 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - authority_name # Instead of ["null"]
+        - authority_name # Only one source per field
 ```
+
+**Note**: Only specify one source per field. If multiple sources are provided, only the first non-null source will be used.
 
 ## Local Controlled Vocabularies
 
@@ -131,10 +135,23 @@ To set up the MeSH vocabulary:
 
 **Important Notes:**
 
+> **⚠️ Important for Developers:** MeSH data must be imported on each server and for each tenant.
+
 - MeSH data is tenant-specific and must be imported for each tenant
 - The `mesh_terms.txt` file should not be committed to the repository (it's in `.gitignore`)
 - The custom MeSH authority class (`app/authorities/qa/authorities/mesh.rb`) handles the autocomplete functionality
 - The endpoint `/authorities/search/local/mesh` provides the autocomplete API
+
+**Required Server Commands:**
+
+```bash
+# On each server (staging, production, etc.)
+# 1. Convert MeSH data file
+ruby scripts/convert_mesh.rb ~/Downloads/d2025.bin mesh_terms.txt
+
+# 2. Import for each tenant
+bundle exec rake mesh:import_tenant[tenant_name,mesh_terms.txt]
+```
 
 Once set up, you can use `mesh` as a source in your metadata profiles, and it will provide an autocomplete search against the imported terms.
 
@@ -162,10 +179,19 @@ Discogs music database authorities are available with proper setup:
 
 **Deployment Considerations:**
 
+> **⚠️ Important for Developers:** You must run setup commands on each server environment.
+
 - **Local Development:** Run `bundle exec rails generate qa:discogs` to generate the files locally
 - **Staging/Production:** Run the same command on your server after deployment
 - **File Management:** These files contain format/genre mappings derived from Discogs API and should be generated on each environment rather than committed to version control
 - **Security:** The files contain reference data (format mappings) but are derived from external API data
+
+**Required Server Commands:**
+
+```bash
+# On each server (staging, production, etc.)
+bundle exec rails generate qa:discogs
+```
 
 **Discogs Management Rake Tasks:**
 

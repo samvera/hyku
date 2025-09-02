@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 # Script to convert MeSH .bin file to plain text format
 # Usage: ruby convert_mesh.rb d2025.bin mesh_terms.txt
 
@@ -6,7 +7,7 @@ require 'optparse'
 
 def convert_mesh_bin_to_text(input_file, output_file)
   puts "Converting #{input_file} to #{output_file}..."
-  
+
   File.open(output_file, 'w') do |output|
     File.foreach(input_file) do |line|
       # Look for lines that start with "MH = " (MeSH Heading)
@@ -16,13 +17,11 @@ def convert_mesh_bin_to_text(input_file, output_file)
         # Remove any trailing punctuation or formatting
         term = term.gsub(/[;\.]$/, '')
         # Only include if it's not empty and doesn't contain special characters
-        if !term.empty? && !term.include?('*') && !term.include?('/')
-          output.puts term
-        end
+        output.puts term if !term.empty? && !term.include?('*') && !term.include?('/')
       end
     end
   end
-  
+
   puts "Conversion complete! Check #{output_file}"
 end
 

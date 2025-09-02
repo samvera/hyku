@@ -88,7 +88,6 @@ namespace :discogs do
   task test: :environment do
     # Suppress verbose output
     ActiveRecord::Base.logger.level = Logger::WARN
-
     puts "🎵 Testing Discogs API connectivity..."
 
     # Check if required files exist
@@ -105,8 +104,7 @@ namespace :discogs do
     test_account = nil
     Account.find_each do |account|
       Account.switch!(account)
-      site = Site.instance
-      if site.respond_to?(:discogs_user_token) && site.discogs_user_token.present?
+      if account.respond_to?(:discogs_user_token) && accound.discogs_user_token.present?
         test_account = account
         break
       end

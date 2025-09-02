@@ -68,3 +68,7 @@ mesh_terms.txt
 d*.bin
 c*.bin
 q*.bin
+
+# Discogs configuration files (generated from external API, not committed)
+config/discogs-formats.yml
+config/discogs-genres.yml

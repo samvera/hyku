@@ -153,12 +153,40 @@ Discogs music database authorities are available with proper setup:
 
 1. Register for a Discogs developer account at https://www.discogs.com/settings/developers
 2. Generate a **Personal Access Token** (not an OAuth application).
-3. Generate the discogs formats and genres YAML files by running the following command:
+3. **Generate the required discogs formats and genres YAML files** by running the following command:
    ```
-   RAILS_ENV=production rails generate qa:discogs
    bundle exec rails generate qa:discogs
    ```
+   **Note:** These files are required for the Discogs integration to work. The Questioning Authority gem expects them to be present at startup.
 4. In your Hyku tenant's Account Settings, set the `Discogs user token` field to your Personal Access Token.
+
+**Deployment Considerations:**
+
+- **Local Development:** Run `bundle exec rails generate qa:discogs` to generate the files locally
+- **Staging/Production:** Run the same command on your server after deployment
+- **File Management:** These files contain format/genre mappings derived from Discogs API and should be generated on each environment rather than committed to version control
+- **Security:** The files contain reference data (format mappings) but are derived from external API data
+
+**Discogs Management Rake Tasks:**
+
+Hyku provides several rake tasks to help manage Discogs integration:
+
+```bash
+# Set up Discogs integration (generates required YAML files)
+bundle exec rake discogs:setup
+
+# Check Discogs setup status across all tenants
+bundle exec rake discogs:status
+
+# Test Discogs API connectivity
+bundle exec rake discogs:test
+```
+
+These tasks help verify that:
+
+- Required configuration files are present
+- Each tenant has a Discogs token configured
+- The API is accessible and working correctly
 
 The integration is automatically enabled when the `Discogs user token` is set and both `discogs-formats.yml` and `discogs-genres.yml` are present in your application's `config/` directory.
 

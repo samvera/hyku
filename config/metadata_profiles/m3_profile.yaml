@@ -19,12 +19,8 @@ classes:
     display_label: AdminSetResource
   CollectionResource:
     display_label: pcdmcollection
-  Hyrax::AdministrativeSet:
-    display_label: Administrative Set
   Hyrax::FileSet:
     display_label: FileSet
-  Hyrax::PcdmCollection:
-    display_label: PcdmCollection
 contexts:
   flexible_context:
     display_label: Flexible Metadata Example
@@ -54,7 +50,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 1
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -72,7 +68,6 @@ properties:
     form:
       required: true
       primary: true
-      multi_value: true
     mappings:
       metatags: twitter:title, og:title
       mods_oai_pmh: mods:titleInfo/mods:title
@@ -80,7 +75,6 @@ properties:
       simple_dc_pmh: dc:title
     property_uri: http://purl.org/dc/terms/title
     range: http://www.w3.org/2001/XMLSchema#string
-    requirement: required
     sample_values:
       - Pencil drawn portrait study of woman
     view:
@@ -101,7 +95,7 @@ properties:
     cardinality:
       minimum: 0
       maximum: 1
-    multi_value: false
+    data_type: string
     display_label:
       default: Date Modified
     property_uri: http://purl.org/dc/terms/modified
@@ -131,7 +125,7 @@ properties:
     cardinality:
       minimum: 0
       maximum: 1
-    multi_value: false
+    data_type: string
     display_label:
       default: Date Uploaded
     property_uri: http://purl.org/dc/terms/dateSubmitted
@@ -151,7 +145,7 @@ properties:
     cardinality:
       minimum: 0
       maximum: 1
-    multi_value: false
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -161,6 +155,7 @@ properties:
     index_documentation: searchable
     indexing:
       - depositor_tesim
+      - depositor_ssim
     property_uri: http://id.loc.gov/vocabulary/relators/dpt
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
@@ -176,8 +171,8 @@ properties:
         - OerResource
         - EtdResource
     cardinality:
-      minimum: 1
-    multi_value: true
+      minimum: 0
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -188,6 +183,7 @@ properties:
     indexing:
       - creator_sim
       - creator_tesim
+      - facetable
     form:
       required: true
       primary: true
@@ -209,7 +205,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -240,7 +236,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -269,7 +265,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -299,7 +295,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -332,7 +328,7 @@ properties:
     cardinality:
       minimum: 0
       maximum: 1
-    multi_value: false
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -356,7 +352,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -387,7 +383,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -417,7 +413,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -428,6 +424,7 @@ properties:
     indexing:
       - contributor_tesim
       - contributor_sim
+      - facetable
     form:
       primary: false
     property_uri: http://purl.org/dc/elements/1.1/contributor
@@ -448,7 +445,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#dateTime
       sources:
@@ -480,7 +477,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -508,7 +505,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -540,7 +537,7 @@ properties:
     cardinality:
       minimum: 0
       maximum: 1
-    multi_value: false
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -562,7 +559,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -573,6 +570,7 @@ properties:
     indexing:
       - keyword_sim
       - keyword_tesim
+      - facetable
     form:
       primary: false
     property_uri: http://schema.org/keywords
@@ -595,7 +593,7 @@ properties:
     cardinality:
       minimum: 0
       maximum: 1
-    multi_value: false
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -623,7 +621,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -634,6 +632,7 @@ properties:
     indexing:
       - language_sim
       - language_tesim
+      - facetable
     form:
       primary: false
     property_uri: http://purl.org/dc/elements/1.1/language
@@ -655,7 +654,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -666,6 +665,7 @@ properties:
     indexing:
       - publisher_sim
       - publisher_tesim
+      - facetable
     form:
       primary: false
     property_uri: http://purl.org/dc/elements/1.1/publisher
@@ -686,7 +686,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -718,7 +718,7 @@ properties:
     cardinality:
       minimum: 0
       maximum: 1
-    multi_value: false
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -740,7 +740,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -751,6 +751,7 @@ properties:
     indexing:
       - resource_type_sim
       - resource_type_tesim
+      - facetable
     form:
       primary: false
     property_uri: http://purl.org/dc/terms/type
@@ -772,7 +773,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -802,7 +803,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -834,7 +835,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -865,7 +866,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -876,6 +877,7 @@ properties:
     indexing:
       - subject_sim
       - subject_tesim
+      - facetable
     form:
       primary: false
     property_uri: http://purl.org/dc/elements/1.1/subject
@@ -894,7 +896,7 @@ properties:
     cardinality:
       minimum: 0
       maximum: 1
-    multi_value: false
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -917,7 +919,7 @@ properties:
     cardinality:
       minimum: 0
       maximum: 1
-    multi_value: false
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -938,7 +940,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -963,7 +965,7 @@ properties:
         - ImageResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -989,7 +991,7 @@ properties:
         - OerResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -1015,7 +1017,7 @@ properties:
         - OerResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -1040,7 +1042,7 @@ properties:
     cardinality:
       minimum: 0
       maximum: 1
-    multi_value: false
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -1067,7 +1069,7 @@ properties:
     cardinality:
       minimum: 0
       maximum: 1
-    multi_value: false
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -1094,7 +1096,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -1118,7 +1120,7 @@ properties:
         - OerResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -1140,7 +1142,7 @@ properties:
         - OerResource
     cardinality:
       minimum: 1
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -1169,7 +1171,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -1191,7 +1193,7 @@ properties:
         - OerResource
     cardinality:
       minimum: 1
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -1218,7 +1220,7 @@ properties:
         - OerResource
     cardinality:
       minimum: 1
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -1246,7 +1248,7 @@ properties:
         - OerResource
     cardinality:
       minimum: 1
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -1274,7 +1276,7 @@ properties:
         - OerResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -1296,7 +1298,7 @@ properties:
         - OerResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -1320,7 +1322,7 @@ properties:
         - OerResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -1342,7 +1344,7 @@ properties:
         - OerResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -1364,7 +1366,7 @@ properties:
         - OerResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -1389,7 +1391,7 @@ properties:
         - OerResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -1415,7 +1417,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -1440,7 +1442,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -1465,7 +1467,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 1
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -1492,7 +1494,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 1
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -1519,7 +1521,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 1
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -1546,7 +1548,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 1
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -1580,7 +1582,7 @@ properties:
     cardinality:
       minimum: 0
       maximum: 1
-    multi_value: false
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -1611,7 +1613,7 @@ properties:
     cardinality:
       minimum: 0
       maximum: 1
-    multi_value: false
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#bool
       sources:
@@ -1641,7 +1643,7 @@ properties:
     cardinality:
       minimum: 0
       maximum: 1
-    multi_value: false
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#bool
       sources:
@@ -1672,7 +1674,7 @@ properties:
     cardinality:
       minimum: 0
       maximum: 1
-    multi_value: false
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -1703,7 +1705,7 @@ properties:
     cardinality:
       minimum: 0
       maximum: 1
-    multi_value: false
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#bool
       sources:
@@ -1733,7 +1735,7 @@ properties:
     cardinality:
       minimum: 0
       maximum: 1
-    multi_value: false
+    data_type: string
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -1760,7 +1762,7 @@ properties:
         - special_context
     cardinality:
       minimum: 0
-    multi_value: true
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -1781,3 +1783,30 @@ properties:
     view:
       render_as: "faceted"
       html_dl: true
+  hide_from_catalog_search:
+    available_on:
+      class:
+        - CollectionResource
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#bool
+      sources:
+        - "null"
+    display_label:
+      default: Hide from Catalog Search
+    index_documentation: displayable, searchable
+    indexing:
+      - hide_from_catalog_search_bsi
+      - hide_from_catalog_search_tesim
+    form:
+      primary: false
+      required: false
+      multiple: false
+    property_uri: https://hykucommons.org/terms/hide_from_catalog_search
+    range: http://www.w3.org/2001/XMLSchema#bool
+    sample_values:
+      - true
+      - false

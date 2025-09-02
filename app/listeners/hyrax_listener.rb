@@ -107,7 +107,7 @@ class HyraxListener
 
   def pdf_viewer_and_download_button(event)
     file_set = event[:file_set]
-    return unless file_set.original_file&.pdf?
+    return unless file_set.original_file&.respond_to?(:pdf?) && file_set.original_file&.pdf?
 
     parent_work = Hyrax.custom_queries.find_parent_work(resource: file_set)
     parent_work.show_pdf_viewer = '1'

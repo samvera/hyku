@@ -58,9 +58,34 @@ RSpec.describe AdvSearchBuilder do
         highlight_search_params
         show_parents_only
         include_allinson_flex_fields
+        filter_hidden_collections
       ]
     end
 
     it { is_expected.to eq(expected_default_processor_chain) }
+  end
+
+  describe '#filter_hidden_collections' do
+    let(:solr_params) { {} }
+
+    before { builder.filter_hidden_collections(solr_params) }
+
+    it 'adds filter query to exclude hidden collections' do
+      expect(solr_params[:fq]).to include('-(hide_from_catalog_search_bsi:true)')
+    end
+
+    it 'preserves existing fq parameters' do
+      existing_fq = ['existing_filter:value']
+      solr_params[:fq] = existing_fq
+      builder.filter_hidden_collections(solr_params)
+
+      expect(solr_params[:fq]).to include('existing_filter:value')
+      expect(solr_params[:fq]).to include('-(hide_from_catalog_search_bsi:true)')
+    end
+
+    it 'initializes fq array if not present' do
+      expect(solr_params[:fq]).to be_an(Array)
+      expect(solr_params[:fq]).to include('-(hide_from_catalog_search_bsi:true)')
+    end
   end
 end

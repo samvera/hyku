@@ -30,7 +30,7 @@ gem 'blacklight_range_limit'
 gem 'bolognese', '>= 1.9.10'
 gem 'bootstrap', '~> 4.6'
 gem 'bootstrap-datepicker-rails'
-gem 'bulkrax', '~> 9.1'
+gem 'bulkrax', github: 'samvera/bulkrax', branch: 'main'
 gem 'byebug', group: %i[development test]
 gem 'capybara', group: %i[test]
 gem 'capybara-screenshot', '~> 1.0', group: %i[test]
@@ -61,6 +61,7 @@ gem 'i18n-tasks', group: %i[development test]
 gem 'iiif_print', '~> 3.0.5'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails' # Use jquery as the JavaScript library
+gem 'json_schemer' # Required for m3 schema validation
 gem 'openssl', '>= 3.2.0'
 # The maintainers yanked 0.3.2 version (see https://github.com/dryruby/json-canonicalization/issues/2)
 gem 'json-canonicalization', "0.3.1"
@@ -126,7 +127,7 @@ gem 'valkyrie-shrine'
 gem 'web-console', '>= 3.3.0', group: %i[development] # <%= console %> in views
 gem 'webdrivers', '~> 4.7.0', group: %i[test]
 gem 'webmock', group: %i[test]
-gem 'willow_sword', github: 'notch8/willow_sword', branch: 'main'
+gem 'willow_sword', github: 'notch8/willow_sword', tag: 'v0.3.0'
 
 # Enabling the following gem breaks sidekiq. To Enable: assets.debug must be set to true in config/development.rb
 # gem "xray-rails", git: "https://github.com/brentd/xray-rails.git", branch: "bugs/ruby-3.0.0", group: %i[development]

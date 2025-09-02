@@ -7,6 +7,7 @@ Hyku is primarily configured using environment variables. The default configurat
 
 | Name | Description | Default | Development or Test Only |
 | ------------- | ------------- | ------------- | ------------- |
+| APP_NAME | uniquely identify the endpoint for tenant administration - e.g. `https://admin-hyku.example.org` (production) or `https://admin-hyku.localhost.direct` (development) | hyku | no |
 | CHROME_HOSTNAME | specifies the chromium host for feature specs | chrome | yes |
 | DB_ADAPTER | which Rails database adapter, mapped in to config/database.yml. Common values are postgresql, mysql2, jdbc, nulldb | postgresql | no |
 | DB_HOST | host name for the database | db | no |

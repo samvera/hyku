@@ -697,6 +697,7 @@ zh:
           highlighted: 突出显示
           items: 物品
           last_modified: 最后修改
+          profile_version: 配置文件版本
           title: 标题
           type: 类型
           visibility: 能见度

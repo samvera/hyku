@@ -110,7 +110,7 @@ extraEnvVars: &envVars
   - name: PASSENGER_APP_ENV
     value: production
   - name: RAILS_CACHE_STORE_URL
-    value: redis://:staging@hyku-demo-redis-master:6379/0
+    value: redis://:$REDIS_PASSWORD@hyku-demo-redis-master:6379/0
   - name: RAILS_ENV
     value: production
   - name: RAILS_LOG_TO_STDOUT
@@ -122,7 +122,7 @@ extraEnvVars: &envVars
   - name: REDIS_HOST
     value: hyku-demo-redis-master
   - name: REDIS_URL
-    value: redis://:staging@hyku-demo-redis-master:6379/0
+    value: redis://:$REDIS_PASSWORD@hyku-demo-redis-master:6379/0
   - name: HYRAX_ACTIVE_JOB_QUEUE
     value: good_job
   - name: HYKU_BULKRAX_ENABLED
@@ -229,7 +229,7 @@ redis:
   enabled: true
   architecture: standalone
   auth:
-    password: staging
+    password: $REDIS_PASSWORD
 
 solr:
   enabled: false

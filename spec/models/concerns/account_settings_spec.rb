@@ -230,16 +230,18 @@ RSpec.describe AccountSettings do
       end
 
       context 'when tenant has no specific credentials but ENV has them' do
-        it 'returns true when ENV credentials are present' do
+        # rubocop:disable RSpec/ExampleLength
+        it 'returns false when only ENV credentials are present (tenant has no specific values)' do
           allow(account).to receive(:google_analytics_id).and_return('')
           allow(account).to receive(:google_analytics_property_id).and_return('')
           allow(ENV).to receive(:fetch).with('GOOGLE_ANALYTICS_ID', '').and_return('G-ENVXXXXXXX')
           allow(ENV).to receive(:fetch).with('GOOGLE_ANALYTICS_PROPERTY_ID', '').and_return('987654321')
           allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON', '').and_return('{}')
-
-          expect(account.analytics_credentials_present?).to be true
+          expect(account.analytics_credentials_present?).to be false
         end
+        # rubocop:enable RSpec/ExampleLength
 
+        # rubocop:disable RSpec/ExampleLength
         it 'returns false when ENV credentials are also missing' do
           allow(account).to receive(:google_analytics_id).and_return('')
           allow(account).to receive(:google_analytics_property_id).and_return('')
@@ -247,17 +249,15 @@ RSpec.describe AccountSettings do
           allow(ENV).to receive(:fetch).with('GOOGLE_ANALYTICS_PROPERTY_ID', '').and_return('')
           allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON', '').and_return('')
           allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON_PATH', '').and_return('')
-
           expect(account.analytics_credentials_present?).to be false
         end
+        # rubocop:enable RSpec/ExampleLength
       end
 
       context 'when tenant credentials override ENV credentials' do
         it 'uses tenant credentials even when ENV has different values' do
           allow(account).to receive(:google_analytics_id).and_return('G-TENANTXXX')
           allow(account).to receive(:google_analytics_property_id).and_return('111111111')
-          allow(ENV).to receive(:fetch).with('GOOGLE_ANALYTICS_ID', '').and_return('G-ENVXXXXXXX')
-          allow(ENV).to receive(:fetch).with('GOOGLE_ANALYTICS_PROPERTY_ID', '').and_return('999999999')
           allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON', '').and_return('{}')
 
           expect(account.analytics_credentials_present?).to be true

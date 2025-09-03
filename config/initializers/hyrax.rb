@@ -258,9 +258,10 @@ begin
       Qa::Authorities::Local.register_subauthority(subauth, 'Qa::Authorities::Local::FileBasedAuthority')
     end
   end
-rescue Qa::ConfigDirectoryNotFound, NameError => e
-  # NameError can be raised on first boot of the application if Hyrax is not yet loaded.
+rescue Qa::ConfigDirectoryNotFound => e
   Rails.logger.warn("Hyrax config unable to find qa local authorities directory: #{e.message}")
+rescue NameError => e
+  Rails.logger.debug("Unexpected error during Hyrax configuration: #{e.message}")
 end
 
 # Register custom MeSH authority

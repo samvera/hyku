@@ -142,18 +142,18 @@ RSpec.describe 'Controlled Vocabularies Integration', type: :service do
 
       it 'includes common remote authorities' do
         remote_authorities = Hyrax::ControlledVocabularies::REMOTE_AUTHORITIES
-        
+
         # Library of Congress authorities
         expect(remote_authorities).to have_key('loc/subjects')
         expect(remote_authorities).to have_key('loc/names')
-        
-        # FAST authorities  
+
+        # FAST authorities
         expect(remote_authorities).to have_key('fast')
         expect(remote_authorities).to have_key('fast/geographic')
-        
+
         # Getty authorities
         expect(remote_authorities).to have_key('getty/aat')
-        
+
         # Other authorities
         expect(remote_authorities).to have_key('mesh')
         expect(remote_authorities).to have_key('discogs/release')
@@ -188,7 +188,6 @@ RSpec.describe 'Controlled Vocabularies Integration', type: :service do
       end
 
       it 'processes profiles with controlled vocabularies correctly' do
-        # Verify the profile structure is valid
         expect(profile['properties']['audience']['controlled_values']['sources']).to eq(['audience'])
         expect(profile['properties']['subject']['controlled_values']['sources']).to eq(['loc/subjects'])
       end
@@ -196,16 +195,13 @@ RSpec.describe 'Controlled Vocabularies Integration', type: :service do
       it 'distinguishes between local and remote vocabularies' do
         audience_sources = profile['properties']['audience']['controlled_values']['sources']
         subject_sources = profile['properties']['subject']['controlled_values']['sources']
-        
-        # Local vocabulary should be in SERVICES
+
         expect(Hyrax::ControlledVocabularies::SERVICES).to have_key(audience_sources.first)
-        
-        # Remote vocabulary should be in REMOTE_AUTHORITIES
+
         expect(Hyrax::ControlledVocabularies::REMOTE_AUTHORITIES).to have_key(subject_sources.first)
       end
 
       it 'validates that controlled vocabulary services exist' do
-        # Test that referenced services actually exist and are accessible
         expect { Hyrax::AudienceService.select_all_options }.not_to raise_error
         expect { Hyrax::DisciplineService.select_all_options }.not_to raise_error
       end
@@ -227,8 +223,6 @@ RSpec.describe 'Controlled Vocabularies Integration', type: :service do
       end
 
       it 'still has access to controlled vocabulary configurations' do
-        # The controlled vocabulary configurations should still be available
-        # even when flexible metadata is disabled
         expect(Hyrax::ControlledVocabularies::SERVICES).to be_present
         expect(Hyrax::ControlledVocabularies::REMOTE_AUTHORITIES).to be_present
       end
@@ -240,13 +234,11 @@ RSpec.describe 'Controlled Vocabularies Integration', type: :service do
       options = Hyrax::AudienceService.select_all_options
       expect(options).to be_an(Array)
       expect(options.length).to be > 0
-      
-      # Verify format is [label, value] pairs
+
       first_option = options.first
       expect(first_option).to be_an(Array)
       expect(first_option.length).to eq(2)
-      
-      # Test specific known values
+
       expect(options).to include(['Student', 'Student'])
     end
 
@@ -254,21 +246,18 @@ RSpec.describe 'Controlled Vocabularies Integration', type: :service do
       options = Hyrax::DisciplineService.select_all_options
       expect(options).to be_an(Array)
       expect(options.length).to be > 0
-      
-      # Check that we have a reasonable number of disciplines
+
       expect(options.length).to be >= 60
-      
-      # Verify format and content
+
       first_option = options.first
       expect(first_option).to be_an(Array)
       expect(first_option.length).to eq(2)
     end
 
     it 'provides labels for controlled vocabulary terms' do
-      # Test local vocabulary label resolution
       expect(Hyrax::AudienceService.label('Student')).to eq('Student')
       expect(Hyrax::AudienceService.label('Instructor')).to eq('Instructor')
-      
+
       expect(Hyrax::DisciplineService.label('Computing and Information - Computer Science'))
         .to eq('Computing and Information - Computer Science')
     end
@@ -286,16 +275,16 @@ RSpec.describe 'Controlled Vocabularies Integration', type: :service do
         resource_types
         rights_statements
       ]
-      
+
       expected_local_services.each do |service|
         expect(Hyrax::ControlledVocabularies::SERVICES).to have_key(service)
         service_class = Hyrax::ControlledVocabularies::SERVICES[service].constantize
-        
+
         # Handle different service patterns:
         # 1. Module-based services with select_all_options (most Hyku services)
         # 2. Module-based services with select_options (ResourceTypesService)
         # 3. Class-based services that inherit from QaSelectService (LicenseService, RightsStatementService)
-        
+
         if service_class.respond_to?(:select_all_options)
           # Most Hyku services use select_all_options
           expect(service_class).to respond_to(:select_all_options)
@@ -333,7 +322,7 @@ RSpec.describe 'Controlled Vocabularies Integration', type: :service do
         discogs/release
         discogs/master
       ]
-      
+
       expected_remote_authorities.each do |authority|
         expect(Hyrax::ControlledVocabularies::REMOTE_AUTHORITIES).to have_key(authority)
         config = Hyrax::ControlledVocabularies::REMOTE_AUTHORITIES[authority]

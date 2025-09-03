@@ -14,7 +14,8 @@ module Hyrax
       source = controlled_vocabulary_source_for(property_name)
       return unless source
 
-      ensure_discogs_credentials if source.start_with?('discogs')
+      # Only ensure Discogs credentials if we have a valid token
+      ensure_discogs_credentials if source.start_with?('discogs') && discogs_configured?
 
       local_vocabulary_options_for(source) || remote_vocabulary_options_for(source)
     end
@@ -41,7 +42,7 @@ module Hyrax
 
       begin
         service = service_lookup.is_a?(Class) ? service_lookup.new : service_lookup
-        
+
         # Handle different service patterns:
         # 1. Most services use select_all_options
         # 2. Some, like ResourceTypesService, uses select_options
@@ -53,7 +54,7 @@ module Hyrax
                     Rails.logger.warn "Service #{service.class} does not have select_all_options or select_options method"
                     []
                   end
-        
+
         {
           type: 'select',
           options: options,
@@ -66,6 +67,9 @@ module Hyrax
     end
 
     def remote_vocabulary_options_for(source)
+      # Skip Discogs authorities if not properly configured
+      return nil if source.start_with?('discogs') && !discogs_configured?
+
       remote_config = remote_authority_config_for(source)
       return unless remote_config
 
@@ -73,6 +77,11 @@ module Hyrax
         type: remote_config[:type],
         url: remote_config[:url]
       }
+    end
+
+    def discogs_configured?
+      return false unless current_account.respond_to?(:discogs_user_token)
+      current_account.discogs_user_token.present?
     end
 
     def ensure_discogs_credentials

@@ -41,9 +41,22 @@ module Hyrax
 
       begin
         service = service_lookup.is_a?(Class) ? service_lookup.new : service_lookup
+        
+        # Handle different service patterns:
+        # 1. Most services use select_all_options
+        # 2. Some, like ResourceTypesService, uses select_options
+        options = if service.respond_to?(:select_all_options)
+                    service.select_all_options
+                  elsif service.respond_to?(:select_options)
+                    service.select_options
+                  else
+                    Rails.logger.warn "Service #{service.class} does not have select_all_options or select_options method"
+                    []
+                  end
+        
         {
           type: 'select',
-          options: service.select_all_options,
+          options: options,
           service: service
         }
       rescue StandardError => e

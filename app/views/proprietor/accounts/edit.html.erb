@@ -36,26 +36,33 @@
           <h3><%= t(".account_settings") %></h3>
           
           <!-- Google Analytics Settings Section -->
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-0">
-                <i class="fas fa-chart-line"></i> Google Analytics 4 Configuration
+          <div class="card mb-4 border-left-primary">
+            <div class="card-header bg-light">
+              <h5 class="mb-0 text-primary">
+                <i class="fas fa-chart-line mr-2"></i> Google Analytics 4 Configuration
               </h5>
             </div>
             <div class="card-body">
-              <p class="text-muted mb-3">
-                Configure Google Analytics 4 for tracking user interactions and displaying analytics data in the dashboard.
-                Both fields are required for analytics functionality.
-              </p>
               <% if @account.live_settings.key?(:analytics) %>
-                <%= render 'shared/settings', f: f, key: :analytics, value: @account.live_settings[:analytics] %>
+                <div class="form-group mb-4">
+                  <%= render 'shared/settings', f: f, key: :analytics, value: @account.live_settings[:analytics] %>
+                </div>
               <% end %>
-              <% if @account.live_settings.key?(:google_analytics_id) %>
-                <%= render 'shared/settings', f: f, key: :google_analytics_id, value: @account.live_settings[:google_analytics_id] %>
-              <% end %>
-              <% if @account.live_settings.key?(:google_analytics_property_id) %>
-                <%= render 'shared/settings', f: f, key: :google_analytics_property_id, value: @account.live_settings[:google_analytics_property_id] %>
-              <% end %>
+              
+              <div class="row">
+                <% if @account.live_settings.key?(:google_analytics_id) %>
+                  <div class="col-md-6">
+                    <%= render 'shared/settings', f: f, key: :google_analytics_id, value: @account.live_settings[:google_analytics_id] %>
+                  </div>
+                <% end %>
+                <% if @account.live_settings.key?(:google_analytics_property_id) %>
+                  <div class="col-md-6">
+                    <%= render 'shared/settings', f: f, key: :google_analytics_property_id, value: @account.live_settings[:google_analytics_property_id] %>
+                  </div>
+                <% end %>
+              </div>
+              
+
             </div>
           </div>
 

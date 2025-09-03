@@ -38,8 +38,8 @@ module AccountSettings
     setting :email_subject_prefix, type: 'string'
     setting :enable_oai_metadata, type: 'string', disabled: true
     setting :file_size_limit, type: 'string', default: 5.gigabytes.to_s
-    setting :google_analytics_id, type: 'string', default: ENV.fetch('GOOGLE_ANALYTICS_ID', '')
-    setting :google_analytics_property_id, type: 'string', default: ENV.fetch('GOOGLE_ANALYTICS_PROPERTY_ID', '')
+    setting :google_analytics_id, type: 'string', default: ''
+    setting :google_analytics_property_id, type: 'string', default: ''
     setting :google_scholarly_work_types, type: 'array', disabled: true
     setting :geonames_username, type: 'string', default: ''
     setting :gtm_id, type: 'string'
@@ -87,7 +87,7 @@ module AccountSettings
       # watch out because false is a valid value to return here
       define_method(name) do
         value = super()
-        if name == :analytics
+        if name == :analytics || name == :google_analytics_id || name == :google_analytics_property_id
           return value.nil? ? args[:default] : set_type(value, (args[:type]).to_s)
         end
         value = value.nil? ? ENV.fetch("HYKU_#{name.upcase}", nil) : value
@@ -268,19 +268,25 @@ module AccountSettings
   end
 
   def analytics_credentials_present?
-    google_analytics_id.present? &&
-      google_analytics_property_id.present? &&
+    analytics_id = google_analytics_id.presence || ENV.fetch('GOOGLE_ANALYTICS_ID', '')
+    property_id = google_analytics_property_id.presence || ENV.fetch('GOOGLE_ANALYTICS_PROPERTY_ID', '')
+
+    analytics_id.present? &&
+      property_id.present? &&
       (ENV.fetch('GOOGLE_ACCOUNT_JSON', '').present? || ENV.fetch('GOOGLE_ACCOUNT_JSON_PATH', '').present?)
   end
 
   def reload_hyrax_analytics
+    analytics_id = google_analytics_id.presence || ENV.fetch('GOOGLE_ANALYTICS_ID', '')
+    property_id = google_analytics_property_id.presence || ENV.fetch('GOOGLE_ANALYTICS_PROPERTY_ID', '')
+
     # Configure analytics if all required settings are present
-    if google_analytics_id.present? &&
-       google_analytics_property_id.present? &&
+    if analytics_id.present? &&
+       property_id.present? &&
        (ENV.fetch('GOOGLE_ACCOUNT_JSON', '').present? || ENV.fetch('GOOGLE_ACCOUNT_JSON_PATH', '').present?)
 
-      Hyrax::Analytics.config.analytics_id = google_analytics_id
-      Hyrax::Analytics.config.property_id = google_analytics_property_id
+      Hyrax::Analytics.config.analytics_id = analytics_id
+      Hyrax::Analytics.config.property_id = property_id
 
     else
       # Disable analytics if any required settings are missing

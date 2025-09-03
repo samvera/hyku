@@ -119,6 +119,50 @@ RSpec.describe AccountSettings do
       end
     end
 
+    describe 'Google Analytics form display methods' do
+      describe '#google_analytics_id' do
+        context 'when tenant has no specific value and ENV is set' do
+          before do
+            account.settings['google_analytics_id'] = nil
+            allow(ENV).to receive(:fetch).with('GOOGLE_ANALYTICS_ID', '').and_return('G-ENVVALUE123')
+          end
+
+          it 'returns empty string for form display (not ENV value)' do
+            expect(account.google_analytics_id).to eq('')
+          end
+        end
+
+        context 'when tenant has a specific value' do
+          before { account.settings['google_analytics_id'] = 'G-TENANT123' }
+
+          it 'returns the tenant-specific value' do
+            expect(account.google_analytics_id).to eq('G-TENANT123')
+          end
+        end
+      end
+
+      describe '#google_analytics_property_id' do
+        context 'when tenant has no specific value and ENV is set' do
+          before do
+            account.settings['google_analytics_property_id'] = nil
+            allow(ENV).to receive(:fetch).with('GOOGLE_ANALYTICS_PROPERTY_ID', '').and_return('987654321')
+          end
+
+          it 'returns empty string for form display (not ENV value)' do
+            expect(account.google_analytics_property_id).to eq('')
+          end
+        end
+
+        context 'when tenant has a specific value' do
+          before { account.settings['google_analytics_property_id'] = '123456789' }
+
+          it 'returns the tenant-specific value' do
+            expect(account.google_analytics_property_id).to eq('123456789')
+          end
+        end
+      end
+    end
+
     describe '#configure_hyrax_analytics_settings' do
       let(:config) { double('config') }
 
@@ -166,31 +210,61 @@ RSpec.describe AccountSettings do
     end
 
     describe '#analytics_credentials_present?' do
-      it 'returns true when all required credentials are present' do
-        allow(account).to receive(:google_analytics_id).and_return('G-XXXXXXXXXX')
-        allow(account).to receive(:google_analytics_property_id).and_return('123456789')
-        allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON', '').and_return('{}')
+      context 'when tenant has specific analytics credentials' do
+        it 'returns true when all tenant-specific credentials are present' do
+          allow(account).to receive(:google_analytics_id).and_return('G-XXXXXXXXXX')
+          allow(account).to receive(:google_analytics_property_id).and_return('123456789')
+          allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON', '').and_return('{}')
 
-        expect(account.analytics_credentials_present?).to be true
+          expect(account.analytics_credentials_present?).to be true
+        end
+
+        it 'returns false when tenant google_analytics_id is missing' do
+          allow(account).to receive(:google_analytics_id).and_return('')
+          allow(account).to receive(:google_analytics_property_id).and_return('123456789')
+          allow(ENV).to receive(:fetch).with('GOOGLE_ANALYTICS_ID', '').and_return('')
+          allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON', '').and_return('{}')
+
+          expect(account.analytics_credentials_present?).to be false
+        end
       end
 
-      it 'returns false when google_analytics_id is missing' do
-        allow(account).to receive(:google_analytics_id).and_return('')
-        allow(account).to receive(:google_analytics_property_id).and_return('123456789')
-        allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON', '').and_return('{}')
+      context 'when tenant has no specific credentials but ENV has them' do
+        it 'returns true when ENV credentials are present' do
+          allow(account).to receive(:google_analytics_id).and_return('')
+          allow(account).to receive(:google_analytics_property_id).and_return('')
+          allow(ENV).to receive(:fetch).with('GOOGLE_ANALYTICS_ID', '').and_return('G-ENVXXXXXXX')
+          allow(ENV).to receive(:fetch).with('GOOGLE_ANALYTICS_PROPERTY_ID', '').and_return('987654321')
+          allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON', '').and_return('{}')
 
-        expect(account.analytics_credentials_present?).to be false
+          expect(account.analytics_credentials_present?).to be true
+        end
+
+        it 'returns false when ENV credentials are also missing' do
+          allow(account).to receive(:google_analytics_id).and_return('')
+          allow(account).to receive(:google_analytics_property_id).and_return('')
+          allow(ENV).to receive(:fetch).with('GOOGLE_ANALYTICS_ID', '').and_return('')
+          allow(ENV).to receive(:fetch).with('GOOGLE_ANALYTICS_PROPERTY_ID', '').and_return('')
+          allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON', '').and_return('')
+          allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON_PATH', '').and_return('')
+
+          expect(account.analytics_credentials_present?).to be false
+        end
       end
 
-      it 'returns false when google_analytics_property_id is missing' do
-        allow(account).to receive(:google_analytics_id).and_return('G-XXXXXXXXXX')
-        allow(account).to receive(:google_analytics_property_id).and_return('')
-        allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON', '').and_return('{}')
+      context 'when tenant credentials override ENV credentials' do
+        it 'uses tenant credentials even when ENV has different values' do
+          allow(account).to receive(:google_analytics_id).and_return('G-TENANTXXX')
+          allow(account).to receive(:google_analytics_property_id).and_return('111111111')
+          allow(ENV).to receive(:fetch).with('GOOGLE_ANALYTICS_ID', '').and_return('G-ENVXXXXXXX')
+          allow(ENV).to receive(:fetch).with('GOOGLE_ANALYTICS_PROPERTY_ID', '').and_return('999999999')
+          allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON', '').and_return('{}')
 
-        expect(account.analytics_credentials_present?).to be false
+          expect(account.analytics_credentials_present?).to be true
+        end
       end
 
-      it 'returns false when both JSON environment variables are missing' do
+      it 'returns false when JSON environment variables are missing' do
         allow(account).to receive(:google_analytics_id).and_return('G-XXXXXXXXXX')
         allow(account).to receive(:google_analytics_property_id).and_return('123456789')
         allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON', '').and_return('')

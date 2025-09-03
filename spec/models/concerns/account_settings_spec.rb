@@ -166,10 +166,9 @@ RSpec.describe AccountSettings do
     describe '#configure_hyrax_analytics_settings' do
       let(:config) { double('config') }
 
-      context 'when analytics is enabled and credentials are present' do
+      context 'when analytics credentials are functionally available' do
         before do
-          account.settings['analytics'] = true
-          allow(account).to receive(:analytics_credentials_present?).and_return(true)
+          allow(account).to receive(:analytics_functionally_available?).and_return(true)
         end
 
         it 'enables both analytics and analytics_reporting in Hyrax config' do
@@ -180,24 +179,9 @@ RSpec.describe AccountSettings do
         end
       end
 
-      context 'when analytics is disabled' do
+      context 'when analytics credentials are not functionally available' do
         before do
-          account.settings['analytics'] = false
-          allow(account).to receive(:analytics_credentials_present?).and_return(true)
-        end
-
-        it 'disables both analytics and analytics_reporting in Hyrax config' do
-          expect(config).to receive(:analytics=).with(false)
-          expect(config).to receive(:analytics_reporting=).with(false)
-
-          account.configure_hyrax_analytics_settings(config)
-        end
-      end
-
-      context 'when analytics is enabled but credentials are missing' do
-        before do
-          account.settings['analytics'] = true
-          allow(account).to receive(:analytics_credentials_present?).and_return(false)
+          allow(account).to receive(:analytics_functionally_available?).and_return(false)
         end
 
         it 'disables both analytics and analytics_reporting in Hyrax config' do
@@ -280,6 +264,86 @@ RSpec.describe AccountSettings do
         allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON_PATH', '').and_return('/path/to/service-account.json')
 
         expect(account.analytics_credentials_present?).to be true
+      end
+    end
+
+    describe '#analytics_functionally_available?' do
+      context 'when tenant has specific analytics credentials' do
+        it 'returns true when all tenant-specific credentials are present' do
+          allow(account).to receive(:google_analytics_id).and_return('G-XXXXXXXXXX')
+          allow(account).to receive(:google_analytics_property_id).and_return('123456789')
+          allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON', '').and_return('{}')
+
+          expect(account.analytics_functionally_available?).to be true
+        end
+
+        it 'returns false when tenant google_analytics_id is missing' do
+          allow(account).to receive(:google_analytics_id).and_return('')
+          allow(account).to receive(:google_analytics_property_id).and_return('123456789')
+          allow(ENV).to receive(:fetch).with('GOOGLE_ANALYTICS_ID', '').and_return('')
+          allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON', '').and_return('{}')
+
+          expect(account.analytics_functionally_available?).to be false
+        end
+      end
+
+      context 'when tenant has no specific credentials but ENV has them' do
+        # rubocop:disable RSpec/ExampleLength
+        it 'returns true when ENV credentials are present' do
+          allow(account).to receive(:google_analytics_id).and_return('')
+          allow(account).to receive(:google_analytics_property_id).and_return('')
+          allow(ENV).to receive(:fetch).with('GOOGLE_ANALYTICS_ID', '').and_return('G-ENVXXXXXXX')
+          allow(ENV).to receive(:fetch).with('GOOGLE_ANALYTICS_PROPERTY_ID', '').and_return('987654321')
+          allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON', '').and_return('{}')
+
+          expect(account.analytics_functionally_available?).to be true
+        end
+        # rubocop:enable RSpec/ExampleLength
+
+        # rubocop:disable RSpec/ExampleLength
+        it 'returns false when ENV credentials are also missing' do
+          allow(account).to receive(:google_analytics_id).and_return('')
+          allow(account).to receive(:google_analytics_property_id).and_return('')
+          allow(ENV).to receive(:fetch).with('GOOGLE_ANALYTICS_ID', '').and_return('')
+          allow(ENV).to receive(:fetch).with('GOOGLE_ANALYTICS_PROPERTY_ID', '').and_return('')
+          allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON', '').and_return('')
+          allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON_PATH', '').and_return('')
+
+          expect(account.analytics_functionally_available?).to be false
+        end
+        # rubocop:enable RSpec/ExampleLength
+      end
+
+      context 'when tenant credentials override ENV credentials' do
+        # rubocop:disable RSpec/ExampleLength
+        it 'uses tenant credentials even when ENV has different values' do
+          allow(account).to receive(:google_analytics_id).and_return('G-TENANTXXXX')
+          allow(account).to receive(:google_analytics_property_id).and_return('111111111')
+          allow(ENV).to receive(:fetch).with('GOOGLE_ANALYTICS_ID', '').and_return('G-ENVXXXXXXX')
+          allow(ENV).to receive(:fetch).with('GOOGLE_ANALYTICS_PROPERTY_ID', '').and_return('987654321')
+          allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON', '').and_return('{}')
+
+          expect(account.analytics_functionally_available?).to be true
+        end
+        # rubocop:enable RSpec/ExampleLength
+      end
+
+      it 'returns false when JSON environment variables are missing' do
+        allow(account).to receive(:google_analytics_id).and_return('G-XXXXXXXXXX')
+        allow(account).to receive(:google_analytics_property_id).and_return('123456789')
+        allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON', '').and_return('')
+        allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON_PATH', '').and_return('')
+
+        expect(account.analytics_functionally_available?).to be false
+      end
+
+      it 'returns true when GOOGLE_ACCOUNT_JSON_PATH is present instead of GOOGLE_ACCOUNT_JSON' do
+        allow(account).to receive(:google_analytics_id).and_return('G-XXXXXXXXXX')
+        allow(account).to receive(:google_analytics_property_id).and_return('123456789')
+        allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON', '').and_return('')
+        allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON_PATH', '').and_return('/path/to/service-account.json')
+
+        expect(account.analytics_functionally_available?).to be true
       end
     end
   end

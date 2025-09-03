@@ -141,14 +141,26 @@ module AccountSettings
 
   def analytics_credentials_present?
     # Only show analytics if tenant has explicitly configured their own GA4 settings
-    # Don't fall back to environment variables for UI visibility
+    # GA4 ID fields are tenant-specific only, but JSON credentials can use ENV fallback
     google_analytics_id.present? &&
       google_analytics_property_id.present? &&
       (ENV.fetch('GOOGLE_ACCOUNT_JSON', '').present? || ENV.fetch('GOOGLE_ACCOUNT_JSON_PATH', '').present?)
   end
 
+  def analytics_functionally_available?
+    # Check if analytics can function (with ENV fallback for actual tracking)
+    analytics_id = google_analytics_id.presence || ENV.fetch('GOOGLE_ANALYTICS_ID', '')
+    property_id = google_analytics_property_id.presence || ENV.fetch('GOOGLE_ANALYTICS_PROPERTY_ID', '')
+
+    analytics_id.present? &&
+      property_id.present? &&
+      (ENV.fetch('GOOGLE_ACCOUNT_JSON', '').present? || ENV.fetch('GOOGLE_ACCOUNT_JSON_PATH', '').present?)
+  end
+
   def configure_hyrax_analytics_settings(config)
-    if ActiveModel::Type::Boolean.new.cast(analytics) && analytics_credentials_present?
+    # Global analytics work for all tenants when ENV is set, regardless of tenant-specific settings
+    # But tenant-specific settings can override global settings
+    if analytics_functionally_available?
       config.analytics = true
       config.analytics_reporting = true
     else

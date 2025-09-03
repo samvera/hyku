@@ -9,7 +9,7 @@ zh:
         admin_emails: 一次输入一个电子邮件地址
         allow_signup: 允许用户注册您的存储库
         analytics: 启用或禁用 Google Analytics 4 来跟踪用户互动，包括点击。
-        analytics_reporting: 启用或停用 Google Analytics 4 的报告功能，以便在信息中心显示分析数据。需要开发者支持才能进行设置。
+
         cache_api: 打开API端点的缓存。实验性
         contact_email: 系统通知将从其中发送的电子邮件地址。需要额外的配置才能从网站域以外的域添加地址
         contact_email_to: 通过联系页面提交的消息发送到的电子邮件地址
@@ -29,9 +29,10 @@ zh:
         gtm_id: 您的Google标签管理器帐户ID
         hidden_index_fields: 逗号分隔。蛇形命名法。不包括 Solr 后缀（例如“title,rights_statement”）
         is_public: 用户可以在主页上发现您的网站，或者不需要特殊的用户名/密码就可以访问您的页面吗？
-        locale_name: '添加到其locale.yml文件的租户特定语言环境后缀的名称。只应添加字母字符，不应添加符号或数字，这些将随后大写。
+        locale_name:
+          "添加到其locale.yml文件的租户特定语言环境后缀的名称。只应添加字母字符，不应添加符号或数字，这些将随后大写。
 
-          '
+          "
         monthly_email_list: 每月报告的电子邮件地址列表。每个电子邮件之间留一个空格
         name: 用于存储技术方面的单一或连字符名称（例如，“acme”或“acme-library”）。
         oai_admin_email: OAI端点联系电子邮件地址
@@ -70,11 +71,11 @@ zh:
         email: 电子邮件地址
       user_search:
         uq: 用户搜索
-    'no': 否
+    "no": 否
     placeholders:
       user_search:
         uq: 名称或用户名
     required:
       mark: "*"
       text: 必填
-    'yes': 是
+    "yes": 是

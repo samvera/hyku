@@ -3,13 +3,13 @@ es:
   simple_form:
     cancel: Cancelar
     error_notification:
-      default_message: 'Repase los problemas abajo, por favor:'
+      default_message: "Repase los problemas abajo, por favor:"
     hints:
       account:
         admin_emails: Introduzca una dirección de correo electrónico a la vez
         allow_signup: Permitir a los usuarios registrarse en su repositorio
         analytics: Habilite o deshabilite Google Analytics 4 para realizar un seguimiento de las interacciones del usuario, incluidos los clics.
-        analytics_reporting: Habilite o deshabilite los informes de Google Analytics 4 para mostrar datos analíticos en el panel. Requiere asistencia del desarrollador para la configuración.
+
         cache_api: Activa la caché para puntos finales de API. Experimental
         contact_email: La dirección de correo electrónico desde la que se enviarán las notificaciones del sistema. Se requiere una configuración adicional para agregar una dirección de dominios distintos al dominio del sitio
         contact_email_to: La dirección de correo electrónico a la que se envían los mensajes enviados a través de la página de contacto
@@ -29,9 +29,10 @@ es:
         gtm_id: La ID de su cuenta de Google Tag Manager
         hidden_index_fields: Separados por comas. Mayúsculas y minúsculas. Excluye sufijos Solr (p. ej., "title,rights_statement")
         is_public: "¿Pueden los usuarios descubrir su sitio en la página principal o acceder a sus páginas sin un nombre de usuario/contraseña especial?"
-        locale_name: 'El nombre del sufijo de configuración regional específico del inquilino añadido a sus archivos locale.yml. Solo se deben agregar caracteres alfabéticos, no símbolos o números, estos se capitalizarán.
+        locale_name:
+          "El nombre del sufijo de configuración regional específico del inquilino añadido a sus archivos locale.yml. Solo se deben agregar caracteres alfabéticos, no símbolos o números, estos se capitalizarán.
 
-          '
+          "
         monthly_email_list: Lista de direcciones de correo electrónico para enviar el informe mensual. Deje un espacio entre cada correo electrónico
         name: Un nombre único o con guiones utilizado para aspectos técnicos del repositorio (por ejemplo, "acme" o "acme-biblioteca").
         oai_admin_email: Dirección de correo electrónico de contacto del punto final OAI
@@ -70,11 +71,11 @@ es:
         email: Dirección de correo electrónico
       user_search:
         uq: Buscar usuario
-    'no': 'No'
+    "no": "No"
     placeholders:
       user_search:
         uq: Nombre o nombre de usuario
     required:
       mark: "*"
       text: requerido
-    'yes': Sí
+    "yes": Sí

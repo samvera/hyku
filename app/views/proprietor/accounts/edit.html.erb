@@ -34,7 +34,33 @@
           </div>
 
           <h3><%= t(".account_settings") %></h3>
-          <% @account.live_settings.each do |key, value| %>
+          
+          <!-- Google Analytics Settings Section -->
+          <div class="card mb-3">
+            <div class="card-header">
+              <h5 class="mb-0">
+                <i class="fas fa-chart-line"></i> Google Analytics 4 Configuration
+              </h5>
+            </div>
+            <div class="card-body">
+              <p class="text-muted mb-3">
+                Configure Google Analytics 4 for tracking user interactions and displaying analytics data in the dashboard.
+                Both fields are required for analytics functionality.
+              </p>
+              <% if @account.live_settings.key?(:analytics) %>
+                <%= render 'shared/settings', f: f, key: :analytics, value: @account.live_settings[:analytics] %>
+              <% end %>
+              <% if @account.live_settings.key?(:google_analytics_id) %>
+                <%= render 'shared/settings', f: f, key: :google_analytics_id, value: @account.live_settings[:google_analytics_id] %>
+              <% end %>
+              <% if @account.live_settings.key?(:google_analytics_property_id) %>
+                <%= render 'shared/settings', f: f, key: :google_analytics_property_id, value: @account.live_settings[:google_analytics_property_id] %>
+              <% end %>
+            </div>
+          </div>
+
+          <!-- Other Settings -->
+          <% @account.live_settings.except(:analytics, :google_analytics_id, :google_analytics_property_id).each do |key, value| %>
             <%= render 'shared/settings', f: f, key: key, value: value %>
           <% end %>
 

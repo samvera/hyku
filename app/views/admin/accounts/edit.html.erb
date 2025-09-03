@@ -21,7 +21,36 @@
             <%= f.text_field :tenant, class: 'form-control', readonly: @account.persisted? %>
           </div>
           <% is_superadmin = current_ability.superadmin? %>
-          <% current_account.public_settings(is_superadmin: is_superadmin).each do |key, value| %>
+          <% settings = current_account.public_settings(is_superadmin: is_superadmin) %>
+          
+          <!-- Google Analytics Settings Section -->
+          <% if settings.key?(:analytics) || settings.key?(:google_analytics_id) || settings.key?(:google_analytics_property_id) %>
+            <div class="card mb-3">
+              <div class="card-header">
+                <h5 class="mb-0">
+                  <i class="fas fa-chart-line"></i> Google Analytics 4 Configuration
+                </h5>
+              </div>
+              <div class="card-body">
+                <p class="text-muted mb-3">
+                  Configure Google Analytics 4 for tracking user interactions and displaying analytics data in the dashboard.
+                  Both fields are required for analytics functionality.
+                </p>
+                <% if settings.key?(:analytics) %>
+                  <%= render 'shared/settings', f: f, key: :analytics, value: settings[:analytics] %>
+                <% end %>
+                <% if settings.key?(:google_analytics_id) %>
+                  <%= render 'shared/settings', f: f, key: :google_analytics_id, value: settings[:google_analytics_id] %>
+                <% end %>
+                <% if settings.key?(:google_analytics_property_id) %>
+                  <%= render 'shared/settings', f: f, key: :google_analytics_property_id, value: settings[:google_analytics_property_id] %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+
+          <!-- Other Settings -->
+          <% settings.except(:analytics, :google_analytics_id, :google_analytics_property_id).each do |key, value| %>
             <%= render 'shared/settings', f: f, key: key, value: value %>
           <% end %>
           <div class="card-footer">

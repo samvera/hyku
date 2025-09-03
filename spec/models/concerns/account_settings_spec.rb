@@ -10,7 +10,6 @@ RSpec.describe AccountSettings do
         expect(account.public_settings(is_superadmin: true).keys.sort).to eq %i[allow_downloads
                                                                                 allow_signup
                                                                                 analytics
-                                                                                analytics_reporting
                                                                                 batch_email_notifications
                                                                                 bulkrax_field_mappings
                                                                                 cache_api
@@ -99,6 +98,114 @@ RSpec.describe AccountSettings do
       it 'adds an error to the setting' do
         expect(account.valid?).to eq(false)
         expect(account.errors.messages[:bulkrax_field_mappings]).to eq(["unexpected character: 'hello' at line 1 column 1"])
+      end
+    end
+  end
+
+  describe 'consolidated analytics setting' do
+    describe '#analytics' do
+      context 'when analytics setting is not present' do
+        it 'returns the default value (false)' do
+          expect(account.analytics).to be false
+        end
+      end
+
+      context 'when analytics setting is present' do
+        before { account.settings['analytics'] = true }
+
+        it 'returns the set value' do
+          expect(account.analytics).to be true
+        end
+      end
+    end
+
+    describe '#configure_hyrax_analytics_settings' do
+      let(:config) { double('config') }
+
+      context 'when analytics is enabled and credentials are present' do
+        before do
+          account.settings['analytics'] = true
+          allow(account).to receive(:analytics_credentials_present?).and_return(true)
+        end
+
+        it 'enables both analytics and analytics_reporting in Hyrax config' do
+          expect(config).to receive(:analytics=).with(true)
+          expect(config).to receive(:analytics_reporting=).with(true)
+
+          account.configure_hyrax_analytics_settings(config)
+        end
+      end
+
+      context 'when analytics is disabled' do
+        before do
+          account.settings['analytics'] = false
+          allow(account).to receive(:analytics_credentials_present?).and_return(true)
+        end
+
+        it 'disables both analytics and analytics_reporting in Hyrax config' do
+          expect(config).to receive(:analytics=).with(false)
+          expect(config).to receive(:analytics_reporting=).with(false)
+
+          account.configure_hyrax_analytics_settings(config)
+        end
+      end
+
+      context 'when analytics is enabled but credentials are missing' do
+        before do
+          account.settings['analytics'] = true
+          allow(account).to receive(:analytics_credentials_present?).and_return(false)
+        end
+
+        it 'disables both analytics and analytics_reporting in Hyrax config' do
+          expect(config).to receive(:analytics=).with(false)
+          expect(config).to receive(:analytics_reporting=).with(false)
+
+          account.configure_hyrax_analytics_settings(config)
+        end
+      end
+    end
+
+    describe '#analytics_credentials_present?' do
+      it 'returns true when all required credentials are present' do
+        allow(account).to receive(:google_analytics_id).and_return('G-XXXXXXXXXX')
+        allow(account).to receive(:google_analytics_property_id).and_return('123456789')
+        allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON', '').and_return('{}')
+
+        expect(account.analytics_credentials_present?).to be true
+      end
+
+      it 'returns false when google_analytics_id is missing' do
+        allow(account).to receive(:google_analytics_id).and_return('')
+        allow(account).to receive(:google_analytics_property_id).and_return('123456789')
+        allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON', '').and_return('{}')
+
+        expect(account.analytics_credentials_present?).to be false
+      end
+
+      it 'returns false when google_analytics_property_id is missing' do
+        allow(account).to receive(:google_analytics_id).and_return('G-XXXXXXXXXX')
+        allow(account).to receive(:google_analytics_property_id).and_return('')
+        allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON', '').and_return('{}')
+
+        expect(account.analytics_credentials_present?).to be false
+      end
+
+      it 'returns false when both JSON environment variables are missing' do
+        allow(account).to receive(:google_analytics_id).and_return('G-XXXXXXXXXX')
+        allow(account).to receive(:google_analytics_property_id).and_return('123456789')
+        allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON', '').and_return('')
+        allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON_PATH', '').and_return('')
+
+        expect(account.analytics_credentials_present?).to be false
+      end
+
+      it 'returns true when GOOGLE_ACCOUNT_JSON_PATH is present instead of GOOGLE_ACCOUNT_JSON' do
+        allow(account).to receive(:google_analytics_id).and_return('G-XXXXXXXXXX')
+        allow(account).to receive(:google_analytics_property_id).and_return('123456789')
+        allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON', '').and_return('')
+        allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON_PATH', '').and_return('/path/to/service-account.json')
+
+        expect(account.analytics_credentials_present?).to be true
       end
     end
   end

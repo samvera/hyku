@@ -3,13 +3,13 @@ fr:
   simple_form:
     cancel: Annuler
     error_notification:
-      default_message: 'Veuillez examiner les problèmes ci-dessous:'
+      default_message: "Veuillez examiner les problèmes ci-dessous:"
     hints:
       account:
         admin_emails: Entrez une adresse e-mail à la fois
         allow_signup: Autoriser les utilisateurs à s'inscrire à votre dépôt
         analytics: Activez ou désactivez Google Analytics 4 pour suivre les interactions des utilisateurs, y compris les clics.
-        analytics_reporting: Activez ou désactivez les rapports de Google Analytics 4 pour afficher les données d'analyse dans le tableau de bord. Nécessite l'assistance d'un développeur pour la configuration.
+
         cache_api: Active le cache pour les points d'accès API. Expérimental
         contact_email: L'adresse e-mail à partir de laquelle les notifications système seront envoyées. Une configuration supplémentaire est nécessaire pour ajouter une adresse provenant de domaines autres que le domaine du site
         contact_email_to: L'adresse e-mail à laquelle les messages soumis via la page de contact sont envoyés
@@ -29,9 +29,10 @@ fr:
         gtm_id: L'ID de votre compte Google Tag Manager
         hidden_index_fields: Séparé par des virgules. Casse serpent. Exclure les suffixes Solr (par exemple, « titre, déclaration_de_droits »).
         is_public: Les utilisateurs peuvent-ils découvrir votre site sur la page d'accueil ou accéder à vos pages sans identifiant/mot de passe spécifique?
-        locale_name: 'Le nom du suffixe de locale spécifique au locataire ajouté à leurs fichiers locale.yml. Seuls les caractères alphabétiques doivent être ajoutés, pas de symboles ou de chiffres, ceux-ci seront alors mis en majuscule.
+        locale_name:
+          "Le nom du suffixe de locale spécifique au locataire ajouté à leurs fichiers locale.yml. Seuls les caractères alphabétiques doivent être ajoutés, pas de symboles ou de chiffres, ceux-ci seront alors mis en majuscule.
 
-          '
+          "
         monthly_email_list: Liste des adresses e-mail pour envoyer le rapport mensuel. Laissez un espace entre chaque e-mail
         name: Un nom simple ou avec des tirets utilisé pour les aspects techniques du dépôt (par exemple, "acme" ou "acme-bibliothèque").
         oai_admin_email: Adresse e-mail de contact du point d'accès OAI
@@ -70,11 +71,11 @@ fr:
         email: Adresse électronique
       user_search:
         uq: Recherche d'utilisateur
-    'no': Non
+    "no": Non
     placeholders:
       user_search:
         uq: Nom ou nom d'utilisateur
     required:
       mark: "*"
       text: requis
-    'yes': Oui
+    "yes": Oui

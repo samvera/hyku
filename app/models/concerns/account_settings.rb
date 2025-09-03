@@ -23,7 +23,6 @@ module AccountSettings
     setting :allow_downloads, type: 'boolean', default: true
     setting :allow_signup, type: 'boolean', default: true
     setting :analytics, type: 'boolean', default: false
-    setting :analytics_reporting, type: 'boolean', default: false
     setting :batch_email_notifications, type: 'boolean', default: false
     setting :bulkrax_field_mappings, type: 'json_editor', default: Hyku.default_bulkrax_field_mappings.to_json
     setting :bulkrax_validations, type: 'boolean', disabled: true
@@ -88,7 +87,7 @@ module AccountSettings
       # watch out because false is a valid value to return here
       define_method(name) do
         value = super()
-        if name == :analytics_reporting || name == :analytics
+        if name == :analytics
           return value.nil? ? args[:default] : set_type(value, (args[:type]).to_s)
         end
         value = value.nil? ? ENV.fetch("HYKU_#{name.upcase}", nil) : value
@@ -220,7 +219,7 @@ module AccountSettings
   end
 
   def configure_hyrax_analytics_settings(config)
-    if ActiveModel::Type::Boolean.new.cast(analytics_reporting) && analytics_credentials_present?
+    if ActiveModel::Type::Boolean.new.cast(analytics) && analytics_credentials_present?
       config.analytics = true
       config.analytics_reporting = true
     else

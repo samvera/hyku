@@ -25,35 +25,7 @@
           
           <!-- Google Analytics Settings Section -->
           <% if settings.key?(:analytics) || settings.key?(:google_analytics_id) || settings.key?(:google_analytics_property_id) %>
-            <div class="card mb-4 border-left-primary">
-              <div class="card-header bg-light">
-                <h5 class="mb-0 text-primary">
-                  <i class="fas fa-chart-line mr-2"></i> Google Analytics 4 Configuration
-                </h5>
-              </div>
-              <div class="card-body">
-                <% if settings.key?(:analytics) %>
-                  <div class="form-group mb-4">
-                    <%= render 'shared/settings', f: f, key: :analytics, value: settings[:analytics] %>
-                  </div>
-                <% end %>
-                
-                <div class="row">
-                  <% if settings.key?(:google_analytics_id) %>
-                    <div class="col-md-6">
-                      <%= render 'shared/settings', f: f, key: :google_analytics_id, value: settings[:google_analytics_id] %>
-                    </div>
-                  <% end %>
-                  <% if settings.key?(:google_analytics_property_id) %>
-                    <div class="col-md-6">
-                      <%= render 'shared/settings', f: f, key: :google_analytics_property_id, value: settings[:google_analytics_property_id] %>
-                    </div>
-                  <% end %>
-                </div>
-                
-
-              </div>
-            </div>
+            <%= render 'shared/google_analytics_settings', f: f, settings: settings %>
           <% end %>
 
           <!-- Other Settings -->

@@ -249,11 +249,26 @@ end
 
 Date::DATE_FORMATS[:standard] = "%m/%d/%Y"
 
-Qa::Authorities::Local.register_subauthority('audience', 'Qa::Authorities::Local::FileBasedAuthority')
-Qa::Authorities::Local.register_subauthority('discipline', 'Qa::Authorities::Local::FileBasedAuthority')
-Qa::Authorities::Local.register_subauthority('education_levels', 'Qa::Authorities::Local::FileBasedAuthority')
-Qa::Authorities::Local.register_subauthority('learning_resource_types', 'Qa::Authorities::Local::FileBasedAuthority')
-Qa::Authorities::Local.register_subauthority('oer_types', 'Qa::Authorities::Local::FileBasedAuthority')
+# Dynamically register file-based authorities from the `config/authorities` directory
+begin
+  # The Qa::Authorities::Local.names method will return all the .yml files in your
+  # `config/authorities` directory. This will register each of them as a FileBasedAuthority
+  if Qa::Authorities::Local.subauthorities_path && Dir.exist?(Qa::Authorities::Local.subauthorities_path)
+    Qa::Authorities::Local.names.each do |subauth|
+      Qa::Authorities::Local.register_subauthority(subauth, 'Qa::Authorities::Local::FileBasedAuthority')
+    end
+  end
+rescue Qa::ConfigDirectoryNotFound => e
+  Rails.logger.warn("Hyrax config unable to find qa local authorities directory: #{e.message}")
+rescue NameError => e
+  Rails.logger.debug("Unexpected error during Hyrax configuration: #{e.message}")
+end
+
+# Register custom MeSH authority
+Qa::Authorities::Local.register_subauthority('mesh', 'Qa::Authorities::Mesh')
+
+# NOTE: Remote authorities like LOC don't need explicit registration
+# They are available by default through the QA engine routes
 
 Hyrax::IiifAv.config.iiif_av_viewer = :universal_viewer
 

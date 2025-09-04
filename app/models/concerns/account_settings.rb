@@ -23,7 +23,6 @@ module AccountSettings
     setting :allow_downloads, type: 'boolean', default: true
     setting :allow_signup, type: 'boolean', default: true
     setting :analytics, type: 'boolean', default: false
-    setting :analytics_reporting, type: 'boolean', default: false
     setting :batch_email_notifications, type: 'boolean', default: false
     setting :bulkrax_field_mappings, type: 'json_editor', default: Hyku.default_bulkrax_field_mappings.to_json
     setting :bulkrax_validations, type: 'boolean', disabled: true
@@ -39,8 +38,8 @@ module AccountSettings
     setting :email_subject_prefix, type: 'string'
     setting :enable_oai_metadata, type: 'string', disabled: true
     setting :file_size_limit, type: 'string', default: 5.gigabytes.to_s
-    setting :google_analytics_id, type: 'string', default: ENV.fetch('GOOGLE_ANALYTICS_ID', '')
-    setting :google_analytics_property_id, type: 'string', default: ENV.fetch('GOOGLE_ANALYTICS_PROPERTY_ID', '')
+    setting :google_analytics_id, type: 'string', default: ''
+    setting :google_analytics_property_id, type: 'string', default: ''
     setting :google_scholarly_work_types, type: 'array', disabled: true
     setting :geonames_username, type: 'string', default: ''
     setting :gtm_id, type: 'string'
@@ -77,6 +76,7 @@ module AccountSettings
   class_methods do
     # rubocop:disable Metrics/MethodLength
     # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/CyclomaticComplexity
     def setting(name, args)
       known_type = ['array', 'boolean', 'hash', 'string', 'json_editor'].include?(args[:type])
       raise "Setting type #{args[:type]} is not supported. Can not laod." unless known_type
@@ -88,15 +88,16 @@ module AccountSettings
       # watch out because false is a valid value to return here
       define_method(name) do
         value = super()
-        if name == :analytics_reporting || name == :analytics
+        # For analytics and Google Analytics settings, don't fall back to ENV variables
+        # They should show tenant-specific values only (blank for new tenants)
+        if tenant_specific_analytics_setting?(name)
           return value.nil? ? args[:default] : set_type(value, (args[:type]).to_s)
         end
-        value = value.nil? ? ENV.fetch("HYKU_#{name.upcase}", nil) : value
-        value = value.nil? ? ENV.fetch("HYRAX_#{name.upcase}", nil) : value
-        value = value.nil? ? ENV.fetch(name.upcase.to_s, nil) : value
+        value = apply_env_fallbacks(value, name)
         value = value.nil? ? args[:default] : value
         set_type(value, (args[:type]).to_s)
       end
+      # rubocop:enable Metrics/CyclomaticComplexity
       # rubocop:enable Metrics/AbcSize
       # rubocop:enable Metrics/MethodLength
     end
@@ -138,7 +139,48 @@ module AccountSettings
     all_settings.reject { |_k, v| v[:disabled] }
   end
 
+  def analytics_credentials_present?
+    # Only show analytics if tenant has explicitly enabled analytics and configured their own GA4 settings
+    # GA4 ID fields are tenant-specific only, but JSON credentials can use ENV fallback
+    analytics &&
+      google_analytics_id.present? &&
+      google_analytics_property_id.present? &&
+      (ENV.fetch('GOOGLE_ACCOUNT_JSON', '').present? || ENV.fetch('GOOGLE_ACCOUNT_JSON_PATH', '').present?)
+  end
+
+  def analytics_functionally_available?
+    # Check if analytics can function (with ENV fallback for actual tracking)
+    analytics_id = google_analytics_id.presence || ENV.fetch('GOOGLE_ANALYTICS_ID', '')
+    property_id = google_analytics_property_id.presence || ENV.fetch('GOOGLE_ANALYTICS_PROPERTY_ID', '')
+
+    analytics_id.present? &&
+      property_id.present? &&
+      (ENV.fetch('GOOGLE_ACCOUNT_JSON', '').present? || ENV.fetch('GOOGLE_ACCOUNT_JSON_PATH', '').present?)
+  end
+
+  def configure_hyrax_analytics_settings(config)
+    # Global analytics work for all tenants when ENV is set, regardless of tenant-specific settings
+    # But tenant-specific settings can override global settings
+    if analytics_functionally_available?
+      config.analytics = true
+      config.analytics_reporting = true
+    else
+      config.analytics = false
+      config.analytics_reporting = false
+    end
+  end
+
   private
+
+  def tenant_specific_analytics_setting?(name)
+    [:analytics, :google_analytics_id, :google_analytics_property_id].include?(name)
+  end
+
+  def apply_env_fallbacks(value, name)
+    value = value.nil? ? ENV.fetch("HYKU_#{name.upcase}", nil) : value
+    value = value.nil? ? ENV.fetch("HYRAX_#{name.upcase}", nil) : value
+    value.nil? ? ENV.fetch(name.upcase.to_s, nil) : value
+  end
 
   def set_type(value, to_type)
     case to_type
@@ -219,16 +261,6 @@ module AccountSettings
     end
   end
 
-  def configure_hyrax_analytics_settings(config)
-    if ActiveModel::Type::Boolean.new.cast(analytics_reporting) && analytics_credentials_present?
-      config.analytics = true
-      config.analytics_reporting = true
-    else
-      config.analytics = false
-      config.analytics_reporting = false
-    end
-  end
-
   def configure_devise
     Devise.mailer_sender = contact_email
   end
@@ -268,20 +300,17 @@ module AccountSettings
     ActionMailer::Base.default_url_options[:protocol] = 'https'
   end
 
-  def analytics_credentials_present?
-    google_analytics_id.present? &&
-      google_analytics_property_id.present? &&
-      (ENV.fetch('GOOGLE_ACCOUNT_JSON', '').present? || ENV.fetch('GOOGLE_ACCOUNT_JSON_PATH', '').present?)
-  end
-
   def reload_hyrax_analytics
+    analytics_id = google_analytics_id.presence || ENV.fetch('GOOGLE_ANALYTICS_ID', '')
+    property_id = google_analytics_property_id.presence || ENV.fetch('GOOGLE_ANALYTICS_PROPERTY_ID', '')
+
     # Configure analytics if all required settings are present
-    if google_analytics_id.present? &&
-       google_analytics_property_id.present? &&
+    if analytics_id.present? &&
+       property_id.present? &&
        (ENV.fetch('GOOGLE_ACCOUNT_JSON', '').present? || ENV.fetch('GOOGLE_ACCOUNT_JSON_PATH', '').present?)
 
-      Hyrax::Analytics.config.analytics_id = google_analytics_id
-      Hyrax::Analytics.config.property_id = google_analytics_property_id
+      Hyrax::Analytics.config.analytics_id = analytics_id
+      Hyrax::Analytics.config.property_id = property_id
 
     else
       # Disable analytics if any required settings are missing

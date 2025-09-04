@@ -61,3 +61,4 @@ docker-compose.override.yml
 .DS_Store
 /bundler.d/
 .tool-versions
+config/google_service_account.json

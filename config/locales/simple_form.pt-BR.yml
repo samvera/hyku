@@ -3,13 +3,13 @@ pt-BR:
   simple_form:
     cancel: Cancelar
     error_notification:
-      default_message: 'Por favor, reveja os problemas abaixo:'
+      default_message: "Por favor, reveja os problemas abaixo:"
     hints:
       account:
         admin_emails: Insira um endereço de e-mail por vez
         allow_signup: Permitir que usuários se inscrevam no seu repositório
         analytics: Ative ou desative o Google Analytics 4 para rastrear interações do usuário, incluindo cliques.
-        analytics_reporting: Habilite ou desabilite os relatórios do Google Analytics 4 para exibir dados analíticos no painel. Requer suporte do desenvolvedor para configuração.
+
         cache_api: Ativar cache para pontos finais de API. Experimental
         contact_email: O endereço de e-mail do qual as notificações do sistema serão enviadas. Uma configuração adicional é necessária para adicionar um endereço de domínios diferentes do domínio do site
         contact_email_to: O endereço de e-mail para o qual as mensagens enviadas via página de contato são enviadas
@@ -29,9 +29,10 @@ pt-BR:
         gtm_id: O ID da sua conta no Google Tag Manager
         hidden_index_fields: 'Separado por vírgulas. Excluir sufixos Solr (ex.: "título,declaração_de_direitos")'
         is_public: Os usuários podem descobrir seu site na página inicial ou acessar suas páginas sem um nome de usuário/senha especial?
-        locale_name: 'O nome do sufixo específico do inquilino adicionado aos seus arquivos locale.yml. Apenas caracteres alfabéticos devem ser adicionados, sem símbolos ou números, estes serão então capitalizados.
+        locale_name:
+          "O nome do sufixo específico do inquilino adicionado aos seus arquivos locale.yml. Apenas caracteres alfabéticos devem ser adicionados, sem símbolos ou números, estes serão então capitalizados.
 
-          '
+          "
         monthly_email_list: Lista de endereços de e-mail para enviar o relatório mensal. Deixe um espaço único entre cada e-mail
         name: Um nome simples ou hifenizado usado para aspectos técnicos do repositório (por exemplo, "acme" ou "acme-biblioteca").
         oai_admin_email: Endereço de e-mail de contato do ponto final OAI
@@ -70,11 +71,11 @@ pt-BR:
         email: Endereço de e-mail
       user_search:
         uq: Pesquisar por usuário
-    'no': Não
+    "no": Não
     placeholders:
       user_search:
         uq: Nome ou nome de usuário
     required:
       mark: "*"
       text: obrigatório
-    'yes': Sim
+    "yes": Sim

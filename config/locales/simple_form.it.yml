@@ -3,13 +3,13 @@ it:
   simple_form:
     cancel: Annulla
     error_notification:
-      default_message: 'Si prega di rivedere i problemi di seguito:'
+      default_message: "Si prega di rivedere i problemi di seguito:"
     hints:
       account:
         admin_emails: Inserisci un indirizzo email alla volta
         allow_signup: Permetti agli utenti di iscriversi al tuo repository
         analytics: Abilita o disabilita Google Analytics 4 per monitorare le interazioni degli utenti, inclusi i clic.
-        analytics_reporting: Abilita o disabilita i report di Google Analytics 4 per visualizzare i dati analitici nella dashboard. Richiede il supporto degli sviluppatori per la configurazione.
+
         cache_api: Abilita la cache per gli endpoint API. Sperimentale
         contact_email: L'indirizzo email da cui saranno inviate le notifiche di sistema. È richiesta una configurazione aggiuntiva per aggiungere un indirizzo da domini diversi dal dominio del sito
         contact_email_to: L'indirizzo email al quale i messaggi inviati tramite la pagina di contatto sono inviati
@@ -29,9 +29,10 @@ it:
         gtm_id: L'ID del tuo account Google Tag Manager
         hidden_index_fields: Separato da virgole. Maiuscolo/minuscolo. Escludere i suffissi Solr (ad esempio "title,rights_statement").
         is_public: Gli utenti possono scoprire il tuo sito nella pagina principale o accedere alle tue pagine senza un nome utente/password speciale?
-        locale_name: 'Il nome del suffisso specifico del tenant aggiunto ai loro file locale.yml. Aggiungi solo caratteri alfabetici, niente simboli o numeri, questi saranno poi capitalizzati.
+        locale_name:
+          "Il nome del suffisso specifico del tenant aggiunto ai loro file locale.yml. Aggiungi solo caratteri alfabetici, niente simboli o numeri, questi saranno poi capitalizzati.
 
-          '
+          "
         monthly_email_list: Lista di indirizzi email ai quali inviare il rapporto mensile. Lascia uno spazio tra ogni email
         name: Un nome singolo o con trattino usato per gli aspetti tecnici del repository (ad es., "acme" o "acme-biblioteca").
         oai_admin_email: Indirizzo email di contatto dell'endpoint OAI
@@ -70,11 +71,11 @@ it:
         email: Indirizzo email
       user_search:
         uq: Ricerca utente
-    'no': 'No'
+    "no": "No"
     placeholders:
       user_search:
         uq: Nome o nome utente
     required:
       mark: "*"
       text: richiesto
-    'yes': Sì
+    "yes": Sì

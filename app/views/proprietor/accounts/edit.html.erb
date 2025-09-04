@@ -34,7 +34,14 @@
           </div>
 
           <h3><%= t(".account_settings") %></h3>
-          <% @account.live_settings.each do |key, value| %>
+          
+          <!-- Google Analytics Settings Section -->
+          <% if @account.live_settings.key?(:analytics) || @account.live_settings.key?(:google_analytics_id) || @account.live_settings.key?(:google_analytics_property_id) %>
+            <%= render 'shared/google_analytics_settings', f: f, settings: @account.live_settings %>
+          <% end %>
+
+          <!-- Other Settings -->
+          <% @account.live_settings.except(:analytics, :google_analytics_id, :google_analytics_property_id).each do |key, value| %>
             <%= render 'shared/settings', f: f, key: key, value: value %>
           <% end %>
 

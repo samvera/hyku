@@ -191,7 +191,7 @@ class Account < ApplicationRecord
       jobs_to_schedule << Hyrax::QueuedDeleteJob
     end
 
-    if analytics_reporting && Hyrax.config.analytics_reporting?
+    if analytics && Hyrax.config.analytics_reporting?
       jobs_to_schedule << DepositorEmailNotificationJob if depositor_email_notifications
       jobs_to_schedule << UserStatCollectionJob
     end
@@ -211,7 +211,7 @@ class Account < ApplicationRecord
     relevant_settings = [
       'batch_email_notifications',
       'depositor_email_notifications',
-      'analytics_reporting'
+      'analytics'
     ]
 
     return unless saved_changes['settings']

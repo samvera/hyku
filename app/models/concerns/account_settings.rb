@@ -140,9 +140,10 @@ module AccountSettings
   end
 
   def analytics_credentials_present?
-    # Only show analytics if tenant has explicitly configured their own GA4 settings
+    # Only show analytics if tenant has explicitly enabled analytics and configured their own GA4 settings
     # GA4 ID fields are tenant-specific only, but JSON credentials can use ENV fallback
-    google_analytics_id.present? &&
+    analytics &&
+      google_analytics_id.present? &&
       google_analytics_property_id.present? &&
       (ENV.fetch('GOOGLE_ACCOUNT_JSON', '').present? || ENV.fetch('GOOGLE_ACCOUNT_JSON_PATH', '').present?)
   end

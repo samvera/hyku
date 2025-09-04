@@ -12,7 +12,7 @@
       </div>
     <% end %>
     
-    <div class="row">
+    <div class="row" id="google-analytics-fields" style="display: none;">
       <% if settings.key?(:google_analytics_id) %>
         <div class="col-md-6">
           <%= render 'shared/settings', f: f, key: :google_analytics_id, value: settings[:google_analytics_id] %>
@@ -26,3 +26,67 @@
     </div>
   </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Try multiple possible checkbox selectors
+  const analyticsCheckbox = document.getElementById('account_analytics') || 
+                           document.querySelector('input[name="account[analytics]"]') ||
+                           document.querySelector('input[type="checkbox"][id*="analytics"]');
+  const analyticsFields = document.getElementById('google-analytics-fields');
+  
+  if (analyticsCheckbox && analyticsFields) {
+    // Set initial state based on checkbox
+    if (analyticsCheckbox.checked) {
+      analyticsFields.style.display = 'flex';
+    } else {
+      analyticsFields.style.display = 'none';
+    }
+    
+    analyticsCheckbox.addEventListener('change', function() {
+      if (this.checked) {
+        analyticsFields.style.display = 'flex';
+      } else {
+        analyticsFields.style.display = 'none';
+      }
+    });
+  } else {
+    console.log('Analytics checkbox or fields not found:', {
+      checkbox: !!analyticsCheckbox,
+      fields: !!analyticsFields
+    });
+  }
+});
+
+// Also listen for turbolinks events in case the form is loaded via AJAX
+document.addEventListener('turbolinks:load', function() {
+  const analyticsCheckbox = document.getElementById('account_analytics') || 
+                           document.querySelector('input[name="account[analytics]"]') ||
+                           document.querySelector('input[type="checkbox"][id*="analytics"]');
+  const analyticsFields = document.getElementById('google-analytics-fields');
+  
+  if (analyticsCheckbox && analyticsFields) {
+    // Set initial state based on checkbox
+    if (analyticsCheckbox.checked) {
+      analyticsFields.style.display = 'flex';
+    } else {
+      analyticsFields.style.display = 'none';
+    }
+    
+    // Remove any existing event listeners to avoid duplicates
+    analyticsCheckbox.removeEventListener('change', handleAnalyticsToggle);
+    analyticsCheckbox.addEventListener('change', handleAnalyticsToggle);
+  }
+});
+
+function handleAnalyticsToggle() {
+  const analyticsFields = document.getElementById('google-analytics-fields');
+  if (analyticsFields) {
+    if (this.checked) {
+      analyticsFields.style.display = 'flex';
+    } else {
+      analyticsFields.style.display = 'none';
+    }
+  }
+}
+</script>

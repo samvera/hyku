@@ -161,13 +161,11 @@ module AccountSettings
   def configure_hyrax_analytics_settings(config)
     # Global analytics work for all tenants when ENV is set, regardless of tenant-specific settings
     # But tenant-specific settings can override global settings
-    if analytics_functionally_available?
-      config.analytics = true
-      config.analytics_reporting = true
-    else
-      config.analytics = false
-      config.analytics_reporting = false
-    end
+    config.analytics = if analytics_functionally_available?
+                         true
+                       else
+                         false
+                       end
   end
 
   private

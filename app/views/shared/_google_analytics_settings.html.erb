@@ -21,11 +21,20 @@
         (MATOMO_BASE_URL, MATOMO_SITE_ID, MATOMO_AUTH_TOKEN).
       </div>
     <% elsif provider == 'ga4' %>
-      <div class="alert alert-info">
-        <i class="fa fa-info-circle mr-2"></i>
-        <strong>Google Analytics 4:</strong> Your system is configured to use Google Analytics 4. 
-        Configure your GA4 settings below to track analytics for your tenant.
-      </div>
+      <% if ENV['GOOGLE_ACCOUNT_JSON'].blank? && ENV['GOOGLE_ACCOUNT_JSON_PATH'].blank? %>
+        <div class="alert alert-warning">
+          <i class="fa fa-exclamation-triangle mr-2"></i>
+          <strong>A Google Analytics 4 Setup Required:</strong> Your system is configured to use Google Analytics 4, but the global service account credentials are
+          not configured. Please contact your system administrator to set up the required environment variables (GOOGLE_ACCOUNT_JSON or
+          GOOGLE_ACCOUNT_JSON_PATH).
+        </div>
+      <% else %>
+        <div class="alert alert-info">
+          <i class="fa fa-info-circle mr-2"></i>
+          <strong>Google Analytics 4:</strong> Your system is configured to use Google Analytics 4.
+          Configure your GA4 settings below to track analytics for your tenant.
+        </div>
+      <% end %>
     <% elsif provider == 'google' %>
       <div class="alert alert-warning">
         <i class="fa fa-exclamation-triangle mr-2"></i>

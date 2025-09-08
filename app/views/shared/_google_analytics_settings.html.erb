@@ -2,7 +2,7 @@
 <div class="card mb-4 border-left-primary">
   <div class="card-header bg-light">
     <h5 class="mb-0 text-primary">
-      <i class="fa fa-line-chart mr-2"></i> Analytics Configuration
+      <i class="fa fa-line-chart mr-2"></i> <%= t('hyku.admin.google_analytics_settings.header') %>
     </h5>
   </div>
   <div class="card-body">
@@ -16,30 +16,24 @@
     <% if provider == 'matomo' %>
       <div class="alert alert-info">
         <i class="fa fa-info-circle mr-2"></i>
-        <strong>Matomo Setup Required:</strong> Additional configuration is needed to complete Matomo analytics setup. 
-        Please ensure your system administrator has configured the required Matomo environment variables 
-        (MATOMO_BASE_URL, MATOMO_SITE_ID, MATOMO_AUTH_TOKEN).
+        <strong><%= t('hyku.admin.google_analytics_settings.matomo_setup.header') %></strong> <%= t('hyku.admin.google_analytics_settings.matomo_setup.body') %>
       </div>
     <% elsif provider == 'ga4' %>
       <% if ENV['GOOGLE_ACCOUNT_JSON'].blank? && ENV['GOOGLE_ACCOUNT_JSON_PATH'].blank? %>
         <div class="alert alert-warning">
           <i class="fa fa-exclamation-triangle mr-2"></i>
-          <strong>Google Analytics 4 Setup is Required:</strong> Your system is configured to use Google Analytics 4, but the global service account credentials are
-          not configured. Please contact your system administrator to set up the required environment variables (GOOGLE_ACCOUNT_JSON or
-          GOOGLE_ACCOUNT_JSON_PATH).
+          <strong><%= t('hyku.admin.google_analytics_settings.ga4_setup_required.header') %></strong> <%= t('hyku.admin.google_analytics_settings.ga4_setup_required.body') %>
         </div>
       <% else %>
         <div class="alert alert-info">
           <i class="fa fa-info-circle mr-2"></i>
-          <strong>Google Analytics 4:</strong> Your system is configured to use Google Analytics 4.
-          Configure your GA4 settings below to track analytics for your tenant.
+          <strong><%= t('hyku.admin.google_analytics_settings.ga4_configured.header') %></strong> <%= t('hyku.admin.google_analytics_settings.ga4_configured.body') %>
         </div>
       <% end %>
     <% elsif provider == 'google' %>
       <div class="alert alert-warning">
         <i class="fa fa-exclamation-triangle mr-2"></i>
-        <strong>Google Universal Analytics:</strong> Your system is using Google Universal Analytics (legacy). 
-        Google has deprecated Universal Analytics. Consider upgrading to Google Analytics 4.
+        <strong><%= t('hyku.admin.google_analytics_settings.universal_analytics_warning.header') %></strong> <%= t('hyku.admin.google_analytics_settings.universal_analytics_warning.body') %>
       </div>
     <% end %>
     

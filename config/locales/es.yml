@@ -51,6 +51,20 @@ es:
     admin:
       flash:
         access_denied: No está autorizado a ver esta página
+      google_analytics_settings:
+        header: "Configuración de Analytics"
+        matomo_setup:
+          header: "Se requiere configuración de Matomo:"
+          body: "Se necesita configuración adicional para completar la configuración de Matomo analytics. Asegúrese de que su administrador del sistema haya configurado las variables de entorno de Matomo requeridas (MATOMO_BASE_URL, MATOMO_SITE_ID, MATOMO_AUTH_TOKEN)."
+        ga4_setup_required:
+          header: "Se requiere configuración de Google Analytics 4:"
+          body: "Su sistema está configurado para usar Google Analytics 4, pero las credenciales globales de la cuenta de servicio no están configuradas. Póngase en contacto con su administrador del sistema para configurar las variables de entorno requeridas (GOOGLE_ACCOUNT_JSON o GOOGLE_ACCOUNT_JSON_PATH)."
+        ga4_configured:
+          header: "Google Analytics 4:"
+          body: "Su sistema está configurado para usar Google Analytics 4. Configure sus ajustes de GA4 a continuación para rastrear analytics para su inquilino."
+        universal_analytics_warning:
+          header: "Google Universal Analytics:"
+          body: "Su sistema está usando Google Universal Analytics (heredado). Google ha desaprobado Universal Analytics. Considere actualizar a Google Analytics 4."
       groups:
         action:
           create: Crear nuevo grupo
@@ -69,7 +83,7 @@ es:
         description:
           admin: Los usuarios de este grupo se consideran administradores de este inquilino y tienen acceso sin restricciones.
           depositors: Los usuarios de este grupo pueden depositar trabajos en cualquier conjunto de administración de este inquilino.
-          editors: 'Los usuarios de este grupo pueden leer y editar todas las colecciones y obras de este inquilino. También pueden: crear cobros, depositar y aprobar obras, gestionar embargos y arrendamientos y gestionar importadores y exportadores de Bulkrax.'
+          editors: "Los usuarios de este grupo pueden leer y editar todas las colecciones y obras de este inquilino. También pueden: crear cobros, depositar y aprobar obras, gestionar embargos y arrendamientos y gestionar importadores y exportadores de Bulkrax."
           registered: Contiene todos los usuarios que se han registrado en este inquilino.
         flash:
           create:
@@ -77,12 +91,12 @@ es:
             invalid: Los grupos deben tener un nombre
             success: "%{group} creado"
           destroy:
-            failure: 'No pudo ser destruido %{group} '
+            failure: "No pudo ser destruido %{group} "
             success: "%{group} destruido"
           remove:
             cannot_destroy_default_group: Los grupos predeterminados no se pueden destruir.
           update:
-            failure: 'No se pudo actualizar %{group} '
+            failure: "No se pudo actualizar %{group} "
             success: "%{group} actualizado"
         humanized_name:
           admin: Administradores de repositorios
@@ -214,7 +228,7 @@ es:
             favicon:
               hint: Los favicons deben ser archivos png y deben ser cuadrados. El tamaño máximo utilizado es 228px x 228px.
             link_color:
-              hint: 'Afecta a los enlaces en las páginas de inicio y trabajo, incluidos: migas de pan, pestañas, títulos y términos de servicio.'
+              hint: "Afecta a los enlaces en las páginas de inicio y trabajo, incluidos: migas de pan, pestañas, títulos y términos de servicio."
             logo_image:
               hint: Para usar una imagen como logotipo, debe usar una imagen (JPG, GIF o PNG) que no sea más alta que el encabezado ni más ancha que 400 píxeles de ancho.
             navbar_background_color:
@@ -260,7 +274,7 @@ es:
             description: Debido a que algunos de los roles de colección tienen acceso a cada colección dentro de un inquilino, cree un registro Hyrax::CollectionTypeParticipant para ellos en cada Hyrax::CollectionType (excepto AdminSet).
             label: Crear participantes del tipo de colección
           grant_workflow_roles_for_all_admin_sets:
-            description: 'Los permisos para depositar trabajos están controlados por roles de flujo de trabajo en AdminSets individuales. Para que los registros de Hyrax::Group y User que tienen el rol ''Editor de trabajo'' o ''Depositante de trabajo'' tengan los permisos correctos para Works, les otorgamos roles de flujo de trabajo para todos los AdminSets. NOTA: Todos los AdminSets deben tener una plantilla de permisos o esto fallará. Primero ejecute ''Crear accesos al conjunto de administradores''.'
+            description: "Los permisos para depositar trabajos están controlados por roles de flujo de trabajo en AdminSets individuales. Para que los registros de Hyrax::Group y User que tienen el rol 'Editor de trabajo' o 'Depositante de trabajo' tengan los permisos correctos para Works, les otorgamos roles de flujo de trabajo para todos los AdminSets. NOTA: Todos los AdminSets deben tener una plantilla de permisos o esto fallará. Primero ejecute 'Crear accesos al conjunto de administradores'."
             label: Administrador establecer roles de flujo de trabajo
       sidebar:
         accounts: Cuentas

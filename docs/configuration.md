@@ -181,12 +181,16 @@ For new implementations, we recommend using Google Analytics 4:
 For existing implementations using Universal Analytics:
 
 1. **Create a Service Account**: https://cloud.google.com/iam/docs/creating-managing-service-accounts
-   - Note the service account email
-   - When making a service account key, make sure the key type is set to p12
-   - Note the service account private key secret
+
+- Note the service account email
+- When making a service account key, make sure the key type is set to p12
+- Note the service account private key secret
+
 2. **Create an OAuth 2.0 Client ID**: https://developers.google.com/identity/protocols/oauth2/web-server#creatingcred
 3. **Create an Analytics account**: https://support.google.com/analytics/answer/10269537?hl=en
-   - Note Google Universal Analytics ID number
+
+- Note Google Universal Analytics ID number
+
 4. **Add service account email as User, and grant "View" access**: https://support.google.com/analytics/answer/1009702?hl=en#Add&zippy=%2Cin-this-article
 5. **Enable the "Google Analytics API"**: https://developers.google.com/identity/protocols/oauth2/web-server#enable-apis
 6. **Enable the "IAM Service Account Credentials API"**: https://developers.google.com/identity/protocols/oauth2/web-server#enable-apis
@@ -271,8 +275,8 @@ GOOGLE_ACCOUNT_JSON='{"type":"service_account",...}'
 # For Google Analytics 4 (recommended)
 - name: HYRAX_ANALYTICS_PROVIDER
   value: "ga4"
-- name: GOOGLE_ANALYTICS_ID
-  value: $GOOGLE_ANALYTICS_ID # Set in GitHub's Environment Secrets
+  - name: GOOGLE_ANALYTICS_ID
+    value: $GOOGLE_ANALYTICS_ID # Set in GitHub's Environment Secrets
 - name: GOOGLE_ANALYTICS_PROPERTY_ID
   value: $GOOGLE_ANALYTICS_PROPERTY_ID # Set in GitHub's Environment Secrets
 - name: GOOGLE_ACCOUNT_JSON
@@ -309,7 +313,7 @@ GOOGLE_ACCOUNT_JSON='{"type":"service_account",...}'
 # - name: MATOMO_AUTH_TOKEN
 #   value: $MATOMO_AUTH_TOKEN # Set in GitHub's Environment Secrets
 
-- name: HYRAX_ANALYTICS
+  - name: HYRAX_ANALYTICS
   value: "true"
 ```
 

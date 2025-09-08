@@ -8,7 +8,7 @@ pt-BR:
       account:
         admin_emails: Insira um endereço de e-mail por vez
         allow_signup: Permitir que usuários se inscrevam no seu repositório
-        analytics: Ative ou desative o Google Analytics 4 para rastrear interações do usuário, incluindo cliques.
+        analytics: Ative ou desative as análises para rastrear interações do usuário e exibir dados analíticos no painel.
 
         cache_api: Ativar cache para pontos finais de API. Experimental
         contact_email: O endereço de e-mail do qual as notificações do sistema serão enviadas. Uma configuração adicional é necessária para adicionar um endereço de domínios diferentes do domínio do site
@@ -25,7 +25,8 @@ pt-BR:
         file_acl: Desative se estiver usando um sistema de arquivos como samba ou nfs que não suporta listas de controle de acesso
         file_size_limit: Isso deve ser configurado para pelo menos 536870912000
         geonames_username: Registre-se em http://www.geonames.org/manageaccount
-        google_analytics_id: O ID da sua conta no Google Analytics
+        google_analytics_id: 'ID de Medição (ex: G-XXXXXXXXXX) do GA4 Admin → Propriedade → Fluxos de Dados → Fluxo da Web. <a href="https://samvera.atlassian.net/wiki/spaces/hyku/pages/3185147970/Google+Analytics+4+GA4+Support#Creating-a-New-Google-Analytics-Account" target="_blank">Guia de configuração</a>'
+        google_analytics_property_id: 'ID de Propriedade Numérica (ex: 123456789) do GA4 Admin → Detalhes da Propriedade (canto superior direito). <a href="https://samvera.atlassian.net/wiki/spaces/hyku/pages/3185147970/Google+Analytics+4+GA4+Support#Creating-a-New-Google-Analytics-Account" target="_blank">Guia de configuração</a>'
         gtm_id: O ID da sua conta no Google Tag Manager
         hidden_index_fields: 'Separado por vírgulas. Excluir sufixos Solr (ex.: "título,declaração_de_direitos")'
         is_public: Os usuários podem descobrir seu site na página inicial ou acessar suas páginas sem um nome de usuário/senha especial?

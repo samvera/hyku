@@ -8,7 +8,7 @@ fr:
       account:
         admin_emails: Entrez une adresse e-mail à la fois
         allow_signup: Autoriser les utilisateurs à s'inscrire à votre dépôt
-        analytics: Activez ou désactivez Google Analytics 4 pour suivre les interactions des utilisateurs, y compris les clics.
+        analytics: Activez ou désactivez les analyses pour suivre les interactions des utilisateurs et afficher les données d'analyse dans le tableau de bord.
 
         cache_api: Active le cache pour les points d'accès API. Expérimental
         contact_email: L'adresse e-mail à partir de laquelle les notifications système seront envoyées. Une configuration supplémentaire est nécessaire pour ajouter une adresse provenant de domaines autres que le domaine du site
@@ -25,7 +25,8 @@ fr:
         file_acl: Désactivez si vous utilisez un système de fichiers comme samba ou nfs qui ne prend pas en charge les listes de contrôle d'accès
         file_size_limit: Ceci doit être réglé à au moins 536870912000
         geonames_username: Inscrivez-vous sur http://www.geonames.org/manageaccount
-        google_analytics_id: L'ID de votre compte Google Analytics
+        google_analytics_id: 'ID de mesure (par exemple, G-XXXXXXXXXX) de GA4 Admin → Propriété → Flux de données → Flux Web. <a href="https://samvera.atlassian.net/wiki/spaces/hyku/pages/3185147970/Google+Analytics+4+GA4+Support#Creating-a-New-Google-Analytics-Account" target="_blank">Guide de configuration</a>'
+        google_analytics_property_id: 'ID de propriété numérique (par exemple, 123456789) de GA4 Admin → Détails de la propriété (coin supérieur droit). <a href="https://samvera.atlassian.net/wiki/spaces/hyku/pages/3185147970/Google+Analytics+4+GA4+Support#Creating-a-New-Google-Analytics-Account" target="_blank">Guide de configuration</a>'
         gtm_id: L'ID de votre compte Google Tag Manager
         hidden_index_fields: Séparé par des virgules. Casse serpent. Exclure les suffixes Solr (par exemple, « titre, déclaration_de_droits »).
         is_public: Les utilisateurs peuvent-ils découvrir votre site sur la page d'accueil ou accéder à vos pages sans identifiant/mot de passe spécifique?

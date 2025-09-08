@@ -8,7 +8,7 @@ de:
       account:
         admin_emails: Geben Sie jeweils eine E-Mail-Adresse ein
         allow_signup: Benutzern erlauben, sich für Ihr Repository anzumelden
-        analytics: Aktivieren oder deaktivieren Sie Google Analytics 4, um Benutzerinteraktionen, einschließlich Klicks, zu verfolgen.
+        analytics: Aktivieren oder deaktivieren Sie Analysen, um Benutzerinteraktionen zu verfolgen und Analysedaten im Dashboard anzuzeigen.
 
         cache_api: Cache für API-Endpunkte aktivieren. Experimentell
         contact_email: Die E-Mail-Adresse, von der Systembenachrichtigungen gesendet werden. Eine zusätzliche Konfiguration ist erforderlich, um eine Adresse von anderen Domänen als der Domäne der Website hinzuzufügen
@@ -25,7 +25,8 @@ de:
         file_acl: Deaktivieren Sie dies, wenn Sie ein Dateisystem wie Samba oder NFS verwenden, das das Festlegen von Zugriffssteuerungslisten nicht unterstützt
         file_size_limit: Dies sollte mindestens auf 536870912000 eingestellt sein
         geonames_username: Registrieren Sie sich unter http://www.geonames.org/manageaccount
-        google_analytics_id: Die ID Ihres Google Analytics-Kontos
+        google_analytics_id: 'Mess-ID (z.B. G-XXXXXXXXXX) von GA4 Admin → Eigenschaft → Datenstreams → Web-Stream. <a href="https://samvera.atlassian.net/wiki/spaces/hyku/pages/3185147970/Google+Analytics+4+GA4+Support#Creating-a-New-Google-Analytics-Account" target="_blank">Einrichtungsanleitung</a>'
+        google_analytics_property_id: 'Numerische Eigenschafts-ID (z.B. 123456789) von GA4 Admin → Eigenschaftsdetails (obere rechte Ecke). <a href="https://samvera.atlassian.net/wiki/spaces/hyku/pages/3185147970/Google+Analytics+4+GA4+Support#Creating-a-New-Google-Analytics-Account" target="_blank">Einrichtungsanleitung</a>'
         gtm_id: Die ID Ihres Google Tag Manager-Kontos
         hidden_index_fields: Komma-getrennt. Snake Case. Solr-Suffixe ausschließen (z. B. „title,rights_statement“)
         is_public: Können Benutzer Ihre Seite auf der Startseite entdecken oder auf Ihre Seiten zugreifen, ohne einen speziellen Benutzernamen / Passwort?

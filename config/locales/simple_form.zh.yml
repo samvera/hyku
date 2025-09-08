@@ -8,7 +8,7 @@ zh:
       account:
         admin_emails: 一次输入一个电子邮件地址
         allow_signup: 允许用户注册您的存储库
-        analytics: 启用或禁用 Google Analytics 4 来跟踪用户互动，包括点击。
+        analytics: 启用或禁用分析以跟踪用户交互并在仪表板中显示分析数据。
 
         cache_api: 打开API端点的缓存。实验性
         contact_email: 系统通知将从其中发送的电子邮件地址。需要额外的配置才能从网站域以外的域添加地址
@@ -25,7 +25,8 @@ zh:
         file_acl: 如果使用不支持设置访问控制列表的文件系统（如samba或nfs），请关闭它
         file_size_limit: 此值应至少设置为536870912000
         geonames_username: 在http://www.geonames.org/manageaccount上注册
-        google_analytics_id: 您的Google Analytics帐户ID
+        google_analytics_id: '测量ID（例如，G-XXXXXXXXXX）来自GA4管理 → 属性 → 数据流 → 网络流。<a href="https://samvera.atlassian.net/wiki/spaces/hyku/pages/3185147970/Google+Analytics+4+GA4+Support#Creating-a-New-Google-Analytics-Account" target="_blank">设置指南</a>'
+        google_analytics_property_id: '数字属性ID（例如，123456789）来自GA4管理 → 属性详情（右上角）。<a href="https://samvera.atlassian.net/wiki/spaces/hyku/pages/3185147970/Google+Analytics+4+GA4+Support#Creating-a-New-Google-Analytics-Account" target="_blank">设置指南</a>'
         gtm_id: 您的Google标签管理器帐户ID
         hidden_index_fields: 逗号分隔。蛇形命名法。不包括 Solr 后缀（例如“title,rights_statement”）
         is_public: 用户可以在主页上发现您的网站，或者不需要特殊的用户名/密码就可以访问您的页面吗？

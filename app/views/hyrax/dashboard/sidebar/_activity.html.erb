@@ -67,7 +67,7 @@
   </li>
 <% end %>
 
-<% if current_ability.can_create_any_work? && Hyrax.config.analytics_reporting? %>
+<% if current_ability.can_create_any_work? && current_account.analytics_credentials_present? %>
   <li class="nav-item">
     <%= menu.collapsable_section t('hyrax.admin.sidebar.analytics'),
                                   icon_class: "fa fa-pie-chart",

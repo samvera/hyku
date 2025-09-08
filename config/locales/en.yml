@@ -58,6 +58,20 @@ en:
     admin:
       flash:
         access_denied: You are not authorized to view this page
+      google_analytics_settings:
+        header: "Analytics Configuration"
+        matomo_setup:
+          header: "Matomo Setup Required:"
+          body: "Additional configuration is needed to complete Matomo analytics setup. Please ensure your system administrator has configured the required Matomo environment variables (MATOMO_BASE_URL, MATOMO_SITE_ID, MATOMO_AUTH_TOKEN)."
+        ga4_setup_required:
+          header: "Google Analytics 4 Setup is Required:"
+          body: "Your system is configured to use Google Analytics 4, but the global service account credentials are not configured. Please contact your system administrator to set up the required environment variables (GOOGLE_ACCOUNT_JSON or GOOGLE_ACCOUNT_JSON_PATH)."
+        ga4_configured:
+          header: "Google Analytics 4:"
+          body: "Your system is configured to use Google Analytics 4. Configure your GA4 settings below to track analytics for your tenant."
+        universal_analytics_warning:
+          header: "Google Universal Analytics:"
+          body: "Your system is using Google Universal Analytics (legacy). Google has deprecated Universal Analytics. Consider upgrading to Google Analytics 4."
       groups:
         action:
           create: Create New Group

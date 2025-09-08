@@ -27,5 +27,5 @@
     });
   </script>
 <% else %>
-  <%= f.input key, as: value[:type] %>
+  <%= f.input key, as: value[:type], wrapper_html: { class: local_assigns.fetch(:wrapper_class, nil) }, hint_html: { class: local_assigns.fetch(:hint_class, nil) } %>
 <% end %>

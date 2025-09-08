@@ -51,6 +51,20 @@ de:
     admin:
       flash:
         access_denied: Sie sind nicht berechtigt, diese Seite anzuzeigen
+      google_analytics_settings:
+        header: "Analytics-Konfiguration"
+        matomo_setup:
+          header: "Matomo-Einrichtung erforderlich:"
+          body: "Zusätzliche Konfiguration ist erforderlich, um die Matomo-Analytics-Einrichtung abzuschließen. Bitte stellen Sie sicher, dass Ihr Systemadministrator die erforderlichen Matomo-Umgebungsvariablen (MATOMO_BASE_URL, MATOMO_SITE_ID, MATOMO_AUTH_TOKEN) konfiguriert hat."
+        ga4_setup_required:
+          header: "Google Analytics 4-Einrichtung ist erforderlich:"
+          body: "Ihr System ist für die Verwendung von Google Analytics 4 konfiguriert, aber die globalen Dienstkonten-Anmeldeinformationen sind nicht konfiguriert. Bitte wenden Sie sich an Ihren Systemadministrator, um die erforderlichen Umgebungsvariablen (GOOGLE_ACCOUNT_JSON oder GOOGLE_ACCOUNT_JSON_PATH) einzurichten."
+        ga4_configured:
+          header: "Google Analytics 4:"
+          body: "Ihr System ist für die Verwendung von Google Analytics 4 konfiguriert. Konfigurieren Sie Ihre GA4-Einstellungen unten, um Analytics für Ihren Mandanten zu verfolgen."
+        universal_analytics_warning:
+          header: "Google Universal Analytics:"
+          body: "Ihr System verwendet Google Universal Analytics (Legacy). Google hat Universal Analytics eingestellt. Erwägen Sie ein Upgrade auf Google Analytics 4."
       groups:
         action:
           create: Neue Gruppe erstellen
@@ -69,7 +83,7 @@ de:
         description:
           admin: Benutzer in dieser Gruppe gelten als Administratoren für diesen Mandanten und haben uneingeschränkten Zugriff.
           depositors: Benutzer in dieser Gruppe dürfen Works in jedem Admin-Set dieses Mandanten hinterlegen.
-          editors: 'Benutzer in dieser Gruppe dürfen alle Sammlungen und Werke in diesem Mandanten lesen und bearbeiten. Sie können auch: Sammlungen erstellen, Werke hinterlegen und genehmigen, Embargos und Leasingverträge verwalten und Bulkrax-Importeure und -Exporteure verwalten.'
+          editors: "Benutzer in dieser Gruppe dürfen alle Sammlungen und Werke in diesem Mandanten lesen und bearbeiten. Sie können auch: Sammlungen erstellen, Werke hinterlegen und genehmigen, Embargos und Leasingverträge verwalten und Bulkrax-Importeure und -Exporteure verwalten."
           registered: Enthält alle Benutzer, die sich bei diesem Mandanten angemeldet haben.
         flash:
           create:
@@ -213,7 +227,7 @@ de:
             favicon:
               hint: Favicons müssen PNG-Dateien und quadratisch sein. Die maximal verwendete Größe beträgt 228 x 228 Pixel.
             link_color:
-              hint: 'Betrifft Links auf der Startseite und der Arbeitsseite, einschließlich: Breadcrumbs, Tabs, Titel und Nutzungsbedingungen.'
+              hint: "Betrifft Links auf der Startseite und der Arbeitsseite, einschließlich: Breadcrumbs, Tabs, Titel und Nutzungsbedingungen."
             logo_image:
               hint: Um ein Bild als Logo zu verwenden, sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das nicht höher als der Header und nicht breiter als 400 Pixel ist.
             navbar_background_color:
@@ -259,7 +273,7 @@ de:
             description: Da einige der Sammlungsrollen Zugriff auf jede Sammlung innerhalb eines Mandanten haben, erstellen Sie für sie einen Hyrax::CollectionTypeParticipant-Datensatz für jeden Hyrax::CollectionType (außer dem AdminSet).
             label: Teilnehmer des Sammlungstyps erstellen
           grant_workflow_roles_for_all_admin_sets:
-            description: 'Die Berechtigungen zum Hinterlegen von Werken werden durch Workflow-Rollen in einzelnen AdminSets gesteuert. Damit Hyrax::Group- und Benutzerdatensätze, die entweder die Rolle „Werkeditor“ oder „Werkhinterleger“ haben, die richtigen Berechtigungen für Werke haben, erteilen wir ihnen Workflow-Rollen für alle AdminSets. HINWEIS: Alle AdminSets müssen eine Berechtigungsvorlage haben, sonst schlägt dies fehl. Führen Sie zuerst „Admin-Set-Zugriffe erstellen“ aus.'
+            description: "Die Berechtigungen zum Hinterlegen von Werken werden durch Workflow-Rollen in einzelnen AdminSets gesteuert. Damit Hyrax::Group- und Benutzerdatensätze, die entweder die Rolle „Werkeditor“ oder „Werkhinterleger“ haben, die richtigen Berechtigungen für Werke haben, erteilen wir ihnen Workflow-Rollen für alle AdminSets. HINWEIS: Alle AdminSets müssen eine Berechtigungsvorlage haben, sonst schlägt dies fehl. Führen Sie zuerst „Admin-Set-Zugriffe erstellen“ aus."
             label: Vom Administrator festgelegte Workflow-Rollen
       sidebar:
         accounts: Konten

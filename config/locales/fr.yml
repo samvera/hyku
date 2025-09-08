@@ -51,6 +51,20 @@ fr:
     admin:
       flash:
         access_denied: Vous n'êtes pas autorisé à afficher cette page
+      google_analytics_settings:
+        header: "Configuration d'Analytics"
+        matomo_setup:
+          header: "Configuration Matomo requise :"
+          body: "Une configuration supplémentaire est nécessaire pour terminer la configuration de Matomo analytics. Veuillez vous assurer que votre administrateur système a configuré les variables d'environnement Matomo requises (MATOMO_BASE_URL, MATOMO_SITE_ID, MATOMO_AUTH_TOKEN)."
+        ga4_setup_required:
+          header: "Configuration Google Analytics 4 requise :"
+          body: "Votre système est configuré pour utiliser Google Analytics 4, mais les identifiants de compte de service global ne sont pas configurés. Veuillez contacter votre administrateur système pour configurer les variables d'environnement requises (GOOGLE_ACCOUNT_JSON ou GOOGLE_ACCOUNT_JSON_PATH)."
+        ga4_configured:
+          header: "Google Analytics 4 :"
+          body: "Votre système est configuré pour utiliser Google Analytics 4. Configurez vos paramètres GA4 ci-dessous pour suivre l'analytics de votre locataire."
+        universal_analytics_warning:
+          header: "Google Universal Analytics :"
+          body: "Votre système utilise Google Universal Analytics (héritage). Google a déprécié Universal Analytics. Envisagez de passer à Google Analytics 4."
       groups:
         action:
           create: Créer un nouveau groupe
@@ -69,7 +83,7 @@ fr:
         description:
           admin: Les utilisateurs de ce groupe sont considérés comme des administrateurs pour ce locataire et ont un accès illimité.
           depositors: Les utilisateurs de ce groupe sont autorisés à déposer des œuvres dans n'importe quel ensemble d'administration de ce client.
-          editors: 'Les utilisateurs de ce groupe sont autorisés à lire et à modifier toutes les collections et tous les travaux de ce client. Ils peuvent également: créer des collections, déposer et approuver des travaux, gérer les embargos et les baux, et gérer les importateurs et exportateurs Bulkrax.'
+          editors: "Les utilisateurs de ce groupe sont autorisés à lire et à modifier toutes les collections et tous les travaux de ce client. Ils peuvent également: créer des collections, déposer et approuver des travaux, gérer les embargos et les baux, et gérer les importateurs et exportateurs Bulkrax."
           registered: Contient tous les utilisateurs qui se sont inscrits dans ce locataire.
         flash:
           create:
@@ -214,7 +228,7 @@ fr:
             favicon:
               hint: Les favicons doivent être des fichiers png et doivent être carrés. La taille maximale utilisée est de 228px x 228px.
             link_color:
-              hint: 'Affecte les liens sur les pages d''accueil et de travail, notamment : les fils d''Ariane, les onglets, les titres et les conditions d''utilisation.'
+              hint: "Affecte les liens sur les pages d'accueil et de travail, notamment : les fils d'Ariane, les onglets, les titres et les conditions d'utilisation."
             logo_image:
               hint: Pour utiliser une image comme logo, vous devez utiliser une image (JPG, GIF ou PNG) qui n'est pas plus haute que l'en-tête et pas plus large que 400 pixels de large.
             navbar_background_color:
@@ -260,7 +274,7 @@ fr:
             description: Étant donné que certains rôles de collection ont accès à chaque collection au sein d'un locataire, créez un enregistrement Hyrax::CollectionTypeParticipant pour eux sur chaque Hyrax::CollectionType (sauf AdminSet).
             label: Créer des participants de type de collection
           grant_workflow_roles_for_all_admin_sets:
-            description: 'Les autorisations de dépôt d''œuvres sont contrôlées par les rôles de workflow sur les AdminSets individuels. Afin que les enregistrements Hyrax::Group et User qui ont le rôle « Éditeur de travaux » ou « Déposant de travaux » disposent des autorisations appropriées pour les travaux, nous leur accordons des rôles de flux de travail pour tous les AdminSets. REMARQUE : Tous les AdminSets doivent avoir un modèle d''autorisation, sinon cela échouera. Exécutez d''abord « Créer des accès aux ensembles d''administrateurs ».'
+            description: "Les autorisations de dépôt d'œuvres sont contrôlées par les rôles de workflow sur les AdminSets individuels. Afin que les enregistrements Hyrax::Group et User qui ont le rôle « Éditeur de travaux » ou « Déposant de travaux » disposent des autorisations appropriées pour les travaux, nous leur accordons des rôles de flux de travail pour tous les AdminSets. REMARQUE : Tous les AdminSets doivent avoir un modèle d'autorisation, sinon cela échouera. Exécutez d'abord « Créer des accès aux ensembles d'administrateurs »."
             label: L'administrateur définit les rôles de flux de travail
       sidebar:
         accounts: Comptes

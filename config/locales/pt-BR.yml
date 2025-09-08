@@ -69,7 +69,7 @@ pt-BR:
         description:
           admin: Os usuários neste grupo são considerados administradores para este locatário e têm acesso irrestrito.
           depositors: Os usuários neste grupo têm permissão para depositar trabalhos em qualquer Admin Set neste locatário.
-          editors: 'Os usuários neste grupo têm permissão para ler e editar todas as coleções e obras neste inquilino. Eles também podem: criar cobranças, depositar e aprovar obras, gerenciar embargos e arrendamentos e gerenciar importadores e exportadores Bulkrax.'
+          editors: "Os usuários neste grupo têm permissão para ler e editar todas as coleções e obras neste inquilino. Eles também podem: criar cobranças, depositar e aprovar obras, gerenciar embargos e arrendamentos e gerenciar importadores e exportadores Bulkrax."
           registered: Contém todos os usuários que se inscreveram neste locatário.
         flash:
           create:
@@ -214,7 +214,7 @@ pt-BR:
             favicon:
               hint: Os favicons precisam ser arquivos png e devem ser quadrados. O tamanho máximo usado é 228px x 228px.
             link_color:
-              hint: 'Afeta links nas páginas inicial e de trabalho, incluindo: breadcrumbs, guias, títulos e termos de serviço.'
+              hint: "Afeta links nas páginas inicial e de trabalho, incluindo: breadcrumbs, guias, títulos e termos de serviço."
             logo_image:
               hint: Para usar uma imagem como logotipo, use uma imagem (JPG, GIF ou PNG) que não seja mais alta que o cabeçalho e que não tenha mais que 400 pixels de largura.
             navbar_background_color:
@@ -260,7 +260,7 @@ pt-BR:
             description: Como algumas das funções de coleção têm acesso a todas as coleções dentro de um locatário, crie um registro Hyrax::CollectionTypeParticipant para elas em cada Hyrax::CollectionType (exceto AdminSet)
             label: Criar participantes do tipo de coleção
           grant_workflow_roles_for_all_admin_sets:
-            description: 'As permissões para depositar trabalhos são controladas por funções de fluxo de trabalho em AdminSets individuais. Para que os registros Hyrax::Group e User que possuem a função ''Editor de trabalho'' ou ''Depositador de trabalho'' tenham as permissões corretas para Works, concedemos a eles funções de fluxo de trabalho para todos os AdminSets. NOTA: Todos os AdminSets devem ter um modelo de permissão ou isso falhará. Execute ''Criar acessos ao conjunto de administradores'' primeiro.'
+            description: "As permissões para depositar trabalhos são controladas por funções de fluxo de trabalho em AdminSets individuais. Para que os registros Hyrax::Group e User que possuem a função 'Editor de trabalho' ou 'Depositador de trabalho' tenham as permissões corretas para Works, concedemos a eles funções de fluxo de trabalho para todos os AdminSets. NOTA: Todos os AdminSets devem ter um modelo de permissão ou isso falhará. Execute 'Criar acessos ao conjunto de administradores' primeiro."
             label: Administrador definir funções de fluxo de trabalho
       sidebar:
         accounts: Contas
@@ -357,3 +357,17 @@ pt-BR:
     service:
       down: Baixa
       ok: Está bem
+  google_analytics_settings:
+    header: "Configuração do Analytics"
+    matomo_setup:
+      header: "Configuração do Matomo necessária:"
+      body: "Configuração adicional é necessária para completar a configuração do Matomo analytics. Certifique-se de que seu administrador do sistema configurou as variáveis de ambiente Matomo necessárias (MATOMO_BASE_URL, MATOMO_SITE_ID, MATOMO_AUTH_TOKEN)."
+    ga4_setup_required:
+      header: "Configuração do Google Analytics 4 necessária:"
+      body: "Seu sistema está configurado para usar o Google Analytics 4, mas as credenciais da conta de serviço global não estão configuradas. Entre em contato com seu administrador do sistema para configurar as variáveis de ambiente necessárias (GOOGLE_ACCOUNT_JSON ou GOOGLE_ACCOUNT_JSON_PATH)."
+    ga4_configured:
+      header: "Google Analytics 4:"
+      body: "Seu sistema está configurado para usar o Google Analytics 4. Configure suas configurações GA4 abaixo para rastrear analytics para seu locatário."
+    universal_analytics_warning:
+      header: "Google Universal Analytics:"
+      body: "Seu sistema está usando Google Universal Analytics (legado). O Google descontinuou o Universal Analytics. Considere atualizar para o Google Analytics 4."

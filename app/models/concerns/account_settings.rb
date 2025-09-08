@@ -149,23 +149,31 @@ module AccountSettings
   end
 
   def analytics_functionally_available?
-    # Check if analytics can function (with ENV fallback for actual tracking)
-    analytics_id = google_analytics_id.presence || ENV.fetch('GOOGLE_ANALYTICS_ID', '')
-    property_id = google_analytics_property_id.presence || ENV.fetch('GOOGLE_ANALYTICS_PROPERTY_ID', '')
+    provider = ENV.fetch('HYRAX_ANALYTICS_PROVIDER', 'ga4')
 
-    analytics_id.present? &&
-      property_id.present? &&
-      (ENV.fetch('GOOGLE_ACCOUNT_JSON', '').present? || ENV.fetch('GOOGLE_ACCOUNT_JSON_PATH', '').present?)
+    case provider
+    when 'ga4', 'google'
+      # Check for Google Analytics 4 credentials (tenant-specific or ENV fallback)
+      analytics_id = google_analytics_id.presence || ENV.fetch('GOOGLE_ANALYTICS_ID', '')
+      property_id = google_analytics_property_id.presence || ENV.fetch('GOOGLE_ANALYTICS_PROPERTY_ID', '')
+
+      analytics_id.present? &&
+        property_id.present? &&
+        (ENV.fetch('GOOGLE_ACCOUNT_JSON', '').present? || ENV.fetch('GOOGLE_ACCOUNT_JSON_PATH', '').present?)
+    when 'matomo'
+      # Check for Matomo credentials (global ENV only, as it's not tenant-specific yet)
+      ENV.fetch('MATOMO_BASE_URL', '').present? &&
+        ENV.fetch('MATOMO_SITE_ID', '').present? &&
+        ENV.fetch('MATOMO_AUTH_TOKEN', '').present?
+    else
+      false
+    end
   end
 
   def configure_hyrax_analytics_settings(config)
     # Global analytics work for all tenants when ENV is set, regardless of tenant-specific settings
     # But tenant-specific settings can override global settings
-    config.analytics = if analytics_functionally_available?
-                         true
-                       else
-                         false
-                       end
+    config.analytics = analytics_functionally_available?
   end
 
   private
@@ -302,7 +310,6 @@ module AccountSettings
     analytics_id = google_analytics_id.presence || ENV.fetch('GOOGLE_ANALYTICS_ID', '')
     property_id = google_analytics_property_id.presence || ENV.fetch('GOOGLE_ANALYTICS_PROPERTY_ID', '')
 
-    # Configure analytics if all required settings are present
     if analytics_id.present? &&
        property_id.present? &&
        (ENV.fetch('GOOGLE_ACCOUNT_JSON', '').present? || ENV.fetch('GOOGLE_ACCOUNT_JSON_PATH', '').present?)
@@ -311,15 +318,11 @@ module AccountSettings
       Hyrax::Analytics.config.property_id = property_id
 
     else
-      # Disable analytics if any required settings are missing
       Hyrax.config.analytics = false
-      Hyrax.config.analytics_reporting = false
     end
   rescue StandardError => e
-    # Log the error but don't crash the application
     Rails.logger.error "Failed to configure analytics: #{e.message}"
     Hyrax.config.analytics = false
-    Hyrax.config.analytics_reporting = false
   end
 end
 # rubocop:enable Metrics/ModuleLength

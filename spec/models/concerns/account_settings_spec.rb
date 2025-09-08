@@ -3,6 +3,19 @@
 RSpec.describe AccountSettings do
   let(:account) { FactoryBot.create(:account) }
 
+  before do
+    # Stub all ENV variables that might be called during account initialization
+    allow(ENV).to receive(:fetch).and_call_original
+    allow(ENV).to receive(:fetch).with('HYRAX_ANALYTICS_PROVIDER', 'ga4').and_return('ga4')
+    allow(ENV).to receive(:fetch).with('GOOGLE_ANALYTICS_ID', '').and_return('')
+    allow(ENV).to receive(:fetch).with('GOOGLE_ANALYTICS_PROPERTY_ID', '').and_return('')
+    allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON', '').and_return('')
+    allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON_PATH', '').and_return('')
+    allow(ENV).to receive(:fetch).with('MATOMO_BASE_URL', '').and_return('')
+    allow(ENV).to receive(:fetch).with('MATOMO_SITE_ID', '').and_return('')
+    allow(ENV).to receive(:fetch).with('MATOMO_AUTH_TOKEN', '').and_return('')
+  end
+
   describe '#public_settings' do
     context 'when is_superadmin is true' do
       # rubocop:disable RSpec/ExampleLength
@@ -171,9 +184,8 @@ RSpec.describe AccountSettings do
           allow(account).to receive(:analytics_functionally_available?).and_return(true)
         end
 
-        it 'enables both analytics and analytics_reporting in Hyrax config' do
+        it 'enables analytics in Hyrax config' do
           expect(config).to receive(:analytics=).with(true)
-          expect(config).to receive(:analytics_reporting=).with(true)
 
           account.configure_hyrax_analytics_settings(config)
         end
@@ -184,9 +196,8 @@ RSpec.describe AccountSettings do
           allow(account).to receive(:analytics_functionally_available?).and_return(false)
         end
 
-        it 'disables both analytics and analytics_reporting in Hyrax config' do
+        it 'disables analytics in Hyrax config' do
           expect(config).to receive(:analytics=).with(false)
-          expect(config).to receive(:analytics_reporting=).with(false)
 
           account.configure_hyrax_analytics_settings(config)
         end
@@ -366,6 +377,46 @@ RSpec.describe AccountSettings do
         allow(ENV).to receive(:fetch).with('GOOGLE_ACCOUNT_JSON_PATH', '').and_return('/path/to/service-account.json')
 
         expect(account.analytics_functionally_available?).to be true
+      end
+    end
+
+    context 'when analytics provider is matomo' do
+      before do
+        allow(ENV).to receive(:fetch).with('HYRAX_ANALYTICS_PROVIDER', 'ga4').and_return('matomo')
+      end
+
+      it 'returns true when all Matomo ENV variables are present' do
+        allow(ENV).to receive(:fetch).with('MATOMO_BASE_URL', '').and_return('https://analytics.example.com')
+        allow(ENV).to receive(:fetch).with('MATOMO_SITE_ID', '').and_return('42')
+        allow(ENV).to receive(:fetch).with('MATOMO_AUTH_TOKEN', '').and_return('abc123')
+
+        expect(account.analytics_functionally_available?).to be true
+      end
+
+      it 'returns false when Matomo ENV variables are missing' do
+        allow(ENV).to receive(:fetch).with('MATOMO_BASE_URL', '').and_return('')
+        allow(ENV).to receive(:fetch).with('MATOMO_SITE_ID', '').and_return('')
+        allow(ENV).to receive(:fetch).with('MATOMO_AUTH_TOKEN', '').and_return('')
+
+        expect(account.analytics_functionally_available?).to be false
+      end
+
+      it 'returns false when only some Matomo ENV variables are present' do
+        allow(ENV).to receive(:fetch).with('MATOMO_BASE_URL', '').and_return('https://analytics.example.com')
+        allow(ENV).to receive(:fetch).with('MATOMO_SITE_ID', '').and_return('')
+        allow(ENV).to receive(:fetch).with('MATOMO_AUTH_TOKEN', '').and_return('abc123')
+
+        expect(account.analytics_functionally_available?).to be false
+      end
+    end
+
+    context 'when analytics provider is unknown' do
+      before do
+        allow(ENV).to receive(:fetch).with('HYRAX_ANALYTICS_PROVIDER', 'ga4').and_return('unknown_provider')
+      end
+
+      it 'returns false' do
+        expect(account.analytics_functionally_available?).to be false
       end
     end
   end

@@ -97,14 +97,14 @@ namespace :discogs do
     unless formats_file.exist? && genres_file.exist?
       puts "❌ Discogs configuration files are missing"
       puts "   Run: bundle exec rake discogs:setup"
-      return
+      abort
     end
 
     # Test with a tenant that has a token
     test_account = nil
     Account.find_each do |account|
       Account.switch!(account)
-      if account.respond_to?(:discogs_user_token) && accound.discogs_user_token.present?
+      if account.respond_to?(:discogs_user_token) && account.discogs_user_token.present?
         test_account = account
         break
       end
@@ -113,7 +113,7 @@ namespace :discogs do
     unless test_account
       puts "❌ No tenant has a Discogs token configured"
       puts "   Configure a Discogs Personal Access Token in Account Settings"
-      return
+      abort
     end
 
     puts "🧪 Testing with tenant: #{test_account.name}"

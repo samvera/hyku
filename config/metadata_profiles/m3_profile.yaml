@@ -1944,3 +1944,67 @@ properties:
   #   view:
   #     render_as: "faceted"
   #     html_dl: true
+
+  # # FAST (OCLC FAST) CONTROLLED VOCABULARY EXAMPLE
+  # fast_subject:
+  #   available_on:
+  #     class:
+  #       - GenericWorkResource
+  #   cardinality:
+  #     minimum: 0
+  #   data_type: array
+  #   controlled_values:
+  #     format: http://www.w3.org/2001/XMLSchema#string
+  #     sources:
+  #       - fast
+  #   display_label:
+  #     default: FAST Subject
+  #   index_documentation: displayable, searchable
+  #   indexing:
+  #     - fast_subject_sim
+  #     - fast_subject_tesim
+  #     - facetable
+  #   form:
+  #     primary: true
+  #     data_type: array
+  #   property_uri: http://purl.org/dc/elements/1.1/subject
+  #   range: http://www.w3.org/2001/XMLSchema#string
+  #   sample_values:
+  #     - Digital humanities
+  #     - Information science
+  #     - Metadata
+  #   view:
+  #     render_as: "faceted"
+  #     html_dl: true
+
+  # # DISCOGS CONTROLLED VOCABULARY EXAMPLE
+  # music_release:
+  #   available_on:
+  #     class:
+  #       - GenericWorkResource
+  #   cardinality:
+  #     minimum: 0
+  #   data_type: array
+  #   controlled_values:
+  #     format: http://www.w3.org/2001/XMLSchema#string
+  #     sources:
+  #       - discogs/release
+  #   display_label:
+  #     default: Music Release
+  #   index_documentation: displayable, searchable
+  #   indexing:
+  #     - music_release_sim
+  #     - music_release_tesim
+  #     - facetable
+  #   form:
+  #     primary: true
+  #     data_type: array
+  #   property_uri: http://purl.org/dc/elements/1.1/relation
+  #   range: http://www.w3.org/2001/XMLSchema#string
+  #   sample_values:
+  #     - Abbey Road
+  #     - The Dark Side of the Moon
+  #     - Thriller
+  #   view:
+  #     render_as: "faceted"
+  #     html_dl: true

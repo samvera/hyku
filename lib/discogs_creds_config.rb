@@ -24,7 +24,7 @@ class DiscogsCredsConfig
   end
 
   def set_token_from_site
-    return unless site_defined?
+    return unless site_defined? && db_table_exists?
 
     site = Site.instance
     return unless site.respond_to?(:discogs_user_token) && site.discogs_user_token.present?
@@ -36,6 +36,12 @@ class DiscogsCredsConfig
 
   def site_defined?
     defined?(Site) && Site.respond_to?(:instance)
+  end
+
+  def db_table_exists?
+    ApplicationRecord.connection.table_exists?(Site.table_name)
+  rescue ActiveRecord::NoDatabaseError
+    false
   end
 
   def set_token_from_env

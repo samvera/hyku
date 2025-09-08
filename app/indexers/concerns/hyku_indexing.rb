@@ -40,18 +40,31 @@ module HykuIndexing
   # @TODO: This method only supports Valkyrie, and does not support ActiveFedora, even
   #        though it is used in the ActiveFedora indexer.
   def extract_full_text(object)
+    texts = []
+
+    texts << extract_text_from_plain_text_files(object)
+    texts << extract_text_from_child_works(object)
+
+    texts.flatten.compact.join(' ').strip
+  end
+
+  def extract_text_from_plain_text_files(object)
+    return [] if object.members.blank?
+
+    text_file_sets = object.members.select { |fs| fs.file_set? && fs.original_file&.mime_type == 'text/plain' }
+    text_file_sets.map { |fs| fs.original_file&.content }
+  end
+
+  def extract_text_from_child_works(object)
     child_works = Hyrax.custom_queries.find_child_works(resource: object)
 
-    if child_works.empty?
-      extract_text_from_pdf_directly(object)
-    else
-      file_set_texts = child_works_file_sets(child_works).map { |fs| all_text(fs) }.select(&:present?)
-      if file_set_texts.join.blank?
-        extract_text_from_pdf_directly(object)
-      else
-        file_set_texts.join("\n---------------------------\n")
-      end
-    end
+    return extract_text_from_pdf_directly(object) if child_works.empty?
+
+    file_set_texts = child_works_file_sets(child_works).map { |fs| all_text(fs) }.select(&:present?)
+
+    return extract_text_from_pdf_directly(object) if file_set_texts.join.blank?
+
+    file_set_texts.join("\n---------------------------\n")
   end
 
   def extract_text_from_pdf_directly(object)

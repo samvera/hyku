@@ -224,6 +224,21 @@ GIT
       view_component (~> 2.74.1)
 
 GIT
+  remote: https://github.com/samvera/questioning_authority.git
+  revision: 54cb5e7047f0261b8ccfd4b737d6f30a0a96d3ba
+  branch: main
+  specs:
+    qa (5.15.0)
+      activerecord-import
+      deprecation
+      faraday (< 3.0, != 2.0.0)
+      geocoder
+      ldpath
+      nokogiri (~> 1.6)
+      rails (>= 5.0, < 8.1)
+      rdf
+
+GIT
   remote: https://github.com/stanhu/omniauth-cas.git
   revision: 4211e6d05941b4a981f9a36b49ec166cecd0e271
   ref: 4211e6d05941b4a981f9a36b49ec166cecd0e271
@@ -1057,15 +1072,6 @@ GEM
     public_suffix (4.0.7)
     puma (5.6.7)
       nio4r (~> 2.0)
-    qa (5.15.0)
-      activerecord-import
-      deprecation
-      faraday (< 3.0, != 2.0.0)
-      geocoder
-      ldpath
-      nokogiri (~> 1.6)
-      rails (>= 5.0, < 8.1)
-      rdf
     raabro (1.4.0)
     racc (1.8.1)
     rack (2.2.17)
@@ -1585,6 +1591,7 @@ DEPENDENCIES
   postrank-uri (>= 1.0.24)
   pry-byebug
   puma (~> 5.6)
+  qa!
   rack-attack
   rack-test (= 0.7.0)
   rails (~> 6.0)!

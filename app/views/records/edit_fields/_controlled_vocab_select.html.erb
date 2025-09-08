@@ -1,0 +1,20 @@
+<% if f.object.multiple? key %>
+  <%= f.input key,
+      as: :select,
+      collection: controlled_vocab_config[:options],
+      label: label_for(term: key, record_class: record.class),
+      hint: hint_for(term: key, record_class: record.class),
+      input_html: { class: 'form-control', name: "#{f.object_name}[#{key}][]" },
+      include_blank: true,
+      selected: f.object.send(key).first,
+      required: f.object.required?(key) %>
+<% else %>
+  <%= f.input key,
+      as: :select,
+      collection: controlled_vocab_config[:options],
+      label: label_for(term: key, record_class: record.class),
+      hint: hint_for(term: key, record_class: record.class),
+      include_blank: true,
+      input_html: { class: 'form-control' },
+      required: f.object.required?(key) %>
+<% end %>

@@ -42,6 +42,7 @@ module AccountSettings
     setting :google_analytics_property_id, type: 'string', default: ''
     setting :google_scholarly_work_types, type: 'array', disabled: true
     setting :geonames_username, type: 'string', default: ''
+    setting :discogs_user_token, type: 'string', private: true
     setting :gtm_id, type: 'string'
     setting :hidden_index_fields, type: 'string', default: 'title'
     setting :locale_name, type: 'string', disabled: true
@@ -269,6 +270,13 @@ module AccountSettings
       config.contact_email = contact_email
       config.geonames_username = geonames_username
       config.uploader[:maxFileSize] = file_size_limit.to_i
+      # Configure Discogs API credentials for Questioning Authority
+      if File.exist?(Rails.root.join('config', 'discogs-genres.yml')) &&
+         File.exist?(Rails.root.join('config', 'discogs-formats.yml')) &&
+         discogs_user_token.present?
+
+        Qa::Authorities::Discogs::GenericAuthority.discogs_user_token = discogs_user_token
+      end
       configure_hyrax_analytics_settings(config)
     end
   end

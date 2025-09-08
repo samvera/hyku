@@ -61,4 +61,17 @@ docker-compose.override.yml
 .DS_Store
 /bundler.d/
 .tool-versions
+
+# MeSH data files (large, not source code)
+mesh_terms.txt
+*.bin
+d*.bin
+c*.bin
+q*.bin
+
+# Discogs configuration files (generated from external API, not committed)
+config/discogs-formats.yml
+config/discogs-genres.yml
+
+# Google service account credentials
 config/google_service_account.json

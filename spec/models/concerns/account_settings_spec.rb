@@ -29,6 +29,7 @@ RSpec.describe AccountSettings do
                                                                                 contact_email
                                                                                 contact_email_to
                                                                                 depositor_email_notifications
+                                                                                discogs_user_token
                                                                                 doi_reader
                                                                                 doi_writer
                                                                                 email_domain

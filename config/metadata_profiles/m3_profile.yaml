@@ -209,7 +209,7 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - "null"
+        - "licenses"
     display_label:
       default: License
     index_documentation: displayable, searchable
@@ -744,7 +744,7 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - "null"
+        - "resource_types"
     display_label:
       default: Resource Type
     index_documentation: displayable, searchable
@@ -807,7 +807,7 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - "null"
+        - "rights_statements"
     display_label:
       default: Rights Statement
     index_documentation: displayable, searchable
@@ -1146,7 +1146,7 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - "null"
+        - "audience"
     display_label:
       default: Audience
     index_documentation: displayable, searchable
@@ -1197,7 +1197,7 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - "null"
+        - "discipline"
     display_label:
       default: Discipline
     index_documentation: searchable
@@ -1224,7 +1224,7 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - "null"
+        - "education_levels"
     display_label:
       default: Education Level
     index_documentation: displayable, searchable
@@ -1252,7 +1252,7 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - "null"
+        - "learning_resource_types"
     display_label:
       default: Learning Resource Type
     index_documentation: displayable, searchable
@@ -1811,3 +1811,200 @@ properties:
     sample_values:
       - true
       - false
+
+  # ============================================================================
+  # CONTROLLED VOCABULARY EXAMPLES
+  # ============================================================================
+
+  # LOCAL CONTROLLED VOCABULARY EXAMPLE
+  # discipline:
+  #   available_on:
+  #     class:
+  #       - GenericWorkResource
+  #   cardinality:
+  #     minimum: 1
+  #   data_type: array
+  #   controlled_values:
+  #     format: http://www.w3.org/2001/XMLSchema#string
+  #     sources:
+  #       - discipline
+  #   display_label:
+  #     default: Discipline
+  #   index_documentation: displayable, searchable
+  #   indexing:
+  #     - discipline_sim
+  #     - discipline_tesim
+  #     - facetable
+  #   form:
+  #     required: true
+  #     primary: true
+  #     data_type: array
+  #   property_uri: https://hykucommons.org/terms/discipline
+  #   range: http://www.w3.org/2001/XMLSchema#string
+  #   sample_values:
+  #     - Mathematics
+  #     - Biology
+  #     - Computer Science
+  #   view:
+  #     render_as: "faceted"
+  #     html_dl: true
+
+  # LOC SUBJECTS REMOTE CONTROLLED VOCABULARY EXAMPLE
+  # subject_loc:
+  #   available_on:
+  #     class:
+  #       - GenericWorkResource
+  #   cardinality:
+  #     minimum: 0
+  #   data_type: array
+  #   controlled_values:
+  #     format: http://www.w3.org/2001/XMLSchema#string
+  #     sources:
+  #       - loc/subjects
+  #   display_label:
+  #     default: Subject (LOC)
+  #   index_documentation: displayable, searchable
+  #   indexing:
+  #     - subject_loc_sim
+  #     - subject_loc_tesim
+  #     - facetable
+  #   form:
+  #     primary: true
+  #     data_type: array
+  #   property_uri: http://purl.org/dc/elements/1.1/subject
+  #   range: http://www.w3.org/2001/XMLSchema#string
+  #   sample_values:
+  #     - Art
+  #     - Science
+  #     - Mathematics
+  #   view:
+  #     render_as: "faceted"
+  #     html_dl: true
+
+  # # GETTY AAT CONTROLLED VOCABULARY EXAMPLE
+  # art_subject:
+  #   available_on:
+  #     class:
+  #       - GenericWorkResource
+  #   cardinality:
+  #     minimum: 0
+  #   data_type: array
+  #   controlled_values:
+  #     format: http://www.w3.org/2001/XMLSchema#string
+  #     sources:
+  #       - getty/aat
+  #   display_label:
+  #     default: Art Subject
+  #   index_documentation: displayable, searchable
+  #   indexing:
+  #     - art_subject_sim
+  #     - art_subject_tesim
+  #     - facetable
+  #   form:
+  #     primary: true
+  #     data_type: array
+  #   property_uri: http://purl.org/dc/elements/1.1/subject
+  #   range: http://www.w3.org/2001/XMLSchema#string
+  #   sample_values:
+  #     - Portraits
+  #     - Landscapes
+  #     - Still Life
+  #   view:
+  #     render_as: "faceted"
+  #     html_dl: true
+
+  # # MESH CONTROLLED VOCABULARY EXAMPLE
+  # medical_subject:
+  #   available_on:
+  #     class:
+  #       - GenericWorkResource
+  #   cardinality:
+  #     minimum: 0
+  #   data_type: array
+  #   controlled_values:
+  #     format: http://www.w3.org/2001/XMLSchema#string
+  #     sources:
+  #       - mesh
+  #   display_label:
+  #     default: Medical Subject
+  #   index_documentation: displayable, searchable
+  #   indexing:
+  #     - medical_subject_sim
+  #     - medical_subject_tesim
+  #     - facetable
+  #   form:
+  #     primary: true
+  #     data_type: array
+  #   property_uri: http://purl.org/dc/elements/1.1/subject
+  #   range: http://www.w3.org/2001/XMLSchema#string
+  #   sample_values:
+  #     - Diabetes Mellitus
+  #     - Cardiovascular Diseases
+  #     - Neoplasms
+  #   view:
+  #     render_as: "faceted"
+  #     html_dl: true
+
+  # # FAST (OCLC FAST) CONTROLLED VOCABULARY EXAMPLE
+  # fast_subject:
+  #   available_on:
+  #     class:
+  #       - GenericWorkResource
+  #   cardinality:
+  #     minimum: 0
+  #   data_type: array
+  #   controlled_values:
+  #     format: http://www.w3.org/2001/XMLSchema#string
+  #     sources:
+  #       - fast
+  #   display_label:
+  #     default: FAST Subject
+  #   index_documentation: displayable, searchable
+  #   indexing:
+  #     - fast_subject_sim
+  #     - fast_subject_tesim
+  #     - facetable
+  #   form:
+  #     primary: true
+  #     data_type: array
+  #   property_uri: http://purl.org/dc/elements/1.1/subject
+  #   range: http://www.w3.org/2001/XMLSchema#string
+  #   sample_values:
+  #     - Digital humanities
+  #     - Information science
+  #     - Metadata
+  #   view:
+  #     render_as: "faceted"
+  #     html_dl: true
+
+  # # DISCOGS CONTROLLED VOCABULARY EXAMPLE
+  # music_release:
+  #   available_on:
+  #     class:
+  #       - GenericWorkResource
+  #   cardinality:
+  #     minimum: 0
+  #   data_type: array
+  #   controlled_values:
+  #     format: http://www.w3.org/2001/XMLSchema#string
+  #     sources:
+  #       - discogs/release
+  #   display_label:
+  #     default: Music Release
+  #   index_documentation: displayable, searchable
+  #   indexing:
+  #     - music_release_sim
+  #     - music_release_tesim
+  #     - facetable
+  #   form:
+  #     primary: true
+  #     data_type: array
+  #   property_uri: http://purl.org/dc/elements/1.1/relation
+  #   range: http://www.w3.org/2001/XMLSchema#string
+  #   sample_values:
+  #     - Abbey Road
+  #     - The Dark Side of the Moon
+  #     - Thriller
+  #   view:
+  #     render_as: "faceted"
+  #     html_dl: true

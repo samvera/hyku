@@ -8,80 +8,12 @@
 
 <% if controlled_vocab_config.present? %>
   <% if controlled_vocab_config[:type] == 'select' %>
-    <%# Render local controlled vocabulary as select field %>
-    <% if f.object.multiple? key %>
-      <%= f.input key,
-          as: :select,
-          collection: controlled_vocab_config[:options],
-          label: label_for(term: key, record_class: record.class),
-          hint: hint_for(term: key, record_class: record.class),
-          input_html: { class: 'form-control', name: "#{f.object_name}[#{key}][]" },
-          include_blank: true,
-          selected: f.object.send(key).first,
-          required: f.object.required?(key) %>
-    <% else %>
-      <%= f.input key,
-          as: :select,
-          collection: controlled_vocab_config[:options],
-          label: label_for(term: key, record_class: record.class),
-          hint: hint_for(term: key, record_class: record.class),
-          include_blank: true,
-          input_html: { class: 'form-control' },
-          required: f.object.required?(key) %>
-    <% end %>
+    <%= render partial: 'records/edit_fields/controlled_vocab_select', locals: { f: f, key: key, controlled_vocab_config: controlled_vocab_config, record: record } %>
   <% elsif controlled_vocab_config[:type] == 'autocomplete' %>
-    <%# Render remote authority as restrictive controlled vocabulary field %>
-    <% if f.object.multiple? key %>
-      <%= f.input key,
-          as: :multi_value,
-          label: label_for(term: key, record_class: record.class),
-          hint: hint_for(term: key, record_class: record.class),
-          input_html: {
-            class: 'form-control',
-            'data-autocomplete' => key.to_s,
-            'data-autocomplete-url' => controlled_vocab_config[:url],
-            'data-autocomplete-type' => 'linked'
-          },
-          wrapper_html: {
-            data: {
-              'autocomplete-url' => controlled_vocab_config[:url],
-              'field-name' => key.to_s
-            }
-          },
-          required: f.object.required?(key) %>
-    <% else %>
-      <%= f.input key,
-          as: :controlled_vocabulary,
-          label: label_for(term: key, record_class: record.class),
-          hint: hint_for(term: key, record_class: record.class),
-          input_html: {
-            class: 'form-control',
-            'data-autocomplete' => key.to_s,
-            'data-autocomplete-url' => controlled_vocab_config[:url],
-            'data-autocomplete-type' => 'linked'
-          },
-          wrapper_html: {
-            data: {
-              'autocomplete-url' => controlled_vocab_config[:url],
-              'field-name' => key.to_s
-            }
-          },
-          required: f.object.required?(key) %>
-    <% end %>
+    <%= render partial: 'records/edit_fields/controlled_vocab_autocomplete', locals: { f: f, key: key, controlled_vocab_config: controlled_vocab_config, record: record } %>
   <% end %>
 <% elsif f.object.multiple? key %>
-  <%# Render standard multi-value field %>
-  <%= f.input key,
-      as: :multi_value,
-      label: label_for(term: key, record_class: record.class),
-      hint: hint_for(term: key, record_class: record.class),
-      input_html: { class: 'form-control' },
-      required: f.object.required?(key) %>
+  <%= render partial: 'records/edit_fields/default_multi_value', locals: { f: f, key: key, record: record } %>
 <% else %>
-  <%# Render standard single-value field %>
-  <%= f.input key,
-      label: label_for(term: key, record_class: record.class),
-      hint: hint_for(term: key, record_class: record.class),
-      input_html: { class: 'form-control' },
-      required: f.object.required?(key) %>
+  <%= render partial: 'records/edit_fields/default_single_value', locals: { f: f, key: key, record: record } %>
 <% end %>

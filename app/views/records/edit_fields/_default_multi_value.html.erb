@@ -1,0 +1,7 @@
+<%# Render standard multi-value field %>
+<%= f.input key,
+    as: :multi_value,
+    label: label_for(term: key, record_class: record.class),
+    hint: hint_for(term: key, record_class: record.class),
+    input_html: { class: 'form-control' },
+    required: f.object.required?(key) %>

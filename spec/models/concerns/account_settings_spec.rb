@@ -184,8 +184,9 @@ RSpec.describe AccountSettings do
           allow(account).to receive(:analytics_functionally_available?).and_return(true)
         end
 
-        it 'enables analytics in Hyrax config' do
+        it 'enables analytics and analytics_reporting in Hyrax config' do
           expect(config).to receive(:analytics=).with(true)
+          expect(config).to receive(:analytics_reporting=).with(true)
 
           account.configure_hyrax_analytics_settings(config)
         end
@@ -196,8 +197,9 @@ RSpec.describe AccountSettings do
           allow(account).to receive(:analytics_functionally_available?).and_return(false)
         end
 
-        it 'disables analytics in Hyrax config' do
+        it 'disables analytics and analytics_reporting in Hyrax config' do
           expect(config).to receive(:analytics=).with(false)
+          expect(config).to receive(:analytics_reporting=).with(false)
 
           account.configure_hyrax_analytics_settings(config)
         end

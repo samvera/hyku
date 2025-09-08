@@ -172,11 +172,17 @@ module AccountSettings
 
   def configure_hyrax_analytics_settings(config)
     # Global analytics work for all tenants when ENV is set, regardless of tenant-specific settings
-    # But tenant-specific settings can override global settings
-    config.analytics = analytics_functionally_available?
+    # But tenant-specific settings can be used in addition to global settings
+    analytics_enabled = analytics_functionally_available?
+    set_hyrax_analytics_config(config, analytics_enabled)
   end
 
   private
+
+  def set_hyrax_analytics_config(config, analytics_enabled)
+    config.analytics = analytics_enabled
+    config.analytics_reporting = analytics_enabled
+  end
 
   def tenant_specific_analytics_setting?(name)
     [:analytics, :google_analytics_id, :google_analytics_property_id].include?(name)
@@ -307,22 +313,28 @@ module AccountSettings
   end
 
   def reload_hyrax_analytics
-    analytics_id = google_analytics_id.presence || ENV.fetch('GOOGLE_ANALYTICS_ID', '')
-    property_id = google_analytics_property_id.presence || ENV.fetch('GOOGLE_ANALYTICS_PROPERTY_ID', '')
+    analytics_enabled = analytics_functionally_available?
 
-    if analytics_id.present? &&
-       property_id.present? &&
-       (ENV.fetch('GOOGLE_ACCOUNT_JSON', '').present? || ENV.fetch('GOOGLE_ACCOUNT_JSON_PATH', '').present?)
+    if analytics_enabled
+      provider = ENV.fetch('HYRAX_ANALYTICS_PROVIDER', 'ga4')
 
-      Hyrax::Analytics.config.analytics_id = analytics_id
-      Hyrax::Analytics.config.property_id = property_id
+      case provider
+      when 'ga4', 'google'
+        analytics_id = google_analytics_id.presence || ENV.fetch('GOOGLE_ANALYTICS_ID', '')
+        property_id = google_analytics_property_id.presence || ENV.fetch('GOOGLE_ANALYTICS_PROPERTY_ID', '')
 
-    else
-      Hyrax.config.analytics = false
+        Hyrax::Analytics.config.analytics_id = analytics_id
+        Hyrax::Analytics.config.property_id = property_id
+      when 'matomo'
+        # Matomo configuration is handled via ENV variables only
+        # No additional config needed here as it's handled globally
+      end
     end
+
+    set_hyrax_analytics_config(Hyrax.config, analytics_enabled)
   rescue StandardError => e
     Rails.logger.error "Failed to configure analytics: #{e.message}"
-    Hyrax.config.analytics = false
+    set_hyrax_analytics_config(Hyrax.config, false)
   end
 end
 # rubocop:enable Metrics/ModuleLength

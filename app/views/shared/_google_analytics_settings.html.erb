@@ -43,15 +43,15 @@
       </div>
     <% end %>
     
-    <div class="row" id="google-analytics-fields" style="display: none;">
+    <div class="form-row" id="google-analytics-fields" style="display: none;">
       <% if settings.key?(:google_analytics_id) %>
-        <div class="col-md-6">
-          <%= render 'shared/settings', f: f, key: :google_analytics_id, value: settings[:google_analytics_id] %>
+        <div class="col-md-6 d-flex">
+          <%= render 'shared/settings', f: f, key: :google_analytics_id, value: settings[:google_analytics_id], wrapper_class: 'd-flex flex-column', hint_class: 'mt-auto' %>
         </div>
       <% end %>
       <% if settings.key?(:google_analytics_property_id) %>
-        <div class="col-md-6">
-          <%= render 'shared/settings', f: f, key: :google_analytics_property_id, value: settings[:google_analytics_property_id] %>
+        <div class="col-md-6 d-flex">
+          <%= render 'shared/settings', f: f, key: :google_analytics_property_id, value: settings[:google_analytics_property_id], wrapper_class: 'd-flex flex-column', hint_class: 'mt-auto' %>
         </div>
       <% end %>
     </div>

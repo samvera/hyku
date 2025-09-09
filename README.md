@@ -12,15 +12,16 @@ Docs:
 
 Jump In: [![Slack Status](http://slack.samvera.org/badge.svg)](http://slack.samvera.org/)
 
-----
-  * [Getting Started](./docs/getting-started.md)
-  * [Configuration](./docs/configuration.md)
-  * [Using Hyku](./docs/using-hyku.md)
-  * [Product Owner](#product-owner)
-  * [Help](#help)
-  * [Acknowledgments](#acknowledgments)
+---
 
-----
+- [Getting Started](./docs/getting-started.md)
+- [Configuration](./docs/configuration.md)
+- [Using Hyku](./docs/using-hyku.md)
+- [Product Owner](#product-owner)
+- [Help](#help)
+- [Acknowledgments](#acknowledgments)
+
+---
 
 ## Getting Started
 
@@ -46,7 +47,7 @@ The Samvera community is here to help. Please see our [support guide](./docs/sup
 
 This software was developed by the Hydra-in-a-Box Project (DPLA, DuraSpace, and Stanford University) under a grant from IMLS.
 
-This software is brought to you by the Samvera community.  Learn more at the
+This software is brought to you by the Samvera community. Learn more at the
 [Samvera website](http://samvera.org/).
 
 ![Samvera Logo](https://samvera.atlassian.net/wiki/download/attachments/405216084/samvera-fall-TM-220w-transparent.png?version=1&modificationDate=1540440075555&cacheVersion=1&api=v2)

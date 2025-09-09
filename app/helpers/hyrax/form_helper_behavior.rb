@@ -87,6 +87,11 @@ module Hyrax
     def ensure_discogs_credentials
       return unless current_account.respond_to?(:discogs_user_token)
 
+      unless discogs_config_files_exist?
+        Rails.logger.warn('Discogs user token is present, but config/discogs-genres.yml and/or config/discogs-formats.yml are missing. Discogs integration is disabled.')
+        return
+      end
+
       # Clear token if current tenant doesn't have one configured
       if current_account.discogs_user_token.blank?
         Qa::Authorities::Discogs::GenericAuthority.discogs_user_token = nil
@@ -95,6 +100,11 @@ module Hyrax
 
       # Set token for current tenant
       Qa::Authorities::Discogs::GenericAuthority.discogs_user_token = current_account.discogs_user_token
+    end
+
+    def discogs_config_files_exist?
+      File.exist?(Rails.root.join('config', 'discogs-genres.yml')) &&
+        File.exist?(Rails.root.join('config', 'discogs-formats.yml'))
     end
   end
 end

@@ -30,6 +30,7 @@ module AccountSettings
     setting :contact_email, type: 'string', default: 'change-me-in-settings@example.com'
     setting :contact_email_to, type: 'string', default: 'change-me-in-settings@example.com'
     setting :depositor_email_notifications, type: 'boolean', default: false
+    setting :discogs_user_token, type: 'string', private: true
     setting :doi_reader, type: 'boolean', default: false
     setting :doi_writer, type: 'boolean', default: false
     setting :file_acl, type: 'boolean', default: true, private: true
@@ -42,7 +43,6 @@ module AccountSettings
     setting :google_analytics_property_id, type: 'string', default: ''
     setting :google_scholarly_work_types, type: 'array', disabled: true
     setting :geonames_username, type: 'string', default: ''
-    setting :discogs_user_token, type: 'string', private: true
     setting :gtm_id, type: 'string'
     setting :hidden_index_fields, type: 'string', default: 'title'
     setting :locale_name, type: 'string', disabled: true

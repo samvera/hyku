@@ -49,7 +49,9 @@ module HykuIndexing
   end
 
   def extract_text_from_plain_text_files(object)
-    return [] if object.members.blank?
+    members = Hyrax.custom_queries.find_child_file_sets(resource: object)
+
+    return [] if members.blank?
 
     text_file_sets = object.members.select { |fs| fs.file_set? && fs.original_file&.mime_type == 'text/plain' }
     text_file_sets.map { |fs| fs.original_file&.content }

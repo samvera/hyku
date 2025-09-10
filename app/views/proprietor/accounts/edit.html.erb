@@ -8,11 +8,25 @@
       <%= simple_form_for @account, url: [:proprietor, @account], html: { class: 'form' } do |f| %>
         <div class="card-body">
           <% if @account.errors.any? %>
-            <div id="error_explanation" class="alert alert-danger">
-              <h2><%= pluralize(@account.errors.count, "error") %> prohibited this account from being saved:</h2>
-              <ul>
+            <div id="error_explanation" class="alert alert-danger alert-dismissible fade show" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="alert-heading">
+                <i class="fa fa-exclamation-triangle mr-2"></i>
+                <%= pluralize(@account.errors.count, "error") %> prohibited this account from being saved:
+              </h4>
+              <ul class="mb-0">
                 <% @account.errors.messages.each do |key, messages| %>
-                  <li><%= key %> &quot;<%= @account.errors.details[key].first[:value] %>&quot; <%= messages.join(' and ') %></li>
+                  <li class="mb-1">
+                    <strong><%= key.to_s.humanize %>:</strong> 
+                    <code class="text-danger">&quot;<%= @account.errors.details[key].first[:value] %>&quot;</code> 
+                    <% if key.to_s == 'google_analytics_id' %>
+                      <span class="text-danger">must be a valid Google Analytics 4 Measurement ID (e.g., G-XXXXXXXXXX)</span>
+                    <% else %>
+                      <span class="text-danger"><%= messages.join(' and ') %></span>
+                    <% end %>
+                  </li>
                 <% end %>
               </ul>
             </div>

@@ -60,13 +60,16 @@ module AccountSettings
 
     store :settings, coder: JSON, accessors: all_settings.keys
 
-    validates :gtm_id, format: { with: /GTM-[A-Z0-9]{4,7}/, message: "Invalid GTM ID" }, allow_blank: true
+    validates :gtm_id, format: { with: /GTM-[A-Z0-9]{4,7}/, message: "must be a valid Google Tag Manager ID (e.g., GTM-XXXXXXX)" }, allow_blank: true
     validates :contact_email, :oai_admin_email,
               format: { with: URI::MailTo::EMAIL_REGEXP },
               allow_blank: true
     validate :validate_email_format, :validate_contact_emails, :validate_json
     validates :google_analytics_id,
-              format: { with: /((UA|YT|MO)-\d+-\d+|G-[A-Z0-9]{10})/i },
+              format: { 
+                with: /G-[A-Z0-9]{10}/i,
+                message: "invalid"
+              },
               allow_blank: true
 
     after_initialize :initialize_settings

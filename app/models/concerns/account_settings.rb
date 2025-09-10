@@ -66,11 +66,17 @@ module AccountSettings
               allow_blank: true
     validate :validate_email_format, :validate_contact_emails, :validate_json
     validates :google_analytics_id,
-              format: { 
+              format: {
                 with: /G-[A-Z0-9]{10}/i,
                 message: "invalid"
               },
-              allow_blank: true
+              if: -> { google_analytics_id.present? }
+    validates :google_analytics_property_id,
+              format: {
+                with: /\A\d+\z/,
+                message: "must be numeric"
+              },
+              if: -> { google_analytics_property_id.present? }
 
     after_initialize :initialize_settings
   end

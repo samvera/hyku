@@ -32,7 +32,8 @@ FactoryBot.define do
         gtm_id: "GTM-123456", shared_login: "true",
         email_format: ["@pacificu.edu", "@ubiquitypress.com", "@test.com"],
         allow_signup: "true",
-        google_analytics_id: 'UA-123456-12',
+        google_analytics_id: 'G-1234567890',
+        google_analytics_property_id: '123456789',
         geonames_username: 'geonames'
       }
     end

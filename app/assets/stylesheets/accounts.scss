@@ -6,6 +6,11 @@
   .help-block {
     margin-bottom: 0;
     margin-top: 5px;
+    
+    a {
+      display: inline;
+      white-space: nowrap;
+    }
   }
 
   // Enhanced error styling for better visibility

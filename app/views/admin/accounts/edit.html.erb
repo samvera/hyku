@@ -22,6 +22,8 @@
                     <code class="text-danger">&quot;<%= @account.errors.details[key].first[:value] %>&quot;</code> 
                     <% if key.to_s == 'google_analytics_id' %>
                       <span class="text-danger">must be a valid Google Analytics 4 Measurement ID (e.g., G-XXXXXXXXXX)</span>
+                    <% elsif key.to_s == 'google_analytics_property_id' %>
+                      <span class="text-danger">must be a numeric Property ID (e.g., 123456789)</span>
                     <% else %>
                       <span class="text-danger"><%= messages.join(' and ') %></span>
                     <% end %>

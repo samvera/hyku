@@ -253,9 +253,13 @@ Date::DATE_FORMATS[:standard] = "%m/%d/%Y"
 begin
   # The Qa::Authorities::Local.names method will return all the .yml files in your
   # `config/authorities` directory. This will register each of them as a FileBasedAuthority
-  if Qa::Authorities::Local.subauthorities_path && Dir.exist?(Qa::Authorities::Local.subauthorities_path)
-    Qa::Authorities::Local.names.each do |subauth|
-      Qa::Authorities::Local.register_subauthority(subauth, 'Qa::Authorities::Local::FileBasedAuthority')
+  if Qa::Authorities::Local.subauthorities_path
+    Array.wrap(Qa::Authorities::Local.subauthorities_path).each do |path|
+      next unless Dir.exist?(path)
+
+      Qa::Authorities::Local.names.each do |subauth|
+        Qa::Authorities::Local.register_subauthority(subauth, 'Qa::Authorities::Local::FileBasedAuthority')
+      end
     end
   end
 rescue Qa::ConfigDirectoryNotFound => e

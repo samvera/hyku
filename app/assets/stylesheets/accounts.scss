@@ -33,13 +33,17 @@
       border-radius: 0.25rem;
       padding: 0.5rem 0.75rem;
       margin-top: 0.5rem;
-      display: flex;
-      align-items: center;
       
       &::before {
-        content: "⚠️";
+        content: "\f071"; // Font Awesome exclamation triangle
+        font-family: "FontAwesome";
         margin-right: 0.5rem;
         font-size: 1.1em;
+      }
+      
+      a {
+        display: inline;
+        white-space: nowrap;
       }
     }
   }

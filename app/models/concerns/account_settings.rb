@@ -68,7 +68,7 @@ module AccountSettings
     validates :google_analytics_id,
               format: {
                 with: /G-[A-Z0-9]{10}/i,
-                message: "invalid"
+                message: "must be a valid Google Analytics ID (e.g., G-XXXXXXXXXX)"
               },
               if: -> { google_analytics_id.present? }
     validates :google_analytics_property_id,

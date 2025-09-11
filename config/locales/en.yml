@@ -72,6 +72,9 @@ en:
         universal_analytics_warning:
           header: "Google Universal Analytics:"
           body: "Your system is using Google Universal Analytics (legacy). Google has deprecated Universal Analytics. Consider upgrading to Google Analytics 4."
+        error_messages:
+          google_analytics_id: "must be a valid Google Analytics 4 Measurement ID (e.g., G-XXXXXXXXXX)"
+          google_analytics_property_id: "must be a numeric Property ID (e.g., 123456789)"
       groups:
         action:
           create: Create New Group

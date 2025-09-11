@@ -65,6 +65,14 @@ es:
         universal_analytics_warning:
           header: "Google Universal Analytics:"
           body: "Su sistema está usando Google Universal Analytics (heredado). Google ha desaprobado Universal Analytics. Considere actualizar a Google Analytics 4."
+        error_messages:
+          google_analytics_id: "debe ser un ID de medición válido de Google Analytics 4 (por ejemplo, G-XXXXXXXXXX)"
+          google_analytics_property_id: "debe ser un ID de propiedad numérico (por ejemplo, 123456789)"
+  bulkrax:
+    admin:
+      sidebar:
+        importers: Importadores
+        exporters: Exportadores
       groups:
         action:
           create: Crear nuevo grupo

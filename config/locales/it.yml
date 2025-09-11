@@ -65,6 +65,14 @@ it:
         universal_analytics_warning:
           header: "Google Universal Analytics:"
           body: "Il tuo sistema sta utilizzando Google Universal Analytics (legacy). Google ha deprecato Universal Analytics. Considera l'aggiornamento a Google Analytics 4."
+        error_messages:
+          google_analytics_id: "deve essere un ID di misurazione Google Analytics 4 valido (ad esempio, G-XXXXXXXXXX)"
+          google_analytics_property_id: "deve essere un ID di proprietà numerico (ad esempio, 123456789)"
+  bulkrax:
+    admin:
+      sidebar:
+        importers: Importatori
+        exporters: Esportatori
       groups:
         action:
           create: Crea nuovo gruppo

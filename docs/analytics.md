@@ -2,8 +2,7 @@
 
 Hyku supports multiple analytics providers for tracking user interactions and displaying analytics data in the dashboard. Currently supported providers are:
 
-- **Google Analytics 4 (GA4)** - Recommended for new implementations
-- **Google Universal Analytics** - Legacy support (deprecated by Google)
+- **Google Analytics 4 (GA4)** - Current analytics platform
 - **Matomo** - Self-hosted analytics solution
 
 ## Analytics Provider Selection
@@ -14,14 +13,14 @@ The analytics provider is configured globally via the `HYRAX_ANALYTICS_PROVIDER`
 # For Google Analytics 4 (recommended)
 HYRAX_ANALYTICS_PROVIDER=ga4
 
-# For Google Universal Analytics (legacy)
+# For Google Analytics 4 (GA4)
 HYRAX_ANALYTICS_PROVIDER=google
 
 # For Matomo
 HYRAX_ANALYTICS_PROVIDER=matomo
 ```
 
-**Note**: Google has announced they will stop processing data using Universal Analytics on July 1, 2023 (or July 1, 2024 for Analytics 360 properties). New implementations should use Google Analytics 4.
+**Note**: Universal Analytics was deprecated by Google on July 1, 2023. Hyku now only supports Google Analytics 4 (GA4) format.
 
 To enable analytics tracking and reporting features within Hyku, please follow the provider-specific directions below.
 
@@ -52,25 +51,6 @@ For new implementations, we recommend using Google Analytics 4:
    # OR use a file path instead:
    GOOGLE_ACCOUNT_JSON_PATH=/path/to/service-account.json
    ```
-
-## Google Universal Analytics Setup (Legacy)
-
-For existing implementations using Universal Analytics:
-
-1. **Create a Service Account**: https://cloud.google.com/iam/docs/creating-managing-service-accounts
-
-- Note the service account email
-- When making a service account key, make sure the key type is set to p12
-- Note the service account private key secret
-
-2. **Create an OAuth 2.0 Client ID**: https://developers.google.com/identity/protocols/oauth2/web-server#creatingcred
-3. **Create an Analytics account**: https://support.google.com/analytics/answer/10269537?hl=en
-
-- Note Google Universal Analytics ID number
-
-4. **Add service account email as User, and grant "View" access**: https://support.google.com/analytics/answer/1009702?hl=en#Add&zippy=%2Cin-this-article
-5. **Enable the "Google Analytics API"**: https://developers.google.com/identity/protocols/oauth2/web-server#enable-apis
-6. **Enable the "IAM Service Account Credentials API"**: https://developers.google.com/identity/protocols/oauth2/web-server#enable-apis
 
 ## Matomo Setup
 
@@ -118,7 +98,7 @@ analytics:
 ##START## Enable Analytics
 # Uncomment to enable and configure analytics, see README for instructions.
 
-# For Google Analytics 4 (recommended)
+# For Google Analytics 4 (GA4)
 HYRAX_ANALYTICS_PROVIDER=ga4
 GOOGLE_ANALYTICS_ID=G-XXXXXXXXXX
 GOOGLE_ANALYTICS_PROPERTY_ID=123456789
@@ -126,14 +106,8 @@ GOOGLE_ACCOUNT_JSON='{"type":"service_account",...}'
 # OR use a file path instead:
 # GOOGLE_ACCOUNT_JSON_PATH=/path/to/service-account.json
 
-# For Google Universal Analytics (legacy)
-# HYRAX_ANALYTICS_PROVIDER=google
-# GOOGLE_ANALYTICS_ID=UA-123456-12
-# GOOGLE_OAUTH_APP_NAME=hyku-demo
-# GOOGLE_OAUTH_APP_VERSION=1.0
-# GOOGLE_OAUTH_PRIVATE_KEY_SECRET=not-a-secret
-# GOOGLE_OAUTH_PRIVATE_KEY_PATH=prod-cred.p12
-# GOOGLE_OAUTH_CLIENT_EMAIL=set-me@email.com
+# Note: Universal Analytics (UA-XXXXX-XX format) is no longer supported
+# as it was deprecated by Google on July 1, 2023. Only GA4 format is accepted.
 
 # For Matomo
 # HYRAX_ANALYTICS_PROVIDER=matomo
@@ -162,7 +136,7 @@ GOOGLE_ACCOUNT_JSON='{"type":"service_account",...}'
 # - name: GOOGLE_ACCOUNT_JSON_PATH
 #   value: /path/to/service-account.json
 
-# For Google Universal Analytics (legacy)
+# For Google Analytics 4 (GA4)
 # - name: HYRAX_ANALYTICS_PROVIDER
 #   value: 'google'
 # - name: GOOGLE_ANALYTICS_ID
@@ -206,7 +180,7 @@ Once the global analytics provider is configured, individual tenants can:
 
 1. **Enable/Disable Analytics**: Each tenant can enable or disable analytics for their site
 2. **Override Global Settings**: For Google Analytics, tenants can provide their own:
-   - Google Analytics Measurement ID (GA4) or Universal Analytics ID
+   - Google Analytics Measurement ID (GA4 format: G-XXXXXXXXXX)
    - Google Analytics Property ID (GA4 only)
 3. **Analytics Dashboard Access**: The analytics dashboard and reports are only visible to tenants who have configured their own analytics credentials
 

@@ -65,6 +65,14 @@ zh:
         universal_analytics_warning:
           header: "Google Universal Analytics："
           body: "您的系统正在使用 Google Universal Analytics（旧版）。Google 已弃用 Universal Analytics。考虑升级到 Google Analytics 4。"
+        error_messages:
+          google_analytics_id: "必须是有效的 Google Analytics 4 测量 ID（例如，G-XXXXXXXXXX）"
+          google_analytics_property_id: "必须是数字属性 ID（例如，123456789）"
+  bulkrax:
+    admin:
+      sidebar:
+        importers: 导入器
+        exporters: 导出器
       groups:
         action:
           create: 创建新组

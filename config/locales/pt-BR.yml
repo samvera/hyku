@@ -371,3 +371,11 @@ pt-BR:
     universal_analytics_warning:
       header: "Google Universal Analytics:"
       body: "Seu sistema está usando Google Universal Analytics (legado). O Google descontinuou o Universal Analytics. Considere atualizar para o Google Analytics 4."
+    error_messages:
+      google_analytics_id: "deve ser um ID de medição válido do Google Analytics 4 (por exemplo, G-XXXXXXXXXX)"
+      google_analytics_property_id: "deve ser um ID de propriedade numérico (por exemplo, 123456789)"
+  bulkrax:
+    admin:
+      sidebar:
+        importers: Importadores
+        exporters: Exportadores

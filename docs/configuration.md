@@ -121,6 +121,40 @@ In single tenant mode, both the application root (eg. localhost, or hyku.test) a
 
 To change from single- to multi-tenant mode, change the multitenancy/enabled flag to true and restart the application. Change the 'single' tenant account cname in the Accounts edit interface to the correct hostname.
 
+## Flexible Metadata
+
+Hyku v6.2 and later includes flexible metadata functionality that allows administrators to configure metadata schemas through the UI using M3 (Machine-readable Metadata Modeling) profiles. This feature is **disabled by default** and must be explicitly enabled.
+
+### Key Features
+
+- **UI-based Configuration**: Admins can define and manage metadata fields through the Hyku admin dashboard
+- **Multi-tenant Support**: Full support for Hyku's multi-tenant architecture
+- **Version Control**: Metadata profiles can be versioned, imported, and exported
+- **Work Type Customization**: Control over field labels, required status, searchability, and more per Work Type
+- **Reduced Developer Dependency**: Basic metadata changes no longer require developer involvement
+
+### Enabling Flexible Metadata
+
+To enable flexible metadata, set the environment variable:
+
+```bash
+HYRAX_FLEXIBLE=true
+```
+
+Add this to your `.env` file for local development, or set it in your deployment environment.
+
+### Documentation
+
+For comprehensive information about flexible metadata, including:
+
+- How to create and manage metadata profiles
+- M3 profile structure and syntax
+- Work Type configuration
+- Schema versioning
+- User guide for administrators
+
+See the official [Flexible Metadata Documentation](https://samvera.atlassian.net/wiki/spaces/hyku/pages/3185541198/Flexible+Metadata+v6.2) on the Samvera Confluence.
+
 ## Controlled Vocabularies
 
 For detailed information about configuring controlled vocabularies in Hyku when using flexible metadata, see the [Controlled Vocabularies Guide](./controlled-vocabularies.md).

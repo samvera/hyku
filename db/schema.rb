@@ -631,7 +631,7 @@ ActiveRecord::Schema.define(version: 2025_07_01_163138) do
     t.index ["uri"], name: "index_qa_local_authority_entries_on_uri", unique: true
   end
 
-  create_table "qa_mesh_trees", id: :bigserial, force: :cascade do |t|
+  create_table "qa_mesh_trees", id: :serial, force: :cascade do |t|
     t.string "term_id"
     t.string "tree_number"
     t.index ["term_id"], name: "index_qa_mesh_trees_on_term_id"

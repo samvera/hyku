@@ -12,6 +12,7 @@ en:
           base_path: Fedora base path should begin with a slash AND not end with a slash
           url: Fedora URL should not end with a slash
         name: A single or hyphenated name used for technical aspects of the repository (e.g., "acme" or "acme-library").
+        file_size_limit: "Enter the file size limit in bytes. The default is 5 GB (5368709120 bytes)."
         gtm_id: The ID of your Google Tag Manager account
         google_analytics_id: 'Measurement ID (e.g., G-XXXXXXXXXX) from GA4 Admin → Property → Data Streams → Web Stream. <a href="https://samvera.atlassian.net/wiki/spaces/hyku/pages/3185147970/Google+Analytics+4+GA4+Support#Creating-a-New-Google-Analytics-Account" target="_blank">Setup guide</a>'
         google_analytics_property_id: 'Numeric Property ID (e.g., 123456789) from GA4 Admin → Property Details (upper right corner). <a href="https://samvera.atlassian.net/wiki/spaces/hyku/pages/3185147970/Google+Analytics+4+GA4+Support#Creating-a-New-Google-Analytics-Account" target="_blank">Setup guide</a>'
@@ -25,7 +26,6 @@ en:
         depositor_email_notifications: Enable or disable email notifications that send depositors a summary of statistics for their submissions. This feature requires analytics to be enabled.
         enable_oai_metadata: Enable or disable OAI link
         shared_login: Enable or disable shared login
-        file_size_limit: This should be set to at least 536870912000
         locale_name: |
           The name of the tenant specific locale suffix added to their locale.yml files. Only alphabetic characters should be added, no symbols or numbers, these will then be capitalised.
         oai_admin_email: OAI endpoint contact email address

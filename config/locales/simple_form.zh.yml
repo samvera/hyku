@@ -23,7 +23,7 @@ zh:
           base_path: Fedora基本路径应该以斜杠开始且不应该以斜杠结束
           url: Fedora URL不应该以斜杠结束
         file_acl: 如果使用不支持设置访问控制列表的文件系统（如samba或nfs），请关闭它
-        file_size_limit: 此值应至少设置为536870912000
+        file_size_limit: "请输入文件大小限制（以字节为单位）。默认值为5 GB（5368709120字节）。"
         geonames_username: 在http://www.geonames.org/manageaccount上注册
         google_analytics_id: '测量ID（例如，G-XXXXXXXXXX）来自GA4管理 → 属性 → 数据流 → 网络流。<a href="https://samvera.atlassian.net/wiki/spaces/hyku/pages/3185147970/Google+Analytics+4+GA4+Support#Creating-a-New-Google-Analytics-Account" target="_blank">设置指南</a>'
         google_analytics_property_id: '数字属性ID（例如，123456789）来自GA4管理 → 属性详情（右上角）。<a href="https://samvera.atlassian.net/wiki/spaces/hyku/pages/3185147970/Google+Analytics+4+GA4+Support#Creating-a-New-Google-Analytics-Account" target="_blank">设置指南</a>'

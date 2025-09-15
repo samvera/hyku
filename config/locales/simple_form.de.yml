@@ -23,7 +23,7 @@ de:
           base_path: Der Fedora-Basispfad sollte mit einem Schrägstrich beginnen UND nicht mit einem Schrägstrich enden
           url: Die Fedora-URL sollte nicht mit einem Schrägstrich enden
         file_acl: Deaktivieren Sie dies, wenn Sie ein Dateisystem wie Samba oder NFS verwenden, das das Festlegen von Zugriffssteuerungslisten nicht unterstützt
-        file_size_limit: Dies sollte mindestens auf 536870912000 eingestellt sein
+        file_size_limit: "Geben Sie das Dateigrößenlimit in Byte ein. Der Standardwert ist 5 GB (5368709120 Bytes)."
         geonames_username: Registrieren Sie sich unter http://www.geonames.org/manageaccount
         google_analytics_id: 'Mess-ID (z.B. G-XXXXXXXXXX) von GA4 Admin → Eigenschaft → Datenstreams → Web-Stream. <a href="https://samvera.atlassian.net/wiki/spaces/hyku/pages/3185147970/Google+Analytics+4+GA4+Support#Creating-a-New-Google-Analytics-Account" target="_blank">Einrichtungsanleitung</a>'
         google_analytics_property_id: 'Numerische Eigenschafts-ID (z.B. 123456789) von GA4 Admin → Eigenschaftsdetails (obere rechte Ecke). <a href="https://samvera.atlassian.net/wiki/spaces/hyku/pages/3185147970/Google+Analytics+4+GA4+Support#Creating-a-New-Google-Analytics-Account" target="_blank">Einrichtungsanleitung</a>'

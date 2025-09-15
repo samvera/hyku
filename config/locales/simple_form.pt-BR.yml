@@ -23,7 +23,7 @@ pt-BR:
           base_path: O caminho base do Fedora deve começar com uma barra e NÃO terminar com uma barra
           url: A URL do Fedora não deve terminar com uma barra
         file_acl: Desative se estiver usando um sistema de arquivos como samba ou nfs que não suporta listas de controle de acesso
-        file_size_limit: Isso deve ser configurado para pelo menos 536870912000
+        file_size_limit: "Insira o limite de tamanho do arquivo em bytes. O padrão é 5 GB (5368709120 bytes)."
         geonames_username: Registre-se em http://www.geonames.org/manageaccount
         google_analytics_id: 'ID de Medição (ex: G-XXXXXXXXXX) do GA4 Admin → Propriedade → Fluxos de Dados → Fluxo da Web. <a href="https://samvera.atlassian.net/wiki/spaces/hyku/pages/3185147970/Google+Analytics+4+GA4+Support#Creating-a-New-Google-Analytics-Account" target="_blank">Guia de configuração</a>'
         google_analytics_property_id: 'ID de Propriedade Numérica (ex: 123456789) do GA4 Admin → Detalhes da Propriedade (canto superior direito). <a href="https://samvera.atlassian.net/wiki/spaces/hyku/pages/3185147970/Google+Analytics+4+GA4+Support#Creating-a-New-Google-Analytics-Account" target="_blank">Guia de configuração</a>'

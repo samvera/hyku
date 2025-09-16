@@ -209,7 +209,7 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - "null"
+        - "licenses"
     display_label:
       default: License
     index_documentation: displayable, searchable
@@ -744,7 +744,7 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - "null"
+        - "resource_types"
     display_label:
       default: Resource Type
     index_documentation: displayable, searchable
@@ -807,7 +807,7 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - "null"
+        - "rights_statements"
     display_label:
       default: Rights Statement
     index_documentation: displayable, searchable
@@ -1146,7 +1146,7 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - "null"
+        - "audience"
     display_label:
       default: Audience
     index_documentation: displayable, searchable
@@ -1197,7 +1197,7 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - "null"
+        - "discipline"
     display_label:
       default: Discipline
     index_documentation: searchable
@@ -1224,7 +1224,7 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - "null"
+        - "education_levels"
     display_label:
       default: Education Level
     index_documentation: displayable, searchable
@@ -1252,7 +1252,7 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - "null"
+        - "learning_resource_types"
     display_label:
       default: Learning Resource Type
     index_documentation: displayable, searchable

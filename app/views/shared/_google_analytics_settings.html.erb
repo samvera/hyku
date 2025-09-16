@@ -1,0 +1,53 @@
+<!-- Analytics Settings Section -->
+<div class="card mb-4 border-left-primary">
+  <div class="card-header bg-light">
+    <h5 class="mb-0 text-primary">
+      <i class="fa fa-line-chart mr-2"></i> <%= t('hyku.admin.google_analytics_settings.header') %>
+    </h5>
+  </div>
+  <div class="card-body">
+    <% if settings.key?(:analytics) %>
+      <div class="form-group mb-4">
+        <%= render 'shared/settings', f: f, key: :analytics, value: settings[:analytics] %>
+      </div>
+    <% end %>
+    
+    <% provider = ENV.fetch('HYRAX_ANALYTICS_PROVIDER', 'ga4') %>
+    <% if provider == 'matomo' %>
+      <div class="alert alert-info">
+        <i class="fa fa-info-circle mr-2"></i>
+        <strong><%= t('hyku.admin.google_analytics_settings.matomo_setup.header') %></strong> <%= t('hyku.admin.google_analytics_settings.matomo_setup.body') %>
+      </div>
+    <% elsif provider == 'ga4' %>
+      <% if ENV['GOOGLE_ACCOUNT_JSON'].blank? && ENV['GOOGLE_ACCOUNT_JSON_PATH'].blank? %>
+        <div class="alert alert-warning">
+          <i class="fa fa-exclamation-triangle mr-2"></i>
+          <strong><%= t('hyku.admin.google_analytics_settings.ga4_setup_required.header') %></strong> <%= t('hyku.admin.google_analytics_settings.ga4_setup_required.body') %>
+        </div>
+      <% else %>
+        <div class="alert alert-info">
+          <i class="fa fa-info-circle mr-2"></i>
+          <strong><%= t('hyku.admin.google_analytics_settings.ga4_configured.header') %></strong> <%= t('hyku.admin.google_analytics_settings.ga4_configured.body') %>
+        </div>
+      <% end %>
+    <% elsif provider == 'google' %>
+      <div class="alert alert-warning">
+        <i class="fa fa-exclamation-triangle mr-2"></i>
+        <strong><%= t('hyku.admin.google_analytics_settings.universal_analytics_warning.header') %></strong> <%= t('hyku.admin.google_analytics_settings.universal_analytics_warning.body') %>
+      </div>
+    <% end %>
+    
+    <div class="form-row" id="google-analytics-fields" style="display: none;">
+      <% if settings.key?(:google_analytics_id) %>
+        <div class="col-md-6 d-flex">
+          <%= render 'shared/settings', f: f, key: :google_analytics_id, value: settings[:google_analytics_id], wrapper_class: 'd-flex flex-column', hint_class: 'mt-auto' %>
+        </div>
+      <% end %>
+      <% if settings.key?(:google_analytics_property_id) %>
+        <div class="col-md-6 d-flex">
+          <%= render 'shared/settings', f: f, key: :google_analytics_property_id, value: settings[:google_analytics_property_id], wrapper_class: 'd-flex flex-column', hint_class: 'mt-auto' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

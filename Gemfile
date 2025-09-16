@@ -30,7 +30,7 @@ gem 'blacklight_range_limit'
 gem 'bolognese', '>= 1.9.10'
 gem 'bootstrap', '~> 4.6'
 gem 'bootstrap-datepicker-rails'
-gem 'bulkrax', github: 'samvera/bulkrax', branch: 'main'
+gem 'bulkrax', '>= 9.2' # github: 'samvera/bulkrax', branch: 'main'
 gem 'byebug', group: %i[development test]
 gem 'capybara', group: %i[test]
 gem 'capybara-screenshot', '~> 1.0', group: %i[test]
@@ -82,6 +82,9 @@ gem 'pg'
 gem 'postrank-uri', '>= 1.0.24'
 gem 'pry-byebug', group: %i[development test]
 gem 'puma', '~> 5.6' # Use Puma as the app server
+gem 'qa',
+  git: 'https://github.com/samvera/questioning_authority.git',
+  branch: 'main'
 gem 'rack-attack'
 gem 'rack-test', '0.7.0', group: %i[test] # rack-test >= 0.71 does not work with older Capybara versions (< 2.17). See #214 for more details
 gem 'rails-controller-testing', group: %i[test]

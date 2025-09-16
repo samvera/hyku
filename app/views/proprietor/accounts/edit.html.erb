@@ -8,11 +8,17 @@
       <%= simple_form_for @account, url: [:proprietor, @account], html: { class: 'form' } do |f| %>
         <div class="card-body">
           <% if @account.errors.any? %>
-            <div id="error_explanation" class="alert alert-danger">
-              <h2><%= pluralize(@account.errors.count, "error") %> prohibited this account from being saved:</h2>
-              <ul>
+            <div id="error_explanation" class="alert alert-danger alert-dismissible fade show" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="alert-heading">
+                <i class="fa fa-exclamation-triangle mr-2"></i>
+                <%= pluralize(@account.errors.count, "error") %> prohibited this account from being saved:
+              </h4>
+              <ul class="mb-0">
                 <% @account.errors.messages.each do |key, messages| %>
-                  <li><%= key %> &quot;<%= @account.errors.details[key].first[:value] %>&quot; <%= messages.join(' and ') %></li>
+                  <%= render 'shared/error_message', key: key, messages: messages %>
                 <% end %>
               </ul>
             </div>
@@ -34,7 +40,14 @@
           </div>
 
           <h3><%= t(".account_settings") %></h3>
-          <% @account.live_settings.each do |key, value| %>
+          
+          <!-- Google Analytics Settings Section -->
+          <% if @account.live_settings.key?(:analytics) || @account.live_settings.key?(:google_analytics_id) || @account.live_settings.key?(:google_analytics_property_id) %>
+            <%= render 'shared/google_analytics_settings', f: f, settings: @account.live_settings %>
+          <% end %>
+
+          <!-- Other Settings -->
+          <% @account.live_settings.except(:analytics, :google_analytics_id, :google_analytics_property_id).each do |key, value| %>
             <%= render 'shared/settings', f: f, key: key, value: value %>
           <% end %>
 

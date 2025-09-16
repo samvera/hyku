@@ -1,0 +1,627 @@
+Acid:
+  label: Psychedelic rock music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027024
+AcidHouse:
+  label: Psychedelic rock music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027024
+AcidRock:
+  label: Psychedelic rock music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027024
+Afro-CubanJazz:
+  label: Latin jazz
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026903
+Afrobeat:
+  label: Afrobeat
+  uri: http://id.loc.gov/authorities/genreForms/gf2015026088
+AlternativeRock:
+  label: Alternative rock music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026632
+Ambient:
+  label: Ambient sounds
+  uri: http://id.loc.gov/authorities/genreForms/gf2011026039
+AndalusianClassical:
+  label: Ambient music (Electronica)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027185
+ArtRock:
+  label: Progressive rock (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027018
+Bachata:
+  label: Bachata
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026643
+BangladeshiClassical:
+  label: Art music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026639
+Barbershop:
+  label: Barbershop (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026654
+Beatbox:
+  label: Beatboxing
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026658
+Bhangra:
+  label: Bhangra (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026660
+BlackMetal:
+  label: Black metal (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026663
+Bluegrass:
+  label: Bluegrass music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026664
+Blues:
+  label: Blues (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026665
+BluesRock:
+  label: Blues-rock music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026666
+Boogie:
+  label: Boogie woogie (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026669
+BoogieWoogie:
+  label: Boogie woogie (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026669
+Bop:
+  label: Bop (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026670
+BossaNova:
+  label: Bossa nova (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026671
+Bossanova:
+  label: Bossa nova (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026671
+Bounce:
+  label: Bounce (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026672
+Cajun:
+  label: Cajun music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026679
+Calypso:
+  label: Calypso (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026680
+CambodianClassical:
+  label: Art music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026639
+Carnatic:
+  label: Carnatic music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026693
+Celtic:
+  label: Celtic music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026697
+Chamamé:
+  label: Chamamé (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026703
+Champeta:
+  label: Champeta (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026705
+Children's:
+  label: Children's sound recordings
+  uri: http://id.loc.gov/authorities/genreForms/gf2011026126
+ChineseClassical:
+  label: Art music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026639
+Chutney:
+  label: Chutney (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026717
+Classical:
+  label: Art music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026639
+Conjunto:
+  label: Norteño (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026969
+ContemporaryR&B:
+  label: Rhythm and blues music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027052
+CoolJazz:
+  label: Cool Jazz
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026730
+CountryBlues:
+  label: Country music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026739
+Country:
+  label: Country music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026739
+CountryRock:
+  label: Country rock music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026740
+Crunk:
+  label: Crunk (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026746
+Cumbia:
+  label: Cumbia (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026749
+Dancehall:
+  label: Dancehall (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026754
+Dangdut:
+  label: Dangdut
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026755
+Darkwave:
+  label: Darkwave (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026759
+DeathMetal:
+  label: Death metal (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026761
+DeepTechno:
+  label: Techno (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027130
+Dialogue:
+  label: Dialogues (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026765
+Disco:
+  label: Disco (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026768
+DiscoPolo:
+  label: Disco (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026768
+Dixieland:
+  label: Dixieland music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026770
+DooWop:
+  label: Doo-wop
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026773
+DoomMetal:
+  label: Doom metal (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026774
+Downtempo:
+  label: Ambient music (Electronica)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027185
+DrumnBass:
+  label: Jungle (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026887
+Dub:
+  label: Dub (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026778
+Dubstep:
+  label: Dubstep (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026779
+EBM:
+  label: Industrial dance music
+  uri: http://id.loc.gov/authorities/genreForms/gf2017026062
+Electronic:
+  label: Electronic dance music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027153
+Emo:
+  label: Emo (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026784
+Enka:
+  label: Enka
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026785
+FieldRecording:
+  label: Field recordings
+  uri: http://id.loc.gov/authorities/genreForms/gf2011026253
+Flamenco:
+  label: Flamenco music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026806
+Folk:
+  label: Folk music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026809
+FolkRock:
+  label: Folk-rock music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026810
+Forró:
+  label: Forró (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026812
+FreeJazz:
+  label: Free jazz
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026816
+Funk:
+  label: Funk (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026823
+Fusion:
+  label: Jazz-rock (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026880
+FutureJazz:
+  label: Jazz-rock (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026880
+Gabber:
+  label: Gabba (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026825
+Gagaku:
+  label: Gagaku
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026826
+Gangsta:
+  label: Gangsta rap (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026830
+GarageRock:
+  label: Garage rock music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026831
+Ghettotech:
+  label: Ghettotech (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026834
+Glam:
+  label: Glam rock (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2018026029
+Glitch:
+  label: Glitch music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026836
+Go-Go:
+  label: Go-go (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026837
+GoaTrance:
+  label: Trance (House music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027143
+GogoGo-go:
+  label: Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026837
+Gospel:
+  label: Gospel music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026839
+GothRock:
+  label: Gothic rock music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026840
+Grindcore:
+  label: Grindcore (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2015026097
+Grunge:
+  label: Grunge music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026844
+HardBop:
+  label: Bop (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026670
+HardTechno:
+  label: Techno (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027130
+HardTrance:
+  label: Trance (House music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027143
+Hardcore:
+  label: Hardcore (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026850
+HeavyMetal:
+  label: Heavy metal (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026854
+Highlife:
+  label: Highlife (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026858
+Hillbilly:
+  label: Country music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026739
+Hillbilly:
+  label: Old-time music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026974
+Hindustani:
+  label: Hindustani music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026859
+HipHop:
+  label: Hip-hop (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2017026157
+HonkyTonk:
+  label: Honky-tonk music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026863
+House:
+  label: House music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026865
+IDM:
+  label: Intelligent dance music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026875
+IndianClassical:
+  label: Art music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026639
+IndiePop:
+  label: Indie pop music
+  uri: http://id.loc.gov/authorities/genreForms/gf2015026065
+IndieRock:
+  label: Alternative rock music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026632
+Industrial:
+  label: Industrial music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026874
+Instrumental:
+  label: Songs without words (Instrumental music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027104
+Interview:
+  label: Interviews (Sound recordings)
+  uri: http://id.loc.gov/authorities/genreForms/gf2015026013
+ItaloHouse:
+  label: Italo disco (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2017026149
+Italo-Disco:
+  label: Italo disco (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2017026149
+Jazz:
+  label: Jazz
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026879
+Jazz-Rock:
+  label: Jazz-rock (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026880
+Jungle:
+  label: Jungle (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026887
+Karaoke:
+  label: Karaoke
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026892
+Keroncong:
+  label: Keroncong
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026894
+Klezmer:
+  label: Klezmer music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026896
+Krautrock:
+  label: Krautrock (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2015026098
+Kwaito:
+  label: Kwaito
+  uri: http://id.loc.gov/authorities/genreForms/gf2015026071
+Latin:
+  label: Latin pop
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026904
+LatinJazz:
+  label: Latin jazz
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026903
+Lo-Fi:
+  label: Lo-fi (Rock music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2016026013
+Lounge:
+  label: Lounge music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026911
+Maloya:
+  label: Maloya (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026919
+Marches:
+  label: Marches (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026922
+Mariachi:
+  label: Mariachi (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026923
+MathRock:
+  label: Math rock (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026927
+Mbalax:
+  label: Mbalax
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026929
+MelodicDeathMetal:
+  label: Death metal (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026761
+Military:
+  label: Military music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026936
+Minimal:
+  label: Minimal music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026938
+MinimalTechno:
+  label: Techno (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027130
+ModernClassical:
+  label: Art music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026639
+MouthMusic:
+  label: Mouth music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026951
+MusicHall:
+  label: Dancehall (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026754
+MusiqueConcrète:
+  label: Musique concrète
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026958
+eo-Classical:
+  label: Art music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026639
+NerdcoreTechno:
+  label: Techno (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027130
+NewAge:
+  label: New Age music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026962
+NewWave:
+  label: New wave music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026963
+NoWave:
+  label: No wave (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026966
+Noise:
+  label: Noise music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026967
+Norteño:
+  label: Norteño (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026969
+Novelty:
+  label: Novelty songs
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026970
+Oi:
+  label: Oi music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026972
+Opera:
+  label: Operas
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026976
+Operetta:
+  label: Operas
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026976
+OttomanClassical:
+  label: Art music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026639
+Parody:
+  label: Musical parodies
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026955
+PersianClassical:
+  label: Art music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026639
+PhilippineClassical:
+  label: Art music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026639
+Poetry:
+  label: Poetry readings (Sound recordings)
+  uri: http://id.loc.gov/authorities/genreForms/gf2013025040
+Polka:
+  label: Polka-mazurkas (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027003
+Pop:
+  label: Popular music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027009
+PowerMetal:
+  label: Power metal (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027011
+ProgRock:
+  label: Progressive rock (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027018
+ProgressiveMetal:
+  label: Progressive metal (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027016
+Psychedelic:
+  label: Psychedelic rock music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027024
+PsychedelicRock:
+  label: Psychedelic rock music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027024
+Punk:
+  label: Punk rock music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027025
+Ragga:
+  label: Ragga (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027033
+Ragtime:
+  label: Ragtime music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027034
+Rapso:
+  label: Rapso
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027039
+Rebetiko:
+  label: Rebetika
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027040
+Reggae:
+  label: Reggae music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027045
+ReggaeGospel:
+  label: Reggae music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027045
+Reggae-Pop:
+  label: Reggae music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027045
+Reggaeton :
+  label: Reggae music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027045
+Religious:
+  label: Sacred music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027062
+Rhythm&Blues:
+  label: Rhythm and blues music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027052
+RnB/Swing:
+  label: Rhythm and blues music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027052
+Rock:
+  label: Rock music
+  uri: http://id.loc.gov/authorities/genreForms/gf2011026540
+Rock&Roll:
+  label: Rock music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027054
+RockOpera:
+  label: Rock operas
+  uri: http://id.loc.gov/authorities/genreForms/gf2017026056
+Rockabilly:
+  label: Rockabilly music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027055
+Rocksteady:
+  label: Rocksteady (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027056
+RootsReggae:
+  label: Reggae music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027045
+RuneSinging:
+  label: Rune songs
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027060
+Salsa:
+  label: Salsa (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027066
+SeaShanties:
+  label: Sea shanties
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027078
+Shoegaze:
+  label: Shoegaze (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2016026014
+Ska:
+  label: Ska (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027095
+Skiffle:
+  label: Skiffle
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027096
+SludgeMetal:
+  label: Sludge metal (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027097
+Soca:
+  label: Soca (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027098
+SoftRock:
+  label: Folk-rock music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026810
+Soukous:
+  label: Soukous (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027105
+Soul:
+  label: Soul music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027106
+SoundArt:
+  label: Sound art
+  uri: http://id.loc.gov/authorities/genreForms/gf2017026022
+SoundCollage:
+  label: Sound art
+  uri: http://id.loc.gov/authorities/genreForms/gf2017026022
+SoundPoetry:
+  label: Sound poetry
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026550
+Soundtrack:
+  label: Film soundtracks
+  uri: http://id.loc.gov/authorities/genreForms/gf2011026262
+Speech:
+  label: Speeches
+  uri: http://id.loc.gov/authorities/genreForms/gf2011026363
+SpeedMetal:
+  label: Thrash metal (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027138
+Stage&Screen:
+  label: Musical theatre
+  uri: http://id.loc.gov/authorities/genreForms/gf2016026057
+Stage&Screen2:
+  label: Musical films
+  uri: http://id.loc.gov/authorities/genreForms/gf2011026414
+Surf:
+  label: Surf music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027117
+SwampPop:
+  label: Swamp pop music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027118
+Swing:
+  label: Swing (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027119
+Synth-pop:
+  label: Synthpop (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027122
+Techno:
+  label: Techno (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027130
+Tejano:
+  label: Tejano music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027131
+ThaiClassical:
+  label: Art music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014026639
+Theme:
+  label: Variations (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027156
+Thrash:
+  label: Thrash metal (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027138
+Timba:
+  label: Timba (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027139
+Trance:
+  label: Trance (House music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027143
+TripHop:
+  label: Trip-hop (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027146
+Vallenato:
+  label: Vallenato
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027155
+WesternSwing:
+  label: Western swing (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027169
+Zamba:
+  label: Zamba (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027174
+Zouk:
+  label: Zouk (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027176
+Zydeco:
+  label: Zydeco music
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027177
+Éntekhno:
+  label: Techno (Music)
+  uri: http://id.loc.gov/authorities/genreForms/gf2014027130

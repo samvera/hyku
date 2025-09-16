@@ -1,0 +1,13 @@
+<%# frozen_string_literal: true %>
+<%# Shared partial for displaying account validation error messages %>
+<li class="mb-1">
+  <strong><%= key.to_s.humanize %>:</strong> 
+  <code class="text-danger">&quot;<%= @account.errors.details[key].first[:value] %>&quot;</code> 
+  <% if key.to_s == 'google_analytics_id' %>
+    <span class="text-danger"><%= t('hyku.admin.google_analytics_settings.error_messages.google_analytics_id') %></span>
+  <% elsif key.to_s == 'google_analytics_property_id' %>
+    <span class="text-danger"><%= t('hyku.admin.google_analytics_settings.error_messages.google_analytics_property_id') %></span>
+  <% else %>
+    <span class="text-danger"><%= messages.join(' and ') %></span>
+  <% end %>
+</li>

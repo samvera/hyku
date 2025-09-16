@@ -51,6 +51,28 @@ zh:
     admin:
       flash:
         access_denied: 您无权查看此页面
+      google_analytics_settings:
+        header: "Analytics 配置"
+        matomo_setup:
+          header: "需要 Matomo 设置："
+          body: "需要额外配置来完成 Matomo analytics 设置。请确保您的系统管理员已配置所需的 Matomo 环境变量（MATOMO_BASE_URL、MATOMO_SITE_ID、MATOMO_AUTH_TOKEN）。"
+        ga4_setup_required:
+          header: "需要 Google Analytics 4 设置："
+          body: "您的系统配置为使用 Google Analytics 4，但全局服务帐户凭据未配置。请联系您的系统管理员设置所需的环境变量（GOOGLE_ACCOUNT_JSON 或 GOOGLE_ACCOUNT_JSON_PATH）。"
+        ga4_configured:
+          header: "Google Analytics 4："
+          body: "您的系统配置为使用 Google Analytics 4。在下面配置您的 GA4 设置以跟踪您租户的 analytics。"
+        universal_analytics_warning:
+          header: "Google Universal Analytics："
+          body: "您的系统正在使用 Google Universal Analytics（旧版）。Google 已弃用 Universal Analytics。考虑升级到 Google Analytics 4。"
+        error_messages:
+          google_analytics_id: "必须是有效的 Google Analytics 4 测量 ID（例如，G-XXXXXXXXXX）"
+          google_analytics_property_id: "必须是数字属性 ID（例如，123456789）"
+  bulkrax:
+    admin:
+      sidebar:
+        importers: 导入器
+        exporters: 导出器
       groups:
         action:
           create: 创建新组

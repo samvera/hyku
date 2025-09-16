@@ -51,6 +51,28 @@ it:
     admin:
       flash:
         access_denied: Non sei autorizzato a visualizzare questa pagina
+      google_analytics_settings:
+        header: "Configurazione Analytics"
+        matomo_setup:
+          header: "Configurazione Matomo richiesta:"
+          body: "È necessaria una configurazione aggiuntiva per completare la configurazione di Matomo analytics. Assicurati che il tuo amministratore di sistema abbia configurato le variabili di ambiente Matomo richieste (MATOMO_BASE_URL, MATOMO_SITE_ID, MATOMO_AUTH_TOKEN)."
+        ga4_setup_required:
+          header: "Configurazione Google Analytics 4 richiesta:"
+          body: "Il tuo sistema è configurato per utilizzare Google Analytics 4, ma le credenziali dell'account di servizio globale non sono configurate. Contatta il tuo amministratore di sistema per configurare le variabili di ambiente richieste (GOOGLE_ACCOUNT_JSON o GOOGLE_ACCOUNT_JSON_PATH)."
+        ga4_configured:
+          header: "Google Analytics 4:"
+          body: "Il tuo sistema è configurato per utilizzare Google Analytics 4. Configura le tue impostazioni GA4 qui sotto per tracciare l'analytics per il tuo tenant."
+        universal_analytics_warning:
+          header: "Google Universal Analytics:"
+          body: "Il tuo sistema sta utilizzando Google Universal Analytics (legacy). Google ha deprecato Universal Analytics. Considera l'aggiornamento a Google Analytics 4."
+        error_messages:
+          google_analytics_id: "deve essere un ID di misurazione Google Analytics 4 valido (ad esempio, G-XXXXXXXXXX)"
+          google_analytics_property_id: "deve essere un ID di proprietà numerico (ad esempio, 123456789)"
+  bulkrax:
+    admin:
+      sidebar:
+        importers: Importatori
+        exporters: Esportatori
       groups:
         action:
           create: Crea nuovo gruppo
@@ -69,7 +91,7 @@ it:
         description:
           admin: Gli utenti di questo gruppo sono considerati amministratori per questo tenant e hanno accesso illimitato.
           depositors: Gli utenti di questo gruppo possono depositare Works in qualsiasi set di amministratori in questo tenant.
-          editors: 'Gli utenti di questo gruppo possono leggere e modificare tutte le raccolte e le opere in questo tenant. Possono anche: creare collezioni, depositare e approvare lavori, gestire embarghi e contratti di locazione e gestire importatori ed esportatori Bulkrax.'
+          editors: "Gli utenti di questo gruppo possono leggere e modificare tutte le raccolte e le opere in questo tenant. Possono anche: creare collezioni, depositare e approvare lavori, gestire embarghi e contratti di locazione e gestire importatori ed esportatori Bulkrax."
           registered: Contiene tutti gli utenti che si sono registrati in questo tenant.
         flash:
           create:
@@ -214,7 +236,7 @@ it:
             favicon:
               hint: Le favicon devono essere file png e devono essere quadrate. La dimensione massima utilizzata è 228px x 228px.
             link_color:
-              hint: 'Influisce sui collegamenti nelle pagine di casa e di lavoro, inclusi: breadcrumb, schede, titoli e termini di servizio.'
+              hint: "Influisce sui collegamenti nelle pagine di casa e di lavoro, inclusi: breadcrumb, schede, titoli e termini di servizio."
             logo_image:
               hint: Per utilizzare un'immagine come logo, è necessario utilizzare un'immagine (JPG, GIF o PNG) non più alta dell'intestazione e non più larga di 400 pixel.
             navbar_background_color:

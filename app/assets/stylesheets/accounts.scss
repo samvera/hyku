@@ -6,6 +6,51 @@
   .help-block {
     margin-bottom: 0;
     margin-top: 5px;
+    
+    a {
+      display: inline;
+      white-space: nowrap;
+    }
+  }
+
+  // Enhanced error styling for better visibility
+  .has-error {
+    .form-control {
+      border-color: #dc3545;
+      box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    }
+    
+    .control-label {
+      color: #dc3545;
+      font-weight: 600;
+    }
+    
+    .help-block {
+      color: #dc3545;
+      font-weight: 500;
+      background-color: #f8d7da;
+      border: 1px solid #f5c6cb;
+      border-radius: 0.25rem;
+      padding: 0.5rem 0.75rem;
+      margin-top: 0.5rem;
+      
+      &::before {
+        content: "\f071"; // Font Awesome exclamation triangle
+        font-family: "FontAwesome";
+        margin-right: 0.5rem;
+        font-size: 1.1em;
+      }
+      
+      a {
+        display: inline;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  .field_with_errors {
+    border-radius: $border-radius-base;
+    margin-top: 5px;
   }
 }
 
@@ -13,9 +58,4 @@
   .required-tag {
     display: none;
   }
-}
-
-.field_with_errors {
-  border-radius: $border-radius-base;
-  margin-top: 5px;
 }

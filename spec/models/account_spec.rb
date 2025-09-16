@@ -465,8 +465,8 @@ RSpec.describe Account, type: :model do
         expect(account.settings['gtm_id']).to eq 'GTM-123456'
       end
 
-      it "allows UA google_analytics_id" do
-        expect(account.settings['google_analytics_id']).to eq 'UA-123456-12'
+      it "allows GA4 google_analytics_id" do
+        expect(account.settings['google_analytics_id']).to eq 'G-1234567890'
       end
 
       it "allows G4A google_analytics_id" do
@@ -635,7 +635,7 @@ RSpec.describe Account, type: :model do
 
     context 'with analytics enabled' do
       before do
-        account.settings['analytics_reporting'] = true
+        account.settings['analytics'] = true
         allow(Hyrax.config).to receive(:analytics_reporting?).and_return(true)
       end
 

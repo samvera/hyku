@@ -1,0 +1,346 @@
+# carriers
+4-TrackCartridge:
+    type: carrier
+    label: audio cartridge
+    uri: http://id.loc.gov/vocabulary/carriers/sg
+8-TrackCartridge:
+    type: carrier
+    label: audio cartridge
+    uri: http://id.loc.gov/vocabulary/carriers/sg
+Acetate:
+    type: carrier
+    label: other audio carrier
+    uri: http://id.loc.gov/vocabulary/carriers/sz
+AllMedia:
+    type: carrier
+    label: other audio carrier
+    uri: http://id.loc.gov/vocabulary/carriers/sz
+Betacam:
+    type: carrier
+    label: videocassette
+    uri: http://id.loc.gov/vocabulary/carriers/vf
+BetacamSP:
+    type: carrier
+    label: videocassette
+    uri: http://id.loc.gov/vocabulary/carriers/vf
+Betamax:
+    type: carrier
+    label: videocassette
+    uri: http://id.loc.gov/vocabulary/carriers/vf
+Blu-ray:
+    type: carrier
+    label: videodisc
+    uri: http://id.loc.gov/vocabulary/carriers/vd
+Blu-ray-R:
+    type: carrier
+    label: videodisc
+    uri: http://id.loc.gov/vocabulary/carriers/vd
+Cassette:
+    type: carrier
+    label: audiocassette
+    uri: http://id.loc.gov/vocabulary/carriers/ss
+CD:
+    type: carrier
+    label: audio disc
+    uri: http://id.loc.gov/vocabulary/carriers/sd
+CDr:
+    type: carrier
+    label: audio disc
+    uri: http://id.loc.gov/vocabulary/carriers/sd
+CDV:
+    type: carrier
+    label: videodisc
+    uri: http://id.loc.gov/vocabulary/carriers/vd
+Cylinder:
+    type: carrier
+    label: audio cylinder
+    uri: http://id.loc.gov/vocabulary/carriers/se
+DAT:
+    type: carrier
+    label: audiocassette
+    uri: http://id.loc.gov/vocabulary/carriers/ss
+DCC:
+    type: carrier
+    label: computer tape cassette
+    uri: http://id.loc.gov/vocabulary/carriers/cf
+DVD:
+    type: carrier
+    label: videodisc
+    uri: http://id.loc.gov/vocabulary/carriers/vd
+DVDr:
+    type: carrier
+    label: videodisc
+    uri: http://id.loc.gov/vocabulary/carriers/vd
+EdisonDisc:
+    type: carrier
+    label: audio disc
+    uri: http://id.loc.gov/vocabulary/carriers/sd
+Elcaset:
+    type: carrier
+    label: audiocassette
+    uri: http://id.loc.gov/vocabulary/carriers/ss
+File:
+    type: carrier
+    label: other computer carrier
+    uri: http://id.loc.gov/vocabulary/carriers/cz
+Flexi-disc:
+    type: carrier
+    label: audio disc
+    uri: http://id.loc.gov/vocabulary/carriers/sd
+FloppyDisk:
+    type: carrier
+    label: computer disc
+    uri: http://id.loc.gov/vocabulary/carriers/cd
+HDDVD:
+    type: carrier
+    label: videodisc
+    uri: http://id.loc.gov/vocabulary/carriers/vd
+HDDVD-R:
+    type: carrier
+    label: videodisc
+    uri: http://id.loc.gov/vocabulary/carriers/vd
+Hybrid:
+    type: carrier
+    label: other audio carrier
+    uri: http://id.loc.gov/vocabulary/carriers/sz
+Laserdisc:
+    type: carrier
+    label: videodisc
+    uri: http://id.loc.gov/vocabulary/carriers/vd
+LatheCut:
+    type: carrier
+    label: audio disc
+    uri: http://id.loc.gov/vocabulary/carriers/sd
+MemoryStick:
+    type: carrier
+    label: other computer carrier
+    uri: http://id.loc.gov/vocabulary/carriers/cz
+Microcassette:
+    type: carrier
+    label: audiocassette
+    uri: http://id.loc.gov/vocabulary/carriers/ss
+Minidisc:
+    type: carrier
+    label: audio disc
+    uri: http://id.loc.gov/vocabulary/carriers/sd
+MiniDV:
+    type: carrier
+    label: videocassette
+    uri: http://id.loc.gov/vocabulary/carriers/vf
+MVD:
+    type: carrier
+    label: audio disc
+    uri: http://id.loc.gov/vocabulary/carriers/sd
+PathéDisc:
+    type: carrier
+    label: audio disc
+    uri: http://id.loc.gov/vocabulary/carriers/sd
+PlayTape:
+    type: carrier
+    label: audio cartridge
+    uri: http://id.loc.gov/vocabulary/carriers/sg
+RCATapeCartridge:
+    type: carrier
+    label: audio cartridge
+    uri: http://id.loc.gov/vocabulary/carriers/sg
+Reel-To-Reel:
+    type: carrier
+    label: audiotape reel
+    uri: http://id.loc.gov/vocabulary/carriers/st
+SACD:
+    type: carrier
+    label: audiodisc
+    uri: http://id.loc.gov/vocabulary/carriers/sd
+SelectaVision:
+    type: carrier
+    label: videocassette
+    uri: http://id.loc.gov/vocabulary/carriers/vf
+Shellac:
+    type: carrier
+    label: audio disc
+    uri: http://id.loc.gov/vocabulary/carriers/sd
+Tefifon:
+    type: carrier
+    label: audio cartridge
+    uri: http://id.loc.gov/vocabulary/carriers/sg
+U-matic:
+    type: carrier
+    label: videocassette
+    uri: http://id.loc.gov/vocabulary/carriers/vf
+UMD:
+    type: carrier
+    label: computer disc
+    uri: http://id.loc.gov/vocabulary/carriers/cd
+VHD:
+    type: carrier
+    label: computer disc
+    uri: http://id.loc.gov/vocabulary/carriers/cd
+VHS:
+    type: carrier
+    label: videocassette
+    uri: http://id.loc.gov/vocabulary/carriers/vf
+Video2000:
+    type: carrier
+    label: videocassette
+    uri: http://id.loc.gov/vocabulary/carriers/vf
+Video8:
+    type: carrier
+    label: videocassette
+    uri: http://id.loc.gov/vocabulary/carriers/vf
+Vinyl:
+    type: carrier
+    label: audio disc
+    uri: http://id.loc.gov/vocabulary/carriers/sd
+WireRecording:
+    type: carrier
+    label: other audio carrier
+    uri: http://id.loc.gov/vocabulary/carriers/sz
+# playback channels
+Stereo:
+    type: playbackChannel
+    label: stereo
+    uri: http://id.loc.gov/vocabulary/mplayback/ste
+Mono:
+    type: playbackChannel
+    label: mono
+    uri: http://id.loc.gov/vocabulary/mplayback/mon
+Quadraphonic:
+    type: playbackChannel
+    label: surround
+    uri: http://id.loc.gov/vocabulary/mplayback/mul
+4-TrackStereo:
+    type: playbackChannel
+    label: stereo
+    uri: http://id.loc.gov/vocabulary/mplayback/ste
+2-TrackStereo:
+    type: playbackChannel
+    label: stereo
+    uri: http://id.loc.gov/vocabulary/mplayback/ste
+2-TrackMono:
+    type: playbackChannel
+    label: mono
+    uri: http://id.loc.gov/vocabulary/mplayback/mon
+4-TrackMono:
+    type: playbackChannel
+    label: mono
+    uri: http://id.loc.gov/vocabulary/mplayback/mon
+Dolby5.1:
+    type: playbackChannel
+    label: surround
+    uri: http://id.loc.gov/vocabulary/mplayback/mul
+# dimensions
+10":
+    type: dimension
+    label: 10 inches
+11":
+    type: dimension
+    label: 11 inches
+12":
+    type: dimension
+    label: 12 inches
+16":
+    type: dimension
+    label: 16 inches
+2":
+    type: dimension
+    label: 2 inches
+21cm:
+    type: dimension
+    label: 21cm
+25cm:
+    type: dimension
+    label: 25cm
+27cm:
+    type: dimension
+    label: 27cm
+29cm:
+    type: dimension
+    label: 29cm
+3":
+    type: dimension
+    label: 3 inches
+3.5":
+    type: dimension
+    label: 3.5 inches
+35cm:
+    type: dimension
+    label: 35cm
+3½":
+    type: dimension
+    label: 3 1/2 inches
+4":
+    type: dimension
+    label: 4 inches
+5":
+    type: dimension
+    label: 5 inches
+5.25":
+    type: dimension
+    label: 5.25 inches
+5½":
+    type: dimension
+    label: 5 1/2 inches
+6":
+    type: dimension
+    label: 6 inches
+6½":
+    type: dimension
+    label: 6 1/2 inches
+7":
+    type: dimension
+    label: 7 inches
+8":
+    type: dimension
+    label: 8 inches
+9":
+    type: dimension
+    label: 9 inches
+⅛":
+    type: dimension
+    label: 1/8 inches
+¼":
+    type: dimension
+    label: 1/4 inches
+½":
+    type: dimension
+    label: 1/2 inches
+# playing speeds
+1⅞ips:
+    type: playingSpeed
+    label: 1 7/8 ips
+15ips:
+    type: playingSpeed
+    label: 15 ips
+15/16ips:
+    type: playingSpeed
+    label: 15/16 ips
+16⅔RPM:
+    type: playingSpeed
+    label: 16 2/3 RPM
+3¾ips:
+    type: playingSpeed
+    label: 3 3/4 ips
+30ips:
+    type: playingSpeed
+    label: 30 ips
+33⅓RPM:
+    type: playingSpeed
+    label: 33 1/3 RPM
+45RPM:
+    type: playingSpeed
+    label: 45 RPM
+7½ips:
+    type: playingSpeed
+    label: 7 1/2 ips
+78RPM:
+    type: playingSpeed
+    label: 78 RPM
+8⅓RPM:
+    type: playingSpeed
+    label: 8 1/3 RPM
+80RPM:
+    type: playingSpeed
+    label: 80 RPM
+90RPM:
+    type: playingSpeed
+    label: 90 RPM

@@ -27,5 +27,10 @@
     });
   </script>
 <% else %>
-  <%= f.input key, as: value[:type] %>
+  <% if key.to_s == 'google_analytics_id' || key.to_s == 'google_analytics_property_id' %>
+    <% error_class = @account.errors[key].any? ? 'has-error' : '' %>
+    <%= f.input key, as: value[:type], wrapper_html: { class: "#{local_assigns.fetch(:wrapper_class, nil)} #{error_class}" }, hint_html: { class: local_assigns.fetch(:hint_class, nil) }, error: false %>
+  <% else %>
+    <%= f.input key, as: value[:type], wrapper_html: { class: local_assigns.fetch(:wrapper_class, nil) }, hint_html: { class: local_assigns.fetch(:hint_class, nil) } %>
+  <% end %>
 <% end %>

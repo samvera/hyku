@@ -61,3 +61,12 @@ docker-compose.override.yml
 .DS_Store
 /bundler.d/
 .tool-versions
+
+# MeSH data files (large, not source code)
+*.bin
+d*.bin
+c*.bin
+q*.bin
+
+# Google service account credentials
+config/google_service_account.json

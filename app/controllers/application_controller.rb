@@ -25,6 +25,7 @@ class ApplicationController < ActionController::Base
   before_action :require_active_account!, if: :multitenant?
   before_action :set_account_specific_connections!
   before_action :elevate_single_tenant!, if: :singletenant?
+  before_action :set_locale
 
   after_action :clear_session_cookie
 
@@ -175,6 +176,14 @@ class ApplicationController < ActionController::Base
     payload[:request_id] = request.uuid
     payload[:user_id] = current_user.id if current_user
     payload[:account_id] = current_account.cname if current_account
+  end
+
+  def set_locale
+    I18n.locale = params[:locale] || I18n.default_locale
+  end
+
+  def default_url_options
+    { locale: I18n.locale }
   end
 end
 # rubocop:enable Metrics/ClassLength

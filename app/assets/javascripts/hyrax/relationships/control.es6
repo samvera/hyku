@@ -26,7 +26,7 @@ export default class RelationshipsControl {
     this.members = this.element.data('members')
     this.relationship = relationship
     this.registry = new Registry(this.element.find('tbody'), paramKey, property, templateId, relationship)
-    this.input = this.element.find(`[data-autocomplete]`)
+    this.input = this.element.find(`[data-autocomplete], .collection-select2`)
     this.warning = this.element.find(".message.has-warning")
     this.addButton = this.element.find("[data-behavior='add-relationship']")
     this.errors = null

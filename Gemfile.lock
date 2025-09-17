@@ -20,10 +20,10 @@ GIT
 
 GIT
   remote: https://github.com/notch8/willow_sword.git
-  revision: d64d5958a7ad9945b79ad8cee9c6002217ff424c
-  tag: v0.3.0
+  revision: bc5d12510cbe39833ade4c71e867e387cc103010
+  tag: v0.7.0
   specs:
-    willow_sword (0.3.0)
+    willow_sword (0.7.0)
       bagit (~> 0.4)
       rails (~> 6.1)
       rubyzip (>= 1.0.0)
@@ -141,7 +141,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: bae59673f355479b9bf69a044096d0bd83c3a059
+  revision: 15617c8a9f1b4d4e2c1536851ac61ea525ade582
   branch: 5.0-flexible
   specs:
     hyrax (5.0.5)
@@ -399,7 +399,7 @@ GEM
       signet (~> 0.8)
       typhoeus
     builder (3.3.0)
-    bulkrax (9.2.0)
+    bulkrax (9.2.1)
       bagit (~> 0.6.0)
       coderay
       denormalize_fields
@@ -1533,7 +1533,7 @@ DEPENDENCIES
   bolognese (>= 1.9.10)
   bootstrap (~> 4.6)
   bootstrap-datepicker-rails
-  bulkrax (>= 9.2)
+  bulkrax (~> 9.2)
   byebug
   capybara
   capybara-screenshot (~> 1.0)

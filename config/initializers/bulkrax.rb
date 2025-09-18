@@ -8,6 +8,10 @@ if Hyku.bulkrax_enabled?
     #   { name: 'MODS - My Local MODS parser', class_name: 'Bulkrax::ModsXmlParser', partial: 'mods_fields' },
     # ]
 
+    config.fill_in_blank_source_identifiers = lambda do |parser, index|
+      "#{Site.account.name}-#{parser.importerexporter.id}-#{index}"
+    end
+
     # Field to use during import to identify if the Work or Collection already exists.
     # Default is 'source'.
     # config.system_identifier_field = 'source'

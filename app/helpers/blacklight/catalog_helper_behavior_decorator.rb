@@ -32,6 +32,13 @@ module Blacklight
       # rubocop:enable Style/GuardClause
     end
     # rubocop:enable Metrics/MethodLength
+
+    def thumbnail_url(document)
+      cname = document['account_cname_tesim']&.first
+      return super if cname.nil?
+
+      request.protocol + cname + super
+    end
   end
 end
 

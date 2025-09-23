@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_07_01_163138) do
+ActiveRecord::Schema.define(version: 2025_09_23_223123) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -951,7 +951,7 @@ ActiveRecord::Schema.define(version: 2025_07_01_163138) do
     t.integer "invitation_limit"
     t.integer "invited_by_id"
     t.string "invited_by_type"
-    t.string "preferred_locale"
+    t.string "preferred_locale", default: "en"
     t.string "provider"
     t.string "uid"
     t.string "batch_email_frequency", default: "never"

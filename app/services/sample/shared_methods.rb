@@ -124,7 +124,8 @@ module Sample
       ActiveJob::Base.queue_adapter = @original_queue_adapter
     end
 
-    def print_completion_summary(collections, images, generic_works, total)
+    # rubocop:disable Metrics/AbcSize
+    def print_completion_summary(collections, images, generic_works, oers, total)
       object_type = self.class.name.include?('Valkyrie') ? 'VALKYRIE' : 'ACTIVEFEDORA'
       Rails.logger.debug "\n" + "=" * 60
       Rails.logger.debug "SAMPLE #{object_type} DATA CREATION COMPLETE"
@@ -133,8 +134,10 @@ module Sample
       Rails.logger.debug "Created #{collections.length} Collections"
       Rails.logger.debug "Created #{images.length} Images"
       Rails.logger.debug "Created #{generic_works.length} Generic Works"
+      Rails.logger.debug "Created #{oers.length} OERs"
       Rails.logger.debug "Total: #{total} works created"
       Rails.logger.debug "=" * 60
+      # rubocop:enable Metrics/AbcSize
     end
 
     def print_cleanup_summary(counts, total) # rubocop:disable Metrics/AbcSize

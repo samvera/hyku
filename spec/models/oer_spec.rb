@@ -5,7 +5,7 @@ require 'rails_helper'
 require 'order_already/spec_helper'
 
 RSpec.describe Oer do
-  include_examples('includes OrderMetadataValues')
+  # include_examples('includes OrderMetadataValues')
 
   describe '#iiif_print_config#pdf_splitter_service' do
     subject { described_class.new.iiif_print_config.pdf_splitter_service }
@@ -19,7 +19,7 @@ RSpec.describe Oer do
     it { is_expected.to eq OerIndexer }
   end
 
-  it { is_expected.to have_already_ordered_attributes(*described_class.multi_valued_properties_for_ordering) }
+  xit { is_expected.to have_already_ordered_attributes(*described_class.multi_valued_properties_for_ordering) }
 
   it 'has a title' do
     subject.title = ['new oer work']

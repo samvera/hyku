@@ -4,7 +4,7 @@ module Sample
   class ActiveFedoraService # rubocop:disable Metrics/ClassLength
     include SharedMethods
 
-    def create_sample_data
+    def create_sample_data # rubocop:disable Metrics/AbcSize
       validate_and_switch_tenant
       load_sample_data
       setup_dependencies
@@ -19,12 +19,12 @@ module Sample
         collections = create_collections(quantity)
         images = create_images(quantity, collections)
         generic_works = create_generic_works(quantity, collections)
+        oers = create_oers(quantity, collections)
+        total_works = collections.length + images.length + generic_works.length + oers.length
 
-        total_works = collections.length + images.length + generic_works.length
+        index_all_works(collections + images + generic_works + oers)
 
-        index_all_works(collections + images + generic_works)
-
-        print_completion_summary(collections, images, generic_works, total_works)
+        print_completion_summary(collections, images, generic_works, oers, total_works)
       ensure
         Hydra::Derivatives.config.output_file_service = Hyrax::ValkyriePersistDerivatives
         restore_job_configuration
@@ -145,6 +145,42 @@ module Sample
 
       Rails.logger.debug "\nCreated #{collections.length} collections."
       collections
+    end
+
+    def create_oers(count, collections) # rubocop:disable Metrics/AbcSize
+      Rails.logger.debug "Creating OERs..."
+      oers = []
+
+      (1..count).each do |index|
+        oer = begin
+          work = Oer.new(
+          title: ["Oer Sample #{index}: #{sample_data[:titles][index % sample_data[:titles].length]}"],
+          description: [sample_data[:descriptions][index % sample_data[:descriptions].length]],
+          creator: sample_data[:creators][index % sample_data[:creators].length],
+          subject: sample_data[:subjects][index % sample_data[:subjects].length],
+          bulkrax_identifier: "SampleOer#{index}",
+          visibility: Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC,
+          admin_set: admin_set,
+          resource_type: ['Other'],
+          audience: ['Higher Education'],
+          education_level: ['College'],
+          learning_resource_type: ['Textbook'],
+          discipline: ['History']
+        )
+          work.apply_depositor_metadata(user.user_key)
+          work
+        end
+        add_to_random_collection(oer, collections)
+        oer.save!
+
+        file_path = select_file_for_work(index)
+        attach_file_to_work(work, file_path)
+        oers << oer
+        Rails.logger.debug "."
+      end
+
+      Rails.logger.debug "\nCreated #{oers.length} OERs with file attachments."
+      oers
     end
 
     def create_images(count, collections)

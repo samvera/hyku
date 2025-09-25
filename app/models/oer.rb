@@ -115,7 +115,8 @@ class Oer < ActiveFedora::Base
   # This line must be kept below all others that set up properties,
   # including `include ::Hyrax::BasicMetadata`. All properties must
   # be declared before their values can be ordered.
-  include OrderMetadataValues
+  # This is broken, so commenting this out so we can create OERs in sample_seeds for testing
+  # include OrderMetadataValues
 
   # These needed to be added again in order to enable destroy for based_near, even though they are in Hyrax::BasicMetadata.
   # the OrderAlready OrderMetadataValues above somehow prevents them from running

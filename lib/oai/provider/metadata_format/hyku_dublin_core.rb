@@ -5,10 +5,14 @@ module OAI
     module MetadataFormat
       class HykuDublinCore < OAI::Provider::Metadata::Format
         class_attribute :fields, default: %i[
-          abstract access_right alternative_title based_near bibliographic_citation
-          contributor creator date_created date_modified date_uploaded depositor
-          description identifier keyword language license owner publisher related_url
-          resource_type rights_notes rights_statement source subject title
+          identifier oai_id title abstract access_right accessibility_feature accessibility_hazard
+          accessibility_summary additional_information advisor alternate_version_id alternative_title
+          audience based_near bibliographic_citation committee_member contributor creator date_created
+          degree_discipline degree_grantor degree_level degree_name department description discipline
+          education_level extent format has_model keyword language learning_resource_type license
+          newer_version_id oer_size previous_version_id publisher related_item_id related_url
+          resource_type rights_holder rights_notes rights_statement source subject table_of_contents
+          contributing_library library_catalog_identifier chronology_note
         ], instance_accessor: false
 
         # rubocop:disable Lint/MissingSuper

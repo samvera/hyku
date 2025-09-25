@@ -79,6 +79,7 @@ gem 'parser', '>= 3.1.0.0'
 gem 'pg'
 gem 'postrank-uri', '>= 1.0.24'
 gem 'pry-byebug', group: %i[development test]
+gem 'pry-rails'
 gem 'puma', '~> 5.6' # Use Puma as the app server
 gem 'qa', git: 'https://github.com/samvera/questioning_authority.git', branch: 'main'
 gem 'rack-attack'
@@ -89,7 +90,7 @@ gem 'redcarpet' # for Markdown constant
 gem 'redis-actionpack'
 gem 'redis-namespace', '~> 1.10' # Hyrax v5 relies on 1.5; but we'd like to have the #clear method so we need 1.10 or greater.
 gem 'redlock', '>= 0.1.2', '< 2.0' # lock redlock per https://github.com/samvera/hyrax/pull/5961
-gem 'riiif', '~> 2.0'
+gem 'riiif', '~> 2.1'
 gem 'rolify'
 gem 'ros-apartment', require: 'apartment' # Rails 7.2 compatible apartment fork - drop-in replacement
 gem 'rsolr', '~> 2.0'

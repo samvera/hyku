@@ -1111,13 +1111,15 @@ GEM
     pry-byebug (3.11.0)
       byebug (~> 12.0)
       pry (>= 0.13, < 0.16)
+    pry-rails (0.3.11)
+      pry (>= 0.13.0)
     psych (3.3.4)
     public_suffix (4.0.7)
     puma (5.6.9)
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.8.1)
-    rack (2.2.17)
+    rack (2.2.18)
     rack-attack (6.7.0)
       rack (>= 1.0, < 4)
     rack-linkeddata (3.2.1)
@@ -1712,6 +1714,7 @@ DEPENDENCIES
   pg
   postrank-uri (>= 1.0.24)
   pry-byebug
+  pry-rails
   puma (~> 5.6)
   qa!
   rack-attack
@@ -1723,7 +1726,7 @@ DEPENDENCIES
   redis-actionpack
   redis-namespace (~> 1.10)
   redlock (>= 0.1.2, < 2.0)
-  riiif (~> 2.0)
+  riiif (~> 2.1)
   rolify
   ros-apartment
   rsolr (~> 2.0)

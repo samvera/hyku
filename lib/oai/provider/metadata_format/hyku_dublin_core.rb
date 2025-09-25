@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module OAI
+module Oai
   module Provider
     module MetadataFormat
       class HykuDublinCore < OAI::Provider::Metadata::Format
@@ -103,4 +103,4 @@ module OAI
   end
 end
 
-OAI::Provider::Base.register_format(OAI::Provider::MetadataFormat::HykuDublinCore.instance)
+OAI::Provider::Base.register_format(Oai::Provider::MetadataFormat::HykuDublinCore.instance)

@@ -27,6 +27,10 @@ module Hyrax
       available_works = Site.instance.available_works
       return available_works unless Hyrax.config.flexible?
 
+      # Search-only tenants don't have their own flexible metadata profiles
+      # They should use the basic available_works configuration
+      return available_works if Site.account&.search_only?
+
       profile = Hyrax::FlexibleSchema.current_version
       return available_works unless profile
 

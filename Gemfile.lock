@@ -348,9 +348,10 @@ GEM
       blacklight (~> 7.0)
       oai (~> 1.2)
       rexml
-    blacklight_range_limit (9.1.0)
+    blacklight_range_limit (8.5.0)
       blacklight (>= 7.25.2, < 9)
-      view_component (>= 2.54, < 5)
+      deprecation
+      view_component (>= 2.54, < 4)
     bolognese (2.3.6)
       activesupport (>= 4.2.5)
       benchmark_methods (~> 0.7)
@@ -1659,7 +1660,7 @@ DEPENDENCIES
   blacklight (~> 7.38)
   blacklight_advanced_search
   blacklight_oai_provider (~> 7.0)
-  blacklight_range_limit
+  blacklight_range_limit (~> 8.5)
   bolognese (>= 1.9.10)
   bootstrap (~> 4.6)
   bootstrap-datepicker-rails

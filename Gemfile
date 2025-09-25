@@ -25,7 +25,7 @@ gem 'bixby', group: %i[development test]
 gem 'blacklight', '~> 7.38' # Updated for Rails 7.2 compatibility
 gem 'blacklight_advanced_search'
 gem 'blacklight_oai_provider', '~> 7.0'
-gem 'blacklight_range_limit'
+gem 'blacklight_range_limit', '~> 8.5'
 gem 'bolognese', '>= 1.9.10'
 gem 'bootstrap', '~> 4.6'
 gem 'bootstrap-datepicker-rails'

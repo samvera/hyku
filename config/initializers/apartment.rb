@@ -17,6 +17,10 @@ def st(schema_name = nil)
   switch!(schema_name)
 end
 
+def tenant_info_msg
+  puts "Available Tenants: #{tenant_list}\n"
+  puts "Use `st 'tenant'` to switch tenants & `tenant_list` to see list\n"
+end
 #
 # Apartment Configuration
 #

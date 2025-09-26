@@ -10,7 +10,7 @@ Layout/IndentationWidth:
 
 AllCops:
   NewCops: disable
-  TargetRubyVersion: 3.2.2
+  TargetRubyVersion: 3.3
   DisplayCopNames: true
   SuggestExtensions: false
   Exclude:

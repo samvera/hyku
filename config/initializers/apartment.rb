@@ -1,11 +1,34 @@
 # frozen_string_literal: true
-if ENV['DB_ADAPTER'] != 'nulldb' && db_created?
+
+ENV['APARTMENT_DISABLE_INIT'] = 'true' if ENV['DB_ADAPTER'] == 'nulldb'
+
+unless ActiveModel::Type::Boolean.new.cast(ENV.fetch('APARTMENT_DISABLE_INIT', 'false'))
   # You can have Apartment route to the appropriate Tenant by adding some Rack middleware.
   # Apartment can support many different "Elevators" that can take care of this routing to your data.
   # Require whichever Elevator you're using below or none if you have a custom one.
-  #
+  require Rails.root.join('lib', 'apartment', 'custom_console')
   require 'apartment/elevators/generic'
+  # Override the console helpers
+  def tenant_list
+    tenant_list = Account.pluck(:name)
+    tenant_list.uniq
+  end
 
+  def st(schema_name = nil)
+    switch!(schema_name)
+  end
+
+  def reset!
+    Account.new.reset!
+    Apartment::Tenant.switch!(nil)
+  end
+
+  def tenant_info_msg
+    # rubocop:disable Rails/Output
+    puts "Available Tenants: #{tenant_list}\n"
+    puts "Use `switch! 'tenant'` to switch tenants & `tenant_list` to see list\n"
+    # rubocop:enable Rails/Output
+  end
   #
   # Apartment Configuration
   #
@@ -55,6 +78,6 @@ if ENV['DB_ADAPTER'] != 'nulldb' && db_created?
       account&.switch!
     }
   end
-
+  require Rails.root.join('lib', 'middleware', 'account_elevator')
   Rails.application.config.middleware.insert_before Warden::Manager, AccountElevator
 end

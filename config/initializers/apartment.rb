@@ -18,9 +18,16 @@ unless ActiveModel::Type::Boolean.new.cast(ENV.fetch('APARTMENT_DISABLE_INIT', '
     switch!(schema_name)
   end
 
+  def reset!
+    Account.new.reset!
+    Apartment::Tenant.switch!(nil)
+  end
+
   def tenant_info_msg
+    # rubocop:disable Rails/Output
     puts "Available Tenants: #{tenant_list}\n"
-    puts "Use `st 'tenant'` to switch tenants & `tenant_list` to see list\n"
+    puts "Use `switch! 'tenant'` to switch tenants & `tenant_list` to see list\n"
+    # rubocop:enable Rails/Output
   end
   #
   # Apartment Configuration

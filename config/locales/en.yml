@@ -291,6 +291,7 @@ en:
         activity_summary: Activity Summary
         labels: Labels
         manage_groups: Manage Groups
+        metadata_profiles: Metadata Profiles
         repository_activity: Repository Activity
         system_status: System Status
         roles_service_jobs: Data Repair

@@ -1,0 +1,18 @@
+<%# OVERRIDE: Custom menu partials to control metadata profiles visibility for search-only tenants %>
+<%# This template overrides the default Hyrax menu_partials to prevent automatic inclusion of metadata profiles %>
+
+<% if section == :configuration %>
+  <%# Only add metadata profiles if NOT a search-only tenant %>
+  <% unless Site.account&.search_only? %>
+    <%# Check if Hyrax has flexible metadata enabled and user has permissions %>
+    <% if defined?(Hyrax.config.flexible?) && Hyrax.config.flexible? && can?(:read, :admin_dashboard) %>
+      <%# Add metadata profiles link only for non-search-only tenants %>
+      <%= menu.nav_link(main_app.metadata_profiles_path, class: "nav-link", title: t('hyrax.admin.sidebar.metadata_profiles')) do %>
+        <span class="fa fa-cogs" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.metadata_profiles') %></span>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<%# Add any other menu partials that Hyrax might include here %>
+<%# This ensures we maintain other functionality while controlling metadata profiles %>

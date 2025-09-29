@@ -162,9 +162,16 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
 
   if ENV.fetch('HYRAX_FLEXIBLE', false)
     # Metadata profiles routes
-    resources :metadata_profiles, except: [:update, :show, :destroy] do
-      collection { post :import }
-      get 'export'
+    # Add constraint to prevent search-only tenants from accessing metadata profiles
+    constraints(lambda { |req| 
+      return true unless defined?(Account) && Account.table_exists?
+      current_account = Account.from_request(req)
+      current_account.blank? || !current_account.search_only?
+    }) do    
+      resources :metadata_profiles, except: [:update, :show, :destroy] do
+        collection { post :import }
+        get 'export'
+      end
     end
   end
 end

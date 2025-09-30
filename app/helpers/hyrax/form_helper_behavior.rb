@@ -23,17 +23,36 @@ module Hyrax
     private
 
     def controlled_vocabulary_source_for(property_name)
-      schema = Hyrax::FlexibleSchema.order("created_at asc").last
-      return unless schema&.profile
+      if Hyrax.config.flexible?
+        schema = Hyrax::FlexibleSchema.order("created_at asc").last
+        return unless schema&.profile
 
-      property_config = schema.profile.dig('properties', property_name.to_s)
-      return unless property_config
+        property_config = schema.profile.dig('properties', property_name.to_s)
+        return unless property_config
 
-      sources = property_config.dig('controlled_values', 'sources')
-      return unless sources&.any? { |s| s != 'null' }
+        sources = property_config.dig('controlled_values', 'sources')
+        return unless sources&.any? { |s| s != 'null' }
 
-      # Get the first non-null source and trim whitespace
-      sources.find { |s| s != 'null' }&.strip
+        # Get the first non-null source and trim whitespace
+        sources.find { |s| s != 'null' }&.strip
+      else
+        controlled_vocabulary_mapping_for(property_name)
+      end
+    end
+
+    def controlled_vocabulary_mapping_for(property_name)
+      # Maps property names in when flexible=false to their corresponding controlled vocabulary service keys
+      # Hyku: config/initializers/hyrax_controlled_vocabularies.rb
+      controlled_vocab_mappings = {
+        'audience' => 'audiences',
+        'discipline' => 'disciplines',
+        'education_level' => 'education_levels',
+        'learning_resource_type' => 'learning_resource_types',
+        'license' => 'licenses',
+        'resource_type' => 'resource_types',
+        'rights_statement' => 'rights_statements'
+      }
+      controlled_vocab_mappings[property_name.to_s]
     end
 
     def local_vocabulary_options_for(source)

@@ -3,11 +3,11 @@
 module Hyrax
   module FormHelperBehavior
     def controlled_vocabulary_service_for(source_name)
-      Hyrax::ControlledVocabularies::SERVICES[source_name]&.safe_constantize
+      Hyrax::ControlledVocabularies.services[source_name]&.safe_constantize
     end
 
     def remote_authority_config_for(source_name)
-      Hyrax::ControlledVocabularies::REMOTE_AUTHORITIES[source_name]
+      Hyrax::ControlledVocabularies.remote_authorities[source_name]
     end
 
     def controlled_vocabulary_options_for(property_name, _record_class)
@@ -43,16 +43,7 @@ module Hyrax
     def controlled_vocabulary_mapping_for(property_name)
       # Maps property names in when flexible=false to their corresponding controlled vocabulary service keys
       # Hyku: config/initializers/hyrax_controlled_vocabularies.rb
-      controlled_vocab_mappings = {
-        'audience' => 'audiences',
-        'discipline' => 'disciplines',
-        'education_level' => 'education_levels',
-        'learning_resource_type' => 'learning_resource_types',
-        'license' => 'licenses',
-        'resource_type' => 'resource_types',
-        'rights_statement' => 'rights_statements'
-      }
-      controlled_vocab_mappings[property_name.to_s]
+      Hyrax::ControlledVocabularies.controlled_vocab_mappings[property_name.to_s]
     end
 
     def local_vocabulary_options_for(source)

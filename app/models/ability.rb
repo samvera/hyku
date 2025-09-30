@@ -49,20 +49,6 @@ class Ability
   # Define any customized permissions here.
   def custom_permissions
     can [:create], Account
-
-    # Admin users can manage metadata profiles on regular tenants
-    if admin?
-      # Only restrict metadata profiles for search-only tenants
-      if Site.account&.search_only?
-        cannot :manage, :metadata_profiles
-        cannot :create, :metadata_profiles
-        cannot :read, :metadata_profiles
-        cannot :update, :metadata_profiles
-      else
-        # Allow metadata profiles management for regular tenants
-        can :manage, :metadata_profiles
-      end
-    end
   end
 
   def admin_permissions

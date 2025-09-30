@@ -8,8 +8,8 @@ RSpec.describe Hyrax::FormHelperBehavior, type: :helper do
       end
 
       it 'returns controlled vocabulary service keys' do
-        expect(helper.send(:controlled_vocabulary_source_for, :audience)).to eq('audiences')
-        expect(helper.send(:controlled_vocabulary_source_for, :discipline)).to eq('disciplines')
+        expect(helper.send(:controlled_vocabulary_source_for, :audience)).to eq('audience')
+        expect(helper.send(:controlled_vocabulary_source_for, :discipline)).to eq('discipline')
         expect(helper.send(:controlled_vocabulary_source_for, :education_level)).to eq('education_levels')
         expect(helper.send(:controlled_vocabulary_source_for, 'learning_resource_type')).to eq('learning_resource_types')
         expect(helper.send(:controlled_vocabulary_source_for, :license)).to eq('licenses')

@@ -39,10 +39,12 @@
     </label>
   </div>
   <%# Hide from catalog search option %>
-  <div class="form-check mt-3">
-    <label class="form-check-label <%= disabled %>">
-      <%= f.check_box :hide_from_catalog_search, { disabled: disabled } %>
-      <%= t('.hide_from_catalog_search_html') %>
-    </label>
-  </div>
+  <% if f.object.respond_to?(:hide_from_catalog_search) %>
+    <div class="form-check mt-3">
+      <label class="form-check-label <%= disabled %>">
+        <%= f.check_box :hide_from_catalog_search, { disabled: disabled } %>
+        <%= t('.hide_from_catalog_search_html') %>
+      </label>
+    </div>
+  <% end %>
 </div>

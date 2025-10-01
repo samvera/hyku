@@ -53,14 +53,21 @@ module Hyrax
       def validate_existing_records!
         classes_to_check = potential_existing_classes - @profile['classes'].keys
         classes_with_records = []
+        checked_models = Set.new
 
         classes_to_check.each do |class_name|
           model_class = resolve_model_class(class_name)
           next unless model_class
 
+          model_identifier = model_class.to_s
+          next if checked_models.include?(model_identifier)
+
           begin
             count = Hyrax.query_service.count_all_of_model(model: model_class)
-            classes_with_records << class_name if count.positive?
+            if count.positive?
+              classes_with_records << model_identifier
+              checked_models.add(model_identifier)
+            end
           rescue StandardError => e
             Rails.logger.error "Error checking records for #{class_name}: #{e.message}"
           end
@@ -79,7 +86,8 @@ module Hyrax
         classes = @required_classes.dup
 
         Hyrax.config.registered_curation_concern_types.each do |concern_type|
-          classes << "#{concern_type.capitalize}Resource"
+          classes << "#{concern_type}Resource"
+          classes << concern_type
         end
 
         classes.uniq

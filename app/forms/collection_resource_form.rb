@@ -9,5 +9,7 @@ class CollectionResourceForm < Hyrax::Forms::PcdmCollectionForm
   include CollectionAccessFiltering
 
   # Add hide_from_catalog_search checkbox as a Reform property that will set the property as true or false
-  property :hide_from_catalog_search, type: Dry::Types['params.bool'], default: false
+  unless Hyrax.config.flexible?
+    property :hide_from_catalog_search, type: Dry::Types['params.bool'], default: false if CollectionResource.new.respond_to?(:hide_from_catalog_search)
+  end
 end

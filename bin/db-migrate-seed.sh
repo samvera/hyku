@@ -59,7 +59,8 @@ begin
   migrations_fs = bundled_migrations
 
   if (migrations_fs - migrations_run).size > 0
-    run_command('bundle exec rails db:create')
+    run_command('APARTMENT_DISABLE_INIT=true bundle exec rails db:create')
+    run_command('APARTMENT_DISABLE_INIT=true bundle exec rails db:migrate')
     run_command('bundle exec rails db:migrate')
     run_command('bundle exec rails db:seed')
   end

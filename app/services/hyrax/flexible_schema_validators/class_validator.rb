@@ -68,43 +68,30 @@ module Hyrax
       end
 
       # Validates a single class, checking for registration as a curation concern
-      # and for Valkyrie naming mismatches.
+      # and for Valkyrie naming mismatches using the Valkyrie resolver.
       #
       # @param klass [String] the class name to validate
       # @param invalid_classes [Array<String>] an array to append invalid class errors to
       # @param mismatched_valkyrie_classes [Array<Hash>] an array to append Valkyrie mismatch errors to
       # @return [void]
       def validate_class(klass, invalid_classes, mismatched_valkyrie_classes)
-        base_class = klass.gsub(/(?<=.)Resource$/, '')
+        base_class_name = klass.gsub(/(?<=.)Resource$/, '')
 
-        unless Hyrax.config.registered_curation_concern_types.include?(base_class)
+        unless Hyrax.config.registered_curation_concern_types.include?(base_class_name)
           invalid_classes << klass
           return
         end
 
-        check_for_valkyrie_mismatch(klass, base_class, mismatched_valkyrie_classes)
-      end
+        begin
+          expected_valkyrie_class = Valkyrie.config.resource_class_resolver.call(base_class_name)
+          expected_class_name = expected_valkyrie_class.to_s
 
-      # Checks if a non-resource class (e.g., `Image`) is used when a
-      # corresponding resource class (e.g., `ImageResource`) exists.
-      #
-      # @param klass [String] the class name from the profile
-      # @param base_class [String] the class name with `Resource` suffix removed
-      # @param mismatched_classes [Array<Hash>] an array to append mismatch errors to
-      # @return [void]
-      def check_for_valkyrie_mismatch(klass, base_class, mismatched_classes)
-        valkyrie_class_name = "#{base_class}Resource"
-        return if klass == valkyrie_class_name
-
-        valkyrie_class_exists = begin
-                                  valkyrie_class_name.constantize
-                                  true
-                                rescue NameError
-                                  false
-                                end
-
-        # If a Valkyrie class exists but the profile uses the non-resource name, it's an error.
-        mismatched_classes << { non_resource: klass, resource: valkyrie_class_name } if valkyrie_class_exists
+          mismatched_valkyrie_classes << { non_resource: klass, resource: expected_class_name } if klass != expected_class_name
+        rescue NameError
+          # This occurs if a registered concern doesn't have a loadable backing class,
+          # which is an invalid state.
+          invalid_classes << klass
+        end
       end
 
       # Appends a formatted error message for any Valkyrie naming mismatches.

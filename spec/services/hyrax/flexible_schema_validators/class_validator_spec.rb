@@ -73,6 +73,17 @@ RSpec.describe Hyrax::FlexibleSchemaValidators::ClassValidator do
         stub_const('ImageResource', Class.new)
         stub_const('ScholarlyWork', Class.new)
         hide_const('ScholarlyWorkResource') # Ensure this is not defined for the test
+
+        # Mock the resolver to simulate production behavior for our test cases
+        resolver = lambda do |class_name|
+          resource_name = "#{class_name}Resource"
+          begin
+            resource_name.constantize
+          rescue NameError
+            class_name.constantize # Fallback to the base name if no ...Resource variant exists
+          end
+        end
+        allow(Valkyrie.config).to receive(:resource_class_resolver).and_return(resolver)
       end
 
       context 'when a ...Resource model exists' do

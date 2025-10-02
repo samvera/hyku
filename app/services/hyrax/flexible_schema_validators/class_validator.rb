@@ -4,14 +4,16 @@ module Hyrax
   module FlexibleSchemaValidators
     # Handles class-related validations for flexible metadata profiles
     class ClassValidator
+      # @param profile [Hash] M3 profile data
+      # @param required_classes [Array<String>] Foundational classes that must be present
+      # @param errors [Array<String>] Array to append validation errors to
       def initialize(profile, required_classes, errors)
         @profile = profile
         @required_classes = required_classes
         @errors = errors
       end
 
-      # Checks that any class referenced in the profile is a registered
-      # Hyrax curation concern type.
+      # Validates that referenced classes are registered Hyrax curation concern types
       def validate_availability!
         profile_classes = @profile['classes'].keys
         properties = @profile['properties']
@@ -33,8 +35,7 @@ module Hyrax
         @errors << "Invalid classes: #{invalid_classes.join(', ')}."
       end
 
-      # Validates that every class referenced under `available_on.class` is also
-      # defined in the profile's top-level `classes` section.
+      # Validates that classes referenced in available_on are defined in the profile
       def validate_references!
         properties = @profile['properties'] || {}
 
@@ -49,11 +50,21 @@ module Hyrax
         @errors << "Classes referenced in `available_on` but not defined in `classes`: #{undefined_classes.join(', ')}."
       end
 
-      # Validates that classes with existing records in the repository are not removed from the profile.
+      # Validates that classes with existing records are not removed from the profile
       def validate_existing_records!
-        classes_to_check = potential_existing_classes - @profile['classes'].keys
+        profile_classes = @profile['classes'].keys
+        classes_to_check = potential_existing_classes - profile_classes
         classes_with_records = []
         checked_models = Set.new
+
+        classes_to_check.reject! do |class_name|
+          counterpart = if class_name.end_with?('Resource')
+                          class_name.chomp('Resource')
+                        else
+                          "#{class_name}Resource"
+                        end
+          profile_classes.include?(counterpart)
+        end
 
         classes_to_check.each do |class_name|
           model_class = resolve_model_class(class_name)
@@ -80,8 +91,7 @@ module Hyrax
 
       private
 
-      # Returns classes that could potentially have existing records
-      # @return [Array<String>] Class names in profile format
+      # @return [Array<String>] Class names that could potentially have existing records
       def potential_existing_classes
         classes = @required_classes.dup
 
@@ -93,9 +103,8 @@ module Hyrax
         classes.uniq
       end
 
-      # Resolves a profile class name to its actual model class
-      # @param class_name [String] Class name in profile format (e.g., 'GenericWorkResource')
-      # @return [Class, nil] The resolved model class or nil if not found
+      # @param class_name [String] Class name in profile format
+      # @return [Class, nil] Resolved model class or nil if not found
       def resolve_model_class(class_name)
         return Hyrax.config.file_set_model.constantize if class_name == 'Hyrax::FileSet'
         return Hyrax.config.admin_set_model.constantize if class_name == Hyrax.config.admin_set_model

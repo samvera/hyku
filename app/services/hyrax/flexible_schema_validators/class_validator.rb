@@ -56,18 +56,11 @@ module Hyrax
         classes_with_records = []
         checked_models = Set.new
 
-        classes_to_check.reject! do |class_name|
-          counterpart = if class_name.end_with?('Resource')
-                          class_name.chomp('Resource')
-                        else
-                          "#{class_name}Resource"
-                        end
-          profile_classes.include?(counterpart)
-        end
-
         classes_to_check.each do |class_name|
           model_class = resolve_model_class(class_name)
           next unless model_class
+
+          next if profile_classes.include?(model_class.to_s)
 
           model_identifier = model_class.to_s
           next if checked_models.include?(model_identifier)

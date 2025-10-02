@@ -173,11 +173,27 @@ RSpec.describe Hyrax::FlexibleSchemaValidators::ClassValidator do
       validator.validate_existing_records!
     end
 
-    it 'handles counterpart classes correctly' do
-      profile['classes']['Image'] = { 'display_label' => 'Image' }
+    context 'with counterpart classes' do
+      before do
+        stub_const('ImageResource', Class.new) unless defined?(ImageResource)
+        stub_const('Image', ImageResource) unless defined?(Image) # Alias Image to ImageResource for the test
+      end
 
-      validator.validate_existing_records!
-      expect(errors).to be_empty
+      it 'adds an error if a class with records is removed, even if its counterpart is present' do
+        profile['classes'] = { 'Image' => { 'display_label' => 'Image' } }
+        allow(Hyrax.query_service).to receive(:count_all_of_model).with(model: ImageResource).and_return(1)
+
+        validator.validate_existing_records!
+        expect(errors).to include('Classes with existing records cannot be removed from the profile: ImageResource.')
+      end
+
+      it 'does not add an error if a class without a Resource suffix is present' do
+        profile['classes'] = { 'Image' => { 'display_label' => 'Image' } }
+        allow(Hyrax.config).to receive(:registered_curation_concern_types).and_return(['Image'])
+
+        validator.validate_existing_records!
+        expect(errors).to be_empty
+      end
     end
 
     it 'logs error when query service fails' do

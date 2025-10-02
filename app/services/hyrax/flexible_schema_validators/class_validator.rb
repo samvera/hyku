@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'set'
+
 module Hyrax
   module FlexibleSchemaValidators
     # Handles class-related validations for flexible metadata profiles
@@ -15,20 +17,17 @@ module Hyrax
 
       # Validates that referenced classes are registered Hyrax curation concern types
       def validate_availability!
-        profile_classes = @profile['classes'].keys
-        properties = @profile['properties']
-        available_on_classes = properties.keys.flat_map do |key|
-          properties[key].fetch('available_on', nil)&.fetch('class', nil)
-        end.compact.uniq
+        profile_classes = @profile.fetch('classes', {}).keys
+        properties = @profile['properties'] || {}
+        available_on_classes = properties.values.flat_map do |prop|
+          prop.dig('available_on', 'class')
+        end.compact
 
-        combined_classes = profile_classes + available_on_classes
-        unique_classes = combined_classes.uniq
-        filtered_classes = unique_classes - @required_classes
-        classes = filtered_classes.map { |klass| klass.gsub(/(?<=.)Resource$/, '') }
+        all_classes = (profile_classes + available_on_classes).uniq
+        classes_to_validate = all_classes - @required_classes
 
-        invalid_classes = classes.filter_map do |klass|
-          klass unless Hyrax.config.registered_curation_concern_types.include?(klass)
-        end
+        invalid_classes = classes_to_validate.map { |klass| klass.gsub(/(?<=.)Resource$/, '') }
+                                             .reject { |klass| Hyrax.config.registered_curation_concern_types.include?(klass) }
 
         return if invalid_classes.empty?
 
@@ -73,12 +72,10 @@ module Hyrax
           model_identifier = model_class.to_s
           next if checked_models.include?(model_identifier)
 
+          checked_models.add(model_identifier)
           begin
             count = Hyrax.query_service.count_all_of_model(model: model_class)
-            if count.positive?
-              classes_with_records << model_identifier
-              checked_models.add(model_identifier)
-            end
+            classes_with_records << model_identifier if count.positive?
           rescue StandardError => e
             Rails.logger.error "Error checking records for #{class_name}: #{e.message}"
           end

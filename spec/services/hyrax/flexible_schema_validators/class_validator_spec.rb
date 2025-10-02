@@ -16,70 +16,106 @@ RSpec.describe Hyrax::FlexibleSchemaValidators::ClassValidator do
   end
 
   describe '#validate_availability!' do
-    let(:profile) do
-      {
-        'classes' => {
-          'GenericWorkResource' => { 'display_label' => 'Generic Work' },
-          'InvalidWorkType' => { 'display_label' => 'Invalid Work' }
-        },
-        'properties' => {
-          'title' => {
-            'available_on' => {
-              'class' => ['AnotherInvalidWorkType']
-            }
+    before do
+      allow(Hyrax.config).to receive(:registered_curation_concern_types).and_return(['GenericWork', 'Image', 'ScholarlyWork'])
+    end
+
+    context 'with invalid class names' do
+      let(:profile) do
+        {
+          'classes' => {
+            'GenericWorkResource' => { 'display_label' => 'Generic Work' },
+            'InvalidWorkType' => { 'display_label' => 'Invalid Work' }
+          },
+          'properties' => {
+            'title' => { 'available_on' => { 'class' => ['AnotherInvalidWorkType'] } }
           }
         }
-      }
+      end
+
+      it 'adds an error for all invalid classes' do
+        validator.validate_availability!
+        expect(errors).to contain_exactly('Invalid classes: InvalidWorkType, AnotherInvalidWorkType.')
+      end
     end
 
-    before do
-      allow(Hyrax.config).to receive(:registered_curation_concern_types).and_return(['GenericWork'])
+    context 'when all classes are valid' do
+      let(:profile) do
+        { 'classes' => { 'GenericWorkResource' => { 'display_label' => 'Generic Work' } } }
+      end
+
+      it 'does not add an error' do
+        validator.validate_availability!
+        expect(errors).to be_empty
+      end
     end
 
-    it 'adds error for invalid classes in profile classes' do
-      validator.validate_availability!
-      expect(errors.first).to include('InvalidWorkType')
+    context 'when properties are nil' do
+      let(:profile) { { 'classes' => { 'GenericWorkResource' => {} } } }
+
+      it 'handles nil properties without error' do
+        validator.validate_availability!
+        expect(errors).to be_empty
+      end
     end
 
-    it 'adds error for invalid classes in available_on' do
-      validator.validate_availability!
-      expect(errors.first).to include('AnotherInvalidWorkType')
+    context 'with required classes' do
+      let(:profile) { { 'classes' => { 'AdminSetResource' => {} } } }
+
+      it 'excludes required classes from validation' do
+        validator.validate_availability!
+        expect(errors).to be_empty
+      end
     end
 
-    it 'combines all invalid classes in one error message' do
-      validator.validate_availability!
-      expect(errors.first).to eq('Invalid classes: InvalidWorkType, AnotherInvalidWorkType.')
-    end
+    context 'with Valkyrie model naming conventions' do
+      before do
+        stub_const('ImageResource', Class.new)
+        stub_const('ScholarlyWork', Class.new)
+        hide_const('ScholarlyWorkResource') # Ensure this is not defined for the test
+      end
 
-    it 'does not add error when all classes are valid' do
-      profile['classes'].delete('InvalidWorkType')
-      profile['properties']['title']['available_on']['class'] = ['GenericWorkResource']
+      context 'when a ...Resource model exists' do
+        it 'adds an error if the profile uses the non-resource name' do
+          profile = { 'classes' => { 'Image' => {} } }
+          validator = described_class.new(profile, required_classes, errors)
+          validator.validate_availability!
+          expect(errors).to include(a_string_starting_with("Mismatched Valkyrie classes found: 'Image' should be 'ImageResource'"))
+        end
 
-      validator.validate_availability!
-      expect(errors).to be_empty
-    end
+        it 'does not add an error if the profile uses the correct ...Resource name' do
+          profile = { 'classes' => { 'ImageResource' => {} } }
+          validator = described_class.new(profile, required_classes, errors)
+          validator.validate_availability!
+          expect(errors).to be_empty
+        end
+      end
 
-    it 'handles nil properties' do
-      profile['classes'].delete('InvalidWorkType')
-      profile['properties'] = nil
-      validator.validate_availability!
-      expect(errors).to be_empty
-    end
+      context "when a Valkyrie model exists without a 'Resource' suffix" do
+        it 'does not add an error' do
+          profile = { 'classes' => { 'ScholarlyWork' => {} } }
+          validator = described_class.new(profile, required_classes, errors)
+          validator.validate_availability!
+          expect(errors).to be_empty
+        end
+      end
 
-    it 'strips Resource suffix when checking against registered types' do
-      profile['classes'] = { 'GenericWorkResource' => { 'display_label' => 'Generic Work' } }
-      profile['properties'] = {}
+      context 'with a mix of invalid and mismatched classes' do
+        let(:profile) do
+          {
+            'classes' => {
+              'Image' => { 'display_label' => 'Image' },
+              'InvalidWork' => { 'display_label' => 'Invalid Work' }
+            }
+          }
+        end
 
-      validator.validate_availability!
-      expect(errors).to be_empty
-    end
-
-    it 'excludes required classes from validation' do
-      profile['classes'] = { 'AdminSetResource' => { 'display_label' => 'Admin Set' } }
-      profile['properties'] = {}
-
-      validator.validate_availability!
-      expect(errors).to be_empty
+        it 'reports both errors' do
+          validator.validate_availability!
+          expect(errors).to include(a_string_starting_with("Mismatched Valkyrie classes found"))
+          expect(errors).to include('Invalid classes: InvalidWork.')
+        end
+      end
     end
   end
 
@@ -129,148 +165,6 @@ RSpec.describe Hyrax::FlexibleSchemaValidators::ClassValidator do
 
       validator.validate_references!
       expect(errors).to be_empty
-    end
-  end
-
-  describe '#validate_existing_records!' do
-    let(:profile) do
-      {
-        'classes' => {
-          'GenericWorkResource' => { 'display_label' => 'Generic Work' }
-        },
-        'properties' => {}
-      }
-    end
-
-    before do
-      allow(Hyrax.config).to receive(:registered_curation_concern_types).and_return(['GenericWork', 'Image'])
-      allow(Hyrax.query_service).to receive(:count_all_of_model).and_return(0)
-    end
-
-    it 'adds error for classes with existing records' do
-      allow(Hyrax.query_service).to receive(:count_all_of_model)
-        .with(model: ImageResource).and_return(1)
-
-      validator.validate_existing_records!
-      expect(errors).to include('Classes with existing records cannot be removed from the profile: ImageResource.')
-    end
-
-    it 'does not add error when no classes have existing records' do
-      validator.validate_existing_records!
-      expect(errors).to be_empty
-    end
-
-    it 'queries for a model only once, even with aliases' do
-      stub_const('Image', Class.new)
-      allow(Hyrax.config).to receive(:registered_curation_concern_types).and_return(['Image'])
-      profile['classes'] = {}
-
-      expect(Hyrax.query_service).to receive(:count_all_of_model).with(model: Image).once.and_return(0)
-      expect(Hyrax.query_service).to receive(:count_all_of_model).with(model: AdminSetResource).once.and_return(0)
-      expect(Hyrax.query_service).to receive(:count_all_of_model).with(model: CollectionResource).once.and_return(0)
-      expect(Hyrax.query_service).to receive(:count_all_of_model).with(model: Hyrax::FileSet).once.and_return(0)
-
-      validator.validate_existing_records!
-    end
-
-    context 'with counterpart classes' do
-      before do
-        stub_const('ImageResource', Class.new) unless defined?(ImageResource)
-        stub_const('Image', ImageResource) unless defined?(Image) # Alias Image to ImageResource for the test
-      end
-
-      it 'adds an error if a class with records is removed, even if its counterpart is present' do
-        profile['classes'] = { 'Image' => { 'display_label' => 'Image' } }
-        allow(Hyrax.query_service).to receive(:count_all_of_model).with(model: ImageResource).and_return(1)
-
-        validator.validate_existing_records!
-        expect(errors).to include('Classes with existing records cannot be removed from the profile: ImageResource.')
-      end
-
-      it 'does not add an error if a class without a Resource suffix is present' do
-        profile['classes'] = { 'Image' => { 'display_label' => 'Image' } }
-        allow(Hyrax.config).to receive(:registered_curation_concern_types).and_return(['Image'])
-
-        validator.validate_existing_records!
-        expect(errors).to be_empty
-      end
-    end
-
-    it 'logs error when query service fails' do
-      allow(Hyrax.query_service).to receive(:count_all_of_model)
-        .with(model: ImageResource).and_raise(StandardError, 'Database error')
-      allow(Rails.logger).to receive(:error)
-
-      validator.validate_existing_records!
-      expect(Rails.logger).to have_received(:error).with('Error checking records for ImageResource: Database error')
-    end
-
-    it 'skips classes that cannot be resolved' do
-      allow(validator).to receive(:resolve_model_class).and_return(nil)
-
-      validator.validate_existing_records!
-      expect(errors).to be_empty
-    end
-  end
-
-  describe '#potential_existing_classes' do
-    it 'includes required classes' do
-      expect(validator.send(:potential_existing_classes)).to include(*required_classes)
-    end
-
-    it 'includes registered curation concern types' do
-      allow(Hyrax.config).to receive(:registered_curation_concern_types).and_return(['GenericWork', 'Image'])
-
-      classes = validator.send(:potential_existing_classes)
-      expect(classes).to include('GenericWork', 'GenericWorkResource', 'Image', 'ImageResource')
-    end
-
-    it 'removes duplicates' do
-      allow(Hyrax.config).to receive(:registered_curation_concern_types).and_return(['GenericWork'])
-
-      classes = validator.send(:potential_existing_classes)
-      expect(classes.uniq).to eq(classes)
-    end
-  end
-
-  describe '#resolve_model_class' do
-    context 'with configured models' do
-      {
-        'Hyrax::FileSet' => :file_set_model,
-        'Hyrax::AdminSet' => :admin_set_model,
-        'Hyrax::Collection' => :collection_model
-      }.each do |class_name, config_key|
-        it "resolves #{class_name} using #{config_key}" do
-          model = stub_const(class_name, Class.new)
-          allow(Hyrax.config).to receive(config_key).and_return(class_name)
-
-          result = validator.send(:resolve_model_class, class_name)
-          expect(result).to eq(model)
-        end
-      end
-    end
-
-    it 'resolves class name directly' do
-      stub_const('GenericWorkResource', Class.new)
-
-      result = validator.send(:resolve_model_class, 'GenericWorkResource')
-      expect(result).to eq(GenericWorkResource)
-    end
-
-    it 'falls back to base name when direct resolution fails' do
-      stub_const('TestWork', Class.new)
-
-      # Test with a class name that doesn't exist directly but has a base name that does
-      result = validator.send(:resolve_model_class, 'TestWorkResource')
-      expect(result).to eq(TestWork)
-    end
-
-    it 'returns nil when both direct and base name resolution fail' do
-      allow(Rails.logger).to receive(:warn)
-
-      result = validator.send(:resolve_model_class, 'InvalidClass')
-      expect(result).to be_nil
-      expect(Rails.logger).to have_received(:warn).with('Could not resolve model class for: InvalidClass')
     end
   end
 end

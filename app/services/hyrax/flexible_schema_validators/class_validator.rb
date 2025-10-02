@@ -17,21 +17,16 @@ module Hyrax
 
       # Validates that referenced classes are registered Hyrax curation concern types
       def validate_availability!
-        profile_classes = @profile.fetch('classes', {}).keys
-        properties = @profile['properties'] || {}
-        available_on_classes = properties.values.flat_map do |prop|
-          prop.dig('available_on', 'class')
-        end.compact
+        classes_to_validate = all_profile_classes - @required_classes
+        invalid_classes = []
+        mismatched_valkyrie_classes = []
 
-        all_classes = (profile_classes + available_on_classes).uniq
-        classes_to_validate = all_classes - @required_classes
+        classes_to_validate.each do |klass|
+          validate_class(klass, invalid_classes, mismatched_valkyrie_classes)
+        end
 
-        invalid_classes = classes_to_validate.map { |klass| klass.gsub(/(?<=.)Resource$/, '') }
-                                             .reject { |klass| Hyrax.config.registered_curation_concern_types.include?(klass) }
-
-        return if invalid_classes.empty?
-
-        @errors << "Invalid classes: #{invalid_classes.join(', ')}."
+        report_mismatched_classes(mismatched_valkyrie_classes)
+        report_invalid_classes(invalid_classes)
       end
 
       # Validates that classes referenced in available_on are defined in the profile
@@ -49,68 +44,56 @@ module Hyrax
         @errors << "Classes referenced in `available_on` but not defined in `classes`: #{undefined_classes.join(', ')}."
       end
 
-      # Validates that classes with existing records are not removed from the profile
-      def validate_existing_records!
-        profile_classes = @profile.fetch('classes', {}).keys
-        classes_to_check = potential_existing_classes - profile_classes
-        classes_with_records = []
-        checked_models = Set.new
-
-        classes_to_check.each do |class_name|
-          model_class = resolve_model_class(class_name)
-          next unless model_class
-
-          next if profile_classes.include?(model_class.to_s)
-
-          model_identifier = model_class.to_s
-          next if checked_models.include?(model_identifier)
-
-          checked_models.add(model_identifier)
-          begin
-            count = Hyrax.query_service.count_all_of_model(model: model_class)
-            classes_with_records << model_identifier if count.positive?
-          rescue StandardError => e
-            Rails.logger.error "Error checking records for #{class_name}: #{e.message}"
-          end
-        end
-
-        return if classes_with_records.empty?
-
-        @errors << "Classes with existing records cannot be removed from the profile: #{classes_with_records.join(', ')}."
-      end
-
       private
 
-      # @return [Array<String>] Class names that could potentially have existing records
-      def potential_existing_classes
-        classes = @required_classes.dup
-
-        Hyrax.config.registered_curation_concern_types.each do |concern_type|
-          classes << "#{concern_type}Resource"
-          classes << concern_type
-        end
-
-        classes.uniq
+      def all_profile_classes
+        profile_classes = @profile.fetch('classes', {}).keys
+        properties = @profile['properties'] || {}
+        available_on_classes = properties.values.flat_map do |prop|
+          prop.dig('available_on', 'class')
+        end.compact
+        (profile_classes + available_on_classes).uniq
       end
 
-      # @param class_name [String] Class name in profile format
-      # @return [Class, nil] Resolved model class or nil if not found
-      def resolve_model_class(class_name)
-        return Hyrax.config.file_set_model.constantize if class_name == 'Hyrax::FileSet'
-        return Hyrax.config.admin_set_model.constantize if class_name == Hyrax.config.admin_set_model
-        return Hyrax.config.collection_model.constantize if class_name == Hyrax.config.collection_model
+      def validate_class(klass, invalid_classes, mismatched_valkyrie_classes)
+        base_class = klass.gsub(/(?<=.)Resource$/, '')
 
-        begin
-          class_name.constantize
-        rescue NameError
-          base_name = class_name.gsub(/Resource$/, '')
-          begin
-            base_name.constantize
-          rescue NameError
-            Rails.logger.warn "Could not resolve model class for: #{class_name}"
-            nil
-          end
+        unless Hyrax.config.registered_curation_concern_types.include?(base_class)
+          invalid_classes << klass
+          return
         end
+
+        check_for_valkyrie_mismatch(klass, base_class, mismatched_valkyrie_classes)
+      end
+
+      def check_for_valkyrie_mismatch(klass, base_class, mismatched_classes)
+        valkyrie_class_name = "#{base_class}Resource"
+        return if klass == valkyrie_class_name
+
+        valkyrie_class_exists = begin
+                                  valkyrie_class_name.constantize
+                                  true
+                                rescue NameError
+                                  false
+                                end
+
+        # If a Valkyrie class exists but the profile uses the non-resource name, it's an error.
+        mismatched_classes << { non_resource: klass, resource: valkyrie_class_name } if valkyrie_class_exists
+      end
+
+      def report_mismatched_classes(mismatched_classes)
+        return if mismatched_classes.empty?
+
+        message = mismatched_classes.map do |mismatch|
+          "'#{mismatch[:non_resource]}' should be '#{mismatch[:resource]}'"
+        end.join(', ')
+        @errors << "Mismatched Valkyrie classes found: #{message}. If a Valkyrie model exists, the profile must use the '...Resource' class name."
+      end
+
+      def report_invalid_classes(invalid_classes)
+        return if invalid_classes.empty?
+
+        @errors << "Invalid classes: #{invalid_classes.join(', ')}."
       end
     end
   end

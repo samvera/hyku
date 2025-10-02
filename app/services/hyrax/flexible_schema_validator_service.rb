@@ -4,6 +4,7 @@ require 'json_schemer'
 require_relative 'core_metadata_validator'
 require_relative 'flexible_schema_validators/schema_validator'
 require_relative 'flexible_schema_validators/class_validator'
+require_relative 'flexible_schema_validators/existing_records_validator'
 
 module Hyrax
   class FlexibleSchemaValidatorService
@@ -107,7 +108,7 @@ module Hyrax
     #
     # @return [void]
     def validate_existing_records_classes_defined
-      FlexibleSchemaValidators::ClassValidator.new(profile, required_classes, @errors).validate_existing_records!
+      FlexibleSchemaValidators::ExistingRecordsValidator.new(profile, required_classes, @errors).validate!
     end
 
     # Validates that a `label` property exists and that it is available on

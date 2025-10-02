@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 module Hyrax
   module FlexibleSchemaValidators
     # Handles class-related validations for flexible metadata profiles

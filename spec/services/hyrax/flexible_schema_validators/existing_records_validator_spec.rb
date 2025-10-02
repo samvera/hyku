@@ -44,6 +44,7 @@ RSpec.describe Hyrax::FlexibleSchemaValidators::ExistingRecordsValidator do
     end
 
     it 'queries for a model only once, even with aliases' do
+      hide_const('ImageResource') # Prevent state leakage from other tests
       stub_const('Image', Class.new)
       allow(Hyrax.config).to receive(:registered_curation_concern_types).and_return(['Image'])
       profile['classes'] = {}
@@ -62,12 +63,12 @@ RSpec.describe Hyrax::FlexibleSchemaValidators::ExistingRecordsValidator do
         stub_const('Image', ImageResource) unless defined?(Image) # Alias Image to ImageResource for the test
       end
 
-      it 'adds an error if a class with records is removed, even if its counterpart is present' do
+      it 'does not add an error if its counterpart is present in the profile' do
         profile['classes'] = { 'Image' => { 'display_label' => 'Image' } }
         allow(Hyrax.query_service).to receive(:count_all_of_model).with(model: ImageResource).and_return(1)
 
         validator.validate!
-        expect(errors).to include('Classes with existing records cannot be removed from the profile: ImageResource.')
+        expect(errors).to be_empty
       end
 
       it 'does not add an error if a class without a Resource suffix is present' do

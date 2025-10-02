@@ -20,35 +20,72 @@ module Hyrax
       #
       # @return [void]
       def validate!
-        profile_classes = @profile.fetch('classes', {}).keys
-        classes_to_check = potential_existing_classes - profile_classes
+        profile_classes_set = Set.new(@profile.fetch('classes', {}).keys)
+        classes_to_check = potential_existing_classes - profile_classes_set.to_a
         classes_with_records = []
         checked_models = Set.new
 
         classes_to_check.each do |class_name|
-          model_class = resolve_model_class(class_name)
-          next unless model_class
-
-          next if profile_classes.include?(model_class.to_s)
-
-          model_identifier = model_class.to_s
-          next if checked_models.include?(model_identifier)
-
-          checked_models.add(model_identifier)
-          begin
-            count = Hyrax.query_service.count_all_of_model(model: model_class)
-            classes_with_records << model_identifier if count.positive?
-          rescue StandardError => e
-            Rails.logger.error "Error checking records for #{class_name}: #{e.message}"
-          end
+          check_class_for_existing_records(class_name, checked_models, profile_classes_set, classes_with_records)
         end
 
         return if classes_with_records.empty?
 
-        @errors << "Classes with existing records cannot be removed from the profile: #{classes_with_records.join(', ')}."
+        @errors << "Classes with existing records cannot be removed from the profile: #{classes_with_records.uniq.join(', ')}."
       end
 
       private
+
+      # Helper method to check a single class for existing records and validate its presence in the profile.
+      #
+      # @param class_name [String] The name of the class to check.
+      # @param checked_models [Set] A set of model names that have already been processed to avoid duplicates.
+      # @param profile_classes_set [Set] A set of class names defined in the new profile.
+      # @param classes_with_records [Array] An array to accumulate classes that have records but are missing from the profile.
+      # @return [void]
+      def check_class_for_existing_records(class_name, checked_models, profile_classes_set, classes_with_records)
+        model_class = resolve_model_class(class_name)
+        return unless model_class
+
+        model_identifier = model_class.to_s
+        counterpart_identifier = counterpart_for(model_identifier)
+
+        return if already_checked?(model_identifier, counterpart_identifier, checked_models)
+        mark_as_checked(model_identifier, counterpart_identifier, checked_models)
+
+        return unless model_has_records?(model_class, class_name)
+
+        is_present = profile_classes_set.include?(model_identifier) || profile_classes_set.include?(counterpart_identifier)
+        classes_with_records << model_identifier unless is_present
+      end
+
+      # Determines the counterpart model name (e.g., Image -> ImageResource).
+      def counterpart_for(model_identifier)
+        if model_identifier.end_with?('Resource')
+          model_identifier.chomp('Resource')
+        else
+          "#{model_identifier}Resource"
+        end
+      end
+
+      # Checks if a model or its counterpart has already been processed.
+      def already_checked?(model_id, counterpart_id, checked_models)
+        checked_models.include?(model_id) || checked_models.include?(counterpart_id)
+      end
+
+      # Marks both a model and its counterpart as processed.
+      def mark_as_checked(model_id, counterpart_id, checked_models)
+        checked_models.add(model_id)
+        checked_models.add(counterpart_id)
+      end
+
+      # Queries the repository to see if a given model has any records.
+      def model_has_records?(model_class, class_name)
+        Hyrax.query_service.count_all_of_model(model: model_class).positive?
+      rescue StandardError => e
+        Rails.logger.error "Error checking records for #{class_name}: #{e.message}"
+        false
+      end
 
       # @return [Array<String>] Class names that could potentially have existing records
       def potential_existing_classes
@@ -71,11 +108,11 @@ module Hyrax
 
         begin
           class_name.constantize
-        rescue NameError
+        rescue NameError, LoadError
           base_name = class_name.gsub(/Resource$/, '')
           begin
             base_name.constantize
-          rescue NameError
+          rescue NameError, LoadError
             Rails.logger.warn "Could not resolve model class for: #{class_name}"
             nil
           end

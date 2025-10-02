@@ -51,7 +51,7 @@ module Hyrax
 
       # Validates that classes with existing records are not removed from the profile
       def validate_existing_records!
-        profile_classes = @profile['classes'].keys
+        profile_classes = @profile.fetch('classes', {}).keys
         classes_to_check = potential_existing_classes - profile_classes
         classes_with_records = []
         checked_models = Set.new

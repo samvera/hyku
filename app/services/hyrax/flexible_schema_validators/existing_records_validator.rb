@@ -15,7 +15,10 @@ module Hyrax
         @errors = errors
       end
 
-      # Validates that classes with existing records are not removed from the profile
+      # Validates that no classes with existing records in the repository have been
+      # removed from the profile.
+      #
+      # @return [void]
       def validate!
         profile_classes = @profile.fetch('classes', {}).keys
         classes_to_check = potential_existing_classes - profile_classes

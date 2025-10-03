@@ -71,8 +71,8 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: 9c653343c4df5075a99e37059ee15e2c5b77971c
-  branch: main
+  revision: 6822d38d147b43fa3e86d1833a46a98d8fed3e86
+  branch: db_create_bug
   specs:
     hyrax (5.2.0)
       active-fedora (~> 15.0)

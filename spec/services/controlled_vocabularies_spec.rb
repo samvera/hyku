@@ -96,8 +96,8 @@ RSpec.describe 'Controlled Vocabularies Integration', type: :service do
   describe 'Local Controlled Vocabularies' do
     context 'when HYRAX_FLEXIBLE is enabled' do
       it 'loads local vocabulary services correctly' do
-        expect(Hyrax::ControlledVocabularies::SERVICES).to include('audience')
-        expect(Hyrax::ControlledVocabularies::SERVICES['audience']).to eq('Hyrax::AudienceService')
+        expect(Hyrax::ControlledVocabularies.services).to include('audience')
+        expect(Hyrax::ControlledVocabularies.services['audience']).to eq('Hyrax::AudienceService')
       end
 
       it 'provides local vocabulary options through service' do
@@ -123,8 +123,8 @@ RSpec.describe 'Controlled Vocabularies Integration', type: :service do
 
         it 'maps local vocabulary to known services' do
           source = 'audience'
-          expect(Hyrax::ControlledVocabularies::SERVICES).to have_key(source)
-          service_class = Hyrax::ControlledVocabularies::SERVICES[source].constantize
+          expect(Hyrax::ControlledVocabularies.services).to have_key(source)
+          service_class = Hyrax::ControlledVocabularies.services[source].constantize
           expect(service_class).to respond_to(:select_all_options)
         end
       end
@@ -134,14 +134,14 @@ RSpec.describe 'Controlled Vocabularies Integration', type: :service do
   describe 'Remote Controlled Vocabularies' do
     context 'when HYRAX_FLEXIBLE is enabled' do
       it 'loads remote vocabulary authorities correctly' do
-        expect(Hyrax::ControlledVocabularies::REMOTE_AUTHORITIES).to include('loc/subjects')
-        authority_config = Hyrax::ControlledVocabularies::REMOTE_AUTHORITIES['loc/subjects']
+        expect(Hyrax::ControlledVocabularies.remote_authorities).to include('loc/subjects')
+        authority_config = Hyrax::ControlledVocabularies.remote_authorities['loc/subjects']
         expect(authority_config[:url]).to eq('/authorities/search/loc/subjects')
         expect(authority_config[:type]).to eq('autocomplete')
       end
 
       it 'includes common remote authorities' do
-        remote_authorities = Hyrax::ControlledVocabularies::REMOTE_AUTHORITIES
+        remote_authorities = Hyrax::ControlledVocabularies.remote_authorities
 
         # Library of Congress authorities
         expect(remote_authorities).to have_key('loc/subjects')
@@ -169,8 +169,8 @@ RSpec.describe 'Controlled Vocabularies Integration', type: :service do
 
         it 'maps remote vocabulary to known authorities' do
           source = 'loc/subjects'
-          expect(Hyrax::ControlledVocabularies::REMOTE_AUTHORITIES).to have_key(source)
-          authority_config = Hyrax::ControlledVocabularies::REMOTE_AUTHORITIES[source]
+          expect(Hyrax::ControlledVocabularies.remote_authorities).to have_key(source)
+          authority_config = Hyrax::ControlledVocabularies.remote_authorities[source]
           expect(authority_config[:type]).to eq('autocomplete')
           expect(authority_config[:url]).to be_present
         end
@@ -196,9 +196,9 @@ RSpec.describe 'Controlled Vocabularies Integration', type: :service do
         audience_sources = profile['properties']['audience']['controlled_values']['sources']
         subject_sources = profile['properties']['subject']['controlled_values']['sources']
 
-        expect(Hyrax::ControlledVocabularies::SERVICES).to have_key(audience_sources.first)
+        expect(Hyrax::ControlledVocabularies.services).to have_key(audience_sources.first)
 
-        expect(Hyrax::ControlledVocabularies::REMOTE_AUTHORITIES).to have_key(subject_sources.first)
+        expect(Hyrax::ControlledVocabularies.remote_authorities).to have_key(subject_sources.first)
       end
 
       it 'validates that controlled vocabulary services exist' do
@@ -207,7 +207,7 @@ RSpec.describe 'Controlled Vocabularies Integration', type: :service do
       end
 
       it 'validates that remote authorities are configured' do
-        remote_auth = Hyrax::ControlledVocabularies::REMOTE_AUTHORITIES['loc/subjects']
+        remote_auth = Hyrax::ControlledVocabularies.remote_authorities['loc/subjects']
         expect(remote_auth).to be_present
         expect(remote_auth[:url]).to start_with('/authorities/search/')
         expect(remote_auth[:type]).to eq('autocomplete')
@@ -223,8 +223,8 @@ RSpec.describe 'Controlled Vocabularies Integration', type: :service do
       end
 
       it 'still has access to controlled vocabulary configurations' do
-        expect(Hyrax::ControlledVocabularies::SERVICES).to be_present
-        expect(Hyrax::ControlledVocabularies::REMOTE_AUTHORITIES).to be_present
+        expect(Hyrax::ControlledVocabularies.services).to be_present
+        expect(Hyrax::ControlledVocabularies.remote_authorities).to be_present
       end
     end
   end
@@ -277,8 +277,8 @@ RSpec.describe 'Controlled Vocabularies Integration', type: :service do
       ]
 
       expected_local_services.each do |service|
-        expect(Hyrax::ControlledVocabularies::SERVICES).to have_key(service)
-        service_class = Hyrax::ControlledVocabularies::SERVICES[service].constantize
+        expect(Hyrax::ControlledVocabularies.services).to have_key(service)
+        service_class = Hyrax::ControlledVocabularies.services[service].constantize
 
         # Handle different service patterns:
         # 1. Module-based services with select_all_options (most Hyku services)
@@ -324,8 +324,8 @@ RSpec.describe 'Controlled Vocabularies Integration', type: :service do
       ]
 
       expected_remote_authorities.each do |authority|
-        expect(Hyrax::ControlledVocabularies::REMOTE_AUTHORITIES).to have_key(authority)
-        config = Hyrax::ControlledVocabularies::REMOTE_AUTHORITIES[authority]
+        expect(Hyrax::ControlledVocabularies.remote_authorities).to have_key(authority)
+        config = Hyrax::ControlledVocabularies.remote_authorities[authority]
         expect(config[:url]).to be_present
         expect(config[:type]).to eq('autocomplete')
       end

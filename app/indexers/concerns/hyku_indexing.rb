@@ -53,7 +53,7 @@ module HykuIndexing
 
     return [] if members.blank?
 
-    text_file_sets = object.members.select { |fs| fs.file_set? && fs.original_file&.mime_type == 'text/plain' }
+    text_file_sets = members.select { |fs| fs.file_set? && fs.original_file&.mime_type == 'text/plain' }
     text_file_sets.map { |fs| fs.original_file&.content }
   end
 

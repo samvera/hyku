@@ -49,10 +49,10 @@ GIT
 
 GIT
   remote: https://github.com/samvera/bulkrax.git
-  revision: 0495611fee0a4f26a09c7a7b72d3511c745b67d7
-  ref: main
+  revision: 226cf1aa5dc0b61fa6c9f1bd3b48f5501da286b3
+  branch: main
   specs:
-    bulkrax (9.2.1)
+    bulkrax (9.3.0)
       bagit (~> 0.6.0)
       coderay
       denormalize_fields

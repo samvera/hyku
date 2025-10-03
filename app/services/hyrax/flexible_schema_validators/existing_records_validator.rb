@@ -43,11 +43,16 @@ module Hyrax
 
       # Determines the counterpart model name (e.g., Image -> ImageResource).
       def counterpart_for(model_identifier)
-        if model_identifier.end_with?('Resource')
-          model_identifier.chomp('Resource')
-        else
-          "#{model_identifier}Resource"
-        end
+        return unless defined?(Wings)
+
+        klass = model_identifier.safe_constantize
+        return if klass.blank?
+
+        Wings::ModelRegistry.lookup(klass).to_s
+      rescue NameError
+        # This can happen if a class is not loadable,
+        # or if a counterpart model does not exist.
+        nil
       end
 
       # Queries the repository to see if a given model has any records.

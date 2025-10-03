@@ -29,6 +29,19 @@ RSpec.describe Hyrax::FlexibleSchemaValidators::ExistingRecordsValidator do
     before do
       stub_const('GenericWorkResource', Class.new)
       stub_const('ImageResource', Class.new)
+      stub_const('Image', Class.new)
+
+      # Stubbing Wings since the validator now depends on it.
+      if Object.const_defined?('Wings')
+        Rails.logger.warn('Wings is already defined, not stubbing.')
+      else
+        stub_const('Wings', Module.new)
+        stub_const('Wings::ModelRegistry', Class.new)
+      end
+
+      allow(Wings::ModelRegistry).to receive(:lookup).and_call_original
+      allow(Wings::ModelRegistry).to receive(:lookup).with(ImageResource).and_return(Image)
+
       allow(Hyrax.config).to receive(:registered_curation_concern_types).and_return(['GenericWork', 'Image'])
       allow(Valkyrie.config).to receive(:resource_class_resolver).and_return(->(name) { "#{name}Resource".constantize })
       allow(Hyrax.query_service).to receive(:count_all_of_model).and_return(0)
@@ -58,6 +71,18 @@ RSpec.describe Hyrax::FlexibleSchemaValidators::ExistingRecordsValidator do
       validator.validate!
       expect(Rails.logger).to have_received(:error).with('Error checking records for ImageResource: Database error')
       expect(errors).to be_empty
+    end
+
+    context 'when Wings is not defined' do
+      before do
+        hide_const('Wings')
+      end
+
+      it 'adds an error if a class with records is removed and no counterpart can be found' do
+        allow(Hyrax.query_service).to receive(:count_all_of_model).with(model: ImageResource).and_return(1)
+        validator.validate!
+        expect(errors).to include('Classes with existing records cannot be removed from the profile: ImageResource.')
+      end
     end
   end
 

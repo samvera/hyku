@@ -4,6 +4,7 @@ require 'json_schemer'
 require_relative 'core_metadata_validator'
 require_relative 'flexible_schema_validators/schema_validator'
 require_relative 'flexible_schema_validators/class_validator'
+require_relative 'flexible_schema_validators/existing_records_validator'
 
 module Hyrax
   class FlexibleSchemaValidatorService
@@ -103,11 +104,12 @@ module Hyrax
       FlexibleSchemaValidators::ClassValidator.new(profile, required_classes, @errors).validate_references!
     end
 
-    # Validates that classes with existing records in the repository are not removed from the profile.
+    # Delegates to {ExistingRecordsValidator} to ensure that no classes with
+    # existing repository records have been removed from the profile.
     #
     # @return [void]
     def validate_existing_records_classes_defined
-      FlexibleSchemaValidators::ClassValidator.new(profile, required_classes, @errors).validate_existing_records!
+      FlexibleSchemaValidators::ExistingRecordsValidator.new(profile, required_classes, @errors).validate!
     end
 
     # Validates that a `label` property exists and that it is available on

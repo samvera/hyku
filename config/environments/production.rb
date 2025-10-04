@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require Rails.root.join('lib', 'middleware', 'no_cache_middleware')
 
-Rails.application.configure do
+Rails.application.configure do # rubocop:disable Metrics/BlockLength
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.

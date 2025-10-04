@@ -1,12 +1,4 @@
 # frozen_string_literal: true
-
-# Loading these constants during runtime would freeze the web service in development.
-# Adding the requires here to load them on initialize.
-require 'riiif/imagemagick_transformer'
-require 'riiif/imagemagick_command_factory'
-require 'riiif/crop'
-require 'riiif/resize'
-
 Rails.application.reloader.to_prepare do
   Riiif::Image.info_service = lambda do |id, _file|
     # id will look like a path to a pcdm:file
@@ -43,29 +35,31 @@ end
 module Hyrax
   # Adds file locking to Riiif::File
   # @see RiiifFileResolver
-  class RiiifFile < Riiif::File
-    include ActiveSupport::Benchmarkable
+  Rails.application.reloader.to_prepare do
+    class RiiifFile < Riiif::File
+      include ActiveSupport::Benchmarkable
 
-    attr_reader :id
-    def initialize(input_path, tempfile = nil, id:)
-      super(input_path, tempfile)
-      raise(ArgumentError, "must specify id") if id.blank?
-      @id = id
-    end
+      attr_reader :id
+      def initialize(input_path, tempfile = nil, id:)
+        super(input_path, tempfile)
+        raise(ArgumentError, "must specify id") if id.blank?
+        @id = id
+      end
 
-    # Wrap extract in a read lock and benchmark it
-    def extract(transformation, image_info = nil)
-      Riiif::Image.file_resolver.file_locks[id].with_read_lock do
-        benchmark "RiiifFile extracted #{path} with #{transformation.to_params}", level: :debug do
-          super
+      # Wrap extract in a read lock and benchmark it
+      def extract(transformation, image_info = nil)
+        Riiif::Image.file_resolver.file_locks[id].with_read_lock do
+          benchmark "RiiifFile extracted #{path} with #{transformation.to_params}", level: :debug do
+            super
+          end
         end
       end
-    end
 
-    private
+      private
 
-    def logger
-      Hyrax.logger
+      def logger
+        Hyrax.logger
+      end
     end
   end
 
@@ -80,7 +74,7 @@ module Hyrax
         path = build_path(id)
         path = build_path(id, force: true) unless File.exist?(path) # Ensures the file is locally available
       end
-      RiiifFile.new(path, id:)
+      RiiifFile.new(path, id: id)
     end
 
     # tracks individual file locks
@@ -97,7 +91,7 @@ module Hyrax
     def build_path(id, force: false)
       Riiif::Image.cache.fetch("riiif:" + Digest::MD5.hexdigest("path:#{id}"),
                                expires_in: Riiif::Image.expires_in,
-                               force:) do
+                               force: force) do
         load_file(id)
       end
     end
@@ -106,7 +100,7 @@ module Hyrax
       benchmark "RiiifFileResolver loaded #{id}", level: :debug do
         fs_id = id.sub(/\A([^\/]*)\/.*/, '\1')
         file_set = Hyrax.query_service.find_by(id: fs_id)
-        file_metadata = Hyrax.custom_queries.find_original_file(file_set:)
+        file_metadata = Hyrax.custom_queries.find_original_file(file_set: file_set)
         file_metadata.file.disk_path.to_s # Stores a local copy in tmpdir
       end
     end

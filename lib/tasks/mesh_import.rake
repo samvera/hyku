@@ -102,7 +102,7 @@ namespace :mesh do
     puts "🏢 MeSH Import Status Report"
     puts "=" * 50
 
-    Account.all.each do |account|
+    Account.find_each do |account|
       puts "\n📋 Tenant: #{account.name}"
 
       # Switch to this tenant

@@ -2,7 +2,7 @@
 
 if Gem::Version.new(BlacklightAdvancedSearch::VERSION) < Gem::Version.new('8.0.0')
   module BlacklightAdvancedSearch
-    module QueryParserDecorator
+    module AdvancedQueryParserDecorator
       # OVERRIDE: BlacklightAdvancedSearch v7.0.0
       #
       # Ensure @params has indifferent access. This resolves a bug where field-specific
@@ -26,5 +26,5 @@ if Gem::Version.new(BlacklightAdvancedSearch::VERSION) < Gem::Version.new('8.0.0
     end
   end
 
-  BlacklightAdvancedSearch::QueryParser.prepend(BlacklightAdvancedSearch::QueryParserDecorator)
+  BlacklightAdvancedSearch::QueryParser.prepend(BlacklightAdvancedSearch::AdvancedQueryParserDecorator)
 end

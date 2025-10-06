@@ -1,3 +1,8 @@
+# dotenv gem doesn't always do the right thing with blank env vars, so we make sure these get set to something
+x-app-env: &app-env
+  APP_NAME: ${APP_NAME:-hyku}
+  HYRAX_FLEXIBLE: ${HYRAX_FLEXIBLE:-false}
+
 x-app: &app
   build:
     context: .
@@ -10,7 +15,8 @@ x-app: &app
   user: root
   env_file:
     - .env
-  # NOTE: all common env variables moved to .env
+  environment:
+    <<: *app-env
   volumes:
     - node_modules:/app/samvera/hyrax-webapp/node_modules:cached
     - uploads:/app/samvera/hyrax-webapp/public/uploads:cached
@@ -160,9 +166,9 @@ services:
     # Uncomment command to access container with out starting bin/web. Useful for debugging
     # command: sleep infinity
     environment:
-      - VIRTUAL_PORT=3000
-      - VIRTUAL_HOST=.hyku.test
-      - CHROME_HOSTNAME=chrome
+      <<: *app-env
+      VIRTUAL_PORT: 3000
+      VIRTUAL_HOST: .hyku.test
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.web-${APP_NAME}.tls=true"
@@ -211,8 +217,6 @@ services:
       cache_from:
         - ghcr.io/samvera/hyku/web:latest
         - ghcr.io/samvera/hyku/worker:latest
-    environment:
-      - CHROME_HOSTNAME=chrome
     depends_on:
       check_volumes:
         condition: service_completed_successfully

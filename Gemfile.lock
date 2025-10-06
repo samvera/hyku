@@ -119,11 +119,12 @@ GIT
 
 GIT
   remote: https://github.com/samvera-labs/hyrax-doi.git
-  revision: 9b7ab7f8054a14385b838de1118f55ad2e0f5da8
-  branch: rails_hyrax_upgrade
+  revision: 29c9cdd22dba5ccbb53e7e830136fecdfc2cee85
+  tag: v1.0.0
   specs:
     hyrax-doi (0.2.0)
-      bolognese (>= 1.8.6, < 2.0)
+      addressable (= 2.8.1)
+      bolognese (>= 1.8.6, < 3.0)
       flipflop (~> 2.3)
       hyrax (>= 2.9, < 6.0)
       rails (>= 5.2.4.3, < 8.0)

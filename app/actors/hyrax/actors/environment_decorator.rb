@@ -4,7 +4,7 @@
 
 module Hyrax
   module Actors
-    module EnvironmentDecoractor
+    module EnvironmentDecorator
       # @param [ActiveFedora::Base] curation_concern work to operate on
       # @param [Ability] current_ability the authorizations of the acting user
       # @param [ActionController::Parameters] attributes user provided form attributes
@@ -18,4 +18,4 @@ module Hyrax
   end
 end
 
-Hyrax::Actors::Environment.prepend(Hyrax::Actors::EnvironmentDecoractor)
+Hyrax::Actors::Environment.prepend(Hyrax::Actors::EnvironmentDecorator)

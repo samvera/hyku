@@ -3,7 +3,7 @@
 namespace :hyku do
   desc "Update group name to be parameterized"
   task update_hyrax_group_names: :environment do
-    Account.all.each do |account|
+    Account.find_each do |account|
       puts "Running update group names task within '#{account.cname}' tenant"
       AccountElevator.switch!(account.cname)
       groups = Hyrax::Group.where(humanized_name: nil)

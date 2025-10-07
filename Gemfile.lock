@@ -119,10 +119,10 @@ GIT
 
 GIT
   remote: https://github.com/samvera-labs/hyrax-doi.git
-  revision: 29c9cdd22dba5ccbb53e7e830136fecdfc2cee85
-  tag: v1.0.0
+  revision: 6a046f5739320a13449e4c99cbd3ce059e2e0243
+  tag: v0.3.0
   specs:
-    hyrax-doi (0.2.0)
+    hyrax-doi (0.3.0)
       addressable (= 2.8.1)
       bolognese (>= 1.8.6, < 3.0)
       flipflop (~> 2.3)

@@ -1574,7 +1574,6 @@ properties:
     available_on:
       class:
         - Hyrax::FileSet
-        - FileSet
         - CollectionResource
         - GenericWorkResource
         - ImageResource

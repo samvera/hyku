@@ -55,6 +55,15 @@ en:
   hyku:
     account:
       signup_disabled: Account registration is disabled
+    access_denied:
+      metadata_profiles:
+        title: "Metadata Profiles Access Denied"
+        message: "Access to metadata profiles is not available for search-only tenants."
+        details: "This tenant is configured for search-only access. Administrative features like metadata profile management are restricted."
+      default:
+        title: "Access Denied"
+        message: "You do not have permission to access this resource."
+        details: "Please contact your administrator if you believe this is an error."
     admin:
       flash:
         access_denied: You are not authorized to view this page

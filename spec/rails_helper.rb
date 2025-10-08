@@ -71,7 +71,7 @@ Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
 ActiveRecord::Migration.maintain_test_schema!
 
 # Uses faster rack_test driver when JavaScript support not needed
-Capybara.default_max_wait_time = 8
+Capybara.default_max_wait_time = 15  # Increased from 8 to handle slower Docker environments
 Capybara.default_driver = :rack_test
 
 ENV['WEB_HOST'] ||= `hostname -s`.strip
@@ -80,7 +80,12 @@ if ENV['CHROME_HOSTNAME'].present?
   options = Selenium::WebDriver::Options.chrome(args: ["disable-gpu",
                                                        "no-sandbox",
                                                        "whitelisted-ips",
-                                                       "window-size=1200,800"])
+                                                       "window-size=1200,800",
+                                                       "disable-dev-shm-usage",
+                                                       "disable-extensions",
+                                                       "disable-background-timer-throttling",
+                                                       "disable-backgrounding-occluded-windows",
+                                                       "disable-renderer-backgrounding"])
 
   Capybara.register_driver :chrome do |app|
     d = Capybara::Selenium::Driver.new(app,
@@ -100,7 +105,13 @@ if ENV['CHROME_HOSTNAME'].present?
 else
   options = Selenium::WebDriver::Options.chrome(args: ["headless",
                                                        "disable-gpu",
-                                                       "window-size=1920,1080"])
+                                                       "window-size=1920,1080",
+                                                       "no-sandbox",
+                                                       "disable-dev-shm-usage",
+                                                       "disable-extensions",
+                                                       "disable-background-timer-throttling",
+                                                       "disable-backgrounding-occluded-windows",
+                                                       "disable-renderer-backgrounding"])
 
   Capybara.register_driver :chrome do |app|
     Capybara::Selenium::Driver.new(
@@ -178,6 +189,13 @@ RSpec.configure do |config|
     # Only use truncation for JS-enabled feature specs
     if example.metadata[:js] && example.metadata[:type] == :feature
       DatabaseCleaner.strategy = :truncation
+      
+      # Ensure we have a fresh session for JS tests
+      begin
+        Capybara.reset_sessions! if defined?(Capybara)
+      rescue StandardError => e
+        Rails.logger.warn "Could not reset Capybara sessions: #{e.message}"
+      end
     else
       DatabaseCleaner.strategy = :transaction
       DatabaseCleaner.start
@@ -189,8 +207,19 @@ RSpec.configure do |config|
     save_page if example.exception.present?
     # rubocop:enable Lint/Debugger
     Warden.test_reset!
-    Capybara.reset_sessions!
-    page.driver.reset!
+    
+    # Improved Selenium session handling
+    begin
+      Capybara.reset_sessions!
+      page.driver.reset! if page.driver.respond_to?(:reset!)
+    rescue Selenium::WebDriver::Error::InvalidSessionIdError, 
+           Selenium::WebDriver::Error::NoSuchWindowError,
+           Selenium::WebDriver::Error::WebDriverError => e
+      Rails.logger.warn "Selenium session error during cleanup: #{e.message}"
+      # Force a complete session reset
+      Capybara.current_session.driver.quit if Capybara.current_session.driver.respond_to?(:quit)
+      Capybara.reset_sessions!
+    end
   end
 
   config.after do

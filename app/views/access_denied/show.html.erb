@@ -1,0 +1,22 @@
+<% content_for :page_title, @title %>
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10 col-sm-12">
+      <div class="text-center mt-5 mb-4">
+        <div class="alert alert-warning" role="alert">
+          <h4><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <%= @title %></h4>
+          <p class="mb-2"><strong><%= @message %></strong></p>
+          <p class="mb-0"><%= @details %></p>
+        </div>
+        
+        <div class="mt-4">
+          <div class="btn-group-horizontal" style="display: inline-block;">
+            <%= link_to 'Return to Dashboard', '/dashboard', class: 'btn btn-primary', style: 'margin-right: 8px;' %>
+            <%= link_to 'Go to Home Page', root_path, class: 'btn btn-secondary' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

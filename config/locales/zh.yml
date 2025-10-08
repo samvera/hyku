@@ -1,5 +1,15 @@
 ---
 zh:
+  hyku:
+    access_denied:
+      metadata_profiles:
+        title: "元数据配置文件访问被拒绝"
+        message: "仅搜索租户无法访问元数据配置文件。"
+        details: "此租户配置为仅搜索访问。元数据配置文件管理等管理功能受到限制。"
+      default:
+        title: "访问被拒绝"
+        message: "您没有访问此资源的权限。"
+        details: "如果您认为这是错误，请联系您的管理员。"
   activefedora:
     models:
       etd: 紧急断电

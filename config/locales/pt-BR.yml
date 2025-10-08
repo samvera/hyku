@@ -1,5 +1,15 @@
 ---
 pt-BR:
+  hyku:
+    access_denied:
+      metadata_profiles:
+        title: "Acesso aos Perfis de Metadados Negado"
+        message: "O acesso aos perfis de metadados não está disponível para locatários somente de pesquisa."
+        details: "Este locatário está configurado para acesso somente de pesquisa. Recursos administrativos como gerenciamento de perfis de metadados são restritos."
+      default:
+        title: "Acesso Negado"
+        message: "Você não tem permissão para acessar este recurso."
+        details: "Entre em contato com seu administrador se acreditar que isso é um erro."
   activefedora:
     models:
       etd: ETD

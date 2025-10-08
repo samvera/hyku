@@ -1,5 +1,15 @@
 ---
 fr:
+  hyku:
+    access_denied:
+      metadata_profiles:
+        title: "Accès aux Profils de Métadonnées Refusé"
+        message: "L'accès aux profils de métadonnées n'est pas disponible pour les locataires en recherche seule."
+        details: "Ce locataire est configuré pour un accès en recherche seule. Les fonctionnalités administratives comme la gestion des profils de métadonnées sont restreintes."
+      default:
+        title: "Accès Refusé"
+        message: "Vous n'avez pas la permission d'accéder à cette ressource."
+        details: "Veuillez contacter votre administrateur si vous pensez que c'est une erreur."
   activefedora:
     models:
       etd: ETD

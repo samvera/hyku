@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 require_relative 'boot'
 require_relative '../app/middleware/no_cache_middleware'
+require_relative '../app/middleware/search_only_tenant_blocker'
 
 require 'rails/all'
 require 'i18n/debug' if ENV['I18N_DEBUG']
@@ -282,6 +283,9 @@ module Hyku
     # Gzip all responses.  We probably could do this in an upstream proxy, but
     # configuring Nginx on Elastic Beanstalk is a pain.
     config.middleware.use Rack::Deflater
+
+    # Block search-only tenants from accessing metadata profiles
+    config.middleware.use SearchOnlyTenantBlocker
 
     # The locale is set by a query parameter, so if it's not found render 404
     config.action_dispatch.rescue_responses["I18n::InvalidLocale"] = :not_found

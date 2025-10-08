@@ -46,6 +46,9 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   end
 
   get 'status', to: 'status#index'
+  
+  # Access denied page for blocked features
+  get 'access_denied', to: 'access_denied#show'
 
   # routes for the  api
   namespace :api, defaults: { format: :json } do
@@ -98,6 +101,10 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   mount Hyrax::Engine, at: '/'
   mount Bulkrax::Engine, at: '/' if Hyku.bulkrax_enabled?
   mount HykuKnapsack::Engine, at: '/'
+  
+  # Metadata profiles routes
+  resources :metadata_profiles, only: [:index, :show, :new, :edit]
+  
   concern :searchable, Blacklight::Routes::Searchable.new
   concern :exportable, Blacklight::Routes::Exportable.new
 
@@ -161,17 +168,10 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
        as: :delete_uploaded_thumbnail
 
   if ENV.fetch('HYRAX_FLEXIBLE', false)
-    # Metadata profiles routes
-    # Add constraint to prevent search-only tenants from accessing metadata profiles
-    constraints(lambda { |req| 
-      return true unless defined?(Account) && Account.table_exists?
-      current_account = Account.from_request(req)
-      current_account.blank? || !current_account.search_only?
-    }) do    
-      resources :metadata_profiles, except: [:update, :show, :destroy] do
-        collection { post :import }
-        get 'export'
-      end
+    # Metadata profiles routes - access control handled by SearchOnlyTenantBlocker middleware
+    resources :metadata_profiles, except: [:update, :show, :destroy] do
+      collection { post :import }
+      get 'export'
     end
   end
 end

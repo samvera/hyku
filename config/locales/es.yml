@@ -1,5 +1,15 @@
 ---
 es:
+  hyku:
+    access_denied:
+      metadata_profiles:
+        title: "Acceso a Perfiles de Metadatos Denegado"
+        message: "El acceso a los perfiles de metadatos no está disponible para inquilinos de solo búsqueda."
+        details: "Este inquilino está configurado para acceso de solo búsqueda. Las funciones administrativas como la gestión de perfiles de metadatos están restringidas."
+      default:
+        title: "Acceso Denegado"
+        message: "No tienes permiso para acceder a este recurso."
+        details: "Por favor contacta a tu administrador si crees que esto es un error."
   activefedora:
     models:
       etd: Fecha de finalización estimada

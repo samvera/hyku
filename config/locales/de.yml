@@ -1,5 +1,15 @@
 ---
 de:
+  hyku:
+    access_denied:
+      metadata_profiles:
+        title: "Zugriff auf Metadatenprofile verweigert"
+        message: "Der Zugriff auf Metadatenprofile ist für reine Suchinstanzen nicht verfügbar."
+        details: "Diese Instanz ist nur für die Suche konfiguriert. Verwaltungsfunktionen wie die Metadatenprofilverwaltung sind eingeschränkt."
+      default:
+        title: "Zugriff verweigert"
+        message: "Sie haben keine Berechtigung, auf diese Ressource zuzugreifen."
+        details: "Bitte wenden Sie sich an Ihren Administrator, wenn Sie glauben, dass dies ein Fehler ist."
   activefedora:
     models:
       etd: ETD

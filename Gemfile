@@ -53,7 +53,7 @@ gem 'good_job', '~> 2.99'
 gem 'googleauth', '~> 1.9.0'
 gem 'google-protobuf'
 gem 'grpc'
-gem 'hyrax', github: 'samvera/hyrax', branch: 'fix_initialize_app'
+gem 'hyrax', github: 'samvera/hyrax', branch: '5.0-flexible'
 gem 'hyrax-doi', github: 'samvera-labs/hyrax-doi', tag: 'v0.3.0'
 gem 'hyrax-iiif_av', github: 'samvera-labs/hyrax-iiif_av', branch: 'rails_hyrax_upgrade'
 gem 'i18n-debug', require: false, group: %i[development test]

@@ -3,7 +3,8 @@
 <%# hyrax-doi doesn't work post hyrax v3.0.0 %>
 <% if Hyrax.config.flexible? %>
   <% view_options_for(presenter).each do |field, options| %>
-    <%= presenter.attribute_to_html(conform_field(field, options), conform_options(field, options)) %>
+    <% view_options = conform_options(field, options) %>
+    <%= presenter.attribute_to_html(conform_field(field, options), view_options) unless view_options[:admin_only] && !current_user.admin?  %>
   <% end %>
 <% else %>
   <%# Copied from hyrax-doi v0.2.0 %>

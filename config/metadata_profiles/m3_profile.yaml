@@ -60,7 +60,9 @@ properties:
         Enter a standardized title for display. If only one title is needed,
         transcribe the title from the source itself.
     display_label:
-      default: Title
+      en: Title
+      es: Título
+      default: blacklight.search.fields.show.title_tesim
     index_documentation: displayable, searchable
     indexing:
       - title_sim
@@ -78,9 +80,6 @@ properties:
     sample_values:
       - Pencil drawn portrait study of woman
     view:
-      label:
-        en: "Title"
-        es: "Título"
       html_dl: true
   date_modified:
     available_on:
@@ -97,20 +96,19 @@ properties:
       maximum: 1
     data_type: string
     display_label:
-      default: Date Modified
+      de: Zuletzt geändert
+      en: Last modified
+      es: Última modificación
+      fr: Dernière modification
+      it: Ultima modifica
+      pt-BR: Última modificação
+      zh: 最新修改
+      default: blacklight.search.fields.show.date_modified_dtsi
     property_uri: http://purl.org/dc/terms/modified
     range: http://www.w3.org/2001/XMLSchema#dateTime
     sample_values:
       - "2024-06-06 21:06:51 +0000"
     view:
-      label:
-        de: "Zuletzt geändert"
-        en: "Last modified"
-        es: "Última modificación"
-        fr: "Dernière modification"
-        it: "Ultima modifica"
-        pt-BR: "Última modificação"
-        zh: "最新修改"
       html_dl: true
   date_uploaded:
     available_on:
@@ -127,7 +125,7 @@ properties:
       maximum: 1
     data_type: string
     display_label:
-      default: Date Uploaded
+      default: blacklight.search.fields.show.date_uploaded_dtsi
     property_uri: http://purl.org/dc/terms/dateSubmitted
     range: http://www.w3.org/2001/XMLSchema#dateTime
     sample_values:
@@ -178,7 +176,7 @@ properties:
       sources:
         - "null"
     display_label:
-      default: Creator
+      default: blacklight.search.fields.show.creator_tesim
     index_documentation: displayable, searchable
     indexing:
       - creator_sim
@@ -192,7 +190,7 @@ properties:
     sample_values:
       - Julie Allinson
     view:
-      render_as: "faceted"
+      render_as: faceted
       html_dl: true
   license:
     available_on:
@@ -209,9 +207,9 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - "licenses"
+        - licenses
     display_label:
-      default: License
+      default: blacklight.search.fields.index.license_tesim
     index_documentation: displayable, searchable
     indexing:
       - license_sim
@@ -223,7 +221,7 @@ properties:
     sample_values:
       - http://creativecommons.org/licenses/by/3.0/us/
     view:
-      render_as: "external_link"
+      render_as: external_link
       html_dl: true
   abstract:
     available_on:
@@ -301,7 +299,9 @@ properties:
       sources:
         - "null"
     display_label:
-      default: Alternative Title
+      en: Alternative Title
+      es: Título Alternativo
+      default: blacklight.search.fields.index.alternative_title_tesim
     index_documentation: displayable, searchable
     indexing:
       - alternative_title_sim
@@ -313,9 +313,6 @@ properties:
     sample_values:
       - Alternate Title Example
     view:
-      label:
-        en: "Alternative Title"
-        es: "Título Alternativo"
       html_dl: true
   arkivo_checksum:
     available_on:
@@ -358,7 +355,7 @@ properties:
       sources:
         - "null"
     display_label:
-      default: Location
+      default: blacklight.search.fields.show.based_near_label_tesim
     index_documentation: displayable, searchable
     indexing:
       - based_near_sim
@@ -370,8 +367,7 @@ properties:
     sample_values:
       - San Diego, California, United States
     view:
-      label: Based Near
-      render_term: "based_near_label"
+      render_term: based_near_label
       html_dl: true
   bibliographic_citation:
     available_on:
@@ -419,7 +415,7 @@ properties:
       sources:
         - "null"
     display_label:
-      default: Contributor
+      default: blacklight.search.fields.show.contributor_tesim
     index_documentation: displayable, searchable
     indexing:
       - contributor_tesim
@@ -432,7 +428,7 @@ properties:
     sample_values:
       - Julie Allinson
     view:
-      render_as: "faceted"
+      render_as: faceted
       html_dl: true
   date_created:
     available_on:
@@ -451,7 +447,7 @@ properties:
       sources:
         - "null"
     display_label:
-      default: Date Created
+      default: blacklight.search.fields.show.date_created_tesim
     index_documentation: displayable, searchable
     indexing:
       - date_created_sim
@@ -463,8 +459,8 @@ properties:
     sample_values:
       - "2024-06-06 21:06:51 +0000"
     view:
-      render_as: "linked"
-      search_field: "date_created_tesim"
+      render_as: linked
+      search_field: date_created_tesim
       html_dl: true
   description:
     available_on:
@@ -483,7 +479,7 @@ properties:
       sources:
         - "null"
     display_label:
-      default: Description
+      default: blacklight.search.fields.show.description_tesim
     index_documentation: displayable, searchable
     indexing:
       - description_sim
@@ -511,7 +507,7 @@ properties:
       sources:
         - "null"
     display_label:
-      default: Identifier
+      default: blacklight.search.fields.show.identifier_tesim
     index_documentation: displayable, searchable
     indexing:
       - identifier_sim
@@ -523,8 +519,8 @@ properties:
     sample_values:
       - abc123
     view:
-      render_as: "linked"
-      search_field: "identifier_tesim"
+      render_as: linked
+      search_field: identifier_tesim
       html_dl: true
   import_url:
     available_on:
@@ -565,7 +561,7 @@ properties:
       sources:
         - "null"
     display_label:
-      default: Keyword
+      default: blacklight.search.fields.show.keyword_tesim
     index_documentation: displayable, searchable
     indexing:
       - keyword_sim
@@ -579,7 +575,7 @@ properties:
       - Metadata
       - Repository
     view:
-      render_as: "faceted"
+      render_as: faceted
       html_dl: true
   label:
     available_on:
@@ -627,7 +623,7 @@ properties:
       sources:
         - "null"
     display_label:
-      default: Language
+      default: blacklight.search.fields.show.language_tesim
     index_documentation: displayable, searchable
     indexing:
       - language_sim
@@ -641,7 +637,7 @@ properties:
       - English
       - Spanish
     view:
-      render_as: "faceted"
+      render_as: faceted
       html_dl: true
   publisher:
     available_on:
@@ -660,7 +656,7 @@ properties:
       sources:
         - "null"
     display_label:
-      default: Publisher
+      default: blacklight.search.fields.show.publisher_tesim
     index_documentation: displayable, searchable
     indexing:
       - publisher_sim
@@ -673,7 +669,7 @@ properties:
     sample_values:
       - Scholastic
     view:
-      render_as: "faceted"
+      render_as: faceted
       html_dl: true
   related_url:
     available_on:
@@ -692,7 +688,7 @@ properties:
       sources:
         - "null"
     display_label:
-      default: Related URL
+      default: blacklight.search.fields.index.related_url_tesim
     index_documentation: displayable, searchable
     indexing:
       - related_url_sim
@@ -704,7 +700,7 @@ properties:
     sample_values:
       - http://example.com/resource1
     view:
-      render_as: "external_link"
+      render_as: external_link
       html_dl: true
   relative_path:
     available_on:
@@ -744,9 +740,9 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - "resource_types"
+        - resource_types
     display_label:
-      default: Resource Type
+      default: blacklight.search.fields.index.resource_type_tesim
     index_documentation: displayable, searchable
     indexing:
       - resource_type_sim
@@ -760,7 +756,7 @@ properties:
       - Article
       - Conference Proceeding
     view:
-      render_as: "faceted"
+      render_as: faceted
       html_dl: true
   rights_notes:
     available_on:
@@ -807,9 +803,9 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - "rights_statements"
+        - rights_statements
     display_label:
-      default: Rights Statement
+      default: blacklight.search.fields.index.rights_statement_tesim
     index_documentation: displayable, searchable
     indexing:
       - rights_statement_sim
@@ -823,7 +819,7 @@ properties:
       - http://rightsstatements.org/vocab/InC/1.0/
     view:
       html_dl: true
-      render_as: "rights_statement"
+      render_as: rights_statement
   source:
     available_on:
       class:
@@ -872,7 +868,7 @@ properties:
       sources:
         - "null"
     display_label:
-      default: Subject
+      default: blacklight.search.fields.show.subject_tesim
     index_documentation: displayable, searchable
     indexing:
       - subject_sim
@@ -886,7 +882,7 @@ properties:
       - Art
       - Science
     view:
-      render_as: "faceted"
+      render_as: faceted
       html_dl: true
   department:
     available_on:
@@ -946,10 +942,10 @@ properties:
       sources:
         - "null"
     display_label:
-      default: Format
+      default: blacklight.search.fields.index.format_tesim
     index_documentation: searchable
     indexing:
-      - "format_tesim"
+      - format_tesim
     form:
       required: false
       primary: false
@@ -958,7 +954,6 @@ properties:
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
       - PDF
-  # Image-specific metadata from image_resource.yaml
   extent:
     available_on:
       class:
@@ -971,10 +966,10 @@ properties:
       sources:
         - "null"
     display_label:
-      default: Extent
+      default: blacklight.search.fields.show.extent_tesim
     index_documentation: searchable
     indexing:
-      - "extent_tesim"
+      - extent_tesim
     form:
       required: false
       primary: false
@@ -982,9 +977,8 @@ properties:
     property_uri: http://purl.org/dc/terms/extent
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
-      - "300 dpi"
-      - "1024x768 pixels"
-  # OER-specific metadata from oer_resource.yaml
+      - 300 dpi
+      - 1024x768 pixels
   accessibility_feature:
     available_on:
       class:
@@ -997,11 +991,11 @@ properties:
       sources:
         - "null"
     display_label:
-      default: Accessibility Feature
+      default: blacklight.search.fields.index.accessibility_feature_tesim
     index_documentation: displayable, searchable
     indexing:
-      - "accessibility_feature_tesim"
-      - "accessibility_feature_sim"
+      - accessibility_feature_tesim
+      - accessibility_feature_sim
     form:
       primary: false
       multiple: true
@@ -1023,11 +1017,11 @@ properties:
       sources:
         - "null"
     display_label:
-      default: Accessibility Hazard
+      default: blacklight.search.fields.index.accessibility_hazard_tesim
     index_documentation: displayable, searchable
     indexing:
-      - "accessibility_hazard_tesim"
-      - "accessibility_hazard_sim"
+      - accessibility_hazard_tesim
+      - accessibility_hazard_sim
     form:
       primary: false
       multiple: true
@@ -1048,11 +1042,11 @@ properties:
       sources:
         - "null"
     display_label:
-      default: Accessibility Summary
+      default: blacklight.search.fields.index.accessibility_summary_tesim
     index_documentation: displayable, searchable
     indexing:
-      - "accessibility_summary_tesim"
-      - "accessibility_summary_sim"
+      - accessibility_summary_tesim
+      - accessibility_summary_sim
     form:
       primary: false
       multiple: false
@@ -1075,10 +1069,10 @@ properties:
       sources:
         - "null"
     display_label:
-      default: Admin Note
+      default: blacklight.search.fields.index.admin_note_tesim
     index_documentation: searchable
     indexing:
-      - "admin_note_tesim"
+      - admin_note_tesim
     form:
       primary: false
       multiple: false
@@ -1102,10 +1096,10 @@ properties:
       sources:
         - "null"
     display_label:
-      default: Additional Information
+      default: blacklight.search.fields.index.additional_information_tesim
     index_documentation: searchable
     indexing:
-      - "additional_information_tesim"
+      - additional_information_tesim
     form:
       primary: false
       multiple: true
@@ -1129,8 +1123,8 @@ properties:
       default: Alternate Version ID
     index_documentation: displayable, searchable
     indexing:
-      - "alternate_version_id_tesim"
-      - "alternate_version_id_sim"
+      - alternate_version_id_tesim
+      - alternate_version_id_sim
     property_uri: http://purl.org/dc/terms/hasVersion
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
@@ -1146,13 +1140,13 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - "audience"
+        - audience
     display_label:
-      default: Audience
+      default: blacklight.search.fields.index.audience_tesim
     index_documentation: displayable, searchable
     indexing:
-      - "audience_tesim"
-      - "audience_sim"
+      - audience_tesim
+      - audience_sim
     form:
       required: true
       primary: true
@@ -1163,7 +1157,7 @@ properties:
       - Instructor
     view:
       html_dl: true
-      render_as: "faceted"
+      render_as: faceted
   date:
     available_on:
       class:
@@ -1177,11 +1171,11 @@ properties:
       sources:
         - "null"
     display_label:
-      default: Date
+      default: blacklight.search.fields.index.date_tesim
     index_documentation: displayable, searchable
     indexing:
-      - "date_tesim"
-      - "date_sim"
+      - date_tesim
+      - date_sim
     property_uri: https://hykucommons.org/terms/date
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
@@ -1197,23 +1191,23 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - "discipline"
+        - discipline
     display_label:
-      default: Discipline
+      default: blacklight.search.fields.index.discipline_tesim
     index_documentation: searchable
     indexing:
-      - "discipline_tesim"
+      - discipline_tesim
     form:
       required: true
       primary: true
     property_uri: https://hykucommons.org/terms/degree_discipline
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
-      - "Languages - Spanish"
-      - "Natural Sciences - Physics"
+      - Languages - Spanish
+      - Natural Sciences - Physics
     view:
       html_dl: true
-      render_as: "faceted"
+      render_as: faceted
   education_level:
     available_on:
       class:
@@ -1224,24 +1218,24 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - "education_levels"
+        - education_levels
     display_label:
-      default: Education Level
+      default: blacklight.search.fields.index.education_level_tesim
     index_documentation: displayable, searchable
     indexing:
-      - "education_level_tesim"
-      - "education_level_sim"
+      - education_level_tesim
+      - education_level_sim
     form:
       required: true
       primary: true
     property_uri: http://purl.org/dc/terms/educationLevel
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
-      - "Community college / Lower division"
-      - "College / Upper division"
+      - Community college / Lower division
+      - College / Upper division
     view:
       html_dl: true
-      render_as: "faceted"
+      render_as: faceted
   learning_resource_type:
     available_on:
       class:
@@ -1252,24 +1246,24 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - "learning_resource_types"
+        - learning_resource_types
     display_label:
-      default: Learning Resource Type
+      default: blacklight.search.fields.index.learning_resource_type_tesim
     index_documentation: displayable, searchable
     indexing:
-      - "learning_resource_type_tesim"
-      - "learning_resource_type_sim"
+      - learning_resource_type_tesim
+      - learning_resource_type_sim
     form:
       required: true
       primary: true
     property_uri: http://schema.org/learningResourceType
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
-      - "Activity/lab"
-      - "Assessment (test, quizzes, etc.)"
+      - Activity/lab
+      - Assessment (test, quizzes, etc.)
     view:
       html_dl: true
-      render_as: "faceted"
+      render_as: faceted
   newer_version_id:
     available_on:
       class:
@@ -1285,8 +1279,8 @@ properties:
       default: Newer Version ID
     index_documentation: displayable, searchable
     indexing:
-      - "newer_version_id_tesim"
-      - "newer_version_id_sim"
+      - newer_version_id_tesim
+      - newer_version_id_sim
     property_uri: http://purl.org/dc/terms/isReplacedBy
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
@@ -1307,7 +1301,7 @@ properties:
       default: OER Size
     index_documentation: searchable
     indexing:
-      - "oer_size_tesim"
+      - oer_size_tesim
     form:
       primary: false
       multiple: true
@@ -1331,8 +1325,8 @@ properties:
       default: Previous Version ID
     index_documentation: displayable, searchable
     indexing:
-      - "previous_version_id_tesim"
-      - "previous_version_id_sim"
+      - previous_version_id_tesim
+      - previous_version_id_sim
     property_uri: http://purl.org/dc/terms/replaces
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
@@ -1353,8 +1347,8 @@ properties:
       default: Related Item ID
     index_documentation: displayable, searchable
     indexing:
-      - "related_item_id_tesim"
-      - "related_item_id_sim"
+      - related_item_id_tesim
+      - related_item_id_sim
     property_uri: http://purl.org/dc/terms/relation
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
@@ -1372,11 +1366,11 @@ properties:
       sources:
         - "null"
     display_label:
-      default: Rights Holder
+      default: blacklight.search.fields.index.rights_holder_tesim
     index_documentation: displayable, searchable
     indexing:
-      - "rights_holder_tesim"
-      - "rights_holder_sim"
+      - rights_holder_tesim
+      - rights_holder_sim
     form:
       primary: false
       multiple: true
@@ -1400,7 +1394,7 @@ properties:
       default: Table of Contents
     index_documentation: searchable
     indexing:
-      - "table_of_contents_tesim"
+      - table_of_contents_tesim
     form:
       primary: false
       multiple: true
@@ -1410,7 +1404,6 @@ properties:
       - "Chapter 1: Introduction"
       - "Chapter 2: Literature Review"
       - "Chapter 3: Methodology"
-  # ETD-specific metadata - etd_resource.yaml
   advisor:
     available_on:
       class:
@@ -1426,7 +1419,7 @@ properties:
       default: Advisor
     index_documentation: searchable
     indexing:
-      - "advisor_tesim"
+      - advisor_tesim
     form:
       required: false
       primary: false
@@ -1451,7 +1444,7 @@ properties:
       default: Committee Member
     index_documentation: searchable
     indexing:
-      - "committee_member_tesim"
+      - committee_member_tesim
     form:
       required: false
       primary: false
@@ -1476,7 +1469,7 @@ properties:
       default: Degree Name
     index_documentation: searchable
     indexing:
-      - "degree_name_tesim"
+      - degree_name_tesim
     form:
       required: true
       primary: true
@@ -1503,7 +1496,7 @@ properties:
       default: Degree Level
     index_documentation: searchable
     indexing:
-      - "degree_level_tesim"
+      - degree_level_tesim
     form:
       required: true
       primary: true
@@ -1530,7 +1523,7 @@ properties:
       default: Degree Discipline
     index_documentation: searchable
     indexing:
-      - "degree_discipline_tesim"
+      - degree_discipline_tesim
     form:
       required: true
       primary: true
@@ -1557,7 +1550,7 @@ properties:
       default: Degree Grantor
     index_documentation: searchable
     indexing:
-      - "degree_grantor_tesim"
+      - degree_grantor_tesim
     form:
       required: true
       primary: true
@@ -1569,7 +1562,6 @@ properties:
       - Example State University
     view:
       html_dl: true
-  # Bulkrax metadata from bulkrax_metadata.yaml
   bulkrax_identifier:
     available_on:
       class:
@@ -1591,8 +1583,8 @@ properties:
       default: Bulkrax Identifier
     index_documentation: displayable, searchable
     indexing:
-      - "bulkrax_identifier_tesim"
-      - "bulkrax_identifier_ssi"
+      - bulkrax_identifier_tesim
+      - bulkrax_identifier_ssi
     form:
       display: false
       primary: false
@@ -1602,7 +1594,6 @@ properties:
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
       - example-bulkrax-identifier
-  # PDF.js metadata from with_pdf_viewer.yaml
   show_pdf_viewer:
     available_on:
       class:
@@ -1622,7 +1613,7 @@ properties:
       default: Show PDF Viewer
     index_documentation: displayable, searchable
     indexing:
-      - "show_pdf_viewer_bsi"
+      - show_pdf_viewer_bsi
     form:
       display: false
       primary: false
@@ -1652,7 +1643,7 @@ properties:
       default: Show PDF Download Button
     index_documentation: displayable, searchable
     indexing:
-      - "show_pdf_download_button_bsi"
+      - show_pdf_download_button_bsi
     form:
       display: false
       primary: false
@@ -1663,7 +1654,6 @@ properties:
     sample_values:
       - "0"
       - "1"
-  # Video Embed metadata - with_video_embed.yaml
   video_embed:
     available_on:
       class:
@@ -1683,7 +1673,7 @@ properties:
       default: Video Embed
     index_documentation: searchable
     indexing:
-      - "video_embed_tesi"
+      - video_embed_tesi
     form:
       display: true
       primary: false
@@ -1692,9 +1682,8 @@ properties:
     property_uri: https://atla.com/terms/video_embed
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
-      - "https://player.vimeo.com/video/467264493?h=b089de0eab"
-      - "https://www.youtube.com/embed/Znf73dsFdC8"
-  # IiifPrint metadata - child_works_from_pdf_splitting.yaml
+      - https://player.vimeo.com/video/467264493?h=b089de0eab
+      - https://www.youtube.com/embed/Znf73dsFdC8
   is_child:
     available_on:
       class:
@@ -1714,7 +1703,7 @@ properties:
       default: Is Child
     index_documentation: displayable, searchable
     indexing:
-      - "is_child_bsi"
+      - is_child_bsi
     form:
       display: false
       required: false
@@ -1744,7 +1733,7 @@ properties:
       default: Split from PDF ID
     index_documentation: searchable
     indexing:
-      - "split_from_pdf_id_ssi"
+      - split_from_pdf_id_ssi
     form:
       display: false
       required: false
@@ -1781,7 +1770,7 @@ properties:
       - 50" x 20"
       - 5 m x 10 m x 8 m
     view:
-      render_as: "faceted"
+      render_as: faceted
       html_dl: true
   hide_from_catalog_search:
     available_on:

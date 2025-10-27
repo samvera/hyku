@@ -7,8 +7,9 @@
     <% render_attribute = value.present? && (value.is_a?(Enumerable) ? value.any?(&:present?) : true) %>
     <% if field == :admin_note %>
       <%= presenter.attribute_to_html(:admin_note, options) if presenter.editor? && render_attribute %>
-    <% else %>
-      <%= presenter.attribute_to_html(conform_field(field, options), conform_options(field, options)) if render_attribute %>
+    <% elsif render_attribute %>
+      <% view_options = conform_options(field, options) %>
+      <%= presenter.attribute_to_html(conform_field(field, options), view_options) unless view_options[:admin_only] && !current_user.admin?  %>
     <% end %>
   <% end %>
   <% else %>

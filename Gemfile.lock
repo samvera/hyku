@@ -142,7 +142,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: 576d68d1f47e0b8099d28327e1486502f52dabd6
+  revision: 52bb262f7af0c29c3bdf893013f5ae3e135bacb6
   branch: 5.0-flexible
   specs:
     hyrax (5.0.5)
@@ -660,7 +660,7 @@ GEM
       mutex_m
       representable (~> 3.0)
       retriable (>= 2.0, < 4.a)
-    google-apis-drive_v3 (0.72.0)
+    google-apis-drive_v3 (0.73.0)
       google-apis-core (>= 0.15.0, < 2.a)
     google-cloud-core (1.8.0)
       google-cloud-env (>= 1.0, < 3.a)

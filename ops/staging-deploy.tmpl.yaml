@@ -177,6 +177,8 @@ extraEnvVars: &envVars
     value: $SOLR_ADMIN_PASSWORD
   - name: SOLR_COLLECTION_NAME
     value: hyku-staging
+  - name: SOLR_COLLECTION_REPLICAS
+    value: "2"
   - name: SOLR_CONFIGSET_NAME
     value: hyku-staging
   - name: SOLR_HOST

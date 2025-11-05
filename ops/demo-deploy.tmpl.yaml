@@ -188,11 +188,11 @@ extraEnvVars: &envVars
   - name: SOLR_CONFIGSET_NAME
     value: hyku-demo-2
   - name: SOLR_HOST
-    value: solr.solr
+    value: solr.solr.svc.cluster.local
   - name: SOLR_PORT
     value: "8983"
   - name: SOLR_URL
-    value: http://admin:$SOLR_ADMIN_PASSWORD@solr.solr:8983/solr/
+    value: http://admin:$SOLR_ADMIN_PASSWORD@solr.solr.svc.cluster.local:8983/solr/
   - name: SECRET_KEY_BASE
     value: $SECRET_KEY_BASE
   - name: SENTRY_DSN

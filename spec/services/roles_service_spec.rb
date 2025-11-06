@@ -513,26 +513,34 @@ RSpec.describe RolesService, clean: true do
 
   describe 'CleanReviewSubmissionsPageJob' do
     describe '#perform' do
-      let!(:entity1) { create(:sipity_entity) }
-      let!(:entity2) { create(:sipity_entity) }
-      let!(:entity3) { create(:sipity_entity) }
-      let!(:entity4) { create(:sipity_entity) }
+      let(:entity1) { instance_double(Sipity::Entity, id: 1) }
+      let(:entity2) { instance_double(Sipity::Entity, id: 2) }
+      let(:entity3) { instance_double(Sipity::Entity, id: 3) }
+      let(:entity4) { instance_double(Sipity::Entity, id: 4) }
+      let(:entities) { [entity1, entity2, entity3, entity4] }
 
       before do
+        allow(Sipity::Entity).to receive(:find_each).and_yield(entity1).and_yield(entity2).and_yield(entity3).and_yield(entity4)
         allow(entity1).to receive(:proxy_for).and_raise(Ldp::Gone)
+        allow(entity1).to receive(:destroy)
         allow(entity2).to receive(:proxy_for).and_raise(Ldp::NotFound)
+        allow(entity2).to receive(:destroy)
         allow(entity3).to receive(:proxy_for).and_raise(Valkyrie::Persistence::ObjectNotFoundError)
+        allow(entity3).to receive(:destroy)
         allow(entity4).to receive(:proxy_for).and_return(true)
+        allow(entity4).to receive(:destroy)
       end
 
       it 'destroys entities that raise any of the target errors' do
-        expect { roles_service.valid_jobs[:clean_review_submissions_page].new.perform }
-          .to change { Sipity::Entity.count }.by(-3)
+        roles_service.valid_jobs[:clean_review_submissions_page].new.perform
+        expect(entity1).to have_received(:destroy)
+        expect(entity2).to have_received(:destroy)
+        expect(entity3).to have_received(:destroy)
       end
 
       it 'does not destroy entities that return successfully' do
         roles_service.valid_jobs[:clean_review_submissions_page].new.perform
-        expect(Sipity::Entity.exists?(entity4.id)).to be true
+        expect(entity4).not_to have_received(:destroy)
       end
     end
   end

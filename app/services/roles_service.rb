@@ -355,11 +355,9 @@ class RolesService # rubocop:disable Metrics/ClassLength
   class CleanReviewSubmissionsPageJob < Hyrax::ApplicationJob
     def perform
       Sipity::Entity.find_each do |entity|
-        begin
-          entity.proxy_for
-        rescue Ldp::Gone, Ldp::NotFound, Valkyrie::Persistence::ObjectNotFoundError
-          entity.destroy
-        end
+        entity.proxy_for
+      rescue Ldp::Gone, Ldp::NotFound, Valkyrie::Persistence::ObjectNotFoundError
+        entity.destroy
       end
     end
   end

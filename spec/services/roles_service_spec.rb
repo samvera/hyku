@@ -511,6 +511,32 @@ RSpec.describe RolesService, clean: true do
     end
   end
 
+  describe 'CleanReviewSubmissionsPageJob' do
+    describe '#perform' do
+      let!(:entity1) { create(:sipity_entity) }
+      let!(:entity2) { create(:sipity_entity) }
+      let!(:entity3) { create(:sipity_entity) }
+      let!(:entity4) { create(:sipity_entity) }
+
+      before do
+        allow(entity1).to receive(:proxy_for).and_raise(Ldp::Gone)
+        allow(entity2).to receive(:proxy_for).and_raise(Ldp::NotFound)
+        allow(entity3).to receive(:proxy_for).and_raise(Valkyrie::Persistence::ObjectNotFoundError)
+        allow(entity4).to receive(:proxy_for).and_return(true)
+      end
+
+      it 'destroys entities that raise any of the target errors' do
+        expect { roles_service.valid_jobs[:clean_review_submissions_page].new.perform }
+          .to change { Sipity::Entity.count }.by(-3)
+      end
+
+      it 'does not destroy entities that return successfully' do
+        roles_service.valid_jobs[:clean_review_submissions_page].new.perform
+        expect(Sipity::Entity.exists?(entity4.id)).to be true
+      end
+    end
+  end
+
   def access_count_for(role, permission_template, access)
     permission_template.access_grants.where(
       agent_type: Hyrax::PermissionTemplateAccess::GROUP,

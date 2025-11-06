@@ -24,55 +24,8 @@ de:
         show:
           additional_information: Weitere Rechteinformationen
     slideshow_info: Wählen Sie ein Bild aus, um die Diashow zu starten
-  errors:
-    messages:
-      valid_embed_url: muss eine gültige YouTube- oder Vimeo-Einbettungs-URL sein.
-  helpers:
-    action:
-      become: Werden
-    submit:
-      add_role_to_group:
-        submit: Hinzufügen
-      add_user_to_group:
-        submit: Hinzufügen
-      group_search:
-        submit: Suche
-      page_size:
-        submit: Aktualisieren
-      remove_role_from_group:
-        submit: Entfernen
-      revoke_membership:
-        submit: Entfernen
-      user_search:
-        submit: Suche
-  hyku:
-    account:
-      signup_disabled: Kontoanmeldung ist deaktiviert
-    admin:
-      flash:
-        access_denied: Sie sind nicht berechtigt, diese Seite anzuzeigen
-      google_analytics_settings:
-        header: "Analytics-Konfiguration"
-        matomo_setup:
-          header: "Matomo-Einrichtung erforderlich:"
-          body: "Zusätzliche Konfiguration ist erforderlich, um die Matomo-Analytics-Einrichtung abzuschließen. Bitte stellen Sie sicher, dass Ihr Systemadministrator die erforderlichen Matomo-Umgebungsvariablen (MATOMO_BASE_URL, MATOMO_SITE_ID, MATOMO_AUTH_TOKEN) konfiguriert hat."
-        ga4_setup_required:
-          header: "Google Analytics 4-Einrichtung ist erforderlich:"
-          body: "Ihr System ist für die Verwendung von Google Analytics 4 konfiguriert, aber die globalen Dienstkonten-Anmeldeinformationen sind nicht konfiguriert. Bitte wenden Sie sich an Ihren Systemadministrator, um die erforderlichen Umgebungsvariablen (GOOGLE_ACCOUNT_JSON oder GOOGLE_ACCOUNT_JSON_PATH) einzurichten."
-        ga4_configured:
-          header: "Google Analytics 4:"
-          body: "Ihr System ist für die Verwendung von Google Analytics 4 konfiguriert. Konfigurieren Sie Ihre GA4-Einstellungen unten, um Analytics für Ihren Mandanten zu verfolgen."
-        universal_analytics_warning:
-          header: "Google Universal Analytics:"
-          body: "Ihr System verwendet Google Universal Analytics (Legacy). Google hat Universal Analytics eingestellt. Erwägen Sie ein Upgrade auf Google Analytics 4."
-        error_messages:
-          google_analytics_id: "muss eine gültige Google Analytics 4-Mess-ID sein (z.B. G-XXXXXXXXXX)"
-          google_analytics_property_id: "muss eine numerische Eigenschafts-ID sein (z.B. 123456789)"
   bulkrax:
     admin:
-      sidebar:
-        importers: Importeure
-        exporters: Exporteure
       groups:
         action:
           create: Neue Gruppe erstellen
@@ -91,7 +44,7 @@ de:
         description:
           admin: Benutzer in dieser Gruppe gelten als Administratoren für diesen Mandanten und haben uneingeschränkten Zugriff.
           depositors: Benutzer in dieser Gruppe dürfen Works in jedem Admin-Set dieses Mandanten hinterlegen.
-          editors: "Benutzer in dieser Gruppe dürfen alle Sammlungen und Werke in diesem Mandanten lesen und bearbeiten. Sie können auch: Sammlungen erstellen, Werke hinterlegen und genehmigen, Embargos und Leasingverträge verwalten und Bulkrax-Importeure und -Exporteure verwalten."
+          editors: 'Benutzer in dieser Gruppe dürfen alle Sammlungen und Werke in diesem Mandanten lesen und bearbeiten. Sie können auch: Sammlungen erstellen, Werke hinterlegen und genehmigen, Embargos und Leasingverträge verwalten und Bulkrax-Importeure und -Exporteure verwalten.'
           registered: Enthält alle Benutzer, die sich bei diesem Mandanten angemeldet haben.
         flash:
           create:
@@ -158,6 +111,9 @@ de:
           user_reader: Kann jeden Benutzer in diesem Mandanten lesen
           work_depositor: Kann Works in ein beliebiges Admin-Set dieses Mandanten einzahlen. Kann Embargos / Leasingverträge für dazugehörige Werke lesen, bearbeiten und verwalten
           work_editor: Kann jedes Admin-Set in diesem Mandanten lesen. Sie können auch alle Arbeiten in diesem Mandanten erstellen, lesen, bearbeiten und genehmigen sowie Arbeiten zwischen Verwaltungssätzen verschieben und Embargos und Leases verwalten
+      sidebar:
+        exporters: Exporteure
+        importers: Importeure
       title: Verwaltung
       work_types: Verfügbare Arbeitstypen
     footer:
@@ -207,6 +163,184 @@ de:
         last_login: Letzter Zugriff
         name: Name
         user_key: Benutzername
+  errors:
+    messages:
+      valid_embed_url: muss eine gültige YouTube- oder Vimeo-Einbettungs-URL sein.
+  helpers:
+    action:
+      become: Werden
+    submit:
+      add_role_to_group:
+        submit: Hinzufügen
+      add_user_to_group:
+        submit: Hinzufügen
+      group_search:
+        submit: Suche
+      page_size:
+        submit: Aktualisieren
+      remove_role_from_group:
+        submit: Entfernen
+      revoke_membership:
+        submit: Entfernen
+      user_search:
+        submit: Suche
+  hyku:
+    account:
+      signup_disabled: Kontoanmeldung ist deaktiviert
+    admin:
+      flash:
+        access_denied: Sie sind nicht berechtigt, diese Seite anzuzeigen
+      google_analytics_settings:
+        error_messages:
+          google_analytics_id: muss eine gültige Google Analytics 4-Mess-ID sein (z.B. G-XXXXXXXXXX)
+          google_analytics_property_id: muss eine numerische Eigenschafts-ID sein (z.B. 123456789)
+        ga4_configured:
+          body: Ihr System ist für die Verwendung von Google Analytics 4 konfiguriert. Konfigurieren Sie Ihre GA4-Einstellungen unten, um Analytics für Ihren Mandanten zu verfolgen.
+          header: 'Google Analytics 4:'
+        ga4_setup_required:
+          body: Ihr System ist für die Verwendung von Google Analytics 4 konfiguriert, aber die globalen Dienstkonten-Anmeldeinformationen sind nicht konfiguriert. Bitte wenden Sie sich an Ihren Systemadministrator, um die erforderlichen Umgebungsvariablen (GOOGLE_ACCOUNT_JSON oder GOOGLE_ACCOUNT_JSON_PATH) einzurichten.
+          header: 'Google Analytics 4-Einrichtung ist erforderlich:'
+        header: Analytics-Konfiguration
+        matomo_setup:
+          body: Zusätzliche Konfiguration ist erforderlich, um die Matomo-Analytics-Einrichtung abzuschließen. Bitte stellen Sie sicher, dass Ihr Systemadministrator die erforderlichen Matomo-Umgebungsvariablen (MATOMO_BASE_URL, MATOMO_SITE_ID, MATOMO_AUTH_TOKEN) konfiguriert hat.
+          header: 'Matomo-Einrichtung erforderlich:'
+        universal_analytics_warning:
+          body: Ihr System verwendet Google Universal Analytics (Legacy). Google hat Universal Analytics eingestellt. Erwägen Sie ein Upgrade auf Google Analytics 4.
+          header: 'Google Universal Analytics:'
+      groups:
+        action:
+          create: Neue Gruppe erstellen
+          edit: Gruppe und Benutzer bearbeiten
+          members:
+            description: Gruppenmitglieder übernehmen alle dieser Gruppe zugewiesenen Berechtigungen.
+          per_page: Aktualisieren
+          remove:
+            confirmation: Möchten Sie diese Gruppe wirklich entfernen?
+            description: Diese Aktion ist unumkehrbar. Sie entfernt sämtliche Berechtigungen, die Gruppenmitgliedern über diese Gruppe zugewiesen wurden.
+            submit: Entfernen
+          search:
+            clear: Zurücksetzen
+        describe_quantity_html: In diesem Repository gibt es <b>%{number} Gruppen</b> .
+        describe_singular_quantity_html: In diesem Repository gibt es <b>1 Gruppe</b> .
+        description:
+          admin: Benutzer dieser Gruppe gelten als Administratoren für diesen Mandanten und haben uneingeschränkten Zugriff.
+          depositors: Benutzer dieser Gruppe dürfen Werke in jedes Admin-Set dieses Mandanten hochladen.
+          editors: 'Benutzer dieser Gruppe dürfen alle Sammlungen und Werke in diesem Mandanten lesen und bearbeiten. Sie können außerdem: Sammlungen erstellen, Werke einreichen und genehmigen, Sperrfristen und Mietverträge verwalten sowie Bulkrax-Importeure und -Exporteure verwalten.'
+          registered: Enthält alle Benutzer, die sich in diesem Mandanten registriert haben.
+        flash:
+          create:
+            failure: Gruppe konnte nicht erstellt werden
+            invalid: Gruppen müssen einen Namen haben
+            success: "%{group} erstellt"
+          destroy:
+            failure: "%{group} konnte nicht zerstört werden"
+            success: "%{group} zerstört"
+          remove:
+            cannot_destroy_default_group: Standardgruppen können nicht zerstört werden
+          update:
+            failure: "%{group} konnte nicht aktualisiert werden"
+            success: "%{group} aktualisiert"
+        humanized_name:
+          admin: Repository-Administratoren
+          group/admin: Administrator
+          group/public: Unbefugte Benutzer
+          group/work_editor: Redakteur
+          registered: Registrierte Benutzer
+        label:
+          actions: Aktionen
+          created_at: Erstellungsdatum
+          description: Beschreibung
+          humanized_name: Name
+          members: Benutzer
+          name: Name
+          per_page: pro Seite
+          roles: Rollen
+        nav:
+          attributes: Beschreibung
+          delete: Entfernen
+          index: Zurück zu Gruppen verwalten
+          members: Benutzer
+          roles: Rollen
+        roles:
+          add: Hinzufügen
+          label:
+            action: Aktion
+            description: Beschreibung
+            name: Rolle
+          remove: Entfernen
+          title:
+            add_group_roles: Rollen zur Gruppe hinzufügen
+            current_group_roles: Aktuelle Gruppenrollen
+        title:
+          add_user: Benutzer zur Gruppe hinzufügen
+          delete: Gruppe „%{group}“ entfernen
+          edit: Gruppe bearbeiten
+          index: Gruppen verwalten
+          list_members: Aktuelle Gruppenmitglieder
+          members: Gruppenmitglieder
+          new: Neue Gruppe
+          reader_index: Gruppen anzeigen
+          remove: Gruppe entfernen
+          roles: Gruppenrollen
+      roles:
+        description:
+          admin: Gewährt diesem Mieter uneingeschränkten Zugriff.
+          collection_editor: Kann jede Sammlung in diesem Mandanten erstellen, lesen und bearbeiten.
+          collection_manager: Kann jede Sammlung in diesem Mandanten erstellen, lesen, bearbeiten und löschen.
+          collection_reader: Kann jede Sammlung in diesem Mandanten lesen.
+          user_manager: Kann jeden Benutzer in diesem Mandanten lesen, bearbeiten, einladen und entfernen.
+          user_reader: Kann jeden Benutzer in diesem Mandanten lesen
+          work_depositor: Kann Werke in jedem Admin-Set dieses Mandanten ablegen. Kann Sperrfristen/Mietverträge für die zugehörigen Werke lesen, bearbeiten und verwalten.
+          work_editor: Kann alle Arbeiten in diesem Mandanten erstellen, lesen, bearbeiten und genehmigen sowie Arbeiten zwischen Verwaltungssätzen verschieben und Sperrfristen und Mietverträge verwalten.
+      title: Verwaltung
+      work_types: Verfügbare Arbeitsarten
+    footer:
+      admin_login: Administrator-Login
+    identity_provider:
+      header: Authentifizierungsidentitätsanbieter
+      label:
+        create_new: Neu
+        edit: Bearbeiten
+        logo: Logo
+        logo_image: Bild für SSO-Seite
+        logo_image_alt_text: Alternativtext für Bild
+        name: Name oder Beschreibung
+        options: Optionen
+        provider: Anbieter
+        updated_at: Aktualisiert am
+    proprietor:
+      accounts:
+        nav: Konten
+      users:
+        edit:
+          header: Benutzer bearbeiten
+        index:
+          confirm_delete: Sind Sie sicher, dass Sie diesen Benutzer löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.
+          header: Benutzer verwalten
+          manage: Verwalten
+        nav: Benutzer
+        show:
+          header: Benutzer verwalten
+          update: Aktualisieren
+    splash:
+      account_denied: Sie sind nicht berechtigt, Mieter anzulegen.
+      account_login: Melden Sie sich an, um loszulegen.
+      account_signup: Los geht's
+      center_heading: Funktionsreich
+      center_text: Alle Funktionen, die man von einem ausgereiften Repository-System erwartet. Unterstützt eine Vielzahl von Inhaltstypen und Anwendungsfällen.
+      left_heading: Einfach
+      left_text: Funktioniert für große und kleine Institutionen, von Museen bis hin zu Universitätsbibliotheken. Legen Sie in wenigen Minuten los.
+      right_heading: Flexibel
+      right_text: Passen Sie die Benutzeroberfläche an die Markenidentität Ihrer Institution an. Optimieren Sie die Arbeitsabläufe für die Arbeitsweise Ihrer Mitarbeiter.
+    toolbar:
+      profile:
+        edit_registration: Kennwort ändern
+    users:
+      label:
+        date_joined: Beigetreten
+        last_login: Letzter Zugriff
+        name: Name
+        user_key: Benutzername
   hyrax:
     admin:
       appearances:
@@ -235,7 +369,7 @@ de:
             favicon:
               hint: Favicons müssen PNG-Dateien und quadratisch sein. Die maximal verwendete Größe beträgt 228 x 228 Pixel.
             link_color:
-              hint: "Betrifft Links auf der Startseite und der Arbeitsseite, einschließlich: Breadcrumbs, Tabs, Titel und Nutzungsbedingungen."
+              hint: 'Betrifft Links auf der Startseite und der Arbeitsseite, einschließlich: Breadcrumbs, Tabs, Titel und Nutzungsbedingungen.'
             logo_image:
               hint: Um ein Bild als Logo zu verwenden, sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das nicht höher als der Header und nicht breiter als 400 Pixel ist.
             navbar_background_color:
@@ -271,6 +405,9 @@ de:
       roles_service_jobs:
         header: Datenreparaturjobs
         jobs:
+          clean_review_submissions_page:
+            description: Dieser Job entfernt die leeren Einträge von der Seite „Überprüfungseinreichungen“ und korrigiert die angezeigten Zählerstände.
+            label: Seite für Einreichungen von sauberen Rezensionen
           create_admin_set_accesses:
             description: Durch das Erstellen eines Hyrax::PermissionTemplateAccess-Datensatzes (kombiniert mit Ability#user_groups) können Werke in allen AdminSets in Blacklight-/Solr-Abfragen angezeigt werden.
             label: Erstellen von Admin-Set-Zugriffen
@@ -281,7 +418,7 @@ de:
             description: Da einige der Sammlungsrollen Zugriff auf jede Sammlung innerhalb eines Mandanten haben, erstellen Sie für sie einen Hyrax::CollectionTypeParticipant-Datensatz für jeden Hyrax::CollectionType (außer dem AdminSet).
             label: Teilnehmer des Sammlungstyps erstellen
           grant_workflow_roles_for_all_admin_sets:
-            description: "Die Berechtigungen zum Hinterlegen von Werken werden durch Workflow-Rollen in einzelnen AdminSets gesteuert. Damit Hyrax::Group- und Benutzerdatensätze, die entweder die Rolle „Werkeditor“ oder „Werkhinterleger“ haben, die richtigen Berechtigungen für Werke haben, erteilen wir ihnen Workflow-Rollen für alle AdminSets. HINWEIS: Alle AdminSets müssen eine Berechtigungsvorlage haben, sonst schlägt dies fehl. Führen Sie zuerst „Admin-Set-Zugriffe erstellen“ aus."
+            description: 'Die Berechtigungen zum Hinterlegen von Werken werden durch Workflow-Rollen in einzelnen AdminSets gesteuert. Damit Hyrax::Group- und Benutzerdatensätze, die entweder die Rolle „Werkeditor“ oder „Werkhinterleger“ haben, die richtigen Berechtigungen für Werke haben, erteilen wir ihnen Workflow-Rollen für alle AdminSets. HINWEIS: Alle AdminSets müssen eine Berechtigungsvorlage haben, sonst schlägt dies fehl. Führen Sie zuerst „Admin-Set-Zugriffe erstellen“ aus.'
             label: Vom Administrator festgelegte Workflow-Rollen
       sidebar:
         accounts: Konten

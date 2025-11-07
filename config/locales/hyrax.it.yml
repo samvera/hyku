@@ -555,6 +555,7 @@ it:
             description: Un'immagine da visualizzare nei risultati di ricerca e sulla home page se decidi di mettere in evidenza questa raccolta. L'immagine verrà ritagliata e ridimensionata in vari modi all'interno dell'app, ma per ottenere i migliori risultati utilizza un'immagine (JPG, GIF o PNG) con orientamento orizzontale.
             label: Miniatura
         form_discovery:
+          hide_from_catalog_search_html: "<strong>Nascondi dalla ricerca nel catalogo</strong> : se selezionata, questa raccolta non apparirà nei risultati della ricerca nel catalogo."
           para1: Queste impostazioni determinano chi è in grado di scoprire e visualizzare la pagina di destinazione di questa raccolta; non influiscono sulla visibilità degli articoli nella collezione.
           para2: Se scegli di non rendere accessibile questa raccolta, puoi comunque condividere la raccolta con utenti e gruppi specifici utilizzando la scheda Condivisione.
         form_relationships:

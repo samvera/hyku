@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# OVERRIDE Hyrax v5.0.5 to add a validator for the m3 profile upload which will
+#   reject profiles that have errors which would not break the application
+#   by letting a bad profile through
+
 module Hyrax
   module FlexibleSchemaDecorator
     private

@@ -24,55 +24,8 @@ zh:
         show:
           additional_information: 附加权利信息
     slideshow_info: 选择一张图片开始幻灯片放映
-  errors:
-    messages:
-      valid_embed_url: 必须是有效的YouTube或Vimeo嵌入URL。
-  helpers:
-    action:
-      become: 成為
-    submit:
-      add_role_to_group:
-        submit: 加
-      add_user_to_group:
-        submit: 加
-      group_search:
-        submit: 走
-      page_size:
-        submit: 更新
-      remove_role_from_group:
-        submit: 去掉
-      revoke_membership:
-        submit: 去掉
-      user_search:
-        submit: 走
-  hyku:
-    account:
-      signup_disabled: 帐户注册被禁用
-    admin:
-      flash:
-        access_denied: 您无权查看此页面
-      google_analytics_settings:
-        header: "Analytics 配置"
-        matomo_setup:
-          header: "需要 Matomo 设置："
-          body: "需要额外配置来完成 Matomo analytics 设置。请确保您的系统管理员已配置所需的 Matomo 环境变量（MATOMO_BASE_URL、MATOMO_SITE_ID、MATOMO_AUTH_TOKEN）。"
-        ga4_setup_required:
-          header: "需要 Google Analytics 4 设置："
-          body: "您的系统配置为使用 Google Analytics 4，但全局服务帐户凭据未配置。请联系您的系统管理员设置所需的环境变量（GOOGLE_ACCOUNT_JSON 或 GOOGLE_ACCOUNT_JSON_PATH）。"
-        ga4_configured:
-          header: "Google Analytics 4："
-          body: "您的系统配置为使用 Google Analytics 4。在下面配置您的 GA4 设置以跟踪您租户的 analytics。"
-        universal_analytics_warning:
-          header: "Google Universal Analytics："
-          body: "您的系统正在使用 Google Universal Analytics（旧版）。Google 已弃用 Universal Analytics。考虑升级到 Google Analytics 4。"
-        error_messages:
-          google_analytics_id: "必须是有效的 Google Analytics 4 测量 ID（例如，G-XXXXXXXXXX）"
-          google_analytics_property_id: "必须是数字属性 ID（例如，123456789）"
   bulkrax:
     admin:
-      sidebar:
-        importers: 导入器
-        exporters: 导出器
       groups:
         action:
           create: 创建新组
@@ -158,6 +111,9 @@ zh:
           user_reader: 可以读取此租户中的任何用户
           work_depositor: 可以将作品存放到该租户的任何管理集中。可以阅读，编辑和管理属于他们的作品的禁运/租赁
           work_editor: 可以读取此租户中的任何管理集。此外，可以在此租户中创建，阅读，编辑和批准任何作品，以及在管理集之间移动作品以及管理禁运和租赁
+      sidebar:
+        exporters: 导出器
+        importers: 导入器
       title: 行政
       work_types: 可用的工作类型
     footer:
@@ -207,6 +163,184 @@ zh:
         date_joined: 加盟
         last_login: 最后访问
         name: 名称
+        user_key: 用户名
+  errors:
+    messages:
+      valid_embed_url: 必须是有效的YouTube或Vimeo嵌入URL。
+  helpers:
+    action:
+      become: 成為
+    submit:
+      add_role_to_group:
+        submit: 加
+      add_user_to_group:
+        submit: 加
+      group_search:
+        submit: 走
+      page_size:
+        submit: 更新
+      remove_role_from_group:
+        submit: 去掉
+      revoke_membership:
+        submit: 去掉
+      user_search:
+        submit: 走
+  hyku:
+    account:
+      signup_disabled: 帐户注册被禁用
+    admin:
+      flash:
+        access_denied: 您无权查看此页面
+      google_analytics_settings:
+        error_messages:
+          google_analytics_id: 必须是有效的 Google Analytics 4 测量 ID（例如，G-XXXXXXXXXX）
+          google_analytics_property_id: 必须是数字属性 ID（例如，123456789）
+        ga4_configured:
+          body: 您的系统配置为使用 Google Analytics 4。在下面配置您的 GA4 设置以跟踪您租户的 analytics。
+          header: Google Analytics 4：
+        ga4_setup_required:
+          body: 您的系统配置为使用 Google Analytics 4，但全局服务帐户凭据未配置。请联系您的系统管理员设置所需的环境变量（GOOGLE_ACCOUNT_JSON 或 GOOGLE_ACCOUNT_JSON_PATH）。
+          header: 需要 Google Analytics 4 设置：
+        header: Analytics 配置
+        matomo_setup:
+          body: 需要额外配置来完成 Matomo analytics 设置。请确保您的系统管理员已配置所需的 Matomo 环境变量（MATOMO_BASE_URL、MATOMO_SITE_ID、MATOMO_AUTH_TOKEN）。
+          header: 需要 Matomo 设置：
+        universal_analytics_warning:
+          body: 您的系统正在使用 Google Universal Analytics（旧版）。Google 已弃用 Universal Analytics。考虑升级到 Google Analytics 4。
+          header: Google Universal Analytics：
+      groups:
+        action:
+          create: 创建新组
+          edit: 编辑群组和用户
+          members:
+            description: 群组成员享有该群组的所有权限。
+          per_page: 更新
+          remove:
+            confirmation: 您确定要删除此群组吗？
+            description: 此操作不可逆。它将移除该组成员通过此组获得的所有权限。
+            submit: 消除
+          search:
+            clear: 重置
+        describe_quantity_html: 此存储库中有<b>%{number} 个组</b>。
+        describe_singular_quantity_html: 此仓库中共有<b>1 个组</b>。
+        description:
+          admin: 该组中的用户被视为该租户的管理员，拥有不受限制的访问权限。
+          depositors: 该组中的用户可以将作品存入该租户中的任何管理集中。
+          editors: 该组用户可以读取和编辑此租户中的所有收藏集和作品。他们还可以：创建收藏集、存入和审批作品、管理禁运和租赁，以及管理 Bulkrax 的进口商和出口商。
+          registered: 包含所有已注册到此租户的用户。
+        flash:
+          create:
+            failure: 无法创建群组。
+            invalid: 小组必须有名称
+            success: "%{group} 创建"
+          destroy:
+            failure: "%{group} 无法被破坏"
+            success: "%{group} 已摧毁"
+          remove:
+            cannot_destroy_default_group: 默认组无法删除
+          update:
+            failure: "%{group} 无法更新"
+            success: "%{group} 已更新"
+        humanized_name:
+          admin: 存储库管理员
+          group/admin: 行政
+          group/public: 未经授权的用户
+          group/work_editor: 工作编辑
+          registered: 注册用户
+        label:
+          actions: 行动
+          created_at: 创建日期
+          description: 描述
+          humanized_name: 姓名
+          members: 用户
+          name: 姓名
+          per_page: 每页
+          roles: 角色
+        nav:
+          attributes: 描述
+          delete: 消除
+          index: 返回“管理群组”
+          members: 用户
+          roles: 角色
+        roles:
+          add: 添加
+          label:
+            action: 行动
+            description: 描述
+            name: 角色
+          remove: 消除
+          title:
+            add_group_roles: 向组中添加角色
+            current_group_roles: 当前团队角色
+        title:
+          add_user: 将用户添加到组
+          delete: 删除组“%{group}”
+          edit: 编辑组
+          index: 管理群组
+          list_members: 当前团队成员
+          members: 团队成员
+          new: 新集团
+          reader_index: 查看群组
+          remove: 移除组
+          roles: 团队角色
+      roles:
+        description:
+          admin: 授予该租户无限制访问权限
+          collection_editor: 可以创建、读取和编辑此租户中的任何集合
+          collection_manager: 可以创建、读取、编辑和销毁此租户中的任何集合
+          collection_reader: 可以读取此租户中的任何集合
+          user_manager: 可以读取、编辑、邀请和删除此租户中的任何用户
+          user_reader: 可以读取此租户中的任何用户信息
+          work_depositor: 可以将作品存入此租户的任何管理集中。可以读取、编辑和管理属于他们的作品的禁运/租赁信息。
+          work_editor: 可以创建、阅读、编辑和批准此租户中的任何作品，以及在管理集之间移动作品并管理禁运和租约。
+      title: 行政
+      work_types: 可供选择的工作类型
+    footer:
+      admin_login: 管理员登录
+    identity_provider:
+      header: 身份验证身份提供商
+      label:
+        create_new: 新的
+        edit: 编辑
+        logo: 标识
+        logo_image: SSO 页面图片
+        logo_image_alt_text: 图片替代文字
+        name: 名称或描述
+        options: 选项
+        provider: 提供者
+        updated_at: 更新于
+    proprietor:
+      accounts:
+        nav: 账户
+      users:
+        edit:
+          header: 编辑用户
+        index:
+          confirm_delete: 您确定要删除此用户吗？此操作无法撤销。
+          header: 管理用户
+          manage: 管理
+        nav: 用户
+        show:
+          header: 管理用户
+          update: 更新
+    splash:
+      account_denied: 您没有创建租户的权限。
+      account_login: 登录即可开始
+      account_signup: 开始使用
+      center_heading: 功能丰富
+      center_text: 它具备成熟存储库系统应有的所有功能，并支持多种内容类型和使用场景。
+      left_heading: 简单的
+      left_text: 适用于各种规模的机构，从博物馆到大学图书馆。几分钟即可上手。
+      right_heading: 灵活的
+      right_text: 自定义用户界面，使其与贵机构的品牌形象相符。调整工作流程，使其符合员工的工作习惯。
+    toolbar:
+      profile:
+        edit_registration: 更改密码
+    users:
+      label:
+        date_joined: 加入
+        last_login: 最后访问
+        name: 姓名
         user_key: 用户名
   hyrax:
     admin:
@@ -272,6 +406,9 @@ zh:
       roles_service_jobs:
         header: 数据修复工作
         jobs:
+          clean_review_submissions_page:
+            description: 这项工作将从“审核提交”页面中删除空项，并修复显示的计数。
+            label: 清洁评论提交页面
           create_admin_set_accesses:
             description: 创建 Hyrax::PermissionTemplateAccess 记录（与 Ability#user_groups 结合）将允许所有 AdminSet 中的 Works 显示在 Blacklight / Solr 查询中。
             label: 创建管理集访问权限

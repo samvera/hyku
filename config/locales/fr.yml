@@ -24,55 +24,8 @@ fr:
         show:
           additional_information: Informations complémentaires sur les droits
     slideshow_info: Sélectionnez une image pour démarrer le diaporama
-  errors:
-    messages:
-      valid_embed_url: doit être une URL d'incorporation valide de YouTube ou Vimeo.
-  helpers:
-    action:
-      become: Devenir
-    submit:
-      add_role_to_group:
-        submit: Ajouter
-      add_user_to_group:
-        submit: Ajouter
-      group_search:
-        submit: Aller
-      page_size:
-        submit: Mettre à jour
-      remove_role_from_group:
-        submit: Retirer
-      revoke_membership:
-        submit: Retirer
-      user_search:
-        submit: Aller
-  hyku:
-    account:
-      signup_disabled: L'enregistrement du compte est désactivé
-    admin:
-      flash:
-        access_denied: Vous n'êtes pas autorisé à afficher cette page
-      google_analytics_settings:
-        header: "Configuration d'Analytics"
-        matomo_setup:
-          header: "Configuration Matomo requise :"
-          body: "Une configuration supplémentaire est nécessaire pour terminer la configuration de Matomo analytics. Veuillez vous assurer que votre administrateur système a configuré les variables d'environnement Matomo requises (MATOMO_BASE_URL, MATOMO_SITE_ID, MATOMO_AUTH_TOKEN)."
-        ga4_setup_required:
-          header: "Configuration Google Analytics 4 requise :"
-          body: "Votre système est configuré pour utiliser Google Analytics 4, mais les identifiants de compte de service global ne sont pas configurés. Veuillez contacter votre administrateur système pour configurer les variables d'environnement requises (GOOGLE_ACCOUNT_JSON ou GOOGLE_ACCOUNT_JSON_PATH)."
-        ga4_configured:
-          header: "Google Analytics 4 :"
-          body: "Votre système est configuré pour utiliser Google Analytics 4. Configurez vos paramètres GA4 ci-dessous pour suivre l'analytics de votre locataire."
-        universal_analytics_warning:
-          header: "Google Universal Analytics :"
-          body: "Votre système utilise Google Universal Analytics (héritage). Google a déprécié Universal Analytics. Envisagez de passer à Google Analytics 4."
-        error_messages:
-          google_analytics_id: "doit être un ID de mesure Google Analytics 4 valide (par exemple, G-XXXXXXXXXX)"
-          google_analytics_property_id: "doit être un ID de propriété numérique (par exemple, 123456789)"
   bulkrax:
     admin:
-      sidebar:
-        importers: Importateurs
-        exporters: Exportateurs
       groups:
         action:
           create: Créer un nouveau groupe
@@ -91,7 +44,7 @@ fr:
         description:
           admin: Les utilisateurs de ce groupe sont considérés comme des administrateurs pour ce locataire et ont un accès illimité.
           depositors: Les utilisateurs de ce groupe sont autorisés à déposer des œuvres dans n'importe quel ensemble d'administration de ce client.
-          editors: "Les utilisateurs de ce groupe sont autorisés à lire et à modifier toutes les collections et tous les travaux de ce client. Ils peuvent également: créer des collections, déposer et approuver des travaux, gérer les embargos et les baux, et gérer les importateurs et exportateurs Bulkrax."
+          editors: 'Les utilisateurs de ce groupe sont autorisés à lire et à modifier toutes les collections et tous les travaux de ce client. Ils peuvent également: créer des collections, déposer et approuver des travaux, gérer les embargos et les baux, et gérer les importateurs et exportateurs Bulkrax.'
           registered: Contient tous les utilisateurs qui se sont inscrits dans ce locataire.
         flash:
           create:
@@ -158,6 +111,9 @@ fr:
           user_reader: Peut lire n'importe quel utilisateur de ce locataire
           work_depositor: Peut déposer des œuvres dans n'importe quel ensemble d'administration de ce client. Peut lire, modifier et gérer les embargos / baux pour les œuvres qui leur appartiennent
           work_editor: Peut lire n'importe quel ensemble d'administration dans ce client. En outre, peut créer, lire, modifier et approuver n'importe quel travail dans ce locataire, ainsi que déplacer des travaux entre les ensembles d'administration et gérer les embargos et les baux
+      sidebar:
+        exporters: Exportateurs
+        importers: Importateurs
       title: Administration
       work_types: Types de travail disponibles
     footer:
@@ -208,6 +164,184 @@ fr:
         last_login: Dernier accès
         name: prénom
         user_key: Nom d'utilisateur
+  errors:
+    messages:
+      valid_embed_url: doit être une URL d'incorporation valide de YouTube ou Vimeo.
+  helpers:
+    action:
+      become: Devenir
+    submit:
+      add_role_to_group:
+        submit: Ajouter
+      add_user_to_group:
+        submit: Ajouter
+      group_search:
+        submit: Aller
+      page_size:
+        submit: Mettre à jour
+      remove_role_from_group:
+        submit: Retirer
+      revoke_membership:
+        submit: Retirer
+      user_search:
+        submit: Aller
+  hyku:
+    account:
+      signup_disabled: L'enregistrement du compte est désactivé
+    admin:
+      flash:
+        access_denied: Vous n'êtes pas autorisé à afficher cette page
+      google_analytics_settings:
+        error_messages:
+          google_analytics_id: doit être un ID de mesure Google Analytics 4 valide (par exemple, G-XXXXXXXXXX)
+          google_analytics_property_id: doit être un ID de propriété numérique (par exemple, 123456789)
+        ga4_configured:
+          body: Votre système est configuré pour utiliser Google Analytics 4. Configurez vos paramètres GA4 ci-dessous pour suivre l'analytics de votre locataire.
+          header: 'Google Analytics 4 :'
+        ga4_setup_required:
+          body: Votre système est configuré pour utiliser Google Analytics 4, mais les identifiants de compte de service global ne sont pas configurés. Veuillez contacter votre administrateur système pour configurer les variables d'environnement requises (GOOGLE_ACCOUNT_JSON ou GOOGLE_ACCOUNT_JSON_PATH).
+          header: 'Configuration Google Analytics 4 requise :'
+        header: Configuration d'Analytics
+        matomo_setup:
+          body: Une configuration supplémentaire est nécessaire pour terminer la configuration de Matomo analytics. Veuillez vous assurer que votre administrateur système a configuré les variables d'environnement Matomo requises (MATOMO_BASE_URL, MATOMO_SITE_ID, MATOMO_AUTH_TOKEN).
+          header: 'Configuration Matomo requise :'
+        universal_analytics_warning:
+          body: Votre système utilise Google Universal Analytics (héritage). Google a déprécié Universal Analytics. Envisagez de passer à Google Analytics 4.
+          header: 'Google Universal Analytics :'
+      groups:
+        action:
+          create: Créer un nouveau groupe
+          edit: Modifier le groupe et les utilisateurs
+          members:
+            description: Les membres du groupe bénéficient de tous les privilèges attribués à ce groupe.
+          per_page: Mise à jour
+          remove:
+            confirmation: Êtes-vous sûr de vouloir supprimer ce groupe ?
+            description: Cette action est irréversible. Elle supprimera tous les privilèges attribués aux membres du groupe par l'intermédiaire de ce groupe.
+            submit: Retirer
+          search:
+            clear: Réinitialiser
+        describe_quantity_html: Ce dépôt contient <b>%{number} groupes</b> .
+        describe_singular_quantity_html: Ce dépôt contient <b>1 groupe</b> .
+        description:
+          admin: Les utilisateurs de ce groupe sont considérés comme des administrateurs pour ce locataire et disposent d'un accès illimité.
+          depositors: Les utilisateurs de ce groupe sont autorisés à déposer des œuvres dans n'importe quel ensemble d'administrateurs de ce locataire.
+          editors: 'Les utilisateurs de ce groupe sont autorisés à consulter et à modifier toutes les collections et tous les travaux de ce locataire. Ils peuvent également : créer des collections, déposer et approuver des travaux, gérer les embargos et les baux, ainsi que gérer les importateurs et exportateurs Bulkrax.'
+          registered: Contient tous les utilisateurs inscrits à ce locataire.
+        flash:
+          create:
+            failure: Impossible de créer le groupe.
+            invalid: Les groupes doivent avoir un nom
+            success: "%{group} a créé"
+          destroy:
+            failure: "%{group} n'a pas pu être détruit"
+            success: "%{group} détruit"
+          remove:
+            cannot_destroy_default_group: Les groupes par défaut ne peuvent pas être détruits
+          update:
+            failure: "%{group} n'a pas pu être mis à jour"
+            success: "%{group} mis à jour"
+        humanized_name:
+          admin: Administrateurs de référentiel
+          group/admin: Administrateur
+          group/public: Utilisateurs non autorisés
+          group/work_editor: Rédacteur de travail
+          registered: Utilisateurs enregistrés
+        label:
+          actions: Actes
+          created_at: Date de création
+          description: Description
+          humanized_name: Nom
+          members: Utilisateurs
+          name: Nom
+          per_page: par page
+          roles: Rôles
+        nav:
+          attributes: Description
+          delete: Retirer
+          index: Retour à la gestion des groupes
+          members: Utilisateurs
+          roles: Rôles
+        roles:
+          add: Ajouter
+          label:
+            action: Action
+            description: Description
+            name: Rôle
+          remove: Retirer
+          title:
+            add_group_roles: Ajouter des rôles au groupe
+            current_group_roles: Rôles actuels au sein du groupe
+        title:
+          add_user: Ajouter l'utilisateur au groupe
+          delete: Supprimer le groupe « %{group} »
+          edit: Modifier le groupe
+          index: Gérer les groupes
+          list_members: Membres actuels du groupe
+          members: Membres du groupe
+          new: Nouveau groupe
+          reader_index: Afficher les groupes
+          remove: Supprimer le groupe
+          roles: Rôles du groupe
+      roles:
+        description:
+          admin: Accorde un accès illimité à ce locataire
+          collection_editor: Peut créer, lire et modifier n'importe quelle collection dans ce locataire
+          collection_manager: Peut créer, lire, modifier et supprimer n'importe quelle collection dans ce locataire
+          collection_reader: Vous pouvez consulter n'importe quelle collection de ce locataire.
+          user_manager: Peut lire, modifier, inviter et supprimer tout utilisateur de ce locataire
+          user_reader: Peut lire n'importe quel utilisateur de ce locataire
+          work_depositor: Peut déposer des œuvres dans n'importe quel ensemble d'administration de ce locataire. Peut lire, modifier et gérer les embargos/baux des œuvres lui appartenant.
+          work_editor: Permet de créer, lire, modifier et approuver tout travail dans ce locataire, ainsi que de déplacer des travaux entre les ensembles d'administration et de gérer les embargos et les baux.
+      title: Administration
+      work_types: Types de travail disponibles
+    footer:
+      admin_login: Connexion administrateur
+    identity_provider:
+      header: Fournisseur d'identité d'authentification
+      label:
+        create_new: Nouveau
+        edit: Modifier
+        logo: Logo
+        logo_image: Image pour la page SSO
+        logo_image_alt_text: Texte alternatif pour l'image
+        name: Nom ou description
+        options: Options
+        provider: Fournisseur
+        updated_at: Mise à jour le
+    proprietor:
+      accounts:
+        nav: Comptes
+      users:
+        edit:
+          header: Utilisateur en modification
+        index:
+          confirm_delete: Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible.
+          header: Gérer les utilisateurs
+          manage: Gérer
+        nav: Utilisateurs
+        show:
+          header: Gérer les utilisateurs
+          update: Mise à jour
+    splash:
+      account_denied: Vous n'êtes pas autorisé à créer de locataires.
+      account_login: Connectez-vous pour commencer
+      account_signup: Commencer
+      center_heading: Riche en fonctionnalités
+      center_text: Toutes les fonctionnalités attendues d'un système de gestion de référentiel mature. Prend en charge une large gamme de types de contenu et de cas d'utilisation.
+      left_heading: Facile
+      left_text: Convient aux institutions de toutes tailles, des musées aux bibliothèques universitaires. Mise en route en quelques minutes.
+      right_heading: Flexible
+      right_text: Personnalisez l'interface utilisateur pour qu'elle corresponde à l'identité visuelle de votre établissement. Adaptez les flux de travail aux préférences de votre personnel.
+    toolbar:
+      profile:
+        edit_registration: Changer le mot de passe
+    users:
+      label:
+        date_joined: Adhésion
+        last_login: Dernière visite
+        name: Nom
+        user_key: Nom d'utilisateur
   hyrax:
     admin:
       appearances:
@@ -236,7 +370,7 @@ fr:
             favicon:
               hint: Les favicons doivent être des fichiers png et doivent être carrés. La taille maximale utilisée est de 228px x 228px.
             link_color:
-              hint: "Affecte les liens sur les pages d'accueil et de travail, notamment : les fils d'Ariane, les onglets, les titres et les conditions d'utilisation."
+              hint: 'Affecte les liens sur les pages d''accueil et de travail, notamment : les fils d''Ariane, les onglets, les titres et les conditions d''utilisation.'
             logo_image:
               hint: Pour utiliser une image comme logo, vous devez utiliser une image (JPG, GIF ou PNG) qui n'est pas plus haute que l'en-tête et pas plus large que 400 pixels de large.
             navbar_background_color:
@@ -272,6 +406,9 @@ fr:
       roles_service_jobs:
         header: Travaux de réparation de données
         jobs:
+          clean_review_submissions_page:
+            description: Cette tâche permettra de supprimer les éléments vides de la page « Soumissions d'avis » et de corriger les chiffres affichés.
+            label: Page de soumission d'avis positifs
           create_admin_set_accesses:
             description: La création d'un enregistrement Hyrax::PermissionTemplateAccess (combiné avec Ability#user_groups) permettra aux travaux de tous les AdminSets d'apparaître dans les requêtes Blacklight/Solr.
             label: Créer des accès aux ensembles d'administrateurs
@@ -282,7 +419,7 @@ fr:
             description: Étant donné que certains rôles de collection ont accès à chaque collection au sein d'un locataire, créez un enregistrement Hyrax::CollectionTypeParticipant pour eux sur chaque Hyrax::CollectionType (sauf AdminSet).
             label: Créer des participants de type de collection
           grant_workflow_roles_for_all_admin_sets:
-            description: "Les autorisations de dépôt d'œuvres sont contrôlées par les rôles de workflow sur les AdminSets individuels. Afin que les enregistrements Hyrax::Group et User qui ont le rôle « Éditeur de travaux » ou « Déposant de travaux » disposent des autorisations appropriées pour les travaux, nous leur accordons des rôles de flux de travail pour tous les AdminSets. REMARQUE : Tous les AdminSets doivent avoir un modèle d'autorisation, sinon cela échouera. Exécutez d'abord « Créer des accès aux ensembles d'administrateurs »."
+            description: 'Les autorisations de dépôt d''œuvres sont contrôlées par les rôles de workflow sur les AdminSets individuels. Afin que les enregistrements Hyrax::Group et User qui ont le rôle « Éditeur de travaux » ou « Déposant de travaux » disposent des autorisations appropriées pour les travaux, nous leur accordons des rôles de flux de travail pour tous les AdminSets. REMARQUE : Tous les AdminSets doivent avoir un modèle d''autorisation, sinon cela échouera. Exécutez d''abord « Créer des accès aux ensembles d''administrateurs ».'
             label: L'administrateur définit les rôles de flux de travail
       sidebar:
         accounts: Comptes

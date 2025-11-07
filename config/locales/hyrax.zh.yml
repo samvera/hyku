@@ -555,6 +555,7 @@ zh:
             description: 如果您决定展示此系列，将显示在搜索结果和主页上的图像。图像将在整个应用程序中以各种方式裁剪和调整大小，但为获得最佳效果，请使用横向图像（JPG、GIF 或 PNG）。
             label: 缩略图
         form_discovery:
+          hide_from_catalog_search_html: "<strong>从目录搜索中隐藏</strong>- 选中此项后，此系列将不会出现在目录搜索结果中。"
           para1: 这些设置确定谁可以发现和查看此收藏的登录页面；它们不会影响集合中项目的可见性。
           para2: 如果您选择不使该收藏集成为开放访问权限，您仍然可以使用“共享”选项卡与特定用户和组共享收藏集。
         form_relationships:

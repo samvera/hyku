@@ -3,10 +3,12 @@
 # Generated via
 #  `rails generate hyrax:collection_resource CollectionResource`
 class CollectionResourceIndexer < Hyrax::Indexers::PcdmCollectionIndexer
-  include Hyrax::Indexer(:basic_metadata) unless Hyrax.config.flexible?
-  include Hyrax::Indexer(:bulkrax_metadata) unless Hyrax.config.flexible?
-  include Hyrax::Indexer(:collection_resource) unless Hyrax.config.flexible?
-  include Hyrax::Indexer('CollectionResource') if Hyrax.config.flexible?
+  if Hyrax.config.collection_include_metadata?
+    include Hyrax::Indexer(:basic_metadata)
+    include Hyrax::Indexer(:bulkrax_metadata)
+    include Hyrax::Indexer(:collection_resource)
+  end
+  check_if_flexible(CollectionResource)
 
   include Hyrax::IndexesThumbnails
   include HykuIndexing

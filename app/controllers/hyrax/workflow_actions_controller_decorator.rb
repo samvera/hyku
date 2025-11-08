@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax 5.0.0 to redirect back to the review submissions page after approving or rejecting a work
+# OVERRIDE Hyrax 5.2.0 to redirect back to the review submissions page after approving or rejecting a work
 # when the user came from the review submissions page
 
 module Hyrax

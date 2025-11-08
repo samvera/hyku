@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-# OVERRIDE Hyraxv5.0.0 to add the ability to upload a collection thumbnail
+# OVERRIDE Hyraxv5.2.0 to add the ability to upload a collection thumbnail
 
 module Hyrax
   module Forms

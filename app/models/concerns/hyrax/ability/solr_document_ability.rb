@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v5.0.0rc2 Alter abilities for Groups with Roles feature
+# OVERRIDE Hyrax v5.2.0 Alter abilities for Groups with Roles feature
 module Hyrax
   module Ability
     module SolrDocumentAbility

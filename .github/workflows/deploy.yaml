@@ -5,13 +5,14 @@ on:
     inputs:
       environment:
         description: "Deploy to Environment"
-        require: true
+        required: true
         default: "staging"
         type: choice
         options:
           - demo
           - iiif
           - staging
+          - besties
       debug_enabled:
         type: boolean
         description: "Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)"

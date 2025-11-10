@@ -71,7 +71,7 @@ extraEnvVars: &envVars
   - name: DB_NAME
     value: hyku-besties
   - name: DB_USER
-    value: postgres
+    value: hyku-besties
   - name: FCREPO_BASE_PATH
     value: /hyku-besties
   - name: FCREPO_HOST
@@ -231,7 +231,7 @@ externalFcrepoHost: fcrepo.fcrepo.svc.cluster.local
 
 externalPostgresql:
   host: acid-postgres-cluster-delta.postgres.svc.cluster.local
-  username: postgres
+  username: hyku-besties
   password: $POSTGRES_PASSWORD
 
 externalSolrHost: solr.solr.svc.cluster.local

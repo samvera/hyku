@@ -1463,7 +1463,7 @@ GEM
       rdf-vocab
       reform (~> 2.2)
       reform-rails
-    valkyrie-shrine (1.0.0)
+    valkyrie-shrine (1.1.0)
       aws-sdk-s3 (~> 1)
       shrine (>= 2.0, < 4.0)
       valkyrie (> 1.0)

@@ -3,16 +3,14 @@
 <%# hyrax-doi doesn't work post hyrax v3.0.0 %>
 <% if Hyrax.config.flexible? %>
   <% view_options_for(presenter).each do |field, options| %>
-    <% value = presenter.public_send(field) %>
-    <% render_attribute = value.present? && (value.is_a?(Enumerable) ? value.any?(&:present?) : true) %>
+    <% view_options = conform_options(field, options) %>
     <% if field == :admin_note %>
-      <%= presenter.attribute_to_html(:admin_note, options) if presenter.editor? && render_attribute %>
-    <% elsif render_attribute %>
-      <% view_options = conform_options(field, options) %>
-      <%= presenter.attribute_to_html(conform_field(field, options), view_options) unless view_options[:admin_only] && !current_user.admin?  %>
+      <%= presenter.attribute_to_html(conform_field(field, options), view_options) if presenter.editor? %>
+    <% else %>
+      <%= presenter.attribute_to_html(conform_field(field, options), view_options) unless view_options[:admin_only] && !current_user&.admin?  %>
     <% end %>
   <% end %>
-  <% else %>
+<% else %>
   <%= presenter.attribute_to_html(:admin_note, html_dl: true) if presenter.editor? %>
   <%= presenter.attribute_to_html(:creator, render_as: :faceted, label: label_for(term: :creator, record_class: Etd), html_dl: true) %>
   <%= presenter.attribute_to_html(:contributor, render_as: :faceted, html_dl: true) %>
@@ -40,4 +38,4 @@
   <%= presenter.attribute_to_html(:advisor, label: label_for(term: :advisor, record_class: Etd), html_dl: true) %>
   <%= presenter.attribute_to_html(:committee_member, label: label_for(term: :committee_member, record_class: Etd), html_dl: true) %>
   <%= presenter.attribute_to_html(:department, label: label_for(term: :department, record_class: Etd), html_dl: true) %>
-  <% end %>
+<% end %>

@@ -49,8 +49,8 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: dd6822e88e616d78148b934d20de4ceb29fe56c7
-  branch: db_create_bug
+  revision: e4fc7dd1331e6ce5525d149f4b42329d105f969c
+  branch: hyku_7_main
   specs:
     hyrax (5.2.0)
       active-fedora (~> 15.0)
@@ -81,6 +81,7 @@ GIT
       hydra-works (>= 0.16)
       iiif_manifest (>= 0.3, < 2.0)
       json-schema
+      json_schemer
       legato (~> 0.3)
       linkeddata
       listen (~> 3.9)

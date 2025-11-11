@@ -142,7 +142,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: 52bb262f7af0c29c3bdf893013f5ae3e135bacb6
+  revision: a182a72710d84f52664e3ac18b3a8920632b4e17
   branch: 5.0-flexible
   specs:
     hyrax (5.0.5)

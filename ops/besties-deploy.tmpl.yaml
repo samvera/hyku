@@ -240,7 +240,9 @@ externalSolrCollection: "hyku-besties"
 externalSolrPassword: $SOLR_ADMIN_PASSWORD
 
 global:
-  hyraxName: hyku-besties-hyrax
+  hyraxName: hyku-besties
+
+nameOverride: hyku-besties
 
 nginx:
   enabled: true

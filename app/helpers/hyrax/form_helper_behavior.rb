@@ -10,8 +10,15 @@ module Hyrax
       Hyrax::ControlledVocabularies.remote_authorities[source_name]
     end
 
-    def controlled_vocabulary_options_for(property_name, _record_class)
-      source = controlled_vocabulary_source_for(property_name)
+    def controlled_vocabulary_options_for(property_name, record_class)
+      # TODO: Metadata property overrides for specific classes will soon be available in Hyrax
+      # Temporary workaround to support OER override
+      source = if record_class.present? && property_name == :resource_type && record_class.name.start_with?('Oer')
+                 'oer_types'
+               else
+                 controlled_vocabulary_source_for(property_name)
+               end
+
       return unless source
 
       # Only ensure Discogs credentials if we have a valid token

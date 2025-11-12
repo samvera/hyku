@@ -37,7 +37,12 @@ RSpec.describe Hyrax::QuickClassificationQuery, type: :decorator do
       before { allow(Hyrax.config).to receive(:flexible?).and_return(true) }
 
       context 'with a search-only tenant' do
-        let(:account) { create(:account, search_only: true) }
+        let(:full_account) { create(:account, search_only: false) }
+        let(:account) do
+          create(:account, search_only: true, full_account_cross_searches_attributes: [
+            { full_account_id: full_account.id }
+          ])
+        end
 
         before do
           allow(Site).to receive(:account).and_return(account)

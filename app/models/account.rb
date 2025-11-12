@@ -231,9 +231,8 @@ class Account < ApplicationRecord
   end
 
   def search_only_must_have_full_accounts
-    if full_account_cross_searches.reject(&:marked_for_destruction?).empty?
-      errors.add(:base, 'Search-only accounts must have at least one full account selected for cross-tenant search')
-    end
+    return unless full_account_cross_searches.reject(&:marked_for_destruction?).empty?
+    errors.add(:base, 'Search-only accounts must have at least one full account selected for cross-tenant search')
   end
 end
 # rubocop:enable Metrics/ClassLength

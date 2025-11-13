@@ -4,10 +4,13 @@
 <% if Hyrax.config.flexible? %>
   <% view_options_for(presenter).each do |field, options| %>
     <% view_options = conform_options(field, options) %>
+    <% value = presenter.public_send(field) %>
+    <% render_attribute = value.present? && (value.is_a?(Enumerable) ? value.any?(&:present?) : true) %>
     <% if field == :admin_note %>
-      <%= presenter.attribute_to_html(conform_field(field, options), view_options) if presenter.editor? %>
+      <%= presenter.attribute_to_html(conform_field(field, options), view_options) if presenter.editor? && render_attribute %>
     <% else %>
-      <%= presenter.attribute_to_html(conform_field(field, options), view_options) unless view_options[:admin_only] && !current_user&.admin?  %>
+      <% next if view_options[:admin_only] && !current_user&.admin? %>
+      <%= presenter.attribute_to_html(conform_field(field, options), view_options) if render_attribute %>
     <% end %>
   <% end %>
 <% else %>

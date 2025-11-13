@@ -554,6 +554,7 @@ de:
             description: Ein Bild, das in den Suchergebnissen und auf der Startseite angezeigt wird, wenn Sie sich entscheiden, diese Sammlung zu präsentieren. Das Bild wird in der gesamten App auf verschiedene Weise zugeschnitten und in der Größe angepasst, aber für beste Ergebnisse verwenden Sie ein Bild (JPG, GIF oder PNG) im Querformat.
             label: Miniaturansicht
         form_discovery:
+          hide_from_catalog_search_html: "<strong>Aus der Katalogsuche ausblenden</strong> – Wenn diese Option aktiviert ist, wird diese Sammlung nicht in den Suchergebnissen des Katalogs angezeigt."
           para1: Diese Einstellungen bestimmen, wer die Zielseite dieser Sammlung erkennen und anzeigen kann. Sie haben keinen Einfluss auf die Sichtbarkeit von Elementen in der Sammlung.
           para2: Wenn Sie diese Sammlung nicht offen zugänglich machen möchten, können Sie die Sammlung weiterhin über die Registerkarte Freigabe für bestimmte Benutzer und Gruppen freigeben.
         form_relationships:

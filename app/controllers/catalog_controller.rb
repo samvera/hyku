@@ -167,6 +167,7 @@ class CatalogController < ApplicationController
     config.add_index_field 'resource_type_tesim', label: "Resource Type", link_to_facet: 'resource_type_sim', if: :render_in_tenant?
     config.add_index_field 'file_format_tesim', link_to_facet: 'file_format_sim', if: :render_in_tenant?
     config.add_index_field 'identifier_tesim', helper_method: :index_field_link, field_name: 'identifier', if: :render_in_tenant?
+    config.add_index_field 'related_url_tesim', helper_method: :truncate_and_iconify_auto_link, if: :render_in_tenant?
     config.add_index_field 'embargo_release_date_dtsi', label: "Embargo release date", helper_method: :human_readable_date, if: :render_in_tenant?
     config.add_index_field 'lease_expiration_date_dtsi', label: "Lease expiration date", helper_method: :human_readable_date, if: :render_in_tenant?
     config.add_index_field 'learning_resource_type_tesim', label: "Learning resource type", if: :render_in_tenant?

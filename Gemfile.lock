@@ -49,7 +49,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: e4fc7dd1331e6ce5525d149f4b42329d105f969c
+  revision: 87855a3851569f7d718d1ed73a9d1bde5fede0e4
   branch: hyku_7_main
   specs:
     hyrax (5.2.0)
@@ -784,7 +784,7 @@ GEM
       json
     iiif_manifest (1.6.0)
       activesupport (>= 4)
-    iiif_print (3.0.8)
+    iiif_print (3.0.9)
       blacklight_iiif_search (>= 1.0, < 3.0)
       derivative-rodeo (~> 0.5)
       hyrax (>= 2.5, < 6)
@@ -1688,7 +1688,7 @@ DEPENDENCIES
   hyrax-iiif_av!
   i18n-debug
   i18n-tasks
-  iiif_print (~> 3.0.5)
+  iiif_print (~> 3.0.9)
   jbuilder (~> 2.5)
   jquery-rails
   json-canonicalization (= 0.3.1)

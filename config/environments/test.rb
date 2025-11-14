@@ -30,6 +30,9 @@ Rails.application.configure do
   # Disable request forgery protection in test environment.
   config.action_controller.allow_forgery_protection = false
 
+  # Rails 7.2: Allow redirects to any host in test environment for multi-tenant testing
+  config.action_controller.raise_on_open_redirects = false
+
   # Store uploaded files on the local file system in a temporary directory.
   config.active_storage.service = :test
 

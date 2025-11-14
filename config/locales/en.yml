@@ -316,6 +316,9 @@ en:
         roles:
           remove:
             confirmation: Are you sure you want to remove the role "%{role}" from the user "%{user}"?
+  dashboard:
+      sidebar:
+        metadata_profiles: "Metadata Profiles"  
   permissions:
     collections:
       cannot:

@@ -1,18 +1,11 @@
-<%# OVERRIDE: Hyrax v5.0.0 to hide metadata profiles for search-only tenants %>
-<% if defined?(Hyrax) && Hyrax.config.respond_to?(:flexible?) && Hyrax.config.flexible? && defined?(current_ability) && current_ability.can?(:manage, Hyrax::FlexibleSchema) %>
-  <% unless Site.account&.respond_to?(:search_only?) && Site.account&.search_only? %>
-    <% begin %>
-      <li class="nav-item">
-        <%= menu.nav_link(hyrax.metadata_profiles_path,
-                          class: "nav-link",
-                          onclick: "dontChangeAccordion(event);",
-                          title: t('hyrax.admin.sidebar.metadata_profiles')) do %>
-          <span class="fa fa-table" aria-hidden="true"></span>
-          <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.metadata_profiles') %></span>
-        <% end %>
-      </li>
-    <% rescue StandardError %>
-      <%# Route helper or other error, do not render link %>
+<% unless Site.account&.search_only? %>
+  <li class="nav-item">
+    <%= menu.nav_link(hyrax.metadata_profiles_path,
+                      class: "nav-link",
+                      onclick: "dontChangeAccordion(event);",
+                      title: t('hyrax.admin.sidebar.metadata_profiles')) do %>
+      <span class="fa fa-table" aria-hidden="true"></span>
+      <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.metadata_profiles') %></span>
     <% end %>
-  <% end %>
+  </li>
 <% end %>

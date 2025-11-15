@@ -8,6 +8,18 @@ GIT
       rails (>= 4.2)
 
 GIT
+  remote: https://github.com/notch8/iiif_print.git
+  revision: 857ea9248f9f93a91336defcbecadd03650fac32
+  branch: fix_metadata_include
+  specs:
+    iiif_print (3.0.10)
+      blacklight_iiif_search (>= 1.0, < 3.0)
+      derivative-rodeo (~> 0.5)
+      hyrax (>= 2.5, < 6)
+      nokogiri (>= 1.13.2)
+      rdf-vocab (~> 3.0)
+
+GIT
   remote: https://github.com/notch8/willow_sword.git
   revision: 47971c8f5548a651fb13b8c433485bc75687f4ff
   branch: loosen-gem-spec
@@ -19,7 +31,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera-labs/hyku_knapsack.git
-  revision: e20e4a82b5c7687ffa731b60a50856a03d1fc076
+  revision: ca70becc31bf82950b003a1a8441e861fac753cb
   branch: required_for_knapsack_instances
   specs:
     hyku_knapsack (0.0.1)
@@ -46,6 +58,28 @@ GIT
       hyrax (>= 3.5, < 6.0)
       iiif_manifest (> 0.5)
       rails (>= 5.1, < 8.0)
+
+GIT
+  remote: https://github.com/samvera/bulkrax.git
+  revision: 248ee12afaa9bd7751313c90816a0c1cc51a1398
+  branch: main
+  specs:
+    bulkrax (9.3.2)
+      bagit (~> 0.6.0)
+      coderay
+      denormalize_fields
+      iso8601 (~> 0.9.0)
+      kaminari
+      language_list (~> 1.2, >= 1.2.1)
+      libxml-ruby (~> 5.0)
+      loofah (>= 2.2.3)
+      marcel
+      oai (>= 0.4, < 2.x)
+      rack (>= 2.0.6)
+      rails (>= 5.1.6, < 8.0.0)
+      rdf (>= 2.0.2, < 4.0)
+      rubyzip
+      simple_form
 
 GIT
   remote: https://github.com/samvera/hyrax.git
@@ -372,22 +406,6 @@ GEM
       signet (~> 0.8)
       typhoeus
     builder (3.3.0)
-    bulkrax (9.3.0)
-      bagit (~> 0.6.0)
-      coderay
-      denormalize_fields
-      iso8601 (~> 0.9.0)
-      kaminari
-      language_list (~> 1.2, >= 1.2.1)
-      libxml-ruby (~> 5.0)
-      loofah (>= 2.2.3)
-      marcel
-      oai (>= 0.4, < 2.x)
-      rack (>= 2.0.6)
-      rails (>= 5.1.6, < 8.0.0)
-      rdf (>= 2.0.2, < 4.0)
-      rubyzip
-      simple_form
     byebug (12.0.0)
     cancancan (3.6.1)
     capybara (3.40.0)
@@ -784,12 +802,6 @@ GEM
       json
     iiif_manifest (1.6.0)
       activesupport (>= 4)
-    iiif_print (3.0.9)
-      blacklight_iiif_search (>= 1.0, < 3.0)
-      derivative-rodeo (~> 0.5)
-      hyrax (>= 2.5, < 6)
-      nokogiri (>= 1.13.2)
-      rdf-vocab (~> 3.0)
     io-console (0.8.1)
     irb (1.15.2)
       pp (>= 0.6.0)
@@ -1659,7 +1671,7 @@ DEPENDENCIES
   bolognese (>= 1.9.10)
   bootstrap (~> 4.6)
   bootstrap-datepicker-rails
-  bulkrax (~> 9.3.0)
+  bulkrax!
   byebug
   capybara
   capybara-screenshot (~> 1.0)
@@ -1688,7 +1700,7 @@ DEPENDENCIES
   hyrax-iiif_av!
   i18n-debug
   i18n-tasks
-  iiif_print (~> 3.0.9)
+  iiif_print!
   jbuilder (~> 2.5)
   jquery-rails
   json-canonicalization (= 0.3.1)

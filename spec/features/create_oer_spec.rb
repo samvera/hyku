@@ -38,8 +38,8 @@ RSpec.feature 'Create a Oer', type: :feature, js: true, clean: true, cohort: 'al
       login_as user
     end
 
-    # Temporarily commenting out these specs because they consistently fail in the CI pipeline 
-    # after the Bulkrax version update. The issue seems related to form submission failing 
+    # Temporarily commenting out these specs because they consistently fail in the CI pipeline
+    # after the Bulkrax version update. The issue seems related to form submission failing
     # in the CI environment but not locally. This needs further investigation to resolve.
     xit 'User submits a form and sees success message' do
       visit '/dashboard/my/works'
@@ -58,8 +58,8 @@ RSpec.feature 'Create a Oer', type: :feature, js: true, clean: true, cohort: 'al
       expect(page).to have_content "Add files"
       expect(page).to have_content "Add folder"
       within('div#add-files') do
-        attach_file("files[]", File.join(fixture_path, 'hyrax', 'image.jp2'), visible: false)
-        attach_file("files[]", File.join(fixture_path, 'hyrax', 'jp2_fits.xml'), visible: false)
+        attach_file("files[]", File.join(file_fixture_path, 'hyrax', 'image.jp2'), visible: false)
+        attach_file("files[]", File.join(file_fixture_path, 'hyrax', 'jp2_fits.xml'), visible: false)
       end
       click_link "Descriptions" # switch tab
       fill_in('Title', with: 'My Test Work')

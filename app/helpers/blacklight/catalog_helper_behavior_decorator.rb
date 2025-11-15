@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE blacklight 6 to allow full url for show links for shared search thumbnail
+# OVERRIDE blacklight 7.9.0 to allow full url for show links for shared search thumbnail
 module Blacklight
   module CatalogHelperBehaviorDecorator
     # rubocop:disable Metrics/MethodLength

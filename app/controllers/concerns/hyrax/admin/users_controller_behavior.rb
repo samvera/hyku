@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v5.0.0rc2 Authorize User access and set up roles dropdown
+# OVERRIDE Hyrax v5.2.0 Authorize User access and set up roles dropdown
 module Hyrax
   module Admin
     module UsersControllerBehavior

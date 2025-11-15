@@ -12,6 +12,7 @@ pg_upgrade_*.log
 /node_modules
 /coverage/
 /spec/tmp
+/plans/*
 vendor/engines
 vendor/bundle
 .tools-versions

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v5.0.1 Enable markdown rendering on work show page metadata
+# OVERRIDE Hyrax v5.2.0 Enable markdown rendering on work show page metadata
 
 module Hyrax
   module Renderers

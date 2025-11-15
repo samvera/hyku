@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v5.0.0rc2
+# OVERRIDE Hyrax v5.2.0
 # - Add collection methods to collection presenter and override to return
 #   full banner_file data, rather than only download path to file.
 # - Alter permissions-related behavior.

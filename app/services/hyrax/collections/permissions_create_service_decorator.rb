@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v5.0.0rc2 Grants certain roles access to either all AdminSets or
+# OVERRIDE Hyrax v5.2.0 Grants certain roles access to either all AdminSets or
 #                          all Collections (depending on the role) at create time.
 module Hyrax
   module Collections

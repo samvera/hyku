@@ -1,4 +1,13 @@
 # frozen_string_literal: true
 
-# Override Hyrax 5.0; the default feature limit from Hyrax is 5.
-FeaturedWork.feature_limit = 6
+module FeaturedWorkDecorator
+  extend ActiveSupport::Concern
+
+  class_methods do
+    def feature_limit
+      6
+    end
+  end
+end
+
+FeaturedWork.prepend(FeaturedWorkDecorator)

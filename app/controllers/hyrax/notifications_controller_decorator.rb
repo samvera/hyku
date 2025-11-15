@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE: Hyrax v5.0.4 to mark all unread messages as read when the user visits the notifications dashboard
+# OVERRIDE: Hyrax v5.2.0 to mark all unread messages as read when the user visits the notifications dashboard
 
 module Hyrax
   module NotificationsControllerDecorator

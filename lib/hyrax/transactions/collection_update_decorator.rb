@@ -1,14 +1,9 @@
 # frozen_string_literal: true
 
-# Require the necessary file at the beginning
-require 'hyrax/transactions/transaction'
-
-# OVERRIDE Hyrax v5.0.0 to add the ability to upload a collection thumbnail
 module Hyrax
   module Transactions
-    # Use class_eval to reopen the class for modification
-    CollectionUpdate.class_eval do
-      # Override the initialize method to alter the default steps
+    # Decorator module to override CollectionUpdate behavior
+    module CollectionUpdateDecorator
       def initialize(container: Container, steps: nil)
         # Define the new steps array including the new thumbnail step
         new_steps = ['change_set.apply',
@@ -23,3 +18,6 @@ module Hyrax
     end
   end
 end
+
+# Prepend the decorator to the CollectionUpdate class
+Hyrax::Transactions::CollectionUpdate.prepend(Hyrax::Transactions::CollectionUpdateDecorator)

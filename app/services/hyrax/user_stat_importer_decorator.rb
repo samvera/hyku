@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v5.0.1 to override to #sorted_users to account for multitenancy in Hyku
+# OVERRIDE Hyrax v5.2.0 to override to #sorted_users to account for multitenancy in Hyku
 
 module Hyrax
   module UserStatImporterDecorator

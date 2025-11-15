@@ -129,4 +129,17 @@ class Ability
       end
     end
   end
+
+  def test_download(*args)
+    account = Site.account
+
+    # In cases where we don't have an account.
+    return super unless account
+
+    if account.settings[:allow_downloads].nil? || account.settings[:allow_downloads].to_i.nonzero?
+      super
+    else
+      false
+    end
+  end
 end

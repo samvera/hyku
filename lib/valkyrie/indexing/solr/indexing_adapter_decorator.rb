@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Override Hyrax v5.0 to avoid incorrect default connection. Because of the way
+# OVERRIDE Hyrax v5.2.0 to avoid incorrect default connection. Because of the way
 # Hyku uses SolrEndpoint, the configuration isn't always appropriate. At times,
 # it falls back into the Valkyrie IndexingAdapter instead of Hyrax's, and
 # loses the connection.

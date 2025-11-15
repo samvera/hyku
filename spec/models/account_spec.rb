@@ -401,7 +401,7 @@ RSpec.describe Account, type: :model do
         allow(ENV).to receive(:fetch).and_call_original
         allow(ENV).to receive(:fetch).with('HYKU_MULTITENANT', anything).and_return(true)
         allow(Rails.env).to receive(:test?).and_return false
-        allow(Apartment::Tenant).to receive(:current_tenant).and_return Apartment::Tenant.default_tenant
+        allow(Apartment::Tenant).to receive(:current).and_return Apartment::Tenant.default_tenant
       end
 
       it { is_expected.to be true }

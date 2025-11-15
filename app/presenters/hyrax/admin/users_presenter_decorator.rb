@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# OVERRIDE Hyrax v5.2.0 to accommodate groups and roles work
 module Hyrax
   module Admin
     module UsersPresenterDecorator

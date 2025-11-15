@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v5.0.0rc2 - index using site defaults instead of app wide defaults
+# OVERRIDE Hyrax v5.2.0 - index using site defaults instead of app wide defaults
 
 module Hyrax
   module ThumbnailPathServiceDecorator

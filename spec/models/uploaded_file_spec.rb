@@ -5,7 +5,7 @@
 
 # rubocop:disable Layout/LineLength
 RSpec.describe 'Hyrax::UploadedFile' do # rubocop:disable RSpec/DescribeClass
-  let(:file) { File.open(fixture_path + '/images/world.png') }
+  let(:file) { File.open(file_fixture_path + '/images/world.png') }
   let(:upload) { Hyrax::UploadedFile.create(file:) }
   let(:config) { CarrierWave.configure { |c| c } }
   let(:bucket_name) { 'hyku-carrierwave-test' }
@@ -31,8 +31,6 @@ RSpec.describe 'Hyrax::UploadedFile' do # rubocop:disable RSpec/DescribeClass
   end
 
   describe CarrierWave::Storage::File do # default in dev/test
-    before { expect(Hyrax::UploadedFileUploader).to receive(:storage).and_return(described_class).at_least(:once) }
-
     it_behaves_like 'Regular upload'
     it 'returns a SanitizedFile' do
       expect(upload.file.file).to be_a CarrierWave::SanitizedFile

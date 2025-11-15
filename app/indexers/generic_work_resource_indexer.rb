@@ -5,9 +5,7 @@
 class GenericWorkResourceIndexer < Hyrax::ValkyrieWorkIndexer
   if Hyrax.config.work_include_metadata?
     include Hyrax::Indexer(:core_metadata)
-    # Commented out basic_metadata because the terms were added to the resource's yaml
-    # so we can customize it
-    # include Hyrax::Indexer(:basic_metadata)
+    include Hyrax::Indexer(:basic_metadata)
     include Hyrax::Indexer(:bulkrax_metadata)
     include Hyrax::Indexer(:generic_work_resource)
     include Hyrax::Indexer(:with_pdf_viewer)

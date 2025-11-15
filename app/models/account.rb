@@ -47,6 +47,9 @@ class Account < ApplicationRecord
                      format: { with: /\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/ },
                      unless: proc { |a| a.tenant == 'public' || a.tenant == 'single' }
 
+  # NEW: Validate that search-only accounts have at least one full account selected
+  validate :search_only_must_have_full_accounts, if: :search_only?
+
   after_save :schedule_jobs_if_settings_changed
 
   def self.admin_host
@@ -225,6 +228,11 @@ class Account < ApplicationRecord
     Apartment::Tenant.switch(self.tenant) do
       find_or_schedule_jobs
     end
+  end
+
+  def search_only_must_have_full_accounts
+    return unless full_account_cross_searches.reject(&:marked_for_destruction?).empty?
+    errors.add(:base, 'Search-only accounts must have at least one full account selected for cross-tenant search')
   end
 end
 # rubocop:enable Metrics/ClassLength

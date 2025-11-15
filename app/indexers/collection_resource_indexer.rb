@@ -4,6 +4,7 @@
 #  `rails generate hyrax:collection_resource CollectionResource`
 class CollectionResourceIndexer < Hyrax::Indexers::PcdmCollectionIndexer
   if Hyrax.config.collection_include_metadata?
+    include Hyrax::Indexer(:core_metadata)
     include Hyrax::Indexer(:basic_metadata)
     include Hyrax::Indexer(:bulkrax_metadata)
     include Hyrax::Indexer(:collection_resource)

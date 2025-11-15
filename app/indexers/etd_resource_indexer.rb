@@ -4,6 +4,7 @@
 #  `rails generate hyrax:work_resource EtdResource`
 class EtdResourceIndexer < Hyrax::ValkyrieWorkIndexer
   if Hyrax.config.work_include_metadata?
+    include Hyrax::Indexer(:core_metadata)
     # Commented out basic_metadata because the terms were added to the resource's yaml
     # so we can customize it
     # include Hyrax::Indexer(:basic_metadata)

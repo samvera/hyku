@@ -4,8 +4,8 @@
 #  `rails generate hyrax:work_resource EtdResource`
 class EtdResource < Hyrax::Work
   if Hyrax.config.work_include_metadata?
+    include Hyrax::Schema(:core_metadata)
     # Commented out basic_metadata because these terms were added to etd_resource so we can customize it.
-    # include Hyrax::Schema(:core_metadata)
     # include Hyrax::Schema(:basic_metadata)
     include Hyrax::Schema(:etd_resource)
     include Hyrax::Schema(:bulkrax_metadata)

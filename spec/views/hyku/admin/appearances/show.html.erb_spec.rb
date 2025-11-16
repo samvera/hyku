@@ -15,13 +15,9 @@ RSpec.describe "hyrax/admin/appearances/show", type: :view do
         ["Neutral Repository", "neutral_repository"]
       ]
 
-      @show_theme_names = {
-        "default_show" =>
-          {
-            "name" => "Default Show Page",
-            "notes" => "This is the default Hyku show page. It is recommended for use with cultural repositories."
-          }
-      }
+      @show_theme_names = [
+        ["Default home", "default_home"]
+      ]
       @search_themes = { 'List view' => 'list_view', 'Gallery view' => 'gallery_view' }
       render
     end

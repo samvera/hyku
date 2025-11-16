@@ -1,6 +1,6 @@
 # Controlled Vocabularies in Hyku
 
-Hyku supports both local and remote controlled vocabularies for form fields through the flexible metadata system. When `HYRAX_FLEXIBLE` is enabled, you can specify controlled vocabularies directly in your metadata profile YAML files by configuring the `controlled_values.sources` array for any property.
+Hyku supports both local and remote controlled vocabularies for form fields through the flexible metadata system. When `HYRAX_FLEXIBLE` is enabled, you can specify controlled vocabularies directly in your metadata profile YAML files by configuring the `controlled_values.sources` array for most properties.
 
 ## How It Works
 
@@ -78,6 +78,7 @@ Remote vocabularies query external services through the Questioning Authority ge
 - `loc/names` - Library of Congress Name Authority File
 - `loc/genre_forms` - Library of Congress Genre/Form Terms
 - `loc/countries` - Library of Congress Countries
+- `loc/languages` - Library of Congress Languages
 - `getty/aat` - Getty Art & Architecture Thesaurus
 - `getty/tgn` - Getty Thesaurus of Geographic Names
 - `getty/ulan` - Getty Union List of Artist Names
@@ -92,7 +93,7 @@ Remote vocabularies query external services through the Questioning Authority ge
 - `discogs/release` - Music releases
 - `discogs/master` - Master releases
 
-**Note**: Authority names use the slash format consistent with Questioning Authority documentation. These match exactly with the configured mappings in the application.
+**Note**: Authority names use the slash format consistent with [Questioning Authority](https://github.com/samvera/questioning_authority) documentation. These match exactly with the configured mappings in the application.
 
 ### MeSH (Requires Setup)
 
@@ -437,7 +438,7 @@ A UI for managing local vocabularies through the admin dashboard is planned to m
 ### Adding Remote Vocabularies
 
 1. Ensure the Questioning Authority gem supports the remote service
-2. Add the authority mapping to the `remote_authority_config_for` method in `app/helpers/hyrax/form_helper_behavior.rb`
+2. Add the authority mapping to the `remote_authorities` method in `config/initializers/hyrax_controlled_vocabularies.rb`
 3. Use the authority name in your metadata profile's `sources` array
 
 ## Technical Implementation

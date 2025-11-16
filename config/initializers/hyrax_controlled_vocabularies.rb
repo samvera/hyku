@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ModuleLength
 module Hyrax
   module ControlledVocabularies
     class << self
@@ -44,6 +45,10 @@ module Hyrax
           },
           'loc/countries' => {
             url: "/authorities/search/loc/countries",
+            type: 'autocomplete'
+          },
+          'loc/languages' => {
+            url: "/authorities/search/loc/languages",
             type: 'autocomplete'
           },
           'getty/aat' => {
@@ -103,3 +108,4 @@ module Hyrax
     end
   end
 end
+# rubocop:enable Metrics/ModuleLength

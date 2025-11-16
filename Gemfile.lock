@@ -21,8 +21,8 @@ GIT
 
 GIT
   remote: https://github.com/notch8/willow_sword.git
-  revision: 47971c8f5548a651fb13b8c433485bc75687f4ff
-  branch: loosen-gem-spec
+  revision: 90d600cc5d44b70e59cceb5faebb4fd5eddd7fbc
+  branch: main
   specs:
     willow_sword (0.7.1)
       bagit (>= 0.4)

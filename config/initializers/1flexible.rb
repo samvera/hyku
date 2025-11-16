@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Set flexible metadata flags based on global flag
 
 flexible = ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYRAX_FLEXIBLE', 'true'))

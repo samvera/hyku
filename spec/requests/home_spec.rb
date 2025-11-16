@@ -15,8 +15,9 @@ RSpec.describe 'Home page', type: :request do
       context 'on an unknown subhost' do
         before { host! 'mystery.localhost' }
 
-        it 'raises a 404' do
-          expect { get root_path }.to raise_error(ActionController::RoutingError)
+        it 'returns a 404' do
+          get root_path
+          expect(response).to have_http_status(:not_found)
         end
       end
     end

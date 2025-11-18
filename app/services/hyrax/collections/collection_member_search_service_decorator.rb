@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v5.0.0 to sort subcollections by title
+# OVERRIDE Hyrax v5.2.0 to sort subcollections by title
 module Hyrax
   module Collections
     module CollectionMemberSearchServiceDecorator

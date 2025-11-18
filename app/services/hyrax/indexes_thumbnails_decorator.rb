@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v5.0.0rc2 to make collection thumbnails uploadable
+# OVERRIDE Hyrax v5.2.0 to make collection thumbnails uploadable
 
 module Hyrax
   module IndexesThumbnailsDecorator

@@ -43,9 +43,11 @@ Account.find_each do |account|
   end
 end
 
-if ENV['INITIAL_ADMIN_EMAIL'] && ENV['INITIAL_ADMIN_PASSWORD']
-  u = User.find_or_create_by(email: ENV['INITIAL_ADMIN_EMAIL']) do |u|
-    u.password = ENV['INITIAL_ADMIN_PASSWORD']
-  end
-  u.add_role(:superadmin)
-end
+# TODO not working
+# if ENV['INITIAL_ADMIN_EMAIL'] && ENV['INITIAL_ADMIN_PASSWORD']
+#   reset!
+#   u = User.find_or_create_by(email: ENV['INITIAL_ADMIN_EMAIL']) do |u|
+#     u.password = ENV['INITIAL_ADMIN_PASSWORD']
+#   end
+#   u.add_role(:superadmin)
+# end

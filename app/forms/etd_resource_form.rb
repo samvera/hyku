@@ -6,15 +6,18 @@
 # @see https://github.com/samvera/hyrax/wiki/Hyrax-Valkyrie-Usage-Guide#forms
 # @see https://github.com/samvera/valkyrie/wiki/ChangeSets-and-Dirty-Tracking
 class EtdResourceForm < Hyrax::Forms::ResourceForm(EtdResource)
-  # Commented out basic_metadata because the terms were added to the resource's yaml
-  # so we can customize it
-  # include Hyrax::FormFields(:basic_metadata)
-  include Hyrax::FormFields(:bulkrax_metadata) unless Hyrax.config.flexible?
-  include Hyrax::FormFields(:etd_resource) unless Hyrax.config.flexible?
-  include Hyrax::FormFields(:with_pdf_viewer) unless Hyrax.config.flexible?
-  include Hyrax::FormFields(:with_video_embed) unless Hyrax.config.flexible?
+  if Hyrax.config.work_include_metadata?
+    # Commented out basic_metadata because the terms were added to the resource's yaml
+    # so we can customize it
+    # include Hyrax::FormFields(:basic_metadata)
+    include Hyrax::FormFields(:bulkrax_metadata)
+    include Hyrax::FormFields(:etd_resource)
+    include Hyrax::FormFields(:with_pdf_viewer)
+    include Hyrax::FormFields(:with_video_embed)
+  end
+  check_if_flexible(EtdResource)
+
   include VideoEmbedBehavior::Validation
-  include Hyrax::BasedNearFieldBehavior unless Hyrax.config.flexible?
   # Define custom form fields using the Valkyrie::ChangeSet interface
   #
   # property :my_custom_form_field

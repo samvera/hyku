@@ -242,8 +242,6 @@ Hyrax.config do |config|
   # essence a "super" method.
   original_translator = config.translate_id_to_uri
   config.translate_id_to_uri = ->(id) { original_translator.call(id.to_s) }
-
-  config.file_set_indexer = Hyku::Indexers::FileSetIndexer
 end
 # rubocop:enable Metrics/BlockLength
 
@@ -271,27 +269,31 @@ end
 # Register custom MeSH authority
 Qa::Authorities::Local.register_subauthority('mesh', 'Qa::Authorities::Mesh')
 
-# NOTE: Remote authorities like LOC don't need explicit registration
-# They are available by default through the QA engine routes
+Rails.application.config.to_prepare do
+  Hyrax.config.file_set_indexer = Hyku::Indexers::FileSetIndexer
 
-Hyrax::IiifAv.config.iiif_av_viewer = :universal_viewer
+  # NOTE: Remote authorities like LOC don't need explicit registration
+  # They are available by default through the QA engine routes
 
-require 'hydra/derivatives'
-Hydra::Derivatives::Processors::Video::Processor.config.video_bitrate = '1500k'
+  Hyrax::IiifAv.config.iiif_av_viewer = :universal_viewer
 
-Hyrax.publisher.subscribe(HyraxListener.new)
+  require 'hydra/derivatives'
+  Hydra::Derivatives::Processors::Video::Processor.config.video_bitrate = '1500k'
 
-Hyrax::MemberPresenterFactory.file_presenter_class = Hyrax::IiifAv::IiifFileSetPresenter
-Hyrax::PcdmMemberPresenterFactory.file_presenter_class = Hyrax::IiifAv::IiifFileSetPresenter
+  Hyrax.publisher.subscribe(HyraxListener.new)
 
-Hyrax::Transactions::Container.namespace('collection_resource') do |ops|
-  ops.register 'save_collection_thumbnail', Hyrax::Transactions::Steps::SaveCollectionThumbnail.new
+  Hyrax::MemberPresenterFactory.file_presenter_class = Hyrax::IiifAv::IiifFileSetPresenter
+  Hyrax::PcdmMemberPresenterFactory.file_presenter_class = Hyrax::IiifAv::IiifFileSetPresenter
+
+  Hyrax::Transactions::Container.namespace('collection_resource') do |ops|
+    ops.register 'save_collection_thumbnail', Hyrax::Transactions::Steps::SaveCollectionThumbnail.new
+  end
+
+  Hyrax::Resource.delegate(
+    :visibility_during_embargo, :visibility_after_embargo, :embargo_release_date, to: :embargo, allow_nil: true
+  )
+
+  Hyrax::Resource.delegate(
+    :visibility_during_lease, :visibility_after_lease, :lease_expiration_date, to: :lease, allow_nil: true
+  )
 end
-
-Hyrax::Resource.delegate(
-  :visibility_during_embargo, :visibility_after_embargo, :embargo_release_date, to: :embargo, allow_nil: true
-)
-
-Hyrax::Resource.delegate(
-  :visibility_during_lease, :visibility_after_lease, :lease_expiration_date, to: :lease, allow_nil: true
-)

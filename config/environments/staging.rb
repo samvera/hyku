@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require Rails.root.join('lib', 'middleware', 'no_cache_middleware')
 
 # rubocop:disable Metrics/BlockLength
 Rails.application.configure do

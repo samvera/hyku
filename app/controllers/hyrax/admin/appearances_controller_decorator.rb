@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v5.0.0rc2 to add selectable themes
+# OVERRIDE Hyrax v5.2.0 to add selectable themes
 
 module Hyrax
   module Admin

@@ -18,13 +18,6 @@ Welcome to the Hyku development wiki!
 * [[ActiveJob with tenants]]
 * [[Run rake task on all or selected tenants]]
 
-## Amazon Web Services
-* [[SSH to AWS demo stack]]
-* [[Rails Console and DB Console on an Elastic Beanstalk machine]]
-* [[Update the cloudformation deploy]]
-* [[ActiveJob on SQS]]
-* [[View Solr and Zookeeper dashboards in AWS]]
-
 ## Cleanup
 * [[Cleaning out bad data]]
 * [[How Broke Is It? (Production data debugging scratchpad)]]

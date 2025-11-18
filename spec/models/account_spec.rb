@@ -562,6 +562,40 @@ RSpec.describe Account, type: :model do
       end
     end
 
+    # NEW: Add validation specs
+    context 'search-only validation' do
+      let(:normal_account) { create(:account) }
+
+      it 'is invalid when search_only is true and no full accounts are selected' do
+        search_account = build(:account, search_only: true)
+        expect(search_account).not_to be_valid
+        expect(search_account.errors[:base]).to include('Search-only accounts must have at least one full account selected for cross-tenant search')
+      end
+
+      it 'is valid when search_only is true and at least one full account is selected' do
+        search_account = build(:account, search_only: true, full_account_ids: [normal_account.id])
+        expect(search_account).to be_valid
+      end
+
+      it 'is valid when search_only is false with no full accounts' do
+        regular_account = build(:account, search_only: false)
+        expect(regular_account).to be_valid
+      end
+
+      it 'allows removing all full accounts if search_only is changed to false' do
+        cross_search_solr = create(:solr_endpoint, url: "http://solr:8983/solr/hydra-cross-search-tenant")
+        search_account = create(:account,
+                               search_only: true,
+                               full_account_ids: [normal_account.id],
+                               solr_endpoint: cross_search_solr,
+                               fcrepo_endpoint: nil)
+
+        search_account.search_only = false
+        search_account.full_account_ids = []
+        expect(search_account).to be_valid
+      end
+    end
+
     context 'can add and remove Full Account from shared search' do
       let(:normal_account) { create(:account) }
       let(:cross_search_solr) { create(:solr_endpoint, url: "http://solr:8983/solr/hydra-cross-search-tenant") }

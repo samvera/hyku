@@ -21,6 +21,7 @@ RSpec.feature 'Dashboard sidebar metadata profiles link', type: :feature, clean:
   context 'when HYRAX_FLEXIBLE is enabled' do
     before do
       ENV['HYRAX_FLEXIBLE'] = 'true'
+      Hyrax.config.flexible = true # Ensure Hyrax config is set
       Rails.application.reload_routes!
       allow(Site).to receive(:account).and_return(double(search_only?: false))
     end
@@ -72,6 +73,7 @@ RSpec.feature 'Dashboard sidebar metadata profiles link', type: :feature, clean:
 
     before do
       ENV['HYRAX_FLEXIBLE'] = 'true'
+      Hyrax.config.flexible = true # Ensure Hyrax config is set
       Rails.application.reload_routes!
       allow(Site).to receive(:account).and_return(double(search_only?: false))
     end

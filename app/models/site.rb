@@ -18,7 +18,7 @@ class Site < ApplicationRecord
   # Allow for uploading of site's favicon image
   mount_uploader :favicon, FaviconUploader
 
-  belongs_to :account
+  belongs_to :account, optional: true
   accepts_nested_attributes_for :account, update_only: true
 
   class << self

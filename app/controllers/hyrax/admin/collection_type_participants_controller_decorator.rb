@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# OVERRIDE Hyrax v5.2.0 make you can not delete the admin group
 module Hyrax
   module Admin
     # Add backend validation to stop admin group access from being destroyed

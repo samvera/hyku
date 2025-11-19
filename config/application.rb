@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 require_relative 'boot'
-require_relative '../app/middleware/no_cache_middleware'
 
 require 'rails/all'
 require 'i18n/debug' if ENV['I18N_DEBUG']
@@ -145,6 +144,15 @@ module Hyku
 
   # rubocop:disable Metrics/ClassLength
   class Application < Rails::Application
+    # Initialize configuration defaults for originally generated Rails version.
+    config.load_defaults 7.2
+
+    # Please, add to the `ignore` list any other `lib` subdirectories that do
+    # not contain `.rb` files, or that should not be reloaded or eager loaded.
+    # Common ones are `templates`, `generators`, or `middleware`, for example.
+    config.autoload_lib(ignore: %w[assets tasks middleware rubocop])
+    config.add_autoload_paths_to_load_path = true
+
     ##
     # @!group Class Attributes
     #
@@ -213,13 +221,6 @@ module Hyku
                     }
     # @!endgroup Class Attributes
 
-    # Add this line to load the lib folder first because we need
-    # IiifPrint::SplitPdfs::AdventistPagesToJpgsSplitter
-    config.autoload_paths.unshift(Rails.root.join('lib'))
-
-    # Add the middleware directory to the eager load paths
-    config.eager_load_paths << Rails.root.join('app', 'middleware')
-
     ##
     #   @return [Array<String>] an array of strings in which we should be looking for theme view
     #           candidates.
@@ -287,6 +288,8 @@ module Hyku
     config.action_dispatch.rescue_responses["I18n::InvalidLocale"] = :not_found
 
     if defined?(ActiveElasticJob) && ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', '') == 'elastic'
+      require 'active_job/queue_adapters/better_active_elastic_job_adapter'
+
       Rails.application.configure do
         process_jobs = ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_ELASTIC_JOBS', false))
         config.active_elastic_job.process_jobs = process_jobs
@@ -359,10 +362,9 @@ module Hyku
         end
       end
 
+      require Rails.root.join('app', 'models', 'concerns', 'account_switch')
       Object.include(AccountSwitch)
     end
-
-    config.autoload_paths << Rails.root.join("app", "controllers", "api")
 
     # copies tinymce assets directly into public/assets
     config.tinymce.install = :copy
@@ -386,10 +388,9 @@ module Hyku
         User,
         Time
       ]
-      config.active_record.yaml_column_permitted_classes = yaml_column_permitted_classes
       # Seems at some point `ActiveRecord::Base.yaml_column_permitted_classes` loses all the values we set above
       # so we need to set it again here.
-      ActiveRecord::Base.yaml_column_permitted_classes = yaml_column_permitted_classes
+      ActiveRecord.yaml_column_permitted_classes = yaml_column_permitted_classes
 
       # Because we're loading local translations early in the to_prepare block for our decorators,
       # the I18n.load_path is out of order.  This line ensures that we load local translations last.

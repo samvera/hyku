@@ -85,7 +85,7 @@ RSpec.describe "OAI PMH Support", type: :feature do
         it 'adds download links' do
           expect(xml.to_s).not_to include('my-file-set-id-1', 'my-file-set-id-2')
 
-          OAI::Provider::MetadataFormat::HykuDublinCore
+          Oai::Provider::MetadataFormat::HykuDublinCore
             .send(:new)
             .add_public_file_urls(xml, record)
 
@@ -105,7 +105,7 @@ RSpec.describe "OAI PMH Support", type: :feature do
         it 'does not add download links' do
           expect(xml.to_s).not_to include('my-file-set-id-1', 'my-file-set-id-2')
 
-          OAI::Provider::MetadataFormat::HykuDublinCore
+          Oai::Provider::MetadataFormat::HykuDublinCore
             .send(:new)
             .add_public_file_urls(xml, record)
 
@@ -125,7 +125,7 @@ RSpec.describe "OAI PMH Support", type: :feature do
         it 'adds public download links' do
           expect(xml.to_s).not_to include('my-file-set-id-1', 'my-file-set-id-2')
 
-          OAI::Provider::MetadataFormat::HykuDublinCore
+          Oai::Provider::MetadataFormat::HykuDublinCore
             .send(:new)
             .add_public_file_urls(xml, record)
 

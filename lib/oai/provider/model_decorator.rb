@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module OAI
+module Oai
   module Provider
     module ModelDecorator
       # # OVERRIDE OAI v1.2.1 to map Qualified Dublin Core (Terms) fields to PALNI/PALCI fields
@@ -68,4 +68,4 @@ module OAI
   end
 end
 
-OAI::Provider::Model.prepend(OAI::Provider::ModelDecorator)
+OAI::Provider::Model.prepend(Oai::Provider::ModelDecorator)

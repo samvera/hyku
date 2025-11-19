@@ -38,18 +38,14 @@ RSpec.describe Hyrax::QuickClassificationQuery, type: :decorator do
 
       context 'with a search-only tenant' do
         let(:full_account) { create(:account, search_only: false) }
-        let(:account) do
-          create(
-            :account,
-            search_only: true,
-            full_account_cross_searches_attributes: [
-              { full_account_id: full_account.id }
-            ]
-          )
+        let(:search_only_account) do
+          create(:account, search_only: true, full_account_cross_searches_attributes: [
+                   { full_account_id: full_account.id }
+                 ])
         end
 
         before do
-          allow(Site).to receive(:account).and_return(account)
+          allow(Site).to receive(:account).and_return(search_only_account)
         end
 
         it 'returns Site.instance.available_works without trying to access flexible schema' do

@@ -120,7 +120,6 @@ NegativeCaptcha.test_mode = true
 
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = Rails.root.join('spec', 'fixtures').to_s
   config.file_fixture_path = Rails.root.join('spec', 'fixtures').to_s
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your

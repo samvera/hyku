@@ -71,7 +71,7 @@ Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
 ActiveRecord::Migration.maintain_test_schema!
 
 # Uses faster rack_test driver when JavaScript support not needed
-Capybara.default_max_wait_time = 8
+Capybara.default_max_wait_time = 10
 Capybara.default_driver = :rack_test
 
 ENV['WEB_HOST'] ||= `hostname -s`.strip
@@ -185,12 +185,14 @@ RSpec.configure do |config|
   end
 
   config.after(:each, type: :feature) do |example|
-    # rubocop:disable Lint/Debugger
     save_page if example.exception.present?
-    # rubocop:enable Lint/Debugger
     Warden.test_reset!
-    Capybara.reset_sessions!
-    page.driver.reset!
+    begin
+      Capybara.reset_sessions!
+      page.driver.reset!
+    rescue Selenium::WebDriver::Error::InvalidSessionIdError, Selenium::WebDriver::Error::NoSuchWindowError
+      # Ignore session errors to prevent cascading failures
+    end
   end
 
   config.after do

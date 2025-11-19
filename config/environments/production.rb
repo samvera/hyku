@@ -86,6 +86,7 @@ Rails.application.configure do # rubocop:disable Metrics/BlockLength
   # Use a real queuing backend for Active Job (and separate queues per environment).
   config.active_job.queue_adapter = ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq')
   # config.active_job.queue_name_prefix = "hyku_production"
+
   config.action_mailer.default_options = { from: ENV.fetch('HYKU_CONTACT_EMAIL', 'changeme@example.com') }
   if ENV['SMTP_ENABLED'].present? && ENV['SMTP_ENABLED'].to_s == 'true'
     config.action_mailer.smtp_settings = {

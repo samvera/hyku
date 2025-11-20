@@ -52,5 +52,10 @@
       <span class="fa fa-users" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.roles_service_jobs') %></span>
     <% end %>
   <% end %>
+  <%# TODO: potentially temporary Hyku override to show metadata partial here %>
+  <%# Bulkrax overrides the repository contents menu so it doesn't appear in Hyku %>
+  <% if current_account && !current_account.search_only %>
+    <%= render 'hyrax/dashboard/sidebar/metadata', menu: menu %>
+  <% end %>
   <%= render 'hyrax/dashboard/sidebar/menu_partials', menu: menu, section: :configuration %>
 <% end %>

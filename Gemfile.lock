@@ -142,7 +142,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: a182a72710d84f52664e3ac18b3a8920632b4e17
+  revision: 4b643fc4d347dc399659e972b0b03acb5984c5cb
   branch: 5.0-flexible
   specs:
     hyrax (5.0.5)
@@ -1629,4 +1629,4 @@ DEPENDENCIES
   willow_sword!
 
 BUNDLED WITH
-   2.4.21
+   2.6.9

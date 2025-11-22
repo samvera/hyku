@@ -52,12 +52,12 @@ gem 'good_job', '~> 4.10' # Updated for Rails 7.2 compatibility
 gem 'googleauth', '~> 1.9.0'
 gem 'google-protobuf'
 gem 'grpc'
-gem 'hyrax', github: 'samvera/hyrax', branch: 'hyku_7_main'
+gem 'hyrax', github: 'samvera/hyrax', branch: 'main'
 gem 'hyrax-doi', github: 'samvera-labs/hyrax-doi', branch: 'rails_hyrax_upgrade'
 gem 'hyrax-iiif_av', github: 'samvera-labs/hyrax-iiif_av', branch: 'rails_hyrax_upgrade'
 gem 'i18n-debug', require: false, group: %i[development test]
 gem 'i18n-tasks', group: %i[development test]
-gem 'iiif_print', github: 'notch8/iiif_print', branch: 'fix_metadata_include' # '~> 3.0.9'
+gem 'iiif_print', '~> 3.0.10'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'json-canonicalization', "0.3.1" # The maintainers yanked 0.3.2 version (see https://github.com/dryruby/json-canonicalization/issues/2)

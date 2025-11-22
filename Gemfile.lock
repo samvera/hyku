@@ -1,13 +1,4 @@
 GIT
-  remote: https://github.com/active-elastic-job/active-elastic-job.git
-  revision: ec51c5d9dedc4a1b47f2db41f26d5fceb251e979
-  ref: ec51c5d9dedc4a1b47f2db41f26d5fceb251e979
-  specs:
-    active_elastic_job (2.0.1)
-      aws-sdk-sqs (~> 1)
-      rails (>= 4.2)
-
-GIT
   remote: https://github.com/notch8/iiif_print.git
   revision: 857ea9248f9f93a91336defcbecadd03650fac32
   branch: fix_metadata_include
@@ -1658,7 +1649,6 @@ PLATFORMS
 
 DEPENDENCIES
   active-fedora
-  active_elastic_job!
   activerecord-nulldb-adapter
   activesupport (>= 4.2.0)
   addressable (= 2.8.1)

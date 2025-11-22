@@ -287,17 +287,6 @@ module Hyku
     # The locale is set by a query parameter, so if it's not found render 404
     config.action_dispatch.rescue_responses["I18n::InvalidLocale"] = :not_found
 
-    if defined?(ActiveElasticJob) && ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', '') == 'elastic'
-      require 'active_job/queue_adapters/better_active_elastic_job_adapter'
-
-      Rails.application.configure do
-        process_jobs = ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_ELASTIC_JOBS', false))
-        config.active_elastic_job.process_jobs = process_jobs
-        config.active_elastic_job.aws_credentials = -> { Aws::InstanceProfileCredentials.new }
-        config.active_elastic_job.secret_key_base = Rails.application.secrets[:secret_key_base]
-      end
-    end
-
     config.to_prepare do
       # Load locales early so decorators can use them during initialization
       I18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.yml')]
@@ -353,15 +342,6 @@ module Hyku
     config.paths.add 'app/helpers', eager_load: true
 
     config.before_initialize do
-      if defined?(ActiveElasticJob) && ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', '') == 'elastic'
-        Rails.application.configure do
-          process_jobs = ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_ELASTIC_JOBS', false))
-          config.active_elastic_job.process_jobs = process_jobs
-          config.active_elastic_job.aws_credentials = -> { Aws::InstanceProfileCredentials.new }
-          config.active_elastic_job.secret_key_base = Rails.application.secrets[:secret_key_base]
-        end
-      end
-
       require Rails.root.join('app', 'models', 'concerns', 'account_switch')
       Object.include(AccountSwitch)
     end

@@ -2,7 +2,7 @@
 
 # OVERRIDE IIIFManifest v1.3.1 to use the parent's title as the label instead of the filename
 
-module IiifManifest
+module IIIFManifest
   module ManifestBuilderDecorator
     module CanvasBuilderDecorator
       private
@@ -15,5 +15,5 @@ module IiifManifest
   end
 end
 
-IIIFManifest::ManifestBuilder.prepend(IiifManifest::ManifestBuilderDecorator)
-IIIFManifest::ManifestBuilder::CanvasBuilder.prepend(IiifManifest::ManifestBuilderDecorator::CanvasBuilderDecorator)
+IIIFManifest::ManifestBuilder.prepend(IIIFManifest::ManifestBuilderDecorator)
+IIIFManifest::ManifestBuilder::CanvasBuilder.prepend(IIIFManifest::ManifestBuilderDecorator::CanvasBuilderDecorator)

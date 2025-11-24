@@ -30,7 +30,7 @@ module Apartment
       Pry.config.prompt = Pry::Prompt[:ros][:value]
     end
 
-    Pry.config.hooks.add_hook(:when_started, 'startup message') do
+    Pry.config.hooks.add_hook(:before_session, 'startup message') do
       case Account.count
       when 0
         puts "***** No accounts, found, please run the seeds *****" # rubocop:disable Rails/Output

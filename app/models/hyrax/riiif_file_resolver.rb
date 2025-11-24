@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hyrax
   # Adds file locking to Riiif::File
   # @see RiiifFileResolver

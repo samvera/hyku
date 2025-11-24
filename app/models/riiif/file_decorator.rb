@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Riiif
   module FileDecorator
     extend ActiveSupport::Concern

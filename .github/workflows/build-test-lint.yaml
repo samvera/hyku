@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - 6.2-stable
   pull_request:
     branches:
       - main
+      - 6.2-stable
   workflow_dispatch:
     inputs:
       debug_step:

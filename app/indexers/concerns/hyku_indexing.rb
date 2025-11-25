@@ -15,7 +15,7 @@ module HykuIndexing
         # Specs refer to object as @object
         # Valkyrie refers to resource
         object ||= @object || resource
-        solr_doc['generic_type_sim'] = ['Work']
+        solr_doc['generic_type_sim'] = ['Work'] if object.is_a?(Hyrax::Work)
         solr_doc['account_cname_tesim'] = Site.instance&.account&.cname
         solr_doc['bulkrax_identifier_tesim'] = object.bulkrax_identifier if object.respond_to?(:bulkrax_identifier)
         solr_doc['account_institution_name_ssim'] = Site.instance.institution_label

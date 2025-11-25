@@ -135,6 +135,17 @@ GIT
       nokogiri (~> 1.5)
       omniauth (>= 1.2, < 3)
 
+GIT
+  remote: https://github.com/sul-dlss/riiif.git
+  revision: 9a37564c3842d703bb9df195038eaf7fb037b5df
+  ref: 9a375
+  specs:
+    riiif (2.7.0)
+      deprecation (>= 1.0.0)
+      iiif-image-api (>= 0.1.0)
+      railties (>= 4.2, < 9)
+      ruby-vips
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -1311,10 +1322,6 @@ GEM
     reverse_markdown (3.0.0)
       nokogiri
     rexml (3.4.4)
-    riiif (2.7.0)
-      deprecation (>= 1.0.0)
-      iiif-image-api (>= 0.1.0)
-      railties (>= 4.2, < 9)
     rolify (6.0.1)
     ros-apartment (3.2.0)
       activerecord (>= 6.1.0, < 8.1)
@@ -1394,6 +1401,9 @@ GEM
     ruby-saml (1.18.1)
       nokogiri (>= 1.13.10)
       rexml
+    ruby-vips (2.2.5)
+      ffi (~> 1.12)
+      logger
     ruby2_keywords (0.0.5)
     rubyzip (3.1.0)
     sass (3.7.4)
@@ -1722,7 +1732,7 @@ DEPENDENCIES
   redis-actionpack
   redis-namespace (~> 1.10)
   redlock (>= 0.1.2, < 2.0)
-  riiif (~> 2.1)
+  riiif!
   rolify
   ros-apartment
   rsolr (~> 2.0)

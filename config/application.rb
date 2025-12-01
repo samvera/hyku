@@ -281,7 +281,11 @@ module Hyku
 
     # Gzip all responses.  We probably could do this in an upstream proxy, but
     # configuring Nginx on Elastic Beanstalk is a pain.
-    config.middleware.use Rack::Deflater
+    config.middleware.use Rack::Deflater,
+      if: lambda { |env, _status, _headers, _body|
+        # Don't compress downloads route
+        !env['PATH_INFO']&.start_with?('/downloads')
+      }
 
     # The locale is set by a query parameter, so if it's not found render 404
     config.action_dispatch.rescue_responses["I18n::InvalidLocale"] = :not_found

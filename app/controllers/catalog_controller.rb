@@ -622,7 +622,8 @@ class CatalogController < ApplicationController
       document: {
         limit: 100, # number of records returned with each request, default: 15
         set_fields: [ # ability to define ListSets, optional, default: nil
-          { label: 'collection', solr_field: 'isPartOf_ssim' }
+          { label: 'admin_set', solr_field: 'isPartOf_ssim' },
+          { label: 'collection', solr_field: 'member_of_collection_ids_ssim' }
         ]
       }
     }

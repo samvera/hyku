@@ -38,6 +38,7 @@ Rails.application.reloader.to_prepare do
   Riiif.unauthorized_image = Rails.root.join('app', 'assets', 'images', 'us_404.svg')
 
   Riiif::Engine.config.cache_duration = 1.year
+  Riiif::Engine.config.use_vips = true
 end
 
 module Hyrax

@@ -62,7 +62,6 @@ class SolrDocument
   attribute :library_catalog_identifier, Solr::String, 'library_catalog_identifier_tesim'
   attribute :chronology_note, Solr::String, 'chronology_note_tesim'
   attribute :based_near, Solr::Array, 'based_near_tesim'
-  attribute :video_embed, Solr::String, 'video_embed_tesi'
 
   field_semantics.merge!(
     contributor: 'contributor_tesim',
@@ -119,5 +118,9 @@ class SolrDocument
   def query(query, **opts)
     result = Hyrax::SolrService.post(query, **opts)
     result.fetch('response').fetch('docs', [])
+  end
+
+  def video_embed
+    self['video_embed_tesi'] || first('video_embed_tesim')
   end
 end

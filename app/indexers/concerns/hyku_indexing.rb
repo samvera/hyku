@@ -3,6 +3,7 @@
 ##
 # A mixin for all additional Hyku applicable indexing; both Valkyrie and ActiveFedora friendly.
 module HykuIndexing
+  include ScrubText
   # TODO: Once we've fully moved to Valkyrie, remove the generate_solr_document and move `#to_solr`
   #      to a more conventional method def (e.g. `def to_solr`).  However, we need to tap into two
   #      different inheritance paths based on ActiveFedora or Valkyrie
@@ -54,7 +55,7 @@ module HykuIndexing
     return [] if members.blank?
 
     text_file_sets = members.select { |fs| fs.file_set? && fs.original_file&.mime_type == 'text/plain' }
-    text_file_sets.map { |fs| fs.original_file&.content }
+    text_file_sets.map { |fs| scrub_text(fs.original_file&.content) }
   end
 
   def extract_text_from_child_works(object)

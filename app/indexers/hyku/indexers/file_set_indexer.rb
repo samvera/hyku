@@ -4,6 +4,7 @@ module Hyku
   module Indexers
     class FileSetIndexer < Hyrax::Indexers::FileSetIndexer
       include Hyrax::Indexer(:bulkrax_metadata) unless Hyrax.config.flexible?
+      include ScrubText
 
       def to_solr
         return super unless Flipflop.default_pdf_viewer?
@@ -27,9 +28,7 @@ module Hyku
             pdftotext.read
           end
 
-          text.tr("\n", ' ')
-              .squeeze(' ')
-              .encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '') # remove non-UTF-8 characters
+          scrub_text(text)
         rescue Errno::ENOENT => e
           raise e unless e.message.include?("No such file or directory - pdftotext")
           Rails.logger.warn("`pdfinfo' is not installed; unable to extract text from the PDF's content")

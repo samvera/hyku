@@ -614,7 +614,7 @@ class CatalogController < ApplicationController
     config.oai = {
       provider: {
         repository_name: ->(controller) { controller.send(:current_account)&.name.presence },
-        # repository_url:  ->(controller) { controller.oai_catalog_url },
+        repository_url: ->(controller) { controller.oai_catalog_url.split('?locale').first }, # remove i18n for oai URL
         record_prefix: ->(controller) { controller.send(:current_account).oai_prefix },
         admin_email: ->(controller) { controller.send(:current_account).oai_admin_email },
         sample_id: ->(controller) { controller.send(:current_account).oai_sample_identifier }

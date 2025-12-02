@@ -56,7 +56,9 @@ module Hyrax
         # Handle different service patterns:
         # 1. Most services use select_all_options
         # 2. Some, like ResourceTypesService, uses select_options
-        options = if service.respond_to?(:select_all_options)
+        options = if service.respond_to?(:select_active_options)
+                    service.select_active_options
+                  elsif service.respond_to?(:select_all_options)
                     service.select_all_options
                   elsif service.respond_to?(:select_options)
                     service.select_options

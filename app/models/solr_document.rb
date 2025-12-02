@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
 class SolrDocument
   include Blacklight::Solr::Document
   include BlacklightOaiProvider::SolrDocument
@@ -63,6 +64,16 @@ class SolrDocument
   attribute :chronology_note, Solr::String, 'chronology_note_tesim'
   attribute :based_near, Solr::Array, 'based_near_tesim'
 
+  # OVERRIDE Blacklight v6.25.0 to add the link to item and link to thumbnail onto the oai_dc feed
+  def to_semantic_values
+    @semantic_value_hash = super
+    @semantic_value_hash[:identifier] = [] unless @semantic_value_hash.key?(:identifier)
+    @semantic_value_hash[:identifier] << link_to_item
+    @semantic_value_hash[:identifier] << link_to_thumbnail if self['thumbnail_path_ss']
+
+    @semantic_value_hash
+  end
+
   field_semantics.merge!(
     contributor: 'contributor_tesim',
     creator: 'creator_tesim',
@@ -123,4 +134,25 @@ class SolrDocument
   def video_embed
     self['video_embed_tesi'] || first('video_embed_tesim')
   end
+
+  private
+
+  def link_to_item
+    return "https://#{self['account_cname_tesim'].first}/collections/#{id}" if hydra_model == Collection
+
+    Rails.application.routes.url_helpers.send(
+      "hyrax_#{hydra_model.to_s.underscore}_url",
+      id,
+      host: self['account_cname_tesim'].first,
+      protocol: 'https'
+    )
+  end
+
+  def link_to_thumbnail
+    path = self['thumbnail_path_ss']
+    host = self['account_cname_tesim'].first
+
+    "https://#{host}#{path}"
+  end
 end
+# rubocop:enable Metrics/ClassLength

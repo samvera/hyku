@@ -15,7 +15,6 @@ source 'https://rubygems.org'
 # Updated to Rails 7.2 for upgrade
 gem 'rails', '~> 7.2.0'
 
-gem 'active_elastic_job', github: 'active-elastic-job/active-elastic-job', ref: 'ec51c5d9dedc4a1b47f2db41f26d5fceb251e979', group: %i[aws]
 gem 'active-fedora'
 gem 'activerecord-nulldb-adapter'
 gem 'activesupport', '>= 4.2.0', group: %i[development test]

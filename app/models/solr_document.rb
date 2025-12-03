@@ -64,30 +64,25 @@ class SolrDocument
   attribute :chronology_note, Solr::String, 'chronology_note_tesim'
   attribute :based_near, Solr::Array, 'based_near_tesim'
 
-  # OVERRIDE Blacklight v6.25.0 to add the link to item and link to thumbnail onto the oai_dc feed
+  # OVERRIDE Blacklight v7.35.0 to find properties from schema metadata
+  #   and to add show page and thumbnail links to identifier
   def to_semantic_values
-    @semantic_value_hash = super
+    @semantic_value_hash ||= field_semantics.each_with_object(Hash.new([])) do |(key, field_names), hash|
+      ##
+      # Handles single string field_name or an array of field_names
+      value = Array.wrap(field_names).map { |field_name| self[field_name] }.flatten.compact
+
+      # Make single and multi-values all arrays, so clients
+      # don't have to know.
+      hash[key] = value unless value.empty?
+    end
+
     @semantic_value_hash[:identifier] = [] unless @semantic_value_hash.key?(:identifier)
     @semantic_value_hash[:identifier] << link_to_item
     @semantic_value_hash[:identifier] << link_to_thumbnail if self['thumbnail_path_ss']
 
-    @semantic_value_hash
+    @semantic_value_hash ||= {}
   end
-
-  field_semantics.merge!(
-    contributor: 'contributor_tesim',
-    creator: 'creator_tesim',
-    date: 'date_created_tesim',
-    description: 'description_tesim',
-    identifier: 'identifier_tesim',
-    language: 'language_tesim',
-    publisher: 'publisher_tesim',
-    relation: 'nesting_collection__pathnames_ssim',
-    rights: 'rights_statement_tesim',
-    subject: 'subject_tesim',
-    title: 'title_tesim',
-    type: 'human_readable_type_tesim'
-  )
 
   def show_pdf_viewer
     # NOTE: We want to move towards persisting a boolean.  In the ActiveFedora implementation we are
@@ -153,6 +148,49 @@ class SolrDocument
     host = self['account_cname_tesim'].first
 
     "https://#{host}#{path}"
+  end
+
+  # In Blacklight this is a class method, but we need access
+  # to the instance's hydra_model to do the reverse lookup
+  def field_semantics
+    find_model.schema.keys.each_with_object(dc_mappings) do |schema_key, mappings|
+      qualified_name = schema_key.meta.dig('mappings', 'simple_dc_pmh') # ex. 'dc:rights'
+      next unless qualified_name
+
+      property = qualified_name.split(':').last.to_sym
+      index_keys = schema_key.meta['index_keys']
+      next unless mappings.key?(property) && index_keys.present?
+
+      mappings[property] |= index_keys
+    end
+  end
+
+  def find_model
+    if hydra_model < ActiveFedora::Base
+      ::Wings::ModelRegistry.reverse_lookup(hydra_model)
+    else
+      hydra_model
+    end
+  end
+
+  def dc_mappings
+    @dc_mappings ||= {
+      contributor: [],
+      coverage: [],
+      creator: [],
+      date: [],
+      description: [],
+      format: [],
+      identifier: [],
+      language: [],
+      publisher: [],
+      relation: [],
+      rights: [],
+      source: [],
+      subject: [],
+      title: ['title_tesim'], # adding title_tesim since this is a core metadata property which will always be available
+      type: []
+    }
   end
 end
 # rubocop:enable Metrics/ClassLength

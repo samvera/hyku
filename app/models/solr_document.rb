@@ -133,19 +133,19 @@ class SolrDocument
   private
 
   def link_to_item
-    return "https://#{self['account_cname_tesim'].first}/collections/#{id}" if hydra_model == Collection
+    return "https://#{first('account_cname_tesim')}/collections/#{id}" if collection?
 
     Rails.application.routes.url_helpers.send(
-      "hyrax_#{hydra_model.to_s.underscore}_url",
+      "hyrax_#{first('has_model_ssim').to_s.underscore}_url",
       id,
-      host: self['account_cname_tesim'].first,
+      host: first('account_cname_tesim'),
       protocol: 'https'
     )
   end
 
   def link_to_thumbnail
     path = self['thumbnail_path_ss']
-    host = self['account_cname_tesim'].first
+    host = first('account_cname_tesim')
 
     "https://#{host}#{path}"
   end
@@ -153,7 +153,7 @@ class SolrDocument
   # In Blacklight this is a class method, but we need access
   # to the instance's hydra_model to do the reverse lookup
   def field_semantics
-    find_model.schema.keys.each_with_object(dc_mappings) do |schema_key, mappings|
+    hydra_model.schema.keys.each_with_object(dc_mappings) do |schema_key, mappings|
       qualified_name = schema_key.meta.dig('mappings', 'simple_dc_pmh') # ex. 'dc:rights'
       next unless qualified_name
 
@@ -162,14 +162,6 @@ class SolrDocument
       next unless mappings.key?(property) && index_keys.present?
 
       mappings[property] |= index_keys
-    end
-  end
-
-  def find_model
-    if hydra_model < ActiveFedora::Base
-      ::Wings::ModelRegistry.reverse_lookup(hydra_model)
-    else
-      hydra_model
     end
   end
 

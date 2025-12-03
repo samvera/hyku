@@ -11,6 +11,8 @@ attributes:
     predicate: http://purl.org/dc/terms/abstract
     view:
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:description
   access_right:
     type: string
     multiple: true
@@ -22,6 +24,8 @@ attributes:
     predicate: http://purl.org/dc/terms/accessRights
     view:
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:rights
   alternative_title:
     type: string
     multiple: true
@@ -33,6 +37,8 @@ attributes:
     predicate: http://purl.org/dc/terms/alternative
     view:
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:title
   arkivo_checksum:
     type: string
     multiple: false
@@ -51,6 +57,8 @@ attributes:
     view:
       render_term: 'based_near_label'
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:coverage
   bibliographic_citation:
     type: string
     multiple: true
@@ -62,6 +70,8 @@ attributes:
     predicate: http://purl.org/dc/terms/bibliographicCitation
     view:
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:relation
   contributor:
     type: string
     multiple: true
@@ -74,6 +84,8 @@ attributes:
     view:
       render_as: "faceted"
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:contributor
   creator:
     type: string
     multiple: true
@@ -87,6 +99,8 @@ attributes:
     view:
       render_as: "faceted"
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:creator
   date_created:
     type: date_time
     multiple: true
@@ -100,6 +114,8 @@ attributes:
       render_as: "linked"
       search_field: 'date_created_tesim'
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:date
   date_modified:
     type: date_time
     predicate: http://purl.org/dc/terms/modified
@@ -113,6 +129,8 @@ attributes:
         pt-BR: 'Última modificação'
         zh: '最新修改'
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:date
   description:
     type: string
     multiple: true
@@ -122,6 +140,8 @@ attributes:
       - "description_sim"
       - "description_tesim"
     predicate: http://purl.org/dc/elements/1.1/description
+    mappings:
+      simple_dc_pmh: dc:description
   identifier:
     type: string
     multiple: true
@@ -135,6 +155,8 @@ attributes:
       render_as: "linked"
       search_field: 'identifier_tesim'
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:identifier
   import_url:
     type: string
     predicate: http://scholarsphere.psu.edu/ns#importUrl
@@ -150,6 +172,8 @@ attributes:
     view:
       render_as: "faceted"
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:subject
   publisher:
     type: string
     multiple: true
@@ -162,6 +186,8 @@ attributes:
     view:
       render_as: "faceted"
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:publisher
   label:
     type: string
     form:
@@ -182,6 +208,8 @@ attributes:
     view:
       render_as: "faceted"
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:language
   license:
     type: string
     multiple: true
@@ -194,6 +222,8 @@ attributes:
     view:
       render_as: "license"
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:rights
   relative_path:
     type: string
     predicate: http://scholarsphere.psu.edu/ns#relativePath
@@ -209,6 +239,8 @@ attributes:
     view:
       render_as: "external_link"
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:relation
   resource_type:
     type: string
     multiple: true
@@ -221,6 +253,8 @@ attributes:
     view:
       render_as: "faceted"
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:type
   rights_notes:
     type: string
     multiple: true
@@ -232,6 +266,8 @@ attributes:
     predicate: http://purl.org/dc/elements/1.1/rights
     view:
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:rights
   rights_statement:
     type: string
     multiple: true
@@ -244,6 +280,8 @@ attributes:
       html_dl: true
       render_as: "rights_statement"
     predicate: http://www.europeana.eu/schemas/edm/rights
+    mappings:
+      simple_dc_pmh: dc:rights
   source:
     type: string
     multiple: true
@@ -255,6 +293,8 @@ attributes:
     predicate: http://purl.org/dc/terms/source
     view:
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:source
   subject:
     type: string
     multiple: true
@@ -267,3 +307,5 @@ attributes:
     view:
       render_as: "faceted"
       html_dl: true
+    mappings:
+      simple_dc_pmh: dc:subject

@@ -153,6 +153,8 @@ properties:
     indexing:
       - "creator_sim"
       - "creator_tesim"
+    mappings:
+      simple_dc_pmh: dc:creator
     property_uri: http://purl.org/dc/elements/1.1/creator
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
@@ -178,8 +180,6 @@ properties:
       - label_tesim
     form:
       primary: false
-    mappings:
-      simple_dc_pmh: dc:creator
     property_uri: info:fedora/fedora-system:def/model#downloadFilename
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:

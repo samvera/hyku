@@ -185,6 +185,8 @@ properties:
     form:
       required: true
       primary: true
+    mappings:
+      simple_dc_pmh: dc:creator
     property_uri: http://purl.org/dc/elements/1.1/creator
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
@@ -216,6 +218,8 @@ properties:
       - license_tesim
     form:
       primary: false
+    mappings:
+      simple_dc_pmh: dc:rights
     property_uri: http://purl.org/dc/terms/license
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
@@ -247,6 +251,8 @@ properties:
       - abstract_tesim
     form:
       primary: false
+    mappings:
+      simple_dc_pmh: dc:description
     property_uri: http://purl.org/dc/terms/abstract
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
@@ -423,6 +429,8 @@ properties:
       - facetable
     form:
       primary: false
+    mappings:
+      simple_dc_pmh: dc:contributor
     property_uri: http://purl.org/dc/elements/1.1/contributor
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
@@ -454,6 +462,8 @@ properties:
       - date_created_tesim
     form:
       primary: false
+    mappings:
+      simple_dc_pmh: dc:date
     property_uri: http://purl.org/dc/terms/created
     range: http://www.w3.org/2001/XMLSchema#dateTime
     sample_values:
@@ -486,6 +496,8 @@ properties:
       - description_tesim
     form:
       primary: false
+    mappings:
+      simple_dc_pmh: dc:description
     property_uri: http://purl.org/dc/elements/1.1/description
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
@@ -631,6 +643,8 @@ properties:
       - facetable
     form:
       primary: false
+    mappings:
+      simple_dc_pmh: dc:language
     property_uri: http://purl.org/dc/elements/1.1/language
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
@@ -664,6 +678,8 @@ properties:
       - facetable
     form:
       primary: false
+    mappings:
+      simple_dc_pmh: dc:publisher
     property_uri: http://purl.org/dc/elements/1.1/publisher
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
@@ -782,6 +798,8 @@ properties:
       - rights_notes_tesim
     form:
       primary: false
+    mappings:
+      simple_dc_pmh: dc:rights
     property_uri: http://purl.org/dc/elements/1.1/rights
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
@@ -813,6 +831,8 @@ properties:
     form:
       primary: true
       required: true
+    mappings:
+      simple_dc_pmh: dc:rights
     property_uri: http://www.europeana.eu/schemas/edm/rights
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
@@ -876,6 +896,8 @@ properties:
       - facetable
     form:
       primary: false
+    mappings:
+      simple_dc_pmh: dc:subject
     property_uri: http://purl.org/dc/elements/1.1/subject
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
@@ -1349,6 +1371,8 @@ properties:
     indexing:
       - related_item_id_tesim
       - related_item_id_sim
+    mappings:
+      simple_dc_pmh: dc:relation
     property_uri: http://purl.org/dc/terms/relation
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:

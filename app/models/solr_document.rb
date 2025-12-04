@@ -67,7 +67,7 @@ class SolrDocument
   # OVERRIDE Blacklight v7.35.0 to find properties from schema metadata
   #   and to add show page and thumbnail links to identifier
   def to_semantic_values
-    @semantic_value_hash ||= field_semantics.each_with_object(Hash.new([])) do |(key, field_names), hash|
+    @semantic_value_hash ||= field_semantics.each_with_object(Hash.new { |h, k| h[k] = [] }) do |(key, field_names), hash|
       ##
       # Handles single string field_name or an array of field_names
       value = Array.wrap(field_names).map { |field_name| self[field_name] }.flatten.compact
@@ -77,11 +77,10 @@ class SolrDocument
       hash[key] = value unless value.empty?
     end
 
-    @semantic_value_hash[:identifier] = [] unless @semantic_value_hash.key?(:identifier)
     @semantic_value_hash[:identifier] << link_to_item
     @semantic_value_hash[:identifier] << link_to_thumbnail if self['thumbnail_path_ss']
 
-    @semantic_value_hash ||= {}
+    @semantic_value_hash
   end
 
   def show_pdf_viewer

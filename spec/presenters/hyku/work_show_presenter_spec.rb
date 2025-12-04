@@ -193,5 +193,27 @@ RSpec.describe Hyku::WorkShowPresenter do
         end
       end
     end
+  end 
+
+  describe "#valid_child_concerns" do
+    let(:enabled_works) { ["GenericWork", "Image"] }
+    let(:all_concerns) { [GenericWork, Image, Etd] }
+
+    before do
+      account_double = double("Account", cname: nil)
+      site_double = double("Site", 
+                          available_works: enabled_works, 
+                          default_work_image: double(url: nil), 
+                          account: account_double,
+                          institution_label: nil)
+      allow(Site).to receive(:instance).and_return(site_double)
+      allow_any_instance_of(Hyrax::WorkShowPresenter).to receive(:valid_child_concerns).and_return(all_concerns)
+    end
+
+    it "returns only enabled work types as valid child concerns" do
+      result = presenter.valid_child_concerns.map(&:to_s)
+      expect(result).to match_array(enabled_works)
+    end
   end
+  
 end

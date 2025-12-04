@@ -153,6 +153,8 @@ properties:
     indexing:
       - "creator_sim"
       - "creator_tesim"
+    mappings:
+      simple_dc_pmh: dc:creator
     property_uri: http://purl.org/dc/elements/1.1/creator
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
@@ -182,6 +184,68 @@ properties:
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
       - file_label.txt
+  abstract:
+    available_on:
+      class:
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+    data_type: array
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Abstract
+    index_documentation: displayable, searchable
+    indexing:
+      - abstract_sim
+      - abstract_tesim
+    form:
+      primary: false
+    mappings:
+      simple_dc_pmh: dc:description
+    property_uri: http://purl.org/dc/terms/abstract
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - This is an abstract.
+    view:
+      html_dl: true
+  description:
+    available_on:
+      class:
+        - Hyrax::FileSet
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+    data_type: array
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: blacklight.search.fields.show.description_tesim
+    index_documentation: displayable, searchable
+    indexing:
+      - description_sim
+      - description_tesim
+    form:
+      primary: false
+    mappings:
+      simple_dc_pmh: dc:description
+    property_uri: http://purl.org/dc/elements/1.1/description
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - This is a description.
   keyword:
     available_on:
       class:

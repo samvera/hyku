@@ -31,4 +31,6 @@ attributes:
       required: false
       primary: false
       multiple: true
-    predicate: http://purl.org/dc/terms/extent   
+    predicate: http://purl.org/dc/terms/extent
+    mappings:
+      simple_dc_pmh: dc:format

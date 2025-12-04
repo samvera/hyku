@@ -614,7 +614,7 @@ class CatalogController < ApplicationController
     config.oai = {
       provider: {
         repository_name: ->(controller) { controller.send(:current_account)&.name.presence },
-        # repository_url:  ->(controller) { controller.oai_catalog_url },
+        repository_url: ->(controller) { controller.oai_catalog_url.split('?locale').first }, # remove i18n for oai URL
         record_prefix: ->(controller) { controller.send(:current_account).oai_prefix },
         admin_email: ->(controller) { controller.send(:current_account).oai_admin_email },
         sample_id: ->(controller) { controller.send(:current_account).oai_sample_identifier }
@@ -622,7 +622,8 @@ class CatalogController < ApplicationController
       document: {
         limit: 100, # number of records returned with each request, default: 15
         set_fields: [ # ability to define ListSets, optional, default: nil
-          { label: 'collection', solr_field: 'isPartOf_ssim' }
+          { label: 'admin_set', solr_field: 'isPartOf_ssim' },
+          { label: 'collection', solr_field: 'member_of_collection_ids_ssim' }
         ]
       }
     }

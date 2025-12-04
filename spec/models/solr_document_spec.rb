@@ -41,4 +41,59 @@ RSpec.describe SolrDocument, type: :model do
       end
     end
   end
+
+  describe '#to_semantic_values' do
+    let(:subject) { solr_document.to_semantic_values }
+    let(:solr_document) do
+      described_class.new(
+        id: '123',
+        has_model_ssim: ['GenericWork'],
+        account_cname_tesim: ['test.hyku'],
+        thumbnail_path_ss: '/thumbnail.png',
+        title_tesim: ['A Title'],
+        description_tesim: ['A description'],
+        abstract_tesim: ['An abstract']
+      )
+    end
+
+    it 'includes show page and thumbnail urls in identifier' do
+      expect(subject[:identifier]).to include('https://test.hyku/concern/generic_works/123')
+      expect(subject[:identifier]).to include('https://test.hyku/thumbnail.png')
+    end
+
+    shared_examples 'maps properties to dc terms' do
+      it "uses the works' schema match properties to dc terms" do
+        klass_name = GenericWorkResource
+        expect(solr_document.hydra_model).to eq klass_name
+
+        schema_key = klass_name.schema.keys.find { |k| k.name == :abstract }
+        expect(schema_key.meta.dig('mappings', 'simple_dc_pmh')).to eq 'dc:description'
+
+        schema_key = klass_name.schema.keys.find { |k| k.name == :description }
+        expect(schema_key.meta.dig('mappings', 'simple_dc_pmh')).to eq 'dc:description'
+
+        expect(subject[:description]).to include('A description')
+        expect(subject[:description]).to include('An abstract')
+      end
+    end
+
+    it_behaves_like 'maps properties to dc terms'
+
+    context 'when flexible is on' do
+      around do |example|
+        Hyrax.config.flexible = true
+        example.run
+        Hyrax.config.flexible = false
+      end
+
+      let(:profile_file_path) { File.join(fixture_path, 'files', 'm3_profile.yaml') }
+      let(:profile_data) { YAML.load_file(profile_file_path) }
+
+      before do
+        Hyrax::FlexibleSchema.create(profile: profile_data)
+      end
+
+      it_behaves_like 'maps properties to dc terms'
+    end
+  end
 end

@@ -32,6 +32,11 @@ attributes:
       - "creator_sim"
       - "creator_tesim"
     predicate: http://purl.org/dc/elements/1.1/creator
+    view:
+      render_as: "faceted"
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:creator
   resource_type:
     type: string
     multiple: true
@@ -42,6 +47,11 @@ attributes:
       - "resource_type_sim"
       - "resource_type_tesim"
     predicate: http://purl.org/dc/terms/type
+    view:
+      render_as: "faceted"
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:type
   date_created:
     type: string
     multiple: true
@@ -51,6 +61,12 @@ attributes:
     index_keys:
       - "date_created_tesim"
     predicate: http://purl.org/dc/terms/date
+    view:
+      render_as: "linked"
+      search_field: 'date_created_tesim'
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:date
   audience:
     type: string
     multiple: true
@@ -61,6 +77,11 @@ attributes:
       - "audience_tesim"
       - "audience_sim"
     predicate: http://schema.org/EducationalAudience
+    view:
+      render_as: "faceted"
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:description
   education_level:
     type: string
     multiple: true
@@ -71,6 +92,11 @@ attributes:
       - "education_level_tesim"
       - "education_level_sim"
     predicate: http://purl.org/dc/terms/educationLevel
+    view:
+      render_as: "faceted"
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:description
   learning_resource_type:
     type: string
     multiple: true
@@ -81,6 +107,11 @@ attributes:
       - "learning_resource_type_tesim"
       - "learning_resource_type_sim"
     predicate: http://schema.org/learningResourceType
+    view:
+      render_as: "faceted"
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:type
   discipline:
     type: string
     multiple: true
@@ -90,6 +121,11 @@ attributes:
     index_keys:
       - "discipline_tesim"
     predicate: https://hykucommons.org/terms/degree_discipline
+    view:
+      render_as: "faceted"
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:subject
   rights_statement:
     type: string
     multiple: true
@@ -100,6 +136,11 @@ attributes:
       - "rights_statement_sim"
       - "rights_statement_tesim"
     predicate: http://www.europeana.eu/schemas/edm/rights
+    view:
+      render_as: "rights_statement"
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:rights
   license:
     type: string
     multiple: true
@@ -109,6 +150,11 @@ attributes:
       - "license_sim"
       - "license_tesim"
     predicate: http://purl.org/dc/terms/license
+    view:
+      render_as: "license"
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:rights
   abstract:
     type: string
     multiple: true
@@ -119,6 +165,10 @@ attributes:
       - "abstract_sim"
       - "abstract_tesim"
     predicate: http://purl.org/dc/terms/abstract
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:description
   accessibility_feature:
     type: string
     multiple: true
@@ -129,6 +179,10 @@ attributes:
       - "accessibility_feature_tesim"
       - "accessibility_feature_sim"
     predicate: http://schema.org/accessibilityFeature
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:description
   accessibility_hazard:
     type: string
     multiple: true
@@ -139,6 +193,10 @@ attributes:
       - "accessibility_hazard_tesim"
       - "accessibility_hazard_sim"
     predicate: http://schema.org/accessibilityHazard
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:description
   accessibility_summary:
     type: string
     multiple: false
@@ -149,6 +207,10 @@ attributes:
       - "accessibility_summary_tesim"
       - "accessibility_summary_sim"
     predicate: http://schema.org/accessibilitySummary
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:description
   additional_information:
     type: string
     multiple: true
@@ -158,6 +220,10 @@ attributes:
     index_keys:
       - "additional_information_tesim"
     predicate: http://purl.org/dc/terms/accessRights
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:description
   admin_note:
     type: string
     multiple: false
@@ -167,6 +233,9 @@ attributes:
     index_keys:
       - "admin_note_tesim"
     predicate: http://schema.org/positiveNotes
+    view:
+      html_dl: true
+      admin_only: true
   alternative_title:
     type: string
     multiple: true
@@ -176,6 +245,10 @@ attributes:
       - "alternative_title_sim"
       - "alternative_title_tesim"
     predicate: http://purl.org/dc/terms/alternative
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:title
   bibliographic_citation:
     type: string
     multiple: true
@@ -186,6 +259,10 @@ attributes:
       - "bibliographic_citation_sim"
       - "bibliographic_citation_tesim"
     predicate: http://purl.org/dc/terms/bibliographicCitation
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:relation
   contributor:
     type: string
     multiple: true
@@ -196,6 +273,11 @@ attributes:
       - "contributor_tesim"
       - "contributor_sim"
     predicate: http://purl.org/dc/elements/1.1/contributor
+    view:
+      render_as: "faceted"
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:contributor
   description:
     type: string
     multiple: true
@@ -206,6 +288,10 @@ attributes:
       - "description_sim"
       - "description_tesim"
     predicate: http://purl.org/dc/elements/1.1/description
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:description
   identifier:
     type: string
     multiple: true
@@ -216,6 +302,12 @@ attributes:
       - "identifier_sim"
       - "identifier_tesim"
     predicate: http://purl.org/dc/terms/identifier
+    view:
+      render_as: "linked"
+      search_field: 'identifier_tesim'
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:identifier
   keyword:
     type: string
     multiple: true
@@ -226,6 +318,11 @@ attributes:
       primary: false
       multiple: true
     predicate: http://schema.org/keywords
+    view:
+      render_as: "faceted"
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:subject
   language:
     type: string
     multiple: true
@@ -236,6 +333,11 @@ attributes:
       - "language_sim"
       - "language_tesim"
     predicate: http://purl.org/dc/elements/1.1/language
+    view:
+      render_as: "faceted"
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:language
   oer_size:
     type: string
     multiple: true
@@ -245,6 +347,10 @@ attributes:
     index_keys:
       - "oer_size_tesim"
     predicate: http://purl.org/dc/terms/extent
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:format
   publisher:
     type: string
     multiple: true
@@ -255,6 +361,11 @@ attributes:
       - "publisher_sim"
       - "publisher_tesim"
     predicate: http://purl.org/dc/elements/1.1/publisher
+    view:
+      render_as: "faceted"
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:publisher
   related_url:
     type: string
     multiple: true
@@ -265,6 +376,11 @@ attributes:
       - "related_url_sim"
       - "related_url_tesim"
     predicate: http://www.w3.org/2000/01/rdf-schema#seeAlso
+    view:
+      render_as: "external_link"
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:relation
   rights_holder:
     type: string
     multiple: true
@@ -275,6 +391,10 @@ attributes:
       - "rights_holder_tesim"
       - "rights_holder_sim"
     predicate: http://purl.org/dc/terms/rightsHolder
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:rights
   rights_notes:
     type: string
     multiple: true
@@ -284,6 +404,10 @@ attributes:
     index_keys:
       - "rights_notes_tesim"
     predicate: https://hykucommons.org/terms/rights_notes
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:rights
   source:
     type: string
     multiple: true
@@ -294,6 +418,10 @@ attributes:
       - "source_sim"
       - "source_tesim"
     predicate: http://purl.org/dc/terms/source
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:source
   subject:
     type: string
     multiple: true
@@ -304,6 +432,11 @@ attributes:
       primary: false
       multiple: true
     predicate: http://purl.org/dc/elements/1.1/subject
+    view:
+      render_as: "faceted"
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:subject
   table_of_contents:
     type: string
     multiple: true
@@ -313,6 +446,10 @@ attributes:
     index_keys:
       - "table_of_contents_tesim"
     predicate: http://purl.org/dc/terms/tableOfContents
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:description
   previous_version_id:
     type: string
     multiple: true
@@ -320,6 +457,10 @@ attributes:
       - "previous_version_id_tesim"
       - "previous_version_id_sim"
     predicate: http://purl.org/dc/terms/replaces
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:relation
   newer_version_id:
     type: string
     multiple: true
@@ -327,6 +468,10 @@ attributes:
       - "newer_version_id_tesim"
       - "newer_version_id_sim"
     predicate: http://purl.org/dc/terms/isReplacedBy
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:relation
   alternate_version_id:
     type: string
     multiple: true
@@ -334,6 +479,10 @@ attributes:
       - "alternate_version_id_tesim"
       - "alternate_version_id_sim"
     predicate: http://purl.org/dc/terms/hasVersion
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:relation
   related_item_id:
     type: string
     multiple: true
@@ -341,6 +490,10 @@ attributes:
       - "related_item_id_tesim"
       - "related_item_id_sim"
     predicate: http://purl.org/dc/terms/relation
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:relation
   date:
     type: string
     multiple: false
@@ -348,6 +501,12 @@ attributes:
       - "date_tesim"
       - "date_sim"
     predicate: https://hykucommons.org/terms/date
+    view:
+      render_as: "linked"
+      search_field: 'date_tesim'
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:date
   access_right:
     type: string
     multiple: true
@@ -355,6 +514,10 @@ attributes:
       - "access_right_sim"
       - "access_right_tesim"
     predicate: http://purl.org/dc/terms/accessRights
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:rights
   arkivo_checksum:
     type: string
     multiple: false
@@ -368,6 +531,11 @@ attributes:
       - "based_near_sim"
       - "based_near_tesim"
     predicate: http://xmlns.com/foaf/0.1/based_near
+    view:
+      render_term: 'based_near_label'
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:coverage
   import_url:
     type: string
     predicate: http://scholarsphere.psu.edu/ns#importUrl

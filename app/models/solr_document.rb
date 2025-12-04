@@ -153,15 +153,42 @@ class SolrDocument
   # In Blacklight this is a class method, but we need access
   # to the instance's hydra_model to do the reverse lookup
   def field_semantics
-    hydra_model.schema.keys.each_with_object(dc_mappings) do |schema_key, mappings|
-      qualified_name = schema_key.meta.dig('mappings', 'simple_dc_pmh') # ex. 'dc:rights'
+    if Hyrax.config.flexible?
+      build_field_semantics(flexible_schema_data)
+    else
+      build_field_semantics(standard_schema_data)
+    end
+  end
+
+  def build_field_semantics(schema_data)
+    schema_data.each_with_object(dc_mappings) do |item, mappings|
+      qualified_name = item[:qualified_name]
       next unless qualified_name
 
       property = qualified_name.split(':').last.to_sym
-      index_keys = schema_key.meta['index_keys']
+      index_keys = item[:index_keys]
       next unless mappings.key?(property) && index_keys.present?
 
       mappings[property] |= index_keys
+    end
+  end
+
+  def standard_schema_data
+    hydra_model.schema.keys.map do |schema_key|
+      {
+        qualified_name: schema_key.meta.dig('mappings', 'simple_dc_pmh'),
+        index_keys: schema_key.meta['index_keys']
+      }
+    end
+  end
+
+  def flexible_schema_data
+    m3_data = Hyrax::FlexibleSchema.mappings_data_for('simple_dc_pmh')
+    m3_data.map do |_, property_hash|
+      {
+        qualified_name: property_hash.dig('mappings', 'simple_dc_pmh'),
+        index_keys: property_hash['indexing']
+      }
     end
   end
 

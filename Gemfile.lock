@@ -1,16 +1,4 @@
 GIT
-  remote: https://github.com/notch8/iiif_print.git
-  revision: 857ea9248f9f93a91336defcbecadd03650fac32
-  branch: fix_metadata_include
-  specs:
-    iiif_print (3.0.10)
-      blacklight_iiif_search (>= 1.0, < 3.0)
-      derivative-rodeo (~> 0.5)
-      hyrax (>= 2.5, < 6)
-      nokogiri (>= 1.13.2)
-      rdf-vocab (~> 3.0)
-
-GIT
   remote: https://github.com/notch8/willow_sword.git
   revision: 90d600cc5d44b70e59cceb5faebb4fd5eddd7fbc
   branch: main
@@ -52,7 +40,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: 8abde49b1aacd17400e5bf0fd2717ab90d0ab7c9
+  revision: 6aa247efbacb5b61c075cdd64975d4079f173f51
   branch: main
   specs:
     hyrax (5.2.0)

@@ -3,8 +3,14 @@
 <%# hyrax-doi doesn't work post hyrax v3.0.0 %>
 <% if Hyrax.config.flexible? %>
   <% view_options_for(presenter).each do |field, options| %>
-    <% view_options = conform_options(field, options) %>
-    <%= presenter.attribute_to_html(conform_field(field, options), view_options) unless view_options[:admin_only] && !current_user.admin?  %>
+    <% if presenter.respond_to?(field) %>
+      <% value = presenter.public_send(field) %>
+      <% render_attribute = value.present? && (value.is_a?(Enumerable) ? value.any?(&:present?) : true) %>
+      <% if render_attribute %>
+        <% view_options = conform_options(field, options) %>
+        <%= presenter.attribute_to_html(conform_field(field, options), view_options) unless view_options[:admin_only] && !current_user.admin?  %>
+      <% end %>
+    <% end %>
   <% end %>
 <% else %>
   <%# Copied from hyrax-doi v0.2.0 %>

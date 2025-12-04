@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe PerTenantFieldMappings, type: :decorator do
+RSpec.describe Bulkrax::PerTenantFieldMappingDecorator, type: :decorator do
   before do
     allow(Site).to receive(:account).and_return(account)
   end

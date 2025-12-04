@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v5.0.0rc2 use site defaults over app default
+# OVERRIDE Hyrax v5.2.0 use site defaults over app default
 
 module Hyrax
   module WorkThumbnailPathServiceDecorator

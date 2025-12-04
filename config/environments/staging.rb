@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require Rails.root.join('lib', 'middleware', 'no_cache_middleware')
 
 # rubocop:disable Metrics/BlockLength
 Rails.application.configure do
@@ -66,7 +67,6 @@ Rails.application.configure do
   config.cache_store = :redis_cache_store, { url: ENV['RAILS_CACHE_STORE_URL'] } if /^redis/.match?(ENV.fetch('RAILS_CACHE_STORE_URL', ''))
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
-  require 'active_job/queue_adapters/better_active_elastic_job_adapter'
   config.active_job.queue_adapter = ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq')
   # config.active_job.queue_name_prefix = "hyku_#{Rails.env}"
 

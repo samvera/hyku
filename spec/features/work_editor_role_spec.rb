@@ -80,9 +80,9 @@ RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, ci: 's
       expect(page).to have_link('Share Your Work')
     end
 
-    # Temporarily commenting out these specs because they consistently fail in the CI pipeline 
-    # after the Bulkrax version update. The issue seems related to form submission failing 
-    # in the CI environment but not locally. This needs further investigation to resolve.    
+    # Temporarily commenting out these specs because they consistently fail in the CI pipeline
+    # after the Bulkrax version update. The issue seems related to form submission failing
+    # in the CI environment but not locally. This needs further investigation to resolve.
     xit 'can create a work' do # rubocop:disable RSpec/ExampleLength
       visit new_hyrax_generic_work_path
 
@@ -93,8 +93,8 @@ RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, ci: 's
       expect(page).to have_content "Add files"
       expect(page).to have_content "Add folder"
       within('div#add-files') do
-        attach_file("files[]", File.join(fixture_path, 'hyrax', 'image.jp2'), visible: false)
-        attach_file("files[]", File.join(fixture_path, 'hyrax', 'jp2_fits.xml'), visible: false)
+        attach_file("files[]", File.join(file_fixture_path, 'hyrax', 'image.jp2'), visible: false)
+        attach_file("files[]", File.join(file_fixture_path, 'hyrax', 'jp2_fits.xml'), visible: false)
       end
       expect(page).to have_selector(:link_or_button, 'Delete') # Wait for files to finish uploading
 

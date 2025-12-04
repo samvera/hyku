@@ -555,6 +555,7 @@ es:
             description: Una imagen que se mostrará en los resultados de búsqueda y en la página de inicio si decide presentar esta colección. La imagen se recortará y cambiará de tamaño de varias maneras a lo largo de la aplicación, pero para obtener los mejores resultados, utilice una imagen (JPG, GIF o PNG) con orientación horizontal.
             label: Miniatura
         form_discovery:
+          hide_from_catalog_search_html: "<strong>Ocultar de la búsqueda del catálogo</strong> : si se selecciona esta opción, esta colección no aparecerá en los resultados de búsqueda del catálogo."
           para1: Esta configuración determina quién puede descubrir y ver la página de inicio de esta colección; No afectan la visibilidad de los elementos de la colección.
           para2: Si elige no hacer que esta colección tenga acceso abierto, aún puede compartir la colección con usuarios y grupos específicos mediante la pestaña Compartir.
         form_relationships:

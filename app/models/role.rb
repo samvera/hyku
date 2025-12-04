@@ -6,7 +6,8 @@ class Role < ApplicationRecord
   has_many :groups, through: :group_roles
 
   belongs_to :resource,
-             polymorphic: true
+             polymorphic: true,
+             optional: true
 
   before_create :set_sort_value
 

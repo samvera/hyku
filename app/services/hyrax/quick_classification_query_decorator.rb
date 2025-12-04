@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hryax v5.0.0rc2
+# OVERRIDE Hryax v5.2.0
 
 module Hyrax
   module QuickClassificationQueryDecorator

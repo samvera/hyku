@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ModuleLength
 module Hyrax
   module ControlledVocabularies
+    # rubocop:disable Metrics/ClassLength
     class << self
       def controlled_vocab_mappings
         {
@@ -44,6 +46,18 @@ module Hyrax
           },
           'loc/countries' => {
             url: "/authorities/search/loc/countries",
+            type: 'autocomplete'
+          },
+          'loc/languages' => {
+            url: "/authorities/search/loc/languages",
+            type: 'autocomplete'
+          },
+          'loc/iso639-1' => {
+            url: "/authorities/search/loc/iso639-1",
+            type: 'autocomplete'
+          },
+          'loc/iso639-2' => {
+            url: "/authorities/search/loc/iso639-2",
             type: 'autocomplete'
           },
           'getty/aat' => {
@@ -101,5 +115,7 @@ module Hyrax
         }.freeze
       end
     end
+    # rubocop:enable Metrics/ClassLength
   end
 end
+# rubocop:enable Metrics/ModuleLength

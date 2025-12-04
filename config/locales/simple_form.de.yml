@@ -3,13 +3,12 @@ de:
   simple_form:
     cancel: Abbrechen
     error_notification:
-      default_message: "Bitte überprüfen Sie die untenstehenden Probleme:"
+      default_message: 'Bitte überprüfen Sie die untenstehenden Probleme:'
     hints:
       account:
         admin_emails: Geben Sie jeweils eine E-Mail-Adresse ein
         allow_signup: Benutzern erlauben, sich für Ihr Repository anzumelden
         analytics: Aktivieren oder deaktivieren Sie Analysen, um Benutzerinteraktionen zu verfolgen und Analysedaten im Dashboard anzuzeigen.
-
         cache_api: Cache für API-Endpunkte aktivieren. Experimentell
         contact_email: Die E-Mail-Adresse, von der Systembenachrichtigungen gesendet werden. Eine zusätzliche Konfiguration ist erforderlich, um eine Adresse von anderen Domänen als der Domäne der Website hinzuzufügen
         contact_email_to: Die E-Mail-Adresse, an die über die Kontaktseite gesendete Nachrichten gesendet werden
@@ -23,17 +22,16 @@ de:
           base_path: Der Fedora-Basispfad sollte mit einem Schrägstrich beginnen UND nicht mit einem Schrägstrich enden
           url: Die Fedora-URL sollte nicht mit einem Schrägstrich enden
         file_acl: Deaktivieren Sie dies, wenn Sie ein Dateisystem wie Samba oder NFS verwenden, das das Festlegen von Zugriffssteuerungslisten nicht unterstützt
-        file_size_limit: "Geben Sie das Dateigrößenlimit in Byte ein. Der Standardwert ist 5 GB (5368709120 Bytes)."
+        file_size_limit: Geben Sie das Dateigrößenlimit in Byte ein. Der Standardwert ist 5 GB (5368709120 Bytes).
         geonames_username: Registrieren Sie sich unter http://www.geonames.org/manageaccount
-        google_analytics_id: 'Mess-ID (z.B. G-XXXXXXXXXX) von GA4 Admin → Eigenschaft → Datenstreams → Web-Stream. <a href="https://samvera.atlassian.net/wiki/spaces/hyku/pages/3185147970/Google+Analytics+4+GA4+Support#Creating-a-New-Google-Analytics-Account" target="_blank">Einrichtungsanleitung</a>'
-        google_analytics_property_id: 'Numerische Eigenschafts-ID (z.B. 123456789) von GA4 Admin → Eigenschaftsdetails (obere rechte Ecke). <a href="https://samvera.atlassian.net/wiki/spaces/hyku/pages/3185147970/Google+Analytics+4+GA4+Support#Creating-a-New-Google-Analytics-Account" target="_blank">Einrichtungsanleitung</a>'
+        google_analytics_id: Mess-ID (z.B. G-XXXXXXXXXX) von GA4 Admin → Eigenschaft → Datenstreams → Web-Stream. <a href="https://samvera.atlassian.net/wiki/spaces/hyku/pages/3185147970/Google+Analytics+4+GA4+Support#Creating-a-New-Google-Analytics-Account" target="_blank">Einrichtungsanleitung</a>
+        google_analytics_property_id: Numerische Eigenschafts-ID (z.B. 123456789) von GA4 Admin → Eigenschaftsdetails (obere rechte Ecke). <a href="https://samvera.atlassian.net/wiki/spaces/hyku/pages/3185147970/Google+Analytics+4+GA4+Support#Creating-a-New-Google-Analytics-Account" target="_blank">Einrichtungsanleitung</a>
         gtm_id: Die ID Ihres Google Tag Manager-Kontos
         hidden_index_fields: Komma-getrennt. Snake Case. Solr-Suffixe ausschließen (z. B. „title,rights_statement“)
         is_public: Können Benutzer Ihre Seite auf der Startseite entdecken oder auf Ihre Seiten zugreifen, ohne einen speziellen Benutzernamen / Passwort?
-        locale_name:
-          "Der Name des mandantenspezifischen Gebietsschemasuffix, der ihren locale.yml-Dateien hinzugefügt wird. Es sollten nur alphabetische Zeichen hinzugefügt werden, keine Symbole oder Zahlen, diese werden dann großgeschrieben.
+        locale_name: 'Der Name des mandantenspezifischen Gebietsschemasuffix, der ihren locale.yml-Dateien hinzugefügt wird. Es sollten nur alphabetische Zeichen hinzugefügt werden, keine Symbole oder Zahlen, diese werden dann großgeschrieben.
 
-          "
+          '
         monthly_email_list: Liste von E-Mail-Adressen, an die der monatliche Bericht gesendet wird. Lassen Sie jeweils ein Leerzeichen zwischen den E-Mails
         name: Ein einzelner oder mit Bindestrichen versehener Name, der für technische Aspekte des Repositories verwendet wird (z.B. "acme" oder "acme-bibliothek").
         oai_admin_email: OAI-Endpunkt-Kontakt-E-Mail-Adresse
@@ -72,11 +70,11 @@ de:
         email: E-Mail-Adresse
       user_search:
         uq: Benutzer suchen
-    "no": Nein
+    'no': Nein
     placeholders:
       user_search:
         uq: Name oder Benutzername
     required:
       mark: "*"
       text: erforderlich
-    "yes": Ja
+    'yes': Ja

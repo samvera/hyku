@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v5.0.0rc2
+# OVERRIDE Hyrax v5.2.0
 # - Fix file upload in logo and banner
 # - ensure user is allowed to change visibility
 # - add the ability to upload a collection thumbnail

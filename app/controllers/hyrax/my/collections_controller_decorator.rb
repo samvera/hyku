@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# OVERRIDE Hyrax v5.2.0 add date, depositor, and creator sorting
 module Hyrax
   module My
     module CollectionsControllerDecorator

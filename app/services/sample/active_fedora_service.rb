@@ -108,7 +108,7 @@ module Sample
       register_managing_role!
       # Grant all workflow roles to the creating_user and the admin group
       permission_template.available_workflows.each do |workflow|
-        Sipity::Role.all.each do |role|
+        Sipity::Role.find_each do |role|
           workflow.update_responsibilities(role: role,
                                            agents: workflow_agents)
         end

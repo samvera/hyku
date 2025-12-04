@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v5.0.0rc2
+# OVERRIDE Hyrax v5.2.0
 # - to increase the size of thumbnails
 # - add method missing_thumbnail? for methods which do both thumbnail AND another derivative
 #   (We were getting duplicate Hyrax::Metadata for thumbnails due to failing and rerunning derivative jobs.)

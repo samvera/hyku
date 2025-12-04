@@ -553,6 +553,7 @@ fr:
             description: Une image à afficher dans les résultats de recherche et sur la page d'accueil si vous décidez de présenter cette collection. L'image sera recadrée et redimensionnée de différentes manières dans l'application, mais pour de meilleurs résultats, utilisez une image (JPG, GIF ou PNG) avec une orientation paysage.
             label: La vignette
         form_discovery:
+          hide_from_catalog_search_html: "<strong>Masquer de la recherche dans le catalogue</strong> - Si cette option est cochée, cette collection n'apparaîtra pas dans les résultats de la recherche dans le catalogue."
           para1: Ces paramètres déterminent qui peut découvrir et afficher la page de destination de cette collection; ils n'affectent pas la visibilité des éléments de la collection.
           para2: Si vous avez choisi de ne pas rendre cette collection en accès libre, vous pouvez toujours partager la collection avec des utilisateurs et des groupes spécifiques à l'aide de l'onglet Partage.
         form_relationships:

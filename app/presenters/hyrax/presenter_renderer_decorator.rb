@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax 5 to display based near label instead of URI
+# OVERRIDE Hyrax 5.2.0 to display based near label instead of URI
 # @TODO Move this behavior into Hyrax in a flexible manner
 module Hyrax
   module PresenterRendererDecorator

@@ -50,7 +50,7 @@ module Sample
       if account.nil?
         Rails.logger.debug "ERROR: Tenant '#{tenant_name}' not found!"
         Rails.logger.debug "Available tenants:"
-        Account.all.each { |acc| Rails.logger.debug "  - #{acc.name}" }
+        Account.find_each { |acc| Rails.logger.debug "  - #{acc.name}" }
         raise "Tenant not found"
       end
 
@@ -85,7 +85,6 @@ module Sample
                          "#{@sample_data[:creators].length} creators, " \
                          "#{@sample_data[:subjects].length} subject sets"
       Rails.logger.debug ""
-      puts
     end
 
     def load_subjects_from_csv

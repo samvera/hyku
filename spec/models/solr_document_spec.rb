@@ -52,8 +52,7 @@ RSpec.describe SolrDocument, type: :model do
         thumbnail_path_ss: '/thumbnail.png',
         title_tesim: ['A Title'],
         description_tesim: ['A description'],
-        abstract_tesim: ['An abstract']
-      }
+        abstract_tesim: ['An abstract']}
     end
 
     it 'includes show page and thumbnail urls in identifier' do

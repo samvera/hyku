@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
 class SolrDocument
   include Blacklight::Solr::Document
   include BlacklightOaiProvider::SolrDocument
@@ -211,3 +212,4 @@ class SolrDocument
     }
   end
 end
+# rubocop:enable Metrics/ClassLength

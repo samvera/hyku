@@ -121,6 +121,15 @@ module Hyku
                         end
     end
 
+    # OVERRIDE Hyrax to filter valid_child_concerns by enabled work types in the tenant
+    # @return [Array<Class>] only work types that are enabled in Site.instance.available_works
+    def valid_child_concerns
+      @valid_child_concerns ||= begin
+        enabled_works = Site.instance.available_works
+        super.select { |concern| enabled_works.include?(concern.to_s) }
+      end
+    end
+
     private
 
     # @todo: is this method obsolete?

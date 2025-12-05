@@ -154,8 +154,10 @@ class SolrDocument
   def field_semantics
     if Hyrax.config.flexible_classes.include?(hydra_model.to_s)
       build_field_semantics(flexible_schema_data)
-    else
+    elsif hydra_model.respond_to?(:schema)
       build_field_semantics(standard_schema_data)
+    else
+      basic_mappings
     end
   end
 
@@ -189,6 +191,26 @@ class SolrDocument
         index_keys: property_hash['indexing']
       }
     end
+  end
+
+  def basic_mappings
+    {
+      contributor: ['contributor_tesim'],
+      coverage: [],
+      creator: ['creator_tesim'],
+      date: ['date_created_tesim'],
+      description: ['description_tesim'],
+      format: ['format_tesim'],
+      identifier: ['identifier_tesim'],
+      language: ['language_tesim'],
+      publisher: ['publisher_tesim'],
+      relation: ['nesting_collection__pathnames_ssim'],
+      rights: ['rights_statement_tesim', 'rights_notes_tesim', 'license_tesim'],
+      source: [],
+      subject: ['subject_tesim'],
+      title: ['title_tesim'],
+      type: ['human_readable_type_tesim']
+    }
   end
 
   def dc_mappings

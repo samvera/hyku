@@ -17,22 +17,23 @@
                   label_method: :second,
                   value_method: :first,
                   label: t('hyku.identity_provider.label.provider'),
-       required: true %>
+        required: true %>
+      <p><%= t('hyku.identity_provider.documentation.message', link: link_to(t('hyku.identity_provider.documentation.link'), 'https://samvera.atlassian.net/wiki/spaces/hyku/pages/3570663437/Identity+Provider+Single+Sign-On+SSO', target: '_blank', rel: 'noopener noreferrer', aria: { label: 'SSO documentation (opens in new tab)' })).html_safe %></p>
       <p>Documentation for each identity provider type can be found in its associated adapter documentation.</p>
       <ul>
-        <li><%= link_to 'SAML', 'https://github.com/omniauth/omniauth-saml' %></li>
-        <li><%= link_to 'CAS', 'https://github.com/dlindahl/omniauth-cas' %></li>
-        <li><%= link_to 'Openid Connect', 'https://github.com/omniauth/omniauth_openid_connect' %></li>
+        <li><%= link_to 'SAML', 'https://github.com/omniauth/omniauth-saml', target: '_blank' rel: 'noopener noreferrer', aria: { label: 'SAML documentation (opens in new tab)' } %></li>
+        <li><%= link_to 'CAS', 'https://github.com/dlindahl/omniauth-cas', target: '_blank' rel: 'noopener noreferrer', aria: { label: 'CAS documentation (opens in new tab)' } %></li>
+        <li><%= link_to 'Openid Connect', 'https://github.com/omniauth/omniauth_openid_connect', target: '_blank' rel: 'noopener noreferrer', aria: { label: 'Openid Connect documentation (opens in new tab)' } %></li>
       </ul>
 
-      <p>We use an additional paramater for SAML - `idp_metadata_url`. If you provide that URL, it will be parsed as shown in <%= link_to 'the SAML docs', 'https://github.com/omniauth/omniauth-saml#idp-metadata' %></p>
+      <p>We use an additional parameter for SAML: <code>idp_metadata_url</code>. If you provide that URL, it will be parsed as shown in <%= link_to 'the SAML docs', 'https://github.com/omniauth/omniauth-saml#idp-metadata', target: '_blank' rel: 'noopener noreferrer', aria: { label: 'SAML documentation (opens in new tab)' } %>.</p>
       <% if @identity_provider.new_record? %>
-        <p>SAML assertion_consumer_service_url will be displayed after record is saved</p>
+        <p>SAML <code>assertion_consumer_service_url</code> will be displayed after the record is saved.</p>
       <% else %>
-        <p>These are the assertion consumer service urls or redirect urls that need to be allowed by your IdP. Do not specify the <code>assertion_consumer_service_url</code> in your options.</p>
+        <p>These are the assertion consumer service URLs or redirect URLs that need to be allowed by your IdP. Do not specify the <code>assertion_consumer_service_url</code> in your options.</p>
         <ul>
         <% @current_account.domain_names.each do |dn| %>
-          <li><%= dn.cname %>/users/auth/saml/<%= @identity_provider.id %>/callback</li>
+          <li><code><%= dn.cname %>/users/auth/saml/<%= @identity_provider.id %>/callback</code></li>
         <% end %>
         </ul>
         <p>Metadata is available <%= link_to 'here', "/users/auth/saml/#{@identity_provider.id}/metadata", data: { turbolinks: false } %></p>

@@ -176,6 +176,9 @@ en:
         logo_image_alt_text: Alt Text for Image
         create_new: New
         edit: Edit
+      documentation:
+        message: "For more information on how to configure your identity provider, please refer to the %{link} Samvera Community documentation page."
+        link: "Single Sign On (SSO)"
     footer:
       admin_login: Administrator login
     proprietor:

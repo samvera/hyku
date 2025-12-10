@@ -169,16 +169,34 @@ en:
       label:
         name: Name or Description
         provider: Provider
-        options: Options
+        options: JSON Options
         logo: Logo
         updated_at: Updated At
         logo_image: Image for SSO Page
         logo_image_alt_text: Alt Text for Image
         create_new: New
         edit: Edit
+        documentation: Documentation
+        configurations: Configurations
+      sso_configurations:
+        metadata: Metadata is available %{link}
       documentation:
-        message: "For more information on how to configure your identity provider, please refer to the %{link} Samvera Community documentation page."
-        link: "Single Sign On (SSO)"
+        link:
+          samvera: Single Sign On (SSO)
+          saml: SAML
+          cas: CAS
+          openid_connect: Openid Connect
+        aria_label:
+          samvera: "Single Sign On (SSO) documentation (opens in new tab)"
+          saml: "SAML documentation (opens in new tab)"
+          cas: "CAS documentation (opens in new tab)"
+          openid_connect: "Openid Connect documentation (opens in new tab)"
+        text_content:
+          samvera: "For more information on how to configure your identity provider, please refer to the %{link_name} Samvera Community documentation page."
+          provider: "Documentation for each identity provider type can be found in its associated adapter documentation."
+        configurations:
+          saml: "We use an additional parameter for SAML: <code>idp_metadata_url</code>. If you provide that URL, it will be parsed as shown %{link_name}."
+          assertion_url_text: "These are the assertion consumer service URLs or redirect URLs that need to be allowed by your IdP. Do not specify the <code>assertion_consumer_service_url</code> in your options."
     footer:
       admin_login: Administrator login
     proprietor:

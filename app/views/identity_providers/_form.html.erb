@@ -1,57 +1,159 @@
-<%= simple_form_for(@identity_provider) do |f| %>
+<%
+  identity_provider = @identity_provider
+  provider_collection = Devise.omniauth_providers.map { |o| [o, o.upcase] }
+  external_link_attrs = {
+    target: '_blank',
+    rel: 'noopener noreferrer'
+  }
+
+  samvera_docs_url = 'https://samvera.atlassian.net/wiki/spaces/hyku/pages/3570663437/Identity+Provider+Single+Sign-On+SSO'
+  saml_docs_url = 'https://github.com/omniauth/omniauth-saml#idp-metadata'
+
+  adapter_documentation_links = [
+    {
+      name: t('hyku.identity_provider.documentation.link.saml'),
+      url: 'https://github.com/omniauth/omniauth-saml',
+      aria_label: t('hyku.identity_provider.documentation.aria_label.saml')
+    },
+    {
+      name: t('hyku.identity_provider.documentation.link.cas'),
+      url: 'https://github.com/dlindahl/omniauth-cas',
+      aria_label: t('hyku.identity_provider.documentation.aria_label.cas')
+    },
+    {
+      name: t('hyku.identity_provider.documentation.link.openid_connect'),
+      url: 'https://github.com/omniauth/omniauth_openid_connect',
+      aria_label: t('hyku.identity_provider.documentation.aria_label.openid_connect')
+    }
+  ]
+%>
+
+<%= simple_form_for(identity_provider) do |f| %>
   <div class="card">
     <div class="card-body">
-      <% if @identity_provider.errors.any? %>
+
+      <%# Error messages %>
+      <% if identity_provider.errors.any? %>
         <div id="error_explanation">
-          <h2><%= pluralize(@identity_provider.errors.count, "error") %> prohibited this authentication provider from being saved:</h2>
+          <h2>
+            <%= pluralize(identity_provider.errors.count, "error") %> prohibited this authentication provider from being saved:
+          </h2>
           <ul>
-            <% @identity_provider.errors.messages.each do |key, messages| %>
-              <li><%= key %> &quot;<%= @identity_provider.errors.details[key].first[:value] %>&quot; <%= messages.join(' and ') %></li>
+            <% identity_provider.errors.messages.each do |key, messages| %>
+              <li>
+                <%= key %> &quot;<%= identity_provider.errors.details[key].first[:value] %>&quot; <%= messages.join(' and ') %>
+              </li>
             <% end %>
           </ul>
         </div>
       <% end %>
-      <%= f.input :name, label: t('hyku.identity_provider.label.name'), required: true %>
-      <%= f.input :provider,
-            collection: Devise.omniauth_providers.map {|o| [o, o.upcase]},
-                  label_method: :second,
-                  value_method: :first,
-                  label: t('hyku.identity_provider.label.provider'),
-        required: true %>
-      <p><%= t('hyku.identity_provider.documentation.message', link: link_to(t('hyku.identity_provider.documentation.link'), 'https://samvera.atlassian.net/wiki/spaces/hyku/pages/3570663437/Identity+Provider+Single+Sign-On+SSO', target: '_blank', rel: 'noopener noreferrer', aria: { label: 'SSO documentation (opens in new tab)' })).html_safe %></p>
-      <p>Documentation for each identity provider type can be found in its associated adapter documentation.</p>
-      <ul>
-        <li><%= link_to 'SAML', 'https://github.com/omniauth/omniauth-saml', target: '_blank' rel: 'noopener noreferrer', aria: { label: 'SAML documentation (opens in new tab)' } %></li>
-        <li><%= link_to 'CAS', 'https://github.com/dlindahl/omniauth-cas', target: '_blank' rel: 'noopener noreferrer', aria: { label: 'CAS documentation (opens in new tab)' } %></li>
-        <li><%= link_to 'Openid Connect', 'https://github.com/omniauth/omniauth_openid_connect', target: '_blank' rel: 'noopener noreferrer', aria: { label: 'Openid Connect documentation (opens in new tab)' } %></li>
-      </ul>
 
-      <p>We use an additional parameter for SAML: <code>idp_metadata_url</code>. If you provide that URL, it will be parsed as shown in <%= link_to 'the SAML docs', 'https://github.com/omniauth/omniauth-saml#idp-metadata', target: '_blank' rel: 'noopener noreferrer', aria: { label: 'SAML documentation (opens in new tab)' } %>.</p>
-      <% if @identity_provider.new_record? %>
-        <p>SAML <code>assertion_consumer_service_url</code> will be displayed after the record is saved.</p>
-      <% else %>
-        <p>These are the assertion consumer service URLs or redirect URLs that need to be allowed by your IdP. Do not specify the <code>assertion_consumer_service_url</code> in your options.</p>
+      <%# Name and Provider inputs %>
+      <%= f.input :name,
+            label: t('hyku.identity_provider.label.name'),
+            required: true %>
+
+      <%= f.input :provider,
+            collection: provider_collection,
+            label_method: :second,
+            value_method: :first,
+            label: t('hyku.identity_provider.label.provider'),
+            required: true %>
+
+      <%# Documentation %>
+      <div class="documentation-section bg-light p-3 mb-3">
+        <h4><%= t('hyku.identity_provider.label.documentation') %></h4>
+        <p><%= t('hyku.identity_provider.documentation.text_content.provider') %></p>
         <ul>
-        <% @current_account.domain_names.each do |dn| %>
-          <li><code><%= dn.cname %>/users/auth/saml/<%= @identity_provider.id %>/callback</code></li>
-        <% end %>
+          <% adapter_documentation_links.each do |link| %>
+            <li>
+              <%= link_to link[:name],
+                          link[:url],
+                          external_link_attrs.merge(aria: { label: link[:aria_label] }) %>
+            </li>
+          <% end %>
         </ul>
-        <p>Metadata is available <%= link_to 'here', "/users/auth/saml/#{@identity_provider.id}/metadata", data: { turbolinks: false } %></p>
+        <p>
+          <%= t('hyku.identity_provider.documentation.text_content.samvera',
+                link_name: link_to(
+                  t('hyku.identity_provider.documentation.link.samvera'),
+                  samvera_docs_url,
+                  external_link_attrs.merge(aria: { label: t('hyku.identity_provider.documentation.aria_label.samvera') })
+                )).html_safe %>
+        </p>
+      </div>
+
+      <%# Configurations %>
+      <div class="configurations-section">
+        <h4><%= t('hyku.identity_provider.label.configurations') %></h4>
+        <p>
+          <%= t('hyku.identity_provider.documentation.configurations.saml',
+                link_name: link_to(
+                  t('hyku.identity_provider.documentation.link.saml'),
+                  saml_docs_url,
+                  external_link_attrs.merge(aria: { label: t('hyku.identity_provider.documentation.aria_label.saml') })
+                )).html_safe %>
+        </p>
+      </div>
+
+      <%# SAML Configuration (for existing records) %>
+      <% if identity_provider.new_record? %>
+        <p>
+          SAML <code>assertion_consumer_service_url</code> will be displayed after the record is saved.
+        </p>
+      <% else %>
+        <%
+          saml_callback_path = "/users/auth/saml/#{identity_provider.id}/callback"
+          saml_metadata_path = "/users/auth/saml/#{identity_provider.id}/metadata"
+        %>
+        <div class="saml-configuration">
+          <p>
+            <%= t('hyku.identity_provider.documentation.configurations.assertion_url_text') %>
+          </p>
+          <ul>
+            <% @current_account.domain_names.each do |dn| %>
+              <li>
+                <code><%= dn.cname %><%= saml_callback_path %></code>
+              </li>
+            <% end %>
+          </ul>
+          <p>
+            <%= t('hyku.identity_provider.sso_configurations.metadata', link: link_to('here', saml_metadata_path, data: { turbolinks: false })).html_safe %>
+          </p>
+        </div>
       <% end %>
 
-      <%= f.input :options, label: t('hyku.identity_provider.label.options'), input_html: {value: @identity_provider.options&.to_json } %>
+      <%# Options - JSON field for provider-specific configuration %>
+      <%= f.input :options,
+            label: t('hyku.identity_provider.label.options'),
+            input_html: { value: identity_provider.options&.to_json } %>
 
-
-      <%# Upload Logo Image %>
-      <%= f.input :logo_image, label: t('hyku.identity_provider.label.logo_image'), as: :file, wrapper: :vertical_file_input, hint: t('hyrax.admin.appearances.show.forms.logo_image.hint') %>
-      <%= f.input :logo_image_text, label: t('hyku.identity_provider.label.logo_image_alt_text'), as: :text %>
-      <%= image_tag f.object.logo_image.url(:medium), class: "img-fluid", alt: f.object.logo_image_text if f.object.logo_image? %>
-
+      <%# Logo and alt text %>
+      <div class="logo-section">
+        <%= f.input :logo_image,
+              label: t('hyku.identity_provider.label.logo_image'),
+              as: :file,
+              wrapper: :vertical_file_input,
+              hint: t('hyrax.admin.appearances.show.forms.logo_image.hint') %>
+        <%= f.input :logo_image_text,
+              label: t('hyku.identity_provider.label.logo_image_alt_text'),
+              as: :text %>
+        <% if f.object.logo_image? %>
+          <%= image_tag f.object.logo_image.url(:medium),
+                class: "img-fluid",
+                alt: f.object.logo_image_text %>
+        <% end %>
+      </div>
     </div>
 
+    <%# Add delete action to existing records %>
     <div class="card-footer text-right">
-      <% if IdentityProvider.count.nonzero? %>
-        <%= link_to 'Delete', identity_provider, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+      <% unless identity_provider.new_record? %>
+        <%= link_to 'Delete',
+                    identity_provider,
+                    method: :delete,
+                    data: { confirm: 'Are you sure?' },
+                    class: 'btn btn-danger' %>
       <% end %>
       <%= f.submit class: 'btn btn-primary action-save' %>
     </div>

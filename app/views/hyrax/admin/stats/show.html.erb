@@ -26,7 +26,7 @@
         <div class="card-body">
           <h2>Collections over time</h2>
           <%=
-          graph_tag('collection-graph', [Hyrax::Statistics::Collections::OverTime.new.points], {
+          graph_tag('collection-graph', [Hyrax::Statistics::Collections::OverTime.new.points.to_a], {
             xaxis: {
               mode: 'time',
               minTickSize: [7, 'day']
@@ -46,7 +46,7 @@
         <div class="card-body">
           <h2>Works over time</h2>
           <%=
-          graph_tag('works-graph', [Hyrax::Statistics::Works::OverTime.new.points], {
+          graph_tag('works-graph', [Hyrax::Statistics::Works::OverTime.new.points.to_a], {
             xaxis: {
               mode: 'time',
               minTickSize: [7, 'day']
@@ -59,20 +59,28 @@
           })
           %>
           <h2>Works by type:</h2>
-          <%=
-          graph_tag('works-by-type', Hyrax::Statistics::Works::ByResourceType.new.query, series: {
-            pie: {
-              show: true,
-            }
-          })
+          <% 
+            works_by_type = Hyrax::Statistics::Works::ByResourceType.new.query
+            if works_by_type.present?
           %>
+            <%=
+            graph_tag('works-by-type', works_by_type, series: {
+              pie: {
+                show: true,
+              }
+            })
+            %>
+          <% else %>
+            <p class="text-muted">No resource type data available. Works may not have resource types assigned, or the Solr terms component may not be enabled.</p>
+          <% end %>
         </div>
       </div>
     </div>
     <div role="tabpanel" class="tab-pane" id="downloads">
       <div class="card labels">
         <div class="card-body">
-          ...
+          <h2>Downloads</h2>
+          <p class="text-muted">Download statistics are not yet implemented in this view. File download statistics are available on individual work and file pages.</p>
         </div>
       </div>
     </div>
@@ -86,9 +94,97 @@
     </div>
     <script>
      Blacklight.onLoad(function() {
-       var stats = require('statistics_tab_manager');
-       new stats.Tab('#collections').show();
-       new stats.Tab('#works');
+       // Wait for Flot to be available
+       function waitForFlot(callback, maxAttempts) {
+         maxAttempts = maxAttempts || 50;
+         if (typeof $.plot !== 'undefined') {
+           callback();
+         } else if (maxAttempts > 0) {
+           setTimeout(function() { waitForFlot(callback, maxAttempts - 1); }, 100);
+         } else {
+           console.error('Flot.js is not loaded. Graphs will not render.');
+         }
+       }
+       
+       waitForFlot(function() {
+         // Initialize graphs directly without requiring ES6 modules
+         function initializeGraphs() {
+           $('.graph-container').each(function() {
+             var $container = $(this);
+             var $graph = $('.graph', $container);
+             
+             if (!$graph.length) {
+               console.warn('Graph element not found in container');
+               return;
+             }
+             
+             // Get data from data attributes (jQuery auto-parses JSON)
+             var graphData = $container.data('graph-data');
+             var graphOptions = $container.data('graph-options') || {};
+             
+             if (!graphData) {
+               console.warn('No graph data found in container', $container);
+               return;
+             }
+             
+             // Ensure graphData is an array
+             if (!Array.isArray(graphData)) {
+               console.error('Graph data is not an array:', graphData);
+               return;
+             }
+             
+             // Flot requires the container to be visible
+             function renderGraph() {
+               if (!$graph.is(':visible')) {
+                 return;
+               }
+               
+               try {
+                 // Ensure the graph element has dimensions
+                 if ($graph.width() === 0 || $graph.height() === 0) {
+                   console.warn('Graph element has no dimensions:', $graph);
+                   return;
+                 }
+                 
+                 // Render the graph
+                 $.plot($graph, graphData, graphOptions);
+               } catch(e) {
+                 console.error('Failed to render graph:', e, 'Data:', graphData, 'Options:', graphOptions);
+               }
+             }
+             
+             // Store render function for tab activation
+             $container.data('renderGraph', renderGraph);
+             
+             // Render immediately if visible
+             if ($graph.is(':visible')) {
+               renderGraph();
+             }
+           });
+         }
+         
+         // Handle tab switching
+         $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+           var targetId = $(e.target).attr('href');
+           setTimeout(function() {
+             $(targetId + ' .graph-container').each(function() {
+               var renderGraph = $(this).data('renderGraph');
+               if (renderGraph) renderGraph();
+             });
+           }, 50);
+         });
+         
+         // Initialize graphs
+         initializeGraphs();
+         
+         // Also initialize for the initially active collections tab after a short delay
+         setTimeout(function() {
+           $('#collections .graph-container').each(function() {
+             var renderGraph = $(this).data('renderGraph');
+             if (renderGraph) renderGraph();
+           });
+         }, 200);
+       });
      });
     </script>
   </div>

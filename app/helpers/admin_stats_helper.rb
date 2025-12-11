@@ -4,8 +4,8 @@ module AdminStatsHelper
   def graph_tag(id, data, options)
     content_tag :div, class: 'graph-container',
                       data: { graph_data: data.to_json,
-                              graph_options: options } do
-      content_tag :div, nil, class: 'graph', id:
+                              graph_options: options.to_json } do
+      content_tag :div, nil, class: 'graph', id: id
     end
   end
 end

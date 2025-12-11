@@ -25,8 +25,16 @@
       <div class="card labels">
         <div class="card-body">
           <h2>Collections over time</h2>
+          <% 
+            stats = Hyrax::Statistics::Collections::OverTime.new
+            points = stats.points.to_a
+            # Ensure we include today's point if the last point is before today
+            if points.any? && points.last[0] < Time.zone.now.end_of_day.to_i * 1000
+              points << [Time.zone.now.end_of_day.to_i * 1000, stats.send(:point, stats.instance_variable_get(:@x_min), Time.zone.now.end_of_day)]
+            end
+          %>
           <%=
-          graph_tag('collection-graph', [Hyrax::Statistics::Collections::OverTime.new.points.to_a], {
+          graph_tag('collection-graph', [points], {
             xaxis: {
               mode: 'time',
               minTickSize: [7, 'day']
@@ -45,8 +53,16 @@
       <div class="card labels">
         <div class="card-body">
           <h2>Works over time</h2>
+          <% 
+            stats = Hyrax::Statistics::Works::OverTime.new
+            points = stats.points.to_a
+            # Ensure we include today's point if the last point is before today
+            if points.any? && points.last[0] < Time.zone.now.end_of_day.to_i * 1000
+              points << [Time.zone.now.end_of_day.to_i * 1000, stats.send(:point, stats.instance_variable_get(:@x_min), Time.zone.now.end_of_day)]
+            end
+          %>
           <%=
-          graph_tag('works-graph', [Hyrax::Statistics::Works::OverTime.new.points.to_a], {
+          graph_tag('works-graph', [points], {
             xaxis: {
               mode: 'time',
               minTickSize: [7, 'day']

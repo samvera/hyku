@@ -26,9 +26,9 @@ RSpec.describe 'identity_providers/_form', type: :view do
 
     it 'has a Provider select field with options' do
       expect(rendered).to have_selector('select[name="identity_provider[provider]"]')
-      expect(rendered).to have_link('SAML')
-      expect(rendered).to have_link('CAS')
-      expect(rendered).to have_link('Openid Connect')
+      expect(rendered).to have_text('SAML')
+      expect(rendered).to have_text('CAS')
+      expect(rendered).to have_text('Openid Connect')
     end
 
     it 'has an Options textarea field' do
@@ -49,6 +49,15 @@ RSpec.describe 'identity_providers/_form', type: :view do
 
     it 'does not display a Delete button for new records' do
       expect(rendered).not_to have_link('Delete')
+    end
+
+    it 'displays documentation section' do
+      expect(rendered).to have_selector('h4', text: 'Documentation')
+      expect(rendered).to have_text('Documentation for each identity provider type can be found in its associated adapter documentation.')
+      expect(rendered).to have_link('SAML', href: 'https://github.com/omniauth/omniauth-saml')
+      expect(rendered).to have_link('CAS', href: 'https://github.com/dlindahl/omniauth-cas')
+      expect(rendered).to have_link('Openid Connect', href: 'https://github.com/omniauth/omniauth_openid_connect')
+      expect(rendered).to have_link('Single Sign On (SSO)', href: 'https://samvera.atlassian.net/wiki/spaces/hyku/pages/3570663437/Identity+Provider+Single+Sign-On+SSO')
     end
 
     it 'displays message about assertion_consumer_service_url for new records' do
@@ -121,7 +130,7 @@ RSpec.describe 'identity_providers/_form', type: :view do
     end
 
     it 'displays metadata link for existing records' do
-      expect(rendered).to have_link('here', href: '/users/auth/saml/1/metadata')
+      expect(rendered).to have_link('View metadata', href: '/users/auth/saml/1/metadata')
     end
 
     it 'does not display message about assertion_consumer_service_url for existing records' do

@@ -87,7 +87,7 @@
       <div class="configurations-section">
         <h4><%= t('hyku.identity_provider.label.configurations') %></h4>
         <p>
-          <%= t('hyku.identity_provider.documentation.configurations.saml',
+          <%= t('hyku.identity_provider.configurations.saml_html',
                 link_name: link_to(
                   t('hyku.identity_provider.documentation.link.saml'),
                   saml_docs_url,
@@ -99,7 +99,7 @@
       <%# SAML Configuration (for existing records) %>
       <% if identity_provider.new_record? %>
         <p>
-          SAML <code>assertion_consumer_service_url</code> will be displayed after the record is saved.
+          <%= t('hyku.identity_provider.configurations.assertion_url_before_save_html').html_safe %>
         </p>
       <% else %>
         <%
@@ -108,7 +108,7 @@
         %>
         <div class="saml-configuration">
           <p>
-            <%= t('hyku.identity_provider.documentation.configurations.assertion_url_text') %>
+            <%= t('hyku.identity_provider.configurations.assertion_url_after_save_html').html_safe %>
           </p>
           <ul>
             <% @current_account.domain_names.each do |dn| %>
@@ -118,7 +118,7 @@
             <% end %>
           </ul>
           <p>
-            <%= t('hyku.identity_provider.sso_configurations.metadata', link: link_to('here', saml_metadata_path, data: { turbolinks: false })).html_safe %>
+            <%= link_to t('hyku.identity_provider.configurations.metadata'), saml_metadata_path, data: { turbolinks: false } %>
           </p>
         </div>
       <% end %>
@@ -149,10 +149,10 @@
     <%# Add delete action to existing records %>
     <div class="card-footer text-right">
       <% unless identity_provider.new_record? %>
-        <%= link_to 'Delete',
+        <%= link_to t('hyku.identity_provider.label.delete'),
                     identity_provider,
                     method: :delete,
-                    data: { confirm: 'Are you sure?' },
+                    data: { confirm: t('hyku.identity_provider.label.delete_confirmation') },
                     class: 'btn btn-danger' %>
       <% end %>
       <%= f.submit class: 'btn btn-primary action-save' %>

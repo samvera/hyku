@@ -1,0 +1,80 @@
+// Splash Landing Page Styles
+
+body.splash.splash-index.public-facing {
+  /// --- Container Layout (Homepage Only) --- ///
+  #content-wrapper.container {
+    margin: 3rem auto;
+
+    .splash-logo {
+      max-width: 200px;
+    }
+
+    #banner.jumbotron {
+      background: image_url("white-cloud-background.jpg") no-repeat;
+      background-position: center;
+      margin-bottom: 0;
+      text-align: center;
+      border-radius: 0.3rem 0.3rem 0 0 !important; // override bootstrap default
+      position: relative; // ensure the button is centered horizontally between the jumbotron and the product-features section
+      padding-bottom: 45px;
+
+      h1 {
+        color: $jumbotron-heading-color;
+        font-size: $jumbotron-heading-font-size;
+        font-weight: 700;
+        letter-spacing: 0.075em;
+        text-transform: uppercase;
+      }
+
+      p {
+        color: $jumbotron-sub-heading-color;
+        font-size: 1.6em;
+        margin-bottom: 20px;
+      }
+
+      .button-wrapper {
+        // ensure the button is centered horizontally between the jumbotron and the product-features section
+        position: absolute;
+        left: 0;
+        right: 0;
+        transform: translateY(50%);
+      }
+
+      .btn-sign-up {
+        // bootstrap mixin
+        @include button-variant(
+          // background color
+          $classic-white,
+          // border color
+          $jumbotron-button-background-color,
+          // hover background color
+          $jumbotron-button-background-color
+        );
+        border-radius: 3px;
+        font-size: 0.7em;
+        // margin-top: 15px;
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+    }
+
+    .product-features {
+      background: $features-section-background-color;
+      border-radius: 0 0 0.3rem 0.3rem;
+      border-top: 1px solid $features-section-border-color;
+      padding: 50px 20px;
+
+      .heading {
+        color: $gray;
+        font-size: 1.4em;
+        text-align: center;
+      }
+
+      p {
+        font-size: 1em;
+        line-height: 1.5em;
+        padding: 0 20px;
+      }
+    }
+  }
+}

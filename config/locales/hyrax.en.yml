@@ -1,24 +1,15 @@
 ---
 en:
   hyrax:
-    product_name: "Hyku"
-    product_twitter_handle: "@HydraInABox"
-    institution_name: "Institution"
-    institution_name_full: "Institution"
-    account_name: "Account Id"
-    directory:
-      suffix: "@hydrainabox.org"
-    footer:
-      copyright_html: "<strong>Copyright &copy; 2019 - %{current_year} Samvera</strong> Licensed under the Apache License, Version 2.0"
-      service_html: A service of <a href="http://samvera.org/" class="navbar-link" target="_blank">Samvera</a>.
     account_label: User
+    account_name: Account Id
+    active_consent_to_agreement: I have read and agree to the
     activefedora:
       models:
-        generic_work: "Work"
-        image: "Image"
-        etd: "ETD"
-        oer: "OER"
-    active_consent_to_agreement: I have read and agree to the
+        etd: ETD
+        generic_work: Work
+        image: Image
+        oer: OER
     admin:
       admin_sets:
         delete:
@@ -30,7 +21,7 @@ en:
           no_works: The administrative set does not contain any works.
           title: List of items in this administrative set
         edit:
-          header: "Edit Administrative Set: %{title}"
+          header: 'Edit Administrative Set: %{title}'
         form:
           cancel: Cancel
           note: Users granted a new role will only gain the role on works that are deposited after that role has been granted.
@@ -81,9 +72,9 @@ en:
             title: Viewers
             type: Type
         form_participants:
-          add_group: "Add group:"
+          add_group: 'Add group:'
           add_participants: Add Participants
-          add_user: "Add user:"
+          add_user: 'Add user:'
           current_participants: Current Participants
         form_visibility:
           cancel: Cancel
@@ -95,15 +86,15 @@ en:
             title: Release
             varies:
               any: Depositor can choose any embargo length; leases are allowed
-              between: "Depositor can choose embargo up to date:"
-              description: "Allow depositor to choose settings:"
+              between: 'Depositor can choose embargo up to date:'
+              description: 'Allow depositor to choose settings:'
               embargo:
                 1yr: 1 year after deposit
                 2yrs: 2 years after deposit
                 3yrs: 3 years after deposit
                 6mos: 6 months after deposit
                 select: Select embargo period..
-              period: "Depositor can choose embargo period up to:"
+              period: 'Depositor can choose embargo period up to:'
           visibility:
             description: Set visibility policies for the administrative set. Setting honors embargo policies above.
             everyone: Public - depositor can only choose public visibility setting
@@ -175,7 +166,7 @@ en:
           update_notice: Participants Updated
         form_settings:
           instructions: These settings determine how collections of this type can be managed and discovered.
-          warning: "Warning: These settings cannot be changed after a collection of this type has been created."
+          warning: 'Warning: These settings cannot be changed after a collection of this type has been created.'
         index:
           breadcrumb: Collection Types
           create_new_button: Create new collection type
@@ -193,7 +184,7 @@ en:
             actions: Actions
             name: Name
         multiple_membership_checker:
-          error_preamble: "Error: You have specified more than one of the same single-membership collection type "
+          error_preamble: 'Error: You have specified more than one of the same single-membership collection type '
           error_type_and_collections: "(type: %{type}, collections: %{collections})"
         new:
           header: Create New Collection Type
@@ -209,12 +200,12 @@ en:
       sidebar:
         activity: Activity
         appearance: Appearance
-        identity_provider: Identity Provider
         collection_types: Collection Types
         collections: Collections
         configuration: Configuration
         contact: Contact
         content_blocks: Content Blocks
+        identity_provider: Identity Provider
         notifications: Notifications
         pages: Pages
         profile: Profile
@@ -232,7 +223,7 @@ en:
       stats:
         deposited_form:
           end_label: end [defaults to now]
-          heading: "Display Files Deposited:"
+          heading: 'Display Files Deposited:'
           start_label: Start
         repository_objects:
           series:
@@ -246,7 +237,7 @@ en:
         works:
           headers:
             main: Work Statistics
-            total: "Total Works:"
+            total: 'Total Works:'
             visibility: Totals by Visibility
       users:
         index:
@@ -254,13 +245,13 @@ en:
           describe_users_html:
             one: There is <b>%{count} user</b> in this repository.
             other: There are <b>%{count} users</b> in this repository.
-          id_label: Username
-          role_label: Roles
           group_label: Groups
           group_role_label: Group roles
+          id_label: Username
+          reader_title: View Users
+          role_label: Roles
           site_role_label: Site roles
           title: Manage Users
-          reader_title: View Users
       workflow_roles:
         header: Workflow Roles
         index:
@@ -305,10 +296,10 @@ en:
         default: You must be logged in to do that!
       unprocessable_entity:
         default: The resource you attempted to modify cannot be modified according to your request.
-    background_attribution_html: ""
+    background_attribution_html: ''
     base:
       citations:
-        header: "Citation"
+        header: Citation
       form_child_work_relationships:
         actions:
           remove: Remove from this work
@@ -378,12 +369,12 @@ en:
         unauthorized: There are no publicly available items in this %{type}.
         visibility: Visibility
       part_of:
-        label: "Part of:"
+        label: 'Part of:'
       relationships:
         empty: This %{type} is not currently in any collections.
         header: Relationships
       relationships_parent_row:
-        label: "In %{type}:"
+        label: 'In %{type}:'
       show:
         last_modified: Last modified
       social_media:
@@ -458,7 +449,7 @@ en:
         create: Save
         create_new: Add to new Collection
         no_collections: You do not have access to any existing collections. You may create a new collection.
-        select_heading: "Select the collection to add your files to:"
+        select_heading: 'Select the collection to add your files to:'
         title: Add to collection
         update: Save changes
     collection_type:
@@ -502,20 +493,20 @@ en:
       type_label: Issue Type
     content_blocks:
       cancel: Cancel
-      tabs:
-        announcement_text: Announcement Text
-        featured_researcher: Featured Researcher
-        home_text: Home Page Text
-        marketing_text: Marketing Text
-        homepage_about_section_heading: About Section Heading
-        homepage_about_section_content: About Section Content
       instructions:
         announcement_instructions: Announcement Text displays on the homepage. It is for important or timely messages to be made prominently visible to all home page visitors. It would be appropriate to enter an announcement here, for example, to notify users about an upcoming planned maintenance outage of the system.
         featured_researcher_instructions: Featured Researcher is a space to enter information and on the home page reserved for highlighting repository users.
         home_text_instructions: Home Page Text refers to the custom messaging that is displayed on the home page either in the hero block or another section of the home page. This text appears when selecting a theme that either requires or allows home page text. We recommend no more than 3 sentences in this area.
-        marketing_instructions: Banner Text refers to the text that is displayed over banner image on the homepage. We recommend no more than approximately 30 characters or spaces in this text area.
-        homepage_about_section_heading_instructions: This heading is not used by any of the default Hyku themes. It may be used for custom themes.
         homepage_about_section_content_instructions: This content is not used by any of the default Hyku themes. It may be used for custom themes.
+        homepage_about_section_heading_instructions: This heading is not used by any of the default Hyku themes. It may be used for custom themes.
+        marketing_instructions: Banner Text refers to the text that is displayed over banner image on the homepage. We recommend no more than approximately 30 characters or spaces in this text area.
+      tabs:
+        announcement_text: Announcement Text
+        featured_researcher: Featured Researcher
+        home_text: Home Page Text
+        homepage_about_section_content: About Section Content
+        homepage_about_section_heading: About Section Heading
+        marketing_text: Marketing Text
       updated: Content blocks updated.
     controls:
       about: About
@@ -542,7 +533,7 @@ en:
         select_type_of_collection: Select type of collection
       collections:
         edit:
-          header: "Edit %{type_title}: %{title}"
+          header: 'Edit %{type_title}: %{title}'
         form:
           permission_update_errors:
             error: Invalid update option for permission template.
@@ -569,9 +560,9 @@ en:
             description: An image to be displayed in the search results and on the homepage if you decide to feature this collection. Image will be cropped and resized in various ways throughout the app, but for best results use an image (JPG, GIF or PNG) with a landscape orientation.
             label: Thumbnail
         form_discovery:
+          hide_from_catalog_search_html: "<strong>Hide from catalog search</strong> - When checked, this collection will not appear in catalog search results."
           para1: These settings determine who is able to discover and view this collection's landing page; they do not affect the visibility of items in the collection.
           para2: If you chose not to make this collection open access, you can still share the collection with specific users and groups using the Sharing tab.
-          hide_from_catalog_search_html: <strong>Hide from catalog search</strong> - When checked, this collection will not appear in catalog search results.
         form_relationships:
           add_other_collections_as_sub_collections_description: You can manage the sub-collections of this collection.
           buttons:
@@ -688,21 +679,21 @@ en:
           view_collection: View collection
           work_confirmation: Deleting a work from %{application_name} is permanent. Click OK to delete this work from %{application_name}, or Cancel to cancel this operation
         collection_list:
-          description: "Description:"
-          edit_access: "Edit Access:"
-          groups: "Groups:"
+          description: 'Description:'
+          edit_access: 'Edit Access:'
+          groups: 'Groups:'
           managed_access:
             deposit: Deposit
             edit: Edit
             manage: Manage
             view: View
-          users: "Users:"
+          users: 'Users:'
         collections: Collections
         facet_label:
-          collections: "Filter collections:"
-          highlighted: "Filter highlights:"
-          shared: "Filter shares:"
-          works: "Filter works:"
+          collections: 'Filter collections:'
+          highlighted: 'Filter highlights:'
+          shared: 'Filter shares:'
+          works: 'Filter works:'
         heading:
           access: Access
           action: Actions
@@ -720,8 +711,8 @@ en:
         shared: Works Shared with Me
         sr:
           batch_checkbox: Check to add to a collection or edit list
-          collections_batch_checkbox: Check to batch delete collections.
           check_all_label: Select all files to be added to a collection or edited
+          collections_batch_checkbox: Check to batch delete collections.
           detail_label: Display summary details of
           listing: Listing of items you have deposited in
           press_to: Press to
@@ -774,6 +765,8 @@ en:
         title: User Activity
       user_notifications: User Notifications
       view_files: View Files
+    directory:
+      suffix: "@hydrainabox.org"
     document_language: en
     edit_profile: Edit Profile
     embargoes:
@@ -796,7 +789,7 @@ en:
         expired: Expired Active Embargoes
         manage_embargoes: Manage Embargoes
       list_expired_active_embargoes:
-        change_all: "Change all files within %{cc} to "
+        change_all: 'Change all files within %{cc} to '
         deactivate: Deactivate Embargo
         deactivate_selected: Deactivate Embargoes for Selected
         missing: There are no expired embargoes in effect at this time.
@@ -835,6 +828,9 @@ en:
         versions_title: Display previous versions
       groups_description:
         description_html: The list of groups in the drop-down marked "Select a group" is a list of User Managed Groups that you are a member of.  You may select a specific group and assign an access level for a file within %{application_name}, similarly to adding user access levels.
+    footer:
+      copyright_html: "<strong>Copyright &copy; 2019 - %{current_year} Samvera</strong> Licensed under the Apache License, Version 2.0"
+      service_html: A service of <a href="http://samvera.org/" class="navbar-link" target="_blank">Samvera</a>.
     help:
       header: User Support
       override_text: Use app/views/static/help.html.erb to override this file.
@@ -842,8 +838,13 @@ en:
       admin_sets:
         link: View all collections
         tab_label: Explore Collections
-        title: Explore Collections
         thumbnail: Thumbnail
+        title: Explore Collections
+      featured_collections:
+        document:
+          title_label: Title
+        no_collections: No collections have been featured.
+        title: Featured Collections
       featured_researcher:
         missing: No researchers have been featured.
         tab_label: Featured Researcher
@@ -859,11 +860,6 @@ en:
         no_works: No works have been featured
         tab_label: Featured Works
         title: Featured Works
-      featured_collections:
-        no_collections: No collections have been featured.
-        title: Featured Collections
-        document:
-          title_label: Title
       recently_uploaded:
         depositor: Depositor
         details: Details
@@ -879,6 +875,8 @@ en:
     icons:
       collection: fa fa-cubes
       default: fa fa-cube
+    institution_name: Institution
+    institution_name_full: Institution
     leases:
       edit:
         header:
@@ -899,7 +897,7 @@ en:
         expired: Expired Active Leases
         manage_leases: Manage Leases
       list_expired_active_leases:
-        change_all: "Change all files within %{cc} to "
+        change_all: 'Change all files within %{cc} to '
         deactivate: Deactivate Lease
         deactivate_selected: Deactivate Leases for Selected
         missing: There are no expired leases in effect at this time.
@@ -948,14 +946,16 @@ en:
       change_tab_message: Are you sure you want to leave this tab?  Any unsaved data will be lost.
     pages:
       cancel: Cancel
-      update: Save changes
       tabs:
         about_page: About Page
         agreement_page: Deposit Agreement
         help_page: Help Page
         terms_page: Terms of Use
+      update: Save changes
       updated: Pages updated.
     passive_consent_to_agreement: By saving this work I agree to the
+    product_name: Hyku
+    product_twitter_handle: "@HydraInABox"
     search:
       button:
         html: <span class="fa fa-search"></span> Go
@@ -1050,12 +1050,12 @@ en:
       processing: File is being processed; you may edit when processing has completed
     user_profile:
       email_frequency:
-        label: <i class="fa fa-calendar"></i> Batch Email Frequency
         daily: Daily
+        label: <i class="fa fa-calendar"></i> Batch Email Frequency
         monthly: Monthly
         never: Never
-        weekly: Weekly
         not_set: Not yet specified
+        weekly: Weekly
       orcid:
         alt: ORCID icon
         label: ORCID Profile
@@ -1090,7 +1090,7 @@ en:
       default:
         deposit: Deposit
       load:
-        state_error: "The workflow: %{workflow_name} has not been updated.  You are removing a state: %{state_name} with %{entity_count} entity/ies.  A state may not be removed while it has active entities!"
+        state_error: 'The workflow: %{workflow_name} has not been updated.  You are removing a state: %{state_name} with %{entity_count} entity/ies.  A state may not be removed while it has active entities!'
       unauthorized: The work is not currently available because it has not yet completed the approval process
     works:
       create:
@@ -1122,8 +1122,7 @@ en:
         description: A brief overarching description that applies to all works collected in this set. For example, "Theses and supplementary files created by the School of Earth Sciences graduate students."
         title: A name to aid in identifying the Administrative Set and to distinguish it from other Administrative Sets in the repository.
       collection:
-        based_near: "A place name related to the work, such as its site of publication, or the city, state, or country the work contents are about. Calls upon the <a href='http://www.geonames.org'>GeoNames web service</a>. Please note, you must configure your geonames username in the account settings, or this field will have a loading error.</br>
-        </br><b>Steps to enable this field:</b><br/>1. Create a free account on the <a href='http://www.geonames.org'>Geonames web service page.</a></br>2. Go to your <a href='http://www.geonames.org/manageaccount'>geonames account settings</a> and select the option at the bottom to enable free services.</br>3. Go into your hyku account settings in the <a href='/admin/account/edit?locale=en'>dashboard.</a></br>4. Enter your geonames username in the hyrax account settings.<br/>5. You should now be able to see the list of locations in this dropdown."
+        based_near: A place name related to the work, such as its site of publication, or the city, state, or country the work contents are about. Calls upon the <a href='http://www.geonames.org'>GeoNames web service</a>. Please note, you must configure your geonames username in the account settings, or this field will have a loading error.</br> </br><b>Steps to enable this field:</b><br/>1. Create a free account on the <a href='http://www.geonames.org'>Geonames web service page.</a></br>2. Go to your <a href='http://www.geonames.org/manageaccount'>geonames account settings</a> and select the option at the bottom to enable free services.</br>3. Go into your hyku account settings in the <a href='/admin/account/edit?locale=en'>dashboard.</a></br>4. Enter your geonames username in the hyrax account settings.<br/>5. You should now be able to see the list of locations in this dropdown.
         contributor: A person or group you want to recognize for playing a role in the creation of the collection, but not the primary role.
         creator: The person or group responsible for the collection. Usually this is the author of the content. Personal names should be entered with the last name first, e.g. &quot;Smith, John.&quot;.
         date_created: The date on which the collection was created.
@@ -1148,10 +1147,9 @@ en:
         require_membership: A work must belong to at least one collection of this type
         sharable: Allow users to assign collection managers, depositors, and viewers for collections they manage
         share_applies_to_new_works: When new works are created directly in the collection, grant sharing users and groups permissions for the new work according to their collection roles.
-        title: ""
+        title: ''
       defaults:
-        based_near: "A place name related to the work, such as its site of publication, or the city, state, or country the work contents are about. Calls upon the <a href='http://www.geonames.org'>GeoNames web service</a>. Please note, you must configure your geonames username in the account settings, or this field will have a loading error.</br>
-        </br><b>Steps to enable this field:</b><br/>1. Create a free account on the <a href='http://www.geonames.org'>Geonames web service page.</a></br>2. Go to your <a href='http://www.geonames.org/manageaccount'>geonames account settings</a> and select the option at the bottom to enable free services.</br>3. Go into your hyku account settings in the <a href='/admin/account/edit?locale=en'>dashboard.</a></br>4. Enter your geonames username in the hyrax account settings.<br/>5. You should now be able to see the list of locations in this dropdown."
+        based_near: A place name related to the work, such as its site of publication, or the city, state, or country the work contents are about. Calls upon the <a href='http://www.geonames.org'>GeoNames web service</a>. Please note, you must configure your geonames username in the account settings, or this field will have a loading error.</br> </br><b>Steps to enable this field:</b><br/>1. Create a free account on the <a href='http://www.geonames.org'>Geonames web service page.</a></br>2. Go to your <a href='http://www.geonames.org/manageaccount'>geonames account settings</a> and select the option at the bottom to enable free services.</br>3. Go into your hyku account settings in the <a href='/admin/account/edit?locale=en'>dashboard.</a></br>4. Enter your geonames username in the hyrax account settings.<br/>5. You should now be able to see the list of locations in this dropdown.
         contributor: A person or group you want to recognize for playing a role in the creation of the work, but not the primary role.
         creator: The person or group responsible for the work. Usually this is the author of the content. Personal names should be entered with the last name first, e.g. &quot;Smith, John.&quot;.
         date_created: The date on which the work was created. Must adhere to either the format YYYY, YYYY-MM, or YYYY-MM-DD in order to be filtered and sorted.
@@ -1166,7 +1164,7 @@ en:
         resource_type: Pre-defined categories to describe the type of content being uploaded, such as &quot;article&quot; or &quot;dataset.&quot;  More than one type may be selected.
         subject: Headings or index terms describing what the work is about; these do need to conform to an existing vocabulary.
         title: A name to aid in identifying a work.
-        video_embed: "If you enter an embed link for a video, it must be a properly formatted url beginning with 'http://' or 'https://'. It also needs to contain a valid link to a hosted video that can appear in an iframe. <br /><br /><i>Examples:<br/>https://player.vimeo.com/video/467264493?h=b089de0eab<br/>https://www.youtube.com/embed/Znf73dsFdC8</i>"
+        video_embed: If you enter an embed link for a video, it must be a properly formatted url beginning with 'http://' or 'https://'. It also needs to contain a valid link to a hosted video that can appear in an iframe. <br /><br /><i>Examples:<br/>https://player.vimeo.com/video/467264493?h=b089de0eab<br/>https://www.youtube.com/embed/Znf73dsFdC8</i>
     labels:
       collection:
         size: Size
@@ -1187,9 +1185,9 @@ en:
       defaults:
         admin_set_id: Administrative Set
         based_near: Location
+        collection_banner_text_color: Collection banner text color
         contributor: Contributor
         creator: Creator
-        collection_banner_text_color: Collection banner text color
         date_created: Date Created
         default_button_background_color: Secondary button background color
         default_button_border_color: Secondary button border color
@@ -1214,13 +1212,12 @@ en:
         navbar_link_background_hover_color: Navbar link background hover color
         navbar_link_text_color: Navbar link text color
         navbar_link_text_hover_color: Navbar link text hover color
-        primary_button_hover_color: Primary button hover color
-        primary_button_text_color: Primary button text color
         primary_button_background_color: Primary button background color
         primary_button_border_color: Primary button border color
+        primary_button_hover_color: Primary button hover color
+        primary_button_text_color: Primary button text color
         publisher: Publisher
         related_url: Related URL
-        rights_statement: Rights statement
         source: Source
         title: Title
         visibility_after_embargo: then open it up to

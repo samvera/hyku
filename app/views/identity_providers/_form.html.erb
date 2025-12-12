@@ -1,31 +1,3 @@
-<%
-    external_link_attrs = {
-    target: '_blank',
-    rel: 'noopener noreferrer'
-  }
-
-  samvera_docs_url = 'https://samvera.atlassian.net/wiki/spaces/hyku/pages/3570663437/Identity+Provider+Single+Sign-On+SSO'
-  saml_docs_url = 'https://github.com/omniauth/omniauth-saml#idp-metadata'
-
-  adapter_documentation_links = [
-    {
-      name: t('hyku.identity_provider.documentation.link.saml'),
-      url: 'https://github.com/omniauth/omniauth-saml',
-      aria_label: t('hyku.identity_provider.documentation.aria_label.saml')
-    },
-    {
-      name: t('hyku.identity_provider.documentation.link.cas'),
-      url: 'https://github.com/dlindahl/omniauth-cas',
-      aria_label: t('hyku.identity_provider.documentation.aria_label.cas')
-    },
-    {
-      name: t('hyku.identity_provider.documentation.link.openid_connect'),
-      url: 'https://github.com/omniauth/omniauth_openid_connect',
-      aria_label: t('hyku.identity_provider.documentation.aria_label.openid_connect')
-    }
-  ]
-%>
-
 <%= simple_form_for(@identity_provider) do |f| %>
   <div class="card">
     <div class="card-body">
@@ -100,10 +72,6 @@
           <%= t('hyku.identity_provider.configurations.assertion_url_before_save_html') %>
         </p>
       <% else %>
-        <%
-          saml_callback_path = "/users/auth/saml/#{@identity_provider.id}/callback"
-          saml_metadata_path = "/users/auth/saml/#{@identity_provider.id}/metadata"
-        %>
         <div class="saml-configuration">
           <p>
             <%= t('hyku.identity_provider.configurations.assertion_url_after_save_html') %>
@@ -111,12 +79,12 @@
           <ul>
             <% current_account.domain_names.each do |domain_name| %>
               <li>
-                <code><%= domain_name.cname %><%= saml_callback_path %></code>
+                <code><%= domain_name.cname %><%= saml_callback_path(@identity_provider) %></code>
               </li>
             <% end %>
           </ul>
           <p>
-            <%= link_to t('hyku.identity_provider.configurations.metadata'), saml_metadata_path, data: { turbo: false } %>
+            <%= link_to t('hyku.identity_provider.configurations.metadata'), saml_metadata_path(@identity_provider), data: { turbo: false } %>
           </p>
         </div>
       <% end %>

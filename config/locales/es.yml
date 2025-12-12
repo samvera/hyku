@@ -298,9 +298,33 @@ es:
     footer:
       admin_login: Inicio de sesión de administrador
     identity_provider:
+      configurations:
+        assertion_url_after_save_html: Estas son las URL de servicio del consumidor de aserciones o URL de redireccionamiento que su IdP debe permitir. No especifique <code>assertion_consumer_service_url</code> en sus opciones.
+        assertion_url_before_save_html: SAML <code>assertion_consumer_service_url</code> se mostrará después de guardar el registro.
+        metadata: Ver metadatos
+        saml_html: 'Usamos un parámetro adicional para SAML: <code>idp_metadata_url</code> . Si proporciona esa URL, se analizará como se muestra en %{link_name}.'
+      documentation:
+        aria_label:
+          cas: Documentación CAS (se abre en una nueva pestaña)
+          openid_connect: Documentación de Openid Connect (se abre en una nueva pestaña)
+          saml: Documentación SAML (se abre en una nueva pestaña)
+          samvera: Documentación de inicio de sesión único (SSO) (se abre en una nueva pestaña)
+        link:
+          cas: CAS
+          openid_connect: Conexión Openid
+          saml: SAML
+          samvera: Inicio de sesión único (SSO)
+        text_content:
+          provider: La documentación de cada tipo de proveedor de identidad se puede encontrar en la documentación del adaptador asociado.
+          samvera: Para obtener más información sobre cómo configurar su proveedor de identidad, consulte la página de documentación de la Comunidad %{link_name} Samvera.
+          samvera_html: Para obtener más información sobre cómo configurar su proveedor de identidad, consulte la página de documentación de la Comunidad %{link_name} Samvera.
       header: Proveedor de identidad de autenticación
       label:
+        configurations: Configuraciones
         create_new: Nuevo
+        delete: Borrar
+        delete_confirmation: "¿Está seguro?"
+        documentation: Documentación
         edit: Editar
         logo: Logo
         logo_image: Imagen para la página de SSO

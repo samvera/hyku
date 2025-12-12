@@ -297,9 +297,33 @@ de:
     footer:
       admin_login: Administrator-Login
     identity_provider:
+      configurations:
+        assertion_url_after_save_html: Dies sind die URLs der Assertion-Consumer-Dienste oder die Redirect-URLs, die von Ihrem IdP zugelassen werden müssen. Geben Sie die <code>assertion_consumer_service_url</code> nicht in Ihren Optionen an.
+        assertion_url_before_save_html: Die SAML- <code>assertion_consumer_service_url</code> wird nach dem Speichern des Datensatzes angezeigt.
+        metadata: Metadaten anzeigen
+        saml_html: 'Wir verwenden einen zusätzlichen Parameter für SAML: <code>idp_metadata_url</code> . Wenn Sie diese URL angeben, wird sie wie folgt geparst: %{link_name}.'
+      documentation:
+        aria_label:
+          cas: CAS-Dokumentation (wird in neuem Tab geöffnet)
+          openid_connect: OpenID Connect-Dokumentation (öffnet sich in einem neuen Tab)
+          saml: SAML-Dokumentation (wird in neuem Tab geöffnet)
+          samvera: Dokumentation zu Single Sign-On (SSO) (wird in neuem Tab geöffnet)
+        link:
+          cas: CAS
+          openid_connect: OpenID Connect
+          saml: SAML
+          samvera: Single Sign-On (SSO)
+        text_content:
+          provider: Die Dokumentation für jeden Identitätsanbietertyp finden Sie in der zugehörigen Adapterdokumentation.
+          samvera: Weitere Informationen zur Konfiguration Ihres Identitätsanbieters finden Sie auf der Dokumentationsseite der %{link_name} Samvera Community.
+          samvera_html: Weitere Informationen zur Konfiguration Ihres Identitätsanbieters finden Sie auf der Dokumentationsseite der %{link_name} Samvera Community.
       header: Authentifizierungsidentitätsanbieter
       label:
+        configurations: Konfigurationen
         create_new: Neu
+        delete: Löschen
+        delete_confirmation: Bist du sicher?
+        documentation: Dokumentation
         edit: Bearbeiten
         logo: Logo
         logo_image: Bild für SSO-Seite

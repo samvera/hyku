@@ -298,9 +298,33 @@ zh:
     footer:
       admin_login: 管理员登录
     identity_provider:
+      configurations:
+        assertion_url_after_save_html: 这些是您的 IdP 需要允许的断言消费者服务 URL 或重定向 URL。请勿在选项中指定<code>assertion_consumer_service_url</code> 。
+        assertion_url_before_save_html: 记录保存后将显示 SAML <code>assertion_consumer_service_url</code> 。
+        metadata: 查看元数据
+        saml_html: 我们为 SAML 使用了一个额外的参数： <code>idp_metadata_url</code> 。如果您提供该 URL，它将被解析为 %{link_name}。
+      documentation:
+        aria_label:
+          cas: CAS 文档（在新标签页中打开）
+          openid_connect: OpenID Connect 文档（在新标签页中打开）
+          saml: SAML 文档（在新标签页中打开）
+          samvera: 单点登录 (SSO) 文档（在新标签页中打开）
+        link:
+          cas: CAS
+          openid_connect: OpenID Connect
+          saml: SAML
+          samvera: 单点登录（SSO）
+        text_content:
+          provider: 每种身份提供程序类型的相关文档都可以在其关联的适配器文档中找到。
+          samvera: 有关如何配置身份提供程序的更多信息，请参阅 %{link_name} Samvera 社区文档页面。
+          samvera_html: 有关如何配置身份提供程序的更多信息，请参阅 %{link_name} Samvera 社区文档页面。
       header: 身份验证身份提供商
       label:
+        configurations: 配置
         create_new: 新的
+        delete: 删除
+        delete_confirmation: 你确定吗？
+        documentation: 文档
         edit: 编辑
         logo: 标识
         logo_image: SSO 页面图片

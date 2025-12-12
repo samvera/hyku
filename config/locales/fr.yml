@@ -298,9 +298,32 @@ fr:
     footer:
       admin_login: Connexion administrateur
     identity_provider:
+      configurations:
+        assertion_url_after_save_html: Il s'agit des URL de service de consommation d'assertions ou des URL de redirection qui doivent être autorisées par votre fournisseur d'identité. Ne spécifiez pas l' <code>assertion_consumer_service_url</code> dans vos options.
+        assertion_url_before_save_html: L'assertion SAML <code>assertion_consumer_service_url</code> sera affichée une fois l'enregistrement sauvegardé.
+        metadata: Afficher les métadonnées
+        saml_html: 'Nous utilisons un paramètre supplémentaire pour SAML : <code>idp_metadata_url</code> . Si vous fournissez cette URL, elle sera analysée comme indiqué : %{link_name}.'
+      documentation:
+        aria_label:
+          cas: Documentation CAS (s'ouvre dans un nouvel onglet)
+          openid_connect: Documentation OpenID Connect (s'ouvre dans un nouvel onglet)
+          saml: Documentation SAML (ouvre dans un nouvel onglet)
+          samvera: Documentation sur l'authentification unique (SSO) (ouvre dans un nouvel onglet)
+        link:
+          cas: CAS
+          openid_connect: OpenID Connect
+          saml: SAML
+          samvera: Authentification unique (SSO)
+        text_content:
+          provider: La documentation relative à chaque type de fournisseur d'identité se trouve dans la documentation de son adaptateur associé.
+          samvera: Pour plus d'informations sur la configuration de votre fournisseur d'identité, veuillez consulter la page de documentation de la communauté %{link_name} Samvera.
       header: Fournisseur d'identité d'authentification
       label:
+        configurations: Configurations
         create_new: Nouveau
+        delete: Supprimer
+        delete_confirmation: Es-tu sûr?
+        documentation: Documentation
         edit: Modifier
         logo: Logo
         logo_image: Image pour la page SSO

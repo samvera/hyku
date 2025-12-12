@@ -1,6 +1,5 @@
 <%
-  provider_collection = Devise.omniauth_providers.map { |o| [o, o.upcase] }
-  external_link_attrs = {
+    external_link_attrs = {
     target: '_blank',
     rel: 'noopener noreferrer'
   }
@@ -53,7 +52,7 @@
             required: true %>
 
       <%= f.input :provider,
-            collection: provider_collection,
+            collection: @provider_collection,
             label_method: :second,
             value_method: :first,
             label: t('hyku.identity_provider.label.provider'),

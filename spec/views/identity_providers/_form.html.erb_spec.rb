@@ -10,8 +10,9 @@ RSpec.describe 'identity_providers/_form', type: :view do
   context 'when creating a new identity provider' do
     # mocking a new identity provider view
     before do
-      # assign the instance variable the form expects
+      # assign the instance variables the form expects
       assign(:identity_provider, IdentityProvider.new)
+      assign(:provider_collection, Devise.omniauth_providers.map { |o| [o, o.upcase] })
       # render the form partial
       render
     end
@@ -112,10 +113,12 @@ RSpec.describe 'identity_providers/_form', type: :view do
     let(:account) { instance_double('Account', domain_names: [domain_name]) }
     # stub a created identity provider with an id
     let(:identity_provider) { build_stubbed(:identity_provider, id: 1) }
+    let(:provider_collection) { Devise.omniauth_providers.map { |o| [o, o.upcase] } }
 
     before do
       assign(:identity_provider, identity_provider)
       assign(:current_account, account)
+      assign(:provider_collection, provider_collection)
       render
     end
 

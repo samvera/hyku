@@ -199,6 +199,7 @@ pt-BR:
         text_content:
           provider: A documentação para cada tipo de provedor de identidade pode ser encontrada na documentação do adaptador correspondente.
           samvera: Para obter mais informações sobre como configurar seu provedor de identidade, consulte a página de documentação da comunidade %{link_name} Samvera.
+          samvera_html: Para obter mais informações sobre como configurar seu provedor de identidade, consulte a página de documentação da comunidade %{link_name} Samvera.
       header: Provedor de identidade de autenticação
       label:
         configurations: Configurações

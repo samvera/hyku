@@ -317,6 +317,7 @@ zh:
         text_content:
           provider: 每种身份提供程序类型的相关文档都可以在其关联的适配器文档中找到。
           samvera: 有关如何配置身份提供程序的更多信息，请参阅 %{link_name} Samvera 社区文档页面。
+          samvera_html: 有关如何配置身份提供程序的更多信息，请参阅 %{link_name} Samvera 社区文档页面。
       header: 身份验证身份提供商
       label:
         configurations: 配置

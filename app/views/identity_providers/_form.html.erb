@@ -1,5 +1,4 @@
 <%
-  identity_provider = @identity_provider
   provider_collection = Devise.omniauth_providers.map { |o| [o, o.upcase] }
   external_link_attrs = {
     target: '_blank',
@@ -28,20 +27,20 @@
   ]
 %>
 
-<%= simple_form_for(identity_provider) do |f| %>
+<%= simple_form_for(@identity_provider) do |f| %>
   <div class="card">
     <div class="card-body">
 
       <%# Error messages %>
-      <% if identity_provider.errors.any? %>
+      <% if @identity_provider.errors.any? %>
         <div id="error_explanation">
           <h2>
-            <%= pluralize(identity_provider.errors.count, "error") %> prohibited this authentication provider from being saved:
+            <%= pluralize(@identity_provider.errors.count, "error") %> prohibited this authentication provider from being saved:
           </h2>
           <ul>
-            <% identity_provider.errors.messages.each do |key, messages| %>
+            <% @identity_provider.errors.messages.each do |key, messages| %>
               <li>
-                <%= key %> &quot;<%= identity_provider.errors.details[key].first[:value] %>&quot; <%= messages.join(' and ') %>
+                <%= key %> &quot;<%= @identity_provider.errors.details[key].first[:value] %>&quot; <%= messages.join(' and ') %>
               </li>
             <% end %>
           </ul>
@@ -74,12 +73,12 @@
           <% end %>
         </ul>
         <p>
-          <%= t('hyku.identity_provider.documentation.text_content.samvera',
+          <%= t('hyku.identity_provider.documentation.text_content.samvera_html',
                 link_name: link_to(
                   t('hyku.identity_provider.documentation.link.samvera'),
                   samvera_docs_url,
                   external_link_attrs.merge(aria: { label: t('hyku.identity_provider.documentation.aria_label.samvera') })
-                )).html_safe %>
+                )) %>
         </p>
       </div>
 
@@ -92,26 +91,26 @@
                   t('hyku.identity_provider.documentation.link.saml'),
                   saml_docs_url,
                   external_link_attrs.merge(aria: { label: t('hyku.identity_provider.documentation.aria_label.saml') })
-                )).html_safe %>
+                )) %>
         </p>
       </div>
 
       <%# SAML Configuration (for existing records) %>
-      <% if identity_provider.new_record? %>
+      <% if @identity_provider.new_record? %>
         <p>
-          <%= t('hyku.identity_provider.configurations.assertion_url_before_save_html').html_safe %>
+          <%= t('hyku.identity_provider.configurations.assertion_url_before_save_html') %>
         </p>
       <% else %>
         <%
-          saml_callback_path = "/users/auth/saml/#{identity_provider.id}/callback"
-          saml_metadata_path = "/users/auth/saml/#{identity_provider.id}/metadata"
+          saml_callback_path = "/users/auth/saml/#{@identity_provider.id}/callback"
+          saml_metadata_path = "/users/auth/saml/#{@identity_provider.id}/metadata"
         %>
         <div class="saml-configuration">
           <p>
-            <%= t('hyku.identity_provider.configurations.assertion_url_after_save_html').html_safe %>
+            <%= t('hyku.identity_provider.configurations.assertion_url_after_save_html') %>
           </p>
           <ul>
-            <% @current_account.domain_names.each do |dn| %>
+            <% current_account.domain_names.each do |dn| %>
               <li>
                 <code><%= dn.cname %><%= saml_callback_path %></code>
               </li>
@@ -126,7 +125,7 @@
       <%# Options - JSON field for provider-specific configuration %>
       <%= f.input :options,
             label: t('hyku.identity_provider.label.options'),
-            input_html: { value: identity_provider.options&.to_json } %>
+            input_html: { value: @identity_provider.options&.to_json } %>
 
       <%# Logo and alt text %>
       <div class="logo-section">
@@ -148,9 +147,9 @@
 
     <%# Add delete action to existing records %>
     <div class="card-footer text-right">
-      <% unless identity_provider.new_record? %>
+      <% unless @identity_provider.new_record? %>
         <%= link_to t('hyku.identity_provider.label.delete'),
-                    identity_provider,
+                    @identity_provider,
                     method: :delete,
                     data: { confirm: t('hyku.identity_provider.label.delete_confirmation') },
                     class: 'btn btn-danger' %>

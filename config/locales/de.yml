@@ -316,6 +316,7 @@ de:
         text_content:
           provider: Die Dokumentation für jeden Identitätsanbietertyp finden Sie in der zugehörigen Adapterdokumentation.
           samvera: Weitere Informationen zur Konfiguration Ihres Identitätsanbieters finden Sie auf der Dokumentationsseite der %{link_name} Samvera Community.
+          samvera_html: Weitere Informationen zur Konfiguration Ihres Identitätsanbieters finden Sie auf der Dokumentationsseite der %{link_name} Samvera Community.
       header: Authentifizierungsidentitätsanbieter
       label:
         configurations: Konfigurationen

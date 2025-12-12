@@ -176,7 +176,7 @@ en:
           samvera: Single Sign On (SSO)
         text_content:
           provider: Documentation for each identity provider type can be found in its associated adapter documentation.
-          samvera: For more information on how to configure your identity provider, please refer to the %{link_name} Samvera Community documentation page.
+          samvera_html: For more information on how to configure your identity provider, please refer to the %{link_name} Samvera Community documentation page.
       header: Authentication Identity Provider
       label:
         configurations: Configurations

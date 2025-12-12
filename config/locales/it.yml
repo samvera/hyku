@@ -317,6 +317,7 @@ it:
         text_content:
           provider: La documentazione per ciascun tipo di provider di identità è disponibile nella documentazione dell'adattatore associato.
           samvera: Per maggiori informazioni su come configurare il tuo provider di identità, consulta la pagina della documentazione della community %{link_name} Samvera.
+          samvera_html: Per maggiori informazioni su come configurare il tuo provider di identità, consulta la pagina della documentazione della community %{link_name} Samvera.
       header: Fornitore di identità di autenticazione
       label:
         configurations: Configurazioni

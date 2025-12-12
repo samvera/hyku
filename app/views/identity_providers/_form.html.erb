@@ -110,9 +110,9 @@
             <%= t('hyku.identity_provider.configurations.assertion_url_after_save_html') %>
           </p>
           <ul>
-            <% current_account.domain_names.each do |dn| %>
+            <% current_account.domain_names.each do |domain_name| %>
               <li>
-                <code><%= dn.cname %><%= saml_callback_path %></code>
+                <code><%= domain_name.cname %><%= saml_callback_path %></code>
               </li>
             <% end %>
           </ul>

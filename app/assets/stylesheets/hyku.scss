@@ -44,45 +44,6 @@
     }
 }
 
-#banner.jumbotron {
-    background: image_url("white-cloud-background.jpg") no-repeat;
-    background-position: center;
-    height: 220px;
-    background-color: $gray-lighter;
-    border: 0;
-    font-family: $primary-font-family;
-    margin-bottom: 0;
-    text-align: center;
-
-    h1 {
-        color: $jumbotron-heading-color;
-        font-size: $jumbotron-heading-font-size;
-        font-weight: 700;
-        letter-spacing: 0.075em;
-        text-transform: uppercase;
-    }
-
-    p {
-        color: $jumbotron-sub-heading-color;
-        font-size: 1.6em;
-        margin-bottom: 20px;
-    }
-
-    // TODO: Do we need this style or could we fallback on btn-primary
-    .btn-sign-up {
-        @include button-variant(
-            $classic-white,
-            $jumbotron-button-background-color,
-            $jumbotron-button-background-color
-        );
-        border-radius: 3px;
-        font-size: 0.7em;
-        margin-top: 15px;
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-}
-
 // active hightlight on sort/per page on catalog page
 .dropdown-item:active,
 .dropdown-item.active {
@@ -124,35 +85,6 @@ footer.navbar {
 
     @media (max-width: 992px) {
         justify-content: center;
-    }
-}
-
-.product-features {
-    background: $features-section-background-color;
-    border-top: 1px solid $features-section-border-color;
-    font-family: $primary-font-family;
-    padding: 20px 0 50px;
-
-    .grid-row {
-        display: flex;
-        flex-wrap: wrap;
-    }
-
-    .grid-item {
-        padding-left: 40px;
-        padding-right: 40px;
-        text-align: center;
-        width: 33.33%;
-    }
-
-    .heading {
-        color: $gray;
-        font-size: 1.4em;
-    }
-
-    p {
-        font-size: 1em;
-        line-height: 1.5em;
     }
 }
 
@@ -425,23 +357,10 @@ a.btn.btn-secondary.restore-default-color.with-color-hint {
 }
 
 @media (max-width: 992px) {
-    .product-features {
-        .grid-item {
-            width: 50%;
-        }
-    }
 
     // makes hamburger menu visible for mobile
     .navbar-toggler-icon {
         display: inline-block !important;
-    }
-}
-
-@media (max-width: 768px) {
-    .product-features {
-        .grid-item {
-            width: 100%;
-        }
     }
 }
 

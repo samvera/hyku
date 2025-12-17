@@ -40,8 +40,8 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: 4269a3b48349ea434ee43ede958bc49d2bdfea67
-  branch: main
+  revision: 5962bcf7a9b8493a18434bcf7327422f7258778c
+  branch: i7314_add_blacklight_dynamic_sitemap
   specs:
     hyrax (5.2.0)
       active-fedora (~> 15.0)
@@ -49,6 +49,7 @@ GIT
       awesome_nested_set (~> 3.1)
       blacklight (~> 7.29)
       blacklight-gallery (~> 4.6.4)
+      blacklight_dynamic_sitemap
       breadcrumbs_on_rails (~> 3.0)
       browse-everything (>= 0.16, < 2.0)
       carrierwave (~> 1.0)
@@ -320,6 +321,9 @@ GEM
     blacklight_advanced_search (7.0.0)
       blacklight (~> 7.0)
       parslet
+    blacklight_dynamic_sitemap (1.0.0)
+      blacklight (> 7.0)
+      rails
     blacklight_iiif_search (2.1.0)
       blacklight (~> 7.0)
       ffi (~> 1.16.3)

@@ -11,6 +11,7 @@ body.catalog.catalog-index {
         border: 1px solid #dee2e6;
         padding: 0.25rem;
         border-radius: 0.25rem;
+        width: 100%;
       }
 
       .document-thumbnail {
@@ -22,5 +23,11 @@ body.catalog.catalog-index {
         }
       }
     }
+  }
+
+  // fix long strings overflowing metadata field containers
+  dd[class*="blacklight-"] {
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 }

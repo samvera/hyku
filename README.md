@@ -6,7 +6,7 @@ Code:
 [![Stories in Ready](https://img.shields.io/waffle/label/samvera/hyku/ready.svg)](https://waffle.io/samvera/hyku)
 
 Docs:
-[![Development Docs](http://img.shields.io/badge/DOCUMENTATION-wiki-blue.svg)](https://github.com/samvera/hyku/wiki)
+[![Development Docs](http://img.shields.io/badge/DOCUMENTATION-wiki-blue.svg)](./docs/wiki)
 [![Contribution Guidelines](http://img.shields.io/badge/CONTRIBUTING-Guidelines-blue.svg)](./CONTRIBUTING.md)
 [![Apache 2.0 License](http://img.shields.io/badge/APACHE2-license-blue.svg)](./LICENSE)
 
@@ -34,6 +34,10 @@ See the [Configuration Guide](./docs/configuration.md) for information on config
 ## Using Hyku
 
 See the [Using Hyku Guide](./docs/using-hyku.md) for information on using Hyku.
+
+## Wiki Redirect
+
+The Github wiki is no longer in use. All docs from there have been moved to [Docs Wiki](./docs/wiki)
 
 ## Product Owner
 

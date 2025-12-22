@@ -40,7 +40,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: 4269a3b48349ea434ee43ede958bc49d2bdfea67
+  revision: ef22231258022507f37931395ec7ed50531d8c6f
   branch: main
   specs:
     hyrax (5.2.0)
@@ -49,6 +49,7 @@ GIT
       awesome_nested_set (~> 3.1)
       blacklight (~> 7.29)
       blacklight-gallery (~> 4.6.4)
+      blacklight_dynamic_sitemap (~> 1.0)
       breadcrumbs_on_rails (~> 3.0)
       browse-everything (>= 0.16, < 2.0)
       carrierwave (~> 1.0)
@@ -320,6 +321,9 @@ GEM
     blacklight_advanced_search (7.0.0)
       blacklight (~> 7.0)
       parslet
+    blacklight_dynamic_sitemap (1.0.0)
+      blacklight (> 7.0)
+      rails
     blacklight_iiif_search (2.1.0)
       blacklight (~> 7.0)
       ffi (~> 1.16.3)

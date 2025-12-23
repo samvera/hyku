@@ -192,7 +192,7 @@ properties:
     sample_values:
       - Julie Allinson
     view:
-      render_as: faceted
+      render_as: linked
       html_dl: true
   license:
     available_on:
@@ -436,7 +436,7 @@ properties:
     sample_values:
       - Julie Allinson
     view:
-      render_as: faceted
+      render_as: linked
       html_dl: true
   date_created:
     available_on:
@@ -587,7 +587,7 @@ properties:
       - Metadata
       - Repository
     view:
-      render_as: faceted
+      render_as: linked
       html_dl: true
   label:
     available_on:
@@ -651,7 +651,7 @@ properties:
       - English
       - Spanish
     view:
-      render_as: faceted
+      render_as: linked
       html_dl: true
   publisher:
     available_on:
@@ -685,7 +685,7 @@ properties:
     sample_values:
       - Scholastic
     view:
-      render_as: faceted
+      render_as: linked
       html_dl: true
   related_url:
     available_on:
@@ -772,7 +772,7 @@ properties:
       - Article
       - Conference Proceeding
     view:
-      render_as: faceted
+      render_as: linked
       html_dl: true
   rights_notes:
     available_on:
@@ -904,7 +904,7 @@ properties:
       - Art
       - Science
     view:
-      render_as: faceted
+      render_as: linked
       html_dl: true
   department:
     available_on:
@@ -1179,7 +1179,7 @@ properties:
       - Instructor
     view:
       html_dl: true
-      render_as: faceted
+      render_as: linked
   date:
     available_on:
       class:
@@ -1229,7 +1229,7 @@ properties:
       - Natural Sciences - Physics
     view:
       html_dl: true
-      render_as: faceted
+      render_as: linked
   education_level:
     available_on:
       class:
@@ -1257,7 +1257,7 @@ properties:
       - College / Upper division
     view:
       html_dl: true
-      render_as: faceted
+      render_as: linked
   learning_resource_type:
     available_on:
       class:
@@ -1285,7 +1285,7 @@ properties:
       - Assessment (test, quizzes, etc.)
     view:
       html_dl: true
-      render_as: faceted
+      render_as: linked
   newer_version_id:
     available_on:
       class:
@@ -1794,7 +1794,7 @@ properties:
       - 50" x 20"
       - 5 m x 10 m x 8 m
     view:
-      render_as: faceted
+      render_as: linked
       html_dl: true
   hide_from_catalog_search:
     available_on:

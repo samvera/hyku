@@ -153,6 +153,18 @@ module Hyku
     config.autoload_lib(ignore: %w[assets tasks middleware rubocop])
     config.add_autoload_paths_to_load_path = true
 
+    # Add datastreams path early to prevent ActiveFedora from modifying frozen autoload_paths in Rails 7.2
+    config.before_initialize do
+      datastreams_path = Rails.root.join('app', 'models', 'datastreams').to_s
+      unless config.autoload_paths.include?(datastreams_path)
+        # Ensure autoload_paths is not frozen before adding the path
+        if config.autoload_paths.frozen?
+          config.autoload_paths = config.autoload_paths.dup
+        end
+        config.autoload_paths << datastreams_path
+      end
+    end
+
     ##
     # @!group Class Attributes
     #

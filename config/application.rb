@@ -158,9 +158,7 @@ module Hyku
       datastreams_path = Rails.root.join('app', 'models', 'datastreams').to_s
       unless config.autoload_paths.include?(datastreams_path)
         # Ensure autoload_paths is not frozen before adding the path
-        if config.autoload_paths.frozen?
-          config.autoload_paths = config.autoload_paths.dup
-        end
+        config.autoload_paths = config.autoload_paths.dup if config.autoload_paths.frozen?
         config.autoload_paths << datastreams_path
       end
     end

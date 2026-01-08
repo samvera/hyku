@@ -9,9 +9,7 @@ Rails.application.config.before_initialize do
       # Override the initializer that sets autoload paths to handle frozen arrays
       initializer 'active_fedora.autoload', before: :set_autoload_paths do |app|
         # Ensure autoload_paths is not frozen before ActiveFedora tries to modify them
-        if app.config.autoload_paths.frozen?
-          app.config.autoload_paths = app.config.autoload_paths.dup
-        end
+        app.config.autoload_paths = app.config.autoload_paths.dup if app.config.autoload_paths.frozen?
       end
     end
   end

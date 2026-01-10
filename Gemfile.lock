@@ -1,4 +1,16 @@
 GIT
+  remote: https://github.com/notch8/iiif_print.git
+  revision: d65a5871d8566770960c794224fa3e5aa3709ccf
+  branch: main
+  specs:
+    iiif_print (3.0.10)
+      blacklight_iiif_search (>= 1.0, < 3.0)
+      derivative-rodeo (~> 0.5)
+      hyrax (>= 2.5, < 6)
+      nokogiri (>= 1.13.2)
+      rdf-vocab (~> 3.0)
+
+GIT
   remote: https://github.com/notch8/willow_sword.git
   revision: a8bcacbf4d277e2c9522179086e84ea8414225b4
   tag: v0.8.0
@@ -40,7 +52,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: ef22231258022507f37931395ec7ed50531d8c6f
+  revision: 8312a50ce3014031fbd746ab06413fdaa8bd9224
   branch: main
   specs:
     hyrax (5.2.0)
@@ -78,6 +90,7 @@ GIT
       linkeddata
       listen (~> 3.9)
       mailboxer (~> 0.12)
+      multi_json (= 1.18.0)
       nest (~> 3.1)
       noid-rails (~> 3.0)
       oauth
@@ -790,12 +803,6 @@ GEM
       json
     iiif_manifest (1.6.0)
       activesupport (>= 4)
-    iiif_print (3.0.10)
-      blacklight_iiif_search (>= 1.0, < 3.0)
-      derivative-rodeo (~> 0.5)
-      hyrax (>= 2.5, < 6)
-      nokogiri (>= 1.13.2)
-      rdf-vocab (~> 3.0)
     io-console (0.8.1)
     irb (1.15.2)
       pp (>= 0.6.0)
@@ -971,7 +978,7 @@ GEM
       iso-639
       nokogiri (>= 1.6.6)
       nom-xml (~> 1.0)
-    multi_json (1.17.0)
+    multi_json (1.18.0)
     multi_xml (0.7.2)
       bigdecimal (~> 3.1)
     multipart-post (2.4.1)
@@ -1692,7 +1699,7 @@ DEPENDENCIES
   hyrax-iiif_av!
   i18n-debug
   i18n-tasks
-  iiif_print (~> 3.0.10)
+  iiif_print!
   jbuilder (~> 2.5)
   jquery-rails
   json-canonicalization (= 0.3.1)

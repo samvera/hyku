@@ -1,5 +1,11 @@
 replicaCount: 2
-
+resources:
+  limits:
+    memory: "4Gi"
+    cpu: "1000m"
+  requests:
+    memory: "2Gi"
+    cpu: "250m"
 livenessProbe:
   enabled: false
 readinessProbe:
@@ -204,6 +210,13 @@ extraEnvVars: &envVars
   - name: VALKYRIE_TRANSITION
     value: "true"
 worker:
+  resources:
+    limits:
+      memory: "4Gi"
+      cpu: "1000m"
+    requests:
+      memory: "2Gi"
+      cpu: "250m" 
   replicaCount: 1
   extraVolumeMounts: *volMounts
   extraEnvVars: *envVars
@@ -225,10 +238,27 @@ leaseRelease:
 
 fcrepo:
   enabled: false
+fits:
+  enabled: true
+  resources:
+    limits:
+      memory: "2Gi"
+      cpu: "1000m"
+    requests:
+      memory: "1Gi"
+      cpu: "500m"
 postgresql:
   enabled: false
 redis:
   enabled: true
+  master:
+    resources:
+      limits:
+        memory: "512Mi"
+        cpu: "250m"
+      requests:
+        memory: "256Mi"
+        cpu: "50m"
   architecture: standalone
   auth:
     password: $REDIS_PASSWORD

@@ -1,11 +1,11 @@
 replicaCount: 2
 resources:
   limits:
-    memory: "4Gi"
+    memory: "2Gi"
     cpu: "1000m"
   requests:
-    memory: "2Gi"
-    cpu: "250m"
+    memory: "1Gi"
+    cpu: "100m"
 livenessProbe:
   enabled: false
 readinessProbe:
@@ -212,11 +212,11 @@ extraEnvVars: &envVars
 worker:
   resources:
     limits:
-      memory: "4Gi"
+      memory: "2Gi"
       cpu: "1000m"
     requests:
-      memory: "2Gi"
-      cpu: "250m" 
+      memory: "1Gi"
+      cpu: "100m"
   replicaCount: 1
   extraVolumeMounts: *volMounts
   extraEnvVars: *envVars
@@ -242,11 +242,11 @@ fits:
   enabled: true
   resources:
     limits:
-      memory: "2Gi"
+      memory: "1.5Gi"
       cpu: "1000m"
     requests:
-      memory: "1Gi"
-      cpu: "500m"
+      memory: "512Mi"
+      cpu: "250m"
 postgresql:
   enabled: false
 redis:
@@ -254,11 +254,11 @@ redis:
   master:
     resources:
       limits:
-        memory: "512Mi"
-        cpu: "250m"
-      requests:
         memory: "256Mi"
-        cpu: "50m"
+        cpu: "100m"
+      requests:
+        memory: "128Mi"
+        cpu: "20m"
   architecture: standalone
   auth:
     password: $REDIS_PASSWORD

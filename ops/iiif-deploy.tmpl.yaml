@@ -2,11 +2,11 @@ replicaCount: 2
 
 resources:
   limits:
-    memory: "4Gi"
+    memory: "2Gi"
     cpu: "1000m"
   requests:
-    memory: "2Gi"
-    cpu: "250m"
+    memory: "1Gi"
+    cpu: "100m"
 
 livenessProbe:
   enabled: false
@@ -206,11 +206,11 @@ worker:
   replicaCount: 1
   resources:
     limits:
-      memory: "4Gi"
+      memory: "2Gi"
       cpu: "1000m"
     requests:
-      memory: "2Gi"
-      cpu: "250m"
+      memory: "1Gi"
+      cpu: "100m"
   extraVolumeMounts: *volMounts
   extraEnvVars: *envVars
   podSecurityContext:
@@ -238,11 +238,11 @@ redis:
   master:
     resources:
       limits:
-        memory: "512Mi"
-        cpu: "250m"
-      requests:
         memory: "256Mi"
-        cpu: "50m"
+        cpu: "100m"
+      requests:
+        memory: "128Mi"
+        cpu: "20m"
   architecture: standalone
   auth:
     password: $REDIS_PASSWORD
@@ -265,11 +265,11 @@ fits:
   enabled: true
   resources:
     limits:
-      memory: "2Gi"
+      memory: "1.5Gi"
       cpu: "1000m"
     requests:
-      memory: "1Gi"
-      cpu: "500m"
+      memory: "512Mi"
+      cpu: "250m"
 
 global:
   hyraxName: hyku-iiif-hyrax
@@ -278,11 +278,11 @@ nginx:
   enabled: true
   resources:
     limits:
-      memory: "4Gi"
-      cpu: "1000m"
+      memory: "128Mi"
+      cpu: "100m"
     requests:
-      memory: "2Gi"
-      cpu: "250m"
+      memory: "64Mi"
+      cpu: "20m"
   image:
     registry: ghcr.io
     repository: notch8/scripts/bitnamilegacy-nginx

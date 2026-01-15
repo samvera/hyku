@@ -2,10 +2,10 @@ replicaCount: 2
 
 resources:
   limits:
-    memory: "2Gi"
+    memory: "4Gi"
     cpu: "1000m"
   requests:
-    memory: "1Gi"
+    memory: "2Gi"
     cpu: "100m"
 
 livenessProbe:
@@ -206,10 +206,10 @@ worker:
   replicaCount: 1
   resources:
     limits:
-      memory: "2Gi"
+      memory: "4Gi"
       cpu: "1000m"
     requests:
-      memory: "1Gi"
+      memory: "2Gi"
       cpu: "100m"
   extraVolumeMounts: *volMounts
   extraEnvVars: *envVars
@@ -238,10 +238,10 @@ redis:
   master:
     resources:
       limits:
-        memory: "256Mi"
+        memory: "512Mi"
         cpu: "100m"
       requests:
-        memory: "128Mi"
+        memory: "256Mi"
         cpu: "20m"
   architecture: standalone
   auth:
@@ -265,10 +265,10 @@ fits:
   enabled: true
   resources:
     limits:
-      memory: "1.5Gi"
+      memory: "2Gi"
       cpu: "1000m"
     requests:
-      memory: "512Mi"
+      memory: "1Gi"
       cpu: "250m"
 
 global:
@@ -278,10 +278,10 @@ nginx:
   enabled: true
   resources:
     limits:
-      memory: "128Mi"
+      memory: "256Mi"
       cpu: "100m"
     requests:
-      memory: "64Mi"
+      memory: "128Mi"
       cpu: "20m"
   image:
     registry: ghcr.io

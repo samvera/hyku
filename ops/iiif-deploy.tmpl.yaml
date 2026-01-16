@@ -1,5 +1,13 @@
 replicaCount: 2
 
+resources:
+  limits:
+    memory: "4Gi"
+    cpu: "1000m"
+  requests:
+    memory: "2Gi"
+    cpu: "100m"
+
 livenessProbe:
   enabled: false
 readinessProbe:
@@ -196,6 +204,13 @@ extraEnvVars: &envVars
 
 worker:
   replicaCount: 1
+  resources:
+    limits:
+      memory: "4Gi"
+      cpu: "1000m"
+    requests:
+      memory: "2Gi"
+      cpu: "100m"
   extraVolumeMounts: *volMounts
   extraEnvVars: *envVars
   podSecurityContext:
@@ -220,6 +235,14 @@ postgresql:
   enabled: false
 redis:
   enabled: true
+  master:
+    resources:
+      limits:
+        memory: "512Mi"
+        cpu: "100m"
+      requests:
+        memory: "256Mi"
+        cpu: "20m"
   architecture: standalone
   auth:
     password: $REDIS_PASSWORD
@@ -238,11 +261,28 @@ externalSolrUser: admin
 externalSolrCollection: "hyku-iiif"
 externalSolrPassword: $SOLR_ADMIN_PASSWORD
 
+fits:
+  enabled: true
+  resources:
+    limits:
+      memory: "2Gi"
+      cpu: "1000m"
+    requests:
+      memory: "1Gi"
+      cpu: "250m"
+
 global:
   hyraxName: hyku-iiif-hyrax
 
 nginx:
   enabled: true
+  resources:
+    limits:
+      memory: "256Mi"
+      cpu: "100m"
+    requests:
+      memory: "128Mi"
+      cpu: "20m"
   image:
     registry: ghcr.io
     repository: notch8/scripts/bitnamilegacy-nginx

@@ -648,6 +648,10 @@ class CatalogController < ApplicationController
     false
   end
 
+  def render_optionally?(field_config, doc)
+    render_in_tenant?(field_config, doc)
+  end
+
   def render_in_tenant?(field_config, _doc)
     return true if Site.account&.hidden_index_fields.blank?
 

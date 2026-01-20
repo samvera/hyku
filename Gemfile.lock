@@ -1,4 +1,16 @@
 GIT
+  remote: https://github.com/notch8/iiif_print.git
+  revision: d65a5871d8566770960c794224fa3e5aa3709ccf
+  branch: main
+  specs:
+    iiif_print (3.0.10)
+      blacklight_iiif_search (>= 1.0, < 3.0)
+      derivative-rodeo (~> 0.5)
+      hyrax (>= 2.5, < 6)
+      nokogiri (>= 1.13.2)
+      rdf-vocab (~> 3.0)
+
+GIT
   remote: https://github.com/notch8/willow_sword.git
   revision: a8bcacbf4d277e2c9522179086e84ea8414225b4
   tag: v0.8.0
@@ -40,7 +52,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: 4269a3b48349ea434ee43ede958bc49d2bdfea67
+  revision: 8312a50ce3014031fbd746ab06413fdaa8bd9224
   branch: main
   specs:
     hyrax (5.2.0)
@@ -49,6 +61,7 @@ GIT
       awesome_nested_set (~> 3.1)
       blacklight (~> 7.29)
       blacklight-gallery (~> 4.6.4)
+      blacklight_dynamic_sitemap (~> 1.0)
       breadcrumbs_on_rails (~> 3.0)
       browse-everything (>= 0.16, < 2.0)
       carrierwave (~> 1.0)
@@ -77,6 +90,7 @@ GIT
       linkeddata
       listen (~> 3.9)
       mailboxer (~> 0.12)
+      multi_json (= 1.18.0)
       nest (~> 3.1)
       noid-rails (~> 3.0)
       oauth
@@ -250,8 +264,8 @@ GEM
     awesome_nested_set (3.8.0)
       activerecord (>= 4.0.0, < 8.1)
     aws-eventstream (1.4.0)
-    aws-partitions (1.1164.0)
-    aws-sdk-core (3.233.0)
+    aws-partitions (1.1196.0)
+    aws-sdk-core (3.240.0)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
       aws-sigv4 (~> 1.9)
@@ -259,11 +273,11 @@ GEM
       bigdecimal
       jmespath (~> 1, >= 1.6.1)
       logger
-    aws-sdk-kms (1.112.0)
-      aws-sdk-core (~> 3, >= 3.231.0)
+    aws-sdk-kms (1.118.0)
+      aws-sdk-core (~> 3, >= 3.239.1)
       aws-sigv4 (~> 1.5)
-    aws-sdk-s3 (1.199.0)
-      aws-sdk-core (~> 3, >= 3.231.0)
+    aws-sdk-s3 (1.208.0)
+      aws-sdk-core (~> 3, >= 3.234.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.5)
     aws-sdk-sqs (1.104.0)
@@ -290,7 +304,7 @@ GEM
       latex-decode (~> 0.0)
       logger (~> 1.7)
       racc (~> 1.7)
-    bigdecimal (3.2.3)
+    bigdecimal (3.3.1)
     bindata (2.5.1)
     bindex (0.8.1)
     bixby (5.0.0)
@@ -320,6 +334,9 @@ GEM
     blacklight_advanced_search (7.0.0)
       blacklight (~> 7.0)
       parslet
+    blacklight_dynamic_sitemap (1.0.0)
+      blacklight (> 7.0)
+      rails
     blacklight_iiif_search (2.1.0)
       blacklight (~> 7.0)
       ffi (~> 1.16.3)
@@ -711,7 +728,7 @@ GEM
     hiredis (0.6.3)
     htmlentities (4.3.4)
     http_logger (1.0.1)
-    httparty (0.23.1)
+    httparty (0.24.0)
       csv
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
@@ -786,12 +803,6 @@ GEM
       json
     iiif_manifest (1.6.0)
       activesupport (>= 4)
-    iiif_print (3.0.10)
-      blacklight_iiif_search (>= 1.0, < 3.0)
-      derivative-rodeo (~> 0.5)
-      hyrax (>= 2.5, < 6)
-      nokogiri (>= 1.13.2)
-      rdf-vocab (~> 3.0)
     io-console (0.8.1)
     irb (1.15.2)
       pp (>= 0.6.0)
@@ -967,9 +978,9 @@ GEM
       iso-639
       nokogiri (>= 1.6.6)
       nom-xml (~> 1.0)
-    multi_json (1.17.0)
-    multi_xml (0.7.2)
-      bigdecimal (~> 3.1)
+    multi_json (1.18.0)
+    multi_xml (0.8.1)
+      bigdecimal (>= 3.1, < 5)
     multipart-post (2.4.1)
     mustermann (2.0.2)
       ruby2_keywords (~> 0.0.1)
@@ -1567,7 +1578,7 @@ GEM
     unicode-display_width (2.6.0)
     unicode-types (1.11.0)
     unicode_utils (1.4.0)
-    uri (1.0.3)
+    uri (1.0.4)
     useragent (0.16.11)
     validatable (1.6.7)
     validate_url (1.0.15)
@@ -1688,7 +1699,7 @@ DEPENDENCIES
   hyrax-iiif_av!
   i18n-debug
   i18n-tasks
-  iiif_print (~> 3.0.10)
+  iiif_print!
   jbuilder (~> 2.5)
   jquery-rails
   json-canonicalization (= 0.3.1)

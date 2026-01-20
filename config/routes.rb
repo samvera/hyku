@@ -98,6 +98,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   mount Hyrax::Engine, at: '/'
   mount Bulkrax::Engine, at: '/' if Hyku.bulkrax_enabled?
   mount HykuKnapsack::Engine, at: '/'
+  mount BlacklightDynamicSitemap::Engine => '/'
   concern :searchable, Blacklight::Routes::Searchable.new
   concern :exportable, Blacklight::Routes::Exportable.new
 

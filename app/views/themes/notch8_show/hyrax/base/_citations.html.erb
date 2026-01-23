@@ -1,0 +1,75 @@
+<%#
+  OVERRIDE: Hyku 7.0.0 to center the citation button with constrained width
+  rather than having it span the full page width as in the base Hyku implementation. This also enhances the citations to include MLA, APA, and Chicago citation styles, per app/views/hyrax/base/_citations.html.erb.
+
+  Changes made for Notch 8 show theme styling:
+  - Removed `btn-block` class to prevent full-width button spanning the page
+  - Removed `center-block` class (Bootstrap 3, deprecated)
+  - Added `mx-auto` and `d-block` classes (Bootstrap 4/5 utilities) for centered, non-full-width button
+  - Wrapped button in `<div class="text-center">` for container-level centering
+  - Custom CSS in notch8_show_buttons.scss applies min-width: 350px, max-width: 500px for proper sizing
+  - Changed from collapse to modal display for better UX, matching Georgetown site design
+%>
+
+<div class="text-center">
+  <button
+    class="btn btn-secondary citations-button mx-auto d-block"
+    data-toggle="modal"
+    data-target="#citations-modal"
+    role="button"
+  >
+    <%= t('.header') %>
+  </button>
+</div>
+
+<!-- Citations Modal -->
+<div class="modal fade" id="citations-modal" tabindex="-1" role="dialog" aria-labelledby="citations-modal-label" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title text-center w-100" id="citations-modal-label">Citations</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="text-center text-muted mb-4">
+          Provided as a suggestion only. Please verify these automated citations against the guidelines of your preferred style.
+        </p>
+
+        <div class="citation-style-section mb-4">
+          <h5 class="mb-2">MLA</h5>
+          <%= render partial: 'hyrax/base/citation_with_copy', locals: {
+            citation_id: 'mla-citation',
+            tooltip_id: 'mla-citation-tooltip',
+            button_label: 'Copy MLA citation',
+            citation_text: export_as_mla_citation(@presenter) + ' ' + request.original_url.sub(/^https?:\/\/(www\.)?/, '') + '.'
+          } %>
+        </div>
+
+        <div class="citation-style-section mb-4">
+          <h5 class="mb-2">APA</h5>
+          <%= render partial: 'hyrax/base/citation_with_copy', locals: {
+            citation_id: 'apa-citation',
+            tooltip_id: 'apa-citation-tooltip',
+            button_label: 'Copy APA citation',
+            citation_text: export_as_apa_citation(@presenter) + ' ' + request.original_url
+          } %>
+        </div>
+
+        <div class="citation-style-section mb-4">
+          <h5 class="mb-2">Chicago</h5>
+          <%= render partial: 'hyrax/base/citation_with_copy', locals: {
+            citation_id: 'chicago-citation',
+            tooltip_id: 'chicago-citation-tooltip',
+            button_label: 'Copy Chicago citation',
+            citation_text: export_as_chicago_citation(@presenter) + ' ' + request.original_url + '.'
+          } %>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

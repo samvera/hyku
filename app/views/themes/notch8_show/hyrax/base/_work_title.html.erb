@@ -1,0 +1,11 @@
+<div class="work-title-wrapper">
+  <div class="title-with-badges">
+    <% presenter.title.each_with_index do |title, index| %>
+      <div class="row">
+        <div class="col-12 text-show-title d-flex">
+          <h2><%= markdown(title) %></h2>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,83 @@
+@mixin notch8-show-cta-button {
+  min-width: 350px;
+  max-width: 500px;
+  width: auto;
+  padding: 0.875rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.notch8_show {
+  dl.work-show,
+  .work-show {
+    column-count: unset !important;
+    columns: unset !important;
+  }
+
+  .download-pdf-controls {
+    #file_download,
+    button#file_download,
+    .btn.file_download {
+      @include notch8-show-cta-button;
+    }
+  }
+
+  .citations-button,
+  button.citations-button {
+    @include notch8-show-cta-button;
+  }
+
+  // Citations Modal Styles - Matching Georgetown alignment
+  #citations-modal {
+    .modal-header {
+      position: relative;
+
+      .modal-title {
+        margin: 0;
+        font-weight: bold;
+      }
+    }
+
+    .modal-body {
+      .citation-style-section {
+        margin-bottom: 1.5rem;
+
+        &:last-of-type {
+          margin-bottom: 0;
+        }
+
+        h5 {
+          font-weight: 600;
+          font-size: 1rem;
+          margin-bottom: 0.5rem;
+          text-align: left;
+        }
+
+        .citation {
+          display: block;
+          padding: 0;
+          background-color: transparent;
+          border: none;
+          margin: 0.5rem 0;
+          font-family: 'Courier New', monospace;
+          font-size: 0.95rem;
+          line-height: 1.6;
+          word-wrap: break-word;
+          text-align: left;
+        }
+
+        .btn-outline-secondary {
+          margin-top: 0.5rem;
+          margin-left: 0;
+        }
+      }
+    }
+  }
+
+  @media (min-width: 991px) {
+    .work-show.document {
+      column-count: 2;
+      column-gap: 3rem;
+    }
+  }
+}

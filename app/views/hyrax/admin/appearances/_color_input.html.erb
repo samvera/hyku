@@ -3,7 +3,7 @@
     <% hint = t("hyrax.admin.appearances.show.forms.#{color_name}.hint") %>
     <%= f.input color_name,
         required: false,
-        input_html: { type: 'color', data: { default_value: hex } },
+        input_html: { type: 'color', data: { default_value: hex, system_default: local_assigns[:system_default] || hex } },
         hint: !missing_translation(hint) && hint %>
   </div>
   <div class='col-lg-2'>

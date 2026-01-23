@@ -21,10 +21,24 @@ module Hyrax
       end
 
       def update
+        return_tab = params[:return_tab] || extract_tab_from_referer || 'logo_image'
+
+        if params[:save_as_custom_defaults] == 'true'
+          form = form_class.new(update_params)
+          form.update!
+          form.save_as_custom_defaults!
+          redirect_to("#{hyrax.admin_appearance_path}##{return_tab}", notice: 'Custom default colors have been saved. These will be used when you click "Restore All Defaults".')
+          return
+        end
+
         form = form_class.new(update_params)
         form.banner_image = update_params[:banner_image] if update_params[:banner_image].present?
         form.logo_image = update_params[:logo_image] if update_params[:logo_image].present?
         form.update!
+
+        update_params.each do |key, value|
+          ContentBlock.update_block(name: key.to_s, value: value) if key.to_s.include?('color') && value.present?
+        end
 
         if update_params['default_collection_image']
           # Reindex all Collections and AdminSets to apply new default collection image
@@ -37,7 +51,7 @@ module Hyrax
           ReindexWorksJob.perform_later
         end
 
-        redirect_to({ action: :show }, notice: t('.flash.success'))
+        redirect_to("#{hyrax.admin_appearance_path}##{return_tab}", notice: t('.flash.success'))
       end
 
       private
@@ -74,6 +88,13 @@ module Hyrax
           'List view' => 'list_view',
           'Gallery view' => 'gallery_view'
         }
+      end
+
+      def extract_tab_from_referer
+        return nil unless request.referer
+        # Extract tab from referer URL (e.g., /admin/appearance#color)
+        match = request.referer.match(/#(\w+)$/)
+        match ? match[1] : nil
       end
     end
   end

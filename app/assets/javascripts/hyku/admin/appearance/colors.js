@@ -1,5 +1,9 @@
 // Colors form
 $(document).on('turbolinks:load', function() {
+  $('#colors-form').on('submit', function() {
+    $('#return_tab_field').val('color');
+  });
+
   $('div.defaultable-colors a.restore-default-color').click(function(e) {
     e.preventDefault();
 
@@ -15,6 +19,7 @@ $(document).on('turbolinks:load', function() {
     var allColorInputs = $("input[name*='color']");
 
     allColorInputs.each(function() {
+      // Use default_value (which may be custom default) for restore all
       $(this).val($(this).data('default-value'));
     });
   });

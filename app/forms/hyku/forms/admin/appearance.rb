@@ -430,13 +430,35 @@ module Hyku
         # Persist the form values
         def update!
           self.class.customization_params.each do |field|
-            update_block(field, attributes[field]) if attributes[field]
+            next unless attributes.key?(field)
+            value = attributes[field]
+            if field.to_s.include?('color')
+              update_block(field, value) if value.present?
+            elsif value.present?
+              update_block(field, value)
+            end
           end
 
           site.update!(banner_attributes.merge(logo_attributes)
                                         .merge(favicon_attributes)
                                         .merge(directory_attributes)
                                         .merge(default_image_attributes))
+        end
+
+        def save_as_custom_defaults!
+          self.class.customization_params.each do |field|
+            next unless field.to_s.include?('color')
+            current_value = attributes[field] || block_for(field.to_s)
+            next if current_value.blank?
+            custom_default_name = "custom_default_#{field}"
+            ContentBlock.update_block(name: custom_default_name, value: current_value)
+          end
+        end
+
+        # Get custom default color for a given color name
+        def custom_default_color(color_name)
+          custom_default_name = "custom_default_#{color_name}"
+          ContentBlock.block_for(name: custom_default_name, fallback_value: nil)
         end
 
         def font_import_body_url
@@ -481,14 +503,17 @@ module Hyku
         end
 
         def block_for(name, dynamic_default = nil)
-          ContentBlock.block_for(name:, fallback_value: default_values[name] || dynamic_default)
+          custom_default = custom_default_color(name)
+          theme_color = custom_theme_colors[name.to_s]
+          fallback = custom_default || theme_color || default_values[name] || dynamic_default
+          ContentBlock.block_for(name: name, fallback_value: fallback)
         end
 
         # Persist a key/value tuple as a ContentBlock
         # @param [Symbol] name the identifier for the ContentBlock
         # @param [String] value the value to set
         def update_block(name, value)
-          ContentBlock.update_block(name:, value:)
+          ContentBlock.update_block(name: name, value: value)
         end
 
         def format_font_names(font_style)

@@ -39,7 +39,13 @@ class ContentBlock < ApplicationRecord
     #
     # @return [Object] either the named block's value or the fallback_value.
     def block_for(name:, fallback_value: false)
-      block = ContentBlock.find_by(name:)
+      site = Site.instance
+      block = if site && !site.is_a?(NilSite)
+                ContentBlock.find_by(name: name.to_s, site_id: site.id) ||
+                  ContentBlock.find_by(name: name.to_s, site_id: nil)
+              else
+                ContentBlock.find_by(name: name.to_s, site_id: nil)
+              end
       block&.value.presence || fallback_value
     end
 
@@ -48,7 +54,14 @@ class ContentBlock < ApplicationRecord
     # @param name [#to_s] the named content block
     # @param value [Object] the value to update the given content block
     def update_block(name:, value:)
-      find_or_create_by(name: name.to_s).update!(value:)
+      site = Site.instance
+      if site && !site.is_a?(NilSite)
+        block = find_or_initialize_by(name: name.to_s, site_id: site.id)
+        block.site_id = site.id
+        block.update!(value: value)
+      else
+        find_or_create_by(name: name.to_s, site_id: nil).update!(value: value)
+      end
     end
 
     def registered?(key)
@@ -60,7 +73,7 @@ class ContentBlock < ApplicationRecord
     end
 
     def marketing_text=(value)
-      marketing_text.update(value:)
+      marketing_text.update(value: value)
     end
 
     def announcement_text
@@ -68,7 +81,7 @@ class ContentBlock < ApplicationRecord
     end
 
     def announcement_text=(value)
-      announcement_text.update(value:)
+      announcement_text.update(value: value)
     end
 
     def featured_researcher
@@ -76,7 +89,7 @@ class ContentBlock < ApplicationRecord
     end
 
     def featured_researcher=(value)
-      featured_researcher.update(value:)
+      featured_researcher.update(value: value)
     end
 
     # OVERRIDE Hyrax v3.4.0 to add home_text getter/setter methods - Adding themes
@@ -85,7 +98,7 @@ class ContentBlock < ApplicationRecord
     end
 
     def home_text=(value)
-      home_text.update(value:)
+      home_text.update(value: value)
     end
 
     def homepage_about_section_heading
@@ -93,7 +106,7 @@ class ContentBlock < ApplicationRecord
     end
 
     def homepage_about_section_heading=(value)
-      homepage_about_section_heading.update(value:)
+      homepage_about_section_heading.update(value: value)
     end
 
     def homepage_about_section_content
@@ -101,7 +114,7 @@ class ContentBlock < ApplicationRecord
     end
 
     def homepage_about_section_content=(value)
-      homepage_about_section_content.update(value:)
+      homepage_about_section_content.update(value: value)
     end
 
     def about_page
@@ -109,7 +122,7 @@ class ContentBlock < ApplicationRecord
     end
 
     def about_page=(value)
-      about_page.update(value:)
+      about_page.update(value: value)
     end
 
     def agreement_page
@@ -118,7 +131,7 @@ class ContentBlock < ApplicationRecord
     end
 
     def agreement_page=(value)
-      agreement_page.update(value:)
+      agreement_page.update(value: value)
     end
 
     def help_page
@@ -126,7 +139,7 @@ class ContentBlock < ApplicationRecord
     end
 
     def help_page=(value)
-      help_page.update(value:)
+      help_page.update(value: value)
     end
 
     def terms_page
@@ -135,7 +148,7 @@ class ContentBlock < ApplicationRecord
     end
 
     def terms_page=(value)
-      terms_page.update(value:)
+      terms_page.update(value: value)
     end
 
     def default_agreement_text

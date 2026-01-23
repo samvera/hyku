@@ -1,3 +1,14 @@
 .notch8 {
-  background-color: #f0f0f0;
+  // ========================================
+  // Top Navigation Bar
+  // ========================================
+  #notch8-navbar-collapse {
+    margin-top: 2rem;
+
+    .navbar-nav {
+      .nav-link {
+        margin-bottom: 1rem;
+      }
+    }
+  }
 }

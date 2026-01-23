@@ -1,0 +1,32 @@
+<%# Define the banner area WITHOUT search controls %>
+<% content_for(:navbar) do %>
+  <div class="image-masthead notch8-banner">
+    <%# Banner background image %>
+    <div class="background-container"
+         title="<%= block_for(name: 'banner_image_text') %>"
+         style="background-image: url('<%= banner_image %>')">
+    </div>
+
+    <%# Marketing text overlay %>
+    <div class="container site-title-container">
+      <div class="site-title h1 text-center">
+        <%= render "hyrax/homepage/marketing" if controller_name == 'homepage' %>
+      </div>
+    </div>
+  </div>
+
+  <%# Search bar BELOW banner %>
+  <div class="notch8-search-section">
+    <div class="container">
+      <%= render partial: 'catalog/search_form' %>
+    </div>
+  </div>
+<% end %>
+
+<%# Announcement section %>
+<% content_for(:precontainer_content) do %>
+  <%= render 'hyrax/homepage/announcement' if controller_name == 'homepage' %>
+<% end %>
+
+<%# Render main Hyrax layout %>
+<%= render template: 'layouts/hyrax' %>

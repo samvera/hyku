@@ -1,4 +1,5 @@
-<%= simple_form_for @form, url: admin_appearance_path do |f| %>
+<%= simple_form_for @form, url: admin_appearance_path, html: { id: 'banner-image-form' } do |f| %>
+  <%= hidden_field_tag :return_tab, 'banner_image', id: 'return_tab_field_banner' %>
   <div class="card-body">
     <% require_image = @form.banner_image? ? false : true %>
     <%# Upload Banner Image %>

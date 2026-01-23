@@ -1,4 +1,5 @@
-<%= simple_form_for @form, url: admin_appearance_path do |f| %>
+<%= simple_form_for @form, url: admin_appearance_path, html: { id: 'directory-image-form' } do |f| %>
+  <%= hidden_field_tag :return_tab, 'directory_image', id: 'return_tab_field_directory' %>
   <div class="card-body">
     <% require_image = @form.directory_image? ? false : true %>
     <%# Upload Directory Image %>

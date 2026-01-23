@@ -1,4 +1,5 @@
-<%= simple_form_for @form, url: admin_appearance_path do |f| %>
+<%= simple_form_for @form, url: admin_appearance_path, html: { id: 'favicon-form' } do |f| %>
+  <%= hidden_field_tag :return_tab, 'favicon', id: 'return_tab_field_favicon' %>
   <div class="card-body">
     <% require_image = @form.favicon? ? false : true %>
     <%= f.input :favicon, as: :file, wrapper: :vertical_file_input, hint: t('hyrax.admin.appearances.show.forms.favicon.hint') %>

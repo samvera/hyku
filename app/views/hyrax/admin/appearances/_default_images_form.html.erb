@@ -1,4 +1,5 @@
-<%= simple_form_for @form, url: admin_appearance_path do |f| %>
+<%= simple_form_for @form, url: admin_appearance_path, html: { id: 'default-images-form' } do |f| %>
+  <%= hidden_field_tag :return_tab, 'default_images', id: 'return_tab_field_default_images' %>
   <div class="card-body">
     <%= f.input :default_collection_image, as: :file, wrapper: :vertical_file_input, hint: t('hyrax.admin.appearances.show.forms.default_images.hint'), required: false %>
     <%= f.input :default_collection_image_text, as: :text, label: 'Default collection image alt text', required: false %>

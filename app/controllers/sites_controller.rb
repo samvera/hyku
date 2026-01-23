@@ -6,6 +6,9 @@ class SitesController < ApplicationController
   layout 'hyrax/dashboard'
 
   def update
+    # Determine which tab to return to based on params or referer
+    return_tab = params[:return_tab] || extract_tab_from_referer || 'logo_image'
+    
     # FIXME: Pull these strings out to i18n locale
     if @site.update(update_params)
 
@@ -22,9 +25,9 @@ class SitesController < ApplicationController
         ReindexWorksJob.perform_later
       end
       remove_appearance_text(update_params)
-      redirect_to hyrax.admin_appearance_path, notice: 'The appearance was successfully updated.'
+      redirect_to("#{hyrax.admin_appearance_path}##{return_tab}", notice: 'The appearance was successfully updated.')
     else
-      redirect_to hyrax.admin_appearance_path, flash: { error: 'Updating the appearance was unsuccessful.' }
+      redirect_to("#{hyrax.admin_appearance_path}##{return_tab}", flash: { error: 'Updating the appearance was unsuccessful.' })
     end
 
     @site.update(site_theme_params) if params[:site]
@@ -63,5 +66,12 @@ class SitesController < ApplicationController
       block = ContentBlock.find_by(name: REMOVE_TEXT_MAPS[image_text_key])
       block.delete if block&.value.present?
     end
+  end
+
+  def extract_tab_from_referer
+    return nil unless request.referer
+    # Extract tab from referer URL (e.g., /admin/appearance#themes)
+    match = request.referer.match(/#(\w+)$/)
+    match ? match[1] : nil
   end
 end

@@ -25,6 +25,8 @@ class AppIndexer < Hyrax::WorkIndexer
       solr_doc['account_institution_name_ssim'] = Site.instance.institution_label
       solr_doc['all_text_tsimv'] = full_text(object.file_sets.first&.id)
       add_date(solr_doc)
+      # Add this guard for schema_version
+      solr_doc['schema_version_tesim'] = object.schema_version if object.respond_to?(:schema_version)
     end
   end
   # rubocop:enable Metrics/AbcSize

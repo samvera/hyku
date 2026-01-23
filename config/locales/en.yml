@@ -286,6 +286,9 @@ en:
             In order for Hyrax::Group and User records who have either the 'Work Editor' or 'Work Depositor' Role
             to have the correct permissions for Works, we grant them Workflow Roles for all AdminSets.
             NOTE: All AdminSets must have a permission template or this will fail. Run 'Create Admin Set Accesses' first."
+          clean_review_submissions_page:
+            label: Clean Review Submissions Page
+            description: "This job will remove the empty items from the Review Submissions page and fix the counts shown."
       sidebar:
         accounts: Accounts
         activity_summary: Activity Summary
@@ -316,6 +319,9 @@ en:
         roles:
           remove:
             confirmation: Are you sure you want to remove the role "%{role}" from the user "%{user}"?
+  dashboard:
+      sidebar:
+        metadata_profiles: "Metadata Profiles"  
   permissions:
     collections:
       cannot:

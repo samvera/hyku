@@ -22,15 +22,16 @@ module Hyrax
 
       def update
         return_tab = params[:return_tab] || extract_tab_from_referer || 'logo_image'
+        form = update_appearance_form
+        return redirect_to_custom_defaults(return_tab, form) if params[:save_as_custom_defaults].present?
 
-        if params[:save_as_custom_defaults] == 'true'
-          form = form_class.new(update_params)
-          form.update!
-          form.save_as_custom_defaults!
-          redirect_to("#{hyrax.admin_appearance_path}##{return_tab}", notice: 'Custom default colors have been saved. These will be used when you click "Restore All Defaults".')
-          return
-        end
+        reindex_resources
+        redirect_to("#{hyrax.admin_appearance_path}##{return_tab}", notice: t('.flash.success'))
+      end
 
+      private
+
+      def update_appearance_form
         form = form_class.new(update_params)
         form.banner_image = update_params[:banner_image] if update_params[:banner_image].present?
         form.logo_image = update_params[:logo_image] if update_params[:logo_image].present?
@@ -40,21 +41,25 @@ module Hyrax
           ContentBlock.update_block(name: key.to_s, value: value) if key.to_s.include?('color') && value.present?
         end
 
+        form
+      end
+
+      def redirect_to_custom_defaults(return_tab, form)
+        form.save_as_custom_defaults!
+        redirect_to("#{hyrax.admin_appearance_path}##{return_tab}",
+                    notice: 'Custom default colors have been saved. These will be used when you click "Restore All Defaults".')
+      end
+
+      def reindex_resources
+        return unless update_params['default_collection_image'] || update_params['default_work_image']
+
         if update_params['default_collection_image']
-          # Reindex all Collections and AdminSets to apply new default collection image
           ReindexCollectionsJob.perform_later
           ReindexAdminSetsJob.perform_later
         end
 
-        if update_params['default_work_image']
-          # Reindex all Works to apply new default work image
-          ReindexWorksJob.perform_later
-        end
-
-        redirect_to("#{hyrax.admin_appearance_path}##{return_tab}", notice: t('.flash.success'))
+        ReindexWorksJob.perform_later if update_params['default_work_image']
       end
-
-      private
 
       def add_breadcrumbs
         add_breadcrumb t(:'hyrax.controls.home'), root_path

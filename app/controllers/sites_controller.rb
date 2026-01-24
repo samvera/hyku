@@ -8,7 +8,7 @@ class SitesController < ApplicationController
   def update
     # Determine which tab to return to based on params or referer
     return_tab = params[:return_tab] || extract_tab_from_referer || 'logo_image'
-    
+
     # FIXME: Pull these strings out to i18n locale
     if @site.update(update_params)
 

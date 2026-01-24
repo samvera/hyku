@@ -14,16 +14,13 @@
   <div class="card-footer">
     <%= link_to 'Restore All Defaults', '#color', class: 'btn btn-secondary restore-all-default-colors' %>
     <% if !theme_colors.empty? %>
-      <%= link_to 'Apply Theme Colors', '#color', class: 'btn btn-secondary apply-theme-colors', 
+      <%= link_to 'Apply Theme Colors', '#color', class: 'btn btn-secondary apply-theme-colors',
         data: { theme_colors: theme_colors.to_json } %>
     <% end %>
-    <%= button_to 'Save as Custom Default Colors', 
-        admin_appearance_path, 
-        method: :patch,
-        params: { save_as_custom_defaults: true },
+    <%= f.submit 'Save as Custom Default Colors',
+        name: 'save_as_custom_defaults',
         class: 'btn btn-secondary save-custom-defaults',
-        data: { confirm: 'This will save your current color settings as your tenant\'s default colors. These will be used when you click "Restore All Defaults" or switch themes. Continue?' },
-        form: { style: 'display: inline;' } %>
+        data: { confirm: 'This will save your current color settings as your tenant\'s default colors. These will be used when you click "Restore All Defaults" or switch themes. Continue?' } %>
     <%= f.submit 'Save changes', class: 'btn btn-primary float-right' %>
   </div>
 <% end %>

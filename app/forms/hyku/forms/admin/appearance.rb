@@ -484,6 +484,10 @@ module Hyku
           @default_values ||= default_fonts.merge(default_colors)
         end
 
+        def system_default_color(color_name)
+          self.class.default_colors[color_name.to_s]
+        end
+
         private
 
         def darken_color(hex_color, adjustment = 0.2)
@@ -503,9 +507,13 @@ module Hyku
         end
 
         def block_for(name, dynamic_default = nil)
-          custom_default = custom_default_color(name)
-          theme_color = custom_theme_colors[name.to_s]
-          fallback = custom_default || theme_color || default_values[name] || dynamic_default
+          fallback = if Flipflop.use_tenant_default_colors?
+                       # Tenant mode: tenant defaults → system defaults (skip theme colors)
+                       custom_default_color(name) || default_values[name] || dynamic_default
+                     else
+                       # Theme mode: theme colors → system defaults (for backwards compatibility)
+                       custom_theme_colors[name.to_s] || default_values[name] || dynamic_default
+                     end
           ContentBlock.block_for(name: name, fallback_value: fallback)
         end
 

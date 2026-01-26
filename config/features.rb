@@ -45,4 +45,9 @@ Flipflop.configure do
   feature :treat_some_user_inputs_as_markdown,
           default: false,
           description: "Treat some user inputs (e.g. titles and descriptions) as markdown."
+
+  feature :use_tenant_default_colors,
+          default: false,
+          description: "When enabled, default colors you set will apply to all themes. When disabled, " \
+                       "colors are determined by the selected theme (requires developer configuration)."
 end

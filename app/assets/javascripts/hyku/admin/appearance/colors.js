@@ -66,14 +66,26 @@ $(document).on('turbolinks:load', function() {
     input.val(input.data('default-value'));
   });
 
-  $('.card-footer a.restore-all-default-colors').click(function(e) {
+  $('.card-footer a.reset-to-system-defaults').click(function(e) {
     e.preventDefault();
 
     var allColorInputs = $("input[name*='color']");
 
     allColorInputs.each(function() {
-      // Use default_value (which may be custom default) for restore all
-      $(this).val($(this).data('default-value'));
+      var systemDefault = $(this).attr('data-system-default');
+      $(this).val(systemDefault);
+    });
+  });
+
+  $('.card-footer a.restore-tenant-defaults').click(function(e) {
+    e.preventDefault();
+
+    var allColorInputs = $("input[name*='color']");
+
+    allColorInputs.each(function() {
+      var tenantDefault = $(this).attr('data-tenant-default');
+      var systemDefault = $(this).attr('data-system-default');
+      $(this).val(tenantDefault || systemDefault);
     });
   });
 

@@ -1,26 +1,48 @@
 <%= simple_form_for @form, url: admin_appearance_path, html: { id: 'colors-form' } do |f| %>
   <%= hidden_field_tag :return_tab, 'color', id: 'return_tab_field' %>
   <div class="card-body defaultable-colors">
-    <% @form.default_colors.each do |color_name, hex| %>
-      <% # Check for custom default, fallback to system default %>
-      <% custom_default = @form.custom_default_color(color_name) %>
-      <% default_hex = custom_default || hex %>
-      <%= render 'color_input', f: f, color_name: color_name, hex: default_hex, system_default: hex %>
+    <% @form.default_colors.each do |color_name, _| %>
+      <%# Always get system default from class-level constant, never runtime values %>
+      <% system_default = @form.system_default_color(color_name) %>
+      <% tenant_default = @form.custom_default_color(color_name) %>
+      <%# Per-color "Restore Default" uses tenant defaults in tenant mode (if they exist), system defaults otherwise %>
+      <% if Flipflop.use_tenant_default_colors? %>
+        <% per_color_default = tenant_default || system_default %>
+      <% else %>
+        <% per_color_default = system_default %>
+      <% end %>
+      <%= render 'color_input', f: f, color_name: color_name, hex: per_color_default, system_default: system_default, tenant_default: tenant_default %>
     <% end %>
   </div>
 
-  <% theme_colors = @form.custom_theme_colors %>
-
   <div class="card-footer">
-    <%= link_to 'Restore All Defaults', '#color', class: 'btn btn-secondary restore-all-default-colors' %>
-    <% if !theme_colors.empty? %>
-      <%= link_to 'Apply Theme Colors', '#color', class: 'btn btn-secondary apply-theme-colors',
-        data: { theme_colors: theme_colors.to_json } %>
+    <%= link_to 'Reset to System Defaults', '#color',
+        class: 'btn btn-secondary reset-to-system-defaults',
+        title: 'Reset all colors to Hyku\'s original default colors' %>
+
+    <% if Flipflop.use_tenant_default_colors? %>
+      <%# Tenant Default Colors Mode - allow setting and restoring tenant-wide defaults %>
+      <% has_tenant_defaults = @form.default_colors.keys.any? { |c| @form.custom_default_color(c).present? } %>
+      <% if has_tenant_defaults %>
+        <%= link_to 'Restore Tenant Defaults', '#color',
+            class: 'btn btn-secondary restore-tenant-defaults',
+            title: 'Restore all colors to your saved tenant defaults' %>
+      <% end %>
+      <%= f.submit 'Set as Tenant Defaults',
+          name: 'save_as_custom_defaults',
+          class: 'btn btn-secondary save-custom-defaults',
+          data: { confirm: 'This will save your current color settings as tenant defaults. These colors will apply to all themes. Continue?' } %>
+    <% else %>
+      <%# Theme-Based Colors Mode - backwards compatible with knapsack YAML configs %>
+      <% theme_colors = @form.custom_theme_colors %>
+      <% if theme_colors.present? %>
+        <%= link_to 'Apply Theme Colors', '#color',
+            class: 'btn btn-secondary apply-theme-colors',
+            data: { theme_colors: theme_colors.to_json },
+            title: 'Apply the color scheme defined for the current theme' %>
+      <% end %>
     <% end %>
-    <%= f.submit 'Save as Custom Default Colors',
-        name: 'save_as_custom_defaults',
-        class: 'btn btn-secondary save-custom-defaults',
-        data: { confirm: 'This will save your current color settings as your tenant\'s default colors. These will be used when you click "Restore All Defaults" or switch themes. Continue?' } %>
+
     <%= f.submit 'Save changes', class: 'btn btn-primary float-right' %>
   </div>
 <% end %>

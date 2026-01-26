@@ -47,7 +47,7 @@ module Hyrax
       def redirect_to_custom_defaults(return_tab, form)
         form.save_as_custom_defaults!
         redirect_to("#{hyrax.admin_appearance_path}##{return_tab}",
-                    notice: 'Custom default colors have been saved. These will be used when you click "Restore All Defaults".')
+                    notice: 'Tenant default colors have been saved. These colors will apply to all themes.')
       end
 
       def reindex_resources

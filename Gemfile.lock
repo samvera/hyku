@@ -391,7 +391,7 @@ GEM
       signet (~> 0.8)
       typhoeus
     builder (3.3.0)
-    bulkrax (9.3.3)
+    bulkrax (9.3.4)
       bagit (~> 0.6.0)
       coderay
       denormalize_fields

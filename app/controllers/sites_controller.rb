@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SitesController < ApplicationController
+  include AppearanceTabNavigation
+
   before_action :set_site
   load_and_authorize_resource instance_variable: :site, class: 'Site' # descendents still auth Site
   layout 'hyrax/dashboard'
@@ -66,12 +68,5 @@ class SitesController < ApplicationController
       block = ContentBlock.find_by(name: REMOVE_TEXT_MAPS[image_text_key])
       block.delete if block&.value.present?
     end
-  end
-
-  def extract_tab_from_referer
-    return nil unless request.referer
-    # Extract tab from referer URL (e.g., /admin/appearance#themes)
-    match = request.referer.match(/#(\w+)$/)
-    match ? match[1] : nil
   end
 end

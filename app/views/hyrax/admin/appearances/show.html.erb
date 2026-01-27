@@ -93,27 +93,3 @@
     </div>
   </div>
 </div>
-
-<script>
-  // Immediately activate the correct tab based on URL hash to prevent flash
-  (function() {
-    var hash = window.location.hash;
-    if (hash && hash.length > 1) {
-      var tabId = hash.substring(1);
-      var tabLink = document.querySelector('a[href="#' + tabId + '"]');
-      var tabPane = document.getElementById(tabId);
-      
-      if (tabLink && tabPane) {
-        // Remove active from default tab
-        var defaultTabLink = document.querySelector('a[href="#logo_image"]');
-        var defaultTabPane = document.getElementById('logo_image');
-        if (defaultTabLink) defaultTabLink.classList.remove('active');
-        if (defaultTabPane) defaultTabPane.classList.remove('active', 'show');
-        
-        // Activate the correct tab immediately
-        tabLink.classList.add('active');
-        tabPane.classList.add('active', 'show');
-      }
-    }
-  })();
-</script>

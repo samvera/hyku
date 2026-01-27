@@ -36,11 +36,6 @@ module Hyrax
         form.banner_image = update_params[:banner_image] if update_params[:banner_image].present?
         form.logo_image = update_params[:logo_image] if update_params[:logo_image].present?
         form.update!
-
-        update_params.each do |key, value|
-          ContentBlock.update_block(name: key.to_s, value: value) if key.to_s.include?('color') && value.present?
-        end
-
         form
       end
 
@@ -94,16 +89,10 @@ module Hyrax
           'Gallery view' => 'gallery_view'
         }
       end
-
-      def extract_tab_from_referer
-        return nil unless request.referer
-        # Extract tab from referer URL (e.g., /admin/appearance#color)
-        match = request.referer.match(/#(\w+)$/)
-        match ? match[1] : nil
-      end
     end
   end
 end
 
 Hyrax::Admin::AppearancesController.prepend(Hyrax::Admin::AppearancesControllerDecorator)
+Hyrax::Admin::AppearancesController.include(AppearanceTabNavigation)
 Hyrax::Admin::AppearancesController.form_class = Hyku::Forms::Admin::Appearance

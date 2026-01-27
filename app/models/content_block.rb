@@ -57,7 +57,6 @@ class ContentBlock < ApplicationRecord
       site = Site.instance
       if site && !site.is_a?(NilSite)
         block = find_or_initialize_by(name: name.to_s, site_id: site.id)
-        block.site_id = site.id
         block.update!(value: value)
       else
         find_or_create_by(name: name.to_s, site_id: nil).update!(value: value)

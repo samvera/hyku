@@ -509,7 +509,8 @@ module Hyku
         def block_for(name, dynamic_default = nil)
           fallback = if Flipflop.use_tenant_default_colors?
                        # Tenant mode: tenant defaults → system defaults (skip theme colors)
-                       custom_default_color(name) || default_values[name] || dynamic_default
+                       custom_default = name.to_s.include?('color') ? custom_default_color(name) : nil
+                       custom_default || default_values[name] || dynamic_default
                      else
                        # Theme mode: theme colors → system defaults (for backwards compatibility)
                        custom_theme_colors[name.to_s] || default_values[name] || dynamic_default

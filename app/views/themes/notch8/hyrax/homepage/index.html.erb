@@ -1,16 +1,21 @@
 <% provide :page_title, application_name %>
 
+<!-- check for home text content block-->
+<% if display_content_block? @home_text %>
+  <div class="homepage-text-container">
+    <%= render 'themes/notch8/home_text' if controller_name == 'homepage' %>
+  </div>
+<% end %>
+
 <%# add check for featured works %>
 <div class="row">
-  <div class="col-12">
+  <div class="col-lg-4 pr-lg-5">
+    <h2>Featured Collections</h2>
+    <%= render 'featured_collection_section' %>
+  </div>
+
+  <div class="col-lg-8 pl-lg-5">
     <h2>Featured Works</h2>
     <%= render 'featured_works' %>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-12">
-    <h2>Collections</h2>
-    <%= render 'featured_collection_section' %>
   </div>
 </div>

@@ -1,4 +1,14 @@
-.notch8 {
+body.notch8 {
+  // ensure the footer stays at the bottom of the page
+  margin-bottom: 0;
+
+  // homepage full width layout
+  #content-wrapper.container {
+    margin: 5rem auto;
+    // set a slightly wider content area for the homepage
+    max-width: 1400px;
+  }
+
   // ========================================
   // Top Navigation Bar
   // ========================================
@@ -9,6 +19,31 @@
       .nav-link {
         margin-bottom: 1rem;
       }
+    }
+  }
+
+  // ========================================
+  // Banner Image
+  // ========================================
+  // larger area for the banner image
+  .image-masthead {
+    height: 60vh;
+    min-height: 400px;
+    max-height: 700px;
+    .site-title-container.container {
+      max-width: 1400px;
+    }
+  }
+
+  .notch8-marketing-text {
+    padding: 2rem 0;
+  }
+
+  @media (min-width: 768px) {
+    .image-masthead {
+      height: 40vh; // Responsive on tablet+
+      min-height: 400px;
+      max-height: 600px;
     }
   }
 }

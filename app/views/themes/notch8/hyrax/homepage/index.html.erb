@@ -1,13 +1,12 @@
 <% provide :page_title, application_name %>
 
-<!-- check for home text content block-->
+<%# add check for home page text content block %>
 <% if display_content_block? @home_text %>
-  <div class="homepage-text-container">
+  <div class="notch8-home-text-container">
     <%= render 'themes/notch8/home_text' if controller_name == 'homepage' %>
   </div>
 <% end %>
 
-<%# add check for featured works %>
 <div class="row">
   <div class="col-lg-4 pr-lg-5">
     <h2>Featured Collections</h2>
@@ -15,15 +14,20 @@
   </div>
 
   <div class="col-lg-8 pl-lg-5">
-    <div class="border-bottom pb-4">
-    <h2>Featured Works</h2>
-    <%= render 'featured_works' %>
-    </div>
-    <div class="mt-4">
-      <% if @presenter.display_recently_uploaded? %>
+    <%# add check for featured works %>
+    <% if @presenter.display_featured_works? %>
+      <div class="notch8-featured-works-container">
+        <h2>Featured Works</h2>
+        <%= render 'featured_works' %>
+      </div>
+    <% end %>
+
+    <%# add check for recently uploaded %>
+    <% if @presenter.display_recently_uploaded? %>
+      <div class="notch8-recent-uploads-container">
         <h2>Recent Uploads</h2>
-        <%= render 'hyrax/homepage/recently_uploaded', recent_documents: @recent_documents %>
-      <% end %>
-    </div>
+        <%= render 'recently_uploaded', recent_documents: @recent_documents %>
+      </div>
+    <% end %>
   </div>
 </div>

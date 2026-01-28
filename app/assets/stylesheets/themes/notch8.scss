@@ -48,20 +48,46 @@ body.notch8 {
   }
 
   // ========================================
+  // Home Text Content Block (configurable in the admin dashboard)
+  // ========================================
+  .notch8-home-text-container {
+    padding: 2rem 0;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 4rem;
+  }
+
+  // ========================================
   // Featured Collections
   // ========================================
   .card.notch8-explore-collections {
     border-radius: 0;
     width: 275px;
     height: 250px;
+    background-color: #f8f9fa;
     .card-img-top {
       border-radius: 0;
+    }
+    &:hover {
+      // background-color: #e9ecef;
+      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+      transform: scale(1.02);
     }
   }
 
   // ========================================
-  // Featured Works
+  // Featured Works and Recent Uploads (can be toggled on/off in the admin dashboard)
   // ========================================
+
+  .notch8-featured-works-container {
+    margin-bottom: 4rem;
+  }
+
+  .notch8-recent-uploads-container {
+    padding-top: 4rem;
+    border-top: 1px solid #ddd;
+  }
+
   // override default styles
   .featured-item,
   .recent-item {

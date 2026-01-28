@@ -63,7 +63,8 @@ body.notch8 {
   // Featured Works
   // ========================================
   // override default styles
-  .featured-item {
+  .featured-item,
+  .recent-item {
     border-top: none;
     margin-bottom: 1rem;
   }
@@ -73,7 +74,8 @@ body.notch8 {
   }
 
   // image covers entire thumbnail area
-  .notch8-explore-works-thumbnail {
+  .notch8-explore-works-thumbnail,
+  .notch8-recent-works-thumbnail {
     width: 125px;
     height: 150px;
     object-fit: cover;

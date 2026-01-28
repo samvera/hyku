@@ -14,8 +14,16 @@
     <%= render 'featured_collection_section' %>
   </div>
 
-  <div class="col-lg-8 pl-lg-5 border-bottom">
+  <div class="col-lg-8 pl-lg-5">
+    <div class="border-bottom pb-4">
     <h2>Featured Works</h2>
     <%= render 'featured_works' %>
+    </div>
+    <div class="mt-4">
+      <% if @presenter.display_recently_uploaded? %>
+        <h2>Recent Uploads</h2>
+        <%= render 'hyrax/homepage/recently_uploaded', recent_documents: @recent_documents %>
+      <% end %>
+    </div>
   </div>
 </div>

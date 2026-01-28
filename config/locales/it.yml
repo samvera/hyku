@@ -374,7 +374,10 @@ it:
             active_tabs_background_color:
               hint: Colore al passaggio del mouse sulle schede della home page.
             banner_image:
-              hint: Per utilizzare un'immagine come sfondo di masthead, è necessario utilizzare un'immagine (JPG, GIF o PNG) alta almeno 120 pixel e larga 1200 pixel. Per risultati ottimali, utilizzare un'immagine larga almeno 1800 pixel.
+              hint: |
+                Per utilizzare un'immagine come sfondo di masthead, è necessario utilizzare un'immagine (JPG, GIF o PNG) alta almeno 120 pixel e larga 1200 pixel. Per risultati ottimali, utilizzare un'immagine larga almeno 1800 pixel.<br/>
+                Per ritagliare: fare clic su "Crop Image", regolare la selezione, quindi fare clic su "Save changes". Il banner si ridimensiona con la finestra. Per annullare un ritaglio, utilizzare "Remove banner image" e poi ricaricare l'originale.
+              cropped_save_error: Impossibile salvare il banner ritagliato. Riprova.
             collection_banner_text_color:
               hint: Il colore del testo (titolo e data dell'ultimo aggiornamento) all'interno del banner della raccolta.
             custom_css:
@@ -384,7 +387,7 @@ it:
               hint: Pulsanti di interazione con il lavoro (modifica, funzionalità, ecc.); viste di lavoro sulla pagina di raccolta e sul pulsante del filtro di ricerca.
             default_images:
               alert: Carica almeno un file prima di inviarlo.
-              hint: Per le immagini predefinite, è necessario utilizzare un'immagine (JPG, GIF o PNG) che abbia le stesse dimensioni in altezza e larghezza (100 pixel in larghezza e 100 pixel in altezza)
+              hint: Per le immagini predefinite, è necessario utilizzare un'immagine (JPG, GIF o PNG) che abbia le stesse dimensioni in altezza e larghezza (100 pixel in larghezza e 100 pixel in altezza).
             directory_image:
               hint: L'immagine della directory deve utilizzare un'immagine (JPG, GIF o PNG). La larghezza dell'immagine non dovrebbe essere più ampia di 2 volte l'altezza.
             facet_panel_background_color:

@@ -374,7 +374,10 @@ es:
             active_tabs_background_color:
               hint: Color al pasar el mouse sobre las pestañas de la página de inicio.
             banner_image:
-              hint: Para usar una imagen como fondo de cabecera, debe usar una imagen (JPG, GIF o PNG) que tenga al menos 120 píxeles de alto y 1200 píxeles de ancho. Para obtener mejores resultados, use una imagen de al menos 1800 píxeles de ancho.
+              hint: |
+                Para usar una imagen como fondo de cabecera, debe usar una imagen (JPG, GIF o PNG) que tenga al menos 120 píxeles de alto y 1200 píxeles de ancho. Para obtener mejores resultados, use una imagen de al menos 1800 píxeles de ancho.<br/>
+                Para recortar: haga clic en "Crop Image", ajuste la selección y luego haga clic en "Save changes". El banner se redimensiona con la ventana. Para deshacer un recorte, use "Remove banner image" y luego vuelva a cargar el original.
+              cropped_save_error: Error al guardar el banner recortado. Por favor, inténtelo de nuevo.
             collection_banner_text_color:
               hint: El color del texto (título y fecha de última actualización) dentro del banner de la colección.
             custom_css:
@@ -384,7 +387,7 @@ es:
               hint: Botones de interacción de trabajo (editar, función, etc.); vistas de trabajo en la página de colección y botón de filtro de búsqueda.
             default_images:
               alert: Cargue al menos un archivo antes de enviarlo.
-              hint: Para las imágenes predeterminadas, debe usar una imagen (JPG, GIF o PNG) que tenga las mismas dimensiones de alto y ancho (100 píxeles de ancho y 100 píxeles de alto)
+              hint: Para las imágenes predeterminadas, debe usar una imagen (JPG, GIF o PNG) que tenga las mismas dimensiones de alto y ancho (100 píxeles de ancho y 100 píxeles de alto).
             directory_image:
               hint: La imagen del directorio debe usar una imagen (JPG, GIF o PNG). El ancho de la imagen no debe ser más ancho que el doble de la altura.
             facet_panel_background_color:

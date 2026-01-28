@@ -754,3 +754,14 @@ dd {
     }
 }
 /* End blacklight advanced search */
+
+// Style instruction hints for file inputs with left border accent
+.form-group .help-block.border-left-accent {
+    border-left: 3px solid #007bff;
+    padding-left: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
+    color: #6c757d;
+}

@@ -234,8 +234,9 @@ en:
               hint: Hover color for homepage tabs.
             banner_image:
               hint: |
-                To use an image as a masthead background, you should use an image (JPG, GIF or PNG) that is at least 120 pixels tall and 1200 pixels wide. For best results, use an image at least 1800 pixels wide.<br/>
-                To crop: click "Crop Image", adjust the selection, then click "Save changes" to apply the crop. The banner dynamically resizes with the window size. To restore the full image after cropping, reupload the original image.
+                To use an image as a masthead background, use an image (JPG, GIF or PNG) at least 120 pixels tall and 1200 pixels wide. For best results, use at least 1800 pixels wide.<br/>
+                To crop: click "Crop Image", adjust the selection, then click "Save changes" to apply the crop. The banner resizes with the window. To undo a crop, use "Remove banner image" then re-upload the original.
+              cropped_save_error: Failed to save cropped banner. Please try again.
             collection_banner_text_color:
               hint: The color for the text (title, and last updated date) inside of the collection banner.
             custom_css:
@@ -245,7 +246,7 @@ en:
               hint: Work interaction (edit, feature, etc.) buttons; work views on collection page and search filter button.
             default_images:
               alert: Please upload at least one file before submitting.
-              hint: For default images, you should use an image (JPG, GIF or PNG) that has equal height and width dimensions (100 pixels wide and 100 pixels tall)
+              hint: For default images, you should use an image (JPG, GIF or PNG) that has equal height and width dimensions (100 pixels wide and 100 pixels tall).
             directory_image:
               hint: To use an image as the directory image, you should use an image (JPG, GIF or PNG) that is no taller than the header and no wider than 400 pixels wide.
             facet_panel_background_color:

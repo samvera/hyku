@@ -64,27 +64,26 @@
  });
 
 document.querySelector('.banner-submit').addEventListener('click', function(e) {
-  // Get all required fields
-  var requiredFields = document.querySelectorAll('input[required],textarea[required],select[required]');
+  var bannerForm = document.querySelector('.banner-submit').closest('form');
+  var requiredFields = bannerForm.querySelectorAll('input[required],textarea[required],select[required]');
 
-  // Check if all required fields are filled
   for (var i = 0; i < requiredFields.length; i++) {
     if (!requiredFields[i].value) {
-      // return early if not all required fields have been filled out
       return;
     }
   }
 
-  e.preventDefault();
-
-  // Show the spinner
-  $('#spinner').show();
-
   if (cropper) {
-    cropper.getCroppedCanvas().toBlob(function(blob) {
-      var formData = new FormData(document.querySelector('form'));
-      var currentAccountName = "<%= current_account.name %>";
-      formData.append('admin_appearance[banner_image]', blob, `${currentAccountName}-cropped.jpg`);
+    e.preventDefault();
+    $('#spinner').show();
+
+    cropper.getCroppedCanvas({
+      imageSmoothingEnabled: true,
+      imageSmoothingQuality: 'high'
+    }).toBlob(function(blob) {
+      var formData = new FormData(bannerForm);
+      formData.delete('admin_appearance[banner_image]');
+      formData.append('admin_appearance[banner_image]', blob, "<%= current_account.name %>-cropped.jpg");
 
       $.ajax('/admin/appearance', {
         method: 'POST',
@@ -92,17 +91,15 @@ document.querySelector('.banner-submit').addEventListener('click', function(e) {
         processData: false,
         contentType: false,
         success() {
-          console.log('Upload success');
-          // Hide the spinner
           $('#spinner').hide();
+          window.location.reload();
         },
         error() {
-          console.log('Upload error');
-          // Hide the spinner
           $('#spinner').hide();
+          alert('Failed to save cropped banner. Please try again.');
         },
       });
-    });
+    }, 'image/jpeg', 0.95);
   }
 });
 

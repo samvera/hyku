@@ -235,7 +235,7 @@ en:
             banner_image:
               hint: |
                 To use an image as a masthead background, you should use an image (JPG, GIF or PNG) that is at least 120 pixels tall and 1200 pixels wide. For best results, use an image at least 1800 pixels wide.<br/>
-                Image can be cropped after upload, but be aware that the banner dynamically resizes with the window size. To restore full image after cropping, it is necessary to reupload the initial image.
+                To crop: click "Crop Image", adjust the selection, then click "Save changes" to apply the crop. The banner dynamically resizes with the window size. To restore the full image after cropping, reupload the original image.
             collection_banner_text_color:
               hint: The color for the text (title, and last updated date) inside of the collection banner.
             custom_css:

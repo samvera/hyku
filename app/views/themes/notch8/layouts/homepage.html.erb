@@ -12,6 +12,11 @@
       <div class="site-title h1">
         <%= render "hyrax/homepage/marketing" if controller_name == 'homepage' %>
       </div>
+      <div class="notch8-homepage-about-section-content">
+        <% if display_content_block? @homepage_about_section_content %>
+          <%= displayable_content_block @homepage_about_section_content %>
+        <% end %>
+      </div>
     </div>
   </div>
 

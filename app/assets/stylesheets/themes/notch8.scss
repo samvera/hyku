@@ -27,23 +27,36 @@ body.notch8 {
   // ========================================
   // larger area for the banner image
   .image-masthead {
-    height: 60vh;
     min-height: 400px;
-    max-height: 700px;
+    height: auto;
+    padding-bottom: 3rem;
+
     .site-title-container.container {
       max-width: 1400px;
+      padding-top: 2rem;
+      padding-bottom: 2rem;
     }
   }
 
   .notch8-marketing-text {
-    padding: 2rem 0;
+    padding-top: 2rem;
+  }
+
+  .notch8-homepage-about-section-content {
+    position: relative;
+    padding-top: 1rem;
+    max-width: 1000px;
   }
 
   @media (min-width: 768px) {
     .image-masthead {
-      height: 40vh; // Responsive on tablet+
       min-height: 400px;
-      max-height: 600px;
+
+      // If there's no about content, use smaller viewport height
+      &:not(:has(.notch8-homepage-about-section-content *)) {
+        height: 40vh;
+        max-height: 600px;
+      }
     }
   }
 

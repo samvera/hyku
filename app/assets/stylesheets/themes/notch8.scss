@@ -50,11 +50,61 @@ body.notch8 {
   // ========================================
   // Featured Collections
   // ========================================
-  .notch8-explore-collections {
+  .card.notch8-explore-collections {
+    border-radius: 0;
+    width: 275px;
+    height: 250px;
     .card-img-top {
-      width: 100%;
-      height: 250px;
-      object-fit: cover;
+      border-radius: 0;
+    }
+  }
+
+  // ========================================
+  // Featured Works
+  // ========================================
+  // override default styles
+  .featured-item {
+    border-top: none;
+    margin-bottom: 1rem;
+  }
+
+  .notch8-featured-works {
+    display: flex;
+  }
+
+  // image covers entire thumbnail area
+  .notch8-explore-works-thumbnail {
+    width: 125px;
+    height: 150px;
+    object-fit: cover;
+    display: block;
+    transition: all 0.3s ease;
+    padding: 0;
+    margin-right: 3rem;
+
+    // target default/placeholder images by src pattern to prevent image from being cut off
+    &[src*='default'],
+    &[src*='placeholder'],
+    &[src*='.png'] {
+      object-fit: scale-down;
+    }
+
+    // image expands to full size on hover
+    &:hover {
+      object-fit: contain;
+      z-index: 100;
+      position: relative;
+      transform: scale(1.8);
+      transform-origin: center;
+    }
+
+    // disable hover effect for placeholder images
+    &[src*='default']:hover,
+    &[src*='placeholder']:hover,
+    &[src*='.png']:hover {
+      transform: none;
+      z-index: 1;
+      object-fit: scale-down;
     }
   }
 }

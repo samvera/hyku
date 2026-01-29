@@ -31,7 +31,13 @@ module HyraxHelper
   end
 
   def banner_image
-    Site.instance.banner_image? ? Site.instance.banner_image.url : super
+    if Site.instance.banner_image?
+      url = Site.instance.banner_image.url
+      timestamp = Site.instance.updated_at.to_i
+      "#{url}?#{timestamp}"
+    else
+      super
+    end
   end
 
   def favicon(size)

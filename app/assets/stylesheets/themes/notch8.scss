@@ -12,13 +12,16 @@ body.notch8 {
   // ========================================
   // Announcement Content Block (configurable in the admin dashboard)
   // ========================================
-  #announcement {
-    background-color: #7dccf7;
-    border: none;
+  .notch8-announcement-text-container {
+    background-color: #ccf2f9;
     border-bottom: 2px solid #ffc107;
-    padding: 1rem;
-    text-align: center;
-    border-radius: 0;
+    padding-top: 0.75rem;
+    .notch8-announcement-text-block {
+      max-width: 1400px;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 1.2rem;
+    }
   }
 
   // ========================================
@@ -125,6 +128,8 @@ body.notch8 {
   .recent-item {
     border-top: none;
     margin-bottom: 1rem;
+    max-height: 200px;
+    overflow: hidden;
   }
 
   .notch8-featured-works {
@@ -141,6 +146,7 @@ body.notch8 {
     transition: all 0.3s ease;
     padding: 0;
     margin-right: 3rem;
+    margin-bottom: 3rem;
 
     // target default/placeholder images by src pattern to prevent image from being cut off
     &[src*='default'],
@@ -166,5 +172,9 @@ body.notch8 {
       z-index: 1;
       object-fit: scale-down;
     }
+  }
+
+  .featured-item-data {
+    color: #6c757d;
   }
 }

@@ -1,0 +1,9 @@
+<% if display_content_block? @announcement_text %>
+  <div class="notch8-announcement-text-container">
+    <div class="notch8-announcement-text-block">
+      <span class="fa fa-bell" aria-hidden="true"></span>
+      <span class="font-weight-bold">Notice</span>
+      <%= displayable_content_block @announcement_text, role: 'complementary', 'aria-label': 'announcement-text' %>
+    </div>
+  </div>
+<% end %>

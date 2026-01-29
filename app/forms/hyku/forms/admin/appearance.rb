@@ -159,7 +159,7 @@ module Hyku
 
         def custom_theme_colors
           @home_theme_information ||= YAML.load_file(Hyku::Application.path_for('config/home_themes.yml'))
-          current_theme = site&.home_theme || 'default_home'
+          current_theme = site.respond_to?(:home_theme) ? site.home_theme : 'default_home'
           @home_theme_information.dig(current_theme, 'theme_custom_colors') || {}
         end
 

@@ -1,4 +1,4 @@
-<%# OVERRIDE Hyrax v5.2.0 to remove the hardcorded image width and add ENV to control turbolinks %>
+<%# OVERRIDE Hyrax v5.2.0 to remove the hardcorded image width, add ENV to control turbolinks, and call depositor with no args (Hyrax main compatibility) %>
 <div>
   <div class="featured-item-title">
     <span class="sr-only"><%= t('hyrax.homepage.featured_works.document.title_label') %></span>
@@ -12,7 +12,7 @@
   </div>
   <% if Flipflop.home_page_recent_document_show_depositor? %>
     <div class="featured-field featured-item-depositor">
-      <span class="featured-label"><%= t('hyrax.homepage.featured_works.document.depositor_label') %>:</span> <%= link_to_profile featured.depositor(t('hyrax.homepage.featured_works.document.depositor_missing')) %>
+      <span class="featured-label"><%= t('hyrax.homepage.featured_works.document.depositor_label') %>:</span> <%= link_to_profile(featured.depositor.presence || t('hyrax.homepage.featured_works.document.depositor_missing')) %>
     </div>
   <% end %>
   <% if Flipflop.home_page_recent_document_show_keyword? %>

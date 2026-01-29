@@ -257,7 +257,10 @@ pt-BR:
             active_tabs_background_color:
               hint: Cor de foco para abas da página inicial.
             banner_image:
-              hint: Para usar uma imagem como plano de fundo do cabeçalho, você deve usar uma imagem (JPG, GIF ou PNG) com pelo menos 120 pixels de altura e 1200 pixels de largura. Para obter melhores resultados, use uma imagem com pelo menos 1800 pixels de largura.
+              hint: |
+                Para usar uma imagem como plano de fundo do cabeçalho, você deve usar uma imagem (JPG, GIF ou PNG) com pelo menos 120 pixels de altura e 1200 pixels de largura. Para obter melhores resultados, use uma imagem com pelo menos 1800 pixels de largura.<br/>
+                Para recortar: clique em "Crop Image", ajuste a seleção e clique em "Save changes". O banner redimensiona com a janela. Para desfazer um recorte, use "Remove banner image" e faça upload do original novamente.
+              cropped_save_error: Falha ao salvar o banner recortado. Por favor, tente novamente.
             collection_banner_text_color:
               hint: A cor do texto (título e data da última atualização) dentro do banner da coleção.
             custom_css:
@@ -267,7 +270,7 @@ pt-BR:
               hint: Botões de interação do trabalho (editar, recurso, etc.); exibições de trabalho na página de coleção e botão de filtro de pesquisa.
             default_images:
               alert: Faça upload de pelo menos um arquivo antes de enviar.
-              hint: Para imagens padrão, você deve usar uma imagem (JPG, GIF ou PNG) que tenha dimensões iguais de altura e largura (100 pixels de largura e 100 pixels de altura)
+              hint: Para imagens padrão, você deve usar uma imagem (JPG, GIF ou PNG) que tenha dimensões iguais de altura e largura (100 pixels de largura e 100 pixels de altura).
             directory_image:
               hint: A imagem do diretório deve usar uma imagem (JPG, GIF ou PNG). A largura da imagem não deve ser maior que 2x a altura.
             facet_panel_background_color:

@@ -373,7 +373,10 @@ de:
             active_tabs_background_color:
               hint: Hover-Farbe für Homepage-Tabs.
             banner_image:
-              hint: Um ein Bild als Masthead-Hintergrund zu verwenden, sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das mindestens 120 Pixel hoch und 1200 Pixel breit ist. Verwenden Sie für optimale Ergebnisse ein Bild mit einer Breite von mindestens 1800 Pixel.
+              hint: |
+                Um ein Bild als Masthead-Hintergrund zu verwenden, sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das mindestens 120 Pixel hoch und 1200 Pixel breit ist. Verwenden Sie für optimale Ergebnisse ein Bild mit einer Breite von mindestens 1800 Pixel.<br/>
+                Zum Zuschneiden: Klicken Sie auf "Crop Image", passen Sie die Auswahl an und klicken Sie dann auf "Save changes". Das Banner passt sich dem Fenster an. Um einen Zuschnitt rückgängig zu machen, verwenden Sie "Remove banner image" und laden Sie dann das Original erneut hoch.
+              cropped_save_error: Fehler beim Speichern des zugeschnittenen Banners. Bitte versuchen Sie es erneut.
             collection_banner_text_color:
               hint: Die Farbe für den Text (Titel und Datum der letzten Aktualisierung) im Sammlungsbanner.
             custom_css:

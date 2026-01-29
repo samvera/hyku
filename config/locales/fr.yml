@@ -374,7 +374,10 @@ fr:
             active_tabs_background_color:
               hint: Couleur de survol pour les onglets de la page d'accueil.
             banner_image:
-              hint: Pour utiliser une image comme arrière-plan d'une bannière Masthead, vous devez utiliser une image (JPG, GIF ou PNG) d'au moins 120 pixels de haut et 1 200 pixels de large. Pour de meilleurs résultats, utilisez une image d'au moins 1800 pixels de large.
+              hint: |
+                Pour utiliser une image comme arrière-plan d'une bannière Masthead, vous devez utiliser une image (JPG, GIF ou PNG) d'au moins 120 pixels de haut et 1 200 pixels de large. Pour de meilleurs résultats, utilisez une image d'au moins 1800 pixels de large.<br/>
+                Pour recadrer : cliquez sur "Crop Image", ajustez la sélection, puis cliquez sur "Save changes". La bannière se redimensionne avec la fenêtre. Pour annuler un recadrage, utilisez "Remove banner image" puis téléchargez à nouveau l'original.
+              cropped_save_error: Échec de l'enregistrement du bannière recadrée. Veuillez réessayer.
             collection_banner_text_color:
               hint: La couleur du texte (titre et date de la dernière mise à jour) à l'intérieur de la bannière de collection.
             custom_css:
@@ -384,7 +387,7 @@ fr:
               hint: Boutons d'interaction de travail (édition, fonctionnalité, etc.) ; vues de travail sur la page de collection et le bouton de filtre de recherche.
             default_images:
               alert: Veuillez télécharger au moins un fichier avant de soumettre.
-              hint: Pour les images par défaut, vous devez utiliser une image (JPG, GIF ou PNG) qui a des dimensions de hauteur et de largeur égales (100 pixels de large et 100 pixels de haut)
+              hint: Pour les images par défaut, vous devez utiliser une image (JPG, GIF ou PNG) qui a des dimensions de hauteur et de largeur égales (100 pixels de large et 100 pixels de haut).
             directory_image:
               hint: L'image du répertoire doit utiliser une image (JPG, GIF ou PNG). La largeur de l'image ne doit pas être plus large que 2x la hauteur.
             facet_panel_background_color:

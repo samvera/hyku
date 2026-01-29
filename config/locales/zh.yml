@@ -374,7 +374,10 @@ zh:
             active_tabs_background_color:
               hint: 主页标签的悬停颜色。
             banner_image:
-              hint: 要将图像用作标头广告背景，您应该使用至少120像素高和1200像素宽的图像（JPG，GIF或PNG）。为了获得最佳效果，请使用至少1800像素宽的图像。
+              hint: |
+                要将图像用作标头广告背景，您应该使用至少120像素高和1200像素宽的图像（JPG，GIF或PNG）。为了获得最佳效果，请使用至少1800像素宽的图像。<br/>
+                要裁剪：点击"Crop Image"，调整选择，然后点击"Save changes"。横幅会随窗口调整大小。要撤消裁剪，请使用"Remove banner image"，然后重新上传原始图像。
+              cropped_save_error: 保存裁剪后的横幅失败。请重试。
             collection_banner_text_color:
               hint: 集合横幅内文本（标题和上次更新日期）的颜色。
             custom_css:
@@ -384,7 +387,7 @@ zh:
               hint: 工作交互（编辑、功能等）按钮；收藏页面和搜索过滤器按钮上的工作视图。
             default_images:
               alert: 请至少上传一个文件，然后再提交。
-              hint: 对于默认图像，您应该使用高度和宽度尺寸（宽度为100像素，高度为100像素）的图像（JPG，GIF或PNG）
+              hint: 对于默认图像，您应该使用高度和宽度尺寸（宽度为100像素，高度为100像素）的图像（JPG，GIF或PNG）。
             directory_image:
               hint: 要将图像用作目录图像，应使用高度不超过标题且宽度不超过 400 像素的图像（JPG、GIF 或 PNG）。
             facet_panel_background_color:

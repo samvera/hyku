@@ -10,6 +10,25 @@ body.notch8 {
   }
 
   // ========================================
+  // Announcement Content Block (configurable in the admin dashboard)
+  // ========================================
+  #announcement {
+    background-color: #7dccf7;
+    border: none;
+    border-bottom: 2px solid #ffc107;
+    padding: 1rem;
+    text-align: center;
+    border-radius: 0;
+  }
+
+  // ========================================
+  // Log in and log out flash messages
+  // ========================================
+  .alert {
+    margin: 0;
+  }
+
+  // ========================================
   // Top Navigation Bar
   // ========================================
   #notch8-navbar-collapse {
@@ -75,9 +94,9 @@ body.notch8 {
   .card.notch8-explore-collections {
     border-radius: 0;
     width: 275px;
-    height: 250px;
     background-color: #f8f9fa;
     .card-img-top {
+      height: 225px;
       border-radius: 0;
     }
     &:hover {

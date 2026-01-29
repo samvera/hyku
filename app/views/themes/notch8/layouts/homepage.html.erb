@@ -12,7 +12,11 @@
       <div class="site-title h1">
         <%= render "hyrax/homepage/marketing" if controller_name == 'homepage' %>
       </div>
+      <%# Homepage About Section Content Block (configurable in the admin dashboard) %>
       <div class="notch8-homepage-about-section-content">
+        <% if display_content_block? @homepage_about_section_heading%>
+          <h2><%= displayable_content_block @homepage_about_section_heading%></h2>
+        <% end %>
         <% if display_content_block? @homepage_about_section_content %>
           <%= displayable_content_block @homepage_about_section_content %>
         <% end %>
@@ -28,8 +32,8 @@
   </div>
 <% end %>
 
-<%# Announcement section %>
-<% content_for(:precontainer_content) do %>
+<%# Announcement Content Block (configurable in the admin dashboard) appears at very top of page %>
+<% content_for(:announcement_top) do %>
   <%= render 'hyrax/homepage/announcement' if controller_name == 'homepage' %>
 <% end %>
 

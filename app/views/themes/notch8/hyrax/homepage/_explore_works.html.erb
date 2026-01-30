@@ -27,7 +27,7 @@
   <div class="featured-field">
     <% text = featured.description&.first || featured.abstract&.first %>
     <% if text.present? %>
-      <%= markdown(truncate_featured_description(text)) %>
+      <%= markdown(truncate_description(text)) %>
     <% else %>
       <%= t('hyrax.homepage.featured_works.document.description_missing') %>
     <% end %>

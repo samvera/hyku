@@ -31,9 +31,9 @@
     <div class="recent-field">
       <% text = recent_document.description&.first || recent_document.abstract&.first %>
       <% if text.present? %>
-        <%= markdown(truncate_recent_description(text)) %>
+        <%= markdown(truncate_description(text)) %>
       <% else %>
-        <%= t('hyrax.homepage.featured_works.document.description_missing') %>
+        <%= t('hyrax.homepage.recently_uploaded.document.description_missing') %>
       <% end %>
     </div>
   </div>

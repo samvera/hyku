@@ -8,6 +8,12 @@
       <% end %>
     </h3>
 
+    <div class="recent-field">
+      <% if recent_document.resource_type.present? %>
+        <span class="recent-label"><%= markdown(recent_document.resource_type&.first) %></span>
+      <% end %>
+    </div>
+
     <% if Flipflop.home_page_recent_document_show_depositor? %>
       <div class="recent-field">
         <span class="recent-label"><%= t('hyrax.homepage.recently_uploaded.document.depositor_label') %>:</span>
@@ -21,5 +27,17 @@
         <%= link_to_facet_list(recent_document.keyword, 'keyword', t('hyrax.homepage.recently_uploaded.document.keyword_missing')).html_safe %>
       </div>
     <% end %>
+
+    <div class="recent-field">
+      <% if recent_document.description.present? %>
+        <% description_text = recent_document.description&.first %>
+        <%= markdown(truncate(description_text, length: 275, separator: ' ', omission: '...')) %>
+      <% elsif recent_document.abstract.present? %>
+        <% abstract_text = recent_document.abstract&.first %>
+        <%= markdown(truncate(abstract_text, length: 275, separator: ' ', omission: '...')) %>
+      <% else %>
+        <%= t('hyrax.homepage.featured_works.document.description_missing') %>
+      <% end %>
+    </div>
   </div>
 </li>

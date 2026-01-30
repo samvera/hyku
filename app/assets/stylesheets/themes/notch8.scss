@@ -2,6 +2,13 @@ body.notch8 {
   // ensure the footer stays at the bottom of the page
   margin-bottom: 0;
 
+  // override Nestable plugin styles on the drag and drop
+  #featured_works .dd3-content,
+  #featured_works .dd3-content .card {
+    margin: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
   // homepage full width layout
   #content-wrapper.container {
     margin: 2rem auto;
@@ -18,9 +25,13 @@ body.notch8 {
     padding-top: 0.75rem;
     .notch8-announcement-text-block {
       max-width: 1400px;
-      margin-left: auto;
-      margin-right: auto;
       font-size: 1.2rem;
+    }
+  }
+  @media (max-width: 768px) {
+    .notch8-announcement-text-block {
+      text-align: center;
+      font-size: 1rem;
     }
   }
 
@@ -28,7 +39,8 @@ body.notch8 {
   // Log in and log out flash messages
   // ========================================
   .alert {
-    margin: 0;
+    margin-left: 0;
+    margin-right: 0;
   }
 
   // ========================================
@@ -70,18 +82,6 @@ body.notch8 {
     max-width: 1000px;
   }
 
-  @media (min-width: 768px) {
-    .image-masthead {
-      min-height: 400px;
-
-      // If there's no about content, use smaller viewport height
-      &:not(:has(.notch8-homepage-about-section-content *)) {
-        height: 40vh;
-        max-height: 600px;
-      }
-    }
-  }
-
   // ========================================
   // Home Text Content Block (configurable in the admin dashboard)
   // ========================================
@@ -94,10 +94,22 @@ body.notch8 {
   // ========================================
   // Featured Collections
   // ========================================
+  .notch8-featured-collections-container {
+    text-align: center;
+  }
+  @media (max-width: 992px) {
+    .notch8-featured-collections-container {
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 4rem;
+    }
+  }
+
   .card.notch8-explore-collections {
     border-radius: 0;
     width: 275px;
     background-color: #f8f9fa;
+    margin-left: auto;
+    margin-right: auto;
     .card-img-top {
       height: 225px;
       border-radius: 0;
@@ -115,11 +127,11 @@ body.notch8 {
   // ========================================
 
   .notch8-featured-works-container {
-    margin-bottom: 4rem;
+    margin-bottom: 3rem;
   }
 
   .notch8-recent-uploads-container {
-    padding-top: 4rem;
+    padding-top: 3rem;
     border-top: 1px solid #ddd;
   }
 

@@ -197,4 +197,47 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
       account.reset!
     end
   end
+
+  describe 'sandbox functionality' do
+    let(:user) { FactoryBot.create(:superadmin) }
+    let(:account) { FactoryBot.create(:account) }
+
+    before do
+      Site.update(account:)
+      allow(controller).to receive(:current_account).and_return(account)
+    end
+
+    describe 'POST #create' do
+      context 'with sandbox parameter' do
+        it 'creates a sandbox account' do
+          post :create, params: { account: valid_attributes.merge(sandbox: true) }
+          expect(Account.last.sandbox).to be true
+        end
+
+        it 'creates a non-sandbox account by default' do
+          post :create, params: { account: valid_attributes }
+          expect(Account.last.sandbox).to be false
+        end
+      end
+    end
+
+    describe 'PUT #update' do
+      let(:sandbox_account) { FactoryBot.create(:account, sandbox: true) }
+      let(:production_account) { FactoryBot.create(:account, sandbox: false) }
+
+      it 'does not allow changing sandbox flag on existing sandbox account' do
+        put :update, params: { id: sandbox_account.to_param, account: { sandbox: false } }
+        expect(sandbox_account.reload.sandbox).to be true
+      end
+
+      it 'does not allow changing sandbox flag on existing production account' do
+        put :update, params: { id: production_account.to_param, account: { sandbox: true } }
+        expect(production_account.reload.sandbox).to be false
+      end
+    end
+
+    after do
+      account.reset!
+    end
+  end
 end

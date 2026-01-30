@@ -491,11 +491,13 @@ zh:
         header: 编辑帐号
         solr_endpoint: Solr端点
       index:
+        actions: 操作
         cname: CNAME
         confirm_delete: 您确定要删除此存储库吗？该存储库中的所有收藏和作品将被永久删除
         create_new: 建立新帐户
         header: 帐目
         manage: 管理
+        sandbox: 测试环境
         tenant: 租户（UUID）
       new:
         header: 创建一个新的仓库

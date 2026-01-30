@@ -494,11 +494,13 @@ de:
         header: Konto bearbeiten
         solr_endpoint: Solr-Endpunkt
       index:
+        actions: Aktionen
         cname: CNAME
         confirm_delete: Möchten Sie dieses Repository wirklich löschen? ALLE SAMMLUNGEN UND ARBEITEN in diesem Repository werden dauerhaft gelöscht
         create_new: Neuen Account erstellen
         header: Konten
         manage: Verwalten
+        sandbox: Testumgebung
         tenant: Mieter (UUID)
       new:
         header: Erstellen Sie ein neues Repository

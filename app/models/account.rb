@@ -35,6 +35,8 @@ class Account < ApplicationRecord
   scope :is_public, -> { where(is_public: true) }
   scope :sorted_by_name, -> { order("name ASC") }
   scope :full_accounts, -> { where(search_only: false) }
+  scope :sandbox, -> { where(sandbox: true) }
+  scope :non_sandbox, -> { where(sandbox: false) }
 
   before_validation do
     self.tenant ||= SecureRandom.uuid

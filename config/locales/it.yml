@@ -491,11 +491,13 @@ it:
         header: Modifica account
         solr_endpoint: Solr Endpoint
       index:
+        actions: Azioni
         cname: CNAME
         confirm_delete: Sei sicuro di voler eliminare questo repository? TUTTE LE COLLEZIONI E LE OPERE all'interno di questo repository verranno ELIMINATE PERMANENTAMENTE
         create_new: Crea un nuovo account
         header: conti
         manage: Gestire
+        sandbox: Ambiente di test
         tenant: Locatario (UUID)
       new:
         header: Crea un nuovo repository

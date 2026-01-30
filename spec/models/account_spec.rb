@@ -704,4 +704,45 @@ RSpec.describe Account, type: :model do
       account.find_or_schedule_jobs
     end
   end
+
+  describe 'sandbox scopes' do
+    let!(:sandbox_account1) { described_class.create!(name: 'sandbox1', sandbox: true) }
+    let!(:sandbox_account2) { described_class.create!(name: 'sandbox2', sandbox: true) }
+    let!(:production_account1) { described_class.create!(name: 'production1', sandbox: false) }
+    let!(:production_account2) { described_class.create!(name: 'production2', sandbox: false) }
+
+    describe '.sandbox' do
+      it 'returns only sandbox accounts' do
+        sandbox_accounts = described_class.sandbox
+        expect(sandbox_accounts).to include(sandbox_account1, sandbox_account2)
+        expect(sandbox_accounts).not_to include(production_account1, production_account2)
+      end
+    end
+
+    describe '.non_sandbox' do
+      it 'returns only non-sandbox accounts' do
+        non_sandbox_accounts = described_class.non_sandbox
+        expect(non_sandbox_accounts).to include(production_account1, production_account2)
+        expect(non_sandbox_accounts).not_to include(sandbox_account1, sandbox_account2)
+      end
+    end
+  end
+
+  describe 'sandbox immutability' do
+    let(:account) { described_class.create!(name: 'test-account', sandbox: true) }
+
+    it 'allows setting sandbox on creation' do
+      expect(account.sandbox).to be true
+    end
+
+    it 'sandbox value persists after creation' do
+      account.reload
+      expect(account.sandbox).to be true
+    end
+
+    it 'defaults to false when not specified' do
+      default_account = described_class.create!(name: 'default-test')
+      expect(default_account.sandbox).to be false
+    end
+  end
 end

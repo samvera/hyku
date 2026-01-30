@@ -17,7 +17,7 @@
     <% if Flipflop.home_page_recent_document_show_depositor? %>
       <div class="recent-field">
         <span class="recent-label"><%= t('hyrax.homepage.recently_uploaded.document.depositor_label') %>:</span>
-        <%= link_to_profile recent_document.depositor(t('hyrax.homepage.recently_uploaded.document.depositor_missing')) %>
+        <%= link_to_profile(recent_document.depositor&.first) || t('hyrax.homepage.recently_uploaded.document.depositor_missing') %>
       </div>
     <% end %>
 
@@ -29,12 +29,9 @@
     <% end %>
 
     <div class="recent-field">
-      <% if recent_document.description.present? %>
-        <% description_text = recent_document.description&.first %>
-        <%= markdown(truncate(description_text, length: 275, separator: ' ', omission: '...')) %>
-      <% elsif recent_document.abstract.present? %>
-        <% abstract_text = recent_document.abstract&.first %>
-        <%= markdown(truncate(abstract_text, length: 275, separator: ' ', omission: '...')) %>
+      <% text = recent_document.description&.first || recent_document.abstract&.first %>
+      <% if text.present? %>
+        <%= markdown(truncate_recent_description(text)) %>
       <% else %>
         <%= t('hyrax.homepage.featured_works.document.description_missing') %>
       <% end %>

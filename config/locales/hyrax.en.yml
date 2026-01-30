@@ -852,10 +852,12 @@ en:
       featured_works:
         document:
           depositor_label: Depositor
-          depositor_missing: no depositor value
+          depositor_missing: No depositor available.
           keyword_label: Keywords
-          keyword_missing: no keywords specified
+          keyword_missing: No keywords available.
           title_label: Title
+          description_missing: No description available.
+          abstract_missing: No abstract available.
         drag: Drag
         no_works: No works have been featured
         tab_label: Featured Works
@@ -865,10 +867,12 @@ en:
         details: Details
         document:
           depositor_label: Depositor
-          depositor_missing: no depositor value
+          depositor_missing: No depositor available.
           keyword_label: Keywords
-          keyword_missing: no keywords specified
+          keyword_missing: No keywords available.
           title_label: Title
+          description_missing: No description available.
+          abstract_missing: No abstract available.
         no_public: No public work has been contributed.
         tab_label: Recently Uploaded
         title: Recently Uploaded

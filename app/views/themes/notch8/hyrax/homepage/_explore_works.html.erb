@@ -25,12 +25,9 @@
     </div>
   <% end %>
   <div class="featured-field">
-    <% if featured.description.present? %>
-      <% description_text = featured.description&.first %>
-      <%= markdown(truncate(description_text, length: 275, separator: ' ', omission: '...')) %>
-    <% elsif featured.abstract.present? %>
-      <% abstract_text = featured.abstract&.first %>
-      <%= markdown(truncate(abstract_text, length: 275, separator: ' ', omission: '...')) %>
+    <% text = featured.description&.first || featured.abstract&.first %>
+    <% if text.present? %>
+      <%= markdown(truncate_featured_description(text)) %>
     <% else %>
       <%= t('hyrax.homepage.featured_works.document.description_missing') %>
     <% end %>

@@ -143,6 +143,11 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     get "roles_service", to: "roles_service#index", as: :roles_service_jobs
   end
 
+  # Add save_tenant_colors route for appearance
+  post 'admin/appearance/save_tenant_colors',
+       to: 'hyrax/admin/appearances#save_tenant_colors',
+       as: :save_tenant_colors_admin_appearance
+
   # OVERRIDE here to add featured collection routes
   scope module: 'hyrax' do
     # Generic collection routes

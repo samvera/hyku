@@ -17,7 +17,11 @@ RSpec.shared_examples 'a sitemap' do
       work
     end
 
+    # Clean Solr before adding test documents to prevent leaky specs
     solr = Blacklight.default_index.connection
+    solr.delete_by_query('*:*')
+    solr.commit
+
     solr.add([
                {
                  id: work.id,
@@ -39,6 +43,14 @@ RSpec.shared_examples 'a sitemap' do
                }
              ])
     solr.commit
+  end
+
+  after do
+    # Clean up Solr after tests
+    solr = Blacklight.default_index.connection
+    solr.delete_by_query('*:*')
+    solr.commit
+    WebMock.enable!
   end
 
   describe 'GET /sitemap' do

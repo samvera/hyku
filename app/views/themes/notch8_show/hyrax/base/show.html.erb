@@ -1,4 +1,6 @@
-<% content_for(:extra_body_classes, 'works-show') %>
+<%# content_for adds a class to the body tag %>
+<%# a space is needed to separate it from additional classes %>
+<% content_for(:extra_body_classes, 'works-show ') %>
 
 <% provide :page_title, @presenter.page_title %>
 

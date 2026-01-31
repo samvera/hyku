@@ -1,0 +1,8 @@
+<%# OVERRIDE Hyrax v5.2.0 for Notch 8 theme styling %>
+
+<% if display_content_block? @marketing_text %>
+  <div class="home_marketing_text">
+    <%# Remove default classes %>
+    <%= displayable_content_block @marketing_text, class: 'notch8-marketing-text', role: 'complementary' %>
+  </div>
+<% end %>

@@ -1,0 +1,41 @@
+<%# OVERRIDE Hyku 7.0.0 to create a two-column layout for the show page metadata %>
+
+<%
+  all_fields = view_options_for(presenter)
+
+  # Convert to array for splitting
+  fields_array = all_fields.to_a
+
+  # Filter out admin-only fields if user is not admin
+  fields_array.select! do |field, options|
+    is_admin_only = options && (options[:admin_only] || options['admin_only'])
+    !is_admin_only || current_user.try(:admin?)
+  end
+
+  half = (fields_array.count / 2.0).ceil
+  left_fields = fields_array[0...half]
+  right_fields = fields_array[half..-1] || []
+%>
+
+<div class="row" <%= presenter.microdata_type_to_html %>>
+  <div class="col-md-6">
+    <dl class="work-show pt-3 <%= dom_class(presenter) %>" style="column-count: unset !important; columns: unset !important;">
+      <% left_fields.each do |field, options| %>
+        <% view_options = conform_options(field, options) %>
+        <%= presenter.attribute_to_html(conform_field(field, options), view_options) %>
+      <% end %>
+    </dl>
+  </div>
+  <div class="col-md-6">
+    <dl class="work-show pt-3 <%= dom_class(presenter) %>" style="column-count: unset !important; columns: unset !important;">
+      <% right_fields.each do |field, options| %>
+        <% view_options = conform_options(field, options) %>
+        <%= presenter.attribute_to_html(conform_field(field, options), view_options) %>
+      <% end %>
+
+      <%# Render embargo/lease dates in the right column if they exist %>
+      <%= presenter.attribute_to_html(:embargo_release_date, render_as: :date, html_dl: true) %>
+      <%= presenter.attribute_to_html(:lease_expiration_date, render_as: :date, html_dl: true) %>
+    </dl>
+  </div>
+</div>

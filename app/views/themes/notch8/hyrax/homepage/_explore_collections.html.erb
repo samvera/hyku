@@ -1,0 +1,19 @@
+<% featured_collection = f.object.presenter %>
+
+<div class="card notch8-explore-collections">
+  <div>
+    <%= link_to [hyrax, featured_collection] do %>
+      <%= render_thumbnail_tag(featured_collection,
+                                { class: 'card-img-top', alt: "#{featured_collection.title_or_label} #{ t('hyrax.homepage.admin_sets.thumbnail')}" },
+                                {suppress_link: true}
+      ) %>
+    <% end %>
+  </div>
+  <div class="card-body">
+    <h3 class="card-title">
+      <%= link_to [hyrax, featured_collection] do %>
+        <%= markdown(featured_collection.title.first) %>
+      <% end %>
+    </h3>
+  </div>
+</div>

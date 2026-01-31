@@ -1,9 +1,9 @@
 # These settings are to provide information about your theme
-# and should follow the format   
+# and should follow the format
 # theme:
 #   name: Theme notes
 #   notes: Notes about the theme you want to display
-#   
+#
 default_show:
   name: Default Show Page
   notes: This is the default Hyku show page. It is recommended for use with cultural repositories.
@@ -13,4 +13,6 @@ cultural_show:
 scholarly_show:
   name: Scholarly Show Page
   notes: This text based show page is recommended for institutional repositories.
-  
+notch8_show:
+  name: Notch 8 Show Page
+  notes: This show page features a dual-column layout for the metadata section, and a citation modal.

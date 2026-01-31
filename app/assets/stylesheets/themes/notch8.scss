@@ -28,6 +28,7 @@ body.notch8 {
       font-size: 1.2rem;
     }
   }
+  // center the announcement text on mobile
   @media (max-width: 768px) {
     .notch8-announcement-text-block {
       text-align: center;
@@ -101,9 +102,18 @@ body.notch8 {
     .notch8-featured-collections-container {
       border-bottom: 1px solid #ddd;
       margin-bottom: 4rem;
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 700px;
+    }
+    // convert to a two column layout for logged out view
+    #featured_collections {
+      display: flex;
+      flex-wrap: wrap;
     }
   }
 
+  // collection card styles for logged out view
   .card.notch8-explore-collections {
     border-radius: 0;
     width: 275px;
@@ -115,7 +125,6 @@ body.notch8 {
       border-radius: 0;
     }
     &:hover {
-      // background-color: #e9ecef;
       box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
       transition: all 0.3s ease;
       transform: scale(1.02);
@@ -188,5 +197,13 @@ body.notch8 {
 
   .featured-item-data {
     color: #6c757d;
+  }
+
+  @media (max-width: 992px) {
+    .new_featured_work_list {
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
   }
 }

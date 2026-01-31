@@ -19,7 +19,7 @@
     <%# add check for featured works %>
     <% if @presenter.display_featured_works? %>
       <div class="notch8-featured-works-container">
-        <h2>Featured Works</h2>
+        <h2 class="<%= 'text-center' if user_signed_in? %>">Featured Works</h2>
         <%= render 'featured_works' %>
       </div>
     <% end %>

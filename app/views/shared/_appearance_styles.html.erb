@@ -72,7 +72,8 @@ body.public-facing .nav-tabs > li.nav-item > a:focus {
 }
 
 /* PRIMARY BUTTON STYLES */
-body.public-facing .btn-primary {
+body.public-facing .btn-primary,
+body.public-facing .page-item.active > .page-link {
   background-color: <%= appearance.primary_button_background_color %> !important;
   border-color: <%= appearance.primary_button_border_color %> !important;
   color: <%= appearance.primary_button_text_color %> !important;

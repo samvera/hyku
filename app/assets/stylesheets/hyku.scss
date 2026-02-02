@@ -536,13 +536,14 @@ span.constraint-value p,
 
 .hyc-banner {
     padding: 15px;
-    .hyc-bugs .hyc-created-by,
-    .hyc-bugs .hyc-last-updated,
+
     .hyc-title {
         padding: 0;
     }
 
-    .hyc-item-count {
+    .hyc-item-count,
+    .hyc-created-by,
+    .hyc-last-updated {
         background: rgba(255, 255, 255, 0.75);
         border-radius: 0.5em;
         color: #333;

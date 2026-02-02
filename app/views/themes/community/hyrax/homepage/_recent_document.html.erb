@@ -4,7 +4,7 @@
 
     <h3>
       <%= link_to generate_work_url(recent_document, request),  data: { turbolinks: block_valkyrie_redirect? } do %>
-        <%= render_thumbnail_tag(recent_document, {class: "notch8-recent-works-thumbnail"}, {suppress_link: true}).to_s + " " + markdown(recent_document&.title_or_label.to_s) %>
+        <%= render_thumbnail_tag(recent_document, {class: "community-recent-works-thumbnail"}, {suppress_link: true}).to_s + " " + markdown(recent_document&.title_or_label.to_s) %>
       <% end %>
     </h3>
 

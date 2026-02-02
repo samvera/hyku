@@ -13,6 +13,6 @@ cultural_show:
 scholarly_show:
   name: Scholarly Show Page
   notes: This text based show page is recommended for institutional repositories.
-notch8_show:
-  name: Notch 8 Show Page
+community_show:
+  name: Community Show Page
   notes: This show page features a dual-column layout for the metadata section, and a citation modal.

@@ -2,12 +2,12 @@
   OVERRIDE: Hyku 7.0.0 to center the citation button with constrained width
   rather than having it span the full page width as in the base Hyku implementation. This also enhances the citations to include MLA, APA, and Chicago citation styles, per app/views/hyrax/base/_citations.html.erb.
 
-  Changes made for Notch 8 show theme styling:
+  Changes made for Community show theme styling:
   - Removed `btn-block` class to prevent full-width button spanning the page
   - Removed `center-block` class (Bootstrap 3, deprecated)
   - Added `mx-auto` and `d-block` classes (Bootstrap 4/5 utilities) for centered, non-full-width button
   - Wrapped button in `<div class="text-center">` for container-level centering
-  - Custom CSS in notch8_show_buttons.scss applies min-width: 350px, max-width: 500px for proper sizing
+  - Custom CSS in community_show_buttons.scss applies min-width: 350px, max-width: 500px for proper sizing
   - Changed from collapse to modal display for better UX, matching Georgetown site design
 %>
 

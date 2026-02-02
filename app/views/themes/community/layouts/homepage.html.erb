@@ -1,6 +1,6 @@
 <%# Define the banner area WITHOUT search controls %>
 <% content_for(:navbar) do %>
-  <div class="image-masthead notch8-banner">
+  <div class="image-masthead community-banner">
     <%# Banner background image %>
     <div class="background-container"
          title="<%= block_for(name: 'banner_image_text') %>"
@@ -13,7 +13,7 @@
         <%= render "hyrax/homepage/marketing" if controller_name == 'homepage' %>
       </div>
       <%# Homepage About Section Content Block (configurable in the admin dashboard) %>
-      <div class="notch8-homepage-about-section-content">
+      <div class="community-homepage-about-section-content">
         <% if display_content_block? @homepage_about_section_heading%>
           <h2><%= displayable_content_block @homepage_about_section_heading%></h2>
         <% end %>
@@ -25,7 +25,7 @@
   </div>
 
   <%# Search bar BELOW banner %>
-  <div class="notch8-search-section">
+  <div class="community-search-section">
     <div class="container">
       <%= render partial: 'catalog/search_form' %>
     </div>
@@ -34,7 +34,7 @@
 
 <%# Announcement Content Block (configurable in the admin dashboard) appears at very top of page %>
 <% content_for(:announcement_top) do %>
-  <%= render 'themes/notch8/hyrax/homepage/announcement' if controller_name == 'homepage' %>
+  <%= render 'themes/community/hyrax/homepage/announcement' if controller_name == 'homepage' %>
 <% end %>
 
 <%# Render main Hyrax layout %>

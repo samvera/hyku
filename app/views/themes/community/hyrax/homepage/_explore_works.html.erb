@@ -5,7 +5,7 @@
     <span class="sr-only"><%= t('hyrax.homepage.featured_works.document.title_label') %></span>
     <h3>
       <%= link_to [main_app, featured], data: { turbolinks: block_valkyrie_redirect? } do %>
-        <%= render_thumbnail_tag(featured, {alt: "#{featured.title.first.to_s} #{ t('hyrax.homepage.admin_sets.thumbnail')}", class: "notch8-explore-works-thumbnail" }, {suppress_link: true}) + featured.title.first %>
+        <%= render_thumbnail_tag(featured, {alt: "#{featured.title.first.to_s} #{ t('hyrax.homepage.admin_sets.thumbnail')}", class: "community-explore-works-thumbnail" }, {suppress_link: true}) + featured.title.first %>
       <% end %>
     </h3>
   </div>
@@ -33,4 +33,3 @@
     <% end %>
   </div>
 </div>
-

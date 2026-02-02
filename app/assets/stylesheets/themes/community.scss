@@ -1,4 +1,4 @@
-body.notch8 {
+body.community {
   // ensure the footer stays at the bottom of the page
   margin-bottom: 0;
 
@@ -19,18 +19,18 @@ body.notch8 {
   // ========================================
   // Announcement Content Block (configurable in the admin dashboard)
   // ========================================
-  .notch8-announcement-text-container {
+  .community-announcement-text-container {
     background-color: #ccf2f9;
     border-bottom: 2px solid #ffc107;
     padding-top: 0.75rem;
-    .notch8-announcement-text-block {
+    .community-announcement-text-block {
       max-width: 1400px;
       font-size: 1.2rem;
     }
   }
   // center the announcement text on mobile
   @media (max-width: 768px) {
-    .notch8-announcement-text-block {
+    .community-announcement-text-block {
       text-align: center;
       font-size: 1rem;
     }
@@ -47,7 +47,7 @@ body.notch8 {
   // ========================================
   // Top Navigation Bar
   // ========================================
-  #notch8-navbar-collapse {
+  #community-navbar-collapse {
     margin-top: 2rem;
 
     .navbar-nav {
@@ -73,11 +73,11 @@ body.notch8 {
     }
   }
 
-  .notch8-marketing-text {
+  .community-marketing-text {
     padding-top: 2rem;
   }
 
-  .notch8-homepage-about-section-content {
+  .community-homepage-about-section-content {
     position: relative;
     padding-top: 1rem;
     max-width: 1000px;
@@ -86,7 +86,7 @@ body.notch8 {
   // ========================================
   // Home Text Content Block (configurable in the admin dashboard)
   // ========================================
-  .notch8-home-text-container {
+  .community-home-text-container {
     padding: 2rem 0;
     border-bottom: 1px solid #ddd;
     margin-bottom: 4rem;
@@ -95,11 +95,11 @@ body.notch8 {
   // ========================================
   // Featured Collections
   // ========================================
-  .notch8-featured-collections-container {
+  .community-featured-collections-container {
     text-align: center;
   }
   @media (max-width: 992px) {
-    .notch8-featured-collections-container {
+    .community-featured-collections-container {
       border-bottom: 1px solid #ddd;
       margin-bottom: 4rem;
       margin-left: auto;
@@ -114,7 +114,7 @@ body.notch8 {
   }
 
   // collection card styles for logged out view
-  .card.notch8-explore-collections {
+  .card.community-explore-collections {
     border-radius: 0;
     width: 275px;
     background-color: #f8f9fa;
@@ -135,11 +135,11 @@ body.notch8 {
   // Featured Works and Recent Uploads (can be toggled on/off in the admin dashboard)
   // ========================================
 
-  .notch8-featured-works-container {
+  .community-featured-works-container {
     margin-bottom: 3rem;
   }
 
-  .notch8-recent-uploads-container {
+  .community-recent-uploads-container {
     padding-top: 3rem;
     border-top: 1px solid #ddd;
   }
@@ -153,13 +153,13 @@ body.notch8 {
     overflow: hidden;
   }
 
-  .notch8-featured-works {
+  .community-featured-works {
     display: flex;
   }
 
   // image covers entire thumbnail area
-  .notch8-explore-works-thumbnail,
-  .notch8-recent-works-thumbnail {
+  .community-explore-works-thumbnail,
+  .community-recent-works-thumbnail {
     width: 125px;
     height: 150px;
     object-fit: cover;

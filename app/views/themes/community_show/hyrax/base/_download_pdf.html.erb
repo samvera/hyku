@@ -2,12 +2,12 @@
   OVERRIDE: Hyku 7.0.0 to center the download PDF button with constrained width to match,
   rather than having it span the full page width as in the base Hyku implementation.
 
-  Changes made for Notch 8 show theme styling:
+  Changes made for Community show theme styling:
   - Removed `btn-block` class to prevent full-width button spanning the page
   - Removed `center-block` class (Bootstrap 3, deprecated)
   - Added `mx-auto` and `d-block` classes (Bootstrap 4/5 utilities) for centered, non-full-width button
   - Added `text-center` class to wrapper div for container-level centering
-  - Custom CSS in notch8_show_buttons.scss applies min-width: 350px, max-width: 500px for proper sizing
+  - Custom CSS in community_show_buttons.scss applies min-width: 350px, max-width: 500px for proper sizing
 %>
 
 <% if can?(:download, file_set_id) %>

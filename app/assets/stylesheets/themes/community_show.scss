@@ -1,4 +1,4 @@
-@mixin notch8-show-cta-button {
+@mixin community-show-cta-button {
   min-width: 350px;
   max-width: 500px;
   width: auto;
@@ -7,7 +7,7 @@
   font-weight: 500;
 }
 
-.notch8_show {
+.community_show {
   dl.work-show,
   .work-show {
     column-count: unset !important;
@@ -18,13 +18,13 @@
     #file_download,
     button#file_download,
     .btn.file_download {
-      @include notch8-show-cta-button;
+      @include community-show-cta-button;
     }
   }
 
   .citations-button,
   button.citations-button {
-    @include notch8-show-cta-button;
+    @include community-show-cta-button;
   }
 
   // Citations Modal Styles - Matching Georgetown alignment

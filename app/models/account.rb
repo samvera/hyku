@@ -6,7 +6,7 @@ class Account < ApplicationRecord
   include AccountEndpoints
   include AccountSettings
   include AccountCname
-  attr_readonly :tenant
+  attr_readonly :tenant, :sandbox
 
   has_many :sites, dependent: :destroy
   has_many :domain_names, dependent: :destroy

@@ -497,7 +497,7 @@ it:
         create_new: Crea un nuovo account
         header: conti
         manage: Gestire
-        sandbox: Ambiente di test
+        public_demo_tenant: Tenant demo pubblico
         tenant: Locatario (UUID)
       new:
         header: Crea un nuovo repository

@@ -500,7 +500,7 @@ de:
         create_new: Neuen Account erstellen
         header: Konten
         manage: Verwalten
-        sandbox: Testumgebung
+        public_demo_tenant: Öffentlicher Demo-Mandant
         tenant: Mieter (UUID)
       new:
         header: Erstellen Sie ein neues Repository

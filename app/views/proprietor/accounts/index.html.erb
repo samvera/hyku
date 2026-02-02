@@ -16,7 +16,7 @@
             <tr>
               <th><%= t('.tenant') %></th>
               <th><%= t('.cname') %></th>
-              <th><%= t('.sandbox') %></th>
+              <th><%= t('.public_demo_tenant') %></th>
               <th><%= t('.actions') %></th>
             </tr>
           </thead>
@@ -26,7 +26,7 @@
               <tr>
                 <td><%= account.tenant %></td>
                 <td><%= account.cname %></td>
-                <td><%= account.sandbox? ? '✓' : '' %></td>
+                <td><%= account.public_demo_tenant? ? '✓' : '' %></td>
                 <td class="col-md-2">
                   <%= link_to t('.manage'), [:proprietor, account] %>&nbsp;|&nbsp;
                   <%= link_to t('helpers.action.edit'), [:edit, :proprietor, account] %>&nbsp;|&nbsp;

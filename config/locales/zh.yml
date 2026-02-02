@@ -497,7 +497,7 @@ zh:
         create_new: 建立新帐户
         header: 帐目
         manage: 管理
-        sandbox: 测试环境
+        public_demo_tenant: 公共演示租户
         tenant: 租户（UUID）
       new:
         header: 创建一个新的仓库

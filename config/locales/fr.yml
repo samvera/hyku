@@ -502,7 +502,7 @@ fr:
         create_new: Créer un nouveau compte
         header: Comptes
         manage: Gérer
-        sandbox: Environnement de test
+        public_demo_tenant: Locataire de démonstration publique
         tenant: Locataire (UUID)
       new:
         header: Créer un nouveau référentiel

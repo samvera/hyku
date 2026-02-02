@@ -198,7 +198,7 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
     end
   end
 
-  describe 'sandbox functionality' do
+  describe 'public_demo_tenant functionality' do
     let(:user) { FactoryBot.create(:superadmin) }
     let(:account) { FactoryBot.create(:account) }
 
@@ -208,31 +208,31 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
     end
 
     describe 'POST #create' do
-      context 'with sandbox parameter' do
-        it 'creates a sandbox account' do
-          post :create, params: { account: valid_attributes.merge(sandbox: true) }
-          expect(Account.last.sandbox).to be true
+      context 'with public_demo_tenant parameter' do
+        it 'creates a public demo tenant account' do
+          post :create, params: { account: valid_attributes.merge(public_demo_tenant: true) }
+          expect(Account.last.public_demo_tenant).to be true
         end
 
-        it 'creates a non-sandbox account by default' do
+        it 'creates a non-public-demo-tenant account by default' do
           post :create, params: { account: valid_attributes }
-          expect(Account.last.sandbox).to be false
+          expect(Account.last.public_demo_tenant).to be false
         end
       end
     end
 
     describe 'PUT #update' do
-      let(:sandbox_account) { FactoryBot.create(:account, sandbox: true) }
-      let(:production_account) { FactoryBot.create(:account, sandbox: false) }
+      let(:public_demo_account) { FactoryBot.create(:account, public_demo_tenant: true) }
+      let(:production_account) { FactoryBot.create(:account, public_demo_tenant: false) }
 
-      it 'does not allow changing sandbox flag on existing sandbox account' do
-        put :update, params: { id: sandbox_account.to_param, account: { sandbox: false } }
-        expect(sandbox_account.reload.sandbox).to be true
+      it 'does not allow changing public_demo_tenant flag on existing public demo account' do
+        put :update, params: { id: public_demo_account.to_param, account: { public_demo_tenant: false } }
+        expect(public_demo_account.reload.public_demo_tenant).to be true
       end
 
-      it 'does not allow changing sandbox flag on existing production account' do
-        put :update, params: { id: production_account.to_param, account: { sandbox: true } }
-        expect(production_account.reload.sandbox).to be false
+      it 'does not allow changing public_demo_tenant flag on existing production account' do
+        put :update, params: { id: production_account.to_param, account: { public_demo_tenant: true } }
+        expect(production_account.reload.public_demo_tenant).to be false
       end
     end
 

@@ -346,7 +346,7 @@ en:
         create_new: Create new account
         header: Accounts
         manage: Manage
-        sandbox: Sandbox
+        public_demo_tenant: Public demo tenant
         tenant: Tenant (UUID)
       new:
         header: Create a new repository

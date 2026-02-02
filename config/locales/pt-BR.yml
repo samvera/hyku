@@ -380,7 +380,7 @@ pt-BR:
         create_new: Criar nova conta
         header: Contas
         manage: Gerir
-        sandbox: Ambiente de teste
+        public_demo_tenant: Inquilino de demonstração pública
         tenant: Locatário (UUID)
       new:
         header: Crie um novo repositório

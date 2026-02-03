@@ -6,7 +6,7 @@ class Account < ApplicationRecord
   include AccountEndpoints
   include AccountSettings
   include AccountCname
-  attr_readonly :tenant
+  attr_readonly :tenant, :public_demo_tenant
 
   has_many :sites, dependent: :destroy
   has_many :domain_names, dependent: :destroy
@@ -35,6 +35,8 @@ class Account < ApplicationRecord
   scope :is_public, -> { where(is_public: true) }
   scope :sorted_by_name, -> { order("name ASC") }
   scope :full_accounts, -> { where(search_only: false) }
+  scope :public_demo_tenants, -> { where(public_demo_tenant: true) }
+  scope :non_public_demo_tenants, -> { where(public_demo_tenant: false) }
 
   before_validation do
     self.tenant ||= SecureRandom.uuid

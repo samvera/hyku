@@ -340,11 +340,13 @@ en:
         header: Editing Account
         solr_endpoint: Solr Endpoint
       index:
+        actions: Actions
         cname: CNAME
         confirm_delete: Are you sure you wish to delete this repository? ALL COLLECTIONS AND WORKS within this repository will be DELETED PERMANENTLY
         create_new: Create new account
         header: Accounts
         manage: Manage
+        public_demo_tenant: Public demo tenant
         tenant: Tenant (UUID)
       new:
         header: Create a new repository

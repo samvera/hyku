@@ -114,6 +114,7 @@ module Proprietor
     def account_params
       params.require(:account).permit(
         :name,
+        :public_demo_tenant,
         :search_only,
         admin_emails: [],
         full_account_cross_searches_attributes: [:id, :_destroy, :full_account_id, full_account_attributes: [:id]]

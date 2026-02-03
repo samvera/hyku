@@ -374,11 +374,13 @@ pt-BR:
         header: Editando conta
         solr_endpoint: Ponto final do Solr
       index:
+        actions: Ações
         cname: CNAME
         confirm_delete: Tem certeza de que deseja excluir este repositório? TODAS AS COLEÇÕES E TRABALHOS dentro deste repositório serão EXCLUÍDOS PERMANENTEMENTE
         create_new: Criar nova conta
         header: Contas
         manage: Gerir
+        public_demo_tenant: Inquilino de demonstração pública
         tenant: Locatário (UUID)
       new:
         header: Crie um novo repositório

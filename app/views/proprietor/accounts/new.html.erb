@@ -20,6 +20,8 @@
 
           <%= f.input :name %>
 
+          <%= f.input :public_demo_tenant, hint: "Mark this account as a public demo tenant for testing. This cannot be changed after creation." %>
+
           <div class="form-group">
             <%= f.input :search_only, wrapper: false %>
             <small class="form-text text-muted">

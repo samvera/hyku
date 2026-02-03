@@ -491,11 +491,13 @@ es:
         header: Cuenta de edición
         solr_endpoint: Punto final de Solr
       index:
+        actions: Acciones
         cname: CNAME
         confirm_delete: "¿Estás seguro de que deseas eliminar este repositorio? TODAS LAS COLECCIONES Y TRABAJOS dentro de este repositorio se BORRARÁN PERMANENTEMENTE"
         create_new: Crear una nueva cuenta
         header: Cuentas
         manage: Gestionar
+        public_demo_tenant: Inquilino de demostración pública
         tenant: Inquilino (UUID)
       new:
         header: Crea un nuevo repositorio

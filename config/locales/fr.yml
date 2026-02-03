@@ -496,11 +496,13 @@ fr:
         header: Modification du compte
         solr_endpoint: Solr Endpoint
       index:
+        actions: Actions
         cname: CNAME
         confirm_delete: Voulez-vous vraiment supprimer ce référentiel? TOUTES LES COLLECTIONS ET LES OEUVRES de ce référentiel seront SUPPRIMÉES DE MANIÈRE PERMANENTE
         create_new: Créer un nouveau compte
         header: Comptes
         manage: Gérer
+        public_demo_tenant: Locataire de démonstration publique
         tenant: Locataire (UUID)
       new:
         header: Créer un nouveau référentiel

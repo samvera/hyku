@@ -1,0 +1,35 @@
+<% provide :page_title, application_name %>
+
+<%# add check for home page text content block %>
+<% if display_content_block? @home_text %>
+  <div class="community-home-text-container">
+    <%= render 'themes/community/home_text' if controller_name == 'homepage' %>
+  </div>
+<% end %>
+
+<div class="row">
+  <div class="col-lg-4 pr-lg-5">
+    <div class="community-featured-collections-container">
+      <h2>Featured Collections</h2>
+      <%= render 'featured_collection_section' %>
+    </div>
+  </div>
+
+  <div class="col-lg-8 pl-lg-5">
+    <%# add check for featured works %>
+    <% if @presenter.display_featured_works? %>
+      <div class="community-featured-works-container">
+        <h2 class="<%= 'text-center' if user_signed_in? %>">Featured Works</h2>
+        <%= render 'featured_works' %>
+      </div>
+    <% end %>
+
+    <%# add check for recently uploaded %>
+    <% if @presenter.display_recently_uploaded? %>
+      <div class="community-recent-uploads-container">
+        <h2>Recent Uploads</h2>
+        <%= render 'recently_uploaded', recent_documents: @recent_documents %>
+      </div>
+    <% end %>
+  </div>
+</div>

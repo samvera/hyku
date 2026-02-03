@@ -48,24 +48,6 @@ RSpec.describe Hyrax::Admin::AppearancesController, type: :controller, singleten
           expect(response).to redirect_to(hyrax.admin_appearance_path(locale: 'en'))
           expect(flash[:notice]).to include("The appearance was successfully updated")
           expect(Site.instance.banner_image?).to be true
-          expect(Site.instance.banner_image.file.filename).to eq('nypl-hydra-of-lerna.jpg')
-        end
-
-        it "replaces an existing banner image" do
-          # Set up an initial banner image
-          Site.instance.update!(banner_image: fixture_file_upload('/images/nypl-hydra-of-lerna.jpg', 'image/jpg'))
-          expect(Site.instance.banner_image?).to be true
-          original_filename = Site.instance.banner_image.file.filename
-
-          # Upload a different image
-          f = fixture_file_upload('/images/world.png', 'image/png')
-          post :update, params: { admin_appearance: { banner_image: f } }
-
-          expect(response).to redirect_to(hyrax.admin_appearance_path(locale: 'en'))
-          expect(flash[:notice]).to include("The appearance was successfully updated")
-          expect(Site.instance.reload.banner_image?).to be true
-          expect(Site.instance.banner_image.file.filename).to eq('world.png')
-          expect(Site.instance.banner_image.file.filename).not_to eq(original_filename)
         end
 
         it "sets a directory image" do

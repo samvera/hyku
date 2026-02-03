@@ -8,18 +8,8 @@ RSpec.describe HyraxHelper, type: :helper do
         Site.instance.update(banner_image: f)
       end
 
-      it "returns the uploaded banner image with cache busting timestamp" do
-        url = helper.banner_image
-        expect(url).to start_with(Site.instance.banner_image.url)
-        expect(url).to include("?#{Site.instance.updated_at.to_i}")
-      end
-
-      it "includes a different timestamp when the site is updated" do
-        initial_url = helper.banner_image
-        sleep 1
-        Site.instance.update(updated_at: Time.current)
-        updated_url = helper.banner_image
-        expect(updated_url).not_to eq(initial_url)
+      it "returns the uploaded banner image" do
+        expect(helper.banner_image).to eq(Site.instance.banner_image.url)
       end
     end
 

@@ -1,19 +1,18 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyku::AvatarUploader do
+RSpec.describe Hyku::LogoUploader do
   include ActiveSupport::Testing::TimeHelpers
 
   let(:account) { build(:account) }
   let(:site) { create(:site, account: account) }
-  let(:uploader) { described_class.new(site, :banner_image) }
+  let(:uploader) { described_class.new(site, :logo_image) }
   let(:file) { File.open(Rails.root.join('spec', 'fixtures', 'images', 'world.png').to_s) }
 
   describe '#filename' do
-    before { uploader.store!(file) }
-
     it 'renames the file and its versions with the tenant id and a timestamp' do
       freeze_time do
         timestamp = Time.current.to_i
+        uploader.store!(file)
         filename = "#{account.tenant}_#{timestamp}.png"
 
         expect(uploader.filename).to eq(filename)

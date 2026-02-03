@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 module Hyku
-  class FaviconUploader < CarrierWave::Uploader::Base
-    include CarrierWave::MiniMagick
-    include CarrierWave::Compatibility::Paperclip
+  class FaviconUploader < Hyrax::AvatarUploader
     include Hyku::FileRenameable
     # rubocop:disable Style/AsciiComments
     # 32×32	favicon-32.png	Standard for most desktop browsers
@@ -15,14 +13,24 @@ module Hyku
     # 196×196	favicon-196.png Chrome for Android home screen icon
     # rubocop:enable Style/AsciiComments
 
+    versions.delete(:medium)
+    versions.delete(:thumb)
+
     [32, 57, 76, 96, 128, 192, 228, 196, 120, 152, 180].each do |i|
       version "v#{i}".to_sym do
         process resize_to_limit: [i, i]
+
+        # @return [String, nil] The parent uploader's filename when present, so this version
+        #   uses the same tenant-scoped name; otherwise delegates to super.
+        def filename
+          parent_version.present? ? parent_version.filename : super
+        end
       end
     end
 
-    def extension_allowlist
-      %w[png]
+    # @return [Array<String>] Allowed extensions for favicon uploads (png and ico).
+    def extension_whitelist
+      %w[png ico]
     end
   end
 end

@@ -29,7 +29,7 @@ RSpec.describe Hyku::Forms::Admin::Appearance do
   describe '#banner_image' do
     subject { instance.banner_image }
 
-    it { is_expected.to be_a(Hyrax::AvatarUploader) }
+    it { is_expected.to be_a(Hyku::AvatarUploader) }
   end
 
   described_class.instance_methods.grep(/_color$/).each do |color_method_name|

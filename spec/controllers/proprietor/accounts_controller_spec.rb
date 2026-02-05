@@ -222,8 +222,8 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
     end
 
     describe 'PUT #update' do
-      let(:public_demo_account) { FactoryBot.create(:account, public_demo_tenant: true) }
-      let(:production_account) { FactoryBot.create(:account, public_demo_tenant: false) }
+      let(:public_demo_account) { FactoryBot.create(:demo_account) }
+      let(:production_account) { FactoryBot.create(:account) }
 
       it 'does not allow changing public_demo_tenant flag on existing public demo account' do
         put :update, params: { id: public_demo_account.to_param, account: { public_demo_tenant: false } }

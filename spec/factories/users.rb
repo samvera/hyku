@@ -15,16 +15,6 @@ FactoryBot.modify do
         user.add_role(role, Site.instance)
       end
     end
-
-    factory :admin do
-      before(:create) do |user|
-        user.add_role(:admin, Site.instance)
-      end
-
-      after(:build) do |user|
-        user.add_role(:admin, Site.instance)
-      end
-    end
   end
 end
 
@@ -32,6 +22,16 @@ FactoryBot.define do
   factory :superadmin, parent: :user do
     before(:create) { |user| user.add_role(:superadmin) }
     after(:build)   { |user| user.add_role(:superadmin) }
+  end
+
+  factory :tenant_superadmin, parent: :user do
+    before(:create) do |user|
+      user.add_role(:superadmin, Site.instance)
+    end
+
+    after(:build) do |user|
+      user.add_role(:superadmin, Site.instance)
+    end
   end
 
   factory :user_admin, parent: :user do

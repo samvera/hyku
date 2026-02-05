@@ -31,20 +31,14 @@ module HyraxHelper
   end
 
   def banner_image
-    if Site.instance.banner_image?
-      url = Site.instance.banner_image.url
-      timestamp = Site.instance.updated_at.to_i
-      "#{url}?#{timestamp}"
-    else
-      super
-    end
+    Site.instance.banner_image? ? Site.instance.banner_image.url : super
   end
 
   def favicon(size)
     icon = Site.instance.favicon
     if icon
       case icon
-      when FaviconUploader
+      when Hyku::FaviconUploader
         return Site.instance.favicon.url(size)
       when String
         return Site.instance.favicon

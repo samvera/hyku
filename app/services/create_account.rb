@@ -69,7 +69,7 @@ class CreateAccount
     end
     # When creating a demo tenant, the last user is the creator and gets superadmin rights
     # additional superadmins can be added through the proprietor admin interface
-    return unless Site.account.public_demo_tenant?
+    return unless Site.account&.public_demo_tenant?
     users.last.add_role :superadmin, Site.instance
   end
 

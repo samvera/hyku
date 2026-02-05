@@ -23,7 +23,7 @@ module Proprietor
       superadmin_emails.include?(user.email)
     end
 
-    def can_remove_admin?(user)
+    def can_remove_admin?(_user)
       !last_admin?
     end
 

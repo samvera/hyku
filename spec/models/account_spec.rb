@@ -349,6 +349,37 @@ RSpec.describe Account, type: :model do
     end
   end
 
+  describe '#superadmin_emails' do
+    let!(:account) { FactoryBot.create(:demo_account) }
+    let!(:user1) { FactoryBot.create(:user, email: "test@test.com") }
+    let!(:user2) { FactoryBot.create(:user, email: "test@test.org") }
+
+    it 'switches to current tenant database and returns Site superadmin_emails' do
+      allow(Apartment::Tenant).to receive(:switch).with(account.tenant).and_yield
+      Site.update(account:)
+      Site.instance.superadmin_emails = ["test@test.com", "test@test.org"]
+
+      expect(account.superadmin_emails).to match_array(["test@test.com", "test@test.org"])
+    end
+  end
+
+  describe '#superadmin_emails=' do
+    let!(:account) { FactoryBot.create(:demo_account) }
+    let!(:user1) { FactoryBot.create(:user, email: "test@test.com") }
+    let!(:user2) { FactoryBot.create(:user, email: "test@test.org") }
+    let!(:user3) { FactoryBot.create(:user, email: "newadmin@here.org") }
+
+    it 'switches to current tenant database updates Site superadmin_emails' do
+      allow(Apartment::Tenant).to receive(:switch).with(account.tenant).and_yield
+      Site.update(account:)
+      Site.instance.superadmin_emails = ["test@test.com", "test@test.org"]
+
+      expect(account.superadmin_emails).to match_array(["test@test.com", "test@test.org"])
+      account.superadmin_emails = ["newadmin@here.org"]
+      expect(account.superadmin_emails).to match_array(["newadmin@here.org"])
+    end
+  end
+
   describe '#admin_emails' do
     let!(:account) { FactoryBot.create(:account, tenant: "59500a46-b1fb-412d-94d6-b928e91ef4d9") }
 

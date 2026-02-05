@@ -35,6 +35,8 @@ es:
         monthly_email_list: Lista de direcciones de correo electrónico para enviar el informe mensual. Deje un espacio entre cada correo electrónico
         name: Un nombre único o con guiones utilizado para aspectos técnicos del repositorio (por ejemplo, "acme" o "acme-biblioteca").
         oai_admin_email: Dirección de correo electrónico de contacto del punto final OAI
+        public_demo_tenant: Marque esta cuenta como inquilino de demostración público para pruebas. Esto no se puede cambiar después de crearla.
+        search_only: Las cuentas de solo búsqueda requieren que se seleccione al menos una cuenta completa a continuación para la búsqueda entre inquilinos.
         shared_login: Habilitar o deshabilitar inicio de sesión compartido
         ssl_configured: Establézcalo como verdadero si está utilizando https
         weekly_email_list: Lista de direcciones de correo electrónico para enviar el informe semanal. Deje un espacio entre cada correo electrónico
@@ -52,6 +54,8 @@ es:
           url: URL
         gtm_id: Administrador de etiquetas de Google
         name: Nombre corto
+        public_demo_tenant: Inquilino de demostración pública
+        search_only: Sólo búsqueda
         solr_endpoint:
           url: URL
         tenant: Inquilino UUID

@@ -7,6 +7,8 @@ en:
     hints:
       account:
         admin_emails: Enter one email address at a time
+        public_demo_tenant: Mark this account as a public demo tenant for testing. This cannot be changed after creation.
+        search_only: Search-only accounts require at least one full account to be selected below for cross-tenant search.
         allow_signup: Allow users to sign up to your repository
         analytics: Enable or disable analytics to track user interactions and display analytics data in the dashboard.
         cache_api: Use Redis instead of disk for caching
@@ -46,6 +48,8 @@ en:
     labels:
       account:
         admin_emails: Add or invite new administrator (via email)
+        public_demo_tenant: Public Demo Tenant
+        search_only: Search Only
         cname: Primary Domain Name
         fcrepo_endpoint:
           base_path: Base Path

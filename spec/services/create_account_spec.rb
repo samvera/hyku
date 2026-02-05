@@ -99,6 +99,27 @@ RSpec.describe CreateAccount, clean: true do
         expect(user1.hyrax_group_names).to contain_exactly('admin', 'registered')
         expect(user2.hyrax_group_names).to contain_exactly('admin', 'registered')
       end
+
+      context 'when the account is a demo account' do
+        let(:demo_account) { FactoryBot.build(:demo_account) }
+        let(:user3) { FactoryBot.create(:user) }
+        let(:demo_users) { [user1, user2, user3] }
+        let(:demo_create_account) { CreateAccount.new(demo_account, demo_users) }
+
+        before do
+          allow(Site).to receive(:account).and_return(demo_account)
+        end
+
+        it 'adds the creating user as a superadmin for the account' do
+          expect(user1.has_role?(:superadmin, Site.instance)).to eq(false)
+          expect(user3.has_role?(:superadmin, Site.instance)).to eq(false)
+
+          demo_create_account.add_initial_users
+
+          expect(user1.has_role?(:superadmin, Site.instance)).to eq(false)
+          expect(user3.has_role?(:superadmin, Site.instance)).to eq(true)
+        end
+      end
     end
 
     context 'non-supplied users' do

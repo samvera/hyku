@@ -49,6 +49,22 @@ class Site < ApplicationRecord
     remove_admins_by_email(removed_admin_emails) if removed_admin_emails
   end
 
+  # Get all superadmin emails associated with this site
+  def superadmin_emails
+    User.with_role(:superadmin, self).pluck(:email)
+  end
+
+  # Update superadmin emails associated with this site
+  # @param [Array<String>] Array of user emails
+  def superadmin_emails=(emails)
+    emails = Array(emails).reject(&:blank?)
+    existing_superadmin_emails = superadmin_emails
+    new_superadmin_emails = emails - existing_superadmin_emails
+    removed_superadmin_emails = existing_superadmin_emails - emails
+    add_superadmins_by_email(new_superadmin_emails) if new_superadmin_emails.present?
+    remove_superadmins_by_email(removed_superadmin_emails) if removed_superadmin_emails.present?
+  end
+
   def institution_label
     if Site.instance&.institution_name&.present?
       Site.instance.institution_name.to_s
@@ -79,6 +95,22 @@ class Site < ApplicationRecord
   def remove_admins_by_email(emails)
     User.where(email: emails).find_each do |u|
       u.remove_role :admin, self
+    end
+  end
+
+  # Add superadmins via email address
+  # @param [Array<String>] Array of user emails
+  def add_superadmins_by_email(emails)
+    User.where(email: emails).find_each do |u|
+      u.add_role :superadmin, self
+    end
+  end
+
+  # Remove specific superadmins
+  # @param [Array<String>] Array of user emails
+  def remove_superadmins_by_email(emails)
+    User.where(email: emails).find_each do |u|
+      u.remove_role :superadmin, self
     end
   end
 end

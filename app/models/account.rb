@@ -164,6 +164,23 @@ class Account < ApplicationRecord
     end
   end
 
+  # Get superadmin emails associated with this account/site
+  def superadmin_emails
+    # Must run this against proper tenant database
+    Apartment::Tenant.switch(tenant) do
+      Site.instance.superadmin_emails
+    end
+  end
+
+  # Set superadmin emails associated with this account/site
+  # @param [Array<String>] Array of user emails
+  def superadmin_emails=(emails)
+    # Must run this against proper tenant database
+    Apartment::Tenant.switch(tenant) do
+      Site.instance.superadmin_emails = emails
+    end
+  end
+
   def cache_api?
     cache_api
   end

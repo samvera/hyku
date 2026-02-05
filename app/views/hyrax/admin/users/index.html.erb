@@ -85,9 +85,12 @@
                     <li>
                       <%= role.name.titleize %>
                       <%= link_to main_app.remove_role_admin_user_path(id: user.id, role_id: role.id), method: :delete, data: { confirm: t('hyrax.admin.users.roles.remove.confirmation', user: user.email, role: role.name.titleize) } do %>
-                        <% if current_ability.admin? || (can?(:edit, User) && role.name != 'admin') %>
-                          <span class="fa fa-remove"></span>
-                        <% end %>
+                      <%# super admin roles are managed in the proprietor pages %>
+                        <% if role.name != 'superadmin' %>
+                          <% if current_ability.admin? || (can?(:edit, User) && role.name != 'admin') %>
+                            <span class="fa fa-remove"></span>
+                          <% end %>
+                        <% end%>
                       <% end %>
                     </li>
                   <% end %>
@@ -104,8 +107,10 @@
               <td><%= user.accepted_or_not_invited? ? t('.status.active') : t('.status.pending') %></td>
               <% if can? :destroy, User %>
                 <td>
-                  <%= link_to t('.delete'), main_app.admin_user_path(user), class: 'btn btn-danger btn-sm action-delete', method: :delete, data: { confirm: t('hyrax.admin.users.destroy.confirmation', user: user.email) } %>
-                  <% if user.invited_to_sign_up? %>
+                  <% if can? :manage, :tenant_controls %>
+                    <%= link_to t('.delete'), main_app.admin_user_path(user), class: 'btn btn-danger btn-sm action-delete', method: :delete, data: { confirm: t('hyrax.admin.users.destroy.confirmation', user: user.email) } %>
+                  <% end %>
+                  <% if user.invited_to_sign_up? && can?(:manage, :tenant_controls) %>
                     <%= link_to t('.activate'), main_app.activate_admin_user_path(user.id), class: 'btn btn-primary btn-sm', method: :post, data: { confirm: t('hyrax.admin.users.activate.confirmation', user: user.email) } %>
                   <% end %>
                 </td>

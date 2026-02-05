@@ -370,14 +370,21 @@ zh:
     admin:
       appearances:
         show:
+          colors:
+            apply_changes: 应用更改
+            restore_all_defaults: 恢复所有默认设置
+            restore_all_tenant_colors: 恢复所有租户颜色
+            restore_default: 恢复默认设置
+            restore_tenant_color: 恢复租户颜色
+            save_as_tenant_colors: 应用更改并保存为租户颜色
           forms:
             active_tabs_background_color:
               hint: 主页标签的悬停颜色。
             banner_image:
+              cropped_save_error: 保存裁剪后的横幅失败。请重试。
               hint: |
                 要将图像用作标头广告背景，您应该使用至少120像素高和1200像素宽的图像（JPG，GIF或PNG）。为了获得最佳效果，请使用至少1800像素宽的图像。<br/>
                 要裁剪：点击"Crop Image"，调整选择，然后点击"Save changes"。横幅会随窗口调整大小。要撤消裁剪，请使用"Remove banner image"，然后重新上传原始图像。
-              cropped_save_error: 保存裁剪后的横幅失败。请重试。
             collection_banner_text_color:
               hint: 集合横幅内文本（标题和上次更新日期）的颜色。
             custom_css:
@@ -500,18 +507,31 @@ zh:
         public_demo_tenant: 公共演示租户
         tenant: 租户（UUID）
       new:
+        cross_tenant_search:
+          add_account: 添加帐户以进行搜索
+          description: 选择此仅搜索帐户将在哪些存储库中进行搜索。
+          header: 跨租户搜索的完整帐户
+          remove: 消除
+        errors_prohibited:
+          one: 1 个错误导致此存储库无法保存：
+          other: "%{count} 错误导致无法保存此存储库："
         header: 创建一个新的仓库
       show:
         add: 加
+        cannot_remove_last_admin: 无法移除最后一位管理员
+        cannot_remove_last_superadmin: 无法移除最后一个超级管理员
         current_admins:
           actions: 行动
           all_users: 全部用户
           email: 电子邮件地址
           header: 经常账户管理员
           no_admins: 没有管理员
+          superadmin: 租户超级管理员
         edit: 编辑帐户
         header: 管理帐户
         remove: 去掉
+        remove_superadmin: 移除租户超级管理员
+        set_superadmin: 添加租户超级管理员
         update: 更新资料
     users:
       edit:

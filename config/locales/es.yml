@@ -370,14 +370,21 @@ es:
     admin:
       appearances:
         show:
+          colors:
+            apply_changes: Aplicar cambios
+            restore_all_defaults: Restaurar todos los valores predeterminados
+            restore_all_tenant_colors: Restaurar todos los colores de los inquilinos
+            restore_default: Restaurar valores predeterminados
+            restore_tenant_color: Restaurar el color del inquilino
+            save_as_tenant_colors: Aplicar cambios y guardar como colores de inquilino
           forms:
             active_tabs_background_color:
               hint: Color al pasar el mouse sobre las pestañas de la página de inicio.
             banner_image:
+              cropped_save_error: Error al guardar el banner recortado. Por favor, inténtelo de nuevo.
               hint: |
                 Para usar una imagen como fondo de cabecera, debe usar una imagen (JPG, GIF o PNG) que tenga al menos 120 píxeles de alto y 1200 píxeles de ancho. Para obtener mejores resultados, use una imagen de al menos 1800 píxeles de ancho.<br/>
                 Para recortar: haga clic en "Crop Image", ajuste la selección y luego haga clic en "Save changes". El banner se redimensiona con la ventana. Para deshacer un recorte, use "Remove banner image" y luego vuelva a cargar el original.
-              cropped_save_error: Error al guardar el banner recortado. Por favor, inténtelo de nuevo.
             collection_banner_text_color:
               hint: El color del texto (título y fecha de última actualización) dentro del banner de la colección.
             custom_css:
@@ -500,18 +507,31 @@ es:
         public_demo_tenant: Inquilino de demostración pública
         tenant: Inquilino (UUID)
       new:
+        cross_tenant_search:
+          add_account: Añadir cuenta para buscar
+          description: Seleccione en qué repositorios buscará esta cuenta de solo búsqueda.
+          header: Cuentas completas para búsqueda entre inquilinos
+          remove: eliminar
+        errors_prohibited:
+          one: '1 error impidió que se guardara este repositorio:'
+          other: 'Los errores %{count} impidieron que se guardara este repositorio:'
         header: Crea un nuevo repositorio
       show:
         add: Añadir
+        cannot_remove_last_admin: No se puede eliminar el último administrador
+        cannot_remove_last_superadmin: No se puede eliminar el último superadministrador
         current_admins:
           actions: Acción
           all_users: Todos los usuarios
           email: Dirección de correo electrónico
           header: Administradores de cuenta corriente
           no_admins: No existen administradores
+          superadmin: Superadministrador de inquilinos
         edit: Editar cuenta
         header: Administrar cuenta
         remove: Eliminar
+        remove_superadmin: Eliminar Superadministrador de inquilinos
+        set_superadmin: Agregar inquilino superadministrador
         update: Actualizar
     users:
       edit:

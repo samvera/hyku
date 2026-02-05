@@ -67,6 +67,10 @@ class CreateAccount
       user.add_default_group_membership!
       Hyrax::Group.find_or_create_by!(name: Ability.admin_group_name).add_members_by_id(user.id)
     end
+    # When creating a demo tenant, the last user is the creator and gets superadmin rights
+    # additional superadmins can be added through the proprietor admin interface
+    return unless Site.account&.public_demo_tenant?
+    users.last.add_role :superadmin, Site.instance
   end
 
   # Sacrifing idempotency of our account creation jobs here to reflect

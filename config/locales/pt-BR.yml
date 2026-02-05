@@ -253,14 +253,21 @@ pt-BR:
     admin:
       appearances:
         show:
+          colors:
+            apply_changes: Aplicar alterações
+            restore_all_defaults: Restaurar todas as configurações padrão
+            restore_all_tenant_colors: Restaurar todas as cores dos inquilinos
+            restore_default: Restaurar padrão
+            restore_tenant_color: Restaurar a cor do inquilino
+            save_as_tenant_colors: Aplicar alterações e salvar como cores do inquilino
           forms:
             active_tabs_background_color:
               hint: Cor de foco para abas da página inicial.
             banner_image:
+              cropped_save_error: Falha ao salvar o banner recortado. Por favor, tente novamente.
               hint: |
                 Para usar uma imagem como plano de fundo do cabeçalho, você deve usar uma imagem (JPG, GIF ou PNG) com pelo menos 120 pixels de altura e 1200 pixels de largura. Para obter melhores resultados, use uma imagem com pelo menos 1800 pixels de largura.<br/>
                 Para recortar: clique em "Crop Image", ajuste a seleção e clique em "Save changes". O banner redimensiona com a janela. Para desfazer um recorte, use "Remove banner image" e faça upload do original novamente.
-              cropped_save_error: Falha ao salvar o banner recortado. Por favor, tente novamente.
             collection_banner_text_color:
               hint: A cor do texto (título e data da última atualização) dentro do banner da coleção.
             custom_css:
@@ -383,18 +390,31 @@ pt-BR:
         public_demo_tenant: Inquilino de demonstração pública
         tenant: Locatário (UUID)
       new:
+        cross_tenant_search:
+          add_account: Adicionar conta à pesquisa
+          description: Selecione em quais repositórios esta conta somente de pesquisa realizará buscas.
+          header: Contas completas para pesquisa entre locatários
+          remove: remover
+        errors_prohibited:
+          one: '1 erro impediu que este repositório fosse salvo:'
+          other: "%{count} erros impediram que este repositório fosse salvo:"
         header: Crie um novo repositório
       show:
         add: Adicionar
+        cannot_remove_last_admin: Não é possível remover o último administrador.
+        cannot_remove_last_superadmin: Não é possível remover o último superadministrador.
         current_admins:
           actions: Açao
           all_users: Todos os usuários
           email: Endereço de e-mail
           header: Administradores de conta corrente
           no_admins: Não existem administradores
+          superadmin: Superadministrador de inquilinos
         edit: Editar conta
         header: Gerenciar conta
         remove: Remover
+        remove_superadmin: Remover Superadministrador do locatário
+        set_superadmin: Adicionar Superadministrador de Locatário
         update: Atualizar
     users:
       edit:

@@ -79,6 +79,10 @@ class User < ApplicationRecord
     has_role? :superadmin
   end
 
+  def tenant_superadmin?
+    has_role?(:superadmin, Site.instance)
+  end
+
   # Favor admin? over is_admin? but provided for backwards compatability.
   alias is_superadmin? superadmin?
 

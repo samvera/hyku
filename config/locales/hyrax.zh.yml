@@ -846,8 +846,10 @@ zh:
         title: 特色研究员
       featured_works:
         document:
+          abstract_missing: 暂无摘要。
           depositor_label: 储户
           depositor_missing: 没有储户价值
+          description_missing: 暂无描述。
           keyword_label: 关键词
           keyword_missing: 未指定关键字
           title_label: 标题
@@ -859,8 +861,10 @@ zh:
         depositor: 储户
         details: 细节
         document:
+          abstract_missing: 暂无摘要。
           depositor_label: 储户
           depositor_missing: 没有储户价值
+          description_missing: 暂无描述。
           keyword_label: 关键词
           keyword_missing: 未指定关键字
           title_label: 标题

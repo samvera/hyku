@@ -369,14 +369,21 @@ de:
     admin:
       appearances:
         show:
+          colors:
+            apply_changes: Änderungen anwenden
+            restore_all_defaults: Alle Standardeinstellungen wiederherstellen
+            restore_all_tenant_colors: Alle Mieterfarben wiederherstellen
+            restore_default: Standardeinstellungen wiederherstellen
+            restore_tenant_color: Mieterfarbe wiederherstellen
+            save_as_tenant_colors: Änderungen anwenden und als Mieterfarben speichern
           forms:
             active_tabs_background_color:
               hint: Hover-Farbe für Homepage-Tabs.
             banner_image:
+              cropped_save_error: Fehler beim Speichern des zugeschnittenen Banners. Bitte versuchen Sie es erneut.
               hint: |
                 Um ein Bild als Masthead-Hintergrund zu verwenden, sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das mindestens 120 Pixel hoch und 1200 Pixel breit ist. Verwenden Sie für optimale Ergebnisse ein Bild mit einer Breite von mindestens 1800 Pixel.<br/>
                 Zum Zuschneiden: Klicken Sie auf "Crop Image", passen Sie die Auswahl an und klicken Sie dann auf "Save changes". Das Banner passt sich dem Fenster an. Um einen Zuschnitt rückgängig zu machen, verwenden Sie "Remove banner image" und laden Sie dann das Original erneut hoch.
-              cropped_save_error: Fehler beim Speichern des zugeschnittenen Banners. Bitte versuchen Sie es erneut.
             collection_banner_text_color:
               hint: Die Farbe für den Text (Titel und Datum der letzten Aktualisierung) im Sammlungsbanner.
             custom_css:
@@ -503,18 +510,31 @@ de:
         public_demo_tenant: Öffentlicher Demo-Mandant
         tenant: Mieter (UUID)
       new:
+        cross_tenant_search:
+          add_account: Konto zur Suche hinzufügen
+          description: Wählen Sie aus, in welchen Repositories dieses Suchkonto gesucht werden soll.
+          header: Vollständige Konten für die mandantenübergreifende Suche
+          remove: entfernen
+        errors_prohibited:
+          one: 'Ein Fehler verhinderte das Speichern dieses Repositorys:'
+          other: "%{count}-Fehler haben das Speichern dieses Repositorys verhindert:"
         header: Erstellen Sie ein neues Repository
       show:
         add: Hinzufügen
+        cannot_remove_last_admin: Der letzte Administrator kann nicht entfernt werden.
+        cannot_remove_last_superadmin: Der letzte Superadmin kann nicht entfernt werden.
         current_admins:
           actions: Aktion
           all_users: Alle Nutzer
           email: E-Mail-Addresse
           header: Administratoren für Girokonten
           no_admins: Es sind keine Administratoren vorhanden
+          superadmin: Mieter-Superadministrator
         edit: Konto bearbeiten
         header: Konto verwalten
         remove: Entfernen
+        remove_superadmin: Mieter-Superadministrator entfernen
+        set_superadmin: Tenant-SuperAdmin hinzufügen
         update: Aktualisieren
     users:
       edit:

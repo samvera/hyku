@@ -844,8 +844,10 @@ fr:
         title: Chercheur en vedette
       featured_works:
         document:
+          abstract_missing: Aucun résumé disponible.
           depositor_label: Déposant
           depositor_missing: aucune valeur pour le déposant
+          description_missing: Aucune description disponible.
           keyword_label: Mots clés
           keyword_missing: aucun mot clé spécifié
           title_label: Titre
@@ -857,8 +859,10 @@ fr:
         depositor: Déposant
         details: Détails
         document:
+          abstract_missing: Aucun résumé disponible.
           depositor_label: Déposant
           depositor_missing: aucune valeur pour le déposant
+          description_missing: Aucune description disponible.
           keyword_label: Mots clés
           keyword_missing: aucun mot clé spécifié
           title_label: Titre

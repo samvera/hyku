@@ -53,6 +53,11 @@ FactoryBot.define do
       search_only { true }
     end
 
+    trait(:public_demo_tenant) do
+      public_demo_tenant { true }
+    end
+
+    factory :demo_account, traits: [:public_demo_tenant]
     factory :search_only_account, traits: [:search_only]
     factory :account_with_public_schema, traits: [:public_schema]
   end

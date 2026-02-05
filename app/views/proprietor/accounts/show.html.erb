@@ -107,11 +107,13 @@
                             <% end %>
                             <%# Superadmin toggle %>
                             <% if @account.superadmin_emails.include?(current_superuser.email) %>
-                              <% if is_last_superadmin %>
+                              <% if is_last_superadmin && @account.public_demo_tenant %>
                                 <span class="dropdown-item disabled" title="<%= t('.cannot_remove_last_superadmin') %>"><%= t('.remove_superadmin') %></span>
                               <% else %>
                                 <%= simple_form_for @account, url: [:proprietor, @account], namespace: "remove_superadmin_#{current_superuser}_form", html: { class: 'form' } do |f| %>
                                   <% keep_superadmin_emails = @account.superadmin_emails - [current_superuser.email] %>
+                                  <%# Always include a blank value first to ensure the array param is sent even when empty %>
+                                  <%= hidden_field_tag 'account[superadmin_emails][]', '' %>
                                   <% keep_superadmin_emails.each do |keep_email| %>
                                     <%= f.input_field :superadmin_emails, multiple: true, hidden: true, value: keep_email %>
                                   <% end %>

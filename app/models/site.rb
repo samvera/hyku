@@ -57,11 +57,12 @@ class Site < ApplicationRecord
   # Update superadmin emails associated with this site
   # @param [Array<String>] Array of user emails
   def superadmin_emails=(emails)
+    emails = Array(emails).reject(&:blank?)
     existing_superadmin_emails = superadmin_emails
     new_superadmin_emails = emails - existing_superadmin_emails
     removed_superadmin_emails = existing_superadmin_emails - emails
-    add_superadmins_by_email(new_superadmin_emails) if new_superadmin_emails
-    remove_superadmins_by_email(removed_superadmin_emails) if removed_superadmin_emails
+    add_superadmins_by_email(new_superadmin_emails) if new_superadmin_emails.present?
+    remove_superadmins_by_email(removed_superadmin_emails) if removed_superadmin_emails.present?
   end
 
   def institution_label

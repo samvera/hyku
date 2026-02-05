@@ -279,6 +279,13 @@ en:
             fonts: Fonts
             logo: Logo
             themes: Themes
+          colors:
+            restore_tenant_color: Restore Tenant Color
+            restore_default: Restore Default
+            restore_all_tenant_colors: Restore All Tenant Colors
+            restore_all_defaults: Restore All Defaults
+            save_as_tenant_colors: Apply Changes and Save as Tenant Colors
+            apply_changes: Apply Changes
       roles_service_jobs:
         header: Data Repair Jobs
         jobs:
@@ -350,17 +357,31 @@ en:
         tenant: Tenant (UUID)
       new:
         header: Create a new repository
+        note: "Note:"
+        errors_prohibited:
+          one: "1 error prohibited this repository from being saved:"
+          other: "%{count} errors prohibited this repository from being saved:"
+        cross_tenant_search:
+          header: Full Accounts for Cross-Tenant Search
+          description: Select which repositories this search-only account will search across.
+          add_account: Add account to search
+          remove: remove
       show:
-        add: Add
+        add: Add Admin
         current_admins:
-          actions: Action
+          actions: Update Access
           all_users: All Users
           email: Email address
           header: Current Account Administrators
           no_admins: No administrators exist
+          superadmin: Tenant SuperAdmin
         edit: Edit Account
         header: Manage Account
-        remove: Remove
+        remove: Remove Admin
+        remove_superadmin: Remove Tenant SuperAdmin
+        set_superadmin: Add Tenant SuperAdmin
+        cannot_remove_last_admin: Cannot remove the last admin
+        cannot_remove_last_superadmin: Cannot remove the last superadmin
         update: Update
     users:
       edit:

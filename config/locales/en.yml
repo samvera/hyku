@@ -357,7 +357,6 @@ en:
         tenant: Tenant (UUID)
       new:
         header: Create a new repository
-        note: "Note:"
         errors_prohibited:
           one: "1 error prohibited this repository from being saved:"
           other: "%{count} errors prohibited this repository from being saved:"

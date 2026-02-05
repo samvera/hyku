@@ -21,13 +21,11 @@
           <%= f.input :name %>
 
           <div class="form-group">
-            <%= f.input :public_demo_tenant, wrapper: false, input_html: { class: 'mr-2' }, label_html: { class: 'font-weight-bold' } %>
-            <small class="form-text text-muted"><%= t('simple_form.hints.account.public_demo_tenant') %></small>
+            <%= f.input :public_demo_tenant, wrapper: false, input_html: { class: 'mr-2' }, label_html: { class: 'font-weight-bold' }, hint_html: { class: 'form-text text-muted' } %>
           </div>
 
           <div class="form-group">
-            <%= f.input :search_only, wrapper: false, input_html: { class: 'mr-2' }, label_html: { class: 'font-weight-bold' } %>
-            <small class="form-text text-muted"><strong><%= t('proprietor.accounts.new.note') %></strong> <%= t('simple_form.hints.account.search_only') %></small>
+            <%= f.input :search_only, wrapper: false, input_html: { class: 'mr-2' }, label_html: { class: 'font-weight-bold' }, hint: "#{t('simple_form.hints.account.search_only')}", hint_html: { class: 'form-text text-muted' } %>
           </div>
 
           <div class='hide mb-2' id='full_account_cross_container'>

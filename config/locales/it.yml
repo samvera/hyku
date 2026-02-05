@@ -370,14 +370,21 @@ it:
     admin:
       appearances:
         show:
+          colors:
+            apply_changes: Applica modifiche
+            restore_all_defaults: Ripristina tutti i valori predefiniti
+            restore_all_tenant_colors: Ripristina tutti i colori degli inquilini
+            restore_default: Ripristina predefinito
+            restore_tenant_color: Ripristina il colore dell'inquilino
+            save_as_tenant_colors: Applica modifiche e salva come colori tenant
           forms:
             active_tabs_background_color:
               hint: Colore al passaggio del mouse sulle schede della home page.
             banner_image:
+              cropped_save_error: Impossibile salvare il banner ritagliato. Riprova.
               hint: |
                 Per utilizzare un'immagine come sfondo di masthead, è necessario utilizzare un'immagine (JPG, GIF o PNG) alta almeno 120 pixel e larga 1200 pixel. Per risultati ottimali, utilizzare un'immagine larga almeno 1800 pixel.<br/>
                 Per ritagliare: fare clic su "Crop Image", regolare la selezione, quindi fare clic su "Save changes". Il banner si ridimensiona con la finestra. Per annullare un ritaglio, utilizzare "Remove banner image" e poi ricaricare l'originale.
-              cropped_save_error: Impossibile salvare il banner ritagliato. Riprova.
             collection_banner_text_color:
               hint: Il colore del testo (titolo e data dell'ultimo aggiornamento) all'interno del banner della raccolta.
             custom_css:
@@ -500,18 +507,31 @@ it:
         public_demo_tenant: Tenant demo pubblico
         tenant: Locatario (UUID)
       new:
+        cross_tenant_search:
+          add_account: Aggiungi account alla ricerca
+          description: Seleziona in quali repository questo account di sola ricerca effettuerà la ricerca.
+          header: Resoconti completi per la ricerca tra tenant
+          remove: rimuovere
+        errors_prohibited:
+          one: '1 errore ha impedito il salvataggio di questo repository:'
+          other: "%{count} errori hanno impedito il salvataggio di questo repository:"
         header: Crea un nuovo repository
       show:
         add: Inserisci
+        cannot_remove_last_admin: Impossibile rimuovere l'ultimo amministratore
+        cannot_remove_last_superadmin: Impossibile rimuovere l'ultimo superamministratore
         current_admins:
           actions: Azione
           all_users: Tutti gli utenti
           email: Indirizzo email
           header: Amministratori del conto corrente
           no_admins: Nessun amministratore esiste
+          superadmin: Superamministratore inquilino
         edit: Modifica account
         header: Gestisci profilo
         remove: Rimuovere
+        remove_superadmin: Rimuovi Tenant SuperAdmin
+        set_superadmin: Aggiungi tenant SuperAdmin
         update: Aggiornare
     users:
       edit:

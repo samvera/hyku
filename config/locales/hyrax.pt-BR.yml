@@ -846,8 +846,10 @@ pt-BR:
         title: Pesquisador Destaque
       featured_works:
         document:
+          abstract_missing: Não há resumo disponível.
           depositor_label: Depositante
           depositor_missing: nenhum valor depositante
+          description_missing: Nenhuma descrição disponível.
           keyword_label: Palavras-chave
           keyword_missing: nenhuma palavra-chave especificada
           title_label: Título
@@ -859,8 +861,10 @@ pt-BR:
         depositor: Depositante
         details: Detalhes
         document:
+          abstract_missing: Não há resumo disponível.
           depositor_label: Depositante
           depositor_missing: nenhum valor depositante
+          description_missing: Nenhuma descrição disponível.
           keyword_label: Palavras-chave
           keyword_missing: nenhuma palavra-chave especificada
           title_label: Título

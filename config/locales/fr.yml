@@ -370,14 +370,21 @@ fr:
     admin:
       appearances:
         show:
+          colors:
+            apply_changes: Appliquer les modifications
+            restore_all_defaults: Rétablir tous les paramètres par défaut
+            restore_all_tenant_colors: Rétablir toutes les couleurs des locataires
+            restore_default: Restaurer les paramètres par défaut
+            restore_tenant_color: Rétablir la couleur des locataires
+            save_as_tenant_colors: Appliquer les modifications et enregistrer les couleurs du locataire
           forms:
             active_tabs_background_color:
               hint: Couleur de survol pour les onglets de la page d'accueil.
             banner_image:
+              cropped_save_error: Échec de l'enregistrement du bannière recadrée. Veuillez réessayer.
               hint: |
                 Pour utiliser une image comme arrière-plan d'une bannière Masthead, vous devez utiliser une image (JPG, GIF ou PNG) d'au moins 120 pixels de haut et 1 200 pixels de large. Pour de meilleurs résultats, utilisez une image d'au moins 1800 pixels de large.<br/>
                 Pour recadrer : cliquez sur "Crop Image", ajustez la sélection, puis cliquez sur "Save changes". La bannière se redimensionne avec la fenêtre. Pour annuler un recadrage, utilisez "Remove banner image" puis téléchargez à nouveau l'original.
-              cropped_save_error: Échec de l'enregistrement du bannière recadrée. Veuillez réessayer.
             collection_banner_text_color:
               hint: La couleur du texte (titre et date de la dernière mise à jour) à l'intérieur de la bannière de collection.
             custom_css:
@@ -505,18 +512,31 @@ fr:
         public_demo_tenant: Locataire de démonstration publique
         tenant: Locataire (UUID)
       new:
+        cross_tenant_search:
+          add_account: Ajouter un compte à la recherche
+          description: Sélectionnez les référentiels sur lesquels ce compte de recherche uniquement effectuera ses recherches.
+          header: Comptes complets pour la recherche inter-locataires
+          remove: retirer
+        errors_prohibited:
+          one: 'Une erreur a empêché l''enregistrement de ce dépôt :'
+          other: 'Des erreurs %{count} ont empêché l''enregistrement de ce dépôt :'
         header: Créer un nouveau référentiel
       show:
         add: Ajouter
+        cannot_remove_last_admin: Impossible de supprimer le dernier administrateur
+        cannot_remove_last_superadmin: Impossible de supprimer le dernier super-administrateur
         current_admins:
           actions: action
           all_users: Tous les utilisateurs
           email: Adresse e-mail
           header: Administrateurs de compte actuels
           no_admins: Aucun administrateur n'existe
+          superadmin: Superadministrateur du locataire
         edit: Modifier le compte
         header: Gérer son compte
         remove: Retirer
+        remove_superadmin: Supprimer le superadministrateur du locataire
+        set_superadmin: Ajouter un superadministrateur locataire
         update: Mettre à jour
     users:
       edit:

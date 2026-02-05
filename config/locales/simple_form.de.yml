@@ -35,6 +35,8 @@ de:
         monthly_email_list: Liste von E-Mail-Adressen, an die der monatliche Bericht gesendet wird. Lassen Sie jeweils ein Leerzeichen zwischen den E-Mails
         name: Ein einzelner oder mit Bindestrichen versehener Name, der für technische Aspekte des Repositories verwendet wird (z.B. "acme" oder "acme-bibliothek").
         oai_admin_email: OAI-Endpunkt-Kontakt-E-Mail-Adresse
+        public_demo_tenant: Dieses Konto soll als öffentlicher Demo-Mandant für Testzwecke gekennzeichnet werden. Diese Einstellung kann nach der Erstellung nicht mehr geändert werden.
+        search_only: Für reine Suchkonten muss mindestens ein vollständiges Konto für die mandantenübergreifende Suche ausgewählt werden.
         shared_login: Gemeinsamen Login aktivieren oder deaktivieren
         ssl_configured: Setzen Sie es auf wahr, wenn Sie https verwenden
         weekly_email_list: Liste von E-Mail-Adressen, an die der wöchentliche Bericht gesendet wird. Lassen Sie jeweils ein Leerzeichen zwischen den E-Mails
@@ -52,6 +54,8 @@ de:
           url: URL
         gtm_id: Google Tag Manager
         name: Kurzname
+        public_demo_tenant: Öffentlicher Demo-Mieter
+        search_only: Nur Suche
         solr_endpoint:
           url: URL
         tenant: Mandant UUID

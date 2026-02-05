@@ -35,6 +35,8 @@ fr:
         monthly_email_list: Liste des adresses e-mail pour envoyer le rapport mensuel. Laissez un espace entre chaque e-mail
         name: Un nom simple ou avec des tirets utilisé pour les aspects techniques du dépôt (par exemple, "acme" ou "acme-bibliothèque").
         oai_admin_email: Adresse e-mail de contact du point d'accès OAI
+        public_demo_tenant: Marquez ce compte comme un compte de démonstration public à des fins de test. Cette option ne pourra plus être modifiée après sa création.
+        search_only: Les comptes de recherche uniquement nécessitent la sélection d'au moins un compte complet ci-dessous pour la recherche inter-locataires.
         shared_login: Activer ou désactiver la connexion partagée
         ssl_configured: Mettez-le sur vrai si vous utilisez https
         weekly_email_list: Liste des adresses e-mail pour envoyer le rapport hebdomadaire. Laissez un espace entre chaque e-mail
@@ -52,6 +54,8 @@ fr:
           url: URL
         gtm_id: Gestionnaire de balises Google
         name: Nom court
+        public_demo_tenant: Démo publique locataire
+        search_only: Recherche uniquement
         solr_endpoint:
           url: URL
         tenant: UUID du locataire

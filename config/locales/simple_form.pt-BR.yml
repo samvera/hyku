@@ -35,6 +35,8 @@ pt-BR:
         monthly_email_list: Lista de endereços de e-mail para enviar o relatório mensal. Deixe um espaço único entre cada e-mail
         name: Um nome simples ou hifenizado usado para aspectos técnicos do repositório (por exemplo, "acme" ou "acme-biblioteca").
         oai_admin_email: Endereço de e-mail de contato do ponto final OAI
+        public_demo_tenant: Marque esta conta como um locatário de demonstração público para testes. Esta configuração não poderá ser alterada após a criação.
+        search_only: Contas somente para pesquisa exigem que pelo menos uma conta completa seja selecionada abaixo para pesquisa entre locatários.
         shared_login: Habilitar ou desabilitar login compartilhado
         ssl_configured: Defina como verdadeiro se estiver usando https
         weekly_email_list: Lista de endereços de e-mail para enviar o relatório semanal. Deixe um espaço único entre cada e-mail
@@ -52,6 +54,8 @@ pt-BR:
           url: URL
         gtm_id: Google Tag Manager
         name: Nome curto
+        public_demo_tenant: Inquilino de demonstração pública
+        search_only: Somente pesquisa
         solr_endpoint:
           url: URL
         tenant: UUID do inquilino

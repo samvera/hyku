@@ -13,8 +13,19 @@ module Hyku
     # 196×196	favicon-196.png Chrome for Android home screen icon
     # rubocop:enable Style/AsciiComments
 
-    versions.delete(:medium)
-    versions.delete(:thumb)
+    # Needed here to override Hyrax::AvatarUploader's whitelist even though these
+    #   versions don't get created
+    version :medium do
+      def extension_whitelist
+        %w[png ico]
+      end
+    end
+
+    version :thumb do
+      def extension_whitelist
+        %w[png ico]
+      end
+    end
 
     [32, 57, 76, 96, 128, 192, 228, 196, 120, 152, 180].each do |i|
       version "v#{i}".to_sym do

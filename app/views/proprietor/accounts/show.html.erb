@@ -73,66 +73,8 @@
                     <td></td>
                   </tr>
                 <% else %>
-                  <% @current_superusers.each do |current_superuser| %>
-                    <tr>
-                      <td><%= current_superuser %></td>
-                      <td><%= @account.superadmin_emails.include?(current_superuser.email) %></td>
-                      <td>
-                        <% is_last_admin = @account.admin_emails.size == 1 %>
-                        <% is_last_superadmin = @account.superadmin_emails.size == 1 && @account.superadmin_emails.include?(current_superuser.email) %>
-                        <div class="dropdown">
-                          <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
-                            <%= t('.current_admins.actions') %>
-                          </button>
-                          <div class="dropdown-menu">
-                            <%# Remove admin form (also removes superadmin status) %>
-                            <% if is_last_admin %>
-                              <span class="dropdown-item disabled" title="<%= t('.cannot_remove_last_admin') %>"><%= t('.remove') %></span>
-                            <% else %>
-                              <%= simple_form_for @account, url: [:proprietor, @account], namespace: "remove_#{current_superuser}_form", html: { class: 'form' } do |f| %>
-                                <% keep_emails = @account.admin_emails - [current_superuser.email] %>
-                                <% keep_emails.each do |keep_email| %>
-                                  <%= f.input_field :admin_emails, multiple: true, hidden: true, value: keep_email %>
-                                <% end %>
-                                <% keep_superadmin_emails = @account.superadmin_emails - [current_superuser.email] %>
-                                <% if keep_superadmin_emails.empty? %>
-                                  <%= f.input_field :superadmin_emails, multiple: true, hidden: true, value: '' %>
-                                <% else %>
-                                  <% keep_superadmin_emails.each do |keep_email| %>
-                                    <%= f.input_field :superadmin_emails, multiple: true, hidden: true, value: keep_email %>
-                                  <% end %>
-                                <% end %>
-                                <%= f.submit t('.remove'), class: 'dropdown-item' %>
-                              <% end %>
-                            <% end %>
-                            <%# Superadmin toggle %>
-                            <% if @account.superadmin_emails.include?(current_superuser.email) %>
-                              <% if is_last_superadmin && @account.public_demo_tenant %>
-                                <span class="dropdown-item disabled" title="<%= t('.cannot_remove_last_superadmin') %>"><%= t('.remove_superadmin') %></span>
-                              <% else %>
-                                <%= simple_form_for @account, url: [:proprietor, @account], namespace: "remove_superadmin_#{current_superuser}_form", html: { class: 'form' } do |f| %>
-                                  <% keep_superadmin_emails = @account.superadmin_emails - [current_superuser.email] %>
-                                  <%# Always include a blank value first to ensure the array param is sent even when empty %>
-                                  <%= hidden_field_tag 'account[superadmin_emails][]', '' %>
-                                  <% keep_superadmin_emails.each do |keep_email| %>
-                                    <%= f.input_field :superadmin_emails, multiple: true, hidden: true, value: keep_email %>
-                                  <% end %>
-                                  <%= f.submit t('.remove_superadmin'), class: 'dropdown-item text-warning' %>
-                                <% end %>
-                              <% end %>
-                            <% else %>
-                              <%= simple_form_for @account, url: [:proprietor, @account], namespace: "add_superadmin_#{current_superuser}_form", html: { class: 'form' } do |f| %>
-                                <% @account.superadmin_emails.each do |email| %>
-                                  <%= f.input_field :superadmin_emails, multiple: true, hidden: true, value: email %>
-                                <% end %>
-                                <%= f.input_field :superadmin_emails, multiple: true, hidden: true, value: current_superuser.email %>
-                                <%= f.submit t('.set_superadmin'), class: 'dropdown-item' %>
-                              <% end %>
-                            <% end %>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
+                  <% @current_superusers.each do |user| %>
+                    <%= render 'proprietor/accounts/admin_row', presenter: @presenter, user: user %>
                   <% end %>
                 <% end %>
               </tbody>

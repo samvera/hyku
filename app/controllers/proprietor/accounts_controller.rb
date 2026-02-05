@@ -18,6 +18,7 @@ module Proprietor
     # GET /accounts/1.json
     def show
       @users = User.accessible_by(current_ability)
+      @presenter = Proprietor::AccountPresenter.new(@account)
 
       add_breadcrumb t(:'hyrax.controls.home'), root_path
       add_breadcrumb t(:'hyrax.admin.sidebar.accounts'), proprietor_accounts_path

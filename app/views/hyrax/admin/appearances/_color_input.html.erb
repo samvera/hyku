@@ -7,7 +7,8 @@
         hint: !missing_translation(hint) && hint %>
   </div>
   <div class='col-lg-2'>
-    <%= link_to 'Restore Default',
+    <% button_text = Flipflop.use_tenant_specific_colors? ? t('hyrax.admin.appearances.show.colors.restore_tenant_color') : t('hyrax.admin.appearances.show.colors.restore_default') %>
+    <%= link_to button_text,
         '#color',
         class: "btn btn-secondary restore-default-color #{'with-color-hint' if !missing_translation(hint)}",
         data: { default_target: color_name } %>

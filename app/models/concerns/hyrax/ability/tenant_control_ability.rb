@@ -7,7 +7,7 @@ module Hyrax
   module Ability
     module TenantControlAbility
       def tenant_control_abilities
-        if admin? && Site.account.public_demo_tenant? != true
+        if admin? && Site.account&.public_demo_tenant? != true
           can [:manage], :tenant_controls
         elsif tenant_superadmin?
           can [:manage], :tenant_controls

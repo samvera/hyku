@@ -14,6 +14,7 @@ RSpec.describe Hyrax::Ability::TenantControlAbility do
   context 'when in standard tenant' do
     before do
       allow(Site).to receive_message_chain(:account, :public_demo_tenant?).and_return(false)
+      allow(Site).to receive_message_chain(:account, :search_only?).and_return(false)
       allow(ability).to receive(:current_user).and_return(current_user)
     end
 
@@ -45,6 +46,7 @@ RSpec.describe Hyrax::Ability::TenantControlAbility do
   context 'when in demo tenant' do
     before do
       allow(Site).to receive_message_chain(:account, :public_demo_tenant?).and_return(true)
+      allow(Site).to receive_message_chain(:account, :search_only?).and_return(false)
     end
 
     describe 'when tenant superadmin' do

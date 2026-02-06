@@ -845,8 +845,10 @@ de:
         title: Ausgewählter Forscher
       featured_works:
         document:
+          abstract_missing: Es ist keine Zusammenfassung verfügbar.
           depositor_label: Einleger
           depositor_missing: kein Einzahlerwert
+          description_missing: Keine Beschreibung verfügbar.
           keyword_label: Schlüsselwörter
           keyword_missing: Keine Schlüsselwörter angegeben
           title_label: Titel
@@ -858,8 +860,10 @@ de:
         depositor: Einleger
         details: Einzelheiten
         document:
+          abstract_missing: Es ist keine Zusammenfassung verfügbar.
           depositor_label: Einleger
           depositor_missing: kein Einzahlerwert
+          description_missing: Keine Beschreibung verfügbar.
           keyword_label: Schlüsselwörter
           keyword_missing: Keine Schlüsselwörter angegeben
           title_label: Titel

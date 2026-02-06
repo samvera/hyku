@@ -40,6 +40,16 @@ module Hyrax
         redirect_to({ action: :show }, notice: t('.flash.success'))
       end
 
+      def save_tenant_colors
+        if Flipflop.use_tenant_specific_colors?
+          form = form_class.new(tenant_colors_params)
+          form.save_tenant_colors!
+          redirect_to({ action: :show }, notice: t('.flash.success'))
+        else
+          redirect_to({ action: :show }, alert: t('.flash.failure'))
+        end
+      end
+
       private
 
       def add_breadcrumbs
@@ -74,6 +84,10 @@ module Hyrax
           'List view' => 'list_view',
           'Gallery view' => 'gallery_view'
         }
+      end
+
+      def tenant_colors_params
+        params.require(:admin_appearance).permit(form_class.color_params)
       end
     end
   end

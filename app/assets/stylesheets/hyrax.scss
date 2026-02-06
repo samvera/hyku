@@ -3,7 +3,7 @@
  *= require select2
  *= require_self
 */
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Montserrat&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Montserrat&display=swap");
 @import "variables";
 @import "bootstrap-default-overrides";
 @import "bootstrap";
@@ -20,6 +20,7 @@
 @import "viewer";
 
 @import "themes/*";
+@import "hyku/*";
 
 // for catalog search result snippets
 .highlight {
@@ -48,4 +49,3 @@
 a {
   overflow-wrap: anywhere;
 }
-

@@ -26,6 +26,8 @@
 
           <%= f.input :is_public %>
 
+          <%= f.input :public_demo_tenant, disabled: true, hint: "This field cannot be changed after account creation" %>
+
           <%= f.input :tenant, readonly: @account.persisted? %>
 
           <%= f.input :cname, readonly: true %>

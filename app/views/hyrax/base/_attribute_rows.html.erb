@@ -4,6 +4,9 @@
 <% if Hyrax.config.flexible? %>
   <% view_options_for(presenter).each do |field, options| %>
     <% view_options = conform_options(field, options) %>
+
+    <%# can add metadata property called admin_note that is restricted to any editor role %>
+    <%# can add indexing.admin_only to restrict any property to admins %>
     <% if field == :admin_note %>
       <%= presenter.attribute_to_html(conform_field(field, options), view_options) if presenter.editor? %>
     <% else %>

@@ -4,7 +4,7 @@ class IdentityProvider < ApplicationRecord
   validates :name, presence: true
   validates :provider, presence: true
 
-  mount_uploader :logo_image, LogoUploader
+  mount_uploader :logo_image, Hyku::LogoUploader
 
   def parsed_options(rack_env = nil)
     @parsed_options = options.with_indifferent_access

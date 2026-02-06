@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_10_03_224622) do
+ActiveRecord::Schema[7.2].define(version: 2026_02_02_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -39,6 +39,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_03_224622) do
     t.jsonb "settings", default: {}
     t.bigint "data_cite_endpoint_id"
     t.boolean "search_only", default: false
+    t.boolean "public_demo_tenant", default: false, null: false
     t.index ["cname", "tenant"], name: "index_accounts_on_cname_and_tenant"
     t.index ["cname"], name: "index_accounts_on_cname", unique: true
     t.index ["data_cite_endpoint_id"], name: "index_accounts_on_data_cite_endpoint_id"

@@ -23,7 +23,7 @@ class OerResource < Hyrax::Work
     pdf_splitter_service: IiifPrint::TenantConfig::PdfSplitter
   )
 
-  prepend OrderAlready.for(:creator) unless Hyrax.config.flexible?
+  prepend OrderAlready.for(:creator)
 
   def previous_version
     @previous_version ||= Hyrax.query_service.find_many_by_ids(ids: previous_version_id) if previous_version_id.present?

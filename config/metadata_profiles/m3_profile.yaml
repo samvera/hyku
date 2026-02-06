@@ -809,8 +809,6 @@ properties:
   rights_statement:
     available_on:
       class:
-        - Hyrax::FileSet
-        - CollectionResource
         - GenericWorkResource
         - ImageResource
         - OerResource
@@ -831,6 +829,37 @@ properties:
     form:
       primary: true
       required: true
+    mappings:
+      simple_dc_pmh: dc:rights
+    property_uri: http://www.europeana.eu/schemas/edm/rights
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - http://rightsstatements.org/vocab/InC/1.0/
+    view:
+      html_dl: true
+      render_as: rights_statement
+  rights_statement_optional:
+    name: rights_statement
+    available_on:
+      class:
+        - Hyrax::FileSet
+        - CollectionResource
+    cardinality:
+      minimum: 0
+    data_type: array
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - rights_statements
+    display_label:
+      default: blacklight.search.fields.index.rights_statement_tesim
+    index_documentation: displayable, searchable
+    indexing:
+      - rights_statement_sim
+      - rights_statement_tesim
+    form:
+      primary: false
+      required: false
     mappings:
       simple_dc_pmh: dc:rights
     property_uri: http://www.europeana.eu/schemas/edm/rights

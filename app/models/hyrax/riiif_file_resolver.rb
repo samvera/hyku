@@ -14,7 +14,7 @@ module Hyrax
         path = build_path(id)
         path = build_path(id, force: true) unless File.exist?(path) # Ensures the file is locally available
       end
-      Riiif::File.new(path, id: id)
+      ::Riiif::File.new(path, id: id)
     end
 
     # tracks individual file locks
@@ -29,8 +29,8 @@ module Hyrax
     private
 
     def build_path(id, force: false)
-      Riiif::Image.cache.fetch("riiif:" + Digest::MD5.hexdigest("path:#{id}"),
-                               expires_in: Riiif::Image.expires_in,
+      ::Riiif::Image.cache.fetch("riiif:" + Digest::MD5.hexdigest("path:#{id}"),
+                               expires_in: ::Riiif::Image.expires_in,
                                force: force) do
         load_file(id)
       end

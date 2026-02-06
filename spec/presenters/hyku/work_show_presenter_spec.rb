@@ -193,7 +193,7 @@ RSpec.describe Hyku::WorkShowPresenter do
         end
       end
     end
-  end 
+  end
 
   describe "#valid_child_concerns" do
     let(:enabled_works) { ["GenericWork", "Image"] }
@@ -201,9 +201,9 @@ RSpec.describe Hyku::WorkShowPresenter do
 
     before do
       account_double = double("Account", cname: nil)
-      site_double = double("Site", 
-                          available_works: enabled_works, 
-                          default_work_image: double(url: nil), 
+      site_double = double("Site",
+                          available_works: enabled_works,
+                          default_work_image: double(url: nil),
                           account: account_double,
                           institution_label: nil)
       allow(Site).to receive(:instance).and_return(site_double)
@@ -217,7 +217,7 @@ RSpec.describe Hyku::WorkShowPresenter do
 
     context "when some work types are disabled" do
       let(:enabled_works) { ["GenericWork"] }
-      
+
       it "excludes disabled work types from child concerns" do
         result = presenter.valid_child_concerns.map(&:to_s)
         expect(result).to eq(["GenericWork"])
@@ -227,7 +227,7 @@ RSpec.describe Hyku::WorkShowPresenter do
 
     context "when all work types are disabled" do
       let(:enabled_works) { [] }
-      
+
       it "returns empty array when no work types are enabled" do
         result = presenter.valid_child_concerns
         expect(result).to be_empty
@@ -236,7 +236,7 @@ RSpec.describe Hyku::WorkShowPresenter do
 
     context "when flexible metadata is enabled" do
       let(:enabled_works) { ["GenericWork", "Image", "Etd"] }
-      
+
       before do
         allow(Hyrax.config).to receive(:flexible?).and_return(true)
       end
@@ -244,7 +244,7 @@ RSpec.describe Hyku::WorkShowPresenter do
       context "and M3 profile removes some curation concerns" do
         let(:profile_classes) { ["GenericWorkResource", "ImageResource"] }
         let(:profile) { { "classes" => profile_classes.index_with { |_| {} } } }
-        
+
         before do
           allow(Hyrax::FlexibleSchema).to receive(:current_version).and_return(profile)
           # Simulate that Hyrax only considers GenericWork and Image as valid based on profile
@@ -261,7 +261,7 @@ RSpec.describe Hyku::WorkShowPresenter do
       context "and M3 profile allows all work types" do
         let(:profile_classes) { ["GenericWorkResource", "ImageResource", "EtdResource"] }
         let(:profile) { { "classes" => profile_classes.index_with { |_| {} } } }
-        
+
         before do
           allow(Hyrax::FlexibleSchema).to receive(:current_version).and_return(profile)
         end
@@ -273,5 +273,4 @@ RSpec.describe Hyku::WorkShowPresenter do
       end
     end
   end
-  
 end

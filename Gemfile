@@ -15,7 +15,6 @@ source 'https://rubygems.org'
 # Updated to Rails 7.2 for upgrade
 gem 'rails', '~> 7.2.0'
 
-gem 'active_elastic_job', github: 'active-elastic-job/active-elastic-job', ref: 'ec51c5d9dedc4a1b47f2db41f26d5fceb251e979', group: %i[aws]
 gem 'active-fedora'
 gem 'activerecord-nulldb-adapter'
 gem 'activesupport', '>= 4.2.0', group: %i[development test]
@@ -29,7 +28,8 @@ gem 'blacklight_range_limit', '~> 8.5'
 gem 'bolognese', '>= 1.9.10'
 gem 'bootstrap', '~> 4.6'
 gem 'bootstrap-datepicker-rails'
-gem 'bulkrax', github: 'samvera/bulkrax', branch: 'main' # , '~> 9.3.0'
+# gem 'bulkrax', '~> 9.3.0'
+gem 'bulkrax', github: 'samvera/bulkrax', branch: 'main'
 gem 'byebug', group: %i[development test]
 gem 'capybara', group: %i[test]
 gem 'capybara-screenshot', '~> 1.0', group: %i[test]
@@ -52,12 +52,12 @@ gem 'good_job', '~> 4.10' # Updated for Rails 7.2 compatibility
 gem 'googleauth', '~> 1.9.0'
 gem 'google-protobuf'
 gem 'grpc'
-gem 'hyrax', github: 'samvera/hyrax', branch: 'hyku_7_main'
+gem 'hyrax', github: 'samvera/hyrax', branch: 'main'
 gem 'hyrax-doi', github: 'samvera-labs/hyrax-doi', branch: 'rails_hyrax_upgrade'
 gem 'hyrax-iiif_av', github: 'samvera-labs/hyrax-iiif_av', branch: 'rails_hyrax_upgrade'
 gem 'i18n-debug', require: false, group: %i[development test]
 gem 'i18n-tasks', group: %i[development test]
-gem 'iiif_print', github: 'notch8/iiif_print', branch: 'fix_metadata_include' # '~> 3.0.9'
+gem 'iiif_print', github: 'notch8/iiif_print', branch: 'main' # '~> 3.0.10'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'json-canonicalization', "0.3.1" # The maintainers yanked 0.3.2 version (see https://github.com/dryruby/json-canonicalization/issues/2)
@@ -90,7 +90,7 @@ gem 'redcarpet' # for Markdown constant
 gem 'redis-actionpack'
 gem 'redis-namespace', '~> 1.10' # Hyrax v5 relies on 1.5; but we'd like to have the #clear method so we need 1.10 or greater.
 gem 'redlock', '>= 0.1.2', '< 2.0' # lock redlock per https://github.com/samvera/hyrax/pull/5961
-gem 'riiif', '~> 2.1'
+gem 'riiif', git: 'https://github.com/sul-dlss/riiif.git', ref: '9a375'
 gem 'rolify'
 gem 'ros-apartment', require: 'apartment' # Rails 7.2 compatible apartment fork - drop-in replacement
 gem 'rsolr', '~> 2.0'
@@ -126,7 +126,7 @@ gem 'valkyrie-shrine'
 gem 'web-console', '>= 3.3.0', group: %i[development] # <%= console %> in views
 gem 'webdrivers', '~> 4.7.0', group: %i[test]
 gem 'webmock', group: %i[test]
-gem 'willow_sword', github: 'notch8/willow_sword', branch: 'main'
+gem 'willow_sword', github: 'notch8/willow_sword', tag: 'v0.8.0'
 
 # Enabling the following gem breaks sidekiq. To Enable: assets.debug must be set to true in config/development.rb
 # gem "xray-rails", git: "https://github.com/brentd/xray-rails.git", branch: "bugs/ruby-3.0.0", group: %i[development]

@@ -72,7 +72,8 @@ body.public-facing .nav-tabs > li.nav-item > a:focus {
 }
 
 /* PRIMARY BUTTON STYLES */
-body.public-facing .btn-primary {
+body.public-facing .btn-primary,
+body.public-facing .page-item.active > .page-link {
   background-color: <%= appearance.primary_button_background_color %> !important;
   border-color: <%= appearance.primary_button_border_color %> !important;
   color: <%= appearance.primary_button_text_color %> !important;
@@ -214,12 +215,18 @@ body.public-facing .card-body > .facet-limit-active {
 }
 
 /* COLLECTION STYLES */
-body.public-facing .hyc-banner .hyc-title h1,
-body.public-facing .hyc-last-updated,
-body.public-facing .hyc-created-by {
+body.public-facing .hyc-banner .hyc-title h1 {
   color: <%= appearance.collection_banner_text_color %> !important;
 }
 
 <%= appearance.custom_css_block %>
+
+/* COMMUNITY THEME CUSTOMIZATIONS */
+body.community .community-explore-collections:hover {
+  background-color: <%= appearance.primary_button_hover_color %>;
+}
+body.community .community-explore-collections:hover .card-title a {
+  color: <%= appearance.primary_button_text_color %>;
+}
 
 </style>

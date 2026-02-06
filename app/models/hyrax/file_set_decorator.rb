@@ -2,9 +2,9 @@
 
 module Hyrax
   module FileSetDecorator
-    def self.included(base)
-      base.include Hyrax::Schema(:bulkrax_metadata) unless Hyrax.config.file_set_include_metadata?
-      base.include Hyrax::ArResource
+    def self.prepended(base)
+      base.include Hyrax::Schema(:bulkrax_metadata) if Hyrax.config.file_set_include_metadata? && !base.fields.include?(:bulkrax_identifier)
+      base.include Hyrax::ArResource unless base.include?(Hyrax::ArResource)
     end
   end
 end

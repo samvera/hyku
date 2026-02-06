@@ -72,3 +72,8 @@ q*.bin
 # Google service account credentials
 config/google_service_account.json
 rspec.log
+scratch.md
+plans/*
+.serena/*
+.claude/*
+CLAUDE.md

@@ -1,14 +1,15 @@
+---
 en:
   blacklight:
-    application_name: 'Hyku'
+    application_name: Hyku
     search:
       fields:
         facet:
           based_near_label_sim: Location
           creator_sim: Creator
+          depositor_ssim: Depositor
           file_format_sim: Format
           generic_type_sim: Type
-          depositor_ssim: Depositor
           keyword_sim: Keyword
           language_sim: Language
           publisher_sim: Publisher

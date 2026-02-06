@@ -298,9 +298,33 @@ es:
     footer:
       admin_login: Inicio de sesión de administrador
     identity_provider:
+      configurations:
+        assertion_url_after_save_html: Estas son las URL de servicio del consumidor de aserciones o URL de redireccionamiento que su IdP debe permitir. No especifique <code>assertion_consumer_service_url</code> en sus opciones.
+        assertion_url_before_save_html: SAML <code>assertion_consumer_service_url</code> se mostrará después de guardar el registro.
+        metadata: Ver metadatos
+        saml_html: 'Usamos un parámetro adicional para SAML: <code>idp_metadata_url</code> . Si proporciona esa URL, se analizará como se muestra en %{link_name}.'
+      documentation:
+        aria_label:
+          cas: Documentación CAS (se abre en una nueva pestaña)
+          openid_connect: Documentación de Openid Connect (se abre en una nueva pestaña)
+          saml: Documentación SAML (se abre en una nueva pestaña)
+          samvera: Documentación de inicio de sesión único (SSO) (se abre en una nueva pestaña)
+        link:
+          cas: CAS
+          openid_connect: Conexión Openid
+          saml: SAML
+          samvera: Inicio de sesión único (SSO)
+        text_content:
+          provider: La documentación de cada tipo de proveedor de identidad se puede encontrar en la documentación del adaptador asociado.
+          samvera: Para obtener más información sobre cómo configurar su proveedor de identidad, consulte la página de documentación de la Comunidad %{link_name} Samvera.
+          samvera_html: Para obtener más información sobre cómo configurar su proveedor de identidad, consulte la página de documentación de la Comunidad %{link_name} Samvera.
       header: Proveedor de identidad de autenticación
       label:
+        configurations: Configuraciones
         create_new: Nuevo
+        delete: Borrar
+        delete_confirmation: "¿Está seguro?"
+        documentation: Documentación
         edit: Editar
         logo: Logo
         logo_image: Imagen para la página de SSO
@@ -346,11 +370,21 @@ es:
     admin:
       appearances:
         show:
+          colors:
+            apply_changes: Aplicar cambios
+            restore_all_defaults: Restaurar todos los valores predeterminados
+            restore_all_tenant_colors: Restaurar todos los colores de los inquilinos
+            restore_default: Restaurar valores predeterminados
+            restore_tenant_color: Restaurar el color del inquilino
+            save_as_tenant_colors: Aplicar cambios y guardar como colores de inquilino
           forms:
             active_tabs_background_color:
               hint: Color al pasar el mouse sobre las pestañas de la página de inicio.
             banner_image:
-              hint: Para usar una imagen como fondo de cabecera, debe usar una imagen (JPG, GIF o PNG) que tenga al menos 120 píxeles de alto y 1200 píxeles de ancho. Para obtener mejores resultados, use una imagen de al menos 1800 píxeles de ancho.
+              cropped_save_error: Error al guardar el banner recortado. Por favor, inténtelo de nuevo.
+              hint: |
+                Para usar una imagen como fondo de cabecera, debe usar una imagen (JPG, GIF o PNG) que tenga al menos 120 píxeles de alto y 1200 píxeles de ancho. Para obtener mejores resultados, use una imagen de al menos 1800 píxeles de ancho.<br/>
+                Para recortar: haga clic en "Crop Image", ajuste la selección y luego haga clic en "Save changes". El banner se redimensiona con la ventana. Para deshacer un recorte, use "Remove banner image" y luego vuelva a cargar el original.
             collection_banner_text_color:
               hint: El color del texto (título y fecha de última actualización) dentro del banner de la colección.
             custom_css:
@@ -360,7 +394,7 @@ es:
               hint: Botones de interacción de trabajo (editar, función, etc.); vistas de trabajo en la página de colección y botón de filtro de búsqueda.
             default_images:
               alert: Cargue al menos un archivo antes de enviarlo.
-              hint: Para las imágenes predeterminadas, debe usar una imagen (JPG, GIF o PNG) que tenga las mismas dimensiones de alto y ancho (100 píxeles de ancho y 100 píxeles de alto)
+              hint: Para las imágenes predeterminadas, debe usar una imagen (JPG, GIF o PNG) que tenga las mismas dimensiones de alto y ancho (100 píxeles de ancho y 100 píxeles de alto).
             directory_image:
               hint: La imagen del directorio debe usar una imagen (JPG, GIF o PNG). El ancho de la imagen no debe ser más ancho que el doble de la altura.
             facet_panel_background_color:
@@ -464,25 +498,40 @@ es:
         header: Cuenta de edición
         solr_endpoint: Punto final de Solr
       index:
+        actions: Acciones
         cname: CNAME
         confirm_delete: "¿Estás seguro de que deseas eliminar este repositorio? TODAS LAS COLECCIONES Y TRABAJOS dentro de este repositorio se BORRARÁN PERMANENTEMENTE"
         create_new: Crear una nueva cuenta
         header: Cuentas
         manage: Gestionar
+        public_demo_tenant: Inquilino de demostración pública
         tenant: Inquilino (UUID)
       new:
+        cross_tenant_search:
+          add_account: Añadir cuenta para buscar
+          description: Seleccione en qué repositorios buscará esta cuenta de solo búsqueda.
+          header: Cuentas completas para búsqueda entre inquilinos
+          remove: eliminar
+        errors_prohibited:
+          one: '1 error impidió que se guardara este repositorio:'
+          other: 'Los errores %{count} impidieron que se guardara este repositorio:'
         header: Crea un nuevo repositorio
       show:
         add: Añadir
+        cannot_remove_last_admin: No se puede eliminar el último administrador
+        cannot_remove_last_superadmin: No se puede eliminar el último superadministrador
         current_admins:
           actions: Acción
           all_users: Todos los usuarios
           email: Dirección de correo electrónico
           header: Administradores de cuenta corriente
           no_admins: No existen administradores
+          superadmin: Superadministrador de inquilinos
         edit: Editar cuenta
         header: Administrar cuenta
         remove: Eliminar
+        remove_superadmin: Eliminar Superadministrador de inquilinos
+        set_superadmin: Agregar inquilino superadministrador
         update: Actualizar
     users:
       edit:

@@ -1,16 +1,7 @@
 GIT
-  remote: https://github.com/active-elastic-job/active-elastic-job.git
-  revision: ec51c5d9dedc4a1b47f2db41f26d5fceb251e979
-  ref: ec51c5d9dedc4a1b47f2db41f26d5fceb251e979
-  specs:
-    active_elastic_job (2.0.1)
-      aws-sdk-sqs (~> 1)
-      rails (>= 4.2)
-
-GIT
   remote: https://github.com/notch8/iiif_print.git
-  revision: 857ea9248f9f93a91336defcbecadd03650fac32
-  branch: fix_metadata_include
+  revision: d65a5871d8566770960c794224fa3e5aa3709ccf
+  branch: main
   specs:
     iiif_print (3.0.10)
       blacklight_iiif_search (>= 1.0, < 3.0)
@@ -21,10 +12,10 @@ GIT
 
 GIT
   remote: https://github.com/notch8/willow_sword.git
-  revision: 90d600cc5d44b70e59cceb5faebb4fd5eddd7fbc
-  branch: main
+  revision: a8bcacbf4d277e2c9522179086e84ea8414225b4
+  tag: v0.8.0
   specs:
-    willow_sword (0.7.1)
+    willow_sword (0.8.0)
       bagit (>= 0.4)
       rails (>= 6.1)
       rubyzip (>= 1.0.0)
@@ -61,10 +52,10 @@ GIT
 
 GIT
   remote: https://github.com/samvera/bulkrax.git
-  revision: 248ee12afaa9bd7751313c90816a0c1cc51a1398
+  revision: 4e24444f8eb46edab7b18ccd160281fa76b6affd
   branch: main
   specs:
-    bulkrax (9.3.2)
+    bulkrax (9.3.4)
       bagit (~> 0.6.0)
       coderay
       denormalize_fields
@@ -83,8 +74,8 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: d91ce230e653b7e0adc9a85af31693c8139f473c
-  branch: hyku_7_main
+  revision: 0af11acf9088cc90c7c9dcf2b4969bd45a101fe2
+  branch: main
   specs:
     hyrax (5.2.0)
       active-fedora (~> 15.0)
@@ -92,6 +83,7 @@ GIT
       awesome_nested_set (~> 3.1)
       blacklight (~> 7.29)
       blacklight-gallery (~> 4.6.4)
+      blacklight_dynamic_sitemap (~> 1.0)
       breadcrumbs_on_rails (~> 3.0)
       browse-everything (>= 0.16, < 2.0)
       carrierwave (~> 1.0)
@@ -120,6 +112,7 @@ GIT
       linkeddata
       listen (~> 3.9)
       mailboxer (~> 0.12)
+      multi_json (= 1.18.0)
       nest (~> 3.1)
       noid-rails (~> 3.0)
       oauth
@@ -168,6 +161,17 @@ GIT
       addressable (~> 2.3)
       nokogiri (~> 1.5)
       omniauth (>= 1.2, < 3)
+
+GIT
+  remote: https://github.com/sul-dlss/riiif.git
+  revision: 9a37564c3842d703bb9df195038eaf7fb037b5df
+  ref: 9a375
+  specs:
+    riiif (2.7.0)
+      deprecation (>= 1.0.0)
+      iiif-image-api (>= 0.1.0)
+      railties (>= 4.2, < 9)
+      ruby-vips
 
 GEM
   remote: https://rubygems.org/
@@ -282,8 +286,8 @@ GEM
     awesome_nested_set (3.8.0)
       activerecord (>= 4.0.0, < 8.1)
     aws-eventstream (1.4.0)
-    aws-partitions (1.1164.0)
-    aws-sdk-core (3.233.0)
+    aws-partitions (1.1196.0)
+    aws-sdk-core (3.240.0)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
       aws-sigv4 (~> 1.9)
@@ -291,11 +295,11 @@ GEM
       bigdecimal
       jmespath (~> 1, >= 1.6.1)
       logger
-    aws-sdk-kms (1.112.0)
-      aws-sdk-core (~> 3, >= 3.231.0)
+    aws-sdk-kms (1.118.0)
+      aws-sdk-core (~> 3, >= 3.239.1)
       aws-sigv4 (~> 1.5)
-    aws-sdk-s3 (1.199.0)
-      aws-sdk-core (~> 3, >= 3.231.0)
+    aws-sdk-s3 (1.208.0)
+      aws-sdk-core (~> 3, >= 3.234.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.5)
     aws-sdk-sqs (1.104.0)
@@ -322,7 +326,7 @@ GEM
       latex-decode (~> 0.0)
       logger (~> 1.7)
       racc (~> 1.7)
-    bigdecimal (3.2.3)
+    bigdecimal (3.3.1)
     bindata (2.5.1)
     bindex (0.8.1)
     bixby (5.0.0)
@@ -352,6 +356,9 @@ GEM
     blacklight_advanced_search (7.0.0)
       blacklight (~> 7.0)
       parslet
+    blacklight_dynamic_sitemap (1.0.0)
+      blacklight (> 7.0)
+      rails
     blacklight_iiif_search (2.1.0)
       blacklight (~> 7.0)
       ffi (~> 1.16.3)
@@ -727,7 +734,7 @@ GEM
     hiredis (0.6.3)
     htmlentities (4.3.4)
     http_logger (1.0.1)
-    httparty (0.23.1)
+    httparty (0.24.0)
       csv
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
@@ -977,9 +984,9 @@ GEM
       iso-639
       nokogiri (>= 1.6.6)
       nom-xml (~> 1.0)
-    multi_json (1.17.0)
-    multi_xml (0.7.2)
-      bigdecimal (~> 3.1)
+    multi_json (1.18.0)
+    multi_xml (0.8.1)
+      bigdecimal (>= 3.1, < 5)
     multipart-post (2.4.1)
     mustermann (2.0.2)
       ruby2_keywords (~> 0.0.1)
@@ -1323,10 +1330,6 @@ GEM
     reverse_markdown (3.0.0)
       nokogiri
     rexml (3.4.4)
-    riiif (2.7.0)
-      deprecation (>= 1.0.0)
-      iiif-image-api (>= 0.1.0)
-      railties (>= 4.2, < 9)
     rolify (6.0.1)
     ros-apartment (3.2.0)
       activerecord (>= 6.1.0, < 8.1)
@@ -1406,6 +1409,9 @@ GEM
     ruby-saml (1.18.1)
       nokogiri (>= 1.13.10)
       rexml
+    ruby-vips (2.2.5)
+      ffi (~> 1.12)
+      logger
     ruby2_keywords (0.0.5)
     rubyzip (3.1.0)
     sass (3.7.4)
@@ -1578,7 +1584,7 @@ GEM
     unicode-display_width (2.6.0)
     unicode-types (1.11.0)
     unicode_utils (1.4.0)
-    uri (1.0.3)
+    uri (1.0.4)
     useragent (0.16.11)
     validatable (1.6.7)
     validate_url (1.0.15)
@@ -1658,7 +1664,6 @@ PLATFORMS
 
 DEPENDENCIES
   active-fedora
-  active_elastic_job!
   activerecord-nulldb-adapter
   activesupport (>= 4.2.0)
   addressable (= 2.8.1)
@@ -1734,7 +1739,7 @@ DEPENDENCIES
   redis-actionpack
   redis-namespace (~> 1.10)
   redlock (>= 0.1.2, < 2.0)
-  riiif (~> 2.1)
+  riiif!
   rolify
   ros-apartment
   rsolr (~> 2.0)

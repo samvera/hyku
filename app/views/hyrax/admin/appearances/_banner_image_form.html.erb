@@ -2,7 +2,7 @@
   <div class="card-body">
     <% require_image = @form.banner_image? ? false : true %>
     <%# Upload Banner Image %>
-    <%= f.input :banner_image, as: :file, wrapper: :vertical_file_input, required: require_image, hint: t('hyrax.admin.appearances.show.forms.banner_image.hint').html_safe, input_html: { name: 'admin_appearance[banner_image]' } %>
+    <%= f.input :banner_image, as: :file, wrapper: :vertical_file_input, required: require_image, hint: t('hyrax.admin.appearances.show.forms.banner_image.hint').html_safe, hint_html: { class: 'border-left-accent' }, input_html: { name: 'admin_appearance[banner_image]' } %>
     <%= f.input :banner_image_text, required: true, as: :text, label: 'Banner image alt text' %>
     <!-- Image preview and cropping area -->
     <button type="button" id="activate-cropper" class="btn btn-primary" style=<%= @form.banner_image.url ? "display:block;" : "display:none;" %>>Crop Image</button>
@@ -29,15 +29,21 @@
 <%# TODO: move this into the assets folder and make it work %>
 <script>
  var cropper;
+ var originalMimeType = 'image/jpeg';
+ var cropperActivated = false;
 
  document.getElementById('activate-cropper').addEventListener('click', function() {
    var image = document.getElementById('image');
    if (image.src) {
+     if (cropper) {
+       cropper.destroy();
+     }
      cropper = new Cropper(image, {
        initialAspectRatio: 16 / 9,
        aspectRatio: NaN,
        zoomOnWheel: false
      });
+     cropperActivated = true;
    }
  });
 
@@ -46,45 +52,50 @@
  inputImage.addEventListener('change', function(e) {
    var files = e.target.files;
    if (files && files.length) {
+     // Store original mime type to preserve format
+     originalMimeType = files[0].type || 'image/jpeg';
      var reader = new FileReader();
      reader.onload = function(e) {
        var image = document.getElementById('image');
        image.src = e.target.result;
        if (cropper) {
          cropper.destroy();
+         cropper = null;
        }
-       cropper = new Cropper(image, {
-         initialAspectRatio: 16 / 9,
-         aspectRatio: NaN,
-         zoomOnWheel: false
-       });
+       cropperActivated = false;
+       // Show the Crop Image button
+       document.getElementById('activate-cropper').style.display = 'block';
      };
      reader.readAsDataURL(files[0]);
    }
  });
 
 document.querySelector('.banner-submit').addEventListener('click', function(e) {
-  // Get all required fields
-  var requiredFields = document.querySelectorAll('input[required],textarea[required],select[required]');
+  var bannerForm = document.querySelector('.banner-submit').closest('form');
+  var requiredFields = bannerForm.querySelectorAll('input[required],textarea[required],select[required]');
 
-  // Check if all required fields are filled
   for (var i = 0; i < requiredFields.length; i++) {
     if (!requiredFields[i].value) {
-      // return early if not all required fields have been filled out
       return;
     }
   }
 
-  e.preventDefault();
+  if (cropper && cropperActivated) {
+    e.preventDefault();
+    $('#spinner').show();
 
-  // Show the spinner
-  $('#spinner').show();
+    // Determine file extension and mime type based on original format
+    var extension = originalMimeType === 'image/png' ? 'png' : originalMimeType === 'image/gif' ? 'gif' : 'jpg';
+    var mimeType = originalMimeType === 'image/png' ? 'image/png' : originalMimeType === 'image/gif' ? 'image/gif' : 'image/jpeg';
+    var quality = originalMimeType === 'image/png' || originalMimeType === 'image/gif' ? undefined : 0.95;
 
-  if (cropper) {
-    cropper.getCroppedCanvas().toBlob(function(blob) {
-      var formData = new FormData(document.querySelector('form'));
-      var currentAccountName = "<%= current_account.name %>";
-      formData.append('admin_appearance[banner_image]', blob, `${currentAccountName}-cropped.jpg`);
+    cropper.getCroppedCanvas({
+      imageSmoothingEnabled: true,
+      imageSmoothingQuality: 'high'
+    }).toBlob(function(blob) {
+      var formData = new FormData(bannerForm);
+      formData.delete('admin_appearance[banner_image]');
+      formData.append('admin_appearance[banner_image]', blob, "<%= j current_account.name %>-cropped." + extension);
 
       $.ajax('/admin/appearance', {
         method: 'POST',
@@ -92,17 +103,16 @@ document.querySelector('.banner-submit').addEventListener('click', function(e) {
         processData: false,
         contentType: false,
         success() {
-          console.log('Upload success');
-          // Hide the spinner
           $('#spinner').hide();
+          cropperActivated = false;
+          window.location.reload();
         },
         error() {
-          console.log('Upload error');
-          // Hide the spinner
           $('#spinner').hide();
+          alert('<%= j t("hyrax.admin.appearances.show.forms.banner_image.cropped_save_error") %>');
         },
       });
-    });
+    }, mimeType, quality);
   }
 });
 

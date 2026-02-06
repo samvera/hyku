@@ -298,9 +298,33 @@ fr:
     footer:
       admin_login: Connexion administrateur
     identity_provider:
+      configurations:
+        assertion_url_after_save_html: Il s'agit des URL de service de consommation d'assertions ou des URL de redirection qui doivent être autorisées par votre fournisseur d'identité. Ne spécifiez pas l' <code>assertion_consumer_service_url</code> dans vos options.
+        assertion_url_before_save_html: L'assertion SAML <code>assertion_consumer_service_url</code> sera affichée une fois l'enregistrement sauvegardé.
+        metadata: Afficher les métadonnées
+        saml_html: 'Nous utilisons un paramètre supplémentaire pour SAML : <code>idp_metadata_url</code> . Si vous fournissez cette URL, elle sera analysée comme indiqué : %{link_name}.'
+      documentation:
+        aria_label:
+          cas: Documentation CAS (s'ouvre dans un nouvel onglet)
+          openid_connect: Documentation OpenID Connect (s'ouvre dans un nouvel onglet)
+          saml: Documentation SAML (ouvre dans un nouvel onglet)
+          samvera: Documentation sur l'authentification unique (SSO) (ouvre dans un nouvel onglet)
+        link:
+          cas: CAS
+          openid_connect: OpenID Connect
+          saml: SAML
+          samvera: Authentification unique (SSO)
+        text_content:
+          provider: La documentation relative à chaque type de fournisseur d'identité se trouve dans la documentation de son adaptateur associé.
+          samvera: Pour plus d'informations sur la configuration de votre fournisseur d'identité, veuillez consulter la page de documentation de la communauté %{link_name} Samvera.
+          samvera_html: Pour plus d'informations sur la configuration de votre fournisseur d'identité, veuillez consulter la page de documentation de la communauté %{link_name} Samvera.
       header: Fournisseur d'identité d'authentification
       label:
+        configurations: Configurations
         create_new: Nouveau
+        delete: Supprimer
+        delete_confirmation: Es-tu sûr?
+        documentation: Documentation
         edit: Modifier
         logo: Logo
         logo_image: Image pour la page SSO
@@ -346,11 +370,21 @@ fr:
     admin:
       appearances:
         show:
+          colors:
+            apply_changes: Appliquer les modifications
+            restore_all_defaults: Rétablir tous les paramètres par défaut
+            restore_all_tenant_colors: Rétablir toutes les couleurs des locataires
+            restore_default: Restaurer les paramètres par défaut
+            restore_tenant_color: Rétablir la couleur des locataires
+            save_as_tenant_colors: Appliquer les modifications et enregistrer les couleurs du locataire
           forms:
             active_tabs_background_color:
               hint: Couleur de survol pour les onglets de la page d'accueil.
             banner_image:
-              hint: Pour utiliser une image comme arrière-plan d'une bannière Masthead, vous devez utiliser une image (JPG, GIF ou PNG) d'au moins 120 pixels de haut et 1 200 pixels de large. Pour de meilleurs résultats, utilisez une image d'au moins 1800 pixels de large.
+              cropped_save_error: Échec de l'enregistrement du bannière recadrée. Veuillez réessayer.
+              hint: |
+                Pour utiliser une image comme arrière-plan d'une bannière Masthead, vous devez utiliser une image (JPG, GIF ou PNG) d'au moins 120 pixels de haut et 1 200 pixels de large. Pour de meilleurs résultats, utilisez une image d'au moins 1800 pixels de large.<br/>
+                Pour recadrer : cliquez sur "Crop Image", ajustez la sélection, puis cliquez sur "Save changes". La bannière se redimensionne avec la fenêtre. Pour annuler un recadrage, utilisez "Remove banner image" puis téléchargez à nouveau l'original.
             collection_banner_text_color:
               hint: La couleur du texte (titre et date de la dernière mise à jour) à l'intérieur de la bannière de collection.
             custom_css:
@@ -360,7 +394,7 @@ fr:
               hint: Boutons d'interaction de travail (édition, fonctionnalité, etc.) ; vues de travail sur la page de collection et le bouton de filtre de recherche.
             default_images:
               alert: Veuillez télécharger au moins un fichier avant de soumettre.
-              hint: Pour les images par défaut, vous devez utiliser une image (JPG, GIF ou PNG) qui a des dimensions de hauteur et de largeur égales (100 pixels de large et 100 pixels de haut)
+              hint: Pour les images par défaut, vous devez utiliser une image (JPG, GIF ou PNG) qui a des dimensions de hauteur et de largeur égales (100 pixels de large et 100 pixels de haut).
             directory_image:
               hint: L'image du répertoire doit utiliser une image (JPG, GIF ou PNG). La largeur de l'image ne doit pas être plus large que 2x la hauteur.
             facet_panel_background_color:
@@ -469,25 +503,40 @@ fr:
         header: Modification du compte
         solr_endpoint: Solr Endpoint
       index:
+        actions: Actions
         cname: CNAME
         confirm_delete: Voulez-vous vraiment supprimer ce référentiel? TOUTES LES COLLECTIONS ET LES OEUVRES de ce référentiel seront SUPPRIMÉES DE MANIÈRE PERMANENTE
         create_new: Créer un nouveau compte
         header: Comptes
         manage: Gérer
+        public_demo_tenant: Locataire de démonstration publique
         tenant: Locataire (UUID)
       new:
+        cross_tenant_search:
+          add_account: Ajouter un compte à la recherche
+          description: Sélectionnez les référentiels sur lesquels ce compte de recherche uniquement effectuera ses recherches.
+          header: Comptes complets pour la recherche inter-locataires
+          remove: retirer
+        errors_prohibited:
+          one: 'Une erreur a empêché l''enregistrement de ce dépôt :'
+          other: 'Des erreurs %{count} ont empêché l''enregistrement de ce dépôt :'
         header: Créer un nouveau référentiel
       show:
         add: Ajouter
+        cannot_remove_last_admin: Impossible de supprimer le dernier administrateur
+        cannot_remove_last_superadmin: Impossible de supprimer le dernier super-administrateur
         current_admins:
           actions: action
           all_users: Tous les utilisateurs
           email: Adresse e-mail
           header: Administrateurs de compte actuels
           no_admins: Aucun administrateur n'existe
+          superadmin: Superadministrateur du locataire
         edit: Modifier le compte
         header: Gérer son compte
         remove: Retirer
+        remove_superadmin: Supprimer le superadministrateur du locataire
+        set_superadmin: Ajouter un superadministrateur locataire
         update: Mettre à jour
     users:
       edit:

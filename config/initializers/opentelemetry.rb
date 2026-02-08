@@ -14,18 +14,21 @@ if ENV['OTEL_EXPORTER_OTLP_ENDPOINT'].present?
   require 'opentelemetry/exporter/otlp'
   require 'opentelemetry/instrumentation/all'
 
+  # Determine version safely — this initializer runs before version.rb
+  app_version = defined?(Hyku::VERSION) ? Hyku::VERSION : 'unknown'
+
   OpenTelemetry::SDK.configure do |c|
     c.service_name = ENV.fetch('OTEL_SERVICE_NAME', "hyku-#{ENV.fetch('HYKU_ADMIN_HOST', 'unknown').split('.').first}")
-
-    # Auto-instrument Rails, ActiveRecord, Faraday, Net::HTTP, Rack, Sidekiq, etc.
-    c.use_all
 
     # Resource attributes for better trace identification
     c.resource = OpenTelemetry::SDK::Resources::Resource.create(
       'deployment.environment' => ENV.fetch('RAILS_ENV', 'production'),
       'service.namespace' => 'hyku',
-      'service.version' => Hyku::VERSION
+      'service.version' => app_version
     )
+
+    # Auto-instrument Rails, ActiveRecord, Faraday, Net::HTTP, Rack, Sidekiq, etc.
+    c.use_all
   end
 
   Rails.logger.info "[OpenTelemetry] Tracing enabled → #{ENV['OTEL_EXPORTER_OTLP_ENDPOINT']}"

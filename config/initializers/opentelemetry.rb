@@ -5,7 +5,7 @@
 # which then forwards them to the central Tempo instance.
 #
 # Required environment variables:
-#   OTEL_EXPORTER_OTLP_ENDPOINT - e.g. http://alloy.monitoring.svc.cluster.local:4317
+#   OTEL_EXPORTER_OTLP_ENDPOINT - e.g. http://alloy.monitoring.svc.cluster.local:4318
 #   OTEL_SERVICE_NAME            - e.g. hyku-besties (set automatically below if not present)
 #
 # To disable tracing, omit the OTEL_EXPORTER_OTLP_ENDPOINT env var.

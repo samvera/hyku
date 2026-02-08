@@ -196,7 +196,7 @@ extraEnvVars: &envVars
     value: "true"
   # OpenTelemetry tracing → Alloy collector → Tempo
   - name: OTEL_EXPORTER_OTLP_ENDPOINT
-    value: "http://alloy.monitoring.svc.cluster.local:4317"
+    value: "http://alloy.monitoring.svc.cluster.local:4318"
   - name: OTEL_SERVICE_NAME
     value: hyku-besties
 

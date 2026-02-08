@@ -68,6 +68,9 @@ gem 'json-canonicalization', "0.3.1"
 gem 'launchy', group: %i[test]
 gem 'listen', '>= 3.0.5', '< 3.2', group: %i[development]
 gem 'lograge'
+gem 'opentelemetry-sdk', '~> 1.4'
+gem 'opentelemetry-exporter-otlp', '~> 0.29'
+gem 'opentelemetry-instrumentation-all', '~> 0.67'
 gem 'mods', '~> 2.4'
 gem 'negative_captcha'
 gem 'okcomputer'

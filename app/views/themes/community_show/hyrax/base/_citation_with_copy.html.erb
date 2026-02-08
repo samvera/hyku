@@ -1,0 +1,27 @@
+<button
+  type="button"
+  class="btn btn-outline-secondary btn-sm"
+  onclick="copyCitationToClipboard('<%= citation_id %>', '<%= tooltip_id %>')"
+  title="<%= button_label %>"
+  id="copy-<%= citation_id %>-btn"
+>
+  <%= button_label %>
+</button>
+<span id="<%= tooltip_id %>" style="display:none; margin-left:8px; color:green; font-weight:bold;">Copied!</span>
+<br />
+<span class="citation" id="<%= citation_id %>"><%= citation_text %></span>
+
+<script>
+  function copyCitationToClipboard(citationId, tooltipId) {
+    const citation = document.getElementById(citationId).innerText;
+    navigator.clipboard.writeText(citation).then(function() {
+      const tooltip = document.getElementById(tooltipId);
+      tooltip.style.display = 'inline';
+      setTimeout(function() {
+        tooltip.style.display = 'none';
+      }, 1000);
+    }, function(err) {
+      alert('Failed to copy citation');
+    });
+  }
+</script>

@@ -297,9 +297,33 @@ de:
     footer:
       admin_login: Administrator-Login
     identity_provider:
+      configurations:
+        assertion_url_after_save_html: Dies sind die URLs der Assertion-Consumer-Dienste oder die Redirect-URLs, die von Ihrem IdP zugelassen werden müssen. Geben Sie die <code>assertion_consumer_service_url</code> nicht in Ihren Optionen an.
+        assertion_url_before_save_html: Die SAML- <code>assertion_consumer_service_url</code> wird nach dem Speichern des Datensatzes angezeigt.
+        metadata: Metadaten anzeigen
+        saml_html: 'Wir verwenden einen zusätzlichen Parameter für SAML: <code>idp_metadata_url</code> . Wenn Sie diese URL angeben, wird sie wie folgt geparst: %{link_name}.'
+      documentation:
+        aria_label:
+          cas: CAS-Dokumentation (wird in neuem Tab geöffnet)
+          openid_connect: OpenID Connect-Dokumentation (öffnet sich in einem neuen Tab)
+          saml: SAML-Dokumentation (wird in neuem Tab geöffnet)
+          samvera: Dokumentation zu Single Sign-On (SSO) (wird in neuem Tab geöffnet)
+        link:
+          cas: CAS
+          openid_connect: OpenID Connect
+          saml: SAML
+          samvera: Single Sign-On (SSO)
+        text_content:
+          provider: Die Dokumentation für jeden Identitätsanbietertyp finden Sie in der zugehörigen Adapterdokumentation.
+          samvera: Weitere Informationen zur Konfiguration Ihres Identitätsanbieters finden Sie auf der Dokumentationsseite der %{link_name} Samvera Community.
+          samvera_html: Weitere Informationen zur Konfiguration Ihres Identitätsanbieters finden Sie auf der Dokumentationsseite der %{link_name} Samvera Community.
       header: Authentifizierungsidentitätsanbieter
       label:
+        configurations: Konfigurationen
         create_new: Neu
+        delete: Löschen
+        delete_confirmation: Bist du sicher?
+        documentation: Dokumentation
         edit: Bearbeiten
         logo: Logo
         logo_image: Bild für SSO-Seite
@@ -345,11 +369,21 @@ de:
     admin:
       appearances:
         show:
+          colors:
+            apply_changes: Änderungen anwenden
+            restore_all_defaults: Alle Standardeinstellungen wiederherstellen
+            restore_all_tenant_colors: Alle Mieterfarben wiederherstellen
+            restore_default: Standardeinstellungen wiederherstellen
+            restore_tenant_color: Mieterfarbe wiederherstellen
+            save_as_tenant_colors: Änderungen anwenden und als Mieterfarben speichern
           forms:
             active_tabs_background_color:
               hint: Hover-Farbe für Homepage-Tabs.
             banner_image:
-              hint: Um ein Bild als Masthead-Hintergrund zu verwenden, sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das mindestens 120 Pixel hoch und 1200 Pixel breit ist. Verwenden Sie für optimale Ergebnisse ein Bild mit einer Breite von mindestens 1800 Pixel.
+              cropped_save_error: Fehler beim Speichern des zugeschnittenen Banners. Bitte versuchen Sie es erneut.
+              hint: |
+                Um ein Bild als Masthead-Hintergrund zu verwenden, sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das mindestens 120 Pixel hoch und 1200 Pixel breit ist. Verwenden Sie für optimale Ergebnisse ein Bild mit einer Breite von mindestens 1800 Pixel.<br/>
+                Zum Zuschneiden: Klicken Sie auf "Crop Image", passen Sie die Auswahl an und klicken Sie dann auf "Save changes". Das Banner passt sich dem Fenster an. Um einen Zuschnitt rückgängig zu machen, verwenden Sie "Remove banner image" und laden Sie dann das Original erneut hoch.
             collection_banner_text_color:
               hint: Die Farbe für den Text (Titel und Datum der letzten Aktualisierung) im Sammlungsbanner.
             custom_css:
@@ -467,25 +501,40 @@ de:
         header: Konto bearbeiten
         solr_endpoint: Solr-Endpunkt
       index:
+        actions: Aktionen
         cname: CNAME
         confirm_delete: Möchten Sie dieses Repository wirklich löschen? ALLE SAMMLUNGEN UND ARBEITEN in diesem Repository werden dauerhaft gelöscht
         create_new: Neuen Account erstellen
         header: Konten
         manage: Verwalten
+        public_demo_tenant: Öffentlicher Demo-Mandant
         tenant: Mieter (UUID)
       new:
+        cross_tenant_search:
+          add_account: Konto zur Suche hinzufügen
+          description: Wählen Sie aus, in welchen Repositories dieses Suchkonto gesucht werden soll.
+          header: Vollständige Konten für die mandantenübergreifende Suche
+          remove: entfernen
+        errors_prohibited:
+          one: 'Ein Fehler verhinderte das Speichern dieses Repositorys:'
+          other: "%{count}-Fehler haben das Speichern dieses Repositorys verhindert:"
         header: Erstellen Sie ein neues Repository
       show:
         add: Hinzufügen
+        cannot_remove_last_admin: Der letzte Administrator kann nicht entfernt werden.
+        cannot_remove_last_superadmin: Der letzte Superadmin kann nicht entfernt werden.
         current_admins:
           actions: Aktion
           all_users: Alle Nutzer
           email: E-Mail-Addresse
           header: Administratoren für Girokonten
           no_admins: Es sind keine Administratoren vorhanden
+          superadmin: Mieter-Superadministrator
         edit: Konto bearbeiten
         header: Konto verwalten
         remove: Entfernen
+        remove_superadmin: Mieter-Superadministrator entfernen
+        set_superadmin: Tenant-SuperAdmin hinzufügen
         update: Aktualisieren
     users:
       edit:

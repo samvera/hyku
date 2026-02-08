@@ -846,8 +846,10 @@ it:
         title: Ricercatore in primo piano
       featured_works:
         document:
+          abstract_missing: Nessun abstract disponibile.
           depositor_label: Depositante
           depositor_missing: nessun valore per il depositante
+          description_missing: Nessuna descrizione disponibile.
           keyword_label: parole
           keyword_missing: nessuna parola chiave specificata
           title_label: Titolo
@@ -859,8 +861,10 @@ it:
         depositor: Depositante
         details: Dettagli
         document:
+          abstract_missing: Nessun abstract disponibile.
           depositor_label: Depositante
           depositor_missing: nessun valore per il depositante
+          description_missing: Nessuna descrizione disponibile.
           keyword_label: parole
           keyword_missing: nessuna parola chiave specificata
           title_label: Titolo

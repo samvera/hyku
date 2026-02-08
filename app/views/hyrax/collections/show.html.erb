@@ -1,4 +1,4 @@
-<%# OVERRIDE Hyrax 5.0.1: %>
+<%# OVERRIDE Hyrax 5.2.0: %>
 <%# add show actions buttons to collection show page %>
 <%# add branding text for banner image %>
 <%# remove duplicate items count originating in Hyrax view %>
@@ -65,7 +65,7 @@
       <% end %>
 
       <% unless @presenter.total_viewable_items.blank? %>
-        <div class="hyc-bugs d-flex space-between">
+        <div class="d-flex space-between">
           <% unless @presenter.creator.blank? %>
               <div class="hyc-created-by">Created by: <%= @presenter.creator.first %></div>
           <% end %>

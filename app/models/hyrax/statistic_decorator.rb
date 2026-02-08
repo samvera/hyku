@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v5.0.4 to use a different GA key, by default FileDownloadStat uses :totalEvents
+# OVERRIDE Hyrax v5.2.0 to use a different GA key, by default FileDownloadStat uses :totalEvents
 #   however this isn't working for because what we get back from Hyrax::Analytics::Results object
 #   is a hash with :pageviews instead which doesn't work for our needs.
 

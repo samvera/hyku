@@ -66,43 +66,29 @@ module Hyku
           end
 
           # A list of parameters that are related to customizations
-          # rubocop:disable Metrics/MethodLength
           def customization_params
+            non_color_customization_params + color_params
+          end
+
+          # Non-color customization parameters (fonts, text fields, css)
+          def non_color_customization_params
             %i[
-              active_tabs_background_color
               banner_image_text
               body_font
-              collection_banner_text_color
               custom_css_block
-              default_button_background_color
-              default_button_border_color
-              default_button_text_color
               default_collection_image_text
               default_work_image_text
               directory_image_alt_text
               directory_image_text
-              facet_panel_background_color
-              facet_panel_text_color
-              footer_link_color
-              footer_link_hover_color
-              header_and_footer_background_color
-              header_and_footer_text_color
               headline_font
-              link_color
-              link_hover_color
               logo_image_text
-              navbar_background_color
-              navbar_link_background_color
-              navbar_link_background_hover_color
-              navbar_link_text_color
-              navbar_link_text_hover_color
-              primary_button_background_color
-              primary_button_border_color
-              primary_button_hover_color
-              primary_button_text_color
             ]
           end
-          # rubocop:enable Metrics/MethodLength
+
+          # Color-related parameters (derived from default_colors keys)
+          def color_params
+            default_colors.keys.map(&:to_sym)
+          end
 
           # @return [Array<Symbol>] a list of fields that are related to the banner
           def banner_fields
@@ -161,6 +147,27 @@ module Hyku
           @home_theme_information ||= YAML.load_file(Hyku::Application.path_for('config/home_themes.yml'))
           current_theme = site&.home_theme || 'default_home'
           @home_theme_information.dig(current_theme, 'theme_custom_colors') || {}
+        end
+
+        def tenant_colors
+          return {} unless Flipflop.use_tenant_specific_colors?
+          tenant_colors = {}
+          default_colors.keys.each do |key|
+            color = block_for('tenant_' + key.to_s)
+            tenant_colors[key] = color if color.present?
+          end
+          tenant_colors
+        end
+
+        def save_tenant_colors!
+          return unless Flipflop.use_tenant_specific_colors?
+          default_colors.keys.each do |key|
+            color = attributes[key]
+            if color.present?
+              update_block('tenant_' + key.to_s, color)
+              update_block(key.to_s, color)
+            end
+          end
         end
 
         # The color for the collection banner text

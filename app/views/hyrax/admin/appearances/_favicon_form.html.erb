@@ -1,7 +1,7 @@
 <%= simple_form_for @form, url: admin_appearance_path do |f| %>
   <div class="card-body">
     <% require_image = @form.favicon? ? false : true %>
-    <%= f.input :favicon, as: :file, wrapper: :vertical_file_input, hint: t('hyrax.admin.appearances.show.forms.favicon.hint') %>
+    <%= f.input :favicon, as: :file, wrapper: :vertical_file_input, required: require_image, hint: t('hyrax.admin.appearances.show.forms.favicon.hint'), hint_html: { class: 'border-left-accent' } %>
     <%= image_tag @form.favicon.url, class: "img-fluid" if @form.favicon? %>
   </div>
   <div class="card-footer">

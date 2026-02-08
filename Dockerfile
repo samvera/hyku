@@ -11,7 +11,7 @@ ENV LD_PRELOAD=/usr/lib/libjemalloc.so.2
 ENV MALLOC_CONF='dirty_decay_ms:1000,narenas:2,background_thread:true'
 
 ENV TESSDATA_PREFIX=/app/samvera/tessdata
-ADD https://github.com/tesseract-ocr/tessdata_best/blob/main/eng.traineddata?raw=true /app/samvera/tessdata/eng_best.traineddata
+ADD --chmod=777 https://github.com/tesseract-ocr/tessdata_best/blob/main/eng.traineddata?raw=true /app/samvera/tessdata/eng_best.traineddata
 
 COPY --chown=1001:101 Gemfile /app/samvera/hyrax-webapp/
 COPY --chown=1001:101 Gemfile.lock /app/samvera/hyrax-webapp/
@@ -20,7 +20,7 @@ RUN bundle install --jobs "$(nproc)"
 ARG APP_PATH=.
 COPY --chown=1001:101 $APP_PATH /app/samvera/hyrax-webapp
 
-RUN RAILS_ENV=production SECRET_KEY_BASE=`bin/rake secret` DB_ADAPTER=nulldb DB_URL='postgresql://fake' bundle exec rake assets:precompile && yarn install
+RUN RAILS_ENV=production SECRET_KEY_BASE=`bin/rails secret` DB_ADAPTER=nulldb DB_URL='postgresql://fake' bundle exec rake assets:precompile && yarn install
 CMD ./bin/web
 
 FROM hyku-web AS hyku-worker

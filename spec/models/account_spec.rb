@@ -349,6 +349,37 @@ RSpec.describe Account, type: :model do
     end
   end
 
+  describe '#superadmin_emails' do
+    let!(:account) { FactoryBot.create(:demo_account) }
+    let!(:user1) { FactoryBot.create(:user, email: "test@test.com") }
+    let!(:user2) { FactoryBot.create(:user, email: "test@test.org") }
+
+    it 'switches to current tenant database and returns Site superadmin_emails' do
+      allow(Apartment::Tenant).to receive(:switch).with(account.tenant).and_yield
+      Site.update(account:)
+      Site.instance.superadmin_emails = ["test@test.com", "test@test.org"]
+
+      expect(account.superadmin_emails).to match_array(["test@test.com", "test@test.org"])
+    end
+  end
+
+  describe '#superadmin_emails=' do
+    let!(:account) { FactoryBot.create(:demo_account) }
+    let!(:user1) { FactoryBot.create(:user, email: "test@test.com") }
+    let!(:user2) { FactoryBot.create(:user, email: "test@test.org") }
+    let!(:user3) { FactoryBot.create(:user, email: "newadmin@here.org") }
+
+    it 'switches to current tenant database updates Site superadmin_emails' do
+      allow(Apartment::Tenant).to receive(:switch).with(account.tenant).and_yield
+      Site.update(account:)
+      Site.instance.superadmin_emails = ["test@test.com", "test@test.org"]
+
+      expect(account.superadmin_emails).to match_array(["test@test.com", "test@test.org"])
+      account.superadmin_emails = ["newadmin@here.org"]
+      expect(account.superadmin_emails).to match_array(["newadmin@here.org"])
+    end
+  end
+
   describe '#admin_emails' do
     let!(:account) { FactoryBot.create(:account, tenant: "59500a46-b1fb-412d-94d6-b928e91ef4d9") }
 
@@ -401,7 +432,7 @@ RSpec.describe Account, type: :model do
         allow(ENV).to receive(:fetch).and_call_original
         allow(ENV).to receive(:fetch).with('HYKU_MULTITENANT', anything).and_return(true)
         allow(Rails.env).to receive(:test?).and_return false
-        allow(Apartment::Tenant).to receive(:current_tenant).and_return Apartment::Tenant.default_tenant
+        allow(Apartment::Tenant).to receive(:current).and_return Apartment::Tenant.default_tenant
       end
 
       it { is_expected.to be true }
@@ -562,6 +593,40 @@ RSpec.describe Account, type: :model do
       end
     end
 
+    # NEW: Add validation specs
+    context 'search-only validation' do
+      let(:normal_account) { create(:account) }
+
+      it 'is invalid when search_only is true and no full accounts are selected' do
+        search_account = build(:account, search_only: true)
+        expect(search_account).not_to be_valid
+        expect(search_account.errors[:base]).to include('Search-only accounts must have at least one full account selected for cross-tenant search')
+      end
+
+      it 'is valid when search_only is true and at least one full account is selected' do
+        search_account = build(:account, search_only: true, full_account_ids: [normal_account.id])
+        expect(search_account).to be_valid
+      end
+
+      it 'is valid when search_only is false with no full accounts' do
+        regular_account = build(:account, search_only: false)
+        expect(regular_account).to be_valid
+      end
+
+      it 'allows removing all full accounts if search_only is changed to false' do
+        cross_search_solr = create(:solr_endpoint, url: "http://solr:8983/solr/hydra-cross-search-tenant")
+        search_account = create(:account,
+                               search_only: true,
+                               full_account_ids: [normal_account.id],
+                               solr_endpoint: cross_search_solr,
+                               fcrepo_endpoint: nil)
+
+        search_account.search_only = false
+        search_account.full_account_ids = []
+        expect(search_account).to be_valid
+      end
+    end
+
     context 'can add and remove Full Account from shared search' do
       let(:normal_account) { create(:account) }
       let(:cross_search_solr) { create(:solr_endpoint, url: "http://solr:8983/solr/hydra-cross-search-tenant") }
@@ -668,6 +733,47 @@ RSpec.describe Account, type: :model do
       expect(account).to receive(:reset!)
 
       account.find_or_schedule_jobs
+    end
+  end
+
+  describe 'public_demo_tenant scopes' do
+    let!(:public_demo_account1) { described_class.create!(name: 'public_demo1', public_demo_tenant: true) }
+    let!(:public_demo_account2) { described_class.create!(name: 'public_demo2', public_demo_tenant: true) }
+    let!(:production_account1) { described_class.create!(name: 'production1', public_demo_tenant: false) }
+    let!(:production_account2) { described_class.create!(name: 'production2', public_demo_tenant: false) }
+
+    describe '.public_demo_tenants' do
+      it 'returns only public demo tenant accounts' do
+        public_demo_accounts = described_class.public_demo_tenants
+        expect(public_demo_accounts).to include(public_demo_account1, public_demo_account2)
+        expect(public_demo_accounts).not_to include(production_account1, production_account2)
+      end
+    end
+
+    describe '.non_public_demo_tenants' do
+      it 'returns only non-public-demo-tenant accounts' do
+        non_public_demo_accounts = described_class.non_public_demo_tenants
+        expect(non_public_demo_accounts).to include(production_account1, production_account2)
+        expect(non_public_demo_accounts).not_to include(public_demo_account1, public_demo_account2)
+      end
+    end
+  end
+
+  describe 'public_demo_tenant immutability' do
+    let(:account) { described_class.create!(name: 'test-account', public_demo_tenant: true) }
+
+    it 'allows setting public_demo_tenant on creation' do
+      expect(account.public_demo_tenant).to be true
+    end
+
+    it 'public_demo_tenant value persists after creation' do
+      account.reload
+      expect(account.public_demo_tenant).to be true
+    end
+
+    it 'defaults to false when not specified' do
+      default_account = described_class.create!(name: 'default-test')
+      expect(default_account.public_demo_tenant).to be false
     end
   end
 end

@@ -3,12 +3,17 @@
 # Generated via
 #  `rails generate hyrax:work_resource EtdResource`
 class EtdResourceIndexer < Hyrax::ValkyrieWorkIndexer
-  include Hyrax::Indexer(:basic_metadata) unless Hyrax.config.flexible?
-  include Hyrax::Indexer(:bulkrax_metadata) unless Hyrax.config.flexible?
-  include Hyrax::Indexer(:etd_resource) unless Hyrax.config.flexible?
-  include Hyrax::Indexer(:with_pdf_viewer) unless Hyrax.config.flexible?
-  include Hyrax::Indexer(:with_video_embed) unless Hyrax.config.flexible?
-  include Hyrax::Indexer('EtdResource') if Hyrax.config.flexible?
+  if Hyrax.config.work_include_metadata?
+    include Hyrax::Indexer(:core_metadata)
+    # Commented out basic_metadata because the terms were added to the resource's yaml
+    # so we can customize it
+    # include Hyrax::Indexer(:basic_metadata)
+    include Hyrax::Indexer(:bulkrax_metadata)
+    include Hyrax::Indexer(:etd_resource)
+    include Hyrax::Indexer(:with_pdf_viewer)
+    include Hyrax::Indexer(:with_video_embed)
+  end
+  check_if_flexible(EtdResource)
 
   include HykuIndexing
 

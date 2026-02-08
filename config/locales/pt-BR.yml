@@ -180,9 +180,33 @@ pt-BR:
     footer:
       admin_login: Login do administrador
     identity_provider:
+      configurations:
+        assertion_url_after_save_html: Essas são as URLs de serviço do consumidor de asserção ou URLs de redirecionamento que precisam ser permitidas pelo seu IdP. Não especifique o <code>assertion_consumer_service_url</code> nas suas opções.
+        assertion_url_before_save_html: O campo SAML <code>assertion_consumer_service_url</code> será exibido após o registro ser salvo.
+        metadata: Ver metadados
+        saml_html: 'Usamos um parâmetro adicional para SAML: <code>idp_metadata_url</code> . Se você fornecer esse URL, ele será analisado conforme mostrado em %{link_name}.'
+      documentation:
+        aria_label:
+          cas: Documentação CAS (abre em nova aba)
+          openid_connect: Documentação do OpenID Connect (abre em nova aba)
+          saml: Documentação SAML (abre em nova aba)
+          samvera: Documentação de Single Sign-On (SSO) (abre em nova aba)
+        link:
+          cas: CAS
+          openid_connect: Openid Connect
+          saml: SAML
+          samvera: Autenticação única (SSO)
+        text_content:
+          provider: A documentação para cada tipo de provedor de identidade pode ser encontrada na documentação do adaptador correspondente.
+          samvera: Para obter mais informações sobre como configurar seu provedor de identidade, consulte a página de documentação da comunidade %{link_name} Samvera.
+          samvera_html: Para obter mais informações sobre como configurar seu provedor de identidade, consulte a página de documentação da comunidade %{link_name} Samvera.
       header: Provedor de identidade de autenticação
       label:
+        configurations: Configurações
         create_new: Novo
+        delete: Excluir
+        delete_confirmation: Tem certeza?
+        documentation: Documentação
         edit: Editar
         logo: Logotipo
         logo_image: Imagem para página SSO
@@ -229,11 +253,21 @@ pt-BR:
     admin:
       appearances:
         show:
+          colors:
+            apply_changes: Aplicar alterações
+            restore_all_defaults: Restaurar todas as configurações padrão
+            restore_all_tenant_colors: Restaurar todas as cores dos inquilinos
+            restore_default: Restaurar padrão
+            restore_tenant_color: Restaurar a cor do inquilino
+            save_as_tenant_colors: Aplicar alterações e salvar como cores do inquilino
           forms:
             active_tabs_background_color:
               hint: Cor de foco para abas da página inicial.
             banner_image:
-              hint: Para usar uma imagem como plano de fundo do cabeçalho, você deve usar uma imagem (JPG, GIF ou PNG) com pelo menos 120 pixels de altura e 1200 pixels de largura. Para obter melhores resultados, use uma imagem com pelo menos 1800 pixels de largura.
+              cropped_save_error: Falha ao salvar o banner recortado. Por favor, tente novamente.
+              hint: |
+                Para usar uma imagem como plano de fundo do cabeçalho, você deve usar uma imagem (JPG, GIF ou PNG) com pelo menos 120 pixels de altura e 1200 pixels de largura. Para obter melhores resultados, use uma imagem com pelo menos 1800 pixels de largura.<br/>
+                Para recortar: clique em "Crop Image", ajuste a seleção e clique em "Save changes". O banner redimensiona com a janela. Para desfazer um recorte, use "Remove banner image" e faça upload do original novamente.
             collection_banner_text_color:
               hint: A cor do texto (título e data da última atualização) dentro do banner da coleção.
             custom_css:
@@ -243,7 +277,7 @@ pt-BR:
               hint: Botões de interação do trabalho (editar, recurso, etc.); exibições de trabalho na página de coleção e botão de filtro de pesquisa.
             default_images:
               alert: Faça upload de pelo menos um arquivo antes de enviar.
-              hint: Para imagens padrão, você deve usar uma imagem (JPG, GIF ou PNG) que tenha dimensões iguais de altura e largura (100 pixels de largura e 100 pixels de altura)
+              hint: Para imagens padrão, você deve usar uma imagem (JPG, GIF ou PNG) que tenha dimensões iguais de altura e largura (100 pixels de largura e 100 pixels de altura).
             directory_image:
               hint: A imagem do diretório deve usar uma imagem (JPG, GIF ou PNG). A largura da imagem não deve ser maior que 2x a altura.
             facet_panel_background_color:
@@ -347,25 +381,40 @@ pt-BR:
         header: Editando conta
         solr_endpoint: Ponto final do Solr
       index:
+        actions: Ações
         cname: CNAME
         confirm_delete: Tem certeza de que deseja excluir este repositório? TODAS AS COLEÇÕES E TRABALHOS dentro deste repositório serão EXCLUÍDOS PERMANENTEMENTE
         create_new: Criar nova conta
         header: Contas
         manage: Gerir
+        public_demo_tenant: Inquilino de demonstração pública
         tenant: Locatário (UUID)
       new:
+        cross_tenant_search:
+          add_account: Adicionar conta à pesquisa
+          description: Selecione em quais repositórios esta conta somente de pesquisa realizará buscas.
+          header: Contas completas para pesquisa entre locatários
+          remove: remover
+        errors_prohibited:
+          one: '1 erro impediu que este repositório fosse salvo:'
+          other: "%{count} erros impediram que este repositório fosse salvo:"
         header: Crie um novo repositório
       show:
         add: Adicionar
+        cannot_remove_last_admin: Não é possível remover o último administrador.
+        cannot_remove_last_superadmin: Não é possível remover o último superadministrador.
         current_admins:
           actions: Açao
           all_users: Todos os usuários
           email: Endereço de e-mail
           header: Administradores de conta corrente
           no_admins: Não existem administradores
+          superadmin: Superadministrador de inquilinos
         edit: Editar conta
         header: Gerenciar conta
         remove: Remover
+        remove_superadmin: Remover Superadministrador do locatário
+        set_superadmin: Adicionar Superadministrador de Locatário
         update: Atualizar
     users:
       edit:

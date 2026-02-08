@@ -35,6 +35,8 @@ zh:
         monthly_email_list: 每月报告的电子邮件地址列表。每个电子邮件之间留一个空格
         name: 用于存储技术方面的单一或连字符名称（例如，“acme”或“acme-library”）。
         oai_admin_email: OAI端点联系电子邮件地址
+        public_demo_tenant: 将此帐户标记为用于测试的公共演示租户。创建后无法更改此设置。
+        search_only: 仅搜索帐户需要在下面至少选择一个完整帐户才能进行跨租户搜索。
         shared_login: 启用或禁用共享登录
         ssl_configured: 如果使用https，请将其设置为true
         weekly_email_list: 每周报告的电子邮件地址列表。每个电子邮件之间留一个空格
@@ -52,6 +54,8 @@ zh:
           url: URL
         gtm_id: Google标签管理器
         name: 简称
+        public_demo_tenant: 公共演示租户
+        search_only: 仅搜索
         solr_endpoint:
           url: URL
         tenant: 租户UUID

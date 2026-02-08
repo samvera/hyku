@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE: Hyrax v5.0.0rc2
+# OVERRIDE: Hyrax v5.2.0
 # - add inject_theme_views method for theming
 # - add homepage presenter for access to feature flippers
 # - add access to content blocks in the show method

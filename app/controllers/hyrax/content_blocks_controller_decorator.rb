@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v5.0.0rc2 to add home_text to permitted_params - Adding themes
+# OVERRIDE Hyrax v5.2.0 to add home_text to permitted_params - Adding themes
 
 module Hyrax
   module ContentBlocksControllerDecorator

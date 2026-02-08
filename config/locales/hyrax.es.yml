@@ -846,8 +846,10 @@ es:
         title: Investigador destacado
       featured_works:
         document:
+          abstract_missing: No hay resumen disponible
           depositor_label: Depositor
           depositor_missing: sin valor de depositante
+          description_missing: No hay descripción disponible
           keyword_label: Palabras clave
           keyword_missing: sin palabras clave especificadas
           title_label: Título
@@ -859,8 +861,10 @@ es:
         depositor: Depositor
         details: Detalles
         document:
+          abstract_missing: No hay resumen disponible
           depositor_label: Depositor
           depositor_missing: sin valor de depositante
+          description_missing: No hay descripción disponible
           keyword_label: Palabras clave
           keyword_missing: sin palabras clave especificadas
           title_label: Título

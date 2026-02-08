@@ -185,12 +185,14 @@ properties:
     form:
       required: true
       primary: true
+    mappings:
+      simple_dc_pmh: dc:creator
     property_uri: http://purl.org/dc/elements/1.1/creator
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
       - Julie Allinson
     view:
-      render_as: faceted
+      render_as: linked
       html_dl: true
   license:
     available_on:
@@ -216,6 +218,8 @@ properties:
       - license_tesim
     form:
       primary: false
+    mappings:
+      simple_dc_pmh: dc:rights
     property_uri: http://purl.org/dc/terms/license
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
@@ -247,6 +251,8 @@ properties:
       - abstract_tesim
     form:
       primary: false
+    mappings:
+      simple_dc_pmh: dc:description
     property_uri: http://purl.org/dc/terms/abstract
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
@@ -423,12 +429,14 @@ properties:
       - facetable
     form:
       primary: false
+    mappings:
+      simple_dc_pmh: dc:contributor
     property_uri: http://purl.org/dc/elements/1.1/contributor
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
       - Julie Allinson
     view:
-      render_as: faceted
+      render_as: linked
       html_dl: true
   date_created:
     available_on:
@@ -454,6 +462,8 @@ properties:
       - date_created_tesim
     form:
       primary: false
+    mappings:
+      simple_dc_pmh: dc:date
     property_uri: http://purl.org/dc/terms/created
     range: http://www.w3.org/2001/XMLSchema#dateTime
     sample_values:
@@ -486,6 +496,8 @@ properties:
       - description_tesim
     form:
       primary: false
+    mappings:
+      simple_dc_pmh: dc:description
     property_uri: http://purl.org/dc/elements/1.1/description
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
@@ -575,7 +587,7 @@ properties:
       - Metadata
       - Repository
     view:
-      render_as: faceted
+      render_as: linked
       html_dl: true
   label:
     available_on:
@@ -589,7 +601,7 @@ properties:
     cardinality:
       minimum: 0
       maximum: 1
-    data_type: string
+    data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
@@ -631,13 +643,15 @@ properties:
       - facetable
     form:
       primary: false
+    mappings:
+      simple_dc_pmh: dc:language
     property_uri: http://purl.org/dc/elements/1.1/language
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
       - English
       - Spanish
     view:
-      render_as: faceted
+      render_as: linked
       html_dl: true
   publisher:
     available_on:
@@ -664,12 +678,14 @@ properties:
       - facetable
     form:
       primary: false
+    mappings:
+      simple_dc_pmh: dc:publisher
     property_uri: http://purl.org/dc/elements/1.1/publisher
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
       - Scholastic
     view:
-      render_as: faceted
+      render_as: linked
       html_dl: true
   related_url:
     available_on:
@@ -756,7 +772,7 @@ properties:
       - Article
       - Conference Proceeding
     view:
-      render_as: faceted
+      render_as: linked
       html_dl: true
   rights_notes:
     available_on:
@@ -782,6 +798,8 @@ properties:
       - rights_notes_tesim
     form:
       primary: false
+    mappings:
+      simple_dc_pmh: dc:rights
     property_uri: http://purl.org/dc/elements/1.1/rights
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
@@ -791,8 +809,6 @@ properties:
   rights_statement:
     available_on:
       class:
-        - Hyrax::FileSet
-        - CollectionResource
         - GenericWorkResource
         - ImageResource
         - OerResource
@@ -813,6 +829,39 @@ properties:
     form:
       primary: true
       required: true
+    mappings:
+      simple_dc_pmh: dc:rights
+    property_uri: http://www.europeana.eu/schemas/edm/rights
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - http://rightsstatements.org/vocab/InC/1.0/
+    view:
+      html_dl: true
+      render_as: rights_statement
+  rights_statement_optional:
+    name: rights_statement
+    available_on:
+      class:
+        - Hyrax::FileSet
+        - CollectionResource
+    cardinality:
+      minimum: 0
+    data_type: array
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - rights_statements
+    display_label:
+      default: blacklight.search.fields.index.rights_statement_tesim
+    index_documentation: displayable, searchable
+    indexing:
+      - rights_statement_sim
+      - rights_statement_tesim
+    form:
+      primary: false
+      required: false
+    mappings:
+      simple_dc_pmh: dc:rights
     property_uri: http://www.europeana.eu/schemas/edm/rights
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
@@ -876,13 +925,15 @@ properties:
       - facetable
     form:
       primary: false
+    mappings:
+      simple_dc_pmh: dc:subject
     property_uri: http://purl.org/dc/elements/1.1/subject
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
       - Art
       - Science
     view:
-      render_as: faceted
+      render_as: linked
       html_dl: true
   department:
     available_on:
@@ -1157,7 +1208,7 @@ properties:
       - Instructor
     view:
       html_dl: true
-      render_as: faceted
+      render_as: linked
   date:
     available_on:
       class:
@@ -1207,7 +1258,7 @@ properties:
       - Natural Sciences - Physics
     view:
       html_dl: true
-      render_as: faceted
+      render_as: linked
   education_level:
     available_on:
       class:
@@ -1235,7 +1286,7 @@ properties:
       - College / Upper division
     view:
       html_dl: true
-      render_as: faceted
+      render_as: linked
   learning_resource_type:
     available_on:
       class:
@@ -1263,7 +1314,7 @@ properties:
       - Assessment (test, quizzes, etc.)
     view:
       html_dl: true
-      render_as: faceted
+      render_as: linked
   newer_version_id:
     available_on:
       class:
@@ -1349,6 +1400,8 @@ properties:
     indexing:
       - related_item_id_tesim
       - related_item_id_sim
+    mappings:
+      simple_dc_pmh: dc:relation
     property_uri: http://purl.org/dc/terms/relation
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
@@ -1770,7 +1823,7 @@ properties:
       - 50" x 20"
       - 5 m x 10 m x 8 m
     view:
-      render_as: faceted
+      render_as: linked
       html_dl: true
   hide_from_catalog_search:
     available_on:

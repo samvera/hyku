@@ -112,8 +112,8 @@ This lets you run Hyku without Dory, but you will have to set up your own DNS en
 You may be able to run the application locally without docker by ensuring you have met the following
 requirements:
 
-* Ruby 3.2.x is requried.  Later versions may also work.
-* Rails 6.x is required.
+* Ruby 3.3.x is required (minimum for Rails 7.2). Later versions may also work.
+* Rails 7.2.x is required.
 
 ```bash
 solr_wrapper

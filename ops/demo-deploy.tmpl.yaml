@@ -1,5 +1,11 @@
 replicaCount: 2
-
+resources:
+  limits:
+    memory: "4Gi"
+    cpu: "1000m"
+  requests:
+    memory: "2Gi"
+    cpu: "100m"
 livenessProbe:
   enabled: false
 readinessProbe:
@@ -163,6 +169,8 @@ extraEnvVars: &envVars
     value: "true"
   - name: HYKU_USER_DEFAULT_PASSWORD
     value: password
+  - name: NEGATIVE_CAPTCHA_SECRET
+    value: $NEGATIVE_CAPTCHA_SECRET
   - name: SMTP_ADDRESS
     value: "maildev-smtp.maildev.svc.cluster.local"
   - name: SMTP_DOMAIN
@@ -202,6 +210,13 @@ extraEnvVars: &envVars
   - name: VALKYRIE_TRANSITION
     value: "true"
 worker:
+  resources:
+    limits:
+      memory: "4Gi"
+      cpu: "1250m"
+    requests:
+      memory: "2Gi"
+      cpu: "100m"
   replicaCount: 1
   extraVolumeMounts: *volMounts
   extraEnvVars: *envVars
@@ -223,10 +238,27 @@ leaseRelease:
 
 fcrepo:
   enabled: false
+fits:
+  enabled: true
+  resources:
+    limits:
+      memory: "2Gi"
+      cpu: "1000m"
+    requests:
+      memory: "1Gi"
+      cpu: "250m"
 postgresql:
   enabled: false
 redis:
   enabled: true
+  master:
+    resources:
+      limits:
+        memory: "512Mi"
+        cpu: "100m"
+      requests:
+        memory: "256Mi"
+        cpu: "20m"
   architecture: standalone
   auth:
     password: $REDIS_PASSWORD

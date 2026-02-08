@@ -93,7 +93,7 @@ module Sample
       if account.nil?
         Rails.logger.debug "ERROR: Tenant '#{tenant_name}' not found!"
         Rails.logger.debug "Available tenants:"
-        Account.all.each { |acc| Rails.logger.debug "  - #{acc.name}" }
+        Account.find_each { |acc| Rails.logger.debug "  - #{acc.name}" }
         raise 'Tenant not found'
       end
 

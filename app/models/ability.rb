@@ -7,6 +7,7 @@ class Ability
   # Add custom ability roles
   include Hyrax::Ability::UserAbility
   include Hyrax::Ability::WorkAbility
+  include Hyrax::Ability::TenantControlAbility
 
   self.ability_logic += %i[
     group_permissions
@@ -15,6 +16,7 @@ class Ability
     user_roles
     work_roles
     featured_collection_abilities
+    tenant_control_abilities
   ]
   # If the Groups with Roles feature is disabled, allow registered users to create curation concerns
   # (Works, Collections, and FileSets). Otherwise, omit this ability logic as to not
@@ -87,6 +89,10 @@ class Ability
     current_user.has_role? :superadmin
   end
 
+  def tenant_superadmin?
+    current_user.has_role?(:superadmin, Site.instance)
+  end
+
   # @return [Array<String>] a list of all role names that apply to the user
   def all_user_and_group_roles
     return @all_user_and_group_roles if @all_user_and_group_roles
@@ -127,6 +133,19 @@ class Ability
         cache.put(obj.id, obj)
         test_download(obj.id)
       end
+    end
+  end
+
+  def test_download(*args)
+    account = Site.account
+
+    # In cases where we don't have an account.
+    return super unless account
+
+    if account.settings[:allow_downloads].nil? || account.settings[:allow_downloads].to_i.nonzero?
+      super
+    else
+      false
     end
   end
 end

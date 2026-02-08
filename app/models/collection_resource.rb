@@ -3,10 +3,12 @@
 # Generated via
 #  `rails generate hyrax:collection_resource CollectionResource`
 class CollectionResource < Hyrax::PcdmCollection
-  include Hyrax::Schema(:basic_metadata) unless Hyrax.config.flexible?
-  include Hyrax::Schema(:bulkrax_metadata) unless Hyrax.config.flexible?
-  include Hyrax::Schema(:collection_resource) unless Hyrax.config.flexible?
-  include Hyrax::Schema(:with_thumbnail) unless Hyrax.config.flexible?
+  if Hyrax.config.collection_include_metadata?
+    include Hyrax::Schema(:basic_metadata)
+    include Hyrax::Schema(:bulkrax_metadata)
+    include Hyrax::Schema(:collection_resource)
+    include Hyrax::Schema(:with_thumbnail)
+  end
   include Hyrax::ArResource
 
   Hyrax::ValkyrieLazyMigration.migrating(self, from: ::Collection)
@@ -19,7 +21,7 @@ class CollectionResource < Hyrax::PcdmCollection
 
   include WithPermissionTemplateShim
 
-  prepend OrderAlready.for(:creator) unless Hyrax.config.flexible?
+  prepend OrderAlready.for(:creator)
 
   ##
   # @!group Methods to Extract

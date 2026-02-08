@@ -1,5 +1,13 @@
 replicaCount: 2
 
+resources:
+  limits:
+    memory: "4Gi"
+    cpu: "1000m"
+  requests:
+    memory: "2Gi"
+    cpu: "100m"
+
 livenessProbe:
   enabled: false
 readinessProbe:
@@ -64,7 +72,7 @@ ingress:
 
 extraEnvVars: &envVars
   - name: CONFDIR
-    value: "/app/samvera/hyrax-webapp/solr/config"
+    value: "/app/samvera/hyrax-webapp/solr/conf"
   - name: DB_ADAPTER
     value: postgresql
   - name: DB_HOST
@@ -130,7 +138,7 @@ extraEnvVars: &envVars
   - name: HYRAX_FITS_PATH
     value: /app/fits/fits.sh
   - name: HYRAX_FLEXIBLE
-    value: "true"
+    value: "false"
   - name: HYRAX_VALKYRIE
     value: "true"
   - name: HYKU_ADMIN_HOST
@@ -197,6 +205,13 @@ extraEnvVars: &envVars
     value: "true"
 
 worker:
+  resources:
+    limits:
+      memory: "4Gi"
+      cpu: "1000m"
+    requests:
+      memory: "2Gi"
+      cpu: "100m"
   replicaCount: 1
   extraVolumeMounts: *volMounts
   extraEnvVars: *envVars
@@ -222,6 +237,14 @@ postgresql:
   enabled: false
 redis:
   enabled: true
+  master:
+    resources:
+      limits:
+        memory: "512Mi"
+        cpu: "100m"
+      requests:
+        memory: "256Mi"
+        cpu: "20m"
   architecture: standalone
   auth:
     password: $REDIS_PASSWORD
@@ -240,11 +263,27 @@ externalSolrUser: admin
 externalSolrCollection: "hyku-staging"
 externalSolrPassword: $SOLR_ADMIN_PASSWORD
 
+fits:
+  enabled: true
+  resources:
+    limits:
+      memory: "2Gi"
+      cpu: "1000m"
+    requests:
+      memory: "1Gi"
+      cpu: "250m"
 global:
   hyraxName: hyku-staging-hyrax
 
 nginx:
   enabled: true
+  resources:
+    limits:
+      memory: "256Mi"
+      cpu: "100m"
+    requests:
+      memory: "128Mi"
+      cpu: "20m"
   image:
     registry: ghcr.io
     repository: notch8/scripts/bitnamilegacy-nginx

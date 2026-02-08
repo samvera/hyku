@@ -6,7 +6,7 @@ class Account < ApplicationRecord
   include AccountEndpoints
   include AccountSettings
   include AccountCname
-  attr_readonly :tenant
+  attr_readonly :tenant, :public_demo_tenant
 
   has_many :sites, dependent: :destroy
   has_many :domain_names, dependent: :destroy
@@ -35,6 +35,8 @@ class Account < ApplicationRecord
   scope :is_public, -> { where(is_public: true) }
   scope :sorted_by_name, -> { order("name ASC") }
   scope :full_accounts, -> { where(search_only: false) }
+  scope :public_demo_tenants, -> { where(public_demo_tenant: true) }
+  scope :non_public_demo_tenants, -> { where(public_demo_tenant: false) }
 
   before_validation do
     self.tenant ||= SecureRandom.uuid
@@ -46,6 +48,9 @@ class Account < ApplicationRecord
                      uniqueness: true,
                      format: { with: /\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/ },
                      unless: proc { |a| a.tenant == 'public' || a.tenant == 'single' }
+
+  # NEW: Validate that search-only accounts have at least one full account selected
+  validate :search_only_must_have_full_accounts, if: :search_only?
 
   after_save :schedule_jobs_if_settings_changed
 
@@ -159,6 +164,23 @@ class Account < ApplicationRecord
     end
   end
 
+  # Get superadmin emails associated with this account/site
+  def superadmin_emails
+    # Must run this against proper tenant database
+    Apartment::Tenant.switch(tenant) do
+      Site.instance.superadmin_emails
+    end
+  end
+
+  # Set superadmin emails associated with this account/site
+  # @param [Array<String>] Array of user emails
+  def superadmin_emails=(emails)
+    # Must run this against proper tenant database
+    Apartment::Tenant.switch(tenant) do
+      Site.instance.superadmin_emails = emails
+    end
+  end
+
   def cache_api?
     cache_api
   end
@@ -225,6 +247,11 @@ class Account < ApplicationRecord
     Apartment::Tenant.switch(self.tenant) do
       find_or_schedule_jobs
     end
+  end
+
+  def search_only_must_have_full_accounts
+    return unless full_account_cross_searches.reject(&:marked_for_destruction?).empty?
+    errors.add(:base, 'Search-only accounts must have at least one full account selected for cross-tenant search')
   end
 end
 # rubocop:enable Metrics/ClassLength

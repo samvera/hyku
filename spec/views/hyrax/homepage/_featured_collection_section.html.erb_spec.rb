@@ -39,4 +39,9 @@ RSpec.describe "hyrax/homepage/_featured_collection_section.html.erb", type: :vi
       is_expected.to have_selector('form')
     end
   end
+
+  it 'links to all collections, sorted by title' do
+    render
+    is_expected.to have_link('View all collections', href: /sort=title_ssi\+asc/)
+  end
 end

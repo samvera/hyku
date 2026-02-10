@@ -77,4 +77,8 @@ RSpec.describe "themes/cultural_repository/hyrax/homepage/_featured_collection_s
       expect(rendered).to have_link(t('hyrax.homepage.admin_sets.link'))
     end
   end
+  it 'links to all collections, sorted by title' do
+    render
+    expect(rendered).to have_link('View all collections', href: /sort=title_ssi\+asc/)
+  end
 end

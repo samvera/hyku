@@ -59,7 +59,7 @@ module HyraxHelper
     Site.instance.directory_image? ? Site.instance.directory_image.url : false
   end
 
-  def default_collction_image
+  def default_collection_image
     Site.instance.default_collection_image? ? Site.instance.default_collection_image.url : false
   end
 

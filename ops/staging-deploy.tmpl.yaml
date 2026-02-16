@@ -49,6 +49,7 @@ extraVolumeMounts: &volMounts
 
 ingress:
   enabled: true
+  ingressClassName: "nginx-ingress"
   hosts:
     - host: hykustaging.org
       paths:
@@ -60,8 +61,7 @@ ingress:
           pathType: ImplementationSpecific
   annotations:
     {
-      kubernetes.io/ingress.class: "nginx",
-      nginx.ingress.kubernetes.io/proxy-body-size: "0",
+      nginx.org/client-max-body-size: "0",
       cert-manager.io/cluster-issuer: letsencrypt-production-dns,
     }
   tls:

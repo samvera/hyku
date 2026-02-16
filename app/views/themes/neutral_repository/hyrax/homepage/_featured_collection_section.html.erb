@@ -29,7 +29,7 @@
 <ul class="list-inline collection-highlights-list">
   <li>
     <%= link_to t('hyrax.homepage.admin_sets.link'),
-                main_app.search_catalog_path(f: { generic_type_sim: ['Collection']}),
+                main_app.search_catalog_path(f: { generic_type_sim: ['Collection']}, sort: "#{CatalogController.title_field} asc"),
                 class: 'btn btn-secondary mt-1' %>
   </li>
 </ul>

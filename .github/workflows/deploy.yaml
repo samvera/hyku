@@ -20,16 +20,21 @@ on:
 jobs:
   deployment:
     runs-on: ubuntu-latest
-    container: dtzar/helm-kubectl:3.9.4
     environment: ${{ inputs.environment }}
+    permissions:
+      id-token: write   # required for OIDC (configure-aws-credentials with role-to-assume)
+      contents: read
     env:
       HELM_EXPERIMENTAL_OCI: 1
       HELM_RELEASE_NAME: ${{ github.event.repository.name }}-${{ inputs.environment }}
       KUBE_NAMESPACE: ${{ github.event.repository.name }}-${{ inputs.environment }}
       HELM_EXTRA_ARGS: >
         --values ops/${{ inputs.environment }}-deploy.yaml
-      KUBECONFIG_FILE: ${{ secrets.KUBECONFIG_FILE }}
       KUBECONFIG: ./kubeconfig.yml
+      # Must match role created by ops/create-github-actions-deploy-role-n8.sh (profile n8, cluster tools)
+      EKS_CLUSTER_NAME: tools
+      EKS_REGION: us-west-2
+      AWS_ROLE_ARN: arn:aws:iam::559021623471:role/tools-github-actions-deploy
       BASE_URL: ${{ secrets.BASE_URL }}
       DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
@@ -55,6 +60,32 @@ jobs:
       SQUARE_WEBHOOK_SIGNATURE_KEY: ${{ secrets.SQUARE_WEBHOOK_SIGNATURE_KEY }}
       STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: "3.17"
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: "latest"
+
+      # Role tools-github-actions-deploy: OIDC trust repo:samvera/hyku:*, EKS Describe/ListClusters/GetToken, EKS Access Entry ClusterAdmin on cluster tools.
+      - name: Configure AWS credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.EKS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN || env.AWS_ROLE_ARN }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Set up kubeconfig
+        run: |
+          aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $EKS_REGION --role-arn "${{ secrets.AWS_ROLE_ARN || env.AWS_ROLE_ARN }}" --kubeconfig $KUBECONFIG
+          chmod 600 $KUBECONFIG
+
       - id: setup
         name: Setup
         uses: notch8/actions/setup-env@v1.0.6
@@ -62,14 +93,15 @@ jobs:
           tag: ${{ inputs.tag }}
           image_name: ${{ inputs.image_name }}
           token: ${{ secrets.CHECKOUT_TOKEN || secrets.GITHUB_TOKEN }}
+
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
         with:
           limit-access-to-actor: true
+
       - name: Do deploy
         run: |
-          echo $KUBECONFIG_FILE | base64 -d > $KUBECONFIG;
           DOLLAR=$ envsubst < ops/${{ inputs.environment }}-deploy.tmpl.yaml > ops/${{ inputs.environment }}-deploy.yaml;
           export DEPLOY_TAG=${TAG};
           export DEPLOY_IMAGE=ghcr.io/${REPO_LOWER}/web;

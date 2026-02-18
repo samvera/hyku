@@ -82,9 +82,10 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
+      # Omit --role-arn: we're already that role via OIDC; embedding it would make kubectl exec try to assume the role again (denied).
       - name: Set up kubeconfig
         run: |
-          aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $EKS_REGION --role-arn "${{ secrets.AWS_ROLE_ARN || env.AWS_ROLE_ARN }}" --kubeconfig $KUBECONFIG
+          aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $EKS_REGION --kubeconfig $KUBECONFIG
           chmod 600 $KUBECONFIG
 
       - id: setup

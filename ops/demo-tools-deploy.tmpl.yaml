@@ -78,7 +78,7 @@ extraEnvVars: &envVars
   - name: DB_NAME
     value: hyku-demo-tools
   - name: DB_USER
-    value: postgres
+    value: hyku-demo-tools
   - name: FCREPO_BASE_PATH
     value: /hykudemotools
   - name: FCREPO_HOST
@@ -275,11 +275,13 @@ externalPostgresql:
 
 externalSolrHost: solr.solr.svc.cluster.local
 externalSolrUser: admin
+externalSolrPort: "8983"
 externalSolrCollection: "hyku-demo-tools"
 externalSolrPassword: $SOLR_ADMIN_PASSWORD
 
+fullnameOverride: hyku-demo-tools
 global:
-  hyraxName: hyku-demo-tools-hyrax
+  hyraxName: hyku-demo-tools
 
 nginx:
   enabled: false

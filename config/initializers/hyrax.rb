@@ -285,8 +285,10 @@ Rails.application.config.to_prepare do
   Hyrax::MemberPresenterFactory.file_presenter_class = Hyrax::IiifAv::IiifFileSetPresenter
   Hyrax::PcdmMemberPresenterFactory.file_presenter_class = Hyrax::IiifAv::IiifFileSetPresenter
 
-  Hyrax::Transactions::Container.namespace('collection_resource') do |ops|
-    ops.register 'save_collection_thumbnail', Hyrax::Transactions::Steps::SaveCollectionThumbnail.new
+  unless Hyrax::Transactions::Container.key?('collection_resource.save_collection_thumbnail')
+    Hyrax::Transactions::Container.namespace('collection_resource') do |ops|
+      ops.register 'save_collection_thumbnail', Hyrax::Transactions::Steps::SaveCollectionThumbnail.new
+    end
   end
 
   Hyrax::Resource.delegate(

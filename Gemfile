@@ -28,7 +28,7 @@ gem 'blacklight_range_limit', '~> 8.5'
 gem 'bolognese', '>= 1.9.10'
 gem 'bootstrap', '~> 4.6'
 gem 'bootstrap-datepicker-rails'
-gem 'bulkrax', '~> 9.3.0'
+gem 'bulkrax', github: 'samvera-labs/bulkrax', branch: 'bulkrax-v2-importer'
 gem 'byebug', group: %i[development test]
 gem 'capybara', group: %i[test]
 gem 'capybara-screenshot', '~> 1.0', group: %i[test]

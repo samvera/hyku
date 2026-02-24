@@ -22,8 +22,8 @@ GIT
 
 GIT
   remote: https://github.com/samvera-labs/bulkrax.git
-  revision: e1be82511c9a055e8ece484d3d2323cc8508a212
-  branch: bulkrax-v2-importer
+  revision: e22a9e8bd9e547a8ad1924ad3e7ca4a0cd3eeeb4
+  branch: v2-chunk-uploads
   specs:
     bulkrax (9.3.5)
       bagit (~> 0.6.0)

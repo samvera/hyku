@@ -12,12 +12,18 @@ RSpec.describe 'Admin Dashboard', type: :feature, js: true, clean: true do
     end
 
     it 'shows the admin page' do # rubocop:disable RSpec/ExampleLength
+      # Jobs dashboard link shows when queue adapter is sidekiq or good_job; stub for consistent test
+      allow(ENV).to receive(:fetch).and_call_original
+      allow(ENV).to receive(:fetch).with('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq').and_return('sidekiq')
       visit Hyrax::Engine.routes.url_helpers.dashboard_path
       within '.sidebar' do
         expect(page).to have_link('Activity Summary')
         expect(page).to have_link('System Status')
         expect(page).to have_link("Your activity")
         expect(page).to have_link('Reports')
+        expect(page).to have_link('Sidekiq Dashboard', href: '/jobs')
+      end
+      within '.sidebar' do
         # Need to click link to open collapsed menu
         click_link "Your activity"
         expect(page).to have_link('Profile')
@@ -44,6 +50,15 @@ RSpec.describe 'Admin Dashboard', type: :feature, js: true, clean: true do
         expect(page).to have_link('Features')
         expect(page).to have_link('Available Work Types')
         # expect(page).to have_link('Workflow Roles')
+      end
+    end
+
+    it 'shows Jobs Dashboard link when GoodJob is the queue adapter' do
+      allow(ENV).to receive(:fetch).and_call_original
+      allow(ENV).to receive(:fetch).with('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq').and_return('good_job')
+      visit Hyrax::Engine.routes.url_helpers.dashboard_path
+      within '.sidebar' do
+        expect(page).to have_link('Jobs Dashboard', href: '/jobs')
       end
     end
 
@@ -79,6 +94,9 @@ RSpec.describe 'Admin Dashboard', type: :feature, js: true, clean: true do
         expect(page).to have_link("Your activity")
         # Should not see Reports
         expect(page).not_to have_link('Reports')
+        # Should not see jobs dashboard link (admin only; label varies by queue: Sidekiq or Jobs Dashboard)
+        expect(page).not_to have_link('Sidekiq Dashboard')
+        expect(page).not_to have_link('Jobs Dashboard')
         # Need to click link to open collapsed menu
         click_link "Your activity"
         expect(page).to have_link('Profile')

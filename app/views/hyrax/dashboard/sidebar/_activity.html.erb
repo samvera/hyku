@@ -67,6 +67,17 @@
   </li>
 <% end %>
 
+<% jobs_queue = ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq') %>
+<% if can?(:manage, :sidekiq_dashboard) && %w[sidekiq good_job].include?(jobs_queue) %>
+  <li class="nav-item">
+    <%= menu.nav_link('/jobs',
+                      class: "nav-link",
+                      title: t("hyrax.admin.sidebar.jobs_dashboard_#{jobs_queue}")) do %>
+      <span class="fa fa-briefcase" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t("hyrax.admin.sidebar.jobs_dashboard_#{jobs_queue}") %></span>
+    <% end %>
+  </li>
+<% end %>
+
 <% if current_ability.can_create_any_work? && current_account.analytics_credentials_present? %>
   <li class="nav-item">
     <%= menu.collapsable_section t('hyrax.admin.sidebar.analytics'),

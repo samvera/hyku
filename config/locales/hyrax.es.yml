@@ -211,6 +211,9 @@ es:
         profile: Perfil
         repository_objects: Contenido del repositorio
         settings: Configuraciones
+        jobs_dashboard_good_job: Panel de trabajos
+        jobs_dashboard_sidekiq: Panel de Sidekiq
+        sidekiq_dashboard: Panel de Sidekiq
         statistics: Informes
         tasks: Tareas
         technical: Caracteristicas

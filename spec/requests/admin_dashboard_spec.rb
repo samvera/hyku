@@ -54,6 +54,12 @@ RSpec.describe 'Admin Dashboard', type: :request, singletenant: true, clean: tru
         expect(response.status).to eq(200)
       end
 
+      it 'gets the url for Sidekiq dashboard' do # Sidekiq Dashboard (or GoodJob at /jobs when so configured)
+        get '/jobs'
+        # 200 when jobs UI is mounted; 302 when the mounted app redirects; 404 when /jobs is not mounted (e.g. queue is inline)
+        expect([200, 302, 404]).to include(response.status)
+      end
+
       # Repository Contents
       it 'gets the url for collections' do # Collections
         get '/dashboard/collections'
@@ -65,14 +71,14 @@ RSpec.describe 'Admin Dashboard', type: :request, singletenant: true, clean: tru
         expect(response.status).to eq(200)
       end
 
-      # This test passes locally, but fails in the CI.  The Bulkrax route does not exist in CI.
-      xit 'gets the url for importers' do # Importers
+      it 'gets the url for importers' do # Importers (Bulkrax)
+        skip 'Bulkrax routes not mounted' unless Hyku.bulkrax_enabled?
         get '/importers'
         expect(response.status).to eq(200)
       end
 
-      # This test passes locally, but fails in the CI.  The Bulkrax route does not exist in CI.
-      xit 'gets the url for exporters' do # Exporters
+      it 'gets the url for exporters' do # Exporters (Bulkrax)
+        skip 'Bulkrax routes not mounted' unless Hyku.bulkrax_enabled?
         get '/exporters'
         expect(response.status).to eq(200)
       end
@@ -190,6 +196,12 @@ RSpec.describe 'Admin Dashboard', type: :request, singletenant: true, clean: tru
         expect(response.status).to eq(302)
       end
 
+      it 'renders a status of you are not authorized to access the Sidekiq dashboard' do # Sidekiq Dashboard
+        get '/jobs'
+        # 302 when route is mounted and user is unauthorized; 404 when /jobs is not mounted (e.g. queue adapter is inline)
+        expect([302, 404]).to include(response.status)
+      end
+
       # Repository Contents
       it 'gets the url for collections' do # Collections
         get '/dashboard/collections'
@@ -201,16 +213,16 @@ RSpec.describe 'Admin Dashboard', type: :request, singletenant: true, clean: tru
         expect(response.status).to eq(200)
       end
 
-      # This test passes locally, but fails in the CI.  The Bulkrax route does not exist in CI.
-      xit 'gets the url for importers' do # Importers
+      it 'renders a status of you are not authorized to access the Importers page' do # Importers (Bulkrax)
+        skip 'Bulkrax routes not mounted' unless Hyku.bulkrax_enabled?
         get '/importers'
-        expect(response.status).to eq(200)
+        expect(response.status).to eq(302)
       end
 
-      # This test passes locally, but fails in the CI.  The Bulkrax route does not exist in CI.
-      xit 'gets the url for exporters' do # Exporters
+      it 'renders a status of you are not authorized to access the Exporters page' do # Exporters (Bulkrax)
+        skip 'Bulkrax routes not mounted' unless Hyku.bulkrax_enabled?
         get '/exporters'
-        expect(response.status).to eq(200)
+        expect(response.status).to eq(302)
       end
 
       # Tasks

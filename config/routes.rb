@@ -15,7 +15,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   mount IiifPrint::Engine, at: '/'
   mount Riiif::Engine => 'images', as: :riiif if Hyrax.config.iiif_image_server?
 
-  authenticate :user, ->(u) { u.superadmin? || u.admin? } do
+  authenticate :user, ->(u) { Ability.new(u).can?(:manage, :sidekiq_dashboard) } do
     queue = ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq')
     case queue
     when 'sidekiq'

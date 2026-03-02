@@ -68,7 +68,7 @@
 <% end %>
 
 <% jobs_queue = ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq') %>
-<% if can?(:manage, :sidekiq_dashboard) && %w[sidekiq good_job].include?(jobs_queue) %>
+<% if can?(:manage, :jobs_dashboard) && %w[sidekiq good_job].include?(jobs_queue) %>
   <li class="nav-item">
     <%= menu.nav_link('/jobs',
                       class: "nav-link",

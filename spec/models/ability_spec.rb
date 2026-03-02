@@ -63,7 +63,7 @@ RSpec.describe Ability do
     it { is_expected.not_to be_able_to(:manage, :all) }
     it { is_expected.not_to be_able_to(:manage, Account) }
     it { is_expected.not_to be_able_to(:manage, Site) }
-    it { is_expected.not_to be_able_to(:manage, :sidekiq_dashboard) }
+    it { is_expected.not_to be_able_to(:manage, :jobs_dashboard) }
 
     describe "#user_groups" do
       subject { ability.user_groups }
@@ -84,14 +84,14 @@ RSpec.describe Ability do
     it { is_expected.not_to be_able_to(:manage, :all) }
     it { is_expected.not_to be_able_to(:manage, Account) }
     it { is_expected.to be_able_to(:manage, Site) }
-    it { is_expected.to be_able_to(:manage, :sidekiq_dashboard) }
+    it { is_expected.to be_able_to(:manage, :jobs_dashboard) }
   end
 
   describe 'a superadmin user' do
     let(:user) { FactoryBot.create(:superadmin) }
 
     it { is_expected.to be_able_to(:manage, :all) }
-    it { is_expected.to be_able_to(:manage, :sidekiq_dashboard) }
+    it { is_expected.to be_able_to(:manage, :jobs_dashboard) }
   end
 
   describe 'a user_manager user' do

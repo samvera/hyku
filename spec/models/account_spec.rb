@@ -799,4 +799,27 @@ RSpec.describe Account, type: :model do
       expect(default_account.public_demo_tenant).to be false
     end
   end
+
+  describe '.single_tenant_default' do
+    before do
+      described_class.instance_variable_set(:@single_tenant_default, nil)
+      allow(described_class).to receive(:from_cname).and_return(nil)
+    end
+
+    it 'does not build an fcrepo endpoint when transition is disabled' do
+      allow(Hyrax.config).to receive(:valkyrie_transition?).and_return(false)
+
+      account = described_class.single_tenant_default
+
+      expect(account.association(:fcrepo_endpoint).target).to be_nil
+    end
+
+    it 'builds an fcrepo endpoint when transition is enabled' do
+      allow(Hyrax.config).to receive(:valkyrie_transition?).and_return(true)
+
+      account = described_class.single_tenant_default
+
+      expect(account.association(:fcrepo_endpoint).target).to be_present
+    end
+  end
 end

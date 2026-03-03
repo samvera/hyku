@@ -31,6 +31,12 @@ Rails.application.config.after_initialize do
 
   Valkyrie.config.metadata_adapter = :freyja
   Hyrax.config.query_index_from_valkyrie = true
+  # Honor explicit Hyrax DISABLE_WINGS env override, else follow transition mode.
+  Hyrax.config.disable_wings = if ENV.key?("DISABLE_WINGS")
+                                 ActiveModel::Type::Boolean.new.cast(ENV["DISABLE_WINGS"])
+                               else
+                                 !Hyrax.config.valkyrie_transition?
+                               end
   Hyrax.config.index_adapter = if ActiveModel::Type::Boolean.new.cast(ENV.fetch("HYKU_USE_QUEUED_INDEX", false))
                                  :redis_queue
                                else
@@ -70,6 +76,7 @@ Rails.application.config.after_initialize do
     Hyrax::CustomQueries::Navigators::CollectionMembers,
     Hyrax::CustomQueries::Navigators::ChildCollectionsNavigator,
     Hyrax::CustomQueries::Navigators::ParentCollectionsNavigator,
+    Hyrax::CustomQueries::Navigators::ParentWorkNavigator,
     Hyrax::CustomQueries::Navigators::ChildFileSetsNavigator,
     Hyrax::CustomQueries::Navigators::ChildWorksNavigator,
     Hyrax::CustomQueries::Navigators::FindFiles,
@@ -87,10 +94,17 @@ Rails.application.config.after_initialize do
     Hyrax.query_service.services[0].custom_queries.register_query_handler(handler)
   end
 
-  [
-    Wings::CustomQueries::FindBySourceIdentifier
-  ].each do |handler|
-    Hyrax.query_service.services[1].custom_queries.register_query_handler(handler)
+  if Hyrax.config.disable_wings
+    # Goddess query_service still includes Wings by default; prune it so
+    # find_multiple queries cannot fall through to ActiveFedora/Fedora.
+    remaining_services = Hyrax.query_service.services.reject { |service| service.class.name == "Wings::Valkyrie::QueryService" }
+    Hyrax.query_service.instance_variable_set(:@services, remaining_services)
+  else
+    [
+      Wings::CustomQueries::FindBySourceIdentifier
+    ].each do |handler|
+      Hyrax.query_service.services[1].custom_queries.register_query_handler(handler)
+    end
   end
 end
 

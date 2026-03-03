@@ -49,5 +49,30 @@ RSpec.describe Sipity do
         end
       end
     end
+
+    context 'on a solr document with transition false and wings disabled' do
+      let(:solr_document) { SolrDocument.new(id: 'test-no-fcrepo-id', has_model_ssim: ["GenericWork"]) }
+
+      it 'resolves via query_service and avoids to_model' do
+        with_valkyrie_transition_setting(false) do
+          proxy_string = 'gid://hyku/GenericWork/test-no-fcrepo-id'
+          global_id = URI::GID.parse(proxy_string)
+          query_resource = instance_double('QueryResource', id: solr_document.id, to_global_id: global_id)
+
+          allow(Hyrax.config).to receive(:disable_wings).and_return(true)
+          allow(Hyrax.query_service).to receive(:find_by).with(id: solr_document.id).and_return(query_resource)
+          expect(solr_document).not_to receive(:to_model)
+
+          saved_entity = Sipity::Entity.create(
+            proxy_for_global_id: proxy_string,
+            workflow_state: workflow_state,
+            workflow: workflow_state.workflow
+          )
+
+          subject = described_class.Entity(solr_document)
+          expect(subject).to eq(saved_entity)
+        end
+      end
+    end
   end
 end

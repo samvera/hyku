@@ -87,7 +87,7 @@ class Account < ApplicationRecord
     @single_tenant_default ||= Account.from_cname('single.tenant.default')
     @single_tenant_default ||= Account.new do |a|
       a.build_solr_endpoint
-      a.build_fcrepo_endpoint
+      a.build_fcrepo_endpoint if Hyrax.config.valkyrie_transition?
       a.build_redis_endpoint
       a.build_data_cite_endpoint
     end

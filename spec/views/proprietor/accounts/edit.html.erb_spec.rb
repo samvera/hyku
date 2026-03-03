@@ -3,7 +3,6 @@
 RSpec.describe "proprietor/accounts/edit", type: :view do
   before do
     assign(:account, account)
-    render
   end
 
   context "with connections" do
@@ -11,6 +10,7 @@ RSpec.describe "proprietor/accounts/edit", type: :view do
 
     before do
       allow(Hyrax.config).to receive(:valkyrie_transition?).and_return(true)
+      render
     end
 
     it "renders the edit account form including fcrepo fields when transition is enabled" do
@@ -28,6 +28,7 @@ RSpec.describe "proprietor/accounts/edit", type: :view do
 
     before do
       allow(Hyrax.config).to receive(:valkyrie_transition?).and_return(false)
+      render
     end
 
     it "does not render fcrepo endpoint fields" do
@@ -45,6 +46,7 @@ RSpec.describe "proprietor/accounts/edit", type: :view do
 
     before do
       allow(Hyrax.config).to receive(:valkyrie_transition?).and_return(true)
+      render
     end
 
     it "renders the edit account form" do

@@ -64,6 +64,9 @@ gem 'json_schemer' # Required for m3 schema validation
 gem 'launchy', group: %i[test]
 gem 'listen', group: %i[development]
 gem 'lograge'
+gem 'opentelemetry-sdk', '~> 1.4'
+gem 'opentelemetry-exporter-otlp', '~> 0.29'
+gem 'opentelemetry-instrumentation-all', '~> 0.67'
 gem 'mods', '~> 2.4'
 gem 'negative_captcha'
 gem 'okcomputer'

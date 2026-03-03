@@ -828,6 +828,8 @@ en:
         versions_title: Display previous versions
       groups_description:
         description_html: The list of groups in the drop-down marked "Select a group" is a list of User Managed Groups that you are a member of.  You may select a specific group and assign an access level for a file within %{application_name}, similarly to adding user access levels.
+      metadata:
+        metadata: Metadata
     footer:
       copyright_html: "<strong>Copyright &copy; 2019 - %{current_year} Samvera</strong> Licensed under the Apache License, Version 2.0"
       service_html: A service of <a href="http://samvera.org/" class="navbar-link" target="_blank">Samvera</a>.

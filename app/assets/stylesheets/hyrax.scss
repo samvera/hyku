@@ -49,3 +49,9 @@
 a {
   overflow-wrap: anywhere;
 }
+
+.file-show-term {
+  dt {
+    break-inside: avoid;
+  }
+}

@@ -234,9 +234,9 @@ RSpec.describe Account, type: :model do
       expect(Hyrax.config.redis_namespace).to eq previous_redis_namespace
       # datacite mode is reset to test in between for safety.
       expect(Hyrax::DOI::DataCiteRegistrar.mode).to eq :test
-      expect(Hyrax::DOI::DataCiteRegistrar.prefix).to eq nil
-      expect(Hyrax::DOI::DataCiteRegistrar.username).to eq nil
-      expect(Hyrax::DOI::DataCiteRegistrar.password).to eq nil
+      expect(Hyrax::DOI::DataCiteRegistrar.prefix).to eq previous_data_cite_prefix
+      expect(Hyrax::DOI::DataCiteRegistrar.username).to eq previous_data_cite_username
+      expect(Hyrax::DOI::DataCiteRegistrar.password).to eq previous_data_cite_password
       expect(Rails.application.routes.default_url_options[:host]).to eq previous_account_cname
     end
 

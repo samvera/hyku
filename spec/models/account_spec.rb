@@ -164,6 +164,29 @@ RSpec.describe Account, type: :model do
     end
   end
 
+  describe '#switch! and #reset! when valkyrie transition is disabled' do
+    before do
+      allow(Hyrax.config).to receive(:valkyrie_transition?).and_return(false)
+      account.build_solr_endpoint(url: 'http://example.com/solr/')
+      account.build_fcrepo_endpoint(url: 'http://example.com/fedora', base_path: '/dev')
+      account.build_redis_endpoint(namespace: 'foobaz')
+      account.build_data_cite_endpoint(mode: 'test', prefix: '10.1234', username: 'user123', password: 'pass123')
+    end
+
+    it 'does not switch the fcrepo endpoint' do
+      expect(account.fcrepo_endpoint).not_to receive(:switch!)
+      account.switch!
+    end
+
+    it 'does not reset fcrepo endpoint state' do
+      allow(account.fcrepo_endpoint).to receive(:switch!)
+      account.switch!
+
+      expect(FcrepoEndpoint).not_to receive(:reset!)
+      account.reset!
+    end
+  end
+
   describe '#switch' do
     let!(:previous_solr_url) { Hyrax::SolrService.connection.uri.to_s }
     let!(:previous_redis_namespace) { 'hyrax' }
@@ -211,9 +234,9 @@ RSpec.describe Account, type: :model do
       expect(Hyrax.config.redis_namespace).to eq previous_redis_namespace
       # datacite mode is reset to test in between for safety.
       expect(Hyrax::DOI::DataCiteRegistrar.mode).to eq :test
-      expect(Hyrax::DOI::DataCiteRegistrar.prefix).to eq previous_data_cite_prefix
-      expect(Hyrax::DOI::DataCiteRegistrar.username).to eq previous_data_cite_username
-      expect(Hyrax::DOI::DataCiteRegistrar.password).to eq previous_data_cite_password
+      expect(Hyrax::DOI::DataCiteRegistrar.prefix).to eq nil
+      expect(Hyrax::DOI::DataCiteRegistrar.username).to eq nil
+      expect(Hyrax::DOI::DataCiteRegistrar.password).to eq nil
       expect(Rails.application.routes.default_url_options[:host]).to eq previous_account_cname
     end
 

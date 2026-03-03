@@ -104,7 +104,7 @@ class Account < ApplicationRecord
   # Make all the account specific connections active
   def switch!
     solr_endpoint.switch!
-    fcrepo_endpoint.switch!
+    fcrepo_endpoint.switch! if Hyrax.config.valkyrie_transition?
     redis_endpoint.switch!
     data_cite_endpoint.switch!
     switch_host!(cname)
@@ -121,7 +121,7 @@ class Account < ApplicationRecord
   def reset!
     setup_tenant_cache(cache_api?) if self.class.column_names.include?('settings')
     SolrEndpoint.reset!
-    FcrepoEndpoint.reset!
+    FcrepoEndpoint.reset! if Hyrax.config.valkyrie_transition?
     RedisEndpoint.reset!
     DataCiteEndpoint.reset!
     switch_host!(nil)

@@ -5,7 +5,7 @@ class CreateAccountInlineJob < ApplicationJob
 
   def perform(account)
     CreateSolrCollectionJob.perform_now(account)
-    CreateFcrepoEndpointJob.perform_now(account)
+    CreateFcrepoEndpointJob.perform_now(account) if Hyrax.config.valkyrie_transition?
     CreateRedisNamespaceJob.perform_now(account)
     account.create_data_cite_endpoint
 

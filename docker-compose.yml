@@ -1,39 +1,130 @@
-# Optional operator overlay for Fedora 4 (Fcrepo4).
+x-app: &app
+  build:
+    context: .
+    target: hyku-web
+    cache_from:
+      - ghcr.io/notch8/palni_palci_knapsack:latest
+    args:
+      BUILDKIT_INLINE_CACHE: 1
+      APP_PATH: ./hyrax-webapp
+  image: ghcr.io/notch8/palni_palci_knapsack:${TAG:-latest}
+  env_file:
+    - .env
+    - .env.development
+  environment:
+    # This line is what makes the knapsack include use the local code instead of the remote gem
+    - BUNDLE_LOCAL__HYKU_KNAPSACK=/app/samvera
+    - BUNDLE_DISABLE_LOCAL_BRANCH_CHECK=true
+  volumes:
+    - node_modules:/app/samvera/hyrax-webapp/node_modules:cached
+    - uploads:/app/samvera/hyrax-webapp/public/uploads:cached
+    - assets:/app/samvera/hyrax-webapp/public/assets:cached
+    - cache:/app/samvera/hyrax-webapp/tmp/cache:cached
+    - .:/app/samvera
 
 volumes:
+  assets:
+  cache:
+  db:
   fcrepo:
+  node_modules:
+  redis:
+  solr:
+  uploads:
+  zk:
+  zoo:
+
+networks:
+  default:
+    name: stackcar
 
 services:
+  adminer:
+    extends:
+      file: hyrax-webapp/docker-compose.yml
+      service: adminer
+
+  zoo:
+    extends:
+      file: hyrax-webapp/docker-compose.yml
+      service: zoo
+
+  solr:
+    extends:
+      file: hyrax-webapp/docker-compose.yml
+      service: solr
+
   fcrepo:
-    image: ghcr.io/samvera/fcrepo4:4.7.5
-    volumes:
-      - fcrepo:/data:cached
-    env_file:
-      - .env
-    environment:
-      - VIRTUAL_PORT=8080
-      - VIRTUAL_HOST=fcrepo.hyku.test
-      - JAVA_OPTS=${JAVA_OPTS} -Dfcrepo.modeshape.configuration="classpath:/config/file-simple/repository.json" -Dfcrepo.object.directory="/data/objects" -Dfcrepo.binary.directory="/data/binaries"
-    ports:
-      - 8080
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.fcrepo-${APP_NAME}.tls=true"
-      - "traefik.http.routers.fcrepo-${APP_NAME}.entrypoints=websecure"
-      - "traefik.http.routers.fcrepo-${APP_NAME}.rule=Host(`fcrepo-${APP_NAME}.localhost.direct`)"
-      - "traefik.http.services.fcrepo-${APP_NAME}.loadbalancer.server.port=8080"
+    extends:
+      file: hyrax-webapp/docker-compose.yml
+      service: fcrepo
+
+  fits:
+    extends:
+      file: hyrax-webapp/docker-compose.yml
+      service: fits
+
+  db:
+    extends:
+      file: hyrax-webapp/docker-compose.yml
+      service: db
 
   web:
-    depends_on:
-      fcrepo:
-        condition: service_started
+    <<: *app
+    extends:
+      file: hyrax-webapp/docker-compose.yml
+      service: web
+    # Uncomment command to access container with out starting bin/web. Useful for debugging or updating Gemfile.lock
+    # command: sleep infinity
 
   worker:
-    depends_on:
-      fcrepo:
-        condition: service_started
+    <<: *app
+    extends:
+      file: hyrax-webapp/docker-compose.yml
+      service: worker
+    build:
+      context: .
+      target: hyku-worker
+      cache_from:
+        - ghcr.io/notch8/palni_palci_knapsack/worker:latest
+      args:
+        BUILDKIT_INLINE_CACHE: 1
+        APP_PATH: ./hyrax-webapp
+    image: ghcr.io/notch8/palni_palci_knapsack/worker:${TAG:-latest}
+    # Uncomment command to access container with out starting bin/worker. Useful for debugging or updating Gemfile.lock
+    # command: sleep infinity
+    volumes:
+      - node_modules:/app/samvera/hyrax-webapp/node_modules:cached
+      - uploads:/app/samvera/hyrax-webapp/public/uploads:cached
+      - assets:/app/samvera/hyrax-webapp/public/assets:cached
+      - cache:/app/samvera/hyrax-webapp/tmp/cache:cached
+      - .:/app/samvera
+
+  check_volumes:
+    <<: *app
+    extends:
+      file: hyrax-webapp/docker-compose.yml
+      service: check_volumes
 
   initialize_app:
-    depends_on:
-      fcrepo:
-        condition: service_started
+    <<: *app
+    extends:
+      file: hyrax-webapp/docker-compose.yml
+      service: initialize_app
+    command:
+      - >
+        /app/samvera/bin/solrcloud-upload-configset.sh /app/samvera/hyrax-webapp/solr/conf &&
+        /app/samvera/bin/solrcloud-assign-configset.sh &&
+        SOLR_COLLECTION_NAME=hydra-test /app/samvera/bin/solrcloud-assign-configset.sh &&
+        bundle &&
+        /app/samvera/bin/db-migrate-seed.sh
+
+  redis:
+    extends:
+      file: hyrax-webapp/docker-compose.yml
+      service: redis
+
+  chrome:
+    extends:
+      file: hyrax-webapp/docker-compose.yml
+      service: chrome

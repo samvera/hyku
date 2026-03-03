@@ -96,20 +96,27 @@ module Proprietor
 
     # Never trust parameters from the scary internet, only allow the permitted parameters through.
     def edit_account_params
-      params.require(:account).permit(
+      permitted_attributes = [
         :name,
         :cname,
         :title,
         :is_public,
         :search_only,
         *@account.live_settings.keys,
-        admin_emails: [],
-        superadmin_emails: [],
-        full_account_cross_searches_attributes: [:id, :_destroy, :full_account_id, full_account_attributes: [:id]],
-        solr_endpoint_attributes: %i[id url],
-        fcrepo_endpoint_attributes: %i[id url base_path],
-        data_cite_endpoint_attributes: %i[mode prefix username password],
-        domain_names_attributes: %i[id tenant cname is_active _destroy]
+        { admin_emails: [] },
+        { superadmin_emails: [] },
+        { full_account_cross_searches_attributes: [:id, :_destroy, :full_account_id, { full_account_attributes: [:id] }] },
+        { solr_endpoint_attributes: %i[id url] },
+        { data_cite_endpoint_attributes: %i[mode prefix username password] },
+        { domain_names_attributes: %i[id tenant cname is_active _destroy] }
+      ]
+
+      if Hyrax.config.valkyrie_transition?
+        permitted_attributes << { fcrepo_endpoint_attributes: %i[id url base_path] }
+      end
+
+      params.require(:account).permit(
+        *permitted_attributes
       )
     end
 

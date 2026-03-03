@@ -1,0 +1,39 @@
+# Optional operator overlay for Fedora 4 (Fcrepo4).
+
+volumes:
+  fcrepo:
+
+services:
+  fcrepo:
+    image: ghcr.io/samvera/fcrepo4:4.7.5
+    volumes:
+      - fcrepo:/data:cached
+    env_file:
+      - .env
+    environment:
+      - VIRTUAL_PORT=8080
+      - VIRTUAL_HOST=fcrepo.hyku.test
+      - JAVA_OPTS=${JAVA_OPTS} -Dfcrepo.modeshape.configuration="classpath:/config/file-simple/repository.json" -Dfcrepo.object.directory="/data/objects" -Dfcrepo.binary.directory="/data/binaries"
+    ports:
+      - 8080
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.fcrepo-${APP_NAME}.tls=true"
+      - "traefik.http.routers.fcrepo-${APP_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.fcrepo-${APP_NAME}.rule=Host(`fcrepo-${APP_NAME}.localhost.direct`)"
+      - "traefik.http.services.fcrepo-${APP_NAME}.loadbalancer.server.port=8080"
+
+  web:
+    depends_on:
+      fcrepo:
+        condition: service_started
+
+  worker:
+    depends_on:
+      fcrepo:
+        condition: service_started
+
+  initialize_app:
+    depends_on:
+      fcrepo:
+        condition: service_started

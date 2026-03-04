@@ -15,10 +15,8 @@ RSpec.describe Hyrax::AdminSetCreateServiceDecorator do
       allow(Hyrax.config).to receive(:valkyrie_transition?).and_return(true)
       query_service = instance_double('QueryService')
       allow(Hyrax).to receive(:query_service).and_return(query_service)
-      allow(query_service).to receive(:find_by).with(id: 'admin_set/default')
-                                        .and_raise(Valkyrie::Persistence::ObjectNotFoundError)
-      allow(query_service).to receive(:find_by).with(id: Hyrax::AdminSetCreateService::DEFAULT_ID)
-                                        .and_raise(Valkyrie::Persistence::ObjectNotFoundError)
+      allow(query_service).to receive(:find_by).with(id: 'admin_set/default').and_raise(Valkyrie::Persistence::ObjectNotFoundError)
+      allow(query_service).to receive(:find_by).with(id: Hyrax::AdminSetCreateService::DEFAULT_ID).and_raise(Valkyrie::Persistence::ObjectNotFoundError)
 
       result = Hyrax::AdminSetCreateService.send(:find_unsaved_default_admin_set)
 

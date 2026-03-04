@@ -49,7 +49,11 @@ RSpec.describe 'Admin Dashboard', type: :feature, js: true, clean: true do
 
     it 'shows the status page' do
       visit status_path
-      expect(page).to have_selector(".list-group-item-success", text: "Fedora OK")
+      if Hyrax.config.valkyrie_transition?
+        expect(page).to have_selector(".list-group-item-success", text: "Fedora OK")
+      else
+        expect(page).to have_no_text("Fedora OK")
+      end
       expect(page).to have_selector(".list-group-item-success", text: "Solr OK")
       expect(page).to have_selector(".list-group-item-success", text: "Redis OK")
       expect(page).to have_selector(".list-group-item-success", text: "Database OK")

@@ -28,9 +28,7 @@ RSpec.describe Hyrax do
     end
 
     it 'keeps parent work custom query available when wings disabled' do
-      if subject.disable_wings
-        expect(Hyrax.custom_queries).to respond_to(:find_parent_work)
-      end
+      expect(Hyrax.custom_queries).to respond_to(:find_parent_work) if subject.disable_wings
     end
   end
 end

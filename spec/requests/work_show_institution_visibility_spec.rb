@@ -22,7 +22,8 @@ RSpec.describe "Users trying to access an Institution Work's show page", type: :
   context 'an unauthenticated user' do
     it 'is redirected to the login view' do
       get "http://#{account.cname}/concern/generic_works/#{work.id}"
-      expect(response.status).to eq(302)
+      expected_status = no_wings_mode? ? 404 : 302
+      expect(response.status).to eq(expected_status)
     end
   end
 
@@ -39,7 +40,8 @@ RSpec.describe "Users trying to access an Institution Work's show page", type: :
     it 'is authorized' do
       login_as @tenant_user # rubocop:disable RSpec/InstanceVariable
       get "http://#{account.cname}/concern/generic_works/#{work.id}"
-      expect(response.status).to eq(200)
+      expected_status = no_wings_mode? ? 404 : 200
+      expect(response.status).to eq(expected_status)
     end
   end
 
@@ -60,7 +62,8 @@ RSpec.describe "Users trying to access an Institution Work's show page", type: :
     it 'is authorized' do
       login_as @tenant_admin # rubocop:disable RSpec/InstanceVariable
       get "http://#{account.cname}/concern/generic_works/#{work.id}"
-      expect(response.status).to eq(200)
+      expected_status = no_wings_mode? ? 404 : 200
+      expect(response.status).to eq(expected_status)
     end
   end
 end

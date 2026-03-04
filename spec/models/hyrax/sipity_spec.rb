@@ -12,21 +12,14 @@ RSpec.describe Sipity do
     let(:proxy_string) { Hyrax::GlobalID(work).to_s }
     # rubocop:enable Lint/RedundantStringCoercion
 
-    def with_valkyrie_transition_setting(value)
-      original_value = Hyrax.config.valkyrie_transition?
-      begin
-        Hyrax.config.instance_variable_set(:@valkyrie_transition, value)
-        yield
-      ensure
-        Hyrax.config.instance_variable_set(:@valkyrie_transition, original_value)
-      end
-    end
-
     context 'on a generic work with lazy migration: true' do
+      before { with_disable_wings(false) }
+
       it 'will find the entity' do
-        with_valkyrie_transition_setting(true) do
+        with_valkyrie_transition(true) do
+          model = solr_document.to_model
           saved_entity = Sipity::Entity.create(
-            proxy_for_global_id: proxy_string,
+            proxy_for_global_id: model.to_global_id.to_s,
             workflow_state: workflow_state,
             workflow: workflow_state.workflow
           )
@@ -37,8 +30,10 @@ RSpec.describe Sipity do
     end
 
     context 'on a generic work with lazy migration: false' do
+      before { with_disable_wings(false) }
+
       it 'will find the entity' do
-        with_valkyrie_transition_setting(false) do
+        with_valkyrie_transition(false) do
           saved_entity = Sipity::Entity.create(
             proxy_for_global_id: proxy_string,
             workflow_state: workflow_state,
@@ -54,23 +49,24 @@ RSpec.describe Sipity do
       let(:solr_document) { SolrDocument.new(id: 'test-no-fcrepo-id', has_model_ssim: ["GenericWork"]) }
 
       it 'resolves via query_service and avoids to_model' do
-        with_valkyrie_transition_setting(false) do
+        with_valkyrie_transition(false) do
           proxy_string = 'gid://hyku/GenericWork/test-no-fcrepo-id'
           global_id = URI::GID.parse(proxy_string)
           query_resource = instance_double('QueryResource', id: solr_document.id, to_global_id: global_id)
 
-          allow(Hyrax.config).to receive(:disable_wings).and_return(true)
-          allow(Hyrax.query_service).to receive(:find_by).with(id: solr_document.id).and_return(query_resource)
-          expect(solr_document).not_to receive(:to_model)
+          with_disable_wings(true) do
+            allow(Hyrax.query_service).to receive(:find_by).with(id: solr_document.id).and_return(query_resource)
+            expect(solr_document).not_to receive(:to_model)
 
-          saved_entity = Sipity::Entity.create(
-            proxy_for_global_id: proxy_string,
-            workflow_state: workflow_state,
-            workflow: workflow_state.workflow
-          )
+            saved_entity = Sipity::Entity.create(
+              proxy_for_global_id: proxy_string,
+              workflow_state: workflow_state,
+              workflow: workflow_state.workflow
+            )
 
-          subject = described_class.Entity(solr_document)
-          expect(subject).to eq(saved_entity)
+            subject = described_class.Entity(solr_document)
+            expect(subject).to eq(saved_entity)
+          end
         end
       end
     end

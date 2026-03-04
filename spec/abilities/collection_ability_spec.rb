@@ -5,6 +5,7 @@ require 'cancan/matchers'
 # rubocop:disable RSpec/FilePath
 RSpec.describe Ability::CollectionAbility do
   # rubocop:enable RSpec/FilePath
+
   subject { ability }
 
   let(:ability) { Ability.new(current_user) }
@@ -20,6 +21,20 @@ RSpec.describe Ability::CollectionAbility do
   let(:collection) { FactoryBot.create(:old_collection_lw, with_permission_template: true, collection_type_gid:) }
   let(:permission_template) { collection.permission_template }
   let(:valkyrie_permission_template) { valkyrie_native.permission_template }
+  let(:ability_targets) do
+    targets = [collection, valkyrie_native, valkyrie_native_id, id]
+    unless no_wings_mode?
+      targets.concat([valkyrie_found, valkyrie_conversion, solr_document])
+    end
+    targets
+  end
+  let(:ability_targets_without_ids) do
+    targets = [collection, valkyrie_native]
+    unless no_wings_mode?
+      targets.concat([valkyrie_found, valkyrie_conversion, solr_document])
+    end
+    targets
+  end
 
   context 'when admin user' do
     let(:user) { FactoryBot.create(:admin) }
@@ -31,7 +46,7 @@ RSpec.describe Ability::CollectionAbility do
       is_expected.to be_able_to(:create_any, Collection)
       is_expected.to be_able_to(:read_any, Collection)
       is_expected.to be_able_to(:view_admin_show_any, Collection)
-      [collection, valkyrie_found, valkyrie_conversion, solr_document, valkyrie_native, valkyrie_native_id, id].each do |obj|
+      ability_targets.each do |obj|
         is_expected.to be_able_to(:edit, obj)
         is_expected.to be_able_to(:update, obj)
         is_expected.to be_able_to(:destroy, obj)
@@ -55,7 +70,7 @@ RSpec.describe Ability::CollectionAbility do
         is_expected.to be_able_to(:create_any, Collection)
         is_expected.to be_able_to(:read_any, Collection)
         is_expected.to be_able_to(:view_admin_show_any, Collection)
-        [collection, valkyrie_found, valkyrie_conversion, solr_document, valkyrie_native, valkyrie_native_id, id].each do |obj|
+        ability_targets.each do |obj|
           is_expected.to be_able_to(:edit, obj)
           is_expected.to be_able_to(:update, obj)
           is_expected.to be_able_to(:destroy, obj)
@@ -84,7 +99,7 @@ RSpec.describe Ability::CollectionAbility do
         is_expected.to be_able_to(:create_any, Collection)
         is_expected.to be_able_to(:read_any, Collection)
         is_expected.to be_able_to(:view_admin_show_any, Collection)
-        [collection, valkyrie_found, valkyrie_conversion, solr_document, valkyrie_native, valkyrie_native_id, id].each do |obj|
+        ability_targets.each do |obj|
           is_expected.to be_able_to(:edit, obj)
           is_expected.to be_able_to(:update, obj)
           is_expected.to be_able_to(:destroy, obj)
@@ -106,7 +121,7 @@ RSpec.describe Ability::CollectionAbility do
         is_expected.to be_able_to(:create_any, Collection)
         is_expected.to be_able_to(:read_any, Collection)
         is_expected.to be_able_to(:view_admin_show_any, Collection)
-        [collection, valkyrie_found, valkyrie_conversion, solr_document, valkyrie_native, valkyrie_native_id, id].each do |obj|
+        ability_targets.each do |obj|
           is_expected.to be_able_to(:edit, obj)
           is_expected.to be_able_to(:update, obj)
           is_expected.to be_able_to(:view_admin_show, obj)
@@ -133,7 +148,7 @@ RSpec.describe Ability::CollectionAbility do
         is_expected.to be_able_to(:create_any, Collection)
         is_expected.to be_able_to(:read_any, Collection)
         is_expected.to be_able_to(:view_admin_show_any, Collection)
-        [collection, valkyrie_found, valkyrie_conversion, solr_document, valkyrie_native, valkyrie_native_id, id].each do |obj|
+        ability_targets.each do |obj|
           is_expected.to be_able_to(:edit, obj)
           is_expected.to be_able_to(:update, obj)
           is_expected.to be_able_to(:view_admin_show, obj)
@@ -154,7 +169,7 @@ RSpec.describe Ability::CollectionAbility do
         is_expected.to be_able_to(:read_any, Collection)
         is_expected.to be_able_to(:view_admin_show_any, Collection)
         is_expected.not_to be_able_to(:create, Collection)
-        [collection, valkyrie_found, valkyrie_conversion, solr_document, valkyrie_native, valkyrie_native_id, id].each do |obj|
+        ability_targets.each do |obj|
           is_expected.to be_able_to(:view_admin_show, obj)
           is_expected.to be_able_to(:read, obj)
 
@@ -182,7 +197,7 @@ RSpec.describe Ability::CollectionAbility do
         is_expected.to be_able_to(:view_admin_show_any, Collection)
         is_expected.not_to be_able_to(:create, Collection)
 
-        [collection, valkyrie_found, valkyrie_conversion, solr_document, valkyrie_native, valkyrie_native_id, id].each do |_obj|
+        ability_targets.each do |_obj|
           is_expected.to be_able_to(:view_admin_show, collection)
           is_expected.to be_able_to(:read, collection)
 
@@ -214,7 +229,7 @@ RSpec.describe Ability::CollectionAbility do
       is_expected.not_to be_able_to(:manage, Collection)
 
       # We cannot use ID because the document is not actually in Solr to find then cast to a resource
-      [collection, valkyrie_found, valkyrie_conversion, solr_document, valkyrie_native].each do |obj|
+      ability_targets_without_ids.each do |obj|
         is_expected.to be_able_to(:edit, obj)
         is_expected.to be_able_to(:update, obj)
         is_expected.to be_able_to(:destroy, obj)
@@ -248,7 +263,7 @@ RSpec.describe Ability::CollectionAbility do
       is_expected.not_to be_able_to(:manage_any, Collection)
 
       # We cannot use ID because the document is not actually in Solr to find then cast to a resource
-      [collection, valkyrie_found, valkyrie_conversion, solr_document, valkyrie_native].each do |obj|
+      ability_targets_without_ids.each do |obj|
         is_expected.to be_able_to(:deposit, obj)
         is_expected.to be_able_to(:view_admin_show, obj)
         is_expected.to be_able_to(:read, obj)
@@ -279,7 +294,7 @@ RSpec.describe Ability::CollectionAbility do
       is_expected.not_to be_able_to(:manage_any, Collection)
 
       # We cannot use ID because the document is not actually in Solr to find then cast to a resource
-      [collection, valkyrie_found, valkyrie_conversion, solr_document, valkyrie_native].each do |obj|
+      ability_targets_without_ids.each do |obj|
         is_expected.to be_able_to(:view_admin_show, obj)
         is_expected.to be_able_to(:read, obj)
 
@@ -297,7 +312,7 @@ RSpec.describe Ability::CollectionAbility do
       is_expected.not_to be_able_to(:manage, Collection)
       is_expected.not_to be_able_to(:manage_any, Collection)
       is_expected.not_to be_able_to(:view_admin_show_any, Collection)
-      [collection, valkyrie_found, valkyrie_conversion, solr_document, id, valkyrie_native, valkyrie_native_id].each do |obj|
+      ability_targets.each do |obj|
         is_expected.not_to be_able_to(:edit, obj)
         is_expected.not_to be_able_to(:update, obj)
         is_expected.not_to be_able_to(:destroy, obj)

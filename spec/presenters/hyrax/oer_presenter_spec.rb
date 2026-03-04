@@ -237,7 +237,7 @@ RSpec.describe Hyrax::OerPresenter do
   describe '#iiif_viewer' do
     subject { presenter.iiif_viewer }
 
-    let(:representative_presenter) { instance_double('Hyrax::FileSetPresenter', present?: true) }
+    let(:representative_presenter) { double('Hyrax::FileSetPresenter', present?: true) }
     let(:image_boolean) { false }
     let(:audio_boolean) { false }
     let(:video_boolean) { false }

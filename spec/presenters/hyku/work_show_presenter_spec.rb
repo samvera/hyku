@@ -18,6 +18,12 @@ RSpec.describe Hyku::WorkShowPresenter do
   end
 
   describe "#iiif_viewer?" do
+    around do |example|
+      RSpec::Mocks.configuration.verify_partial_doubles = false
+      example.run
+      RSpec::Mocks.configuration.verify_partial_doubles = true
+    end
+
     subject { presenter.iiif_viewer? }
 
     before do

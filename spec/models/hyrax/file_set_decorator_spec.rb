@@ -43,9 +43,7 @@ RSpec.describe Hyrax::FileSet do
     before do
       # set up some derivatives
       allow(Hyrax::DerivativePath).to receive(:derivatives_for_reference).and_return(paths)
-      unless Hyrax.config.disable_wings
-        allow(Hyrax::ValkyriePersistDerivatives).to receive(:fileset_for_directives).and_return(file_set_resource)
-      end
+      allow(Hyrax::ValkyriePersistDerivatives).to receive(:fileset_for_directives).and_return(file_set_resource) unless no_wings_mode?
       allow(Hyrax.publisher).to receive(:publish)
     end
 

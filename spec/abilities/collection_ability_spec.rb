@@ -23,16 +23,12 @@ RSpec.describe Ability::CollectionAbility do
   let(:valkyrie_permission_template) { valkyrie_native.permission_template }
   let(:ability_targets) do
     targets = [collection, valkyrie_native, valkyrie_native_id, id]
-    unless no_wings_mode?
-      targets.concat([valkyrie_found, valkyrie_conversion, solr_document])
-    end
+    targets.concat([valkyrie_found, valkyrie_conversion, solr_document]) unless no_wings_mode?
     targets
   end
   let(:ability_targets_without_ids) do
     targets = [collection, valkyrie_native]
-    unless no_wings_mode?
-      targets.concat([valkyrie_found, valkyrie_conversion, solr_document])
-    end
+    targets.concat([valkyrie_found, valkyrie_conversion, solr_document]) unless no_wings_mode?
     targets
   end
 

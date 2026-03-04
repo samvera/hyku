@@ -61,7 +61,6 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
           if no_wings_mode?
             # In no-wings mode, AF-backed paths are intentionally unavailable.
             get hyrax_generic_work_path(my_work)
-            expect(response).to have_http_status(:success)
           else
             # We're testing existing AF objects and Valkyrie objects. They both should pass.
             af_admin_set = FactoryBot.create(:admin_set, with_permission_template: { with_workflows: true })
@@ -69,10 +68,10 @@ RSpec.describe 'Work Editor role', type: :request, singletenant: true, clean: tr
 
             get hyrax_generic_work_path(af_work)
             expect(response).to have_http_status(:success)
-
-            get hyrax_generic_work_path(my_work)
-            expect(response).to have_http_status(:success)
           end
+
+          get hyrax_generic_work_path(my_work)
+          expect(response).to have_http_status(:success)
         end
 
         it 'can see the show page for works deposited by other users' do

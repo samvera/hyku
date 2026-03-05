@@ -52,7 +52,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: c63f4fe4027f5cdc542150499c3ebc8027af2bfc
+  revision: ec9792d3c390911e0daee92962d6b0f16dad7a88
   branch: alt-text-for-filesets
   specs:
     hyrax (5.2.0)

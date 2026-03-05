@@ -2,7 +2,7 @@
 
 RSpec.describe ApplicationHelper, type: :helper do
   describe '#thumbnail_alt_text_for' do
-    let(:document) { SolrDocument.new('thumbnail_alt_text_tesim' => thumbnail_alt_text, 'title_tesim' => ['My Work']) }
+    let(:document) { SolrDocument.new('has_model_ssim' => ['GenericWork'], 'thumbnail_alt_text_tesim' => thumbnail_alt_text, 'title_tesim' => ['My Work']) }
 
     context 'when the document has thumbnail_alt_text (real thumbnail)' do
       let(:thumbnail_alt_text) { ['Custom alt text'] }
@@ -29,10 +29,10 @@ RSpec.describe ApplicationHelper, type: :helper do
       end
 
       context 'when no content block is configured' do
-        before { allow(helper).to receive(:block_for).with(name: 'default_work_image_text').and_return(false) }
+        before { allow(helper).to receive(:block_for).with(name: 'default_work_image_text').and_return(nil) }
 
-        it 'falls back to alt_text_for_view' do
-          expect(helper.thumbnail_alt_text_for(document)).to eq(document.alt_text_for_view)
+        it 'falls back to the default sr thumbnail translation' do
+          expect(helper.thumbnail_alt_text_for(document)).to eq(t('hyrax.sr.thumbnail'))
         end
       end
 

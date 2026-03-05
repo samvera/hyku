@@ -7,6 +7,19 @@ RSpec.describe Hyrax::Transactions::Steps::SaveCollectionThumbnail do
 
   let(:collection_resource) { FactoryBot.valkyrie_create(:hyrax_collection) }
 
+  context 'update the thumbnail' do
+    let(:uploaded) { FactoryBot.create(:uploaded_file) }
+
+    it 'successfully updates the thumbnail' do
+      expect(step.call(collection_resource, update_thumbnail_file_ids: [uploaded.id.to_s], thumbnail_unchanged_indicator: nil)).to be_success
+
+      expect(CollectionBrandingInfo
+               .where(collection_id: collection_resource.id.to_s, role: "thumbnail")
+               .where("local_path LIKE '%#{uploaded.file.filename}'"))
+        .to exist
+    end
+  end
+
   describe '#call' do
     it 'returns Success with the collection resource' do
       result = step.call(collection_resource, update_thumbnail_file_ids: nil, alttext_values: nil)
@@ -23,9 +36,12 @@ RSpec.describe Hyrax::Transactions::Steps::SaveCollectionThumbnail do
 
     context 'when removing a thumbnail' do
       let!(:branding_info) do
-        FactoryBot.create(:collection_branding_info,
-                          collection_id: collection_resource.id.to_s,
-                          role: 'thumbnail')
+        CollectionBrandingInfo.create!(
+          collection_id: collection_resource.id.to_s,
+          role: 'thumbnail',
+          local_path: 'thumbnail/thumbnail.png',
+          alt_text: ''
+        )
       end
 
       it 'removes the thumbnail and publishes the event' do
@@ -40,10 +56,12 @@ RSpec.describe Hyrax::Transactions::Steps::SaveCollectionThumbnail do
 
     context 'when only updating alt text' do
       let!(:branding_info) do
-        FactoryBot.create(:collection_branding_info,
-                          collection_id: collection_resource.id.to_s,
-                          role: 'thumbnail',
-                          alt_text: 'old alt text')
+        CollectionBrandingInfo.create!(
+          collection_id: collection_resource.id.to_s,
+          role: 'thumbnail',
+          local_path: 'thumbnail/thumbnail.png',
+          alt_text: 'old alt text'
+        )
       end
 
       it 'updates the alt text and publishes the event' do

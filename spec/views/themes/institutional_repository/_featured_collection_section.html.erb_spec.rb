@@ -44,7 +44,7 @@ RSpec.describe "themes/institutional_repository/hyrax/homepage/_featured_collect
 
       allow(view).to receive(:render_thumbnail_tag).with(
         presenter.solr_document,
-        { alt: "Featured Collection Thumbnail" },
+        { alt: I18n.t('hyrax.sr.thumbnail') },
         { suppress_link: true }
       ).and_return('thumbnail')
 

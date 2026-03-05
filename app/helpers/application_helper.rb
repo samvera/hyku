@@ -36,7 +36,7 @@ module ApplicationHelper
   # @param document [SolrDocument]
   # @param block_name [String] content block name for the default image alt text
   def thumbnail_alt_text_for(document, block_name: 'default_work_image_text')
-    return document.alt_text_for_view if document.thumbnail_alt_text.present?
+    return document.alt_text_for_view if document.respond_to?(:thumbnail_alt_text) && document.thumbnail_alt_text.present?
 
     block_for(name: block_name) || super
   end

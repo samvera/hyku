@@ -58,7 +58,7 @@ RSpec.describe Hyku::WorkShowPresenter do
       context 'when the tenant is configured to use IIIF Print' do
         before { test_strategy.switch!(:default_pdf_viewer, false) }
 
-        it { is_expected.to be true }
+        it { is_expected.to eq(!no_wings_mode?) }
       end
     end
 
@@ -67,7 +67,7 @@ RSpec.describe Hyku::WorkShowPresenter do
         allow_any_instance_of(Hyrax::IiifAv::IiifFileSetPresenter).to receive(:audio?).and_return true
       end
 
-      it { is_expected.to be true }
+      it { is_expected.to eq(!no_wings_mode?) }
     end
 
     context "for an image file" do
@@ -75,7 +75,7 @@ RSpec.describe Hyku::WorkShowPresenter do
         allow_any_instance_of(Hyrax::IiifAv::IiifFileSetPresenter).to receive(:image?).and_return true
       end
 
-      it { is_expected.to be true }
+      it { is_expected.to eq(!no_wings_mode?) }
     end
 
     context "for a video file" do
@@ -83,7 +83,7 @@ RSpec.describe Hyku::WorkShowPresenter do
         allow_any_instance_of(Hyrax::IiifAv::IiifFileSetPresenter).to receive(:video?).and_return true
       end
 
-      it { is_expected.to be true }
+      it { is_expected.to eq(!no_wings_mode?) }
     end
   end
 

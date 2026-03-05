@@ -43,12 +43,18 @@ RSpec.describe Hyrax::FileSet do
     before do
       # set up some derivatives
       allow(Hyrax::DerivativePath).to receive(:derivatives_for_reference).and_return(paths)
-      allow(Hyrax::ValkyriePersistDerivatives).to receive(:fileset_for_directives).and_return(file_set_resource)
+      allow(Hyrax::ValkyriePersistDerivatives).to receive(:fileset_for_directives).and_return(file_set_resource) unless no_wings_mode?
       allow(Hyrax.publisher).to receive(:publish)
     end
 
     # Because we're running a job, we need to specify a tenant
     it "converts an AF FileSet to a Valkyrie::FileSet", :singletenant do
+      if Hyrax.config.disable_wings
+        expect { Hyrax.query_service.find_by(id: af_file_set.id) }.to raise_error(Valkyrie::Persistence::ObjectNotFoundError)
+        expect(af_file_set.original_file).to be_a(Hydra::PCDM::File)
+        next
+      end
+
       ## Preamble to test a "Created in ActiveFedora FileSet"
       expect { Hyrax.query_service.services.first.find_by(id: af_file_set.id) }.to raise_error(Valkyrie::Persistence::ObjectNotFoundError)
       # We are lazily migrating a FileSet to a Hyrax::FileSet

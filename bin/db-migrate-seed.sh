@@ -8,6 +8,12 @@ def service_wait(address)
   run_command("#{DIR}/service-wait.sh #{address}")
 end
 
+def env_truthy?(name, default: false)
+  value = ENV[name]
+  return default if value.nil?
+  %w[1 true yes on].include?(value.strip.downcase)
+end
+
 def run_command(command)
   stdout, stderr, status = Open3.capture3(command)
   raise stderr unless status.success?
@@ -43,14 +49,23 @@ begin
   db_port = ENV['DB_PORT']
   fcrepo_host = ENV['FCREPO_HOST']
   fcrepo_port = ENV['FCREPO_PORT']
+  disable_wings = if ENV.key?('DISABLE_WINGS')
+                    env_truthy?('DISABLE_WINGS', default: false)
+                  else
+                    !env_truthy?('VALKYRIE_TRANSITION', default: false)
+                  end
   solr_host = ENV['SOLR_HOST']
   solr_port = ENV['SOLR_PORT']
   db_user = ENV['DB_USER']
   db_name = ENV['DB_NAME']
   db_password = ENV['DB_PASSWORD']
 
+  puts "[db-migrate-seed] DISABLE_WINGS=#{ENV['DISABLE_WINGS'].inspect} VALKYRIE_TRANSITION=#{ENV['VALKYRIE_TRANSITION'].inspect} parsed_disable_wings=#{disable_wings}"
+  puts "[db-migrate-seed] FCREPO_HOST=#{fcrepo_host.inspect} FCREPO_PORT=#{fcrepo_port.inspect}"
+  puts "[db-migrate-seed] will_wait_for_fcrepo=#{(!disable_wings && !fcrepo_host.to_s.empty?).inspect}"
+
   service_wait("#{db_host}:#{db_port}")
-  service_wait("#{fcrepo_host}:#{fcrepo_port}") if fcrepo_host
+  service_wait("#{fcrepo_host}:#{fcrepo_port}") if !disable_wings && fcrepo_host
   service_wait("#{solr_host}:#{solr_port}")
 
   migrations_run_query = "PGPASSWORD=#{db_password} psql -h #{db_host} -U #{db_user} #{db_name} -t -c \"SELECT version FROM schema_migrations ORDER BY schema_migrations\""

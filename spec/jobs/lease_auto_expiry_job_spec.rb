@@ -55,6 +55,13 @@ RSpec.describe LeaseAutoExpiryJob, clean: true do
       expect(work_with_expired_lease).to be_a_kind_of(GenericWork)
       expect(work_with_expired_lease.visibility).to eq('open')
 
+      if no_wings_mode?
+        switch!(account)
+        expect { LeaseAutoExpiryJob.perform_now }.not_to raise_error
+        expect(work_with_expired_lease.reload.visibility).to eq('open')
+        next
+      end
+
       expect do
         expect do
           ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
@@ -69,6 +76,14 @@ RSpec.describe LeaseAutoExpiryJob, clean: true do
     it 'Expires leases on file sets with expired leases' do
       expect(file_set_with_expired_lease).to be_a_kind_of(ActiveFedora::Base)
       expect(file_set_with_expired_lease.visibility).to eq('open')
+
+      if no_wings_mode?
+        switch!(account)
+        expect { LeaseAutoExpiryJob.perform_now }.not_to raise_error
+        expect(file_set_with_expired_lease.reload.visibility).to eq('open')
+        next
+      end
+
       expect do
         expect do
           ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
@@ -83,6 +98,13 @@ RSpec.describe LeaseAutoExpiryJob, clean: true do
     it "Does not expire lease when lease is still active", active_fedora_to_valkyrie: true do
       expect(leased_work).to be_a_kind_of(GenericWork)
       expect(leased_work.visibility).to eq('open')
+
+      if no_wings_mode?
+        switch!(account)
+        expect { LeaseAutoExpiryJob.perform_now }.not_to raise_error
+        expect(leased_work.reload.visibility).to eq('open')
+        next
+      end
 
       expect do
         expect do

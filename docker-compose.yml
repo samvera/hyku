@@ -2,9 +2,6 @@
 x-app-env: &app-env
   APP_NAME: ${APP_NAME:-hyku}
   HYRAX_FLEXIBLE: ${HYRAX_FLEXIBLE:-false}
-  # Ensure in-container defaults point to the compose Fedora service.
-  FCREPO_HOST: ${FCREPO_HOST:-fcrepo}
-  FCREPO_PORT: ${FCREPO_PORT:-8080}
 
 x-app: &app
   build:

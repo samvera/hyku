@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/notch8/iiif_print.git
-  revision: d65a5871d8566770960c794224fa3e5aa3709ccf
+  revision: 910a893fc58b51a4a854720fc15d3c4601dc0f8b
   branch: main
   specs:
-    iiif_print (3.0.10)
+    iiif_print (3.0.11)
       blacklight_iiif_search (>= 1.0, < 3.0)
       derivative-rodeo (~> 0.5)
       hyrax (>= 2.5, < 6)

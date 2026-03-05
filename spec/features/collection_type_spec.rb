@@ -557,18 +557,11 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
         # within the typeahead input the first two characters of the user's
         # email and wait one second for the item to populate in the table
         within('#s2id_collection_type_participant_agent_id') do
-          fill_in "s2id_autogen1", with: 'us'
-          sleep 1
+          find('input.select2-input').set('us')
         end
 
         # check for the existence of the user's email from the typeahead dropdown menu
-        within('#select2-drop') do
-          within('.select2-results', match: :first) do
-            within('.select2-result', match: :first) do
-              find('.select2-result-label', text: 'user@example.com').click
-            end
-          end
-        end
+        find('#select2-drop .select2-results .select2-result', text: 'user@example.com', match: :first).click
 
         # from the add user form select the value 'Manager' from the dropdown menu and click the 'Add' button
         within('.section-participants') do

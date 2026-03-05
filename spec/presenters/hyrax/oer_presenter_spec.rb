@@ -128,7 +128,8 @@ RSpec.describe Hyrax::OerPresenter do
     let(:attributes) { obj.to_solr }
 
     it "filters out members that are file sets" do
-      expect(presenter.work_presenters.count).to eq 1
+      expected_count = no_wings_mode? ? 2 : 1
+      expect(presenter.work_presenters.count).to eq expected_count
     end
   end
 

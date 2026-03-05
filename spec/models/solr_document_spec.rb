@@ -62,7 +62,7 @@ RSpec.describe SolrDocument, type: :model do
 
     shared_examples_for 'maps properties to dc terms' do
       it "uses the works' schema match properties to dc terms" do
-        klass_name = GenericWorkResource
+        klass_name = no_wings_mode? ? GenericWork : GenericWorkResource
         expect(solr_document.hydra_model).to eq klass_name
 
         schema_key = klass_name.schema.keys.find { |k| k.name == :abstract }

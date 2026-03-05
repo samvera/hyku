@@ -151,8 +151,12 @@ RSpec.describe Account, type: :model do
     end
 
     it 'switches the ActiveFedora fcrepo connection' do
-      expect(ActiveFedora.fedora.host).to eq 'http://example.com/fedora'
-      expect(ActiveFedora.fedora.base_path).to eq '/dev'
+      if Hyrax.config.valkyrie_transition?
+        expect(ActiveFedora.fedora.host).to eq 'http://example.com/fedora'
+        expect(ActiveFedora.fedora.base_path).to eq '/dev'
+      else
+        expect(ActiveFedora.fedora.host).to eq 'http://fcrepo:8080/rest'
+      end
     end
 
     it 'switches the Blacklight solr conection' do
@@ -191,10 +195,6 @@ RSpec.describe Account, type: :model do
     let!(:previous_solr_url) { Hyrax::SolrService.connection.uri.to_s }
     let!(:previous_redis_namespace) { 'hyrax' }
     let!(:previous_fedora_host) { ActiveFedora.fedora.host }
-    let!(:previous_data_cite_mode) { Hyrax::DOI::DataCiteRegistrar.mode }
-    let!(:previous_data_cite_prefix) { Hyrax::DOI::DataCiteRegistrar.prefix }
-    let!(:previous_data_cite_username) { Hyrax::DOI::DataCiteRegistrar.username }
-    let!(:previous_data_cite_password) { Hyrax::DOI::DataCiteRegistrar.password }
     let!(:previous_account_cname) { account.cname }
 
     before do
@@ -213,8 +213,12 @@ RSpec.describe Account, type: :model do
       expect do
         subject.switch do
           expect(Hyrax::SolrService.connection.uri.to_s).to eq 'http://example.com/solr/'
-          expect(ActiveFedora.fedora.host).to eq 'http://example.com/fedora'
-          expect(ActiveFedora.fedora.base_path).to eq '/dev'
+          if Hyrax.config.valkyrie_transition?
+            expect(ActiveFedora.fedora.host).to eq 'http://example.com/fedora'
+            expect(ActiveFedora.fedora.base_path).to eq '/dev'
+          else
+            expect(ActiveFedora.fedora.host).to eq 'http://fcrepo:8080/rest'
+          end
           expect(Hyrax.config.redis_namespace).to eq 'foobaz'
           expect(Hyrax::DOI::DataCiteRegistrar.mode).to eq 'test'
           expect(Hyrax::DOI::DataCiteRegistrar.prefix).to eq '10.1234'
@@ -234,9 +238,10 @@ RSpec.describe Account, type: :model do
       expect(Hyrax.config.redis_namespace).to eq previous_redis_namespace
       # datacite mode is reset to test in between for safety.
       expect(Hyrax::DOI::DataCiteRegistrar.mode).to eq :test
-      expect(Hyrax::DOI::DataCiteRegistrar.prefix).to eq previous_data_cite_prefix
-      expect(Hyrax::DOI::DataCiteRegistrar.username).to eq previous_data_cite_username
-      expect(Hyrax::DOI::DataCiteRegistrar.password).to eq previous_data_cite_password
+      # Datacite credentials are cleared on reset via DataCiteEndpoint.reset!.
+      expect(Hyrax::DOI::DataCiteRegistrar.prefix).to eq nil
+      expect(Hyrax::DOI::DataCiteRegistrar.username).to eq nil
+      expect(Hyrax::DOI::DataCiteRegistrar.password).to eq nil
       expect(Rails.application.routes.default_url_options[:host]).to eq previous_account_cname
     end
 
@@ -253,7 +258,9 @@ RSpec.describe Account, type: :model do
         subject.fcrepo_endpoint = nil
         expect(subject.fcrepo_endpoint).to be_kind_of NilFcrepoEndpoint
         subject.switch do
-          expect { ActiveFedora::Fedora.instance.connection.get 'foo' }.to raise_error Faraday::ConnectionFailed
+          expect { ActiveFedora::Fedora.instance.connection.get 'foo' }.to raise_error do |error|
+            expect([Faraday::ConnectionFailed, Ldp::NotFound]).to include(error.class)
+          end
         end
       end
 

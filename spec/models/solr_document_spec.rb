@@ -76,7 +76,13 @@ RSpec.describe SolrDocument, type: :model do
         end
 
         expect(subject[:description]).to include('A description')
-        expect(subject[:description]).to include('An abstract')
+        if no_wings_mode?
+          # In no-wings mode SolrDocument falls back to basic mappings, which
+          # do not merge `abstract_tesim` into dc:description.
+          expect(subject[:description]).not_to include('An abstract')
+        else
+          expect(subject[:description]).to include('An abstract')
+        end
       end
     end
 

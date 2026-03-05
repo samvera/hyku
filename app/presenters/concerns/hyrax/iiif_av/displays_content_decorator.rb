@@ -91,7 +91,7 @@ module Hyrax
           label:,
           duration:,
           type: 'Sound',
-          format: mime_type
+          format: Hyrax.config.iiif_av_viewer == :universal_viewer ? 'audio/mp3' : mime_type
         )
       end
     end

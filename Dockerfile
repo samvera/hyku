@@ -13,6 +13,10 @@ ENV MALLOC_CONF='dirty_decay_ms:1000,narenas:2,background_thread:true'
 ENV TESSDATA_PREFIX=/app/samvera/tessdata
 ADD --chmod=777 https://github.com/tesseract-ocr/tessdata_best/blob/main/eng.traineddata?raw=true /app/samvera/tessdata/eng_best.traineddata
 
+USER root
+RUN cp -r /usr/share/tesseract-ocr/5/tessdata/configs /app/samvera/tessdata/configs
+USER app
+
 COPY --chown=1001:101 Gemfile /app/samvera/hyrax-webapp/
 COPY --chown=1001:101 Gemfile.lock /app/samvera/hyrax-webapp/
 RUN bundle install --jobs "$(nproc)"

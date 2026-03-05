@@ -29,6 +29,7 @@
 
         const data = urlAdapter.getInitialData({
           embedded: true,
+          highlight: urlAdapter.get('q', ''), // adds a way for catalog search term to be passed into UV for highlighting in the viewer
         });
 
         uv = UV.init("uv", data);

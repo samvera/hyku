@@ -210,6 +210,9 @@ de:
         profile: Profil
         repository_objects: Repository-Inhalt
         settings: die Einstellungen
+        jobs_dashboard_good_job: Jobs-Dashboard
+        jobs_dashboard_sidekiq: Sidekiq-Dashboard
+        sidekiq_dashboard: Sidekiq-Dashboard
         statistics: Berichte
         tasks: Aufgaben
         technical: Eigenschaften

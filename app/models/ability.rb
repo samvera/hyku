@@ -70,6 +70,9 @@ class Ability
 
     # OVERRIDE: add custom action used in WorkAbility for "Delete Selected" button on Works dashboard index views
     can :batch_delete, :works
+
+    # Allow admins to access the Jobs dashboard (linked from admin sidebar)
+    can :manage, :jobs_dashboard
   end
 
   def group_permissions

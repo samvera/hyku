@@ -62,14 +62,18 @@ RSpec.describe SolrDocument, type: :model do
 
     shared_examples_for 'maps properties to dc terms' do
       it "uses the works' schema match properties to dc terms" do
-        klass_name = no_wings_mode? ? GenericWork : GenericWorkResource
-        expect(solr_document.hydra_model).to eq klass_name
+        if no_wings_mode?
+          expect(solr_document.hydra_model).to eq(GenericWork)
+        else
+          klass_name = GenericWorkResource
+          expect(solr_document.hydra_model).to eq klass_name
 
-        schema_key = klass_name.schema.keys.find { |k| k.name == :abstract }
-        expect(schema_key.meta.dig('mappings', 'simple_dc_pmh')).to eq 'dc:description'
+          schema_key = klass_name.schema.keys.find { |k| k.name == :abstract }
+          expect(schema_key.meta.dig('mappings', 'simple_dc_pmh')).to eq 'dc:description'
 
-        schema_key = klass_name.schema.keys.find { |k| k.name == :description }
-        expect(schema_key.meta.dig('mappings', 'simple_dc_pmh')).to eq 'dc:description'
+          schema_key = klass_name.schema.keys.find { |k| k.name == :description }
+          expect(schema_key.meta.dig('mappings', 'simple_dc_pmh')).to eq 'dc:description'
+        end
 
         expect(subject[:description]).to include('A description')
         expect(subject[:description]).to include('An abstract')

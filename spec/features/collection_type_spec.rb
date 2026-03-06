@@ -558,7 +558,7 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
         # email and wait one second for the item to populate in the table
         within('#s2id_collection_type_participant_agent_id') do
           fill_in "s2id_autogen1", with: 'us'
-          sleep 1
+          sleep 3
         end
 
         # check for the existence of the user's email from the typeahead dropdown menu

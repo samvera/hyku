@@ -12,7 +12,7 @@
       <% work = SolrDocument.find(featured_work.work_id) %>
       <div class="carousel-item h-100 bg-light <%= order.zero? ? 'active' : '' %>">
         <%= link_to [main_app, work] do %>
-          <%= render_thumbnail_tag(work, {class: 'w-100 h-100'}, {suppress_link: true}) %>
+          <%= render_thumbnail_tag(work, {class: 'w-100 h-100', alt: thumbnail_alt_text_for(work)}, {suppress_link: true}) %>
         <% end %>
         <div class="carousel-caption">
           <h3 class="carousel-opacity p-2">

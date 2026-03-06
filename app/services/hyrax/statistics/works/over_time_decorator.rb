@@ -1,4 +1,12 @@
 # frozen_string_literal: true
+#
+# OVERRIDE: Hyrax v5.2.0: Work around a bug in
+# `Hyrax::Statistics::Works::OverTime` when running in Valkyrie-only
+# (no Wings/Fedora) mode. Upstream statistics logic assumes a Wings /
+# ActiveFedora-backed relation and undercounts works once Wings is
+# disabled. This decorator switches the implementation to use the
+# Valkyrie statistics query service instead.
+# See https://github.com/samvera/hyrax/issues/7379
 
 module Hyrax
   module Statistics

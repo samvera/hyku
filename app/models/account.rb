@@ -87,7 +87,7 @@ class Account < ApplicationRecord
     @single_tenant_default ||= Account.from_cname('single.tenant.default')
     @single_tenant_default ||= Account.new do |a|
       a.build_solr_endpoint
-      a.build_fcrepo_endpoint if Hyrax.config.valkyrie_transition?
+      a.build_fcrepo_endpoint unless Hyrax.config.disable_wings
       a.build_redis_endpoint
       a.build_data_cite_endpoint
     end
@@ -104,7 +104,7 @@ class Account < ApplicationRecord
   # Make all the account specific connections active
   def switch!
     solr_endpoint.switch!
-    fcrepo_endpoint.switch! if Hyrax.config.valkyrie_transition?
+    fcrepo_endpoint.switch! unless Hyrax.config.disable_wings
     redis_endpoint.switch!
     data_cite_endpoint.switch!
     switch_host!(cname)
@@ -121,7 +121,7 @@ class Account < ApplicationRecord
   def reset!
     setup_tenant_cache(cache_api?) if self.class.column_names.include?('settings')
     SolrEndpoint.reset!
-    FcrepoEndpoint.reset! if Hyrax.config.valkyrie_transition?
+    FcrepoEndpoint.reset! unless Hyrax.config.disable_wings
     RedisEndpoint.reset!
     DataCiteEndpoint.reset!
     switch_host!(nil)

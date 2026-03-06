@@ -49,7 +49,7 @@ RSpec.describe 'Admin Dashboard', type: :feature, js: true, clean: true do
 
     it 'shows the status page' do
       visit status_path
-      if Hyrax.config.valkyrie_transition?
+      unless Hyrax.config.disable_wings
         expect(page).to have_selector(".list-group-item-success", text: "Fedora OK")
       else
         expect(page).to have_no_text("Fedora OK")

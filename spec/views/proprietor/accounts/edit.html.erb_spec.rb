@@ -9,7 +9,7 @@ RSpec.describe "proprietor/accounts/edit", type: :view do
     let(:account) { create(:account) }
 
     before do
-      allow(Hyrax.config).to receive(:valkyrie_transition?).and_return(true)
+      allow(Hyrax.config).to receive(:disable_wings).and_return(false)
       render
     end
 
@@ -27,7 +27,7 @@ RSpec.describe "proprietor/accounts/edit", type: :view do
     let(:account) { create(:account) }
 
     before do
-      allow(Hyrax.config).to receive(:valkyrie_transition?).and_return(false)
+      allow(Hyrax.config).to receive(:disable_wings).and_return(true)
       render
     end
 
@@ -45,7 +45,7 @@ RSpec.describe "proprietor/accounts/edit", type: :view do
     let(:account) { create(:account, solr_endpoint: nil, fcrepo_endpoint: nil) }
 
     before do
-      allow(Hyrax.config).to receive(:valkyrie_transition?).and_return(true)
+      allow(Hyrax.config).to receive(:disable_wings).and_return(false)
       render
     end
 

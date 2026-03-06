@@ -12,7 +12,7 @@ module Hyrax
       # In transition-off mode, avoid probing legacy default admin set IDs through
       # Hyrax.query_service. That legacy probe can hit Wings/Fedora query paths.
       def find_unsaved_default_admin_set
-        return nil unless Hyrax.config.valkyrie_transition?
+        return nil if Hyrax.config.disable_wings
 
         super
       end

@@ -4,9 +4,9 @@ RSpec.describe CreateAccountInlineJob do
   let(:account) { FactoryBot.create(:account) }
 
   describe '#perform' do
-    context 'when valkyrie transition is enabled' do
+    context 'when Wings is enabled' do
       before do
-        allow(Hyrax.config).to receive(:valkyrie_transition?).and_return(true)
+        allow(Hyrax.config).to receive(:disable_wings).and_return(false)
       end
 
       it 'calls Fedora provisioning along with other jobs' do
@@ -19,9 +19,9 @@ RSpec.describe CreateAccountInlineJob do
       end
     end
 
-    context 'when valkyrie transition is disabled' do
+    context 'when Wings is disabled' do
       before do
-        allow(Hyrax.config).to receive(:valkyrie_transition?).and_return(false)
+        allow(Hyrax.config).to receive(:disable_wings).and_return(true)
       end
 
       it 'skips Fedora provisioning and runs other jobs' do

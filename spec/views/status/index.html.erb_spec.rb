@@ -5,7 +5,7 @@ RSpec.describe "status/index", type: :view do
 
   context "when transition is enabled" do
     before do
-      allow(Hyrax.config).to receive(:valkyrie_transition?).and_return(true)
+      allow(Hyrax.config).to receive(:disable_wings).and_return(false)
       allow(view).to receive(:current_account).and_return(account)
       allow(ActiveRecord::Base.connection).to receive(:active?).and_return(true)
       render
@@ -18,7 +18,7 @@ RSpec.describe "status/index", type: :view do
 
   context "when transition is disabled" do
     before do
-      allow(Hyrax.config).to receive(:valkyrie_transition?).and_return(false)
+      allow(Hyrax.config).to receive(:disable_wings).and_return(true)
       allow(view).to receive(:current_account).and_return(account)
       allow(ActiveRecord::Base.connection).to receive(:active?).and_return(true)
       render

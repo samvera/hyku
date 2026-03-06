@@ -151,7 +151,7 @@ RSpec.describe Account, type: :model do
     end
 
     it 'switches the ActiveFedora fcrepo connection' do
-      if Hyrax.config.valkyrie_transition?
+      if !Hyrax.config.disable_wings
         expect(ActiveFedora.fedora.host).to eq 'http://example.com/fedora'
         expect(ActiveFedora.fedora.base_path).to eq '/dev'
       else
@@ -170,7 +170,7 @@ RSpec.describe Account, type: :model do
 
   describe '#switch! and #reset! when valkyrie transition is disabled' do
     before do
-      allow(Hyrax.config).to receive(:valkyrie_transition?).and_return(false)
+      allow(Hyrax.config).to receive(:disable_wings).and_return(true)
       account.build_solr_endpoint(url: 'http://example.com/solr/')
       account.build_fcrepo_endpoint(url: 'http://example.com/fedora', base_path: '/dev')
       account.build_redis_endpoint(namespace: 'foobaz')
@@ -213,7 +213,7 @@ RSpec.describe Account, type: :model do
       expect do
         subject.switch do
           expect(Hyrax::SolrService.connection.uri.to_s).to eq 'http://example.com/solr/'
-          if Hyrax.config.valkyrie_transition?
+          if !Hyrax.config.disable_wings
             expect(ActiveFedora.fedora.host).to eq 'http://example.com/fedora'
             expect(ActiveFedora.fedora.base_path).to eq '/dev'
           else
@@ -813,16 +813,16 @@ RSpec.describe Account, type: :model do
       allow(described_class).to receive(:from_cname).and_return(nil)
     end
 
-    it 'does not build an fcrepo endpoint when transition is disabled' do
-      allow(Hyrax.config).to receive(:valkyrie_transition?).and_return(false)
+    it 'does not build an fcrepo endpoint when Wings is disabled' do
+      allow(Hyrax.config).to receive(:disable_wings).and_return(true)
 
       account = described_class.single_tenant_default
 
       expect(account.association(:fcrepo_endpoint).target).to be_nil
     end
 
-    it 'builds an fcrepo endpoint when transition is enabled' do
-      allow(Hyrax.config).to receive(:valkyrie_transition?).and_return(true)
+    it 'builds an fcrepo endpoint when Wings is enabled' do
+      allow(Hyrax.config).to receive(:disable_wings).and_return(false)
 
       account = described_class.single_tenant_default
 

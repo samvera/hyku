@@ -111,7 +111,7 @@ module Proprietor
         { domain_names_attributes: %i[id tenant cname is_active _destroy] }
       ]
 
-      permitted_attributes << { fcrepo_endpoint_attributes: %i[id url base_path] } if Hyrax.config.valkyrie_transition?
+      permitted_attributes << { fcrepo_endpoint_attributes: %i[id url base_path] } unless Hyrax.config.disable_wings
 
       params.require(:account).permit(
         *permitted_attributes

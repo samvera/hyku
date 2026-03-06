@@ -85,7 +85,7 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
           allow(Apartment::Tenant).to receive(:switch).with(account.tenant) do |&block|
             block.call
           end
-          allow(Hyrax.config).to receive(:valkyrie_transition?).and_return(true)
+          allow(Hyrax.config).to receive(:disable_wings).and_return(false)
           put :update, params: { id: account.to_param, account: new_attributes }
           account.reload
           expect(account.cname).to eq 'new.example.com'
@@ -103,7 +103,7 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
           allow(Apartment::Tenant).to receive(:switch).with(account.tenant) do |&block|
             block.call
           end
-          allow(Hyrax.config).to receive(:valkyrie_transition?).and_return(false)
+          allow(Hyrax.config).to receive(:disable_wings).and_return(true)
           original_url = account.fcrepo_endpoint.url
 
           put :update, params: { id: account.to_param, account: new_attributes }

@@ -3,7 +3,7 @@
 RSpec.describe Hyrax::AdminSetCreateServiceDecorator do
   describe '.find_unsaved_default_admin_set' do
     it 'does not query for legacy default admin set IDs when transition is disabled' do
-      allow(Hyrax.config).to receive(:valkyrie_transition?).and_return(false)
+      allow(Hyrax.config).to receive(:disable_wings).and_return(true)
       expect(Hyrax).not_to receive(:query_service)
 
       result = Hyrax::AdminSetCreateService.send(:find_unsaved_default_admin_set)
@@ -12,7 +12,7 @@ RSpec.describe Hyrax::AdminSetCreateServiceDecorator do
     end
 
     it 'queries legacy default admin set IDs when transition is enabled' do
-      allow(Hyrax.config).to receive(:valkyrie_transition?).and_return(true)
+      allow(Hyrax.config).to receive(:disable_wings).and_return(false)
       query_service = instance_double('QueryService')
       allow(Hyrax).to receive(:query_service).and_return(query_service)
       allow(query_service).to receive(:find_by).with(id: 'admin_set/default').and_raise(Valkyrie::Persistence::ObjectNotFoundError)

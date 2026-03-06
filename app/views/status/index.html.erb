@@ -10,7 +10,7 @@
       </div>
       <div class="card-body">
         <ul class="list-group">
-          <% if Hyrax.config.valkyrie_transition? %>
+          <% unless Hyrax.config.disable_wings %>
             <%= render partial: 'service', locals: { name: 'Fedora', status: current_account.fcrepo_endpoint.ping } %>
           <% end %>
           <%= render partial: 'service', locals: { name: 'Solr', status: current_account.solr_endpoint.ping } %>

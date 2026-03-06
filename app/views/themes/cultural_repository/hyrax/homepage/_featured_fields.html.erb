@@ -1,7 +1,7 @@
 <% # Note: overriding Hyrax v5.0.0rc2 for client theming -- removed item keywords and depositor from partial %>
   <div>
     <%= link_to [main_app, featured] do %>
-      <%= render_thumbnail_tag(featured, {class: 'img-fluid mx-auto d-block'}, {suppress_link: true}) %>
+      <%= render_thumbnail_tag(featured, {class: 'img-fluid mx-auto d-block', alt: thumbnail_alt_text_for(featured.solr_document)}, {suppress_link: true}) %>
     <% end %>
     <div class="featured-item-title">
       <span class="sr-only"><%= t('hyrax.homepage.featured_works.document.title_label') %></span>

@@ -7,7 +7,7 @@
       <div>
         <%= link_to [hyrax, featured_collection] do %>
           <%= render_thumbnail_tag(featured_collection,
-                                   { class: 'img-fluid d-none d-sm-block file_listing_thumbnail mt-0', alt: "#{featured_collection.title_or_label} #{ t('hyrax.homepage.admin_sets.thumbnail')}" },
+                                   { class: 'img-fluid d-none d-sm-block file_listing_thumbnail mt-0', alt: thumbnail_alt_text_for(featured_collection.solr_document, block_name: 'default_collection_image_text') },
                                    {suppress_link: true}
           ) %>
         <% end %>

@@ -22,6 +22,7 @@ module Hyrax
         def call(collection_resource, update_thumbnail_file_ids: nil, thumbnail_unchanged_indicator: true, alttext_values: nil)
           collection_id = collection_resource.id.to_s
           process_thumbnail_input(collection_id:, update_thumbnail_file_ids:, thumbnail_unchanged_indicator:, alttext_values:)
+          Hyrax.publisher.publish('collection.metadata.updated', collection: collection_resource, user: nil)
           Success(collection_resource)
         end
 

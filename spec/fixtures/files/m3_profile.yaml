@@ -136,7 +136,6 @@ properties:
   creator:
     available_on:
       class:
-        - AdminSetResource
         - CollectionResource
         - Hyrax::FileSet
         - GenericWorkResource
@@ -150,6 +149,27 @@ properties:
         - "null"
     display_label:
       default: Creator
+    indexing:
+      - "creator_sim"
+      - "creator_tesim"
+    property_uri: http://purl.org/dc/elements/1.1/creator
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Julie Allinson
+  creator_hidden:
+    name: creator
+    available_on:
+      class:
+        - AdminSetResource
+    data_type: array
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - "null"
+    display_label:
+      default: Creator
+    form:
+      display: false
     indexing:
       - "creator_sim"
       - "creator_tesim"

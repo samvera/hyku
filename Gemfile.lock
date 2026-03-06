@@ -1,16 +1,4 @@
 GIT
-  remote: https://github.com/notch8/iiif_print.git
-  revision: 76fd75db92bfef5e76e1cc2f0751ca7de83d65bb
-  branch: main
-  specs:
-    iiif_print (3.0.12)
-      blacklight_iiif_search (>= 1.0, < 3.0)
-      derivative-rodeo (~> 0.5)
-      hyrax (>= 2.5, < 6)
-      nokogiri (>= 1.13.2)
-      rdf-vocab (~> 3.0)
-
-GIT
   remote: https://github.com/notch8/willow_sword.git
   revision: a8bcacbf4d277e2c9522179086e84ea8414225b4
   tag: v0.8.0
@@ -803,6 +791,12 @@ GEM
       json
     iiif_manifest (1.6.0)
       activesupport (>= 4)
+    iiif_print (3.0.12)
+      blacklight_iiif_search (>= 1.0, < 3.0)
+      derivative-rodeo (~> 0.5)
+      hyrax (>= 2.5, < 6)
+      nokogiri (>= 1.13.2)
+      rdf-vocab (~> 3.0)
     io-console (0.8.1)
     irb (1.15.2)
       pp (>= 0.6.0)
@@ -1699,7 +1693,7 @@ DEPENDENCIES
   hyrax-iiif_av!
   i18n-debug
   i18n-tasks
-  iiif_print!
+  iiif_print (~> 3.0.12)
   jbuilder (~> 2.5)
   jquery-rails
   json-canonicalization (= 0.3.1)

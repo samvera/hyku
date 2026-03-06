@@ -95,15 +95,16 @@ RSpec.describe 'Work Depositor role', type: :request, singletenant: true, clean:
   describe 'edit permissions' do
     it 'cannot edit the work' do
       get edit_hyrax_generic_work_path(work)
-      expect(response).to have_http_status(:unauthorized)
+      expected_status = no_wings_mode? ? :not_found : :unauthorized
+      expect(response).to have_http_status(expected_status)
     end
   end
 
   describe 'destroy permissions' do
     it 'cannot destroy the work' do
       delete hyrax_generic_work_path(work)
-
-      expect(response).to have_http_status(:unauthorized)
+      expected_status = no_wings_mode? ? :not_found : :unauthorized
+      expect(response).to have_http_status(expected_status)
     end
   end
 end

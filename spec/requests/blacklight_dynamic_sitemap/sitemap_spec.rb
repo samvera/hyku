@@ -103,6 +103,7 @@ RSpec.describe 'Sitemap generation', :clean_repo, type: :request do
     let(:work_id) { '8d06fd24-e84c-482b-9505-06a37a34dbe2' }
     let(:collection_id) { 'c0a0cbbd-c7fa-4d5d-b8f6-ad5fddf171fc' }
     let(:private_work_id) { '91d96555-d40f-40e5-9f27-1b20885b066a' }
+    let(:work) { create(:work, id: work_id) }
     let(:public_work_sitemap_id) { work_id[0] }
     let(:collection_sitemap_id) { collection_id[0] }
     let(:private_work_sitemap_id) { private_work_id[0] }

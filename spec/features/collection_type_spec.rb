@@ -554,20 +554,16 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
         click_link 'Participants'
         expect(page).to have_content 'Add Participants'
 
-        # within the typeahead input the first two characters of the user's
-        # email and wait one second for the item to populate in the table
-        within('#s2id_collection_type_participant_agent_id') do
-          fill_in "s2id_autogen1", with: 'us'
-          sleep 1
-        end
-
-        # check for the existence of the user's email from the typeahead dropdown menu
-        within('#select2-drop') do
-          within('.select2-results', match: :first) do
-            within('.select2-result', match: :first) do
-              find('.select2-result-label', text: 'user@example.com').click
-            end
+        # Prefer native select interaction when option is already present.
+        if page.has_select?('collection_type_participant_agent_id', with_options: ['user@example.com'], wait: 2)
+          select('user@example.com', from: 'collection_type_participant_agent_id')
+        else
+          # Fallback for Select2 typeahead UIs with dynamic markup/classes.
+          within('#s2id_collection_type_participant_agent_id') do
+            find('.select2-choice', wait: 2).click if page.has_css?('.select2-choice', wait: 1)
           end
+          find('#select2-drop input', match: :first, visible: :all, wait: 5).set('us')
+          find('#select2-drop .select2-result', text: /user@example\.com/i, match: :first, wait: 5).click
         end
 
         # from the add user form select the value 'Manager' from the dropdown menu and click the 'Add' button

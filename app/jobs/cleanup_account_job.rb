@@ -5,7 +5,7 @@ class CleanupAccountJob < ApplicationJob
 
   def perform(account)
     cleanup_solr(account)
-    cleanup_fedora(account)
+    cleanup_fedora(account) if Hyrax.config.valkyrie_transition?
     cleanup_redis(account)
     cleanup_database(account)
     account.destroy

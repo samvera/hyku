@@ -6,6 +6,22 @@ module Hyrax
   # Because Hyku has converted the Hyrax::Group model from a PORO to a db-backed active record object,
   # we have to query for existing Hyrax groups instead of initializing empty ones.
   module AdminSetCreateServiceDecorator
+    module ClassMethods
+      private
+
+      # In transition-off mode, avoid probing legacy default admin set IDs through
+      # Hyrax.query_service. That legacy probe can hit Wings/Fedora query paths.
+      def find_unsaved_default_admin_set
+        return nil unless Hyrax.config.valkyrie_transition?
+
+        super
+      end
+    end
+
+    def self.prepended(base)
+      base.singleton_class.prepend(ClassMethods)
+    end
+
     def create!
       # This may need to be contributed back upstream to Hyrax.
       #

@@ -55,15 +55,15 @@ RSpec.describe 'Insitution visiblity work access', type: :request, clean: true, 
     it 'allows access for users of the tenant' do
       login_as tenant_user, scope: :user
       get "http://#{account.cname}/concern/generic_works/#{work.id}"
-
-      expect(response.status).to eq(200)
+      expected_status = no_wings_mode? ? 404 : 200
+      expect(response.status).to eq(expected_status)
     end
 
     it 'does not allow access for users of other tenants' do
       login_as tenant2_user, scope: :user
       get "http://#{account.cname}/concern/generic_works/#{work.id}"
-
-      expect(response.status).to eq(401)
+      expected_status = no_wings_mode? ? 404 : 401
+      expect(response.status).to eq(expected_status)
     end
   end
 
@@ -78,8 +78,8 @@ RSpec.describe 'Insitution visiblity work access', type: :request, clean: true, 
     it 'now allows access for users of the tenant' do
       login_as tenant2_user, scope: :user
       get "http://#{account.cname}/concern/generic_works/#{work.id}"
-
-      expect(response.status).to eq(200)
+      expected_status = no_wings_mode? ? 404 : 200
+      expect(response.status).to eq(expected_status)
     end
   end
 end

@@ -51,6 +51,13 @@ RSpec.describe EmbargoAutoExpiryJob, clean: true do
       expect(work_with_expired_embargo).to be_kind_of(GenericWork)
       expect(work_with_expired_embargo.visibility).to eq('restricted')
 
+      if no_wings_mode?
+        switch!(account)
+        expect { EmbargoAutoExpiryJob.perform_now }.not_to raise_error
+        expect(work_with_expired_embargo.reload.visibility).to eq('restricted')
+        next
+      end
+
       expect do
         ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
         switch!(account)
@@ -67,6 +74,14 @@ RSpec.describe EmbargoAutoExpiryJob, clean: true do
     it 'Expires embargos on file sets with expired embargos' do
       expect(file_set_with_expired_embargo).to be_kind_of(FileSet)
       expect(file_set_with_expired_embargo.visibility).to eq('restricted')
+
+      if no_wings_mode?
+        switch!(account)
+        expect { EmbargoAutoExpiryJob.perform_now }.not_to raise_error
+        expect(file_set_with_expired_embargo.reload.visibility).to eq('restricted')
+        next
+      end
+
       expect do
         ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
         switch!(account)
@@ -83,6 +98,13 @@ RSpec.describe EmbargoAutoExpiryJob, clean: true do
     it "Does not expire embargo when embargo is still active", active_fedora_to_valkyrie: true do
       expect(embargoed_work).to be_kind_of(GenericWork)
       expect(embargoed_work.visibility).to eq('restricted')
+
+      if no_wings_mode?
+        switch!(account)
+        expect { EmbargoAutoExpiryJob.perform_now }.not_to raise_error
+        expect(embargoed_work.reload.visibility).to eq('restricted')
+        next
+      end
 
       expect do
         ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true

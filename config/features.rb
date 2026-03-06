@@ -49,4 +49,10 @@ Flipflop.configure do
   feature :use_tenant_specific_colors,
           default: false,
           description: "Enable storing tenant-specific color selections to override application defaults."
+
+  group :experimental_features do
+    feature :include_guided_import,
+            default: false,
+            description: "Enable the guided import workflow."
+  end
 end

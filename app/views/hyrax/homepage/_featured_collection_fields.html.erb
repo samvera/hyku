@@ -3,7 +3,7 @@
     <span class="sr-only"><%= t('hyrax.homepage.featured_collections.document.title_label') %></span>
     <h3>
       <%= link_to [hyrax, featured] do %>
-        <%= render_thumbnail_tag(featured.solr_document, {alt: "#{featured.title.first.to_s} #{ t('hyrax.homepage.admin_sets.thumbnail')}" }, {suppress_link: true})%><%= markdown(featured.title.first) %>
+        <%= render_thumbnail_tag(featured.solr_document, {alt: thumbnail_alt_text_for(featured.solr_document, block_name: 'default_collection_image_text') }, {suppress_link: true})%><%= markdown(featured.title.first) %>
       <% end %>
     </h3>
   </div>

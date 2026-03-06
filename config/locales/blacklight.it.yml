@@ -21,6 +21,7 @@ it:
           additional_information_tesim: Informazioni aggiuntive
           admin_note_tesim: Nota dell'amministratore
           alternative_title_tesim: Titolo alternativo
+          alt_text_tesim: Testo alternativo
           audience_tesim: Pubblico
           based_near_label_tesim: luogo
           chronology_note_tesim: Nota cronologica

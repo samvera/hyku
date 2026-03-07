@@ -421,6 +421,9 @@ it:
               hint: Colore del testo per i pulsanti di interazione di condivisione, ricerca e raccolta
             themes:
               confirm: Se il tuo tema non sembra essere applicato correttamente, verifica che non venga sovrascritto dal CSS personalizzato.
+              home_wireframe_alt: "Anteprima del tema %{theme}"
+              search_wireframe_alt: "Anteprima del tema %{theme}"
+              show_wireframe_alt: "Anteprima del tema %{theme}"
           hints:
             banner_image: Per utilizzare un'immagine come sfondo di masthead, è consigliabile utilizzare un'immagine (JPG, GIF o PNG) di almeno 120 pixel di altezza e 1200 pixel di larghezza. Per ottenere risultati ottimali, utilizzare un'immagine di larghezza almeno 1800 pixel.
             default_image: Per le immagini predefinite, è necessario utilizzare un'immagine (JPG, GIF o PNG) che abbia le stesse dimensioni di altezza e larghezza (100 pixel di larghezza e 100 pixel di altezza)

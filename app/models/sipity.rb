@@ -40,10 +40,12 @@ module Sipity
                Hyrax.logger.debug("  Searching for GID: #{gid_string}")
                Entity.find_by(proxy_for_global_id: gid_string)
              when SolrDocument
-               if Hyrax.config.valkyrie_transition? # we need the actual model, not the mapped "Resource" model
+               if Hyrax.config.disable_wings
+                 # In no-Wings mode, resolve via query_service instead of
+                 # SolrDocument#to_model, which can trigger ActiveFedora/Fedora lookups.
                  item = Hyrax.query_service.find_by(id: input.id)
                  # rubocop:disable Lint/RedundantStringCoercion
-                 Hyrax.logger.debug("Entity() got a SolrDocument with valkyrie_transition, retrying on item #{item.id.to_s}")
+                 Hyrax.logger.debug("Entity() got a SolrDocument in valkyrie/no-wings mode, retrying on item #{item.id.to_s}")
                  # rubocop:enable Lint/RedundantStringCoercion
                  Entity(item)
                else

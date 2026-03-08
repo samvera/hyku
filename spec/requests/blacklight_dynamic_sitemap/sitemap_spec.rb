@@ -6,7 +6,8 @@ RSpec.shared_examples 'a sitemap' do
   let(:xml) { Nokogiri::XML(response.body) }
   let(:locs) { xml.xpath('//xmlns:loc', 'xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9').map(&:text) }
   let(:account) { create(:account) }
-  let(:work) { create(:work) }
+  let(:admin_set_id) { Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id }
+  let(:work) { FactoryBot.valkyrie_create(:generic_work_resource, admin_set_id:) }
   let(:tenant_user_attributes) { attributes_for(:user) }
 
   before do
@@ -14,6 +15,8 @@ RSpec.shared_examples 'a sitemap' do
     Apartment::Tenant.create(account.tenant)
     Apartment::Tenant.switch(account.tenant) do
       Site.update(account:)
+      FactoryBot.create(:admin_group)
+      FactoryBot.create(:registered_group)
       work
     end
 
@@ -24,7 +27,7 @@ RSpec.shared_examples 'a sitemap' do
 
     solr.add([
                {
-                 id: work.id,
+                 id: work.id.to_s,
                  has_model_ssim: ['GenericWork'],
                  read_access_group_ssim: ['public'],
                  visibility_ssi: 'open'
@@ -61,13 +64,13 @@ RSpec.shared_examples 'a sitemap' do
       expect(response.content_type).to match(%r{application/xml})
       expect(locs.size).to eq(16)
       expect(locs).to include(match(%r{/sitemap/#{collection_sitemap_id}}))
-      expect(locs).to include(match(%r{/sitemap/#{work.id[0]}}))
+      expect(locs).to include(match(%r{/sitemap/#{work.id.to_s[0]}}))
     end
   end
   describe 'GET /sitemap/:id' do
     context 'with a work' do
       it 'generates proper Hyrax URLs for works and collections' do
-        get "http://#{account.cname}/sitemap/#{work.id[0]}"
+        get "http://#{account.cname}/sitemap/#{work.id.to_s[0]}"
 
         expect(response).to have_http_status(:success)
         expect(response.content_type).to match(%r{application/xml})
@@ -75,9 +78,10 @@ RSpec.shared_examples 'a sitemap' do
         expect(locs).to include(match(%r{/concern/generic_works/#{work.id}}))
       end
       it 'only shows objects that match the index' do
-        get "http://#{account.cname}/sitemap/#{work.id[0]}"
-        expect(locs.size).to eq(1)
+        get "http://#{account.cname}/sitemap/#{work.id.to_s[0]}"
+        expect(locs).to include(match(%r{/concern/generic_works/#{work.id}}))
         expect(locs).not_to include(match(%r{/collections/#{collection_id}}))
+        expect(locs).not_to include(match(%r{#{private_work_id}}))
       end
     end
     context 'with a collection' do
@@ -103,6 +107,7 @@ RSpec.describe 'Sitemap generation', :clean_repo, type: :request do
     let(:work_id) { '8d06fd24-e84c-482b-9505-06a37a34dbe2' }
     let(:collection_id) { 'c0a0cbbd-c7fa-4d5d-b8f6-ad5fddf171fc' }
     let(:private_work_id) { '91d96555-d40f-40e5-9f27-1b20885b066a' }
+    let(:work) { FactoryBot.valkyrie_create(:generic_work_resource, id: work_id, admin_set_id:) }
     let(:public_work_sitemap_id) { work_id[0] }
     let(:collection_sitemap_id) { collection_id[0] }
     let(:private_work_sitemap_id) { private_work_id[0] }

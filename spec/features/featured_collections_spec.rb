@@ -5,8 +5,8 @@ require 'rails_helper'
 RSpec.describe "The homepage", :clean_repo do
   let(:user) { create(:user).tap { |u| u.add_role(:admin, Site.instance) } }
   let(:account) { create(:account) }
-  let(:collection1) { create(:collection, user:) }
-  let(:collection2) { create(:collection, user:) }
+  let(:collection1) { FactoryBot.valkyrie_create(:hyku_collection, title: ["Featured Collection 1"], depositor: user.user_key) }
+  let(:collection2) { FactoryBot.valkyrie_create(:hyku_collection, title: ["Featured Collection 2"], depositor: user.user_key) }
 
   before do
     Site.update(account:)

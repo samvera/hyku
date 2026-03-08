@@ -9,10 +9,10 @@ RSpec.describe 'Admin can select cultural repository theme', type: :feature, js:
 
   # rubocop:disable RSpec/LetSetup
   let!(:work) do
-    create(:generic_work,
-           title: ['Llamas and Alpacas'],
-           keyword: ['llama', 'alpaca'],
-           user:)
+    FactoryBot.valkyrie_create(:generic_work_resource,
+                               title: ['Llamas and Alpacas'],
+                               keyword: ['llama', 'alpaca'],
+                               depositor: user.user_key)
   end
 
   # rubocop:enable RSpec/LetSetup

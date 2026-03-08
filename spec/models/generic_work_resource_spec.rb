@@ -27,8 +27,10 @@ RSpec.describe GenericWorkResource do
   describe 'class configuration' do
     subject { described_class }
 
-    its(:migrating_from) { is_expected.to eq(GenericWork) }
-    its(:migrating_to) { is_expected.to eq(GenericWorkResource) }
+    unless Hyrax.config.disable_wings
+      its(:migrating_from) { is_expected.to eq(GenericWork) }
+      its(:migrating_to) { is_expected.to eq(GenericWorkResource) }
+    end
 
     describe '.model_name' do
       subject { described_class.model_name }

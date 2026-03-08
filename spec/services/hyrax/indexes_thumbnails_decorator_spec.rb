@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::IndexesThumbnails, type: :decorator do
+RSpec.describe Hyrax::IndexesThumbnails, type: :decorator, skip: (Hyrax.config.disable_wings ? 'ActiveFedora update_index not available' : false) do
   describe '#thumbnail_path' do
     context 'when the object is a Collection' do
       let(:object) { FactoryBot.build(:collection, id: '123') }

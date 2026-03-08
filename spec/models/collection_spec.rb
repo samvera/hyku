@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Collection do
+RSpec.describe Collection, skip: (Hyrax.config.disable_wings ? 'ActiveFedora Collection tests require Wings/Fedora' : false) do
   let(:user) { create(:user).tap { |u| u.add_role(:admin, Site.instance) } }
   let(:account) { create(:account) }
   let(:collection) { create(:collection, user:) }

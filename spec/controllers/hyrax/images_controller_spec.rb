@@ -11,7 +11,7 @@ RSpec.describe Hyrax::ImagesController do
   describe "#presenter" do
     subject { controller.send :presenter }
 
-    let(:solr_document) { SolrDocument.new(image_resource.to_solr) }
+    let(:solr_document) { SolrDocument.new(Hyrax::ValkyrieIndexer.for(resource: image_resource).to_solr) }
 
     before do
       allow(controller).to receive(:search_result_document).and_return(solr_document)

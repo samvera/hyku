@@ -82,10 +82,10 @@ RSpec.describe Hyrax::HomepageController, type: :controller, clean_repo: true do
     end
 
     context "with featured works" do
-      let!(:my_work) { create(:work, user:) }
+      let!(:my_work) { FactoryBot.valkyrie_create(:generic_work_resource, depositor: user.user_key) }
 
       before do
-        FeaturedWork.create!(work_id: my_work.id)
+        FeaturedWork.create!(work_id: my_work.id.to_s)
       end
 
       it "sets featured works" do
@@ -138,7 +138,11 @@ RSpec.describe Hyrax::HomepageController, type: :controller, clean_repo: true do
           allow(controller).to receive(:home_page_theme).and_return('institutional_repository')
         end
         # rubocop:disable RSpec/LetSetup
-        let!(:work_with_resource_type) { create(:work, user:, resource_type: ['Article']) }
+        let!(:work_with_resource_type) do
+          w = FactoryBot.valkyrie_create(:generic_work_resource, depositor: user.user_key, resource_type: ['Article'], visibility_setting: 'open')
+          Hyrax::SolrService.commit
+          w
+        end
 
         # rubocop:enable RSpec/LetSetup
 

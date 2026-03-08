@@ -18,8 +18,10 @@ RSpec.describe GenericWork do
       it { is_expected.to have_property(:bulkrax_identifier) }
     end
 
-    its(:migrating_from) { is_expected.to eq(GenericWork) }
-    its(:migrating_to) { is_expected.to eq(GenericWorkResource) }
+    unless Hyrax.config.disable_wings
+      its(:migrating_from) { is_expected.to eq(GenericWork) }
+      its(:migrating_to) { is_expected.to eq(GenericWorkResource) }
+    end
 
     context '.model_name' do
       subject { described_class.model_name }

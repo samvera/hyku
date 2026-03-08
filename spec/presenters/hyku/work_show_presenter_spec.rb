@@ -2,7 +2,7 @@
 
 RSpec.describe Hyku::WorkShowPresenter do
   let(:work) { FactoryBot.valkyrie_create(:generic_work_resource, :with_one_file_set) }
-  let(:document) { work.to_solr }
+  let(:document) { Hyrax::ValkyrieIndexer.for(resource: work).to_solr }
   let(:solr_document) { SolrDocument.new(document) }
   let(:request) { double(base_url: 'http://test.host', host: 'http://test.host') }
   let(:ability) { nil }
@@ -58,7 +58,7 @@ RSpec.describe Hyku::WorkShowPresenter do
       context 'when the tenant is configured to use IIIF Print' do
         before { test_strategy.switch!(:default_pdf_viewer, false) }
 
-        it { is_expected.to be true }
+        it { is_expected.to eq(!no_wings_mode?) }
       end
     end
 
@@ -67,7 +67,7 @@ RSpec.describe Hyku::WorkShowPresenter do
         allow_any_instance_of(Hyrax::IiifAv::IiifFileSetPresenter).to receive(:audio?).and_return true
       end
 
-      it { is_expected.to be true }
+      it { is_expected.to eq(!no_wings_mode?) }
     end
 
     context "for an image file" do
@@ -75,7 +75,7 @@ RSpec.describe Hyku::WorkShowPresenter do
         allow_any_instance_of(Hyrax::IiifAv::IiifFileSetPresenter).to receive(:image?).and_return true
       end
 
-      it { is_expected.to be true }
+      it { is_expected.to eq(!no_wings_mode?) }
     end
 
     context "for a video file" do
@@ -83,7 +83,7 @@ RSpec.describe Hyku::WorkShowPresenter do
         allow_any_instance_of(Hyrax::IiifAv::IiifFileSetPresenter).to receive(:video?).and_return true
       end
 
-      it { is_expected.to be true }
+      it { is_expected.to eq(!no_wings_mode?) }
     end
   end
 

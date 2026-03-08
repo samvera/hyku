@@ -24,8 +24,10 @@ RSpec.describe ImageResource do
 
   describe 'class configuration' do
     subject { described_class }
-    its(:migrating_from) { is_expected.to eq(Image) }
-    its(:migrating_to) { is_expected.to eq(ImageResource) }
+    unless Hyrax.config.disable_wings
+      its(:migrating_from) { is_expected.to eq(Image) }
+      its(:migrating_to) { is_expected.to eq(ImageResource) }
+    end
 
     context '.model_name' do
       subject { described_class.model_name }

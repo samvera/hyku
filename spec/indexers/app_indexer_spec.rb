@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 RSpec.describe AppIndexer do
-  subject(:solr_document) { service.generate_solr_document }
+  subject(:solr_document) { service.to_solr }
 
-  let(:service) { described_class.new(work) }
-  let(:work) { create(:work) }
+  let(:service) { Hyrax::ValkyrieIndexer.for(resource: work) }
+  let(:work) { FactoryBot.valkyrie_create(:generic_work_resource) }
 
   context "account_cname_tesim" do
     let(:account) { create(:account, cname: 'hyky-test.me') }
@@ -27,57 +27,65 @@ RSpec.describe AppIndexer do
 
   describe "#generate_solr_document" do
     context "when given a date with a YYYY-MM-DD format" do
+      let(:work) { FactoryBot.valkyrie_create(:generic_work_resource, date_created: ["2024-01-01"]) }
+
       it "indexes date_ssi in YYYY-MM-DD format" do
-        work.date_created = ["2024-01-01"]
         expect(solr_document.fetch("date_ssi")).to eq("2024-01-01")
       end
     end
 
     context "when given a date with a YYYY-MM format" do
+      let(:work) { FactoryBot.valkyrie_create(:generic_work_resource, date_created: ["2024-01"]) }
+
       it "indexes date_ssi in YYYY-MM format" do
-        work.date_created = ["2024-01"]
         expect(solr_document.fetch("date_ssi")).to eq("2024-01")
       end
     end
 
     context "when given a date with a YYYY format" do
+      let(:work) { FactoryBot.valkyrie_create(:generic_work_resource, date_created: ["2024"]) }
+
       it "indexes date_ssi in YYYY format" do
-        work.date_created = ["2024"]
         expect(solr_document.fetch("date_ssi")).to eq("2024")
       end
     end
 
     context "when given a date with a YYYY-M-D format" do
+      let(:work) { FactoryBot.valkyrie_create(:generic_work_resource, date_created: ["2024-1-1"]) }
+
       it "converts the date to YYYY-MM-DD format and indexes date_ssi" do
-        work.date_created = ["2024-1-1"]
         expect(solr_document.fetch("date_ssi")).to eq("2024-01-01")
       end
     end
 
     context "when given a date with a YYYY-M format" do
+      let(:work) { FactoryBot.valkyrie_create(:generic_work_resource, date_created: ["2024-1"]) }
+
       it "converts the date to YYYY-MM format and indexes date_ssi" do
-        work.date_created = ["2024-1"]
         expect(solr_document.fetch("date_ssi")).to eq("2024-01")
       end
     end
 
     context "when given a date with a YYYY-MM-D format" do
+      let(:work) { FactoryBot.valkyrie_create(:generic_work_resource, date_created: ["2024-01-1"]) }
+
       it "converts the date to YYYY-MM-DD format and indexes date_ssi" do
-        work.date_created = ["2024-01-1"]
         expect(solr_document.fetch("date_ssi")).to eq("2024-01-01")
       end
     end
 
     context "when given a date with a YYYY-M-DD format" do
+      let(:work) { FactoryBot.valkyrie_create(:generic_work_resource, date_created: ["2024-1-01"]) }
+
       it "converts the date to YYYY-M-DD format and indexes date_ssi" do
-        work.date_created = ["2024-1-01"]
         expect(solr_document.fetch("date_ssi")).to eq("2024-01-01")
       end
     end
 
     context "when given a date with an invalid format" do
+      let(:work) { FactoryBot.valkyrie_create(:generic_work_resource, date_created: ["Jan 1, 2024"]) }
+
       it "indexes the given date" do
-        work.date_created = ["Jan 1, 2024"]
         expect(solr_document.fetch("date_ssi")).to eq("Jan 1, 2024")
       end
     end

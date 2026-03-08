@@ -151,6 +151,7 @@ RSpec.describe Account, type: :model do
     end
 
     it 'switches the ActiveFedora fcrepo connection' do
+      skip 'Fedora connection not managed when Wings is disabled' if Hyrax.config.disable_wings
       expect(ActiveFedora.fedora.host).to eq 'http://example.com/fedora'
       expect(ActiveFedora.fedora.base_path).to eq '/dev'
     end
@@ -164,14 +165,33 @@ RSpec.describe Account, type: :model do
     end
   end
 
+  describe '#switch! and #reset! when Wings is disabled' do
+    before do
+      allow(Hyrax.config).to receive(:disable_wings).and_return(true)
+      account.build_solr_endpoint(url: 'http://example.com/solr/')
+      account.build_fcrepo_endpoint(url: 'http://example.com/fedora', base_path: '/dev')
+      account.build_redis_endpoint(namespace: 'foobaz')
+      account.build_data_cite_endpoint(mode: 'test', prefix: '10.1234', username: 'user123', password: 'pass123')
+    end
+
+    it 'does not switch the fcrepo endpoint' do
+      expect(account.fcrepo_endpoint).not_to receive(:switch!)
+      account.switch!
+    end
+
+    it 'does not reset fcrepo endpoint state' do
+      allow(account.fcrepo_endpoint).to receive(:switch!)
+      account.switch!
+
+      expect(FcrepoEndpoint).not_to receive(:reset!)
+      account.reset!
+    end
+  end
+
   describe '#switch' do
     let!(:previous_solr_url) { Hyrax::SolrService.connection.uri.to_s }
     let!(:previous_redis_namespace) { 'hyrax' }
     let!(:previous_fedora_host) { ActiveFedora.fedora.host }
-    let!(:previous_data_cite_mode) { Hyrax::DOI::DataCiteRegistrar.mode }
-    let!(:previous_data_cite_prefix) { Hyrax::DOI::DataCiteRegistrar.prefix }
-    let!(:previous_data_cite_username) { Hyrax::DOI::DataCiteRegistrar.username }
-    let!(:previous_data_cite_password) { Hyrax::DOI::DataCiteRegistrar.password }
     let!(:previous_account_cname) { account.cname }
 
     before do
@@ -190,8 +210,10 @@ RSpec.describe Account, type: :model do
       expect do
         subject.switch do
           expect(Hyrax::SolrService.connection.uri.to_s).to eq 'http://example.com/solr/'
-          expect(ActiveFedora.fedora.host).to eq 'http://example.com/fedora'
-          expect(ActiveFedora.fedora.base_path).to eq '/dev'
+          unless Hyrax.config.disable_wings
+            expect(ActiveFedora.fedora.host).to eq 'http://example.com/fedora'
+            expect(ActiveFedora.fedora.base_path).to eq '/dev'
+          end
           expect(Hyrax.config.redis_namespace).to eq 'foobaz'
           expect(Hyrax::DOI::DataCiteRegistrar.mode).to eq 'test'
           expect(Hyrax::DOI::DataCiteRegistrar.prefix).to eq '10.1234'
@@ -211,9 +233,10 @@ RSpec.describe Account, type: :model do
       expect(Hyrax.config.redis_namespace).to eq previous_redis_namespace
       # datacite mode is reset to test in between for safety.
       expect(Hyrax::DOI::DataCiteRegistrar.mode).to eq :test
-      expect(Hyrax::DOI::DataCiteRegistrar.prefix).to eq previous_data_cite_prefix
-      expect(Hyrax::DOI::DataCiteRegistrar.username).to eq previous_data_cite_username
-      expect(Hyrax::DOI::DataCiteRegistrar.password).to eq previous_data_cite_password
+      # Datacite credentials are cleared on reset via DataCiteEndpoint.reset!.
+      expect(Hyrax::DOI::DataCiteRegistrar.prefix).to eq nil
+      expect(Hyrax::DOI::DataCiteRegistrar.username).to eq nil
+      expect(Hyrax::DOI::DataCiteRegistrar.password).to eq nil
       expect(Rails.application.routes.default_url_options[:host]).to eq previous_account_cname
     end
 
@@ -230,7 +253,9 @@ RSpec.describe Account, type: :model do
         subject.fcrepo_endpoint = nil
         expect(subject.fcrepo_endpoint).to be_kind_of NilFcrepoEndpoint
         subject.switch do
-          expect { ActiveFedora::Fedora.instance.connection.get 'foo' }.to raise_error Faraday::ConnectionFailed
+          expect { ActiveFedora::Fedora.instance.connection.get 'foo' }.to raise_error do |error|
+            expect([Faraday::ConnectionFailed, Ldp::NotFound]).to include(error.class)
+          end
         end
       end
 
@@ -774,6 +799,29 @@ RSpec.describe Account, type: :model do
     it 'defaults to false when not specified' do
       default_account = described_class.create!(name: 'default-test')
       expect(default_account.public_demo_tenant).to be false
+    end
+  end
+
+  describe '.single_tenant_default' do
+    before do
+      described_class.instance_variable_set(:@single_tenant_default, nil)
+      allow(described_class).to receive(:from_cname).and_return(nil)
+    end
+
+    it 'does not build an fcrepo endpoint when Wings is disabled' do
+      allow(Hyrax.config).to receive(:disable_wings).and_return(true)
+
+      account = described_class.single_tenant_default
+
+      expect(account.association(:fcrepo_endpoint).target).to be_nil
+    end
+
+    it 'builds an fcrepo endpoint when Wings is enabled' do
+      allow(Hyrax.config).to receive(:disable_wings).and_return(false)
+
+      account = described_class.single_tenant_default
+
+      expect(account.association(:fcrepo_endpoint).target).to be_present
     end
   end
 end

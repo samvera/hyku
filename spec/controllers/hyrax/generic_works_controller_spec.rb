@@ -13,7 +13,7 @@ RSpec.describe Hyrax::GenericWorksController do
   describe "#presenter" do
     subject { controller.send :presenter }
 
-    let(:solr_document) { SolrDocument.new(work.to_solr) }
+    let(:solr_document) { SolrDocument.new(Hyrax::ValkyrieIndexer.for(resource: work).to_solr) }
 
     before do
       allow(controller).to receive(:search_result_document).and_return(solr_document)

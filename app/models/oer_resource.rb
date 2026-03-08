@@ -16,7 +16,9 @@ class OerResource < Hyrax::Work
   include Hyrax::ArResource
   include Hyrax::NestedWorks
 
-  Hyrax::ValkyrieLazyMigration.migrating(self, from: Oer)
+  # NOTE: Uses ENV rather than Hyrax.config.disable_wings because this line
+  # executes at class load time, before Hyrax configuration is fully initialized.
+  Hyrax::ValkyrieLazyMigration.migrating(self, from: Oer) unless ENV["HYRAX_SKIP_WINGS"] == "true"
 
   include IiifPrint.model_configuration(
     pdf_split_child_model: GenericWorkResource,

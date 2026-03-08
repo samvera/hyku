@@ -13,7 +13,7 @@ RSpec.describe CollectionResource do
     it { is_expected.to respond_to :registered? }
   end
 
-  its(:internal_resource) { is_expected.to eq('Collection') }
+  its(:internal_resource) { is_expected.to eq(Hyrax.config.disable_wings ? 'CollectionResource' : 'Collection') }
 
   context 'class configuration' do
     subject { described_class }

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Hyrax::FileSetIndexerDecorator, type: :decorator do
+RSpec.describe Hyrax::FileSetIndexerDecorator, type: :decorator, skip: (Hyrax.config.disable_wings ? 'Requires ActiveFedora FileSet and Fedora file ingest' : false) do
   let(:user)           { FactoryBot.create(:user) }
   let(:file_set)       { create(:file_set) }
   let(:relation)       { :original_file }

@@ -2,7 +2,7 @@
 
 RSpec.describe CatalogController do
   describe "GET /show" do
-    let(:file_set) { create(:file_set) }
+    let(:file_set) { FactoryBot.valkyrie_create(:hyrax_file_set) }
 
     context "with access" do
       before do

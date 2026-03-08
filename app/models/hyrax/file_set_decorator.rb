@@ -10,4 +10,7 @@ module Hyrax
 end
 
 Hyrax::FileSet.prepend Hyrax::FileSetDecorator
-Hyrax::ValkyrieLazyMigration.migrating(Hyrax::FileSet, from: ::FileSet)
+
+# NOTE: Uses ENV rather than Hyrax.config.disable_wings because this line
+# executes at class load time, before Hyrax configuration is fully initialized.
+Hyrax::ValkyrieLazyMigration.migrating(Hyrax::FileSet, from: ::FileSet) unless ENV["HYRAX_SKIP_WINGS"] == "true"

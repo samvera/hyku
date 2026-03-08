@@ -5,7 +5,8 @@ RSpec.describe 'Insitution visiblity work access', type: :request, clean: true, 
   let(:account2) { create(:account) }
   let(:tenant_user_attributes) { attributes_for(:user) }
   let(:tenant2_user_attributes) { attributes_for(:user) }
-  let(:work) { create(:work, visibility: 'authenticated') }
+  let(:admin_set_id) { Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id }
+  let(:work) { FactoryBot.valkyrie_create(:generic_work_resource, visibility_setting: 'authenticated', admin_set_id:) }
 
   let(:tenant_user) do
     post "http://#{account.cname}/users", params: { user: {
@@ -32,6 +33,8 @@ RSpec.describe 'Insitution visiblity work access', type: :request, clean: true, 
     Apartment::Tenant.create(account.tenant)
     Apartment::Tenant.switch(account.tenant) do
       Site.update(account:)
+      FactoryBot.create(:admin_group)
+      FactoryBot.create(:registered_group)
       work
     end
     Apartment::Tenant.create(account2.tenant)
@@ -55,14 +58,12 @@ RSpec.describe 'Insitution visiblity work access', type: :request, clean: true, 
     it 'allows access for users of the tenant' do
       login_as tenant_user, scope: :user
       get "http://#{account.cname}/concern/generic_works/#{work.id}"
-
       expect(response.status).to eq(200)
     end
 
     it 'does not allow access for users of other tenants' do
       login_as tenant2_user, scope: :user
       get "http://#{account.cname}/concern/generic_works/#{work.id}"
-
       expect(response.status).to eq(401)
     end
   end
@@ -78,7 +79,6 @@ RSpec.describe 'Insitution visiblity work access', type: :request, clean: true, 
     it 'now allows access for users of the tenant' do
       login_as tenant2_user, scope: :user
       get "http://#{account.cname}/concern/generic_works/#{work.id}"
-
       expect(response.status).to eq(200)
     end
   end

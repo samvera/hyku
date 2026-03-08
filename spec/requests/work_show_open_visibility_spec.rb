@@ -2,7 +2,8 @@
 
 RSpec.describe "Users trying to access a Public Work's show page", type: :request, clean: true, multitenant: true do
   let(:account) { create(:account) }
-  let(:work) { create(:work, visibility: 'open') }
+  let(:admin_set_id) { Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id }
+  let(:work) { FactoryBot.valkyrie_create(:generic_work_resource, visibility_setting: 'open', admin_set_id:) }
   let(:tenant_user_attributes) { attributes_for(:user) }
 
   before do
@@ -10,6 +11,8 @@ RSpec.describe "Users trying to access a Public Work's show page", type: :reques
     Apartment::Tenant.create(account.tenant)
     Apartment::Tenant.switch(account.tenant) do
       Site.update(account:)
+      FactoryBot.create(:admin_group)
+      FactoryBot.create(:registered_group)
       work
     end
   end

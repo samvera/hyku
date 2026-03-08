@@ -297,6 +297,7 @@ module Hyku
       end
 
       Dir.glob(File.join(File.dirname(__FILE__), "../lib/**/*_decorator*.rb")).sort.each do |c|
+        next if Hyrax.config.disable_wings && c.include?('/wings/')
         Rails.configuration.cache_classes ? require(c) : load(c)
       end
 

@@ -133,6 +133,16 @@ Execute in this order:
 | No Fedora endpoints in database | ⬜ Data cleanup + migration to drop `fcrepo_endpoint_id`. |
 | Infrastructure cleaned up | ⬜ Compose + Helm + Terraform + ArgoCD. |
 | Verify #538 (FileSet deletion/indexing Valkyrie source of truth) resolved | ⬜ Re-test after Fedora off and migration cleanup. |
+| Zeitwerk does not eager-load Wings decorators in no-Wings mode | ✅ `lib/wings` added to `autoload_lib` ignore list when `HYRAX_SKIP_WINGS=true`; `FindIdsByModelDecorator` prepend guarded by `defined?` check. |
+| Deploy to Fedora-off environment succeeds (e.g. hyku-besties) | ⬜ Confirm after redeploy with fix. |
+
+---
+
+## Release strategy
+
+- All changes made on Hyku (`hyku/552-fedora-off-adapter-agnostic-runtime` branch).
+- Backport into `6.2-stable` for immediate availability.
+- PR #2952 stays open against `main` until after Hyku 7 is released; this work becomes the next minor version after 7.0.
 
 ---
 
@@ -146,4 +156,4 @@ Execute in this order:
 
 ---
 
-*Last updated for PR #2952 (adapter-agnostic runtime).*
+*Last updated for PR #2952 — Zeitwerk eager-load fix and release strategy.*

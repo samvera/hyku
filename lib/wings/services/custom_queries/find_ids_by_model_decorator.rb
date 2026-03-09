@@ -43,4 +43,6 @@ module Wings
   end
 end
 
-Wings::CustomQueries::FindIdsByModel.prepend Wings::Services::CustomQueries::FindIdsByModelDecorator
+if defined?(Wings::CustomQueries::FindIdsByModel)
+  Wings::CustomQueries::FindIdsByModel.prepend Wings::Services::CustomQueries::FindIdsByModelDecorator
+end

@@ -4,7 +4,7 @@
     <%# Upload Logo Image %>
     <%= f.input :logo_image, as: :file, wrapper: :vertical_file_input, required: require_image, hint: t('hyrax.admin.appearances.show.forms.logo_image.hint'), hint_html: { class: 'border-left-accent' } %>
     <%= f.input :logo_image_text, required: true, as: :text, label: 'Logo image alt text' %>
-    <%= image_tag @form.logo_image.url, class: "img-fluid" if @form.logo_image? %>
+    <%= image_tag @form.logo_image.url, class: "img-fluid", alt: @form.logo_image_text if @form.logo_image? %>
   </div>
   <div class="card-footer">
     <%= f.submit class: 'btn btn-primary float-right' %>

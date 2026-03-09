@@ -421,6 +421,9 @@ es:
               hint: Color del texto para los botones de interacción de compartir, buscar y recopilar
             themes:
               confirm: Si su tema no parece aplicarse correctamente, verifique que no esté siendo sobrescrito por CSS personalizado.
+              home_wireframe_alt: "Vista previa del tema %{theme}"
+              search_wireframe_alt: "Vista previa del tema %{theme}"
+              show_wireframe_alt: "Vista previa del tema %{theme}"
           hints:
             banner_image: Para utilizar una imagen como fondo de masthead, debe utilizar una imagen (JPG, GIF o PNG) que tenga al menos 120 píxeles de alto y 1200 píxeles de ancho. Para obtener mejores resultados, utilice una imagen de al menos 1800 píxeles de ancho.
             default_image: Para las imágenes predeterminadas, debe usar una imagen (JPG, GIF o PNG) que tenga las mismas dimensiones de alto y ancho (100 píxeles de ancho y 100 píxeles de alto)

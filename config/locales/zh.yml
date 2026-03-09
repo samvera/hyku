@@ -421,6 +421,9 @@ zh:
               hint: 分享、搜索和收藏交互按钮的文字颜色
             themes:
               confirm: 如果您的主题似乎没有正确应用，请确认该主题未被Custom CSS覆盖。
+              home_wireframe_alt: "%{theme} 主题预览"
+              search_wireframe_alt: "%{theme} 主题预览"
+              show_wireframe_alt: "%{theme} 主题预览"
           hints:
             banner_image: 要使用图像作为标头背景，您应该使用至少120像素高和1200像素宽的图像（JPG，GIF或PNG）。 为获得最佳效果，请使用至少1800像素宽的图像。
             default_image: 对于默认图像，您应使用具有相同高度和宽度尺寸（100像素宽，100像素高）的图像（JPG，GIF或PNG）

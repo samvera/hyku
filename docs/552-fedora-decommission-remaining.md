@@ -73,7 +73,7 @@
 |------|--------|--------|
 | Is Fcrepo container deployed via Helm? | ⬜ Check | In **infra/chart repo** (not this app repo). |
 | Is Fcrepo required in readiness probes? | ⬜ Check | Ensure app pods do not depend on Fcrepo. |
-| Is db-wait dependent on Fedora? | ✅ No | `bin/db-migrate-seed.sh` only waits for Fcrepo when `!disable_wings && FCREPO_HOST`. |
+| Is db-wait dependent on Fedora? | ✅ No | `bin/db-migrate-seed.sh` skips Fcrepo wait when host is unset/placeholder. |
 | Remove from deploy pipeline if not required | ⬜ To do | Compose + Helm/Terraform/ArgoCD. |
 | Remove from Terraform | ⬜ To do | In infra repo. |
 | Remove from ArgoCD manifests | ⬜ To do | In infra repo. |

@@ -304,6 +304,9 @@ pt-BR:
               hint: Cor do texto para botões de interação de compartilhamento, pesquisa e coleção
             themes:
               confirm: Se o seu tema não parece estar sendo aplicado corretamente, verifique se ele não está sendo substituído pelo CSS personalizado.
+              home_wireframe_alt: "Pré-visualização do tema %{theme}"
+              search_wireframe_alt: "Pré-visualização do tema %{theme}"
+              show_wireframe_alt: "Pré-visualização do tema %{theme}"
           hints:
             banner_image: Para usar uma imagem como um fundo de masthead, você deve usar uma imagem (JPG, GIF ou PNG) com pelo menos 120 pixels de altura e 1200 pixels de largura. Para obter melhores resultados, use uma imagem de pelo menos 1800 pixels de largura.
             default_image: Para imagens padrão, você deve usar uma imagem (JPG, GIF ou PNG) que tenha dimensões de altura e largura iguais (100 pixels de largura e 100 pixels de altura)

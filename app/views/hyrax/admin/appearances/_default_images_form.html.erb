@@ -2,11 +2,11 @@
   <div class="card-body">
     <%= f.input :default_collection_image, as: :file, wrapper: :vertical_file_input, required: false, hint: t('hyrax.admin.appearances.show.forms.default_images.hint'), hint_html: { class: 'border-left-accent' } %>
     <%= f.input :default_collection_image_text, as: :text, label: 'Default collection image alt text', required: false %>
-    <%= image_tag @form.default_collection_image.url, class: "img-fluid" if @form.default_collection_image? %>
+    <%= image_tag @form.default_collection_image.url, class: "img-fluid", alt: @form.default_collection_image_text if @form.default_collection_image? %>
 
     <%= f.input :default_work_image, as: :file, wrapper: :vertical_file_input, required: false, hint: t('hyrax.admin.appearances.show.forms.default_images.hint'), hint_html: { class: 'border-left-accent' } %>
     <%= f.input :default_work_image_text, as: :text, label: 'Default work image alt text', required: false %>
-    <%= image_tag @form.default_work_image.url, class: "img-fluid" if @form.default_work_image? %>
+    <%= image_tag @form.default_work_image.url, class: "img-fluid", alt: @form.default_work_image_text if @form.default_work_image? %>
   </div>
   <div class="card-footer">
     <%= f.submit class: 'btn btn-primary float-right' %>

@@ -420,6 +420,9 @@ de:
               hint: Textfarbe für die Interaktionsschaltflächen „Teilen“, „Suchen“ und „Sammeln“
             themes:
               confirm: Wenn Ihr Thema nicht richtig angewendet wird, stellen Sie sicher, dass es nicht von benutzerdefiniertem CSS überschrieben wird.
+              home_wireframe_alt: "%{theme} Themenvorschau"
+              search_wireframe_alt: "%{theme} Themenvorschau"
+              show_wireframe_alt: "%{theme} Themenvorschau"
           hints:
             banner_image: Um ein Bild als Überschriften-Hintergrund zu verwenden, solltest du ein Bild (JPG, GIF oder PNG) verwenden, das mindestens 120 Pixel hoch und 1200 Pixel breit ist. Für beste Ergebnisse verwenden Sie ein Bild mindestens 1800 Pixel breit.
             default_image: Für Standardbilder sollten Sie ein Bild (JPG, GIF oder PNG) verwenden, das die gleiche Höhe und Breite hat (100 Pixel breit und 100 Pixel hoch).

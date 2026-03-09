@@ -1,6 +1,7 @@
-<% thumbnail_path = SolrDocument.find(@collection.id).thumbnail_path %>
- <% if thumbnail_path.include?("uploaded_collection_thumbnails") and File.exist? Hyku::Application.path_for("public#{::SolrDocument.find(@collection.id).thumbnail_path}") %>
-  <%= image_tag(thumbnail_path, class: "current-thumbnail") %>
+<% solr_document = SolrDocument.find(@collection.id) %>
+<% thumbnail_path = solr_document.thumbnail_path %>
+ <% if thumbnail_path.include?("uploaded_collection_thumbnails") and File.exist? Hyku::Application.path_for("public#{thumbnail_path}") %>
+  <%= image_tag(thumbnail_path, class: "current-thumbnail", alt: thumbnail_alt_text_for(solr_document, block_name: 'default_collection_image_text')) %>
   <p>Current image: <strong><%= @thumbnail_filename %></strong></p>
 <% else %>
   No image found.

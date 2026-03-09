@@ -29,8 +29,8 @@
           </li>
         </ul>
       </div>
-      <div id="home-wireframe" class="col-sm-6">
-        <%= image_tag "themes/default_home/default_home.jpg", class: "img-fluid" %>
+      <div id="home-wireframe" class="col-sm-6" data-alt-template="<%= t('hyrax.admin.appearances.show.forms.themes.home_wireframe_alt', theme: '%{theme}') %>">
+        <%= image_tag "themes/default_home/default_home.jpg", class: "img-fluid", alt: t('hyrax.admin.appearances.show.forms.themes.home_wireframe_alt', theme: @form.site.home_theme) %>
       </div>
     </div>
     <hr />
@@ -52,8 +52,8 @@
           </li>
         </ul>
       </div>
-      <div id="search-wireframe" class="col-md-6">
-        <%= image_tag "themes/search/list_view.jpg", class: "img-fluid" %>
+      <div id="search-wireframe" class="col-md-6" data-alt-template="<%= t('hyrax.admin.appearances.show.forms.themes.search_wireframe_alt', theme: '%{theme}') %>">
+        <%= image_tag "themes/search/list_view.jpg", class: "img-fluid", alt: t('hyrax.admin.appearances.show.forms.themes.search_wireframe_alt', theme: @form.site.search_theme) %>
       </div>
     </div>
     <hr />
@@ -71,8 +71,8 @@
           <li id="show-theme-notes"></li>
         </ul>
       </div>
-      <div id="show-wireframe" class="col-sm-6">
-        <%= image_tag "themes/default_show/default_show.jpg", class: "img-fluid" %>
+      <div id="show-wireframe" class="col-sm-6" data-alt-template="<%= t('hyrax.admin.appearances.show.forms.themes.show_wireframe_alt', theme: '%{theme}') %>">
+        <%= image_tag "themes/default_show/default_show.jpg", class: "img-fluid", alt: t('hyrax.admin.appearances.show.forms.themes.show_wireframe_alt', theme: @form.site.show_theme) %>
       </div>
     </div>
     <hr />

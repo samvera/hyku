@@ -212,9 +212,6 @@ en:
         repository_objects: Repository Contents
         settings: Settings
         jobs_dashboard: Job Dashboard
-        jobs_dashboard_good_job: Jobs Dashboard
-        jobs_dashboard_sidekiq: Sidekiq Dashboard
-        sidekiq_dashboard: Sidekiq Dashboard
         statistics: Reports
         tasks: Tasks
         technical: Features

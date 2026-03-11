@@ -212,9 +212,6 @@ pt-BR:
         repository_objects: Conteúdo do Repositório
         settings: Configurações
         jobs_dashboard: Painel de trabalhos
-        jobs_dashboard_good_job: Painel de trabalhos
-        jobs_dashboard_sidekiq: Painel Sidekiq
-        sidekiq_dashboard: Painel Sidekiq
         statistics: Relatórios
         tasks: Tarefas
         technical: Recursos

@@ -212,9 +212,6 @@ zh:
         repository_objects: 储存库内容
         settings: 设定值
         jobs_dashboard: 作业仪表板
-        jobs_dashboard_good_job: 作业仪表板
-        jobs_dashboard_sidekiq: Sidekiq 仪表板
-        sidekiq_dashboard: Sidekiq 仪表板
         statistics: 报告书
         tasks: 任务
         technical: 特征

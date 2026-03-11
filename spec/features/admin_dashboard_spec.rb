@@ -12,16 +12,14 @@ RSpec.describe 'Admin Dashboard', type: :feature, js: true, clean: true do
     end
 
     it 'shows the admin page' do # rubocop:disable RSpec/ExampleLength
-      # Jobs dashboard link shows when queue adapter is sidekiq or good_job; stub for consistent test
-      allow(ENV).to receive(:fetch).and_call_original
-      allow(ENV).to receive(:fetch).with('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq').and_return('sidekiq')
       visit Hyrax::Engine.routes.url_helpers.dashboard_path
       within '.sidebar' do
         expect(page).to have_link('Activity Summary')
         expect(page).to have_link('System Status')
         expect(page).to have_link("Your activity")
         expect(page).to have_link('Reports')
-        expect(page).to have_link('Sidekiq Dashboard', href: '/jobs')
+        # Should not see job dashboard link (superadmin only)
+        expect(page).not_to have_link('Job Dashboard')
       end
       within '.sidebar' do
         # Need to click link to open collapsed menu
@@ -53,15 +51,6 @@ RSpec.describe 'Admin Dashboard', type: :feature, js: true, clean: true do
       end
     end
 
-    it 'shows Jobs Dashboard link when GoodJob is the queue adapter' do
-      allow(ENV).to receive(:fetch).and_call_original
-      allow(ENV).to receive(:fetch).with('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq').and_return('good_job')
-      visit Hyrax::Engine.routes.url_helpers.dashboard_path
-      within '.sidebar' do
-        expect(page).to have_link('Jobs Dashboard', href: '/jobs')
-      end
-    end
-
     it 'shows the status page' do
       visit status_path
       expect(page).to have_selector(".list-group-item-success", text: "Fedora OK")
@@ -74,6 +63,21 @@ RSpec.describe 'Admin Dashboard', type: :feature, js: true, clean: true do
       visit admin_group_users_path(group)
       expect(page).to have_content('Add User to Group')
       expect(page).to have_selector('.js-group-user-add', visible: false)
+    end
+  end
+
+  context 'as a superadmin' do
+    let(:user) { FactoryBot.create(:superadmin) }
+
+    before do
+      login_as(user, scope: :user)
+    end
+
+    it 'shows Job Dashboard link in sidebar' do
+      visit Hyrax::Engine.routes.url_helpers.dashboard_path
+      within '.sidebar' do
+        expect(page).to have_link('Job Dashboard', href: '/jobs')
+      end
     end
   end
 
@@ -94,9 +98,8 @@ RSpec.describe 'Admin Dashboard', type: :feature, js: true, clean: true do
         expect(page).to have_link("Your activity")
         # Should not see Reports
         expect(page).not_to have_link('Reports')
-        # Should not see jobs dashboard link (admin only; label varies by queue: Sidekiq or Jobs Dashboard)
-        expect(page).not_to have_link('Sidekiq Dashboard')
-        expect(page).not_to have_link('Jobs Dashboard')
+        # Should not see job dashboard link (superadmin only)
+        expect(page).not_to have_link('Job Dashboard')
         # Need to click link to open collapsed menu
         click_link "Your activity"
         expect(page).to have_link('Profile')

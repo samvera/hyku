@@ -54,7 +54,7 @@ RSpec.describe 'Admin Dashboard', type: :request, singletenant: true, clean: tru
         expect(response.status).to eq(200)
       end
 
-      it 'gets the url for jobs dashboard' do # Jobs Dashboard (Sidekiq or GoodJob at /jobs when so configured)
+      it 'gets the url for job dashboard' do # Job Dashboard (Sidekiq or GoodJob at /jobs when so configured)
         get '/jobs'
         # 200 when jobs UI is mounted; 302 when the mounted app redirects; 404 when /jobs is not mounted (e.g. queue is inline)
         expect([200, 302, 404]).to include(response.status)
@@ -196,7 +196,7 @@ RSpec.describe 'Admin Dashboard', type: :request, singletenant: true, clean: tru
         expect(response.status).to eq(302)
       end
 
-      it 'renders a status of you are not authorized to access the jobs dashboard' do # Jobs Dashboard
+      it 'renders a status of you are not authorized to access the job dashboard' do # Job Dashboard
         get '/jobs'
         # 302 when route is mounted and user is unauthorized; 404 when /jobs is not mounted (e.g. queue adapter is inline)
         expect([302, 404]).to include(response.status)

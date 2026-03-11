@@ -211,6 +211,7 @@ it:
         profile: Profilo
         repository_objects: Contenuto del repository
         settings: impostazioni
+        jobs_dashboard: Dashboard dei processi
         jobs_dashboard_good_job: Dashboard dei processi
         jobs_dashboard_sidekiq: Dashboard Sidekiq
         sidekiq_dashboard: Dashboard Sidekiq

@@ -210,6 +210,7 @@ de:
         profile: Profil
         repository_objects: Repository-Inhalt
         settings: die Einstellungen
+        jobs_dashboard: Jobs-Dashboard
         jobs_dashboard_good_job: Jobs-Dashboard
         jobs_dashboard_sidekiq: Sidekiq-Dashboard
         sidekiq_dashboard: Sidekiq-Dashboard

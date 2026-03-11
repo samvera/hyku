@@ -67,13 +67,12 @@
   </li>
 <% end %>
 
-<% jobs_queue = ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq') %>
-<% if can?(:manage, :jobs_dashboard) && %w[sidekiq good_job].include?(jobs_queue) %>
+<% if can?(:manage, :jobs_dashboard) %>
   <li class="nav-item">
     <%= menu.nav_link('/jobs',
                       class: "nav-link",
-                      title: t("hyrax.admin.sidebar.jobs_dashboard_#{jobs_queue}")) do %>
-      <span class="fa fa-briefcase" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t("hyrax.admin.sidebar.jobs_dashboard_#{jobs_queue}") %></span>
+                      title: t('hyrax.admin.sidebar.jobs_dashboard')) do %>
+      <span class="fa fa-briefcase" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.jobs_dashboard') %></span>
     <% end %>
   </li>
 <% end %>

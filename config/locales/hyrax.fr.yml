@@ -210,6 +210,7 @@ fr:
         profile: Profil
         repository_objects: Contenu du référentiel
         settings: Paramètres
+        jobs_dashboard: Tableau de bord des travaux
         jobs_dashboard_good_job: Tableau de bord des travaux
         jobs_dashboard_sidekiq: Tableau de bord Sidekiq
         sidekiq_dashboard: Tableau de bord Sidekiq

@@ -234,6 +234,7 @@ properties:
         - EtdResource
     cardinality:
       minimum: 0
+      maximum: 1
     data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
@@ -869,7 +870,8 @@ properties:
         - OerResource
         - EtdResource
     cardinality:
-      minimum: 0
+      minimum: 1
+      maximum: 1
     data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
@@ -901,6 +903,7 @@ properties:
         - CollectionResource
     cardinality:
       minimum: 0
+      maximum: 1
     data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
@@ -1095,7 +1098,7 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - "null"
+        - accessibility_features
     display_label:
       default: blacklight.search.fields.index.accessibility_feature_tesim
     index_documentation: displayable, searchable
@@ -1121,7 +1124,7 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - "null"
+        - accessibility_hazards
     display_label:
       default: blacklight.search.fields.index.accessibility_hazard_tesim
     index_documentation: displayable, searchable
@@ -1242,6 +1245,7 @@ properties:
         - OerResource
     cardinality:
       minimum: 1
+      maximum: 1
     data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
@@ -1293,6 +1297,7 @@ properties:
         - OerResource
     cardinality:
       minimum: 1
+      maximum: 1
     data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
@@ -1320,6 +1325,7 @@ properties:
         - OerResource
     cardinality:
       minimum: 1
+      maximum: 1
     data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
@@ -1348,6 +1354,7 @@ properties:
         - OerResource
     cardinality:
       minimum: 1
+      maximum: 1
     data_type: array
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string

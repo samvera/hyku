@@ -13,7 +13,7 @@ Blacklight.onLoad(function() {
     themeData.banner_image === true ? $('#banner-image-notes').show() : $('#banner-image-notes').hide();
     themeData.home_page_text === true ? $('#home-page-text-notes').show() : $('#home-page-text-notes').hide();
     themeData.marketing_text === true ? $('#marketing-text-notes').show() : $('#marketing-text-notes').hide();
-    $('#home-wireframe').find("img").attr("src", assetPath);
+    $('#home-wireframe').find("img").attr("src", assetPath).attr("alt", $('#home-wireframe').data('alt-template').replace('%{theme}', el.find(':selected').text()));
   }
 
   el.on('change', function() {
@@ -26,7 +26,7 @@ Blacklight.onLoad(function() {
     themeData.banner_image === true ? $('#banner-image-notes').show() : $('#banner-image-notes').hide();
     themeData.home_page_text === true ? $('#home-page-text-notes').show() : $('#home-page-text-notes').hide();
     themeData.marketing_text === true ? $('#marketing-text-notes').show() : $('#marketing-text-notes').hide();
-    $('#home-wireframe').find("img").attr("src", assetPath);
+    $('#home-wireframe').find("img").attr("src", assetPath).attr("alt", $('#home-wireframe').data('alt-template').replace('%{theme}', el.find(':selected').text()));
   });
 
   // show page theme notes and wireframe
@@ -38,7 +38,7 @@ Blacklight.onLoad(function() {
   if (typeof showTheme !== 'undefined' && typeof showThemeInfo !== 'undefined') {
     var showThemeData = showThemeInfo[showTheme];
     $('#show-theme-notes').html(showThemeData.notes);
-    $('#show-wireframe').find("img").attr("src", showAssetPath);
+    $('#show-wireframe').find("img").attr("src", showAssetPath).attr("alt", $('#show-wireframe').data('alt-template').replace('%{theme}', showSelect.find(':selected').text()));
   }
 
   showSelect.on('change', function() {
@@ -48,7 +48,7 @@ Blacklight.onLoad(function() {
     showAssetPath = showSelect.find(':selected').data('image');
 
     $('#show-theme-notes').html(showThemeData.notes);
-    $('#show-wireframe').find("img").attr("src", showAssetPath);
+    $('#show-wireframe').find("img").attr("src", showAssetPath).attr("alt", $('#show-wireframe').data('alt-template').replace('%{theme}', showSelect.find(':selected').text()));
   });
 
   // search page theme wireframes
@@ -57,14 +57,14 @@ Blacklight.onLoad(function() {
   var searchAssetPath = searchSelect.find(':selected').data('image');
 
   if (typeof searchTheme !== 'undefined') {
-    $('#search-wireframe').find("img").attr("src", searchAssetPath);
+    $('#search-wireframe').find("img").attr("src", searchAssetPath).attr("alt", $('#search-wireframe').data('alt-template').replace('%{theme}', searchSelect.find(':selected').text()));
   }
 
   searchSelect.on('change', function() {
     searchTheme = searchSelect.val();
     searchAssetPath = searchSelect.find(':selected').data('image');
 
-    $('#search-wireframe').find("img").attr("src", searchAssetPath);
+    $('#search-wireframe').find("img").attr("src", searchAssetPath).attr("alt", $('#search-wireframe').data('alt-template').replace('%{theme}', searchSelect.find(':selected').text()));
   });
 
 });

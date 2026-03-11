@@ -421,6 +421,9 @@ fr:
               hint: Couleur du texte pour les boutons d'interaction de partage, de recherche et de collecte
             themes:
               confirm: Si votre thème ne semble pas s'appliquer correctement, vérifiez qu'il n'est pas écrasé par le CSS personnalisé.
+              home_wireframe_alt: "Aperçu du thème %{theme}"
+              search_wireframe_alt: "Aperçu du thème %{theme}"
+              show_wireframe_alt: "Aperçu du thème %{theme}"
           hints:
             banner_image: Pour utiliser une image en tant que fond de masthead, vous devez utiliser une image (JPG, GIF ou PNG) d'au moins 120 pixels de hauteur et 1200 pixels de largeur. Pour de meilleurs résultats, utilisez une image d'au moins 1800 pixels de largeur.
             default_image: Pour les images par défaut, vous devez utiliser une image (JPG, GIF ou PNG) ayant des dimensions de hauteur et de largeur égales (100 pixels de largeur et 100 pixels de hauteur).

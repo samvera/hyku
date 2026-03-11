@@ -269,6 +269,9 @@ en:
               hint: Background color for the share, search and collection interaction buttons.
             themes:
               confirm: If your theme doesn't appear to be applying correctly, verify that it isn't being overwritten by Custom CSS.
+              home_wireframe_alt: "%{theme} theme preview"
+              search_wireframe_alt: "%{theme} theme preview"
+              show_wireframe_alt: "%{theme} theme preview"
           tabs:
             banner_image: Banner Image
             colors: Colors

@@ -2,7 +2,7 @@
   <div class="card-body">
     <% require_image = @form.favicon? ? false : true %>
     <%= f.input :favicon, as: :file, wrapper: :vertical_file_input, required: require_image, hint: t('hyrax.admin.appearances.show.forms.favicon.hint'), hint_html: { class: 'border-left-accent' } %>
-    <%= image_tag @form.favicon.url, class: "img-fluid" if @form.favicon? %>
+    <%= image_tag @form.favicon.url, class: "img-fluid", alt: "Favicon preview" if @form.favicon? %>
   </div>
   <div class="card-footer">
     <%= f.submit class: 'btn btn-primary float-right' %>

@@ -12,10 +12,10 @@
 
 <div class="col-md-3">
   <% if model == Hyrax::PcdmCollection || model < Hyrax::PcdmCollection %>
-    <%= document_presenter(document)&.thumbnail&.thumbnail_tag({}, suppress_link: true) %>
+    <%= document_presenter(document)&.thumbnail&.thumbnail_tag({ alt: thumbnail_alt_text_for(document, block_name: 'default_collection_image_text') }, suppress_link: true) %>
   <% else %>
     <div class="list-thumbnail">
-      <%= document_presenter(document)&.thumbnail&.thumbnail_tag({}, additional_options ) %>
+      <%= document_presenter(document)&.thumbnail&.thumbnail_tag({ alt: thumbnail_alt_text_for(document) }, additional_options ) %>
     </div>
   <% end %>
 </div>

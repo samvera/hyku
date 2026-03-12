@@ -8,6 +8,8 @@ module Hyrax
       def controlled_vocab_mappings
         {
           'audience' => 'audience',
+          'accessibility_feature' => 'accessibility_features',
+          'accessibility_hazard' => 'accessibility_hazards',
           'discipline' => 'discipline',
           'education_level' => 'education_levels',
           'learning_resource_type' => 'learning_resource_types',
@@ -20,6 +22,8 @@ module Hyrax
       def services
         {
           'audience' => 'Hyrax::AudienceService',
+          'accessibility_features' => 'Hyrax::AccessibilityFeaturesService',
+          'accessibility_hazards' => 'Hyrax::AccessibilityHazardsService',
           'discipline' => 'Hyrax::DisciplineService',
           'education_levels' => 'Hyrax::EducationLevelsService',
           'learning_resource_types' => 'Hyrax::LearningResourceTypesService',

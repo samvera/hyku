@@ -10,7 +10,7 @@ module Hyrax
       Hyrax::ControlledVocabularies.remote_authorities[source_name]
     end
 
-    def controlled_vocabulary_options_for(property_name, record_class)
+    def controlled_vocabulary_options_for(property_name)
       source = controlled_vocabulary_source_for(property_name)
       return unless source
 

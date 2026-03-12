@@ -7,7 +7,7 @@
   <%= render partial: 'records/edit_fields/default',
              locals: { f: f,
                        key: :resource_type,
-                       controlled_vocab_config: controlled_vocabulary_options_for(:oer_resource_type, f.object.class) } %>
+                       controlled_vocab_config: controlled_vocabulary_options_for(:oer_resource_type) } %>
 <% else %>
   <%= f.input :resource_type,
       as: :select,

@@ -4,7 +4,7 @@
 <% return if f.object.try(:hidden?, key) %>
 
 <% record = f.object.model %>
-<% controlled_vocab_config = local_assigns[:controlled_vocab_config] || controlled_vocabulary_options_for(key, record.class) %>
+<% controlled_vocab_config = local_assigns[:controlled_vocab_config] || controlled_vocabulary_options_for(key) %>
 
 <% if controlled_vocab_config.present? %>
   <% if controlled_vocab_config[:type] == 'select' %>

@@ -804,7 +804,6 @@ properties:
         - CollectionResource
         - GenericWorkResource
         - ImageResource
-        - OerResource
         - EtdResource
     cardinality:
       minimum: 0
@@ -813,6 +812,35 @@ properties:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
         - resource_types
+    display_label:
+      default: blacklight.search.fields.index.resource_type_tesim
+    index_documentation: displayable, searchable
+    indexing:
+      - resource_type_sim
+      - resource_type_tesim
+      - facetable
+    form:
+      primary: false
+    property_uri: http://purl.org/dc/terms/type
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - Article
+      - Conference Proceeding
+    view:
+      render_as: linked
+      html_dl: true
+  oer_resource_type:
+    name: resource_type
+    available_on:
+      class:
+        - OerResource
+    cardinality:
+      minimum: 0
+    data_type: array
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - oer_types
     display_label:
       default: blacklight.search.fields.index.resource_type_tesim
     index_documentation: displayable, searchable

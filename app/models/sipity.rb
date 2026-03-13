@@ -27,7 +27,7 @@ module Sipity
   # @param input [Object]
   #
   # @return [Sipity::Entity]
-  # rubocop:disable Naming/MethodName, Metrics/CyclomaticComplexity, Metrics/MethodLength
+  # rubocop:disable Naming/MethodName, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
   def Entity(input, &block) # rubocop:disable Metrics/AbcSize
     Hyrax.logger.debug("Trying to make an Entity for #{input.inspect}")
 
@@ -38,28 +38,7 @@ module Sipity
                Hyrax.logger.debug("Entity() got a GID, searching by proxy")
                gid_string = input.to_s
                Hyrax.logger.debug("  Searching for GID: #{gid_string}")
-               result = Entity.find_by(proxy_for_global_id: gid_string)
-               # Valkyrie resources use Hyrax::ValkyrieGlobalIdProxy in GID; entities may be stored with
-               # the concrete model name (e.g. GenericWork or GenericWorkResource). Resolve and try that.
-               if result.nil? && gid_string.include?("ValkyrieGlobalIdProxy")
-                 begin
-                   resolved = GlobalID::Locator.locate(input)
-                   if resolved.is_a?(Valkyrie::Resource)
-                     app = input.respond_to?(:app) ? input.app : URI.parse(gid_string).host
-                     # Try concrete resource class (e.g. GenericWorkResource)
-                     alt_gid = "gid://#{app}/#{resolved.class.name}/#{resolved.id}"
-                     result = Entity.find_by(proxy_for_global_id: alt_gid)
-                     # Entity may have been stored with legacy/internal name (e.g. GenericWork)
-                     if result.nil? && resolved.respond_to?(:internal_resource)
-                       alt_gid = "gid://#{app}/#{resolved.internal_resource}/#{resolved.id}"
-                       result = Entity.find_by(proxy_for_global_id: alt_gid)
-                     end
-                   end
-                 rescue StandardError => e
-                   Hyrax.logger.debug("  Entity() ValkyrieGlobalIdProxy fallback failed: #{e.message}")
-                 end
-               end
-               result
+               entity_find_by_gid(input, gid_string)
              when SolrDocument
                if Hyrax.config.disable_wings
                  # In no-Wings mode, resolve via query_service instead of
@@ -99,7 +78,7 @@ module Sipity
     Entity(nil)
   end # rubocop:enable Metrics/AbcSize
   module_function :Entity
-  # rubocop:enable Naming/MethodName, Metrics/CyclomaticComplexity, Metrics/MethodLength
+  # rubocop:enable Naming/MethodName, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
 
   ##
   # Cast an object to an Role
@@ -177,6 +156,33 @@ module Sipity
       super("Unable to convert #{value.inspect}")
     end
   end
+
+  ##
+  # Find Sipity::Entity by proxy_for_global_id, with fallback for ValkyrieGlobalIdProxy GIDs
+  # when the entity was stored with a concrete or legacy model name.
+  def entity_find_by_gid(gid_input, gid_string)
+    result = Entity.find_by(proxy_for_global_id: gid_string)
+    return result unless result.nil? && gid_string.include?("ValkyrieGlobalIdProxy")
+
+    entity_find_by_valkyrie_proxy_gid(gid_input, gid_string)
+  end
+  module_function :entity_find_by_gid
+
+  def entity_find_by_valkyrie_proxy_gid(gid_input, gid_string)
+    resolved = GlobalID::Locator.locate(gid_input)
+    return nil unless resolved.is_a?(Valkyrie::Resource)
+
+    app = gid_input.respond_to?(:app) ? gid_input.app : URI.parse(gid_string).host
+    result = Entity.find_by(proxy_for_global_id: "gid://#{app}/#{resolved.class.name}/#{resolved.id}")
+    return result if result.present?
+    return Entity.find_by(proxy_for_global_id: "gid://#{app}/#{resolved.internal_resource}/#{resolved.id}") if resolved.respond_to?(:internal_resource)
+
+    nil
+  rescue StandardError => e
+    Hyrax.logger.debug("  Entity() ValkyrieGlobalIdProxy fallback failed: #{e.message}")
+    nil
+  end
+  module_function :entity_find_by_valkyrie_proxy_gid
 
   ##
   # Provides compatibility with the old `PowerConverter` conventions

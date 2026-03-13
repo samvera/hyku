@@ -5,13 +5,7 @@ require 'rails_helper'
 # NOTE: If you generated more than one work, you have to set "js: true"
 RSpec.describe 'Etd show page', type: :feature, js: true, clean: true, cohort: 'alpha' do
   include Warden::Test::Helpers
-  let(:etd) do
-    if no_wings_mode?
-      FactoryBot.valkyrie_create(:etd_resource, :with_admin_set)
-    else
-      FactoryBot.create(:etd)
-    end
-  end
+  let(:etd) { FactoryBot.create(:etd) }
 
   before do
     FactoryBot.create(:admin_group)
@@ -31,38 +25,34 @@ RSpec.describe 'Etd show page', type: :feature, js: true, clean: true, cohort: '
       visit "/concern/etds/#{etd.id}"
       metadata = find('dl.work-show.etd')
 
-      if no_wings_mode?
-        expect(metadata).to have_content('Identifier')
-      else
-        expect(metadata).to have_content('Date')
-        expect(metadata).not_to have_content('Date created')
+      expect(metadata).to have_content('Date')
+      expect(metadata).not_to have_content('Date created')
 
-        expect(metadata).to have_content('Type')
-        expect(metadata).not_to have_content('Resource type')
+      expect(metadata).to have_content('Type')
+      expect(metadata).not_to have_content('Resource type')
 
-        expect(metadata).to have_content('Rights')
-        expect(metadata).not_to have_content('Rights statement')
+      expect(metadata).to have_content('Rights')
+      expect(metadata).not_to have_content('Rights statement')
 
-        expect(metadata).to have_content('Format')
+      expect(metadata).to have_content('Format')
 
-        expect(metadata).to have_content('Degree')
-        expect(metadata).not_to have_content('Degree name')
+      expect(metadata).to have_content('Degree')
+      expect(metadata).not_to have_content('Degree name')
 
-        expect(metadata).to have_content('Level')
-        expect(metadata).not_to have_content('Degree level')
+      expect(metadata).to have_content('Level')
+      expect(metadata).not_to have_content('Degree level')
 
-        expect(metadata).to have_content('Discipline')
-        expect(metadata).not_to have_content('Degree discipline')
+      expect(metadata).to have_content('Discipline')
+      expect(metadata).not_to have_content('Degree discipline')
 
-        expect(metadata).to have_content('Grantor')
-        expect(metadata).not_to have_content('Degree grantor')
+      expect(metadata).to have_content('Grantor')
+      expect(metadata).not_to have_content('Degree grantor')
 
-        expect(metadata).to have_content('Advisor')
+      expect(metadata).to have_content('Advisor')
 
-        expect(metadata).to have_content('Committee member')
+      expect(metadata).to have_content('Committee member')
 
-        expect(metadata).to have_content('Department')
-      end
+      expect(metadata).to have_content('Department')
     end
   end
 end

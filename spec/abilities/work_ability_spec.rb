@@ -9,28 +9,20 @@ RSpec.describe Hyrax::Ability::WorkAbility do
 
   let(:user) { FactoryBot.create(:user) }
 
-  VALKYRIE_FACTORY_MAP = {
-    'GenericWork' => :generic_work_resource,
-    'Image' => :image_resource,
-    'Etd' => :etd_resource,
-    'Oer' => :oer_resource,
-    'FileSet' => :hyrax_file_set
-  }.freeze
-
   context 'when work editor' do
     before do
       FactoryBot.create(:editors_group, member_users: [user])
     end
 
+    # TODO: We need to create factories for GenericWorkResource and ImageResource.
+    # NOTE: This assumes that all curation_conerns are ActiveFedora based.
+    # FactoryBot.create is for ActiveFedora models.  And
+    # FactoryBot.valkyrie_create is for Valkyrie models.
     (Hyrax.config.curation_concerns + [::FileSet]).each do |model|
       context "#{model} permissions" do
-        let(:factory_name) { VALKYRIE_FACTORY_MAP[model.to_s] || model.to_s.underscore.to_sym }
-        let(:model_instance) { FactoryBot.valkyrie_create(factory_name, title: ["#{model} instance"]) }
-        let(:solr_doc) do
-          doc = Hyrax::ValkyrieIndexer.for(resource: model_instance).to_solr
-          ::SolrDocument.new(doc.merge('title_tesim' => ["#{model} solr doc"]))
-        end
-        let(:id) { model_instance.id.to_s }
+        let(:model_instance) { FactoryBot.create(model.to_s.underscore.to_sym, title: ["#{model} instance"]) }
+        let(:solr_doc) { ::SolrDocument.new(model_instance.to_solr.merge('title_tesim' => ["#{model} solr doc"])) }
+        let(:id) { model_instance.id }
 
         it { is_expected.to be_able_to(:create, model) }
 
@@ -58,15 +50,14 @@ RSpec.describe Hyrax::Ability::WorkAbility do
       FactoryBot.create(:depositors_group, member_users: [user])
     end
 
+    # NOTE: This assumes that all curation_conerns are ActiveFedora based.
+    # FactoryBot.create is for ActiveFedora models.  And
+    # FactoryBot.valkyrie_create is for Valkyrie models.
     (Hyrax.config.curation_concerns + [::FileSet]).each do |model|
       context "#{model} permissions" do
-        let(:factory_name) { VALKYRIE_FACTORY_MAP[model.to_s] || model.to_s.underscore.to_sym }
-        let(:model_instance) { FactoryBot.valkyrie_create(factory_name, title: ["#{model} instance"]) }
-        let(:solr_doc) do
-          doc = Hyrax::ValkyrieIndexer.for(resource: model_instance).to_solr
-          ::SolrDocument.new(doc.merge('title_tesim' => ["#{model} solr doc"]))
-        end
-        let(:id) { model_instance.id.to_s }
+        let(:model_instance) { FactoryBot.create(model.to_s.underscore.to_sym, title: ["#{model} instance"]) }
+        let(:solr_doc) { ::SolrDocument.new(model_instance.to_solr.merge('title_tesim' => ["#{model} solr doc"])) }
+        let(:id) { model_instance.id }
 
         it { is_expected.to be_able_to(:create, model) }
 

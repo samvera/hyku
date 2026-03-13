@@ -1,11 +1,7 @@
 # frozen_string_literal: true
 
-# TODO: When running in no-Wings mode this entire spec is skipped because the
-# test fixtures use ActiveFedora factories that require Wings/Fedora.  A
-# follow-up should add Valkyrie-native lease specs that create resources via
-# Hyrax.persister so lease expiry can be verified end-to-end without Wings.
-require 'freyja/persister' unless Hyrax.config.disable_wings
-RSpec.describe LeaseAutoExpiryJob, clean: true, skip: (Hyrax.config.disable_wings ? 'Requires ActiveFedora/Wings for lease work creation' : false) do
+require 'freyja/persister'
+RSpec.describe LeaseAutoExpiryJob, clean: true do
   before do
     ActiveJob::Base.queue_adapter = :test
     FactoryBot.create(:group, name: "public")
@@ -59,13 +55,6 @@ RSpec.describe LeaseAutoExpiryJob, clean: true, skip: (Hyrax.config.disable_wing
       expect(work_with_expired_lease).to be_a_kind_of(GenericWork)
       expect(work_with_expired_lease.visibility).to eq('open')
 
-      if no_wings_mode?
-        switch!(account)
-        expect { LeaseAutoExpiryJob.perform_now }.not_to raise_error
-        expect(work_with_expired_lease.reload.visibility).to eq('open')
-        next
-      end
-
       expect do
         expect do
           ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
@@ -80,14 +69,6 @@ RSpec.describe LeaseAutoExpiryJob, clean: true, skip: (Hyrax.config.disable_wing
     it 'Expires leases on file sets with expired leases' do
       expect(file_set_with_expired_lease).to be_a_kind_of(ActiveFedora::Base)
       expect(file_set_with_expired_lease.visibility).to eq('open')
-
-      if no_wings_mode?
-        switch!(account)
-        expect { LeaseAutoExpiryJob.perform_now }.not_to raise_error
-        expect(file_set_with_expired_lease.reload.visibility).to eq('open')
-        next
-      end
-
       expect do
         expect do
           ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
@@ -102,13 +83,6 @@ RSpec.describe LeaseAutoExpiryJob, clean: true, skip: (Hyrax.config.disable_wing
     it "Does not expire lease when lease is still active", active_fedora_to_valkyrie: true do
       expect(leased_work).to be_a_kind_of(GenericWork)
       expect(leased_work.visibility).to eq('open')
-
-      if no_wings_mode?
-        switch!(account)
-        expect { LeaseAutoExpiryJob.perform_now }.not_to raise_error
-        expect(leased_work.reload.visibility).to eq('open')
-        next
-      end
 
       expect do
         expect do

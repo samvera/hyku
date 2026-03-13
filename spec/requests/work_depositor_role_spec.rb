@@ -3,10 +3,7 @@
 # For work approval permissions, see spec/requests/work_approval_permissions_spec.rb
 RSpec.describe 'Work Depositor role', type: :request, singletenant: true, clean: true do
   let(:work_depositor) { FactoryBot.create(:user, roles: [:work_depositor]) }
-  let(:admin_set_id) { Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id }
-  let(:work) do
-    FactoryBot.valkyrie_create(:generic_work_resource, title: ["Test Work"], visibility_setting: 'open', admin_set_id:)
-  end
+  let(:work) { create(:work) }
 
   before do
     FactoryBot.create(:admin_group)
@@ -18,10 +15,12 @@ RSpec.describe 'Work Depositor role', type: :request, singletenant: true, clean:
   end
 
   describe 'read permissions' do
+    let!(:admin_set_id) { Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id }
+
     before do
       solr = Blacklight.default_index.connection
-      solr_doc = Hyrax::ValkyrieIndexer.for(resource: work).to_solr
-      solr.add(solr_doc)
+
+      solr.add(work.to_solr)
       solr.commit
     end
 
@@ -103,6 +102,7 @@ RSpec.describe 'Work Depositor role', type: :request, singletenant: true, clean:
   describe 'destroy permissions' do
     it 'cannot destroy the work' do
       delete hyrax_generic_work_path(work)
+
       expect(response).to have_http_status(:unauthorized)
     end
   end

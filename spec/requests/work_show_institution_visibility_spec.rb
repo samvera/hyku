@@ -2,8 +2,7 @@
 
 RSpec.describe "Users trying to access an Institution Work's show page", type: :request, clean: true, multitenant: true do # rubocop:disable Layout/LineLength
   let(:account) { create(:account) }
-  let(:admin_set_id) { Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id }
-  let(:work) { FactoryBot.valkyrie_create(:generic_work_resource, visibility_setting: 'authenticated', admin_set_id:) }
+  let(:work) { create(:work, visibility: 'authenticated') }
   let(:tenant_user_attributes) { attributes_for(:user) }
 
   before do
@@ -11,8 +10,6 @@ RSpec.describe "Users trying to access an Institution Work's show page", type: :
     Apartment::Tenant.create(account.tenant)
     Apartment::Tenant.switch(account.tenant) do
       Site.update(account:)
-      FactoryBot.create(:admin_group)
-      FactoryBot.create(:registered_group)
       work
     end
   end

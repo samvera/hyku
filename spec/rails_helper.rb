@@ -10,9 +10,7 @@ ENV['HYKU_ROOT_HOST'] = 'test.host'
 ENV['HYKU_ADMIN_ONLY_TENANT_CREATION'] = nil
 ENV['HYKU_DEFAULT_HOST'] = nil
 ENV['HYKU_MULTITENANT'] = 'true'
-# Default to transition mode for local test runs, but allow CI
-# (or any caller) to override via environment.
-ENV['VALKYRIE_TRANSITION'] ||= 'true'
+ENV['VALKYRIE_TRANSITION'] = 'true'
 ENV['HYRAX_ANALYTICS_REPORTING'] = 'false'
 
 require 'simplecov'
@@ -20,18 +18,8 @@ SimpleCov.start('rails')
 require File.expand_path('../config/environment', __dir__)
 require 'spec_helper'
 
-if Hyrax.config.disable_wings
-  module Hyrax
-    module Test
-      class SimpleWork < Hyrax::Work
-        include Hyrax::Schema(:core_metadata)
-        include Hyrax::Schema(:basic_metadata)
-      end
-    end
-  end
-else
-  require Hyrax::Engine.root.join("lib/hyrax/specs/shared_specs/simple_work.rb").to_s
-end
+# We're going to need this for our factories
+require Hyrax::Engine.root.join("lib/hyrax/specs/shared_specs/simple_work.rb").to_s
 
 # I want to set this so that our factory finder will have the right values.
 Hyrax.config.admin_set_model = "AdminSetResource"
@@ -174,10 +162,17 @@ RSpec.configure do |config|
   end
 
   config.before do |example|
-    ActiveFedora::Fedora.reset! unless Hyrax.config.disable_wings
+    # When Wings is disabled (no Fedora), skip Fedora reset/clean and use Solr-only wipe for clean/feature examples.
+    # Use ENV so DISABLE_WINGS=true is respected even if Hyrax.config was set from VALKYRIE_TRANSITION.
+    disable_wings = if ENV.key?('DISABLE_WINGS')
+                      ActiveModel::Type::Boolean.new.cast(ENV['DISABLE_WINGS'])
+                    else
+                      Hyrax.config.disable_wings
+                    end
+    ActiveFedora::Fedora.reset! unless disable_wings
     SolrEndpoint.reset!
     if example.metadata[:clean] || example.metadata[:clean_repo] || example.metadata[:type] == :feature
-      if Hyrax.config.disable_wings
+      if disable_wings
         Hyrax::SolrService.wipe!
       else
         ActiveFedora::Cleaner.clean!

@@ -7,11 +7,11 @@ RSpec.describe 'Admin can select institutional repository theme', type: :feature
   let(:admin) { FactoryBot.create(:admin, email: 'admin@example.com', display_name: 'Adam Admin') }
   let(:user) { create :user }
   let!(:work) do
-    FactoryBot.valkyrie_create(:generic_work_resource,
-                               title: ['Llamas and Alpacas'],
-                               keyword: ['llama', 'alpaca'],
-                               resource_type: ['Software or Program Code'],
-                               depositor: user.user_key)
+    create(:generic_work,
+           title: ['Llamas and Alpacas'],
+           keyword: ['llama', 'alpaca'],
+           resource_type: ['Software or Program Code'],
+           user:)
   end
 
   context 'as a repository admin' do

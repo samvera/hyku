@@ -6,7 +6,7 @@ RSpec.describe Hyrax::FileSet do
   end
 
   subject { described_class.new }
-  its(:internal_resource) { is_expected.to eq(Hyrax.config.disable_wings ? 'Hyrax::FileSet' : 'FileSet') }
+  its(:internal_resource) { is_expected.to eq('FileSet') }
 
   it 'responds to #bulkrax_identifier' do
     expect(subject).to respond_to(:bulkrax_identifier)
@@ -43,14 +43,12 @@ RSpec.describe Hyrax::FileSet do
     before do
       # set up some derivatives
       allow(Hyrax::DerivativePath).to receive(:derivatives_for_reference).and_return(paths)
-      allow(Hyrax::ValkyriePersistDerivatives).to receive(:fileset_for_directives).and_return(file_set_resource) unless no_wings_mode?
+      allow(Hyrax::ValkyriePersistDerivatives).to receive(:fileset_for_directives).and_return(file_set_resource)
       allow(Hyrax.publisher).to receive(:publish)
     end
 
     # Because we're running a job, we need to specify a tenant
     it "converts an AF FileSet to a Valkyrie::FileSet", :singletenant do
-      skip 'ActiveFedora/Wings required for lazy migration test' if Hyrax.config.disable_wings
-
       ## Preamble to test a "Created in ActiveFedora FileSet"
       expect { Hyrax.query_service.services.first.find_by(id: af_file_set.id) }.to raise_error(Valkyrie::Persistence::ObjectNotFoundError)
       # We are lazily migrating a FileSet to a Hyrax::FileSet

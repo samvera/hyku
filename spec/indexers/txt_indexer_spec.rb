@@ -13,9 +13,8 @@ RSpec.describe 'txt indexer' do
   end
 
   it 'indexes txt files onto the work' do
-    indexer_class = "#{work.class}Indexer".constantize
-    expect(indexer_class.included_modules).to include(HykuIndexing)
-    solr_doc = indexer_class.new(resource: work).to_solr
-    expect(solr_doc['all_text_tsimv']).to eq('Hello world!')
+    indexer = "#{work.class}Indexer".constantize
+    expect(indexer.included_modules).to include(HykuIndexing)
+    expect(work.to_solr['all_text_tsimv']).to eq('Hello world!')
   end
 end

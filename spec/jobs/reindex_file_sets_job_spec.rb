@@ -18,9 +18,9 @@ RSpec.describe ReindexFileSetsJob do
       end
     end
 
-    context 'when Wings is enabled',
-            skip: (Hyrax.config.disable_wings ? 'Wings::ModelRegistry is not loaded in no-Wings mode' : false) do
+    context 'when Wings is enabled' do
       before do
+        skip 'Wings::ModelRegistry is not loaded in no-Wings mode' if Hyrax.config.disable_wings
         allow(Hyrax.config).to receive(:disable_wings).and_return(false)
         allow(Wings::ModelRegistry).to receive(:lookup).with(Hyrax::FileSet).and_return(Hyrax::FileSet)
       end

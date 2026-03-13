@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe CreateDerivativesJob, skip: (Hyrax.config.disable_wings ? 'Requires Fedora for Hydra::PCDM::File' : false) do
+RSpec.describe CreateDerivativesJob do
   around do |example|
     ffmpeg_enabled = Hyrax.config.enable_ffmpeg
     Hyrax.config.enable_ffmpeg = true

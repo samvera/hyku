@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe CreateLargeDerivativesJob, type: :job, skip: (Hyrax.config.disable_wings ? 'Requires Fedora for Hydra::PCDM::File' : false) do
+RSpec.describe CreateLargeDerivativesJob, type: :job do
   before do
     ActiveJob::Base.queue_adapter = :test
     allow(FileSet).to receive(:find).with(id).and_return(file_set)

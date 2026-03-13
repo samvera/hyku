@@ -11,10 +11,6 @@ class CollectionResource < Hyrax::PcdmCollection
   end
   include Hyrax::ArResource
 
-  # NOTE: Uses ENV rather than Hyrax.config.disable_wings because this line
-  # executes at class load time, before Hyrax configuration is fully initialized.
-  Hyrax::ValkyrieLazyMigration.migrating(self, from: ::Collection) unless ENV["HYRAX_SKIP_WINGS"] == "true"
-
   # This module provides the #public?, #private?, #restricted? methods; consider
   # contributing this back to Hyrax; but that decision requires further discussion
   # on architecture.

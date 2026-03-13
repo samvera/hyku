@@ -20,7 +20,7 @@ RSpec.describe Hyrax::Ability::SolrDocumentAbility do
         with_permission_template: true,
         collection_type_gid:)
     end
-    let!(:solr_document) { SolrDocument.new(Hyrax::ValkyrieIndexer.for(resource: collection).to_solr) }
+    let!(:solr_document) { SolrDocument.new(collection.to_solr) }
 
     context 'when admin user' do
       let(:user) { FactoryBot.create(:admin) }

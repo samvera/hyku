@@ -299,3 +299,8 @@ Rails.application.config.to_prepare do
     :visibility_during_lease, :visibility_after_lease, :lease_expiration_date, to: :lease, allow_nil: true
   )
 end
+
+Rails.application.config.after_initialize do
+  Hyrax::Microdata.load_paths << Rails.root.join('config', 'schema_org.yml')
+  Hyrax::Microdata.reload!
+end

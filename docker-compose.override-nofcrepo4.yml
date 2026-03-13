@@ -5,6 +5,7 @@ x-no-wings-env: &no-wings-env
   HYRAX_SKIP_WINGS: "true"
   HYRAX_SKIP_FREYJA: "false"
   HYRAX_SKIP_FRIGG: "true"
+  VALKYRIE_TRANSITION: "false"
 
 services:
   web:

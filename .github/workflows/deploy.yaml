@@ -12,7 +12,6 @@ on:
           - demo
           - iiif
           - staging
-          - besties
       debug_enabled:
         type: boolean
         description: "Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)"

@@ -38,7 +38,28 @@ module Sipity
                Hyrax.logger.debug("Entity() got a GID, searching by proxy")
                gid_string = input.to_s
                Hyrax.logger.debug("  Searching for GID: #{gid_string}")
-               Entity.find_by(proxy_for_global_id: gid_string)
+               result = Entity.find_by(proxy_for_global_id: gid_string)
+               # Valkyrie resources use Hyrax::ValkyrieGlobalIdProxy in GID; entities may be stored with
+               # the concrete model name (e.g. GenericWork or GenericWorkResource). Resolve and try that.
+               if result.nil? && gid_string.include?("ValkyrieGlobalIdProxy")
+                 begin
+                   resolved = GlobalID::Locator.locate(input)
+                   if resolved.is_a?(Valkyrie::Resource)
+                     app = input.respond_to?(:app) ? input.app : URI.parse(gid_string).host
+                     # Try concrete resource class (e.g. GenericWorkResource)
+                     alt_gid = "gid://#{app}/#{resolved.class.name}/#{resolved.id}"
+                     result = Entity.find_by(proxy_for_global_id: alt_gid)
+                     # Entity may have been stored with legacy/internal name (e.g. GenericWork)
+                     if result.nil? && resolved.respond_to?(:internal_resource)
+                       alt_gid = "gid://#{app}/#{resolved.internal_resource}/#{resolved.id}"
+                       result = Entity.find_by(proxy_for_global_id: alt_gid)
+                     end
+                   end
+                 rescue StandardError => e
+                   Hyrax.logger.debug("  Entity() ValkyrieGlobalIdProxy fallback failed: #{e.message}")
+                 end
+               end
+               result
              when SolrDocument
                if Hyrax.config.disable_wings
                  # In no-Wings mode, resolve via query_service instead of

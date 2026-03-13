@@ -17,8 +17,7 @@ RSpec.describe Hyku::Indexers::FileSetIndexer do
       allow(original_file).to receive(:pdf?).and_return(true)
       allow(original_file).to receive(:content).and_return(stream)
 
-      solr_doc = indexer_class.new(resource:).to_solr
-      expect(solr_doc['all_text_tsimv']).to include('Dummy PDF file')
+      expect(resource.to_solr['all_text_tsimv']).to include('Dummy PDF file')
     end
   end
 end

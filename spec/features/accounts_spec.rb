@@ -43,22 +43,16 @@ RSpec.describe 'Accounts administration', multitenant: true do
       visit edit_proprietor_account_path(account)
 
       fill_in 'account_solr_endpoint_attributes_url', with: 'http://example.com/solr/'
-      unless no_wings_mode?
-        fill_in 'account_fcrepo_endpoint_attributes_url', with: 'http://example.com/fcrepo'
-        fill_in 'account_fcrepo_endpoint_attributes_base_path', with: '/dev'
-      end
+      fill_in 'account_fcrepo_endpoint_attributes_url', with: 'http://example.com/fcrepo'
+      fill_in 'account_fcrepo_endpoint_attributes_base_path', with: '/dev'
 
       click_on 'Save'
 
       account.reload
 
       expect(account.solr_endpoint.url).to eq 'http://example.com/solr/'
-      if no_wings_mode?
-        expect(page).not_to have_field('account_fcrepo_endpoint_attributes_url')
-      else
-        expect(account.fcrepo_endpoint.url).to eq 'http://example.com/fcrepo'
-        expect(account.fcrepo_endpoint.base_path).to eq '/dev'
-      end
+      expect(account.fcrepo_endpoint.url).to eq 'http://example.com/fcrepo'
+      expect(account.fcrepo_endpoint.base_path).to eq '/dev'
     end
   end
 end

@@ -48,6 +48,16 @@ Rails.application.config.after_initialize do
     end
 
     Valkyrie.config.metadata_adapter = :freyja
+
+    # Register lazy migration from legacy ActiveFedora models to Valkyrie resources.
+    # Done here (after config load) so we can use Hyrax.config.disable_wings.
+    AdminSetResource.class_eval { Hyrax::ValkyrieLazyMigration.migrating(self, from: ::AdminSet) }
+    CollectionResource.class_eval { Hyrax::ValkyrieLazyMigration.migrating(self, from: ::Collection) }
+    GenericWorkResource.class_eval { Hyrax::ValkyrieLazyMigration.migrating(self, from: GenericWork) }
+    EtdResource.class_eval { Hyrax::ValkyrieLazyMigration.migrating(self, from: Etd) }
+    ImageResource.class_eval { Hyrax::ValkyrieLazyMigration.migrating(self, from: Image) }
+    OerResource.class_eval { Hyrax::ValkyrieLazyMigration.migrating(self, from: Oer) }
+    Hyrax::ValkyrieLazyMigration.migrating(Hyrax::FileSet, from: ::FileSet)
   end
 
   Hyrax.config.query_index_from_valkyrie = true

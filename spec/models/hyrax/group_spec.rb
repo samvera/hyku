@@ -214,7 +214,7 @@ module Hyrax
         before { subject.add_members_by_id(user_ids) }
 
         it 'removes multiple users' do
-          expect(subject.members.collect(&:id)).to match_array(user_ids)
+          expect(subject.members.collect(&:id)).to eq(user_ids)
           subject.remove_members_by_id(user_ids)
           expect(subject.members.count).to eq(0)
         end

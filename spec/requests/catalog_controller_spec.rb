@@ -4,8 +4,8 @@ require "spec_helper"
 
 RSpec.describe CatalogController, type: :request, clean: true, multitenant: true do
   let(:user) { create(:user, email: 'test_user@repo-sample.edu') }
-  let(:work) { FactoryBot.valkyrie_create(:generic_work_resource, title: ['welcome test'], depositor: user.user_key) }
-  let(:hyku_sample_work) { FactoryBot.valkyrie_create(:generic_work_resource, title: ['sample test'], depositor: user.user_key) }
+  let(:work) { build(:work, title: ['welcome test'], id: SecureRandom.uuid, user:) }
+  let(:hyku_sample_work) { build(:work, title: ['sample test'], id: SecureRandom.uuid, user:) }
   let(:sample_solr_connection) { RSolr.connect url: "#{ENV['SOLR_URL']}hydra-sample" }
 
   let(:cross_search_solr) { create(:solr_endpoint, url: "#{ENV['SOLR_URL']}hydra-cross-search-tenant") }
@@ -23,11 +23,11 @@ RSpec.describe CatalogController, type: :request, clean: true, multitenant: true
     allow(Apartment::Tenant.adapter).to receive(:connect_to_new).and_return('')
     allow_any_instance_of(Hyrax::SolrServiceDecorator).to receive(:connection).and_return(sample_solr_connection)
 
-    Hyrax::SolrService.add(Hyrax::ValkyrieIndexer.for(resource: hyku_sample_work).to_solr)
+    Hyrax::SolrService.add(hyku_sample_work.to_solr)
     Hyrax::SolrService.commit
 
     Hyrax::SolrService.reset!
-    Hyrax::SolrService.add(Hyrax::ValkyrieIndexer.for(resource: work).to_solr)
+    Hyrax::SolrService.add(work.to_solr)
     Hyrax::SolrService.commit
   end
 

@@ -10,9 +10,7 @@ ENV['HYKU_ROOT_HOST'] = 'test.host'
 ENV['HYKU_ADMIN_ONLY_TENANT_CREATION'] = nil
 ENV['HYKU_DEFAULT_HOST'] = nil
 ENV['HYKU_MULTITENANT'] = 'true'
-# Default to transition mode for local test runs, but allow CI
-# (or any caller) to override via environment.
-ENV['VALKYRIE_TRANSITION'] ||= 'true'
+ENV['VALKYRIE_TRANSITION'] = 'true'
 ENV['HYRAX_ANALYTICS_REPORTING'] = 'false'
 
 require 'simplecov'
@@ -20,18 +18,8 @@ SimpleCov.start('rails')
 require File.expand_path('../config/environment', __dir__)
 require 'spec_helper'
 
-if Hyrax.config.disable_wings
-  module Hyrax
-    module Test
-      class SimpleWork < Hyrax::Work
-        include Hyrax::Schema(:core_metadata)
-        include Hyrax::Schema(:basic_metadata)
-      end
-    end
-  end
-else
-  require Hyrax::Engine.root.join("lib/hyrax/specs/shared_specs/simple_work.rb").to_s
-end
+# We're going to need this for our factories
+require Hyrax::Engine.root.join("lib/hyrax/specs/shared_specs/simple_work.rb").to_s
 
 # I want to set this so that our factory finder will have the right values.
 Hyrax.config.admin_set_model = "AdminSetResource"
@@ -174,14 +162,16 @@ RSpec.configure do |config|
   end
 
   config.before do |example|
-    ActiveFedora::Fedora.reset! unless Hyrax.config.disable_wings
+    # make sure we are on the default fedora config
+    ActiveFedora::Fedora.reset!
     SolrEndpoint.reset!
+    # Pass `:clean' (or hyrax's convention of :clean_repo) to destroy objects in fedora/solr and
+    # start from scratch
     if example.metadata[:clean] || example.metadata[:clean_repo] || example.metadata[:type] == :feature
-      if Hyrax.config.disable_wings
-        Hyrax::SolrService.wipe!
-      else
-        ActiveFedora::Cleaner.clean!
-      end
+      ## We don't need to do `Hyrax::SolrService.wipe!` so long as we're using `ActiveFedora.clean!`;
+      ## but Valkyrie is coming so be prepared.
+      # Hyrax::SolrService.wipe!
+      ActiveFedora::Cleaner.clean!
     end
 
     # Only use truncation for JS-enabled feature specs

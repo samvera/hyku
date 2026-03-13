@@ -7,8 +7,8 @@ RSpec.describe FeaturedCollectionList, :clean_repo, type: :model do
 
   let(:user) { create(:user).tap { |u| u.add_role(:admin, Site.instance) } }
   let(:account) { create(:account) }
-  let(:collection1) { FactoryBot.valkyrie_create(:hyku_collection, title: ["Collection Title 1"], depositor: user.user_key) }
-  let(:collection2) { FactoryBot.valkyrie_create(:hyku_collection, title: ["Collection Title 2"], depositor: user.user_key) }
+  let(:collection1) { create(:collection, user:, title: ["Collection Title 1"]) }
+  let(:collection2) { create(:collection, user:, title: ["Collection Title 2"]) }
 
   describe 'featured_collections' do
     before do

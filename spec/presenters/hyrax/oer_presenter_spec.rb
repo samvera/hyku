@@ -125,21 +125,16 @@ RSpec.describe Hyrax::OerPresenter do
 
   describe "#work_presenters" do
     let(:obj) { valkyrie_create(:oer_resource, :with_file_and_work, depositor: 'somebody') }
-    let(:attributes) { Hyrax::ValkyrieIndexer.for(resource: obj).to_solr }
+    let(:attributes) { obj.to_solr }
 
     it "filters out members that are file sets" do
-      # In Wings mode the :with_file_and_work factory produces a single work
-      # member visible to work_presenters (Wings deduplicates via ModelRegistry).
-      # In no-Wings mode the Valkyrie persister indexes both the nested work and
-      # the OER itself as work-type members, yielding 2.
-      expected_count = no_wings_mode? ? 2 : 1
-      expect(presenter.work_presenters.count).to eq expected_count
+      expect(presenter.work_presenters.count).to eq 1
     end
   end
 
   describe "#manifest" do
     let(:work) { valkyrie_create(:oer_resource, :with_one_file_set, depositor: 'somebody') }
-    let(:solr_document) { SolrDocument.new(Hyrax::ValkyrieIndexer.for(resource: work).to_solr) }
+    let(:solr_document) { SolrDocument.new(work.to_solr) }
 
     describe "#sequence_rendering" do
       subject do
@@ -147,7 +142,7 @@ RSpec.describe Hyrax::OerPresenter do
       end
 
       it "returns a hash containing the rendering information" do
-        work.rendering_ids = [work.member_ids.first]
+        work.rendering_ids = [work.members.first.id]
         expect(subject).to be_an Array
       end
     end

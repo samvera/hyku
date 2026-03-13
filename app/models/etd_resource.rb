@@ -16,10 +16,6 @@ class EtdResource < Hyrax::Work
   include Hyrax::ArResource
   include Hyrax::NestedWorks
 
-  # NOTE: Uses ENV rather than Hyrax.config.disable_wings because this line
-  # executes at class load time, before Hyrax configuration is fully initialized.
-  Hyrax::ValkyrieLazyMigration.migrating(self, from: Etd) unless ENV["HYRAX_SKIP_WINGS"] == "true"
-
   include IiifPrint.model_configuration(
     pdf_split_child_model: GenericWorkResource,
     pdf_splitter_service: IiifPrint::TenantConfig::PdfSplitter

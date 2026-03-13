@@ -14,7 +14,7 @@ RSpec.describe AdminSetResource do
     it { is_expected.to respond_to :registered? }
   end
 
-  its(:internal_resource) { is_expected.to eq(Hyrax.config.disable_wings ? 'AdminSetResource' : 'AdminSet') }
+  its(:internal_resource) { is_expected.to eq('AdminSet') }
 
   context 'class configuration' do
     subject { described_class }
@@ -23,13 +23,13 @@ RSpec.describe AdminSetResource do
 
   describe '#member_of' do
     it 'returns the resources in the admin set' do
-      expect(subject.member_of.to_a).to eq [resource]
+      expect(subject.member_of).to eq [resource]
     end
   end
 
   describe '#member_collection_ids' do
     it 'returns the collection ids of the resources in the admin set' do
-      expect(subject.member_collection_ids.to_a).to eq [resource.id]
+      expect(subject.member_collection_ids).to eq [resource.id]
     end
   end
 end

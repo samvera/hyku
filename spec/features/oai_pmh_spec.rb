@@ -2,8 +2,8 @@
 
 RSpec.describe "OAI PMH Support", type: :feature do
   let(:user) { create(:user) }
-  let(:work) { FactoryBot.valkyrie_create(:generic_work_resource, depositor: user.user_key, title: ['OAI Test Work']) }
-  let(:identifier) { work.id.to_s }
+  let(:work) { create(:work, user:) }
+  let(:identifier) { work.id }
 
   before do
     # We use Site.instance.account.cname to build the download links.
@@ -16,8 +16,7 @@ RSpec.describe "OAI PMH Support", type: :feature do
     work
   end
 
-  context 'oai interface with works present',
-          skip: (Hyrax.config.disable_wings ? 'OAI discovery requires ActiveFedora work indexing with tenant/account host setup' : false) do
+  context 'oai interface with works present' do
     it 'lists metadata prefixes' do
       visit oai_catalog_path(verb: 'ListMetadataFormats')
       expect(page).to have_content('oai_dc')
@@ -51,11 +50,9 @@ RSpec.describe "OAI PMH Support", type: :feature do
     let(:metadata_prefix) { 'oai_hyku' }
 
     it 'includes non-DC fields' do
-      skip 'OAI discovery requires Solr doc updates that are not compatible with Valkyrie-only indexing' if Hyrax.config.disable_wings
       work.keyword = ['asdf']
       work.abstract = ['fdsa']
-      Hyrax.persister.save(resource: work)
-      Hyrax.index_adapter.save(resource: work)
+      work.save
 
       visit oai_catalog_path(verb: 'ListRecords', metadataPrefix: metadata_prefix)
 

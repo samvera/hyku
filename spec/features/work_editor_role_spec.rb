@@ -19,7 +19,7 @@ RSpec.describe 'Work Editor role', type: :feature, js: true, clean: true, ci: 's
   let(:work_depositor) { FactoryBot.create(:user, roles: [:work_depositor]) }
   let(:visibility_setting) { 'open' }
   let(:admin_set) do
-    admin_set = AdminSetResource.new(title: ['Test Admin Set'])
+    admin_set = AdminSet.new(title: ['Test Admin Set'])
     allow(Hyrax.config).to receive(:default_active_workflow_name).and_return('default')
     Hyrax::AdminSetCreateService.call!(admin_set:, creating_user: nil)
   end

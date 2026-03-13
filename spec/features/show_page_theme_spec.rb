@@ -7,18 +7,10 @@ RSpec.describe 'Admin can select show page theme', type: :feature, js: true, cle
   let(:admin) { FactoryBot.create(:admin, email: 'admin@example.com', display_name: 'Adam Admin') }
   let(:user) { create :user }
   let!(:work) do
-    if no_wings_mode?
-      FactoryBot.valkyrie_create(:generic_work_resource,
-                                 :with_admin_set,
-                                 title: ['Giant Pandas and Red Pandas'],
-                                 keyword: ['panda'],
-                                 depositor: user.user_key)
-    else
-      create(:generic_work,
-             title: ['Giant Pandas and Red Pandas'],
-             keyword: ['panda'],
-             user:)
-    end
+    create(:generic_work,
+           title: ['Giant Pandas and Red Pandas'],
+           keyword: ['panda'],
+           user:)
   end
 
   let(:admin_set_id) { Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id }

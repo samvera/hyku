@@ -6,7 +6,7 @@ require 'rails_helper'
 RSpec.describe Hyrax::OerForm do
   let(:work) { Oer.new }
   let(:form) { described_class.new(work, nil, nil) }
-  let(:file_set) { FactoryBot.valkyrie_create(:hyrax_file_set) }
+  let(:file_set) { FactoryBot.create(:file_set) }
 
   describe ".model_attributes" do
     subject { described_class.model_attributes(params) }
@@ -15,7 +15,7 @@ RSpec.describe Hyrax::OerForm do
     let(:attributes) do
       {
         title: ['foo'],
-        rendering_ids: [file_set.id.to_s],
+        rendering_ids: [file_set.id],
         audience: ['instructor'],
         discipline: ['Engineering - Nuclear'],
         education_level: ['adult education'],
@@ -35,7 +35,7 @@ RSpec.describe Hyrax::OerForm do
 
     it 'permits parameters' do
       expect(subject['title']).to eq ['foo']
-      expect(subject['rendering_ids']).to eq [file_set.id.to_s]
+      expect(subject['rendering_ids']).to eq [file_set.id]
       expect(subject['audience']).to eq ["instructor"]
       expect(subject['discipline']).to eq ['Engineering - Nuclear']
       expect(subject['education_level']).to eq ['adult education']

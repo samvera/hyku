@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
-# TODO: When running in no-Wings mode this entire spec is skipped because the
-# test fixtures use ActiveFedora factories that require Wings/Fedora.  A
-# follow-up should add Valkyrie-native embargo specs that create resources via
-# Hyrax.persister so embargo expiry can be verified end-to-end without Wings.
-RSpec.describe EmbargoAutoExpiryJob, clean: true, skip: (Hyrax.config.disable_wings ? 'Requires ActiveFedora/Wings for embargo work creation' : false) do
+RSpec.describe EmbargoAutoExpiryJob, clean: true do
   before do
     ActiveJob::Base.queue_adapter = :test
     FactoryBot.create(:group, name: "public")
@@ -55,13 +51,6 @@ RSpec.describe EmbargoAutoExpiryJob, clean: true, skip: (Hyrax.config.disable_wi
       expect(work_with_expired_embargo).to be_kind_of(GenericWork)
       expect(work_with_expired_embargo.visibility).to eq('restricted')
 
-      if no_wings_mode?
-        switch!(account)
-        expect { EmbargoAutoExpiryJob.perform_now }.not_to raise_error
-        expect(work_with_expired_embargo.reload.visibility).to eq('restricted')
-        next
-      end
-
       expect do
         ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
         switch!(account)
@@ -78,14 +67,6 @@ RSpec.describe EmbargoAutoExpiryJob, clean: true, skip: (Hyrax.config.disable_wi
     it 'Expires embargos on file sets with expired embargos' do
       expect(file_set_with_expired_embargo).to be_kind_of(FileSet)
       expect(file_set_with_expired_embargo.visibility).to eq('restricted')
-
-      if no_wings_mode?
-        switch!(account)
-        expect { EmbargoAutoExpiryJob.perform_now }.not_to raise_error
-        expect(file_set_with_expired_embargo.reload.visibility).to eq('restricted')
-        next
-      end
-
       expect do
         ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
         switch!(account)
@@ -102,13 +83,6 @@ RSpec.describe EmbargoAutoExpiryJob, clean: true, skip: (Hyrax.config.disable_wi
     it "Does not expire embargo when embargo is still active", active_fedora_to_valkyrie: true do
       expect(embargoed_work).to be_kind_of(GenericWork)
       expect(embargoed_work.visibility).to eq('restricted')
-
-      if no_wings_mode?
-        switch!(account)
-        expect { EmbargoAutoExpiryJob.perform_now }.not_to raise_error
-        expect(embargoed_work.reload.visibility).to eq('restricted')
-        next
-      end
 
       expect do
         ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true

@@ -41,4 +41,57 @@ RSpec.describe SolrDocument, type: :model do
       end
     end
   end
+
+  describe '#to_semantic_values' do
+    subject { solr_document.to_semantic_values }
+    let(:solr_document) { SolrDocument.new(attributes) }
+    let(:attributes) do
+      { id: '123',
+        has_model_ssim: ['GenericWork'],
+        account_cname_tesim: ['test.hyku'],
+        thumbnail_path_ss: '/thumbnail.png',
+        title_tesim: ['A Title'],
+        description_tesim: ['A description'],
+        abstract_tesim: ['An abstract'] }
+    end
+
+    it 'includes show page and thumbnail urls in identifier' do
+      expect(subject[:identifier]).to include('https://test.hyku/concern/generic_works/123')
+      expect(subject[:identifier]).to include('https://test.hyku/thumbnail.png')
+    end
+
+    shared_examples_for 'maps properties to dc terms' do
+      it "uses the works' schema match properties to dc terms" do
+        klass_name = GenericWorkResource
+        expect(solr_document.hydra_model).to eq klass_name
+
+        schema_key = klass_name.schema.keys.find { |k| k.name == :abstract }
+        expect(schema_key.meta.dig('mappings', 'simple_dc_pmh')).to eq 'dc:description'
+
+        schema_key = klass_name.schema.keys.find { |k| k.name == :description }
+        expect(schema_key.meta.dig('mappings', 'simple_dc_pmh')).to eq 'dc:description'
+
+        expect(subject[:description]).to include('A description')
+        expect(subject[:description]).to include('An abstract')
+      end
+    end
+
+    context 'when not using flexible metadata' do
+      it_behaves_like 'maps properties to dc terms'
+    end
+
+    context 'when using flexible metadata' do
+      let(:profile_file_path) { Rails.root.join('spec', 'fixtures', 'files', 'm3_profile.yaml') }
+      let(:profile_data) { YAML.load_file(profile_file_path) }
+      around do |example|
+        original_value = Hyrax.config.flexible
+        Hyrax.config.flexible = true
+        Hyrax::FlexibleSchema.create(profile: profile_data)
+        example.run
+        Hyrax.config.flexible = original_value
+      end
+
+      it_behaves_like 'maps properties to dc terms'
+    end
+  end
 end

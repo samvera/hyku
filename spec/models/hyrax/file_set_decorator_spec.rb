@@ -8,6 +8,14 @@ RSpec.describe Hyrax::FileSet do
   subject { described_class.new }
   its(:internal_resource) { is_expected.to eq('FileSet') }
 
+  it 'responds to #bulkrax_identifier' do
+    expect(subject).to respond_to(:bulkrax_identifier)
+  end
+
+  it 'includes Hyrax::ArResource' do
+    expect(subject.class.included_modules).to include(Hyrax::ArResource)
+  end
+
   context 'class configuration' do
     subject { described_class }
     its(:to_rdf_representation) { is_expected.to eq('FileSet') }

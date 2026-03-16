@@ -352,12 +352,23 @@ class RolesService # rubocop:disable Metrics/ClassLength
     end
   end
 
+  class CleanReviewSubmissionsPageJob < Hyrax::ApplicationJob
+    def perform
+      Sipity::Entity.find_each do |entity|
+        entity.proxy_for
+      rescue Ldp::Gone, Ldp::NotFound, Valkyrie::Persistence::ObjectNotFoundError
+        entity.destroy
+      end
+    end
+  end
+
   def self.valid_jobs
     ActiveSupport::HashWithIndifferentAccess.new(
       create_collection_accesses: CreateCollectionAccessesJob,
       create_admin_set_accesses: CreateAdminSetAccessesJob,
       create_collection_type_participants: CreateCollectionTypeParticipantsJob,
-      grant_workflow_roles_for_all_admin_sets: GrantWorkflowRolesForAllAdminSetsJob
+      grant_workflow_roles_for_all_admin_sets: GrantWorkflowRolesForAllAdminSetsJob,
+      clean_review_submissions_page: CleanReviewSubmissionsPageJob
     )
   end
 end

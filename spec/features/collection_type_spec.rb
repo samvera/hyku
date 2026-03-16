@@ -188,8 +188,6 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
           click_button('Add', match: :first)
         end
 
-        # wait one second for the item to populate in the table and check for it's existence
-        sleep 1
         expect(page).to have_content("Participants Updated")
         creator_row_html = find('table.creators-table')
                            .find(:xpath, './/td[@data-agent="admin"]')
@@ -525,8 +523,6 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
           click_button('Add', match: :first)
         end
 
-        # wait one second for the item to populate in the table and check for it's existence
-        sleep 1
         expect(page).to have_content("Participants Updated")
         manager_row_html = find('table.managers-table')
                            .find(:xpath, '//td[@data-agent="town_of_bedrock"]')
@@ -558,8 +554,8 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
         # email and wait one second for the item to populate in the table
         within('#s2id_collection_type_participant_agent_id') do
           fill_in "s2id_autogen1", with: 'us'
-          sleep 1
         end
+        expect(page).to have_css('#select2-drop .select2-results')
 
         # check for the existence of the user's email from the typeahead dropdown menu
         within('#select2-drop') do
@@ -579,8 +575,6 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
           end
         end
 
-        # wait one second for the item to populate in the table and check for it's existence
-        sleep 1
         expect(page).to have_content("Participants Updated")
         manager_row_html = find('table.managers-table')
                            .find(:xpath, '//td[@data-agent="user@example.com"]')

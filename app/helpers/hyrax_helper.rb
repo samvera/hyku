@@ -38,7 +38,7 @@ module HyraxHelper
     icon = Site.instance.favicon
     if icon
       case icon
-      when FaviconUploader
+      when Hyku::FaviconUploader
         return Site.instance.favicon.url(size)
       when String
         return Site.instance.favicon
@@ -59,7 +59,7 @@ module HyraxHelper
     Site.instance.directory_image? ? Site.instance.directory_image.url : false
   end
 
-  def default_collction_image
+  def default_collection_image
     Site.instance.default_collection_image? ? Site.instance.default_collection_image.url : false
   end
 

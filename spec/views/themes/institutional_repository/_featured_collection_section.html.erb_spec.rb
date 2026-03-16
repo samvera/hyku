@@ -44,7 +44,7 @@ RSpec.describe "themes/institutional_repository/hyrax/homepage/_featured_collect
 
       allow(view).to receive(:render_thumbnail_tag).with(
         presenter.solr_document,
-        { alt: "Featured Collection Thumbnail" },
+        { alt: I18n.t('hyrax.sr.thumbnail') },
         { suppress_link: true }
       ).and_return('thumbnail')
 
@@ -76,5 +76,10 @@ RSpec.describe "themes/institutional_repository/hyrax/homepage/_featured_collect
       expect(rendered).to have_selector('.collection-highlights-list')
       expect(rendered).to have_link(t('hyrax.homepage.admin_sets.link'))
     end
+  end
+
+  it 'links to all collections, sorted by title' do
+    render
+    expect(rendered).to have_link('View all collections', href: /sort=title_ssi\+asc/)
   end
 end

@@ -1,4 +1,4 @@
-<div class='nested-fields well'>
+<div class='nested-fields well mb-2'>
   <%= f.association :full_account, collection: Account.full_accounts %>
-  <%= link_to_remove_association "remove", f %>
+  <%= link_to_remove_association t('proprietor.accounts.new.cross_tenant_search.remove'), f %>
 </div>

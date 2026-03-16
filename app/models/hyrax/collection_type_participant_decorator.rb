@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v5.0.0rc2 Expand functionality for Groups with Roles feature
+# OVERRIDE Hyrax v5.2.0 Expand functionality for Groups with Roles feature
 module Hyrax
   module CollectionTypeParticipantDecorator
     # OVERRIDE: #titleize agent_id for groups since we are displaying their humanized names in the dropdown

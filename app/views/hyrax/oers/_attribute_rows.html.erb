@@ -3,12 +3,11 @@
 <%# hyrax-doi doesn't work post hyrax v3.0.0 %>
 <% if Hyrax.config.flexible? %>
   <% view_options_for(presenter).each do |field, options| %>
-    <% value = presenter.public_send(field) %>
-    <% render_attribute = value.present? && (value.is_a?(Enumerable) ? value.any?(&:present?) : true) %>
+    <% view_options = conform_options(field, options) %>
     <% if field == :admin_note %>
-      <%= presenter.attribute_to_html(:admin_note, options) if presenter.editor? && render_attribute %>
+      <%= presenter.attribute_to_html(conform_field(field, options), view_options) if presenter.editor? %>
     <% else %>
-      <%= presenter.attribute_to_html(conform_field(field, options), conform_options(field, options)) if render_attribute %>
+      <%= presenter.attribute_to_html(conform_field(field, options), view_options) unless view_options[:admin_only] && !current_user&.admin?  %>
     <% end %>
   <% end %>
 <% else %>
@@ -24,7 +23,7 @@
   <%= presenter.attribute_to_html(:audience, render_as: :faceted, html_dl: true) %>
   <%= presenter.attribute_to_html(:discipline, render_as: :faceted, html_dl: true) %>
   <%= presenter.attribute_to_html(:date_created, html_dl: true) %>
-  <%= presenter.attribute_to_html(:table_of_contents, html_dl: true) %> 
+  <%= presenter.attribute_to_html(:table_of_contents, html_dl: true) %>
   <%= presenter.attribute_to_html(:subject, render_as: :faceted, html_dl: true) %>
   <%= presenter.attribute_to_html(:based_near_label, html_dl: true) %>
   <%= presenter.attribute_to_html(:rights_statement, render_as: :rights_statement, html_dl: true) %>

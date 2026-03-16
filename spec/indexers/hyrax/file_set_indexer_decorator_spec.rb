@@ -5,7 +5,7 @@ RSpec.describe Hyrax::FileSetIndexerDecorator, type: :decorator do
   let(:file_set)       { create(:file_set) }
   let(:relation)       { :original_file }
   let(:actor)          { Hyrax::Actors::FileActor.new(file_set, relation, user) }
-  let(:file_path)      { File.join(fixture_path, 'pdf', 'archive.pdf') }
+  let(:file_path)      { File.join(file_fixture_path, 'pdf', 'archive.pdf') }
   let(:fixture)        { fixture_file_upload(file_path, 'application/pdf') }
   let(:huf)            { Hyrax::UploadedFile.new(user:, file_set_uri: file_set.uri, file: fixture) }
   let(:io)             { JobIoWrapper.new(file_set_id: file_set.id, user:, uploaded_file: huf) }

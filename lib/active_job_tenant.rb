@@ -38,14 +38,14 @@ module ActiveJobTenant
     def find_job(klass:, tenant_id: nil, queue_name: :default)
       queue = ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq')
       if queue == 'sidekiq'
-        result = find_job_with_in_redis(queue: Sidekiq::Queue.new(queue_name), klass: klass, tenant_id: tenant_id)
-        result ||= find_job_with_in_redis(queue: Sidekiq::ScheduledSet.new, klass: klass, tenant_id: tenant_id)
-        result || find_job_with_in_redis(queue: Sidekiq::RetrySet.new, klass: klass, tenant_id: tenant_id)
+        result = find_job_with_in_redis(queue: Sidekiq::Queue.new(queue_name), klass: klass.name, tenant_id: tenant_id)
+        result ||= find_job_with_in_redis(queue: Sidekiq::ScheduledSet.new, klass: klass.name, tenant_id: tenant_id)
+        result || find_job_with_in_redis(queue: Sidekiq::RetrySet.new, klass: klass.name, tenant_id: tenant_id)
       elsif queue == 'good_job'
         if tenant_id.present?
-          GoodJob::Job.where("finished_at is null and serialized_params->>'tenant' = ? and serialized_params->>'job_class' = ?", tenant_id, klass).any?
+          GoodJob::Job.where("finished_at is null and serialized_params->>'tenant' = ? and serialized_params->>'job_class' = ?", tenant_id, klass.name).any?
         else
-          GoodJob::Job.where("finished_at is null and serialized_params->>'job_class' = ?", klass).any?
+          GoodJob::Job.where("finished_at is null and serialized_params->>'job_class' = ?", klass.name).any?
         end
       else
         Rails.logger.error("Job engine #{queue} does not support recurring jobs")

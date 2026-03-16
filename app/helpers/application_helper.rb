@@ -8,6 +8,7 @@ module ApplicationHelper
   include Bulkrax::ApplicationHelper
   include HykuKnapsack::ApplicationHelper
   include Hyrax::FormHelperBehavior
+  include Hyku::HomepageHelper
 
   def group_navigation_presenter
     @group_navigation_presenter ||= Hyku::Admin::Group::NavigationPresenter.new(params:)
@@ -19,15 +20,25 @@ module ApplicationHelper
   #  - fallback to Hyrax's default image
   def collection_thumbnail(document, _image_options = {}, url_options = {})
     view_class = url_options[:class]
+    alt = thumbnail_alt_text_for(document, block_name: 'default_collection_image_text')
+
     # The correct thumbnail SHOULD be indexed on the object
-    return image_tag(document['thumbnail_path_ss'], class: view_class, alt: alttext_for(document)) if document['thumbnail_path_ss'].present?
+    return image_tag(document['thumbnail_path_ss'], class: view_class, alt:) if document['thumbnail_path_ss'].present?
 
     # If nothing is indexed, we just fall back to site default
-    return image_tag(Site.instance.default_collection_image&.url, alt: alttext_for(document), class: view_class) if Site.instance.default_collection_image.present?
+    return image_tag(Site.instance.default_collection_image&.url, alt:, class: view_class) if Site.instance.default_collection_image.present?
 
     # fall back to Hyrax default if no site default
-    tag.span("", class: [Hyrax::ModelIcon.css_class_for(::Collection), view_class],
-                 alt: alttext_for(document))
+    tag.span("", class: [Hyrax::ModelIcon.css_class_for(::Collection), view_class], alt:)
+  end
+
+  # OVERRIDE Hyrax to add content-block lookup when no custom thumbnail alt text is indexed.
+  # @param document [SolrDocument]
+  # @param block_name [String] content block name for the default image alt text
+  def thumbnail_alt_text_for(document, block_name: 'default_work_image_text')
+    return document.alt_text_for_view if document.respond_to?(:thumbnail_alt_text) && document.thumbnail_alt_text.present?
+
+    block_for(name: block_name) || super
   end
 
   def label_for(term:, record_class: nil)
@@ -35,6 +46,7 @@ module ApplicationHelper
   end
 
   def alttext_for(collection)
+    Deprecation.warn(self, "alttext_for is deprecated. Use thumbnail_alt_text_for(document) instead.")
     thumbnail = CollectionBrandingInfo.where(collection_id: collection.id, role: "thumbnail")&.first
     return thumbnail.alt_text if thumbnail
     block_for(name: 'default_collection_image_text') || "#{collection.title_or_label} #{t('hyrax.dashboard.my.sr.thumbnail')}"

@@ -1,2 +1,15 @@
-<%# OVERRIDE: Hyrax v5.0.0 to support flexible metadata controlled vocabulary %>
-<%= render 'records/edit_fields/default', f: f, key: key %> 
+<%# OVERRIDE: Hyrax 5.2 %>
+<%# support dynamic labels and hints for custom worktypes %>
+<%# controlled vocabular varies for class Oer %>
+<%# Support flexible controlled vocabulary definitions %>
+
+<% if Hyrax.config.flexible? %>
+  <%= render partial: 'records/edit_fields/default', locals: { f: f, key: :resource_type } %>
+<% else %>
+  <%= f.input :resource_type,
+      as: :select,
+      collection: Hyrax::ResourceTypesService.select_options,
+      label: label_for(term: :resource_type, record_class: f.object.class),
+      hint: hint_for(term: :resource_type, record_class: f.object.class),
+      input_html: { class: 'form-control', multiple: true } %>
+<% end %>

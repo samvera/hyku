@@ -98,6 +98,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   mount Hyrax::Engine, at: '/'
   mount Bulkrax::Engine, at: '/' if Hyku.bulkrax_enabled?
   mount HykuKnapsack::Engine, at: '/'
+  mount BlacklightDynamicSitemap::Engine => '/'
   concern :searchable, Blacklight::Routes::Searchable.new
   concern :exportable, Blacklight::Routes::Exportable.new
 
@@ -141,6 +142,11 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     post "roles_service/:job_name_key", to: "roles_service#update_roles", as: :update_roles
     get "roles_service", to: "roles_service#index", as: :roles_service_jobs
   end
+
+  # Add save_tenant_colors route for appearance
+  post 'admin/appearance/save_tenant_colors',
+       to: 'hyrax/admin/appearances#save_tenant_colors',
+       as: :save_tenant_colors_admin_appearance
 
   # OVERRIDE here to add featured collection routes
   scope module: 'hyrax' do

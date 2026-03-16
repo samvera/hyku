@@ -18,6 +18,7 @@ module Proprietor
     # GET /accounts/1.json
     def show
       @users = User.accessible_by(current_ability)
+      @presenter = Proprietor::AccountPresenter.new(@account)
 
       add_breadcrumb t(:'hyrax.controls.home'), root_path
       add_breadcrumb t(:'hyrax.admin.sidebar.accounts'), proprietor_accounts_path
@@ -103,6 +104,7 @@ module Proprietor
         :search_only,
         *@account.live_settings.keys,
         admin_emails: [],
+        superadmin_emails: [],
         full_account_cross_searches_attributes: [:id, :_destroy, :full_account_id, full_account_attributes: [:id]],
         solr_endpoint_attributes: %i[id url],
         fcrepo_endpoint_attributes: %i[id url base_path],
@@ -114,6 +116,7 @@ module Proprietor
     def account_params
       params.require(:account).permit(
         :name,
+        :public_demo_tenant,
         :search_only,
         admin_emails: [],
         full_account_cross_searches_attributes: [:id, :_destroy, :full_account_id, full_account_attributes: [:id]]

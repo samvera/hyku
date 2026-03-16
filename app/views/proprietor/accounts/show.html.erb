@@ -62,6 +62,7 @@
             <table class="table table-striped">
               <thead>
                 <th><%= t('.current_admins.email') %></th>
+                <th><%= t('.current_admins.superadmin') %></th>
                 <th><%= t('.current_admins.actions') %></th>
               </thead>
               <tbody>
@@ -69,26 +70,11 @@
                   <tr>
                     <td><%= t('.current_admins.no_admins') %></td>
                     <td></td>
+                    <td></td>
                   </tr>
                 <% else %>
-                  <% @current_superusers.each do |current_superuser| %>
-                    <tr>
-                      <td><%= current_superuser %></td>
-                      <td>
-                        <%# For the remove button form, add all admin emails *except this one* as hidden inputs %>
-                        <%= simple_form_for @account, url: [:proprietor, @account], namespace: "remove_#{current_superuser}_form", html: { class: 'form' } do |f| %>
-                          <% keep_emails = @account.admin_emails - [current_superuser.email] %>
-                          <% if keep_emails.empty? %>
-                            <%= f.input_field :admin_emails, multiple: true, hidden: true, value: '' %>
-                          <% else %>
-                            <% keep_emails.each do |keep_email| %>
-                              <%= f.input_field :admin_emails, multiple: true, hidden: true, value: keep_email %>
-                            <% end %>
-                          <% end %>
-                          <%= f.submit t('.remove'), class: 'btn btn-danger' %>
-                        <% end %>
-                      </td>
-                    </tr>
+                  <% @current_superusers.each do |user| %>
+                    <%= render 'proprietor/accounts/admin_row', presenter: @presenter, user: user %>
                   <% end %>
                 <% end %>
               </tbody>
@@ -117,7 +103,7 @@
                               <%= f.input_field :admin_emails, multiple: true, hidden: true, value: email %>
                           <% end %>
                           <%= f.input_field :admin_emails, multiple: true, hidden: true, value: user.email %>
-                          <%= f.submit t('.add'), class: 'btn btn-danger' %>
+                          <%= f.submit t('.add'), class: 'btn btn-secondary' %>
                         <% end %>
                       <% end %>
                     </td>

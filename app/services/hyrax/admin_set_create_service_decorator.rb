@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
+# OVERRIDE Hyrax v5.2.0 This decorator is used to override logic found in
 module Hyrax
-  # This decorator is used to override logic found in Hyrax v5.0.0rc2
   #
   # Because Hyku has converted the Hyrax::Group model from a PORO to a db-backed active record object,
   # we have to query for existing Hyrax groups instead of initializing empty ones.

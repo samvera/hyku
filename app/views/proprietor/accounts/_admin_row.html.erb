@@ -1,0 +1,7 @@
+<tr>
+  <td><%= user %></td>
+  <td><%= presenter.superadmin?(user) %></td>
+  <td>
+    <%= render 'proprietor/accounts/admin_actions_dropdown', presenter: presenter, user: user %>
+  </td>
+</tr>

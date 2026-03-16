@@ -6,19 +6,19 @@ class Site < ApplicationRecord
   validates :application_name, presence: true, allow_nil: true
 
   # Allow for uploading of site's banner image
-  mount_uploader :banner_image, Hyrax::AvatarUploader
+  mount_uploader :banner_image, Hyku::AvatarUploader
   # Allow for uploading of site's logo image
-  mount_uploader :logo_image, Hyrax::AvatarUploader
+  mount_uploader :logo_image, Hyku::AvatarUploader
   # Allow for uploading of site's directory image
-  mount_uploader :directory_image, Hyrax::AvatarUploader
+  mount_uploader :directory_image, Hyku::AvatarUploader
   # Allow for uploading of site's default collection image
-  mount_uploader :default_collection_image, Hyrax::AvatarUploader
+  mount_uploader :default_collection_image, Hyku::AvatarUploader
   # Allow for uploading of site's default work image
-  mount_uploader :default_work_image, Hyrax::AvatarUploader
+  mount_uploader :default_work_image, Hyku::AvatarUploader
   # Allow for uploading of site's favicon image
-  mount_uploader :favicon, FaviconUploader
+  mount_uploader :favicon, Hyku::FaviconUploader
 
-  belongs_to :account
+  belongs_to :account, optional: true
   accepts_nested_attributes_for :account, update_only: true
 
   class << self
@@ -47,6 +47,22 @@ class Site < ApplicationRecord
     removed_admin_emails = existing_admin_emails - emails
     add_admins_by_email(new_admin_emails) if new_admin_emails
     remove_admins_by_email(removed_admin_emails) if removed_admin_emails
+  end
+
+  # Get all superadmin emails associated with this site
+  def superadmin_emails
+    User.with_role(:superadmin, self).pluck(:email)
+  end
+
+  # Update superadmin emails associated with this site
+  # @param [Array<String>] Array of user emails
+  def superadmin_emails=(emails)
+    emails = Array(emails).reject(&:blank?)
+    existing_superadmin_emails = superadmin_emails
+    new_superadmin_emails = emails - existing_superadmin_emails
+    removed_superadmin_emails = existing_superadmin_emails - emails
+    add_superadmins_by_email(new_superadmin_emails) if new_superadmin_emails.present?
+    remove_superadmins_by_email(removed_superadmin_emails) if removed_superadmin_emails.present?
   end
 
   def institution_label
@@ -79,6 +95,22 @@ class Site < ApplicationRecord
   def remove_admins_by_email(emails)
     User.where(email: emails).find_each do |u|
       u.remove_role :admin, self
+    end
+  end
+
+  # Add superadmins via email address
+  # @param [Array<String>] Array of user emails
+  def add_superadmins_by_email(emails)
+    User.where(email: emails).find_each do |u|
+      u.add_role :superadmin, self
+    end
+  end
+
+  # Remove specific superadmins
+  # @param [Array<String>] Array of user emails
+  def remove_superadmins_by_email(emails)
+    User.where(email: emails).find_each do |u|
+      u.remove_role :superadmin, self
     end
   end
 end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v5.0.0rc2 to fix user count. by joining roles, we keep the count correct even though there are many users
+# OVERRIDE Hyrax v5.2.0 to fix user count. by joining roles, we keep the count correct even though there are many users
 module Hyrax
   module Admin
     module DashboardPresenterDecorator

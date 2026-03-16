@@ -1,0 +1,44 @@
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+    <%= t('proprietor.accounts.show.current_admins.actions') %>
+  </button>
+  <div class="dropdown-menu">
+    <%# Remove admin (also removes superadmin status) %>
+    <% if presenter.can_remove_admin?(user) %>
+      <%= simple_form_for presenter.account, url: [:proprietor, presenter.account], namespace: "remove_#{user}_form", html: { class: 'form' } do |f| %>
+        <% presenter.admin_emails_without(user).each do |email| %>
+          <%= f.input_field :admin_emails, multiple: true, hidden: true, value: email %>
+        <% end %>
+        <%= hidden_field_tag 'account[superadmin_emails][]', '' %>
+        <% presenter.superadmin_emails_without(user).each do |email| %>
+          <%= f.input_field :superadmin_emails, multiple: true, hidden: true, value: email %>
+        <% end %>
+        <%= f.submit t('proprietor.accounts.show.remove'), class: 'dropdown-item' %>
+      <% end %>
+    <% else %>
+      <span class="dropdown-item disabled" title="<%= t('proprietor.accounts.show.cannot_remove_last_admin') %>"><%= t('proprietor.accounts.show.remove') %></span>
+    <% end %>
+
+    <%# Superadmin toggle %>
+    <% if presenter.superadmin?(user) %>
+      <% if presenter.can_remove_superadmin?(user) %>
+        <%= simple_form_for presenter.account, url: [:proprietor, presenter.account], namespace: "remove_superadmin_#{user}_form", html: { class: 'form' } do |f| %>
+          <%= hidden_field_tag 'account[superadmin_emails][]', '' %>
+          <% presenter.superadmin_emails_without(user).each do |email| %>
+            <%= f.input_field :superadmin_emails, multiple: true, hidden: true, value: email %>
+          <% end %>
+          <%= f.submit t('proprietor.accounts.show.remove_superadmin'), class: 'dropdown-item text-warning' %>
+        <% end %>
+      <% else %>
+        <span class="dropdown-item disabled" title="<%= t('proprietor.accounts.show.cannot_remove_last_superadmin') %>"><%= t('proprietor.accounts.show.remove_superadmin') %></span>
+      <% end %>
+    <% else %>
+      <%= simple_form_for presenter.account, url: [:proprietor, presenter.account], namespace: "add_superadmin_#{user}_form", html: { class: 'form' } do |f| %>
+        <% presenter.superadmin_emails_with(user).each do |email| %>
+          <%= f.input_field :superadmin_emails, multiple: true, hidden: true, value: email %>
+        <% end %>
+        <%= f.submit t('proprietor.accounts.show.set_superadmin'), class: 'dropdown-item' %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

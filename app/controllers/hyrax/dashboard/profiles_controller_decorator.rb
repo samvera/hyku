@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE FILE from Hyrax v5.0.0
+# OVERRIDE FILE from Hyrax v5.2.0
 # - Modify params to allow editing of additional User columns
 # - Ensure the current user matches the requested URL.
 module Hyrax

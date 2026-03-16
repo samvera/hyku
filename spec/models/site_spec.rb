@@ -23,6 +23,27 @@ RSpec.describe Site, type: :model do
     end
   end
 
+  describe ".superadmin_emails" do
+    subject { described_class.instance }
+
+    context "no admins exist" do
+      it "returns empty array" do
+        expect(subject.superadmin_emails).to eq([])
+      end
+    end
+
+    context "admins exist" do
+      before do
+        admin1.add_role :superadmin, subject
+        admin2.add_role :superadmin, subject
+      end
+
+      it "returns array of emails" do
+        expect(subject.superadmin_emails).to match_array([admin1.email, admin2.email])
+      end
+    end
+  end
+
   describe ".admin_emails" do
     subject { described_class.instance }
 

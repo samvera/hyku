@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v3.6.0
+# OVERRIDE Hyrax v5.2.0
 # @see CreateLargeDerivativesJob
 module CreateDerivativesJobDecorator
   # OVERRIDE: Divert audio and video derivative

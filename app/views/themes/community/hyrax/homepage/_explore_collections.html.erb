@@ -1,0 +1,19 @@
+<% featured_collection = f.object.presenter %>
+
+<div class="card community-explore-collections">
+  <div>
+    <%= link_to [hyrax, featured_collection] do %>
+      <%= render_thumbnail_tag(featured_collection,
+                                { class: 'card-img-top', alt: thumbnail_alt_text_for(featured_collection.solr_document, block_name: 'default_collection_image_text') },
+                                {suppress_link: true}
+      ) %>
+    <% end %>
+  </div>
+  <div class="card-body">
+    <h3 class="card-title">
+      <%= link_to [hyrax, featured_collection] do %>
+        <%= markdown(featured_collection.title.first) %>
+      <% end %>
+    </h3>
+  </div>
+</div>

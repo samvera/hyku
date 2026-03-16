@@ -2,9 +2,11 @@
 <% content_for(:container_class) { 'row' } %>
 <section id="banner" class="jumbotron">
   <div class="container">
-    <h1><%= application_name %></h1>
+    <h1>
+      <img src="<%= image_path('logo-hyku.png') %>" alt="<%= application_name %>" class="splash-logo" />
+    </h1>
     <p><%= t('application.tagline') %></p>
-    <p>
+    <p class="button-wrapper">
       <% if !admin_only_tenant_creation? || can?(:manage, Account) %>
         <%= link_to t('hyku.splash.account_signup'), account_sign_up_path, class: 'btn btn-lg btn-sign-up' %>
       <% elsif !user_signed_in? %>

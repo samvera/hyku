@@ -1,31 +1,33 @@
-.gallery {
-  div.thumbnail {
-    img {
-      height: 200px;
-      object-fit: cover;
-      width:  200px;
+// Catalog index gallery view
+// Gallery view can be set as the default search results in dashboard < appearance < themes
+// Gallery view can be selected on the view-type-group on the search results page
+
+body.catalog.catalog-index {
+  .documents-gallery {
+    .document {
+      padding: 0.5rem;
+
+      .thumbnail-container {
+        border: 1px solid #dee2e6;
+        padding: 0.25rem;
+        border-radius: 0.25rem;
+        width: 100%;
+      }
+
+      .document-thumbnail {
+        // extend the img-thumbnail class from bootstrap
+        .img-thumbnail {
+          height: 300px;
+          width: 250px;
+          object-fit: cover;
+        }
+      }
     }
   }
 
-  .thumbnail {
-    background-color: transparent !important;
-    border: none !important;
-    border-radius: 0 !important;
-  }
-
-  .thumbnail > img,
-  .thumbnail a > img {
-    height: 200px !important;
-  }
-
-  .document {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin: 15px;
-  }
-
-  #documents .document {
-    border-bottom: 1px solid #ddd !important;
+  // fix long strings overflowing metadata field containers
+  dd[class*="blacklight-"] {
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 }

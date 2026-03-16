@@ -22,9 +22,7 @@ class User < ApplicationRecord
   after_update :mark_all_undelivered_messages_as_delivered!, if: -> { batch_email_frequency == 'never' }
 
   # set default scope to exclude guest users
-  def self.default_scope
-    where(guest: false)
-  end
+  default_scope -> { where(guest: false) }
 
   scope :for_repository, lambda {
     joins(:roles)
@@ -79,6 +77,10 @@ class User < ApplicationRecord
 
   def superadmin?
     has_role? :superadmin
+  end
+
+  def tenant_superadmin?
+    has_role?(:superadmin, Site.instance)
   end
 
   # Favor admin? over is_admin? but provided for backwards compatability.

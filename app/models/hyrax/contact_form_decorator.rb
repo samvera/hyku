@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax v5.0.0rc2 to override the mail to
+# OVERRIDE Hyrax v5.2.0 to override the mail to
 module Hyrax
   module ContactFormDecorator
     # Declare the e-mail headers. It accepts anything the mail method

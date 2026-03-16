@@ -26,6 +26,8 @@
 
           <%= f.input :is_public %>
 
+          <%= f.input :public_demo_tenant, disabled: true, hint: "This field cannot be changed after account creation" %>
+
           <%= f.input :tenant, readonly: @account.persisted? %>
 
           <%= f.input :cname, readonly: true %>
@@ -53,12 +55,13 @@
 
           <% if @account.search_only? %>
             <h3><%= t('.accounts_to_search') %></h3>
+            <p class="text-muted">Select which repositories this search-only account will search across. At least one full account is required.</p>
             <div id='full_acount_cross_searches'>
               <%= f.simple_fields_for :full_account_cross_searches do |full_account_cross_search| %>
                 <%= render 'full_account_cross_search_fields', f: full_account_cross_search %>
               <% end %>
               <div class='links'>
-                <%= link_to_add_association 'Add account to search', f, :full_account_cross_searches %>
+                <%= link_to_add_association 'Add account to search', f, :full_account_cross_searches, class: 'btn btn-sm btn-secondary' %>
               </div>
             </div>
           <% end %>

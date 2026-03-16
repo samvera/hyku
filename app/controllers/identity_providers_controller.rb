@@ -5,6 +5,7 @@ class IdentityProvidersController < ApplicationController
 
   before_action :ensure_admin!
   before_action :set_identity_provider, only: %i[edit update destroy]
+  before_action :set_provider_collection, only: %i[new edit create update]
 
   def index
     add_breadcrumbs
@@ -88,6 +89,10 @@ class IdentityProvidersController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_identity_provider
     @identity_provider = IdentityProvider.find(params[:id])
+  end
+
+  def set_provider_collection
+    @provider_collection = Devise.omniauth_providers.map { |o| [o, o.upcase] }
   end
 
   def ensure_admin!

@@ -1,6 +1,19 @@
 # frozen_string_literal: true
 
 RSpec.describe CreateLargeDerivativesJob, type: :job do
+  before do
+    ActiveJob::Base.queue_adapter = :test
+    allow(FileSet).to receive(:find).with(id).and_return(file_set)
+    allow(file_set).to receive(:id).and_return(id)
+    # Short-circuit irrelevant logic
+    allow(file_set).to receive(:reload)
+    allow(file_set).to receive(:update_index)
+  end
+
+  after do
+    clear_enqueued_jobs
+  end
+
   let(:id)       { '123' }
   let(:file_set) { FileSet.new }
   let(:file) do
@@ -9,14 +22,6 @@ RSpec.describe CreateLargeDerivativesJob, type: :job do
       f.original_name = 'video.mp4'
       f.save!
     end
-  end
-
-  before do
-    allow(FileSet).to receive(:find).with(id).and_return(file_set)
-    allow(file_set).to receive(:id).and_return(id)
-    # Short-circuit irrelevant logic
-    allow(file_set).to receive(:reload)
-    allow(file_set).to receive(:update_index)
   end
 
   it 'runs in the :auxiliary queue' do

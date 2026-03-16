@@ -32,7 +32,7 @@ RSpec.describe SitesController, type: :controller, singletenant: true do
 
     context "site with existing banner image" do
       before do
-        expect(Hyrax::AvatarUploader)
+        expect(Hyku::AvatarUploader)
           .to receive(:storage)
           .and_return(CarrierWave::Storage::File)
           .at_least(3).times
@@ -54,10 +54,10 @@ RSpec.describe SitesController, type: :controller, singletenant: true do
 
     context "site with existing favicon" do
       before do
-        FaviconUploader.enable_processing = false
+        Hyku::FaviconUploader.enable_processing = false
         file = fixture_file_upload('/images/favicon.png', 'image/png')
         Site.instance.update(favicon: file)
-        FaviconUploader.enable_processing = true
+        Hyku::FaviconUploader.enable_processing = true
       end
 
       it "#update with remove_favicon deletes a favicon" do
@@ -71,7 +71,7 @@ RSpec.describe SitesController, type: :controller, singletenant: true do
 
     context "site with existing directory image" do
       before do
-        expect(Hyrax::AvatarUploader).to receive(:storage).and_return(CarrierWave::Storage::File).at_least(3).times
+        expect(Hyku::AvatarUploader).to receive(:storage).and_return(CarrierWave::Storage::File).at_least(3).times
         f = fixture_file_upload('/images/nypl-hydra-of-lerna.jpg', 'image/jpg')
         Site.instance.update(directory_image: f)
         ContentBlock.find_or_create_by(name: 'directory_image_text').update!(value: 'Sample text')
@@ -109,7 +109,7 @@ RSpec.describe SitesController, type: :controller, singletenant: true do
 
     context "site with existing logo image and logo text" do
       before do
-        expect(Hyrax::AvatarUploader)
+        expect(Hyku::AvatarUploader)
           .to receive(:storage)
           .and_return(CarrierWave::Storage::File)
           .at_least(3).times

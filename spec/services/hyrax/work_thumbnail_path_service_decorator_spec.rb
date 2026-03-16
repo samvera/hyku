@@ -6,7 +6,7 @@ RSpec.describe Hyrax::WorkThumbnailPathService, type: :decorator do
       let(:image) { '/assets/site_default_work_image.png' }
 
       it 'returns the default image from the site' do
-        allow_any_instance_of(Hyrax::AvatarUploader).to receive(:url).and_return(image)
+        allow_any_instance_of(Hyku::AvatarUploader).to receive(:url).and_return(image)
 
         expect(described_class.default_image).to eq(image)
       end

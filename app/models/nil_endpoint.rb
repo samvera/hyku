@@ -25,4 +25,8 @@ class NilEndpoint
   def switch!
     false
   end
+
+  def marked_for_destruction?
+    false
+  end
 end

@@ -1,6 +1,6 @@
 # Controlled Vocabularies in Hyku
 
-Hyku supports both local and remote controlled vocabularies for form fields through the flexible metadata system. When `HYRAX_FLEXIBLE` is enabled, you can specify controlled vocabularies directly in your metadata profile YAML files by configuring the `controlled_values.sources` array for any property.
+Hyku supports both local and remote controlled vocabularies for form fields through the flexible metadata system. When `HYRAX_FLEXIBLE` is enabled, you can specify controlled vocabularies directly in your metadata profile YAML files by configuring the `controlled_values.sources` array for most properties.
 
 ## How It Works
 
@@ -8,10 +8,13 @@ The flexible metadata system automatically detects controlled vocabularies based
 
 1. **Profile Import**: When you import a metadata profile, the system reads the `controlled_values.sources` array
 2. **Form Generation**: The form builder checks if the source is a local authority file or remote authority service
+   - The default partial `app/views/records/edit_fields/_default.html.erb` determines if the controlled vocabulary type is `select` for local vocabulary or `autocomplete` for remote vocabulary
 3. **Rendering**:
    - Local vocabularies render as dropdown select fields with predefined options
    - Remote authorities render as autocomplete text inputs that query external services
 4. **Data Attributes**: Remote authorities get `data-autocomplete` and `data-autocomplete-url` attributes for JavaScript functionality
+   - The autocomplete form functionality is managed in Hyrax at `app/assets/javascripts/hyrax/autocomplete` and uses the [select2 autocomplete widget](https://github.com/argerim/select2-rails)
+   - Hyku overrides some of the autocomplete functionality in `editor.es6` and `linked_data.es6`
 
 **Important Limitation**: Hyku currently supports only **one vocabulary source per field**. If you specify multiple sources in the `sources` array, only the first non-null source will be used. To use different vocabulary sources, create separate fields for each source.
 
@@ -78,6 +81,11 @@ Remote vocabularies query external services through the Questioning Authority ge
 - `loc/names` - Library of Congress Name Authority File
 - `loc/genre_forms` - Library of Congress Genre/Form Terms
 - `loc/countries` - Library of Congress Countries
+- `loc/iso639-1` - Library of Congress major/common languages
+- `loc/iso639-2` - Library of Congress bibliographic standard for languages
+  - Requires three character language code in the form for lookup
+- `loc/languages` - Library of Congress language superset of ISO-639-2 and also includes historical variants
+  - Requires three character language code in the form for lookup
 - `getty/aat` - Getty Art & Architecture Thesaurus
 - `getty/tgn` - Getty Thesaurus of Geographic Names
 - `getty/ulan` - Getty Union List of Artist Names
@@ -92,7 +100,7 @@ Remote vocabularies query external services through the Questioning Authority ge
 - `discogs/release` - Music releases
 - `discogs/master` - Master releases
 
-**Note**: Authority names use the slash format consistent with Questioning Authority documentation. These match exactly with the configured mappings in the application.
+**Note**: Authority names use the slash format consistent with [Questioning Authority](https://github.com/samvera/questioning_authority) documentation. These match exactly with the configured mappings in the application.
 
 ### MeSH (Requires Setup)
 
@@ -253,6 +261,10 @@ GeoNames geographical database integration requires a free username:
 - Geographical place name autocomplete
 - Global coverage of cities, countries, regions, and landmarks
 - Standardized geographic authority data
+
+### Library of Congress Language
+
+The `loc/iso639-2` and `loc/languages` require the user to submit a three letter language code in the form in order to return an autocompleted language. The autocomplete functionality is managed in Hyrax and overridden in Hyku to support the three character form submission.
 
 ### Usage in Profile YAML
 
@@ -437,7 +449,7 @@ A UI for managing local vocabularies through the admin dashboard is planned to m
 ### Adding Remote Vocabularies
 
 1. Ensure the Questioning Authority gem supports the remote service
-2. Add the authority mapping to the `remote_authority_config_for` method in `app/helpers/hyrax/form_helper_behavior.rb`
+2. Add the authority mapping to the `remote_authorities` method in `config/initializers/hyrax_controlled_vocabularies.rb`
 3. Use the authority name in your metadata profile's `sources` array
 
 ## Technical Implementation

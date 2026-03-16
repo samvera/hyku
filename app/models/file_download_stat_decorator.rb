@@ -4,7 +4,7 @@
 
 Hyrax::Download # rubocop:disable Lint/Void
 
-module FileDownloadStatClass
+module FileDownloadStatDecorator
   # Hyrax::Download is sent to Hyrax::Analytics.profile as #hyrax__download
   # see Legato::ProfileMethods.method_name_from_klass
   def ga_statistics(start_date, file)
@@ -22,4 +22,4 @@ module FileDownloadStatClass
   end
 end
 
-FileDownloadStat.singleton_class.send(:prepend, FileDownloadStatClass)
+FileDownloadStat.singleton_class.send(:prepend, FileDownloadStatDecorator)

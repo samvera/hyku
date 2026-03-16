@@ -1,0 +1,37 @@
+terms:
+  - id: Alternative Text
+    term: Alternative Text
+  - id: Audio Description
+    term: Audio Description
+  - id: Braille
+    term: Braille
+  - id: Captions
+    term: Captions
+  - id: ChemML
+    term: ChemML
+  - id: Described Math
+    term: Described Math
+  - id: Display Transformability
+    term: Display Transformability
+  - id: Haptic
+    term: Haptic
+  - id: High Contrast
+    term: High Contrast
+  - id: Large Print
+    term: Large Print
+  - id: Latex
+    term: Latex
+  - id: Long Description
+    term: Long Description
+  - id: MathML
+    term: MathML
+  - id: Nemeth Braille
+    term: Nemeth Braille
+  - id: Sign Language
+    term: Sign Language
+  - id: Structural Navigation
+    term: Structural Navigation
+  - id: Tactile Graphics
+    term: Tactile Graphics
+  - id: Transcript
+    term: Transcript

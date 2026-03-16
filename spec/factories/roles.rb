@@ -8,6 +8,11 @@ FactoryBot.define do
       name { 'superadmin' }
     end
 
+    trait :tenant_superadmin do
+      name { 'superadmin' }
+      site_role
+    end
+
     trait :site_role do
       resource_id   { Site.instance.id }
       resource_type { 'Site' }

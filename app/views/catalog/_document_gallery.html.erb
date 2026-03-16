@@ -1,0 +1,11 @@
+<%# OVERRIDE Blacklight Gallery v6.0.0 to use row-cols-lg-3 rather than row-cols-md-3 %>
+
+<% view_config = local_assigns[:view_config] || blacklight_config&.view_config(document_index_view_type) %>
+<div class="container">
+  <%# OVERRIDE begin %>
+  <div id="documents" class="<%= (Array(view_config.classes || 'row-cols-2 row-cols-lg-3') + ["row documents-#{view_config.key}"]).join(' ') %>">
+  <%# OVERRIDE end %>
+    <% document_presenters = Blacklight::VERSION > '8' ? documents.map { |doc| document_presenter(doc) } : documents %>
+    <%= render view_config.document_component.with_collection(document_presenters, counter_offset: @response&.start || 0) %>
+  </div>
+</div>

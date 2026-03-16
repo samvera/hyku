@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# OVERRIDE Hyrax v5.2.0 make sure users are authorized
 module Hyrax
   module UsersControllerDecorator
     extend ActiveSupport::Concern

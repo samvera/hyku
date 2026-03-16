@@ -6,13 +6,23 @@
   </div>
 
   <% theme_colors = @form.custom_theme_colors %>
+  <% tenant_colors = @form.tenant_colors %>
 
   <div class="card-footer">
-    <%= link_to 'Restore All Defaults', '#color', class: 'btn btn-secondary restore-all-default-colors' %>
-    <% if !theme_colors.empty? %>
-      <%= link_to 'Apply Theme Colors', '#color', class: 'btn btn-secondary apply-theme-colors', 
-        data: { theme_colors: theme_colors.to_json } %>
+    <% button_label = Flipflop.use_tenant_specific_colors? ? t('hyrax.admin.appearances.show.colors.restore_all_tenant_colors') : t('hyrax.admin.appearances.show.colors.restore_all_defaults') %>
+    <% if Flipflop.use_tenant_specific_colors? && !tenant_colors.empty? %>
+      <%= link_to button_label, '#color', class: 'btn btn-secondary apply-tenant-colors',
+        data: { tenant_colors: tenant_colors.to_json } %>
+    <% else %>
+      <%= link_to button_label, '#color', class: 'btn btn-secondary restore-all-default-colors' %>
     <% end %>
-    <%= f.submit class: 'btn btn-primary float-right' %>
+
+    <div class="float-right">
+      <% if Flipflop.use_tenant_specific_colors? && current_user.can?(:manage, :tenant_controls) %>
+        <%= link_to t('hyrax.admin.appearances.show.colors.save_as_tenant_colors'), '#color', class: 'btn btn-secondary save-tenant-colors mr-2',
+          data: { save_url: main_app.save_tenant_colors_admin_appearance_path } %>
+      <% end %>
+      <%= f.submit t('hyrax.admin.appearances.show.colors.apply_changes'), class: 'btn btn-primary' %>
+    </div>
   </div>
 <% end %>

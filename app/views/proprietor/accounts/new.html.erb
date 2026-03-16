@@ -9,7 +9,7 @@
         <div class="card-body">
           <% if @account.errors.any? %>
             <div id="error_explanation" class="alert alert-danger">
-              <%= pluralize(@account.errors.count, "error") %> prohibited this repository from being saved:
+              <%= t('.errors_prohibited', count: @account.errors.count) %>
               <ul>
                 <% @account.errors.messages.each do |key, messages| %>
                   <li><%= key %> &quot;<%= @account.errors.details[key].first[:value] %>&quot; <%= messages.join(' and ') %></li>
@@ -19,15 +19,24 @@
           <% end %>
 
           <%= f.input :name %>
-          <%= f.input :search_only %>
 
-          <div class='hide' id='full_account_cross_container'>
+          <div class="form-group">
+            <%= f.input :public_demo_tenant, wrapper: false, input_html: { class: 'mr-2' }, label_html: { class: 'font-weight-bold' }, hint_html: { class: 'form-text text-muted' } %>
+          </div>
+
+          <div class="form-group">
+            <%= f.input :search_only, wrapper: false, input_html: { class: 'mr-2' }, label_html: { class: 'font-weight-bold' }, hint: "#{t('simple_form.hints.account.search_only')}", hint_html: { class: 'form-text text-muted' } %>
+          </div>
+
+          <div class='hide mb-2' id='full_account_cross_container'>
+            <h4><%= t('.cross_tenant_search.header') %></h4>
+            <p class="text-muted"><%= t('.cross_tenant_search.description') %></p>
             <div id='full_acount_cross_searches'>
               <%= f.simple_fields_for :full_account_cross_searches do |full_account_cross_search| %>
                 <%= render 'full_account_cross_search_fields', f: full_account_cross_search %>
               <% end %>
               <div class='links'>
-                <%= link_to_add_association 'Add account to search', f, :full_account_cross_searches %>
+                <%= link_to_add_association t('.cross_tenant_search.add_account'), f, :full_account_cross_searches, class: 'btn btn-sm btn-secondary' %>
               </div>
             </div>
           </div>

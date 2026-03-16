@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax 5.0.0 to add custom sort fields while in the dashboard for works
+# OVERRIDE Hyrax 5.2.0 to add custom sort fields while in the dashboard for works
 
 module Hyrax
   module My

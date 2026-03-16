@@ -12,6 +12,7 @@ pg_upgrade_*.log
 /node_modules
 /coverage/
 /spec/tmp
+/plans/*
 vendor/engines
 vendor/bundle
 .tools-versions
@@ -55,6 +56,7 @@ config/environments/*.local.yml
 # Avatars and such
 public/uploads
 /public/branding
+public/assets
 .env.*
 docker-compose.override.yml
 *~undo-tree~
@@ -70,3 +72,8 @@ q*.bin
 
 # Google service account credentials
 config/google_service_account.json
+scratch.md
+plans/*
+.serena/*
+.claude/*
+CLAUDE.md

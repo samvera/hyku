@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax 3.6.0 to add custom sort fields
+# OVERRIDE Hyrax 5.2.0 to add custom sort fields
 
 module Hyrax
   module SearchServiceDecorator

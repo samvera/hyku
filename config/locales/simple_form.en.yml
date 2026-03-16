@@ -7,38 +7,40 @@ en:
     hints:
       account:
         admin_emails: Enter one email address at a time
-        is_public: 'Can users discover your site on the home page or access your pages without a special username / password?'
+        public_demo_tenant: Mark this account as a public demo tenant for testing. This cannot be changed after creation.
+        search_only: Search-only accounts require at least one full account to be selected below for cross-tenant search.
+        allow_signup: Allow users to sign up to your repository
+        analytics: Enable or disable analytics to track user interactions and display analytics data in the dashboard.
+        cache_api: Use Redis instead of disk for caching
+        contact_email: The email address that system notifications will be sent from. Additional configuration is required to add an address from domains other than the site's domain
+        contact_email_to: The email address that messages submitted via the contact page are sent to
+        depositor_email_notifications: Enable or disable email notifications that send depositors a summary of statistics for their submissions. This feature requires analytics to be enabled.
+        doi_reader: Show ability to read from Datacite to populate records. WIP do not use
+        doi_writer: Write DOIs for records. WIP do not use
+        email_format: Set a list of email domains that are allowed sign up to this repository e.g (@ubiquitypress.com @gmail.com). Leave a single space between each domain.
+        email_subjet_prefix: String to put in front of system email subjects.
+        enable_oai_metadata: Enable or disable OAI link
         fcrepo_endpoint:
           base_path: Fedora base path should begin with a slash AND not end with a slash
           url: Fedora URL should not end with a slash
-        name: A single or hyphenated name used for technical aspects of the repository (e.g., "acme" or "acme-library").
-        file_size_limit: "Enter the file size limit in bytes. The default is 5 GB (5368709120 bytes)."
-        gtm_id: The ID of your Google Tag Manager account
-        google_analytics_id: 'Measurement ID (e.g., G-XXXXXXXXXX) from GA4 Admin → Property → Data Streams → Web Stream. <a href="https://samvera.atlassian.net/wiki/spaces/hyku/pages/3185147970/Google+Analytics+4+GA4+Support#Creating-a-New-Google-Analytics-Account" target="_blank">Setup guide</a>'
-        google_analytics_property_id: 'Numeric Property ID (e.g., 123456789) from GA4 Admin → Property Details (upper right corner). <a href="https://samvera.atlassian.net/wiki/spaces/hyku/pages/3185147970/Google+Analytics+4+GA4+Support#Creating-a-New-Google-Analytics-Account" target="_blank">Setup guide</a>'
-        contact_email_to: The email address that messages submitted via the contact page are sent to
-        weekly_email_list: List of email addresses to email the weekly report. Leave a single space between each email
-        monthly_email_list: List of email addresses to email the monthly report. Leave a single space between each email
-        yearly_email_list: List of email addresses to email the yearly report. Leave a single space between each email
-        email_format: Set a list of email domains that are allowed sign up to this repository e.g (@ubiquitypress.com @gmail.com). Leave a single space between each domain.
-        allow_signup: Allow users to sign up to your repository
-        analytics: Enable or disable analytics to track user interactions and display analytics data in the dashboard.
-        depositor_email_notifications: Enable or disable email notifications that send depositors a summary of statistics for their submissions. This feature requires analytics to be enabled.
-        enable_oai_metadata: Enable or disable OAI link
-        shared_login: Enable or disable shared login
-        locale_name: |
-          The name of the tenant specific locale suffix added to their locale.yml files. Only alphabetic characters should be added, no symbols or numbers, these will then be capitalised.
-        oai_admin_email: OAI endpoint contact email address
-        doi_reader: Show ability to read from Datacite to populate records. WIP do not use
-        doi_writer: Write DOIs for records. WIP do not use
-        cache_api: Use Redis instead of disk for caching
-        email_subjet_prefix: String to put in front of system email subjects.
-        contact_email: The email address that system notifications will be sent from. Additional configuration is required to add an address from domains other than the site's domain
-        contact_email_to: The email address that messages submitted via the contact page are sent to
-        geonames_username: Register at http://www.geonames.org/manageaccount
         file_acl: Turn off if using a file system like samba or nfs that does not support setting access control lists
-        ssl_configured: Set it true if using https
+        file_size_limit: Enter the file size limit in bytes. The default is 5 GB (5368709120 bytes).
+        geonames_username: Register at http://www.geonames.org/manageaccount
+        google_analytics_id: Measurement ID (e.g., G-XXXXXXXXXX) from GA4 Admin → Property → Data Streams → Web Stream. <a href="https://samvera.atlassian.net/wiki/spaces/hyku/pages/3185147970/Google+Analytics+4+GA4+Support#Creating-a-New-Google-Analytics-Account" target="_blank">Setup guide</a>
+        google_analytics_property_id: Numeric Property ID (e.g., 123456789) from GA4 Admin → Property Details (upper right corner). <a href="https://samvera.atlassian.net/wiki/spaces/hyku/pages/3185147970/Google+Analytics+4+GA4+Support#Creating-a-New-Google-Analytics-Account" target="_blank">Setup guide</a>
+        gtm_id: The ID of your Google Tag Manager account
         hidden_index_fields: Comma-separated. Snake case. Exclude Solr suffixes (e.g. "title,rights_statement")
+        is_public: Can users discover your site on the home page or access your pages without a special username / password?
+        locale_name: 'The name of the tenant specific locale suffix added to their locale.yml files. Only alphabetic characters should be added, no symbols or numbers, these will then be capitalised.
+
+          '
+        monthly_email_list: List of email addresses to email the monthly report. Leave a single space between each email
+        name: A single or hyphenated name used for technical aspects of the repository (e.g., "acme" or "acme-library").
+        oai_admin_email: OAI endpoint contact email address
+        shared_login: Enable or disable shared login
+        ssl_configured: Set it true if using https
+        weekly_email_list: List of email addresses to email the weekly report. Leave a single space between each email
+        yearly_email_list: List of email addresses to email the yearly report. Leave a single space between each email
       hyku_group:
         description: A brief summary of the role of the group
       user:
@@ -46,15 +48,17 @@ en:
     labels:
       account:
         admin_emails: Add or invite new administrator (via email)
+        public_demo_tenant: Public Demo Tenant
+        search_only: Search Only
         cname: Primary Domain Name
         fcrepo_endpoint:
           base_path: Base Path
           url: URL
+        gtm_id: Google tag manager
         name: Short name
         solr_endpoint:
           url: URL
         tenant: Tenant UUID
-        gtm_id: Google tag manager
       add_user_to_group:
         user_ids: User ID
       domain_names:

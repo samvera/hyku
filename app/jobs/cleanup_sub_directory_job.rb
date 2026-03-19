@@ -73,11 +73,23 @@ class CleanupSubDirectoryJob < ApplicationJob
 
   def tenant_has_file_set?(file_set_id:, tenant:)
     Apartment::Tenant.switch(tenant) do
-      return true if FileSet.exists?(file_set_id)
+      return true if active_fedora_file_set_exists?(file_set_id)
+      return true if valkyrie_file_set_exists?(file_set_id)
     end
 
     false
   rescue StandardError => e
     logger.error("Error checking FileSet #{file_set_id} in tenant #{tenant}: #{e.message}")
+  end
+
+  def active_fedora_file_set_exists?(file_set_id)
+    FileSet.exists?(file_set_id)
+  end
+
+  def valkyrie_file_set_exists?(file_set_id)
+    resource = Hyrax.query_service.find_by(id: Valkyrie::ID.new(file_set_id))
+    resource.is_a?(Hyrax::FileSet)
+  rescue Valkyrie::Persistence::ObjectNotFoundError
+    false
   end
 end

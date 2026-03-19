@@ -24,17 +24,17 @@ class CleanupUploadFilesJob < ApplicationJob
 
   private
 
-    def top_level_directories
-      @top_level_directories ||= Dir.glob("#{uploads_path}/*").select do |path|
-        File.directory?(path) && File.basename(path).match?(HEX_TOP_DIR_PATTERN)
-      end
+  def top_level_directories
+    @top_level_directories ||= Dir.glob("#{uploads_path}/*").select do |path|
+      File.directory?(path) && File.basename(path).match?(HEX_TOP_DIR_PATTERN)
     end
+  end
 
-    def message(delete_ingested_after_days, delete_all_after_days)
-      <<~MESSAGE
+  def message(delete_ingested_after_days, delete_all_after_days)
+    <<~MESSAGE
         Starting cleanup: delete ingested after #{delete_ingested_after_days} days,
         delete all files after #{delete_all_after_days} days.
         Spawning #{top_level_directories.count} cleanup jobs for subdirectories
       MESSAGE
-    end
+  end
 end

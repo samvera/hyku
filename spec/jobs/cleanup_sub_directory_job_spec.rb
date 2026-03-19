@@ -63,6 +63,18 @@ RSpec.describe CleanupSubDirectoryJob do
     described_class.perform_now(delete_ingested_after_days: 180, directory: '/app/samvera/uploads/ff')
   end
 
+  it 'deletes old staged files when only a Valkyrie file set exists (no ActiveFedora FileSet)' do
+    valkyrie_fs = instance_double(Hyrax::FileSet)
+    allow(valkyrie_fs).to receive(:is_a?).with(Hyrax::FileSet).and_return(true)
+    allow(FileSet).to receive(:exists?).with('file-set-id-5').and_return(false)
+    allow(Hyrax.query_service).to receive(:find_by)
+      .with(id: Valkyrie::ID.new('file-set-id-5'))
+      .and_return(valkyrie_fs)
+
+    expect(File).to receive(:delete).with(path_5)
+    described_class.perform_now(delete_ingested_after_days: 180, directory: '/app/samvera/uploads/ff')
+  end
+
   it 'deletes orphaned files older than delete_all_after_days' do
     expect(File).to receive(:delete).with(path_6)
     described_class.perform_now(delete_ingested_after_days: 180,

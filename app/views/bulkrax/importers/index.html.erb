@@ -1,0 +1,45 @@
+<%
+  # OVERRIDE Bulkrax to hide the Guided Import button when :include_guided_import feature is disabled.
+%>
+<% provide :page_header do %>
+  <h1><span class="fa fa-cloud-upload" aria-hidden="true"></span> <%= t('bulkrax.headings.importers') %></h1>
+  <div class="pull-right">
+    <%= link_to new_importer_path, class: 'btn btn-secondary' do %>
+      <span class="fa fa-edit" aria-hidden="true"></span> <%= t(:'helpers.action.importer.new') %>
+    <% end %>
+    <% if Flipflop.include_guided_import? %>
+      <%= link_to guided_import_new_importers_path, class: 'btn btn-primary' do %>
+        <span class="fa fa-edit" aria-hidden="true"></span> <%= t(:'helpers.action.importer.guided_import_new') %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+
+<% content_for(:head) do %>
+  <meta name="turbolinks-cache-control" content="no-cache">
+<% end %>
+
+<div class="panel card panel-default">
+  <div class="panel-body card-body">
+    <div class="table-responsive">
+      <table id='importers-table' class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col"><%= t('bulkrax.table_header.labels.name') %></th>
+            <th scope="col"><%= t('bulkrax.table_header.labels.status') %></th>
+            <th scope="col"><%= t('bulkrax.table_header.labels.last_run') %></th>
+            <th scope="col"><%= t('bulkrax.table_header.labels.next_run') %></th>
+            <th scope="col"><%= t('bulkrax.table_header.labels.entries_enqueued') %></th>
+            <th scope="col"><%= t('bulkrax.table_header.labels.entries_processed') %></th>
+            <th scope="col"><%= t('bulkrax.table_header.labels.entries_failed') %></th>
+            <th scope="col"><%= t('bulkrax.table_header.labels.entries_deleted_upstream') %></th>
+            <th scope="col"><%= t('bulkrax.table_header.labels.total_collection_entries') %></th>
+            <th scope="col"><%= t('bulkrax.table_header.labels.total_work_entries') %></th>
+            <th scope="col"><%= t('bulkrax.table_header.labels.total_file_set_entries') %></th>
+            <th scope="col"><%= t('bulkrax.table_header.labels.actions') %></th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
+</div>

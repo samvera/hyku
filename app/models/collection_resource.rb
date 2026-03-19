@@ -11,8 +11,6 @@ class CollectionResource < Hyrax::PcdmCollection
   end
   include Hyrax::ArResource
 
-  Hyrax::ValkyrieLazyMigration.migrating(self, from: ::Collection)
-
   # This module provides the #public?, #private?, #restricted? methods; consider
   # contributing this back to Hyrax; but that decision requires further discussion
   # on architecture.

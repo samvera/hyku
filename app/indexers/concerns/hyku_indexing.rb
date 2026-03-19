@@ -47,9 +47,9 @@ module HykuIndexing
   end
 
   def extract_text_from_plain_text_files(object)
-    members = Hyrax.custom_queries.find_child_file_sets(resource: object)
+    members = Hyrax.custom_queries.find_child_file_sets(resource: object).to_a
 
-    return [] if members.blank?
+    return [] if members.empty?
 
     text_file_sets = members.select { |fs| fs.file_set? && fs.original_file&.mime_type == 'text/plain' }
     text_file_sets.map { |fs| scrub_text(fs.original_file&.content) }
@@ -58,7 +58,7 @@ module HykuIndexing
   def extract_text_from_child_works(object)
     child_works = Hyrax.custom_queries.find_child_works(resource: object)
 
-    return extract_text_from_pdf_directly(object) if child_works.empty?
+    return extract_text_from_pdf_directly(object) if child_works.none?
 
     file_set_texts = child_works_file_sets(child_works).map { |fs| all_text(fs) }.select(&:present?)
 
@@ -79,7 +79,7 @@ module HykuIndexing
   end
 
   def child_works_file_sets(child_works)
-    child_works.map { |child_work| Hyrax.custom_queries.find_child_file_sets(resource: child_work) }.flatten
+    child_works.to_a.flat_map { |child_work| Hyrax.custom_queries.find_child_file_sets(resource: child_work).to_a }
   end
 
   def all_text(fs)

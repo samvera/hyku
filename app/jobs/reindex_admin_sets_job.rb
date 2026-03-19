@@ -5,7 +5,7 @@ class ReindexAdminSetsJob < ApplicationJob
     models = Hyrax::ModelRegistry.admin_set_classes
     unique_models = []
     models.each do |model|
-      unique_models << Wings::ModelRegistry.lookup(model)
+      unique_models << (Hyrax.config.disable_wings ? model : Wings::ModelRegistry.lookup(model))
     end
 
     unique_models.uniq.each do |model|

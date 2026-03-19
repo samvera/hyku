@@ -510,7 +510,7 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
       it "includes non-role group access_grants to render in tables" do
         fill_in 'Type name', with: title
         click_button 'Save'
-        expect(page).to have_content("The collection type #{title} has been created.")
+        expect(page).to have_current_path(%r{/admin/collection_types/\d+/edit})
 
         # click the Participants tab and ensure the heading has rendered
         click_link 'Participants'
@@ -533,7 +533,7 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
       it 'excludes default role access_grants from rendering in tables' do
         fill_in 'Type name', with: title
         click_button 'Save'
-        expect(page).to have_content("The collection type #{title} has been created.")
+        expect(page).to have_current_path(%r{/admin/collection_types/\d+/edit})
 
         click_link 'Participants'
 
@@ -545,7 +545,7 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
       it "includes user access_grants to render in tables" do # rubocop:disable RSpec/ExampleLength
         fill_in 'Type name', with: title
         click_button 'Save'
-        expect(page).to have_content("The collection type #{title} has been created.")
+        expect(page).to have_current_path(%r{/admin/collection_types/\d+/edit})
 
         click_link 'Participants'
         expect(page).to have_content 'Add Participants'

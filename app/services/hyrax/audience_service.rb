@@ -1,8 +1,13 @@
 # frozen_string_literal: true
 module Hyrax
   module AudienceService
-    mattr_accessor :authority
-    self.authority = Qa::Authorities::Local.subauthority_for('audience')
+    def self.authority
+      @authority ||= Qa::Authorities::Local.subauthority_for('audience')
+    end
+
+    def self.authority=(val)
+      @authority = val
+    end
 
     def self.select_all_options
       authority.all.map do |element|

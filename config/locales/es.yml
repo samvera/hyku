@@ -372,6 +372,7 @@ es:
         show:
           colors:
             apply_changes: Aplicar cambios
+            apply_theme_colors: Aplicar colores del tema
             restore_all_defaults: Restaurar todos los valores predeterminados
             restore_all_tenant_colors: Restaurar todos los colores de los inquilinos
             restore_default: Restaurar valores predeterminados

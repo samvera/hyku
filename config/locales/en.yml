@@ -287,6 +287,7 @@ en:
             restore_default: Restore Default
             restore_all_tenant_colors: Restore All Tenant Colors
             restore_all_defaults: Restore All Defaults
+            apply_theme_colors: Apply Theme Colors
             save_as_tenant_colors: Apply Changes and Save as Tenant Colors
             apply_changes: Apply Changes
       roles_service_jobs:

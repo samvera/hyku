@@ -255,6 +255,7 @@ pt-BR:
         show:
           colors:
             apply_changes: Aplicar alterações
+            apply_theme_colors: Aplicar cores do tema
             restore_all_defaults: Restaurar todas as configurações padrão
             restore_all_tenant_colors: Restaurar todas as cores dos inquilinos
             restore_default: Restaurar padrão

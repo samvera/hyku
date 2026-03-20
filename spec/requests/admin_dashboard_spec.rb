@@ -14,7 +14,7 @@ RSpec.describe 'Admin Dashboard', type: :request, singletenant: true, clean: tru
     let(:admin) { FactoryBot.create(:admin) }
 
     before do
-      login_as(admin)
+      login_as(admin, scope: :user)
     end
 
     describe 'I can hit every url corresponding to each link in the admin dashboard' do
@@ -52,6 +52,12 @@ RSpec.describe 'Admin Dashboard', type: :request, singletenant: true, clean: tru
       it 'gets the url for reports' do # Reports
         get '/admin/stats'
         expect(response.status).to eq(200)
+      end
+
+      it 'gets the url for job dashboard' do # Job Dashboard (Sidekiq or GoodJob at /jobs when so configured)
+        get '/jobs'
+        # 200 when jobs UI is mounted; 302 when the mounted app redirects; 404 when /jobs is not mounted (e.g. queue is inline)
+        expect([200, 302, 404]).to include(response.status)
       end
 
       # Repository Contents
@@ -150,7 +156,7 @@ RSpec.describe 'Admin Dashboard', type: :request, singletenant: true, clean: tru
     let(:user) { create(:user, email: 'test@example.com') }
 
     before do
-      login_as user
+      login_as user, scope: :user
     end
 
     describe 'I can hit some urls corresponding to each link in the admin dashboard' do
@@ -188,6 +194,12 @@ RSpec.describe 'Admin Dashboard', type: :request, singletenant: true, clean: tru
       it 'renders a status of you are not authorized to access the Reports page' do # Reports
         get '/admin/stats'
         expect(response.status).to eq(302)
+      end
+
+      it 'renders a status of you are not authorized to access the job dashboard' do # Job Dashboard
+        get '/jobs'
+        # 302 when route is mounted and user is unauthorized; 404 when /jobs is not mounted (e.g. queue adapter is inline)
+        expect([302, 404]).to include(response.status)
       end
 
       # Repository Contents

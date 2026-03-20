@@ -211,6 +211,7 @@ it:
         profile: Profilo
         repository_objects: Contenuto del repository
         settings: impostazioni
+        jobs_dashboard: Dashboard dei processi
         statistics: Rapporti
         tasks: Compiti
         technical: Caratteristiche

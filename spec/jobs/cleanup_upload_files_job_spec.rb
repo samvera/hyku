@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 RSpec.describe CleanupUploadFilesJob do
+  before do
+    ActiveJob::Base.queue_adapter = :test
+  end
+
+  after do
+    clear_enqueued_jobs
+  end
+
   let(:hex_dir_ff) { '/app/samvera/uploads/ff' }
   let(:hex_dir_00) { '/app/samvera/uploads/00' }
   let(:hex_dir_ab) { '/app/samvera/uploads/ab' }
@@ -21,8 +29,15 @@ RSpec.describe CleanupUploadFilesJob do
   end
 
   before do
-    allow(Dir).to receive(:glob).and_call_original
-    allow(Dir).to receive(:glob).with('/app/samvera/uploads/*').and_return(all_top_level_entries)
+    # One stub: chaining .with after .and_call_original is unreliable (second allow can replace the first),
+    # and the real /app/samvera/uploads path often does not exist in CI — glob would return [].
+    allow(Dir).to receive(:glob).and_wrap_original do |orig, pattern, *args|
+      if pattern == '/app/samvera/uploads/*'
+        all_top_level_entries
+      else
+        orig.call(pattern, *args)
+      end
+    end
     allow(File).to receive(:directory?).and_call_original
     [hex_dir_ff, hex_dir_00, hex_dir_ab, uuid_tenant_dir,
      uploaded_collection_thumbnails_dir, identity_provider_dir, hyrax_uploaded_file_dir].each do |dir|

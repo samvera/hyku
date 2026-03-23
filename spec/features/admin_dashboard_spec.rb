@@ -18,6 +18,10 @@ RSpec.describe 'Admin Dashboard', type: :feature, js: true, clean: true do
         expect(page).to have_link('System Status')
         expect(page).to have_link("Your activity")
         expect(page).to have_link('Reports')
+        # Should not see job dashboard link (superadmin only)
+        expect(page).not_to have_link('Job Dashboard')
+      end
+      within '.sidebar' do
         # Need to click link to open collapsed menu
         click_link "Your activity"
         expect(page).to have_link('Profile')
@@ -62,6 +66,21 @@ RSpec.describe 'Admin Dashboard', type: :feature, js: true, clean: true do
     end
   end
 
+  context 'as a superadmin' do
+    let(:user) { FactoryBot.create(:superadmin) }
+
+    before do
+      login_as(user, scope: :user)
+    end
+
+    it 'shows Job Dashboard link in sidebar' do
+      visit Hyrax::Engine.routes.url_helpers.dashboard_path
+      within '.sidebar' do
+        expect(page).to have_link('Job Dashboard', href: '/jobs')
+      end
+    end
+  end
+
   context 'as a user' do
     let(:user) { FactoryBot.create(:user) }
     let(:group) { FactoryBot.create(:group) }
@@ -79,6 +98,8 @@ RSpec.describe 'Admin Dashboard', type: :feature, js: true, clean: true do
         expect(page).to have_link("Your activity")
         # Should not see Reports
         expect(page).not_to have_link('Reports')
+        # Should not see job dashboard link (superadmin only)
+        expect(page).not_to have_link('Job Dashboard')
         # Need to click link to open collapsed menu
         click_link "Your activity"
         expect(page).to have_link('Profile')

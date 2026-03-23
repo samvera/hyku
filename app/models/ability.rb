@@ -82,6 +82,7 @@ class Ability
     return unless superadmin?
 
     can :manage, :all
+    can :manage, :jobs_dashboard
   end
 
   # TODO: move method to GroupAwareRoleChecker, or use the GroupAwareRoleChecker

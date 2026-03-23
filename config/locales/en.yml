@@ -46,6 +46,10 @@ en:
       user_search:
         submit: Go
   hyku:
+    helpers:
+      action:
+        importer:
+          new_import: New Import
     account:
       signup_disabled: Account registration is disabled
     admin:

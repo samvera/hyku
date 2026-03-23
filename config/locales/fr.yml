@@ -186,6 +186,10 @@ fr:
       user_search:
         submit: Aller
   hyku:
+    helpers:
+      action:
+        importer:
+          new_import: Nouvelle importation
     account:
       signup_disabled: L'enregistrement du compte est désactivé
     admin:

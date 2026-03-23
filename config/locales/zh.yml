@@ -186,6 +186,10 @@ zh:
       user_search:
         submit: 走
   hyku:
+    helpers:
+      action:
+        importer:
+          new_import: 新建导入
     account:
       signup_disabled: 帐户注册被禁用
     admin:

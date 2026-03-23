@@ -185,6 +185,10 @@ de:
       user_search:
         submit: Suche
   hyku:
+    helpers:
+      action:
+        importer:
+          new_import: Neuer Import
     account:
       signup_disabled: Kontoanmeldung ist deaktiviert
     admin:

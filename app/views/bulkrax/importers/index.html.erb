@@ -1,11 +1,17 @@
 <%
-  # OVERRIDE Bulkrax to hide the Guided Import button when :include_guided_import feature is disabled.
+  # OVERRIDE Bulkrax to hide the Guided Import button when :include_guided_import feature is disabled,
+  # and to rename the "Advanced Import" button to "New Import" when that feature is off.
 %>
 <% provide :page_header do %>
   <h1><span class="fa fa-cloud-upload" aria-hidden="true"></span> <%= t('bulkrax.headings.importers') %></h1>
   <div class="pull-right">
     <%= link_to new_importer_path, class: 'btn btn-secondary' do %>
-      <span class="fa fa-edit" aria-hidden="true"></span> <%= t(:'helpers.action.importer.new') %>
+      <span class="fa fa-edit" aria-hidden="true"></span>
+      <% if Flipflop.include_guided_import? %>
+        <%= t(:'helpers.action.importer.new') %>
+      <% else %>
+        <%= t(:'hyku.helpers.action.importer.new_import') %>
+      <% end %>
     <% end %>
     <% if Flipflop.include_guided_import? %>
       <%= link_to guided_import_new_importers_path, class: 'btn btn-primary' do %>

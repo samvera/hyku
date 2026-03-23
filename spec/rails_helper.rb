@@ -162,16 +162,21 @@ RSpec.configure do |config|
   end
 
   config.before do |example|
-    # make sure we are on the default fedora config
-    ActiveFedora::Fedora.reset!
+    # When Wings is disabled (no Fedora), skip Fedora reset/clean and use Solr-only wipe for clean/feature examples.
+    # Use ENV so DISABLE_WINGS=true is respected even if Hyrax.config was set from VALKYRIE_TRANSITION.
+    disable_wings = if ENV.key?('DISABLE_WINGS')
+                      ActiveModel::Type::Boolean.new.cast(ENV['DISABLE_WINGS'])
+                    else
+                      Hyrax.config.disable_wings
+                    end
+    ActiveFedora::Fedora.reset! unless disable_wings
     SolrEndpoint.reset!
-    # Pass `:clean' (or hyrax's convention of :clean_repo) to destroy objects in fedora/solr and
-    # start from scratch
     if example.metadata[:clean] || example.metadata[:clean_repo] || example.metadata[:type] == :feature
-      ## We don't need to do `Hyrax::SolrService.wipe!` so long as we're using `ActiveFedora.clean!`;
-      ## but Valkyrie is coming so be prepared.
-      # Hyrax::SolrService.wipe!
-      ActiveFedora::Cleaner.clean!
+      if disable_wings
+        Hyrax::SolrService.wipe!
+      else
+        ActiveFedora::Cleaner.clean!
+      end
     end
 
     # Only use truncation for JS-enabled feature specs

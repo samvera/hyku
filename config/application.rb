@@ -150,7 +150,9 @@ module Hyku
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
-    config.autoload_lib(ignore: %w[assets tasks middleware rubocop])
+    autoload_lib_ignores = %w[assets tasks middleware rubocop]
+    autoload_lib_ignores << 'wings' if ENV["HYRAX_SKIP_WINGS"] == "true"
+    config.autoload_lib(ignore: autoload_lib_ignores)
     config.add_autoload_paths_to_load_path = true
 
     ##
@@ -297,6 +299,7 @@ module Hyku
       end
 
       Dir.glob(File.join(File.dirname(__FILE__), "../lib/**/*_decorator*.rb")).sort.each do |c|
+        next if Hyrax.config.disable_wings && c.include?('/wings/')
         Rails.configuration.cache_classes ? require(c) : load(c)
       end
 

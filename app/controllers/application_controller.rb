@@ -148,7 +148,7 @@ class ApplicationController < ActionController::Base
     @current_account ||= if multitenant?
                            Account.new do |a|
                              a.build_solr_endpoint
-                             a.build_fcrepo_endpoint
+                             a.build_fcrepo_endpoint unless Hyrax.config.disable_wings
                              a.build_redis_endpoint
                            end
                          else

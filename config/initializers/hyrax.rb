@@ -33,10 +33,9 @@ Hyrax.config do |config|
   # Identify the model class name that will be used for FileSets in your app
   #
   # TODO: We may need to add similar model_name overrides so that parameters and
-  # keys are the same for FileSet and Hyrax::FileSet.  We do this for
-  # GenericWorkResoure via Hyrax::ValkyrieLazyMigration.migrating(self, from:
-  # GenericWork).  That may or may not work for FileSet but does provide the
-  # breadcrumbs.
+  # keys are the same for FileSet and Hyrax::FileSet.  ValkyrieLazyMigration for
+  # all resources (including GenericWork and FileSet) is registered in
+  # config/initializers/wings.rb when Wings is enabled.
   config.file_set_model = 'Hyrax::FileSet'
 
   # The default method used for Solr queries. Values are :get or :post.

@@ -10,4 +10,9 @@ module Hyrax
   end
 end
 
-Hyrax::SolrQueryService.prepend(Hyrax::SolrQueryServiceDecorator)
+# Defer the prepend so that autoloading Hyrax::SolrQueryService (whose class
+# body calls Hyrax.query_service) happens after the metadata adapter is fully
+# configured in the after_initialize block.
+Rails.application.config.after_initialize do
+  Hyrax::SolrQueryService.prepend(Hyrax::SolrQueryServiceDecorator)
+end

@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax 5.0.x to handle lazy migration logic for solr documents
-# This can be removed once code is ported back to Hyrax
+# OVERRIDE: Hyrax v5.0.x: Work around Sipity being unable to find the Entity for
+# a solr document when using lazy migration or Valkyrie-only (no Wings/Fedora)
+# mode. We need the actual work (resolved via query_service) so that
+# proxy_for_global_id matches what is stored in Sipity::Entity; using
+# SolrDocument#to_model can yield the wrong model and break workflow lookups.
 # Due to loading sequence issues the entire module is included in the override.
+# See https://github.com/samvera/hyrax/issues/7028
 # rubocop:disable Metrics/ModuleLength
 module Sipity
   ##
@@ -27,7 +31,7 @@ module Sipity
   # @param input [Object]
   #
   # @return [Sipity::Entity]
-  # rubocop:disable Naming/MethodName, Metrics/CyclomaticComplexity, Metrics/MethodLength
+  # rubocop:disable Naming/MethodName, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
   def Entity(input, &block) # rubocop:disable Metrics/AbcSize
     Hyrax.logger.debug("Trying to make an Entity for #{input.inspect}")
 
@@ -38,12 +42,14 @@ module Sipity
                Hyrax.logger.debug("Entity() got a GID, searching by proxy")
                gid_string = input.to_s
                Hyrax.logger.debug("  Searching for GID: #{gid_string}")
-               Entity.find_by(proxy_for_global_id: gid_string)
+               entity_find_by_gid(input, gid_string)
              when SolrDocument
-               if Hyrax.config.valkyrie_transition? # we need the actual model, not the mapped "Resource" model
+               if Hyrax.config.disable_wings
+                 # In no-Wings mode, resolve via query_service instead of
+                 # SolrDocument#to_model, which can trigger ActiveFedora/Fedora lookups.
                  item = Hyrax.query_service.find_by(id: input.id)
                  # rubocop:disable Lint/RedundantStringCoercion
-                 Hyrax.logger.debug("Entity() got a SolrDocument with valkyrie_transition, retrying on item #{item.id.to_s}")
+                 Hyrax.logger.debug("Entity() got a SolrDocument in valkyrie/no-wings mode, retrying on item #{item.id.to_s}")
                  # rubocop:enable Lint/RedundantStringCoercion
                  Entity(item)
                else
@@ -76,7 +82,7 @@ module Sipity
     Entity(nil)
   end # rubocop:enable Metrics/AbcSize
   module_function :Entity
-  # rubocop:enable Naming/MethodName, Metrics/CyclomaticComplexity, Metrics/MethodLength
+  # rubocop:enable Naming/MethodName, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
 
   ##
   # Cast an object to an Role
@@ -154,6 +160,33 @@ module Sipity
       super("Unable to convert #{value.inspect}")
     end
   end
+
+  ##
+  # Find Sipity::Entity by proxy_for_global_id, with fallback for ValkyrieGlobalIdProxy GIDs
+  # when the entity was stored with a concrete or legacy model name.
+  def entity_find_by_gid(gid_input, gid_string)
+    result = Entity.find_by(proxy_for_global_id: gid_string)
+    return result unless result.nil? && gid_string.include?("ValkyrieGlobalIdProxy")
+
+    entity_find_by_valkyrie_proxy_gid(gid_input, gid_string)
+  end
+  module_function :entity_find_by_gid
+
+  def entity_find_by_valkyrie_proxy_gid(gid_input, gid_string)
+    resolved = GlobalID::Locator.locate(gid_input)
+    return nil unless resolved.is_a?(Valkyrie::Resource)
+
+    app = gid_input.respond_to?(:app) ? gid_input.app : URI.parse(gid_string).host
+    result = Entity.find_by(proxy_for_global_id: "gid://#{app}/#{resolved.class.name}/#{resolved.id}")
+    return result if result.present?
+    return Entity.find_by(proxy_for_global_id: "gid://#{app}/#{resolved.internal_resource}/#{resolved.id}") if resolved.respond_to?(:internal_resource)
+
+    nil
+  rescue StandardError => e
+    Hyrax.logger.debug("  Entity() ValkyrieGlobalIdProxy fallback failed: #{e.message}")
+    nil
+  end
+  module_function :entity_find_by_valkyrie_proxy_gid
 
   ##
   # Provides compatibility with the old `PowerConverter` conventions

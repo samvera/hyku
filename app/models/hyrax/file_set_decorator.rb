@@ -10,4 +10,3 @@ module Hyrax
 end
 
 Hyrax::FileSet.prepend Hyrax::FileSetDecorator
-Hyrax::ValkyrieLazyMigration.migrating(Hyrax::FileSet, from: ::FileSet)

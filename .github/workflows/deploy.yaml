@@ -5,7 +5,7 @@ on:
     inputs:
       environment:
         description: "Deploy to Environment"
-        require: true
+        required: true
         default: "staging"
         type: choice
         options:

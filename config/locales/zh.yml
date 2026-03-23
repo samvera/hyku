@@ -372,6 +372,7 @@ zh:
         show:
           colors:
             apply_changes: 应用更改
+            apply_theme_colors: 应用主题颜色
             restore_all_defaults: 恢复所有默认设置
             restore_all_tenant_colors: 恢复所有租户颜色
             restore_default: 恢复默认设置

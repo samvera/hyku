@@ -371,6 +371,7 @@ de:
         show:
           colors:
             apply_changes: Änderungen anwenden
+            apply_theme_colors: Themenfarben anwenden
             restore_all_defaults: Alle Standardeinstellungen wiederherstellen
             restore_all_tenant_colors: Alle Mieterfarben wiederherstellen
             restore_default: Standardeinstellungen wiederherstellen

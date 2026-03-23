@@ -211,6 +211,7 @@ en:
         profile: Profile
         repository_objects: Repository Contents
         settings: Settings
+        jobs_dashboard: Job Dashboard
         statistics: Reports
         tasks: Tasks
         technical: Features

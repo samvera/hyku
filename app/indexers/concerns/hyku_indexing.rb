@@ -27,10 +27,7 @@ module HykuIndexing
         solr_doc['title_ssi'] = SortTitle.new(object.title.first).alphabetical
         solr_doc['depositor_ssi'] = object.depositor
         solr_doc['creator_ssi'] = object.creator&.first
-        if object.respond_to?(:date_created)
-          solr_doc[CatalogController.created_field] =
-            Array(object.date_created).first
-        end
+        solr_doc[CatalogController.created_field] ||= Array(object.try(:date_created)).first
         add_date(solr_doc)
       end
     end

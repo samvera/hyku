@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 module Hyrax
-  module OerTypesService
+  module AccessibilityHazardsService
     def self.authority
-      @authority ||= Qa::Authorities::Local.subauthority_for('oer_types')
+      @authority ||= Qa::Authorities::Local.subauthority_for('accessibility_hazards')
     end
 
     def self.authority=(val)
@@ -25,7 +25,8 @@ module Hyrax
     # @return [String] a schema.org type. Gives the default type if `id` is nil.
     def self.microdata_type(id)
       return Hyrax.config.microdata_default_type if id.nil?
-      Microdata.fetch("type.#{id}", default: Hyrax.config.microdata_default_type)
+
+      Microdata.fetch("accessibility_hazard_type.#{id}", default: Hyrax.config.microdata_default_type)
     end
   end
 end

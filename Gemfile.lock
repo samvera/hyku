@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/notch8/willow_sword.git
-  revision: a8bcacbf4d277e2c9522179086e84ea8414225b4
-  tag: v0.8.0
+  revision: 6d16c9d61eba21fffffe3bbf89b99f3c2afdb270
+  tag: v0.8.3
   specs:
-    willow_sword (0.8.0)
+    willow_sword (0.8.3)
       bagit (>= 0.4)
       rails (>= 6.1)
       rubyzip (>= 1.0.0)
@@ -62,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: 5a177feb5b0c81843a2ac089f2dd7717503c4358
+  revision: aced8ad9cd7d2f3520119e3d8fdd282a32cb72d5
   branch: main
   specs:
     hyrax (5.2.0)
@@ -588,7 +588,7 @@ GEM
     factory_bot_rails (6.5.1)
       factory_bot (~> 6.5)
       railties (>= 6.1.0)
-    faraday (2.13.4)
+    faraday (2.14.1)
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
@@ -604,8 +604,8 @@ GEM
       zlib (~> 2.1)
     faraday-multipart (1.0.4)
       multipart-post (~> 2)
-    faraday-net_http (3.4.1)
-      net-http (>= 0.5.0)
+    faraday-net_http (3.4.2)
+      net-http (~> 0.5)
     faraday-retry (2.3.2)
       faraday (~> 2.0)
     fcrepo_wrapper (0.9.0)
@@ -820,7 +820,7 @@ GEM
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
-    json (2.15.0)
+    json (2.18.1)
     json-canonicalization (0.3.1)
     json-jwt (1.17.0)
       activesupport (>= 4.2)
@@ -992,8 +992,8 @@ GEM
       activesupport
     nest (3.2.0)
       redic
-    net-http (0.6.0)
-      uri
+    net-http (0.9.1)
+      uri (>= 0.11.1)
     net-http-persistent (4.0.6)
       connection_pool (~> 2.2, >= 2.2.4)
     net-imap (0.5.10)
@@ -1010,21 +1010,21 @@ GEM
     noid-rails (3.3.0)
       actionpack (>= 5.0.0, < 9)
       noid (~> 0.9)
-    nokogiri (1.18.10-aarch64-linux-gnu)
+    nokogiri (1.19.1-aarch64-linux-gnu)
       racc (~> 1.4)
-    nokogiri (1.18.10-aarch64-linux-musl)
+    nokogiri (1.19.1-aarch64-linux-musl)
       racc (~> 1.4)
-    nokogiri (1.18.10-arm-linux-gnu)
+    nokogiri (1.19.1-arm-linux-gnu)
       racc (~> 1.4)
-    nokogiri (1.18.10-arm-linux-musl)
+    nokogiri (1.19.1-arm-linux-musl)
       racc (~> 1.4)
-    nokogiri (1.18.10-arm64-darwin)
+    nokogiri (1.19.1-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.18.10-x86_64-darwin)
+    nokogiri (1.19.1-x86_64-darwin)
       racc (~> 1.4)
-    nokogiri (1.18.10-x86_64-linux-gnu)
+    nokogiri (1.19.1-x86_64-linux-gnu)
       racc (~> 1.4)
-    nokogiri (1.18.10-x86_64-linux-musl)
+    nokogiri (1.19.1-x86_64-linux-musl)
       racc (~> 1.4)
     nom-xml (1.2.0)
       i18n
@@ -1128,7 +1128,7 @@ GEM
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.8.1)
-    rack (2.2.20)
+    rack (2.2.22)
     rack-attack (6.7.0)
       rack (>= 1.0, < 4)
     rack-linkeddata (3.2.1)
@@ -1578,7 +1578,7 @@ GEM
     unicode-display_width (2.6.0)
     unicode-types (1.11.0)
     unicode_utils (1.4.0)
-    uri (1.0.4)
+    uri (1.1.1)
     useragent (0.16.11)
     validatable (1.6.7)
     validate_url (1.0.15)

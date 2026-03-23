@@ -1,3 +1,4 @@
+<%# Todo: determine if this is this needed? %>
 <% service = Hyrax::LicenseService.new %>
 <% record.license.each do |r| %>
   <%= link_to_field('license', r, service.label(r)) %> <%= iconify_auto_link(r, false) %><br />

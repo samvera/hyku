@@ -106,6 +106,7 @@ RSpec.describe 'Sitemap generation', :clean_repo, type: :request do
     let(:public_work_sitemap_id) { work_id[0] }
     let(:collection_sitemap_id) { collection_id[0] }
     let(:private_work_sitemap_id) { private_work_id[0] }
+    let(:work) { create(:work, id: work_id) }
 
     before { BlacklightDynamicSitemap::Engine.config.hashed_id_field = 'id' }
 

@@ -16,11 +16,8 @@ namespace :hyku do
           next
         end
 
-        uploads_path = if ENV["HYRAX_UPLOAD_PATH"].present?
-                         File.join(ENV.fetch("HYRAX_UPLOAD_PATH"), account.tenant)
-                       else
-                         Rails.root.join("public", "uploads", account.tenant).to_s
-                       end
+        uploads_path = Hyrax.config.upload_path.call
+        uploads_path = uploads_path.to_s
 
         unless Dir.exist?(uploads_path)
           puts "Skipping #{account.tenant}: #{uploads_path} does not exist"
@@ -32,7 +29,8 @@ namespace :hyku do
         CleanupUploadFilesJob.perform_later(
           delete_ingested_after_days: ingested,
           uploads_path: uploads_path,
-          delete_all_after_days: delete_all
+          delete_all_after_days: delete_all,
+          tenant: account.tenant
         )
       end
     end

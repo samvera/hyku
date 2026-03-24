@@ -9,92 +9,66 @@ RSpec.describe CleanupUploadFilesJob do
     clear_enqueued_jobs
   end
 
-  let(:hex_dir_ff) { '/app/samvera/uploads/ff' }
-  let(:hex_dir_00) { '/app/samvera/uploads/00' }
-  let(:hex_dir_ab) { '/app/samvera/uploads/ab' }
-  let(:uuid_tenant_dir) { '/app/samvera/uploads/56e0eb81-c2d5-4d5d-9171-b251bf7299a4' }
-  let(:uploaded_collection_thumbnails_dir) { '/app/samvera/uploads/uploaded_collection_thumbnails' }
-  let(:identity_provider_dir) { '/app/samvera/uploads/identity_provider' }
-  let(:hyrax_uploaded_file_dir) { '/app/samvera/uploads/hyrax' }
+  let(:uploads_path) { '/app/samvera/uploads/tenant-abc' }
+  let(:tenant) { 'tenant-abc' }
+  let(:carrierwave_dir) { "#{uploads_path}/hyrax/uploaded_file/file" }
 
-  let(:all_top_level_entries) do
-    [
-      hex_dir_ff, hex_dir_00, hex_dir_ab,
-      uuid_tenant_dir,
-      uploaded_collection_thumbnails_dir,
-      identity_provider_dir,
-      hyrax_uploaded_file_dir,
-      '/app/samvera/uploads/somefile'
-    ]
-  end
-
-  before do
-    # One stub: chaining .with after .and_call_original is unreliable (second allow can replace the first),
-    # and the real /app/samvera/uploads path often does not exist in CI — glob would return [].
-    allow(Dir).to receive(:glob).and_wrap_original do |orig, pattern, *args|
-      if pattern == '/app/samvera/uploads/*'
-        all_top_level_entries
-      else
-        orig.call(pattern, *args)
-      end
+  context 'when the Carrierwave directory exists' do
+    before do
+      allow(Dir).to receive(:exist?).and_call_original
+      allow(Dir).to receive(:exist?).with(carrierwave_dir).and_return(true)
     end
-    allow(File).to receive(:directory?).and_call_original
-    [hex_dir_ff, hex_dir_00, hex_dir_ab, uuid_tenant_dir,
-     uploaded_collection_thumbnails_dir, identity_provider_dir, hyrax_uploaded_file_dir].each do |dir|
-      allow(File).to receive(:directory?).with(dir).and_return(true)
+
+    it 'spawns a CleanupSubDirectoryJob for the Carrierwave directory' do
+      expect do
+        described_class.perform_now(delete_ingested_after_days: 180, uploads_path: uploads_path, tenant: tenant)
+      end.to have_enqueued_job(CleanupSubDirectoryJob)
+        .with(
+          delete_ingested_after_days: 180,
+          directory: carrierwave_dir,
+          delete_all_after_days: 730,
+          tenant: tenant
+        )
     end
-    allow(File).to receive(:directory?).with('/app/samvera/uploads/somefile').and_return(false)
+
+    it 'passes delete_all_after_days parameter to child job' do
+      expect do
+        described_class.perform_now(delete_ingested_after_days: 180,
+                                    uploads_path: uploads_path,
+                                    delete_all_after_days: 365,
+                                    tenant: tenant)
+      end.to have_enqueued_job(CleanupSubDirectoryJob)
+        .with(
+          delete_ingested_after_days: 180,
+          directory: carrierwave_dir,
+          delete_all_after_days: 365,
+          tenant: tenant
+        )
+    end
+
+    it 'uses default delete_all_after_days of 730 when not specified' do
+      expect do
+        described_class.perform_now(delete_ingested_after_days: 180, uploads_path: uploads_path, tenant: tenant)
+      end.to have_enqueued_job(CleanupSubDirectoryJob)
+        .with(
+          delete_ingested_after_days: 180,
+          directory: carrierwave_dir,
+          delete_all_after_days: 730,
+          tenant: tenant
+        )
+    end
   end
 
-  it 'spawns child jobs only for hex pair-tree directories (00-ff)' do
-    expect { described_class.perform_now(delete_ingested_after_days: 180, uploads_path: '/app/samvera/uploads') }
-      .to have_enqueued_job(CleanupSubDirectoryJob).exactly(3).times
-  end
+  context 'when the Carrierwave directory does not exist' do
+    before do
+      allow(Dir).to receive(:exist?).and_call_original
+      allow(Dir).to receive(:exist?).with(carrierwave_dir).and_return(false)
+    end
 
-  it 'does not create CleanupSubDirectoryJob for tenant UUID directories (site/banner_images, etc.)' do
-    expect do
-      described_class.perform_now(delete_ingested_after_days: 180, uploads_path: '/app/samvera/uploads')
-    end.not_to have_enqueued_job(CleanupSubDirectoryJob).with(directory: uuid_tenant_dir)
-  end
-
-  it 'does not create CleanupSubDirectoryJob for uploaded_collection_thumbnails directory' do
-    expect do
-      described_class.perform_now(delete_ingested_after_days: 180, uploads_path: '/app/samvera/uploads')
-    end.not_to have_enqueued_job(CleanupSubDirectoryJob).with(directory: uploaded_collection_thumbnails_dir)
-  end
-
-  it 'does not create CleanupSubDirectoryJob for identity_provider directory (LogoUploader)' do
-    expect do
-      described_class.perform_now(delete_ingested_after_days: 180, uploads_path: '/app/samvera/uploads')
-    end.not_to have_enqueued_job(CleanupSubDirectoryJob).with(directory: identity_provider_dir)
-  end
-
-  it 'does not create CleanupSubDirectoryJob for hyrax directory (UploadedFile cache)' do
-    expect do
-      described_class.perform_now(delete_ingested_after_days: 180, uploads_path: '/app/samvera/uploads')
-    end.not_to have_enqueued_job(CleanupSubDirectoryJob).with(directory: hyrax_uploaded_file_dir)
-  end
-
-  it 'passes delete_all_after_days parameter to child jobs' do
-    expect do
-      described_class.perform_now(delete_ingested_after_days: 180,
-                                  uploads_path: '/app/samvera/uploads',
-                                  delete_all_after_days: 365)
-    end.to have_enqueued_job(CleanupSubDirectoryJob)
-      .with(
-        delete_ingested_after_days: 180,
-        directory: hex_dir_ff,
-        delete_all_after_days: 365
-      )
-  end
-
-  it 'uses default delete_all_after_days of 730 when not specified' do
-    expect { described_class.perform_now(delete_ingested_after_days: 180, uploads_path: '/app/samvera/uploads') }
-      .to have_enqueued_job(CleanupSubDirectoryJob)
-      .with(
-        delete_ingested_after_days: 180,
-        directory: hex_dir_ff,
-        delete_all_after_days: 730
-      )
+    it 'does not spawn any child jobs' do
+      expect do
+        described_class.perform_now(delete_ingested_after_days: 180, uploads_path: uploads_path, tenant: tenant)
+      end.not_to have_enqueued_job(CleanupSubDirectoryJob)
+    end
   end
 end

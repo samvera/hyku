@@ -52,15 +52,15 @@ RSpec.describe CleanupSubDirectoryJob do
     allow(FileUtils).to receive(:rmdir)
 
     allow(Hyrax::UploadedFile).to receive(:find_by).with(id: '1')
-      .and_return(instance_double(Hyrax::UploadedFile, file_set_uri: 'http://fcrepo/rest/abc'))
+                                                   .and_return(instance_double(Hyrax::UploadedFile, file_set_uri: 'http://fcrepo/rest/abc'))
     allow(Hyrax::UploadedFile).to receive(:find_by).with(id: '2')
-      .and_return(instance_double(Hyrax::UploadedFile, file_set_uri: 'some-uuid'))
+                                                   .and_return(instance_double(Hyrax::UploadedFile, file_set_uri: 'some-uuid'))
     allow(Hyrax::UploadedFile).to receive(:find_by).with(id: '3')
-      .and_return(instance_double(Hyrax::UploadedFile, file_set_uri: 'some-uuid'))
+                                                   .and_return(instance_double(Hyrax::UploadedFile, file_set_uri: 'some-uuid'))
     allow(Hyrax::UploadedFile).to receive(:find_by).with(id: '5')
-      .and_return(instance_double(Hyrax::UploadedFile, file_set_uri: nil))
+                                                   .and_return(instance_double(Hyrax::UploadedFile, file_set_uri: nil))
     allow(Hyrax::UploadedFile).to receive(:find_by).with(id: '6')
-      .and_return(instance_double(Hyrax::UploadedFile, file_set_uri: nil))
+                                                   .and_return(instance_double(Hyrax::UploadedFile, file_set_uri: nil))
   end
 
   it 'deletes old files that have been ingested (file_set_uri present)' do

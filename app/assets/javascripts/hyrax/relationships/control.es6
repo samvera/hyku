@@ -33,8 +33,31 @@ export default class RelationshipsControl {
   }
 
   init() {
+    this.ensureSelect2();
     this.bindAddButton();
     this.displayMembers();
+  }
+
+  /**
+   * Ensure Select2 is initialized on collection dropdowns before reading selection
+   * via select2('data'). Without this, the first "Add" can receive a jQuery object
+   * (so data.text is jQuery.fn.text) and the row shows minified JS instead of the title.
+   * Matches upstream Hyrax RelationshipsControl#ensureSelect2.
+   */
+  ensureSelect2() {
+    let collectionSelect = this.input.filter('.collection-select2, select[name="member_of_collection_ids"]')
+    // Select2 3.x stores the instance on .data('select2'); 4.x may also use select2-hidden-accessible
+    if (collectionSelect.length > 0 && !collectionSelect.data('select2') && !collectionSelect.hasClass('select2-hidden-accessible')) {
+      let dropdownParent = collectionSelect.closest('.modal-body')
+      let options = {
+        placeholder: collectionSelect.data('placeholder') || 'Select',
+        allowClear: true
+      }
+      if (dropdownParent.length > 0) {
+        options.dropdownParent = dropdownParent
+      }
+      collectionSelect.select2(options)
+    }
   }
 
   validate() {

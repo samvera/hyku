@@ -8,9 +8,20 @@
 class CleanupSubDirectoryJob < ApplicationJob
   non_tenant_job
 
+  # Avoid ApplicationJob's retry_on(StandardError) burning 5 attempts
+  # and swallowing the error when the retry block is present.
+  discard_on ArgumentError do |_job, error|
+    logger.warn(error.message)
+  end
+
+  # Must stay aligned with CleanupUploadFilesJob::CARRIERWAVE_SUBDIR (site/banner_images, etc. must never match).
+  INGEST_STAGING_SUFFIX = File.join(File::SEPARATOR, "hyrax", "uploaded_file", "file").freeze
+
   attr_reader :delete_ingested_after_days, :delete_all_after_days, :directory, :tenant, :files_checked, :files_deleted
 
   def perform(delete_ingested_after_days:, directory:, delete_all_after_days: 730, tenant: nil)
+    assert_ingest_staging_directory!(directory)
+
     @directory = directory
     @delete_ingested_after_days = delete_ingested_after_days
     @delete_all_after_days = delete_all_after_days
@@ -23,6 +34,16 @@ class CleanupSubDirectoryJob < ApplicationJob
   end
 
   private
+
+  def assert_ingest_staging_directory!(dir)
+    path = File.expand_path(dir.to_s)
+    return if path.end_with?(INGEST_STAGING_SUFFIX)
+
+    relative = File.join("hyrax", "uploaded_file", "file")
+    raise ArgumentError,
+          "CleanupSubDirectoryJob only accepts Hyrax ingest staging paths ending in #{relative.inspect} " \
+          "(e.g. tenant upload root + #{relative}); got #{dir.inspect}"
+  end
 
   def process_upload_directories
     Dir.glob("#{directory}/*").each do |upload_dir|

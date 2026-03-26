@@ -7,6 +7,41 @@ RSpec.describe CleanupSubDirectoryJob do
   let(:tenant) { 'tenant-abc' }
   let(:base_dir) { '/app/samvera/uploads/tenant-abc/hyrax/uploaded_file/file' }
 
+  describe 'ingest staging directory guard' do
+    # Call #perform directly so ArgumentError is not intercepted by ApplicationJob's retry_on(StandardError),
+    # which (with a block) does not re-raise after the final attempt — perform_now would then not fail the example.
+    it 'raises when given a site banner directory (ticket #842)' do
+      banner = '/app/samvera/uploads/56e0eb81-c2d5-4d5d-9171-b251bf7299a4/site/banner_images/1'
+      expect do
+        described_class.new.perform(delete_ingested_after_days: 180, directory: banner, tenant: tenant)
+      end.to raise_error(ArgumentError, %r{only accepts Hyrax ingest staging paths})
+    end
+
+    it 'raises when given the tenant upload root' do
+      root = '/app/samvera/uploads/tenant-abc'
+      expect do
+        described_class.new.perform(delete_ingested_after_days: 180, directory: root, tenant: tenant)
+      end.to raise_error(ArgumentError, %r{only accepts Hyrax ingest staging paths})
+    end
+
+    it 'raises when given hyrax/uploaded_file without the final file segment' do
+      partial = '/app/samvera/uploads/tenant-abc/hyrax/uploaded_file'
+      expect do
+        described_class.new.perform(delete_ingested_after_days: 180, directory: partial, tenant: tenant)
+      end.to raise_error(ArgumentError, %r{only accepts Hyrax ingest staging paths})
+    end
+
+    it 'accepts a valid staging path with a trailing slash' do
+      allow(Apartment::Tenant).to receive(:switch).with(tenant).and_yield
+      allow(Dir).to receive(:glob).and_return([])
+      allow(FileUtils).to receive(:rmdir)
+
+      expect do
+        described_class.new.perform(delete_ingested_after_days: 180, directory: "#{base_dir}/", tenant: tenant)
+      end.not_to raise_error
+    end
+  end
+
   let(:file_1) { "#{base_dir}/1/document.pdf" }
   let(:file_2) { "#{base_dir}/2/image.jpg" }
   let(:file_3) { "#{base_dir}/3/recent.txt" }

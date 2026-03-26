@@ -270,6 +270,13 @@ module AccountSettings
     configure_devise
     configure_carrierwave
     configure_ssl
+    configure_bulkrax
+  end
+
+  def configure_bulkrax
+    Bulkrax.config do |config|
+      config.guided_import_enabled = Flipflop.include_guided_import?
+    end
   end
 
   def configure_hyrax

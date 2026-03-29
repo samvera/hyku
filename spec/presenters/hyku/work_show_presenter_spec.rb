@@ -201,6 +201,70 @@ RSpec.describe Hyku::WorkShowPresenter do
     end
   end
 
+  describe "#show_pdf_viewer?" do
+    subject { presenter.show_pdf_viewer? }
+
+    let(:pdf_presenter) { double("IiifFileSetPresenter", pdf?: true) }
+
+    before do
+      allow(Flipflop).to receive(:default_pdf_viewer?).and_return(true)
+      allow(presenter).to receive(:file_set_presenters).and_return([pdf_presenter])
+    end
+
+    context "when show_pdf_viewer returns an empty string" do
+      before { allow(presenter).to receive(:show_pdf_viewer).and_return("") }
+
+      it { is_expected.to be_nil }
+    end
+
+    context "when show_pdf_viewer returns true" do
+      before { allow(presenter).to receive(:show_pdf_viewer).and_return(true) }
+
+      it { is_expected.to be true }
+    end
+
+    context "when default_pdf_viewer feature is disabled" do
+      before do
+        allow(Flipflop).to receive(:default_pdf_viewer?).and_return(false)
+        allow(presenter).to receive(:show_pdf_viewer).and_return(true)
+      end
+
+      it { is_expected.to be_nil }
+    end
+  end
+
+  describe "#show_pdf_download_button?" do
+    subject { presenter.show_pdf_download_button? }
+
+    let(:pdf_presenter) { double("IiifFileSetPresenter", pdf?: true) }
+
+    before do
+      allow(Hyrax.config).to receive(:display_media_download_link?).and_return(true)
+      allow(presenter).to receive(:file_set_presenters).and_return([pdf_presenter])
+    end
+
+    context "when show_pdf_download_button returns an empty string" do
+      before { allow(presenter).to receive(:show_pdf_download_button).and_return("") }
+
+      it { is_expected.to be_nil }
+    end
+
+    context "when show_pdf_download_button returns true" do
+      before { allow(presenter).to receive(:show_pdf_download_button).and_return(true) }
+
+      it { is_expected.to be true }
+    end
+
+    context "when display_media_download_link is disabled" do
+      before do
+        allow(Hyrax.config).to receive(:display_media_download_link?).and_return(false)
+        allow(presenter).to receive(:show_pdf_download_button).and_return(true)
+      end
+
+      it { is_expected.to be_nil }
+    end
+  end
+
   describe "#valid_child_concerns" do
     let(:enabled_works) { ["GenericWork", "Image"] }
     let(:all_concerns) { [GenericWork, Image, Etd] }

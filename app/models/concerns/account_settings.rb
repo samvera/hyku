@@ -270,6 +270,24 @@ module AccountSettings
     configure_devise
     configure_carrierwave
     configure_ssl
+    configure_bulkrax
+  end
+
+  def configure_bulkrax
+    Bulkrax.config do |config|
+      config.guided_import_enabled = guided_import_enabled?
+    end
+  end
+
+  ## Needed for specs.
+  # In production this never triggers since the table always exists by the time any request is processed.
+  # In tests during Apartment::Tenant.create, the savepoint cleanly handles the missing table and returns false, allowing tenant creation to complete.
+  def guided_import_enabled?
+    ActiveRecord::Base.connection.transaction(requires_new: true) do
+      Flipflop.include_guided_import?
+    end
+  rescue ActiveRecord::StatementInvalid
+    false
   end
 
   def configure_hyrax

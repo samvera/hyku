@@ -74,6 +74,10 @@ unless ActiveModel::Type::Boolean.new.cast(ENV.fetch('APARTMENT_DISABLE_INIT', '
     # Instead receives an [Apartment::Adapters::PostgresqlSchemaAdapter]
     # Therefore cannot be used as effectively as ActiveRecord hooks.
     Apartment::Tenant.adapter.class.set_callback :switch, :after, lambda {
+      # Clear the Flipflop FeatureCache so that any reads prior to the schema
+      # switch (e.g. from AccountElevator#parse_tenant_name) don't poison the
+      # cache with values from the wrong tenant schema.
+      Flipflop::FeatureCache.current.clear!
       account = Account.find_by(tenant: current)
       account&.switch!
     }

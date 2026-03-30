@@ -9,6 +9,28 @@ GIT
       rubyzip (>= 1.0.0)
 
 GIT
+  remote: https://github.com/samvera-labs/bulkrax.git
+  revision: 6fb7d55765f69ef81c7aba8d33704bd8516021eb
+  branch: main
+  specs:
+    bulkrax (9.3.5)
+      bagit (~> 0.6.0)
+      coderay
+      denormalize_fields
+      iso8601 (~> 0.9.0)
+      kaminari
+      language_list (~> 1.2, >= 1.2.1)
+      libxml-ruby (~> 5.0)
+      loofah (>= 2.2.3)
+      marcel
+      oai (>= 0.4, < 2.x)
+      rack (>= 2.0.6)
+      rails (>= 5.1.6, < 8.0.0)
+      rdf (>= 2.0.2, < 4.0)
+      rubyzip
+      simple_form
+
+GIT
   remote: https://github.com/samvera-labs/hyku_knapsack.git
   revision: ca70becc31bf82950b003a1a8441e861fac753cb
   branch: required_for_knapsack_instances
@@ -40,7 +62,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: aced8ad9cd7d2f3520119e3d8fdd282a32cb72d5
+  revision: d3e4d893c2b8bf96407e233bf4acaf0840a618d8
   branch: main
   specs:
     hyrax (5.2.0)
@@ -379,22 +401,6 @@ GEM
       signet (~> 0.8)
       typhoeus
     builder (3.3.0)
-    bulkrax (9.3.5)
-      bagit (~> 0.6.0)
-      coderay
-      denormalize_fields
-      iso8601 (~> 0.9.0)
-      kaminari
-      language_list (~> 1.2, >= 1.2.1)
-      libxml-ruby (~> 5.0)
-      loofah (>= 2.2.3)
-      marcel
-      oai (>= 0.4, < 2.x)
-      rack (>= 2.0.6)
-      rails (>= 5.1.6, < 8.0.0)
-      rdf (>= 2.0.2, < 4.0)
-      rubyzip
-      simple_form
     byebug (12.0.0)
     cancancan (3.6.1)
     capybara (3.40.0)
@@ -1667,7 +1673,7 @@ DEPENDENCIES
   bolognese (>= 1.9.10)
   bootstrap (~> 4.6)
   bootstrap-datepicker-rails
-  bulkrax (~> 9.3.0)
+  bulkrax!
   byebug
   capybara
   capybara-screenshot (~> 1.0)

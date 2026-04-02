@@ -167,7 +167,7 @@ class SolrDocument
       next unless qualified_name
 
       property = qualified_name.split(':').last.to_sym
-      index_keys = item[:index_keys]
+      index_keys = Array(item[:index_keys]).select { |k| k.to_s.end_with?('_tesim') }
       next unless mappings.key?(property) && index_keys.present?
 
       mappings[property] |= index_keys

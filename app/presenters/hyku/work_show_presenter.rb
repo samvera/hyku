@@ -79,7 +79,7 @@ module Hyku
     # @return [Boolean] Use PDF.js viewer
     def show_pdf_viewer?
       return unless Flipflop.default_pdf_viewer?
-      return unless show_pdf_viewer
+      return unless show_pdf_viewer.presence
       return unless file_set_presenters.any?(&:pdf?)
 
       show_for_pdf?(show_pdf_viewer)
@@ -104,7 +104,7 @@ module Hyku
     def show_pdf_download_button?
       return unless Hyrax.config.display_media_download_link?
       return unless file_set_presenters.any?(&:pdf?)
-      return unless show_pdf_download_button
+      return unless show_pdf_download_button.presence
 
       show_for_pdf?(show_pdf_download_button)
     end

@@ -30,7 +30,8 @@ CMD ./bin/web
 FROM hyku-web AS hyku-worker
 CMD ./bin/worker
 
-FROM solr:8.3 AS hyku-solr
+# Use a Solr version with patched Log4j to address CVE-2021-44228
+FROM solr:8.11.2 AS hyku-solr
 ENV SOLR_USER="solr" \
     SOLR_GROUP="solr"
 USER root

@@ -29,17 +29,27 @@ module Hyrax
         private
 
         def process_thumbnail_input(collection_id:, update_thumbnail_file_ids:, thumbnail_unchanged_indicator:, alttext_values:)
-          if !update_thumbnail_file_ids && !alttext_values
+          unchanged = ActiveModel::Type::Boolean.new.cast(thumbnail_unchanged_indicator)
+
+          if !update_thumbnail_file_ids && !alttext_values && !unchanged
             remove_thumbnail(collection_id:)
           elsif update_thumbnail_file_ids && thumbnail_unchanged_indicator.nil?
             remove_thumbnail(collection_id:)
             add_new_thumbnail(collection_id:, uploaded_file_ids: update_thumbnail_file_ids, alttext_values:)
-          else
-            CollectionBrandingInfo
-              .where(collection_id:, role: 'thumbnail')
-              .first
-              .update_column(:alt_text, alttext_values.first) # rubocop:disable Rails/SkipsModelValidations
+          elsif alttext_values.present?
+            update_thumbnail_alt_text(collection_id:, unchanged:, alttext_values:)
           end
+        end
+
+        def update_thumbnail_alt_text(collection_id:, unchanged:, alttext_values:)
+          record = CollectionBrandingInfo.where(collection_id:, role: 'thumbnail').first
+          return unless record
+
+          new_alt = alttext_values.first
+          # Do not wipe stored alt when the client omitted meaningful text but sent "unchanged".
+          return if unchanged && new_alt.to_s.empty?
+
+          record.update_column(:alt_text, new_alt) # rubocop:disable Rails/SkipsModelValidations
         end
 
         def remove_thumbnail(collection_id:)

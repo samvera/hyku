@@ -65,6 +65,9 @@ Rails.application.config.to_prepare do
 
       # Properties that should not be used in imports/exports. They are reserved for use by Hyrax.
       # config.reserved_properties += ['my_field']
+
+      # Generate random source identifiers for any blank source identifier fields.
+      # config.fill_in_blank_source_identifiers = ->(obj, index) { "#{SecureRandom.uuid}" }
     end
     # rubocop:enable Metrics/BlockLength
 

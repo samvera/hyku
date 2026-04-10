@@ -9,7 +9,7 @@ on:
         default: "staging"
         type: choice
         options:
-          - demo
+          # - demo
           - iiif
           - staging
       debug_enabled:

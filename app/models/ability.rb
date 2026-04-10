@@ -118,6 +118,10 @@ class Ability
     can_create_any_work?
   end
 
+  def can_read_bulkrax_metrics?
+    admin? || superadmin?
+  end
+
   ##
   # @api public
   #

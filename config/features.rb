@@ -54,5 +54,9 @@ Flipflop.configure do
     feature :include_guided_import,
             default: false,
             description: "Enable the guided import workflow."
+
+    feature :include_guided_import_metrics,
+            default: false,
+            description: "Enable product metrics for the guided import workflow."
   end
 end

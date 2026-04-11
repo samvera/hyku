@@ -1,0 +1,25 @@
+# Ensures VPAT / accessibility automation artifacts are not accidentally removed.
+# Full axe runs still happen inside the main Docker-based RSpec job (build-test-lint / GitLab test).
+name: Accessibility tooling
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  verify-files:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify accessibility tooling paths
+        run: |
+          test -f bin/rspec-a11y
+          test -f spec/features/accessibility/critical_paths_accessibility_spec.rb
+          test -f spec/features/accessibility/extended_paths_accessibility_spec.rb
+          test -f spec/support/accessibility_helpers.rb
+          test -f spec/support/a11y_artifacts.rb
+          test -f docs/accessibility/wcag-2.1-aa-traceability-matrix.yaml
+          test -f docs/accessibility/README.md
+          test -f lib/tasks/hyku/accessibility_fixtures.rake

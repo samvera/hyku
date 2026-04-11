@@ -63,6 +63,7 @@ further details.
   * You may find the [hub suite of commands](https://github.com/defunkt/hub) helpful
 * Make sure you have added sufficient tests and documentation for your changes.
   * Test functionality with RSpec; Test features / UI with Capybara.
+  * If you change **public-facing UI** (styles under `app/assets/stylesheets/`, shared views, or appearance-related templates), run **VPAT-oriented axe specs** in Docker: `docker compose exec web bin/rspec-a11y` (see [docs/accessibility/README.md](../docs/accessibility/README.md)).
 * Run _all_ the tests to assure nothing else was accidentally broken.
 
 ### Documenting Code

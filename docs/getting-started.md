@@ -107,6 +107,10 @@ This lets you run Hyku without Dory, but you will have to set up your own DNS en
 >cp docker-compose.override-noproxy.yml docker-compose.override.yml
 >```
 
+#### VPAT / accessibility (axe) feature specs
+
+These specs need **Chrome** and the same dependencies as other JavaScript feature tests. With Docker, start the stack (including the `chrome` service) and run `docker compose exec web bin/rspec-a11y`. See [Accessibility and VPAT](./accessibility/README.md) (includes Docker and manual checklist).
+
 #### Local development without Docker
 
 You may be able to run the application locally without docker by ensuring you have met the following

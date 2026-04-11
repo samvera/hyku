@@ -1,0 +1,399 @@
+# WCAG 2.1 Level A & AA traceability for Hyku
+# coverage: automated_axe | semi_automated | manual
+# Align VPAT rows with ITI VPAT 2.5 (or newer) when completing the official workbook.
+#
+# Automated runs: bundle exec rspec --tag a11y
+# axe tags: wcag2a, wcag2aa, wcag21aa (see spec/support/accessibility_helpers.rb)
+
+meta:
+  product: Hyku
+  wcag_version: "2.1"
+  conformance_level: "A and AA"
+  vpat_template: "ITI VPAT — WCAG 2.1 edition (e.g. VPAT 2.5)"
+  third_party_note: >
+    Universal Viewer, pdf.js, and some Blacklight/Hyrax widgets may require
+    "Supports with exceptions" in the VPAT unless remediated locally.
+  hyku_baseline_contrast_remediation:
+    - file: app/assets/stylesheets/hyku/splash.scss
+      note: "Splash .product-features .heading on #f4f4f4 (replaces insufficient $gray)"
+    - file: app/assets/stylesheets/hyku.scss
+      note: "body.public-facing .breadcrumb a overrides appearance link_color on #e9ecef"
+  regression_focus_hyku_5_to_7:
+    # Prioritized retest map — see docs/accessibility/README.md (Hyku 5 → 7.1 regression focus)
+    - "1.1.1"
+    - "1.3.1"
+    - "1.4.3"
+    - "2.1.1"
+    - "2.1.2"
+    - "4.1.2"
+    - "4.1.3"
+  related_docs:
+    accessibility_guide: docs/accessibility/README.md
+
+criteria:
+  - id: "1.1.1"
+    name: "Non-text Content"
+    level: A
+    coverage: automated_axe
+    evidence: "axe rules (image-alt, input-image-alt, object-alt, etc.); manual spot check for decorative images"
+    specs: "spec/features/accessibility/critical_paths_accessibility_spec.rb"
+
+  - id: "1.2.1"
+    name: "Audio-only and Video-only (Prerecorded)"
+    level: A
+    coverage: manual
+    evidence: "Content-dependent; verify transcripts or alternatives where media is exposed"
+    specs: "~"
+
+  - id: "1.2.2"
+    name: "Captions (Prerecorded)"
+    level: A
+    coverage: manual
+    evidence: "Content-dependent"
+    specs: "~"
+
+  - id: "1.2.3"
+    name: "Audio Description or Media Alternative (Prerecorded)"
+    level: A
+    coverage: manual
+    evidence: "Content-dependent"
+    specs: "~"
+
+  - id: "1.2.4"
+    name: "Captions (Live)"
+    level: AA
+    coverage: manual
+    evidence: "Content-dependent"
+    specs: "~"
+
+  - id: "1.2.5"
+    name: "Audio Description (Prerecorded)"
+    level: AA
+    coverage: manual
+    evidence: "Content-dependent"
+    specs: "~"
+
+  - id: "1.3.1"
+    name: "Info and Relationships"
+    level: A
+    coverage: semi_automated
+    evidence: "axe (aria roles, lists, definition-list, dlitem); manual for complex layouts"
+    specs: "spec/features/accessibility/critical_paths_accessibility_spec.rb"
+
+  - id: "1.3.2"
+    name: "Meaningful Sequence"
+    level: A
+    coverage: semi_automated
+    evidence: "axe (some layout rules); manual reading order in CSS-heavy pages"
+    specs: "~"
+
+  - id: "1.3.3"
+    name: "Sensory Characteristics"
+    level: A
+    coverage: manual
+    evidence: "Instructions must not rely solely on shape/color/position"
+    specs: "~"
+
+  - id: "1.3.4"
+    name: "Orientation"
+    level: A
+    coverage: manual
+    evidence: "No single-orientation lock unless essential"
+    specs: "~"
+
+  - id: "1.3.5"
+    name: "Identify Input Purpose"
+    level: AA
+    coverage: semi_automated
+    evidence: "axe autocomplete rules where applicable"
+    specs: "~"
+
+  - id: "1.4.1"
+    name: "Use of Color"
+    level: A
+    coverage: semi_automated
+    evidence: "axe link-in-text-block; manual for state communication"
+    specs: "~"
+
+  - id: "1.4.2"
+    name: "Audio Control"
+    level: A
+    coverage: manual
+    evidence: "Auto-playing audio longer than 3s"
+    specs: "~"
+
+  - id: "1.4.3"
+    name: "Contrast (Minimum)"
+    level: AA
+    coverage: automated_axe
+    evidence: "axe color-contrast (text); Hyku baseline fixes in hyku/splash.scss and hyku.scss (see meta.hyku_baseline_contrast_remediation)"
+    specs: "spec/features/accessibility/critical_paths_accessibility_spec.rb"
+
+  - id: "1.4.4"
+    name: "Resize text"
+    level: AA
+    coverage: manual
+    evidence: "docs/accessibility/README.md — Manual release playbook (zoom)"
+    specs: "~"
+
+  - id: "1.4.5"
+    name: "Images of Text"
+    level: AA
+    coverage: manual
+    evidence: "Prefer real text; axe limited"
+    specs: "~"
+
+  - id: "1.4.10"
+    name: "Reflow"
+    level: AA
+    coverage: manual
+    evidence: "docs/accessibility/README.md — Manual release playbook (reflow)"
+    specs: "~"
+
+  - id: "1.4.11"
+    name: "Non-text Contrast"
+    level: AA
+    coverage: automated_axe
+    evidence: "axe rules for graphical objects / UI components"
+    specs: "spec/features/accessibility/critical_paths_accessibility_spec.rb"
+
+  - id: "1.4.12"
+    name: "Text Spacing"
+    level: AA
+    coverage: manual
+    evidence: "docs/accessibility/README.md — Manual release playbook"
+    specs: "~"
+
+  - id: "1.4.13"
+    name: "Content on Hover or Focus"
+    level: AA
+    coverage: manual
+    evidence: "Tooltips, hover menus — dismissible, hoverable, persistent"
+    specs: "~"
+
+  - id: "2.1.1"
+    name: "Keyboard"
+    level: A
+    coverage: manual
+    evidence: "docs/accessibility/README.md — Manual release playbook (keyboard)"
+    specs: "~"
+
+  - id: "2.1.2"
+    name: "No Keyboard Trap"
+    level: A
+    coverage: manual
+    evidence: "Focus traps in modals, viewers"
+    specs: "~"
+
+  - id: "2.1.4"
+    name: "Character Key Shortcuts"
+    level: A
+    coverage: manual
+    evidence: "If single-key shortcuts exist, must be configurable or off"
+    specs: "~"
+
+  - id: "2.2.1"
+    name: "Timing Adjustable"
+    level: A
+    coverage: manual
+    evidence: "Sessions, auto-refresh"
+    specs: "~"
+
+  - id: "2.2.2"
+    name: "Pause, Stop, Hide"
+    level: A
+    coverage: manual
+    evidence: "Moving/blinking/auto-updating content"
+    specs: "~"
+
+  - id: "2.3.1"
+    name: "Three Flashes or Below Threshold"
+    level: A
+    coverage: semi_automated
+    evidence: "axe avoid-inline-spacing partial; flashing usually manual"
+    specs: "~"
+
+  - id: "2.4.1"
+    name: "Bypass Blocks"
+    level: A
+    coverage: semi_automated
+    evidence: "axe skip-link rule when implemented; landmark structure"
+    specs: "~"
+
+  - id: "2.4.2"
+    name: "Page Titled"
+    level: A
+    coverage: automated_axe
+    evidence: "axe document-title"
+    specs: "spec/features/accessibility/critical_paths_accessibility_spec.rb"
+
+  - id: "2.4.3"
+    name: "Focus Order"
+    level: A
+    coverage: manual
+    evidence: "DOM order vs visual order"
+    specs: "~"
+
+  - id: "2.4.4"
+    name: "Link Purpose (In Context)"
+    level: A
+    coverage: semi_automated
+    evidence: "axe link-name; manual for generic 'click here'"
+    specs: "~"
+
+  - id: "2.4.5"
+    name: "Multiple Ways"
+    level: AA
+    coverage: manual
+    evidence: "Search, nav, sitemap — architecture review"
+    specs: "~"
+
+  - id: "2.4.6"
+    name: "Headings and Labels"
+    level: AA
+    coverage: semi_automated
+    evidence: "axe empty-heading, label; manual descriptiveness"
+    specs: "~"
+
+  - id: "2.4.7"
+    name: "Focus Visible"
+    level: AA
+    coverage: manual
+    evidence: "Keyboard focus visibility across themes"
+    specs: "~"
+
+  - id: "2.5.1"
+    name: "Pointer Gestures"
+    level: A
+    coverage: manual
+    evidence: "Multipoint/path gestures need single-pointer alternative"
+    specs: "~"
+
+  - id: "2.5.2"
+    name: "Pointer Cancellation"
+    level: A
+    coverage: manual
+    evidence: "Up-event activation"
+    specs: "~"
+
+  - id: "2.5.3"
+    name: "Label in Name"
+    level: A
+    coverage: automated_axe
+    evidence: "axe label-content-name-mismatch"
+    specs: "spec/features/accessibility/critical_paths_accessibility_spec.rb"
+
+  - id: "2.5.4"
+    name: "Motion Actuation"
+    level: A
+    coverage: manual
+    evidence: "Device motion alternatives"
+    specs: "~"
+
+  - id: "3.1.1"
+    name: "Language of Page"
+    level: A
+    coverage: automated_axe
+    evidence: "axe html-has-lang, html-lang-valid"
+    specs: "spec/features/accessibility/critical_paths_accessibility_spec.rb"
+
+  - id: "3.1.2"
+    name: "Language of Parts"
+    level: AA
+    coverage: semi_automated
+    evidence: "axe valid-lang where attributes exist"
+    specs: "~"
+
+  - id: "3.2.1"
+    name: "On Focus"
+    level: A
+    coverage: manual
+    evidence: "No unexpected context changes on focus"
+    specs: "~"
+
+  - id: "3.2.2"
+    name: "On Input"
+    level: A
+    coverage: manual
+    evidence: "Changing settings without prior notice"
+    specs: "~"
+
+  - id: "3.2.3"
+    name: "Consistent Navigation"
+    level: AA
+    coverage: manual
+    evidence: "Repeated regions across pages"
+    specs: "~"
+
+  - id: "3.2.4"
+    name: "Consistent Identification"
+    level: AA
+    coverage: manual
+    evidence: "Same icons/labels for same functions"
+    specs: "~"
+
+  - id: "3.3.1"
+    name: "Error Identification"
+    level: A
+    coverage: semi_automated
+    evidence: "axe form-field-multiple-labels; manual error association"
+    specs: "~"
+
+  - id: "3.3.2"
+    name: "Labels or Instructions"
+    level: A
+    coverage: automated_axe
+    evidence: "axe label, select-name, etc."
+    specs: "spec/features/accessibility/critical_paths_accessibility_spec.rb"
+
+  - id: "3.3.3"
+    name: "Error Suggestion"
+    level: AA
+    coverage: manual
+    evidence: "Meaningful correction hints"
+    specs: "~"
+
+  - id: "3.3.4"
+    name: "Error Prevention (Legal, Financial, Data)"
+    level: AA
+    coverage: manual
+    evidence: "Confirm/delete for irreversible actions"
+    specs: "~"
+
+  - id: "3.3.7"
+    name: "Redundant Entry"
+    level: A
+    coverage: manual
+    evidence: "Auto-populate or available selection for re-entered data"
+    specs: "~"
+
+  - id: "4.1.1"
+    name: "Parsing"
+    level: A
+    coverage: semi_automated
+    evidence: "axe duplicate-id, valid markup rules; note WCAG 2.2 deprecation"
+    specs: "~"
+
+  - id: "4.1.2"
+    name: "Name, Role, Value"
+    level: A
+    coverage: automated_axe
+    evidence: "axe ARIA and widget rules"
+    specs: "spec/features/accessibility/critical_paths_accessibility_spec.rb"
+
+  - id: "4.1.3"
+    name: "Status Messages"
+    level: AA
+    coverage: manual
+    evidence: "aria-live / role=status for dynamic updates — screen reader check"
+    specs: "~"
+
+axe_configuration:
+  rspec_tags: ["a11y"]
+  according_to_tags:
+    - :wcag2a
+    - :wcag2aa
+    - :wcag21aa
+  scan_scope:
+    primary_selector: "#content-wrapper"
+    note: "Hyku Hyrax layout main landmark; splash and some pages may use full-page scan — see helper."

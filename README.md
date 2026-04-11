@@ -17,6 +17,7 @@ Jump In: [![Slack Status](http://slack.samvera.org/badge.svg)](http://slack.samv
 - [Getting Started](./docs/getting-started.md)
 - [Configuration](./docs/configuration.md)
 - [Using Hyku](./docs/using-hyku.md)
+- [Accessibility and VPAT](./docs/accessibility/README.md)
 - [Product Owner](#product-owner)
 - [Help](#help)
 - [Acknowledgments](#acknowledgments)

@@ -67,7 +67,7 @@ This is **not** a completed VPAT. Paste into the ITI workbook; legal/procurement
 
 ### Continuous integration
 
-- **GitHub**: `build-test-lint` runs full RSpec (including `:a11y`). [`.github/workflows/accessibility-tooling.yml`](../../.github/workflows/accessibility-tooling.yml) checks that this guide and the YAML matrix exist.
+- **GitHub**: `build-test-lint` runs full RSpec (including `:a11y`).
 - **GitLab**: The `test` job runs the same style of suite unless RSpec is tag-filtered.
 
 ### Baseline contrast remediation (Hyku default theme)

@@ -1,9 +1,13 @@
 import { chromium, firefox, type FullConfig } from "@playwright/test";
 
-/** Must match playwright.config.ts / bin/playwright-a11y (Firefox on arm64 Docker often has no Chromium installed). */
+/** Must match playwright.config.ts / bin/playwright-a11y (Firefox default only on arm64 Docker). */
 function a11yBrowser() {
   return process.env.PLAYWRIGHT_A11Y_BROWSER === "firefox" ? firefox : chromium;
 }
+
+const firefoxLaunchOptions = {
+  firefoxUserPrefs: { "security.sandbox.content.level": 0 },
+} as const;
 import * as fs from "fs";
 import * as path from "path";
 import { loadManifest, manifestPath } from "./tests/routeAuditUtils";
@@ -54,7 +58,7 @@ export default async function globalSetup(_config: FullConfig): Promise<void> {
             "--in-process-gpu",
           ],
         }
-      : {}),
+      : firefoxLaunchOptions),
   });
   const context = await browser.newContext({
     ...(httpCredentials ? { httpCredentials } : {}),

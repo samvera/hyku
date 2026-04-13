@@ -33,10 +33,11 @@ Rails.application.configure do
   # Rails 7.2: Allow redirects to any host in test environment for multi-tenant testing
   config.action_controller.raise_on_open_redirects = false
 
-  # Multitenant Hyku: Playwright (`bin/playwright-a11y`) and host-based feature specs use
-  # Host: *.localhost.direct (e.g. admin-hyku, a11y-demo-hyku). Without this,
-  # ActionDispatch::HostAuthorization returns 403 and route-audit.spec.ts fails assertSuccessfulNavigation.
-  config.hosts << ".localhost.direct"
+  # Do not set `config.hosts` here. In test, the default is an empty list, which keeps
+  # ActionDispatch::HostAuthorization out of the stack so any Host header is accepted.
+  # Appending even one entry (e.g. ".localhost.direct") enables that middleware and then
+  # *only* those patterns match — everything else (www.example.com, test.host, account
+  # cnames, Docker WEB_HOST, …) gets 403 and most of the suite fails.
 
   # Store uploaded files on the local file system in a temporary directory.
   config.active_storage.service = :test

@@ -1,8 +1,13 @@
 import { defineConfig, devices } from "@playwright/test";
 
 const port = process.env.PLAYWRIGHT_SERVER_PORT || "3000";
-/** Set by bin/playwright-a11y on linux/arm64 where Chromium's GPU helper often fails in Docker. */
+/** Set by bin/playwright-a11y on linux/arm64 (Chromium GPU helper often fails in Docker). */
 const useFirefox = process.env.PLAYWRIGHT_A11Y_BROWSER === "firefox";
+
+/** Firefox content sandbox often gets EPERM inside Docker (user namespaces). */
+const firefoxLaunchOptions = {
+  firefoxUserPrefs: { "security.sandbox.content.level": 0 },
+} as const;
 
 /**
  * Local/staging: ApplicationController may require HTTP basic when the tenant is not public
@@ -35,7 +40,7 @@ export default defineConfig({
     baseURL: process.env.PLAYWRIGHT_BASE_URL || `http://admin-hyku.localhost.direct:${port}`,
     headless: useFirefox ? true : process.env.PLAYWRIGHT_DOCKER_XVFB !== "1",
     launchOptions: useFirefox
-      ? {}
+      ? firefoxLaunchOptions
       : {
           args: [
             "--disable-gpu",

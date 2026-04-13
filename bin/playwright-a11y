@@ -26,10 +26,11 @@ export HYKU_MULTITENANT="${HYKU_MULTITENANT:-true}"
 export HYKU_DEMO_A11Y_SEED="${HYKU_DEMO_A11Y_SEED:-1}"
 export IN_DOCKER="${IN_DOCKER:-true}"
 
-# Chromium: headless shell often hits missing GLib symbols on older images (e.g. g_uri_ref); GPU stack
-# also breaks on arm64 Docker. Default to Firefox in Docker or on arm64 unless explicitly overridden.
+# Chromium's bundled headless stack can break on arm64 Docker (GPU helper). Default Firefox there only.
+# On amd64 Docker, Playwright's Firefox still loads libmozgtk against the host GLib; old images lack
+# g_uri_ref (2.66+), so default Chromium + Xvfb below — do not force Firefox for /.dockerenv on x86_64.
 ARCH="$(uname -m)"
-if [[ -f /.dockerenv ]] || [[ "$ARCH" == aarch64 ]] || [[ "$ARCH" == arm64 ]]; then
+if [[ "$ARCH" == aarch64 ]] || [[ "$ARCH" == arm64 ]]; then
   export PLAYWRIGHT_A11Y_BROWSER="${PLAYWRIGHT_A11Y_BROWSER:-firefox}"
 fi
 # Firefox + root: must be set before `playwright install` so cache matches runtime (see Playwright docs).

@@ -276,6 +276,7 @@ module AccountSettings
   def configure_bulkrax
     Bulkrax.config do |config|
       config.guided_import_enabled = guided_import_enabled?
+      config.guided_import_metrics_enabled = guided_import_metrics_enabled?
     end
   end
 
@@ -285,6 +286,16 @@ module AccountSettings
   def guided_import_enabled?
     ActiveRecord::Base.connection.transaction(requires_new: true) do
       Flipflop.include_guided_import?
+    end
+  rescue ActiveRecord::StatementInvalid
+    false
+  end
+
+  def guided_import_metrics_enabled?
+    return false unless guided_import_enabled?
+
+    ActiveRecord::Base.connection.transaction(requires_new: true) do
+      Flipflop.include_guided_import_metrics?
     end
   rescue ActiveRecord::StatementInvalid
     false

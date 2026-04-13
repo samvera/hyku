@@ -45,7 +45,7 @@ gem 'devise-i18n'
 gem 'devise_invitable', '~> 2.0'
 gem 'dry-monads', '~> 1.5'
 gem 'easy_translate', group: %i[development]
-gem 'factory_bot_rails', group: %i[development test]
+gem 'factory_bot_rails', group: %i[test]
 gem 'fcrepo_wrapper', '~> 0.4', group: %i[development test]
 gem 'flutie'
 gem 'good_job', '~> 4.10' # Updated for Rails 7.2 compatibility

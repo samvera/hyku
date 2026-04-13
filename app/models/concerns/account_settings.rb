@@ -123,7 +123,7 @@ module AccountSettings
         create_node_set: nil,
         max_shards_per_node: nil,
         num_shards: 1,
-        replication_factor: nil,
+        replication_factor: ENV.fetch('SOLR_COLLECTION_REPLICAS', 1).to_i,
         router: {
           name: nil,
           field: nil

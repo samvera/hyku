@@ -423,4 +423,34 @@ RSpec.describe AccountSettings do
       end
     end
   end
+  describe '#solr_collection_options' do
+    let(:old_account) do
+      Account.create(name: 'old', cname: 'old.example.com').tap do |a|
+        a.update!(settings: { solr_collection_options: { num_shards: 1, replication_factor: nil } })
+        a.reload
+      end
+    end
+    let(:new_account) { Account.create(name: 'new', cname: 'new.example.com') }
+
+    context 'when SOLR_COLLECTION_REPLICAS is set' do
+      before do
+        allow(ENV).to receive(:fetch).with('SOLR_COLLECTION_REPLICAS', 1).and_return(5)
+        Account.all_settings[:solr_collection_options][:default] = Account.solr_collection_options
+      end
+      after do
+        Account.all_settings[:solr_collection_options][:default] = Account.solr_collection_options
+      end
+
+      it 'has the correct default set for the class value' do
+        expect(Account.solr_collection_options[:replication_factor]).to eq(5)
+      end
+      it 'returns the ENV value for replication_factor on a new account' do
+        expect(new_account.solr_collection_options[:replication_factor]).to eq(5)
+      end
+
+      it 'returns nil for replication_factor on an old account with nil stored' do
+        expect(old_account.solr_collection_options[:replication_factor]).to be_nil
+      end
+    end
+  end
 end

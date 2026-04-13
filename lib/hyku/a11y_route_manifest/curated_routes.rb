@@ -49,9 +49,11 @@ module Hyku
         add.call A11yRouteManifest.safe_path { hyrax.collection_path(cid, locale: A11yRouteManifest::LOCALE) }
         return unless ctx.sub_collection
 
-        add.call A11yRouteManifest.safe_path do
-          hyrax.collection_path(ctx.sub_collection.id.to_s, locale: A11yRouteManifest::LOCALE)
-        end
+        add.call(
+          A11yRouteManifest.safe_path do
+            hyrax.collection_path(ctx.sub_collection.id.to_s, locale: A11yRouteManifest::LOCALE)
+          end
+        )
       end
 
       def add_tenant_public_work_paths(ctx, collector)

@@ -38,12 +38,6 @@ if [[ "${PLAYWRIGHT_A11Y_BROWSER:-}" == firefox ]] && [[ "$(id -u)" -eq 0 ]]; th
   export HOME=/root
 fi
 
-# chromium-headless-shell often dlopens system GTK/GLib; minimal or mixed images hit
-# "undefined symbol: g_uri_ref" (needs GLib 2.66+). Full Chrome for Testing avoids that path.
-if [[ -f /.dockerenv ]] && [[ "${PLAYWRIGHT_A11Y_BROWSER:-}" != firefox ]]; then
-  export PLAYWRIGHT_CHROMIUM_USE_HEADLESS_SHELL="${PLAYWRIGHT_CHROMIUM_USE_HEADLESS_SHELL:-0}"
-fi
-
 PORT="${PLAYWRIGHT_SERVER_PORT:-3000}"
 HOST_BIND="${PLAYWRIGHT_SERVER_BIND:-0.0.0.0}"
 MANIFEST="$ROOT/e2e/a11y-routes/a11y-routes.manifest.json"

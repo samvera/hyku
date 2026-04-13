@@ -103,9 +103,7 @@ module Hyku
       add.call safe_path { app.new_user_session_path(locale: LOCALE) }
       HYRAX_CONTENT_HELPERS.each { |meth| add.call safe_path { hyrax.public_send(meth, locale: LOCALE) } }
       add.call safe_path { hyrax.collection_path(cid, locale: LOCALE) }
-      if ctx.sub_collection
-        add.call safe_path { hyrax.collection_path(ctx.sub_collection.id.to_s, locale: LOCALE) }
-      end
+      add.call safe_path { hyrax.collection_path(ctx.sub_collection.id.to_s, locale: LOCALE) } if ctx.sub_collection
 
       ctx.works.each do |w|
         wid = w.id.to_s

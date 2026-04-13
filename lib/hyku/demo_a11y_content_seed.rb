@@ -48,7 +48,7 @@ module Hyku
     DEMO_ACCOUNT_TENANT_SLUG = "a11y-demo"
 
     class << self
-      def run!(manifest_path: Rails.root.join("e2e/a11y-routes/a11y-routes.manifest.json"))
+      def run!(manifest_path: Rails.root.join("e2e", "a11y-routes", "a11y-routes.manifest.json"))
         unless allowed_to_run?
           raise <<~MSG.squish
             hyku:demo_content:seed may only run in RAILS_ENV=test (e.g. `RAILS_ENV=test bundle exec rake hyku:demo_content:seed`),
@@ -115,9 +115,7 @@ module Hyku
     end
 
     def demo_cname
-      if ENV["HYKU_A11Y_DEMO_CNAME"].present?
-        return Account.canonical_cname(ENV["HYKU_A11Y_DEMO_CNAME"])
-      end
+      return Account.canonical_cname(ENV["HYKU_A11Y_DEMO_CNAME"]) if ENV["HYKU_A11Y_DEMO_CNAME"].present?
 
       slug = DEMO_ACCOUNT_TENANT_SLUG.parameterize
       template = ENV["HYKU_DEFAULT_HOST"].presence ||

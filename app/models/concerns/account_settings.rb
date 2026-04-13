@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# All settings have a presedence order as follows
+# All settings have a precedence order as follows
 # Per Tenant Setting > ENV['HYKU_SETTING_NAME'] > ENV['HYRAX_SETTING_NAME'] > default
 
 # rubocop:disable Metrics/ModuleLength

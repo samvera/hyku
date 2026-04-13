@@ -94,9 +94,28 @@ class CreateSolrCollectionJob < ApplicationJob
     @solr_url = @solr_url.ends_with?('/') ? @solr_url : "#{@solr_url}/"
   end
 
+  # This builds the URL differently from config/blacklight.yml
+  # That would have to be a separate refactor
   def solr_url_parts
-    "http://#{ENV.fetch('SOLR_ADMIN_USER', 'admin')}:#{ENV.fetch('SOLR_ADMIN_PASSWORD', 'admin')}" \
-      "@#{ENV.fetch('SOLR_HOST', 'solr')}:#{ENV.fetch('SOLR_PORT', '8983')}/solr/"
+    password = check_credential_encoding(env_variable: 'SOLR_ADMIN_PASSWORD', default: 'admin')
+    user = check_credential_encoding(env_variable: 'SOLR_ADMIN_USER', default: 'admin')
+    URI::HTTP.build(
+      userinfo: "#{user}:#{password}",
+      host: ENV.fetch('SOLR_HOST', 'solr'),
+      port: ENV.fetch('SOLR_PORT', 8983).to_i,
+      path: '/solr/'
+    ).to_s
+  end
+
+  def check_credential_encoding(env_variable:, default:)
+    credential = ENV.fetch(env_variable, default)
+    credential_encoded = URI.encode_www_form_component(credential)
+    if credential != credential_encoded
+      Rails.logger.warn("#{env_variable} contains characters that may require URL encoding. " \
+                        "If you experience Solr authentication errors, URL encode the value in " \
+                        "#{env_variable} and in SOLR_URL if it is set.")
+    end
+    credential
   end
 
   def add_solr_endpoint_to_account(account, name)

@@ -48,8 +48,10 @@ export default async function globalSetup(_config: FullConfig): Promise<void> {
   const baseURL = `http://${host}:${port}`;
 
   const browserType = a11yBrowser();
+  // Match playwright.config.ts: headed Chromium on Xvfb in Docker (avoids headless-shell GLib issues).
+  const chromiumHeadless = process.env.PLAYWRIGHT_DOCKER_XVFB !== "1";
   const browser = await browserType.launch({
-    headless: true,
+    headless: browserType === firefox ? true : chromiumHeadless,
     ...(browserType === chromium
       ? {
           args: [

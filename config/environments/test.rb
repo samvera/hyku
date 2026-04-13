@@ -33,6 +33,11 @@ Rails.application.configure do
   # Rails 7.2: Allow redirects to any host in test environment for multi-tenant testing
   config.action_controller.raise_on_open_redirects = false
 
+  # Multitenant Hyku: Playwright (`bin/playwright-a11y`) and host-based feature specs use
+  # Host: *.localhost.direct (e.g. admin-hyku, a11y-demo-hyku). Without this,
+  # ActionDispatch::HostAuthorization returns 403 and route-audit.spec.ts fails assertSuccessfulNavigation.
+  config.hosts << ".localhost.direct"
+
   # Store uploaded files on the local file system in a temporary directory.
   config.active_storage.service = :test
 

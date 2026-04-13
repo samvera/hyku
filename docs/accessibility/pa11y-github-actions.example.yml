@@ -1,0 +1,31 @@
+# Example: scheduled Pa11y CI against a stable staging URL.
+# Copy to .github/workflows/ and adjust secrets, URLs, and runner needs.
+# Hyku does not enable this by default — set STAGING_BASE_URL (or similar) in repo secrets first.
+#
+# name: Pa11y CI (staging)
+# on:
+#   schedule:
+#     - cron: '0 6 * * 1'  # Mondays 06:00 UTC
+#   workflow_dispatch:
+#
+# jobs:
+#   pa11y:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+#       - uses: actions/setup-node@v4
+#         with:
+#           node-version: '20'
+#       - run: npm install -g pa11y-ci
+#       - name: Run Pa11y
+#         env:
+#           BASE_URL: ${{ secrets.STAGING_BASE_URL }}
+#         run: |
+#           test -n "$BASE_URL"
+#           node -e "const fs=require('fs');const c=JSON.parse(fs.readFileSync('docs/accessibility/pa11yci.sample.json','utf8'));c.urls=c.urls.map(u=>u.replace('https://YOUR-TENANT.example.edu',process.env.BASE_URL));fs.writeFileSync('.pa11yci',JSON.stringify(c,null,2));"
+#           npx pa11y-ci
+#       - uses: actions/upload-artifact@v4
+#         if: always()
+#         with:
+#           name: pa11y-reports
+#           path: .pa11yci

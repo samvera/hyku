@@ -165,6 +165,9 @@ services:
     <<: *app
     # Uncomment command to access container with out starting bin/web. Useful for debugging
     # command: sleep infinity
+    extra_hosts:
+      - "admin-${APP_NAME:-hyku}.localhost.direct:127.0.0.1"
+      - "a11y-demo-${APP_NAME:-hyku}.localhost.direct:127.0.0.1"
     environment:
       <<: *app-env
       VIRTUAL_PORT: 3000

@@ -1,0 +1,9 @@
+area,urls_or_flows_tested,result,notes,tester,date,browser,os,assistive_technology
+Keyboard,,,,,,,,
+Zoom / reflow,,,,,,,,
+Text spacing,,,,,,,,
+Forms / errors,,,,,,,,
+Media / timing,,,,,,,,
+Third-party viewers,,,,,,,,
+Screen reader smoke,,,,,,,,
+Hover / focus content,,,,,,,,

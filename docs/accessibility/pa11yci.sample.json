@@ -1,0 +1,13 @@
+{
+  "defaults": {
+    "standard": "WCAG2AA",
+    "timeout": 60000,
+    "chromeLaunchConfig": {
+      "args": ["--no-sandbox", "--disable-dev-shm-usage"]
+    }
+  },
+  "urls": [
+    "https://YOUR-TENANT.example.edu/?locale=en",
+    "https://YOUR-TENANT.example.edu/catalog?locale=en"
+  ]
+}

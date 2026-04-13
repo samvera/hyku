@@ -128,7 +128,8 @@ jobs:
     uses: notch8/actions/.github/workflows/test.yaml@v1.0.6
     with:
       confdir: "/app/samvera/hyrax-webapp/solr/conf"
-      rspec_cmd: "gem install semaphore_test_boosters && bundle && rspec_booster --job $CI_NODE_INDEX/$CI_NODE_TOTAL"
+      setup_db_cmd: "RAILS_ENV=test bundle exec rake db:create db:schema:load db:migrate && bundle exec rake hyku:demo_content:seed"
+      rspec_cmd: "gem install semaphore_test_boosters && bundle && rspec_booster --job $CI_NODE_INDEX/$CI_NODE_TOTAL && if [ \"$CI_NODE_INDEX\" = \"0\" ]; then chmod +x bin/playwright-a11y && RAILS_ENV=test ./bin/playwright-a11y; fi"
 
   reports:
     if: always()

@@ -1,0 +1,26 @@
+{
+  "tenant_cname": "a11y-demo-hyku.localhost.direct",
+  "admin_host": "admin-hyku.localhost.direct",
+  "port": 3000,
+  "a11y_admin_email": "hyku-a11y-admin@example.com",
+  "a11y_admin_password_env": "HYKU_DEMO_A11Y_ADMIN_PASSWORD",
+  "routes": [
+    { "host": "admin-hyku.localhost.direct", "path": "/" },
+    { "host": "a11y-demo-hyku.localhost.direct", "path": "/?locale=en" },
+    { "host": "a11y-demo-hyku.localhost.direct", "path": "/catalog?locale=en" },
+    { "host": "a11y-demo-hyku.localhost.direct", "path": "/catalog/advanced?locale=en" },
+    { "host": "a11y-demo-hyku.localhost.direct", "path": "/all_collections?locale=en" },
+    { "host": "a11y-demo-hyku.localhost.direct", "path": "/users/sign_in?locale=en" },
+    { "host": "a11y-demo-hyku.localhost.direct", "path": "/help?locale=en" },
+    { "host": "a11y-demo-hyku.localhost.direct", "path": "/about?locale=en" },
+    { "host": "a11y-demo-hyku.localhost.direct", "path": "/zotero?locale=en" },
+    { "host": "a11y-demo-hyku.localhost.direct", "path": "/mendeley?locale=en" },
+    { "host": "a11y-demo-hyku.localhost.direct", "path": "/terms?locale=en" }
+  ],
+  "authenticated_routes": [
+    { "host": "a11y-demo-hyku.localhost.direct", "path": "/dashboard?locale=en" },
+    { "host": "a11y-demo-hyku.localhost.direct", "path": "/dashboard/works?locale=en" },
+    { "host": "a11y-demo-hyku.localhost.direct", "path": "/dashboard/collections?locale=en" },
+    { "host": "a11y-demo-hyku.localhost.direct", "path": "/admin/appearance?locale=en" }
+  ]
+}

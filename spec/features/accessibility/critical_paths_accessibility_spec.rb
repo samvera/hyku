@@ -32,6 +32,13 @@ RSpec.describe 'VPAT critical path accessibility', :a11y, type: :feature, js: tr
       expect(page).to have_content('Public GenericWork')
       expect_hyku_primary_content_axe_clean
     end
+
+    it 'catalog index masthead region is axe-clean' do
+      visit '/catalog'
+      expect(page).to have_content('Public GenericWork')
+      expect(page).to have_css('#masthead')
+      expect_hyku_masthead_axe_clean
+    end
   end
 
   context "public work show page" do

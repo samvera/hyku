@@ -64,6 +64,7 @@ further details.
 * Make sure you have added sufficient tests and documentation for your changes.
   * Test functionality with RSpec; Test features / UI with Capybara.
   * If you change **public-facing UI** (styles under `app/assets/stylesheets/`, shared views, or appearance-related templates), run **VPAT-oriented axe specs** in Docker: `docker compose exec web bin/rspec-a11y` (see [docs/accessibility/README.md](../docs/accessibility/README.md)).
+ * **CI**: The `build-test-lint` workflow's `test` job runs the **full** RSpec suite (including examples tagged `:a11y`) via `rspec_booster`. In a green run, confirm accessibility coverage by searching job logs for `VPAT` or by checking that `spec/features/accessibility/` examples are not excluded from your RSpec command.
 * Run _all_ the tests to assure nothing else was accidentally broken.
 
 ### Documenting Code

@@ -1,0 +1,14 @@
+{
+  "name": "hyku-a11y-routes",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Playwright + axe WCAG audits against hyku:demo_content:seed manifest",
+  "scripts": {
+    "test": "playwright test",
+    "test:crawl": "PLAYWRIGHT_CRAWL=1 playwright test"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10.1",
+    "@playwright/test": "^1.49.0"
+  }
+}

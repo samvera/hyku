@@ -2,10 +2,41 @@
 
 require 'rails_helper'
 
-# Additional VPAT-oriented journeys (sign-in, collection show, work edit).
+# Additional VPAT-oriented journeys (sign-in, collection show, work edit, help, about, dashboard).
 # Run: bundle exec rspec --tag a11y
 RSpec.describe 'VPAT extended path accessibility', :a11y, type: :feature, js: true, clean: true do
   include Warden::Test::Helpers
+
+  context 'public help page' do
+    it 'help page primary landmark is axe-clean' do
+      visit Hyrax::Engine.routes.url_helpers.help_path(locale: 'en')
+      expect(page).to have_css('#content-wrapper')
+      expect_hyku_primary_content_axe_clean
+    end
+  end
+
+  context 'public about page' do
+    it 'about page primary landmark is axe-clean' do
+      visit Hyrax::Engine.routes.url_helpers.about_path(locale: 'en')
+      expect(page).to have_css('#content-wrapper')
+      expect_hyku_primary_content_axe_clean
+    end
+  end
+
+  context 'dashboard works list' do
+    let(:user) { create(:admin) }
+
+    before do
+      create(:admin_group)
+      login_as(user, scope: :user)
+    end
+
+    it 'works index primary landmark is axe-clean' do
+      visit '/dashboard/works?locale=en'
+      expect(page).to have_css('#content-wrapper')
+      expect_hyku_primary_content_axe_clean
+    end
+  end
 
   context 'user sign-in page' do
     it 'sign-in page primary landmark is axe-clean' do

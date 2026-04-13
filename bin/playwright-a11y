@@ -1,0 +1,133 @@
+#!/usr/bin/env bash
+# Run Playwright + axe against e2e/a11y-routes/a11y-routes.manifest.json.
+# Runs db:create, db:extensions, db:prepare, then hyku:demo_content:seed for the active RAILS_ENV. Solr must be reachable for indexing.
+#
+# Default RAILS_ENV is development (matches `rails s` / Docker web with no env set). CI uses RAILS_ENV=test.
+# In development, seed requires IN_DOCKER=true or HYKU_DEMO_A11Y_SEED=1 (see lib/hyku/demo_a11y_content_seed.rb).
+# Stop any other Puma on PLAYWRIGHT_SERVER_PORT first, or set PLAYWRIGHT_SERVER_PORT to a free port.
+#
+# Env (optional):
+#   RAILS_ENV (default development; set test in CI for isolated DB)
+#   PLAYWRIGHT_SERVER_PORT (default 3000)
+#   HYKU_ADMIN_HOST / HYKU_ROOT_HOST (default admin-hyku.localhost.direct)
+#   PLAYWRIGHT_CRAWL=1 — optional BFS crawl (see e2e/a11y-routes/tests/crawl.supplement.spec.ts)
+#   PLAYWRIGHT_HTTP_BASIC_USER / PLAYWRIGHT_HTTP_BASIC_PASSWORD — HTTP basic (default samvera/hyku; matches
+#     ApplicationController when tenant is non-public in development). PLAYWRIGHT_HTTP_BASIC_OFF=1 to disable.
+set -euo pipefail
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$ROOT"
+mkdir -p "$ROOT/tmp"
+
+export RAILS_ENV="${RAILS_ENV:-development}"
+export APP_NAME="${APP_NAME:-hyku}"
+export HYKU_ADMIN_HOST="${HYKU_ADMIN_HOST:-admin-hyku.localhost.direct}"
+export HYKU_ROOT_HOST="${HYKU_ROOT_HOST:-admin-hyku.localhost.direct}"
+export HYKU_MULTITENANT="${HYKU_MULTITENANT:-true}"
+export HYKU_DEMO_A11Y_SEED="${HYKU_DEMO_A11Y_SEED:-1}"
+export IN_DOCKER="${IN_DOCKER:-true}"
+
+# Chromium's GPU stack frequently breaks in arm64 Docker; Firefox headless is reliable there.
+ARCH="$(uname -m)"
+if [[ "$ARCH" == aarch64 ]] || [[ "$ARCH" == arm64 ]]; then
+  export PLAYWRIGHT_A11Y_BROWSER="${PLAYWRIGHT_A11Y_BROWSER:-firefox}"
+fi
+# Firefox + root: must be set before `playwright install` so cache matches runtime (see Playwright docs).
+if [[ "${PLAYWRIGHT_A11Y_BROWSER:-}" == firefox ]] && [[ "$(id -u)" -eq 0 ]]; then
+  export HOME=/root
+fi
+
+PORT="${PLAYWRIGHT_SERVER_PORT:-3000}"
+HOST_BIND="${PLAYWRIGHT_SERVER_BIND:-0.0.0.0}"
+MANIFEST="$ROOT/e2e/a11y-routes/a11y-routes.manifest.json"
+
+# Create DB, install pgcrypto into shared_extensions (PostgreSQL 11 needs it for gen_random_uuid), then migrate.
+echo "[playwright-a11y] Creating ${RAILS_ENV} database if needed..."
+bundle exec rails db:create
+
+echo "[playwright-a11y] Ensuring PostgreSQL extensions (pgcrypto, hstore, uuid-ossp in shared_extensions)..."
+bundle exec rails db:extensions
+
+echo "[playwright-a11y] Preparing ${RAILS_ENV} database (db:prepare)..."
+bundle exec rails db:prepare
+
+# Idempotent: a11y demo tenant + Solr index + e2e/a11y-routes/a11y-routes.manifest.json (mutates the active DB).
+echo "[playwright-a11y] Seeding a11y demo + manifest (hyku:demo_content:seed, RAILS_ENV=${RAILS_ENV})..."
+bundle exec rake hyku:demo_content:seed
+
+if [[ ! -f "$MANIFEST" ]]; then
+  echo "Expected $MANIFEST after hyku:demo_content:seed — seed did not write manifest."
+  exit 1
+fi
+
+XVFB_PID=""
+
+cleanup() {
+  if [[ -n "${XVFB_PID:-}" ]] && kill -0 "$XVFB_PID" 2>/dev/null; then
+    kill "$XVFB_PID" || true
+    wait "$XVFB_PID" 2>/dev/null || true
+  fi
+  if [[ -n "${RAILS_PID:-}" ]] && kill -0 "$RAILS_PID" 2>/dev/null; then
+    kill "$RAILS_PID" || true
+    wait "$RAILS_PID" 2>/dev/null || true
+  fi
+}
+trap cleanup EXIT
+
+echo "[playwright-a11y] Starting Rails server (RAILS_ENV=${RAILS_ENV}) on ${HOST_BIND}:${PORT}..."
+bundle exec rails server -e "$RAILS_ENV" -p "$PORT" -b "$HOST_BIND" >"$ROOT/tmp/playwright-rails-server.log" 2>&1 &
+RAILS_PID=$!
+
+for i in $(seq 1 90); do
+  # Multitenant Hyku returns 404 for Host: 127.0.0.1; use admin host so / is routable.
+  if curl -sf -H "Host: ${HYKU_ADMIN_HOST}" "http://127.0.0.1:${PORT}/" >/dev/null 2>&1; then
+    echo "[playwright-a11y] Server ready."
+    break
+  fi
+  if ! kill -0 "$RAILS_PID" 2>/dev/null; then
+    echo "[playwright-a11y] Rails exited early. Log:"
+    tail -n 80 "$ROOT/tmp/playwright-rails-server.log" || true
+    exit 1
+  fi
+  sleep 1
+  if [[ "$i" -eq 90 ]]; then
+    echo "[playwright-a11y] Timeout waiting for Rails."
+    tail -n 80 "$ROOT/tmp/playwright-rails-server.log" || true
+    exit 1
+  fi
+done
+
+cd "$ROOT/e2e/a11y-routes"
+if [[ ! -d node_modules ]]; then
+  npm ci
+fi
+# Minimal dev images often lack browser libs; Docker needs --with-deps once (requires root/apt).
+if [[ -f /.dockerenv ]] || [[ "${PLAYWRIGHT_WITH_DEPS:-}" == "1" ]]; then
+  if [[ "${PLAYWRIGHT_A11Y_BROWSER:-}" == firefox ]]; then
+    npx playwright install --with-deps firefox
+  else
+    npx playwright install --with-deps chromium
+  fi
+else
+  if [[ "${PLAYWRIGHT_A11Y_BROWSER:-}" == firefox ]]; then
+    npx playwright install firefox
+  else
+    npx playwright install chromium
+  fi
+fi
+
+export PLAYWRIGHT_SERVER_PORT="$PORT"
+export PLAYWRIGHT_BASE_URL="${PLAYWRIGHT_BASE_URL:-http://${HYKU_ADMIN_HOST}:${PORT}}"
+# Match hyku:demo_content:seed defaults for hyku-a11y-admin@example.com (see DemoA11yContentSeed).
+export HYKU_DEMO_A11Y_ADMIN_PASSWORD="${HYKU_DEMO_A11Y_ADMIN_PASSWORD:-${HYKU_USER_DEFAULT_PASSWORD:-password}}"
+
+# headless_shell can crash the GPU helper on amd64 Docker images; headed Chromium on Xvfb avoids that (not needed for Firefox).
+if [[ -f /.dockerenv ]] && [[ "${PLAYWRIGHT_A11Y_BROWSER:-}" != firefox ]] && command -v Xvfb >/dev/null 2>&1; then
+  export DISPLAY=:99
+  Xvfb :99 -ac -screen 0 1280x1024x24 -nolisten tcp >>"$ROOT/tmp/playwright-xvfb.log" 2>&1 &
+  XVFB_PID=$!
+  export PLAYWRIGHT_DOCKER_XVFB=1
+  sleep 1
+fi
+
+echo "[playwright-a11y] Running Playwright (AA blocking, AAA report-only)..."
+npx playwright test "$@"

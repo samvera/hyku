@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 # Run VPAT-oriented axe-core feature specs only (requires Chrome / stack like other :js feature tests).
+#
+# Optional snapshots under tmp/a11y/ (.url, .html, .axe.json per example):
+#   A11Y_ARTIFACTS=1 bin/rspec-a11y
+# Docker: docker compose exec -e A11Y_ARTIFACTS=1 web bin/rspec-a11y
 set -euo pipefail
 cd "$(dirname "$0")/.."
 exec bundle exec rspec --tag a11y "$@"

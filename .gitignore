@@ -10,6 +10,11 @@ pg_upgrade_*.log
 /public/system
 /public/uv
 /node_modules
+
+## Accessibility E2E (generated manifest + local npm install)
+/e2e/a11y-routes/node_modules
+/e2e/a11y-routes/a11y-routes.manifest.json
+/e2e/a11y-routes/.auth/
 /coverage/
 /spec/tmp
 /plans/*

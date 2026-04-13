@@ -36,54 +36,58 @@ module HykuAccessibility
       return unless a11y
       return unless example.metadata[:type] == :feature
 
-      # Do not use defined?(page) here: this method is a module_function, so `page` is not in scope
-      # and defined?(page) is always false, which skipped all writes silently.
       session = Capybara.current_session
-      current =
-        begin
-          # Prefer driver URL; Capybara's page.current_url can be about:blank with remote Chrome.
-          session.driver.browser.current_url
-        rescue StandardError
-          begin
-            session.current_url
-          rescue StandardError
-            nil
-          end
-        end
+      current = capybara_session_url(session)
       if current.blank? || current == 'about:blank'
         warn "[A11Y_ARTIFACTS] Skipped snapshot (no real URL: #{current.inspect}) — #{example.full_description}"
         return
       end
 
+      write_a11y_artifact_files(session, example, current)
+    end
+
+    # Prefer driver URL; Capybara's page.current_url can be about:blank with remote Chrome.
+    # Do not use defined?(page): this is a module_function so `page` is not in scope.
+    def capybara_session_url(session)
+      session.driver.browser.current_url
+    rescue StandardError
+      session.current_url
+    rescue StandardError
+      nil
+    end
+
+    def write_a11y_artifact_files(session, example, current)
       dir = Rails.root.join('tmp', 'a11y')
       FileUtils.mkdir_p(dir)
       safe = example.full_description.gsub(/[^a-zA-Z0-9_-]+/, '_')[0..120]
       prefix = "#{Time.now.utc.strftime('%Y%m%dT%H%M%S')}_#{safe}"
 
       File.write(dir.join("#{prefix}.url"), "#{current}\n")
+      write_a11y_html_snapshot(session, dir, prefix)
+      write_a11y_axe_snapshot(session, dir, prefix)
+    end
 
-      begin
-        File.write(dir.join("#{prefix}.html"), session.html)
-      rescue StandardError => e
-        File.write(dir.join("#{prefix}.html-error.txt"), e.message)
-      end
+    def write_a11y_html_snapshot(session, dir, prefix)
+      File.write(dir.join("#{prefix}.html"), session.html)
+    rescue StandardError => e
+      File.write(dir.join("#{prefix}.html-error.txt"), e.message)
+    end
 
-      begin
-        browser = session.driver.browser
-        script = <<~JS
-          const callback = arguments[arguments.length - 1];
-          if (typeof axe === 'undefined') {
-            callback(JSON.stringify({ error: 'axe not loaded on page' }));
-            return;
-          }
-          axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21aa'] } })
-            .then(results => callback(JSON.stringify(results)));
-        JS
-        json = browser.execute_async_script(script)
-        File.write(dir.join("#{prefix}.axe.json"), "#{json}\n")
-      rescue StandardError => e
-        File.write(dir.join("#{prefix}.axe-error.txt"), "#{e.class}: #{e.message}\n")
-      end
+    def write_a11y_axe_snapshot(session, dir, prefix)
+      browser = session.driver.browser
+      script = <<~JS
+        const callback = arguments[arguments.length - 1];
+        if (typeof axe === 'undefined') {
+          callback(JSON.stringify({ error: 'axe not loaded on page' }));
+          return;
+        }
+        axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21aa'] } })
+          .then(results => callback(JSON.stringify(results)));
+      JS
+      json = browser.execute_async_script(script)
+      File.write(dir.join("#{prefix}.axe.json"), "#{json}\n")
+    rescue StandardError => e
+      File.write(dir.join("#{prefix}.axe-error.txt"), "#{e.class}: #{e.message}\n")
     end
   end
 end

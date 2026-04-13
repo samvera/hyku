@@ -13,7 +13,65 @@ namespace :hyku do
   end
 end
 
+# Split out so HykuAccessibilityCoverageReport stays under Metrics/ClassLength.
+module HykuAccessibilityCoverageMatrixPrinting
+  private
+
+  def print_matrix_stats
+    unless @matrix_path.file?
+      warn "Matrix not found: #{@matrix_path}"
+      return
+    end
+
+    rows = matrix_criteria_rows
+    puts "WCAG matrix (#{@matrix_path.relative_path_from(@root)}):"
+    puts "  Total criteria rows: #{rows.size}"
+    print_matrix_coverage_breakdown(rows)
+    %w[automated_axe semi_automated].each { |bucket| print_matrix_bucket_stats(rows, bucket) }
+  end
+
+  def matrix_criteria_rows
+    data = YAML.load_file(@matrix_path)
+    Array(data['criteria'])
+  end
+
+  def print_matrix_coverage_breakdown(rows)
+    by_coverage = rows.group_by { |r| r['coverage'].to_s }
+    puts '  By coverage type:'
+    by_coverage.keys.sort.each { |k| puts "    #{k}: #{by_coverage[k].size}" }
+  end
+
+  def print_matrix_bucket_stats(rows, bucket)
+    bucket_rows = rows.select { |r| r['coverage'].to_s == bucket }
+    return if bucket_rows.empty?
+
+    linked = bucket_rows.count { |r| spec_paths_for(r).any? }
+    total = bucket_rows.size
+    pct = total.positive? ? (100.0 * linked / total).round(1) : 0.0
+    puts "  #{bucket}: #{linked}/#{total} rows list at least one spec (#{pct}% linkage)"
+    print_matrix_unlinked(bucket_rows)
+  end
+
+  def print_matrix_unlinked(bucket_rows)
+    unlinked = bucket_rows.reject { |r| spec_paths_for(r).any? }
+    return if unlinked.empty?
+
+    puts "    Unlinked (add spec paths under specs:):"
+    unlinked.each { |r| puts "      - #{r['id']} #{r['name']}" }
+  end
+
+  def spec_paths_for(row)
+    specs = row['specs']
+    return [] if specs.nil?
+    return specs if specs.is_a?(Array)
+
+    # legacy single string
+    [specs].compact
+  end
+end
+
 class HykuAccessibilityCoverageReport
+  include HykuAccessibilityCoverageMatrixPrinting
   class << self
     def run
       new.print
@@ -69,49 +127,6 @@ class HykuAccessibilityCoverageReport
     else
       warn '  Could not parse example count from rspec output.'
     end
-  end
-
-  def print_matrix_stats
-    unless @matrix_path.file?
-      warn "Matrix not found: #{@matrix_path}"
-      return
-    end
-
-    data = YAML.load_file(@matrix_path)
-    rows = Array(data['criteria'])
-    puts "WCAG matrix (#{@matrix_path.relative_path_from(@root)}):"
-    puts "  Total criteria rows: #{rows.size}"
-
-    by_coverage = rows.group_by { |r| r['coverage'].to_s }
-    puts '  By coverage type:'
-    by_coverage.keys.sort.each do |k|
-      puts "    #{k}: #{by_coverage[k].size}"
-    end
-
-    %w[automated_axe semi_automated].each do |bucket|
-      bucket_rows = rows.select { |r| r['coverage'].to_s == bucket }
-      next if bucket_rows.empty?
-
-      linked = bucket_rows.count { |r| spec_paths_for(r).any? }
-      total = bucket_rows.size
-      pct = total.positive? ? (100.0 * linked / total).round(1) : 0.0
-      puts "  #{bucket}: #{linked}/#{total} rows list at least one spec (#{pct}% linkage)"
-
-      unlinked = bucket_rows.reject { |r| spec_paths_for(r).any? }
-      next if unlinked.empty?
-
-      puts "    Unlinked (add spec paths under specs:):"
-      unlinked.each { |r| puts "      - #{r['id']} #{r['name']}" }
-    end
-  end
-
-  def spec_paths_for(row)
-    specs = row['specs']
-    return [] if specs.nil?
-    return specs if specs.is_a?(Array)
-
-    # legacy single string
-    [specs].compact
   end
 
   def print_pa11y_sample_urls

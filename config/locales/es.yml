@@ -186,6 +186,9 @@ es:
       user_search:
         submit: Ir
   hyku:
+    file_set:
+      pdf_thumbnail_alt: Miniatura de vista previa del documento PDF
+      image_thumbnail_alt: Miniatura de vista previa del archivo de imagen
     account:
       signup_disabled: El registro de la cuenta está deshabilitado
     admin:

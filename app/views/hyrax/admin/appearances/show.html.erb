@@ -1,3 +1,4 @@
+<%# OVERRIDE Hyrax v5.2.0 — tablist/tab/tabpanel roles and aria-controls/selected for WCAG (appearance admin UI). %>
 <% provide :page_header do %>
   <h1><span class="fa fa-paint-brush" aria-hidden="true"></span> <%= t('.header') %></h1>
 <% end %>
@@ -6,85 +7,85 @@
   <div class="col-md-12">
     <div class="card tabs" id="admin-set-controls">
       <ul class="nav nav-tabs" role="tablist">
-        <li class="nav-item">
-          <a class="nav-link active" href="#logo_image" role="tab" data-toggle="tab"><%= t('.tabs.logo') %></a>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link active" href="#logo_image" id="appearance-tab-logo_image" role="tab" data-toggle="tab" aria-controls="logo_image" aria-selected="true"><%= t('.tabs.logo') %></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#favicon" role="tab" data-toggle="tab"><%= t('.tabs.favicon') %></a>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" href="#favicon" id="appearance-tab-favicon" role="tab" data-toggle="tab" aria-controls="favicon" aria-selected="false" tabindex="-1"><%= t('.tabs.favicon') %></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#banner_image" role="tab" data-toggle="tab"><%= t('.tabs.banner_image') %></a>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" href="#banner_image" id="appearance-tab-banner_image" role="tab" data-toggle="tab" aria-controls="banner_image" aria-selected="false" tabindex="-1"><%= t('.tabs.banner_image') %></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#directory_image" role="tab" data-toggle="tab"><%= t('.tabs.directory_image') %></a>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" href="#directory_image" id="appearance-tab-directory_image" role="tab" data-toggle="tab" aria-controls="directory_image" aria-selected="false" tabindex="-1"><%= t('.tabs.directory_image') %></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#default_images" role="tab" data-toggle="tab"><%= t('.tabs.default_images') %></a>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" href="#default_images" id="appearance-tab-default_images" role="tab" data-toggle="tab" aria-controls="default_images" aria-selected="false" tabindex="-1"><%= t('.tabs.default_images') %></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#color" role="tab" data-toggle="tab"><%= t('.tabs.colors') %></a>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" href="#color" id="appearance-tab-color" role="tab" data-toggle="tab" aria-controls="color" aria-selected="false" tabindex="-1"><%= t('.tabs.colors') %></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#font" role="tab" data-toggle="tab"><%= t('.tabs.fonts') %></a>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" href="#font" id="appearance-tab-font" role="tab" data-toggle="tab" aria-controls="font" aria-selected="false" tabindex="-1"><%= t('.tabs.fonts') %></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#css" role="tab" data-toggle="tab"><%= t('.tabs.custom_css') %></a>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" href="#css" id="appearance-tab-css" role="tab" data-toggle="tab" aria-controls="css" aria-selected="false" tabindex="-1"><%= t('.tabs.custom_css') %></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#themes" role="tab" data-toggle="tab"><%= t('.tabs.themes') %></a>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" href="#themes" id="appearance-tab-themes" role="tab" data-toggle="tab" aria-controls="themes" aria-selected="false" tabindex="-1"><%= t('.tabs.themes') %></a>
         </li>
       </ul>
       <div class="tab-content">
 
-        <div id="logo_image" class="tab-pane active">
+        <div id="logo_image" class="tab-pane active" role="tabpanel" aria-labelledby="appearance-tab-logo_image">
           <div class="card">
             <%= render 'logo_image_form' %>
           </div>
         </div>
 
-        <div id="favicon" class="tab-pane">
+        <div id="favicon" class="tab-pane" role="tabpanel" aria-labelledby="appearance-tab-favicon">
           <div class="card">
             <%= render 'favicon_form' %>
           </div>
         </div>
 
-        <div id="banner_image" class="tab-pane">
+        <div id="banner_image" class="tab-pane" role="tabpanel" aria-labelledby="appearance-tab-banner_image">
           <div class="card">
             <%= render 'banner_image_form' %>
           </div>
         </div>
 
-        <div id="directory_image" class="tab-pane">
+        <div id="directory_image" class="tab-pane" role="tabpanel" aria-labelledby="appearance-tab-directory_image">
           <div class="card">
             <%= render 'directory_image_form' %>
           </div>
         </div>
 
-        <div id="default_images" class="tab-pane" data-alert="<%= I18n.t('hyrax.admin.appearances.show.forms.default_images.alert') %>">
+        <div id="default_images" class="tab-pane" role="tabpanel" aria-labelledby="appearance-tab-default_images" data-alert="<%= I18n.t('hyrax.admin.appearances.show.forms.default_images.alert') %>">
           <div class="card">
             <%= render 'default_images_form' %>
           </div>
         </div>
 
-        <div id="color" class="tab-pane">
+        <div id="color" class="tab-pane" role="tabpanel" aria-labelledby="appearance-tab-color">
           <div class="card">
             <%= render 'default_colors_form' %>
           </div>
         </div>
 
-        <div id="font" class="tab-pane">
+        <div id="font" class="tab-pane" role="tabpanel" aria-labelledby="appearance-tab-font">
           <div class="card">
             <%= render 'default_fonts_form' %>
           </div>
         </div>
 
-        <div id="css" class="tab-pane">
+        <div id="css" class="tab-pane" role="tabpanel" aria-labelledby="appearance-tab-css">
           <div class="card">
             <%= render 'custom_css_form' %>
           </div>
         </div>
 
-        <div id="themes" class="tab-pane">
+        <div id="themes" class="tab-pane" role="tabpanel" aria-labelledby="appearance-tab-themes">
           <div class="card">
             <%= render 'theme_form' %>
           </div>

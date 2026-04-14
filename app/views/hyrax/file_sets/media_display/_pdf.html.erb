@@ -1,14 +1,16 @@
+<%# OVERRIDE Hyrax v5.2.0 — meaningful alt for PDF thumbnail (empty alt + decorative role still fails some axe configs). %>
+<% pdf_thumb_alt = t('hyku.file_set.pdf_thumbnail_alt') %>
 <% if display_media_download_link?(file_set: file_set) %>
   <div>
       <h2 class="sr-only"><%= t('hyrax.file_set.show.downloadable_content.heading') %></h2>
       <%= image_tag thumbnail_url(file_set),
                     class: "representative-media",
-                    alt: "",
-                    role: "presentation" %>
+                    alt: pdf_thumb_alt %>
       <% if controller_name == 'file_sets' && @presenter.solr_document.load_parent_docs.any?(&:show_pdf_download_button) %>
         <%= link_to t('hyrax.file_set.show.downloadable_content.pdf_link'),
                     hyrax.download_path(file_set),
                     target: :_blank,
+                    rel: "noopener noreferrer",
                     id: "file_download",
                     data: { label: file_set.id, work_id: @presenter.id, collection_ids: @presenter.member_of_collection_ids } %>
       <% end %>
@@ -17,7 +19,6 @@
     <div>
       <%= image_tag thumbnail_url(file_set),
                     class: "representative-media",
-                    alt: "",
-                    role: "presentation" %>
+                    alt: pdf_thumb_alt %>
     </div>
 <% end %>

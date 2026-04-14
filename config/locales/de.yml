@@ -185,6 +185,9 @@ de:
       user_search:
         submit: Suche
   hyku:
+    file_set:
+      pdf_thumbnail_alt: Vorschaubild des PDF-Dokuments
+      image_thumbnail_alt: Vorschaubild der Bilddatei
     account:
       signup_disabled: Kontoanmeldung ist deaktiviert
     admin:

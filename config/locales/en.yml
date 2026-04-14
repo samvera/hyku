@@ -46,6 +46,9 @@ en:
       user_search:
         submit: Go
   hyku:
+    file_set:
+      pdf_thumbnail_alt: PDF document preview thumbnail
+      image_thumbnail_alt: Image file preview thumbnail
     account:
       signup_disabled: Account registration is disabled
     admin:

@@ -76,8 +76,14 @@ module Hyrax
 
     def browserconfig; end
 
+    # TODO(open-upstream-pr): Contribute this pattern to samvera/hyrax if/when all_collections exists
+    # there: non-theme fallback view (Hyku: app/views/hyrax/homepage/all_collections.html.erb) plus
+    # @top_level_collections for themes that skip the IR branch in load_shared_info.
     def all_collections
       load_shared_info
+      # IR theme sets this in load_shared_info; other themes (e.g. default_home) still need a list
+      # for app/views/hyrax/homepage/all_collections.html.erb.
+      @top_level_collections ||= load_top_level_collections(@collections)
     end
 
     # Added from Blacklight 6.23.0 to change url for facets on home page

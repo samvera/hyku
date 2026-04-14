@@ -1,0 +1,13 @@
+<%# OVERRIDE Hyrax v5.2.0 — Fallback when home_page_theme is not institutional_repository (no themed all_collections). %>
+<h2>Browse by Collection</h2>
+<% Array.wrap(@top_level_collections).each do |collection| %>
+  <div class="col-12">
+    <div>
+      <ul class="list-unstyled all-collection-list">
+        <%= link_to [hyrax, collection] do %>
+          <li><%= collection.title_or_label %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>

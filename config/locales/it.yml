@@ -186,6 +186,9 @@ it:
       user_search:
         submit: Partire
   hyku:
+    file_set:
+      pdf_thumbnail_alt: Anteprima in miniatura del documento PDF
+      image_thumbnail_alt: Anteprima in miniatura del file immagine
     account:
       signup_disabled: La registrazione dell'account è disattivata
     admin:

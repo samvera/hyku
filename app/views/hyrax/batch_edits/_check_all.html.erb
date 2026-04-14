@@ -1,0 +1,23 @@
+<%# OVERRIDE Hyrax v5.2.0 — avoid nesting interactive controls (dropdown link inside <label>), which fails axe nested-interactive / WCAG 4.1.2. %>
+<div class="dropdown batch_document_selector_all">
+  <div class="centerizer d-flex flex-wrap align-items-center">
+    <%= check_box_tag 'check_all', 'yes', @all_checked, disabled: @disable_select_all %>
+    <label for="check_all" class="batch-checkbox-label-text mb-0 ml-1">
+      <span class="sr-only"><%= t("hyrax.dashboard.my.sr.check_all_label") %></span>
+      <span aria-hidden="true"><%= t("hyrax.dashboard.my.action.select") %></span>
+    </label>
+    <% if !@disable_select_all %>
+      <a class="dropdown-toggle ml-1"
+         data-toggle="dropdown"
+         href="#"
+         role="button"
+         aria-expanded="false"
+         aria-haspopup="true">
+        <span class="sr-only"><%= t('hyrax.batch_edits.check_all.select_to_access_selection_options') %></span>
+      </a>
+      <ul class="dropdown-menu">
+        <%= render "batch_edits_actions" %>
+      </ul>
+    <% end %>
+  </div>
+</div>

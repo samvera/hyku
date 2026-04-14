@@ -1,0 +1,28 @@
+<%# OVERRIDE Hyrax v5.2.0 — WCAG 1.2.2 / axe video-caption: provide a caption track for HTML5 video previews. %>
+<% placeholder_captions = "/a11y/repository-media-placeholder-en.vtt" %>
+<% if display_media_download_link?(file_set: file_set) %>
+  <div>
+      <h2 class="sr-only"><%= t('hyrax.file_set.show.downloadable_content.heading') %></h2>
+      <video controls="controls" class="video-js vjs-default-skin" style="width:100%" data-setup="{}" controlsList="nodownload" preload="auto">
+        <source src="<%= hyrax.download_path(file_set, file: 'webm', mime_type: 'video/webm') %>" type="video/webm" />
+        <source src="<%= hyrax.download_path(file_set, file: 'mp4', mime_type: 'video/mp4') %>" type="video/mp4" />
+        <track kind="captions" srclang="en" label="English" src="<%= placeholder_captions %>" default />
+        <%= t('hyrax.file_set.show.downloadable_content.video_tag_not_supported') %>
+      </video>
+      <%= link_to t('hyrax.file_set.show.downloadable_content.video_link'),
+                  hyrax.download_path(file_set),
+                  data: { label: file_set.id.to_s, work_id: @presenter.id, collection_ids: @presenter.member_of_collection_ids },
+                  target: :_blank,
+                  rel: "noopener noreferrer",
+                  id: "file_download" %>
+    </div>
+<% else %>
+    <div>
+      <video controls="controls" class="video-js vjs-default-skin" style="width:100%" data-setup="{}" controlsList="nodownload" preload="auto">
+        <source src="<%= hyrax.download_path(file_set, file: 'webm') %>" type="video/webm" />
+        <source src="<%= hyrax.download_path(file_set, file: 'mp4') %>" type="video/mp4" />
+        <track kind="captions" srclang="en" label="English" src="<%= placeholder_captions %>" default />
+        <%= t('hyrax.file_set.show.downloadable_content.video_tag_not_supported') %>
+      </video>
+    </div>
+<% end %>

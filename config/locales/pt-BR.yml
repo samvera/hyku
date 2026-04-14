@@ -68,6 +68,9 @@ pt-BR:
       user_search:
         submit: Ir
   hyku:
+    file_set:
+      pdf_thumbnail_alt: Miniatura de pré-visualização do documento PDF
+      image_thumbnail_alt: Miniatura de pré-visualização do arquivo de imagem
     account:
       signup_disabled: O registro da conta está desativado
     admin:

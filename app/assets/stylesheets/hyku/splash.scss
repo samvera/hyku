@@ -1,6 +1,7 @@
 // Splash Landing Page Styles
 
-body.splash.splash-index.public-facing {
+// Match `body.splash … index` (Rails uses separate `index` class, not `splash-index`).
+body.splash.public-facing {
   /// --- Container Layout (Homepage Only) --- ///
   #content-wrapper.container {
     margin: 3rem auto;
@@ -65,7 +66,8 @@ body.splash.splash-index.public-facing {
       padding: 50px 20px;
 
       .heading {
-        color: $gray;
+        // WCAG 2.1 AA: $gray (#6c757d) on #f4f4f4 is below 4.5:1; align with jumbotron heading
+        color: $jumbotron-heading-color;
         font-size: 1.4em;
         text-align: center;
       }

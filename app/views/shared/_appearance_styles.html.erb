@@ -24,6 +24,33 @@ body.public-facing .dropdown-menu a {
 body.public-facing a:hover,
 body.public-facing a:focus { color: <%= appearance.link_hover_color %>; }
 
+/* WCAG 2.1 AA: breadcrumb strip (#e9ecef) needs darker links than default appearance link color */
+body.public-facing nav.breadcrumb a,
+body.public-facing .breadcrumb a {
+  color: #104d7a !important;
+}
+body.public-facing nav.breadcrumb a:hover,
+body.public-facing nav.breadcrumb a:focus,
+body.public-facing .breadcrumb a:hover,
+body.public-facing .breadcrumb a:focus {
+  color: #0a3554 !important;
+}
+
+/* WCAG 2.1 AA: appearance link on Bootstrap striped rows (~#f2f2f2) is ~4.4:1; applies to collection
+   member tables, work "Items" / related-files, and metadata tables using .table-striped. */
+body.public-facing table.table-striped tbody a {
+  color: #104d7a !important;
+}
+body.public-facing table.table-striped tbody a:hover,
+body.public-facing table.table-striped tbody a:focus {
+  color: #0a3554 !important;
+}
+
+/* Admin proprietor splash: product feature headings (align with $jumbotron-heading-color in splash.scss) */
+body.splash.public-facing .product-features h2.heading {
+  color: #30373b !important;
+}
+
 /* MAIN NAV */
 body.public-facing .navbar.navbar-expand-lg,
 body.public-facing footer.navbar {
@@ -227,6 +254,11 @@ body.community .community-explore-collections:hover {
 }
 body.community .community-explore-collections:hover .card-title a {
   color: <%= appearance.primary_button_text_color %>;
+}
+
+/* WCAG 1.4.1: distinguish footer links without relying on color (admin splash omits body.public-facing, so appearance link colors do not apply). */
+footer.navbar .navbar-link {
+  text-decoration: underline;
 }
 
 </style>

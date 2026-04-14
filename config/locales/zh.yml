@@ -186,6 +186,9 @@ zh:
       user_search:
         submit: 走
   hyku:
+    file_set:
+      pdf_thumbnail_alt: PDF 文档预览缩略图
+      image_thumbnail_alt: 图像文件预览缩略图
     account:
       signup_disabled: 帐户注册被禁用
     admin:

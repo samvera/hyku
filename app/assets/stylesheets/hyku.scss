@@ -1,3 +1,25 @@
+// WCAG 2.1 AA: default appearance link (#2e74b2) on breadcrumb bg (#e9ecef) fails contrast vs
+// `body.public-facing a` in app/views/shared/_appearance_styles.html.erb
+body.public-facing nav.breadcrumb a,
+body.public-facing .breadcrumb a {
+  color: #104d7a !important;
+
+  &:hover,
+  &:focus {
+    color: #0a3554 !important;
+  }
+}
+
+// WCAG 2.1 AA: same default link on Bootstrap striped rows (~#f2f2f2) is ~4.4:1 (needs 4.5:1)
+body.public-facing.hyrax-collections-show table.table-striped a {
+  color: #104d7a !important;
+
+  &:hover,
+  &:focus {
+    color: #0a3554 !important;
+  }
+}
+
 #masthead {
     #logo {
         margin-left: 10px;

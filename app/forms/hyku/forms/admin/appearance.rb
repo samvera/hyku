@@ -41,8 +41,9 @@ module Hyku
           'footer_link_hover_color' => '#ffffff',
           'header_and_footer_background_color' => '#3c3c3c',
           'header_and_footer_text_color' => '#dcdcdc',
-          'link_color' => '#2e74b2',
-          'link_hover_color' => '#215480',
+          # WCAG 2.1 AA on ~#f2f2f2 (Bootstrap table-striped): #2e74b2 is ~4.4:1; darken slightly for new tenants.
+          'link_color' => '#1a5f90',
+          'link_hover_color' => '#134a72',
           'navbar_background_color' => '#000000',
           'navbar_link_background_color' => '#375f8c',
           'navbar_link_background_hover_color' => '#ffffff',

@@ -186,6 +186,9 @@ fr:
       user_search:
         submit: Aller
   hyku:
+    file_set:
+      pdf_thumbnail_alt: "Miniature d'aperçu du document PDF"
+      image_thumbnail_alt: "Miniature d'aperçu du fichier image"
     account:
       signup_disabled: L'enregistrement du compte est désactivé
     admin:

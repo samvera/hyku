@@ -247,10 +247,12 @@ class CatalogController < ApplicationController
     # of Solr search fields.
     # creator, title, description, publisher, date_created,
     # subject, language, resource_type, format, identifier, based_near,
+    #
+    # Hyku solr/conf/solrconfig.xml only registers spellcheck dictionaries named
+    # default, author, subject, and title. Omit per-field spellcheck.dictionary here;
+    # unknown names cause Solr errors and Blacklight::Exceptions::InvalidRequest.
     config.add_search_field('contributor') do |field|
       # solr_parameters hash are sent to Solr as ordinary url query params.
-      field.solr_parameters = { "spellcheck.dictionary": "contributor" }
-
       # :solr_local_parameters will be sent using Solr LocalParams
       # syntax, as eg {! qf=$title_qf }. This is neccesary to use
       # Solr parameter de-referencing like $title_qf.
@@ -263,7 +265,6 @@ class CatalogController < ApplicationController
     end
 
     config.add_search_field('creator') do |field|
-      field.solr_parameters = { "spellcheck.dictionary": "creator" }
       solr_name = 'creator_tesim'
       field.solr_local_parameters = {
         qf: solr_name,
@@ -272,9 +273,6 @@ class CatalogController < ApplicationController
     end
 
     config.add_search_field('title') do |field|
-      field.solr_parameters = {
-        "spellcheck.dictionary": "title"
-      }
       solr_name = 'title_tesim'
       field.solr_local_parameters = {
         qf: solr_name,
@@ -284,9 +282,6 @@ class CatalogController < ApplicationController
 
     config.add_search_field('description') do |field|
       field.label = "Abstract or Summary"
-      field.solr_parameters = {
-        "spellcheck.dictionary": "description"
-      }
       solr_name = 'description_tesim'
       field.solr_local_parameters = {
         qf: solr_name,
@@ -295,9 +290,6 @@ class CatalogController < ApplicationController
     end
 
     config.add_search_field('publisher') do |field|
-      field.solr_parameters = {
-        "spellcheck.dictionary": "publisher"
-      }
       solr_name = 'publisher_tesim'
       field.solr_local_parameters = {
         qf: solr_name,
@@ -308,9 +300,6 @@ class CatalogController < ApplicationController
     date_fields = ['date_created_tesim', 'sorted_date_isi', 'sorted_month_isi']
 
     config.add_search_field('date_created') do |field|
-      field.solr_parameters = {
-        "spellcheck.dictionary": "date_created"
-      }
       field.solr_local_parameters = {
         qf: date_fields.join(' '),
         pf: date_fields.join(' ')
@@ -318,9 +307,6 @@ class CatalogController < ApplicationController
     end
 
     config.add_search_field('subject') do |field|
-      field.solr_parameters = {
-        "spellcheck.dictionary": "subject"
-      }
       solr_name = 'subject_tesim'
       field.solr_local_parameters = {
         qf: solr_name,
@@ -329,9 +315,6 @@ class CatalogController < ApplicationController
     end
 
     config.add_search_field('language') do |field|
-      field.solr_parameters = {
-        "spellcheck.dictionary": "language"
-      }
       solr_name = 'language_tesim'
       field.solr_local_parameters = {
         qf: solr_name,
@@ -340,9 +323,6 @@ class CatalogController < ApplicationController
     end
 
     config.add_search_field('resource_type') do |field|
-      field.solr_parameters = {
-        "spellcheck.dictionary": "resource_type"
-      }
       solr_name = 'resource_type_tesim'
       field.solr_local_parameters = {
         qf: solr_name,
@@ -352,9 +332,6 @@ class CatalogController < ApplicationController
 
     config.add_search_field('format') do |field|
       field.include_in_advanced_search = false
-      field.solr_parameters = {
-        "spellcheck.dictionary": "format"
-      }
       solr_name = 'format_tesim'
       field.solr_local_parameters = {
         qf: solr_name,
@@ -364,9 +341,6 @@ class CatalogController < ApplicationController
 
     config.add_search_field('identifier') do |field|
       field.include_in_advanced_search = false
-      field.solr_parameters = {
-        "spellcheck.dictionary": "identifier"
-      }
       solr_name = 'id_tesim'
       field.solr_local_parameters = {
         qf: solr_name,
@@ -376,9 +350,6 @@ class CatalogController < ApplicationController
 
     config.add_search_field('based_near_label') do |field|
       field.label = "Location"
-      field.solr_parameters = {
-        "spellcheck.dictionary": "based_near_label"
-      }
       solr_name = 'based_near_label_tesim'
       field.solr_local_parameters = {
         qf: solr_name,
@@ -387,9 +358,6 @@ class CatalogController < ApplicationController
     end
 
     config.add_search_field('keyword') do |field|
-      field.solr_parameters = {
-        "spellcheck.dictionary": "keyword"
-      }
       solr_name = 'keyword_tesim'
       field.solr_local_parameters = {
         qf: solr_name,

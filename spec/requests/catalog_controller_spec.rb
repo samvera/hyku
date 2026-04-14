@@ -57,9 +57,6 @@ RSpec.describe CatalogController, type: :request, clean: true, multitenant: true
     before do
       host! "http://#{cross_search_tenant_account.cname}/"
       black_light_config.add_search_field('title') do |field|
-        field.solr_parameters = {
-          "spellcheck.dictionary": "title"
-        }
         solr_name = 'title_tesim'
         field.solr_local_parameters = {
           qf: solr_name,

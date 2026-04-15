@@ -132,14 +132,18 @@ class SolrDocument
   private
 
   def link_to_item
-    return "https://#{first('account_cname_tesim')}/collections/#{id}" if collection?
+    host = first('account_cname_tesim') || Site.account&.cname
+    return nil unless host
+    return "https://#{host}/collections/#{id}" if collection?
 
     Rails.application.routes.url_helpers.send(
       "hyrax_#{first('has_model_ssim').to_s.underscore}_url",
       id,
-      host: first('account_cname_tesim'),
+      host: host,
       protocol: 'https'
     )
+  rescue StandardError
+    nil
   end
 
   def link_to_thumbnail

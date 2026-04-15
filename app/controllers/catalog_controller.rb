@@ -249,8 +249,11 @@ class CatalogController < ApplicationController
     # subject, language, resource_type, format, identifier, based_near,
     #
     # Hyku solr/conf/solrconfig.xml only registers spellcheck dictionaries named
-    # default, author, subject, and title. Omit per-field spellcheck.dictionary here;
+    # default, author, subject, and title. Omit per-field spellcheck.dictionary here, unless it is also added to the solrconfig.xml;
     # unknown names cause Solr errors and Blacklight::Exceptions::InvalidRequest.
+    # To add per-field spellcheck, add e.g.
+    # field.solr_parameters = { "spellcheck.dictionary": "contributor" }
+    # inside the add_search_field block
     config.add_search_field('contributor') do |field|
       # solr_parameters hash are sent to Solr as ordinary url query params.
       # :solr_local_parameters will be sent using Solr LocalParams

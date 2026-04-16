@@ -377,7 +377,7 @@ module Hyku
 
       # Because we're loading local translations early in the to_prepare block for our decorators,
       # the I18n.load_path is out of order.  This line ensures that we load local translations last.
-      I18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.yml')]
+      I18n.load_path |= Dir[Rails.root.join('config', 'locales', '**', '*.yml')]
 
       ##
       # The first "#valid?" service is the one that we'll use for generating derivatives.

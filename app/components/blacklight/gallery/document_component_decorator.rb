@@ -5,7 +5,7 @@ module Blacklight
   module Gallery
     module DocumentComponentDecorator
       def before_render
-        with_thumbnail(image_options: { class: 'img-thumbnail', alt: helpers.thumbnail_alt_text_for(@document || @presenter&.document) }) unless thumbnail.present?
+        with_thumbnail(image_options: { class: 'img-thumbnail', alt: helpers.thumbnail_alt_text_for(@document || @presenter&.document) }) if thumbnail.blank?
         super
       end
     end

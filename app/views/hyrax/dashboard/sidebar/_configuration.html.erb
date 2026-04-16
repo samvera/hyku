@@ -38,6 +38,9 @@
           <%= menu.nav_link('/admin/work_types/edit', class: "nav-link", title: t('hyku.admin.work_types')) do %>
             <span class="fa  fa-address-book"></span> <span class="sidebar-action-text"><%= t('hyku.admin.work_types') %></span>
           <% end %>
+          <%= menu.nav_link(main_app.edit_admin_field_mappings_path, class: "nav-link", title: t('hyku.admin.field_mappings')) do %>
+            <span class="fa fa-exchange"></span> <span class="sidebar-action-text"><%= t('hyku.admin.field_mappings') %></span>
+          <% end %>
         <% end %>
       <% end %>
     </li>

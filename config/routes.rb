@@ -127,6 +127,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   namespace :admin do
     resource :account, only: %i[edit update]
     resource :work_types, only: %i[edit update]
+    resource :field_mappings, only: %i[edit update]
     resources :users, only: [:index, :destroy] do
       post 'activate', on: :member
       delete 'remove_role/:role_id', on: :member, to: 'users#remove_role', as: :remove_role

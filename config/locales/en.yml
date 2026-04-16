@@ -154,6 +154,7 @@ en:
           work_depositor: Can deposit Works into any Admin Set in this tenant. Can read, edit, and manage Embargoes / Leases for Works belonging to them
           work_editor: Can create, read, edit, and approve any Work in this tenant, as well as move Works between Admin Sets and manage Embargoes and Leases
       title: Administration
+      field_mappings: Bulkrax Field Mappings
       work_types: Available Work Types
     footer:
       admin_login: Administrator login

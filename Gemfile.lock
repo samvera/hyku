@@ -1636,7 +1636,7 @@ GEM
       psych (>= 3.3)
       rdf (~> 3.2, >= 3.2.9)
       rdf-xsd (~> 3.2)
-    yard (0.9.37)
+    yard (0.9.42)
     yard-solargraph (0.1.0)
       yard (~> 0.9)
     zeitwerk (2.7.5)

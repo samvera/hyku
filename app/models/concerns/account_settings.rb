@@ -304,15 +304,17 @@ module AccountSettings
       config.uploader[:maxFileSize] = file_size_limit.to_i
       config.solr_rows_per_request = solr_rows_per_request.to_i if solr_rows_per_request.present?
       config.solr_max_results = solr_max_results.to_i if solr_max_results.present?
-      # Configure Discogs API credentials for Questioning Authority
-      if File.exist?(Rails.root.join('config', 'discogs-genres.yml')) &&
-         File.exist?(Rails.root.join('config', 'discogs-formats.yml')) &&
-         discogs_user_token.present?
-
-        Qa::Authorities::Discogs::GenericAuthority.discogs_user_token = discogs_user_token
-      end
+      configure_discogs_authority
       configure_hyrax_analytics_settings(config)
     end
+  end
+
+  def configure_discogs_authority
+    return unless discogs_user_token.present? &&
+                  File.exist?(Rails.root.join('config', 'discogs-genres.yml')) &&
+                  File.exist?(Rails.root.join('config', 'discogs-formats.yml'))
+
+    Qa::Authorities::Discogs::GenericAuthority.discogs_user_token = discogs_user_token
   end
 
   def configure_devise

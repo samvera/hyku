@@ -38,6 +38,8 @@ de:
         public_demo_tenant: Dieses Konto soll als öffentlicher Demo-Mandant für Testzwecke gekennzeichnet werden. Diese Einstellung kann nach der Erstellung nicht mehr geändert werden.
         search_only: Für reine Suchkonten muss mindestens ein vollständiges Konto für die mandantenübergreifende Suche ausgewählt werden.
         shared_login: Gemeinsamen Login aktivieren oder deaktivieren
+        solr_max_results: Maximale Anzahl von Dokumenten, die Hyrax aus paginierten Abfragen zurückgibt (z. B. im Dropdown „Zur Sammlung hinzufügen"). Ein Überschreiten dieses Werts erzeugt eine Warnmeldung und kürzt das Ergebnis. Standardwert 10000.
+        solr_rows_per_request: Seitengröße für jede Solr-Anfrage innerhalb der paginierten Abfragen von Hyrax. Standardwert 1000.
         ssl_configured: Setzen Sie es auf wahr, wenn Sie https verwenden
         weekly_email_list: Liste von E-Mail-Adressen, an die der wöchentliche Bericht gesendet wird. Lassen Sie jeweils ein Leerzeichen zwischen den E-Mails
         yearly_email_list: Liste von E-Mail-Adressen, an die der jährliche Bericht gesendet wird. Lassen Sie jeweils ein Leerzeichen zwischen den E-Mails

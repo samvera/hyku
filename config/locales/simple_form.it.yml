@@ -38,6 +38,8 @@ it:
         public_demo_tenant: Contrassegna questo account come tenant demo pubblico per i test. Questa impostazione non può essere modificata dopo la creazione.
         search_only: Per gli account di sola ricerca è necessario selezionare almeno un account completo qui sotto per la ricerca tra tenant.
         shared_login: Abilita o disabilita l'accesso condiviso
+        solr_max_results: Numero massimo di documenti restituiti da Hyrax nelle query paginate (ad esempio il menu a tendina «Aggiungi alla raccolta»). Il superamento di questo valore registra un avviso e tronca i risultati. Valore predefinito 10000.
+        solr_rows_per_request: Dimensione di pagina per ogni richiesta Solr all'interno delle query paginate di Hyrax. Valore predefinito 1000.
         ssl_configured: Impostalo su vero se stai utilizzando https
         weekly_email_list: Lista di indirizzi email ai quali inviare il rapporto settimanale. Lascia uno spazio tra ogni email
         yearly_email_list: Lista di indirizzi email ai quali inviare il rapporto annuale. Lascia uno spazio tra ogni email

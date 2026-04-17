@@ -38,6 +38,8 @@ en:
         name: A single or hyphenated name used for technical aspects of the repository (e.g., "acme" or "acme-library").
         oai_admin_email: OAI endpoint contact email address
         shared_login: Enable or disable shared login
+        solr_max_results: Maximum total documents Hyrax will return from paginated fetches (e.g. the "Add to Collection" dropdown). Exceeding this logs a warning and truncates. Default 10000.
+        solr_rows_per_request: Page size for each Solr request inside Hyrax's paginated fetches. Default 1000.
         ssl_configured: Set it true if using https
         weekly_email_list: List of email addresses to email the weekly report. Leave a single space between each email
         yearly_email_list: List of email addresses to email the yearly report. Leave a single space between each email

@@ -38,6 +38,8 @@ zh:
         public_demo_tenant: 将此帐户标记为用于测试的公共演示租户。创建后无法更改此设置。
         search_only: 仅搜索帐户需要在下面至少选择一个完整帐户才能进行跨租户搜索。
         shared_login: 启用或禁用共享登录
+        solr_max_results: Hyrax 分页查询（例如"添加到集合"下拉菜单）返回的最大文档数。超过此值将记录警告并截断结果。默认值 10000。
+        solr_rows_per_request: Hyrax 分页查询中每个 Solr 请求的页面大小。默认值 1000。
         ssl_configured: 如果使用https，请将其设置为true
         weekly_email_list: 每周报告的电子邮件地址列表。每个电子邮件之间留一个空格
         yearly_email_list: 每年报告的电子邮件地址列表。每个电子邮件之间留一个空格

@@ -58,15 +58,6 @@ Rails.application.config.after_initialize do
     ImageResource.class_eval { Hyrax::ValkyrieLazyMigration.migrating(self, from: Image) }
     OerResource.class_eval { Hyrax::ValkyrieLazyMigration.migrating(self, from: Oer) }
     Hyrax::ValkyrieLazyMigration.migrating(Hyrax::FileSet, from: ::FileSet)
-
-    # Evict any ActiveModel::Name memoized before the lazy-migration wiring
-    # finished. A premature `.model_name` call would cache a name derived from
-    # the resource class (e.g. "generic_work_resource"), breaking polymorphic
-    # route lookups like `new_hyrax_parent_generic_work_path` for the life of
-    # the process.
-    (WINGS_CONCERNS.map { |k| "#{k}Resource".constantize } + [Hyrax::FileSet]).each do |klass|
-      klass.remove_instance_variable(:@_model_name) if klass.instance_variable_defined?(:@_model_name)
-    end
   end
 
   Hyrax.config.query_index_from_valkyrie = true

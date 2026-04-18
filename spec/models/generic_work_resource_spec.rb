@@ -80,9 +80,7 @@ RSpec.describe GenericWorkResource do
       # ValkyrieLazyMigration wiring has had a chance to install the right
       # default name class.
       def force_bad_ordering!
-        if described_class.instance_variable_defined?(:@_model_name)
-          described_class.remove_instance_variable(:@_model_name)
-        end
+        described_class.remove_instance_variable(:@_model_name) if described_class.instance_variable_defined?(:@_model_name)
         described_class.singleton_class.define_method(:_hyrax_default_name_class) { Hyrax::ResourceName }
         described_class.model_name # poisons @_model_name
       end
@@ -104,12 +102,12 @@ RSpec.describe GenericWorkResource do
           Hyrax::ValkyrieLazyMigration::ResourceName
         end
 
-        expect {
+        expect do
           Rails.application.routes.url_helpers.polymorphic_path(
             [:new, :hyrax, :parent, described_class.model_name.singular.to_sym],
             parent_id: 'abc'
           )
-        }.to raise_error(NoMethodError, /new_hyrax_parent_generic_work_resource_path/)
+        end.to raise_error(NoMethodError, /new_hyrax_parent_generic_work_resource_path/)
       end
 
       # This test asserts the CORRECT behavior: after the bad ordering occurs,
@@ -134,12 +132,12 @@ RSpec.describe GenericWorkResource do
           Hyrax::ValkyrieLazyMigration::ResourceName
         end
 
-        expect {
+        expect do
           Rails.application.routes.url_helpers.polymorphic_path(
             [:new, :hyrax, :parent, described_class.model_name.singular.to_sym],
             parent_id: 'abc'
           )
-        }.not_to raise_error
+        end.not_to raise_error
       end
     end
   end

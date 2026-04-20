@@ -54,6 +54,8 @@ module AccountSettings
     setting :shared_login, type: 'boolean', disabled: true
     setting :smtp_settings, type: 'hash', private: true, default: {}
     setting :solr_collection_options, type: 'hash', default: solr_collection_options
+    setting :solr_max_results, type: 'string', default: '10000'
+    setting :solr_rows_per_request, type: 'string', default: '1000'
     setting :ssl_configured, type: 'boolean', default: true, private: true
     setting :weekly_email_list, type: 'array', disabled: true
     setting :yearly_email_list, type: 'array', disabled: true
@@ -77,6 +79,9 @@ module AccountSettings
                 message: "must be numeric"
               },
               if: -> { google_analytics_property_id.present? }
+    validates :solr_rows_per_request, :solr_max_results,
+              format: { with: /\A\d+\z/, message: "must be a positive integer" },
+              allow_blank: true
 
     after_initialize :initialize_settings
   end
@@ -297,15 +302,19 @@ module AccountSettings
       config.contact_email = contact_email
       config.geonames_username = geonames_username
       config.uploader[:maxFileSize] = file_size_limit.to_i
-      # Configure Discogs API credentials for Questioning Authority
-      if File.exist?(Rails.root.join('config', 'discogs-genres.yml')) &&
-         File.exist?(Rails.root.join('config', 'discogs-formats.yml')) &&
-         discogs_user_token.present?
-
-        Qa::Authorities::Discogs::GenericAuthority.discogs_user_token = discogs_user_token
-      end
+      config.solr_rows_per_request = solr_rows_per_request.to_i if solr_rows_per_request.present?
+      config.solr_max_results = solr_max_results.to_i if solr_max_results.present?
+      configure_discogs_authority
       configure_hyrax_analytics_settings(config)
     end
+  end
+
+  def configure_discogs_authority
+    return unless discogs_user_token.present? &&
+                  File.exist?(Rails.root.join('config', 'discogs-genres.yml')) &&
+                  File.exist?(Rails.root.join('config', 'discogs-formats.yml'))
+
+    Qa::Authorities::Discogs::GenericAuthority.discogs_user_token = discogs_user_token
   end
 
   def configure_devise

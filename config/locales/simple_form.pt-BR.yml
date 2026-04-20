@@ -38,6 +38,8 @@ pt-BR:
         public_demo_tenant: Marque esta conta como um locatário de demonstração público para testes. Esta configuração não poderá ser alterada após a criação.
         search_only: Contas somente para pesquisa exigem que pelo menos uma conta completa seja selecionada abaixo para pesquisa entre locatários.
         shared_login: Habilitar ou desabilitar login compartilhado
+        solr_max_results: Número máximo de documentos que o Hyrax retorna em consultas paginadas (por exemplo, no menu suspenso «Adicionar à coleção»). Ultrapassar esse valor registra um aviso e trunca os resultados. Valor padrão 10000.
+        solr_rows_per_request: Tamanho da página para cada requisição Solr dentro das consultas paginadas do Hyrax. Valor padrão 1000.
         ssl_configured: Defina como verdadeiro se estiver usando https
         weekly_email_list: Lista de endereços de e-mail para enviar o relatório semanal. Deixe um espaço único entre cada e-mail
         yearly_email_list: Lista de endereços de e-mail para enviar o relatório anual. Deixe um espaço único entre cada e-mail

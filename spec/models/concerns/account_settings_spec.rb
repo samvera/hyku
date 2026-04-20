@@ -48,6 +48,8 @@ RSpec.describe AccountSettings do
                                                                                 s3_bucket
                                                                                 smtp_settings
                                                                                 solr_collection_options
+                                                                                solr_max_results
+                                                                                solr_rows_per_request
                                                                                 ssl_configured]
       end
       # rubocop:enable RSpec/ExampleLength

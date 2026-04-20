@@ -38,6 +38,8 @@ fr:
         public_demo_tenant: Marquez ce compte comme un compte de démonstration public à des fins de test. Cette option ne pourra plus être modifiée après sa création.
         search_only: Les comptes de recherche uniquement nécessitent la sélection d'au moins un compte complet ci-dessous pour la recherche inter-locataires.
         shared_login: Activer ou désactiver la connexion partagée
+        solr_max_results: Nombre maximal de documents renvoyés par les récupérations paginées de Hyrax (par exemple, le menu déroulant « Ajouter à la collection »). Dépasser cette valeur entraîne un avertissement et une troncature. Par défaut 10000.
+        solr_rows_per_request: Taille de page pour chaque requête Solr dans les récupérations paginées de Hyrax. Par défaut 1000.
         ssl_configured: Mettez-le sur vrai si vous utilisez https
         weekly_email_list: Liste des adresses e-mail pour envoyer le rapport hebdomadaire. Laissez un espace entre chaque e-mail
         yearly_email_list: Liste des adresses e-mail pour envoyer le rapport annuel. Laissez un espace entre chaque e-mail

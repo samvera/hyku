@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/notch8/willow_sword.git
-  revision: c423082a3501e2a591bcc49abe22f6ba1e0573e0
-  tag: v0.8.5
+  revision: 349a7499a13d5e6fe5990457f6914d113896d08e
+  branch: i540-chunk-uploads
   specs:
     willow_sword (0.8.4)
       bagit (>= 0.4)

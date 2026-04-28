@@ -105,6 +105,13 @@ module Hyku
       'related_item' => { from: ['related_item'], split: '\|' },
       'relative_path' => { from: ['relative_path'], split: '\|', generated: true },
       'related_url' => { from: ['related_url', 'relation'], split: /\s* [|]\s*/ },
+      # `redirects` is a nested-resource attribute (Hyrax::Redirect with path,
+      # canonical, sequence). Bulkrax's `object:` field-mapping pattern groups
+      # the three CSV columns into a single nested array on the record.
+      # https://github.com/samvera/bulkrax/wiki/Configuring-Bulkrax#mapping-from-objects
+      'redirect_path' => { from: ['redirect_path'], object: 'redirects' },
+      'redirect_canonical' => { from: ['redirect_canonical'], object: 'redirects' },
+      'redirect_sequence' => { from: ['redirect_sequence'], object: 'redirects' },
       'remote_files' => { from: ['remote_files'], split: /\s*[|]\s*/ },
       'rendering_ids' => { from: ['rendering_ids'], split: '\|', generated: true },
       'resource_type' => { from: ['resource_type'], split: true },

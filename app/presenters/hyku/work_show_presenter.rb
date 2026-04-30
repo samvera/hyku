@@ -22,7 +22,7 @@ module Hyku
 
     # @return [Boolean] Use Clover IIIF viewer
     def clover_viewer?
-      Flipflop.clover_viewer?
+      Flipflop.enabled?(:clover_viewer)
     end
 
     # assumes there can only be one doi

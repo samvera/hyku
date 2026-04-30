@@ -33,6 +33,11 @@ Flipflop.configure do
           default: false,
           description: "Shows the Identity Provider tab on the admin dashboard."
 
+  # Flipflop.clover_viewer? returning `true` means we use Clover IIIF Viewer instead of UV.
+  feature :clover_viewer,
+          default: false,
+          description: "Use Clover IIIF Viewer instead of Universal Viewer for IIIF content."
+
   # Flipflop.default_pdf_viewer? returning `true` means we use PDF.js and `false` means we use IIIF Print.
   feature :default_pdf_viewer,
           default: true,

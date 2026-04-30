@@ -13,8 +13,8 @@ module GroupAwareRoleChecker
   private
 
   def current_user_hyrax_groups(site_instance)
-    @current_user_hyrax_groups ||= {}
-    @current_user_hyrax_groups[site_instance.id] ||= current_user.hyrax_groups
+    @current_user_hyrax_groups_memo ||= {}
+    @current_user_hyrax_groups_memo[site_instance.id] ||= current_user.hyrax_groups
   end
 
   # Check for the presence of the passed role_name in the User's Roles and
@@ -22,14 +22,14 @@ module GroupAwareRoleChecker
   def group_aware_role?(role_name)
     return false if current_user.new_record?
 
-    @group_aware_role_cache ||= {}
+    @group_role_memo ||= {}
 
     site_instance = Site.instance
 
-    cache_key = [role_name, site_instance.id]
-    return @group_aware_role_cache[cache_key] if @group_aware_role_cache.key?(cache_key)
+    memo_key = [role_name, site_instance.id]
+    return @group_role_memo[memo_key] if @group_role_memo.key?(memo_key)
 
-    @group_aware_role_cache[cache_key] =
+    @group_role_memo[memo_key] =
       current_user.has_role?(role_name, site_instance) ||
       current_user_hyrax_groups(site_instance).any? { |group| group.site_role?(role_name) }
   end

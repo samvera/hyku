@@ -23,6 +23,10 @@ module Hyku
     # @return [Boolean] Use Clover IIIF viewer
     def clover_viewer?
       begin
+        # Ensure the feature exists in the database
+        unless Flipflop::Feature.find_by(key: 'clover_viewer')
+          Flipflop::Feature.create!(key: 'clover_viewer', enabled: false)
+        end
         Flipflop.enabled?(:clover_viewer)
       rescue Flipflop::FeatureError
         false

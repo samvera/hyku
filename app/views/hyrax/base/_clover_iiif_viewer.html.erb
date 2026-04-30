@@ -1,0 +1,11 @@
+<%# Clover IIIF Viewer partial for Hyku/Hyrax %>
+<div class="clover-iiif-viewer-wrapper">
+  <iframe
+    src="/iiif_viewer/clover.html?manifest=<%= presenter.manifest_url if presenter.respond_to?(:manifest_url) %>"
+    title="Clover IIIF Viewer"
+    width="100%"
+    height="600"
+    frameborder="0"
+    allowfullscreen
+  ></iframe>
+</div>

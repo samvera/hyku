@@ -20,6 +20,11 @@ module Hyku
     # OVERRIDE Hyrax v2.9.0 here to make featured collections work
     delegate :collection_presenters, to: :member_presenter_factory
 
+    # @return [Boolean] Use Clover IIIF viewer
+    def clover_viewer?
+      Flipflop.clover_viewer?
+    end
+
     # assumes there can only be one doi
     def doi
       doi_regex = %r{10\.\d{4,9}\/[-._;()\/:A-Z0-9]+}i
@@ -92,7 +97,7 @@ module Hyku
 
     # @return [Boolean] use any viewer
     def viewer?
-      iiif_viewer? || video_embed_viewer? || show_pdf_viewer?
+      clover_viewer? || iiif_viewer? || video_embed_viewer? || show_pdf_viewer?
     end
 
     # The use of universal_viewer has been removed, but leaving

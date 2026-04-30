@@ -18,7 +18,9 @@
         <div class="row">
           <%= render 'workflow_actions_widget', presenter: @presenter %>
           <%# OVERRIDE: add pdf viewer & adjust viewer logic %>
-          <% if @presenter.video_embed_viewer? %>
+          <% if @presenter.clover_viewer? %>
+            <%= render 'clover_iiif_viewer', presenter: @presenter %>
+          <% elsif @presenter.video_embed_viewer? %>
             <%= render 'video_embed_viewer', presenter: @presenter %>
           <% elsif @presenter.iiif_viewer? %>
             <div class="col-sm-12">

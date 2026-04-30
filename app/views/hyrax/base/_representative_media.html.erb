@@ -1,7 +1,9 @@
 <% if presenter.representative_id.present? && presenter.representative_presenter.present? %>
   <%# logic to determine which viewer appears is defined in: %>
   <%# pdf_js_helper, work_show_presenter, and tenant_config %>
-  <% if defined?(viewer) && viewer && presenter.iiif_viewer?%>
+  <% if defined?(viewer) && viewer && presenter.clover_viewer? %>
+    <%= render 'clover_iiif_viewer', presenter: presenter %>
+  <% elsif defined?(viewer) && viewer && presenter.iiif_viewer?%>
     <div class="center-block">
       <%= iiif_viewer_display presenter %>
     </div>

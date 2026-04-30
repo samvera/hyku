@@ -33,15 +33,17 @@ Flipflop.configure do
           default: false,
           description: "Shows the Identity Provider tab on the admin dashboard."
 
-  # Flipflop.clover_viewer? returning `true` means we use Clover IIIF Viewer instead of UV.
+  # Flipflop.clover_viewer? returning `true` means we use Clover IIIF Viewer for all content including PDFs.
+  # When enabled, Clover takes precedence over both the IIIF (UV) and PDF (PDF.js/UV) viewers.
   feature :clover_viewer,
           default: false,
-          description: "Use Clover IIIF Viewer instead of Universal Viewer for IIIF content."
+          description: "Use Clover IIIF Viewer for all content (IIIF images and PDFs). When enabled, overrides the Default PDF Viewer setting."
 
-  # Flipflop.default_pdf_viewer? returning `true` means we use PDF.js and `false` means we use IIIF Print.
+  # Flipflop.default_pdf_viewer? returning `true` means we use PDF.js and `false` means we use IIIF Print (UV).
+  # Note: This setting is overridden when Clover Viewer is enabled.
   feature :default_pdf_viewer,
           default: true,
-          description: "Choose PDF.js or Universal Viewer to render PDFs. UV uses IIIF Print and requires PDF splitting with OCR. Switching from PDF.js to the UV may require re-ingesting of the PDF."
+          description: "Choose PDF.js or Universal Viewer to render PDFs (when Clover Viewer is disabled). UV uses IIIF Print and requires PDF splitting with OCR. Switching from PDF.js to UV may require re-ingesting of the PDF."
 
   feature :show_login_link,
           default: true,

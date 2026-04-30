@@ -16,7 +16,7 @@ module FeaturesHelper
   end
 
   FEATURE_ACTION_LABELS = {
-    clover_viewer: { on: 'Clover', off: 'UV' },
+    clover_viewer: { on: 'Clover', off: 'Default' },
     default_pdf_viewer: { on: 'PDF.js', off: 'UV' }
   }.freeze
 end

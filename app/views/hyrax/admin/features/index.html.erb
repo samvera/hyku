@@ -7,9 +7,7 @@
   <h1><span class="fa fa-wrench" aria-hidden="true"></span> <%= t('.header') %></h1>
 <% end %>
 <% # Ensure clover_viewer feature exists for this tenant %>
-<% unless Flipflop::Feature.exists?(key: 'clover_viewer') %>
-  <% Flipflop::Feature.create!(key: 'clover_viewer', enabled: false) %>
-<% end %>
+<% Flipflop.disable!(:clover_viewer) rescue nil %>
 <div class="flip row">
   <div class="col-md-12">
     <div class="card">

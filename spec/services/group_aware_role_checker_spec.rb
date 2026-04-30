@@ -42,4 +42,41 @@ RSpec.describe GroupAwareRoleChecker, clean: true do
       end
     end
   end
+
+  describe 'query memoization' do
+    let(:role_name) { RolesService::DEFAULT_ROLES.first }
+    let(:site_instance_one) { FactoryBot.create(:site, application_name: "First site instance") }
+
+    before do
+      allow(Site).to receive(:instance).and_return(site_instance_one)
+    end
+
+    def count_queries(&block)
+      count = 0
+      counter = ->(*, **) { count += 1 }
+      ActiveSupport::Notifications.subscribed(counter, "sql.active_record", &block)
+      count
+    end
+
+    it 'does not issue additional queries on repeated calls to the same role check' do
+      # warm up any lazy-loaded associations
+      user.ability
+      count_queries { user.ability.public_send("#{role_name}?") }
+      queries_for_second_call = count_queries { user.ability.public_send("#{role_name}?") }
+      expect(queries_for_second_call).to eq(0)
+    end
+
+    it 'does not issue additional queries when checking multiple roles' do
+      abilities_warmup_count = count_queries { user.ability }
+
+      queries_first_role = count_queries { user.ability.public_send("#{RolesService::DEFAULT_ROLES.first}?") }
+
+      queries_second_role = count_queries { user.ability.public_send("#{RolesService::DEFAULT_ROLES.second}?") }
+
+      # Second role check may query once to check that specific role,
+      # but should not re-query hyrax_groups
+      expect(queries_second_role).to be < abilities_warmup_count
+      expect(queries_second_role).to be <= queries_first_role
+    end
+  end
 end

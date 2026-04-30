@@ -65,8 +65,6 @@ RSpec.describe 'Catalog query performance', type: :feature, clean: true, js: fal
     puts "Queries for 5 works + 3 collections (admin): #{queries_for_mixed}"
     puts "Delta: #{queries_for_mixed - queries_for_1}"
 
-    # With memoization, ability checks should not scale linearly with result count.
-    # Without the fix this was ~440+ queries for 5 results.
     expect(queries_for_mixed).to be < 400
   end
 end

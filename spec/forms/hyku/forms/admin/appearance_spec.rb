@@ -4,6 +4,29 @@ require 'spec_helper'
 
 RSpec.describe Hyku::Forms::Admin::Appearance do
   let(:instance) { described_class.new }
+
+  def count_queries(&block)
+    count = 0
+    counter = ->(*, **) { count += 1 }
+    ActiveSupport::Notifications.subscribed(counter, "sql.active_record", &block)
+    count
+  end
+
+  describe 'database query efficiency' do
+    it 'loads all content blocks in a single query regardless of how many attributes are accessed' do
+      query_count = count_queries do
+        instance.link_color
+        instance.navbar_background_color
+        instance.primary_button_background_color
+        instance.body_font
+        instance.custom_css_block
+      end
+      # 1 query to load all ContentBlocks in a single IN clause.
+      # Rails may also fire a pg_attribute schema introspection query on first use;
+      # we allow for that here rather than fighting the schema cache warmup.
+      expect(query_count).to be <= 2
+    end
+  end
   describe '.default_fonts' do
     subject { described_class.default_fonts }
 

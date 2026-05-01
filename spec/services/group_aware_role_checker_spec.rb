@@ -78,5 +78,38 @@ RSpec.describe GroupAwareRoleChecker, clean: true do
       expect(queries_second_role).to be < abilities_warmup_count
       expect(queries_second_role).to be <= queries_first_role
     end
+
+    # Regression for reviewer scenario: memo keyed only by site id would leak user A's
+    # hyrax_groups to user B when the same checker object is reused with a different current_user.
+    describe 'test_n_plus_one_exploration: hyrax_groups cache must not cross users on the same site' do
+      subject(:checker) do
+        Class.new do
+          include GroupAwareRoleChecker
+          attr_accessor :current_user
+        end.new
+      end
+
+      let(:site_instance_one) { FactoryBot.create(:site, application_name: 'Shared site for memo test') }
+      let(:user_one) { FactoryBot.create(:user) }
+      let(:user_two) { FactoryBot.create(:user) }
+
+      before do
+        allow(Site).to receive(:instance).and_return(site_instance_one)
+        FactoryBot.create(:group, name: 'memo-test-group-one', member_users: [user_one])
+        FactoryBot.create(:group, name: 'memo-test-group-two', member_users: [user_two])
+      end
+
+      it 'returns the second user\'s groups after current_user changes (same site, same checker)' do
+        checker.current_user = user_one
+        groups_for_user_one = checker.send(:current_user_hyrax_groups, site_instance_one)
+
+        checker.current_user = user_two
+        groups_for_user_two = checker.send(:current_user_hyrax_groups, site_instance_one)
+
+        expect(groups_for_user_one.map(&:id)).to match_array(user_one.reload.hyrax_groups.map(&:id))
+        expect(groups_for_user_two.map(&:id)).to match_array(user_two.reload.hyrax_groups.map(&:id))
+        expect(groups_for_user_two.map(&:id)).not_to match_array(groups_for_user_one.map(&:id))
+      end
+    end
   end
 end

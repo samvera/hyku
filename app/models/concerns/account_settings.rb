@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# All settings have a presedence order as follows
+# All settings have a precedence order as follows
 # Per Tenant Setting > ENV['HYKU_SETTING_NAME'] > ENV['HYRAX_SETTING_NAME'] > default
 
 # rubocop:disable Metrics/ModuleLength
@@ -128,7 +128,7 @@ module AccountSettings
         create_node_set: nil,
         max_shards_per_node: nil,
         num_shards: 1,
-        replication_factor: nil,
+        replication_factor: ENV.fetch('SOLR_COLLECTION_REPLICAS', 1).to_i,
         router: {
           name: nil,
           field: nil

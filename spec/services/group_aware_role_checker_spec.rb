@@ -44,6 +44,10 @@ RSpec.describe GroupAwareRoleChecker, clean: true do
   end
 
   describe 'query memoization' do
+    after do
+      allow(Site).to receive(:instance).and_call_original
+    end
+
     let(:role_name) { RolesService::DEFAULT_ROLES.first }
     let(:site_instance_one) { FactoryBot.create(:site, application_name: "First site instance") }
 
@@ -109,6 +113,31 @@ RSpec.describe GroupAwareRoleChecker, clean: true do
         expect(groups_for_user_one.map(&:id)).to match_array(user_one.reload.hyrax_groups.map(&:id))
         expect(groups_for_user_two.map(&:id)).to match_array(user_two.reload.hyrax_groups.map(&:id))
         expect(groups_for_user_two.map(&:id)).not_to match_array(groups_for_user_one.map(&:id))
+      end
+    end
+
+    describe 'test_n_plus_one_exploration: group_role memo must not cross users on the same site' do
+      subject(:checker) do
+        Class.new do
+          include GroupAwareRoleChecker
+          attr_accessor :current_user
+        end.new
+      end
+
+      let(:site_instance_one) { FactoryBot.create(:site, application_name: 'Shared site for group_role memo') }
+      let(:user_without_admin) { FactoryBot.create(:user) }
+      let(:user_with_admin) { FactoryBot.create(:admin) }
+
+      before do
+        allow(Site).to receive(:instance).and_return(site_instance_one)
+      end
+
+      it 'recomputes the role after current_user changes (same site, same checker)' do
+        checker.current_user = user_without_admin
+        expect(checker.public_send("#{RolesService::ADMIN_ROLE}?")).to be false
+
+        checker.current_user = user_with_admin.reload
+        expect(checker.public_send("#{RolesService::ADMIN_ROLE}?")).to be true
       end
     end
   end

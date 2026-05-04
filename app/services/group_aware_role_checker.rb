@@ -14,7 +14,8 @@ module GroupAwareRoleChecker
 
   def current_user_hyrax_groups(site_instance)
     @current_user_hyrax_groups_memo ||= {}
-    @current_user_hyrax_groups_memo[site_instance.id] ||= current_user.hyrax_groups
+    cache_key = [site_instance.id, current_user.id || current_user.object_id]
+    @current_user_hyrax_groups_memo[cache_key] ||= current_user.hyrax_groups
   end
 
   # Check for the presence of the passed role_name in the User's Roles and
@@ -26,7 +27,7 @@ module GroupAwareRoleChecker
 
     site_instance = Site.instance
 
-    memo_key = [role_name, site_instance.id]
+    memo_key = [role_name, site_instance.id, current_user.id || current_user.object_id]
     return @group_role_memo[memo_key] if @group_role_memo.key?(memo_key)
 
     @group_role_memo[memo_key] =

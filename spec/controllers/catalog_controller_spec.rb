@@ -52,6 +52,10 @@ RSpec.describe CatalogController do
     end
   end
   describe 'memoization isolation' do
+    after do
+      allow(Site).to receive(:instance).and_call_original
+    end
+
     let(:role_name) { RolesService::DEFAULT_ROLES.first } # "admin"
     let(:site_one) { FactoryBot.create(:site, application_name: "Site One") }
     let(:site_two) { FactoryBot.create(:site, application_name: "Site Two") }
@@ -97,8 +101,9 @@ RSpec.describe CatalogController do
       expect(third_ability.admin?).to be false # populate the memoization on the new instance
       third_cache = third_ability.instance_variable_get(:@group_role_memo)
       site_id = Site.instance.id
-      expect(second_cache[["admin", site_id]]).to be true
-      expect(third_cache[["admin", site_id]]).to be false
+      admin_role = RolesService::ADMIN_ROLE
+      expect(second_cache[[admin_role, site_id, second_ability.current_user.id]]).to be true
+      expect(third_cache[[admin_role, site_id, third_ability.current_user.id]]).to be false
       expect(second_cache).not_to eq(third_cache)
     end
   end

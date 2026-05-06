@@ -173,4 +173,11 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
       get 'export'
     end
   end
+
+  # Catch-all redirect resolver — must be last. See documentation/redirects.md
+  # in Hyrax for the architecture. Gated by Hyrax.config.redirects_active? at
+  # request time so the route is transparent when the redirects feature is off.
+  get '*alias_path', to: 'hyrax/redirects#show',
+                     constraints: ->(_req) { Hyrax.config.redirects_active? },
+                     format: false
 end

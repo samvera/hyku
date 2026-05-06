@@ -241,6 +241,23 @@ Hyrax.config do |config|
   # essence a "super" method.
   original_translator = config.translate_id_to_uri
   config.translate_id_to_uri = ->(id) { original_translator.call(id.to_s) }
+
+  # Extend the redirects reserved-prefix list with Hyku-specific routes that
+  # the upstream Hyrax default doesn't know about. Excludes admin-host-only
+  # routes (/account, /proprietor) since those are host-scoped via
+  # `constraints: host: Account.admin_host` and never reach a tenant host.
+  config.reserved_redirect_prefixes += %w[
+    /authorities
+    /bookmarks
+    /browse
+    /exporters
+    /identity_providers
+    /importers
+    /jobs
+    /single_signon
+    /status
+    /sword
+  ]
 end
 # rubocop:enable Metrics/BlockLength
 

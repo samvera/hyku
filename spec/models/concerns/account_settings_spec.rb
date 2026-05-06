@@ -435,11 +435,14 @@ RSpec.describe AccountSettings do
     let(:new_account) { Account.create(name: 'new', cname: 'new.example.com') }
 
     context 'when SOLR_COLLECTION_REPLICAS is set' do
+      around do |example|
+        cached_default_options = Account.all_settings[:solr_collection_options][:default]
+        example.run
+        Account.all_settings[:solr_collection_options][:default] = cached_default_options
+      end
+
       before do
         allow(ENV).to receive(:fetch).with('SOLR_COLLECTION_REPLICAS', 1).and_return(5)
-        Account.all_settings[:solr_collection_options][:default] = Account.solr_collection_options
-      end
-      after do
         Account.all_settings[:solr_collection_options][:default] = Account.solr_collection_options
       end
 

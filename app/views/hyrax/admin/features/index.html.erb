@@ -1,6 +1,13 @@
 <%
   # OVERRIDE Hyrax 5.2.0 to make the default PDF viewer switch more intuitive and some styling changes.
   # Instead of saying on/off it says PDF.js/IIIF Print.
+  #
+  # OVERRIDE: Flipflop builds @feature_set.grouped_features from each `group :name` block in config.
+  # Hyrax and Hyku can each register `group :experimental_features` in separate config files, which
+  # creates two distinct group objects with the same name. The stock template iterates by group
+  # identity, so the admin UI showed duplicate "Experimental features" sections. We merge rows by
+  # group name before rendering so same-named groups appear once.
+
 %>
 
 <% provide :page_header do %>
@@ -21,7 +28,19 @@
               </tr>
             </thead>
             <tbody>
-            <% @feature_set.grouped_features.each do |group, features| -%>
+            <%# BEGIN OVERRIDE: merge Flipflop groups that share the same group name %>
+            <% grouped_features = @feature_set.grouped_features.each_with_object([]) do |(group, features), acc| %>
+              <% group_key = group&.name || :default %>
+              <% existing_group = acc.find { |entry| entry[:key] == group_key } %>
+              <% if existing_group %>
+                <% existing_group[:features].concat(features) %>
+              <% else %>
+                <% acc << { key: group_key, group: group, features: features.to_a } %>
+              <% end %>
+            <% end %>
+            <% grouped_features.each do |entry| -%>
+              <% group = entry[:group] %>
+              <% features = entry[:features] %>
               <% if @feature_set.grouped? -%>
                 <tr class="group">
                   <td></td>
@@ -67,6 +86,7 @@
               </tr>
               <% end -%>
             <% end -%>
+            <%# END OVERRIDE: merge Flipflop groups that share the same group name %>
             </tbody>
           </table>
         </div>

@@ -488,7 +488,19 @@ module Hyku
         end
 
         def block_for(name, dynamic_default = nil)
-          ContentBlock.block_for(name:, fallback_value: default_values[name] || dynamic_default)
+          content_blocks_memo[name.to_s]&.presence || default_values[name] || dynamic_default
+        end
+
+        def content_blocks_memo
+          @content_blocks_memo ||= ContentBlock
+                                   .where(name: all_block_names)
+                                   .each_with_object({}) { |block, hash| hash[block.name] = block.value }
+        end
+
+        def all_block_names
+          (self.class.non_color_customization_params.map(&:to_s) +
+            self.class.color_params.map(&:to_s) +
+            ["custom_css_block", "collection_banner_text_color"]).uniq
         end
 
         # Persist a key/value tuple as a ContentBlock

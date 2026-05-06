@@ -1943,3 +1943,21 @@ properties:
     sample_values:
       - true
       - false
+  redirects:
+    available_on:
+      class:
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+        - CollectionResource
+    cardinality:
+      minimum: 0
+    type: hash
+    multiple: true
+    display_label:
+      default: Aliases
+    property_uri: http://samvera.org/ns/hyku/redirects
+    range: http://www.w3.org/2001/XMLSchema#string
+    form:
+      primary: false

@@ -40,8 +40,8 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: cae6920513edbf879a47b86a9137baee2055bb27
-  branch: main
+  revision: a714f6a0bc4e9de623e446f44d3e0df119b90866
+  branch: redirects/fix-non-flexible-form
   specs:
     hyrax (5.2.0)
       active-fedora (~> 15.0)

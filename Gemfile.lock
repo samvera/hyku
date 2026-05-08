@@ -40,7 +40,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: cae6920513edbf879a47b86a9137baee2055bb27
+  revision: b26f82e557bcf7f79de3bcc52b8f9b5bbb420e7a
   branch: main
   specs:
     hyrax (5.2.0)
@@ -379,7 +379,7 @@ GEM
       signet (~> 0.8)
       typhoeus
     builder (3.3.0)
-    bulkrax (9.4.3)
+    bulkrax (9.5.0)
       bagit (~> 0.6.0)
       coderay
       denormalize_fields
@@ -1667,7 +1667,7 @@ DEPENDENCIES
   bolognese (>= 1.9.10)
   bootstrap (~> 4.6)
   bootstrap-datepicker-rails
-  bulkrax (~> 9.4)
+  bulkrax (~> 9.5)
   byebug
   capybara
   capybara-screenshot (~> 1.0)

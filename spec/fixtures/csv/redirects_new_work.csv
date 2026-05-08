@@ -1,0 +1,2 @@
+source_identifier,model,title,creator,rights_statement,visibility,redirects_path_1,redirects_canonical_1,redirects_path_2,redirects_canonical_2
+redirect-test-001,GenericWorkResource,Redirects Import Test,Test Author,http://rightsstatements.org/vocab/InC/1.0/,open,/legacy/dspace/handle/12345,true,/old-catalog/item-99,false

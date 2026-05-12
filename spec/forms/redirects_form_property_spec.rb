@@ -21,9 +21,7 @@ RSpec.describe 'Redirects form property', type: :model do
   # retroactively add the schema to an already-loaded class, so these specs
   # must be skipped when the feature was not enabled at boot.
   before do
-    unless GenericWorkResource.new.respond_to?(:redirects)
-      skip 'Redirects feature not enabled at boot (set HYRAX_REDIRECTS_ENABLED=true)'
-    end
+    skip 'Redirects feature not enabled at boot (set HYRAX_REDIRECTS_ENABLED=true)' unless GenericWorkResource.new.respond_to?(:redirects)
   end
 
   describe 'GenericWorkResource model' do

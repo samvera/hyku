@@ -1,17 +1,28 @@
+<% base_options = controlled_vocab_config[:options] %>
+<% service = controlled_vocab_config[:service] %>
+<% current_values = Array.wrap(f.object.send(key)).select(&:present?) %>
+<% augmented_options =
+     if service.respond_to?(:include_current_value)
+       current_values.reduce(base_options) do |opts, value|
+         service.include_current_value(value, nil, opts, { class: [] }).first
+       end
+     else
+       base_options
+     end %>
 <% if f.object.multiple? key %>
   <%= f.input key,
       as: :select,
-      collection: controlled_vocab_config[:options],
+      collection: augmented_options,
       label: label_for(term: key, record_class: record.class),
       hint: hint_for(term: key, record_class: record.class),
       input_html: { class: 'form-control', multiple: true, name: "#{f.object_name}[#{key}][]" },
       include_blank: !f.object.required?(key),
-      selected: f.object.send(key).first,
+      selected: current_values,
       required: f.object.required?(key) %>
 <% else %>
   <%= f.input key,
       as: :select,
-      collection: controlled_vocab_config[:options],
+      collection: augmented_options,
       label: label_for(term: key, record_class: record.class),
       hint: hint_for(term: key, record_class: record.class),
       include_blank: true,

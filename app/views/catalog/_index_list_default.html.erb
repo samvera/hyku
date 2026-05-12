@@ -1,18 +1,24 @@
-<%# OVERRIDE Hyrax 5.0.1 to enable markdown for index field values in search results %>
-<%# OVERRIDE Hyrax 5.0.1 to handle search only accounts %>
-<%# OVERRIDE Hyrax 5.0.1 display label only when a property has a value, to prevent blank metadata %>
+<%# OVERRIDE Hyrax v5.2.0 %>
+<%#   - enable markdown for index field values in search results %>
+<%#   - handle search only accounts %>
+<%#   - display label only when a property has a value, to prevent blank metadata %>
+<%#   - compute field_value inside the should_render check so a bad authority %>
+<%#     value cannot raise during catalog rendering before the field is even %>
+<%#     decided to render %>
 
 <div class="ol-md-9 col-lg-6">
   <div class="metadata">
     <dl>
       <% doc_presenter = index_presenter(document) %>
       <% index_fields(document).each do |field_name, field| -%>
-      <% field_value = doc_presenter.field_value(field) %>
-        <% if should_render_index_field?(document, field) && field_value.present? %>
-          <div class="row">
-            <dt class="col-5 text-right" data-solr-field-name="<%= field_name %>"><%= render_index_field_label document, field: field_name %></dt>
-            <dd class="col-7"><%= markdown(field_value) %></dd>
-          </div>
+        <% if should_render_index_field?(document, field) %>
+          <% field_value = doc_presenter.field_value(field) %>
+          <% if field_value.present? %>
+            <div class="row">
+              <dt class="col-5 text-right" data-solr-field-name="<%= field_name %>"><%= render_index_field_label document, field: field_name %></dt>
+              <dd class="col-7"><%= markdown(field_value) %></dd>
+            </div>
+          <% end %>
         <% end %>
       <% end %>
       <% if current_account.search_only %>

@@ -1,32 +1,9 @@
 # frozen_string_literal: true
 module Hyrax
   module AccessibilityHazardsService
-    def self.authority
-      @authority ||= Qa::Authorities::Local.subauthority_for('accessibility_hazards')
-    end
+    extend Hyrax::AuthorityService
 
-    def self.authority=(val)
-      @authority = val
-    end
-
-    def self.select_all_options
-      authority.all.map do |element|
-        [element[:label], element[:id]]
-      end
-    end
-
-    def self.label(id)
-      authority.find(id).fetch('term')
-    end
-
-    ##
-    # @param [String, nil] id identifier of the resource type
-    #
-    # @return [String] a schema.org type. Gives the default type if `id` is nil.
-    def self.microdata_type(id)
-      return Hyrax.config.microdata_default_type if id.nil?
-
-      Microdata.fetch("accessibility_hazard_type.#{id}", default: Hyrax.config.microdata_default_type)
-    end
+    authority_name 'accessibility_hazards'
+    microdata_namespace 'accessibility_hazard_type.'
   end
 end

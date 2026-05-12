@@ -149,6 +149,8 @@ extraEnvVars: &envVars
     value: /app/fits/fits.sh
   - name: HYRAX_FLEXIBLE
     value: "true"
+  - name: HYRAX_REDIRECTS_ENABLED
+    value: "true"
   - name: HYRAX_VALKYRIE
     value: "true"
   - name: HYKU_ADMIN_HOST

@@ -16,8 +16,14 @@
 #
 # See: spec/redirects_testing/TEST_RESULTS_PASS1.md for the full bug report.
 RSpec.describe 'Redirects form property', type: :model do
+  # The redirects schema is included in Hyrax::Work at class-load time based
+  # on Hyrax.config.redirects_enabled?. Stubbing in a before block cannot
+  # retroactively add the schema to an already-loaded class, so these specs
+  # must be skipped when the feature was not enabled at boot.
   before do
-    allow(Hyrax.config).to receive(:redirects_enabled?).and_return(true)
+    unless GenericWorkResource.new.respond_to?(:redirects)
+      skip 'Redirects feature not enabled at boot (set HYRAX_REDIRECTS_ENABLED=true)'
+    end
   end
 
   describe 'GenericWorkResource model' do

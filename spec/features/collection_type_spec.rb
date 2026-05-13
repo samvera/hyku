@@ -559,11 +559,7 @@ RSpec.describe 'collection_type', type: :feature, js: true, clean: true do
 
         # check for the existence of the user's email from the typeahead dropdown menu
         within('#select2-drop') do
-          within('.select2-results', match: :first) do
-            within('.select2-result', match: :first) do
-              find('.select2-result-label', text: 'user@example.com').click
-            end
-          end
+          find('.select2-result-label', text: 'user@example.com').click
         end
 
         # from the add user form select the value 'Manager' from the dropdown menu and click the 'Add' button

@@ -12,6 +12,7 @@ on:
           # - demo - pausing for accessibility testing
           - iiif
           - staging
+          - test
       debug_enabled:
         type: boolean
         description: "Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)"

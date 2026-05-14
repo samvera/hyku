@@ -40,8 +40,8 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: b26f82e557bcf7f79de3bcc52b8f9b5bbb420e7a
-  branch: main
+  revision: 8994ebab95ac3fcf853982a7e944a5adf0d28624
+  ref: 8994ebab95ac3fcf853982a7e944a5adf0d28624
   specs:
     hyrax (5.2.0)
       active-fedora (~> 15.0)
@@ -74,6 +74,7 @@ GIT
       iiif_manifest (>= 0.3, < 2.0)
       json-schema
       json_schemer
+      language_list
       legato (~> 0.3)
       linkeddata
       listen (~> 3.9)

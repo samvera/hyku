@@ -766,3 +766,8 @@ dd {
     font-size: 0.875rem;
     color: #6c757d;
 }
+
+// Accessibility fix for contrast on Show Pages
+.breadcrumb-item a {
+    color: #000000;
+}

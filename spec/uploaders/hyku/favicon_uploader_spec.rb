@@ -9,10 +9,9 @@ RSpec.describe Hyku::FaviconUploader do
   let(:file) { File.open(Rails.root.join('spec', 'fixtures', 'images', 'favicon.png').to_s) }
 
   describe '#filename' do
-    before { uploader.store!(file) }
-
     it 'renames the file and its versions with the tenant id and a timestamp' do
       freeze_time do
+        uploader.store!(file)
         timestamp = Time.current.to_i
         filename = "#{account.tenant}_#{timestamp}.png"
 

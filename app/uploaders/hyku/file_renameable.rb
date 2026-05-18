@@ -35,7 +35,7 @@ module Hyku
       time_stamp = Time.now.utc.to_i
       extension = File.extname(original_filename)
 
-      [account_id, time_stamp].join('_') + extension
+      ([account_id, time_stamp].join('_') + extension).force_encoding('UTF-8')
     end
   end
 end

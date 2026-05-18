@@ -28,7 +28,7 @@ gem 'blacklight_range_limit', '~> 8.5'
 gem 'bolognese', '>= 1.9.10'
 gem 'bootstrap', '~> 4.6'
 gem 'bootstrap-datepicker-rails'
-gem 'bulkrax', '~> 9.4'
+gem 'bulkrax', '~> 9.5'
 gem 'byebug', group: %i[development test]
 gem 'capybara', group: %i[test]
 gem 'capybara-screenshot', '~> 1.0', group: %i[test]
@@ -51,7 +51,7 @@ gem 'good_job', '~> 4.10' # Updated for Rails 7.2 compatibility
 gem 'googleauth', '~> 1.9.0'
 gem 'google-protobuf'
 gem 'grpc'
-gem 'hyrax', github: 'samvera/hyrax', branch: 'main'
+gem 'hyrax', github: 'samvera/hyrax', ref: '8994ebab95ac3fcf853982a7e944a5adf0d28624'
 gem 'hyrax-doi', github: 'samvera-labs/hyrax-doi', branch: 'rails_hyrax_upgrade'
 gem 'hyrax-iiif_av', github: 'samvera-labs/hyrax-iiif_av', branch: 'rails_hyrax_upgrade'
 gem 'i18n-debug', require: false, group: %i[development test]

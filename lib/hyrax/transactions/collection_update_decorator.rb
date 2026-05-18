@@ -1,23 +1,22 @@
 # frozen_string_literal: true
 
+# OVERRIDE Hyrax to add a `save_collection_thumbnail` step to the
+# CollectionUpdate transaction. Build the step list by inserting into
+# upstream's DEFAULT_STEPS rather than hardcoding, so future upstream
+# additions (e.g. sync_redirect_paths) are picked up automatically.
+
 module Hyrax
   module Transactions
-    # Decorator module to override CollectionUpdate behavior
     module CollectionUpdateDecorator
-      def initialize(container: Container, steps: nil)
-        # Define the new steps array including the new thumbnail step
-        new_steps = ['change_set.apply',
-                     'collection_resource.save_collection_banner',
-                     'collection_resource.save_collection_logo',
-                     'collection_resource.save_collection_thumbnail',
-                     'collection_resource.save_acl'].freeze
+      default_steps = Hyrax::Transactions::CollectionUpdate::DEFAULT_STEPS.dup
+      logo_index = default_steps.index('collection_resource.save_collection_logo')
+      DEFAULT_STEPS = default_steps.insert(logo_index + 1, 'collection_resource.save_collection_thumbnail').freeze
 
-        # Use the new steps array if steps argument is nil, else use provided steps
-        super(container:, steps: steps || new_steps)
+      def initialize(container: Container, steps: DEFAULT_STEPS)
+        super
       end
     end
   end
 end
 
-# Prepend the decorator to the CollectionUpdate class
 Hyrax::Transactions::CollectionUpdate.prepend(Hyrax::Transactions::CollectionUpdateDecorator)

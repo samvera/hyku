@@ -105,6 +105,12 @@ module Hyku
       'related_item' => { from: ['related_item'], split: '\|' },
       'relative_path' => { from: ['relative_path'], split: '\|', generated: true },
       'related_url' => { from: ['related_url', 'relation'], split: /\s* [|]\s*/ },
+      # Redirects persist as Array<Hash> with string keys ('path', 'canonical', 'sequence').
+      # `nested_attributes: true` routes the imported data through `redirects_attributes`
+      # so the form populator (which strips the bare `redirects` key) receives it correctly.
+      'path' => { from: ['redirect_path'], object: 'redirects', nested_attributes: true },
+      'canonical' => { from: ['redirect_canonical'], object: 'redirects', nested_attributes: true },
+      'sequence' => { from: ['redirect_sequence'], object: 'redirects', nested_attributes: true },
       'remote_files' => { from: ['remote_files'], split: /\s*[|]\s*/ },
       'rendering_ids' => { from: ['rendering_ids'], split: '\|', generated: true },
       'resource_type' => { from: ['resource_type'], split: true },

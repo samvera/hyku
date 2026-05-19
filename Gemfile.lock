@@ -241,8 +241,8 @@ GEM
       minitest (>= 5.1)
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
-    addressable (2.8.1)
-      public_suffix (>= 2.0.2, < 6.0)
+    addressable (2.9.0)
+      public_suffix (>= 2.0.2, < 8.0)
     aes_key_wrap (1.1.0)
     almond-rails (0.3.0)
       rails (>= 4.2)
@@ -1658,7 +1658,7 @@ DEPENDENCIES
   active-fedora
   activerecord-nulldb-adapter
   activesupport (>= 4.2.0)
-  addressable (= 2.8.1)
+  addressable (= 2.9.0)
   aws-sdk-sqs
   bixby
   blacklight (~> 7.38)

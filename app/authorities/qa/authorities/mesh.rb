@@ -15,12 +15,13 @@ module Qa::Authorities
       return [] unless mesh_authority
 
       q_down = q.downcase
+      q_like = ActiveRecord::Base.sanitize_sql_like(q_down)
       entries = mesh_authority.local_authority_entries
-                              .where("LOWER(label) LIKE ?", "%#{q_down}%")
+                              .where("LOWER(label) LIKE ?", "%#{q_like}%")
                               .order(Arel.sql(ActiveRecord::Base.sanitize_sql_array([
                                                                                       "CASE WHEN LOWER(label) = ? THEN 0 " \
                                                                                       "WHEN LOWER(label) LIKE ? THEN 1 ELSE 2 END, label ASC",
-                                                                                      q_down, "#{q_down}%"
+                                                                                      q_down, "#{q_like}%"
                                                                                     ])))
                               .limit(MAX_AUTOCOMPLETE_RESULTS)
 

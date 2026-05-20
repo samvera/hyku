@@ -40,8 +40,8 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: c2b18e57523a7ec9bc6c4aabb51d15151adcb5d3
-  branch: main
+  revision: b18cf3ef2c95ed5e4ffc13bed715bbe332d1a60a
+  branch: redirects/resolver-display-url
   specs:
     hyrax (5.2.0)
       active-fedora (~> 15.0)

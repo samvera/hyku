@@ -1943,3 +1943,16 @@ properties:
     sample_values:
       - true
       - false
+  transcript_ids:
+    available_on:
+      class:
+        - Hyrax::FileSet
+    display_label:
+      default: Transcripts
+    indexing:
+      - transcript_ids_ssim
+    data_type: array
+    form:
+      primary: false
+    property_uri: http://vocabulary.samvera.org/ns#transcriptIds
+    range: http://www.w3.org/2001/XMLSchema#string

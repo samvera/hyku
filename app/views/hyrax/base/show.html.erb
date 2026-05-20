@@ -3,6 +3,9 @@
 <%# OVERRIDE: add works-show class %>
 <% content_for(:extra_body_classes, 'works-show ') %>
 <% provide :page_title, @presenter.page_title %>
+<% content_for :canonical_url do %>
+  <link rel="canonical" href="<%= canonical_url_for(@presenter) %>" />
+<% end %>
 <%= render 'shared/citations' %>
 <%# OVERRIDE: additional citations %>
 <%= render 'shared/additional_citations' %>

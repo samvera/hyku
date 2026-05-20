@@ -2,6 +2,8 @@
 
 module Qa::Authorities
   class Mesh < Qa::Authorities::Base
+    MAX_AUTOCOMPLETE_RESULTS = 20
+
     def initialize(subauthority = nil)
       @subauthority = subauthority
     end
@@ -9,15 +11,19 @@ module Qa::Authorities
     def search(q, _controller)
       return [] if q.blank?
 
-      # Search the local MeSH authority entries
       mesh_authority = Qa::LocalAuthority.find_by(name: 'mesh')
       return [] unless mesh_authority
 
-      # Search for terms that contain the query string (case-insensitive)
+      q_down = q.downcase
+      q_like = ActiveRecord::Base.sanitize_sql_like(q_down)
       entries = mesh_authority.local_authority_entries
-                              .where("label ILIKE ?", "%#{q}%")
-                              .limit(20)
-                              .order(:label)
+                              .where("LOWER(label) LIKE ?", "%#{q_like}%")
+                              .order(Arel.sql(ActiveRecord::Base.sanitize_sql_array([
+                                                                                      "CASE WHEN LOWER(label) = ? THEN 0 " \
+                                                                                      "WHEN LOWER(label) LIKE ? THEN 1 ELSE 2 END, label ASC",
+                                                                                      q_down, "#{q_like}%"
+                                                                                    ])))
+                              .limit(MAX_AUTOCOMPLETE_RESULTS)
 
       entries.map do |entry|
         {

@@ -6,10 +6,9 @@
   # Convert to array for splitting
   fields_array = all_fields.to_a
 
-  # Filter out admin-only fields if user is not admin
+  # Filter out admin-only and editor-only fields per Hyrax's view-visibility rules
   fields_array.select! do |field, options|
-    is_admin_only = options && (options[:admin_only] || options['admin_only'])
-    !is_admin_only || current_user.try(:admin?)
+    field_visible?(conform_options(field, options), presenter)
   end
 
   half = (fields_array.count / 2.0).ceil

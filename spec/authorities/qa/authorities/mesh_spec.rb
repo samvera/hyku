@@ -103,6 +103,22 @@ RSpec.describe Qa::Authorities::Mesh do
           expect(attack).to include(id: 'Heart Attack', label: 'Heart Attack', value: 'Heart Attack')
         end
       end
+
+      describe 'LIKE wildcard handling' do
+        it 'treats % and _ as literals, not SQL wildcards' do
+          add_entry('Vitamin B_12')
+          add_entry('100% Cotton Allergy')
+          add_entry('Cancer')
+          add_entry('Heart')
+
+          # Without escaping, '%' would match everything and '_' would match any single char
+          percent_results = authority.search('%', nil).map { |r| r[:label] }
+          expect(percent_results).to contain_exactly('100% Cotton Allergy')
+
+          underscore_results = authority.search('_', nil).map { |r| r[:label] }
+          expect(underscore_results).to contain_exactly('Vitamin B_12')
+        end
+      end
     end
   end
 end

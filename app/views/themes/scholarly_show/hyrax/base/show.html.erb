@@ -2,6 +2,10 @@
 
 <% provide :page_title, @presenter.page_title %>
 
+<% content_for :canonical_url do %>
+  <link rel="canonical" href="<%= canonical_url_for(@presenter) %>" />
+<% end %>
+
 <%= render 'shared/citations' %>
 <%= render 'shared/additional_citations' %>
 <div class="row work-type">

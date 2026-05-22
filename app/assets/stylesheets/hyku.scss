@@ -539,6 +539,20 @@ span.constraint-value p,
 
     .hyc-title {
         padding: 0;
+
+        .copy-permalink-button {
+            padding: 0.25em 0.5em;
+            margin-left: 0.5rem;
+            vertical-align: middle;
+            font-size: 0.85em;
+            font-weight: 400;
+            line-height: 1;
+        }
+
+        .badge,
+        .copy-permalink-button {
+            vertical-align: middle;
+        }
     }
 
     .hyc-item-count,

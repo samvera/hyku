@@ -29,8 +29,8 @@ RSpec.describe 'Redirects catch-all route placement', type: :request do
         path.start_with?('/rails/') || path == '/'
       end
       expect(app_routes_after).to be_empty,
-        "Expected no application routes after the catch-all, but found: " \
-        "#{app_routes_after.map { |r| r.path.spec.to_s }.join(', ')}"
+                                  "Expected no application routes after the catch-all, but found: " \
+                                  "#{app_routes_after.map { |r| r.path.spec.to_s }.join(', ')}"
     end
   end
 

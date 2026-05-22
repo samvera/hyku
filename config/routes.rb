@@ -97,7 +97,6 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   mount BlacklightAdvancedSearch::Engine => '/'
   mount Hyrax::Engine, at: '/'
   mount Bulkrax::Engine, at: '/' if Hyku.bulkrax_enabled?
-  mount HykuKnapsack::Engine, at: '/'
   mount BlacklightDynamicSitemap::Engine => '/'
   concern :searchable, Blacklight::Routes::Searchable.new
   concern :exportable, Blacklight::Routes::Exportable.new
@@ -173,6 +172,14 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
       get 'export'
     end
   end
+
+  # Knapsack engine is mounted last (right before the catch-all) so any
+  # routes contributed by the consuming app's knapsack cannot accidentally
+  # shadow the alias_path resolver below. New knapsack routes that need to
+  # take precedence over the catch-all should still be safe because they
+  # are matched in declaration order within the engine and the engine
+  # itself is matched before *alias_path.
+  mount HykuKnapsack::Engine, at: '/'
 
   # Catch-all redirect resolver — must be last. See documentation/redirects.md
   # in Hyrax for the architecture. Gated by Hyrax.config.redirects_active? at

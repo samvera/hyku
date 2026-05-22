@@ -4,6 +4,7 @@
   <head>
     <%= render partial: 'layouts/head_tag_content' %>
     <%= content_for(:head) %>
+    <%= yield(:canonical_url) %>
   </head>
   <% content_for(:extra_body_classes, 'public-facing') unless params[:controller].match(/^proprietor/) %>
   <% content_for(:extra_body_classes, ' search-only') if current_account && current_account.search_only %>

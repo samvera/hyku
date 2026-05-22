@@ -259,12 +259,6 @@ Hyrax.config do |config|
     /sword
   ]
 end
-
-# Force-load the middleware decorator so its `prepend` runs at boot.
-# Zeitwerk wouldn't touch the constant on its own.
-Rails.application.config.after_initialize do
-  Hyrax::Redirects::MiddlewareDecorator
-end
 # rubocop:enable Metrics/BlockLength
 
 Date::DATE_FORMATS[:standard] = "%m/%d/%Y"

@@ -121,128 +121,100 @@ class CatalogController < ApplicationController
     config.add_nav_action(:bookmark, partial: 'blacklight/nav/bookmark', if: :render_bookmarks_control?)
     config.add_nav_action(:search_history, partial: 'blacklight/nav/search_history')
 
-    # Facets that cannot be M3-driven and must remain static in both flex modes:
-    #   - generic_type_sim: Hyrax-injected pseudo-field
-    #   - based_near_label_sim: M3 indexing uses based_near_sim, not based_near_label_sim
-    #   - file_format_sim: populated by FileSet indexer, not a metadata property
-    #   - member_of_collections_ssim: Hyrax relationship index, not a metadata property
+    # solr fields that will be treated as facets by the blacklight application
+    #   The ordering of the field names is the order of the display
     config.add_facet_field 'generic_type_sim', label: "Type", limit: 5
+    config.add_facet_field 'resource_type_sim', label: "Resource Type", limit: 5
+    config.add_facet_field 'creator_sim', limit: 5
+    config.add_facet_field 'contributor_sim', label: "Contributor", limit: 5
+    config.add_facet_field 'keyword_sim', limit: 5
+    config.add_facet_field 'subject_sim', limit: 5
+    config.add_facet_field 'language_sim', limit: 5
     config.add_facet_field 'based_near_label_sim', limit: 5
+    config.add_facet_field 'publisher_sim', limit: 5
     config.add_facet_field 'file_format_sim', limit: 5
+    config.add_facet_field 'contributing_library_sim', limit: 5
     config.add_facet_field 'member_of_collections_ssim', limit: 5, label: 'Collections'
 
-    # Index fields that cannot be M3-driven and must remain static in both flex modes:
-    #   - proxy_depositor_ssim: Hyrax-injected proxy depositor field
-    #   - based_near_label_tesim: M3 indexes based_near_tesim, different Solr suffix
-    #   - date_uploaded_dtsi: Hyrax-injected timestamp field
-    #   - date_modified_dtsi: Hyrax-injected timestamp field
-    #   - file_format_tesim: populated by FileSet indexer
-    #   - embargo_release_date_dtsi: Hyrax-injected embargo data
-    #   - lease_expiration_date_dtsi: Hyrax-injected lease data
-    config.add_index_field 'proxy_depositor_ssim', label: "Depositor", helper_method: :link_to_profile, if: :render_in_tenant?
-    config.add_index_field 'based_near_label_tesim', itemprop: 'contentLocation', link_to_facet: 'based_near_label_sim', if: :render_in_tenant?
-    config.add_index_field 'date_uploaded_dtsi', itemprop: 'datePublished', helper_method: :human_readable_date, if: :render_in_tenant?
-    config.add_index_field 'date_modified_dtsi', itemprop: 'dateModified', helper_method: :human_readable_date, if: :render_in_tenant?
-    config.add_index_field 'file_format_tesim', link_to_facet: 'file_format_sim', if: :render_in_tenant?
-    config.add_index_field 'embargo_release_date_dtsi', label: "Embargo release date", helper_method: :human_readable_date, if: :render_in_tenant?
-    config.add_index_field 'lease_expiration_date_dtsi', label: "Lease expiration date", helper_method: :human_readable_date, if: :render_in_tenant?
-
-    unless Hyrax.config.flexible?
-      # solr fields that will be treated as facets by the blacklight application
-      #   The ordering of the field names is the order of the display
-      # In flexible mode FlexibleCatalogBehavior registers these from M3
-      # properties carrying `facetable` in their indexing: array.
-      config.add_facet_field 'resource_type_sim', label: "Resource Type", limit: 5
-      config.add_facet_field 'creator_sim', limit: 5
-      config.add_facet_field 'contributor_sim', label: "Contributor", limit: 5
-      config.add_facet_field 'keyword_sim', limit: 5
-      config.add_facet_field 'subject_sim', limit: 5
-      config.add_facet_field 'language_sim', limit: 5
-      config.add_facet_field 'publisher_sim', limit: 5
-      config.add_facet_field 'contributing_library_sim', limit: 5
-
-      # TODO: deal with part of facet changes
-      # config.add_facet_field 'part_sim', limit: 5, label: 'Part'
-      # config.add_facet_field 'part_of_sim', limit: 5
-
-      # solr fields to be displayed in the index (search results) view
-      #   The ordering of the field names is the order of the display
-      # In flexible mode FlexibleCatalogBehavior registers these from M3
-      # properties carrying stored_searchable (or <itemprop>_tesim) in
-      # their indexing: array.
-      config.add_index_field 'title_tesim', label: "Title", itemprop: 'name', if: :render_in_tenant?
-      config.add_index_field 'description_tesim', itemprop: 'description', helper_method: :truncate_and_iconify_auto_link, if: :render_in_tenant?
-      config.add_index_field 'keyword_tesim', itemprop: 'keywords', link_to_facet: 'keyword_sim', if: :render_in_tenant?
-      config.add_index_field 'subject_tesim', itemprop: 'about', link_to_facet: 'subject_sim', if: :render_in_tenant?
-      config.add_index_field 'creator_tesim', itemprop: 'creator', link_to_facet: 'creator_sim', if: :render_in_tenant?
-      config.add_index_field 'date_tesim', itemprop: 'date', if: :render_in_tenant?
-      config.add_index_field 'contributor_tesim', itemprop: 'contributor', link_to_facet: 'contributor_sim', if: :render_in_tenant?
-      config.add_index_field 'depositor_tesim', label: "Owner", helper_method: :link_to_profile, if: :render_in_tenant?
-      config.add_index_field 'publisher_tesim', itemprop: 'publisher', link_to_facet: 'publisher_sim', if: :render_in_tenant?
-      config.add_index_field 'language_tesim', itemprop: 'inLanguage', link_to_facet: 'language_sim', if: :render_in_tenant?
-      config.add_index_field 'date_created_tesim', itemprop: 'dateCreated', if: :render_in_tenant?
-      config.add_index_field 'rights_statement_tesim', helper_method: :rights_statement_links, if: :render_in_tenant?
-      config.add_index_field 'license_tesim', helper_method: :license_links, if: :render_in_tenant?
-      config.add_index_field 'resource_type_tesim', label: "Resource Type", link_to_facet: 'resource_type_sim', if: :render_in_tenant?
-      config.add_index_field 'identifier_tesim', helper_method: :index_field_link, field_name: 'identifier', if: :render_in_tenant?
-      config.add_index_field 'related_url_tesim', helper_method: :truncate_and_iconify_auto_link, if: :render_in_tenant?
-      config.add_index_field 'learning_resource_type_tesim', label: "Learning resource type", if: :render_in_tenant?
-      config.add_index_field 'education_level_tesim', label: "Education level", if: :render_in_tenant?
-      config.add_index_field 'audience_tesim', label: "Audience", if: :render_in_tenant?
-      config.add_index_field 'discipline_tesim', label: "Discipline", if: :render_in_tenant?
-    end
-
-    unless Hyrax.config.flexible?
-      # solr fields to be displayed in the show (single result) view
-      #   The ordering of the field names is the order of the display
-      config.add_show_field 'description_tesim', helper_method: :truncate_and_iconify_auto_link
-      config.add_show_field 'keyword_tesim'
-      config.add_show_field 'subject_tesim'
-      config.add_show_field 'creator_tesim'
-      config.add_show_field 'contributor_tesim'
-      config.add_show_field 'publisher_tesim'
-      config.add_show_field 'based_near_label_tesim'
-      config.add_show_field 'language_tesim'
-      config.add_show_field 'date_uploaded_tesim'
-      config.add_show_field 'date_modified_tesim'
-      config.add_show_field 'date_created_tesim'
-      config.add_show_field 'rights_statement_tesim', helper_method: :rights_statement_links
-      config.add_show_field 'license_tesim', helper_method: :license_links
-      config.add_show_field 'resource_type_tesim', label: "Resource Type"
-      config.add_show_field 'format_tesim'
-      config.add_show_field 'identifier_tesim'
-      config.add_show_field 'extent_tesim'
-      config.add_show_field 'admin_note_tesim', label: "Administrative Notes"
-      config.add_show_field "alternative_title_tesim", label: "Alternative title"
-      config.add_show_field "related_url_tesim", helper_method: :truncate_and_iconify_auto_link
-      config.add_show_field 'learning_resource_type_tesim'
-      config.add_show_field 'education_level_tesim'
-      config.add_show_field 'audience_tesim'
-      config.add_show_field 'discipline_tesim'
-      config.add_show_field "date_tesim", label: "Date", helper_method: :human_readable_date
-      config.add_show_field "table_of_contents_tesim", label: "Table of contents"
-      config.add_show_field "rights_holder_tesim", label: "Rights holder"
-      config.add_show_field "additional_information_tesim", label: "Additional information"
-      config.add_show_field "oer_size_tesim", label: "Size"
-      config.add_show_field 'accessibility_feature_tesim'
-      config.add_show_field 'accessibility_hazard_tesim'
-      config.add_show_field 'accessibility_summary_tesim', label: "Accessibility summary"
-      config.add_show_field 'previous_version_id_tesim'
-      config.add_show_field 'newer_version_id_tesim'
-      config.add_show_field 'related_item_id_tesim'
-      config.add_show_field 'contributing_library_tesim'
-      config.add_show_field 'library_catalog_identifier_tesim'
-      config.add_show_field 'chronology_note_tesim'
-    end
+    # TODO: deal with part of facet changes
+    # config.add_facet_field 'part_sim', limit: 5, label: 'Part'
+    # config.add_facet_field 'part_of_sim', limit: 5
 
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
     # handler defaults, or have no facets.
-    #
-    # This sets a global flag on blacklight_config that applies to every facet,
-    # including ones registered later by FlexibleCatalogBehavior, so it must run
-    # in both flex modes.
     config.add_facet_fields_to_solr_request!
+
+    # solr fields to be displayed in the index (search results) view
+    #   The ordering of the field names is the order of the display
+    config.add_index_field 'title_tesim', label: "Title", itemprop: 'name', if: :render_in_tenant?
+    config.add_index_field 'description_tesim', itemprop: 'description', helper_method: :truncate_and_iconify_auto_link, if: :render_in_tenant?
+    config.add_index_field 'keyword_tesim', itemprop: 'keywords', link_to_facet: 'keyword_sim', if: :render_in_tenant?
+    config.add_index_field 'subject_tesim', itemprop: 'about', link_to_facet: 'subject_sim', if: :render_in_tenant?
+    config.add_index_field 'creator_tesim', itemprop: 'creator', link_to_facet: 'creator_sim', if: :render_in_tenant?
+    config.add_index_field 'date_tesim', itemprop: 'date', if: :render_in_tenant?
+    config.add_index_field 'contributor_tesim', itemprop: 'contributor', link_to_facet: 'contributor_sim', if: :render_in_tenant?
+    config.add_index_field 'proxy_depositor_ssim', label: "Depositor", helper_method: :link_to_profile, if: :render_in_tenant?
+    config.add_index_field 'depositor_tesim', label: "Owner", helper_method: :link_to_profile, if: :render_in_tenant?
+    config.add_index_field 'publisher_tesim', itemprop: 'publisher', link_to_facet: 'publisher_sim', if: :render_in_tenant?
+    config.add_index_field 'based_near_label_tesim', itemprop: 'contentLocation', link_to_facet: 'based_near_label_sim', if: :render_in_tenant?
+    config.add_index_field 'language_tesim', itemprop: 'inLanguage', link_to_facet: 'language_sim', if: :render_in_tenant?
+    config.add_index_field 'date_uploaded_dtsi', itemprop: 'datePublished', helper_method: :human_readable_date, if: :render_in_tenant?
+    config.add_index_field 'date_modified_dtsi', itemprop: 'dateModified', helper_method: :human_readable_date, if: :render_in_tenant?
+    config.add_index_field 'date_created_tesim', itemprop: 'dateCreated', if: :render_in_tenant?
+    config.add_index_field 'rights_statement_tesim', helper_method: :rights_statement_links, if: :render_in_tenant?
+    config.add_index_field 'license_tesim', helper_method: :license_links, if: :render_in_tenant?
+    config.add_index_field 'resource_type_tesim', label: "Resource Type", link_to_facet: 'resource_type_sim', if: :render_in_tenant?
+    config.add_index_field 'file_format_tesim', link_to_facet: 'file_format_sim', if: :render_in_tenant?
+    config.add_index_field 'identifier_tesim', helper_method: :index_field_link, field_name: 'identifier', if: :render_in_tenant?
+    config.add_index_field 'related_url_tesim', helper_method: :truncate_and_iconify_auto_link, if: :render_in_tenant?
+    config.add_index_field 'embargo_release_date_dtsi', label: "Embargo release date", helper_method: :human_readable_date, if: :render_in_tenant?
+    config.add_index_field 'lease_expiration_date_dtsi', label: "Lease expiration date", helper_method: :human_readable_date, if: :render_in_tenant?
+    config.add_index_field 'learning_resource_type_tesim', label: "Learning resource type", if: :render_in_tenant?
+    config.add_index_field 'education_level_tesim', label: "Education level", if: :render_in_tenant?
+    config.add_index_field 'audience_tesim', label: "Audience", if: :render_in_tenant?
+    config.add_index_field 'discipline_tesim', label: "Discipline", if: :render_in_tenant?
+
+    # solr fields to be displayed in the show (single result) view
+    #   The ordering of the field names is the order of the display
+    config.add_show_field 'description_tesim', helper_method: :truncate_and_iconify_auto_link
+    config.add_show_field 'keyword_tesim'
+    config.add_show_field 'subject_tesim'
+    config.add_show_field 'creator_tesim'
+    config.add_show_field 'contributor_tesim'
+    config.add_show_field 'publisher_tesim'
+    config.add_show_field 'based_near_label_tesim'
+    config.add_show_field 'language_tesim'
+    config.add_show_field 'date_uploaded_tesim'
+    config.add_show_field 'date_modified_tesim'
+    config.add_show_field 'date_created_tesim'
+    config.add_show_field 'rights_statement_tesim', helper_method: :rights_statement_links
+    config.add_show_field 'license_tesim', helper_method: :license_links
+    config.add_show_field 'resource_type_tesim', label: "Resource Type"
+    config.add_show_field 'format_tesim'
+    config.add_show_field 'identifier_tesim'
+    config.add_show_field 'extent_tesim'
+    config.add_show_field 'admin_note_tesim', label: "Administrative Notes"
+    config.add_show_field "alternative_title_tesim", label: "Alternative title"
+    config.add_show_field "related_url_tesim", helper_method: :truncate_and_iconify_auto_link
+    config.add_show_field 'learning_resource_type_tesim'
+    config.add_show_field 'education_level_tesim'
+    config.add_show_field 'audience_tesim'
+    config.add_show_field 'discipline_tesim'
+    config.add_show_field "date_tesim", label: "Date", helper_method: :human_readable_date
+    config.add_show_field "table_of_contents_tesim", label: "Table of contents"
+    config.add_show_field "rights_holder_tesim", label: "Rights holder"
+    config.add_show_field "additional_information_tesim", label: "Additional information"
+    config.add_show_field "oer_size_tesim", label: "Size"
+    config.add_show_field 'accessibility_feature_tesim'
+    config.add_show_field 'accessibility_hazard_tesim'
+    config.add_show_field 'accessibility_summary_tesim', label: "Accessibility summary"
+    config.add_show_field 'previous_version_id_tesim'
+    config.add_show_field 'newer_version_id_tesim'
+    config.add_show_field 'related_item_id_tesim'
+    config.add_show_field 'contributing_library_tesim'
+    config.add_show_field 'library_catalog_identifier_tesim'
+    config.add_show_field 'chronology_note_tesim'
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields

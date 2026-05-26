@@ -106,7 +106,7 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
       click_button "search-submit-header"
       expect(page).to have_css('a.view-type-gallery.active')
       click_link "List"
-      expect(page).to have_current_path('/catalog?locale=en&q=llama&search_field=all_fields&utf8=✓&view=list')
+      expect(page).to have_current_path('/catalog?q=llama&search_field=all_fields&utf8=✓&view=list')
     end
 
     it 'defaults to list view when no theme is selected' do

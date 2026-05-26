@@ -365,15 +365,15 @@ RSpec.describe 'actions permitted by the collection_editor role', type: :feature
   def check_tr_data_attributes(id, type)
     url_fragment = get_url_fragment(type)
     expect(page).to have_selector("tr[data-id='#{id}'][data-colls-hash]")
-    expect(page).to have_selector("tr[data-post-url='/dashboard/collections/#{id}/within?locale=en']")
-    expect(page).to have_selector("tr[data-post-delete-url='/#{url_fragment}/#{id}?locale=en']")
+    expect(page).to have_selector("tr[data-post-url='/dashboard/collections/#{id}/within']")
+    expect(page).to have_selector("tr[data-post-delete-url='/#{url_fragment}/#{id}']")
   end
 
   # check data attributes have been transferred from table row to the modal
   def check_modal_data_attributes(id, type)
     url_fragment = get_url_fragment(type)
     expect(page).to have_selector("div[data-id='#{id}']")
-    expect(page).to have_selector("div[data-post-delete-url='/#{url_fragment}/#{id}?locale=en']")
+    expect(page).to have_selector("div[data-post-delete-url='/#{url_fragment}/#{id}']")
   end
 
   def get_url_fragment(type)

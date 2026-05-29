@@ -63,7 +63,7 @@ class UploadsCleanupService
       return
     end
 
-    Rails.logger.debug "Enqueueing cleanup for #{tenant} → #{uploads_path}"
+    Rails.logger.info "Enqueueing cleanup for #{tenant} → #{uploads_path}"
     CleanupUploadFilesJob.perform_later(
       delete_ingested_after_days: @delete_ingested_after_days,
       uploads_path: uploads_path,
@@ -117,7 +117,7 @@ class UploadsCleanupService
       return
     end
 
-    Rails.logger.debug "Enqueueing orphaned tenant cleanup for #{tenant_id} → #{uploads_path} " \
+    Rails.logger.info "Enqueueing orphaned tenant cleanup for #{tenant_id} → #{uploads_path} " \
          "(all files older than #{@delete_all_after_days} days)"
     CleanupUploadFilesJob.perform_later(
       delete_ingested_after_days: @delete_all_after_days,

@@ -1,0 +1,6 @@
+# Installation-level Flipflop feature overrides.
+# Read by Hyrax::Strategies::YamlStrategy (declared in Hyrax's config/features.rb);
+# values here override the defaults declared on each `feature` line.
+
+iiif_av:
+  enabled: true

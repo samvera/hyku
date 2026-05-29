@@ -291,7 +291,7 @@ Rails.application.config.to_prepare do
   # NOTE: Remote authorities like LOC don't need explicit registration
   # They are available by default through the QA engine routes
 
-  Hyrax::IiifAv.config.iiif_av_viewer = :universal_viewer
+  Hyrax.config.iiif_av_viewer = :universal_viewer
   Hyrax.config.iiif_manifest_factory = ::IIIFManifest::V3::ManifestFactory
 
   require 'hydra/derivatives'

@@ -28,17 +28,6 @@ GIT
       rails (>= 5.2.4.3, < 8.0)
 
 GIT
-  remote: https://github.com/samvera-labs/hyrax-iiif_av.git
-  revision: 4723b8fd0961fa179caf787532bd7922a44957ec
-  branch: rails_hyrax_upgrade
-  specs:
-    hyrax-iiif_av (0.2.0)
-      blacklight
-      hyrax (>= 3.5, < 6.0)
-      iiif_manifest (> 0.5)
-      rails (>= 5.1, < 8.0)
-
-GIT
   remote: https://github.com/samvera/hyrax.git
   revision: bb662edae452785df62d7d2b634e9326bb9ab816
   branch: main
@@ -1694,7 +1683,6 @@ DEPENDENCIES
   hyku_knapsack!
   hyrax!
   hyrax-doi!
-  hyrax-iiif_av!
   i18n-debug
   i18n-tasks
   iiif_print (~> 3.0.12)

@@ -50,8 +50,6 @@ module Hyrax
     end
 
     module DisplayImagePresenterDecorator
-      include Hyrax::IiifAv::DisplaysContent
-
       # override Hyrax to keep pdfs from gumming up the v3 manifest
       # in app/presenters/hyrax/iiif_manifest_presenter.rb
       def file_set?

@@ -6,10 +6,6 @@ RSpec.describe Hyrax::GenericWorksController do
   let(:user) { FactoryBot.create(:user) }
   let(:work) { FactoryBot.valkyrie_create(:generic_work_resource, :with_one_file_set, depositor: user.user_key) }
 
-  it "includes Hyrax::IiifAv::ControllerBehavior" do
-    expect(described_class.include?(Hyrax::IiifAv::ControllerBehavior)).to be true
-  end
-
   describe "#presenter" do
     subject { controller.send :presenter }
 

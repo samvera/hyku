@@ -291,15 +291,13 @@ Rails.application.config.to_prepare do
   # NOTE: Remote authorities like LOC don't need explicit registration
   # They are available by default through the QA engine routes
 
-  Hyrax::IiifAv.config.iiif_av_viewer = :universal_viewer
+  Hyrax.config.iiif_av_viewer = :universal_viewer
+  Hyrax.config.iiif_manifest_factory = ::IIIFManifest::V3::ManifestFactory
 
   require 'hydra/derivatives'
   Hydra::Derivatives::Processors::Video::Processor.config.video_bitrate = '1500k'
 
   Hyrax.publisher.subscribe(HyraxListener.new)
-
-  Hyrax::MemberPresenterFactory.file_presenter_class = Hyrax::IiifAv::IiifFileSetPresenter
-  Hyrax::PcdmMemberPresenterFactory.file_presenter_class = Hyrax::IiifAv::IiifFileSetPresenter
 
   unless Hyrax::Transactions::Container.key?('collection_resource.save_collection_thumbnail')
     Hyrax::Transactions::Container.namespace('collection_resource') do |ops|

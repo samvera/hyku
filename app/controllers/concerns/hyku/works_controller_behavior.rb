@@ -3,7 +3,6 @@
 # OVERRIDE: Hyrax v5.0.0rc2 to:
 #           - add inject_show_theme_views - Hyku theming
 #           - correct hostname of manifests
-#           - add Hyrax IIIF AV
 #           - override for bug https://github.com/samvera/hyrax/issues/5904
 #           - use Hyku::WorkShowPresenter rather than Hyrax's presenter
 module Hyku
@@ -11,9 +10,6 @@ module Hyku
   # Hyrax::WorksControllerBehavior methods with the ones defined here
   module WorksControllerBehavior
     extend ActiveSupport::Concern
-
-    # Adds behaviors for hyrax-iiif_av plugin and provides #manifest and #iiif_manifest_builder
-    include Hyrax::IiifAv::ControllerBehavior
 
     included do
       # add around action to load theme show page views

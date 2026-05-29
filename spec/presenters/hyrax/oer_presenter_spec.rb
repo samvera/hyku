@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 # Generated via
 #  `rails generate hyrax:work Oer`
-# NOTE: The majority of this spec is coming from the hyrax-iiif_av gem.
-# See this file for more info: https://github.com/samvera-labs/hyrax-iiif_av/blob/main/lib/hyrax/iiif_av/spec/shared_specs/displays_iiif_av.rb
 require 'rails_helper'
 
 RSpec.describe Hyrax::OerPresenter do

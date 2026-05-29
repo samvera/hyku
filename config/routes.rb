@@ -11,7 +11,6 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   concern :oai_provider, BlacklightOaiProvider::Routes.new
   mount WillowSword::Engine => '/sword'
 
-  mount Hyrax::IiifAv::Engine, at: '/'
   mount IiifPrint::Engine, at: '/'
   mount Riiif::Engine => 'images', as: :riiif if Hyrax.config.iiif_image_server?
 

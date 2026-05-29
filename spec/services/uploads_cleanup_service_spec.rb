@@ -116,7 +116,12 @@ RSpec.describe UploadsCleanupService do
 
         service.run
 
-        expect(CleanupUploadFilesJob).to have_received(:perform_later).once
+        expect(CleanupUploadFilesJob).not_to have_received(:perform_later).with(
+          hash_including(uploads_path: "#{legacy_base}/not-a-uuid")
+        )
+        expect(CleanupUploadFilesJob).not_to have_received(:perform_later).with(
+          hash_including(uploads_path: "#{legacy_base}/cache")
+        )
       end
 
       context 'when the same path appears in both the main loop and extra paths' do

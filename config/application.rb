@@ -183,49 +183,6 @@ module Hyku
       :omniauthable, { omniauth_providers: %i[saml openid_connect cas] }
     ]
 
-    ##
-    # @!attribute iiif_audio_labels_and_mime_types [r|w]
-    #   @see Hyrax::IiifAv::DisplaysContentDecorator
-    #   @return [Hash<String,String>] Hash of valid audio labels and their mime types.
-    class_attribute :iiif_audio_labels_and_mime_types, default: { "ogg" => "audio/ogg", "mp3" => "audio/mpeg" }
-
-    ##
-    # @!attribute iiif_video_labels_and_mime_types [r|w]
-    #   @see Hyrax::IiifAv::DisplaysContentDecorator
-    #   @return [Hash<String,String>] Hash of valid video labels and their mime types.
-    class_attribute :iiif_video_labels_and_mime_types, default: { "mp4" => "video/mp4" }
-
-    ##
-    # @!attribute iiif_av_url_builder [r|w]
-    #   @param document [SolrDocument]
-    #   @param label [String] the file extension
-    #   @param host [String] (e.g. samvera.org)
-    #   @param mime_type [String] the MIME type of the audio/video file
-    #   @return [String] the fully qualified URL.
-    #   @see Hyrax::IiifAv::DisplaysContentDecorator
-    #
-    #   @example
-    #     # The below example will build a URL that downloads directly from Hyrax as the
-    #     # audio/video resource using the standard downloads controller. This approach uses
-    #     # the file parameter to specify the desired format and includes the mime_type
-    #     # for proper content handling.
-    #     #
-    #     # This method points to the original or processed audio/video file via Hyrax's
-    #     # download endpoint, which can handle format conversion and streaming as
-    #     # configured in the downloads controller.
-    #     Hyrax::IiifAv::DisplaysContent.iiif_audio_url_builder = ->(document:, label:, host:, mime_type:) do
-    #       Hyrax::Engine.routes.url_helpers.download_url(document.id, host:, file: label, mime_type:)
-    #     end
-    #     Hyrax::IiifAv::DisplaysContent.iiif_video_url_builder = ->(document:, label:, host:, mime_type:) do
-    #       Hyrax::Engine.routes.url_helpers.download_url(document.id, host:, file: label, mime_type:)
-    #     end
-    #
-    #   @see Hyrax::IiifAv::DisplaysContentDecorator#video_content
-    #   @see Hyrax::IiifAv::DisplaysContentDecorator#audio_content
-    class_attribute :iiif_av_url_builder,
-                    default: lambda { |document:, label:, host:, mime_type:|
-                      Hyrax::Engine.routes.url_helpers.download_url(document.id, host:, file: label, mime_type:)
-                    }
     # @!endgroup Class Attributes
 
     ##

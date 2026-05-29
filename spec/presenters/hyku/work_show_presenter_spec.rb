@@ -29,10 +29,10 @@ RSpec.describe Hyku::WorkShowPresenter do
     before do
       allow(solr_document).to receive(:representative_id).and_return(solr_document.member_ids.first)
       allow(ability).to receive(:can?).and_return true
-      allow_any_instance_of(Hyrax::IiifAv::IiifFileSetPresenter).to receive(:image?).and_return false
-      allow_any_instance_of(Hyrax::IiifAv::IiifFileSetPresenter).to receive(:pdf?).and_return false
-      allow_any_instance_of(Hyrax::IiifAv::IiifFileSetPresenter).to receive(:video?).and_return false
-      allow_any_instance_of(Hyrax::IiifAv::IiifFileSetPresenter).to receive(:audio?).and_return false
+      allow_any_instance_of(Hyrax::FileSetPresenter).to receive(:image?).and_return false
+      allow_any_instance_of(Hyrax::FileSetPresenter).to receive(:pdf?).and_return false
+      allow_any_instance_of(Hyrax::FileSetPresenter).to receive(:video?).and_return false
+      allow_any_instance_of(Hyrax::FileSetPresenter).to receive(:audio?).and_return false
     end
 
     context 'method owner' do
@@ -45,7 +45,7 @@ RSpec.describe Hyku::WorkShowPresenter do
     context "for a PDF file" do
       let!(:test_strategy) { Flipflop::FeatureSet.current.test! }
 
-      before { allow_any_instance_of(Hyrax::IiifAv::IiifFileSetPresenter).to receive(:pdf?).and_return true }
+      before { allow_any_instance_of(Hyrax::FileSetPresenter).to receive(:pdf?).and_return true }
       # Return state of the tenant to the default after test suite
       after { test_strategy.switch!(:default_pdf_viewer, default_pdf_viewer_value) }
 
@@ -64,7 +64,7 @@ RSpec.describe Hyku::WorkShowPresenter do
 
     context "for an audio file" do
       before do
-        allow_any_instance_of(Hyrax::IiifAv::IiifFileSetPresenter).to receive(:audio?).and_return true
+        allow_any_instance_of(Hyrax::FileSetPresenter).to receive(:audio?).and_return true
       end
 
       it { is_expected.to be true }
@@ -72,7 +72,7 @@ RSpec.describe Hyku::WorkShowPresenter do
 
     context "for an image file" do
       before do
-        allow_any_instance_of(Hyrax::IiifAv::IiifFileSetPresenter).to receive(:image?).and_return true
+        allow_any_instance_of(Hyrax::FileSetPresenter).to receive(:image?).and_return true
       end
 
       it { is_expected.to be true }
@@ -80,7 +80,7 @@ RSpec.describe Hyku::WorkShowPresenter do
 
     context "for a video file" do
       before do
-        allow_any_instance_of(Hyrax::IiifAv::IiifFileSetPresenter).to receive(:video?).and_return true
+        allow_any_instance_of(Hyrax::FileSetPresenter).to receive(:video?).and_return true
       end
 
       it { is_expected.to be true }

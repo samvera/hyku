@@ -1,21 +1,14 @@
 # frozen_string_literal: true
 
 # OVERRIDE here to add featured collection methods and to delegate collection presenters to the member presenter factory
-# OVERRIDE: Hyrax 5 to add Hyrax IIIF AV and manage logic for which viewer to display
+# OVERRIDE: Hyrax 5 to manage logic for which viewer to display
 
 module Hyku
   class WorkShowPresenter < Hyrax::WorkShowPresenter
-    # Hyrax::MemberPresenterFactory.file_presenter_class = Hyrax::FileSetPresenter
-    # Adds behaviors for hyrax-iiif_av plugin.
-    include Hyrax::IiifAv::DisplaysIiifAv
-
     ##
-    # NOTE: IIIF Print prepends a IiifPrint::WorkShowPresenterDecorator to Hyrax::WorkShowPresenter
-    # However, with the above `include Hyrax::IiifAv::DisplaysIiifAv` we obliterate that logic.  So
-    # we need to re-introduce that logic.
+    # NOTE: IIIF Print prepends a IiifPrint::WorkShowPresenterDecorator to Hyrax::WorkShowPresenter,
+    # and we re-prepend it here so the knapsack-side WorkShowPresenter participates in that chain.
     prepend IiifPrint::TenantConfig::WorkShowPresenterDecorator
-
-    Hyrax::MemberPresenterFactory.file_presenter_class = Hyrax::IiifAv::IiifFileSetPresenter
 
     # OVERRIDE Hyrax v2.9.0 here to make featured collections work
     delegate :collection_presenters, to: :member_presenter_factory

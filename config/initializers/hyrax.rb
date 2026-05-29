@@ -292,6 +292,7 @@ Rails.application.config.to_prepare do
   # They are available by default through the QA engine routes
 
   Hyrax::IiifAv.config.iiif_av_viewer = :universal_viewer
+  Hyrax.config.iiif_manifest_factory = ::IIIFManifest::V3::ManifestFactory
 
   require 'hydra/derivatives'
   Hydra::Derivatives::Processors::Video::Processor.config.video_bitrate = '1500k'

@@ -20,11 +20,11 @@ module SharedSearchHelper
 
   # Extracts the model ID, route name, and account cname from the model and request.
   #
-  # @param model [Object] the model object (e.g., Hyrax::IiifAv::IiifFileSetPresenter or others)
+  # @param model [Object] the model object (e.g., Hyrax::FileSetPresenter or a SolrDocument)
   # @param request [ActionDispatch::Request] the current HTTP request object
   # @return [Array<String>] a tuple containing the model's ID, route name, and account cname
   def extract_model_info(model, request)
-    if model.class == Hyrax::IiifAv::IiifFileSetPresenter
+    if model.is_a?(Hyrax::FileSetPresenter)
       base_route_name = model.model_name.plural
       id = model.id
       account_cname = request.server_name

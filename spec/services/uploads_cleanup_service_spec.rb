@@ -191,7 +191,7 @@ RSpec.describe UploadsCleanupService do
         it 'does not enqueue jobs for the missing path' do
           service.run
 
-          expect(CleanupUploadFilesJob).to have_received(:perform_later).once # main loop only
+          expect(CleanupUploadFilesJob).not_to have_received(:perform_later).with('/nonexistent/path')
         end
       end
 

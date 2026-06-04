@@ -2,6 +2,7 @@
 
 module Hyku
   class FaviconUploader < Hyrax::AvatarUploader
+    include Hyku::BrandingStoreable
     include Hyku::FileRenameable
     # rubocop:disable Style/AsciiComments
     # 32×32	favicon-32.png	Standard for most desktop browsers

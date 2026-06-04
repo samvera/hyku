@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax::AvatarUploader to rename uploaded avatar files.
+# OVERRIDE Hyrax::AvatarUploader to rename uploaded avatar files and store them
+# in the permanent branding directory instead of the temporary upload staging path.
 # Version blocks must override filename so medium/thumb versions use the parent's
 # tenant-scoped filename instead of the original filename.
 module Hyku
   class AvatarUploader < Hyrax::AvatarUploader
+    include Hyku::BrandingStoreable
     include Hyku::FileRenameable
 
     version :medium do

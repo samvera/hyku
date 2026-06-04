@@ -169,6 +169,13 @@ Hyrax.config do |config|
     end
   }
 
+  # Base path on the local file system where site branding files (banners, logos, favicons)
+  # will be stored. Set HYRAX_BRANDING_PATH to override. Tenant scoping is applied by
+  # Hyku::BrandingStoreable (uploaders) and BrandingMigrationPaths (migration jobs), which
+  # append Apartment::Tenant.current so each tenant's files are isolated.
+  # If you use a multi-server architecture, this MUST be a shared volume.
+  config.branding_path = Pathname.new(ENV.fetch('HYRAX_BRANDING_PATH', Rails.root.join('public', 'branding')))
+
   # Location on local file system where derivatives will be stored.
   # If you use a multi-server architecture, this MUST be a shared volume.
   config.derivatives_path = ENV['HYRAX_DERIVATIVES_PATH'].presence || Rails.root.join('tmp', 'derivatives').to_s

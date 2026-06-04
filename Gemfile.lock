@@ -29,8 +29,8 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: bb662edae452785df62d7d2b634e9326bb9ab816
-  branch: main
+  revision: f23f344aae364cba44d20ba88ae812f663d4fd8a
+  branch: nested-compound-metadata-foundation
   specs:
     hyrax (5.2.0)
       active-fedora (~> 15.0)

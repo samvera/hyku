@@ -1963,12 +1963,12 @@ properties:
   agents:
     available_on:
       class:
-        - Hyrax::Work
         - CollectionResource
+        - GenericWorkResource
     data_type: array
     type: hash
     cardinality:
-      minimum: 1
+      minimum: 0
     range: http://www.w3.org/2001/XMLSchema#string
     display_label:
       default: Agents
@@ -1996,10 +1996,12 @@ properties:
   identifiers:
     available_on:
       class:
-        - Hyrax::Work
         - CollectionResource
+        - GenericWorkResource
     data_type: array
     type: hash
+    cardinality:
+      minimum: 0
     range: http://www.w3.org/2001/XMLSchema#string
     display_label:
       default: Identifiers
@@ -2022,10 +2024,12 @@ properties:
   compound_rights:
     available_on:
       class:
-        - Hyrax::Work
         - CollectionResource
+        - GenericWorkResource
     data_type: array
     type: hash
+    cardinality:
+      minimum: 0
     range: http://www.w3.org/2001/XMLSchema#string
     display_label:
       default: Rights
@@ -2050,10 +2054,12 @@ properties:
   relationships:
     available_on:
       class:
-        - Hyrax::Work
         - CollectionResource
+        - GenericWorkResource
     data_type: array
     type: hash
+    cardinality:
+      minimum: 0
     range: http://www.w3.org/2001/XMLSchema#string
     display_label:
       default: Relationships

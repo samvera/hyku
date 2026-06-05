@@ -82,6 +82,19 @@ Start off by setting up a local development environment where you can experiment
     docker compose down
     ```
 
+### Single Tenant Mode
+
+By default Hyku runs in multi-tenant mode. If you only need a single repository instance
+(no tenant management screens, no subdomain routing), you can enable single tenant mode
+**before** running `docker compose up web` for the first time:
+
+1. Open `.env` and comment out the multi-tenant block, then uncomment the two single-tenant lines.
+2. Bring the app up normally: `docker compose up web`
+3. Access the site at `https://hyku.localhost.direct` instead of the admin URL above.
+
+See the [Single Tenant Mode](./configuration.md#single-tenant-mode) section of the Configuration
+Guide for the exact `.env` edits and instructions for switching an existing install.
+
 ### Additional Docker Options
 
 #### Configuration

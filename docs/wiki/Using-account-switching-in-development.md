@@ -1,3 +1,19 @@
+> **⚠️ LEGACY / STALE — This article describes the pre-Docker, pre-`.env` era of Hyku development.**
+> The `config/settings.yml` file referenced below no longer exists. The `lvh.me` and `dnsmasq`
+> approaches have been superseded by [Stack Car](https://github.com/notch8/stack_car) and the
+> `localhost.direct` wildcard domain.
+>
+> For current Docker-based development setup, see:
+> - [Getting Started](../getting-started.md) — Docker setup with Stack Car
+> - [Configuration Guide](../configuration.md) — environment variables and single/multi-tenant mode
+> - [Using Hyku](../using-hyku.md) — creating your first tenant
+
+---
+
+*(Original article preserved below for historical reference.)*
+
+---
+
 * Flip the `multitenancy.enabled` setting in [config/settings.yml](https://github.com/projecthydra-labs/hybox/blob/master/config/settings.yml#L7) to `true` (but don't commit this later)
   ```
   multitenancy:

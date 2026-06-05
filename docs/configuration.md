@@ -115,11 +115,34 @@ Hyku is primarily configured using environment variables. The default configurat
 
 Much of the default configuration in Hyku is set up to use multi-tenant mode. This default mode allows Hyku users to run the equivielent of multiple Hyrax installs on a single set of resources. However, sometimes the subdomain splitting multi-headed complexity is simply not needed. If this is the case, then single tenant mode is for you. Single tenant mode will not show the tenant sign up page, or any of the tenant management screens. Instead it shows a single Samvera instance at what ever domain is pointed at the application.
 
-To enable single tenant, set `HYKU_MULTITENANT=false` in your `docker-compose.yml` and `docker-compose.production.yml` configs. After changinig this setting, run `rails db:seed` to prepopulate the single tenant.
+To enable single tenant mode, edit your `.env` file: comment out the multi-tenant variable block and uncomment the two single-tenant variables:
 
-In single tenant mode, both the application root (eg. localhost, or hyku.test) and the tenant url single.\* (eg. single.hyku.test) will load the tenant. Override the root host by setting HYKU_ROOT_HOST`.
+```bash
+# Comment out these lines for single tenancy:
+# HYKU_ADMIN_HOST="admin-${APP_NAME}.localhost.direct"
+# HYKU_ADMIN_ONLY_TENANT_CREATION=false
+# HYKU_BLOCK_VALKYRIE_REDIRECT=false
+# HYKU_DEFAULT_HOST="%{tenant}-${APP_NAME}.localhost.direct"
+# HYKU_ROOT_HOST=localhost.direct
+# HYKU_MULTITENANT=true
+# HYKU_USER_DEFAULT_PASSWORD=password
 
-To change from single- to multi-tenant mode, change the multitenancy/enabled flag to true and restart the application. Change the 'single' tenant account cname in the Accounts edit interface to the correct hostname.
+# Uncomment these 2 for single tenancy:
+HYKU_ROOT_HOST=hyku.localhost.direct
+HYKU_MULTITENANT=false
+```
+
+**Fresh install:** Seeds run automatically on first startup via `bin/db-migrate-seed.sh`, creating the `single.tenant.default` account.
+
+**Existing install (switching from multi → single):** Seeds do not re-run automatically when there are no new migrations. You must run seeds manually after changing the flag:
+
+```bash
+docker compose exec web bundle exec rails db:seed
+```
+
+In single tenant mode the application is available at `https://hyku.localhost.direct` (or whatever `HYKU_ROOT_HOST` is set to). Both the root host and the `single.*` subdomain (e.g. `single-hyku.localhost.direct`) route to the same tenant.
+
+**Switching back to multi-tenant:** Set `HYKU_MULTITENANT=true` and restart. Update the `single.tenant.default` account's cname in the Accounts admin interface to the correct hostname for that tenant.
 
 ## Flexible Metadata
 

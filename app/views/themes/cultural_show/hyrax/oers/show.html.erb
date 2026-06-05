@@ -42,6 +42,8 @@
             <%= render 'metadata', presenter: @presenter %>
           </div>
           <div class="<%= @presenter.iiif_viewer? ? 'col-sm-4' : 'col-sm-12' %>  relationships-container">
+            <%# OVERRIDE: render schema-driven compound cards (view: display: card) %>
+            <%= render_compound_cards(@presenter) %>
             <div class='relationships-box'>
               <%= render 'relationships', presenter: @presenter %>
               </div>

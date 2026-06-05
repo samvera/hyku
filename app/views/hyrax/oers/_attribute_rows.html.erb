@@ -3,6 +3,9 @@
 <%# hyrax-doi doesn't work post hyrax v3.0.0 %>
 <% if Hyrax.config.flexible? %>
   <% view_options_for(presenter).each do |field, options| %>
+    <%# Card compounds (view: display: card) render in their own card via
+        render_compound_cards, so skip them in the inline metadata list. %>
+    <% next if compound_card_field?(presenter, field) %>
     <% view_options = conform_options(field, options) %>
     <% if field == :admin_note %>
       <%= presenter.attribute_to_html(conform_field(field, options), view_options) if presenter.editor? %>

@@ -31,12 +31,16 @@ module Hyrax
     end
 
     # OVERRIDE Hyrax - remove size
+    # Delegate everything except :total_items to Hyrax's `#[]`, which guards a
+    # declared-but-empty compound term (no `<name>_json_ss` reader on the doc)
+    # instead of raising. `:size` never reaches here — Hyku removes it from
+    # `terms` (see the class-method override above).
     def [](key)
       case key
       when :total_items
         total_items
       else
-        solr_document.send key
+        super
       end
     end
 

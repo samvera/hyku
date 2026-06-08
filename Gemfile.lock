@@ -29,7 +29,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: d82788ad0afd29730871ab8d6603d5686ddcb541
+  revision: 20b843b3fcfba07c6c57a4f4713375b3d4466566
   branch: nested-compound-metadata-foundation
   specs:
     hyrax (5.2.0)

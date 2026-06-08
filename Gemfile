@@ -58,6 +58,7 @@ gem 'i18n-tasks', group: %i[development test]
 gem 'iiif_print', '~> 3.0.12'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails' # Use jquery as the JavaScript library
+gem 'json', '~> 2.0' # avoid v3 breaking changes downstream
 gem 'json-canonicalization', "0.3.1" # The maintainers yanked 0.3.2 version (see https://github.com/dryruby/json-canonicalization/issues/2)
 gem 'json_schemer' # Required for m3 schema validation
 gem 'launchy', group: %i[test]

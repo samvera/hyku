@@ -60,6 +60,14 @@ class SolrEndpoint < Endpoint
     # NOTE: Other end points first call switch!; is that an oversight?  Perhaps not as we're relying
     # on a scheduled job to do the destructive work.
 
+    # In single-tenant mode the Solr core is shared and managed by the container
+    # entrypoint.  Just destroy the endpoint record; do not enqueue a collection
+    # deletion job that would call the SolrCloud Collections API.
+    if Hyku.single_tenant?
+      destroy
+      return
+    end
+
     # Spin off as a job, so that it can fail and be retried separately from the other logic.
     if account.search_only?
       RemoveSolrCollectionJob.perform_later(collection, connection_options, 'cross_search_tenant')

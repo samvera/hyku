@@ -10,10 +10,19 @@ RSpec.describe RemoveSolrCollectionJob do
     allow(connection_options).to receive(:without).with('adapter').and_return(connection_options)
   end
 
-  it 'destroys the solr collection' do
-    expect(RSolr).to receive(:connect).with(connection_options).and_return(connection)
-    expect(connection).to receive(:get).with('/solr/admin/collections',
-                                             params: { action: 'DELETE', name: 'x' })
-    described_class.perform_now(collection, connection_options)
+  context 'in multi-tenant mode (SolrCloud)', :multitenant do
+    it 'destroys the solr collection' do
+      expect(RSolr).to receive(:connect).with(connection_options).and_return(connection)
+      expect(connection).to receive(:get).with('/solr/admin/collections',
+                                               params: { action: 'DELETE', name: 'x' })
+      described_class.perform_now(collection, connection_options)
+    end
+  end
+
+  context 'in single-tenant mode (standalone Solr)', :singletenant do
+    it 'does not call the Solr Collections API' do
+      expect(RSolr).not_to receive(:connect)
+      described_class.perform_now(collection, connection_options)
+    end
   end
 end

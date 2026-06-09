@@ -174,10 +174,43 @@ jobs:
           echo "web did not become ready in time"
           docker compose -f docker-compose.single.yml ps
           exit 1
-      - name: Run user and account model specs
+      - name: Run single-tenant specs
+        env:
+          HYKU_MULTITENANT: "false"
+          SOLR_ENABLE_CLOUD_MODE: "no"
+          SOLR_COLLECTION: hydra-development
+          SOLR_COLLECTION_NAME: hydra-development
         run: |
-          docker compose -f docker-compose.single.yml exec -T web \
-            bundle exec rspec spec/models/user_spec.rb spec/models/account_spec.rb
+          docker compose -f docker-compose.single.yml exec -T \
+            -e HYKU_MULTITENANT=false \
+            -e SOLR_ENABLE_CLOUD_MODE=no \
+            -e SOLR_COLLECTION=hydra-development \
+            -e SOLR_COLLECTION_NAME=hydra-development \
+            web bundle exec rspec \
+              spec/models/user_spec.rb \
+              spec/models/account_spec.rb \
+              spec/models/solr_endpoint_spec.rb \
+              spec/jobs/create_solr_collection_job_spec.rb \
+              spec/jobs/remove_solr_collection_job_spec.rb \
+              spec/lib/hyku_spec.rb \
+              --tag ~wip
+      - name: Verify standalone Solr core and account endpoint
+        run: |
+          docker compose -f docker-compose.single.yml exec -T \
+            -e HYKU_MULTITENANT=false \
+            -e SOLR_COLLECTION=hydra-development \
+            -e SOLR_COLLECTION_NAME=hydra-development \
+            web bundle exec rails runner "
+              core = ENV.fetch('SOLR_COLLECTION', 'hydra-development')
+              account = Account.find_by(cname: 'single.tenant.default')
+              raise 'No single-tenant account found' unless account
+              raise 'Account has no SolrEndpoint' if account.solr_endpoint.is_a?(NilSolrEndpoint)
+              raise \"SolrEndpoint URL does not include core name '#{core}'\" unless account.solr_endpoint.url.include?(core)
+              base_url = ENV.fetch('SOLR_URL', 'http://solr:8983/solr/')
+              response = RSolr.connect(url: base_url).get('/solr/admin/cores', params: { action: 'STATUS', core: core })
+              raise \"Solr core '#{core}' missing from STATUS response\" unless response.dig('status', core)&.any?
+              puts \"Standalone Solr core '#{core}' OK — endpoint: #{account.solr_endpoint.url}\"
+            "
       - name: Dump container logs on failure
         if: failure()
         run: docker compose -f docker-compose.single.yml logs --no-color

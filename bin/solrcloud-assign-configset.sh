@@ -1,4 +1,12 @@
 #!/usr/bin/env sh
+
+# Guard: skip entirely in standalone Solr mode.  The core is pre-created by the
+# container entrypoint (SOLR_COLLECTION env var); Collection API is SolrCloud-only.
+if [ "${SOLR_ENABLE_CLOUD_MODE:-yes}" = "no" ]; then
+  echo "-- Standalone Solr mode (SOLR_ENABLE_CLOUD_MODE=no): skipping ConfigSet assignment."
+  exit 0
+fi
+
 COUNTER=0;
 
 if [ "$SOLR_ADMIN_USER" ]; then

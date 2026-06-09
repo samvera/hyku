@@ -5,29 +5,62 @@ RSpec.describe CreateSolrCollectionJob do
   let(:client) { double }
 
   describe '#perform' do
-    before do
-      allow(Blacklight.default_index).to receive(:connection).and_return(client)
+    context 'in multi-tenant mode (SolrCloud)', :multitenant do
+      before do
+        allow(Blacklight.default_index).to receive(:connection).and_return(client)
+      end
+
+      it 'creates a new collection for an account' do
+        expect(client).to receive(:get).with('/solr/admin/collections',
+                                             params: { action: 'LIST' }).and_return('collections' => [])
+
+        expect(client).to receive(:get).with('/solr/admin/collections',
+                                             params: hash_including(action: 'CREATE',
+                                                                    name: account.tenant,
+                                                                    'collection.configName': 'hyku'))
+        described_class.perform_now(account)
+
+        expect(account.solr_endpoint.url).to eq "#{ENV.fetch('SOLR_URL')}#{account.tenant}"
+      end
+
+      it 'is idempotent' do
+        expect(client).to receive(:get).with('/solr/admin/collections',
+                                             params: { action: 'LIST' }).and_return('collections' => [account.tenant])
+
+        expect(client).not_to receive(:get).with('/solr/admin/collections', params: hash_including(action: 'CREATE'))
+
+        described_class.perform_now(account)
+      end
     end
-    it 'creates a new collection for an account' do
-      expect(client).to receive(:get).with('/solr/admin/collections',
-                                           params: { action: 'LIST' }).and_return('collections' => [])
 
-      expect(client).to receive(:get).with('/solr/admin/collections',
-                                           params: hash_including(action: 'CREATE',
-                                                                  name: account.tenant,
-                                                                  'collection.configName': 'hyku'))
-      described_class.perform_now(account)
+    context 'in single-tenant mode (standalone Solr)', :singletenant do
+      it 'does not call the SolrCloud Collections API' do
+        expect(subject).not_to receive(:collection_exists?)
+        subject.perform(account)
+      end
 
-      expect(account.solr_endpoint.url).to eq "#{ENV.fetch('SOLR_URL')}#{account.tenant}"
+      it 'creates a SolrEndpoint pointing at the configured standalone core' do
+        stub_const('ENV', ENV.to_h.merge('SOLR_COLLECTION_NAME' => 'hydra-development',
+                                         'SOLR_URL' => 'http://solr:8983/solr/'))
+        subject.perform(account)
+        expect(account.reload.solr_endpoint.url).to include('hydra-development')
+      end
+
+      it 'is idempotent — does not duplicate endpoints on repeated calls' do
+        stub_const('ENV', ENV.to_h.merge('SOLR_COLLECTION_NAME' => 'hydra-development',
+                                         'SOLR_URL' => 'http://solr:8983/solr/'))
+        subject.perform(account)
+        expect { subject.perform(account) }.not_to change(SolrEndpoint, :count)
+      end
     end
+  end
 
-    it 'is idempotent' do
-      expect(client).to receive(:get).with('/solr/admin/collections',
-                                           params: { action: 'LIST' }).and_return('collections' => [account.tenant])
-
-      expect(client).not_to receive(:get).with('/solr/admin/collections', params: hash_including(action: 'CREATE'))
-
-      described_class.perform_now(account)
+  describe '#without_account' do
+    context 'in single-tenant mode', :singletenant do
+      it 'is a no-op (never calls Collections API)' do
+        expect(subject).not_to receive(:collection_exists?)
+        subject.without_account('hydra-test')
+      end
     end
   end
 

@@ -119,6 +119,11 @@ module AccountSettings
 
     # rubocop:disable Metrics/MethodLength
     def solr_collection_options
+      # In single-tenant mode Solr is standalone; SolrCloud-specific parameters
+      # (shards, replicas, router, etc.) are meaningless and would cause errors
+      # if sent to the Collections API.  Return a minimal options hash instead.
+      return { collection: { config_name: ENV.fetch('SOLR_CONFIGSET_NAME', 'hyku') } } if Hyku.single_tenant?
+
       {
         async: nil,
         auto_add_replicas: nil,

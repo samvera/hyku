@@ -9,6 +9,15 @@ class CreateSolrCollectionJob < ApplicationJob
   # @param [Account]
   def perform(account)
     @account = account
+
+    # In single-tenant mode Solr is standalone (no SolrCloud).  The core is
+    # pre-created by the container entrypoint via the SOLR_COLLECTION env var.
+    # We just need to ensure the account's SolrEndpoint points at that core.
+    if Hyku.single_tenant?
+      ensure_single_tenant_endpoint(account)
+      return
+    end
+
     name = account.tenant.parameterize
 
     if account.search_only?
@@ -18,7 +27,11 @@ class CreateSolrCollectionJob < ApplicationJob
     end
   end
 
+  # Used by the RSpec suite bootstrap to pre-create named collections before
+  # the suite runs.  In single-tenant mode we never call the Collections API,
+  # so this is a no-op to keep callers safe.
   def without_account(name, tenant_list = '')
+    return if Hyku.single_tenant?
     return if collection_exists?(name)
     if tenant_list.present?
       client.get '/solr/admin/collections', params: collection_options.merge(action: 'CREATEALIAS',
@@ -120,6 +133,19 @@ class CreateSolrCollectionJob < ApplicationJob
 
   def add_solr_endpoint_to_account(account, name)
     account.create_solr_endpoint(url: collection_url(name), collection: name)
+  end
+
+  # In single-tenant mode, point the account's SolrEndpoint at the pre-created
+  # standalone core.  The core name comes from SOLR_COLLECTION_NAME (defaulting
+  # to 'hydra-development' to match docker-compose.single.yml's SOLR_COLLECTION).
+  def ensure_single_tenant_endpoint(account)
+    core_name = ENV.fetch('SOLR_COLLECTION_NAME', 'hydra-development')
+    url = collection_url(core_name)
+    if account.solr_endpoint.is_a?(NilSolrEndpoint)
+      account.create_solr_endpoint(url: url, collection: core_name)
+    elsif account.solr_endpoint.url != url
+      account.solr_endpoint.update(url: url, collection: core_name)
+    end
   end
 
   def perform_for_normal_tenant(account, name)

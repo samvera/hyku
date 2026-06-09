@@ -39,11 +39,21 @@ RSpec.describe SolrEndpoint do
   end
 
   describe '#remove!' do
-    it 'schedules the removal and deletes the end point' do
-      instance = described_class.create!
-      allow(instance).to receive(:account).and_return(double(Account, search_only?: true))
-      expect(RemoveSolrCollectionJob).to receive(:perform_later)
-      expect { instance.remove! }.to change(described_class, :count).by(-1)
+    context 'in multi-tenant mode (SolrCloud)', :multitenant do
+      it 'schedules the removal and deletes the end point' do
+        instance = described_class.create!
+        allow(instance).to receive(:account).and_return(double(Account, search_only?: true))
+        expect(RemoveSolrCollectionJob).to receive(:perform_later)
+        expect { instance.remove! }.to change(described_class, :count).by(-1)
+      end
+    end
+
+    context 'in single-tenant mode (standalone Solr)', :singletenant do
+      it 'destroys the endpoint without enqueueing RemoveSolrCollectionJob' do
+        instance = described_class.create!
+        expect(RemoveSolrCollectionJob).not_to receive(:perform_later)
+        expect { instance.remove! }.to change(described_class, :count).by(-1)
+      end
     end
   end
 end

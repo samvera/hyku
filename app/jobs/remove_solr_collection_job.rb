@@ -6,6 +6,10 @@ class RemoveSolrCollectionJob < ApplicationJob
   # @option connection_options [String] :url
   # @option connection_options [String] :url
   def perform(collection, connection_options, tenant_type = 'normal')
+    # In single-tenant mode Solr is standalone.  The shared core is managed by
+    # the container entrypoint and must NOT be deleted on a per-account basis.
+    return if Hyku.single_tenant?
+
     if tenant_type == 'cross_search_tenant'
       solr_client(connection_options).get '/solr/admin/collections', params: { action: 'DELETEALIAS', name: collection }
     else

@@ -9,7 +9,10 @@ ENV['HYKU_ADMIN_HOST'] = 'test.host'
 ENV['HYKU_ROOT_HOST'] = 'test.host'
 ENV['HYKU_ADMIN_ONLY_TENANT_CREATION'] = nil
 ENV['HYKU_DEFAULT_HOST'] = nil
-ENV['HYKU_MULTITENANT'] = 'true'
+# Preserve an explicit HYKU_MULTITENANT value supplied by the environment
+# (e.g. docker-compose.single.yml sets it to 'false').  Default to 'true'
+# so the full multi-tenant suite still runs correctly when no override is given.
+ENV['HYKU_MULTITENANT'] = ENV.fetch('HYKU_MULTITENANT', 'true')
 ENV['VALKYRIE_TRANSITION'] = 'true'
 ENV['HYRAX_ANALYTICS_REPORTING'] = 'false'
 
@@ -156,9 +159,7 @@ RSpec.configure do |config|
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)
     Account.destroy_all
-    CreateSolrCollectionJob.new.without_account('hydra-test') if ENV['IN_DOCKER']
-    CreateSolrCollectionJob.new.without_account('hydra-sample')
-    CreateSolrCollectionJob.new.without_account('hydra-cross-search-tenant', 'hydra-test, hydra-sample')
+    prepare_test_solr
   end
 
   config.before do |example|

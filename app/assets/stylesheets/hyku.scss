@@ -766,3 +766,14 @@ dd {
     font-size: 0.875rem;
     color: #6c757d;
 }
+
+/* Accessibility fix for contrast on Show Pages */
+/* Breadcrumb links: ensure #000000 overrides tenant link color for WCAG AA contrast */
+nav.breadcrumb a {
+    color: #000000 !important;
+}
+
+/* Document title links in gallery/list views: ensure #000000 overrides tenant link color for WCAG AA contrast */
+.document-title-heading a {
+    color: #000000 !important;
+}

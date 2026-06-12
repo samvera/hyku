@@ -11,6 +11,9 @@ class OerResource < Hyrax::Work
     include Hyrax::Schema(:bulkrax_metadata)
     include Hyrax::Schema(:with_pdf_viewer)
     include Hyrax::Schema(:with_video_embed)
+    # In flexible mode the compounds come from the m3 profile; include the static
+    # schema only when the m3 profile is not driving the schema.
+    include Hyrax::Schema(:compound_metadata) unless Hyrax.config.flexible?
   end
 
   include Hyrax::ArResource

@@ -1,0 +1,117 @@
+# OVERRIDE: Overrides Hyrax's sample compound_metadata schema (used under
+# HYRAX_FLEXIBLE=false). Mirrors the compounds defined in the m3 profile
+# (config/metadata_profiles/m3_profile.yaml) so both flex modes expose the same
+# fields: participants, identifiers, and relationships — each a primary, optional
+# compound. Hyrax's `compound_rights` sample is intentionally not carried over.
+attributes:
+  # Participants associated with the work: a name, a controlled role, and a
+  # display title (the reused `shared_title` below).
+  participants:
+    type: hash
+    multiple: true
+    predicate: http://id.loc.gov/vocabulary/relators/asn
+    form:
+      primary: true
+    groups:
+      identity:
+        label: Identity
+    view:
+      render_as: compound
+      html_dl: true
+  participant_name:
+    type: string
+    name: name
+    available_on:
+      properties:
+        - participants
+    group: identity
+    required: true
+    form:
+      cols: 4
+  participant_role:
+    type: controlled
+    name: role
+    available_on:
+      properties:
+        - participants
+    group: identity
+    required: true
+    values: [Author, Editor, Contributor, Creator, Data Collector, Funder, Publisher, Other]
+    form:
+      cols: 4
+
+  # A typed identifier: an open-entry value plus a controlled identifier type.
+  # Named `identifiers` (plural) to avoid colliding with the scalar `identifier`.
+  identifiers:
+    type: hash
+    multiple: true
+    predicate: http://purl.org/dc/terms/identifier
+    form:
+      primary: true
+    view:
+      render_as: compound
+      html_dl: true
+  identifier_value:
+    type: string
+    name: value
+    available_on:
+      properties:
+        - identifiers
+    required: true
+    form:
+      cols: 6
+  identifier_type:
+    type: controlled
+    name: type
+    available_on:
+      properties:
+        - identifiers
+    required: true
+    values: [DOI, Handle, ISBN, ISSN, URL, URN, ARK, Other]
+    form:
+      cols: 6
+
+  # A related-item grouping using the `work_or_url` sub-property: the user
+  # searches for an internal work (typeahead) or types an external URL.
+  relationships:
+    type: hash
+    multiple: true
+    predicate: http://purl.org/dc/terms/relation
+    form:
+      primary: true
+    view:
+      render_as: compound
+      html_dl: true
+      display: card
+  relationship_item:
+    type: work_or_url
+    name: item
+    available_on:
+      properties:
+        - relationships
+    required: true
+    form:
+      cols: 6
+  relationship_type:
+    type: controlled
+    name: type
+    available_on:
+      properties:
+        - relationships
+    required: true
+    values: [References, Is Referenced By, Is Part Of, Has Part, Is Version Of, Replaces, Requires, Other]
+    form:
+      cols: 6
+
+  # A single subproperty reused by both compounds: `name: title` sets the row
+  # key, `available_on.properties` lists both parents. Solr fields derive per
+  # parent (participants_title_*, relationships_title_*), so no collision.
+  shared_title:
+    type: string
+    name: title
+    available_on:
+      properties:
+        - participants
+        - relationships
+    form:
+      cols: 12

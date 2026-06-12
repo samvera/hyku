@@ -147,12 +147,8 @@ Add this to your `.env` file for local development, or set it in your deployment
 
 When flexible metadata is enabled, Hyku applies it to the stock work types
 (GenericWork, Image, Etd, Oer) plus Collections, Admin Sets, and File Sets.
-A class only participates in flexible metadata if it is named in the
-`HYRAX_FLEXIBLE_CLASSES` environment variable; custom work types (for example,
-ones generated in a [Hyku Knapsack](https://github.com/samvera-labs/hyku_knapsack)
-with `rails generate hyku_knapsack:work_resource MyWorkType`) must be added to
-it or their forms, indexing, and Bulkrax-template generation will silently fall
-back to static (non-flexible) metadata.
+A class participates in flexible metadata if it is named in the
+`HYRAX_FLEXIBLE_CLASSES` environment variable or if acts_as_flexible_resource is declaired on the class.
 
 `HYRAX_FLEXIBLE_CLASSES` is the **complete** list, not additions — include the
 stock classes too:
@@ -161,7 +157,7 @@ stock classes too:
 HYRAX_FLEXIBLE_CLASSES=AdminSetResource,CollectionResource,Hyrax::FileSet,GenericWorkResource,ImageResource,EtdResource,OerResource,MyWorkType
 ```
 
-When the variable is unset, Hyku defaults it to the stock classes listed above.
+When the variable is unset, Hyku defaults it to the stock classes listed above plus any class with `acts_as_flexible_resource` set.
 Every class named here must also be declared in the tenant's M3 profile
 (`classes:` section) and have its properties' `available_on` entries reference it.
 

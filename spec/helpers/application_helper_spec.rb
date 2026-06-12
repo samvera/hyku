@@ -76,4 +76,22 @@ RSpec.describe ApplicationHelper, type: :helper do
       end
     end
   end
+
+  describe '#work_type_facet_label' do
+    it 'returns the human model name from the locales' do
+      allow(I18n).to receive(:t).and_call_original
+      allow(I18n).to receive(:t).with('activerecord.models.generic_work_resource', count: 1, default: 'Generic Work Resource')
+                                .and_return('Generic Work')
+      expect(helper.work_type_facet_label('GenericWorkResource')).to eq('Generic Work')
+    end
+
+    it 'unwraps a Blacklight facet item' do
+      item = double(value: 'GenericWorkResource')
+      expect(helper.work_type_facet_label(item)).to be_a(String)
+    end
+
+    it 'titleizes values that are not model classes (stale index data)' do
+      expect(helper.work_type_facet_label('NoSuchModel')).to eq('No Such Model')
+    end
+  end
 end

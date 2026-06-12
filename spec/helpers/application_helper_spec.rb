@@ -79,8 +79,12 @@ RSpec.describe ApplicationHelper, type: :helper do
 
   describe '#work_type_facet_label' do
     it 'returns the human model name from the locales' do
+      # Hyrax overrides model_name on resource classes, so the i18n key is
+      # :generic_work, not :generic_work_resource - derive it instead of
+      # hardcoding it.
+      key = "activerecord.models.#{GenericWorkResource.model_name.i18n_key}"
       allow(I18n).to receive(:t).and_call_original
-      allow(I18n).to receive(:t).with('activerecord.models.generic_work_resource', count: 1, default: 'Generic Work Resource')
+      allow(I18n).to receive(:t).with(key, count: 1, default: 'Generic Work Resource')
                                 .and_return('Generic Work')
       expect(helper.work_type_facet_label('GenericWorkResource')).to eq('Generic Work')
     end

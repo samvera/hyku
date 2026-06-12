@@ -1,4 +1,7 @@
-<%# OVERRIDE Hyrax v5.2.0 to make it say 'Default thumbnail' in the thumbnail select box instead of 'undefined' %>
+<%# OVERRIDE Hyrax v5.2.0
+      - make the thumbnail select box say 'Default thumbnail' instead of 'undefined'
+      - add a thumbnail upload control
+%>
 <%= render "shared/nav_safety_modal" %>
 <div class="tabs mt-4" id="collection-edit-controls">
   <ul class="nav nav-tabs" id="dashboard-collection-tab" role="tablist">
@@ -48,6 +51,13 @@
             <div id="base-terms">
               <% f.object.primary_terms.each do |term| %>
                 <%= render_edit_field_partial(term, f: f) %>
+              <% end %>
+
+              <%# OVERRIDE: mirror upstream Hyrax to render compound metadata fields with their add/remove buttons and JS hooks %>
+              <% if f.object.respond_to?(:compound_terms) %>
+                <% f.object.compound_terms.each do |term| %>
+                  <%= render_compound_field(f, term) %>
+                <% end %>
               <% end %>
 
               <% # TODO: Remove check for PcdmCollection when Issue #5286 is resolved. %>

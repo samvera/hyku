@@ -9,7 +9,7 @@ require 'i18n/debug' if ENV['I18N_DEBUG']
 groups = Rails.groups
 Bundler.require(*groups)
 
-module Hyku
+module Hyku # rubocop:disable Metrics/ModuleLength
   # Providing a common method to ensure consistent UTF-8 encoding.  Also removing the tricksy Byte
   # Order Marker character which is an invisible 0 space character.
   #
@@ -105,11 +105,24 @@ module Hyku
       'related_item' => { from: ['related_item'], split: '\|' },
       'relative_path' => { from: ['relative_path'], split: '\|', generated: true },
       'related_url' => { from: ['related_url', 'relation'], split: /\s* [|]\s*/ },
-      # Redirects persist as Array<Hash> with string keys ('path', 'is_display_url').
-      # `nested_attributes: true` routes the imported data through `redirects_attributes`
-      # so the form populator (which strips the bare `redirects` key) receives it correctly.
+      # Compound fields: each CSV column maps into an entry on its `object:`. Use
+      # numbered columns (participant_name_1, participant_name_2, …) for multiple
+      # entries. `name:` sets the key inside the entry when the column name can't
+      # be reused as-is (e.g. two compounds both need a `title` or `type`).
+      #   Redirects: alternate URLs for a work.
       'path' => { from: ['redirect_path'], object: 'redirects', nested_attributes: true },
       'is_display_url' => { from: ['redirect_is_display_url'], object: 'redirects', nested_attributes: true },
+      #   Participants: people/organizations with a name, role, and title.
+      'name' => { from: ['participant_name'], object: 'participants', nested_attributes: true },
+      'role' => { from: ['participant_role'], object: 'participants', nested_attributes: true },
+      'participant_title' => { from: ['participant_title'], object: 'participants', nested_attributes: true, name: 'title' },
+      #   Identifiers: a value plus its type (e.g. a DOI).
+      'value' => { from: ['identifier_value'], object: 'identifiers', nested_attributes: true },
+      'identifier_type' => { from: ['identifier_type'], object: 'identifiers', nested_attributes: true, name: 'type' },
+      #   Relationships: links to related works or URLs, with a type and title.
+      'item' => { from: ['relationship_item'], object: 'relationships', nested_attributes: true },
+      'relationship_type' => { from: ['relationship_type'], object: 'relationships', nested_attributes: true, name: 'type' },
+      'relationship_title' => { from: ['relationship_title'], object: 'relationships', nested_attributes: true, name: 'title' },
       'remote_files' => { from: ['remote_files'], split: /\s*[|]\s*/ },
       'rendering_ids' => { from: ['rendering_ids'], split: '\|', generated: true },
       'resource_type' => { from: ['resource_type'], split: true },
@@ -358,3 +371,4 @@ module Hyku
   end
   # rubocop:enable Metrics/ClassLength
 end
+# rubocop:enable Metrics/ModuleLength

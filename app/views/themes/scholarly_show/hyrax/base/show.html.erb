@@ -66,6 +66,8 @@
         <div class="row">
           <div class="col-12 work-show-items">
             <%= render 'relationships', presenter: @presenter %>
+            <%# OVERRIDE: render schema-driven compound cards (view: display: card) %>
+            <%= render_compound_cards(@presenter) %>
             <% if @presenter.class == Hyrax::OerPresenter %>
               <%= render 'hyrax/oers/related_items', presenter: @presenter %>
             <% end %>

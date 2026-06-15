@@ -29,7 +29,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: bb662edae452785df62d7d2b634e9326bb9ab816
+  revision: 19340f2c311fee87ad09b92274890265ffa59e72
   branch: main
   specs:
     hyrax (5.2.0)
@@ -369,7 +369,7 @@ GEM
       signet (~> 0.8)
       typhoeus
     builder (3.3.0)
-    bulkrax (9.5.0)
+    bulkrax (9.5.1)
       bagit (~> 0.6.0)
       coderay
       denormalize_fields

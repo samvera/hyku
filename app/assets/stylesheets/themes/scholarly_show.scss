@@ -40,4 +40,40 @@
       font-weight: 400;
     }
   }
+
+  // Compound cards (view: display: card) render as a flat titled section like
+  // the other work-show-items sections: no card box, no rule, a heading
+  // matching the metadata titles, sub-fields indented like other values.
+  // Selectors are chained / use `!important` to beat the Bootstrap .card and
+  // `body.public-facing .card > .card-header` defaults.
+  .hyrax-compound-card.card {
+    background: none !important;
+    border: 0 !important;
+    border-radius: 0;
+    box-shadow: none !important;
+    margin-top: 1rem;
+    padding: 1rem 0 0;
+
+    > .card-header {
+      background: none !important;
+      border: 0 !important;
+      padding: 0;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-body {
+      padding: 0;
+    }
+
+    // Indent the sub-field rows to line up with other metadata values
+    // (scholarly indents values via `ul.tabular { padding-inline-start: 20px }`).
+    .hyrax-compound-subfield {
+      padding-left: 20px !important;
+    }
+  }
 }

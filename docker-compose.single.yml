@@ -69,7 +69,7 @@ services:
     user: root
     command: bash -c "
       chown -R 8983:8983 /var/solr
-      && runuser -u solr -- solr-foreground"
+      && exec runuser -u solr -- solr-precreate hydra-development /opt/solr/server/solr/configsets/hyku"
     expose:
       - 8983
     volumes:

@@ -97,9 +97,7 @@ class CreateSolrCollectionJob < ApplicationJob
   end
 
   def collection_url(name)
-    uri = URI(solr_url) + name
-
-    uri.to_s
+    (URI(solr_url) + name).to_s
   end
 
   def solr_url
@@ -123,11 +121,9 @@ class CreateSolrCollectionJob < ApplicationJob
   def check_credential_encoding(env_variable:, default:)
     credential = ENV.fetch(env_variable, default)
     credential_encoded = URI.encode_www_form_component(credential)
-    if credential != credential_encoded
-      Rails.logger.warn("#{env_variable} contains characters that may require URL encoding. " \
-                        "If you experience Solr authentication errors, URL encode the value in " \
-                        "#{env_variable} and in SOLR_URL if it is set.")
-    end
+    Rails.logger.warn("#{env_variable} contains characters that may require URL encoding. " \
+                      "If you experience Solr authentication errors, URL encode the value in " \
+                      "#{env_variable} and in SOLR_URL if it is set.") if credential != credential_encoded
     credential
   end
 
@@ -149,10 +145,7 @@ class CreateSolrCollectionJob < ApplicationJob
   end
 
   def perform_for_normal_tenant(account, name)
-    unless collection_exists? name
-      client.get '/solr/admin/collections', params: collection_options.merge(action: 'CREATE',
-                                                                             name:)
-    end
+    client.get '/solr/admin/collections', params: collection_options.merge(action: 'CREATE', name:) unless collection_exists? name
     add_solr_endpoint_to_account(account, name)
   end
 

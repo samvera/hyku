@@ -151,6 +151,8 @@ RSpec.describe Account, type: :model do
     end
 
     it 'switches the ActiveFedora fcrepo connection' do
+      skip 'Fedora is not active when Wings is disabled' if Hyrax.config.disable_wings
+
       expect(ActiveFedora.fedora.host).to eq 'http://example.com/fedora'
       expect(ActiveFedora.fedora.base_path).to eq '/dev'
     end
@@ -190,8 +192,10 @@ RSpec.describe Account, type: :model do
       expect do
         subject.switch do
           expect(Hyrax::SolrService.connection.uri.to_s).to eq 'http://example.com/solr/'
-          expect(ActiveFedora.fedora.host).to eq 'http://example.com/fedora'
-          expect(ActiveFedora.fedora.base_path).to eq '/dev'
+          unless Hyrax.config.disable_wings
+            expect(ActiveFedora.fedora.host).to eq 'http://example.com/fedora'
+            expect(ActiveFedora.fedora.base_path).to eq '/dev'
+          end
           expect(Hyrax.config.redis_namespace).to eq 'foobaz'
           expect(Hyrax::DOI::DataCiteRegistrar.mode).to eq 'test'
           expect(Hyrax::DOI::DataCiteRegistrar.prefix).to eq '10.1234'

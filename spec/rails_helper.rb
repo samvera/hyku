@@ -21,8 +21,10 @@ SimpleCov.start('rails')
 require File.expand_path('../config/environment', __dir__)
 require 'spec_helper'
 
-# We're going to need this for our factories
-require Hyrax::Engine.root.join("lib/hyrax/specs/shared_specs/simple_work.rb").to_s
+# Hyrax's simple_work shared spec references Wings::ModelRegistry, which is
+# unavailable when HYRAX_SKIP_WINGS=true (as in docker-compose.single.yml).
+simple_work_spec = Hyrax::Engine.root.join("lib/hyrax/specs/shared_specs/simple_work.rb").to_s
+require simple_work_spec unless Hyrax.config.disable_wings
 
 # I want to set this so that our factory finder will have the right values.
 Hyrax.config.admin_set_model = "AdminSetResource"

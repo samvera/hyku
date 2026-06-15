@@ -29,8 +29,8 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: dc3db70bf55734009a88af6d4d936301440b2395
-  branch: flexible-presenter-schema-hoist
+  revision: 19340f2c311fee87ad09b92274890265ffa59e72
+  branch: main
   specs:
     hyrax (5.2.0)
       active-fedora (~> 15.0)

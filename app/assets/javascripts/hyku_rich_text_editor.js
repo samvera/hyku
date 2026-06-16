@@ -1,25 +1,79 @@
 // Attaches a TinyMCE WYSIWYG editor to any textarea that Hyrax's flexible
 // rich-text edit field renders for a `form: { input_type: rich_text }` property.
-// Hyrax emits an engine-agnostic `<textarea class="rich-text">`; this is the
-// Hyku-side hook that turns it into a what-you-see-is-what-you-get editor whose
-// HTML output is stored on the field and rendered (sanitized) on the show page.
+// Hyrax emits `<textarea class="rich-text">` (single-valued) or a multi_value
+// widget of such textareas with an "Add another" control. This is the Hyku-side
+// hook that turns each into a what-you-see-is-what-you-get editor whose HTML
+// output is stored on the field and rendered (sanitized) on the show page.
 (function () {
-  function initRichTextEditors() {
-    if (typeof tinymce === 'undefined') { return; }
-    // Avoid double-initialization on Turbo/AJAX re-renders.
-    tinymce.remove('textarea.rich-text');
+  var TOOLBAR = 'undo redo | bold italic underline | bullist numlist | blockquote link | removeformat | code';
+  var PLUGINS = 'lists link autolink code';
+  // Keep stored markup aligned with HtmlAttributeRenderer's allow-list.
+  var VALID_ELEMENTS = 'p,br,strong/b,em/i,u,s,a[href|title|target|rel],ul,ol,li,blockquote,h1,h2,h3,h4,h5,h6,code,pre,span';
+
+  function uniqueId() {
+    return 'rich-text-' + Date.now() + '-' + Math.floor(Math.random() * 100000);
+  }
+
+  function initEditor(textarea) {
+    if (typeof tinymce === 'undefined' || !textarea) { return; }
+    // TinyMCE keys editors by id; ensure each textarea has a unique, un-bound id.
+    if (!textarea.id || tinymce.get(textarea.id)) { textarea.id = uniqueId(); }
     tinymce.init({
-      selector: 'textarea.rich-text',
+      target: textarea,
       menubar: false,
       branding: false,
-      plugins: 'lists link autolink code',
-      toolbar: 'undo redo | bold italic underline | bullist numlist | blockquote link | removeformat | code',
-      // Keep the stored markup aligned with HtmlAttributeRenderer's allow-list.
-      valid_elements: 'p,br,strong/b,em/i,u,s,a[href|title|target|rel],ul,ol,li,blockquote,h1,h2,h3,h4,h5,h6,code,pre,span'
+      plugins: PLUGINS,
+      toolbar: TOOLBAR,
+      valid_elements: VALID_ELEMENTS
     });
   }
 
-  document.addEventListener('DOMContentLoaded', initRichTextEditors);
-  document.addEventListener('turbo:load', initRichTextEditors);
-  document.addEventListener('turbolinks:load', initRichTextEditors);
+  function initAll() {
+    if (typeof tinymce === 'undefined') { return; }
+    var nodes = document.querySelectorAll('textarea.rich-text');
+    for (var i = 0; i < nodes.length; i++) {
+      if (!tinymce.get(nodes[i].id)) { initEditor(nodes[i]); }
+    }
+  }
+
+  // When the multi_value "Add another" control clones a field, the clone carries
+  // a stale copy of the source editor's TinyMCE DOM. Strip it, then initialize a
+  // fresh editor on the cloned textarea.
+  function onManagedFieldAdd(_event, added) {
+    if (typeof window.jQuery === 'undefined') { return; }
+    var $ = window.jQuery;
+    // hydra-editor triggers this event *before* it appends the cloned field to
+    // the listing, so defer until the node is attached to the DOM. Initializing
+    // TinyMCE on a detached node breaks the subsequent append.
+    setTimeout(function () {
+      var $added = $(added);
+      var $textarea = $added.is('textarea.rich-text') ? $added : $added.find('textarea.rich-text');
+      if (!$textarea.length) { $textarea = $added.closest('li').find('textarea.rich-text'); }
+      if (!$textarea.length) { return; }
+
+      var $li = $textarea.closest('li');
+      // Remove any cloned TinyMCE chrome so we can rebind cleanly.
+      $li.find('.tox-tinymce, .mce-tinymce').remove();
+
+      var textarea = $textarea[0];
+      textarea.style.display = '';
+      textarea.removeAttribute('aria-hidden');
+      textarea.value = '';
+      textarea.id = uniqueId();
+      initEditor(textarea);
+    }, 0);
+  }
+
+  function bind() {
+    initAll();
+    if (typeof window.jQuery !== 'undefined') {
+      // Rebind defensively (off then on) so Turbo re-renders don't stack handlers.
+      window.jQuery(document).off('managed_field:add.hykuRichText')
+            .on('managed_field:add.hykuRichText', onManagedFieldAdd);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', bind);
+  document.addEventListener('turbo:load', bind);
+  document.addEventListener('turbolinks:load', bind);
 })();

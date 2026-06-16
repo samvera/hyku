@@ -14,14 +14,21 @@
   <% end %>
 </div>
 
-<%# Feature the rich-text context/narrative prominently at the top of the show
-    page, rendered as sanitized HTML and reusing the same allow-list as
-    Hyrax::Renderers::HtmlAttributeRenderer for consistency with the metadata table. %>
-<% context_narrative = Array(presenter.solr_document['context_narrative_tesim']).join %>
-<% if context_narrative.present? %>
-  <section class="work-context-narrative card mb-4">
+<%# Feature any property flagged `view: { position: featured }` prominently at
+    the top of the show page. Profile-driven (not tied to a specific field) and
+    works whether or not flexible metadata is enabled, since view_options_for
+    resolves view definitions in both modes. Values are rendered as sanitized
+    HTML using the same allow-list as Hyrax::Renderers::HtmlAttributeRenderer so
+    a `render_as: html` field looks identical here and in the metadata table. %>
+<% view_options_for(presenter).each do |field, view_options| %>
+  <% next unless view_options.with_indifferent_access[:position].to_s == 'featured' %>
+  <% render_field = conform_field(field, view_options) %>
+  <% next unless presenter.respond_to?(render_field) %>
+  <% featured_value = Array(presenter.public_send(render_field)).join(' ').to_s %>
+  <% next if featured_value.blank? %>
+  <section class="work-featured-attribute card mb-4 attribute-<%= field %>">
     <div class="card-body">
-      <%= sanitize(context_narrative,
+      <%= sanitize(featured_value,
                    tags: Hyrax::Renderers::HtmlAttributeRenderer::ALLOWED_TAGS,
                    attributes: Hyrax::Renderers::HtmlAttributeRenderer::ALLOWED_ATTRIBUTES) %>
     </div>

@@ -13,3 +13,17 @@
     <% end %>
   <% end %>
 </div>
+
+<%# Feature the rich-text context/narrative prominently at the top of the show
+    page, rendered as sanitized HTML and reusing the same allow-list as
+    Hyrax::Renderers::HtmlAttributeRenderer for consistency with the metadata table. %>
+<% context_narrative = Array(presenter.solr_document['context_narrative_tesim']).join %>
+<% if context_narrative.present? %>
+  <section class="work-context-narrative card mb-4">
+    <div class="card-body">
+      <%= sanitize(context_narrative,
+                   tags: Hyrax::Renderers::HtmlAttributeRenderer::ALLOWED_TAGS,
+                   attributes: Hyrax::Renderers::HtmlAttributeRenderer::ALLOWED_ATTRIBUTES) %>
+    </div>
+  </section>
+<% end %>

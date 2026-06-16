@@ -30,12 +30,11 @@ end
 # Raises if the core is absent so CI fails fast with a clear message instead of
 # producing confusing test failures later.
 #
-# The core name is resolved via (in order):
-#   1. SOLR_COLLECTION env var (matches the docker-compose.single.yml Solr service)
-#   2. SOLR_COLLECTION_NAME env var (used by Rails / .env)
-#   3. Hard-coded fallback 'hydra-development'
+# The core name should have been normalized in spec/rails_helper.rb for single-tenant
+# specs: SOLR_COLLECTION is set from SOLR_COLLECTION_TEST so test cleanup never
+# points at the development core.
 def ensure_standalone_test_core_available
-  core = ENV.fetch('SOLR_COLLECTION', ENV.fetch('SOLR_COLLECTION_NAME', 'hydra-development'))
+  core = ENV.fetch('SOLR_COLLECTION', ENV.fetch('SOLR_COLLECTION_TEST', 'hydra-test'))
   base_url = ENV.fetch('SOLR_URL', 'http://solr:8983/solr/')
   # Use the base URL without the collection path for the admin endpoint
   admin_base = base_url.sub(%r{/solr/[^/]+/?$}, '/solr/')

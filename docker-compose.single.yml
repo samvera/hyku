@@ -55,6 +55,7 @@ services:
       - SOLR_ADMIN_USER=solr
       - SOLR_ADMIN_PASSWORD=SolrRocks
       - SOLR_COLLECTION=hydra-development
+      - SOLR_COLLECTION_TEST=${SOLR_COLLECTION_TEST:-hydra-test}
       - SOLR_CLOUD_BOOTSTRAP=no
       - SOLR_ENABLE_CLOUD_MODE=no
       - SOLR_ENABLE_AUTHENTICATION=no
@@ -69,7 +70,7 @@ services:
     user: root
     command: bash -c "
       chown -R 8983:8983 /var/solr
-      && exec runuser -u solr -- solr-precreate hydra-development /opt/solr/server/solr/configsets/hyku"
+      && exec runuser -u solr -- bash -c 'precreate-core "$${SOLR_COLLECTION:-hydra-development}" /opt/solr/server/solr/configsets/hyku && precreate-core "$${SOLR_COLLECTION_TEST:-hydra-test}" /opt/solr/server/solr/configsets/hyku && solr-foreground'"
     expose:
       - 8983
     volumes:

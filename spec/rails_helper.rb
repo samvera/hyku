@@ -13,6 +13,10 @@ ENV['HYKU_DEFAULT_HOST'] = nil
 # (e.g. docker-compose.single.yml sets it to 'false').  Default to 'true'
 # so the full multi-tenant suite still runs correctly when no override is given.
 ENV['HYKU_MULTITENANT'] = ENV.fetch('HYKU_MULTITENANT', 'true')
+if ENV['HYKU_MULTITENANT'].to_s.casecmp('false').zero?
+  ENV['SOLR_COLLECTION_TEST'] ||= 'hydra-test'
+  ENV['SOLR_COLLECTION'] = ENV['SOLR_COLLECTION_TEST']
+end
 ENV['VALKYRIE_TRANSITION'] = 'true'
 ENV['HYRAX_ANALYTICS_REPORTING'] = 'false'
 

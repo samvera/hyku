@@ -3,8 +3,6 @@
 <%# hyrax-doi doesn't work post hyrax v3.0.0 %>
 <% if Hyrax.config.flexible? %>
   <% view_options_for(presenter).each do |field, options| %>
-    <%# Fields flagged `view: { position: featured }` render at the top of the show page (see _work_title), so skip them here to avoid duplication %>
-    <% next if options.with_indifferent_access[:position].to_s == 'featured' %>
     <% view_options = conform_options(field, options) %>
     <%# keeps admin_note behavior for backward compatibility... should be in metadata but may not be %>
     <% if field == :admin_note %>

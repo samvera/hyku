@@ -28,6 +28,10 @@ class SolrDocument
   # Do content negotiation for AF models.
   use_extension(Hydra::ContentNegotiation)
 
+  # Expose context_narrative on the SolrDocument so the show-page presenter can
+  # render it when flexible metadata is OFF. (With flexible on, it's surfaced via
+  # the dynamic flexible-schema accessors instead.)
+  attribute :context_narrative, Solr::Array, 'context_narrative_tesim'
   attribute :account_cname, Solr::Array, 'account_cname_tesim'
   attribute :account_institution_name, Solr::Array, 'account_institution_name_ssim'
   attribute :extent, Solr::Array, 'extent_tesim'

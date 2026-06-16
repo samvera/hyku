@@ -167,7 +167,7 @@ view:
   position: featured      # optional: lift the field out of the metadata table to the top of the show page
 ```
 
-Hyku attaches **TinyMCE** to every `textarea.rich-text` (see `app/assets/javascripts/hyku_rich_text_editor.js`), including editors added via the multi-valued "Add another" control. The display directives (`render_as: html`, `position: featured`) are handled upstream by Hyrax; see the Hyrax [`documentation/flexible_metadata.md`](https://github.com/samvera/hyrax/blob/main/documentation/flexible_metadata.md) "Rich-text fields" and "Featured display" sections for the renderer's allow-list and behavior.
+The **TinyMCE** WYSIWYG editor, the sanitized HTML display (`render_as: html`), and the featured placement (`position: featured`) are all provided upstream by Hyrax, so Hyku inherits them with no app-side JavaScript. See the Hyrax [`documentation/flexible_metadata.md`](https://github.com/samvera/hyrax/blob/main/documentation/flexible_metadata.md) "Rich-text fields" and "Featured display" sections for the editor toolbar, the renderer's allow-list, and behavior.
 
 ## Controlled Vocabularies
 

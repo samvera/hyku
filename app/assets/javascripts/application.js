@@ -65,4 +65,3 @@
 //= require bootstrap-slider
 //= require jquery.flot.js
 //= require tinymce
-//= require hyku_rich_text_editor

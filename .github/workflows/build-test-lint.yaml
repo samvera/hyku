@@ -160,7 +160,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Bring up single-tenant stack
-        run: docker compose -f docker-compose.single.yml up -d web worker
+        run: docker compose -f docker-compose.single.yml up -d web worker > docker-compose-server.log 2>&1
       - name: Wait for web to be ready
         run: |
           for i in {1..60}; do
@@ -211,9 +211,14 @@ jobs:
               raise \"Solr core '#{core}' missing from STATUS response\" unless response.dig('status', core)&.any?
               puts \"Standalone Solr core '#{core}' OK — endpoint: #{account.solr_endpoint.url}\"
             "
-      - name: Dump container logs on failure
-        if: failure()
-        run: docker compose -f docker-compose.single.yml logs --no-color
+      - name: Upload single-tenant logs
+        uses: notch8/actions/after-care@v1.0.6
+        if: always()
+        env:
+          COMPOSE_FILE: docker-compose.single.yml
+        with:
+          name: single-tenant-${{ env.TAG }}
+          reports: "single-tenant-*.xml"
       - name: Tear down stack
         if: always()
         run: docker compose -f docker-compose.single.yml down -v --remove-orphans

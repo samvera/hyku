@@ -155,6 +155,20 @@ For comprehensive information about flexible metadata, including:
 
 See the official [Flexible Metadata Documentation](https://samvera.atlassian.net/wiki/spaces/hyku/pages/3185541198/Flexible+Metadata+v6.2) on the Samvera Confluence.
 
+### Rich-text metadata fields
+
+A string property can offer a WYSIWYG editor on the form and render as sanitized HTML on the show page, in both flexible (`HYRAX_FLEXIBLE=true`, m3 profile) and non-flexible (`config/metadata/*.yaml`) mode. Declare it with the Hyrax directives:
+
+```yaml
+form:
+  input_type: rich_text   # renders a <textarea class="rich-text"> on the edit form
+view:
+  render_as: html         # sanitizes + renders the stored markup on the show page
+  position: featured      # optional: lift the field out of the metadata table to the top of the show page
+```
+
+Hyku attaches **TinyMCE** to every `textarea.rich-text` (see `app/assets/javascripts/hyku_rich_text_editor.js`), including editors added via the multi-valued "Add another" control. The display directives (`render_as: html`, `position: featured`) are handled upstream by Hyrax; see the Hyrax [`documentation/flexible_metadata.md`](https://github.com/samvera/hyrax/blob/main/documentation/flexible_metadata.md) "Rich-text fields" and "Featured display" sections for the renderer's allow-list and behavior.
+
 ## Controlled Vocabularies
 
 For detailed information about configuring controlled vocabularies in Hyku when using flexible metadata, see the [Controlled Vocabularies Guide](./controlled-vocabularies.md).

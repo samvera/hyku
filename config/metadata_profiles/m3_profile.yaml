@@ -1229,6 +1229,7 @@ properties:
       minimum: 0
       maximum: 1
     data_type: string
+    editor_only: true
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:

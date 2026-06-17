@@ -163,11 +163,12 @@ A string property can offer a WYSIWYG editor on the form and render as sanitized
 form:
   input_type: rich_text   # renders a <textarea class="rich-text"> on the edit form
 view:
-  render_as: html         # sanitizes + renders the stored markup on the show page
-  position: featured      # optional: lift the field out of the metadata table to the top of the show page
+  render_as: html              # sanitizes + renders the stored markup on the show page
+  position: featured           # optional: lift the field out of the metadata table to the top of the show page
+  search_results_truncate: 300 # optional: catalog search-results snippet length; `false` to disable (default 230)
 ```
 
-The **TinyMCE** WYSIWYG editor, the sanitized HTML display (`render_as: html`), and the featured placement (`position: featured`) are all provided upstream by Hyrax, so Hyku inherits them with no app-side JavaScript. See the Hyrax [`documentation/flexible_metadata.md`](https://github.com/samvera/hyrax/blob/main/documentation/flexible_metadata.md) "Rich-text fields" and "Featured display" sections for the editor toolbar, the renderer's allow-list, and behavior.
+The **TinyMCE** WYSIWYG editor, the sanitized HTML display (`render_as: html`), and the featured placement (`position: featured`) are all provided upstream by Hyrax, so Hyku inherits them with no app-side JavaScript. In catalog search results, `render_as: html` fields render as a clean, truncated plain-text snippet rather than escaped markup; set `search_results_truncate` to change the length (default 230) or `false` to disable. See the Hyrax [`documentation/flexible_metadata.md`](https://github.com/samvera/hyrax/blob/main/documentation/flexible_metadata.md) "Rich-text fields" and "Featured display" sections for the editor toolbar, the renderer's allow-list, and behavior.
 
 ## Controlled Vocabularies
 

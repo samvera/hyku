@@ -11,6 +11,14 @@
     field_visible?(conform_options(field, options), presenter)
   end
 
+  # Only keep fields that actually have a value to render, so the two columns
+  # split by visible rows. Empty fields (including unfilled compounds) would
+  # otherwise pad the count and skew everything into one column.
+  fields_array.select! do |field, options|
+    render_field = conform_field(field, options)
+    presenter.respond_to?(render_field) && presenter.public_send(render_field).present?
+  end
+
   half = (fields_array.count / 2.0).ceil
   left_fields = fields_array[0...half]
   right_fields = fields_array[half..-1] || []

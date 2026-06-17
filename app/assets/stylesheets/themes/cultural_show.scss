@@ -49,6 +49,32 @@
     }
   }
 
+  // Style compound cards (view: display: card) to match the relationships box.
+  .hyrax-compound-card {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    margin-top: 20px;
+    padding: 8px;
+
+    .card-header {
+      background: none;
+      border-bottom: 2px solid #ddd;
+      padding: 0 0 0.25rem;
+    }
+
+    .card-title {
+      margin-bottom: 0;
+    }
+
+    .card-body {
+      padding: 0.5rem 0 0;
+    }
+
+    ul.tabular > li > a {
+      word-break: break-word;
+    }
+  }
+
   .citations-container {
     display: flex;
     justify-content: center;

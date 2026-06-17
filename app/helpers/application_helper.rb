@@ -14,6 +14,21 @@ module ApplicationHelper
     @group_navigation_presenter ||= Hyku::Admin::Group::NavigationPresenter.new(params:)
   end
 
+  # Facet label for a has_model_ssim value (the "Work Type" facet): the human
+  # model name from the app's locales (activerecord.models.*), so a value like
+  # "GenericWorkResource" can render as whatever the installation calls it.
+  # Blacklight passes a facet item (not a bare string), so unwrap it first.
+  # The locale entries may be pluralized (one:/other:), which model_name.human
+  # does not resolve, so look them up with an explicit count. Falls back to
+  # titleizing unknown values so the facet never breaks on stale index data.
+  def work_type_facet_label(value)
+    name = (value.respond_to?(:value) ? value.value : value).to_s
+    klass = name.safe_constantize
+    return name.titleize unless klass.respond_to?(:model_name)
+
+    I18n.t("activerecord.models.#{klass.model_name.i18n_key}", count: 1, default: name.titleize)
+  end
+
   # Return collection thumbnail formatted for display:
   #  - use collection's branding thumbnail if it exists
   #  - use site's default collection image if one exists

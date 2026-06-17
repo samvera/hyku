@@ -29,7 +29,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: 9c1aa9d76b6bae860060acc5cf92853f91752f35
+  revision: 92335e49eda4b1f3b8a9247592422c7aad92b8fb
   branch: enact-rich-text-input-type
   specs:
     hyrax (5.2.0)

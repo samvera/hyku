@@ -116,23 +116,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_05_21_230524) do
     t.index ["user_id"], name: "index_bulkrax_exporters_on_user_id"
   end
 
-  create_table "bulkrax_import_metrics", force: :cascade do |t|
-    t.string "metric_type", null: false
-    t.string "event", null: false
-    t.bigint "importer_id"
-    t.bigint "user_id"
-    t.string "session_id"
-    t.jsonb "payload", default: {}
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.index ["created_at"], name: "index_bulkrax_import_metrics_on_created_at"
-    t.index ["event"], name: "index_bulkrax_import_metrics_on_event"
-    t.index ["importer_id"], name: "index_bulkrax_import_metrics_on_importer_id"
-    t.index ["metric_type", "created_at"], name: "index_bulkrax_import_metrics_on_metric_type_and_created_at"
-    t.index ["metric_type"], name: "index_bulkrax_import_metrics_on_metric_type"
-    t.index ["user_id"], name: "index_bulkrax_import_metrics_on_user_id"
-  end
-
   create_table "bulkrax_importer_runs", force: :cascade do |t|
     t.bigint "importer_id"
     t.integer "total_work_entries", default: 0
@@ -1083,7 +1066,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_05_21_230524) do
   add_foreign_key "accounts", "endpoints", column: "redis_endpoint_id", on_delete: :nullify
   add_foreign_key "accounts", "endpoints", column: "solr_endpoint_id", on_delete: :nullify
   add_foreign_key "bulkrax_exporter_runs", "bulkrax_exporters", column: "exporter_id"
-  add_foreign_key "bulkrax_import_metrics", "bulkrax_importers", column: "importer_id"
   add_foreign_key "bulkrax_importer_runs", "bulkrax_importers", column: "importer_id"
   add_foreign_key "bulkrax_pending_relationships", "bulkrax_importer_runs", column: "importer_run_id"
   add_foreign_key "collection_type_participants", "hyrax_collection_types"

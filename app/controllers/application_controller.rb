@@ -131,7 +131,7 @@ class ApplicationController < ActionController::Base
   end
 
   def elevate_single_tenant!
-    AccountElevator.switch!(current_account.cname) if current_account
+    AccountElevator.switch!(current_account.cname) if current_account&.persisted?
   end
 
   def admin_host?

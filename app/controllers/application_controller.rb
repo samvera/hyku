@@ -131,11 +131,7 @@ class ApplicationController < ActionController::Base
   end
 
   def elevate_single_tenant!
-    AccountElevator.switch!(current_account.cname) if current_account && root_host?
-  end
-
-  def root_host?
-    Account.canonical_cname(request.host) == Account.root_host
+    AccountElevator.switch!(current_account.cname) if current_account
   end
 
   def admin_host?

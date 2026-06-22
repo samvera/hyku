@@ -12,6 +12,7 @@
         <%= render 'work_title', presenter: @presenter %>
       </div>
       <div class="card-body">
+        <%= render 'featured_attributes', presenter: @presenter %>
         <div class="row">
           <%= render 'workflow_actions_widget', presenter: @presenter %>
           <% if @presenter.iiif_viewer? %>

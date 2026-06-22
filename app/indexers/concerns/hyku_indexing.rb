@@ -84,13 +84,16 @@ module HykuIndexing
 
   # The members' already-indexed full text, in one query. `fq` on generic_type
   # keeps file-set members out; the parent's own file sets are handled by
-  # `extract_text_from_plain_text_files`.
+  # `extract_text_from_plain_text_files`. Forced to POST so the `{!terms}` id
+  # list (one parent can have thousands of members) is sent in the request body
+  # rather than the URL, avoiding URL-length limits on a GET.
   def child_work_full_texts(member_ids)
     Hyrax::SolrService.query(
       "{!terms f=id}#{member_ids.join(',')}",
       fq: 'generic_type_sim:Work',
       fl: 'all_text_tsimv',
-      rows: member_ids.length
+      rows: member_ids.length,
+      method: :post
     ).flat_map { |doc| Array(doc['all_text_tsimv']) }.select(&:present?)
   end
 

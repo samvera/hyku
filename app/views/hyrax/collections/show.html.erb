@@ -3,6 +3,7 @@
 <%# add branding text for banner image %>
 <%# remove duplicate items count originating in Hyrax view %>
 <%# contribute more from pals update layout to be more visually appealing %>
+<%# render compound metadata cards (Relationships) the engine view adds %>
 
 <% provide :page_title, construct_page_title(@presenter.title) %>
 <% content_for :canonical_url do %>
@@ -106,6 +107,11 @@
       <% end %>
     </div>
   </div>
+
+  <%# OVERRIDE Hyrax 5.2.0: render compound metadata cards (e.g. Relationships)
+      as their own band, after the collection metadata and before the member
+      listing — mirroring upstream collections/show.html.erb placement. %>
+  <%= render_compound_cards(@presenter) %>
 
   <!-- Search results label -->
   <% if @members_count > 0 || @presenter.subcollection_count > 0 %>

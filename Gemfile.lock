@@ -369,7 +369,7 @@ GEM
       signet (~> 0.8)
       typhoeus
     builder (3.3.0)
-    bulkrax (9.5.0)
+    bulkrax (9.5.1)
       bagit (~> 0.6.0)
       coderay
       denormalize_fields
@@ -1688,6 +1688,7 @@ DEPENDENCIES
   iiif_print (~> 3.0.12)
   jbuilder (~> 2.5)
   jquery-rails
+  json (~> 2.0)
   json-canonicalization (= 0.3.1)
   json_schemer
   launchy

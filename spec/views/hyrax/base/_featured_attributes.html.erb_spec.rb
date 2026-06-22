@@ -19,7 +19,7 @@ RSpec.describe 'hyrax/base/featured_attributes', type: :view do
   context 'with a field flagged view: { position: featured }' do
     before do
       allow(view).to receive(:view_options_for).with(presenter)
-        .and_return('context_narrative' => { 'position' => 'featured', 'render_as' => 'html' })
+                                               .and_return('context_narrative' => { 'position' => 'featured', 'render_as' => 'html' })
       allow(presenter).to receive(:context_narrative)
         .and_return('<p>Featured <strong>narrative</strong></p><script>alert(1)</script>')
     end
@@ -36,7 +36,7 @@ RSpec.describe 'hyrax/base/featured_attributes', type: :view do
   context 'when no field is flagged featured' do
     before do
       allow(view).to receive(:view_options_for).with(presenter)
-        .and_return('title' => { 'position' => 'inline' })
+                                               .and_return('title' => { 'position' => 'inline' })
       allow(presenter).to receive(:title).and_return(['A title'])
     end
 
@@ -50,7 +50,7 @@ RSpec.describe 'hyrax/base/featured_attributes', type: :view do
   context 'when the featured field is blank' do
     before do
       allow(view).to receive(:view_options_for).with(presenter)
-        .and_return('context_narrative' => { 'position' => 'featured' })
+                                               .and_return('context_narrative' => { 'position' => 'featured' })
       allow(presenter).to receive(:context_narrative).and_return('')
     end
 

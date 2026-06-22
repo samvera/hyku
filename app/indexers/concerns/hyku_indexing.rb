@@ -47,12 +47,20 @@ module HykuIndexing
   end
 
   def extract_text_from_plain_text_files(object)
-    members = Hyrax.custom_queries.find_child_file_sets(resource: object).to_a
+    members = child_file_sets(object)
 
     return [] if members.empty?
 
     text_file_sets = members.select { |fs| fs.file_set? && fs.original_file&.mime_type == 'text/plain' }
     text_file_sets.map { |fs| scrub_text(fs.original_file&.content) }
+  end
+
+  # The parent's own child file sets, fetched once per object. Both
+  # `extract_text_from_plain_text_files` and the `extract_text_from_pdf_directly`
+  # fallback need them, and `find_child_file_sets` loads the member resources, so
+  # memoize to avoid running that load twice in the same indexing pass.
+  def child_file_sets(object)
+    (@child_file_sets ||= {})[object.id] ||= Hyrax.custom_queries.find_child_file_sets(resource: object).to_a
   end
 
   # Aggregate each child work's already-indexed full text from Solr rather than
@@ -98,7 +106,7 @@ module HykuIndexing
   end
 
   def extract_text_from_pdf_directly(object)
-    file_set = Hyrax.custom_queries.find_child_file_sets(resource: object).first
+    file_set = child_file_sets(object).first
     file_set_id = file_set&.id&.to_s
     return if file_set_id.blank?
 

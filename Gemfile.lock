@@ -29,8 +29,8 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: 18dd8310fce89e8c5e28741549737315f0256261
-  branch: linked-record-compound-type
+  revision: 8c3ec8bbfe2b53f88df0040010d048b35faed72a
+  branch: prepare-linked-record-type-for-bulkrax-imports
   specs:
     hyrax (5.2.0)
       active-fedora (~> 15.0)

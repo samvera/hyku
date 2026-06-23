@@ -1034,7 +1034,7 @@ GEM
       multi_xml (~> 0.5)
       rack (>= 1.2, < 4)
     observer (0.1.2)
-    oj (3.16.11)
+    oj (3.17.3)
       bigdecimal (>= 3.0)
       ostruct (>= 0.2)
     oj_mimic_json (1.0.1)

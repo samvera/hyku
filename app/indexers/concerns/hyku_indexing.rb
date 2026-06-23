@@ -47,7 +47,7 @@ module HykuIndexing
   end
 
   def extract_text_from_plain_text_files(object)
-    members = Hyrax.custom_queries.find_child_file_sets(resource: object).to_a
+    members = child_file_sets(object)
 
     return [] if members.empty?
 
@@ -55,20 +55,58 @@ module HykuIndexing
     text_file_sets.map { |fs| scrub_text(fs.original_file&.content) }
   end
 
+  # The parent's own child file sets, fetched once per object. Both
+  # `extract_text_from_plain_text_files` and the `extract_text_from_pdf_directly`
+  # fallback need them, and `find_child_file_sets` loads the member resources, so
+  # memoize to avoid running that load twice in the same indexing pass.
+  def child_file_sets(object)
+    (@child_file_sets ||= {})[object.id] ||= Hyrax.custom_queries.find_child_file_sets(resource: object).to_a
+  end
+
+  # Aggregate each child work's already-indexed full text from Solr rather than
+  # re-deriving every child work's file-set text from disk on each reindex.
+  #
+  # A parent work is reindexed several times per save (the WorkUpdate
+  # transaction publishes `object.metadata.updated` and
+  # `object.membership.updated`, plus the ACL reindex), and the old path walked
+  # Postgres for each child work, queried each child's file sets, and read each
+  # derivative from disk every time. That is O(child works x file sets) per
+  # reindex and made saving a "hub" work with many children time out (a
+  # ~95-child work took 60-70s, past common ingress timeouts).
+  #
+  # Every child work is indexed by this same concern, so its `all_text_tsimv`
+  # already holds its (and its descendants') text. One batched Solr read keyed
+  # on `member_ids` recovers the same content in a single round trip regardless
+  # of child/file-set count. A child not yet indexed contributes on the next
+  # reindex (eventual consistency), which matches how derived text already
+  # propagates.
   def extract_text_from_child_works(object)
-    child_works = Hyrax.custom_queries.find_child_works(resource: object)
+    member_ids = Array(object.member_ids).map(&:to_s).reject(&:blank?)
+    return extract_text_from_pdf_directly(object) if member_ids.empty?
 
-    return extract_text_from_pdf_directly(object) if child_works.none?
+    texts = child_work_full_texts(member_ids)
+    return extract_text_from_pdf_directly(object) if texts.blank?
 
-    file_set_texts = child_works_file_sets(child_works).map { |fs| all_text(fs) }.select(&:present?)
+    texts.join("\n---------------------------\n")
+  end
 
-    return extract_text_from_pdf_directly(object) if file_set_texts.join.blank?
-
-    file_set_texts.join("\n---------------------------\n")
+  # The members' already-indexed full text, in one query. `fq` on generic_type
+  # keeps file-set members out; the parent's own file sets are handled by
+  # `extract_text_from_plain_text_files`. Forced to POST so the `{!terms}` id
+  # list (one parent can have thousands of members) is sent in the request body
+  # rather than the URL, avoiding URL-length limits on a GET.
+  def child_work_full_texts(member_ids)
+    Hyrax::SolrService.query(
+      "{!terms f=id}#{member_ids.join(',')}",
+      fq: 'generic_type_sim:Work',
+      fl: 'all_text_tsimv',
+      rows: member_ids.length,
+      method: :post
+    ).flat_map { |doc| Array(doc['all_text_tsimv']) }.select(&:present?)
   end
 
   def extract_text_from_pdf_directly(object)
-    file_set = Hyrax.custom_queries.find_child_file_sets(resource: object).first
+    file_set = child_file_sets(object).first
     file_set_id = file_set&.id&.to_s
     return if file_set_id.blank?
 
@@ -76,17 +114,6 @@ module HykuIndexing
   rescue Blacklight::Exceptions::RecordNotFound
     file_set_doc = Hyrax::Indexers::ResourceIndexer.for(resource: file_set).to_solr
     return file_set_doc&.[]('all_text_tsimv')
-  end
-
-  def child_works_file_sets(child_works)
-    child_works.to_a.flat_map { |child_work| Hyrax.custom_queries.find_child_file_sets(resource: child_work).to_a }
-  end
-
-  def all_text(fs)
-    text = IiifPrint::Data::WorkDerivatives.data(from: fs, of_type: 'txt') || ''
-    return text if text.empty?
-
-    text.tr("\n", ' ').squeeze(' ')
   end
 
   def add_date(solr_doc)

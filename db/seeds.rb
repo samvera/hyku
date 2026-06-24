@@ -7,9 +7,9 @@
 
 unless ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_MULTITENANT', false))
   puts "\n== Creating single tenant resources"
-  single_tenant_default = Account.find_by(cname: 'single.tenant.default')
+  single_tenant_default = Account.find_by(cname: ENV.fetch('HYKU_SINGLE_TENANT_CNAME', 'single.tenant.default'))
   if single_tenant_default.blank?
-    single_tenant_default = Account.new(name: 'Single Tenant', cname: 'single.tenant.default', tenant: SecureRandom.uuid, is_public: true)
+    single_tenant_default = Account.new(name: ENV.fetch('HYKU_SINGLE_TENANT_NAME', 'Single Tenant'), cname: ENV.fetch('HYKU_SINGLE_TENANT_CNAME', 'single.tenant.default'), tenant: SecureRandom.uuid, is_public: true)
     CreateAccount.new(single_tenant_default).save
     raise "Account creation failed for #{single_tenant_default.errors.full_messages}" unless single_tenant_default.valid?
     single_tenant_default = single_tenant_default.reload
@@ -49,7 +49,7 @@ if ENV['INITIAL_ADMIN_EMAIL'] && ENV['INITIAL_ADMIN_PASSWORD']
     u.password = ENV['INITIAL_ADMIN_PASSWORD']
     u.add_role(:superadmin)
   end
-  account = Account.find_by(cname: 'single.tenant.default')
+  account = Account.find_by(cname: ENV.fetch('HYKU_SINGLE_TENANT_CNAME', 'single.tenant.default'))
   if account
     Apartment::Tenant.switch!(account.tenant)
     u.add_role(:admin, Site.instance)

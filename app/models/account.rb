@@ -84,7 +84,7 @@ class Account < ApplicationRecord
 
   # @return [Account] a placeholder account using the default connections configured by the application
   def self.single_tenant_default
-    @single_tenant_default ||= Account.from_cname('single.tenant.default')
+    @single_tenant_default ||= Account.from_cname(ENV.fetch('HYKU_SINGLE_TENANT_CNAME', 'single.tenant.default'))
     @single_tenant_default ||= Account.new do |a|
       a.build_solr_endpoint
       a.build_fcrepo_endpoint unless Hyrax.config.disable_wings

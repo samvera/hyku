@@ -202,7 +202,7 @@ jobs:
             -e SOLR_COLLECTION_NAME=hydra-development \
             web bundle exec rails runner "
               core = ENV.fetch('SOLR_COLLECTION', 'hydra-development')
-              account = Account.find_by(cname: 'single.tenant.default')
+              account = Account.find_by(cname: ENV.fetch('HYKU_SINGLE_TENANT_CNAME', 'single.tenant.default'))
               raise 'No single-tenant account found' unless account
               raise 'Account has no SolrEndpoint' if account.solr_endpoint.is_a?(NilSolrEndpoint)
               raise \"SolrEndpoint URL does not include core name '#{core}'\" unless account.solr_endpoint.url.include?(core)

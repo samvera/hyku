@@ -216,9 +216,6 @@ attributes:
   admin_note:
     type: string
     multiple: false
-    # Editor-gated via Hyrax field_visible? (top-level key; a nested `view:
-    # admin_only` is overwritten by the schema loader and has no effect).
-    editor_only: true
     index_keys:
       - "admin_note_tesim"
     form:
@@ -228,6 +225,7 @@ attributes:
     predicate: http://schema.org/positiveNotes
     view:
       html_dl: true
+      admin_only: true
   advisor:
     type: string
     multiple: true

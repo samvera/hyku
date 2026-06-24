@@ -29,8 +29,8 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: 8c3ec8bbfe2b53f88df0040010d048b35faed72a
-  branch: prepare-linked-record-type-for-bulkrax-imports
+  revision: 0ffc6aadf1867de9689ab0aff9d72294419b2d7e
+  branch: main
   specs:
     hyrax (5.2.0)
       active-fedora (~> 15.0)

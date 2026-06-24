@@ -21,17 +21,4 @@
 # Generated via
 #  `rails generate hyrax:work_resource GenericWorkResource`
 
-attributes:
-  context_narrative:
-    type: string
-    multiple: false
-    index_keys:
-      - "context_narrative_tesim"
-    predicate: http://purl.org/dc/terms/description
-    form:
-      primary: true
-      input_type: rich_text
-    view:
-      render_as: html
-      position: featured
-      html_dl: true
+attributes: {}

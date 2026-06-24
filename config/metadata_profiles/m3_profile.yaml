@@ -558,34 +558,6 @@ properties:
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
       - This is a description.
-  context_narrative:
-    available_on:
-      class:
-        - GenericWorkResource
-    cardinality:
-      minimum: 0
-      maximum: 1
-    data_type: string
-    controlled_values:
-      format: http://www.w3.org/2001/XMLSchema#string
-      sources:
-        - "null"
-    display_label:
-      default: Context / Narrative
-    index_documentation: displayable, searchable
-    indexing:
-      - context_narrative_tesim
-    form:
-      primary: true
-      input_type: rich_text
-    property_uri: http://purl.org/dc/terms/description
-    range: http://www.w3.org/2001/XMLSchema#string
-    sample_values:
-      - "<p>This portfolio explores <strong>community resilience</strong>.</p>"
-    view:
-      render_as: html
-      position: featured
-      html_dl: true
   identifier:
     available_on:
       class:

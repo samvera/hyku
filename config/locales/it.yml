@@ -293,10 +293,23 @@ it:
           user_reader: Può leggere qualsiasi utente in questo tenant
           work_depositor: Può depositare Opere in qualsiasi Set di Amministrazione di questo tenant. Può leggere, modificare e gestire Embarghi/Locazioni per le Opere di loro proprietà.
           work_editor: Può creare, leggere, modificare e approvare qualsiasi lavoro in questo tenant, nonché spostare lavori tra set di amministrazione e gestire embarghi e contratti di locazione
+      stats:
+        collections_over_time: Raccolte nel tempo
+        downloads: Download
+        header: Statistiche per %{application_name}
+        tab_collections: Collezioni
+        tab_works: Opere
+        users: Utenti
+        works_by_type: "Opere per tipo:"
+        works_over_time: Opere nel tempo
       title: Amministrazione
       work_types: Tipi di lavoro disponibili
     footer:
       admin_login: Accesso amministratore
+    generic_type:
+      admin_set: Set di amministrazione
+      collection: Collezione
+      work: Opera
     identity_provider:
       configurations:
         assertion_url_after_save_html: Questi sono gli URL del servizio consumer di asserzione o gli URL di reindirizzamento che devono essere autorizzati dal tuo IdP. Non specificare <code>assertion_consumer_service_url</code> nelle tue opzioni.
@@ -357,6 +370,10 @@ it:
       left_text: Adatto a istituzioni grandi e piccole, dai musei alle biblioteche universitarie. Inizia subito in pochi minuti.
       right_heading: Flessibile
       right_text: Personalizza l'interfaccia utente in base all'identità del tuo istituto. Adatta i flussi di lavoro in base al modo in cui il tuo personale preferisce lavorare.
+    themes:
+      browse_by_collection: Sfoglia per raccolta
+      collections: Collezioni
+      featured_collections: Raccolte in evidenza
     toolbar:
       profile:
         edit_registration: Cambiare la password

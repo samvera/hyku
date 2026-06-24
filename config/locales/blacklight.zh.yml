@@ -10,8 +10,10 @@ zh:
           depositor_ssim: 储户
           file_format_sim: 文件格式
           generic_type_sim: 类型
+          has_model_ssim: 作品类型
           keyword_sim: 关键词
           language_sim: 语言
+          member_of_collections_ssim: 收藏
           publisher_sim: 出版者
           subject_sim: 学科
         index:

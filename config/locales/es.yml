@@ -293,10 +293,23 @@ es:
           user_reader: Puede leer cualquier usuario de este inquilino.
           work_depositor: Puede depositar obras en cualquier conjunto administrativo de este inquilino. Puede leer, editar y gestionar embargos/arrendamientos de las obras que le pertenecen.
           work_editor: Puede crear, leer, editar y aprobar cualquier Obra en este inquilino, así como mover Obras entre Conjuntos de administración y gestionar Embargos y Arrendamientos.
+      stats:
+        collections_over_time: Colecciones a lo largo del tiempo
+        downloads: Descargas
+        header: Estadísticas de %{application_name}
+        tab_collections: Colecciones
+        tab_works: Obras
+        users: Usuarios
+        works_by_type: "Obras por tipo:"
+        works_over_time: Obras a lo largo del tiempo
       title: Administración
       work_types: Tipos de trabajo disponibles
     footer:
       admin_login: Inicio de sesión de administrador
+    generic_type:
+      admin_set: Conjunto de administración
+      collection: Colección
+      work: Obra
     identity_provider:
       configurations:
         assertion_url_after_save_html: Estas son las URL de servicio del consumidor de aserciones o URL de redireccionamiento que su IdP debe permitir. No especifique <code>assertion_consumer_service_url</code> en sus opciones.
@@ -357,6 +370,10 @@ es:
       left_text: Funciona para instituciones de todos los tamaños, desde museos hasta bibliotecas universitarias. Empieza en minutos.
       right_heading: Flexible
       right_text: Personalice la interfaz de usuario para que coincida con la identidad de marca de su institución. Adapte los flujos de trabajo a la forma en que su personal prefiere trabajar.
+    themes:
+      browse_by_collection: Explorar por colección
+      collections: Colecciones
+      featured_collections: Colecciones destacadas
     toolbar:
       profile:
         edit_registration: Cambiar la contraseña

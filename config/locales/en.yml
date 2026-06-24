@@ -153,10 +153,23 @@ en:
           user_reader: Can read any User in this tenant
           work_depositor: Can deposit Works into any Admin Set in this tenant. Can read, edit, and manage Embargoes / Leases for Works belonging to them
           work_editor: Can create, read, edit, and approve any Work in this tenant, as well as move Works between Admin Sets and manage Embargoes and Leases
+      stats:
+        collections_over_time: Collections over time
+        downloads: Downloads
+        header: Statistics for %{application_name}
+        tab_collections: Collections
+        tab_works: Works
+        users: Users
+        works_by_type: "Works by type:"
+        works_over_time: Works over time
       title: Administration
       work_types: Available Work Types
     footer:
       admin_login: Administrator login
+    generic_type:
+      admin_set: Admin Set
+      collection: Collection
+      work: Work
     identity_provider:
       configurations:
         assertion_url_after_save_html: These are the assertion consumer service URLs or redirect URLs that need to be allowed by your IdP. Do not specify the <code>assertion_consumer_service_url</code> in your options.
@@ -216,6 +229,10 @@ en:
       left_text: Works for institutions large and small, from museums to university libraries. Get started in minutes.
       right_heading: Flexible
       right_text: Customize the user interface to match your institution's brand identity. Tailor workflows to match how your staff likes to work.
+    themes:
+      browse_by_collection: Browse by Collection
+      collections: Collections
+      featured_collections: Featured Collections
     toolbar:
       profile:
         edit_registration: Change password

@@ -10,8 +10,10 @@ de:
           depositor_ssim: Einleger
           file_format_sim: Format
           generic_type_sim: Art
+          has_model_ssim: Werkart
           keyword_sim: Stichwort
           language_sim: Sprache
+          member_of_collections_ssim: Sammlungen
           publisher_sim: Herausgeber
           subject_sim: Fach
         index:

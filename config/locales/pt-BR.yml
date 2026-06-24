@@ -175,10 +175,23 @@ pt-BR:
           user_reader: Pode ler qualquer usuário neste locatário
           work_depositor: Pode depositar obras em qualquer Admin Set neste locatário. Pode ler, editar e gerenciar embargos / locações de obras pertencentes a eles
           work_editor: Pode ler qualquer Admin Set neste inquilino. Além disso, pode criar, ler, editar e aprovar qualquer Trabalho neste inquilino, bem como mover Obras entre Conjuntos de Administradores e gerenciar Embargos e Locações
+      stats:
+        collections_over_time: Coleções ao longo do tempo
+        downloads: Downloads
+        header: Estatísticas de %{application_name}
+        tab_collections: Coleções
+        tab_works: Obras
+        users: Usuários
+        works_by_type: "Obras por tipo:"
+        works_over_time: Obras ao longo do tempo
       title: Administração
       work_types: Tipos de trabalho disponíveis
     footer:
       admin_login: Login do administrador
+    generic_type:
+      admin_set: Conjunto de administração
+      collection: Coleção
+      work: Obra
     identity_provider:
       configurations:
         assertion_url_after_save_html: Essas são as URLs de serviço do consumidor de asserção ou URLs de redirecionamento que precisam ser permitidas pelo seu IdP. Não especifique o <code>assertion_consumer_service_url</code> nas suas opções.
@@ -240,6 +253,10 @@ pt-BR:
       right_heading: Flexível
       right_text: Personalize a interface do usuário para combinar a identidade da marca da sua instituição. Ajude os fluxos de trabalho a combinar a maneira como sua equipe gosta de trabalhar.
     tagline: A solução de repositório de próxima geração
+    themes:
+      browse_by_collection: Navegar por coleção
+      collections: Coleções
+      featured_collections: Coleções em destaque
     toolbar:
       profile:
         edit_registration: Mudar senha

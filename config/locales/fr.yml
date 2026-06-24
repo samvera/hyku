@@ -293,10 +293,23 @@ fr:
           user_reader: Peut lire n'importe quel utilisateur de ce locataire
           work_depositor: Peut déposer des œuvres dans n'importe quel ensemble d'administration de ce locataire. Peut lire, modifier et gérer les embargos/baux des œuvres lui appartenant.
           work_editor: Permet de créer, lire, modifier et approuver tout travail dans ce locataire, ainsi que de déplacer des travaux entre les ensembles d'administration et de gérer les embargos et les baux.
+      stats:
+        collections_over_time: Collections au fil du temps
+        downloads: Téléchargements
+        header: Statistiques pour %{application_name}
+        tab_collections: Collections
+        tab_works: Œuvres
+        users: Utilisateurs
+        works_by_type: "Œuvres par type :"
+        works_over_time: Œuvres au fil du temps
       title: Administration
       work_types: Types de travail disponibles
     footer:
       admin_login: Connexion administrateur
+    generic_type:
+      admin_set: Ensemble d'administration
+      collection: Collection
+      work: Œuvre
     identity_provider:
       configurations:
         assertion_url_after_save_html: Il s'agit des URL de service de consommation d'assertions ou des URL de redirection qui doivent être autorisées par votre fournisseur d'identité. Ne spécifiez pas l' <code>assertion_consumer_service_url</code> dans vos options.
@@ -357,6 +370,10 @@ fr:
       left_text: Convient aux institutions de toutes tailles, des musées aux bibliothèques universitaires. Mise en route en quelques minutes.
       right_heading: Flexible
       right_text: Personnalisez l'interface utilisateur pour qu'elle corresponde à l'identité visuelle de votre établissement. Adaptez les flux de travail aux préférences de votre personnel.
+    themes:
+      browse_by_collection: Parcourir par collection
+      collections: Collections
+      featured_collections: Collections en vedette
     toolbar:
       profile:
         edit_registration: Changer le mot de passe

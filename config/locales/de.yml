@@ -292,10 +292,23 @@ de:
           user_reader: Kann jeden Benutzer in diesem Mandanten lesen
           work_depositor: Kann Werke in jedem Admin-Set dieses Mandanten ablegen. Kann Sperrfristen/Mietverträge für die zugehörigen Werke lesen, bearbeiten und verwalten.
           work_editor: Kann alle Arbeiten in diesem Mandanten erstellen, lesen, bearbeiten und genehmigen sowie Arbeiten zwischen Verwaltungssätzen verschieben und Sperrfristen und Mietverträge verwalten.
+      stats:
+        collections_over_time: Sammlungen im Zeitverlauf
+        downloads: Downloads
+        header: Statistiken für %{application_name}
+        tab_collections: Sammlungen
+        tab_works: Werke
+        users: Benutzer
+        works_by_type: "Werke nach Typ:"
+        works_over_time: Werke im Zeitverlauf
       title: Verwaltung
       work_types: Verfügbare Arbeitsarten
     footer:
       admin_login: Administrator-Login
+    generic_type:
+      admin_set: Admin-Set
+      collection: Sammlung
+      work: Werk
     identity_provider:
       configurations:
         assertion_url_after_save_html: Dies sind die URLs der Assertion-Consumer-Dienste oder die Redirect-URLs, die von Ihrem IdP zugelassen werden müssen. Geben Sie die <code>assertion_consumer_service_url</code> nicht in Ihren Optionen an.
@@ -356,6 +369,10 @@ de:
       left_text: Funktioniert für große und kleine Institutionen, von Museen bis hin zu Universitätsbibliotheken. Legen Sie in wenigen Minuten los.
       right_heading: Flexibel
       right_text: Passen Sie die Benutzeroberfläche an die Markenidentität Ihrer Institution an. Optimieren Sie die Arbeitsabläufe für die Arbeitsweise Ihrer Mitarbeiter.
+    themes:
+      browse_by_collection: Nach Sammlung durchsuchen
+      collections: Sammlungen
+      featured_collections: Vorgestellte Sammlungen
     toolbar:
       profile:
         edit_registration: Kennwort ändern

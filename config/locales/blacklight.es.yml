@@ -10,8 +10,10 @@ es:
           depositor_ssim: Depositor
           file_format_sim: Formato
           generic_type_sim: Tipo
+          has_model_ssim: Tipo de obra
           keyword_sim: Palabra clave
           language_sim: Idioma
+          member_of_collections_ssim: Colecciones
           publisher_sim: Editor
           subject_sim: Tema
         index:

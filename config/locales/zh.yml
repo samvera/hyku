@@ -293,10 +293,23 @@ zh:
           user_reader: 可以读取此租户中的任何用户信息
           work_depositor: 可以将作品存入此租户的任何管理集中。可以读取、编辑和管理属于他们的作品的禁运/租赁信息。
           work_editor: 可以创建、阅读、编辑和批准此租户中的任何作品，以及在管理集之间移动作品并管理禁运和租约。
+      stats:
+        collections_over_time: 收藏随时间变化
+        downloads: 下载
+        header: "%{application_name} 的统计信息"
+        tab_collections: 收藏
+        tab_works: 作品
+        users: 用户
+        works_by_type: 按类型划分的作品：
+        works_over_time: 作品随时间变化
       title: 行政
       work_types: 可供选择的工作类型
     footer:
       admin_login: 管理员登录
+    generic_type:
+      admin_set: 管理集
+      collection: 收藏
+      work: 作品
     identity_provider:
       configurations:
         assertion_url_after_save_html: 这些是您的 IdP 需要允许的断言消费者服务 URL 或重定向 URL。请勿在选项中指定<code>assertion_consumer_service_url</code> 。
@@ -357,6 +370,10 @@ zh:
       left_text: 适用于各种规模的机构，从博物馆到大学图书馆。几分钟即可上手。
       right_heading: 灵活的
       right_text: 自定义用户界面，使其与贵机构的品牌形象相符。调整工作流程，使其符合员工的工作习惯。
+    themes:
+      browse_by_collection: 按收藏浏览
+      collections: 收藏
+      featured_collections: 精选收藏
     toolbar:
       profile:
         edit_registration: 更改密码

@@ -27,6 +27,7 @@
         </div>
       </div>
       <div class="card-body">
+        <%= render 'featured_attributes', presenter: @presenter %>
         <div class="row">
           <%= render 'workflow_actions_widget', presenter: @presenter %>
           <% if @presenter.video_embed_viewer? %>

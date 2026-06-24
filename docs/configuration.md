@@ -155,6 +155,47 @@ For comprehensive information about flexible metadata, including:
 
 See the official [Flexible Metadata Documentation](https://samvera.atlassian.net/wiki/spaces/hyku/pages/3185541198/Flexible+Metadata+v6.2) on the Samvera Confluence.
 
+### Metadata field display directives
+
+Hyku inherits a set of independent, profile-driven field directives from Hyrax. They work in both flexible (`HYRAX_FLEXIBLE=true`, m3 profile) and non-flexible (`config/metadata/*.yaml`) mode, and each does one job, so you can use them separately or together. The example below combines all of them on one property:
+
+```yaml
+form:
+  input_type: rich_text          # WYSIWYG editor on the edit form
+view:
+  render_as: html                # sanitize + render stored markup on the show page
+  position: featured             # lift the field to a card at the top of the show page
+  search_results_truncate: 300   # catalog snippet length for render_as: html fields
+```
+
+None of these require app-side JavaScript or view overrides in Hyku; the editor, renderer, and partials all live upstream in Hyrax. See the Hyrax [`documentation/flexible_metadata.md`](https://github.com/samvera/hyrax/blob/main/documentation/flexible_metadata.md) "Rich-text fields" and "Featured display" sections for the editor toolbar and the renderer's allow-list.
+
+#### Rich-text editing and display (`input_type: rich_text`, `render_as: html`)
+
+These two are independent but usually paired:
+
+- `form: { input_type: rich_text }` renders a **TinyMCE** WYSIWYG editor for the field on the new/edit form (instead of a plain textarea). It governs *input* only.
+- `view: { render_as: html }` renders the stored markup as **sanitized** HTML (against Hyrax's allow-list) on the show page, instead of displaying the raw tags as escaped text. It governs *display* only.
+
+Use `render_as: html` without `input_type: rich_text` if authors hand-write markup; use `input_type: rich_text` without `render_as: html` only if you want a WYSIWYG editor but plain-text display (uncommon).
+
+#### Featured display (`position: featured`)
+
+`view: { position: featured }` lifts **any** field (not just rich-text) out of the standard metadata table and renders it in a prominent card near the top of the show page, via Hyrax's `hyrax/base/_featured_attributes` partial. The same `field_visible?` hook that places it at the top also suppresses it from the metadata table, so it is never duplicated. Multiple featured fields each render as their own card, in profile order.
+
+This is purely a placement directive and is unrelated to `render_as`/`rich_text`: a featured field is rendered with whatever `render_as` it declares (a `render_as: html` featured field is sanitized identically in the card and the table).
+
+#### Catalog search-results truncation (`search_results_truncate`)
+
+`view: { search_results_truncate: N }` sets the length of the plain-text snippet shown for a field in catalog search results. It is **only honored for `render_as: html` fields** (which render as a clean, truncated plain-text snippet rather than escaped markup). Set an integer to change the length, `false` to disable truncation, or omit it for the default of `230`.
+
+#### Validation warnings (flexible mode)
+
+When a flexible (m3) profile is saved, Hyrax emits **non-blocking warnings** (it does not reject the profile) for misconfigured combinations:
+
+- `input_type: rich_text` on a controlled-vocabulary property — the rich-text editor pre-empts the controlled-value widget, so the controlled config is effectively ignored.
+- `search_results_truncate` declared without `render_as: html` — the setting is a silent no-op there, since truncation is only wired into the HTML renderer.
+
 ## Controlled Vocabularies
 
 For detailed information about configuring controlled vocabularies in Hyku when using flexible metadata, see the [Controlled Vocabularies Guide](./controlled-vocabularies.md).

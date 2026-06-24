@@ -2,7 +2,7 @@
 
 RSpec.describe CleanupAccountJob do
   it 'removes the various end points and database records' do
-    account = Account.new(name: 'Single Tenant', cname: 'single.tenant.default', tenant: SecureRandom.uuid, is_public: true)
+    account = Account.new(name: ENV.fetch('HYKU_SINGLE_TENANT_NAME', 'Single Tenant'), cname: ENV.fetch('HYKU_SINGLE_TENANT_CNAME', 'single.tenant.default'), tenant: SecureRandom.uuid, is_public: true)
     # Perform all the tenant creation stuff.
     CreateAccount.new(account, []).save
     account.reload

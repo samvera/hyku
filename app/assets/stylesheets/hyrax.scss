@@ -49,3 +49,23 @@
 a {
   overflow-wrap: anywhere;
 }
+
+// Fix: Batch Edit Descriptions labels render vertically (one char per line)
+// Regression in Hyku 7 — labels inside accordion toggles need explicit
+// white-space and display overrides to match Add/Edit Work formatting.
+// Ref: #2990, original fix #2527
+.descriptions_display,
+#descriptions_display {
+  .accordion-toggle label,
+  .accordion-toggle > label {
+    display: inline !important;
+    white-space: nowrap !important;
+    letter-spacing: normal !important;
+  }
+
+  // Ensure the accordion toggle link itself doesn't force vertical layout
+  .accordion-toggle {
+    display: block !important;
+    line-height: normal !important;
+  }
+}

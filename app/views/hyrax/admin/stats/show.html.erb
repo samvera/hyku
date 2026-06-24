@@ -1,21 +1,21 @@
 <% content_for :page_header do %>
-  <h1><span class="fa fa-edit"></span> Statistics for <%= application_name %></h1>
+  <h1><span class="fa fa-edit"></span> <%= t('hyku.admin.stats.header', application_name: application_name) %></h1>
 <% end %>
 
 <div class="card tabs">
   <!-- Nav tabs -->
   <ul id="statistics-tabs" class="nav nav-tabs" role="tablist">
     <li class="nav-item" role="presentation">
-      <a class="nav-link active" href="#collections" role="tab" data-toggle="tab">Collections</a>
+      <a class="nav-link active" href="#collections" role="tab" data-toggle="tab"><%= t('hyku.admin.stats.tab_collections') %></a>
     </li>
     <li class="nav-item" role="presentation">
-      <a class="nav-link" href="#works" role="tab" data-toggle="tab">Works</a>
+      <a class="nav-link" href="#works" role="tab" data-toggle="tab"><%= t('hyku.admin.stats.tab_works') %></a>
     </li>
     <li class="nav-item" role="presentation">
-      <a class="nav-link" href="#downloads" role="tab" data-toggle="tab">Downloads</a>
+      <a class="nav-link" href="#downloads" role="tab" data-toggle="tab"><%= t('hyku.admin.stats.downloads') %></a>
     </li>
     <li class="nav-item" role="presentation">
-      <a class="nav-link" href="#users" role="tab" data-toggle="tab">Users</a>
+      <a class="nav-link" href="#users" role="tab" data-toggle="tab"><%= t('hyku.admin.stats.users') %></a>
     </li>
   </ul>
 
@@ -24,7 +24,7 @@
     <div class="tab-pane active" id="collections">
       <div class="card labels">
         <div class="card-body">
-          <h2>Collections over time</h2>
+          <h2><%= t('hyku.admin.stats.collections_over_time') %></h2>
           <%=
           graph_tag('collection-graph', [Hyrax::Statistics::Collections::OverTime.new.points], {
             xaxis: {
@@ -44,7 +44,7 @@
     <div role="tabpanel" class="tab-pane" id="works">
       <div class="card labels">
         <div class="card-body">
-          <h2>Works over time</h2>
+          <h2><%= t('hyku.admin.stats.works_over_time') %></h2>
           <%=
           graph_tag('works-graph', [Hyrax::Statistics::Works::OverTime.new.points], {
             xaxis: {
@@ -58,7 +58,7 @@
             }
           })
           %>
-          <h2>Works by type:</h2>
+          <h2><%= t('hyku.admin.stats.works_by_type') %></h2>
           <%=
           graph_tag('works-by-type', Hyrax::Statistics::Works::ByResourceType.new.query, series: {
             pie: {

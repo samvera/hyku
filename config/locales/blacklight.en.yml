@@ -10,8 +10,10 @@ en:
           depositor_ssim: Depositor
           file_format_sim: Format
           generic_type_sim: Type
+          has_model_ssim: Work Type
           keyword_sim: Keyword
           language_sim: Language
+          member_of_collections_ssim: Collections
           publisher_sim: Publisher
           subject_sim: Subject
         index:

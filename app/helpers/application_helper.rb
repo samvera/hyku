@@ -29,6 +29,17 @@ module ApplicationHelper
     I18n.t("activerecord.models.#{klass.model_name.i18n_key}", count: 1, default: name.titleize)
   end
 
+  # Facet label for a generic_type_sim value (the "Type" facet). This facet holds
+  # a small fixed set of coarse type tokens ("Work", "Collection", "Admin Set") —
+  # not class names — so each token maps directly to a locale key under
+  # hyku.generic_type, letting an installation rename ANY of them (e.g.
+  # "Collection" -> "User Collection") via locale alone. An unmapped token falls
+  # back to its own text, so a new/stale value never breaks the facet.
+  def generic_type_facet_label(value)
+    token = (value.respond_to?(:value) ? value.value : value).to_s
+    I18n.t(token.parameterize(separator: '_'), scope: 'hyku.generic_type', default: token)
+  end
+
   # Return collection thumbnail formatted for display:
   #  - use collection's branding thumbnail if it exists
   #  - use site's default collection image if one exists

@@ -10,6 +10,10 @@ en:
     attributes:
       site:
         institution_name_full: Full institution name
+    models:
+      collection_resource:
+        one: Collection
+        other: Collections
   application:
     tagline: The next-generation repository solution
   blacklight:

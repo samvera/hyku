@@ -6,7 +6,7 @@
   <!-- Nav tabs -->
   <ul id="statistics-tabs" class="nav nav-tabs" role="tablist">
     <li class="nav-item" role="presentation">
-      <a class="nav-link active" href="#collections" role="tab" data-toggle="tab">Collections</a>
+      <a class="nav-link active" href="#collections" role="tab" data-toggle="tab"><%= t('hyrax.admin.stats.collections_tab') %></a>
     </li>
     <li class="nav-item" role="presentation">
       <a class="nav-link" href="#works" role="tab" data-toggle="tab">Works</a>
@@ -24,7 +24,7 @@
     <div class="tab-pane active" id="collections">
       <div class="card labels">
         <div class="card-body">
-          <h2>Collections over time</h2>
+          <h2><%= t('hyrax.admin.stats.collections_over_time') %></h2>
           <%=
           graph_tag('collection-graph', [Hyrax::Statistics::Collections::OverTime.new.points], {
             xaxis: {

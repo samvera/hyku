@@ -222,6 +222,8 @@ en:
         workflow_roles: Workflow Roles
         works: Works
       stats:
+        collections_over_time: Collections over time
+        collections_tab: Collections
         deposited_form:
           end_label: end [defaults to now]
           heading: 'Display Files Deposited:'
@@ -453,6 +455,9 @@ en:
         select_heading: 'Select the collection to add your files to:'
         title: Add to collection
         update: Save changes
+    collection_counts:
+      collections: Collections
+      works: Works
     collection_type:
       admin_set_title: Admin Set
       default_title: User Collection
@@ -841,6 +846,8 @@ en:
         tab_label: Explore Collections
         thumbnail: Thumbnail
         title: Explore Collections
+      all_collections:
+        browse_by_collection: Browse by Collection
       featured_collections:
         document:
           title_label: Title

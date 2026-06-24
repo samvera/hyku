@@ -5,8 +5,10 @@
 <%#   - compute field_value inside the should_render check so a bad authority %>
 <%#     value cannot raise during catalog rendering before the field is even %>
 <%#     decided to render %>
+<%#   - i18n the collection count-badge labels so downstream apps can relabel %>
+<%#     "Collections"/"Works" without overriding this whole partial %>
 
-<div class="ol-md-9 col-lg-6">
+<div class="col-md-9 col-lg-6">
   <div class="metadata">
     <dl>
       <% doc_presenter = index_presenter(document) %>
@@ -24,7 +26,7 @@
       <% if current_account.search_only %>
         <% if document.account_institution_name.first.present? %>
           <small class="search-only-institution-link">
-            <span>From: <%= link_to "//#{document.account_cname.first}", target: :_blank do %>
+            <span>From: <%= link_to "//#{document.account_cname.first}", target: :_blank, rel: "noopener noreferrer" do %>
               <%= document.account_institution_name&.join %>
             <% end %></span>
           </small>
@@ -38,10 +40,10 @@
   <div class="col-md-12 col-lg-3">
     <div class="collection-counts-wrapper">
       <div class="collection-counts-item">
-        <span><%= collection_presenter.total_viewable_collections %></span>Collections
+        <span><%= collection_presenter.total_viewable_collections %></span><%= t('hyrax.collection_counts.collections') %>
       </div>
       <div class="collection-counts-item">
-        <span><%= collection_presenter.total_viewable_works %></span>Works
+        <span><%= collection_presenter.total_viewable_works %></span><%= t('hyrax.collection_counts.works') %>
       </div>
     </div>
   </div>

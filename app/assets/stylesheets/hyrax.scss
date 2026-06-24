@@ -49,3 +49,26 @@
 a {
   overflow-wrap: anywhere;
 }
+
+// Fix: Batch Edit Descriptions labels render vertically (one char per line)
+// Regression in Hyku 7 — accordion toggle links have overflow-wrap: anywhere
+// which breaks text character-by-character in narrow columns.
+// Solution: Set overflow-wrap: normal on the link itself + white-space: nowrap on label
+// Ref: #2990, original fix #2527
+.descriptions_display,
+#descriptions_display {
+  // Fix the parent link's overflow-wrap behavior
+  .accordion-toggle {
+    display: block;
+    line-height: normal;
+    overflow-wrap: normal;
+  }
+
+  // Fix the label display and wrapping
+  .accordion-toggle label,
+  .accordion-toggle > label {
+    display: inline;
+    white-space: nowrap;
+    letter-spacing: normal;
+  }
+}

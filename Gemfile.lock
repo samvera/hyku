@@ -29,8 +29,8 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: 92335e49eda4b1f3b8a9247592422c7aad92b8fb
-  branch: enact-rich-text-input-type
+  revision: 06862de328abba1f7720d8472f6d60df3b48c036
+  branch: main
   specs:
     hyrax (5.2.0)
       active-fedora (~> 15.0)

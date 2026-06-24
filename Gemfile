@@ -18,7 +18,7 @@ gem 'rails', '~> 7.2.0'
 gem 'active-fedora'
 gem 'activerecord-nulldb-adapter'
 gem 'activesupport', '>= 4.2.0', group: %i[development test]
-gem 'addressable', '2.8.1' # remove once https://github.com/postrank-labs/postrank-uri/issues/49 is fixed
+gem 'addressable', '2.9.0' # remove once https://github.com/postrank-labs/postrank-uri/issues/49 is fixed
 gem 'aws-sdk-sqs', group: %i[aws]
 gem 'bixby', group: %i[development test]
 gem 'blacklight', '~> 7.38' # Updated for Rails 7.2 compatibility

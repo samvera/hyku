@@ -1,0 +1,41 @@
+<!-- Override of Hyrax _head_tag_content.html.erb to report correct generator tag -->
+<%= csrf_meta_tag %>
+<meta charset="utf-8" />
+<%# Only display meta tag, which enables creation of the ActionCable
+consumer, when realtime notifications are enabled and the user is
+signed in %>
+<% if Hyrax.config.realtime_notifications? && signed_in? %>
+    <%= tag :meta, name: 'current-user', data: { user_key: current_user.user_key } %>
+<% end %>
+<!-- added for use on small devices like phones -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="resourcesync" href="<%= hyrax.capability_list_url %>" />
+<meta name="generator" content="Samvera Hyku <%= ::Hyku::VERSION %>" />
+
+<!-- Twitter card metadata -->
+<%= yield :twitter_meta %>
+<!-- Google Scholar metadata -->
+<%= yield :gscholar_meta %>
+
+<title><%= content_for?(:page_title) ? yield(:page_title) : default_page_title %></title>
+
+<!-- application css -->
+<%= stylesheet_link_tag 'application' %>
+
+<!-- application js -->
+<%= javascript_include_tag 'application' %>
+
+<%= render 'shared/appearance_styles' %>
+
+<% if Hyrax.config.analytics? %>
+  <% if Hyrax.config.analytics_provider == 'google' %>
+    <%= render partial: 'shared/ga', formats: [:html]  %>
+  <% elsif Hyrax.config.analytics_provider == 'ga4' %>
+    <%= render partial: 'shared/ga4', formats: [:html] %>
+  <% elsif Hyrax.config.analytics_provider == 'matomo' %>
+    <%= render partial: 'shared/matomo', formats: [:html] %>
+  <% end %>
+<% end %>
+
+<!-- for extras, e.g., a favicon -->
+<%= render partial: '/head_tag_extras', formats: [:html] %>

@@ -20,7 +20,7 @@ on:
           - test
           - lint
 
-# Cancel in-progress runs for the same ref when a newer push arrives.
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true

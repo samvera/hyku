@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Admin can select show page theme', type: :feature, js: true, clean: true do
-  let(:account) { FactoryBot.create(:account) }
+  let(:account) { FactoryBot.create(:account_with_public_schema) }
   let(:admin) { FactoryBot.create(:admin, email: 'admin@example.com', display_name: 'Adam Admin') }
   let(:user) { create :user }
   let!(:work) do

@@ -9,7 +9,14 @@ ENV['HYKU_ADMIN_HOST'] = 'test.host'
 ENV['HYKU_ROOT_HOST'] = 'test.host'
 ENV['HYKU_ADMIN_ONLY_TENANT_CREATION'] = nil
 ENV['HYKU_DEFAULT_HOST'] = nil
-ENV['HYKU_MULTITENANT'] = 'true'
+# Preserve an explicit HYKU_MULTITENANT value supplied by the environment
+# (e.g. docker-compose.single.yml sets it to 'false').  Default to 'true'
+# so the full multi-tenant suite still runs correctly when no override is given.
+ENV['HYKU_MULTITENANT'] = ENV.fetch('HYKU_MULTITENANT', 'true')
+if ENV['HYKU_MULTITENANT'].to_s.casecmp('false').zero?
+  ENV['SOLR_COLLECTION_TEST'] ||= 'hydra-test'
+  ENV['SOLR_COLLECTION'] = ENV['SOLR_COLLECTION_TEST']
+end
 ENV['VALKYRIE_TRANSITION'] = 'true'
 ENV['HYRAX_ANALYTICS_REPORTING'] = 'false'
 
@@ -18,8 +25,10 @@ SimpleCov.start('rails')
 require File.expand_path('../config/environment', __dir__)
 require 'spec_helper'
 
-# We're going to need this for our factories
-require Hyrax::Engine.root.join("lib/hyrax/specs/shared_specs/simple_work.rb").to_s
+# Hyrax's simple_work shared spec references Wings::ModelRegistry, which is
+# unavailable when HYRAX_SKIP_WINGS=true (as in docker-compose.single.yml).
+simple_work_spec = Hyrax::Engine.root.join("lib/hyrax/specs/shared_specs/simple_work.rb").to_s
+require simple_work_spec unless Hyrax.config.disable_wings
 
 # I want to set this so that our factory finder will have the right values.
 Hyrax.config.admin_set_model = "AdminSetResource"
@@ -156,9 +165,7 @@ RSpec.configure do |config|
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)
     Account.destroy_all
-    CreateSolrCollectionJob.new.without_account('hydra-test') if ENV['IN_DOCKER']
-    CreateSolrCollectionJob.new.without_account('hydra-sample')
-    CreateSolrCollectionJob.new.without_account('hydra-cross-search-tenant', 'hydra-test, hydra-sample')
+    prepare_test_solr
   end
 
   config.before do |example|

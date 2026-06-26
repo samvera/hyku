@@ -1,5 +1,12 @@
 #!/usr/bin/env sh
 
+# Guard: skip entirely in standalone Solr mode.  The core is pre-created by the
+# container entrypoint (SOLR_COLLECTION env var); ConfigSet upload is SolrCloud-only.
+if [ "${SOLR_ENABLE_CLOUD_MODE:-yes}" = "no" ]; then
+  echo "-- Standalone Solr mode (SOLR_ENABLE_CLOUD_MODE=no): skipping ConfigSet upload."
+  exit 0
+fi
+
 COUNTER=0;
 # /app/samvera/hyrax-webapp/solr/conf
 CONFDIR="${1}"

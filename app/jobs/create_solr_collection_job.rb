@@ -9,6 +9,15 @@ class CreateSolrCollectionJob < ApplicationJob
   # @param [Account]
   def perform(account)
     @account = account
+
+    # In single-tenant mode Solr is standalone (no SolrCloud).  The core is
+    # pre-created by the container entrypoint via the SOLR_COLLECTION env var.
+    # We just need to ensure the account's SolrEndpoint points at that core.
+    if Hyku.single_tenant?
+      ensure_single_tenant_endpoint(account)
+      return
+    end
+
     name = account.tenant.parameterize
 
     if account.search_only?
@@ -18,7 +27,11 @@ class CreateSolrCollectionJob < ApplicationJob
     end
   end
 
+  # Used by the RSpec suite bootstrap to pre-create named collections before
+  # the suite runs.  In single-tenant mode we never call the Collections API,
+  # so this is a no-op to keep callers safe.
   def without_account(name, tenant_list = '')
+    return if Hyku.single_tenant?
     return if collection_exists?(name)
     if tenant_list.present?
       client.get '/solr/admin/collections', params: collection_options.merge(action: 'CREATEALIAS',
@@ -26,43 +39,6 @@ class CreateSolrCollectionJob < ApplicationJob
     else
       client.get '/solr/admin/collections', params: collection_options.merge(action: 'CREATE',
                                                                              name:)
-    end
-  end
-
-  # Transform settings from nested, snaked-cased options to flattened, camel-cased options
-  class CollectionOptions
-    attr_reader :settings
-
-    def initialize(settings = {})
-      @settings = settings
-    end
-
-    ##
-    # @example Camel-casing
-    #   { replication_factor: 5 } # => { "replicationFactor" => 5 }
-    # @example Blank-rejecting
-    #   { emptyValue: '' } #=> { }
-    # @example Nested value-flattening
-    #   { collection: { config_name: 'x' } } # => { 'collection.configName' => 'x' }
-    def to_h
-      Hash[*settings.map { |k, v| transform_entry(k, v) }.flatten].reject { |_k, v| v.blank? }.symbolize_keys
-    end
-
-    private
-
-    def transform_entry(k, v)
-      case v
-      when Hash
-        v.map do |k1, v1|
-          ["#{transform_key(k)}.#{transform_key(k1)}", v1]
-        end
-      else
-        [transform_key(k), v]
-      end
-    end
-
-    def transform_key(k)
-      k.to_s.camelize(:lower)
     end
   end
 
@@ -84,9 +60,7 @@ class CreateSolrCollectionJob < ApplicationJob
   end
 
   def collection_url(name)
-    uri = URI(solr_url) + name
-
-    uri.to_s
+    (URI(solr_url) + name).to_s
   end
 
   def solr_url
@@ -110,11 +84,11 @@ class CreateSolrCollectionJob < ApplicationJob
   def check_credential_encoding(env_variable:, default:)
     credential = ENV.fetch(env_variable, default)
     credential_encoded = URI.encode_www_form_component(credential)
-    if credential != credential_encoded
-      Rails.logger.warn("#{env_variable} contains characters that may require URL encoding. " \
-                        "If you experience Solr authentication errors, URL encode the value in " \
-                        "#{env_variable} and in SOLR_URL if it is set.")
-    end
+    return credential if credential == credential_encoded
+
+    Rails.logger.warn("#{env_variable} contains characters that may require URL encoding. " \
+                      "If you experience Solr authentication errors, URL encode the value in " \
+                      "#{env_variable} and in SOLR_URL if it is set.")
     credential
   end
 
@@ -122,11 +96,22 @@ class CreateSolrCollectionJob < ApplicationJob
     account.create_solr_endpoint(url: collection_url(name), collection: name)
   end
 
-  def perform_for_normal_tenant(account, name)
-    unless collection_exists? name
-      client.get '/solr/admin/collections', params: collection_options.merge(action: 'CREATE',
-                                                                             name:)
+  # In single-tenant mode, point the account's SolrEndpoint at the pre-created
+  # standalone core.  The core name comes from SOLR_COLLECTION_NAME (defaulting
+  # to 'hydra-development' to match docker-compose.single.yml's SOLR_COLLECTION).
+  def ensure_single_tenant_endpoint(account)
+    core_name = ENV.fetch('SOLR_COLLECTION_NAME', 'hydra-development')
+    url = collection_url(core_name)
+    if account.solr_endpoint.is_a?(NilSolrEndpoint)
+      account.create_solr_endpoint(url: url, collection: core_name)
+    elsif account.solr_endpoint.url != url
+      account.solr_endpoint.update(url: url, collection: core_name)
     end
+  end
+
+  def perform_for_normal_tenant(account, name)
+    create_params = collection_options.merge(action: 'CREATE', name:)
+    client.get '/solr/admin/collections', params: create_params unless collection_exists?(name)
     add_solr_endpoint_to_account(account, name)
   end
 

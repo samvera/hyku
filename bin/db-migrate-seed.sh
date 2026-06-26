@@ -48,8 +48,9 @@ begin
   db_user = ENV['DB_USER']
   db_name = ENV['DB_NAME']
   db_password = ENV['DB_PASSWORD']
+  disable_wings = ENV['HYRAX_SKIP_WINGS'] == 'true'
 
-  fcrepo_reachable = fcrepo_host && fcrepo_host != 'NO_FCREPO_HOST_DEFINED'
+  fcrepo_reachable = !disable_wings && fcrepo_host && fcrepo_host != 'NO_FCREPO_HOST_DEFINED'
 
   service_wait("#{db_host}:#{db_port}")
   service_wait("#{fcrepo_host}:#{fcrepo_port}") if fcrepo_reachable

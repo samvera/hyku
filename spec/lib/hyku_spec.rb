@@ -5,6 +5,37 @@ RSpec.describe Hyku do
     expect(described_class).to have_constant(:VERSION)
   end
 
+  describe '.multitenant?' do
+    context 'when HYKU_MULTITENANT is "true"' do
+      before { stub_const('ENV', ENV.to_h.merge('HYKU_MULTITENANT' => 'true')) }
+      it { expect(described_class.multitenant?).to be true }
+    end
+
+    context 'when HYKU_MULTITENANT is "false"' do
+      before { stub_const('ENV', ENV.to_h.merge('HYKU_MULTITENANT' => 'false')) }
+      it { expect(described_class.multitenant?).to be false }
+    end
+
+    context 'when HYKU_MULTITENANT is absent' do
+      before { stub_const('ENV', ENV.to_h.except('HYKU_MULTITENANT')) }
+      it 'defaults to false' do
+        expect(described_class.multitenant?).to be false
+      end
+    end
+  end
+
+  describe '.single_tenant?' do
+    context 'when HYKU_MULTITENANT is "false"' do
+      before { stub_const('ENV', ENV.to_h.merge('HYKU_MULTITENANT' => 'false')) }
+      it { expect(described_class.single_tenant?).to be true }
+    end
+
+    context 'when HYKU_MULTITENANT is "true"' do
+      before { stub_const('ENV', ENV.to_h.merge('HYKU_MULTITENANT' => 'true')) }
+      it { expect(described_class.single_tenant?).to be false }
+    end
+  end
+
   # @see config/application.rb
   describe '#default_bulkrax_field_mappings=' do
     around do |example|

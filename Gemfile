@@ -18,7 +18,7 @@ gem 'rails', '~> 7.2.0'
 gem 'active-fedora'
 gem 'activerecord-nulldb-adapter'
 gem 'activesupport', '>= 4.2.0', group: %i[development test]
-gem 'addressable', '2.8.1' # remove once https://github.com/postrank-labs/postrank-uri/issues/49 is fixed
+gem 'addressable', '2.9.0' # remove once https://github.com/postrank-labs/postrank-uri/issues/49 is fixed
 gem 'aws-sdk-sqs', group: %i[aws]
 gem 'bixby', group: %i[development test]
 gem 'blacklight', '~> 7.38' # Updated for Rails 7.2 compatibility
@@ -79,7 +79,7 @@ gem 'pg'
 gem 'postrank-uri', '>= 1.0.24'
 gem 'pry-byebug', group: %i[development test]
 gem 'pry-rails'
-gem 'puma', '~> 5.6' # Use Puma as the app server
+gem 'puma', '~> 7.2' # Use Puma as the app server
 gem 'qa', git: 'https://github.com/samvera/questioning_authority.git', branch: 'main'
 gem 'rack-attack'
 gem 'rack-test', '0.7.0', group: %i[test] # rack-test >= 0.71 does not work with older Capybara versions (< 2.17). See #214 for more details

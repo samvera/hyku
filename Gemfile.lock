@@ -29,8 +29,8 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: 5b5a4704696d24f188c7314458f48b5f8c548373
-  branch: main
+  revision: 3cecdda584b8421a02c464df1a1ce243528f7131
+  branch: file-set-show-compounds
   specs:
     hyrax (5.2.0)
       active-fedora (~> 15.0)

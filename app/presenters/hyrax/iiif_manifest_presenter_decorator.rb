@@ -51,9 +51,9 @@ module Hyrax
 
     module DisplayImagePresenterDecorator
       # override Hyrax to keep pdfs from gumming up the v3 manifest
-      # in app/presenters/hyrax/iiif_manifest_presenter.rb
+      # in app/presenters/hyrax/iiif_manifest_presenter.rb if Flipflop.iiif_pdf? is false
       def file_set?
-        super && (image? || audio? || video?)
+        super && (image? || audio? || video? || (Flipflop.iiif_pdf? && pdf?))
       end
     end
   end

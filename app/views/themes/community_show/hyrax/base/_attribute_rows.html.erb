@@ -6,6 +6,11 @@
   # Convert to array for splitting
   fields_array = all_fields.to_a
 
+  # Card compounds (view: { display: card }) render as their own cards via
+  # render_compound_cards on the show page, so skip them here or they render
+  # twice. Matches Hyrax's base/_attribute_rows.
+  fields_array.reject! { |field, _options| compound_card_field?(presenter, field) }
+
   # Filter out admin-only and editor-only fields per Hyrax's view-visibility rules
   fields_array.select! do |field, options|
     field_visible?(conform_options(field, options), presenter)

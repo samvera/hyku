@@ -81,6 +81,13 @@
             <%= render 'citations', presenter: @presenter %>
           </div>
         </div>
+        <%# Card compounds (view: { display: card }) render as their own cards,
+            above the relationships and items cards - matching Hyrax's base show. %>
+        <div class="row">
+          <div class="col-12">
+            <%= render_compound_cards(@presenter) %>
+          </div>
+        </div>
         <div class="row">
           <div class="col-12 work-show-items">
             <%= render 'relationships', presenter: @presenter %>

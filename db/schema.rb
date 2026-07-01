@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_05_21_230524) do
+ActiveRecord::Schema[7.2].define(version: 2026_07_01_170000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
+  enable_extension "pg_trgm"
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
@@ -699,6 +700,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_05_21_230524) do
     t.string "uri"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.index "lower((label)::text) gin_trgm_ops", name: "index_qa_local_authority_entries_on_lower_label_trgm", using: :gin
     t.index ["local_authority_id"], name: "index_qa_local_authority_entries_on_local_authority_id"
     t.index ["uri"], name: "index_qa_local_authority_entries_on_uri", unique: true
   end

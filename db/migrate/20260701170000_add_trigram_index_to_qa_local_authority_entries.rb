@@ -17,7 +17,7 @@ class AddTrigramIndexToQaLocalAuthorityEntries < ActiveRecord::Migration[7.2]
       return
     end
 
-    enable_extension 'pg_trgm' unless extension_enabled?('pg_trgm')
+    execute 'CREATE EXTENSION IF NOT EXISTS pg_trgm SCHEMA shared_extensions;'
 
     execute <<-SQL.squish
       CREATE INDEX IF NOT EXISTS #{INDEX_NAME}

@@ -47,6 +47,8 @@ en:
         submit: Go
   hyku:
     account:
+      signup_challenge_failed: Your registration could not be verified. Please try again.
+      signup_challenge_honeypot_label: Leave this field blank
       signup_disabled: Account registration is disabled
     admin:
       flash:

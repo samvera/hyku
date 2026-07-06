@@ -164,6 +164,15 @@ en:
         works_over_time: Works over time
       title: Administration
       work_types: Available Work Types
+    demo_banner:
+      acceptable_use: Acceptable use policy
+      aria_label: Demo environment notice
+      dismiss: Dismiss this notice for today
+      last_reset: 'Last reset: %{time}.'
+      not_yet_reset: It has not been reset yet.
+      reset_schedule: Content and settings reset nightly.
+      title: Demo environment
+      version: Running Hyku v%{version}.
     footer:
       admin_login: Administrator login
     generic_type:

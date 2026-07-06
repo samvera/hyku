@@ -2,11 +2,12 @@
 
 RSpec.describe 'Demo environment banner', type: :feature do
   let(:account) do
-    FactoryBot.create(:demo_account, last_reset_at: Time.zone.parse('2026-07-05 08:00'))
+    FactoryBot.create(:account, :public_schema, :public_demo_tenant,
+                      last_reset_at: Time.zone.parse('2026-07-05 08:00'))
   end
 
   before do
-    allow_any_instance_of(ApplicationController).to receive(:current_account).and_return(account)
+    allow(Account).to receive(:from_request).and_return(account)
   end
 
   it 'appears on the home page of a public demo tenant' do
@@ -23,7 +24,7 @@ RSpec.describe 'Demo environment banner', type: :feature do
   end
 
   context 'on a regular tenant' do
-    let(:account) { FactoryBot.create(:account) }
+    let(:account) { FactoryBot.create(:account, :public_schema) }
 
     it 'does not appear' do
       visit '/'

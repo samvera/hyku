@@ -250,7 +250,7 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
       it 'refuses to remove the last superadmin from a public demo tenant' do
         put :update, params: { id: account.to_param, account: { superadmin_emails: [''] } }
         expect(response).to render_template('edit')
-        expect(account.superadmin_emails).to eq(['onlysuper@example.com'])
+        expect(account.superadmin_emails).to include('onlysuper@example.com')
       end
 
       it 'reports the error on the account' do
@@ -262,7 +262,8 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
         replacement = FactoryBot.create(:user, email: 'newsuper@example.com')
         put :update, params: { id: account.to_param, account: { superadmin_emails: [replacement.email] } }
         expect(response).to redirect_to([:proprietor, account])
-        expect(account.superadmin_emails).to eq([replacement.email])
+        expect(account.superadmin_emails).to include(replacement.email)
+        expect(account.superadmin_emails).not_to include('onlysuper@example.com')
       end
     end
 

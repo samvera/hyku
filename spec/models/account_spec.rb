@@ -725,6 +725,28 @@ RSpec.describe Account, type: :model do
       end
     end
 
+    context 'with a public demo tenant' do
+      let(:account) { create(:account, :public_demo_tenant) }
+
+      it 'schedules DemoTenantResetJob' do
+        allow(account).to receive(:find_job).and_return(false)
+        expect(DemoTenantResetJob).to receive(:perform_later)
+        account.find_or_schedule_jobs
+      end
+
+      it 'does not schedule if the job already exists' do
+        allow(account).to receive(:find_job).and_return(false)
+        allow(account).to receive(:find_job).with(DemoTenantResetJob).and_return(true)
+        expect(DemoTenantResetJob).not_to receive(:perform_later)
+        account.find_or_schedule_jobs
+      end
+    end
+
+    it 'does not schedule DemoTenantResetJob for regular accounts' do
+      expect(DemoTenantResetJob).not_to receive(:perform_later)
+      account.find_or_schedule_jobs
+    end
+
     it 'switches back to original account' do
       expect(AccountElevator).to receive(:switch!).with(account)
       expect(AccountElevator).to receive(:switch!).with(site_account)

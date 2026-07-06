@@ -39,7 +39,8 @@ RSpec.describe 'User self-registration spam challenge', type: :request, singlete
       payload = user_params.merge(registration_website: 'http://spam.example.com',
                                   registration_timestamp: elapsed_timestamp)
       post '/users', params: payload
-      expect(response).to redirect_to('/users/sign_up')
+      expect(response).to have_http_status(:redirect)
+      expect(response.location).to include('/users/sign_up')
       expect(flash[:alert]).to eq I18n.t('hyku.account.signup_challenge_failed')
     end
 

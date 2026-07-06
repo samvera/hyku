@@ -99,4 +99,29 @@ RSpec.describe "Rake tasks" do
       end
     end
   end
+
+  describe 'db:seed:sample:create' do
+    let(:valkyrie_service) { instance_double(Sample::ValkyrieService, create_sample_data: true) }
+    let(:af_service) { instance_double(Sample::ActiveFedoraService, create_sample_data: true) }
+
+    it 'passes tenant, quantity, and visibility through to the valkyrie service' do
+      expect(Sample::ValkyrieService).to receive(:new).with('demo', '10', 'open').and_return(valkyrie_service)
+      run_task('db:seed:sample:create', 'demo', 'valkyrie', '10', 'open')
+    end
+
+    it 'passes visibility through to the active fedora service' do
+      expect(Sample::ActiveFedoraService).to receive(:new).with('demo', '10', 'restricted').and_return(af_service)
+      run_task('db:seed:sample:create', 'demo', 'af', '10', 'restricted')
+    end
+
+    it 'defaults to no visibility override' do
+      expect(Sample::ValkyrieService).to receive(:new).with('demo', '10', nil).and_return(valkyrie_service)
+      run_task('db:seed:sample:create', 'demo', 'valkyrie', '10')
+    end
+
+    it 'rejects an unrecognized visibility value' do
+      expect(Sample::ValkyrieService).not_to receive(:new)
+      expect(run_task('db:seed:sample:create', 'demo', 'valkyrie', '10', 'public')).to include('ERROR')
+    end
+  end
 end

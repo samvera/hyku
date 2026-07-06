@@ -1,0 +1,24 @@
+<%# Site-wide banner for public demo (sandbox) tenants: identifies the
+    environment, shows the running version and reset recency, and links to an
+    acceptable use page when one is configured. Dismissal is client-side (a
+    cookie read by hyku/demo_banner.js) so cached pages stay cacheable. %>
+<% if current_account&.public_demo_tenant? %>
+  <div id="demo-banner" class="alert alert-info alert-dismissible demo-banner" role="region" aria-label="<%= t('hyku.demo_banner.aria_label') %>">
+    <button type="button" class="close" data-dismiss="alert" aria-label="<%= t('hyku.demo_banner.dismiss') %>">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <strong><%= t('hyku.demo_banner.title') %></strong>
+    <span class="demo-banner-version"><%= t('hyku.demo_banner.version', version: Hyku::VERSION) %></span>
+    <span class="demo-banner-reset">
+      <%= t('hyku.demo_banner.reset_schedule') %>
+      <% if current_account.last_reset_at.present? %>
+        <%= t('hyku.demo_banner.last_reset', time: l(current_account.last_reset_at, format: :long)) %>
+      <% else %>
+        <%= t('hyku.demo_banner.not_yet_reset') %>
+      <% end %>
+    </span>
+    <% if current_account.demo_acceptable_use_url.present? %>
+      <%= link_to t('hyku.demo_banner.acceptable_use'), current_account.demo_acceptable_use_url, class: 'alert-link' %>
+    <% end %>
+  </div>
+<% end %>

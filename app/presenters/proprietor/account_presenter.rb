@@ -23,8 +23,11 @@ module Proprietor
       superadmin_emails.include?(user.email)
     end
 
-    def can_remove_admin?(_user)
-      !last_admin?
+    # Removing a user's admin role also removes their superadmin role (the
+    # remove-admin form posts both email lists), so this also respects the
+    # last-superadmin floor on public demo tenants.
+    def can_remove_admin?(user)
+      !last_admin? && can_remove_superadmin?(user)
     end
 
     def can_remove_superadmin?(user)

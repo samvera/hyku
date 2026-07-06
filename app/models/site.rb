@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class Site < ApplicationRecord
+  # Raised when a superadmin_emails assignment would leave a public demo
+  # tenant with no site-scoped superadmins.
+  class LastSuperadminRemovalError < StandardError; end
+
   resourcify
 
   validates :application_name, presence: true, allow_nil: true
@@ -56,11 +60,14 @@ class Site < ApplicationRecord
 
   # Update superadmin emails associated with this site
   # @param [Array<String>] Array of user emails
+  # @raise [LastSuperadminRemovalError] when the assignment would leave a
+  #   public demo tenant with no site-scoped superadmins
   def superadmin_emails=(emails)
     emails = Array(emails).reject(&:blank?)
     existing_superadmin_emails = superadmin_emails
     new_superadmin_emails = emails - existing_superadmin_emails
     removed_superadmin_emails = existing_superadmin_emails - emails
+    guard_last_superadmin_removal!(emails) if removed_superadmin_emails.present?
     add_superadmins_by_email(new_superadmin_emails) if new_superadmin_emails.present?
     remove_superadmins_by_email(removed_superadmin_emails) if removed_superadmin_emails.present?
   end
@@ -112,5 +119,20 @@ class Site < ApplicationRecord
     User.where(email: emails).find_each do |u|
       u.remove_role :superadmin, self
     end
+  end
+
+  # Public demo tenants must always keep at least one site-scoped superadmin.
+  # Role changes apply immediately when the attribute is assigned (not at
+  # save), so this guard must halt the assignment; a validation error added
+  # after the fact would not roll the removal back. The requested emails only
+  # produce superadmins for users that already exist, so the assignment is
+  # refused when none of them match an existing user.
+  # @param [Array<String>] requested_emails the full email list being assigned
+  # @raise [LastSuperadminRemovalError]
+  def guard_last_superadmin_removal!(requested_emails)
+    return unless account&.public_demo_tenant?
+    return if User.where(email: requested_emails).exists?
+
+    raise LastSuperadminRemovalError, I18n.t('activerecord.errors.messages.cannot_remove_last_superadmin')
   end
 end

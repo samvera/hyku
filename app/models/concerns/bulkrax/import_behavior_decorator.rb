@@ -1,11 +1,17 @@
 # frozen_string_literal: true
 
-# OVERRIDES BULKRAX v9.1.0
+# OVERRIDES BULKRAX v9.5.1
 #
-# Validates the work type for a given entry at the beginning of the import
-# process. This ensures that we don't attempt to process an entry for a work
-# type that isn't enabled for the tenant or defined in the current metadata
-# profile, which would otherwise result in a cryptic KeyError.
+# Validates each entry at the beginning of the import process:
+#
+# * the work type must be enabled for the tenant and, when flexible metadata
+#   is enabled, defined in the current metadata profile, which would otherwise
+#   result in a cryptic KeyError; and
+# * the entry's local files must satisfy the tenant's upload restraints
+#   (file size limit, accepted content types, storage ceiling).
+#
+# Both validations raise, which the existing rescue turns into a failure
+# recorded on the entry alone; the rest of the importer run continues.
 module Bulkrax
   module ImportBehaviorDecorator
     # Overriding the entire method to inject validation at the correct place.
@@ -16,6 +22,9 @@ module Bulkrax
         # OVERRIDE end
 
         build_metadata
+        # OVERRIDE begin
+        validate_upload_limits!
+        # OVERRIDE end
         unless importerexporter.validate_only
           raise CollectionsCreatedError unless collections_created?
           @item = factory.run!
@@ -91,6 +100,32 @@ module Bulkrax
       raise StandardError,
             "Work type '#{full_name}' is not enabled for this tenant. " \
             "Please enable it via the 'Available Work Types' setting of the Admin Dashboard."
+    end
+
+    # Enforce the tenant's upload restraints against the local files this
+    # entry references, before any of them are ingested.
+    #
+    # @raise [StandardError] when a file violates the tenant's upload limits
+    def validate_upload_limits!
+      paths = local_file_paths
+      return if paths.empty?
+
+      messages = paths.flat_map { |path| upload_limit_errors_for(path) }
+      messages << UploadLimitsService.storage_error(additional_bytes: paths.sum { |path| File.size(path) })
+      messages = messages.compact
+      raise StandardError, messages.join(' ') if messages.any?
+    end
+
+    def local_file_paths
+      Array.wrap(parsed_metadata&.[]('file')).select { |path| path.present? && File.exist?(path.to_s) }
+    end
+
+    def upload_limit_errors_for(path)
+      filename = File.basename(path)
+      [UploadLimitsService.file_size_error(size: File.size(path), filename:),
+       UploadLimitsService.content_type_error(
+         content_type: Marcel::MimeType.for(Pathname.new(path), name: filename), filename:
+       )]
     end
   end
 end

@@ -55,6 +55,4 @@ module Hyrax
 end
 
 Hyrax::UploadedFile.prepend(Hyrax::UploadedFileDecorator)
-unless Hyrax::UploadedFile._validate_callbacks.any? { |cb| cb.filter == :enforce_tenant_upload_limits }
-  Hyrax::UploadedFile.validate :enforce_tenant_upload_limits
-end
+Hyrax::UploadedFile.validate :enforce_tenant_upload_limits unless Hyrax::UploadedFile._validate_callbacks.any? { |cb| cb.filter == :enforce_tenant_upload_limits }

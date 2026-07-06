@@ -41,12 +41,13 @@ RSpec.describe 'Hyrax::UploadedFile' do # rubocop:disable RSpec/DescribeClass
     # world.png is 4218 bytes with content type image/png
     let(:account) { FactoryBot.build(:account, settings:) }
     let(:settings) { {} }
+    let(:user) { FactoryBot.create(:user) }
 
     before { allow(Site).to receive(:account).and_return(account) }
 
     context 'with no restrictive settings' do
       it 'accepts the upload' do
-        expect(Hyrax::UploadedFile.new(file:)).to be_valid
+        expect(Hyrax::UploadedFile.new(file:, user:)).to be_valid
       end
     end
 
@@ -54,7 +55,7 @@ RSpec.describe 'Hyrax::UploadedFile' do # rubocop:disable RSpec/DescribeClass
       let(:account) { nil }
 
       it 'accepts the upload' do
-        expect(Hyrax::UploadedFile.new(file:)).to be_valid
+        expect(Hyrax::UploadedFile.new(file:, user:)).to be_valid
       end
     end
 
@@ -62,7 +63,7 @@ RSpec.describe 'Hyrax::UploadedFile' do # rubocop:disable RSpec/DescribeClass
       let(:settings) { { file_size_limit: '1000000' } }
 
       it 'accepts the upload' do
-        expect(Hyrax::UploadedFile.new(file:)).to be_valid
+        expect(Hyrax::UploadedFile.new(file:, user:)).to be_valid
       end
     end
 
@@ -70,14 +71,14 @@ RSpec.describe 'Hyrax::UploadedFile' do # rubocop:disable RSpec/DescribeClass
       let(:settings) { { file_size_limit: '1000' } }
 
       it 'rejects the upload with a readable message' do
-        uploaded = Hyrax::UploadedFile.new(file:)
+        uploaded = Hyrax::UploadedFile.new(file:, user:)
 
         expect(uploaded).not_to be_valid
         expect(uploaded.errors[:base].join).to include('file size limit')
       end
 
       it 'still accepts a record with no file content' do
-        expect(Hyrax::UploadedFile.new).to be_valid
+        expect(Hyrax::UploadedFile.new(user:)).to be_valid
       end
     end
 
@@ -85,7 +86,7 @@ RSpec.describe 'Hyrax::UploadedFile' do # rubocop:disable RSpec/DescribeClass
       let(:settings) { { file_size_limit: '1000000' } }
 
       it 'is re-checked on later saves' do
-        uploaded = Hyrax::UploadedFile.create(file:)
+        uploaded = Hyrax::UploadedFile.create(file:, user:)
         account.file_size_limit = '1000'
 
         expect(uploaded.save).to eq(false)
@@ -96,7 +97,7 @@ RSpec.describe 'Hyrax::UploadedFile' do # rubocop:disable RSpec/DescribeClass
       let(:settings) { { allowed_content_types: 'image/png, application/pdf' } }
 
       it 'accepts the upload' do
-        expect(Hyrax::UploadedFile.new(file:)).to be_valid
+        expect(Hyrax::UploadedFile.new(file:, user:)).to be_valid
       end
     end
 
@@ -104,7 +105,7 @@ RSpec.describe 'Hyrax::UploadedFile' do # rubocop:disable RSpec/DescribeClass
       let(:settings) { { allowed_content_types: 'image/*' } }
 
       it 'accepts the upload' do
-        expect(Hyrax::UploadedFile.new(file:)).to be_valid
+        expect(Hyrax::UploadedFile.new(file:, user:)).to be_valid
       end
     end
 
@@ -112,7 +113,7 @@ RSpec.describe 'Hyrax::UploadedFile' do # rubocop:disable RSpec/DescribeClass
       let(:settings) { { allowed_content_types: 'application/pdf' } }
 
       it 'rejects the upload with a readable message' do
-        uploaded = Hyrax::UploadedFile.new(file:)
+        uploaded = Hyrax::UploadedFile.new(file:, user:)
 
         expect(uploaded).not_to be_valid
         expect(uploaded.errors[:base].join).to include('not accepted')
@@ -125,7 +126,7 @@ RSpec.describe 'Hyrax::UploadedFile' do # rubocop:disable RSpec/DescribeClass
       before { allow(UploadLimitsService).to receive(:current_storage_usage).and_return(0) }
 
       it 'accepts the upload' do
-        expect(Hyrax::UploadedFile.new(file:)).to be_valid
+        expect(Hyrax::UploadedFile.new(file:, user:)).to be_valid
       end
     end
 
@@ -135,7 +136,7 @@ RSpec.describe 'Hyrax::UploadedFile' do # rubocop:disable RSpec/DescribeClass
       before { allow(UploadLimitsService).to receive(:current_storage_usage).and_return(10_000) }
 
       it 'rejects the upload with a readable message' do
-        uploaded = Hyrax::UploadedFile.new(file:)
+        uploaded = Hyrax::UploadedFile.new(file:, user:)
 
         expect(uploaded).not_to be_valid
         expect(uploaded.errors[:base].join).to include('storage limit')

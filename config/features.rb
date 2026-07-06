@@ -54,5 +54,9 @@ Flipflop.configure do
     feature :include_guided_import,
             default: false,
             description: "Enable the guided import workflow."
+
+    feature :deposit_wizard,
+            default: false,
+            description: "Enable the guided deposit wizard for creating works."
   end
 end

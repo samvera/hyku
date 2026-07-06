@@ -1,0 +1,10 @@
+<% provide :page_header do %>
+  <h1><span class="fa fa-cloud-upload" aria-hidden="true"></span> <%= t('hyku.deposit_wizard.start.heading') %></h1>
+<% end %>
+
+<%# Phase 1 is the entry point only. The path chooser (new portfolio / add to
+    existing / standalone) arrives once its sub-flows exist; until then the
+    start step is intentionally minimal. %>
+<div class="deposit-wizard deposit-wizard--start">
+  <p class="deposit-wizard__subtext"><%= t('hyku.deposit_wizard.start.subtext') %></p>
+</div>

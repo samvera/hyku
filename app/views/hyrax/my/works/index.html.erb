@@ -1,0 +1,53 @@
+<%# OVERRIDE Hyrax v5 to add the guided deposit wizard button to the page header.
+    The button group is extracted into the _deposit_actions partial; the rest of
+    this view mirrors upstream and should be re-synced when Hyrax changes it.
+    This change could be contributed back to Hyrax if desired, removing this override.
+%>
+<% provide :page_title, t("hyrax.admin.sidebar.works") %>
+
+<% provide :head do %>
+  <%= rss_feed_link_tag route_set: hyrax %>
+  <%= atom_feed_link_tag route_set: hyrax %>
+<% end %>
+
+<script>
+//<![CDATA[
+
+  <%= render partial: 'scripts', formats: [:js] %>
+
+//]]>
+</script>
+
+<% provide :page_header do %>
+  <h1><span class="fa fa-file" aria-hidden="true"></span> <%= t("hyrax.admin.sidebar.works") %></h1>
+  <%# OVERRIDE: button group moved to _deposit_actions to add Guided Deposit %>
+  <%= render 'deposit_actions' %>
+<% end %>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="<%= 'tabs' if current_page?(hyrax.dashboard_works_path(locale: nil)) || @managed_works_count > 0 %>">
+      <%= render 'tabs' if current_page?(hyrax.dashboard_works_path(locale: nil)) || @managed_works_count > 0 %>
+      <div class="card">
+        <div class="card-header">
+          <% if current_page?(hyrax.my_works_path(locale: nil)) %>
+            <span class="count-display"><%= I18n.t('hyrax.my.count.works.you_own', total_count: @response.total_count).html_safe %></span>
+          <% elsif current_page?(hyrax.dashboard_works_path(locale: nil)) && !current_ability.admin? %>
+            <span class="count-display"><%= I18n.t('hyrax.my.count.works.you_manage', total_count: @response.total_count).html_safe %></span>
+          <% else %>
+            <span class="count-display"><%= I18n.t('hyrax.my.count.works.in_repo', total_count: @response.total_count).html_safe %></span>
+          <% end %>
+        </div>
+        <div class="card-body">
+          <%= render 'search_header' %>
+          <h2 class="sr-only"><%= t('hyrax.my.count.works.works_listing') %></h2>
+          <%= render 'document_list' %>
+
+          <%= render 'results_pagination' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= render '/shared/select_work_type_modal', create_work_presenter: @create_work_presenter if @create_work_presenter.many? %>

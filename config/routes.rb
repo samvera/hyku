@@ -157,6 +157,12 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     resources :featured_collection_lists, path: 'featured_collections', only: :create
   end
 
+  # Guided deposit wizard (gated by the :deposit_wizard feature)
+  scope module: 'hyrax' do
+    get 'deposit_wizard', to: 'deposit_wizard#start', as: :deposit_wizard
+    get 'deposit_wizard/:step', to: 'deposit_wizard#show', as: :deposit_wizard_step
+  end
+
   get 'all_collections' => 'hyrax/homepage#all_collections', as: :all_collections
 
   # Upload a collection thumbnail

@@ -24,7 +24,7 @@ module Sample
 
         index_all_works(collections + images + generic_works + oers)
 
-        print_completion_summary(collections, images, generic_works, oers, total_works)
+        print_completion_summary(collections, images, generic_works, total_works, oers: oers)
       ensure
         Hydra::Derivatives.config.output_file_service = Hyrax::ValkyriePersistDerivatives
         restore_job_configuration
@@ -159,7 +159,7 @@ module Sample
           creator: sample_data[:creators][index % sample_data[:creators].length],
           subject: sample_data[:subjects][index % sample_data[:subjects].length],
           bulkrax_identifier: "SampleOer#{index}",
-          visibility: Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC,
+          visibility: seed_visibility,
           admin_set: admin_set,
           resource_type: ['Other'],
           audience: ['Higher Education'],
@@ -226,7 +226,7 @@ module Sample
         description: [sample_data[:descriptions][index % sample_data[:descriptions].length]],
         creator: sample_data[:creators][index % sample_data[:creators].length],
         subject: sample_data[:subjects][index % sample_data[:subjects].length],
-        visibility: Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC,
+        visibility: seed_visibility,
         collection_type_gid: collection_type.to_global_id.to_s
       )
       collection.apply_depositor_metadata(user.user_key)
@@ -241,11 +241,17 @@ module Sample
         creator: sample_data[:creators][index % sample_data[:creators].length],
         subject: sample_data[:subjects][index % sample_data[:subjects].length],
         bulkrax_identifier: "Sample#{work_class}#{index}",
-        visibility: Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC,
+        visibility: seed_visibility,
         admin_set: admin_set
       )
       work.apply_depositor_metadata(user.user_key)
       work
+    end
+
+    # The ActiveFedora sample data has always been created as open access;
+    # an explicit visibility argument overrides that default.
+    def seed_visibility
+      visibility.presence || Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
     end
 
     def attach_file_to_work(work, filename)

@@ -113,6 +113,73 @@ RSpec.describe Site, type: :model do
     end
   end
 
+  describe ".superadmin_emails=" do
+    subject { described_class.instance }
+
+    context "on a public demo tenant" do
+      let(:account) { FactoryBot.create(:demo_account) }
+
+      before do
+        subject.update(account:)
+        admin1.add_role :superadmin, subject
+      end
+
+      it "raises when passed an empty array that would remove the last superadmin" do
+        expect { subject.superadmin_emails = [] }
+          .to raise_error(Site::LastSuperadminRemovalError)
+        expect(subject.superadmin_emails).to eq([admin1.email])
+      end
+
+      it "raises when passed only blank values" do
+        expect { subject.superadmin_emails = [''] }
+          .to raise_error(Site::LastSuperadminRemovalError)
+        expect(subject.superadmin_emails).to eq([admin1.email])
+      end
+
+      it "raises when the replacement emails match no existing users" do
+        expect { subject.superadmin_emails = ['ghost@nowhere.org'] }
+          .to raise_error(Site::LastSuperadminRemovalError)
+        expect(subject.superadmin_emails).to eq([admin1.email])
+      end
+
+      it "allows swapping the last superadmin for another existing user in one assignment" do
+        subject.superadmin_emails = [admin2.email]
+        expect(subject.superadmin_emails).to eq([admin2.email])
+      end
+
+      it "allows removing one of several superadmins" do
+        admin2.add_role :superadmin, subject
+        subject.superadmin_emails = [admin1.email]
+        expect(subject.superadmin_emails).to eq([admin1.email])
+      end
+    end
+
+    context "on a standard tenant" do
+      let(:account) { FactoryBot.create(:account) }
+
+      before do
+        subject.update(account:)
+        admin1.add_role :superadmin, subject
+      end
+
+      it "clears out all superadmins when passed an empty array" do
+        subject.superadmin_emails = []
+        expect(subject.superadmin_emails).to eq([])
+      end
+    end
+
+    context "when the site has no account" do
+      before do
+        admin1.add_role :superadmin, subject
+      end
+
+      it "clears out all superadmins when passed an empty array" do
+        subject.superadmin_emails = []
+        expect(subject.superadmin_emails).to eq([])
+      end
+    end
+  end
+
   describe '#institution_label' do
     let(:site) { FactoryBot.create(:site) }
 

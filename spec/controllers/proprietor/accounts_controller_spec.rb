@@ -236,6 +236,36 @@ RSpec.describe Proprietor::AccountsController, type: :controller, multitenant: t
       end
     end
 
+    describe 'PUT #update with superadmin_emails' do
+      let(:account) { FactoryBot.create(:demo_account) }
+      let!(:sole_superadmin) { FactoryBot.create(:user, email: 'onlysuper@example.com') }
+
+      before do
+        allow(Apartment::Tenant).to receive(:switch).with(account.tenant) do |&block|
+          block.call
+        end
+        sole_superadmin.add_role :superadmin, Site.instance
+      end
+
+      it 'refuses to remove the last superadmin from a public demo tenant' do
+        put :update, params: { id: account.to_param, account: { superadmin_emails: [''] } }
+        expect(response).to render_template('edit')
+        expect(account.superadmin_emails).to eq(['onlysuper@example.com'])
+      end
+
+      it 'reports the error on the account' do
+        put :update, params: { id: account.to_param, account: { superadmin_emails: [''] } }
+        expect(assigns(:account).errors[:superadmin_emails]).to be_present
+      end
+
+      it 'allows replacing the last superadmin with another user in one assignment' do
+        replacement = FactoryBot.create(:user, email: 'newsuper@example.com')
+        put :update, params: { id: account.to_param, account: { superadmin_emails: [replacement.email] } }
+        expect(response).to redirect_to([:proprietor, account])
+        expect(account.superadmin_emails).to eq([replacement.email])
+      end
+    end
+
     after do
       account.reset!
     end

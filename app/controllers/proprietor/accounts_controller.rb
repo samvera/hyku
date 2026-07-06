@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Proprietor
+  # rubocop:disable Metrics/ClassLength
   class AccountsController < ProprietorController
     before_action :ensure_admin!
 
@@ -147,4 +148,5 @@ module Proprietor
       end
     end
   end
+  # rubocop:enable Metrics/ClassLength
 end

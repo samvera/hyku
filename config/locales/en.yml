@@ -49,6 +49,8 @@ en:
     account:
       signup_disabled: Account registration is disabled
     deposit_wizard:
+      admin_set:
+        label: Administrative set
       back: Back
       button: Guided Deposit
       continue: Continue
@@ -56,7 +58,15 @@ en:
         heading: Describe your item
         subtext: Add the details for this work. Required fields are marked.
       disabled: The guided deposit wizard is not enabled.
+      done:
+        deposit_another: Deposit another work
+        heading: Work deposited
+        no_recent: Your work has been deposited.
+        subtext: "“%{title}” has been deposited to the repository."
+        untitled: Your work
+        view_work: View work
       errors:
+        agreement_required: Please accept the deposit agreement to continue.
         no_work_type: Please choose a work type to continue.
       files:
         add_files: Add files
@@ -74,6 +84,20 @@ en:
       no_work_types: There are no work types available for you to deposit. Please contact an administrator.
       notices:
         work_type_selected: "%{type} selected."
+      review:
+        deposit: Deposit
+        destination: This work will be deposited into the %{admin_set} administrative set.
+        entry_count:
+          one: 1 entry
+          other: "%{count} entries"
+        file_count:
+          one: 1 file
+          other: "%{count} files"
+        files: Files
+        heading: Review and deposit
+        subtext: Check everything looks right before you deposit this work.
+        visibility: Visibility
+        work_type: Work type
       start:
         heading: What would you like to deposit?
         subtext: This guided flow walks you through depositing your work step by step.

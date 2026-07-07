@@ -7,7 +7,6 @@
 <div class="deposit-wizard deposit-wizard--item-start">
   <p class="deposit-wizard__subtext"><%= t('hyku.deposit_wizard.item_start.subtext') %></p>
 
-  <%# This increment offers the "known type" route; guided and batch follow. %>
   <%= form_tag main_app.deposit_wizard_advance_path(step: 'item_start'), method: :patch do %>
     <%= button_tag t('hyku.deposit_wizard.item_start.known_type'), type: 'submit', class: 'btn btn-primary' %>
   <% end %>

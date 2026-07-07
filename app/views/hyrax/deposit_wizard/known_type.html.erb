@@ -7,7 +7,9 @@
 <div class="deposit-wizard deposit-wizard--known-type">
   <p class="deposit-wizard__subtext"><%= t('hyku.deposit_wizard.known_type.subtext') %></p>
 
-  <%= render 'type_cards', step: 'known_type' %>
+  <%= form_tag main_app.deposit_wizard_advance_path(step: 'known_type'), method: :patch, class: 'deposit-wizard__type-form' do %>
+    <%= render 'type_cards' %>
+  <% end %>
 
   <div class="deposit-wizard__nav">
     <% back = wizard_config.container? ? main_app.deposit_wizard_step_path(step: 'item_start') : main_app.deposit_wizard_path %>

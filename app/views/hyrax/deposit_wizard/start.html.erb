@@ -5,20 +5,23 @@
 <div class="deposit-wizard deposit-wizard--start">
   <p class="deposit-wizard__subtext"><%= t('hyku.deposit_wizard.start.subtext') %></p>
 
-  <% if wizard_config.container? %>
-    <div class="deposit-wizard__paths">
-      <% %w[new add standalone].each do |path| %>
-        <%= form_tag main_app.deposit_wizard_advance_path(step: 'start'), method: :patch, class: 'deposit-wizard__path-form' do %>
-          <%= hidden_field_tag :path, path %>
-          <%= button_tag type: 'submit', class: 'deposit-wizard__path-card btn btn-outline-primary btn-block' do %>
+  <%# A single form so the admin-set select is shown once and submits with
+      whichever choice button is clicked (each button carries its own value). %>
+  <%= form_tag main_app.deposit_wizard_advance_path(step: 'start'), method: :patch, class: 'deposit-wizard__start-form' do %>
+    <%= render 'admin_set_select' %>
+
+    <% if wizard_config.container? %>
+      <div class="deposit-wizard__paths">
+        <% %w[new add standalone].each do |path| %>
+          <%= button_tag type: 'submit', name: 'path', value: path, class: 'deposit-wizard__path-card btn btn-outline-primary btn-block' do %>
             <span class="deposit-wizard__path-title"><%= t("hyku.deposit_wizard.start.paths.#{path}.title") %></span>
             <span class="deposit-wizard__path-desc"><%= t("hyku.deposit_wizard.start.paths.#{path}.desc") %></span>
           <% end %>
         <% end %>
-      <% end %>
-    </div>
-  <% else %>
-    <h2 class="deposit-wizard__section-heading"><%= t('hyku.deposit_wizard.known_type.heading') %></h2>
-    <%= render 'type_cards', step: 'start' %>
+      </div>
+    <% else %>
+      <h2 class="deposit-wizard__section-heading"><%= t('hyku.deposit_wizard.known_type.heading') %></h2>
+      <%= render 'type_cards' %>
+    <% end %>
   <% end %>
 </div>

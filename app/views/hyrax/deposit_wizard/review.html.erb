@@ -1,0 +1,69 @@
+<% provide :page_header do %>
+  <h1><span class="fa fa-cloud-upload" aria-hidden="true"></span> <%= t('hyku.deposit_wizard.review.heading') %></h1>
+<% end %>
+
+<%= render 'stepper', steps: item_stepper_steps, phase: 3 %>
+
+<div class="deposit-wizard deposit-wizard--review">
+  <p class="deposit-wizard__subtext"><%= t('hyku.deposit_wizard.review.subtext') %></p>
+
+  <dl class="deposit-wizard__review-list row">
+    <dt class="col-sm-3"><%= t('hyku.deposit_wizard.review.work_type') %></dt>
+    <dd class="col-sm-9"><%= work_form.model_name.human %></dd>
+
+    <dt class="col-sm-3"><%= t('hyku.deposit_wizard.review.files') %></dt>
+    <dd class="col-sm-9"><%= t('hyku.deposit_wizard.review.file_count', count: wizard_state.uploaded_file_ids.size) %></dd>
+
+    <%# Every entered field the form exposes — primary and secondary ("additional
+        fields") scalar terms, plus compounds — so the summary reflects the work
+        type's full profile and any context-specific fields. The internal
+        schema_version/contexts terms are not user-facing. %>
+    <% scalar_terms = (work_form.primary_terms + work_form.secondary_terms) - %i[schema_version contexts] %>
+    <% scalar_terms.each do |term| %>
+      <% value = Array(work_form.send(term)).reject(&:blank?) if work_form.respond_to?(term) %>
+      <% next if value.blank? %>
+      <dt class="col-sm-3"><%= t(term, scope: 'simple_form.labels.defaults', default: term.to_s.humanize) %></dt>
+      <dd class="col-sm-9"><%= value.join(', ') %></dd>
+    <% end %>
+
+    <% work_form.compound_terms.each do |term| %>
+      <% entries = Array(work_form.send(term)).reject(&:blank?) if work_form.respond_to?(term) %>
+      <% next if entries.blank? %>
+      <dt class="col-sm-3"><%= t(term, scope: 'simple_form.labels.defaults', default: term.to_s.humanize) %></dt>
+      <dd class="col-sm-9"><%= t('hyku.deposit_wizard.review.entry_count', count: entries.size) %></dd>
+    <% end %>
+
+    <% if work_form.respond_to?(:visibility) && work_form.visibility.present? %>
+      <dt class="col-sm-3"><%= t('hyku.deposit_wizard.review.visibility') %></dt>
+      <dd class="col-sm-9"><%= visibility_badge(work_form.visibility) %></dd>
+    <% end %>
+  </dl>
+
+  <% if selected_admin_set_name.present? %>
+    <p class="deposit-wizard__review-destination">
+      <%= t('hyku.deposit_wizard.review.destination', admin_set: selected_admin_set_name) %>
+    </p>
+  <% end %>
+
+  <%= form_tag main_app.deposit_wizard_commit_path, method: :post, class: 'deposit-wizard__commit-form' do %>
+    <% if Flipflop.show_deposit_agreement? %>
+      <div class="deposit-wizard__agreement">
+        <% if Flipflop.active_deposit_agreement_acceptance? %>
+          <label>
+            <%= check_box_tag 'agreement', '1', false, required: true %>
+            <%= t('hyrax.active_consent_to_agreement') %>
+            <%= link_to t('hyrax.pages.tabs.agreement_page'), hyrax.agreement_path, target: '_blank', rel: 'noopener' %>
+          </label>
+        <% else %>
+          <%= t('hyrax.passive_consent_to_agreement') %>
+          <%= link_to t('hyrax.pages.tabs.agreement_page'), hyrax.agreement_path, target: '_blank', rel: 'noopener' %>
+        <% end %>
+      </div>
+    <% end %>
+
+    <div class="deposit-wizard__nav">
+      <%= link_to t('hyku.deposit_wizard.back'), main_app.deposit_wizard_step_path(step: 'details'), class: 'btn btn-link' %>
+      <%= submit_tag t('hyku.deposit_wizard.review.deposit'), class: 'btn btn-primary deposit-wizard__deposit-btn' %>
+    </div>
+  <% end %>
+</div>

@@ -1,14 +1,12 @@
-<%# Work-type chooser: one submit button per enabled type, each PATCHing the
-    chosen work_type to the given step. Locals: step (the current step name). %>
+<%# Work-type choice buttons. Rendered inside a form supplied by the caller;
+    each button submits its own work_type value. Shows an empty-state message
+    when the tenant has no available work types. %>
 <% if available_work_types.any? %>
   <div class="deposit-wizard__type-cards">
     <% available_work_types.each do |model| %>
-      <%= form_tag main_app.deposit_wizard_advance_path(step: step), method: :patch, class: 'deposit-wizard__type-card-form' do %>
-        <%= hidden_field_tag :work_type, model.to_s %>
-        <%= button_tag type: 'submit',
-                       class: "deposit-wizard__type-card btn btn-outline-primary#{' active' if wizard_state.work_type == model.to_s}" do %>
-          <span class="deposit-wizard__type-card-label"><%= model.model_name.human %></span>
-        <% end %>
+      <%= button_tag type: 'submit', name: 'work_type', value: model.to_s,
+                     class: "deposit-wizard__type-card btn btn-outline-primary#{' active' if wizard_state.work_type == model.to_s}" do %>
+        <span class="deposit-wizard__type-card-label"><%= model.model_name.human %></span>
       <% end %>
     <% end %>
   </div>

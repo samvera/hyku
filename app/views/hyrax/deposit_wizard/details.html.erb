@@ -13,6 +13,10 @@
                       html: { class: 'deposit-wizard__details-form', data: { 'param-key' => work_form.model_name.param_key } } do |f| %>
     <%= render 'hyrax/base/form_metadata', f: f %>
 
+    <fieldset class="deposit-wizard__visibility">
+      <%= render 'hyrax/base/form_visibility_component', f: f %>
+    </fieldset>
+
     <div class="deposit-wizard__nav">
       <%= link_to t('hyku.deposit_wizard.back'), main_app.deposit_wizard_step_path(step: 'files'), class: 'btn btn-link' %>
       <%= f.submit t('hyku.deposit_wizard.continue'), class: 'btn btn-primary' %>

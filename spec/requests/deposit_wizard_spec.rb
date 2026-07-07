@@ -132,6 +132,16 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
       end
     end
 
+    describe 'the inline admin-set choice' do
+      it 'records an admin set submitted with the start choice' do
+        admin_set_id = Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id.to_s
+        patch deposit_wizard_advance_path(step: 'start'),
+              params: { work_type: work_type, admin_set_id: admin_set_id }
+
+        expect(session[:deposit_wizard]['admin_set_id']).to eq(admin_set_id)
+      end
+    end
+
     describe 'the files step' do
       it 'redirects back to type selection when no work type has been chosen' do
         get deposit_wizard_step_path(step: 'files')
@@ -171,12 +181,13 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
       context 'after a work type is chosen' do
         before { patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type } }
 
-        it 'renders the metadata form for the chosen work type' do
+        it 'renders the metadata form and the visibility component' do
           get deposit_wizard_step_path(step: 'details')
 
           expect(response).to have_http_status(:success)
           expect(response.body).to include(I18n.t('hyku.deposit_wizard.details.heading'))
           expect(response.body).to include("#{param_key}[title]")
+          expect(response.body).to include("#{param_key}[visibility]")
         end
 
         it 'persists valid metadata and advances' do
@@ -184,7 +195,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
                 params: { param_key => { title: ['A guided deposit work'], creator: ['Ada Lovelace'] } }
 
           expect(session[:deposit_wizard]['attributes']['title']).to eq(['A guided deposit work'])
-          expect(response).to redirect_to(deposit_wizard_step_path(step: 'details'))
+          expect(response).to redirect_to(deposit_wizard_step_path(step: 'review'))
         end
 
         it 're-renders the form when required metadata is missing' do
@@ -194,6 +205,91 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
           expect(response).to have_http_status(:success)
           expect(session[:deposit_wizard]['attributes']).to be_nil
         end
+      end
+    end
+
+    describe 'review and commit' do
+      before do
+        Hyrax::AdminSetCreateService.find_or_create_default_admin_set
+        # Pin the deposit-agreement flags off by default so commit isn't gated;
+        # the active-acceptance context turns them on explicitly.
+        allow(Flipflop).to receive(:show_deposit_agreement?).and_return(false)
+        allow(Flipflop).to receive(:active_deposit_agreement_acceptance?).and_return(false)
+      end
+
+      # Walk to a valid review state: choose a type (the admin set defaults),
+      # then submit required metadata.
+      def fill_in_wizard
+        patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type }
+        patch deposit_wizard_advance_path(step: 'details'),
+              params: { param_key => { title: ['Repair Study'], creator: ['Ada Lovelace'] } }
+      end
+
+      it 'renders a summary including visibility on the review step' do
+        fill_in_wizard
+        get deposit_wizard_step_path(step: 'review')
+
+        expect(response).to have_http_status(:success)
+        expect(response.body).to include(I18n.t('hyku.deposit_wizard.review.heading'))
+        expect(response.body).to include('Repair Study')
+        expect(response.body).to include(I18n.t('hyku.deposit_wizard.review.visibility'))
+        expect(response.body).to include('administrative set')
+      end
+
+      context 'when the deposit agreement is in active-acceptance mode' do
+        before do
+          allow(Flipflop).to receive(:show_deposit_agreement?).and_return(true)
+          allow(Flipflop).to receive(:active_deposit_agreement_acceptance?).and_return(true)
+        end
+
+        it 'blocks the commit until the agreement is accepted' do
+          fill_in_wizard
+
+          post deposit_wizard_commit_path
+
+          expect(response).to have_http_status(:success)
+          expect(response.body).to include(I18n.t('hyku.deposit_wizard.errors.agreement_required'))
+          expect(response).not_to redirect_to(deposit_wizard_step_path(step: 'done'))
+        end
+
+        it 'commits when the agreement checkbox is accepted' do
+          fill_in_wizard
+
+          post deposit_wizard_commit_path, params: { agreement: '1' }
+
+          expect(response).to redirect_to(deposit_wizard_step_path(step: 'done'))
+        end
+      end
+
+      it 'commits the work and lands on the done screen' do
+        fill_in_wizard
+        resource_class = Hyrax::ModelRegistry.work_classes
+                                             .detect { |k| k < Hyrax::Resource && k.model_name.param_key == param_key }
+
+        expect { post deposit_wizard_commit_path }
+          .to change { Hyrax.query_service.find_all_of_model(model: resource_class).count }.by(1)
+
+        expect(response).to redirect_to(deposit_wizard_step_path(step: 'done'))
+        expect(session[:deposit_wizard]).to eq({})
+      end
+
+      it 'runs the configured post-commit hook with the persisted work' do
+        captured = []
+        Hyku::DepositWizard.config.post_commit = ->(work, _state) { captured << work }
+        fill_in_wizard
+
+        post deposit_wizard_commit_path
+
+        expect(captured.size).to eq(1)
+        expect(captured.first).to be_present
+      ensure
+        Hyku::DepositWizard.reset_config!
+      end
+
+      it 'redirects to type selection when committing without a work type' do
+        post deposit_wizard_commit_path
+
+        expect(response).to redirect_to(deposit_wizard_step_path(step: 'known_type'))
       end
     end
   end

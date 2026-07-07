@@ -23,14 +23,3 @@
     </div>
   <% end %>
 </div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    if (typeof $ === 'undefined' || typeof $.fn.hyraxUploader !== 'function') return;
-    var uploader = $('.fileupload-deposit-wizard');
-    uploader.hyraxUploader({
-      maxNumberOfFiles: uploader.data('max-number-of-files'),
-      maxFileSize: uploader.data('max-file-size')
-    });
-  });
-</script>

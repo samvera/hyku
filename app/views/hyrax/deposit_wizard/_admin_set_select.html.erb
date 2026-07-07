@@ -1,0 +1,11 @@
+<%# Inline admin-set chooser, submitted with the enclosing choice form. Shown
+    only when the user can deposit into more than one set; otherwise the default
+    set is used silently. The chosen set drives the work form's fields. %>
+<% if available_admin_sets.size > 1 %>
+  <div class="form-group deposit-wizard__admin-set">
+    <%= label_tag :admin_set_id, t('hyku.deposit_wizard.admin_set.label'), class: 'font-weight-bold' %>
+    <%= select_tag :admin_set_id,
+                   options_for_select(available_admin_sets.map { |label, id, *| [label, id] }, selected_admin_set_id),
+                   class: 'form-control' %>
+  </div>
+<% end %>

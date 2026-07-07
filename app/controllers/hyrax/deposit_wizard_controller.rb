@@ -15,8 +15,8 @@ module Hyrax
     before_action :authenticate_user!
     before_action :build_breadcrumbs
 
-    STEPS = %w[start item_start known_type files details].freeze
-    STEPS_REQUIRING_WORK_TYPE = %w[files details].freeze
+    STEPS = %w[start item_start known_type files details review done].freeze
+    STEPS_REQUIRING_WORK_TYPE = %w[files details review].freeze
 
     # Let the details step reuse Hyrax's work-form partials: the shared
     # _form_metadata renders sub-partials (form_media, etc.) by relative name,
@@ -35,7 +35,7 @@ module Hyrax
       return redirect_to(main_app.deposit_wizard_path) unless STEPS.include?(step)
       return redirect_to(main_app.deposit_wizard_step_path(step: 'known_type')) if needs_work_type?(step)
 
-      build_work_form if step == 'details'
+      build_work_form if %w[details review].include?(step)
       render step
     end
 
@@ -52,9 +52,30 @@ module Hyrax
       end
     end
 
+    # Persist the work from the collected state, then run the configured
+    # post-commit hook (e.g. Enact nesting) and land on the done screen.
+    def commit
+      return redirect_to(main_app.deposit_wizard_step_path(step: 'known_type')) if wizard_state.work_type.blank?
+
+      build_work_form
+      if deposit_agreement_required? && params[:agreement] != '1'
+        flash.now[:alert] = t('hyku.deposit_wizard.errors.agreement_required')
+        return render(:review)
+      end
+
+      work = create_work
+      return render(:review) unless work
+
+      wizard_config.post_commit&.call(work, wizard_state)
+      reset_state
+      stash_deposited(work)
+      redirect_to main_app.deposit_wizard_step_path(step: 'done')
+    end
+
     private
 
     def advance_from_start
+      wizard_state.admin_set_id = params[:admin_set_id] if params.key?(:admin_set_id)
       if wizard_config.container?
         wizard_state.path = params[:path]
         redirect_to main_app.deposit_wizard_step_path(step: 'item_start')
@@ -65,7 +86,6 @@ module Hyrax
     end
 
     def advance_from_item_start
-      # This increment supports the "known type" branch; guided/batch follow.
       redirect_to main_app.deposit_wizard_step_path(step: 'known_type')
     end
 
@@ -100,8 +120,7 @@ module Hyrax
       build_work_form
       if @form.validate(work_params)
         wizard_state.attributes = work_params.to_unsafe_h
-        # TODO(phase 4): advance to 'review' once that step exists.
-        redirect_to main_app.deposit_wizard_step_path(step: 'details')
+        redirect_to main_app.deposit_wizard_step_path(step: 'review')
       else
         render :details
       end

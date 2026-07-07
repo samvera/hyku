@@ -6,7 +6,6 @@
   <p class="deposit-wizard__subtext"><%= t('hyku.deposit_wizard.start.subtext') %></p>
 
   <% if wizard_config.container? %>
-    <%# Container config: choose an entry path first. %>
     <div class="deposit-wizard__paths">
       <% %w[new add standalone].each do |path| %>
         <%= form_tag main_app.deposit_wizard_advance_path(step: 'start'), method: :patch, class: 'deposit-wizard__path-form' do %>
@@ -19,7 +18,6 @@
       <% end %>
     </div>
   <% else %>
-    <%# Flat config: choose the work type directly. %>
     <h2 class="deposit-wizard__section-heading"><%= t('hyku.deposit_wizard.known_type.heading') %></h2>
     <%= render 'type_cards', step: 'start' %>
   <% end %>

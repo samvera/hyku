@@ -1,0 +1,36 @@
+<% provide :page_header do %>
+  <h1><span class="fa fa-cloud-upload" aria-hidden="true"></span> <%= t('hyku.deposit_wizard.files.heading') %></h1>
+<% end %>
+
+<%= render 'stepper', steps: item_stepper_steps, phase: 1 %>
+
+<div class="deposit-wizard deposit-wizard--files">
+  <p class="deposit-wizard__subtext"><%= t('hyku.deposit_wizard.files.subtext') %></p>
+
+  <%= form_tag main_app.deposit_wizard_advance_path(step: 'files'), method: :patch, class: 'deposit-wizard__files-form' do %>
+    <%= render 'file_uploader' %>
+
+    <%# Files uploaded on a previous visit to this step re-submit by id so the
+        selection survives navigating back and forth. New uploads add their own
+        uploaded_files[] inputs client-side via the upload js_templates. %>
+    <% wizard_state.uploaded_file_ids.each do |id| %>
+      <%= hidden_field_tag 'uploaded_files[]', id %>
+    <% end %>
+
+    <div class="deposit-wizard__nav">
+      <%= link_to t('hyku.deposit_wizard.back'), main_app.deposit_wizard_step_path(step: 'known_type'), class: 'btn btn-link' %>
+      <%= submit_tag t('hyku.deposit_wizard.continue'), class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof $ === 'undefined' || typeof $.fn.hyraxUploader !== 'function') return;
+    var uploader = $('.fileupload-deposit-wizard');
+    uploader.hyraxUploader({
+      maxNumberOfFiles: uploader.data('max-number-of-files'),
+      maxFileSize: uploader.data('max-file-size')
+    });
+  });
+</script>

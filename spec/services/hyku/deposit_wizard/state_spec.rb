@@ -33,6 +33,35 @@ RSpec.describe Hyku::DepositWizard::State do
     end
   end
 
+  describe '#uploaded_file_ids' do
+    it 'defaults to an empty array' do
+      expect(state.uploaded_file_ids).to eq([])
+    end
+
+    it 'normalizes to unique, blank-free strings' do
+      state.uploaded_file_ids = [1, '2', '2', '', nil]
+      expect(state.uploaded_file_ids).to eq(%w[1 2])
+    end
+  end
+
+  describe '#primary_file_id' do
+    before { state.uploaded_file_ids = %w[10 20 30] }
+
+    it 'falls back to the first uploaded file when unset' do
+      expect(state.primary_file_id).to eq('10')
+    end
+
+    it 'returns the chosen id when it is among the uploaded files' do
+      state.primary_file_id = '20'
+      expect(state.primary_file_id).to eq('20')
+    end
+
+    it 'falls back to the first file when the chosen id is no longer present' do
+      state.primary_file_id = '99'
+      expect(state.primary_file_id).to eq('10')
+    end
+  end
+
   it 'exposes the backing hash for the session' do
     state.path = 'new'
     state.work_type = 'GenericWorkResource'

@@ -1,0 +1,47 @@
+<%# Deposit-wizard file uploader. Mirrors Bulkrax's _file_uploader: our own
+    widget markup (class fileupload-deposit-wizard) attached to Hyrax's uploader
+    via $.fn.hyraxUploader. Files POST to Hyrax's /uploads as they are added and
+    each completed upload renders a hidden uploaded_files[] input (from
+    hyrax/uploads/js_templates), which submits with the wizard form. %>
+<div class="fileupload-deposit-wizard"
+     id="fileupload"
+     data-max-file-size="<%= Hyrax.config.uploader[:maxFileSize] %>"
+     data-max-number-of-files="<%= Hyrax.config.uploader[:maxNumberOfFiles] %>">
+  <noscript><input type="hidden" name="redirect" value="<%= main_app.root_path %>" /></noscript>
+  <table role="presentation" class="table table-striped"><tbody class="files"></tbody></table>
+
+  <div class="fileupload-buttonbar">
+    <div class="row">
+      <div class="col-12">
+        <div class="fileinput-button" id="add-files">
+          <input id="addfiles" type="file" style="display:none;" name="files[]" multiple />
+          <button type="button" class="btn btn-success" onclick="document.getElementById('addfiles').click();">
+            <span class="fa fa-plus"></span>
+            <span><%= t('hyku.deposit_wizard.files.add_files') %></span>
+          </button>
+        </div>
+        <button type="reset" id="file-upload-cancel-btn" class="btn btn-warning cancel">
+          <span class="fa fa-ban"></span>
+          <span><%= t('hyku.deposit_wizard.files.cancel_upload') %></span>
+        </button>
+        <span class="fileupload-process"></span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="fileupload-progress fade">
+          <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width:0%;"></div>
+          </div>
+          <div class="progress-extended">&nbsp;</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dropzone">
+    <%= t('hyku.deposit_wizard.files.dropzone') %>
+  </div>
+</div>
+
+<%= render 'hyrax/uploads/js_templates' %>

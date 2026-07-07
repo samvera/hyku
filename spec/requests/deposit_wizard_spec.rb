@@ -72,10 +72,10 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         expect(response.body).to include(I18n.t('hyku.deposit_wizard.known_type.heading'))
       end
 
-      it 'persists the chosen work type and advances' do
+      it 'persists the chosen work type and advances to the files step' do
         patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type }
 
-        expect(response).to redirect_to(deposit_wizard_step_path(step: 'known_type'))
+        expect(response).to redirect_to(deposit_wizard_step_path(step: 'files'))
         expect(session[:deposit_wizard]['work_type']).to eq(work_type)
         expect(session[:deposit_wizard]['path']).to eq('standalone')
       end
@@ -118,6 +118,35 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         patch deposit_wizard_advance_path(step: 'known_type'), params: { work_type: work_type }
 
         expect(session[:deposit_wizard]['work_type']).to eq(work_type)
+      end
+    end
+
+    describe 'the files step' do
+      it 'redirects back to type selection when no work type has been chosen' do
+        get deposit_wizard_step_path(step: 'files')
+
+        expect(response).to redirect_to(deposit_wizard_step_path(step: 'known_type'))
+      end
+
+      context 'after a work type is chosen' do
+        before { patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type } }
+
+        it 'renders the files step with the uploader' do
+          get deposit_wizard_step_path(step: 'files')
+
+          expect(response).to have_http_status(:success)
+          expect(response.body).to include('fileupload-deposit-wizard')
+          expect(response.body).to include(I18n.t('hyku.deposit_wizard.files.heading'))
+        end
+
+        it 'stores uploaded file ids and the primary selection, then advances' do
+          patch deposit_wizard_advance_path(step: 'files'),
+                params: { uploaded_files: %w[3 7], primary_file_id: '7' }
+
+          expect(session[:deposit_wizard]['uploaded_file_ids']).to eq(%w[3 7])
+          expect(session[:deposit_wizard]['primary_file_id']).to eq('7')
+          expect(response).to redirect_to(deposit_wizard_step_path(step: 'files'))
+        end
       end
     end
   end

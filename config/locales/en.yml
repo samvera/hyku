@@ -51,9 +51,16 @@ en:
     deposit_wizard:
       back: Back
       button: Guided Deposit
+      continue: Continue
       disabled: The guided deposit wizard is not enabled.
       errors:
         no_work_type: Please choose a work type to continue.
+      files:
+        add_files: Add files
+        cancel_upload: Cancel
+        dropzone: Drop files here to upload
+        heading: Add files
+        subtext: Add any files for this work. You can also continue without any.
       item_start:
         heading: Add an item
         known_type: I know what type of work this is

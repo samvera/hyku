@@ -6,7 +6,6 @@ module Hyku
     # is a sequence of GET-per-step pages, so choices made on one step are
     # persisted here and read back on the next.
     class State
-      # Entry paths chosen on the start screen.
       PATHS = %w[new add standalone].freeze
 
       def initialize(store)
@@ -27,6 +26,30 @@ module Hyku
 
       def work_type=(value)
         @store['work_type'] = value.presence
+      end
+
+      # Ids of the Hyrax::UploadedFiles attached on the files step. Stored as
+      # strings (the form round-trips them as strings); the commit phase attaches
+      # them by id.
+      def uploaded_file_ids
+        Array(@store['uploaded_file_ids'])
+      end
+
+      def uploaded_file_ids=(values)
+        @store['uploaded_file_ids'] = Array(values).map(&:to_s).reject(&:blank?).uniq
+      end
+
+      # The id of the file that becomes the work's representative/thumbnail.
+      # Falls back to the first uploaded file, and never points at a removed one.
+      def primary_file_id
+        id = @store['primary_file_id']
+        return id if uploaded_file_ids.include?(id)
+
+        uploaded_file_ids.first
+      end
+
+      def primary_file_id=(value)
+        @store['primary_file_id'] = value.presence
       end
 
       # The raw hash, for assignment back into the session.

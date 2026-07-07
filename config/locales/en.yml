@@ -49,12 +49,39 @@ en:
     account:
       signup_disabled: Account registration is disabled
     deposit_wizard:
+      back: Back
       button: Guided Deposit
       disabled: The guided deposit wizard is not enabled.
+      errors:
+        no_work_type: Please choose a work type to continue.
+      item_start:
+        heading: Add an item
+        known_type: I know what type of work this is
+        subtext: Choose how you would like to describe this item.
+      known_type:
+        heading: What type of work is this?
+        subtext: Choose the type that best fits the work you are depositing.
+      notices:
+        work_type_selected: "%{type} selected."
       start:
         heading: What would you like to deposit?
         subtext: This guided flow walks you through depositing your work step by step.
+        paths:
+          add:
+            desc: Add one or more works to a portfolio you have already created.
+            title: Add to an existing portfolio
+          new:
+            desc: Start a new portfolio, then add works to it.
+            title: Create a new portfolio
+          standalone:
+            desc: Deposit a single work on its own, without a portfolio.
+            title: Deposit a standalone work
       stepper:
+        item:
+          detail: Work detail
+          review: Review
+          type: Item type
+          upload: Upload files
         label: Deposit progress
     admin:
       flash:

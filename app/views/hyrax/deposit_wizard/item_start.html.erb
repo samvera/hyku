@@ -1,0 +1,18 @@
+<% provide :page_header do %>
+  <h1><span class="fa fa-cloud-upload" aria-hidden="true"></span> <%= t('hyku.deposit_wizard.item_start.heading') %></h1>
+<% end %>
+
+<%= render 'stepper', steps: item_stepper_steps, phase: 0 %>
+
+<div class="deposit-wizard deposit-wizard--item-start">
+  <p class="deposit-wizard__subtext"><%= t('hyku.deposit_wizard.item_start.subtext') %></p>
+
+  <%# This increment offers the "known type" route; guided and batch follow. %>
+  <%= form_tag main_app.deposit_wizard_advance_path(step: 'item_start'), method: :patch do %>
+    <%= button_tag t('hyku.deposit_wizard.item_start.known_type'), type: 'submit', class: 'btn btn-primary' %>
+  <% end %>
+
+  <div class="deposit-wizard__nav">
+    <%= link_to t('hyku.deposit_wizard.back'), main_app.deposit_wizard_path, class: 'btn btn-link' %>
+  </div>
+</div>

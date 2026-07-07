@@ -161,6 +161,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   scope module: 'hyrax' do
     get 'deposit_wizard', to: 'deposit_wizard#start', as: :deposit_wizard
     get 'deposit_wizard/:step', to: 'deposit_wizard#show', as: :deposit_wizard_step
+    patch 'deposit_wizard/:step', to: 'deposit_wizard#update', as: :deposit_wizard_advance
   end
 
   get 'all_collections' => 'hyrax/homepage#all_collections', as: :all_collections

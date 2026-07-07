@@ -2,9 +2,25 @@
   <h1><span class="fa fa-cloud-upload" aria-hidden="true"></span> <%= t('hyku.deposit_wizard.start.heading') %></h1>
 <% end %>
 
-<%# Phase 1 is the entry point only. The path chooser (new portfolio / add to
-    existing / standalone) arrives once its sub-flows exist; until then the
-    start step is intentionally minimal. %>
 <div class="deposit-wizard deposit-wizard--start">
   <p class="deposit-wizard__subtext"><%= t('hyku.deposit_wizard.start.subtext') %></p>
+
+  <% if wizard_config.container? %>
+    <%# Container config: choose an entry path first. %>
+    <div class="deposit-wizard__paths">
+      <% %w[new add standalone].each do |path| %>
+        <%= form_tag main_app.deposit_wizard_advance_path(step: 'start'), method: :patch, class: 'deposit-wizard__path-form' do %>
+          <%= hidden_field_tag :path, path %>
+          <%= button_tag type: 'submit', class: 'deposit-wizard__path-card btn btn-outline-primary btn-block' do %>
+            <span class="deposit-wizard__path-title"><%= t("hyku.deposit_wizard.start.paths.#{path}.title") %></span>
+            <span class="deposit-wizard__path-desc"><%= t("hyku.deposit_wizard.start.paths.#{path}.desc") %></span>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  <% else %>
+    <%# Flat config: choose the work type directly. %>
+    <h2 class="deposit-wizard__section-heading"><%= t('hyku.deposit_wizard.known_type.heading') %></h2>
+    <%= render 'type_cards', step: 'start' %>
+  <% end %>
 </div>

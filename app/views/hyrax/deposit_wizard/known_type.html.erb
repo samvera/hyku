@@ -1,0 +1,16 @@
+<% provide :page_header do %>
+  <h1><span class="fa fa-cloud-upload" aria-hidden="true"></span> <%= t('hyku.deposit_wizard.known_type.heading') %></h1>
+<% end %>
+
+<%= render 'stepper', steps: item_stepper_steps, phase: 0 %>
+
+<div class="deposit-wizard deposit-wizard--known-type">
+  <p class="deposit-wizard__subtext"><%= t('hyku.deposit_wizard.known_type.subtext') %></p>
+
+  <%= render 'type_cards', step: 'known_type' %>
+
+  <div class="deposit-wizard__nav">
+    <% back = wizard_config.container? ? main_app.deposit_wizard_step_path(step: 'item_start') : main_app.deposit_wizard_path %>
+    <%= link_to t('hyku.deposit_wizard.back'), back, class: 'btn btn-link' %>
+  </div>
+</div>

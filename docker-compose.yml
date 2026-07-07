@@ -11,6 +11,11 @@ x-app-env: &app-env
   FCREPO_HOST: ${FCREPO_HOST:-fcrepo}
   HYKU_ROOT_HOST: ${HYKU_ROOT_HOST:-localhost.direct}
   HYKU_MULTITENANT: ${HYKU_MULTITENANT:-true}
+  # Derived from APP_NAME. Computed here (not in .env) so the ${APP_NAME}
+  # reference resolves on every Compose version; via env_file it would only
+  # interpolate on Compose >= ~2.24 and breaks entirely if APP_NAME is unset.
+  HYKU_ADMIN_HOST: admin-${APP_NAME:-hyku}.${HYKU_ROOT_HOST:-localhost.direct}
+  HYKU_DEFAULT_HOST: "%{tenant}-${APP_NAME:-hyku}.${HYKU_ROOT_HOST:-localhost.direct}"
 
 x-app: &app
   build:
@@ -260,8 +265,13 @@ services:
 
   initialize_app:
     <<: *app
+    # Merge *app-env (mapping form) so this service inherits APP_NAME,
+    # HYKU_ROOT_HOST, HYKU_MULTITENANT, etc. A bare `environment:` list would
+    # replace the mapping merged in via *app and drop those defaults, which
+    # makes db-migrate-seed.sh boot Rails with HYKU_ROOT_HOST unset.
     environment:
-      - CONFDIR=/app/samvera/hyrax-webapp/solr/conf
+      <<: *app-env
+      CONFDIR: /app/samvera/hyrax-webapp/solr/conf
     entrypoint: ["sh", "-c"]
     command:
       - >

@@ -56,10 +56,13 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
       Hyrax::AdminSetCreateService.find_or_create_default_admin_set
     end
 
-    # A work type the current user is actually allowed to create.
+    # A work type the wizard offers (same list as the stock deposit chooser).
     let(:work_type) do
       Hyrax::QuickClassificationQuery.new(admin).authorized_models.first.to_s
     end
+
+    # The param key is shared by the ActiveFedora model and its Valkyrie form.
+    let(:param_key) { work_type.constantize.model_name.param_key }
 
     after { Hyku::DepositWizard.reset_config! }
 
@@ -70,6 +73,14 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         get deposit_wizard_path
 
         expect(response.body).to include(I18n.t('hyku.deposit_wizard.known_type.heading'))
+      end
+
+      it 'shows an empty-state message when no work types are available' do
+        allow_any_instance_of(Hyrax::QuickClassificationQuery).to receive(:authorized_models).and_return([])
+
+        get deposit_wizard_path
+
+        expect(response.body).to include(I18n.t('hyku.deposit_wizard.no_work_types'))
       end
 
       it 'persists the chosen work type and advances to the files step' do
@@ -139,13 +150,49 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
           expect(response.body).to include(I18n.t('hyku.deposit_wizard.files.heading'))
         end
 
-        it 'stores uploaded file ids and the primary selection, then advances' do
+        it 'stores uploaded file ids and the primary selection, then advances to details' do
           patch deposit_wizard_advance_path(step: 'files'),
                 params: { uploaded_files: %w[3 7], primary_file_id: '7' }
 
           expect(session[:deposit_wizard]['uploaded_file_ids']).to eq(%w[3 7])
           expect(session[:deposit_wizard]['primary_file_id']).to eq('7')
-          expect(response).to redirect_to(deposit_wizard_step_path(step: 'files'))
+          expect(response).to redirect_to(deposit_wizard_step_path(step: 'details'))
+        end
+      end
+    end
+
+    describe 'the details step' do
+      it 'redirects back to type selection when no work type has been chosen' do
+        get deposit_wizard_step_path(step: 'details')
+
+        expect(response).to redirect_to(deposit_wizard_step_path(step: 'known_type'))
+      end
+
+      context 'after a work type is chosen' do
+        before { patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type } }
+
+        it 'renders the metadata form for the chosen work type' do
+          get deposit_wizard_step_path(step: 'details')
+
+          expect(response).to have_http_status(:success)
+          expect(response.body).to include(I18n.t('hyku.deposit_wizard.details.heading'))
+          expect(response.body).to include("#{param_key}[title]")
+        end
+
+        it 'persists valid metadata and advances' do
+          patch deposit_wizard_advance_path(step: 'details'),
+                params: { param_key => { title: ['A guided deposit work'], creator: ['Ada Lovelace'] } }
+
+          expect(session[:deposit_wizard]['attributes']['title']).to eq(['A guided deposit work'])
+          expect(response).to redirect_to(deposit_wizard_step_path(step: 'details'))
+        end
+
+        it 're-renders the form when required metadata is missing' do
+          patch deposit_wizard_advance_path(step: 'details'),
+                params: { param_key => { title: [''] } }
+
+          expect(response).to have_http_status(:success)
+          expect(session[:deposit_wizard]['attributes']).to be_nil
         end
       end
     end

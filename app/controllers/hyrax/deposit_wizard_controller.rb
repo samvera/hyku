@@ -7,13 +7,23 @@ module Hyrax
   # one created via the stock deposit form. Gated by the +deposit_wizard+
   # Flipflop feature (off by default).
   class DepositWizardController < ApplicationController
+    include Hyrax::DepositWizard::Context
+
     with_themed_layout 'dashboard'
 
     before_action :ensure_enabled
     before_action :authenticate_user!
     before_action :build_breadcrumbs
 
-    STEPS = %w[start item_start known_type files].freeze
+    STEPS = %w[start item_start known_type files details].freeze
+    STEPS_REQUIRING_WORK_TYPE = %w[files details].freeze
+
+    # Let the details step reuse Hyrax's work-form partials: the shared
+    # _form_metadata renders sub-partials (form_media, etc.) by relative name,
+    # which must resolve against hyrax/base.
+    def self._prefixes
+      super + ['hyrax/base']
+    end
 
     def start
       reset_state
@@ -23,11 +33,9 @@ module Hyrax
     def show
       step = params[:step].to_s
       return redirect_to(main_app.deposit_wizard_path) unless STEPS.include?(step)
-
-      # The files step (and everything after) needs a chosen work type; send the
-      # user back to pick one rather than rendering an item-less upload page.
       return redirect_to(main_app.deposit_wizard_step_path(step: 'known_type')) if needs_work_type?(step)
 
+      build_work_form if step == 'details'
       render step
     end
 
@@ -39,42 +47,12 @@ module Hyrax
       when 'item_start' then advance_from_item_start
       when 'known_type' then advance_from_known_type
       when 'files'      then advance_from_files
+      when 'details'    then advance_from_details
       else redirect_to main_app.deposit_wizard_path
       end
     end
 
     private
-
-    def needs_work_type?(step)
-      step == 'files' && wizard_state.work_type.blank?
-    end
-
-    # The seam downstream apps replace to add container types, suggestions, etc.
-    def wizard_config
-      Hyku::DepositWizard.config
-    end
-    helper_method :wizard_config
-
-    def wizard_state
-      @wizard_state ||= Hyku::DepositWizard::State.new(session[:deposit_wizard] ||= {})
-    end
-    helper_method :wizard_state
-
-    # Profile-filtered per tenant by Hyku's QuickClassificationQuery decorator.
-    def available_work_types
-      Hyrax::QuickClassificationQuery.new(current_user).authorized_models
-    end
-    helper_method :available_work_types
-
-    # Stepper rail for the single-item flow. The full dynamic step sets
-    # (portfolio / item with-or-without files / batch) arrive with those steps;
-    # this increment covers the item type -> upload -> detail -> review shape.
-    def item_stepper_steps
-      %i[type upload detail review].each_with_index.map do |key, i|
-        { n: i + 1, label: t("hyku.deposit_wizard.stepper.item.#{key}") }
-      end
-    end
-    helper_method :item_stepper_steps
 
     def advance_from_start
       if wizard_config.container?
@@ -107,21 +85,26 @@ module Hyrax
                   notice: t('hyku.deposit_wizard.notices.work_type_selected', type: type.constantize.model_name.human)
     end
 
-    # Record the uploaded files and which one is primary, then advance. The
-    # files themselves are already persisted as Hyrax::UploadedFiles (uploaded to
-    # /uploads as they were added); here we only capture their ids for commit.
     def advance_from_files
       # `uploaded_files[]` is emitted by Hyrax's upload js_templates for each
       # completed upload, matching the param name stock deposit uses.
       wizard_state.uploaded_file_ids = params[:uploaded_files]
       wizard_state.primary_file_id = params[:primary_file_id]
-      redirect_to main_app.deposit_wizard_step_path(step: step_after_files)
+      redirect_to main_app.deposit_wizard_step_path(step: 'details')
     end
 
-    # TODO(phase 3): return 'details' once the details step exists. Until then,
-    # re-render files so the selection is not lost.
-    def step_after_files
-      'files'
+    # The ChangeSet permits its own fields, so raw nested params go straight to
+    # #validate, as the stock works controller does. The submitted values (plain
+    # strings/arrays) are stored so they serialize into the session.
+    def advance_from_details
+      build_work_form
+      if @form.validate(work_params)
+        wizard_state.attributes = work_params.to_unsafe_h
+        # TODO(phase 4): advance to 'review' once that step exists.
+        redirect_to main_app.deposit_wizard_step_path(step: 'details')
+      else
+        render :details
+      end
     end
 
     # Mirror Hyrax's batch-upload guard: redirect to the dashboard rather than

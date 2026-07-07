@@ -52,6 +52,15 @@ module Hyku
         @store['primary_file_id'] = value.presence
       end
 
+      # Submitted work-form values from the details step (plain strings/arrays).
+      def attributes
+        @store['attributes'] || {}
+      end
+
+      def attributes=(value)
+        @store['attributes'] = value.to_h
+      end
+
       # The raw hash, for assignment back into the session.
       def to_h
         @store

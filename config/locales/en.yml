@@ -52,6 +52,9 @@ en:
       back: Back
       button: Guided Deposit
       continue: Continue
+      details:
+        heading: Describe your item
+        subtext: Add the details for this work. Required fields are marked.
       disabled: The guided deposit wizard is not enabled.
       errors:
         no_work_type: Please choose a work type to continue.
@@ -68,6 +71,7 @@ en:
       known_type:
         heading: What type of work is this?
         subtext: Choose the type that best fits the work you are depositing.
+      no_work_types: There are no work types available for you to deposit. Please contact an administrator.
       notices:
         work_type_selected: "%{type} selected."
       start:

@@ -229,12 +229,13 @@ jobs:
         run: docker compose -f docker-compose.single.yml down -v --remove-orphans
 
   env-file-lint:
-    # Guard against a regression class: shell-style default interpolation
-    # (`${VAR:-default}`) placed inside `.env`. Compose only expands this in
-    # `env_file` entries on newer versions (>= ~2.24); on older Compose the
-    # value is passed to the container verbatim, so the app literally sees
-    # `${HYKU_ROOT_HOST:-localhost.direct}`. Defaults belong in the compose
-    # `environment:` block, which is interpolated on every Compose version.
+    # Guard against a regression class: `${VAR}` shell interpolation of any
+    # form placed inside `.env`. It is not reliably expanded through env_file:
+    # the `${VAR:-default}` form is only handled on newer Compose (>= ~2.24),
+    # and the dotenv CLI that stack_car (`sc`) wraps compose with mangles it
+    # (e.g. `${FCREPO_HOST:-fcrepo}` becomes `:-fcrepo}`). Even plain `${VAR}`
+    # depends on how the file is consumed. Defaults belong in the compose
+    # `environment:` block, which is always interpolated; `.env` stays literal.
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -242,18 +243,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Reject `${VAR:-default}` interpolation in .env
+      - name: Reject `${...}` interpolation in .env
         run: |
           # Compose files (docker-compose*.yml) may use ${VAR:-default} freely; the
           # compose file is always interpolated. Only `.env` is unreliable, because
-          # its values reach the container via env_file passthrough.
-          env_matches=$(grep -nE '\$\{[A-Za-z_][A-Za-z0-9_]*:-' .env 2>/dev/null || true)
+          # its values reach the container via env_file passthrough and the
+          # dotenv CLI. Note: `%{...}` (Ruby format, e.g. HYKU_DEFAULT_HOST) is fine.
+          env_matches=$(grep -nE '\$\{' .env 2>/dev/null || true)
           if [ -n "$env_matches" ]; then
-            echo "::error::Found shell-style default interpolation in .env. This is NOT reliably expanded via docker-compose env_file (only on Compose >= ~2.24), so the container may receive the literal string. Move the default into the docker-compose.yml 'environment:' (x-app-env) block instead."
+            echo "::error::Found \${...} interpolation in .env. This is NOT reliably expanded via docker-compose env_file (only on Compose >= ~2.24) and is mangled by the dotenv CLI used by stack_car, so the container may receive a literal/garbled value. Use a plain literal in .env and put any overridable default in the docker-compose.yml 'environment:' (x-app-env) block instead."
             echo "$env_matches"
             exit 1
           fi
-          echo "No unreliable \${VAR:-default} interpolation found in .env"
+          echo "No \${...} interpolation found in .env"
 
   reports:
     if: always()

@@ -228,6 +228,33 @@ jobs:
         if: always()
         run: docker compose -f docker-compose.single.yml down -v --remove-orphans
 
+  env-file-lint:
+    # Guard against a regression class: shell-style default interpolation
+    # (`${VAR:-default}`) placed inside `.env`. Compose only expands this in
+    # `env_file` entries on newer versions (>= ~2.24); on older Compose the
+    # value is passed to the container verbatim, so the app literally sees
+    # `${HYKU_ROOT_HOST:-localhost.direct}`. Defaults belong in the compose
+    # `environment:` block, which is interpolated on every Compose version.
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Reject `${VAR:-default}` interpolation in .env
+        run: |
+          # Compose files (docker-compose*.yml) may use ${VAR:-default} freely; the
+          # compose file is always interpolated. Only `.env` is unreliable, because
+          # its values reach the container via env_file passthrough.
+          env_matches=$(grep -nE '\$\{[A-Za-z_][A-Za-z0-9_]*:-' .env 2>/dev/null || true)
+          if [ -n "$env_matches" ]; then
+            echo "::error::Found shell-style default interpolation in .env. This is NOT reliably expanded via docker-compose env_file (only on Compose >= ~2.24), so the container may receive the literal string. Move the default into the docker-compose.yml 'environment:' (x-app-env) block instead."
+            echo "$env_matches"
+            exit 1
+          fi
+          echo "No unreliable \${VAR:-default} interpolation found in .env"
+
   reports:
     if: always()
     needs: [test, lint, single-tenant-test]

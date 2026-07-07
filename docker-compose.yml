@@ -1,8 +1,16 @@
-# dotenv gem doesn't always do the right thing with blank env vars, so we make sure these get set to something
+# Defaults live here, in the compose `environment:` block, NOT in `.env`.
+# Compose always interpolates the compose file, so `${VAR:-default}` reliably
+# means "use VAR from the shell if set, otherwise fall back to the default" on
+# every Compose version. The same `${VAR:-default}` inside `.env` only expands
+# on Compose >= ~2.24 (env_file interpolation); on older versions it is passed
+# through verbatim, so the container would literally get `${HYKU_ROOT_HOST:-...}`.
+# Keep `.env` values as plain literals and express overridable defaults here.
 x-app-env: &app-env
   APP_NAME: ${APP_NAME:-hyku}
   HYRAX_FLEXIBLE: ${HYRAX_FLEXIBLE:-false}
-  FCREPO_HOST: fcrepo
+  FCREPO_HOST: ${FCREPO_HOST:-fcrepo}
+  HYKU_ROOT_HOST: ${HYKU_ROOT_HOST:-localhost.direct}
+  HYKU_MULTITENANT: ${HYKU_MULTITENANT:-true}
 
 x-app: &app
   build:

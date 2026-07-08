@@ -78,6 +78,13 @@ services:
       - SOLR_ENABLE_CLOUD_MODE=yes
       - SOLR_ENABLE_AUTHENTICATION=yes
       - ZK_HOST=zoo:2181
+      # Pin the SolrCloud node identity to the compose service DNS name so it
+      # survives container restarts. Without this, Solr registers node_name as
+      # <container-IP>:8983_solr; when the container's IP changes on restart the
+      # tenant collections' replicas are orphaned at the dead IP (queries proxy
+      # to a dead node and cores can be lost on cleanup). `solr` is the network
+      # alias every other service already uses to reach Solr.
+      - SOLR_HOST=solr
       - VIRTUAL_PORT=8983
       - VIRTUAL_HOST=solr.hyku.test
     labels:

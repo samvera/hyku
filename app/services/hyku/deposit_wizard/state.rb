@@ -69,6 +69,18 @@ module Hyku
         @store['attributes'] = value.to_h
       end
 
+      # Per-file metadata entered on the file_meta step, keyed by uploaded-file
+      # id. Each value is a plain-string/array hash of FileSet form fields; a
+      # 'visibility' of 'inherit' (or absent) means the file follows the work's
+      # visibility rather than setting its own.
+      def file_metadata
+        @store['file_metadata'] || {}
+      end
+
+      def file_metadata=(value)
+        @store['file_metadata'] = value.to_h
+      end
+
       # The raw hash, for assignment back into the session.
       def to_h
         @store

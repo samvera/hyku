@@ -2,7 +2,7 @@
   <h1><span class="fa fa-cloud-upload" aria-hidden="true"></span> <%= t('hyku.deposit_wizard.item_start.heading') %></h1>
 <% end %>
 
-<%= render 'stepper', steps: item_stepper_steps, phase: 0 %>
+<%= render 'stepper', steps: item_stepper_steps, phase: stepper_phase(:type) %>
 
 <div class="deposit-wizard deposit-wizard--item-start">
   <p class="deposit-wizard__subtext"><%= t('hyku.deposit_wizard.item_start.subtext') %></p>

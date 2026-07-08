@@ -801,6 +801,25 @@ en:
         viz_after: Visibility will Change to
         viz_current: Current Visibility
     featured_researchers: Featured Researchers
+    # Per-file (FileSet) form hints. The edit-field partials resolve hints via
+    # ApplicationHelper#locale_for, which looks up hyrax.<record_class>.hints.<term>
+    # (record_class underscores to "hyrax/file_set") before falling back to the
+    # work-worded simple_form.hints.defaults.*. These keys give FileSet fields
+    # file-oriented wording instead of the work-oriented default.
+    'hyrax/file_set':
+      hints:
+        title: A name to aid in identifying this file.
+        creator: The person or group responsible for this file's content. Personal names should be entered with the last name first, e.g. "Smith, John."
+        license: Licensing and distribution information governing access to this file. Select from the provided drop-down list.
+        contributor: A person or group you want to recognize for playing a role in the creation of this file, but not the primary role.
+        date_created: The date on which this file was created.
+        description: Free-text notes about this file.
+        identifier: A unique handle identifying this file, such as a DOI, ISBN, or OCLC number.
+        keyword: Words or phrases you select to describe what this file is about. These are used to search for content.
+        language: The language of the file's content. For audio/video transcriptions, this can be the <a href="https://id.loc.gov/vocabulary/iso639-2.html" target="_blank">ISO 639-2</a> code, the <a href="https://id.loc.gov/vocabulary/iso639-3.html" target="_blank">ISO 639-3</a> code, or the English name of the language.
+        publisher: The person or group making this file available. Generally this is the institution.
+        related_url: A link to a website or other specific content (audio, video, PDF document) related to this file.
+        subject: Headings or index terms describing what this file is about.
     file_manager:
       link_text: File Manager
     file_set:

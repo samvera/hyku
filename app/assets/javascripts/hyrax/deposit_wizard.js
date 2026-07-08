@@ -14,17 +14,34 @@
   // Reveal a visibility option's sub-fields (embargo/lease dates) when its radio
   // is chosen. The stock deposit form does this via VisibilityComponent, which is
   // wired only into its own save-work JS; replicate just the collapse toggling.
+  // Scoped per block so the details step (one) and the file-meta step (one per
+  // file) each toggle only their own sub-fields.
   function initVisibility() {
-    var scope = $('.deposit-wizard__visibility .visibility');
-    if (!scope.length) return;
-    scope.find('.collapse').collapse({ toggle: false });
-    function openSelected() {
-      var target = scope.find("input[type='radio']:checked").data('target');
-      scope.find('.collapse').collapse('hide');
-      if (target) scope.find('.collapse' + target).collapse('show');
-    }
-    scope.find("input[type='radio']").on('change', openSelected);
-    openSelected();
+    $('.deposit-wizard__visibility .visibility').each(function () {
+      var scope = $(this);
+      scope.find('.collapse').collapse({ toggle: false });
+      function openSelected() {
+        var target = scope.find("input[type='radio']:checked").data('target');
+        scope.find('.collapse').collapse('hide');
+        if (target) scope.find('.collapse' + target).collapse('show');
+      }
+      scope.find("input[type='radio']").on('change', openSelected);
+      openSelected();
+    });
+  }
+
+  // Per-file "same as the work" toggle: when checked, the file follows the work's
+  // visibility and its own visibility form is hidden; unchecking reveals it.
+  function initFileVisibilityInherit() {
+    $('[data-behavior="file-visibility"]').each(function () {
+      var block = $(this);
+      var checkbox = block.find('[data-behavior="inherit-visibility"]');
+      var ownVisibility = block.find('.deposit-wizard__own-visibility');
+      if (!checkbox.length || !ownVisibility.length) return;
+      function sync() { ownVisibility.prop('hidden', checkbox.prop('checked')); }
+      checkbox.on('change', sync);
+      sync();
+    });
   }
 
   // Disable the Deposit button until the active deposit-agreement checkbox is
@@ -42,6 +59,7 @@
   function initDepositWizard() {
     initFileUploader();
     initVisibility();
+    initFileVisibilityInherit();
     initDepositAgreement();
   }
 

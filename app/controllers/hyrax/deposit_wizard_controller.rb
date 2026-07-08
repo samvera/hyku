@@ -8,6 +8,8 @@ module Hyrax
   # Flipflop feature (off by default).
   class DepositWizardController < ApplicationController
     include Hyrax::DepositWizard::Context
+    include Hyrax::DepositWizard::Navigation
+    include Hyrax::DepositWizard::Persistence
 
     with_themed_layout 'dashboard'
 
@@ -15,8 +17,8 @@ module Hyrax
     before_action :authenticate_user!
     before_action :build_breadcrumbs
 
-    STEPS = %w[start item_start known_type files details review done].freeze
-    STEPS_REQUIRING_WORK_TYPE = %w[files details review].freeze
+    STEPS = %w[start item_start known_type files details file_meta review done].freeze
+    STEPS_REQUIRING_WORK_TYPE = %w[files details file_meta review].freeze
 
     # Let the details step reuse Hyrax's work-form partials: the shared
     # _form_metadata renders sub-partials (form_media, etc.) by relative name,
@@ -35,6 +37,9 @@ module Hyrax
       return redirect_to(main_app.deposit_wizard_path) unless STEPS.include?(step)
       return redirect_to(main_app.deposit_wizard_step_path(step: 'known_type')) if needs_work_type?(step)
 
+      # file_meta has nothing to show without files; send it on to review.
+      return redirect_to(main_app.deposit_wizard_step_path(step: 'review')) if step == 'file_meta' && wizard_state.uploaded_file_ids.empty?
+
       build_work_form if %w[details review].include?(step)
       render step
     end
@@ -48,6 +53,7 @@ module Hyrax
       when 'known_type' then advance_from_known_type
       when 'files'      then advance_from_files
       when 'details'    then advance_from_details
+      when 'file_meta'  then advance_from_file_meta
       else redirect_to main_app.deposit_wizard_path
       end
     end
@@ -66,6 +72,7 @@ module Hyrax
       work = create_work
       return render(:review) unless work
 
+      apply_file_embargoes_and_leases(work)
       wizard_config.post_commit&.call(work, wizard_state)
       reset_state
       stash_deposited(work)
@@ -73,58 +80,6 @@ module Hyrax
     end
 
     private
-
-    def advance_from_start
-      wizard_state.admin_set_id = params[:admin_set_id] if params.key?(:admin_set_id)
-      if wizard_config.container?
-        wizard_state.path = params[:path]
-        redirect_to main_app.deposit_wizard_step_path(step: 'item_start')
-      else
-        wizard_state.path = 'standalone'
-        select_work_type_and_continue
-      end
-    end
-
-    def advance_from_item_start
-      redirect_to main_app.deposit_wizard_step_path(step: 'known_type')
-    end
-
-    def advance_from_known_type
-      select_work_type_and_continue
-    end
-
-    def select_work_type_and_continue
-      type = params[:work_type].to_s
-      unless available_work_types.map(&:to_s).include?(type)
-        flash.now[:alert] = t('hyku.deposit_wizard.errors.no_work_type')
-        return render(wizard_config.container? ? :known_type : :start)
-      end
-
-      wizard_state.work_type = type
-      redirect_to main_app.deposit_wizard_step_path(step: 'files'),
-                  notice: t('hyku.deposit_wizard.notices.work_type_selected', type: type.constantize.model_name.human)
-    end
-
-    def advance_from_files
-      # `uploaded_files[]` is emitted by Hyrax's upload js_templates for each
-      # completed upload, matching the param name stock deposit uses.
-      wizard_state.uploaded_file_ids = params[:uploaded_files]
-      wizard_state.primary_file_id = params[:primary_file_id]
-      redirect_to main_app.deposit_wizard_step_path(step: 'details')
-    end
-
-    # The ChangeSet permits its own fields, so raw nested params go straight to
-    # #validate, as the stock works controller does. The submitted values (plain
-    # strings/arrays) are stored so they serialize into the session.
-    def advance_from_details
-      build_work_form
-      if @form.validate(work_params)
-        wizard_state.attributes = work_params.to_unsafe_h
-        redirect_to main_app.deposit_wizard_step_path(step: 'review')
-      else
-        render :details
-      end
-    end
 
     # Mirror Hyrax's batch-upload guard: redirect to the dashboard rather than
     # exposing the wizard routes when the feature is off.

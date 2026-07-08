@@ -208,6 +208,60 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
       end
     end
 
+    describe 'the per-file metadata step' do
+      before { patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type } }
+
+      it 'skips file_meta and lands on review when no files were uploaded' do
+        get deposit_wizard_step_path(step: 'file_meta')
+
+        expect(response).to redirect_to(deposit_wizard_step_path(step: 'review'))
+      end
+
+      it 'advancing details goes straight to review when there are no files' do
+        patch deposit_wizard_advance_path(step: 'details'),
+              params: { param_key => { title: ['No files here'], creator: ['Ada'] } }
+
+        expect(response).to redirect_to(deposit_wizard_step_path(step: 'review'))
+      end
+
+      context 'with uploaded files' do
+        let(:upload) { FactoryBot.create(:uploaded_file, user: admin) }
+
+        before { patch deposit_wizard_advance_path(step: 'files'), params: { uploaded_files: [upload.id.to_s] } }
+
+        it 'advancing details goes to file_meta when files exist' do
+          patch deposit_wizard_advance_path(step: 'details'),
+                params: { param_key => { title: ['Has a file'], creator: ['Ada'] } }
+
+          expect(response).to redirect_to(deposit_wizard_step_path(step: 'file_meta'))
+        end
+
+        it 'renders a panel per uploaded file with a visibility choice' do
+          get deposit_wizard_step_path(step: 'file_meta')
+
+          expect(response).to have_http_status(:success)
+          expect(response.body).to include("file_metadata[#{upload.id}][title]")
+          expect(response.body).to include("file_metadata[#{upload.id}][visibility]")
+        end
+
+        it 'renders a hidden inherit_visibility companion so unchecking submits a value' do
+          get deposit_wizard_step_path(step: 'file_meta')
+
+          # A bare checkbox submits nothing when unchecked; the hidden field ensures
+          # an explicit "0" (own visibility) is sent, so it is not misread as inherit.
+          expect(response.body).to include(%(<input type="hidden" name="file_metadata[#{upload.id}][inherit_visibility]" value="0"))
+        end
+
+        it 'persists per-file metadata and advances to review' do
+          patch deposit_wizard_advance_path(step: 'file_meta'),
+                params: { file_metadata: { upload.id.to_s => { title: 'Cover image', visibility: 'inherit' } } }
+
+          expect(session[:deposit_wizard]['file_metadata'][upload.id.to_s]['title']).to eq('Cover image')
+          expect(response).to redirect_to(deposit_wizard_step_path(step: 'review'))
+        end
+      end
+    end
+
     describe 'review and commit' do
       before do
         Hyrax::AdminSetCreateService.find_or_create_default_admin_set
@@ -232,8 +286,36 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         expect(response).to have_http_status(:success)
         expect(response.body).to include(I18n.t('hyku.deposit_wizard.review.heading'))
         expect(response.body).to include('Repair Study')
-        expect(response.body).to include(I18n.t('hyku.deposit_wizard.review.visibility'))
+        expect(response.body).to include(I18n.t('hyku.deposit_wizard.review.work_visibility'))
         expect(response.body).to include('administrative set')
+      end
+
+      it 'summarizes an embargo as a transitional phrase, not a bare badge' do
+        patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type }
+        patch deposit_wizard_advance_path(step: 'details'),
+              params: { param_key => { title: ['Embargoed'], creator: ['Ada'],
+                                       visibility: 'embargo',
+                                       visibility_during_embargo: 'restricted',
+                                       embargo_release_date: '2099-01-01',
+                                       visibility_after_embargo: 'open' } }
+        get deposit_wizard_step_path(step: 'review')
+
+        expect(response.body).to include('2099-01-01')
+        expect(response.body).to match(/Embargo:.*until 2099-01-01, then/)
+      end
+
+      it 'summarizes a lease as a transitional phrase, not a bare badge' do
+        patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type }
+        patch deposit_wizard_advance_path(step: 'details'),
+              params: { param_key => { title: ['Leased'], creator: ['Ada'],
+                                       visibility: 'lease',
+                                       visibility_during_lease: 'open',
+                                       lease_expiration_date: '2099-01-01',
+                                       visibility_after_lease: 'restricted' } }
+        get deposit_wizard_step_path(step: 'review')
+
+        expect(response.body).to include('2099-01-01')
+        expect(response.body).to match(/Lease:.*until 2099-01-01, then/)
       end
 
       context 'when the deposit agreement is in active-acceptance mode' do
@@ -271,6 +353,108 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
 
         expect(response).to redirect_to(deposit_wizard_step_path(step: 'done'))
         expect(session[:deposit_wizard]).to eq({})
+      end
+
+      it 'applies a per-file embargo that differs from the work embargo' do
+        upload = FactoryBot.create(:uploaded_file, user: admin)
+        patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type }
+        patch deposit_wizard_advance_path(step: 'files'), params: { uploaded_files: [upload.id.to_s] }
+        patch deposit_wizard_advance_path(step: 'details'),
+              params: { param_key => { title: ['Embargoed work'], creator: ['Ada'],
+                                       visibility: 'embargo',
+                                       visibility_during_embargo: 'restricted',
+                                       embargo_release_date: '2099-01-01',
+                                       visibility_after_embargo: 'open' } }
+        # File gets its OWN embargo, different release date than the work.
+        patch deposit_wizard_advance_path(step: 'file_meta'),
+              params: { file_metadata: { upload.id.to_s =>
+                { inherit_visibility: '0', visibility: 'embargo',
+                  visibility_during_embargo: 'restricted',
+                  embargo_release_date: '2088-06-06',
+                  visibility_after_embargo: 'open' } } }
+
+        resource_class = Hyrax::ModelRegistry.work_classes
+                                             .detect { |k| k < Hyrax::Resource && k.model_name.param_key == param_key }
+        expect { post deposit_wizard_commit_path }.not_to raise_error
+        expect(response).to redirect_to(deposit_wizard_step_path(step: 'done'))
+
+        work = Hyrax.query_service.find_all_of_model(model: resource_class).to_a.last
+        file_set = Hyrax.query_service.find_members(resource: work).to_a.first
+        expect(file_set.embargo&.embargo_release_date&.to_date&.iso8601).to eq('2088-06-06')
+        expect(file_set.visibility).to eq('restricted')
+      end
+
+      it 'gives the file only its own lease when the work is embargoed' do
+        upload = FactoryBot.create(:uploaded_file, user: admin)
+        patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type }
+        patch deposit_wizard_advance_path(step: 'files'), params: { uploaded_files: [upload.id.to_s] }
+        patch deposit_wizard_advance_path(step: 'details'),
+              params: { param_key => { title: ['Embargoed work'], creator: ['Ada'],
+                                       visibility: 'embargo',
+                                       visibility_during_embargo: 'restricted',
+                                       embargo_release_date: '2099-01-01',
+                                       visibility_after_embargo: 'open' } }
+        patch deposit_wizard_advance_path(step: 'file_meta'),
+              params: { file_metadata: { upload.id.to_s =>
+                { inherit_visibility: '0', visibility: 'lease',
+                  visibility_during_lease: 'open',
+                  lease_expiration_date: '2088-06-06',
+                  visibility_after_lease: 'restricted' } } }
+
+        resource_class = Hyrax::ModelRegistry.work_classes
+                                             .detect { |k| k < Hyrax::Resource && k.model_name.param_key == param_key }
+        post deposit_wizard_commit_path
+
+        work = Hyrax.query_service.find_all_of_model(model: resource_class).to_a.last
+        file_set = Hyrax.query_service.find_members(resource: work).to_a.first
+        # The file should carry ITS lease and NOT the work's inherited embargo.
+        expect(file_set.lease&.lease_expiration_date&.to_date&.iso8601).to eq('2088-06-06')
+        expect(file_set.embargo&.embargo_release_date).to be_blank
+      end
+
+      it 'commits a work under lease with an inheriting file without error' do
+        upload = FactoryBot.create(:uploaded_file, user: admin)
+        patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type }
+        patch deposit_wizard_advance_path(step: 'files'), params: { uploaded_files: [upload.id.to_s] }
+        patch deposit_wizard_advance_path(step: 'details'),
+              params: { param_key => { title: ['Leased'], creator: ['Ada'],
+                                       visibility: 'lease',
+                                       visibility_during_lease: 'open',
+                                       lease_expiration_date: '2099-01-01',
+                                       visibility_after_lease: 'restricted' } }
+        # file inherits (no per-file visibility submitted beyond the hidden inherit flag)
+        patch deposit_wizard_advance_path(step: 'file_meta'),
+              params: { file_metadata: { upload.id.to_s => { inherit_visibility: '1' } } }
+
+        expect { post deposit_wizard_commit_path }.not_to raise_error
+        expect(response).to redirect_to(deposit_wizard_step_path(step: 'done'))
+      end
+
+      it 'applies a per-file visibility that differs from the work' do
+        upload = FactoryBot.create(:uploaded_file, user: admin)
+        # Walk the wizard with a file, the work set open, and the file set private.
+        patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type }
+        patch deposit_wizard_advance_path(step: 'files'), params: { uploaded_files: [upload.id.to_s] }
+        patch deposit_wizard_advance_path(step: 'details'),
+              params: { param_key => { title: ['Repair Study'], creator: ['Ada Lovelace'], visibility: 'open' } }
+        # An unchecked "same as work" checkbox submits inherit_visibility=0 via the
+        # hidden companion field, exactly as the browser does. Also enter per-file
+        # metadata to confirm it lands on the FileSet (not just visibility).
+        patch deposit_wizard_advance_path(step: 'file_meta'),
+              params: { file_metadata: { upload.id.to_s =>
+                { inherit_visibility: '0', visibility: 'restricted',
+                  title: ['Cover image'], description: ['The front cover'] } } }
+
+        resource_class = Hyrax::ModelRegistry.work_classes
+                                             .detect { |k| k < Hyrax::Resource && k.model_name.param_key == param_key }
+        post deposit_wizard_commit_path
+
+        work = Hyrax.query_service.find_all_of_model(model: resource_class).to_a.last
+        file_set = Hyrax.query_service.find_members(resource: work).to_a.first
+        expect(work.visibility).to eq('open')
+        expect(file_set.visibility).to eq('restricted')
+        expect(file_set.title).to contain_exactly('Cover image')
+        expect(file_set.description).to contain_exactly('The front cover')
       end
 
       it 'runs the configured post-commit hook with the persisted work' do

@@ -2,7 +2,7 @@
   <h1><span class="fa fa-cloud-upload" aria-hidden="true"></span> <%= t('hyku.deposit_wizard.review.heading') %></h1>
 <% end %>
 
-<%= render 'stepper', steps: item_stepper_steps, phase: 3 %>
+<%= render 'stepper', steps: item_stepper_steps, phase: stepper_phase(:review) %>
 
 <div class="deposit-wizard deposit-wizard--review">
   <p class="deposit-wizard__subtext"><%= t('hyku.deposit_wizard.review.subtext') %></p>
@@ -14,12 +14,8 @@
     <dt class="col-sm-3"><%= t('hyku.deposit_wizard.review.files') %></dt>
     <dd class="col-sm-9"><%= t('hyku.deposit_wizard.review.file_count', count: wizard_state.uploaded_file_ids.size) %></dd>
 
-    <%# Every entered field the form exposes — primary and secondary ("additional
-        fields") scalar terms, plus compounds — so the summary reflects the work
-        type's full profile and any context-specific fields. The internal
-        schema_version/contexts terms are not user-facing. %>
-    <% scalar_terms = (work_form.primary_terms + work_form.secondary_terms) - %i[schema_version contexts] %>
-    <% scalar_terms.each do |term| %>
+    <% basic_terms = (work_form.primary_terms + work_form.secondary_terms) - %i[schema_version contexts] %>
+    <% basic_terms.each do |term| %>
       <% value = Array(work_form.send(term)).reject(&:blank?) if work_form.respond_to?(term) %>
       <% next if value.blank? %>
       <dt class="col-sm-3"><%= t(term, scope: 'simple_form.labels.defaults', default: term.to_s.humanize) %></dt>
@@ -34,8 +30,19 @@
     <% end %>
 
     <% if work_form.respond_to?(:visibility) && work_form.visibility.present? %>
-      <dt class="col-sm-3"><%= t('hyku.deposit_wizard.review.visibility') %></dt>
-      <dd class="col-sm-9"><%= visibility_badge(work_form.visibility) %></dd>
+      <dt class="col-sm-3"><%= t('hyku.deposit_wizard.review.work_visibility') %></dt>
+      <dd class="col-sm-9"><%= visibility_summary(work_visibility_attributes) %></dd>
+    <% end %>
+
+    <% if file_visibility_summaries.any? %>
+      <dt class="col-sm-3"><%= t('hyku.deposit_wizard.review.file_visibility') %></dt>
+      <dd class="col-sm-9">
+        <ul class="deposit-wizard__review-files list-unstyled mb-0">
+          <% file_visibility_summaries.each do |file| %>
+            <li><%= file[:title] %> &mdash; <%= visibility_summary(file[:attributes]) %></li>
+          <% end %>
+        </ul>
+      </dd>
     <% end %>
   </dl>
 

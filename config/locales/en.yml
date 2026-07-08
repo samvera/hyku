@@ -68,6 +68,13 @@ en:
       errors:
         agreement_required: Please accept the deposit agreement to continue.
         no_work_type: Please choose a work type to continue.
+      file_meta:
+        description: Description
+        heading: Describe your files
+        inherit: Same as the work
+        subtext: Add details for each file, or leave them to inherit from the work.
+        title: Title
+        visibility: File visibility
       files:
         add_files: Add files
         cancel_upload: Cancel
@@ -94,10 +101,15 @@ en:
           one: 1 file
           other: "%{count} files"
         files: Files
+        embargo_summary: "Embargo: %{during} until %{date}, then %{after}"
+        file_visibility: File visibility
         heading: Review and deposit
+        lease_summary: "Lease: %{during} until %{date}, then %{after}"
         subtext: Check everything looks right before you deposit this work.
         visibility: Visibility
+        visibility_inherited: Same as work
         work_type: Work type
+        work_visibility: Work visibility
       start:
         heading: What would you like to deposit?
         subtext: This guided flow walks you through depositing your work step by step.
@@ -114,6 +126,7 @@ en:
       stepper:
         item:
           detail: Work detail
+          file_detail: File detail
           review: Review
           type: Item type
           upload: Upload files

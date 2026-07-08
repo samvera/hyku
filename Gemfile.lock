@@ -437,7 +437,7 @@ GEM
     concurrent-ruby (1.3.4)
     connection_pool (2.5.5)
     content_disposition (1.0.0)
-    crack (1.0.0)
+    crack (1.0.1)
       bigdecimal
       rexml
     crass (1.0.6)
@@ -960,9 +960,7 @@ GEM
     mime-types-data (3.2025.0916)
     mini_magick (4.13.2)
     mini_mime (1.1.5)
-    minitest (6.0.6)
-      drb (~> 2.0)
-      prism (~> 1.5)
+    minitest (5.27.0)
     mods (2.4.1)
       edtf
       iso-639
@@ -1615,7 +1613,7 @@ GEM
       activesupport
       faraday (~> 2.0)
       faraday-follow_redirects
-    webmock (3.25.1)
+    webmock (3.26.2)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
@@ -1761,7 +1759,7 @@ DEPENDENCIES
   valkyrie-shrine
   web-console (>= 3.3.0)
   webdrivers (~> 4.7.0)
-  webmock
+  webmock (>= 3.26)
   willow_sword!
 
 BUNDLED WITH

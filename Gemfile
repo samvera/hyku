@@ -124,7 +124,7 @@ gem 'valkyrie', '~> 3.0', '>= 3.1.4' # There's a patch in 3.1.4 that we want
 gem 'valkyrie-shrine'
 gem 'web-console', '>= 3.3.0', group: %i[development] # <%= console %> in views
 gem 'webdrivers', '~> 4.7.0', group: %i[test]
-gem 'webmock', group: %i[test]
+gem 'webmock', '>= 3.26', group: %i[test]
 gem 'willow_sword', github: 'notch8/willow_sword', tag: 'v0.8.5'
 
 # Enabling the following gem breaks sidekiq. To Enable: assets.debug must be set to true in config/development.rb

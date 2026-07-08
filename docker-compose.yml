@@ -1,8 +1,21 @@
-# dotenv gem doesn't always do the right thing with blank env vars, so we make sure these get set to something
+# Defaults live here, in the compose `environment:` block, NOT in `.env`.
+# Compose always interpolates the compose file, so `${VAR:-default}` reliably
+# means "use VAR from the shell if set, otherwise fall back to the default" on
+# every Compose version. The same `${VAR:-default}` inside `.env` only expands
+# on Compose >= ~2.24 (env_file interpolation); on older versions it is passed
+# through verbatim, so the container would literally get `${HYKU_ROOT_HOST:-...}`.
+# Keep `.env` values as plain literals and express overridable defaults here.
 x-app-env: &app-env
   APP_NAME: ${APP_NAME:-hyku}
   HYRAX_FLEXIBLE: ${HYRAX_FLEXIBLE:-false}
-  FCREPO_HOST: fcrepo
+  FCREPO_HOST: ${FCREPO_HOST:-fcrepo}
+  HYKU_ROOT_HOST: ${HYKU_ROOT_HOST:-localhost.direct}
+  HYKU_MULTITENANT: ${HYKU_MULTITENANT:-true}
+  # Derived from APP_NAME. Computed here (not in .env) so the ${APP_NAME}
+  # reference resolves on every Compose version; via env_file it would only
+  # interpolate on Compose >= ~2.24 and breaks entirely if APP_NAME is unset.
+  HYKU_ADMIN_HOST: admin-${APP_NAME:-hyku}.${HYKU_ROOT_HOST:-localhost.direct}
+  HYKU_DEFAULT_HOST: "%{tenant}-${APP_NAME:-hyku}.${HYKU_ROOT_HOST:-localhost.direct}"
 
 x-app: &app
   build:
@@ -252,8 +265,13 @@ services:
 
   initialize_app:
     <<: *app
+    # Merge *app-env (mapping form) so this service inherits APP_NAME,
+    # HYKU_ROOT_HOST, HYKU_MULTITENANT, etc. A bare `environment:` list would
+    # replace the mapping merged in via *app and drop those defaults, which
+    # makes db-migrate-seed.sh boot Rails with HYKU_ROOT_HOST unset.
     environment:
-      - CONFDIR=/app/samvera/hyrax-webapp/solr/conf
+      <<: *app-env
+      CONFDIR: /app/samvera/hyrax-webapp/solr/conf
     entrypoint: ["sh", "-c"]
     command:
       - >

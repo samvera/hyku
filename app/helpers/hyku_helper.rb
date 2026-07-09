@@ -45,5 +45,4 @@ module HykuHelper
   def hyku_generator_meta_tag
     "Samvera Hyku #{::Hyku::VERSION}"
   end
-
 end

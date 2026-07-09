@@ -29,7 +29,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: ab3f45b03d54e88581c24d8ce8ddd8759d32e00f
+  revision: 568ec626010ee4fce3d8b62a724fd49c7845861b
   branch: main
   specs:
     hyrax (5.2.0)
@@ -51,6 +51,7 @@ GIT
       dry-logic (~> 1.5)
       dry-monads (~> 1.6)
       dry-validation (~> 1.10)
+      erb (~> 4.0)
       flipflop (~> 2.3)
       flot-rails (~> 0.0.6)
       font-awesome-rails (~> 4.2)
@@ -563,6 +564,8 @@ GEM
       activesupport (>= 3.0, < 9.0)
     email_validator (2.2.4)
       activemodel
+    erb (4.0.4.1)
+      cgi (>= 0.3.3)
     erubi (1.13.1)
     et-orbi (1.3.0)
       tzinfo

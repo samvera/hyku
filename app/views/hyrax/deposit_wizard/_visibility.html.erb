@@ -1,0 +1,92 @@
+<%# Renders the same fields as Hyrax's _form_visibility_component (visibility
+    radio + embargo/lease during/date/after) so params and the collapse JS are
+    unchanged; only the layout differs (pills + expanding panels).
+
+    Locals: f (form builder); optional id_suffix to keep collapse target ids
+    unique when several render on one page (the per-file file_meta step). %>
+<% suffix = local_assigns.fetch(:id_suffix, '') %>
+<% opts = [
+     [Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC,        t('hyku.deposit_wizard.visibility.options.open'),          t('hyrax.visibility.open.note_html', type: f.object.try(:human_readable_type) || 'work'), nil],
+     [Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED, t('hyku.deposit_wizard.visibility.options.authenticated'), t('hyrax.visibility.authenticated.note_html', institution: institution_name), nil],
+     [Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_EMBARGO,       t('hyku.deposit_wizard.visibility.options.embargo'),       t('hyrax.visibility.embargo.note_html'), "#collapseEmbargo#{suffix}"],
+     [Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_LEASE,         t('hyku.deposit_wizard.visibility.options.lease'),         t('hyrax.visibility.lease.note_html'), "#collapseLease#{suffix}"],
+     [Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE,       t('hyku.deposit_wizard.visibility.options.restricted'),    t('hyrax.visibility.restricted.note_html'), nil]
+   ] %>
+<%# Under embargo/lease the populator sets flat `visibility` to the DURING value,
+    so an active sub-form is the real signal (e.g. on Back). Else fall back to the
+    flat visibility, then to Private (the required default). %>
+<% embargo = f.object.try(:embargo) %>
+<% lease = f.object.try(:lease) %>
+<% current =
+     if embargo&.embargo_release_date.present?
+       Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_EMBARGO
+     elsif lease&.lease_expiration_date.present?
+       Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_LEASE
+     else
+       f.object.try(:visibility).presence || Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
+     end %>
+<%# Prefill from the sub-form so Back restores them; the date defaults to
+    tomorrow, guaranteeing a valid future date. %>
+<% embargo_date = embargo&.embargo_release_date&.to_date || Date.tomorrow %>
+<% embargo_during = embargo&.visibility_during_embargo %>
+<% embargo_after = embargo&.visibility_after_embargo %>
+<% lease_date = lease&.lease_expiration_date&.to_date || Date.tomorrow %>
+<% lease_during = lease&.visibility_during_lease %>
+<% lease_after = lease&.visibility_after_lease %>
+
+<fieldset class="deposit-wizard__visibility" data-behavior="visibility">
+  <legend class="deposit-wizard__visibility-legend control-label"><%= t('hyku.deposit_wizard.visibility.legend') %></legend>
+
+  <div class="deposit-wizard__visibility-options" role="radiogroup">
+    <% opts.each do |value, label, note, target| %>
+      <label class="deposit-wizard__visibility-pill<%= ' is-selected' if current == value %>"
+             title="<%= strip_tags(note.to_s) %>">
+        <%= f.radio_button :visibility, value, checked: (current == value), class: 'sr-only',
+                           data: { behavior: 'visibility-option', target: target }.compact %>
+        <%= label %>
+      </label>
+    <% end %>
+  </div>
+
+  <%# Updated by JS on change. %>
+  <p class="deposit-wizard__visibility-desc" data-behavior="visibility-desc">
+    <% selected = opts.find { |value, *| value == current } %>
+    <%= raw(selected[2]) if selected %>
+  </p>
+
+  <%# Fields are required only when embargo is selected; the JS keeps `required`
+      in sync as the user switches options. %>
+  <% embargo_selected = current == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_EMBARGO %>
+  <div class="collapse deposit-wizard__visibility-panel" id="collapseEmbargo<%= suffix %>">
+    <div class="deposit-wizard__field">
+      <%= f.label :visibility_during_embargo, t('hyku.deposit_wizard.visibility.embargo.during'), class: 'deposit-wizard__field-label' %>
+      <%= f.select :visibility_during_embargo, visibility_options(:restrict), { include_blank: false, selected: embargo_during }, class: 'form-control', required: embargo_selected, data: { behavior: 'embargo-field' } %>
+    </div>
+    <div class="deposit-wizard__field">
+      <%= f.label :embargo_release_date, t('hyku.deposit_wizard.visibility.embargo.date'), class: 'deposit-wizard__field-label' %>
+      <%= f.date_field :embargo_release_date, value: embargo_date,
+                       placeholder: 'YYYY-MM-DD', class: 'form-control datepicker', required: embargo_selected, data: { behavior: 'embargo-field' } %>
+    </div>
+    <div class="deposit-wizard__field">
+      <%= f.label :visibility_after_embargo, t('hyku.deposit_wizard.visibility.embargo.after'), class: 'deposit-wizard__field-label' %>
+      <%= f.select :visibility_after_embargo, visibility_options(:loosen), { include_blank: false, selected: embargo_after }, class: 'form-control', required: embargo_selected, data: { behavior: 'embargo-field' } %>
+    </div>
+  </div>
+
+  <% lease_selected = current == Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_LEASE %>
+  <div class="collapse deposit-wizard__visibility-panel" id="collapseLease<%= suffix %>">
+    <div class="deposit-wizard__field">
+      <%= f.label :visibility_during_lease, t('hyku.deposit_wizard.visibility.lease.during'), class: 'deposit-wizard__field-label' %>
+      <%= f.select :visibility_during_lease, visibility_options(:loosen), { include_blank: false, selected: lease_during }, class: 'form-control', required: lease_selected, data: { behavior: 'lease-field' } %>
+    </div>
+    <div class="deposit-wizard__field">
+      <%= f.label :lease_expiration_date, t('hyku.deposit_wizard.visibility.lease.date'), class: 'deposit-wizard__field-label' %>
+      <%= f.date_field :lease_expiration_date, value: lease_date,
+                       placeholder: 'YYYY-MM-DD', class: 'form-control datepicker', required: lease_selected, data: { behavior: 'lease-field' } %>
+    </div>
+    <div class="deposit-wizard__field">
+      <%= f.label :visibility_after_lease, t('hyku.deposit_wizard.visibility.lease.after'), class: 'deposit-wizard__field-label' %>
+      <%= f.select :visibility_after_lease, visibility_options(:restrict), { include_blank: false, selected: lease_after }, class: 'form-control', required: lease_selected, data: { behavior: 'lease-field' } %>
+    </div>
+  </div>
+</fieldset>

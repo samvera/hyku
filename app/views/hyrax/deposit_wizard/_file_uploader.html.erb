@@ -1,47 +1,43 @@
-<%# Deposit-wizard file uploader. Mirrors Bulkrax's _file_uploader: our own
-    widget markup (class fileupload-deposit-wizard) attached to Hyrax's uploader
-    via $.fn.hyraxUploader. Files POST to Hyrax's /uploads as they are added and
-    each completed upload renders a hidden uploaded_files[] input (from
-    hyrax/uploads/js_templates), which submits with the wizard form. %>
-<div class="fileupload-deposit-wizard"
+<%# Attached to Hyrax's uploader via $.fn.hyraxUploader (see deposit_wizard.js).
+    Hyrax's hooks are preserved so its JS still drives it:
+      - #fileupload    the widget root the uploader binds to
+      - .dropzone      the drag-drop target (JS toggles .in/.hover)
+      - input#addfiles the file input (jQuery File Upload's fileInput)
+      - .files         the container the templates render uploaded rows into
+    The dropzone is a <label for="addfiles"> so a click anywhere opens the picker
+    natively — a manual onclick fought the plugin. %>
+<div class="fileupload-deposit-wizard deposit-wizard__uploader"
      id="fileupload"
      data-max-file-size="<%= Hyrax.config.uploader[:maxFileSize] %>"
      data-max-number-of-files="<%= Hyrax.config.uploader[:maxNumberOfFiles] %>">
   <noscript><input type="hidden" name="redirect" value="<%= main_app.root_path %>" /></noscript>
-  <table role="presentation" class="table table-striped"><tbody class="files"></tbody></table>
+
+  <label class="dropzone deposit-wizard__dropzone" for="addfiles" role="button" tabindex="0">
+    <input id="addfiles" type="file" class="fileinput-button" style="display:none;" name="files[]" multiple />
+    <div class="deposit-wizard__dropzone-chip">
+      <span class="fa fa-cloud-upload" aria-hidden="true"></span>
+    </div>
+    <p class="deposit-wizard__dropzone-main"><%= t('hyku.deposit_wizard.files.dropzone') %></p>
+  </label>
 
   <div class="fileupload-buttonbar">
-    <div class="row">
-      <div class="col-12">
-        <div class="fileinput-button" id="add-files">
-          <input id="addfiles" type="file" style="display:none;" name="files[]" multiple />
-          <button type="button" class="btn btn-success" onclick="document.getElementById('addfiles').click();">
-            <span class="fa fa-plus"></span>
-            <span><%= t('hyku.deposit_wizard.files.add_files') %></span>
-          </button>
-        </div>
-        <button type="reset" id="file-upload-cancel-btn" class="btn btn-warning cancel">
-          <span class="fa fa-ban"></span>
-          <span><%= t('hyku.deposit_wizard.files.cancel_upload') %></span>
-        </button>
-        <span class="fileupload-process"></span>
+    <div class="fileupload-progress fade">
+      <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width:0%;"></div>
       </div>
+      <div class="progress-extended">&nbsp;</div>
     </div>
-    <div class="row">
-      <div class="col-12">
-        <div class="fileupload-progress fade">
-          <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width:0%;"></div>
-          </div>
-          <div class="progress-extended">&nbsp;</div>
-        </div>
-      </div>
-    </div>
+    <span class="fileupload-process"></span>
   </div>
 
-  <div class="dropzone">
-    <%= t('hyku.deposit_wizard.files.dropzone') %>
+  <%# Seed rows for files uploaded on a prior visit (Hyrax's uploader plugin only
+      renders rows for uploads it handled this load); new uploads append here
+      client-side. %>
+  <div class="files deposit-wizard__file-list">
+    <% uploaded_files.each do |uploaded_file| %>
+      <%= render 'uploaded_file_row', uploaded_file: uploaded_file %>
+    <% end %>
   </div>
 </div>
 
-<%= render 'hyrax/uploads/js_templates' %>
+<%= render 'uploader_templates' %>

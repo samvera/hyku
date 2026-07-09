@@ -1,0 +1,9 @@
+<%# In-card step title + hint, shown under the stepper. Locals:
+      title - the step heading (required).
+      hint  - optional supporting/hint text below the title. %>
+<div class="deposit-wizard__step-title">
+  <h2 class="deposit-wizard__section-heading"><%= title %></h2>
+  <% if local_assigns[:hint].present? %>
+    <p class="deposit-wizard__step-hint"><%= hint %></p>
+  <% end %>
+</div>

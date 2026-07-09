@@ -1,0 +1,696 @@
+// Guided deposit wizard styling, scoped under .deposit-wizard.
+//
+// Tokens are CSS custom properties so a downstream app can rebrand — override
+// --dw-accent, add serif heading fonts, etc. — without touching this baseline.
+
+.deposit-wizard {
+  // ---- Design tokens ---------------------------------------------------
+  --dw-accent: #2b6da5;
+  --dw-accent-tint: #e7f3ff;        // selected card background
+  --dw-success: #5cb85c;            // completed step
+  --dw-danger: #bb5b4b;             // remove/delete accent
+  --dw-surface: #fff;
+  --dw-surface-sunk: #f8f9fa;
+  --dw-ink: #232a32;
+  --dw-ink-muted: #5d6670;
+  --dw-ink-subtle: #6c7178;
+  --dw-border: #e6e3dc;
+  --dw-border-strong: #d9d5cc;
+  --dw-divider: #ece9e2;
+  --dw-radius-sm: 8px;
+  --dw-radius-md: 11px;
+  --dw-radius-lg: 16px;
+  --dw-shadow-sm: 0 1px 2px rgba(20, 30, 45, 0.04);
+  --dw-shadow-card: 0 1px 2px rgba(20, 30, 45, 0.04), 0 12px 30px -22px rgba(20, 30, 45, 0.18);
+  --dw-shadow-pop: 0 12px 28px -22px rgba(20, 30, 45, 0.30);
+
+  // The screen container itself is the card; the stepper rail renders above it.
+  max-width: 884px;
+  margin: 0 auto;
+  color: var(--dw-ink);
+  background: var(--dw-surface);
+  border: 1px solid var(--dw-border);
+  border-radius: var(--dw-radius-sm);
+  box-shadow: var(--dw-shadow-card);
+  padding: 2.5rem;
+
+  &__section-heading {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 1.75rem 0 0.75rem;
+    color: var(--dw-ink);
+  }
+
+  &__step-title {
+    margin-bottom: 1.5rem;
+
+    .deposit-wizard__section-heading {
+      margin-top: 0; // leads the card content
+    }
+  }
+
+  // Shared hint text under card titles; keep these three selectors in sync.
+  &__step-hint,
+  &__admin-set-hint,
+  &__review-destination {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--dw-ink-muted);
+    max-width: 64ch;
+  }
+
+  // ---- Stepper rail ----------------------------------------------------
+  &__stepper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2.5rem;
+    position: relative;
+  }
+
+  &__step {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+
+    // Connector line to the next step, inset so it doesn't touch the dots. Grey
+    // by default; turns green once this step is completed.
+    &:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      top: 25px; // vertical center of the 50px dot
+      left: calc(50% + 52px); // half the dot (25px) + ~27px gap
+      right: calc(-50% + 52px);
+      height: 2px;
+      background: var(--dw-border);
+      z-index: -1;
+      transition: background-color 0.3s ease;
+    }
+  }
+
+  &__step-dot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #f8f9fa; // future/todo step
+    border: 2px solid var(--dw-border);
+    color: #6c757d;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  &__step-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #6c757d;
+    max-width: 8rem;
+  }
+
+  // Current step: blue.
+  &__step--active {
+    .deposit-wizard__step-dot {
+      background: var(--dw-accent);
+      border-color: var(--dw-accent);
+      color: #fff;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .deposit-wizard__step-label {
+      color: var(--dw-ink);
+    }
+  }
+
+  // Completed step: green dot + green trailing connector.
+  &__step--done {
+    .deposit-wizard__step-dot {
+      background: var(--dw-success);
+      border-color: var(--dw-success);
+      color: #fff;
+    }
+
+    .deposit-wizard__step-label {
+      color: var(--dw-ink);
+    }
+
+    // :not raises specificity to beat the base connector's grey.
+    &:not(:last-child)::after {
+      background: var(--dw-success);
+    }
+  }
+
+  // ---- Choice cards (path + type choosers) -----------------------------
+  &__paths,
+  &__type-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  &__path-card,
+  &__type-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    height: 100%;
+    text-align: center;
+    padding: 1.25rem 0.95rem;
+    border: 2px solid var(--dw-border);
+    border-radius: var(--dw-radius-sm);
+    background: var(--dw-surface);
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover,
+    &:focus {
+      border-color: #6c757d;
+      outline: none;
+    }
+
+    &.is-selected {
+      border-color: var(--dw-accent);
+      background: var(--dw-accent-tint);
+      box-shadow: 0 2px 4px rgba(43, 109, 165, 0.1);
+
+      .deposit-wizard__type-card-label,
+      .deposit-wizard__path-title,
+      .deposit-wizard__type-card-icon {
+        color: var(--dw-accent);
+      }
+    }
+  }
+
+  // Work-type icon (from SelectTypePresenter#icon_class), above the label.
+  &__type-card-icon {
+    font-size: 22px;
+    color: var(--dw-ink-subtle);
+    margin-bottom: 0.35rem;
+    transition: color 0.2s ease;
+  }
+
+  &__path-title,
+  &__type-card-label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #333;
+  }
+
+  &__path-desc,
+  &__type-card-desc {
+    color: var(--dw-ink-muted);
+    font-size: 0.8rem;
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  // ---- Forms -----------------------------------------------------------
+  &__admin-set {
+    margin-bottom: 1.75rem;
+  }
+
+  &__admin-set-hint {
+    margin-bottom: 0.75rem;
+  }
+
+  // Drop the browser's default dotted underline on abbr[title] so the required
+  // mark reads as a plain red asterisk.
+  &__section-heading .required {
+    margin-left: 0.25rem;
+    text-decoration: none;
+    cursor: default;
+  }
+
+  // ---- File uploader ---------------------------------------------------
+  // This element also carries the .dropzone class (Hyrax's JS binds drag-drop to
+  // it), and Hyrax's _file_upload.scss .dropzone sets a fixed height/line-height
+  // that squashes the box and pushes the text outside it — override those here.
+  &__dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+    line-height: 1.5;
+    font-weight: normal;
+    text-align: center;
+    padding: 2rem 1.25rem;
+    margin: 0 0 0.75rem;
+    border: 2px dashed var(--dw-border-strong);
+    border-radius: var(--dw-radius-sm);
+    background: var(--dw-surface-sunk);
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+
+    // Beat Hyrax's `.dropzone.in { height: ...; font-size: larger }` drag state.
+    &.in,
+    &.hover {
+      height: auto;
+      font-size: inherit;
+      background: var(--dw-surface-sunk);
+    }
+
+    &:hover,
+    &.hover,
+    &.in {
+      border-color: var(--dw-accent);
+    }
+  }
+
+  // Rounded chip behind the cloud icon.
+  &__dropzone-chip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    background: var(--dw-accent-tint);
+    color: var(--dw-accent);
+    font-size: 28px;
+    margin: 0 0 0.75rem;
+    transition: background-color 0.2s ease;
+  }
+
+  &__dropzone-main {
+    margin: 0.25rem 0;
+  }
+
+  &__dropzone-hint {
+    margin: 0;
+  }
+
+  // Minimize size of the progress bar so dropzone and file list sit close together.
+  .fileupload-buttonbar {
+    margin: 0;
+
+    .fileupload-progress:not(.in) {
+      display: none;
+    }
+  }
+
+  // Outer container for the uploaded-file rows; hidden until it holds a row so an
+  // empty box never shows.
+  &__file-list {
+    padding: 0.75rem;
+    border: 1px solid var(--dw-border);
+    border-radius: var(--dw-radius-sm);
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  &__file-row {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.75rem;
+    margin-bottom: 0.6rem;
+    border: 1px solid var(--dw-border);
+    border-radius: var(--dw-radius-sm);
+    background: var(--dw-surface-sunk);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__file-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--dw-radius-sm);
+    background: var(--dw-accent);
+    color: #fff;
+    font-size: 1.1rem;
+  }
+
+  &__file-info {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  &__file-name {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.3;
+    color: #333;
+    margin-bottom: 3px;
+    word-break: break-word;
+  }
+
+  &__file-meta {
+    display: block;
+    font-size: 12px;
+    line-height: 1.3;
+    color: #595f64;
+  }
+
+  &__file-remove {
+    flex: none;
+    padding: 0 0.35rem;
+    border: 0;
+    background: none;
+    color: var(--dw-danger, #bb5b4b);
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+
+    &:hover {
+      color: #a04436;
+    }
+  }
+
+  &__file-progress {
+    flex: none;
+    width: 120px;
+    height: 6px;
+  }
+
+  // ---- Visibility control (pill buttons + embargo/lease expansion) -----
+  &__visibility {
+    border: 0;
+    padding: 0;
+    margin: 1.5rem 0 0;
+  }
+
+  // Reset <legend> browser defaults so the title matches the other field labels.
+  &__visibility-legend {
+    float: none;
+    width: auto;
+    padding: 0;
+    margin-bottom: 0.6rem;
+    font-size: inherit;
+    line-height: inherit;
+    color: var(--dw-ink);
+  }
+
+  &__visibility-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  &__visibility-pill {
+    margin: 0;
+    padding: 0.5rem 1.1rem;
+    border: 1px solid var(--dw-border-strong);
+    border-radius: var(--dw-radius-sm);
+    background: var(--dw-surface);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--dw-ink-strong, var(--dw-ink));
+    cursor: pointer;
+    transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+
+    &:hover {
+      border-color: #6c757d;
+    }
+
+    &.is-selected {
+      border-color: var(--dw-accent);
+      background: var(--dw-accent-tint);
+      color: var(--dw-accent);
+      font-weight: 600;
+    }
+  }
+
+  &__visibility-desc {
+    margin: 0.6rem 0 0;
+    font-size: 0.85rem;
+    color: var(--dw-ink-muted);
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  &__visibility-panel {
+    margin-top: 0.85rem;
+    padding: 1.25rem;
+    background: var(--dw-surface-sunk);
+    border: 1px solid var(--dw-divider);
+    border-radius: var(--dw-radius-sm);
+
+    .deposit-wizard__field:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__field {
+    margin-bottom: 1rem;
+  }
+
+  &__field-label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--dw-ink-strong, var(--dw-ink));
+    margin-bottom: 0.35rem;
+  }
+
+  // SimpleForm's default wrapper sets no label weight, so metadata field labels
+  // render plain; make them bold to match across both forms.
+  &__details-form,
+  &__file-metadata {
+    .control-label,
+    .form-group > label,
+    label.string,
+    .form-group .col-form-label {
+      font-weight: 600;
+      color: var(--dw-ink);
+    }
+  }
+
+  // ---- Per-file metadata: master-detail (sidebar + form panel) ---------
+  &__file-meta-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    border: 1px solid var(--dw-border);
+    border-radius: var(--dw-radius-sm);
+    overflow: hidden;
+  }
+
+  &__file-sidebar {
+    background: var(--dw-surface-sunk);
+    border-right: 1px solid var(--dw-border);
+    padding: 1rem 0.75rem;
+  }
+
+  &__file-sidebar-heading {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--dw-ink-subtle);
+    margin: 0 0.5rem 0.75rem;
+  }
+
+  &__file-sidebar-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__file-sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    text-align: left;
+    padding: 0.6rem 0.75rem;
+    border: 0;
+    border-left: 3px solid transparent;
+    border-radius: 0 var(--dw-radius-sm) var(--dw-radius-sm) 0;
+    background: none;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    &.is-active {
+      background: var(--dw-surface);
+      border-left-color: var(--dw-accent);
+    }
+
+    // Flagged when the file has an incomplete required field (set by JS when the
+    // user tries to advance). A red left-border + a trailing marker on the name.
+    &.has-error {
+      border-left-color: var(--dw-danger, #bb5b4b);
+
+      .deposit-wizard__file-sidebar-name::after {
+        content: " !";
+        color: var(--dw-danger, #bb5b4b);
+        font-weight: 700;
+      }
+    }
+  }
+
+  // Filename truncates to one line so long names don't wrap/overflow the sidebar
+  // (the full name is in the item's title attribute on hover).
+  &__file-sidebar-name {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--dw-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__file-panels {
+    padding: 1.5rem;
+  }
+
+  &__file-panel {
+    border: 0;
+    padding: 0;
+    margin: 0;
+
+    &[hidden] {
+      display: none;
+    }
+  }
+
+  &__file-panel-name {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1rem;
+    font-weight: 600;
+    width: auto;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--dw-divider);
+    color: var(--dw-ink);
+  }
+
+  &__file-ext {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.15rem 0.5rem;
+    border-radius: 6px;
+    background: var(--dw-fill-neutral, #f0ede6);
+    color: var(--dw-ink-muted);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+  }
+
+  &__file-visibility {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--dw-divider);
+  }
+
+  &__inherit-visibility {
+    font-weight: 600;
+  }
+
+  &__own-visibility {
+    margin-top: 0.75rem;
+  }
+
+  // ---- Review summary --------------------------------------------------
+  &__review-list {
+    margin-bottom: 1.5rem;
+
+    .row {
+      padding: 0.35rem 0;
+      align-items: baseline;
+
+      & + .row {
+        border-top: 1px solid var(--dw-divider);
+      }
+    }
+
+    dt {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--dw-ink);
+    }
+
+    dd {
+      font-size: 0.95rem;
+      color: var(--dw-ink-muted);
+      margin-bottom: 0;
+    }
+  }
+
+  &__review-files {
+    li + li {
+      margin-top: 0.25rem;
+    }
+  }
+
+  &__agreement {
+    margin: 1.5rem 0;
+    padding: 1rem 1.25rem;
+    background: var(--dw-surface-sunk);
+    border: 1px solid var(--dw-divider);
+    border-radius: var(--dw-radius-md);
+  }
+
+  // ---- Navigation footer -----------------------------------------------
+  &__nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--dw-border);
+  }
+
+  // When there's no left-side content, push the button group to the right.
+  &__nav--end {
+    justify-content: flex-end;
+  }
+
+  &__nav-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .btn {
+      min-width: 120px;
+      font-weight: 600;
+    }
+  }
+
+  &__empty {
+    color: var(--dw-ink-subtle);
+    font-style: italic;
+  }
+}
+
+// The intro subtext sits under the page header, above the card, so it lives
+// outside the .deposit-wizard card scope. Left-aligned (not centered on the
+// card): the h1 renders full-width in .col-12 main-header, so the subtext flows
+// to the same left edge rather than the centered card width. No color set — it
+// inherits the dashboard body text color.
+.deposit-wizard__subtext {
+  margin: 0 0 1.25rem;
+  text-align: left;
+  font-size: 1rem;
+  line-height: 1.55;
+}

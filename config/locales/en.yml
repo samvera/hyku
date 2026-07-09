@@ -50,10 +50,16 @@ en:
       signup_disabled: Account registration is disabled
     deposit_wizard:
       admin_set:
+        heading: Admin Set
+        hint_lead: Sets the rules for this deposit
+        hint: An administrative set decides which metadata fields you'll complete, the visibility options available to your work, and the review workflow it follows after deposit. Most deposits use the default.
         label: Administrative set
       back: Back
       button: Guided Deposit
       continue: Continue
+      next: Next
+      page_heading: Deposit a New Work
+      page_subtitle: This guided flow walks you through depositing your work step by step
       details:
         heading: Describe your item
         subtext: Add the details for this work. Required fields are marked.
@@ -70,6 +76,11 @@ en:
         no_work_type: Please choose a work type to continue.
       file_meta:
         description: Description
+        file: File
+        files_count:
+          one: "Files · 1"
+          other: "Files · %{count}"
+        files_nav: Uploaded files
         heading: Describe your files
         inherit: Same as the work
         subtext: Add details for each file, or leave them to inherit from the work.
@@ -78,7 +89,8 @@ en:
       files:
         add_files: Add files
         cancel_upload: Cancel
-        dropzone: Drop files here to upload
+        dropzone: Drag & drop files here, or click to browse
+        dropzone_hint: You can add more than one file, or continue without any.
         heading: Add files
         subtext: Add any files for this work. You can also continue without any.
       item_start:
@@ -123,6 +135,22 @@ en:
           standalone:
             desc: Deposit a single work on its own, without a portfolio.
             title: Deposit a standalone work
+      visibility:
+        legend: Visibility
+        options:
+          open: Public
+          authenticated: Institutional
+          restricted: Private
+          embargo: Embargo
+          lease: Lease
+        embargo:
+          during: Until the embargo lifts, access is
+          date: Embargo lift date
+          after: When the embargo lifts, access becomes
+        lease:
+          during: While the lease is active, access is
+          date: Lease expiration date
+          after: When the lease expires, access becomes
       stepper:
         item:
           detail: Work detail

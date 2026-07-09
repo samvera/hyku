@@ -28,7 +28,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         get deposit_wizard_path
 
         expect(response).to have_http_status(:success)
-        expect(response.body).to include(I18n.t('hyku.deposit_wizard.start.heading'))
+        expect(response.body).to include(I18n.t('hyku.deposit_wizard.page_heading'))
       end
 
       it 'renders the dashboard breadcrumb trail' do
@@ -190,6 +190,22 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
           expect(response.body).to include("#{param_key}[visibility]")
         end
 
+        it 'still renders the metadata fields after files -> back -> forward' do
+          upload = FactoryBot.create(:uploaded_file, user: admin)
+          patch deposit_wizard_advance_path(step: 'files'), params: { uploaded_files: [upload.id.to_s] }
+          get deposit_wizard_step_path(step: 'details')
+          expect(response.body).to include("#{param_key}[title]")
+
+          # Back to files, then forward to details again.
+          get deposit_wizard_step_path(step: 'files')
+          patch deposit_wizard_advance_path(step: 'files'), params: { uploaded_files: [upload.id.to_s] }
+          get deposit_wizard_step_path(step: 'details')
+
+          expect(response).to have_http_status(:success)
+          expect(response.body).to include("#{param_key}[title]")
+          expect(response.body).to include("#{param_key}[creator]")
+        end
+
         it 'persists valid metadata and advances' do
           patch deposit_wizard_advance_path(step: 'details'),
                 params: { param_key => { title: ['A guided deposit work'], creator: ['Ada Lovelace'] } }
@@ -259,6 +275,16 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
           expect(session[:deposit_wizard]['file_metadata'][upload.id.to_s]['title']).to eq('Cover image')
           expect(response).to redirect_to(deposit_wizard_step_path(step: 'review'))
         end
+
+        it 'restores entered per-file metadata when returning to the step' do
+          patch deposit_wizard_advance_path(step: 'file_meta'),
+                params: { file_metadata: { upload.id.to_s => { title: ['Cover image'] } } }
+          # Return to the file_meta step (e.g. Back from review).
+          get deposit_wizard_step_path(step: 'file_meta')
+
+          expect(response).to have_http_status(:success)
+          expect(response.body).to include('Cover image')
+        end
       end
     end
 
@@ -288,6 +314,36 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         expect(response.body).to include('Repair Study')
         expect(response.body).to include(I18n.t('hyku.deposit_wizard.review.work_visibility'))
         expect(response.body).to include('administrative set')
+      end
+
+      it 'review Back goes to file_meta when there are files, else details' do
+        # No files: Back -> details.
+        fill_in_wizard
+        get deposit_wizard_step_path(step: 'review')
+        expect(response.body).to include(deposit_wizard_step_path(step: 'details'))
+        expect(response.body).not_to include(deposit_wizard_step_path(step: 'file_meta'))
+
+        # With a file: Back -> file_meta.
+        upload = FactoryBot.create(:uploaded_file, user: admin)
+        patch deposit_wizard_advance_path(step: 'files'), params: { uploaded_files: [upload.id.to_s] }
+        get deposit_wizard_step_path(step: 'review')
+        expect(response.body).to include(deposit_wizard_step_path(step: 'file_meta'))
+      end
+
+      it 'still shows the work fields on review after going back to details and forward' do
+        fill_in_wizard
+        get deposit_wizard_step_path(step: 'review')
+        expect(response.body).to include('Repair Study')
+
+        # Back to details (a GET), then forward again by re-submitting details.
+        get deposit_wizard_step_path(step: 'details')
+        patch deposit_wizard_advance_path(step: 'details'),
+              params: { param_key => { title: ['Repair Study'], creator: ['Ada Lovelace'] } }
+        get deposit_wizard_step_path(step: 'review')
+
+        expect(response).to have_http_status(:success)
+        expect(response.body).to include('Repair Study')
+        expect(response.body).to include('Ada Lovelace')
       end
 
       it 'summarizes an embargo as a transitional phrase, not a bare badge' do

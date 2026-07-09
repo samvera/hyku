@@ -1,11 +1,8 @@
-<% provide :page_header do %>
-  <h1><span class="fa fa-cloud-upload" aria-hidden="true"></span> <%= t('hyku.deposit_wizard.details.heading') %></h1>
-<% end %>
-
-<%= render 'stepper', steps: item_stepper_steps, phase: stepper_phase(:detail) %>
+<%= render 'page_header' %>
 
 <div class="deposit-wizard deposit-wizard--details">
-  <p class="deposit-wizard__subtext"><%= t('hyku.deposit_wizard.details.subtext') %></p>
+  <%= render 'stepper', steps: item_stepper_steps, phase: stepper_phase(:detail) %>
+  <%= render 'step_title', title: t('hyku.deposit_wizard.details.heading'), hint: t('hyku.deposit_wizard.details.subtext') %>
 
   <%= simple_form_for work_form,
                       url: main_app.deposit_wizard_advance_path(step: 'details'),
@@ -13,13 +10,8 @@
                       html: { class: 'deposit-wizard__details-form', data: { 'param-key' => work_form.model_name.param_key } } do |f| %>
     <%= render 'hyrax/base/form_metadata', f: f %>
 
-    <fieldset class="deposit-wizard__visibility">
-      <%= render 'hyrax/base/form_visibility_component', f: f %>
-    </fieldset>
+    <%= render 'visibility', f: f %>
 
-    <div class="deposit-wizard__nav">
-      <%= link_to t('hyku.deposit_wizard.back'), main_app.deposit_wizard_step_path(step: 'files'), class: 'btn btn-link' %>
-      <%= f.submit t('hyku.deposit_wizard.continue'), class: 'btn btn-primary' %>
-    </div>
+    <%= render 'nav', back_path: main_app.deposit_wizard_step_path(step: 'files') %>
   <% end %>
 </div>

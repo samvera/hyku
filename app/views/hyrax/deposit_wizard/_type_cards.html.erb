@@ -1,13 +1,19 @@
-<%# Work-type choice buttons. Rendered inside a form supplied by the caller;
-    each button submits its own work_type value. Shows an empty-state message
-    when the tenant has no available work types. %>
+<%# Work-type cards. Each is a label wrapping a hidden radio named work_type;
+    selecting one marks the card (JS adds .is-selected) and enables the caller's
+    Next button. The caller supplies the form and the Next submit. %>
 <% if available_work_types.any? %>
-  <div class="deposit-wizard__type-cards">
+  <div class="deposit-wizard__type-cards" data-behavior="type-select">
     <% available_work_types.each do |model| %>
-      <%= button_tag type: 'submit', name: 'work_type', value: model.to_s,
-                     class: "deposit-wizard__type-card btn btn-outline-primary#{' active' if wizard_state.work_type == model.to_s}" do %>
+      <% presenter = Hyrax::SelectTypePresenter.new(model) %>
+      <% selected = wizard_state.work_type == model.to_s %>
+      <label class="deposit-wizard__type-card<%= ' is-selected' if selected %>">
+        <%= radio_button_tag 'work_type', model.to_s, selected, class: 'deposit-wizard__type-radio sr-only', data: { behavior: 'type-option' } %>
+        <span class="deposit-wizard__type-card-icon <%= presenter.icon_class %>" aria-hidden="true"></span>
         <span class="deposit-wizard__type-card-label"><%= model.model_name.human %></span>
-      <% end %>
+        <% if presenter.description.present? %>
+          <span class="deposit-wizard__type-card-desc"><%= presenter.description %></span>
+        <% end %>
+      </label>
     <% end %>
   </div>
 <% else %>

@@ -2,10 +2,8 @@
 
 module Hyrax
   module DepositWizard
-    # Wizard context shared by the controller and its views: the active config,
-    # per-request state, the work-type list, the stepper rail, and the work form.
-    # These are cohesive view/state helpers for one feature, so the module runs
-    # past the default length limit; splitting it would scatter related helpers.
+    # Wizard context shared by the controller and its views: config, per-request
+    # state, the work-type list, the stepper rail, and the work/file forms.
     module Context # rubocop:disable Metrics/ModuleLength
       extend ActiveSupport::Concern
 
@@ -14,7 +12,8 @@ module Hyrax
                       :item_stepper_steps, :stepper_phase, :work_form, :last_deposited,
                       :available_admin_sets, :selected_admin_set_id, :selected_admin_set_name,
                       :uploaded_files, :file_meta_forms, :file_inherits_visibility?,
-                      :file_visibility_summaries, :work_visibility_attributes
+                      :file_visibility_summaries, :work_visibility_attributes,
+                      :file_display_title
       end
 
       # The seam downstream apps replace to add container types, suggestions, etc.
@@ -26,22 +25,26 @@ module Hyrax
         @wizard_state ||= Hyku::DepositWizard::State.new(session[:deposit_wizard] ||= {})
       end
 
-      # The work types the current user may create, exactly as the stock deposit
-      # chooser lists them (tenant- and profile-filtered).
       def available_work_types
         Hyrax::QuickClassificationQuery.new(current_user).authorized_models
       end
 
-      # Stepper rail for the single-item flow. A "File detail" step appears only
-      # when files were uploaded (matching the prototype's dynamic step sets):
+      # A "File detail" step appears only when files were uploaded:
       # type -> upload -> detail -> [file detail] -> review.
       def item_stepper_steps
-        stepper_keys.each_with_index.map { |key, i| { n: i + 1, label: t("hyku.deposit_wizard.stepper.item.#{key}") } }
+        stepper_keys.each_with_index.map do |key, i|
+          { n: i + 1, label: t("hyku.deposit_wizard.stepper.item.#{key}"), icon: stepper_icon(key) }
+        end
       end
 
-      # The active step's zero-based index in the current step set, so views ask
-      # for their position by name rather than hardcoding a number that shifts
-      # when the optional file-detail step is present.
+      def stepper_icon(key)
+        { type: 'fa-list-alt',
+          upload: 'fa-cloud-upload',
+          detail: 'fa-pencil',
+          file_detail: 'fa-file-text-o',
+          review: 'fa-check' }.fetch(key.to_sym, 'fa-circle')
+      end
+
       def stepper_phase(step_key)
         stepper_keys.index(step_key.to_sym) || -1
       end
@@ -57,68 +60,64 @@ module Hyrax
         @form
       end
 
-      # Build the ResourceForm for the chosen work type, re-validating any values
-      # entered on a prior visit so the fields render prepopulated. Passing
-      # admin_set_id to +ResourceForm.for+ applies its contexts during form init
-      # (in flexible mode those contexts determine which fields the form exposes),
-      # which is the same lifecycle point the stock works controller uses.
       def build_work_form
         @form = Hyrax::Forms::ResourceForm.for(resource: work_resource_class.new,
                                                admin_set_id: selected_admin_set_id).prepopulate!
         @form.validate(wizard_state.attributes) if wizard_state.attributes.present?
-        # The flexible metadata form's shared/_schema_version widget reads this
-        # ivar (stock sets it in a new/edit before_action, which the wizard lacks).
         @latest_schema_version = Hyrax::FlexibleSchema.current_schema_id.to_f
       end
 
-      # The uploaded files awaiting deposit, in the order they will be attached,
-      # for the per-file metadata step.
       def uploaded_files
         @uploaded_files ||= Hyrax::UploadedFile.where(id: wizard_state.uploaded_file_ids)
                                                .index_by { |uf| uf.id.to_s }
                                                .values_at(*wizard_state.uploaded_file_ids).compact
       end
 
-      # A FileSet form per uploaded file, prepopulated from any saved per-file
-      # metadata, keyed by uploaded-file id. Its terms are profile-driven
-      # (file_set_metadata); rendering it inside a per-file-namespaced form
-      # reuses Hyrax's own field and visibility partials.
+      # A FileSet form per uploaded file, keyed by uploaded-file id, prepopulated
+      # from any saved metadata so entered values survive navigating back.
       def file_meta_forms
-        @file_meta_forms ||= uploaded_files.index_by { |uf| uf.id.to_s }.transform_values do
-          Hyrax::Forms::ResourceForm.for(resource: Hyrax.config.file_set_class.new)
+        @file_meta_forms ||= uploaded_files.index_by { |uf| uf.id.to_s }.transform_values do |uf|
+          form = Hyrax::Forms::ResourceForm.for(resource: Hyrax.config.file_set_class.new).prepopulate!
+          saved = wizard_state.file_metadata[uf.id.to_s]
+          if saved.present?
+            form.validate(saved) # restore entered values on Back
+          else
+            # Default title to the filename
+            form.title = [file_display_title(uf)]
+          end
+          form
         end
       end
 
-      # Whether a file currently inherits the work's visibility (the default).
       def file_inherits_visibility?(uploaded_file_id)
         saved = wizard_state.file_metadata[uploaded_file_id.to_s]
         saved.nil? || saved['inherit_visibility'] != '0'
       end
 
-      # Per-file summary rows for the review step: each uploaded file's display
-      # title and its *effective* visibility attributes (its own when it does not
-      # inherit and one was chosen, otherwise the work's), so reviewers see exactly
-      # what each file will be deposited as. The attributes hash carries the
-      # embargo/lease fields too, so #visibility_summary can render the transitional
-      # phrasing rather than just the base visibility string.
+      def file_display_title(uploaded_file)
+        id = uploaded_file.id.to_s
+        entered = Array(wizard_state.file_metadata[id].to_h['title']).find(&:present?)
+        return entered if entered.present?
+
+        name = uploaded_file.file&.file&.filename.to_s
+        base = File.basename(name, File.extname(name))
+        base.tr('_-', '  ').squish.presence&.capitalize || id
+      end
+
       def file_visibility_summaries
         uploaded_files.map do |uf|
           id    = uf.id.to_s
           saved = wizard_state.file_metadata[id].to_h
           attrs = file_inherits_visibility?(id) ? work_visibility_attributes : saved
-          # Title is multi-valued; display the first entry, falling back to the
-          # file's label/filename — mirroring the app's title-then-label convention
-          # (SolrDocument#title_or_label, FileSetPresenter#first_title).
           { title: Array.wrap(saved['title']).first.presence || uf.file&.file&.filename || id,
             attributes: attrs }
         end
       end
 
-      # The work-level visibility attributes as a string-keyed hash for the review
-      # summary. Under embargo/lease the form's `visibility` is set to the *during*
-      # value by the visibility populator, and the transitional details live on the
-      # `embargo`/`lease` sub-form — so read those and restore the "embargo"/"lease"
-      # selector so #visibility_summary renders the "X until <date>, then Y" phrase.
+      # Under embargo/lease the visibility populator sets the form's flat
+      # `visibility` to the *during* value and stores the details on the
+      # `embargo`/`lease` sub-form — so read those back and restore the
+      # "embargo"/"lease" selector for #visibility_summary's transitional phrasing.
       def work_visibility_attributes
         embargo = work_form.try(:embargo)
         lease   = work_form.try(:lease)
@@ -137,8 +136,6 @@ module Hyrax
         end
       end
 
-      # The admin set to deposit into: the user's explicit choice, else the
-      # default admin set (matching the stock deposit modal's preselection).
       def selected_admin_set_id
         wizard_state.admin_set_id.presence || default_admin_set_id
       end
@@ -149,16 +146,11 @@ module Hyrax
         available_admin_sets.first&.dig(1)&.to_s
       end
 
-      # The display name of the selected admin set, for the review destination.
       def selected_admin_set_name
         id = selected_admin_set_id
         available_admin_sets.find { |_label, option_id, *| option_id.to_s == id.to_s }&.first
       end
 
-      # The chooser lists ActiveFedora model names, but the form needs the
-      # Valkyrie resource class. Resolve by shared param_key against the
-      # registered Valkyrie work classes (no Wings), falling back to the chosen
-      # class when no Valkyrie class is registered.
       def work_resource_class
         chosen = wizard_state.work_type.constantize
         return chosen if chosen < Hyrax::Resource
@@ -168,7 +160,6 @@ module Hyrax
         end || chosen
       end
 
-      # The admin sets the current user may deposit into, as selection options.
       # Shown as an inline chooser only when more than one is available.
       def available_admin_sets
         @available_admin_sets ||=
@@ -179,7 +170,6 @@ module Hyrax
         Hyrax::AdminSetService.new(self).search_results(:deposit)
       end
 
-      # The just-deposited work info, stashed for the done screen and read once.
       def last_deposited
         session.delete(:deposit_wizard_last)
       end

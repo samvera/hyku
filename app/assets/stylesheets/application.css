@@ -22,6 +22,7 @@
  *= require blacklight_range_limit
  *= require cropper.min
  *= require bulkrax/application
+ *= require deposit_wizard
  *= require_self
  *= require hyku_knapsack/application
  */

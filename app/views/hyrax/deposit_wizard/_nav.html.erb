@@ -1,0 +1,24 @@
+<%# Shared step footer: Back + Next, grouped on the right.
+    Locals:
+      back_path  - URL for the Back button (required).
+      next_label - text for the primary button (default: "Next").
+      next_html  - hash of extra options for the submit button (e.g. disabled,
+                   data, class additions). Optional.
+      next_form  - a form builder to submit through (f.submit), or nil to use a
+                   plain submit_tag (the button must sit inside a form_tag). %>
+<% next_label ||= t('hyku.deposit_wizard.next') %>
+<% next_html ||= {} %>
+<% next_arrow = local_assigns.fetch(:next_arrow, true) %>
+<div class="deposit-wizard__nav deposit-wizard__nav--end">
+  <div class="deposit-wizard__nav-group">
+    <%= link_to back_path, class: 'btn btn-secondary deposit-wizard__back-btn' do %>
+      <span class="fa fa-arrow-left" aria-hidden="true"></span> <%= t('hyku.deposit_wizard.back') %>
+    <% end %>
+    <%= button_tag(type: 'submit',
+                   class: "btn btn-primary deposit-wizard__next-btn #{next_html[:class]}".strip,
+                   disabled: next_html[:disabled],
+                   data: next_html[:data]) do %>
+      <%= next_label %><%= ' '.html_safe + tag.span('', class: 'fa fa-arrow-right', 'aria-hidden': true) if next_arrow %>
+    <% end %>
+  </div>
+</div>

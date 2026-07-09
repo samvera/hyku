@@ -1,9 +1,16 @@
-<%# Inline admin-set chooser, submitted with the enclosing choice form. Shown
-    only when the user can deposit into more than one set; otherwise the default
-    set is used silently. The chosen set drives the work form's fields. %>
+<%# Inline admin-set chooser, submitted with the enclosing form. Shown only when
+    more than one set is available; otherwise the default is used silently. The
+    chosen set drives the work form's fields. %>
 <% if available_admin_sets.size > 1 %>
   <div class="form-group deposit-wizard__admin-set">
-    <%= label_tag :admin_set_id, t('hyku.deposit_wizard.admin_set.label'), class: 'font-weight-bold' %>
+    <h2 class="deposit-wizard__section-heading">
+      <%= t('hyku.deposit_wizard.admin_set.heading') %>
+      <abbr title="<%= t('simple_form.required.text', default: 'required') %>" class="required text-danger">*</abbr>
+    </h2>
+    <p class="deposit-wizard__admin-set-hint">
+      <%= t('hyku.deposit_wizard.admin_set.hint_lead') %>. <%= t('hyku.deposit_wizard.admin_set.hint') %>
+    </p>
+    <%= label_tag :admin_set_id, t('hyku.deposit_wizard.admin_set.label'), class: 'sr-only' %>
     <%= select_tag :admin_set_id,
                    options_for_select(available_admin_sets.map { |label, id, *| [label, id] }, selected_admin_set_id),
                    class: 'form-control' %>

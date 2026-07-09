@@ -90,6 +90,7 @@ jobs:
   push:
     needs: build
     runs-on: ubuntu-latest
+    permissions: write-all
     steps:
       - name: Determine git sha to checkout
         uses: haya14busa/action-cond@v1

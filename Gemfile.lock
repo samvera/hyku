@@ -787,7 +787,7 @@ GEM
       json
     iiif_manifest (1.6.0)
       activesupport (>= 4)
-    iiif_print (3.0.12)
+    iiif_print (3.1.0)
       blacklight_iiif_search (>= 1.0, < 3.0)
       derivative-rodeo (~> 0.5)
       hyrax (>= 2.5, < 6)
@@ -1692,7 +1692,7 @@ DEPENDENCIES
   hyrax-doi!
   i18n-debug
   i18n-tasks
-  iiif_print (~> 3.0.12)
+  iiif_print (~> 3.1)
   jbuilder (~> 2.5)
   jquery-rails
   json (~> 2.0)

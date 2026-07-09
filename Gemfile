@@ -55,7 +55,7 @@ gem 'hyrax', github: 'samvera/hyrax', branch: 'main'
 gem 'hyrax-doi', github: 'samvera-labs/hyrax-doi', branch: 'rails_hyrax_upgrade'
 gem 'i18n-debug', require: false, group: %i[development test]
 gem 'i18n-tasks', group: %i[development test]
-gem 'iiif_print', '~> 3.0.12'
+gem 'iiif_print', '~> 3.1'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'json', '~> 2.0' # avoid v3 breaking changes downstream

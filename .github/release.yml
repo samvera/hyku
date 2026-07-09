@@ -12,6 +12,7 @@ changelog:
     - title: Bug Fixes 🐞
       labels:
         - patch-ver
+        - dependencies
     - title: Database Changes
       labels:
         - database-changes

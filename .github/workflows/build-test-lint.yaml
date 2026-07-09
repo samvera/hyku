@@ -156,8 +156,6 @@ jobs:
           GIT_SHA: ${{ steps.gitsha.outputs.value }}
       - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          ref: ${{ steps.gitsha.outputs.value }}
       - name: Github Container Login
         uses: docker/login-action@v3
         with:
@@ -166,6 +164,12 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Bring up single-tenant stack
         run: docker compose -f docker-compose.single.yml up -d web worker > docker-compose-server.log 2>&1
+      - name: Ensure gems are installed in web and worker
+        run: |
+          for svc in web worker; do
+            docker compose -f docker-compose.single.yml exec -T "$svc" \
+              sh -lc 'bundle check || bundle install'
+          done
       - name: Wait for web to be ready
         run: |
           for i in {1..60}; do

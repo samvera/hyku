@@ -79,7 +79,7 @@ gem 'pg'
 gem 'postrank-uri', '>= 1.0.24'
 gem 'pry-byebug', group: %i[development test]
 gem 'pry-rails'
-gem 'puma', '~> 5.6' # Use Puma as the app server
+gem 'puma', '~> 7.2' # Use Puma as the app server
 gem 'qa', git: 'https://github.com/samvera/questioning_authority.git', branch: 'main'
 gem 'rack-attack'
 gem 'rack-test', '0.7.0', group: %i[test] # rack-test >= 0.71 does not work with older Capybara versions (< 2.17). See #214 for more details
@@ -124,7 +124,7 @@ gem 'valkyrie', '~> 3.0', '>= 3.1.4' # There's a patch in 3.1.4 that we want
 gem 'valkyrie-shrine'
 gem 'web-console', '>= 3.3.0', group: %i[development] # <%= console %> in views
 gem 'webdrivers', '~> 4.7.0', group: %i[test]
-gem 'webmock', group: %i[test]
+gem 'webmock', '>= 3.26', group: %i[test]
 gem 'willow_sword', github: 'notch8/willow_sword', tag: 'v0.8.5'
 
 # Enabling the following gem breaks sidekiq. To Enable: assets.debug must be set to true in config/development.rb

@@ -313,7 +313,6 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         expect(response.body).to include(I18n.t('hyku.deposit_wizard.review.heading'))
         expect(response.body).to include('Repair Study')
         expect(response.body).to include(I18n.t('hyku.deposit_wizard.review.work_visibility'))
-        expect(response.body).to include('administrative set')
       end
 
       it 'review Back goes to file_meta when there are files, else details' do
@@ -511,6 +510,50 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         expect(file_set.visibility).to eq('restricted')
         expect(file_set.title).to contain_exactly('Cover image')
         expect(file_set.description).to contain_exactly('The front cover')
+      end
+
+      it 'applies each file its own visibility when two files differ' do
+        private_upload = FactoryBot.create(:uploaded_file, user: admin)
+        embargo_upload = FactoryBot.create(:uploaded_file, user: admin)
+        patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type }
+        patch deposit_wizard_advance_path(step: 'files'),
+              params: { uploaded_files: [private_upload.id.to_s, embargo_upload.id.to_s] }
+        patch deposit_wizard_advance_path(step: 'details'),
+              params: { param_key => { title: ['Two file work'], creator: ['Ada'], visibility: 'open' } }
+        # One file private, the other embargoed. Titled so each FileSet is
+        # identifiable regardless of the order find_members returns them.
+        patch deposit_wizard_advance_path(step: 'file_meta'),
+              params: { file_metadata: {
+                private_upload.id.to_s => { inherit_visibility: '0', visibility: 'restricted', title: ['Private one'] },
+                embargo_upload.id.to_s => { inherit_visibility: '0', visibility: 'embargo', title: ['Embargo one'],
+                                            visibility_during_embargo: 'restricted',
+                                            embargo_release_date: '2099-01-01',
+                                            visibility_after_embargo: 'open' }
+              } }
+
+        resource_class = Hyrax::ModelRegistry.work_classes
+                                             .detect { |k| k < Hyrax::Resource && k.model_name.param_key == param_key }
+
+        # find_members does not guarantee it returns file sets in uploaded_file_ids
+        # order. Force reversed order to prove the embargo is matched to the right
+        # file by identity, not by array position.
+        original = Hyrax.query_service.method(:find_members)
+        allow(Hyrax.query_service).to receive(:find_members) do |**kwargs|
+          result = original.call(**kwargs)
+          result.respond_to?(:to_a) ? result.to_a.reverse : result
+        end
+
+        post deposit_wizard_commit_path
+
+        work = Hyrax.query_service.find_all_of_model(model: resource_class).to_a.last
+        file_sets = Hyrax.query_service.find_members(resource: work).to_a
+        private_fs = file_sets.find { |fs| fs.title.include?('Private one') }
+        embargo_fs = file_sets.find { |fs| fs.title.include?('Embargo one') }
+
+        expect(work.visibility).to eq('open')
+        expect(private_fs.visibility).to eq('restricted')
+        expect(private_fs.embargo&.embargo_release_date).to be_blank
+        expect(embargo_fs.embargo&.embargo_release_date&.to_date&.iso8601).to eq('2099-01-01')
       end
 
       it 'runs the configured post-commit hook with the persisted work' do

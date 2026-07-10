@@ -99,11 +99,12 @@ module Hyrax
       # leased under an embargoed work keeps both) before applying its own choice.
       # Inheriting files are left with whatever add_file_sets copied down.
       def apply_file_embargoes_and_leases(work)
-        file_sets = Hyrax.query_service.find_members(resource: work).to_a
-        wizard_state.uploaded_file_ids.each_with_index do |id, index|
+        file_set_ids = file_set_ids_by_uploaded_file
+        file_sets = Hyrax.query_service.find_members(resource: work).index_by { |fs| fs.id.to_s }
+        wizard_state.uploaded_file_ids.each do |id|
           meta = wizard_state.file_metadata[id.to_s].to_h
           next if meta['inherit_visibility'] != '0'
-          file_set = file_sets[index]
+          file_set = file_sets[file_set_ids[id.to_s]]
           next if file_set.nil?
 
           clear_inherited_restrictions(file_set)
@@ -112,6 +113,15 @@ module Hyrax
           when 'lease'   then apply_file_lease(file_set, meta)
           end
           Hyrax.persister.save(resource: file_set)
+        end
+      end
+
+      # Map each uploaded-file id to the id of the FileSet it was attached to.
+      # WorkUploadsHandler records the link on the UploadedFile as file_set_uri
+      # (via #add_file_set!); the FileSet id is its trailing path segment.
+      def file_set_ids_by_uploaded_file
+        Hyrax::UploadedFile.where(id: wizard_state.uploaded_file_ids).each_with_object({}) do |uf, map|
+          map[uf.id.to_s] = uf.file_set_uri.to_s.split('/').last
         end
       end
 

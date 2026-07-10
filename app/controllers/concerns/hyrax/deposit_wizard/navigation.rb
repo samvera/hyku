@@ -64,7 +64,9 @@ module Hyrax
       end
 
       def advance_from_file_meta
-        wizard_state.file_metadata = params.fetch(:file_metadata, {}).permit!.to_h
+        submitted = params.fetch(:file_metadata, {}).permit!.to_h
+        allowed = wizard_state.uploaded_file_ids.map(&:to_s)
+        wizard_state.file_metadata = submitted.slice(*allowed)
         redirect_to main_app.deposit_wizard_step_path(step: 'review')
       end
     end

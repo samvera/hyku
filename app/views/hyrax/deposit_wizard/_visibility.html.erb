@@ -26,11 +26,12 @@
        f.object.try(:visibility).presence || Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
      end %>
 <%# Prefill from the sub-form so Back restores them; the date defaults to
-    tomorrow, guaranteeing a valid future date. %>
-<% embargo_date = embargo&.embargo_release_date&.to_date || Date.tomorrow %>
+    tomorrow (in the app time zone), guaranteeing a valid future date. %>
+<% tomorrow = Time.zone.today + 1 %>
+<% embargo_date = embargo&.embargo_release_date&.to_date || tomorrow %>
 <% embargo_during = embargo&.visibility_during_embargo %>
 <% embargo_after = embargo&.visibility_after_embargo %>
-<% lease_date = lease&.lease_expiration_date&.to_date || Date.tomorrow %>
+<% lease_date = lease&.lease_expiration_date&.to_date || tomorrow %>
 <% lease_during = lease&.visibility_during_lease %>
 <% lease_after = lease&.visibility_after_lease %>
 

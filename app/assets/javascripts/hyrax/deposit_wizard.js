@@ -30,7 +30,7 @@
         scope.find('.collapse').collapse('hide');
         if (target) scope.find(target).collapse('show');
         // Move the selected option's title (its description) into the desc line.
-        desc.html(checked.closest('.deposit-wizard__visibility-pill').attr('title') || '');
+        desc.text(checked.closest('.deposit-wizard__visibility-pill').attr('title') || '');
 
         // Embargo/lease sub-fields are required only when their option is chosen.
         // A required field inside a hidden collapse would block submit invisibly,

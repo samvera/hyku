@@ -276,6 +276,19 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
           expect(response).to redirect_to(deposit_wizard_step_path(step: 'review'))
         end
 
+        it 'drops metadata keyed to files not in the current wizard state' do
+          other_upload = FactoryBot.create(:uploaded_file, user: admin)
+          patch deposit_wizard_advance_path(step: 'file_meta'),
+                params: { file_metadata: {
+                  upload.id.to_s => { title: 'Mine' },
+                  other_upload.id.to_s => { title: 'Not in this wizard run' }
+                } }
+
+          stored = session[:deposit_wizard]['file_metadata']
+          expect(stored.keys).to contain_exactly(upload.id.to_s)
+          expect(stored).not_to have_key(other_upload.id.to_s)
+        end
+
         it 'restores entered per-file metadata when returning to the step' do
           patch deposit_wizard_advance_path(step: 'file_meta'),
                 params: { file_metadata: { upload.id.to_s => { title: ['Cover image'] } } }

@@ -113,10 +113,10 @@ en:
           one: 1 file
           other: "%{count} files"
         files: Files
-        embargo_summary: "Embargo: %{during} until %{date}, then %{after}"
+        embargo_summary_html: "Embargo: %{during} until %{date}, then %{after}"
         file_visibility: File visibility
         heading: Review and deposit
-        lease_summary: "Lease: %{during} until %{date}, then %{after}"
+        lease_summary_html: "Lease: %{during} until %{date}, then %{after}"
         subtext: Check everything looks right before you deposit this work.
         visibility: Visibility
         visibility_inherited: Same as work

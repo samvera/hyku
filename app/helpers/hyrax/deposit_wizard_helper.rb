@@ -30,18 +30,20 @@ module Hyrax
     private
 
     def embargo_lease_summary(kind, during, after, date)
-      t("hyku.deposit_wizard.review.#{kind}_summary",
+      t("hyku.deposit_wizard.review.#{kind}_summary_html",
         during: visibility_badge(during),
         after: visibility_badge(after),
-        date: format_release_date(date)).html_safe
+        date: format_release_date(date))
     end
 
     # Accepts a Date/Time/DateTime or a string (per-file params arrive as strings,
-    # work sub-forms as DateTime) and renders a plain YYYY-MM-DD date.
+    # work sub-forms as DateTime) and renders a plain YYYY-MM-DD date. A string that
+    # is not a parseable date is returned as-is (escaped by the caller).
     def format_release_date(date)
       return '' if date.blank?
-      return date.to_date.iso8601 if date.respond_to?(:to_date)
 
+      date.to_date.iso8601
+    rescue ArgumentError
       date.to_s
     end
   end

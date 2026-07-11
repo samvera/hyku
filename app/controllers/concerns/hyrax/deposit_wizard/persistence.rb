@@ -92,12 +92,10 @@ module Hyrax
         meta.reject! { |k, _| k.to_s.include?('embargo') || k.to_s.include?('lease') }
       end
 
-      # Apply per-file embargo/lease after the work and FileSets are saved.
-      # WorkUploadsHandler only assigns a flat visibility, and add_file_sets copies
-      # the *work's* embargo/lease onto every FileSet. So for a file with its OWN
-      # visibility we must first clear any inherited embargo/lease (else a file
-      # leased under an embargoed work keeps both) before applying its own choice.
-      # Inheriting files are left with whatever add_file_sets copied down.
+      # Apply each file's OWN embargo/lease after commit. add_file_sets copies the
+      # work's embargo/lease onto every FileSet, so first clear the inherited one,
+      # then apply the file's choice. FileSets are matched by identity, not array
+      # position: find_members does not guarantee uploaded_file_ids order.
       def apply_file_embargoes_and_leases(work)
         file_set_ids = file_set_ids_by_uploaded_file
         file_sets = Hyrax.query_service.find_members(resource: work).index_by { |fs| fs.id.to_s }
@@ -112,7 +110,8 @@ module Hyrax
           when 'embargo' then apply_file_embargo(file_set, meta)
           when 'lease'   then apply_file_lease(file_set, meta)
           end
-          Hyrax.persister.save(resource: file_set)
+          saved = Hyrax.persister.save(resource: file_set)
+          Hyrax.publisher.publish('object.metadata.updated', object: saved, user: current_user)
         end
       end
 
@@ -128,8 +127,7 @@ module Hyrax
       # Drop any embargo/lease the file inherited from the work (copied down by the
       # add_file_sets step) so the file's own choice starts from a clean slate. The
       # association is stored as embargo_id/lease_id, so detach by clearing the id
-      # (assigning nil to the object accessor raises). The file's flat visibility
-      # was already set by the handler.
+      # (assigning nil to the object accessor raises).
       def clear_inherited_restrictions(file_set)
         file_set.embargo_id = nil
         file_set.lease_id = nil

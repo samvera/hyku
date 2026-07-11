@@ -359,31 +359,33 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
       end
 
       it 'summarizes an embargo as a transitional phrase, not a bare badge' do
+        release_date = 30.days.from_now.to_date.iso8601
         patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type }
         patch deposit_wizard_advance_path(step: 'details'),
               params: { param_key => { title: ['Embargoed'], creator: ['Ada'],
                                        visibility: 'embargo',
                                        visibility_during_embargo: 'restricted',
-                                       embargo_release_date: '2099-01-01',
+                                       embargo_release_date: release_date,
                                        visibility_after_embargo: 'open' } }
         get deposit_wizard_step_path(step: 'review')
 
-        expect(response.body).to include('2099-01-01')
-        expect(response.body).to match(/Embargo:.*until 2099-01-01, then/)
+        expect(response.body).to include(release_date)
+        expect(response.body).to match(/Embargo:.*until #{release_date}, then/)
       end
 
       it 'summarizes a lease as a transitional phrase, not a bare badge' do
+        expiration_date = 30.days.from_now.to_date.iso8601
         patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type }
         patch deposit_wizard_advance_path(step: 'details'),
               params: { param_key => { title: ['Leased'], creator: ['Ada'],
                                        visibility: 'lease',
                                        visibility_during_lease: 'open',
-                                       lease_expiration_date: '2099-01-01',
+                                       lease_expiration_date: expiration_date,
                                        visibility_after_lease: 'restricted' } }
         get deposit_wizard_step_path(step: 'review')
 
-        expect(response.body).to include('2099-01-01')
-        expect(response.body).to match(/Lease:.*until 2099-01-01, then/)
+        expect(response.body).to include(expiration_date)
+        expect(response.body).to match(/Lease:.*until #{expiration_date}, then/)
       end
 
       context 'when the deposit agreement is in active-acceptance mode' do
@@ -424,6 +426,8 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
       end
 
       it 'applies a per-file embargo that differs from the work embargo' do
+        work_date = 30.days.from_now.to_date
+        file_date = 60.days.from_now.to_date
         upload = FactoryBot.create(:uploaded_file, user: admin)
         patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type }
         patch deposit_wizard_advance_path(step: 'files'), params: { uploaded_files: [upload.id.to_s] }
@@ -431,14 +435,14 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
               params: { param_key => { title: ['Embargoed work'], creator: ['Ada'],
                                        visibility: 'embargo',
                                        visibility_during_embargo: 'restricted',
-                                       embargo_release_date: '2099-01-01',
+                                       embargo_release_date: work_date.iso8601,
                                        visibility_after_embargo: 'open' } }
         # File gets its OWN embargo, different release date than the work.
         patch deposit_wizard_advance_path(step: 'file_meta'),
               params: { file_metadata: { upload.id.to_s =>
                 { inherit_visibility: '0', visibility: 'embargo',
                   visibility_during_embargo: 'restricted',
-                  embargo_release_date: '2088-06-06',
+                  embargo_release_date: file_date.iso8601,
                   visibility_after_embargo: 'open' } } }
 
         resource_class = Hyrax::ModelRegistry.work_classes
@@ -448,11 +452,13 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
 
         work = Hyrax.query_service.find_all_of_model(model: resource_class).to_a.last
         file_set = Hyrax.query_service.find_members(resource: work).to_a.first
-        expect(file_set.embargo&.embargo_release_date&.to_date&.iso8601).to eq('2088-06-06')
+        expect(file_set.embargo&.embargo_release_date&.to_date).to eq(file_date)
         expect(file_set.visibility).to eq('restricted')
       end
 
       it 'gives the file only its own lease when the work is embargoed' do
+        work_date = 30.days.from_now.to_date
+        file_date = 60.days.from_now.to_date
         upload = FactoryBot.create(:uploaded_file, user: admin)
         patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type }
         patch deposit_wizard_advance_path(step: 'files'), params: { uploaded_files: [upload.id.to_s] }
@@ -460,13 +466,13 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
               params: { param_key => { title: ['Embargoed work'], creator: ['Ada'],
                                        visibility: 'embargo',
                                        visibility_during_embargo: 'restricted',
-                                       embargo_release_date: '2099-01-01',
+                                       embargo_release_date: work_date.iso8601,
                                        visibility_after_embargo: 'open' } }
         patch deposit_wizard_advance_path(step: 'file_meta'),
               params: { file_metadata: { upload.id.to_s =>
                 { inherit_visibility: '0', visibility: 'lease',
                   visibility_during_lease: 'open',
-                  lease_expiration_date: '2088-06-06',
+                  lease_expiration_date: file_date.iso8601,
                   visibility_after_lease: 'restricted' } } }
 
         resource_class = Hyrax::ModelRegistry.work_classes
@@ -476,7 +482,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         work = Hyrax.query_service.find_all_of_model(model: resource_class).to_a.last
         file_set = Hyrax.query_service.find_members(resource: work).to_a.first
         # The file should carry ITS lease and NOT the work's inherited embargo.
-        expect(file_set.lease&.lease_expiration_date&.to_date&.iso8601).to eq('2088-06-06')
+        expect(file_set.lease&.lease_expiration_date&.to_date).to eq(file_date)
         expect(file_set.embargo&.embargo_release_date).to be_blank
       end
 
@@ -488,7 +494,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
               params: { param_key => { title: ['Leased'], creator: ['Ada'],
                                        visibility: 'lease',
                                        visibility_during_lease: 'open',
-                                       lease_expiration_date: '2099-01-01',
+                                       lease_expiration_date: 30.days.from_now.to_date.iso8601,
                                        visibility_after_lease: 'restricted' } }
         # file inherits (no per-file visibility submitted beyond the hidden inherit flag)
         patch deposit_wizard_advance_path(step: 'file_meta'),
@@ -526,6 +532,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
       end
 
       it 'applies each file its own visibility when two files differ' do
+        release_date = 30.days.from_now.to_date
         private_upload = FactoryBot.create(:uploaded_file, user: admin)
         embargo_upload = FactoryBot.create(:uploaded_file, user: admin)
         patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type }
@@ -540,7 +547,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
                 private_upload.id.to_s => { inherit_visibility: '0', visibility: 'restricted', title: ['Private one'] },
                 embargo_upload.id.to_s => { inherit_visibility: '0', visibility: 'embargo', title: ['Embargo one'],
                                             visibility_during_embargo: 'restricted',
-                                            embargo_release_date: '2099-01-01',
+                                            embargo_release_date: release_date.iso8601,
                                             visibility_after_embargo: 'open' }
               } }
 
@@ -566,7 +573,39 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         expect(work.visibility).to eq('open')
         expect(private_fs.visibility).to eq('restricted')
         expect(private_fs.embargo&.embargo_release_date).to be_blank
-        expect(embargo_fs.embargo&.embargo_release_date&.to_date&.iso8601).to eq('2099-01-01')
+        expect(embargo_fs.embargo&.embargo_release_date&.to_date).to eq(release_date)
+      end
+
+      it "indexes a file's own lease when the work is leased with a different date" do
+        work_date = 30.days.from_now.to_date
+        file_date = 60.days.from_now.to_date
+        upload = FactoryBot.create(:uploaded_file, user: admin)
+
+        patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type }
+        patch deposit_wizard_advance_path(step: 'files'), params: { uploaded_files: [upload.id.to_s] }
+        patch deposit_wizard_advance_path(step: 'details'),
+              params: { param_key => { title: ['Leased work'], creator: ['Ada'],
+                                       visibility: 'lease',
+                                       visibility_during_lease: 'open',
+                                       lease_expiration_date: work_date.iso8601,
+                                       visibility_after_lease: 'restricted' } }
+        patch deposit_wizard_advance_path(step: 'file_meta'),
+              params: { file_metadata: {
+                upload.id.to_s => { inherit_visibility: '0', visibility: 'lease', title: ['Own lease'],
+                                    visibility_during_lease: 'open',
+                                    lease_expiration_date: file_date.iso8601,
+                                    visibility_after_lease: 'restricted' }
+              } }
+
+        resource_class = Hyrax::ModelRegistry.work_classes
+                                             .detect { |k| k < Hyrax::Resource && k.model_name.param_key == param_key }
+        post deposit_wizard_commit_path
+
+        work = Hyrax.query_service.find_all_of_model(model: resource_class).to_a.last
+        file_set = Hyrax.query_service.find_members(resource: work).to_a.first
+
+        expect(file_set.lease&.lease_expiration_date&.to_date).to eq(file_date)
+        expect(SolrDocument.find(file_set.id.to_s)['lease_expiration_date_dtsi']).to include(file_date.iso8601)
       end
 
       it 'runs the configured post-commit hook with the persisted work' do

@@ -214,6 +214,20 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
           expect(response).to redirect_to(deposit_wizard_step_path(step: 'review'))
         end
 
+        it 're-renders details with an embargo work visibility restored (Back)' do
+          patch deposit_wizard_advance_path(step: 'details'),
+                params: { param_key => { title: ['Embargoed'], creator: ['Ada'],
+                                         visibility: 'embargo',
+                                         visibility_during_embargo: 'restricted',
+                                         embargo_release_date: 30.days.from_now.to_date.iso8601,
+                                         visibility_after_embargo: 'open' } }
+
+          get deposit_wizard_step_path(step: 'details')
+
+          expect(response).to have_http_status(:success)
+          expect(response.body).to include("#{param_key}[visibility_during_embargo]")
+        end
+
         it 're-renders the form when required metadata is missing' do
           patch deposit_wizard_advance_path(step: 'details'),
                 params: { param_key => { title: [''] } }

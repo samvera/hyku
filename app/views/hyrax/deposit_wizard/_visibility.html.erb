@@ -61,7 +61,7 @@
   <div class="collapse deposit-wizard__visibility-panel" id="collapseEmbargo<%= suffix %>">
     <div class="deposit-wizard__field">
       <%= f.label :visibility_during_embargo, t('hyku.deposit_wizard.visibility.embargo.during'), class: 'deposit-wizard__field-label' %>
-      <%= f.select :visibility_during_embargo, visibility_options(:restrict), { include_blank: false, selected: embargo_during }, class: 'form-control', required: embargo_selected, data: { behavior: 'embargo-field' } %>
+      <%= f.select :visibility_during_embargo, visibility_options(:restrict), { selected: embargo_during }, class: 'form-control', required: embargo_selected, data: { behavior: 'embargo-field' } %>
     </div>
     <div class="deposit-wizard__field">
       <%= f.label :embargo_release_date, t('hyku.deposit_wizard.visibility.embargo.date'), class: 'deposit-wizard__field-label' %>
@@ -70,7 +70,7 @@
     </div>
     <div class="deposit-wizard__field">
       <%= f.label :visibility_after_embargo, t('hyku.deposit_wizard.visibility.embargo.after'), class: 'deposit-wizard__field-label' %>
-      <%= f.select :visibility_after_embargo, visibility_options(:loosen), { include_blank: false, selected: embargo_after }, class: 'form-control', required: embargo_selected, data: { behavior: 'embargo-field' } %>
+      <%= f.select :visibility_after_embargo, visibility_options(:loosen), { selected: embargo_after }, class: 'form-control', required: embargo_selected, data: { behavior: 'embargo-field' } %>
     </div>
   </div>
 
@@ -78,7 +78,7 @@
   <div class="collapse deposit-wizard__visibility-panel" id="collapseLease<%= suffix %>">
     <div class="deposit-wizard__field">
       <%= f.label :visibility_during_lease, t('hyku.deposit_wizard.visibility.lease.during'), class: 'deposit-wizard__field-label' %>
-      <%= f.select :visibility_during_lease, visibility_options(:loosen), { include_blank: false, selected: lease_during }, class: 'form-control', required: lease_selected, data: { behavior: 'lease-field' } %>
+      <%= f.select :visibility_during_lease, visibility_options(:loosen), { selected: lease_during }, class: 'form-control', required: lease_selected, data: { behavior: 'lease-field' } %>
     </div>
     <div class="deposit-wizard__field">
       <%= f.label :lease_expiration_date, t('hyku.deposit_wizard.visibility.lease.date'), class: 'deposit-wizard__field-label' %>
@@ -87,7 +87,7 @@
     </div>
     <div class="deposit-wizard__field">
       <%= f.label :visibility_after_lease, t('hyku.deposit_wizard.visibility.lease.after'), class: 'deposit-wizard__field-label' %>
-      <%= f.select :visibility_after_lease, visibility_options(:restrict), { include_blank: false, selected: lease_after }, class: 'form-control', required: lease_selected, data: { behavior: 'lease-field' } %>
+      <%= f.select :visibility_after_lease, visibility_options(:restrict), { selected: lease_after }, class: 'form-control', required: lease_selected, data: { behavior: 'lease-field' } %>
     </div>
   </div>
 </fieldset>

@@ -36,6 +36,14 @@ module Hyku
         @store['admin_set_id'] = value.presence
       end
 
+      def parent_id
+        @store['parent_id']
+      end
+
+      def parent_id=(value)
+        @store['parent_id'] = value.presence
+      end
+
       # Ids of the Hyrax::UploadedFiles attached on the files step. Stored as
       # strings (the form round-trips them as strings); the commit phase attaches
       # them by id.

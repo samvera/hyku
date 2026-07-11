@@ -37,6 +37,40 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         expect(response.body).to include(I18n.t('hyrax.controls.home'))
         expect(response.body).to include(I18n.t('hyku.deposit_wizard.button'))
       end
+
+      describe 'launch with context (handoff from another entry point)' do
+        after { Hyku::DepositWizard.reset_config! }
+
+        it 'seeds a parent work from parent_id when parent connect is enabled' do
+          Hyku::DepositWizard.config.enable_parent_connect = true
+          get deposit_wizard_path(parent_id: 'parent-123')
+
+          expect(session[:deposit_wizard]['parent_id']).to eq('parent-123')
+        end
+
+        it 'ignores parent_id when parent connect is disabled' do
+          Hyku::DepositWizard.config.enable_parent_connect = false
+          get deposit_wizard_path(parent_id: 'parent-123')
+
+          expect(session[:deposit_wizard]['parent_id']).to be_nil
+        end
+
+        it 'seeds collection membership from add_works_to_collection when enabled' do
+          Hyku::DepositWizard.config.enable_collection_connect = true
+          get deposit_wizard_path(add_works_to_collection: 'coll-9')
+
+          membership = session[:deposit_wizard].dig('attributes', 'member_of_collections_attributes')
+          expect(membership).to be_present
+          expect(membership.values.map { |row| row['id'] }).to include('coll-9')
+        end
+
+        it 'ignores add_works_to_collection when collection connect is disabled' do
+          Hyku::DepositWizard.config.enable_collection_connect = false
+          get deposit_wizard_path(add_works_to_collection: 'coll-9')
+
+          expect(session[:deposit_wizard].dig('attributes', 'member_of_collections_attributes')).to be_blank
+        end
+      end
     end
   end
 
@@ -639,6 +673,166 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         post deposit_wizard_commit_path
 
         expect(response).to redirect_to(deposit_wizard_step_path(step: 'known_type'))
+      end
+
+      describe 'the optional connect capabilities on the deposit (Review) form' do
+        let(:resource_class) do
+          Hyrax::ModelRegistry.work_classes.detect { |k| k < Hyrax::Resource && k.model_name.param_key == param_key }
+        end
+
+        after { Hyku::DepositWizard.reset_config! }
+
+        context 'collection connect' do
+          before { Hyku::DepositWizard.config.enable_collection_connect = true }
+
+          it 'adds the work to the chosen collection' do
+            collection = FactoryBot.create(:hyku_collection, user: admin)
+            fill_in_wizard
+
+            post deposit_wizard_commit_path,
+                 params: { param_key => { member_of_collections_attributes: { '0' => { id: collection.id.to_s } } } }
+
+            expect(response).to redirect_to(deposit_wizard_step_path(step: 'done'))
+            work = Hyrax.query_service.find_all_of_model(model: resource_class).to_a.last
+            expect(work.member_of_collection_ids.map(&:to_s)).to include(collection.id.to_s)
+          end
+        end
+
+        context 'when collection connect is disabled' do
+          before { Hyku::DepositWizard.config.enable_collection_connect = false }
+
+          it 'ignores submitted collection membership' do
+            collection = FactoryBot.create(:hyku_collection, user: admin)
+            fill_in_wizard
+
+            post deposit_wizard_commit_path,
+                 params: { param_key => { member_of_collections_attributes: { '0' => { id: collection.id.to_s } } } }
+
+            work = Hyrax.query_service.find_all_of_model(model: resource_class).to_a.last
+            expect(work.member_of_collection_ids).to be_empty
+          end
+        end
+
+        context 'parent connect' do
+          before { Hyku::DepositWizard.config.enable_parent_connect = true }
+
+          it 'nests the work under the chosen parent work' do
+            parent = FactoryBot.valkyrie_create(:generic_work_resource, title: ['Parent work'], depositor: admin.user_key)
+            fill_in_wizard
+
+            post deposit_wizard_commit_path, params: { parent_id: parent.id.to_s }
+
+            expect(response).to redirect_to(deposit_wizard_step_path(step: 'done'))
+            reloaded_parent = Hyrax.query_service.find_by(id: parent.id)
+            child = Hyrax.query_service.find_all_of_model(model: resource_class).to_a
+                         .reject { |w| w.id.to_s == parent.id.to_s }.last
+            expect(reloaded_parent.member_ids.map(&:to_s)).to include(child.id.to_s)
+          end
+
+          it 'nests using a parent seeded at launch (handoff), without re-posting it' do
+            parent = FactoryBot.valkyrie_create(:generic_work_resource, title: ['Parent work'], depositor: admin.user_key)
+            # Launch the wizard from the parent's "attach child" action.
+            get deposit_wizard_path(parent_id: parent.id.to_s)
+            fill_in_wizard
+
+            post deposit_wizard_commit_path
+
+            reloaded_parent = Hyrax.query_service.find_by(id: parent.id)
+            child = Hyrax.query_service.find_all_of_model(model: resource_class).to_a
+                         .reject { |w| w.id.to_s == parent.id.to_s }.last
+            expect(reloaded_parent.member_ids.map(&:to_s)).to include(child.id.to_s)
+          end
+        end
+
+        context 'when parent connect is disabled' do
+          before { Hyku::DepositWizard.config.enable_parent_connect = false }
+
+          it 'ignores a submitted parent_id' do
+            parent = FactoryBot.valkyrie_create(:generic_work_resource, title: ['Parent work'], depositor: admin.user_key)
+            fill_in_wizard
+
+            post deposit_wizard_commit_path, params: { parent_id: parent.id.to_s }
+
+            reloaded_parent = Hyrax.query_service.find_by(id: parent.id)
+            expect(reloaded_parent.member_ids).to be_empty
+          end
+        end
+
+        context 'sharing' do
+          before { Hyku::DepositWizard.config.enable_sharing = true }
+
+          it 'grants a user the access chosen on the review step' do
+            grantee = FactoryBot.create(:user)
+            fill_in_wizard
+
+            post deposit_wizard_commit_path,
+                 params: { param_key => { permissions_attributes: {
+                   '0' => { type: 'person', name: grantee.user_key, access: 'edit' }
+                 } } }
+
+            expect(response).to redirect_to(deposit_wizard_step_path(step: 'done'))
+            work = Hyrax.query_service.find_all_of_model(model: resource_class).to_a.last
+            expect(work.permission_manager.edit_users.to_a).to include(grantee.user_key)
+          end
+        end
+
+        context 'when sharing is disabled' do
+          before { Hyku::DepositWizard.config.enable_sharing = false }
+
+          it 'ignores submitted permissions' do
+            grantee = FactoryBot.create(:user)
+            fill_in_wizard
+
+            post deposit_wizard_commit_path,
+                 params: { param_key => { permissions_attributes: {
+                   '0' => { type: 'person', name: grantee.user_key, access: 'edit' }
+                 } } }
+
+            work = Hyrax.query_service.find_all_of_model(model: resource_class).to_a.last
+            expect(work.permission_manager.edit_users.to_a).not_to include(grantee.user_key)
+          end
+        end
+
+        # The wizard's job for redirects is to CAPTURE the submitted params into
+        # the work attributes when the capability is available; the actual
+        # persistence is Hyrax's redirects populator + sync_redirect_paths step,
+        # which fire only when the `redirects` attribute is in the active schema
+        # (an env/profile concern, not a wizard concern). These specs assert the
+        # wizard's capture behavior, gated by the capability. reset_state is
+        # stubbed so the captured session is observable after commit.
+        context 'redirects' do
+          before do
+            allow(Hyrax.config).to receive(:redirects_active?).and_return(true)
+            allow_any_instance_of(Hyrax::DepositWizardController).to receive(:reset_state)
+          end
+
+          it 'captures the submitted vanity URL into the work attributes' do
+            fill_in_wizard
+
+            post deposit_wizard_commit_path,
+                 params: { param_key => { redirects_attributes: { '0' => { path: '/my-vanity-url' } } } }
+
+            expect(response).to redirect_to(deposit_wizard_step_path(step: 'done'))
+            captured = session[:deposit_wizard].dig('attributes', 'redirects_attributes')
+            expect(captured&.dig('0', 'path')).to eq('/my-vanity-url')
+          end
+        end
+
+        context 'when redirects are not active' do
+          before do
+            allow(Hyrax.config).to receive(:redirects_active?).and_return(false)
+            allow_any_instance_of(Hyrax::DepositWizardController).to receive(:reset_state)
+          end
+
+          it 'ignores a submitted redirect path' do
+            fill_in_wizard
+
+            post deposit_wizard_commit_path,
+                 params: { param_key => { redirects_attributes: { '0' => { path: '/my-vanity-url' } } } }
+
+            expect(session[:deposit_wizard].dig('attributes', 'redirects_attributes')).to be_blank
+          end
+        end
       end
     end
   end

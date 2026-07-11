@@ -33,6 +33,18 @@ RSpec.describe Hyku::DepositWizard::State do
     end
   end
 
+  describe '#parent_id' do
+    it 'stores a present value' do
+      state.parent_id = 'abc-123'
+      expect(state.parent_id).to eq('abc-123')
+    end
+
+    it 'stores nil for a blank value' do
+      state.parent_id = ''
+      expect(state.parent_id).to be_nil
+    end
+  end
+
   describe '#uploaded_file_ids' do
     it 'defaults to an empty array' do
       expect(state.uploaded_file_ids).to eq([])

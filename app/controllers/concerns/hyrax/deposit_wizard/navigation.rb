@@ -69,6 +69,29 @@ module Hyrax
         wizard_state.file_metadata = submitted.slice(*allowed)
         redirect_to main_app.deposit_wizard_step_path(step: 'review')
       end
+
+      # Capture the enabled connect/share/redirect capabilities posted with the
+      # deposit form into wizard state before commit.
+      def capture_review_extras
+        keys = enabled_extra_attribute_keys
+        if keys.any?
+          submitted = params.fetch(work_form.model_name.param_key, {}).permit!.to_h.slice(*keys)
+          wizard_state.attributes = wizard_state.attributes.merge(submitted) if submitted.present?
+        end
+
+        # Guard on params.key? so an absent parent_id doesn't clobber one seeded at
+        # launch (the handoff).
+        return unless wizard_config.enable_parent_connect && params.key?(:parent_id)
+        wizard_state.parent_id = params[:parent_id]
+      end
+
+      def enabled_extra_attribute_keys
+        keys = []
+        keys << 'member_of_collections_attributes' if wizard_config.enable_collection_connect
+        keys << 'permissions_attributes' if wizard_config.enable_sharing
+        keys.push('redirects_attributes', 'redirects_display_url_index') if wizard_config.redirects_available?
+        keys
+      end
     end
   end
 end

@@ -29,6 +29,7 @@ module Hyrax
 
     def start
       reset_state
+      seed_launch_context
       render :start
     end
 
@@ -69,6 +70,8 @@ module Hyrax
         return render(:review)
       end
 
+      capture_review_extras
+      build_work_form
       work = create_work
       return render(:review) unless work
 
@@ -97,6 +100,18 @@ module Hyrax
 
     def reset_state
       session[:deposit_wizard] = {}
+    end
+
+    # Seed wizard state from the same context params other entry points pass
+    # allowing a potential connection point with other deposit flows.
+    def seed_launch_context
+      wizard_state.parent_id = params[:parent_id] if wizard_config.enable_parent_connect && params[:parent_id].present?
+
+      return unless wizard_config.enable_collection_connect && params[:add_works_to_collection].present?
+
+      wizard_state.attributes = wizard_state.attributes.merge(
+        'member_of_collections_attributes' => { '0' => { 'id' => params[:add_works_to_collection] } }
+      )
     end
   end
 end

@@ -45,6 +45,27 @@ module Hyku
       # Callable run after commit, receiving the persisted work and wizard state.
       attr_accessor :post_commit
 
+      # The parent/collection/sharing capabilities are per-tenant Flipflop features
+      # (grouped with :deposit_wizard). A writer stays for an explicit in-memory
+      # override (used by specs and any app that sets it directly). Redirects are
+      # not here — they use their own Flipflop gate (see #redirects_available?).
+      attr_writer :enable_parent_connect, :enable_collection_connect, :enable_sharing
+
+      # Work types eligible as parents; +nil+ falls back to the tenant's available
+      # work types.
+      attr_accessor :parent_types
+
+      # Each reader returns the in-memory override when one was set, otherwise the
+      # tenant's Flipflop feature value.
+      %i[parent_connect collection_connect sharing].each do |capability|
+        define_method("enable_#{capability}") do
+          override = instance_variable_get("@enable_#{capability}")
+          return override unless override.nil?
+
+          Flipflop.public_send("deposit_wizard_#{capability}?")
+        end
+      end
+
       def initialize
         @single_admin_set = true
         @enable_batch = false
@@ -54,11 +75,18 @@ module Hyku
         @item_types = nil
         @suggestions = {}
         @post_commit = nil
+        @parent_types = nil
         yield self if block_given?
       end
 
       def container?
         container_type.present?
+      end
+
+      # Redirects are governed entirely by Hyrax's own per-tenant gate
+      # (+redirects_enabled?+ boot flag && +Flipflop.redirects?+).
+      def redirects_available?
+        Hyrax.config.redirects_active?
       end
     end
   end

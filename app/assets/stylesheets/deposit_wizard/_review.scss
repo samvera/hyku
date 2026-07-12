@@ -1,0 +1,73 @@
+// The review summary, deposit-agreement block, and the navigation footer.
+.deposit-wizard {
+  // ---- Review summary --------------------------------------------------
+  &__review-list {
+    margin-bottom: 1.5rem;
+
+    .row {
+      padding: 0.35rem 0;
+      align-items: baseline;
+
+      & + .row {
+        border-top: 1px solid var(--dw-divider);
+      }
+    }
+
+    dt {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--dw-ink);
+    }
+
+    dd {
+      font-size: 0.95rem;
+      color: var(--dw-ink-muted);
+      margin-bottom: 0;
+    }
+  }
+
+  &__review-files {
+    li + li {
+      margin-top: 0.25rem;
+    }
+  }
+
+  &__agreement {
+    margin: 1.5rem 0;
+    padding: 1rem 1.25rem;
+    background: var(--dw-surface-sunk);
+    border: 1px solid var(--dw-divider);
+    border-radius: var(--dw-radius-md);
+  }
+
+  // ---- Navigation footer -----------------------------------------------
+  &__nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--dw-border);
+  }
+
+  // When there's no left-side content, push the button group to the right.
+  &__nav--end {
+    justify-content: flex-end;
+  }
+
+  &__nav-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .btn {
+      min-width: 120px;
+      font-weight: 600;
+    }
+  }
+
+  &__empty {
+    color: var(--dw-ink-subtle);
+    font-style: italic;
+  }
+}

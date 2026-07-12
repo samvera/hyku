@@ -1,0 +1,84 @@
+// Path/type chooser cards and the admin-set selector on the start screen.
+.deposit-wizard {
+  // ---- Choice cards (path + type choosers) -----------------------------
+  &__paths,
+  &__type-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  &__path-card,
+  &__type-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    height: 100%;
+    text-align: center;
+    padding: 1.25rem 0.95rem;
+    border: 2px solid var(--dw-border);
+    border-radius: var(--dw-radius-sm);
+    background: var(--dw-surface);
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover,
+    &:focus {
+      border-color: #6c757d;
+      outline: none;
+    }
+
+    &.is-selected {
+      border-color: var(--dw-accent);
+      background: var(--dw-accent-tint);
+      box-shadow: 0 2px 4px rgba(43, 109, 165, 0.1);
+
+      .deposit-wizard__type-card-label,
+      .deposit-wizard__path-title,
+      .deposit-wizard__type-card-icon {
+        color: var(--dw-accent);
+      }
+    }
+  }
+
+  // Work-type icon (from SelectTypePresenter#icon_class), above the label.
+  &__type-card-icon {
+    font-size: 22px;
+    color: var(--dw-ink-subtle);
+    margin-bottom: 0.35rem;
+    transition: color 0.2s ease;
+  }
+
+  &__path-title,
+  &__type-card-label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #333;
+  }
+
+  &__path-desc,
+  &__type-card-desc {
+    color: var(--dw-ink-muted);
+    font-size: 0.8rem;
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  // ---- Forms -----------------------------------------------------------
+  &__admin-set {
+    margin-bottom: 1.75rem;
+  }
+
+  &__admin-set-hint {
+    margin-bottom: 0.75rem;
+  }
+
+  // Drop the browser's default dotted underline on abbr[title] so the required
+  // mark reads as a plain red asterisk.
+  &__section-heading .required {
+    margin-left: 0.25rem;
+    text-decoration: none;
+    cursor: default;
+  }
+}

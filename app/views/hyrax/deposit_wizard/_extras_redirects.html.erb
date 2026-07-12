@@ -1,35 +1,23 @@
-<%# Posts redirects_attributes[i][path] and redirects_display_url_index; the
-    redirects populator + sync_redirect_paths persist them in the deposit
-    transaction. %>
-<% param_key = work_form.model_name.param_key %>
-<section class="deposit-wizard__extra" data-behavior="extra-redirects" data-param-key="<%= param_key %>">
-  <h3 class="deposit-wizard__section-heading"><%= t('hyku.deposit_wizard.extras.redirects.heading') %></h3>
-  <p class="deposit-wizard__step-hint"><%= t('hyku.deposit_wizard.extras.redirects.hint', base_url: request.base_url) %></p>
-
-  <ul class="deposit-wizard__extra-rows list-unstyled" data-behavior="redirect-rows">
-    <li class="deposit-wizard__extra-row">
-      <%= text_field_tag "#{param_key}[redirects_attributes][0][path]", nil, class: 'form-control',
-                         placeholder: t('hyku.deposit_wizard.extras.redirects.placeholder') %>
-      <label class="deposit-wizard__redirect-primary">
-        <%= radio_button_tag "#{param_key}[redirects_display_url_index]", '0' %>
-        <%= t('hyku.deposit_wizard.extras.redirects.primary') %>
-      </label>
-    </li>
-  </ul>
-
-  <button type="button" class="btn btn-secondary" data-behavior="redirect-add">
-    <%= t('hyku.deposit_wizard.extras.redirects.add') %>
+<%# Vanity-URL section. Renders Hyrax's stock redirects tab (hyrax/base/
+    _form_redirects) inside the wizard card so it inherits the full behavior —
+    none-radio, per-row remove, disable-until-path, the always-submitted marker,
+    and the monotonic row index — driven by hyrax/redirects.js. The posted
+    redirects_attributes ride the deposit form; the populator + sync_redirect_paths
+    persist them in the transaction. %>
+<% open = extra_prefilled?(:redirects) %>
+<section class="deposit-wizard__extra <%= 'is-open' if open %>" data-behavior="extra-redirects">
+  <button type="button" class="deposit-wizard__extra-toggle" data-behavior="extra-toggle"
+          aria-expanded="<%= open %>">
+    <span class="deposit-wizard__extra-titles">
+      <span class="deposit-wizard__extra-title"><%= t('hyku.deposit_wizard.extras.redirects.heading') %></span>
+      <span class="deposit-wizard__extra-subtitle"><%= t('hyku.deposit_wizard.extras.redirects.hint', base_url: request.base_url) %></span>
+    </span>
+    <span class="deposit-wizard__extra-chevron" aria-hidden="true"></span>
   </button>
 
-  <%# Row template cloned by the wizard JS for each additional path (index filled in). %>
-  <template data-behavior="redirect-row-template">
-    <li class="deposit-wizard__extra-row">
-      <input type="text" name="<%= param_key %>[redirects_attributes][__index__][path]" class="form-control"
-             placeholder="<%= t('hyku.deposit_wizard.extras.redirects.placeholder') %>">
-      <label class="deposit-wizard__redirect-primary">
-        <input type="radio" name="<%= param_key %>[redirects_display_url_index]" value="__index__">
-        <%= t('hyku.deposit_wizard.extras.redirects.primary') %>
-      </label>
-    </li>
-  </template>
+  <div class="deposit-wizard__extra-body" data-behavior="extra-body" <%= 'hidden' unless open %>>
+    <%= fields_for work_form.model_name.param_key, work_form do |f| %>
+      <%= render 'hyrax/base/form_redirects', f: f %>
+    <% end %>
+  </div>
 </section>

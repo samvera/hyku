@@ -69,6 +69,15 @@ module Hyrax
       render json: eligible_parent_documents(params[:q]).map { |doc| { id: doc.id, label: doc.title.first } }
     end
 
+    # Autosave endpoint for the review-step extras, so they survive a refresh.
+    def save_extras
+      return head(:bad_request) if wizard_state.work_type.blank?
+
+      build_work_form
+      capture_review_extras
+      head :no_content
+    end
+
     # Persist the work from the collected state, then run the configured
     # post-commit hook (e.g. Enact nesting) and land on the done screen.
     def commit

@@ -1,6 +1,19 @@
 // Progressive enhancement for the guided deposit wizard. Attaches behavior to
 // wizard steps by class when present; a no-op on other pages.
 (function () {
+  // Debounced so rapid edits (typing a redirect path) coalesce into one save.
+  var extrasSaveTimer = null;
+  function autosaveExtras() {
+    var form = document.querySelector('.deposit-wizard__commit-form');
+    if (!form) return;
+    var url = form.getAttribute('data-extras-url');
+    if (!url) return;
+    clearTimeout(extrasSaveTimer);
+    extrasSaveTimer = setTimeout(function () {
+      $.ajax({ url: url, method: 'POST', data: $(form).serialize() });
+    }, 400);
+  }
+
   function initFileUploader() {
     var uploader = $('.fileupload-deposit-wizard');
     if (!uploader.length || typeof $.fn.hyraxUploader !== 'function') return;
@@ -151,6 +164,12 @@
     }
     var index = 0;
 
+    // Delegated so server-rendered chips (restored on refresh) are removable too.
+    chips.on('click', '.deposit-wizard__chip-remove', function () {
+      $(this).closest('.deposit-wizard__extra-chip').remove();
+      autosaveExtras();
+    });
+
     section.find('[data-behavior="collection-add"]').on('click', function () {
       var id = select.val();
       if (!id) return;
@@ -162,9 +181,9 @@
       var chip = $('<li class="deposit-wizard__extra-chip" data-collection-id="' + id + '"></li>');
       chip.append($('<span></span>').text(label));
       chip.append($('<input type="hidden">').attr('name', field).val(id));
-      chip.append($('<button type="button" class="deposit-wizard__chip-remove" aria-label="remove">×</button>')
-        .on('click', function () { chip.remove(); }));
+      chip.append($('<button type="button" class="deposit-wizard__chip-remove" aria-label="remove">×</button>'));
       chips.append(chip);
+      autosaveExtras();
 
       if (typeof select.val === 'function') { select.val('').trigger('change'); }
     });
@@ -175,6 +194,12 @@
     if (!section.length) return;
     var chips = section.find('[data-behavior="share-chips"]');
     var index = 0;
+
+    // Delegated so server-rendered chips (restored on refresh) are removable too.
+    chips.on('click', '.deposit-wizard__chip-remove', function () {
+      $(this).closest('.deposit-wizard__extra-chip').remove();
+      autosaveExtras();
+    });
 
     var paramKey = section.data('param-key');
     function addGrant(type, name, accessVal, accessLabel) {
@@ -187,9 +212,9 @@
       chip.append($('<input type="hidden">').attr('name', prefix + '[type]').val(type));
       chip.append($('<input type="hidden">').attr('name', prefix + '[name]').val(name));
       chip.append($('<input type="hidden">').attr('name', prefix + '[access]').val(accessVal));
-      chip.append($('<button type="button" class="deposit-wizard__chip-remove" aria-label="remove">×</button>')
-        .on('click', function () { chip.remove(); }));
+      chip.append($('<button type="button" class="deposit-wizard__chip-remove" aria-label="remove">×</button>'));
       chips.append(chip);
+      autosaveExtras();
     }
 
     section.find('[data-behavior="share-person-add"]').on('click', function () {
@@ -206,21 +231,6 @@
     });
   }
 
-  function initRedirectsConnect() {
-    var section = $('[data-behavior="extra-redirects"]');
-    if (!section.length) return;
-    var rows = section.find('[data-behavior="redirect-rows"]');
-    var template = section.find('[data-behavior="redirect-row-template"]');
-    if (!template.length) return;
-    var index = 1; // row 0 is rendered server-side
-
-    section.find('[data-behavior="redirect-add"]').on('click', function () {
-      var html = template.html().replace(/__index__/g, index);
-      index += 1;
-      rows.append($(html));
-    });
-  }
-
   // Select2 v3 (the version Hyrax bundles) binds an ajax typeahead to a HIDDEN
   // INPUT, not a <select>. That input is the parent_id field posted with the
   // deposit, so its value is the chosen work id — no separate hidden field.
@@ -234,11 +244,11 @@
       placeholder: input.data('placeholder'),
       allowClear: true,
       minimumInputLength: 2,
-      // A hidden input has no option text for a pre-seeded value; supply one so
-      // the id round-trips as its own label until the user picks a fresh result.
+      // A hidden input has no option text for a pre-seeded value; show the work's
+      // title (passed as data-initial-label) rather than the bare id.
       initSelection: function (element, callback) {
         var val = element.val();
-        if (val) callback({ id: val, text: val });
+        if (val) callback({ id: val, text: input.data('initial-label') || val });
       },
       ajax: {
         url: section.data('options-url'),
@@ -248,6 +258,31 @@
           return { results: data.map(function (row) { return { id: row.id, text: row.label }; }) };
         }
       }
+    });
+
+    input.on('change', autosaveExtras);
+  }
+
+  // The redirects rows are the stock partial's (hyrax/redirects.js owns them), so
+  // autosave via delegation to catch dynamically-added rows.
+  function initRedirectsAutosave() {
+    var section = document.querySelector('[data-behavior="extra-redirects"]');
+    if (!section) return;
+    section.addEventListener('input', autosaveExtras);
+    section.addEventListener('change', autosaveExtras);
+    section.addEventListener('click', function (event) {
+      if (event.target.closest('[data-redirects-remove-row]')) autosaveExtras();
+    });
+  }
+
+  function initExtrasToggle() {
+    $('[data-behavior="extra-toggle"]').on('click', function () {
+      var toggle = $(this);
+      var body = toggle.siblings('[data-behavior="extra-body"]');
+      var open = body.prop('hidden');
+      body.prop('hidden', !open);
+      toggle.attr('aria-expanded', open ? 'true' : 'false');
+      toggle.closest('.deposit-wizard__extra').toggleClass('is-open', open);
     });
   }
 
@@ -271,8 +306,9 @@
     initDepositAgreement();
     initCollectionConnect();
     initSharingConnect();
-    initRedirectsConnect();
     initParentConnect();
+    initRedirectsAutosave();
+    initExtrasToggle();
   }
 
   $(document).on('turbolinks:load ready', initDepositWizard);

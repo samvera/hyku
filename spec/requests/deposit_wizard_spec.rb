@@ -408,6 +408,41 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         expect(response.body).to include(I18n.t('hyku.deposit_wizard.review.work_visibility'))
       end
 
+      describe 'autosaving review extras (survive a refresh)' do
+        after { Hyku::DepositWizard.reset_config! }
+
+        it 'saves a chosen parent into wizard state and re-renders it on review' do
+          Hyku::DepositWizard.config.enable_parent_connect = true
+          parent = FactoryBot.valkyrie_create(:generic_work_resource, title: ['Parent'], depositor: admin.user_key)
+          fill_in_wizard
+
+          post deposit_wizard_extras_path, params: { parent_id: parent.id.to_s }
+          expect(response).to have_http_status(:no_content)
+          expect(session[:deposit_wizard]['parent_id']).to eq(parent.id.to_s)
+
+          get deposit_wizard_step_path(step: 'review')
+          expect(response.body).to include(parent.id.to_s)
+        end
+
+        it 'saves collection membership into wizard state' do
+          Hyku::DepositWizard.config.enable_collection_connect = true
+          collection = FactoryBot.create(:hyku_collection, user: admin)
+          fill_in_wizard
+
+          post deposit_wizard_extras_path,
+               params: { param_key => { member_of_collections_attributes: { '0' => { id: collection.id.to_s } } } }
+
+          expect(response).to have_http_status(:no_content)
+          captured = session[:deposit_wizard].dig('attributes', 'member_of_collections_attributes')
+          expect(captured&.dig('0', 'id')).to eq(collection.id.to_s)
+        end
+
+        it 'rejects the save before a work type is chosen' do
+          post deposit_wizard_extras_path, params: { parent_id: 'x' }
+          expect(response).to have_http_status(:bad_request)
+        end
+      end
+
       describe 'the parent connect section on review' do
         after { Hyku::DepositWizard.reset_config! }
 

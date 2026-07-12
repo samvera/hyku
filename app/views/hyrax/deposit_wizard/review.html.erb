@@ -61,7 +61,8 @@
     </p>
   <% end %>
 
-  <%= form_tag main_app.deposit_wizard_commit_path, method: :post, class: 'deposit-wizard__commit-form' do %>
+  <%= form_tag main_app.deposit_wizard_commit_path, method: :post, class: 'deposit-wizard__commit-form',
+               data: { 'extras-url': main_app.deposit_wizard_extras_path } do %>
     <% if wizard_config.enable_parent_connect %>
       <%= render 'extras_parent' %>
     <% end %>

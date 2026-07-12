@@ -75,8 +75,12 @@ module Hyrax
       def capture_review_extras
         keys = enabled_extra_attribute_keys
         if keys.any?
-          submitted = params.fetch(work_form.model_name.param_key, {}).permit!.to_h.slice(*keys)
-          wizard_state.attributes = wizard_state.attributes.merge(submitted) if submitted.present?
+          posted = params.fetch(work_form.model_name.param_key, {}).permit!.to_h
+          attributes = wizard_state.attributes
+          # Delete-when-absent (not merge) so removing all of a capability's
+          # entries clears it rather than leaving the prior value to reappear.
+          keys.each { |key| posted.key?(key) ? attributes[key] = posted[key] : attributes.delete(key) }
+          wizard_state.attributes = attributes
         end
 
         # Guard on params.key? so an absent parent_id doesn't clobber one seeded at

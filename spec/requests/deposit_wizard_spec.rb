@@ -437,6 +437,19 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
           expect(captured&.dig('0', 'id')).to eq(collection.id.to_s)
         end
 
+        it 'clears a capability from state when its entries are removed' do
+          Hyku::DepositWizard.config.enable_collection_connect = true
+          collection = FactoryBot.create(:hyku_collection, user: admin)
+          fill_in_wizard
+
+          post deposit_wizard_extras_path,
+               params: { param_key => { member_of_collections_attributes: { '0' => { id: collection.id.to_s } } } }
+          expect(session[:deposit_wizard].dig('attributes', 'member_of_collections_attributes')).to be_present
+
+          post deposit_wizard_extras_path, params: { param_key => { title: ['x'] } }
+          expect(session[:deposit_wizard].dig('attributes', 'member_of_collections_attributes')).to be_blank
+        end
+
         it 'rejects the save before a work type is chosen' do
           post deposit_wizard_extras_path, params: { parent_id: 'x' }
           expect(response).to have_http_status(:bad_request)

@@ -97,9 +97,6 @@ en:
         redirects:
           heading: Add a vanity URL
           hint: "Optionally add a short, memorable URL that redirects to this work (under %{base_url})."
-          placeholder: /my-vanity-url
-          primary: Use as primary
-          add: Add another URL
       file_meta:
         description: Description
         file: File

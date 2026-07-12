@@ -58,6 +58,20 @@ RSpec.describe Hyku::DepositWizard::Config do
       allow(Hyrax.config).to receive(:redirects_active?).and_return(true)
       expect(config.redirects_available?).to be(true)
     end
+
+    context 'when the redirects feature is active' do
+      before { allow(Hyrax.config).to receive(:redirects_active?).and_return(true) }
+
+      it 'is hidden when the work does not carry the redirects attribute' do
+        form = double(model: double(:model))
+        expect(config.redirects_available?(form)).to be(false)
+      end
+
+      it 'is shown when the work carries the redirects attribute' do
+        form = double(model: double(:model, redirects: []))
+        expect(config.redirects_available?(form)).to be(true)
+      end
+    end
   end
 
   describe 'block configuration (downstream override)' do

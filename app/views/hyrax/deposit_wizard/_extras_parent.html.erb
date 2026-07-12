@@ -1,0 +1,19 @@
+<%# Sets the top-level parent_id (not under the work key); add_to_parent
+    consumes it in the deposit transaction to nest this work under the chosen one. %>
+<section class="deposit-wizard__extra" data-behavior="extra-parent"
+         data-options-url="<%= main_app.deposit_wizard_parent_options_path %>">
+  <h3 class="deposit-wizard__section-heading"><%= t('hyku.deposit_wizard.extras.parent.heading') %></h3>
+  <p class="deposit-wizard__step-hint"><%= t('hyku.deposit_wizard.extras.parent.hint') %></p>
+
+  <div class="deposit-wizard__field">
+    <%= label_tag 'dw_parent_search', t('hyku.deposit_wizard.extras.parent.label'),
+                  class: 'deposit-wizard__field-label' %>
+    <%# Select2 3.x ajax binds to a hidden input (not a <select>); this input both
+        drives the typeahead and carries the chosen work's id as the top-level
+        parent_id, which add_to_parent consumes in the transaction. %>
+    <%= hidden_field_tag 'parent_id', nil, id: 'dw_parent_search',
+                         class: 'form-control', style: 'width: 24rem;',
+                         data: { behavior: 'parent-select',
+                                 placeholder: t('hyku.deposit_wizard.extras.parent.placeholder') } %>
+  </div>
+</section>

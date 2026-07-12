@@ -15,6 +15,7 @@ module Hyrax
 
     before_action :ensure_enabled
     before_action :authenticate_user!
+    before_action :assign_current_ability
     before_action :build_breadcrumbs
 
     STEPS = %w[start item_start known_type files details file_meta review done].freeze
@@ -59,6 +60,15 @@ module Hyrax
       end
     end
 
+    def parent_options
+      return head(:forbidden) unless wizard_config.enable_parent_connect
+
+      # FindWorksSearchBuilder excludes a "current" work by params[:id]; the wizard
+      # has no current work, so a blank id excludes nothing.
+      params[:id] ||= ''
+      render json: eligible_parent_documents(params[:q]).map { |doc| { id: doc.id, label: doc.title.first } }
+    end
+
     # Persist the work from the collected state, then run the configured
     # post-commit hook (e.g. Enact nesting) and land on the done screen.
     def commit
@@ -90,6 +100,14 @@ module Hyrax
       return if Flipflop.deposit_wizard?
 
       redirect_to hyrax.my_works_path, alert: t('hyku.deposit_wizard.disabled')
+    end
+
+    # Hyrax's collection/search helpers (e.g. available_collections) read the
+    # @current_ability instance variable, which stock works controllers set via
+    # WorksControllerBehavior. This lean controller must set it itself, or those
+    # helpers bail with an empty list.
+    def assign_current_ability
+      @current_ability = current_ability
     end
 
     def build_breadcrumbs

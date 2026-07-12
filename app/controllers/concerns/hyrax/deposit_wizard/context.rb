@@ -170,6 +170,28 @@ module Hyrax
         Hyrax::AdminSetService.new(self).search_results(:deposit)
       end
 
+      def eligible_parent_documents(query)
+        search = Hyrax::SearchService.new(config: blacklight_config, user_params: { q: query.to_s },
+                                          search_builder_class: Hyrax::My::FindWorksSearchBuilder,
+                                          scope: self, current_ability: current_ability)
+        _, docs = search.search_results do |builder|
+          builder.with(q: query.to_s).with_access(:read).rows(20)
+          types = eligible_parent_types
+          builder.merge(fq: type_filter_query(types)) if types.present?
+          builder
+        end
+        docs
+      end
+
+      def eligible_parent_types
+        wizard_config.parent_types.presence || available_work_types.map(&:to_s)
+      end
+
+      def type_filter_query(type_names)
+        clauses = Array(type_names).map { |name| "has_model_ssim:\"#{name}\"" }
+        "(#{clauses.join(' OR ')})"
+      end
+
       def last_deposited
         session.delete(:deposit_wizard_last)
       end

@@ -83,10 +83,11 @@ module Hyku
         container_type.present?
       end
 
-      # Redirects are governed entirely by Hyrax's own per-tenant gate
-      # (+redirects_enabled?+ boot flag && +Flipflop.redirects?+).
-      def redirects_available?
-        Hyrax.config.redirects_active?
+      def redirects_available?(form = nil)
+        return false unless Hyrax.config.redirects_active?
+
+        target = form.respond_to?(:model) ? form.model : form
+        target.nil? || target.respond_to?(:redirects)
       end
     end
   end

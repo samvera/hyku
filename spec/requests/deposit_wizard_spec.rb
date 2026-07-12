@@ -84,6 +84,38 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
     end
   end
 
+  describe 'GET /deposit_wizard/parent_options (parent typeahead)' do
+    let(:admin) { FactoryBot.create(:admin) }
+
+    before do
+      allow(Flipflop).to receive(:deposit_wizard?).and_return(true)
+      Hyku::DepositWizard.config.enable_parent_connect = true
+    end
+
+    after { Hyku::DepositWizard.reset_config! }
+
+    it 'returns matching works as JSON id/label pairs' do
+      parent = FactoryBot.valkyrie_create(:generic_work_resource, title: ['Findable Parent'],
+                                                                  depositor: admin.user_key,
+                                                                  visibility_setting: 'open')
+
+      get deposit_wizard_parent_options_path(q: 'Findable')
+
+      expect(response).to have_http_status(:success)
+      results = JSON.parse(response.body)
+      expect(results).to be_an(Array)
+      expect(results.map { |r| r['id'] }).to include(parent.id.to_s)
+    end
+
+    it 'is forbidden when parent connect is disabled' do
+      Hyku::DepositWizard.config.enable_parent_connect = false
+
+      get deposit_wizard_parent_options_path(q: 'anything')
+
+      expect(response).to have_http_status(:forbidden)
+    end
+  end
+
   describe 'navigation and type selection' do
     before do
       allow(Flipflop).to receive(:deposit_wizard?).and_return(true)
@@ -374,6 +406,100 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         expect(response.body).to include(I18n.t('hyku.deposit_wizard.review.heading'))
         expect(response.body).to include('Repair Study')
         expect(response.body).to include(I18n.t('hyku.deposit_wizard.review.work_visibility'))
+      end
+
+      describe 'the parent connect section on review' do
+        after { Hyku::DepositWizard.reset_config! }
+
+        it 'renders the section when parent connect is enabled' do
+          Hyku::DepositWizard.config.enable_parent_connect = true
+          fill_in_wizard
+          get deposit_wizard_step_path(step: 'review')
+
+          expect(response.body).to include('data-behavior="extra-parent"')
+          expect(response.body).to include(I18n.t('hyku.deposit_wizard.extras.parent.heading'))
+        end
+
+        it 'omits the section when parent connect is disabled' do
+          Hyku::DepositWizard.config.enable_parent_connect = false
+          fill_in_wizard
+          get deposit_wizard_step_path(step: 'review')
+
+          expect(response.body).not_to include('data-behavior="extra-parent"')
+        end
+      end
+
+      describe 'the collection connect section on review' do
+        after { Hyku::DepositWizard.reset_config! }
+
+        it 'renders the section when the capability is enabled' do
+          Hyku::DepositWizard.config.enable_collection_connect = true
+          fill_in_wizard
+          get deposit_wizard_step_path(step: 'review')
+
+          expect(response.body).to include('data-behavior="extra-collection"')
+          expect(response.body).to include(I18n.t('hyku.deposit_wizard.extras.collection.heading'))
+        end
+
+        it 'omits the section when the capability is disabled' do
+          Hyku::DepositWizard.config.enable_collection_connect = false
+          fill_in_wizard
+          get deposit_wizard_step_path(step: 'review')
+
+          expect(response.body).not_to include('data-behavior="extra-collection"')
+        end
+      end
+
+      describe 'the sharing section on review' do
+        after { Hyku::DepositWizard.reset_config! }
+
+        it 'renders the section when sharing is enabled' do
+          Hyku::DepositWizard.config.enable_sharing = true
+          fill_in_wizard
+          get deposit_wizard_step_path(step: 'review')
+
+          expect(response.body).to include('data-behavior="extra-sharing"')
+          expect(response.body).to include(I18n.t('hyku.deposit_wizard.extras.sharing.heading'))
+        end
+
+        it 'omits the section when sharing is disabled' do
+          Hyku::DepositWizard.config.enable_sharing = false
+          fill_in_wizard
+          get deposit_wizard_step_path(step: 'review')
+
+          expect(response.body).not_to include('data-behavior="extra-sharing"')
+        end
+      end
+
+      describe 'the redirects section on review' do
+        it 'renders the section when redirects are active and the work carries the attribute' do
+          allow(Hyrax.config).to receive(:redirects_active?).and_return(true)
+          allow_any_instance_of(Hyku::DepositWizard::Config)
+            .to receive(:redirects_available?).and_return(true)
+          fill_in_wizard
+          get deposit_wizard_step_path(step: 'review')
+
+          expect(response.body).to include('data-behavior="extra-redirects"')
+          expect(response.body).to include(I18n.t('hyku.deposit_wizard.extras.redirects.heading'))
+        end
+
+        it 'omits the section when redirects are not active' do
+          allow(Hyrax.config).to receive(:redirects_active?).and_return(false)
+          fill_in_wizard
+          get deposit_wizard_step_path(step: 'review')
+
+          expect(response.body).not_to include('data-behavior="extra-redirects"')
+        end
+
+        it 'omits the section when the work does not carry the redirects attribute' do
+          allow(Hyrax.config).to receive(:redirects_active?).and_return(true)
+          allow_any_instance_of(Hyku::DepositWizard::Config)
+            .to receive(:redirects_available?).and_return(false)
+          fill_in_wizard
+          get deposit_wizard_step_path(step: 'review')
+
+          expect(response.body).not_to include('data-behavior="extra-redirects"')
+        end
       end
 
       it 'review Back goes to file_meta when there are files, else details' do

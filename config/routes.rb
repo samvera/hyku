@@ -160,6 +160,8 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   # Guided deposit wizard
   scope :dashboard, module: 'hyrax' do
     get 'deposit_wizard', to: 'deposit_wizard#start', as: :deposit_wizard
+    # Must precede the :step wildcard so it isn't captured as a step.
+    get 'deposit_wizard/parent_options', to: 'deposit_wizard#parent_options', as: :deposit_wizard_parent_options
     get 'deposit_wizard/:step', to: 'deposit_wizard#show', as: :deposit_wizard_step
     patch 'deposit_wizard/:step', to: 'deposit_wizard#update', as: :deposit_wizard_advance
     post 'deposit_wizard/commit', to: 'deposit_wizard#commit', as: :deposit_wizard_commit

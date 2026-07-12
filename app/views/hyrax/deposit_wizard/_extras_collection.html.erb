@@ -1,0 +1,30 @@
+<%# Posts member_of_collections_attributes[N][id]; the ResourceForm's
+    in_collections_populator persists membership in the deposit transaction. %>
+<% param_key = work_form.model_name.param_key %>
+<% collections = available_collections(work: work_form) %>
+<section class="deposit-wizard__extra" data-behavior="extra-collection" data-param-key="<%= param_key %>">
+  <h3 class="deposit-wizard__section-heading"><%= t('hyku.deposit_wizard.extras.collection.heading') %></h3>
+  <p class="deposit-wizard__step-hint"><%= t('hyku.deposit_wizard.extras.collection.hint') %></p>
+
+  <% if collections.any? %>
+    <div class="deposit-wizard__field form-inline">
+      <%= label_tag "#{param_key}_collection_select", t('hyku.deposit_wizard.extras.collection.label'),
+                    class: 'deposit-wizard__field-label sr-only' %>
+      <select id="<%= param_key %>_collection_select" class="form-control"
+              data-behavior="collection-select"
+              data-placeholder="<%= t('hyku.deposit_wizard.extras.collection.placeholder') %>">
+        <option value=""></option>
+        <% collections.each do |collection| %>
+          <option value="<%= collection.id %>"><%= collection.to_s %></option>
+        <% end %>
+      </select>
+      <button type="button" class="btn btn-secondary" data-behavior="collection-add">
+        <%= t('hyku.deposit_wizard.extras.add') %>
+      </button>
+    </div>
+
+    <ul class="deposit-wizard__extra-chips list-unstyled" data-behavior="collection-chips"></ul>
+  <% else %>
+    <p class="deposit-wizard__empty"><%= t('hyku.deposit_wizard.extras.collection.none') %></p>
+  <% end %>
+</section>

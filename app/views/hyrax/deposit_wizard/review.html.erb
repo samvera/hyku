@@ -62,6 +62,22 @@
   <% end %>
 
   <%= form_tag main_app.deposit_wizard_commit_path, method: :post, class: 'deposit-wizard__commit-form' do %>
+    <% if wizard_config.enable_parent_connect %>
+      <%= render 'extras_parent' %>
+    <% end %>
+
+    <% if wizard_config.enable_collection_connect %>
+      <%= render 'extras_collection' %>
+    <% end %>
+
+    <% if wizard_config.enable_sharing %>
+      <%= render 'extras_sharing' %>
+    <% end %>
+
+    <% if wizard_config.redirects_available?(work_form) %>
+      <%= render 'extras_redirects' %>
+    <% end %>
+
     <% if Flipflop.show_deposit_agreement? %>
       <div class="deposit-wizard__agreement">
         <% if Flipflop.active_deposit_agreement_acceptance? %>

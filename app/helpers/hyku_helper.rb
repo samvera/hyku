@@ -41,8 +41,8 @@ module HykuHelper
     main_app.send(path, parent_doc.id)
   end
 
-  # Override Hyrax's hardcoded "Samvera Hyrax" generator tag with correct identification
-  def hyku_generator_meta_tag
+  # Override Hyrax's generator tag to identify the application as Samvera Hyku
+  def hyrax_generator_meta_tag
     "Samvera Hyku #{::Hyku::VERSION}"
   end
 end

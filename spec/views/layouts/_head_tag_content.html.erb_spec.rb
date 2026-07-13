@@ -46,9 +46,7 @@ RSpec.describe 'layouts/_head_tag_content.html.erb', type: :view do
 
         # csrf_meta_tag may not render in view spec context without proper request setup
         # This test is best-effort — the generator tag fix is what matters
-        if rendered.include?('csrf')
-          expect(rendered).to match(/<meta name=["']csrf-/)
-        end
+        expect(rendered).to match(/<meta name=["']csrf-/) if rendered.include?('csrf')
       end
 
       it 'includes charset meta tag' do

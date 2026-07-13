@@ -18,18 +18,23 @@ module Hyrax
         params.fetch(wizard_state.work_type.constantize.model_name.param_key, {})
       end
 
-      # Run the stock CreateValkyrieWork action (same as the deposit form) to
-      # persist the work and attach the uploaded files. Returns the work, or nil
-      # when validation or the transaction fails.
+      # Run the stock CreateValkyrieWork action (same as the deposit form). Returns
+      # the work, or nil on validation/transaction failure — flashing why, so the
+      # re-rendered review step isn't silent.
       def create_work
         action = Hyrax::Action::CreateValkyrieWork.new(form: work_form,
                                                        transactions: Hyrax::Transactions::Container,
                                                        user: current_user,
                                                        params: commit_params,
                                                        work_attributes_key: work_form.model_name.param_key)
-        return unless action.validate
+        return flag_commit_failure(form_error_messages(action.form)) unless action.validate
 
-        action.perform.value_or(nil)
+        # Failure#or returns the block's value, so branch explicitly rather than
+        # chaining .value_or (which would run on the block's nil result).
+        result = action.perform
+        return result.value! if result.success?
+
+        flag_commit_failure(transaction_failure_messages(result.failure))
       end
 
       # Survive the redirect to the done screen, which reads it once. The show

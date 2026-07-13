@@ -8,9 +8,10 @@
   <%= form_tag main_app.deposit_wizard_advance_path(step: 'start'), method: :patch, class: 'deposit-wizard__start-form' do %>
     <%= render 'admin_set_select' %>
 
-    <% if wizard_config.container? %>
+    <% if show_relationship_paths? %>
+      <% paths = wizard_config.container? ? %w[new add standalone] : %w[new add] %>
       <div class="deposit-wizard__paths">
-        <% %w[new add standalone].each do |path| %>
+        <% paths.each do |path| %>
           <%= button_tag type: 'submit', name: 'path', value: path, class: 'deposit-wizard__path-card' do %>
             <span class="deposit-wizard__path-title"><%= t("hyku.deposit_wizard.start.paths.#{path}.title") %></span>
             <span class="deposit-wizard__path-desc"><%= t("hyku.deposit_wizard.start.paths.#{path}.desc") %></span>

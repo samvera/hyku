@@ -166,9 +166,12 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
       end
     end
 
-    context 'with a container config' do
+    context 'with a container config offering a sub-flow' do
       before do
-        Hyku::DepositWizard.config = Hyku::DepositWizard::Config.new { |c| c.container_type = 'GenericWorkResource' }
+        Hyku::DepositWizard.config = Hyku::DepositWizard::Config.new do |c|
+          c.container_type = 'GenericWorkResource'
+          c.enable_batch = true
+        end
       end
 
       it 'renders the path chooser on the start screen' do
@@ -195,6 +198,96 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         patch deposit_wizard_advance_path(step: 'known_type'), params: { work_type: work_type }
 
         expect(session[:deposit_wizard]['work_type']).to eq(work_type)
+      end
+    end
+
+    context 'with a container config offering no sub-flow' do
+      before do
+        Hyku::DepositWizard.config = Hyku::DepositWizard::Config.new { |c| c.container_type = 'GenericWorkResource' }
+      end
+
+      it 'skips item_start and goes straight to the type chooser' do
+        patch deposit_wizard_advance_path(step: 'start'), params: { path: 'standalone' }
+
+        expect(response).to redirect_to(deposit_wizard_step_path(step: 'known_type'))
+      end
+
+      it 'redirects a direct item_start visit to the type chooser' do
+        get deposit_wizard_step_path(step: 'item_start')
+
+        expect(response).to redirect_to(deposit_wizard_step_path(step: 'known_type'))
+      end
+    end
+
+    context 'with the relationship-first path (flat config, parent_connect on)' do
+      before { Hyku::DepositWizard.config.enable_parent_connect = true }
+
+      it 'renders the new/add path cards on the start screen' do
+        get deposit_wizard_path
+
+        expect(response.body).to include(I18n.t('hyku.deposit_wizard.start.paths.new.title'))
+        expect(response.body).to include(I18n.t('hyku.deposit_wizard.start.paths.add.title'))
+      end
+
+      it 'sends the add path to the select_parent step' do
+        patch deposit_wizard_advance_path(step: 'start'), params: { path: 'add' }
+
+        expect(response).to redirect_to(deposit_wizard_step_path(step: 'select_parent'))
+        expect(session[:deposit_wizard]['path']).to eq('add')
+      end
+
+      it 'sends the new path to type selection' do
+        patch deposit_wizard_advance_path(step: 'start'), params: { path: 'new' }
+
+        expect(response).to redirect_to(deposit_wizard_step_path(step: 'known_type'))
+      end
+
+      it 'seeds the chosen parent and advances from select_parent' do
+        parent = FactoryBot.valkyrie_create(:generic_work_resource, title: ['Parent'], depositor: admin.user_key)
+        patch deposit_wizard_advance_path(step: 'start'), params: { path: 'add' }
+
+        patch deposit_wizard_advance_path(step: 'select_parent'), params: { parent_id: parent.id.to_s }
+
+        expect(response).to redirect_to(deposit_wizard_step_path(step: 'known_type'))
+        expect(session[:deposit_wizard]['parent_id']).to eq(parent.id.to_s)
+      end
+
+      it 're-renders select_parent with an alert when no parent is chosen' do
+        patch deposit_wizard_advance_path(step: 'start'), params: { path: 'add' }
+
+        patch deposit_wizard_advance_path(step: 'select_parent'), params: { parent_id: '' }
+
+        expect(response).to have_http_status(:success)
+        expect(response.body).to include(I18n.t('hyku.deposit_wizard.errors.no_parent'))
+        expect(session[:deposit_wizard]['parent_id']).to be_nil
+      end
+
+      it 'redirects select_parent to start when the add path is not active' do
+        get deposit_wizard_step_path(step: 'select_parent')
+
+        expect(response).to redirect_to(deposit_wizard_path)
+      end
+
+      it 'shows the chosen parent and a Back-to-parent link on the type chooser' do
+        parent = FactoryBot.valkyrie_create(:generic_work_resource, title: ['Umbrella'], depositor: admin.user_key)
+        patch deposit_wizard_advance_path(step: 'start'), params: { path: 'add' }
+        patch deposit_wizard_advance_path(step: 'select_parent'), params: { parent_id: parent.id.to_s }
+
+        get deposit_wizard_step_path(step: 'known_type')
+
+        expect(response.body).to include(I18n.t('hyku.deposit_wizard.known_type.adding_to'))
+        expect(response.body).to include('Umbrella')
+        expect(response.body).to include('Generic Work') # the parent's model name
+        expect(response.body).to include(deposit_wizard_step_path(step: 'select_parent'))
+      end
+    end
+
+    context 'with the relationship-first path off' do
+      it 'shows the flat type chooser and no path cards' do
+        get deposit_wizard_path
+
+        expect(response.body).to include(I18n.t('hyku.deposit_wizard.known_type.heading'))
+        expect(response.body).not_to include(I18n.t('hyku.deposit_wizard.start.paths.add.title'))
       end
     end
 
@@ -278,6 +371,21 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
 
           expect(session[:deposit_wizard]['attributes']['title']).to eq(['A guided deposit work'])
           expect(response).to redirect_to(deposit_wizard_step_path(step: 'review'))
+        end
+
+        it 're-renders details with an error when a server-only field fails' do
+          patch deposit_wizard_advance_path(step: 'details'),
+                params: { param_key => { title: ['Bad embed'], creator: ['Ada'],
+                                         video_embed: 'not a url' } }
+
+          expect(response).to have_http_status(:success)
+          expect(response).not_to redirect_to(deposit_wizard_step_path(step: 'review'))
+          expect(response.body).to include(I18n.t('hyku.deposit_wizard.errors.details_invalid'))
+          # The submission is not advanced into wizard state on failure.
+          expect(session[:deposit_wizard]['attributes']).to be_blank
+          # Entered values survive the re-render so the depositor can correct them.
+          expect(response.body).to include('Bad embed')
+          expect(response.body).to include('not a url')
         end
 
         it 're-renders details with an embargo work visibility restored (Back)' do
@@ -632,6 +740,37 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
           post deposit_wizard_commit_path, params: { agreement: '1' }
 
           expect(response).to redirect_to(deposit_wizard_step_path(step: 'done'))
+        end
+      end
+
+      context 'when the deposit fails server-side validation' do
+        it 'stays on review and shows why (form validation, e.g. a bad path)' do
+          allow(Hyrax.config).to receive(:redirects_active?).and_return(true)
+          fill_in_wizard
+
+          # A malformed redirect path is rejected by the form validator.
+          post deposit_wizard_commit_path,
+               params: { param_key => { redirects_attributes: { '0' => { path: '/bad path' } } } }
+
+          expect(response).to have_http_status(:success)
+          expect(response).not_to redirect_to(deposit_wizard_step_path(step: 'done'))
+          expect(response.body).to include(I18n.t('hyku.deposit_wizard.errors.deposit_failed'))
+        end
+
+        it 'shows a friendly message for a commit-only transaction failure' do
+          # A redirect-path collision is only detectable at commit; the create
+          # transaction returns Failure([:redirect_path_collision, ...]).
+          allow_any_instance_of(Hyrax::Action::CreateValkyrieWork)
+            .to receive(:validate).and_return(true)
+          allow_any_instance_of(Hyrax::Action::CreateValkyrieWork)
+            .to receive(:perform).and_return(Dry::Monads::Failure([:redirect_path_collision, 'taken']))
+          fill_in_wizard
+
+          post deposit_wizard_commit_path
+
+          expect(response).to have_http_status(:success)
+          expect(response).not_to redirect_to(deposit_wizard_step_path(step: 'done'))
+          expect(response.body).to include(I18n.t('hyku.deposit_wizard.errors.commit.redirect_path_collision'))
         end
       end
 

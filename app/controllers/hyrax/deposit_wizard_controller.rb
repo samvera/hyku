@@ -8,6 +8,7 @@ module Hyrax
   # Flipflop feature (off by default).
   class DepositWizardController < ApplicationController
     include Hyrax::DepositWizard::Context
+    include Hyrax::DepositWizard::ErrorReporting
     include Hyrax::DepositWizard::Navigation
     include Hyrax::DepositWizard::Persistence
 
@@ -18,7 +19,7 @@ module Hyrax
     before_action :assign_current_ability
     before_action :build_breadcrumbs
 
-    STEPS = %w[start item_start known_type files details file_meta review done].freeze
+    STEPS = %w[start select_parent item_start known_type files details file_meta review done].freeze
     STEPS_REQUIRING_WORK_TYPE = %w[files details file_meta review].freeze
 
     # Let the details step reuse Hyrax's work-form partials: the shared
@@ -37,10 +38,9 @@ module Hyrax
     def show
       step = params[:step].to_s
       return redirect_to(main_app.deposit_wizard_path) unless STEPS.include?(step)
-      return redirect_to(main_app.deposit_wizard_step_path(step: 'known_type')) if needs_work_type?(step)
 
-      # file_meta has nothing to show without files; send it on to review.
-      return redirect_to(main_app.deposit_wizard_step_path(step: 'review')) if step == 'file_meta' && wizard_state.uploaded_file_ids.empty?
+      detour = step_detour(step)
+      return redirect_to(detour) if detour
 
       build_work_form if %w[details review].include?(step)
       render step
@@ -50,12 +50,13 @@ module Hyrax
     # wizard is server-rendered: each step is a GET, and choices POST here.
     def update
       case params[:step].to_s
-      when 'start'      then advance_from_start
-      when 'item_start' then advance_from_item_start
-      when 'known_type' then advance_from_known_type
-      when 'files'      then advance_from_files
-      when 'details'    then advance_from_details
-      when 'file_meta'  then advance_from_file_meta
+      when 'start'         then advance_from_start
+      when 'select_parent' then advance_from_select_parent
+      when 'item_start'    then advance_from_item_start
+      when 'known_type'    then advance_from_known_type
+      when 'files'         then advance_from_files
+      when 'details'       then advance_from_details
+      when 'file_meta'     then advance_from_file_meta
       else redirect_to main_app.deposit_wizard_path
       end
     end
@@ -102,6 +103,17 @@ module Hyrax
     end
 
     private
+
+    # Where a requested step should redirect instead of rendering, or nil to
+    # render it — for steps that don't apply given the current wizard state.
+    def step_detour(step)
+      return main_app.deposit_wizard_step_path(step: 'known_type') if needs_work_type?(step)
+      return main_app.deposit_wizard_step_path(step: 'review') if step == 'file_meta' && wizard_state.uploaded_file_ids.empty?
+      return main_app.deposit_wizard_path if step == 'select_parent' && wizard_state.path != 'add'
+      return main_app.deposit_wizard_step_path(step: 'known_type') if step == 'item_start' && !item_start_offers_choice?
+
+      nil
+    end
 
     # Mirror Hyrax's batch-upload guard: redirect to the dashboard rather than
     # exposing the wizard routes when the feature is off.

@@ -12,13 +12,28 @@ module Hyrax
 
       def advance_from_start
         wizard_state.admin_set_id = params[:admin_set_id] if params.key?(:admin_set_id)
-        if wizard_config.container?
-          wizard_state.path = params[:path]
-          redirect_to main_app.deposit_wizard_step_path(step: 'item_start')
-        else
+
+        unless params.key?(:path)
           wizard_state.path = 'standalone'
-          select_work_type_and_continue
+          return select_work_type_and_continue
         end
+
+        wizard_state.path = params[:path]
+        if wizard_state.path == 'add'
+          redirect_to main_app.deposit_wizard_step_path(step: 'select_parent')
+        else
+          redirect_to main_app.deposit_wizard_step_path(step: item_flow_entry_step)
+        end
+      end
+
+      def advance_from_select_parent
+        if params[:parent_id].blank?
+          flash.now[:alert] = t('hyku.deposit_wizard.errors.no_parent')
+          return render(:select_parent)
+        end
+
+        wizard_state.parent_id = params[:parent_id]
+        redirect_to main_app.deposit_wizard_step_path(step: item_flow_entry_step)
       end
 
       def advance_from_item_start
@@ -33,7 +48,9 @@ module Hyrax
         type = params[:work_type].to_s
         unless available_work_types.map(&:to_s).include?(type)
           flash.now[:alert] = t('hyku.deposit_wizard.errors.no_work_type')
-          return render(wizard_config.container? ? :known_type : :start)
+          # Re-render whichever step posted the (invalid) type: the flat start
+          # screen chooses the type inline, every other flow uses known_type.
+          return render(params[:step].to_s == 'start' ? :start : :known_type)
         end
 
         wizard_state.work_type = type
@@ -59,6 +76,7 @@ module Hyrax
           next_step = wizard_state.uploaded_file_ids.any? ? 'file_meta' : 'review'
           redirect_to main_app.deposit_wizard_step_path(step: next_step)
         else
+          flash_error('hyku.deposit_wizard.errors.details_invalid', form_error_messages(@form))
           render :details
         end
       end

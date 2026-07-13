@@ -74,11 +74,77 @@
     margin-bottom: 0.75rem;
   }
 
+  &__admin-set-guidance {
+    margin-top: 0.6rem;
+  }
+
+  &__admin-set-desc {
+    margin: 0 0 0.4rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--dw-ink-muted);
+
+    &[hidden] {
+      display: none;
+    }
+  }
+
+  &__admin-set-workflow {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--dw-ink-muted);
+
+    &[hidden] {
+      display: none;
+    }
+  }
+
+  &__admin-set-workflow-label {
+    font-weight: 600;
+    color: var(--dw-ink);
+    margin-right: 0.3rem;
+  }
+
+  // Parent line above the type chooser: "Adding as a child of <Type>: <Title>".
+  &__adding-to {
+    margin: 0.5rem 0 1.5rem;
+    color: var(--dw-ink-muted);
+  }
+
+  &__adding-to-type {
+    color: var(--dw-ink-muted);
+  }
+
+  &__adding-to-parent {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--dw-ink);
+  }
+
   // Drop the browser's default dotted underline on abbr[title] so the required
   // mark reads as a plain red asterisk.
   &__section-heading .required {
     margin-left: 0.25rem;
     text-decoration: none;
     cursor: default;
+  }
+}
+
+// On the select-parent step the parent card has no toggle header (it's always
+// open), so its body needs the vertical padding the review card's header would
+// otherwise provide. The typeahead fills the card width here (the review card
+// caps it at 24rem, which would float left in this full-width step).
+.deposit-wizard--select-parent {
+  .deposit-wizard__extra-body {
+    padding: 1.75rem;
+  }
+
+  // Sole element in the body; the body padding provides the spacing below it.
+  .deposit-wizard__field {
+    margin-bottom: 0;
+  }
+
+  .select2-container {
+    max-width: none;
   }
 }

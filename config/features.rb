@@ -58,5 +58,17 @@ Flipflop.configure do
     feature :deposit_wizard,
             default: false,
             description: "Enable the guided deposit wizard for creating works."
+
+    feature :deposit_wizard_parent_connect,
+            default: false,
+            description: "In the deposit wizard, let depositors add the work to a parent work. Requires the deposit wizard."
+
+    feature :deposit_wizard_collection_connect,
+            default: false,
+            description: "In the deposit wizard, let depositors add the work to a collection. Requires the deposit wizard."
+
+    feature :deposit_wizard_sharing,
+            default: false,
+            description: "In the deposit wizard, let depositors share the work with specific users and groups. Requires the deposit wizard."
   end
 end

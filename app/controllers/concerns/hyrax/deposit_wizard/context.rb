@@ -13,7 +13,8 @@ module Hyrax
                       :available_admin_sets, :selected_admin_set_id, :selected_admin_set_name,
                       :uploaded_files, :file_meta_forms, :file_inherits_visibility?,
                       :file_visibility_summaries, :work_visibility_attributes,
-                      :file_display_title
+                      :file_display_title, :selected_member_collections, :saved_permission_grants,
+                      :extra_prefilled?, :selected_parent_title, :collection_display_title
       end
 
       # The seam downstream apps replace to add container types, suggestions, etc.
@@ -168,6 +169,80 @@ module Hyrax
 
       def admin_sets_for_deposit
         Hyrax::AdminSetService.new(self).search_results(:deposit)
+      end
+
+      # A since-deleted collection id is dropped individually rather than failing
+      # the whole review render.
+      def selected_member_collections
+        rows = wizard_state.attributes['member_of_collections_attributes']
+        ids = Array.wrap(rows.is_a?(Hash) ? rows.values : rows)
+                   .reject { |h| h.is_a?(Hash) && h['_destroy'].to_s == 'true' }
+                   .map { |h| h.is_a?(Hash) ? h['id'] : h }.compact.uniq
+
+        ids.filter_map do |id|
+          Hyrax.query_service.find_by(id: id)
+        rescue Valkyrie::Persistence::ObjectNotFoundError
+          nil
+        end
+      end
+
+      def saved_permission_grants
+        rows = wizard_state.attributes['permissions_attributes']
+        Array.wrap(rows.is_a?(Hash) ? rows.values : rows)
+             .select { |h| h.is_a?(Hash) && h['name'].present? && h['access'].present? }
+      end
+
+      def saved_redirect_paths
+        rows = wizard_state.attributes['redirects_attributes']
+        Array.wrap(rows.is_a?(Hash) ? rows.values : rows)
+             .select { |h| h.is_a?(Hash) && h['path'].present? }
+      end
+
+      # Read the title, not #to_s: a CollectionResource's #to_s is class+id, and
+      # available_collections and find_by return different object types here.
+      def collection_display_title(collection)
+        Array(collection.title).first
+      end
+
+      def selected_parent_title
+        return if wizard_state.parent_id.blank?
+
+        Array(Hyrax.query_service.find_by(id: wizard_state.parent_id).title).first
+      rescue Valkyrie::Persistence::ObjectNotFoundError
+        nil
+      end
+
+      # Drives whether the capability's review card renders expanded on load.
+      def extra_prefilled?(kind)
+        case kind
+        when :parent     then wizard_state.parent_id.present?
+        when :collection then selected_member_collections.any?
+        when :sharing    then saved_permission_grants.any?
+        when :redirects  then saved_redirect_paths.any?
+        else false
+        end
+      end
+
+      def eligible_parent_documents(query)
+        search = Hyrax::SearchService.new(config: blacklight_config, user_params: { q: query.to_s },
+                                          search_builder_class: Hyrax::My::FindWorksSearchBuilder,
+                                          scope: self, current_ability: current_ability)
+        _, docs = search.search_results do |builder|
+          builder.with(q: query.to_s).with_access(:read).rows(20)
+          types = eligible_parent_types
+          builder.merge(fq: type_filter_query(types)) if types.present?
+          builder
+        end
+        docs
+      end
+
+      def eligible_parent_types
+        wizard_config.parent_types.presence || available_work_types.map(&:to_s)
+      end
+
+      def type_filter_query(type_names)
+        clauses = Array(type_names).map { |name| "has_model_ssim:\"#{name}\"" }
+        "(#{clauses.join(' OR ')})"
       end
 
       def last_deposited

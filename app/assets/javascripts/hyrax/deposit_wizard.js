@@ -1,6 +1,19 @@
 // Progressive enhancement for the guided deposit wizard. Attaches behavior to
 // wizard steps by class when present; a no-op on other pages.
 (function () {
+  // Debounced so rapid edits (typing a redirect path) coalesce into one save.
+  var extrasSaveTimer = null;
+  function autosaveExtras() {
+    var form = document.querySelector('.deposit-wizard__commit-form');
+    if (!form) return;
+    var url = form.getAttribute('data-extras-url');
+    if (!url) return;
+    clearTimeout(extrasSaveTimer);
+    extrasSaveTimer = setTimeout(function () {
+      $.ajax({ url: url, method: 'POST', data: $(form).serialize() });
+    }, 400);
+  }
+
   function initFileUploader() {
     var uploader = $('.fileupload-deposit-wizard');
     if (!uploader.length || typeof $.fn.hyraxUploader !== 'function') return;
@@ -140,6 +153,139 @@
     refresh();
   }
 
+  function initCollectionConnect() {
+    var section = $('[data-behavior="extra-collection"]');
+    if (!section.length) return;
+    var paramKey = section.data('param-key');
+    var select = section.find('[data-behavior="collection-select"]');
+    var chips = section.find('[data-behavior="collection-chips"]');
+    if (typeof select.select2 === 'function') {
+      select.select2({ placeholder: select.data('placeholder'), allowClear: true, width: '20rem' });
+    }
+    var index = 0;
+
+    // Delegated so server-rendered chips (restored on refresh) are removable too.
+    chips.on('click', '.deposit-wizard__chip-remove', function () {
+      $(this).closest('.deposit-wizard__extra-chip').remove();
+      autosaveExtras();
+    });
+
+    section.find('[data-behavior="collection-add"]').on('click', function () {
+      var id = select.val();
+      if (!id) return;
+      if (chips.find('[data-collection-id="' + id + '"]').length) return;
+      var label = select.find('option:selected').text();
+      var field = paramKey + '[member_of_collections_attributes][' + index + '][id]';
+      index += 1;
+
+      var chip = $('<li class="deposit-wizard__extra-chip" data-collection-id="' + id + '"></li>');
+      chip.append($('<span></span>').text(label));
+      chip.append($('<input type="hidden">').attr('name', field).val(id));
+      chip.append($('<button type="button" class="deposit-wizard__chip-remove" aria-label="remove">×</button>'));
+      chips.append(chip);
+      autosaveExtras();
+
+      if (typeof select.val === 'function') { select.val('').trigger('change'); }
+    });
+  }
+
+  function initSharingConnect() {
+    var section = $('[data-behavior="extra-sharing"]');
+    if (!section.length) return;
+    var chips = section.find('[data-behavior="share-chips"]');
+    var index = 0;
+
+    // Delegated so server-rendered chips (restored on refresh) are removable too.
+    chips.on('click', '.deposit-wizard__chip-remove', function () {
+      $(this).closest('.deposit-wizard__extra-chip').remove();
+      autosaveExtras();
+    });
+
+    var paramKey = section.data('param-key');
+    function addGrant(type, name, accessVal, accessLabel) {
+      if (!name || !accessVal || accessVal === 'none') return;
+      var prefix = paramKey + '[permissions_attributes][' + index + ']';
+      index += 1;
+
+      var chip = $('<li class="deposit-wizard__extra-chip"></li>');
+      chip.append($('<span></span>').text(name + ' — ' + accessLabel));
+      chip.append($('<input type="hidden">').attr('name', prefix + '[type]').val(type));
+      chip.append($('<input type="hidden">').attr('name', prefix + '[name]').val(name));
+      chip.append($('<input type="hidden">').attr('name', prefix + '[access]').val(accessVal));
+      chip.append($('<button type="button" class="deposit-wizard__chip-remove" aria-label="remove">×</button>'));
+      chips.append(chip);
+      autosaveExtras();
+    }
+
+    section.find('[data-behavior="share-person-add"]').on('click', function () {
+      var access = section.find('[data-behavior="share-person-access"]');
+      addGrant('person', $.trim(section.find('[data-behavior="share-person-name"]').val()),
+        access.val(), access.find('option:selected').text());
+      section.find('[data-behavior="share-person-name"]').val('');
+    });
+
+    section.find('[data-behavior="share-group-add"]').on('click', function () {
+      var name = section.find('[data-behavior="share-group-name"]');
+      var access = section.find('[data-behavior="share-group-access"]');
+      addGrant('group', name.val(), access.val(), access.find('option:selected').text());
+    });
+  }
+
+  // Select2 v3 (the version Hyrax bundles) binds an ajax typeahead to a HIDDEN
+  // INPUT, not a <select>. That input is the parent_id field posted with the
+  // deposit, so its value is the chosen work id — no separate hidden field.
+  function initParentConnect() {
+    var section = $('[data-behavior="extra-parent"]');
+    if (!section.length) return;
+    var input = section.find('[data-behavior="parent-select"]');
+    if (!input.length || typeof input.select2 !== 'function') return;
+
+    input.select2({
+      placeholder: input.data('placeholder'),
+      allowClear: true,
+      minimumInputLength: 2,
+      // A hidden input has no option text for a pre-seeded value; show the work's
+      // title (passed as data-initial-label) rather than the bare id.
+      initSelection: function (element, callback) {
+        var val = element.val();
+        if (val) callback({ id: val, text: input.data('initial-label') || val });
+      },
+      ajax: {
+        url: section.data('options-url'),
+        dataType: 'json',
+        data: function (term) { return { q: term }; },
+        results: function (data) {
+          return { results: data.map(function (row) { return { id: row.id, text: row.label }; }) };
+        }
+      }
+    });
+
+    input.on('change', autosaveExtras);
+  }
+
+  // The redirects rows are the stock partial's (hyrax/redirects.js owns them), so
+  // autosave via delegation to catch dynamically-added rows.
+  function initRedirectsAutosave() {
+    var section = document.querySelector('[data-behavior="extra-redirects"]');
+    if (!section) return;
+    section.addEventListener('input', autosaveExtras);
+    section.addEventListener('change', autosaveExtras);
+    section.addEventListener('click', function (event) {
+      if (event.target.closest('[data-redirects-remove-row]')) autosaveExtras();
+    });
+  }
+
+  function initExtrasToggle() {
+    $('[data-behavior="extra-toggle"]').on('click', function () {
+      var toggle = $(this);
+      var body = toggle.siblings('[data-behavior="extra-body"]');
+      var open = body.prop('hidden');
+      body.prop('hidden', !open);
+      toggle.attr('aria-expanded', open ? 'true' : 'false');
+      toggle.closest('.deposit-wizard__extra').toggleClass('is-open', open);
+    });
+  }
+
   function initDepositWizard() {
     // Idempotency guard: this handler is bound to both `turbolinks:load` and
     // `ready`, which can both fire on a full page load. Running the inits twice
@@ -158,6 +304,11 @@
     initFileMeta();
     initStepValidity();
     initDepositAgreement();
+    initCollectionConnect();
+    initSharingConnect();
+    initParentConnect();
+    initRedirectsAutosave();
+    initExtrasToggle();
   }
 
   $(document).on('turbolinks:load ready', initDepositWizard);

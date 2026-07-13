@@ -74,6 +74,29 @@ en:
       errors:
         agreement_required: Please accept the deposit agreement to continue.
         no_work_type: Please choose a work type to continue.
+      extras:
+        add: Add
+        parent:
+          heading: Add to a parent work
+          hint: Optionally nest this work inside an existing work.
+          label: Search works
+          placeholder: Search for a work…
+        collection:
+          heading: Add to a collection
+          hint: Optionally add this work to one or more collections.
+          label: Search collections
+          placeholder: Search for a collection…
+          none: You don't have any collections available to add this work to.
+        sharing:
+          heading: Share with people or groups
+          hint: Optionally give specific people or groups access to this work.
+          person_label: Person (email)
+          person_placeholder: name@example.com
+          group_label: Group
+          group_placeholder: Select a group…
+        redirects:
+          heading: Add a vanity URL
+          hint: "Optionally add a short, memorable URL that redirects to this work (under %{base_url})."
       file_meta:
         description: Description
         file: File

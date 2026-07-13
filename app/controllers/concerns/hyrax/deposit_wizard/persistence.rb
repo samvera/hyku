@@ -47,10 +47,13 @@ module Hyrax
       def commit_params
         attributes = wizard_state.attributes.merge('admin_set_id' => selected_admin_set_id).compact
         attributes['file_set'] = file_set_params if file_set_params.any?
-        ActionController::Parameters.new(
+        params = {
           work_form.model_name.param_key => attributes,
           'uploaded_files' => wizard_state.uploaded_file_ids
-        )
+        }
+        # parent_id is top-level (not under the work key); add_to_parent reads it there.
+        params['parent_id'] = wizard_state.parent_id if wizard_state.parent_id.present?
+        ActionController::Parameters.new(params)
       end
 
       # Per-file metadata for CreateValkyrieWork's add_file_sets step: one hash

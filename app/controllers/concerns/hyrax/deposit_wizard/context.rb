@@ -14,7 +14,9 @@ module Hyrax
                       :uploaded_files, :file_meta_forms, :file_inherits_visibility?,
                       :file_visibility_summaries, :work_visibility_attributes,
                       :file_display_title, :selected_member_collections, :saved_permission_grants,
-                      :extra_prefilled?, :selected_parent_title, :collection_display_title
+                      :extra_prefilled?, :selected_parent_title, :selected_parent, :collection_display_title,
+                      :admin_set_options_for_display, :multiple_admin_sets?, :show_relationship_paths?,
+                      :known_type_back_step
       end
 
       # The seam downstream apps replace to add container types, suggestions, etc.
@@ -39,7 +41,8 @@ module Hyrax
       end
 
       def stepper_icon(key)
-        { type: 'fa-list-alt',
+        { parent: 'fa-sitemap',
+          type: 'fa-list-alt',
           upload: 'fa-cloud-upload',
           detail: 'fa-pencil',
           file_detail: 'fa-file-text-o',
@@ -51,7 +54,9 @@ module Hyrax
       end
 
       def stepper_keys
-        keys = %i[type upload detail]
+        keys = []
+        keys << :parent if wizard_state.path == 'add'
+        keys += %i[type upload detail]
         keys << :file_detail if wizard_state.uploaded_file_ids.any?
         keys << :review
         keys
@@ -171,6 +176,48 @@ module Hyrax
         Hyrax::AdminSetService.new(self).search_results(:deposit)
       end
 
+      # Keep the presenter's data-* hash on each option: the visibility component
+      # enforces those visibility/release rules downstream on the details form.
+      def admin_set_options_for_display
+        @admin_set_options_for_display ||= begin
+          docs = admin_sets_for_deposit
+          templates = Hyrax::PermissionTemplate.where(source_id: docs.map { |d| d.id.to_s }).to_a
+          docs.map do |doc|
+            template = templates.find { |t| t.source_id == doc.id.to_s }
+            entry = Hyrax::AdminSetSelectionPresenter::OptionsEntry.new(admin_set: doc, permission_template: template)
+            label, id, data = entry.result
+            { id: id, label: label, data: data,
+              description: Array(doc.try(:description)).first.presence,
+              workflow: template&.active_workflow&.label.presence }
+          end
+        end
+      end
+
+      def multiple_admin_sets?
+        admin_set_options_for_display.size > 1
+      end
+
+      def show_relationship_paths?
+        wizard_config.container? || wizard_config.enable_parent_connect
+      end
+
+      # item_start is only worth showing when it has a sub-flow to choose between
+      # (guided suggestions or batch); otherwise skip straight to the type chooser.
+      def item_flow_entry_step
+        item_start_offers_choice? ? 'item_start' : 'known_type'
+      end
+
+      def item_start_offers_choice?
+        wizard_config.enable_batch || wizard_config.suggestions.present?
+      end
+
+      def known_type_back_step
+        return 'select_parent' if wizard_state.path == 'add'
+        return 'item_start' if item_start_offers_choice?
+
+        nil # start screen
+      end
+
       # A since-deleted collection id is dropped individually rather than failing
       # the whole review render.
       def selected_member_collections
@@ -205,9 +252,18 @@ module Hyrax
       end
 
       def selected_parent_title
+        selected_parent&.dig(:title)
+      end
+
+      # The chosen parent's human model name + title (one query). nil when unset
+      # or since-deleted.
+      def selected_parent
         return if wizard_state.parent_id.blank?
 
-        Array(Hyrax.query_service.find_by(id: wizard_state.parent_id).title).first
+        @selected_parent ||= begin
+          work = Hyrax.query_service.find_by(id: wizard_state.parent_id)
+          { type: work.model_name.human, title: Array(work.title).first }
+        end
       rescue Valkyrie::Persistence::ObjectNotFoundError
         nil
       end

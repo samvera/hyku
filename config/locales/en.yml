@@ -54,6 +54,7 @@ en:
         hint_lead: Sets the rules for this deposit
         hint: An administrative set decides which metadata fields you'll complete, the visibility options available to your work, and the review workflow it follows after deposit. Most deposits use the default.
         label: Administrative set
+        workflow: 'Workflow:'
       back: Back
       button: Guided Deposit
       continue: Continue
@@ -73,6 +74,11 @@ en:
         view_work: View work
       errors:
         agreement_required: Please accept the deposit agreement to continue.
+        commit:
+          redirect_path_collision: One of the vanity URLs is already in use. Choose a different path.
+        deposit_failed: Your work could not be deposited
+        details_invalid: Some details need fixing before you can continue
+        no_parent: Please choose a work to add this deposit to.
         no_work_type: Please choose a work type to continue.
       extras:
         add: Add
@@ -121,6 +127,7 @@ en:
         known_type: I know what type of work this is
         subtext: Choose how you would like to describe this item.
       known_type:
+        adding_to: Adding as a child of
         heading: What type of work is this?
         subtext: Choose the type that best fits the work you are depositing.
       no_work_types: There are no work types available for you to deposit. Please contact an administrator.
@@ -145,18 +152,22 @@ en:
         visibility_inherited: Same as work
         work_type: Work type
         work_visibility: Work visibility
+      select_parent:
+        heading: Choose the parent work
+        subtext: Search for the work this deposit should be added to.
+        label: Search works
       start:
         heading: What would you like to deposit?
         subtext: This guided flow walks you through depositing your work step by step.
         paths:
           add:
-            desc: Add one or more works to a portfolio you have already created.
-            title: Add to an existing portfolio
+            desc: Nest this deposit inside a work you have already created.
+            title: Add to an existing work
           new:
-            desc: Start a new portfolio, then add works to it.
-            title: Create a new portfolio
+            desc: Deposit a work on its own.
+            title: Deposit a new work
           standalone:
-            desc: Deposit a single work on its own, without a portfolio.
+            desc: Deposit a single work on its own, without a parent.
             title: Deposit a standalone work
       visibility:
         legend: Visibility
@@ -178,6 +189,7 @@ en:
         item:
           detail: Work detail
           file_detail: File detail
+          parent: Parent work
           review: Review
           type: Item type
           upload: Upload files

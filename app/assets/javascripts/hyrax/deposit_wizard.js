@@ -160,7 +160,7 @@
     var select = section.find('[data-behavior="collection-select"]');
     var chips = section.find('[data-behavior="collection-chips"]');
     if (typeof select.select2 === 'function') {
-      select.select2({ placeholder: select.data('placeholder'), allowClear: true, width: '20rem' });
+      select.select2({ placeholder: select.data('placeholder'), allowClear: true, width: '100%' });
     }
     var index = 0;
 
@@ -244,6 +244,7 @@
       placeholder: input.data('placeholder'),
       allowClear: true,
       minimumInputLength: 2,
+      width: '100%',
       // A hidden input has no option text for a pre-seeded value; show the work's
       // title (passed as data-initial-label) rather than the bare id.
       initSelection: function (element, callback) {
@@ -286,6 +287,25 @@
     });
   }
 
+  function initAdminSetDescription() {
+    var block = document.querySelector('[data-behavior="admin-set"]');
+    if (!block) return;
+    var select = block.querySelector('[data-behavior="admin-set-select"]');
+    var desc = block.querySelector('[data-behavior="admin-set-desc"]');
+    var workflow = block.querySelector('[data-behavior="admin-set-workflow"]');
+    var workflowValue = block.querySelector('[data-behavior="admin-set-workflow-value"]');
+    if (!select) return;
+
+    select.addEventListener('change', function () {
+      var option = select.options[select.selectedIndex];
+      var d = option.getAttribute('data-description') || '';
+      var w = option.getAttribute('data-workflow') || '';
+      if (desc) { desc.textContent = d; desc.hidden = d === ''; }
+      if (workflow) workflow.hidden = w === '';
+      if (workflowValue) workflowValue.textContent = w;
+    });
+  }
+
   function initDepositWizard() {
     // Idempotency guard: this handler is bound to both `turbolinks:load` and
     // `ready`, which can both fire on a full page load. Running the inits twice
@@ -309,10 +329,14 @@
     initParentConnect();
     initRedirectsAutosave();
     initExtrasToggle();
+    initAdminSetDescription();
   }
 
   $(document).on('turbolinks:load ready', initDepositWizard);
-  $(document).on('turbolinks:before-render', function () {
+  // Clear the init flag before the page is cached and before a new page renders,
+  // so a restore visit (Back/Forward) re-initializes rather than reusing the
+  // cached DOM's stale "initialized" marker (which left Next unbound/disabled).
+  $(document).on('turbolinks:before-cache turbolinks:before-render', function () {
     var root = document.querySelector('.deposit-wizard');
     if (root) { delete root.dataset.dwInitialized; }
   });

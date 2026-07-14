@@ -8,7 +8,6 @@ module Hyrax
   # Flipflop feature (off by default).
   class DepositWizardController < ApplicationController # rubocop:disable Metrics/ClassLength
     include Hyrax::DepositWizard::Context
-    include Hyrax::DepositWizard::ErrorReporting
     include Hyrax::DepositWizard::Navigation
     include Hyrax::DepositWizard::Persistence
 
@@ -146,6 +145,17 @@ module Hyrax
 
       flash.now[:alert] = t('hyku.deposit_wizard.errors.agreement_required')
       false
+    end
+
+    # Set a multi-line alert: a lead-in ending in a colon, then one line per
+    # message. _flash_msg joins an array flash with <br>, so each is its own row.
+    def flash_error(lead_in_key, messages)
+      flash.now[:alert] = ["#{t(lead_in_key)}:", *Array(messages)]
+      nil
+    end
+
+    def flag_commit_failure(messages)
+      flash_error('hyku.deposit_wizard.errors.deposit_failed', messages)
     end
 
     def reset_state

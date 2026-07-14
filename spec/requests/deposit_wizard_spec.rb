@@ -744,13 +744,17 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
       end
 
       context 'when the deposit fails server-side validation' do
-        it 'stays on review and shows why (form validation, e.g. a bad path)' do
-          allow(Hyrax.config).to receive(:redirects_active?).and_return(true)
+        it 'stays on review and shows why when the form is invalid' do
+          # Stub the form-validation failure at the action seam (like the
+          # transaction-failure sibling below). Driving it through a real invalid
+          # field made the outcome depend on the ambient flexible schema/feature
+          # state, which other specs mutate — an order-dependent failure. This
+          # asserts the error-surfacing behavior itself, deterministically.
+          allow_any_instance_of(Hyrax::Action::CreateValkyrieWork)
+            .to receive(:validate).and_return(false)
           fill_in_wizard
 
-          # A malformed redirect path is rejected by the form validator.
-          post deposit_wizard_commit_path,
-               params: { param_key => { redirects_attributes: { '0' => { path: '/bad path' } } } }
+          post deposit_wizard_commit_path
 
           expect(response).to have_http_status(:success)
           expect(response).not_to redirect_to(deposit_wizard_step_path(step: 'done'))

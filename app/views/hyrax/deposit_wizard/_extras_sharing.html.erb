@@ -1,7 +1,7 @@
 <%# Posts permissions_attributes[i][type|name|access]; save_acl persists the
     grants in the deposit transaction. %>
-<% open = extra_prefilled?(:sharing) %>
-<section class="deposit-wizard__extra <%= 'is-open' if open %>" data-behavior="extra-sharing" data-param-key="<%= work_form.model_name.param_key %>">
+<% open = deposit_wizard.extra_prefilled?(:sharing) %>
+<section class="deposit-wizard__extra <%= 'is-open' if open %>" data-behavior="extra-sharing" data-param-key="<%= deposit_wizard.work_form.model_name.param_key %>">
   <button type="button" class="deposit-wizard__extra-toggle" data-behavior="extra-toggle"
           aria-expanded="<%= open %>">
     <span class="deposit-wizard__extra-titles">
@@ -39,9 +39,9 @@
       </button>
     </div>
 
-    <% param_key = work_form.model_name.param_key %>
+    <% param_key = deposit_wizard.work_form.model_name.param_key %>
     <ul class="deposit-wizard__extra-chips list-unstyled" data-behavior="share-chips">
-      <% saved_permission_grants.each_with_index do |grant, i| %>
+      <% deposit_wizard.saved_permission_grants.each_with_index do |grant, i| %>
         <% prefix = "#{param_key}[permissions_attributes][pre#{i}]" %>
         <li class="deposit-wizard__extra-chip">
           <span><%= grant['name'] %> &mdash; <%= grant['access'] %></span>

@@ -33,7 +33,7 @@
     <div class="deposit-wizard__file-info">
       <span class="deposit-wizard__file-name name">{%=file.name%}</span>
       <span class="deposit-wizard__file-meta size">{%=o.formatFileSize(file.size)%}</span>
-      <input type="hidden" name="uploaded_files[]" value="{%=file.id%}">
+      <input type="hidden" name="deposit_wizard.uploaded_files[]" value="{%=file.id%}">
     </div>
     {% if (file.error) { %}
       <span class="badge badge-danger">{%=file.error%}</span>

@@ -1,7 +1,7 @@
 <%= render 'page_header' %>
 
 <div class="deposit-wizard deposit-wizard--file-meta">
-  <%= render 'stepper', steps: item_stepper_steps, phase: stepper_phase(:file_detail) %>
+  <%= render 'stepper', steps: deposit_wizard.item_stepper_steps, phase: deposit_wizard.stepper_phase(:file_detail) %>
   <%= render 'step_title', title: t('hyku.deposit_wizard.file_meta.heading'), hint: t('hyku.deposit_wizard.file_meta.subtext') %>
 
   <%= form_tag main_app.deposit_wizard_advance_path(step: 'file_meta'), method: :patch, class: 'deposit-wizard__file-meta-form' do %>
@@ -10,9 +10,9 @@
         JS toggles which is visible. %>
     <div class="deposit-wizard__file-meta-layout" data-behavior="file-meta">
       <nav class="deposit-wizard__file-sidebar" aria-label="<%= t('hyku.deposit_wizard.file_meta.files_nav') %>">
-        <p class="deposit-wizard__file-sidebar-heading"><%= t('hyku.deposit_wizard.file_meta.files_count', count: uploaded_files.size) %></p>
+        <p class="deposit-wizard__file-sidebar-heading"><%= t('hyku.deposit_wizard.file_meta.files_count', count: deposit_wizard.uploaded_files.size) %></p>
         <ul class="deposit-wizard__file-sidebar-list">
-          <% uploaded_files.each_with_index do |uf, i| %>
+          <% deposit_wizard.uploaded_files.each_with_index do |uf, i| %>
             <% id = uf.id.to_s %>
             <li>
               <% filename = uf.file&.file&.filename.to_s %>
@@ -29,9 +29,9 @@
       </nav>
 
       <div class="deposit-wizard__file-panels">
-        <% uploaded_files.each_with_index do |uf, i| %>
+        <% deposit_wizard.uploaded_files.each_with_index do |uf, i| %>
           <% id = uf.id.to_s %>
-          <% form = file_meta_forms[id] %>
+          <% form = deposit_wizard.file_meta_forms[id] %>
           <fieldset class="deposit-wizard__file-panel<%= ' is-active' if i.zero? %>"
                     data-behavior="file-panel" data-file-id="<%= id %>" <%= 'hidden' unless i.zero? %>>
             <legend class="deposit-wizard__file-panel-name">
@@ -52,12 +52,12 @@
                       check_box_tag sends nothing unchecked, indistinguishable from
                       "never rendered". The '0' is unchecked; the '1' wins when checked. %>
                   <%= hidden_field_tag "file_metadata[#{id}][inherit_visibility]", '0', id: nil %>
-                  <%= check_box_tag "file_metadata[#{id}][inherit_visibility]", '1', file_inherits_visibility?(id),
+                  <%= check_box_tag "file_metadata[#{id}][inherit_visibility]", '1', deposit_wizard.file_inherits_visibility?(id),
                                     data: { behavior: 'inherit-visibility' } %>
                   <%= t('hyku.deposit_wizard.file_meta.inherit') %>
                 </label>
 
-                <div class="deposit-wizard__own-visibility" <%= 'hidden' if file_inherits_visibility?(id) %>>
+                <div class="deposit-wizard__own-visibility" <%= 'hidden' if deposit_wizard.file_inherits_visibility?(id) %>>
                   <%= render 'visibility', f: f, id_suffix: "-#{id}" %>
                 </div>
               </div>

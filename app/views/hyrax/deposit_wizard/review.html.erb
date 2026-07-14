@@ -1,23 +1,23 @@
 <%= render 'page_header' %>
 
 <div class="deposit-wizard deposit-wizard--review">
-  <%= render 'stepper', steps: item_stepper_steps, phase: stepper_phase(:review) %>
+  <%= render 'stepper', steps: deposit_wizard.item_stepper_steps, phase: deposit_wizard.stepper_phase(:review) %>
   <%= render 'step_title', title: t('hyku.deposit_wizard.review.heading'), hint: t('hyku.deposit_wizard.review.subtext') %>
 
   <dl class="deposit-wizard__review-list">
     <div class="row">
       <dt class="col-sm-3"><%= t('hyku.deposit_wizard.review.work_type') %></dt>
-      <dd class="col-sm-9"><%= work_form.model_name.human %></dd>
+      <dd class="col-sm-9"><%= deposit_wizard.work_form.model_name.human %></dd>
     </div>
 
     <div class="row">
       <dt class="col-sm-3"><%= t('hyku.deposit_wizard.review.files') %></dt>
-      <dd class="col-sm-9"><%= t('hyku.deposit_wizard.review.file_count', count: wizard_state.uploaded_file_ids.size) %></dd>
+      <dd class="col-sm-9"><%= t('hyku.deposit_wizard.review.file_count', count: deposit_wizard.state.uploaded_file_ids.size) %></dd>
     </div>
 
-    <% basic_terms = (work_form.primary_terms + work_form.secondary_terms) - %i[schema_version contexts] %>
+    <% basic_terms = (deposit_wizard.work_form.primary_terms + deposit_wizard.work_form.secondary_terms) - %i[schema_version contexts] %>
     <% basic_terms.each do |term| %>
-      <% value = Array(work_form.send(term)).reject(&:blank?) if work_form.respond_to?(term) %>
+      <% value = Array(deposit_wizard.work_form.send(term)).reject(&:blank?) if deposit_wizard.work_form.respond_to?(term) %>
       <% next if value.blank? %>
       <div class="row">
         <dt class="col-sm-3"><%= t(term, scope: 'simple_form.labels.defaults', default: term.to_s.humanize) %></dt>
@@ -25,8 +25,8 @@
       </div>
     <% end %>
 
-    <% work_form.compound_terms.each do |term| %>
-      <% entries = Array(work_form.send(term)).reject(&:blank?) if work_form.respond_to?(term) %>
+    <% deposit_wizard.work_form.compound_terms.each do |term| %>
+      <% entries = Array(deposit_wizard.work_form.send(term)).reject(&:blank?) if deposit_wizard.work_form.respond_to?(term) %>
       <% next if entries.blank? %>
       <div class="row">
         <dt class="col-sm-3"><%= t(term, scope: 'simple_form.labels.defaults', default: term.to_s.humanize) %></dt>
@@ -34,19 +34,19 @@
       </div>
     <% end %>
 
-    <% if work_form.respond_to?(:visibility) && work_form.visibility.present? %>
+    <% if deposit_wizard.work_form.respond_to?(:visibility) && deposit_wizard.work_form.visibility.present? %>
       <div class="row">
         <dt class="col-sm-3"><%= t('hyku.deposit_wizard.review.work_visibility') %></dt>
-        <dd class="col-sm-9"><%= visibility_summary(work_visibility_attributes) %></dd>
+        <dd class="col-sm-9"><%= visibility_summary(deposit_wizard.work_visibility_attributes) %></dd>
       </div>
     <% end %>
 
-    <% if file_visibility_summaries.any? %>
+    <% if deposit_wizard.file_visibility_summaries.any? %>
       <div class="row">
         <dt class="col-sm-3"><%= t('hyku.deposit_wizard.review.file_visibility') %></dt>
         <dd class="col-sm-9">
           <ul class="deposit-wizard__review-files list-unstyled mb-0">
-            <% file_visibility_summaries.each do |file| %>
+            <% deposit_wizard.file_visibility_summaries.each do |file| %>
               <li><%= file[:title] %> &mdash; <%= visibility_summary(file[:attributes]) %></li>
             <% end %>
           </ul>
@@ -55,27 +55,27 @@
     <% end %>
   </dl>
 
-  <% if available_admin_sets.size > 1 && selected_admin_set_name.present? %>
+  <% if deposit_wizard.available_admin_sets.size > 1 && deposit_wizard.selected_admin_set_name.present? %>
     <p class="deposit-wizard__review-destination">
-      <%= t('hyku.deposit_wizard.review.destination', admin_set: selected_admin_set_name) %>
+      <%= t('hyku.deposit_wizard.review.destination', admin_set: deposit_wizard.selected_admin_set_name) %>
     </p>
   <% end %>
 
   <%= form_tag main_app.deposit_wizard_commit_path, method: :post, class: 'deposit-wizard__commit-form',
                data: { 'extras-url': main_app.deposit_wizard_extras_path } do %>
-    <% if wizard_config.enable_parent_connect %>
+    <% if deposit_wizard.config.enable_parent_connect %>
       <%= render 'extras_parent' %>
     <% end %>
 
-    <% if wizard_config.enable_collection_connect %>
+    <% if deposit_wizard.config.enable_collection_connect %>
       <%= render 'extras_collection' %>
     <% end %>
 
-    <% if wizard_config.enable_sharing %>
+    <% if deposit_wizard.config.enable_sharing %>
       <%= render 'extras_sharing' %>
     <% end %>
 
-    <% if wizard_config.redirects_available?(work_form) %>
+    <% if deposit_wizard.config.redirects_available?(deposit_wizard.work_form) %>
       <%= render 'extras_redirects' %>
     <% end %>
 
@@ -96,7 +96,7 @@
 
     <%# Back mirrors the forward flow: file_meta precedes review when there are
         files, otherwise details does. %>
-    <% back_step = wizard_state.uploaded_file_ids.any? ? 'file_meta' : 'details' %>
+    <% back_step = deposit_wizard.state.uploaded_file_ids.any? ? 'file_meta' : 'details' %>
     <%= render 'nav', back_path: main_app.deposit_wizard_step_path(step: back_step),
                       next_label: t('hyku.deposit_wizard.review.deposit'),
                       next_arrow: false,

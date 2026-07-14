@@ -1,9 +1,9 @@
 <%# Inline admin-set chooser, submitted with the enclosing form; hidden when only
     one set is available. Options keep the presenter's visibility/release data-*
     so the visibility component still enforces them on the details step. %>
-<% if multiple_admin_sets? %>
-  <% options = admin_set_options_for_display %>
-  <% selected = options.find { |o| o[:id] == selected_admin_set_id } || options.first %>
+<% if deposit_wizard.multiple_admin_sets? %>
+  <% options = deposit_wizard.admin_set_options_for_display %>
+  <% selected = options.find { |o| o[:id] == deposit_wizard.selected_admin_set_id } || options.first %>
   <div class="form-group deposit-wizard__admin-set" data-behavior="admin-set">
     <h2 class="deposit-wizard__section-heading">
       <%= t('hyku.deposit_wizard.admin_set.heading') %>

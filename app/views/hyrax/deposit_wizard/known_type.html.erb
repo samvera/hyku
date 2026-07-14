@@ -1,23 +1,23 @@
 <%= render 'page_header' %>
 
 <div class="deposit-wizard deposit-wizard--known-type">
-  <%= render 'stepper', steps: item_stepper_steps, phase: stepper_phase(:type) %>
+  <%= render 'stepper', steps: deposit_wizard.item_stepper_steps, phase: deposit_wizard.stepper_phase(:type) %>
   <h2 class="deposit-wizard__section-heading"><%= t('hyku.deposit_wizard.known_type.heading') %></h2>
 
-  <% if selected_parent.present? %>
+  <% if deposit_wizard.selected_parent.present? %>
     <p class="deposit-wizard__adding-to">
       <%= t('hyku.deposit_wizard.known_type.adding_to') %>
-      <span class="deposit-wizard__adding-to-type"><%= selected_parent[:type] %>:</span>
-      <span class="deposit-wizard__adding-to-parent"><%= selected_parent[:title] %></span>
+      <span class="deposit-wizard__adding-to-type"><%= deposit_wizard.selected_parent[:type] %>:</span>
+      <span class="deposit-wizard__adding-to-parent"><%= deposit_wizard.selected_parent[:title] %></span>
     </p>
   <% end %>
 
   <%= form_tag main_app.deposit_wizard_advance_path(step: 'known_type'), method: :patch, class: 'deposit-wizard__type-form' do %>
     <%= render 'type_cards' %>
 
-    <% back_step = known_type_back_step %>
+    <% back_step = deposit_wizard.known_type_back_step %>
     <% back = back_step ? main_app.deposit_wizard_step_path(step: back_step) : main_app.deposit_wizard_path %>
     <%= render 'nav', back_path: back,
-                      next_html: { disabled: wizard_state.work_type.blank?, data: { behavior: 'type-next' } } %>
+                      next_html: { disabled: deposit_wizard.state.work_type.blank?, data: { behavior: 'type-next' } } %>
   <% end %>
 </div>

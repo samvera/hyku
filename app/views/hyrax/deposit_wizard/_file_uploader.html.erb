@@ -34,7 +34,7 @@
       renders rows for uploads it handled this load); new uploads append here
       client-side. %>
   <div class="files deposit-wizard__file-list">
-    <% uploaded_files.each do |uploaded_file| %>
+    <% deposit_wizard.uploaded_files.each do |uploaded_file| %>
       <%= render 'uploaded_file_row', uploaded_file: uploaded_file %>
     <% end %>
   </div>

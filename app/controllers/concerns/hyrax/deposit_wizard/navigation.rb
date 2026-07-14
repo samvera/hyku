@@ -76,7 +76,7 @@ module Hyrax
           next_step = wizard_state.uploaded_file_ids.any? ? 'file_meta' : 'review'
           redirect_to main_app.deposit_wizard_step_path(step: next_step)
         else
-          flash_error('hyku.deposit_wizard.errors.details_invalid', form_error_messages(work_form))
+          flash_error('hyku.deposit_wizard.errors.details_invalid', deposit_wizard.form_error_messages(work_form))
           render :details
         end
       end

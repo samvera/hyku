@@ -79,24 +79,21 @@ module Hyrax
       head :no_content
     end
 
-    # Persist the work from the collected state, then run the configured
-    # post-commit hook (e.g. Enact nesting) and land on the done screen.
+    # Deposit the work from the collected state and land on the done screen.
     def commit
       return redirect_to(main_app.deposit_wizard_step_path(step: 'known_type')) if wizard_state.work_type.blank?
 
       build_work_form
-      if deposit_agreement_required? && params[:agreement] != '1'
-        flash.now[:alert] = t('hyku.deposit_wizard.errors.agreement_required')
-        return render(:review)
-      end
+      return render(:review) unless deposit_agreement_accepted?
 
       capture_review_extras
       build_work_form
-      work = create_work
-      return render(:review) unless work
+      work = deposit_wizard.deposit
+      unless work
+        flag_commit_failure(deposit_wizard.commit_errors)
+        return render(:review)
+      end
 
-      apply_file_embargoes_and_leases(work)
-      wizard_config.post_commit&.call(work, wizard_state)
       reset_state
       stash_deposited(work)
       redirect_to main_app.deposit_wizard_step_path(step: 'done')
@@ -140,6 +137,15 @@ module Hyrax
       add_breadcrumb t('hyrax.controls.home'), main_app.root_path
       add_breadcrumb t('hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
       add_breadcrumb t('hyku.deposit_wizard.button'), main_app.deposit_wizard_path
+    end
+
+    # False (with an alert flashed) when active-agreement mode requires the
+    # checkbox and it wasn't ticked, so #commit can re-render review.
+    def deposit_agreement_accepted?
+      return true unless deposit_wizard.deposit_agreement_required? && params[:agreement] != '1'
+
+      flash.now[:alert] = t('hyku.deposit_wizard.errors.agreement_required')
+      false
     end
 
     def reset_state

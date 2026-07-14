@@ -20,20 +20,6 @@ module Hyrax
       def flag_commit_failure(messages)
         flash_error('hyku.deposit_wizard.errors.deposit_failed', messages)
       end
-
-      # e.g. invalid redirect path or video embed the form validator rejected.
-      def form_error_messages(form)
-        form.errors.full_messages
-      end
-
-      # A transaction Failure's first element is a symbol reason (e.g.
-      # :redirect_path_collision); prefer a translation for it, else its detail.
-      def transaction_failure_messages(failure)
-        reason, *detail = Array(failure)
-        message = I18n.t("hyku.deposit_wizard.errors.commit.#{reason}", default: nil) ||
-                  Array(detail).flatten.map(&:to_s).presence&.to_sentence || reason.to_s.humanize
-        Array(message)
-      end
     end
   end
 end

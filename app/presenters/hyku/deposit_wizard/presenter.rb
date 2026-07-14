@@ -297,9 +297,185 @@ module Hyku
         session.delete(:deposit_wizard_last)
       end
 
+      # Active deposit-agreement mode requires the depositor to tick the checkbox
+      # before committing; passive mode is informational only.
+      def deposit_agreement_required?
+        Flipflop.show_deposit_agreement? && Flipflop.active_deposit_agreement_acceptance?
+      end
+
+      # Messages from the last failed #deposit, for the controller to flash on the
+      # re-rendered review step.
+      attr_reader :commit_errors
+
+      # Create the work, apply per-file embargo/lease, and run the configured
+      # post-commit hook (e.g. Enact nesting). Returns the work, or nil on
+      # validation/transaction failure (recorded in #commit_errors so the
+      # re-rendered review step isn't silent).
+      def deposit
+        work = create_work
+        return unless work
+
+        apply_file_embargoes_and_leases(work)
+        config.post_commit&.call(work, state)
+        work
+      end
+
+      # e.g. invalid redirect path or video embed the form validator rejected.
+      # Also used by the details step (Navigation) to explain a validation failure.
+      def form_error_messages(form)
+        form.errors.full_messages
+      end
+
       private
 
       attr_reader :context
+
+      # Run the stock CreateValkyrieWork action (same as the deposit form). Returns
+      # the work, or nil on validation/transaction failure (recorded in
+      # #commit_errors).
+      def create_work
+        @commit_errors = nil
+        action = Hyrax::Action::CreateValkyrieWork.new(form: work_form,
+                                                       transactions: Hyrax::Transactions::Container,
+                                                       user: current_user,
+                                                       params: commit_params,
+                                                       work_attributes_key: work_form.model_name.param_key)
+        return record_commit_failure(form_error_messages(action.form)) unless action.validate
+
+        # Failure#or returns the block's value, so branch explicitly rather than
+        # chaining .value_or (which would run on the block's nil result).
+        result = action.perform
+        return result.value! if result.success?
+
+        record_commit_failure(transaction_failure_messages(result.failure))
+      end
+
+      def record_commit_failure(messages)
+        @commit_errors = Array(messages)
+        nil
+      end
+
+      # A transaction Failure's first element is a symbol reason (e.g.
+      # :redirect_path_collision); prefer a translation for it, else its detail.
+      def transaction_failure_messages(failure)
+        reason, *detail = Array(failure)
+        message = I18n.t("hyku.deposit_wizard.errors.commit.#{reason}", default: nil) ||
+                  Array(detail).flatten.map(&:to_s).presence&.to_sentence || reason.to_s.humanize
+        Array(message)
+      end
+
+      # The params CreateValkyrieWork expects, assembled from wizard state: the
+      # work attributes (with the chosen admin set, and any per-file metadata
+      # under +file_set+) under its param key, plus the uploaded-file ids.
+      def commit_params
+        attributes = state.attributes.merge('admin_set_id' => selected_admin_set_id).compact
+        attributes['file_set'] = file_set_params if file_set_params.any?
+        params = {
+          work_form.model_name.param_key => attributes,
+          'uploaded_files' => state.uploaded_file_ids
+        }
+        # parent_id is top-level (not under the work key); add_to_parent reads it there.
+        params['parent_id'] = state.parent_id if state.parent_id.present?
+        ActionController::Parameters.new(params)
+      end
+
+      # Per-file metadata for CreateValkyrieWork's add_file_sets step: one hash
+      # per uploaded file, in attach order, carrying its uploaded_file_id (used to
+      # match visibility) and entered fields. When a file inherits the work's
+      # visibility, its visibility params are dropped so it follows the work.
+      #
+      # Keys are symbolized because WorkUploadsHandler#file_set_args merges this
+      # into a symbol-keyed default hash; string keys would not override the
+      # defaults, so entered metadata (title, description, ...) would be dropped.
+      # The FileSet constructor ignores non-attribute keys (uploaded_file_id), and
+      # visibility is applied separately by the handler.
+      def file_set_params
+        @file_set_params ||= state.uploaded_file_ids.map do |id|
+          meta = state.file_metadata[id.to_s].to_h.dup
+          meta['uploaded_file_id'] = id.to_s
+          inherits = meta.delete('inherit_visibility') != '0'
+          if inherits
+            meta.reject! { |k, _| k.to_s.start_with?('visibility') || k.to_s.include?('embargo') || k.to_s.include?('lease') }
+          else
+            normalize_file_visibility!(meta)
+          end
+          meta.symbolize_keys
+        end
+      end
+
+      # Apply each file's OWN embargo/lease after commit. add_file_sets copies the
+      # work's embargo/lease onto every FileSet, so first clear the inherited one,
+      # then apply the file's choice. FileSets are matched by identity, not array
+      # position: find_members does not guarantee uploaded_file_ids order.
+      def apply_file_embargoes_and_leases(work)
+        file_set_ids = file_set_ids_by_uploaded_file
+        file_sets = Hyrax.query_service.find_members(resource: work).index_by { |fs| fs.id.to_s }
+        state.uploaded_file_ids.each do |id|
+          meta = state.file_metadata[id.to_s].to_h
+          next if meta['inherit_visibility'] != '0'
+          file_set = file_sets[file_set_ids[id.to_s]]
+          next if file_set.nil?
+
+          clear_inherited_restrictions(file_set)
+          case meta['visibility']
+          when 'embargo' then apply_file_embargo(file_set, meta)
+          when 'lease'   then apply_file_lease(file_set, meta)
+          end
+          saved = Hyrax.persister.save(resource: file_set)
+          Hyrax.publisher.publish('object.metadata.updated', object: saved, user: current_user)
+        end
+      end
+
+      # The visibility component submits "embargo"/"lease" as the visibility, but
+      # those are selectors, not real visibilities: passing them to a FileSet's
+      # `visibility=` raises UnknownVisibility. Replace the flat visibility with the
+      # during-condition (what the file is *now*), and drop the embargo/lease detail
+      # keys so they are not merged onto the FileSet as junk attributes. The actual
+      # embargo/lease record is applied post-commit from state (see
+      # #apply_file_embargoes_and_leases), which still has the untouched detail fields.
+      def normalize_file_visibility!(meta)
+        case meta['visibility']
+        when 'embargo' then meta['visibility'] = meta['visibility_during_embargo']
+        when 'lease'   then meta['visibility'] = meta['visibility_during_lease']
+        end
+        meta.reject! { |k, _| k.to_s.include?('embargo') || k.to_s.include?('lease') }
+      end
+
+      # Map each uploaded-file id to the id of the FileSet it was attached to.
+      # WorkUploadsHandler records the link on the UploadedFile as file_set_uri
+      # (via #add_file_set!); the FileSet id is its trailing path segment.
+      def file_set_ids_by_uploaded_file
+        Hyrax::UploadedFile.where(id: state.uploaded_file_ids).each_with_object({}) do |uf, map|
+          map[uf.id.to_s] = uf.file_set_uri.to_s.split('/').last
+        end
+      end
+
+      # Drop any embargo/lease the file inherited from the work (copied down by the
+      # add_file_sets step) so the file's own choice starts from a clean slate. The
+      # association is stored as embargo_id/lease_id, so detach by clearing the id
+      # (assigning nil to the object accessor raises).
+      def clear_inherited_restrictions(file_set)
+        file_set.embargo_id = nil
+        file_set.lease_id = nil
+      end
+
+      def apply_file_embargo(file_set, meta)
+        file_set.embargo = Hyrax.persister.save(resource: Hyrax::Embargo.new(
+          visibility_during_embargo: meta['visibility_during_embargo'],
+          visibility_after_embargo: meta['visibility_after_embargo'],
+          embargo_release_date: meta['embargo_release_date']
+        ))
+        Hyrax::EmbargoManager.apply_embargo_for(resource: file_set)
+      end
+
+      def apply_file_lease(file_set, meta)
+        file_set.lease = Hyrax.persister.save(resource: Hyrax::Lease.new(
+          visibility_during_lease: meta['visibility_during_lease'],
+          visibility_after_lease: meta['visibility_after_lease'],
+          lease_expiration_date: meta['lease_expiration_date']
+        ))
+        Hyrax::LeaseManager.apply_lease_for(resource: file_set)
+      end
     end
   end
 end

@@ -86,8 +86,12 @@ RSpec.describe SolrDocument, type: :model do
       around do |example|
         original_value = Hyrax.config.flexible
         Hyrax.config.flexible = true
-        Hyrax::FlexibleSchema.create(profile: profile_data)
+        # current_schema_id is the newest row, so this fixture schema (which omits
+        # some properties, e.g. redirects) shadows the default for the rest of the
+        # process; delete it after the example so later specs see the real schema.
+        schema = Hyrax::FlexibleSchema.create(profile: profile_data)
         example.run
+        schema.destroy
         Hyrax.config.flexible = original_value
       end
 

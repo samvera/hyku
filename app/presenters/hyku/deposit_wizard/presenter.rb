@@ -210,6 +210,66 @@ module Hyku
         nil # start screen
       end
 
+      STEPS = %w[start select_parent item_start known_type files details file_meta review done].freeze
+      STEPS_REQUIRING_WORK_TYPE = %w[files details file_meta review].freeze
+
+      def valid_step?(step)
+        STEPS.include?(step)
+      end
+
+      def needs_work_type?(step)
+        STEPS_REQUIRING_WORK_TYPE.include?(step) && state.work_type.blank?
+      end
+
+      # Which step a requested one should redirect to instead of rendering, or nil
+      # to render it — for steps that don't apply given the current wizard state.
+      def step_detour(step)
+        return 'known_type' if needs_work_type?(step)
+        return 'review'     if step == 'file_meta' && state.uploaded_file_ids.empty?
+        return 'start'      if step == 'select_parent' && state.path != 'add'
+        return 'known_type' if step == 'item_start' && !item_start_offers_choice?
+
+        nil
+      end
+
+      # Record the choice submitted on +step+ into wizard state and return the
+      # Transition (advance or re-render) the controller should apply. The wizard
+      # is server-rendered: each step is a GET, its choice POSTs here.
+      def advance_from(step)
+        case step
+        when 'start'         then advance_from_start
+        when 'select_parent' then advance_from_select_parent
+        when 'item_start'    then Transition.advance('known_type')
+        when 'known_type'    then select_work_type
+        when 'files'         then advance_from_files
+        when 'details'       then advance_from_details
+        when 'file_meta'     then advance_from_file_meta
+        end
+      end
+
+      def work_params
+        params.fetch(state.work_type.constantize.model_name.param_key, {})
+      end
+
+      # Copy the enabled connect/share/redirect capabilities posted with the
+      # deposit form into wizard state before commit.
+      def capture_review_extras
+        keys = enabled_extra_attribute_keys
+        if keys.any?
+          posted = params.fetch(work_form.model_name.param_key, {}).permit!.to_h
+          attributes = state.attributes
+          # Delete-when-absent (not merge) so removing all of a capability's
+          # entries clears it rather than leaving the prior value to reappear.
+          keys.each { |key| posted.key?(key) ? attributes[key] = posted[key] : attributes.delete(key) }
+          state.attributes = attributes
+        end
+
+        # Guard on params.key? so an absent parent_id doesn't clobber one seeded at
+        # launch (the handoff).
+        return unless config.enable_parent_connect && params.key?(:parent_id)
+        state.parent_id = params[:parent_id]
+      end
+
       # A since-deleted collection id is dropped individually rather than failing
       # the whole review render.
       def selected_member_collections
@@ -353,6 +413,82 @@ module Hyku
       def record_commit_failure(messages)
         @commit_errors = Array(messages)
         nil
+      end
+
+      def advance_from_start
+        state.admin_set_id = params[:admin_set_id] if params.key?(:admin_set_id)
+
+        # No path posted means the flat (non-relationship) start screen, which
+        # chooses the work type inline.
+        unless params.key?(:path)
+          state.path = 'standalone'
+          return select_work_type(rerender_step: 'start')
+        end
+
+        state.path = params[:path]
+        Transition.advance(state.path == 'add' ? 'select_parent' : item_flow_entry_step)
+      end
+
+      def advance_from_select_parent
+        return rerender_parent_required if params[:parent_id].blank?
+
+        state.parent_id = params[:parent_id]
+        Transition.advance(item_flow_entry_step)
+      end
+
+      def rerender_parent_required
+        Transition.rerender('select_parent', alert: 'hyku.deposit_wizard.errors.no_parent')
+      end
+
+      def select_work_type(rerender_step: 'known_type')
+        type = params[:work_type].to_s
+        return rerender_bad_work_type(rerender_step) unless available_work_types.map(&:to_s).include?(type)
+
+        state.work_type = type
+        Transition.advance('files',
+                           notice: I18n.t('hyku.deposit_wizard.notices.work_type_selected',
+                                          type: type.constantize.model_name.human))
+      end
+
+      def rerender_bad_work_type(step)
+        Transition.rerender(step, alert: 'hyku.deposit_wizard.errors.no_work_type')
+      end
+
+      def advance_from_files
+        # `uploaded_files[]` is emitted by Hyrax's upload js_templates for each
+        # completed upload, matching the param name stock deposit uses.
+        state.uploaded_file_ids = params[:uploaded_files]
+        state.primary_file_id = params[:primary_file_id]
+        Transition.advance('details')
+      end
+
+      # The ChangeSet permits its own fields, so raw nested params go straight to
+      # #validate, as the stock works controller does. The submitted values (plain
+      # strings/arrays) are stored so they serialize into the session.
+      def advance_from_details
+        build_work_form
+        unless work_form.validate(work_params)
+          return Transition.rerender('details', alert: 'hyku.deposit_wizard.errors.details_invalid',
+                                                messages: form_error_messages(work_form))
+        end
+
+        state.attributes = work_params.to_unsafe_h
+        Transition.advance(state.uploaded_file_ids.any? ? 'file_meta' : 'review')
+      end
+
+      def advance_from_file_meta
+        submitted = params.fetch(:file_metadata, {}).permit!.to_h
+        allowed = state.uploaded_file_ids.map(&:to_s)
+        state.file_metadata = submitted.slice(*allowed)
+        Transition.advance('review')
+      end
+
+      def enabled_extra_attribute_keys
+        keys = []
+        keys << 'member_of_collections_attributes' if config.enable_collection_connect
+        keys << 'permissions_attributes' if config.enable_sharing
+        keys.push('redirects_attributes', 'redirects_display_url_index') if config.redirects_available?
+        keys
       end
 
       # A transaction Failure's first element is a symbol reason (e.g.

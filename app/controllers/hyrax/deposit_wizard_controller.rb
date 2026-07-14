@@ -8,8 +8,6 @@ module Hyrax
   # Flipflop feature (off by default).
   class DepositWizardController < ApplicationController # rubocop:disable Metrics/ClassLength
     include Hyrax::DepositWizard::Context
-    include Hyrax::DepositWizard::Navigation
-    include Hyrax::DepositWizard::Persistence
 
     with_themed_layout 'dashboard'
 
@@ -17,9 +15,6 @@ module Hyrax
     before_action :authenticate_user!
     before_action :assign_current_ability
     before_action :build_breadcrumbs
-
-    STEPS = %w[start select_parent item_start known_type files details file_meta review done].freeze
-    STEPS_REQUIRING_WORK_TYPE = %w[files details file_meta review].freeze
 
     # Let the details step reuse Hyrax's work-form partials: the shared
     # _form_metadata renders sub-partials (form_media, etc.) by relative name,
@@ -36,10 +31,10 @@ module Hyrax
 
     def show
       step = params[:step].to_s
-      return redirect_to(main_app.deposit_wizard_path) unless STEPS.include?(step)
+      return redirect_to(main_app.deposit_wizard_path) unless deposit_wizard.valid_step?(step)
 
-      detour = step_detour(step)
-      return redirect_to(detour) if detour
+      detour = deposit_wizard.step_detour(step)
+      return redirect_to(step_path(detour)) if detour
 
       build_work_form if %w[details review].include?(step)
       render step
@@ -48,16 +43,10 @@ module Hyrax
     # Record a choice made on the current step and advance to the next one. The
     # wizard is server-rendered: each step is a GET, and choices POST here.
     def update
-      case params[:step].to_s
-      when 'start'         then advance_from_start
-      when 'select_parent' then advance_from_select_parent
-      when 'item_start'    then advance_from_item_start
-      when 'known_type'    then advance_from_known_type
-      when 'files'         then advance_from_files
-      when 'details'       then advance_from_details
-      when 'file_meta'     then advance_from_file_meta
-      else redirect_to main_app.deposit_wizard_path
-      end
+      transition = deposit_wizard.advance_from(params[:step].to_s)
+      return redirect_to(main_app.deposit_wizard_path) if transition.nil?
+
+      apply_transition(transition)
     end
 
     def parent_options
@@ -74,7 +63,7 @@ module Hyrax
       return head(:bad_request) if wizard_state.work_type.blank?
 
       build_work_form
-      capture_review_extras
+      deposit_wizard.capture_review_extras
       head :no_content
     end
 
@@ -85,7 +74,7 @@ module Hyrax
       build_work_form
       return render(:review) unless deposit_agreement_accepted?
 
-      capture_review_extras
+      deposit_wizard.capture_review_extras
       build_work_form
       work = deposit_wizard.deposit
       unless work
@@ -105,15 +94,23 @@ module Hyrax
     end
     helper_method :deposit_wizard
 
-    # Where a requested step should redirect instead of rendering, or nil to
-    # render it — for steps that don't apply given the current wizard state.
-    def step_detour(step)
-      return main_app.deposit_wizard_step_path(step: 'known_type') if needs_work_type?(step)
-      return main_app.deposit_wizard_step_path(step: 'review') if step == 'file_meta' && wizard_state.uploaded_file_ids.empty?
-      return main_app.deposit_wizard_path if step == 'select_parent' && wizard_state.path != 'add'
-      return main_app.deposit_wizard_step_path(step: 'known_type') if step == 'item_start' && !item_start_offers_choice?
+    # Turn the presenter's Transition into the HTTP effect: advance by redirecting
+    # to the next step, or flash the alert and re-render the current step.
+    def apply_transition(transition)
+      return redirect_to(step_path(transition.step), notice: transition.notice) if transition.advance?
 
-      nil
+      if transition.messages
+        flash_error(transition.alert, transition.messages)
+      else
+        flash.now[:alert] = t(transition.alert)
+      end
+      render transition.step
+    end
+
+    # The 'start' step is the reset entry point (its own action), not a rendered
+    # :step; everything else is the show route.
+    def step_path(step)
+      step == 'start' ? main_app.deposit_wizard_path : main_app.deposit_wizard_step_path(step: step)
     end
 
     # Mirror Hyrax's batch-upload guard: redirect to the dashboard rather than
@@ -160,6 +157,15 @@ module Hyrax
 
     def reset_state
       session[:deposit_wizard] = {}
+    end
+
+    # Survive the redirect to the done screen, which reads it once. The show path
+    # is built here where the work object is available.
+    def stash_deposited(work)
+      session[:deposit_wizard_last] = {
+        'title' => Array(work.title).first,
+        'path' => main_app.polymorphic_path([main_app, work])
+      }
     end
 
     # Seed wizard state from the same context params other entry points pass

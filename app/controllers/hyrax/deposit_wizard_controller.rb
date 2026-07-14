@@ -6,7 +6,7 @@ module Hyrax
   # Hyrax create transaction, so a work created here is indistinguishable from
   # one created via the stock deposit form. Gated by the +deposit_wizard+
   # Flipflop feature (off by default).
-  class DepositWizardController < ApplicationController
+  class DepositWizardController < ApplicationController # rubocop:disable Metrics/ClassLength
     include Hyrax::DepositWizard::Context
     include Hyrax::DepositWizard::ErrorReporting
     include Hyrax::DepositWizard::Navigation
@@ -103,6 +103,11 @@ module Hyrax
     end
 
     private
+
+    def deposit_wizard
+      @deposit_wizard ||= Hyku::DepositWizard::Presenter.new(self)
+    end
+    helper_method :deposit_wizard
 
     # Where a requested step should redirect instead of rendering, or nil to
     # render it — for steps that don't apply given the current wizard state.

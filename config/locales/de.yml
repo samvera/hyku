@@ -187,6 +187,146 @@ de:
   hyku:
     account:
       signup_disabled: Kontoanmeldung ist deaktiviert
+    deposit_wizard:
+      admin_set:
+        heading: Administrativer Satz
+        hint_lead: Legt die Regeln für diese Einreichung fest
+        hint_html: Ein administrativer Satz bestimmt, welche <strong>Metadatenfelder</strong> Sie ausfüllen, welche <strong>Sichtbarkeitsoptionen</strong> für Ihr Werk verfügbar sind und welchen <strong>Prüf-Workflow</strong> es nach der Einreichung durchläuft. Die meisten Einreichungen verwenden den Standard.
+        label: Administrativer Satz
+        workflow: Workflow
+      back: Zurück
+      button: Geführte Einreichung
+      continue: Weiter
+      next: Weiter
+      page_heading: Neues Werk einreichen
+      page_subtitle: Dieser geführte Ablauf begleitet Sie Schritt für Schritt bei der Einreichung Ihres Werks
+      details:
+        heading: Beschreiben Sie Ihr Element
+        subtext: Fügen Sie die Details für dieses Werk hinzu. Pflichtfelder sind markiert.
+      disabled: Der geführte Einreichungsassistent ist nicht aktiviert.
+      done:
+        deposit_another: Ein weiteres Werk einreichen
+        heading: Werk eingereicht
+        no_recent: Ihr Werk wurde eingereicht.
+        subtext: "„%{title}“ wurde im Repositorium eingereicht."
+        untitled: Ihr Werk
+        view_work: Werk ansehen
+      errors:
+        agreement_required: Bitte akzeptieren Sie die Einreichungsvereinbarung, um fortzufahren.
+        commit:
+          redirect_path_collision: Eine der Wunsch-URLs wird bereits verwendet. Wählen Sie einen anderen Pfad.
+        deposit_failed: Ihr Werk konnte nicht eingereicht werden
+        details_invalid: Einige Details müssen korrigiert werden, bevor Sie fortfahren können
+        no_parent: Bitte wählen Sie ein Werk, dem diese Einreichung hinzugefügt werden soll.
+        no_work_type: Bitte wählen Sie einen Werktyp, um fortzufahren.
+      extras:
+        add: Hinzufügen
+        parent:
+          heading: Zu einem übergeordneten Werk hinzufügen
+          hint: Optional können Sie dieses Werk in ein vorhandenes Werk einbetten.
+          label: Werke suchen
+          placeholder: Nach einem Werk suchen…
+        collection:
+          heading: Zu einer Sammlung hinzufügen
+          hint: Optional können Sie dieses Werk zu einer oder mehreren Sammlungen hinzufügen.
+          label: Sammlungen suchen
+          placeholder: Nach einer Sammlung suchen…
+          none: Es sind keine Sammlungen verfügbar, denen Sie dieses Werk hinzufügen können.
+        sharing:
+          heading: Mit Personen oder Gruppen teilen
+          hint: Optional können Sie bestimmten Personen oder Gruppen Zugriff auf dieses Werk gewähren.
+          person_label: Person (E-Mail)
+          person_placeholder: name@beispiel.de
+          group_label: Gruppe
+          group_placeholder: Eine Gruppe auswählen…
+        redirects:
+          heading: Eine Wunsch-URL hinzufügen
+          hint: "Optional können Sie eine kurze, einprägsame URL hinzufügen, die auf dieses Werk weiterleitet (unter %{base_url})."
+      file_meta:
+        description: Beschreibung
+        file: Datei
+        files_count:
+          one: "Dateien · 1"
+          other: "Dateien · %{count}"
+        files_nav: Hochgeladene Dateien
+        heading: Beschreiben Sie Ihre Dateien
+        inherit: Wie das Werk
+        subtext: Fügen Sie Details für jede Datei hinzu oder lassen Sie sie vom Werk erben.
+        title: Titel
+        visibility: Sichtbarkeit der Datei
+      files:
+        add_files: Dateien hinzufügen
+        cancel_upload: Abbrechen
+        dropzone: Dateien hierher ziehen und ablegen oder zum Durchsuchen klicken
+        dropzone_hint: Sie können mehr als eine Datei hinzufügen oder ohne fortfahren.
+        heading: Dateien hinzufügen
+        subtext: Fügen Sie beliebige Dateien für dieses Werk hinzu. Sie können auch ohne fortfahren.
+      item_start:
+        heading: Ein Element hinzufügen
+        known_type: Ich weiß, um welchen Werktyp es sich handelt
+        subtext: Wählen Sie, wie Sie dieses Element beschreiben möchten.
+      known_type:
+        adding_to: Wird hinzugefügt als untergeordnetes Element von
+        heading: Um welchen Werktyp handelt es sich?
+        subtext: Wählen Sie den Typ, der am besten zum eingereichten Werk passt.
+      no_work_types: Es sind keine Werktypen für die Einreichung verfügbar. Bitte wenden Sie sich an einen Administrator.
+      notices:
+        work_type_selected: "%{type} ausgewählt."
+      review:
+        deposit: Einreichen
+        destination: Dieses Werk wird im administrativen Satz %{admin_set} eingereicht.
+        entry_count:
+          one: 1 Eintrag
+          other: "%{count} Einträge"
+        file_count:
+          one: 1 Datei
+          other: "%{count} Dateien"
+        files: Dateien
+        embargo_summary_html: "Embargo: %{during} bis %{date}, danach %{after}"
+        file_visibility: Sichtbarkeit der Datei
+        heading: Überprüfen und einreichen
+        lease_summary_html: "Freigabefrist: %{during} bis %{date}, danach %{after}"
+        subtext: Prüfen Sie, ob alles korrekt ist, bevor Sie dieses Werk einreichen.
+        visibility: Sichtbarkeit
+        visibility_inherited: Wie das Werk
+        work_type: Werktyp
+        work_visibility: Sichtbarkeit des Werks
+      select_parent:
+        heading: Wählen Sie das übergeordnete Werk
+        subtext: Suchen Sie das Werk, dem diese Einreichung hinzugefügt werden soll.
+        label: Werke suchen
+      start:
+        heading: Was möchten Sie einreichen?
+        subtext: Dieser geführte Ablauf begleitet Sie Schritt für Schritt bei der Einreichung Ihres Werks.
+        paths:
+          add:
+            desc: Betten Sie diese Einreichung in ein bereits erstelltes Werk ein.
+            title: Zu einem vorhandenen Werk hinzufügen
+          new:
+            desc: Ein Werk eigenständig einreichen.
+            title: Ein neues Werk einreichen
+          standalone:
+            desc: Ein einzelnes Werk eigenständig einreichen, ohne übergeordnetes Werk.
+            title: Ein eigenständiges Werk einreichen
+      visibility:
+        legend: Sichtbarkeit
+        embargo:
+          during: Bis das Embargo aufgehoben wird, ist der Zugriff
+          date: Datum der Embargo-Aufhebung
+          after: Nach Aufhebung des Embargos wird der Zugriff
+        lease:
+          during: Solange die Freigabefrist aktiv ist, ist der Zugriff
+          date: Ablaufdatum der Freigabefrist
+          after: Nach Ablauf der Freigabefrist wird der Zugriff
+      stepper:
+        item:
+          detail: Werkdetails
+          file_detail: Dateidetails
+          parent: Übergeordnetes Werk
+          review: Überprüfen
+          type: Elementtyp
+          upload: Dateien hochladen
+        label: Fortschritt der Einreichung
     admin:
       flash:
         access_denied: Sie sind nicht berechtigt, diese Seite anzuzeigen

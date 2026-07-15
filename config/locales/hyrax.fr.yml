@@ -794,6 +794,20 @@ fr:
         viz_after: La visibilité passera à
         viz_current: Visibilité actuelle
     featured_researchers: Chercheurs en vedette
+    'hyrax/file_set':
+      hints:
+        title: Un nom pour faciliter l'identification de ce fichier.
+        creator: La personne ou le groupe responsable du contenu de ce fichier. Les noms de personnes doivent être saisis avec le nom de famille en premier, par ex. « Dupont, Jean ».
+        license: Informations de licence et de distribution régissant l'accès à ce fichier. Sélectionnez-les dans la liste déroulante proposée.
+        contributor: Une personne ou un groupe que vous souhaitez reconnaître pour avoir joué un rôle dans la création de ce fichier, mais pas le rôle principal.
+        date_created: La date de création de ce fichier.
+        description: Notes en texte libre sur ce fichier.
+        identifier: Un identifiant unique de ce fichier, tel qu'un DOI, un ISBN ou un numéro OCLC.
+        keyword: Mots ou expressions que vous choisissez pour décrire le sujet de ce fichier. Ils servent à rechercher du contenu.
+        language: La langue du contenu du fichier. Pour les transcriptions audio/vidéo, il peut s'agir du code <a href="https://id.loc.gov/vocabulary/iso639-2.html" target="_blank">ISO 639-2</a>, du code <a href="https://id.loc.gov/vocabulary/iso639-3.html" target="_blank">ISO 639-3</a>, ou du nom anglais de la langue.
+        publisher: La personne ou le groupe qui met ce fichier à disposition. Il s'agit généralement de l'institution.
+        related_url: Un lien vers un site web ou un autre contenu spécifique (audio, vidéo, document PDF) lié à ce fichier.
+        subject: Vedettes-matière ou termes d'index décrivant le sujet de ce fichier.
     file_manager:
       link_text: Gestionnaire de fichiers
     file_set:

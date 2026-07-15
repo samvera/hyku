@@ -796,6 +796,20 @@ zh:
         viz_after: 可见性将变为
         viz_current: 当前可见性
     featured_researchers: 特色研究员
+    'hyrax/file_set':
+      hints:
+        title: 有助于识别此文件的名称。
+        creator: 对此文件内容负责的个人或群组。个人姓名应姓在前，例如“张, 三”。
+        license: 管理此文件访问权限的许可与分发信息。请从提供的下拉列表中选择。
+        contributor: 您希望表彰其在此文件创建中发挥了作用（但非主要作用）的个人或群组。
+        date_created: 此文件的创建日期。
+        description: 关于此文件的自由文本备注。
+        identifier: 此文件的唯一标识符，例如 DOI、ISBN 或 OCLC 编号。
+        keyword: 您所选用来描述此文件主题的词语或短语。这些用于搜索内容。
+        language: 文件内容的语言。对于音频/视频转录，可以是 <a href="https://id.loc.gov/vocabulary/iso639-2.html" target="_blank">ISO 639-2</a> 代码、<a href="https://id.loc.gov/vocabulary/iso639-3.html" target="_blank">ISO 639-3</a> 代码，或该语言的英文名称。
+        publisher: 提供此文件的个人或群组。通常是所属机构。
+        related_url: 指向与此文件相关的网站或其他特定内容（音频、视频、PDF 文档）的链接。
+        subject: 描述此文件主题的标题或索引词。
     file_manager:
       link_text: 文件管理器
     file_set:

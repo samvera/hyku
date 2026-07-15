@@ -65,22 +65,57 @@
     margin: 0;
   }
 
-  // ---- Forms -----------------------------------------------------------
+  // ---- Admin set card --------------------------------------------------
   &__admin-set {
     margin-bottom: 1.75rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--dw-surface);
+    border: 1px solid var(--dw-border);
+    border-radius: var(--dw-radius-lg);
+    box-shadow: var(--dw-shadow-card);
   }
 
-  &__admin-set-hint {
-    margin-bottom: 0.75rem;
+  &__admin-set-title {
+    margin: 0 0 0.5rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--dw-ink);
   }
 
-  &__admin-set-guidance {
-    margin-top: 0.6rem;
+  &__admin-set-subtitle {
+    margin-left: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--dw-ink-subtle);
+  }
+
+  &__admin-set-explanation {
+    margin: 0 0 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--dw-ink-muted);
+
+    strong {
+      color: var(--dw-ink);
+      font-weight: 600;
+    }
+  }
+
+  &__admin-set-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  &__admin-set-select {
+    flex: 1 1 20rem;
   }
 
   &__admin-set-desc {
-    margin: 0 0 0.4rem;
-    font-size: 0.9rem;
+    flex-basis: 100%;
+    margin: 0.65rem 0 0;
+    font-size: 0.85rem;
     line-height: 1.5;
     color: var(--dw-ink-muted);
 
@@ -89,10 +124,15 @@
     }
   }
 
+  // Workflow badge sitting beside the selector.
   &__admin-set-workflow {
-    margin: 0;
-    font-size: 0.85rem;
-    color: var(--dw-ink-muted);
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    flex: none;
+    padding: 0.4rem 0.75rem;
+    background: var(--dw-surface-sunk);
+    border-radius: var(--dw-radius-sm);
 
     &[hidden] {
       display: none;
@@ -100,9 +140,17 @@
   }
 
   &__admin-set-workflow-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--dw-ink-subtle);
+  }
+
+  &__admin-set-workflow-value {
+    font-size: 0.9rem;
     font-weight: 600;
     color: var(--dw-ink);
-    margin-right: 0.3rem;
   }
 
   // Parent line above the type chooser: "Adding as a child of <Type>: <Title>".

@@ -4,7 +4,7 @@
     and the monotonic row index — driven by hyrax/redirects.js. The posted
     redirects_attributes ride the deposit form; the populator + sync_redirect_paths
     persist them in the transaction. %>
-<% open = extra_prefilled?(:redirects) %>
+<% open = deposit_wizard.extra_prefilled?(:redirects) %>
 <section class="deposit-wizard__extra <%= 'is-open' if open %>" data-behavior="extra-redirects">
   <button type="button" class="deposit-wizard__extra-toggle" data-behavior="extra-toggle"
           aria-expanded="<%= open %>">
@@ -16,7 +16,7 @@
   </button>
 
   <div class="deposit-wizard__extra-body" data-behavior="extra-body" <%= 'hidden' unless open %>>
-    <%= fields_for work_form.model_name.param_key, work_form do |f| %>
+    <%= fields_for deposit_wizard.work_form.model_name.param_key, deposit_wizard.work_form do |f| %>
       <%= render 'hyrax/base/form_redirects', f: f %>
     <% end %>
   </div>

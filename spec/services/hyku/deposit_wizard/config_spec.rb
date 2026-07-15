@@ -27,24 +27,77 @@ RSpec.describe Hyku::DepositWizard::Config do
     end
   end
 
-  describe 'per-tenant capability flags' do
+  describe 'capabilities (live per-tenant Flipflop reads)' do
     subject(:config) { described_class.new }
 
-    it 'reads each capability from its Flipflop feature when no override is set' do
+    it 'reads each capability straight from its Flipflop feature' do
       allow(Flipflop).to receive(:deposit_wizard_parent_connect?).and_return(true)
       allow(Flipflop).to receive(:deposit_wizard_collection_connect?).and_return(false)
       allow(Flipflop).to receive(:deposit_wizard_sharing?).and_return(true)
 
-      expect(config.enable_parent_connect).to be(true)
-      expect(config.enable_collection_connect).to be(false)
-      expect(config.enable_sharing).to be(true)
+      expect(config.capabilities.parent_connect?).to be(true)
+      expect(config.capabilities.collection_connect?).to be(false)
+      expect(config.capabilities.sharing?).to be(true)
     end
 
-    it 'lets an explicit in-memory override win over the Flipflop feature' do
+    it 'reflects a flag change immediately (no stored state to shadow it)' do
       allow(Flipflop).to receive(:deposit_wizard_parent_connect?).and_return(false)
-      config.enable_parent_connect = true
+      expect(config.capabilities.parent_connect?).to be(false)
 
-      expect(config.enable_parent_connect).to be(true)
+      allow(Flipflop).to receive(:deposit_wizard_parent_connect?).and_return(true)
+      expect(config.capabilities.parent_connect?).to be(true)
+    end
+  end
+
+  describe 'parent-connect placement' do
+    subject(:config) { described_class.new { |c| c.parent_connect_placement = placement } }
+
+    let(:placement) { :both }
+
+    before { allow(Flipflop).to receive(:deposit_wizard_parent_connect?).and_return(true) }
+
+    context 'with the default (:both)' do
+      it 'offers parent selection on both edges' do
+        expect(config.parent_connect_placement).to eq(:both)
+        expect(config).to be_parent_connect_on_start
+        expect(config).to be_parent_connect_on_review
+      end
+    end
+
+    context 'with :start' do
+      let(:placement) { :start }
+
+      it 'offers it only up front' do
+        expect(config).to be_parent_connect_on_start
+        expect(config).not_to be_parent_connect_on_review
+      end
+    end
+
+    context 'with :review' do
+      let(:placement) { :review }
+
+      it 'offers it only on review' do
+        expect(config).not_to be_parent_connect_on_start
+        expect(config).to be_parent_connect_on_review
+      end
+    end
+
+    context 'with :none' do
+      let(:placement) { :none }
+
+      it 'offers it on neither edge' do
+        expect(config).not_to be_parent_connect_on_start
+        expect(config).not_to be_parent_connect_on_review
+      end
+    end
+
+    context 'when the parent-connect flag is off' do
+      before { allow(Flipflop).to receive(:deposit_wizard_parent_connect?).and_return(false) }
+
+      it 'shows nothing regardless of placement' do
+        expect(config).not_to be_parent_connect_on_start
+        expect(config).not_to be_parent_connect_on_review
+      end
     end
   end
 
@@ -82,7 +135,7 @@ RSpec.describe Hyku::DepositWizard::Config do
         c.file_meta = true
         c.suggestions = { image: %w[design installation] }
         c.post_commit = ->(_work, _wizard) {}
-        c.enable_parent_connect = true
+        c.parent_connect_placement = :review
         c.parent_types = %w[GenericWorkResource EtdResource OerResource]
       end
     end
@@ -94,7 +147,7 @@ RSpec.describe Hyku::DepositWizard::Config do
       expect(config.file_meta).to be(true)
       expect(config.suggestions).to eq(image: %w[design installation])
       expect(config.post_commit).to respond_to(:call)
-      expect(config.enable_parent_connect).to be(true)
+      expect(config.parent_connect_placement).to eq(:review)
       expect(config.parent_types).to eq(%w[GenericWorkResource EtdResource OerResource])
     end
   end

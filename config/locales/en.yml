@@ -52,9 +52,9 @@ en:
       admin_set:
         heading: Admin Set
         hint_lead: Sets the rules for this deposit
-        hint: An administrative set decides which metadata fields you'll complete, the visibility options available to your work, and the review workflow it follows after deposit. Most deposits use the default.
+        hint_html: An administrative set decides which <strong>metadata fields</strong> you'll complete, the <strong>visibility options</strong> available to your work, and the <strong>review workflow</strong> it follows after deposit. Most deposits use the default.
         label: Administrative set
-        workflow: 'Workflow:'
+        workflow: Workflow
       back: Back
       button: Guided Deposit
       continue: Continue
@@ -171,12 +171,6 @@ en:
             title: Deposit a standalone work
       visibility:
         legend: Visibility
-        options:
-          open: Public
-          authenticated: Institutional
-          restricted: Private
-          embargo: Embargo
-          lease: Lease
         embargo:
           during: Until the embargo lifts, access is
           date: Embargo lift date

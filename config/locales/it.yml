@@ -188,6 +188,146 @@ it:
   hyku:
     account:
       signup_disabled: La registrazione dell'account è disattivata
+    deposit_wizard:
+      admin_set:
+        heading: Insieme amministrativo
+        hint_lead: Definisce le regole per questo deposito
+        hint_html: Un insieme amministrativo determina quali <strong>campi di metadati</strong> completerai, le <strong>opzioni di visibilità</strong> disponibili per la tua opera e il <strong>flusso di revisione</strong> che segue dopo il deposito. La maggior parte dei depositi usa quello predefinito.
+        label: Insieme amministrativo
+        workflow: Flusso di lavoro
+      back: Indietro
+      button: Deposito guidato
+      continue: Continua
+      next: Avanti
+      page_heading: Deposita una nuova opera
+      page_subtitle: Questo flusso guidato ti accompagna passo dopo passo nel deposito della tua opera
+      details:
+        heading: Descrivi il tuo elemento
+        subtext: Aggiungi i dettagli per questa opera. I campi obbligatori sono contrassegnati.
+      disabled: La procedura guidata di deposito non è abilitata.
+      done:
+        deposit_another: Deposita un'altra opera
+        heading: Opera depositata
+        no_recent: La tua opera è stata depositata.
+        subtext: "«%{title}» è stata depositata nel repository."
+        untitled: La tua opera
+        view_work: Visualizza opera
+      errors:
+        agreement_required: Accetta l'accordo di deposito per continuare.
+        commit:
+          redirect_path_collision: Uno degli URL personalizzati è già in uso. Scegli un percorso diverso.
+        deposit_failed: Non è stato possibile depositare la tua opera
+        details_invalid: Alcuni dettagli devono essere corretti prima di poter continuare
+        no_parent: Scegli un'opera a cui aggiungere questo deposito.
+        no_work_type: Scegli un tipo di opera per continuare.
+      extras:
+        add: Aggiungi
+        parent:
+          heading: Aggiungi a un'opera principale
+          hint: Facoltativamente, annida questa opera all'interno di un'opera esistente.
+          label: Cerca opere
+          placeholder: Cerca un'opera…
+        collection:
+          heading: Aggiungi a una raccolta
+          hint: Facoltativamente, aggiungi questa opera a una o più raccolte.
+          label: Cerca raccolte
+          placeholder: Cerca una raccolta…
+          none: Non hai alcuna raccolta disponibile a cui aggiungere questa opera.
+        sharing:
+          heading: Condividi con persone o gruppi
+          hint: Facoltativamente, concedi a persone o gruppi specifici l'accesso a questa opera.
+          person_label: Persona (email)
+          person_placeholder: nome@esempio.com
+          group_label: Gruppo
+          group_placeholder: Seleziona un gruppo…
+        redirects:
+          heading: Aggiungi un URL personalizzato
+          hint: "Facoltativamente, aggiungi un URL breve e facile da ricordare che reindirizza a questa opera (sotto %{base_url})."
+      file_meta:
+        description: Descrizione
+        file: File
+        files_count:
+          one: "File · 1"
+          other: "File · %{count}"
+        files_nav: File caricati
+        heading: Descrivi i tuoi file
+        inherit: Come l'opera
+        subtext: Aggiungi dettagli per ogni file oppure lasciali ereditare dall'opera.
+        title: Titolo
+        visibility: Visibilità del file
+      files:
+        add_files: Aggiungi file
+        cancel_upload: Annulla
+        dropzone: Trascina e rilascia i file qui, oppure fai clic per sfogliare
+        dropzone_hint: Puoi aggiungere più di un file oppure continuare senza.
+        heading: Aggiungi file
+        subtext: Aggiungi i file per questa opera. Puoi anche continuare senza.
+      item_start:
+        heading: Aggiungi un elemento
+        known_type: So di che tipo di opera si tratta
+        subtext: Scegli come vuoi descrivere questo elemento.
+      known_type:
+        adding_to: Aggiunta come elemento figlio di
+        heading: Di che tipo di opera si tratta?
+        subtext: Scegli il tipo più adatto all'opera che stai depositando.
+      no_work_types: Non ci sono tipi di opera disponibili per il deposito. Contatta un amministratore.
+      notices:
+        work_type_selected: "%{type} selezionato."
+      review:
+        deposit: Deposita
+        destination: Questa opera sarà depositata nell'insieme amministrativo %{admin_set}.
+        entry_count:
+          one: 1 voce
+          other: "%{count} voci"
+        file_count:
+          one: 1 file
+          other: "%{count} file"
+        files: File
+        embargo_summary_html: "Embargo: %{during} fino al %{date}, poi %{after}"
+        file_visibility: Visibilità del file
+        heading: Rivedi e deposita
+        lease_summary_html: "Concessione: %{during} fino al %{date}, poi %{after}"
+        subtext: Controlla che tutto sia corretto prima di depositare questa opera.
+        visibility: Visibilità
+        visibility_inherited: Come l'opera
+        work_type: Tipo di opera
+        work_visibility: Visibilità dell'opera
+      select_parent:
+        heading: Scegli l'opera principale
+        subtext: Cerca l'opera a cui deve essere aggiunto questo deposito.
+        label: Cerca opere
+      start:
+        heading: Cosa vorresti depositare?
+        subtext: Questo flusso guidato ti accompagna passo dopo passo nel deposito della tua opera.
+        paths:
+          add:
+            desc: Annida questo deposito all'interno di un'opera che hai già creato.
+            title: Aggiungi a un'opera esistente
+          new:
+            desc: Deposita un'opera per conto suo.
+            title: Deposita una nuova opera
+          standalone:
+            desc: Deposita una singola opera per conto suo, senza opera principale.
+            title: Deposita un'opera autonoma
+      visibility:
+        legend: Visibilità
+        embargo:
+          during: Fino alla revoca dell'embargo, l'accesso è
+          date: Data di revoca dell'embargo
+          after: Alla revoca dell'embargo, l'accesso diventa
+        lease:
+          during: Mentre la concessione è attiva, l'accesso è
+          date: Data di scadenza della concessione
+          after: Alla scadenza della concessione, l'accesso diventa
+      stepper:
+        item:
+          detail: Dettaglio dell'opera
+          file_detail: Dettaglio del file
+          parent: Opera principale
+          review: Rivedi
+          type: Tipo di elemento
+          upload: Carica file
+        label: Avanzamento del deposito
     admin:
       flash:
         access_denied: Non sei autorizzato a visualizzare questa pagina

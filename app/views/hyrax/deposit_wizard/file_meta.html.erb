@@ -1,69 +1,17 @@
 <%= render 'page_header' %>
 
 <div class="deposit-wizard deposit-wizard--file-meta">
-  <%= render 'stepper', steps: item_stepper_steps, phase: stepper_phase(:file_detail) %>
+  <%= render 'stepper', steps: deposit_wizard.item_stepper_steps, phase: deposit_wizard.stepper_phase(:file_detail) %>
   <%= render 'step_title', title: t('hyku.deposit_wizard.file_meta.heading'), hint: t('hyku.deposit_wizard.file_meta.subtext') %>
 
   <%= form_tag main_app.deposit_wizard_advance_path(step: 'file_meta'), method: :patch, class: 'deposit-wizard__file-meta-form' do %>
-    <%# Master-detail: a sidebar lists the files, the panel area shows one file's
-        form. All panels stay in the DOM so every file's fields submit together;
-        JS toggles which is visible. %>
+    <%# Master-detail: the sidebar lists the files; the panels area shows one
+        file's form at a time (JS toggles visibility). %>
     <div class="deposit-wizard__file-meta-layout" data-behavior="file-meta">
-      <nav class="deposit-wizard__file-sidebar" aria-label="<%= t('hyku.deposit_wizard.file_meta.files_nav') %>">
-        <p class="deposit-wizard__file-sidebar-heading"><%= t('hyku.deposit_wizard.file_meta.files_count', count: uploaded_files.size) %></p>
-        <ul class="deposit-wizard__file-sidebar-list">
-          <% uploaded_files.each_with_index do |uf, i| %>
-            <% id = uf.id.to_s %>
-            <li>
-              <% filename = uf.file&.file&.filename.to_s %>
-              <button type="button"
-                      class="deposit-wizard__file-sidebar-item<%= ' is-active' if i.zero? %>"
-                      data-behavior="file-tab" data-file-target="<%= id %>"
-                      title="<%= filename.presence || uf.id %>">
-                <span class="deposit-wizard__file-ext"><%= File.extname(filename).delete('.').upcase.presence || t('hyku.deposit_wizard.file_meta.file') %></span>
-                <span class="deposit-wizard__file-sidebar-name"><%= filename.presence || uf.id %></span>
-              </button>
-            </li>
-          <% end %>
-        </ul>
-      </nav>
+      <%= render 'file_sidebar' %>
 
       <div class="deposit-wizard__file-panels">
-        <% uploaded_files.each_with_index do |uf, i| %>
-          <% id = uf.id.to_s %>
-          <% form = file_meta_forms[id] %>
-          <fieldset class="deposit-wizard__file-panel<%= ' is-active' if i.zero? %>"
-                    data-behavior="file-panel" data-file-id="<%= id %>" <%= 'hidden' unless i.zero? %>>
-            <legend class="deposit-wizard__file-panel-name">
-              <span class="deposit-wizard__file-ext"><%= File.extname(uf.file&.file&.filename.to_s).delete('.').upcase.presence || t('hyku.deposit_wizard.file_meta.file') %></span>
-              <%= uf.file&.file&.filename || uf.id %>
-            </legend>
-
-            <%# Namespace every field under file_metadata[<id>][...]. Use
-                simple_fields_for (not fields_for + builder:) so the builder
-                inherits SimpleForm's wrapper config; a bare SimpleForm::FormBuilder
-                renders labels/inputs differently from the work details form. %>
-            <%= simple_fields_for "file_metadata[#{id}]", form do |f| %>
-              <%= render 'file_metadata', f: f, panel_id: id %>
-
-              <div class="deposit-wizard__file-visibility" data-behavior="file-visibility">
-                <label class="deposit-wizard__inherit-visibility">
-                  <%# Hidden companion so an unchecked box still submits a value:
-                      check_box_tag sends nothing unchecked, indistinguishable from
-                      "never rendered". The '0' is unchecked; the '1' wins when checked. %>
-                  <%= hidden_field_tag "file_metadata[#{id}][inherit_visibility]", '0', id: nil %>
-                  <%= check_box_tag "file_metadata[#{id}][inherit_visibility]", '1', file_inherits_visibility?(id),
-                                    data: { behavior: 'inherit-visibility' } %>
-                  <%= t('hyku.deposit_wizard.file_meta.inherit') %>
-                </label>
-
-                <div class="deposit-wizard__own-visibility" <%= 'hidden' if file_inherits_visibility?(id) %>>
-                  <%= render 'visibility', f: f, id_suffix: "-#{id}" %>
-                </div>
-              </div>
-            <% end %>
-          </fieldset>
-        <% end %>
+        <%= render partial: 'file_panel', collection: deposit_wizard.uploaded_files, as: :uf %>
       </div>
     </div>
 

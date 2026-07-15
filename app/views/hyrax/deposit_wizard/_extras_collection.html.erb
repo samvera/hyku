@@ -1,9 +1,9 @@
 <%# Posts member_of_collections_attributes[N][id]; the ResourceForm's
     in_collections_populator persists membership in the deposit transaction. %>
-<% param_key = work_form.model_name.param_key %>
-<% collections = available_collections(work: work_form) %>
-<% selected_collections = selected_member_collections %>
-<% open = extra_prefilled?(:collection) %>
+<% param_key = deposit_wizard.work_form.model_name.param_key %>
+<% collections = available_collections(work: deposit_wizard.work_form) %>
+<% selected_collections = deposit_wizard.selected_member_collections %>
+<% open = deposit_wizard.extra_prefilled?(:collection) %>
 <section class="deposit-wizard__extra <%= 'is-open' if open %>" data-behavior="extra-collection" data-param-key="<%= param_key %>">
   <button type="button" class="deposit-wizard__extra-toggle" data-behavior="extra-toggle"
           aria-expanded="<%= open %>">
@@ -24,7 +24,7 @@
                 data-placeholder="<%= t('hyku.deposit_wizard.extras.collection.placeholder') %>">
           <option value=""></option>
           <% collections.each do |collection| %>
-            <option value="<%= collection.id %>"><%= collection_display_title(collection) %></option>
+            <option value="<%= collection.id %>"><%= deposit_wizard.collection_display_title(collection) %></option>
           <% end %>
         </select>
         <button type="button" class="btn btn-primary" data-behavior="collection-add">
@@ -40,7 +40,7 @@
     <ul class="deposit-wizard__extra-chips list-unstyled" data-behavior="collection-chips">
       <% selected_collections.each_with_index do |collection, i| %>
         <li class="deposit-wizard__extra-chip" data-collection-id="<%= collection.id %>">
-          <span><%= collection_display_title(collection) %></span>
+          <span><%= deposit_wizard.collection_display_title(collection) %></span>
           <%= hidden_field_tag "#{param_key}[member_of_collections_attributes][pre#{i}][id]", collection.id %>
           <button type="button" class="deposit-wizard__chip-remove" aria-label="remove">×</button>
         </li>

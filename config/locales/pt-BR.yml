@@ -70,6 +70,146 @@ pt-BR:
   hyku:
     account:
       signup_disabled: O registro da conta está desativado
+    deposit_wizard:
+      admin_set:
+        heading: Conjunto administrativo
+        hint_lead: Define as regras para este depósito
+        hint_html: Um conjunto administrativo determina quais <strong>campos de metadados</strong> você preencherá, as <strong>opções de visibilidade</strong> disponíveis para sua obra e o <strong>fluxo de revisão</strong> que ela segue após o depósito. A maioria dos depósitos usa o padrão.
+        label: Conjunto administrativo
+        workflow: Fluxo de trabalho
+      back: Voltar
+      button: Depósito guiado
+      continue: Continuar
+      next: Próximo
+      page_heading: Depositar uma nova obra
+      page_subtitle: Este fluxo guiado acompanha você passo a passo no depósito da sua obra
+      details:
+        heading: Descreva seu item
+        subtext: Adicione os detalhes desta obra. Os campos obrigatórios estão marcados.
+      disabled: O assistente de depósito guiado não está habilitado.
+      done:
+        deposit_another: Depositar outra obra
+        heading: Obra depositada
+        no_recent: Sua obra foi depositada.
+        subtext: "“%{title}” foi depositada no repositório."
+        untitled: Sua obra
+        view_work: Ver obra
+      errors:
+        agreement_required: Aceite o acordo de depósito para continuar.
+        commit:
+          redirect_path_collision: Uma das URLs personalizadas já está em uso. Escolha um caminho diferente.
+        deposit_failed: Não foi possível depositar sua obra
+        details_invalid: Alguns detalhes precisam ser corrigidos antes de continuar
+        no_parent: Escolha uma obra à qual adicionar este depósito.
+        no_work_type: Escolha um tipo de obra para continuar.
+      extras:
+        add: Adicionar
+        parent:
+          heading: Adicionar a uma obra principal
+          hint: Opcionalmente, aninhe esta obra dentro de uma obra existente.
+          label: Pesquisar obras
+          placeholder: Pesquisar uma obra…
+        collection:
+          heading: Adicionar a uma coleção
+          hint: Opcionalmente, adicione esta obra a uma ou mais coleções.
+          label: Pesquisar coleções
+          placeholder: Pesquisar uma coleção…
+          none: Você não tem nenhuma coleção disponível à qual adicionar esta obra.
+        sharing:
+          heading: Compartilhar com pessoas ou grupos
+          hint: Opcionalmente, conceda acesso a esta obra a pessoas ou grupos específicos.
+          person_label: Pessoa (e-mail)
+          person_placeholder: nome@exemplo.com
+          group_label: Grupo
+          group_placeholder: Selecione um grupo…
+        redirects:
+          heading: Adicionar uma URL personalizada
+          hint: "Opcionalmente, adicione uma URL curta e fácil de lembrar que redirecione para esta obra (em %{base_url})."
+      file_meta:
+        description: Descrição
+        file: Arquivo
+        files_count:
+          one: "Arquivos · 1"
+          other: "Arquivos · %{count}"
+        files_nav: Arquivos enviados
+        heading: Descreva seus arquivos
+        inherit: Igual à obra
+        subtext: Adicione detalhes para cada arquivo ou deixe-os herdar da obra.
+        title: Título
+        visibility: Visibilidade do arquivo
+      files:
+        add_files: Adicionar arquivos
+        cancel_upload: Cancelar
+        dropzone: Arraste e solte arquivos aqui, ou clique para procurar
+        dropzone_hint: Você pode adicionar mais de um arquivo ou continuar sem nenhum.
+        heading: Adicionar arquivos
+        subtext: Adicione quaisquer arquivos para esta obra. Você também pode continuar sem nenhum.
+      item_start:
+        heading: Adicionar um item
+        known_type: Eu sei que tipo de obra é esta
+        subtext: Escolha como você gostaria de descrever este item.
+      known_type:
+        adding_to: Adicionando como filho de
+        heading: Que tipo de obra é esta?
+        subtext: Escolha o tipo que melhor se ajusta à obra que você está depositando.
+      no_work_types: Não há tipos de obra disponíveis para você depositar. Entre em contato com um administrador.
+      notices:
+        work_type_selected: "%{type} selecionado."
+      review:
+        deposit: Depositar
+        destination: Esta obra será depositada no conjunto administrativo %{admin_set}.
+        entry_count:
+          one: 1 entrada
+          other: "%{count} entradas"
+        file_count:
+          one: 1 arquivo
+          other: "%{count} arquivos"
+        files: Arquivos
+        embargo_summary_html: "Embargo: %{during} até %{date}, depois %{after}"
+        file_visibility: Visibilidade do arquivo
+        heading: Revisar e depositar
+        lease_summary_html: "Concessão: %{during} até %{date}, depois %{after}"
+        subtext: Verifique se está tudo correto antes de depositar esta obra.
+        visibility: Visibilidade
+        visibility_inherited: Igual à obra
+        work_type: Tipo de obra
+        work_visibility: Visibilidade da obra
+      select_parent:
+        heading: Escolha a obra principal
+        subtext: Pesquise a obra à qual este depósito deve ser adicionado.
+        label: Pesquisar obras
+      start:
+        heading: O que você gostaria de depositar?
+        subtext: Este fluxo guiado acompanha você passo a passo no depósito da sua obra.
+        paths:
+          add:
+            desc: Aninhe este depósito dentro de uma obra que você já criou.
+            title: Adicionar a uma obra existente
+          new:
+            desc: Depositar uma obra por si só.
+            title: Depositar uma nova obra
+          standalone:
+            desc: Depositar uma única obra por si só, sem obra principal.
+            title: Depositar uma obra independente
+      visibility:
+        legend: Visibilidade
+        embargo:
+          during: Até o embargo ser suspenso, o acesso é
+          date: Data de suspensão do embargo
+          after: Quando o embargo for suspenso, o acesso passa a ser
+        lease:
+          during: Enquanto a concessão estiver ativa, o acesso é
+          date: Data de expiração da concessão
+          after: Quando a concessão expirar, o acesso passa a ser
+      stepper:
+        item:
+          detail: Detalhe da obra
+          file_detail: Detalhe do arquivo
+          parent: Obra principal
+          review: Revisar
+          type: Tipo de item
+          upload: Enviar arquivos
+        label: Progresso do depósito
     admin:
       flash:
         access_denied: Você não está autorizado a visualizar esta página

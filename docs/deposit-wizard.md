@@ -8,8 +8,8 @@ indistinguishable from one created by the stock form.
 
 The wizard is additive: the stock deposit form is untouched, and the wizard is
 off by default behind a feature flag. It is designed as a **generic Hyku
-feature** with **seams a downstream app** (e.g. the Enact knapsack) can configure
-and extend without forking.
+feature** with **seams a downstream application** can configure and extend
+without forking.
 
 ## Enabling
 
@@ -33,20 +33,27 @@ The dashboard entry point is a "Guided Deposit" button rendered in
 
 ## Architecture
 
-A single controller drives a sequence of server-rendered steps, holding state in
-the session between steps. It wraps — does not replace — Hyrax's create
-machinery.
+A thin controller drives a sequence of server-rendered steps, holding state in
+the session between steps. Almost all of the wizard's logic lives on a presenter
+object the controller and views share; the controller keeps only its HTTP
+boundary. It wraps — does not replace — Hyrax's create machinery.
 
 - **Controller**: `Hyrax::DepositWizardController`
   (`app/controllers/hyrax/deposit_wizard_controller.rb`). Actions: `start`,
   `show` (per step), `update` (advance), `commit`, plus the AJAX endpoints
   `parent_options` (parent typeahead) and `save_extras` (review-step autosave).
-- **Controller concerns** (`app/controllers/concerns/hyrax/deposit_wizard/`):
-  - `Context` — shared view/step/form helpers (form building, the stepper rail,
-    admin-set options, flow predicates).
-  - `Navigation` — `advance_from_<step>` transitions run from `update`.
-  - `Persistence` — assembling commit params and running the create action.
-  - `ErrorReporting` — turning validation/transaction failures into a flash.
+  Each action reads params, calls the presenter for the decision, and turns the
+  result into a redirect / render / flash. The `Context` concern
+  (`app/controllers/concerns/hyrax/deposit_wizard/context.rb`) wires the presenter
+  in and provides the `wizard_config` / `wizard_state` shorthands.
+- **Presenter**: `Hyku::DepositWizard::Presenter`
+  (`app/presenters/hyku/deposit_wizard/presenter.rb`). A request-scoped view-model
+  constructed with the controller context, shared by the controller and the views
+  (as `deposit_wizard.*`). It owns form building, the stepper rail, admin-set
+  options, the flow decisions (`advance_from`, `step_detour`), and the commit-side
+  persistence (`deposit`). `#advance_from` returns a `Transition`
+  (`app/presenters/hyku/deposit_wizard/transition.rb`) telling the controller
+  whether to advance (with an optional notice) or re-render with an alert.
 - **Config + state** (`app/services/hyku/deposit_wizard/`):
   - `Hyku::DepositWizard.config` — the swappable configuration seam (see below).
   - `Hyku::DepositWizard::State` — a thin wrapper over `session[:deposit_wizard]`.
@@ -64,7 +71,7 @@ under both `HYRAX_FLEXIBLE=false` and `HYRAX_FLEXIBLE=true`.
 
 ## Steps
 
-The step sequence (`DepositWizardController::STEPS`):
+The step sequence (`Hyku::DepositWizard::Presenter::STEPS`):
 
 ```
 start → select_parent → item_start → known_type → files → details → file_meta → review → done
@@ -86,14 +93,15 @@ Not every step runs on every deposit — several are conditional:
 
 `STEPS_REQUIRING_WORK_TYPE` (`files`, `details`, `file_meta`, `review`) redirect
 back to `known_type` if no type has been chosen. The skip/redirect rules live in
-`DepositWizardController#step_detour`; forward targets live in the
-`advance_from_<step>` methods; the stepper-rail keys and Back targets live in
-`Context` (`stepper_keys`, `known_type_back_step`).
+`Presenter#step_detour`; forward targets live in the presenter's
+`advance_from_<step>` methods; the stepper-rail keys and Back targets live in the
+presenter too (`stepper_keys`, `known_type_back_step`).
 
 ### Error handling
 
 Validation and transaction failures surface a multi-line flash rather than
-silently re-rendering (see `ErrorReporting`):
+silently re-rendering (the presenter reports the messages; the controller flashes
+them):
 
 - **Details step** — a field the form validator rejects (for example a
   `video_embed` that is not a YouTube/Vimeo embed URL) re-renders `details` with
@@ -144,7 +152,7 @@ Hyrax's redirects gate with a check that the work's schema carries `redirects`.
 
 When more than one deposit-eligible admin set exists, the start screen shows a
 selector whose description and workflow label update as the choice changes.
-`Context#admin_set_options_for_display` builds each option from Hyrax's
+`Presenter#admin_set_options_for_display` builds each option from Hyrax's
 `AdminSetSelectionPresenter` (keeping its `data-*` visibility/release attributes,
 which the visibility component enforces on the details step) enriched with the
 set's `description` and active-workflow `label`. Admin-set-scoped extra fields
@@ -153,8 +161,8 @@ chosen `admin_set_id` into `ResourceForm.for`, which applies the set's contexts.
 
 ## Insertion points for a downstream app
 
-Everything a knapsack needs to customize is a seam; no Hyrax or Hyku override is
-required.
+Everything a downstream application needs to customize is a seam; no Hyrax or
+Hyku override is required.
 
 - **Configuration** — assign `Hyku::DepositWizard.config` (see above). This is
   the primary seam: container type, item types, parent types, suggestions,
@@ -168,9 +176,9 @@ required.
   `?add_works_to_collection=<id>` seeds the matching state slot (each gated by its
   capability), so other entry points can hand off into the wizard with a target
   pre-filled.
-- **View overrides** — the knapsack view-path prepend lets an app override any
-  step template or partial in `hyrax/deposit_wizard/` for bespoke labels or
-  styling.
+- **View overrides** — a consuming application's view-path prepend lets it
+  override any step template or partial in `hyrax/deposit_wizard/` for bespoke
+  labels or styling.
 - **Styling tokens** — the SCSS is scoped under `.deposit-wizard` and driven by
   `--dw-*` CSS custom properties (defined in
   `app/assets/stylesheets/deposit_wizard/_base.scss`), so an app can rebrand by

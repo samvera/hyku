@@ -7,7 +7,10 @@ module Hyrax
   # one created via the stock deposit form. Gated by the +deposit_wizard+
   # Flipflop feature (off by default).
   class DepositWizardController < ApplicationController # rubocop:disable Metrics/ClassLength
-    include Hyrax::DepositWizard::Context
+    # The presenter is the single object the controller and views share; these
+    # delegate the couple of names the controller still calls by bare name. Views
+    # reach the presenter directly as deposit_wizard.*.
+    delegate :build_work_form, :eligible_parent_documents, to: :deposit_wizard
 
     with_themed_layout 'dashboard'
 
@@ -97,6 +100,14 @@ module Hyrax
       @deposit_wizard ||= Hyku::DepositWizard::Presenter.new(self)
     end
     helper_method :deposit_wizard
+
+    def wizard_config
+      deposit_wizard.config
+    end
+
+    def wizard_state
+      deposit_wizard.state
+    end
 
     # Turn the presenter's Transition into the HTTP effect: advance by redirecting
     # to the next step, or flash the alert and re-render the current step.

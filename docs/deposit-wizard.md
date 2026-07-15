@@ -43,9 +43,8 @@ boundary. It wraps — does not replace — Hyrax's create machinery.
   `show` (per step), `update` (advance), `commit`, plus the AJAX endpoints
   `parent_options` (parent typeahead) and `save_extras` (review-step autosave).
   Each action reads params, calls the presenter for the decision, and turns the
-  result into a redirect / render / flash. The `Context` concern
-  (`app/controllers/concerns/hyrax/deposit_wizard/context.rb`) wires the presenter
-  in and provides the `wizard_config` / `wizard_state` shorthands.
+  result into a redirect / render / flash. It memoizes the presenter and exposes
+  `wizard_config` / `wizard_state` shorthands; there are no controller concerns.
 - **Presenter**: `Hyku::DepositWizard::Presenter`
   (`app/presenters/hyku/deposit_wizard/presenter.rb`). A request-scoped view-model
   constructed with the controller context, shared by the controller and the views

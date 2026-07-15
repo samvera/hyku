@@ -59,7 +59,9 @@ Flipflop.configure do
   group :deposit_wizard do
     feature :deposit_wizard,
             default: false,
-            description: "Enable the guided deposit wizard for creating works. Additional features are available to connect works to parent works, collections, and sharing. If the redirects feature is enabled, it will also be active for the deposit wizard."
+            description: "Enable the guided deposit wizard for creating works. Additional features are " \
+                         "available to connect works to parent works, collections, and sharing. If the " \
+                         "redirects feature is enabled, it will also be active for the deposit wizard."
 
     feature :deposit_wizard_parent_connect,
             default: false,

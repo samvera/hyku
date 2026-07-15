@@ -15,7 +15,7 @@
                               data: { behavior: 'work-form', 'param-key' => deposit_wizard.work_form.model_name.param_key } } do |f| %>
     <%= render 'hyrax/base/form_metadata', f: f %>
 
-    <%= render 'visibility', f: f %>
+    <%= render 'visibility', f: f, policy: deposit_wizard.visibility_policy %>
 
     <%= render 'nav', back_path: main_app.deposit_wizard_step_path(step: 'files') %>
   <% end %>

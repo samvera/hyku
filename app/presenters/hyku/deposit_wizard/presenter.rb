@@ -56,7 +56,7 @@ module Hyku
         keys
       end
 
-      attr_reader :work_form
+      attr_reader :work_form, :latest_schema_version
 
       def build_work_form
         @work_form = Hyrax::Forms::ResourceForm.for(resource: work_resource_class.new,
@@ -80,7 +80,6 @@ module Hyku
           if saved.present?
             form.validate(saved) # restore entered values on Back
           else
-            # Default title to the filename
             form.title = [file_display_title(uf)]
           end
           form
@@ -112,6 +111,34 @@ module Hyku
         end
       end
 
+      # Basic (non-compound) work fields with a value, as {label:, value:} rows for
+      # the review summary. schema_version/contexts are bookkeeping, not shown.
+      def review_basic_terms
+        terms = (work_form.primary_terms + work_form.secondary_terms) - %i[schema_version contexts]
+        terms.filter_map do |term|
+          value = review_term_value(term)
+          { label: review_term_label(term), value: value.join(', ') } if value.present?
+        end
+      end
+
+      # Compound fields with entries, as {label:, count:} rows (the review shows a
+      # count rather than expanding each nested entry).
+      def review_compound_terms
+        work_form.compound_terms.filter_map do |term|
+          entries = review_term_value(term)
+          { label: review_term_label(term), count: entries.size } if entries.present?
+        end
+      end
+
+      def review_back_step
+        state.uploaded_file_ids.any? ? 'file_meta' : 'details'
+      end
+
+      def file_type_label(uploaded_file)
+        ext = File.extname(uploaded_file.file&.file&.filename.to_s).delete('.').upcase
+        ext.presence || I18n.t('hyku.deposit_wizard.file_meta.file')
+      end
+
       # Under embargo/lease the visibility populator sets the form's flat
       # `visibility` to the *during* value and stores the details on the
       # `embargo`/`lease` sub-form — so read those back and restore the
@@ -132,6 +159,23 @@ module Hyku
         else
           { 'visibility' => (work_form.visibility if work_form.respond_to?(:visibility)) }
         end
+      end
+
+      # The current selection and embargo/lease prefill values to render for +form+
+      # (the work form, or a per-file FileSet form), so navigating Back restores them.
+      def visibility_fields(form)
+        embargo = form.object.try(:embargo)
+        lease   = form.object.try(:lease)
+        tomorrow = Time.zone.today + 1 # a valid future default for the date fields
+        VisibilityFields.new(
+          current: current_visibility(form, embargo, lease),
+          embargo_date: embargo&.embargo_release_date&.to_date || tomorrow,
+          embargo_during: embargo&.visibility_during_embargo,
+          embargo_after: embargo&.visibility_after_embargo,
+          lease_date: lease&.lease_expiration_date&.to_date || tomorrow,
+          lease_during: lease&.visibility_during_lease,
+          lease_after: lease&.visibility_after_lease
+        )
       end
 
       def selected_admin_set_id
@@ -158,7 +202,6 @@ module Hyku
         end || chosen
       end
 
-      # Shown as an inline chooser only when more than one is available.
       def available_admin_sets
         @available_admin_sets ||=
           Hyrax::AdminSetSelectionPresenter.new(admin_sets: admin_sets_for_deposit).select_options
@@ -169,7 +212,8 @@ module Hyku
       end
 
       # Keep the presenter's data-* hash on each option: the visibility component
-      # enforces those visibility/release rules downstream on the details form.
+      # enforces those visibility/release rules downstream on the details form. The
+      # description/workflow prose is built by AdminSetDescription.
       def admin_set_options_for_display
         @admin_set_options_for_display ||= begin
           docs = admin_sets_for_deposit
@@ -178,9 +222,9 @@ module Hyku
             template = templates.find { |t| t.source_id == doc.id.to_s }
             entry = Hyrax::AdminSetSelectionPresenter::OptionsEntry.new(admin_set: doc, permission_template: template)
             label, id, data = entry.result
+            guidance = AdminSetDescription.new(admin_set: doc, permission_template: template)
             { id: id, label: label, data: data,
-              description: Array(doc.try(:description)).first.presence,
-              workflow: template&.active_workflow&.label.presence }
+              description: guidance.summary, workflow: guidance.workflow_label }
           end
         end
       end
@@ -189,8 +233,21 @@ module Hyku
         admin_set_options_for_display.size > 1
       end
 
+      # The VisibilityPolicy for the selected admin set, built from its
+      # permission-template data-* (see VisibilityPolicy for the rules).
+      def visibility_policy
+        selected = admin_set_options_for_display.find { |o| o[:id].to_s == selected_admin_set_id.to_s }
+        VisibilityPolicy.from_admin_set_data(selected&.dig(:data) || {})
+      end
+
+      # Name the chosen admin set on review only when the depositor actually had a
+      # choice (more than one set) and a name resolved.
+      def show_review_destination?
+        multiple_admin_sets? && selected_admin_set_name.present?
+      end
+
       def show_relationship_paths?
-        config.container? || config.enable_parent_connect
+        config.container? || config.parent_connect_on_start?
       end
 
       # item_start is only worth showing when it has a sub-flow to choose between
@@ -265,8 +322,8 @@ module Hyku
         end
 
         # Guard on params.key? so an absent parent_id doesn't clobber one seeded at
-        # launch (the handoff).
-        return unless config.enable_parent_connect && params.key?(:parent_id)
+        # launch (the handoff) or on the start "add" path.
+        return unless config.parent_connect_on_review? && params.key?(:parent_id)
         state.parent_id = params[:parent_id]
       end
 
@@ -368,7 +425,7 @@ module Hyku
       attr_reader :commit_errors
 
       # Create the work, apply per-file embargo/lease, and run the configured
-      # post-commit hook (e.g. Enact nesting). Returns the work, or nil on
+      # post-commit hook (e.g. downstream nesting). Returns the work, or nil on
       # validation/transaction failure (recorded in #commit_errors so the
       # re-rendered review step isn't silent).
       def deposit
@@ -381,7 +438,6 @@ module Hyku
       end
 
       # e.g. invalid redirect path or video embed the form validator rejected.
-      # Also used by the details step (Navigation) to explain a validation failure.
       def form_error_messages(form)
         form.errors.full_messages
       end
@@ -389,6 +445,30 @@ module Hyku
       private
 
       attr_reader :context
+
+      def review_term_value(term)
+        return unless work_form.respond_to?(term)
+
+        Array(work_form.send(term)).reject(&:blank?)
+      end
+
+      # Which visibility option to pre-select. When an embargo/lease is active the
+      # flat `visibility` holds the *during* value (not "embargo"/"lease"), so the
+      # sub-form's presence is what selects it; otherwise use `visibility`, defaulting
+      # to Private.
+      def current_visibility(form, embargo, lease)
+        if embargo&.embargo_release_date.present?
+          Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_EMBARGO
+        elsif lease&.lease_expiration_date.present?
+          Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_LEASE
+        else
+          form.object.try(:visibility).presence || Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
+        end
+      end
+
+      def review_term_label(term)
+        I18n.t(term, scope: 'simple_form.labels.defaults', default: term.to_s.humanize)
+      end
 
       # Run the stock CreateValkyrieWork action (same as the deposit form). Returns
       # the work, or nil on validation/transaction failure (recorded in
@@ -418,9 +498,9 @@ module Hyku
       def advance_from_start
         state.admin_set_id = params[:admin_set_id] if params.key?(:admin_set_id)
 
-        # No path posted means the flat (non-relationship) start screen, which
-        # chooses the work type inline.
-        unless params.key?(:path)
+        # The flat (non-relationship) start screen chooses the work type inline, so
+        # a posted path is only honored when the path cards are actually offered.
+        unless params.key?(:path) && show_relationship_paths?
           state.path = 'standalone'
           return select_work_type(rerender_step: 'start')
         end
@@ -485,8 +565,8 @@ module Hyku
 
       def enabled_extra_attribute_keys
         keys = []
-        keys << 'member_of_collections_attributes' if config.enable_collection_connect
-        keys << 'permissions_attributes' if config.enable_sharing
+        keys << 'member_of_collections_attributes' if config.capabilities.collection_connect?
+        keys << 'permissions_attributes' if config.capabilities.sharing?
         keys.push('redirects_attributes', 'redirects_display_url_index') if config.redirects_available?
         keys
       end

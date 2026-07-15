@@ -4,100 +4,18 @@
   <%= render 'stepper', steps: deposit_wizard.item_stepper_steps, phase: deposit_wizard.stepper_phase(:review) %>
   <%= render 'step_title', title: t('hyku.deposit_wizard.review.heading'), hint: t('hyku.deposit_wizard.review.subtext') %>
 
-  <dl class="deposit-wizard__review-list">
-    <div class="row">
-      <dt class="col-sm-3"><%= t('hyku.deposit_wizard.review.work_type') %></dt>
-      <dd class="col-sm-9"><%= deposit_wizard.work_form.model_name.human %></dd>
-    </div>
-
-    <div class="row">
-      <dt class="col-sm-3"><%= t('hyku.deposit_wizard.review.files') %></dt>
-      <dd class="col-sm-9"><%= t('hyku.deposit_wizard.review.file_count', count: deposit_wizard.state.uploaded_file_ids.size) %></dd>
-    </div>
-
-    <% basic_terms = (deposit_wizard.work_form.primary_terms + deposit_wizard.work_form.secondary_terms) - %i[schema_version contexts] %>
-    <% basic_terms.each do |term| %>
-      <% value = Array(deposit_wizard.work_form.send(term)).reject(&:blank?) if deposit_wizard.work_form.respond_to?(term) %>
-      <% next if value.blank? %>
-      <div class="row">
-        <dt class="col-sm-3"><%= t(term, scope: 'simple_form.labels.defaults', default: term.to_s.humanize) %></dt>
-        <dd class="col-sm-9"><%= value.join(', ') %></dd>
-      </div>
-    <% end %>
-
-    <% deposit_wizard.work_form.compound_terms.each do |term| %>
-      <% entries = Array(deposit_wizard.work_form.send(term)).reject(&:blank?) if deposit_wizard.work_form.respond_to?(term) %>
-      <% next if entries.blank? %>
-      <div class="row">
-        <dt class="col-sm-3"><%= t(term, scope: 'simple_form.labels.defaults', default: term.to_s.humanize) %></dt>
-        <dd class="col-sm-9"><%= t('hyku.deposit_wizard.review.entry_count', count: entries.size) %></dd>
-      </div>
-    <% end %>
-
-    <% if deposit_wizard.work_form.respond_to?(:visibility) && deposit_wizard.work_form.visibility.present? %>
-      <div class="row">
-        <dt class="col-sm-3"><%= t('hyku.deposit_wizard.review.work_visibility') %></dt>
-        <dd class="col-sm-9"><%= visibility_summary(deposit_wizard.work_visibility_attributes) %></dd>
-      </div>
-    <% end %>
-
-    <% if deposit_wizard.file_visibility_summaries.any? %>
-      <div class="row">
-        <dt class="col-sm-3"><%= t('hyku.deposit_wizard.review.file_visibility') %></dt>
-        <dd class="col-sm-9">
-          <ul class="deposit-wizard__review-files list-unstyled mb-0">
-            <% deposit_wizard.file_visibility_summaries.each do |file| %>
-              <li><%= file[:title] %> &mdash; <%= visibility_summary(file[:attributes]) %></li>
-            <% end %>
-          </ul>
-        </dd>
-      </div>
-    <% end %>
-  </dl>
-
-  <% if deposit_wizard.available_admin_sets.size > 1 && deposit_wizard.selected_admin_set_name.present? %>
-    <p class="deposit-wizard__review-destination">
-      <%= t('hyku.deposit_wizard.review.destination', admin_set: deposit_wizard.selected_admin_set_name) %>
-    </p>
-  <% end %>
+  <%= render 'review_summary' %>
 
   <%= form_tag main_app.deposit_wizard_commit_path, method: :post, class: 'deposit-wizard__commit-form',
                data: { 'extras-url': main_app.deposit_wizard_extras_path } do %>
-    <% if deposit_wizard.config.enable_parent_connect %>
-      <%= render 'extras_parent' %>
-    <% end %>
+    <%= render 'extras_parent' if deposit_wizard.config.parent_connect_on_review? %>
+    <%= render 'extras_collection' if deposit_wizard.config.capabilities.collection_connect? %>
+    <%= render 'extras_sharing' if deposit_wizard.config.capabilities.sharing? %>
+    <%= render 'extras_redirects' if deposit_wizard.config.redirects_available?(deposit_wizard.work_form) %>
 
-    <% if deposit_wizard.config.enable_collection_connect %>
-      <%= render 'extras_collection' %>
-    <% end %>
+    <%= render 'review_agreement' %>
 
-    <% if deposit_wizard.config.enable_sharing %>
-      <%= render 'extras_sharing' %>
-    <% end %>
-
-    <% if deposit_wizard.config.redirects_available?(deposit_wizard.work_form) %>
-      <%= render 'extras_redirects' %>
-    <% end %>
-
-    <% if Flipflop.show_deposit_agreement? %>
-      <div class="deposit-wizard__agreement">
-        <% if Flipflop.active_deposit_agreement_acceptance? %>
-          <label>
-            <%= check_box_tag 'agreement', '1', false, required: true %>
-            <%= t('hyrax.active_consent_to_agreement') %>
-            <%= link_to t('hyrax.pages.tabs.agreement_page'), hyrax.agreement_path, target: '_blank', rel: 'noopener' %>
-          </label>
-        <% else %>
-          <%= t('hyrax.passive_consent_to_agreement') %>
-          <%= link_to t('hyrax.pages.tabs.agreement_page'), hyrax.agreement_path, target: '_blank', rel: 'noopener' %>
-        <% end %>
-      </div>
-    <% end %>
-
-    <%# Back mirrors the forward flow: file_meta precedes review when there are
-        files, otherwise details does. %>
-    <% back_step = deposit_wizard.state.uploaded_file_ids.any? ? 'file_meta' : 'details' %>
-    <%= render 'nav', back_path: main_app.deposit_wizard_step_path(step: back_step),
+    <%= render 'nav', back_path: main_app.deposit_wizard_step_path(step: deposit_wizard.review_back_step),
                       next_label: t('hyku.deposit_wizard.review.deposit'),
                       next_arrow: false,
                       next_html: { class: 'deposit-wizard__deposit-btn' } %>

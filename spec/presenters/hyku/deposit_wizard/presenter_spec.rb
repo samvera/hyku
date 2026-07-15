@@ -70,4 +70,63 @@ RSpec.describe Hyku::DepositWizard::Presenter do
       end
     end
   end
+
+  describe '#visibility_fields' do
+    let(:form) { double(object: object) }
+
+    context 'with no embargo or lease' do
+      let(:object) { double(embargo: nil, lease: nil, visibility: 'open') }
+
+      it 'reports the flat visibility as current and defaults dates to tomorrow' do
+        fields = presenter.visibility_fields(form)
+        expect(fields.current).to eq('open')
+        expect(fields.embargo_date).to eq(Time.zone.today + 1)
+      end
+    end
+
+    context 'with an active embargo' do
+      let(:object) do
+        double(embargo: double(embargo_release_date: Time.zone.today + 5,
+                               visibility_during_embargo: 'restricted',
+                               visibility_after_embargo: 'open'),
+               lease: nil, visibility: 'restricted')
+      end
+
+      it 'reports embargo as current and prefills its values' do
+        fields = presenter.visibility_fields(form)
+        expect(fields.current).to eq('embargo')
+        expect(fields.embargo_during).to eq('restricted')
+        expect(fields.embargo_date).to eq(Time.zone.today + 5)
+      end
+    end
+  end
+
+  describe '#show_review_destination?' do
+    it 'is true only when there is more than one set and a name resolved' do
+      allow(presenter).to receive_messages(multiple_admin_sets?: true, selected_admin_set_name: 'Theses')
+      expect(presenter).to be_show_review_destination
+    end
+
+    it 'is false with a single set' do
+      allow(presenter).to receive_messages(multiple_admin_sets?: false, selected_admin_set_name: 'Theses')
+      expect(presenter).not_to be_show_review_destination
+    end
+
+    it 'is false when no name resolved' do
+      allow(presenter).to receive_messages(multiple_admin_sets?: true, selected_admin_set_name: nil)
+      expect(presenter).not_to be_show_review_destination
+    end
+  end
+
+  describe '#file_type_label' do
+    it 'returns the uppercase extension' do
+      uf = double(file: double(file: double(filename: 'thesis.PDF')))
+      expect(presenter.file_type_label(uf)).to eq('PDF')
+    end
+
+    it 'falls back to a generic label when there is no extension' do
+      uf = double(file: double(file: double(filename: 'README')))
+      expect(presenter.file_type_label(uf)).to eq(I18n.t('hyku.deposit_wizard.file_meta.file'))
+    end
+  end
 end

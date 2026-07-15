@@ -47,14 +47,19 @@
     }
   }
 
-  // Shared hint text under card titles; keep these three selectors in sync.
+  // Shared hint text under card titles; keep these selectors in sync.
   &__step-hint,
-  &__admin-set-hint,
   &__review-destination {
     margin: 0;
     font-size: 0.9rem;
     line-height: 1.5;
     color: var(--dw-ink-muted);
     max-width: 64ch;
+  }
+
+  // Hyrax's work form renders a schema-version box
+  // In a deposit only context, this doesn't make much sense so hide it.
+  .schema-version {
+    display: none;
   }
 }

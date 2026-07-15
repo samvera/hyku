@@ -36,7 +36,11 @@ module Hyrax
       detour = deposit_wizard.step_detour(step)
       return redirect_to(step_path(detour)) if detour
 
-      build_work_form if %w[details review].include?(step)
+      if %w[details review].include?(step)
+        build_work_form
+        # Hyrax's shared/_schema_version partial reads this controller ivar directly.
+        @latest_schema_version = deposit_wizard.latest_schema_version
+      end
       render step
     end
 
@@ -50,7 +54,7 @@ module Hyrax
     end
 
     def parent_options
-      return head(:forbidden) unless wizard_config.enable_parent_connect
+      return head(:forbidden) unless wizard_config.capabilities.parent_connect?
 
       # FindWorksSearchBuilder excludes a "current" work by params[:id]; the wizard
       # has no current work, so a blank id excludes nothing.
@@ -171,9 +175,9 @@ module Hyrax
     # Seed wizard state from the same context params other entry points pass
     # allowing a potential connection point with other deposit flows.
     def seed_launch_context
-      wizard_state.parent_id = params[:parent_id] if wizard_config.enable_parent_connect && params[:parent_id].present?
+      wizard_state.parent_id = params[:parent_id] if wizard_config.capabilities.parent_connect? && params[:parent_id].present?
 
-      return unless wizard_config.enable_collection_connect && params[:add_works_to_collection].present?
+      return unless wizard_config.capabilities.collection_connect? && params[:add_works_to_collection].present?
 
       wizard_state.attributes = wizard_state.attributes.merge(
         'member_of_collections_attributes' => { '0' => { 'id' => params[:add_works_to_collection] } }

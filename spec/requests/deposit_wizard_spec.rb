@@ -170,7 +170,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
       before do
         Hyku::DepositWizard.config = Hyku::DepositWizard::Config.new do |c|
           c.container_type = 'GenericWorkResource'
-          c.enable_batch = true
+          c.suggestions = { image: %w[GenericWorkResource] }
         end
       end
 
@@ -220,7 +220,13 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
     end
 
     context 'with the relationship-first path (flat config, parent_connect on)' do
-      before { allow(Flipflop).to receive(:deposit_wizard_parent_connect?).and_return(true) }
+      before do
+        allow(Flipflop).to receive(:deposit_wizard_parent_connect?).and_return(true)
+        # These exercise the start-screen path; the default placement is review-only.
+        Hyku::DepositWizard.config.parent_connect_placement = :both
+      end
+
+      after { Hyku::DepositWizard.reset_config! }
 
       it 'renders the new/add path cards on the start screen' do
         get deposit_wizard_path
@@ -324,10 +330,11 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
     end
 
     describe 'the files step' do
-      it 'redirects back to type selection when no work type has been chosen' do
+      it 'renders without a work type (upload has no prerequisite)' do
         get deposit_wizard_step_path(step: 'files')
 
-        expect(response).to redirect_to(deposit_wizard_step_path(step: 'known_type'))
+        expect(response).to have_http_status(:success)
+        expect(response.body).to include(I18n.t('hyku.deposit_wizard.files.heading'))
       end
 
       context 'after a work type is chosen' do

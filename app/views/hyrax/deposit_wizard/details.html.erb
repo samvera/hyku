@@ -17,6 +17,6 @@
 
     <%= render 'visibility', f: f, policy: deposit_wizard.visibility_policy %>
 
-    <%= render 'nav', back_path: main_app.deposit_wizard_step_path(step: 'files') %>
+    <%= render 'nav', back_path: wizard_back_path('details') %>
   <% end %>
 </div>

@@ -15,9 +15,7 @@
   <%= form_tag main_app.deposit_wizard_advance_path(step: 'known_type'), method: :patch, class: 'deposit-wizard__type-form' do %>
     <%= render 'type_cards' %>
 
-    <% back_step = deposit_wizard.known_type_back_step %>
-    <% back = back_step ? main_app.deposit_wizard_step_path(step: back_step) : main_app.deposit_wizard_path %>
-    <%= render 'nav', back_path: back,
+    <%= render 'nav', back_path: wizard_back_path('known_type'),
                       next_html: { disabled: deposit_wizard.state.work_type.blank?, data: { behavior: 'type-next' } } %>
   <% end %>
 </div>

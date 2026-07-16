@@ -7,6 +7,6 @@
   <%= form_tag main_app.deposit_wizard_advance_path(step: 'files'), method: :patch, class: 'deposit-wizard__files-form' do %>
     <%= render 'file_uploader' %>
 
-    <%= render 'nav', back_path: main_app.deposit_wizard_step_path(step: 'known_type') %>
+    <%= render 'nav', back_path: wizard_back_path('files') %>
   <% end %>
 </div>

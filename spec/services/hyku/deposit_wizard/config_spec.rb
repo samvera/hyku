@@ -9,13 +9,6 @@ RSpec.describe Hyku::DepositWizard::Config do
       expect(config).not_to be_container
     end
 
-    it 'has the prototype behavior toggles off at the Hyku layer' do
-      expect(config.single_admin_set).to be(true)
-      expect(config.enable_batch).to be(false)
-      expect(config.file_pool).to be(false)
-      expect(config.file_meta).to be(false)
-    end
-
     it 'has empty item types and suggestions and no post-commit hook' do
       expect(config.item_types).to be_nil
       expect(config.suggestions).to eq({})
@@ -131,8 +124,7 @@ RSpec.describe Hyku::DepositWizard::Config do
     subject(:config) do
       described_class.new do |c|
         c.container_type = 'GenericWorkResource'
-        c.file_pool = true
-        c.file_meta = true
+        c.item_types = %w[GenericWorkResource]
         c.suggestions = { image: %w[design installation] }
         c.post_commit = ->(_work, _wizard) {}
         c.parent_connect_placement = :review
@@ -143,8 +135,7 @@ RSpec.describe Hyku::DepositWizard::Config do
     it 'applies the assigned values' do
       expect(config.container_type).to eq('GenericWorkResource')
       expect(config).to be_container
-      expect(config.file_pool).to be(true)
-      expect(config.file_meta).to be(true)
+      expect(config.item_types).to eq(%w[GenericWorkResource])
       expect(config.suggestions).to eq(image: %w[design installation])
       expect(config.post_commit).to respond_to(:call)
       expect(config.parent_connect_placement).to eq(:review)

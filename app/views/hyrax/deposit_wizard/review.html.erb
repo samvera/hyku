@@ -15,7 +15,7 @@
 
     <%= render 'review_agreement' %>
 
-    <%= render 'nav', back_path: main_app.deposit_wizard_step_path(step: deposit_wizard.review_back_step),
+    <%= render 'nav', back_path: wizard_back_path('review'),
                       next_label: t('hyku.deposit_wizard.review.deposit'),
                       next_arrow: false,
                       next_html: { class: 'deposit-wizard__deposit-btn' } %>

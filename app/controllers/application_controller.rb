@@ -21,12 +21,14 @@ class ApplicationController < ActionController::Base
   include DeviseGuestControllersHelpersDecorator
 
   helper_method :current_account, :admin_host?, :home_page_theme, :show_page_theme, :search_results_theme
+  helper_method :public_demo_tenant?
   before_action :authenticate_if_needed
   before_action :require_active_account!, if: :multitenant?
   before_action :set_account_specific_connections!
   before_action :elevate_single_tenant!, if: :singletenant?
 
   after_action :clear_session_cookie
+  after_action :add_noindex_header, if: :public_demo_tenant?
 
   rescue_from Apartment::TenantNotFound do
     raise ActionController::RoutingError, 'Not Found'
@@ -48,6 +50,19 @@ class ApplicationController < ActionController::Base
 
   def hidden?
     current_account.persisted? && !current_account.is_public?
+  end
+
+  # Search engines must not index public demo tenants: work show pages emit
+  # Google Scholar citation meta tags, so an indexable demo tenant can pollute
+  # Google Scholar and compete with production repositories in search results.
+  # robots.txt intentionally stays permissive; crawlers have to be able to
+  # fetch a page in order to see this directive.
+  def add_noindex_header
+    response.headers['X-Robots-Tag'] = 'noindex, nofollow'
+  end
+
+  def public_demo_tenant?
+    current_account&.persisted? && current_account.public_demo_tenant?
   end
 
   def api_or_pdf?

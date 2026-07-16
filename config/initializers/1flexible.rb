@@ -3,7 +3,9 @@
 
 flexible = ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYRAX_FLEXIBLE', 'true'))
 if flexible
-  ENV['HYRAX_FLEXIBLE_CLASSES'] = %w[
+  # Respect a pre-set HYRAX_FLEXIBLE_CLASSES (e.g. a deployment or knapsack
+  # adding custom work types); otherwise default to the stock classes.
+  ENV['HYRAX_FLEXIBLE_CLASSES'] ||= %w[
     AdminSetResource
     CollectionResource
     Hyrax::FileSet

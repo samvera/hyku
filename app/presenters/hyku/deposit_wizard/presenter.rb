@@ -22,38 +22,33 @@ module Hyku
         @state ||= State.new(session[:deposit_wizard] ||= {})
       end
 
+      # The work types the type chooser offers. Defaults to everything the user is
+      # authorized to deposit; a downstream app narrows this to config.item_types
+      # (intersected with authorization, so it can restrict but never widen it).
       def available_work_types
-        Hyrax::QuickClassificationQuery.new(current_user).authorized_models
+        authorized = Hyrax::QuickClassificationQuery.new(current_user).authorized_models
+        return authorized if config.item_types.blank?
+
+        allowed = Array(config.item_types).map(&:to_s)
+        authorized.select { |model| allowed.include?(model.to_s) }
       end
 
-      # A "File detail" step appears only when files were uploaded:
-      # type -> upload -> detail -> [file detail] -> review.
+      # The stepper rail rows ({n:, label:, icon:}) for the current state, built
+      # from the flow's rail (one entry per distinct visible rail_key).
       def item_stepper_steps
-        stepper_keys.each_with_index.map do |key, i|
-          { n: i + 1, label: I18n.t("hyku.deposit_wizard.stepper.item.#{key}"), icon: stepper_icon(key) }
+        stepper_rail.each_with_index.map do |row, i|
+          { n: i + 1, label: I18n.t("hyku.deposit_wizard.stepper.item.#{row[:label_key]}"), icon: row[:icon] }
         end
       end
 
-      def stepper_icon(key)
-        { parent: 'fa-sitemap',
-          type: 'fa-list-alt',
-          upload: 'fa-cloud-upload',
-          detail: 'fa-pencil',
-          file_detail: 'fa-file-text-o',
-          review: 'fa-check' }.fetch(key.to_sym, 'fa-circle')
+      # The zero-based index of the rail entry for +rail_key+ (the key each step
+      # view passes for its own position), or -1 to hide the rail.
+      def stepper_phase(rail_key)
+        stepper_rail.index { |row| row[:key] == rail_key.to_sym } || -1
       end
 
-      def stepper_phase(step_key)
-        stepper_keys.index(step_key.to_sym) || -1
-      end
-
-      def stepper_keys
-        keys = []
-        keys << :parent if state.path == 'add'
-        keys += %i[type upload detail]
-        keys << :file_detail if state.uploaded_file_ids.any?
-        keys << :review
-        keys
+      def stepper_rail
+        config.flow.rail(state, config)
       end
 
       attr_reader :work_form, :latest_schema_version
@@ -128,10 +123,6 @@ module Hyku
           entries = review_term_value(term)
           { label: review_term_label(term), count: entries.size } if entries.present?
         end
-      end
-
-      def review_back_step
-        state.uploaded_file_ids.any? ? 'file_meta' : 'details'
       end
 
       def file_type_label(uploaded_file)
@@ -250,43 +241,24 @@ module Hyku
         config.container? || config.parent_connect_on_start?
       end
 
-      # item_start is only worth showing when it has a sub-flow to choose between
-      # (guided suggestions or batch); otherwise skip straight to the type chooser.
-      def item_flow_entry_step
-        item_start_offers_choice? ? 'item_start' : 'known_type'
-      end
-
-      def item_start_offers_choice?
-        config.enable_batch || config.suggestions.present?
-      end
-
-      def known_type_back_step
-        return 'select_parent' if state.path == 'add'
-        return 'item_start' if item_start_offers_choice?
-
-        nil # start screen
-      end
-
-      STEPS = %w[start select_parent item_start known_type files details file_meta review done].freeze
-      STEPS_REQUIRING_WORK_TYPE = %w[files details file_meta review].freeze
-
+      # Flow questions delegate to the configured step map (see
+      # Hyku::DepositWizard::Flow), so ordering/skips/prerequisites live in one
+      # place. `next_step`/`back_step` compute forward/back targets for the current
+      # state; `step_detour` sends an unrenderable step elsewhere.
       def valid_step?(step)
-        STEPS.include?(step)
+        config.flow.valid_step?(step)
       end
 
-      def needs_work_type?(step)
-        STEPS_REQUIRING_WORK_TYPE.include?(step) && state.work_type.blank?
-      end
-
-      # Which step a requested one should redirect to instead of rendering, or nil
-      # to render it — for steps that don't apply given the current wizard state.
       def step_detour(step)
-        return 'known_type' if needs_work_type?(step)
-        return 'review'     if step == 'file_meta' && state.uploaded_file_ids.empty?
-        return 'start'      if step == 'select_parent' && state.path != 'add'
-        return 'known_type' if step == 'item_start' && !item_start_offers_choice?
+        config.flow.detour_for(step, state, config)
+      end
 
-        nil
+      def next_step(step)
+        config.flow.next_after(step, state, config)
+      end
+
+      def back_step(step)
+        config.flow.back_before(step, state, config)
       end
 
       # Record the choice submitted on +step+ into wizard state and return the
@@ -296,7 +268,7 @@ module Hyku
         case step
         when 'start'         then advance_from_start
         when 'select_parent' then advance_from_select_parent
-        when 'item_start'    then Transition.advance('known_type')
+        when 'item_start'    then Transition.advance(next_step('item_start'))
         when 'known_type'    then select_work_type
         when 'files'         then advance_from_files
         when 'details'       then advance_from_details
@@ -506,14 +478,14 @@ module Hyku
         end
 
         state.path = params[:path]
-        Transition.advance(state.path == 'add' ? 'select_parent' : item_flow_entry_step)
+        Transition.advance(next_step('start'))
       end
 
       def advance_from_select_parent
         return rerender_parent_required if params[:parent_id].blank?
 
         state.parent_id = params[:parent_id]
-        Transition.advance(item_flow_entry_step)
+        Transition.advance(next_step('select_parent'))
       end
 
       def rerender_parent_required
@@ -525,7 +497,7 @@ module Hyku
         return rerender_bad_work_type(rerender_step) unless available_work_types.map(&:to_s).include?(type)
 
         state.work_type = type
-        Transition.advance('files',
+        Transition.advance(next_step('known_type'),
                            notice: I18n.t('hyku.deposit_wizard.notices.work_type_selected',
                                           type: type.constantize.model_name.human))
       end
@@ -539,7 +511,7 @@ module Hyku
         # completed upload, matching the param name stock deposit uses.
         state.uploaded_file_ids = params[:uploaded_files]
         state.primary_file_id = params[:primary_file_id]
-        Transition.advance('details')
+        Transition.advance(next_step('files'))
       end
 
       # The ChangeSet permits its own fields, so raw nested params go straight to
@@ -553,14 +525,14 @@ module Hyku
         end
 
         state.attributes = work_params.to_unsafe_h
-        Transition.advance(state.uploaded_file_ids.any? ? 'file_meta' : 'review')
+        Transition.advance(next_step('details'))
       end
 
       def advance_from_file_meta
         submitted = params.fetch(:file_metadata, {}).permit!.to_h
         allowed = state.uploaded_file_ids.map(&:to_s)
         state.file_metadata = submitted.slice(*allowed)
-        Transition.advance('review')
+        Transition.advance(next_step('file_meta'))
       end
 
       def enabled_extra_attribute_keys

@@ -128,6 +128,14 @@ module Hyrax
       step == 'start' ? main_app.deposit_wizard_path : main_app.deposit_wizard_step_path(step: step)
     end
 
+    # Route for the Back button on the step currently rendering: the flow's
+    # previous visible step, so views never hardcode their predecessor.
+    def wizard_back_path(current_step)
+      back = deposit_wizard.back_step(current_step.to_s)
+      back ? step_path(back) : main_app.deposit_wizard_path
+    end
+    helper_method :wizard_back_path
+
     # Mirror Hyrax's batch-upload guard: redirect to the dashboard rather than
     # exposing the wizard routes when the feature is off.
     def ensure_enabled

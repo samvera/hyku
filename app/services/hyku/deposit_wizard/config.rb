@@ -27,14 +27,16 @@ module Hyku
         end
       end
 
-      attr_accessor :single_admin_set, :enable_batch, :file_pool, :file_meta,
-                    :container_type, :item_types, :suggestions, :post_commit, :parent_types,
-                    :parent_connect_placement
+      attr_accessor :container_type, :item_types, :suggestions,
+                    :post_commit, :parent_types, :parent_connect_placement
+      attr_writer :flow
 
-      # Where the parent-connect capability offers to attach a parent: :both
-      # (default), :start (only the up-front "add to an existing work" path),
-      # :review (only the review-step section), or :none. Only takes effect when
-      # parent-connect is enabled.
+      # Only takes effect when parent-connect is enabled.
+      # Where the parent-connect capability offers to attach a parent:
+      # :review (default — only the review-step section),
+      # :start (only the up-front "add to an existing work" path),
+      # :both, or
+      # :none (offers on neither edge).
       PARENT_CONNECT_PLACEMENTS = %i[both start review none].freeze
 
       def capabilities
@@ -42,21 +44,29 @@ module Hyku
       end
 
       def initialize
-        @single_admin_set = true
-        @enable_batch = false
-        @file_pool = false
-        @file_meta = false
         @container_type = nil
         @item_types = nil
         @suggestions = {}
         @post_commit = nil
         @parent_types = nil
-        @parent_connect_placement = :both
+        @parent_connect_placement = :review
         yield self if block_given?
       end
 
       def container?
         container_type.present?
+      end
+
+      # The ordered wizard step sequence (a Flow). Downstream apps reshape the
+      # wizard by assigning their own Flow; defaults to the built-in sequence.
+      def flow
+        @flow ||= Flow.default
+      end
+
+      # item_start is only worth showing when a guided sub-flow is configured (the
+      # file→subtype suggestion map); otherwise the flow skips it.
+      def item_start_offers_choice?
+        suggestions.present?
       end
 
       # The up-front "add to an existing work" path is offered when parent-connect

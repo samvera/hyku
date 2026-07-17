@@ -72,15 +72,22 @@ boundary. It wraps — does not replace — Hyrax's create machinery.
   (read params → mutate state → return a `Transition`). It delegates the *flow*
   itself — order, skips, prerequisites, next/back/detour, and the stepper rail —
   to the configured `Flow` (see "Steps and the Flow"). `#advance_from` returns a
-  `Transition` (`app/presenters/hyku/deposit_wizard/transition.rb`) telling the
+  `Transition` (`app/models/hyku/deposit_wizard/transition.rb`) telling the
   controller whether to advance (with an optional notice) or re-render with an
   alert.
-- **Flow** (`app/presenters/hyku/deposit_wizard/flow.rb`): the step sequence as
-  data — a swappable `Config#flow` a downstream app reshapes without touching flow
-  logic. See "Steps and the Flow".
-- **Config + state** (`app/services/hyku/deposit_wizard/`):
-  - `Hyku::DepositWizard.config` — the swappable configuration seam (see below).
+- **Domain and value objects** (`app/models/hyku/deposit_wizard/`) — the wizard's
+  plain-Ruby collaborators, none of which persist to a database:
+  - `Hyku::DepositWizard::Config` — static deployment settings (container type,
+    parent/item types, flow, post-commit hook), reached through the swappable
+    module-level singleton `Hyku::DepositWizard.config` (see below).
   - `Hyku::DepositWizard::State` — a thin wrapper over `session[:deposit_wizard]`.
+  - `Hyku::DepositWizard::Flow` — the step sequence as data plus its navigator (a
+    swappable `Config#flow`); see "Steps and the Flow".
+  - `Hyku::DepositWizard::VisibilityPolicy` — a policy object deriving the allowed
+    visibility options from an admin set's rules (see "Admin-set assistance").
+  - `Hyku::DepositWizard::Transition` — the result object for advancing a step
+    (advance vs. re-render); `Hyku::DepositWizard::VisibilityFields` — the value
+    object the visibility partial renders.
 - **Views**: `app/views/hyrax/deposit_wizard/` — one template per step, shared
   chrome partials (`_stepper`, `_nav`, `_page_header`, `_step_title`), and
   step-specific partials (the start `_admin_set_select`, the `file_meta`
@@ -98,7 +105,7 @@ under both `HYRAX_FLEXIBLE=false` and `HYRAX_FLEXIBLE=true`.
 ## Steps and the Flow
 
 The step sequence, skips, prerequisites, and progress rail are described by a
-single **`Hyku::DepositWizard::Flow`** (`app/presenters/hyku/deposit_wizard/flow.rb`)
+single **`Hyku::DepositWizard::Flow`** (`app/models/hyku/deposit_wizard/flow.rb`)
 — an ordered list of `Step` value objects plus a navigator. The presenter delegates
 every flow question to `config.flow`, so ordering lives in one place rather than
 scattered across the presenter and views. The default sequence:
@@ -126,7 +133,7 @@ Each `Step` declares its own rules; the navigator computes the rest:
 | --- | --- | --- |
 | `start` | Path chooser (new / add / standalone) when the start relationship path is offered, otherwise the work-type chooser; inline admin-set selection. | Always the entry point. |
 | `select_parent` | Pick the parent work to nest under. | Only on the "add" path — when parent-connect is on and its placement includes the start edge. |
-| `item_start` | An override seam for a downstream item sub-flow; the built-in screen just continues to the work-type chooser. | Skipped straight to `known_type` unless a sub-flow is configured. |
+| `item_start` | An override seam for a downstream item sub-flow; the built-in screen just continues to the work-type chooser. | Shown only when a guided sub-flow is configured (`config.suggestions` present); otherwise skipped straight to `known_type`. |
 | `known_type` | Work-type card chooser. | Whenever a type still needs choosing. |
 | `files` | Hyrax uploader. | Always available — upload has no prerequisite, so files may be added before a work type is chosen. |
 | `details` | Work `ResourceForm` (profile-driven fields, visibility, embargo/lease). | Requires a chosen work type. |
@@ -179,6 +186,8 @@ reset it with `Hyku::DepositWizard.reset_config!`.
 | `item_types` | `nil` | Restricts the work types the type chooser offers, intersected with what the user is authorized to deposit (it narrows, never widens). `nil` offers all authorized types. |
 | `parent_types` | `nil` | Work types eligible as parents in the typeahead. `nil` falls back to the tenant's available work types. |
 | `parent_connect_placement` | `:review` | Where parent-connect offers to attach a parent: `:both`, `:start` (only the up-front path), `:review` (only the review section), or `:none`. Only takes effect when parent-connect is enabled. |
+| `suggestions` | `{}` | A guided sub-flow map (uploaded-file kind → offered sub-types) for the `item_start` step. When present (`item_start_offers_choice?`), the `item_start` step is shown; empty skips straight to the work-type chooser. |
+| `flow` | `Flow.default` | The ordered step sequence (a `Hyku::DepositWizard::Flow`). Assign a reshaped flow to add, remove, or reorder steps (see [Step flow](#step-flow)). |
 | `post_commit` | `nil` | Callable run after a successful commit, receiving `(work, wizard_state)` — the hook for downstream nesting/fan-out. |
 
 The parent/collection/sharing capabilities are **not** config options — they are
@@ -219,7 +228,7 @@ Everything a downstream application needs to customize is a seam; no Hyrax or
 Hyku file is overridden, prepended, or decorated.
 
 **Where this code goes.** `Hyku::DepositWizard.config` is a swappable
-module-level singleton (`app/services/hyku/deposit_wizard.rb`); the wizard reads
+module-level singleton (`app/models/hyku/deposit_wizard.rb`); the wizard reads
 it fresh on each request. A downstream app *replaces* it — it does not patch the
 wizard. Hyku ships **no** `deposit_wizard` initializer (a plain install runs the
 default `Config`), so the app **creates a new initializer**, conventionally
@@ -268,7 +277,7 @@ declares its own rules and never names its neighbors.
 | `terminal` | Boolean | Marks a non-navigable endpoint reached by commit, not by advancing (`done`). Terminal steps are excluded from next/back and the rail. |
 | `rail_key` | Symbol | Which progress-rail phase this step maps to. Several steps can share one key and collapse into a single phase (`start`/`item_start`/`known_type` all → `:type`). Omit to keep the step off the rail. |
 | `rail_if` | `->(state, config)` | Extra condition for the rail phase to show (independent of `skip_if`) — e.g. `:parent` only on the add path, `:file_detail` only when files exist. Omit for "show whenever a visible step maps to this key". |
-| `icon` / `label_key` | String | The rail phase's Font Awesome icon and i18n label suffix (`hyku.deposit_wizard.stepper.<label_key>`). Set on whichever step of a collapsed phase should supply the rail's icon/label. |
+| `icon` / `label_key` | String | The rail phase's Font Awesome icon and i18n label suffix (`hyku.deposit_wizard.stepper.item.<label_key>`). Set on whichever step of a collapsed phase should supply the rail's icon/label. |
 
 **Prerequisites are a registry, not free-form.** `requires:` entries are looked up
 in `Flow::PREREQUISITES`, which maps each prerequisite to a `met` predicate and the

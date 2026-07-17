@@ -26,21 +26,21 @@ module Hyku
     # - rail metadata: +rail_key+ (steps sharing a key collapse to one rail entry),
     #                +rail_if+ ->(state, config) whether the entry shows, +icon+,
     #                +label_key+ (i18n suffix under hyku.deposit_wizard.stepper.item).
-    Step = Struct.new(
-      :name, :requires, :skip_if, :terminal, :on_skip,
-      :rail_key, :rail_if, :icon, :label_key,
-      keyword_init: true
-    ) do
-      def visible?(state, config)
-        skip_if.nil? || !skip_if.call(state, config)
-      end
-
-      def rail_visible?(state, config)
-        rail_key.present? && (rail_if.nil? || rail_if.call(state, config))
-      end
-    end
-
     class Flow
+      Step = Struct.new(
+        :name, :requires, :skip_if, :terminal, :on_skip,
+        :rail_key, :rail_if, :icon, :label_key,
+        keyword_init: true
+      ) do
+        def visible?(state, config)
+          skip_if.nil? || !skip_if.call(state, config)
+        end
+
+        def rail_visible?(state, config)
+          rail_key.present? && (rail_if.nil? || rail_if.call(state, config))
+        end
+      end
+
       # Named prerequisites a Step can require. +step+ is where the navigator
       # detours when the prerequisite is unmet.
       PREREQUISITES = {
@@ -143,15 +143,19 @@ module Hyku
       end
 
       # The stepper rail, in +rail_keys+ order. A phase appears only when a visible
-      # step maps to it (so :parent shows on the add path, :file_detail with files);
-      # its icon/label come from that step. Order is the rail_keys list, NOT the
-      # step sequence, so display order and flow order stay independent.
+      # step maps to it (so :parent shows on the add path, :file_detail with files).
+      # Order is the rail_keys list, NOT the step sequence, so display order and flow
+      # order stay independent. A phase's icon/label come from whichever visible step
+      # in the group defines them, since collapsed steps (start/item_start/known_type
+      # → :type) don't all carry them.
       def rail(state, config)
         rail_keys.filter_map do |key|
-          step = visible_steps(state, config).find { |s| s.rail_key == key && s.rail_visible?(state, config) }
-          next if step.nil?
+          group = visible_steps(state, config).select { |s| s.rail_key == key && s.rail_visible?(state, config) }
+          next if group.empty?
 
-          { key: key, icon: step.icon, label_key: step.label_key }
+          { key: key,
+            icon: group.filter_map(&:icon).first,
+            label_key: group.filter_map(&:label_key).first }
         end
       end
     end

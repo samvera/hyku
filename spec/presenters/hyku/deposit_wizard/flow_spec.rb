@@ -121,6 +121,31 @@ RSpec.describe Hyku::DepositWizard::Flow do
       keys = reordered.rail(state, config).map { |r| r[:key] }
       expect(keys.first(2)).to eq(%i[type parent])
     end
+
+    it 'sources a phase icon/label from whichever group step defines them, not just the first' do
+      # A downstream flow where the first visible step of a rail_key group carries
+      # no icon/label but a later one does. The rail row must still get the icon and
+      # label from the step that defines them, not nil from the first step.
+      step = described_class::Step
+      flow = described_class.new(
+        [
+          step.new(name: 'a', rail_key: :type),
+          step.new(name: 'b', rail_key: :type, icon: 'fa-list-alt', label_key: 'type'),
+          step.new(name: 'review', rail_key: :review, icon: 'fa-check', label_key: 'review')
+        ],
+        rail_keys: %i[type review]
+      )
+
+      type_row = flow.rail(state, config).find { |r| r[:key] == :type }
+      expect(type_row[:icon]).to eq('fa-list-alt')
+      expect(type_row[:label_key]).to eq('type')
+    end
+  end
+
+  describe 'Step constant' do
+    it 'is exposed as Flow::Step (the documented public path)' do
+      expect(described_class::Step).to be < Struct
+    end
   end
 
   describe 'resequencing seam (files before type)' do
@@ -128,7 +153,7 @@ RSpec.describe Hyku::DepositWizard::Flow do
       # A downstream flow that puts files before a type-predicting step: because
       # `files` has no work_type prerequisite, reaching it first is legal, and the
       # metadata steps still detour until a type is set.
-      step = Hyku::DepositWizard::Step
+      step = described_class::Step
       guided = described_class.new(
         [
           step.new(name: 'files'),

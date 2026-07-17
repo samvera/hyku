@@ -24,8 +24,8 @@ x-app: &app
     args:
       BUILDKIT_INLINE_CACHE: 1
     cache_from:
-      - ghcr.io/samvera/hyku/web:latest
-  image: ghcr.io/samvera/hyku/web:${TAG:-latest}
+      - ghcr.io/samvera/hyku-minimal:latest
+  image: ghcr.io/samvera/hyku-minimal:${GITHUB_SHA:-latest}
   user: root
   env_file:
     - .env
@@ -36,10 +36,11 @@ x-app: &app
     - uploads:/app/samvera/hyrax-webapp/public/uploads:cached
     - assets:/app/samvera/hyrax-webapp/public/assets:cached
     - cache:/app/samvera/hyrax-webapp/tmp/cache:cached
-    - .:/app/samvera/hyrax-webapp
-
+    # - .:/app/samvera/hyrax-webapp
+    - bundle:/app/samvera/hyrax-webapp/vendor/bundle
 volumes:
   assets:
+  bundle:
   cache:
   db:
   fcrepo:
@@ -220,7 +221,7 @@ services:
 
   worker:
     <<: *app
-    image: ghcr.io/samvera/hyku/worker:${TAG:-latest}
+    image: ghcr.io/samvera/hyku-minimal:${GITHUB_SHA:-latest}
     # Uncomment command to access container with out starting bin/worker. Useful for debugging
     # command: sleep infinity
     build:

@@ -271,7 +271,7 @@ GEM
       babel-source (>= 4.0, < 6)
       execjs (~> 2.0)
     backport (1.2.0)
-    bagit (0.6.0)
+    bagit (0.6.1)
       docopt (~> 0.5.0)
       validatable (~> 1.6)
     base64 (0.3.0)

@@ -6,7 +6,9 @@ FROM ruby:$RUBY_VERSION-$LINUX_VERSION AS build-env
 ARG RAILS_ROOT=/app/samvera/hyrax-webapp
 ENV RAILS_ENV=production
 ENV NODE_ENV=production
-ENV BUNDLE_APP_CONFIG="$RAILS_ROOT/.bundle"
+ENV BUNDLE_APP_CONFIG="/app/.bundle"
+ENV BUNDLE_DEPLOYMENT=true
+ENV BUNDLE_WITHOUT=development:test
 # app user env vars
 ENV USER=app
 ENV GROUPNAME=$USER
@@ -40,9 +42,7 @@ RUN addgroup --gid "$GID" "$GROUPNAME" && \
 # Install Gems & remove build artifacts
 COPY --chown=$UID:$GID Gemfile* package.json yarn.lock $RAILS_ROOT/
 USER $UID
-RUN bundle config set deployment true && \
-    bundle config set without development:test && \
-    bundle install --no-cache --retry 3 && \
+RUN bundle install --no-cache --retry 3 && \
     # Remove unneeded files (cached *.gem, *.o, *.c)
     rm -rf vendor/bundle/ruby/*/cache/*.gem && \
     find vendor/bundle/ruby/*/gems/ -name "*.c" -delete && \
@@ -63,7 +63,9 @@ FROM ruby:$RUBY_VERSION-$LINUX_VERSION AS hyku-web
 
 ARG RAILS_ROOT=/app/samvera/hyrax-webapp
 ENV RAILS_ENV=production
-ENV BUNDLE_APP_CONFIG="$RAILS_ROOT/.bundle"
+ENV BUNDLE_APP_CONFIG="/app/.bundle"
+ENV BUNDLE_DEPLOYMENT=true
+ENV BUNDLE_WITHOUT=development:test
 ENV PATH="/app/samvera/hyrax-webapp/bin:${PATH}"
 # app user env vars
 ENV USER=app
@@ -75,15 +77,10 @@ WORKDIR $RAILS_ROOT
 RUN apk update \
     && apk upgrade \
     && apk add --update --no-cache \
-    build-base \
     curl \
-    gcompat \
-    git \
-    libxml2-dev \
-    linux-headers \
-    nodejs \
     tzdata \
-    vips
+    vips \
+    zip
 
 # Create app user and group
 RUN addgroup --gid "$GID" "$GROUPNAME" && \
@@ -94,12 +91,9 @@ RUN addgroup --gid "$GID" "$GROUPNAME" && \
 
 USER $UID
 COPY --chown=$UID:$GID --from=build-env $RAILS_ROOT $RAILS_ROOT
-RUN bundle config set deployment true && \
-    bundle config set without development:test
+COPY --chown=$UID:$GID --from=build-env /app/.bundle /app/.bundle
 
-# CMD ["./bin/web"]
-
-CMD ["sleep", "infinity"]
+CMD ["./bin/web"]
 
 FROM hyku-web AS hyku-worker
 

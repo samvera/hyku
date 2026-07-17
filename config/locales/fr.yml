@@ -188,6 +188,146 @@ fr:
   hyku:
     account:
       signup_disabled: L'enregistrement du compte est désactivé
+    deposit_wizard:
+      admin_set:
+        heading: Ensemble administratif
+        hint_lead: Définit les règles de ce dépôt
+        hint_html: Un ensemble administratif détermine quels <strong>champs de métadonnées</strong> vous compléterez, les <strong>options de visibilité</strong> disponibles pour votre œuvre et le <strong>flux de révision</strong> qu'elle suit après le dépôt. La plupart des dépôts utilisent celui par défaut.
+        label: Ensemble administratif
+        workflow: Flux de travail
+      back: Retour
+      button: Dépôt guidé
+      continue: Continuer
+      next: Suivant
+      page_heading: Déposer une nouvelle œuvre
+      page_subtitle: Ce flux guidé vous accompagne étape par étape dans le dépôt de votre œuvre
+      details:
+        heading: Décrivez votre élément
+        subtext: Ajoutez les détails de cette œuvre. Les champs obligatoires sont indiqués.
+      disabled: L'assistant de dépôt guidé n'est pas activé.
+      done:
+        deposit_another: Déposer une autre œuvre
+        heading: Œuvre déposée
+        no_recent: Votre œuvre a été déposée.
+        subtext: "« %{title} » a été déposée dans le dépôt."
+        untitled: Votre œuvre
+        view_work: Voir l'œuvre
+      errors:
+        agreement_required: Veuillez accepter l'accord de dépôt pour continuer.
+        commit:
+          redirect_path_collision: L'une des URL personnalisées est déjà utilisée. Choisissez un autre chemin.
+        deposit_failed: Votre œuvre n'a pas pu être déposée
+        details_invalid: Certains détails doivent être corrigés avant de continuer
+        no_parent: Veuillez choisir une œuvre à laquelle ajouter ce dépôt.
+        no_work_type: Veuillez choisir un type d'œuvre pour continuer.
+      extras:
+        add: Ajouter
+        parent:
+          heading: Ajouter à une œuvre parente
+          hint: Vous pouvez éventuellement imbriquer cette œuvre dans une œuvre existante.
+          label: Rechercher des œuvres
+          placeholder: Rechercher une œuvre…
+        collection:
+          heading: Ajouter à une collection
+          hint: Vous pouvez éventuellement ajouter cette œuvre à une ou plusieurs collections.
+          label: Rechercher des collections
+          placeholder: Rechercher une collection…
+          none: Vous n'avez aucune collection disponible à laquelle ajouter cette œuvre.
+        sharing:
+          heading: Partager avec des personnes ou des groupes
+          hint: Vous pouvez éventuellement donner accès à cette œuvre à des personnes ou des groupes spécifiques.
+          person_label: Personne (courriel)
+          person_placeholder: nom@exemple.com
+          group_label: Groupe
+          group_placeholder: Sélectionnez un groupe…
+        redirects:
+          heading: Ajouter une URL personnalisée
+          hint: "Vous pouvez éventuellement ajouter une URL courte et mémorable qui redirige vers cette œuvre (sous %{base_url})."
+      file_meta:
+        description: Description
+        file: Fichier
+        files_count:
+          one: "Fichiers · 1"
+          other: "Fichiers · %{count}"
+        files_nav: Fichiers téléversés
+        heading: Décrivez vos fichiers
+        inherit: Identique à l'œuvre
+        subtext: Ajoutez des détails pour chaque fichier, ou laissez-les hériter de ceux de l'œuvre.
+        title: Titre
+        visibility: Visibilité du fichier
+      files:
+        add_files: Ajouter des fichiers
+        cancel_upload: Annuler
+        dropzone: Glissez-déposez des fichiers ici, ou cliquez pour parcourir
+        dropzone_hint: Vous pouvez ajouter plusieurs fichiers, ou continuer sans aucun.
+        heading: Ajouter des fichiers
+        subtext: Ajoutez les fichiers de cette œuvre. Vous pouvez aussi continuer sans aucun.
+      item_start:
+        heading: Ajouter un élément
+        known_type: Je sais de quel type d'œuvre il s'agit
+        subtext: Choisissez comment vous souhaitez décrire cet élément.
+      known_type:
+        adding_to: Ajout en tant qu'enfant de
+        heading: De quel type d'œuvre s'agit-il ?
+        subtext: Choisissez le type qui correspond le mieux à l'œuvre que vous déposez.
+      no_work_types: Aucun type d'œuvre n'est disponible pour le dépôt. Veuillez contacter un administrateur.
+      notices:
+        work_type_selected: "%{type} sélectionné."
+      review:
+        deposit: Déposer
+        destination: Cette œuvre sera déposée dans l'ensemble administratif %{admin_set}.
+        entry_count:
+          one: 1 entrée
+          other: "%{count} entrées"
+        file_count:
+          one: 1 fichier
+          other: "%{count} fichiers"
+        files: Fichiers
+        embargo_summary_html: "Embargo : %{during} jusqu'au %{date}, puis %{after}"
+        file_visibility: Visibilité du fichier
+        heading: Vérifier et déposer
+        lease_summary_html: "Bail : %{during} jusqu'au %{date}, puis %{after}"
+        subtext: Vérifiez que tout est correct avant de déposer cette œuvre.
+        visibility: Visibilité
+        visibility_inherited: Identique à l'œuvre
+        work_type: Type d'œuvre
+        work_visibility: Visibilité de l'œuvre
+      select_parent:
+        heading: Choisissez l'œuvre parente
+        subtext: Recherchez l'œuvre à laquelle ce dépôt doit être ajouté.
+        label: Rechercher des œuvres
+      start:
+        heading: Que souhaitez-vous déposer ?
+        subtext: Ce flux guidé vous accompagne étape par étape dans le dépôt de votre œuvre.
+        paths:
+          add:
+            desc: Imbriquez ce dépôt dans une œuvre que vous avez déjà créée.
+            title: Ajouter à une œuvre existante
+          new:
+            desc: Déposer une œuvre seule.
+            title: Déposer une nouvelle œuvre
+          standalone:
+            desc: Déposer une seule œuvre, sans œuvre parente.
+            title: Déposer une œuvre autonome
+      visibility:
+        legend: Visibilité
+        embargo:
+          during: Jusqu'à la levée de l'embargo, l'accès est
+          date: Date de levée de l'embargo
+          after: À la levée de l'embargo, l'accès devient
+        lease:
+          during: Tant que le bail est actif, l'accès est
+          date: Date d'expiration du bail
+          after: À l'expiration du bail, l'accès devient
+      stepper:
+        item:
+          detail: Détail de l'œuvre
+          file_detail: Détail du fichier
+          parent: Œuvre parente
+          review: Vérifier
+          type: Type d'élément
+          upload: Téléverser des fichiers
+        label: Progression du dépôt
     admin:
       flash:
         access_denied: Vous n'êtes pas autorisé à afficher cette page

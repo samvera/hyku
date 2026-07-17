@@ -1,0 +1,12 @@
+<%# Opt wizard steps out of Turbolinks caching: steps are stateful (the form is
+    rebuilt from session on each visit), so a cached snapshot can show stale or
+    empty content when navigating back and forward. %>
+<% content_for :head do %>
+  <meta name="turbolinks-cache-control" content="no-cache">
+<% end %>
+
+<% provide :page_header do %>
+  <h1><span class="fa fa-cloud-upload" aria-hidden="true"></span> <%= t('hyku.deposit_wizard.page_heading') %></h1>
+<% end %>
+
+<p class="deposit-wizard__subtext"><%= t('hyku.deposit_wizard.page_subtitle') %></p>

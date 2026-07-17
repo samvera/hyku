@@ -1,0 +1,30 @@
+<%= render 'page_header' %>
+
+<div class="deposit-wizard deposit-wizard--select-parent">
+  <%= render 'stepper', steps: deposit_wizard.item_stepper_steps, phase: deposit_wizard.stepper_phase(:parent) %>
+  <%= render 'step_title', title: t('hyku.deposit_wizard.select_parent.heading'),
+                           hint: t('hyku.deposit_wizard.select_parent.subtext') %>
+
+  <%= form_tag main_app.deposit_wizard_advance_path(step: 'select_parent'), method: :patch,
+               class: 'deposit-wizard__select-parent-form' do %>
+    <%# Same Select2-ajax typeahead the review-step parent card uses, wrapped in
+        the __extra-body scope so its Select2 styling (single box, no double
+        border) applies here too; always open (no collapse) since it's the step. %>
+    <section class="deposit-wizard__extra is-open" data-behavior="extra-parent"
+             data-options-url="<%= main_app.deposit_wizard_parent_options_path %>">
+      <div class="deposit-wizard__extra-body">
+        <div class="deposit-wizard__field">
+          <%= label_tag 'dw_parent_search', t('hyku.deposit_wizard.select_parent.label'),
+                        class: 'deposit-wizard__field-label sr-only' %>
+          <%= hidden_field_tag 'parent_id', deposit_wizard.state.parent_id, id: 'dw_parent_search',
+                               class: 'form-control',
+                               data: { behavior: 'parent-select',
+                                       'initial-label': deposit_wizard.selected_parent_title,
+                                       placeholder: t('hyku.deposit_wizard.extras.parent.placeholder') } %>
+        </div>
+      </div>
+    </section>
+
+    <%= render 'nav', back_path: wizard_back_path('select_parent') %>
+  <% end %>
+</div>

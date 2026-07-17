@@ -188,6 +188,146 @@ zh:
   hyku:
     account:
       signup_disabled: 帐户注册被禁用
+    deposit_wizard:
+      admin_set:
+        heading: 管理集
+        hint_lead: 设定此次存缴的规则
+        hint_html: 管理集决定您需要填写哪些<strong>元数据字段</strong>、您的作品可用的<strong>可见性选项</strong>，以及存缴后所遵循的<strong>审核工作流</strong>。大多数存缴使用默认设置。
+        label: 管理集
+        workflow: 工作流
+      back: 返回
+      button: 引导式存缴
+      continue: 继续
+      next: 下一步
+      page_heading: 存缴新作品
+      page_subtitle: 此引导流程将逐步带您完成作品的存缴
+      details:
+        heading: 描述您的条目
+        subtext: 为此作品添加详细信息。必填字段已标记。
+      disabled: 引导式存缴向导未启用。
+      done:
+        deposit_another: 存缴另一件作品
+        heading: 作品已存缴
+        no_recent: 您的作品已存缴。
+        subtext: "“%{title}”已存缴至存储库。"
+        untitled: 您的作品
+        view_work: 查看作品
+      errors:
+        agreement_required: 请接受存缴协议以继续。
+        commit:
+          redirect_path_collision: 其中一个自定义网址已被使用。请选择其他路径。
+        deposit_failed: 无法存缴您的作品
+        details_invalid: 继续之前需要修正部分详细信息
+        no_parent: 请选择要将此存缴添加到的作品。
+        no_work_type: 请选择作品类型以继续。
+      extras:
+        add: 添加
+        parent:
+          heading: 添加到上级作品
+          hint: 可选择将此作品嵌套到现有作品中。
+          label: 搜索作品
+          placeholder: 搜索作品…
+        collection:
+          heading: 添加到收藏集
+          hint: 可选择将此作品添加到一个或多个收藏集。
+          label: 搜索收藏集
+          placeholder: 搜索收藏集…
+          none: 您没有可添加此作品的收藏集。
+        sharing:
+          heading: 与个人或群组共享
+          hint: 可选择授予特定个人或群组访问此作品的权限。
+          person_label: 个人（电子邮件）
+          person_placeholder: name@example.com
+          group_label: 群组
+          group_placeholder: 选择一个群组…
+        redirects:
+          heading: 添加自定义网址
+          hint: "可选择添加一个简短、易记的网址，重定向到此作品（位于 %{base_url}）。"
+      file_meta:
+        description: 描述
+        file: 文件
+        files_count:
+          one: "文件 · 1"
+          other: "文件 · %{count}"
+        files_nav: 已上传的文件
+        heading: 描述您的文件
+        inherit: 与作品相同
+        subtext: 为每个文件添加详细信息，或让它们继承作品的信息。
+        title: 标题
+        visibility: 文件可见性
+      files:
+        add_files: 添加文件
+        cancel_upload: 取消
+        dropzone: 将文件拖放到此处，或点击浏览
+        dropzone_hint: 您可以添加多个文件，也可以不添加任何文件继续。
+        heading: 添加文件
+        subtext: 为此作品添加任何文件。您也可以不添加任何文件继续。
+      item_start:
+        heading: 添加条目
+        known_type: 我知道这是什么类型的作品
+        subtext: 选择您希望如何描述此条目。
+      known_type:
+        adding_to: 作为其子项添加至
+        heading: 这是什么类型的作品？
+        subtext: 选择最适合您正在存缴的作品的类型。
+      no_work_types: 没有可供您存缴的作品类型。请联系管理员。
+      notices:
+        work_type_selected: "已选择 %{type}。"
+      review:
+        deposit: 存缴
+        destination: 此作品将存缴至 %{admin_set} 管理集。
+        entry_count:
+          one: 1 个条目
+          other: "%{count} 个条目"
+        file_count:
+          one: 1 个文件
+          other: "%{count} 个文件"
+        files: 文件
+        embargo_summary_html: "禁限：%{during}，直至 %{date}，之后 %{after}"
+        file_visibility: 文件可见性
+        heading: 审核并存缴
+        lease_summary_html: "租约：%{during}，直至 %{date}，之后 %{after}"
+        subtext: 在存缴此作品之前，请检查所有信息是否正确。
+        visibility: 可见性
+        visibility_inherited: 与作品相同
+        work_type: 作品类型
+        work_visibility: 作品可见性
+      select_parent:
+        heading: 选择上级作品
+        subtext: 搜索此存缴应添加到的作品。
+        label: 搜索作品
+      start:
+        heading: 您想存缴什么？
+        subtext: 此引导流程将逐步带您完成作品的存缴。
+        paths:
+          add:
+            desc: 将此存缴嵌套到您已创建的作品中。
+            title: 添加到现有作品
+          new:
+            desc: 单独存缴一件作品。
+            title: 存缴新作品
+          standalone:
+            desc: 单独存缴一件作品，不含上级作品。
+            title: 存缴独立作品
+      visibility:
+        legend: 可见性
+        embargo:
+          during: 在禁限解除之前，访问权限为
+          date: 禁限解除日期
+          after: 禁限解除后，访问权限变为
+        lease:
+          during: 在租约有效期内，访问权限为
+          date: 租约到期日期
+          after: 租约到期后，访问权限变为
+      stepper:
+        item:
+          detail: 作品详情
+          file_detail: 文件详情
+          parent: 上级作品
+          review: 审核
+          type: 条目类型
+          upload: 上传文件
+        label: 存缴进度
     admin:
       flash:
         access_denied: 您无权查看此页面

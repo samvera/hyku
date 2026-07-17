@@ -1,0 +1,198 @@
+// Path/type chooser cards and the admin-set selector on the start screen.
+.deposit-wizard {
+  // ---- Choice cards (path + type choosers) -----------------------------
+  &__paths,
+  &__type-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  &__path-card,
+  &__type-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    height: 100%;
+    text-align: center;
+    padding: 1.25rem 0.95rem;
+    border: 2px solid var(--dw-border);
+    border-radius: var(--dw-radius-sm);
+    background: var(--dw-surface);
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover,
+    &:focus {
+      border-color: #6c757d;
+      outline: none;
+    }
+
+    &.is-selected {
+      border-color: var(--dw-accent);
+      background: var(--dw-accent-tint);
+      box-shadow: 0 2px 4px rgba(43, 109, 165, 0.1);
+
+      .deposit-wizard__type-card-label,
+      .deposit-wizard__path-title,
+      .deposit-wizard__type-card-icon {
+        color: var(--dw-accent);
+      }
+    }
+  }
+
+  // Work-type icon (from SelectTypePresenter#icon_class), above the label.
+  &__type-card-icon {
+    font-size: 22px;
+    color: var(--dw-ink-subtle);
+    margin-bottom: 0.35rem;
+    transition: color 0.2s ease;
+  }
+
+  &__path-title,
+  &__type-card-label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #333;
+  }
+
+  &__path-desc,
+  &__type-card-desc {
+    color: var(--dw-ink-muted);
+    font-size: 0.8rem;
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  // ---- Admin set card --------------------------------------------------
+  &__admin-set {
+    margin-bottom: 1.75rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--dw-surface);
+    border: 1px solid var(--dw-border);
+    border-radius: var(--dw-radius-lg);
+    box-shadow: var(--dw-shadow-card);
+  }
+
+  &__admin-set-title {
+    margin: 0 0 0.5rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--dw-ink);
+  }
+
+  &__admin-set-subtitle {
+    margin-left: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--dw-ink-subtle);
+  }
+
+  &__admin-set-explanation {
+    margin: 0 0 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--dw-ink-muted);
+
+    strong {
+      color: var(--dw-ink);
+      font-weight: 600;
+    }
+  }
+
+  &__admin-set-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  &__admin-set-select {
+    flex: 1 1 20rem;
+  }
+
+  &__admin-set-desc {
+    flex-basis: 100%;
+    margin: 0.65rem 0 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--dw-ink-muted);
+
+    &[hidden] {
+      display: none;
+    }
+  }
+
+  // Workflow badge sitting beside the selector.
+  &__admin-set-workflow {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    flex: none;
+    padding: 0.4rem 0.75rem;
+    background: var(--dw-surface-sunk);
+    border-radius: var(--dw-radius-sm);
+
+    &[hidden] {
+      display: none;
+    }
+  }
+
+  &__admin-set-workflow-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--dw-ink-subtle);
+  }
+
+  &__admin-set-workflow-value {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--dw-ink);
+  }
+
+  // Parent line above the type chooser: "Adding as a child of <Type>: <Title>".
+  &__adding-to {
+    margin: 0.5rem 0 1.5rem;
+    color: var(--dw-ink-muted);
+  }
+
+  &__adding-to-type {
+    color: var(--dw-ink-muted);
+  }
+
+  &__adding-to-parent {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--dw-ink);
+  }
+
+  // Drop the browser's default dotted underline on abbr[title] so the required
+  // mark reads as a plain red asterisk.
+  &__section-heading .required {
+    margin-left: 0.25rem;
+    text-decoration: none;
+    cursor: default;
+  }
+}
+
+// On the select-parent step the parent card has no toggle header (it's always
+// open), so its body needs the vertical padding the review card's header would
+// otherwise provide. The typeahead fills the card width here (the review card
+// caps it at 24rem, which would float left in this full-width step).
+.deposit-wizard--select-parent {
+  .deposit-wizard__extra-body {
+    padding: 1.75rem;
+  }
+
+  // Sole element in the body; the body padding provides the spacing below it.
+  .deposit-wizard__field {
+    margin-bottom: 0;
+  }
+
+  .select2-container {
+    max-width: none;
+  }
+}

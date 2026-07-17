@@ -1,0 +1,19 @@
+<% deposited = deposit_wizard.last_deposited %>
+<% provide :page_header do %>
+  <h1><span class="fa fa-check-circle" aria-hidden="true"></span> <%= t('hyku.deposit_wizard.done.heading') %></h1>
+<% end %>
+
+<div class="deposit-wizard deposit-wizard--done">
+  <% if deposited %>
+    <p class="deposit-wizard__subtext">
+      <%= t('hyku.deposit_wizard.done.subtext', title: deposited['title'].presence || t('hyku.deposit_wizard.done.untitled')) %>
+    </p>
+    <div class="deposit-wizard__nav">
+      <%= link_to t('hyku.deposit_wizard.done.view_work'), deposited['path'], class: 'btn btn-primary' if deposited['path'].present? %>
+      <%= link_to t('hyku.deposit_wizard.done.deposit_another'), main_app.deposit_wizard_path, class: 'btn btn-secondary' %>
+    </div>
+  <% else %>
+    <p class="deposit-wizard__subtext"><%= t('hyku.deposit_wizard.done.no_recent') %></p>
+    <%= link_to t('hyku.deposit_wizard.done.deposit_another'), main_app.deposit_wizard_path, class: 'btn btn-primary' %>
+  <% end %>
+</div>

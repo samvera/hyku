@@ -1,0 +1,21 @@
+<%= render 'page_header' %>
+
+<div class="deposit-wizard deposit-wizard--known-type">
+  <%= render 'stepper', steps: deposit_wizard.item_stepper_steps, phase: deposit_wizard.stepper_phase(:type) %>
+  <h2 class="deposit-wizard__section-heading"><%= t('hyku.deposit_wizard.known_type.heading') %></h2>
+
+  <% if deposit_wizard.selected_parent.present? %>
+    <p class="deposit-wizard__adding-to">
+      <%= t('hyku.deposit_wizard.known_type.adding_to') %>
+      <span class="deposit-wizard__adding-to-type"><%= deposit_wizard.selected_parent[:type] %>:</span>
+      <span class="deposit-wizard__adding-to-parent"><%= deposit_wizard.selected_parent[:title] %></span>
+    </p>
+  <% end %>
+
+  <%= form_tag main_app.deposit_wizard_advance_path(step: 'known_type'), method: :patch, class: 'deposit-wizard__type-form' do %>
+    <%= render 'type_cards' %>
+
+    <%= render 'nav', back_path: wizard_back_path('known_type'),
+                      next_html: { disabled: deposit_wizard.state.work_type.blank?, data: { behavior: 'type-next' } } %>
+  <% end %>
+</div>

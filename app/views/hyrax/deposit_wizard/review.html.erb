@@ -1,0 +1,23 @@
+<%= render 'page_header' %>
+
+<div class="deposit-wizard deposit-wizard--review">
+  <%= render 'stepper', steps: deposit_wizard.item_stepper_steps, phase: deposit_wizard.stepper_phase(:review) %>
+  <%= render 'step_title', title: t('hyku.deposit_wizard.review.heading'), hint: t('hyku.deposit_wizard.review.subtext') %>
+
+  <%= render 'review_summary' %>
+
+  <%= form_tag main_app.deposit_wizard_commit_path, method: :post, class: 'deposit-wizard__commit-form',
+               data: { 'extras-url': main_app.deposit_wizard_extras_path } do %>
+    <%= render 'extras_parent' if deposit_wizard.config.parent_connect_on_review? %>
+    <%= render 'extras_collection' if deposit_wizard.config.capabilities.collection_connect? %>
+    <%= render 'extras_sharing' if deposit_wizard.config.capabilities.sharing? %>
+    <%= render 'extras_redirects' if deposit_wizard.config.redirects_available?(deposit_wizard.work_form) %>
+
+    <%= render 'review_agreement' %>
+
+    <%= render 'nav', back_path: wizard_back_path('review'),
+                      next_label: t('hyku.deposit_wizard.review.deposit'),
+                      next_arrow: false,
+                      next_html: { class: 'deposit-wizard__deposit-btn' } %>
+  <% end %>
+</div>

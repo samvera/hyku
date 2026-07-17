@@ -795,6 +795,20 @@ de:
         viz_after: Die Sichtbarkeit ändert sich zu
         viz_current: Aktuelle Sichtbarkeit
     featured_researchers: Ausgewählte Forscher
+    'hyrax/file_set':
+      hints:
+        title: Ein Name zur besseren Identifizierung dieser Datei.
+        creator: Die Person oder Gruppe, die für den Inhalt dieser Datei verantwortlich ist. Personennamen sollten mit dem Nachnamen zuerst eingegeben werden, z. B. „Schmidt, Johann“.
+        license: Lizenz- und Verbreitungsinformationen, die den Zugriff auf diese Datei regeln. Wählen Sie aus der bereitgestellten Auswahlliste.
+        contributor: Eine Person oder Gruppe, die Sie für ihre Rolle bei der Erstellung dieser Datei würdigen möchten, jedoch nicht in der Hauptrolle.
+        date_created: Das Datum, an dem diese Datei erstellt wurde.
+        description: Freitextnotizen zu dieser Datei.
+        identifier: Eine eindeutige Kennung dieser Datei, etwa ein DOI, eine ISBN oder eine OCLC-Nummer.
+        keyword: Wörter oder Ausdrücke, die Sie zur Beschreibung des Inhalts dieser Datei auswählen. Sie werden zur Suche nach Inhalten verwendet.
+        language: Die Sprache des Dateiinhalts. Für Audio-/Videotranskriptionen kann dies der <a href="https://id.loc.gov/vocabulary/iso639-2.html" target="_blank">ISO 639-2</a>-Code, der <a href="https://id.loc.gov/vocabulary/iso639-3.html" target="_blank">ISO 639-3</a>-Code oder der englische Name der Sprache sein.
+        publisher: Die Person oder Gruppe, die diese Datei verfügbar macht. In der Regel ist dies die Institution.
+        related_url: Ein Link zu einer Website oder zu bestimmten Inhalten (Audio, Video, PDF-Dokument) im Zusammenhang mit dieser Datei.
+        subject: Schlagwörter oder Indexbegriffe, die beschreiben, worum es in dieser Datei geht.
     file_manager:
       link_text: Dateimanager
     file_set:

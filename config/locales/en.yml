@@ -48,6 +48,146 @@ en:
   hyku:
     account:
       signup_disabled: Account registration is disabled
+    deposit_wizard:
+      admin_set:
+        heading: Admin Set
+        hint_lead: Sets the rules for this deposit
+        hint_html: An administrative set decides which <strong>metadata fields</strong> you'll complete, the <strong>visibility options</strong> available to your work, and the <strong>review workflow</strong> it follows after deposit. Most deposits use the default.
+        label: Administrative set
+        workflow: Workflow
+      back: Back
+      button: Guided Deposit
+      continue: Continue
+      next: Next
+      page_heading: Deposit a New Work
+      page_subtitle: This guided flow walks you through depositing your work step by step
+      details:
+        heading: Describe your item
+        subtext: Add the details for this work. Required fields are marked.
+      disabled: The guided deposit wizard is not enabled.
+      done:
+        deposit_another: Deposit another work
+        heading: Work deposited
+        no_recent: Your work has been deposited.
+        subtext: "“%{title}” has been deposited to the repository."
+        untitled: Your work
+        view_work: View work
+      errors:
+        agreement_required: Please accept the deposit agreement to continue.
+        commit:
+          redirect_path_collision: One of the vanity URLs is already in use. Choose a different path.
+        deposit_failed: Your work could not be deposited
+        details_invalid: Some details need fixing before you can continue
+        no_parent: Please choose a work to add this deposit to.
+        no_work_type: Please choose a work type to continue.
+      extras:
+        add: Add
+        parent:
+          heading: Add to a parent work
+          hint: Optionally nest this work inside an existing work.
+          label: Search works
+          placeholder: Search for a work…
+        collection:
+          heading: Add to a collection
+          hint: Optionally add this work to one or more collections.
+          label: Search collections
+          placeholder: Search for a collection…
+          none: You don't have any collections available to add this work to.
+        sharing:
+          heading: Share with people or groups
+          hint: Optionally give specific people or groups access to this work.
+          person_label: Person (email)
+          person_placeholder: name@example.com
+          group_label: Group
+          group_placeholder: Select a group…
+        redirects:
+          heading: Add a vanity URL
+          hint: "Optionally add a short, memorable URL that redirects to this work (under %{base_url})."
+      file_meta:
+        description: Description
+        file: File
+        files_count:
+          one: "Files · 1"
+          other: "Files · %{count}"
+        files_nav: Uploaded files
+        heading: Describe your files
+        inherit: Same as the work
+        subtext: Add details for each file, or leave them to inherit from the work.
+        title: Title
+        visibility: File visibility
+      files:
+        add_files: Add files
+        cancel_upload: Cancel
+        dropzone: Drag & drop files here, or click to browse
+        dropzone_hint: You can add more than one file, or continue without any.
+        heading: Add files
+        subtext: Add any files for this work. You can also continue without any.
+      item_start:
+        heading: Add an item
+        known_type: I know what type of work this is
+        subtext: Choose how you would like to describe this item.
+      known_type:
+        adding_to: Adding as a child of
+        heading: What type of work is this?
+        subtext: Choose the type that best fits the work you are depositing.
+      no_work_types: There are no work types available for you to deposit. Please contact an administrator.
+      notices:
+        work_type_selected: "%{type} selected."
+      review:
+        deposit: Deposit
+        destination: This work will be deposited into the %{admin_set} administrative set.
+        entry_count:
+          one: 1 entry
+          other: "%{count} entries"
+        file_count:
+          one: 1 file
+          other: "%{count} files"
+        files: Files
+        embargo_summary_html: "Embargo: %{during} until %{date}, then %{after}"
+        file_visibility: File visibility
+        heading: Review and deposit
+        lease_summary_html: "Lease: %{during} until %{date}, then %{after}"
+        subtext: Check everything looks right before you deposit this work.
+        visibility: Visibility
+        visibility_inherited: Same as work
+        work_type: Work type
+        work_visibility: Work visibility
+      select_parent:
+        heading: Choose the parent work
+        subtext: Search for the work this deposit should be added to.
+        label: Search works
+      start:
+        heading: What would you like to deposit?
+        subtext: This guided flow walks you through depositing your work step by step.
+        paths:
+          add:
+            desc: Nest this deposit inside a work you have already created.
+            title: Add to an existing work
+          new:
+            desc: Deposit a work on its own.
+            title: Deposit a new work
+          standalone:
+            desc: Deposit a single work on its own, without a parent.
+            title: Deposit a standalone work
+      visibility:
+        legend: Visibility
+        embargo:
+          during: Until the embargo lifts, access is
+          date: Embargo lift date
+          after: When the embargo lifts, access becomes
+        lease:
+          during: While the lease is active, access is
+          date: Lease expiration date
+          after: When the lease expires, access becomes
+      stepper:
+        item:
+          detail: Work detail
+          file_detail: File detail
+          parent: Parent work
+          review: Review
+          type: Item type
+          upload: Upload files
+        label: Deposit progress
     admin:
       flash:
         access_denied: You are not authorized to view this page

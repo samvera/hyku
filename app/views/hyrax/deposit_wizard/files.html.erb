@@ -1,0 +1,12 @@
+<%= render 'page_header' %>
+
+<div class="deposit-wizard deposit-wizard--files">
+  <%= render 'stepper', steps: deposit_wizard.item_stepper_steps, phase: deposit_wizard.stepper_phase(:upload) %>
+  <%= render 'step_title', title: t('hyku.deposit_wizard.files.heading'), hint: t('hyku.deposit_wizard.files.subtext') %>
+
+  <%= form_tag main_app.deposit_wizard_advance_path(step: 'files'), method: :patch, class: 'deposit-wizard__files-form' do %>
+    <%= render 'file_uploader' %>
+
+    <%= render 'nav', back_path: wizard_back_path('files') %>
+  <% end %>
+</div>

@@ -29,7 +29,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: 568ec626010ee4fce3d8b62a724fd49c7845861b
+  revision: bff6ede4813b751eb723ce45ec224bafe103aaa5
   branch: main
   specs:
     hyrax (5.2.0)
@@ -56,7 +56,7 @@ GIT
       flot-rails (~> 0.0.6)
       font-awesome-rails (~> 4.2)
       google-analytics-data (~> 0.6)
-      hydra-derivatives (~> 4.0)
+      hydra-derivatives (~> 4.1)
       hydra-editor (~> 7.0)
       hydra-file_characterization (~> 1.1)
       hydra-head (~> 13.0)
@@ -727,15 +727,16 @@ GEM
     hydra-core (13.1.0)
       hydra-access-controls (= 13.1.0)
       railties (>= 6.1, < 8.1)
-    hydra-derivatives (4.0.0)
+    hydra-derivatives (4.1.0)
       active-fedora (>= 14.0)
       active-triples (>= 1.2)
       active_encode (~> 1.2)
-      activesupport (>= 4.0, < 8.0)
+      activesupport (>= 4.0, < 9.0)
       addressable (~> 2.5)
       deprecation
       mime-types (> 2.0, < 4.0)
       mini_magick (>= 3.2, < 5)
+      ruby-vips
     hydra-editor (7.0.0)
       active-fedora (>= 9.0.0)
       activerecord (>= 5.2, < 8.0)

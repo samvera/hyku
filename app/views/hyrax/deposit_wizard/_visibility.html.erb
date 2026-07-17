@@ -1,0 +1,85 @@
+<%# Renders the same fields as Hyrax's _form_visibility_component (visibility
+    radio + embargo/lease during/date/after) so params and the collapse JS are
+    unchanged; only the layout differs (pills + expanding panels).
+
+    Locals: f (form builder); optional id_suffix to keep collapse target ids
+    unique when several render on one page (the per-file file_meta step);
+    optional policy (Hyku::DepositWizard::VisibilityPolicy) limiting which options
+    the selected admin set allows — defaults to all options. %>
+<% vis = Hyku::DepositWizard::VisibilityPolicy %>
+<% suffix = local_assigns.fetch(:id_suffix, '') %>
+<% policy = local_assigns.fetch(:policy, nil) %>
+<% allowed = policy ? policy.allowed_visibilities : vis::ALL %>
+<% fields = deposit_wizard.visibility_fields(f) %>
+<%# When the default selection isn't allowed, fall back to the most restrictive
+    option (allowed is in public->private order). %>
+<% current = allowed.include?(fields.current) ? fields.current : allowed.last %>
+<%# Labels use Hyrax's shared visibility_text so downstream relabels apply here too. %>
+<% opts = [
+     [vis::OPEN,          visibility_text(vis::OPEN),          t('hyrax.visibility.open.note_html', type: f.object.try(:human_readable_type) || 'work'), nil],
+     [vis::AUTHENTICATED, visibility_text(vis::AUTHENTICATED), t('hyrax.visibility.authenticated.note_html', institution: institution_name), nil],
+     [vis::EMBARGO,       visibility_text(vis::EMBARGO),       t('hyrax.visibility.embargo.note_html'), "#collapseEmbargo#{suffix}"],
+     [vis::LEASE,         visibility_text(vis::LEASE),         t('hyrax.visibility.lease.note_html'), "#collapseLease#{suffix}"],
+     [vis::PRIVATE,       visibility_text(vis::PRIVATE),       t('hyrax.visibility.restricted.note_html'), nil]
+   ].select { |value, *| allowed.include?(value) } %>
+
+<fieldset class="deposit-wizard__visibility" data-behavior="visibility">
+  <legend class="deposit-wizard__visibility-legend control-label"><%= t('hyku.deposit_wizard.visibility.legend') %></legend>
+
+  <div class="deposit-wizard__visibility-options" role="radiogroup">
+    <% opts.each do |value, label, note, target| %>
+      <label class="deposit-wizard__visibility-pill<%= ' is-selected' if current == value %>"
+             title="<%= strip_tags(note.to_s) %>">
+        <%= f.radio_button :visibility, value, checked: (current == value), class: 'sr-only',
+                           data: { behavior: 'visibility-option', target: target }.compact %>
+        <%= label %>
+      </label>
+    <% end %>
+  </div>
+
+  <p class="deposit-wizard__visibility-desc" data-behavior="visibility-desc">
+    <% selected = opts.find { |value, *| value == current } %>
+    <%= raw(selected[2]) if selected %>
+  </p>
+
+  <%# Fields are required only when embargo is selected; the JS keeps `required`
+      in sync as the user switches options. %>
+  <% embargo_selected = current == vis::EMBARGO %>
+  <div class="collapse deposit-wizard__visibility-panel" id="collapseEmbargo<%= suffix %>">
+    <div class="deposit-wizard__field">
+      <%= f.label :visibility_during_embargo, t('hyku.deposit_wizard.visibility.embargo.during'), class: 'deposit-wizard__field-label' %>
+      <%= f.select :visibility_during_embargo, visibility_options(:restrict), { selected: fields.embargo_during }, class: 'form-control', required: embargo_selected, data: { behavior: 'embargo-field' } %>
+    </div>
+    <div class="deposit-wizard__field">
+      <%= f.label :embargo_release_date, t('hyku.deposit_wizard.visibility.embargo.date'), class: 'deposit-wizard__field-label' %>
+      <%# When the admin set forces an exact release date, lock the field to it;
+          otherwise bound it to the set's ceiling (if any) and today's floor. %>
+      <% forced_date = policy&.forced_embargo_date %>
+      <%= f.date_field :embargo_release_date, value: forced_date || fields.embargo_date,
+                       min: Time.zone.today, max: policy&.max_embargo_date,
+                       readonly: forced_date.present?,
+                       placeholder: 'YYYY-MM-DD', class: 'form-control datepicker', required: embargo_selected, data: { behavior: 'embargo-field' } %>
+    </div>
+    <div class="deposit-wizard__field">
+      <%= f.label :visibility_after_embargo, t('hyku.deposit_wizard.visibility.embargo.after'), class: 'deposit-wizard__field-label' %>
+      <%= f.select :visibility_after_embargo, visibility_options(:loosen), { selected: fields.embargo_after }, class: 'form-control', required: embargo_selected, data: { behavior: 'embargo-field' } %>
+    </div>
+  </div>
+
+  <% lease_selected = current == vis::LEASE %>
+  <div class="collapse deposit-wizard__visibility-panel" id="collapseLease<%= suffix %>">
+    <div class="deposit-wizard__field">
+      <%= f.label :visibility_during_lease, t('hyku.deposit_wizard.visibility.lease.during'), class: 'deposit-wizard__field-label' %>
+      <%= f.select :visibility_during_lease, visibility_options(:loosen), { selected: fields.lease_during }, class: 'form-control', required: lease_selected, data: { behavior: 'lease-field' } %>
+    </div>
+    <div class="deposit-wizard__field">
+      <%= f.label :lease_expiration_date, t('hyku.deposit_wizard.visibility.lease.date'), class: 'deposit-wizard__field-label' %>
+      <%= f.date_field :lease_expiration_date, value: fields.lease_date,
+                       placeholder: 'YYYY-MM-DD', class: 'form-control datepicker', required: lease_selected, data: { behavior: 'lease-field' } %>
+    </div>
+    <div class="deposit-wizard__field">
+      <%= f.label :visibility_after_lease, t('hyku.deposit_wizard.visibility.lease.after'), class: 'deposit-wizard__field-label' %>
+      <%= f.select :visibility_after_lease, visibility_options(:restrict), { selected: fields.lease_after }, class: 'form-control', required: lease_selected, data: { behavior: 'lease-field' } %>
+    </div>
+  </div>
+</fieldset>

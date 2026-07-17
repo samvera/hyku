@@ -1,0 +1,56 @@
+<%# Posts permissions_attributes[i][type|name|access]; save_acl persists the
+    grants in the deposit transaction. %>
+<% open = deposit_wizard.extra_prefilled?(:sharing) %>
+<section class="deposit-wizard__extra <%= 'is-open' if open %>" data-behavior="extra-sharing" data-param-key="<%= deposit_wizard.work_form.model_name.param_key %>">
+  <button type="button" class="deposit-wizard__extra-toggle" data-behavior="extra-toggle"
+          aria-expanded="<%= open %>">
+    <span class="deposit-wizard__extra-titles">
+      <span class="deposit-wizard__extra-title"><%= t('hyku.deposit_wizard.extras.sharing.heading') %></span>
+      <span class="deposit-wizard__extra-subtitle"><%= t('hyku.deposit_wizard.extras.sharing.hint') %></span>
+    </span>
+    <span class="deposit-wizard__extra-chevron" aria-hidden="true"></span>
+  </button>
+
+  <div class="deposit-wizard__extra-body" data-behavior="extra-body" <%= 'hidden' unless open %>>
+    <div class="deposit-wizard__field form-inline">
+      <%= label_tag 'dw_share_person_name', t('hyku.deposit_wizard.extras.sharing.person_label'),
+                    class: 'deposit-wizard__field-label' %>
+      <%= text_field_tag 'dw_share_person_name', nil, class: 'form-control',
+                         data: { behavior: 'share-person-name' },
+                         placeholder: t('hyku.deposit_wizard.extras.sharing.person_placeholder') %>
+      <%= select_tag 'dw_share_person_access', options_for_select(Hyrax.config.permission_options),
+                     class: 'form-control', data: { behavior: 'share-person-access' } %>
+      <button type="button" class="btn btn-primary" data-behavior="share-person-add">
+        <%= t('hyku.deposit_wizard.extras.add') %>
+      </button>
+    </div>
+
+    <div class="deposit-wizard__field form-inline">
+      <%= label_tag 'dw_share_group_name', t('hyku.deposit_wizard.extras.sharing.group_label'),
+                    class: 'deposit-wizard__field-label' %>
+      <%= select_tag 'dw_share_group_name',
+                     options_for_select(Hyrax::Group.all.map { |g| [g.humanized_name, g.name] }),
+                     prompt: t('hyku.deposit_wizard.extras.sharing.group_placeholder'),
+                     class: 'form-control', data: { behavior: 'share-group-name' } %>
+      <%= select_tag 'dw_share_group_access', options_for_select(Hyrax.config.permission_options),
+                     class: 'form-control', data: { behavior: 'share-group-access' } %>
+      <button type="button" class="btn btn-primary" data-behavior="share-group-add">
+        <%= t('hyku.deposit_wizard.extras.add') %>
+      </button>
+    </div>
+
+    <% param_key = deposit_wizard.work_form.model_name.param_key %>
+    <ul class="deposit-wizard__extra-chips list-unstyled" data-behavior="share-chips">
+      <% deposit_wizard.saved_permission_grants.each_with_index do |grant, i| %>
+        <% prefix = "#{param_key}[permissions_attributes][pre#{i}]" %>
+        <li class="deposit-wizard__extra-chip">
+          <span><%= grant['name'] %> &mdash; <%= grant['access'] %></span>
+          <%= hidden_field_tag "#{prefix}[type]", grant['type'] %>
+          <%= hidden_field_tag "#{prefix}[name]", grant['name'] %>
+          <%= hidden_field_tag "#{prefix}[access]", grant['access'] %>
+          <button type="button" class="deposit-wizard__chip-remove" aria-label="remove">×</button>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</section>

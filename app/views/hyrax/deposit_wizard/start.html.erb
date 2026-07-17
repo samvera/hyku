@@ -1,0 +1,35 @@
+<%= render 'page_header' %>
+
+<div class="deposit-wizard deposit-wizard--start">
+  <%= render 'stepper', steps: deposit_wizard.item_stepper_steps, phase: deposit_wizard.stepper_phase(:type) %>
+
+  <%# A single form so the admin-set select is shown once and submits with
+      whichever choice button is clicked (each button carries its own value). %>
+  <%= form_tag main_app.deposit_wizard_advance_path(step: 'start'), method: :patch, class: 'deposit-wizard__start-form' do %>
+    <%= render 'admin_set_select' %>
+
+    <% if deposit_wizard.show_relationship_paths? %>
+      <% paths = deposit_wizard.config.container? ? %w[new add standalone] : %w[new add] %>
+      <div class="deposit-wizard__paths">
+        <% paths.each do |path| %>
+          <%= button_tag type: 'submit', name: 'path', value: path, class: 'deposit-wizard__path-card' do %>
+            <span class="deposit-wizard__path-title"><%= t("hyku.deposit_wizard.start.paths.#{path}.title") %></span>
+            <span class="deposit-wizard__path-desc"><%= t("hyku.deposit_wizard.start.paths.#{path}.desc") %></span>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <h2 class="deposit-wizard__section-heading"><%= t('hyku.deposit_wizard.known_type.heading') %></h2>
+      <%= render 'type_cards' %>
+
+      <div class="deposit-wizard__nav deposit-wizard__nav--end">
+        <div class="deposit-wizard__nav-group">
+          <%= button_tag type: 'submit', class: 'btn btn-primary deposit-wizard__next-btn',
+                         disabled: deposit_wizard.state.work_type.blank?, data: { behavior: 'type-next' } do %>
+            <%= t('hyku.deposit_wizard.next') %> <span class="fa fa-arrow-right" aria-hidden="true"></span>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

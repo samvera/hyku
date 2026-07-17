@@ -1,0 +1,38 @@
+<%# One file's metadata + per-file visibility (the "detail" of the master-detail).
+    Every panel stays in the DOM so all files submit together; JS toggles which is
+    visible, starting with the first (uf_counter == 0).
+    Locals: uf (uploaded file); uf_counter (Rails collection index, named after as:). %>
+<% id = uf.id.to_s %>
+<% first = uf_counter.zero? %>
+<% form = deposit_wizard.file_meta_forms[id] %>
+<fieldset class="deposit-wizard__file-panel<%= ' is-active' if first %>"
+          data-behavior="file-panel" data-file-id="<%= id %>" <%= 'hidden' unless first %>>
+  <legend class="deposit-wizard__file-panel-name">
+    <span class="deposit-wizard__file-ext"><%= deposit_wizard.file_type_label(uf) %></span>
+    <%= uf.file&.file&.filename || uf.id %>
+  </legend>
+
+  <%# Namespace every field under file_metadata[<id>][...]. Use simple_fields_for
+      (not fields_for + builder:) so the builder inherits SimpleForm's wrapper
+      config; a bare SimpleForm::FormBuilder renders labels/inputs differently from
+      the work details form. %>
+  <%= simple_fields_for "file_metadata[#{id}]", form do |f| %>
+    <%= render 'file_metadata', f: f, panel_id: id %>
+
+    <div class="deposit-wizard__file-visibility" data-behavior="file-visibility">
+      <label class="deposit-wizard__inherit-visibility">
+        <%# Hidden companion so an unchecked box still submits a value: check_box_tag
+            sends nothing unchecked, indistinguishable from "never rendered". The '0'
+            is unchecked; the '1' wins when checked. %>
+        <%= hidden_field_tag "file_metadata[#{id}][inherit_visibility]", '0', id: nil %>
+        <%= check_box_tag "file_metadata[#{id}][inherit_visibility]", '1', deposit_wizard.file_inherits_visibility?(id),
+                          data: { behavior: 'inherit-visibility' } %>
+        <%= t('hyku.deposit_wizard.file_meta.inherit') %>
+      </label>
+
+      <div class="deposit-wizard__own-visibility" <%= 'hidden' if deposit_wizard.file_inherits_visibility?(id) %>>
+        <%= render 'visibility', f: f, id_suffix: "-#{id}" %>
+      </div>
+    </div>
+  <% end %>
+</fieldset>

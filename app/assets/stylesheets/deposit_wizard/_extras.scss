@@ -1,0 +1,430 @@
+// Optional connect/share/redirect sections on the review step. Each is gated by
+// its own feature, so any number may appear. Each is a collapsible card showing
+// a title + subtitle; its body of controls expands on click.
+.deposit-wizard {
+  &__extra {
+    margin-top: 0.75rem;
+    border: 1px solid var(--dw-border);
+    border-radius: var(--dw-radius-sm);
+    background: var(--dw-surface);
+    overflow: hidden;
+
+    &.is-open {
+      border-color: var(--dw-border-strong);
+      box-shadow: var(--dw-shadow-sm);
+    }
+  }
+
+  &__extra-toggle {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 1rem 1.25rem;
+    border: 0;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+
+    &:hover,
+    &:focus {
+      background: var(--dw-surface-sunk);
+      outline: none;
+    }
+  }
+
+  &__extra-titles {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  &__extra-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--dw-ink);
+  }
+
+  &__extra-subtitle {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: var(--dw-ink-muted);
+  }
+
+  &__extra-chevron {
+    flex: none;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-right: 2px solid var(--dw-ink-subtle);
+    border-bottom: 2px solid var(--dw-ink-subtle);
+    transform: rotate(-45deg); // points right when collapsed
+    transition: transform 0.2s ease;
+
+    .deposit-wizard__extra.is-open & {
+      transform: rotate(45deg); // points down when open
+    }
+  }
+
+  &__extra-body {
+    padding: 0.75rem 1.25rem 1.25rem;
+
+    &[hidden] {
+      display: none;
+    }
+
+    .form-inline {
+      align-items: flex-end;
+      gap: 0.5rem;
+
+      .form-control {
+        width: auto;
+        min-width: 12rem;
+      }
+    }
+  }
+
+  // Sharing: align the person and group rows into shared columns so the two
+  // rows' labels, name field, access select, and Add button line up vertically.
+  // Both rows use the same grid template, so the columns match across rows.
+  &__extra[data-behavior="extra-sharing"] {
+    .form-inline {
+      display: grid;
+      grid-template-columns: 7rem minmax(12rem, 1fr) 10rem auto;
+      align-items: center;
+      gap: 0.5rem 0.75rem;
+
+      .deposit-wizard__field-label {
+        margin: 0;
+        text-align: right;
+      }
+
+      .form-control {
+        width: 100%;
+        min-width: 0;
+      }
+    }
+  }
+
+  // ---- Added-item chips (collections, share grants) --------------------
+  &__extra-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0.85rem 0 0;
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  // Match the shape of a selected visibility pill (see _visibility.scss):
+  // rounded rectangle, accent-tint fill, accent border — not a full pill.
+  &__extra-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.4rem 0.4rem 0.85rem;
+    border: 1px solid var(--dw-accent);
+    border-radius: var(--dw-radius-sm);
+    background: var(--dw-accent-tint);
+    color: var(--dw-accent);
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  // Remove control matches the wizard's file-remove idiom: red at rest, darker
+  // red on hover (see _files.scss __file-remove).
+  &__chip-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.35rem;
+    height: 1.35rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    color: var(--dw-danger);
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+
+    &:hover {
+      background: rgba(160, 68, 54, 0.14);
+      color: #82372b;
+    }
+  }
+
+  // ---- Redirects tab (stock Hyrax partial restyled into the card) ------
+  // The vanity-URL section renders hyrax/base/_form_redirects — a Bootstrap
+  // table — into the card body. We keep its markup and behavior (none-radio,
+  // per-row remove, disable-until-path, marker, monotonic index via
+  // hyrax/redirects.js) but restyle it, scoped here, to read like the other
+  // wizard cards: sunk-surface rows, token borders, quiet accent buttons. The
+  // stock elements are targeted by their stable data hooks and Bootstrap
+  // classes, so Hyrax's own redirects tab elsewhere is untouched.
+  &__extra-body {
+    // The partial's own <h2> duplicates the card header's title, so hide it.
+    // Keep the two help paragraphs — they explain aliases and the display-URL
+    // radio, giving the expanded card the context the screenshot was missing.
+    h2.h3 {
+      display: none;
+    }
+
+    h2.h3 + p {
+      margin-top: 0;
+    }
+
+    // Keep a light table structure (header underline, ruled rows) so the layout
+    // reads as a grid. Rows are flex; every row shares one column geometry so the
+    // Display-URL radio and remove × line up under the "Display URL" header. The
+    // two columns: a flexible Path column, then a fixed right-aligned control
+    // column holding the radio + ×.
+    $dw-redirect-controls: 7rem; // width of the radio + × group on the right
+
+    [data-redirects-table] {
+      margin: 0.85rem 0 0;
+      border: 1px solid var(--dw-border);
+      border-radius: var(--dw-radius-sm);
+      overflow: hidden;
+
+      thead tr {
+        display: flex;
+        align-items: baseline;
+        padding: 0.5rem 0.75rem;
+        background: var(--dw-surface-sunk);
+        border-bottom: 1px solid var(--dw-border);
+      }
+
+      thead th {
+        border: 0;
+        padding: 0;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        color: var(--dw-ink-subtle);
+
+        &:first-child {
+          flex: 1 1 auto;
+        }
+
+        &:last-child {
+          flex: none;
+          width: $dw-redirect-controls;
+          text-align: right;
+        }
+      }
+
+      tbody {
+        display: block;
+      }
+
+      td {
+        border: 0;
+        padding: 0;
+      }
+    }
+
+    // Rows: ruled blocks. The None row and each path row share the same padding
+    // so their left edges line up. Both are laid out as a grid whose columns are
+    // shared, so the Display-URL radio and remove × align across rows and under
+    // the right-aligned "Display URL" header, regardless of path-field width.
+    // (The selector is scoped through [data-redirects-table] so it out-specifies
+    // the generic tbody-tr reset and the grid actually applies to the <tr>.)
+    [data-redirects-table] tbody tr {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) calc(#{$dw-redirect-controls} - 2rem) 2rem;
+      align-items: center;
+      padding: 0.6rem 0.75rem;
+
+      & + tr {
+        border-top: 1px solid var(--dw-divider);
+      }
+    }
+
+    [data-redirects-table] tbody td {
+      display: flex;
+      align-items: center;
+      min-width: 0; // let the path track shrink instead of overflowing
+      width: auto !important; // beat the stock inline width on the × cell
+    }
+
+    [data-redirects-row] td:nth-child(2),
+    [data-redirects-row] td:last-child {
+      justify-content: flex-end;
+    }
+
+    // The <site.org> prefix + path input. Both share the field font so the
+    // prefix and the typed path read as one control.
+    [data-redirects-table] .input-group {
+      flex-wrap: nowrap;
+      width: 100%;
+    }
+
+    [data-redirects-table] .input-group-text,
+    [data-redirects-path-input] {
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    [data-redirects-table] .input-group-text {
+      border: 1px solid var(--dw-border-strong);
+      border-right: 0;
+      border-radius: var(--dw-radius-sm) 0 0 var(--dw-radius-sm);
+      background: var(--dw-surface);
+      color: var(--dw-ink-subtle);
+    }
+
+    [data-redirects-path-input] {
+      flex: 1 1 auto; // fill the input-group so the field spans the Path column
+      min-width: 0;
+      border-radius: 0 var(--dw-radius-sm) var(--dw-radius-sm) 0;
+    }
+
+    // The stock partial wraps the add button in the <p> right after the table;
+    // right-align it so the action sits on the right like the wizard's other
+    // action buttons.
+    [data-redirects-table] + p {
+      margin-bottom: 0;
+      text-align: right;
+    }
+
+    // Add-a-row button: solid accent, matching the other cards' Add buttons
+    // (which use btn-primary). The stock markup gives it btn-secondary, so set
+    // the primary look here.
+    [data-redirects-add-row] {
+      border-color: var(--dw-accent);
+      background: var(--dw-accent);
+      color: #fff;
+      font-weight: 600;
+
+      &:hover,
+      &:focus {
+        border-color: var(--dw-accent);
+        background: #245e8f;
+        color: #fff;
+      }
+    }
+
+    // Per-row remove: the red × used by the chips / file-remove.
+    [data-redirects-remove-row] {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.35rem;
+      height: 1.35rem;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: none;
+      color: var(--dw-danger);
+      font-size: 1.05rem; // match the chip × (Bootstrap .close is larger)
+      font-weight: 700;
+      line-height: 1;
+      opacity: 1;
+      text-shadow: none;
+      transition: background-color 0.15s ease, color 0.15s ease;
+
+      &:hover {
+        background: rgba(160, 68, 54, 0.14);
+        color: #82372b;
+      }
+    }
+  }
+
+  // ---- Select2 v3 (parent + collection typeaheads) ---------------------
+  // Hyrax bundles Select2 v3. Its widget is a .select2-container wrapping a
+  // .select2-choice box with a bordered .select2-arrow segment. When the source
+  // field carries .form-control, both the container and the inner choice get a
+  // border, so the control reads as a box-inside-a-box. Collapse it to a single
+  // field: strip the container's own border/padding and style only the inner
+  // choice with the wizard's field tokens; flatten the arrow into the box.
+  &__extra-body {
+    .select2-container {
+      display: block;
+      width: 100%;
+      max-width: 24rem;
+      height: auto;
+      padding: 0;
+      border: 0;
+      background: none;
+      box-shadow: none;
+    }
+
+    .select2-container .select2-choice {
+      display: flex;
+      align-items: center;
+      height: auto;
+      min-height: calc(1.5em + 0.75rem + 2px); // match .form-control height
+      padding: 0.375rem 0.75rem;
+      border: 1px solid var(--dw-border-strong);
+      border-radius: var(--dw-radius-sm);
+      background: var(--dw-surface);
+      background-image: none;
+      color: var(--dw-ink);
+      line-height: 1.5;
+    }
+
+    .select2-container.select2-container-active .select2-choice,
+    .select2-container.select2-dropdown-open .select2-choice {
+      border-color: var(--dw-accent);
+      box-shadow: 0 0 0 0.15rem rgba(43, 109, 165, 0.15);
+    }
+
+    .select2-choice > .select2-chosen {
+      flex: 1 1 auto;
+      margin-right: 0.5rem;
+    }
+
+    .select2-choice .select2-chosen.select2-default {
+      color: var(--dw-ink-subtle);
+    }
+
+    // Flatten Select2's separately-bordered arrow segment into the box.
+    .select2-choice .select2-arrow {
+      position: static;
+      flex: none;
+      width: auto;
+      border: 0;
+      border-radius: 0;
+      background: none;
+    }
+
+    // The clear (×) shown when a value is chosen. Select2 v3 renders it as an
+    // <abbr> that the browser draws small, gray, and underlined, absolutely
+    // positioned top-right. Replace the glyph with a bold × matching the red
+    // remove idiom used elsewhere, centered as a normal flex child.
+    .select2-choice .select2-search-choice-close,
+    .select2-choice abbr.select2-search-choice-close {
+      position: static;
+      flex: none;
+      align-self: center;
+      order: 1; // sit after the caret, at the right edge
+      width: 1rem;
+      height: 1rem;
+      margin: 0 0 0 0.35rem;
+      top: auto;
+      right: auto;
+      background: none; // drop Select2's sprite ×
+      text-decoration: none;
+      color: var(--dw-danger);
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1;
+
+      &::before {
+        content: "\00d7"; // ×
+      }
+
+      &:hover {
+        color: #82372b;
+      }
+    }
+  }
+}

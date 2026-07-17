@@ -1,0 +1,50 @@
+<%# Posts member_of_collections_attributes[N][id]; the ResourceForm's
+    in_collections_populator persists membership in the deposit transaction. %>
+<% param_key = deposit_wizard.work_form.model_name.param_key %>
+<% collections = available_collections(work: deposit_wizard.work_form) %>
+<% selected_collections = deposit_wizard.selected_member_collections %>
+<% open = deposit_wizard.extra_prefilled?(:collection) %>
+<section class="deposit-wizard__extra <%= 'is-open' if open %>" data-behavior="extra-collection" data-param-key="<%= param_key %>">
+  <button type="button" class="deposit-wizard__extra-toggle" data-behavior="extra-toggle"
+          aria-expanded="<%= open %>">
+    <span class="deposit-wizard__extra-titles">
+      <span class="deposit-wizard__extra-title"><%= t('hyku.deposit_wizard.extras.collection.heading') %></span>
+      <span class="deposit-wizard__extra-subtitle"><%= t('hyku.deposit_wizard.extras.collection.hint') %></span>
+    </span>
+    <span class="deposit-wizard__extra-chevron" aria-hidden="true"></span>
+  </button>
+
+  <div class="deposit-wizard__extra-body" data-behavior="extra-body" <%= 'hidden' unless open %>>
+    <% if collections.any? %>
+      <div class="deposit-wizard__field form-inline">
+        <%= label_tag "#{param_key}_collection_select", t('hyku.deposit_wizard.extras.collection.label'),
+                      class: 'deposit-wizard__field-label sr-only' %>
+        <select id="<%= param_key %>_collection_select" class="form-control"
+                data-behavior="collection-select"
+                data-placeholder="<%= t('hyku.deposit_wizard.extras.collection.placeholder') %>">
+          <option value=""></option>
+          <% collections.each do |collection| %>
+            <option value="<%= collection.id %>"><%= deposit_wizard.collection_display_title(collection) %></option>
+          <% end %>
+        </select>
+        <button type="button" class="btn btn-primary" data-behavior="collection-add">
+          <%= t('hyku.deposit_wizard.extras.add') %>
+        </button>
+      </div>
+    <% elsif selected_collections.empty? %>
+      <p class="deposit-wizard__empty"><%= t('hyku.deposit_wizard.extras.collection.none') %></p>
+    <% end %>
+
+    <%# Chosen collections always render (even when none remain available to add),
+        so restored chips survive a refresh. %>
+    <ul class="deposit-wizard__extra-chips list-unstyled" data-behavior="collection-chips">
+      <% selected_collections.each_with_index do |collection, i| %>
+        <li class="deposit-wizard__extra-chip" data-collection-id="<%= collection.id %>">
+          <span><%= deposit_wizard.collection_display_title(collection) %></span>
+          <%= hidden_field_tag "#{param_key}[member_of_collections_attributes][pre#{i}][id]", collection.id %>
+          <button type="button" class="deposit-wizard__chip-remove" aria-label="remove">×</button>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</section>

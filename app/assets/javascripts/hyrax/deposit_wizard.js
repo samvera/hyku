@@ -262,6 +262,13 @@
     });
 
     input.on('change', autosaveExtras);
+
+    var next = $('[data-behavior="parent-next"]');
+    if (next.length) {
+      input.on('change', function () {
+        next.prop('disabled', !$(this).val());
+      });
+    }
   }
 
   // The redirects rows are the stock partial's (hyrax/redirects.js owns them), so

@@ -81,6 +81,9 @@ boundary. It wraps — does not replace — Hyrax's create machinery.
     parent/item types, flow, post-commit hook), reached through the swappable
     module-level singleton `Hyku::DepositWizard.config` (see below).
   - `Hyku::DepositWizard::State` — a thin wrapper over `session[:deposit_wizard]`.
+    Exposes named slots (path, work type, uploaded files, …) plus `#extra`, a
+    namespaced bag a downstream app writes custom step state into without
+    subclassing State (see "Insertion points").
   - `Hyku::DepositWizard::Flow` — the step sequence as data plus its navigator (a
     swappable `Config#flow`); see "Steps and the Flow".
   - `Hyku::DepositWizard::VisibilityPolicy` — a policy object deriving the allowed
@@ -92,7 +95,12 @@ boundary. It wraps — does not replace — Hyrax's create machinery.
   chrome partials (`_stepper`, `_nav`, `_page_header`, `_step_title`), and
   step-specific partials (the start `_admin_set_select`, the `file_meta`
   `_file_sidebar` / `_file_panel`, the review `_review_summary` /
-  `_review_agreement` / `_extras_*` sections).
+  `_review_agreement` / `_extras_*` sections). Each `file_meta` panel renders the
+  FileSet form through the shared `hyrax/base/_form_metadata` partial — the same
+  one the work details step uses — so per-file fields (including compounds) stay in
+  sync with the work form. That partial takes an `extended_terms_id` local so the
+  several per-file panels on one page don't collide on the "additional fields"
+  collapse id.
 - **Assets**: `app/assets/javascripts/hyrax/deposit_wizard.js` (progressive
   enhancement) and `app/assets/stylesheets/deposit_wizard/` (SCSS partials).
 
@@ -326,6 +334,35 @@ To reorder only the progress rail (independent of the walk order), pass
 c.flow = flow.new(flow.default_steps,
                   rail_keys: %i[type parent upload detail file_detail review])
 ```
+
+#### Advancing an inserted step
+
+When a step is submitted, the controller calls `presenter.advance_from(step)`. The
+presenter handles the built-in steps explicitly and **falls back** to advancing to
+the next visible step for any step it does not recognize — so a plain pass-through
+step you insert needs no extra code. A step that must record a choice or otherwise
+mutate state overrides `advance_from` in a presenter decorator, handling its own
+step and delegating the rest with `super`:
+
+```ruby
+def advance_from(step)
+  return advance_from_my_step if step == "my_step"
+
+  super
+end
+```
+
+Store a step's own state in **`state.extra`**, a namespaced bag that round-trips in
+the session, rather than adding a slot to `State`:
+
+```ruby
+def advance_from_my_step
+  state.extra["my_choice"] = params[:my_choice]
+  Transition.advance(next_step("my_step"))
+end
+```
+
+A `skip_if`/`rail_if` predicate then reads it back: `state.extra["my_choice"]`.
 
 ### Post-commit hook
 

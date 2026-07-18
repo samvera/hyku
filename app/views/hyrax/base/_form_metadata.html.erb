@@ -1,0 +1,43 @@
+<%# OVERRIDE Hyrax v5 _form_metadata to make the "additional fields" collapse id
+    configurable via the `extended_terms_id` local. The stock partial hardcodes
+    id="extended-terms", which collides when the partial is rendered more than once
+    on a page (the deposit wizard's per-file metadata panels). Callers that render a
+    single form omit the local and keep the original id.
+    TODO: contribute the parameterized id back to Hyrax so this override can go. %>
+<% extended_terms_id = local_assigns.fetch(:extended_terms_id, 'extended-terms') %>
+<%# Some edit-field partials (e.g. transcript_ids) require a `curation_concern`
+    local; forward the form's model so they work in any form context (the wizard's
+    per-file panels render this partial for a FileSet, not a work). %>
+<% curation_concern = local_assigns.fetch(:curation_concern, f.object.model) %>
+<div class="base-terms">
+  <% f.object.primary_terms.each do |term| %>
+    <%= render_edit_field_partial(term, f: f, curation_concern: curation_concern) %>
+  <% end %>
+</div>
+<%# Primary compounds (form: { primary: true }) render in the primary
+    section; non-primary compounds render in "Additional fields" below. %>
+<% if f.object.respond_to?(:primary_compound_terms) %>
+  <% f.object.primary_compound_terms.each do |term| %>
+    <%= render_compound_field(f, term) %>
+  <% end %>
+<% end %>
+<% if f.object.display_additional_fields? %>
+  <%= link_to t('hyrax.works.form.additional_fields'),
+              "##{extended_terms_id}",
+              class: 'btn btn-secondary additional-fields',
+              data: { toggle: 'collapse' },
+              role: "button",
+              'aria-expanded' => "false",
+              'aria-controls' => extended_terms_id %>
+  <div id="<%= extended_terms_id %>" class='collapse'>
+    <%= render 'form_media', f: f %>
+    <% f.object.secondary_terms.each do |term| %>
+      <%= render_edit_field_partial(term, f: f, curation_concern: curation_concern) %>
+    <% end %>
+    <% if f.object.respond_to?(:secondary_compound_terms) %>
+      <% f.object.secondary_compound_terms.each do |term| %>
+        <%= render_compound_field(f, term) %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

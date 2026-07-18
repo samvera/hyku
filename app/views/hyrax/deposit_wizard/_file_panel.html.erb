@@ -17,7 +17,9 @@
       config; a bare SimpleForm::FormBuilder renders labels/inputs differently from
       the work details form. %>
   <%= simple_fields_for "file_metadata[#{id}]", form do |f| %>
-    <%= render 'file_metadata', f: f, panel_id: id %>
+    <%# The shared work-form metadata partial (title, compounds, additional fields),
+        with a per-panel collapse id so multiple file panels don't collide. %>
+    <%= render 'hyrax/base/form_metadata', f: f, extended_terms_id: "file-extended-terms-#{id}" %>
 
     <div class="deposit-wizard__file-visibility" data-behavior="file-visibility">
       <label class="deposit-wizard__inherit-visibility">

@@ -42,8 +42,11 @@
     }
   }
 
-  // Work-type icon (from SelectTypePresenter#icon_class), above the label.
-  &__type-card-icon {
+  // Icon above the label on a choice card: the work-type icon (from
+  // SelectTypePresenter#icon_class) or an optional path-card icon (from the
+  // `start.paths.<path>.icon` i18n key, when the deployment sets one).
+  &__type-card-icon,
+  &__path-icon {
     font-size: 22px;
     color: var(--dw-ink-subtle);
     margin-bottom: 0.35rem;

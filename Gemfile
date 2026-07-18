@@ -46,6 +46,7 @@ gem 'dry-monads', '~> 1.5'
 gem 'easy_translate', group: %i[development]
 gem 'factory_bot_rails', group: %i[test]
 gem 'fcrepo_wrapper', '~> 0.4', group: %i[development test]
+gem 'flow_wizard', github: 'laritakr/flow_wizard', branch: 'main'
 gem 'flutie'
 gem 'good_job', '~> 4.10' # Updated for Rails 7.2 compatibility
 gem 'googleauth', '~> 1.9.0'

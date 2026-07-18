@@ -1,4 +1,11 @@
 GIT
+  remote: https://github.com/laritakr/flow_wizard.git
+  revision: 64208f71f86763ae88b784ad4ec348bb6010d2fc
+  branch: main
+  specs:
+    flow_wizard (0.1.0)
+
+GIT
   remote: https://github.com/notch8/willow_sword.git
   revision: c423082a3501e2a591bcc49abe22f6ba1e0573e0
   tag: v0.8.5
@@ -1683,6 +1690,7 @@ DEPENDENCIES
   easy_translate
   factory_bot_rails
   fcrepo_wrapper (~> 0.4)
+  flow_wizard!
   flutie
   good_job (~> 4.10)
   google-protobuf

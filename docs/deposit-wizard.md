@@ -28,6 +28,7 @@ without forking.
   - [Parent nesting](#parent-nesting)
   - [Launch with context](#launch-with-context)
   - [View overrides and styling](#view-overrides-and-styling)
+  - [Path-card icons](#path-card-icons)
 - [JavaScript hooks](#javascript-hooks)
 
 ## Enabling
@@ -403,6 +404,28 @@ partial in `hyrax/deposit_wizard/` for bespoke labels or styling. The SCSS is
 scoped under `.deposit-wizard` and driven by `--dw-*` CSS custom properties
 (defined in `app/assets/stylesheets/deposit_wizard/_base.scss`), so an app can
 rebrand by overriding the tokens without touching the baseline.
+
+### Path-card icons
+
+The start-screen path cards (new / add / standalone) render an optional icon
+above their label, read from an i18n key — mirroring how the work-type cards
+resolve their icon (`Hyrax::ModelIcon` → `hyrax.icons.*`). No icon shows unless the
+key is set, so vanilla installs are unaffected. A consuming app supplies a Font
+Awesome class per path under `hyku.deposit_wizard.start.paths.<path>.icon`:
+
+```yaml
+en:
+  hyku:
+    deposit_wizard:
+      start:
+        paths:
+          new:
+            icon: fa fa-cube
+          add:
+            icon: fa fa-sitemap
+          standalone:
+            icon: fa fa-file-o
+```
 
 ## JavaScript hooks
 

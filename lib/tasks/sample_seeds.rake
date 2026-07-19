@@ -4,26 +4,33 @@ namespace :db do
   namespace :seed do
     namespace :sample do
       desc 'Create sample works with file attachments for a specific tenant'
-      task :create, [:tenant, :type, :quantity] => :environment do |_t, args|
+      task :create, [:tenant, :type, :quantity, :visibility] => :environment do |_t, args|
         if args[:tenant].blank?
           puts "ERROR: Tenant name is required!"
-          puts "Usage: bundle exec rake db:seed:sample:create[tenant_name,type,quantity]"
+          puts "Usage: bundle exec rake db:seed:sample:create[tenant_name,type,quantity,visibility]"
           puts "Examples:"
           puts "  bundle exec rake db:seed:sample:create[tenant_name,activefedora,100]"
-          puts "  bundle exec rake db:seed:sample:create[tenant_name,valkyrie,50]"
+          puts "  bundle exec rake db:seed:sample:create[tenant_name,valkyrie,50,open]"
           puts "  bundle exec rake db:seed:sample:create[tenant_name] (defaults: activefedora, 50)"
           puts "Types: 'activefedora' of 'af' (default) or 'valkyrie' or 'val'"
+          puts "Visibility: 'open', 'authenticated' or 'restricted' (optional)"
           exit 1
         end
 
         quantity = args[:quantity] || 50
         type = args[:type] || 'activefedora'
+        visibility = args[:visibility]&.downcase
+
+        if visibility && !Sample::SharedMethods::VALID_VISIBILITIES.include?(visibility)
+          puts "ERROR: Unknown visibility '#{visibility}'. Valid values are 'open', 'authenticated' or 'restricted'"
+          exit 1
+        end
 
         case type.downcase
         when 'activefedora', 'af'
-          Sample::ActiveFedoraService.new(args[:tenant], quantity).create_sample_data
+          Sample::ActiveFedoraService.new(args[:tenant], quantity, visibility).create_sample_data
         when 'valkyrie', 'val'
-          Sample::ValkyrieService.new(args[:tenant], quantity).create_sample_data
+          Sample::ValkyrieService.new(args[:tenant], quantity, visibility).create_sample_data
         else
           puts "ERROR: Unknown type '#{type}'. Valid types are 'activefedora' or 'valkyrie'"
           exit 1

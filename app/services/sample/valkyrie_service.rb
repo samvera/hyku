@@ -210,12 +210,12 @@ module Sample
         description: sample_data[:descriptions][index % sample_data[:descriptions].length],
         creator: sample_data[:creators][index % sample_data[:creators].length],
         subject: sample_data[:subjects][index % sample_data[:subjects].length],
-        visibility: Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC,
         collection_type_gid: collection_type.to_global_id.to_s,
         depositor: user.user_key
       }
 
       collection = Hyrax.persister.save(resource: CollectionResource.new(collection_attrs))
+      apply_visibility(collection)
       Sample::PermissionTemplateService.create_for_valkyrie_collection(collection, user)
       Hyrax.index_adapter.save(resource: collection)
       Hyrax.publisher.publish('collection.metadata.updated', collection: collection, user: user)
@@ -229,17 +229,29 @@ module Sample
         description: sample_data[:descriptions][index % sample_data[:descriptions].length],
         creator: sample_data[:creators][index % sample_data[:creators].length],
         subject: sample_data[:subjects][index % sample_data[:subjects].length],
-        visibility: Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC,
         bulkrax_identifier: "SampleValk-#{work_class}#{index}",
         depositor: user.user_key,
         admin_set_id: admin_set.id
       }
 
       work = Hyrax.persister.save(resource: work_class.new(work_attrs))
+      apply_visibility(work)
       Hyrax.index_adapter.save(resource: work)
       Hyrax.publisher.publish('object.deposited', object: work, user: user)
       Hyrax.publisher.publish('object.metadata.updated', object: work, user: user)
       work
+    end
+
+    # Valkyrie resource constructors silently discard a :visibility key
+    # because visibility is not a Valkyrie attribute. It has to be assigned
+    # through the resource's visibility writer once the resource has an id,
+    # and the resulting ACL has to be persisted as its own resource.
+    def apply_visibility(resource)
+      return resource if visibility.blank?
+
+      resource.visibility = visibility
+      resource.permission_manager.acl.save
+      resource
     end
 
     def attach_file_to_work(work, filename)

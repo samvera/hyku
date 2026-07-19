@@ -2,12 +2,24 @@
 
 module Sample
   module SharedMethods # rubocop:disable Metrics/ModuleLength
-    attr_accessor :admin_set, :user
-    attr_reader :tenant_name, :sample_files_dir, :sample_data, :quantity
+    VALID_VISIBILITIES = [
+      Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC,
+      Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED,
+      Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
+    ].freeze
 
-    def initialize(tenant_name, quantity = 50)
+    attr_accessor :admin_set, :user
+    attr_reader :tenant_name, :sample_files_dir, :sample_data, :quantity, :visibility
+
+    # @param tenant_name [String] the Account name of the tenant to seed
+    # @param quantity [Integer, String] how many of each work type to create
+    # @param visibility [String, nil] visibility to assign to seeded records
+    #   ('open', 'authenticated', or 'restricted'); when nil, each service
+    #   keeps its existing default behavior
+    def initialize(tenant_name, quantity = 50, visibility = nil)
       @tenant_name = tenant_name
       @quantity = quantity.to_i
+      @visibility = visibility
       @sample_files_dir = Rails.root.join('db', 'seeds', 'sample')
       @sample_data = {}
       @user = nil
@@ -124,7 +136,7 @@ module Sample
     end
 
     # rubocop:disable Metrics/AbcSize
-    def print_completion_summary(collections, images, generic_works, oers, total)
+    def print_completion_summary(collections, images, generic_works, total, oers: [])
       object_type = self.class.name.include?('Valkyrie') ? 'VALKYRIE' : 'ACTIVEFEDORA'
       Rails.logger.debug "\n" + "=" * 60
       Rails.logger.debug "SAMPLE #{object_type} DATA CREATION COMPLETE"

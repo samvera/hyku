@@ -26,7 +26,12 @@
 
           <%= f.input :is_public %>
 
-          <%= f.input :public_demo_tenant, disabled: true, hint: "This field cannot be changed after account creation" %>
+          <%# public_demo_tenant is attr_readonly, so it is shown as read-only text rather than a form control %>
+          <div class="form-group account-public-demo-tenant">
+            <span class="d-block font-weight-bold"><%= t('simple_form.labels.account.public_demo_tenant') %></span>
+            <span><%= @account.public_demo_tenant? ? t('.public_demo_tenant.enabled') : t('.public_demo_tenant.disabled') %></span>
+            <small class="form-text text-muted"><%= t('.public_demo_tenant.immutable') %></small>
+          </div>
 
           <%= f.input :tenant, readonly: @account.persisted? %>
 

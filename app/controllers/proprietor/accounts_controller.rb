@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Proprietor
+  # rubocop:disable Metrics/ClassLength
   class AccountsController < ProprietorController
     before_action :ensure_admin!
 
@@ -75,6 +76,8 @@ module Proprietor
           format.json { render json: @account.errors, status: :unprocessable_entity }
         end
       end
+    rescue Site::LastSuperadminRemovalError
+      respond_with_last_superadmin_error
     end
 
     # DELETE /accounts/1
@@ -133,5 +136,17 @@ module Proprietor
         ActiveModel::Type::Boolean.new.cast(v["_destroy"]) == true || v["id"].blank?
       end
     end
+
+    # Public demo tenants must keep at least one site-scoped superadmin; the
+    # role removal happens during attribute assignment, so the model raises
+    # rather than failing validation. Surface it as a form error.
+    def respond_with_last_superadmin_error
+      @account.errors.add(:superadmin_emails, :cannot_remove_last_superadmin)
+      respond_to do |format|
+        format.html { render :edit }
+        format.json { render json: @account.errors, status: :unprocessable_entity }
+      end
+    end
   end
+  # rubocop:enable Metrics/ClassLength
 end

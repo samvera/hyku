@@ -27,4 +27,22 @@ RSpec.describe "proprietor/accounts/edit", type: :view do
       end
     end
   end
+
+  context "with a public demo tenant account" do
+    let(:account) { create(:demo_account) }
+
+    it "renders public_demo_tenant as read-only text instead of an input" do
+      assert_select "input[name=?]", "account[public_demo_tenant]", count: 0
+      assert_select "div.account-public-demo-tenant", text: /Yes/
+    end
+  end
+
+  context "with a standard account" do
+    let(:account) { create(:account) }
+
+    it "renders public_demo_tenant as read-only text instead of an input" do
+      assert_select "input[name=?]", "account[public_demo_tenant]", count: 0
+      assert_select "div.account-public-demo-tenant", text: /No/
+    end
+  end
 end

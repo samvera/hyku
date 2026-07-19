@@ -102,6 +102,29 @@ RSpec.describe Proprietor::AccountPresenter do
         expect(presenter.can_remove_admin?(user)).to be false
       end
     end
+
+    # Removing a user's admin role also strips their superadmin role, so the
+    # remove-admin action must respect the last-superadmin floor on public
+    # demo tenants.
+    context 'when the user is the last superadmin on a public demo tenant' do
+      let(:user) { instance_double(User, email: 'superadmin1@example.com') }
+      let(:superadmin_emails) { ['superadmin1@example.com'] }
+      let(:public_demo_tenant) { true }
+
+      it 'returns false' do
+        expect(presenter.can_remove_admin?(user)).to be false
+      end
+    end
+
+    context 'when the user is the last superadmin on a non-demo tenant' do
+      let(:user) { instance_double(User, email: 'superadmin1@example.com') }
+      let(:superadmin_emails) { ['superadmin1@example.com'] }
+      let(:public_demo_tenant) { false }
+
+      it 'returns true' do
+        expect(presenter.can_remove_admin?(user)).to be true
+      end
+    end
   end
 
   describe '#can_remove_superadmin?' do

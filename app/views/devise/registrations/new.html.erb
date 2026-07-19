@@ -10,6 +10,7 @@
         <%= f.input :email, required: true, autofocus: true, wrapper: :inline %>
         <%= f.input :password, required: true, wrapper: :inline %>
         <%= f.input :password_confirmation, required: true, wrapper: :inline %>
+        <%= render 'devise/shared/signup_challenge' %>
       </div>
 
       <div class="form-actions">

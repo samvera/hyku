@@ -472,6 +472,33 @@ RSpec.describe RolesService, clean: true do
       expect(superadmin_user.has_role?(:superadmin)).to eq(true)
     end
 
+    context 'when HYKU_SEED_PASSWORD is set' do
+      before do
+        allow(ENV).to receive(:fetch).and_call_original
+        allow(ENV).to receive(:fetch).with('HYKU_SEED_PASSWORD', nil).and_return('seeded-env-password')
+      end
+
+      it 'uses the configured password for the new user' do
+        expect(roles_service.seed_superadmin!.valid_password?('seeded-env-password')).to eq(true)
+      end
+    end
+
+    context 'when HYKU_SEED_PASSWORD is not set' do
+      before do
+        allow(ENV).to receive(:fetch).and_call_original
+        allow(ENV).to receive(:fetch).with('HYKU_SEED_PASSWORD', nil).and_return(nil)
+      end
+
+      it 'does not use the historical hardcoded password' do
+        expect(roles_service.seed_superadmin!.valid_password?('testing123')).to eq(false)
+      end
+
+      it 'announces the generated password' do
+        expect { roles_service.seed_superadmin! }
+          .to output(/HYKU_SEED_PASSWORD is not set/).to_stdout
+      end
+    end
+
     context 'when in the production environment' do
       before { allow(Rails.env).to receive(:production?).and_return(true) }
       after { allow(Rails.env).to receive(:production?).and_call_original } # un-stub
@@ -493,6 +520,37 @@ RSpec.describe RolesService, clean: true do
       expect { roles_service.seed_qa_users! }
         .to change(User, :count)
         .by(default_role_count)
+    end
+
+    context 'when HYKU_SEED_PASSWORD is set' do
+      before do
+        allow(ENV).to receive(:fetch).and_call_original
+        allow(ENV).to receive(:fetch).with('HYKU_SEED_PASSWORD', nil).and_return('seeded-env-password')
+      end
+
+      it 'uses the configured password for each new user' do
+        roles_service.seed_qa_users!
+        user = User.find_by(email: "#{described_class::DEFAULT_ROLES.last}@example.com")
+        expect(user.valid_password?('seeded-env-password')).to eq(true)
+      end
+    end
+
+    context 'when HYKU_SEED_PASSWORD is not set' do
+      before do
+        allow(ENV).to receive(:fetch).and_call_original
+        allow(ENV).to receive(:fetch).with('HYKU_SEED_PASSWORD', nil).and_return(nil)
+      end
+
+      it 'does not use the historical hardcoded password' do
+        roles_service.seed_qa_users!
+        user = User.find_by(email: "#{described_class::DEFAULT_ROLES.last}@example.com")
+        expect(user.valid_password?('testing123')).to eq(false)
+      end
+
+      it 'announces the generated password' do
+        expect { roles_service.seed_qa_users! }
+          .to output(/HYKU_SEED_PASSWORD is not set/).to_stdout
+      end
     end
 
     context 'when in the production environment' do

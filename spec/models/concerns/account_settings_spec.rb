@@ -46,6 +46,7 @@ RSpec.describe AccountSettings do
                                                                                 oai_prefix
                                                                                 oai_sample_identifier
                                                                                 s3_bucket
+                                                                                signup_spam_protection
                                                                                 smtp_settings
                                                                                 solr_collection_options
                                                                                 solr_max_results

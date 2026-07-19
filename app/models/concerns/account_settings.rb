@@ -52,6 +52,7 @@ module AccountSettings
     setting :oai_sample_identifier, type: 'string', default: '806bbc5e-8ebe-468c-a188-b7c14fbe34df'
     setting :s3_bucket, type: 'string', private: true
     setting :shared_login, type: 'boolean', disabled: true
+    setting :signup_spam_protection, type: 'boolean', default: false
     setting :smtp_settings, type: 'hash', private: true, default: {}
     setting :solr_collection_options, type: 'hash', default: solr_collection_options
     setting :solr_max_results, type: 'string', default: '10000'

@@ -1,0 +1,12 @@
+<%# Invisible spam challenge for self-registration. Rendered only when the
+    tenant enables the signup_spam_protection setting (always enforced on
+    public demo tenants). The visually hidden text field must remain blank,
+    and the signed timestamp enforces a minimum time between rendering and
+    submitting the form. %>
+<% if signup_challenge_enabled? %>
+  <div class="signup-challenge" style="display: none;" aria-hidden="true">
+    <%= label_tag Hyku::RegistrationsController::HONEYPOT_FIELD, t('hyku.account.signup_challenge_honeypot_label') %>
+    <%= text_field_tag Hyku::RegistrationsController::HONEYPOT_FIELD, '', autocomplete: 'off', tabindex: -1 %>
+  </div>
+  <%= hidden_field_tag Hyku::RegistrationsController::TIMESTAMP_FIELD, signup_challenge_timestamp %>
+<% end %>

@@ -8,7 +8,7 @@
 <%# Some edit-field partials (e.g. transcript_ids) require a `curation_concern`
     local; forward the form's model so they work in any form context (the wizard's
     per-file panels render this partial for a FileSet, not a work). %>
-<% curation_concern = local_assigns.fetch(:curation_concern, f.object.model) %>
+<% curation_concern = local_assigns.fetch(:curation_concern) { f.object.model } %>
 <div class="base-terms">
   <% f.object.primary_terms.each do |term| %>
     <%= render_edit_field_partial(term, f: f, curation_concern: curation_concern) %>

@@ -94,7 +94,8 @@ module Hyku
       # round-trips in the session like the built-in slots. Read/write freely:
       #   state.extra['my_key'] = value
       def extra
-        @store['extra'] ||= {}
+        current = @store['extra']
+        @store['extra'] = current.is_a?(Hash) ? current : {}
       end
 
       # The raw hash, for assignment back into the session.

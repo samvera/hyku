@@ -410,8 +410,10 @@ rebrand by overriding the tokens without touching the baseline.
 The start-screen path cards (new / add / standalone) render an optional icon
 above their label, read from an i18n key — mirroring how the work-type cards
 resolve their icon (`Hyrax::ModelIcon` → `hyrax.icons.*`). No icon shows unless the
-key is set, so vanilla installs are unaffected. A consuming app supplies a Font
-Awesome class per path under `hyku.deposit_wizard.start.paths.<path>.icon`:
+key is set, so vanilla installs are unaffected. A consuming app supplies the full
+CSS class string per path under `hyku.deposit_wizard.start.paths.<path>.icon` (the
+value is used verbatim, so include every class the icon needs — e.g. both `fa` and
+`fa-cube` for Font Awesome 4, or whatever your icon set requires):
 
 ```yaml
 en:

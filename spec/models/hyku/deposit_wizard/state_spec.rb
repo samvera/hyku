@@ -88,6 +88,15 @@ RSpec.describe Hyku::DepositWizard::State do
       state.extra['type_mode'] = 'guided'
       expect(state.to_h['extra']).to eq('type_mode' => 'guided')
     end
+
+    context 'when the session holds a non-Hash at the extra key (legacy/corrupt data)' do
+      let(:store) { { 'extra' => 'not a hash' } }
+
+      it 'coerces it to an empty hash so writes do not raise' do
+        expect { state.extra['type_mode'] = 'guided' }.not_to raise_error
+        expect(state.extra).to eq('type_mode' => 'guided')
+      end
+    end
   end
 
   it 'exposes the backing hash for the session' do

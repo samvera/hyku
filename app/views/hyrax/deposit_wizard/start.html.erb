@@ -15,7 +15,7 @@
           <%= button_tag type: 'submit', name: 'path', value: path, class: 'deposit-wizard__path-card' do %>
             <% icon = t("hyku.deposit_wizard.start.paths.#{path}.icon", default: nil) %>
             <% if icon.present? %>
-              <span class="deposit-wizard__path-icon fa <%= icon %>" aria-hidden="true"></span>
+              <span class="deposit-wizard__path-icon <%= icon %>" aria-hidden="true"></span>
             <% end %>
             <span class="deposit-wizard__path-title"><%= t("hyku.deposit_wizard.start.paths.#{path}.title") %></span>
             <span class="deposit-wizard__path-desc"><%= t("hyku.deposit_wizard.start.paths.#{path}.desc") %></span>

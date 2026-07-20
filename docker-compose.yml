@@ -24,8 +24,14 @@ x-app: &app
     target: hyku-web
     args:
       BUILDKIT_INLINE_CACHE: 1
+    # Matches the buildcache-<arch> tags the CI workflow keeps fresh on every
+    # push (see .github/workflows/build-test-lint.yaml) rather than `:latest`,
+    # which only moves on a published release. Both arches are listed since
+    # this isn't templated per-host; BuildKit silently skips whichever doesn't
+    # match the local machine's architecture.
     cache_from:
-      - ghcr.io/samvera/hyku/web:latest
+      - ghcr.io/samvera/hyku/web:buildcache-amd64
+      - ghcr.io/samvera/hyku/web:buildcache-arm64
   image: ghcr.io/samvera/hyku/web:${TAG:-latest}
   user: root
   env_file:
@@ -83,7 +89,8 @@ services:
       args:
         BUILDKIT_INLINE_CACHE: 1
       cache_from:
-        - ghcr.io/samvera/hyku/solr:latest
+        - ghcr.io/samvera/hyku/solr:buildcache-amd64
+        - ghcr.io/samvera/hyku/solr:buildcache-arm64
     environment:
       - OOM=script
       - SOLR_ADMIN_USER=solr
@@ -231,8 +238,10 @@ services:
       args:
         BUILDKIT_INLINE_CACHE: 1
       cache_from:
-        - ghcr.io/samvera/hyku/web:latest
-        - ghcr.io/samvera/hyku/worker:latest
+        - ghcr.io/samvera/hyku/worker:buildcache-amd64
+        - ghcr.io/samvera/hyku/worker:buildcache-arm64
+        - ghcr.io/samvera/hyku/web:buildcache-amd64
+        - ghcr.io/samvera/hyku/web:buildcache-arm64
     depends_on:
       check_volumes:
         condition: service_completed_successfully

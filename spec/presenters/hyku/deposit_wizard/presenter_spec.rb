@@ -69,6 +69,42 @@ RSpec.describe Hyku::DepositWizard::Presenter do
         expect(presenter.state.parent_id).to eq('abc123')
       end
     end
+
+    context 'with a step the presenter does not explicitly handle' do
+      # A downstream app can insert its own steps into the flow; the presenter
+      # falls back to advancing to the next visible step (a decorator overrides
+      # this only for steps that need custom side-effects).
+      it 'advances to the next visible step' do
+        allow(presenter.config.flow).to receive(:next_after).with('inserted', anything, anything).and_return('files')
+        transition = presenter.advance_from('inserted')
+        expect(transition).to be_advance
+        expect(transition.step).to eq('files')
+      end
+    end
+  end
+
+  describe '#build_work_form' do
+    let(:params) { ActionController::Parameters.new }
+    let(:work_form) { instance_double(Hyrax::Forms::ResourceForm, deserialize: nil) }
+
+    before do
+      allow(presenter).to receive_messages(work_resource_class: double(new: double),
+                                           selected_admin_set_id: nil)
+      allow(Hyrax::Forms::ResourceForm).to receive(:for).and_return(work_form)
+      allow(work_form).to receive(:prepopulate!).and_return(work_form)
+      allow(Hyrax::FlexibleSchema).to receive(:current_schema_id).and_return(1)
+    end
+
+    it 'restores saved attributes with deserialize (not validate, which would show errors early)' do
+      presenter.state.attributes = { 'item_subtype' => 'x' }
+      presenter.build_work_form
+      expect(work_form).to have_received(:deserialize).with('item_subtype' => 'x')
+    end
+
+    it 'does not deserialize when there is no saved state' do
+      presenter.build_work_form
+      expect(work_form).not_to have_received(:deserialize)
+    end
   end
 
   describe '#visibility_fields' do

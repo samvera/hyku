@@ -89,6 +89,15 @@ module Hyku
         @store['file_metadata'] = value.to_h
       end
 
+      # A namespaced bag for downstream-app state a knapsack needs to persist across
+      # steps (e.g. a custom sub-flow's choice) without overriding this class. It
+      # round-trips in the session like the built-in slots. Read/write freely:
+      #   state.extra['my_key'] = value
+      def extra
+        current = @store['extra']
+        @store['extra'] = current.is_a?(Hash) ? current : {}
+      end
+
       # The raw hash, for assignment back into the session.
       def to_h
         @store

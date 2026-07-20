@@ -25,6 +25,8 @@
       </div>
     </section>
 
-    <%= render 'nav', back_path: wizard_back_path('select_parent') %>
+    <%= render 'nav', back_path: wizard_back_path('select_parent'),
+                      next_html: { disabled: deposit_wizard.state.parent_id.blank?,
+                                   data: { behavior: 'parent-next' } } %>
   <% end %>
 </div>

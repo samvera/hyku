@@ -56,7 +56,14 @@ module Hyku
       def build_work_form
         @work_form = Hyrax::Forms::ResourceForm.for(resource: work_resource_class.new,
                                                     admin_set_id: selected_admin_set_id).prepopulate!
-        @work_form.validate(state.attributes) if state.attributes.present?
+        # Restore previously-entered values without validating: `deserialize` sets
+        # the form fields from saved state but skips validation, so required-field
+        # errors aren't shown on the initial render (state.attributes may be partial
+        # when a step seeded a single field before the details form). Errors surface
+        # on the real submit, where advance_from_details validates the posted params.
+        # (`validate` here would raise errors that re-populate on access, so clearing
+        # them fails.)
+        @work_form.deserialize(state.attributes) if state.attributes.present?
         @latest_schema_version = Hyrax::FlexibleSchema.current_schema_id.to_f
       end
 
@@ -264,15 +271,20 @@ module Hyku
       # Record the choice submitted on +step+ into wizard state and return the
       # Transition (advance or re-render) the controller should apply. The wizard
       # is server-rendered: each step is a GET, its choice POSTs here.
+      #
+      # Unrecognized steps (e.g. ones a downstream app inserts into the flow) fall
+      # back to advancing to the next visible step. A step needing custom
+      # side-effects overrides this in a decorator; a plain pass-through step needs
+      # no override.
       def advance_from(step)
         case step
         when 'start'         then advance_from_start
         when 'select_parent' then advance_from_select_parent
-        when 'item_start'    then Transition.advance(next_step('item_start'))
         when 'known_type'    then select_work_type
         when 'files'         then advance_from_files
         when 'details'       then advance_from_details
         when 'file_meta'     then advance_from_file_meta
+        else                      Transition.advance(next_step(step))
         end
       end
 
@@ -478,6 +490,9 @@ module Hyku
         end
 
         state.path = params[:path]
+        # The "new" path deposits the container work itself: the container is the
+        # only type, so set it now and skip all type selection.
+        state.work_type = config.container_type.to_s if state.path == 'new' && config.container?
         Transition.advance(next_step('start'))
       end
 

@@ -28,6 +28,7 @@ without forking.
   - [Parent nesting](#parent-nesting)
   - [Launch with context](#launch-with-context)
   - [View overrides and styling](#view-overrides-and-styling)
+  - [Path-card icons](#path-card-icons)
 - [JavaScript hooks](#javascript-hooks)
 
 ## Enabling
@@ -81,6 +82,9 @@ boundary. It wraps — does not replace — Hyrax's create machinery.
     parent/item types, flow, post-commit hook), reached through the swappable
     module-level singleton `Hyku::DepositWizard.config` (see below).
   - `Hyku::DepositWizard::State` — a thin wrapper over `session[:deposit_wizard]`.
+    Exposes named slots (path, work type, uploaded files, …) plus `#extra`, a
+    namespaced bag a downstream app writes custom step state into without
+    subclassing State (see "Insertion points").
   - `Hyku::DepositWizard::Flow` — the step sequence as data plus its navigator (a
     swappable `Config#flow`); see "Steps and the Flow".
   - `Hyku::DepositWizard::VisibilityPolicy` — a policy object deriving the allowed
@@ -92,7 +96,12 @@ boundary. It wraps — does not replace — Hyrax's create machinery.
   chrome partials (`_stepper`, `_nav`, `_page_header`, `_step_title`), and
   step-specific partials (the start `_admin_set_select`, the `file_meta`
   `_file_sidebar` / `_file_panel`, the review `_review_summary` /
-  `_review_agreement` / `_extras_*` sections).
+  `_review_agreement` / `_extras_*` sections). Each `file_meta` panel renders the
+  FileSet form through the shared `hyrax/base/_form_metadata` partial — the same
+  one the work details step uses — so per-file fields (including compounds) stay in
+  sync with the work form. That partial takes an `extended_terms_id` local so the
+  several per-file panels on one page don't collide on the "additional fields"
+  collapse id.
 - **Assets**: `app/assets/javascripts/hyrax/deposit_wizard.js` (progressive
   enhancement) and `app/assets/stylesheets/deposit_wizard/` (SCSS partials).
 
@@ -327,6 +336,35 @@ c.flow = flow.new(flow.default_steps,
                   rail_keys: %i[type parent upload detail file_detail review])
 ```
 
+#### Advancing an inserted step
+
+When a step is submitted, the controller calls `presenter.advance_from(step)`. The
+presenter handles the built-in steps explicitly and **falls back** to advancing to
+the next visible step for any step it does not recognize — so a plain pass-through
+step you insert needs no extra code. A step that must record a choice or otherwise
+mutate state overrides `advance_from` in a presenter decorator, handling its own
+step and delegating the rest with `super`:
+
+```ruby
+def advance_from(step)
+  return advance_from_my_step if step == "my_step"
+
+  super
+end
+```
+
+Store a step's own state in **`state.extra`**, a namespaced bag that round-trips in
+the session, rather than adding a slot to `State`:
+
+```ruby
+def advance_from_my_step
+  state.extra["my_choice"] = params[:my_choice]
+  Transition.advance(next_step("my_step"))
+end
+```
+
+A `skip_if`/`rail_if` predicate then reads it back: `state.extra["my_choice"]`.
+
 ### Post-commit hook
 
 `config.post_commit` receives the persisted work and the wizard state after a
@@ -366,6 +404,30 @@ partial in `hyrax/deposit_wizard/` for bespoke labels or styling. The SCSS is
 scoped under `.deposit-wizard` and driven by `--dw-*` CSS custom properties
 (defined in `app/assets/stylesheets/deposit_wizard/_base.scss`), so an app can
 rebrand by overriding the tokens without touching the baseline.
+
+### Path-card icons
+
+The start-screen path cards (new / add / standalone) render an optional icon
+above their label, read from an i18n key — mirroring how the work-type cards
+resolve their icon (`Hyrax::ModelIcon` → `hyrax.icons.*`). No icon shows unless the
+key is set, so vanilla installs are unaffected. A consuming app supplies the full
+CSS class string per path under `hyku.deposit_wizard.start.paths.<path>.icon` (the
+value is used verbatim, so include every class the icon needs — e.g. both `fa` and
+`fa-cube` for Font Awesome 4, or whatever your icon set requires):
+
+```yaml
+en:
+  hyku:
+    deposit_wizard:
+      start:
+        paths:
+          new:
+            icon: fa fa-cube
+          add:
+            icon: fa fa-sitemap
+          standalone:
+            icon: fa fa-file-o
+```
 
 ## JavaScript hooks
 

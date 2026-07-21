@@ -91,6 +91,10 @@ services:
       - SOLR_ENABLE_CLOUD_MODE=yes
       - SOLR_ENABLE_AUTHENTICATION=yes
       - ZK_HOST=zoo:2181
+      # Register SolrCloud replicas by this stable hostname instead of the
+      # container IP, so ZooKeeper's node_name stays valid across IP churn on the
+      # shared stackcar network (switching between the Hyku and a knapsack stack).
+      - SOLR_HOST=solr
       - VIRTUAL_PORT=8983
       - VIRTUAL_HOST=solr.hyku.test
     labels:

@@ -80,9 +80,16 @@ module Hyrax
       end
 
       def load_search_themes
+        # Slideshow is a working Blacklight view too, but adding it here alone
+        # is not enough to make it a good default: out of the box the results
+        # page is a grid of thumbnails and the actual slideshow only opens in a
+        # pop-up after clicking one. Offering it as a default needs more work
+        # first (a real image source and a clearer launch UX), so it is left
+        # out for now and stays available as a per-user view toggle.
         {
           'List view' => 'list_view',
-          'Gallery view' => 'gallery_view'
+          'Gallery view' => 'gallery_view',
+          'Masonry view' => 'masonry_view'
         }
       end
 

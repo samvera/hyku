@@ -88,6 +88,25 @@ RSpec.describe 'Admin can select home page theme', type: :feature, js: true, cle
       expect(page).to have_css('a.view-type-gallery.active')
     end
 
+    it 'supports masonry as a default search results view' do
+      login_as admin
+      visit '/admin/appearance'
+      click_link('Themes')
+      select('Masonry view', from: 'Search Results Page Theme')
+      find('body').click
+      click_on('Save')
+      site = Site.last
+      account.sites << site
+      allow_any_instance_of(ApplicationController).to receive(:current_account).and_return(account)
+      expect(page).to have_content('The appearance was successfully updated')
+      expect(site.search_theme).to eq('masonry_view')
+      visit '/'
+      expect(page).to have_css('body.masonry_view')
+      fill_in "search-field-header", with: "llama"
+      click_button "search-submit-header"
+      expect(page).to have_css('a.view-type-masonry.active')
+    end
+
     # Temporarily commenting out these specs because they consistently fail in the CI pipeline
     # after the Bulkrax version update. The issue seems related to form submission failing
     # in the CI environment but not locally. This needs further investigation to resolve.

@@ -376,6 +376,10 @@ en:
     toolbar:
       profile:
         edit_registration: Change password
+    upload_limits:
+      content_type_not_allowed: "%{filename} was not saved. Files of type %{content_type} are not accepted by this repository. Accepted types: %{allowed_types}"
+      file_size_exceeded: "%{filename} was not saved because it is larger than the %{limit} file size limit for this repository."
+      storage_limit_reached: This repository has reached its %{limit} storage limit, so new files cannot be saved. Please contact the repository administrator.
     users:
       label:
         date_joined: Joined

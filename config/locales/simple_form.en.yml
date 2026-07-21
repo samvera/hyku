@@ -10,6 +10,7 @@ en:
         public_demo_tenant: Mark this account as a public demo tenant for testing. This cannot be changed after creation.
         search_only: Search-only accounts require at least one full account to be selected below for cross-tenant search.
         allow_signup: Allow users to sign up to your repository
+        allowed_content_types: Comma-separated list of MIME content types accepted for file uploads, e.g. "image/png,application/pdf". A wildcard subtype like "image/*" is supported. Leave blank to accept all types.
         analytics: Enable or disable analytics to track user interactions and display analytics data in the dashboard.
         cache_api: Use Redis instead of disk for caching
         contact_email: The email address that system notifications will be sent from. Additional configuration is required to add an address from domains other than the site's domain
@@ -41,6 +42,7 @@ en:
         solr_max_results: Maximum total documents Hyrax will return from paginated fetches (e.g. the "Add to Collection" dropdown). Exceeding this logs a warning and truncates. Default 10000.
         solr_rows_per_request: Page size for each Solr request inside Hyrax's paginated fetches. Default 1000.
         ssl_configured: Set it true if using https
+        storage_limit: Maximum total storage for this repository in bytes, checked against indexed file sizes when new files are uploaded. Leave blank for no storage ceiling.
         weekly_email_list: List of email addresses to email the weekly report. Leave a single space between each email
         yearly_email_list: List of email addresses to email the yearly report. Leave a single space between each email
       hyku_group:

@@ -22,6 +22,7 @@ RSpec.describe AccountSettings do
       it 'returns all settings except private and disabled settings' do
         expect(account.public_settings(is_superadmin: true).keys.sort).to eq %i[allow_downloads
                                                                                 allow_signup
+                                                                                allowed_content_types
                                                                                 analytics
                                                                                 batch_email_notifications
                                                                                 bulkrax_field_mappings
@@ -50,9 +51,29 @@ RSpec.describe AccountSettings do
                                                                                 solr_collection_options
                                                                                 solr_max_results
                                                                                 solr_rows_per_request
-                                                                                ssl_configured]
+                                                                                ssl_configured
+                                                                                storage_limit]
       end
       # rubocop:enable RSpec/ExampleLength
+    end
+  end
+
+  describe 'upload limit settings' do
+    it 'defaults allowed_content_types to a blank string, meaning all types are accepted' do
+      expect(account.allowed_content_types).to eq('')
+    end
+
+    it 'defaults storage_limit to a blank string, meaning storage is not capped' do
+      expect(account.storage_limit).to eq('')
+    end
+
+    context 'when storage_limit is not numeric' do
+      let(:account) { build(:account, settings: { storage_limit: 'unlimited' }) }
+
+      it 'is invalid' do
+        expect(account.valid?).to eq(false)
+        expect(account.errors.messages[:storage_limit]).to eq(['must be a positive integer'])
+      end
     end
   end
 

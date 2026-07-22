@@ -83,6 +83,33 @@ RSpec.describe Hyku::DepositWizard::Presenter do
     end
   end
 
+  describe '#advance_from (details step)' do
+    let(:params) do
+      ActionController::Parameters.new(step: 'details',
+                                       'generic_work' => { 'title' => ['A title'] })
+    end
+    let(:work_form) { instance_double(Hyrax::Forms::ResourceForm) }
+
+    before do
+      presenter.state.work_type = 'GenericWorkResource'
+      allow(presenter).to receive(:build_work_form).and_return(work_form)
+      allow(presenter).to receive(:work_form).and_return(work_form)
+      allow(work_form).to receive(:validate).and_return(true)
+      allow(presenter.config.flow).to receive(:next_after).and_return('review')
+    end
+
+    it 'preserves a launch-seeded collection through the details step' do
+      presenter.state.attributes = { 'member_of_collections_attributes' => { '0' => { 'id' => 'coll-7' } } }
+
+      presenter.advance_from('details')
+
+      seeded = presenter.state.attributes['member_of_collections_attributes']
+      expect(seeded).to be_present
+      expect(seeded.values.map { |row| row['id'] }).to include('coll-7')
+      expect(presenter.state.attributes['title']).to eq(['A title'])
+    end
+  end
+
   describe '#build_work_form' do
     let(:params) { ActionController::Parameters.new }
     let(:work_form) { instance_double(Hyrax::Forms::ResourceForm, deserialize: nil) }

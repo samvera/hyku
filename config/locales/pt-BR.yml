@@ -180,6 +180,7 @@ pt-BR:
         label: Pesquisar obras
       start:
         heading: O que você gostaria de depositar?
+        standard_link: Mudar para o formulário de depósito padrão
         subtext: Este fluxo guiado acompanha você passo a passo no depósito da sua obra.
         paths:
           add:

@@ -4,7 +4,12 @@
   <%# OVERRIDE: add check for :manage_items_in_collection permission %>
   <% if can?(:deposit, presenter.solr_document) || can?(:manage_items_in_collection, presenter.solr_document) %>
     <div>
-      <% if @presenter.create_many_work_types? %>
+      <% if guided_replaces_standard? %>
+        <%= link_to t('hyrax.collection.actions.add_new_work.label'),
+                    main_app.deposit_wizard_path(add_works_to_collection: presenter.id),
+                    title: t('hyrax.collection.actions.add_new_work.desc'),
+                    class: 'btn btn-primary deposit-new-work-through-collection' %>
+      <% elsif @presenter.create_many_work_types? %>
         <%= link_to t('hyrax.collection.actions.add_new_work.label'),
                     '#',
                     title: t('hyrax.collection.actions.add_new_work.desc'),

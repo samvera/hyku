@@ -298,6 +298,7 @@ zh:
         label: 搜索作品
       start:
         heading: 您想存缴什么？
+        standard_link: 切换到标准存缴表单
         subtext: 此引导流程将逐步带您完成作品的存缴。
         paths:
           add:

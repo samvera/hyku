@@ -1,0 +1,22 @@
+<%# Opt-out link from the guided start screen to the standard single-page deposit.
+    Rendered by start.html.erb only when +config.standard_link?+ (both guided and
+    standard deposit enabled). To remove the feature entirely, delete: this file, its
+    render line in start.html.erb,
+    DepositWizardController#assign_admin_sets_for_standard_chooser (and its call),
+    Presenter#create_work_presenter, Capabilities#standard_link?, and the
+    start.standard_link locale keys.
+
+    Reproduces the standard deposit type-selection UX: several creatable types open
+    Hyrax's select_work_type_modal; a single type links straight to its new-work
+    form. %>
+<% create_work_presenter = deposit_wizard.create_work_presenter %>
+<p class="deposit-wizard__standard-link">
+  <% if create_work_presenter.many? %>
+    <%= link_to t('hyku.deposit_wizard.start.standard_link'), '#',
+                data: { behavior: 'select-work', toggle: 'modal', target: '#worktypes-to-create', 'create-type' => 'single' } %>
+  <% elsif (standard_type = create_work_presenter.first_model) %>
+    <%= link_to t('hyku.deposit_wizard.start.standard_link'),
+                new_polymorphic_path([main_app, standard_type]) %>
+  <% end %>
+</p>
+<%= render '/shared/select_work_type_modal', create_work_presenter: create_work_presenter if create_work_presenter.many? %>

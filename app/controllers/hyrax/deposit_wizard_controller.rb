@@ -29,6 +29,7 @@ module Hyrax
     def start
       reset_state
       seed_launch_context
+      assign_admin_sets_for_standard_chooser
       render :start
     end
 
@@ -57,7 +58,7 @@ module Hyrax
     end
 
     def parent_options
-      return head(:forbidden) unless wizard_config.capabilities.parent_connect?
+      return head(:forbidden) unless wizard_config.parent_connect?
 
       # FindWorksSearchBuilder excludes a "current" work by params[:id]; the wizard
       # has no current work, so a blank id excludes nothing.
@@ -139,7 +140,7 @@ module Hyrax
     # Mirror Hyrax's batch-upload guard: redirect to the dashboard rather than
     # exposing the wizard routes when the feature is off.
     def ensure_enabled
-      return if Flipflop.deposit_wizard?
+      return if wizard_config.enabled?
 
       redirect_to hyrax.my_works_path, alert: t('hyku.deposit_wizard.disabled')
     end
@@ -191,12 +192,27 @@ module Hyrax
       }
     end
 
+    # The "switch to the standard deposit form" link reuses Hyrax's
+    # select_work_type_modal, whose admin-set dropdown reads this ivar (mirroring
+    # My::WorksController). Only needed when that link is shown.
+    def assign_admin_sets_for_standard_chooser
+      return unless wizard_config.standard_link?
+
+      @admin_sets_for_select = helpers.available_admin_sets_for_creating_works(ability: current_ability)
+    end
+
     # Seed wizard state from the same context params other entry points pass
     # allowing a potential connection point with other deposit flows.
+    #
+    # A present +parent_id+ / +add_works_to_collection+ is a directed handoff
+    # ("attach a child to THIS work" / "deposit into THIS collection") and always
+    # seeds; it is independent of the +parent_connect+ / +collection_connect+
+    # capabilities, which only govern the optional start/review pickers a depositor
+    # uses to choose a parent or collections themselves.
     def seed_launch_context
-      wizard_state.parent_id = params[:parent_id] if wizard_config.capabilities.parent_connect? && params[:parent_id].present?
+      wizard_state.parent_id = params[:parent_id] if params[:parent_id].present?
 
-      return unless wizard_config.capabilities.collection_connect? && params[:add_works_to_collection].present?
+      return if params[:add_works_to_collection].blank?
 
       wizard_state.attributes = wizard_state.attributes.merge(
         'member_of_collections_attributes' => { '0' => { 'id' => params[:add_works_to_collection] } }

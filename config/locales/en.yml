@@ -158,6 +158,7 @@ en:
         label: Search works
       start:
         heading: What would you like to deposit?
+        standard_link: Switch to the standard deposit form
         subtext: This guided flow walks you through depositing your work step by step.
         paths:
           add:

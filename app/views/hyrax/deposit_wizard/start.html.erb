@@ -36,4 +36,6 @@
       </div>
     <% end %>
   <% end %>
+
+  <%= render 'standard_deposit_link' if deposit_wizard.config.standard_link? %>
 </div>

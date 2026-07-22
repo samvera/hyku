@@ -6,14 +6,15 @@ upload, metadata, per-file metadata, and review, then commits through the same
 public Hyrax create transaction — so a work created by the wizard is
 indistinguishable from one created by the stock form.
 
-The wizard is additive: the stock deposit form is untouched, and the wizard is
-off by default behind a feature flag. It is designed as a **generic Hyku
-feature** with **seams a downstream application** can configure and extend
-without forking.
+The wizard is off by default (guided deposit disabled, standard deposit enabled);
+a tenant turns it on per the [Enabling](#enabling) flags, and it can run alongside
+or in place of the standard form. It is designed as a **generic Hyku feature** with
+**seams a downstream application** can configure and extend without forking.
 
 ## Contents
 
 - [Enabling](#enabling)
+- [Deposit modes](#deposit-modes)
 - [Architecture](#architecture)
 - [Steps and the Flow](#steps-and-the-flow)
   - [The progress rail](#the-progress-rail)
@@ -33,23 +34,58 @@ without forking.
 
 ## Enabling
 
-The wizard and its optional capabilities are per-tenant Flipflop features
-(declared in `config/features.rb`, group `:deposit_wizard`):
+Two per-tenant Flipflop features turn each deposit path on (declared in
+`config/features.rb`, group `:deposit_features`):
 
-| Feature | Effect |
-| --- | --- |
-| `deposit_wizard` | Master switch. When off, the wizard routes redirect to the dashboard and the "Guided Deposit" button is hidden. |
-| `deposit_wizard_parent_connect` | Lets a depositor nest the work under a parent work. Where the offer appears — the start-screen "add to an existing work" path, the review-step section, or both — is set by `parent_connect_placement` (see Configuration). |
-| `deposit_wizard_collection_connect` | Lets a depositor add the work to one or more collections on the review step. |
-| `deposit_wizard_sharing` | Lets a depositor grant per-user / per-group access on the review step. |
+| Feature | Default | Effect |
+| --- | :---: | --- |
+| `enable_guided_deposit` | off | Adds a Guided Deposit button to the works page, and overrides every other deposit entry point (homepage, show-page "attach child", collection page) to the guided wizard. |
+| `enable_standard_deposit` | on | Adds a Standard Deposit ("Add new work") button to the works page, and routes deposit entry links to the standard form — unless `enable_guided_deposit` is also on, in which case guided takes precedence for the links. When both are enabled, the guided start page also offers a "switch to the standard deposit form" link. |
 
-Vanity-URL redirects on the review step are gated separately by Hyrax's own
-`redirects_active?` (its boot flag plus `Flipflop.redirects?`) **and** the work's
-schema carrying a `redirects` attribute — not by a wizard-specific flag.
+The two enable flags are independent: each adds its own works-page button. The
+wizard's parent and collection pickers and the sharing section are **not** flags —
+they are config settings (`c.parent_connect` / `c.collection_connect` /
+`c.depositor_sharing`, all default on); see [Configuration](#configuration).
+Vanity-URL redirects on the review step are gated by Hyrax's own `redirects_active?`
+**and** the work's schema carrying a `redirects` attribute — not a wizard flag.
 
-The dashboard entry point is a "Guided Deposit" button rendered in
-`app/views/hyrax/my/works/_deposit_actions.html.erb`, shown only when
-`Flipflop.deposit_wizard?` is true.
+## Deposit modes
+
+All deposit questions are answered by `Hyku::DepositWizard.config` (which delegates
+the live-flag capabilities to `config.capabilities`); the entry-point views — which
+render outside `DepositWizardController` — reach it through `Hyrax::DepositWizardHelper`.
+
+**Which works-page buttons show** — each enable flag independently adds its button:
+
+| `enable_guided_deposit` | `enable_standard_deposit` | Works-page buttons | Entry links elsewhere |
+| :---: | :---: | --- | --- |
+| off | on (default) | Standard only | standard |
+| on | off | Guided only | guided |
+| on | on | Guided **and** Standard | guided (guided wins) |
+| off | off | none | standard |
+
+**Entry-link routing** — `config.guided_replaces_standard?` (`== enable_guided_deposit?`,
+read by the `guided_replaces_standard?` helper) decides whether the non-works-page
+entry points route to the guided wizard: a collection's "Add new work" button (carrying
+`add_works_to_collection`), the work show page's "Attach a child work" control
+(carrying `parent_id`; the child type is chosen in the wizard), and the homepage
+"share your work" buttons (default `hyrax/homepage/index` and the three themed
+homepages). The batch-upload path is unaffected, and the standard `new_polymorphic`
+route is never disabled.
+
+**The standard-form link on the guided start screen** —
+`config.standard_link?` (`== enable_guided_deposit? && enable_standard_deposit?`)
+renders the `_standard_deposit_link` partial, a "switch to the standard deposit form"
+link for all users — offered when the tenant enables both deposit paths, so a guided
+depositor can opt into the standard form. It reproduces the standard type-selection
+UX (chooser modal when several types are creatable, a direct link otherwise).
+
+A directed handoff — `add_works_to_collection` from a collection, or `parent_id`
+from the "Attach a child work" control — always seeds that association into the
+wizard, independent of the `collection_connect` / `parent_connect` config settings.
+Those settings govern only the optional review/start pickers a depositor uses to
+choose a collection or parent themselves; a handoff is an explicit directive, so it
+is honored regardless.
 
 ## Architecture
 
@@ -194,22 +230,27 @@ reset it with `Hyku::DepositWizard.reset_config!`.
 | `container_type` | `nil` | The container work type (class or class name). Presence makes the start screen a new/add/standalone path chooser (`container?`). `nil` is a flat wizard. |
 | `item_types` | `nil` | Restricts the work types the type chooser offers, intersected with what the user is authorized to deposit (it narrows, never widens). `nil` offers all authorized types. |
 | `parent_types` | `nil` | Work types eligible as parents in the typeahead. `nil` falls back to the tenant's available work types. |
-| `parent_connect_placement` | `:review` | Where parent-connect offers to attach a parent: `:both`, `:start` (only the up-front path), `:review` (only the review section), or `:none`. Only takes effect when parent-connect is enabled. |
+| `parent_connect` | `true` | Whether the wizard offers a parent picker. |
+| `collection_connect` | `true` | Whether the wizard offers a collection picker on the review step. |
+| `depositor_sharing` | `true` | Whether the wizard offers the per-user/group sharing section on the review step. |
+| `parent_connect_placement` | `:review` | Where parent-connect offers to attach a parent: `:both`, `:start` (only the up-front path), `:review` (only the review section), or `:none`. Only takes effect when `parent_connect` is on. |
 | `suggestions` | `{}` | A guided sub-flow map (uploaded-file kind → offered sub-types) for the `item_start` step. When present (`item_start_offers_choice?`), the `item_start` step is shown; empty skips straight to the work-type chooser. |
 | `flow` | `Flow.default` | The ordered step sequence (a `Hyku::DepositWizard::Flow`). Assign a reshaped flow to add, remove, or reorder steps (see [Step flow](#step-flow)). |
 | `post_commit` | `nil` | Callable run after a successful commit, receiving `(work, wizard_state)` — the hook for downstream nesting/fan-out. |
 
-The parent/collection/sharing capabilities are **not** config options — they are
-the per-tenant Flipflop features above, read **live** on every request through
-`config.capabilities` (`parent_connect?` / `collection_connect?` / `sharing?`), a
-small module nested in `Config`. They are never stored on the config and cannot be
-overridden in memory, so toggling a flag takes effect immediately. Static
-deployment settings (the table above) live on `Config` itself; the capability
-on/off is always the flag. `parent_connect_placement` (static) then decides which
-of the two parent-connect edges appears when the flag is on
-(`parent_connect_on_start?` / `parent_connect_on_review?`).
-`redirects_available?(form)` combines Hyrax's redirects gate with a check that the
-work's schema carries `redirects`.
+Parent connect, collection connect, and depositor sharing are static config settings
+on `Config` (`parent_connect` / `collection_connect` / `depositor_sharing`, default
+on); `parent_connect_placement` then decides which of the two parent-connect edges
+appears when `parent_connect` is on (`parent_connect_on_start?` /
+`parent_connect_on_review?`). `sharing?` combines the `depositor_sharing` setting
+with the wizard being enabled.
+
+The deposit-mode capabilities read **live** from Flipflop on every request through
+`config.capabilities` (a small module nested in `Config`, surfaced on `config` by
+delegation), so toggling a flag takes effect immediately: `enabled?`,
+`guided_replaces_standard?`, `standard_deposit_button?`, and `standard_link?` (see
+[Deposit modes](#deposit-modes)). `redirects_available?(form)` combines Hyrax's
+redirects gate with a check that the work's schema carries `redirects`.
 
 ## Admin-set assistance
 
@@ -233,8 +274,12 @@ which applies the set's contexts.
 
 ## Insertion points for a downstream app
 
-Everything a downstream application needs to customize is a seam; no Hyrax or
-Hyku file is overridden, prepended, or decorated.
+Everything a downstream application needs to customize is a seam: it configures the
+wizard through the swappable `Hyku::DepositWizard.config` singleton and its own
+view-path prepends, without forking or patching Hyku. (Hyku's own integration does
+override a few Hyrax views — e.g. `hyrax/homepage/index` and the themed
+`_show_actions` / share-row partials — to route the deposit entry points; those are
+platform-level overrides, not something a downstream app needs to touch.)
 
 **Where this code goes.** `Hyku::DepositWizard.config` is a swappable
 module-level singleton (`app/models/hyku/deposit_wizard.rb`); the wizard reads
@@ -381,13 +426,17 @@ end
 
 The persistence layer already honors a top-level `parent_id` (seeded by the "add"
 path or by launch context) through Hyrax's `add_to_parent` step, so nesting under
-a parent needs no extra wiring — set `parent_types` and enable the
-`deposit_wizard_parent_connect` feature.
+a parent needs no extra wiring. To offer the depositor a parent *picker* (the "add"
+start path or the review-step section), set `parent_types` and the `parent_connect`
+config setting (default on). A directed `parent_id` handoff (see
+[Launch with context](#launch-with-context)) nests regardless of that setting.
 
 ### Launch with context
 
 Other entry points can hand off into the wizard with a target pre-filled by
-passing a context param; each is gated by its matching capability:
+passing a context param. A handoff always seeds its association, independent of the
+`collection_connect` / `parent_connect` config settings — those gate only the review
+/ start pickers, not a directed handoff (see [Deposit modes](#deposit-modes)):
 
 ```erb
 <%= link_to "Deposit into this collection",

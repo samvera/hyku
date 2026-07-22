@@ -298,6 +298,7 @@ es:
         label: Buscar obras
       start:
         heading: ¿Qué te gustaría depositar?
+        standard_link: Cambiar al formulario de depósito estándar
         subtext: Este flujo guiado te acompaña paso a paso en el depósito de tu obra.
         paths:
           add:

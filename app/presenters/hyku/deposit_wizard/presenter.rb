@@ -33,6 +33,13 @@ module Hyku
         authorized.select { |model| allowed.include?(model.to_s) }
       end
 
+      # Hyrax's own work-type chooser presenter, backing the shared
+      # select_work_type_modal for the wizard-primary "switch to the classic deposit
+      # form" escape link exactly as the classic works page does.
+      def create_work_presenter
+        @create_work_presenter ||= Hyrax::SelectTypeListPresenter.new(current_user)
+      end
+
       # The stepper rail rows ({n:, label:, icon:}) for the current state, built
       # from the flow's rail (one entry per distinct visible rail_key).
       def item_stepper_steps
@@ -539,8 +546,19 @@ module Hyku
                                                 messages: form_error_messages(work_form))
         end
 
-        state.attributes = work_params.to_unsafe_h
+        # The details form owns the work fields, but not the launch-seeded extras
+        # (a collection carried in by the "deposit into THIS collection" handoff).
+        # Replacing wholesale would drop those before commit, so re-apply any that
+        # the form did not submit.
+        submitted = work_params.to_unsafe_h
+        state.attributes = preserved_launch_extras.merge(submitted)
         Transition.advance(next_step('details'))
+      end
+
+      # Launch-seeded attributes the details form does not manage (today: collection
+      # membership from the handoff).
+      def preserved_launch_extras
+        state.attributes.slice('member_of_collections_attributes')
       end
 
       def advance_from_file_meta
@@ -552,8 +570,8 @@ module Hyku
 
       def enabled_extra_attribute_keys
         keys = []
-        keys << 'member_of_collections_attributes' if config.capabilities.collection_connect?
-        keys << 'permissions_attributes' if config.capabilities.sharing?
+        keys << 'member_of_collections_attributes' if config.collection_connect?
+        keys << 'permissions_attributes' if config.sharing?
         keys.push('redirects_attributes', 'redirects_display_url_index') if config.redirects_available?
         keys
       end

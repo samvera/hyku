@@ -17,10 +17,6 @@ Flipflop.configure do
           default: true,
           description: "Shows the Featured Researcher tab on the homepage."
 
-  feature :show_share_button,
-          default: true,
-          description: "Shows the 'Share Your Work' button on the homepage."
-
   feature :show_featured_works,
           default: true,
           description: "Shows the Featured Works tab on the homepage."
@@ -56,23 +52,18 @@ Flipflop.configure do
             description: "Enable the guided import workflow."
   end
 
-  group :deposit_wizard do
-    feature :deposit_wizard,
-            default: false,
-            description: "Enable the guided deposit wizard for creating works. Additional features are " \
-                         "available to connect works to parent works, collections, and sharing. If the " \
-                         "redirects feature is enabled, it will also be active for the deposit wizard."
+  group :deposit_features do
+    feature :show_share_button,
+          default: true,
+          description: "Shows the 'Share Your Work' button on the homepage for users who can deposit."
 
-    feature :deposit_wizard_parent_connect,
+    feature :enable_guided_deposit,
             default: false,
-            description: "In the deposit wizard, let depositors add the work to a parent work. Requires the deposit wizard."
+            description: "Enables a button on the dashboard works page for guided deposit, and uses guided deposit for all deposit entry points."
 
-    feature :deposit_wizard_collection_connect,
-            default: false,
-            description: "In the deposit wizard, let depositors add the work to a collection. Requires the deposit wizard."
-
-    feature :deposit_wizard_sharing,
-            default: false,
-            description: "In the deposit wizard, let depositors share the work with specific users and groups. Requires the deposit wizard."
+    feature :enable_standard_deposit,
+            default: true,
+            description: "Enables the standard 'Add new work' button on the dashboard works page. When guided " \
+                         "deposit is also enabled, the guided start page offers a 'switch to the standard deposit form' link."
   end
 end

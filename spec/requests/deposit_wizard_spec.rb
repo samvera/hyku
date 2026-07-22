@@ -11,7 +11,9 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
 
   describe 'GET /deposit_wizard' do
     context 'when the deposit_wizard feature is off' do
-      before { allow(Flipflop).to receive(:deposit_wizard?).and_return(false) }
+      before do
+        allow(Flipflop).to receive(:enable_guided_deposit?).and_return(false)
+      end
 
       it 'redirects to the dashboard with an alert and does not expose the wizard' do
         get deposit_wizard_path
@@ -22,7 +24,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
     end
 
     context 'when the deposit_wizard feature is on' do
-      before { allow(Flipflop).to receive(:deposit_wizard?).and_return(true) }
+      before { allow(Flipflop).to receive(:enable_guided_deposit?).and_return(true) }
 
       it 'renders the start screen' do
         get deposit_wizard_path
@@ -41,22 +43,20 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
       describe 'launch with context (handoff from another entry point)' do
         after { Hyku::DepositWizard.reset_config! }
 
-        it 'seeds a parent work from parent_id when parent connect is enabled' do
-          allow(Flipflop).to receive(:deposit_wizard_parent_connect?).and_return(true)
+        it 'seeds a parent work from parent_id when the parent picker is enabled' do
           get deposit_wizard_path(parent_id: 'parent-123')
 
           expect(session[:deposit_wizard]['parent_id']).to eq('parent-123')
         end
 
-        it 'ignores parent_id when parent connect is disabled' do
-          allow(Flipflop).to receive(:deposit_wizard_parent_connect?).and_return(false)
+        it 'seeds a parent work from parent_id even when the picker is disabled' do
+          Hyku::DepositWizard.config.parent_connect = false
           get deposit_wizard_path(parent_id: 'parent-123')
 
-          expect(session[:deposit_wizard]['parent_id']).to be_nil
+          expect(session[:deposit_wizard]['parent_id']).to eq('parent-123')
         end
 
-        it 'seeds collection membership from add_works_to_collection when enabled' do
-          allow(Flipflop).to receive(:deposit_wizard_collection_connect?).and_return(true)
+        it 'seeds collection membership from add_works_to_collection when the picker is enabled' do
           get deposit_wizard_path(add_works_to_collection: 'coll-9')
 
           membership = session[:deposit_wizard].dig('attributes', 'member_of_collections_attributes')
@@ -64,18 +64,20 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
           expect(membership.values.map { |row| row['id'] }).to include('coll-9')
         end
 
-        it 'ignores add_works_to_collection when collection connect is disabled' do
-          allow(Flipflop).to receive(:deposit_wizard_collection_connect?).and_return(false)
+        it 'seeds collection membership from add_works_to_collection even when the picker is disabled' do
+          Hyku::DepositWizard.config.collection_connect = false
           get deposit_wizard_path(add_works_to_collection: 'coll-9')
 
-          expect(session[:deposit_wizard].dig('attributes', 'member_of_collections_attributes')).to be_blank
+          membership = session[:deposit_wizard].dig('attributes', 'member_of_collections_attributes')
+          expect(membership).to be_present
+          expect(membership.values.map { |row| row['id'] }).to include('coll-9')
         end
       end
     end
   end
 
   describe 'GET /deposit_wizard/:step with an unknown step' do
-    before { allow(Flipflop).to receive(:deposit_wizard?).and_return(true) }
+    before { allow(Flipflop).to receive(:enable_guided_deposit?).and_return(true) }
 
     it 'falls back to the start screen' do
       get deposit_wizard_step_path(step: 'does_not_exist')
@@ -88,8 +90,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
     let(:admin) { FactoryBot.create(:admin) }
 
     before do
-      allow(Flipflop).to receive(:deposit_wizard?).and_return(true)
-      allow(Flipflop).to receive(:deposit_wizard_parent_connect?).and_return(true)
+      allow(Flipflop).to receive(:enable_guided_deposit?).and_return(true)
     end
 
     after { Hyku::DepositWizard.reset_config! }
@@ -108,7 +109,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
     end
 
     it 'is forbidden when parent connect is disabled' do
-      allow(Flipflop).to receive(:deposit_wizard_parent_connect?).and_return(false)
+      Hyku::DepositWizard.config.parent_connect = false
 
       get deposit_wizard_parent_options_path(q: 'anything')
 
@@ -118,7 +119,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
 
   describe 'navigation and type selection' do
     before do
-      allow(Flipflop).to receive(:deposit_wizard?).and_return(true)
+      allow(Flipflop).to receive(:enable_guided_deposit?).and_return(true)
       Hyrax::AdminSetCreateService.find_or_create_default_admin_set
     end
 
@@ -221,7 +222,6 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
 
     context 'with the relationship-first path (flat config, parent_connect on)' do
       before do
-        allow(Flipflop).to receive(:deposit_wizard_parent_connect?).and_return(true)
         # These exercise the start-screen path; the default placement is review-only.
         Hyku::DepositWizard.config.parent_connect_placement = :both
       end
@@ -290,7 +290,6 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
 
     context 'with parent-connect placement :review (review edge only)' do
       before do
-        allow(Flipflop).to receive(:deposit_wizard_parent_connect?).and_return(true)
         Hyku::DepositWizard.config.parent_connect_placement = :review
       end
 
@@ -549,7 +548,6 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         after { Hyku::DepositWizard.reset_config! }
 
         it 'saves a chosen parent into wizard state and re-renders it on review' do
-          allow(Flipflop).to receive(:deposit_wizard_parent_connect?).and_return(true)
           parent = FactoryBot.valkyrie_create(:generic_work_resource, title: ['Parent'], depositor: admin.user_key)
           fill_in_wizard
 
@@ -562,7 +560,6 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         end
 
         it 'saves collection membership into wizard state' do
-          allow(Flipflop).to receive(:deposit_wizard_collection_connect?).and_return(true)
           collection = FactoryBot.create(:hyku_collection, user: admin)
           fill_in_wizard
 
@@ -575,7 +572,6 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         end
 
         it 'clears a capability from state when its entries are removed' do
-          allow(Flipflop).to receive(:deposit_wizard_collection_connect?).and_return(true)
           collection = FactoryBot.create(:hyku_collection, user: admin)
           fill_in_wizard
 
@@ -597,7 +593,6 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         after { Hyku::DepositWizard.reset_config! }
 
         it 'renders the section when parent connect is enabled' do
-          allow(Flipflop).to receive(:deposit_wizard_parent_connect?).and_return(true)
           fill_in_wizard
           get deposit_wizard_step_path(step: 'review')
 
@@ -606,7 +601,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         end
 
         it 'omits the section when parent connect is disabled' do
-          allow(Flipflop).to receive(:deposit_wizard_parent_connect?).and_return(false)
+          Hyku::DepositWizard.config.parent_connect = false
           fill_in_wizard
           get deposit_wizard_step_path(step: 'review')
 
@@ -614,7 +609,6 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         end
 
         it 'omits the section when placement is :start (front edge only)' do
-          allow(Flipflop).to receive(:deposit_wizard_parent_connect?).and_return(true)
           Hyku::DepositWizard.config.parent_connect_placement = :start
           fill_in_wizard
           get deposit_wizard_step_path(step: 'review')
@@ -623,7 +617,6 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         end
 
         it 'renders the section when placement is :review' do
-          allow(Flipflop).to receive(:deposit_wizard_parent_connect?).and_return(true)
           Hyku::DepositWizard.config.parent_connect_placement = :review
           fill_in_wizard
           get deposit_wizard_step_path(step: 'review')
@@ -636,7 +629,6 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         after { Hyku::DepositWizard.reset_config! }
 
         it 'renders the section when the capability is enabled' do
-          allow(Flipflop).to receive(:deposit_wizard_collection_connect?).and_return(true)
           fill_in_wizard
           get deposit_wizard_step_path(step: 'review')
 
@@ -645,7 +637,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         end
 
         it 'omits the section when the capability is disabled' do
-          allow(Flipflop).to receive(:deposit_wizard_collection_connect?).and_return(false)
+          Hyku::DepositWizard.config.collection_connect = false
           fill_in_wizard
           get deposit_wizard_step_path(step: 'review')
 
@@ -657,7 +649,6 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         after { Hyku::DepositWizard.reset_config! }
 
         it 'renders the section when sharing is enabled' do
-          allow(Flipflop).to receive(:deposit_wizard_sharing?).and_return(true)
           fill_in_wizard
           get deposit_wizard_step_path(step: 'review')
 
@@ -666,7 +657,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         end
 
         it 'omits the section when sharing is disabled' do
-          allow(Flipflop).to receive(:deposit_wizard_sharing?).and_return(false)
+          Hyku::DepositWizard.config.depositor_sharing = false
           fill_in_wizard
           get deposit_wizard_step_path(step: 'review')
 
@@ -1047,8 +1038,6 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         after { Hyku::DepositWizard.reset_config! }
 
         context 'collection connect' do
-          before { allow(Flipflop).to receive(:deposit_wizard_collection_connect?).and_return(true) }
-
           it 'adds the work to the chosen collection' do
             collection = FactoryBot.create(:hyku_collection, user: admin)
             fill_in_wizard
@@ -1063,7 +1052,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         end
 
         context 'when collection connect is disabled' do
-          before { allow(Flipflop).to receive(:deposit_wizard_collection_connect?).and_return(false) }
+          before { Hyku::DepositWizard.config.collection_connect = false }
 
           it 'ignores submitted collection membership' do
             collection = FactoryBot.create(:hyku_collection, user: admin)
@@ -1078,8 +1067,6 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         end
 
         context 'parent connect' do
-          before { allow(Flipflop).to receive(:deposit_wizard_parent_connect?).and_return(true) }
-
           it 'nests the work under the chosen parent work' do
             parent = FactoryBot.valkyrie_create(:generic_work_resource, title: ['Parent work'], depositor: admin.user_key)
             fill_in_wizard
@@ -1109,7 +1096,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         end
 
         context 'when parent connect is disabled' do
-          before { allow(Flipflop).to receive(:deposit_wizard_parent_connect?).and_return(false) }
+          before { Hyku::DepositWizard.config.parent_connect = false }
 
           it 'ignores a submitted parent_id' do
             parent = FactoryBot.valkyrie_create(:generic_work_resource, title: ['Parent work'], depositor: admin.user_key)
@@ -1123,8 +1110,6 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         end
 
         context 'sharing' do
-          before { allow(Flipflop).to receive(:deposit_wizard_sharing?).and_return(true) }
-
           it 'grants a user the access chosen on the review step' do
             grantee = FactoryBot.create(:user)
             fill_in_wizard
@@ -1141,7 +1126,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         end
 
         context 'when sharing is disabled' do
-          before { allow(Flipflop).to receive(:deposit_wizard_sharing?).and_return(false) }
+          before { Hyku::DepositWizard.config.depositor_sharing = false }
 
           it 'ignores submitted permissions' do
             grantee = FactoryBot.create(:user)
@@ -1207,7 +1192,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
     before { Hyrax::AdminSetCreateService.find_or_create_default_admin_set }
 
     it 'appears when the feature is on' do
-      allow(Flipflop).to receive(:deposit_wizard?).and_return(true)
+      allow(Flipflop).to receive(:enable_guided_deposit?).and_return(true)
 
       get hyrax.my_works_path
 
@@ -1216,7 +1201,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
     end
 
     it 'is absent when the feature is off' do
-      allow(Flipflop).to receive(:deposit_wizard?).and_return(false)
+      allow(Flipflop).to receive(:enable_guided_deposit?).and_return(false)
 
       get hyrax.my_works_path
 

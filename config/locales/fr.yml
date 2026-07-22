@@ -298,6 +298,7 @@ fr:
         label: Rechercher des œuvres
       start:
         heading: Que souhaitez-vous déposer ?
+        standard_link: Passer au formulaire de dépôt standard
         subtext: Ce flux guidé vous accompagne étape par étape dans le dépôt de votre œuvre.
         paths:
           add:

@@ -297,6 +297,7 @@ de:
         label: Werke suchen
       start:
         heading: Was möchten Sie einreichen?
+        standard_link: Zum Standard-Einreichungsformular wechseln
         subtext: Dieser geführte Ablauf begleitet Sie Schritt für Schritt bei der Einreichung Ihres Werks.
         paths:
           add:

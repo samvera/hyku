@@ -1,0 +1,31 @@
+<%# OVERRIDE Hyrax v5.2.0 route the signed-in "share your work" button into the
+    guided deposit wizard when it replaces the legacy deposit (deposit_new_work_target).
+    TODO: upstream, extract the share-your-work button into its own partial so we can
+    override just that partial instead of the whole index — the rest of this file is
+    mirrored from upstream only to reach the one button and will drift on a gem bump. %>
+<% provide :page_title, application_name %>
+
+<% if @presenter.display_share_button? && !Flipflop.read_only? %>
+<div class="home-share-work text-center">
+  <% if signed_in? %>
+    <%# OVERRIDE: single share button whose target the deposit mode resolves. %>
+    <% href, data = deposit_new_work_target(many: @presenter.create_many_work_types?,
+                                            first_type: @presenter.first_work_type) %>
+    <%= link_to href, class: "btn btn-primary btn-lg", data: data do %>
+      <i class="fa fa-upload" aria-hidden="true"></i> <%= t('hyrax.share_button') %>
+    <% end %>
+  <% else %>
+    <%= link_to hyrax.my_works_path,
+      class: "btn btn-primary btn-lg" do %>
+      <i class="fa fa-upload" aria-hidden="true"></i> <%= t('hyrax.share_button') %>
+    <% end %>
+  <% end %>
+  <p class="terms-of-use"><%= link_to t(:'hyrax.pages.tabs.terms_page'), hyrax.terms_path %></p>
+</div>
+<% end %>
+
+<div class="row home-content">
+  <%= render 'home_content' %>
+</div>
+
+<%= render '/shared/select_work_type_modal', create_work_presenter: @presenter.create_work_presenter if @presenter.draw_select_work_modal? %>

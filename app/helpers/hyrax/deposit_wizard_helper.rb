@@ -3,6 +3,49 @@
 module Hyrax
   # View helpers for the guided deposit wizard.
   module DepositWizardHelper
+    # These read the deposit-mode config. They are view helpers (not presenter
+    # methods) because the legacy entry points — the works-page buttons, a
+    # collection's add-items button, the themed homepage share buttons — render
+    # outside DepositWizardController and so have no wizard presenter in scope. See
+    # the deposit modes in docs/deposit-wizard.md.
+    def deposit_wizard_config
+      Hyku::DepositWizard.config
+    end
+
+    # True when guided deposit is enabled: the standard "Add new work" entry points
+    # open the guided wizard instead of the standard form.
+    delegate :guided_replaces_standard?, to: :deposit_wizard_config
+
+    # Whether to show the standard-deposit button on the works page (independent of
+    # guided; each enable flag adds its own button).
+    def show_standard_deposit_button?
+      deposit_wizard_config.standard_deposit_button?
+    end
+
+    # Whether to show the guided-deposit button on the works page.
+    def show_guided_deposit_button?
+      deposit_wizard_config.enabled?
+    end
+
+    # A deposit entry point's +[href, data]+ — routes into the guided wizard when
+    # guided has taken over, otherwise the standard target. Used by the non-works-page
+    # entry points (collection add-items, themed homepage share buttons), which flip
+    # to guided when it is enabled. Takes primitives (not a presenter) because those
+    # views expose +many+ / +first_type+ under different presenter method names.
+    def deposit_new_work_target(many:, first_type:)
+      return [main_app.deposit_wizard_path, {}] if guided_replaces_standard?
+
+      standard_deposit_target(many: many, first_type: first_type)
+    end
+
+    # The standard-deposit +[href, data]+, never routed to guided: the select-work
+    # modal when several types are creatable, else a direct link to the only type.
+    def standard_deposit_target(many:, first_type:)
+      return ['#', { behavior: 'select-work', toggle: 'modal', target: '#worktypes-to-create', 'create-type' => 'single' }] if many
+
+      [new_polymorphic_path([main_app, first_type]), {}]
+    end
+
     # Render a human-readable visibility summary for the review step. For open and
     # restricted, this is just the visibility badge. For embargo and lease, the
     # base "visibility" is the transitional state (e.g. "embargo"), so a badge

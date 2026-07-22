@@ -298,6 +298,7 @@ it:
         label: Cerca opere
       start:
         heading: Cosa vorresti depositare?
+        standard_link: Passa al modulo di deposito standard
         subtext: Questo flusso guidato ti accompagna passo dopo passo nel deposito della tua opera.
         paths:
           add:

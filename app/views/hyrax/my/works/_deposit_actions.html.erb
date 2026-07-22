@@ -1,43 +1,38 @@
-<%# Works-page deposit buttons: the stock "Add new work"/batch buttons (mirrored
-    from Hyrax's my/works/index) plus the guided deposit wizard when enabled. %>
+<%# Works-page deposit buttons. Guided and standard are independent: each enable
+    flag adds its own button (guided when enable_guided_deposit, standard when
+    enable_standard_deposit). The standard "Add new work" button always targets the
+    standard form; the batch upload path is a separate bulk workflow, unaffected. %>
 <% if current_ability.can_create_any_work? %>
   <div class="float-right">
-    <% if Flipflop.deposit_wizard? %>
+    <% if show_guided_deposit_button? %>
       <%= link_to t('hyku.deposit_wizard.button'),
                   main_app.deposit_wizard_path,
                   id: 'guided-deposit-button',
                   class: 'btn btn-primary' %>
     <% end %>
-    <% if @create_work_presenter.many? %>
-      <% if Flipflop.batch_upload? %>
+
+    <% if Flipflop.batch_upload? %>
+      <% if @create_work_presenter.many? %>
         <%= link_to(
               t(:'helpers.action.batch.new'),
               '#',
               data: { behavior: "select-work", toggle: 'modal', target: "#worktypes-to-create", 'create-type' => 'batch' },
               class: 'btn btn-primary'
             ) %>
-      <% end %>
-      <%= link_to(
-            t(:'helpers.action.work.new'),
-            '#',
-            data: { behavior: "select-work", toggle: 'modal', target: "#worktypes-to-create", 'create-type' => 'single' },
-            id: 'add-new-work-button',
-            class: 'btn btn-primary'
-          ) %>
-    <% else # simple link to the first work type %>
-      <% if Flipflop.batch_upload? %>
+      <% else %>
         <%= link_to(
-            t(:'helpers.action.batch.new'),
-            hyrax.new_batch_upload_path(payload_concern: @create_work_presenter.first_model),
-            class: 'btn btn-primary'
+              t(:'helpers.action.batch.new'),
+              hyrax.new_batch_upload_path(payload_concern: @create_work_presenter.first_model),
+              class: 'btn btn-primary'
             ) %>
       <% end %>
-      <%= link_to(
-            t(:'helpers.action.work.new'),
-            new_polymorphic_path([main_app, @create_work_presenter.first_model]),
-            id: 'add-new-work-button',
-            class: 'btn btn-primary'
-          ) %>
+    <% end %>
+
+    <% if show_standard_deposit_button? %>
+      <% href, data = standard_deposit_target(many: @create_work_presenter.many?,
+                                              first_type: @create_work_presenter.first_model) %>
+      <%= link_to t(:'helpers.action.work.new'), href,
+                  id: 'add-new-work-button', class: 'btn btn-primary', data: data %>
     <% end %>
   </div>
 <% end %>

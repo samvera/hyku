@@ -18,27 +18,98 @@ RSpec.describe Hyku::DepositWizard::Config do
     it 'has no parent_types restriction by default' do
       expect(config.parent_types).to be_nil
     end
+
+    it 'offers parent and collection connect by default (config settings, on)' do
+      expect(config.parent_connect?).to be(true)
+      expect(config.collection_connect?).to be(true)
+    end
   end
 
-  describe 'capabilities (live per-tenant Flipflop reads)' do
-    subject(:config) { described_class.new }
+  describe 'parent/collection connect (config settings, not flags)' do
+    it 'reflects the assigned config values' do
+      config = described_class.new do |c|
+        c.parent_connect = false
+        c.collection_connect = false
+      end
 
-    it 'reads each capability straight from its Flipflop feature' do
-      allow(Flipflop).to receive(:deposit_wizard_parent_connect?).and_return(true)
-      allow(Flipflop).to receive(:deposit_wizard_collection_connect?).and_return(false)
-      allow(Flipflop).to receive(:deposit_wizard_sharing?).and_return(true)
+      expect(config.parent_connect?).to be(false)
+      expect(config.collection_connect?).to be(false)
+    end
+  end
 
-      expect(config.capabilities.parent_connect?).to be(true)
-      expect(config.capabilities.collection_connect?).to be(false)
-      expect(config.capabilities.sharing?).to be(true)
+  describe 'capabilities (guided/standard enable flags)' do
+    subject(:capabilities) { described_class.new.capabilities }
+
+    def stub_flags(guided: false, standard: false)
+      allow(Flipflop).to receive(:enable_guided_deposit?).and_return(guided)
+      allow(Flipflop).to receive(:enable_standard_deposit?).and_return(standard)
     end
 
-    it 'reflects a flag change immediately (no stored state to shadow it)' do
-      allow(Flipflop).to receive(:deposit_wizard_parent_connect?).and_return(false)
-      expect(config.capabilities.parent_connect?).to be(false)
+    context 'when neither enable flag is set' do
+      before { stub_flags }
 
-      allow(Flipflop).to receive(:deposit_wizard_parent_connect?).and_return(true)
-      expect(config.capabilities.parent_connect?).to be(true)
+      it 'is disabled; guided-dependent capabilities are inert' do
+        expect(capabilities).not_to be_enabled
+        expect(capabilities).not_to be_guided_replaces_standard
+        expect(capabilities).not_to be_standard_deposit_button
+        expect(capabilities).not_to be_standard_link
+      end
+    end
+
+    context 'with enable_standard_deposit only (the default)' do
+      before { stub_flags(standard: true) }
+
+      it 'shows the standard button but does not enable or replace with guided' do
+        expect(capabilities).to be_standard_deposit_button
+        expect(capabilities).not_to be_enabled
+        expect(capabilities).not_to be_guided_replaces_standard
+      end
+    end
+
+    context 'with enable_guided_deposit on (only)' do
+      before { stub_flags(guided: true) }
+
+      it 'enables guided and overrides the standard entry links' do
+        expect(capabilities).to be_enabled
+        expect(capabilities).to be_guided_replaces_standard
+      end
+
+      it 'does not show the standard button, nor the standard-form link' do
+        expect(capabilities).not_to be_standard_deposit_button
+        expect(capabilities).not_to be_standard_link
+      end
+    end
+
+    context 'with both enable flags on' do
+      before { stub_flags(guided: true, standard: true) }
+
+      it 'shows both buttons; guided still overrides the entry links' do
+        expect(capabilities).to be_enabled
+        expect(capabilities).to be_standard_deposit_button
+        expect(capabilities).to be_guided_replaces_standard
+      end
+
+      it 'offers the standard-form link on the guided start screen' do
+        expect(capabilities).to be_standard_link
+      end
+    end
+  end
+
+  describe 'depositor sharing (config setting, gated by guided being enabled)' do
+    it 'is available by default when guided is enabled' do
+      allow(Flipflop).to receive(:enable_guided_deposit?).and_return(true)
+      expect(described_class.new).to be_sharing
+    end
+
+    it 'is off when the config setting is disabled' do
+      allow(Flipflop).to receive(:enable_guided_deposit?).and_return(true)
+      config = described_class.new { |c| c.depositor_sharing = false }
+      expect(config).not_to be_sharing
+    end
+
+    it 'is off when guided is not enabled, regardless of the setting' do
+      allow(Flipflop).to receive(:enable_guided_deposit?).and_return(false)
+      expect(described_class.new).not_to be_sharing
     end
   end
 
@@ -46,8 +117,6 @@ RSpec.describe Hyku::DepositWizard::Config do
     subject(:config) { described_class.new { |c| c.parent_connect_placement = placement } }
 
     let(:placement) { :both }
-
-    before { allow(Flipflop).to receive(:deposit_wizard_parent_connect?).and_return(true) }
 
     context 'with the default (:both)' do
       it 'offers parent selection on both edges' do
@@ -84,8 +153,13 @@ RSpec.describe Hyku::DepositWizard::Config do
       end
     end
 
-    context 'when the parent-connect flag is off' do
-      before { allow(Flipflop).to receive(:deposit_wizard_parent_connect?).and_return(false) }
+    context 'when parent-connect is turned off in config' do
+      subject(:config) do
+        described_class.new do |c|
+          c.parent_connect_placement = placement
+          c.parent_connect = false
+        end
+      end
 
       it 'shows nothing regardless of placement' do
         expect(config).not_to be_parent_connect_on_start

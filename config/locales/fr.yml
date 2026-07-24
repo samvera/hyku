@@ -251,8 +251,8 @@ fr:
           other: "Fichiers · %{count}"
         files_nav: Fichiers téléversés
         heading: Décrivez vos fichiers
-        inherit: Identique à l'œuvre
-        subtext: Ajoutez des détails pour chaque fichier, ou laissez-les hériter de ceux de l'œuvre.
+        inherit: Utilisez les paramètres de visibilité de l'œuvre. Décochez pour définir une visibilité propre au fichier.
+        subtext: Ajoutez des détails et la visibilité pour chaque fichier.
         title: Titre
         visibility: Visibilité du fichier
       files:

@@ -250,8 +250,8 @@ de:
           other: "Dateien · %{count}"
         files_nav: Hochgeladene Dateien
         heading: Beschreiben Sie Ihre Dateien
-        inherit: Wie das Werk
-        subtext: Fügen Sie Details für jede Datei hinzu oder lassen Sie sie vom Werk erben.
+        inherit: Sichtbarkeitseinstellungen des Werks verwenden. Deaktivieren, um eine dateispezifische Sichtbarkeit festzulegen.
+        subtext: Fügen Sie Details und Sichtbarkeit für jede Datei hinzu.
         title: Titel
         visibility: Sichtbarkeit der Datei
       files:

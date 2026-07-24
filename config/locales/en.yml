@@ -111,8 +111,8 @@ en:
           other: "Files · %{count}"
         files_nav: Uploaded files
         heading: Describe your files
-        inherit: Same as the work
-        subtext: Add details for each file, or leave them to inherit from the work.
+        inherit: Use the work's visibility settings. Uncheck to set file-specific visibility.
+        subtext: Add details and visibility for each file.
         title: Title
         visibility: File visibility
       files:

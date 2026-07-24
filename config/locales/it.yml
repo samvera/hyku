@@ -251,8 +251,8 @@ it:
           other: "File · %{count}"
         files_nav: File caricati
         heading: Descrivi i tuoi file
-        inherit: Come l'opera
-        subtext: Aggiungi dettagli per ogni file oppure lasciali ereditare dall'opera.
+        inherit: Usa le impostazioni di visibilità dell'opera. Deseleziona per impostare una visibilità specifica del file.
+        subtext: Aggiungi dettagli e visibilità per ogni file.
         title: Titolo
         visibility: Visibilità del file
       files:

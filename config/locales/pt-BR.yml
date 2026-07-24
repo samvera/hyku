@@ -133,8 +133,8 @@ pt-BR:
           other: "Arquivos · %{count}"
         files_nav: Arquivos enviados
         heading: Descreva seus arquivos
-        inherit: Igual à obra
-        subtext: Adicione detalhes para cada arquivo ou deixe-os herdar da obra.
+        inherit: Use as configurações de visibilidade da obra. Desmarque para definir uma visibilidade específica do arquivo.
+        subtext: Adicione detalhes e visibilidade para cada arquivo.
         title: Título
         visibility: Visibilidade do arquivo
       files:

@@ -251,8 +251,8 @@ es:
           other: "Archivos · %{count}"
         files_nav: Archivos subidos
         heading: Describe tus archivos
-        inherit: Igual que la obra
-        subtext: Añade detalles para cada archivo o déjalos para que hereden los de la obra.
+        inherit: Usa la configuración de visibilidad de la obra. Desmarca para establecer una visibilidad específica del archivo.
+        subtext: Añade detalles y visibilidad para cada archivo.
         title: Título
         visibility: Visibilidad del archivo
       files:

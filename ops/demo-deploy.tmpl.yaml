@@ -136,7 +136,7 @@ extraEnvVars: &envVars
   - name: HYKU_BULKRAX_ENABLED
     value: "true"
   - name: HYKU_CONTACT_EMAIL
-    value: support@notch8.com
+    value: no-reply@hykudemo.org
   - name: HYKU_FILE_ACL
     value: "false"
   - name: HYRAX_ANALYTICS

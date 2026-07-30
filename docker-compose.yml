@@ -52,12 +52,9 @@ volumes:
   zoo:
 
 networks:
-  # `default` is left unnamed so Compose auto-namespaces it per checkout
-  # (<project>_default).
+  # Unnamed: Compose auto-namespaces this per checkout.
   default:
-  # `proxy` is the one network every concurrently-running Hyku/knapsack
-  # checkout shares, so a single Traefik (`sc proxy up`) can route
-  # *.localhost.direct to whichever stack is currently running.
+  # Shared across checkouts so Traefik (`sc proxy up`) can route them all.
   proxy:
     name: stackcar
 
@@ -98,10 +95,7 @@ services:
       - SOLR_ENABLE_CLOUD_MODE=yes
       - SOLR_ENABLE_AUTHENTICATION=yes
       - ZK_HOST=zoo:2181
-      # Register SolrCloud replicas by this stable hostname instead of the
-      # container IP, so ZooKeeper's node_name stays valid across IP churn.
-      # zoo is private-only (default network), so this alias is always
-      # project-scoped and can't collide with another checkout's solr/zoo.
+      # Stable hostname for ZooKeeper's node_name, not the container IP.
       - SOLR_HOST=solr
       - VIRTUAL_PORT=8983
       - VIRTUAL_HOST=solr.hyku.test

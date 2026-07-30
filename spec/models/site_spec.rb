@@ -6,19 +6,45 @@ RSpec.describe Site, type: :model do
   let(:admin3) { FactoryBot.create(:user, email: 'i@was_here.net') }
 
   describe ".instance" do
+    let(:request_store_mock) { {} }
+    before do
+      allow(RequestStore).to receive(:store).and_return(request_store_mock)
+    end
     context "on global tenant" do
       before do
         allow(Account).to receive(:global_tenant?).and_return true
       end
 
       it "is a NilSite" do
-        expect(described_class.instance).to eq(NilSite.instance)
+        expect(described_class.instance).to be_an_instance_of(NilSite)
       end
     end
 
     context "on a specific tenant" do
       it "is a singleton site" do
         expect(described_class.instance).to eq(described_class.instance)
+      end
+      it 'only queries the database once across multiple calls in the same request' do
+        expect(described_class).to receive(:first_or_create).once.and_call_original
+
+        3.times { described_class.instance }
+      end
+
+      it 'returns the same object across multiple calls' do
+        first = described_class.instance
+        second = described_class.instance
+
+        expect(first).to equal(second)
+      end
+
+      it 'queries again after RequestStore is cleared (simulating a new request)' do
+        local_request_store_mock = {}
+        allow(RequestStore).to receive(:store).and_return(local_request_store_mock)
+        described_class.instance
+        expect(local_request_store_mock.keys).to eq([:site_instance])
+        local_request_store_mock.delete(:site_instance)
+        expect(Site).to receive(:first_or_create).once.and_call_original
+        described_class.instance
       end
     end
   end

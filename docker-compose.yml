@@ -57,13 +57,9 @@ networks:
   default:
   # `proxy` is the one network every concurrently-running Hyku/knapsack
   # checkout shares, so a single Traefik (`sc proxy up`) can route
-  # *.localhost.direct to whichever stack is currently running. It must
-  # already exist (`sc proxy up` creates it) - only services that Traefik
-  # actually routes to (see traefik.enable labels below) join it, in
-  # addition to `default`.
+  # *.localhost.direct to whichever stack is currently running.
   proxy:
     name: stackcar
-    external: true
 
 services:
   zoo:
@@ -111,6 +107,7 @@ services:
       - VIRTUAL_HOST=solr.hyku.test
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=stackcar"
       - "traefik.http.routers.solr-${APP_NAME:-${COMPOSE_PROJECT_NAME}}.tls=true"
       - "traefik.http.routers.solr-${APP_NAME:-${COMPOSE_PROJECT_NAME}}.entrypoints=websecure"
       - "traefik.http.routers.solr-${APP_NAME:-${COMPOSE_PROJECT_NAME}}.rule=Host(`solr-${APP_NAME:-${COMPOSE_PROJECT_NAME}}.localhost.direct`)"
@@ -141,6 +138,7 @@ services:
       - 8080
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=stackcar"
       - "traefik.http.routers.fits-${APP_NAME:-${COMPOSE_PROJECT_NAME}}.tls=true"
       - "traefik.http.routers.fits-${APP_NAME:-${COMPOSE_PROJECT_NAME}}.entrypoints=websecure"
       - "traefik.http.routers.fits-${APP_NAME:-${COMPOSE_PROJECT_NAME}}.rule=Host(`fits-${APP_NAME:-${COMPOSE_PROJECT_NAME}}.localhost.direct`)"
@@ -161,6 +159,7 @@ services:
       - 8080
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=stackcar"
       - "traefik.http.routers.fcrepo-${APP_NAME:-${COMPOSE_PROJECT_NAME}}.tls=true"
       - "traefik.http.routers.fcrepo-${APP_NAME:-${COMPOSE_PROJECT_NAME}}.entrypoints=websecure"
       - "traefik.http.routers.fcrepo-${APP_NAME:-${COMPOSE_PROJECT_NAME}}.rule=Host(`fcrepo-${APP_NAME:-${COMPOSE_PROJECT_NAME}}.localhost.direct`)"
@@ -189,6 +188,7 @@ services:
       - VIRTUAL_HOST=admin.hyku.test
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=stackcar"
       - "traefik.http.routers.adminer-${APP_NAME:-${COMPOSE_PROJECT_NAME}}.tls=true"
       - "traefik.http.routers.adminer-${APP_NAME:-${COMPOSE_PROJECT_NAME}}.entrypoints=websecure"
       - "traefik.http.routers.adminer-${APP_NAME:-${COMPOSE_PROJECT_NAME}}.rule=Host(`adminer-${APP_NAME:-${COMPOSE_PROJECT_NAME}}.localhost.direct`)"
@@ -205,6 +205,7 @@ services:
       VIRTUAL_HOST: .hyku.test
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=stackcar"
       - "traefik.http.routers.web-${APP_NAME:-${COMPOSE_PROJECT_NAME}}.tls=true"
       - "traefik.http.routers.web-${APP_NAME:-${COMPOSE_PROJECT_NAME}}.entrypoints=websecure"
       - "traefik.http.routers.web-${APP_NAME:-${COMPOSE_PROJECT_NAME}}.priority=10"
@@ -330,6 +331,7 @@ services:
       - VIRTUAL_HOST=chrome.hyku.test
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=stackcar"
       - "traefik.http.routers.chrome-${APP_NAME:-${COMPOSE_PROJECT_NAME}}.tls=true"
       - "traefik.http.routers.chrome-${APP_NAME:-${COMPOSE_PROJECT_NAME}}.entrypoints=websecure"
       - "traefik.http.routers.chrome-${APP_NAME:-${COMPOSE_PROJECT_NAME}}.rule=Host(`chrome-${APP_NAME:-${COMPOSE_PROJECT_NAME}}.localhost.direct`)"

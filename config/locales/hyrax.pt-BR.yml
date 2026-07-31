@@ -302,6 +302,7 @@ pt-BR:
     base:
       citations:
         header: 'Citaçõ:'
+      download_pdf: Baixar PDF
       form_child_work_relationships:
         actions:
           remove: Remover deste trabalho

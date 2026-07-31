@@ -300,6 +300,7 @@ fr:
     base:
       citations:
         header: Citation
+      download_pdf: Télécharger le PDF
       form_child_work_relationships:
         actions:
           remove: Supprimer de ce travail

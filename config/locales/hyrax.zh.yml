@@ -302,6 +302,7 @@ zh:
     base:
       citations:
         header: 引文
+      download_pdf: 下载 PDF
       form_child_work_relationships:
         actions:
           remove: 从这项工作中删除

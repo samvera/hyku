@@ -47,6 +47,31 @@ RSpec.describe Site, type: :model do
         described_class.instance
       end
     end
+    describe '.instance across an in-process tenant switch' do
+      after { Apartment::Tenant.switch!(Apartment.default_tenant) }
+
+      let(:old_account) { FactoryBot.build(:sign_up_account) }
+      let(:new_account) { FactoryBot.build(:sign_up_account) }
+
+      before do
+        CreateAccount.new(old_account).save
+        CreateAccount.new(new_account).save
+
+        Apartment::Tenant.switch!(old_account.tenant)
+        Site.instance.update!(application_name: 'old site')
+
+        Apartment::Tenant.switch!(new_account.tenant)
+        Site.instance.update!(application_name: 'new site')
+      end
+
+      it 'does not return a stale Site after switching tenants within the same thread' do
+        Apartment::Tenant.switch!(old_account.tenant)
+        expect(described_class.instance.application_name).to eq('old site')
+
+        Apartment::Tenant.switch!(new_account.tenant)
+        expect(described_class.instance.application_name).to eq('new site')
+      end
+    end
   end
 
   describe ".superadmin_emails" do

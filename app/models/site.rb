@@ -35,6 +35,11 @@ class Site < ApplicationRecord
         end
       end
     end
+
+    # Clears the memoized Site so the next call to .instance re-fetches it.
+    def reset!
+      RequestStore.delete(:site_instance)
+    end
   end
 
   # Get all administrator emails associated with this site

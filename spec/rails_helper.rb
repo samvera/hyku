@@ -178,6 +178,7 @@ RSpec.configure do |config|
                     end
     ActiveFedora::Fedora.reset! unless disable_wings
     SolrEndpoint.reset!
+    RequestStore.clear!
     if example.metadata[:clean] || example.metadata[:clean_repo] || example.metadata[:type] == :feature
       if disable_wings
         Hyrax::SolrService.wipe!

@@ -301,6 +301,7 @@ en:
     base:
       citations:
         header: Citation
+      download_pdf: Download PDF
       form_child_work_relationships:
         actions:
           remove: Remove from this work

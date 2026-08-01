@@ -301,6 +301,7 @@ de:
     base:
       citations:
         header: Zitate
+      download_pdf: PDF herunterladen
       form_child_work_relationships:
         actions:
           remove: Aus dieser Arbeit entfernen

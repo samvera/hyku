@@ -302,6 +302,7 @@ it:
     base:
       citations:
         header: Citazioni
+      download_pdf: Scarica il PDF
       form_child_work_relationships:
         actions:
           remove: Rimuovi da questo lavoro

@@ -1,14 +1,13 @@
-<% if can?(:download, file_set_id) %>
+<% pdf = pdf_file_set_presenter(presenter, downloadable: true) %>
+<% if pdf.present? %>
   <div class="download-pdf-controls">
-    <% if @presenter.representative_presenter.present? && presenter.file_set_presenters.any?(&:pdf?) %>
-      <%= button_tag type: 'button',
-                     id: "file_download",
-                     data: { label: @presenter.representative_presenter.id,
-                             path: hyrax.download_path(presenter.representative_presenter) },
-                     class: "btn btn-success btn-block file_download center-block",
-                     onclick: "window.open(this.dataset.path, '_blank');" do %>
-        Download PDF
-      <% end %>
+    <%= button_tag type: 'button',
+                   id: "file_download",
+                   data: { label: pdf.id,
+                           path: hyrax.download_path(pdf) },
+                   class: "btn btn-success btn-block file_download center-block",
+                   onclick: "window.open(this.dataset.path, '_blank', 'noopener,noreferrer');" do %>
+      <%= t('hyrax.base.download_pdf') %>
     <% end %>
   </div>
 <% end %>

@@ -29,7 +29,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: ca5a17c60b548c5df96ac328b7811cbb8e5cd232
+  revision: 6fac65d85de8307d194b8608f48b33a7be0a4947
   branch: main
   specs:
     hyrax (5.2.0)
@@ -91,7 +91,7 @@ GIT
       signet
       sprockets (= 3.7.2)
       tinymce-rails (~> 5.10)
-      valkyrie (~> 3.5)
+      valkyrie (~> 3.6, >= 3.6.1)
       view_component (~> 2.74.1)
 
 GIT
@@ -1579,7 +1579,7 @@ GEM
     validate_url (1.0.15)
       activemodel (>= 3.0.0)
       public_suffix
-    valkyrie (3.5.0)
+    valkyrie (3.6.1)
       activemodel
       activesupport
       dry-struct
@@ -1589,7 +1589,7 @@ GEM
       json
       json-ld
       railties
-      rdf (~> 3.0, >= 3.0.10)
+      rdf (~> 3.0, >= 3.3.2)
       rdf-vocab
       reform (~> 2.2)
       reform-rails

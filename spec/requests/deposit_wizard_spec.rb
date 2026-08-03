@@ -826,6 +826,9 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
 
         expect(response).to redirect_to(deposit_wizard_step_path(step: 'done'))
         expect(session[:deposit_wizard]).to eq({})
+
+        work = Hyrax.query_service.find_all_of_model(model: resource_class).to_a.last
+        expect(session[:deposit_wizard_last]).to include('id' => work.id.to_s, 'parent_id' => nil)
       end
 
       it 'applies a per-file embargo that differs from the work embargo' do
@@ -1078,6 +1081,8 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
             child = Hyrax.query_service.find_all_of_model(model: resource_class).to_a
                          .reject { |w| w.id.to_s == parent.id.to_s }.last
             expect(reloaded_parent.member_ids.map(&:to_s)).to include(child.id.to_s)
+            expect(session[:deposit_wizard_last])
+              .to include('id' => child.id.to_s, 'parent_id' => parent.id.to_s)
           end
 
           it 'nests using a parent seeded at launch (handoff), without re-posting it' do

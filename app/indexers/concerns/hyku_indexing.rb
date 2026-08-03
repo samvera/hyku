@@ -57,10 +57,53 @@ module HykuIndexing
 
   # The parent's own child file sets, fetched once per object. Both
   # `extract_text_from_plain_text_files` and the `extract_text_from_pdf_directly`
-  # fallback need them, and `find_child_file_sets` loads the member resources, so
+  # fallback need them, and loading member resources is the expensive part, so
   # memoize to avoid running that load twice in the same indexing pass.
   def child_file_sets(object)
-    (@child_file_sets ||= {})[object.id] ||= Hyrax.custom_queries.find_child_file_sets(resource: object).to_a
+    (@child_file_sets ||= {})[object.id] ||= file_set_members(object)
+  end
+
+  # Loads only the members that are file sets. `find_child_file_sets` is
+  # `find_members(resource:).select(&:file_set?)`, so it instantiates every member
+  # before discarding the non-file-sets: a 100-child work spent ~1.7s per reindex
+  # loading child works it never uses, and the parent is reindexed several times
+  # per save (#3175, the other half of #3105).
+  #
+  # `find_members(model:)` can't do the filtering: Goddess maps a Valkyrie model
+  # to its Wings counterpart, so asking for `Hyrax::FileSet` queries
+  # `internal_resource = 'FileSet'` and matches nothing.
+  def file_set_members(object)
+    ids = file_set_member_ids(object)
+    return [] if ids.empty?
+
+    # find_many_by_ids does not preserve the order of the ids it is given.
+    by_id = Hyrax.query_service.find_many_by_ids(ids: ids).index_by { |member| member.id.to_s }
+    ids.filter_map { |id| by_id[id.to_s] }
+  end
+
+  # Which members are file sets, in member order. Same batched-Solr shape as
+  # `child_work_full_texts`, and the same eventual consistency: a file set not yet
+  # indexed contributes on the next reindex.
+  def file_set_member_ids(object)
+    member_ids = Array(object.member_ids).map(&:to_s).reject(&:blank?)
+    return [] if member_ids.empty?
+
+    found = Hyrax::SolrService.query(
+      "{!terms f=id}#{member_ids.join(',')}",
+      fq: file_set_model_filter,
+      fl: 'id',
+      rows: member_ids.length,
+      method: :post
+    ).map { |doc| doc['id'].to_s }.to_set
+
+    member_ids.select { |id| found.include?(id) }.map { |id| Valkyrie::ID.new(id) }
+  end
+
+  # File sets are indexed with `has_model_ssim` but no `generic_type_sim`, so the
+  # model names are the only way to select them.
+  def file_set_model_filter
+    names = Hyrax::ModelRegistry.file_set_class_names.map { |name| name.delete_prefix('::') }.uniq
+    "has_model_ssim:(#{names.map { |name| %("#{name}") }.join(' OR ')})"
   end
 
   # Aggregate each child work's already-indexed full text from Solr rather than

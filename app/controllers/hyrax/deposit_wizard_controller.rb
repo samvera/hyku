@@ -90,8 +90,10 @@ module Hyrax
         return render(:review)
       end
 
-      reset_state
+      # Stash before resetting, so reading the session-scoped parent doesn't rely
+      # on the memoized State still pointing at the hash reset_state replaced.
       stash_deposited(work)
+      reset_state
       redirect_to main_app.deposit_wizard_step_path(step: 'done')
     end
 
@@ -184,9 +186,13 @@ module Hyrax
     end
 
     # Survive the redirect to the done screen, which reads it once. The show path
-    # is built here where the work object is available.
+    # is built here where the work object is available. The ids let a done-screen
+    # override render something about the deposit in context (e.g. the parent's
+    # membership) without re-deriving them from state the redirect has dropped.
     def stash_deposited(work)
       session[:deposit_wizard_last] = {
+        'id' => work.id.to_s,
+        'parent_id' => wizard_state.parent_id.presence,
         'title' => Array(work.title).first,
         'path' => main_app.polymorphic_path([main_app, work])
       }

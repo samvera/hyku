@@ -23,6 +23,40 @@
       uploadTemplateId: 'deposit-wizard-template-upload',
       downloadTemplateId: 'deposit-wizard-template-download'
     });
+    guardNextWhileUploading(uploader);
+  }
+
+  // The uploaded_files[] hidden input is written only by the download template,
+  // which the plugin swaps in on completion — so advancing mid-upload posts
+  // without the in-flight ids and silently drops those files.
+  function guardNextWhileUploading(uploader) {
+    var next = $('[data-behavior="files-next"]');
+    if (!next.length) return;
+    var inFlight = 0;
+
+    function sync() {
+      next.prop('disabled', inFlight > 0);
+    }
+
+    // Decrement on 'finished', not 'completed': completed fires only on success,
+    // so a failed upload would leave the count above zero and Next stuck for the
+    // rest of the page's life. 'finished' fires on both the success and failure
+    // paths. (Hyrax's own save_work/uploaded_files.es6 counts 'completed' and has
+    // exactly that leak — don't mirror it.)
+    uploader.on('fileuploadadded', function () {
+      inFlight += 1;
+      sync();
+      // No explicit return: the plugin cancels the upload when an 'added'
+      // handler returns false.
+    });
+    uploader.on('fileuploadfinished', function () {
+      inFlight = Math.max(0, inFlight - 1);
+      sync();
+    });
+
+    uploader.closest('form').on('submit', function (event) {
+      if (inFlight > 0) event.preventDefault();
+    });
   }
 
   // Visibility pills: mark the selected pill, expand its embargo/lease panel (by

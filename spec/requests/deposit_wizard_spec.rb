@@ -336,6 +336,15 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         expect(response.body).to include(I18n.t('hyku.deposit_wizard.files.heading'))
       end
 
+      # The uploaded_files[] inputs are written by the uploader's download
+      # template on completion, so advancing mid-upload would drop in-flight
+      # files. This hook is what the JS disables until the uploads settle.
+      it 'marks the Next button so uploads in flight can block advancing' do
+        get deposit_wizard_step_path(step: 'files')
+
+        expect(response.body).to include('data-behavior="files-next"')
+      end
+
       context 'after a work type is chosen' do
         before { patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type } }
 

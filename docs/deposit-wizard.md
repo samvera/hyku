@@ -487,3 +487,8 @@ redirect controls, the admin-set description, and the parent/collection Select2
 typeaheads. The details step additionally carries `data-behavior="work-form"` so
 Hyrax's own editor JS binds the autocomplete and controlled-vocabulary fields
 exactly as on the stock form.
+
+Three steps gate their Next button on a `data-behavior` hook: `files-next` stays
+disabled while uploads are in flight (the uploaded-file ids only reach the form as
+each upload completes, so advancing early would drop them), and `parent-next` /
+`type-next` stay disabled until a parent or work type is chosen.

@@ -438,6 +438,13 @@ start path or the review-step section), set `parent_types` and the `parent_conne
 config setting (default on). A directed `parent_id` handoff (see
 [Launch with context](#launch-with-context)) nests regardless of that setting.
 
+The parent must be able to contain the work: the parent step refuses a work whose
+type accepts no children, and commit refuses one that cannot contain the chosen
+work type. Both read `Hyrax::ChildTypes`, i.e. the parent class's
+`valid_child_concerns`, so a repository declaring its own nesting rules is honored.
+`add_to_parent` validates none of this itself, so the standard deposit form applies
+the same check on create.
+
 ### Launch with context
 
 Other entry points can hand off into the wizard with a target pre-filled by

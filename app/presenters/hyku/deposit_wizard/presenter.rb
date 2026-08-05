@@ -416,10 +416,12 @@ module Hyku
       attr_reader :commit_errors
 
       # Create the work, apply per-file embargo/lease, and run the configured
-      # post-commit hook (e.g. downstream nesting). Returns the work, or nil on
-      # validation/transaction failure (recorded in #commit_errors so the
-      # re-rendered review step isn't silent).
+      # post-commit hook (e.g. downstream nesting). Returns the work, or nil if the
+      # nesting is disallowed or on validation/transaction failure (recorded in
+      # #commit_errors so the re-rendered review step isn't silent).
       def deposit
+        return record_commit_failure(I18n.t('hyku.deposit_wizard.errors.parent_not_allowed')) unless nesting_allowed?
+
         work = create_work
         return unless work
 
@@ -505,6 +507,7 @@ module Hyku
 
       def advance_from_select_parent
         return rerender_parent_required if params[:parent_id].blank?
+        return rerender_parent_rejected unless parent_accepts_children?(params[:parent_id])
 
         state.parent_id = params[:parent_id]
         Transition.advance(next_step('select_parent'))
@@ -512,6 +515,36 @@ module Hyku
 
       def rerender_parent_required
         Transition.rerender('select_parent', alert: 'hyku.deposit_wizard.errors.no_parent')
+      end
+
+      def rerender_parent_rejected
+        Transition.rerender('select_parent', alert: 'hyku.deposit_wizard.errors.parent_not_allowed')
+      end
+
+      # The work type usually isn't chosen yet at select_parent, so "accepts
+      # children at all" is the only check available there; #nesting_allowed? does
+      # the full pairing at commit.
+      def parent_accepts_children?(parent_id)
+        child_types_for(parent_id).any?
+      end
+
+      # Checked again at commit because parent_id also arrives by routes that skip
+      # select_parent (the launch handoff), and because AddToParent validates
+      # nothing itself.
+      def nesting_allowed?
+        return true if state.parent_id.blank? || state.work_type.blank?
+
+        child_types_for(state.parent_id).map(&:to_s).include?(state.work_type.to_s)
+      end
+
+      # Empty when the parent can't be read, so an unresolvable parent is refused
+      # at the step that names it rather than surfacing as a transaction failure
+      # after the depositor has filled in the rest of the form.
+      def child_types_for(parent_id)
+        parent = Hyrax.query_service.find_by(id: parent_id)
+        Hyrax::ChildTypes.for(parent: parent.class).to_a
+      rescue Valkyrie::Persistence::ObjectNotFoundError
+        []
       end
 
       def select_work_type(rerender_step: 'known_type')

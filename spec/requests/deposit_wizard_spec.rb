@@ -364,6 +364,38 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         expect(response).to redirect_to(deposit_wizard_path)
       end
 
+      context 'when the chosen parent accepts no children' do
+        let(:childless) { GenericWorkResource }
+
+        before do
+          @original = childless.valid_child_concerns
+          childless.valid_child_concerns = []
+        end
+
+        after { childless.valid_child_concerns = @original }
+
+        it 're-renders select_parent with an alert and does not seed the parent' do
+          parent = FactoryBot.valkyrie_create(:generic_work_resource, depositor: admin.user_key)
+          patch deposit_wizard_advance_path(step: 'start'), params: { path: 'add' }
+
+          patch deposit_wizard_advance_path(step: 'select_parent'), params: { parent_id: parent.id.to_s }
+
+          expect(response).to have_http_status(:success)
+          expect(response.body).to include(I18n.t('hyku.deposit_wizard.errors.parent_not_allowed'))
+          expect(session[:deposit_wizard]['parent_id']).to be_nil
+        end
+      end
+
+      it 're-renders select_parent when the chosen parent cannot be read' do
+        patch deposit_wizard_advance_path(step: 'start'), params: { path: 'add' }
+
+        patch deposit_wizard_advance_path(step: 'select_parent'), params: { parent_id: 'no-such-work' }
+
+        expect(response).to have_http_status(:success)
+        expect(response.body).to include(I18n.t('hyku.deposit_wizard.errors.parent_not_allowed'))
+        expect(session[:deposit_wizard]['parent_id']).to be_nil
+      end
+
       it 'shows the chosen parent and a Back-to-parent link on the type chooser' do
         parent = FactoryBot.valkyrie_create(:generic_work_resource, title: ['Umbrella'], depositor: admin.user_key)
         patch deposit_wizard_advance_path(step: 'start'), params: { path: 'add' }
@@ -724,6 +756,27 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type }
         patch deposit_wizard_advance_path(step: 'details'),
               params: { param_key => { title: ['Repair Study'], creator: ['Ada Lovelace'] } }
+      end
+
+      context 'when the seeded parent cannot contain the chosen type' do
+        before do
+          @original = GenericWorkResource.valid_child_concerns
+          GenericWorkResource.valid_child_concerns = []
+        end
+
+        after { GenericWorkResource.valid_child_concerns = @original }
+
+        it 'refuses to deposit and re-renders review with an alert' do
+          parent = FactoryBot.valkyrie_create(:generic_work_resource, depositor: admin.user_key)
+          get deposit_wizard_path(parent_id: parent.id.to_s)
+          fill_in_wizard
+
+          expect { post deposit_wizard_commit_path }
+            .not_to change { Hyrax.query_service.find_all_of_model(model: work_type.constantize).count }
+
+          expect(response).to have_http_status(:success)
+          expect(response.body).to include(I18n.t('hyku.deposit_wizard.errors.parent_not_allowed'))
+        end
       end
 
       it 'renders a summary including visibility on the review step' do

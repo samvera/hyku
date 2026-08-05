@@ -23,4 +23,38 @@ RSpec.describe Hyrax::GenericWorksController do
       expect(response.status).to eq(200)
     end
   end
+
+  describe '#create with a parent_id' do
+    let(:parent) { FactoryBot.valkyrie_create(:generic_work_resource, depositor: user.user_key) }
+
+    before { sign_in user }
+
+    context 'when the parent accepts no children' do
+      before do
+        @original = GenericWorkResource.valid_child_concerns
+        GenericWorkResource.valid_child_concerns = []
+      end
+
+      after { GenericWorkResource.valid_child_concerns = @original }
+
+      it 'refuses the deposit' do
+        post :create, params: { parent_id: parent.id.to_s,
+                                generic_work: { title: ['Rejected child'] } }
+
+        expect(response).to redirect_to(root_path)
+        expect(flash[:alert]).to eq(I18n.t('hyku.works.errors.parent_not_allowed'))
+      end
+    end
+
+    it 'refuses a parent the user cannot edit' do
+      other = FactoryBot.valkyrie_create(:generic_work_resource,
+                                         depositor: FactoryBot.create(:user).user_key)
+
+      post :create, params: { parent_id: other.id.to_s,
+                              generic_work: { title: ['Not mine'] } }
+
+      expect(response).to redirect_to(root_path)
+      expect(flash[:alert]).to eq(I18n.t('hyku.works.errors.parent_not_allowed'))
+    end
+  end
 end

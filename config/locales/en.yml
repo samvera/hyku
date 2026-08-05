@@ -85,6 +85,7 @@ en:
         deposit_failed: Your work could not be deposited
         details_invalid: Some details need fixing before you can continue
         no_parent: Please choose a work to add this deposit to.
+        parent_not_allowed: That work cannot contain this deposit. Choose a different one.
         no_work_type: Please choose a work type to continue.
       extras:
         add: Add
@@ -195,6 +196,9 @@ en:
           type: Item type
           upload: Upload files
         label: Deposit progress
+    works:
+      errors:
+        parent_not_allowed: That work cannot contain this deposit.
     admin:
       flash:
         access_denied: You are not authorized to view this page

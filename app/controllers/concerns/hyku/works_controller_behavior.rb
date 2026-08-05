@@ -5,6 +5,8 @@
 #           - correct hostname of manifests
 #           - override for bug https://github.com/samvera/hyrax/issues/5904
 #           - use Hyku::WorkShowPresenter rather than Hyrax's presenter
+#           - refuse a parent_id the depositor cannot edit or whose type cannot
+#             contain the work being created
 module Hyku
   # include this module after including Hyrax::WorksControllerBehavior to override
   # Hyrax::WorksControllerBehavior methods with the ones defined here
@@ -14,6 +16,7 @@ module Hyku
     included do
       # add around action to load theme show page views
       around_action :inject_show_theme_views, except: :delete
+      before_action :ensure_parent_accepts_child, only: :create
       self.show_presenter = Hyku::WorkShowPresenter
 
       # These cache wrapper methods need to be in the top level so that they override other modules
@@ -37,6 +40,26 @@ module Hyku
     end
 
     private
+
+    # parent_id reaches Steps::AddToParent straight from params, and that step
+    # validates neither the type pairing nor the user's access to the parent.
+    def ensure_parent_accepts_child
+      parent_id = params[:parent_id]
+      return if parent_id.blank?
+
+      parent = Hyrax.query_service.find_by(id: parent_id)
+      child_types = Hyrax::ChildTypes.for(parent: parent.class).map(&:to_s)
+      return if current_ability.can?(:edit, parent) &&
+                child_types.include?(self.class.curation_concern_type.to_s)
+
+      reject_parent
+    rescue Valkyrie::Persistence::ObjectNotFoundError
+      reject_parent
+    end
+
+    def reject_parent
+      redirect_to main_app.root_path, alert: I18n.t('hyku.works.errors.parent_not_allowed')
+    end
 
     def iiif_manifest_presenter
       Hyrax::IiifManifestPresenter.new(search_result_document(id: params[:id])).tap do |p|

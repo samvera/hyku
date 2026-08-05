@@ -789,6 +789,36 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         expect(response.body).to include(I18n.t('hyku.deposit_wizard.review.work_visibility'))
       end
 
+      it 'shows an authority label instead of the stored URI' do
+        uri = 'http://rightsstatements.org/vocab/InC/1.0/'
+        patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type }
+        patch deposit_wizard_advance_path(step: 'details'),
+              params: { param_key => { title: ['Labeled'], creator: ['Ada'], rights_statement: [uri] } }
+
+        get deposit_wizard_step_path(step: 'review')
+
+        expect(response.body).to include('In Copyright')
+        expect(response.body).not_to include(uri)
+      end
+
+      it 'leaves an uncontrolled value alone' do
+        fill_in_wizard
+        get deposit_wizard_step_path(step: 'review')
+
+        expect(response.body).to include('Repair Study')
+      end
+
+      it 'falls back to the stored value when the authority has no match' do
+        patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type }
+        patch deposit_wizard_advance_path(step: 'details'),
+              params: { param_key => { title: ['Unmatched'], creator: ['Ada'],
+                                       rights_statement: ['http://example.com/not-an-authority-id'] } }
+
+        get deposit_wizard_step_path(step: 'review')
+
+        expect(response.body).to include('http://example.com/not-an-authority-id')
+      end
+
       describe 'autosaving review extras (survive a refresh)' do
         after { Hyku::DepositWizard.reset_config! }
 

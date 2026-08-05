@@ -126,17 +126,91 @@ module Hyku
         terms = (work_form.primary_terms + work_form.secondary_terms) - %i[schema_version contexts]
         terms.filter_map do |term|
           value = review_term_value(term)
-          { label: review_term_label(term), value: value.join(', ') } if value.present?
+          { label: review_term_label(term), value: review_display_values(term, value).join(', ') } if value.present?
         end
       end
 
-      # Compound fields with entries, as {label:, count:} rows (the review shows a
-      # count rather than expanding each nested entry).
+      # Which properties are controlled comes from the metadata profile, so no
+      # property is named here.
+      def review_display_values(term, values)
+        service = controlled_service_for(term)
+        return values if service.nil?
+
+        values.map { |value| service.label(value) { value } }
+      end
+
+      # nil unless the profile declares this property controlled and its authority
+      # resolves. Memoized per request: Qa re-reads and re-parses the whole
+      # authority file on every lookup.
+      def controlled_service_for(term)
+        @controlled_services ||= {}
+        return @controlled_services[term] if @controlled_services.key?(term)
+
+        @controlled_services[term] = build_controlled_service(term)
+      end
+
+      def build_controlled_service(term)
+        source = context.helpers.controlled_vocabulary_source_for(term)
+        return if source.blank?
+
+        # Prefer the registered service (it may add behavior); fall back to a bare
+        # authority lookup so a profile source with no registry entry still labels.
+        registered = Hyrax::ControlledVocabularies.services[source]&.safe_constantize
+        registered ? registered.new : Hyrax::TolerantSelectService.new(source)
+      rescue StandardError => e
+        Hyrax.logger.debug("Deposit wizard: no label service for #{term} (#{source}): #{e.message}")
+        nil
+      end
+
+      # Compound fields with entries, as {label:, count:, values:} rows: the count
+      # summarizes, +values+ carries each entry's controlled sub-property labels.
       def review_compound_terms
         work_form.compound_terms.filter_map do |term|
           entries = review_term_value(term)
-          { label: review_term_label(term), count: entries.size } if entries.present?
+          next if entries.blank?
+
+          { label: review_term_label(term), count: entries.size,
+            values: compound_entry_labels(term, entries) }
         end
+      end
+
+      # Empty when the compound declares no controlled sub-properties, so the row
+      # stays a bare count.
+      def compound_entry_labels(term, entries)
+        specs = compound_subproperty_specs(term)
+        return [] if specs.blank?
+
+        entries.flat_map { |entry| compound_row_labels(specs, entry) }.uniq
+      end
+
+      def compound_row_labels(specs, entry)
+        row = entry.respond_to?(:to_h) ? entry.to_h.with_indifferent_access : {}
+        specs.filter_map do |name, spec|
+          value = row[name]
+          next if value.blank?
+
+          Hyrax::CompoundSubpropertyLabeler.label_for(spec, value).presence
+        end
+      end
+
+      # Only the `controlled` sub-properties: the labeler passes anything else
+      # through unchanged, so filtering here keeps free-text out of the summary.
+      def compound_subproperty_specs(term)
+        @compound_specs ||= {}
+        return @compound_specs[term] if @compound_specs.key?(term)
+
+        definition = compound_schema&.definition_for(term)
+        specs = (definition&.dig(:subproperties) || {}).select { |_n, s| s[:type].to_s == 'controlled' }
+        @compound_specs[term] = specs
+      end
+
+      def compound_schema
+        return @compound_schema if defined?(@compound_schema)
+
+        @compound_schema = Hyrax::CompoundSchema.for(work_form.model)
+      rescue StandardError => e
+        Hyrax.logger.debug("Deposit wizard: no compound schema for review labels: #{e.message}")
+        @compound_schema = nil
       end
 
       def file_type_label(uploaded_file)

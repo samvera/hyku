@@ -418,8 +418,8 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
           expect(response).to have_http_status(:success)
           expect(response).not_to redirect_to(deposit_wizard_step_path(step: 'review'))
           expect(response.body).to include(I18n.t('hyku.deposit_wizard.errors.details_invalid'))
-          # The submission is not advanced into wizard state on failure.
-          expect(session[:deposit_wizard]['attributes']).to be_blank
+          # Saved even though invalid, so leaving the step doesn't discard the work.
+          expect(session[:deposit_wizard]['attributes']['title']).to eq(['Bad embed'])
           # Entered values survive the re-render so the depositor can correct them.
           expect(response.body).to include('Bad embed')
           expect(response.body).to include('not a url')
@@ -444,7 +444,36 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
                 params: { param_key => { title: [''] } }
 
           expect(response).to have_http_status(:success)
-          expect(session[:deposit_wizard]['attributes']).to be_nil
+          expect(session[:deposit_wizard]['attributes']).to be_present
+        end
+
+        it 'saves what was entered and steps back when Back is submitted' do
+          patch deposit_wizard_advance_path(step: 'details'),
+                params: { direction: 'back',
+                          param_key => { title: ['Half finished'], description: ['Some notes'] } }
+
+          expect(response).to redirect_to(deposit_wizard_step_path(step: 'files'))
+          expect(session[:deposit_wizard]['attributes']['title']).to eq(['Half finished'])
+          expect(session[:deposit_wizard]['attributes']['description']).to eq(['Some notes'])
+        end
+
+        it 'steps back without validating, so an incomplete form is still saved' do
+          patch deposit_wizard_advance_path(step: 'details'),
+                params: { direction: 'back', param_key => { title: [''], description: ['Just a note'] } }
+
+          expect(response).to redirect_to(deposit_wizard_step_path(step: 'files'))
+          expect(flash[:alert]).to be_blank
+          expect(session[:deposit_wizard]['attributes']['description']).to eq(['Just a note'])
+        end
+
+        it 'renders Back as a submit button so entries post on the way out' do
+          get deposit_wizard_step_path(step: 'details')
+
+          # formnovalidate is asserted because a request spec can't exercise the
+          # browser validation it suppresses (see _nav.html.erb).
+          expect(response.body).to match(
+            /<button[^>]*name="direction"[^>]*value="back"[^>]*formnovalidate/
+          )
         end
       end
     end
@@ -522,6 +551,16 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
 
           expect(response).to have_http_status(:success)
           expect(response.body).to include('Cover image')
+        end
+
+        it 'saves per-file metadata and steps back when Back is submitted' do
+          patch deposit_wizard_advance_path(step: 'file_meta'),
+                params: { direction: 'back',
+                          file_metadata: { upload.id.to_s => { title: 'Typed then went back' } } }
+
+          expect(response).to redirect_to(deposit_wizard_step_path(step: 'details'))
+          expect(session[:deposit_wizard]['file_metadata'][upload.id.to_s]['title'])
+            .to eq('Typed then went back')
         end
       end
     end

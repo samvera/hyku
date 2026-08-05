@@ -539,20 +539,34 @@ module Hyku
       # The ChangeSet permits its own fields, so raw nested params go straight to
       # #validate, as the stock works controller does. The submitted values (plain
       # strings/arrays) are stored so they serialize into the session.
+      #
+      # The save is unconditional: validation decides where the depositor goes
+      # next, not whether their entries are kept.
       def advance_from_details
         build_work_form
+        save_details_attributes
+        return Transition.advance(back_step('details')) if going_back?
+
         unless work_form.validate(work_params)
           return Transition.rerender('details', alert: 'hyku.deposit_wizard.errors.details_invalid',
                                                 messages: form_error_messages(work_form))
         end
 
-        # The details form owns the work fields, but not the launch-seeded extras
-        # (a collection carried in by the "deposit into THIS collection" handoff).
-        # Replacing wholesale would drop those before commit, so re-apply any that
-        # the form did not submit.
-        submitted = work_params.to_unsafe_h
-        state.attributes = preserved_launch_extras.merge(submitted)
         Transition.advance(next_step('details'))
+      end
+
+      # The details form owns the work fields, but not the launch-seeded extras
+      # (a collection carried in by the "deposit into THIS collection" handoff).
+      # Replacing wholesale would drop those before commit, so re-apply any that
+      # the form did not submit.
+      def save_details_attributes
+        state.attributes = preserved_launch_extras.merge(work_params.to_unsafe_h)
+      end
+
+      # Set by the metadata steps' Back button, which submits the form (saving what
+      # was entered) instead of linking away.
+      def going_back?
+        params[:direction].to_s == 'back'
       end
 
       # Launch-seeded attributes the details form does not manage (today: collection
@@ -565,6 +579,8 @@ module Hyku
         submitted = params.fetch(:file_metadata, {}).permit!.to_h
         allowed = state.uploaded_file_ids.map(&:to_s)
         state.file_metadata = submitted.slice(*allowed)
+        return Transition.advance(back_step('file_meta')) if going_back?
+
         Transition.advance(next_step('file_meta'))
       end
 

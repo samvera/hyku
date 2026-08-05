@@ -172,6 +172,10 @@ Each `Step` declares its own rules; the navigator computes the rest:
   is never a prerequisite.
 - **Back** is the previous visible step (`Flow#back_before`), so views never name
   their predecessor. **Forward** is the next visible step (`Flow#next_after`).
+  On the metadata steps (`details`, `file_meta`) Back submits the form rather than
+  linking, so what was typed is saved on the way out; those steps save
+  unconditionally and validate only to decide whether to advance. The browser's own
+  back button bypasses this, so entries abandoned that way are still lost.
 - **Detours** (`Flow#detour_for`) replace the old per-step redirect rules.
 
 | Step | Purpose | Shown when |

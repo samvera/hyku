@@ -116,8 +116,6 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
             expect(response).to have_http_status(:success)
           end
 
-          # Skipping start skips its inline admin-set chooser, so the child takes
-          # the parent's set rather than silently falling back to the default.
           it 'inherits the admin set from the handed-off parent' do
             admin_set_id = Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id.to_s
             parent = FactoryBot.valkyrie_create(:generic_work_resource, admin_set_id: admin_set_id)
@@ -428,9 +426,6 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         expect(response.body).to include(I18n.t('hyku.deposit_wizard.files.heading'))
       end
 
-      # The uploaded_files[] inputs are written by the uploader's download
-      # template on completion, so advancing mid-upload would drop in-flight
-      # files. This hook is what the JS disables until the uploads settle.
       it 'marks the Next button so uploads in flight can block advancing' do
         get deposit_wizard_step_path(step: 'files')
 

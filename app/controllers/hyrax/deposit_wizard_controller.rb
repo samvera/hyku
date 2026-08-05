@@ -77,7 +77,6 @@ module Hyrax
       head :no_content
     end
 
-    # Abandon an in-progress deposit.
     def discard
       deleted = discard_staged_uploads
       reset_state

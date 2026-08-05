@@ -254,6 +254,26 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         expect(response.body).to include(I18n.t('hyku.deposit_wizard.start.paths.standalone.title'))
       end
 
+      it 'marks only the container path so it can lead the group' do
+        get deposit_wizard_path
+
+        cards = response.body.scan(/<button[^>]*name="path"[^>]*>/)
+        container_cards = cards.grep(/path-card--container/)
+
+        expect(container_cards.size).to eq(1)
+        expect(container_cards.first).to include('value="new"')
+      end
+
+      it 'marks no path when no container is configured' do
+        Hyku::DepositWizard.config = Hyku::DepositWizard::Config.new do |c|
+          c.parent_connect_placement = :start
+        end
+        get deposit_wizard_path
+
+        expect(response.body).to include(I18n.t('hyku.deposit_wizard.start.paths.new.title'))
+        expect(response.body).not_to include('path-card--container')
+      end
+
       it 'records the chosen path and advances to item_start' do
         patch deposit_wizard_advance_path(step: 'start'), params: { path: 'standalone' }
 

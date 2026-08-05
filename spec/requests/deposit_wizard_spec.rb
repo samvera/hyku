@@ -56,6 +56,78 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
           expect(session[:deposit_wizard]['parent_id']).to eq('parent-123')
         end
 
+        # The default placement (:review) accepts a handed-off parent and carries on;
+        # only an install that chooses the parent up front lands on that step.
+        it 'renders the path chooser under the default placement' do
+          get deposit_wizard_path(parent_id: 'parent-123')
+
+          expect(response).to have_http_status(:success)
+          expect(session[:deposit_wizard]['parent_id']).to eq('parent-123')
+        end
+
+        context 'when the parent is chosen up front' do
+          before { Hyku::DepositWizard.config.parent_connect_placement = :start }
+
+          it 'skips the path chooser and lands on the parent step, on the add path' do
+            get deposit_wizard_path(parent_id: 'parent-123')
+
+            expect(response).to redirect_to(deposit_wizard_step_path(step: 'select_parent'))
+            # Required for select_parent to be visible at all; without it the step's
+            # on_skip: :entry detour sends the visit straight back to start.
+            expect(session[:deposit_wizard]['path']).to eq('add')
+          end
+
+          it 'renders the parent step with the handed-off parent already chosen' do
+            get deposit_wizard_path(parent_id: 'parent-123')
+            follow_redirect!
+
+            expect(response).to have_http_status(:success)
+            expect(response.body).to include('parent-123')
+          end
+
+          # Back from select_parent returns to start without the param, so the
+          # redirect must not fire again and trap the depositor.
+          it 'does not redirect back out of the path chooser once there' do
+            get deposit_wizard_path(parent_id: 'parent-123')
+            get deposit_wizard_path
+
+            expect(response).to have_http_status(:success)
+            expect(response.body).to include(I18n.t('hyku.deposit_wizard.page_heading'))
+          end
+
+          it 'still renders the path chooser when no parent was handed off' do
+            get deposit_wizard_path
+
+            expect(response).to have_http_status(:success)
+          end
+
+          it 'tolerates a parent that cannot be found' do
+            get deposit_wizard_path(parent_id: 'no-such-work')
+
+            expect(response).to redirect_to(deposit_wizard_step_path(step: 'select_parent'))
+            expect(session[:deposit_wizard]['admin_set_id']).to be_blank
+          end
+
+          # A blank param passes params.present? but seeds nothing, so redirecting
+          # would land on the parent step with no parent chosen.
+          it 'renders the path chooser when the handed-off parent is blank' do
+            get deposit_wizard_path(parent_id: '   ')
+
+            expect(response).to have_http_status(:success)
+          end
+
+          # Skipping start skips its inline admin-set chooser, so the child takes
+          # the parent's set rather than silently falling back to the default.
+          it 'inherits the admin set from the handed-off parent' do
+            admin_set_id = Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id.to_s
+            parent = FactoryBot.valkyrie_create(:generic_work_resource, admin_set_id: admin_set_id)
+
+            get deposit_wizard_path(parent_id: parent.id.to_s)
+
+            expect(session[:deposit_wizard]['admin_set_id']).to eq(admin_set_id)
+          end
+        end
+
         it 'seeds collection membership from add_works_to_collection when the picker is enabled' do
           get deposit_wizard_path(add_works_to_collection: 'coll-9')
 

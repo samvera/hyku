@@ -29,6 +29,8 @@ module Hyrax
     def start
       reset_state
       seed_launch_context
+      return redirect_to(step_path('select_parent')) if skip_start_for_handoff?
+
       assign_admin_sets_for_standard_chooser
       render :start
     end
@@ -239,13 +241,47 @@ module Hyrax
     # capabilities, which only govern the optional start/review pickers a depositor
     # uses to choose a parent or collections themselves.
     def seed_launch_context
-      wizard_state.parent_id = params[:parent_id] if params[:parent_id].present?
+      seed_parent_handoff if params[:parent_id].present?
 
       return if params[:add_works_to_collection].blank?
 
       wizard_state.attributes = wizard_state.attributes.merge(
         'member_of_collections_attributes' => { '0' => { 'id' => params[:add_works_to_collection] } }
       )
+    end
+
+    # Setting the 'add' path is required, not redundant with parent_id: without it
+    # select_parent is skipped and its on_skip: :entry detour bounces straight back
+    # here.
+    def seed_parent_handoff
+      wizard_state.parent_id = params[:parent_id]
+      wizard_state.path = 'add'
+      inherit_admin_set_from_parent
+    end
+
+    # Skipping `start` skips its inline admin-set chooser, so a child work takes
+    # its parent's admin set. selected_admin_set_id falls back to the default when
+    # this leaves it blank (an unreadable or since-deleted parent).
+    def inherit_admin_set_from_parent
+      parent = Hyrax.query_service.find_by(id: wizard_state.parent_id)
+      wizard_state.admin_set_id = parent.try(:admin_set_id).presence
+    rescue Valkyrie::Persistence::ObjectNotFoundError
+      nil
+    end
+
+    # Land a directed handoff on the parent step rather than the path chooser it
+    # has already answered.
+    #
+    # Only for installs that choose a parent up front. The default placement
+    # (:review) accepts a handed-off parent and proceeds, which is deliberate —
+    # redirecting those installs to an up-front parent step would contradict it.
+    def skip_start_for_handoff?
+      # The param, so Back from select_parent (which returns here without one)
+      # reaches the chooser instead of being redirected forward in a loop; the
+      # state too, since parent_id= drops a blank and there'd be nothing to show.
+      params[:parent_id].present? &&
+        wizard_config.parent_connect_on_start? &&
+        wizard_state.parent_id.present?
     end
   end
 end

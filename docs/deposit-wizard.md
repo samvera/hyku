@@ -96,8 +96,10 @@ boundary. It wraps — does not replace — Hyrax's create machinery.
 
 - **Controller**: `Hyrax::DepositWizardController`
   (`app/controllers/hyrax/deposit_wizard_controller.rb`). Actions: `start`,
-  `show` (per step), `update` (advance), `commit`, plus the AJAX endpoints
-  `parent_options` (parent typeahead) and `save_extras` (review-step autosave).
+  `show` (per step), `update` (advance), `commit`, `discard` (abandon an
+  in-progress deposit — clears the session state and destroys the uploads staged
+  for it), plus the AJAX endpoints `parent_options` (parent typeahead) and
+  `save_extras` (review-step autosave).
   Each action reads params, calls the presenter for the decision, and turns the
   result into a redirect / render / flash. It memoizes the presenter and exposes
   `wizard_config` / `wizard_state` shorthands; there are no controller concerns.
@@ -120,7 +122,8 @@ boundary. It wraps — does not replace — Hyrax's create machinery.
   - `Hyku::DepositWizard::State` — a thin wrapper over `session[:deposit_wizard]`.
     Exposes named slots (path, work type, uploaded files, …) plus `#extra`, a
     namespaced bag a downstream app writes custom step state into without
-    subclassing State (see "Insertion points").
+    subclassing State (see "Insertion points"). It is cleared on entry at `start`,
+    after a successful `commit`, and by `discard`.
   - `Hyku::DepositWizard::Flow` — the step sequence as data plus its navigator (a
     swappable `Config#flow`); see "Steps and the Flow".
   - `Hyku::DepositWizard::VisibilityPolicy` — a policy object deriving the allowed

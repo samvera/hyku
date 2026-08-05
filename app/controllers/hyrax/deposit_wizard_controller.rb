@@ -75,6 +75,14 @@ module Hyrax
       head :no_content
     end
 
+    # Abandon an in-progress deposit.
+    def discard
+      deleted = discard_staged_uploads
+      reset_state
+      key = deleted.positive? ? 'discarded_with_files' : 'discarded'
+      redirect_to hyrax.my_works_path, notice: t("hyku.deposit_wizard.#{key}", count: deleted)
+    end
+
     # Deposit the work from the collected state and land on the done screen.
     def commit
       return redirect_to(main_app.deposit_wizard_step_path(step: 'known_type')) if wizard_state.work_type.blank?
@@ -183,6 +191,21 @@ module Hyrax
 
     def reset_state
       session[:deposit_wizard] = {}
+    end
+
+    # Staged uploads are only reachable through this session, so abandoning the
+    # deposit orphans them: nothing will attach them to a work, and the cleanup
+    # sweeper's default retention is measured in years.
+    #
+    # Scoped by user (matching the `can :destroy, UploadedFile, user: current_user`
+    # ability) because the ids come from the session, which a request can forge.
+    # Returns the number destroyed, so the notice can name what actually happened.
+    def discard_staged_uploads
+      ids = wizard_state.uploaded_file_ids
+      return 0 if ids.blank?
+
+      staged = Hyrax::UploadedFile.where(id: ids, user: current_user)
+      staged.count.tap { staged.find_each(&:destroy) }
     end
 
     # Survive the redirect to the done screen, which reads it once. The show path

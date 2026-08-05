@@ -1,4 +1,4 @@
-<%# Shared step footer: Back + Next, grouped on the right.
+<%# Shared step footer: a discard link, then Back + Next grouped on the right.
     Locals:
       back_path  - URL for the Back button (required).
       next_label - text for the primary button (default: "Next").
@@ -12,7 +12,17 @@
 <% next_html ||= {} %>
 <% next_arrow = local_assigns.fetch(:next_arrow, true) %>
 <% back_submit = local_assigns.fetch(:back_submit, false) %>
-<div class="deposit-wizard__nav deposit-wizard__nav--end">
+<%# The discard link fills the footer's left slot, so --end (which right-aligns a
+    lone button group) no longer applies. %>
+<div class="deposit-wizard__nav">
+  <%# rails-ujs builds its own form for a non-GET link, so this doesn't nest a
+      form inside the step's form. %>
+  <%= link_to t('hyku.deposit_wizard.discard'),
+              main_app.deposit_wizard_discard_path,
+              method: :delete,
+              data: { confirm: t('hyku.deposit_wizard.discard_confirm') },
+              class: 'deposit-wizard__discard-link' %>
+
   <div class="deposit-wizard__nav-group">
     <% if back_submit %>
       <%# formnovalidate: simple_form emits HTML5 `required`, and the browser blocks

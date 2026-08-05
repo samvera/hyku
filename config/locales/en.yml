@@ -64,6 +64,12 @@ en:
       details:
         heading: Describe your item
         subtext: Add the details for this work. Required fields are marked.
+      discard: Discard this deposit
+      discard_confirm: Discard this deposit? Anything you have entered will be lost, and the files you uploaded will be deleted. This cannot be undone.
+      discarded: Your deposit was discarded.
+      discarded_with_files:
+        one: Your deposit was discarded and the file you had uploaded was deleted.
+        other: Your deposit was discarded and the %{count} files you had uploaded were deleted.
       disabled: The guided deposit wizard is not enabled.
       done:
         deposit_another: Deposit another work

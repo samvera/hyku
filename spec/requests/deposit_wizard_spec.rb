@@ -565,6 +565,63 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
       end
     end
 
+    describe 'discarding an in-progress deposit' do
+      before { patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type } }
+
+      it 'offers a discard link on the step footer' do
+        get deposit_wizard_step_path(step: 'files')
+
+        expect(response.body).to include(deposit_wizard_discard_path)
+        expect(response.body).to include(I18n.t('hyku.deposit_wizard.discard'))
+      end
+
+      it 'clears the collected state and returns to the dashboard' do
+        patch deposit_wizard_advance_path(step: 'details'),
+              params: { param_key => { title: ['Abandon me'], creator: ['Ada'] } }
+
+        delete deposit_wizard_discard_path
+
+        expect(response).to redirect_to(hyrax.my_works_path)
+        expect(flash[:notice]).to eq(I18n.t('hyku.deposit_wizard.discarded'))
+        expect(session[:deposit_wizard]).to be_blank
+      end
+
+      it 'destroys the staged uploads, which nothing else would attach to a work' do
+        upload = FactoryBot.create(:uploaded_file, user: admin)
+        patch deposit_wizard_advance_path(step: 'files'), params: { uploaded_files: [upload.id.to_s] }
+        path = upload.file.path
+        expect(File).to exist(path)
+
+        delete deposit_wizard_discard_path
+
+        expect(Hyrax::UploadedFile.where(id: upload.id)).to be_empty
+        # The confirmation prompt promises the files are deleted, so assert the
+        # bytes are gone and not just the row.
+        expect(File).not_to exist(path)
+        expect(flash[:notice]).to eq(
+          I18n.t('hyku.deposit_wizard.discarded_with_files', count: 1)
+        )
+      end
+
+      # The ids come from the session, so a forged request must not be able to
+      # reach another depositor's staged files.
+      it "leaves another user's uploads alone" do
+        other_upload = FactoryBot.create(:uploaded_file, user: FactoryBot.create(:user))
+        patch deposit_wizard_advance_path(step: 'files'),
+              params: { uploaded_files: [other_upload.id.to_s] }
+
+        delete deposit_wizard_discard_path
+
+        expect(Hyrax::UploadedFile.where(id: other_upload.id)).to be_present
+      end
+
+      it 'is a no-op when nothing has been collected yet' do
+        delete deposit_wizard_discard_path
+
+        expect(response).to redirect_to(hyrax.my_works_path)
+      end
+    end
+
     describe 'review and commit' do
       before do
         Hyrax::AdminSetCreateService.find_or_create_default_admin_set

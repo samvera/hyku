@@ -61,12 +61,24 @@ RSpec.describe Hyku::DepositWizard::Presenter do
     end
 
     context 'when a parent is chosen' do
-      let(:params) { ActionController::Parameters.new(step: 'select_parent', parent_id: 'abc123') }
+      let(:parent) { FactoryBot.valkyrie_create(:generic_work_resource) }
+      let(:params) { ActionController::Parameters.new(step: 'select_parent', parent_id: parent.id.to_s) }
 
       it 'stores the parent and advances' do
         transition = presenter.advance_from('select_parent')
         expect(transition).to be_advance
-        expect(presenter.state.parent_id).to eq('abc123')
+        expect(presenter.state.parent_id).to eq(parent.id.to_s)
+      end
+    end
+
+    context 'when the chosen parent cannot contain children' do
+      let(:params) { ActionController::Parameters.new(step: 'select_parent', parent_id: 'abc123') }
+
+      it 're-renders select_parent and leaves the parent unset' do
+        transition = presenter.advance_from('select_parent')
+        expect(transition).not_to be_advance
+        expect(transition.alert).to eq('hyku.deposit_wizard.errors.parent_not_allowed')
+        expect(presenter.state.parent_id).to be_nil
       end
     end
 

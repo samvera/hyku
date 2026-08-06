@@ -126,17 +126,91 @@ module Hyku
         terms = (work_form.primary_terms + work_form.secondary_terms) - %i[schema_version contexts]
         terms.filter_map do |term|
           value = review_term_value(term)
-          { label: review_term_label(term), value: value.join(', ') } if value.present?
+          { label: review_term_label(term), value: review_display_values(term, value).join(', ') } if value.present?
         end
       end
 
-      # Compound fields with entries, as {label:, count:} rows (the review shows a
-      # count rather than expanding each nested entry).
+      # Which properties are controlled comes from the metadata profile, so no
+      # property is named here.
+      def review_display_values(term, values)
+        service = controlled_service_for(term)
+        return values if service.nil?
+
+        values.map { |value| service.label(value) { value } }
+      end
+
+      # nil unless the profile declares this property controlled and its authority
+      # resolves. Memoized per request: Qa re-reads and re-parses the whole
+      # authority file on every lookup.
+      def controlled_service_for(term)
+        @controlled_services ||= {}
+        return @controlled_services[term] if @controlled_services.key?(term)
+
+        @controlled_services[term] = build_controlled_service(term)
+      end
+
+      def build_controlled_service(term)
+        source = context.helpers.controlled_vocabulary_source_for(term)
+        return if source.blank?
+
+        # Prefer the registered service (it may add behavior); fall back to a bare
+        # authority lookup so a profile source with no registry entry still labels.
+        registered = Hyrax::ControlledVocabularies.services[source]&.safe_constantize
+        registered ? registered.new : Hyrax::TolerantSelectService.new(source)
+      rescue StandardError => e
+        Hyrax.logger.debug("Deposit wizard: no label service for #{term} (#{source}): #{e.message}")
+        nil
+      end
+
+      # Compound fields with entries, as {label:, count:, values:} rows: the count
+      # summarizes, +values+ carries each entry's controlled sub-property labels.
       def review_compound_terms
         work_form.compound_terms.filter_map do |term|
           entries = review_term_value(term)
-          { label: review_term_label(term), count: entries.size } if entries.present?
+          next if entries.blank?
+
+          { label: review_term_label(term), count: entries.size,
+            values: compound_entry_labels(term, entries) }
         end
+      end
+
+      # Empty when the compound declares no controlled sub-properties, so the row
+      # stays a bare count.
+      def compound_entry_labels(term, entries)
+        specs = compound_subproperty_specs(term)
+        return [] if specs.blank?
+
+        entries.flat_map { |entry| compound_row_labels(specs, entry) }.uniq
+      end
+
+      def compound_row_labels(specs, entry)
+        row = entry.respond_to?(:to_h) ? entry.to_h.with_indifferent_access : {}
+        specs.filter_map do |name, spec|
+          value = row[name]
+          next if value.blank?
+
+          Hyrax::CompoundSubpropertyLabeler.label_for(spec, value).presence
+        end
+      end
+
+      # Only the `controlled` sub-properties: the labeler passes anything else
+      # through unchanged, so filtering here keeps free-text out of the summary.
+      def compound_subproperty_specs(term)
+        @compound_specs ||= {}
+        return @compound_specs[term] if @compound_specs.key?(term)
+
+        definition = compound_schema&.definition_for(term)
+        specs = (definition&.dig(:subproperties) || {}).select { |_n, s| s[:type].to_s == 'controlled' }
+        @compound_specs[term] = specs
+      end
+
+      def compound_schema
+        return @compound_schema if defined?(@compound_schema)
+
+        @compound_schema = Hyrax::CompoundSchema.for(work_form.model)
+      rescue StandardError => e
+        Hyrax.logger.debug("Deposit wizard: no compound schema for review labels: #{e.message}")
+        @compound_schema = nil
       end
 
       def file_type_label(uploaded_file)
@@ -214,6 +288,12 @@ module Hyku
 
       def admin_sets_for_deposit
         Hyrax::AdminSetService.new(context).search_results(:deposit)
+      end
+
+      def can_deposit_in_admin_set?(admin_set_id)
+        return false if admin_set_id.blank?
+
+        admin_set_options_for_display.any? { |option| option[:id].to_s == admin_set_id.to_s }
       end
 
       # Keep the presenter's data-* hash on each option: the visibility component
@@ -416,10 +496,12 @@ module Hyku
       attr_reader :commit_errors
 
       # Create the work, apply per-file embargo/lease, and run the configured
-      # post-commit hook (e.g. downstream nesting). Returns the work, or nil on
-      # validation/transaction failure (recorded in #commit_errors so the
-      # re-rendered review step isn't silent).
+      # post-commit hook (e.g. downstream nesting). Returns the work, or nil if the
+      # nesting is disallowed or on validation/transaction failure (recorded in
+      # #commit_errors so the re-rendered review step isn't silent).
       def deposit
+        return record_commit_failure(I18n.t('hyku.deposit_wizard.errors.parent_not_allowed')) unless nesting_allowed?
+
         work = create_work
         return unless work
 
@@ -505,6 +587,7 @@ module Hyku
 
       def advance_from_select_parent
         return rerender_parent_required if params[:parent_id].blank?
+        return rerender_parent_rejected unless parent_accepts_children?(params[:parent_id])
 
         state.parent_id = params[:parent_id]
         Transition.advance(next_step('select_parent'))
@@ -512,6 +595,41 @@ module Hyku
 
       def rerender_parent_required
         Transition.rerender('select_parent', alert: 'hyku.deposit_wizard.errors.no_parent')
+      end
+
+      def rerender_parent_rejected
+        Transition.rerender('select_parent', alert: 'hyku.deposit_wizard.errors.parent_not_allowed')
+      end
+
+      # The work type usually isn't chosen yet at select_parent, so "accepts
+      # children at all" is the only check available there; #nesting_allowed? does
+      # the full pairing at commit.
+      def parent_accepts_children?(parent_id)
+        child_types_for(parent_id).any?
+      end
+
+      # Checked again at commit because parent_id also arrives by routes that skip
+      # select_parent (the launch handoff), and because AddToParent validates
+      # nothing itself.
+      def nesting_allowed?
+        return true if state.parent_id.blank? || state.work_type.blank?
+
+        child_types_for(state.parent_id).map(&:to_s).include?(state.work_type.to_s)
+      end
+
+      # Empty when the parent can't be read, so an unresolvable parent is refused
+      # at the step that names it rather than surfacing as a transaction failure
+      # after the depositor has filled in the rest of the form.
+      # Empty for a parent the depositor cannot edit as well as one that cannot be
+      # read, so a forged parent_id is refused rather than merely type-checked.
+      # Adding a child mutates the parent's member_ids, hence edit rather than read.
+      def child_types_for(parent_id)
+        parent = Hyrax.query_service.find_by(id: parent_id)
+        return [] unless current_ability.can?(:edit, parent)
+
+        Hyrax::ChildTypes.for(parent: parent.class).to_a
+      rescue Valkyrie::Persistence::ObjectNotFoundError
+        []
       end
 
       def select_work_type(rerender_step: 'known_type')
@@ -539,20 +657,34 @@ module Hyku
       # The ChangeSet permits its own fields, so raw nested params go straight to
       # #validate, as the stock works controller does. The submitted values (plain
       # strings/arrays) are stored so they serialize into the session.
+      #
+      # The save is unconditional: validation decides where the depositor goes
+      # next, not whether their entries are kept.
       def advance_from_details
         build_work_form
+        save_details_attributes
+        return Transition.advance(back_step('details')) if going_back?
+
         unless work_form.validate(work_params)
           return Transition.rerender('details', alert: 'hyku.deposit_wizard.errors.details_invalid',
                                                 messages: form_error_messages(work_form))
         end
 
-        # The details form owns the work fields, but not the launch-seeded extras
-        # (a collection carried in by the "deposit into THIS collection" handoff).
-        # Replacing wholesale would drop those before commit, so re-apply any that
-        # the form did not submit.
-        submitted = work_params.to_unsafe_h
-        state.attributes = preserved_launch_extras.merge(submitted)
         Transition.advance(next_step('details'))
+      end
+
+      # The details form owns the work fields, but not the launch-seeded extras
+      # (a collection carried in by the "deposit into THIS collection" handoff).
+      # Replacing wholesale would drop those before commit, so re-apply any that
+      # the form did not submit.
+      def save_details_attributes
+        state.attributes = preserved_launch_extras.merge(work_params.to_unsafe_h)
+      end
+
+      # Set by the metadata steps' Back button, which submits the form (saving what
+      # was entered) instead of linking away.
+      def going_back?
+        params[:direction].to_s == 'back'
       end
 
       # Launch-seeded attributes the details form does not manage (today: collection
@@ -565,6 +697,8 @@ module Hyku
         submitted = params.fetch(:file_metadata, {}).permit!.to_h
         allowed = state.uploaded_file_ids.map(&:to_s)
         state.file_metadata = submitted.slice(*allowed)
+        return Transition.advance(back_step('file_meta')) if going_back?
+
         Transition.advance(next_step('file_meta'))
       end
 

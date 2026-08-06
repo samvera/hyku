@@ -96,8 +96,10 @@ boundary. It wraps — does not replace — Hyrax's create machinery.
 
 - **Controller**: `Hyrax::DepositWizardController`
   (`app/controllers/hyrax/deposit_wizard_controller.rb`). Actions: `start`,
-  `show` (per step), `update` (advance), `commit`, plus the AJAX endpoints
-  `parent_options` (parent typeahead) and `save_extras` (review-step autosave).
+  `show` (per step), `update` (advance), `commit`, `discard` (abandon an
+  in-progress deposit — clears the session state and destroys the uploads staged
+  for it), plus the AJAX endpoints `parent_options` (parent typeahead) and
+  `save_extras` (review-step autosave).
   Each action reads params, calls the presenter for the decision, and turns the
   result into a redirect / render / flash. It memoizes the presenter and exposes
   `wizard_config` / `wizard_state` shorthands; there are no controller concerns.
@@ -120,7 +122,8 @@ boundary. It wraps — does not replace — Hyrax's create machinery.
   - `Hyku::DepositWizard::State` — a thin wrapper over `session[:deposit_wizard]`.
     Exposes named slots (path, work type, uploaded files, …) plus `#extra`, a
     namespaced bag a downstream app writes custom step state into without
-    subclassing State (see "Insertion points").
+    subclassing State (see "Insertion points"). It is cleared on entry at `start`,
+    after a successful `commit`, and by `discard`.
   - `Hyku::DepositWizard::Flow` — the step sequence as data plus its navigator (a
     swappable `Config#flow`); see "Steps and the Flow".
   - `Hyku::DepositWizard::VisibilityPolicy` — a policy object deriving the allowed
@@ -172,6 +175,10 @@ Each `Step` declares its own rules; the navigator computes the rest:
   is never a prerequisite.
 - **Back** is the previous visible step (`Flow#back_before`), so views never name
   their predecessor. **Forward** is the next visible step (`Flow#next_after`).
+  On the metadata steps (`details`, `file_meta`) Back submits the form rather than
+  linking, so what was typed is saved on the way out; those steps save
+  unconditionally and validate only to decide whether to advance. The browser's own
+  back button bypasses this, so entries abandoned that way are still lost.
 - **Detours** (`Flow#detour_for`) replace the old per-step redirect rules.
 
 | Step | Purpose | Shown when |
@@ -431,6 +438,13 @@ start path or the review-step section), set `parent_types` and the `parent_conne
 config setting (default on). A directed `parent_id` handoff (see
 [Launch with context](#launch-with-context)) nests regardless of that setting.
 
+The parent must be able to contain the work: the parent step refuses a work whose
+type accepts no children, and commit refuses one that cannot contain the chosen
+work type. Both read `Hyrax::ChildTypes`, i.e. the parent class's
+`valid_child_concerns`, so a repository declaring its own nesting rules is honored.
+`add_to_parent` validates none of this itself, so the standard deposit form applies
+the same check on create.
+
 ### Launch with context
 
 Other entry points can hand off into the wizard with a target pre-filled by
@@ -487,3 +501,8 @@ redirect controls, the admin-set description, and the parent/collection Select2
 typeaheads. The details step additionally carries `data-behavior="work-form"` so
 Hyrax's own editor JS binds the autocomplete and controlled-vocabulary fields
 exactly as on the stock form.
+
+Three steps gate their Next button on a `data-behavior` hook: `files-next` stays
+disabled while uploads are in flight (the uploaded-file ids only reach the form as
+each upload completes, so advancing early would drop them), and `parent-next` /
+`type-next` stay disabled until a parent or work type is chosen.

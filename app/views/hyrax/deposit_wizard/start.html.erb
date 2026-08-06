@@ -12,7 +12,10 @@
       <% paths = deposit_wizard.config.container? ? %w[new add standalone] : %w[new add] %>
       <div class="deposit-wizard__paths">
         <% paths.each do |path| %>
-          <%= button_tag type: 'submit', name: 'path', value: path, class: 'deposit-wizard__path-card' do %>
+          <%# The modifier drives the card's grid placement; see _choices.scss. %>
+          <% container_path = path == 'new' && deposit_wizard.config.container? %>
+          <%= button_tag type: 'submit', name: 'path', value: path,
+                         class: "deposit-wizard__path-card #{'deposit-wizard__path-card--container' if container_path}".strip do %>
             <% icon = t("hyku.deposit_wizard.start.paths.#{path}.icon", default: nil) %>
             <% if icon.present? %>
               <span class="deposit-wizard__path-icon <%= icon %>" aria-hidden="true"></span>

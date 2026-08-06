@@ -20,8 +20,9 @@ module Hyrax
       local_vocabulary_options_for(source) || remote_vocabulary_options_for(source)
     end
 
-    private
-
+    # The authority name backing +property_name+, or nil when the property isn't
+    # controlled. Public because callers that only need to label a stored value
+    # want the source without building the whole option list.
     def controlled_vocabulary_source_for(property_name)
       if Hyrax.config.flexible?
         schema = Hyrax::FlexibleSchema.order("created_at asc").last
@@ -39,6 +40,8 @@ module Hyrax
         controlled_vocabulary_mapping_for(property_name)
       end
     end
+
+    private
 
     def controlled_vocabulary_mapping_for(property_name)
       # Maps property names in when flexible=false to their corresponding controlled vocabulary service keys

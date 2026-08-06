@@ -413,7 +413,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
           expect(session[:deposit_wizard]['parent_id']).to be_nil
         end
 
-        it 'does not inherit the admin set on a launch handoff' do
+        it 'stays on start rather than inheriting the admin set on a launch handoff' do
           other = FactoryBot.valkyrie_create(
             :generic_work_resource,
             depositor: FactoryBot.create(:user).user_key,
@@ -422,6 +422,8 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
 
           get deposit_wizard_path(parent_id: other.id.to_s)
 
+          expect(response).to have_http_status(:success)
+          expect(response).not_to redirect_to(deposit_wizard_step_path(step: 'select_parent'))
           expect(session[:deposit_wizard]['admin_set_id']).to be_blank
         end
 
@@ -746,6 +748,12 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         expect(response).to redirect_to(hyrax.my_works_path)
         expect(flash[:notice]).to eq(I18n.t('hyku.deposit_wizard.discarded'))
         expect(session[:deposit_wizard]).to be_blank
+      end
+
+      it 'clears an unviewed confirmation so it cannot resurface later' do
+        delete deposit_wizard_discard_path
+
+        expect(session[:deposit_wizard_last]).to be_blank
       end
 
       it 'destroys the staged uploads, which nothing else would attach to a work' do

@@ -80,6 +80,7 @@ module Hyrax
     def discard
       deleted = discard_staged_uploads
       reset_state
+      clear_deposited_stash
       key = deleted.positive? ? 'discarded_with_files' : 'discarded'
       redirect_to hyrax.my_works_path, notice: t("hyku.deposit_wizard.#{key}", count: deleted)
     end
@@ -194,6 +195,13 @@ module Hyrax
       session[:deposit_wizard] = {}
     end
 
+    # The done screen's read is destructive, but only if it renders — so a stash left
+    # by a deposit whose confirmation was never viewed would otherwise resurface as a
+    # stale confirmation. Not part of reset_state: #commit stashes before resetting.
+    def clear_deposited_stash
+      session.delete(:deposit_wizard_last)
+    end
+
     # Staged uploads are only reachable through this session, so abandoning the
     # deposit orphans them: nothing will attach them to a work, and the cleanup
     # sweeper's default retention is measured in years.
@@ -268,7 +276,10 @@ module Hyrax
     # keep them on the start screen rather than silently defaulting one.
     def inherit_admin_set_from_parent
       parent = Hyrax.query_service.find_by(id: wizard_state.parent_id)
-      return true unless current_ability.can?(:edit, parent)
+      # Nothing to inherit from a parent they cannot edit, so don't skip the chooser
+      # on its behalf. Commit refuses that parent anyway; this keeps the depositor on
+      # a screen where they can still act rather than deferring the refusal.
+      return false unless current_ability.can?(:edit, parent)
 
       inherited = parent.try(:admin_set_id).presence
       return true if inherited.blank?

@@ -29,6 +29,16 @@ RSpec.describe Hyrax::GenericWorksController do
 
     before { sign_in user }
 
+    it 'allows a child whose type the parent accepts' do
+      editable = FactoryBot.valkyrie_create(:generic_work_resource, edit_users: [user])
+
+      post :create, params: { parent_id: editable.id.to_s,
+                              generic_work: { title: ['Legitimate child'] } }
+
+      expect(flash[:alert]).to be_blank
+      expect(response).not_to redirect_to(root_path)
+    end
+
     context 'when the parent accepts no children' do
       before do
         @original = GenericWorkResource.valid_child_concerns

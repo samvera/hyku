@@ -32,30 +32,36 @@
   function guardNextWhileUploading(uploader) {
     var next = $('[data-behavior="files-next"]');
     if (!next.length) return;
-    var inFlight = 0;
+    // Tracked per file rather than as a counter so the settle events can overlap
+    // without double-counting: an aborted upload fires both 'fail' and 'finished'.
+    var pending = [];
 
-    function sync() {
-      next.prop('disabled', inFlight > 0);
+    function settle(data) {
+      var files = (data && data.files) || [];
+      for (var i = 0; i < files.length; i += 1) {
+        var at = pending.indexOf(files[i]);
+        if (at !== -1) pending.splice(at, 1);
+      }
+      next.prop('disabled', pending.length > 0);
     }
 
-    // Decrement on 'finished', not 'completed': completed fires only on success,
-    // so a failed upload would leave the count above zero and Next stuck for the
-    // rest of the page's life. 'finished' fires on both the success and failure
-    // paths. (Hyrax's own save_work/uploaded_files.es6 counts 'completed' and has
-    // exactly that leak — don't mirror it.)
-    uploader.on('fileuploadadded', function () {
-      inFlight += 1;
-      sync();
+    uploader.on('fileuploadadded', function (e, data) {
+      pending = pending.concat((data && data.files) || []);
+      next.prop('disabled', pending.length > 0);
       // No explicit return: the plugin cancels the upload when an 'added'
       // handler returns false.
     });
-    uploader.on('fileuploadfinished', function () {
-      inFlight = Math.max(0, inFlight - 1);
-      sync();
+
+    // 'finished' covers success and a mid-flight abort, but a file cancelled before
+    // it is ever sent has no data.abort, so the plugin fires 'fail' alone — without
+    // that second binding Next would stay disabled until a reload. ('completed'
+    // alone, as Hyrax's save_work/uploaded_files.es6 counts, misses both.)
+    uploader.on('fileuploadfinished fileuploadfail', function (e, data) {
+      settle(data);
     });
 
     uploader.closest('form').on('submit', function (event) {
-      if (inFlight > 0) event.preventDefault();
+      if (pending.length > 0) event.preventDefault();
     });
   }
 

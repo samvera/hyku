@@ -1,0 +1,18 @@
+<% counts = pr_home.counts.reject { |_key, count| count.to_i.zero? } %>
+
+<% if counts.any? %>
+  <div class="pr-stats">
+    <div class="container pr-stats-inner">
+      <% paths = { works: main_app.search_catalog_path,
+                   collections: main_app.search_catalog_path(f: { generic_type_sim: ['Collection'] }) } %>
+      <% counts.each do |key, count| %>
+        <p class="pr-stat">
+          <%= link_to paths[key], class: 'pr-stat-link' do %>
+            <span class="pr-stat-number"><%= number_with_delimiter(count) %></span>
+            <span class="pr-stat-key"><%= t("practice_research.homepage.stats.#{key}", count: count) %></span>
+          <% end %>
+        </p>
+      <% end %>
+    </div>
+  </div>
+<% end %>

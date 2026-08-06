@@ -658,6 +658,10 @@ zh:
         data_cite_endpoint: 数据引用端点
         fcrepo_endpoint: Fedora端点
         header: 编辑帐号
+        public_demo_tenant:
+          disabled: '否'
+          enabled: '是'
+          immutable: 此设置在创建账户时确定，创建后无法更改。
         solr_endpoint: Solr端点
       index:
         actions: 操作

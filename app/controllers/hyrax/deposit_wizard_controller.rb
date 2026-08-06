@@ -216,6 +216,7 @@ module Hyrax
     def stash_deposited(work)
       session[:deposit_wizard_last] = {
         'id' => work.id.to_s,
+        'work_type' => work.class.to_s,
         'parent_id' => wizard_state.parent_id.presence,
         'title' => Array(work.title).first,
         'path' => main_app.polymorphic_path([main_app, work])

@@ -1109,6 +1109,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         work = Hyrax.query_service.find_by(id: Valkyrie::ID.new(stashed['id']))
         expect(work).to be_a(resource_class)
         expect(Array(work.title).first).to eq(stashed['title'])
+        expect(stashed['work_type']).to eq(resource_class.to_s)
       end
 
       it 'applies a per-file embargo that differs from the work embargo' do

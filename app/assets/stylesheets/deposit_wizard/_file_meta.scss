@@ -1,0 +1,134 @@
+// The per-file metadata step: a sidebar of files beside the active file's panel.
+.deposit-wizard {
+  // ---- Per-file metadata: master-detail (sidebar + form panel) ---------
+  &__file-meta-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    border: 1px solid var(--dw-border);
+    border-radius: var(--dw-radius-sm);
+    overflow: hidden;
+  }
+
+  &__file-sidebar {
+    background: var(--dw-surface-sunk);
+    border-right: 1px solid var(--dw-border);
+    padding: 1rem 0.75rem;
+  }
+
+  &__file-sidebar-heading {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--dw-ink-subtle);
+    margin: 0 0.5rem 0.75rem;
+  }
+
+  &__file-sidebar-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__file-sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    text-align: left;
+    padding: 0.6rem 0.75rem;
+    border: 0;
+    border-left: 3px solid transparent;
+    border-radius: 0 var(--dw-radius-sm) var(--dw-radius-sm) 0;
+    background: none;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    &.is-active {
+      background: var(--dw-surface);
+      border-left-color: var(--dw-accent);
+    }
+
+    // Flagged when the file has an incomplete required field (set by JS when the
+    // user tries to advance). A red left-border + a trailing marker on the name.
+    &.has-error {
+      border-left-color: var(--dw-danger, #bb5b4b);
+
+      .deposit-wizard__file-sidebar-name::after {
+        content: " !";
+        color: var(--dw-danger, #bb5b4b);
+        font-weight: 700;
+      }
+    }
+  }
+
+  // Filename truncates to one line so long names don't wrap/overflow the sidebar
+  // (the full name is in the item's title attribute on hover).
+  &__file-sidebar-name {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--dw-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__file-panels {
+    padding: 1.5rem;
+  }
+
+  &__file-panel {
+    border: 0;
+    padding: 0;
+    margin: 0;
+
+    &[hidden] {
+      display: none;
+    }
+  }
+
+  &__file-panel-name {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1rem;
+    font-weight: 600;
+    width: auto;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--dw-divider);
+    color: var(--dw-ink);
+  }
+
+  &__file-ext {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.15rem 0.5rem;
+    border-radius: 6px;
+    background: var(--dw-fill-neutral, #f0ede6);
+    color: var(--dw-ink-muted);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+  }
+
+  &__file-visibility {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--dw-divider);
+  }
+
+  &__inherit-visibility {
+    font-weight: 600;
+  }
+
+  &__own-visibility {
+    margin-top: 0.75rem;
+  }
+}

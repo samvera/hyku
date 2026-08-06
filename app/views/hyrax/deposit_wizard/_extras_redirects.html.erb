@@ -1,0 +1,23 @@
+<%# Vanity-URL section. Renders Hyrax's stock redirects tab (hyrax/base/
+    _form_redirects) inside the wizard card so it inherits the full behavior —
+    none-radio, per-row remove, disable-until-path, the always-submitted marker,
+    and the monotonic row index — driven by hyrax/redirects.js. The posted
+    redirects_attributes ride the deposit form; the populator + sync_redirect_paths
+    persist them in the transaction. %>
+<% open = deposit_wizard.extra_prefilled?(:redirects) %>
+<section class="deposit-wizard__extra <%= 'is-open' if open %>" data-behavior="extra-redirects">
+  <button type="button" class="deposit-wizard__extra-toggle" data-behavior="extra-toggle"
+          aria-expanded="<%= open %>">
+    <span class="deposit-wizard__extra-titles">
+      <span class="deposit-wizard__extra-title"><%= t('hyku.deposit_wizard.extras.redirects.heading') %></span>
+      <span class="deposit-wizard__extra-subtitle"><%= t('hyku.deposit_wizard.extras.redirects.hint', base_url: request.base_url) %></span>
+    </span>
+    <span class="deposit-wizard__extra-chevron" aria-hidden="true"></span>
+  </button>
+
+  <div class="deposit-wizard__extra-body" data-behavior="extra-body" <%= 'hidden' unless open %>>
+    <%= fields_for deposit_wizard.work_form.model_name.param_key, deposit_wizard.work_form do |f| %>
+      <%= render 'hyrax/base/form_redirects', f: f %>
+    <% end %>
+  </div>
+</section>

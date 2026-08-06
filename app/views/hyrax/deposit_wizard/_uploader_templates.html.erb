@@ -1,0 +1,47 @@
+<%# Uploader row templates, wired via the uploadTemplateId/downloadTemplateId
+    options in deposit_wizard.js. Replaces Hyrax's stock _js_templates to control
+    the row markup. Must keep the data hooks Hyrax's uploader plugin requires:
+    .name .size .progress/.progress-bar .cancel (upload); .delete with
+    data-url/data-type (download). %>
+<%# Fade is disabled under test so rows appear synchronously for specs. %>
+<% fade_class_if_not_test = Rails.env.test? ? '' : 'fade' %>
+<script id="deposit-wizard-template-upload" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+  <div class="template-upload deposit-wizard__file-row <%= fade_class_if_not_test %>">
+    <span class="deposit-wizard__file-icon fa fa-file-o" aria-hidden="true"></span>
+    <div class="deposit-wizard__file-info">
+      <span class="deposit-wizard__file-name name">{%=file.name%}</span>
+      <span class="deposit-wizard__file-meta size">Processing...</span>
+      <strong class="error text-danger"></strong>
+    </div>
+    <div class="deposit-wizard__file-progress progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width:0%;"></div>
+    </div>
+    {% if (!i) { %}
+      <button type="button" class="deposit-wizard__file-remove cancel" aria-label="<%= t('helpers.action.cancel') %>">
+        <span class="fa fa-times" aria-hidden="true"></span>
+      </button>
+    {% } %}
+  </div>
+{% } %}
+</script>
+
+<script id="deposit-wizard-template-download" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+  <div class="template-download deposit-wizard__file-row <%= fade_class_if_not_test %>">
+    <span class="deposit-wizard__file-icon fa fa-file-o" aria-hidden="true"></span>
+    <div class="deposit-wizard__file-info">
+      <span class="deposit-wizard__file-name name">{%=file.name%}</span>
+      <span class="deposit-wizard__file-meta size">{%=o.formatFileSize(file.size)%}</span>
+      <input type="hidden" name="uploaded_files[]" value="{%=file.id%}">
+    </div>
+    {% if (file.error) { %}
+      <span class="badge badge-danger">{%=file.error%}</span>
+    {% } %}
+    <button type="button" class="deposit-wizard__file-remove delete" aria-label="<%= t('helpers.action.delete') %>"
+            data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
+      <span class="fa fa-times" aria-hidden="true"></span>
+    </button>
+  </div>
+{% } %}
+</script>

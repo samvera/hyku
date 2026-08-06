@@ -1,0 +1,53 @@
+<%# Read-only recap of the work being deposited: type, file count, entered
+    fields, and work/file visibility, plus the destination admin set. %>
+<dl class="deposit-wizard__review-list">
+  <div class="row">
+    <dt class="col-sm-3"><%= t('hyku.deposit_wizard.review.work_type') %></dt>
+    <dd class="col-sm-9"><%= deposit_wizard.work_form.model_name.human %></dd>
+  </div>
+
+  <div class="row">
+    <dt class="col-sm-3"><%= t('hyku.deposit_wizard.review.files') %></dt>
+    <dd class="col-sm-9"><%= t('hyku.deposit_wizard.review.file_count', count: deposit_wizard.state.uploaded_file_ids.size) %></dd>
+  </div>
+
+  <% deposit_wizard.review_basic_terms.each do |row| %>
+    <div class="row">
+      <dt class="col-sm-3"><%= row[:label] %></dt>
+      <dd class="col-sm-9"><%= row[:value] %></dd>
+    </div>
+  <% end %>
+
+  <% deposit_wizard.review_compound_terms.each do |row| %>
+    <div class="row">
+      <dt class="col-sm-3"><%= row[:label] %></dt>
+      <dd class="col-sm-9"><%= t('hyku.deposit_wizard.review.entry_count', count: row[:count]) %></dd>
+    </div>
+  <% end %>
+
+  <% if deposit_wizard.work_form.respond_to?(:visibility) && deposit_wizard.work_form.visibility.present? %>
+    <div class="row">
+      <dt class="col-sm-3"><%= t('hyku.deposit_wizard.review.work_visibility') %></dt>
+      <dd class="col-sm-9"><%= visibility_summary(deposit_wizard.work_visibility_attributes) %></dd>
+    </div>
+  <% end %>
+
+  <% if deposit_wizard.file_visibility_summaries.any? %>
+    <div class="row">
+      <dt class="col-sm-3"><%= t('hyku.deposit_wizard.review.file_visibility') %></dt>
+      <dd class="col-sm-9">
+        <ul class="deposit-wizard__review-files list-unstyled mb-0">
+          <% deposit_wizard.file_visibility_summaries.each do |file| %>
+            <li><%= file[:title] %> &mdash; <%= visibility_summary(file[:attributes]) %></li>
+          <% end %>
+        </ul>
+      </dd>
+    </div>
+  <% end %>
+</dl>
+
+<% if deposit_wizard.show_review_destination? %>
+  <p class="deposit-wizard__review-destination">
+    <%= t('hyku.deposit_wizard.review.destination', admin_set: deposit_wizard.selected_admin_set_name) %>
+  </p>
+<% end %>

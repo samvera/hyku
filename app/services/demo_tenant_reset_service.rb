@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'timeout'
-
 # Resets a public demo ("sandbox") tenant to a stored golden state so that a
 # publicly writable demo environment recovers from visitor changes on a
 # schedule.
@@ -13,20 +11,19 @@ require 'timeout'
 #   featured works. Run it once, after arranging the tenant the way it should
 #   look after every reset.
 # * {#reset!} destroys visitor-created content (works, file sets, collections,
-#   featured entries, Bulkrax importers and exporters), removes visitor
-#   created users, restores the snapshot, optionally re-imports a seed corpus
+#   featured entries, Bulkrax importers and exporters), revokes visitor
+#   access, restores the snapshot, optionally re-imports a seed corpus
 #   through Bulkrax, restores featured works, runs an injectable health check,
 #   and stamps the account's last_reset_at on success.
 #
 # Both operations refuse to run for accounts not flagged public_demo_tenant.
 #
 # Users are global records in Hyku while role grants live in each tenant
-# schema, so "visitor-created users" are identified by their role grants in
-# this tenant: any user holding a role here (self-registered users receive a
-# registered-group membership role on creation) is swept unless they are a
-# superadmin, a tenant superadmin, or on the keep_emails list. Swept users
-# lose their role grants in this tenant and are destroyed globally only when
-# they hold no roles in any other tenant.
+# schema, so visitors are identified by holding a role here and are stripped
+# of it unless they are a superadmin, a tenant superadmin, or on keep_emails.
+# The User records are left in place: deleting them would mean checking every
+# other tenant schema for remaining grants, which does not scale, and an
+# account with no roles has no access anyway.
 #
 # The seed source is deliberately configuration: pass seed_csv_path to
 # re-import a corpus through Bulkrax's CSV parser, or omit it to reset to an
@@ -118,7 +115,7 @@ class DemoTenantResetService
     log 'reset started'
     within_tenant do
       wipe_content!
-      remove_visitor_users!
+      revoke_visitor_access!
       restore_site!
       restore_content_blocks!
       import_seed! if seed_csv_path.present?
@@ -138,15 +135,10 @@ class DemoTenantResetService
     raise NotDemoTenant, "#{account&.cname || account.inspect} is not flagged public_demo_tenant; refusing"
   end
 
-  # AccountElevator.switch! (rather than account.switch) is required: it
-  # switches the Apartment schema so Valkyrie queries, Site.instance, and
-  # Bulkrax's multitenant paths are scoped to the tenant.
-  def within_tenant
-    previous = Apartment::Tenant.current
-    AccountElevator.switch!(account)
-    yield
-  ensure
-    Apartment::Tenant.switch!(previous)
+  # Both switches are needed: Account#switch only moves the endpoints,
+  # Apartment::Tenant.switch only moves the schema.
+  def within_tenant(&block)
+    account.switch { Apartment::Tenant.switch(account.tenant, &block) }
   end
 
   def wipe_content!
@@ -193,12 +185,11 @@ class DemoTenantResetService
     log("admin set reindex failed: #{e.class}: #{e.message}", level: :warn)
   end
 
-  def remove_visitor_users!
+  def revoke_visitor_access!
     User.joins(:roles).distinct.to_a.each do |user|
       next if keep_user?(user)
 
       strip_tenant_roles!(user)
-      destroy_user_unless_active_elsewhere!(user)
     end
   end
 
@@ -206,32 +197,14 @@ class DemoTenantResetService
     user.superadmin? || user.tenant_superadmin? || keep_emails.include?(user.email.to_s.downcase)
   end
 
-  # Removes the users_roles join rows in this tenant's schema; the shared
-  # Role records themselves are left in place.
+  # remove_role rather than clearing the association, so orphaned Role
+  # records go too.
   def strip_tenant_roles!(user)
-    user.roles.reload
-    user.roles = []
+    roles = user.roles.reload.to_a
+    return if roles.empty?
+
+    roles.each { |role| user.remove_role(role.name, role.resource) }
     log "stripped tenant roles from #{user.email}"
-  end
-
-  def destroy_user_unless_active_elsewhere!(user)
-    return if roles_in_other_tenants?(user)
-
-    user.destroy
-    log "destroyed visitor user #{user.email}"
-  end
-
-  def roles_in_other_tenants?(user)
-    Account.where.not(id: account.id).distinct.pluck(:tenant).any? do |schema|
-      Apartment::Tenant.switch(schema) do
-        user.roles.reset
-        user.roles.exists?
-      end
-    rescue StandardError
-      false
-    end
-  ensure
-    user.roles.reset
   end
 
   def restore_site!

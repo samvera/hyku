@@ -27,8 +27,7 @@ RSpec.describe Sample::ValkyrieService do
       allow(service).to receive(:restore_job_configuration)
       allow(service).to receive(:find_or_create_admin_set)
       allow(service).to receive(:create_collections).and_return([])
-      allow(service).to receive(:create_images).and_return([])
-      allow(service).to receive(:create_generic_works).and_return([])
+      allow(service).to receive(:create_works_of_type).and_return([])
       allow(service).to receive(:index_all_works)
     end
 
@@ -37,6 +36,39 @@ RSpec.describe Sample::ValkyrieService do
     # every record.
     it 'prints the completion summary without raising' do
       expect { service.create_sample_data }.not_to raise_error
+    end
+
+    it 'creates every work type the tenant offers, not a hardcoded pair' do
+      allow(service).to receive(:available_work_type_names).and_return(%w[GenericWork Image Etd])
+
+      service.create_sample_data
+
+      expect(service).to have_received(:create_works_of_type).with('GenericWork', 1, [])
+      expect(service).to have_received(:create_works_of_type).with('Image', 1, [])
+      expect(service).to have_received(:create_works_of_type).with('Etd', 1, [])
+    end
+
+    context 'with explicit per-type counts' do
+      let(:service) { described_class.new(tenant_name, 1, nil, work_types: { 'image' => 3 }) }
+
+      it 'uses the requested counts and skips the other types' do
+        allow(service).to receive(:available_work_type_names).and_return(%w[GenericWork Image])
+
+        service.create_sample_data
+
+        expect(service).to have_received(:create_works_of_type).with('Image', 3, [])
+        expect(service).not_to have_received(:create_works_of_type).with('GenericWork', anything, anything)
+      end
+    end
+
+    context 'with a work type the tenant does not offer' do
+      let(:service) { described_class.new(tenant_name, 1, nil, work_types: { 'nope' => 1 }) }
+
+      it 'raises rather than silently seeding nothing' do
+        allow(service).to receive(:available_work_type_names).and_return(%w[GenericWork Image])
+
+        expect { service.create_sample_data }.to raise_error(ArgumentError, /Unknown work type 'nope'/)
+      end
     end
   end
 

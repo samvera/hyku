@@ -17,14 +17,18 @@ module Sample
         # we have to create the admin set after we switch modes
         self.admin_set = find_or_create_admin_set
         collections = create_collections(quantity)
-        images = create_images(quantity, collections)
-        generic_works = create_generic_works(quantity, collections)
-        oers = create_oers(quantity, collections)
-        total_works = collections.length + images.length + generic_works.length + oers.length
+        works_by_type = work_type_counts.to_h do |type_name, count|
+          [type_name, create_works_of_type(type_name, count, collections)]
+        end
 
-        index_all_works(collections + images + generic_works + oers)
+        all_works = works_by_type.values.flatten
+        total_works = collections.length + all_works.length
 
-        print_completion_summary(collections, images, generic_works, total_works, oers: oers)
+        index_all_works(collections + all_works)
+
+        counts = { 'Collections' => collections.length }
+        works_by_type.each { |type_name, works| counts[work_type_label(type_name)] = works.length }
+        print_completion_summary(counts, total_works)
       ensure
         Hydra::Derivatives.config.output_file_service = Hyrax::ValkyriePersistDerivatives
         restore_job_configuration
@@ -38,12 +42,14 @@ module Sample
 
       Rails.logger.debug "Removing all sample data from tenant '#{tenant_name}'..."
 
-      counts = {
-        collections: clean_works_by_pattern(Collection, "%Collection %:%"),
-        images: clean_works_by_pattern(Image, "%Image %:%"),
-        generic_works: clean_works_by_pattern(GenericWork, "%Generic Work %:%"),
-        file_sets: clean_works_by_pattern(FileSet, "%FileSet %:%")
-      }
+      # Driven by the same type list as creation, so cleanup cannot orphan a
+      # work type that seeding created. OERs were previously left behind.
+      counts = { 'Collections' => clean_works_by_pattern(Collection, "%Collection %:%") }
+      work_type_counts.each_key do |type_name|
+        counts[work_type_label(type_name)] =
+          clean_works_by_pattern(work_class_for(type_name), "%#{title_prefix_for(type_name)} %:%")
+      end
+      counts['FileSets'] = clean_works_by_pattern(FileSet, "%FileSet %:%")
 
       total_removed = counts.values.sum
       print_cleanup_summary(counts, total_removed)
@@ -147,77 +153,37 @@ module Sample
       collections
     end
 
-    def create_oers(count, collections) # rubocop:disable Metrics/AbcSize
-      Rails.logger.debug "Creating OERs..."
-      oers = []
-
-      (1..count).each do |index|
-        oer = begin
-          work = Oer.new(
-          title: ["Oer Sample #{index}: #{sample_data[:titles][index % sample_data[:titles].length]}"],
-          description: [sample_data[:descriptions][index % sample_data[:descriptions].length]],
-          creator: sample_data[:creators][index % sample_data[:creators].length],
-          subject: sample_data[:subjects][index % sample_data[:subjects].length],
-          bulkrax_identifier: "SampleOer#{index}",
-          visibility: seed_visibility,
-          admin_set: admin_set,
-          resource_type: ['Other'],
-          audience: ['Higher Education'],
-          education_level: ['College'],
-          learning_resource_type: ['Textbook'],
-          discipline: ['History']
-        )
-          work.apply_depositor_metadata(user.user_key)
-          work
-        end
-        add_to_random_collection(oer, collections)
-        oer.save!
-
-        file_path = select_file_for_work(index)
-        attach_file_to_work(work, file_path)
-        oers << oer
-        Rails.logger.debug "."
-      end
-
-      Rails.logger.debug "\nCreated #{oers.length} OERs with file attachments."
-      oers
-    end
-
-    def create_images(count, collections)
-      Rails.logger.debug "Creating Images..."
-      images = []
+    def create_works_of_type(type_name, count, collections)
+      label = work_type_label(type_name)
+      Rails.logger.debug "Creating #{label}..."
+      work_class = work_class_for(type_name)
+      works = []
 
       (1..count).each do |i|
-        image = build_work(Image, i, "Image")
-        add_to_random_collection(image, collections)
-        image.save!
-
-        attach_file_to_work(image, sample_data[:files][:image].first)
-        images << image
-        Rails.logger.debug "."
-      end
-
-      Rails.logger.debug "\nCreated #{images.length} images with file attachments."
-      images
-    end
-
-    def create_generic_works(count, collections)
-      Rails.logger.debug "Creating Generic Works..."
-      generic_works = []
-
-      (1..count).each do |i|
-        work = build_work(GenericWork, i, "Generic Work")
+        work = build_work(work_class, i, title_prefix_for(type_name), extra_attributes_for(type_name))
         add_to_random_collection(work, collections)
         work.save!
 
-        file_path = select_file_for_work(i)
+        # Images get an image; everything else cycles the sample file types.
+        file_path = type_name == 'Image' ? sample_data[:files][:image].first : select_file_for_work(i)
         attach_file_to_work(work, file_path)
-        generic_works << work
+        works << work
         Rails.logger.debug "."
       end
 
-      Rails.logger.debug "\nCreated #{generic_works.length} generic works with file attachments."
-      generic_works
+      Rails.logger.debug "\nCreated #{works.length} #{label.downcase} with file attachments."
+      works
+    end
+
+    def work_class_for(type_name)
+      type_name.safe_constantize ||
+        raise(ArgumentError, "No ActiveFedora class for work type '#{type_name}'")
+    end
+
+    # Titles read "Generic Work 1: ...", and clean_sample_data matches on the
+    # same prefix, so the two must be derived the same way.
+    def title_prefix_for(type_name)
+      type_name.titleize
     end
 
     def build_collection(index, collection_type) # rubocop:disable Metrics/AbcSize
@@ -234,8 +200,8 @@ module Sample
       collection
     end
 
-    def build_work(work_class, index, type_name) # rubocop:disable Metrics/AbcSize
-      work = work_class.new(
+    def build_work(work_class, index, type_name, extra = {}) # rubocop:disable Metrics/AbcSize
+      work = work_class.new({
         title: ["#{type_name} #{index}: #{sample_data[:titles][index % sample_data[:titles].length]}"],
         description: [sample_data[:descriptions][index % sample_data[:descriptions].length]],
         creator: sample_data[:creators][index % sample_data[:creators].length],
@@ -243,9 +209,21 @@ module Sample
         bulkrax_identifier: "Sample#{work_class}#{index}",
         visibility: seed_visibility,
         admin_set: admin_set
-      )
+      }.merge(extra))
       work.apply_depositor_metadata(user.user_key)
       work
+    end
+
+    # Work types with required fields beyond the shared set.
+    def extra_attributes_for(type_name)
+      case type_name
+      when 'Oer'
+        { resource_type: ['Other'], audience: ['Higher Education'],
+          education_level: ['College'], learning_resource_type: ['Textbook'],
+          discipline: ['History'] }
+      else
+        {}
+      end
     end
 
     # The ActiveFedora sample data has always been created as open access;

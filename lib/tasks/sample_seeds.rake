@@ -11,13 +11,17 @@ namespace :db do
           puts "Examples:"
           puts "  bundle exec rake db:seed:sample:create[tenant_name,activefedora,100]"
           puts "  bundle exec rake db:seed:sample:create[tenant_name,valkyrie,50,open]"
+          puts "  bundle exec rake db:seed:sample:create[tenant_name,valkyrie,'generic_work:5;image:2',open]"
           puts "  bundle exec rake db:seed:sample:create[tenant_name] (defaults: activefedora, 50)"
           puts "Types: 'activefedora' of 'af' (default) or 'valkyrie' or 'val'"
+          puts "Quantity: a number, applied to every work type the tenant offers and to"
+          puts "          collections, or per-type counts as 'work_type:count' pairs"
+          puts "          separated by ';' (works only; one collection is created)"
           puts "Visibility: 'open', 'authenticated' or 'restricted' (optional)"
           exit 1
         end
 
-        quantity = args[:quantity] || 50
+        quantity_arg = args[:quantity] || 50
         type = args[:type] || 'activefedora'
         visibility = args[:visibility]&.downcase
 
@@ -26,13 +30,34 @@ namespace :db do
           exit 1
         end
 
-        case type.downcase
-        when 'activefedora', 'af'
-          Sample::ActiveFedoraService.new(args[:tenant], quantity, visibility).create_sample_data
-        when 'valkyrie', 'val'
-          Sample::ValkyrieService.new(args[:tenant], quantity, visibility).create_sample_data
-        else
+        # Either a bare number, or 'work_type:count' pairs. Semicolons because
+        # rake already claims the comma. Per-type counts cover works only, so
+        # quantity still governs collections; default to one so seeded works
+        # have somewhere to live.
+        work_types = nil
+        quantity = quantity_arg
+        if quantity_arg.to_s.include?(':')
+          work_types = quantity_arg.to_s.split(';').to_h do |pair|
+            name, count = pair.split(':', 2)
+            [name.to_s.strip, count.to_i]
+          end
+          quantity = 1
+        end
+
+        service_class = case type.downcase
+                        when 'activefedora', 'af' then Sample::ActiveFedoraService
+                        when 'valkyrie', 'val' then Sample::ValkyrieService
+                        end
+
+        if service_class.nil?
           puts "ERROR: Unknown type '#{type}'. Valid types are 'activefedora' or 'valkyrie'"
+          exit 1
+        end
+
+        begin
+          service_class.new(args[:tenant], quantity, visibility, work_types:).create_sample_data
+        rescue ArgumentError => e
+          puts "ERROR: #{e.message}"
           exit 1
         end
       end

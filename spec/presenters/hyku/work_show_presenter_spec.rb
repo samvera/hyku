@@ -343,4 +343,61 @@ RSpec.describe Hyku::WorkShowPresenter do
       end
     end
   end
+
+  describe '#authorized_file_set_ids / #authorized_child_work_ids', :clean_repo do
+    subject(:presenter) { described_class.new(parent_doc, ability, nil) }
+
+    let(:user) { FactoryBot.create(:user) }
+    let(:ability) { ::Ability.new(user) }
+
+    let(:file_set) do
+      resource = Hyrax.persister.save(resource: Hyrax::FileSet.new(title: ['Bound portfolio.pdf']))
+      Hyrax.index_adapter.save(resource:)
+      resource
+    end
+
+    let(:child_work) do
+      resource = Hyrax.persister.save(resource: GenericWorkResource.new(title: ['A Machine for Learning']))
+      Hyrax.index_adapter.save(resource:)
+      resource
+    end
+
+    def indexed_parent_doc(member_ids)
+      resource = Hyrax.persister.save(
+        resource: GenericWorkResource.new(title: ['Primary Space'], member_ids:)
+      )
+      Hyrax.index_adapter.save(resource:)
+      ::SolrDocument.new(Hyrax::SolrService.query("{!field f=id}#{resource.id}", rows: 1).first)
+    end
+
+    let(:parent_doc) { indexed_parent_doc([file_set.id, child_work.id]) }
+
+    it 'splits members into file set ids and child work ids' do
+      allow(Flipflop).to receive(:hide_private_items?).and_return(false)
+
+      file_sets = presenter.authorized_file_set_ids
+      child_works = presenter.authorized_child_work_ids
+
+      expect(file_sets.map(&:to_s)).to eq([file_set.id.to_s])
+      expect(child_works.map(&:to_s)).to eq([child_work.id.to_s])
+    end
+
+    it 'skips a member id with no indexed document rather than raising' do
+      allow(Flipflop).to receive(:hide_private_items?).and_return(false)
+
+      ghost = Valkyrie::ID.new(SecureRandom.uuid)
+      doc = indexed_parent_doc([child_work.id, ghost])
+      presenter = described_class.new(doc, ability, nil)
+
+      expect(presenter.authorized_child_work_ids.map(&:to_s)).to eq([child_work.id.to_s])
+      expect(presenter.authorized_file_set_ids).to be_empty
+    end
+
+    it 'drops members the ability cannot read when hide_private_items is on' do
+      allow(Flipflop).to receive(:hide_private_items?).and_return(true)
+
+      expect(presenter.authorized_file_set_ids).to be_empty
+      expect(presenter.authorized_child_work_ids).to be_empty
+    end
+  end
 end

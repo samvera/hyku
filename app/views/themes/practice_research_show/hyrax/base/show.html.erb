@@ -1,0 +1,112 @@
+<% content_for(:extra_body_classes, 'works-show ') %>
+<% provide :page_title, @presenter.page_title %>
+
+<% content_for :canonical_url do %>
+  <link rel="canonical" href="<%= canonical_url_for(@presenter) %>" />
+<% end %>
+
+<%= render 'shared/citations' %>
+<%= render 'shared/additional_citations' %>
+
+<% panes = pr_show_panes(@presenter) %>
+<% active_pane = pr_active_pane(@presenter) %>
+
+<div class="pr-show" itemscope itemtype="http://schema.org/CreativeWork">
+
+  <div class="pr-masthead">
+    <div class="pr-masthead-inner">
+      <%= render 'work_title', presenter: @presenter, item_count: pr_child_work_ids(@presenter).total_count %>
+      <div class="pr-masthead-actions">
+        <%= render 'show_actions', presenter: @presenter %>
+      </div>
+    </div>
+  </div>
+
+  <%= render 'workflow_actions_widget', presenter: @presenter %>
+
+  <% if pr_viewer?(@presenter) %>
+    <div class="pr-viewer">
+      <% if @presenter.video_embed_viewer? %>
+        <%= render 'video_embed_viewer', presenter: @presenter %>
+      <% elsif @presenter.iiif_viewer? %>
+        <%= render 'representative_media', presenter: @presenter, viewer: true %>
+      <% elsif @presenter.show_pdf_viewer? %>
+        <%= render 'pdf_js', file_set_presenter: pdf_file_set_presenter(@presenter) %>
+      <% else %>
+        <div class="pr-viewer-thumb">
+          <%= render 'representative_media', presenter: @presenter, viewer: false %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="pr-body">
+    <div class="pr-main">
+      <ul class="nav nav-tabs pr-tabs" role="tablist" aria-label="<%= t('practice_research.show.tabs_label') %>">
+        <% panes.each do |key, label| %>
+          <li class="nav-item" role="presentation">
+            <a class="nav-link <%= 'active' if key == active_pane %>"
+               id="pr-tab-<%= key %>"
+               href="#pr-pane-<%= key %>"
+               data-toggle="tab"
+               role="tab"
+               aria-controls="pr-pane-<%= key %>"
+               aria-selected="<%= key == active_pane %>"><%= label %></a>
+          </li>
+        <% end %>
+      </ul>
+
+      <div class="tab-content pr-panes">
+        <% panes.each do |key, _label| %>
+          <div class="tab-pane <%= 'active show' if key == active_pane %>"
+               id="pr-pane-<%= key %>"
+               role="tabpanel"
+               tabindex="0"
+               aria-labelledby="pr-tab-<%= key %>">
+            <% case key %>
+            <% when :context %>
+              <div class="pr-prose"><%= pr_context_html(@presenter) %></div>
+            <% when :metadata %>
+              <%= render 'work_description', presenter: @presenter %>
+
+              <% placement_html = capture do %>
+                <%= render 'relationships', presenter: @presenter %>
+                <%= render 'related_items', presenter: @presenter %>
+              <% end %>
+              <% if pr_section_present?(placement_html) %>
+                <div class="pr-placement">
+                  <div class="pr-section-head">
+                    <h2 class="pr-section-title"><%= t('practice_research.show.placement_heading') %></h2>
+                  </div>
+                  <%= placement_html %>
+                </div>
+              <% end %>
+
+              <% metadata_html = capture { render 'metadata', presenter: @presenter } %>
+              <% if pr_section_present?(metadata_html) %>
+                <div class="pr-section-head pr-metadata-head">
+                  <h2 class="pr-section-title"><%= t('practice_research.show.metadata_heading') %></h2>
+                </div>
+                <%= metadata_html %>
+              <% end %>
+            <% when :items %>
+              <%= render 'pr_items', presenter: @presenter, members: pr_child_works(@presenter),
+                                     paginated: pr_child_work_ids(@presenter),
+                                     items_label: pr_items_label(@presenter) %>
+            <% when :files %>
+              <%= render 'pr_files', presenter: @presenter, members: pr_file_sets(@presenter),
+                                     paginated: pr_file_set_ids(@presenter) %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <%= render 'pr_sidebar', presenter: @presenter %>
+  </div>
+
+  <span class='hide analytics-event' data-category="work" data-action="work-view" data-name="<%= @presenter.id %>"></span>
+  <% @presenter.member_of_collection_ids.each do |collection_id| %>
+    <span class='hide analytics-event' data-category="work-in-collection" data-action="work-in-collection-view" data-name="<%= collection_id %>"></span>
+  <% end %>
+</div>

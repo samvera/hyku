@@ -1,0 +1,42 @@
+<section class="pr-card">
+  <h2 class="pr-card-head"><%= t('practice_research.show.cite') %></h2>
+  <div class="pr-card-body">
+    <% if all_authors(presenter).any? %>
+      <%
+        citations = {
+          'apa' => export_as_apa_citation(presenter),
+          'mla' => export_as_mla_citation(presenter),
+          'chicago' => export_as_chicago_citation(presenter)
+        }.select { |_style, text| text.present? }
+      %>
+      <% if citations.any? %>
+        <div class="pr-cite" data-pr-cite>
+          <select class="form-control form-control-sm pr-cite-picker" data-pr-cite-picker
+                  aria-label="<%= t('practice_research.show.citation_style') %>">
+            <% citations.each_key do |style| %>
+              <option value="<%= style %>"><%= t("practice_research.show.citation_styles.#{style}") %></option>
+            <% end %>
+          </select>
+
+          <% citations.each_with_index do |(style, text), index| %>
+            <blockquote class="pr-cite-text" data-pr-cite-text="<%= style %>"
+                        <%= 'hidden' unless index.zero? %>><%= text %></blockquote>
+          <% end %>
+
+          <div class="d-flex align-items-center">
+            <button type="button" class="pr-cite-copy" data-pr-cite-copy>
+              <%= t('practice_research.show.citation_copy') %>
+            </button>
+            <span class="pr-cite-copied ml-2" data-pr-cite-copied hidden aria-live="polite"><%= t('practice_research.show.citation_copied') %></span>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+
+    <div class="pr-cite-exports">
+      <%= link_to t('practice_research.show.endnote'),
+                  polymorphic_path([main_app, presenter], format: 'endnote'),
+                  class: 'pr-cite-export-link' %>
+    </div>
+  </div>
+</section>

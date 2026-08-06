@@ -2,6 +2,11 @@
 
 module Hyku
   class InvitationsController < Devise::InvitationsController
+    # On public demo tenants, inviting users is restricted to holders of
+    # manage :tenant_controls (i.e. tenant superadmins).
+    # @see Hyrax::Ability::TenantControlAbility
+    before_action :ensure_tenant_controls_on_demo_tenant!, only: :create
+
     # For devise_invitable, specify post-invite path to be 'Manage Users' form
     # (as the user invitation form is also on that page)
     def after_invite_path_for(_resource)
@@ -34,6 +39,12 @@ module Hyku
 
     def user_params
       params.require(:user).permit(:email, :role)
+    end
+
+    def ensure_tenant_controls_on_demo_tenant!
+      return unless Site.account&.public_demo_tenant?
+
+      authorize! :manage, :tenant_controls
     end
   end
 end

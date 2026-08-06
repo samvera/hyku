@@ -117,7 +117,7 @@ module Hyrax
     def collections(rows: 6)
       Hyrax::CollectionsService.new(self).search_results do |builder|
         builder.rows(rows)
-        builder.merge(sort: "title_ssi")
+        builder.merge(sort: "title_ssi asc")
       end
     rescue Blacklight::Exceptions::ECONNREFUSED, Blacklight::Exceptions::InvalidRequest
       []

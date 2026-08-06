@@ -1,0 +1,22 @@
+<%= render 'page_header' %>
+
+<div class="deposit-wizard deposit-wizard--details">
+  <%= render 'stepper', steps: deposit_wizard.item_stepper_steps, phase: deposit_wizard.stepper_phase(:detail) %>
+  <%= render 'step_title', title: t('hyku.deposit_wizard.details.heading'), hint: t('hyku.deposit_wizard.details.subtext') %>
+
+  <%# data-behavior=work-form lets Hyrax's app.js instantiate its Editor here, so
+      autocomplete fields (based_near, subject, language) bind as on the stock
+      form; the Editor's save/relationship/sharing sub-inits safely no-op without
+      their DOM. %>
+  <%= simple_form_for deposit_wizard.work_form,
+                      url: main_app.deposit_wizard_advance_path(step: 'details'),
+                      method: :patch,
+                      html: { class: 'deposit-wizard__details-form',
+                              data: { behavior: 'work-form', 'param-key' => deposit_wizard.work_form.model_name.param_key } } do |f| %>
+    <%= render 'hyrax/base/form_metadata', f: f %>
+
+    <%= render 'visibility', f: f, policy: deposit_wizard.visibility_policy %>
+
+    <%= render 'nav', back_path: wizard_back_path('details') %>
+  <% end %>
+</div>

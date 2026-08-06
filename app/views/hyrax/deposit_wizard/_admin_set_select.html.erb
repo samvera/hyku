@@ -1,0 +1,40 @@
+<%# Inline admin-set chooser, submitted with the enclosing form; hidden when only
+    one set is available. Options keep the presenter's visibility/release data-*
+    so the visibility component still enforces them on the details step. The
+    workflow badge and per-set summary are updated by deposit_wizard.js on change
+    from the selected option's data-workflow / data-description. %>
+<% if deposit_wizard.multiple_admin_sets? %>
+  <% options = deposit_wizard.admin_set_options_for_display %>
+  <% selected = options.find { |o| o[:id] == deposit_wizard.selected_admin_set_id } || options.first %>
+  <div class="deposit-wizard__admin-set" data-behavior="admin-set">
+    <div class="deposit-wizard__admin-set-header">
+      <h2 class="deposit-wizard__admin-set-title">
+        <%= t('hyku.deposit_wizard.admin_set.label') %>
+        <span class="deposit-wizard__admin-set-subtitle"><%= t('hyku.deposit_wizard.admin_set.hint_lead') %></span>
+      </h2>
+      <p class="deposit-wizard__admin-set-explanation"><%= t('hyku.deposit_wizard.admin_set.hint_html') %></p>
+    </div>
+
+    <div class="deposit-wizard__admin-set-controls">
+      <%= label_tag :admin_set_id, t('hyku.deposit_wizard.admin_set.label'), class: 'sr-only' %>
+      <select id="admin_set_id" name="admin_set_id" class="form-control deposit-wizard__admin-set-select"
+              data-behavior="admin-set-select" required>
+        <% options.each do |option| %>
+          <%= content_tag :option, option[:label],
+                          { value: option[:id], selected: option[:id] == selected[:id],
+                            'data-description': option[:description],
+                            'data-workflow': option[:workflow] }.merge(option[:data] || {}) %>
+        <% end %>
+      </select>
+
+      <div class="deposit-wizard__admin-set-workflow" data-behavior="admin-set-workflow"
+           <%= 'hidden' if selected[:workflow].blank? %>>
+        <span class="deposit-wizard__admin-set-workflow-label"><%= t('hyku.deposit_wizard.admin_set.workflow') %></span>
+        <span class="deposit-wizard__admin-set-workflow-value" data-behavior="admin-set-workflow-value"><%= selected[:workflow] %></span>
+      </div>
+
+      <p class="deposit-wizard__admin-set-desc" data-behavior="admin-set-desc"
+         <%= 'hidden' if selected[:description].blank? %>><%= selected[:description] %></p>
+    </div>
+  </div>
+<% end %>

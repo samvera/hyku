@@ -32,16 +32,7 @@
           <%= link_to t("hyrax.file_manager.link_text"), polymorphic_path([main_app, :file_manager, presenter]), class: 'btn btn-secondary' %>
       <% end %>
       <% if presenter.valid_child_concerns.length > 0 %>
-        <div class="btn-group">
-          <button type="button" class="btn btn-secondary dropdown-toggle" type="button" id="dropdown-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <%= t('.attach_child') %>
-          </button>
-          <div class="dropdown-menu">
-            <% presenter.valid_child_concerns.each do |concern| %>
-              <%= link_to "Attach #{concern.human_readable_type}", polymorphic_path([main_app, :new, :hyrax, :parent, concern.model_name.singular.to_sym], parent_id: presenter.id), class: "dropdown-item" %>
-            <% end %>
-          </div>
-        </div>
+        <%= render 'hyrax/base/attach_child_control', presenter: presenter %>
       <% end %>
       <%# OVERRIDE to validate delete permission %>
       <% if current_ability.can?(:delete, presenter.solr_document) %>

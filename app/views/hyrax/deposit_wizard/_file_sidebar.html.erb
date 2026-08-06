@@ -1,0 +1,19 @@
+<%# Master list of the uploaded files; clicking a tab reveals its panel (JS). The
+    first tab starts active. %>
+<nav class="deposit-wizard__file-sidebar" aria-label="<%= t('hyku.deposit_wizard.file_meta.files_nav') %>">
+  <p class="deposit-wizard__file-sidebar-heading"><%= t('hyku.deposit_wizard.file_meta.files_count', count: deposit_wizard.uploaded_files.size) %></p>
+  <ul class="deposit-wizard__file-sidebar-list">
+    <% deposit_wizard.uploaded_files.each_with_index do |uf, i| %>
+      <% filename = uf.file&.file&.filename.to_s %>
+      <li>
+        <button type="button"
+                class="deposit-wizard__file-sidebar-item<%= ' is-active' if i.zero? %>"
+                data-behavior="file-tab" data-file-target="<%= uf.id %>"
+                title="<%= filename.presence || uf.id %>">
+          <span class="deposit-wizard__file-ext"><%= deposit_wizard.file_type_label(uf) %></span>
+          <span class="deposit-wizard__file-sidebar-name"><%= filename.presence || uf.id %></span>
+        </button>
+      </li>
+    <% end %>
+  </ul>
+</nav>

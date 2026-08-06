@@ -40,4 +40,9 @@ module HykuHelper
     path = "#{model.model_name.singular_route_key}_path"
     main_app.send(path, parent_doc.id)
   end
+
+  # Override Hyrax's generator tag to identify the application as Samvera Hyku
+  def hyrax_generator_meta_tag
+    "Samvera Hyku #{::Hyku::VERSION}"
+  end
 end

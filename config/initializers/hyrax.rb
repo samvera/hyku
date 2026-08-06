@@ -173,6 +173,23 @@ Hyrax.config do |config|
   # If you use a multi-server architecture, this MUST be a shared volume.
   config.derivatives_path = ENV['HYRAX_DERIVATIVES_PATH'].presence || Rails.root.join('tmp', 'derivatives').to_s
 
+  config.derivative_options[:pdf] = [
+    { label: :thumbnail, format: 'jpg', size: '676x986', url: 'thumbnail', layer: 0 }
+  ]
+  config.derivative_options[:office].each { |output| output[:size] = '600x450>' if output[:label] == :thumbnail }
+  config.derivative_options[:image].each { |output| output[:size] = '600x450>' if output[:label] == :thumbnail }
+
+  video_size = lambda do |file_set|
+    width = Array(file_set.width).first
+    height = Array(file_set.height).first
+
+    width.nil? || height.nil? ? '320x240' : "#{width}x#{height}"
+  end
+  config.derivative_options[:video] = [
+    { label: :thumbnail, format: 'jpg', url: 'thumbnail', mime_type: 'image/jpeg', size: video_size },
+    { label: 'mp4', format: 'mp4', url: 'mp4', mime_type: 'video/mp4', container: 'service_file', size: video_size }
+  ]
+
   # Should schema.org microdata be displayed?
   # config.display_microdata = true
 

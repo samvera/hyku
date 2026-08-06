@@ -1,0 +1,18 @@
+<%# Server-rendered row for a file uploaded on a prior visit. Hyrax's uploader
+    plugin only renders rows for uploads it handled this page load, so without this
+    a file added earlier would vanish from view on Back (it is preserved regardless
+    — the hidden uploaded_files[] input re-submits the id).
+    Local: uploaded_file (a Hyrax::UploadedFile). %>
+<div class="template-download deposit-wizard__file-row">
+  <span class="deposit-wizard__file-icon fa fa-file-o" aria-hidden="true"></span>
+  <div class="deposit-wizard__file-info">
+    <span class="deposit-wizard__file-name"><%= uploaded_file.file&.file&.filename || uploaded_file.id %></span>
+    <span class="deposit-wizard__file-meta"><%= number_to_human_size(uploaded_file.file&.size) if uploaded_file.file&.size %></span>
+    <input type="hidden" name="uploaded_files[]" value="<%= uploaded_file.id %>">
+  </div>
+  <button type="button" class="deposit-wizard__file-remove delete"
+          aria-label="<%= t('helpers.action.delete') %>"
+          data-type="DELETE" data-url="<%= hyrax.uploaded_file_path(uploaded_file) %>">
+    <span class="fa fa-times" aria-hidden="true"></span>
+  </button>
+</div>

@@ -1,0 +1,14 @@
+// Guided deposit wizard styling, scoped under .deposit-wizard.
+//
+// Split into region partials for maintainability; each re-opens .deposit-wizard
+// and uses the &__ element convention. Tokens live in _base.
+
+@import 'deposit_wizard/base';
+@import 'deposit_wizard/stepper';
+@import 'deposit_wizard/choices';
+@import 'deposit_wizard/files';
+@import 'deposit_wizard/visibility';
+@import 'deposit_wizard/file_meta';
+@import 'deposit_wizard/review';
+@import 'deposit_wizard/extras';
+@import 'deposit_wizard/subtext';

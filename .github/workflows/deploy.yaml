@@ -9,7 +9,7 @@ on:
         default: "staging"
         type: choice
         options:
-          # - demo - pausing for accessibility testing
+          - demo
           - iiif
           - staging
           - test

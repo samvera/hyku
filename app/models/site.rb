@@ -4,6 +4,7 @@ class Site < ApplicationRecord
   resourcify
 
   validates :application_name, presence: true, allow_nil: true
+  validate :superadmin_removal_permitted
 
   # Allow for uploading of site's banner image
   mount_uploader :banner_image, Hyku::AvatarUploader
@@ -54,6 +55,13 @@ class Site < ApplicationRecord
     User.with_role(:superadmin, self).pluck(:email)
   end
 
+  # True when the last assignment declined to remove a superadmin because it
+  # would have left a public demo tenant with none. Account reads this to
+  # raise the same error on itself, since the proprietor form edits an Account.
+  def superadmin_removal_blocked?
+    @superadmin_removal_blocked.present?
+  end
+
   # Update superadmin emails associated with this site
   # @param [Array<String>] Array of user emails
   def superadmin_emails=(emails)
@@ -61,6 +69,10 @@ class Site < ApplicationRecord
     existing_superadmin_emails = superadmin_emails
     new_superadmin_emails = emails - existing_superadmin_emails
     removed_superadmin_emails = existing_superadmin_emails - emails
+    if removed_superadmin_emails.present? && strips_last_superadmin?(emails)
+      @superadmin_removal_blocked = true
+      removed_superadmin_emails = []
+    end
     add_superadmins_by_email(new_superadmin_emails) if new_superadmin_emails.present?
     remove_superadmins_by_email(removed_superadmin_emails) if removed_superadmin_emails.present?
   end
@@ -112,5 +124,24 @@ class Site < ApplicationRecord
     User.where(email: emails).find_each do |u|
       u.remove_role :superadmin, self
     end
+  end
+
+  def superadmin_removal_permitted
+    return unless @superadmin_removal_blocked
+
+    errors.add(:superadmin_emails, :cannot_remove_last_superadmin)
+  end
+
+  # Public demo tenants must always keep at least one site-scoped superadmin.
+  # Role changes apply on assignment rather than on save, so the removal is
+  # skipped rather than performed and undone; the validation above then fails
+  # the save.
+  # @param [Array<String>] requested_emails the full email list being assigned
+  def strips_last_superadmin?(requested_emails)
+    return false unless account&.public_demo_tenant?
+
+    # Only existing users can hold the role, so an assignment naming none of
+    # them would leave the tenant with no superadmins.
+    User.where(email: requested_emails).none?
   end
 end

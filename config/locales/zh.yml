@@ -10,6 +10,9 @@ zh:
     attributes:
       site:
         institution_name_full: 完整的机构名称
+    errors:
+      messages:
+        cannot_remove_last_superadmin: 无法移除公开演示租户的最后一名 superadmin
   application:
     tagline: 下一代存储库解决方案
   blacklight:

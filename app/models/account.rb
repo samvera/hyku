@@ -51,6 +51,7 @@ class Account < ApplicationRecord
 
   # NEW: Validate that search-only accounts have at least one full account selected
   validate :search_only_must_have_full_accounts, if: :search_only?
+  validate :superadmin_removal_permitted
 
   after_save :schedule_jobs_if_settings_changed
 
@@ -177,8 +178,18 @@ class Account < ApplicationRecord
   def superadmin_emails=(emails)
     # Must run this against proper tenant database
     Apartment::Tenant.switch(tenant) do
-      Site.instance.superadmin_emails = emails
+      site = Site.instance
+      site.superadmin_emails = emails
+      # Carry the refusal up so the proprietor form, which edits an Account,
+      # fails validation rather than silently reporting success.
+      @superadmin_removal_blocked = site.superadmin_removal_blocked?
     end
+  end
+
+  def superadmin_removal_permitted
+    return unless @superadmin_removal_blocked
+
+    errors.add(:superadmin_emails, :cannot_remove_last_superadmin)
   end
 
   def cache_api?

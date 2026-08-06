@@ -219,6 +219,20 @@ body.public-facing .hyc-banner .hyc-title h1 {
   color: <%= appearance.collection_banner_text_color %> !important;
 }
 
+/* PRACTICE RESEARCH THEME CUSTOMIZATIONS */
+<% if home_page_theme == 'practice_research' || show_page_theme == 'practice_research_show' %>
+:root {
+  --pr-accent: <%= appearance.primary_button_background_color %>;
+  --pr-accent-ink: <%= appearance.primary_button_text_color %>;
+  --pr-band-dark: <%= appearance.header_and_footer_background_color %>;
+  --pr-band-text: <%= appearance.header_and_footer_text_color %>;
+  --pr-band-link: <%= appearance.footer_link_color %>;
+  --pr-link: <%= appearance.link_color %>;
+  --pr-primary: <%= appearance.link_color %>;
+  --pr-brand-ink: <%= appearance.link_hover_color %>;
+}
+<% end %>
+
 <%= appearance.custom_css_block %>
 
 /* COMMUNITY THEME CUSTOMIZATIONS */

@@ -40,7 +40,7 @@ RSpec.describe DemoTenantResetService do
 
       let(:health_check) { nil }
       let(:steps) do
-        %i[wipe_content! remove_visitor_users! restore_site!
+        %i[wipe_content! revoke_visitor_access! restore_site!
            restore_content_blocks! restore_featured_works! import_seed!]
       end
 
@@ -57,7 +57,7 @@ RSpec.describe DemoTenantResetService do
 
       it 'wipes visitor artifacts before restoring the golden state' do
         expect(service).to receive(:wipe_content!).ordered
-        expect(service).to receive(:remove_visitor_users!).ordered
+        expect(service).to receive(:revoke_visitor_access!).ordered
         expect(service).to receive(:restore_site!).ordered
         expect(service).to receive(:restore_content_blocks!).ordered
         service.reset!
@@ -202,7 +202,9 @@ RSpec.describe DemoTenantResetService do
       expect(Site.instance.reload.application_name).to eq 'Golden Demo'
       expect(ContentBlock.block_for(name: 'announcement_text')).to eq 'Welcome to the demo'
       expect(ContentBlock.find_by(name: 'home_text')).to be_nil
-      expect(User.find_by(email: 'visitor@example.com')).to be_nil
+      visitor_after = User.find_by(email: 'visitor@example.com')
+      expect(visitor_after).to be_present
+      expect(visitor_after.roles.reload).to be_empty
       expect(User.find_by(email: 'seed.depositor@demo.test')).to be_present
       expect(creator.reload).to be_present
       expect(creator.tenant_superadmin?).to be true

@@ -1,0 +1,43 @@
+<%# Attached to Hyrax's uploader via $.fn.hyraxUploader (see deposit_wizard.js).
+    Hyrax's hooks are preserved so its JS still drives it:
+      - #fileupload    the widget root the uploader binds to
+      - .dropzone      the drag-drop target (JS toggles .in/.hover)
+      - input#addfiles the file input (jQuery File Upload's fileInput)
+      - .files         the container the templates render uploaded rows into
+    The dropzone is a <label for="addfiles"> so a click anywhere opens the picker
+    natively — a manual onclick fought the plugin. %>
+<div class="fileupload-deposit-wizard deposit-wizard__uploader"
+     id="fileupload"
+     data-max-file-size="<%= Hyrax.config.uploader[:maxFileSize] %>"
+     data-max-number-of-files="<%= Hyrax.config.uploader[:maxNumberOfFiles] %>">
+  <noscript><input type="hidden" name="redirect" value="<%= main_app.root_path %>" /></noscript>
+
+  <label class="dropzone deposit-wizard__dropzone" for="addfiles" role="button" tabindex="0">
+    <input id="addfiles" type="file" class="fileinput-button" style="display:none;" name="files[]" multiple />
+    <div class="deposit-wizard__dropzone-chip">
+      <span class="fa fa-cloud-upload" aria-hidden="true"></span>
+    </div>
+    <p class="deposit-wizard__dropzone-main"><%= t('hyku.deposit_wizard.files.dropzone') %></p>
+  </label>
+
+  <div class="fileupload-buttonbar">
+    <div class="fileupload-progress fade">
+      <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width:0%;"></div>
+      </div>
+      <div class="progress-extended">&nbsp;</div>
+    </div>
+    <span class="fileupload-process"></span>
+  </div>
+
+  <%# Seed rows for files uploaded on a prior visit (Hyrax's uploader plugin only
+      renders rows for uploads it handled this load); new uploads append here
+      client-side. %>
+  <div class="files deposit-wizard__file-list">
+    <% deposit_wizard.uploaded_files.each do |uploaded_file| %>
+      <%= render 'uploaded_file_row', uploaded_file: uploaded_file %>
+    <% end %>
+  </div>
+</div>
+
+<%= render 'uploader_templates' %>

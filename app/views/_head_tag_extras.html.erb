@@ -23,3 +23,7 @@
 
 <!— Windows 8.1 + IE11 and above —>
 <meta name="msapplication-config" content="/browserconfig.xml" />
+
+<% if public_demo_tenant? %>
+  <meta name="robots" content="noindex, nofollow">
+<% end %>

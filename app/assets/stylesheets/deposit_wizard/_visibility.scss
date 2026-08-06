@@ -1,0 +1,98 @@
+// Visibility pill buttons with embargo/lease expansion, plus the shared field
+// label styling used across the wizard's forms.
+.deposit-wizard {
+  // ---- Visibility control (pill buttons + embargo/lease expansion) -----
+  &__visibility {
+    border: 0;
+    padding: 0;
+    margin: 1.5rem 0 0;
+  }
+
+  // Reset <legend> browser defaults so the title matches the other field labels.
+  &__visibility-legend {
+    float: none;
+    width: auto;
+    padding: 0;
+    margin-bottom: 0.6rem;
+    font-size: inherit;
+    line-height: inherit;
+    color: var(--dw-ink);
+  }
+
+  &__visibility-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  &__visibility-pill {
+    margin: 0;
+    padding: 0.5rem 1.1rem;
+    border: 1px solid var(--dw-border-strong);
+    border-radius: var(--dw-radius-sm);
+    background: var(--dw-surface);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--dw-ink-strong, var(--dw-ink));
+    cursor: pointer;
+    transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+
+    &:hover {
+      border-color: #6c757d;
+    }
+
+    &.is-selected {
+      border-color: var(--dw-accent);
+      background: var(--dw-accent-tint);
+      color: var(--dw-accent);
+      font-weight: 600;
+    }
+  }
+
+  &__visibility-desc {
+    margin: 0.6rem 0 0;
+    font-size: 0.85rem;
+    color: var(--dw-ink-muted);
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  &__visibility-panel {
+    margin-top: 0.85rem;
+    padding: 1.25rem;
+    background: var(--dw-surface-sunk);
+    border: 1px solid var(--dw-divider);
+    border-radius: var(--dw-radius-sm);
+
+    .deposit-wizard__field:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__field {
+    margin-bottom: 1rem;
+  }
+
+  &__field-label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--dw-ink-strong, var(--dw-ink));
+    margin-bottom: 0.35rem;
+  }
+
+  // SimpleForm's default wrapper sets no label weight, so metadata field labels
+  // render plain; make them bold to match across both forms.
+  &__details-form,
+  &__file-metadata {
+    .control-label,
+    .form-group > label,
+    label.string,
+    .form-group .col-form-label {
+      font-weight: 600;
+      color: var(--dw-ink);
+    }
+  }
+}

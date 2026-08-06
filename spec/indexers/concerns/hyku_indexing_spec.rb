@@ -56,4 +56,52 @@ RSpec.describe HykuIndexing do
       expect(all_text).not_to include('text from file set')
     end
   end
+
+  # Finding the parent's own file sets used to go through `find_child_file_sets`
+  # (`find_members(resource:).select(&:file_set?)`), which instantiated every
+  # member before discarding the non-file-sets. On an aggregating work that is
+  # O(child works) of wasted loading per reindex, several times per save.
+  describe 'resolving the parent\'s own file sets', :clean_repo do
+    let(:indexer) { Hyrax::Indexers::ResourceIndexer.for(resource: work) }
+
+    context 'when the members are child works' do
+      let(:child_work_id) { 'work-member-not-loaded' }
+      let(:work) { valkyrie_create(:generic_work_resource, member_ids: [Valkyrie::ID.new(child_work_id)]) }
+
+      before do
+        Hyrax::SolrService.add({ 'id' => child_work_id, 'generic_type_sim' => ['Work'] }, commit: true)
+      end
+
+      it 'treats them as no file sets at all' do
+        expect(indexer.send(:child_file_sets, work)).to be_empty
+      end
+    end
+
+    context 'when a member really is a file set' do
+      let(:file_set) { valkyrie_create(:hyrax_file_set) }
+      let(:work) { valkyrie_create(:generic_work_resource, member_ids: [file_set.id]) }
+
+      it 'still finds it' do
+        expect(indexer.send(:child_file_sets, work).map(&:id)).to eq([file_set.id])
+      end
+    end
+
+    context 'with both a child work and a file set, in member order' do
+      let(:file_set) { valkyrie_create(:hyrax_file_set) }
+      let(:other_file_set) { valkyrie_create(:hyrax_file_set) }
+      let(:child_work_id) { 'interleaved-work-member' }
+      let(:work) do
+        valkyrie_create(:generic_work_resource,
+                        member_ids: [other_file_set.id, Valkyrie::ID.new(child_work_id), file_set.id])
+      end
+
+      before do
+        Hyrax::SolrService.add({ 'id' => child_work_id, 'generic_type_sim' => ['Work'] }, commit: true)
+      end
+
+      it 'returns only the file sets, in member order' do
+        expect(indexer.send(:child_file_sets, work).map(&:id)).to eq([other_file_set.id, file_set.id])
+      end
+    end
+  end
 end

@@ -10,17 +10,16 @@
   - Custom CSS in community_show_buttons.scss applies min-width: 350px, max-width: 500px for proper sizing
 %>
 
-<% if can?(:download, file_set_id) %>
+<% pdf = pdf_file_set_presenter(presenter, downloadable: true) %>
+<% if pdf.present? %>
   <div class="download-pdf-controls text-center">
-    <% if @presenter.representative_presenter.present? && presenter.file_set_presenters.any?(&:pdf?) %>
-      <%= link_to 'Download PDF',
-                  hyrax.download_path(presenter.representative_presenter),
-                  id: 'file_download',
-                  class: 'btn btn-primary file_download mx-auto d-block',
-                  target: '_blank',
-                  rel: 'noopener noreferrer',
-                  role: 'button',
-                  data: { label: @presenter.representative_presenter.id } %>
-    <% end %>
+    <%= link_to t('hyrax.base.download_pdf'),
+                hyrax.download_path(pdf),
+                id: 'file_download',
+                class: 'btn btn-primary file_download mx-auto d-block',
+                target: '_blank',
+                rel: 'noopener noreferrer',
+                role: 'button',
+                data: { label: pdf.id } %>
   </div>
 <% end %>

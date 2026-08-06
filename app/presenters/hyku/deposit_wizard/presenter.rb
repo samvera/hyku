@@ -290,6 +290,12 @@ module Hyku
         Hyrax::AdminSetService.new(context).search_results(:deposit)
       end
 
+      def can_deposit_in_admin_set?(admin_set_id)
+        return false if admin_set_id.blank?
+
+        admin_set_options_for_display.any? { |option| option[:id].to_s == admin_set_id.to_s }
+      end
+
       # Keep the presenter's data-* hash on each option: the visibility component
       # enforces those visibility/release rules downstream on the details form. The
       # description/workflow prose is built by AdminSetDescription.
@@ -614,8 +620,13 @@ module Hyku
       # Empty when the parent can't be read, so an unresolvable parent is refused
       # at the step that names it rather than surfacing as a transaction failure
       # after the depositor has filled in the rest of the form.
+      # Empty for a parent the depositor cannot edit as well as one that cannot be
+      # read, so a forged parent_id is refused rather than merely type-checked.
+      # Adding a child mutates the parent's member_ids, hence edit rather than read.
       def child_types_for(parent_id)
         parent = Hyrax.query_service.find_by(id: parent_id)
+        return [] unless current_ability.can?(:edit, parent)
+
         Hyrax::ChildTypes.for(parent: parent.class).to_a
       rescue Valkyrie::Persistence::ObjectNotFoundError
         []

@@ -256,17 +256,28 @@ module Hyrax
     def seed_parent_handoff
       wizard_state.parent_id = params[:parent_id]
       wizard_state.path = 'add'
-      inherit_admin_set_from_parent
+      @admin_set_needs_choosing = !inherit_admin_set_from_parent
     end
 
-    # Skipping `start` skips its inline admin-set chooser, so a child work takes
-    # its parent's admin set. selected_admin_set_id falls back to the default when
-    # this leaves it blank (an unreadable or since-deleted parent).
+    # Skipping `start` skips its inline admin-set chooser, so a child work takes its
+    # parent's admin set. Only from a parent the depositor can edit, and only into an
+    # admin set they may deposit into: parent_id arrives in params, and edit on a work
+    # does not imply deposit rights to the admin set it sits in.
+    #
+    # False when the depositor must choose an admin set themselves, so the caller can
+    # keep them on the start screen rather than silently defaulting one.
     def inherit_admin_set_from_parent
       parent = Hyrax.query_service.find_by(id: wizard_state.parent_id)
-      wizard_state.admin_set_id = parent.try(:admin_set_id).presence
+      return true unless current_ability.can?(:edit, parent)
+
+      inherited = parent.try(:admin_set_id).presence
+      return true if inherited.blank?
+      return false unless deposit_wizard.can_deposit_in_admin_set?(inherited)
+
+      wizard_state.admin_set_id = inherited
+      true
     rescue Valkyrie::Persistence::ObjectNotFoundError
-      nil
+      true
     end
 
     # Land a directed handoff on the parent step rather than the path chooser it
@@ -277,11 +288,13 @@ module Hyrax
     # redirecting those installs to an up-front parent step would contradict it.
     def skip_start_for_handoff?
       # The param, so Back from select_parent (which returns here without one)
-      # reaches the chooser instead of being redirected forward in a loop; the
-      # state too, since parent_id= drops a blank and there'd be nothing to show.
+      # reaches the chooser instead of being redirected forward in a loop; the state
+      # too, since parent_id= drops a blank and there'd be nothing to show. And not
+      # when the admin set still needs choosing, since the chooser lives here.
       params[:parent_id].present? &&
         wizard_config.parent_connect_on_start? &&
-        wizard_state.parent_id.present?
+        wizard_state.parent_id.present? &&
+        !@admin_set_needs_choosing # set by seed_parent_handoff
     end
   end
 end

@@ -61,8 +61,13 @@ RSpec.describe Hyku::DepositWizard::Presenter do
     end
 
     context 'when a parent is chosen' do
-      let(:parent) { FactoryBot.valkyrie_create(:generic_work_resource) }
+      let(:user) { FactoryBot.create(:user) }
+      let(:parent) { FactoryBot.valkyrie_create(:generic_work_resource, edit_users: [user]) }
       let(:params) { ActionController::Parameters.new(step: 'select_parent', parent_id: parent.id.to_s) }
+      let(:context) do
+        double(session: session, current_user: user, current_ability: Ability.new(user),
+               params: params, main_app: nil, blacklight_config: nil)
+      end
 
       it 'stores the parent and advances' do
         transition = presenter.advance_from('select_parent')

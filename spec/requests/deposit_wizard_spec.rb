@@ -396,6 +396,49 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         expect(session[:deposit_wizard]['parent_id']).to be_nil
       end
 
+      # Needs a non-admin: an admin can edit everything.
+      context 'as a depositor who cannot edit the chosen parent' do
+        let(:depositor) { FactoryBot.create(:user) }
+
+        before { login_as depositor }
+
+        it 'refuses the parent and leaves it unset' do
+          other = FactoryBot.valkyrie_create(:generic_work_resource,
+                                             depositor: FactoryBot.create(:user).user_key)
+          patch deposit_wizard_advance_path(step: 'start'), params: { path: 'add' }
+
+          patch deposit_wizard_advance_path(step: 'select_parent'), params: { parent_id: other.id.to_s }
+
+          expect(response.body).to include(I18n.t('hyku.deposit_wizard.errors.parent_not_allowed'))
+          expect(session[:deposit_wizard]['parent_id']).to be_nil
+        end
+
+        it 'does not inherit the admin set on a launch handoff' do
+          other = FactoryBot.valkyrie_create(
+            :generic_work_resource,
+            depositor: FactoryBot.create(:user).user_key,
+            admin_set_id: Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id.to_s
+          )
+
+          get deposit_wizard_path(parent_id: other.id.to_s)
+
+          expect(session[:deposit_wizard]['admin_set_id']).to be_blank
+        end
+
+        it 'keeps the parent but stays on start when it cannot deposit in that admin set' do
+          admin_set_id = Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id.to_s
+          parent = FactoryBot.valkyrie_create(:generic_work_resource, edit_users: [depositor],
+                                                                      admin_set_id: admin_set_id)
+
+          get deposit_wizard_path(parent_id: parent.id.to_s)
+
+          expect(response).to have_http_status(:success)
+          expect(response).not_to redirect_to(deposit_wizard_step_path(step: 'select_parent'))
+          expect(session[:deposit_wizard]['parent_id']).to eq(parent.id.to_s)
+          expect(session[:deposit_wizard]['admin_set_id']).to be_blank
+        end
+      end
+
       it 'shows the chosen parent and a Back-to-parent link on the type chooser' do
         parent = FactoryBot.valkyrie_create(:generic_work_resource, title: ['Umbrella'], depositor: admin.user_key)
         patch deposit_wizard_advance_path(step: 'start'), params: { path: 'add' }

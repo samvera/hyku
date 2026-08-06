@@ -80,6 +80,17 @@ module Hyrax
       load_shared_info
     end
 
+    # add this method to vary blacklight config and user_params
+    def search_service(*_args)
+      Hyrax::SearchService.new(
+        config: ::CatalogController.new.blacklight_config,
+        user_params: params.except(:q, :page),
+        scope: self,
+        current_ability:,
+        search_builder_class:
+      )
+    end
+
     # Added from Blacklight 6.23.0 to change url for facets on home page
     protected
 
@@ -140,17 +151,6 @@ module Hyrax
     # COPIED from Hyrax::HomepageController
     def sort_field
       "date_uploaded_dtsi desc"
-    end
-
-    # add this method to vary blacklight config and user_params
-    def search_service(*_args)
-      Hyrax::SearchService.new(
-        config: ::CatalogController.new.blacklight_config,
-        user_params: params.except(:q, :page),
-        scope: self,
-        current_ability:,
-        search_builder_class:
-      )
     end
   end
 end

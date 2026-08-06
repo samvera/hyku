@@ -1,0 +1,91 @@
+// The numbered progress rail above the card.
+.deposit-wizard {
+  &__stepper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2.5rem;
+    position: relative;
+  }
+
+  &__step {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+
+    // Connector line to the next step, inset so it doesn't touch the dots. Grey
+    // by default; turns green once this step is completed.
+    &:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      top: 25px; // vertical center of the 50px dot
+      left: calc(50% + 52px); // half the dot (25px) + ~27px gap
+      right: calc(-50% + 52px);
+      height: 2px;
+      background: var(--dw-border);
+      z-index: -1;
+      transition: background-color 0.3s ease;
+    }
+  }
+
+  &__step-dot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #f8f9fa; // future/todo step
+    border: 2px solid var(--dw-border);
+    color: #6c757d;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  &__step-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #6c757d;
+    max-width: 8rem;
+  }
+
+  // Current step: blue.
+  &__step--active {
+    .deposit-wizard__step-dot {
+      background: var(--dw-accent);
+      border-color: var(--dw-accent);
+      color: #fff;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .deposit-wizard__step-label {
+      color: var(--dw-ink);
+    }
+  }
+
+  // Completed step: green dot + green trailing connector.
+  &__step--done {
+    .deposit-wizard__step-dot {
+      background: var(--dw-success);
+      border-color: var(--dw-success);
+      color: #fff;
+    }
+
+    .deposit-wizard__step-label {
+      color: var(--dw-ink);
+    }
+
+    // :not raises specificity to beat the base connector's grey.
+    &:not(:last-child)::after {
+      background: var(--dw-success);
+    }
+  }
+}

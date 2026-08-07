@@ -507,6 +507,10 @@ en:
         data_cite_endpoint: DataCite Endpoint
         fcrepo_endpoint: Fedora Endpoint
         header: Editing Account
+        public_demo_tenant:
+          disabled: 'No'
+          enabled: 'Yes'
+          immutable: This setting is defined when the account is created and cannot be changed.
         solr_endpoint: Solr Endpoint
       index:
         actions: Actions

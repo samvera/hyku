@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'db_query_matchers'
-
 # spec/features/catalog_query_count_spec.rb covers the same "doesn't scale with
 # result count" property using fake Solr-only documents (random UUIDs with no
 # backing orm_resources row) - useful, but it never exercises the real per-result
@@ -16,17 +14,10 @@ RSpec.describe 'Catalog query performance with real, persisted works', type: :fe
   let(:works) { Array.new(6) { |i| create(:work, title: ["Real Work Query Count #{i}"], user: admin) } }
 
   before do
-    # Exclude one-time schema-introspection queries (pg_attribute/pg_attrdef lookups
-    # Rails issues to populate its column-type cache) - noisy, one-time overhead
-    # unrelated to the per-result query fan-out this spec is actually guarding against.
-    DBQueryMatchers.configuration.schemaless = true
-
     login_as admin
     works.each { |work| solr.add(work.to_solr) }
     solr.commit
   end
-
-  after { DBQueryMatchers.reset_configuration }
 
   after do
     solr.delete_by_query('title_tesim:Real\ Work\ Query\ Count*')

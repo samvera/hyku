@@ -12,6 +12,7 @@ RSpec.describe 'themes/neutral_repository/_featured_carousel.html.erb', type: :v
   before do
     assign(:featured_work_list, FeaturedWorkList.new.tap { |l| allow(l).to receive(:featured_works).and_return([featured_work]) })
     allow(SolrDocument).to receive(:find).with('work1').and_return(work)
+    allow(view).to receive(:main_app).and_return(main_app)
     allow(view).to receive(:render_thumbnail_tag) do |_doc, image_options, _url_options|
       # rubocop:disable Rails/OutputSafety - fixture markup echoing the options the partial passed
       %(<img src="thumb.png" alt="#{image_options[:alt]}">).html_safe

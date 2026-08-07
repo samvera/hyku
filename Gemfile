@@ -29,6 +29,7 @@ gem 'bolognese', '>= 1.9.10'
 gem 'bootstrap', '~> 4.6'
 gem 'bootstrap-datepicker-rails'
 gem 'bulkrax', '~> 9.5'
+gem "bullet", "~> 8.1", group: %i[development test]
 gem 'byebug', group: %i[development test]
 gem 'capybara', group: %i[test]
 gem 'capybara-screenshot', '~> 1.0', group: %i[test]

@@ -179,7 +179,7 @@ class RolesService # rubocop:disable Metrics/ClassLength
       # rubocop:enable Rails/UnknownEnv
       user = User.where(email: 'admin@example.com').first_or_initialize do |u|
         if u.new_record?
-          u.password = 'testing123'
+          u.password = seed_user_password
           u.display_name = 'Admin'
           u.save!
         end
@@ -204,11 +204,13 @@ class RolesService # rubocop:disable Metrics/ClassLength
       # rubocop:disable Rails/UnknownEnv
       return 'Seed data should not be used in the production environment' if Rails.env.production? || Rails.env.staging?
       # rubocop:disable Rails/UnknownEnv
+      shared_password = nil
       ActiveRecord::Base.transaction do
         DEFAULT_ROLES.each do |role_name|
           user = User.where(email: "#{role_name}@example.com").first_or_initialize do |u|
             if u.new_record?
-              u.password = 'testing123'
+              shared_password ||= seed_user_password
+              u.password = shared_password
               u.display_name = role_name.titleize
               u.save!
             end
@@ -227,6 +229,30 @@ class RolesService # rubocop:disable Metrics/ClassLength
       end
     end
     # rubocop:enable Metrics/MethodLength
+
+    ##
+    # Password assigned to users created by {.seed_superadmin!} and
+    # {.seed_qa_users!}. Reads the HYKU_SEED_PASSWORD environment variable and
+    # falls back to generating a random password, which is announced once so
+    # the operator can capture it.
+    #
+    # @return [String]
+    def seed_user_password
+      ENV.fetch('HYKU_SEED_PASSWORD', nil).presence || generated_seed_password
+    end
+
+    ##
+    # @api private
+    # @return [String] a newly generated random password
+    def generated_seed_password
+      password = SecureRandom.base58(24)
+      message = "HYKU_SEED_PASSWORD is not set; generated a random password for seed users: #{password}"
+      Rails.logger.info(message)
+      # rubocop:disable Rails/Output
+      puts message
+      # rubocop:enable Rails/Output
+      password
+    end
   end
 
   class GrantWorkflowRolesForAllAdminSetsJob < Hyrax::ApplicationJob

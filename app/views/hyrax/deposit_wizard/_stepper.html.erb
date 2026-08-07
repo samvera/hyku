@@ -1,0 +1,30 @@
+<%# Progress rail for the deposit wizard.
+    Locals:
+      steps - array of { n:, label:, icon: } for the current flow (the step set
+              is dynamic: 3/4 for a portfolio, 4/5 for an item, 3 for batch).
+      phase - zero-based index of the active step, or -1 to hide the rail. %>
+<% steps ||= [] %>
+<% phase ||= -1 %>
+<% if phase >= 0 && steps.any? %>
+  <ol class="deposit-wizard__stepper" aria-label="<%= t('hyku.deposit_wizard.stepper.label') %>">
+    <% steps.each_with_index do |step, i| %>
+      <%
+        state = if i < phase
+                  'done'
+                elsif i == phase
+                  'active'
+                else
+                  'todo'
+                end
+        icon = state == 'done' ? 'fa-check' : step[:icon]
+      %>
+      <li class="deposit-wizard__step deposit-wizard__step--<%= state %>"
+          <%= 'aria-current="step"'.html_safe if state == 'active' %>>
+        <span class="deposit-wizard__step-dot">
+          <span class="fa <%= icon %>" aria-hidden="true"></span>
+        </span>
+        <span class="deposit-wizard__step-label"><%= step[:label] %></span>
+      </li>
+    <% end %>
+  </ol>
+<% end %>

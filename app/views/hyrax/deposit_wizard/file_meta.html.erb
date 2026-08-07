@@ -1,0 +1,20 @@
+<%= render 'page_header' %>
+
+<div class="deposit-wizard deposit-wizard--file-meta">
+  <%= render 'stepper', steps: deposit_wizard.item_stepper_steps, phase: deposit_wizard.stepper_phase(:file_detail) %>
+  <%= render 'step_title', title: t('hyku.deposit_wizard.file_meta.heading'), hint: t('hyku.deposit_wizard.file_meta.subtext') %>
+
+  <%= form_tag main_app.deposit_wizard_advance_path(step: 'file_meta'), method: :patch, class: 'deposit-wizard__file-meta-form' do %>
+    <%# Master-detail: the sidebar lists the files; the panels area shows one
+        file's form at a time (JS toggles visibility). %>
+    <div class="deposit-wizard__file-meta-layout" data-behavior="file-meta">
+      <%= render 'file_sidebar' %>
+
+      <div class="deposit-wizard__file-panels">
+        <%= render partial: 'file_panel', collection: deposit_wizard.uploaded_files, as: :uf %>
+      </div>
+    </div>
+
+    <%= render 'nav', back_path: wizard_back_path('file_meta') %>
+  <% end %>
+</div>

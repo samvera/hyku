@@ -1,0 +1,14 @@
+<%= render 'page_header' %>
+
+<div class="deposit-wizard deposit-wizard--item-start">
+  <%= render 'stepper', steps: deposit_wizard.item_stepper_steps, phase: deposit_wizard.stepper_phase(:type) %>
+  <%= render 'step_title', title: t('hyku.deposit_wizard.item_start.heading'), hint: t('hyku.deposit_wizard.item_start.subtext') %>
+
+  <%= form_tag main_app.deposit_wizard_advance_path(step: 'item_start'), method: :patch do %>
+    <%= button_tag t('hyku.deposit_wizard.item_start.known_type'), type: 'submit', class: 'btn btn-primary' %>
+  <% end %>
+
+  <div class="deposit-wizard__nav">
+    <%= link_to t('hyku.deposit_wizard.back'), main_app.deposit_wizard_path, class: 'btn btn-link' %>
+  </div>
+</div>

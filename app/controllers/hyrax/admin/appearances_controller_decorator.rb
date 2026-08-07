@@ -82,7 +82,9 @@ module Hyrax
       def load_search_themes
         {
           'List view' => 'list_view',
-          'Gallery view' => 'gallery_view'
+          'Gallery view' => 'gallery_view',
+          'Masonry view' => 'masonry_view',
+          'Slideshow view' => 'slideshow_view'
         }
       end
 

@@ -1,0 +1,11 @@
+// The intro subtext sits under the page header, above the card, so it lives
+// outside the .deposit-wizard card scope. Left-aligned (not centered on the
+// card): the h1 renders full-width in .col-12 main-header, so the subtext flows
+// to the same left edge rather than the centered card width. No color set — it
+// inherits the dashboard body text color.
+.deposit-wizard__subtext {
+  margin: 0 0 1.25rem;
+  text-align: left;
+  font-size: 1rem;
+  line-height: 1.55;
+}

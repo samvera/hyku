@@ -17,10 +17,6 @@ Flipflop.configure do
           default: true,
           description: "Shows the Featured Researcher tab on the homepage."
 
-  feature :show_share_button,
-          default: true,
-          description: "Shows the 'Share Your Work' button on the homepage."
-
   feature :show_featured_works,
           default: true,
           description: "Shows the Featured Works tab on the homepage."
@@ -54,5 +50,20 @@ Flipflop.configure do
     feature :include_guided_import,
             default: false,
             description: "Enable the guided import workflow."
+  end
+
+  group :deposit_features do
+    feature :show_share_button,
+          default: true,
+          description: "Shows the 'Share Your Work' button on the homepage for users who can deposit."
+
+    feature :enable_guided_deposit,
+            default: false,
+            description: "Enables a button on the dashboard works page for guided deposit, and uses guided deposit for all deposit entry points."
+
+    feature :enable_standard_deposit,
+            default: true,
+            description: "Enables the standard 'Add new work' button on the dashboard works page. When guided " \
+                         "deposit is also enabled, the guided start page offers a 'switch to the standard deposit form' link."
   end
 end

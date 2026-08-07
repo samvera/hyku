@@ -71,5 +71,18 @@ RSpec.describe Bulkrax::ImportBehaviorDecorator do
         expect(factory).to have_received(:run!)
       end
     end
+
+    # A directory satisfies File.exist?, and sniffing one raises EISDIR, which
+    # would escape as a bare error rather than a message naming the entry.
+    context 'when the referenced path is a directory' do
+      let(:settings) { { file_size_limit: '1000000' } }
+      let(:file_path) { File.join(file_fixture_path, 'images') }
+
+      it 'skips it rather than failing the entry' do
+        expect { entry.build_for_importer }.not_to raise_error
+        expect(entry.current_status&.status_message).not_to eq('Failed')
+        expect(factory).to have_received(:run!)
+      end
+    end
   end
 end

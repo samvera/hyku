@@ -81,7 +81,10 @@ module AccountSettings
                 message: "must be numeric"
               },
               if: -> { google_analytics_property_id.present? }
-    validates :solr_rows_per_request, :solr_max_results, :storage_limit,
+    # file_size_limit joins these now that it is enforced server-side rather than
+    # only feeding the upload widget: it is read with #to_i, so "5 GB" would parse
+    # to 5 bytes and "five" to 0, which reads as no limit at all.
+    validates :solr_rows_per_request, :solr_max_results, :storage_limit, :file_size_limit,
               format: { with: /\A\d+\z/, message: "must be a positive integer" },
               allow_blank: true
 

@@ -116,8 +116,12 @@ module Bulkrax
       raise StandardError, messages.join(' ') if messages.any?
     end
 
+    # File.file? rather than File.exist?, which also accepts a directory: sizing
+    # one returns its inode size rather than anything meaningful, and sniffing it
+    # raises EISDIR, which would surface as a far less readable failure than the
+    # entry-level messages this guard exists to produce.
     def local_file_paths
-      Array.wrap(parsed_metadata&.[]('file')).select { |path| path.present? && File.exist?(path.to_s) }
+      Array.wrap(parsed_metadata&.[]('file')).select { |path| path.present? && File.file?(path.to_s) }
     end
 
     def upload_limit_errors_for(path)

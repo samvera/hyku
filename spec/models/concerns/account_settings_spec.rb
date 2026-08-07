@@ -75,6 +75,17 @@ RSpec.describe AccountSettings do
         expect(account.errors.messages[:storage_limit]).to eq(['must be a positive integer'])
       end
     end
+
+    # The limit is read with #to_i, so a value like this would silently become
+    # 5 bytes rather than 5 gigabytes.
+    context 'when file_size_limit is not numeric' do
+      let(:account) { build(:account, settings: { file_size_limit: '5 GB' }) }
+
+      it 'is invalid' do
+        expect(account.valid?).to eq(false)
+        expect(account.errors.messages[:file_size_limit]).to eq(['must be a positive integer'])
+      end
+    end
   end
 
   describe '#bulkrax_field_mappings' do

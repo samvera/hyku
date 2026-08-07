@@ -10,6 +10,9 @@ fr:
     attributes:
       site:
         institution_name_full: Nom complet de l'établissement
+    errors:
+      messages:
+        cannot_remove_last_superadmin: impossible de supprimer le dernier superadministrateur d'un locataire de démonstration public
   application:
     tagline: La solution de dépôt de nouvelle génération
   blacklight:

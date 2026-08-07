@@ -10,6 +10,9 @@ pt-BR:
     attributes:
       site:
         institution_name_full: Nome completo da instituição
+    errors:
+      messages:
+        cannot_remove_last_superadmin: não é possível remover o último superadministrador de um inquilino de demonstração público
   application:
     tagline: A solução de repos
   blacklight:

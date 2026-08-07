@@ -10,6 +10,9 @@ en:
     attributes:
       site:
         institution_name_full: Full institution name
+    errors:
+      messages:
+        cannot_remove_last_superadmin: cannot remove the last tenant superadmin from a public demo tenant
   application:
     tagline: The next-generation repository solution
   blacklight:

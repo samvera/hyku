@@ -6,6 +6,7 @@ class Account < ApplicationRecord
   include AccountEndpoints
   include AccountSettings
   include AccountCname
+  include SuperadminRemovalGuard
   attr_readonly :tenant, :public_demo_tenant
 
   has_many :sites, dependent: :destroy
@@ -177,7 +178,11 @@ class Account < ApplicationRecord
   def superadmin_emails=(emails)
     # Must run this against proper tenant database
     Apartment::Tenant.switch(tenant) do
-      Site.instance.superadmin_emails = emails
+      site = Site.instance
+      site.superadmin_emails = emails
+      # Carry the refusal up so the proprietor form, which edits an Account,
+      # fails validation rather than silently reporting success.
+      self.superadmin_removal_blocked = site.superadmin_removal_blocked?
     end
   end
 

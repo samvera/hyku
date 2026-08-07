@@ -1,5 +1,14 @@
 # frozen_string_literal: true
 
+# Test-only job used to exercise the real ActiveJobTenant#perform_now wrapper
+# (config/initializers/apartment_activejob.rb includes it into ActiveJob::Base,
+# so every real job gets this same tenant-switching behavior for free).
+class SiteNameCapturingJob < ApplicationJob
+  def perform
+    Site.instance.application_name
+  end
+end
+
 RSpec.describe Site, type: :model do
   let(:admin1) { FactoryBot.create(:user, email: 'bob@was_here.net') }
   let(:admin2) { FactoryBot.create(:user, email: 'jane@was_here.net') }
@@ -70,6 +79,44 @@ RSpec.describe Site, type: :model do
 
         Apartment::Tenant.switch!(new_account.tenant)
         expect(described_class.instance.application_name).to eq('new site')
+      end
+
+      # RequestStore.store is Thread.current[:request_store] (pure thread-local), so
+      # this test needs real accounts visible to a *different* DB connection than the
+      # one holding the example's own open transaction - truncation instead of the
+      # suite's default transactional strategy for model specs.
+      it 'does not leak a memoized Site across concurrent threads for different tenants', truncation: true do
+        seen_names = Queue.new
+        [[old_account, 'old site'], [new_account, 'new site']].map do |account, expected_name|
+          Thread.new do
+            Apartment::Tenant.switch!(account.tenant)
+            names = Array.new(20) { Site.instance.application_name }
+            seen_names << { expected: expected_name, actual: names.uniq }
+          ensure
+            Apartment::Tenant.switch!(Apartment.default_tenant)
+          end
+        end.each(&:join)
+
+        2.times do
+          result = seen_names.pop
+          expect(result[:actual]).to eq([result[:expected]])
+        end
+      end
+
+      # Every job includes ActiveJobTenant (config/initializers/apartment_activejob.rb),
+      # whose perform_now wraps execution in Apartment::Tenant.switch(tenant) { super } -
+      # which calls switch! (firing the :switch callback, i.e. Site.reset!) on entry AND
+      # exit. This proves that mechanism actually protects sequential job execution on a
+      # reused thread (the GoodJob/Sidekiq thread-pool-reuse scenario), using the real
+      # job execution path rather than calling Apartment::Tenant.switch! directly.
+      it 'does not leak a memoized Site across sequential job executions on the same thread' do
+        old_job = SiteNameCapturingJob.new
+        old_job.tenant = old_account.tenant
+        new_job = SiteNameCapturingJob.new
+        new_job.tenant = new_account.tenant
+
+        expect(old_job.perform_now).to eq('old site')
+        expect(new_job.perform_now).to eq('new site')
       end
     end
   end

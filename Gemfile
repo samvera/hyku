@@ -152,4 +152,6 @@ gem 'willow_sword', github: 'notch8/willow_sword', tag: 'v0.8.5'
 #         of the time use the `samvera-labs/hyku_knapsack` remote branch.
 gem 'hyku_knapsack', github: 'samvera-labs/hyku_knapsack', branch: 'required_for_knapsack_instances'
 
+gem 'bullet', '~> 8.1', group: %i[development test]
+
 # rubocop:enable Metrics/MethodLength

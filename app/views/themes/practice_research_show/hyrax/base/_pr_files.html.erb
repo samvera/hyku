@@ -1,0 +1,32 @@
+<div class="pr-section">
+  <div class="pr-section-head">
+    <h2 class="pr-section-title"><%= t('practice_research.show.files_heading') %></h2>
+    <span class="pr-section-count"><%= t('practice_research.show.files_count', count: paginated.total_count) %></span>
+  </div>
+  <p class="pr-section-note"><%= t('practice_research.show.files_note') %></p>
+
+  <ul class="pr-tiles list-unstyled">
+    <% members.each do |member| %>
+      <li class="pr-tile">
+        <div class="pr-tile-thumb">
+          <%= document_presenter(member).thumbnail.thumbnail_tag({ alt: '' }, { suppress_link: true }) %>
+        </div>
+        <%= link_to member.link_name, contextual_path(member, presenter), class: 'pr-tile-name' %>
+        <div class="pr-tile-meta">
+          <%= member.permission_badge %>
+          <% if member.try(:date_uploaded).present? %>
+            <span class="pr-tile-date"><%= member.date_uploaded %></span>
+          <% end %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+
+  <% if paginated.total_pages > 1 %>
+    <div class="pr-pager">
+      <%= paginate paginated, outer_window: 2, theme: 'blacklight',
+                   param_name: :files_page, route_set: main_app,
+                   params: { pane: 'files', anchor: 'pr-pane-files' } %>
+    </div>
+  <% end %>
+</div>

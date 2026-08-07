@@ -1,0 +1,75 @@
+// ---- practice research mixins ----
+
+@mixin pr-full-bleed {
+  margin-inline: calc(50% - 50vw);
+  padding-inline: calc(50vw - 50%);
+}
+
+@mixin pr-container-inset {
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+
+  @media (min-width: 576px) {
+    padding-left: calc((100% - 540px) / 2 + 15px) !important;
+    padding-right: calc((100% - 540px) / 2 + 15px) !important;
+  }
+
+  @media (min-width: 768px) {
+    padding-left: calc((100% - 720px) / 2 + 15px) !important;
+    padding-right: calc((100% - 720px) / 2 + 15px) !important;
+  }
+
+  @media (min-width: 992px) {
+    padding-left: calc((100% - 960px) / 2 + 15px) !important;
+    padding-right: calc((100% - 960px) / 2 + 15px) !important;
+  }
+
+  @media (min-width: 1200px) {
+    padding-left: calc((100% - 1140px) / 2 + 15px) !important;
+    padding-right: calc((100% - 1140px) / 2 + 15px) !important;
+  }
+}
+
+@mixin pr-controls-reset {
+  .btn,
+  .form-control {
+    border-radius: 0;
+  }
+
+  .btn:focus-visible,
+  .form-control:focus-visible,
+  select:focus-visible {
+    box-shadow: none;
+    outline: 2px solid var(--pr-link, #0e5c58);
+    outline-offset: 2px;
+  }
+}
+
+@mixin pr-focus-ring($color: var(--pr-link, #0e5c58)) {
+  box-shadow: none;
+  outline: 2px solid $color;
+  outline-offset: 2px;
+}
+
+@mixin pr-section-title($color, $size: 0.85rem) {
+  color: $color;
+  font-family: var(--pr-sans, 'Helvetica Neue', Helvetica, Arial, sans-serif) !important;
+  font-size: $size;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+@mixin pr-thumb-placeholder {
+  background: repeating-linear-gradient(135deg, #f2f4f3 0 6px, #e6eae8 6px 12px);
+}
+
+@mixin pr-eyebrow-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+}

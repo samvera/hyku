@@ -1,0 +1,78 @@
+<% featured = pr_home.featured_works %>
+<% editable = can?(:update, FeaturedWork) && @featured_work_list.present? && !@featured_work_list.empty? %>
+
+<% if featured.any? || editable %>
+  <section class="pr-section pr-featured">
+    <div class="pr-section-head">
+      <h2 class="pr-section-title"><%= t('practice_research.homepage.featured.heading') %></h2>
+      <%= link_to t('practice_research.homepage.featured.view_all'), main_app.search_catalog_path,
+                  class: 'pr-section-link' %>
+    </div>
+
+    <% if editable %>
+      <%= form_for [hyrax, @featured_work_list] do |f| %>
+        <ul class="pr-work-grid pr-work-grid-editable" role="list" data-featured-grid
+            data-moved-template="<%= t('practice_research.homepage.featured.moved', title: '%{title}',
+                                       position: '%{position}', total: '%{total}') %>"
+            data-at-template="<%= t('practice_research.homepage.featured.at_position', title: '%{title}',
+                                    position: '%{position}', total: '%{total}') %>"
+            data-unfeature-confirm="<%= t('practice_research.homepage.featured.unfeature_confirm') %>"
+            data-unfeature-failed="<%= t('practice_research.homepage.featured.unfeature_failed') %>">
+          <%= f.fields_for :featured_works do |featured_work| %>
+            <% presenter = featured_work.object.presenter %>
+            <li class="pr-portfolio pr-work-row"
+                data-id="<%= presenter.id %>"
+                data-title="<%= Array(presenter.title).first %>">
+              <%= featured_work.hidden_field :id %>
+              <%= featured_work.hidden_field :order, data: { property: 'order' } %>
+
+              <div class="pr-portfolio-tools">
+                <button type="button" class="pr-portfolio-handle" data-featured-handle
+                        aria-label="<%= t('practice_research.homepage.featured.reorder_handle',
+                                          title: Array(presenter.title).first) %>">
+                  <span aria-hidden="true">⠿</span>
+                </button>
+
+                <button type="button" class="pr-portfolio-move" data-featured-move="-1"
+                        aria-label="<%= t('practice_research.homepage.featured.move_earlier',
+                                          title: Array(presenter.title).first) %>">
+                  <span aria-hidden="true">&lsaquo;</span>
+                </button>
+
+                <button type="button" class="pr-portfolio-move" data-featured-move="1"
+                        aria-label="<%= t('practice_research.homepage.featured.move_later',
+                                          title: Array(presenter.title).first) %>">
+                  <span aria-hidden="true">&rsaquo;</span>
+                </button>
+
+                <% if can? :destroy, FeaturedWork %>
+                  <%= link_to hyrax.featured_work_path(presenter, format: :json),
+                              class: 'pr-portfolio-unfeature pr-portfolio-remove',
+                              title: t('practice_research.homepage.featured.unfeature'),
+                              data: { featured_unfeature: true } do %>
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only"><%= t('practice_research.homepage.featured.unfeature') %></span>
+                  <% end %>
+                <% end %>
+              </div>
+
+              <%= render 'hyrax/homepage/featured_card', presenter: presenter %>
+            </li>
+          <% end %>
+        </ul>
+
+        <p class="sr-only" role="status" aria-live="polite" data-featured-status></p>
+        <p class="pr-featured-reorder-hint"><%= t('practice_research.homepage.featured.reorder_hint') %></p>
+        <%= f.submit(t('practice_research.homepage.featured.save_order'), class: 'pr-featured-save') %>
+      <% end %>
+    <% else %>
+      <ul class="pr-work-grid" role="list">
+        <% featured.each do |work| %>
+          <li class="pr-portfolio pr-work-row">
+            <%= render 'hyrax/homepage/featured_card', presenter: work.presenter %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  </section>
+<% end %>

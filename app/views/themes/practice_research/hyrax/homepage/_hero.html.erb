@@ -1,0 +1,25 @@
+<div class="pr-hero" style="background-image: url('<%= banner_image %>')">
+  <div class="container pr-hero-inner">
+    <p class="pr-hero-eyebrow"><%= application_name %></p>
+
+    <% if @home_text&.value.present? %>
+      <div class="pr-hero-intro"><%= displayable_content_block @home_text %></div>
+    <% else %>
+      <h1 class="pr-hero-title"><%= t('practice_research.homepage.hero.title') %></h1>
+      <p class="pr-hero-lede"><%= t('practice_research.homepage.hero.lede') %></p>
+    <% end %>
+
+    <%= form_tag main_app.search_catalog_path, method: :get, class: 'pr-hero-search', role: 'search' do %>
+      <label class="sr-only" for="pr-hero-q"><%= t('practice_research.homepage.hero.search_label') %></label>
+      <%= text_field_tag :q, params[:q], id: 'pr-hero-q', autocomplete: 'off',
+                         class: 'pr-hero-search-field',
+                         placeholder: t('practice_research.homepage.hero.search_placeholder') %>
+      <%= button_tag t('practice_research.homepage.hero.search_button'), class: 'pr-hero-search-submit' %>
+    <% end %>
+
+    <p class="pr-hero-links">
+      <%= link_to t('practice_research.homepage.hero.advanced_search'), main_app.advanced_search_catalog_path %>
+      <%= link_to t('practice_research.homepage.hero.browse_everything'), main_app.search_catalog_path %>
+    </p>
+  </div>
+</div>

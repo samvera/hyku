@@ -1,0 +1,43 @@
+<% if @recent_documents.present? %>
+  <section class="pr-section pr-recent">
+    <div class="pr-section-head">
+      <h2 class="pr-section-title"><%= t('practice_research.homepage.recent.heading') %></h2>
+      <%= link_to t('practice_research.homepage.recent.all'),
+                  main_app.search_catalog_path(sort: 'date_uploaded_dtsi desc'),
+                  class: 'pr-section-link',
+                  aria: { label: t('practice_research.homepage.recent.all_label') } %>
+    </div>
+
+    <ul class="pr-recent-list" role="list">
+      <% @recent_documents.each do |document| %>
+        <li class="pr-recent-item">
+          <div class="pr-recent-thumb">
+            <%= render_thumbnail_tag(document, { alt: '' }, { suppress_link: true }) if pr_thumbnail?(document) %>
+          </div>
+
+          <div class="pr-recent-body">
+            <h3 class="pr-recent-heading">
+                <%= link_to document.title_or_label, generate_work_url(document, request),
+                          class: 'pr-recent-title',
+                          data: { turbolinks: block_valkyrie_redirect? } %>
+            </h3>
+            <span class="pr-recent-meta">
+              <span class="pr-recent-type"><%= work_type_facet_label(Array(document['has_model_ssim']).first) %></span>
+              <% if document.date_uploaded.present? %>
+                <span class="pr-recent-date">
+                  <%= l(document.date_uploaded.to_date, format: :pr_short, default: '%-d %b %Y') %>
+                </span>
+              <% end %>
+              <% collection_title = Array(document['member_of_collections_ssim']).first %>
+              <% if collection_title.present? %>
+                <span class="pr-recent-parent">
+                  <%= t('practice_research.homepage.recent.in_parent', title: collection_title) %>
+                </span>
+              <% end %>
+            </span>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </section>
+<% end %>

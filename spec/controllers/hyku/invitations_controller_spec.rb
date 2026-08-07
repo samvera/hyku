@@ -57,5 +57,59 @@ RSpec.describe Hyku::InvitationsController, type: :controller do
         expect(user.groups).to eq([Ability.registered_group_name])
       end
     end
+
+    context 'on a public demo tenant' do
+      before do
+        allow(Site).to receive_message_chain(:account, :public_demo_tenant?).and_return(true)
+        allow(Site).to receive_message_chain(:account, :search_only?).and_return(false)
+      end
+
+      context 'when signed in as a tenant admin' do
+        it 'denies the invitation and does not create the user' do
+          post :create, params: {
+            user: {
+              email: 'uninvited@guest.org',
+              role: 'user_manager'
+            }
+          }
+          expect(User.find_by(email: 'uninvited@guest.org')).to be_nil
+          expect(response).to redirect_to root_path
+        end
+      end
+
+      context 'when signed in as a tenant superadmin' do
+        let(:user) { create(:tenant_superadmin) }
+
+        it 'processes the invitation' do
+          post :create, params: {
+            user: {
+              email: 'invited@guest.org',
+              role: 'user_manager'
+            }
+          }
+          created_user = User.find_by(email: 'invited@guest.org')
+          expect(created_user.roles.map(&:name)).to include('user_manager')
+          expect(response).to redirect_to Hyrax::Engine.routes.url_helpers.admin_users_path(locale: 'en')
+        end
+      end
+    end
+
+    context 'on a standard tenant' do
+      before do
+        allow(Site).to receive_message_chain(:account, :public_demo_tenant?).and_return(false)
+        allow(Site).to receive_message_chain(:account, :search_only?).and_return(false)
+      end
+
+      it 'still allows a tenant admin to invite users' do
+        post :create, params: {
+          user: {
+            email: 'welcome@guest.org',
+            role: 'user_manager'
+          }
+        }
+        expect(User.find_by(email: 'welcome@guest.org')).to be_present
+        expect(response).to redirect_to Hyrax::Engine.routes.url_helpers.admin_users_path(locale: 'en')
+      end
+    end
   end
 end

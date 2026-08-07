@@ -6,7 +6,12 @@
 # Hyrax::Work queries against orm_resources, since those go through Valkyrie's
 # query service rather than AR associations. Complementary to, not a replacement
 # for, Postgres-level pg_stat_statements/log_min_duration_statement analysis.
-if Rails.env.development? || Rails.env.staging?
+#
+# Gated on an env var, not Rails.env.staging? - real staging deployments run with
+# RAILS_ENV=production (see ops/staging-deploy.tmpl.yaml), so config/environments/
+# staging.rb never actually loads there. Set HYKU_BULLET_ENABLED=true wherever this
+# should run in a deployed environment.
+if Rails.env.development? || ActiveModel::Type::Boolean.new.cast(ENV.fetch('HYKU_BULLET_ENABLED', 'false'))
   require 'bullet'
 
   Rails.application.configure do

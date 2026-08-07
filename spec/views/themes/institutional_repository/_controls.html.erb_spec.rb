@@ -3,7 +3,10 @@
 RSpec.describe 'themes/institutional_repository/_controls.html.erb', type: :view do
   before do
     allow(view).to receive(:admin_host?).and_return(false)
-    stub_template '_user_util_links.html.erb' => ''
+    # The partial renders '/user_util_links' (leading slash = from the view
+    # root), so these keys are the full virtual paths of the templates it can
+    # reach; the theme variants live under themes/<name>/ and are not in play.
+    stub_template '_user_util_links.html.erb' => '', '_admin_util_links.html.erb' => ''
 
     render partial: 'themes/institutional_repository/controls'
   end

@@ -91,5 +91,6 @@ Rails.application.configure do # rubocop:disable Metrics/BlockLength
 
   config.active_job.queue_adapter = ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq')
   # adding `.` wildcard to allow for subdomains
-  config.hosts << "." + ENV['HYKU_ROOT_HOST']
+  # adding regex to allow for COMPOSE_PROJECT_NAME-created hostnames
+  config.hosts << /\A(?:[a-z0-9_-]+\.)?#{Regexp.escape(ENV['HYKU_ROOT_HOST'])}(:\d+)?\z/i
 end

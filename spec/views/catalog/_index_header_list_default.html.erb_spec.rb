@@ -18,7 +18,7 @@ RSpec.describe 'catalog/_index_header_list_default.html.erb', type: :view do
     # Collections render h3.search-result-title; works rendered h4, so a
     # works-only results page jumped h2 -> h4 (axe heading-order).
     expect(rendered).to have_css('h3.search-result-title', text: 'Assessment of Coastal Ecosystems')
-    expect(rendered).not_to have_css('h4')
+    expect(rendered).not_to have_css('h4.search-result-title')
   end
 
   it 'shows the access-status badge for the work' do

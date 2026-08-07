@@ -455,6 +455,9 @@ GEM
       database_cleaner-core (~> 2.0)
     database_cleaner-core (2.0.1)
     date (3.5.1)
+    db-query-matchers (0.15.0)
+      activesupport (>= 4.0)
+      rspec (>= 3.0)
     declarative (0.0.20)
     denormalize_fields (1.3.0)
       activerecord (>= 4.1.14, < 8.0.0)
@@ -1674,6 +1677,7 @@ DEPENDENCIES
   codemirror-rails
   coffee-rails (~> 4.2)
   database_cleaner
+  db-query-matchers (~> 0.15)
   derivative-rodeo (~> 0.5, >= 0.5.3)
   devise
   devise-guests (~> 0.3)

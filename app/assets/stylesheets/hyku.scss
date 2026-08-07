@@ -79,8 +79,11 @@ footer.navbar {
         font-weight: 500;
     }
 
+    // Links in the footer sit inside blocks of text whose color they don't
+    // contrast with by 3:1 (axe link-in-text-block), so they need a non-color
+    // distinguisher.
     a {
-        text-decoration: none;
+        text-decoration: underline;
     }
 
     @media (max-width: 992px) {

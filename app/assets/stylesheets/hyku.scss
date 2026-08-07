@@ -769,7 +769,7 @@ dd {
 
 /* Accessibility fix for contrast on Show Pages */
 /* Breadcrumb links: ensure #000000 overrides tenant link color for WCAG AA contrast */
-nav.breadcrumb a {
+body.public-facing nav.breadcrumb a {
     color: #000000 !important;
 }
 

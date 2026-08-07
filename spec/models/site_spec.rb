@@ -165,6 +165,18 @@ RSpec.describe Site, type: :model do
         subject.superadmin_emails = [admin1.email]
         expect(subject.superadmin_emails).to eq([admin1.email])
       end
+
+      # The refusal describes the assignment just attempted. If it latched on,
+      # correcting the mistake would still fail to save.
+      it "stops reporting the refusal once a later assignment is acceptable" do
+        subject.superadmin_emails = []
+        expect(subject).not_to be_valid
+
+        subject.superadmin_emails = [admin1.email, admin2.email]
+
+        expect(subject).to be_valid
+        expect(subject.errors[:superadmin_emails]).to be_empty
+      end
     end
 
     context "on a standard tenant" do

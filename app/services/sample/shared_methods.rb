@@ -2,12 +2,28 @@
 
 module Sample
   module SharedMethods # rubocop:disable Metrics/ModuleLength
-    attr_accessor :admin_set, :user
-    attr_reader :tenant_name, :sample_files_dir, :sample_data, :quantity
+    VALID_VISIBILITIES = [
+      Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC,
+      Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED,
+      Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
+    ].freeze
 
-    def initialize(tenant_name, quantity = 50)
+    attr_accessor :admin_set, :user
+    attr_reader :tenant_name, :sample_files_dir, :sample_data, :quantity, :visibility
+
+    # @param tenant_name [String] the Account name of the tenant to seed
+    # @param quantity [Integer, String] how many of each work type to create
+    # @param visibility [String, nil] visibility to assign to seeded records
+    #   ('open', 'authenticated', or 'restricted'); when nil, each service
+    #   keeps its existing default behavior
+    # @param work_types [Hash, nil] per-type counts, e.g. { 'GenericWork' => 5,
+    #   'Image' => 2 }. Overrides quantity for the types named. When nil, every
+    #   work type the tenant offers gets quantity records.
+    def initialize(tenant_name, quantity = 50, visibility = nil, work_types: nil)
       @tenant_name = tenant_name
       @quantity = quantity.to_i
+      @visibility = visibility
+      @requested_work_types = work_types
       @sample_files_dir = Rails.root.join('db', 'seeds', 'sample')
       @sample_data = {}
       @user = nil
@@ -15,6 +31,38 @@ module Sample
     end
 
     private
+
+    # The work types this tenant offers, so seeding follows whatever a given
+    # Hyku is configured for rather than a hardcoded list.
+    def available_work_type_names
+      names = Site.instance.available_works.presence ||
+              Hyrax.config.registered_curation_concern_types
+      Array(names).map { |name| name.to_s.sub(/Resource\z/, '') }
+    end
+
+    # @return [Hash<String, Integer>] canonical work type name => how many
+    def work_type_counts
+      @work_type_counts ||=
+        if @requested_work_types.blank?
+          available_work_type_names.index_with { quantity }
+        else
+          normalize_requested_work_types
+        end
+    end
+
+    def normalize_requested_work_types
+      available = available_work_type_names
+      @requested_work_types.each_with_object({}) do |(name, count), counts|
+        canonical = available.find { |a| a.casecmp?(name.to_s.camelize.sub(/Resource\z/, '')) }
+        raise ArgumentError, "Unknown work type '#{name}'. Available: #{available.join(', ')}" if canonical.nil?
+
+        counts[canonical] = count.to_i
+      end
+    end
+
+    def work_type_label(name)
+      name.titleize.pluralize
+    end
 
     def confirm_cleanup # rubocop:disable Metrics/AbcSize
       # Skip confirmation if CONFIRM environment variable is set to 'true'
@@ -123,33 +171,24 @@ module Sample
       ActiveJob::Base.queue_adapter = @original_queue_adapter
     end
 
-    # rubocop:disable Metrics/AbcSize
-    def print_completion_summary(collections, images, generic_works, oers, total)
-      object_type = self.class.name.include?('Valkyrie') ? 'VALKYRIE' : 'ACTIVEFEDORA'
-      Rails.logger.debug "\n" + "=" * 60
-      Rails.logger.debug "SAMPLE #{object_type} DATA CREATION COMPLETE"
-      Rails.logger.debug "=" * 60
-      Rails.logger.debug "Tenant: #{tenant_name}"
-      Rails.logger.debug "Created #{collections.length} Collections"
-      Rails.logger.debug "Created #{images.length} Images"
-      Rails.logger.debug "Created #{generic_works.length} Generic Works"
-      Rails.logger.debug "Created #{oers.length} OERs"
-      Rails.logger.debug "Total: #{total} works created"
-      Rails.logger.debug "=" * 60
-      # rubocop:enable Metrics/AbcSize
+    # @param counts [Hash] label => number created
+    def print_completion_summary(counts, total)
+      print_summary('CREATION', 'Created', counts, total, 'created')
     end
 
-    def print_cleanup_summary(counts, total) # rubocop:disable Metrics/AbcSize
+    # @param counts [Hash] label => number removed
+    def print_cleanup_summary(counts, total)
+      print_summary('CLEANUP', 'Removed', counts, total, 'removed')
+    end
+
+    def print_summary(heading, verb, counts, total, past_tense)
       object_type = self.class.name.include?('Valkyrie') ? 'VALKYRIE' : 'ACTIVEFEDORA'
       Rails.logger.debug "\n" + "=" * 60
-      Rails.logger.debug "SAMPLE #{object_type} DATA CLEANUP COMPLETE"
+      Rails.logger.debug "SAMPLE #{object_type} DATA #{heading} COMPLETE"
       Rails.logger.debug "=" * 60
       Rails.logger.debug "Tenant: #{tenant_name}"
-      Rails.logger.debug "Removed #{counts[:collections]} Collections"
-      Rails.logger.debug "Removed #{counts[:images]} Images"
-      Rails.logger.debug "Removed #{counts[:generic_works]} Generic Works"
-      Rails.logger.debug "Removed #{counts[:file_sets]} FileSets"
-      Rails.logger.debug "Total: #{total} works removed"
+      counts.each { |label, count| Rails.logger.debug "#{verb} #{count} #{label}" }
+      Rails.logger.debug "Total: #{total} works #{past_tense}"
       Rails.logger.debug "=" * 60
     end
 

@@ -19,14 +19,18 @@ module Sample
         # we have to create the admin set after we switch modes
         self.admin_set = find_or_create_admin_set
         collections = create_collections(quantity)
-        images = create_images(quantity, collections)
-        generic_works = create_generic_works(quantity, collections)
+        works_by_type = work_type_counts.to_h do |type_name, count|
+          [type_name, create_works_of_type(type_name, count, collections)]
+        end
 
-        total_works = collections.length + images.length + generic_works.length
+        all_works = works_by_type.values.flatten
+        total_works = collections.length + all_works.length
 
-        index_all_works(collections + images + generic_works)
+        index_all_works(collections + all_works)
 
-        print_completion_summary(collections, images, generic_works, total_works)
+        counts = { 'Collections' => collections.length }
+        works_by_type.each { |type_name, works| counts[work_type_label(type_name)] = works.length }
+        print_completion_summary(counts, total_works)
       ensure
         restore_job_configuration
       end
@@ -43,12 +47,14 @@ module Sample
         @original_use_valkyrie = Hyrax.config.use_valkyrie?
         Hyrax.config.use_valkyrie = true
 
-        counts = {
-          collections: clean_works_by_pattern(CollectionResource, "%CollectionResource %:%"),
-          images: clean_works_by_pattern(ImageResource, "%ImageResource %:%"),
-          generic_works: clean_works_by_pattern(GenericWorkResource, "%GenericWorkResource %:%"),
-          file_sets: clean_works_by_pattern(Hyrax::FileSet, "%Hyrax::FileSet %:%")
-        }
+        # Driven by the same type list as creation, so cleanup cannot orphan a
+        # work type that seeding created.
+        counts = { 'Collections' => clean_works_by_pattern(CollectionResource, "%CollectionResource %:%") }
+        work_type_counts.each_key do |type_name|
+          klass = work_class_for(type_name)
+          counts[work_type_label(type_name)] = clean_works_by_pattern(klass, "%#{klass.name} %:%")
+        end
+        counts['FileSets'] = clean_works_by_pattern(Hyrax::FileSet, "%Hyrax::FileSet %:%")
 
         total_removed = counts.values.sum
         print_cleanup_summary(counts, total_removed)
@@ -169,39 +175,30 @@ module Sample
       collections
     end
 
-    def create_images(count, collections)
-      Rails.logger.debug "Creating Images..."
-      images = []
+    def create_works_of_type(type_name, count, collections)
+      label = work_type_label(type_name)
+      Rails.logger.debug "Creating #{label}..."
+      resource_class = work_class_for(type_name)
+      works = []
 
       (1..count).each do |i|
-        image = build_work(ImageResource, i, "ImageResource")
-        add_to_random_collection(image, collections)
-
-        attach_file_to_work(image, sample_data[:files][:image].first)
-        images << image
-        Rails.logger.debug "."
-      end
-
-      Rails.logger.debug "\nCreated #{images.length} images with file attachments."
-      images
-    end
-
-    def create_generic_works(count, collections)
-      Rails.logger.debug "Creating Generic Works..."
-      generic_works = []
-
-      (1..count).each do |i|
-        work = build_work(GenericWorkResource, i, "GenericWorkResource")
+        work = build_work(resource_class, i, resource_class.name)
         add_to_random_collection(work, collections)
 
-        file_path = select_file_for_work(i)
+        # Images get an image; everything else cycles the sample file types.
+        file_path = type_name == 'Image' ? sample_data[:files][:image].first : select_file_for_work(i)
         attach_file_to_work(work, file_path)
-        generic_works << work
+        works << work
         Rails.logger.debug "."
       end
 
-      Rails.logger.debug "\nCreated #{generic_works.length} generic works with file attachments."
-      generic_works
+      Rails.logger.debug "\nCreated #{works.length} #{label.downcase} with file attachments."
+      works
+    end
+
+    def work_class_for(type_name)
+      "#{type_name}Resource".safe_constantize ||
+        raise(ArgumentError, "No Valkyrie resource class for work type '#{type_name}'")
     end
 
     def build_collection(index, collection_type) # rubocop:disable Metrics/AbcSize
@@ -210,12 +207,12 @@ module Sample
         description: sample_data[:descriptions][index % sample_data[:descriptions].length],
         creator: sample_data[:creators][index % sample_data[:creators].length],
         subject: sample_data[:subjects][index % sample_data[:subjects].length],
-        visibility: Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC,
         collection_type_gid: collection_type.to_global_id.to_s,
         depositor: user.user_key
       }
 
       collection = Hyrax.persister.save(resource: CollectionResource.new(collection_attrs))
+      apply_visibility(collection)
       Sample::PermissionTemplateService.create_for_valkyrie_collection(collection, user)
       Hyrax.index_adapter.save(resource: collection)
       Hyrax.publisher.publish('collection.metadata.updated', collection: collection, user: user)
@@ -229,17 +226,29 @@ module Sample
         description: sample_data[:descriptions][index % sample_data[:descriptions].length],
         creator: sample_data[:creators][index % sample_data[:creators].length],
         subject: sample_data[:subjects][index % sample_data[:subjects].length],
-        visibility: Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC,
         bulkrax_identifier: "SampleValk-#{work_class}#{index}",
         depositor: user.user_key,
         admin_set_id: admin_set.id
       }
 
       work = Hyrax.persister.save(resource: work_class.new(work_attrs))
+      apply_visibility(work)
       Hyrax.index_adapter.save(resource: work)
       Hyrax.publisher.publish('object.deposited', object: work, user: user)
       Hyrax.publisher.publish('object.metadata.updated', object: work, user: user)
       work
+    end
+
+    # Valkyrie resource constructors silently discard a :visibility key
+    # because visibility is not a Valkyrie attribute. It has to be assigned
+    # through the resource's visibility writer once the resource has an id,
+    # and the resulting ACL has to be persisted as its own resource.
+    def apply_visibility(resource)
+      return resource if visibility.blank?
+
+      resource.visibility = visibility
+      resource.permission_manager.acl.save
+      resource
     end
 
     def attach_file_to_work(work, filename)

@@ -29,6 +29,7 @@ module AccountSettings
     setting :cache_api, type: 'boolean', default: false
     setting :contact_email, type: 'string', default: 'change-me-in-settings@example.com'
     setting :contact_email_to, type: 'string', default: 'change-me-in-settings@example.com'
+    setting :demo_acceptable_use_url, type: 'string'
     setting :depositor_email_notifications, type: 'boolean', default: false
     setting :discogs_user_token, type: 'string', private: true
     setting :doi_reader, type: 'boolean', default: false

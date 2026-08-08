@@ -40,6 +40,7 @@
 //= require hyku/admin/features_scroll
 //= require hyku/groups/per_page
 //= require hyku/groups/add_member
+//= require hyku/demo_banner
 //= require hyku/google_analytics_settings
 //= require proprietor
 //= require bootstrap_carousel

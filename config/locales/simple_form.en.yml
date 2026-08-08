@@ -7,6 +7,7 @@ en:
     hints:
       account:
         admin_emails: Enter one email address at a time
+        demo_acceptable_use_url: Shown as a link in the demo environment banner on public demo tenants. Leave blank to omit the link.
         public_demo_tenant: Mark this account as a public demo tenant for testing. This cannot be changed after creation.
         search_only: Search-only accounts require at least one full account to be selected below for cross-tenant search.
         allow_signup: Allow users to sign up to your repository
@@ -50,6 +51,7 @@ en:
     labels:
       account:
         admin_emails: Add or invite new administrator (via email)
+        demo_acceptable_use_url: Demo Acceptable Use URL
         public_demo_tenant: Public Demo Tenant
         search_only: Search Only
         cname: Primary Domain Name

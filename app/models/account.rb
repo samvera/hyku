@@ -207,6 +207,7 @@ class Account < ApplicationRecord
     ]
 
     jobs_to_schedule << BatchEmailNotificationJob if batch_email_notifications
+    jobs_to_schedule << DemoTenantResetJob if public_demo_tenant?
 
     if ActiveModel::Type::Boolean.new.cast(ENV.fetch("HYKU_USE_QUEUED_INDEX", false))
       jobs_to_schedule << Hyrax::QueuedIndexingJob

@@ -178,6 +178,7 @@ RSpec.configure do |config|
                     end
     ActiveFedora::Fedora.reset! unless disable_wings
     SolrEndpoint.reset!
+    RequestStore.clear!
     if example.metadata[:clean] || example.metadata[:clean_repo] || example.metadata[:type] == :feature
       if disable_wings
         Hyrax::SolrService.wipe!
@@ -186,8 +187,10 @@ RSpec.configure do |config|
       end
     end
 
-    # Only use truncation for JS-enabled feature specs
-    if example.metadata[:js] && example.metadata[:type] == :feature
+    # Only use truncation for JS-enabled feature specs, or specs that explicitly opt in
+    # (e.g. real Thread.new-based tests, where a spawned thread's own DB connection can't
+    # see data created inside the main thread's still-open transaction).
+    if (example.metadata[:js] && example.metadata[:type] == :feature) || example.metadata[:truncation]
       DatabaseCleaner.strategy = :truncation
     else
       DatabaseCleaner.strategy = :transaction

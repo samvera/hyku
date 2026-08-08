@@ -135,6 +135,8 @@ extraEnvVars: &envVars
     value: good_job
   - name: HYKU_BULKRAX_ENABLED
     value: "true"
+  - name: HYKU_BULLET_ENABLED
+    value: "true"
   - name: HYKU_CONTACT_EMAIL
     value: no-reply@hykustaging.org
   - name: HYKU_FILE_ACL

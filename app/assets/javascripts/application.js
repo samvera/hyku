@@ -47,6 +47,7 @@
 //= require bootstrap-datepicker
 
 //= require hyrax
+//= require hyrax/attached_files
 //= require hyrax/deposit_wizard
 //= require bulkrax/application
 

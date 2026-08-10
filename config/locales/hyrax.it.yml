@@ -321,6 +321,7 @@ it:
         local_upload_html: "<p> È possibile aggiungere uno o più file da associare a questo lavoro. </p>"
       form_files_attached:
         caption: "Questo lavoro contiene attualmente questi file. I file correnti possono essere modificati o rimossi nelle loro pagine individuali."
+        new_files: "Nuovi file da allegare a questo lavoro"
       form_member_of_collections:
         actions:
           remove: Rimuovi dalla raccolta

@@ -54,6 +54,19 @@ RSpec.describe 'hyrax/base/_form_files_attached.html.erb', type: :view do
       expect(caption).to be < first_file
     end
 
+    it 'sets the list apart from the uploader in its own card' do
+      render_list
+
+      expect(rendered).to have_selector('.card.attached-files-card .card-header .attached-files-caption')
+      expect(rendered).to have_selector('.card.attached-files-card .card-body table.attached-files')
+    end
+
+    it 'renders the new-files heading hidden, for the uploader JS to reveal' do
+      render_list
+
+      expect(rendered).to have_selector('[data-behavior="new-files-heading"][hidden]', visible: :all)
+    end
+
     it 'does not render column headings' do
       render_list
 

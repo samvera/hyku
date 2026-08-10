@@ -321,6 +321,7 @@ zh:
         local_upload_html: "<p>您可以添加一个或多个文件来与此工作相关联。 </p>"
       form_files_attached:
         caption: "该作品目前包含这些文件。当前文件可以在各自的详情页面上编辑或删除。"
+        new_files: "将附加到该作品的新文件"
       form_member_of_collections:
         actions:
           remove: 从收藏中删除

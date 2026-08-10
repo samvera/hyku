@@ -10,24 +10,35 @@
   `f`: The form object %>
 <% attached_file_sets = attached_file_set_presenters(f.object) %>
 <% if attached_file_sets.present? %>
-  <p class="attached-files-caption"><%= t('.caption') %></p>
-  <table role="presentation" class="table table-striped attached-files">
-    <tbody>
-      <% attached_file_sets.each do |file_set| %>
-        <tr class="attached-file">
-          <%# Bounded inline rather than in a stylesheet: a thumbnail derivative
-            is not guaranteed to exist, and the fallback is the full-size file. %>
-          <td class="attached-file-preview align-middle" style="width: 80px;">
-            <%= image_tag hyrax.download_path(file_set.id, file: 'thumbnail'),
-                          alt: file_set.solr_document.alt_text_for_view,
-                          class: 'attached-file-thumbnail',
-                          style: 'max-width: 64px; max-height: 64px; width: auto; height: auto;' %>
-          </td>
-          <td class="align-middle">
-            <span class="name"><%= file_set.link_name %></span>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <div class="card mb-4 attached-files-card">
+    <div class="card-header">
+      <p class="mb-0 attached-files-caption"><%= t('.caption') %></p>
+    </div>
+    <div class="card-body p-0">
+      <table role="presentation" class="table table-striped mb-0 attached-files">
+        <tbody>
+          <% attached_file_sets.each do |file_set| %>
+            <tr class="attached-file">
+              <%# Bounded inline rather than in a stylesheet: a thumbnail derivative
+                is not guaranteed to exist, and the fallback is the full-size file. %>
+              <td class="attached-file-preview align-middle" style="width: 80px;">
+                <%= image_tag hyrax.download_path(file_set.id, file: 'thumbnail'),
+                              alt: file_set.solr_document.alt_text_for_view,
+                              class: 'attached-file-thumbnail',
+                              style: 'max-width: 64px; max-height: 64px; width: auto; height: auto;' %>
+              </td>
+              <td class="align-middle">
+                <span class="name"><%= file_set.link_name %></span>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <%# Revealed by hyrax/attached_files.js once the uploader holds a file. Only
+    rendered alongside the card above, which is what it contrasts with. %>
+  <p class="new-files-heading font-weight-bold" data-behavior="new-files-heading" hidden>
+    <%= t('.new_files') %>
+  </p>
 <% end %>

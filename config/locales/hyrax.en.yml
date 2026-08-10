@@ -326,6 +326,7 @@ en:
         local_upload_html: "<p>You can add one or more files to associate with this work.</p>"
       form_files_attached:
         caption: This work currently contains these files. Current files can be edited or removed on their individual show pages.
+        new_files: New files to be attached to this work
       form_member_of_collections:
         actions:
           remove: Remove from collection

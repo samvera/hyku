@@ -320,6 +320,7 @@ de:
         local_upload_html: "<p> Sie können eine oder mehrere Dateien hinzufügen, die dieser Arbeit zugeordnet werden sollen. </p>"
       form_files_attached:
         caption: "Diese Arbeit enthält derzeit diese Dateien. Vorhandene Dateien können auf ihren jeweiligen Detailseiten bearbeitet oder entfernt werden."
+        new_files: "Neue Dateien, die dieser Arbeit hinzugefügt werden"
       form_member_of_collections:
         actions:
           remove: Aus der Sammlung entfernen

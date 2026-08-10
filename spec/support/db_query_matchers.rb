@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'db_query_matchers'
-
 DBQueryMatchers.configure do |config|
   # Exclude one-time schema-introspection queries (pg_attribute/pg_attrdef lookups
   # Rails issues to populate its column-type cache) from every make_database_queries

@@ -28,6 +28,7 @@ RSpec.describe AccountSettings do
                                                                                 cache_api
                                                                                 contact_email
                                                                                 contact_email_to
+                                                                                demo_acceptable_use_url
                                                                                 depositor_email_notifications
                                                                                 discogs_user_token
                                                                                 doi_reader

@@ -1,0 +1,32 @@
+// Practice Research - Cultural: thin variant for cultural heritage and
+// DAMS collections. The base practice_research sheet applies via the
+// family body class the layout shim adds; this file only adjusts rhythm -
+// a roomier band cadence and larger display headlines so imagery leads.
+// Color and identity stay with Admin > Appearance via the --pr-* custom
+// properties, exactly as the base theme.
+
+body.practice_research_cultural {
+  .pr-section {
+    padding-bottom: 4rem;
+    padding-top: 4rem;
+  }
+
+  .pr-section-title {
+    font-size: 1.75rem;
+    letter-spacing: -0.01em;
+  }
+
+  .pr-hero-title {
+    font-size: 3rem;
+  }
+
+  .pr-hero-lede {
+    font-size: 1.125rem;
+  }
+
+  // Collections are the story: give their band more presence.
+  .pr-collections-band {
+    padding-bottom: 4.5rem;
+    padding-top: 4.5rem;
+  }
+}

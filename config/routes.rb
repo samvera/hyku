@@ -164,6 +164,8 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     get 'deposit_wizard/parent_options', to: 'deposit_wizard#parent_options', as: :deposit_wizard_parent_options
     # Must precede the :step wildcard so it isn't captured as a step.
     post 'deposit_wizard/extras', to: 'deposit_wizard#save_extras', as: :deposit_wizard_extras
+    # Must precede the :step wildcard so it isn't captured as a step.
+    delete 'deposit_wizard/discard', to: 'deposit_wizard#discard', as: :deposit_wizard_discard
     get 'deposit_wizard/:step', to: 'deposit_wizard#show', as: :deposit_wizard_step
     patch 'deposit_wizard/:step', to: 'deposit_wizard#update', as: :deposit_wizard_advance
     post 'deposit_wizard/commit', to: 'deposit_wizard#commit', as: :deposit_wizard_commit

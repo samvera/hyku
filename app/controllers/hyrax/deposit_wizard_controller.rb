@@ -29,6 +29,8 @@ module Hyrax
     def start
       reset_state
       seed_launch_context
+      return redirect_to(step_path('select_parent')) if skip_start_for_handoff?
+
       assign_admin_sets_for_standard_chooser
       render :start
     end
@@ -73,6 +75,14 @@ module Hyrax
       build_work_form
       deposit_wizard.capture_review_extras
       head :no_content
+    end
+
+    def discard
+      deleted = discard_staged_uploads
+      reset_state
+      clear_deposited_stash
+      key = deleted.positive? ? 'discarded_with_files' : 'discarded'
+      redirect_to hyrax.my_works_path, notice: t("hyku.deposit_wizard.#{key}", count: deleted)
     end
 
     # Deposit the work from the collected state and land on the done screen.
@@ -185,6 +195,28 @@ module Hyrax
       session[:deposit_wizard] = {}
     end
 
+    # The done screen's read is destructive, but only if it renders — so a stash left
+    # by a deposit whose confirmation was never viewed would otherwise resurface as a
+    # stale confirmation. Not part of reset_state: #commit stashes before resetting.
+    def clear_deposited_stash
+      session.delete(:deposit_wizard_last)
+    end
+
+    # Staged uploads are only reachable through this session, so abandoning the
+    # deposit orphans them: nothing will attach them to a work, and the cleanup
+    # sweeper's default retention is measured in years.
+    #
+    # Scoped by user (matching the `can :destroy, UploadedFile, user: current_user`
+    # ability) because the ids come from the session, which a request can forge.
+    # Returns the number destroyed, so the notice can name what actually happened.
+    def discard_staged_uploads
+      ids = wizard_state.uploaded_file_ids
+      return 0 if ids.blank?
+
+      staged = Hyrax::UploadedFile.where(id: ids, user: current_user)
+      staged.count.tap { staged.find_each(&:destroy) }
+    end
+
     # Survive the redirect to the done screen, which reads it once. The show path
     # is built here where the work object is available. The ids let a done-screen
     # override render something about the deposit in context (e.g. the parent's
@@ -192,6 +224,7 @@ module Hyrax
     def stash_deposited(work)
       session[:deposit_wizard_last] = {
         'id' => work.id.to_s,
+        'work_type' => work.class.to_s,
         'parent_id' => wizard_state.parent_id.presence,
         'title' => Array(work.title).first,
         'path' => main_app.polymorphic_path([main_app, work])
@@ -216,13 +249,63 @@ module Hyrax
     # capabilities, which only govern the optional start/review pickers a depositor
     # uses to choose a parent or collections themselves.
     def seed_launch_context
-      wizard_state.parent_id = params[:parent_id] if params[:parent_id].present?
+      seed_parent_handoff if params[:parent_id].present?
 
       return if params[:add_works_to_collection].blank?
 
       wizard_state.attributes = wizard_state.attributes.merge(
         'member_of_collections_attributes' => { '0' => { 'id' => params[:add_works_to_collection] } }
       )
+    end
+
+    # Setting the 'add' path is required, not redundant with parent_id: without it
+    # select_parent is skipped and its on_skip: :entry detour bounces straight back
+    # here.
+    def seed_parent_handoff
+      wizard_state.parent_id = params[:parent_id]
+      wizard_state.path = 'add'
+      @admin_set_needs_choosing = !inherit_admin_set_from_parent
+    end
+
+    # Skipping `start` skips its inline admin-set chooser, so a child work takes its
+    # parent's admin set. Only from a parent the depositor can edit, and only into an
+    # admin set they may deposit into: parent_id arrives in params, and edit on a work
+    # does not imply deposit rights to the admin set it sits in.
+    #
+    # False when the depositor must choose an admin set themselves, so the caller can
+    # keep them on the start screen rather than silently defaulting one.
+    def inherit_admin_set_from_parent
+      parent = Hyrax.query_service.find_by(id: wizard_state.parent_id)
+      # Nothing to inherit from a parent they cannot edit, so don't skip the chooser
+      # on its behalf. Commit refuses that parent anyway; this keeps the depositor on
+      # a screen where they can still act rather than deferring the refusal.
+      return false unless current_ability.can?(:edit, parent)
+
+      inherited = parent.try(:admin_set_id).presence
+      return true if inherited.blank?
+      return false unless deposit_wizard.can_deposit_in_admin_set?(inherited)
+
+      wizard_state.admin_set_id = inherited
+      true
+    rescue Valkyrie::Persistence::ObjectNotFoundError
+      true
+    end
+
+    # Land a directed handoff on the parent step rather than the path chooser it
+    # has already answered.
+    #
+    # Only for installs that choose a parent up front. The default placement
+    # (:review) accepts a handed-off parent and proceeds, which is deliberate —
+    # redirecting those installs to an up-front parent step would contradict it.
+    def skip_start_for_handoff?
+      # The param, so Back from select_parent (which returns here without one)
+      # reaches the chooser instead of being redirected forward in a loop; the state
+      # too, since parent_id= drops a blank and there'd be nothing to show. And not
+      # when the admin set still needs choosing, since the chooser lives here.
+      params[:parent_id].present? &&
+        wizard_config.parent_connect_on_start? &&
+        wizard_state.parent_id.present? &&
+        !@admin_set_needs_choosing # set by seed_parent_handoff
     end
   end
 end

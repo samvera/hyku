@@ -64,6 +64,12 @@ en:
       details:
         heading: Describe your item
         subtext: Add the details for this work. Required fields are marked.
+      discard: Discard this deposit
+      discard_confirm: Discard this deposit? Anything you have entered will be lost, and the files you uploaded will be deleted. This cannot be undone.
+      discarded: Your deposit was discarded.
+      discarded_with_files:
+        one: Your deposit was discarded and the file you had uploaded was deleted.
+        other: Your deposit was discarded and the %{count} files you had uploaded were deleted.
       disabled: The guided deposit wizard is not enabled.
       done:
         deposit_another: Deposit another work
@@ -79,6 +85,7 @@ en:
         deposit_failed: Your work could not be deposited
         details_invalid: Some details need fixing before you can continue
         no_parent: Please choose a work to add this deposit to.
+        parent_not_allowed: That work cannot contain this deposit. Choose a different one.
         no_work_type: Please choose a work type to continue.
       extras:
         add: Add
@@ -189,6 +196,9 @@ en:
           type: Item type
           upload: Upload files
         label: Deposit progress
+    works:
+      errors:
+        parent_not_allowed: That work cannot contain this deposit.
     admin:
       flash:
         access_denied: You are not authorized to view this page

@@ -319,6 +319,8 @@ zh:
         dropzone: 将文件放在这里。
         local_upload_browse_everything_html: "<p>您可以添加一个或多个文件来与此工作相关联。从本地系统或云提供商添加文件。 </p><p>请注意，如果您使用云提供商在短时间内上传大量文件，则提供商可能无法满足您的请求。如果您从云端上传时遇到错误，请通过%{contact_href}告诉我们。 </p>"
         local_upload_html: "<p>您可以添加一个或多个文件来与此工作相关联。 </p>"
+      form_files_attached:
+        caption: "该作品目前包含这些文件。当前文件可以在各自的详情页面上编辑或删除。"
       form_member_of_collections:
         actions:
           remove: 从收藏中删除

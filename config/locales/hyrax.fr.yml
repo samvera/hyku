@@ -317,6 +317,8 @@ fr:
         dropzone: Déposez les fichiers ici.
         local_upload_browse_everything_html: "<p> Vous pouvez ajouter un ou plusieurs fichiers à associer à ce travail. Ajoutez des fichiers à partir de votre système local ou d'un fournisseur de cloud. </p><p> Notez que si vous utilisez un fournisseur de cloud pour télécharger un grand nombre de fichiers dans un court laps de temps, le fournisseur peut ne pas être en mesure de répondre à votre demande. Si vous rencontrez des erreurs de téléchargement à partir du cloud, faites-le nous savoir via le %{contact_href}. </p>"
         local_upload_html: "<p> Vous pouvez ajouter un ou plusieurs fichiers à associer à ce travail. </p>"
+      form_files_attached:
+        caption: "Cette œuvre contient actuellement ces fichiers. Les fichiers actuels peuvent être modifiés ou supprimés sur leurs pages individuelles."
       form_member_of_collections:
         actions:
           remove: Supprimer de la collection

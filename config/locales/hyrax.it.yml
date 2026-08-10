@@ -319,6 +319,8 @@ it:
         dropzone: Trascina i file qui.
         local_upload_browse_everything_html: "<p> È possibile aggiungere uno o più file da associare a questo lavoro. Aggiungi file dal tuo sistema locale o da un provider cloud. </p><p> Se si utilizza un provider cloud per caricare un numero elevato di file in un breve periodo di tempo, il provider potrebbe non essere in grado di soddisfare la richiesta. Se si verificano errori durante il caricamento dal cloud, segnalacelo tramite %{contact_href}. </p>"
         local_upload_html: "<p> È possibile aggiungere uno o più file da associare a questo lavoro. </p>"
+      form_files_attached:
+        caption: "Questo lavoro contiene attualmente questi file. I file correnti possono essere modificati o rimossi nelle loro pagine individuali."
       form_member_of_collections:
         actions:
           remove: Rimuovi dalla raccolta

@@ -319,6 +319,8 @@ pt-BR:
         dropzone: Solte os arquivos aqui.
         local_upload_browse_everything_html: "<p> Você pode adicionar um ou mais arquivos para associar a este trabalho. Adicione arquivos do seu sistema local ou de um provedor de nuvem. </p><p> Observe que, se você usar um provedor de nuvem para fazer upload de um grande número de arquivos dentro de um curto período, o provedor poderá não conseguir acomodar sua solicitação. Se você encontrar erros ao fazer o upload da nuvem, informe-nos por meio do %{contact_href}. </p>"
         local_upload_html: "<p> Você pode adicionar um ou mais arquivos para associar a este trabalho. </p>"
+      form_files_attached:
+        caption: "Este trabalho atualmente contém esses arquivos. Os arquivos atuais podem ser editados ou removidos em suas páginas individuais."
       form_member_of_collections:
         actions:
           remove: Remover da coleção

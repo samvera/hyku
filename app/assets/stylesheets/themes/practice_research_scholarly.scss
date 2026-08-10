@@ -1,0 +1,27 @@
+// Practice Research - Scholarly: thin variant for institutional
+// repositories. The base practice_research sheet applies via the family
+// body class the layout shim adds; this file only adjusts rhythm - a
+// slightly tighter band cadence and type scale for text-dense content.
+// Color and identity stay with Admin > Appearance via the --pr-* custom
+// properties, exactly as the base theme.
+
+body.practice_research_scholarly {
+  .pr-section {
+    padding-bottom: 2.5rem;
+    padding-top: 2.5rem;
+  }
+
+  .pr-section-title {
+    font-size: 1.375rem;
+    letter-spacing: 0.01em;
+  }
+
+  .pr-hero-title {
+    font-size: 2.25rem;
+  }
+
+  .pr-hero-lede {
+    font-size: 1rem;
+    max-width: 46rem;
+  }
+}

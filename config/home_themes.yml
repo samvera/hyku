@@ -53,3 +53,11 @@ practice_research:
   marketing_text: false
   name: Practice Research
   notes: A search-led hero over the banner image, a counts band, featured collections and works, browse by work type and subject, recently uploaded, a featured researcher, and an about band. The accent rides the primary button colors, the dark bands ride the header and footer background, and links carry the brand.
+practice_research_scholarly:
+  banner_image: true
+  featured_researcher: true
+  home_page_text: true
+  marketing_text: false
+  parent: practice_research
+  name: Practice Research - Scholarly
+  notes: The Practice Research look with the sections reordered for an institutional repository, where recency and entry points matter most - browse by work type and subject leads, recent uploads and the featured researcher come next, then featured works and collections. A slightly tighter band rhythm and type scale for text-dense content. Colors ride Admin > Appearance exactly as Practice Research does.

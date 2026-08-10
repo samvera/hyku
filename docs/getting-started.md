@@ -32,7 +32,7 @@ Start off by setting up a local development environment where you can experiment
     ```bash
     gem install stack_car
     sc proxy cert # Only need this once per stack_car version, requires passwords
-    sc proxy up # Once per Docker re-boot
+    sc proxy up
     ```
 
 3) **Build the Docker images:**
@@ -59,10 +59,7 @@ Start off by setting up a local development environment where you can experiment
     #### Congratulations!!!
 
    You can access the admin app in your browser at
-   `https://admin-<app-name>.localhost.direct` - see
-   [Application name in URL](#application-name-in-url) below for what
-   `<app-name>` is for your checkout. For a checkout directory named `hyku`,
-   that's [https://admin-hyku.localhost.direct](https://admin-hyku.localhost.direct).
+   [https://admin-hyku.localhost.direct](https://admin-hyku.localhost.direct).
    > :thumbsup: You are now ready to start using Hyku! Please refer to **[Using Hyku](./using-hyku.md)**
    > for instructions on getting your first tenant set up.
 
@@ -95,14 +92,9 @@ see the [Configuration Guide](./configuration.md).
 
 #### Application name in URL
 
-The `APP_NAME` environment variable defaults to your checkout directory's name
-(so `git clone .../hyku` gives `APP_NAME=hyku`, a directory named `sandbox`
-gives `APP_NAME=sandbox`, etc.) - this is what lets more than one Hyku/knapsack
-checkout run at the same time without colliding on the same hostname or
-Traefik router. You can still override it explicitly - e.g. `export
-APP_NAME=sandbox` - or via the `.env` file; an explicit value always wins over
-the directory-derived default. The application path will be
-"https://admin-${APP_NAME}.localhost.direct" - e.g.
+The APP_NAME environment variable defaults to `hyku`, You can set this to another value in your
+local environment - e.g. `export APP_NAME=sandbox` - or via the `.env` file. The application path 
+will be "https://admin-${APP_NAME}.localhost.direct" - e.g. 
 [https://admin-**sandbox**.localhost.direct](https://admin-sandbox.localhost.direct).
 
 #### DNS & Certificates

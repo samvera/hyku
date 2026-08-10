@@ -1,0 +1,9 @@
+<%# Thin variant over practice_research: adds the family body class so the
+    base stylesheet applies wholesale (flutie's body_class joins
+    :extra_body_classes into the body tag), then delegates to the parent
+    layout by explicit path - its inner renders resolve through the parent
+    view path the injection adds for themes registered with parent:. %>
+<%# trailing space: this content_for runs before the hyrax layout appends
+    'public-facing' to the same buffer %>
+<% content_for(:extra_body_classes, 'practice_research ') %>
+<%= render template: 'themes/practice_research/layouts/homepage' %>

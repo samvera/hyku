@@ -1,0 +1,71 @@
+// Aligns the full-bleed site chrome (masthead, root menu) with the page
+// column, so the logo and menu items sit on the same left edge as the
+// content below them instead of hugging the viewport.
+//
+// CSS rather than view overrides, because a stale markup override silently
+// drops whatever upstream adds. Scoped to .public-facing: the dashboard
+// layout has no .container to align to.
+
+// Mirrors Bootstrap's .container content edge onto a full-bleed band. The
+// widths are tracked by hand from Bootstrap 4's $container-max-widths, so a
+// Bootstrap bump shows up as misalignment. !important because the markup
+// carries px-2/px-3 and Bootstrap's spacing utilities ship !important.
+// Defined here (imported before themes/*) so theme sheets can reuse it.
+@mixin container-inset {
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+
+  @media (min-width: 576px) {
+    padding-left: calc((100% - 540px) / 2 + 15px) !important;
+    padding-right: calc((100% - 540px) / 2 + 15px) !important;
+  }
+
+  @media (min-width: 768px) {
+    padding-left: calc((100% - 720px) / 2 + 15px) !important;
+    padding-right: calc((100% - 720px) / 2 + 15px) !important;
+  }
+
+  @media (min-width: 992px) {
+    padding-left: calc((100% - 960px) / 2 + 15px) !important;
+    padding-right: calc((100% - 960px) / 2 + 15px) !important;
+  }
+
+  @media (min-width: 1200px) {
+    padding-left: calc((100% - 1140px) / 2 + 15px) !important;
+    padding-right: calc((100% - 1140px) / 2 + 15px) !important;
+  }
+}
+
+.public-facing #masthead {
+  @include container-inset;
+
+  // The inset provides the breathing room the margin used to fake.
+  #logo {
+    margin-left: 0;
+  }
+}
+
+.public-facing #user_utility_links {
+  padding-right: 0 !important;
+
+  > li:last-child > .nav-link {
+    padding-right: 0;
+  }
+}
+
+.public-facing nav[aria-label='Root Menu'] {
+  @include container-inset;
+
+  // Bootstrap only sets row direction from 576px up, and this nav has no
+  // .navbar-collapse, so below that the menu items stack vertically.
+  .navbar-nav {
+    flex-direction: row;
+  }
+
+  // The nav owns the inset now, so the columns inside must not add their
+  // own gutters.
+  [class*='col-'] {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

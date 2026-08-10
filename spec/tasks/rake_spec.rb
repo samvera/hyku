@@ -139,7 +139,7 @@ RSpec.describe "Rake tasks" do
       expect(run_task('db:seed:sample:create', 'demo', 'valkyrie', 'nope:1')).to include('ERROR')
     end
   end
-  
+
   describe 'hyku:demo:snapshot' do
     it 'requires a tenant argument' do
       expect { run_task('hyku:demo:snapshot') }.to raise_error(ArgumentError)

@@ -51,6 +51,9 @@
 //= require hyrax/deposit_wizard
 //= require bulkrax/application
 
+//= require themes/practice_research_home
+//= require themes/practice_research_show
+
 //= require codemirror
 //= require codemirror/modes/css
 //= require codemirror/modes/javascript

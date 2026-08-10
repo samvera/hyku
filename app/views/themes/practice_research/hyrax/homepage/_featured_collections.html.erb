@@ -1,0 +1,81 @@
+<% featured = pr_home.featured_collections %>
+<% editable = can?(:update, FeaturedCollection) && @featured_collection_list.present? && !@featured_collection_list.empty? %>
+
+<% if featured.any? || editable %>
+  <div class="pr-collections-band">
+  <section class="pr-section pr-featured">
+    <div class="pr-section-head">
+      <h2 class="pr-section-title"><%= t('practice_research.homepage.featured.collections_heading') %></h2>
+      <%= link_to t('practice_research.homepage.featured.view_all_collections'),
+                  main_app.search_catalog_path(f: { generic_type_sim: ['Collection'] }),
+                  class: 'pr-section-link' %>
+    </div>
+
+    <% if editable %>
+      <%= form_for [main_app, @featured_collection_list] do |f| %>
+        <ul class="pr-portfolio-grid pr-portfolio-grid-editable" role="list" data-featured-grid
+            data-moved-template="<%= t('practice_research.homepage.featured.moved', title: '%{title}',
+                                       position: '%{position}', total: '%{total}') %>"
+            data-at-template="<%= t('practice_research.homepage.featured.at_position', title: '%{title}',
+                                    position: '%{position}', total: '%{total}') %>"
+            data-unfeature-confirm="<%= t('practice_research.homepage.featured.unfeature_collection_confirm') %>"
+            data-unfeature-failed="<%= t('practice_research.homepage.featured.unfeature_failed') %>">
+          <%= f.fields_for :featured_collections do |featured_collection| %>
+            <% presenter = featured_collection.object.presenter %>
+            <li class="pr-portfolio"
+                data-id="<%= presenter.id %>"
+                data-title="<%= Array(presenter.title).first %>">
+              <%= featured_collection.hidden_field :id %>
+              <%= featured_collection.hidden_field :order, data: { property: 'order' } %>
+
+              <div class="pr-portfolio-tools">
+                <button type="button" class="pr-portfolio-handle" data-featured-handle
+                        aria-label="<%= t('practice_research.homepage.featured.reorder_handle',
+                                          title: Array(presenter.title).first) %>">
+                  <span aria-hidden="true">⠿</span>
+                </button>
+
+                <button type="button" class="pr-portfolio-move" data-featured-move="-1"
+                        aria-label="<%= t('practice_research.homepage.featured.move_earlier',
+                                          title: Array(presenter.title).first) %>">
+                  <span aria-hidden="true">&lsaquo;</span>
+                </button>
+
+                <button type="button" class="pr-portfolio-move" data-featured-move="1"
+                        aria-label="<%= t('practice_research.homepage.featured.move_later',
+                                          title: Array(presenter.title).first) %>">
+                  <span aria-hidden="true">&rsaquo;</span>
+                </button>
+
+                <% if can? :destroy, FeaturedCollection %>
+                  <%= link_to main_app.featured_collection_path(presenter, format: :json),
+                              class: 'pr-portfolio-unfeature pr-portfolio-remove',
+                              title: t('practice_research.homepage.featured.unfeature'),
+                              data: { featured_unfeature: true } do %>
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only"><%= t('practice_research.homepage.featured.unfeature') %></span>
+                  <% end %>
+                <% end %>
+              </div>
+
+              <%= render 'hyrax/homepage/featured_collection_card', presenter: presenter %>
+            </li>
+          <% end %>
+        </ul>
+
+        <p class="sr-only" role="status" aria-live="polite" data-featured-status></p>
+        <p class="pr-featured-reorder-hint"><%= t('practice_research.homepage.featured.reorder_hint') %></p>
+        <%= f.submit(t('practice_research.homepage.featured.save_order'), class: 'pr-featured-save') %>
+      <% end %>
+    <% else %>
+      <ul class="pr-portfolio-grid" role="list">
+        <% featured.each do |collection| %>
+          <li class="pr-portfolio">
+            <%= render 'hyrax/homepage/featured_collection_card', presenter: collection.presenter %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  </section>
+  </div>
+<% end %>

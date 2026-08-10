@@ -1,0 +1,180 @@
+// ---- shared site shell for the practice research themes ----
+
+@import 'themes/practice_research/tokens';
+@import 'themes/practice_research/primitives';
+
+// ---- footer ----
+html body.practice_research,
+html body.practice_research_show {
+  margin-bottom: 0;
+}
+
+body.practice_research,
+body.practice_research_show {
+  // ---- brand bar ----
+  #masthead #logo {
+    margin-left: 0;
+  }
+
+  #user_utility_links {
+    padding-right: 0 !important;
+
+    > li:last-child > .nav-link {
+      padding-right: 0;
+    }
+  }
+
+  // ---- search form ----
+  #search-form-header {
+    .form-control,
+    .btn {
+      border-radius: 0;
+    }
+  }
+
+  &.public-facing {
+    #masthead {
+      @include pr-container-inset;
+      @include pr-controls-reset;
+    }
+
+    #masthead #logo {
+      text-decoration: none;
+    }
+
+    #masthead #logo .institution_name {
+      font-family: var(--pr-serif, Georgia, 'Times New Roman', serif) !important;
+      font-size: 1.625rem;
+      font-weight: 600;
+      line-height: 1;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    #masthead .navbar-toggler {
+      border-color: #6fa39d;
+      border-radius: 0;
+    }
+
+    // ---- nav row ----
+    nav[aria-label='Root Menu'] {
+      align-items: center;
+      background-color: #fff !important;
+      border-bottom: 1px solid $pr-border !important;
+      min-height: 4.0625rem;
+      padding-bottom: 0.8rem !important;
+      padding-top: 0.8rem !important;
+
+      @include pr-container-inset;
+      @include pr-controls-reset;
+
+      .navbar-nav {
+        flex-direction: row;
+      }
+
+      [class*='col-'] {
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .nav.navbar-nav {
+        column-gap: 1.5rem;
+      }
+
+      .nav.navbar-nav > li.nav-item > a.nav-link {
+        color: $pr-ink;
+        font-size: 1rem;
+        line-height: 1.4;
+        padding: 0 0 0.125rem;
+      }
+
+      .nav.navbar-nav > li.nav-item.active > a.nav-link {
+        border-bottom: 2px solid var(--pr-accent, #f5c400);
+        color: var(--pr-brand-ink, #0a3a37);
+        padding-bottom: 2px;
+      }
+    }
+
+    .image-masthead nav[aria-label='Root Menu'] {
+      border-bottom: 0 !important;
+      padding-bottom: 1rem !important;
+      padding-top: 1rem !important;
+
+      .nav.navbar-nav {
+        column-gap: 0;
+      }
+
+      .nav.navbar-nav > li.nav-item > a.nav-link {
+        padding: 0.5rem 1rem;
+      }
+
+      .nav.navbar-nav > li.nav-item.active > a.nav-link {
+        border-bottom: 0;
+      }
+    }
+
+    @media (max-width: $pr-frame-laptop-max) {
+      nav[aria-label='Root Menu'] .nav.navbar-nav > li.nav-item > a.nav-link {
+        font-size: 0.9375rem;
+      }
+
+      #masthead #logo .institution_name {
+        font-size: 1.5rem;
+      }
+    }
+
+    @media (max-width: $pr-frame-tablet-max) {
+      nav[aria-label='Root Menu'] .nav.navbar-nav > li.nav-item > a.nav-link {
+        font-size: 0.875rem;
+      }
+
+      #masthead #logo .institution_name {
+        font-size: 1.375rem;
+      }
+    }
+
+    @media (max-width: $pr-frame-mobile-max) {
+      #masthead #logo .institution_name {
+        font-size: 1.3125rem;
+      }
+    }
+  }
+}
+
+// ---- page gutters ----
+@mixin pr-page-gutter($gutter) {
+  #content-wrapper.container,
+  .pr-hero-inner.container,
+  .pr-stats-inner.container {
+    max-width: none;
+    padding-left: $gutter;
+    padding-right: $gutter;
+  }
+}
+
+@mixin pr-shell-gutter($gutter) {
+  #masthead,
+  nav[aria-label='Root Menu'],
+  footer.navbar {
+    padding-left: $gutter !important;
+    padding-right: $gutter !important;
+  }
+}
+
+body.practice_research.public-facing,
+body.practice_research_show.public-facing {
+  @media (max-width: $pr-frame-laptop-max) {
+    @include pr-page-gutter($pr-gutter-laptop);
+    @include pr-shell-gutter($pr-gutter-laptop);
+  }
+
+  @media (max-width: $pr-frame-tablet-max) {
+    @include pr-page-gutter($pr-gutter-tablet);
+    @include pr-shell-gutter($pr-gutter-tablet);
+  }
+
+  @media (max-width: $pr-frame-mobile-max) {
+    @include pr-page-gutter($pr-gutter-mobile);
+    @include pr-shell-gutter($pr-gutter-mobile);
+  }
+}

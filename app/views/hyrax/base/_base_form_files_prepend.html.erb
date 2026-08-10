@@ -1,5 +1,11 @@
-<%# OVERRIDE HYRAX 5.2.0 to add show_pdf_viewer to files tab%>
+<%# OVERRIDE Hyrax v5.2.0
+  - add show_pdf_viewer to files tab
+  - list the files already attached to the work above the uploader
+
+  Upstream ships this partial blank as a downstream extension point. %>
 <% if render_show_pdf_behavior_checkbox? %>
   <%= render partial: 'show_pdf_viewer', locals: { f: f } %>
   <%= render partial: 'show_pdf_download_button', locals: { f: f } %>
 <% end %>
+<%# OVERRIDE list the work's existing files above the uploader %>
+<%= render partial: 'form_files_attached', locals: { f: f } %>

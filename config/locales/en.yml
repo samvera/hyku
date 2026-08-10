@@ -49,6 +49,8 @@ en:
       user_search:
         submit: Go
   hyku:
+    work_show:
+      iiif_manifest: IIIF manifest
     account:
       signup_disabled: Account registration is disabled
     deposit_wizard:

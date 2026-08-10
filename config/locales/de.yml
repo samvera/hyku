@@ -188,6 +188,8 @@ de:
       user_search:
         submit: Suche
   hyku:
+    work_show:
+      iiif_manifest: IIIF-Manifest
     account:
       signup_disabled: Kontoanmeldung ist deaktiviert
     deposit_wizard:

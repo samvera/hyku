@@ -189,6 +189,8 @@ it:
       user_search:
         submit: Partire
   hyku:
+    work_show:
+      iiif_manifest: Manifesto IIIF
     account:
       signup_disabled: La registrazione dell'account è disattivata
     deposit_wizard:

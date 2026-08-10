@@ -5,6 +5,12 @@
     <div class="center-block">
       <%= iiif_viewer_display presenter %>
     </div>
+    <%# A visible manifest link: interoperability proof for IIIF-literate
+        audiences (drag it onto any IIIF viewer). Outside the viewer wrapper:
+        its fixed-height container paints over content placed inside it. %>
+    <p class="iiif-manifest-link text-center mt-2">
+      <%= link_to t('hyku.work_show.iiif_manifest'), presenter.manifest_url %>
+    </p>
   <% elsif presenter.show_pdf_viewer? %>
     <div class="center-block">
       <%= render 'pdf_js', file_set_presenter: presenter.file_set_presenters.first %>

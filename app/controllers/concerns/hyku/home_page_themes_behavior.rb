@@ -16,19 +16,33 @@ module Hyku
     # Add this method to prepend the theme views into the view_paths
     def inject_theme_views
       if home_page_theme && home_page_theme != 'default_home'
-        original_paths = view_paths
-        Hyku::Application.theme_view_path_roots.each do |root|
-          home_theme_view_path = File.join(root, 'app', 'views', "themes", home_page_theme.to_s)
-          prepend_view_path(home_theme_view_path)
+        # A theme registered with a `parent:` in home_themes.yml is a thin
+        # variant: its own views win, unresolved renders fall through to the
+        # parent theme, then to the default views. Parent paths are prepended
+        # first so the variant's paths end up in front of them.
+        #
+        # No restore after yield: the prepended paths live on this controller
+        # instance, which does not outlive the request. The restore this
+        # method used to attempt (`view_paths=(original_paths)`) was a bare
+        # local-variable assignment, so it never ran - and the instance
+        # writer it claimed to call does not exist in Rails 7.
+        [parent_home_page_theme, home_page_theme.to_s].compact.each do |theme|
+          Hyku::Application.theme_view_path_roots.each do |root|
+            home_theme_view_path = File.join(root, 'app', 'views', "themes", theme)
+            prepend_view_path(home_theme_view_path)
+          end
         end
-        yield
-        # rubocop:disable Lint/UselessAssignment, Layout/SpaceAroundOperators, Style/RedundantParentheses
-        # Do NOT change this line. This is calling the Rails view_paths=(paths) method and not a variable assignment.
-        view_paths=(original_paths)
-        # rubocop:enable Lint/UselessAssignment, Layout/SpaceAroundOperators, Style/RedundantParentheses
-      else
-        yield
       end
+      yield
+    end
+
+    private
+
+    def parent_home_page_theme
+      themes = YAML.load_file(Hyku::Application.path_for('config/home_themes.yml'))
+      themes.dig(home_page_theme.to_s, 'parent')
+    rescue Errno::ENOENT
+      nil
     end
   end
 end

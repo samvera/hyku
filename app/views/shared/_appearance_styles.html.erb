@@ -220,7 +220,8 @@ body.public-facing .hyc-banner .hyc-title h1 {
 }
 
 /* PRACTICE RESEARCH THEME CUSTOMIZATIONS */
-<% if home_page_theme == 'practice_research' || show_page_theme == 'practice_research_show' %>
+<%# start_with? so the thin variants (practice_research_scholarly, _cultural, _media) get the same vars %>
+<% if home_page_theme.to_s.start_with?('practice_research') || show_page_theme == 'practice_research_show' %>
 :root {
   --pr-accent: <%= appearance.primary_button_background_color %>;
   --pr-accent-ink: <%= appearance.primary_button_text_color %>;

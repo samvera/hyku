@@ -3,7 +3,7 @@ de:
   activefedora:
     models:
       etd: ETD
-      generic_work: Arbeiten
+      generic_work: Arbeit
       image: Bild
       oer: OER
   activerecord:

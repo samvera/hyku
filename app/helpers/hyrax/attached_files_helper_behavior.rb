@@ -17,8 +17,9 @@ module Hyrax
                                          .select(&:file_set?)
 
       # Solr does not honor the order of an id list, so restore member order.
+      positions = member_ids.each_with_index.to_h
       documents
-        .sort_by { |document| member_ids.index(document.id) || member_ids.size }
+        .sort_by { |document| positions.fetch(document.id, member_ids.size) }
         .map { |document| Hyrax::FileSetPresenter.new(document, current_ability, request) }
     end
   end

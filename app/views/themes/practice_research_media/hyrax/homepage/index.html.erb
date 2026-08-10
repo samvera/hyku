@@ -1,0 +1,24 @@
+<% provide :page_title, application_name %>
+
+<%# Media emphasis: an audiovisual archive leads with the works themselves -
+    featured works first, recent uploads second, discovery and collections
+    after. The sections come from the practice_research parent via
+    view-path fall-through (see home_themes.yml parent:). %>
+<div class="pr-home pr-home-media">
+  <%= render 'hyrax/homepage/featured_works' %>
+
+  <% recent = @recent_documents.present? %>
+  <% researcher = pr_featured_researcher? %>
+  <% if recent || researcher %>
+    <div class="pr-recent-row <%= 'pr-recent-row-single' unless recent && researcher %>">
+      <%= render 'hyrax/homepage/recently_uploaded' %>
+      <%= render 'hyrax/homepage/featured_researcher' %>
+    </div>
+  <% end %>
+
+  <%= render 'hyrax/homepage/browse' %>
+  <%= render 'hyrax/homepage/featured_collections' %>
+  <%= render 'hyrax/homepage/about' %>
+</div>
+
+<%= render '/shared/select_work_type_modal', create_work_presenter: @presenter.create_work_presenter if @presenter.draw_select_work_modal? %>

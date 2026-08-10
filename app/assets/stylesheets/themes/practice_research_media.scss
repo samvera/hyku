@@ -1,0 +1,33 @@
+// Practice Research - Media: thin variant for audiovisual archives. The
+// base practice_research sheet applies via the family body class the
+// layout shim adds; this file only adjusts rhythm - the works band
+// carries the page, so featured works render one per row with wide
+// 16:9 thumbnails that give players and stills room.
+// Color and identity stay with Admin > Appearance via the --pr-* custom
+// properties, exactly as the base theme.
+
+body.practice_research_media {
+  .pr-work-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pr-work-row {
+    grid-template-columns: 236px minmax(0, 1fr);
+  }
+
+  .pr-work-thumb {
+    aspect-ratio: 16 / 9;
+    height: auto;
+    width: 236px;
+  }
+
+  @media (max-width: 743px) {
+    .pr-work-row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .pr-work-thumb {
+      width: 100%;
+    }
+  }
+}

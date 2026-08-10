@@ -53,6 +53,14 @@ practice_research:
   marketing_text: false
   name: Practice Research
   notes: A search-led hero over the banner image, a counts band, featured collections and works, browse by work type and subject, recently uploaded, a featured researcher, and an about band. The accent rides the primary button colors, the dark bands ride the header and footer background, and links carry the brand.
+practice_research_media:
+  banner_image: true
+  featured_researcher: true
+  home_page_text: true
+  marketing_text: false
+  parent: practice_research
+  name: Practice Research - Media
+  notes: The Practice Research look reordered for audiovisual archives, where the works are the draw - featured works lead, recent uploads follow, browse and collections come after. Wider cards give players and stills room. Colors ride Admin > Appearance exactly as Practice Research does.
 practice_research_cultural:
   banner_image: true
   featured_researcher: true

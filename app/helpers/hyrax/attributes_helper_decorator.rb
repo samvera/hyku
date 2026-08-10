@@ -9,6 +9,11 @@
 # external_link rendering is strictly worse, and forcing it here heals
 # existing tenants without a schema migration. The shipped profile is fixed
 # alongside so new tenants agree with the code.
+#
+# TEMPORARY BRIDGE: this fix is upstreamed as samvera/hyrax#7575, which puts
+# the same logic in Hyrax::AttributesHelper#conform_options itself. Once the
+# pinned hyrax revision includes that change, delete this decorator and its
+# spec - the behavior is identical and double-application is a no-op.
 module Hyrax
   module AttributesHelperDecorator
     SEMANTIC_RENDERERS = {

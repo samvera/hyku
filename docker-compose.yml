@@ -57,6 +57,7 @@ networks:
   # Shared across checkouts so Traefik (`sc proxy up`) can route them all.
   proxy:
     name: stackcar
+    external: true
 
 services:
   zoo:

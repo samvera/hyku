@@ -1732,6 +1732,7 @@ DEPENDENCIES
   redis-actionpack
   redis-namespace (~> 1.10)
   redlock (>= 0.1.2, < 2.0)
+  request_store (~> 1.7)
   riiif!
   rolify
   ros-apartment

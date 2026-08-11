@@ -1,8 +1,8 @@
 <% counts = pr_home.counts.reject { |_key, count| count.to_i.zero? } %>
-<% marketing = display_content_block? @marketing_text %>
+<% intro = display_content_block? @home_text %>
 
-<% if counts.any? || marketing %>
-  <div class="<%= class_names('pr-stats', 'pr-stats-split' => marketing && counts.any?) %>">
+<% if counts.any? || intro %>
+  <div class="<%= class_names('pr-stats', 'pr-stats-split' => intro && counts.any?) %>">
     <div class="container pr-stats-inner">
       <% if counts.any? %>
         <div class="pr-stats-counts">
@@ -18,7 +18,7 @@
           <% end %>
         </div>
       <% end %>
-      <%= displayable_content_block @marketing_text, class: 'pr-stats-marketing' %>
+      <%= displayable_content_block @home_text, class: 'pr-stats-intro' %>
     </div>
   </div>
 <% end %>

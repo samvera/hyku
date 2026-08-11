@@ -24,7 +24,7 @@
   .pr-about-cta:focus-visible,
   .pr-about-prose a:focus-visible,
   .pr-about-terms:focus-visible,
-  .pr-stats-marketing a:focus-visible {
+  .pr-stats-intro a:focus-visible {
     @include pr-focus-ring(var(--pr-band-link, #8ed6cd));
   }
 
@@ -222,7 +222,7 @@
     text-transform: uppercase;
   }
 
-  // ---- counts band with marketing text ------------------------------------
+  // ---- counts band with home page text -----------------------------------
 
   .pr-stats-split {
     .pr-stats-inner {
@@ -255,7 +255,7 @@
     }
   }
 
-  .pr-stats-marketing {
+  .pr-stats-intro {
     border-left: 2px solid var(--pr-accent, #f5c400);
     color: var(--pr-band-text, #ffffff);
     color: color-mix(in srgb, var(--pr-band-text, #ffffff) 80%, transparent);
@@ -955,7 +955,7 @@
       }
     }
 
-    .pr-stats-marketing {
+    .pr-stats-intro {
       font-size: 1.0625rem;
       max-width: 40rem;
       padding-left: 1.75rem;
@@ -1153,7 +1153,7 @@
       }
     }
 
-    .pr-stats-marketing {
+    .pr-stats-intro {
       font-size: 1rem;
       max-width: none;
       padding-left: 1.5rem;
@@ -1341,7 +1341,7 @@
       }
     }
 
-    .pr-stats-marketing {
+    .pr-stats-intro {
       line-height: 1.7;
       padding-left: 1.125rem;
     }

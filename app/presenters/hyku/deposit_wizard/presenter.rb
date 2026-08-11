@@ -623,12 +623,14 @@ module Hyku
       # Empty for a parent the depositor cannot edit as well as one that cannot be
       # read, so a forged parent_id is refused rather than merely type-checked.
       # Adding a child mutates the parent's member_ids, hence edit rather than read.
+      # Read from Solr, not the persistence layer: only the parent's id and class
+      # are needed, and AddToParent loads the resource itself at commit.
       def child_types_for(parent_id)
-        parent = Hyrax.query_service.find_by(id: parent_id)
+        parent = ::SolrDocument.find(parent_id)
         return [] unless current_ability.can?(:edit, parent)
 
-        Hyrax::ChildTypes.for(parent: parent.class).to_a
-      rescue Valkyrie::Persistence::ObjectNotFoundError
+        Hyrax::ChildTypes.for(parent: parent.hydra_model).to_a
+      rescue Blacklight::Exceptions::RecordNotFound, Valkyrie::Persistence::ObjectNotFoundError
         []
       end
 

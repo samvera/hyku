@@ -74,6 +74,14 @@ RSpec.describe Hyku::DepositWizard::Presenter do
         expect(transition).to be_advance
         expect(presenter.state.parent_id).to eq(parent.id.to_s)
       end
+
+      it 'does not load the parent resource' do
+        parent # created before the spy, so the factory's own lookups aren't counted
+        allow(Hyrax.query_service).to receive(:find_by).and_call_original
+
+        expect(presenter.advance_from('select_parent')).to be_advance
+        expect(Hyrax.query_service).not_to have_received(:find_by).with(id: parent.id)
+      end
     end
 
     context 'when the chosen parent cannot contain children' do

@@ -10,6 +10,9 @@ it:
     attributes:
       site:
         institution_name_full: Nome dell'istituto completo
+    errors:
+      messages:
+        cannot_remove_last_superadmin: impossibile rimuovere l'ultimo superadmin da un inquilino demo pubblico
   application:
     tagline: La soluzione di repository di nuova generazione
   blacklight:

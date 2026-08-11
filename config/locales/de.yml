@@ -10,6 +10,9 @@ de:
     attributes:
       site:
         institution_name_full: Vollständiger Name der Institution
+    errors:
+      messages:
+        cannot_remove_last_superadmin: der letzte Superadministrator eines öffentlichen Demo-Mandanten kann nicht entfernt werden
   application:
     tagline: Die Next-Generation Repository-Lösung
   blacklight:

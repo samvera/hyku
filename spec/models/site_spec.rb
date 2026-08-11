@@ -211,6 +211,98 @@ RSpec.describe Site, type: :model do
     end
   end
 
+  describe ".superadmin_emails=" do
+    subject { described_class.instance }
+
+    context "on a public demo tenant" do
+      let(:account) { FactoryBot.create(:demo_account) }
+
+      before do
+        subject.update(account:)
+        admin1.add_role :superadmin, subject
+      end
+
+      # The removal is refused outright rather than performed and reported, so
+      # the role must survive a rejected assignment.
+      it "keeps the superadmin and fails validation when passed an empty array" do
+        subject.superadmin_emails = []
+
+        expect(subject).not_to be_valid
+        expect(subject.errors[:superadmin_emails])
+          .to include(I18n.t('activerecord.errors.messages.cannot_remove_last_superadmin'))
+        expect(subject.superadmin_emails).to eq([admin1.email])
+      end
+
+      it "keeps the superadmin and fails validation when passed only blank values" do
+        subject.superadmin_emails = ['']
+
+        expect(subject).not_to be_valid
+        expect(subject.superadmin_emails).to eq([admin1.email])
+      end
+
+      it "keeps the superadmin and fails validation when the emails match no existing users" do
+        subject.superadmin_emails = ['ghost@nowhere.org']
+
+        expect(subject).not_to be_valid
+        expect(subject.superadmin_emails).to eq([admin1.email])
+      end
+
+      it "does not block an assignment that keeps a superadmin" do
+        subject.superadmin_emails = [admin1.email, admin2.email]
+
+        expect(subject).to be_valid
+      end
+
+      it "allows swapping the last superadmin for another existing user in one assignment" do
+        subject.superadmin_emails = [admin2.email]
+        expect(subject.superadmin_emails).to eq([admin2.email])
+      end
+
+      it "allows removing one of several superadmins" do
+        admin2.add_role :superadmin, subject
+        subject.superadmin_emails = [admin1.email]
+        expect(subject.superadmin_emails).to eq([admin1.email])
+      end
+
+      # The refusal describes the assignment just attempted. If it latched on,
+      # correcting the mistake would still fail to save.
+      it "stops reporting the refusal once a later assignment is acceptable" do
+        subject.superadmin_emails = []
+        expect(subject).not_to be_valid
+
+        subject.superadmin_emails = [admin1.email, admin2.email]
+
+        expect(subject).to be_valid
+        expect(subject.errors[:superadmin_emails]).to be_empty
+      end
+    end
+
+    context "on a standard tenant" do
+      let(:account) { FactoryBot.create(:account) }
+
+      before do
+        subject.update(account:)
+        admin1.add_role :superadmin, subject
+      end
+
+      it "clears out all superadmins when passed an empty array" do
+        subject.superadmin_emails = []
+        expect(subject.superadmin_emails).to eq([])
+      end
+    end
+
+    context "when the site has no account" do
+      before do
+        admin1.add_role :superadmin, subject
+      end
+
+      it "clears out all superadmins when passed an empty array" do
+        subject.superadmin_emails = []
+        expect(subject.superadmin_emails).to eq([])
+      end
+    end
+  end
+
   describe '#institution_label' do
     let(:site) { FactoryBot.create(:site) }
 

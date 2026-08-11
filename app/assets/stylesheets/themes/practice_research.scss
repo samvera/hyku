@@ -23,7 +23,8 @@
   .pr-hero-links a:focus-visible,
   .pr-about-cta:focus-visible,
   .pr-about-prose a:focus-visible,
-  .pr-about-terms:focus-visible {
+  .pr-about-terms:focus-visible,
+  .pr-stats-marketing a:focus-visible {
     @include pr-focus-ring(var(--pr-band-link, #8ed6cd));
   }
 
@@ -167,15 +168,19 @@
 
   .pr-stats {
     background: var(--pr-band-dark, #{$pr-brand-900});
+    border-top: 1px solid color-mix(in srgb, var(--pr-band-text, #ffffff) 14%, transparent);
   }
 
   .pr-stats-inner {
+    padding-bottom: 1.25rem;
+    padding-top: 1.25rem;
+  }
+
+  .pr-stats-counts {
     align-items: baseline;
     display: flex;
     flex-wrap: wrap;
     gap: 4rem;
-    padding-bottom: 1.25rem;
-    padding-top: 1.25rem;
   }
 
   .pr-stat {
@@ -184,6 +189,7 @@
 
   .pr-stat-link {
     align-items: baseline;
+    color: var(--pr-band-link, #8ed6cd);
     display: flex;
     gap: 0.625rem;
     text-decoration: none;
@@ -214,6 +220,68 @@
     letter-spacing: 0.12em;
     line-height: 1;
     text-transform: uppercase;
+  }
+
+  // ---- counts band with marketing text ------------------------------------
+
+  .pr-stats-split {
+    .pr-stats-inner {
+      column-gap: 4rem;
+      display: grid;
+      grid-template-columns: minmax(min-content, 11.875rem) 1fr;
+      padding-bottom: 3rem;
+      padding-top: 2.75rem;
+    }
+
+    .pr-stats-counts {
+      align-items: stretch;
+      flex-direction: column;
+      gap: 1.25rem;
+      min-width: 0;
+    }
+
+    .pr-stat-link {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.3125rem;
+    }
+
+    .pr-stat-number {
+      font-size: 2.25rem;
+    }
+
+    .pr-stat-key {
+      letter-spacing: 0.14em;
+    }
+  }
+
+  .pr-stats-marketing {
+    border-left: 2px solid var(--pr-accent, #f5c400);
+    color: var(--pr-band-text, #ffffff);
+    color: color-mix(in srgb, var(--pr-band-text, #ffffff) 80%, transparent);
+    font-family: var(--pr-serif, Georgia, 'Times New Roman', serif);
+    font-size: 1.125rem;
+    line-height: 1.75;
+    max-width: 43.75rem;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    padding-left: 2rem;
+    text-wrap: pretty;
+
+    p,
+    div {
+      font-family: inherit;
+      font-size: inherit;
+      line-height: inherit;
+    }
+
+    a {
+      color: var(--pr-band-link, #8ed6cd);
+    }
+
+    > :last-child {
+      margin-bottom: 0;
+    }
   }
 
   // ---- announcement ------------------------------------------------------
@@ -862,12 +930,35 @@
       font-size: 1.0625rem;
     }
 
-    .pr-stats-inner {
+    .pr-stats-counts {
       gap: 3rem;
     }
 
     .pr-stat-number {
       font-size: 1.4375rem;
+    }
+
+    .pr-stats-split {
+      .pr-stats-inner {
+        column-gap: 3.25rem;
+        grid-template-columns: minmax(min-content, 10.625rem) 1fr;
+        padding-bottom: 2.75rem;
+        padding-top: 2.5rem;
+      }
+
+      .pr-stats-counts {
+        gap: 1.125rem;
+      }
+
+      .pr-stat-number {
+        font-size: 2rem;
+      }
+    }
+
+    .pr-stats-marketing {
+      font-size: 1.0625rem;
+      max-width: 40rem;
+      padding-left: 1.75rem;
     }
 
     .pr-hero-eyebrow {
@@ -1033,12 +1124,39 @@
       max-width: none;
     }
 
-    .pr-stats-inner {
+    .pr-stats-counts {
       gap: 2rem;
     }
 
     .pr-stat-number {
       font-size: 1.3125rem;
+    }
+
+    .pr-stats-split {
+      .pr-stats-inner {
+        column-gap: 2.25rem;
+        grid-template-columns: minmax(min-content, 8.125rem) 1fr;
+        padding-bottom: 2.375rem;
+        padding-top: 2.125rem;
+      }
+
+      .pr-stats-counts {
+        gap: 1rem;
+      }
+
+      .pr-stat-number {
+        font-size: 1.75rem;
+      }
+
+      .pr-stat-key {
+        font-size: 0.625rem;
+      }
+    }
+
+    .pr-stats-marketing {
+      font-size: 1rem;
+      max-width: none;
+      padding-left: 1.5rem;
     }
 
     .pr-hero-search-submit,
@@ -1184,13 +1302,48 @@
       gap: 0.5rem;
     }
 
-    .pr-stats-inner {
+    .pr-stats-counts {
       flex-direction: column;
       gap: 0.4375rem;
     }
 
     .pr-stat-number {
       font-size: 1.1875rem;
+    }
+
+    .pr-stats-split {
+      .pr-stats-inner {
+        display: flex;
+        flex-direction: column;
+        gap: 1.125rem;
+        padding-bottom: 1.875rem;
+        padding-top: 1.625rem;
+      }
+
+      .pr-stats-counts {
+        align-items: baseline;
+        flex-direction: row;
+        gap: 1.625rem;
+      }
+
+      .pr-stat-link {
+        align-items: baseline;
+        flex-direction: row;
+        gap: 0.5rem;
+      }
+
+      .pr-stat-number {
+        font-size: 1.5rem;
+      }
+
+      .pr-stat-key {
+        font-size: 0.625rem;
+      }
+    }
+
+    .pr-stats-marketing {
+      line-height: 1.7;
+      padding-left: 1.125rem;
     }
 
     .pr-hero-eyebrow {

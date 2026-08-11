@@ -2,8 +2,8 @@
   <div class="container pr-hero-inner">
     <p class="pr-hero-eyebrow"><%= application_name %></p>
 
-    <% if @home_text&.value.present? %>
-      <div class="pr-hero-intro"><%= displayable_content_block @home_text %></div>
+    <% if display_content_block? @marketing_text %>
+      <div class="pr-hero-intro"><%= displayable_content_block @marketing_text %></div>
     <% else %>
       <h1 class="pr-hero-title"><%= t('practice_research.homepage.hero.title') %></h1>
       <p class="pr-hero-lede"><%= t('practice_research.homepage.hero.lede') %></p>

@@ -50,6 +50,6 @@ practice_research:
   banner_image: true
   featured_researcher: true
   home_page_text: true
-  marketing_text: false
+  marketing_text: true
   name: Practice Research
-  notes: A search-led hero over the banner image, a counts band, featured collections and works, browse by work type and subject, recently uploaded, a featured researcher, and an about band. The accent rides the primary button colors, the dark bands ride the header and footer background, and links carry the brand.
+  notes: A search-led hero over the banner image whose intro copy comes from the marketing text, a counts band that carries the home page text beside the counts, featured collections and works, browse by work type and subject, recently uploaded, a featured researcher, and an about band. The accent rides the primary button colors, the dark bands ride the header and footer background, and links carry the brand.

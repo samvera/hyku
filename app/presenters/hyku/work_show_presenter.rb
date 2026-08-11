@@ -13,11 +13,20 @@ module Hyku
     # OVERRIDE Hyrax v2.9.0 here to make featured collections work
     delegate :collection_presenters, to: :member_presenter_factory
 
-    # assumes there can only be one doi
+    # Supplies doi_state and doi_status, which describe what DataCite reports for a DOI this
+    # repository minted. The doi method below overrides the one these provide.
+    include Hyrax::DOI::DOIPresenterBehavior
+    include Hyrax::DOI::DataCiteDOIPresenterBehavior
+
+    # Prefers the dedicated doi field, which is where a minted or recorded DOI lives, and
+    # falls back to scraping identifier -- repositories predating the DOI field keep DOIs
+    # there, and their show pages still displayed them.
     def doi
+      recorded = Array(solr_document.try(:doi)).compact_blank
+      return recorded.first if recorded.any?
+
       doi_regex = %r{10\.\d{4,9}\/[-._;()\/:A-Z0-9]+}i
-      doi = extract_from_identifier(doi_regex)
-      doi&.join
+      extract_from_identifier(doi_regex)&.join
     end
 
     # unlike doi, there can be multiple isbns

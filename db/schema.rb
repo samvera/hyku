@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_07_05_190000) do
+ActiveRecord::Schema[7.2].define(version: 2026_08_10_180340) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_trgm"
@@ -281,6 +281,37 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_05_190000) do
     t.index ["local_authority_id", "domain_term_id"], name: "dtla_by_ids1"
   end
 
+  create_table "enact_contributors", force: :cascade do |t|
+    t.string "display_name", null: false
+    t.string "agent_type", default: "person", null: false
+    t.string "orcid"
+    t.integer "user_id"
+    t.jsonb "metadata", default: {}, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["agent_type"], name: "index_enact_contributors_on_agent_type"
+    t.index ["display_name"], name: "index_enact_contributors_on_display_name"
+    t.index ["orcid"], name: "index_enact_contributors_on_orcid", unique: true, where: "(orcid IS NOT NULL)"
+    t.index ["user_id"], name: "index_enact_contributors_on_user_id", unique: true, where: "(user_id IS NOT NULL)"
+  end
+
+  create_table "enact_profile_requests", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "contributor_id"
+    t.string "status", default: "pending", null: false
+    t.text "note"
+    t.text "review_note"
+    t.integer "reviewed_by_id"
+    t.datetime "reviewed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contributor_id"], name: "index_enact_profile_requests_on_contributor_id"
+    t.index ["created_at"], name: "index_enact_profile_requests_on_created_at"
+    t.index ["status"], name: "index_enact_profile_requests_on_status"
+    t.index ["user_id", "status"], name: "index_enact_profile_requests_on_user_id_and_status"
+    t.index ["user_id"], name: "index_enact_profile_requests_on_pending_user", unique: true, where: "((status)::text = 'pending'::text)"
+  end
+
   create_table "endpoints", id: :serial, force: :cascade do |t|
     t.string "type"
     t.binary "options"
@@ -468,6 +499,24 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_05_190000) do
     t.string "default_admin_set_id", null: false
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+  end
+
+  create_table "hyrax_doi_persistent_identifiers", force: :cascade do |t|
+    t.string "resource_id"
+    t.string "resource_type"
+    t.string "scheme", null: false
+    t.string "provider", null: false
+    t.string "value", null: false
+    t.string "state"
+    t.string "origin", default: "minted", null: false
+    t.boolean "primary", default: true, null: false
+    t.datetime "minted_at"
+    t.datetime "last_synced_at"
+    t.text "last_error"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["resource_id", "scheme"], name: "index_hyrax_doi_pids_on_resource_id_and_scheme"
+    t.index ["scheme", "provider", "value"], name: "index_hyrax_doi_pids_on_scheme_provider_value", unique: true
   end
 
   create_table "hyrax_features", id: :serial, force: :cascade do |t|

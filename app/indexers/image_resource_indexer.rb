@@ -14,6 +14,10 @@ class ImageResourceIndexer < Hyrax::ValkyrieWorkIndexer
   check_if_flexible(ImageResource)
 
   include HykuIndexing
+
+  # Writes doi_state_ssi, which nothing else supplies: the metadata profile indexes the DOI
+  # itself, but not the state DataCite reports for it.
+  include Hyrax::DOI::Indexers::DOIIndexer
   # Uncomment this block if you want to add custom indexing behavior:
   #  def to_solr
   #    super.tap do |index_document|

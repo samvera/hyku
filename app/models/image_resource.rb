@@ -3,6 +3,8 @@
 # Generated via
 #  `rails generate hyrax:work_resource ImageResource`
 class ImageResource < Hyrax::Work
+  include Hyrax::DOI::DOIBehavior
+  include Hyrax::DOI::DataCiteDOIBehavior
   if Hyrax.config.work_include_metadata?
     include Hyrax::Schema(:core_metadata)
     include Hyrax::Schema(:basic_metadata)

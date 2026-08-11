@@ -155,6 +155,7 @@ body.practice_research_show {
 @mixin pr-shell-gutter($gutter) {
   #masthead,
   nav[aria-label='Root Menu'],
+  #announcement_text,
   footer.navbar {
     padding-left: $gutter !important;
     padding-right: $gutter !important;

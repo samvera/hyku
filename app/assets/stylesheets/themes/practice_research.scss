@@ -13,7 +13,8 @@
   .pr-subject-chip:focus-visible,
   .pr-researcher-link:focus-visible,
   .pr-featured-save:focus-visible,
-  .pr-nav-share:focus-visible {
+  .pr-nav-share:focus-visible,
+  div#announcement a:focus-visible {
     @include pr-focus-ring;
   }
 
@@ -213,6 +214,37 @@
     letter-spacing: 0.12em;
     line-height: 1;
     text-transform: uppercase;
+  }
+
+  // ---- announcement ------------------------------------------------------
+
+  #announcement_text {
+    @include pr-container-inset;
+
+    background: color-mix(in srgb, var(--pr-accent, #f5c400) 16%, #fff);
+    border-bottom: 1px solid color-mix(in srgb, var(--pr-accent, #f5c400) 40%, #fff);
+    padding-block: 0.9375rem;
+  }
+
+  div#announcement {
+    background-color: transparent;
+    border: 0;
+    border-left: 3px solid var(--pr-accent, #f5c400);
+    border-radius: 0;
+    color: $pr-ink;
+    font-size: 1rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+    padding: 0.125rem 0 0.125rem 0.875rem;
+    text-align: left;
+
+    a {
+      color: color-mix(in srgb, var(--pr-link, #{$pr-brand-700}) 78%, #000);
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
   }
 
   // ---- section furniture -------------------------------------------------

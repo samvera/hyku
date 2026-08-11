@@ -569,6 +569,7 @@ en:
         contributors_and_others:
           one: "%{names} and 1 other"
           other: "%{names} and %{count} others"
+      intro_label: Repository overview
       stats:
         works:
           one: work

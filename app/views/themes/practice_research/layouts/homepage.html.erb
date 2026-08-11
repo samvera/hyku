@@ -1,15 +1,12 @@
 <% content_for(:navbar) do %>
   <%= render '/controls' %>
   <% if controller_name == 'homepage' %>
-    <header>
+    <%= render 'hyrax/homepage/announcement' %>
+    <section aria-label="<%= t('practice_research.homepage.intro_label') %>">
       <%= render 'hyrax/homepage/hero' %>
       <%= render 'hyrax/homepage/stats' %>
-    </header>
+    </section>
   <% end %>
-<% end %>
-
-<% content_for(:precontainer_content) do %>
-  <%= render 'hyrax/homepage/announcement' if controller_name == 'homepage' %>
 <% end %>
 
 <%= render template: 'layouts/hyrax' %>

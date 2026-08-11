@@ -6,6 +6,8 @@
 # @see https://github.com/samvera/hyrax/wiki/Hyrax-Valkyrie-Usage-Guide#forms
 # @see https://github.com/samvera/valkyrie/wiki/ChangeSets-and-Dirty-Tracking
 class EtdResourceForm < Hyrax::Forms::ResourceForm(EtdResource)
+  include Hyrax::DOI::DOIFormBehavior
+  include Hyrax::DOI::DataCiteDOIFormBehavior
   if Hyrax.config.work_include_metadata?
     # Commented out basic_metadata because the terms were added to the resource's yaml
     # so we can customize it

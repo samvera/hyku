@@ -18,14 +18,15 @@ GIT
 
 GIT
   remote: https://github.com/samvera-labs/hyrax-doi.git
-  revision: e54de9da97c5ff4d6219a395ed143a0b719b7420
-  branch: rails_hyrax_upgrade
+  revision: f574261689764acbd960395b566c838c5f763a90
+  branch: valkyrie-test-harness
   specs:
-    hyrax-doi (0.2.0)
-      bolognese (>= 1.8.6, < 3.0)
+    hyrax-doi (0.3.0)
+      faraday (~> 2.0)
+      faraday-follow_redirects (~> 0.3)
       flipflop (~> 2.3)
-      hyrax (>= 2.9, < 6.0)
-      rails (>= 5.2.4.3, < 8.0)
+      hyrax (>= 5.2, < 7.0)
+      rails (> 6.1, < 8.0)
 
 GIT
   remote: https://github.com/samvera/hyrax.git

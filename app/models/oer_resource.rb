@@ -3,6 +3,8 @@
 # Generated via
 #  `rails generate hyrax:work_resource OerResource`
 class OerResource < Hyrax::Work
+  include Hyrax::DOI::DOIBehavior
+  include Hyrax::DOI::DataCiteDOIBehavior
   if Hyrax.config.work_include_metadata?
     include Hyrax::Schema(:core_metadata)
     # Commented out basic_metadata because these terms were added to etd_resource so we can customize it.

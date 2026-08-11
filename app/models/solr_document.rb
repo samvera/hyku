@@ -10,6 +10,11 @@ class SolrDocument
   # Adds Hyrax behaviors to the SolrDocument.
   include Hyrax::SolrDocumentBehavior
 
+  # Reads the DOI and the state DataCite reports for it. The indexed fields are populated
+  # without these, but nothing on the show page can read them.
+  include Hyrax::DOI::SolrDocument::DOIBehavior
+  include Hyrax::DOI::SolrDocument::DataCiteDOIBehavior
+
   # self.unique_key = 'id'
 
   # Email uses the semantic field mappings below to generate the body of an email.

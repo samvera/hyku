@@ -558,6 +558,61 @@ properties:
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
       - This is a description.
+  doi:
+    available_on:
+      class:
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: array
+    display_label:
+      default: DOI
+    index_documentation: displayable, searchable
+    indexing:
+      - doi_ssim
+      - doi_tesim
+    # The DOI tab renders this field itself, so it stays out of the generic
+    # "Additional fields" accordion.
+    form:
+      primary: false
+      display: false
+    property_uri: http://purl.org/ontology/bibo/doi
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - 10.5072/example
+    # render_as doi links the identifier to its resolver and withholds a draft, which is
+    # reserved but does not resolve.
+    view:
+      render_as: doi
+      html_dl: true
+  doi_status_when_public:
+    available_on:
+      class:
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    display_label:
+      default: DOI status when public
+    index_documentation: displayable
+    indexing:
+      - doi_status_when_public_ssi
+    # The depositor's intent, chosen on the DOI tab rather than the metadata form.
+    form:
+      primary: false
+      display: false
+    property_uri: http://samvera.org/ns/hyrax/doi#doi_status_when_public
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - findable
   identifier:
     available_on:
       class:

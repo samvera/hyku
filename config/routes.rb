@@ -95,6 +95,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   mount Blacklight::Engine => '/'
   mount BlacklightAdvancedSearch::Engine => '/'
   mount Hyrax::Engine, at: '/'
+  mount Hyrax::DOI::Engine, at: '/'
   mount Bulkrax::Engine, at: '/' if Hyku.bulkrax_enabled?
   mount BlacklightDynamicSitemap::Engine => '/'
   concern :searchable, Blacklight::Routes::Searchable.new

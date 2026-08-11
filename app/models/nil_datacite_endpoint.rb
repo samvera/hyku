@@ -1,13 +1,9 @@
 # frozen_string_literal: true
 
+# Stands in for a tenant with no DataCite account. NilEndpoint supplies switch!, ping, and
+# the rest; these readers exist because the proprietor account form reads them to render
+# empty fields.
 class NilDataCiteEndpoint < NilEndpoint
-  def switch!
-    Hyrax::DOI::DataCiteRegistrar.mode = nil
-    Hyrax::DOI::DataCiteRegistrar.prefix = nil
-    Hyrax::DOI::DataCiteRegistrar.username = nil
-    Hyrax::DOI::DataCiteRegistrar.password = nil
-  end
-
   def mode
     nil
   end
@@ -22,9 +18,5 @@ class NilDataCiteEndpoint < NilEndpoint
 
   def password
     nil
-  end
-
-  def ping
-    false
   end
 end

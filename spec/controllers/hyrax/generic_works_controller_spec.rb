@@ -39,6 +39,16 @@ RSpec.describe Hyrax::GenericWorksController do
       expect(response).not_to redirect_to(root_path)
     end
 
+    it 'does not load the parent resource to run the guard' do
+      editable = FactoryBot.valkyrie_create(:generic_work_resource, edit_users: [user])
+      allow(Hyrax.query_service).to receive(:find_by).and_call_original
+
+      post :create, params: { parent_id: editable.id.to_s,
+                              generic_work: { title: ['Counted child'] } }
+
+      expect(Hyrax.query_service).not_to have_received(:find_by).with(id: editable.id)
+    end
+
     context 'when the parent accepts no children' do
       before do
         @original = GenericWorkResource.valid_child_concerns

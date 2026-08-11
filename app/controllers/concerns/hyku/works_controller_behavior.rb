@@ -43,22 +43,25 @@ module Hyku
 
     # parent_id reaches Steps::AddToParent straight from params, and that step
     # validates neither the type pairing nor the user's access to the parent.
+    #
+    # Read from Solr, not the persistence layer: only the parent's id and class are
+    # needed, and AddToParent loads the resource itself.
     def ensure_parent_accepts_child
       parent_id = params[:parent_id]
       return if parent_id.blank?
 
-      parent = Hyrax.query_service.find_by(id: parent_id)
+      parent = ::SolrDocument.find(parent_id)
       # Normalize both sides: valid_child_concerns holds the ActiveFedora classes
       # while curation_concern_type is the Valkyrie resource, so comparing class
       # names directly never matches and would reject every legitimate create.
       child_types = Hyrax::ModelRegistry.rdf_representations_from(
-        Hyrax::ChildTypes.for(parent: parent.class).to_a
+        Hyrax::ChildTypes.for(parent: parent.hydra_model).to_a
       )
       child_type = Hyrax::ModelRegistry.rdf_representations_from([self.class.curation_concern_type]).first
       return if current_ability.can?(:edit, parent) && child_types.include?(child_type)
 
       reject_parent
-    rescue Valkyrie::Persistence::ObjectNotFoundError
+    rescue Blacklight::Exceptions::RecordNotFound, Valkyrie::Persistence::ObjectNotFoundError
       reject_parent
     end
 

@@ -15,6 +15,7 @@ module Hyrax
     include Blacklight::SearchContext
     include Blacklight::AccessControls::Catalog
     include Hyku::HomePageThemesBehavior
+    include NegativeCaptchaBehavior
 
     prepended do
       before_action :setup_negative_captcha, only: %i[new create]
@@ -90,18 +91,7 @@ module Hyrax
     end
 
     def setup_negative_captcha
-      @captcha = NegativeCaptcha.new(
-        # A secret key entered in environment.rb. 'rake secret' will give you a good one.
-        secret: ENV.fetch('NEGATIVE_CAPTCHA_SECRET', 'default-value-change-me'),
-        spinner: request.remote_ip,
-        # Only protect text input fields with negative captcha
-        # Select/dropdown fields are handled separately in the create action
-        fields: %i[name email subject message],
-        # If you wish to override the default CSS styles (position: absolute; left: -2000px;)
-        # used to position the fields off-screen
-        css: "display: none",
-        params:
-      )
+      @captcha = negative_captcha_for(%i[name email subject message])
     end
   end
 end

@@ -156,7 +156,13 @@ module Hyku
         # Prefer the registered service (it may add behavior); fall back to a bare
         # authority lookup so a profile source with no registry entry still labels.
         registered = Hyrax::ControlledVocabularies.services[source]&.safe_constantize
-        registered ? registered.new : Hyrax::TolerantSelectService.new(source)
+        return Hyrax::TolerantSelectService.new(source) unless registered
+
+        # Two service styles exist: a class (Hyrax::LicenseService) and a module
+        # extending AuthorityService (Hyrax::ResourceTypesService), whose `label` is
+        # a module method. Calling `.new` on the module raises, the rescue below
+        # swallows it, and the value renders as the stored id.
+        registered.respond_to?(:new) ? registered.new : registered
       rescue StandardError => e
         Hyrax.logger.debug("Deposit wizard: no label service for #{term} (#{source}): #{e.message}")
         nil

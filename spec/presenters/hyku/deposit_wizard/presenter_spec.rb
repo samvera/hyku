@@ -209,4 +209,65 @@ RSpec.describe Hyku::DepositWizard::Presenter do
       expect(presenter.file_type_label(uf)).to eq(I18n.t('hyku.deposit_wizard.file_meta.file'))
     end
   end
+
+  # Hyrax registers controlled vocabularies as two different kinds of object, and
+  # the review step has to label values through both: most (audience, discipline,
+  # resource_types, ...) are modules extending AuthorityService whose `label` is a
+  # module method, while licenses and rights_statements are classes to instantiate.
+  describe '#review_display_values' do
+    let(:context) do
+      double(session: session, current_user: nil, current_ability: nil,
+             params: params, main_app: nil, blacklight_config: nil, helpers: helpers)
+    end
+    let(:helpers) { double }
+
+    before { allow(helpers).to receive(:controlled_vocabulary_source_for).with(:a_term).and_return(source) }
+
+    # Asserted on the resolved service rather than through the returned labels:
+    # every module-backed vocabulary Hyrax ships labels its ids with themselves
+    # ("Article" => "Article"), so a label comparison passes even when the service
+    # failed to resolve and the raw value was echoed instead.
+    context 'when the registered service is a module' do
+      let(:source) { 'resource_types' }
+
+      it 'uses the module itself rather than instantiating it' do
+        expect(presenter.controlled_service_for(:a_term)).to be(Hyrax::ResourceTypesService)
+      end
+
+      it 'labels a value through it' do
+        expect(presenter.review_display_values(:a_term, ['Article'])).to eq(['Article'])
+      end
+    end
+
+    context 'when the registered service is a class' do
+      let(:source) { 'licenses' }
+
+      it 'instantiates it' do
+        expect(presenter.controlled_service_for(:a_term)).to be_a(Hyrax::LicenseService)
+      end
+
+      it 'labels a value through the instance' do
+        value = Hyrax::LicenseService.new.select_all_options.first.last
+
+        expect(presenter.review_display_values(:a_term, [value]))
+          .to eq([Hyrax::LicenseService.new.label(value)])
+      end
+    end
+
+    context 'when the profile names a source with no registry entry' do
+      let(:source) { 'not_registered_anywhere' }
+
+      it 'falls back to a tolerant lookup and echoes the stored value' do
+        expect(presenter.review_display_values(:a_term, ['unmatched'])).to eq(['unmatched'])
+      end
+    end
+
+    context 'when the property is not controlled' do
+      let(:source) { nil }
+
+      it 'returns the values untouched' do
+        expect(presenter.review_display_values(:a_term, %w[one two])).to eq(%w[one two])
+      end
+    end
+  end
 end

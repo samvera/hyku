@@ -175,10 +175,12 @@ Each `Step` declares its own rules; the navigator computes the rest:
   is never a prerequisite.
 - **Back** is the previous visible step (`Flow#back_before`), so views never name
   their predecessor. **Forward** is the next visible step (`Flow#next_after`).
-  On the metadata steps (`details`, `file_meta`) Back submits the form rather than
-  linking, so what was typed is saved on the way out; those steps save
-  unconditionally and validate only to decide whether to advance. The browser's own
-  back button bypasses this, so entries abandoned that way are still lost.
+  On the steps carrying depositor input (`files`, `details`, `file_meta`) Back
+  submits the form rather than linking, so what was entered is saved on the way
+  out; those steps save unconditionally and validate only to decide whether to
+  advance. On `files` that save is what keeps an upload from being orphaned: the
+  id only reaches the session by being posted. The browser's own back button
+  bypasses this, so entries abandoned that way are still lost.
 - **Detours** (`Flow#detour_for`) replace the old per-step redirect rules.
 
 | Step | Purpose | Shown when |
@@ -504,5 +506,11 @@ exactly as on the stock form.
 
 Three steps gate their Next button on a `data-behavior` hook: `files-next` stays
 disabled while uploads are in flight (the uploaded-file ids only reach the form as
-each upload completes, so advancing early would drop them), and `parent-next` /
+each upload completes, so leaving early would drop them), and `parent-next` /
 `type-next` stay disabled until a parent or work type is chosen.
+
+On the files step the submitting Back button (`back-submit`) is disabled by that
+same guard. Both directions post the form, and the guard is bound to the form's
+submit rather than to either button, so leaving Back enabled would show a live
+button whose clicks are silently swallowed. The hook marks only the submitting
+variant — `disabled` is inert on the plain-link Back the other steps render.

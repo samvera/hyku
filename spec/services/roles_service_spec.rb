@@ -462,6 +462,11 @@ RSpec.describe RolesService, clean: true do
   end
 
   describe '#seed_superadmin!' do
+    before do
+      allow(ENV).to receive(:fetch).and_call_original
+      allow(ENV).to receive(:fetch).with('HYKU_SEED_PASSWORD').and_return('seeded-env-password')
+    end
+
     it 'creates a user with the :superadmin role' do
       expect_any_instance_of(User).to receive(:add_default_group_membership!).once
 
@@ -475,7 +480,7 @@ RSpec.describe RolesService, clean: true do
     context 'when HYKU_SEED_PASSWORD is set' do
       before do
         allow(ENV).to receive(:fetch).and_call_original
-        allow(ENV).to receive(:fetch).with('HYKU_SEED_PASSWORD', nil).and_return('seeded-env-password')
+        allow(ENV).to receive(:fetch).with('HYKU_SEED_PASSWORD').and_return('seeded-env-password')
       end
 
       it 'uses the configured password for the new user' do
@@ -486,16 +491,12 @@ RSpec.describe RolesService, clean: true do
     context 'when HYKU_SEED_PASSWORD is not set' do
       before do
         allow(ENV).to receive(:fetch).and_call_original
-        allow(ENV).to receive(:fetch).with('HYKU_SEED_PASSWORD', nil).and_return(nil)
+        allow(ENV).to receive(:fetch).with('HYKU_SEED_PASSWORD').and_raise(KeyError)
       end
 
-      it 'does not use the historical hardcoded password' do
-        expect(roles_service.seed_superadmin!.valid_password?('testing123')).to eq(false)
-      end
-
-      it 'announces the generated password' do
-        expect { roles_service.seed_superadmin! }
-          .to output(/HYKU_SEED_PASSWORD is not set/).to_stdout
+      it 'refuses to create the user' do
+        expect { roles_service.seed_superadmin! }.to raise_error(KeyError)
+        expect(User.find_by(email: 'admin@example.com')).to be_nil
       end
     end
 
@@ -516,6 +517,11 @@ RSpec.describe RolesService, clean: true do
   end
 
   describe '#seed_qa_users!' do
+    before do
+      allow(ENV).to receive(:fetch).and_call_original
+      allow(ENV).to receive(:fetch).with('HYKU_SEED_PASSWORD').and_return('seeded-env-password')
+    end
+
     it 'creates a user for each default role' do
       expect { roles_service.seed_qa_users! }
         .to change(User, :count)
@@ -525,7 +531,7 @@ RSpec.describe RolesService, clean: true do
     context 'when HYKU_SEED_PASSWORD is set' do
       before do
         allow(ENV).to receive(:fetch).and_call_original
-        allow(ENV).to receive(:fetch).with('HYKU_SEED_PASSWORD', nil).and_return('seeded-env-password')
+        allow(ENV).to receive(:fetch).with('HYKU_SEED_PASSWORD').and_return('seeded-env-password')
       end
 
       it 'uses the configured password for each new user' do
@@ -538,18 +544,12 @@ RSpec.describe RolesService, clean: true do
     context 'when HYKU_SEED_PASSWORD is not set' do
       before do
         allow(ENV).to receive(:fetch).and_call_original
-        allow(ENV).to receive(:fetch).with('HYKU_SEED_PASSWORD', nil).and_return(nil)
+        allow(ENV).to receive(:fetch).with('HYKU_SEED_PASSWORD').and_raise(KeyError)
       end
 
-      it 'does not use the historical hardcoded password' do
-        roles_service.seed_qa_users!
-        user = User.find_by(email: "#{described_class::DEFAULT_ROLES.last}@example.com")
-        expect(user.valid_password?('testing123')).to eq(false)
-      end
-
-      it 'announces the generated password' do
-        expect { roles_service.seed_qa_users! }
-          .to output(/HYKU_SEED_PASSWORD is not set/).to_stdout
+      it 'refuses to create the users' do
+        expect { roles_service.seed_qa_users! }.to raise_error(KeyError)
+        expect(User.find_by(email: "#{described_class::DEFAULT_ROLES.last}@example.com")).to be_nil
       end
     end
 

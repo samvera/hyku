@@ -78,45 +78,24 @@ class ApplicationController < ActionController::Base
 
   ##
   # @!attribute http_basic_auth_username [r|w]
-  #   @return [String, nil] overrides the HYKU_BASIC_AUTH_USER environment
-  #     variable when set.
+  #   @return [String]
   #   @see ApplicationController#authenticate_if_needed
-  class_attribute :http_basic_auth_username, default: nil
+  class_attribute :http_basic_auth_username, default: ENV.fetch('HYKU_BASIC_AUTH_USER', 'samvera')
 
   ##
   # @!attribute http_basic_auth_password [r|w]
-  #   @return [String, nil] overrides the HYKU_BASIC_AUTH_PASSWORD environment
-  #     variable when set.
+  #   @return [String]
   #   @see ApplicationController#authenticate_if_needed
-  class_attribute :http_basic_auth_password, default: nil
+  class_attribute :http_basic_auth_password, default: ENV.fetch('HYKU_BASIC_AUTH_PASSWORD', 'hyku')
 
   def authenticate_if_needed
     # Disable this extra authentication in test mode
     return true if Rails.env.test?
     return unless (hidden? || staging?) && !api_or_pdf?
     authenticate_or_request_with_http_basic do |username, password|
-      valid_http_basic_credentials?(username, password)
+      ActiveSupport::SecurityUtils.secure_compare(username.to_s, http_basic_auth_username) &&
+        ActiveSupport::SecurityUtils.secure_compare(password.to_s, http_basic_auth_password)
     end
-  end
-
-  # Credentials come from the HYKU_BASIC_AUTH_USER and HYKU_BASIC_AUTH_PASSWORD
-  # environment variables, or from the http_basic_auth_username /
-  # http_basic_auth_password attributes when those are set. When nothing is
-  # configured, access is refused (fail closed), except in development where
-  # the historical defaults still apply for local convenience.
-  def valid_http_basic_credentials?(username, password)
-    expected_username = http_basic_auth_username || ENV.fetch('HYKU_BASIC_AUTH_USER', nil)
-    expected_password = http_basic_auth_password || ENV.fetch('HYKU_BASIC_AUTH_PASSWORD', nil)
-
-    if expected_username.blank? || expected_password.blank?
-      return false unless Rails.env.development?
-
-      expected_username = 'samvera'
-      expected_password = 'hyku'
-    end
-
-    ActiveSupport::SecurityUtils.secure_compare(username.to_s, expected_username) &&
-      ActiveSupport::SecurityUtils.secure_compare(password.to_s, expected_password)
   end
 
   def super_and_current_users

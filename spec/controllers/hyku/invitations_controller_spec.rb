@@ -32,29 +32,62 @@ RSpec.describe Hyku::InvitationsController, type: :controller do
       expect(flash[:notice]).to eq 'An invitation email has been sent to user@guest.org.'
     end
 
-    context 'when user already exists' do
-      let(:user) { create(:user) }
-
+    context 'when the invited user already exists' do
       # Mimic the state of a user who is only active in other tenants;
       # i.e. a user who has no roles in this tenant
+      let(:invitee) { create(:user) }
+
       before do
-        user.roles.destroy_all
+        invitee.roles.destroy_all
       end
 
       it 'adds the user to the registered group' do
-        expect(user.roles).to be_empty
-        expect(user.groups).to be_empty
+        expect(invitee.roles).to be_empty
+        expect(invitee.groups).to be_empty
 
         post :create, params: {
           user: {
-            email: user.email,
+            email: invitee.email,
             role: ''
           }
         }
 
-        user.reload
-        expect(user.roles).not_to be_empty
-        expect(user.groups).to eq([Ability.registered_group_name])
+        invitee.reload
+        expect(invitee.roles).not_to be_empty
+        expect(invitee.groups).to eq([Ability.registered_group_name])
+      end
+    end
+
+    context 'when the inviter holds no user-management role' do
+      let(:user) { create(:user) }
+
+      # devise_invitable's authenticate_inviter! only requires a signed-in
+      # user, so without an explicit authorize! any registered user could
+      # invite arbitrary addresses and grant them a role.
+      it 'denies the invitation and does not create the user' do
+        post :create, params: {
+          user: {
+            email: 'stranger@guest.org',
+            role: 'user_manager'
+          }
+        }
+        expect(User.find_by(email: 'stranger@guest.org')).to be_nil
+        expect(response).to redirect_to root_path
+      end
+    end
+
+    context 'when the inviter is a user manager' do
+      let(:user) { create(:user_manager) }
+
+      it 'processes the invitation' do
+        post :create, params: {
+          user: {
+            email: 'colleague@guest.org',
+            role: 'work_depositor'
+          }
+        }
+        expect(User.find_by(email: 'colleague@guest.org')).to be_present
+        expect(response).to redirect_to Hyrax::Engine.routes.url_helpers.admin_users_path(locale: 'en')
       end
     end
 
@@ -70,6 +103,21 @@ RSpec.describe Hyku::InvitationsController, type: :controller do
             user: {
               email: 'uninvited@guest.org',
               role: 'user_manager'
+            }
+          }
+          expect(User.find_by(email: 'uninvited@guest.org')).to be_nil
+          expect(response).to redirect_to root_path
+        end
+      end
+
+      context 'when signed in as a user manager' do
+        let(:user) { create(:user_manager) }
+
+        it 'denies the invitation and does not create the user' do
+          post :create, params: {
+            user: {
+              email: 'uninvited@guest.org',
+              role: 'work_depositor'
             }
           }
           expect(User.find_by(email: 'uninvited@guest.org')).to be_nil

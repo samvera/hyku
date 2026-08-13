@@ -8,8 +8,7 @@
   <% end %>
 <% end %>
 
-<%# Inviting always requires :create on User; public demo tenants additionally require manage :tenant_controls %>
-<% if can?(:create, User) && (!Site.account&.public_demo_tenant? || can?(:manage, :tenant_controls)) %>
+<% if can? :invite, User %>
   <div class="card users-invite">
     <div class="card-header">
         <%= t('.invite_users') %>

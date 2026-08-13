@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
-# The invite form on the Manage Users page is hidden from plain admins on
-# public demo tenants; tenant superadmins keep it. This lives in its own file
-# (rather than index.html.erb_spec.rb) because the tenant flag must be stubbed
-# before the first render and the sibling spec renders in a top-level before.
+# The Manage Users page draws the invite form from can? :invite, User, so on a
+# public demo tenant a plain admin loses it and a tenant superadmin keeps it.
+# This lives in its own file (rather than index.html.erb_spec.rb) because the
+# tenant flag must be stubbed before the first render and the sibling spec
+# renders in a top-level before.
+# @see Hyrax::Ability::TenantControlAbility
 RSpec.describe 'hyrax/admin/users/index.html.erb', type: :view do
   include Devise::Test::ControllerHelpers
 

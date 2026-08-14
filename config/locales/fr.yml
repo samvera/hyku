@@ -10,6 +10,9 @@ fr:
     attributes:
       site:
         institution_name_full: Nom complet de l'établissement
+    errors:
+      messages:
+        cannot_remove_last_superadmin: impossible de supprimer le dernier superadministrateur d'un locataire de démonstration public
   application:
     tagline: La solution de dépôt de nouvelle génération
   blacklight:
@@ -164,6 +167,9 @@ fr:
         last_login: Dernier accès
         name: prénom
         user_key: Nom d'utilisateur
+  date:
+    formats:
+      pr_short: "%-d %b %Y"
   errors:
     messages:
       valid_embed_url: doit être une URL d'incorporation valide de YouTube ou Vimeo.
@@ -656,6 +662,94 @@ fr:
     collections:
       cannot:
         manage_discovery: Vous n'êtes pas autorisé à modifier le paramètre de découverte de cette collection
+  practice_research:
+    homepage:
+      hero:
+        title: La recherche par la pratique, réunie
+        lede: Œuvres, documentation et écrits, déposés comme des projets complets, dans l'ordre voulu par leurs auteurs.
+        search_label: Rechercher dans le dépôt
+        search_placeholder: Rechercher des collections et des travaux
+        search_button: Rechercher
+        advanced_search: Recherche avancée
+        browse_everything: Tout parcourir
+      about:
+        heading: Ce que contient ce dépôt
+        first_paragraph: La recherche par la pratique arrive rarement sous la forme d'un fichier unique. Une commande peut laisser des dessins, une maquette, un film de l'inauguration, une critique et un article écrit des années plus tard, chacun dénué de sens isolément.
+        second_paragraph: Le dépôt de projets complets garde ces éléments ensemble et dans l'ordre, avec une note de contexte expliquant ce que la collection démontre. Tout ce qui se trouve ici est déposé par les chercheurs eux-mêmes.
+        about_link: À propos de ce dépôt
+      recent:
+        heading: Téléversements récents
+        all: Tout voir
+        all_label: Voir tous les travaux récemment téléversés
+        in_parent: dans %{title}
+      researcher:
+        heading: Chercheur à la une
+      browse:
+        work_types: Parcourir par type de travail
+        subjects: Parcourir par sujet
+      featured:
+        heading: Travaux à la une
+        view_all: Voir tous les travaux
+        collections_heading: Collections à la une
+        view_all_collections: Voir toutes les collections
+        works_in_collection:
+          one: 1 travail
+          other: "%{count} travaux"
+        reorder_handle: "Réordonner %{title} : glisser ou utiliser les touches fléchées"
+        move_earlier: Avancer %{title}
+        move_later: Reculer %{title}
+        moved: "%{title} déplacé en position %{position} sur %{total}"
+        at_position: "%{title} est déjà en position %{position} sur %{total}"
+        reorder_hint: Faites glisser une carte pour réordonner, ou utilisez les boutons fléchés. Enregistrez l'ordre une fois terminé.
+        save_order: Enregistrer l'ordre
+        unfeature: Retirer de la une
+        unfeature_confirm: Retirer ce travail de la liste à la une ?
+        unfeature_collection_confirm: Retirer cette collection de la liste à la une ?
+        unfeature_failed: Le retrait de la une a échoué. Rechargez la page et réessayez.
+        contributors_and_others:
+          one: "%{names} et 1 autre"
+          other: "%{names} et %{count} autres"
+      stats:
+        works:
+          one: travail
+          other: travaux
+        collections:
+          one: collection
+          other: collections
+    show:
+      tabs_label: Sections de la notice
+      tabs:
+        context: Note de contexte
+        metadata: Informations complémentaires
+        files: Fichiers
+      files_heading: Fichiers de cette notice
+      items:
+        default: Éléments
+      metadata_heading: Métadonnées descriptives
+      placement_heading: Fait partie de
+      parent_work_label: Travail parent
+      fields_show_all: Afficher les %{count} champs
+      fields_show_fewer: Afficher moins de champs
+      files_note: Fichiers déposés directement sur cette notice. Les fichiers des travaux qu'elle contient se trouvent sur ces travaux.
+      items_note: Les travaux que contient cette notice, dans l'ordre de leur dépôt.
+      files_count:
+        one: 1 fichier
+        other: "%{count} fichiers"
+      items_count:
+        one: 1 élément
+        other: "%{count} éléments"
+      relationships: Relations
+      cite: Citer
+      endnote: Télécharger pour EndNote
+      permalink: Permalien
+      contributors: Contributeurs
+      citation_style: Style de citation
+      citation_styles:
+        apa: APA (7e éd.)
+        mla: MLA (9e éd.)
+        chicago: Chicago
+      citation_copy: Copier
+      citation_copied: Copié
   proprietor:
     accounts:
       edit:
@@ -663,6 +757,10 @@ fr:
         data_cite_endpoint: Point de terminaison DataCite
         fcrepo_endpoint: Fedora Endpoint
         header: Modification du compte
+        public_demo_tenant:
+          disabled: 'Non'
+          enabled: 'Oui'
+          immutable: Ce paramètre est défini lors de la création du compte et ne peut pas être modifié.
         solr_endpoint: Solr Endpoint
       index:
         actions: Actions

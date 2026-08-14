@@ -90,6 +90,7 @@ gem 'redcarpet' # for Markdown constant
 gem 'redis-actionpack'
 gem 'redis-namespace', '~> 1.10' # Hyrax v5 relies on 1.5; but we'd like to have the #clear method so we need 1.10 or greater.
 gem 'redlock', '>= 0.1.2', '< 2.0' # lock redlock per https://github.com/samvera/hyrax/pull/5961
+gem 'request_store', '~> 1.7'
 gem 'riiif', git: 'https://github.com/sul-dlss/riiif.git', ref: '9a375'
 gem 'rolify'
 gem 'ros-apartment', require: 'apartment' # Rails 7.2 compatible apartment fork - drop-in replacement
@@ -152,5 +153,7 @@ gem 'willow_sword', github: 'notch8/willow_sword', tag: 'v0.8.5'
 # tl;dr - Have a local `required_for_knapsack_instances` branch on your knapsack repository and 99%
 #         of the time use the `samvera-labs/hyku_knapsack` remote branch.
 gem 'hyku_knapsack', github: 'samvera-labs/hyku_knapsack', branch: 'required_for_knapsack_instances'
+
+gem 'bullet', '~> 8.1', group: %i[development test]
 
 # rubocop:enable Metrics/MethodLength

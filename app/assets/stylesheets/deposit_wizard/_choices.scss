@@ -9,6 +9,12 @@
     margin-bottom: 1.5rem;
   }
 
+  // The container path creates the thing the other paths deposit into, so it
+  // leads the group across the full width rather than sitting beside them.
+  &__path-card--container {
+    grid-column: 1 / -1;
+  }
+
   &__path-card,
   &__type-card {
     display: flex;

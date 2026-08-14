@@ -10,6 +10,9 @@ de:
     attributes:
       site:
         institution_name_full: Vollständiger Name der Institution
+    errors:
+      messages:
+        cannot_remove_last_superadmin: der letzte Superadministrator eines öffentlichen Demo-Mandanten kann nicht entfernt werden
   application:
     tagline: Die Next-Generation Repository-Lösung
   blacklight:
@@ -163,6 +166,9 @@ de:
         last_login: Letzter Zugriff
         name: Name
         user_key: Benutzername
+  date:
+    formats:
+      pr_short: "%-d. %b %Y"
   errors:
     messages:
       valid_embed_url: muss eine gültige YouTube- oder Vimeo-Einbettungs-URL sein.
@@ -654,6 +660,94 @@ de:
     collections:
       cannot:
         manage_discovery: Sie haben keine Berechtigung, die Erkennungseinstellung dieser Sammlung zu ändern
+  practice_research:
+    homepage:
+      hero:
+        title: Praxisforschung, zusammen bewahrt
+        lede: Kunstwerke, Dokumentation und Texte, hinterlegt als ganze Projekte, in der von ihren Urhebern vorgesehenen Reihenfolge.
+        search_label: Repositorium durchsuchen
+        search_placeholder: Sammlungen und Werke durchsuchen
+        search_button: Suchen
+        advanced_search: Erweiterte Suche
+        browse_everything: Alles durchstöbern
+      about:
+        heading: Was dieses Repositorium enthält
+        first_paragraph: Praxisforschung entsteht selten als einzelne Datei. Ein Auftrag kann Zeichnungen, ein Modell, einen Film der Eröffnung, eine Rezension und einen Jahre später verfassten Artikel hinterlassen, die für sich genommen bedeutungslos sind.
+        second_paragraph: Die Hinterlegung ganzer Projekte hält diese Teile zusammen und in Reihenfolge, mit einer Kontextdarstellung, die erläutert, was die Sammlung aussagt. Alles hier wird von den Forschenden selbst hinterlegt.
+        about_link: Über dieses Repositorium
+      recent:
+        heading: Kürzlich hochgeladen
+        all: Alle anzeigen
+        all_label: Alle kürzlich hochgeladenen Werke anzeigen
+        in_parent: in %{title}
+      researcher:
+        heading: Vorgestellte Forscherin oder Forscher
+      browse:
+        work_types: Nach Werktyp durchstöbern
+        subjects: Nach Thema durchstöbern
+      featured:
+        heading: Vorgestellte Werke
+        view_all: Alle Werke anzeigen
+        collections_heading: Vorgestellte Sammlungen
+        view_all_collections: Alle Sammlungen anzeigen
+        works_in_collection:
+          one: 1 Werk
+          other: "%{count} Werke"
+        reorder_handle: "%{title} neu anordnen: ziehen oder Pfeiltasten verwenden"
+        move_earlier: "%{title} nach vorne verschieben"
+        move_later: "%{title} nach hinten verschieben"
+        moved: "%{title} an Position %{position} von %{total} verschoben"
+        at_position: "%{title} ist bereits an Position %{position} von %{total}"
+        reorder_hint: Karte ziehen oder Pfeiltasten verwenden, um die Reihenfolge zu ändern. Anschließend die Reihenfolge speichern.
+        save_order: Reihenfolge speichern
+        unfeature: Aus den vorgestellten entfernen
+        unfeature_confirm: Dieses Werk aus der Liste der vorgestellten entfernen?
+        unfeature_collection_confirm: Diese Sammlung aus der Liste der vorgestellten entfernen?
+        unfeature_failed: Entfernen aus den vorgestellten fehlgeschlagen. Seite neu laden und erneut versuchen.
+        contributors_and_others:
+          one: "%{names} und 1 weitere Person"
+          other: "%{names} und %{count} weitere Personen"
+      stats:
+        works:
+          one: Werk
+          other: Werke
+        collections:
+          one: Sammlung
+          other: Sammlungen
+    show:
+      tabs_label: Abschnitte des Datensatzes
+      tabs:
+        context: Kontextdarstellung
+        metadata: Weitere Informationen
+        files: Dateien
+      files_heading: Dateien dieses Datensatzes
+      items:
+        default: Objekte
+      metadata_heading: Beschreibende Metadaten
+      placement_heading: Teil von
+      parent_work_label: Übergeordnetes Werk
+      fields_show_all: Alle %{count} Felder anzeigen
+      fields_show_fewer: Weniger Felder anzeigen
+      files_note: Dateien, die direkt an diesem Datensatz hinterlegt sind. Dateien der enthaltenen Werke liegen bei diesen Werken.
+      items_note: Die in diesem Datensatz enthaltenen Werke, in der Reihenfolge ihrer Hinterlegung.
+      files_count:
+        one: 1 Datei
+        other: "%{count} Dateien"
+      items_count:
+        one: 1 Objekt
+        other: "%{count} Objekte"
+      relationships: Beziehungen
+      cite: Zitieren
+      endnote: Für EndNote herunterladen
+      permalink: Permalink
+      contributors: Mitwirkende
+      citation_style: Zitierstil
+      citation_styles:
+        apa: APA (7. Aufl.)
+        mla: MLA (9. Aufl.)
+        chicago: Chicago
+      citation_copy: Kopieren
+      citation_copied: Kopiert
   proprietor:
     accounts:
       edit:
@@ -661,6 +755,10 @@ de:
         data_cite_endpoint: DataCite-Endpunkt
         fcrepo_endpoint: Fedora-Endpunkt
         header: Konto bearbeiten
+        public_demo_tenant:
+          disabled: 'Nein'
+          enabled: 'Ja'
+          immutable: Diese Einstellung wird bei der Kontoerstellung festgelegt und kann nicht geändert werden.
         solr_endpoint: Solr-Endpunkt
       index:
         actions: Aktionen

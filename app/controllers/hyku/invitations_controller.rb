@@ -2,6 +2,13 @@
 
 module Hyku
   class InvitationsController < Devise::InvitationsController
+    # devise_invitable's own filter only authenticates the inviter, so without
+    # this any signed-in user could invite. Who may invite is decided entirely
+    # in the ability layer.
+    # @see Hyrax::Ability::UserAbility
+    # @see Hyrax::Ability::TenantControlAbility
+    before_action -> { authorize! :invite, User }, only: :create
+
     # For devise_invitable, specify post-invite path to be 'Manage Users' form
     # (as the user invitation form is also on that page)
     def after_invite_path_for(_resource)

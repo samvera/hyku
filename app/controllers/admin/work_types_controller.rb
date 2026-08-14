@@ -32,7 +32,7 @@ module Admin
     private
 
     def site
-      @site ||= Site.first
+      @site ||= Site.instance
     end
 
     def setup_profile_work_types

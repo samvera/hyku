@@ -1,0 +1,30 @@
+<section class="pr-about">
+  <div class="pr-about-inner">
+    <div class="pr-about-copy">
+      <h2 class="pr-about-title">
+        <%= pr_plain_text(@homepage_about_section_heading&.value).presence ||
+              t('practice_research.homepage.about.heading') %>
+      </h2>
+
+      <% if @homepage_about_section_content&.value.present? %>
+        <div class="pr-about-prose"><%= displayable_content_block @homepage_about_section_content %></div>
+      <% else %>
+        <div class="pr-about-prose">
+          <p><%= t('practice_research.homepage.about.first_paragraph') %></p>
+          <p><%= t('practice_research.homepage.about.second_paragraph') %></p>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="pr-about-actions">
+      <% if pr_share_work? %>
+        <% href, data = pr_share_work_target %>
+        <%= link_to t('hyrax.share_button'), href, data: data, class: 'pr-about-cta' %>
+      <% end %>
+      <%= link_to t('practice_research.homepage.about.about_link'), hyrax.about_path,
+                  class: 'pr-about-cta pr-about-cta-outline' %>
+
+      <%= link_to t(:'hyrax.pages.tabs.terms_page'), hyrax.terms_path, class: 'pr-about-terms' %>
+    </div>
+  </div>
+</section>

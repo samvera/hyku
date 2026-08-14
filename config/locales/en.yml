@@ -10,6 +10,9 @@ en:
     attributes:
       site:
         institution_name_full: Full institution name
+    errors:
+      messages:
+        cannot_remove_last_superadmin: cannot remove the last tenant superadmin from a public demo tenant
   application:
     tagline: The next-generation repository solution
   blacklight:
@@ -24,6 +27,9 @@ en:
         show:
           additional_information: Additional rights information
     slideshow_info: Select an image to start the slideshow
+  date:
+    formats:
+      pr_short: "%-d %b %Y"
   errors:
     messages:
       valid_embed_url: must be a valid YouTube or Vimeo Embed URL.
@@ -64,6 +70,12 @@ en:
       details:
         heading: Describe your item
         subtext: Add the details for this work. Required fields are marked.
+      discard: Discard this deposit
+      discard_confirm: Discard this deposit? Anything you have entered will be lost, and the files you uploaded will be deleted. This cannot be undone.
+      discarded: Your deposit was discarded.
+      discarded_with_files:
+        one: Your deposit was discarded and the file you had uploaded was deleted.
+        other: Your deposit was discarded and the %{count} files you had uploaded were deleted.
       disabled: The guided deposit wizard is not enabled.
       done:
         deposit_another: Deposit another work
@@ -79,6 +91,7 @@ en:
         deposit_failed: Your work could not be deposited
         details_invalid: Some details need fixing before you can continue
         no_parent: Please choose a work to add this deposit to.
+        parent_not_allowed: That work cannot contain this deposit. Choose a different one.
         no_work_type: Please choose a work type to continue.
       extras:
         add: Add
@@ -189,6 +202,9 @@ en:
           type: Item type
           upload: Upload files
         label: Deposit progress
+    works:
+      errors:
+        parent_not_allowed: That work cannot contain this deposit.
     admin:
       flash:
         access_denied: You are not authorized to view this page
@@ -305,6 +321,15 @@ en:
         works_over_time: Works over time
       title: Administration
       work_types: Available Work Types
+    demo_banner:
+      acceptable_use: Acceptable use policy
+      aria_label: Demo environment notice
+      dismiss: Dismiss this notice for today
+      last_reset: 'Last reset: %{time}.'
+      not_yet_reset: It has not been reset yet.
+      reset_schedule: Content and settings reset nightly.
+      title: Demo environment
+      version: Running Hyku v%{version}.
     footer:
       admin_login: Administrator login
     generic_type:
@@ -500,6 +525,95 @@ en:
     collections:
       cannot:
         manage_discovery: You do not have permission to change this Collection's discovery setting
+  practice_research:
+    homepage:
+      hero:
+        title: Practice research, kept together
+        lede: Artworks, documentation and writing, deposited as whole projects, in the order their makers intended.
+        search_label: Search the repository
+        search_placeholder: Search collections and works
+        search_button: Search
+        advanced_search: Advanced search
+        browse_everything: Browse everything
+      about:
+        heading: What this repository holds
+        first_paragraph: Practice research rarely arrives as a single file. A commission might leave behind drawings, a maquette, a film of the opening, a review and an article written years later, each meaningless on its own.
+        second_paragraph: Depositing whole projects keeps those parts together and in sequence, with a context statement explaining what the collection argues. Everything here is deposited by the researchers themselves.
+        about_link: About this repository
+      recent:
+        heading: Recently uploaded
+        all: See all
+        all_label: See all recently uploaded works
+        in_parent: in %{title}
+      researcher:
+        heading: Featured researcher
+      browse:
+        work_types: Browse by work type
+        subjects: Browse by subject
+      featured:
+        heading: Featured works
+        view_all: View all works
+        collections_heading: Featured collections
+        view_all_collections: View all collections
+        works_in_collection:
+          one: 1 work
+          other: "%{count} works"
+        reorder_handle: "Reorder %{title}: drag, or use the arrow keys"
+        move_earlier: Move %{title} earlier
+        move_later: Move %{title} later
+        moved: Moved %{title} to position %{position} of %{total}
+        at_position: "%{title} is already at position %{position} of %{total}"
+        reorder_hint: Drag a card to reorder, or use the arrow buttons. Save the order when you are done.
+        save_order: Save order
+        unfeature: Remove from featured
+        unfeature_confirm: Remove this work from the featured list?
+        unfeature_collection_confirm: Remove this collection from the featured list?
+        unfeature_failed: Removing from featured failed. Reload the page and try again.
+        contributors_and_others:
+          one: "%{names} and 1 other"
+          other: "%{names} and %{count} others"
+      intro_label: Repository overview
+      stats:
+        works:
+          one: work
+          other: works
+        collections:
+          one: collection
+          other: collections
+    show:
+      tabs_label: Record sections
+      tabs:
+        context: Context statement
+        metadata: Additional information
+        files: Files
+      files_heading: Files on this record
+      items:
+        default: Items
+      metadata_heading: Descriptive metadata
+      placement_heading: Part of
+      parent_work_label: Parent work
+      fields_show_all: Show all %{count} fields
+      fields_show_fewer: Show fewer fields
+      files_note: Files deposited against this record itself. Files belonging to the works this record contains live on those works.
+      items_note: The works this record contains, in the order they were deposited.
+      files_count:
+        one: 1 file
+        other: "%{count} files"
+      items_count:
+        one: 1 item
+        other: "%{count} items"
+      relationships: Relationships
+      cite: Cite
+      endnote: Download for EndNote
+      permalink: Permalink
+      contributors: Contributors
+      citation_style: Citation style
+      citation_styles:
+        apa: APA (7th ed.)
+        mla: MLA (9th ed.)
+        chicago: Chicago
+      citation_copy: Copy
+      citation_copied: Copied
   proprietor:
     accounts:
       edit:
@@ -507,6 +621,10 @@ en:
         data_cite_endpoint: DataCite Endpoint
         fcrepo_endpoint: Fedora Endpoint
         header: Editing Account
+        public_demo_tenant:
+          disabled: 'No'
+          enabled: 'Yes'
+          immutable: This setting is defined when the account is created and cannot be changed.
         solr_endpoint: Solr Endpoint
       index:
         actions: Actions

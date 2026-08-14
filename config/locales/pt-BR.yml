@@ -10,6 +10,9 @@ pt-BR:
     attributes:
       site:
         institution_name_full: Nome completo da instituição
+    errors:
+      messages:
+        cannot_remove_last_superadmin: não é possível remover o último superadministrador de um inquilino de demonstração público
   application:
     tagline: A solução de repos
   blacklight:
@@ -29,6 +32,9 @@ pt-BR:
       sidebar:
         exporters: Exportadores
         importers: Importadores
+  date:
+    formats:
+      pr_short: "%-d %b %Y"
   errors:
     messages:
       valid_embed_url: deve ser uma URL de incorporação válida do YouTube ou Vimeo.
@@ -534,6 +540,94 @@ pt-BR:
     collections:
       cannot:
         manage_discovery: Você não tem permissão para alterar a configuração de descoberta desta coleção
+  practice_research:
+    homepage:
+      hero:
+        title: Pesquisa prática, mantida reunida
+        lede: Obras de arte, documentação e textos, depositados como projetos completos, na ordem pretendida por seus criadores.
+        search_label: Pesquisar no repositório
+        search_placeholder: Pesquisar coleções e obras
+        search_button: Pesquisar
+        advanced_search: Pesquisa avançada
+        browse_everything: Explorar tudo
+      about:
+        heading: O que este repositório contém
+        first_paragraph: A pesquisa prática raramente chega como um único arquivo. Uma encomenda pode deixar desenhos, uma maquete, um filme da inauguração, uma resenha e um artigo escrito anos depois, cada um sem sentido isoladamente.
+        second_paragraph: Depositar projetos completos mantém essas partes juntas e em sequência, com uma declaração de contexto explicando o que a coleção sustenta. Tudo aqui é depositado pelos próprios pesquisadores.
+        about_link: Sobre este repositório
+      recent:
+        heading: Enviados recentemente
+        all: Ver tudo
+        all_label: Ver todas as obras enviadas recentemente
+        in_parent: em %{title}
+      researcher:
+        heading: Pesquisador em destaque
+      browse:
+        work_types: Explorar por tipo de obra
+        subjects: Explorar por assunto
+      featured:
+        heading: Obras em destaque
+        view_all: Ver todas as obras
+        collections_heading: Coleções em destaque
+        view_all_collections: Ver todas as coleções
+        works_in_collection:
+          one: 1 obra
+          other: "%{count} obras"
+        reorder_handle: "Reordenar %{title}: arraste ou use as teclas de seta"
+        move_earlier: Mover %{title} para frente
+        move_later: Mover %{title} para trás
+        moved: "%{title} movido para a posição %{position} de %{total}"
+        at_position: "%{title} já está na posição %{position} de %{total}"
+        reorder_hint: Arraste um cartão para reordenar ou use os botões de seta. Salve a ordem quando terminar.
+        save_order: Salvar ordem
+        unfeature: Remover dos destaques
+        unfeature_confirm: Remover esta obra da lista de destaques?
+        unfeature_collection_confirm: Remover esta coleção da lista de destaques?
+        unfeature_failed: Falha ao remover dos destaques. Recarregue a página e tente novamente.
+        contributors_and_others:
+          one: "%{names} e mais 1"
+          other: "%{names} e mais %{count}"
+      stats:
+        works:
+          one: obra
+          other: obras
+        collections:
+          one: coleção
+          other: coleções
+    show:
+      tabs_label: Seções do registro
+      tabs:
+        context: Declaração de contexto
+        metadata: Informações adicionais
+        files: Arquivos
+      files_heading: Arquivos deste registro
+      items:
+        default: Itens
+      metadata_heading: Metadados descritivos
+      placement_heading: Parte de
+      parent_work_label: Obra superior
+      fields_show_all: Mostrar todos os %{count} campos
+      fields_show_fewer: Mostrar menos campos
+      files_note: Arquivos depositados diretamente neste registro. Os arquivos das obras contidas ficam nessas obras.
+      items_note: As obras contidas neste registro, na ordem em que foram depositadas.
+      files_count:
+        one: 1 arquivo
+        other: "%{count} arquivos"
+      items_count:
+        one: 1 item
+        other: "%{count} itens"
+      relationships: Relações
+      cite: Citar
+      endnote: Baixar para EndNote
+      permalink: Link permanente
+      contributors: Colaboradores
+      citation_style: Estilo de citação
+      citation_styles:
+        apa: APA (7ª ed.)
+        mla: MLA (9ª ed.)
+        chicago: Chicago
+      citation_copy: Copiar
+      citation_copied: Copiado
   proprietor:
     accounts:
       edit:
@@ -541,6 +635,10 @@ pt-BR:
         data_cite_endpoint: Terminal DataCite
         fcrepo_endpoint: Ponto de extremidade do Fedora
         header: Editando conta
+        public_demo_tenant:
+          disabled: 'Não'
+          enabled: 'Sim'
+          immutable: Esta configuração é definida na criação da conta e não pode ser alterada.
         solr_endpoint: Ponto final do Solr
       index:
         actions: Ações

@@ -61,12 +61,37 @@ RSpec.describe Hyku::DepositWizard::Presenter do
     end
 
     context 'when a parent is chosen' do
-      let(:params) { ActionController::Parameters.new(step: 'select_parent', parent_id: 'abc123') }
+      let(:user) { FactoryBot.create(:user) }
+      let(:parent) { FactoryBot.valkyrie_create(:generic_work_resource, edit_users: [user]) }
+      let(:params) { ActionController::Parameters.new(step: 'select_parent', parent_id: parent.id.to_s) }
+      let(:context) do
+        double(session: session, current_user: user, current_ability: Ability.new(user),
+               params: params, main_app: nil, blacklight_config: nil)
+      end
 
       it 'stores the parent and advances' do
         transition = presenter.advance_from('select_parent')
         expect(transition).to be_advance
-        expect(presenter.state.parent_id).to eq('abc123')
+        expect(presenter.state.parent_id).to eq(parent.id.to_s)
+      end
+
+      it 'does not load the parent resource' do
+        parent # created before the spy, so the factory's own lookups aren't counted
+        allow(Hyrax.query_service).to receive(:find_by).and_call_original
+
+        expect(presenter.advance_from('select_parent')).to be_advance
+        expect(Hyrax.query_service).not_to have_received(:find_by).with(id: parent.id)
+      end
+    end
+
+    context 'when the chosen parent cannot contain children' do
+      let(:params) { ActionController::Parameters.new(step: 'select_parent', parent_id: 'abc123') }
+
+      it 're-renders select_parent and leaves the parent unset' do
+        transition = presenter.advance_from('select_parent')
+        expect(transition).not_to be_advance
+        expect(transition.alert).to eq('hyku.deposit_wizard.errors.parent_not_allowed')
+        expect(presenter.state.parent_id).to be_nil
       end
     end
 

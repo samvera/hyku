@@ -1,0 +1,10 @@
+<dt><%= t('practice_research.show.parent_work_label') %></dt>
+<dd>
+  <ul class="tabular">
+    <% presenter.parent_works(current_user).each do |parent_doc| %>
+      <li class="attribute attribute-title">
+        <%= link_to parent_doc.title.first, parent_path(parent_doc) %>
+      </li>
+    <% end %>
+  </ul>
+</dd>

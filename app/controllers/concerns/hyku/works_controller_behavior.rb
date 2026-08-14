@@ -5,6 +5,8 @@
 #           - correct hostname of manifests
 #           - override for bug https://github.com/samvera/hyrax/issues/5904
 #           - use Hyku::WorkShowPresenter rather than Hyrax's presenter
+#           - refuse a parent_id the depositor cannot edit or whose type cannot
+#             contain the work being created
 module Hyku
   # include this module after including Hyrax::WorksControllerBehavior to override
   # Hyrax::WorksControllerBehavior methods with the ones defined here
@@ -14,6 +16,7 @@ module Hyku
     included do
       # add around action to load theme show page views
       around_action :inject_show_theme_views, except: :delete
+      before_action :ensure_parent_accepts_child, only: :create
       self.show_presenter = Hyku::WorkShowPresenter
 
       # These cache wrapper methods need to be in the top level so that they override other modules
@@ -37,6 +40,34 @@ module Hyku
     end
 
     private
+
+    # parent_id reaches Steps::AddToParent straight from params, and that step
+    # validates neither the type pairing nor the user's access to the parent.
+    #
+    # Read from Solr, not the persistence layer: only the parent's id and class are
+    # needed, and AddToParent loads the resource itself.
+    def ensure_parent_accepts_child
+      parent_id = params[:parent_id]
+      return if parent_id.blank?
+
+      parent = ::SolrDocument.find(parent_id)
+      # Normalize both sides: valid_child_concerns holds the ActiveFedora classes
+      # while curation_concern_type is the Valkyrie resource, so comparing class
+      # names directly never matches and would reject every legitimate create.
+      child_types = Hyrax::ModelRegistry.rdf_representations_from(
+        Hyrax::ChildTypes.for(parent: parent.hydra_model).to_a
+      )
+      child_type = Hyrax::ModelRegistry.rdf_representations_from([self.class.curation_concern_type]).first
+      return if current_ability.can?(:edit, parent) && child_types.include?(child_type)
+
+      reject_parent
+    rescue Blacklight::Exceptions::RecordNotFound, Valkyrie::Persistence::ObjectNotFoundError
+      reject_parent
+    end
+
+    def reject_parent
+      redirect_to main_app.root_path, alert: I18n.t('hyku.works.errors.parent_not_allowed')
+    end
 
     def iiif_manifest_presenter
       Hyrax::IiifManifestPresenter.new(search_result_document(id: params[:id])).tap do |p|

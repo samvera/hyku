@@ -40,14 +40,19 @@
 //= require hyku/admin/features_scroll
 //= require hyku/groups/per_page
 //= require hyku/groups/add_member
+//= require hyku/demo_banner
 //= require hyku/google_analytics_settings
 //= require proprietor
 //= require bootstrap_carousel
 //= require bootstrap-datepicker
 
 //= require hyrax
+//= require hyrax/attached_files
 //= require hyrax/deposit_wizard
 //= require bulkrax/application
+
+//= require themes/practice_research_home
+//= require themes/practice_research_show
 
 //= require codemirror
 //= require codemirror/modes/css

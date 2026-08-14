@@ -16,3 +16,6 @@ scholarly_show:
 community_show:
   name: Community Show Page
   notes: This show page features a dual-column layout for the metadata section, and a citation modal.
+practice_research_show:
+  name: Practice Research Show Page
+  notes: A narrative-first show page with a tabbed body (context statement, additional information, items, files) and a metadata sidebar with contributors, relationships, rights, and citation cards.

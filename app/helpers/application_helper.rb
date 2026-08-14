@@ -8,6 +8,7 @@ module ApplicationHelper
   include Bulkrax::ApplicationHelper
   include HykuKnapsack::ApplicationHelper
   include Hyrax::FormHelperBehavior
+  include Hyrax::AttachedFilesHelperBehavior
   include Hyku::HomepageHelper
 
   def group_navigation_presenter

@@ -80,20 +80,21 @@ class ApplicationController < ActionController::Base
   # @!attribute http_basic_auth_username [r|w]
   #   @return [String]
   #   @see ApplicationController#authenticate_if_needed
-  class_attribute :http_basic_auth_username, default: 'samvera'
+  class_attribute :http_basic_auth_username, default: ENV.fetch('HYKU_BASIC_AUTH_USER', 'samvera')
 
   ##
   # @!attribute http_basic_auth_password [r|w]
   #   @return [String]
   #   @see ApplicationController#authenticate_if_needed
-  class_attribute :http_basic_auth_password, default: 'hyku'
+  class_attribute :http_basic_auth_password, default: ENV.fetch('HYKU_BASIC_AUTH_PASSWORD', 'hyku')
 
   def authenticate_if_needed
     # Disable this extra authentication in test mode
     return true if Rails.env.test?
     return unless (hidden? || staging?) && !api_or_pdf?
     authenticate_or_request_with_http_basic do |username, password|
-      username == http_basic_auth_username && password == http_basic_auth_password
+      ActiveSupport::SecurityUtils.secure_compare(username.to_s, http_basic_auth_username) &&
+        ActiveSupport::SecurityUtils.secure_compare(password.to_s, http_basic_auth_password)
     end
   end
 

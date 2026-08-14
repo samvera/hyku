@@ -2,13 +2,36 @@
 # frozen_string_literal: true
 `echo "$GOOGLE_OAUTH_PRIVATE_KEY_VALUE" | base64 -d > prod-cred.p12` unless ENV['GOOGLE_OAUTH_PRIVATE_KEY_VALUE'].to_s.strip.empty?
 
-if ENV['DATABASE_URL'].to_s.strip.empty?
-  puts 'DATABASE_URL not set, no pool change needed'
-else
-  ENV['DATABASE_URL'] = ENV['DATABASE_URL'].gsub('pool=5', 'pool=30')
-end
-
 queue = ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq')
+
+# Size the DB connection pool to this process's own concurrency (job
+# runner threads), not a flat guess — avoids self-inflicted pool
+# contention and keeps this worker role's worst-case connection
+# footprint predictable against a shared Postgres instance's
+# max_connections. See bin/web for the Puma-side equivalent.
+#
+# database.yml's pool: reads DB_POOL, but if you're deploying with the
+# Hyrax Helm chart, DATABASE_URL's own ?pool= (when present) wins over
+# that — the chart bakes in a hardcoded pool=5 unless dbPoolInUrl is set
+# to false there. Rather than rewriting the URL's pool= to match DB_POOL
+# (two calculations that have to be kept in sync by hand), strip it
+# entirely so database.yml's DB_POOL is the one and only place pool
+# size is ever specified, regardless of chart version.
+# (Previously this rewrote the URL's "pool=5" substring to "pool=30" —
+# a flat guess untied to either queue backend's actual thread count.)
+require 'uri'
+ENV['DB_POOL'] ||= case queue
+                    when 'good_job' then (ENV.fetch('GOOD_JOB_MAX_THREADS', 5).to_i + 2).to_s
+                    else (ENV.fetch('SIDEKIQ_CONCURRENCY', 10).to_i + 2).to_s
+                    end
+if ENV['DATABASE_URL']
+  uri = URI.parse(ENV['DATABASE_URL'])
+  if uri.query
+    remaining = URI.decode_www_form(uri.query).reject { |k, _| k == 'pool' }
+    uri.query = remaining.empty? ? nil : URI.encode_www_form(remaining)
+    ENV['DATABASE_URL'] = uri.to_s
+  end
+end
 case queue
 when 'sidekiq'
   exec "echo $DATABASE_URL && bundle exec sidekiq"

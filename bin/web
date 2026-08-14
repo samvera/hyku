@@ -7,4 +7,28 @@
 `mkdir -p /app/samvera/branding`
 `ln -snf /app/samvera/branding /app/samvera/hyrax-webapp/public/branding`
 
+# Size the DB connection pool to this process's own concurrency (Puma
+# threads), not a flat guess — avoids self-inflicted pool contention and
+# keeps this web role's worst-case connection footprint predictable
+# against a shared Postgres instance's max_connections. See bin/worker
+# for the job-runner-side equivalent.
+#
+# database.yml's pool: reads DB_POOL, but if you're deploying with the
+# Hyrax Helm chart, DATABASE_URL's own ?pool= (when present) wins over
+# that — the chart bakes in a hardcoded pool=5 unless dbPoolInUrl is set
+# to false there. Rather than rewriting the URL's pool= to match DB_POOL
+# (two calculations that have to be kept in sync by hand), strip it
+# entirely so database.yml's DB_POOL is the one and only place pool
+# size is ever specified, regardless of chart version.
+require 'uri'
+ENV['DB_POOL'] ||= (ENV.fetch('RAILS_MAX_THREADS', 5).to_i + 2).to_s
+if ENV['DATABASE_URL']
+  uri = URI.parse(ENV['DATABASE_URL'])
+  if uri.query
+    remaining = URI.decode_www_form(uri.query).reject { |k, _| k == 'pool' }
+    uri.query = remaining.empty? ? nil : URI.encode_www_form(remaining)
+    ENV['DATABASE_URL'] = uri.to_s
+  end
+end
+
 exec "bundle exec puma -v -b tcp://0.0.0.0:3000"

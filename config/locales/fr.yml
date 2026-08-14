@@ -757,6 +757,10 @@ fr:
         data_cite_endpoint: Point de terminaison DataCite
         fcrepo_endpoint: Fedora Endpoint
         header: Modification du compte
+        public_demo_tenant:
+          disabled: 'Non'
+          enabled: 'Oui'
+          immutable: Ce paramètre est défini lors de la création du compte et ne peut pas être modifié.
         solr_endpoint: Solr Endpoint
       index:
         actions: Actions

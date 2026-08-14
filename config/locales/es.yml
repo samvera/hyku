@@ -752,6 +752,10 @@ es:
         data_cite_endpoint: Extremo de DataCite
         fcrepo_endpoint: Punto final de Fedora
         header: Cuenta de edición
+        public_demo_tenant:
+          disabled: 'No'
+          enabled: 'Sí'
+          immutable: Esta configuración se define al crear la cuenta y no se puede cambiar.
         solr_endpoint: Punto final de Solr
       index:
         actions: Acciones

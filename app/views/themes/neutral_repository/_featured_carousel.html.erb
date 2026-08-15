@@ -7,8 +7,6 @@
   </ol>
 
   <!-- Wrapper for slides -->
-  <%# no role="listbox": it is an input role that allows only option children,
-      a Bootstrap 3-era pattern Bootstrap 4 removed (critical axe violation) %>
   <div class="carousel-inner h-100">
     <% @featured_work_list.featured_works.each.with_index(0) do |featured_work, order| %>
       <% work = SolrDocument.find(featured_work.work_id) %>

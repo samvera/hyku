@@ -18,8 +18,6 @@
                          class: "deposit-wizard__path-card #{'deposit-wizard__path-card--container' if container_path}".strip do %>
             <% icon = t("hyku.deposit_wizard.start.paths.#{path}.icon", default: nil) %>
             <% if icon.present? %>
-              <%# The `fa` family class is added here, as in _stepper, so the locale
-                  supplies a bare icon name. %>
               <span class="deposit-wizard__path-icon fa <%= icon %>" aria-hidden="true"></span>
             <% end %>
             <span class="deposit-wizard__path-title"><%= t("hyku.deposit_wizard.start.paths.#{path}.title") %></span>

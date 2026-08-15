@@ -7,12 +7,7 @@ login: &login
   username: <%= ENV['DB_USER'] %>
   password: <%= ENV['DB_PASSWORD'] %>
   database: <%= ENV['DB_NAME'] || 'hyku' %>
-  # Size this to your process's own thread concurrency (e.g. Puma's
-  # RAILS_MAX_THREADS, or a job runner's own thread count) via DB_POOL —
-  # not a flat guess. If you're deploying with the Hyrax Helm chart and
-  # DATABASE_URL is set, its own ?pool= param (when present) overrides
-  # this value entirely; set dbPoolInUrl: false in the chart's values (or
-  # omit ?pool= from DATABASE_URL yourself) so this setting is authoritative.
+  # Size via DB_POOL to your thread count; chart's DATABASE_URL ?pool= (postgresql.poolInUrl) overrides this if left enabled.
   pool: <%= ENV.fetch('DB_POOL', 10).to_i %>
   timeout: 5000
   prepared_statements: <%= ENV.fetch('DB_PREPARED_STATEMENTS', true) %>

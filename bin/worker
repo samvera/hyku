@@ -4,21 +4,8 @@
 
 queue = ENV.fetch('HYRAX_ACTIVE_JOB_QUEUE', 'sidekiq')
 
-# Size the DB connection pool to this process's own concurrency (job
-# runner threads), not a flat guess — avoids self-inflicted pool
-# contention and keeps this worker role's worst-case connection
-# footprint predictable against a shared Postgres instance's
-# max_connections. See bin/web for the Puma-side equivalent.
-#
-# database.yml's pool: reads DB_POOL, but if you're deploying with the
-# Hyrax Helm chart, DATABASE_URL's own ?pool= (when present) wins over
-# that — the chart bakes in a hardcoded pool=5 unless dbPoolInUrl is set
-# to false there. Rather than rewriting the URL's pool= to match DB_POOL
-# (two calculations that have to be kept in sync by hand), strip it
-# entirely so database.yml's DB_POOL is the one and only place pool
-# size is ever specified, regardless of chart version.
-# (Previously this rewrote the URL's "pool=5" substring to "pool=30" —
-# a flat guess untied to either queue backend's actual thread count.)
+# Size pool to the active queue backend's thread count; strip DATABASE_URL's ?pool=
+# so database.yml's DB_POOL stays authoritative (see bin/web; chart's postgresql.poolInUrl).
 require 'uri'
 ENV['DB_POOL'] ||= case queue
                     when 'good_job' then (ENV.fetch('GOOD_JOB_MAX_THREADS', 5).to_i + 2).to_s

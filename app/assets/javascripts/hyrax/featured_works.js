@@ -27,7 +27,7 @@ function dragAndDrop(selector) {
 Blacklight.onLoad(function() {
   $('a[data-behavior="feature"]').on('click', function(evt) {
     evt.preventDefault();
-    anchor = $(this);
+    var anchor = $(this);
     $.ajax({
       url: anchor.attr('href'),
       type: "post",
@@ -40,7 +40,12 @@ Blacklight.onLoad(function() {
 
   $('a[data-behavior="unfeature"]').on('click', function(evt) {
     evt.preventDefault();
-    anchor = $(this);
+    var anchor = $(this);
+    // OVERRIDE: honor an optional data-unfeature-confirm on the link or its .dd
+    // container so a theme can gate this destructive action. Not data-confirm —
+    // rails-ujs auto-confirms that and would double up; absent it, behavior is unchanged
+    var unfeatureConfirm = anchor.data('unfeatureConfirm') || anchor.closest('.dd').data('unfeatureConfirm');
+    if (unfeatureConfirm && !window.confirm(unfeatureConfirm)) { return; }
     $.ajax({
       url: anchor.attr('href'),
       type: "post",

@@ -1,0 +1,61 @@
+// ---- heritage tokens ----
+
+$hrt-ink: #1c1c1c;
+$hrt-ink-body: #3c3c3c;
+$hrt-ink-muted: #5f5d59;
+$hrt-ink-faint: #767470;
+$hrt-ink-label: #6f6d69;
+
+$hrt-surface: #ffffff;
+
+// one quiet surface for mats, facet headers, the nav row and the about band;
+// these are the fallbacks for pages that do not emit the appearance block
+$hrt-mat: #efeee9;
+$hrt-mat-edge: #e0deda;
+$hrt-mat-edge-hover: #c6c5c1;
+$hrt-surface-sunken: $hrt-mat;
+
+$hrt-rule: #e0ded9;
+$hrt-rule-band: #e6e4e0;
+$hrt-rule-light: #eceae6;
+$hrt-rule-strong: #b9b7b2;
+
+$hrt-link: #2e74b2;
+$hrt-link-strong: #215480;
+$hrt-action: #286090;
+$hrt-action-ink: #ffffff;
+$hrt-footer-accent: #ffebcd;
+
+$hrt-notice-bg: #fdf6e3;
+$hrt-notice-edge: #ecdfba;
+$hrt-cta-bg: #f2f5f8;
+$hrt-cta-edge: #d7e2ec;
+
+$hrt-ok-bg: #e8f0e8;
+$hrt-ok-edge: #bcd3bc;
+$hrt-ok-ink: #2f5d31;
+$hrt-info-bg: #eef3f8;
+$hrt-info-edge: #d7e2ec;
+$hrt-info-ink: #215480;
+$hrt-danger: #b4433c;
+
+$hrt-placeholder-edge: #dcdad5;
+
+$hrt-shadow-object: 0 3px 12px rgba(28, 28, 28, 0.22);
+
+$hrt-serif-stack: Georgia, 'Times New Roman', serif;
+$hrt-sans-stack: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+$hrt-laptop-max: 1199px;
+$hrt-tablet-max: 1023px;
+$hrt-mobile-max: 743px;
+
+$hrt-gutter: 48px;
+$hrt-gutter-laptop: 40px;
+$hrt-gutter-tablet: 24px;
+$hrt-gutter-mobile: 16px;
+
+$hrt-rail-width: 324px;
+$hrt-rail-width-laptop: 288px;
+$hrt-show-rail-width: 320px;
+$hrt-show-rail-width-laptop: 300px;

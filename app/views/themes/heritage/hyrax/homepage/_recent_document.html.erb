@@ -1,0 +1,26 @@
+<li class="hrt-recent-item">
+  <%= link_to generate_work_url(recent_document, request), class: 'hrt-mat hrt-mat-row',
+              tabindex: -1, aria: { hidden: true }, data: { turbolinks: block_valkyrie_redirect? } do %>
+    <%= render_thumbnail_tag(recent_document, { alt: '' }, { suppress_link: true }) %>
+  <% end %>
+
+  <div class="hrt-recent-body">
+    <h3 class="hrt-recent-title">
+      <%= link_to recent_document.title_or_label, generate_work_url(recent_document, request),
+                  data: { turbolinks: block_valkyrie_redirect? } %>
+    </h3>
+
+    <% creator = Array(recent_document.creator).first %>
+    <% if creator.present? %>
+      <p class="hrt-recent-sub"><%= creator %></p>
+    <% end %>
+  </div>
+
+  <% uploaded = Time.zone.parse(recent_document['date_uploaded_dtsi'].to_s) %>
+  <% if uploaded %>
+    <time class="hrt-recent-date" datetime="<%= uploaded.iso8601 %>"
+          title="<%= l(uploaded.to_date, format: :long) %>">
+      <%= t('heritage.homepage.recent.ago', time: time_ago_in_words(uploaded)) %>
+    </time>
+  <% end %>
+</li>

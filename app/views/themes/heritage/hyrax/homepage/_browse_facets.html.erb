@@ -1,0 +1,12 @@
+<aside class="hrt-rail" aria-labelledby="hrt-rail-heading">
+  <h2 class="hrt-rail-heading" id="hrt-rail-heading"><%= t('heritage.homepage.browse.heading') %></h2>
+
+  <button class="hrt-rail-toggle" type="button" data-toggle="collapse" data-target="#hrt-rail-groups"
+          aria-expanded="false" aria-controls="hrt-rail-groups">
+    <%= t('heritage.homepage.browse.toggle') %>
+  </button>
+
+  <div id="hrt-rail-groups" class="hrt-rail-groups collapse">
+    <%= render_facet_partials %>
+  </div>
+</aside>

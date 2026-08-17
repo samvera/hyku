@@ -53,3 +53,10 @@ practice_research:
   marketing_text: true
   name: Practice Research
   notes: A search-led hero over the banner image whose intro copy comes from the marketing text, a counts band that carries the home page text beside the counts, featured collections and works, browse by work type and subject, recently uploaded, a featured researcher, and an about band. The accent rides the primary button colors, the dark bands ride the header and footer background, and links carry the brand.
+heritage:
+  banner_image: true
+  featured_researcher: true
+  home_page_text: true
+  marketing_text: true
+  name: Heritage
+  notes: A catalog-first theme for digitized physical collections. Objects sit on paper mats and are never cropped, and the facet rail is promoted to the home page as Browse the collection. The hero headline comes from the marketing text and the prose band under it from the home page text. Serif for objects and prose, sans for interface chrome, riding the tenant headline and body fonts. Links carry the brand and the dark chrome rides the header and footer background.

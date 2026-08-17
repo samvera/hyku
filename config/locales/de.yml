@@ -190,6 +190,67 @@ de:
         submit: Entfernen
       user_search:
         submit: Suche
+  heritage:
+    homepage:
+      intro_label: "Einführung"
+      hero:
+        headline: Die Sammlung entdecken
+        search_label: Sammlung durchsuchen
+        search_placeholder: Suchbegriffe eingeben
+        search_button: Los
+        advanced: Erweitert
+      browse:
+        heading: Die Sammlung durchstöbern
+        toggle: Facetten anzeigen
+      featured:
+        unfeature_confirm: "Dies aus der Auswahl entfernen?"
+        reorder_hint: "Element ziehen, um neu anzuordnen, dann speichern."
+        save_order: "Reihenfolge speichern"
+      featured_works:
+        heading: Ausgewählte Werke
+        see_all:
+          one: "%{count} Werk anzeigen"
+          other: "Alle %{count} Werke anzeigen"
+      collections:
+        heading: Sammlungen erkunden
+        view_all: Alle Sammlungen anzeigen
+      recent:
+        ago: "vor %{time}"
+        heading: Neu katalogisiert
+        view_all: "Alle anzeigen"
+      researcher:
+        heading: Vorgestellte Forschende
+      about:
+        heading: Über die Sammlungen
+      cta:
+        heading: Teilen Sie Ihre Arbeit
+        sub: Hinterlegen Sie Werke im Repositorium.
+        button: Einreichung starten
+    show:
+      citation:
+        heading: "Zitieren"
+        style: "Zitierstil"
+        styles:
+          apa: "APA"
+          mla: "MLA"
+          chicago: "Chicago"
+        copy_visible: "Zitat kopieren"
+        copied: "Kopiert"
+        endnote: "EndNote-Datensatz herunterladen"
+        note: "Nur als Vorschlag gedacht. Bitte anhand des von Ihnen verwendeten Zitierstils prüfen."
+      files:
+        as_format: als %{name}
+        heading: Dateien
+        count:
+          one: 1 Datei
+          other: "%{count} Dateien"
+      children:
+        heading: Untergeordnete Werke
+        count:
+          one: 1 Werk
+          other: "%{count} Werke"
+      part_of:
+        heading: Teil von
   hyku:
     account:
       signup_disabled: Kontoanmeldung ist deaktiviert

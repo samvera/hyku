@@ -51,6 +51,67 @@ en:
         submit: Remove
       user_search:
         submit: Go
+  heritage:
+    homepage:
+      intro_label: "Introduction"
+      hero:
+        headline: Explore the collection
+        search_label: Search the collection
+        search_placeholder: Enter search terms
+        search_button: Go
+        advanced: Advanced
+      browse:
+        heading: Browse the collection
+        toggle: Show facets
+      featured:
+        unfeature_confirm: "Remove this from the featured list?"
+        reorder_hint: "Drag an item to reorder, then save."
+        save_order: "Save order"
+      featured_works:
+        heading: Featured works
+        see_all:
+          one: See all %{count} work
+          other: See all %{count} works
+      collections:
+        heading: Explore collections
+        view_all: View all collections
+      recent:
+        ago: "%{time} ago"
+        heading: Newly cataloged
+        view_all: "View all"
+      researcher:
+        heading: Featured researcher
+      about:
+        heading: About the collections
+      cta:
+        heading: Share your work
+        sub: Deposit works into the repository.
+        button: Start a deposit
+    show:
+      citation:
+        heading: "Cite this"
+        style: "Citation style"
+        styles:
+          apa: "APA"
+          mla: "MLA"
+          chicago: "Chicago"
+        copy_visible: "Copy citation"
+        copied: "Copied"
+        endnote: "Download EndNote record"
+        note: "Provided as a suggestion only. Check it against your preferred style guide."
+      files:
+        as_format: as %{name}
+        heading: Files
+        count:
+          one: 1 file
+          other: "%{count} files"
+      children:
+        heading: Child works
+        count:
+          one: 1 work
+          other: "%{count} works"
+      part_of:
+        heading: Part of
   hyku:
     account:
       signup_disabled: Account registration is disabled

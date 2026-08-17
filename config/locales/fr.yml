@@ -191,6 +191,67 @@ fr:
         submit: Retirer
       user_search:
         submit: Aller
+  heritage:
+    homepage:
+      intro_label: "Introduction"
+      hero:
+        headline: Explorer la collection
+        search_label: Rechercher dans la collection
+        search_placeholder: Saisissez vos termes de recherche
+        search_button: Rechercher
+        advanced: Avancée
+      browse:
+        heading: Parcourir la collection
+        toggle: Afficher les facettes
+      featured:
+        unfeature_confirm: "Retirer ceci de la liste mise en avant ?"
+        reorder_hint: "Faites glisser un élément pour réordonner, puis enregistrez."
+        save_order: "Enregistrer l’ordre"
+      featured_works:
+        heading: Œuvres à la une
+        see_all:
+          one: "Voir %{count} œuvre"
+          other: "Voir les %{count} œuvres"
+      collections:
+        heading: Explorer les collections
+        view_all: Voir toutes les collections
+      recent:
+        ago: "il y a %{time}"
+        heading: Nouvellement catalogué
+        view_all: "Voir tout"
+      researcher:
+        heading: Chercheur à la une
+      about:
+        heading: À propos des collections
+      cta:
+        heading: Partagez votre travail
+        sub: Déposez des œuvres dans le dépôt.
+        button: Commencer un dépôt
+    show:
+      citation:
+        heading: "Citer"
+        style: "Style de citation"
+        styles:
+          apa: "APA"
+          mla: "MLA"
+          chicago: "Chicago"
+        copy_visible: "Copier la citation"
+        copied: "Copié"
+        endnote: "Télécharger la notice EndNote"
+        note: "Fournie à titre indicatif seulement. Vérifiez-la selon votre guide de style."
+      files:
+        as_format: en %{name}
+        heading: Fichiers
+        count:
+          one: 1 fichier
+          other: "%{count} fichiers"
+      children:
+        heading: Œuvres enfants
+        count:
+          one: 1 œuvre
+          other: "%{count} œuvres"
+      part_of:
+        heading: Fait partie de
   hyku:
     account:
       signup_disabled: L'enregistrement du compte est désactivé

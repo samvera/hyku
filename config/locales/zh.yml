@@ -191,6 +191,67 @@ zh:
         submit: 去掉
       user_search:
         submit: 走
+  heritage:
+    homepage:
+      intro_label: "简介"
+      hero:
+        headline: 探索馆藏
+        search_label: 检索馆藏
+        search_placeholder: 输入检索词
+        search_button: 检索
+        advanced: 高级检索
+      browse:
+        heading: 浏览馆藏
+        toggle: 显示分面
+      featured:
+        unfeature_confirm: "要将其从精选列表中移除吗？"
+        reorder_hint: "拖动某个项目进行重新排序，然后保存。"
+        save_order: "保存顺序"
+      featured_works:
+        heading: 精选作品
+        see_all:
+          one: "查看全部 %{count} 件作品"
+          other: "查看全部 %{count} 件作品"
+      collections:
+        heading: 探索收藏
+        view_all: 查看全部收藏
+      recent:
+        ago: "%{time}前"
+        heading: 新编目
+        view_all: "查看全部"
+      researcher:
+        heading: 精选研究员
+      about:
+        heading: 关于馆藏
+      cta:
+        heading: 分享您的作品
+        sub: 将作品存缴至本仓储。
+        button: 开始存缴
+    show:
+      citation:
+        heading: "引用"
+        style: "引用格式"
+        styles:
+          apa: "APA"
+          mla: "MLA"
+          chicago: "Chicago"
+        copy_visible: "复制引用"
+        copied: "已复制"
+        endnote: "下载 EndNote 记录"
+        note: "仅供参考。请根据您所用的格式指南进行核对。"
+      files:
+        as_format: 为 %{name}
+        heading: 文件
+        count:
+          one: 1 个文件
+          other: "%{count} 个文件"
+      children:
+        heading: 子作品
+        count:
+          one: 1 件作品
+          other: "%{count} 件作品"
+      part_of:
+        heading: 所属
   hyku:
     account:
       signup_disabled: 帐户注册被禁用

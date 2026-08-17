@@ -191,6 +191,67 @@ es:
         submit: Eliminar
       user_search:
         submit: Ir
+  heritage:
+    homepage:
+      intro_label: "Introducción"
+      hero:
+        headline: Explora la colección
+        search_label: Buscar en la colección
+        search_placeholder: Introduzca términos de búsqueda
+        search_button: Ir
+        advanced: Avanzada
+      browse:
+        heading: Explorar la colección
+        toggle: Mostrar facetas
+      featured:
+        unfeature_confirm: "¿Quitar esto de la lista de destacados?"
+        reorder_hint: "Arrastre un elemento para reordenar y luego guarde."
+        save_order: "Guardar orden"
+      featured_works:
+        heading: Obras destacadas
+        see_all:
+          one: "Ver %{count} obra"
+          other: "Ver las %{count} obras"
+      collections:
+        heading: Explorar colecciones
+        view_all: Ver todas las colecciones
+      recent:
+        ago: "hace %{time}"
+        heading: Recién catalogado
+        view_all: "Ver todo"
+      researcher:
+        heading: Investigador destacado
+      about:
+        heading: Acerca de las colecciones
+      cta:
+        heading: Comparta su obra
+        sub: Deposite obras en el repositorio.
+        button: Iniciar un depósito
+    show:
+      citation:
+        heading: "Cómo citar"
+        style: "Estilo de cita"
+        styles:
+          apa: "APA"
+          mla: "MLA"
+          chicago: "Chicago"
+        copy_visible: "Copiar cita"
+        copied: "Copiado"
+        endnote: "Descargar registro de EndNote"
+        note: "Se ofrece solo como sugerencia. Compruébela con su guía de estilo preferida."
+      files:
+        as_format: como %{name}
+        heading: Archivos
+        count:
+          one: 1 archivo
+          other: "%{count} archivos"
+      children:
+        heading: Obras hijas
+        count:
+          one: 1 obra
+          other: "%{count} obras"
+      part_of:
+        heading: Parte de
   hyku:
     account:
       signup_disabled: El registro de la cuenta está deshabilitado

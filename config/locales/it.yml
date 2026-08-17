@@ -191,6 +191,67 @@ it:
         submit: Rimuovere
       user_search:
         submit: Partire
+  heritage:
+    homepage:
+      intro_label: "Introduzione"
+      hero:
+        headline: Esplora la collezione
+        search_label: Cerca nella collezione
+        search_placeholder: Inserisci i termini di ricerca
+        search_button: Vai
+        advanced: Avanzata
+      browse:
+        heading: Sfoglia la collezione
+        toggle: Mostra faccette
+      featured:
+        unfeature_confirm: "Rimuovere questo dagli elementi in evidenza?"
+        reorder_hint: "Trascina un elemento per riordinare, poi salva."
+        save_order: "Salva ordine"
+      featured_works:
+        heading: Opere in evidenza
+        see_all:
+          one: "Vedi %{count} opera"
+          other: "Vedi tutte le %{count} opere"
+      collections:
+        heading: Esplora le collezioni
+        view_all: Vedi tutte le collezioni
+      recent:
+        ago: "%{time} fa"
+        heading: Catalogati di recente
+        view_all: "Vedi tutto"
+      researcher:
+        heading: Ricercatore in evidenza
+      about:
+        heading: Informazioni sulle collezioni
+      cta:
+        heading: Condividi il tuo lavoro
+        sub: Deposita opere nel repository.
+        button: Inizia un deposito
+    show:
+      citation:
+        heading: "Come citare"
+        style: "Stile di citazione"
+        styles:
+          apa: "APA"
+          mla: "MLA"
+          chicago: "Chicago"
+        copy_visible: "Copia citazione"
+        copied: "Copiato"
+        endnote: "Scarica il record EndNote"
+        note: "Fornita solo come suggerimento. Verificala con la guida di stile che utilizzi."
+      files:
+        as_format: come %{name}
+        heading: File
+        count:
+          one: 1 file
+          other: "%{count} file"
+      children:
+        heading: Opere figlie
+        count:
+          one: 1 opera
+          other: "%{count} opere"
+      part_of:
+        heading: Parte di
   hyku:
     account:
       signup_disabled: La registrazione dell'account è disattivata

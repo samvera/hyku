@@ -1,0 +1,629 @@
+// ---- heritage show page theme ----
+
+@import 'themes/heritage/tokens';
+@import 'themes/heritage/primitives';
+@import 'themes/heritage/shell';
+
+.heritage_show.works-show {
+  #content-wrapper {
+    max-width: none;
+    padding: 0;
+  }
+
+  #content-wrapper > .alert {
+    margin: 16px $hrt-gutter;
+  }
+
+  // ---- breadcrumb ----
+  .breadcrumb {
+    @include hrt-gutter($laptop: 32px);
+    background: $hrt-surface;
+    border-bottom: 1px solid $hrt-rule-light;
+    border-radius: 0;
+    border-top: 0;
+    font-size: 14px;
+    margin: 0;
+    padding-bottom: 14px;
+    padding-top: 14px;
+
+    .breadcrumb-item {
+      color: $hrt-ink-label;
+    }
+
+    .breadcrumb-item.active {
+      color: $hrt-ink;
+    }
+
+    a {
+      @include hrt-link;
+    }
+  }
+
+  // ---- page frame ----
+  .hrt-show {
+    @include hrt-gutter($laptop: 32px);
+    padding-bottom: 48px;
+    padding-top: 30px;
+  }
+
+  // ---- editor controls ----
+  .hrt-show-actions {
+    .btn {
+      border-radius: 0;
+      font-size: 14px;
+    }
+
+    form,
+    .btn-group {
+      display: inline-block;
+    }
+  }
+
+  // the actions partial always emits a COinS span, a collection modal (with its
+  // own Close .btn), and feature/unfeature links hidden with .collapse; the bar's
+  // chrome should show only when the .show-actions row itself holds a real
+  // (non-collapsed) button, decided on the live DOM
+  .hrt-show-actions:has(.show-actions a.btn:not(.collapse), .show-actions button.btn:not(.collapse)) {
+    border-bottom: 1px solid $hrt-rule-light;
+    margin-bottom: 22px;
+    padding-bottom: 16px;
+  }
+
+  .hrt-show-eyebrow {
+    @include hrt-eyebrow;
+    align-items: center;
+    display: flex;
+    gap: 8px;
+    margin: 0 0 10px;
+
+    > span {
+      font-size: 15px;
+    }
+  }
+
+  .hrt-show-titleline {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    margin-bottom: 26px;
+  }
+
+  .hrt-show-title {
+    @include hrt-sans;
+    color: $hrt-ink;
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin: 0;
+    text-wrap: pretty;
+
+    @media (max-width: $hrt-mobile-max) {
+      font-size: 26px;
+    }
+  }
+
+  .hrt-show-chips {
+    display: inline-flex;
+    gap: 8px;
+
+    .badge {
+      border: 1px solid;
+      border-radius: 0;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 4px 10px;
+    }
+
+    .badge-success {
+      background: $hrt-ok-bg;
+      border-color: $hrt-ok-edge;
+      color: $hrt-ok-ink;
+    }
+
+    .badge-info,
+    .badge-primary {
+      background: $hrt-info-bg;
+      border-color: $hrt-info-edge;
+      color: $hrt-info-ink;
+    }
+
+    .badge-warning,
+    .badge-secondary,
+    .badge-danger {
+      background: var(--hrt-mat, #{$hrt-mat});
+      border-color: var(--hrt-mat-edge, #{$hrt-mat-edge});
+      color: $hrt-ink-muted;
+    }
+  }
+
+  // ---- body grid ----
+  .hrt-show-body {
+    align-items: start;
+    display: grid;
+    gap: 40px;
+    grid-template-columns: minmax(0, 1fr) $hrt-show-rail-width;
+
+    @media (max-width: $hrt-laptop-max) {
+      grid-template-columns: minmax(0, 1fr) $hrt-show-rail-width-laptop;
+    }
+
+    @media (max-width: $hrt-tablet-max) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .hrt-show-main {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    min-width: 0;
+  }
+
+  // ---- viewer ----
+  // the black well is for an actual viewer; a still thumbnail or the
+  // "no preview" fallback sits on the theme's quiet surface instead
+  .hrt-viewer {
+    border: 1px solid $hrt-rule;
+    position: relative;
+  }
+
+  .hrt-viewer-media {
+    background: #000;
+
+    .viewer-wrapper {
+      height: 598px;
+      overflow: hidden;
+      position: relative;
+
+      @media (max-width: $hrt-mobile-max) {
+        height: 400px;
+      }
+    }
+
+    iframe,
+    .uv,
+    .viewer,
+    .video-embed-viewer {
+      border: 0;
+      display: block;
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .hrt-viewer-still {
+    background: var(--hrt-mat, #{$hrt-mat});
+  }
+
+  .hrt-viewer-thumb {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    min-height: 240px;
+    padding: 18px;
+
+    img {
+      box-shadow: $hrt-shadow-object;
+      max-height: 572px;
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    .no-preview {
+      color: $hrt-ink-muted;
+      font-size: 15px;
+      text-align: center;
+
+      a {
+        @include hrt-link;
+        display: inline-block;
+        margin-top: 6px;
+      }
+    }
+  }
+
+  // ---- description ----
+  // markdown wraps the value in its own <p>, which the parser hoists out of
+  // Hyrax's p.work_description, so the visible text is a sibling: style every
+  // paragraph in the container and drop the empty shell left behind
+  .hrt-show-description,
+  .hrt-show-description p {
+    @include hrt-serif;
+    color: $hrt-ink-body;
+    font-size: 22px;
+    line-height: 1.6;
+    text-wrap: pretty;
+  }
+
+  .hrt-show-description p {
+    margin: 0 0 14px;
+  }
+
+  .hrt-show-description p:last-child {
+    margin-bottom: 0;
+  }
+
+  .hrt-show-description p:empty {
+    display: none;
+  }
+
+  // ---- metadata ----
+  .hrt-meta dl {
+    display: grid;
+    grid-template-columns: 140px minmax(0, 1fr) 140px minmax(0, 1fr);
+    column-gap: 18px;
+    margin: 0;
+
+    // the row rule reads as one line from label to value: the value's border
+    // box reaches back across the column gap, while the wider break between
+    // the two pairs is margin on the second label, which carries no border
+    dt:nth-of-type(even) {
+      margin-left: 26px;
+
+      @media (max-width: $hrt-tablet-max) {
+        margin-left: 0;
+      }
+    }
+
+    @media (max-width: $hrt-tablet-max) {
+      grid-template-columns: 140px minmax(0, 1fr);
+    }
+
+    @media (max-width: $hrt-mobile-max) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    dt {
+      @include hrt-sans;
+      border-top: 1px solid $hrt-rule-light;
+      color: $hrt-ink;
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.55;
+      padding: 11px 0;
+
+      @media (max-width: $hrt-mobile-max) {
+        border-top: 1px solid $hrt-rule-light;
+        font-size: 13px;
+        padding-bottom: 0;
+      }
+    }
+
+    dd {
+      border-top: 1px solid $hrt-rule-light;
+      color: $hrt-ink-body;
+      font-size: 15px;
+      line-height: 1.55;
+      margin: 0 0 0 -18px;
+      padding: 11px 0 11px 18px;
+
+      @media (max-width: $hrt-mobile-max) {
+        border-top: 0;
+        margin-left: 0;
+        padding-left: 0;
+        padding-top: 2px;
+      }
+
+      a {
+        @include hrt-link;
+      }
+
+      ul.tabular {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      ul.tabular p {
+        margin: 0;
+      }
+
+      ul.tabular li + li {
+        margin-top: 3px;
+      }
+    }
+  }
+
+  // ---- rail ----
+  .hrt-show-rail {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-width: 0;
+  }
+
+  // ---- citation card ----
+  .hrt-cite-picker {
+    @include hrt-sans;
+    background: $hrt-surface;
+    border: 1px solid $hrt-rule-strong;
+    border-radius: 0;
+    color: $hrt-ink;
+    font-size: 14px;
+    height: 34px;
+    margin-top: 8px;
+    padding: 0 8px;
+    width: 100%;
+
+    &:focus-visible {
+      @include hrt-focus-ring;
+    }
+  }
+
+  .hrt-cite-text {
+    border-left: 2px solid var(--hrt-mat-edge, #{$hrt-mat-edge});
+    color: $hrt-ink-body;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 12px 0 0;
+    padding-left: 12px;
+    text-wrap: pretty;
+  }
+
+  .hrt-cite-actions {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .hrt-cite-copy {
+    @include hrt-sans;
+    background: $hrt-surface;
+    border: 1px solid $hrt-rule-strong;
+    color: var(--hrt-link-strong, #{$hrt-link-strong});
+    font-size: 13px;
+    font-weight: 700;
+    padding: 7px 12px;
+
+    &:hover,
+    &:focus {
+      background: var(--hrt-sunken, #{$hrt-surface-sunken});
+    }
+
+    &:focus-visible {
+      @include hrt-focus-ring;
+    }
+  }
+
+  .hrt-cite-copied {
+    color: $hrt-ok-ink;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .hrt-cite-note {
+    color: $hrt-ink-faint;
+    font-size: 13px;
+    line-height: 1.45;
+    margin: 12px 0 0;
+  }
+
+  .hrt-cite-export {
+    @include hrt-link;
+    display: inline-block;
+    font-size: 13px;
+    margin-top: 8px;
+  }
+
+  .hrt-panel {
+    border: 1px solid $hrt-rule;
+    padding: 20px;
+  }
+
+  // both panels render Hyrax rows as <dt>/<dd> only when the work has values;
+  // hide the wrapper — heading and all — when there is no row, on the live DOM
+  // rather than parsing the rendered HTML in Ruby
+  .hrt-meta:not(:has(dt)),
+  .hrt-part-of:not(:has(dt)) {
+    display: none;
+  }
+
+  // relationship rows come from Hyrax as a dl; inside the rail they read as
+  // stacked label/value pairs rather than the metadata table's columns
+  .hrt-part-of {
+    dl.work-show {
+      display: block;
+      margin: 0;
+    }
+
+    dt {
+      @include hrt-sans;
+      border: 0;
+      color: $hrt-ink-muted;
+      font-size: 13px;
+      font-weight: 400;
+      margin-top: 12px;
+      padding: 0;
+    }
+
+    dt:first-of-type {
+      margin-top: 2px;
+    }
+
+    dd {
+      border: 0;
+      font-size: 15px;
+      line-height: 1.35;
+      margin: 2px 0 0;
+      padding: 0;
+    }
+
+    ul.tabular {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    ul.tabular li + li {
+      margin-top: 3px;
+    }
+
+    a {
+      @include hrt-link;
+    }
+  }
+
+  .hrt-panel-head {
+    align-items: baseline;
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+
+  .hrt-panel-label {
+    @include hrt-eyebrow;
+    margin: 0;
+  }
+
+  .hrt-panel-count {
+    color: $hrt-ink-muted;
+    flex: none;
+    font-size: 13px;
+  }
+
+  .hrt-panel-list {
+    margin: 0;
+  }
+
+  .hrt-panel-row {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    padding: 14px 0;
+
+    + .hrt-panel-row {
+      border-top: 1px solid $hrt-rule;
+    }
+  }
+
+  .hrt-panel-row-body {
+    min-width: 0;
+  }
+
+  .hrt-file-thumb {
+    background: $hrt-rule-light;
+    display: block;
+    flex: none;
+    height: 52px;
+    overflow: hidden;
+    width: 52px;
+
+    img {
+      height: 100%;
+      object-fit: cover;
+      width: 100%;
+    }
+  }
+
+  .hrt-mat {
+    @include hrt-mat(4px);
+  }
+
+  .hrt-mat-row {
+    flex: none;
+    height: 52px;
+    width: 52px;
+  }
+
+
+  .hrt-file-name,
+  .hrt-child-title {
+    @include hrt-link;
+    display: block;
+    font-size: 15px;
+    line-height: 1.35;
+    text-wrap: pretty;
+    word-break: break-word;
+  }
+
+  .hrt-panel-row-meta {
+    align-items: center;
+    color: $hrt-ink-muted;
+    display: flex;
+    font-size: 13px;
+    gap: 9px;
+    margin: 4px 0 0;
+  }
+
+  // the meta line carries the affordance: a download glyph for visitors, a
+  // kebab opening the stock action list for anyone who can edit
+  .hrt-file-download,
+  .hrt-file-kebab {
+    background: none;
+    border: 0;
+    color: var(--hrt-link-strong, #{$hrt-link-strong});
+    font-size: 15px;
+    line-height: 1;
+    padding: 0;
+
+    &:hover,
+    &:focus {
+      color: var(--hrt-link, #{$hrt-link});
+    }
+
+    &:focus-visible {
+      @include hrt-focus-ring;
+    }
+  }
+
+  .hrt-file-menu {
+    display: inline-block;
+  }
+
+  // the menu keeps Hyku's own dropdown look so it matches every other one on
+  // the page (Attach Child, the locale picker, the user menu)
+  .hrt-file-menu .dropdown-menu .dropdown-item a:focus-visible {
+    @include hrt-focus-ring;
+    outline-offset: -2px;
+  }
+
+  // ---- rail pager ----
+  // Kaminari's blacklight theme renders Bootstrap pagination markup; this only
+  // skins it to sit compactly in the narrow rail
+  .hrt-panel-pager {
+    border-top: 1px solid $hrt-rule;
+    margin-top: 6px;
+    padding-top: 14px;
+
+    .pagination {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .page-item .page-link {
+      align-items: center;
+      background: $hrt-surface;
+      border: 1px solid $hrt-rule-strong;
+      color: var(--hrt-link-strong, #{$hrt-link-strong});
+      display: inline-flex;
+      font-size: 13px;
+      justify-content: center;
+      line-height: 1;
+      min-width: 32px;
+      padding: 7px 9px;
+      text-decoration: none;
+
+      &:focus-visible {
+        @include hrt-focus-ring;
+      }
+    }
+
+    // the active page rides the tenant's Appearance color (pinned !important),
+    // which keeps the pager colorway-neutral like the rest of the theme
+
+    .page-item.disabled .page-link {
+      border-color: $hrt-placeholder-edge;
+      color: $hrt-ink-muted;
+      pointer-events: none;
+    }
+  }
+}

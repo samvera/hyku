@@ -54,6 +54,8 @@
 //= require themes/practice_research_home
 //= require themes/practice_research_show
 
+//= require citation_picker
+
 //= require codemirror
 //= require codemirror/modes/css
 //= require codemirror/modes/javascript

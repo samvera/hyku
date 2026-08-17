@@ -19,3 +19,6 @@ community_show:
 practice_research_show:
   name: Practice Research Show Page
   notes: A narrative-first show page with a tabbed body (context statement, additional information, items, files) and a metadata sidebar with contributors, relationships, rights, and citation cards.
+heritage_show:
+  name: Heritage Show Page
+  notes: Viewer, description, and a two-column metadata table in the main column, with a 320px rail carrying the citation panel and Files and Child works panels that paginate in place at ten entries.

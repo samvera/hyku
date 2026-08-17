@@ -1,0 +1,31 @@
+<% paginated = hrt_child_work_ids(presenter) %>
+<% if paginated.any? %>
+  <section class="hrt-panel" id="hrt-children" aria-labelledby="hrt-children-label">
+    <div class="hrt-panel-head">
+      <h2 class="hrt-panel-label" id="hrt-children-label"><%= t('heritage.show.children.heading') %></h2>
+      <span class="hrt-panel-count"><%= t('heritage.show.children.count', count: paginated.total_count) %></span>
+    </div>
+
+    <ul class="hrt-panel-list list-unstyled">
+      <% presenter.member_presenters(paginated).each do |member| %>
+        <li class="hrt-panel-row">
+          <%= link_to contextual_path(member, presenter), tabindex: -1, aria: { hidden: true },
+                      class: 'hrt-mat hrt-mat-row' do %>
+            <%= document_presenter(member).thumbnail.thumbnail_tag({ alt: '' }, { suppress_link: true }) %>
+          <% end %>
+          <div class="hrt-panel-row-body">
+            <%= link_to member.link_name, contextual_path(member, presenter), class: 'hrt-child-title' %>
+            <p class="hrt-panel-row-meta"><%= safe_join([member.human_readable_type, hrt_date_created(member)].compact_blank, ' · ') %></p>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+
+    <% if paginated.total_pages > 1 %>
+      <nav class="hrt-panel-pager" aria-labelledby="hrt-children-label">
+        <%= paginate paginated, theme: 'blacklight', window: 1, outer_window: 0,
+                     param_name: :items_page, route_set: main_app, params: { anchor: 'hrt-children' } %>
+      </nav>
+    <% end %>
+  </section>
+<% end %>

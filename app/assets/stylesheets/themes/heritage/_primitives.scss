@@ -1,0 +1,196 @@
+// ---- heritage mixins ----
+
+// $important is for chrome the theme does not own: the stock _controls nav
+// carries Bootstrap's px-2, which is itself !important
+@mixin hrt-gutter($desktop: $hrt-gutter, $laptop: $hrt-gutter-laptop, $important: false) {
+  $bang: if($important, unquote('!important'), null);
+
+  padding-left: $desktop $bang;
+  padding-right: $desktop $bang;
+
+  @media (max-width: $hrt-laptop-max) {
+    padding-left: $laptop $bang;
+    padding-right: $laptop $bang;
+  }
+
+  @media (max-width: $hrt-tablet-max) {
+    padding-left: $hrt-gutter-tablet $bang;
+    padding-right: $hrt-gutter-tablet $bang;
+  }
+
+  @media (max-width: $hrt-mobile-max) {
+    padding-left: $hrt-gutter-mobile $bang;
+    padding-right: $hrt-gutter-mobile $bang;
+  }
+}
+
+@mixin hrt-serif {
+  font-family: var(--hrt-serif, #{$hrt-serif-stack}) !important;
+}
+
+@mixin hrt-sans {
+  font-family: var(--hrt-sans, #{$hrt-sans-stack}) !important;
+}
+
+@mixin hrt-mat($pad: 18px) {
+  align-items: center;
+  background: var(--hrt-mat, #{$hrt-mat});
+  box-shadow: inset 0 0 0 1px var(--hrt-mat-edge, #{$hrt-mat-edge});
+  display: flex;
+  justify-content: center;
+  padding: $pad;
+
+  img {
+    box-shadow: $hrt-shadow-object;
+    float: none;
+    height: auto;
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    padding: 0;
+    width: auto;
+  }
+
+  &:hover {
+    box-shadow: inset 0 0 0 1px var(--hrt-mat-edge-hover, #{$hrt-mat-edge-hover});
+  }
+}
+
+@mixin hrt-focus-ring {
+  box-shadow: none;
+  outline: 2px solid var(--hrt-link-strong, #{$hrt-link-strong});
+  outline-offset: 2px;
+}
+
+@mixin hrt-eyebrow {
+  @include hrt-sans;
+  color: $hrt-ink-muted;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+@mixin hrt-section-title {
+  @include hrt-serif;
+  color: $hrt-ink;
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1.2;
+  margin: 0;
+}
+
+@mixin hrt-underline {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+@mixin hrt-link($color: var(--hrt-link, #{$hrt-link})) {
+  @include hrt-underline;
+  color: $color;
+
+  &:hover,
+  &:focus {
+    color: var(--hrt-link-strong, #{$hrt-link-strong});
+  }
+
+  &:focus-visible {
+    @include hrt-focus-ring;
+  }
+}
+
+@mixin hrt-controls-reset {
+  .btn,
+  .form-control,
+  .card,
+  .dropdown-menu,
+  .modal-content,
+  .badge {
+    border-radius: 0;
+  }
+
+  .btn:focus-visible,
+  .form-control:focus-visible,
+  select:focus-visible,
+  a:focus-visible,
+  button:focus-visible {
+    @include hrt-focus-ring;
+  }
+}
+
+// Blacklight's facet cards, restyled into the theme's continuous ruled column.
+// Shared by the catalog rail and the homepage "Browse the collection" rail so
+// both follow the configured facets and read identically.
+@mixin hrt-facets {
+  .card.facet-limit {
+    border: 1px solid $hrt-rule;
+    border-color: $hrt-rule !important;
+    border-radius: 0;
+    margin-bottom: 0;
+  }
+
+  .card.facet-limit + .card.facet-limit {
+    border-top: 0;
+  }
+
+  h3.card-header {
+    background-color: var(--hrt-sunken, #{$hrt-surface-sunken}) !important;
+    border-bottom: 0;
+    border-radius: 0;
+  }
+
+  h3.card-header > .btn {
+    @include hrt-sans;
+    align-items: center;
+    color: $hrt-ink;
+    display: flex !important;
+    font-size: 16px;
+    font-weight: 700;
+    justify-content: space-between;
+    padding: 13px 14px !important;
+  }
+
+  // border-drawn so the stroke weight does not depend on the tenant's font
+  h3.card-header > .btn::after {
+    border: solid $hrt-ink-muted;
+    border-width: 0 2px 2px 0;
+    content: '';
+    flex: none;
+    height: 7px;
+    transform: rotate(45deg);
+    width: 7px;
+  }
+
+  h3.card-header > .btn.collapsed::after {
+    transform: rotate(-45deg);
+  }
+
+  .card-body {
+    padding: 4px 0 8px;
+  }
+
+  ul.facet-values li {
+    align-items: baseline;
+    display: flex;
+    font-size: 14px;
+    gap: 10px;
+    justify-content: space-between;
+    padding: 8px 14px;
+  }
+
+  .facet-label a {
+    @include hrt-link(var(--hrt-link-strong, #{$hrt-link-strong}));
+  }
+
+  .facet-count {
+    color: $hrt-ink-faint;
+    flex: none;
+  }
+
+  .more_facets_link {
+    display: inline-block;
+    padding: 6px 14px 0;
+  }
+}

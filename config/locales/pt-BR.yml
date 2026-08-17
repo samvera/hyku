@@ -73,6 +73,67 @@ pt-BR:
         submit: Remover
       user_search:
         submit: Ir
+  heritage:
+    homepage:
+      intro_label: "Introdução"
+      hero:
+        headline: Explore o acervo
+        search_label: Pesquisar no acervo
+        search_placeholder: Digite os termos de busca
+        search_button: Ir
+        advanced: Avançada
+      browse:
+        heading: Navegue pelo acervo
+        toggle: Mostrar facetas
+      featured:
+        unfeature_confirm: "Remover isto da lista de destaques?"
+        reorder_hint: "Arraste um item para reordenar e depois salve."
+        save_order: "Salvar ordem"
+      featured_works:
+        heading: Obras em destaque
+        see_all:
+          one: "Ver %{count} obra"
+          other: "Ver todas as %{count} obras"
+      collections:
+        heading: Explorar coleções
+        view_all: Ver todas as coleções
+      recent:
+        ago: "há %{time}"
+        heading: Recém-catalogados
+        view_all: "Ver tudo"
+      researcher:
+        heading: Pesquisador em destaque
+      about:
+        heading: Sobre as coleções
+      cta:
+        heading: Compartilhe seu trabalho
+        sub: Deposite obras no repositório.
+        button: Iniciar um depósito
+    show:
+      citation:
+        heading: "Como citar"
+        style: "Estilo de citação"
+        styles:
+          apa: "APA"
+          mla: "MLA"
+          chicago: "Chicago"
+        copy_visible: "Copiar citação"
+        copied: "Copiado"
+        endnote: "Baixar registro do EndNote"
+        note: "Fornecida apenas como sugestão. Confira com o seu guia de estilo preferido."
+      files:
+        as_format: como %{name}
+        heading: Arquivos
+        count:
+          one: 1 arquivo
+          other: "%{count} arquivos"
+      children:
+        heading: Obras filhas
+        count:
+          one: 1 obra
+          other: "%{count} obras"
+      part_of:
+        heading: Parte de
   hyku:
     account:
       signup_disabled: O registro da conta está desativado

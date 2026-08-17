@@ -1,0 +1,210 @@
+// ---- shared site shell for the heritage themes ----
+
+@import 'themes/heritage/tokens';
+@import 'themes/heritage/primitives';
+
+html body.heritage,
+html body.heritage_show {
+  margin-bottom: 0;
+}
+
+body.heritage.public-facing,
+body.heritage_show.public-facing {
+  @include hrt-sans;
+  @include hrt-controls-reset;
+  color: $hrt-ink-body;
+
+  // ---- masthead ----
+  #masthead {
+    @include hrt-gutter;
+    min-height: 56px;
+    padding-bottom: 0;
+    padding-top: 0;
+  }
+
+  #masthead #logo {
+    margin-left: 0;
+    text-decoration: none;
+  }
+
+  #masthead #logo .institution_name {
+    @include hrt-sans;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  #user_utility_links {
+    padding-right: 0 !important;
+
+    > li:last-child > .nav-link {
+      padding-right: 0;
+    }
+  }
+
+  // ---- nav row ----
+  nav[aria-label='Root Menu'] {
+    @include hrt-gutter($important: true);
+    background-color: var(--hrt-sunken, #{$hrt-surface-sunken}) !important;
+    border-bottom: 1px solid $hrt-rule !important;
+    padding-bottom: 15px !important;
+    padding-top: 15px !important;
+
+    // the search form only renders off the homepage; reserving its control
+    // height keeps the nav row the same height on every page
+    .navbar-nav {
+      align-items: center;
+      column-gap: 28px;
+      flex-direction: row;
+      min-height: 38px;
+    }
+
+    .nav.navbar-nav > li.nav-item > a.nav-link {
+      @include hrt-sans;
+      color: var(--hrt-link-strong, #{$hrt-link-strong});
+      font-size: 15px;
+      line-height: 1.4;
+      padding: 0 0 3px;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+
+      &:focus-visible {
+        @include hrt-focus-ring;
+      }
+    }
+
+    // the current page is marked with aria-current for a11y; style off that
+    // rather than computing a duplicate .active class in Ruby
+    .nav.navbar-nav > li.nav-item > a.nav-link[aria-current='page'] {
+      color: $hrt-ink;
+      font-weight: 700;
+      text-decoration-color: var(--hrt-link, #{$hrt-link});
+      text-decoration-thickness: 2px;
+    }
+
+    // the nav search comes from the stock catalog form; square it off and give
+    // it the hero bar's segments. Bootstrap radii and the appearance styles'
+    // button pins are both !important, so countering them has to be too
+    .hrt-nav-search {
+      padding: 0;
+
+      #search-form-header label {
+        color: $hrt-ink-muted;
+        font-size: 14px;
+      }
+
+      #search-form-header .form-group {
+        margin-bottom: 0;
+      }
+
+      .q.form-control,
+      #search-field-header {
+        border: 1px solid $hrt-rule;
+        border-radius: 0 !important;
+        border-right: 0;
+        box-shadow: none;
+        color: $hrt-ink;
+        font-size: 15px;
+        height: 38px;
+
+        &::placeholder {
+          color: $hrt-ink-faint;
+        }
+
+        &:focus-visible {
+          @include hrt-focus-ring;
+          outline-offset: -2px;
+        }
+      }
+
+      // an <a class="btn"> will not center its text against a fixed height the
+      // way a <button> does, so the segments are laid out rather than padded
+      .btn {
+        align-items: center;
+        border-radius: 0 !important;
+        display: inline-flex;
+        font-size: 14px;
+        gap: 6px;
+        height: 38px;
+        justify-content: center;
+        line-height: 1;
+        padding: 0 16px;
+      }
+
+      #search-submit-header {
+        background-color: var(--hrt-action, #{$hrt-action}) !important;
+        border-color: var(--hrt-action, #{$hrt-action}) !important;
+        color: var(--hrt-action-ink, #{$hrt-action-ink}) !important;
+        font-weight: 700;
+      }
+
+      #advanced-top-button,
+      .input-group-append .dropdown-toggle {
+        background-color: $hrt-surface !important;
+        border-color: $hrt-rule !important;
+        color: var(--hrt-link-strong, #{$hrt-link-strong}) !important;
+      }
+    }
+  }
+
+  // ---- announcement band ----
+  // the band lives on the wrapper so it runs full bleed; Hyrax dresses the
+  // inner div as a red alert with a 10px white border and 15px radius, so
+  // every one of those has to be unset here
+  #announcement_text {
+    @include hrt-gutter;
+    background: $hrt-notice-bg;
+    border-bottom: 1px solid $hrt-notice-edge;
+    padding-bottom: 13px;
+    padding-top: 13px;
+  }
+
+  #announcement_text > div#announcement {
+    background-color: transparent;
+    border: 0;
+    border-radius: 0;
+    color: $hrt-ink-body;
+    font-size: 15px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+    padding: 0;
+    text-align: left;
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    a {
+      @include hrt-link;
+    }
+  }
+
+  // ---- footer ----
+  footer.navbar {
+    @include hrt-gutter;
+    font-size: 13px;
+    padding-bottom: 24px;
+    padding-top: 24px;
+
+    .navbar-link {
+      color: var(--hrt-footer-accent, #{$hrt-footer-accent});
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+  }
+
+  // ---- catalog ----
+  // the theme owns no catalog views; the page keeps Bootstrap's container
+  // width, and this only pulls Blacklight's facet cards into the rail's look
+  &.catalog #facets {
+    @include hrt-facets;
+
+    .facets-heading {
+      @include hrt-section-title;
+      margin-bottom: 18px;
+    }
+  }
+}

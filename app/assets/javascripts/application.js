@@ -52,7 +52,6 @@
 //= require bulkrax/application
 
 //= require themes/practice_research_home
-//= require themes/practice_research_show
 
 //= require citation_picker
 

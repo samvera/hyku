@@ -4,7 +4,7 @@
   </div>
 
   <% if all_authors(presenter).any? %>
-    <%# TODO: dedupe with practice_research — shared citations_for helper + one citation_picker.js %>
+    <%# TODO: dedupe with practice_research — shared citations_for helper %>
     <%
       citations = {
         'apa' => export_as_apa_citation(presenter),

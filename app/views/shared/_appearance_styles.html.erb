@@ -233,6 +233,29 @@ body.public-facing .hyc-banner .hyc-title h1 {
 }
 <% end %>
 
+/* HERITAGE THEME CUSTOMIZATIONS */
+<% if home_page_theme == 'heritage' || show_page_theme == 'heritage_show' %>
+  <% heritage_default_serif = appearance.headline_font.include?('Helvetica') %>
+  <% heritage_default_sans = appearance.body_font.include?('Helvetica') %>
+:root {
+  --hrt-serif: <%= heritage_default_serif ? 'Georgia, Times New Roman, serif' : appearance.font_headline_family %>;
+  --hrt-sans: <%= heritage_default_sans ? 'Helvetica Neue, Helvetica, Arial, sans-serif' : appearance.font_body_family %>;
+  --hrt-chrome: <%= appearance.header_and_footer_background_color %>;
+  --hrt-paper: #fffdf8;
+  --hrt-sunken: color-mix(in srgb, var(--hrt-chrome) 8%, var(--hrt-paper));
+  --hrt-cta: color-mix(in srgb, var(--hrt-link-strong) 14%, #ffffff);
+  --hrt-cta-edge: color-mix(in srgb, var(--hrt-link-strong) 26%, #ffffff);
+  --hrt-mat: var(--hrt-sunken);
+  --hrt-mat-edge: color-mix(in srgb, var(--hrt-chrome) 16%, var(--hrt-paper));
+  --hrt-mat-edge-hover: color-mix(in srgb, var(--hrt-chrome) 29%, var(--hrt-paper));
+  --hrt-link: <%= appearance.link_color %>;
+  --hrt-link-strong: <%= appearance.link_hover_color %>;
+  --hrt-action: <%= appearance.primary_button_background_color %>;
+  --hrt-action-ink: <%= appearance.primary_button_text_color %>;
+  --hrt-footer-accent: <%= appearance.footer_link_color %>;
+}
+<% end %>
+
 <%= appearance.custom_css_block %>
 
 /* COMMUNITY THEME CUSTOMIZATIONS */

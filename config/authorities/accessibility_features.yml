@@ -1,3 +1,7 @@
+label: Accessibility Features
+description: >-
+  Accommodations a work provides for readers with disabilities, such as
+  alternative text, captions, or a braille edition.
 terms:
   - id: Alternative Text
     term: Alternative Text

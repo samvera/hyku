@@ -1,3 +1,7 @@
+label: Discipline
+description: >-
+  Academic subject areas a work belongs to, from the arts and humanities through
+  the sciences and professional fields.
 terms:
   - id: Languages - Spanish
     term: Languages - Spanish

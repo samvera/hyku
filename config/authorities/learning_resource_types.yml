@@ -1,3 +1,7 @@
+label: Learning Resource Types
+description: >-
+  The instructional form of an open educational resource, such as an activity,
+  an assessment, a syllabus, or a full textbook.
 terms:
   - id: Activity/lab
     term: Activity/lab

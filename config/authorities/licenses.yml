@@ -1,3 +1,6 @@
+label: Licenses
+description: >-
+  Creative Commons and other reuse licenses a depositor can apply to a work.
 terms:
   - id: https://creativecommons.org/licenses/by/4.0/
     term: Creative Commons BY Attribution 4.0 International

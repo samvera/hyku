@@ -1,3 +1,7 @@
+label: OER Types
+description: >-
+  The kind of open educational resource being described, such as a collection,
+  a dataset, or an event.
 terms:
   - id: Collection
     term: Collection

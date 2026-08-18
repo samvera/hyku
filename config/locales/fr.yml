@@ -253,6 +253,8 @@ fr:
       part_of:
         heading: Fait partie de
   hyku:
+    work_show:
+      iiif_manifest: Manifeste IIIF
     account:
       signup_disabled: L'enregistrement du compte est désactivé
     deposit_wizard:

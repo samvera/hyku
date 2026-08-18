@@ -135,6 +135,8 @@ pt-BR:
       part_of:
         heading: Parte de
   hyku:
+    work_show:
+      iiif_manifest: Manifesto IIIF
     account:
       signup_disabled: O registro da conta está desativado
     deposit_wizard:

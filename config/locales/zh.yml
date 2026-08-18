@@ -253,6 +253,8 @@ zh:
       part_of:
         heading: 所属
   hyku:
+    work_show:
+      iiif_manifest: IIIF 清单
     account:
       signup_disabled: 帐户注册被禁用
     deposit_wizard:

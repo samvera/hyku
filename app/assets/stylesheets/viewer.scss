@@ -1,5 +1,9 @@
 .viewer-wrapper {
   height: 500px;
+  // The viewer iframe is position: absolute with height: 100%; without a
+  // positioned wrapper it anchors to a distant ancestor and overflows this
+  // box, painting over whatever follows the viewer.
+  position: relative;
 }
 
 .viewer {

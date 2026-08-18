@@ -80,28 +80,21 @@ module ApplicationHelper
   end
 
   def hint_for(term:, record_class: nil)
-    hint = locale_for(type: 'hints', term:, record_class:)
-
-    return hint unless missing_translation(hint)
+    locale_for(type: 'hints', term:, record_class:)
   end
 
+  # NOTE: do not define a helper named missing_translation here. Rails'
+  # ActionView::Helpers::TranslationHelper calls a private hook by that name for
+  # every missing view translation; an ApplicationHelper method shadows it and
+  # its return value gets rendered into the page (a literal "false", historically).
   def locale_for(type:, term:, record_class:)
     term              = term.to_s
     record_class      = record_class.to_s.underscore
     work_or_collection = record_class == Hyrax.config.collection_model.underscore ? 'collection' : 'defaults'
-    locale             = t("hyrax.#{record_class}.#{type}.#{term}")
+    locale             = I18n.t("hyrax.#{record_class}.#{type}.#{term}", default: nil) ||
+                         I18n.t("simple_form.#{type}.#{work_or_collection}.#{term}", default: nil)
 
-    if missing_translation(locale)
-      (t("simple_form.#{type}.#{work_or_collection}.#{term}")).try(:html_safe)
-    else
-      locale.html_safe
-    end
-  end
-
-  def missing_translation(value, _options = {})
-    return true if value == false
-    return true if value.try(:false?)
-    false
+    locale&.html_safe
   end
 
   def markdown(text)

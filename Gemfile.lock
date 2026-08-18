@@ -96,17 +96,16 @@ GIT
 
 GIT
   remote: https://github.com/samvera/questioning_authority.git
-  revision: 54cb5e7047f0261b8ccfd4b737d6f30a0a96d3ba
+  revision: e2ee4225eb1d823c34b3e9df253801d819789b1b
   branch: main
   specs:
-    qa (5.15.0)
+    qa (5.17.0)
       activerecord-import
-      deprecation
       faraday (< 3.0, != 2.0.0)
       geocoder
       ldpath
       nokogiri (~> 1.6)
-      rails (>= 5.0, < 8.1)
+      rails (>= 6.0, < 8.2)
       rdf
 
 GIT

@@ -18,24 +18,16 @@ RSpec.describe LocalVocabularyService do
       expect(described_class.default_description({ 'description' => 'Reuse terms.' })).to eq 'Reuse terms.'
     end
 
-    it 'derives one from the terms for a vocabulary that carries none' do
-      expect(described_class.default_description({}, term_count: 20, sample_terms: %w[Article Audio Book]))
-        .to eq '20 terms, including Article, Audio, and Book.'
+    it 'is nil for a vocabulary that carries none, rather than inventing one' do
+      expect(described_class.default_description({})).to be_nil
     end
   end
 
-  describe '.derived_description' do
-    it 'lists the terms outright when there are no more than the sample' do
-      expect(described_class.derived_description(2, %w[Student Instructor]))
-        .to eq '2 terms: Student and Instructor.'
-    end
+  describe 'the vocabularies hyku ships' do
+    it 'describes every one of them' do
+      descriptions = described_class.metadata_by_name(Rails.root.join('config', 'authorities'))
 
-    it 'counts a vocabulary whose terms have no labels' do
-      expect(described_class.derived_description(4, [])).to eq '4 terms.'
-    end
-
-    it 'is nil for an empty vocabulary, which has nothing to describe' do
-      expect(described_class.derived_description(0, [])).to be_nil
+      expect(descriptions.values).to all(include('description'))
     end
   end
 
@@ -65,14 +57,14 @@ RSpec.describe LocalVocabularyService do
     end
 
     # The case a knapsack lands in: its ymls carry neither key.
-    it 'titleizes and describes a vocabulary that carries neither' do
+    it 'titleizes a vocabulary that carries neither, and leaves it undescribed' do
       name = write_vocabulary('bare_vocabulary')
 
       described_class.seed!(path)
 
       authority = Qa::LocalAuthority.find_by(name:)
       expect(authority.label).to eq 'Bare Vocabulary'
-      expect(authority.description).to eq '1 term: A.'
+      expect(authority.description).to be_nil
     end
 
     it 'fills a blank label on a vocabulary seeded before the columns existed' do
@@ -106,6 +98,36 @@ RSpec.describe LocalVocabularyService do
                  { 'label' => 'Lab Names', 'terms' => [{ 'id' => 'a', 'term' => 'A' }] }.to_yaml)
 
       expect(described_class.metadata_by_name(path)).to eq('lab_names' => { 'label' => 'Lab Names' })
+    end
+
+    # HykuKnapsack puts its own directory first and overrides a Hyku vocabulary by
+    # shipping a file of the same name, which would otherwise take Hyku's copy with it.
+    context 'when a knapsack overrides a hyku vocabulary' do
+      let(:knapsack) { Dir.mktmpdir }
+
+      after { FileUtils.remove_entry(knapsack) }
+
+      def write(dir, contents)
+        File.write(File.join(dir, 'resource_types.yml'),
+                   contents.merge('terms' => [{ 'id' => 'a', 'term' => 'A' }]).to_yaml)
+      end
+
+      it 'keeps the description hyku ships when the knapsack carries none' do
+        write(path, 'label' => 'Resource Types', 'description' => 'The kind of thing a work is.')
+        write(knapsack, {})
+
+        expect(described_class.metadata_by_name([knapsack, path]))
+          .to eq('resource_types' => { 'label' => 'Resource Types',
+                                       'description' => 'The kind of thing a work is.' })
+      end
+
+      it 'prefers the copy the knapsack carries' do
+        write(path, 'description' => 'The kind of thing a work is.')
+        write(knapsack, 'description' => 'Formats this library collects.')
+
+        expect(described_class.metadata_by_name([knapsack, path]))
+          .to eq('resource_types' => { 'description' => 'Formats this library collects.' })
+      end
     end
   end
 end

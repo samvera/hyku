@@ -1,28 +1,31 @@
 # frozen_string_literal: true
 
 class LocalVocabularyService
-  SAMPLE_TERM_COUNT = 3
-
   def self.seed!(paths = Qa::Authorities::Local.subauthorities_path)
-    seed_files(paths).map { |file| seed_vocabulary!(file) }
+    metadata = metadata_by_name(paths)
+
+    seed_files(paths).map do |file|
+      seed_vocabulary!(file, metadata[File.basename(file, '.yml')])
+    end
   end
 
   # An earlier path wins, matching how HykuKnapsack overrides a Hyku authority.
   def self.seed_files(paths)
-    Array.wrap(paths).flat_map { |path| Dir.glob(File.join(path, '*.yml')).sort }
-         .uniq { |file| File.basename(file, '.yml') }
+    files_by_name(paths).values.map(&:first)
   end
 
-  def self.seed_vocabulary!(file)
+  def self.files_by_name(paths)
+    Array.wrap(paths).flat_map { |path| Dir.glob(File.join(path, '*.yml')).sort }
+         .group_by { |file| File.basename(file, '.yml') }
+  end
+
+  def self.seed_vocabulary!(file, metadata = nil)
     name = File.basename(file, '.yml')
     contents = YAML.load_file(file) || {}
     terms = Array.wrap(contents['terms'])
     authority = Qa::LocalAuthority.find_or_initialize_by(name:)
 
-    backfill_metadata(authority,
-                      contents,
-                      term_count: terms.size,
-                      sample_terms: terms.first(SAMPLE_TERM_COUNT).map { |term| term['term'] })
+    backfill_metadata(authority, metadata || contents.except('terms'))
     authority.save! if authority.changed?
 
     terms.each_with_index do |term, index|
@@ -38,9 +41,9 @@ class LocalVocabularyService
   end
 
   # Only blanks are filled, so a value staff edit in the admin UI survives a reseed.
-  def self.backfill_metadata(authority, metadata = {}, term_count: 0, sample_terms: [])
+  def self.backfill_metadata(authority, metadata = {})
     authority.label = default_label(authority.name, metadata) if authority.label.blank?
-    authority.description = default_description(metadata, term_count:, sample_terms:) if authority.description.blank?
+    authority.description = default_description(metadata) if authority.description.blank?
     authority
   end
 
@@ -48,25 +51,22 @@ class LocalVocabularyService
     metadata['label'].presence || name.to_s.titleize
   end
 
-  def self.default_description(metadata = {}, term_count: 0, sample_terms: [])
-    metadata['description'].presence || derived_description(term_count, sample_terms)
+  # No fallback: the admin index already prints the term count and lists the terms,
+  # so a generated description would only repeat the page it sits on.
+  def self.default_description(metadata = {})
+    metadata['description'].presence
   end
 
-  # Stored rather than computed, so it goes stale as terms change. It is a
-  # starting point for staff to replace, not a description that stays true.
-  def self.derived_description(term_count, sample_terms)
-    samples = Array.wrap(sample_terms).compact_blank
-    return nil if term_count.zero?
-
-    count = "#{term_count} #{'term'.pluralize(term_count)}"
-    return "#{count}." if samples.empty?
-    return "#{count}: #{samples.to_sentence}." if term_count <= samples.size
-
-    "#{count}, including #{samples.to_sentence}."
-  end
-
+  # Merged across every file a name resolves to, unlike the terms: a knapsack
+  # overriding a Hyku vocabulary keeps Hyku's copy without restating it.
   def self.metadata_by_name(paths = Qa::Authorities::Local.subauthorities_path)
-    seed_files(paths).index_by { |file| File.basename(file, '.yml') }
-                     .transform_values { |file| (YAML.load_file(file) || {}).except('terms') }
+    files_by_name(paths).transform_values { |files| merged_metadata(files) }
+  end
+
+  # Reversed so the earlier path, which wins on terms, wins on copy too.
+  def self.merged_metadata(files)
+    files.reverse.reduce({}) do |merged, file|
+      merged.merge((YAML.load_file(file) || {}).except('terms').compact_blank)
+    end
   end
 end

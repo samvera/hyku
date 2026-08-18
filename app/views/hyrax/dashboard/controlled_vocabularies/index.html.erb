@@ -1,0 +1,73 @@
+<% provide :page_header do %>
+  <h1><span class="fa fa-tags" aria-hidden="true"></span> <%= t('hyku.admin.controlled_vocabularies') %></h1>
+<% end %>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <p class="text-muted">
+      <%= t('hyku.admin.controlled_vocabulary.source_key_help') %>
+    </p>
+
+    <% if @controlled_vocabularies.any? %>
+      <table class="table table-striped">
+        <caption class="sr-only"><%= t('hyku.admin.controlled_vocabularies') %></caption>
+        <thead>
+          <tr>
+            <th scope="col"><%= t('hyku.admin.controlled_vocabulary.name') %></th>
+            <th scope="col"><%= t('hyku.admin.controlled_vocabulary.source_key') %></th>
+            <th scope="col"><%= t('hyku.admin.controlled_vocabulary.origin') %></th>
+            <th scope="col"><%= t('hyku.admin.controlled_vocabulary.status') %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @controlled_vocabularies.each do |entry| %>
+            <tr>
+              <td>
+                <%# Linked when there are terms to show, which includes read-only
+                    file-based vocabularies. Remote services are not enumerable. %>
+                <% if entry.viewable? %>
+                  <%= link_to entry.label, main_app.controlled_vocabulary_path(entry.source_key) %>
+                <% else %>
+                  <%= entry.label %>
+                <% end %>
+                <%# Below the name rather than in its own column: only vocabularies
+                    managed here have one, so a column would be mostly empty. %>
+                <% if entry.description.present? %>
+                  <p class="text-muted small mb-0"><%= entry.description %></p>
+                <% end %>
+              </td>
+              <td><code><%= entry.source_key %></code></td>
+              <td>
+                <%# A fact about where the vocabulary lives, not a status, so it is
+                    plain text: badges here would compete with the status column. %>
+                <%= if entry.provider
+                      t("hyku.admin.controlled_vocabulary.providers.#{entry.provider}",
+                        default: entry.provider.titleize)
+                    else
+                      t("hyku.admin.controlled_vocabulary.origins.#{entry.origin}")
+                    end %>
+              </td>
+              <td>
+                <% if entry.awaiting_import? %>
+                  <span class="label label-info"
+                        title="<%= t('hyku.admin.controlled_vocabulary.awaiting_import_help', task: entry.import_task) %>">
+                    <%= t('hyku.admin.controlled_vocabulary.awaiting_import') %>
+                  </span>
+                <% elsif !entry.configured? %>
+                  <span class="label label-warning"
+                        title="<%= t('hyku.admin.controlled_vocabulary.unconfigured_help') %>">
+                    <%= t('hyku.admin.controlled_vocabulary.unconfigured') %>
+                  </span>
+                <% else %>
+                  <span class="text-muted"><%= t('hyku.admin.controlled_vocabulary.ready') %></span>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p><%= t('hyku.admin.controlled_vocabulary.none') %></p>
+    <% end %>
+  </div>
+</div>

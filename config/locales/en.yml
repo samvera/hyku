@@ -268,6 +268,42 @@ en:
       errors:
         parent_not_allowed: That work cannot contain this deposit.
     admin:
+      controlled_vocabularies: Controlled Vocabularies
+      controlled_vocabulary:
+        active: Active
+        awaiting_import: Not imported
+        awaiting_import_help: 'This vocabulary is available but has no terms in this tenant yet. Populate it by running: %{task}'
+        description: Description
+        inactive: Inactive
+        label: Label
+        name: Vocabulary
+        no_terms: This vocabulary has no terms yet.
+        none: No controlled vocabularies have been set up for this tenant yet.
+        origin: Source
+        origins:
+          database: This tenant
+          file: Configuration file
+          remote: External service
+        providers:
+          discogs: Discogs
+          fast: OCLC FAST
+          geonames: GeoNames
+          getty: Getty
+          loc: Library of Congress
+          mesh: MeSH
+        read_only:
+          database: This vocabulary has no terms in this tenant yet.
+          file: This vocabulary is defined in a configuration file, so its terms cannot be changed here.
+          remote: This vocabulary comes from an external service, so its terms cannot be changed here.
+        ready: Ready
+        source_key: Source key
+        source_key_help: Paste a source key into a metadata profile field to control that field with this vocabulary. Vocabularies managed in this tenant can be edited here; those defined in a configuration file or by an external service cannot.
+        status: Status
+        term_count_unknown: Varies
+        term_id: Term ID
+        terms: Terms
+        unconfigured: Needs setup
+        unconfigured_help: This service needs credentials before it can be used. Until then a field citing it accepts free text instead of offering suggestions.
       flash:
         access_denied: You are not authorized to view this page
       google_analytics_settings:

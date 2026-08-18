@@ -8,6 +8,7 @@ class Ability
   include Hyrax::Ability::UserAbility
   include Hyrax::Ability::WorkAbility
   include Hyrax::Ability::TenantControlAbility
+  include Hyrax::Ability::ControlledVocabularyAbility
 
   self.ability_logic += %i[
     group_permissions
@@ -17,6 +18,7 @@ class Ability
     work_roles
     featured_collection_abilities
     tenant_control_abilities
+    controlled_vocabulary_abilities
   ]
   # If the Groups with Roles feature is disabled, allow registered users to create curation concerns
   # (Works, Collections, and FileSets). Otherwise, omit this ability logic as to not

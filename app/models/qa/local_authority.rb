@@ -30,8 +30,10 @@ module Qa
       label.presence || name.to_s.titleize
     end
 
+    # The value staff paste into a metadata profile's controlled_values sources.
+    # Bare, matching how the file-based vocabularies are already cited there.
     def source_key
-      "local/#{name}"
+      name
     end
   end
 end

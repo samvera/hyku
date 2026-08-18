@@ -1,0 +1,79 @@
+<% provide :page_header do %>
+  <h1>
+    <span class="fa fa-tag" aria-hidden="true"></span>
+    <%= @entry.label %>
+  </h1>
+<% end %>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <dl class="dl-horizontal">
+      <dt><%= t('hyku.admin.controlled_vocabulary.source_key') %></dt>
+      <dd><code><%= @entry.source_key %></code></dd>
+
+      <dt><%= t('hyku.admin.controlled_vocabulary.origin') %></dt>
+      <dd>
+        <%= if @entry.provider
+              t("hyku.admin.controlled_vocabulary.providers.#{@entry.provider}",
+                default: @entry.provider.titleize)
+            else
+              t("hyku.admin.controlled_vocabulary.origins.#{@entry.origin}")
+            end %>
+      </dd>
+
+      <% if @entry.description.present? %>
+        <dt><%= t('hyku.admin.controlled_vocabulary.description') %></dt>
+        <dd><%= @entry.description %></dd>
+      <% end %>
+    </dl>
+
+    <% unless @entry.editable? %>
+      <p class="text-muted">
+        <span class="fa fa-info-circle" aria-hidden="true"></span>
+        <%= t("hyku.admin.controlled_vocabulary.read_only.#{@entry.origin}") %>
+      </p>
+    <% end %>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title">
+      <%= t('hyku.admin.controlled_vocabulary.terms') %>
+      <% if @terms.present? %>
+        <span class="badge"><%= @terms.size %></span>
+      <% end %>
+    </h2>
+  </div>
+  <div class="panel-body">
+    <% if @terms.blank? %>
+      <p class="text-muted"><%= t('hyku.admin.controlled_vocabulary.no_terms') %></p>
+    <% else %>
+      <table class="table table-striped">
+        <caption class="sr-only"><%= @entry.label %></caption>
+        <thead>
+          <tr>
+            <th scope="col"><%= t('hyku.admin.controlled_vocabulary.label') %></th>
+            <th scope="col"><%= t('hyku.admin.controlled_vocabulary.term_id') %></th>
+            <th scope="col"><%= t('hyku.admin.controlled_vocabulary.status') %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @terms.each do |term| %>
+            <tr>
+              <td><%= term['label'] %></td>
+              <td><code><%= term['id'] %></code></td>
+              <td>
+                <% if term['active'] == false %>
+                  <span class="label label-default"><%= t('hyku.admin.controlled_vocabulary.inactive') %></span>
+                <% else %>
+                  <span class="text-muted"><%= t('hyku.admin.controlled_vocabulary.active') %></span>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+  </div>
+</div>

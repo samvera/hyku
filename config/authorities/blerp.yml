@@ -1,0 +1,7 @@
+terms:
+  - id: Student
+    term: Student
+  - id: Instructor
+    term: Instructor
+  - id: Administrator
+    term: Administrator

@@ -2,30 +2,23 @@
 
 class LocalVocabularyService
   def self.seed!(paths = Qa::Authorities::Local.subauthorities_path)
-    metadata = metadata_by_name(paths)
-
-    seed_files(paths).map do |file|
-      seed_vocabulary!(file, metadata[File.basename(file, '.yml')])
+    files_by_name(paths).map do |name, files|
+      seed_vocabulary!(name, files.map { |file| YAML.load_file(file) || {} })
     end
   end
 
   # An earlier path wins, matching how HykuKnapsack overrides a Hyku authority.
-  def self.seed_files(paths)
-    files_by_name(paths).values.map(&:first)
-  end
-
   def self.files_by_name(paths)
     Array.wrap(paths).flat_map { |path| Dir.glob(File.join(path, '*.yml')).sort }
          .group_by { |file| File.basename(file, '.yml') }
   end
 
-  def self.seed_vocabulary!(file, metadata = nil)
-    name = File.basename(file, '.yml')
-    contents = YAML.load_file(file) || {}
-    terms = Array.wrap(contents['terms'])
+  # @param contents [Array<Hash>] every yml this name resolves to, overriding path first
+  def self.seed_vocabulary!(name, contents)
+    terms = Array.wrap(contents.first['terms'])
     authority = Qa::LocalAuthority.find_or_initialize_by(name:)
 
-    backfill_metadata(authority, metadata || contents.except('terms'))
+    backfill_metadata(authority, merged_metadata(contents))
     authority.save! if authority.changed?
 
     terms.each_with_index do |term, index|
@@ -57,16 +50,11 @@ class LocalVocabularyService
     metadata['description'].presence
   end
 
-  # Merged across every file a name resolves to, unlike the terms: a knapsack
-  # overriding a Hyku vocabulary keeps Hyku's copy without restating it.
-  def self.metadata_by_name(paths = Qa::Authorities::Local.subauthorities_path)
-    files_by_name(paths).transform_values { |files| merged_metadata(files) }
-  end
-
-  # Reversed so the earlier path, which wins on terms, wins on copy too.
-  def self.merged_metadata(files)
-    files.reverse.reduce({}) do |merged, file|
-      merged.merge((YAML.load_file(file) || {}).except('terms').compact_blank)
+  # Merged, unlike the terms, so a knapsack overriding a Hyku vocabulary keeps
+  # Hyku's copy without restating it. Reversed so the earlier path still wins.
+  def self.merged_metadata(contents)
+    contents.reverse.reduce({}) do |merged, yml|
+      merged.merge(yml.except('terms').compact_blank)
     end
   end
 end

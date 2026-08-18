@@ -25,9 +25,9 @@ RSpec.describe LocalVocabularyService do
 
   describe 'the vocabularies hyku ships' do
     it 'describes every one of them' do
-      descriptions = described_class.metadata_by_name(Rails.root.join('config', 'authorities'))
+      ymls = Dir[Rails.root.join('config', 'authorities', '*.yml')].map { |file| YAML.load_file(file) }
 
-      expect(descriptions.values).to all(include('description'))
+      expect(ymls).to all(include('description'))
     end
   end
 
@@ -88,46 +88,43 @@ RSpec.describe LocalVocabularyService do
     end
   end
 
-  describe '.metadata_by_name' do
-    let(:path) { Dir.mktmpdir }
+  # HykuKnapsack puts its own directory first and overrides a Hyku vocabulary by
+  # shipping a file of the same name, which would otherwise take Hyku's copy with it.
+  describe 'a knapsack overriding a hyku vocabulary' do
+    let(:hyku) { Dir.mktmpdir }
+    let(:knapsack) { Dir.mktmpdir }
 
-    after { FileUtils.remove_entry(path) }
-
-    it 'reads the copy off disk without the terms' do
-      File.write(File.join(path, 'lab_names.yml'),
-                 { 'label' => 'Lab Names', 'terms' => [{ 'id' => 'a', 'term' => 'A' }] }.to_yaml)
-
-      expect(described_class.metadata_by_name(path)).to eq('lab_names' => { 'label' => 'Lab Names' })
+    after do
+      FileUtils.remove_entry(hyku)
+      FileUtils.remove_entry(knapsack)
     end
 
-    # HykuKnapsack puts its own directory first and overrides a Hyku vocabulary by
-    # shipping a file of the same name, which would otherwise take Hyku's copy with it.
-    context 'when a knapsack overrides a hyku vocabulary' do
-      let(:knapsack) { Dir.mktmpdir }
+    def write_vocabulary(dir, name, metadata, term:)
+      contents = metadata.merge('terms' => [{ 'id' => term.downcase, 'term' => term }])
+      File.write(File.join(dir, "#{name}.yml"), contents.to_yaml)
+      name
+    end
 
-      after { FileUtils.remove_entry(knapsack) }
+    it "takes the terms from the knapsack and keeps hyku's copy" do
+      name = write_vocabulary(hyku, 'shared_vocabulary',
+                              { 'label' => 'Shared Terms', 'description' => "Hyku's copy." }, term: 'Hyku')
+      write_vocabulary(knapsack, name, {}, term: 'Knapsack')
 
-      def write(dir, contents)
-        File.write(File.join(dir, 'resource_types.yml'),
-                   contents.merge('terms' => [{ 'id' => 'a', 'term' => 'A' }]).to_yaml)
-      end
+      described_class.seed!([knapsack, hyku])
 
-      it 'keeps the description hyku ships when the knapsack carries none' do
-        write(path, 'label' => 'Resource Types', 'description' => 'The kind of thing a work is.')
-        write(knapsack, {})
+      authority = Qa::LocalAuthority.find_by(name:)
+      expect(authority.label).to eq 'Shared Terms'
+      expect(authority.description).to eq "Hyku's copy."
+      expect(authority.local_authority_entries.pluck(:label)).to eq ['Knapsack']
+    end
 
-        expect(described_class.metadata_by_name([knapsack, path]))
-          .to eq('resource_types' => { 'label' => 'Resource Types',
-                                       'description' => 'The kind of thing a work is.' })
-      end
+    it 'prefers the copy the knapsack carries' do
+      name = write_vocabulary(hyku, 'overridden_vocabulary', { 'description' => "Hyku's copy." }, term: 'A')
+      write_vocabulary(knapsack, name, { 'description' => "The knapsack's copy." }, term: 'A')
 
-      it 'prefers the copy the knapsack carries' do
-        write(path, 'description' => 'The kind of thing a work is.')
-        write(knapsack, 'description' => 'Formats this library collects.')
+      described_class.seed!([knapsack, hyku])
 
-        expect(described_class.metadata_by_name([knapsack, path]))
-          .to eq('resource_types' => { 'description' => 'Formats this library collects.' })
-      end
+      expect(Qa::LocalAuthority.find_by(name:).description).to eq "The knapsack's copy."
     end
   end
 end

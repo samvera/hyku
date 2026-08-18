@@ -235,7 +235,7 @@ class RolesService # rubocop:disable Metrics/ClassLength
     # @return [String]
     # @raise [KeyError] when HYKU_SEED_PASSWORD is not set
     def seed_user_password
-      ENV.fetch('HYKU_SEED_PASSWORD')
+      @seed_user_password ||= ENV.fetch('HYKU_SEED_PASSWORD')
     end
   end
 

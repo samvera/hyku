@@ -8,6 +8,8 @@ RSpec.describe RolesService, clean: true do
   let(:default_role_count) { described_class::DEFAULT_ROLES.count }
   let(:default_hyrax_group_count) { described_class::DEFAULT_HYRAX_GROUPS_WITH_ATTRIBUTES.keys.count }
 
+  before { described_class.instance_variable_set(:@seed_user_password, nil) }
+
   shared_examples 'must run inside a tenant' do |method_to_run, scope_warning|
     context 'when run outside the scope of a tenant' do
       let(:scope_warning) { scope_warning }

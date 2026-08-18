@@ -3,7 +3,7 @@ zh:
   activefedora:
     models:
       etd: 紧急断电
-      generic_work: 工作
+      generic_work: 作品
       image: 图像
       oer: 开放教育资源
   activerecord:

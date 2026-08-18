@@ -3,7 +3,7 @@ it:
   activefedora:
     models:
       etd: ETD
-      generic_work: Lavoro
+      generic_work: Opera
       image: Immagine
       oer: Risorse educative aperte
   activerecord:

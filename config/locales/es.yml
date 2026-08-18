@@ -3,7 +3,7 @@ es:
   activefedora:
     models:
       etd: Fecha de finalización estimada
-      generic_work: Trabajar
+      generic_work: Trabajo
       image: Imagen
       oer: REA
   activerecord:

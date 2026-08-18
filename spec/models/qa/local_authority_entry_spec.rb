@@ -109,12 +109,12 @@ RSpec.describe Qa::LocalAuthorityEntry, type: :model do
     let!(:pinned) { described_class.create!(local_authority: authority, label: 'Zoology', uri: 'zoo', position: 1) }
 
     it 'separates active from inactive terms' do
-      expect(described_class.active).to contain_exactly(live, pinned)
-      expect(described_class.inactive).to contain_exactly(retired)
+      expect(authority.local_authority_entries.active).to contain_exactly(live, pinned)
+      expect(authority.local_authority_entries.inactive).to contain_exactly(retired)
     end
 
     it 'orders pinned terms first, then unpinned terms by label' do
-      expect(described_class.ordered.to_a).to eq [pinned, retired, live]
+      expect(authority.local_authority_entries.ordered.to_a).to eq [pinned, retired, live]
     end
   end
 end

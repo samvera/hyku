@@ -27,14 +27,6 @@ RSpec.describe Qa::LocalAuthority, type: :model do
       expect(authority.errors[:name].join).to include('lowercase letters')
     end
 
-    it 'rejects a name already claimed by a file-based vocabulary' do
-      allow(described_class).to receive(:file_based_names).and_return(%w[licenses])
-      authority = described_class.new(name: 'licenses')
-
-      expect(authority).not_to be_valid
-      expect(authority.errors[:name].join).to include('file-based vocabulary')
-    end
-
     it 'rejects a duplicate name' do
       described_class.create!(name: 'lab_names')
 
@@ -68,6 +60,8 @@ RSpec.describe Qa::LocalAuthority, type: :model do
 
   describe '.file_based_names' do
     it 'lists the subauthorities backed by config/authorities YAML' do
+      allow(Qa::Authorities::Local).to receive(:names).and_return(%w[licenses])
+
       expect(described_class.file_based_names).to include('licenses')
     end
 

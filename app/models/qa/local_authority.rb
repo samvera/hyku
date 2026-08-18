@@ -16,7 +16,6 @@ module Qa
                          'starting with a letter or number'
               },
               if: -> { name_changed? && name.present? }
-    validate :name_must_not_shadow_a_file_based_vocabulary, if: :name_changed?
 
     scope :ordered, -> { order(Arel.sql("COALESCE(NULLIF(label, ''), name)")) }
 
@@ -33,16 +32,6 @@ module Qa
 
     def source_key
       "local/#{name}"
-    end
-
-    private
-
-    # A YAML file of the same name wins at registration, hiding these terms.
-    def name_must_not_shadow_a_file_based_vocabulary
-      return if name.blank?
-      return unless self.class.file_based_names.include?(name)
-
-      errors.add(:name, "is already used by a file-based vocabulary (config/authorities/#{name}.yml)")
     end
   end
 end

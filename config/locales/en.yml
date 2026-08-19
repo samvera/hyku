@@ -271,7 +271,6 @@ en:
       controlled_vocabularies: Controlled Vocabularies
       controlled_vocabulary:
         active: Active
-        active_count: "%{count} of %{total} active"
         awaiting_import: Not imported
         awaiting_import_help: 'This vocabulary is available but has no terms in this tenant yet. Populate it by running: %{task}'
         description: Description
@@ -314,8 +313,14 @@ en:
         status_hint: Whether this vocabulary is ready to use, or needs something set up first.
         status_unknown: Unspecified
         term_id: Term ID
+        term_limit:
+          one: (showing the first %{count})
+          other: (showing the first %{count})
         term_id_hint: The value stored on a record, and the value to supply in a Bulkrax import.
         term_id_help: The term ID is the value stored on a record, and the value to supply in a Bulkrax import. The label is only what a depositor sees.
+        term_total:
+          one: 1 term
+          other: "%{count} terms"
         terms: Terms
         unconfigured: Needs setup
         unconfigured_help: This service needs credentials before it can be used. Until then a field citing it accepts free text instead of offering suggestions.

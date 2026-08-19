@@ -15,15 +15,20 @@
       <% if @terms.present? %>
         <dt class="col-sm-2"><%= t('hyku.admin.controlled_vocabulary.terms') %></dt>
         <dd class="col-sm-10">
-          <%# A retired term still counts toward the total, so name both: the active
-              figure is what a deposit form actually offers. %>
-          <% retired = @terms.count { |term| term['active'] == false } %>
-          <%= t('hyku.admin.controlled_vocabulary.active_count',
-                count: @terms.size - retired, total: @terms.size) %>
-          <% if retired.positive? %>
+          <% total = @entry.term_count || @terms.size %>
+          <% truncated = total > @terms.size %>
+          <%= t('hyku.admin.controlled_vocabulary.term_total', count: total) %>
+          <% if truncated %>
             <span class="text-muted">
-              <%= t('hyku.admin.controlled_vocabulary.retired_count', count: retired) %>
+              <%= t('hyku.admin.controlled_vocabulary.term_limit', count: @terms.size) %>
             </span>
+          <% else %>
+            <% retired = @terms.count { |term| term['active'] == false } %>
+            <% if retired.positive? %>
+              <span class="text-muted">
+                <%= t('hyku.admin.controlled_vocabulary.retired_count', count: retired) %>
+              </span>
+            <% end %>
           <% end %>
         </dd>
       <% end %>

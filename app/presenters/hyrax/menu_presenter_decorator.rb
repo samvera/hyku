@@ -40,7 +40,8 @@ module Hyrax
       can?(:review, :submissions) ||
         can?(:read, User) ||
         can?(:read, Hyrax::Group) ||
-        can?(:read, :admin_dashboard)
+        can?(:read, :admin_dashboard) ||
+        can?(:view, :controlled_vocabularies)
     end
   end
 end

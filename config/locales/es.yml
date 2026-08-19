@@ -409,13 +409,6 @@ es:
         name: Vocabulario
         no_terms: Este vocabulario aún no tiene términos.
         none: Aún no se ha configurado ningún vocabulario controlado para este inquilino.
-        origin: Fuente
-        origin_hint: Dónde está definido el vocabulario y, por lo tanto, si sus términos se pueden editar aquí.
-        origins:
-          cached: Copia importada
-          database: Este inquilino
-          file: Archivo de configuración
-          remote: Servicio externo
         providers:
           crossref: Crossref
           discogs: Discogs
@@ -455,6 +448,7 @@ es:
         unconfigured: Requiere configuración
         unconfigured_help: Este servicio necesita credenciales antes de poder usarse. Hasta entonces, un campo que lo cite acepta texto libre en lugar de ofrecer sugerencias.
         unused: Ninguna propiedad de metadatos usa este vocabulario.
+        unused_profile_hint: Para empezar a usarlo, agregue la clave de origen de este vocabulario a los valores controlados de una propiedad en el perfil de metadatos del inquilino.
         used_by: Usado por propiedades
         used_by_hint: Las propiedades de metadatos controladas por este vocabulario, tal como se nombran en las importaciones de Bulkrax y en los perfiles de metadatos.
         used_by_work_types: 'Disponible en:'

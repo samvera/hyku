@@ -408,13 +408,6 @@ de:
         name: Vokabular
         no_terms: Dieses Vokabular enthält noch keine Begriffe.
         none: Für diesen Mandanten wurden noch keine kontrollierten Vokabulare eingerichtet.
-        origin: Quelle
-        origin_hint: Wo das Vokabular definiert ist und ob seine Begriffe daher hier bearbeitet werden können.
-        origins:
-          cached: Importierte Kopie
-          database: Dieser Mandant
-          file: Konfigurationsdatei
-          remote: Externer Dienst
         providers:
           crossref: Crossref
           discogs: Discogs
@@ -454,6 +447,7 @@ de:
         unconfigured: Einrichtung erforderlich
         unconfigured_help: Dieser Dienst benötigt Anmeldeinformationen, bevor er verwendet werden kann. Bis dahin akzeptiert ein Feld, das ihn referenziert, Freitext, statt Vorschläge anzubieten.
         unused: Keine Metadaten-Eigenschaft verwendet dieses Vokabular.
+        unused_profile_hint: Um es zu verwenden, fügen Sie den Quellschlüssel dieses Vokabulars den kontrollierten Werten einer Eigenschaft im Metadatenprofil des Mandanten hinzu.
         used_by: Verwendet von Eigenschaften
         used_by_hint: Die von diesem Vokabular kontrollierten Metadaten-Eigenschaften, wie sie in Bulkrax-Importen und Metadatenprofilen benannt sind.
         used_by_work_types: 'Verfügbar für:'

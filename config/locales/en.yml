@@ -280,13 +280,6 @@ en:
         name: Vocabulary
         no_terms: This vocabulary has no terms yet.
         none: No controlled vocabularies have been set up for this tenant yet.
-        origin: Source
-        origin_hint: Where the vocabulary is defined, and therefore whether its terms can be edited here.
-        origins:
-          cached: Imported copy
-          database: This tenant
-          file: Configuration file
-          remote: External service
         providers:
           crossref: Crossref
           discogs: Discogs
@@ -326,6 +319,7 @@ en:
         unconfigured: Needs setup
         unconfigured_help: This service needs credentials before it can be used. Until then a field citing it accepts free text instead of offering suggestions.
         unused: No metadata property uses this vocabulary.
+        unused_profile_hint: To start using it, add this vocabulary's source key to a property's controlled values in the tenant's metadata profile.
         used_by: Used by properties
         used_by_hint: The metadata properties controlled by this vocabulary, as named in Bulkrax imports and metadata profiles.
         used_by_work_types: 'Available on:'

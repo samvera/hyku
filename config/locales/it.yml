@@ -409,13 +409,6 @@ it:
         name: Vocabolario
         no_terms: Questo vocabolario non ha ancora termini.
         none: Nessun vocabolario controllato è stato ancora configurato per questo tenant.
-        origin: Origine
-        origin_hint: Dove è definito il vocabolario, e quindi se i suoi termini possono essere modificati qui.
-        origins:
-          cached: Copia importata
-          database: Questo tenant
-          file: File di configurazione
-          remote: Servizio esterno
         providers:
           crossref: Crossref
           discogs: Discogs
@@ -455,6 +448,7 @@ it:
         unconfigured: Richiede configurazione
         unconfigured_help: Questo servizio richiede credenziali prima di poter essere utilizzato. Fino ad allora un campo che lo utilizza accetta testo libero invece di offrire suggerimenti.
         unused: Nessuna proprietà dei metadati utilizza questo vocabolario.
+        unused_profile_hint: Per iniziare a usarlo, aggiungi la chiave di origine di questo vocabolario ai valori controllati di una proprietà nel profilo dei metadati del tenant.
         used_by: Utilizzato dalle proprietà
         used_by_hint: Le proprietà dei metadati controllate da questo vocabolario, come denominate nelle importazioni Bulkrax e nei profili dei metadati.
         used_by_work_types: 'Disponibile su:'

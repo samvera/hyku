@@ -159,9 +159,9 @@ class ControlledVocabularyCatalog
 
     def remote_entry(provider, subauthority, configured)
       Entry.new(source_key: [provider, subauthority].compact.join('/'),
-                # Names the vocabulary, not the key: titleizing `loc/iso639-1`
-                # gives "Loc/Iso639 1", and the service has its own column.
-                label: remote_vocabulary_label(subauthority) || provider_label(provider),
+                # Prefixed with the service: without it a bare "Corporate" or
+                # "Subjects" does not say whose vocabulary it is.
+                label: [provider_label(provider), remote_vocabulary_label(subauthority)].compact.join(' '),
                 origin: :remote,
                 provider: provider,
                 configured: configured)

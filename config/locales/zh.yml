@@ -409,13 +409,6 @@ zh:
         name: 词表
         no_terms: 此词表尚无词条。
         none: 此租户尚未设置任何受控词表。
-        origin: 来源
-        origin_hint: 词表的定义位置，并由此决定其词条能否在此处编辑。
-        origins:
-          cached: 导入的副本
-          database: 此租户
-          file: 配置文件
-          remote: 外部服务
         providers:
           crossref: Crossref
           discogs: Discogs
@@ -455,6 +448,7 @@ zh:
         unconfigured: 需要设置
         unconfigured_help: 此服务需要先配置凭据才能使用。在此之前，引用它的字段将接受自由文本，而不提供建议。
         unused: 没有元数据属性使用此词表。
+        unused_profile_hint: 如需启用，请将此词表的源键添加到租户元数据配置档中某个属性的受控值。
         used_by: 使用它的属性
         used_by_hint: 由此词表控制的元数据属性，其名称与 Bulkrax 导入和元数据配置档中所用的一致。
         used_by_work_types: '可用于：'

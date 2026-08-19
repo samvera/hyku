@@ -150,13 +150,13 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
     end
   end
 
-  context 'as a user who cannot manage the tenant' do
+  context 'as a user with no deposit access' do
     before do
       user = Apartment::Tenant.switch(account.tenant) { create(:user) }
       login_as(user, scope: :user)
     end
 
-    it 'denies access' do
+    it 'refuses the page' do
       get "http://#{account.cname}/dashboard/controlled_vocabularies"
 
       expect(response).not_to have_http_status(:success)

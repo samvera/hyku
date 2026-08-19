@@ -159,7 +159,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
 
   # Controlled vocabularies, viewable only from the dashboard
   scope :dashboard, module: 'hyrax/dashboard' do
-    resources :controlled_vocabularies, only: [:index, :show]
+    resources :controlled_vocabularies, only: [:index, :show, :new, :create]
   end
 
   # Guided deposit wizard

@@ -7,6 +7,10 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
   # privileges inside it and every request redirects.
   attr_reader :admin
 
+  # Derived rather than written out: param_key drops the Qa module, so the form
+  # nests fields under local_authority and a hand-written key would not match.
+  let(:param_key) { Qa::LocalAuthority.model_name.param_key }
+
   before do
     WebMock.disable!
     Apartment::Tenant.create(account.tenant)
@@ -93,6 +97,57 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
 
       expect(response).to have_http_status(:not_found)
     end
+
+    describe 'creating a vocabulary' do
+      it 'offers the form' do
+        get "http://#{account.cname}/dashboard/controlled_vocabularies/new"
+
+        expect(response).to have_http_status(:success)
+      end
+
+      it 'creates the vocabulary and opens it so terms can be added' do
+        post "http://#{account.cname}/dashboard/controlled_vocabularies",
+             params: { param_key => { label: 'Lab Names', description: 'Where the work was done.' } }
+
+        vocabulary = Apartment::Tenant.switch(account.tenant) { Qa::LocalAuthority.find_by(name: 'lab_names') }
+
+        expect(vocabulary.label).to eq 'Lab Names'
+        expect(vocabulary.description).to eq 'Where the work was done.'
+        # The app appends a locale param, so match the path rather than the whole url.
+        expect(response.location).to include '/dashboard/controlled_vocabularies/lab_names'
+      end
+
+      it 'ignores a name supplied in the request' do
+        post "http://#{account.cname}/dashboard/controlled_vocabularies",
+             params: { param_key => { label: 'Lab Names', name: 'something_else' } }
+
+        names = Apartment::Tenant.switch(account.tenant) { Qa::LocalAuthority.pluck(:name) }
+
+        expect(names).to include 'lab_names'
+        expect(names).not_to include 'something_else'
+      end
+
+      it 'redisplays the form when the vocabulary is not valid' do
+        post "http://#{account.cname}/dashboard/controlled_vocabularies",
+             params: { param_key => { label: '' } }
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.body).to include 'Name'
+      end
+
+      # An accented label is the case a client-side preview would get wrong:
+      # parameterize transliterates, so the key is cafe_terms, not caf_terms.
+      it 'shows the source key it will use when redisplaying' do
+        post "http://#{account.cname}/dashboard/controlled_vocabularies",
+             params: { param_key => { label: 'Café Terms' } }
+        # Duplicate the label so the form comes back rather than saving.
+        post "http://#{account.cname}/dashboard/controlled_vocabularies",
+             params: { param_key => { label: 'Café Terms' } }
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.body).to include 'cafe_terms'
+      end
+    end
   end
 
   context 'as a user who cannot manage the tenant' do
@@ -105,6 +160,37 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
       get "http://#{account.cname}/dashboard/controlled_vocabularies"
 
       expect(response).not_to have_http_status(:success)
+    end
+  end
+
+  # Viewing is granted to depositors, creating only to admins, so the two abilities
+  # have to gate different actions.
+  context 'as a user who can view but not manage' do
+    before do
+      user = Apartment::Tenant.switch(account.tenant) { create(:user) }
+      allow_any_instance_of(Ability).to receive(:can_import_works?).and_return(true)
+      login_as(user, scope: :user)
+    end
+
+    it 'allows the listing' do
+      get "http://#{account.cname}/dashboard/controlled_vocabularies"
+
+      expect(response).to have_http_status(:success)
+    end
+
+    it 'refuses the form' do
+      get "http://#{account.cname}/dashboard/controlled_vocabularies/new"
+
+      expect(response).not_to have_http_status(:success)
+    end
+
+    it 'refuses the create' do
+      post "http://#{account.cname}/dashboard/controlled_vocabularies",
+           params: { param_key => { label: 'Lab Names' } }
+
+      created = Apartment::Tenant.switch(account.tenant) { Qa::LocalAuthority.exists?(name: 'lab_names') }
+
+      expect(created).to be false
     end
   end
 

@@ -273,11 +273,16 @@ en:
         active: Active
         awaiting_import: Not imported
         awaiting_import_help: 'This vocabulary is available but has no terms in this tenant yet. Populate it by running: %{task}'
+        create: Create vocabulary
+        created: '%{name} was created. Add its terms below.'
         description: Description
+        description_help: Optional. Explains to other staff what this vocabulary is for.
         inactive: Inactive
         label: Label
         label_hint: What a depositor sees in the form. Safe to reword without affecting stored records.
         name: Vocabulary
+        new_help: Name the vocabulary, and its source key is set from that name. The key is what a metadata profile cites, so it cannot be changed afterwards.
+        new_title: New vocabulary
         no_terms: This vocabulary has no terms yet.
         none: No controlled vocabularies have been set up for this tenant yet.
         origin: Source
@@ -307,8 +312,10 @@ en:
           other: (%{count} retired)
         show_title: 'Controlled Vocabulary: %{name}'
         source_key: Source key
-        source_key_hint: Paste this into a metadata profile field to control that field with this vocabulary.
+        source_key_from_name: The source key is set from the name above.
         source_key_help: Paste a source key into a metadata profile field to control that field with this vocabulary. Vocabularies managed in this tenant can be edited here; those defined in a configuration file or by an external service cannot.
+        source_key_hint: Paste this into a metadata profile field to control that field with this vocabulary.
+        source_key_will_be_html: This will be saved with the source key %{key}.
         status: Status
         status_hint: Whether this vocabulary is ready to use, or needs something set up first.
         status_unknown: Unspecified

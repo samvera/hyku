@@ -6,6 +6,10 @@ module Qa
 
     has_many :local_authority_entries, dependent: :destroy
 
+    # Create only: a metadata profile cites the name and works store terms found
+    # through it, so a later relabel must not move it.
+    before_validation :derive_name_from_label, on: :create
+
     validates :name, presence: true
     # Guarded on name_changed? so rows predating these rules stay editable.
     validates :name,
@@ -27,6 +31,17 @@ module Qa
     # Bare, matching how the file-based vocabularies are already cited there.
     def source_key
       name
+    end
+
+    # Use underscores to match the vocabularies already shipped (`learning_resource_types`).
+    def self.name_for(label)
+      label.to_s.parameterize(separator: '_')
+    end
+
+    private
+
+    def derive_name_from_label
+      self.name = self.class.name_for(label) if name.blank? && label.present?
     end
   end
 end

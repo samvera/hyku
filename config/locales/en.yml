@@ -752,6 +752,21 @@ en:
   screening_room:
     chrome:
       toggle_navigation: Toggle navigation
+    homepage:
+      player:
+        close: Close
+      spotlight:
+        editor_heading: Featured works
+        featured: Featured
+        hold: Pause
+        label: Featured works
+        quick_view: Quick view
+        reorder_hint: Drag an item to change the order it appears in, then save.
+        resume: Play
+        save_order: Save order
+        segment: 'Show %{title}'
+        unfeature_confirm: Remove this work from the featured list?
+        view_work: View work
   single_signon:
     index:
       sign_in_with_provider: Sign in with %{provider}

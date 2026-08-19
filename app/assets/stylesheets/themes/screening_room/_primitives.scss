@@ -65,3 +65,48 @@
     @include scr-focus-ring;
   }
 }
+
+@mixin scr-controls-reset {
+  .badge,
+  .btn,
+  .card,
+  .dropdown-menu,
+  .form-control,
+  .modal-content {
+    border-radius: 0;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  .btn:focus-visible,
+  .form-control:focus-visible {
+    @include scr-focus-ring;
+  }
+}
+
+@mixin scr-dropdown {
+  background-color: var(--scr-raised, #{$scr-raised});
+  // the popup's fill barely separates it from the page, so its edge is the
+  // boundary and carries the rule that clears 3:1
+  border: 1px solid var(--scr-rule-strong, #{$scr-rule-strong});
+
+  .dropdown-header {
+    color: $scr-ink-muted;
+  }
+
+  .dropdown-divider {
+    border-top-color: var(--scr-rule-input, #{$scr-rule-input});
+  }
+
+  .dropdown-item {
+    color: $scr-ink-body;
+
+    &:hover,
+    &:focus {
+      background-color: var(--scr-chrome, #{$scr-chrome});
+      color: $scr-ink;
+    }
+  }
+}

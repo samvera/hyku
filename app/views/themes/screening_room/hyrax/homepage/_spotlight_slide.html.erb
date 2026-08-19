@@ -1,0 +1,40 @@
+<% document = featured.solr_document %>
+<% kind = scr_player_kind(representative) %>
+
+<div class="scr-stage">
+  <img class="scr-stage-image" src="<%= theme_thumbnail_url(document) %>" alt="" aria-hidden="true">
+  <div class="scr-stage-scrim"></div>
+
+  <div class="scr-stage-content">
+    <div class="scr-stage-body">
+      <p class="scr-stage-eyebrow">
+        <span class="scr-stage-context"><%= t('screening_room.homepage.spotlight.featured') %></span>
+        <span class="scr-chip"><%= Array(document.resource_type).first.presence || document.human_readable_type %></span>
+      </p>
+
+      <div class="scr-stage-actions">
+        <% if kind %>
+          <button type="button" class="scr-action scr-action-primary" data-toggle="modal"
+                  data-target="#scr-player-<%= featured.id %>">
+            <span class="fa fa-eye scr-action-icon" aria-hidden="true"></span>
+            <%= t('screening_room.homepage.spotlight.quick_view') %>
+          </button>
+        <% end %>
+        <%= link_to t('screening_room.homepage.spotlight.view_work'), [main_app, featured],
+                    class: 'scr-action scr-action-secondary' %>
+      </div>
+
+      <h2 class="scr-stage-title"><%= theme_blurb(document.title_or_label, length: 80) %></h2>
+
+      <% blurb = theme_blurb(Array(document.description).first, length: 220) %>
+      <% if blurb.present? %>
+        <p class="scr-stage-description"><%= blurb %></p>
+      <% end %>
+    </div>
+
+    <div class="scr-stage-card <%= 'is-openable' if kind %>"
+         <% if kind %>data-toggle="modal" data-target="#scr-player-<%= featured.id %>"<% end %>>
+      <img src="<%= theme_thumbnail_url(document) %>" alt="<%= thumbnail_alt_text_for(document) %>">
+    </div>
+  </div>
+</div>

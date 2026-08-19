@@ -25,6 +25,7 @@ body.screening_room_show.works-show {
 
 body.screening_room.public-facing,
 body.screening_room_show.public-facing {
+  @include scr-controls-reset;
   @include scr-sans;
 
   // ---- masthead ----
@@ -64,27 +65,7 @@ body.screening_room_show.public-facing {
   }
 
   #masthead .dropdown-menu {
-    background-color: var(--scr-raised, #{$scr-raised});
-    border: 1px solid var(--scr-rule-input, #{$scr-rule-input});
-    border-radius: 0;
-
-    .dropdown-header {
-      color: $scr-ink-muted;
-    }
-
-    .dropdown-divider {
-      border-top-color: var(--scr-rule-input, #{$scr-rule-input});
-    }
-
-    .dropdown-item {
-      color: $scr-ink-body;
-
-      &:hover,
-      &:focus {
-        background-color: var(--scr-chrome, #{$scr-chrome});
-        color: $scr-ink;
-      }
-    }
+    @include scr-dropdown;
   }
 
   @media (max-width: 767px) {
@@ -268,12 +249,15 @@ body.screening_room_show.public-facing {
       display: contents;
     }
 
+    #search-field-header {
+      border-radius: 0;
+    }
+
     .form-control {
       background-color: var(--scr-raised, #{$scr-raised});
       // the box is the only thing delimiting the field, so its edge carries the
       // rule that clears 3:1 rather than the subtler input rule
       border: 1px solid var(--scr-rule-strong, #{$scr-rule-strong});
-      border-radius: 0;
       color: $scr-ink;
       height: 44px;
       order: 0;
@@ -294,7 +278,6 @@ body.screening_room_show.public-facing {
     #search-submit-header {
       background-color: var(--scr-accent, #{$scr-accent}) !important;
       border-color: var(--scr-accent, #{$scr-accent}) !important;
-      border-radius: 0;
       color: var(--scr-accent-ink, #{$scr-accent-ink}) !important;
       font-weight: 700;
       order: 1;
@@ -326,12 +309,21 @@ body.screening_room_show.public-facing {
     .input-group-append > .btn-secondary.dropdown-toggle {
       background-color: var(--scr-raised, #{$scr-raised}) !important;
       border: 1px solid var(--scr-rule-strong, #{$scr-rule-strong}) !important;
-      border-radius: 0;
       border-right: 0 !important;
       color: $scr-ink-body !important;
       height: 44px;
       margin: 0;
       order: -1;
+      position: relative;
+    }
+
+    .dropdown-menu {
+      @include scr-dropdown;
+      left: 0 !important;
+      margin: 0;
+      right: auto !important;
+      top: 100% !important;
+      transform: none !important;
     }
   }
 

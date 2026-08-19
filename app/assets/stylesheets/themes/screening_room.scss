@@ -15,4 +15,586 @@
   #content-wrapper > .alert {
     margin: 16px $scr-gutter-xl;
   }
+
+  // ---- featured works reorder ----
+  .scr-spotlight-editor {
+    @include scr-gutter;
+    padding-bottom: 40px;
+    padding-top: 32px;
+  }
+
+  .scr-section-title {
+    @include scr-serif;
+    color: $scr-ink;
+    font-size: 26px;
+    font-weight: 400;
+    margin: 0 0 24px;
+  }
+
+  .scr-reorder,
+  .dd-dragel {
+    .dd-list {
+      margin: 0;
+      padding: 0;
+    }
+
+    .featured-item {
+      list-style: none;
+      margin: 0 0 6px;
+      padding: 0;
+      position: relative;
+    }
+
+    .dd3-handle {
+      background: var(--scr-chrome, #{$scr-chrome});
+      border: 1px solid var(--scr-rule-input, #{$scr-rule-input});
+      border-radius: 0;
+      border-right: 0;
+      bottom: 0;
+      font-size: 0;
+      height: auto;
+      margin: 0;
+      text-indent: 0;
+      width: 32px;
+
+      &::before {
+        color: $scr-ink-muted;
+        content: '\2261';
+        font-size: 18px;
+        font-weight: 400;
+        left: 0;
+        position: absolute;
+        right: 0;
+        text-align: center;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      &:hover::before {
+        color: $scr-ink;
+      }
+    }
+
+    .dd3-content.card {
+      align-items: center;
+      background: var(--scr-raised, #{$scr-raised});
+      // the appearance pins .card's border-color for the facet panels
+      border: 1px solid var(--scr-rule-input, #{$scr-rule-input}) !important;
+      display: flex;
+      flex-direction: row;
+      margin: 0;
+      min-height: 52px;
+      padding: 6px 12px 6px 44px;
+    }
+
+    .main.row {
+      flex: 1;
+      margin: 0;
+      min-width: 0;
+    }
+
+    .main.row > .col-sm-12 {
+      align-items: center;
+      column-gap: 12px;
+      display: flex;
+      padding: 0;
+
+      > div {
+        flex: 1;
+        min-width: 0;
+      }
+    }
+
+    h3.float-right {
+      float: none !important;
+      font-size: 15px;
+      margin: 0;
+      order: 2;
+
+      a {
+        color: $scr-ink-muted;
+
+        &:hover,
+        &:focus {
+          color: $scr-danger;
+        }
+      }
+    }
+
+    .featured-item-title h3 {
+      font-size: 14px;
+      line-height: 1.35;
+      margin: 0;
+
+      a {
+        @include scr-link;
+        align-items: center;
+        column-gap: 12px;
+        display: flex;
+      }
+    }
+
+    .featured-item-title img {
+      background: var(--scr-chrome, #{$scr-chrome});
+      flex: none;
+      font-size: 0;
+      height: 36px;
+      object-fit: contain;
+      width: 48px;
+    }
+
+    .dd-placeholder,
+    .dd-empty {
+      background: var(--scr-chrome, #{$scr-chrome});
+      border: 1px dashed var(--scr-rule-strong, #{$scr-rule-strong});
+      margin: 0 0 6px;
+      min-height: 52px;
+    }
+  }
+
+  .scr-reorder-actions {
+    align-items: center;
+    column-gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 18px;
+    row-gap: 12px;
+  }
+
+  .scr-reorder-hint {
+    color: $scr-ink-muted;
+    font-size: 13px;
+    margin: 0;
+  }
+
+  // ---- spotlight ----
+  .scr-spotlight {
+    background: var(--scr-chrome, #{$scr-chrome});
+    // the hold control is positioned against the region, not a slide
+    position: relative;
+
+    &.carousel-fade .carousel-item {
+      transition: opacity $scr-spotlight-fade ease;
+    }
+
+    &.carousel-fade .active.carousel-item-left,
+    &.carousel-fade .active.carousel-item-right {
+      pointer-events: none;
+      transition: opacity 0s $scr-spotlight-fade;
+    }
+  }
+
+  .scr-stage {
+    background: var(--scr-chrome, #{$scr-chrome});
+    overflow: hidden;
+    position: relative;
+  }
+
+  .scr-stage-image {
+    filter: blur(28px) saturate(1.1);
+    height: 100%;
+    left: 0;
+    object-fit: cover;
+    opacity: 0.55;
+    position: absolute;
+    top: 0;
+    transform: scale(1.12);
+    width: 100%;
+  }
+
+  .scr-stage-scrim {
+    background: linear-gradient(90deg,
+      color-mix(in srgb, var(--scr-chrome, #{$scr-chrome}) 96%, transparent) 0%,
+      color-mix(in srgb, var(--scr-chrome, #{$scr-chrome}) 70%, transparent) 45%,
+      color-mix(in srgb, var(--scr-chrome, #{$scr-chrome}) 20%, transparent) 100%);
+    inset: 0;
+    position: absolute;
+  }
+
+  .scr-stage-content {
+    @include scr-gutter;
+    align-items: stretch;
+    column-gap: 64px;
+    display: flex;
+    min-height: 640px;
+    padding-bottom: 60px;
+    padding-top: 60px;
+    position: relative;
+
+    @media (max-width: $scr-desktop-max) {
+      column-gap: 44px;
+      min-height: 570px;
+    }
+
+    @media (max-width: $scr-laptop-max) {
+      column-gap: 28px;
+      min-height: 500px;
+    }
+
+    @media (max-width: $scr-mobile-max) {
+      min-height: 520px;
+    }
+  }
+
+  .scr-stage-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+    padding-top: 90px;
+
+    @media (max-width: $scr-desktop-max) {
+      padding-top: 64px;
+    }
+
+    @media (max-width: $scr-laptop-max) {
+      padding-top: 40px;
+    }
+  }
+
+  .scr-stage-card {
+    align-items: center;
+    align-self: center;
+    aspect-ratio: 5 / 4;
+    background: rgba(8, 9, 10, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    display: flex;
+    flex: none;
+    justify-content: center;
+    padding: 14px;
+    width: 500px;
+
+    img {
+      max-height: 100%;
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    &.is-openable {
+      cursor: pointer;
+
+      &:hover {
+        border-color: rgba(255, 255, 255, 0.4);
+      }
+    }
+
+    @media (max-width: $scr-desktop-max) {
+      width: 445px;
+    }
+
+    @media (max-width: $scr-laptop-max) {
+      width: 300px;
+    }
+
+    @media (max-width: $scr-mobile-max) {
+      display: none;
+    }
+  }
+
+  .scr-stage-eyebrow {
+    align-items: center;
+    column-gap: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 0;
+    row-gap: 8px;
+  }
+
+  .scr-chip {
+    @include scr-sans;
+    background: var(--scr-accent, #{$scr-accent});
+    color: var(--scr-accent-ink, #{$scr-accent-ink});
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    padding: 5px 11px;
+    text-transform: uppercase;
+  }
+
+  .scr-stage-context {
+    @include scr-eyebrow;
+    color: $scr-ink-footer;
+    letter-spacing: 0.18em;
+  }
+
+  // the indicators and the hold control read as one cluster against the region,
+  // which keeps them clear of a long title as the stage grows
+  .scr-spotlight-controls {
+    align-items: center;
+    bottom: 26px;
+    column-gap: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    left: $scr-gutter-xl;
+    position: absolute;
+    row-gap: 10px;
+    z-index: 3;
+
+    @media (max-width: $scr-desktop-max) {
+      left: $scr-gutter-lg;
+    }
+
+    @media (max-width: $scr-laptop-max) {
+      left: $scr-gutter-md;
+    }
+
+    @media (max-width: $scr-mobile-max) {
+      bottom: 16px;
+      left: $scr-gutter-sm;
+    }
+  }
+
+  .scr-spotlight-segments {
+    column-gap: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    row-gap: 8px;
+  }
+
+  .scr-spotlight-hold {
+    align-items: center;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--scr-rule-strong, #{$scr-rule-strong});
+    color: $scr-ink;
+    display: inline-flex;
+    height: 26px;
+    justify-content: center;
+    padding: 0;
+    width: 26px;
+
+    &:hover,
+    &:focus {
+      border-color: $scr-ink;
+      color: #fff;
+    }
+
+    &:focus-visible {
+      @include scr-focus-ring;
+    }
+  }
+
+  // two bars while it is running, a triangle once the reader has held it
+  .scr-spotlight-hold-icon {
+    display: block;
+    height: 10px;
+    position: relative;
+    width: 10px;
+
+    &::before,
+    &::after {
+      background: currentcolor;
+      bottom: 0;
+      content: '';
+      position: absolute;
+      top: 0;
+      width: 3px;
+    }
+
+    &::before {
+      left: 0;
+    }
+
+    &::after {
+      right: 0;
+    }
+  }
+
+  .scr-spotlight-hold[data-held='true'] .scr-spotlight-hold-icon {
+    &::before {
+      background: none;
+      border-bottom: 5px solid transparent;
+      border-left: 9px solid currentcolor;
+      border-top: 5px solid transparent;
+      bottom: auto;
+      left: 1px;
+      top: 0;
+      width: 0;
+    }
+
+    &::after {
+      content: none;
+    }
+  }
+
+  .scr-spotlight-segment {
+    background: var(--scr-rule-strong, #{$scr-rule-strong});
+    border: 0;
+    cursor: pointer;
+    display: block;
+    height: 3px;
+    padding: 0;
+    width: 34px;
+
+    &.is-current {
+      background: #ffffff;
+    }
+
+    &:hover {
+      background: $scr-ink-body;
+    }
+
+    &:focus-visible {
+      @include scr-focus-ring;
+    }
+  }
+
+  .scr-stage-actions {
+    column-gap: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 26px 0 36px;
+    row-gap: 12px;
+  }
+
+  .scr-action {
+    @include scr-sans;
+    align-items: center;
+    border: 1px solid transparent;
+    column-gap: 11px;
+    display: inline-flex;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 13px 24px;
+    text-decoration: none;
+
+    &:focus-visible {
+      @include scr-focus-ring;
+    }
+  }
+
+  .scr-action-primary {
+    background: #ffffff;
+    color: var(--scr-base, #{$scr-base});
+
+    &:hover,
+    &:focus {
+      background: $scr-ink;
+      color: var(--scr-base, #{$scr-base});
+    }
+  }
+
+  .scr-action-secondary {
+    background: transparent;
+    border-color: var(--scr-rule-strong, #{$scr-rule-strong});
+    color: $scr-ink;
+    font-weight: 400;
+    padding-left: 22px;
+    padding-right: 22px;
+
+    &:hover,
+    &:focus {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: $scr-ink;
+      color: $scr-ink;
+    }
+  }
+
+  .scr-action-icon {
+    flex: none;
+    font-size: 15px;
+  }
+
+  .scr-stage-title {
+    @include scr-sans;
+    color: #ffffff;
+    font-size: 46px;
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+    margin: 0 0 16px;
+    overflow-wrap: anywhere;
+    text-wrap: pretty;
+
+    @media (max-width: $scr-laptop-max) {
+      font-size: 38px;
+    }
+
+    @media (max-width: $scr-mobile-max) {
+      font-size: 30px;
+    }
+  }
+
+  .scr-stage-description {
+    color: $scr-ink-body;
+    font-size: 17px;
+    line-height: 1.7;
+    margin: 0;
+    max-width: 640px;
+    overflow-wrap: anywhere;
+    text-wrap: pretty;
+  }
+
+  // ---- player modal ----
+  .scr-player-dialog {
+    max-width: 1120px;
+    width: auto;
+  }
+
+  .scr-player-content {
+    background: var(--scr-chrome-deep, #{$scr-chrome-deep});
+    border: 1px solid var(--scr-rule-strong, #{$scr-rule-strong});
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+    padding: 0;
+    position: relative;
+  }
+
+  .scr-player-close {
+    background: rgba(0, 0, 0, 0.6);
+    border: 0;
+    color: $scr-ink;
+    height: 40px;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 40px;
+    z-index: 2;
+
+    &::before,
+    &::after {
+      background: currentColor;
+      content: '';
+      height: 2px;
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      width: 18px;
+    }
+
+    &::before {
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    &::after {
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
+
+    &:hover,
+    &:focus {
+      background: rgba(0, 0, 0, 0.85);
+      color: #ffffff;
+    }
+
+    &:focus-visible {
+      @include scr-focus-ring;
+    }
+  }
+
+  .scr-player-media {
+    display: block;
+    margin: 0 auto;
+    max-height: calc(100vh - 160px);
+    max-width: 100%;
+  }
+
+  .scr-player-audio {
+    padding: 64px 32px 32px;
+    width: 100%;
+  }
+
+  .scr-player-image {
+    height: auto;
+    object-fit: contain;
+  }
 }

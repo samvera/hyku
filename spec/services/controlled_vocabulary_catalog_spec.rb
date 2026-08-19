@@ -75,6 +75,43 @@ RSpec.describe ControlledVocabularyCatalog do
     end
   end
 
+  describe '.terms_for' do
+    let(:vocabulary) { Qa::LocalAuthority.create!(name: 'reading_rooms', label: 'Reading Rooms') }
+
+    it 'reads the terms a database row holds' do
+      vocabulary.local_authority_entries.create!(label: 'Special Collections', uri: 'special-collections')
+      entry = described_class.database.detect { |e| e.source_key == 'reading_rooms' }
+
+      expect(described_class.terms_for(entry).first)
+        .to include('id' => 'special-collections', 'label' => 'Special Collections', 'active' => true)
+    end
+
+    it 'returns nothing for an imported copy, which holds too many terms to list' do
+      mesh = Qa::LocalAuthority.create!(name: 'mesh')
+      mesh.local_authority_entries.create!(label: 'Diabetes', uri: 'mesh:diabetes')
+      entry = described_class.database.detect { |e| e.source_key == 'mesh' }
+
+      expect(described_class.terms_for(entry)).to be_nil
+    end
+
+    # A vocabulary can hold tens of thousands of terms, so the page caps the list.
+    # The cap has to be visible to the caller, or a reader concludes a term is absent.
+    it 'stops at the term limit' do
+      stub_const("#{described_class}::TERM_LIMIT", 2)
+      3.times { |i| vocabulary.local_authority_entries.create!(label: "Room #{i}", uri: "room-#{i}") }
+      entry = described_class.database.detect { |e| e.source_key == 'reading_rooms' }
+
+      expect(described_class.terms_for(entry).size).to eq 2
+      expect(entry.term_count).to eq 3
+    end
+
+    it 'returns nothing for a remote service, which cannot be enumerated' do
+      entry = described_class.remote.detect { |e| e.source_key == 'loc/subjects' }
+
+      expect(described_class.terms_for(entry)).to be_nil
+    end
+  end
+
   describe '.file_based' do
     it 'lists the yaml vocabularies no database row claims' do
       expect(described_class.file_based.map(&:source_key)).to contain_exactly('map_regions', 'geo_regions')
@@ -160,15 +197,21 @@ RSpec.describe ControlledVocabularyCatalog do
       expect(described_class.remote.map(&:source_key)).not_to include 'mesh'
     end
 
-    # Read from this tenant's settings, not from Qa::Authorities::Geonames.username:
-    # that is a class_attribute holding whichever tenant configured Hyrax last.
+    # Read through the account's accessors, not Site.account.settings and not
+    # Qa::Authorities::Geonames.username. The hash skips the environment fallbacks
+    # the reader applies, and the qa class attribute holds whichever tenant
+    # configured Hyrax last in this process.
     context 'with a tenant' do
-      let(:account) { instance_double(Account, settings: settings) }
+      let(:account) do
+        instance_double(Account, geonames_username: geonames, discogs_user_token: discogs)
+      end
+
+      let(:discogs) { '' }
 
       before { allow(Site).to receive(:account).and_return(account) }
 
       context 'whose credentials are set' do
-        let(:settings) { { 'geonames_username' => 'scientist' } }
+        let(:geonames) { 'qrtfhx' }
 
         it 'does not flag the service' do
           expect(described_class.remote.detect { |e| e.source_key == 'geonames' }).to be_configured
@@ -176,7 +219,7 @@ RSpec.describe ControlledVocabularyCatalog do
       end
 
       context 'whose credentials are missing' do
-        let(:settings) { { 'geonames_username' => '' } }
+        let(:geonames) { '' }
 
         it 'flags the service' do
           expect(described_class.remote.detect { |e| e.source_key == 'geonames' }).not_to be_configured
@@ -186,6 +229,38 @@ RSpec.describe ControlledVocabularyCatalog do
           expect(described_class.remote.detect { |e| e.source_key == 'loc/subjects' }).to be_configured
         end
       end
+
+      # The reader returns whatever the HYKU_/HYRAX_ fallback supplies, so a
+      # credential set only in the environment still counts as configured.
+      context 'whose credentials come from the environment' do
+        let(:geonames) { 'zmbvkp' }
+
+        it 'does not flag the service' do
+          expect(described_class.remote.detect { |e| e.source_key == 'geonames' }).to be_configured
+        end
+      end
+    end
+
+    # A tenant whose settings have never been written must not read as configured:
+    # the credential is genuinely absent.
+    context 'with a tenant that has no settings' do
+      before do
+        allow(Site).to receive(:account)
+          .and_return(instance_double(Account, geonames_username: nil, discogs_user_token: nil))
+      end
+
+      it 'flags the services that need credentials' do
+        expect(described_class.remote.detect { |e| e.source_key == 'geonames' }).not_to be_configured
+        expect(described_class.remote.detect { |e| e.provider == 'discogs' }).not_to be_configured
+      end
+    end
+
+    context 'with no tenant at all' do
+      before { allow(Site).to receive(:account).and_return(nil) }
+
+      it 'flags the services that need credentials' do
+        expect(described_class.remote.detect { |e| e.source_key == 'geonames' }).not_to be_configured
+      end
     end
   end
 
@@ -193,6 +268,14 @@ RSpec.describe ControlledVocabularyCatalog do
   # replaces all of them, so Qa::Authorities::Mesh reports locally_owned? false and
   # the catalog files it separately.
   describe 'a vocabulary holding an imported copy' do
+    # The locale names it, so importing must not rename it: display_label alone would
+    # titleize the source key and turn "MeSH" into "Mesh".
+    it 'keeps its name once imported' do
+      Qa::LocalAuthority.create!(name: 'mesh')
+
+      expect(described_class.database.detect { |e| e.source_key == 'mesh' }.label).to eq 'MeSH'
+    end
+
     it 'is listed as cached, awaiting its import task' do
       entry = described_class.database.detect { |e| e.source_key == 'mesh' }
 
@@ -211,23 +294,19 @@ RSpec.describe ControlledVocabularyCatalog do
       entry = described_class.database.detect { |e| e.source_key == 'mesh' }
 
       expect(entry).not_to be_editable
-      expect(entry).to be_stored_locally
+      expect(entry).to be_cached
     end
 
-    # Read-only, but worth opening: a depositor needs to look up the term id.
-    it 'is viewable once its terms are imported' do
+    # A MeSH release runs to about 30,000 terms, so the list is not offered at all
+    # and the index does not link it.
+    it 'has no term list, imported or not' do
       Qa::LocalAuthority.create!(name: 'mesh')
                         .local_authority_entries.create!(label: 'Diabetes', uri: 'mesh:diabetes')
 
       entry = described_class.database.detect { |e| e.source_key == 'mesh' }
 
-      expect(entry).to be_viewable
-    end
-
-    it 'is not viewable before then, because there is nothing to show' do
-      entry = described_class.database.detect { |e| e.source_key == 'mesh' }
-
       expect(entry).not_to be_viewable
+      expect(described_class.terms_for(entry)).to be_nil
     end
 
     it 'stops awaiting import once terms exist' do

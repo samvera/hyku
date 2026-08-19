@@ -19,13 +19,14 @@ class ControlledVocabularyCatalog
   # Editable first, then read-only local, then the external services.
   ORIGIN_ORDER = { database: 0, cached: 1, file: 2, remote: 3 }.freeze
 
+  # How many terms a page will list. A vocabulary can hold tens of thousands — the
+  # MeSH release is around 30,000 — and rendering them all serves nobody. The view
+  # compares this against the real count so a truncated list says so.
+  TERM_LIMIT = 500
+
   Entry = Struct.new(:source_key, :label, :origin, :description, :term_count,
                      :vocabulary, :provider, :configured, :import_task,
                      keyword_init: true) do
-    def stored_locally?
-      origin == :database || origin == :cached
-    end
-
     # Not staff's to change: the next import replaces every row, and the identifiers
     # belong to the upstream authority.
     def cached?
@@ -39,10 +40,10 @@ class ControlledVocabularyCatalog
       origin == :database && vocabulary.present?
     end
 
-    # Anything whose terms are stored here, once the row exists, plus the yaml
-    # vocabularies. Remote services are not enumerable, so they never open.
+    # Only what has a term list worth opening. Remote services are not enumerable,
+    # and an imported copy holds too many terms to list.
     def viewable?
-      (stored_locally? && vocabulary.present?) || origin == :file
+      editable? || origin == :file
     end
 
     # nil means the authority needs no credentials, so only a known-missing one is
@@ -105,27 +106,45 @@ class ControlledVocabularyCatalog
       end
     end
 
+    # Checks the database rows first: assembling the whole catalog walks every qa
+    # authority and parses every yaml, which a show page does not need.
+    #
     # @raise [ActiveRecord::RecordNotFound] so an unknown key 404s rather than
     #   rendering an empty page.
     def find!(source_key)
-      all.detect { |entry| entry.source_key == source_key.to_s } ||
-        raise(ActiveRecord::RecordNotFound, "No controlled vocabulary named #{source_key}")
+      key = source_key.to_s
+
+      database.detect { |entry| entry.source_key == key } ||
+        all.detect { |entry| entry.source_key == key } ||
+        raise(ActiveRecord::RecordNotFound, "No controlled vocabulary named #{key}")
     end
 
-    # Terms for any local vocabulary, whether a database row or a yaml file backs
-    # it: Qa::Authorities::LocalVocabulary resolves both and returns the same shape.
-    # Remote authorities are not enumerable, so they get nothing.
+    # Read from the entries table rather than through the authority, whose classes do
+    # not agree: Mesh implements only #search, so #all raises, and LocalVocabulary
+    # silently caps at 1,000.
     #
-    # @return [Array<Hash>, nil] each with id, label, and active
-    # NotImplementedError is rescued alongside StandardError because it descends
-    # from ScriptError: an authority that implements only #search raises rather
-    # than returning nothing when asked for every term.
+    # @return [Array<Hash>, nil] each with id, label, and active; nil when the terms
+    #   cannot be listed at all
     def terms_for(entry)
-      return unless entry.stored_locally? || entry.origin == :file
+      return file_terms(entry.source_key) if entry.origin == :file
+      # Imported copies are not listed at all: a MeSH release runs to about 30,000
+      # terms, and a page of the first few hundred tells a reader nothing useful.
+      return unless entry.origin == :database
+      return [] if entry.vocabulary.nil?
 
-      Qa::Authorities::Local.subauthority_for(entry.source_key).all
+      entry.vocabulary.local_authority_entries.ordered.limit(TERM_LIMIT).map do |term|
+        { 'id' => term.uri, 'label' => term.label, 'active' => term.active }
+      end
+    end
+
+    # A yaml vocabulary has no rows, so its terms come from the authority.
+    def file_terms(name)
+      Qa::Authorities::Local.subauthority_for(name).all.first(TERM_LIMIT).map do |term|
+        term = term.with_indifferent_access
+        { 'id' => term[:id], 'label' => term[:label], 'active' => term[:active] }
+      end
     rescue StandardError, NotImplementedError => e
-      Rails.logger.warn("Unable to list terms for #{entry.source_key}: #{e.message}")
+      Rails.logger.warn("Unable to list terms for #{name}: #{e.message}")
       nil
     end
 
@@ -150,7 +169,9 @@ class ControlledVocabularyCatalog
 
     def database_entry(vocabulary, totals)
       Entry.new(source_key: vocabulary.name,
-                label: vocabulary.display_label,
+                # A staff label wins, then the locale, then a titleized name. Skipping
+                # the locale would rename MeSH to "Mesh" once it has a row.
+                label: vocabulary.label.presence || provider_label(vocabulary.name),
                 origin: cached_vocabulary?(vocabulary.name) ? :cached : :database,
                 description: vocabulary.description,
                 term_count: totals.fetch(vocabulary.id, 0),
@@ -215,21 +236,24 @@ class ControlledVocabularyCatalog
       I18n.t("hyku.admin.controlled_vocabulary.providers.#{provider}", default: provider.titleize)
     end
 
-    # nil when an authority needs no credentials, so only the ones that do get
+    # Listed rather than matched on a prefix: `loc` would find `locale_name` and
+    # report the Library of Congress unconfigured.
+    PROVIDER_SETTINGS = { 'discogs' => :discogs_user_token, 'geonames' => :geonames_username }.freeze
+
+    # nil for an authority that needs no credentials, so only the ones that do get
     # flagged.
     #
-    # Read from this tenant's settings rather than from the authority class:
-    # Qa::Authorities::Geonames.username is a class_attribute, so it holds whichever
-    # tenant configured Hyrax most recently in this process, not the one being
-    # viewed.
+    # Read through the account's accessors, not Site.account.settings: the readers
+    # apply the HYKU_/HYRAX_ environment fallbacks, so the raw hash reports a
+    # credential missing when the environment supplies it.
     def remote_configured?(provider)
-      settings = Site.account&.settings
-      return if settings.blank?
+      setting = PROVIDER_SETTINGS[provider]
+      return if setting.nil?
 
-      case provider
-      when 'discogs' then settings['discogs_user_token'].present?
-      when 'geonames' then settings['geonames_username'].present?
-      end
+      account = Site.account
+      return false if account.nil?
+
+      account.public_send(setting).present?
     rescue StandardError => e
       Rails.logger.warn("Unable to check configuration for #{provider}: #{e.message}")
       nil

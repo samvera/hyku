@@ -20,7 +20,6 @@ module Hyrax
 
       def show
         @entry = ControlledVocabularyCatalog.find!(params[:id])
-        @controlled_vocabulary = @entry.vocabulary
         add_breadcrumb t(:'hyrax.controls.home'), root_path
         add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
         # main_app, not the bare helper: this controller is namespaced under

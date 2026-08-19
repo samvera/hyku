@@ -19,13 +19,6 @@ module Qa
 
     scope :ordered, -> { order(Arel.sql("COALESCE(NULLIF(label, ''), name)")) }
 
-    def self.file_based_names
-      Qa::Authorities::Local.names
-    rescue Qa::ConfigDirectoryNotFound => e
-      Rails.logger.warn("Unable to list file-based local authorities: #{e.message}")
-      []
-    end
-
     def display_label
       label.presence || name.to_s.titleize
     end

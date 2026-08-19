@@ -16,9 +16,6 @@ RSpec.describe ControlledVocabularyCatalog do
     allow(Qa::Authorities::Local).to receive(:subauthority_for)
       .with('map_regions').and_return(instance_double(Qa::Authorities::Local::FileBasedAuthority,
                                                       all: [{ id: 'north', label: 'North' }]))
-    # Qa::LocalAuthority rejects a name a yaml file already covers, and it reads
-    # that list from Qa directly rather than through this service.
-    allow(Qa::LocalAuthority).to receive(:file_based_names).and_return([])
   end
 
   describe '.all' do
@@ -53,11 +50,10 @@ RSpec.describe ControlledVocabularyCatalog do
       vocabulary.local_authority_entries.create!(label: 'Closed Stacks', uri: 'closed-stacks', active: false)
     end
 
-    it 'counts active terms separately from the total' do
+    it 'counts the terms in the tenant' do
       entry = described_class.database.detect { |e| e.source_key == 'reading_rooms' }
 
       expect(entry.term_count).to eq 2
-      expect(entry.active_term_count).to eq 1
     end
 
     it 'is editable' do
@@ -96,17 +92,15 @@ RSpec.describe ControlledVocabularyCatalog do
       entry = described_class.file_based.detect { |e| e.source_key == 'geo_regions' }
 
       expect(entry.term_count).to be_nil
-      expect(entry).not_to be_counted
     end
   end
 
   describe '.remote' do
-    it 'carries the search url and input type instead of a term count' do
+    it 'names the service instead of counting terms' do
       entry = described_class.remote.detect { |e| e.source_key == 'loc/subjects' }
 
-      expect(entry.url).to eq '/authorities/search/loc/subjects'
-      expect(entry.input_type).to eq 'autocomplete'
-      expect(entry).not_to be_counted
+      expect(entry.provider).to eq 'loc'
+      expect(entry.term_count).to be_nil
     end
 
     it 'is not editable' do

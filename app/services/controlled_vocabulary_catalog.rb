@@ -33,8 +33,8 @@ class ControlledVocabularyCatalog
   }.freeze
 
   Entry = Struct.new(:source_key, :label, :origin, :description, :term_count,
-                     :active_term_count, :vocabulary, :url, :input_type, :provider,
-                     :configured, :import_task, keyword_init: true) do
+                     :vocabulary, :provider, :configured, :import_task,
+                     keyword_init: true) do
     # A registered local authority can have no row yet — mesh before its import —
     # so :database alone does not mean there is anything to edit.
     def editable?
@@ -49,10 +49,6 @@ class ControlledVocabularyCatalog
     # Remote services are not enumerable, so they are not.
     def viewable?
       editable? || origin == :file
-    end
-
-    def counted?
-      !term_count.nil?
     end
 
     # nil means the authority needs no credentials, so only a known-missing one is
@@ -81,12 +77,10 @@ class ControlledVocabularyCatalog
 
     def database
       vocabularies = Qa::LocalAuthority.ordered.to_a
-      # Two grouped counts rather than two per vocabulary.
+      # One grouped count rather than one per vocabulary.
       totals = Qa::LocalAuthorityEntry.where(local_authority: vocabularies).group(:local_authority_id).count
-      actives = Qa::LocalAuthorityEntry.active.where(local_authority: vocabularies)
-                                       .group(:local_authority_id).count
 
-      entries = vocabularies.map { |vocabulary| database_entry(vocabulary, totals, actives) }
+      entries = vocabularies.map { |vocabulary| database_entry(vocabulary, totals) }
 
       (entries + unimported_local).sort_by { |e| e.label.downcase }
     end
@@ -100,8 +94,7 @@ class ControlledVocabularyCatalog
         Entry.new(source_key: name,
                   label: name.titleize,
                   origin: :file,
-                  term_count: file_term_count(name),
-                  input_type: 'select')
+                  term_count: file_term_count(name))
       end
     end
 
@@ -118,8 +111,6 @@ class ControlledVocabularyCatalog
                   label: remote_vocabulary_label(vocabulary) || provider_label(provider),
                   origin: :remote,
                   provider: provider,
-                  url: config[:url],
-                  input_type: config[:type],
                   configured: remote_configured?(provider))
       end
     end
@@ -137,8 +128,8 @@ class ControlledVocabularyCatalog
     #
     # @return [Array<Hash>, nil] each with id, label, and active
     # NotImplementedError is rescued alongside StandardError because it descends
-    # from ScriptError: Qa::Authorities::Mesh implements only #search, so asking it
-    # for every term raises rather than returning nothing.
+    # from ScriptError: an authority that implements only #search raises rather
+    # than returning nothing when asked for every term.
     def terms_for(entry)
       return unless entry.local? || entry.origin == :file
 
@@ -161,15 +152,13 @@ class ControlledVocabularyCatalog
       Hyrax::ControlledVocabularies.remote_authorities
     end
 
-    def database_entry(vocabulary, totals, actives)
+    def database_entry(vocabulary, totals)
       Entry.new(source_key: vocabulary.name,
                 label: vocabulary.display_label,
                 origin: :database,
                 description: vocabulary.description,
                 term_count: totals.fetch(vocabulary.id, 0),
-                active_term_count: actives.fetch(vocabulary.id, 0),
                 vocabulary: vocabulary,
-                input_type: 'select',
                 import_task: import_task_for(vocabulary.name))
     end
 
@@ -186,8 +175,6 @@ class ControlledVocabularyCatalog
                   label: provider_label(source_key),
                   origin: :database,
                   term_count: 0,
-                  active_term_count: 0,
-                  input_type: config[:type],
                   import_task: import_task_for(source_key))
       end
     end

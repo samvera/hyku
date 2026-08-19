@@ -299,7 +299,6 @@ en:
         source_key: Source key
         source_key_help: Paste a source key into a metadata profile field to control that field with this vocabulary. Vocabularies managed in this tenant can be edited here; those defined in a configuration file or by an external service cannot.
         status: Status
-        term_count_unknown: Varies
         term_id: Term ID
         terms: Terms
         unconfigured: Needs setup

@@ -9,11 +9,11 @@
 <div class="card">
   <div class="card-body border-bottom">
     <dl class="row mb-0">
-      <dt class="col-sm-3"><%= t('hyku.admin.controlled_vocabulary.source_key') %></dt>
-      <dd class="col-sm-9"><code><%= @entry.source_key %></code></dd>
+      <dt class="col-sm-2"><%= t('hyku.admin.controlled_vocabulary.source_key') %></dt>
+      <dd class="col-sm-10"><code><%= @entry.source_key %></code></dd>
 
-      <dt class="col-sm-3"><%= t('hyku.admin.controlled_vocabulary.origin') %></dt>
-      <dd class="col-sm-9">
+      <dt class="col-sm-2"><%= t('hyku.admin.controlled_vocabulary.origin') %></dt>
+      <dd class="col-sm-10">
         <%= if @entry.provider
               t("hyku.admin.controlled_vocabulary.providers.#{@entry.provider}",
                 default: @entry.provider.titleize)
@@ -23,13 +23,13 @@
       </dd>
 
       <% if @terms.present? %>
-        <dt class="col-sm-3"><%= t('hyku.admin.controlled_vocabulary.terms') %></dt>
-        <dd class="col-sm-9"><%= @terms.size %></dd>
+        <dt class="col-sm-2"><%= t('hyku.admin.controlled_vocabulary.terms') %></dt>
+        <dd class="col-sm-10"><%= @terms.size %></dd>
       <% end %>
 
       <% if @entry.description.present? %>
-        <dt class="col-sm-3"><%= t('hyku.admin.controlled_vocabulary.description') %></dt>
-        <dd class="col-sm-9"><%= @entry.description %></dd>
+        <dt class="col-sm-2"><%= t('hyku.admin.controlled_vocabulary.description') %></dt>
+        <dd class="col-sm-10"><%= @entry.description %></dd>
       <% end %>
     </dl>
 

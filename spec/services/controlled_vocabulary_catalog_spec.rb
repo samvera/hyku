@@ -61,6 +61,18 @@ RSpec.describe ControlledVocabularyCatalog do
 
       expect(entry).to be_editable
     end
+
+    # An empty vocabulary is where the first term gets added, so having no terms must
+    # not close the page that adds them.
+    it 'is editable and viewable before it has any terms' do
+      Qa::LocalAuthority.create!(name: 'lab_names', label: 'Lab Names')
+
+      entry = described_class.database.detect { |e| e.source_key == 'lab_names' }
+
+      expect(entry.term_count).to eq 0
+      expect(entry).to be_editable
+      expect(entry).to be_viewable
+    end
   end
 
   describe '.file_based' do
@@ -124,40 +136,98 @@ RSpec.describe ControlledVocabularyCatalog do
       expect(described_class.remote.detect { |e| e.source_key == 'geonames' }.label).to eq 'GeoNames'
     end
 
-    it 'flags a service whose credentials are missing' do
-      allow(Qa::Authorities::Geonames).to receive(:username).and_return(nil)
+    # The list comes from qa, not a hand-maintained hash, so every subauthority the
+    # gem supports is offered and each key is one qa can actually resolve.
+    it 'offers every subauthority the gem reports' do
+      keys = described_class.remote.map(&:source_key)
 
-      expect(described_class.remote.detect { |e| e.source_key == 'geonames' }).not_to be_configured
+      expect(keys).to include(*Qa::Authorities::Getty.subauthorities.map { |s| "getty/#{s}" })
     end
 
-    it 'does not flag a service that needs no credentials' do
-      expect(described_class.remote.detect { |e| e.source_key == 'loc/subjects' }).to be_configured
+    it 'spells a subauthority the way qa expects it' do
+      keys = described_class.remote.map(&:source_key)
+
+      expect(keys).to include 'loc/genreForms'
+      expect(keys).not_to include 'loc/genre_forms'
     end
 
-    # mesh is registered as remote but its url points at a local table, so it is
-    # not an external service.
-    it 'omits authorities whose url is a local lookup' do
+    it 'picks up a service the previous hardcoded list omitted' do
+      expect(described_class.remote.map(&:provider)).to include 'crossref'
+    end
+
+    # mesh reads a local table, so it is not an external service.
+    it 'omits mesh' do
       expect(described_class.remote.map(&:source_key)).not_to include 'mesh'
+    end
+
+    # Read from this tenant's settings, not from Qa::Authorities::Geonames.username:
+    # that is a class_attribute holding whichever tenant configured Hyrax last.
+    context 'with a tenant' do
+      let(:account) { instance_double(Account, settings: settings) }
+
+      before { allow(Site).to receive(:account).and_return(account) }
+
+      context 'whose credentials are set' do
+        let(:settings) { { 'geonames_username' => 'scientist' } }
+
+        it 'does not flag the service' do
+          expect(described_class.remote.detect { |e| e.source_key == 'geonames' }).to be_configured
+        end
+      end
+
+      context 'whose credentials are missing' do
+        let(:settings) { { 'geonames_username' => '' } }
+
+        it 'flags the service' do
+          expect(described_class.remote.detect { |e| e.source_key == 'geonames' }).not_to be_configured
+        end
+
+        it 'leaves a service that needs no credentials alone' do
+          expect(described_class.remote.detect { |e| e.source_key == 'loc/subjects' }).to be_configured
+        end
+      end
     end
   end
 
-  describe 'a registered local authority with no terms yet' do
-    it 'is listed as local, awaiting its import task' do
+  # mesh keeps its terms in the same tables as a staff vocabulary, but a MeSH import
+  # replaces all of them, so Qa::Authorities::Mesh reports locally_owned? false and
+  # the catalog files it separately.
+  describe 'a vocabulary holding an imported copy' do
+    it 'is listed as cached, awaiting its import task' do
       entry = described_class.database.detect { |e| e.source_key == 'mesh' }
 
-      expect(entry.origin).to eq :database
+      expect(entry.origin).to eq :cached
+      expect(entry).to be_cached
       expect(entry.term_count).to eq 0
       expect(entry).to be_awaiting_import
       expect(entry.import_task).to eq 'mesh:import_tenant'
     end
 
-    # There is no row to open, so the listing must not link it.
-    it 'is not editable, because it has no record yet' do
+    # Its terms are not staff's to change, whether or not they are imported yet.
+    it 'is never editable' do
+      Qa::LocalAuthority.create!(name: 'mesh')
+                        .local_authority_entries.create!(label: 'Diabetes', uri: 'mesh:diabetes')
+
       entry = described_class.database.detect { |e| e.source_key == 'mesh' }
 
       expect(entry).not_to be_editable
-      expect(entry).to be_local
-      expect(entry.vocabulary).to be_nil
+      expect(entry).to be_stored_locally
+    end
+
+    # Read-only, but worth opening: a depositor needs to look up the term id.
+    it 'is viewable once its terms are imported' do
+      Qa::LocalAuthority.create!(name: 'mesh')
+                        .local_authority_entries.create!(label: 'Diabetes', uri: 'mesh:diabetes')
+
+      entry = described_class.database.detect { |e| e.source_key == 'mesh' }
+
+      expect(entry).to be_viewable
+    end
+
+    it 'is not viewable before then, because there is nothing to show' do
+      entry = described_class.database.detect { |e| e.source_key == 'mesh' }
+
+      expect(entry).not_to be_viewable
     end
 
     it 'stops awaiting import once terms exist' do

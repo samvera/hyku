@@ -4,51 +4,45 @@
 # can see what is available to put in `controlled_values.sources` without reading
 # the code.
 #
-# Three origins:
-#   :database — rows in this tenant, whether staff created them or a seed did
+# Four origins:
+#   :database — rows this tenant owns, whether staff created them or a seed did
+#   :cached   — rows holding a copy of an external vocabulary, replaced on import
 #   :file     — config/authorities/*.yml, deployment-wide
 #   :remote   — external services (LOC, Getty, FAST), deployment-wide
 #
 # Only :database rows are editable, and only once the row exists — see Entry.
 #
-# TODO: over the ClassLength limit while the three assemblers live here. Extract
-# Entry, or one assembler per origin, once term editing settles the shape.
+# TODO: over the ClassLength limit while Entry and the four assemblers live here.
+# Extract them once term editing settles the shape.
 # rubocop:disable Metrics/ClassLength
 class ControlledVocabularyCatalog
-  # Authorities registered as remote whose url actually points at a local table.
-  # `mesh` is the case in hand: it is table-backed and populated by the separate
-  # mesh:import_tenant task, so it belongs with the local vocabularies.
-  LOCAL_URL_PREFIX = '/authorities/search/local/'
-
-  ORIGIN_ORDER = { database: 0, file: 1, remote: 2 }.freeze
-
-  # titleize mangles these, and an acronym expanded wrongly is worse than none.
-  REMOTE_VOCABULARY_LABELS = {
-    'aat' => 'Art & Architecture Thesaurus',
-    'tgn' => 'Thesaurus of Geographic Names',
-    'ulan' => 'Union List of Artist Names',
-    'iso639-1' => 'ISO 639-1 Languages',
-    'iso639-2' => 'ISO 639-2 Languages',
-    'genre_forms' => 'Genre/Form Terms'
-  }.freeze
+  # Editable first, then read-only local, then the external services.
+  ORIGIN_ORDER = { database: 0, cached: 1, file: 2, remote: 3 }.freeze
 
   Entry = Struct.new(:source_key, :label, :origin, :description, :term_count,
                      :vocabulary, :provider, :configured, :import_task,
                      keyword_init: true) do
-    # A registered local authority can have no row yet — mesh before its import —
-    # so :database alone does not mean there is anything to edit.
+    def stored_locally?
+      origin == :database || origin == :cached
+    end
+
+    # Not staff's to change: the next import replaces every row, and the identifiers
+    # belong to the upstream authority.
+    def cached?
+      origin == :cached
+    end
+
+    # Having no terms is not a reason to withhold editing — an empty vocabulary is
+    # where the first term gets added. What is needed is the row itself, which a
+    # registered authority may not have yet.
     def editable?
-      vocabulary.present?
+      origin == :database && vocabulary.present?
     end
 
-    def local?
-      origin == :database
-    end
-
-    # File-based vocabularies are worth opening even though they cannot be edited.
-    # Remote services are not enumerable, so they are not.
+    # Anything whose terms are stored here, once the row exists, plus the yaml
+    # vocabularies. Remote services are not enumerable, so they never open.
     def viewable?
-      editable? || origin == :file
+      (stored_locally? && vocabulary.present?) || origin == :file
     end
 
     # nil means the authority needs no credentials, so only a known-missing one is
@@ -98,20 +92,16 @@ class ControlledVocabularyCatalog
       end
     end
 
-    # Term counts are unknowable without querying the service, so they stay nil.
+    # Built from the qa gem rather than a hand-maintained list, so the page reflects
+    # what qa can actually resolve. Term counts are unknowable without querying the
+    # service, so they stay nil.
     def remote
-      remote_authorities.filter_map do |source_key, config|
-        next if local_url?(config[:url])
+      Qa::AuthorityRegistry.remote_services.flat_map do |provider, klass|
+        configured = remote_configured?(provider)
 
-        provider, vocabulary = source_key.split('/', 2)
-
-        Entry.new(source_key: source_key,
-                  # Names the vocabulary, not the key: titleizing `loc/iso639-1`
-                  # gives "Loc/Iso639 1", and the service has its own column.
-                  label: remote_vocabulary_label(vocabulary) || provider_label(provider),
-                  origin: :remote,
-                  provider: provider,
-                  configured: remote_configured?(provider))
+        Qa::AuthorityRegistry.subauthorities_of(klass).map do |subauthority|
+          remote_entry(provider, subauthority, configured)
+        end
       end
     end
 
@@ -131,7 +121,7 @@ class ControlledVocabularyCatalog
     # from ScriptError: an authority that implements only #search raises rather
     # than returning nothing when asked for every term.
     def terms_for(entry)
-      return unless entry.local? || entry.origin == :file
+      return unless entry.stored_locally? || entry.origin == :file
 
       Qa::Authorities::Local.subauthority_for(entry.source_key).all
     rescue StandardError, NotImplementedError => e
@@ -148,39 +138,63 @@ class ControlledVocabularyCatalog
 
     private
 
-    def remote_authorities
-      Hyrax::ControlledVocabularies.remote_authorities
+    def remote_entry(provider, subauthority, configured)
+      Entry.new(source_key: [provider, subauthority].compact.join('/'),
+                # Names the vocabulary, not the key: titleizing `loc/iso639-1`
+                # gives "Loc/Iso639 1", and the service has its own column.
+                label: remote_vocabulary_label(subauthority) || provider_label(provider),
+                origin: :remote,
+                provider: provider,
+                configured: configured)
     end
 
     def database_entry(vocabulary, totals)
       Entry.new(source_key: vocabulary.name,
                 label: vocabulary.display_label,
-                origin: :database,
+                origin: cached_vocabulary?(vocabulary.name) ? :cached : :database,
                 description: vocabulary.description,
                 term_count: totals.fetch(vocabulary.id, 0),
                 vocabulary: vocabulary,
                 import_task: import_task_for(vocabulary.name))
     end
 
-    # Registered local authorities with no row in this tenant yet, so a manager can
-    # see the vocabulary exists and what it takes to populate it.
+    # Local authorities qa knows about that have neither a row in this tenant nor a
+    # yaml file, so a manager can see the vocabulary exists and what populates it.
+    # mesh is the case in hand: registered at boot, filled by a rake task.
     def unimported_local
-      existing = Qa::LocalAuthority.pluck(:name).map(&:to_s)
+      accounted_for = Qa::LocalAuthority.pluck(:name).map(&:to_s) + file_based_names
 
-      remote_authorities.filter_map do |source_key, config|
-        next unless local_url?(config[:url])
-        next if existing.include?(source_key)
-
-        Entry.new(source_key: source_key,
-                  label: provider_label(source_key),
-                  origin: :database,
+      (registered_local_names - accounted_for).map do |name|
+        Entry.new(source_key: name,
+                  label: provider_label(name),
+                  origin: cached_vocabulary?(name) ? :cached : :database,
                   term_count: 0,
-                  import_task: import_task_for(source_key))
+                  import_task: import_task_for(name))
       end
     end
 
-    def local_url?(url)
-      url.to_s.start_with?(LOCAL_URL_PREFIX)
+    def registered_local_names
+      Qa::Authorities::Local.registry.keys.map(&:to_s)
+    rescue StandardError => e
+      Rails.logger.warn("Unable to list registered local authorities: #{e.message}")
+      []
+    end
+
+    # Whether a locally-stored vocabulary holds a copy of an external one rather than
+    # terms this tenant owns.
+    #
+    # The authority answers for itself: Qa::Authorities::Mesh reports
+    # locally_owned? false because a MeSH import replaces all of its rows. An
+    # authority that does not answer is assumed to be owned here, so a vocabulary is
+    # only ever marked read-only deliberately.
+    def cached_vocabulary?(name)
+      authority = Qa::Authorities::Local.subauthority_for(name)
+      return false unless authority.respond_to?(:locally_owned?)
+
+      !authority.locally_owned?
+    rescue StandardError => e
+      Rails.logger.debug { "Unable to resolve #{name} while checking ownership: #{e.message}" }
+      false
     end
 
     IMPORT_TASKS = { 'mesh' => 'mesh:import_tenant' }.freeze
@@ -192,19 +206,29 @@ class ControlledVocabularyCatalog
     def remote_vocabulary_label(vocabulary)
       return if vocabulary.blank?
 
-      REMOTE_VOCABULARY_LABELS.fetch(vocabulary) { vocabulary.titleize }
+      Qa::AuthorityRegistry.display_name(vocabulary)
     end
 
+    # Locale-driven rather than from the registry: what to call a service in this
+    # dashboard is presentation, and translatable.
     def provider_label(provider)
       I18n.t("hyku.admin.controlled_vocabulary.providers.#{provider}", default: provider.titleize)
     end
 
     # nil when an authority needs no credentials, so only the ones that do get
-    # flagged. Mirrors the checks the form helper already makes before rendering.
+    # flagged.
+    #
+    # Read from this tenant's settings rather than from the authority class:
+    # Qa::Authorities::Geonames.username is a class_attribute, so it holds whichever
+    # tenant configured Hyrax most recently in this process, not the one being
+    # viewed.
     def remote_configured?(provider)
+      settings = Site.account&.settings
+      return if settings.blank?
+
       case provider
-      when 'discogs' then Site.account.respond_to?(:discogs_user_token) && Site.account.discogs_user_token.present?
-      when 'geonames' then Qa::Authorities::Geonames.username.present?
+      when 'discogs' then settings['discogs_user_token'].present?
+      when 'geonames' then settings['geonames_username'].present?
       end
     rescue StandardError => e
       Rails.logger.warn("Unable to check configuration for #{provider}: #{e.message}")

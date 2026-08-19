@@ -10,27 +10,36 @@
   <div class="card-body pt-1">
     <% if @controlled_vocabularies.any? %>
       <div class="table-responsive">
-        <table class="table table-striped table-borderless">
+        <table class="table table-borderless">
           <caption class="sr-only"><%= t('hyku.admin.controlled_vocabularies') %></caption>
           <thead>
             <tr>
               <th scope="col"><%= t('hyku.admin.controlled_vocabulary.name') %></th>
-              <th scope="col"><%= t('hyku.admin.controlled_vocabulary.source_key') %></th>
-              <th scope="col"><%= t('hyku.admin.controlled_vocabulary.origin') %></th>
-              <th scope="col"><%= t('hyku.admin.controlled_vocabulary.status') %></th>
+              <th scope="col">
+                <%= render 'column_hint',
+                           label: t('hyku.admin.controlled_vocabulary.source_key'),
+                           hint: t('hyku.admin.controlled_vocabulary.source_key_hint') %>
+              </th>
+              <th scope="col">
+                <%= render 'column_hint',
+                           label: t('hyku.admin.controlled_vocabulary.origin'),
+                           hint: t('hyku.admin.controlled_vocabulary.origin_hint') %>
+              </th>
+              <th scope="col">
+                <%= render 'column_hint',
+                           label: t('hyku.admin.controlled_vocabulary.status'),
+                           hint: t('hyku.admin.controlled_vocabulary.status_hint') %>
+              </th>
             </tr>
           </thead>
           <tbody>
             <% @controlled_vocabularies.each do |entry| %>
-              <tr>
+              <tr class="<%= 'border-bottom' if entry.description.blank? %>">
                 <td>
                   <% if entry.viewable? %>
                     <%= link_to entry.label, main_app.controlled_vocabulary_path(entry.source_key) %>
                   <% else %>
                     <%= entry.label %>
-                  <% end %>
-                  <% if entry.description.present? %>
-                    <p class="form-text text-muted mb-0"><%= entry.description %></p>
                   <% end %>
                 </td>
                 <td><code><%= entry.source_key %></code></td>
@@ -49,15 +58,24 @@
                       <%= t('hyku.admin.controlled_vocabulary.awaiting_import') %>
                     </span>
                   <% elsif !entry.configured? %>
-                    <span class="badge badge-warning"
+                    <span class="badge badge-attention"
                           title="<%= t('hyku.admin.controlled_vocabulary.unconfigured_help') %>">
                       <%= t('hyku.admin.controlled_vocabulary.unconfigured') %>
                     </span>
                   <% else %>
-                    <span class="text-muted"><%= t('hyku.admin.controlled_vocabulary.ready') %></span>
+                    <span class="badge badge-quiet">
+                      <%= t('hyku.admin.controlled_vocabulary.ready') %>
+                    </span>
                   <% end %>
                 </td>
               </tr>
+              <% if entry.description.present? %>
+                <tr class="border-bottom">
+                  <td colspan="4" class="pt-0 text-muted">
+                    <%= entry.description %>
+                  </td>
+                </tr>
+              <% end %>
             <% end %>
           </tbody>
         </table>

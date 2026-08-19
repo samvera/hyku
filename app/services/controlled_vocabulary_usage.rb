@@ -36,7 +36,7 @@ class ControlledVocabularyUsage
       properties.filter_map do |name, config|
         next unless config.is_a?(Hash) && cites?(config, key)
 
-        Property.new(name: name, work_types: work_types(profile, config))
+        Property.new(name: name, work_types: work_types(config))
       end
     end
 
@@ -76,15 +76,8 @@ class ControlledVocabularyUsage
       model_classes.filter_map do |klass|
         next unless klass.fields.include?(name.to_sym)
 
-        WorkType.new(name: klass.name, label: model_label(klass))
+        WorkType.new(name: klass.name, label: class_label(klass.name))
       end
-    end
-
-    # The Valkyrie suffix is an implementation detail; staff know these as work
-    # types, matching what a profile-backed tenant sees.
-    def model_label(klass)
-      I18n.t("hyku.admin.controlled_vocabulary.work_types.#{klass.name.underscore}",
-             default: klass.name.demodulize.delete_suffix('Resource').titleize)
     end
 
     # Valkyrie classes only: the registry also lists each type's ActiveFedora
@@ -103,22 +96,18 @@ class ControlledVocabularyUsage
       end
     end
 
-    def work_types(profile, config)
+    def work_types(config)
       Array(config.dig('available_on', 'class')).map do |class_name|
-        WorkType.new(name: class_name, label: work_type_label(profile, class_name))
+        WorkType.new(name: class_name, label: class_label(class_name))
       end
     end
 
-    # Labels the shipped profile got wrong; profiles saved before the fix still
-    # carry them, so they fall through to the locale instead of the profile.
-    MISLABELED_CLASSES = ['pcdmcollection'].freeze
-
-    def work_type_label(profile, class_name)
-      label = profile.dig('classes', class_name, 'display_label').presence
-      return label if label && MISLABELED_CLASSES.exclude?(label)
-
+    # From the class name, not the profile's display_label: profiles have shipped
+    # with labels like "pcdmcollection", and the class name is stable across
+    # tenants. The Valkyrie suffix is an implementation detail staff never see.
+    def class_label(class_name)
       I18n.t("hyku.admin.controlled_vocabulary.work_types.#{class_name.underscore}",
-             default: label || class_name)
+             default: class_name.demodulize.delete_suffix('Resource').titleize)
     end
   end
 end

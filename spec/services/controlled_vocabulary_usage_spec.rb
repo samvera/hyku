@@ -45,7 +45,7 @@ RSpec.describe ControlledVocabularyUsage do
       expect(Hyrax::FlexibleSchema).to have_received(:current_version).once
     end
 
-    it 'labels each work type from the profile classes section, keeping the class name' do
+    it 'labels each work type from its class name, keeping the class itself' do
       work_types = described_class.citing('licenses').first.work_types
 
       expect(work_types.map(&:label)).to eq ['Generic Work', 'Image', 'File Set']
@@ -66,16 +66,9 @@ RSpec.describe ControlledVocabularyUsage do
       expect(described_class.citing('subjects')).to eq []
     end
 
-    it 'labels a work type by its class name when the profile does not name it' do
-      profile['classes'].delete('ImageResource')
-
-      labels = described_class.citing('licenses').first.work_types.map(&:label)
-
-      expect(labels).to eq ['Generic Work', 'ImageResource', 'File Set']
-    end
-
-    # Profiles shipped before the fix label CollectionResource "pcdmcollection".
-    it 'corrects a work type label the shipped profile got wrong' do
+    # Some shipped profiles label CollectionResource "pcdmcollection"; the class
+    # name is what is stable, so profile labels are ignored altogether.
+    it 'ignores the profile display_label for work types' do
       profile['classes']['CollectionResource'] = { 'display_label' => 'pcdmcollection' }
       profile['properties']['license']['available_on']['class'] << 'CollectionResource'
 
@@ -83,13 +76,6 @@ RSpec.describe ControlledVocabularyUsage do
 
       expect(labels).to include 'Collection'
       expect(labels).not_to include 'pcdmcollection'
-    end
-
-    it 'keeps a label the tenant chose deliberately' do
-      profile['classes']['CollectionResource'] = { 'display_label' => 'Series' }
-      profile['properties']['license']['available_on']['class'] << 'CollectionResource'
-
-      expect(described_class.citing('licenses').first.work_types.map(&:label)).to include 'Series'
     end
 
     it 'returns nil when the tenant has no profile yet' do

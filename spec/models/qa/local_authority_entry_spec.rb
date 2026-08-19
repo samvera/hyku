@@ -11,14 +11,17 @@ RSpec.describe Qa::LocalAuthorityEntry, type: :model do
 
   describe 'uri' do
     it 'is required on a new term' do
-      entry = described_class.new(local_authority: authority, label: 'Anthropology')
+      entry = described_class.new(local_authority: authority)
 
       expect(entry).not_to be_valid
       expect(entry.errors[:uri]).to be_present
     end
 
-    it 'rejects a blank one on a new term' do
-      expect(described_class.new(local_authority: authority, label: 'Anthropology', uri: '')).not_to be_valid
+    it 'falls back to the label when left blank' do
+      entry = described_class.new(local_authority: authority, label: 'Anthropology', uri: '')
+
+      expect(entry).to be_valid
+      expect(entry.uri).to eq 'Anthropology'
     end
 
     # Works store the uri as the term id, so reassigning it orphans every record
@@ -101,6 +104,35 @@ RSpec.describe Qa::LocalAuthorityEntry, type: :model do
 
     expect(entry.reload.data).to eq('alt_labels' => ['Anthro'], 'definition' => 'The study of humans.')
     expect(entry.alt_labels).to eq ['Anthro']
+  end
+
+  describe 'defaulting the term id on create' do
+    # A vocabulary without real identifiers stores the label itself, which is how the
+    # shipped yaml ones read: `Alternative Text` is both the id and the term.
+    it 'uses the label verbatim' do
+      entry = described_class.create!(local_authority: authority, label: 'Special Collections')
+
+      expect(entry.uri).to eq 'Special Collections'
+    end
+
+    it 'keeps a term id the staff member supplied' do
+      entry = described_class.create!(local_authority: authority,
+                                      label: 'Rare Books',
+                                      uri: 'http://id.loc.gov/authorities/sh85110219')
+
+      expect(entry.uri).to eq 'http://id.loc.gov/authorities/sh85110219'
+    end
+
+    it 'still refuses a term with no label either' do
+      expect(described_class.new(local_authority: authority)).not_to be_valid
+    end
+
+    it 'does not change the term id when the label is edited' do
+      entry = described_class.create!(local_authority: authority, label: 'Special Collections')
+      entry.update!(label: 'Special Collections Reading Room')
+
+      expect(entry.reload.uri).to eq 'Special Collections'
+    end
   end
 
   describe 'scopes' do

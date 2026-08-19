@@ -274,6 +274,7 @@ en:
         awaiting_import: Not imported
         awaiting_import_help: 'This vocabulary is available but has no terms in this tenant yet. Populate it by running: %{task}'
         create: Create vocabulary
+        create_term: Add term
         created: '%{name} was created. Add its terms below.'
         description: Description
         description_help: Optional. Explains to other staff what this vocabulary is for.
@@ -282,6 +283,9 @@ en:
         label_hint: What a depositor sees in the form. Safe to reword without affecting stored records.
         name: Vocabulary
         new_help: Name the vocabulary, and its source key is set from that name. The key is what a metadata profile cites, so it cannot be changed afterwards.
+        new_term_heading: 'Add a term to %{vocabulary}'
+        new_term_help: Name the term as a depositor should see it. The term id is what a record stores, and cannot be changed once terms are in use.
+        new_term_title: Add term
         new_title: New vocabulary
         no_terms: This vocabulary has no terms yet.
         none: No controlled vocabularies have been set up for this tenant yet.
@@ -323,8 +327,11 @@ en:
         term_limit:
           one: (showing the first %{count})
           other: (showing the first %{count})
-        term_id_hint: The value stored on a record, and the value to supply in a Bulkrax import.
+        term_created: '%{label} was added.'
+        term_id_from_label: Leave blank to use the label as the term id.
         term_id_help: The term ID is the value stored on a record, and the value to supply in a Bulkrax import. The label is only what a depositor sees.
+        term_id_hint: The value stored on a record, and the value to supply in a Bulkrax import.
+        term_id_immutable: It cannot be changed afterwards.
         term_total:
           one: 1 term
           other: "%{count} terms"

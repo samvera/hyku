@@ -2,9 +2,7 @@
 
 class LocalVocabularyService
   def self.seed!(paths = Qa::Authorities::Local.subauthorities_path)
-    files_by_name(paths).map do |name, files|
-      seed_vocabulary!(name, files.map { |file| YAML.load_file(file) || {} })
-    end
+    files_by_name(paths).map { |name, files| seed_vocabulary!(name, files) }
   end
 
   # An earlier path wins, matching how HykuKnapsack overrides a Hyku authority.
@@ -13,13 +11,21 @@ class LocalVocabularyService
          .group_by { |file| File.basename(file, '.yml') }
   end
 
-  # @param contents [Array<Hash>] every yml this name resolves to, overriding path first
-  def self.seed_vocabulary!(name, contents)
+  # A vocabulary is named after its file, and Qa::LocalAuthority rejects a name outside
+  # NAME_FORMAT, so one misnamed yml aborts a reseed part way through the tenants.
+  def self.invalid_files(paths = Qa::Authorities::Local.subauthorities_path)
+    files_by_name(paths).reject { |name, _files| name.match?(Qa::LocalAuthority::NAME_FORMAT) }
+                        .values.flatten
+  end
+
+  # @param files [Array<String>] every yml this name resolves to, overriding path first
+  def self.seed_vocabulary!(name, files)
+    contents = files.map { |file| YAML.load_file(file) || {} }
     terms = Array.wrap(contents.first['terms'])
     authority = Qa::LocalAuthority.find_or_initialize_by(name:)
 
     backfill_metadata(authority, merged_metadata(contents))
-    authority.save! if authority.changed?
+    save_authority!(authority, files.first)
 
     terms.each_with_index do |term, index|
       authority.local_authority_entries.find_or_create_by!(uri: term['id']) do |entry|
@@ -31,6 +37,15 @@ class LocalVocabularyService
     end
 
     [name, authority.local_authority_entries.count]
+  end
+
+  # Raised through the instance, not the class: RecordInvalid#initialize takes a record,
+  # so `raise e.class, message` hands the message in where the record belongs.
+  def self.save_authority!(authority, file)
+    authority.save! if authority.changed?
+    authority
+  rescue ActiveRecord::RecordInvalid => e
+    raise e, "#{file}: #{e.message}"
   end
 
   # Only blanks are filled, so a value staff edit in the admin UI survives a reseed.

@@ -25,9 +25,11 @@ RSpec.describe LocalVocabularyService do
 
   describe 'the vocabularies hyku ships' do
     it 'describes every one of them' do
-      ymls = Dir[Rails.root.join('config', 'authorities', '*.yml')].map { |file| YAML.load_file(file) }
+      undescribed = Dir[Rails.root.join('config', 'authorities', '*.yml')]
+                    .reject { |file| (YAML.load_file(file) || {})['description'].present? }
+                    .map { |file| File.basename(file) }
 
-      expect(ymls).to all(include('description'))
+      expect(undescribed).to be_empty
     end
   end
 
@@ -85,6 +87,27 @@ RSpec.describe LocalVocabularyService do
       authority = Qa::LocalAuthority.find_by(name:)
       expect(authority.label).to eq 'Reuse Terms'
       expect(authority.description).to eq 'What we allow.'
+    end
+  end
+
+  # A knapsack names its ymls, and Qa::LocalAuthority will not take every filename.
+  describe 'a vocabulary whose filename qa rejects as a name' do
+    let(:path) { Dir.mktmpdir }
+    let(:file) { File.join(path, 'ETD_Departments.yml') }
+
+    before { File.write(file, { 'terms' => [{ 'id' => 'a', 'term' => 'A' }] }.to_yaml) }
+
+    after { FileUtils.remove_entry(path) }
+
+    it 'names the file rather than the attribute when seeding raises' do
+      expect { described_class.seed!(path) }
+        .to raise_error(ActiveRecord::RecordInvalid, /ETD_Departments\.yml/)
+    end
+
+    it 'lists it ahead of seeding, so a reseed can stop before it writes anything' do
+      File.write(File.join(path, 'lab_names.yml'), { 'terms' => [] }.to_yaml)
+
+      expect(described_class.invalid_files(path)).to eq [file]
     end
   end
 

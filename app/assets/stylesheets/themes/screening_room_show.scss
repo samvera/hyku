@@ -1,0 +1,18 @@
+// ---- screening room show page theme ----
+
+@import 'themes/screening_room/tokens';
+@import 'themes/screening_room/primitives';
+@import 'themes/screening_room/shell';
+
+.screening_room_show.works-show {
+  background: var(--scr-base, #{$scr-base});
+
+  #content-wrapper {
+    max-width: none;
+    padding: 0;
+  }
+
+  #content-wrapper > .alert {
+    margin: 16px $scr-gutter-xl;
+  }
+}

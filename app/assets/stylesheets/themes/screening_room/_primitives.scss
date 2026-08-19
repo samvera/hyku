@@ -1,0 +1,67 @@
+// ---- screening room mixins ----
+
+@import 'themes/screening_room/tokens';
+
+@mixin scr-gutter($important: false) {
+  $bang: if($important, unquote('!important'), null);
+
+  padding-left: $scr-gutter-xl $bang;
+  padding-right: $scr-gutter-xl $bang;
+
+  @media (max-width: $scr-desktop-max) {
+    padding-left: $scr-gutter-lg $bang;
+    padding-right: $scr-gutter-lg $bang;
+  }
+
+  @media (max-width: $scr-laptop-max) {
+    padding-left: $scr-gutter-md $bang;
+    padding-right: $scr-gutter-md $bang;
+  }
+
+  @media (max-width: $scr-mobile-max) {
+    padding-left: $scr-gutter-sm $bang;
+    padding-right: $scr-gutter-sm $bang;
+  }
+}
+
+@mixin scr-serif {
+  font-family: var(--scr-serif, #{$scr-serif-stack}) !important;
+}
+
+@mixin scr-sans {
+  font-family: var(--scr-sans, #{$scr-sans-stack}) !important;
+}
+
+@mixin scr-eyebrow {
+  @include scr-sans;
+  color: $scr-ink-muted;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+@mixin scr-focus-ring {
+  // two tones, because this ring lands on every surface the theme touches: the
+  // dark chrome bands, the tinted notice and cta bands, and the light pages the
+  // theme does not paint. whichever tone the surface swallows, the other shows
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.85);
+  outline: 2px solid #ffffff;
+  outline-offset: 0;
+}
+
+@mixin scr-link($color: var(--scr-link, #{$scr-link})) {
+  color: $color;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+
+  &:hover,
+  &:focus {
+    color: $scr-ink;
+  }
+
+  &:focus-visible {
+    @include scr-focus-ring;
+  }
+}

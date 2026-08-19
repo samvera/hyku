@@ -60,3 +60,10 @@ heritage:
   marketing_text: true
   name: Heritage
   notes: A catalog-first theme for digitized physical collections. Objects sit on paper mats and are never cropped, and the facet rail is promoted to the home page as Browse the collection. The hero headline comes from the marketing text and the prose band under it from the home page text. Serif for objects and prose, sans for interface chrome, riding the tenant headline and body fonts. Links carry the brand and the dark chrome rides the header and footer background.
+screening_room:
+  banner_image: false
+  featured_researcher: true
+  home_page_text: true
+  marketing_text: false
+  name: Screening Room
+  notes: A dark theme for moving image and long-form audio, where the object plays before it is described. A cycling spotlight opens a featured work in a player without leaving the page, then a lede band carries the home page text beside the holdings counts, a recessed shelf shows the collections as objects, latest additions sits beside the featured researcher, and an about band and a deposit band close the page. Every dark surface derives from the header and footer background color, and the accent, chips and links carry the link color.

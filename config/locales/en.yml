@@ -749,6 +749,9 @@ en:
         edit: Edit
         header: Manage User
         update: Update
+  screening_room:
+    chrome:
+      toggle_navigation: Toggle navigation
   single_signon:
     index:
       sign_in_with_provider: Sign in with %{provider}

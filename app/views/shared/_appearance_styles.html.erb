@@ -256,6 +256,31 @@ body.public-facing .hyc-banner .hyc-title h1 {
 }
 <% end %>
 
+/* SCREENING ROOM THEME CUSTOMIZATIONS */
+<% if home_page_theme == 'screening_room' || show_page_theme == 'screening_room_show' %>
+  <% screening_default_serif = appearance.headline_font.include?('Helvetica') %>
+  <% screening_default_sans = appearance.body_font.include?('Helvetica') %>
+:root {
+  --scr-serif: <%= screening_default_serif ? 'Georgia, Times New Roman, serif' : appearance.font_headline_family %>;
+  --scr-sans: <%= screening_default_sans ? 'Helvetica Neue, Helvetica, Arial, sans-serif' : appearance.font_body_family %>;
+  --scr-chrome-pick: <%= appearance.header_and_footer_background_color %>;
+  --scr-chrome-deep: color-mix(in srgb, var(--scr-chrome-pick) 13%, #000000);
+  --scr-chrome: color-mix(in srgb, var(--scr-chrome-pick) 25%, #000000);
+  --scr-chrome-soft: color-mix(in srgb, var(--scr-chrome-pick) 37%, #000000);
+  --scr-base: color-mix(in srgb, var(--scr-chrome-pick) 33%, #000000);
+  --scr-raised: color-mix(in srgb, var(--scr-chrome-pick) 48%, #000000);
+  --scr-rule: color-mix(in srgb, var(--scr-chrome-pick) 63%, #000000);
+  --scr-rule-input: color-mix(in srgb, var(--scr-chrome-pick) 78%, #000000);
+  --scr-rule-strong: color-mix(in srgb, var(--scr-chrome-pick) 92%, #ffffff);
+  --scr-accent: <%= appearance.link_color %>;
+  --scr-accent-ink: <%= appearance.primary_button_text_color %>;
+  --scr-link: color-mix(in srgb, var(--scr-accent) 55%, #ffffff);
+  --scr-notice: color-mix(in srgb, var(--scr-accent) 18%, var(--scr-base));
+  --scr-notice-rule: color-mix(in srgb, var(--scr-accent) 30%, var(--scr-base));
+  --scr-footer-accent: <%= appearance.footer_link_color %>;
+}
+<% end %>
+
 <%= appearance.custom_css_block %>
 
 /* COMMUNITY THEME CUSTOMIZATIONS */

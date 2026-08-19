@@ -28,6 +28,7 @@ module Hyrax
         add_breadcrumb t('hyku.admin.controlled_vocabularies'), main_app.controlled_vocabularies_path
         add_breadcrumb @entry.label, request.path
         @terms = ControlledVocabularyCatalog.terms_for(@entry)
+        @usage = ControlledVocabularyUsage.citing(@entry.source_key)
       end
     end
   end

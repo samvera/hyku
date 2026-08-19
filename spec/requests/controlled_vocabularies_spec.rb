@@ -64,6 +64,93 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
 
         expect(response.body).to include 'special-collections'
       end
+
+      context 'with a metadata profile' do
+        before do
+          allow(Hyrax.config).to receive(:flexible?).and_return(true)
+          allow(Hyrax::FlexibleSchema).to receive(:current_version).and_return(
+            'classes' => { 'GenericWorkResource' => { 'display_label' => 'Generic Work' } },
+            'properties' => {
+              'reading_room' => {
+                'available_on' => { 'class' => ['GenericWorkResource'] },
+                'controlled_values' => { 'sources' => ['reading_rooms'] },
+                'display_label' => { 'default' => 'Reading Room' }
+              }
+            }
+          )
+        end
+
+        it 'lists the properties citing the vocabulary with their work types' do
+          get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms"
+
+          expect(response.body).to include '<code>reading_room</code>'
+          expect(response.body).to include 'Generic Work'
+        end
+
+        it 'says when no property cites the vocabulary' do
+          get "http://#{account.cname}/dashboard/controlled_vocabularies/audience"
+
+          expect(response.body).to include 'No metadata property uses this vocabulary'
+        end
+      end
+
+      # Forms read mapped vocabularies from configuration files in this mode, so
+      # the page must say term changes are out of staff hands.
+      context 'without flexible metadata' do
+        before { allow(Hyrax.config).to receive(:flexible?).and_return(false) }
+
+        it 'still lists usage, and says the terms need a developer' do
+          get "http://#{account.cname}/dashboard/controlled_vocabularies/licenses"
+
+          expect(response.body).to include '<code>license</code>'
+          expect(response.body).to include 'Changing its terms requires a developer.'
+        end
+
+        it 'does not warn on a vocabulary no form uses' do
+          get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms"
+
+          expect(response.body).not_to include 'Changing its terms requires a developer.'
+        end
+
+        # based_near autocompletes against GeoNames, so the vocabulary is in use,
+        # but its terms live in the external service, not a configuration file.
+        it 'shows usage for a remote authority without the configuration-file note' do
+          get "http://#{account.cname}/dashboard/controlled_vocabularies/geonames"
+
+          expect(response.body).to include '<code>based_near</code>'
+          expect(response.body).not_to include 'Changing its terms requires a developer.'
+        end
+
+        # Seeded tenants hold licenses as tenant rows, and the qa fallback serves
+        # the form from those rows, so no developer is needed to change them.
+        it 'does not claim a database-backed vocabulary needs a developer' do
+          Apartment::Tenant.switch(account.tenant) do
+            Qa::LocalAuthority.create!(name: 'licenses', label: 'Licenses')
+          end
+
+          get "http://#{account.cname}/dashboard/controlled_vocabularies/licenses"
+
+          expect(response.body).to include '<code>license</code>'
+          expect(response.body).not_to include 'Changing its terms requires a developer.'
+        end
+      end
+
+      # Flexible metadata on but the tenant has not saved a profile yet: usage is
+      # unknowable, which is not the same as unused.
+      context 'with flexible metadata but no profile' do
+        before do
+          allow(Hyrax.config).to receive(:flexible?).and_return(true)
+          allow(Hyrax::FlexibleSchema).to receive(:current_version).and_return(nil)
+        end
+
+        it 'omits the usage row rather than calling the vocabulary unused' do
+          get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms"
+
+          expect(response).to have_http_status(:success)
+          expect(response.body).not_to include 'Used by properties'
+          expect(response.body).not_to include 'No metadata property uses this vocabulary'
+        end
+      end
     end
 
     # A yaml-backed vocabulary has terms worth reading even though staff cannot

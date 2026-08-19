@@ -309,6 +309,7 @@ en:
         source_key: Source key
         source_key_hint: Paste this into a metadata profile field to control that field with this vocabulary.
         source_key_help: Paste a source key into a metadata profile field to control that field with this vocabulary. Vocabularies managed in this tenant can be edited here; those defined in a configuration file or by an external service cannot.
+        static_forms: Metadata profiles are not enabled, so deposit forms read this vocabulary from a configuration file. Changing its terms requires a developer.
         status: Status
         status_hint: Whether this vocabulary is ready to use, or needs something set up first.
         status_unknown: Unspecified
@@ -324,6 +325,14 @@ en:
         terms: Terms
         unconfigured: Needs setup
         unconfigured_help: This service needs credentials before it can be used. Until then a field citing it accepts free text instead of offering suggestions.
+        unused: No metadata property uses this vocabulary.
+        used_by: Used by properties
+        used_by_hint: The metadata properties controlled by this vocabulary, as named in Bulkrax imports and metadata profiles.
+        used_by_work_types: 'Available on:'
+        work_types:
+          collection_resource: Collection
+          etd_resource: ETD
+          oer_resource: OER
       flash:
         access_denied: You are not authorized to view this page
       google_analytics_settings:

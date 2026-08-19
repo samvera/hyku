@@ -37,6 +37,32 @@
         <dt class="col-sm-2"><%= t('hyku.admin.controlled_vocabulary.description') %></dt>
         <dd class="col-sm-10"><%= @entry.description %></dd>
       <% end %>
+
+      <% unless @usage.nil? %>
+        <dt class="col-sm-2">
+          <%= render 'column_hint',
+                     label: t('hyku.admin.controlled_vocabulary.used_by'),
+                     hint: t('hyku.admin.controlled_vocabulary.used_by_hint') %>
+        </dt>
+        <dd class="col-sm-10">
+          <% if @usage.empty? %>
+            <span class="text-muted"><%= t('hyku.admin.controlled_vocabulary.unused') %></span>
+          <% else %>
+            <ul class="list-unstyled mb-0">
+              <% @usage.each do |property| %>
+                <li class="mb-1">
+                  <code><%= property.name %></code>
+                  <br>
+                  <small class="text-muted">
+                    <%= t('hyku.admin.controlled_vocabulary.used_by_work_types') %>
+                    <% property.work_types.each_with_index do |work_type, index| %><%= ', ' if index.positive? %><span title="<%= work_type.name %>"><%= work_type.label %></span><% end %>
+                  </small>
+                </li>
+              <% end %>
+            </ul>
+          <% end %>
+        </dd>
+      <% end %>
     </dl>
 
     <% unless @entry.editable? %>
@@ -46,6 +72,15 @@
         <span class="fa fa-info-circle" aria-hidden="true"></span>
         <%= t("hyku.admin.controlled_vocabulary.read_only.#{@entry.origin}",
               default: t('hyku.admin.controlled_vocabulary.read_only.generic')) %>
+      </p>
+    <% end %>
+
+    <%# Only for file-backed entries: a database-backed vocabulary feeds the form
+        from the tenant's own rows, and a remote authority from its service. %>
+    <% if @usage.present? && !Hyrax.config.flexible? && @entry.origin == :file %>
+      <p class="form-text text-muted mt-3 mb-0">
+        <span class="fa fa-info-circle" aria-hidden="true"></span>
+        <%= t('hyku.admin.controlled_vocabulary.static_forms') %>
       </p>
     <% end %>
   </div>

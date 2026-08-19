@@ -2,6 +2,8 @@
 
 module Heritage
   class HomepagePresenter
+    include ThemeHelper
+
     def initialize(search_service:, response:, collections:, featured_work_list:, featured_collection_list:)
       @search_service = search_service
       @response = response
@@ -17,7 +19,7 @@ module Heritage
     def featured_works
       @featured_works ||= begin
         featured = @featured_work_list.featured_works
-        readable = readable_ids(featured.map { |work| work.presenter.id })
+        readable = theme_readable_ids(featured.map { |work| work.presenter.id })
 
         featured.select { |work| readable.include?(work.presenter.id) }
       end
@@ -38,16 +40,6 @@ module Heritage
                              else
                                Array(@collections).first(FeaturedCollection.feature_limit)
                              end
-    end
-
-    private
-
-    def readable_ids(ids)
-      return [] if ids.empty?
-
-      (_, documents) = @search_service.fetch(ids, rows: ids.size, fl: 'id')
-
-      documents.map(&:id)
     end
   end
 end

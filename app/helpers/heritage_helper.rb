@@ -2,7 +2,6 @@
 
 # Helpers for the heritage theme's home and show pages.
 module HeritageHelper
-  CARD_BLURB_LENGTH = 140
   PANEL_ROWS = 10
 
   def hrt_home
@@ -15,18 +14,8 @@ module HeritageHelper
     )
   end
 
-  def hrt_plain_text(html)
-    strip_tags(CGI.unescapeHTML(html.to_s).gsub('>', '> ')).squish
-  end
-
   def hrt_date_created(object)
     Array(object.date_created).first.presence
-  end
-
-  def hrt_blurb(text, length: CARD_BLURB_LENGTH)
-    return if text.blank?
-
-    truncate(hrt_plain_text(text), length:, separator: ' ')
   end
 
   def hrt_file_set_ids(presenter)
@@ -42,13 +31,6 @@ module HeritageHelper
   def hrt_viewer?(presenter)
     presenter.video_embed_viewer? ||
       (presenter.representative_id.present? && presenter.representative_presenter.present?)
-  end
-
-  def hrt_collection_thumbnail_tag(collection)
-    path = collection.try(:[], 'thumbnail_path_ss').presence
-    path = nil if path&.include?('/assets/')
-
-    image_tag(path || Site.instance.default_collection_image&.url || image_path('default.png'), alt: '')
   end
 
   private

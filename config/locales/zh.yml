@@ -397,6 +397,71 @@ zh:
           upload: 上传文件
         label: 存缴进度
     admin:
+      controlled_vocabularies: 受控词表
+      controlled_vocabulary:
+        active: 已启用
+        awaiting_import: 未导入
+        awaiting_import_help: '此词表可用，但在此租户中尚无词条。运行以下命令进行填充：%{task}'
+        description: 描述
+        inactive: 未启用
+        label: 标签
+        label_hint: 存缴者在表单中看到的内容。可以放心改写，不会影响已存储的记录。
+        name: 词表
+        no_terms: 此词表尚无词条。
+        none: 此租户尚未设置任何受控词表。
+        origin: 来源
+        origin_hint: 词表的定义位置，并由此决定其词条能否在此处编辑。
+        origins:
+          cached: 导入的副本
+          database: 此租户
+          file: 配置文件
+          remote: 外部服务
+        providers:
+          crossref: Crossref
+          discogs: Discogs
+          fast: OCLC FAST
+          geonames: GeoNames
+          getty: Getty
+          loc: Library of Congress
+          mesh: MeSH
+          tgnlang: Getty TGN Languages
+        read_only:
+          cached: 此词表是外部词表的导入副本。其词条无法在此处修改，重新导入会替换全部词条。
+          file: 此词表在配置文件中定义，因此其词条无法在此处修改。
+          generic: 此词表的词条无法在此处修改。
+          remote: 此词表来自外部服务，因此其词条无法在此处修改。
+        ready: 就绪
+        retired_count:
+          one: （已停用 %{count} 个）
+          other: （已停用 %{count} 个）
+        show_title: '受控词表：%{name}'
+        source_key: 来源键
+        source_key_hint: 将其粘贴到元数据配置档的字段中，即可用此词表控制该字段。
+        source_key_help: 将来源键粘贴到元数据配置档的字段中，即可用此词表控制该字段。在此租户中管理的词表可以在此处编辑；在配置文件中定义或来自外部服务的词表则不能。
+        static_forms: 未启用元数据配置档，因此存缴表单从配置文件读取此词表。修改其词条需要开发人员协助。
+        status: 状态
+        status_hint: 此词表是就绪可用，还是需要先完成某些设置。
+        status_unknown: 未指定
+        term_id: 词条 ID
+        term_limit:
+          one: （显示前 %{count} 个）
+          other: （显示前 %{count} 个）
+        term_id_hint: 存储在记录上的值，也是 Bulkrax 导入时应提供的值。
+        term_id_help: 词条 ID 是存储在记录上的值，也是 Bulkrax 导入时应提供的值。标签只是存缴者看到的内容。
+        term_total:
+          one: 1 个词条
+          other: "%{count} 个词条"
+        terms: 词条
+        unconfigured: 需要设置
+        unconfigured_help: 此服务需要先配置凭据才能使用。在此之前，引用它的字段将接受自由文本，而不提供建议。
+        unused: 没有元数据属性使用此词表。
+        used_by: 使用它的属性
+        used_by_hint: 由此词表控制的元数据属性，其名称与 Bulkrax 导入和元数据配置档中所用的一致。
+        used_by_work_types: '可用于：'
+        work_types:
+          collection_resource: 收藏集
+          etd_resource: ETD
+          oer_resource: OER
       flash:
         access_denied: 您无权查看此页面
       google_analytics_settings:

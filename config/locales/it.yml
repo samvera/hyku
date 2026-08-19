@@ -397,6 +397,71 @@ it:
           upload: Carica file
         label: Avanzamento del deposito
     admin:
+      controlled_vocabularies: Vocabolari controllati
+      controlled_vocabulary:
+        active: Attivo
+        awaiting_import: Non importato
+        awaiting_import_help: 'Questo vocabolario è disponibile ma non ha ancora termini in questo tenant. Popolalo eseguendo: %{task}'
+        description: Descrizione
+        inactive: Inattivo
+        label: Etichetta
+        label_hint: Ciò che un depositante vede nel modulo. Può essere riformulata senza influire sui record salvati.
+        name: Vocabolario
+        no_terms: Questo vocabolario non ha ancora termini.
+        none: Nessun vocabolario controllato è stato ancora configurato per questo tenant.
+        origin: Origine
+        origin_hint: Dove è definito il vocabolario, e quindi se i suoi termini possono essere modificati qui.
+        origins:
+          cached: Copia importata
+          database: Questo tenant
+          file: File di configurazione
+          remote: Servizio esterno
+        providers:
+          crossref: Crossref
+          discogs: Discogs
+          fast: OCLC FAST
+          geonames: GeoNames
+          getty: Getty
+          loc: Library of Congress
+          mesh: MeSH
+          tgnlang: Getty TGN Languages
+        read_only:
+          cached: Questo vocabolario è una copia importata di un vocabolario esterno. I suoi termini non possono essere modificati qui e una nuova importazione li sostituisce tutti.
+          file: Questo vocabolario è definito in un file di configurazione, quindi i suoi termini non possono essere modificati qui.
+          generic: I termini di questo vocabolario non possono essere modificati qui.
+          remote: Questo vocabolario proviene da un servizio esterno, quindi i suoi termini non possono essere modificati qui.
+        ready: Pronto
+        retired_count:
+          one: (%{count} ritirato)
+          other: (%{count} ritirati)
+        show_title: 'Vocabolario controllato: %{name}'
+        source_key: Chiave di origine
+        source_key_hint: Incollala in un campo del profilo dei metadati per controllare quel campo con questo vocabolario.
+        source_key_help: Incolla una chiave di origine in un campo del profilo dei metadati per controllare quel campo con questo vocabolario. I vocabolari gestiti in questo tenant possono essere modificati qui; quelli definiti in un file di configurazione o da un servizio esterno no.
+        static_forms: I profili dei metadati non sono abilitati, quindi i moduli di deposito leggono questo vocabolario da un file di configurazione. La modifica dei suoi termini richiede uno sviluppatore.
+        status: Stato
+        status_hint: Indica se questo vocabolario è pronto all'uso o se richiede prima una configurazione.
+        status_unknown: Non specificato
+        term_id: ID del termine
+        term_limit:
+          one: (viene mostrato il primo %{count})
+          other: (vengono mostrati i primi %{count})
+        term_id_hint: Il valore memorizzato su un record e il valore da fornire in un'importazione Bulkrax.
+        term_id_help: L'ID del termine è il valore memorizzato su un record e il valore da fornire in un'importazione Bulkrax. L'etichetta è solo ciò che vede un depositante.
+        term_total:
+          one: 1 termine
+          other: "%{count} termini"
+        terms: Termini
+        unconfigured: Richiede configurazione
+        unconfigured_help: Questo servizio richiede credenziali prima di poter essere utilizzato. Fino ad allora un campo che lo utilizza accetta testo libero invece di offrire suggerimenti.
+        unused: Nessuna proprietà dei metadati utilizza questo vocabolario.
+        used_by: Utilizzato dalle proprietà
+        used_by_hint: Le proprietà dei metadati controllate da questo vocabolario, come denominate nelle importazioni Bulkrax e nei profili dei metadati.
+        used_by_work_types: 'Disponibile su:'
+        work_types:
+          collection_resource: Collezione
+          etd_resource: ETD
+          oer_resource: OER
       flash:
         access_denied: Non sei autorizzato a visualizzare questa pagina
       google_analytics_settings:

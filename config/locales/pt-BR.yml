@@ -279,6 +279,71 @@ pt-BR:
           upload: Enviar arquivos
         label: Progresso do depósito
     admin:
+      controlled_vocabularies: Vocabulários controlados
+      controlled_vocabulary:
+        active: Ativo
+        awaiting_import: Não importado
+        awaiting_import_help: 'Este vocabulário está disponível, mas ainda não tem termos neste locatário. Preencha-o executando: %{task}'
+        description: Descrição
+        inactive: Inativo
+        label: Rótulo
+        label_hint: O que um depositante vê no formulário. Pode ser reformulado sem afetar os registros armazenados.
+        name: Vocabulário
+        no_terms: Este vocabulário ainda não tem termos.
+        none: Nenhum vocabulário controlado foi configurado para este locatário ainda.
+        origin: Origem
+        origin_hint: Onde o vocabulário é definido e, portanto, se seus termos podem ser editados aqui.
+        origins:
+          cached: Cópia importada
+          database: Este locatário
+          file: Arquivo de configuração
+          remote: Serviço externo
+        providers:
+          crossref: Crossref
+          discogs: Discogs
+          fast: OCLC FAST
+          geonames: GeoNames
+          getty: Getty
+          loc: Library of Congress
+          mesh: MeSH
+          tgnlang: Getty TGN Languages
+        read_only:
+          cached: Este vocabulário é uma cópia importada de um vocabulário externo. Seus termos não podem ser alterados aqui, e reimportá-lo substitui todos eles.
+          file: Este vocabulário é definido em um arquivo de configuração, portanto seus termos não podem ser alterados aqui.
+          generic: Os termos deste vocabulário não podem ser alterados aqui.
+          remote: Este vocabulário vem de um serviço externo, portanto seus termos não podem ser alterados aqui.
+        ready: Pronto
+        retired_count:
+          one: (%{count} desativado)
+          other: (%{count} desativados)
+        show_title: 'Vocabulário controlado: %{name}'
+        source_key: Chave de origem
+        source_key_hint: Cole isto em um campo do perfil de metadados para controlar esse campo com este vocabulário.
+        source_key_help: Cole uma chave de origem em um campo do perfil de metadados para controlar esse campo com este vocabulário. Os vocabulários gerenciados neste locatário podem ser editados aqui; os definidos em um arquivo de configuração ou por um serviço externo não podem.
+        static_forms: Os perfis de metadados não estão habilitados, então os formulários de depósito leem este vocabulário de um arquivo de configuração. Alterar seus termos requer um desenvolvedor.
+        status: Status
+        status_hint: Se este vocabulário está pronto para uso ou precisa de alguma configuração primeiro.
+        status_unknown: Não especificado
+        term_id: ID do termo
+        term_limit:
+          one: (mostrando o primeiro %{count})
+          other: (mostrando os primeiros %{count})
+        term_id_hint: O valor armazenado em um registro e o valor a fornecer em uma importação do Bulkrax.
+        term_id_help: O ID do termo é o valor armazenado em um registro e o valor a fornecer em uma importação do Bulkrax. O rótulo é apenas o que um depositante vê.
+        term_total:
+          one: 1 termo
+          other: "%{count} termos"
+        terms: Termos
+        unconfigured: Requer configuração
+        unconfigured_help: Este serviço precisa de credenciais antes de poder ser usado. Até lá, um campo que o utiliza aceita texto livre em vez de oferecer sugestões.
+        unused: Nenhuma propriedade de metadados usa este vocabulário.
+        used_by: Usado pelas propriedades
+        used_by_hint: As propriedades de metadados controladas por este vocabulário, conforme nomeadas nas importações do Bulkrax e nos perfis de metadados.
+        used_by_work_types: 'Disponível em:'
+        work_types:
+          collection_resource: Coleção
+          etd_resource: ETD
+          oer_resource: OER
       flash:
         access_denied: Você não está autorizado a visualizar esta página
       google_analytics_settings:

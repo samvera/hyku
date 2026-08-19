@@ -567,6 +567,9 @@ de:
         show:
           header: Benutzer verwalten
           update: Aktualisieren
+    search:
+      form:
+        advanced: Erweitert
     splash:
       account_denied: Sie sind nicht berechtigt, Mieter anzulegen.
       account_login: Melden Sie sich an, um loszulegen.

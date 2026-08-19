@@ -447,6 +447,9 @@ en:
         show:
           header: Manage User
           update: Update
+    search:
+      form:
+        advanced: Advanced
     splash:
       account_denied: You are not authorized to create tenants
       account_login: Login to get started

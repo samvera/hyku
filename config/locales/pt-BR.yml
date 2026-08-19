@@ -450,6 +450,9 @@ pt-BR:
         show:
           header: Gerenciar usuário
           update: Atualizar
+    search:
+      form:
+        advanced: Avançada
     splash:
       account_denied: Você não está autorizado a criar inquilinos
       account_login: Inicie sessão para começar

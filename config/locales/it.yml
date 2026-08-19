@@ -568,6 +568,9 @@ it:
         show:
           header: Gestisci utente
           update: Aggiornamento
+    search:
+      form:
+        advanced: Avanzata
     splash:
       account_denied: Non sei autorizzato a creare inquilini
       account_login: Accedi per iniziare

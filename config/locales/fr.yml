@@ -568,6 +568,9 @@ fr:
         show:
           header: Gérer les utilisateurs
           update: Mise à jour
+    search:
+      form:
+        advanced: Recherche avancée
     splash:
       account_denied: Vous n'êtes pas autorisé à créer de locataires.
       account_login: Connectez-vous pour commencer

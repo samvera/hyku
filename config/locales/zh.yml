@@ -568,6 +568,9 @@ zh:
         show:
           header: 管理用户
           update: 更新
+    search:
+      form:
+        advanced: 高级检索
     splash:
       account_denied: 您没有创建租户的权限。
       account_login: 登录即可开始

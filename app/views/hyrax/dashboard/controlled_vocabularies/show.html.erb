@@ -46,7 +46,12 @@
         </dt>
         <dd class="col-sm-10">
           <% if @usage.empty? %>
-            <span class="text-muted"><%= t('hyku.admin.controlled_vocabulary.unused') %></span>
+            <span class="text-muted">
+              <%= t('hyku.admin.controlled_vocabulary.unused') %>
+              <% if Hyrax.config.flexible? %>
+                <%= t('hyku.admin.controlled_vocabulary.unused_profile_hint') %>
+              <% end %>
+            </span>
           <% else %>
             <ul class="list-unstyled mb-0">
               <% @usage.each do |property| %>

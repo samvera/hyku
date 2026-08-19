@@ -157,6 +157,11 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     resources :featured_collection_lists, path: 'featured_collections', only: :create
   end
 
+  # Controlled vocabularies, viewable only from the dashboard
+  scope :dashboard, module: 'hyrax/dashboard' do
+    resources :controlled_vocabularies, only: [:index, :show]
+  end
+
   # Guided deposit wizard
   scope :dashboard, module: 'hyrax' do
     get 'deposit_wizard', to: 'deposit_wizard#start', as: :deposit_wizard

@@ -3,7 +3,13 @@
 module Hyrax
   module FormHelperBehavior
     def controlled_vocabulary_service_for(source_name)
-      Hyrax::ControlledVocabularies.services[source_name]&.safe_constantize
+      registered = Hyrax::ControlledVocabularies.services[source_name]&.safe_constantize
+      return registered if registered
+
+      # Vocabularies created through the admin dashboard have no entry in the
+      # services registry, so fall back to a bare tolerant lookup. Without this
+      # the field renders as free text instead of a dropdown.
+      database_vocabulary_service_for(source_name)
     end
 
     def remote_authority_config_for(source_name)
@@ -42,6 +48,18 @@ module Hyrax
     end
 
     private
+
+    # A tolerant service for a database-backed vocabulary, or nil when no
+    # vocabulary of that name exists (so remote authorities still get a chance).
+    def database_vocabulary_service_for(source_name)
+      return if source_name.blank?
+      return unless Qa::LocalAuthority.exists?(name: source_name.to_s)
+
+      Hyrax::TolerantSelectService.new(source_name.to_s)
+    rescue StandardError => e
+      Rails.logger.warn "Failed to build a vocabulary service for #{source_name}: #{e.message}"
+      nil
+    end
 
     def controlled_vocabulary_mapping_for(property_name)
       # Maps property names in when flexible=false to their corresponding controlled vocabulary service keys

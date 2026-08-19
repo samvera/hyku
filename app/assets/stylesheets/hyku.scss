@@ -780,3 +780,32 @@ dd {
     font-size: 0.875rem;
     color: #6c757d;
 }
+
+// Status badges for the controlled vocabulary dashboard.
+//
+// Set explicitly rather than reusing badge-warning and friends: the themes
+// flatten most Bootstrap badge colours to grays
+// Needs no action, so it recedes.
+.badge-quiet {
+    background-color: #e9ecef;
+    color: #495057;
+}
+
+// Needs attention.
+.badge-attention {
+    background-color: #b45309;
+    color: #fff;
+}
+
+// The question mark beside a column heading that carries a tooltip
+.column-hint {
+    border: 0;
+    cursor: help;
+    font-size: 0.875em;
+    vertical-align: baseline;
+
+    &:hover,
+    &:focus {
+        text-decoration: none;
+    }
+}

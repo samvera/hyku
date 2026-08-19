@@ -5,6 +5,14 @@ require 'rails_helper'
 RSpec.describe Qa::Authorities::Mesh do
   subject(:authority) { described_class.new }
 
+  # A MeSH import replaces every row, so the dashboard must not offer these terms
+  # for editing.
+  describe '#locally_owned?' do
+    it 'is false, because the terms come from a MeSH release' do
+      expect(authority).not_to be_locally_owned
+    end
+  end
+
   describe '#search' do
     context 'when the mesh authority does not exist' do
       it 'returns an empty array' do

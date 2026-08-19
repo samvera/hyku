@@ -7,6 +7,12 @@ RSpec.describe Qa::Authorities::LocalVocabulary do
 
   let(:yml_terms) { YAML.load_file(Rails.root.join('config', 'authorities', 'audience.yml'))['terms'] }
 
+  describe '#locally_owned?' do
+    it 'is true, because nothing external overwrites these terms' do
+      expect(authority).to be_locally_owned
+    end
+  end
+
   it 'serves the tenant rows when the vocabulary is in the database' do
     Qa::LocalAuthority.find_by(name: 'audience')
                       .local_authority_entries

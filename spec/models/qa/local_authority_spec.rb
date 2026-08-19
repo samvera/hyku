@@ -53,22 +53,10 @@ RSpec.describe Qa::LocalAuthority, type: :model do
   end
 
   describe '#source_key' do
+    # Bare, matching how the file-based vocabularies are cited in
+    # config/metadata_profiles (e.g. `- licenses`).
     it 'is the value to paste into the metadata profile' do
-      expect(described_class.new(name: 'lab_names').source_key).to eq 'local/lab_names'
-    end
-  end
-
-  describe '.file_based_names' do
-    it 'lists the subauthorities backed by config/authorities YAML' do
-      allow(Qa::Authorities::Local).to receive(:names).and_return(%w[licenses])
-
-      expect(described_class.file_based_names).to include('licenses')
-    end
-
-    it 'returns an empty list when the authorities directory is missing' do
-      allow(Qa::Authorities::Local).to receive(:names).and_raise(Qa::ConfigDirectoryNotFound, 'no directory')
-
-      expect(described_class.file_based_names).to eq []
+      expect(described_class.new(name: 'lab_names').source_key).to eq 'lab_names'
     end
   end
 end

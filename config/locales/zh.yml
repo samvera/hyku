@@ -402,11 +402,20 @@ zh:
         active: 已启用
         awaiting_import: 未导入
         awaiting_import_help: '此词表可用，但在此租户中尚无词条。运行以下命令进行填充：%{task}'
+        create: 创建词表
+        create_term: 添加词条
+        created: '%{name} 已创建。请在下方添加其词条。'
         description: 描述
+        description_help: 可选。向其他工作人员说明此词表的用途。
         inactive: 未启用
         label: 标签
         label_hint: 存缴者在表单中看到的内容。可以放心改写，不会影响已存储的记录。
         name: 词表
+        new_help: 为词表命名，其源键将由该名称生成。源键是元数据配置档所引用的内容，之后无法更改。
+        new_term_heading: 向 %{vocabulary} 添加词条
+        new_term_help: 按存缴者应看到的形式为词条命名。词条 ID 是记录所存储的值，词条一旦使用便无法更改。
+        new_term_title: 添加词条
+        new_title: 新建词表
         no_terms: 此词表尚无词条。
         none: 此租户尚未设置任何受控词表。
         origin: 来源
@@ -436,13 +445,18 @@ zh:
           other: （已停用 %{count} 个）
         show_title: '受控词表：%{name}'
         source_key: 来源键
+        source_key_from_name: 源键由上方名称生成。
         source_key_hint: 将其粘贴到元数据配置档的字段中，即可用此词表控制该字段。
         source_key_help: 将来源键粘贴到元数据配置档的字段中，即可用此词表控制该字段。在此租户中管理的词表可以在此处编辑；在配置文件中定义或来自外部服务的词表则不能。
+        source_key_will_be_html: 将以源键 %{key} 保存。
         static_forms: 未启用元数据配置档，因此存缴表单从配置文件读取此词表。修改其词条需要开发人员协助。
         status: 状态
         status_hint: 此词表是就绪可用，还是需要先完成某些设置。
         status_unknown: 未指定
+        term_created: '%{label} 已添加。'
         term_id: 词条 ID
+        term_id_from_label: 留空则使用标签作为词条 ID。
+        term_id_immutable: 之后无法更改。
         term_limit:
           one: （显示前 %{count} 个）
           other: （显示前 %{count} 个）

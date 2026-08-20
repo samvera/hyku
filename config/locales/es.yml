@@ -402,11 +402,20 @@ es:
         active: Activo
         awaiting_import: No importado
         awaiting_import_help: 'Este vocabulario está disponible pero aún no tiene términos en este inquilino. Puede completarlo ejecutando: %{task}'
+        create: Crear vocabulario
+        create_term: Agregar término
+        created: '%{name} se creó. Agregue sus términos a continuación.'
         description: Descripción
+        description_help: Opcional. Explica a otro personal para qué sirve este vocabulario.
         inactive: Inactivo
         label: Etiqueta
         label_hint: Lo que ve un depositante en el formulario. Se puede reformular sin afectar los registros almacenados.
         name: Vocabulario
+        new_help: Nombre el vocabulario; su clave de origen se establece a partir de ese nombre. La clave es lo que cita un perfil de metadatos, por lo que no se puede cambiar después.
+        new_term_heading: Agregar un término a %{vocabulary}
+        new_term_help: Nombre el término tal como debe verlo un depositante. El id del término es lo que almacena un registro y no se puede cambiar una vez que los términos están en uso.
+        new_term_title: Agregar término
+        new_title: Nuevo vocabulario
         no_terms: Este vocabulario aún no tiene términos.
         none: Aún no se ha configurado ningún vocabulario controlado para este inquilino.
         origin: Fuente
@@ -436,13 +445,18 @@ es:
           other: (%{count} retirados)
         show_title: 'Vocabulario controlado: %{name}'
         source_key: Clave de fuente
+        source_key_from_name: La clave de origen se establece a partir del nombre anterior.
         source_key_hint: Pegue este valor en un campo del perfil de metadatos para controlar ese campo con este vocabulario.
         source_key_help: Pegue una clave de fuente en un campo del perfil de metadatos para controlar ese campo con este vocabulario. Los vocabularios gestionados en este inquilino se pueden editar aquí; los definidos en un archivo de configuración o por un servicio externo no.
+        source_key_will_be_html: Se guardará con la clave de origen %{key}.
         static_forms: Los perfiles de metadatos no están habilitados, por lo que los formularios de depósito leen este vocabulario desde un archivo de configuración. Cambiar sus términos requiere un desarrollador.
         status: Estado
         status_hint: Indica si este vocabulario está listo para usarse o necesita alguna configuración previa.
         status_unknown: Sin especificar
+        term_created: '%{label} se agregó.'
         term_id: ID del término
+        term_id_from_label: Déjelo en blanco para usar la etiqueta como id del término.
+        term_id_immutable: No se puede cambiar después.
         term_limit:
           one: (mostrando el primer %{count})
           other: (mostrando los primeros %{count})

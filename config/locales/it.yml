@@ -402,11 +402,20 @@ it:
         active: Attivo
         awaiting_import: Non importato
         awaiting_import_help: 'Questo vocabolario è disponibile ma non ha ancora termini in questo tenant. Popolalo eseguendo: %{task}'
+        create: Crea vocabolario
+        create_term: Aggiungi termine
+        created: '%{name} è stato creato. Aggiungi i suoi termini qui sotto.'
         description: Descrizione
+        description_help: Facoltativo. Spiega ad altro personale a cosa serve questo vocabolario.
         inactive: Inattivo
         label: Etichetta
         label_hint: Ciò che un depositante vede nel modulo. Può essere riformulata senza influire sui record salvati.
         name: Vocabolario
+        new_help: Assegna un nome al vocabolario; la sua chiave di origine viene impostata da quel nome. La chiave è ciò che un profilo dei metadati cita, quindi non può essere cambiata in seguito.
+        new_term_heading: Aggiungi un termine a %{vocabulary}
+        new_term_help: Assegna al termine il nome che un depositante deve vedere. L'id del termine è ciò che un record memorizza e non può essere cambiato una volta che i termini sono in uso.
+        new_term_title: Aggiungi termine
+        new_title: Nuovo vocabolario
         no_terms: Questo vocabolario non ha ancora termini.
         none: Nessun vocabolario controllato è stato ancora configurato per questo tenant.
         origin: Origine
@@ -436,13 +445,18 @@ it:
           other: (%{count} ritirati)
         show_title: 'Vocabolario controllato: %{name}'
         source_key: Chiave di origine
+        source_key_from_name: La chiave di origine viene impostata dal nome sopra.
         source_key_hint: Incollala in un campo del profilo dei metadati per controllare quel campo con questo vocabolario.
         source_key_help: Incolla una chiave di origine in un campo del profilo dei metadati per controllare quel campo con questo vocabolario. I vocabolari gestiti in questo tenant possono essere modificati qui; quelli definiti in un file di configurazione o da un servizio esterno no.
+        source_key_will_be_html: Verrà salvato con la chiave di origine %{key}.
         static_forms: I profili dei metadati non sono abilitati, quindi i moduli di deposito leggono questo vocabolario da un file di configurazione. La modifica dei suoi termini richiede uno sviluppatore.
         status: Stato
         status_hint: Indica se questo vocabolario è pronto all'uso o se richiede prima una configurazione.
         status_unknown: Non specificato
+        term_created: '%{label} è stato aggiunto.'
         term_id: ID del termine
+        term_id_from_label: Lascia vuoto per usare l'etichetta come id del termine.
+        term_id_immutable: Non può essere cambiato in seguito.
         term_limit:
           one: (viene mostrato il primo %{count})
           other: (vengono mostrati i primi %{count})

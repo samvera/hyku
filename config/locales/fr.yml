@@ -402,11 +402,20 @@ fr:
         active: Actif
         awaiting_import: Non importé
         awaiting_import_help: 'Ce vocabulaire est disponible mais ne contient encore aucun terme dans ce locataire. Remplissez-le en exécutant : %{task}'
+        create: Créer le vocabulaire
+        create_term: Ajouter un terme
+        created: '%{name} a été créé. Ajoutez ses termes ci-dessous.'
         description: Description
+        description_help: Facultatif. Explique aux autres membres du personnel à quoi sert ce vocabulaire.
         inactive: Inactif
         label: Libellé
         label_hint: Ce qu'un déposant voit dans le formulaire. Peut être reformulé sans affecter les enregistrements stockés.
         name: Vocabulaire
+        new_help: Nommez le vocabulaire; sa clé source est établie à partir de ce nom. La clé est ce que cite un profil de métadonnées et ne peut pas être modifiée par la suite.
+        new_term_heading: Ajouter un terme à %{vocabulary}
+        new_term_help: Nommez le terme tel qu'un déposant doit le voir. L'identifiant du terme est ce qu'un enregistrement stocke et ne peut plus être modifié une fois les termes utilisés.
+        new_term_title: Ajouter un terme
+        new_title: Nouveau vocabulaire
         no_terms: Ce vocabulaire ne contient encore aucun terme.
         none: Aucun vocabulaire contrôlé n'a encore été configuré pour ce locataire.
         origin: Source
@@ -436,13 +445,18 @@ fr:
           other: (%{count} retirés)
         show_title: 'Vocabulaire contrôlé : %{name}'
         source_key: Clé de source
+        source_key_from_name: La clé source est établie à partir du nom ci-dessus.
         source_key_hint: Collez ceci dans un champ de profil de métadonnées pour contrôler ce champ avec ce vocabulaire.
         source_key_help: Collez une clé de source dans un champ de profil de métadonnées pour contrôler ce champ avec ce vocabulaire. Les vocabulaires gérés dans ce locataire peuvent être modifiés ici ; ceux définis dans un fichier de configuration ou par un service externe ne le peuvent pas.
+        source_key_will_be_html: Ce sera enregistré avec la clé source %{key}.
         static_forms: Les profils de métadonnées ne sont pas activés, les formulaires de dépôt lisent donc ce vocabulaire depuis un fichier de configuration. La modification de ses termes nécessite un développeur.
         status: Statut
         status_hint: Indique si ce vocabulaire est prêt à être utilisé ou si quelque chose doit d'abord être configuré.
         status_unknown: Non spécifié
+        term_created: '%{label} a été ajouté.'
         term_id: ID du terme
+        term_id_from_label: Laissez vide pour utiliser le libellé comme identifiant du terme.
+        term_id_immutable: Il ne peut plus être modifié par la suite.
         term_limit:
           one: (%{count} premier terme affiché)
           other: (%{count} premiers termes affichés)

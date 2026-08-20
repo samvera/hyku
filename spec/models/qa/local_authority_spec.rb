@@ -59,4 +59,42 @@ RSpec.describe Qa::LocalAuthority, type: :model do
       expect(described_class.new(name: 'lab_names').source_key).to eq 'lab_names'
     end
   end
+
+  describe '.name_for' do
+    it 'turns a label into a usable source key' do
+      expect(described_class.name_for('Lab Names')).to eq 'lab_names'
+      expect(described_class.name_for('Reading Rooms & Desks')).to eq 'reading_rooms_desks'
+      expect(described_class.name_for('Café Terms')).to eq 'cafe_terms'
+      expect(described_class.name_for('  spaced  ')).to eq 'spaced'
+    end
+
+    it 'produces a key the name validation accepts' do
+      ['Lab Names', 'ISO 639-1 Languages', 'Café Terms'].each do |label|
+        expect(described_class.name_for(label)).to match(described_class::NAME_FORMAT)
+      end
+    end
+  end
+
+  describe 'deriving the name on create' do
+    it 'sets the name from the label' do
+      expect(described_class.create!(label: 'Lab Names').name).to eq 'lab_names'
+    end
+
+    it 'leaves an explicitly given name alone' do
+      expect(described_class.create!(name: 'lab_codes', label: 'Lab Names').name).to eq 'lab_codes'
+    end
+
+    # A metadata profile cites the name, and works store terms found through it, so
+    # relabeling must not move it.
+    it 'does not change the name when the label is edited later' do
+      vocabulary = described_class.create!(label: 'Lab Names')
+      vocabulary.update!(label: 'Laboratory Names')
+
+      expect(vocabulary.reload.name).to eq 'lab_names'
+    end
+
+    it 'still requires something to derive from' do
+      expect(described_class.new(label: '')).not_to be_valid
+    end
+  end
 end

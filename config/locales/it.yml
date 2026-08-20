@@ -407,6 +407,7 @@ it:
         created: '%{name} è stato creato. Aggiungi i suoi termini qui sotto.'
         description: Descrizione
         description_help: Facoltativo. Spiega ad altro personale a cosa serve questo vocabolario.
+        download: Scarica
         inactive: Inattivo
         label: Etichetta
         label_hint: Ciò che un depositante vede nel modulo. Può essere riformulata senza influire sui record salvati.

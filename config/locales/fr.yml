@@ -407,6 +407,7 @@ fr:
         created: '%{name} a été créé. Ajoutez ses termes ci-dessous.'
         description: Description
         description_help: Facultatif. Explique aux autres membres du personnel à quoi sert ce vocabulaire.
+        download: Télécharger
         inactive: Inactif
         label: Libellé
         label_hint: Ce qu'un déposant voit dans le formulaire. Peut être reformulé sans affecter les enregistrements stockés.

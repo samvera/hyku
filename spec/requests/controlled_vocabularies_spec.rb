@@ -49,6 +49,14 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
 
         expect(response.body).to include 'Where an item may be consulted on site.'
       end
+
+      it 'offers a download dropdown on downloadable rows only' do
+        get "http://#{account.cname}/dashboard/controlled_vocabularies"
+
+        expect(response.body).to include 'controlled_vocabularies/reading_rooms.csv'
+        expect(response.body).to include 'controlled_vocabularies/reading_rooms.yml'
+        expect(response.body).not_to include 'controlled_vocabularies/geonames.csv'
+      end
     end
 
     describe 'a vocabulary' do
@@ -73,6 +81,43 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
         get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms"
 
         expect(response.body).to include 'This tenant'
+      end
+
+      it 'offers a download dropdown next to the add term button' do
+        get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms"
+
+        expect(response.body).to include 'controlled_vocabularies/reading_rooms.csv'
+        expect(response.body).to include 'controlled_vocabularies/reading_rooms.yml'
+      end
+
+      it 'downloads the terms as csv, inactive terms included' do
+        get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms.csv"
+
+        expect(response.headers['Content-Disposition']).to include 'reading_rooms.csv'
+        expect(response.body.lines.first).to eq "id,label,active\n"
+        expect(response.body).to include "closed-stacks,Closed Stacks,false\n"
+      end
+
+      it 'downloads the terms as a qa authority yaml file' do
+        get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms.yml"
+
+        expect(response.headers['Content-Disposition']).to include 'reading_rooms.yml'
+        expect(YAML.safe_load(response.body)['terms'])
+          .to include('id' => 'special-collections', 'term' => 'Special Collections', 'active' => true)
+      end
+
+      it 'downloads without flexible metadata' do
+        allow(Hyrax.config).to receive(:flexible?).and_return(false)
+
+        get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms.csv"
+
+        expect(response).to have_http_status(:success)
+      end
+
+      it 'returns not found for a vocabulary whose terms cannot be exported' do
+        get "http://#{account.cname}/dashboard/controlled_vocabularies/geonames.csv"
+
+        expect(response).to have_http_status(:not_found)
       end
 
       context 'with a metadata profile' do
@@ -183,6 +228,13 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
         expect(response.body).to include 'North'
         expect(response.body).to include 'configuration file'
       end
+
+      it 'downloads without a database row' do
+        get "http://#{account.cname}/dashboard/controlled_vocabularies/map_regions.csv"
+
+        expect(response.headers['Content-Disposition']).to include 'map_regions.csv'
+        expect(response.body).to include "north,North,true\n"
+      end
     end
 
     it 'returns not found for a vocabulary that does not exist' do
@@ -254,6 +306,13 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
     before do
       user = Apartment::Tenant.switch(account.tenant) { create(:user) }
       login_as(user, scope: :user)
+    end
+
+    it 'refuses a download' do
+      get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms.csv"
+
+      expect(response).not_to have_http_status(:success)
+      expect(response.headers['Content-Disposition']).to be_nil
     end
 
     it 'refuses the page' do

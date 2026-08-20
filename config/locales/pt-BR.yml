@@ -289,6 +289,7 @@ pt-BR:
         created: '%{name} foi criado. Adicione seus termos abaixo.'
         description: Descrição
         description_help: Opcional. Explica a outros funcionários para que serve este vocabulário.
+        download: Baixar
         inactive: Inativo
         label: Rótulo
         label_hint: O que um depositante vê no formulário. Pode ser reformulado sem afetar os registros armazenados.

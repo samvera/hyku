@@ -38,6 +38,7 @@
                            label: t('hyku.admin.controlled_vocabulary.status'),
                            hint: t('hyku.admin.controlled_vocabulary.status_hint') %>
               </th>
+              <th scope="col"><span class="sr-only"><%= t('hyku.admin.controlled_vocabulary.download') %></span></th>
             </tr>
           </thead>
           <tbody>
@@ -69,10 +70,13 @@
                     </span>
                   <% end %>
                 </td>
+                <td class="text-right">
+                  <%= render 'download_menu', entry: entry, button_class: 'btn-sm btn-outline-secondary' if entry.downloadable? %>
+                </td>
               </tr>
               <% if entry.description.present? %>
                 <tr class="border-bottom">
-                  <td colspan="4" class="pt-0 text-muted">
+                  <td colspan="5" class="pt-0 text-muted">
                     <%= entry.description %>
                   </td>
                 </tr>

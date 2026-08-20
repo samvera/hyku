@@ -278,6 +278,7 @@ en:
         created: '%{name} was created. Add its terms below.'
         description: Description
         description_help: Optional. Explains to other staff what this vocabulary is for.
+        download: Download
         inactive: Inactive
         label: Label
         label_hint: What a depositor sees in the form. Safe to reword without affecting stored records.

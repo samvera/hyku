@@ -407,6 +407,7 @@ es:
         created: '%{name} se creó. Agregue sus términos a continuación.'
         description: Descripción
         description_help: Opcional. Explica a otro personal para qué sirve este vocabulario.
+        download: Descargar
         inactive: Inactivo
         label: Etiqueta
         label_hint: Lo que ve un depositante en el formulario. Se puede reformular sin afectar los registros almacenados.

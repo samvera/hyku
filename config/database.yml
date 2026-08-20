@@ -7,7 +7,8 @@ login: &login
   username: <%= ENV['DB_USER'] %>
   password: <%= ENV['DB_PASSWORD'] %>
   database: <%= ENV['DB_NAME'] || 'hyku' %>
-  pool: 50
+  # Size via DB_POOL to your thread count; DATABASE_URL (including that set by the helm chart) or a `url:` key in this file overrides this value
+  pool: <%= ENV.fetch('DB_POOL', 10).to_i %>
   timeout: 5000
   prepared_statements: <%= ENV.fetch('DB_PREPARED_STATEMENTS', true) %>
   advisory_locks: <%= ENV.fetch('DB_ADVISORY_LOCKS', true) %>

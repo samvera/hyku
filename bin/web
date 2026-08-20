@@ -7,4 +7,7 @@
 `mkdir -p /app/samvera/branding`
 `ln -snf /app/samvera/branding /app/samvera/hyrax-webapp/public/branding`
 
+require_relative 'db_pool_env'
+DbPoolEnv.configure!(default_pool: ENV.fetch('RAILS_MAX_THREADS', 5).to_i + 2)
+
 exec "bundle exec puma -v -b tcp://0.0.0.0:3000"

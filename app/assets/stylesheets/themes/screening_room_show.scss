@@ -353,4 +353,129 @@
       }
     }
   }
+
+  // ---- metadata ----
+  .scr-show-main > dl.work-show {
+    // no column gap: the row's rule is drawn on both cells, so a gap would
+    // break it in two. the label carries the spacing as padding instead
+    column-gap: 0;
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    margin: 0;
+    padding-top: 0;
+
+    @media (max-width: $scr-mobile-max) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    dt {
+      @include scr-sans;
+      border-top: 1px solid var(--scr-rule, #{$scr-rule});
+      color: $scr-ink;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.55;
+      margin: 0;
+      padding: 12px 20px 12px 0;
+
+      @media (max-width: $scr-mobile-max) {
+        padding-bottom: 0;
+        padding-right: 0;
+      }
+    }
+
+    dd {
+      border-top: 1px solid var(--scr-rule, #{$scr-rule});
+      color: $scr-ink-body;
+      font-size: 16px;
+      line-height: 1.55;
+      margin: 0;
+      overflow-wrap: anywhere;
+      padding: 12px 0;
+      text-align: right;
+
+      @media (max-width: $scr-mobile-max) {
+        border-top: 0;
+        padding-top: 2px;
+        text-align: left;
+      }
+
+      a {
+        @include scr-link;
+      }
+
+      ul.tabular {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      // the stock partial gives every value its own list item; the row reads as
+      // one line of prose instead
+      ul.tabular li,
+      ul.tabular p {
+        display: inline;
+        margin: 0;
+      }
+
+      // the separator hangs off the value's own text, not the list item: the
+      // renderers differ on where they put whitespace, and a comma on the item
+      // lands on the far side of it
+      ul.tabular li:not(:last-child) a:last-of-type::after,
+      ul.tabular li:not(:last-child):not(:has(a))::after {
+        color: $scr-ink-faint;
+        content: ', ';
+        text-decoration: none;
+      }
+    }
+  }
+
+  // ---- featured fields and compound cards ----
+  // both gem partials arrive as bootstrap cards, and the compound header also
+  // picks up the appearance's facet palette
+  .work-featured-attribute,
+  .hyrax-compound-card {
+    background: var(--scr-band, #{$scr-band});
+    border: 1px solid var(--scr-rule, #{$scr-rule}) !important;
+    border-radius: 0;
+    color: $scr-ink-body;
+    // the gem ships .mb-4 on the featured card
+    margin-bottom: 0 !important;
+
+    .card-header,
+    .card-body {
+      background-color: transparent !important;
+      border-color: var(--scr-rule, #{$scr-rule}) !important;
+      border-radius: 0;
+      color: $scr-ink-body;
+      padding: 16px 20px;
+    }
+
+    h2,
+    .card-title {
+      @include scr-sans;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      margin: 0 0 8px;
+    }
+
+    .card-title {
+      margin-bottom: 0;
+    }
+
+    a {
+      @include scr-link;
+    }
+
+    .hyrax-compound-subproperty-label {
+      @include scr-sans;
+      color: $scr-ink;
+    }
+  }
+
+  // a compound whose values are all blank still renders its header
+  .hyrax-compound-card:not(:has(.hyrax-compound-entry)) {
+    display: none;
+  }
 }

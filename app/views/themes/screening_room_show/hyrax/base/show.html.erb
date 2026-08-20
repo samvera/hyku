@@ -38,7 +38,9 @@
         </div>
       <% end %>
 
+      <%= render 'featured_attributes', presenter: @presenter %>
       <%= render 'metadata', presenter: @presenter %>
+      <%= render_compound_cards(@presenter) %>
     </div>
 
     <aside class="scr-show-rail">

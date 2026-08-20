@@ -29,11 +29,6 @@ module HeritageHelper
                                              page: params[:items_page].to_s.to_i, per: PANEL_ROWS)
   end
 
-  def hrt_viewer?(presenter)
-    presenter.video_embed_viewer? ||
-      (presenter.representative_id.present? && presenter.representative_presenter.present?)
-  end
-
   private
 
   # TODO: dedupe with practice_research pr_paginate — shared paginate-members helper

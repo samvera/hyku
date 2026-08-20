@@ -40,6 +40,26 @@ RSpec.describe ThemeHelper, type: :helper do
     end
   end
 
+  describe '#theme_viewer?' do
+    it 'is true for a work whose representative loaded' do
+      presenter = double(video_embed_viewer?: false, representative_id: 'fs1', representative_presenter: double)
+
+      expect(helper.theme_viewer?(presenter)).to be true
+    end
+
+    it 'is false when the representative is one the visitor cannot read' do
+      presenter = double(video_embed_viewer?: false, representative_id: 'fs1', representative_presenter: nil)
+
+      expect(helper.theme_viewer?(presenter)).to be_falsey
+    end
+
+    it 'is true for an embedded video even with no representative' do
+      presenter = double(video_embed_viewer?: true)
+
+      expect(helper.theme_viewer?(presenter)).to be true
+    end
+  end
+
   describe '#theme_thumbnail_url' do
     before do
       allow(Site).to receive(:instance)

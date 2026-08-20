@@ -14,6 +14,11 @@ module ThemeHelper
     truncate(theme_plain_text(text), length:, separator: ' ')
   end
 
+  def theme_viewer?(presenter)
+    presenter.video_embed_viewer? ||
+      (presenter.representative_id.present? && presenter.representative_presenter.present?)
+  end
+
   def theme_thumbnail_url(document, default: :work)
     indexed = document.try(:[], 'thumbnail_path_ss').presence
     return indexed if indexed && !indexed.include?('/assets/')

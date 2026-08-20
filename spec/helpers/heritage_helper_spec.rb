@@ -26,18 +26,4 @@ RSpec.describe HeritageHelper, type: :helper do
       expect(helper.hrt_file_set_ids(presenter).current_page).to eq(1)
     end
   end
-
-  describe '#hrt_viewer?' do
-    it 'is true with a representative present' do
-      presenter = double(video_embed_viewer?: false, representative_id: 'abc', representative_presenter: double)
-
-      expect(helper.hrt_viewer?(presenter)).to be true
-    end
-
-    it 'is false with nothing to show' do
-      presenter = double(video_embed_viewer?: false, representative_id: nil)
-
-      expect(helper.hrt_viewer?(presenter)).to be false
-    end
-  end
 end

@@ -478,4 +478,327 @@
   .hyrax-compound-card:not(:has(.hyrax-compound-entry)) {
     display: none;
   }
+
+  // ---- rail panels ----
+  .scr-show-rail {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    row-gap: 14px;
+  }
+
+  .scr-panel {
+    background: var(--scr-band, #{$scr-band});
+    border: 1px solid var(--scr-rule, #{$scr-rule});
+    padding: 20px;
+  }
+
+  .scr-panel-head {
+    align-items: baseline;
+    column-gap: 12px;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 6px;
+  }
+
+  .scr-panel-label {
+    @include scr-sans;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .scr-panel-count {
+    color: $scr-ink-faint;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .scr-panel-list {
+    margin: 0;
+  }
+
+  .scr-panel-row {
+    align-items: center;
+    column-gap: 14px;
+    display: grid;
+    grid-template-columns: 68px minmax(0, 1fr) auto;
+    padding: 14px 0;
+
+    & + .scr-panel-row {
+      border-top: 1px solid var(--scr-rule, #{$scr-rule});
+    }
+  }
+
+  .scr-panel-thumb {
+    background: var(--scr-raised, #{$scr-raised});
+    display: block;
+    height: 68px;
+    overflow: hidden;
+    width: 68px;
+
+    img {
+      height: 100%;
+      object-fit: cover;
+      width: 100%;
+    }
+  }
+
+  .scr-panel-body {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    row-gap: 3px;
+  }
+
+  .scr-panel-name {
+    @include scr-link($scr-ink);
+    font-size: 15px;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+    }
+  }
+
+  .scr-panel-meta {
+    color: $scr-ink-faint;
+    font-size: 13px;
+    margin: 0;
+  }
+
+  .scr-panel-actions {
+    // the file set actions arrive as appearance-pinned buttons
+    .btn,
+    a {
+      @include scr-link;
+      background: none !important;
+      border: 0 !important;
+      color: var(--scr-link, #{$scr-link}) !important;
+      font-size: 13px;
+      padding: 0;
+
+      &:hover,
+      &:focus {
+        color: #fff !important;
+      }
+    }
+
+    // an editor gets the action menu instead of a bare download link
+    .dropdown-toggle {
+      background-color: var(--scr-raised, #{$scr-raised}) !important;
+      border: 1px solid var(--scr-rule-strong, #{$scr-rule-strong}) !important;
+      border-radius: 0;
+      color: $scr-ink !important;
+      padding: 6px 10px;
+      text-decoration: none;
+      white-space: nowrap;
+
+      &:hover,
+      &:focus {
+        background-color: var(--scr-chrome-soft, #{$scr-chrome-soft}) !important;
+        border-color: var(--scr-rule-strong, #{$scr-rule-strong}) !important;
+        color: #fff !important;
+      }
+    }
+
+  }
+
+  // the rail's menus: the file set actions and the citation formats
+  .scr-show-rail .dropdown-menu {
+    background: var(--scr-chrome-soft, #{$scr-chrome-soft});
+    border: 1px solid var(--scr-rule-strong, #{$scr-rule-strong});
+    border-radius: 0;
+    margin: 0;
+    min-width: 190px;
+    padding: 4px 0;
+
+    // bootstrap hovers the list item, not the link inside it
+    .dropdown-item {
+      background: none;
+      padding: 0;
+
+      &:hover,
+      &:focus,
+      &:focus-within {
+        background: var(--scr-raised, #{$scr-raised});
+      }
+    }
+
+    a {
+      color: $scr-ink !important;
+      display: block;
+      padding: 8px 14px;
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        background: var(--scr-raised, #{$scr-raised});
+        color: #fff !important;
+      }
+    }
+
+    em {
+      color: $scr-ink-faint;
+    }
+  }
+
+  // ---- citation panel ----
+  .scr-cite {
+    display: flex;
+    flex-direction: column;
+    row-gap: 12px;
+
+    // the picker, the citation and the copy button share one wrapper, so the
+    // panel's own gap never reaches between them
+    [data-citation] {
+      display: flex;
+      flex-direction: column;
+      row-gap: 12px;
+    }
+  }
+
+  .scr-cite-picker {
+    @include scr-sans;
+    appearance: none;
+    background: var(--scr-chrome, #{$scr-chrome});
+    border: 1px solid var(--scr-rule-strong, #{$scr-rule-strong});
+    border-radius: 0;
+    color: $scr-ink;
+    font-size: 13px;
+    padding: 7px 10px;
+    width: 100%;
+
+    &:focus-visible {
+      @include scr-focus-ring;
+    }
+  }
+
+  .scr-cite-text {
+    border-left: 2px solid var(--scr-accent, #{$scr-accent});
+    color: $scr-ink-body;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+    overflow-wrap: anywhere;
+    padding: 6px 0 6px 12px;
+  }
+
+  .scr-cite-actions {
+    align-items: center;
+    column-gap: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 6px;
+  }
+
+  .scr-cite-copy {
+    @include scr-sans;
+    background: var(--scr-raised, #{$scr-raised});
+    border: 1px solid var(--scr-rule-strong, #{$scr-rule-strong});
+    color: $scr-ink;
+    font-size: 13px;
+    padding: 7px 12px;
+
+    &:hover,
+    &:focus {
+      background: var(--scr-chrome-soft, #{$scr-chrome-soft});
+      color: #fff;
+    }
+
+    &:focus-visible {
+      @include scr-focus-ring;
+    }
+  }
+
+  .scr-cite-copied {
+    color: $scr-ink-faint;
+    font-size: 13px;
+  }
+
+  .scr-cite-note {
+    color: $scr-ink-faint;
+    font-size: 12px;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .scr-cite-export {
+    @include scr-link;
+    font-size: 13px;
+  }
+
+  // ---- what the work belongs to ----
+  .scr-show-rail > dl.work-show {
+    background: var(--scr-band, #{$scr-band});
+    border: 1px solid var(--scr-rule, #{$scr-rule});
+    margin: 0;
+    padding: 16px;
+
+    // the gem partial always emits whitespace inside the list, so :empty never
+    // matches; what makes it worth showing is a term
+    &:not(:has(dt)) {
+      display: none;
+    }
+
+    dt {
+      @include scr-sans;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    dd {
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 4px 0 0;
+      overflow-wrap: anywhere;
+
+      + dt {
+        margin-top: 14px;
+      }
+
+      a {
+        @include scr-link;
+      }
+
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+
+  .scr-panel-empty {
+    color: $scr-ink-body;
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .scr-panel-pager {
+    padding-top: 12px;
+
+    .pagination {
+      column-gap: 4px;
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0;
+    }
+
+    .page-link {
+      background: none;
+      border: 1px solid var(--scr-rule-strong, #{$scr-rule-strong});
+      border-radius: 0;
+      color: $scr-ink-body;
+      font-size: 13px;
+      padding: 4px 9px;
+    }
+
+  }
 }

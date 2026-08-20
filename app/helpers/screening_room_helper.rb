@@ -21,6 +21,15 @@ module ScreeningRoomHelper
     @scr_show_collection ||= Hyrax::CollectionMemberService.run(presenter.solr_document, current_ability).first
   end
 
+  def scr_member_meta(member)
+    visibility = theme_plain_text(member.permission_badge)
+    uploaded = member.solr_document.date_uploaded
+
+    return visibility if uploaded.blank?
+
+    t('screening_room.show.items.meta', visibility:, date: l(uploaded, format: :long))
+  end
+
   def scr_player_kind(representative)
     return if representative.blank?
 

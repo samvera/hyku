@@ -65,6 +65,36 @@ RSpec.describe 'screening_room_show theme', type: :request, singletenant: true, 
     expect(doc.at_css('.scr-show-lede').text).to include('pilot boat passes close')
   end
 
+  describe 'the items panel' do
+    let(:file_set) do
+      indexed(Hyrax::FileSet.new(title: ['reel-001.mp4']))
+    end
+    let(:child) do
+      indexed(GenericWorkResource.new(title: ['Reel 1 transfer']))
+    end
+    let(:parent) do
+      indexed(GenericWorkResource.new(title: ['Parent reel'], member_ids: [file_set.id, child.id]))
+    end
+
+    it 'lists files and child works together with their visibility' do
+      get "/concern/generic_works/#{parent.id}"
+
+      panel = Nokogiri::HTML(response.body).at_css('#scr-items')
+      expect(panel.at_css('.scr-panel-count').text.strip).to eq('2 items')
+      expect(panel.css('.scr-panel-name').map { |n| n.text.strip }).to eq(['reel-001.mp4', 'Reel 1 transfer'])
+      expect(panel.css('.scr-panel-meta').map { |meta| meta.text.strip })
+        .to all(match(/\APublic · \w+ \d{1,2}, \d{4}\z/))
+    end
+
+    it 'leaves the panel empty-handed when the work has no members' do
+      get "/concern/generic_works/#{work.id}"
+
+      panel = Nokogiri::HTML(response.body).at_css('#scr-items')
+      expect(panel.css('.scr-panel-row')).to be_empty
+      expect(panel.at_css('.scr-panel-empty')).to be_present
+    end
+  end
+
   it 'carries the breadcrumb trail in the search band' do
     get "/concern/generic_works/#{work.id}"
 

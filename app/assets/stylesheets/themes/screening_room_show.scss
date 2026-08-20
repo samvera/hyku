@@ -68,6 +68,108 @@
     }
   }
 
+  // ---- editor actions ----
+  // the partial always renders, since it carries the COinS hook citation
+  // managers read; with no buttons in it there is nothing to make room for.
+  // the stock partial ships the feature and unfeature links collapsed rather
+  // than absent, so those do not count as buttons
+  .scr-show-actions:not(:has(.show-actions a.btn:not(.collapse), .show-actions button.btn:not(.collapse))) {
+    display: none;
+  }
+
+  .scr-show-actions {
+    @include scr-gutter;
+    padding-bottom: 10px;
+    padding-top: 10px;
+
+    .show-actions {
+      column-gap: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin: 0;
+      row-gap: 10px;
+    }
+
+    .col-sm-6 {
+      column-gap: 10px;
+      display: flex;
+      // the stock columns are pinned to half the row each, which the row's own
+      // gap then overflows
+      flex: 1 1 auto;
+      flex-wrap: wrap;
+      max-width: none;
+      padding: 0;
+      row-gap: 10px;
+      width: auto;
+
+      &.text-right {
+        justify-content: flex-end;
+      }
+    }
+
+    // the appearance pins every button colour with !important, so a themed
+    // button has to answer in kind
+    .btn {
+      @include scr-sans;
+      background-color: var(--scr-raised, #{$scr-raised}) !important;
+      border: 1px solid var(--scr-rule-strong, #{$scr-rule-strong}) !important;
+      border-radius: 0;
+      color: $scr-ink !important;
+      font-size: 14px;
+      margin: 0;
+      padding: 9px 16px;
+
+      &:hover,
+      &:focus {
+        background-color: var(--scr-chrome-soft, #{$scr-chrome-soft}) !important;
+        border-color: var(--scr-rule-strong, #{$scr-rule-strong}) !important;
+        color: #fff !important;
+      }
+
+      &:focus-visible {
+        @include scr-focus-ring;
+      }
+    }
+
+    .btn-danger {
+      background-color: $scr-danger !important;
+      border-color: $scr-danger !important;
+      color: #1a1a1a !important;
+
+      &:hover,
+      &:focus {
+        background-color: #ffffff !important;
+        border-color: #ffffff !important;
+        color: #1a1a1a !important;
+      }
+    }
+
+    .dropdown-toggle::after {
+      margin-left: 8px;
+    }
+
+    .dropdown-menu {
+      background: var(--scr-chrome-soft, #{$scr-chrome-soft});
+      border: 1px solid var(--scr-rule-strong, #{$scr-rule-strong});
+      border-radius: 0;
+      color: $scr-ink;
+      padding: 4px 0;
+
+      .dropdown-item {
+        color: $scr-ink;
+        font-size: 14px;
+        padding: 8px 16px;
+
+        &:hover,
+        &:focus {
+          background: var(--scr-raised, #{$scr-raised});
+          color: #fff;
+        }
+      }
+    }
+  }
+
   // ---- viewer ----
   .scr-viewer {
     background: #000;

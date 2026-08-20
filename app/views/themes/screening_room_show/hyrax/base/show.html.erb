@@ -9,6 +9,8 @@
 <%= render 'shared/additional_citations' %>
 
 <div class="scr-show" itemscope itemtype="http://schema.org/CreativeWork">
+  <div class="scr-show-actions"><%= render 'show_actions', presenter: @presenter %></div>
+
   <% if theme_viewer?(@presenter) %>
     <div class="scr-viewer">
       <% if @presenter.video_embed_viewer? %>

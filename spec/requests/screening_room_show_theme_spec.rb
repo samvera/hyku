@@ -25,6 +25,34 @@ RSpec.describe 'screening_room_show theme', type: :request, singletenant: true, 
     allow_any_instance_of(ApplicationController).to receive(:show_page_theme).and_return('screening_room_show')
   end
 
+  it 'offers a visitor no actions but keeps the citation hook citation managers read' do
+    get "/concern/generic_works/#{work.id}"
+
+    doc = Nokogiri::HTML(response.body)
+    expect(doc.css('.scr-show-actions .show-actions .btn')).to be_empty
+    expect(doc.at_css('span.Z3988')['title']).to be_present
+  end
+
+  context 'as an editor' do
+    include Devise::Test::IntegrationHelpers
+
+    let(:admin) { FactoryBot.create(:admin) }
+
+    before do
+      Hyrax::Group.create(name: 'admin')
+      sign_in admin
+    end
+
+    it 'puts the action row above the viewer' do
+      get "/concern/generic_works/#{work.id}"
+
+      doc = Nokogiri::HTML(response.body)
+      actions = doc.at_css('.scr-show-actions')
+      expect(actions.text).to include('Edit')
+      expect(doc.css('.scr-show *').index(actions)).to be < doc.css('.scr-show *').index(doc.at_css('.scr-show-body'))
+    end
+  end
+
   it 'opens with the title block over the description' do
     get "/concern/generic_works/#{work.id}"
 

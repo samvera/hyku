@@ -55,6 +55,16 @@ class ControlledVocabularyCatalog
     def awaiting_import?
       import_task.present? && term_count.to_i.zero?
     end
+
+    # Where the vocabulary comes from, for display: the service for a remote
+    # authority, otherwise the origin.
+    def source_label
+      if provider
+        I18n.t("hyku.admin.controlled_vocabulary.providers.#{provider}", default: provider.titleize)
+      else
+        I18n.t("hyku.admin.controlled_vocabulary.origins.#{origin}")
+      end
+    end
   end
 
   class << self

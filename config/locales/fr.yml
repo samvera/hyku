@@ -397,6 +397,86 @@ fr:
           upload: Téléverser des fichiers
         label: Progression du dépôt
     admin:
+      controlled_vocabularies: Vocabulaires contrôlés
+      controlled_vocabulary:
+        active: Actif
+        awaiting_import: Non importé
+        awaiting_import_help: 'Ce vocabulaire est disponible mais ne contient encore aucun terme dans ce locataire. Remplissez-le en exécutant : %{task}'
+        create: Créer le vocabulaire
+        create_term: Ajouter un terme
+        created: '%{name} a été créé. Ajoutez ses termes ci-dessous.'
+        description: Description
+        description_help: Facultatif. Explique aux autres membres du personnel à quoi sert ce vocabulaire.
+        inactive: Inactif
+        label: Libellé
+        label_hint: Ce qu'un déposant voit dans le formulaire. Peut être reformulé sans affecter les enregistrements stockés.
+        name: Vocabulaire
+        new_help: Nommez le vocabulaire; sa clé source est établie à partir de ce nom. La clé est ce que cite un profil de métadonnées et ne peut pas être modifiée par la suite.
+        new_term_heading: Ajouter un terme à %{vocabulary}
+        new_term_help: Nommez le terme tel qu'un déposant doit le voir. L'identifiant du terme est ce qu'un enregistrement stocke et ne peut plus être modifié une fois les termes utilisés.
+        new_term_title: Ajouter un terme
+        new_title: Nouveau vocabulaire
+        no_terms: Ce vocabulaire ne contient encore aucun terme.
+        none: Aucun vocabulaire contrôlé n'a encore été configuré pour ce locataire.
+        origin: Source
+        origin_hint: Où le vocabulaire est défini, et donc si ses termes peuvent être modifiés ici.
+        origins:
+          cached: Copie importée
+          database: Ce locataire
+          file: Fichier de configuration
+          remote: Service externe
+        providers:
+          crossref: Crossref
+          discogs: Discogs
+          fast: OCLC FAST
+          geonames: GeoNames
+          getty: Getty
+          loc: Library of Congress
+          mesh: MeSH
+          tgnlang: Getty TGN Languages
+        read_only:
+          cached: Ce vocabulaire est une copie importée d'un vocabulaire externe. Ses termes ne peuvent pas être modifiés ici, et une réimportation les remplace tous.
+          file: Ce vocabulaire est défini dans un fichier de configuration, ses termes ne peuvent donc pas être modifiés ici.
+          generic: Les termes de ce vocabulaire ne peuvent pas être modifiés ici.
+          remote: Ce vocabulaire provient d'un service externe, ses termes ne peuvent donc pas être modifiés ici.
+        ready: Prêt
+        retired_count:
+          one: (%{count} retiré)
+          other: (%{count} retirés)
+        show_title: 'Vocabulaire contrôlé : %{name}'
+        source_key: Clé de source
+        source_key_from_name: La clé source est établie à partir du nom ci-dessus.
+        source_key_hint: Collez ceci dans un champ de profil de métadonnées pour contrôler ce champ avec ce vocabulaire.
+        source_key_help: Collez une clé de source dans un champ de profil de métadonnées pour contrôler ce champ avec ce vocabulaire. Les vocabulaires gérés dans ce locataire peuvent être modifiés ici ; ceux définis dans un fichier de configuration ou par un service externe ne le peuvent pas.
+        source_key_will_be_html: Ce sera enregistré avec la clé source %{key}.
+        static_forms: Les profils de métadonnées ne sont pas activés, les formulaires de dépôt lisent donc ce vocabulaire depuis un fichier de configuration. La modification de ses termes nécessite un développeur.
+        status: Statut
+        status_hint: Indique si ce vocabulaire est prêt à être utilisé ou si quelque chose doit d'abord être configuré.
+        status_unknown: Non spécifié
+        term_created: '%{label} a été ajouté.'
+        term_id: ID du terme
+        term_id_from_label: Laissez vide pour utiliser le libellé comme identifiant du terme.
+        term_id_immutable: Il ne peut plus être modifié par la suite.
+        term_limit:
+          one: (%{count} premier terme affiché)
+          other: (%{count} premiers termes affichés)
+        term_id_hint: La valeur stockée sur un enregistrement, et la valeur à fournir dans une importation Bulkrax.
+        term_id_help: L'ID du terme est la valeur stockée sur un enregistrement, et la valeur à fournir dans une importation Bulkrax. Le libellé est seulement ce qu'un déposant voit.
+        term_total:
+          one: 1 terme
+          other: "%{count} termes"
+        terms: Termes
+        unconfigured: Configuration requise
+        unconfigured_help: Ce service a besoin d'identifiants avant de pouvoir être utilisé. D'ici là, un champ qui le référence accepte du texte libre au lieu de proposer des suggestions.
+        unused: Aucune propriété de métadonnées n'utilise ce vocabulaire.
+        unused_profile_hint: Pour commencer à l'utiliser, ajoutez la clé source de ce vocabulaire aux valeurs contrôlées d'une propriété dans le profil de métadonnées du locataire.
+        used_by: Utilisé par les propriétés
+        used_by_hint: Les propriétés de métadonnées contrôlées par ce vocabulaire, telles que nommées dans les importations Bulkrax et les profils de métadonnées.
+        used_by_work_types: 'Disponible sur :'
+        work_types:
+          collection_resource: Collection
+          etd_resource: ETD
+          oer_resource: OER
       flash:
         access_denied: Vous n'êtes pas autorisé à afficher cette page
       google_analytics_settings:

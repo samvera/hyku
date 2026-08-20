@@ -396,6 +396,86 @@ de:
           upload: Dateien hochladen
         label: Fortschritt der Einreichung
     admin:
+      controlled_vocabularies: Kontrollierte Vokabulare
+      controlled_vocabulary:
+        active: Aktiv
+        awaiting_import: Nicht importiert
+        awaiting_import_help: 'Dieses Vokabular ist verfügbar, enthält in diesem Mandanten aber noch keine Begriffe. Befüllen Sie es durch Ausführen von: %{task}'
+        create: Vokabular erstellen
+        create_term: Begriff hinzufügen
+        created: '%{name} wurde erstellt. Fügen Sie unten die Begriffe hinzu.'
+        description: Beschreibung
+        description_help: Optional. Erklärt anderen Mitarbeitenden, wofür dieses Vokabular gedacht ist.
+        inactive: Inaktiv
+        label: Bezeichnung
+        label_hint: Was ein Hinterleger im Formular sieht. Kann gefahrlos umformuliert werden, ohne gespeicherte Datensätze zu beeinflussen.
+        name: Vokabular
+        new_help: Benennen Sie das Vokabular; sein Quellschlüssel wird aus diesem Namen gebildet. Der Schlüssel ist, was ein Metadatenprofil zitiert, und kann danach nicht mehr geändert werden.
+        new_term_heading: Einen Begriff zu %{vocabulary} hinzufügen
+        new_term_help: Benennen Sie den Begriff so, wie Einreichende ihn sehen sollen. Die Begriffs-ID ist, was ein Datensatz speichert, und kann nicht mehr geändert werden, sobald Begriffe verwendet werden.
+        new_term_title: Begriff hinzufügen
+        new_title: Neues Vokabular
+        no_terms: Dieses Vokabular enthält noch keine Begriffe.
+        none: Für diesen Mandanten wurden noch keine kontrollierten Vokabulare eingerichtet.
+        origin: Quelle
+        origin_hint: Wo das Vokabular definiert ist und ob seine Begriffe daher hier bearbeitet werden können.
+        origins:
+          cached: Importierte Kopie
+          database: Dieser Mandant
+          file: Konfigurationsdatei
+          remote: Externer Dienst
+        providers:
+          crossref: Crossref
+          discogs: Discogs
+          fast: OCLC FAST
+          geonames: GeoNames
+          getty: Getty
+          loc: Library of Congress
+          mesh: MeSH
+          tgnlang: Getty TGN Languages
+        read_only:
+          cached: Dieses Vokabular ist eine importierte Kopie eines externen Vokabulars. Seine Begriffe können hier nicht geändert werden, und ein erneuter Import ersetzt sie alle.
+          file: Dieses Vokabular ist in einer Konfigurationsdatei definiert, daher können seine Begriffe hier nicht geändert werden.
+          generic: Die Begriffe dieses Vokabulars können hier nicht geändert werden.
+          remote: Dieses Vokabular stammt von einem externen Dienst, daher können seine Begriffe hier nicht geändert werden.
+        ready: Bereit
+        retired_count:
+          one: (%{count} zurückgezogen)
+          other: (%{count} zurückgezogen)
+        show_title: 'Kontrolliertes Vokabular: %{name}'
+        source_key: Quellschlüssel
+        source_key_from_name: Der Quellschlüssel wird aus dem obigen Namen gebildet.
+        source_key_hint: Fügen Sie dies in ein Feld eines Metadatenprofils ein, um dieses Feld mit diesem Vokabular zu kontrollieren.
+        source_key_help: Fügen Sie einen Quellschlüssel in ein Feld eines Metadatenprofils ein, um dieses Feld mit diesem Vokabular zu kontrollieren. In diesem Mandanten verwaltete Vokabulare können hier bearbeitet werden; in einer Konfigurationsdatei oder von einem externen Dienst definierte Vokabulare nicht.
+        source_key_will_be_html: Gespeichert wird mit dem Quellschlüssel %{key}.
+        static_forms: Metadatenprofile sind nicht aktiviert, daher lesen Einreichungsformulare dieses Vokabular aus einer Konfigurationsdatei. Änderungen an seinen Begriffen erfordern einen Entwickler.
+        status: Status
+        status_hint: Ob dieses Vokabular einsatzbereit ist oder zuerst etwas eingerichtet werden muss.
+        status_unknown: Nicht angegeben
+        term_created: '%{label} wurde hinzugefügt.'
+        term_id: Begriffs-ID
+        term_id_from_label: Leer lassen, um das Label als Begriffs-ID zu verwenden.
+        term_id_immutable: Sie kann danach nicht mehr geändert werden.
+        term_limit:
+          one: (der erste %{count} wird angezeigt)
+          other: (die ersten %{count} werden angezeigt)
+        term_id_hint: Der Wert, der in einem Datensatz gespeichert wird, und der Wert, der bei einem Bulkrax-Import anzugeben ist.
+        term_id_help: Die Begriffs-ID ist der Wert, der in einem Datensatz gespeichert wird, und der Wert, der bei einem Bulkrax-Import anzugeben ist. Die Bezeichnung ist nur das, was ein Hinterleger sieht.
+        term_total:
+          one: 1 Begriff
+          other: "%{count} Begriffe"
+        terms: Begriffe
+        unconfigured: Einrichtung erforderlich
+        unconfigured_help: Dieser Dienst benötigt Anmeldeinformationen, bevor er verwendet werden kann. Bis dahin akzeptiert ein Feld, das ihn referenziert, Freitext, statt Vorschläge anzubieten.
+        unused: Keine Metadaten-Eigenschaft verwendet dieses Vokabular.
+        unused_profile_hint: Um es zu verwenden, fügen Sie den Quellschlüssel dieses Vokabulars den kontrollierten Werten einer Eigenschaft im Metadatenprofil des Mandanten hinzu.
+        used_by: Verwendet von Eigenschaften
+        used_by_hint: Die von diesem Vokabular kontrollierten Metadaten-Eigenschaften, wie sie in Bulkrax-Importen und Metadatenprofilen benannt sind.
+        used_by_work_types: 'Verfügbar für:'
+        work_types:
+          collection_resource: Sammlung
+          etd_resource: ETD
+          oer_resource: OER
       flash:
         access_denied: Sie sind nicht berechtigt, diese Seite anzuzeigen
       google_analytics_settings:

@@ -51,14 +51,7 @@
                   <% end %>
                 </td>
                 <td><code><%= entry.source_key %></code></td>
-                <td>
-                  <%= if entry.provider
-                        t("hyku.admin.controlled_vocabulary.providers.#{entry.provider}",
-                          default: entry.provider.titleize)
-                      else
-                        t("hyku.admin.controlled_vocabulary.origins.#{entry.origin}")
-                      end %>
-                </td>
+                <td><%= entry.source_label %></td>
                 <td>
                   <% if entry.awaiting_import? %>
                     <span class="badge badge-info"

@@ -279,6 +279,86 @@ pt-BR:
           upload: Enviar arquivos
         label: Progresso do depósito
     admin:
+      controlled_vocabularies: Vocabulários controlados
+      controlled_vocabulary:
+        active: Ativo
+        awaiting_import: Não importado
+        awaiting_import_help: 'Este vocabulário está disponível, mas ainda não tem termos neste locatário. Preencha-o executando: %{task}'
+        create: Criar vocabulário
+        create_term: Adicionar termo
+        created: '%{name} foi criado. Adicione seus termos abaixo.'
+        description: Descrição
+        description_help: Opcional. Explica a outros funcionários para que serve este vocabulário.
+        inactive: Inativo
+        label: Rótulo
+        label_hint: O que um depositante vê no formulário. Pode ser reformulado sem afetar os registros armazenados.
+        name: Vocabulário
+        new_help: Nomeie o vocabulário; sua chave de origem é definida a partir desse nome. A chave é o que um perfil de metadados cita, então não pode ser alterada depois.
+        new_term_heading: Adicionar um termo a %{vocabulary}
+        new_term_help: Nomeie o termo como um depositante deve vê-lo. O id do termo é o que um registro armazena e não pode ser alterado depois que os termos estão em uso.
+        new_term_title: Adicionar termo
+        new_title: Novo vocabulário
+        no_terms: Este vocabulário ainda não tem termos.
+        none: Nenhum vocabulário controlado foi configurado para este locatário ainda.
+        origin: Origem
+        origin_hint: Onde o vocabulário é definido e, portanto, se seus termos podem ser editados aqui.
+        origins:
+          cached: Cópia importada
+          database: Este locatário
+          file: Arquivo de configuração
+          remote: Serviço externo
+        providers:
+          crossref: Crossref
+          discogs: Discogs
+          fast: OCLC FAST
+          geonames: GeoNames
+          getty: Getty
+          loc: Library of Congress
+          mesh: MeSH
+          tgnlang: Getty TGN Languages
+        read_only:
+          cached: Este vocabulário é uma cópia importada de um vocabulário externo. Seus termos não podem ser alterados aqui, e reimportá-lo substitui todos eles.
+          file: Este vocabulário é definido em um arquivo de configuração, portanto seus termos não podem ser alterados aqui.
+          generic: Os termos deste vocabulário não podem ser alterados aqui.
+          remote: Este vocabulário vem de um serviço externo, portanto seus termos não podem ser alterados aqui.
+        ready: Pronto
+        retired_count:
+          one: (%{count} desativado)
+          other: (%{count} desativados)
+        show_title: 'Vocabulário controlado: %{name}'
+        source_key: Chave de origem
+        source_key_from_name: A chave de origem é definida a partir do nome acima.
+        source_key_hint: Cole isto em um campo do perfil de metadados para controlar esse campo com este vocabulário.
+        source_key_help: Cole uma chave de origem em um campo do perfil de metadados para controlar esse campo com este vocabulário. Os vocabulários gerenciados neste locatário podem ser editados aqui; os definidos em um arquivo de configuração ou por um serviço externo não podem.
+        source_key_will_be_html: Será salvo com a chave de origem %{key}.
+        static_forms: Os perfis de metadados não estão habilitados, então os formulários de depósito leem este vocabulário de um arquivo de configuração. Alterar seus termos requer um desenvolvedor.
+        status: Status
+        status_hint: Se este vocabulário está pronto para uso ou precisa de alguma configuração primeiro.
+        status_unknown: Não especificado
+        term_created: '%{label} foi adicionado.'
+        term_id: ID do termo
+        term_id_from_label: Deixe em branco para usar o rótulo como id do termo.
+        term_id_immutable: Não pode ser alterado depois.
+        term_limit:
+          one: (mostrando o primeiro %{count})
+          other: (mostrando os primeiros %{count})
+        term_id_hint: O valor armazenado em um registro e o valor a fornecer em uma importação do Bulkrax.
+        term_id_help: O ID do termo é o valor armazenado em um registro e o valor a fornecer em uma importação do Bulkrax. O rótulo é apenas o que um depositante vê.
+        term_total:
+          one: 1 termo
+          other: "%{count} termos"
+        terms: Termos
+        unconfigured: Requer configuração
+        unconfigured_help: Este serviço precisa de credenciais antes de poder ser usado. Até lá, um campo que o utiliza aceita texto livre em vez de oferecer sugestões.
+        unused: Nenhuma propriedade de metadados usa este vocabulário.
+        unused_profile_hint: Para começar a usá-lo, adicione a chave de origem deste vocabulário aos valores controlados de uma propriedade no perfil de metadados do locatário.
+        used_by: Usado pelas propriedades
+        used_by_hint: As propriedades de metadados controladas por este vocabulário, conforme nomeadas nas importações do Bulkrax e nos perfis de metadados.
+        used_by_work_types: 'Disponível em:'
+        work_types:
+          collection_resource: Coleção
+          etd_resource: ETD
+          oer_resource: OER
       flash:
         access_denied: Você não está autorizado a visualizar esta página
       google_analytics_settings:

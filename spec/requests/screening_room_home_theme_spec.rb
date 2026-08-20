@@ -126,6 +126,27 @@ RSpec.describe 'screening room home theme', type: :request, singletenant: true, 
     expect(modal.css('video source').map { |source| source['type'] }).to eq(['video/webm', 'video/mp4'])
   end
 
+  context 'as a user who can reorder the featured collections' do
+    let(:admin) { FactoryBot.create(:admin) }
+    let(:collection) { indexed(Hyrax::PcdmCollection.new(title: ['Newsreels'])) }
+
+    before do
+      indexed(GenericWorkResource.new(title: ['Filed reel'], member_of_collection_ids: [collection.id]))
+      FeaturedCollection.create!(collection_id: collection.id.to_s, order: 0)
+      login_as(admin, scope: :user)
+    end
+
+    it 'counts the works in each card it hands the editor to reorder' do
+      get root_path
+
+      expect(response).to have_http_status(:ok)
+
+      doc = Nokogiri::HTML(response.body)
+      expect(doc.at_css('.scr-reorder-cards .featured-item')).to be_present
+      expect(doc.at_css('.scr-collection-meta').text.strip).to eq('1 work')
+    end
+  end
+
   context 'as a user who can reorder the featured works' do
     let(:admin) { FactoryBot.create(:admin) }
 
@@ -194,6 +215,16 @@ RSpec.describe 'screening room home theme', type: :request, singletenant: true, 
       doc = Nokogiri::HTML(response.body)
       expect(doc.at_css('.scr-lede-text')).to be_nil
       expect(doc.css('.scr-count-value').map { |c| c.text.strip }).to eq(%w[1 0])
+    end
+  end
+
+  describe 'the collections section' do
+    it 'hides the section, heading included, when the tenant has no collections' do
+      get root_path
+
+      doc = Nokogiri::HTML(response.body)
+      expect(doc.at_css('.scr-collections')).to be_nil
+      expect(doc.at_css('#scr-collections-heading')).to be_nil
     end
   end
 end

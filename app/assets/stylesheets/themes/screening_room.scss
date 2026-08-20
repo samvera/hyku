@@ -135,6 +135,117 @@
     letter-spacing: 0.16em;
   }
 
+  // ---- featured collections ----
+  .scr-collections {
+    background: var(--scr-chrome-deep, #{$scr-chrome-deep});
+    padding-bottom: 56px;
+  }
+
+  .scr-section-head {
+    @include scr-gutter;
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-top: 48px;
+    row-gap: 8px;
+  }
+
+  .scr-section-action {
+    @include scr-link;
+    font-size: 14px;
+  }
+
+  .scr-collection-grid {
+    @include scr-gutter;
+    display: grid;
+    gap: 22px 40px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    @media (max-width: $scr-laptop-max) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .scr-collection-card {
+    column-gap: 18px;
+    display: flex;
+
+    @media (max-width: $scr-mobile-max) {
+      flex-direction: column;
+      row-gap: 12px;
+    }
+  }
+
+  .scr-collection-thumb {
+    align-items: center;
+    background: var(--scr-raised, #{$scr-raised});
+    display: flex;
+    flex: none;
+    height: 120px;
+    justify-content: center;
+    overflow: hidden;
+    width: 170px;
+
+    img {
+      font-size: 0;
+      max-height: 100%;
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    @media (max-width: $scr-mobile-max) {
+      height: 160px;
+      width: 100%;
+    }
+  }
+
+  .scr-collection-body {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    row-gap: 6px;
+  }
+
+  .scr-collection-title {
+    @include scr-sans;
+    font-size: 18px;
+    font-weight: 800;
+    margin: 0;
+
+    a {
+      color: #ffffff;
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 3px;
+      }
+
+      &:focus-visible {
+        @include scr-focus-ring;
+      }
+    }
+  }
+
+  .scr-collection-blurb {
+    color: $scr-ink-body;
+    font-size: 14px;
+    line-height: 1.55;
+    margin: 0;
+    overflow-wrap: anywhere;
+    text-wrap: pretty;
+  }
+
+  .scr-collection-meta {
+    color: $scr-ink-faint;
+    font-size: 13px;
+    margin: 0;
+  }
+
+
   // ---- featured works reorder ----
   .scr-spotlight-editor {
     @include scr-gutter;
@@ -271,6 +382,115 @@
     }
   }
 
+  .scr-reorder-cards,
+  .dd-dragel {
+    .scr-collection-grid {
+      margin: 0;
+    }
+
+    .scr-collection-thumb img {
+      float: none;
+      height: auto;
+      padding: 0;
+      width: auto;
+    }
+
+    .featured-item {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      position: relative;
+    }
+
+    .dd3-content.card:has(.scr-collection-card) {
+      background: none;
+      border: 0;
+      display: block;
+      margin: 0;
+      min-height: 0;
+      padding: 0;
+      position: static;
+    }
+
+    .main.row {
+      margin: 0;
+      padding: 0;
+    }
+
+    .col-sm-12 {
+      padding: 0;
+      position: static;
+    }
+
+    .featured-item:has(.scr-collection-card) > .dd-handle.dd3-handle,
+    .col-sm-12:has(.scr-collection-card) .float-right a {
+      align-items: center;
+      background: var(--scr-chrome, #{$scr-chrome});
+      border: 1px solid var(--scr-rule-strong, #{$scr-rule-strong});
+      border-radius: 0;
+      display: inline-flex;
+      height: 28px;
+      justify-content: center;
+      margin: 0;
+      position: absolute;
+      top: 8px;
+      width: 28px;
+      z-index: 2;
+    }
+
+    .featured-item:has(.scr-collection-card) > .dd-handle.dd3-handle {
+      bottom: auto;
+      cursor: grab;
+      font-size: 0;
+      height: 28px;
+      left: 8px;
+      line-height: 1;
+      overflow: visible;
+      text-indent: 0;
+
+      &::before {
+        background-image: radial-gradient(currentColor 0.9px, transparent 1.1px);
+        background-size: 4px 4px;
+        color: $scr-ink-body;
+        content: '';
+        display: block;
+        flex: none;
+        height: 12px;
+        left: auto;
+        min-width: 8px;
+        position: static;
+        top: auto;
+        width: 8px;
+      }
+
+      &:active {
+        cursor: grabbing;
+      }
+    }
+
+    .col-sm-12:has(.scr-collection-card) {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .col-sm-12:has(.scr-collection-card) .float-right {
+      float: none !important;
+      margin: 0;
+
+      a {
+        color: $scr-danger;
+        right: 8px;
+        text-decoration: none;
+
+        &:hover,
+        &:focus {
+          border-color: $scr-danger;
+        }
+      }
+    }
+
+  }
+
   .scr-reorder-actions {
     align-items: center;
     column-gap: 20px;
@@ -278,6 +498,10 @@
     flex-wrap: wrap;
     margin-top: 18px;
     row-gap: 12px;
+  }
+
+  .scr-collections .scr-reorder-actions {
+    @include scr-gutter;
   }
 
   .scr-reorder-hint {

@@ -753,6 +753,13 @@ en:
     chrome:
       toggle_navigation: Toggle navigation
     homepage:
+      collections:
+        heading: Featured collections
+        unfeature_confirm: Remove this collection from the featured list?
+        view_all: View all collections
+        works_count:
+          one: 1 work
+          other: '%{count} works'
       lede:
         collections: Collections
         label: About the collection

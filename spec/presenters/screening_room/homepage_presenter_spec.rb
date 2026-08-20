@@ -39,6 +39,14 @@ RSpec.describe ScreeningRoom::HomepagePresenter, :clean_repo do
     saved
   end
 
+  def indexed_collection(title, visibility = 'open')
+    saved = Hyrax.persister.save(resource: Hyrax::PcdmCollection.new(title: [title]))
+    Hyrax::VisibilityWriter.new(resource: saved).assign_access_for(visibility:)
+    saved.permission_manager.acl.save
+    Hyrax.index_adapter.save(resource: saved)
+    saved
+  end
+
   def indexed_file_set(title, visibility)
     saved = Hyrax.persister.save(resource: Hyrax::FileSet.new(title: [title]))
     Hyrax::VisibilityWriter.new(resource: saved).assign_access_for(visibility:)
@@ -87,6 +95,44 @@ RSpec.describe ScreeningRoom::HomepagePresenter, :clean_repo do
       FeaturedWork.create!(work_id: work.id.to_s, order: 0)
 
       expect(presenter.representative_for(presenter.spotlight_works.first)).to be_nil
+    end
+  end
+
+  describe '#collections' do
+    it 'falls back to the collections the controller loaded' do
+      documents = [SolrDocument.new('id' => 'c1'), SolrDocument.new('id' => 'c2')]
+      cards = build_presenter(collections: documents).collections
+
+      expect(cards.map(&:id)).to eq(%w[c1 c2])
+    end
+
+    it 'caps the list at the featured collection limit' do
+      documents = Array.new(FeaturedCollection.feature_limit + 3) { |n| SolrDocument.new('id' => "c#{n}") }
+      cards = build_presenter(collections: documents).collections
+
+      expect(cards.size).to eq(FeaturedCollection.feature_limit)
+    end
+
+    it 'drops a featured collection the visitor cannot read' do
+      readable = SolrDocument.new('id' => 'readable')
+      featured = [double(presenter: double(id: 'hidden', solr_document: SolrDocument.new('id' => 'hidden'))),
+                  double(presenter: double(id: 'readable', solr_document: readable))]
+      list = instance_double(FeaturedCollectionList, featured_collections: featured, empty?: false)
+      cards = build_presenter(collections: [readable], featured_collection_list: list).collections
+
+      expect(cards.map(&:id)).to eq(['readable'])
+    end
+  end
+
+  describe '#collection_works_count' do
+    it 'counts only the works the visitor can read' do
+      collection = indexed_collection('Mission Audio')
+      indexed_work('Public reel', 'open', member_of_collection_ids: [collection.id])
+      indexed_work('Private reel', 'restricted', member_of_collection_ids: [collection.id])
+
+      count = presenter.collection_works_count(SolrDocument.new('id' => collection.id.to_s))
+
+      expect(count).to eq(1)
     end
   end
 end

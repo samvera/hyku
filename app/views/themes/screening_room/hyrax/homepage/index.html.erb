@@ -2,5 +2,6 @@
 
 <%= render 'hyrax/homepage/featured_works' if @presenter&.display_featured_works? %>
 <%= render 'hyrax/homepage/home_text' %>
+<%= render 'hyrax/homepage/featured_collection_section' %>
 
 <%= render '/shared/select_work_type_modal', create_work_presenter: @presenter.create_work_presenter if @presenter.draw_select_work_modal? %>

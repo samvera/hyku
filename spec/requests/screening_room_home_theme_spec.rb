@@ -277,4 +277,40 @@ RSpec.describe 'screening room home theme', type: :request, singletenant: true, 
       expect(Nokogiri::HTML(response.body).at_css('.scr-recent-row')).to be_nil
     end
   end
+
+  describe 'the about band' do
+    it 'falls back to the theme heading when the tenant set only the content' do
+      ContentBlock.find_or_create_by(name: 'homepage_about_section_content')
+                  .update(value: '<p>The archive holds paper print survivals.</p>')
+
+      get root_path
+
+      doc = Nokogiri::HTML(response.body)
+      expect(doc.at_css('#scr-about-heading').text.strip).to eq('About the collections')
+      expect(doc.at_css('.scr-about-prose').text).to include('paper print survivals')
+    end
+
+    it 'hides the band when the tenant set neither block' do
+      get root_path
+
+      expect(Nokogiri::HTML(response.body).at_css('.scr-about')).to be_nil
+    end
+  end
+
+  describe 'the deposit band' do
+    it 'sends a visitor who is not signed in to the login gate' do
+      get root_path
+
+      button = Nokogiri::HTML(response.body).at_css('.scr-cta-button')
+      expect(button['href']).to eq(hyrax.my_works_path)
+    end
+
+    it 'hides the band when the tenant turns the share button off' do
+      allow(Flipflop).to receive(:show_share_button?).and_return(false)
+
+      get root_path
+
+      expect(Nokogiri::HTML(response.body).at_css('.scr-cta')).to be_nil
+    end
+  end
 end

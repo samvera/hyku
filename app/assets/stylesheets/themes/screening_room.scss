@@ -381,6 +381,116 @@
     }
   }
 
+  // ---- about band ----
+  .scr-about {
+    @include scr-gutter;
+    background: var(--scr-band, #{$scr-band});
+    border-top: 1px solid var(--scr-rule, #{$scr-rule});
+    display: grid;
+    gap: 64px;
+    grid-template-columns: 340px minmax(0, 1fr);
+    padding-bottom: 60px;
+    padding-top: 60px;
+
+    @media (max-width: $scr-laptop-max) {
+      gap: 24px;
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .scr-about-title {
+    @include scr-serif;
+    color: $scr-ink;
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 1.25;
+    margin: 0;
+
+    @media (max-width: $scr-laptop-max) {
+      font-size: 26px;
+    }
+  }
+
+  .scr-about-prose {
+    color: $scr-ink-body;
+    font-size: 16px;
+    line-height: 1.7;
+    max-width: 860px;
+    overflow-wrap: anywhere;
+
+    p {
+      margin: 0 0 16px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    a {
+      @include scr-link;
+    }
+  }
+
+  // ---- deposit band ----
+  .scr-cta {
+    @include scr-gutter;
+    align-items: flex-start;
+    background: var(--scr-cta, #{$scr-cta});
+    border-top: 1px solid var(--scr-rule, #{$scr-rule});
+    column-gap: 48px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-bottom: 40px;
+    padding-top: 38px;
+    row-gap: 20px;
+  }
+
+  .scr-cta-heading {
+    @include scr-serif;
+    color: $scr-ink;
+    font-size: 28px;
+    font-weight: 400;
+    margin: 0 0 6px;
+  }
+
+  .scr-cta-sub {
+    color: $scr-ink-body;
+    font-size: 15px;
+    margin: 0;
+  }
+
+  .scr-cta-actions {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+  }
+
+  .scr-cta-terms {
+    @include scr-link;
+    font-size: 14px;
+  }
+
+  .scr-cta-button {
+    background: var(--scr-accent, #{$scr-accent});
+    color: var(--scr-accent-ink, #{$scr-accent-ink});
+    font-size: 15px;
+    font-weight: 700;
+    padding: 13px 24px;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      background: var(--scr-accent-hover, #{darken($scr-accent, 8%)});
+      color: var(--scr-accent-ink, #{$scr-accent-ink});
+    }
+
+    &:focus-visible {
+      @include scr-focus-ring;
+    }
+  }
+
   // ---- featured works reorder ----
   .scr-spotlight-editor {
     @include scr-gutter;

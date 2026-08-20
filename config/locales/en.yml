@@ -81,6 +81,8 @@ en:
         view_all: "View all"
       researcher:
         heading: Featured researcher
+      about:
+        heading: About the collections
       cta:
         heading: Share your work
         sub: Deposit works into the repository.
@@ -760,6 +762,10 @@ en:
         works_count:
           one: 1 work
           other: '%{count} works'
+      cta:
+        button: Start a deposit
+        heading: Share your work
+        sub: Deposit recordings, transfers and production papers into the repository.
       lede:
         collections: Collections
         label: About the collection

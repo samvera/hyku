@@ -156,7 +156,13 @@ module Hyku
         # Prefer the registered service (it may add behavior); fall back to a bare
         # authority lookup so a profile source with no registry entry still labels.
         registered = Hyrax::ControlledVocabularies.services[source]&.safe_constantize
-        registered ? registered.new : Hyrax::TolerantSelectService.new(source)
+        return Hyrax::TolerantSelectService.new(source) unless registered
+
+        # Two service styles exist: a class (Hyrax::LicenseService) and a module
+        # extending AuthorityService (Hyrax::ResourceTypesService), whose `label` is
+        # a module method. Calling `.new` on the module raises, the rescue below
+        # swallows it, and the value renders as the stored id.
+        registered.respond_to?(:new) ? registered.new : registered
       rescue StandardError => e
         Hyrax.logger.debug("Deposit wizard: no label service for #{term} (#{source}): #{e.message}")
         nil
@@ -648,11 +654,16 @@ module Hyku
         Transition.rerender(step, alert: 'hyku.deposit_wizard.errors.no_work_type')
       end
 
+      # The save is unconditional, as on the metadata steps: the ids are the only
+      # record of the uploads, so leaving without posting them orphans the files --
+      # invisible to the uploader, to commit, and to the discard cleanup.
       def advance_from_files
         # `uploaded_files[]` is emitted by Hyrax's upload js_templates for each
         # completed upload, matching the param name stock deposit uses.
         state.uploaded_file_ids = params[:uploaded_files]
         state.primary_file_id = params[:primary_file_id]
+        return Transition.advance(back_step('files')) if going_back?
+
         Transition.advance(next_step('files'))
       end
 
@@ -683,8 +694,8 @@ module Hyku
         state.attributes = preserved_launch_extras.merge(work_params.to_unsafe_h)
       end
 
-      # Set by the metadata steps' Back button, which submits the form (saving what
-      # was entered) instead of linking away.
+      # Set by the Back button on steps that submit the form (saving what was
+      # entered) instead of linking away: files, details, file_meta.
       def going_back?
         params[:direction].to_s == 'back'
       end

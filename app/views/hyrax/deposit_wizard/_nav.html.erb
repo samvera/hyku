@@ -27,8 +27,11 @@
     <% if back_submit %>
       <%# formnovalidate: simple_form emits HTML5 `required`, and the browser blocks
           ANY submit on an invalid form — including this one, whose whole purpose is
-          leaving a half-filled one. %>
+          leaving a half-filled one.
+          data-behavior marks this variant only: `disabled` is inert on the link
+          below, so the files step's upload guard must not match it. %>
       <%= button_tag(type: 'submit', name: 'direction', value: 'back', formnovalidate: true,
+                     data: { behavior: 'back-submit' },
                      class: 'btn btn-secondary deposit-wizard__back-btn') do %>
         <span class="fa fa-arrow-left" aria-hidden="true"></span> <%= t('hyku.deposit_wizard.back') %>
       <% end %>

@@ -22,6 +22,11 @@
               </th>
               <th scope="col">
                 <%= render 'column_hint',
+                           label: t('hyku.admin.controlled_vocabulary.origin'),
+                           hint: t('hyku.admin.controlled_vocabulary.origin_hint') %>
+              </th>
+              <th scope="col">
+                <%= render 'column_hint',
                            label: t('hyku.admin.controlled_vocabulary.status'),
                            hint: t('hyku.admin.controlled_vocabulary.status_hint') %>
               </th>
@@ -38,6 +43,7 @@
                   <% end %>
                 </td>
                 <td><code><%= entry.source_key %></code></td>
+                <td><%= entry.source_label %></td>
                 <td>
                   <% if entry.awaiting_import? %>
                     <span class="badge badge-info"
@@ -58,7 +64,7 @@
               </tr>
               <% if entry.description.present? %>
                 <tr class="border-bottom">
-                  <td colspan="3" class="pt-0 text-muted">
+                  <td colspan="4" class="pt-0 text-muted">
                     <%= entry.description %>
                   </td>
                 </tr>

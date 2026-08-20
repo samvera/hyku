@@ -65,6 +65,12 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
         expect(response.body).to include 'special-collections'
       end
 
+      it 'says where the vocabulary comes from' do
+        get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms"
+
+        expect(response.body).to include 'This tenant'
+      end
+
       context 'with a metadata profile' do
         before do
           allow(Hyrax.config).to receive(:flexible?).and_return(true)

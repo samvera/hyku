@@ -291,6 +291,13 @@ pt-BR:
         name: Vocabulário
         no_terms: Este vocabulário ainda não tem termos.
         none: Nenhum vocabulário controlado foi configurado para este locatário ainda.
+        origin: Origem
+        origin_hint: Onde o vocabulário é definido e, portanto, se seus termos podem ser editados aqui.
+        origins:
+          cached: Cópia importada
+          database: Este locatário
+          file: Arquivo de configuração
+          remote: Serviço externo
         providers:
           crossref: Crossref
           discogs: Discogs

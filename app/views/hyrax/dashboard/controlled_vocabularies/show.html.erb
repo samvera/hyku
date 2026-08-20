@@ -12,6 +12,9 @@
       <dt class="col-sm-2"><%= t('hyku.admin.controlled_vocabulary.source_key') %></dt>
       <dd class="col-sm-10"><code><%= @entry.source_key %></code></dd>
 
+      <dt class="col-sm-2"><%= t('hyku.admin.controlled_vocabulary.origin') %></dt>
+      <dd class="col-sm-10"><%= @entry.source_label %></dd>
+
       <% if @terms.present? %>
         <dt class="col-sm-2"><%= t('hyku.admin.controlled_vocabulary.terms') %></dt>
         <dd class="col-sm-10">

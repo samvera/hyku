@@ -161,12 +161,12 @@ RSpec.describe ControlledVocabularyCatalog do
     end
 
     # Titleizing the key gives "Getty/Aat", which names neither the service nor the
-    # vocabulary usefully. The index has no service column, so the label carries
-    # both.
-    it 'names the service and the vocabulary, spelling out acronyms' do
+    # vocabulary usefully. The service has its own column, so the label carries the
+    # vocabulary.
+    it 'names the vocabulary, spelling out acronyms' do
       entry = described_class.remote.detect { |e| e.source_key == 'getty/aat' }
 
-      expect(entry.label).to eq 'Getty Art & Architecture Thesaurus'
+      expect(entry.label).to eq 'Art & Architecture Thesaurus'
     end
 
     it 'falls back to the service name for a single-vocabulary service' do

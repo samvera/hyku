@@ -409,6 +409,13 @@ es:
         name: Vocabulario
         no_terms: Este vocabulario aún no tiene términos.
         none: Aún no se ha configurado ningún vocabulario controlado para este inquilino.
+        origin: Fuente
+        origin_hint: Dónde está definido el vocabulario y, por lo tanto, si sus términos se pueden editar aquí.
+        origins:
+          cached: Copia importada
+          database: Este inquilino
+          file: Archivo de configuración
+          remote: Servicio externo
         providers:
           crossref: Crossref
           discogs: Discogs

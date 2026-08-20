@@ -409,6 +409,13 @@ it:
         name: Vocabolario
         no_terms: Questo vocabolario non ha ancora termini.
         none: Nessun vocabolario controllato è stato ancora configurato per questo tenant.
+        origin: Origine
+        origin_hint: Dove è definito il vocabolario, e quindi se i suoi termini possono essere modificati qui.
+        origins:
+          cached: Copia importata
+          database: Questo tenant
+          file: File di configurazione
+          remote: Servizio esterno
         providers:
           crossref: Crossref
           discogs: Discogs

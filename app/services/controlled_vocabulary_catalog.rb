@@ -55,6 +55,16 @@ class ControlledVocabularyCatalog
     def awaiting_import?
       import_task.present? && term_count.to_i.zero?
     end
+
+    # Where the vocabulary comes from, for display: the service for a remote
+    # authority, otherwise the origin.
+    def source_label
+      if provider
+        I18n.t("hyku.admin.controlled_vocabulary.providers.#{provider}", default: provider.titleize)
+      else
+        I18n.t("hyku.admin.controlled_vocabulary.origins.#{origin}")
+      end
+    end
   end
 
   class << self
@@ -159,9 +169,9 @@ class ControlledVocabularyCatalog
 
     def remote_entry(provider, subauthority, configured)
       Entry.new(source_key: [provider, subauthority].compact.join('/'),
-                # Prefixed with the service: without it a bare "Corporate" or
-                # "Subjects" does not say whose vocabulary it is.
-                label: [provider_label(provider), remote_vocabulary_label(subauthority)].compact.join(' '),
+                # Names the vocabulary, not the key: titleizing `loc/iso639-1`
+                # gives "Loc/Iso639 1", and the service has its own column.
+                label: remote_vocabulary_label(subauthority) || provider_label(provider),
                 origin: :remote,
                 provider: provider,
                 configured: configured)

@@ -280,6 +280,13 @@ en:
         name: Vocabulary
         no_terms: This vocabulary has no terms yet.
         none: No controlled vocabularies have been set up for this tenant yet.
+        origin: Source
+        origin_hint: Where the vocabulary is defined, and therefore whether its terms can be edited here.
+        origins:
+          cached: Imported copy
+          database: This tenant
+          file: Configuration file
+          remote: External service
         providers:
           crossref: Crossref
           discogs: Discogs

@@ -409,6 +409,13 @@ fr:
         name: Vocabulaire
         no_terms: Ce vocabulaire ne contient encore aucun terme.
         none: Aucun vocabulaire contrôlé n'a encore été configuré pour ce locataire.
+        origin: Source
+        origin_hint: Où le vocabulaire est défini, et donc si ses termes peuvent être modifiés ici.
+        origins:
+          cached: Copie importée
+          database: Ce locataire
+          file: Fichier de configuration
+          remote: Service externe
         providers:
           crossref: Crossref
           discogs: Discogs

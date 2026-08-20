@@ -408,6 +408,13 @@ de:
         name: Vokabular
         no_terms: Dieses Vokabular enthält noch keine Begriffe.
         none: Für diesen Mandanten wurden noch keine kontrollierten Vokabulare eingerichtet.
+        origin: Quelle
+        origin_hint: Wo das Vokabular definiert ist und ob seine Begriffe daher hier bearbeitet werden können.
+        origins:
+          cached: Importierte Kopie
+          database: Dieser Mandant
+          file: Konfigurationsdatei
+          remote: Externer Dienst
         providers:
           crossref: Crossref
           discogs: Discogs

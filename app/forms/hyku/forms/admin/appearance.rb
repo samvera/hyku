@@ -41,7 +41,8 @@ module Hyku
           'footer_link_hover_color' => '#ffffff',
           'header_and_footer_background_color' => '#3c3c3c',
           'header_and_footer_text_color' => '#dcdcdc',
-          'link_color' => '#2e74b2',
+          # 4.5:1 (WCAG AA) against white, .breadcrumb (#e9ecef), and striped rows (#f2f2f2)
+          'link_color' => '#2a6aa3',
           'link_hover_color' => '#215480',
           'navbar_background_color' => '#000000',
           'navbar_link_background_color' => '#375f8c',

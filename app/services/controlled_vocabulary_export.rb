@@ -2,7 +2,7 @@
 
 require 'csv'
 
-# Streams a vocabulary's terms as CSV (the #701 import template) or as a yaml
+# Streams a vocabulary's terms as CSV (the bulk import template) or as a yaml
 # file in the qa authority format.
 class ControlledVocabularyExport
   COLUMNS = %w[id label active].freeze
@@ -31,7 +31,7 @@ class ControlledVocabularyExport
   private
 
   # qa's file reader only consumes terms:, so the label and description ride
-  # along for the #701 importer without breaking the config-file format.
+  # along for the bulk importer without breaking the config-file format.
   def yml_header
     header = { 'source_key' => @entry.source_key, 'label' => @entry.label }
     header['description'] = @entry.description if @entry.description.present?

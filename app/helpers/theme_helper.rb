@@ -14,6 +14,12 @@ module ThemeHelper
     truncate(theme_plain_text(text), length:, separator: ' ')
   end
 
+  def theme_citations(presenter)
+    { 'apa' => export_as_apa_citation(presenter),
+      'mla' => export_as_mla_citation(presenter),
+      'chicago' => export_as_chicago_citation(presenter) }.select { |_style, text| text.present? }
+  end
+
   def theme_viewer?(presenter)
     presenter.video_embed_viewer? ||
       (presenter.representative_id.present? && presenter.representative_presenter.present?)

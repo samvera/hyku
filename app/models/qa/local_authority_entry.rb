@@ -9,6 +9,8 @@ module Qa
     store_accessor :data, :alt_labels, :definition
 
     before_validation { self.uri = nil if uri.blank? }
+    # After the blanking above, or the label would be wiped straight away.
+    before_validation :default_uri_to_label, on: :create
 
     validates :uri, presence: true, on: :create
     validates :uri, uniqueness: { scope: :local_authority_id }, allow_nil: true
@@ -26,8 +28,8 @@ module Qa
       errors.add(:uri, 'cannot be changed, because works store it as the term id')
     end
 
-    scope :active, -> { where(active: true) }
-    scope :inactive, -> { where(active: false) }
-    scope :ordered, -> { order(:position, :label) }
+    def default_uri_to_label
+      self.uri = label if uri.blank?
+    end
   end
 end

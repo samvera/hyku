@@ -17,11 +17,17 @@ RSpec.describe ScreeningRoom::HomepagePresenter, :clean_repo do
       search_builder_class: Hyrax::HomepageSearchBuilder
     )
   end
-  let(:presenter) do
+  let(:collections) { [] }
+  let(:presenter) { build_presenter }
+
+  def build_presenter(**overrides)
     described_class.new(
-      search_service:,
-      featured_work_list: FeaturedWorkList.new,
-      current_ability: ability
+      **{ search_service:,
+          response: instance_double(Blacklight::Solr::Response, total: 0),
+          collections:,
+          featured_work_list: FeaturedWorkList.new,
+          featured_collection_list: FeaturedCollectionList.new,
+          current_ability: ability }.merge(overrides)
     )
   end
 

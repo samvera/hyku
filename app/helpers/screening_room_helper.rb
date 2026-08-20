@@ -5,9 +5,11 @@ module ScreeningRoomHelper
   def scr_home
     @scr_home ||= ScreeningRoom::HomepagePresenter.new(
       search_service: controller.search_service,
+      response: @response,
+      collections: @collections,
       featured_work_list: @featured_work_list,
-      current_ability:,
-      request:
+      featured_collection_list: @featured_collection_list,
+      current_ability:
     )
   end
 

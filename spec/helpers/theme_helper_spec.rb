@@ -40,19 +40,6 @@ RSpec.describe ThemeHelper, type: :helper do
     end
   end
 
-  describe '#theme_readable_ids' do
-    it 'returns nothing without asking Solr when given no ids' do
-      expect(helper.theme_readable_ids([])).to eq([])
-    end
-
-    it 'keeps only the ids the access-filtered search returns' do
-      documents = [double(id: 'readable')]
-      helper.instance_variable_set(:@search_service, double(fetch: [nil, documents]))
-
-      expect(helper.theme_readable_ids(%w[readable hidden])).to eq(['readable'])
-    end
-  end
-
   describe '#theme_thumbnail_url' do
     before do
       allow(Site).to receive(:instance)

@@ -25,7 +25,8 @@ RSpec.describe Heritage::HomepagePresenter, :clean_repo do
       response:,
       collections:,
       featured_work_list: FeaturedWorkList.new,
-      featured_collection_list: FeaturedCollectionList.new
+      featured_collection_list: FeaturedCollectionList.new,
+      current_ability: ability
     )
   end
 

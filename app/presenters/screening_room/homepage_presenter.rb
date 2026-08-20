@@ -2,22 +2,10 @@
 
 module ScreeningRoom
   class HomepagePresenter
-    include ThemeHelper
-
-    def initialize(search_service:, featured_work_list:, current_ability:, request: nil)
-      @search_service = search_service
-      @featured_work_list = featured_work_list
-      @current_ability = current_ability
-      @request = request
-    end
+    include ThemeHomepage
 
     def spotlight_works
-      @spotlight_works ||= begin
-        featured = @featured_work_list.featured_works
-        readable = theme_readable_ids(featured.map { |work| work.presenter.id })
-
-        featured.select { |work| readable.include?(work.presenter.id) }.map(&:presenter)
-      end
+      @spotlight_works ||= featured_works.map(&:presenter)
     end
 
     def representative_for(work)
@@ -29,7 +17,7 @@ module ScreeningRoom
     def representatives
       @representatives ||= authorized_documents(spotlight_works.map(&:representative_id).compact_blank.uniq)
                            .each_with_object({}) do |document, memo|
-        memo[document.id] = Hyrax::FileSetPresenter.new(document, @current_ability, @request)
+        memo[document.id] = Hyrax::FileSetPresenter.new(document, @current_ability)
       end
     end
 

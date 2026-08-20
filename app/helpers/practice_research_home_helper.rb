@@ -10,7 +10,8 @@ module PracticeResearchHomeHelper
       response: @response,
       collections: @collections,
       featured_work_list: @featured_work_list,
-      featured_collection_list: @featured_collection_list
+      featured_collection_list: @featured_collection_list,
+      current_ability:
     )
   end
 

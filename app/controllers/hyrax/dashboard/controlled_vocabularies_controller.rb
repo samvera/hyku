@@ -34,7 +34,7 @@ module Hyrax
         add_breadcrumb t(:'hyrax.controls.home'), root_path
         add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
         add_breadcrumb t('hyku.admin.controlled_vocabularies'), main_app.controlled_vocabularies_path
-        add_breadcrumb t('hyku.admin.controlled_vocabulary.new_title'), request.path
+        add_breadcrumb t('hyku.admin.controlled_vocabulary.new_title'), main_app.new_controlled_vocabulary_path
       end
 
       def create
@@ -48,7 +48,8 @@ module Hyrax
           add_breadcrumb t(:'hyrax.controls.home'), root_path
           add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
           add_breadcrumb t('hyku.admin.controlled_vocabularies'), main_app.controlled_vocabularies_path
-          add_breadcrumb t('hyku.admin.controlled_vocabulary.new_title'), request.path
+          # The form route, not request.path: on a POST that is the index.
+          add_breadcrumb t('hyku.admin.controlled_vocabulary.new_title'), main_app.new_controlled_vocabulary_path
           render :new, status: :unprocessable_entity
         end
       end

@@ -44,7 +44,10 @@ module Hyrax
         add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
         add_breadcrumb t('hyku.admin.controlled_vocabularies'), main_app.controlled_vocabularies_path
         add_breadcrumb @vocabulary.display_label, main_app.controlled_vocabulary_path(@vocabulary.name)
-        add_breadcrumb t('hyku.admin.controlled_vocabulary.new_term_title'), request.path
+        # The form route, not request.path: this trail is also drawn when create
+        # re-renders the form, and the POST path has no GET to link to.
+        add_breadcrumb t('hyku.admin.controlled_vocabulary.new_term_title'),
+                       main_app.new_controlled_vocabulary_term_path(@vocabulary.name)
       end
     end
   end

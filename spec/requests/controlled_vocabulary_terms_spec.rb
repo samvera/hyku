@@ -69,6 +69,13 @@ RSpec.describe 'Controlled vocabulary terms', type: :request, clean: true, multi
       expect(terms_in('reading_rooms').size).to eq 0
     end
 
+    it 'links the redisplayed breadcrumb to the form, not the post path' do
+      post "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms/terms",
+           params: { param_key => { label: '' } }
+
+      expect(response.body).to include '/dashboard/controlled_vocabularies/reading_rooms/terms/new'
+    end
+
     it 'refuses a duplicate term id within the vocabulary' do
       Apartment::Tenant.switch(account.tenant) do
         Qa::LocalAuthority.find_by(name: 'reading_rooms')

@@ -135,6 +135,13 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
         expect(response.body).to include 'Name'
       end
 
+      it 'links the redisplayed breadcrumb to the form, not the listing' do
+        post "http://#{account.cname}/dashboard/controlled_vocabularies",
+             params: { param_key => { label: '' } }
+
+        expect(response.body).to include '/dashboard/controlled_vocabularies/new'
+      end
+
       # An accented label is the case a client-side preview would get wrong:
       # parameterize transliterates, so the key is cafe_terms, not caf_terms.
       it 'shows the source key it will use when redisplaying' do

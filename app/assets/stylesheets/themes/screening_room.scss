@@ -16,6 +16,125 @@
     margin: 16px $scr-gutter-xl;
   }
 
+  // ---- lede + counts ----
+  .scr-lede {
+    @include scr-gutter;
+    background: linear-gradient(180deg, rgba(204, 204, 204, 0.08) 0%, rgba(204, 204, 204, 0) 100%);
+    border-bottom: 1px solid var(--scr-rule, #{$scr-rule});
+    column-gap: 80px;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 60px;
+    padding-top: 60px;
+
+    @media (max-width: $scr-laptop-max) {
+      flex-direction: column;
+      row-gap: 36px;
+    }
+  }
+
+  .scr-lede-body {
+    display: flex;
+    flex-direction: column;
+    max-width: 980px;
+    min-width: 0;
+    row-gap: 26px;
+  }
+
+  .scr-lede-rule {
+    background: var(--scr-accent, #{$scr-accent});
+    display: block;
+    height: 2px;
+    width: 96px;
+  }
+
+  .scr-lede-text {
+    @include scr-serif;
+    color: #f2f0ec;
+    font-size: 31px;
+    font-weight: 300;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+    text-wrap: pretty;
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    a {
+      @include scr-link;
+    }
+
+    @media (max-width: $scr-laptop-max) {
+      font-size: 26px;
+    }
+
+    @media (max-width: $scr-mobile-max) {
+      font-size: 22px;
+    }
+  }
+
+  // with no lede to sit beside, the band tightens to the counts alone
+  .scr-lede:not(:has(.scr-lede-body)) {
+    padding-bottom: 24px;
+    padding-top: 24px;
+
+    .scr-counts {
+      padding-top: 0;
+    }
+  }
+
+  .scr-counts {
+    column-gap: 48px;
+    display: flex;
+    flex: none;
+    // the counts hold the right edge even when the tenant sets no lede text
+    margin: 0 0 0 auto;
+    padding-top: 28px;
+
+    @media (max-width: $scr-laptop-max) {
+      margin-left: 0;
+      padding-top: 0;
+    }
+  }
+
+  .scr-count {
+    // the markup reads label then value, as a definition list must; the number
+    // sits above the label
+    display: flex;
+    flex-direction: column-reverse;
+    row-gap: 6px;
+  }
+
+  .scr-count-value {
+    @include scr-sans;
+    font-size: 34px;
+    font-weight: 800;
+    margin: 0;
+
+    a {
+      color: #ffffff;
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 4px;
+      }
+
+      &:focus-visible {
+        @include scr-focus-ring;
+      }
+    }
+  }
+
+  .scr-count-label {
+    @include scr-eyebrow;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+  }
+
   // ---- featured works reorder ----
   .scr-spotlight-editor {
     @include scr-gutter;

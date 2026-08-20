@@ -174,4 +174,26 @@ RSpec.describe 'screening room home theme', type: :request, singletenant: true, 
       expect(Nokogiri::HTML(response.body).at_css('[data-scr-spotlight-hold]')).to be_nil
     end
   end
+
+  describe 'the lede band' do
+    it 'renders the home page text with the holdings counts' do
+      ContentBlock.home_text = '<p>What the archive holds.</p>'
+
+      get root_path
+
+      doc = Nokogiri::HTML(response.body)
+      expect(doc.at_css('.scr-lede-text').text).to include('What the archive holds')
+      expect(doc.css('.scr-count-value').map { |c| c.text.strip }).to eq(%w[1 0])
+    end
+
+    it 'keeps the counts when no home page text is set' do
+      ContentBlock.home_text = ''
+
+      get root_path
+
+      doc = Nokogiri::HTML(response.body)
+      expect(doc.at_css('.scr-lede-text')).to be_nil
+      expect(doc.css('.scr-count-value').map { |c| c.text.strip }).to eq(%w[1 0])
+    end
+  end
 end

@@ -753,6 +753,10 @@ en:
     chrome:
       toggle_navigation: Toggle navigation
     homepage:
+      lede:
+        collections: Collections
+        label: About the collection
+        works: Works
       player:
         close: Close
       spotlight:

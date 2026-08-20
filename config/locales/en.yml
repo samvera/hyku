@@ -81,8 +81,6 @@ en:
         view_all: "View all"
       researcher:
         heading: Featured researcher
-      about:
-        heading: About the collections
       cta:
         heading: Share your work
         sub: Deposit works into the repository.
@@ -753,6 +751,8 @@ en:
     chrome:
       toggle_navigation: Toggle navigation
     homepage:
+      about:
+        heading: About the collections
       collections:
         heading: Featured collections
         unfeature_confirm: Remove this collection from the featured list?
@@ -766,6 +766,12 @@ en:
         works: Works
       player:
         close: Close
+      recent:
+        ago: "%{time} ago"
+        heading: Latest additions
+        view_all: All recent additions
+      researcher:
+        heading: Featured researcher
       spotlight:
         editor_heading: Featured works
         featured: Featured

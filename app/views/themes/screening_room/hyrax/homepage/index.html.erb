@@ -4,4 +4,14 @@
 <%= render 'hyrax/homepage/home_text' %>
 <%= render 'hyrax/homepage/featured_collection_section' %>
 
+<% recent = @presenter&.display_recently_uploaded? && @recent_documents.present? %>
+<% researcher = @presenter&.display_featured_researcher? && @featured_researcher&.value.present? %>
+
+<% if recent || researcher %>
+  <div class="scr-recent-row">
+    <%= render 'hyrax/homepage/recently_uploaded' if recent %>
+    <%= render 'hyrax/homepage/featured_researcher' if researcher %>
+  </div>
+<% end %>
+
 <%= render '/shared/select_work_type_modal', create_work_presenter: @presenter.create_work_presenter if @presenter.draw_select_work_modal? %>

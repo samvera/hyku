@@ -227,4 +227,54 @@ RSpec.describe 'screening room home theme', type: :request, singletenant: true, 
       expect(doc.at_css('#scr-collections-heading')).to be_nil
     end
   end
+
+  describe 'the latest additions list' do
+    it 'dates a work by how long ago it was deposited' do
+      get root_path
+
+      item = Nokogiri::HTML(response.body).css('.scr-recent-item')
+                     .find { |row| row.text.include?('Harbor at dusk') }
+      stamp = item.at_css('.scr-recent-date')
+
+      expect(stamp.text.strip).to end_with('ago')
+      expect(stamp['datetime']).to be_present
+    end
+
+    it 'leaves a work the visitor cannot read out of the list' do
+      indexed_work('Unreleased reel', 'restricted')
+
+      get root_path
+
+      doc = Nokogiri::HTML(response.body)
+      expect(doc.css('.scr-recent-item').text).to include('Harbor at dusk')
+      expect(doc.css('.scr-recent-item').text).not_to include('Unreleased reel')
+    end
+
+    it 'hides the list when the tenant turns recently uploaded off' do
+      allow(Flipflop).to receive(:show_recently_uploaded?).and_return(false)
+
+      get root_path
+
+      expect(Nokogiri::HTML(response.body).at_css('.scr-recent')).to be_nil
+    end
+  end
+
+  describe 'the featured researcher' do
+    it 'renders the content block inside the card' do
+      ContentBlock.featured_researcher = '<h3>Dr. Miriam Okafor</h3>'
+
+      get root_path
+
+      expect(Nokogiri::HTML(response.body).at_css('.scr-researcher-prose').text).to include('Dr. Miriam Okafor')
+    end
+
+    it 'drops the row entirely when neither the list nor the researcher shows' do
+      allow(Flipflop).to receive(:show_recently_uploaded?).and_return(false)
+      ContentBlock.featured_researcher = ''
+
+      get root_path
+
+      expect(Nokogiri::HTML(response.body).at_css('.scr-recent-row')).to be_nil
+    end
+  end
 end

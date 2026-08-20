@@ -246,6 +246,141 @@
   }
 
 
+  // ---- latest additions + featured researcher ----
+  .scr-recent-row {
+    @include scr-gutter;
+    display: grid;
+    gap: 56px;
+    grid-template-columns: 1.7fr minmax(0, 1fr);
+    padding-bottom: 56px;
+    padding-top: 52px;
+
+    @media (max-width: $scr-laptop-max) {
+      gap: 36px;
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .scr-section-head {
+      padding: 0;
+    }
+  }
+
+  .scr-recent-list {
+    margin: 0;
+  }
+
+  .scr-recent-item {
+    align-items: center;
+    border-top: 1px solid var(--scr-rule, #{$scr-rule});
+    column-gap: 16px;
+    display: grid;
+    grid-template-columns: 58px minmax(0, 1fr) auto;
+    padding: 13px 0;
+
+    &:last-child {
+      border-bottom: 1px solid var(--scr-rule, #{$scr-rule});
+    }
+
+    @media (max-width: $scr-mobile-max) {
+      column-gap: 12px;
+      grid-template-columns: 44px minmax(0, 1fr);
+      row-gap: 2px;
+    }
+  }
+
+  .scr-recent-thumb {
+    background: var(--scr-raised, #{$scr-raised});
+    display: block;
+    height: 58px;
+    overflow: hidden;
+    width: 58px;
+
+    img {
+      height: 100%;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    @media (max-width: $scr-mobile-max) {
+      height: 44px;
+      width: 44px;
+    }
+  }
+
+  .scr-recent-title {
+    @include scr-sans;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.35;
+    margin: 0;
+    overflow-wrap: anywhere;
+
+    a {
+      @include scr-link($scr-ink);
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .scr-recent-date {
+    color: $scr-ink-faint;
+    font-size: 13px;
+
+    @media (max-width: $scr-mobile-max) {
+      grid-column: 2;
+    }
+  }
+
+  .scr-researcher {
+    align-self: start;
+    border: 1px solid var(--scr-rule, #{$scr-rule});
+    padding: 28px;
+  }
+
+  .scr-eyebrow-heading {
+    @include scr-eyebrow;
+    margin: 0 0 18px;
+  }
+
+  .scr-researcher-prose {
+    color: $scr-ink-body;
+    font-size: 15px;
+    line-height: 1.65;
+
+    p {
+      margin: 0 0 12px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    em,
+    i {
+      color: $scr-ink-faint;
+      font-size: 14px;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      @include scr-sans;
+      color: #fff;
+      font-size: 20px;
+      font-weight: 700;
+      margin: 0 0 3px;
+    }
+
+    a {
+      @include scr-link;
+    }
+  }
+
   // ---- featured works reorder ----
   .scr-spotlight-editor {
     @include scr-gutter;

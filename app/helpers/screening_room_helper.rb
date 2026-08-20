@@ -13,6 +13,14 @@ module ScreeningRoomHelper
     )
   end
 
+  def scr_type_label(object)
+    Array(object.resource_type).first.presence || object.human_readable_type
+  end
+
+  def scr_show_collection(presenter)
+    @scr_show_collection ||= Hyrax::CollectionMemberService.run(presenter.solr_document, current_ability).first
+  end
+
   def scr_player_kind(representative)
     return if representative.blank?
 

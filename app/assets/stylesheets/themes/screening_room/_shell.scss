@@ -361,3 +361,17 @@ body.screening_room_show.public-facing {
     }
   }
 }
+
+body.screening_room,
+body.screening_room_show {
+  .scr-chip {
+    @include scr-sans;
+    background: var(--scr-accent, #{$scr-accent});
+    color: var(--scr-accent-ink, #{$scr-accent-ink});
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    padding: 5px 11px;
+    text-transform: uppercase;
+  }
+}

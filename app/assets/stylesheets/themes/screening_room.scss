@@ -888,17 +888,6 @@
     row-gap: 8px;
   }
 
-  .scr-chip {
-    @include scr-sans;
-    background: var(--scr-accent, #{$scr-accent});
-    color: var(--scr-accent-ink, #{$scr-accent-ink});
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    padding: 5px 11px;
-    text-transform: uppercase;
-  }
-
   .scr-stage-context {
     @include scr-eyebrow;
     color: $scr-ink-footer;

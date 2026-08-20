@@ -15,4 +15,240 @@
   #content-wrapper > .alert {
     margin: 16px $scr-gutter-xl;
   }
+
+  // ---- breadcrumb row ----
+  // the layout drops its own breadcrumb inside the container; this theme carries
+  // the trail in the search band instead
+  #content-wrapper > .breadcrumb {
+    display: none;
+  }
+
+  .scr-searchbar-show {
+    align-items: center;
+    column-gap: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    row-gap: 12px;
+
+    .scr-crumbs {
+      flex: 1 1 240px;
+      min-width: 0;
+    }
+
+    .search-form {
+      flex: 0 1 520px;
+    }
+  }
+
+  .scr-crumbs .breadcrumb {
+    background: none;
+    border: 0;
+    color: $scr-ink-muted;
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+
+    li + ::before {
+      border-right-color: var(--scr-rule-strong, #{$scr-rule-strong});
+    }
+
+    a {
+      @include scr-link;
+    }
+
+    li:last-child a {
+      color: $scr-ink;
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  // ---- viewer ----
+  .scr-viewer {
+    background: #000;
+
+    // the viewer's iframe is positioned absolutely, so the frame it fills has
+    // to be the positioned ancestor or it climbs over the masthead
+    .viewer-wrapper {
+      height: 720px;
+      overflow: hidden;
+      position: relative;
+
+      @media (max-width: $scr-laptop-max) {
+        height: 520px;
+      }
+
+      @media (max-width: $scr-mobile-max) {
+        height: 62vw;
+      }
+    }
+  }
+
+  .scr-viewer-still {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding: 24px;
+
+    img {
+      max-height: 720px;
+      max-width: 100%;
+      object-fit: contain;
+    }
+  }
+
+  // ---- show body ----
+  // the text below the viewer sits inside a wider margin than the full-bleed
+  // rows above it, so the description's measure reads as the column width
+  .scr-show-body {
+    align-items: start;
+    display: grid;
+    gap: 48px;
+    grid-template-columns: minmax(0, 1fr) 400px;
+    padding: 36px $scr-gutter-xl * 3 56px;
+
+    @media (max-width: $scr-desktop-max) {
+      grid-template-columns: minmax(0, 1fr) 320px;
+      padding-left: $scr-gutter-lg * 3;
+      padding-right: $scr-gutter-lg * 3;
+    }
+
+    @media (max-width: $scr-laptop-max) {
+      gap: 32px;
+      grid-template-columns: minmax(0, 1fr);
+      padding-left: $scr-gutter-md;
+      padding-right: $scr-gutter-md;
+    }
+
+    @media (max-width: $scr-mobile-max) {
+      padding-left: $scr-gutter-sm;
+      padding-right: $scr-gutter-sm;
+    }
+  }
+
+  .scr-show-main {
+    display: flex;
+    flex-direction: column;
+    row-gap: 28px;
+  }
+
+  // ---- title block ----
+  .scr-show-head {
+    display: flex;
+    flex-direction: column;
+    // .work-title-wrapper carries a bottom margin upstream, which reads as extra
+    // space on top of the column's own gap
+    margin-bottom: 0;
+    row-gap: 16px;
+  }
+
+  .scr-show-eyebrow {
+    align-items: center;
+    column-gap: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    row-gap: 8px;
+  }
+
+  .scr-show-context {
+    @include scr-eyebrow;
+    letter-spacing: 0.18em;
+
+    a {
+      @include scr-link($scr-ink-muted);
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        color: $scr-ink;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .scr-show-titleline {
+    align-items: baseline;
+    column-gap: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+
+  .scr-show-title {
+    @include scr-serif;
+    color: #fff;
+    font-size: 36px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.18;
+    margin: 0;
+    max-width: 1080px;
+    overflow-wrap: anywhere;
+
+    @media (max-width: $scr-laptop-max) {
+      font-size: 30px;
+    }
+
+    @media (max-width: $scr-mobile-max) {
+      font-size: 26px;
+    }
+  }
+
+  .scr-show-chips .badge {
+    border-radius: 0;
+  }
+
+  // ---- description ----
+  .scr-show-lede {
+    // the column is the measure now that the body sits inside a wider margin;
+    // the cap only guards very wide screens
+    max-width: 1080px;
+
+    &::before {
+      background: var(--scr-accent, #{$scr-accent});
+      content: '';
+      display: block;
+      height: 2px;
+      margin-bottom: 20px;
+      width: 96px;
+    }
+
+    // markdown() returns a paragraph, so the stock partial's <p class="work_description">
+    // wrapper ends up empty and the text renders as sibling paragraphs
+    p:empty {
+      display: none;
+    }
+
+    p {
+      @include scr-serif;
+      // the serif has no light weight, so subpixel smoothing is what keeps the
+      // lede from reading bold against the dark surface
+      -webkit-font-smoothing: antialiased;
+      color: $scr-ink-body;
+      font-size: 22px;
+      font-weight: 300;
+      line-height: 1.55;
+      margin: 0 0 14px;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-wrap: anywhere;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      @media (max-width: $scr-laptop-max) {
+        font-size: 20px;
+      }
+
+      @media (max-width: $scr-mobile-max) {
+        font-size: 18px;
+      }
+    }
+  }
 }

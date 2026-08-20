@@ -1,1 +1,4 @@
-<%= render 'themes/screening_room/controls' %>
+<div class="scr-searchbar scr-searchbar-show">
+  <div class="scr-crumbs"><%= render_breadcrumbs builder: Hyrax.config.breadcrumb_builder %></div>
+  <%= render partial: 'catalog/search_form' %>
+</div>

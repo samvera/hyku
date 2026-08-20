@@ -1,0 +1,53 @@
+<% content_for(:extra_body_classes, 'works-show ') %>
+<% provide :page_title, @presenter.page_title %>
+
+<% content_for :canonical_url do %>
+  <link rel="canonical" href="<%= canonical_url_for(@presenter) %>" />
+<% end %>
+
+<%= render 'shared/citations' %>
+<%= render 'shared/additional_citations' %>
+
+<div class="scr-show" itemscope itemtype="http://schema.org/CreativeWork">
+  <% if theme_viewer?(@presenter) %>
+    <div class="scr-viewer">
+      <% if @presenter.video_embed_viewer? %>
+        <%= render 'video_embed_viewer', presenter: @presenter %>
+      <% elsif @presenter.iiif_viewer? %>
+        <%= render 'representative_media', presenter: @presenter, viewer: true %>
+      <% elsif @presenter.show_pdf_viewer? %>
+        <%= render 'pdf_js', file_set_presenter: pdf_file_set_presenter(@presenter) %>
+      <% else %>
+        <div class="scr-viewer-still">
+          <%= render 'representative_media', presenter: @presenter, viewer: false %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="scr-show-body">
+    <div class="scr-show-main">
+      <%= render 'work_title', presenter: @presenter %>
+      <%= render 'workflow_actions_widget', presenter: @presenter if @presenter.workflow.actions.present? %>
+
+      <% if @presenter.description.present? %>
+        <div class="scr-show-lede">
+          <%= render 'work_description', presenter: @presenter %>
+        </div>
+      <% end %>
+
+      <%= render 'metadata', presenter: @presenter %>
+    </div>
+
+    <aside class="scr-show-rail">
+      <%= render 'citations', presenter: @presenter %>
+      <%= render 'relationships', presenter: @presenter %>
+      <%= render 'items', presenter: @presenter %>
+    </aside>
+  </div>
+
+  <span class='hide analytics-event' data-category="work" data-action="work-view" data-name="<%= @presenter.id %>"></span>
+  <% @presenter.member_of_collection_ids.each do |collection_id| %>
+    <span class='hide analytics-event' data-category="work-in-collection" data-action="work-in-collection-view" data-name="<%= collection_id %>"></span>
+  <% end %>
+</div>

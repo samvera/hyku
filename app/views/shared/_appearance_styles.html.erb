@@ -263,7 +263,7 @@ body.public-facing .hyc-banner .hyc-title h1 {
 :root {
   --scr-serif: <%= screening_default_serif ? 'Georgia, Times New Roman, serif' : appearance.font_headline_family %>;
   --scr-sans: <%= screening_default_sans ? 'Helvetica Neue, Helvetica, Arial, sans-serif' : appearance.font_body_family %>;
-  --scr-chrome-pick: <%= appearance.header_and_footer_background_color %>;
+  --scr-chrome-pick: <%= theme_luminance(appearance.header_and_footer_background_color).between?(0.02, 0.0631) ? appearance.header_and_footer_background_color : '#3c3c3c' %>;
   --scr-chrome-deep: color-mix(in srgb, var(--scr-chrome-pick) 13%, #000000);
   --scr-chrome: color-mix(in srgb, var(--scr-chrome-pick) 25%, #000000);
   --scr-chrome-soft: color-mix(in srgb, var(--scr-chrome-pick) 37%, #000000);
@@ -272,14 +272,15 @@ body.public-facing .hyc-banner .hyc-title h1 {
   --scr-band: color-mix(in srgb, var(--scr-chrome-pick) 43%, #000000);
   --scr-rule: color-mix(in srgb, var(--scr-chrome-pick) 63%, #000000);
   --scr-rule-input: color-mix(in srgb, var(--scr-chrome-pick) 78%, #000000);
-  --scr-rule-strong: color-mix(in srgb, var(--scr-chrome-pick) 92%, #ffffff);
+  --scr-rule-strong: color-mix(in srgb, var(--scr-chrome-pick) 65%, #ffffff);
   --scr-accent: <%= appearance.link_color %>;
-  --scr-accent-ink: <%= appearance.primary_button_text_color %>;
-  --scr-link: color-mix(in srgb, var(--scr-accent) 55%, #ffffff);
+  --scr-accent-ink: <%= theme_readable_ink(appearance.link_color) %>;
+  --scr-accent-hover: color-mix(in srgb, var(--scr-accent) 80%, <%= theme_readable_ink(appearance.link_color) == '#ffffff' ? '#000000' : '#ffffff' %>);
+  --scr-link: color-mix(in srgb, var(--scr-accent) <%= theme_brand_mix(appearance.link_color) %>%, #ffffff);
   --scr-cta: color-mix(in srgb, var(--scr-accent) 27%, var(--scr-chrome));
-  --scr-notice: color-mix(in srgb, var(--scr-accent) 18%, var(--scr-base));
-  --scr-notice-rule: color-mix(in srgb, var(--scr-accent) 30%, var(--scr-base));
-  --scr-footer-accent: <%= appearance.footer_link_color %>;
+  --scr-notice: color-mix(in srgb, #ffebcd 14%, var(--scr-chrome));
+  --scr-notice-rule: color-mix(in srgb, #ffebcd 26%, var(--scr-chrome));
+  --scr-footer-accent: <%= theme_luminance(appearance.footer_link_color) > 0.19 ? appearance.footer_link_color : "color-mix(in srgb, #{appearance.footer_link_color} #{theme_brand_mix(appearance.footer_link_color)}%, #ffffff)" %>;
 }
 <% end %>
 

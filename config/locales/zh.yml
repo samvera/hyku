@@ -415,7 +415,7 @@ zh:
           button: 导入词条
           column: 列
           columns:
-            active: true 或 false。单元格留空保持词条当前状态。
+            active: true 或 false。单元格留空时，新词条设为启用，现有词条保持当前状态。
             id: 可选。默认取 label，保存后无法更改。
             label: 必填。存缴者看到的内容。
           confirm: 确认导入

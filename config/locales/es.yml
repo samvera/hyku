@@ -415,7 +415,7 @@ es:
           button: Importar términos
           column: Columna
           columns:
-            active: true o false. Una celda en blanco conserva el estado actual del término.
+            active: true o false. Una celda en blanco agrega un término nuevo como activo y conserva el estado actual de un término existente.
             id: Opcional. Por defecto es el label y no se puede cambiar una vez guardado.
             label: Obligatoria. Lo que ve un depositante.
           confirm: Confirmar importación

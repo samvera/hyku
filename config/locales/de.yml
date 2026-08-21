@@ -414,7 +414,7 @@ de:
           button: Begriffe importieren
           column: Spalte
           columns:
-            active: true oder false. Eine leere Zelle behält den aktuellen Zustand des Begriffs bei.
+            active: true oder false. Eine leere Zelle legt einen neuen Begriff als aktiv an und behält bei einem bestehenden Begriff den aktuellen Zustand bei.
             id: Optional. Standardmäßig das label; kann nach dem Speichern nicht mehr geändert werden.
             label: Erforderlich. Was ein Hinterleger sieht.
           confirm: Import bestätigen

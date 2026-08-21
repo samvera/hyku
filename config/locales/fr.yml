@@ -415,7 +415,7 @@ fr:
           button: Importer les termes
           column: Colonne
           columns:
-            active: true ou false. Une cellule vide conserve l'état actuel du terme.
+            active: true ou false. Une cellule vide ajoute un nouveau terme comme actif et conserve l'état actuel d'un terme existant.
             id: Facultative. Par défaut le label; ne peut plus changer une fois enregistré.
             label: Obligatoire. Ce qu'un déposant voit.
           confirm: Confirmer l'importation

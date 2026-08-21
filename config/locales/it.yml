@@ -415,7 +415,7 @@ it:
           button: Importa termini
           column: Colonna
           columns:
-            active: true o false. Una cella vuota mantiene lo stato attuale del termine.
+            active: true o false. Una cella vuota aggiunge un nuovo termine come attivo e mantiene lo stato attuale di un termine esistente.
             id: Facoltativa. Per impostazione predefinita è il label e non può cambiare una volta salvato.
             label: Obbligatoria. Ciò che un depositante vede.
           confirm: Conferma importazione

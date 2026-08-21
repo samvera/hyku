@@ -286,7 +286,7 @@ en:
           button: Import terms
           column: Column
           columns:
-            active: true or false. A blank cell keeps the term's current state.
+            active: true or false. A blank cell adds a new term as active, and keeps an existing term's current state.
             id: Optional. Defaults to the label, and cannot change once saved.
             label: Required. What a depositor sees.
           confirm: Confirm import

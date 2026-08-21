@@ -297,7 +297,7 @@ pt-BR:
           button: Importar termos
           column: Coluna
           columns:
-            active: true ou false. Uma célula em branco mantém o estado atual do termo.
+            active: true ou false. Uma célula em branco adiciona um novo termo como ativo e mantém o estado atual de um termo existente.
             id: Opcional. Por padrão é o label e não pode mudar depois de salvo.
             label: Obrigatória. O que um depositante vê.
           confirm: Confirmar importação

@@ -896,6 +896,64 @@ zh:
         edit: 編輯
         header: 管理用户
         update: 更新
+  screening_room:
+    chrome:
+      toggle_navigation: 切换导航
+    homepage:
+      about:
+        heading: 关于馆藏
+      collections:
+        heading: 精选收藏
+        unfeature_confirm: 从精选列表中移除此收藏？
+        view_all: 查看全部收藏
+        works_count:
+          one: 1 件作品
+          other: '%{count} 件作品'
+      cta:
+        button: 开始存缴
+        heading: 分享您的作品
+        sub: 将录音、转录件与制作文件存缴至本仓储。
+      lede:
+        collections: 收藏
+        label: 关于馆藏
+        works: 作品
+      player:
+        close: 关闭
+      recent:
+        ago: '%{time}前'
+        heading: 最新入藏
+        view_all: 查看全部最新入藏
+      researcher:
+        heading: 精选研究员
+      spotlight:
+        editor_heading: 精选作品
+        featured: 精选
+        hold: 暂停
+        label: 精选作品
+        quick_view: 快速查看
+        reorder_hint: 拖动项目以调整顺序，然后保存。
+        resume: 播放
+        save_order: 保存顺序
+        segment: '显示 %{title}'
+        unfeature_confirm: 从精选列表中移除此作品？
+        view_work: 查看作品
+    show:
+      citation:
+        copied: 已复制
+        copy_visible: 复制引用
+        endnote: 下载 EndNote 记录
+        heading: 引用
+        note: 仅供参考，请对照您常用的引用格式核对。
+        style: 引用格式
+        styles:
+          apa: APA
+          chicago: Chicago
+          mla: MLA
+      items:
+        count:
+          one: 1 个项目
+          other: '%{count} 个项目'
+        meta: '%{visibility} · %{date}'
   single_signon:
     index:
       sign_in_with_provider: 使用 %{provider} 登录

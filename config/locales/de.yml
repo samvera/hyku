@@ -883,6 +883,64 @@ de:
         edit: Bearbeiten
         header: Benutzer verwalten
         update: Aktualisieren
+  screening_room:
+    chrome:
+      toggle_navigation: Navigation umschalten
+    homepage:
+      about:
+        heading: Über die Sammlungen
+      collections:
+        heading: Ausgewählte Sammlungen
+        unfeature_confirm: 'Diese Sammlung aus der Auswahl entfernen?'
+        view_all: Alle Sammlungen anzeigen
+        works_count:
+          one: 1 Werk
+          other: '%{count} Werke'
+      cta:
+        button: Einreichung starten
+        heading: Teilen Sie Ihre Arbeit
+        sub: Hinterlegen Sie Aufnahmen, Transfers und Produktionsunterlagen im Repositorium.
+      lede:
+        collections: Sammlungen
+        label: Über die Sammlung
+        works: Werke
+      player:
+        close: Schließen
+      recent:
+        ago: 'vor %{time}'
+        heading: Neueste Zugänge
+        view_all: Alle Neuzugänge
+      researcher:
+        heading: Vorgestellte Forschende
+      spotlight:
+        editor_heading: Ausgewählte Werke
+        featured: Ausgewählt
+        hold: Pause
+        label: Ausgewählte Werke
+        quick_view: Schnellansicht
+        reorder_hint: Element ziehen, um die Reihenfolge zu ändern, dann speichern.
+        resume: Abspielen
+        save_order: Reihenfolge speichern
+        segment: '%{title} anzeigen'
+        unfeature_confirm: 'Dieses Werk aus der Auswahl entfernen?'
+        view_work: Werk ansehen
+    show:
+      citation:
+        copied: Kopiert
+        copy_visible: Zitat kopieren
+        endnote: EndNote-Datensatz herunterladen
+        heading: Zitieren
+        note: Nur als Vorschlag. Bitte mit dem gewünschten Zitierstil abgleichen.
+        style: Zitierstil
+        styles:
+          apa: APA
+          chicago: Chicago
+          mla: MLA
+      items:
+        count:
+          one: 1 Element
+          other: '%{count} Elemente'
+        meta: '%{visibility} · %{date}'
   single_signon:
     index:
       sign_in_with_provider: Melden Sie sich mit %{provider} an

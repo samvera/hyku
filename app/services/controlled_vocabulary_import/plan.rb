@@ -35,9 +35,10 @@ class ControlledVocabularyImport
     end
 
     # Confirm compares this against a fresh plan, so an import applies only to
-    # the state that was reviewed.
+    # the state that was reviewed. Every entry's id and timestamp participate,
+    # so any change moves the digest.
     def state_digest
-      "#{@entries.size}-#{@entries.map(&:updated_at).max.to_f}"
+      Digest::MD5.hexdigest(@entries.map { |entry| "#{entry.uri}:#{entry.updated_at.to_f}" }.sort.join('|'))
     end
 
     def upsert_rows

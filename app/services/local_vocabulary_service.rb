@@ -19,24 +19,36 @@ class LocalVocabularyService
   end
 
   # @param files [Array<String>] every yml this name resolves to, overriding path first
+  # @return [Array(String, Integer, Boolean)] name, term count, and whether this run
+  #   seeded it — false for a vocabulary the tenant already had
   def self.seed_vocabulary!(name, files)
     contents = files.map { |file| YAML.load_file(file) || {} }
-    terms = Array.wrap(contents.first['terms'])
     authority = Qa::LocalAuthority.find_or_initialize_by(name:)
+    seeded = authority.persisted? # read before the save below creates it
 
     backfill_metadata(authority, merged_metadata(contents))
     save_authority!(authority, files.first)
 
+    # Terms on creation only: once a tenant has the vocabulary the rows are theirs, so
+    # a term they deleted stays deleted and their wording survives a later run. The
+    # dashboard import is how an existing vocabulary gains terms.
+    seed_terms!(authority, Array.wrap(contents.first['terms'])) unless seeded
+
+    [name, authority.local_authority_entries.count, !seeded]
+  end
+
+  # find_or_create_by! rather than create!: a shipped file can list one id twice
+  # (licenses.yml does, for two Creative Commons URIs), and uri is unique per
+  # vocabulary.
+  def self.seed_terms!(authority, terms)
     terms.each_with_index do |term, index|
       authority.local_authority_entries.find_or_create_by!(uri: term['id']) do |entry|
         entry.label = term['term']
         entry.active = term.fetch('active', true)
-        entry.position = index
+        entry.position = index + 1 # from one, as the model numbers a term added later
         entry.data = term.except('id', 'term', 'active')
       end
     end
-
-    [name, authority.local_authority_entries.count]
   end
 
   # Raised through the instance, not the class: RecordInvalid#initialize takes a record,

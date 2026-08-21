@@ -5,8 +5,7 @@ require 'rails_helper'
 RSpec.describe ControlledVocabularyCatalog do
   # The suite seeds every real yaml vocabulary into the tables, so an unstubbed
   # file_based_names would be entirely claimed by database rows. Naming a fictional
-  # file set keeps these examples independent of that seed state, and clear of
-  # Qa::LocalAuthority's validation against shadowing a real yaml file.
+  # file set keeps these examples independent of that seed state.
   #
   # `map_regions` stands for a file present on disk, `geo_regions` for one named in
   # a profile but missing, so the uncountable path is covered too.
@@ -40,6 +39,15 @@ RSpec.describe ControlledVocabularyCatalog do
 
       expect(keys).to eq keys.uniq
     end
+
+    # Sorting reads the label, so an authority that resolves without one must not
+    # take the whole page down with it.
+    it 'lists an authority whose label cannot be determined' do
+      allow(described_class).to receive(:remote)
+        .and_return([described_class::Entry.new(source_key: 'nameless', origin: :remote)])
+
+      expect(described_class.all.map(&:source_key)).to include 'nameless'
+    end
   end
 
   describe '.database' do
@@ -64,14 +72,14 @@ RSpec.describe ControlledVocabularyCatalog do
 
     # An empty vocabulary is where the first term gets added, so having no terms must
     # not close the page that adds them.
-    it 'is editable and viewable before it has any terms' do
+    it 'is editable before it has any terms' do
       Qa::LocalAuthority.create!(name: 'lab_names', label: 'Lab Names')
 
       entry = described_class.database.detect { |e| e.source_key == 'lab_names' }
 
       expect(entry.term_count).to eq 0
       expect(entry).to be_editable
-      expect(entry).to be_viewable
+      expect(entry).to be_listable
     end
   end
 
@@ -109,6 +117,69 @@ RSpec.describe ControlledVocabularyCatalog do
       entry = described_class.remote.detect { |e| e.source_key == 'loc/subjects' }
 
       expect(described_class.terms_for(entry)).to be_nil
+    end
+
+    # nil and [] are different answers: nil is "cannot say", [] is "nothing here".
+    # A page that collapses them tells a reader an unreadable vocabulary is empty.
+    it 'distinguishes a yaml file it cannot read from one with no terms' do
+      allow(Qa::Authorities::Local).to receive(:subauthority_for)
+        .with('geo_regions').and_raise(Qa::InvalidSubAuthority, 'missing')
+      unreadable = described_class.file_based.detect { |e| e.source_key == 'geo_regions' }
+
+      expect(described_class.terms_for(unreadable)).to be_nil
+    end
+
+    it 'reports an empty database vocabulary as empty, not unreadable' do
+      Qa::LocalAuthority.create!(name: 'lab_names')
+      entry = described_class.database.detect { |e| e.source_key == 'lab_names' }
+
+      expect(described_class.terms_for(entry)).to eq []
+    end
+  end
+
+  describe '.find!' do
+    it 'finds a database vocabulary' do
+      Qa::LocalAuthority.create!(name: 'reading_rooms', label: 'Reading Rooms')
+
+      expect(described_class.find!('reading_rooms').origin).to eq :database
+    end
+
+    it 'finds a remote authority' do
+      expect(described_class.find!('loc/subjects').origin).to eq :remote
+    end
+
+    it 'raises for a key no authority answers to' do
+      expect { described_class.find!('not_a_vocabulary') }
+        .to raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    # A profile written before the dashboard advertised the camelCase spelling can
+    # still deposit against the field, so its page has to open too.
+    it 'resolves a legacy spelling to the vocabulary it names' do
+      entry = described_class.find!('loc/genre_forms')
+
+      expect(entry.source_key).to eq 'loc/genreForms'
+    end
+
+    # A miss used to fall through to .all, which builds the database list again on
+    # top of the one already searched.
+    it 'builds the database list once when it has to fall through' do
+      allow(described_class).to receive(:database).and_call_original
+
+      described_class.find!('loc/subjects')
+
+      expect(described_class).to have_received(:database).once
+    end
+
+    # Resolving through an alias searches a second time, once per spelling tried.
+    # Bounded by how many spellings remote_authorities gives one url, and reached
+    # only by a profile citing a legacy key.
+    it 'searches once per spelling when it resolves through an alias' do
+      allow(described_class).to receive(:database).and_call_original
+
+      described_class.find!('loc/genre_forms')
+
+      expect(described_class).to have_received(:database).twice
     end
   end
 
@@ -154,6 +225,14 @@ RSpec.describe ControlledVocabularyCatalog do
 
     it 'is not editable' do
       expect(described_class.remote.map(&:editable?).uniq).to eq [false]
+    end
+
+    # The service holds the terms and is searched as staff type, so the page says
+    # that rather than showing an empty list.
+    it 'has a page, but no term list to show on it' do
+      entry = described_class.remote.detect { |e| e.source_key == 'loc/subjects' }
+
+      expect(entry).not_to be_listable
     end
 
     it 'names the service behind each authority' do
@@ -262,6 +341,21 @@ RSpec.describe ControlledVocabularyCatalog do
         expect(described_class.remote.detect { |e| e.source_key == 'geonames' }).not_to be_configured
       end
     end
+
+    # An unanswerable check is not an answer of "configured". Reporting ready on a
+    # failed lookup sends staff to debug a form that was never going to work.
+    context 'when the credential check itself fails' do
+      before do
+        account = instance_double(Account)
+        allow(account).to receive(:geonames_username).and_raise(StandardError, 'settings unreadable')
+        allow(account).to receive(:discogs_user_token).and_return('')
+        allow(Site).to receive(:account).and_return(account)
+      end
+
+      it 'flags the service rather than reporting it ready' do
+        expect(described_class.remote.detect { |e| e.source_key == 'geonames' }).not_to be_configured
+      end
+    end
   end
 
   # mesh keeps its terms in the same tables as a staff vocabulary, but a MeSH import
@@ -297,15 +391,15 @@ RSpec.describe ControlledVocabularyCatalog do
       expect(entry).to be_cached
     end
 
-    # A MeSH release runs to about 30,000 terms, so the list is not offered at all
-    # and the index does not link it.
-    it 'has no term list, imported or not' do
+    # A MeSH release runs to about 30,000 terms, so the list is not offered — but the
+    # page still is, because it says where the vocabulary is used.
+    it 'has a page but no term list, imported or not' do
       Qa::LocalAuthority.create!(name: 'mesh')
                         .local_authority_entries.create!(label: 'Diabetes', uri: 'mesh:diabetes')
 
       entry = described_class.database.detect { |e| e.source_key == 'mesh' }
 
-      expect(entry).not_to be_viewable
+      expect(entry).not_to be_listable
       expect(described_class.terms_for(entry)).to be_nil
     end
 

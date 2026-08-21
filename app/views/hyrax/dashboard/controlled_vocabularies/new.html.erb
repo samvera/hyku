@@ -26,21 +26,11 @@
         </div>
       <% end %>
 
+      <%# No source-key preview here: the review step shows the derived key before
+          anything is written. %>
       <div class="form-group">
         <%= f.label :label, t('hyku.admin.controlled_vocabulary.name'), class: 'control-label' %>
-        <%= f.text_field :label,
-                         class: 'form-control',
-                         required: true,
-                         'aria-describedby' => 'vocabulary-source-key' %>
-        <small id="vocabulary-source-key" class="form-text text-muted">
-          <% derived = Qa::LocalAuthority.name_for(@controlled_vocabulary.label) %>
-          <% if derived.present? %>
-            <%= t('hyku.admin.controlled_vocabulary.source_key_will_be_html',
-                  key: tag.code(derived)) %>
-          <% else %>
-            <%= t('hyku.admin.controlled_vocabulary.source_key_from_name') %>
-          <% end %>
-        </small>
+        <%= f.text_field :label, class: 'form-control', required: true %>
       </div>
 
       <div class="form-group">
@@ -51,6 +41,8 @@
         </small>
       </div>
 
+      <%# Submitting reviews rather than saves: create renders the derived source key
+          for confirmation before writing the row. %>
       <%= f.submit t('hyku.admin.controlled_vocabulary.create'), class: 'btn btn-primary' %>
       <%= link_to t('helpers.action.cancel', default: 'Cancel'),
                   main_app.controlled_vocabularies_path,

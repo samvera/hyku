@@ -22,3 +22,6 @@ practice_research_show:
 heritage_show:
   name: Heritage Show Page
   notes: Viewer, description, and a two-column metadata table in the main column, with a 320px rail carrying the citation panel and Files and Child works panels that paginate in place at ten entries.
+screening_room_show:
+  name: Screening Room Show Page
+  notes: A dark show page that opens with the viewer full width before any text, then the work type chip, collection, title, a serif description at lede size, and a two column metadata table, with a rail carrying a citation picker, what the work belongs to, and one Items panel that lists files and child works together, ten at a time.

@@ -121,7 +121,7 @@
 }
 
 // Blacklight's facet cards, restyled into the theme's continuous ruled column.
-// Shared by the catalog rail and the homepage "Browse the collection" rail so
+// Shared by the catalog rail and the homepage "Browse" rail so
 // both follow the configured facets and read identically.
 @mixin hrt-facets {
   .card.facet-limit {

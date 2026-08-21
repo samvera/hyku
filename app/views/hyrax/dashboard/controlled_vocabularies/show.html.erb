@@ -23,15 +23,15 @@
 <div class="card">
   <div class="card-body border-bottom">
     <dl class="row mb-0">
-      <dt class="col-sm-2"><%= t('hyku.admin.controlled_vocabulary.source_key') %></dt>
-      <dd class="col-sm-10"><code><%= @entry.source_key %></code></dd>
+      <dt class="col-sm-3"><%= t('hyku.admin.controlled_vocabulary.source_key') %></dt>
+      <dd class="col-sm-9"><code><%= @entry.source_key %></code></dd>
 
-      <dt class="col-sm-2"><%= t('hyku.admin.controlled_vocabulary.origin') %></dt>
-      <dd class="col-sm-10"><%= @entry.source_label %></dd>
+      <dt class="col-sm-3"><%= t('hyku.admin.controlled_vocabulary.origin') %></dt>
+      <dd class="col-sm-9"><%= @entry.source_label %></dd>
 
       <% if @terms.present? %>
-        <dt class="col-sm-2"><%= t('hyku.admin.controlled_vocabulary.terms') %></dt>
-        <dd class="col-sm-10">
+        <dt class="col-sm-3"><%= t('hyku.admin.controlled_vocabulary.terms') %></dt>
+        <dd class="col-sm-9">
           <% total = @entry.term_count || @terms.size %>
           <% truncated = total > @terms.size %>
           <%= t('hyku.admin.controlled_vocabulary.term_total', count: total) %>
@@ -51,17 +51,17 @@
       <% end %>
 
       <% if @entry.description.present? %>
-        <dt class="col-sm-2"><%= t('hyku.admin.controlled_vocabulary.description') %></dt>
-        <dd class="col-sm-10"><%= @entry.description %></dd>
+        <dt class="col-sm-3"><%= t('hyku.admin.controlled_vocabulary.description') %></dt>
+        <dd class="col-sm-9"><%= @entry.description %></dd>
       <% end %>
 
       <% unless @usage.nil? %>
-        <dt class="col-sm-2">
+        <dt class="col-sm-3">
           <%= render 'column_hint',
                      label: t('hyku.admin.controlled_vocabulary.used_by'),
                      hint: t('hyku.admin.controlled_vocabulary.used_by_hint') %>
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-9">
           <% if @usage.empty? %>
             <span class="text-muted">
               <%= t('hyku.admin.controlled_vocabulary.unused') %>
@@ -87,13 +87,13 @@
       <% end %>
     </dl>
 
-    <% unless @entry.editable? %>
-      <%# Defaulted because the key is interpolated from the origin: a new origin
-          without a message should read plainly, not raise. %>
+    <%# A yaml vocabulary is the one case with a term list staff cannot edit, so it is
+        the one that needs saying. Where there is no list, the note below it already
+        explains where the terms live. %>
+    <% if @entry.origin == :file %>
       <p class="form-text text-muted mt-3 mb-0">
         <span class="fa fa-info-circle" aria-hidden="true"></span>
-        <%= t("hyku.admin.controlled_vocabulary.read_only.#{@entry.origin}",
-              default: t('hyku.admin.controlled_vocabulary.read_only.generic')) %>
+        <%= t('hyku.admin.controlled_vocabulary.read_only.file') %>
       </p>
     <% end %>
 
@@ -106,15 +106,26 @@
       </p>
     <% end %>
   </div>
+  <%# Only where a term list is possible. A remote service holds its terms and is
+      searched as staff type, and an imported copy runs to tens of thousands, so
+      neither gets a terms panel to explain the absence of. %>
+  <% if @entry.listable? %>
   <div class="card-header">
     <%= t('hyku.admin.controlled_vocabulary.term_id_help') %>
   </div>
   <div class="card-body pt-1">
-    <% if @terms.blank? %>
+    <% if @terms.nil? %>
+      <%# nil is "cannot say", not "none": the yaml is missing or unreadable, and
+          reporting it empty would send staff looking for terms they never added. %>
+      <p class="text-muted mb-0"><%= t('hyku.admin.controlled_vocabulary.terms_unavailable') %></p>
+    <% elsif @terms.empty? %>
       <p class="text-muted mb-0"><%= t('hyku.admin.controlled_vocabulary.no_terms') %></p>
     <% else %>
-      <div class="table-responsive">
-        <table class="table table-borderless">
+      <%# controlled-vocabularies-scroll restores the scroll Hyrax disables on
+          .table-responsive app-wide; see hyku.scss. A term id can be a full uri, so
+          this table overflows readily. %>
+      <div class="table-responsive controlled-vocabularies-scroll">
+        <table class="table table-borderless controlled-vocabularies">
           <caption class="sr-only"><%= @entry.label %></caption>
           <thead>
             <tr>
@@ -157,4 +168,15 @@
       </div>
     <% end %>
   </div>
+  <% else %>
+    <div class="card-body pt-0">
+      <p class="form-text text-muted mb-0">
+        <span class="fa fa-info-circle" aria-hidden="true"></span>
+        <%# Defaulted because the key is interpolated from the origin: a new origin
+            without a message should read plainly, not raise. %>
+        <%= t("hyku.admin.controlled_vocabulary.terms_elsewhere.#{@entry.origin}",
+              default: t('hyku.admin.controlled_vocabulary.terms_elsewhere.generic')) %>
+      </p>
+    </div>
+  <% end %>
 </div>

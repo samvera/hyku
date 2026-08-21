@@ -10,7 +10,7 @@
 <div class="pr-portfolio-body">
   <p class="pr-eyebrow">
     <span class="pr-eyebrow-type"><%= presenter.human_readable_type %></span>
-    <% work_count = pr_home.collection_work_counts[presenter.id].to_i %>
+    <% work_count = pr_home.collection_works_count(presenter.solr_document) %>
     <% if work_count.positive? %>
       <span class="pr-eyebrow-sep" aria-hidden="true"></span>
       <span class="pr-eyebrow-count">

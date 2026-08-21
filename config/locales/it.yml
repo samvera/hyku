@@ -12,6 +12,8 @@ it:
         institution_name_full: Nome dell'istituto completo
     errors:
       messages:
+        already_an_authority: è già utilizzato da un altro vocabolario controllato
+        taken_as_source_key: '%{value} è già la chiave di origine di un altro vocabolario controllato'
         cannot_remove_last_superadmin: impossibile rimuovere l'ultimo superadmin da un inquilino demo pubblico
   application:
     tagline: La soluzione di repository di nuova generazione
@@ -201,7 +203,7 @@ it:
         search_button: Vai
         advanced: Avanzata
       browse:
-        heading: Sfoglia la collezione
+        heading: Sfoglia
         toggle: Mostra faccette
       featured:
         unfeature_confirm: "Rimuovere questo dagli elementi in evidenza?"
@@ -217,7 +219,7 @@ it:
         view_all: Vedi tutte le collezioni
       recent:
         ago: "%{time} fa"
-        heading: Catalogati di recente
+        heading: Aggiunti di recente
         view_all: "Vedi tutto"
       researcher:
         heading: Ricercatore in evidenza
@@ -402,7 +404,12 @@ it:
         active: Attivo
         awaiting_import: Non importato
         awaiting_import_help: 'Questo vocabolario è disponibile ma non ha ancora termini in questo tenant. Popolalo eseguendo: %{task}'
-        create: Crea vocabolario
+        confirm_back: Torna alla modifica
+        confirm_create: Conferma e crea
+        confirm_help: Controlla questi valori prima che il vocabolario venga creato.
+        confirm_permanent: Un vocabolario non può essere eliminato dopo la creazione e la sua chiave di origine non può essere modificata in seguito, quindi un profilo di metadati che la cita continua a funzionare.
+        confirm_title: Conferma il nuovo vocabolario
+        create: Rivedi vocabolario
         create_term: Aggiungi termine
         created: '%{name} è stato creato. Aggiungi i suoi termini qui sotto.'
         description: Descrizione
@@ -479,6 +486,7 @@ it:
         new_term_help: Assegna al termine il nome che un depositante deve vedere. L'id del termine è ciò che un record memorizza e non può essere cambiato una volta che i termini sono in uso.
         new_term_title: Aggiungi termine
         new_title: Nuovo vocabolario
+        no_description: Non indicata
         no_terms: Questo vocabolario non ha ancora termini.
         none: Nessun vocabolario controllato è stato ancora configurato per questo tenant.
         origin: Origine
@@ -498,20 +506,15 @@ it:
           mesh: MeSH
           tgnlang: Getty TGN Languages
         read_only:
-          cached: Questo vocabolario è una copia importata di un vocabolario esterno. I suoi termini non possono essere modificati qui e una nuova importazione li sostituisce tutti.
           file: Questo vocabolario è definito in un file di configurazione, quindi i suoi termini non possono essere modificati qui.
-          generic: I termini di questo vocabolario non possono essere modificati qui.
-          remote: Questo vocabolario proviene da un servizio esterno, quindi i suoi termini non possono essere modificati qui.
         ready: Pronto
         retired_count:
           one: (%{count} ritirato)
           other: (%{count} ritirati)
         show_title: 'Vocabolario controllato: %{name}'
         source_key: Chiave di origine
-        source_key_from_name: La chiave di origine viene impostata dal nome sopra.
         source_key_hint: Incollala in un campo del profilo dei metadati per controllare quel campo con questo vocabolario.
         source_key_help: Incolla una chiave di origine in un campo del profilo dei metadati per controllare quel campo con questo vocabolario. I vocabolari gestiti in questo tenant possono essere modificati qui; quelli definiti in un file di configurazione o da un servizio esterno no.
-        source_key_will_be_html: Verrà salvato con la chiave di origine %{key}.
         static_forms: I profili dei metadati non sono abilitati, quindi i moduli di deposito leggono questo vocabolario da un file di configurazione. La modifica dei suoi termini richiede uno sviluppatore.
         status: Stato
         status_hint: Indica se questo vocabolario è pronto all'uso o se richiede prima una configurazione.
@@ -529,6 +532,11 @@ it:
           one: 1 termine
           other: "%{count} termini"
         terms: Termini
+        terms_elsewhere:
+          cached: Questo vocabolario contiene una copia importata di uno esterno, troppo estesa per essere elencata qui. I suoi termini vengono offerti nel modulo di deposito.
+          generic: I termini di questo vocabolario non sono elencati qui.
+          remote: I termini provengono dal servizio esterno, quindi non c'è alcun elenco da mostrare qui.
+        terms_unavailable: I termini di questo vocabolario non possono essere letti e quindi non sono elencati qui. Il suo file di configurazione potrebbe essere mancante.
         unconfigured: Richiede configurazione
         unconfigured_help: Questo servizio richiede credenziali prima di poter essere utilizzato. Fino ad allora un campo che lo utilizza accetta testo libero invece di offrire suggerimenti.
         unused: Nessuna proprietà dei metadati utilizza questo vocabolario.
@@ -537,7 +545,6 @@ it:
         used_by_hint: Le proprietà dei metadati controllate da questo vocabolario, come denominate nelle importazioni Bulkrax e nei profili dei metadati.
         used_by_work_types: 'Disponibile su:'
         work_types:
-          collection_resource: Collezione
           etd_resource: ETD
           oer_resource: OER
       flash:
@@ -711,6 +718,9 @@ it:
         show:
           header: Gestisci utente
           update: Aggiornamento
+    search:
+      form:
+        advanced: Avanzata
     splash:
       account_denied: Non sei autorizzato a creare inquilini
       account_login: Accedi per iniziare
@@ -1020,6 +1030,64 @@ it:
         edit: Modificare
         header: Gestisci utente
         update: Aggiornare
+  screening_room:
+    chrome:
+      toggle_navigation: Attiva/disattiva la navigazione
+    homepage:
+      about:
+        heading: Informazioni sulle collezioni
+      collections:
+        heading: Collezioni in evidenza
+        unfeature_confirm: 'Rimuovere questa collezione dall''elenco in evidenza?'
+        view_all: Vedi tutte le collezioni
+        works_count:
+          one: 1 opera
+          other: '%{count} opere'
+      cta:
+        button: Inizia un deposito
+        heading: Condividi il tuo lavoro
+        sub: Deposita registrazioni, trasferimenti e documenti di produzione nel repository.
+      lede:
+        collections: Collezioni
+        label: Informazioni sulla collezione
+        works: Opere
+      player:
+        close: Chiudi
+      recent:
+        ago: '%{time} fa'
+        heading: Ultimi arrivi
+        view_all: Tutte le aggiunte recenti
+      researcher:
+        heading: Ricercatore in evidenza
+      spotlight:
+        editor_heading: Opere in evidenza
+        featured: In evidenza
+        hold: Pausa
+        label: Opere in evidenza
+        quick_view: Anteprima rapida
+        reorder_hint: Trascina un elemento per cambiare l'ordine, poi salva.
+        resume: Riproduci
+        save_order: Salva ordine
+        segment: 'Mostra %{title}'
+        unfeature_confirm: 'Rimuovere questa opera dall''elenco in evidenza?'
+        view_work: Vedi l'opera
+    show:
+      citation:
+        copied: Copiato
+        copy_visible: Copia la citazione
+        endnote: Scarica il record EndNote
+        heading: Come citare
+        note: Fornito solo come suggerimento. Verificare con la guida di stile preferita.
+        style: Stile di citazione
+        styles:
+          apa: APA
+          chicago: Chicago
+          mla: MLA
+      items:
+        count:
+          one: 1 elemento
+          other: '%{count} elementi'
+        meta: '%{visibility} · %{date}'
   single_signon:
     index:
       sign_in_with_provider: Accedi con %{provider}

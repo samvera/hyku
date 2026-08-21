@@ -28,13 +28,17 @@ module Hyrax
 
       private
 
-      # Only a vocabulary this tenant owns takes new terms. A yaml-backed or imported
-      # one has no row to attach them to, and find_by! keeps that a 404 rather than a
-      # form that cannot save.
+      # An imported copy has a database row, so find_by! alone would let a term through;
+      # its terms are not this tenant's to change. Checked here because the view only
+      # hides the button.
       def load_vocabulary
         @vocabulary = Qa::LocalAuthority.find_by!(name: params[:controlled_vocabulary_id])
+        return if ControlledVocabularyCatalog.find!(@vocabulary.name).editable?
+
+        raise ActiveRecord::RecordNotFound, "#{@vocabulary.name} does not take terms added here"
       end
 
+      # No :position — the model assigns it, so it cannot be posted.
       def term_params
         params.require(:local_authority_entry).permit(:label, :uri)
       end

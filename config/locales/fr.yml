@@ -12,6 +12,8 @@ fr:
         institution_name_full: Nom complet de l'établissement
     errors:
       messages:
+        already_an_authority: est déjà utilisé par un autre vocabulaire contrôlé
+        taken_as_source_key: '%{value} est déjà la clé source d''un autre vocabulaire contrôlé'
         cannot_remove_last_superadmin: impossible de supprimer le dernier superadministrateur d'un locataire de démonstration public
   application:
     tagline: La solution de dépôt de nouvelle génération
@@ -201,7 +203,7 @@ fr:
         search_button: Rechercher
         advanced: Avancée
       browse:
-        heading: Parcourir la collection
+        heading: Parcourir
         toggle: Afficher les facettes
       featured:
         unfeature_confirm: "Retirer ceci de la liste mise en avant ?"
@@ -217,7 +219,7 @@ fr:
         view_all: Voir toutes les collections
       recent:
         ago: "il y a %{time}"
-        heading: Nouvellement catalogué
+        heading: Ajouts récents
         view_all: "Voir tout"
       researcher:
         heading: Chercheur à la une
@@ -402,7 +404,12 @@ fr:
         active: Actif
         awaiting_import: Non importé
         awaiting_import_help: 'Ce vocabulaire est disponible mais ne contient encore aucun terme dans ce locataire. Remplissez-le en exécutant : %{task}'
-        create: Créer le vocabulaire
+        confirm_back: Revenir à la modification
+        confirm_create: Confirmer et créer
+        confirm_help: Vérifiez ces valeurs avant la création du vocabulaire.
+        confirm_permanent: Un vocabulaire ne peut pas être supprimé une fois créé, et sa clé source ne peut pas être modifiée ensuite, de sorte qu'un profil de métadonnées qui la cite continue de fonctionner.
+        confirm_title: Confirmer le nouveau vocabulaire
+        create: Vérifier le vocabulaire
         create_term: Ajouter un terme
         created: '%{name} a été créé. Ajoutez ses termes ci-dessous.'
         description: Description
@@ -479,6 +486,7 @@ fr:
         new_term_help: Nommez le terme tel qu'un déposant doit le voir. L'identifiant du terme est ce qu'un enregistrement stocke et ne peut plus être modifié une fois les termes utilisés.
         new_term_title: Ajouter un terme
         new_title: Nouveau vocabulaire
+        no_description: Non renseignée
         no_terms: Ce vocabulaire ne contient encore aucun terme.
         none: Aucun vocabulaire contrôlé n'a encore été configuré pour ce locataire.
         origin: Source
@@ -498,20 +506,15 @@ fr:
           mesh: MeSH
           tgnlang: Getty TGN Languages
         read_only:
-          cached: Ce vocabulaire est une copie importée d'un vocabulaire externe. Ses termes ne peuvent pas être modifiés ici, et une réimportation les remplace tous.
           file: Ce vocabulaire est défini dans un fichier de configuration, ses termes ne peuvent donc pas être modifiés ici.
-          generic: Les termes de ce vocabulaire ne peuvent pas être modifiés ici.
-          remote: Ce vocabulaire provient d'un service externe, ses termes ne peuvent donc pas être modifiés ici.
         ready: Prêt
         retired_count:
           one: (%{count} retiré)
           other: (%{count} retirés)
         show_title: 'Vocabulaire contrôlé : %{name}'
         source_key: Clé de source
-        source_key_from_name: La clé source est établie à partir du nom ci-dessus.
         source_key_hint: Collez ceci dans un champ de profil de métadonnées pour contrôler ce champ avec ce vocabulaire.
         source_key_help: Collez une clé de source dans un champ de profil de métadonnées pour contrôler ce champ avec ce vocabulaire. Les vocabulaires gérés dans ce locataire peuvent être modifiés ici ; ceux définis dans un fichier de configuration ou par un service externe ne le peuvent pas.
-        source_key_will_be_html: Ce sera enregistré avec la clé source %{key}.
         static_forms: Les profils de métadonnées ne sont pas activés, les formulaires de dépôt lisent donc ce vocabulaire depuis un fichier de configuration. La modification de ses termes nécessite un développeur.
         status: Statut
         status_hint: Indique si ce vocabulaire est prêt à être utilisé ou si quelque chose doit d'abord être configuré.
@@ -529,6 +532,11 @@ fr:
           one: 1 terme
           other: "%{count} termes"
         terms: Termes
+        terms_elsewhere:
+          cached: Ce vocabulaire contient une copie importée d'un vocabulaire externe, bien trop volumineuse pour être répertoriée ici. Ses termes sont proposés dans le formulaire de dépôt.
+          generic: Les termes de ce vocabulaire ne sont pas répertoriés ici.
+          remote: Les termes proviennent du service externe ; il n'y a donc aucune liste à afficher ici.
+        terms_unavailable: Les termes de ce vocabulaire ne peuvent pas être lus et ne sont donc pas répertoriés ici. Son fichier de configuration est peut-être absent.
         unconfigured: Configuration requise
         unconfigured_help: Ce service a besoin d'identifiants avant de pouvoir être utilisé. D'ici là, un champ qui le référence accepte du texte libre au lieu de proposer des suggestions.
         unused: Aucune propriété de métadonnées n'utilise ce vocabulaire.
@@ -537,7 +545,6 @@ fr:
         used_by_hint: Les propriétés de métadonnées contrôlées par ce vocabulaire, telles que nommées dans les importations Bulkrax et les profils de métadonnées.
         used_by_work_types: 'Disponible sur :'
         work_types:
-          collection_resource: Collection
           etd_resource: ETD
           oer_resource: OER
       flash:
@@ -711,6 +718,9 @@ fr:
         show:
           header: Gérer les utilisateurs
           update: Mise à jour
+    search:
+      form:
+        advanced: Recherche avancée
     splash:
       account_denied: Vous n'êtes pas autorisé à créer de locataires.
       account_login: Connectez-vous pour commencer
@@ -1025,6 +1035,64 @@ fr:
         edit: Modifier
         header: Gérer l'utilisateur
         update: Mettre à jour
+  screening_room:
+    chrome:
+      toggle_navigation: Afficher/masquer la navigation
+    homepage:
+      about:
+        heading: À propos des collections
+      collections:
+        heading: Collections à la une
+        unfeature_confirm: 'Retirer cette collection de la sélection ?'
+        view_all: Voir toutes les collections
+        works_count:
+          one: 1 œuvre
+          other: '%{count} œuvres'
+      cta:
+        button: Commencer un dépôt
+        heading: Partagez votre travail
+        sub: Déposez des enregistrements, des transferts et des documents de production dans le dépôt.
+      lede:
+        collections: Collections
+        label: À propos de la collection
+        works: Œuvres
+      player:
+        close: Fermer
+      recent:
+        ago: 'il y a %{time}'
+        heading: Derniers ajouts
+        view_all: Tous les ajouts récents
+      researcher:
+        heading: Chercheur à la une
+      spotlight:
+        editor_heading: Œuvres à la une
+        featured: À la une
+        hold: Pause
+        label: Œuvres à la une
+        quick_view: Aperçu rapide
+        reorder_hint: Faites glisser un élément pour changer l’ordre, puis enregistrez.
+        resume: Lecture
+        save_order: Enregistrer l’ordre
+        segment: 'Afficher %{title}'
+        unfeature_confirm: 'Retirer cette œuvre de la sélection ?'
+        view_work: Voir l’œuvre
+    show:
+      citation:
+        copied: Copié
+        copy_visible: Copier la citation
+        endnote: Télécharger la notice EndNote
+        heading: Citer
+        note: Fourni à titre indicatif. À vérifier avec votre guide de style.
+        style: Style de citation
+        styles:
+          apa: APA
+          chicago: Chicago
+          mla: MLA
+      items:
+        count:
+          one: 1 élément
+          other: '%{count} éléments'
+        meta: '%{visibility} · %{date}'
   single_signon:
     index:
       sign_in_with_provider: Connectez-vous avec %{provider}

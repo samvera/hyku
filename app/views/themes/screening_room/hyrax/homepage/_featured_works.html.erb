@@ -1,0 +1,69 @@
+<% works = scr_home.spotlight_works %>
+<% editable = can?(:update, FeaturedWork) && !@featured_work_list.empty? %>
+
+<% if works.any? %>
+  <section id="scr-spotlight" class="carousel slide carousel-fade scr-spotlight"
+           data-ride="<%= 'carousel' if works.many? %>"
+           data-interval="<%= works.many? ? 6500 : 'false' %>"
+           data-pause="false"
+           role="region" aria-label="<%= t('screening_room.homepage.spotlight.label') %>">
+    <% if works.many? %>
+      <div class="scr-spotlight-controls">
+        <ul class="scr-spotlight-segments list-unstyled">
+          <% works.each_with_index do |slide, position| %>
+            <li>
+              <button type="button" class="scr-spotlight-segment <%= 'is-current' if position.zero? %>"
+                      data-target="#scr-spotlight" data-slide-to="<%= position %>"
+                      aria-current="<%= position.zero? %>"
+                      aria-label="<%= t('screening_room.homepage.spotlight.segment', title: slide.solr_document.title_or_label) %>"></button>
+            </li>
+          <% end %>
+        </ul>
+
+        <button type="button" class="scr-spotlight-hold" data-scr-spotlight-hold data-held="false"
+                data-hold-label="<%= t('screening_room.homepage.spotlight.hold') %>"
+                data-resume-label="<%= t('screening_room.homepage.spotlight.resume') %>">
+          <span class="scr-spotlight-hold-icon" aria-hidden="true"></span>
+          <span class="sr-only" data-scr-spotlight-hold-label><%= t('screening_room.homepage.spotlight.hold') %></span>
+        </button>
+      </div>
+    <% end %>
+
+    <div class="carousel-inner">
+      <% works.each_with_index do |work, index| %>
+        <div class="carousel-item <%= 'active' if index.zero? %>">
+          <%= render 'hyrax/homepage/spotlight_slide', featured: work,
+                     representative: scr_home.representative_for(work) %>
+        </div>
+      <% end %>
+    </div>
+  </section>
+
+  <% works.each do |work| %>
+    <% representative = scr_home.representative_for(work) %>
+    <% if scr_player_kind(representative) %>
+      <%= render 'hyrax/homepage/player_modal', featured: work, representative: %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<% if editable %>
+  <section class="scr-spotlight-editor" aria-labelledby="scr-spotlight-heading">
+    <h2 class="scr-section-title" id="scr-spotlight-heading"><%= t('screening_room.homepage.spotlight.editor_heading') %></h2>
+
+    <%= form_for [hyrax, @featured_work_list] do |f| %>
+      <div class="dd scr-reorder" id="dd" data-unfeature-confirm="<%= t('screening_room.homepage.spotlight.unfeature_confirm') %>">
+        <ol class="list-unstyled">
+          <%= f.fields_for :featured_works do |featured_work| %>
+            <%= render 'hyrax/homepage/sortable_featured', f: featured_work %>
+          <% end %>
+        </ol>
+      </div>
+
+      <div class="scr-reorder-actions">
+        <p class="scr-reorder-hint"><%= t('screening_room.homepage.spotlight.reorder_hint') %></p>
+        <%= f.submit t('screening_room.homepage.spotlight.save_order'), class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+  </section>
+<% end %>

@@ -33,6 +33,55 @@ RSpec.describe Qa::LocalAuthority, type: :model do
       expect(described_class.new(name: 'lab_names')).not_to be_valid
     end
 
+    context 'against the authorities that already exist' do
+      it 'rejects a remote service key' do
+        authority = described_class.new(name: 'geonames', staff_created: true)
+
+        expect(authority).not_to be_valid
+        expect(authority.errors[:name].join).to include('already in use')
+      end
+
+      it 'rejects a name registered to an imported copy' do
+        expect(described_class.new(name: 'mesh', staff_created: true)).not_to be_valid
+      end
+
+      # A profile can cite `getty/aat`, but the format rule rejects a slash before the
+      # collision check is reached, so the reserved list holds service keys only.
+      it 'rejects a qualified key on its format' do
+        authority = described_class.new(name: 'getty/aat', staff_created: true)
+
+        expect(authority).not_to be_valid
+        expect(authority.errors[:name].join).to include('lowercase letters')
+      end
+
+      # Only the whole key collides. A vocabulary about places does not conflict with
+      # geonames merely because the word appears in its name.
+      it 'allows a name that only resembles a remote key' do
+        expect(described_class.new(name: 'geonames_local', staff_created: true)).to be_valid
+      end
+
+      it 'does not reserve a yaml vocabulary name, which is the override path' do
+        expect(described_class.new(name: 'map_regions', staff_created: true)).to be_valid
+      end
+
+      # The mesh import task creates this row itself, and reserving the name must not
+      # stop it.
+      it 'leaves a row not created by staff alone' do
+        expect(described_class.new(name: 'mesh')).to be_valid
+      end
+
+      # One authority that cannot be resolved must not empty the reserved list: a row
+      # named `mesh` would then be created and hijack the field wherever a profile
+      # cites it.
+      it 'still reserves the names it can resolve when one authority fails' do
+        allow(Qa::Authorities::Local).to receive(:subauthority_for).and_call_original
+        allow(Qa::Authorities::Local).to receive(:subauthority_for)
+          .with('resource_types').and_raise(Qa::InvalidSubAuthority, 'boom')
+
+        expect(described_class.new(name: 'mesh', staff_created: true)).not_to be_valid
+      end
+    end
+
     it 'lets a row with a legacy name be relabeled' do
       authority = described_class.create!(name: 'legacy')
       authority.update_columns(name: 'Legacy Name') # rubocop:disable Rails/SkipsModelValidations

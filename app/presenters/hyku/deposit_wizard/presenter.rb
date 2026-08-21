@@ -140,8 +140,8 @@ module Hyku
       end
 
       # nil unless the profile declares this property controlled and its authority
-      # resolves. Memoized per request: Qa re-reads and re-parses the whole
-      # authority file on every lookup.
+      # resolves. Memoized per request: each lookup re-reads the profile and then
+      # queries the vocabulary's terms, and the review step labels every value.
       def controlled_service_for(term)
         @controlled_services ||= {}
         return @controlled_services[term] if @controlled_services.key?(term)
@@ -149,20 +149,20 @@ module Hyku
         @controlled_services[term] = build_controlled_service(term)
       end
 
+      # Resolved by the helper, which is also what renders the field on the deposit
+      # form, so the review step cannot disagree with it about what controls a
+      # property.
       def build_controlled_service(term)
         source = context.helpers.controlled_vocabulary_source_for(term)
         return if source.blank?
 
-        # Prefer the registered service (it may add behavior); fall back to a bare
-        # authority lookup so a profile source with no registry entry still labels.
-        registered = Hyrax::ControlledVocabularies.services[source]&.safe_constantize
-        return Hyrax::TolerantSelectService.new(source) unless registered
+        service = context.helpers.controlled_vocabulary_service_for(source)
 
         # Two service styles exist: a class (Hyrax::LicenseService) and a module
         # extending AuthorityService (Hyrax::ResourceTypesService), whose `label` is
         # a module method. Calling `.new` on the module raises, the rescue below
         # swallows it, and the value renders as the stored id.
-        registered.respond_to?(:new) ? registered.new : registered
+        service.respond_to?(:new) ? service.new : service
       rescue StandardError => e
         Hyrax.logger.debug("Deposit wizard: no label service for #{term} (#{source}): #{e.message}")
         nil

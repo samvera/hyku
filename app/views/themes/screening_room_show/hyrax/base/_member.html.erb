@@ -1,0 +1,13 @@
+<li class="scr-panel-row">
+  <%= link_to contextual_path(member, @presenter), class: 'scr-panel-thumb',
+              tabindex: -1, aria: { hidden: true } do %>
+    <%= document_presenter(member).thumbnail.thumbnail_tag({ alt: '' }, { suppress_link: true }) %>
+  <% end %>
+
+  <div class="scr-panel-body">
+    <%= link_to member.link_name, contextual_path(member, @presenter), class: 'scr-panel-name' %>
+    <p class="scr-panel-meta"><%= scr_member_meta(member) %></p>
+  </div>
+
+  <div class="scr-panel-actions"><%= render 'actions', member: %></div>
+</li>

@@ -206,6 +206,55 @@ RSpec.describe Hyku::DepositWizard::Presenter do
     end
   end
 
+  # The review step labels stored values through the same resolution the deposit form
+  # renders them with, so the two cannot disagree about what a property is controlled
+  # by. The helper owns that decision.
+  describe '#controlled_service_for' do
+    let(:helpers) { double }
+    let(:context) do
+      double(session: session, current_user: nil, current_ability: nil, params: params,
+             main_app: nil, blacklight_config: nil, helpers: helpers)
+    end
+
+    it 'asks the helper to resolve the property' do
+      service = Hyrax::TolerantSelectService.new('licenses')
+      allow(helpers).to receive(:controlled_vocabulary_source_for).with('license').and_return('licenses')
+      allow(helpers).to receive(:controlled_vocabulary_service_for).with('licenses').and_return(service)
+
+      expect(presenter.controlled_service_for('license')).to be service
+    end
+
+    it 'instantiates a service the helper returns as a class' do
+      allow(helpers).to receive(:controlled_vocabulary_source_for).with('license').and_return('licenses')
+      allow(helpers).to receive(:controlled_vocabulary_service_for)
+        .with('licenses').and_return(Hyrax::LicenseService)
+
+      expect(presenter.controlled_service_for('license')).to be_a Hyrax::LicenseService
+    end
+
+    it 'is nil for a property the profile does not control' do
+      allow(helpers).to receive(:controlled_vocabulary_source_for).with('title').and_return(nil)
+
+      expect(presenter.controlled_service_for('title')).to be_nil
+    end
+
+    it 'is nil when the helper cannot resolve the source' do
+      allow(helpers).to receive(:controlled_vocabulary_source_for).with('license').and_return('licenses')
+      allow(helpers).to receive(:controlled_vocabulary_service_for).with('licenses').and_return(nil)
+
+      expect(presenter.controlled_service_for('license')).to be_nil
+    end
+
+    it 'resolves a property once per request' do
+      allow(helpers).to receive(:controlled_vocabulary_source_for).with('license').and_return('licenses')
+      allow(helpers).to receive(:controlled_vocabulary_service_for).with('licenses').and_return(nil)
+
+      2.times { presenter.controlled_service_for('license') }
+
+      expect(helpers).to have_received(:controlled_vocabulary_source_for).once
+    end
+  end
+
   describe '#file_type_label' do
     it 'returns the uppercase extension' do
       uf = double(file: double(file: double(filename: 'thesis.PDF')))
@@ -227,9 +276,14 @@ RSpec.describe Hyku::DepositWizard::Presenter do
       double(session: session, current_user: nil, current_ability: nil,
              params: params, main_app: nil, blacklight_config: nil, helpers: helpers)
     end
-    let(:helpers) { double }
-
-    before { allow(helpers).to receive(:controlled_vocabulary_source_for).with(:a_term).and_return(source) }
+    # The real helper for resolution, so these assert what the deposit form itself
+    # would build rather than a stubbed stand-in. Only the profile lookup is stubbed,
+    # since there is no profile in this example group.
+    let(:helpers) do
+      Class.new { include Hyrax::FormHelperBehavior }.new.tap do |helper|
+        allow(helper).to receive(:controlled_vocabulary_source_for).with(:a_term).and_return(source)
+      end
+    end
 
     # Asserted on the resolved service rather than through the returned labels:
     # every module-backed vocabulary Hyrax ships labels its ids with themselves

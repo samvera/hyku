@@ -17,8 +17,10 @@
   </div>
   <div class="card-body pt-1">
     <% if @controlled_vocabularies.any? %>
-      <div class="table-responsive">
-        <table class="table table-borderless">
+      <%# controlled-vocabularies-scroll restores the scroll Hyrax disables on
+          .table-responsive app-wide; see hyku.scss. %>
+      <div class="table-responsive controlled-vocabularies-scroll">
+        <table class="table table-borderless controlled-vocabularies">
           <caption class="sr-only"><%= t('hyku.admin.controlled_vocabularies') %></caption>
           <thead>
             <tr>
@@ -45,11 +47,7 @@
             <% @controlled_vocabularies.each do |entry| %>
               <tr class="<%= 'border-bottom' if entry.description.blank? %>">
                 <td>
-                  <% if entry.viewable? %>
-                    <%= link_to entry.label, main_app.controlled_vocabulary_path(entry.source_key) %>
-                  <% else %>
-                    <%= entry.label %>
-                  <% end %>
+                  <%= link_to entry.label, main_app.controlled_vocabulary_path(entry.source_key) %>
                 </td>
                 <td><code><%= entry.source_key %></code></td>
                 <td><%= entry.source_label %></td>
@@ -76,7 +74,8 @@
               </tr>
               <% if entry.description.present? %>
                 <tr class="border-bottom">
-                  <td colspan="5" class="pt-0 text-muted">
+                  <%# Spans the row, so it wraps rather than widening the table. %>
+                  <td colspan="5" class="pt-0 text-muted controlled-vocabulary-description">
                     <%= entry.description %>
                   </td>
                 </tr>

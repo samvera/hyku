@@ -159,12 +159,23 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
 
   # Controlled vocabularies, viewable only from the dashboard
   scope :dashboard, module: 'hyrax/dashboard' do
-    resources :controlled_vocabularies, only: [:index, :show, :new, :create] do
+    resources :controlled_vocabularies, only: [:index, :new, :create] do
       resources :terms, only: [:new, :create], controller: 'controlled_vocabulary_terms'
       resource :import, only: [:new, :create], controller: 'controlled_vocabulary_imports' do
         post :confirm
       end
     end
+    # Declared separately so a remote source key keeps its slash: profiles cite
+    # `loc/subjects`, and the default segment stops at one. Anchored to a single
+    # slash, and placed after the collection routes so `new` is not read as a key.
+    #
+    # The glob would otherwise swallow the download formats, so `.csv` and `.yml` are
+    # excluded from the key and declared as the format instead.
+    get 'controlled_vocabularies/*id',
+        to: 'controlled_vocabularies#show',
+        as: :controlled_vocabulary,
+        constraints: { id: %r{[^/.]+(?:/[^/.]+)?} },
+        format: /csv|yml|yaml|html/
   end
 
   # Guided deposit wizard

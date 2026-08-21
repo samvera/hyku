@@ -16,7 +16,7 @@
           <div class="hrt-panel-row-body">
             <%= link_to member.link_name, contextual_path(member, presenter), class: 'hrt-file-name' %>
             <div class="hrt-panel-row-meta">
-              <span><%= hrt_plain_text(member.permission_badge) %></span>
+              <span><%= theme_plain_text(member.permission_badge) %></span>
               <%= render 'hyrax/file_sets/actions', file_set: member %>
             </div>
           </div>

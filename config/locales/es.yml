@@ -12,6 +12,8 @@ es:
         institution_name_full: El nombre de la institución
     errors:
       messages:
+        already_an_authority: ya está en uso por otro vocabulario controlado
+        taken_as_source_key: '%{value} ya es la clave de origen de otro vocabulario controlado'
         cannot_remove_last_superadmin: no se puede eliminar el último superadministrador de un inquilino de demostración público
   application:
     tagline: La solución de repositorio de próxima generación
@@ -201,7 +203,7 @@ es:
         search_button: Ir
         advanced: Avanzada
       browse:
-        heading: Explorar la colección
+        heading: Explorar
         toggle: Mostrar facetas
       featured:
         unfeature_confirm: "¿Quitar esto de la lista de destacados?"
@@ -217,7 +219,7 @@ es:
         view_all: Ver todas las colecciones
       recent:
         ago: "hace %{time}"
-        heading: Recién catalogado
+        heading: Añadidos recientemente
         view_all: "Ver todo"
       researcher:
         heading: Investigador destacado
@@ -402,7 +404,12 @@ es:
         active: Activo
         awaiting_import: No importado
         awaiting_import_help: 'Este vocabulario está disponible pero aún no tiene términos en este inquilino. Puede completarlo ejecutando: %{task}'
-        create: Crear vocabulario
+        confirm_back: Volver a editar
+        confirm_create: Confirmar y crear
+        confirm_help: Compruebe estos valores antes de crear el vocabulario.
+        confirm_permanent: Un vocabulario no se puede eliminar una vez creado, y su clave de origen no se puede cambiar después, de modo que un perfil de metadatos que la cite seguirá funcionando.
+        confirm_title: Confirmar el nuevo vocabulario
+        create: Revisar vocabulario
         create_term: Agregar término
         created: '%{name} se creó. Agregue sus términos a continuación.'
         description: Descripción
@@ -479,6 +486,7 @@ es:
         new_term_help: Nombre el término tal como debe verlo un depositante. El id del término es lo que almacena un registro y no se puede cambiar una vez que los términos están en uso.
         new_term_title: Agregar término
         new_title: Nuevo vocabulario
+        no_description: No indicada
         no_terms: Este vocabulario aún no tiene términos.
         none: Aún no se ha configurado ningún vocabulario controlado para este inquilino.
         origin: Fuente
@@ -498,20 +506,15 @@ es:
           mesh: MeSH
           tgnlang: Getty TGN Languages
         read_only:
-          cached: Este vocabulario es una copia importada de uno externo. Sus términos no se pueden cambiar aquí, y volver a importarlo los reemplaza todos.
           file: Este vocabulario está definido en un archivo de configuración, por lo que sus términos no se pueden cambiar aquí.
-          generic: Los términos de este vocabulario no se pueden cambiar aquí.
-          remote: Este vocabulario proviene de un servicio externo, por lo que sus términos no se pueden cambiar aquí.
         ready: Listo
         retired_count:
           one: (%{count} retirado)
           other: (%{count} retirados)
         show_title: 'Vocabulario controlado: %{name}'
         source_key: Clave de fuente
-        source_key_from_name: La clave de origen se establece a partir del nombre anterior.
         source_key_hint: Pegue este valor en un campo del perfil de metadatos para controlar ese campo con este vocabulario.
         source_key_help: Pegue una clave de fuente en un campo del perfil de metadatos para controlar ese campo con este vocabulario. Los vocabularios gestionados en este inquilino se pueden editar aquí; los definidos en un archivo de configuración o por un servicio externo no.
-        source_key_will_be_html: Se guardará con la clave de origen %{key}.
         static_forms: Los perfiles de metadatos no están habilitados, por lo que los formularios de depósito leen este vocabulario desde un archivo de configuración. Cambiar sus términos requiere un desarrollador.
         status: Estado
         status_hint: Indica si este vocabulario está listo para usarse o necesita alguna configuración previa.
@@ -529,6 +532,11 @@ es:
           one: 1 término
           other: "%{count} términos"
         terms: Términos
+        terms_elsewhere:
+          cached: Este vocabulario contiene una copia importada de uno externo, demasiado extensa para enumerarla aquí. Sus términos se ofrecen en el formulario de depósito.
+          generic: Los términos de este vocabulario no se enumeran aquí.
+          remote: Los términos provienen del servicio externo, por lo que no hay ninguna lista que mostrar aquí.
+        terms_unavailable: Los términos de este vocabulario no se pueden leer, por lo que no se enumeran aquí. Puede faltar su archivo de configuración.
         unconfigured: Requiere configuración
         unconfigured_help: Este servicio necesita credenciales antes de poder usarse. Hasta entonces, un campo que lo cite acepta texto libre en lugar de ofrecer sugerencias.
         unused: Ninguna propiedad de metadatos usa este vocabulario.
@@ -537,7 +545,6 @@ es:
         used_by_hint: Las propiedades de metadatos controladas por este vocabulario, tal como se nombran en las importaciones de Bulkrax y en los perfiles de metadatos.
         used_by_work_types: 'Disponible en:'
         work_types:
-          collection_resource: Colección
           etd_resource: ETD
           oer_resource: OER
       flash:
@@ -711,6 +718,9 @@ es:
         show:
           header: Gestionar usuarios
           update: Actualizar
+    search:
+      form:
+        advanced: Avanzada
     splash:
       account_denied: No está autorizado a crear inquilinos.
       account_login: Inicia sesión para comenzar
@@ -1020,6 +1030,64 @@ es:
         edit: Editar
         header: Administrar usuario
         update: Actualizar
+  screening_room:
+    chrome:
+      toggle_navigation: Alternar la navegación
+    homepage:
+      about:
+        heading: Acerca de las colecciones
+      collections:
+        heading: Colecciones destacadas
+        unfeature_confirm: '¿Quitar esta colección de la lista destacada?'
+        view_all: Ver todas las colecciones
+        works_count:
+          one: 1 obra
+          other: '%{count} obras'
+      cta:
+        button: Iniciar un depósito
+        heading: Comparta su obra
+        sub: Deposite grabaciones, transferencias y documentos de producción en el repositorio.
+      lede:
+        collections: Colecciones
+        label: Acerca de la colección
+        works: Obras
+      player:
+        close: Cerrar
+      recent:
+        ago: 'hace %{time}'
+        heading: Últimas incorporaciones
+        view_all: Ver todas las incorporaciones recientes
+      researcher:
+        heading: Investigador destacado
+      spotlight:
+        editor_heading: Obras destacadas
+        featured: Destacado
+        hold: Pausar
+        label: Obras destacadas
+        quick_view: Vista rápida
+        reorder_hint: Arrastre un elemento para cambiar el orden y luego guarde.
+        resume: Reproducir
+        save_order: Guardar orden
+        segment: 'Mostrar %{title}'
+        unfeature_confirm: '¿Quitar esta obra de la lista destacada?'
+        view_work: Ver la obra
+    show:
+      citation:
+        copied: Copiado
+        copy_visible: Copiar la cita
+        endnote: Descargar registro EndNote
+        heading: Cómo citar
+        note: Solo como sugerencia. Compruébela con su guía de estilo preferida.
+        style: Estilo de cita
+        styles:
+          apa: APA
+          chicago: Chicago
+          mla: MLA
+      items:
+        count:
+          one: 1 elemento
+          other: '%{count} elementos'
+        meta: '%{visibility} · %{date}'
   single_signon:
     index:
       sign_in_with_provider: Iniciar sesión con %{provider}

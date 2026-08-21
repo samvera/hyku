@@ -1,4 +1,8 @@
 <% provide :page_title, construct_page_title(@entry.label, t('hyku.admin.controlled_vocabularies'), t('hyku.admin.title')) %>
+<%# Retiring needs a row to write and the right to change it. Reordering needs those
+    and something to move as well: a single term has no order to put it in. %>
+<% editable_terms = @entry.editable? && can?(:manage, :controlled_vocabularies) && @terms.present? %>
+<% reorderable_terms = editable_terms && @terms.many? %>
 <% provide :page_header do %>
   <h1>
     <span class="fa fa-tag" aria-hidden="true"></span>
@@ -112,6 +116,16 @@
   <% if @entry.listable? %>
   <div class="card-header">
     <%= t('hyku.admin.controlled_vocabulary.term_id_help') %>
+    <%# On its own row, next to the explanation of the columns it applies to, rather
+        than beside the save button where it reads as a note about saving. Muted like
+        the other advisory notes on this page: how to work the control is a lesser
+        thing than what the columns above it mean. %>
+    <% if reorderable_terms %>
+      <p class="form-text text-muted mt-2 mb-0">
+        <span class="fa fa-info-circle" aria-hidden="true"></span>
+        <%= t('hyku.admin.controlled_vocabulary.reorder_hint') %>
+      </p>
+    <% end %>
   </div>
   <div class="card-body pt-1">
     <% if @terms.nil? %>
@@ -120,52 +134,26 @@
       <p class="text-muted mb-0"><%= t('hyku.admin.controlled_vocabulary.terms_unavailable') %></p>
     <% elsif @terms.empty? %>
       <p class="text-muted mb-0"><%= t('hyku.admin.controlled_vocabulary.no_terms') %></p>
+    <% elsif reorderable_terms %>
+      <%= form_tag main_app.order_controlled_vocabulary_terms_path(@entry.source_key),
+                   method: :patch, data: { term_order_form: true } do %>
+        <%= render 'terms_table', entry: @entry, terms: @terms,
+                                  reorderable: true, togglable: editable_terms %>
+
+        <p class="sr-only" role="status" aria-live="polite" data-term-order-status></p>
+        <div class="text-right">
+          <%= submit_tag t('hyku.admin.controlled_vocabulary.save_order'),
+                         class: 'btn btn-secondary', data: { disable_with: false } %>
+        </div>
+      <% end %>
+      <%# After the reorder form closes, so the two never nest. %>
+      <%= render 'term_status_forms', entry: @entry, terms: @terms %>
     <% else %>
-      <%# controlled-vocabularies-scroll restores the scroll Hyrax disables on
-          .table-responsive app-wide; see hyku.scss. A term id can be a full uri, so
-          this table overflows readily. %>
-      <div class="table-responsive controlled-vocabularies-scroll">
-        <table class="table table-borderless controlled-vocabularies">
-          <caption class="sr-only"><%= @entry.label %></caption>
-          <thead>
-            <tr>
-              <th scope="col">
-                <%= render 'column_hint',
-                           label: t('hyku.admin.controlled_vocabulary.label'),
-                           hint: t('hyku.admin.controlled_vocabulary.label_hint') %>
-              </th>
-              <th scope="col">
-                <%= render 'column_hint',
-                           label: t('hyku.admin.controlled_vocabulary.term_id'),
-                           hint: t('hyku.admin.controlled_vocabulary.term_id_hint') %>
-              </th>
-              <th scope="col"><%= t('hyku.admin.controlled_vocabulary.status') %></th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @terms.each do |term| %>
-              <tr class="border-bottom">
-                <td><%= term['label'] %></td>
-                <td><code><%= term['id'] %></code></td>
-                <td>
-                  <% case term['active'] %>
-                  <% when false %>
-                    <span class="badge badge-secondary"><%= t('hyku.admin.controlled_vocabulary.inactive') %></span>
-                  <% when true %>
-                    <span class="badge badge-quiet"><%= t('hyku.admin.controlled_vocabulary.active') %></span>
-                  <% else %>
-                    <%# A yaml term may omit `active` altogether, so its state is unstated
-                        rather than known. Hyrax treats such a term as usable. %>
-                    <span class="badge badge-quiet">
-                      <%= t('hyku.admin.controlled_vocabulary.status_unknown') %>
-                    </span>
-                  <% end %>
-                </td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
+      <%= render 'terms_table', entry: @entry, terms: @terms,
+                                reorderable: false, togglable: editable_terms %>
+      <% if editable_terms %>
+        <%= render 'term_status_forms', entry: @entry, terms: @terms %>
+      <% end %>
     <% end %>
   </div>
   <% else %>

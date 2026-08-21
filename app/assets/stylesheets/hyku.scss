@@ -813,6 +813,64 @@ dd {
     }
 }
 
+// The reorder column. Held narrow so the term itself stays the widest thing in the
+// row, and centered because the controls are icons rather than text.
+.controlled-vocabulary-order {
+    width: 1%;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.term-order-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.15rem;
+}
+
+// Bare buttons: these sit inside a borderless table, where a button's chrome would
+// read as the heaviest thing on the page.
+.term-order-handle,
+.term-order-move {
+    padding: 0.1rem 0.3rem;
+    border: 1px solid transparent;
+    border-radius: 0.2rem;
+    background: none;
+    color: #6c757d;
+    line-height: 1;
+
+    &:hover {
+        border-color: #ced4da;
+        color: #212529;
+    }
+
+    // Not `outline: none` — the keyboard path through this table is the arrow keys on
+    // these buttons, so where focus sits has to stay visible.
+    &:focus {
+        outline: 2px solid #0056b3;
+        outline-offset: 1px;
+    }
+}
+
+.term-order-handle {
+    cursor: grab;
+}
+
+// The retire/restore column. Right-aligned and held narrow, so the buttons line up
+// with each other against the edge of the table rather than drifting with the
+// varying width of the status badge beside them.
+.controlled-vocabulary-status-action {
+    width: 1%;
+    white-space: nowrap;
+    text-align: right;
+}
+
+// The row being dragged. Dimmed rather than hidden: it is still the thing being
+// positioned, so it has to stay readable against the rows it moves past.
+.controlled-vocabularies tr.is-dragging {
+    opacity: 0.4;
+    background-color: #f1f3f5;
+}
+
 // The explanation behind a column heading's question mark. CSS rather than
 // Bootstrap's tooltip plugin, which nothing initializes on these pages.
 .column-hint {

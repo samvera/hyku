@@ -140,6 +140,9 @@ class ControlledVocabularyCatalog
     # not agree: Mesh implements only #search, so #all raises, and LocalVocabulary
     # silently caps at 1,000.
     #
+    # `term_id` is the database row, which only a tenant-owned term has — a yaml
+    # vocabulary has no row to reorder. `id` is the term identifier works store.
+    #
     # @return [Array<Hash>, nil] each with id, label, and active; nil when the terms
     #   cannot be listed at all
     def terms_for(entry)
@@ -150,7 +153,7 @@ class ControlledVocabularyCatalog
       return [] if entry.vocabulary.nil?
 
       entry.vocabulary.local_authority_entries.ordered.limit(TERM_LIMIT).map do |term|
-        { 'id' => term.uri, 'label' => term.label, 'active' => term.active }
+        { 'term_id' => term.id, 'id' => term.uri, 'label' => term.label, 'active' => term.active }
       end
     end
 

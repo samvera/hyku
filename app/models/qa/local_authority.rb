@@ -35,6 +35,25 @@ module Qa
       label.presence || name.to_s.titleize
     end
 
+    # Renumbers this vocabulary's terms into the order given, 1..n.
+    #
+    # Ids not belonging to this vocabulary are ignored, and any term the caller left
+    # out keeps its place after the ones listed — a stale page must not silently
+    # drop the terms it never showed. Contiguous rather than sparse: the list a
+    # depositor sees is rebuilt from these numbers, so a gap has nothing to mean.
+    #
+    # @param ids [Array<Integer, String>] term ids, first to last
+    # @return [Integer] how many terms were renumbered
+    def resequence_terms(ids)
+      # `ordered`, so a term the caller omitted trails in the place it already held
+      # rather than in whatever order the database returned it.
+      current = local_authority_entries.ordered.pluck(:id, :position)
+      listed = ids.map(&:to_i).uniq & current.map(&:first)
+      trailing = current.map(&:first) - listed
+
+      write_positions(moved_terms(listed + trailing, current.to_h))
+    end
+
     # The value staff paste into a metadata profile's controlled_values sources.
     # Bare, matching how the file-based vocabularies are already cited there.
     def source_key
@@ -47,6 +66,46 @@ module Qa
     end
 
     private
+
+    # The terms whose position actually changes, as id => new position.
+    #
+    # A drag moves one term past a few others, so most of a long vocabulary keeps the
+    # number it already had. Comparing first keeps the write proportional to what
+    # moved rather than to the size of the vocabulary. Terms predating positions hold
+    # NULL and so never match, which is what finally numbers them.
+    #
+    # @param ordered_ids [Array<Integer>] every term id, first to last
+    # @param positions [Hash{Integer => Integer, nil}] the positions held now
+    def moved_terms(ordered_ids, positions)
+      ordered_ids.each_with_object({}).with_index do |(id, moved), index|
+        target = index + 1
+        moved[id] = target unless positions[id] == target
+      end
+    end
+
+    # A CASE rather than one update per term: each term takes a different number, so
+    # there is nothing to group, and reversing a 500-term vocabulary would otherwise
+    # be 500 round trips.
+    #
+    # No unique index on position, so the rows may be written in any order without
+    # colliding part way through.
+    #
+    # @return [Integer] how many terms were renumbered
+    def write_positions(moved)
+      return 0 if moved.empty?
+
+      whens = moved.map { |id, position| sanitize_sql(['WHEN id = ? THEN ?', id, position]) }
+      local_authority_entries
+        .where(id: moved.keys)
+        .update_all(Arel.sql("position = CASE #{whens.join(' ')} END")) # rubocop:disable Rails/SkipsModelValidations
+
+      moved.size
+    end
+
+    # `sanitize_sql` is protected on the class, and the CASE above is built here.
+    def sanitize_sql(statement)
+      Qa::LocalAuthorityEntry.send(:sanitize_sql_array, statement)
+    end
 
     def derive_name_from_label
       self.name = self.class.name_for(label) if name.blank? && label.present?

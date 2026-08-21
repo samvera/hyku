@@ -26,7 +26,35 @@ module Hyrax
         end
       end
 
+      # The whole list is posted, so a reorder is one write rather than one per term.
+      def update_order
+        @vocabulary.resequence_terms(ordered_ids)
+
+        redirect_to main_app.controlled_vocabulary_path(@vocabulary.name),
+                    notice: t('hyku.admin.controlled_vocabulary.order_saved')
+      end
+
+      # Retiring is offered in place of deleting, which works cannot survive: they
+      # store the term id, so a retired term stops being offered on the deposit form
+      # while still resolving for the works citing it.
+      def update_status
+        # Scoped through the vocabulary, so a term id from another one is not found
+        # rather than quietly edited.
+        term = @vocabulary.local_authority_entries.find(params[:id])
+        term.update!(active: activating?)
+
+        redirect_to main_app.controlled_vocabulary_path(@vocabulary.name),
+                    notice: t("hyku.admin.controlled_vocabulary.#{activating? ? 'term_restored' : 'term_retired'}",
+                              label: term.label)
+      end
+
       private
+
+      # Cast rather than checked for presence: the button posts `false`, which is a
+      # present value and would otherwise read as activating.
+      def activating?
+        ActiveModel::Type::Boolean.new.cast(params[:active]).present?
+      end
 
       # An imported copy has a database row, so find_by! alone would let a term through;
       # its terms are not this tenant's to change. Checked here because the view only
@@ -41,6 +69,13 @@ module Hyrax
       # No :position — the model assigns it, so it cannot be posted.
       def term_params
         params.require(:local_authority_entry).permit(:label, :uri)
+      end
+
+      # The order of the posted ids is the order itself: a browser submits fields in
+      # document order, and the drag moves the row rather than rewriting a number. So
+      # nothing here has to trust a position the page calculated.
+      def ordered_ids
+        Array(params[:term_ids])
       end
 
       def breadcrumb_trail

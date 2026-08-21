@@ -1,0 +1,115 @@
+<%# The terms of one vocabulary. `reorderable` adds the drag handles and the move
+    buttons, `togglable` the retire/restore button; a yaml vocabulary has no rows to
+    change, so it renders read-only.
+
+    controlled-vocabularies-scroll restores the scroll Hyrax disables on
+    .table-responsive app-wide; see hyku.scss. A term id can be a full uri, so this
+    table overflows readily. %>
+<div class="table-responsive controlled-vocabularies-scroll">
+  <table class="table table-borderless controlled-vocabularies"
+         <% if reorderable %>
+           data-term-order-table
+           data-moved-template="<%= t('hyku.admin.controlled_vocabulary.moved',
+                                      label: '%{label}', position: '%{position}',
+                                      total: '%{total}') %>"
+           data-at-template="<%= t('hyku.admin.controlled_vocabulary.at_position',
+                                   label: '%{label}', position: '%{position}',
+                                   total: '%{total}') %>"
+         <% end %>>
+    <caption class="sr-only"><%= entry.label %></caption>
+    <thead>
+      <tr>
+        <% if reorderable %>
+          <th scope="col" class="controlled-vocabulary-order">
+            <%= render 'column_hint',
+                       label: t('hyku.admin.controlled_vocabulary.order'),
+                       hint: t('hyku.admin.controlled_vocabulary.order_hint') %>
+          </th>
+        <% end %>
+        <th scope="col">
+          <%= render 'column_hint',
+                     label: t('hyku.admin.controlled_vocabulary.label'),
+                     hint: t('hyku.admin.controlled_vocabulary.label_hint') %>
+        </th>
+        <th scope="col">
+          <%= render 'column_hint',
+                     label: t('hyku.admin.controlled_vocabulary.term_id'),
+                     hint: t('hyku.admin.controlled_vocabulary.term_id_hint') %>
+        </th>
+        <th scope="col"><%= t('hyku.admin.controlled_vocabulary.status') %></th>
+        <% if togglable %>
+          <th scope="col">
+            <span class="sr-only"><%= t('hyku.admin.controlled_vocabulary.status_action') %></span>
+          </th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% terms.each do |term| %>
+        <tr class="border-bottom"
+            <% if reorderable %>
+              data-term-row
+              data-term-label="<%= term['label'] %>"
+            <% end %>>
+          <% if reorderable %>
+            <td class="controlled-vocabulary-order">
+              <%# The id, not a position: the browser submits these in document order,
+                  so the order is carried by the sequence of the fields themselves and
+                  no number on the page has to be kept in step with the rows. %>
+              <%= hidden_field_tag 'term_ids[]', term['term_id'], id: nil %>
+
+              <div class="term-order-controls">
+                <button type="button" class="term-order-handle" data-term-handle
+                        aria-label="<%= t('hyku.admin.controlled_vocabulary.reorder_handle',
+                                          label: term['label']) %>">
+                  <span aria-hidden="true">⠿</span>
+                </button>
+                <button type="button" class="term-order-move" data-term-move="-1"
+                        aria-label="<%= t('hyku.admin.controlled_vocabulary.move_earlier',
+                                          label: term['label']) %>">
+                  <span aria-hidden="true">&uarr;</span>
+                </button>
+                <button type="button" class="term-order-move" data-term-move="1"
+                        aria-label="<%= t('hyku.admin.controlled_vocabulary.move_later',
+                                          label: term['label']) %>">
+                  <span aria-hidden="true">&darr;</span>
+                </button>
+              </div>
+            </td>
+          <% end %>
+          <td><%= term['label'] %></td>
+          <td><code><%= term['id'] %></code></td>
+          <td>
+            <% case term['active'] %>
+            <% when false %>
+              <span class="badge badge-secondary"><%= t('hyku.admin.controlled_vocabulary.inactive') %></span>
+            <% when true %>
+              <span class="badge badge-quiet"><%= t('hyku.admin.controlled_vocabulary.active') %></span>
+            <% else %>
+              <%# A yaml term may omit `active` altogether, so its state is unstated
+                  rather than known. Hyrax treats such a term as usable. %>
+              <span class="badge badge-quiet">
+                <%= t('hyku.admin.controlled_vocabulary.status_unknown') %>
+              </span>
+            <% end %>
+          </td>
+          <% if togglable %>
+            <td class="controlled-vocabulary-status-action">
+              <%# Reaches its form by id rather than sitting in one, so nothing nests
+                  inside the reorder form; see _term_status_forms. Outlined rather
+                  than a link because it submits a change. %>
+              <% retiring = term['active'] != false %>
+              <% variant = retiring ? 'btn-outline-secondary' : 'btn-outline-primary' %>
+              <button type="submit" form="term-status-<%= term['term_id'] %>"
+                      class="btn btn-sm term-status-toggle <%= variant %>"
+                      name="active" value="<%= retiring ? 'false' : 'true' %>">
+                <%= t("hyku.admin.controlled_vocabulary.#{retiring ? 'retire' : 'restore'}") %>
+                <span class="sr-only"><%= term['label'] %></span>
+              </button>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

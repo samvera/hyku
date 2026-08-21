@@ -273,6 +273,7 @@ en:
       controlled_vocabularies: Controlled Vocabularies
       controlled_vocabulary:
         active: Active
+        at_position: "%{label} is already at position %{position} of %{total}"
         awaiting_import: Not imported
         awaiting_import_help: 'This vocabulary is available but has no terms in this tenant yet. Populate it by running: %{task}'
         confirm_back: Back to edit
@@ -356,10 +357,16 @@ en:
         new_term_heading: 'Add a term to %{vocabulary}'
         new_term_help: Name the term as a depositor should see it. The term id is what a record stores, and cannot be changed once terms are in use.
         new_term_title: Add term
+        move_earlier: Move %{label} earlier
+        move_later: Move %{label} later
+        moved: Moved %{label} to position %{position} of %{total}
         new_title: New vocabulary
         no_description: None given
         no_terms: This vocabulary has no terms yet.
         none: No controlled vocabularies have been set up for this tenant yet.
+        order: Order
+        order_hint: The order terms are offered in on a deposit form. Drag a term, or use the arrow buttons, then save.
+        order_saved: The term order was saved.
         origin: Source
         origin_hint: Where the vocabulary is defined, and therefore whether its terms can be edited here.
         origins:
@@ -379,15 +386,21 @@ en:
         read_only:
           file: This vocabulary is defined in a configuration file, so its terms cannot be changed here.
         ready: Ready
+        restore: Restore
+        retire: Retire
+        reorder_handle: 'Reorder %{label}: drag, or use the arrow keys'
+        reorder_hint: Drag a term, or use the arrow buttons, to set the order it is offered in on a deposit form. Save the order when you are done.
         retired_count:
           one: (%{count} retired)
           other: (%{count} retired)
+        save_order: Save order
         show_title: 'Controlled Vocabulary: %{name}'
         source_key: Source key
         source_key_help: Paste a source key into a metadata profile field to control that field with this vocabulary. Vocabularies managed in this tenant can be edited here; those defined in a configuration file or by an external service cannot.
         source_key_hint: Paste this into a metadata profile field to control that field with this vocabulary.
         static_forms: Metadata profiles are not enabled, so deposit forms read this vocabulary from a configuration file. Changing its terms requires a developer.
         status: Status
+        status_action: Change status
         status_hint: Whether this vocabulary is ready to use, or needs something set up first.
         status_unknown: Unspecified
         term_id: Term ID
@@ -399,6 +412,8 @@ en:
         term_id_help: The term ID is the value stored on a record, and the value to supply in a Bulkrax import. The label is only what a depositor sees.
         term_id_hint: The value stored on a record, and the value to supply in a Bulkrax import.
         term_id_immutable: It cannot be changed afterwards.
+        term_restored: '%{label} was restored, and is offered on the deposit form again.'
+        term_retired: '%{label} was retired, and is no longer offered on the deposit form.'
         term_total:
           one: 1 term
           other: "%{count} terms"

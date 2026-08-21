@@ -502,18 +502,20 @@ term count. `AUTHORITIES_PATH` overrides which directories are read; passing mor
 one lets a knapsack's copy of a vocabulary take precedence over Hyku's, with the
 earlier path winning.
 
-The task is safe to run more than once. Terms are matched on their term ID, so
-existing ones are not duplicated, and a label or description edited in the dashboard is
-kept — only blank fields are filled from the file. A vocabulary is named after its
+The task is safe to run more than once, and only ever adds: a vocabulary the tenant
+already has is left untouched, terms included. Once a vocabulary is in the database it
+belongs to the tenant, so a term deleted in the dashboard stays deleted, an edited label
+keeps its wording, and terms added to the YAML file afterwards are not backfilled —
+use the dashboard import to add terms to a vocabulary that already exists.
+
+Running it again therefore picks up only vocabularies the tenant does not have yet,
+which is what makes it safe to run after adding a file. A vocabulary is named after its
 file, so a file whose name is not a usable source key aborts the task before any tenant
 is touched, rather than part way through.
 
-Because terms are matched rather than replaced, a term deleted from a YAML file stays
-in the database of a tenant already seeded from it.
-
-Terms are keyed on their ID, so a file listing the same ID twice — `licenses.yml` does,
-for two Creative Commons URIs — yields one row rather than two. A term's `active` flag
-carries over, and an inactive term is kept rather than skipped.
+On first seeding, terms are keyed on their ID, so a file listing the same ID twice —
+`licenses.yml` does, for two Creative Commons URIs — yields one row rather than two. A
+term's `active` flag carries over, and an inactive term is kept rather than skipped.
 
 ### File Structure
 

@@ -17,8 +17,8 @@ task populate_qa: :environment do
 
     puts "=============== #{account.name} ==============="
     Apartment::Tenant.switch(account.tenant) do
-      LocalVocabularyService.seed!(paths).each do |name, count|
-        puts "✓ #{name} (#{count} terms)"
+      LocalVocabularyService.seed!(paths).each do |name, count, seeded|
+        puts seeded ? "✓ #{name} (#{count} terms)" : "· #{name} (already imported, #{count} terms)"
       end
     end
   end

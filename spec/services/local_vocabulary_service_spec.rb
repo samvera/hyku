@@ -78,6 +78,64 @@ RSpec.describe LocalVocabularyService do
       expect(Qa::LocalAuthority.find_by(name:).label).to eq 'Legacy Terms'
     end
 
+    # Seeding and the model have to agree on where numbering starts, or the first term
+    # added in the dashboard skips a number.
+    it 'numbers seeded terms from one, as a dashboard-added term is' do
+      name = write_vocabulary('sequenced_vocabulary')
+
+      described_class.seed!(path)
+      authority = Qa::LocalAuthority.find_by(name:)
+      added = authority.local_authority_entries.create!(label: 'B', uri: 'b')
+
+      expect(authority.local_authority_entries.order(:position).pluck(:position)).to eq [1, 2]
+      expect(added.position).to eq 2
+    end
+
+    # A migration, not a sync: a later run must not undo what staff did to a vocabulary
+    # the tenant already has, but still imports one it has not seen.
+    context 'run a second time' do
+      it 'leaves a term deleted through the dashboard deleted' do
+        name = write_vocabulary('settled_vocabulary')
+        described_class.seed!(path)
+        Qa::LocalAuthority.find_by(name:).local_authority_entries.find_by(uri: 'a').destroy
+
+        described_class.seed!(path)
+
+        expect(Qa::LocalAuthority.find_by(name:).local_authority_entries).to be_empty
+      end
+
+      it 'leaves a term edited through the dashboard alone' do
+        name = write_vocabulary('renamed_vocabulary')
+        described_class.seed!(path)
+        Qa::LocalAuthority.find_by(name:).local_authority_entries.find_by(uri: 'a').update!(label: 'Renamed')
+
+        described_class.seed!(path)
+
+        expect(Qa::LocalAuthority.find_by(name:).local_authority_entries.first.label).to eq 'Renamed'
+      end
+
+      it 'imports a vocabulary the tenant does not have yet' do
+        write_vocabulary('first_vocabulary')
+        described_class.seed!(path)
+        later = write_vocabulary('second_vocabulary')
+
+        described_class.seed!(path)
+
+        expect(Qa::LocalAuthority.find_by(name: later).local_authority_entries.count).to eq 1
+      end
+
+      it 'does not add a term the file gained after seeding' do
+        name = write_vocabulary('grown_vocabulary')
+        described_class.seed!(path)
+        File.write(File.join(path, "#{name}.yml"),
+                   { 'terms' => [{ 'id' => 'a', 'term' => 'A' }, { 'id' => 'b', 'term' => 'B' }] }.to_yaml)
+
+        described_class.seed!(path)
+
+        expect(Qa::LocalAuthority.find_by(name:).local_authority_entries.pluck(:uri)).to eq ['a']
+      end
+    end
+
     it 'leaves a label and description an admin edited alone' do
       name = write_vocabulary('edited_vocabulary', 'label' => 'Licenses', 'description' => 'Shipped copy.')
       Qa::LocalAuthority.create!(name:, label: 'Reuse Terms', description: 'What we allow.')

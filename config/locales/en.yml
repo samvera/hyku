@@ -61,7 +61,7 @@ en:
         search_button: Go
         advanced: Advanced
       browse:
-        heading: Browse the collection
+        heading: Browse
         toggle: Show facets
       featured:
         unfeature_confirm: "Remove this from the featured list?"
@@ -77,7 +77,7 @@ en:
         view_all: View all collections
       recent:
         ago: "%{time} ago"
-        heading: Newly cataloged
+        heading: Recently added
         view_all: "View all"
       researcher:
         heading: Featured researcher

@@ -200,7 +200,7 @@ de:
         search_button: Los
         advanced: Erweitert
       browse:
-        heading: Die Sammlung durchstöbern
+        heading: Durchstöbern
         toggle: Facetten anzeigen
       featured:
         unfeature_confirm: "Dies aus der Auswahl entfernen?"
@@ -216,7 +216,7 @@ de:
         view_all: Alle Sammlungen anzeigen
       recent:
         ago: "vor %{time}"
-        heading: Neu katalogisiert
+        heading: Kürzlich hinzugefügt
         view_all: "Alle anzeigen"
       researcher:
         heading: Vorgestellte Forschende

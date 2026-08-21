@@ -217,7 +217,7 @@ zh:
         search_button: 检索
         advanced: 高级检索
       browse:
-        heading: 浏览馆藏
+        heading: 浏览
         toggle: 显示分面
       featured:
         unfeature_confirm: "要将其从精选列表中移除吗？"
@@ -233,7 +233,7 @@ zh:
         view_all: 查看全部收藏
       recent:
         ago: "%{time}前"
-        heading: 新编目
+        heading: 最近添加
         view_all: "查看全部"
       researcher:
         heading: 精选研究员

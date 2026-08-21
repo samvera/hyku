@@ -201,7 +201,7 @@ fr:
         search_button: Rechercher
         advanced: Avancée
       browse:
-        heading: Parcourir la collection
+        heading: Parcourir
         toggle: Afficher les facettes
       featured:
         unfeature_confirm: "Retirer ceci de la liste mise en avant ?"
@@ -217,7 +217,7 @@ fr:
         view_all: Voir toutes les collections
       recent:
         ago: "il y a %{time}"
-        heading: Nouvellement catalogué
+        heading: Ajouts récents
         view_all: "Voir tout"
       researcher:
         heading: Chercheur à la une

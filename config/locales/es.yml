@@ -201,7 +201,7 @@ es:
         search_button: Ir
         advanced: Avanzada
       browse:
-        heading: Explorar la colección
+        heading: Explorar
         toggle: Mostrar facetas
       featured:
         unfeature_confirm: "¿Quitar esto de la lista de destacados?"
@@ -217,7 +217,7 @@ es:
         view_all: Ver todas las colecciones
       recent:
         ago: "hace %{time}"
-        heading: Recién catalogado
+        heading: Añadidos recientemente
         view_all: "Ver todo"
       researcher:
         heading: Investigador destacado

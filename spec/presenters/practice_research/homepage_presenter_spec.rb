@@ -23,7 +23,8 @@ RSpec.describe PracticeResearch::HomepagePresenter, :clean_repo do
       response: instance_double(Blacklight::Solr::Response, total: 7),
       collections: collections,
       featured_work_list: FeaturedWorkList.new,
-      featured_collection_list: FeaturedCollectionList.new
+      featured_collection_list: FeaturedCollectionList.new,
+      current_ability: ability
     )
   end
   let(:collections) { [] }
@@ -68,7 +69,7 @@ RSpec.describe PracticeResearch::HomepagePresenter, :clean_repo do
       list = instance_double(FeaturedCollectionList, featured_collections: [visible, hidden])
       presenter = described_class.new(search_service:, response: double(total: 0),
                                       collections: [readable], featured_work_list: FeaturedWorkList.new,
-                                      featured_collection_list: list)
+                                      featured_collection_list: list, current_ability: ability)
 
       expect(presenter.featured_collections).to eq([visible])
     end
@@ -89,12 +90,12 @@ RSpec.describe PracticeResearch::HomepagePresenter, :clean_repo do
     end
   end
 
-  describe '#collection_work_counts' do
+  describe '#collection_works_count' do
     it 'counts only the collection members a visitor may see' do
       indexed_work('Site sketchbook', 'open', member_of_collection_ids: ['coll-1'])
       indexed_work('Unreleased maquette', 'restricted', member_of_collection_ids: ['coll-1'])
 
-      expect(presenter.send(:collection_work_count, 'coll-1')).to eq(1)
+      expect(presenter.collection_works_count(SolrDocument.new('id' => 'coll-1'))).to eq(1)
     end
   end
 end

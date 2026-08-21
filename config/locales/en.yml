@@ -528,6 +528,9 @@ en:
         show:
           header: Manage User
           update: Update
+    search:
+      form:
+        advanced: Advanced
     splash:
       account_denied: You are not authorized to create tenants
       account_login: Login to get started
@@ -827,6 +830,64 @@ en:
         edit: Edit
         header: Manage User
         update: Update
+  screening_room:
+    chrome:
+      toggle_navigation: Toggle navigation
+    homepage:
+      about:
+        heading: About the collections
+      collections:
+        heading: Featured collections
+        unfeature_confirm: Remove this collection from the featured list?
+        view_all: View all collections
+        works_count:
+          one: 1 work
+          other: '%{count} works'
+      cta:
+        button: Start a deposit
+        heading: Share your work
+        sub: Deposit recordings, transfers and production papers into the repository.
+      lede:
+        collections: Collections
+        label: About the collection
+        works: Works
+      player:
+        close: Close
+      recent:
+        ago: "%{time} ago"
+        heading: Latest additions
+        view_all: All recent additions
+      researcher:
+        heading: Featured researcher
+      spotlight:
+        editor_heading: Featured works
+        featured: Featured
+        hold: Pause
+        label: Featured works
+        quick_view: Quick view
+        reorder_hint: Drag an item to change the order it appears in, then save.
+        resume: Play
+        save_order: Save order
+        segment: 'Show %{title}'
+        unfeature_confirm: Remove this work from the featured list?
+        view_work: View work
+    show:
+      citation:
+        copied: Copied
+        copy_visible: Copy citation
+        endnote: Download EndNote record
+        heading: Cite this
+        note: Provided as a suggestion only. Check it against your preferred style guide.
+        style: Citation style
+        styles:
+          apa: APA
+          chicago: Chicago
+          mla: MLA
+      items:
+        count:
+          one: 1 item
+          other: '%{count} items'
+        meta: "%{visibility} · %{date}"
   single_signon:
     index:
       sign_in_with_provider: Sign in with %{provider}

@@ -531,6 +531,9 @@ pt-BR:
         show:
           header: Gerenciar usuário
           update: Atualizar
+    search:
+      form:
+        advanced: Avançada
     splash:
       account_denied: Você não está autorizado a criar inquilinos
       account_login: Inicie sessão para começar
@@ -841,6 +844,64 @@ pt-BR:
         edit: Editar
         header: Gerenciar usuário
         update: Atualizar
+  screening_room:
+    chrome:
+      toggle_navigation: Alternar navegação
+    homepage:
+      about:
+        heading: Sobre as coleções
+      collections:
+        heading: Coleções em destaque
+        unfeature_confirm: 'Remover esta coleção da lista de destaques?'
+        view_all: Ver todas as coleções
+        works_count:
+          one: 1 obra
+          other: '%{count} obras'
+      cta:
+        button: Iniciar um depósito
+        heading: Compartilhe seu trabalho
+        sub: Deposite gravações, transferências e documentos de produção no repositório.
+      lede:
+        collections: Coleções
+        label: Sobre a coleção
+        works: Obras
+      player:
+        close: Fechar
+      recent:
+        ago: 'há %{time}'
+        heading: Adições recentes
+        view_all: Ver todas as adições recentes
+      researcher:
+        heading: Pesquisador em destaque
+      spotlight:
+        editor_heading: Obras em destaque
+        featured: Em destaque
+        hold: Pausar
+        label: Obras em destaque
+        quick_view: Visualização rápida
+        reorder_hint: Arraste um item para mudar a ordem e depois salve.
+        resume: Reproduzir
+        save_order: Salvar ordem
+        segment: 'Mostrar %{title}'
+        unfeature_confirm: 'Remover esta obra da lista de destaques?'
+        view_work: Ver a obra
+    show:
+      citation:
+        copied: Copiado
+        copy_visible: Copiar a citação
+        endnote: Baixar registro EndNote
+        heading: Como citar
+        note: Fornecido apenas como sugestão. Confira com seu guia de estilo.
+        style: Estilo de citação
+        styles:
+          apa: APA
+          chicago: Chicago
+          mla: MLA
+      items:
+        count:
+          one: 1 item
+          other: '%{count} itens'
+        meta: '%{visibility} · %{date}'
   single_signon:
     index:
       sign_in_with_provider: Faça login com %{provider}

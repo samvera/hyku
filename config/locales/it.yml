@@ -649,6 +649,9 @@ it:
         show:
           header: Gestisci utente
           update: Aggiornamento
+    search:
+      form:
+        advanced: Avanzata
     splash:
       account_denied: Non sei autorizzato a creare inquilini
       account_login: Accedi per iniziare
@@ -958,6 +961,64 @@ it:
         edit: Modificare
         header: Gestisci utente
         update: Aggiornare
+  screening_room:
+    chrome:
+      toggle_navigation: Attiva/disattiva la navigazione
+    homepage:
+      about:
+        heading: Informazioni sulle collezioni
+      collections:
+        heading: Collezioni in evidenza
+        unfeature_confirm: 'Rimuovere questa collezione dall''elenco in evidenza?'
+        view_all: Vedi tutte le collezioni
+        works_count:
+          one: 1 opera
+          other: '%{count} opere'
+      cta:
+        button: Inizia un deposito
+        heading: Condividi il tuo lavoro
+        sub: Deposita registrazioni, trasferimenti e documenti di produzione nel repository.
+      lede:
+        collections: Collezioni
+        label: Informazioni sulla collezione
+        works: Opere
+      player:
+        close: Chiudi
+      recent:
+        ago: '%{time} fa'
+        heading: Ultimi arrivi
+        view_all: Tutte le aggiunte recenti
+      researcher:
+        heading: Ricercatore in evidenza
+      spotlight:
+        editor_heading: Opere in evidenza
+        featured: In evidenza
+        hold: Pausa
+        label: Opere in evidenza
+        quick_view: Anteprima rapida
+        reorder_hint: Trascina un elemento per cambiare l'ordine, poi salva.
+        resume: Riproduci
+        save_order: Salva ordine
+        segment: 'Mostra %{title}'
+        unfeature_confirm: 'Rimuovere questa opera dall''elenco in evidenza?'
+        view_work: Vedi l'opera
+    show:
+      citation:
+        copied: Copiato
+        copy_visible: Copia la citazione
+        endnote: Scarica il record EndNote
+        heading: Come citare
+        note: Fornito solo come suggerimento. Verificare con la guida di stile preferita.
+        style: Stile di citazione
+        styles:
+          apa: APA
+          chicago: Chicago
+          mla: MLA
+      items:
+        count:
+          one: 1 elemento
+          other: '%{count} elementi'
+        meta: '%{visibility} · %{date}'
   single_signon:
     index:
       sign_in_with_provider: Accedi con %{provider}

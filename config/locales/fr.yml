@@ -649,6 +649,9 @@ fr:
         show:
           header: Gérer les utilisateurs
           update: Mise à jour
+    search:
+      form:
+        advanced: Recherche avancée
     splash:
       account_denied: Vous n'êtes pas autorisé à créer de locataires.
       account_login: Connectez-vous pour commencer
@@ -963,6 +966,64 @@ fr:
         edit: Modifier
         header: Gérer l'utilisateur
         update: Mettre à jour
+  screening_room:
+    chrome:
+      toggle_navigation: Afficher/masquer la navigation
+    homepage:
+      about:
+        heading: À propos des collections
+      collections:
+        heading: Collections à la une
+        unfeature_confirm: 'Retirer cette collection de la sélection ?'
+        view_all: Voir toutes les collections
+        works_count:
+          one: 1 œuvre
+          other: '%{count} œuvres'
+      cta:
+        button: Commencer un dépôt
+        heading: Partagez votre travail
+        sub: Déposez des enregistrements, des transferts et des documents de production dans le dépôt.
+      lede:
+        collections: Collections
+        label: À propos de la collection
+        works: Œuvres
+      player:
+        close: Fermer
+      recent:
+        ago: 'il y a %{time}'
+        heading: Derniers ajouts
+        view_all: Tous les ajouts récents
+      researcher:
+        heading: Chercheur à la une
+      spotlight:
+        editor_heading: Œuvres à la une
+        featured: À la une
+        hold: Pause
+        label: Œuvres à la une
+        quick_view: Aperçu rapide
+        reorder_hint: Faites glisser un élément pour changer l’ordre, puis enregistrez.
+        resume: Lecture
+        save_order: Enregistrer l’ordre
+        segment: 'Afficher %{title}'
+        unfeature_confirm: 'Retirer cette œuvre de la sélection ?'
+        view_work: Voir l’œuvre
+    show:
+      citation:
+        copied: Copié
+        copy_visible: Copier la citation
+        endnote: Télécharger la notice EndNote
+        heading: Citer
+        note: Fourni à titre indicatif. À vérifier avec votre guide de style.
+        style: Style de citation
+        styles:
+          apa: APA
+          chicago: Chicago
+          mla: MLA
+      items:
+        count:
+          one: 1 élément
+          other: '%{count} éléments'
+        meta: '%{visibility} · %{date}'
   single_signon:
     index:
       sign_in_with_provider: Connectez-vous avec %{provider}

@@ -649,6 +649,9 @@ es:
         show:
           header: Gestionar usuarios
           update: Actualizar
+    search:
+      form:
+        advanced: Avanzada
     splash:
       account_denied: No está autorizado a crear inquilinos.
       account_login: Inicia sesión para comenzar
@@ -958,6 +961,64 @@ es:
         edit: Editar
         header: Administrar usuario
         update: Actualizar
+  screening_room:
+    chrome:
+      toggle_navigation: Alternar la navegación
+    homepage:
+      about:
+        heading: Acerca de las colecciones
+      collections:
+        heading: Colecciones destacadas
+        unfeature_confirm: '¿Quitar esta colección de la lista destacada?'
+        view_all: Ver todas las colecciones
+        works_count:
+          one: 1 obra
+          other: '%{count} obras'
+      cta:
+        button: Iniciar un depósito
+        heading: Comparta su obra
+        sub: Deposite grabaciones, transferencias y documentos de producción en el repositorio.
+      lede:
+        collections: Colecciones
+        label: Acerca de la colección
+        works: Obras
+      player:
+        close: Cerrar
+      recent:
+        ago: 'hace %{time}'
+        heading: Últimas incorporaciones
+        view_all: Ver todas las incorporaciones recientes
+      researcher:
+        heading: Investigador destacado
+      spotlight:
+        editor_heading: Obras destacadas
+        featured: Destacado
+        hold: Pausar
+        label: Obras destacadas
+        quick_view: Vista rápida
+        reorder_hint: Arrastre un elemento para cambiar el orden y luego guarde.
+        resume: Reproducir
+        save_order: Guardar orden
+        segment: 'Mostrar %{title}'
+        unfeature_confirm: '¿Quitar esta obra de la lista destacada?'
+        view_work: Ver la obra
+    show:
+      citation:
+        copied: Copiado
+        copy_visible: Copiar la cita
+        endnote: Descargar registro EndNote
+        heading: Cómo citar
+        note: Solo como sugerencia. Compruébela con su guía de estilo preferida.
+        style: Estilo de cita
+        styles:
+          apa: APA
+          chicago: Chicago
+          mla: MLA
+      items:
+        count:
+          one: 1 elemento
+          other: '%{count} elementos'
+        meta: '%{visibility} · %{date}'
   single_signon:
     index:
       sign_in_with_provider: Iniciar sesión con %{provider}

@@ -341,7 +341,7 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
 
           # The link that carries the values, not the breadcrumb to a blank form.
           back = response.body.scan(%r{href="([^"]*controlled_vocabularies/new\?[^"]*)"})
-                              .flatten.find { |href| href.include?('local_authority') }
+                         .flatten.find { |href| href.include?('local_authority') }
 
           expect(back).to include 'Lab+Names'
           expect(back).not_to include 'authenticity_token'

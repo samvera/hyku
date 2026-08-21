@@ -29,10 +29,10 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: 6fac65d85de8307d194b8608f48b33a7be0a4947
+  revision: 3be706ecdb75cfda4c5111f47dbc6c1875d4902d
   branch: main
   specs:
-    hyrax (5.2.0)
+    hyrax (5.3.0)
       active-fedora (~> 15.0)
       almond-rails (~> 0.1)
       awesome_nested_set (~> 3.1)

@@ -1158,6 +1158,71 @@
     }
   }
 
+  // forced-colors repaints backgrounds and borders, so every drawn affordance in
+  // the spotlight and the player has to fall back to something painted as text
+  // or as a border. this block follows the drawn rules so it can override them
+  @media (forced-colors: active) {
+    .scr-spotlight-hold-icon {
+      height: auto;
+      width: auto;
+    }
+
+    .scr-spotlight-hold-icon::before,
+    .scr-spotlight-hold[data-held='true'] .scr-spotlight-hold-icon::before {
+      border: 0;
+      content: '\275A\275A';
+      font-size: 11px;
+      position: static;
+      width: auto;
+    }
+
+    .scr-spotlight-hold[data-held='true'] .scr-spotlight-hold-icon::before {
+      content: '\25B6';
+    }
+
+    .scr-spotlight-hold-icon::after {
+      content: none;
+    }
+
+    .scr-spotlight-segment {
+      background: none;
+      border-top: 3px solid;
+      height: 0;
+    }
+
+    .scr-spotlight-segment.is-current {
+      border-top-color: Highlight;
+    }
+
+    .scr-player-close::before {
+      background: none;
+      content: '\00D7';
+      font-size: 24px;
+      height: auto;
+      left: auto;
+      position: static;
+      transform: none;
+      width: auto;
+    }
+
+    .scr-player-close::after {
+      content: none;
+    }
+
+    // the collection handle draws its grip as a gradient, which this mode strips.
+    // it has to carry the drawn rule's full selectors, including the drag clone,
+    // or it loses on specificity
+    .scr-reorder-cards .featured-item:has(.scr-collection-card) > .dd-handle.dd3-handle::before,
+    .dd-dragel .featured-item:has(.scr-collection-card) > .dd-handle.dd3-handle::before {
+      background-image: none;
+      content: '\2261';
+      font-size: 15px;
+      height: auto;
+      min-width: 0;
+      width: auto;
+    }
+  }
+
   .scr-player-media {
     display: block;
     margin: 0 auto;

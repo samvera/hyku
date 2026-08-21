@@ -224,6 +224,15 @@ RSpec.describe ControlledVocabularyImport do
       expect(plan.upsert_rows).to be_empty
     end
 
+    it 'caps the review preview and reports the overflow' do
+      stub_const('ControlledVocabularyImport::Plan::PREVIEW_ROWS', 2)
+
+      plan = plan_for("label\nA\nB\nC\n")
+
+      expect(plan.additions_preview.map(&:label)).to eq %w[A B]
+      expect(plan.additions_overflow).to eq 1
+    end
+
     it 'changes its digest when the vocabulary changes' do
       before_digest = plan_for("id,label\nbraille,Braille\n").state_digest
       vocabulary.local_authority_entries.find_by(uri: 'captions').update!(label: 'CC')

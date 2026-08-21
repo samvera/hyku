@@ -18,6 +18,8 @@ class ControlledVocabularyImport
     # definition join when a phase displays them; until then their columns are
     # ignored with a warning.
     COLUMNS = %w[id label active].freeze
+    # One sample value per column, for the upload page's format table.
+    EXAMPLES = { 'id' => 'braille', 'label' => 'Braille', 'active' => 'true' }.freeze
     HEADER_ALIASES = { 'identifier' => 'id', 'term' => 'label' }.freeze
     TRUE_VALUES = %w[true 1 yes].freeze
     FALSE_VALUES = %w[false 0 no].freeze

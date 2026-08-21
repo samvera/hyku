@@ -7,6 +7,9 @@ class ControlledVocabularyImport
   class Plan
     Update = Struct.new(:row, :entry, :changes, keyword_init: true)
 
+    # The review page lists at most this many rows per bucket.
+    PREVIEW_ROWS = 100
+
     attr_reader :errors, :warnings, :additions, :updates, :unchanged_count
 
     def initialize(parsed, vocabulary)
@@ -39,6 +42,22 @@ class ControlledVocabularyImport
     # so any change moves the digest.
     def state_digest
       Digest::MD5.hexdigest(@entries.map { |entry| "#{entry.uri}:#{entry.updated_at.to_f}" }.sort.join('|'))
+    end
+
+    def additions_preview
+      additions.first(PREVIEW_ROWS)
+    end
+
+    def additions_overflow
+      additions.size - additions_preview.size
+    end
+
+    def updates_preview
+      updates.first(PREVIEW_ROWS)
+    end
+
+    def updates_overflow
+      updates.size - updates_preview.size
     end
 
     def upsert_rows

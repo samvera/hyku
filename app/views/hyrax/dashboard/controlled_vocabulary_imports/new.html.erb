@@ -38,7 +38,6 @@
         <%= t('hyku.admin.controlled_vocabulary.import.download_template') %>
       <% end %>
     </div>
-    <% examples = { 'id' => 'braille', 'label' => 'Braille', 'active' => 'true' } %>
     <div class="table-responsive">
       <table class="table table-sm table-borderless mb-2">
         <caption class="sr-only"><%= t('hyku.admin.controlled_vocabulary.import.template_heading') %></caption>
@@ -53,7 +52,7 @@
           <% ControlledVocabularyImport::Parser::COLUMNS.each do |column| %>
             <tr class="border-bottom">
               <td><code><%= column %></code></td>
-              <td><code><%= examples[column] %></code></td>
+              <td><code><%= ControlledVocabularyImport::Parser::EXAMPLES[column] %></code></td>
               <td class="text-muted"><%= t("hyku.admin.controlled_vocabulary.import.columns.#{column}") %></td>
             </tr>
           <% end %>
@@ -61,8 +60,8 @@
       </table>
     </div>
     <ul class="form-text text-muted small pl-3 mb-0">
-      <% %w[missing_column missing_rows order yaml].each do |rule| %>
-        <li><%= t("hyku.admin.controlled_vocabulary.import.rules.#{rule}") %></li>
+      <% t('hyku.admin.controlled_vocabulary.import.rules').each_value do |rule| %>
+        <li><%= rule %></li>
       <% end %>
     </ul>
   </div>

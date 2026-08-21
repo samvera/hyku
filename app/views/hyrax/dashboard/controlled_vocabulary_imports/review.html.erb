@@ -8,8 +8,6 @@
   </h1>
 <% end %>
 
-<% row_cap = 100 %>
-
 <div class="card">
   <div class="card-body">
     <% if @plan.errors.any? %>
@@ -61,7 +59,7 @@
             </tr>
           </thead>
           <tbody>
-            <% @plan.additions.first(row_cap).each do |row| %>
+            <% @plan.additions_preview.each do |row| %>
               <tr class="border-bottom">
                 <td><%= row.label %></td>
                 <td><code><%= row.id %></code></td>
@@ -70,9 +68,9 @@
           </tbody>
         </table>
       </div>
-      <% if @plan.additions.size > row_cap %>
+      <% if @plan.additions_overflow.positive? %>
         <p class="text-muted">
-          <%= t('hyku.admin.controlled_vocabulary.import.more_rows', count: @plan.additions.size - row_cap) %>
+          <%= t('hyku.admin.controlled_vocabulary.import.more_rows', count: @plan.additions_overflow) %>
         </p>
       <% end %>
     <% end %>
@@ -91,22 +89,22 @@
             </tr>
           </thead>
           <tbody>
-            <% @plan.updates.first(row_cap).each do |update| %>
+            <% @plan.updates_preview.each do |update| %>
               <% update.changes.each do |field, (from, to)| %>
                 <tr class="border-bottom">
                   <td><code><%= update.row.id %></code></td>
                   <td><%= field %></td>
-                  <td><%= Array(from).join(' | ') %></td>
-                  <td><%= Array(to).join(' | ') %></td>
+                  <td><%= from %></td>
+                  <td><%= to %></td>
                 </tr>
               <% end %>
             <% end %>
           </tbody>
         </table>
       </div>
-      <% if @plan.updates.size > row_cap %>
+      <% if @plan.updates_overflow.positive? %>
         <p class="text-muted">
-          <%= t('hyku.admin.controlled_vocabulary.import.more_rows', count: @plan.updates.size - row_cap) %>
+          <%= t('hyku.admin.controlled_vocabulary.import.more_rows', count: @plan.updates_overflow) %>
         </p>
       <% end %>
     <% end %>

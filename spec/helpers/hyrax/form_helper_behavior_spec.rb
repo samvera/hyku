@@ -44,7 +44,29 @@ RSpec.describe Hyrax::FormHelperBehavior, type: :helper do
       end
     end
 
-    it 'returns nil for a source that is neither registered nor in the database' do
+    # A deployment can drop a yaml file into config/authorities and cite it in the
+    # profile without registering a service class for it. The field still has to
+    # render as a dropdown, and a stored value still has to label.
+    #
+    # Every yaml authority Hyku ships is registered, so the case is set up by
+    # withholding the registry entry for one that exists on disk rather than by
+    # naming a file that does not: Qa raises InvalidSubAuthority for a name its own
+    # registry does not know, whatever this helper believes about it.
+    context 'with a yaml vocabulary that has no registered service' do
+      before do
+        allow(Hyrax::ControlledVocabularies).to receive(:services)
+          .and_return(Hyrax::ControlledVocabularies.services.except('licenses'))
+      end
+
+      it 'returns a tolerant service bound to that vocabulary' do
+        service = helper.controlled_vocabulary_service_for('licenses')
+
+        expect(service).to be_a Hyrax::TolerantSelectService
+        expect(service.select_all_options).to be_present
+      end
+    end
+
+    it 'returns nil for a source no vocabulary of any kind backs' do
       expect(helper.controlled_vocabulary_service_for('nothing_here')).to be_nil
     end
   end

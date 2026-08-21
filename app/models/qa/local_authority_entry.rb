@@ -11,6 +11,7 @@ module Qa
     before_validation { self.uri = nil if uri.blank? }
     # After the blanking above, or the label would be wiped straight away.
     before_validation :default_uri_to_label, on: :create
+    before_create :default_position_to_last
 
     validates :uri, presence: true, on: :create
     validates :uri, uniqueness: { scope: :local_authority_id }, allow_nil: true
@@ -30,6 +31,16 @@ module Qa
 
     def default_uri_to_label
       self.uri = label if uri.blank?
+    end
+
+    # Counted as well as measured: rows predating this hold NULL, so the highest
+    # assigned position can still be below them and reusing it would collide once
+    # they are numbered.
+    def default_position_to_last
+      return if position.present? || local_authority_id.blank?
+
+      siblings = self.class.where(local_authority_id: local_authority_id)
+      self.position = [siblings.maximum(:position).to_i, siblings.count].max + 1
     end
   end
 end

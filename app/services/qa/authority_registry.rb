@@ -54,21 +54,14 @@ module Qa
       # application adds are excluded without naming them: Hyrax contributes
       # pickers for works and collections, and Hyku its own local classes.
       #
+      # Memoized for the life of the process: the walk loads and locates every
+      # constant under Qa::Authorities, the index asks once per remote vocabulary,
+      # and what the gem provides cannot change while the process runs. Unlike the
+      # local authorities, none of this is per-tenant.
+      #
       # @return [Hash{String => Module}]
       def remote_services
-        Qa::Authorities.constants.sort.each_with_object({}) do |name, services|
-          next if NON_SERVICES.include?(name.to_s)
-          next if name.to_s.end_with?('Subauthority', 'Decorator')
-
-          # Loaded before locating it: qa autoloads these, and
-          # const_source_location reports the autoload stub until the constant is
-          # referenced.
-          klass = authority_class(name)
-          next if klass.nil?
-          next unless defined_in_gem?(name)
-
-          services[source_key_for(name)] = klass
-        end
+        @remote_services ||= build_remote_services
       end
 
       # Every vocabulary a service offers, as the keys a profile can cite.
@@ -92,6 +85,22 @@ module Qa
       end
 
       private
+
+      def build_remote_services
+        Qa::Authorities.constants.sort.each_with_object({}) do |name, services|
+          next if NON_SERVICES.include?(name.to_s)
+          next if name.to_s.end_with?('Subauthority', 'Decorator')
+
+          # Loaded before locating it: qa autoloads these, and
+          # const_source_location reports the autoload stub until the constant is
+          # referenced.
+          klass = authority_class(name)
+          next if klass.nil?
+          next unless defined_in_gem?(name)
+
+          services[source_key_for(name)] = klass
+        end
+      end
 
       # Rescued per constant: some authorities read a config file when they load
       # (Oclcts wants config/oclcts-authorities.yml), and one missing file must not

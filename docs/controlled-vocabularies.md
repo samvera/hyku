@@ -36,10 +36,16 @@ properties:
 
 ## Local Controlled Vocabularies
 
-Local vocabularies are stored as YAML files in `config/authorities/` and provide dropdown select options.
+Local vocabularies provide dropdown select options. They come from YAML files shipped
+in `config/authorities/` and from per-tenant database rows that administrators manage in
+the dashboard. See [Managing Local Vocabularies](#managing-local-vocabularies).
 
 ### Available Local Vocabularies
 
+Shipped with the application:
+
+- `accessibility_features` - Accommodations a work provides, such as alternative text or captions
+- `accessibility_hazards` - Characteristics that may pose a risk to some readers, such as flashing
 - `audience` - Target audiences for educational resources
 - `discipline` - Academic disciplines and subject areas
 - `education_levels` - Educational levels (K-12, undergraduate, etc.)
@@ -48,6 +54,8 @@ Local vocabularies are stored as YAML files in `config/authorities/` and provide
 - `licenses` - Creative Commons and other license options for the work
 - `resource_types` - Types of resources, such as "Article" or "Image"
 - `rights_statements` - Rights statements indicating the copyright status of the work
+
+A tenant can add more, which are listed alongside these in the dashboard.
 
 ### Usage in Profile YAML
 
@@ -79,7 +87,8 @@ Remote vocabularies query external services through the Questioning Authority ge
 
 - `loc/subjects` - Library of Congress Subject Headings
 - `loc/names` - Library of Congress Name Authority File
-- `loc/genre_forms` - Library of Congress Genre/Form Terms
+- `loc/genreForms` - Library of Congress Genre/Form Terms
+  - Also configured as `loc/genre_forms` to support older profiles
 - `loc/countries` - Library of Congress Countries
 - `loc/iso639-1` - Library of Congress major/common languages
 - `loc/iso639-2` - Library of Congress bibliographic standard for languages
@@ -419,9 +428,94 @@ properties:
 
 ## Managing Local Vocabularies
 
-### Current Method
+Local vocabularies come from two places, and both work:
 
-Local authority files are managed by editing the YAML files directly in `config/authorities/`. After making changes, restart the application for changes to take effect.
+- **YAML files** in `config/authorities/`, shipped with the application and shared by
+  every tenant. They need no migration to keep working.
+- **Database rows**, held per tenant and editable in the dashboard. A new tenant is
+  seeded from the YAML files when it is created; an existing tenant can be migrated
+  with a rake task. See [Seeding Vocabularies from YAML](#seeding-vocabularies-from-yaml).
+
+A vocabulary is cited in a metadata profile by its bare source key either way, so a
+profile does not record which kind is behind it. Where a tenant has both, the database
+row is used.
+
+### The Vocabularies Dashboard
+
+`/dashboard/controlled_vocabularies` lists every authority a metadata profile can
+cite, whatever backs it, so the source key to paste into a profile can be read off the
+page. Administrators can manage vocabularies; users who can import works can view
+them.
+
+Each vocabulary has a page reporting which properties cite it and the work types those
+properties appear on. Terms are listed where they can be: a tenant-owned vocabulary
+and a YAML file both show theirs, while a remote service holds its terms externally
+and an imported copy holds too many to page through.
+
+The listing marks each authority with its origin:
+
+| Origin | Backed by | Editable |
+|---|---|---|
+| This tenant | A database row | Yes |
+| Imported copy | A database row replaced wholesale by an import task, such as MeSH | No |
+| Configuration file | `config/authorities/*.yml` | No |
+| External service | A remote authority such as LOC or Getty | No |
+
+### Creating a Vocabulary
+
+Administrators can create a vocabulary from the dashboard. The name is typed; the
+source key is derived from it (`Lab Names` becomes `lab_names`, and accented
+characters are transliterated), and the derived key is shown for confirmation before
+anything is written — a vocabulary cannot be deleted and its source key is fixed at
+creation, because profiles cite it and works store the terms found through it.
+
+A name that collides with a remote service key, or with a vocabulary registered to an
+import task, is refused. Taking the name of a YAML vocabulary is allowed on purpose:
+the new row is used in place of the file, which is how a tenant takes ownership of a
+shipped list.
+
+### Adding Terms
+
+Terms can be added to a vocabulary this tenant owns. A term has a label and an
+optional term ID; leaving the ID blank sets it to the label. The ID is what works
+store, so it cannot be changed once the term exists — the label can.
+
+A new term is assigned a sequence number placing it after the terms already in the
+vocabulary. Terms that predate this have no sequence number, and sort after the ones
+that do until they are assigned theirs.
+
+### Seeding Vocabularies from YAML
+
+Loading the YAML files into a tenant's database is what makes those vocabularies
+editable in the dashboard. A tenant that has not been seeded keeps reading the files,
+so this is a migration to run when convenient rather than a prerequisite.
+
+New tenants are seeded automatically as part of account creation. For tenants that
+already exist:
+
+```bash
+bundle exec rake populate_qa
+```
+
+It runs for every tenant except search-only ones, reporting each vocabulary and its
+term count. `AUTHORITIES_PATH` overrides which directories are read; passing more than
+one lets a knapsack's copy of a vocabulary take precedence over Hyku's, with the
+earlier path winning.
+
+The task is safe to run more than once, and only ever adds: a vocabulary the tenant
+already has is left untouched, terms included. Once a vocabulary is in the database it
+belongs to the tenant, so a term deleted in the dashboard stays deleted, an edited label
+keeps its wording, and terms added to the YAML file afterwards are not backfilled —
+use the dashboard import to add terms to a vocabulary that already exists.
+
+Running it again therefore picks up only vocabularies the tenant does not have yet,
+which is what makes it safe to run after adding a file. A vocabulary is named after its
+file, so a file whose name is not a usable source key aborts the task before any tenant
+is touched, rather than part way through.
+
+On first seeding, terms are keyed on their ID, so a file listing the same ID twice —
+`licenses.yml` does, for two Creative Commons URIs — yields one row rather than two. A
+term's `active` flag carries over, and an inactive term is kept rather than skipped.
 
 ### File Structure
 
@@ -434,17 +528,47 @@ terms:
     term: "Biology"
 ```
 
-### Future Enhancement
+A file may also carry a `label` and `description`, used for the vocabulary's name and
+description when it is seeded.
 
-A UI for managing local vocabularies through the admin dashboard is planned to make vocabulary management more user-friendly for repository administrators.
+Editing a YAML file requires an application restart before the change takes effect, and
+affects only tenants that have not been seeded. Vocabularies in the dashboard take
+effect immediately and are per-tenant.
 
 ## Adding New Vocabularies
 
 ### Adding Local Vocabularies
 
+Either create one through the dashboard, which needs no deployment, or ship a YAML
+file:
+
 1. Create a YAML file in `config/authorities/` following the existing pattern
 2. Reference the file name (without .yml extension) in your metadata profile's `sources` array
 3. Restart the application
+
+A YAML vocabulary is deployment-wide; a dashboard-created one belongs to the tenant it
+was created in.
+
+### Registering a Service Class
+
+Registering a service class in the `services` method of
+`config/initializers/hyrax_controlled_vocabularies.rb` is **optional**. A vocabulary
+with no entry there still renders as a dropdown and still turns a stored value back
+into a label — the fallback reads the vocabulary directly and offers the same options.
+
+Register one when a vocabulary needs behavior beyond listing its terms, which is
+usually presentation of the stored value. `Hyrax::LicenseService`, for example, holds
+the logic for rendering a license URI as its name and link.
+
+A registered service is asked before the database and the YAML file, but none of the
+shipped services carry their own term list: each reads the vocabulary's database rows
+when the tenant has them and falls back to the YAML file when it does not. So editing
+terms in the dashboard changes what a depositor sees even for a vocabulary that has a
+service class, and a tenant that has never been seeded still gets its terms from the
+file. What the service adds is the handling around the terms, not the terms.
+
+Vocabularies created through the dashboard have no service class, which is the ordinary
+case.
 
 ### Adding Remote Vocabularies
 
@@ -460,5 +584,17 @@ The flexible metadata system processes controlled vocabularies as follows:
 2. **Form Rendering**: The form metadata partial checks each property's configuration
 3. **Dynamic Rendering**: Properties with `sources` other than `["null"]` are rendered as controlled vocabulary fields
 4. **Authority URLs**: Remote authorities automatically get the correct autocomplete URL pattern
+
+A source key resolves in a fixed order, and the first match wins:
+
+1. A registered service class
+2. A database row belonging to this tenant
+3. A YAML file in `config/authorities/`
+4. A remote authority
+
+So when a tenant has a database row and a YAML file of the same name, the row is used
+and the file is not. This is also why a vocabulary cannot be created under a remote
+service's key: the row would be found first and would answer for that field in place
+of the service.
 
 This system automatically handles both single and multi-value fields for both local and remote vocabularies, providing a seamless experience for repository administrators and depositors.

@@ -40,9 +40,9 @@ class ControlledVocabularyCatalog
       origin == :database && vocabulary.present?
     end
 
-    # Only what has a term list worth opening. Remote services are not enumerable,
-    # and an imported copy holds too many terms to list.
-    def viewable?
+    # A remote service is not enumerable, and an imported copy holds far too many
+    # terms to page through.
+    def listable?
       editable? || origin == :file
     end
 
@@ -77,29 +77,33 @@ class ControlledVocabularyCatalog
     #
     # @return [Array<Entry>]
     def all
-      (database + file_based + remote).sort_by do |entry|
+      # One read, shared: two reads that disagreed would emit the same source key
+      # under two origins.
+      yaml_names = file_based_names
+
+      (database(yaml_names) + file_based(yaml_names) + remote).sort_by do |entry|
         [ORIGIN_ORDER.fetch(entry.origin, 9),
          entry.provider.to_s.downcase,
-         entry.label.downcase]
+         entry.label.to_s.downcase]
       end
     end
 
-    def database
+    def database(yaml_names = file_based_names)
       vocabularies = Qa::LocalAuthority.ordered.to_a
       # One grouped count rather than one per vocabulary.
       totals = Qa::LocalAuthorityEntry.where(local_authority: vocabularies).group(:local_authority_id).count
 
       entries = vocabularies.map { |vocabulary| database_entry(vocabulary, totals) }
 
-      (entries + unimported_local).sort_by { |e| e.label.downcase }
+      (entries + unimported_local(yaml_names)).sort_by { |e| e.label.to_s.downcase }
     end
 
     # Excludes names already backed by a database row: the row is what staff see
     # and edit, so listing both would imply two separate vocabularies.
-    def file_based
+    def file_based(yaml_names = file_based_names)
       claimed = Qa::LocalAuthority.pluck(:name).map(&:to_s)
 
-      (file_based_names - claimed).map do |name|
+      (yaml_names - claimed).map do |name|
         Entry.new(source_key: name,
                   label: name.titleize,
                   origin: :file,
@@ -120,16 +124,15 @@ class ControlledVocabularyCatalog
       end
     end
 
-    # Checks the database rows first: assembling the whole catalog walks every qa
-    # authority and parses every yaml, which a show page does not need.
-    #
     # @raise [ActiveRecord::RecordNotFound] so an unknown key 404s rather than
     #   rendering an empty page.
     def find!(source_key)
       key = source_key.to_s
 
-      database.detect { |entry| entry.source_key == key } ||
-        all.detect { |entry| entry.source_key == key } ||
+      # After a direct miss, so a vocabulary named with the alternate spelling still
+      # answers for itself.
+      find_by_source_key(key) ||
+        aliases_for(key).lazy.filter_map { |alt| find_by_source_key(alt) }.first ||
         raise(ActiveRecord::RecordNotFound, "No controlled vocabulary named #{key}")
     end
 
@@ -169,7 +172,31 @@ class ControlledVocabularyCatalog
       []
     end
 
+    # Two keys on one url in remote_authorities are the same vocabulary
+    # (`loc/genre_forms`, `loc/genreForms`), so an alias added there needs nothing
+    # here. Emitting every spelling from .remote would list one vocabulary twice.
+    def aliases_for(key)
+      authorities = Hyrax::ControlledVocabularies.remote_authorities
+      url = authorities.dig(key.to_s, :url)
+      return [] if url.blank?
+
+      authorities.each_with_object([]) do |(sibling, config), found|
+        found << sibling if sibling != key.to_s && config[:url] == url
+      end
+    end
+
     private
+
+    # Database rows first: the other origins walk every qa authority and parse every
+    # yaml, which a hit here avoids.
+    def find_by_source_key(key)
+      return if key.blank?
+
+      yaml_names = file_based_names
+
+      database(yaml_names).detect { |entry| entry.source_key == key } ||
+        (file_based(yaml_names) + remote).detect { |entry| entry.source_key == key }
+    end
 
     def remote_entry(provider, subauthority, configured)
       Entry.new(source_key: [provider, subauthority].compact.join('/'),
@@ -196,8 +223,8 @@ class ControlledVocabularyCatalog
     # Local authorities qa knows about that have neither a row in this tenant nor a
     # yaml file, so a manager can see the vocabulary exists and what populates it.
     # mesh is the case in hand: registered at boot, filled by a rake task.
-    def unimported_local
-      accounted_for = Qa::LocalAuthority.pluck(:name).map(&:to_s) + file_based_names
+    def unimported_local(yaml_names = file_based_names)
+      accounted_for = Qa::LocalAuthority.pluck(:name).map(&:to_s) + yaml_names
 
       (registered_local_names - accounted_for).map do |name|
         Entry.new(source_key: name,
@@ -270,7 +297,9 @@ class ControlledVocabularyCatalog
       account.public_send(setting).present?
     rescue StandardError => e
       Rails.logger.warn("Unable to check configuration for #{provider}: #{e.message}")
-      nil
+      # false, not nil: nil reads as configured, sending staff to debug a form that
+      # was never going to work.
+      false
     end
 
     # nil rather than 0 on failure, so the view can say "unknown" instead of

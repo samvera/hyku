@@ -135,6 +135,42 @@ RSpec.describe Qa::LocalAuthorityEntry, type: :model do
     end
   end
 
+  describe 'position' do
+    it 'numbers a new term after the ones already there' do
+      first = described_class.create!(local_authority: authority, label: 'Botany', uri: 'bot')
+      second = described_class.create!(local_authority: authority, label: 'Alchemy', uri: 'alc')
+
+      expect([first.position, second.position]).to eq [1, 2]
+    end
+
+    it 'keeps a position given to it' do
+      entry = described_class.create!(local_authority: authority, label: 'Zoology', uri: 'zoo', position: 7)
+
+      expect(entry.position).to eq 7
+    end
+
+    # Numbered per vocabulary, so one tenant's terms do not push another's along.
+    it 'numbers each vocabulary from the start' do
+      other = Qa::LocalAuthority.create!(name: 'other_rooms', label: 'Other Rooms')
+      described_class.create!(local_authority: authority, label: 'Botany', uri: 'bot')
+
+      entry = described_class.create!(local_authority: other, label: 'Botany', uri: 'bot')
+
+      expect(entry.position).to eq 1
+    end
+
+    # Rows predating the assignment hold NULL, which Postgres sorts last, so the
+    # next term has to clear them rather than reuse a low number.
+    it 'numbers a new term after rows that have no position' do
+      described_class.create!(local_authority: authority, label: 'Alpha', uri: 'a').update_column(:position, nil) # rubocop:disable Rails/SkipsModelValidations
+      described_class.create!(local_authority: authority, label: 'Beta', uri: 'b').update_column(:position, nil) # rubocop:disable Rails/SkipsModelValidations
+
+      entry = described_class.create!(local_authority: authority, label: 'Gamma', uri: 'g')
+
+      expect(entry.position).to eq 3
+    end
+  end
+
   describe 'scopes' do
     let!(:live) { described_class.create!(local_authority: authority, label: 'Botany', uri: 'bot') }
     let!(:retired) { described_class.create!(local_authority: authority, label: 'Alchemy', uri: 'alc', active: false) }
@@ -145,8 +181,10 @@ RSpec.describe Qa::LocalAuthorityEntry, type: :model do
       expect(authority.local_authority_entries.inactive).to contain_exactly(retired)
     end
 
-    it 'orders pinned terms first, then unpinned terms by label' do
-      expect(authority.local_authority_entries.ordered.to_a).to eq [pinned, retired, live]
+    # live and retired are numbered on create, so the explicit position: 1 ties with
+    # live's and the label breaks it.
+    it 'orders by position, then by label' do
+      expect(authority.local_authority_entries.ordered.to_a).to eq [live, pinned, retired]
     end
   end
 end

@@ -12,6 +12,8 @@ pt-BR:
         institution_name_full: Nome completo da instituição
     errors:
       messages:
+        already_an_authority: já está em uso por outro vocabulário controlado
+        taken_as_source_key: '%{value} já é a chave de origem de outro vocabulário controlado'
         cannot_remove_last_superadmin: não é possível remover o último superadministrador de um inquilino de demonstração público
   application:
     tagline: A solução de repos
@@ -284,7 +286,12 @@ pt-BR:
         active: Ativo
         awaiting_import: Não importado
         awaiting_import_help: 'Este vocabulário está disponível, mas ainda não tem termos neste locatário. Preencha-o executando: %{task}'
-        create: Criar vocabulário
+        confirm_back: Voltar para editar
+        confirm_create: Confirmar e criar
+        confirm_help: Verifique estes valores antes de o vocabulário ser criado.
+        confirm_permanent: Um vocabulário não pode ser excluído depois de criado, e sua chave de origem não pode ser alterada posteriormente, de modo que um perfil de metadados que a cite continua funcionando.
+        confirm_title: Confirmar novo vocabulário
+        create: Revisar vocabulário
         create_term: Adicionar termo
         created: '%{name} foi criado. Adicione seus termos abaixo.'
         description: Descrição
@@ -299,6 +306,7 @@ pt-BR:
         new_term_help: Nomeie o termo como um depositante deve vê-lo. O id do termo é o que um registro armazena e não pode ser alterado depois que os termos estão em uso.
         new_term_title: Adicionar termo
         new_title: Novo vocabulário
+        no_description: Não informada
         no_terms: Este vocabulário ainda não tem termos.
         none: Nenhum vocabulário controlado foi configurado para este locatário ainda.
         origin: Origem
@@ -318,20 +326,15 @@ pt-BR:
           mesh: MeSH
           tgnlang: Getty TGN Languages
         read_only:
-          cached: Este vocabulário é uma cópia importada de um vocabulário externo. Seus termos não podem ser alterados aqui, e reimportá-lo substitui todos eles.
           file: Este vocabulário é definido em um arquivo de configuração, portanto seus termos não podem ser alterados aqui.
-          generic: Os termos deste vocabulário não podem ser alterados aqui.
-          remote: Este vocabulário vem de um serviço externo, portanto seus termos não podem ser alterados aqui.
         ready: Pronto
         retired_count:
           one: (%{count} desativado)
           other: (%{count} desativados)
         show_title: 'Vocabulário controlado: %{name}'
         source_key: Chave de origem
-        source_key_from_name: A chave de origem é definida a partir do nome acima.
         source_key_hint: Cole isto em um campo do perfil de metadados para controlar esse campo com este vocabulário.
         source_key_help: Cole uma chave de origem em um campo do perfil de metadados para controlar esse campo com este vocabulário. Os vocabulários gerenciados neste locatário podem ser editados aqui; os definidos em um arquivo de configuração ou por um serviço externo não podem.
-        source_key_will_be_html: Será salvo com a chave de origem %{key}.
         static_forms: Os perfis de metadados não estão habilitados, então os formulários de depósito leem este vocabulário de um arquivo de configuração. Alterar seus termos requer um desenvolvedor.
         status: Status
         status_hint: Se este vocabulário está pronto para uso ou precisa de alguma configuração primeiro.
@@ -349,6 +352,11 @@ pt-BR:
           one: 1 termo
           other: "%{count} termos"
         terms: Termos
+        terms_elsewhere:
+          cached: Este vocabulário contém uma cópia importada de um vocabulário externo, grande demais para ser listada aqui. Seus termos são oferecidos no formulário de depósito.
+          generic: Os termos deste vocabulário não são listados aqui.
+          remote: Os termos vêm do serviço externo, portanto não há lista a exibir aqui.
+        terms_unavailable: Os termos deste vocabulário não podem ser lidos e, portanto, não são listados aqui. Seu arquivo de configuração pode estar ausente.
         unconfigured: Requer configuração
         unconfigured_help: Este serviço precisa de credenciais antes de poder ser usado. Até lá, um campo que o utiliza aceita texto livre em vez de oferecer sugestões.
         unused: Nenhuma propriedade de metadados usa este vocabulário.
@@ -357,7 +365,6 @@ pt-BR:
         used_by_hint: As propriedades de metadados controladas por este vocabulário, conforme nomeadas nas importações do Bulkrax e nos perfis de metadados.
         used_by_work_types: 'Disponível em:'
         work_types:
-          collection_resource: Coleção
           etd_resource: ETD
           oer_resource: OER
       flash:

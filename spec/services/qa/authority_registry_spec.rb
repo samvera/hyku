@@ -41,6 +41,18 @@ RSpec.describe Qa::AuthorityRegistry do
       expect(services.keys.grep(/subauthority/)).to be_empty
     end
 
+    # Building the list loads and locates every constant under Qa::Authorities, and
+    # the index page asks for it once per remote vocabulary. What the gem provides
+    # cannot change while the process runs, so the walk happens once.
+    it 'walks the gem once' do
+      described_class.remote_services
+      allow(Qa::Authorities).to receive(:constants).and_call_original
+
+      described_class.remote_services
+
+      expect(Qa::Authorities).not_to have_received(:constants)
+    end
+
     # Qa::Authorities::Oclcts reads config/oclcts-authorities.yml when it loads, so
     # a host without that file must still get the rest of the list.
     it 'skips an authority that cannot be loaded' do

@@ -1,8 +1,10 @@
-<%# A column heading whose explanation sits behind a question mark. %>
-<%= label %>
-<button type="button"
-        class="btn btn-link p-0 ml-1 align-baseline column-hint"
-        title="<%= hint %>"
-        aria-label="<%= hint %>">
-  <span class="fa fa-question-circle text-muted" aria-hidden="true"></span>
-</button>
+<%# A heading whose explanation appears on hover. Not a button — clicking does
+    nothing — but tabindex keeps it reachable by keyboard, and aria-label names it
+    there: the visible hint is `visibility: hidden` until hover, so it is out of the
+    accessibility tree exactly when a focused tab stop needs a name. role="note"
+    because ARIA does not allow naming the implicit generic role, whatever a given
+    browser does with it. The hint is real text, not a data- attribute drawn by CSS:
+    a generated box will not size to its own text inside a cell held to one line. %>
+<%= label %><span class="column-hint" tabindex="0" role="note" aria-label="<%= hint %>"><span
+        class="fa fa-question-circle text-muted" aria-hidden="true"></span><span
+        class="column-hint-text" aria-hidden="true"><%= hint %></span></span>

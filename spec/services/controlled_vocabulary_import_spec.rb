@@ -365,14 +365,15 @@ RSpec.describe ControlledVocabularyImport do
       expect(terms.find { |term| term.uri == 'haptic' }.position).to eq 3
     end
 
-    it 'leaves a new term unpositioned when the vocabulary is, so it sorts by label like the form' do
+    it 'appends past legacy unpositioned terms, matching the term form' do
       vocabulary.local_authority_entries.create!(label: 'Braille', uri: 'braille')
       vocabulary.local_authority_entries.create!(label: 'Transcript', uri: 'transcript')
+      # Rows predating the position default hold NULL.
+      vocabulary.local_authority_entries.update_all(position: nil) # rubocop:disable Rails/SkipsModelValidations
 
       apply("id,label\nhaptic,Haptic\n")
 
-      expect(terms.find { |term| term.uri == 'haptic' }.position).to be_nil
-      expect(vocabulary.local_authority_entries.ordered.pluck(:uri)).to eq %w[braille haptic transcript]
+      expect(terms.find { |term| term.uri == 'haptic' }.position).to eq 3
     end
 
     it 'refuses to apply a plan with errors' do

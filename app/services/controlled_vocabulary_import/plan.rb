@@ -115,20 +115,18 @@ class ControlledVocabularyImport
       row.active
     end
 
-    # nil when any term is unpositioned: a number would jump an appended term
-    # ahead of every nil-position term, which sort last.
+    # The same formula as LocalAuthorityEntry#default_position_to_last, so a
+    # term appended by import lands where a form-added one would.
     def tail_position
-      @entries.map(&:position).max if @entries.any? && @entries.all?(&:position)
+      [@entries.filter_map(&:position).max.to_i, @entries.size].max
     end
 
-    # A new term in a partial file appends after the current tail. When the
-    # vocabulary is unpositioned, it stays unpositioned too, sorting into the
-    # label-ordered group exactly as a form-added term does.
+    # A new term in a partial file appends after the current tail.
     def position_for(entry, index)
       return index + 1 if @write_positions
       return entry.position if entry
 
-      @next_position += 1 if @next_position
+      @next_position += 1
     end
 
     def entries_by_uri

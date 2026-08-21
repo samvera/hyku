@@ -406,6 +406,7 @@ de:
         created: '%{name} wurde erstellt. Fügen Sie unten die Begriffe hinzu.'
         description: Beschreibung
         description_help: Optional. Erklärt anderen Mitarbeitenden, wofür dieses Vokabular gedacht ist.
+        download: Herunterladen
         inactive: Inaktiv
         label: Bezeichnung
         label_hint: Was ein Hinterleger im Formular sieht. Kann gefahrlos umformuliert werden, ohne gespeicherte Datensätze zu beeinflussen.

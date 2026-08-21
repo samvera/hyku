@@ -407,6 +407,7 @@ zh:
         created: '%{name} 已创建。请在下方添加其词条。'
         description: 描述
         description_help: 可选。向其他工作人员说明此词表的用途。
+        download: 下载
         inactive: 未启用
         label: 标签
         label_hint: 存缴者在表单中看到的内容。可以放心改写，不会影响已存储的记录。

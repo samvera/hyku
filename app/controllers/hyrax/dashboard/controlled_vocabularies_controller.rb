@@ -19,15 +19,12 @@ module Hyrax
 
       def show
         @entry = ControlledVocabularyCatalog.find!(params[:id])
-        add_breadcrumb t(:'hyrax.controls.home'), root_path
-        add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
-        # main_app, not the bare helper: this controller is namespaced under
-        # Hyrax::, so bare url helpers resolve against the Hyrax engine, which does
-        # not define this route. The engine's `/files/:id` then swallows it.
-        add_breadcrumb t('hyku.admin.controlled_vocabularies'), main_app.controlled_vocabularies_path
-        add_breadcrumb @entry.label, request.path
-        @terms = ControlledVocabularyCatalog.terms_for(@entry)
-        @usage = ControlledVocabularyUsage.citing(@entry.source_key)
+
+        respond_to do |format|
+          format.html { show_page }
+          format.csv { download :csv }
+          format.yaml { download :yml }
+        end
       end
 
       def new
@@ -56,6 +53,27 @@ module Hyrax
       end
 
       private
+
+      def show_page
+        add_breadcrumb t(:'hyrax.controls.home'), root_path
+        add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
+        # main_app, not the bare helper: this controller is namespaced under
+        # Hyrax::, so bare url helpers resolve against the Hyrax engine, which does
+        # not define this route. The engine's `/files/:id` then swallows it.
+        add_breadcrumb t('hyku.admin.controlled_vocabularies'), main_app.controlled_vocabularies_path
+        add_breadcrumb @entry.label, request.path
+        @terms = ControlledVocabularyCatalog.terms_for(@entry)
+        @usage = ControlledVocabularyUsage.citing(@entry.source_key)
+        render :show
+      end
+
+      def download(format)
+        raise ActiveRecord::RecordNotFound, "No terms to export for #{@entry.source_key}" unless @entry.downloadable?
+
+        export = ControlledVocabularyExport.new(@entry)
+        response.set_header('Content-Disposition', "attachment; filename=\"#{export.filename(format)}\"")
+        self.response_body = export.public_send(format)
+      end
 
       # No :name — it is derived from the label on create, and a metadata profile
       # cites it, so staff do not get to set or change it.

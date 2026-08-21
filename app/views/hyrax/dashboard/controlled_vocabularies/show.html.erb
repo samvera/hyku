@@ -6,13 +6,16 @@
   </h1>
 <% end %>
 
-<% if @entry.editable? && can?(:manage, :controlled_vocabularies) %>
-  <div class="mb-3 text-right">
+<div class="mb-3 text-right">
+  <% if @entry.downloadable? %>
+    <%= render 'download_menu', entry: @entry %>
+  <% end %>
+  <% if @entry.editable? && can?(:manage, :controlled_vocabularies) %>
     <%= link_to t('hyku.admin.controlled_vocabulary.new_term_title'),
                 main_app.new_controlled_vocabulary_term_path(@entry.source_key),
                 class: 'btn btn-primary' %>
-  </div>
-<% end %>
+  <% end %>
+</div>
 
 <div class="card">
   <div class="card-body border-bottom">

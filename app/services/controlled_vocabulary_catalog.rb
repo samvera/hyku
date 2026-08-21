@@ -46,6 +46,10 @@ class ControlledVocabularyCatalog
       editable? || origin == :file
     end
 
+    def downloadable?
+      vocabulary.present? || origin == :file
+    end
+
     # nil means the authority needs no credentials, so only a known-missing one is
     # reported unconfigured.
     def configured?

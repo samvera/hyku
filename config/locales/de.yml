@@ -12,6 +12,8 @@ de:
         institution_name_full: Vollständiger Name der Institution
     errors:
       messages:
+        already_an_authority: wird bereits von einem anderen kontrollierten Vokabular verwendet
+        taken_as_source_key: '%{value} ist bereits der Quellschlüssel eines anderen kontrollierten Vokabulars'
         cannot_remove_last_superadmin: der letzte Superadministrator eines öffentlichen Demo-Mandanten kann nicht entfernt werden
   application:
     tagline: Die Next-Generation Repository-Lösung
@@ -401,7 +403,12 @@ de:
         active: Aktiv
         awaiting_import: Nicht importiert
         awaiting_import_help: 'Dieses Vokabular ist verfügbar, enthält in diesem Mandanten aber noch keine Begriffe. Befüllen Sie es durch Ausführen von: %{task}'
-        create: Vokabular erstellen
+        confirm_back: Zurück zum Bearbeiten
+        confirm_create: Bestätigen und erstellen
+        confirm_help: Prüfen Sie diese Werte, bevor das Vokabular erstellt wird.
+        confirm_permanent: Ein Vokabular kann nach dem Erstellen nicht gelöscht werden, und sein Quellschlüssel kann danach nicht geändert werden, sodass ein Metadatenprofil, das darauf verweist, weiterhin funktioniert.
+        confirm_title: Neues Vokabular bestätigen
+        create: Vokabular prüfen
         create_term: Begriff hinzufügen
         created: '%{name} wurde erstellt. Fügen Sie unten die Begriffe hinzu.'
         description: Beschreibung
@@ -416,6 +423,7 @@ de:
         new_term_help: Benennen Sie den Begriff so, wie Einreichende ihn sehen sollen. Die Begriffs-ID ist, was ein Datensatz speichert, und kann nicht mehr geändert werden, sobald Begriffe verwendet werden.
         new_term_title: Begriff hinzufügen
         new_title: Neues Vokabular
+        no_description: Keine angegeben
         no_terms: Dieses Vokabular enthält noch keine Begriffe.
         none: Für diesen Mandanten wurden noch keine kontrollierten Vokabulare eingerichtet.
         origin: Quelle
@@ -435,20 +443,15 @@ de:
           mesh: MeSH
           tgnlang: Getty TGN Languages
         read_only:
-          cached: Dieses Vokabular ist eine importierte Kopie eines externen Vokabulars. Seine Begriffe können hier nicht geändert werden, und ein erneuter Import ersetzt sie alle.
           file: Dieses Vokabular ist in einer Konfigurationsdatei definiert, daher können seine Begriffe hier nicht geändert werden.
-          generic: Die Begriffe dieses Vokabulars können hier nicht geändert werden.
-          remote: Dieses Vokabular stammt von einem externen Dienst, daher können seine Begriffe hier nicht geändert werden.
         ready: Bereit
         retired_count:
           one: (%{count} zurückgezogen)
           other: (%{count} zurückgezogen)
         show_title: 'Kontrolliertes Vokabular: %{name}'
         source_key: Quellschlüssel
-        source_key_from_name: Der Quellschlüssel wird aus dem obigen Namen gebildet.
         source_key_hint: Fügen Sie dies in ein Feld eines Metadatenprofils ein, um dieses Feld mit diesem Vokabular zu kontrollieren.
         source_key_help: Fügen Sie einen Quellschlüssel in ein Feld eines Metadatenprofils ein, um dieses Feld mit diesem Vokabular zu kontrollieren. In diesem Mandanten verwaltete Vokabulare können hier bearbeitet werden; in einer Konfigurationsdatei oder von einem externen Dienst definierte Vokabulare nicht.
-        source_key_will_be_html: Gespeichert wird mit dem Quellschlüssel %{key}.
         static_forms: Metadatenprofile sind nicht aktiviert, daher lesen Einreichungsformulare dieses Vokabular aus einer Konfigurationsdatei. Änderungen an seinen Begriffen erfordern einen Entwickler.
         status: Status
         status_hint: Ob dieses Vokabular einsatzbereit ist oder zuerst etwas eingerichtet werden muss.
@@ -466,6 +469,11 @@ de:
           one: 1 Begriff
           other: "%{count} Begriffe"
         terms: Begriffe
+        terms_elsewhere:
+          cached: Dieses Vokabular enthält eine importierte Kopie eines externen Vokabulars, die für eine Auflistung hier viel zu umfangreich ist. Seine Begriffe werden im Abgabeformular angeboten.
+          generic: Die Begriffe dieses Vokabulars werden hier nicht aufgeführt.
+          remote: Die Begriffe stammen vom externen Dienst, daher gibt es hier keine Liste anzuzeigen.
+        terms_unavailable: Die Begriffe dieses Vokabulars können nicht gelesen werden und werden daher hier nicht aufgeführt. Möglicherweise fehlt seine Konfigurationsdatei.
         unconfigured: Einrichtung erforderlich
         unconfigured_help: Dieser Dienst benötigt Anmeldeinformationen, bevor er verwendet werden kann. Bis dahin akzeptiert ein Feld, das ihn referenziert, Freitext, statt Vorschläge anzubieten.
         unused: Keine Metadaten-Eigenschaft verwendet dieses Vokabular.
@@ -474,7 +482,6 @@ de:
         used_by_hint: Die von diesem Vokabular kontrollierten Metadaten-Eigenschaften, wie sie in Bulkrax-Importen und Metadatenprofilen benannt sind.
         used_by_work_types: 'Verfügbar für:'
         work_types:
-          collection_resource: Sammlung
           etd_resource: ETD
           oer_resource: OER
       flash:

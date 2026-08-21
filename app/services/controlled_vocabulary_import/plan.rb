@@ -47,8 +47,10 @@ class ControlledVocabularyImport
         position = write_positions? ? index + 1 : entry&.position
         next if entry && changes_for(row, entry).empty? && entry.position == position
 
+        # data rides along untouched: the import does not carry those fields,
+        # and a full-column upsert would otherwise blank them.
         { local_authority_id: @vocabulary.id, uri: row.id, label: row.label,
-          active: desired_active(row, entry), data: data_for(row, entry), position: position,
+          active: desired_active(row, entry), data: entry&.data || {}, position: position,
           created_at: entry&.created_at || now, updated_at: now }
       end
     end
@@ -74,8 +76,6 @@ class ControlledVocabularyImport
       changes['label'] = [entry.label, row.label] if row.label != entry.label
       desired = desired_active(row, entry)
       changes['active'] = [entry.active, desired] if desired != entry.active
-      changes['alt_labels'] = [Array(entry.alt_labels), row.alt_labels] if alt_labels_change?(row, entry)
-      changes['definition'] = [entry.definition, row.definition] if definition_change?(row, entry)
       changes
     end
 
@@ -84,27 +84,6 @@ class ControlledVocabularyImport
       return entry ? entry.active : true if row.active.nil?
 
       row.active
-    end
-
-    # A column absent from the file leaves the attribute untouched; a present
-    # column is the truth, so a blank cell clears the stored value.
-    def alt_labels_change?(row, entry)
-      column?('alt_labels') && Array(entry.alt_labels) != row.alt_labels
-    end
-
-    def definition_change?(row, entry)
-      column?('definition') && entry.definition.presence != row.definition
-    end
-
-    def data_for(row, entry)
-      data = entry ? entry.data.dup : {}
-      data['alt_labels'] = row.alt_labels if column?('alt_labels')
-      data['definition'] = row.definition if column?('definition')
-      data.compact
-    end
-
-    def column?(name)
-      @parsed.columns.include?(name)
     end
 
     def entries_by_uri

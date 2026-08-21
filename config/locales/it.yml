@@ -416,8 +416,6 @@ it:
           column: Colonna
           columns:
             active: true o false. Una cella vuota mantiene lo stato attuale del termine.
-            alt_labels: Facoltativa. Altri nomi con cui si trova il termine. Separa più valori con |.
-            definition: Facoltativa. Cosa significa il termine.
             id: Facoltativa. Per impostazione predefinita è il label e non può cambiare una volta salvato.
             label: Obbligatoria. Ciò che un depositante vede.
           confirm: Conferma importazione
@@ -454,7 +452,6 @@ it:
           review_heading: 'Rivedi l''importazione in %{name}'
           review_title: Rivedi importazione
           rules:
-            blank_cell: Una cella alt_labels o definition vuota cancella il valore memorizzato.
             missing_column: Una colonna assente dal file lascia quell'attributo invariato.
             missing_rows: Le righe assenti dal file non rimuovono mai i termini; disattiva un termine con active=false.
             order: I termini prendono il loro ordine dall'ordine delle righe del file. Per riordinare i termini, modifica un download completo e reimportalo.

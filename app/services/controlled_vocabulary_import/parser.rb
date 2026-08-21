@@ -11,10 +11,13 @@ class ControlledVocabularyImport
   # readers out if a third format arrives.
   # rubocop:disable Metrics/ClassLength
   class Parser
-    Row = Struct.new(:id, :label, :alt_labels, :definition, :active, :line, keyword_init: true)
+    Row = Struct.new(:id, :label, :active, :line, keyword_init: true)
     Result = Struct.new(:rows, :columns, :source_key, :errors, :warnings, keyword_init: true)
 
-    COLUMNS = %w[id label alt_labels definition active].freeze
+    # Only what the terms table and the export surface. Alternate labels and
+    # definition join when a phase displays them; until then their columns are
+    # ignored with a warning.
+    COLUMNS = %w[id label active].freeze
     HEADER_ALIASES = { 'identifier' => 'id', 'term' => 'label' }.freeze
     TRUE_VALUES = %w[true 1 yes].freeze
     FALSE_VALUES = %w[false 0 no].freeze
@@ -64,10 +67,7 @@ class ControlledVocabularyImport
 
     def parse_csv(content)
       table = CSV.parse(content, headers: true)
-      headers = (table.headers || []).compact.map { |header| normalize_header(header) }
-      @columns = headers & COLUMNS
-      unknown = headers - COLUMNS
-      @warnings << warning(:unknown_columns, columns: unknown.join(', ')) if unknown.any?
+      register_columns((table.headers || []).compact.map { |header| normalize_header(header) })
       return @errors << error(:missing_label) unless @columns.include?('label')
       return if size_problem(table.size)
 
@@ -87,7 +87,7 @@ class ControlledVocabularyImport
       return if size_problem(terms.size)
 
       @source_key = data['source_key']
-      @columns = terms.grep(Hash).flat_map(&:keys).uniq.map { |key| normalize_header(key) } & COLUMNS
+      register_columns(terms.grep(Hash).flat_map(&:keys).uniq.map { |key| normalize_header(key) })
       terms.each_with_index do |term, index|
         next @errors << error(:invalid_term, line: index + 1) unless term.is_a?(Hash)
 
@@ -107,8 +107,6 @@ class ControlledVocabularyImport
 
       @rows << Row.new(id: attrs['id'].to_s.strip.presence || label,
                        label: label,
-                       alt_labels: split_alt_labels(attrs['alt_labels']),
-                       definition: attrs['definition'].to_s.strip.presence,
                        active: parse_active(attrs['active'], line),
                        line: line)
     end
@@ -127,9 +125,10 @@ class ControlledVocabularyImport
       nil
     end
 
-    def split_alt_labels(value)
-      values = value.is_a?(Array) ? value : value.to_s.split('|')
-      values.map { |entry| entry.to_s.strip }.reject(&:empty?).uniq
+    def register_columns(keys)
+      @columns = keys & COLUMNS
+      unknown = keys - COLUMNS
+      @warnings << warning(:unknown_columns, columns: unknown.join(', ')) if unknown.any?
     end
 
     def check_duplicate_ids

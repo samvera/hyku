@@ -298,8 +298,6 @@ pt-BR:
           column: Coluna
           columns:
             active: true ou false. Uma célula em branco mantém o estado atual do termo.
-            alt_labels: Opcional. Outros nomes pelos quais o termo é encontrado. Separe vários com |.
-            definition: Opcional. O que o termo significa.
             id: Opcional. Por padrão é o label e não pode mudar depois de salvo.
             label: Obrigatória. O que um depositante vê.
           confirm: Confirmar importação
@@ -336,7 +334,6 @@ pt-BR:
           review_heading: 'Revisar a importação para %{name}'
           review_title: Revisar importação
           rules:
-            blank_cell: Uma célula de alt_labels ou definition em branco apaga o valor armazenado.
             missing_column: Uma coluna ausente do arquivo deixa esse atributo intocado.
             missing_rows: Linhas ausentes do arquivo nunca removem termos; desative um termo com active=false.
             order: Os termos seguem a ordem das linhas do arquivo. Para reordenar os termos, edite um download completo e reimporte-o.

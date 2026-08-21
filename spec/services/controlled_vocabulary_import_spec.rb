@@ -37,12 +37,6 @@ RSpec.describe ControlledVocabularyImport do
       expect(plan.additions.size).to eq 1
     end
 
-    it 'splits alternate labels on pipes, dropping blanks and duplicates' do
-      plan = plan_for("label,alt_labels\nBraille,Moon type| |Moon type|Tactile\n")
-
-      expect(plan.additions.first.alt_labels).to eq ['Moon type', 'Tactile']
-    end
-
     it 'coerces active spellings and rejects anything else' do
       plan = plan_for("label,active\nA,TRUE\nB,0\nC,\nD,maybe\n")
 
@@ -132,7 +126,7 @@ RSpec.describe ControlledVocabularyImport do
       )
     end
 
-    it 'accepts per-term alternate labels and definitions' do
+    it 'warns about per-term keys the import does not carry yet' do
       plan = plan_for(<<~YAML, filename: 'terms.yml')
         terms:
         - term: Braille
@@ -141,7 +135,9 @@ RSpec.describe ControlledVocabularyImport do
           definition: Raised-dot writing.
       YAML
 
-      expect(plan.additions.first.to_h).to include(alt_labels: ['Moon type'], definition: 'Raised-dot writing.')
+      expect(plan.errors).to be_empty
+      expect(plan.warnings).to contain_exactly a_string_including('alt_labels, definition')
+      expect(plan.additions.map(&:label)).to eq ['Braille']
     end
 
     it 'warns when the file was exported from a different vocabulary' do
@@ -208,12 +204,6 @@ RSpec.describe ControlledVocabularyImport do
       expect(plan_for("id,label\nbraille,Braille\n").changes?).to be false
     end
 
-    it 'treats a blank cell in a present column as clearing the value' do
-      plan = plan_for("id,label,definition\nbraille,Braille,\n")
-
-      expect(plan.updates.first.changes).to eq('definition' => ['Raised-dot writing.', nil])
-    end
-
     it 'keeps a term current when blank active means leave alone' do
       vocabulary.local_authority_entries.find_by(uri: 'captions').update!(active: false)
 
@@ -275,11 +265,10 @@ RSpec.describe ControlledVocabularyImport do
 
   describe 'apply!' do
     it 'creates terms with the file order and defaults' do
-      apply("id,label,alt_labels,definition,active\n,Braille,Moon type|Tactile,Raised dots.,\nhap,Haptic,,,false\n")
+      apply("id,label,active\n,Braille,\nhap,Haptic,false\n")
 
       braille, haptic = terms.sort_by(&:position)
-      expect(braille).to have_attributes(uri: 'Braille', label: 'Braille', active: true, position: 1,
-                                         alt_labels: ['Moon type', 'Tactile'], definition: 'Raised dots.')
+      expect(braille).to have_attributes(uri: 'Braille', label: 'Braille', active: true, position: 1)
       expect(haptic).to have_attributes(uri: 'hap', active: false, position: 2)
     end
 
@@ -293,14 +282,14 @@ RSpec.describe ControlledVocabularyImport do
                                              created_at: be_within(1.second).of(existing.created_at))
     end
 
-    it 'keeps stored data that the file does not carry' do
+    it 'keeps stored data the import does not carry' do
       vocabulary.local_authority_entries.create!(label: 'Braille', uri: 'braille',
                                                  definition: 'Raised-dot writing.')
 
-      apply("id,label,alt_labels\nbraille,Braille,Moon type\n")
+      apply("id,label,active\nbraille,Braille Type,true\n")
 
+      expect(terms.first.label).to eq 'Braille Type'
       expect(terms.first.definition).to eq 'Raised-dot writing.'
-      expect(terms.first.alt_labels).to eq ['Moon type']
     end
 
     it 'renumbers positions when the file reorders terms' do

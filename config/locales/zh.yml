@@ -416,8 +416,6 @@ zh:
           column: 列
           columns:
             active: true 或 false。单元格留空保持词条当前状态。
-            alt_labels: 可选。词条的其他检索名称，多个值用 | 分隔。
-            definition: 可选。词条的含义。
             id: 可选。默认取 label，保存后无法更改。
             label: 必填。存缴者看到的内容。
           confirm: 确认导入
@@ -454,7 +452,6 @@ zh:
           review_heading: '审核导入 %{name} 的词条'
           review_title: 审核导入
           rules:
-            blank_cell: alt_labels 或 definition 单元格留空会清除已存储的值。
             missing_column: 文件中缺少的列不会改动对应属性。
             missing_rows: 文件中缺少的行绝不会删除词条；请使用 active=false 停用词条。
             order: 词条的顺序取自文件中的行顺序。要重新排序词条，请编辑完整的下载文件并重新导入。

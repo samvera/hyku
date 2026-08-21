@@ -416,8 +416,6 @@ es:
           column: Columna
           columns:
             active: true o false. Una celda en blanco conserva el estado actual del término.
-            alt_labels: Opcional. Otros nombres con los que se encuentra el término. Separe varios con |.
-            definition: Opcional. Qué significa el término.
             id: Opcional. Por defecto es el label y no se puede cambiar una vez guardado.
             label: Obligatoria. Lo que ve un depositante.
           confirm: Confirmar importación
@@ -454,7 +452,6 @@ es:
           review_heading: 'Revisar la importación a %{name}'
           review_title: Revisar importación
           rules:
-            blank_cell: Una celda de alt_labels o definition en blanco borra el valor almacenado.
             missing_column: Una columna que falta en el archivo deja ese atributo sin cambios.
             missing_rows: Las filas que faltan en el archivo nunca eliminan términos; desactive un término con active=false.
             order: Los términos toman su orden del orden de las filas del archivo. Para reordenar los términos, edite una descarga completa y vuelva a importarla.

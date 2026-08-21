@@ -38,8 +38,7 @@
         <%= t('hyku.admin.controlled_vocabulary.import.download_template') %>
       <% end %>
     </div>
-    <% examples = { 'id' => 'Braille', 'label' => 'Braille', 'alt_labels' => 'Moon type|Tactile writing',
-                    'definition' => 'Raised-dot writing read by touch', 'active' => 'true' } %>
+    <% examples = { 'id' => 'braille', 'label' => 'Braille', 'active' => 'true' } %>
     <div class="table-responsive">
       <table class="table table-sm table-borderless mb-2">
         <caption class="sr-only"><%= t('hyku.admin.controlled_vocabulary.import.template_heading') %></caption>
@@ -62,7 +61,7 @@
       </table>
     </div>
     <ul class="form-text text-muted small pl-3 mb-0">
-      <% %w[missing_column blank_cell missing_rows order yaml].each do |rule| %>
+      <% %w[missing_column missing_rows order yaml].each do |rule| %>
         <li><%= t("hyku.admin.controlled_vocabulary.import.rules.#{rule}") %></li>
       <% end %>
     </ul>

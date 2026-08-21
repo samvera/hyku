@@ -287,8 +287,6 @@ en:
           column: Column
           columns:
             active: true or false. A blank cell keeps the term's current state.
-            alt_labels: Optional. Other names the term is found by. Separate several with |.
-            definition: Optional. What the term means.
             id: Optional. Defaults to the label, and cannot change once saved.
             label: Required. What a depositor sees.
           confirm: Confirm import
@@ -325,7 +323,6 @@ en:
           review_heading: 'Review import into %{name}'
           review_title: Review import
           rules:
-            blank_cell: A blank alt_labels or definition cell clears the stored value.
             missing_column: A column missing from the file leaves that attribute untouched.
             missing_rows: Rows missing from the file never remove terms; deactivate a term with active=false.
             order: Terms take their order from the file's row order. To reorder terms, edit a full download and re-import it.

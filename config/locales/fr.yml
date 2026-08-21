@@ -416,8 +416,6 @@ fr:
           column: Colonne
           columns:
             active: true ou false. Une cellule vide conserve l'état actuel du terme.
-            alt_labels: Facultative. Autres noms sous lesquels le terme est trouvé. Séparez plusieurs valeurs par |.
-            definition: Facultative. Ce que le terme signifie.
             id: Facultative. Par défaut le label; ne peut plus changer une fois enregistré.
             label: Obligatoire. Ce qu'un déposant voit.
           confirm: Confirmer l'importation
@@ -454,7 +452,6 @@ fr:
           review_heading: 'Réviser l''importation dans %{name}'
           review_title: Réviser l'importation
           rules:
-            blank_cell: Une cellule alt_labels ou definition vide efface la valeur stockée.
             missing_column: Une colonne absente du fichier laisse cet attribut inchangé.
             missing_rows: Les lignes absentes du fichier ne suppriment jamais de termes; désactivez un terme avec active=false.
             order: Les termes prennent leur ordre de l'ordre des lignes du fichier. Pour réordonner les termes, modifiez un téléchargement complet et réimportez-le.

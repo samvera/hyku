@@ -415,8 +415,6 @@ de:
           column: Spalte
           columns:
             active: true oder false. Eine leere Zelle behält den aktuellen Zustand des Begriffs bei.
-            alt_labels: Optional. Weitere Namen, unter denen der Begriff gefunden wird. Mehrere mit | trennen.
-            definition: Optional. Was der Begriff bedeutet.
             id: Optional. Standardmäßig das label; kann nach dem Speichern nicht mehr geändert werden.
             label: Erforderlich. Was ein Hinterleger sieht.
           confirm: Import bestätigen
@@ -453,7 +451,6 @@ de:
           review_heading: 'Import in %{name} überprüfen'
           review_title: Import überprüfen
           rules:
-            blank_cell: Eine leere Zelle bei alt_labels oder definition löscht den gespeicherten Wert.
             missing_column: Eine in der Datei fehlende Spalte lässt dieses Attribut unverändert.
             missing_rows: In der Datei fehlende Zeilen entfernen niemals Begriffe; deaktivieren Sie einen Begriff mit active=false.
             order: Die Begriffe übernehmen ihre Reihenfolge aus der Zeilenreihenfolge der Datei. Um Begriffe neu zu ordnen, bearbeiten Sie einen vollständigen Download und importieren Sie ihn erneut.

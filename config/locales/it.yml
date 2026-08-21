@@ -408,6 +408,67 @@ it:
         description: Descrizione
         description_help: Facoltativo. Spiega ad altro personale a cosa serve questo vocabolario.
         download: Scarica
+        import:
+          additions_heading: Termini da aggiungere
+          applied: Importati %{additions} termini nuovi e aggiornati %{updates} esistenti.
+          back: Carica un file diverso
+          button: Importa termini
+          column: Colonna
+          columns:
+            active: true o false. Una cella vuota mantiene lo stato attuale del termine.
+            alt_labels: Facoltativa. Altri nomi con cui si trova il termine. Separa più valori con |.
+            definition: Facoltativa. Cosa significa il termine.
+            id: Facoltativa. Per impostazione predefinita è il label e non può cambiare una volta salvato.
+            label: Obbligatoria. Ciò che un depositante vede.
+          confirm: Conferma importazione
+          continue: Continua alla revisione
+          download_template: Scarica i termini attuali (CSV)
+          errors:
+            blank_label: 'Riga %{line}: l''etichetta è vuota.'
+            duplicate_id: 'Righe %{lines}: id di termine duplicato %{id}.'
+            empty: Il file non contiene righe di termini.
+            encoding: Il file deve essere testo UTF-8.
+            invalid_active: 'Riga %{line}: active deve essere true o false.'
+            invalid_term: 'Riga %{line}: non è una voce di termine.'
+            invalid_yaml: 'Impossibile leggere il file come yaml: %{message}'
+            malformed_csv: 'Impossibile leggere il file come CSV: %{message}'
+            missing_label: Il file deve avere una colonna label.
+            not_a_vocabulary: Il file yaml non contiene un elenco di termini.
+            too_many_rows: Il file ha più di %{max} righe. Dividilo e importa le parti separatamente.
+            unsupported: Carica un file .csv, .yml o .yaml.
+          errors_heading: Non è stato importato nulla. Correggi queste righe e carica di nuovo il file.
+          example: Esempio
+          field: Campo
+          file_help: CSV o yaml, fino a 5 MB e 50,000 righe.
+          file_label: File dei termini
+          file_missing: Scegli un file CSV o yaml da importare.
+          file_too_large: Il file è troppo grande. L'importazione accetta file fino a 5 MB.
+          from: Attuale
+          heading: 'Importa termini in %{name}'
+          help: Carica un file di termini da aggiungere a questo vocabolario o per aggiornare i suoi termini esistenti. Nulla viene salvato finché non confermi la revisione.
+          more_rows: e altri %{count}
+          no_changes: Questo file corrisponde ai termini attuali. Non c'è nulla da importare.
+          notes: Note
+          payload_invalid: La revisione è scaduta o i suoi dati sono stati danneggiati. Carica di nuovo il file.
+          reordered: I termini verranno riordinati per corrispondere al file.
+          review_heading: 'Rivedi l''importazione in %{name}'
+          review_title: Rivedi importazione
+          rules:
+            blank_cell: Una cella alt_labels o definition vuota cancella il valore memorizzato.
+            missing_column: Una colonna assente dal file lascia quell'attributo invariato.
+            missing_rows: Le righe assenti dal file non rimuovono mai i termini; disattiva un termine con active=false.
+            order: I termini prendono il loro ordine dall'ordine delle righe del file. Per riordinare i termini, modifica un download completo e reimportalo.
+            yaml: Un file yaml usa lo stesso formato del download yaml.
+          stale: Questo vocabolario è cambiato durante la revisione. Controlla il confronto aggiornato qui sotto e conferma di nuovo.
+          summary: '%{additions} da aggiungere, %{updates} da cambiare (%{deactivations} da disattivare), %{unchanged} invariati.'
+          template_heading: Formato del file
+          title: Importa termini
+          to: Nuovo
+          updates_heading: Termini da cambiare
+          warnings:
+            source_key_mismatch: Questo file è stato esportato da %{source_key} ma viene importato in %{name}.
+            unknown_columns: 'Colonne ignorate: %{columns}.'
+          warnings_heading: Avvisi
         inactive: Inattivo
         label: Etichetta
         label_hint: Ciò che un depositante vede nel modulo. Può essere riformulata senza influire sui record salvati.

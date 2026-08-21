@@ -408,6 +408,67 @@ fr:
         description: Description
         description_help: Facultatif. Explique aux autres membres du personnel à quoi sert ce vocabulaire.
         download: Télécharger
+        import:
+          additions_heading: Termes à ajouter
+          applied: '%{additions} nouveaux termes importés et %{updates} termes existants mis à jour.'
+          back: Téléverser un autre fichier
+          button: Importer les termes
+          column: Colonne
+          columns:
+            active: true ou false. Une cellule vide conserve l'état actuel du terme.
+            alt_labels: Facultative. Autres noms sous lesquels le terme est trouvé. Séparez plusieurs valeurs par |.
+            definition: Facultative. Ce que le terme signifie.
+            id: Facultative. Par défaut le label; ne peut plus changer une fois enregistré.
+            label: Obligatoire. Ce qu'un déposant voit.
+          confirm: Confirmer l'importation
+          continue: Continuer vers la révision
+          download_template: Télécharger les termes actuels (CSV)
+          errors:
+            blank_label: 'Ligne %{line} : le libellé est vide.'
+            duplicate_id: 'Lignes %{lines} : identifiant de terme %{id} en double.'
+            empty: Le fichier ne contient aucune ligne de terme.
+            encoding: Le fichier doit être du texte UTF-8.
+            invalid_active: 'Ligne %{line} : active doit être true ou false.'
+            invalid_term: 'Ligne %{line} : ce n''est pas une entrée de terme.'
+            invalid_yaml: 'Le fichier n''a pas pu être lu comme yaml : %{message}'
+            malformed_csv: 'Le fichier n''a pas pu être lu comme CSV : %{message}'
+            missing_label: Le fichier doit contenir une colonne label.
+            not_a_vocabulary: Le fichier yaml ne contient pas de liste de termes.
+            too_many_rows: Le fichier compte plus de %{max} lignes. Divisez-le et importez les parties séparément.
+            unsupported: Téléversez un fichier .csv, .yml ou .yaml.
+          errors_heading: Rien n'a été importé. Corrigez ces lignes et téléversez à nouveau le fichier.
+          example: Exemple
+          field: Champ
+          file_help: CSV ou yaml, jusqu'à 5 MB et 50,000 lignes.
+          file_label: Fichier de termes
+          file_missing: Choisissez un fichier CSV ou yaml à importer.
+          file_too_large: Ce fichier est trop volumineux. L'importation accepte les fichiers jusqu'à 5 MB.
+          from: Actuel
+          heading: 'Importer des termes dans %{name}'
+          help: Téléversez un fichier de termes pour les ajouter à ce vocabulaire ou mettre à jour ses termes existants. Rien n'est enregistré tant que vous n'avez pas confirmé la révision.
+          more_rows: et %{count} de plus
+          no_changes: Ce fichier correspond aux termes actuels. Il n'y a rien à importer.
+          notes: Remarques
+          payload_invalid: La révision a expiré ou ses données ont été corrompues. Téléversez à nouveau le fichier.
+          reordered: Les termes seront réordonnés pour correspondre au fichier.
+          review_heading: 'Réviser l''importation dans %{name}'
+          review_title: Réviser l'importation
+          rules:
+            blank_cell: Une cellule alt_labels ou definition vide efface la valeur stockée.
+            missing_column: Une colonne absente du fichier laisse cet attribut inchangé.
+            missing_rows: Les lignes absentes du fichier ne suppriment jamais de termes; désactivez un terme avec active=false.
+            order: Les termes prennent leur ordre de l'ordre des lignes du fichier. Pour réordonner les termes, modifiez un téléchargement complet et réimportez-le.
+            yaml: Un fichier yaml utilise le même format que le téléchargement yaml.
+          stale: Ce vocabulaire a changé pendant votre révision. Vérifiez la comparaison mise à jour ci-dessous et confirmez à nouveau.
+          summary: '%{additions} à ajouter, %{updates} à modifier (%{deactivations} à désactiver), %{unchanged} inchangés.'
+          template_heading: Format du fichier
+          title: Importer des termes
+          to: Nouveau
+          updates_heading: Termes à modifier
+          warnings:
+            source_key_mismatch: Ce fichier a été exporté depuis %{source_key} mais est importé dans %{name}.
+            unknown_columns: 'Colonnes ignorées : %{columns}.'
+          warnings_heading: Avertissements
         inactive: Inactif
         label: Libellé
         label_hint: Ce qu'un déposant voit dans le formulaire. Peut être reformulé sans affecter les enregistrements stockés.

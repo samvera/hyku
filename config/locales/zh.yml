@@ -408,6 +408,67 @@ zh:
         description: 描述
         description_help: 可选。向其他工作人员说明此词表的用途。
         download: 下载
+        import:
+          additions_heading: 待添加的词条
+          applied: 已导入 %{additions} 个新词条，并更新 %{updates} 个现有词条。
+          back: 上传其他文件
+          button: 导入词条
+          column: 列
+          columns:
+            active: true 或 false。单元格留空保持词条当前状态。
+            alt_labels: 可选。词条的其他检索名称，多个值用 | 分隔。
+            definition: 可选。词条的含义。
+            id: 可选。默认取 label，保存后无法更改。
+            label: 必填。存缴者看到的内容。
+          confirm: 确认导入
+          continue: 继续进入审核
+          download_template: 下载当前词条（CSV）
+          errors:
+            blank_label: '第 %{line} 行：标签为空。'
+            duplicate_id: '第 %{lines} 行：词条 id %{id} 重复。'
+            empty: 文件没有词条行。
+            encoding: 文件必须是 UTF-8 文本。
+            invalid_active: '第 %{line} 行：active 必须是 true 或 false。'
+            invalid_term: '第 %{line} 行：不是词条条目。'
+            invalid_yaml: '文件无法作为 yaml 读取：%{message}'
+            malformed_csv: '文件无法作为 CSV 读取：%{message}'
+            missing_label: 文件需要 label 列。
+            not_a_vocabulary: 该 yaml 文件没有词条列表。
+            too_many_rows: 文件超过 %{max} 行。请拆分后分批导入。
+            unsupported: 请上传 .csv、.yml 或 .yaml 文件。
+          errors_heading: 未导入任何内容。请修正这些行后重新上传文件。
+          example: 示例
+          field: 字段
+          file_help: CSV 或 yaml，最大 5 MB，最多 50,000 行。
+          file_label: 词条文件
+          file_missing: 请选择要导入的 CSV 或 yaml 文件。
+          file_too_large: 该文件过大。导入最多接受 5 MB 的文件。
+          from: 当前
+          heading: '将词条导入 %{name}'
+          help: 上传词条文件，为此词表添加词条或更新其现有词条。在确认审核之前不会保存任何内容。
+          more_rows: 及另外 %{count} 个
+          no_changes: 此文件与当前词条一致，没有可导入的内容。
+          notes: 说明
+          payload_invalid: 审核已过期或其数据已损坏。请重新上传文件。
+          reordered: 词条将重新排序以与文件一致。
+          review_heading: '审核导入 %{name} 的词条'
+          review_title: 审核导入
+          rules:
+            blank_cell: alt_labels 或 definition 单元格留空会清除已存储的值。
+            missing_column: 文件中缺少的列不会改动对应属性。
+            missing_rows: 文件中缺少的行绝不会删除词条；请使用 active=false 停用词条。
+            order: 词条的顺序取自文件中的行顺序。要重新排序词条，请编辑完整的下载文件并重新导入。
+            yaml: yaml 文件使用与 yaml 下载相同的格式。
+          stale: 在您审核期间此词表发生了变化。请查看下方更新后的对比并再次确认。
+          summary: '%{additions} 个待添加，%{updates} 个待更改（%{deactivations} 个待停用），%{unchanged} 个无变化。'
+          template_heading: 文件格式
+          title: 导入词条
+          to: 新值
+          updates_heading: 待更改的词条
+          warnings:
+            source_key_mismatch: 此文件从 %{source_key} 导出，但正在导入 %{name}。
+            unknown_columns: '已忽略的列：%{columns}。'
+          warnings_heading: 警告
         inactive: 未启用
         label: 标签
         label_hint: 存缴者在表单中看到的内容。可以放心改写，不会影响已存储的记录。

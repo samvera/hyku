@@ -161,6 +161,9 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   scope :dashboard, module: 'hyrax/dashboard' do
     resources :controlled_vocabularies, only: [:index, :show, :new, :create] do
       resources :terms, only: [:new, :create], controller: 'controlled_vocabulary_terms'
+      resource :import, only: [:new, :create], controller: 'controlled_vocabulary_imports' do
+        post :confirm
+      end
     end
   end
 

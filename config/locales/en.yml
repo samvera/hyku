@@ -279,6 +279,67 @@ en:
         description: Description
         description_help: Optional. Explains to other staff what this vocabulary is for.
         download: Download
+        import:
+          additions_heading: Terms to add
+          applied: Imported %{additions} new and updated %{updates} existing terms.
+          back: Upload a different file
+          button: Import terms
+          column: Column
+          columns:
+            active: true or false. A blank cell keeps the term's current state.
+            alt_labels: Optional. Other names the term is found by. Separate several with |.
+            definition: Optional. What the term means.
+            id: Optional. Defaults to the label, and cannot change once saved.
+            label: Required. What a depositor sees.
+          confirm: Confirm import
+          continue: Continue to review
+          download_template: Download current terms (CSV)
+          errors:
+            blank_label: 'Row %{line}: the label is blank.'
+            duplicate_id: 'Rows %{lines}: duplicate term id %{id}.'
+            empty: The file has no term rows.
+            encoding: The file must be UTF-8 text.
+            invalid_active: 'Row %{line}: active must be true or false.'
+            invalid_term: 'Row %{line}: not a term entry.'
+            invalid_yaml: 'The file could not be read as yaml: %{message}'
+            malformed_csv: 'The file could not be read as CSV: %{message}'
+            missing_label: The file needs a label column.
+            not_a_vocabulary: The yaml file has no terms list.
+            too_many_rows: The file has more than %{max} rows. Split it and import the parts separately.
+            unsupported: Upload a .csv, .yml, or .yaml file.
+          errors_heading: Nothing was imported. Fix these rows and upload the file again.
+          example: Example
+          field: Field
+          file_help: CSV or yaml, up to 5 MB and 50,000 rows.
+          file_label: Terms file
+          file_missing: Choose a CSV or yaml file to import.
+          file_too_large: That file is too large. The importer accepts files up to 5 MB.
+          from: Current
+          heading: 'Import terms into %{name}'
+          help: Upload a file of terms to add to this vocabulary or update its existing terms. Nothing is saved until you confirm the review.
+          more_rows: and %{count} more
+          no_changes: This file matches the current terms. There is nothing to import.
+          notes: Notes
+          payload_invalid: The review expired or its data was corrupted. Upload the file again.
+          reordered: The terms will be reordered to match the file.
+          review_heading: 'Review import into %{name}'
+          review_title: Review import
+          rules:
+            blank_cell: A blank alt_labels or definition cell clears the stored value.
+            missing_column: A column missing from the file leaves that attribute untouched.
+            missing_rows: Rows missing from the file never remove terms; deactivate a term with active=false.
+            order: Terms take their order from the file's row order. To reorder terms, edit a full download and re-import it.
+            yaml: A yaml file uses the same format as the yaml download.
+          stale: This vocabulary changed while you were reviewing. Check the updated comparison below and confirm again.
+          summary: '%{additions} to add, %{updates} to change (%{deactivations} to deactivate), %{unchanged} unchanged.'
+          template_heading: File format
+          title: Import terms
+          to: New
+          updates_heading: Terms to change
+          warnings:
+            source_key_mismatch: This file was exported from %{source_key} but is being imported into %{name}.
+            unknown_columns: 'Ignored columns: %{columns}.'
+          warnings_heading: Warnings
         inactive: Inactive
         label: Label
         label_hint: What a depositor sees in the form. Safe to reword without affecting stored records.

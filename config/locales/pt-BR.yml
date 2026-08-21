@@ -83,7 +83,7 @@ pt-BR:
         search_button: Ir
         advanced: Avançada
       browse:
-        heading: Navegue pelo acervo
+        heading: Navegar
         toggle: Mostrar facetas
       featured:
         unfeature_confirm: "Remover isto da lista de destaques?"
@@ -99,7 +99,7 @@ pt-BR:
         view_all: Ver todas as coleções
       recent:
         ago: "há %{time}"
-        heading: Recém-catalogados
+        heading: Adicionados recentemente
         view_all: "Ver tudo"
       researcher:
         heading: Pesquisador em destaque

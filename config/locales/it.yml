@@ -201,7 +201,7 @@ it:
         search_button: Vai
         advanced: Avanzata
       browse:
-        heading: Sfoglia la collezione
+        heading: Sfoglia
         toggle: Mostra faccette
       featured:
         unfeature_confirm: "Rimuovere questo dagli elementi in evidenza?"
@@ -217,7 +217,7 @@ it:
         view_all: Vedi tutte le collezioni
       recent:
         ago: "%{time} fa"
-        heading: Catalogati di recente
+        heading: Aggiunti di recente
         view_all: "Vedi tutto"
       researcher:
         heading: Ricercatore in evidenza

@@ -414,6 +414,68 @@ de:
         description: Beschreibung
         description_help: Optional. Erklärt anderen Mitarbeitenden, wofür dieses Vokabular gedacht ist.
         download: Herunterladen
+        import:
+          additions_heading: Hinzuzufügende Begriffe
+          applied: Es wurden %{additions} neue Begriffe importiert und %{updates} bestehende aktualisiert.
+          applied_reordered: Die Begriffe wurden neu geordnet, um der Datei zu entsprechen.
+          back: Eine andere Datei hochladen
+          button: Begriffe importieren
+          column: Spalte
+          columns:
+            active: true oder false. Eine leere Zelle legt einen neuen Begriff als aktiv an und behält bei einem bestehenden Begriff den aktuellen Zustand bei.
+            id: Optional. Standardmäßig das label; kann nach dem Speichern nicht mehr geändert werden.
+            label: Erforderlich. Was ein Hinterleger sieht.
+          confirm: Import bestätigen
+          continue: Weiter zur Überprüfung
+          download_template: Aktuelle Begriffe herunterladen (CSV)
+          errors:
+            blank_label: 'Zeile %{line}: die Bezeichnung ist leer.'
+            duplicate_column: 'Die Datei enthält Spalten mit derselben Bedeutung: %{columns}.'
+            duplicate_id: 'Zeilen %{lines}: doppelte Begriffs-ID %{id}.'
+            empty: Die Datei enthält keine Begriffszeilen.
+            encoding: Die Datei muss UTF-8-Text sein.
+            invalid_active: 'Zeile %{line}: active muss true oder false sein.'
+            invalid_term: 'Zeile %{line}: kein Begriffseintrag.'
+            invalid_yaml: 'Die Datei konnte nicht als yaml gelesen werden: %{message}'
+            malformed_csv: 'Die Datei konnte nicht als CSV gelesen werden: %{message}'
+            missing_label: Die Datei benötigt eine label-Spalte.
+            not_a_vocabulary: Die yaml-Datei enthält keine Begriffsliste.
+            too_long: 'Zeile %{line}: ID und Bezeichnung dürfen höchstens %{max} Zeichen lang sein.'
+            too_many_rows: Die Datei hat mehr als %{max} Zeilen. Teilen Sie sie auf und importieren Sie die Teile einzeln.
+            unsupported: Laden Sie eine .csv-, .yml- oder .yaml-Datei hoch.
+          errors_heading: Es wurde nichts importiert. Korrigieren Sie diese Zeilen und laden Sie die Datei erneut hoch.
+          example: Beispiel
+          field: Feld
+          file_help: CSV oder yaml, bis zu 5 MB und 50,000 Zeilen.
+          file_label: Begriffsdatei
+          file_missing: Wählen Sie eine CSV- oder yaml-Datei zum Importieren aus.
+          file_too_large: Diese Datei ist zu groß. Der Import akzeptiert Dateien bis zu 5 MB.
+          from: Aktuell
+          heading: 'Begriffe in %{name} importieren'
+          help: Laden Sie eine Datei mit Begriffen hoch, um sie diesem Vokabular hinzuzufügen oder seine bestehenden Begriffe zu aktualisieren. Nichts wird gespeichert, bis Sie die Überprüfung bestätigen.
+          more_rows: und %{count} weitere
+          no_changes: Diese Datei stimmt mit den aktuellen Begriffen überein. Es gibt nichts zu importieren.
+          notes: Hinweise
+          payload_invalid: Die Überprüfung ist abgelaufen oder ihre Daten wurden beschädigt. Laden Sie die Datei erneut hoch.
+          reordered: Die Begriffe werden neu geordnet, um der Datei zu entsprechen.
+          review_heading: 'Import in %{name} überprüfen'
+          review_title: Import überprüfen
+          rules:
+            missing_column: Eine in der Datei fehlende Spalte lässt dieses Attribut unverändert.
+            missing_rows: In der Datei fehlende Zeilen entfernen niemals Begriffe; deaktivieren Sie einen Begriff mit active=false.
+            order: Die Begriffe übernehmen ihre Reihenfolge aus der Zeilenreihenfolge der Datei. Um Begriffe neu zu ordnen, bearbeiten Sie einen vollständigen Download und importieren Sie ihn erneut.
+            yaml: Eine yaml-Datei verwendet dasselbe Format wie der yaml-Download.
+          stale: Dieses Vokabular hat sich während Ihrer Überprüfung geändert. Prüfen Sie den aktualisierten Vergleich unten und bestätigen Sie erneut.
+          summary: '%{additions} hinzuzufügen, %{updates} zu ändern (%{deactivations} zu deaktivieren), %{unchanged} unverändert.'
+          template_heading: Dateiformat
+          title: Begriffe importieren
+          to: Neu
+          updates_heading: Zu ändernde Begriffe
+          warnings:
+            partial_order: Die Datei lässt bestehende Begriffe aus, daher wurde ihre Zeilenreihenfolge nicht übernommen. Zum Neuordnen bearbeiten Sie einen vollständigen Download.
+            source_key_mismatch: Diese Datei wurde aus %{source_key} exportiert, wird aber in %{name} importiert.
+            unknown_columns: 'Ignorierte Spalten: %{columns}.'
+          warnings_heading: Warnungen
         inactive: Inaktiv
         label: Bezeichnung
         label_hint: Was ein Hinterleger im Formular sieht. Kann gefahrlos umformuliert werden, ohne gespeicherte Datensätze zu beeinflussen.

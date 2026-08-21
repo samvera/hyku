@@ -297,6 +297,68 @@ pt-BR:
         description: Descrição
         description_help: Opcional. Explica a outros funcionários para que serve este vocabulário.
         download: Baixar
+        import:
+          additions_heading: Termos a adicionar
+          applied: Foram importados %{additions} termos novos e atualizados %{updates} existentes.
+          applied_reordered: Os termos foram reordenados para corresponder ao arquivo.
+          back: Enviar um arquivo diferente
+          button: Importar termos
+          column: Coluna
+          columns:
+            active: true ou false. Uma célula em branco adiciona um novo termo como ativo e mantém o estado atual de um termo existente.
+            id: Opcional. Por padrão é o label e não pode mudar depois de salvo.
+            label: Obrigatória. O que um depositante vê.
+          confirm: Confirmar importação
+          continue: Continuar para a revisão
+          download_template: Baixar os termos atuais (CSV)
+          errors:
+            blank_label: 'Linha %{line}: o rótulo está em branco.'
+            duplicate_column: 'O arquivo tem colunas que significam a mesma coisa: %{columns}.'
+            duplicate_id: 'Linhas %{lines}: id de termo duplicado %{id}.'
+            empty: O arquivo não tem linhas de termos.
+            encoding: O arquivo deve ser texto UTF-8.
+            invalid_active: 'Linha %{line}: active deve ser true ou false.'
+            invalid_term: 'Linha %{line}: não é uma entrada de termo.'
+            invalid_yaml: 'O arquivo não pôde ser lido como yaml: %{message}'
+            malformed_csv: 'O arquivo não pôde ser lido como CSV: %{message}'
+            missing_label: O arquivo precisa de uma coluna label.
+            not_a_vocabulary: O arquivo yaml não tem uma lista de termos.
+            too_long: 'Linha %{line}: o id e o rótulo podem ter no máximo %{max} caracteres.'
+            too_many_rows: O arquivo tem mais de %{max} linhas. Divida-o e importe as partes separadamente.
+            unsupported: Envie um arquivo .csv, .yml ou .yaml.
+          errors_heading: Nada foi importado. Corrija estas linhas e envie o arquivo novamente.
+          example: Exemplo
+          field: Campo
+          file_help: CSV ou yaml, até 5 MB e 50,000 linhas.
+          file_label: Arquivo de termos
+          file_missing: Escolha um arquivo CSV ou yaml para importar.
+          file_too_large: Esse arquivo é grande demais. A importação aceita arquivos de até 5 MB.
+          from: Atual
+          heading: 'Importar termos para %{name}'
+          help: Envie um arquivo de termos para adicioná-los a este vocabulário ou atualizar seus termos existentes. Nada é salvo até que você confirme a revisão.
+          more_rows: e mais %{count}
+          no_changes: Este arquivo corresponde aos termos atuais. Não há nada a importar.
+          notes: Observações
+          payload_invalid: A revisão expirou ou seus dados foram corrompidos. Envie o arquivo novamente.
+          reordered: Os termos serão reordenados para corresponder ao arquivo.
+          review_heading: 'Revisar a importação para %{name}'
+          review_title: Revisar importação
+          rules:
+            missing_column: Uma coluna ausente do arquivo deixa esse atributo intocado.
+            missing_rows: Linhas ausentes do arquivo nunca removem termos; desative um termo com active=false.
+            order: Os termos seguem a ordem das linhas do arquivo. Para reordenar os termos, edite um download completo e reimporte-o.
+            yaml: Um arquivo yaml usa o mesmo formato do download yaml.
+          stale: Este vocabulário mudou enquanto você revisava. Verifique a comparação atualizada abaixo e confirme novamente.
+          summary: '%{additions} a adicionar, %{updates} a alterar (%{deactivations} a desativar), %{unchanged} sem alterações.'
+          template_heading: Formato do arquivo
+          title: Importar termos
+          to: Novo
+          updates_heading: Termos a alterar
+          warnings:
+            partial_order: O arquivo omite termos existentes, então a ordem de suas linhas não foi aplicada. Para reordenar, edite um download completo.
+            source_key_mismatch: Este arquivo foi exportado de %{source_key}, mas está sendo importado para %{name}.
+            unknown_columns: 'Colunas ignoradas: %{columns}.'
+          warnings_heading: Avisos
         inactive: Inativo
         label: Rótulo
         label_hint: O que um depositante vê no formulário. Pode ser reformulado sem afetar os registros armazenados.

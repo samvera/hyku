@@ -415,6 +415,68 @@ es:
         description: Descripción
         description_help: Opcional. Explica a otro personal para qué sirve este vocabulario.
         download: Descargar
+        import:
+          additions_heading: Términos a agregar
+          applied: Se importaron %{additions} términos nuevos y se actualizaron %{updates} existentes.
+          applied_reordered: Los términos se reordenaron para coincidir con el archivo.
+          back: Subir un archivo diferente
+          button: Importar términos
+          column: Columna
+          columns:
+            active: true o false. Una celda en blanco agrega un término nuevo como activo y conserva el estado actual de un término existente.
+            id: Opcional. Por defecto es el label y no se puede cambiar una vez guardado.
+            label: Obligatoria. Lo que ve un depositante.
+          confirm: Confirmar importación
+          continue: Continuar a la revisión
+          download_template: Descargar los términos actuales (CSV)
+          errors:
+            blank_label: 'Fila %{line}: la etiqueta está en blanco.'
+            duplicate_column: 'El archivo tiene columnas que significan lo mismo: %{columns}.'
+            duplicate_id: 'Filas %{lines}: id de término duplicado %{id}.'
+            empty: El archivo no tiene filas de términos.
+            encoding: El archivo debe ser texto UTF-8.
+            invalid_active: 'Fila %{line}: active debe ser true o false.'
+            invalid_term: 'Fila %{line}: no es una entrada de término.'
+            invalid_yaml: 'El archivo no se pudo leer como yaml: %{message}'
+            malformed_csv: 'El archivo no se pudo leer como CSV: %{message}'
+            missing_label: El archivo necesita una columna label.
+            not_a_vocabulary: El archivo yaml no tiene una lista de términos.
+            too_long: 'Fila %{line}: el id y la etiqueta pueden tener como máximo %{max} caracteres.'
+            too_many_rows: El archivo tiene más de %{max} filas. Divídalo e importe las partes por separado.
+            unsupported: Suba un archivo .csv, .yml o .yaml.
+          errors_heading: No se importó nada. Corrija estas filas y vuelva a subir el archivo.
+          example: Ejemplo
+          field: Campo
+          file_help: CSV o yaml, hasta 5 MB y 50,000 filas.
+          file_label: Archivo de términos
+          file_missing: Elija un archivo CSV o yaml para importar.
+          file_too_large: Ese archivo es demasiado grande. La importación acepta archivos de hasta 5 MB.
+          from: Actual
+          heading: 'Importar términos a %{name}'
+          help: Suba un archivo de términos para agregarlos a este vocabulario o actualizar sus términos existentes. Nada se guarda hasta que confirme la revisión.
+          more_rows: y %{count} más
+          no_changes: Este archivo coincide con los términos actuales. No hay nada que importar.
+          notes: Notas
+          payload_invalid: La revisión expiró o sus datos se corrompieron. Vuelva a subir el archivo.
+          reordered: Los términos se reordenarán para coincidir con el archivo.
+          review_heading: 'Revisar la importación a %{name}'
+          review_title: Revisar importación
+          rules:
+            missing_column: Una columna que falta en el archivo deja ese atributo sin cambios.
+            missing_rows: Las filas que faltan en el archivo nunca eliminan términos; desactive un término con active=false.
+            order: Los términos toman su orden del orden de las filas del archivo. Para reordenar los términos, edite una descarga completa y vuelva a importarla.
+            yaml: Un archivo yaml usa el mismo formato que la descarga yaml.
+          stale: Este vocabulario cambió mientras lo revisaba. Verifique la comparación actualizada a continuación y confirme de nuevo.
+          summary: '%{additions} a agregar, %{updates} a cambiar (%{deactivations} a desactivar), %{unchanged} sin cambios.'
+          template_heading: Formato del archivo
+          title: Importar términos
+          to: Nuevo
+          updates_heading: Términos a cambiar
+          warnings:
+            partial_order: El archivo omite términos existentes, por lo que su orden de filas no se aplicó. Para reordenar, edite una descarga completa.
+            source_key_mismatch: Este archivo se exportó desde %{source_key} pero se está importando a %{name}.
+            unknown_columns: 'Columnas ignoradas: %{columns}.'
+          warnings_heading: Advertencias
         inactive: Inactivo
         label: Etiqueta
         label_hint: Lo que ve un depositante en el formulario. Se puede reformular sin afectar los registros almacenados.

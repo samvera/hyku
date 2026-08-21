@@ -161,6 +161,9 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   scope :dashboard, module: 'hyrax/dashboard' do
     resources :controlled_vocabularies, only: [:index, :new, :create] do
       resources :terms, only: [:new, :create], controller: 'controlled_vocabulary_terms'
+      resource :import, only: [:new, :create], controller: 'controlled_vocabulary_imports' do
+        post :confirm
+      end
     end
     # Declared separately so a remote source key keeps its slash: profiles cite
     # `loc/subjects`, and the default segment stops at one. Anchored to a single

@@ -42,6 +42,15 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
         expect(response.body).to include 'reading_rooms'
       end
 
+      # Hyrax sets `.table-responsive { overflow-x: visible }` app-wide, cancelling
+      # Bootstrap's scroll for every table. Without the extra class the listing is
+      # cut off at the container edge on a narrow screen rather than scrolling.
+      it 'keeps the listing scrollable on a narrow screen' do
+        get "http://#{account.cname}/dashboard/controlled_vocabularies"
+
+        expect(response.body).to include 'controlled-vocabularies-scroll'
+      end
+
       # Only vocabularies managed here have one, so it sits under the name rather
       # than in a column that would be empty for most rows.
       it 'shows the description of a vocabulary that has one' do
@@ -237,6 +246,49 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
       end
     end
 
+    # Every authority has a page, because it reports where the vocabulary is used.
+    # A remote service cannot be enumerated, so the page says where its terms live
+    # rather than showing an empty list that reads as "none".
+    describe 'a remote authority' do
+      it 'opens, and explains that its terms are not listed' do
+        get "http://#{account.cname}/dashboard/controlled_vocabularies/loc/subjects"
+
+        expect(response).to have_http_status(:success)
+        expect(response.body).to include 'loc/subjects'
+        # Fragments rather than the whole translations: they carry apostrophes, which
+        # the body escapes to &#39;, so a literal match would pass vacuously.
+        expect(response.body).not_to include 'has no terms yet'
+        expect(response.body).to include 'no list to show here'
+      end
+    end
+
+    # A remote source key carries a slash, which the default :id segment stops at.
+    # The url helper escapes it to %2F, so a wrong route yields a link that renders
+    # and then 404s rather than failing loudly.
+    it 'routes a source key containing a slash' do
+      get "http://#{account.cname}/dashboard/controlled_vocabularies/loc/iso639-1"
+
+      expect(response).to have_http_status(:success)
+      expect(response.body).to include 'loc/iso639-1'
+    end
+
+    describe 'a vocabulary whose terms cannot be read' do
+      before do
+        allow(ControlledVocabularyCatalog).to receive(:file_based_names).and_return(%w[map_regions])
+        allow(ControlledVocabularyCatalog).to receive(:terms_for).and_return(nil)
+      end
+
+      # nil is "cannot say", not "none": reporting it empty sends staff looking for
+      # terms they never added.
+      it 'says so instead of claiming it has no terms' do
+        get "http://#{account.cname}/dashboard/controlled_vocabularies/map_regions"
+
+        expect(response).to have_http_status(:success)
+        expect(response.body).to include 'terms cannot be read'
+        expect(response.body).not_to include 'has no terms yet'
+      end
+    end
+
     it 'returns not found for a vocabulary that does not exist' do
       get "http://#{account.cname}/dashboard/controlled_vocabularies/not_a_vocabulary"
 
@@ -250,9 +302,98 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
         expect(response).to have_http_status(:success)
       end
 
+      # A vocabulary cannot be deleted and its source key is fixed at creation, so
+      # the values are shown for review before anything is written. The key is
+      # derived server-side here, so what the page shows is what gets saved.
+      describe 'the confirmation step' do
+        it 'shows what will be saved instead of creating straight away' do
+          post "http://#{account.cname}/dashboard/controlled_vocabularies",
+               params: { param_key => { label: 'Lab Names', description: 'Where the work was done.' } }
+
+          created = Apartment::Tenant.switch(account.tenant) { Qa::LocalAuthority.exists?(name: 'lab_names') }
+
+          expect(response).to have_http_status(:success)
+          expect(created).to be false
+          expect(response.body).to include 'Lab Names'
+          expect(response.body).to include 'lab_names'
+          expect(response.body).to include 'Where the work was done.'
+        end
+
+        # parameterize transliterates, so an accented label does not yield the key a
+        # reader would guess. This is the case the review step earns its keep on.
+        it 'shows the transliterated key for an accented name' do
+          post "http://#{account.cname}/dashboard/controlled_vocabularies",
+               params: { param_key => { label: 'Café Terms' } }
+
+          expect(response.body).to include 'cafe_terms'
+        end
+
+        it 'offers a way back to the form without saving' do
+          post "http://#{account.cname}/dashboard/controlled_vocabularies",
+               params: { param_key => { label: 'Lab Names' } }
+
+          expect(response.body).to include '/dashboard/controlled_vocabularies/new'
+        end
+
+        it 'carries the values back without the csrf token' do
+          post "http://#{account.cname}/dashboard/controlled_vocabularies",
+               params: { param_key => { label: 'Lab Names' } }
+
+          # The link that carries the values, not the breadcrumb to a blank form.
+          back = response.body.scan(%r{href="([^"]*controlled_vocabularies/new\?[^"]*)"})
+                              .flatten.find { |href| href.include?('local_authority') }
+
+          expect(back).to include 'Lab+Names'
+          expect(back).not_to include 'authenticity_token'
+        end
+
+        # The way back carries the values with it, so spotting a typo on review does
+        # not mean retyping the name and description.
+        it 'returns to the form with what was entered still filled in' do
+          get "http://#{account.cname}/dashboard/controlled_vocabularies/new",
+              params: { param_key => { label: 'Lab Names', description: 'Where the work was done.' } }
+
+          expect(response.body).to include 'Lab Names'
+          expect(response.body).to include 'Where the work was done.'
+        end
+
+        # The row cannot be deleted once written, so anything short of an actual
+        # confirmation has to land on the review step rather than saving.
+        it 'reviews rather than saves when the confirmation is empty' do
+          post "http://#{account.cname}/dashboard/controlled_vocabularies",
+               params: { param_key => { label: 'Lab Names' }, confirmed: '' }
+
+          created = Apartment::Tenant.switch(account.tenant) { Qa::LocalAuthority.exists?(name: 'lab_names') }
+
+          expect(created).to be false
+          expect(response).to have_http_status(:success)
+        end
+
+        it 'reviews rather than saves when the confirmation says false' do
+          post "http://#{account.cname}/dashboard/controlled_vocabularies",
+               params: { param_key => { label: 'Lab Names' }, confirmed: 'false' }
+
+          created = Apartment::Tenant.switch(account.tenant) { Qa::LocalAuthority.exists?(name: 'lab_names') }
+
+          expect(created).to be false
+          expect(response).to have_http_status(:success)
+        end
+
+        # Validation runs before the review, so a name that cannot be saved is
+        # reported at once rather than after a confirmation that would fail.
+        it 'redisplays the form rather than confirming an invalid vocabulary' do
+          post "http://#{account.cname}/dashboard/controlled_vocabularies",
+               params: { param_key => { label: 'geonames' } }
+
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response.body).to include 'already in use'
+        end
+      end
+
       it 'creates the vocabulary and opens it so terms can be added' do
         post "http://#{account.cname}/dashboard/controlled_vocabularies",
-             params: { param_key => { label: 'Lab Names', description: 'Where the work was done.' } }
+             params: { param_key => { label: 'Lab Names', description: 'Where the work was done.' },
+                       confirmed: 'true' }
 
         vocabulary = Apartment::Tenant.switch(account.tenant) { Qa::LocalAuthority.find_by(name: 'lab_names') }
 
@@ -262,9 +403,22 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
         expect(response.location).to include '/dashboard/controlled_vocabularies/lab_names'
       end
 
+      # The review page invites a re-submit, so two confirmations of the same name can
+      # race past the validation and collide on the unique index.
+      it 'reports a name taken between validation and save' do
+        allow_any_instance_of(Qa::LocalAuthority).to receive(:save) # rubocop:disable RSpec/AnyInstance
+          .and_raise(ActiveRecord::RecordNotUnique, 'duplicate key value violates unique constraint')
+
+        post "http://#{account.cname}/dashboard/controlled_vocabularies",
+             params: { param_key => { label: 'Lab Names' }, confirmed: 'true' }
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.body).to include 'lab_names'
+      end
+
       it 'ignores a name supplied in the request' do
         post "http://#{account.cname}/dashboard/controlled_vocabularies",
-             params: { param_key => { label: 'Lab Names', name: 'something_else' } }
+             params: { param_key => { label: 'Lab Names', name: 'something_else' }, confirmed: 'true' }
 
         names = Apartment::Tenant.switch(account.tenant) { Qa::LocalAuthority.pluck(:name) }
 
@@ -287,17 +441,84 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
         expect(response.body).to include '/dashboard/controlled_vocabularies/new'
       end
 
-      # An accented label is the case a client-side preview would get wrong:
-      # parameterize transliterates, so the key is cafe_terms, not caf_terms.
-      it 'shows the source key it will use when redisplaying' do
-        post "http://#{account.cname}/dashboard/controlled_vocabularies",
-             params: { param_key => { label: 'Café Terms' } }
-        # Duplicate the label so the form comes back rather than saving.
+      it 'refuses a duplicate, naming the key already taken' do
+        Apartment::Tenant.switch(account.tenant) { Qa::LocalAuthority.create!(label: 'Café Terms') }
+
         post "http://#{account.cname}/dashboard/controlled_vocabularies",
              params: { param_key => { label: 'Café Terms' } }
 
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.body).to include 'cafe_terms'
+      end
+    end
+
+    describe 'adding a term' do
+      let(:term_key) { Qa::LocalAuthorityEntry.model_name.param_key }
+
+      it 'saves the term and returns to the vocabulary' do
+        Apartment::Tenant.switch(account.tenant) { Qa::LocalAuthority.create!(label: 'Lab Names') }
+
+        post "http://#{account.cname}/dashboard/controlled_vocabularies/lab_names/terms",
+             params: { term_key => { label: 'Wet Lab' } }
+
+        term = Apartment::Tenant.switch(account.tenant) { Qa::LocalAuthorityEntry.find_by(label: 'Wet Lab') }
+
+        expect(term).to be_present
+        expect(response.location).to include '/dashboard/controlled_vocabularies/lab_names'
+      end
+
+      # `ordered` sorts on position, and Postgres puts NULL last — so a term saved
+      # without one sorts below every seeded term, and falls off the page entirely in
+      # a vocabulary longer than the display limit.
+      it 'adds the term after the ones already there' do
+        Apartment::Tenant.switch(account.tenant) do
+          vocabulary = Qa::LocalAuthority.create!(label: 'Lab Names')
+          vocabulary.local_authority_entries.create!(label: 'Wet Lab', uri: 'wet', position: 1)
+        end
+
+        post "http://#{account.cname}/dashboard/controlled_vocabularies/lab_names/terms",
+             params: { term_key => { label: 'Dry Lab' } }
+
+        labels = Apartment::Tenant.switch(account.tenant) do
+          Qa::LocalAuthority.find_by(name: 'lab_names').local_authority_entries.ordered.pluck(:label)
+        end
+
+        expect(labels).to eq ['Wet Lab', 'Dry Lab']
+      end
+
+      # The case the position fix exists for: rows seeded before positions were
+      # assigned hold NULL, which Postgres sorts last — so a naive max+1 gives 1 and
+      # the new term jumps to the top of the list instead of the bottom.
+      it 'adds the term last even when the existing ones have no position' do
+        Apartment::Tenant.switch(account.tenant) do
+          vocabulary = Qa::LocalAuthority.create!(label: 'Lab Names')
+          vocabulary.local_authority_entries.create!(label: 'Alpha', uri: 'a')
+          vocabulary.local_authority_entries.create!(label: 'Beta', uri: 'b')
+        end
+
+        post "http://#{account.cname}/dashboard/controlled_vocabularies/lab_names/terms",
+             params: { term_key => { label: 'Gamma' } }
+
+        labels = Apartment::Tenant.switch(account.tenant) do
+          Qa::LocalAuthority.find_by(name: 'lab_names').local_authority_entries.ordered.pluck(:label)
+        end
+
+        expect(labels.last).to eq 'Gamma'
+      end
+
+      # An imported copy has a row, so find_by! locates it and the write goes
+      # through. The next import then replaces every row, silently discarding the
+      # term — the view hides the button, but nothing stops a direct POST.
+      it 'refuses a vocabulary whose terms are not this tenant to change' do
+        Apartment::Tenant.switch(account.tenant) { Qa::LocalAuthority.create!(name: 'mesh', label: 'MeSH') }
+
+        post "http://#{account.cname}/dashboard/controlled_vocabularies/mesh/terms",
+             params: { term_key => { label: 'Sneaked In' } }
+
+        saved = Apartment::Tenant.switch(account.tenant) { Qa::LocalAuthorityEntry.exists?(label: 'Sneaked In') }
+
+        expect(saved).to be false
+        expect(response).to have_http_status(:not_found)
       end
     end
   end
@@ -345,7 +566,7 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
 
     it 'refuses the create' do
       post "http://#{account.cname}/dashboard/controlled_vocabularies",
-           params: { param_key => { label: 'Lab Names' } }
+           params: { param_key => { label: 'Lab Names' }, confirmed: 'true' }
 
       created = Apartment::Tenant.switch(account.tenant) { Qa::LocalAuthority.exists?(name: 'lab_names') }
 

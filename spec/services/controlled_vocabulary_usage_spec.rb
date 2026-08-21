@@ -24,6 +24,13 @@ RSpec.describe ControlledVocabularyUsage do
         'creator' => {
           'available_on' => { 'class' => ['GenericWorkResource'] },
           'controlled_values' => { 'sources' => ['null'] }
+        },
+        # Its authority is hardcoded in the form partial, so the profile declares no
+        # source. It is still controlled, and the profile is where the work types
+        # come from.
+        'based_near' => {
+          'available_on' => { 'class' => ['GenericWorkResource', 'ImageResource'] },
+          'controlled_values' => { 'sources' => ['null'] }
         }
       }
     }
@@ -45,6 +52,27 @@ RSpec.describe ControlledVocabularyUsage do
       expect(Hyrax::FlexibleSchema).to have_received(:current_version).once
     end
 
+    # The based_near partial hardcodes the geonames autocomplete, so the profile
+    # never names it as a source. Reading only controlled_values would report the
+    # service unused on a tenant whose deposit form offers it on every work type.
+    context 'a vocabulary a form partial reads directly' do
+      it 'reports the property the partial controls' do
+        expect(described_class.citing('geonames').map(&:name)).to eq %w[based_near]
+      end
+
+      it 'takes its work types from the profile' do
+        work_types = described_class.citing('geonames').first.work_types
+
+        expect(work_types.map(&:name)).to eq %w[GenericWorkResource ImageResource]
+      end
+
+      it 'is unused when the profile does not offer the property at all' do
+        profile['properties'].delete('based_near')
+
+        expect(described_class.citing('geonames')).to eq []
+      end
+    end
+
     it 'labels each work type from its class name, keeping the class itself' do
       work_types = described_class.citing('licenses').first.work_types
 
@@ -64,6 +92,18 @@ RSpec.describe ControlledVocabularyUsage do
 
     it 'returns an empty array when no property cites the vocabulary' do
       expect(described_class.citing('subjects')).to eq []
+    end
+
+    # The dashboard resolves `loc/genre_forms` to the entry keyed `loc/genreForms`,
+    # then asks for that key's usage — so a profile citing the older spelling has to
+    # be found under either one, or its page reports the vocabulary unused.
+    it 'finds a property citing another spelling of the same vocabulary' do
+      profile['properties']['genre'] = {
+        'available_on' => { 'class' => ['GenericWorkResource'] },
+        'controlled_values' => { 'sources' => ['loc/genre_forms'] }
+      }
+
+      expect(described_class.citing('loc/genreForms').map(&:name)).to eq ['genre']
     end
 
     # Some shipped profiles label CollectionResource "pcdmcollection"; the class

@@ -6,10 +6,9 @@ module Hyrax
       registered = Hyrax::ControlledVocabularies.services[source_name]&.safe_constantize
       return registered if registered
 
-      # Vocabularies created through the admin dashboard have no entry in the
-      # services registry, so fall back to a bare tolerant lookup. Without this
-      # the field renders as free text instead of a dropdown.
-      database_vocabulary_service_for(source_name)
+      # Dashboard-created vocabularies and unregistered yaml files are not in the
+      # registry; without this fallback their fields render as free text.
+      local_vocabulary_service_for(source_name)
     end
 
     def remote_authority_config_for(source_name)
@@ -49,16 +48,26 @@ module Hyrax
 
     private
 
-    # A tolerant service for a database-backed vocabulary, or nil when no
-    # vocabulary of that name exists (so remote authorities still get a chance).
-    def database_vocabulary_service_for(source_name)
-      return if source_name.blank?
-      return unless Qa::LocalAuthority.exists?(name: source_name.to_s)
+    # nil when neither a row nor a yaml file backs the name, so remote authorities
+    # still get a chance.
+    def local_vocabulary_service_for(source_name)
+      name = source_name.to_s
+      return if name.blank?
+      return unless Qa::LocalAuthority.exists?(name: name) || file_based_authority?(name)
 
-      Hyrax::TolerantSelectService.new(source_name.to_s)
+      Hyrax::TolerantSelectService.new(name)
     rescue StandardError => e
       Rails.logger.warn "Failed to build a vocabulary service for #{source_name}: #{e.message}"
       nil
+    end
+
+    # Rescued because qa raises ConfigDirectoryNotFound when a deployment has no
+    # config/authorities — no yaml vocabularies to match, not a broken form.
+    def file_based_authority?(name)
+      Qa::Authorities::Local.names.include?(name)
+    rescue StandardError => e
+      Rails.logger.debug { "Unable to list file-based local authorities: #{e.message}" }
+      false
     end
 
     def controlled_vocabulary_mapping_for(property_name)

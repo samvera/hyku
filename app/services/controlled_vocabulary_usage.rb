@@ -30,23 +30,48 @@ class ControlledVocabularyUsage
 
     private
 
-    def from_profile(profile, key)
-      properties = profile['properties'] || {}
-
-      properties.filter_map do |name, config|
-        next unless config.is_a?(Hash) && cites?(config, key)
-
-        Property.new(name: name, work_types: work_types(config))
-      end
-    end
-
-    # Form partials that read an authority the generic mapping does not list: the
-    # OER form fills resource_type from oer_types, and based_near autocompletes
-    # against geonames. A nil class list means every model defining the property.
+    # Form partials that hardcode an authority the profile and the generic mapping
+    # do not name: the OER form fills resource_type from oer_types, and based_near
+    # autocompletes against geonames. A nil class list means every model defining
+    # the property.
     PARTIAL_SOURCES = {
       'oer_types' => { property: 'resource_type', classes: ['OerResource'] },
       'geonames' => { property: 'based_near', classes: nil }
     }.freeze
+
+    def from_profile(profile, key)
+      properties = profile['properties'] || {}
+      # Every spelling, because the dashboard resolves a legacy key to the entry
+      # keyed canonically and then asks for that key's usage.
+      keys = [key] + ControlledVocabularyCatalog.aliases_for(key)
+
+      declared = properties.filter_map do |name, config|
+        next unless config.is_a?(Hash) && cites?(config, keys)
+
+        Property.new(name: name, work_types: work_types(config))
+      end
+
+      declared + profile_partial_properties(profile, key, declared)
+    end
+
+    # A partial that hardcodes its authority leaves the profile with nothing to
+    # declare — based_near carries `sources: ["null"]` while its form partial
+    # autocompletes against geonames. The property is still controlled, and the
+    # profile is still where its work types come from.
+    def profile_partial_properties(profile, key, declared)
+      config = PARTIAL_SOURCES[key]
+      return [] if config.nil?
+      return [] if declared.any? { |property| property.name == config[:property] }
+
+      property_config = (profile['properties'] || {})[config[:property]]
+      return [] unless property_config.is_a?(Hash)
+
+      types = work_types(property_config)
+      types = types.select { |type| config[:classes].include?(type.name) } if config[:classes]
+      return [] if types.empty?
+
+      [Property.new(name: config[:property], work_types: types)]
+    end
 
     # Without flexible metadata there is no profile; which properties a vocabulary
     # controls comes from the static mapping the deposit form itself uses, and the
@@ -88,11 +113,11 @@ class ControlledVocabularyUsage
         Hyrax::ModelRegistry.file_set_classes).select { |klass| klass < Valkyrie::Resource }
     end
 
-    # Keys are stripped because profiles have shipped them with stray whitespace;
+    # Sources are stripped because profiles have shipped them with stray whitespace;
     # the form helper reads them the same way.
-    def cites?(config, key)
+    def cites?(config, keys)
       Array(config.dig('controlled_values', 'sources')).any? do |source|
-        source.to_s.strip == key
+        keys.include?(source.to_s.strip)
       end
     end
 

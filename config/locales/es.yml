@@ -411,6 +411,7 @@ es:
         import:
           additions_heading: Términos a agregar
           applied: Se importaron %{additions} términos nuevos y se actualizaron %{updates} existentes.
+          applied_reordered: Los términos se reordenaron para coincidir con el archivo.
           back: Subir un archivo diferente
           button: Importar términos
           column: Columna
@@ -423,6 +424,7 @@ es:
           download_template: Descargar los términos actuales (CSV)
           errors:
             blank_label: 'Fila %{line}: la etiqueta está en blanco.'
+            duplicate_column: 'El archivo tiene columnas que significan lo mismo: %{columns}.'
             duplicate_id: 'Filas %{lines}: id de término duplicado %{id}.'
             empty: El archivo no tiene filas de términos.
             encoding: El archivo debe ser texto UTF-8.
@@ -432,6 +434,7 @@ es:
             malformed_csv: 'El archivo no se pudo leer como CSV: %{message}'
             missing_label: El archivo necesita una columna label.
             not_a_vocabulary: El archivo yaml no tiene una lista de términos.
+            too_long: 'Fila %{line}: el id y la etiqueta pueden tener como máximo %{max} caracteres.'
             too_many_rows: El archivo tiene más de %{max} filas. Divídalo e importe las partes por separado.
             unsupported: Suba un archivo .csv, .yml o .yaml.
           errors_heading: No se importó nada. Corrija estas filas y vuelva a subir el archivo.
@@ -463,6 +466,7 @@ es:
           to: Nuevo
           updates_heading: Términos a cambiar
           warnings:
+            partial_order: El archivo omite términos existentes, por lo que su orden de filas no se aplicó. Para reordenar, edite una descarga completa.
             source_key_mismatch: Este archivo se exportó desde %{source_key} pero se está importando a %{name}.
             unknown_columns: 'Columnas ignoradas: %{columns}.'
           warnings_heading: Advertencias

@@ -411,6 +411,7 @@ it:
         import:
           additions_heading: Termini da aggiungere
           applied: Importati %{additions} termini nuovi e aggiornati %{updates} esistenti.
+          applied_reordered: I termini sono stati riordinati per corrispondere al file.
           back: Carica un file diverso
           button: Importa termini
           column: Colonna
@@ -423,6 +424,7 @@ it:
           download_template: Scarica i termini attuali (CSV)
           errors:
             blank_label: 'Riga %{line}: l''etichetta è vuota.'
+            duplicate_column: 'Il file ha colonne che significano la stessa cosa: %{columns}.'
             duplicate_id: 'Righe %{lines}: id di termine duplicato %{id}.'
             empty: Il file non contiene righe di termini.
             encoding: Il file deve essere testo UTF-8.
@@ -432,6 +434,7 @@ it:
             malformed_csv: 'Impossibile leggere il file come CSV: %{message}'
             missing_label: Il file deve avere una colonna label.
             not_a_vocabulary: Il file yaml non contiene un elenco di termini.
+            too_long: 'Riga %{line}: l''id e l''etichetta possono avere al massimo %{max} caratteri.'
             too_many_rows: Il file ha più di %{max} righe. Dividilo e importa le parti separatamente.
             unsupported: Carica un file .csv, .yml o .yaml.
           errors_heading: Non è stato importato nulla. Correggi queste righe e carica di nuovo il file.
@@ -463,6 +466,7 @@ it:
           to: Nuovo
           updates_heading: Termini da cambiare
           warnings:
+            partial_order: Il file omette termini esistenti, quindi il suo ordine delle righe non è stato applicato. Per riordinare, modifica un download completo.
             source_key_mismatch: Questo file è stato esportato da %{source_key} ma viene importato in %{name}.
             unknown_columns: 'Colonne ignorate: %{columns}.'
           warnings_heading: Avvisi

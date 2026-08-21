@@ -61,6 +61,19 @@ RSpec.describe ControlledVocabularyImport do
       expect(plan.errors).to contain_exactly a_string_including('Row 3')
     end
 
+    it 'refuses a file where two headers mean the same column' do
+      plan = plan_for("label,term\nRealLabel,OtherLabel\n")
+
+      expect(plan.errors).to contain_exactly a_string_including('label')
+      expect(plan.additions).to be_empty
+    end
+
+    it 'caps the id and label length, because the id is permanent' do
+      plan = plan_for("label\n#{'x' * 256}\n")
+
+      expect(plan.errors).to contain_exactly a_string_including('255')
+    end
+
     it 'reports duplicate ids, whether typed or defaulted from the label' do
       plan = plan_for("id,label\nbraille,Braille\nbraille,Braille Type\n,braille\n")
 
@@ -172,6 +185,19 @@ RSpec.describe ControlledVocabularyImport do
       expect(plan.errors).to contain_exactly a_string_including('Row 1')
       expect(plan.additions.size).to eq 1
     end
+
+    it 'rejects a nested value instead of stringifying it into a term' do
+      plan = plan_for("terms:\n- term:\n    a: 1\n", filename: 'terms.yml')
+
+      expect(plan.errors).to contain_exactly a_string_including('Row 1')
+      expect(plan.additions).to be_empty
+    end
+
+    it 'warns about the wrong source key even when the file is empty' do
+      plan = plan_for("source_key: licenses\nterms: []\n", filename: 'terms.yml')
+
+      expect(plan.warnings).to contain_exactly a_string_including('licenses')
+    end
   end
 
   describe 'the plan' do
@@ -210,11 +236,22 @@ RSpec.describe ControlledVocabularyImport do
       expect(plan_for("id,label,active\ncaptions,Captions,\n").changes?).to be false
     end
 
-    it 'detects a reorder' do
+    it 'detects a reorder when the file carries every term' do
       plan = plan_for("id,label\ncaptions,Captions\nbraille,Braille\n")
 
       expect(plan.reorder?).to be true
       expect(plan.changes?).to be true
+    end
+
+    it 'never applies row order from a file that leaves terms out' do
+      vocabulary.local_authority_entries.create!(label: 'Haptic', uri: 'haptic')
+
+      plan = plan_for("id,label\ncaptions,Captions\nbraille,Braille\n")
+
+      expect(plan.reorder?).to be false
+      expect(plan.changes?).to be false
+      expect(plan.upsert_rows).to be_empty
+      expect(plan.warnings).to contain_exactly a_string_including('row order was not applied')
     end
 
     it 'never touches terms missing from the file' do
@@ -308,6 +345,27 @@ RSpec.describe ControlledVocabularyImport do
       apply("id,label\ncaptions,Captions\nbraille,Braille\n")
 
       expect(terms.sort_by(&:position).map(&:uri)).to eq %w[captions braille]
+    end
+
+    it 'appends new terms after the tail when the file leaves terms out' do
+      vocabulary.local_authority_entries.create!(label: 'Braille', uri: 'braille', position: 1)
+      vocabulary.local_authority_entries.create!(label: 'Captions', uri: 'captions', position: 2)
+
+      apply("id,label\nhaptic,Haptic\n")
+
+      expect(terms.find { |term| term.uri == 'braille' }.position).to eq 1
+      expect(terms.find { |term| term.uri == 'captions' }.position).to eq 2
+      expect(terms.find { |term| term.uri == 'haptic' }.position).to eq 3
+    end
+
+    it 'leaves a new term unpositioned when the vocabulary is, so it sorts by label like the form' do
+      vocabulary.local_authority_entries.create!(label: 'Braille', uri: 'braille')
+      vocabulary.local_authority_entries.create!(label: 'Transcript', uri: 'transcript')
+
+      apply("id,label\nhaptic,Haptic\n")
+
+      expect(terms.find { |term| term.uri == 'haptic' }.position).to be_nil
+      expect(vocabulary.local_authority_entries.ordered.pluck(:uri)).to eq %w[braille haptic transcript]
     end
 
     it 'refuses to apply a plan with errors' do

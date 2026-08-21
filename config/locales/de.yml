@@ -410,6 +410,7 @@ de:
         import:
           additions_heading: Hinzuzufügende Begriffe
           applied: Es wurden %{additions} neue Begriffe importiert und %{updates} bestehende aktualisiert.
+          applied_reordered: Die Begriffe wurden neu geordnet, um der Datei zu entsprechen.
           back: Eine andere Datei hochladen
           button: Begriffe importieren
           column: Spalte
@@ -422,6 +423,7 @@ de:
           download_template: Aktuelle Begriffe herunterladen (CSV)
           errors:
             blank_label: 'Zeile %{line}: die Bezeichnung ist leer.'
+            duplicate_column: 'Die Datei enthält Spalten mit derselben Bedeutung: %{columns}.'
             duplicate_id: 'Zeilen %{lines}: doppelte Begriffs-ID %{id}.'
             empty: Die Datei enthält keine Begriffszeilen.
             encoding: Die Datei muss UTF-8-Text sein.
@@ -431,6 +433,7 @@ de:
             malformed_csv: 'Die Datei konnte nicht als CSV gelesen werden: %{message}'
             missing_label: Die Datei benötigt eine label-Spalte.
             not_a_vocabulary: Die yaml-Datei enthält keine Begriffsliste.
+            too_long: 'Zeile %{line}: ID und Bezeichnung dürfen höchstens %{max} Zeichen lang sein.'
             too_many_rows: Die Datei hat mehr als %{max} Zeilen. Teilen Sie sie auf und importieren Sie die Teile einzeln.
             unsupported: Laden Sie eine .csv-, .yml- oder .yaml-Datei hoch.
           errors_heading: Es wurde nichts importiert. Korrigieren Sie diese Zeilen und laden Sie die Datei erneut hoch.
@@ -462,6 +465,7 @@ de:
           to: Neu
           updates_heading: Zu ändernde Begriffe
           warnings:
+            partial_order: Die Datei lässt bestehende Begriffe aus, daher wurde ihre Zeilenreihenfolge nicht übernommen. Zum Neuordnen bearbeiten Sie einen vollständigen Download.
             source_key_mismatch: Diese Datei wurde aus %{source_key} exportiert, wird aber in %{name} importiert.
             unknown_columns: 'Ignorierte Spalten: %{columns}.'
           warnings_heading: Warnungen

@@ -26,16 +26,14 @@ class ControlledVocabularyImport
     end
 
     def reorder?
-      @order_differs
+      @write_positions && @order_differs
     end
 
     def changes?
       additions.any? || updates.any? || reorder?
     end
 
-    def valid?
-      errors.empty?
-    end
+    def valid? = errors.empty?
 
     # Confirm compares this against a fresh plan, so an import applies only to
     # the state that was reviewed. Every entry's id and timestamp participate,
@@ -62,9 +60,10 @@ class ControlledVocabularyImport
 
     def upsert_rows
       now = Time.current
+      @next_position = tail_position
       @parsed.rows.each_with_index.filter_map do |row, index|
         entry = entries_by_uri[row.id]
-        position = write_positions? ? index + 1 : entry&.position
+        position = position_for(entry, index)
         next if entry && changes_for(row, entry).empty? && entry.position == position
 
         # data rides along untouched: the import does not carry those fields,
@@ -89,6 +88,16 @@ class ControlledVocabularyImport
         changes.empty? ? @unchanged_count += 1 : @updates << Update.new(row: row, entry: entry, changes: changes)
       end
       @order_differs = order_differs?
+      # Positions are rewritten only from a file that carries every existing
+      # term: a partial file's row numbers would collide with the terms it
+      # omits and scramble a curated order.
+      @write_positions = full_file? && (additions.any? || @order_differs)
+      return unless @order_differs && !full_file?
+      @warnings << I18n.t('hyku.admin.controlled_vocabulary.import.warnings.partial_order')
+    end
+
+    def full_file?
+      @full_file ||= (entries_by_uri.keys - @parsed.rows.map(&:id)).empty?
     end
 
     def changes_for(row, entry)
@@ -106,18 +115,29 @@ class ControlledVocabularyImport
       row.active
     end
 
+    # nil when any term is unpositioned: a number would jump an appended term
+    # ahead of every nil-position term, which sort last.
+    def tail_position
+      @entries.map(&:position).max if @entries.any? && @entries.all?(&:position)
+    end
+
+    # A new term in a partial file appends after the current tail. When the
+    # vocabulary is unpositioned, it stays unpositioned too, sorting into the
+    # label-ordered group exactly as a form-added term does.
+    def position_for(entry, index)
+      return index + 1 if @write_positions
+      return entry.position if entry
+
+      @next_position += 1 if @next_position
+    end
+
     def entries_by_uri
       @entries_by_uri ||= @entries.index_by(&:uri)
     end
 
-    # Positions are only written when the file actually changes the order (or
-    # adds terms, which need slots). A re-uploaded export whose stored
-    # positions are nil still sorts the same way, so skipping keeps that
-    # round trip a true no-op.
-    def write_positions?
-      additions.any? || @order_differs
-    end
-
+    # A re-uploaded export whose stored positions are nil still sorts the same
+    # way, so skipping position writes on a same-order file keeps that round
+    # trip a true no-op.
     def order_differs?
       file_uris = @parsed.rows.map(&:id).select { |uri| entries_by_uri.key?(uri) }
       wanted = file_uris.to_set

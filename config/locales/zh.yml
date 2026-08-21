@@ -411,6 +411,7 @@ zh:
         import:
           additions_heading: 待添加的词条
           applied: 已导入 %{additions} 个新词条，并更新 %{updates} 个现有词条。
+          applied_reordered: 词条已重新排序以与文件一致。
           back: 上传其他文件
           button: 导入词条
           column: 列
@@ -423,6 +424,7 @@ zh:
           download_template: 下载当前词条（CSV）
           errors:
             blank_label: '第 %{line} 行：标签为空。'
+            duplicate_column: '文件包含含义相同的列：%{columns}。'
             duplicate_id: '第 %{lines} 行：词条 id %{id} 重复。'
             empty: 文件没有词条行。
             encoding: 文件必须是 UTF-8 文本。
@@ -432,6 +434,7 @@ zh:
             malformed_csv: '文件无法作为 CSV 读取：%{message}'
             missing_label: 文件需要 label 列。
             not_a_vocabulary: 该 yaml 文件没有词条列表。
+            too_long: '第 %{line} 行：id 和标签最多 %{max} 个字符。'
             too_many_rows: 文件超过 %{max} 行。请拆分后分批导入。
             unsupported: 请上传 .csv、.yml 或 .yaml 文件。
           errors_heading: 未导入任何内容。请修正这些行后重新上传文件。
@@ -463,6 +466,7 @@ zh:
           to: 新值
           updates_heading: 待更改的词条
           warnings:
+            partial_order: 文件遗漏了现有词条，因此未应用其行顺序。要重新排序，请编辑完整的下载文件。
             source_key_mismatch: 此文件从 %{source_key} 导出，但正在导入 %{name}。
             unknown_columns: '已忽略的列：%{columns}。'
           warnings_heading: 警告

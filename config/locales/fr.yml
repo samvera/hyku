@@ -411,6 +411,7 @@ fr:
         import:
           additions_heading: Termes à ajouter
           applied: '%{additions} nouveaux termes importés et %{updates} termes existants mis à jour.'
+          applied_reordered: Les termes ont été réordonnés pour correspondre au fichier.
           back: Téléverser un autre fichier
           button: Importer les termes
           column: Colonne
@@ -423,6 +424,7 @@ fr:
           download_template: Télécharger les termes actuels (CSV)
           errors:
             blank_label: 'Ligne %{line} : le libellé est vide.'
+            duplicate_column: 'Le fichier contient des colonnes ayant la même signification : %{columns}.'
             duplicate_id: 'Lignes %{lines} : identifiant de terme %{id} en double.'
             empty: Le fichier ne contient aucune ligne de terme.
             encoding: Le fichier doit être du texte UTF-8.
@@ -432,6 +434,7 @@ fr:
             malformed_csv: 'Le fichier n''a pas pu être lu comme CSV : %{message}'
             missing_label: Le fichier doit contenir une colonne label.
             not_a_vocabulary: Le fichier yaml ne contient pas de liste de termes.
+            too_long: 'Ligne %{line} : l''identifiant et le libellé peuvent compter au plus %{max} caractères.'
             too_many_rows: Le fichier compte plus de %{max} lignes. Divisez-le et importez les parties séparément.
             unsupported: Téléversez un fichier .csv, .yml ou .yaml.
           errors_heading: Rien n'a été importé. Corrigez ces lignes et téléversez à nouveau le fichier.
@@ -463,6 +466,7 @@ fr:
           to: Nouveau
           updates_heading: Termes à modifier
           warnings:
+            partial_order: Le fichier omet des termes existants, son ordre des lignes n'a donc pas été appliqué. Pour réordonner, modifiez un téléchargement complet.
             source_key_mismatch: Ce fichier a été exporté depuis %{source_key} mais est importé dans %{name}.
             unknown_columns: 'Colonnes ignorées : %{columns}.'
           warnings_heading: Avertissements

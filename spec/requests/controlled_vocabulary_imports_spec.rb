@@ -80,6 +80,19 @@ RSpec.describe 'Controlled vocabulary imports', type: :request, clean: true, mul
       expect(terms.map(&:label)).to contain_exactly('Braille Type', 'Moon Type')
     end
 
+    it 'names a reorder-only import in the notice' do
+      Apartment::Tenant.switch(account.tenant) do
+        Qa::LocalAuthority.find_by(name: 'reading_rooms')
+                          .local_authority_entries.create!(label: 'Captions', uri: 'captions')
+      end
+
+      post_upload("id,label\ncaptions,Captions\nbraille,Braille\n")
+      post_confirm
+      follow_redirect!
+
+      expect(response.body).to include I18n.t('hyku.admin.controlled_vocabulary.import.applied_reordered')
+    end
+
     it 'reports a no-change upload without a confirm button' do
       post_upload("id,label\nbraille,Braille\n")
 
@@ -146,6 +159,20 @@ RSpec.describe 'Controlled vocabulary imports', type: :request, clean: true, mul
 
       expect(response.body).to include I18n.t('hyku.admin.controlled_vocabulary.import.stale')
       expect(terms.map(&:label)).to contain_exactly('Braille', 'Haptic')
+    end
+
+    it 'renders the review instead of applying a hand-built no-change confirm' do
+      csv = "id,label\nbraille,Braille\n"
+      digest = Apartment::Tenant.switch(account.tenant) do
+        vocab = Qa::LocalAuthority.find_by(name: 'reading_rooms')
+        ControlledVocabularyImport.new(content: csv, filename: 'terms.csv', vocabulary: vocab).plan.state_digest
+      end
+
+      post "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms/import/confirm",
+           params: { payload: Base64.strict_encode64(csv), filename: 'terms.csv', state_digest: digest }
+
+      expect(response.body).to include I18n.t('hyku.admin.controlled_vocabulary.import.no_changes')
+      expect(response.body).not_to include I18n.t('hyku.admin.controlled_vocabulary.import.applied_reordered')
     end
 
     it 'rejects a corrupted payload' do

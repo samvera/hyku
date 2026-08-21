@@ -18,6 +18,8 @@ class ControlledVocabularyImport
     # definition join when a phase displays them; until then their columns are
     # ignored with a warning.
     COLUMNS = %w[id label active].freeze
+    # Ids are immutable once saved, so an absurdly long one is forever.
+    MAX_VALUE_LENGTH = 255
     # One sample value per column, for the upload page's format table.
     EXAMPLES = { 'id' => 'braille', 'label' => 'Braille', 'active' => 'true' }.freeze
     HEADER_ALIASES = { 'identifier' => 'id', 'term' => 'label' }.freeze
@@ -69,8 +71,7 @@ class ControlledVocabularyImport
 
     def parse_csv(content)
       table = CSV.parse(content, headers: true)
-      register_columns((table.headers || []).compact.map { |header| normalize_header(header) })
-      return @errors << error(:missing_label) unless @columns.include?('label')
+      return unless valid_csv_headers?(table)
       return if size_problem(table.size)
 
       # Line numbers assume one file line per record, which holds for the
@@ -83,12 +84,9 @@ class ControlledVocabularyImport
     end
 
     def parse_yaml(content)
-      data = YAML.safe_load(content, aliases: false)
-      terms = data['terms'] if data.is_a?(Hash)
-      return @errors << error(:not_a_vocabulary) unless terms.is_a?(Array)
-      return if size_problem(terms.size)
+      terms = yaml_terms(content)
+      return if terms.nil? || size_problem(terms.size)
 
-      @source_key = data['source_key']
       register_columns(terms.grep(Hash).flat_map(&:keys).uniq.map { |key| normalize_header(key) })
       terms.each_with_index do |term, index|
         next @errors << error(:invalid_term, line: index + 1) unless term.is_a?(Hash)
@@ -99,18 +97,59 @@ class ControlledVocabularyImport
       @errors << error(:invalid_yaml, message: e.message)
     end
 
+    def yaml_terms(content)
+      data = YAML.safe_load(content, aliases: false)
+      @source_key = data['source_key'] if data.is_a?(Hash)
+      terms = data['terms'] if data.is_a?(Hash)
+      return terms if terms.is_a?(Array)
+
+      @errors << error(:not_a_vocabulary)
+      nil
+    end
+
+    # Two headers can collapse to one (label plus its alias term), and the
+    # later column would silently win.
+    def valid_csv_headers?(table)
+      headers = (table.headers || []).compact.map { |header| normalize_header(header) }
+      dupes = headers.tally.filter_map { |header, count| header if count > 1 }
+      return failed(:duplicate_column, columns: dupes.join(', ')) if dupes.any?
+
+      register_columns(headers)
+      return failed(:missing_label) unless @columns.include?('label')
+
+      true
+    end
+
+    def failed(key, **args)
+      @errors << error(key, **args)
+      false
+    end
+
     def build_row(attrs, line:)
-      # Yaml escapes and !!binary can decode to bytes the raw-content check
-      # cannot see, which Postgres would refuse at apply.
-      return @errors << error(:encoding) if attrs.values.flatten.any? { |value| unsafe_bytes?(value) }
+      return if row_problem(attrs, line)
 
       label = attrs['label'].to_s.strip
-      return @errors << error(:blank_label, line: line) if label.blank?
-
       @rows << Row.new(id: attrs['id'].to_s.strip.presence || label,
                        label: label,
                        active: parse_active(attrs['active'], line),
                        line: line)
+    end
+
+    # Truthy (after recording the error) when the row must not import: bytes
+    # Postgres would refuse that yaml escapes or !!binary decode to past the
+    # raw-content check, a nested value that would stringify into a garbage
+    # term, a blank label, or an over-long value for the permanent id.
+    def row_problem(attrs, line)
+      values = attrs.values.flatten
+      return @errors << error(:encoding) if values.any? { |value| unsafe_bytes?(value) }
+      return @errors << error(:invalid_term, line: line) if values.any?(Hash)
+
+      label = attrs['label'].to_s.strip
+      return @errors << error(:blank_label, line: line) if label.blank?
+
+      too_long = [attrs['id'].to_s.strip, label].any? { |value| value.length > MAX_VALUE_LENGTH }
+      @errors << error(:too_long, line: line, max: MAX_VALUE_LENGTH) if too_long
+      too_long
     end
 
     # nil means the cell was blank: new terms default active, existing terms

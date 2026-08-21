@@ -282,6 +282,7 @@ en:
         import:
           additions_heading: Terms to add
           applied: Imported %{additions} new and updated %{updates} existing terms.
+          applied_reordered: The terms were reordered to match the file.
           back: Upload a different file
           button: Import terms
           column: Column
@@ -294,6 +295,7 @@ en:
           download_template: Download current terms (CSV)
           errors:
             blank_label: 'Row %{line}: the label is blank.'
+            duplicate_column: 'The file has columns that mean the same thing: %{columns}.'
             duplicate_id: 'Rows %{lines}: duplicate term id %{id}.'
             empty: The file has no term rows.
             encoding: The file must be UTF-8 text.
@@ -303,6 +305,7 @@ en:
             malformed_csv: 'The file could not be read as CSV: %{message}'
             missing_label: The file needs a label column.
             not_a_vocabulary: The yaml file has no terms list.
+            too_long: 'Row %{line}: the id and label can be at most %{max} characters.'
             too_many_rows: The file has more than %{max} rows. Split it and import the parts separately.
             unsupported: Upload a .csv, .yml, or .yaml file.
           errors_heading: Nothing was imported. Fix these rows and upload the file again.
@@ -334,6 +337,7 @@ en:
           to: New
           updates_heading: Terms to change
           warnings:
+            partial_order: The file leaves out existing terms, so its row order was not applied. To reorder, edit a full download.
             source_key_mismatch: This file was exported from %{source_key} but is being imported into %{name}.
             unknown_columns: 'Ignored columns: %{columns}.'
           warnings_heading: Warnings

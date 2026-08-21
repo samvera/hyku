@@ -37,7 +37,7 @@ module Hyrax
         if params[:state_digest] != import.plan.state_digest
           flash.now[:alert] = t('hyku.admin.controlled_vocabulary.import.stale')
           render_review(import, content)
-        elsif import.plan.valid?
+        elsif import.plan.valid? && import.plan.changes?
           apply(import)
         else
           render_review(import, content)
@@ -48,9 +48,15 @@ module Hyrax
 
       def apply(import)
         import.apply!
-        redirect_to main_app.controlled_vocabulary_path(@vocabulary.name),
-                    notice: t('hyku.admin.controlled_vocabulary.import.applied',
-                              additions: import.plan.additions.size, updates: import.plan.updates.size)
+        redirect_to main_app.controlled_vocabulary_path(@vocabulary.name), notice: applied_notice(import.plan)
+      end
+
+      def applied_notice(plan)
+        return t('hyku.admin.controlled_vocabulary.import.applied_reordered') if
+          plan.additions.empty? && plan.updates.empty?
+
+        t('hyku.admin.controlled_vocabulary.import.applied',
+          additions: plan.additions.size, updates: plan.updates.size)
       end
 
       def review(content, filename)

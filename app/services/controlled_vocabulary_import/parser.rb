@@ -140,9 +140,12 @@ class ControlledVocabularyImport
     # raw-content check, a nested value that would stringify into a garbage
     # term, a blank label, or an over-long value for the permanent id.
     def row_problem(attrs, line)
-      values = attrs.values.flatten
-      return @errors << error(:encoding) if values.any? { |value| unsafe_bytes?(value) }
-      return @errors << error(:invalid_term, line: line) if values.any?(Hash)
+      return @errors << error(:encoding) if attrs.values.flatten.any? { |value| unsafe_bytes?(value) }
+      # A nested value (a yaml mapping or sequence) in a carried column would
+      # stringify into a garbage term, and the id is permanent once saved.
+      # Ignored columns may hold anything; they never persist.
+      return @errors << error(:invalid_term, line: line) if
+        attrs.values_at(*COLUMNS).any? { |value| value.is_a?(Hash) || value.is_a?(Array) }
 
       label = attrs['label'].to_s.strip
       return @errors << error(:blank_label, line: line) if label.blank?

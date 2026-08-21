@@ -193,6 +193,13 @@ RSpec.describe ControlledVocabularyImport do
       expect(plan.additions).to be_empty
     end
 
+    it 'rejects a sequence value instead of stringifying it into a term' do
+      plan = plan_for("terms:\n- term:\n  - alpha\n  - beta\n", filename: 'terms.yml')
+
+      expect(plan.errors).to contain_exactly a_string_including('Row 1')
+      expect(plan.additions).to be_empty
+    end
+
     it 'warns about the wrong source key even when the file is empty' do
       plan = plan_for("source_key: licenses\nterms: []\n", filename: 'terms.yml')
 

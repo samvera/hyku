@@ -3,7 +3,9 @@
 # Presentation helpers shared by the Hyku themes.
 module ThemeHelper
   def theme_plain_text(html)
-    strip_tags(CGI.unescapeHTML(html.to_s).gsub('>', '> ')).squish
+    # strip_tags re-escapes what it returns, and every consumer escapes again on
+    # the way out, so an ampersand would reach the reader as &amp;
+    CGI.unescapeHTML(strip_tags(CGI.unescapeHTML(html.to_s).gsub('>', '> ')).squish)
   end
 
   def theme_blurb(text, length:)

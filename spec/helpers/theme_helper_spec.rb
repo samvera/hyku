@@ -11,6 +11,17 @@ RSpec.describe ThemeHelper, type: :helper do
       expect(result).not_to include('<')
     end
 
+    it 'leaves an ampersand for the template to escape once' do
+      expect(helper.theme_plain_text('Sound &amp; Vision')).to eq('Sound & Vision')
+    end
+
+    it 'hands a double-encoded tag back as text that the template escapes' do
+      result = helper.theme_plain_text('&amp;lt;img src=x onerror=1&amp;gt;')
+
+      expect(result).to eq('<img src=x onerror=1>')
+      expect(ERB::Util.html_escape(result)).to eq('&lt;img src=x onerror=1&gt;')
+    end
+
     it 'keeps a space where a tag was so words do not run together' do
       expect(helper.theme_plain_text('<p>One</p><p>Two</p>')).to eq('One Two')
     end

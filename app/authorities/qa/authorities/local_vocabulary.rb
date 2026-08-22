@@ -39,6 +39,10 @@ module Qa::Authorities
       local_authority.nil?
     end
 
+    def local_authority
+      RequestStore.fetch(:qa_local_authorities) { Qa::LocalAuthority.all.index_by(&:name) }[subauthority.to_s]
+    end
+
     def file_based
       Qa::Authorities::Local::FileBasedAuthority.new(subauthority)
     end

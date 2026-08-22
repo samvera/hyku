@@ -402,6 +402,7 @@ fr:
       controlled_vocabularies: Vocabulaires contrôlés
       controlled_vocabulary:
         active: Actif
+        at_position: '%{label} est déjà à la position %{position} sur %{total}'
         awaiting_import: Non importé
         awaiting_import_help: 'Ce vocabulaire est disponible mais ne contient encore aucun terme dans ce locataire. Remplissez-le en exécutant : %{task}'
         confirm_back: Revenir à la modification
@@ -480,6 +481,9 @@ fr:
         inactive: Inactif
         label: Libellé
         label_hint: Ce qu'un déposant voit dans le formulaire. Peut être reformulé sans affecter les enregistrements stockés.
+        move_earlier: Déplacer %{label} vers le haut
+        move_later: Déplacer %{label} vers le bas
+        moved: '%{label} déplacé à la position %{position} sur %{total}'
         name: Vocabulaire
         new_help: Nommez le vocabulaire; sa clé source est établie à partir de ce nom. La clé est ce que cite un profil de métadonnées et ne peut pas être modifiée par la suite.
         new_term_heading: Ajouter un terme à %{vocabulary}
@@ -489,6 +493,9 @@ fr:
         no_description: Non renseignée
         no_terms: Ce vocabulaire ne contient encore aucun terme.
         none: Aucun vocabulaire contrôlé n'a encore été configuré pour ce locataire.
+        order: Ordre
+        order_hint: L'ordre dans lequel les termes sont proposés dans un formulaire de dépôt. Faites glisser un terme ou utilisez les boutons fléchés, puis enregistrez.
+        order_saved: L'ordre des termes a été enregistré.
         origin: Source
         origin_hint: Où le vocabulaire est défini, et donc si ses termes peuvent être modifiés ici.
         origins:
@@ -508,15 +515,21 @@ fr:
         read_only:
           file: Ce vocabulaire est défini dans un fichier de configuration, ses termes ne peuvent donc pas être modifiés ici.
         ready: Prêt
+        reorder_handle: 'Réordonner %{label} : faites glisser ou utilisez les touches fléchées'
+        reorder_hint: Faites glisser un terme, ou utilisez les boutons fléchés, pour définir l'ordre dans lequel il est proposé dans un formulaire de dépôt. Enregistrez l'ordre lorsque vous avez terminé.
+        restore: Rétablir
+        retire: Retirer
         retired_count:
           one: (%{count} retiré)
           other: (%{count} retirés)
+        save_order: Enregistrer l'ordre
         show_title: 'Vocabulaire contrôlé : %{name}'
         source_key: Clé de source
         source_key_hint: Collez ceci dans un champ de profil de métadonnées pour contrôler ce champ avec ce vocabulaire.
         source_key_help: Collez une clé de source dans un champ de profil de métadonnées pour contrôler ce champ avec ce vocabulaire. Les vocabulaires gérés dans ce locataire peuvent être modifiés ici ; ceux définis dans un fichier de configuration ou par un service externe ne le peuvent pas.
         static_forms: Les profils de métadonnées ne sont pas activés, les formulaires de dépôt lisent donc ce vocabulaire depuis un fichier de configuration. La modification de ses termes nécessite un développeur.
         status: Statut
+        status_action: Modifier le statut
         status_hint: Indique si ce vocabulaire est prêt à être utilisé ou si quelque chose doit d'abord être configuré.
         status_unknown: Non spécifié
         term_created: '%{label} a été ajouté.'
@@ -528,6 +541,8 @@ fr:
           other: (%{count} premiers termes affichés)
         term_id_hint: La valeur stockée sur un enregistrement, et la valeur à fournir dans une importation Bulkrax.
         term_id_help: L'ID du terme est la valeur stockée sur un enregistrement, et la valeur à fournir dans une importation Bulkrax. Le libellé est seulement ce qu'un déposant voit.
+        term_restored: '%{label} a été rétabli et est de nouveau proposé dans le formulaire de dépôt.'
+        term_retired: '%{label} a été retiré et n''est plus proposé dans le formulaire de dépôt.'
         term_total:
           one: 1 terme
           other: "%{count} termes"

@@ -401,6 +401,7 @@ de:
       controlled_vocabularies: Kontrollierte Vokabulare
       controlled_vocabulary:
         active: Aktiv
+        at_position: '%{label} ist bereits an Position %{position} von %{total}'
         awaiting_import: Nicht importiert
         awaiting_import_help: 'Dieses Vokabular ist verfügbar, enthält in diesem Mandanten aber noch keine Begriffe. Befüllen Sie es durch Ausführen von: %{task}'
         confirm_back: Zurück zum Bearbeiten
@@ -479,6 +480,9 @@ de:
         inactive: Inaktiv
         label: Bezeichnung
         label_hint: Was ein Hinterleger im Formular sieht. Kann gefahrlos umformuliert werden, ohne gespeicherte Datensätze zu beeinflussen.
+        move_earlier: '%{label} nach vorne verschieben'
+        move_later: '%{label} nach hinten verschieben'
+        moved: '%{label} auf Position %{position} von %{total} verschoben'
         name: Vokabular
         new_help: Benennen Sie das Vokabular; sein Quellschlüssel wird aus diesem Namen gebildet. Der Schlüssel ist, was ein Metadatenprofil zitiert, und kann danach nicht mehr geändert werden.
         new_term_heading: Einen Begriff zu %{vocabulary} hinzufügen
@@ -488,6 +492,9 @@ de:
         no_description: Keine angegeben
         no_terms: Dieses Vokabular enthält noch keine Begriffe.
         none: Für diesen Mandanten wurden noch keine kontrollierten Vokabulare eingerichtet.
+        order: Reihenfolge
+        order_hint: Die Reihenfolge, in der die Begriffe in einem Abgabeformular angeboten werden. Ziehen Sie einen Begriff oder verwenden Sie die Pfeiltasten und speichern Sie dann.
+        order_saved: Die Reihenfolge der Begriffe wurde gespeichert.
         origin: Quelle
         origin_hint: Wo das Vokabular definiert ist und ob seine Begriffe daher hier bearbeitet werden können.
         origins:
@@ -507,15 +514,21 @@ de:
         read_only:
           file: Dieses Vokabular ist in einer Konfigurationsdatei definiert, daher können seine Begriffe hier nicht geändert werden.
         ready: Bereit
+        reorder_handle: '%{label} neu anordnen: ziehen oder die Pfeiltasten verwenden'
+        reorder_hint: Ziehen Sie einen Begriff oder verwenden Sie die Pfeiltasten, um die Reihenfolge festzulegen, in der er in einem Abgabeformular angeboten wird. Speichern Sie die Reihenfolge, wenn Sie fertig sind.
+        restore: Wiederherstellen
+        retire: Außer Betrieb nehmen
         retired_count:
           one: (%{count} zurückgezogen)
           other: (%{count} zurückgezogen)
+        save_order: Reihenfolge speichern
         show_title: 'Kontrolliertes Vokabular: %{name}'
         source_key: Quellschlüssel
         source_key_hint: Fügen Sie dies in ein Feld eines Metadatenprofils ein, um dieses Feld mit diesem Vokabular zu kontrollieren.
         source_key_help: Fügen Sie einen Quellschlüssel in ein Feld eines Metadatenprofils ein, um dieses Feld mit diesem Vokabular zu kontrollieren. In diesem Mandanten verwaltete Vokabulare können hier bearbeitet werden; in einer Konfigurationsdatei oder von einem externen Dienst definierte Vokabulare nicht.
         static_forms: Metadatenprofile sind nicht aktiviert, daher lesen Einreichungsformulare dieses Vokabular aus einer Konfigurationsdatei. Änderungen an seinen Begriffen erfordern einen Entwickler.
         status: Status
+        status_action: Status ändern
         status_hint: Ob dieses Vokabular einsatzbereit ist oder zuerst etwas eingerichtet werden muss.
         status_unknown: Nicht angegeben
         term_created: '%{label} wurde hinzugefügt.'
@@ -527,6 +540,8 @@ de:
           other: (die ersten %{count} werden angezeigt)
         term_id_hint: Der Wert, der in einem Datensatz gespeichert wird, und der Wert, der bei einem Bulkrax-Import anzugeben ist.
         term_id_help: Die Begriffs-ID ist der Wert, der in einem Datensatz gespeichert wird, und der Wert, der bei einem Bulkrax-Import anzugeben ist. Die Bezeichnung ist nur das, was ein Hinterleger sieht.
+        term_restored: '%{label} wurde wiederhergestellt und wird im Abgabeformular wieder angeboten.'
+        term_retired: '%{label} wurde außer Betrieb genommen und wird im Abgabeformular nicht mehr angeboten.'
         term_total:
           one: 1 Begriff
           other: "%{count} Begriffe"

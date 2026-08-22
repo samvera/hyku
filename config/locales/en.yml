@@ -352,14 +352,14 @@ en:
         inactive: Inactive
         label: Label
         label_hint: What a depositor sees in the form. Safe to reword without affecting stored records.
+        move_earlier: Move %{label} earlier
+        move_later: Move %{label} later
+        moved: Moved %{label} to position %{position} of %{total}
         name: Vocabulary
         new_help: Name the vocabulary, and its source key is set from that name. The key is what a metadata profile cites, so it cannot be changed afterwards.
         new_term_heading: 'Add a term to %{vocabulary}'
         new_term_help: Name the term as a depositor should see it. The term id is what a record stores, and cannot be changed once terms are in use.
         new_term_title: Add term
-        move_earlier: Move %{label} earlier
-        move_later: Move %{label} later
-        moved: Moved %{label} to position %{position} of %{total}
         new_title: New vocabulary
         no_description: None given
         no_terms: This vocabulary has no terms yet.
@@ -386,10 +386,10 @@ en:
         read_only:
           file: This vocabulary is defined in a configuration file, so its terms cannot be changed here.
         ready: Ready
-        restore: Restore
-        retire: Retire
         reorder_handle: 'Reorder %{label}: drag, or use the arrow keys'
         reorder_hint: Drag a term, or use the arrow buttons, to set the order it is offered in on a deposit form. Save the order when you are done.
+        restore: Restore
+        retire: Retire
         retired_count:
           one: (%{count} retired)
           other: (%{count} retired)

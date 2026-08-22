@@ -160,7 +160,14 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   # Controlled vocabularies, viewable only from the dashboard
   scope :dashboard, module: 'hyrax/dashboard' do
     resources :controlled_vocabularies, only: [:index, :new, :create] do
-      resources :terms, only: [:new, :create], controller: 'controlled_vocabulary_terms'
+      resources :terms, only: [:new, :create], controller: 'controlled_vocabulary_terms' do
+        # On the collection: reordering is one write covering every term, not an
+        # edit of any one of them.
+        patch :order, on: :collection, action: :update_order
+        # Retiring a term is the only edit offered, so it has its own path rather
+        # than a general update the form would have to guard.
+        patch :status, on: :member, action: :update_status
+      end
       resource :import, only: [:new, :create], controller: 'controlled_vocabulary_imports' do
         post :confirm
       end

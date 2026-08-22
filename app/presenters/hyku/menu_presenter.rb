@@ -46,11 +46,17 @@ module Hyku
       can?(:read, :admin_dashboard)
     end
 
+    # Kept in step with Hyrax::MenuPresenterDecorator, which answers the same question
+    # for the Hyrax sidebar: this subclass overrides the method, so a module prepended
+    # to the parent never runs and an entry added there alone would go unseen here.
     def show_task?
       can?(:review, :submissions) ||
         can?(:read, User) ||
         can?(:read, Hyrax::Group) ||
-        can?(:read, :admin_dashboard)
+        can?(:read, :admin_dashboard) ||
+        # A depositor's only Tasks entry, granted through can_import_works?. Without
+        # it the section is suppressed and the page is reachable only by url.
+        can?(:view, :controlled_vocabularies)
     end
   end
 end

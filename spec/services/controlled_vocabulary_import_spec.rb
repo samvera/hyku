@@ -284,6 +284,16 @@ RSpec.describe ControlledVocabularyImport do
 
       expect(plan_for("id,label\nbraille,Braille\n").state_digest).not_to eq before_digest
     end
+
+    # A full-file import rewrites every position, so an order set after the review
+    # would be silently overwritten on confirm unless reordering moves the digest.
+    it 'changes its digest when the terms are reordered' do
+      before_digest = plan_for("id,label\nbraille,Braille\n").state_digest
+      vocabulary.resequence_terms(vocabulary.local_authority_entries.ordered.pluck(:id).rotate)
+      vocabulary.reload
+
+      expect(plan_for("id,label\nbraille,Braille\n").state_digest).not_to eq before_digest
+    end
   end
 
   describe 'round trips with the export' do

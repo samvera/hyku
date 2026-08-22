@@ -146,4 +146,104 @@ RSpec.describe Qa::LocalAuthority, type: :model do
       expect(described_class.new(label: '')).not_to be_valid
     end
   end
+
+  describe '#resequence_terms' do
+    let(:vocabulary) { described_class.create!(name: 'lab_names') }
+    let!(:first) { vocabulary.local_authority_entries.create!(label: 'Alpha', uri: 'a') }
+    let!(:second) { vocabulary.local_authority_entries.create!(label: 'Beta', uri: 'b') }
+    let!(:third) { vocabulary.local_authority_entries.create!(label: 'Gamma', uri: 'g') }
+
+    def labels
+      vocabulary.local_authority_entries.ordered.pluck(:label)
+    end
+
+    it 'puts the terms in the order given' do
+      vocabulary.resequence_terms([third.id, first.id, second.id])
+
+      expect(labels).to eq %w[Gamma Alpha Beta]
+    end
+
+    it 'numbers them from one, without gaps' do
+      vocabulary.resequence_terms([third.id, first.id, second.id])
+
+      expect(vocabulary.local_authority_entries.ordered.pluck(:position)).to eq [1, 2, 3]
+    end
+
+    # A drag moves one term past its neighbor, so writing every row would make a
+    # reorder cost the size of the vocabulary rather than the size of the change.
+    it 'reports only the terms whose position changed' do
+      expect(vocabulary.resequence_terms([second.id, first.id, third.id])).to eq 2
+    end
+
+    # The write is driven by this mapping, so its shape is pinned rather than only
+    # its size.
+    it 'maps each moved term to its new position' do
+      moved = vocabulary.send(:moved_terms, [third.id, first.id, second.id],
+                              { first.id => 1, second.id => 2, third.id => 3 })
+
+      expect(moved).to eq(third.id => 1, first.id => 2, second.id => 3)
+    end
+
+    it 'maps nothing when every term already holds its position' do
+      moved = vocabulary.send(:moved_terms, [first.id, second.id],
+                              { first.id => 1, second.id => 2 })
+
+      expect(moved).to eq({})
+    end
+
+    it 'leaves a term that did not move untouched' do
+      expect { vocabulary.resequence_terms([second.id, first.id, third.id]) }
+        .not_to change { third.reload.position }
+    end
+
+    it 'writes nothing when the order is unchanged' do
+      expect(vocabulary.resequence_terms([first.id, second.id, third.id])).to eq 0
+    end
+
+    # Ids arrive from form fields, so they are strings.
+    it 'accepts ids as strings' do
+      vocabulary.resequence_terms([third.id.to_s, first.id.to_s, second.id.to_s])
+
+      expect(labels).to eq %w[Gamma Alpha Beta]
+    end
+
+    # Otherwise a posted id would renumber a term this page never showed.
+    it 'ignores a term belonging to another vocabulary' do
+      other = described_class.create!(name: 'other_rooms')
+      stranger = other.local_authority_entries.create!(label: 'Delta', uri: 'd')
+
+      vocabulary.resequence_terms([stranger.id, third.id, first.id, second.id])
+
+      expect(labels).to eq %w[Gamma Alpha Beta]
+      expect(stranger.reload.position).to eq 1
+    end
+
+    # The display limit caps the page at 500 terms, so a longer vocabulary posts only
+    # the ones it showed. Dropping the rest would silently reorder them.
+    it 'keeps a term the caller left out, after the ones listed' do
+      vocabulary.resequence_terms([third.id, first.id])
+
+      expect(labels).to eq %w[Gamma Alpha Beta]
+    end
+
+    # Rows predating positions hold NULL, which never equals a target, so the first
+    # reorder is what numbers them.
+    it 'numbers terms that have no position yet' do
+      vocabulary.local_authority_entries.update_all(position: nil) # rubocop:disable Rails/SkipsModelValidations
+
+      expect(vocabulary.resequence_terms([third.id, first.id, second.id])).to eq 3
+      expect(labels).to eq %w[Gamma Alpha Beta]
+    end
+
+    it 'ignores an id repeated in the list' do
+      vocabulary.resequence_terms([third.id, third.id, first.id, second.id])
+
+      expect(labels).to eq %w[Gamma Alpha Beta]
+    end
+
+    it 'leaves the order alone when given nothing' do
+      expect(vocabulary.resequence_terms([])).to eq 0
+      expect(labels).to eq %w[Alpha Beta Gamma]
+    end
+  end
 end

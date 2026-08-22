@@ -100,6 +100,46 @@ RSpec.describe "Rake tasks" do
     end
   end
 
+  describe 'db:seed:sample:create' do
+    let(:valkyrie_service) { instance_double(Sample::ValkyrieService, create_sample_data: true) }
+    let(:af_service) { instance_double(Sample::ActiveFedoraService, create_sample_data: true) }
+
+    it 'passes tenant, quantity, and visibility through to the valkyrie service' do
+      expect(Sample::ValkyrieService).to receive(:new)
+        .with('demo', '10', 'open', work_types: nil).and_return(valkyrie_service)
+      run_task('db:seed:sample:create', 'demo', 'valkyrie', '10', 'open')
+    end
+
+    it 'passes visibility through to the active fedora service' do
+      expect(Sample::ActiveFedoraService).to receive(:new)
+        .with('demo', '10', 'restricted', work_types: nil).and_return(af_service)
+      run_task('db:seed:sample:create', 'demo', 'af', '10', 'restricted')
+    end
+
+    it 'defaults to no visibility override' do
+      expect(Sample::ValkyrieService).to receive(:new)
+        .with('demo', '10', nil, work_types: nil).and_return(valkyrie_service)
+      run_task('db:seed:sample:create', 'demo', 'valkyrie', '10')
+    end
+
+    it 'rejects an unrecognized visibility value' do
+      expect(Sample::ValkyrieService).not_to receive(:new)
+      expect(run_task('db:seed:sample:create', 'demo', 'valkyrie', '10', 'public')).to include('ERROR')
+    end
+
+    it 'parses per-type counts in the quantity slot' do
+      expect(Sample::ValkyrieService).to receive(:new)
+        .with('demo', 1, 'open', work_types: { 'generic_work' => 5, 'image' => 2 })
+        .and_return(valkyrie_service)
+      run_task('db:seed:sample:create', 'demo', 'valkyrie', 'generic_work:5;image:2', 'open')
+    end
+
+    it 'reports an unknown work type instead of silently skipping it' do
+      allow(Sample::ValkyrieService).to receive(:new).and_raise(ArgumentError, "Unknown work type 'Nope'")
+      expect(run_task('db:seed:sample:create', 'demo', 'valkyrie', 'nope:1')).to include('ERROR')
+    end
+  end
+
   describe 'hyku:demo:snapshot' do
     it 'requires a tenant argument' do
       expect { run_task('hyku:demo:snapshot') }.to raise_error(ArgumentError)

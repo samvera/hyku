@@ -45,13 +45,18 @@ module Qa
     # @param ids [Array<Integer, String>] term ids, first to last
     # @return [Integer] how many terms were renumbered
     def resequence_terms(ids)
-      # `ordered`, so a term the caller omitted trails in the place it already held
-      # rather than in whatever order the database returned it.
-      current = local_authority_entries.ordered.pluck(:id, :position)
-      listed = ids.map(&:to_i).uniq & current.map(&:first)
-      trailing = current.map(&:first) - listed
+      # Locked for the read as well as the write: the positions read here decide which
+      # rows the write skips, so two admins reordering from the same page could
+      # otherwise interleave and leave the vocabulary with duplicate positions.
+      with_lock do
+        # `ordered`, so a term the caller omitted trails in the place it already held
+        # rather than in whatever order the database returned it.
+        current = local_authority_entries.ordered.pluck(:id, :position)
+        listed = ids.map(&:to_i).uniq & current.map(&:first)
+        trailing = current.map(&:first) - listed
 
-      write_positions(moved_terms(listed + trailing, current.to_h))
+        write_positions(moved_terms(listed + trailing, current.to_h))
+      end
     end
 
     # The value staff paste into a metadata profile's controlled_values sources.
@@ -94,17 +99,14 @@ module Qa
     def write_positions(moved)
       return 0 if moved.empty?
 
-      whens = moved.map { |id, position| sanitize_sql(['WHEN id = ? THEN ?', id, position]) }
+      whens = moved.map do |id, position|
+        Qa::LocalAuthorityEntry.sanitize_sql_array(['WHEN id = ? THEN ?', id, position])
+      end
       local_authority_entries
         .where(id: moved.keys)
         .update_all(Arel.sql("position = CASE #{whens.join(' ')} END")) # rubocop:disable Rails/SkipsModelValidations
 
       moved.size
-    end
-
-    # `sanitize_sql` is protected on the class, and the CASE above is built here.
-    def sanitize_sql(statement)
-      Qa::LocalAuthorityEntry.send(:sanitize_sql_array, statement)
     end
 
     def derive_name_from_label

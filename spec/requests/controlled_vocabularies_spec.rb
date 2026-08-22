@@ -637,6 +637,16 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
 
         expect(labels).to eq ['Special Collections', 'Closed Stacks']
       end
+
+      # A hash rather than a list reaches the action as ActionController::Parameters,
+      # which has no #to_i — so an unfiltered value raises rather than being ignored.
+      it 'ignores a posted value that is not an id' do
+        patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms/terms/order",
+              params: { term_ids: { 'a' => term_ids.first } }
+
+        expect(response).to have_http_status(:redirect)
+        expect(labels).to eq ['Special Collections', 'Closed Stacks']
+      end
     end
 
     describe 'retiring and restoring a term' do
@@ -708,6 +718,17 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
               params: { active: 'false' }
 
         expect(term('Special Collections').position).to eq before_position
+      end
+
+      # Retiring is the destructive direction, so it has to be asked for. Casting a
+      # missing parameter reads as false, which would let an incomplete request
+      # retire a term nobody named.
+      it 'refuses to change a term when no state is given' do
+        patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms/terms/" \
+              "#{term('Special Collections').id}/status"
+
+        expect(term('Special Collections').active).to be true
+        expect(response).to have_http_status(:bad_request)
       end
 
       # A term belongs to the vocabulary in the url, so one from elsewhere must not be

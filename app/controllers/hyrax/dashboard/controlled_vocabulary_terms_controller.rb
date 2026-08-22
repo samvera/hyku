@@ -50,9 +50,13 @@ module Hyrax
 
       private
 
-      # Cast rather than checked for presence: the button posts `false`, which is a
-      # present value and would otherwise read as activating.
+      # Required rather than defaulted: casting a missing parameter gives nil, which
+      # reads as retiring, so an incomplete request would take a term out of use
+      # without asking. `false` is a valid answer, hence require before casting.
+      #
+      # @raise [ActionController::ParameterMissing] when no state is given
       def activating?
+        params.require(:active)
         ActiveModel::Type::Boolean.new.cast(params[:active]).present?
       end
 
@@ -74,8 +78,12 @@ module Hyrax
       # The order of the posted ids is the order itself: a browser submits fields in
       # document order, and the drag moves the row rather than rewriting a number. So
       # nothing here has to trust a position the page calculated.
+      #
+      # A nested value is dropped rather than passed on: `term_ids[a]=1` arrives as
+      # ActionController::Parameters, which has no #to_i, so it would raise instead of
+      # being ignored.
       def ordered_ids
-        Array(params[:term_ids])
+        Array(params[:term_ids]).grep_v(ActionController::Parameters)
       end
 
       def breadcrumb_trail

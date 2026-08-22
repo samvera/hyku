@@ -5,8 +5,9 @@
 // moves its field and there is nothing to keep in step. The server renumbers from
 // the order it receives.
 //
-// Dragging is one of two ways to move a term. The handle and the move buttons take
-// arrow keys, and every move is announced, so the order can be set without a mouse.
+// Dragging is not the only way to reorder. The handle and the move buttons both take
+// the arrow keys, and every move is announced, so the order can be set without a
+// mouse — which dragging alone cannot offer a keyboard or a touch device.
 (function () {
   'use strict';
 

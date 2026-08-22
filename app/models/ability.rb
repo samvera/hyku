@@ -42,10 +42,10 @@ class Ability
 
     @user_groups = default_user_groups
     # TODO: necessary to include #hyrax_group_names?
-    @user_groups |= current_user.hyrax_group_names if current_user.respond_to? :hyrax_group_names
-    @user_groups |= ['registered'] if !current_user.new_record? && current_user.roles.count.positive?
+    @user_groups |= current_user_hyrax_groups(Site.instance).map(&:name) if current_user.respond_to?(:hyrax_groups)
     # OVERRIDE: add the names of all user's roles to the array of user_groups
     @user_groups |= all_user_and_group_roles
+    @user_groups |= ['registered'] if !current_user.new_record? && current_user.roles.any?
 
     @user_groups
   end
@@ -89,11 +89,11 @@ class Ability
 
   # TODO: move method to GroupAwareRoleChecker, or use the GroupAwareRoleChecker
   def superadmin?
-    current_user.has_role? :superadmin
+    current_user.has_cached_role? :superadmin
   end
 
   def tenant_superadmin?
-    current_user.has_role?(:superadmin, Site.instance)
+    current_user.has_cached_role?(:superadmin, Site.instance)
   end
 
   # @return [Array<String>] a list of all role names that apply to the user

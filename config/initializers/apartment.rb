@@ -78,9 +78,9 @@ unless ActiveModel::Type::Boolean.new.cast(ENV.fetch('APARTMENT_DISABLE_INIT', '
       # switch (e.g. from AccountElevator#parse_tenant_name) don't poison the
       # cache with values from the wrong tenant schema.
       Flipflop::FeatureCache.current.clear!
-      # Same reasoning as above: a memoized Site.instance is only valid for
-      # the tenant it was fetched under.
-      Site.reset!
+      # Same reasoning as above: anything in RequestStore was read under the
+      # tenant it was fetched from, Site.instance included.
+      RequestStore.clear!
       account = Account.find_by(tenant: current)
       account&.switch!
     }

@@ -95,9 +95,9 @@
           </td>
           <% if togglable %>
             <td class="controlled-vocabulary-status-action">
-              <%# Reaches its form by id rather than sitting in one, so nothing nests
-                  inside the reorder form; see _term_status_forms. Outlined rather
-                  than a link because it submits a change. %>
+              <%# The button sits inside the reorder form but `form` reassigns its
+                  owner, so it submits its own and no form has to nest in another;
+                  see _term_status_forms. Outlined because it submits a change. %>
               <% retiring = term['active'] != false %>
               <% variant = retiring ? 'btn-outline-secondary' : 'btn-outline-primary' %>
               <button type="submit" form="term-status-<%= term['term_id'] %>"

@@ -5,9 +5,9 @@
 // moves its field and there is nothing to keep in step. The server renumbers from
 // the order it receives.
 //
-// Dragging is not the only way to reorder. The handle and the move buttons both take
-// the arrow keys, and every move is announced, so the order can be set without a
-// mouse — which dragging alone cannot offer a keyboard or a touch device.
+// The arrow keys and the move buttons exist because dragging is unavailable to a
+// keyboard, a screen reader, and a touch device; every move is announced for the
+// same reason.
 (function () {
   'use strict';
 
@@ -26,11 +26,18 @@
     return scope.querySelector(STATUS);
   }
 
+  // One pass over the template, because a term's label is free text: replacing the
+  // placeholders in turn would let a label containing `%{total}` be treated as one.
   function fill(template, row, list) {
-    return template
-      .replace('%{label}', function () { return row.dataset.termLabel || ''; })
-      .replace('%{position}', function () { return list.indexOf(row) + 1; })
-      .replace('%{total}', function () { return list.length; });
+    var values = {
+      label: row.dataset.termLabel || '',
+      position: list.indexOf(row) + 1,
+      total: list.length
+    };
+
+    return template.replace(/%\{(label|position|total)\}/g, function (match, name) {
+      return values[name];
+    });
   }
 
   function announce(table, row, template) {

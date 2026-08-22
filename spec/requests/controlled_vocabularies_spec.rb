@@ -639,13 +639,24 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
       end
 
       # A hash rather than a list reaches the action as ActionController::Parameters,
-      # which has no #to_i — so an unfiltered value raises rather than being ignored.
+      # which is not a number and so is not an id to reorder.
       it 'ignores a posted value that is not an id' do
         patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms/terms/order",
               params: { term_ids: { 'a' => term_ids.first } }
 
         expect(response).to have_http_status(:redirect)
         expect(labels).to eq ['Special Collections', 'Closed Stacks']
+      end
+
+      # These ids are request data, so a json client can send whatever it likes.
+      # `true.to_i` raises where a stray string merely reads as zero.
+      it 'ignores json values that are not ids' do
+        patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms/terms/order",
+              params: { term_ids: [nil, true, 'abc', term_ids.last] }.to_json,
+              headers: { 'CONTENT_TYPE' => 'application/json' }
+
+        expect(response).to have_http_status(:redirect)
+        expect(labels).to eq ['Closed Stacks', 'Special Collections']
       end
     end
 

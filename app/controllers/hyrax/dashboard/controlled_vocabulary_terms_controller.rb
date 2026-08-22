@@ -38,13 +38,18 @@ module Hyrax
       # store the term id, so a retired term stops being offered on the deposit form
       # while still resolving for the works citing it.
       def update_status
-        # Scoped through the vocabulary, so a term id from another one is not found
-        # rather than quietly edited.
-        term = @vocabulary.local_authority_entries.find(params[:id])
-        term.update!(active: activating?)
+        state = activating?
+
+        # The same lock an import and a reorder take: an import reads the terms under
+        # it, so a status set in between would be written back to what the import saw.
+        term = @vocabulary.with_lock do
+          @vocabulary.local_authority_entries.find(params[:id]).tap do |found|
+            found.update!(active: state)
+          end
+        end
 
         redirect_to main_app.controlled_vocabulary_path(@vocabulary.name),
-                    notice: t("hyku.admin.controlled_vocabulary.#{activating? ? 'term_restored' : 'term_retired'}",
+                    notice: t("hyku.admin.controlled_vocabulary.#{state ? 'term_restored' : 'term_retired'}",
                               label: term.label)
       end
 
@@ -53,8 +58,6 @@ module Hyrax
       # Required rather than defaulted: casting a missing parameter gives nil, which
       # reads as retiring, so an incomplete request would take a term out of use
       # without asking. `false` is a valid answer, hence require before casting.
-      #
-      # @raise [ActionController::ParameterMissing] when no state is given
       def activating?
         params.require(:active)
         ActiveModel::Type::Boolean.new.cast(params[:active]).present?
@@ -77,13 +80,10 @@ module Hyrax
 
       # The order of the posted ids is the order itself: a browser submits fields in
       # document order, and the drag moves the row rather than rewriting a number. So
-      # nothing here has to trust a position the page calculated.
-      #
-      # A nested value is dropped rather than passed on: `term_ids[a]=1` arrives as
-      # ActionController::Parameters, which has no #to_i, so it would raise instead of
-      # being ignored.
+      # nothing here has to trust a position the page calculated. Non-numeric values
+      # are dropped rather than passed on, because `to_i` raises on some of them.
       def ordered_ids
-        Array(params[:term_ids]).grep_v(ActionController::Parameters)
+        Array(params[:term_ids]).filter_map { |value| Integer(value, exception: false) }
       end
 
       def breadcrumb_trail

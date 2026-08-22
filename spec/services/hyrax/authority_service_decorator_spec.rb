@@ -50,4 +50,26 @@ RSpec.describe Hyrax::AuthorityService, type: :model, clean: true do
       expect(service.select_active_options.map(&:first)).to contain_exactly('Stated', 'Unstated')
     end
   end
+
+  # A tenant that has never been seeded has no rows, so the authority reads the yaml
+  # file instead. Terms are looked up by symbol, as upstream's select_all_options
+  # does, which holds only because qa returns indifferent hashes.
+  describe 'a vocabulary still backed by its yaml file' do
+    let(:unseeded) do
+      Module.new do
+        extend Hyrax::AuthorityService
+        authority_name 'resource_types'
+      end
+    end
+
+    it 'reads the terms the file supplies' do
+      expect(unseeded.authority.all.first).to be_a ActiveSupport::HashWithIndifferentAccess
+      expect(unseeded.select_active_options).to be_present
+      expect(unseeded.select_active_options).to all(match([be_present, be_present]))
+    end
+
+    it 'offers the same terms as the unfiltered list' do
+      expect(unseeded.select_active_options).to eq unseeded.select_all_options
+    end
+  end
 end

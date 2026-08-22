@@ -175,6 +175,22 @@ RSpec.describe Qa::LocalAuthority, type: :model do
       expect(vocabulary.resequence_terms([second.id, first.id, third.id])).to eq 2
     end
 
+    # The write is driven by this mapping, so its shape is pinned rather than only
+    # its size.
+    it 'maps each moved term to its new position' do
+      moved = vocabulary.send(:moved_terms, [third.id, first.id, second.id],
+                              { first.id => 1, second.id => 2, third.id => 3 })
+
+      expect(moved).to eq(third.id => 1, first.id => 2, second.id => 3)
+    end
+
+    it 'maps nothing when every term already holds its position' do
+      moved = vocabulary.send(:moved_terms, [first.id, second.id],
+                              { first.id => 1, second.id => 2 })
+
+      expect(moved).to eq({})
+    end
+
     it 'leaves a term that did not move untouched' do
       expect { vocabulary.resequence_terms([second.id, first.id, third.id]) }
         .not_to change { third.reload.position }

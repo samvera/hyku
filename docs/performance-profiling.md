@@ -3,6 +3,7 @@
 - [Quick start](#quick-start)
 - [Reading the mini-profiler badge](#reading-the-mini-profiler-badge)
 - [The flamegraph and the tenant-switch caveat](#the-flamegraph-and-the-tenant-switch-caveat)
+- [Heap analysis](#heap-analysis)
 - [Profiling something other than a page load](#profiling-something-other-than-a-page-load)
 - [Comparing two implementations](#comparing-two-implementations)
 - [CI regression guard](#ci-regression-guard)
@@ -36,6 +37,15 @@ current tenant. This shows up in the flamegraph as its own frames
 (`Apartment::Tenant.switch!`, `AccountElevator#parse_tenant_name`) - that time
 is real tenant-switch overhead paid on every request, not your view or
 presenter code. Don't misattribute it to "Rails is slow."
+
+## Heap analysis
+
+Load `?pp=analyze-memory` on any authorized page for a Ruby heap snapshot
+(object counts by type, largest live strings) via the stdlib `objspace`
+module - useful for "why is memory growing" questions the CPU flamegraph
+can't answer. This is a different feature from mini-profiler's "profile
+memory" button, which needs the `memory_profiler` gem (not installed here);
+we haven't added that since nothing has asked for it yet.
 
 ## Profiling something other than a page load
 

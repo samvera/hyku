@@ -156,4 +156,8 @@ gem 'hyku_knapsack', github: 'samvera-labs/hyku_knapsack', branch: 'required_for
 
 gem 'bullet', '~> 8.1', group: %i[development test]
 
+gem 'benchmark-ips', '~> 2.14', group: %i[development]
+gem 'rack-mini-profiler', '~> 3.3', group: %i[development]
+gem 'stackprof', '~> 0.2', group: %i[development]
+
 # rubocop:enable Metrics/MethodLength

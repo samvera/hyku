@@ -333,4 +333,17 @@ RSpec.describe Site, type: :model do
       end
     end
   end
+
+  describe '.reset!' do
+    it 'drops the tenant-scoped caches and leaves keys it does not own' do
+      RequestStore.store[:site_instance] = 'stale site'
+      RequestStore.store[:content_blocks] = { 'block' => 'stale' }
+      RequestStore.store[:qa_local_authorities] = { 'vocab' => 'stale' }
+      RequestStore.store[:lograge_location] = '/keep/me'
+
+      described_class.reset!
+
+      expect(RequestStore.store.keys).to eq([:lograge_location])
+    end
+  end
 end

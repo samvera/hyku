@@ -59,6 +59,17 @@ module Sample
 
     private
 
+    # 80% public / 15% authenticated / 5% private, so access-control checks have real variety to chew on.
+    VISIBILITY_POOL = (
+      [Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC] * 80 +
+      [Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED] * 15 +
+      [Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE] * 5
+    ).freeze
+
+    def random_visibility
+      VISIBILITY_POOL.sample
+    end
+
     def confirm_cleanup # rubocop:disable Metrics/AbcSize
       # Skip confirmation if CONFIRM environment variable is set to 'true'
       return true if ENV['CONFIRM']&.downcase == 'true'
@@ -210,12 +221,15 @@ module Sample
         description: sample_data[:descriptions][index % sample_data[:descriptions].length],
         creator: sample_data[:creators][index % sample_data[:creators].length],
         subject: sample_data[:subjects][index % sample_data[:subjects].length],
-        visibility: Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC,
         collection_type_gid: collection_type.to_global_id.to_s,
         depositor: user.user_key
       }
 
       collection = Hyrax.persister.save(resource: CollectionResource.new(collection_attrs))
+      # visibility isn't a Dry::Struct attribute - the constructor kwarg above is silently
+      # ignored, and the ACL it builds needs an explicit save to actually persist.
+      collection.visibility = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
+      collection.permission_manager.acl.save
       Sample::PermissionTemplateService.create_for_valkyrie_collection(collection, user)
       Hyrax.index_adapter.save(resource: collection)
       Hyrax.publisher.publish('collection.metadata.updated', collection: collection, user: user)
@@ -229,13 +243,16 @@ module Sample
         description: sample_data[:descriptions][index % sample_data[:descriptions].length],
         creator: sample_data[:creators][index % sample_data[:creators].length],
         subject: sample_data[:subjects][index % sample_data[:subjects].length],
-        visibility: Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC,
         bulkrax_identifier: "SampleValk-#{work_class}#{index}",
         depositor: user.user_key,
         admin_set_id: admin_set.id
       }
 
       work = Hyrax.persister.save(resource: work_class.new(work_attrs))
+      # visibility isn't a Dry::Struct attribute - the constructor kwarg above is silently
+      # ignored, and the ACL it builds needs an explicit save to actually persist.
+      work.visibility = random_visibility
+      work.permission_manager.acl.save
       Hyrax.index_adapter.save(resource: work)
       Hyrax.publisher.publish('object.deposited', object: work, user: user)
       Hyrax.publisher.publish('object.metadata.updated', object: work, user: user)

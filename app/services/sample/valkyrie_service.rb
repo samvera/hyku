@@ -26,7 +26,7 @@ module Sample
 
         index_all_works(collections + images + generic_works)
 
-        print_completion_summary(collections, images, generic_works, total_works)
+        print_completion_summary(collections, images, generic_works, [], total_works)
       ensure
         restore_job_configuration
       end

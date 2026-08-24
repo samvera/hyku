@@ -17,7 +17,8 @@
                       url: main_app.controlled_vocabulary_path(vocabulary.name),
                       method: :patch,
                       html: { id: "vocabulary-#{field}-form", class: 'vocabulary-field-form d-none' } do |f| %>
-    <%= f.input_field field, class: 'form-control form-control-sm', 'aria-label': heading %>
+    <%= f.input_field field, **local_assigns.fetch(:input_options, {}),
+                      class: 'form-control form-control-sm', 'aria-label': heading %>
     <div class="mt-2">
       <%= f.submit t('hyku.admin.controlled_vocabulary.save'), class: 'btn btn-primary btn-sm' %>
       <button type="button" class="btn btn-link btn-sm vocabulary-field-cancel">

@@ -68,7 +68,8 @@
                    field: :description,
                    heading: t('hyku.admin.controlled_vocabulary.description'),
                    value: @entry.description,
-                   blank_text: t('hyku.admin.controlled_vocabulary.no_description') %>
+                   blank_text: t('hyku.admin.controlled_vocabulary.no_description'),
+                   input_options: { rows: 3 } %>
       <% elsif @entry.description.present? %>
         <dt class="col-sm-3"><%= t('hyku.admin.controlled_vocabulary.description') %></dt>
         <dd class="col-sm-9"><%= @entry.description %></dd>

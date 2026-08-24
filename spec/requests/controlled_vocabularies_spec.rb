@@ -470,6 +470,15 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
         expect(response.body.scan('/dashboard/controlled_vocabularies/reading_rooms/edit').size).to eq 2
       end
 
+      it 'names each field and gives it a form of its own' do
+        get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms"
+
+        expect(response.body).to include 'id="vocabulary-label-form"'
+        expect(response.body).to include 'id="vocabulary-description-form"'
+        expect(response.body).to include 'aria-label="Vocabulary"'
+        expect(response.body).to include 'aria-label="Description"'
+      end
+
       it 'saves the wording and returns to the vocabulary' do
         patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms",
               params: { param_key => { label: 'Reading Areas', description: 'Rooms open to readers.' } }
@@ -569,8 +578,24 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
           expect(response).to have_http_status(:not_found)
         end
 
+        it 'refuses to update one defined in a configuration file' do
+          allow(ControlledVocabularyCatalog).to receive(:file_based_names).and_return(%w[map_regions])
+
+          patch "http://#{account.cname}/dashboard/controlled_vocabularies/map_regions",
+                params: { param_key => { label: 'Sneaked In' } }
+
+          expect(response).to have_http_status(:not_found)
+        end
+
         it 'refuses a remote authority' do
           get "http://#{account.cname}/dashboard/controlled_vocabularies/geonames/edit"
+
+          expect(response).to have_http_status(:not_found)
+        end
+
+        it 'refuses to update a remote authority' do
+          patch "http://#{account.cname}/dashboard/controlled_vocabularies/geonames",
+                params: { param_key => { label: 'Sneaked In' } }
 
           expect(response).to have_http_status(:not_found)
         end

@@ -25,13 +25,11 @@
   <div class="card-body border-bottom">
     <dl class="row mb-0">
       <% if editable %>
-        <dt class="col-sm-3"><%= t('hyku.admin.controlled_vocabulary.name') %></dt>
         <%= render 'editable_field',
                    vocabulary: @entry.vocabulary,
                    field: :label,
                    heading: t('hyku.admin.controlled_vocabulary.name'),
-                   value: @entry.label,
-                   blank_text: nil %>
+                   value: @entry.label %>
       <% end %>
 
       <dt class="col-sm-3"><%= t('hyku.admin.controlled_vocabulary.source_key') %></dt>
@@ -62,7 +60,6 @@
       <% end %>
 
       <% if editable %>
-        <dt class="col-sm-3"><%= t('hyku.admin.controlled_vocabulary.description') %></dt>
         <%= render 'editable_field',
                    vocabulary: @entry.vocabulary,
                    field: :description,

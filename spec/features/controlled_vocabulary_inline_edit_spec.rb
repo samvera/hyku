@@ -40,6 +40,16 @@ RSpec.describe 'Editing a vocabulary in place', type: :feature, js: true, clean:
                              visible: :visible)
   end
 
+  it 'discards what was typed into a field it closes' do
+    visit vocabulary_path
+    first('.vocabulary-field-edit').click
+    within('#vocabulary-label-form') { fill_in 'local_authority[label]', with: 'Abandoned' }
+    all('.vocabulary-field-edit', visible: :visible).last.click
+    first('.vocabulary-field-edit', visible: :visible).click
+
+    expect(page).to have_field('local_authority[label]', with: 'Reading Rooms')
+  end
+
   it 'returns focus to the pencil when the edit is cancelled' do
     visit vocabulary_path
     first('.vocabulary-field-edit').click

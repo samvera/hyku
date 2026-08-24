@@ -52,6 +52,8 @@ module Hyrax
         edit_breadcrumbs
       end
 
+      # The failure branch is defensive: neither column validates, so nothing a form
+      # can send is refused today.
       def update
         if @controlled_vocabulary.update(controlled_vocabulary_params)
           redirect_to main_app.controlled_vocabulary_path(@controlled_vocabulary.name),

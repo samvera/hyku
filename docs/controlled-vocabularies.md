@@ -481,7 +481,8 @@ pencil beside either one swaps it for a field, and the edit page it links to is 
 reader without JavaScript gets. The source key is not editable: metadata profiles cite
 it and works store the terms found through it, so it is fixed at creation.
 
-Clearing the name falls back to the titleized source key. A cleared description reads
+A save that cannot be applied re-renders the edit page, so the errors have somewhere
+to show. Clearing the name falls back to the titleized source key. A cleared description reads
 "None given" for someone who can edit it, since that is what they click to write one,
 and the row disappears for everyone else. Seeding fills a blank value only, so an edit
 made here survives `rake populate_qa`.

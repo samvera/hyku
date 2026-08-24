@@ -226,8 +226,7 @@ module Sample
       }
 
       collection = Hyrax.persister.save(resource: CollectionResource.new(collection_attrs))
-      # visibility isn't a Dry::Struct attribute - the constructor kwarg above is silently
-      # ignored, and the ACL it builds needs an explicit save to actually persist.
+      # visibility= builds an ACL that needs an explicit acl.save - setting it via the constructor is silently ignored.
       collection.visibility = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
       collection.permission_manager.acl.save
       Sample::PermissionTemplateService.create_for_valkyrie_collection(collection, user)
@@ -249,8 +248,7 @@ module Sample
       }
 
       work = Hyrax.persister.save(resource: work_class.new(work_attrs))
-      # visibility isn't a Dry::Struct attribute - the constructor kwarg above is silently
-      # ignored, and the ACL it builds needs an explicit save to actually persist.
+      # visibility= builds an ACL that needs an explicit acl.save - setting it via the constructor is silently ignored.
       work.visibility = random_visibility
       work.permission_manager.acl.save
       Hyrax.index_adapter.save(resource: work)

@@ -53,10 +53,7 @@ module Hyku
       can?(:review, :submissions) ||
         can?(:read, User) ||
         can?(:read, Hyrax::Group) ||
-        can?(:read, :admin_dashboard) ||
-        # A depositor's only Tasks entry, granted through can_import_works?. Without
-        # it the section is suppressed and the page is reachable only by url.
-        can?(:view, :controlled_vocabularies)
+        can?(:read, :admin_dashboard)
     end
   end
 end

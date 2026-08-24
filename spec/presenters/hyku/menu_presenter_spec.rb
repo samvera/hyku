@@ -15,13 +15,10 @@ RSpec.describe Hyku::MenuPresenter do
       allow(instance.view_context).to receive(:can?).with(*permitted).and_return(true)
     end
 
-    context 'for a user who can only view the vocabularies' do
+    context 'for a user who can only view the vocabularies, which are not a Task' do
       let(:permitted) { [:view, :controlled_vocabularies] }
 
-      # A depositor gets :view through can_import_works?, and the vocabularies link is
-      # the only Tasks entry they have. Without this the section is suppressed and the
-      # page is reachable only by typing the url.
-      it { is_expected.to be true }
+      it { is_expected.to be false }
     end
 
     context 'for a user who can review submissions' do

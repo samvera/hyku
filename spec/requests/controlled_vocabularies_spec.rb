@@ -832,6 +832,12 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
       expect(response).to have_http_status(:success)
     end
 
+    it 'offers the vocabularies from the dashboard sidebar' do
+      get "http://#{account.cname}/dashboard"
+
+      expect(response.body).to include '/dashboard/controlled_vocabularies'
+    end
+
     it 'refuses the form' do
       get "http://#{account.cname}/dashboard/controlled_vocabularies/new"
 

@@ -90,6 +90,17 @@ RSpec.describe Hyrax::FormHelperBehavior, type: :helper do
         expect(config[:type]).to eq 'select'
         expect(config[:options]).to eq [['Special Collections', 'https://example.com/special-collections']]
       end
+
+      it 'withholds a retired term' do
+        Qa::LocalAuthorityEntry.create!(local_authority: vocabulary,
+                                        label: 'Closed Stacks',
+                                        uri: 'https://example.com/closed-stacks',
+                                        active: false)
+
+        config = helper.controlled_vocabulary_options_for(:reading_room)
+
+        expect(config[:options].map(&:first)).to eq ['Special Collections']
+      end
     end
   end
 end

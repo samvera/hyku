@@ -21,12 +21,14 @@ module Sample
         collections = create_collections(quantity)
         images = create_images(quantity, collections)
         generic_works = create_generic_works(quantity, collections)
+        # Does not currently create oers, but is needed for completion summary
+        oers = []
 
         total_works = collections.length + images.length + generic_works.length
 
         index_all_works(collections + images + generic_works)
 
-        print_completion_summary(collections, images, generic_works, [], total_works)
+        print_completion_summary(collections, images, generic_works, oers, total_works)
       ensure
         restore_job_configuration
       end
@@ -59,15 +61,15 @@ module Sample
 
     private
 
-    # 80% public / 15% authenticated / 5% private, so access-control checks have real variety to chew on.
-    VISIBILITY_POOL = (
-      [Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC] * 80 +
-      [Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED] * 15 +
-      [Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE] * 5
-    ).freeze
-
     def random_visibility
-      VISIBILITY_POOL.sample
+      visibility_pool.sample
+    end
+
+    # 80% public / 15% authenticated / 5% private by default, so access-control checks have real variety to chew on.
+    def visibility_pool
+      @visibility_pool ||= [Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC] * ENV.fetch('HYKU_SAMPLE_VISIBILITY_PUBLIC', 80).to_i +
+                           [Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED] * ENV.fetch('HYKU_SAMPLE_VISIBILITY_AUTHENTICATED', 15).to_i +
+                           [Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE] * ENV.fetch('HYKU_SAMPLE_VISIBILITY_PRIVATE', 5).to_i
     end
 
     def confirm_cleanup # rubocop:disable Metrics/AbcSize

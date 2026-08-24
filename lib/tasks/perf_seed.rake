@@ -2,9 +2,9 @@
 
 namespace :perf do
   desc 'Create N dummy tenants with sample Valkyrie works, users, and admin sets, for tenant-count performance testing'
-  task :seed_tenants, [:count, :quantity, :users_per_tenant, :admin_sets_per_tenant] => :environment do |_t, args|
-    count = (args[:count] || 3).to_i
-    quantity = (args[:quantity] || 10).to_i
+  task :seed_tenants, [:tenant_count, :work_count, :users_per_tenant, :admin_sets_per_tenant] => :environment do |_t, args|
+    tenant_count = (args[:tenant_count] || 3).to_i
+    work_count = (args[:work_count] || 10).to_i
     users_per_tenant = (args[:users_per_tenant] || 5).to_i
     admin_sets_per_tenant = (args[:admin_sets_per_tenant] || 2).to_i
 
@@ -15,7 +15,7 @@ namespace :perf do
     password = SecureRandom.hex(12)
     created = []
 
-    count.times do |i|
+    tenant_count.times do |i|
       # Rails.application.reloader.wrap keeps autoloaded constants fresh across
       # many tenant switches in one long-lived process - without it, a long
       # batch can hit spurious "uninitialized constant" NameErrors partway through.
@@ -25,8 +25,8 @@ namespace :perf do
         account = Account.new(name: name)
 
         if CreateAccount.new(account, [user]).save
-          puts "  Created (cname: #{account.cname}). Seeding #{quantity} Valkyrie works..."
-          Sample::ValkyrieService.new(account.name, quantity).create_sample_data
+          puts "  Created (cname: #{account.cname}). Seeding #{work_count} Valkyrie works..."
+          Sample::ValkyrieService.new(account.name, work_count).create_sample_data
 
           # still switched into account's tenant here
           puts "  Adding #{users_per_tenant} users..."
@@ -56,7 +56,7 @@ namespace :perf do
       end
     end
 
-    puts "\nDone: #{created.length}/#{count} tenants created with #{quantity} works, #{users_per_tenant} users, #{admin_sets_per_tenant} extra admin sets each."
+    puts "\nDone: #{created.length}/#{count} tenants created with #{work_count} works, #{users_per_tenant} users, #{admin_sets_per_tenant} extra admin sets each."
     created.each { |a| puts "  #{a.name} -> https://#{a.cname}" }
     puts "\nClean up with: bundle exec rake perf:destroy_tenants[#{batch}]" if created.any?
   end

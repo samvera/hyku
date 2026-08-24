@@ -279,6 +279,7 @@ GEM
     bcp47_spec (0.2.1)
     bcrypt (3.1.22)
     benchmark (0.5.0)
+    benchmark-ips (2.15.1)
     benchmark_methods (0.7)
     bibtex-ruby (6.2.0)
       latex-decode (~> 0.0)
@@ -1132,6 +1133,8 @@ GEM
       linkeddata (~> 3.2)
       rack (~> 2.1)
       rack-rdf (~> 3.2)
+    rack-mini-profiler (3.3.1)
+      rack (>= 1.2.0)
     rack-oauth2 (2.2.1)
       activesupport
       attr_required
@@ -1536,6 +1539,7 @@ GEM
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
     ssrf_filter (1.0.8)
+    stackprof (0.2.28)
     stringio (3.1.7)
     swd (2.0.3)
       activesupport (>= 3)
@@ -1663,6 +1667,7 @@ DEPENDENCIES
   activesupport (>= 4.2.0)
   addressable (= 2.8.1)
   aws-sdk-sqs
+  benchmark-ips (~> 2.14)
   bixby
   blacklight (~> 7.38)
   blacklight_advanced_search
@@ -1728,6 +1733,7 @@ DEPENDENCIES
   puma (~> 7.2)
   qa!
   rack-attack
+  rack-mini-profiler (~> 3.3)
   rack-test (= 0.7.0)
   rails (~> 7.2.0)
   rails-controller-testing
@@ -1764,6 +1770,7 @@ DEPENDENCIES
   spring (~> 1.7)
   spring-watcher-listen (~> 2.0.0)
   sprockets-rails
+  stackprof (~> 0.2)
   terser
   tether-rails
   turbolinks (~> 5)

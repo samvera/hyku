@@ -40,7 +40,7 @@ presenter code. Don't misattribute it to "Rails is slow."
 
 ## Heap analysis
 
-Load `?pp=analyze-memory` on any authorized page for a Ruby heap snapshot
+Load `?pp=analyze-memory` on any page for a Ruby heap snapshot
 (object counts by type, largest live strings) via the stdlib `objspace`
 module - useful for "why is memory growing" questions the CPU flamegraph
 can't answer. This is a different feature from mini-profiler's "profile
@@ -98,18 +98,11 @@ an informational PR comment - never a pass/fail gate.
 Set `HYKU_MINI_PROFILER_ENABLED=true` (real staging deploys run
 `RAILS_ENV=production`, so `Rails.env.staging?` never fires - same reasoning
 as [config/initializers/bullet.rb](../config/initializers/bullet.rb)'s
-`HYKU_BULLET_ENABLED`). Outside development the badge is only shown to
-signed-in admins (`current_user.admin?`), via `authorization_mode:
-:allow_authorized` - an anonymous visitor to a staging site with this flag on
-sees nothing, unless the `show_mini_profiler_to_all_users` Flipflop feature
-(toggleable per-tenant from the admin UI, no deploy needed) is turned on -
-useful for comparing logged-in vs logged-out behavior on demand. The
-authorization cookie is written on the *response* to an
-admin's first request after enabling, so the badge itself only appears
-starting on their second page load.
+`HYKU_BULLET_ENABLED`). The badge shows to every visitor, not just admins -
+if that turns out to need locking down later, revisit then.
 
 This intentionally does **not** rely on the gem's `:development` Gemfile
 group for safety - the Docker image currently bundles every group regardless
-of `RAILS_ENV`, so the env-var + admin-authorization check above is the real
-gate. Production stays safe as long as `HYKU_MINI_PROFILER_ENABLED` is unset
-there, exactly the same operational assumption bullet already relies on.
+of `RAILS_ENV`, so the env var above is the real gate. Production stays safe
+as long as `HYKU_MINI_PROFILER_ENABLED` is unset there, exactly the same
+operational assumption bullet already relies on.

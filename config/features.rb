@@ -46,10 +46,6 @@ Flipflop.configure do
           default: false,
           description: "Enable storing tenant-specific color selections to override application defaults."
 
-  feature :show_mini_profiler_to_all_users,
-          default: false,
-          description: "When the performance profiler is enabled outside development, show it to every visitor instead of just admins."
-
   group :experimental_features do
     feature :include_guided_import,
             default: false,

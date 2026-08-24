@@ -4,6 +4,10 @@ module Hyrax
   module Dashboard
     # Adds terms to a vocabulary this tenant manages.
     class ControlledVocabularyTermsController < ApplicationController
+      # The only statuses the buttons post. Anything else is a malformed request
+      # rather than a status to cast, so it is refused instead of interpreted.
+      ACTIVE_VALUES = { 'true' => true, 'false' => false }.freeze
+
       with_themed_layout 'dashboard'
 
       before_action -> { authorize! :manage, :controlled_vocabularies }
@@ -17,7 +21,10 @@ module Hyrax
       def create
         @term = @vocabulary.local_authority_entries.new(term_params)
 
-        if @term.save
+        # The same lock a reorder and an import take: the position is allocated from
+        # the highest already in use, so a term saved beside an import could otherwise
+        # be given a position that import is writing to another term.
+        if @vocabulary.with_lock { @term.save }
           redirect_to main_app.controlled_vocabulary_path(@vocabulary.name),
                       notice: t('hyku.admin.controlled_vocabulary.term_created', label: @term.label)
         else
@@ -28,10 +35,16 @@ module Hyrax
 
       # The whole list is posted, so a reorder is one write rather than one per term.
       def update_order
-        @vocabulary.resequence_terms(ordered_ids)
+        @vocabulary.resequence_terms(ordered_ids, params[:state_digest].presence)
 
         redirect_to main_app.controlled_vocabulary_path(@vocabulary.name),
                     notice: t('hyku.admin.controlled_vocabulary.order_saved')
+      rescue Qa::LocalAuthority::StaleOrder
+        # Back to the vocabulary rather than re-rendering: the order just posted was
+        # built on terms that have since changed, so the table has to be redrawn from
+        # the current ones before it means anything.
+        redirect_to main_app.controlled_vocabulary_path(@vocabulary.name),
+                    alert: t('hyku.admin.controlled_vocabulary.order_stale')
       end
 
       # Retiring is offered in place of deleting, which works cannot survive: they
@@ -57,10 +70,12 @@ module Hyrax
 
       # Required rather than defaulted: casting a missing parameter gives nil, which
       # reads as retiring, so an incomplete request would take a term out of use
-      # without asking. `false` is a valid answer, hence require before casting.
+      # without asking. `false` is a valid answer, hence require before matching.
       def activating?
         params.require(:active)
-        ActiveModel::Type::Boolean.new.cast(params[:active]).present?
+        raise ActionController::BadRequest unless ACTIVE_VALUES.key?(params[:active])
+
+        ACTIVE_VALUES.fetch(params[:active])
       end
 
       # An imported copy has a database row, so find_by! alone would let a term through;

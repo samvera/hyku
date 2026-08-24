@@ -367,6 +367,7 @@ en:
         order: Order
         order_hint: The order terms are offered in on a deposit form. Drag a term, or use the arrow buttons, then save.
         order_saved: The term order was saved.
+        order_stale: The terms changed while you were reordering them, so the order was not saved. Check the current order and try again.
         origin: Source
         origin_hint: Where the vocabulary is defined, and therefore whether its terms can be edited here.
         origins:

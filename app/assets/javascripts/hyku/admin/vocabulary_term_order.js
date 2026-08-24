@@ -82,11 +82,30 @@
     return { row: over, after: y > box.top + box.height / 2 };
   }
 
+  // Puts a row back at the index it held before a canceled drag. The row is compared
+  // against the list with itself excluded, because its own place in the list would
+  // otherwise shift every index after it by one.
+  function restore(table, row, index) {
+    if (index < 0) return;
+
+    var others = rows(table).filter(function (candidate) {
+      return candidate !== row;
+    });
+    if (!others.length) return;
+
+    if (index >= others.length) {
+      others[others.length - 1].after(row);
+    } else {
+      others[index].before(row);
+    }
+  }
+
   // draggable is set on mousedown rather than in the markup, so a drag can only start
   // from the handle. Left on the row, any text selection inside a cell would drag it.
   function bindDragging(table) {
     var dragged = null;
     var from = -1;
+    var dropped = false;
 
     table.addEventListener('mousedown', function (event) {
       var row = event.target.closest(ROW);
@@ -98,6 +117,7 @@
       if (!dragged) return;
 
       from = rows(table).indexOf(dragged);
+      dropped = false;
       dragged.classList.add('is-dragging');
       event.dataTransfer.effectAllowed = 'move';
       event.dataTransfer.setData('text/plain', '');
@@ -119,19 +139,28 @@
     });
 
     table.addEventListener('drop', function (event) {
-      if (dragged) event.preventDefault();
+      if (!dragged) return;
+      event.preventDefault();
+      dropped = true;
     });
 
+    // dragend also fires for a drag no drop completed, such as Escape or a release
+    // outside the table, which is why the preview is only kept when one did.
     table.addEventListener('dragend', function () {
       if (!dragged) return;
 
       dragged.classList.remove('is-dragging');
       dragged.draggable = false;
-      if (rows(table).indexOf(dragged) !== from) {
+
+      if (!dropped) {
+        restore(table, dragged, from);
+      } else if (rows(table).indexOf(dragged) !== from) {
         announce(table, dragged, table.dataset.movedTemplate);
       }
+
       dragged = null;
       from = -1;
+      dropped = false;
     });
   }
 

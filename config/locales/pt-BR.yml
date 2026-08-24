@@ -378,6 +378,7 @@ pt-BR:
         order: Ordem
         order_hint: A ordem em que os termos são oferecidos em um formulário de depósito. Arraste um termo ou use os botões de seta e depois salve.
         order_saved: A ordem dos termos foi salva.
+        order_stale: Os termos mudaram enquanto você os reordenava, portanto a ordem não foi salva. Verifique a ordem atual e tente novamente.
         origin: Origem
         origin_hint: Onde o vocabulário é definido e, portanto, se seus termos podem ser editados aqui.
         origins:

@@ -512,6 +512,7 @@ zh:
         order: 顺序
         order_hint: 词条在提交表单中的显示顺序。拖动词条或使用箭头按钮，然后保存。
         order_saved: 词条顺序已保存。
+        order_stale: 术语在您重新排序时发生了更改，因此未保存排序。请查看当前顺序后重试。
         origin: 来源
         origin_hint: 词表的定义位置，并由此决定其词条能否在此处编辑。
         origins:

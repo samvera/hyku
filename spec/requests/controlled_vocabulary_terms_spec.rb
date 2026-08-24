@@ -94,6 +94,86 @@ RSpec.describe 'Controlled vocabulary terms', type: :request, clean: true, multi
 
       expect(response).to have_http_status(:not_found)
     end
+
+    describe 'reordering terms' do
+      def create_terms
+        Apartment::Tenant.switch(account.tenant) do
+          vocab = Qa::LocalAuthority.find_by(name: 'reading_rooms')
+          %w[Alpha Beta].map { |label| vocab.local_authority_entries.create!(label: label, uri: label.downcase).id }
+        end
+      end
+
+      def digest
+        Apartment::Tenant.switch(account.tenant) do
+          Qa::LocalAuthority.find_by(name: 'reading_rooms').term_state_digest
+        end
+      end
+
+      def patch_order(ids, state_digest)
+        patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms/terms/order",
+              params: { term_ids: ids, state_digest: state_digest }
+      end
+
+      it 'saves the order the page was drawn from' do
+        alpha, beta = create_terms
+
+        patch_order([beta, alpha], digest)
+
+        expect(terms_in('reading_rooms').sort_by(&:position).map(&:label)).to eq %w[Beta Alpha]
+      end
+
+      # Someone else reordered between this page being drawn and its save.
+      it 'refuses an order built on terms that have since changed' do
+        alpha, beta = create_terms
+        stale = digest
+        patch_order([beta, alpha], stale)
+
+        patch_order([alpha, beta], stale)
+
+        expect(flash[:alert]).to eq I18n.t('hyku.admin.controlled_vocabulary.order_stale')
+        expect(terms_in('reading_rooms').sort_by(&:position).map(&:label)).to eq %w[Beta Alpha]
+      end
+    end
+
+    describe 'changing a term status' do
+      def create_term
+        Apartment::Tenant.switch(account.tenant) do
+          Qa::LocalAuthority.find_by(name: 'reading_rooms')
+                            .local_authority_entries.create!(label: 'Rare Books', uri: 'rare-books').id
+        end
+      end
+
+      def patch_status(id, active)
+        patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms/terms/#{id}/status",
+              params: { active: active }
+      end
+
+      it 'retires the term' do
+        patch_status(create_term, 'false')
+
+        expect(terms_in('reading_rooms').first.active).to be false
+      end
+
+      it 'restores the term' do
+        id = create_term
+        patch_status(id, 'false')
+        patch_status(id, 'true')
+
+        expect(terms_in('reading_rooms').first.active).to be true
+      end
+
+      # Casting alone reads any non-empty string as true, so an unrecognized value
+      # would restore a retired term rather than being refused.
+      it 'refuses a value that is not a boolean' do
+        id = create_term
+        patch_status(id, 'false')
+
+        patch_status(id, 'garbage')
+
+        expect(response).to have_http_status(:bad_request)
+        expect(terms_in('reading_rooms').first.active).to be false
+      end
+    end
   end
 
   # Viewing the listing is granted to depositors; adding terms is not.

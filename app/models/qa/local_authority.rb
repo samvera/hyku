@@ -4,6 +4,9 @@ module Qa
   class LocalAuthority < ApplicationRecord
     NAME_FORMAT = /\A[a-z0-9][a-z0-9_-]*\z/
 
+    # A reorder was saved from a page drawn before someone else changed the terms.
+    class StaleOrder < StandardError; end
+
     has_many :local_authority_entries, dependent: :destroy
 
     # Set by the dashboard only, so the mesh import task can still create its own row
@@ -44,17 +47,26 @@ module Qa
     #
     # @param ids [Array<Integer, String>] term ids, first to last
     # @return [Integer] how many terms were renumbered
-    def resequence_terms(ids)
+    def resequence_terms(ids, reviewed_digest = nil)
       # Locked for the read as well as the write: the positions read here decide which
       # rows the write skips, so two admins reordering from the same page could
       # otherwise interleave and leave the vocabulary with duplicate positions.
       with_lock do
+        raise StaleOrder if reviewed_digest && term_state_digest != reviewed_digest
+
         current = local_authority_entries.ordered.pluck(:id, :position)
         listed = ids.map(&:to_i).uniq & current.map(&:first)
         trailing = current.map(&:first) - listed
 
         write_positions(moved_terms(listed + trailing, current.to_h))
       end
+    end
+
+    # Built the same way the import's review digest is, and from the same columns,
+    # because a reorder writes updated_at for exactly this reason.
+    def term_state_digest
+      pairs = local_authority_entries.pluck(:uri, :updated_at)
+      Digest::MD5.hexdigest(pairs.map { |uri, updated_at| "#{uri}:#{updated_at.to_f}" }.sort.join('|'))
     end
 
     # The value staff paste into a metadata profile's controlled_values sources.

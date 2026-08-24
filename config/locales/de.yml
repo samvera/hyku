@@ -495,6 +495,7 @@ de:
         order: Reihenfolge
         order_hint: Die Reihenfolge, in der die Begriffe in einem Abgabeformular angeboten werden. Ziehen Sie einen Begriff oder verwenden Sie die Pfeiltasten und speichern Sie dann.
         order_saved: Die Reihenfolge der Begriffe wurde gespeichert.
+        order_stale: Die Begriffe haben sich geändert, während Sie sie neu sortiert haben. Die Reihenfolge wurde nicht gespeichert. Prüfen Sie die aktuelle Reihenfolge und versuchen Sie es erneut.
         origin: Quelle
         origin_hint: Wo das Vokabular definiert ist und ob seine Begriffe daher hier bearbeitet werden können.
         origins:

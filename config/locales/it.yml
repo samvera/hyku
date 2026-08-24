@@ -496,6 +496,7 @@ it:
         order: Ordine
         order_hint: L'ordine in cui i termini vengono proposti in un modulo di deposito. Trascina un termine oppure usa i pulsanti freccia, quindi salva.
         order_saved: L'ordine dei termini è stato salvato.
+        order_stale: I termini sono cambiati mentre li stavi riordinando, quindi l'ordine non è stato salvato. Controlla l'ordine attuale e riprova.
         origin: Origine
         origin_hint: Dove è definito il vocabolario, e quindi se i suoi termini possono essere modificati qui.
         origins:

@@ -163,6 +163,37 @@ RSpec.describe Qa::LocalAuthority, type: :model do
       expect(labels).to eq %w[Gamma Alpha Beta]
     end
 
+    describe 'against a stale page' do
+      it 'applies when the digest matches what the page was drawn from' do
+        vocabulary.resequence_terms([third.id, first.id, second.id], vocabulary.term_state_digest)
+
+        expect(labels).to eq %w[Gamma Alpha Beta]
+      end
+
+      it 'refuses when the terms changed after the page was drawn' do
+        stale = vocabulary.term_state_digest
+        vocabulary.resequence_terms([second.id, first.id, third.id])
+
+        expect { vocabulary.resequence_terms([third.id, first.id, second.id], stale) }
+          .to raise_error(Qa::LocalAuthority::StaleOrder)
+      end
+
+      it 'leaves the order alone when it refuses' do
+        stale = vocabulary.term_state_digest
+        vocabulary.resequence_terms([second.id, first.id, third.id])
+
+        expect { vocabulary.resequence_terms([third.id, first.id, second.id], stale) }
+          .to raise_error(Qa::LocalAuthority::StaleOrder)
+        expect(labels).to eq %w[Beta Alpha Gamma]
+      end
+
+      it 'applies when no digest is given, so a caller may opt out' do
+        vocabulary.resequence_terms([third.id, first.id, second.id], nil)
+
+        expect(labels).to eq %w[Gamma Alpha Beta]
+      end
+    end
+
     it 'numbers them from one, without gaps' do
       vocabulary.resequence_terms([third.id, first.id, second.id])
 

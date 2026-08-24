@@ -496,6 +496,7 @@ es:
         order: Orden
         order_hint: El orden en que se ofrecen los términos en un formulario de depósito. Arrastre un término o use los botones de flecha y luego guarde.
         order_saved: Se guardó el orden de los términos.
+        order_stale: Los términos cambiaron mientras los reordenaba, por lo que no se guardó el orden. Revise el orden actual e inténtelo de nuevo.
         origin: Fuente
         origin_hint: Dónde está definido el vocabulario y, por lo tanto, si sus términos se pueden editar aquí.
         origins:

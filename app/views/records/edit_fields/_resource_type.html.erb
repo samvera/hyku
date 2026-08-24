@@ -6,23 +6,6 @@
 <% if Hyrax.config.flexible? %>
   <%= render partial: 'records/edit_fields/default', locals: { f: f, key: :resource_type } %>
 <% else %>
-  <% current_values = Array.wrap(f.object[key]).select(&:present?) %>
-  <% augmented_options = options_including_current(Hyrax::ResourceTypesService.select_active_options,
-                                                  Hyrax::ResourceTypesService,
-                                                  current_values) %>
-  <% if f.object.multiple? key %>
-    <%= f.input key, as: :select,
-        collection: augmented_options,
-        include_blank: !f.object.required?(key),
-        label: label_for(term: key, record_class: f.object.class),
-        hint: hint_for(term: key, record_class: f.object.class),
-        input_html: { class: 'form-control', multiple: true, name: "#{f.object_name}[#{key}][]" } %>
-  <% else %>
-    <%= f.input key, as: :select,
-        collection: augmented_options,
-        include_blank: true,
-        label: label_for(term: key, record_class: f.object.class),
-        hint: hint_for(term: key, record_class: f.object.class),
-        input_html: { class: 'form-control' } %>
-  <% end %>
+  <%= render partial: 'records/edit_fields/service_backed_select',
+             locals: { f: f, key: key, service: Hyrax::ResourceTypesService } %>
 <% end %>

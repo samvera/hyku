@@ -418,6 +418,7 @@ fr:
         edit: Modifier les détails
         edit_heading: 'Modifier %{name}'
         edit_help: Modifiez la façon dont ce vocabulaire se lit pour le personnel. Sa clé source est fixe, donc un profil de métadonnées qui la cite continue de fonctionner.
+        edit_field: 'Modifier %{field}'
         edit_title: Modifier le vocabulaire
         import:
           additions_heading: Termes à ajouter

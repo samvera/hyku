@@ -289,6 +289,7 @@ en:
         edit: Edit details
         edit_heading: 'Edit %{name}'
         edit_help: Change how this vocabulary reads for staff. Its source key is fixed, so a metadata profile citing it keeps working.
+        edit_field: 'Edit %{field}'
         edit_title: Edit vocabulary
         import:
           additions_heading: Terms to add

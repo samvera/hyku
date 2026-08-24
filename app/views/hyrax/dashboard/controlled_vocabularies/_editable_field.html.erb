@@ -1,0 +1,28 @@
+<% input = controlled_vocabulary_field_input(field) %>
+<dd class="col-sm-9 vocabulary-field">
+  <div class="vocabulary-field-display">
+    <% if value.present? %>
+      <span><%= value %></span>
+    <% else %>
+      <span class="text-muted"><%= blank_text %></span>
+    <% end %>
+    <button type="button" class="btn btn-link btn-sm vocabulary-field-edit"
+            title="<%= t('hyku.admin.controlled_vocabulary.edit_field', field: heading) %>">
+      <span class="fa fa-pencil" aria-hidden="true"></span>
+      <span class="sr-only"><%= t('hyku.admin.controlled_vocabulary.edit_field', field: heading) %></span>
+    </button>
+  </div>
+
+  <%= form_for vocabulary,
+               url: main_app.controlled_vocabulary_path(vocabulary.name),
+               method: :patch,
+               html: { class: 'vocabulary-field-form d-none' } do |f| %>
+    <%= f.public_send(input[:input], field, input[:options]) %>
+    <div class="mt-2">
+      <%= f.submit t('hyku.admin.controlled_vocabulary.save'), class: 'btn btn-primary btn-sm' %>
+      <button type="button" class="btn btn-link btn-sm vocabulary-field-cancel">
+        <%= t('helpers.action.cancel', default: 'Cancel') %>
+      </button>
+    </div>
+  <% end %>
+</dd>

@@ -508,14 +508,16 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
         expect(response.body).to include 'Reading Rooms'
       end
 
-      it 'drops the description row rather than rendering it empty' do
+      # The row stays for a manager, since it is what they click to write one. A
+      # reader who cannot edit still loses it, as before.
+      it 'says a cleared description is unwritten rather than rendering it empty' do
         patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms",
               params: { param_key => { description: '' } }
 
         get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms"
 
         expect(response.body).not_to include 'Where an item may be consulted on site.'
-        expect(response.body).not_to include '<dt class="col-sm-3">Description</dt>'
+        expect(response.body).to include 'None given'
       end
 
       it 'reorders the listing to match the new label' do

@@ -1,3 +1,4 @@
+<% editable = @entry.editable? && can?(:manage, :controlled_vocabularies) %>
 <% provide :page_title, construct_page_title(@entry.label, t('hyku.admin.controlled_vocabularies'), t('hyku.admin.title')) %>
 <% provide :page_header do %>
   <h1>
@@ -10,10 +11,7 @@
   <% if @entry.downloadable? %>
     <%= render 'download_menu', entry: @entry %>
   <% end %>
-  <% if @entry.editable? && can?(:manage, :controlled_vocabularies) %>
-    <%= link_to t('hyku.admin.controlled_vocabulary.edit'),
-                main_app.edit_controlled_vocabulary_path(@entry.source_key),
-                class: 'btn btn-outline-secondary' %>
+  <% if editable %>
     <%= link_to t('hyku.admin.controlled_vocabulary.import.button'),
                 main_app.new_controlled_vocabulary_import_path(@entry.source_key),
                 class: 'btn btn-outline-secondary' %>
@@ -26,6 +24,16 @@
 <div class="card">
   <div class="card-body border-bottom">
     <dl class="row mb-0">
+      <% if editable %>
+        <dt class="col-sm-3"><%= t('hyku.admin.controlled_vocabulary.name') %></dt>
+        <%= render 'editable_field',
+                   vocabulary: @entry.vocabulary,
+                   field: :label,
+                   heading: t('hyku.admin.controlled_vocabulary.name'),
+                   value: @entry.label,
+                   blank_text: nil %>
+      <% end %>
+
       <dt class="col-sm-3"><%= t('hyku.admin.controlled_vocabulary.source_key') %></dt>
       <dd class="col-sm-9"><code><%= @entry.source_key %></code></dd>
 
@@ -53,7 +61,15 @@
         </dd>
       <% end %>
 
-      <% if @entry.description.present? %>
+      <% if editable %>
+        <dt class="col-sm-3"><%= t('hyku.admin.controlled_vocabulary.description') %></dt>
+        <%= render 'editable_field',
+                   vocabulary: @entry.vocabulary,
+                   field: :description,
+                   heading: t('hyku.admin.controlled_vocabulary.description'),
+                   value: @entry.description,
+                   blank_text: t('hyku.admin.controlled_vocabulary.no_description') %>
+      <% elsif @entry.description.present? %>
         <dt class="col-sm-3"><%= t('hyku.admin.controlled_vocabulary.description') %></dt>
         <dd class="col-sm-9"><%= @entry.description %></dd>
       <% end %>

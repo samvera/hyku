@@ -6,7 +6,7 @@
 - [Heap analysis](#heap-analysis)
 - [Profiling something other than a page load](#profiling-something-other-than-a-page-load)
 - [Comparing two implementations](#comparing-two-implementations)
-- [CI regression guard](#ci-regression-guard)
+- [No wall-clock CI gate](#no-wall-clock-ci-gate)
 - [Enabling on staging](#enabling-on-staging)
 
 ## Quick start
@@ -75,14 +75,7 @@ candidate implementations to compare, use `benchmark-ips` via the
 [benchmarks/](../benchmarks/README.md) convention. This is for micro-level
 "which of these two snippets is faster" questions, not whole-request profiling.
 
-## CI regression guard
-
-[spec/requests/work_show_query_count_spec.rb](../spec/requests/work_show_query_count_spec.rb)
-asserts the work-show page issues fewer than 120 SQL queries (measured at 89
-as of this writing), following the existing pattern in
-[spec/features/catalog_query_count_spec.rb](../spec/features/catalog_query_count_spec.rb).
-This counts queries, not wall-clock time, so it can't flake on CI runner load
-- it catches N+1 regressions on a known hotspot, not general Ruby CPU slowness.
+## No wall-clock CI gate
 
 We deliberately did **not** add a CI job asserting on wall-clock timing
 (`stackprof`/`benchmark-ips` output). Timings on shared CI runners are

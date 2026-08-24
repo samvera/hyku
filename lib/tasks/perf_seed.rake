@@ -16,36 +16,44 @@ namespace :perf do
     created = []
 
     count.times do |i|
-      name = "perf-test-#{batch}-#{i}"
-      puts "Creating tenant #{name}..."
-      account = Account.new(name: name)
+      # Rails.application.reloader.wrap keeps autoloaded constants fresh across
+      # many tenant switches in one long-lived process - without it, a long
+      # batch can hit spurious "uninitialized constant" NameErrors partway through.
+      Rails.application.reloader.wrap do
+        name = "perf-test-#{batch}-#{i}"
+        puts "Creating tenant #{name}..."
+        account = Account.new(name: name)
 
-      unless CreateAccount.new(account, [user]).save
-        puts "  FAILED: #{account.errors.full_messages.join(', ')}"
-        next
+        if CreateAccount.new(account, [user]).save
+          puts "  Created (cname: #{account.cname}). Seeding #{quantity} Valkyrie works..."
+          Sample::ValkyrieService.new(account.name, quantity).create_sample_data
+
+          # still switched into account's tenant here
+          puts "  Adding #{users_per_tenant} users..."
+          users_per_tenant.times do |j|
+            new_user = User.create!(email: "perf-#{batch}-#{i}-#{j}@example.com", password: password, password_confirmation: password)
+            new_user.add_role(:admin, Site.instance) if j.zero?
+          end
+
+          puts "  Adding #{admin_sets_per_tenant} extra admin sets..."
+          admin_sets_per_tenant.times do |k|
+            admin_set = Hyrax.config.admin_set_class.new(id: "perf-admin-set-#{batch}-#{i}-#{k}", title: "Extra Admin Set #{k}")
+            Hyrax::AdminSetCreateService.call!(admin_set: admin_set, creating_user: user)
+          end
+
+          created << account
+        else
+          puts "  FAILED: #{account.errors.full_messages.join(', ')}"
+        end
+      rescue => e
+        puts "  FAILED: #{e.message}"
+      ensure
+        begin
+          Apartment::Tenant.switch!(nil)
+        rescue => e
+          puts "  WARNING: failed to reset tenant after iteration #{i}: #{e.message}"
+        end
       end
-
-      puts "  Created (cname: #{account.cname}). Seeding #{quantity} Valkyrie works..."
-      Sample::ValkyrieService.new(account.name, quantity).create_sample_data
-
-      # still switched into account's tenant here
-      puts "  Adding #{users_per_tenant} users..."
-      users_per_tenant.times do |j|
-        new_user = User.create!(email: "perf-#{batch}-#{i}-#{j}@example.com", password: password, password_confirmation: password)
-        new_user.add_role(:admin, Site.instance) if j.zero?
-      end
-
-      puts "  Adding #{admin_sets_per_tenant} extra admin sets..."
-      admin_sets_per_tenant.times do |k|
-        admin_set = Hyrax.config.admin_set_class.new(id: "perf-admin-set-#{batch}-#{i}-#{k}", title: "Extra Admin Set #{k}")
-        Hyrax::AdminSetCreateService.call!(admin_set: admin_set, creating_user: user)
-      end
-
-      created << account
-    rescue => e
-      puts "  FAILED: #{e.message}"
-    ensure
-      Apartment::Tenant.switch!(nil)
     end
 
     puts "\nDone: #{created.length}/#{count} tenants created with #{quantity} works, #{users_per_tenant} users, #{admin_sets_per_tenant} extra admin sets each."

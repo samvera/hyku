@@ -65,8 +65,6 @@ module Hyrax
 
       private
 
-      # An imported copy and a yaml vocabulary both answer to find!, and the view only
-      # hides the button, so neither is refused anywhere else.
       def load_vocabulary
         entry = ControlledVocabularyCatalog.find!(params[:id])
         raise ActiveRecord::RecordNotFound, "#{entry.source_key} is not edited here" unless entry.editable?

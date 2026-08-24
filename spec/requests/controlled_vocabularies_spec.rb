@@ -464,6 +464,12 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
         expect(response.body).to include 'Reading Rooms'
       end
 
+      it 'links each editable value to the edit page' do
+        get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms"
+
+        expect(response.body.scan('/dashboard/controlled_vocabularies/reading_rooms/edit').size).to eq 2
+      end
+
       it 'saves the wording and returns to the vocabulary' do
         patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms",
               params: { param_key => { label: 'Reading Areas', description: 'Rooms open to readers.' } }
@@ -487,7 +493,6 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
         expect(response.body).to include 'Reading Areas'
       end
 
-      # A metadata profile cites the source key, so a relabel must not move it.
       it 'ignores a name supplied in the request' do
         patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms",
               params: { param_key => { label: 'Reading Areas', name: 'something_else' } }
@@ -508,8 +513,6 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
         expect(response.body).to include 'Reading Rooms'
       end
 
-      # The row stays for a manager, since it is what they click to write one. A
-      # reader who cannot edit still loses it, as before.
       it 'says a cleared description is unwritten rather than rendering it empty' do
         patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms",
               params: { param_key => { description: '' } }
@@ -531,8 +534,6 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
         expect(response.body.index('Aaa Reading Rooms')).to be < response.body.index('Aardvark Terms')
       end
 
-      # Seeding fills a blank only, which is what lets an edit stand. licenses is
-      # backed by a shipped yml, so a reseed reaches it.
       it 'survives a reseed' do
         Apartment::Tenant.switch(account.tenant) { Qa::LocalAuthority.create!(name: 'licenses', label: 'Licenses') }
 
@@ -556,11 +557,9 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
               params: { param_key => { label: 'Reading Areas' } }
 
         expect(response).to have_http_status(:unprocessable_entity)
-        # The form route, not the patch path, which has no GET to link to.
         expect(response.body).to include '/dashboard/controlled_vocabularies/reading_rooms/edit'
       end
 
-      # The view only hides the control, so each of these has to be refused here too.
       describe 'a vocabulary this tenant does not own' do
         it 'refuses one defined in a configuration file' do
           allow(ControlledVocabularyCatalog).to receive(:file_based_names).and_return(%w[map_regions])
@@ -576,8 +575,6 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
           expect(response).to have_http_status(:not_found)
         end
 
-        # An imported copy has a row, so the write would otherwise go through and the
-        # next import would replace it.
         it 'refuses an imported copy' do
           Apartment::Tenant.switch(account.tenant) { Qa::LocalAuthority.create!(name: 'mesh', label: 'MeSH') }
 
@@ -604,8 +601,6 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
         end
       end
 
-      # The label is a dashboard display name, not a form field label, so neither
-      # metadata mode has any say over editing it.
       context 'without flexible metadata' do
         before { allow(Hyrax.config).to receive(:flexible?).and_return(false) }
 

@@ -415,10 +415,9 @@ es:
         description: Descripción
         description_help: Opcional. Explica a otro personal para qué sirve este vocabulario.
         download: Descargar
-        edit: Editar detalles
+        edit_field: 'Editar %{field}'
         edit_heading: 'Editar %{name}'
         edit_help: Cambie cómo se lee este vocabulario para el personal. Su clave de origen es fija, por lo que un perfil de metadatos que la cite sigue funcionando.
-        edit_field: 'Editar %{field}'
         edit_title: Editar vocabulario
         import:
           additions_heading: Términos a agregar

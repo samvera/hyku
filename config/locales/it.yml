@@ -415,10 +415,9 @@ it:
         description: Descrizione
         description_help: Facoltativo. Spiega ad altro personale a cosa serve questo vocabolario.
         download: Scarica
-        edit: Modifica dettagli
+        edit_field: 'Modifica %{field}'
         edit_heading: 'Modifica %{name}'
         edit_help: Cambia come questo vocabolario appare al personale. La sua chiave di origine è fissa, quindi un profilo dei metadati che la cita continua a funzionare.
-        edit_field: 'Modifica %{field}'
         edit_title: Modifica vocabolario
         import:
           additions_heading: Termini da aggiungere

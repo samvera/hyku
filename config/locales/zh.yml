@@ -431,10 +431,9 @@ zh:
         description: 描述
         description_help: 可选。向其他工作人员说明此词表的用途。
         download: 下载
-        edit: 编辑详情
+        edit_field: '编辑%{field}'
         edit_heading: '编辑 %{name}'
         edit_help: 更改此词表对馆员显示的措辞。其源键固定不变，因此引用它的元数据配置档仍可正常使用。
-        edit_field: '编辑%{field}'
         edit_title: 编辑词表
         import:
           additions_heading: 待添加的词条

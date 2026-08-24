@@ -1,4 +1,3 @@
-<% input = controlled_vocabulary_field_input(field) %>
 <dd class="col-sm-9 vocabulary-field">
   <div class="vocabulary-field-display">
     <% if value.present? %>
@@ -14,11 +13,11 @@
     <% end %>
   </div>
 
-  <%= form_for vocabulary,
-               url: main_app.controlled_vocabulary_path(vocabulary.name),
-               method: :patch,
-               html: { class: 'vocabulary-field-form d-none' } do |f| %>
-    <%= f.public_send(input[:input], field, input[:options]) %>
+  <%= simple_form_for vocabulary,
+                      url: main_app.controlled_vocabulary_path(vocabulary.name),
+                      method: :patch,
+                      html: { id: "vocabulary-#{field}-form", class: 'vocabulary-field-form d-none' } do |f| %>
+    <%= f.input_field field, class: 'form-control form-control-sm', 'aria-label': heading %>
     <div class="mt-2">
       <%= f.submit t('hyku.admin.controlled_vocabulary.save'), class: 'btn btn-primary btn-sm' %>
       <button type="button" class="btn btn-link btn-sm vocabulary-field-cancel">

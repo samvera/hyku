@@ -297,10 +297,9 @@ pt-BR:
         description: Descrição
         description_help: Opcional. Explica a outros funcionários para que serve este vocabulário.
         download: Baixar
-        edit: Editar detalhes
+        edit_field: 'Editar %{field}'
         edit_heading: 'Editar %{name}'
         edit_help: Altere como este vocabulário aparece para a equipe. Sua chave de origem é fixa, então um perfil de metadados que a cita continua funcionando.
-        edit_field: 'Editar %{field}'
         edit_title: Editar vocabulário
         import:
           additions_heading: Termos a adicionar

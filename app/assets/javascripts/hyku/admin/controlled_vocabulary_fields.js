@@ -18,5 +18,6 @@ $(document).on('turbolinks:load', function () {
     var field = $(this).closest('.vocabulary-field');
     field.find('form')[0].reset();
     toggle(field, false);
+    field.find('.vocabulary-field-edit').trigger('focus');
   });
 });

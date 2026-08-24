@@ -414,10 +414,9 @@ de:
         description: Beschreibung
         description_help: Optional. Erklärt anderen Mitarbeitenden, wofür dieses Vokabular gedacht ist.
         download: Herunterladen
-        edit: Details bearbeiten
+        edit_field: '%{field} bearbeiten'
         edit_heading: '%{name} bearbeiten'
         edit_help: Ändern Sie, wie dieses Vokabular für Mitarbeitende lautet. Sein Quellschlüssel ist fest, sodass ein Metadatenprofil, das ihn zitiert, weiterhin funktioniert.
-        edit_field: '%{field} bearbeiten'
         edit_title: Vokabular bearbeiten
         import:
           additions_heading: Hinzuzufügende Begriffe

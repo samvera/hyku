@@ -11,9 +11,12 @@
     <%= render 'download_menu', entry: @entry %>
   <% end %>
   <% if @entry.editable? && can?(:manage, :controlled_vocabularies) %>
+    <%# href, not just the toggle: the edit page is what a reader without javascript
+        gets, and what update re-renders when the form comes back invalid. %>
     <%= link_to t('hyku.admin.controlled_vocabulary.edit'),
                 main_app.edit_controlled_vocabulary_path(@entry.source_key),
-                class: 'btn btn-outline-secondary' %>
+                class: 'btn btn-outline-secondary',
+                data: { toggle: 'modal', target: '#edit-vocabulary' } %>
     <%= link_to t('hyku.admin.controlled_vocabulary.import.button'),
                 main_app.new_controlled_vocabulary_import_path(@entry.source_key),
                 class: 'btn btn-outline-secondary' %>
@@ -22,6 +25,11 @@
                 class: 'btn btn-primary' %>
   <% end %>
 </div>
+
+<%# Outside the button row, which is right-aligned. %>
+<% if @entry.editable? && can?(:manage, :controlled_vocabularies) %>
+  <%= render 'edit_modal', vocabulary: @entry.vocabulary %>
+<% end %>
 
 <div class="card">
   <div class="card-body border-bottom">

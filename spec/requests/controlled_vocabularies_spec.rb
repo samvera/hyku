@@ -464,6 +464,16 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
         expect(response.body).to include 'Reading Rooms'
       end
 
+      # The button opens a modal holding the form, and still links to the edit page
+      # for a reader without javascript.
+      it 'carries the form on the vocabulary page' do
+        get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms"
+
+        expect(response.body).to include 'data-target="#edit-vocabulary"'
+        expect(response.body).to include '/dashboard/controlled_vocabularies/reading_rooms/edit'
+        expect(response.body).to include 'id="edit-vocabulary"'
+      end
+
       it 'saves the wording and returns to the vocabulary' do
         patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms",
               params: { param_key => { label: 'Reading Areas', description: 'Rooms open to readers.' } }

@@ -1,0 +1,36 @@
+<div class="modal fade" id="edit-vocabulary" tabindex="-1" role="dialog"
+     aria-labelledby="edit-vocabulary-title" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <%= form_for vocabulary,
+                   url: main_app.controlled_vocabulary_path(vocabulary.name),
+                   method: :patch,
+                   html: { class: 'controlled-vocabulary-form' } do |f| %>
+        <div class="modal-header">
+          <h4 class="modal-title" id="edit-vocabulary-title">
+            <%= t('hyku.admin.controlled_vocabulary.edit_heading', name: vocabulary.display_label) %>
+          </h4>
+          <button type="button" class="close" data-dismiss="modal"
+                  aria-label="<%= t('helpers.action.close', default: 'Close') %>">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <p class="text-muted"><%= t('hyku.admin.controlled_vocabulary.edit_help') %></p>
+          <%= render 'fields', f: f %>
+          <p class="form-text text-muted mb-0">
+            <%= t('hyku.admin.controlled_vocabulary.source_key') %>:
+            <code><%= vocabulary.source_key %></code>
+          </p>
+        </div>
+
+        <div class="modal-footer">
+          <%= link_to t('helpers.action.cancel', default: 'Cancel'), '#',
+                      class: 'btn btn-link', data: { dismiss: 'modal' } %>
+          <%= f.submit t('hyku.admin.controlled_vocabulary.save'), class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

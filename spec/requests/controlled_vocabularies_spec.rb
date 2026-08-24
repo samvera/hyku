@@ -542,6 +542,29 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
         expect(response.body).to include 'Save order'
       end
 
+      it 'reads the digest under the same lock as the rows it guards' do
+        locked = []
+        allow(ControlledVocabularyCatalog).to receive(:terms_for).and_wrap_original do |original, entry|
+          locked << :terms
+          original.call(entry)
+        end
+        allow_any_instance_of(Qa::LocalAuthority).to receive(:with_lock).and_wrap_original do |original, &block|
+          original.call do
+            locked << :lock_opened
+            block.call
+            locked << :lock_closed
+          end
+        end
+        allow_any_instance_of(Qa::LocalAuthority).to receive(:term_state_digest).and_wrap_original do |original|
+          locked << :digest
+          original.call
+        end
+
+        get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms"
+
+        expect(locked).to eq %i[lock_opened terms digest lock_closed]
+      end
+
       # The order is carried by the sequence of the posted ids, so the page needs no
       # position field to keep in step with the rows.
       it 'posts the term ids rather than a position per term' do

@@ -137,7 +137,7 @@
     <% elsif reorderable_terms %>
       <%= form_tag main_app.order_controlled_vocabulary_terms_path(@entry.source_key),
                    method: :patch, data: { term_order_form: true } do %>
-        <%= hidden_field_tag :state_digest, @entry.vocabulary.term_state_digest %>
+        <%= hidden_field_tag :state_digest, @term_state_digest %>
         <%= render 'terms_table', entry: @entry, terms: @terms,
                                   reorderable: true, togglable: editable_terms %>
 

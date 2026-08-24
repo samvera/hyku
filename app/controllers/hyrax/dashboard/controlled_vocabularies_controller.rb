@@ -61,9 +61,21 @@ module Hyrax
         # not define this route. The engine's `/files/:id` then swallows it.
         add_breadcrumb t('hyku.admin.controlled_vocabularies'), main_app.controlled_vocabularies_path
         add_breadcrumb @entry.label, request.path
-        @terms = ControlledVocabularyCatalog.terms_for(@entry)
+        load_terms
         @usage = ControlledVocabularyUsage.citing(@entry.source_key)
         render :show
+      end
+
+      # One lock so the digest describes the rows drawn beside it: read separately it
+      # can describe a reorder those rows never showed, and the save it guards would
+      # overwrite that reorder rather than refuse it.
+      def load_terms
+        return @terms = ControlledVocabularyCatalog.terms_for(@entry) if @entry.vocabulary.blank?
+
+        @entry.vocabulary.with_lock do
+          @terms = ControlledVocabularyCatalog.terms_for(@entry)
+          @term_state_digest = @entry.vocabulary.term_state_digest
+        end
       end
 
       def download(format)

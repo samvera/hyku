@@ -477,6 +477,7 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
         expect(response.body).to include 'id="vocabulary-description-form"'
         expect(response.body).to include 'aria-label="Vocabulary"'
         expect(response.body).to include 'aria-label="Description"'
+        expect(response.body).to include 'rows="3"'
       end
 
       it 'saves the wording and returns to the vocabulary' do

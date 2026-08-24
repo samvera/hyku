@@ -11,6 +11,9 @@
     <%= render 'download_menu', entry: @entry %>
   <% end %>
   <% if @entry.editable? && can?(:manage, :controlled_vocabularies) %>
+    <%= link_to t('hyku.admin.controlled_vocabulary.edit'),
+                main_app.edit_controlled_vocabulary_path(@entry.source_key),
+                class: 'btn btn-outline-secondary' %>
     <%= link_to t('hyku.admin.controlled_vocabulary.import.button'),
                 main_app.new_controlled_vocabulary_import_path(@entry.source_key),
                 class: 'btn btn-outline-secondary' %>

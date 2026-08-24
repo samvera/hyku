@@ -415,6 +415,10 @@ it:
         description: Descrizione
         description_help: Facoltativo. Spiega ad altro personale a cosa serve questo vocabolario.
         download: Scarica
+        edit: Modifica dettagli
+        edit_heading: 'Modifica %{name}'
+        edit_help: Cambia come questo vocabolario appare al personale. La sua chiave di origine è fissa, quindi un profilo dei metadati che la cita continua a funzionare.
+        edit_title: Modifica vocabolario
         import:
           additions_heading: Termini da aggiungere
           applied: Importati %{additions} termini nuovi e aggiornati %{updates} esistenti.
@@ -511,6 +515,7 @@ it:
         retired_count:
           one: (%{count} ritirato)
           other: (%{count} ritirati)
+        save: Salva modifiche
         show_title: 'Vocabolario controllato: %{name}'
         source_key: Chiave di origine
         source_key_hint: Incollala in un campo del profilo dei metadati per controllare quel campo con questo vocabolario.
@@ -541,6 +546,7 @@ it:
         unconfigured_help: Questo servizio richiede credenziali prima di poter essere utilizzato. Fino ad allora un campo che lo utilizza accetta testo libero invece di offrire suggerimenti.
         unused: Nessuna proprietà dei metadati utilizza questo vocabolario.
         unused_profile_hint: Per iniziare a usarlo, aggiungi la chiave di origine di questo vocabolario ai valori controllati di una proprietà nel profilo dei metadati del tenant.
+        updated: '%{name} è stato aggiornato.'
         used_by: Utilizzato dalle proprietà
         used_by_hint: Le proprietà dei metadati controllate da questo vocabolario, come denominate nelle importazioni Bulkrax e nei profili dei metadati.
         used_by_work_types: 'Disponibile su:'

@@ -474,6 +474,19 @@ import task, is refused. Taking the name of a YAML vocabulary is allowed on purp
 the new row is used in place of the file, which is how a tenant takes ownership of a
 shipped list.
 
+### Editing a Vocabulary
+
+The name and description of a vocabulary this tenant owns can be edited from its page.
+The source key is not editable: metadata profiles cite it and works store the terms
+found through it, so it is fixed at creation.
+
+Clearing the name falls back to the titleized source key, and clearing the description
+hides the row rather than showing an empty one. Seeding fills a blank value only, so an
+edit made here survives `rake populate_qa`.
+
+Config-file and external-service vocabularies are not editable, and neither is an
+imported copy such as MeSH, whose rows a re-import replaces.
+
 ### Adding Terms
 
 Terms can be added to a vocabulary this tenant owns. A term has a label and an

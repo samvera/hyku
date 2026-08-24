@@ -159,7 +159,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
 
   # Controlled vocabularies, viewable only from the dashboard
   scope :dashboard, module: 'hyrax/dashboard' do
-    resources :controlled_vocabularies, only: [:index, :new, :create] do
+    resources :controlled_vocabularies, only: [:index, :new, :create, :edit] do
       resources :terms, only: [:new, :create], controller: 'controlled_vocabulary_terms'
       resource :import, only: [:new, :create], controller: 'controlled_vocabulary_imports' do
         post :confirm
@@ -176,6 +176,12 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
         as: :controlled_vocabulary,
         constraints: { id: %r{[^/.]+(?:/[^/.]+)?} },
         format: /csv|yml|yaml|html/
+    # Unnamed, and outside `resources`, so the glob above keeps the
+    # `controlled_vocabulary` route name a slashed source key needs.
+    match 'controlled_vocabularies/:id',
+          to: 'controlled_vocabularies#update',
+          via: %i[patch put],
+          as: nil
   end
 
   # Guided deposit wizard

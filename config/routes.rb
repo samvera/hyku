@@ -181,6 +181,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     match 'controlled_vocabularies/:id',
           to: 'controlled_vocabularies#update',
           via: %i[patch put],
+          format: false,
           as: nil
   end
 

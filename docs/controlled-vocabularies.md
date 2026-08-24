@@ -476,13 +476,15 @@ shipped list.
 
 ### Editing a Vocabulary
 
-The name and description of a vocabulary this tenant owns can be edited from its page.
-The source key is not editable: metadata profiles cite it and works store the terms
-found through it, so it is fixed at creation.
+The name and description of a vocabulary this tenant owns are edited on its page: a
+pencil beside either one swaps it for a field, and the edit page it links to is what a
+reader without JavaScript gets. The source key is not editable: metadata profiles cite
+it and works store the terms found through it, so it is fixed at creation.
 
-Clearing the name falls back to the titleized source key, and clearing the description
-hides the row rather than showing an empty one. Seeding fills a blank value only, so an
-edit made here survives `rake populate_qa`.
+Clearing the name falls back to the titleized source key. A cleared description reads
+"None given" for someone who can edit it, since that is what they click to write one,
+and the row disappears for everyone else. Seeding fills a blank value only, so an edit
+made here survives `rake populate_qa`.
 
 Config-file and external-service vocabularies are not editable, and neither is an
 imported copy such as MeSH, whose rows a re-import replaces.

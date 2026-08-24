@@ -27,6 +27,19 @@ RSpec.describe 'Editing a vocabulary in place', type: :feature, js: true, clean:
     expect(page.evaluate_script('document.activeElement.name')).to eq 'local_authority[label]'
   end
 
+  it 'takes the place of the value it edits, one field at a time' do
+    visit vocabulary_path
+    first('.vocabulary-field-edit').click
+
+    expect(page).to have_css('.vocabulary-field-display', visible: :visible, count: 1)
+
+    all('.vocabulary-field-edit', visible: :visible).last.click
+
+    expect(page).to have_css('#vocabulary-label-form', visible: :hidden)
+    expect(page).to have_css('#vocabulary-description-form input, #vocabulary-description-form textarea',
+                             visible: :visible)
+  end
+
   it 'returns focus to the pencil when the edit is cancelled' do
     visit vocabulary_path
     first('.vocabulary-field-edit').click

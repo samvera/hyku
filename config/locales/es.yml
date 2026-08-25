@@ -405,6 +405,7 @@ es:
         at_position: '%{label} ya está en la posición %{position} de %{total}'
         awaiting_import: No importado
         awaiting_import_help: 'Este vocabulario está disponible pero aún no tiene términos en este inquilino. Puede completarlo ejecutando: %{task}'
+        cancel_order: Cancelar
         confirm_back: Volver a editar
         confirm_create: Confirmar y crear
         confirm_help: Compruebe estos valores antes de crear el vocabulario.

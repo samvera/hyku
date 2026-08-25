@@ -276,6 +276,7 @@ en:
         at_position: "%{label} is already at position %{position} of %{total}"
         awaiting_import: Not imported
         awaiting_import_help: 'This vocabulary is available but has no terms in this tenant yet. Populate it by running: %{task}'
+        cancel_order: Cancel
         confirm_back: Back to edit
         confirm_create: Confirm and create
         confirm_help: Check these values before the vocabulary is created.

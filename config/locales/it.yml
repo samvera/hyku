@@ -405,6 +405,7 @@ it:
         at_position: '%{label} è già alla posizione %{position} di %{total}'
         awaiting_import: Non importato
         awaiting_import_help: 'Questo vocabolario è disponibile ma non ha ancora termini in questo tenant. Popolalo eseguendo: %{task}'
+        cancel_order: Annulla
         confirm_back: Torna alla modifica
         confirm_create: Conferma e crea
         confirm_help: Controlla questi valori prima che il vocabolario venga creato.

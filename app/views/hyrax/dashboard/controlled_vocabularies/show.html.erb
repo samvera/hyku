@@ -145,6 +145,11 @@
             <span class="fa fa-info-circle" aria-hidden="true"></span>
             <%= t('hyku.admin.controlled_vocabulary.order_unsaved') %>
           </p>
+          <%# Hidden until something moves: with nothing to undo it would offer to
+              cancel the order the page is already showing. %>
+          <button type="button" class="btn btn-link d-none" data-term-order-cancel>
+            <%= t('hyku.admin.controlled_vocabulary.cancel_order') %>
+          </button>
           <%= submit_tag t('hyku.admin.controlled_vocabulary.save_order'),
                          class: 'btn btn-secondary', data: { disable_with: false } %>
         </div>

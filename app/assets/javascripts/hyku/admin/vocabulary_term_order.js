@@ -19,6 +19,7 @@
   var TOGGLE = '[data-term-status-toggle]';
   var TOGGLE_REASON = '[data-term-status-reason]';
   var DIRTY_NOTE = '[data-term-order-dirty]';
+  var CANCEL = '[data-term-order-cancel]';
 
   function rows(table) {
     return Array.prototype.slice.call(table.querySelectorAll(ROW));
@@ -55,6 +56,27 @@
 
     var note = document.querySelector(DIRTY_NOTE);
     if (note) note.classList.toggle('d-none', !dirty);
+
+    var cancel = document.querySelector(CANCEL);
+    if (cancel) cancel.classList.toggle('d-none', !dirty);
+  }
+
+  // Restores the order the table was rendered with, from the same stamp the dirty
+  // check compares against.
+  function cancelOrder(table) {
+    var body = table.querySelector('tbody');
+    if (!body) return;
+
+    var byId = {};
+    rows(table).forEach(function (row) {
+      byId[row.dataset.termId] = row;
+    });
+
+    (table.dataset.termOrderLoaded || '').split(',').forEach(function (id) {
+      if (byId[id]) body.appendChild(byId[id]);
+    });
+
+    refreshDirtyState(table);
   }
 
   // aria-disabled carries no behavior of its own, so the submit has to be stopped
@@ -241,6 +263,18 @@
     });
   }
 
+  // On the form rather than the table, because the button sits below it.
+  function bindCancel(table) {
+    var scope = table.closest('form');
+    if (!scope) return;
+
+    scope.addEventListener('click', function (event) {
+      if (!event.target.closest(CANCEL)) return;
+
+      event.preventDefault();
+      cancelOrder(table);
+    });
+  }
 
   function bindKeyboard(table) {
     table.addEventListener('keydown', function (event) {
@@ -264,6 +298,7 @@
       bindDragging(table);
       bindKeyboard(table);
       bindButtons(table);
+      bindCancel(table);
       refreshDirtyState(table);
     });
   }

@@ -404,6 +404,7 @@ de:
         at_position: '%{label} ist bereits an Position %{position} von %{total}'
         awaiting_import: Nicht importiert
         awaiting_import_help: 'Dieses Vokabular ist verfügbar, enthält in diesem Mandanten aber noch keine Begriffe. Befüllen Sie es durch Ausführen von: %{task}'
+        cancel_order: Abbrechen
         confirm_back: Zurück zum Bearbeiten
         confirm_create: Bestätigen und erstellen
         confirm_help: Prüfen Sie diese Werte, bevor das Vokabular erstellt wird.

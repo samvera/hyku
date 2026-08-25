@@ -287,6 +287,7 @@ pt-BR:
         at_position: '%{label} já está na posição %{position} de %{total}'
         awaiting_import: Não importado
         awaiting_import_help: 'Este vocabulário está disponível, mas ainda não tem termos neste locatário. Preencha-o executando: %{task}'
+        cancel_order: Cancelar
         confirm_back: Voltar para editar
         confirm_create: Confirmar e criar
         confirm_help: Verifique estes valores antes de o vocabulário ser criado.

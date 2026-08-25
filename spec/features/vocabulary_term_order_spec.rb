@@ -200,6 +200,14 @@ RSpec.describe 'Reordering a vocabulary\'s terms', type: :feature, js: true, cle
       expect(toggles_marked_unavailable).to eq 0
     end
 
+    it 'offers them again once the order is cancelled' do
+      move_button('Alpha', 1).click
+      click_button 'Cancel'
+
+      expect(displayed_labels).to eq %w[Alpha Beta Gamma]
+      expect(toggles_marked_unavailable).to eq 0
+    end
+
     it 'offers them again when a term is moved back where it started' do
       move_button('Alpha', 1).click
       move_button('Alpha', -1).click
@@ -207,6 +215,57 @@ RSpec.describe 'Reordering a vocabulary\'s terms', type: :feature, js: true, cle
       expect(displayed_labels).to eq %w[Alpha Beta Gamma]
       expect(toggles_marked_unavailable).to eq 0
       expect(page).to have_no_content(note)
+    end
+  end
+
+  describe 'cancelling an order' do
+    it 'stays hidden until something moves' do
+      expect(page).to have_no_button('Cancel')
+    end
+
+    it 'appears once a term moves' do
+      move_button('Alpha', 1).click
+
+      expect(page).to have_button('Cancel')
+    end
+
+    it 'puts the terms back in the order the page loaded with' do
+      move_button('Alpha', 1).click
+      move_button('Gamma', -1).click
+      click_button 'Cancel'
+
+      expect(displayed_labels).to eq %w[Alpha Beta Gamma]
+    end
+
+    it 'hides itself again once there is nothing to cancel' do
+      move_button('Alpha', 1).click
+      click_button 'Cancel'
+
+      expect(page).to have_no_button('Cancel')
+    end
+
+    it 'writes nothing' do
+      move_button('Alpha', 1).click
+      click_button 'Cancel'
+
+      expect(stored_labels).to eq %w[Alpha Beta Gamma]
+    end
+
+    it 'restores an order set by dragging' do
+      page.execute_script(<<~JS)
+        var row = document.querySelector('[data-term-row][data-term-label="Alpha"]');
+        var onto = document.querySelector('[data-term-row][data-term-label="Gamma"]');
+        var y = onto.getBoundingClientRect().bottom - 2;
+        var dt = new DataTransfer();
+        ['dragstart', 'dragover', 'drop', 'dragend'].forEach(function (type) {
+          row.dispatchEvent(new DragEvent(type, {
+            bubbles: true, cancelable: true, dataTransfer: dt, clientY: y
+          }));
+        });
+      JS
+      click_button 'Cancel'
+
+      expect(displayed_labels).to eq %w[Alpha Beta Gamma]
     end
   end
 

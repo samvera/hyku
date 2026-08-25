@@ -24,29 +24,37 @@
     return Array.prototype.slice.call(table.querySelectorAll(ROW));
   }
 
-  // Retiring a term submits its own form, so it would navigate away and leave an
-  // unsaved order behind — recoverable only by redoing it.
-  function markDirty(table) {
-    var scope = table.closest('form');
-    // Not data-term-order-dirty: that is the note's own selector, and setting it here
-    // would make the form match it too — the form being an ancestor, it would match
-    // first and the note would never be revealed.
-    if (!scope || scope.dataset.termOrderMoved) return;
+  function sequence(table) {
+    return rows(table).map(function (row) {
+      return row.dataset.termId;
+    }).join(',');
+  }
 
-    scope.dataset.termOrderMoved = 'true';
+  // Derived by comparing against the order the page loaded with, rather than latched
+  // on the first move: a term moved away and back is not an unsaved change, and a
+  // page restored from the Turbolinks cache would bring a stale flag with it.
+  //
+  // Retiring is withheld while the two differ, because that button submits a form of
+  // its own and would navigate away from an order recoverable only by redoing it.
+  function refreshDirtyState(table) {
+    var dirty = sequence(table) !== table.dataset.termOrderLoaded;
 
     // aria-disabled rather than the attribute, which would drop the button out of the
     // tab order: a keyboard user would find it missing rather than unavailable.
     document.querySelectorAll(TOGGLE).forEach(function (toggle) {
-      toggle.setAttribute('aria-disabled', 'true');
-      toggle.classList.add('disabled');
+      toggle.classList.toggle('disabled', dirty);
+      if (dirty) {
+        toggle.setAttribute('aria-disabled', 'true');
+      } else {
+        toggle.removeAttribute('aria-disabled');
+      }
 
       var reason = toggle.querySelector(TOGGLE_REASON);
-      if (reason) reason.classList.remove('d-none');
+      if (reason) reason.classList.toggle('d-none', !dirty);
     });
 
     var note = document.querySelector(DIRTY_NOTE);
-    if (note) note.classList.remove('d-none');
+    if (note) note.classList.toggle('d-none', !dirty);
   }
 
   // aria-disabled carries no behavior of its own, so the submit has to be stopped
@@ -69,11 +77,12 @@
 
   // One pass over the template, because a term's label is free text: replacing the
   // placeholders in turn would let a label containing `%{total}` be treated as one.
-  function fill(template, row, list) {
+  function fill(table, template, row, list) {
     var values = {
       label: row.dataset.termLabel || '',
       position: list.indexOf(row) + 1,
-      total: list.length
+      // The vocabulary's size rather than the page's, which a long vocabulary caps.
+      total: table.dataset.termTotal || list.length
     };
 
     return template.replace(/%\{(label|position|total)\}/g, function (match, name) {
@@ -85,7 +94,7 @@
     var status = statusFor(table);
     if (!status || !template) return;
 
-    status.textContent = fill(template, row, rows(table));
+    status.textContent = fill(table, template, row, rows(table));
   }
 
   // A row already at the end announces that rather than failing silently, which on a
@@ -105,7 +114,7 @@
     } else {
       list[to].before(row);
     }
-    markDirty(table);
+    refreshDirtyState(table);
     announce(table, row, table.dataset.movedTemplate);
     return true;
   }
@@ -148,6 +157,7 @@
     var dragged = null;
     var from = -1;
     var dropped = false;
+    var overRow = false;
 
     table.addEventListener('mousedown', function (event) {
       var row = event.target.closest(ROW);
@@ -160,6 +170,7 @@
 
       from = rows(table).indexOf(dragged);
       dropped = false;
+      overRow = false;
       dragged.classList.add('is-dragging');
       event.dataTransfer.effectAllowed = 'move';
       event.dataTransfer.setData('text/plain', '');
@@ -170,8 +181,13 @@
       event.preventDefault();
       event.dataTransfer.dropEffect = 'move';
 
+      // Latched for the whole drag rather than set per event: the pointer spends the
+      // last moments of a drag over the dragged row's own space, which dropTarget
+      // skips, so the final dragover of a perfectly good drag reports no target.
       var target = dropTarget(table, dragged, event.clientY);
       if (!target) return;
+
+      overRow = true;
 
       if (target.after) {
         target.row.after(dragged);
@@ -194,16 +210,22 @@
       dragged.classList.remove('is-dragging');
       dragged.draggable = false;
 
-      if (!dropped) {
+      // A drop that never hovered a row lands on the header or the gap below the
+      // table, which is a cancel rather than a move to the last previewed place.
+      if (!dropped || !overRow) {
         restore(table, dragged, from);
       } else if (rows(table).indexOf(dragged) !== from) {
-        markDirty(table);
         announce(table, dragged, table.dataset.movedTemplate);
       }
+
+      // After either branch: a restored row may have returned the table to its
+      // loaded order, and a completed drag may have landed back where it started.
+      refreshDirtyState(table);
 
       dragged = null;
       from = -1;
       dropped = false;
+      overRow = false;
     });
   }
 
@@ -218,6 +240,7 @@
       if (move(table, button.closest(ROW), Number(button.dataset.termMove))) button.focus();
     });
   }
+
 
   function bindKeyboard(table) {
     table.addEventListener('keydown', function (event) {
@@ -234,12 +257,14 @@
 
   // Bound on every turbolinks:load without a guard against binding twice. Restoring
   // a cached page replaces the table with a fresh node, so the listeners attached
-  // here go with the old one rather than accumulating on the new one.
+  // here go with the old one rather than accumulating on the new one — and a restored
+  // page can come back with rows already moved, hence the refresh.
   function start() {
     document.querySelectorAll(TABLE).forEach(function (table) {
       bindDragging(table);
       bindKeyboard(table);
       bindButtons(table);
+      refreshDirtyState(table);
     });
   }
 

@@ -12,6 +12,13 @@
   <table class="table table-borderless controlled-vocabularies"
          <% if reorderable %>
            data-term-order-table
+           <%# The order the server sent, so a page restored from the Turbolinks cache
+               with rows already moved still compares against the saved order. %>
+           data-term-order-loaded="<%= terms.map { |term| term['term_id'] }.join(',') %>"
+           <%# The vocabulary's size, not the page's: a listing capped at TERM_LIMIT
+               would otherwise announce "position 2 of 500" for a term that is second
+               of thirty thousand. %>
+           data-term-total="<%= entry.term_count || terms.size %>"
            data-moved-template="<%= t('hyku.admin.controlled_vocabulary.moved',
                                       label: '%{label}', position: '%{position}',
                                       total: '%{total}') %>"
@@ -52,6 +59,7 @@
         <tr class="border-bottom"
             <% if reorderable %>
               data-term-row
+              data-term-id="<%= term['term_id'] %>"
               data-term-label="<%= term['label'] %>"
             <% end %>>
           <% if reorderable %>

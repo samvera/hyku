@@ -62,6 +62,13 @@ RSpec.describe 'Reordering a vocabulary\'s terms', type: :feature, js: true, cle
       expect(displayed_labels).to eq %w[Alpha Gamma Beta]
     end
 
+    it 'announces the position against the whole vocabulary' do
+      move_button('Alpha', 1).click
+
+      expect(page).to have_selector('[data-term-order-status]',
+                                    text: 'position 2 of 3', visible: :all)
+    end
+
     it 'refuses to move the first term earlier, and says so' do
       move_button('Alpha', -1).click
 
@@ -70,8 +77,60 @@ RSpec.describe 'Reordering a vocabulary\'s terms', type: :feature, js: true, cle
     end
   end
 
-  # Dragging cannot be driven honestly through the driver; these run the same move()
-  # it ends in.
+  # Selenium's synthetic mouse events do not start a native HTML5 drag, so the events
+  # are dispatched directly. It exercises the real handlers; what it cannot vouch for
+  # is the browser emitting them.
+  describe 'dragging' do
+    def drag(label, onto:, edge: :bottom)
+      page.execute_script(<<~JS, label, onto, edge.to_s)
+        var label = arguments[0], ontoLabel = arguments[1], edge = arguments[2];
+        var row = document.querySelector('[data-term-row][data-term-label="' + label + '"]');
+        var onto = document.querySelector('[data-term-row][data-term-label="' + ontoLabel + '"]');
+        var box = onto.getBoundingClientRect();
+        var y = edge === 'bottom' ? box.bottom - 2 : box.top + 2;
+        var dt = new DataTransfer();
+        function fire(type, clientY) {
+          row.dispatchEvent(new DragEvent(type, {
+            bubbles: true, cancelable: true, dataTransfer: dt, clientY: clientY
+          }));
+        }
+
+        fire('dragstart', y);
+        fire('dragover', y);
+        // Over the row's own new position, as a browser sends when the pointer
+        // settles. Without it this passes against a handler that cancels good drags.
+        fire('dragover', row.getBoundingClientRect().top + 2);
+        fire('drop', y);
+        fire('dragend', y);
+      JS
+    end
+
+    it 'drags the first term to the end' do
+      drag('Alpha', onto: 'Gamma')
+
+      expect(displayed_labels).to eq %w[Beta Gamma Alpha]
+    end
+
+    it 'drags the last term to the start' do
+      drag('Gamma', onto: 'Alpha', edge: :top)
+
+      expect(displayed_labels).to eq %w[Gamma Alpha Beta]
+    end
+
+    it 'withholds retiring after a drag' do
+      drag('Alpha', onto: 'Gamma')
+
+      expect(all('[data-term-status-toggle][aria-disabled="true"]').size).to eq 3
+    end
+
+    it 'saves an order set by dragging' do
+      drag('Alpha', onto: 'Gamma')
+      click_button 'Save order'
+
+      expect(stored_labels).to eq %w[Beta Gamma Alpha]
+    end
+  end
+
   describe 'the arrow keys' do
     it 'moves a term with the down arrow from its handle' do
       find("[data-term-row][data-term-label='Alpha'] [data-term-handle]").send_keys(:arrow_down)
@@ -140,6 +199,15 @@ RSpec.describe 'Reordering a vocabulary\'s terms', type: :feature, js: true, cle
 
       expect(toggles_marked_unavailable).to eq 0
     end
+
+    it 'offers them again when a term is moved back where it started' do
+      move_button('Alpha', 1).click
+      move_button('Alpha', -1).click
+
+      expect(displayed_labels).to eq %w[Alpha Beta Gamma]
+      expect(toggles_marked_unavailable).to eq 0
+      expect(page).to have_no_content(note)
+    end
   end
 
   # A restore replaces the table with a fresh node and fires turbolinks:load against
@@ -155,6 +223,20 @@ RSpec.describe 'Reordering a vocabulary\'s terms', type: :feature, js: true, cle
       move_button('Alpha', 1).click
 
       expect(displayed_labels).to eq %w[Beta Alpha Gamma]
+    end
+
+    # The cache keeps the moved rows, but the buttons come back as the server
+    # rendered them: usable, and needing to be withheld again.
+    it 'still withholds retiring when the restored order is unsaved' do
+      move_button('Alpha', 1).click
+      within('.breadcrumb') { click_link 'Controlled Vocabularies' }
+      expect(page).to have_link(label)
+
+      page.go_back
+      expect(page).to have_selector('[data-term-order-table]')
+
+      expect(displayed_labels).to eq %w[Beta Alpha Gamma]
+      expect(all('[data-term-status-toggle][aria-disabled="true"]').size).to eq 3
     end
   end
 end

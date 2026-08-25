@@ -481,8 +481,9 @@ optional term ID; leaving the ID blank sets it to the label. The ID is what work
 store, so it cannot be changed once the term exists — the label can.
 
 A new term is assigned a sequence number placing it after the terms already in the
-vocabulary. Terms that predate this have no sequence number, and sort after the ones
-that do until they are assigned theirs.
+vocabulary. Terms that predate this have no sequence number and sort after the ones
+that do; the first reorder numbers every term, including any the page did not show,
+so the mixed state lasts only until then.
 
 ### Retiring Terms
 
@@ -494,6 +495,10 @@ it would orphan every record citing it.
 
 Retiring does not move the term. It keeps its place in the order, so restoring it puts
 it back where it was rather than at the end.
+
+Retiring and restoring are withheld while a reorder is unsaved: they submit a form of
+their own, which would navigate away from an order recoverable only by redoing it.
+Saving the order offers them again, as does moving a term back where it started.
 
 A term whose `active` flag was never set — a YAML vocabulary may omit it — is treated
 as usable, matching how Hyrax reads it.
@@ -511,9 +516,9 @@ cases. Each move is announced for a screen reader, and the handle itself takes t
 and down arrow keys.
 
 Saving renumbers the terms from one, and writes only the terms whose position actually
-changed, so reordering a long vocabulary costs a single update rather than one per
-term. A vocabulary long enough to be truncated on the page posts only the terms it
-showed; the rest keep their order, after the ones listed.
+changed, in batches, so reordering a long vocabulary costs a few updates rather than
+one per term. A vocabulary long enough to be truncated on the page posts only the
+terms it showed; the rest keep their order, after the ones listed.
 
 Only a vocabulary backed by this tenant's own database rows can be reordered. A YAML
 file has no rows to renumber, an imported copy is replaced wholesale by its next

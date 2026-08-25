@@ -537,18 +537,27 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
 
       # Whether a second connection can take the vocabulary's row lock. A thread
       # because the request's own connection already holds it and would be granted it
-      # again; NOWAIT because a held lock would otherwise hang the suite.
-      def write_from_another_connection
+      # again; NOWAIT so a held lock answers immediately rather than hanging.
+      #
+      # It raises on a miss rather than reporting "not locked": answering the wrong
+      # question is how an earlier version passed against a page taking no lock.
+      def lock_taken_by_another_connection
         thread = Thread.new do
           ActiveRecord::Base.connection_pool.with_connection do |connection|
-            connection.execute("SET search_path TO #{account.tenant}")
-            connection.execute('SET lock_timeout = 250')
-            connection.execute(
+            # Quoted: the tenant is a uuid, which is not a bare identifier.
+            connection.execute("SET search_path TO #{connection.quote_table_name(account.tenant)}")
+            rows = connection.execute(
               "SELECT id FROM qa_local_authorities WHERE name = 'reading_rooms' FOR UPDATE NOWAIT"
             )
-            true
-          rescue ActiveRecord::StatementInvalid, ActiveRecord::LockWaitTimeout
-            false
+            raise "the vocabulary was not visible to the second connection" if rows.count.zero?
+
+            :free
+          rescue ActiveRecord::LockWaitTimeout
+            :held
+          ensure
+            # Reset, or the pooled connection carries this tenant's schema into a
+            # later example that drops it.
+            connection.execute('SET search_path TO public')
           end
         end
 
@@ -563,19 +572,18 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
       end
 
       # Contended from another connection rather than pinning the call order, so a
-      # refactor that still holds the lock keeps passing.
-      it 'reads the digest under the same lock as the rows it guards' do
-        interleaved = nil
+      # refactor that still holds the lock keeps passing. Truncating, because the
+      # second connection cannot see rows an open transaction has not committed.
+      it 'reads the digest under the same lock as the rows it guards', truncation: true do
+        contended = nil
 
         allow(ControlledVocabularyCatalog).to receive(:terms_for).and_wrap_original do |original, entry|
-          original.call(entry).tap do
-            interleaved = write_from_another_connection
-          end
+          original.call(entry).tap { contended = lock_taken_by_another_connection }
         end
 
         get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms"
 
-        expect(interleaved).to be false
+        expect(contended).to eq :held
       end
 
       # The order is carried by the sequence of the posted ids, so the page needs no

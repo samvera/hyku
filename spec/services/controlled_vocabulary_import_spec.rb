@@ -327,6 +327,23 @@ RSpec.describe ControlledVocabularyImport do
   end
 
   describe 'apply!' do
+    # The caller reports what was applied, and what was applied is the plan rebuilt
+    # under the lock. A term added between the review and the confirmation turns an
+    # addition into an update, which the pre-lock plan still counts as an addition.
+    it 'returns the plan it applied, classified as of the lock' do
+      import = described_class.new(content: "id,label\nbraille,Braille\n",
+                                   filename: 'terms.csv', vocabulary: vocabulary)
+      expect(import.plan.additions.size).to eq 1
+
+      # A different label, so the row is a change rather than a term already matching.
+      vocabulary.local_authority_entries.create!(label: 'Braille Type', uri: 'braille')
+
+      applied = import.apply!
+
+      expect(applied.additions).to be_empty
+      expect(applied.updates.size).to eq 1
+    end
+
     it 'creates terms with the file order and defaults' do
       apply("id,label,active\n,Braille,\nhap,Haptic,false\n")
 

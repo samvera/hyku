@@ -48,8 +48,10 @@ module Hyrax
       # The digest goes through so apply! can re-check it under its lock; the check
       # above was read before that lock was held.
       def apply(import, content)
-        import.apply!(params[:state_digest])
-        redirect_to main_app.controlled_vocabulary_path(@vocabulary.name), notice: applied_notice(import.plan)
+        # The plan apply! returns, not import.plan: the two can classify the same row
+        # differently, and the notice has to report the write that happened.
+        applied = import.apply!(params[:state_digest])
+        redirect_to main_app.controlled_vocabulary_path(@vocabulary.name), notice: applied_notice(applied)
       rescue ControlledVocabularyImport::Stale
         # Reset before rebuilding: apply!'s lock rolled back, so the terms this
         # request loaded are the ones from before the change that raised. Reviewing

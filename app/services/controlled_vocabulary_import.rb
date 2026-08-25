@@ -31,6 +31,8 @@ class ControlledVocabularyImport
   # overwritten. with_lock reloads, so the rebuilt plan reads the terms afresh.
   #
   # @param reviewed_digest [String, nil] the digest shown at review, when there is one
+  # @return [Plan] the plan rebuilt under the lock, which is the one applied — not
+  #   the reviewed plan the caller passed a digest for.
   # @raise [Stale] when the vocabulary changed after it was reviewed
   def apply!(reviewed_digest = nil)
     raise ArgumentError, 'cannot apply a plan with errors' unless plan.valid?
@@ -47,6 +49,8 @@ class ControlledVocabularyImport
       current.upsert_rows.each_slice(Qa::LocalAuthorityEntry::BATCH_SIZE) do |batch|
         Qa::LocalAuthorityEntry.upsert_all(batch, unique_by: %i[local_authority_id uri]) # rubocop:disable Rails/SkipsModelValidations
       end
+
+      current
     end
   end
 end

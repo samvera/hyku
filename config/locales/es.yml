@@ -417,6 +417,10 @@ es:
         description: Descripción
         description_help: Opcional. Explica a otro personal para qué sirve este vocabulario.
         download: Descargar
+        edit_field: 'Editar %{field}'
+        edit_heading: 'Editar %{name}'
+        edit_help: Cambie cómo se lee este vocabulario para el personal. Su clave de origen es fija, por lo que un perfil de metadatos que la cite sigue funcionando.
+        edit_title: Editar vocabulario
         import:
           additions_heading: Términos a agregar
           applied: Se importaron %{additions} términos nuevos y se actualizaron %{updates} existentes.
@@ -526,6 +530,7 @@ es:
         retired_count:
           one: (%{count} retirado)
           other: (%{count} retirados)
+        save: Guardar cambios
         save_order: Guardar orden
         show_title: 'Vocabulario controlado: %{name}'
         source_key: Clave de fuente
@@ -560,6 +565,7 @@ es:
         unconfigured_help: Este servicio necesita credenciales antes de poder usarse. Hasta entonces, un campo que lo cite acepta texto libre en lugar de ofrecer sugerencias.
         unused: Ninguna propiedad de metadatos usa este vocabulario.
         unused_profile_hint: Para empezar a usarlo, agregue la clave de origen de este vocabulario a los valores controlados de una propiedad en el perfil de metadatos del inquilino.
+        updated: '%{name} fue actualizado.'
         used_by: Usado por propiedades
         used_by_hint: Las propiedades de metadatos controladas por este vocabulario, tal como se nombran en las importaciones de Bulkrax y en los perfiles de metadatos.
         used_by_work_types: 'Disponible en:'

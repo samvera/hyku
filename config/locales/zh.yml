@@ -433,6 +433,10 @@ zh:
         description: 描述
         description_help: 可选。向其他工作人员说明此词表的用途。
         download: 下载
+        edit_field: '编辑%{field}'
+        edit_heading: '编辑 %{name}'
+        edit_help: 更改此词表对馆员显示的措辞。其源键固定不变，因此引用它的元数据配置档仍可正常使用。
+        edit_title: 编辑词表
         import:
           additions_heading: 待添加的词条
           applied: 已导入 %{additions} 个新词条，并更新 %{updates} 个现有词条。
@@ -542,6 +546,7 @@ zh:
         retired_count:
           one: （已停用 %{count} 个）
           other: （已停用 %{count} 个）
+        save: 保存更改
         save_order: 保存顺序
         show_title: '受控词表：%{name}'
         source_key: 来源键
@@ -576,6 +581,7 @@ zh:
         unconfigured_help: 此服务需要先配置凭据才能使用。在此之前，引用它的字段将接受自由文本，而不提供建议。
         unused: 没有元数据属性使用此词表。
         unused_profile_hint: 如需启用，请将此词表的源键添加到租户元数据配置档中某个属性的受控值。
+        updated: '%{name} 已更新。'
         used_by: 使用它的属性
         used_by_hint: 由此词表控制的元数据属性，其名称与 Bulkrax 导入和元数据配置档中所用的一致。
         used_by_work_types: '可用于：'

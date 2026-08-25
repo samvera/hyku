@@ -38,9 +38,10 @@ class Site < ApplicationRecord
       end
     end
 
-    # Clears the memoized Site so the next call to .instance re-fetches it.
+    # Clears the request-scoped caches that only hold rows from the tenant they
+    # were read under, the memoized Site included.
     def reset!
-      RequestStore.delete(:site_instance)
+      RequestStore.store.except!(:site_instance, :content_blocks, :qa_local_authorities)
     end
   end
 

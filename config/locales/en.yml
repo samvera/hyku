@@ -288,6 +288,10 @@ en:
         description: Description
         description_help: Optional. Explains to other staff what this vocabulary is for.
         download: Download
+        edit_field: 'Edit %{field}'
+        edit_heading: 'Edit %{name}'
+        edit_help: Change how this vocabulary reads for staff. Its source key is fixed, so a metadata profile citing it keeps working.
+        edit_title: Edit vocabulary
         import:
           additions_heading: Terms to add
           applied: Imported %{additions} new and updated %{updates} existing terms.
@@ -397,6 +401,7 @@ en:
         retired_count:
           one: (%{count} retired)
           other: (%{count} retired)
+        save: Save changes
         save_order: Save order
         show_title: 'Controlled Vocabulary: %{name}'
         source_key: Source key
@@ -431,6 +436,7 @@ en:
         unconfigured_help: This service needs credentials before it can be used. Until then a field citing it accepts free text instead of offering suggestions.
         unused: No metadata property uses this vocabulary.
         unused_profile_hint: To start using it, add this vocabulary's source key to a property's controlled values in the tenant's metadata profile.
+        updated: '%{name} was updated.'
         used_by: Used by properties
         used_by_hint: The metadata properties controlled by this vocabulary, as named in Bulkrax imports and metadata profiles.
         used_by_work_types: 'Available on:'

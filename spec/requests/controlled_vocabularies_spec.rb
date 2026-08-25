@@ -452,6 +452,196 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
       end
     end
 
+    describe 'editing a vocabulary' do
+      def reading_rooms
+        Apartment::Tenant.switch(account.tenant) { Qa::LocalAuthority.find_by(name: 'reading_rooms') }
+      end
+
+      it 'offers the form' do
+        get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms/edit"
+
+        expect(response).to have_http_status(:success)
+        expect(response.body).to include 'Reading Rooms'
+      end
+
+      it 'links each editable value to the edit page' do
+        get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms"
+
+        expect(response.body.scan('/dashboard/controlled_vocabularies/reading_rooms/edit').size).to eq 2
+      end
+
+      it 'names each field and gives it a form of its own' do
+        get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms"
+
+        expect(response.body).to include 'id="vocabulary-label-form"'
+        expect(response.body).to include 'id="vocabulary-description-form"'
+        expect(response.body).to include 'aria-label="Vocabulary"'
+        expect(response.body).to include 'aria-label="Description"'
+        expect(response.body).to include 'rows="3"'
+      end
+
+      it 'saves the wording and returns to the vocabulary' do
+        patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms",
+              params: { param_key => { label: 'Reading Areas', description: 'Rooms open to readers.' } }
+
+        vocabulary = reading_rooms
+
+        expect(vocabulary.label).to eq 'Reading Areas'
+        expect(vocabulary.description).to eq 'Rooms open to readers.'
+        expect(response.location).to include '/dashboard/controlled_vocabularies/reading_rooms'
+      end
+
+      it 'shows the new wording on the vocabulary and in the listing' do
+        patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms",
+              params: { param_key => { label: 'Reading Areas', description: 'Rooms open to readers.' } }
+
+        get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms"
+        expect(response.body).to include 'Reading Areas'
+        expect(response.body).to include 'Rooms open to readers.'
+
+        get "http://#{account.cname}/dashboard/controlled_vocabularies"
+        expect(response.body).to include 'Reading Areas'
+      end
+
+      it 'ignores a name supplied in the request' do
+        patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms",
+              params: { param_key => { label: 'Reading Areas', name: 'something_else' } }
+
+        names = Apartment::Tenant.switch(account.tenant) { Qa::LocalAuthority.pluck(:name) }
+
+        expect(names).to include 'reading_rooms'
+        expect(names).not_to include 'something_else'
+      end
+
+      it 'falls back to the titleized source key when the label is cleared' do
+        patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms",
+              params: { param_key => { label: '' } }
+
+        get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms"
+
+        expect(reading_rooms.label).to be_blank
+        expect(response.body).to include 'Reading Rooms'
+      end
+
+      it 'says a cleared description is unwritten rather than rendering it empty' do
+        patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms",
+              params: { param_key => { description: '' } }
+
+        get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms"
+
+        expect(response.body).not_to include 'Where an item may be consulted on site.'
+        expect(response.body).to include 'None given'
+      end
+
+      it 'reorders the listing to match the new label' do
+        Apartment::Tenant.switch(account.tenant) { Qa::LocalAuthority.create!(label: 'Aardvark Terms') }
+
+        patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms",
+              params: { param_key => { label: 'Aaa Reading Rooms' } }
+
+        get "http://#{account.cname}/dashboard/controlled_vocabularies"
+
+        expect(response.body.index('Aaa Reading Rooms')).to be < response.body.index('Aardvark Terms')
+      end
+
+      it 'survives a reseed' do
+        Apartment::Tenant.switch(account.tenant) { Qa::LocalAuthority.create!(name: 'licenses', label: 'Licenses') }
+
+        patch "http://#{account.cname}/dashboard/controlled_vocabularies/licenses",
+              params: { param_key => { label: 'Rights Statements',
+                                       description: 'What a reader may do with the item.' } }
+
+        vocabulary = Apartment::Tenant.switch(account.tenant) do
+          LocalVocabularyService.seed!
+          Qa::LocalAuthority.find_by(name: 'licenses')
+        end
+
+        expect(vocabulary.label).to eq 'Rights Statements'
+        expect(vocabulary.description).to eq 'What a reader may do with the item.'
+      end
+
+      it 'redisplays the form when the vocabulary will not save' do
+        allow_any_instance_of(Qa::LocalAuthority).to receive(:update).and_return(false) # rubocop:disable RSpec/AnyInstance
+
+        patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms",
+              params: { param_key => { label: 'Reading Areas' } }
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.body).to include '/dashboard/controlled_vocabularies/reading_rooms/edit'
+      end
+
+      describe 'a vocabulary this tenant does not own' do
+        it 'refuses one defined in a configuration file' do
+          allow(ControlledVocabularyCatalog).to receive(:file_based_names).and_return(%w[map_regions])
+
+          get "http://#{account.cname}/dashboard/controlled_vocabularies/map_regions/edit"
+
+          expect(response).to have_http_status(:not_found)
+        end
+
+        it 'refuses to update one defined in a configuration file' do
+          allow(ControlledVocabularyCatalog).to receive(:file_based_names).and_return(%w[map_regions])
+
+          patch "http://#{account.cname}/dashboard/controlled_vocabularies/map_regions",
+                params: { param_key => { label: 'Sneaked In' } }
+
+          expect(response).to have_http_status(:not_found)
+        end
+
+        it 'refuses a remote authority' do
+          get "http://#{account.cname}/dashboard/controlled_vocabularies/geonames/edit"
+
+          expect(response).to have_http_status(:not_found)
+        end
+
+        it 'refuses to update a remote authority' do
+          patch "http://#{account.cname}/dashboard/controlled_vocabularies/geonames",
+                params: { param_key => { label: 'Sneaked In' } }
+
+          expect(response).to have_http_status(:not_found)
+        end
+
+        it 'refuses an imported copy' do
+          Apartment::Tenant.switch(account.tenant) { Qa::LocalAuthority.create!(name: 'mesh', label: 'MeSH') }
+
+          patch "http://#{account.cname}/dashboard/controlled_vocabularies/mesh",
+                params: { param_key => { label: 'Sneaked In' } }
+
+          label = Apartment::Tenant.switch(account.tenant) { Qa::LocalAuthority.find_by(name: 'mesh').label }
+
+          expect(label).to eq 'MeSH'
+          expect(response).to have_http_status(:not_found)
+        end
+
+        it 'offers no edit control on its page' do
+          allow(ControlledVocabularyCatalog).to receive(:file_based_names).and_return(%w[map_regions])
+          allow(Qa::Authorities::Local).to receive(:subauthority_for).and_call_original
+          allow(Qa::Authorities::Local).to receive(:subauthority_for)
+            .with('map_regions')
+            .and_return(instance_double(Qa::Authorities::Local::FileBasedAuthority,
+                                        all: [{ 'id' => 'north', 'label' => 'North', 'active' => true }]))
+
+          get "http://#{account.cname}/dashboard/controlled_vocabularies/map_regions"
+
+          expect(response.body).not_to include '/dashboard/controlled_vocabularies/map_regions/edit'
+        end
+      end
+
+      context 'without flexible metadata' do
+        before { allow(Hyrax.config).to receive(:flexible?).and_return(false) }
+
+        it 'still offers the form and saves' do
+          get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms/edit"
+          expect(response).to have_http_status(:success)
+
+          patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms",
+                params: { param_key => { label: 'Reading Areas' } }
+
+          expect(reading_rooms.label).to eq 'Reading Areas'
+        end
+      end
+    end
+
     describe 'adding a term' do
       let(:term_key) { Qa::LocalAuthorityEntry.model_name.param_key }
 
@@ -928,6 +1118,28 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
 
       expect(labels).to eq ['Special Collections', 'Closed Stacks']
     end
+
+    it 'offers no edit control on a vocabulary it can read' do
+      get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms"
+
+      expect(response).to have_http_status(:success)
+      expect(response.body).not_to include '/dashboard/controlled_vocabularies/reading_rooms/edit'
+    end
+
+    it 'refuses the edit form' do
+      get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms/edit"
+
+      expect(response).not_to have_http_status(:success)
+    end
+
+    it 'refuses the update' do
+      patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms",
+            params: { param_key => { label: 'Sneaked In' } }
+
+      label = Apartment::Tenant.switch(account.tenant) { Qa::LocalAuthority.find_by(name: 'reading_rooms').label }
+
+      expect(label).to eq 'Reading Rooms'
+    end
   end
 
   # Vocabularies live in per-tenant Apartment schemas, so one tenant's terms must
@@ -951,6 +1163,21 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
 
       expect(response).to have_http_status(:success)
       expect(response.body).not_to include 'Reading Rooms'
+    end
+
+    it 'edits only its own copy of a vocabulary both tenants have' do
+      Apartment::Tenant.switch(other_account.tenant) do
+        Qa::LocalAuthority.create!(name: 'reading_rooms', label: 'Reading Rooms')
+      end
+
+      patch "http://#{other_account.cname}/dashboard/controlled_vocabularies/reading_rooms",
+            params: { param_key => { label: 'Study Rooms' } }
+
+      labels = [account, other_account].map do |tenant_account|
+        Apartment::Tenant.switch(tenant_account.tenant) { Qa::LocalAuthority.find_by(name: 'reading_rooms').label }
+      end
+
+      expect(labels).to eq ['Reading Rooms', 'Study Rooms']
     end
   end
 end

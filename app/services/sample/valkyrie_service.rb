@@ -21,12 +21,14 @@ module Sample
         collections = create_collections(quantity)
         images = create_images(quantity, collections)
         generic_works = create_generic_works(quantity, collections)
+        # Does not currently create oers, but is needed for completion summary
+        oers = []
 
         total_works = collections.length + images.length + generic_works.length
 
         index_all_works(collections + images + generic_works)
 
-        print_completion_summary(collections, images, generic_works, total_works)
+        print_completion_summary(collections, images, generic_works, oers, total_works)
       ensure
         restore_job_configuration
       end
@@ -58,6 +60,17 @@ module Sample
     end
 
     private
+
+    def random_visibility
+      visibility_pool.sample
+    end
+
+    # 80% public / 15% authenticated / 5% private by default, so access-control checks have real variety to chew on.
+    def visibility_pool
+      @visibility_pool ||= [Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC] * ENV.fetch('HYKU_SAMPLE_VISIBILITY_PUBLIC', 80).to_i +
+                           [Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED] * ENV.fetch('HYKU_SAMPLE_VISIBILITY_AUTHENTICATED', 15).to_i +
+                           [Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE] * ENV.fetch('HYKU_SAMPLE_VISIBILITY_PRIVATE', 5).to_i
+    end
 
     def confirm_cleanup # rubocop:disable Metrics/AbcSize
       # Skip confirmation if CONFIRM environment variable is set to 'true'
@@ -210,12 +223,14 @@ module Sample
         description: sample_data[:descriptions][index % sample_data[:descriptions].length],
         creator: sample_data[:creators][index % sample_data[:creators].length],
         subject: sample_data[:subjects][index % sample_data[:subjects].length],
-        visibility: Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC,
         collection_type_gid: collection_type.to_global_id.to_s,
         depositor: user.user_key
       }
 
       collection = Hyrax.persister.save(resource: CollectionResource.new(collection_attrs))
+      # visibility= builds an ACL that needs an explicit acl.save - setting it via the constructor is silently ignored.
+      collection.visibility = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
+      collection.permission_manager.acl.save
       Sample::PermissionTemplateService.create_for_valkyrie_collection(collection, user)
       Hyrax.index_adapter.save(resource: collection)
       Hyrax.publisher.publish('collection.metadata.updated', collection: collection, user: user)
@@ -229,13 +244,15 @@ module Sample
         description: sample_data[:descriptions][index % sample_data[:descriptions].length],
         creator: sample_data[:creators][index % sample_data[:creators].length],
         subject: sample_data[:subjects][index % sample_data[:subjects].length],
-        visibility: Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC,
         bulkrax_identifier: "SampleValk-#{work_class}#{index}",
         depositor: user.user_key,
         admin_set_id: admin_set.id
       }
 
       work = Hyrax.persister.save(resource: work_class.new(work_attrs))
+      # visibility= builds an ACL that needs an explicit acl.save - setting it via the constructor is silently ignored.
+      work.visibility = random_visibility
+      work.permission_manager.acl.save
       Hyrax.index_adapter.save(resource: work)
       Hyrax.publisher.publish('object.deposited', object: work, user: user)
       Hyrax.publisher.publish('object.metadata.updated', object: work, user: user)

@@ -129,7 +129,7 @@ class User < ApplicationRecord
   #   => [#<Hyrax::Group id: 2, name: "registered", description: nil,...>]
   def hyrax_groups
     # Why compact?  In theory we shouldn't need this.  But in tests we're seeing a case
-    roles.where(name: 'member', resource_type: 'Hyrax::Group').map(&:resource).uniq.compact
+    roles.where(name: 'member', resource_type: 'Hyrax::Group').includes(:resource).map(&:resource).uniq.compact
   end
 
   # Override method from hydra-access-controls v11.0.0 to use Hyrax::Groups.

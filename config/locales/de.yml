@@ -416,6 +416,10 @@ de:
         description: Beschreibung
         description_help: Optional. Erklärt anderen Mitarbeitenden, wofür dieses Vokabular gedacht ist.
         download: Herunterladen
+        edit_field: '%{field} bearbeiten'
+        edit_heading: '%{name} bearbeiten'
+        edit_help: Ändern Sie, wie dieses Vokabular für Mitarbeitende lautet. Sein Quellschlüssel ist fest, sodass ein Metadatenprofil, das ihn zitiert, weiterhin funktioniert.
+        edit_title: Vokabular bearbeiten
         import:
           additions_heading: Hinzuzufügende Begriffe
           applied: Es wurden %{additions} neue Begriffe importiert und %{updates} bestehende aktualisiert.
@@ -525,6 +529,7 @@ de:
         retired_count:
           one: (%{count} zurückgezogen)
           other: (%{count} zurückgezogen)
+        save: Änderungen speichern
         save_order: Reihenfolge speichern
         show_title: 'Kontrolliertes Vokabular: %{name}'
         source_key: Quellschlüssel
@@ -559,6 +564,7 @@ de:
         unconfigured_help: Dieser Dienst benötigt Anmeldeinformationen, bevor er verwendet werden kann. Bis dahin akzeptiert ein Feld, das ihn referenziert, Freitext, statt Vorschläge anzubieten.
         unused: Keine Metadaten-Eigenschaft verwendet dieses Vokabular.
         unused_profile_hint: Um es zu verwenden, fügen Sie den Quellschlüssel dieses Vokabulars den kontrollierten Werten einer Eigenschaft im Metadatenprofil des Mandanten hinzu.
+        updated: '%{name} wurde aktualisiert.'
         used_by: Verwendet von Eigenschaften
         used_by_hint: Die von diesem Vokabular kontrollierten Metadaten-Eigenschaften, wie sie in Bulkrax-Importen und Metadatenprofilen benannt sind.
         used_by_work_types: 'Verfügbar für:'

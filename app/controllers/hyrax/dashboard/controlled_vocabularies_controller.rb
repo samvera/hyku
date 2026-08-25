@@ -3,18 +3,18 @@
 module Hyrax
   module Dashboard
     # Lists every authority a metadata profile can cite, so staff can find the source
-    # key to paste into one, and creates the vocabularies this tenant manages.
+    # key to paste into one, and creates and relabels the vocabularies this tenant
+    # manages.
     class ControlledVocabulariesController < ApplicationController
       with_themed_layout 'dashboard'
 
       before_action -> { authorize! :view, :controlled_vocabularies }, only: %i[index show]
-      before_action -> { authorize! :manage, :controlled_vocabularies }, only: %i[new create]
+      before_action -> { authorize! :manage, :controlled_vocabularies }, only: %i[new create edit update]
+      before_action :load_vocabulary, only: %i[edit update]
 
       def index
         @controlled_vocabularies = ControlledVocabularyCatalog.all
-        add_breadcrumb t(:'hyrax.controls.home'), root_path
-        add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
-        add_breadcrumb t('hyku.admin.controlled_vocabularies'), request.path
+        vocabulary_breadcrumbs
       end
 
       def show
@@ -31,10 +31,7 @@ module Hyrax
       # there does not mean retyping the rest.
       def new
         @controlled_vocabulary = Qa::LocalAuthority.new(prefill_params)
-        add_breadcrumb t(:'hyrax.controls.home'), root_path
-        add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
-        add_breadcrumb t('hyku.admin.controlled_vocabularies'), main_app.controlled_vocabularies_path
-        add_breadcrumb t('hyku.admin.controlled_vocabulary.new_title'), main_app.new_controlled_vocabulary_path
+        creation_breadcrumbs
       end
 
       # Creation is a two-step process so the entry can be confirmed since there is no delete option.
@@ -51,16 +48,34 @@ module Hyrax
                               name: @controlled_vocabulary.display_label)
       end
 
+      def edit
+        edit_breadcrumbs
+      end
+
+      # The failure branch is defensive: neither column validates, so nothing a form
+      # can send is refused today.
+      def update
+        if @controlled_vocabulary.update(controlled_vocabulary_params)
+          redirect_to main_app.controlled_vocabulary_path(@controlled_vocabulary.name),
+                      notice: t('hyku.admin.controlled_vocabulary.updated',
+                                name: @controlled_vocabulary.display_label)
+        else
+          edit_breadcrumbs
+          render :edit, status: :unprocessable_entity
+        end
+      end
+
       private
 
+      def load_vocabulary
+        entry = ControlledVocabularyCatalog.find!(params[:id])
+        raise ActiveRecord::RecordNotFound, "#{entry.source_key} is not edited here" unless entry.editable?
+
+        @controlled_vocabulary = entry.vocabulary
+      end
+
       def show_page
-        add_breadcrumb t(:'hyrax.controls.home'), root_path
-        add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
-        # main_app, not the bare helper: this controller is namespaced under
-        # Hyrax::, so bare url helpers resolve against the Hyrax engine, which does
-        # not define this route. The engine's `/files/:id` then swallows it.
-        add_breadcrumb t('hyku.admin.controlled_vocabularies'), main_app.controlled_vocabularies_path
-        add_breadcrumb @entry.label, request.path
+        vocabulary_breadcrumbs([@entry.label, request.path])
         @terms = ControlledVocabularyCatalog.terms_for(@entry)
         @usage = ControlledVocabularyUsage.citing(@entry.source_key)
         render :show
@@ -101,13 +116,25 @@ module Hyrax
         render :new, status: :unprocessable_entity
       end
 
+      # The form route, not request.path: these trails are also drawn on the POST and
+      # PATCH that re-render a form, where request.path has no GET to link to.
+      def edit_breadcrumbs
+        name = @controlled_vocabulary.name
+        vocabulary_breadcrumbs([@controlled_vocabulary.display_label, main_app.controlled_vocabulary_path(name)],
+                               [t('hyku.admin.controlled_vocabulary.edit_title'), main_app.edit_controlled_vocabulary_path(name)])
+      end
+
       def creation_breadcrumbs
+        vocabulary_breadcrumbs([t('hyku.admin.controlled_vocabulary.new_title'), main_app.new_controlled_vocabulary_path])
+      end
+
+      # main_app, not the bare helper: namespaced under Hyrax::, a bare url helper
+      # resolves against the engine, whose `/files/:id` then swallows the path.
+      def vocabulary_breadcrumbs(*trail)
         add_breadcrumb t(:'hyrax.controls.home'), root_path
         add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
         add_breadcrumb t('hyku.admin.controlled_vocabularies'), main_app.controlled_vocabularies_path
-        # The form route, not request.path: these trails are drawn on a POST, where
-        # request.path is the index.
-        add_breadcrumb t('hyku.admin.controlled_vocabulary.new_title'), main_app.new_controlled_vocabulary_path
+        trail.each { |label, path| add_breadcrumb label, path }
       end
 
       # No :name — it is derived from the label on create, and a metadata profile

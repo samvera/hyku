@@ -415,6 +415,10 @@ fr:
         description: Description
         description_help: Facultatif. Explique aux autres membres du personnel à quoi sert ce vocabulaire.
         download: Télécharger
+        edit_field: 'Modifier %{field}'
+        edit_heading: 'Modifier %{name}'
+        edit_help: Modifiez la façon dont ce vocabulaire se lit pour le personnel. Sa clé source est fixe, donc un profil de métadonnées qui la cite continue de fonctionner.
+        edit_title: Modifier le vocabulaire
         import:
           additions_heading: Termes à ajouter
           applied: '%{additions} nouveaux termes importés et %{updates} termes existants mis à jour.'
@@ -511,6 +515,7 @@ fr:
         retired_count:
           one: (%{count} retiré)
           other: (%{count} retirés)
+        save: Enregistrer les modifications
         show_title: 'Vocabulaire contrôlé : %{name}'
         source_key: Clé de source
         source_key_hint: Collez ceci dans un champ de profil de métadonnées pour contrôler ce champ avec ce vocabulaire.
@@ -541,6 +546,7 @@ fr:
         unconfigured_help: Ce service a besoin d'identifiants avant de pouvoir être utilisé. D'ici là, un champ qui le référence accepte du texte libre au lieu de proposer des suggestions.
         unused: Aucune propriété de métadonnées n'utilise ce vocabulaire.
         unused_profile_hint: Pour commencer à l'utiliser, ajoutez la clé source de ce vocabulaire aux valeurs contrôlées d'une propriété dans le profil de métadonnées du locataire.
+        updated: '%{name} a été mis à jour.'
         used_by: Utilisé par les propriétés
         used_by_hint: Les propriétés de métadonnées contrôlées par ce vocabulaire, telles que nommées dans les importations Bulkrax et les profils de métadonnées.
         used_by_work_types: 'Disponible sur :'

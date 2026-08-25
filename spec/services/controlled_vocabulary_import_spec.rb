@@ -394,7 +394,7 @@ RSpec.describe ControlledVocabularyImport do
     end
 
     it 'commits nothing when a batch fails partway' do
-      stub_const('ControlledVocabularyImport::BATCH_SIZE', 1)
+      stub_const('Qa::LocalAuthorityEntry::BATCH_SIZE', 1)
       calls = 0
       allow(Qa::LocalAuthorityEntry).to receive(:upsert_all).and_wrap_original do |original, *args, **kwargs|
         calls += 1
@@ -408,7 +408,7 @@ RSpec.describe ControlledVocabularyImport do
     end
 
     it 'imports in batches' do
-      stub_const('ControlledVocabularyImport::BATCH_SIZE', 2)
+      stub_const('Qa::LocalAuthorityEntry::BATCH_SIZE', 2)
 
       apply("label\n#{(1..5).map { |n| "Term #{n}\n" }.join}")
 

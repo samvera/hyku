@@ -97,20 +97,28 @@ module Qa
     # one round trip rather than 500. There is no unique index on position, so the
     # rows may be written in any order without colliding part way through.
     #
+    # Sliced, because the size of one statement is not bounded by what the page
+    # showed: a vocabulary whose terms predate positions has every row unnumbered, so
+    # its first reorder renumbers all of them — trailing terms the page never listed
+    # included.
+    #
     # updated_at is set explicitly, which update_all would otherwise leave alone: an
     # import's review digest is built from it, and a reorder that left it untouched
     # would let a reviewed import be confirmed and overwrite the new order.
     def write_positions(moved)
       return 0 if moved.empty?
 
-      whens = moved.map do |id, position|
-        Qa::LocalAuthorityEntry.sanitize_sql_array(['WHEN id = ? THEN ?', id, position])
-      end
       touched = Qa::LocalAuthorityEntry.sanitize_sql_array(['updated_at = ?', Time.current])
 
-      local_authority_entries
-        .where(id: moved.keys)
-        .update_all(Arel.sql("position = CASE #{whens.join(' ')} END, #{touched}")) # rubocop:disable Rails/SkipsModelValidations
+      moved.each_slice(Qa::LocalAuthorityEntry::BATCH_SIZE) do |batch|
+        whens = batch.map do |id, position|
+          Qa::LocalAuthorityEntry.sanitize_sql_array(['WHEN id = ? THEN ?', id, position])
+        end
+
+        local_authority_entries
+          .where(id: batch.map(&:first))
+          .update_all(Arel.sql("position = CASE #{whens.join(' ')} END, #{touched}")) # rubocop:disable Rails/SkipsModelValidations
+      end
 
       moved.size
     end

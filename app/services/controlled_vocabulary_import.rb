@@ -6,7 +6,6 @@
 class ControlledVocabularyImport
   MAX_BYTES = 5.megabytes
   MAX_ROWS = 50_000
-  BATCH_SIZE = 1_000
 
   # The vocabulary changed between the review and the confirmation, so applying would
   # overwrite something the reviewer never saw.
@@ -40,7 +39,7 @@ class ControlledVocabularyImport
       current = Plan.new(Parser.call(@content, @filename), @vocabulary)
       raise Stale if reviewed_digest && current.state_digest != reviewed_digest
 
-      current.upsert_rows.each_slice(BATCH_SIZE) do |batch|
+      current.upsert_rows.each_slice(Qa::LocalAuthorityEntry::BATCH_SIZE) do |batch|
         Qa::LocalAuthorityEntry.upsert_all(batch, unique_by: %i[local_authority_id uri]) # rubocop:disable Rails/SkipsModelValidations
       end
     end

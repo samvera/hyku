@@ -206,6 +206,30 @@ RSpec.describe Qa::LocalAuthority, type: :model do
       expect(vocabulary.resequence_terms([second.id, first.id, third.id])).to eq 2
     end
 
+    # Rotated rather than reversed: reversing three leaves the middle one in place, so
+    # only two would move and one batch would cover them.
+    it 'writes the positions in batches rather than one statement per vocabulary' do
+      stub_const('Qa::LocalAuthorityEntry::BATCH_SIZE', 2)
+      statements = []
+      subscriber = ActiveSupport::Notifications.subscribe('sql.active_record') do |*, payload|
+        statements << payload[:sql] if payload[:sql].include?('position = CASE')
+      end
+
+      moved = vocabulary.resequence_terms([third.id, first.id, second.id])
+
+      ActiveSupport::Notifications.unsubscribe(subscriber)
+      expect(moved).to eq 3
+      expect(statements.size).to eq 2
+    end
+
+    it 'still orders the terms correctly across a batch boundary' do
+      stub_const('Qa::LocalAuthorityEntry::BATCH_SIZE', 2)
+
+      vocabulary.resequence_terms([third.id, first.id, second.id])
+
+      expect(labels).to eq %w[Gamma Alpha Beta]
+    end
+
     # The write is driven by this mapping, so its shape is pinned rather than only
     # its size.
     it 'maps each moved term to its new position' do

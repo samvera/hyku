@@ -494,9 +494,11 @@ fr:
         no_terms: Ce vocabulaire ne contient encore aucun terme.
         none: Aucun vocabulaire contrôlé n'a encore été configuré pour ce locataire.
         order: Ordre
-        order_hint: L'ordre dans lequel les termes sont proposés dans un formulaire de dépôt. Faites glisser un terme ou utilisez les boutons fléchés, puis enregistrez.
+        order_hint: L'ordre dans lequel les termes sont proposés dans un formulaire de dépôt.
         order_saved: L'ordre des termes a été enregistré.
         order_stale: Les termes ont changé pendant que vous les réorganisiez, l'ordre n'a donc pas été enregistré. Vérifiez l'ordre actuel et réessayez.
+        order_unsaved: Enregistrez l'ordre avant de retirer ou de restaurer un terme. Sinon, l'ordre que vous avez défini sera perdu.
+        order_unsaved_short: indisponible tant que l'ordre n'est pas enregistré
         origin: Source
         origin_hint: Où le vocabulaire est défini, et donc si ses termes peuvent être modifiés ici.
         origins:

@@ -69,13 +69,26 @@ module Hyrax
       # One lock so the digest describes the rows drawn beside it: read separately it
       # can describe a reorder those rows never showed, and the save it guards would
       # overwrite that reorder rather than refuse it.
+      #
+      # Only for a page that will draw the reorder form. The lock is SELECT ... FOR
+      # UPDATE and the digest reads every entry, so taking either on a page with no
+      # order to save — a depositor's, an imported copy's, a read-only yaml — would
+      # spend a full table read on nothing and queue the page behind a running import.
       def load_terms
-        return @terms = ControlledVocabularyCatalog.terms_for(@entry) if @entry.vocabulary.blank?
+        can_manage = can?(:manage, :controlled_vocabularies)
 
-        @entry.vocabulary.with_lock do
+        if Hyku::ControlledVocabularyTermsPresenter.new(entry: @entry, can_manage: can_manage).controls_possible?
+          @entry.vocabulary.with_lock do
+            @terms = ControlledVocabularyCatalog.terms_for(@entry)
+            @term_state_digest = @entry.vocabulary.term_state_digest
+          end
+        else
           @terms = ControlledVocabularyCatalog.terms_for(@entry)
-          @term_state_digest = @entry.vocabulary.term_state_digest
         end
+
+        @terms_presenter = Hyku::ControlledVocabularyTermsPresenter.new(
+          entry: @entry, can_manage: can_manage, terms: @terms
+        )
       end
 
       def download(format)

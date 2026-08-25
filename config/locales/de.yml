@@ -493,9 +493,11 @@ de:
         no_terms: Dieses Vokabular enthält noch keine Begriffe.
         none: Für diesen Mandanten wurden noch keine kontrollierten Vokabulare eingerichtet.
         order: Reihenfolge
-        order_hint: Die Reihenfolge, in der die Begriffe in einem Abgabeformular angeboten werden. Ziehen Sie einen Begriff oder verwenden Sie die Pfeiltasten und speichern Sie dann.
+        order_hint: Die Reihenfolge, in der die Begriffe in einem Abgabeformular angeboten werden.
         order_saved: Die Reihenfolge der Begriffe wurde gespeichert.
         order_stale: Die Begriffe haben sich geändert, während Sie sie neu sortiert haben. Die Reihenfolge wurde nicht gespeichert. Prüfen Sie die aktuelle Reihenfolge und versuchen Sie es erneut.
+        order_unsaved: Speichern Sie die Reihenfolge, bevor Sie einen Begriff zurückziehen oder wiederherstellen. Andernfalls geht die von Ihnen festgelegte Reihenfolge verloren.
+        order_unsaved_short: nicht verfügbar, bis die Reihenfolge gespeichert ist
         origin: Quelle
         origin_hint: Wo das Vokabular definiert ist und ob seine Begriffe daher hier bearbeitet werden können.
         origins:

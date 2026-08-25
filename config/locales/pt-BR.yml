@@ -376,9 +376,11 @@ pt-BR:
         no_terms: Este vocabulário ainda não tem termos.
         none: Nenhum vocabulário controlado foi configurado para este locatário ainda.
         order: Ordem
-        order_hint: A ordem em que os termos são oferecidos em um formulário de depósito. Arraste um termo ou use os botões de seta e depois salve.
+        order_hint: A ordem em que os termos são oferecidos em um formulário de depósito.
         order_saved: A ordem dos termos foi salva.
         order_stale: Os termos mudaram enquanto você os reordenava, portanto a ordem não foi salva. Verifique a ordem atual e tente novamente.
+        order_unsaved: Salve a ordem antes de retirar ou restaurar um termo. Caso contrário, a ordem que você definiu será descartada.
+        order_unsaved_short: indisponível até que a ordem seja salva
         origin: Origem
         origin_hint: Onde o vocabulário é definido e, portanto, se seus termos podem ser editados aqui.
         origins:

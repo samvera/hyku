@@ -16,9 +16,50 @@
   var HANDLE = '[data-term-handle]';
   var MOVE = '[data-term-move]';
   var STATUS = '[data-term-order-status]';
+  var TOGGLE = '[data-term-status-toggle]';
+  var TOGGLE_REASON = '[data-term-status-reason]';
+  var DIRTY_NOTE = '[data-term-order-dirty]';
 
   function rows(table) {
     return Array.prototype.slice.call(table.querySelectorAll(ROW));
+  }
+
+  // Retiring a term submits its own form, so it would navigate away and leave an
+  // unsaved order behind — recoverable only by redoing it.
+  function markDirty(table) {
+    var scope = table.closest('form');
+    // Not data-term-order-dirty: that is the note's own selector, and setting it here
+    // would make the form match it too — the form being an ancestor, it would match
+    // first and the note would never be revealed.
+    if (!scope || scope.dataset.termOrderMoved) return;
+
+    scope.dataset.termOrderMoved = 'true';
+
+    // aria-disabled rather than the attribute, which would drop the button out of the
+    // tab order: a keyboard user would find it missing rather than unavailable.
+    document.querySelectorAll(TOGGLE).forEach(function (toggle) {
+      toggle.setAttribute('aria-disabled', 'true');
+      toggle.classList.add('disabled');
+
+      var reason = toggle.querySelector(TOGGLE_REASON);
+      if (reason) reason.classList.remove('d-none');
+    });
+
+    var note = document.querySelector(DIRTY_NOTE);
+    if (note) note.classList.remove('d-none');
+  }
+
+  // aria-disabled carries no behavior of its own, so the submit has to be stopped
+  // here. Captured on the document because the toggles submit forms of their own,
+  // which sit outside the table this script is bound to.
+  function refuseDisabledToggles() {
+    document.addEventListener('click', function (event) {
+      var toggle = event.target.closest(TOGGLE);
+      if (!toggle || toggle.getAttribute('aria-disabled') !== 'true') return;
+
+      event.preventDefault();
+      event.stopPropagation();
+    });
   }
 
   function statusFor(table) {
@@ -64,6 +105,7 @@
     } else {
       list[to].before(row);
     }
+    markDirty(table);
     announce(table, row, table.dataset.movedTemplate);
     return true;
   }
@@ -155,6 +197,7 @@
       if (!dropped) {
         restore(table, dragged, from);
       } else if (rows(table).indexOf(dragged) !== from) {
+        markDirty(table);
         announce(table, dragged, table.dataset.movedTemplate);
       }
 
@@ -189,6 +232,9 @@
     });
   }
 
+  // Bound on every turbolinks:load without a guard against binding twice. Restoring
+  // a cached page replaces the table with a fresh node, so the listeners attached
+  // here go with the old one rather than accumulating on the new one.
   function start() {
     document.querySelectorAll(TABLE).forEach(function (table) {
       bindDragging(table);
@@ -196,6 +242,10 @@
       bindButtons(table);
     });
   }
+
+  // Once, not per turbolinks:load: this one is bound to the document, which survives
+  // a page change, so re-registering it would stack a handler per visit.
+  refuseDisabledToggles();
 
   if (window.Turbolinks) {
     document.addEventListener('turbolinks:load', start);

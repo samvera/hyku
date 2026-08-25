@@ -494,9 +494,11 @@ it:
         no_terms: Questo vocabolario non ha ancora termini.
         none: Nessun vocabolario controllato è stato ancora configurato per questo tenant.
         order: Ordine
-        order_hint: L'ordine in cui i termini vengono proposti in un modulo di deposito. Trascina un termine oppure usa i pulsanti freccia, quindi salva.
+        order_hint: L'ordine in cui i termini vengono proposti in un modulo di deposito.
         order_saved: L'ordine dei termini è stato salvato.
         order_stale: I termini sono cambiati mentre li stavi riordinando, quindi l'ordine non è stato salvato. Controlla l'ordine attuale e riprova.
+        order_unsaved: Salva l'ordine prima di ritirare o ripristinare un termine. Altrimenti l'ordine che hai impostato andrà perso.
+        order_unsaved_short: non disponibile finché l'ordine non viene salvato
         origin: Origine
         origin_hint: Dove è definito il vocabolario, e quindi se i suoi termini possono essere modificati qui.
         origins:

@@ -1,10 +1,13 @@
 <%# The terms of one vocabulary. `reorderable` adds the drag handles and the move
-    buttons, `togglable` the retire/restore button; a yaml vocabulary has no rows to
-    change, so it renders read-only.
+    buttons; the presenter answers whether the retire/restore button belongs, since a
+    yaml vocabulary has no rows to change and renders read-only.
 
     controlled-vocabularies-scroll restores the scroll Hyrax disables on
     .table-responsive app-wide; see hyku.scss. A term id can be a full uri, so this
     table overflows readily. %>
+<% entry = presenter.entry %>
+<% terms = presenter.terms %>
+<% togglable = presenter.togglable? %>
 <div class="table-responsive controlled-vocabularies-scroll">
   <table class="table table-borderless controlled-vocabularies"
          <% if reorderable %>
@@ -60,18 +63,15 @@
 
               <div class="term-order-controls">
                 <button type="button" class="term-order-handle" data-term-handle
-                        aria-label="<%= t('hyku.admin.controlled_vocabulary.reorder_handle',
-                                          label: term['label']) %>">
+                        aria-label="<%= presenter.reorder_handle_label(term) %>">
                   <span aria-hidden="true">⠿</span>
                 </button>
                 <button type="button" class="term-order-move" data-term-move="-1"
-                        aria-label="<%= t('hyku.admin.controlled_vocabulary.move_earlier',
-                                          label: term['label']) %>">
+                        aria-label="<%= presenter.move_label(term, -1) %>">
                   <span aria-hidden="true">&uarr;</span>
                 </button>
                 <button type="button" class="term-order-move" data-term-move="1"
-                        aria-label="<%= t('hyku.admin.controlled_vocabulary.move_later',
-                                          label: term['label']) %>">
+                        aria-label="<%= presenter.move_label(term, 1) %>">
                   <span aria-hidden="true">&darr;</span>
                 </button>
               </div>
@@ -80,31 +80,27 @@
           <td><%= term['label'] %></td>
           <td><code><%= term['id'] %></code></td>
           <td>
-            <% case term['active'] %>
-            <% when false %>
-              <span class="badge badge-secondary"><%= t('hyku.admin.controlled_vocabulary.inactive') %></span>
-            <% when true %>
-              <span class="badge badge-quiet"><%= t('hyku.admin.controlled_vocabulary.active') %></span>
-            <% else %>
-              <%# A yaml term may omit `active` altogether, so its state is unstated
-                  rather than known. Hyrax treats such a term as usable. %>
-              <span class="badge badge-quiet">
-                <%= t('hyku.admin.controlled_vocabulary.status_unknown') %>
-              </span>
-            <% end %>
+            <span class="badge <%= presenter.status_variant(term) %>">
+              <%= presenter.status_label(term) %>
+            </span>
           </td>
           <% if togglable %>
             <td class="controlled-vocabulary-status-action">
               <%# The button sits inside the reorder form but `form` reassigns its
                   owner, so it submits its own and no form has to nest in another;
-                  see _term_status_forms. Outlined because it submits a change. %>
-              <% retiring = term['active'] != false %>
-              <% variant = retiring ? 'btn-outline-secondary' : 'btn-outline-primary' %>
+                  see _term_status_forms. Outlined because it submits a change.
+
+                  The reason is rendered hidden and revealed by the script, so it
+                  joins the accessible name only while the button is unavailable. %>
               <button type="submit" form="term-status-<%= term['term_id'] %>"
-                      class="btn btn-sm term-status-toggle <%= variant %>"
-                      name="active" value="<%= retiring ? 'false' : 'true' %>">
-                <%= t("hyku.admin.controlled_vocabulary.#{retiring ? 'retire' : 'restore'}") %>
+                      data-term-status-toggle
+                      class="btn btn-sm term-status-toggle <%= presenter.toggle_variant(term) %>"
+                      name="active" value="<%= presenter.toggle_value(term) %>">
+                <%= presenter.toggle_label(term) %>
                 <span class="sr-only"><%= term['label'] %></span>
+                <span class="sr-only d-none" data-term-status-reason>
+                  <%= t('hyku.admin.controlled_vocabulary.order_unsaved_short') %>
+                </span>
               </button>
             </td>
           <% end %>

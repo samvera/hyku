@@ -365,9 +365,11 @@ en:
         no_terms: This vocabulary has no terms yet.
         none: No controlled vocabularies have been set up for this tenant yet.
         order: Order
-        order_hint: The order terms are offered in on a deposit form. Drag a term, or use the arrow buttons, then save.
+        order_hint: The order terms are offered in on a deposit form.
         order_saved: The term order was saved.
         order_stale: The terms changed while you were reordering them, so the order was not saved. Check the current order and try again.
+        order_unsaved: Save the order before retiring or restoring a term. Retiring one now would discard the order you have set.
+        order_unsaved_short: unavailable until the order is saved
         origin: Source
         origin_hint: Where the vocabulary is defined, and therefore whether its terms can be edited here.
         origins:

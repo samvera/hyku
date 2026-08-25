@@ -535,6 +535,26 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
         end
       end
 
+      # Whether a second connection can take the vocabulary's row lock. A thread
+      # because the request's own connection already holds it and would be granted it
+      # again; NOWAIT because a held lock would otherwise hang the suite.
+      def write_from_another_connection
+        thread = Thread.new do
+          ActiveRecord::Base.connection_pool.with_connection do |connection|
+            connection.execute("SET search_path TO #{account.tenant}")
+            connection.execute('SET lock_timeout = 250')
+            connection.execute(
+              "SELECT id FROM qa_local_authorities WHERE name = 'reading_rooms' FOR UPDATE NOWAIT"
+            )
+            true
+          rescue ActiveRecord::StatementInvalid, ActiveRecord::LockWaitTimeout
+            false
+          end
+        end
+
+        thread.value
+      end
+
       it 'offers the reorder controls on a vocabulary this tenant owns' do
         get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms"
 
@@ -542,27 +562,20 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
         expect(response.body).to include 'Save order'
       end
 
+      # Contended from another connection rather than pinning the call order, so a
+      # refactor that still holds the lock keeps passing.
       it 'reads the digest under the same lock as the rows it guards' do
-        locked = []
+        interleaved = nil
+
         allow(ControlledVocabularyCatalog).to receive(:terms_for).and_wrap_original do |original, entry|
-          locked << :terms
-          original.call(entry)
-        end
-        allow_any_instance_of(Qa::LocalAuthority).to receive(:with_lock).and_wrap_original do |original, &block|
-          original.call do
-            locked << :lock_opened
-            block.call
-            locked << :lock_closed
+          original.call(entry).tap do
+            interleaved = write_from_another_connection
           end
-        end
-        allow_any_instance_of(Qa::LocalAuthority).to receive(:term_state_digest).and_wrap_original do |original|
-          locked << :digest
-          original.call
         end
 
         get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms"
 
-        expect(locked).to eq %i[lock_opened terms digest lock_closed]
+        expect(interleaved).to be false
       end
 
       # The order is carried by the sequence of the posted ids, so the page needs no
@@ -859,6 +872,25 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
       expect(response).to have_http_status(:success)
       expect(response.body).to include 'Special Collections'
       expect(response.body).not_to include 'data-term-order-table'
+    end
+
+    # A vocabulary can run to tens of thousands of terms, and the lock is the one a
+    # running import holds.
+    it 'reads the terms without locking the vocabulary or digesting it' do
+      taken = []
+      allow_any_instance_of(Qa::LocalAuthority).to receive(:with_lock).and_wrap_original do |original, &block| # rubocop:disable RSpec/AnyInstance
+        taken << :lock
+        original.call(&block)
+      end
+      allow_any_instance_of(Qa::LocalAuthority).to receive(:term_state_digest).and_wrap_original do |original| # rubocop:disable RSpec/AnyInstance
+        taken << :digest
+        original.call
+      end
+
+      get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms"
+
+      expect(response).to have_http_status(:success)
+      expect(taken).to be_empty
     end
 
     it 'refuses to retire a term' do

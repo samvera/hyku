@@ -6,8 +6,9 @@ module Hyrax
     # key to paste into one, and creates and relabels the vocabularies this tenant
     # manages.
     #
-    # TODO: over the ClassLength limit since the relabelling actions and the locked
-    # term read arrived together. Extract the term loading into its own class.
+    # TODO: still over the ClassLength limit with the term loading extracted. What
+    # remains is the two-step creation flow — confirmed?, save_vocabulary,
+    # confirm_creation and redisplay_form — which is the next thing to lift out.
     # rubocop:disable Metrics/ClassLength
     class ControlledVocabulariesController < ApplicationController
       with_themed_layout 'dashboard'
@@ -85,29 +86,13 @@ module Hyrax
         render :show
       end
 
-      # One lock so the digest describes the rows drawn beside it: read separately it
-      # can describe a reorder those rows never showed, and the save it guards would
-      # overwrite that reorder rather than refuse it.
-      #
-      # Only for a page that will draw the reorder form. The lock is SELECT ... FOR
-      # UPDATE and the digest reads every entry, so taking either on a page with no
-      # order to save — a depositor's, an imported copy's, a read-only yaml — would
-      # spend a full table read on nothing and queue the page behind a running import.
       def load_terms
-        can_manage = can?(:manage, :controlled_vocabularies)
+        load = ControlledVocabularyTermLoad.call(entry: @entry,
+                                                 can_manage: can?(:manage, :controlled_vocabularies))
 
-        if Hyku::ControlledVocabularyTermsPresenter.new(entry: @entry, can_manage: can_manage).controls_possible?
-          @entry.vocabulary.with_lock do
-            @terms = ControlledVocabularyCatalog.terms_for(@entry)
-            @term_state_digest = @entry.vocabulary.term_state_digest
-          end
-        else
-          @terms = ControlledVocabularyCatalog.terms_for(@entry)
-        end
-
-        @terms_presenter = Hyku::ControlledVocabularyTermsPresenter.new(
-          entry: @entry, can_manage: can_manage, terms: @terms
-        )
+        @terms = load.terms
+        @term_state_digest = load.state_digest
+        @terms_presenter = load.presenter
       end
 
       def download(format)

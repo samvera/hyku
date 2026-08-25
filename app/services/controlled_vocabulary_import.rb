@@ -38,6 +38,11 @@ class ControlledVocabularyImport
     @vocabulary.with_lock do
       current = Plan.new(Parser.call(@content, @filename), @vocabulary)
       raise Stale if reviewed_digest && current.state_digest != reviewed_digest
+      # Re-checked rather than inherited from the plan validated above: a plan draws
+      # its errors from the vocabulary as well as the file, so this re-read can be
+      # invalid where that one was not. A digest would have raised Stale first, but
+      # it is optional, and upsert_all runs no validations of its own.
+      raise ArgumentError, 'cannot apply a plan with errors' unless current.valid?
 
       current.upsert_rows.each_slice(Qa::LocalAuthorityEntry::BATCH_SIZE) do |batch|
         Qa::LocalAuthorityEntry.upsert_all(batch, unique_by: %i[local_authority_id uri]) # rubocop:disable Rails/SkipsModelValidations

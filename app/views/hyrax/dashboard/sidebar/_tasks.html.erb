@@ -2,19 +2,6 @@
 
 <% if menu.show_task? %>
   <li class="h5 nav-item"><%= t('hyrax.admin.sidebar.tasks') %></li>
-
-  <%# main_app because the route is Hyku's own, even though the controller is
-      namespaced Hyrax::. show_task? covers this ability too, so the heading above is
-      never missing when this renders. %>
-  <% if can? :view, :controlled_vocabularies %>
-    <%= menu.nav_link(main_app.controlled_vocabularies_path,
-                      class: "nav-link",
-                      onclick: "dontChangeAccordion(event);",
-                      title: t('hyku.admin.controlled_vocabularies')) do %>
-      <span class="fa fa-tags" aria-hidden="true"></span>
-      <span class="sidebar-action-text"><%= t('hyku.admin.controlled_vocabularies') %></span>
-    <% end %>
-  <% end %>
 <% end %>
 
 <% if can? :review, :submissions %>

@@ -46,6 +46,9 @@ module Hyku
       can?(:read, :admin_dashboard)
     end
 
+    # Kept in step with Hyrax::MenuPresenterDecorator, which answers the same question
+    # for the Hyrax sidebar: this subclass overrides the method, so a module prepended
+    # to the parent never runs and an entry added there alone would go unseen here.
     def show_task?
       can?(:review, :submissions) ||
         can?(:read, User) ||

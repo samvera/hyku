@@ -35,10 +35,9 @@ module Hyrax
 
         import = build_import(content, params[:filename])
         if params[:state_digest] != import.plan.state_digest
-          flash.now[:alert] = t('hyku.admin.controlled_vocabulary.import.stale')
-          render_review(import, content)
+          stale_review(import, content)
         elsif import.plan.valid? && import.plan.changes?
-          apply(import)
+          apply(import, content)
         else
           render_review(import, content)
         end
@@ -46,9 +45,24 @@ module Hyrax
 
       private
 
-      def apply(import)
-        import.apply!
-        redirect_to main_app.controlled_vocabulary_path(@vocabulary.name), notice: applied_notice(import.plan)
+      # The digest goes through so apply! can re-check it under its lock; the check
+      # above was read before that lock was held.
+      def apply(import, content)
+        # The plan apply! returns, not import.plan: the two can classify the same row
+        # differently, and the notice has to report the write that happened.
+        applied = import.apply!(params[:state_digest])
+        redirect_to main_app.controlled_vocabulary_path(@vocabulary.name), notice: applied_notice(applied)
+      rescue ControlledVocabularyImport::Stale
+        # Reset before rebuilding: apply!'s lock rolled back, so the terms this
+        # request loaded are the ones from before the change that raised. Reviewing
+        # those again would show the wrong diff and hand back the failed digest.
+        @vocabulary.local_authority_entries.reset
+        stale_review(build_import(content, params[:filename]), content)
+      end
+
+      def stale_review(import, content)
+        flash.now[:alert] = t('hyku.admin.controlled_vocabulary.import.stale')
+        render_review(import, content)
       end
 
       def applied_notice(plan)

@@ -418,8 +418,10 @@ zh:
       controlled_vocabularies: 受控词表
       controlled_vocabulary:
         active: 已启用
+        at_position: '%{label} 已位于第 %{position} 项（共 %{total} 项）'
         awaiting_import: 未导入
         awaiting_import_help: '此词表可用，但在此租户中尚无词条。运行以下命令进行填充：%{task}'
+        cancel_order: 取消
         confirm_back: 返回编辑
         confirm_create: 确认并创建
         confirm_help: 请在创建词表前检查这些值。
@@ -500,6 +502,9 @@ zh:
         inactive: 未启用
         label: 标签
         label_hint: 存缴者在表单中看到的内容。可以放心改写，不会影响已存储的记录。
+        move_earlier: 将 %{label} 上移
+        move_later: 将 %{label} 下移
+        moved: 已将 %{label} 移至第 %{position} 项（共 %{total} 项）
         name: 词表
         new_help: 为词表命名，其源键将由该名称生成。源键是元数据配置档所引用的内容，之后无法更改。
         new_term_heading: 向 %{vocabulary} 添加词条
@@ -509,6 +514,12 @@ zh:
         no_description: 未填写
         no_terms: 此词表尚无词条。
         none: 此租户尚未设置任何受控词表。
+        order: 顺序
+        order_hint: 词条在提交表单中的显示顺序。
+        order_saved: 词条顺序已保存。
+        order_stale: 术语在您重新排序时发生了更改，因此未保存排序。请查看当前顺序后重试。
+        order_unsaved: 请先保存顺序，然后再停用或恢复词条。否则您设置的顺序将被丢弃。
+        order_unsaved_short: 在保存顺序之前不可用
         origin: 来源
         origin_hint: 词表的定义位置，并由此决定其词条能否在此处编辑。
         origins:
@@ -528,16 +539,22 @@ zh:
         read_only:
           file: 此词表在配置文件中定义，因此其词条无法在此处修改。
         ready: 就绪
+        reorder_handle: 重新排序 %{label}：拖动或使用箭头键
+        reorder_hint: 拖动词条，或使用箭头按钮，设置其在提交表单中的显示顺序。完成后请保存顺序。
+        restore: 恢复
+        retire: 停用
         retired_count:
           one: （已停用 %{count} 个）
           other: （已停用 %{count} 个）
         save: 保存更改
+        save_order: 保存顺序
         show_title: '受控词表：%{name}'
         source_key: 来源键
         source_key_hint: 将其粘贴到元数据配置档的字段中，即可用此词表控制该字段。
         source_key_help: 将来源键粘贴到元数据配置档的字段中，即可用此词表控制该字段。在此租户中管理的词表可以在此处编辑；在配置文件中定义或来自外部服务的词表则不能。
         static_forms: 未启用元数据配置档，因此存缴表单从配置文件读取此词表。修改其词条需要开发人员协助。
         status: 状态
+        status_action: 更改状态
         status_hint: 此词表是就绪可用，还是需要先完成某些设置。
         status_unknown: 未指定
         term_created: '%{label} 已添加。'
@@ -549,6 +566,8 @@ zh:
           other: （显示前 %{count} 个）
         term_id_hint: 存储在记录上的值，也是 Bulkrax 导入时应提供的值。
         term_id_help: 词条 ID 是存储在记录上的值，也是 Bulkrax 导入时应提供的值。标签只是存缴者看到的内容。
+        term_restored: '%{label} 已恢复，将再次在提交表单中提供。'
+        term_retired: '%{label} 已停用，将不再在提交表单中提供。'
         term_total:
           one: 1 个词条
           other: "%{count} 个词条"

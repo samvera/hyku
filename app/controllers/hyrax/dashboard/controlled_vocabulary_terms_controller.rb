@@ -4,6 +4,10 @@ module Hyrax
   module Dashboard
     # Adds terms to a vocabulary this tenant manages.
     class ControlledVocabularyTermsController < ApplicationController
+      # The only statuses the buttons post. Anything else is a malformed request
+      # rather than a status to cast, so it is refused instead of interpreted.
+      ACTIVE_VALUES = { 'true' => true, 'false' => false }.freeze
+
       with_themed_layout 'dashboard'
 
       before_action -> { authorize! :manage, :controlled_vocabularies }
@@ -17,7 +21,10 @@ module Hyrax
       def create
         @term = @vocabulary.local_authority_entries.new(term_params)
 
-        if @term.save
+        # The same lock a reorder and an import take: the position is allocated from
+        # the highest already in use, so a term saved beside an import could otherwise
+        # be given a position that import is writing to another term.
+        if @vocabulary.with_lock { @term.save }
           redirect_to main_app.controlled_vocabulary_path(@vocabulary.name),
                       notice: t('hyku.admin.controlled_vocabulary.term_created', label: @term.label)
         else
@@ -26,7 +33,50 @@ module Hyrax
         end
       end
 
+      # The whole list is posted, so a reorder is one write rather than one per term.
+      def update_order
+        @vocabulary.resequence_terms(ordered_ids, params[:state_digest].presence)
+
+        redirect_to main_app.controlled_vocabulary_path(@vocabulary.name),
+                    notice: t('hyku.admin.controlled_vocabulary.order_saved')
+      rescue Qa::LocalAuthority::StaleOrder
+        # Back to the vocabulary rather than re-rendering: the order just posted was
+        # built on terms that have since changed, so the table has to be redrawn from
+        # the current ones before it means anything.
+        redirect_to main_app.controlled_vocabulary_path(@vocabulary.name),
+                    alert: t('hyku.admin.controlled_vocabulary.order_stale')
+      end
+
+      # Retiring is offered in place of deleting, which works cannot survive: they
+      # store the term id, so a retired term stops being offered on the deposit form
+      # while still resolving for the works citing it.
+      def update_status
+        state = activating?
+
+        # The same lock an import and a reorder take: an import reads the terms under
+        # it, so a status set in between would be written back to what the import saw.
+        term = @vocabulary.with_lock do
+          @vocabulary.local_authority_entries.find(params[:id]).tap do |found|
+            found.update!(active: state)
+          end
+        end
+
+        redirect_to main_app.controlled_vocabulary_path(@vocabulary.name),
+                    notice: t("hyku.admin.controlled_vocabulary.#{state ? 'term_restored' : 'term_retired'}",
+                              label: term.label)
+      end
+
       private
+
+      # Required rather than defaulted: casting a missing parameter gives nil, which
+      # reads as retiring, so an incomplete request would take a term out of use
+      # without asking. `false` is a valid answer, hence require before matching.
+      def activating?
+        params.require(:active)
+        raise ActionController::BadRequest unless ACTIVE_VALUES.key?(params[:active])
+
+        ACTIVE_VALUES.fetch(params[:active])
+      end
 
       # An imported copy has a database row, so find_by! alone would let a term through;
       # its terms are not this tenant's to change. Checked here because the view only
@@ -41,6 +91,14 @@ module Hyrax
       # No :position — the model assigns it, so it cannot be posted.
       def term_params
         params.require(:local_authority_entry).permit(:label, :uri)
+      end
+
+      # The order of the posted ids is the order itself: a browser submits fields in
+      # document order, and the drag moves the row rather than rewriting a number. So
+      # nothing here has to trust a position the page calculated. Non-numeric values
+      # are dropped rather than passed on, because `to_i` raises on some of them.
+      def ordered_ids
+        Array(params[:term_ids]).filter_map { |value| Integer(value, exception: false) }
       end
 
       def breadcrumb_trail

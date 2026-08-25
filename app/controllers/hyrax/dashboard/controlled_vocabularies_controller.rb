@@ -5,6 +5,11 @@ module Hyrax
     # Lists every authority a metadata profile can cite, so staff can find the source
     # key to paste into one, and creates and relabels the vocabularies this tenant
     # manages.
+    #
+    # TODO: still over the ClassLength limit with the term loading extracted. What
+    # remains is the two-step creation flow — confirmed?, save_vocabulary,
+    # confirm_creation and redisplay_form — which is the next thing to lift out.
+    # rubocop:disable Metrics/ClassLength
     class ControlledVocabulariesController < ApplicationController
       with_themed_layout 'dashboard'
 
@@ -76,9 +81,18 @@ module Hyrax
 
       def show_page
         vocabulary_breadcrumbs([@entry.label, request.path])
-        @terms = ControlledVocabularyCatalog.terms_for(@entry)
+        load_terms
         @usage = ControlledVocabularyUsage.citing(@entry.source_key)
         render :show
+      end
+
+      def load_terms
+        load = ControlledVocabularyTermLoad.call(entry: @entry,
+                                                 can_manage: can?(:manage, :controlled_vocabularies))
+
+        @terms = load.terms
+        @term_state_digest = load.state_digest
+        @terms_presenter = load.presenter
       end
 
       def download(format)
@@ -149,5 +163,6 @@ module Hyrax
         controlled_vocabulary_params
       end
     end
+    # rubocop:enable Metrics/ClassLength
   end
 end

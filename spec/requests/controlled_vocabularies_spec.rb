@@ -711,6 +711,301 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
         expect(response).to have_http_status(:not_found)
       end
     end
+
+    describe 'reordering the terms' do
+      def term_ids
+        Apartment::Tenant.switch(account.tenant) do
+          Qa::LocalAuthority.find_by(name: 'reading_rooms').local_authority_entries.ordered.pluck(:id)
+        end
+      end
+
+      def labels
+        Apartment::Tenant.switch(account.tenant) do
+          Qa::LocalAuthority.find_by(name: 'reading_rooms').local_authority_entries.ordered.pluck(:label)
+        end
+      end
+
+      # Whether a second connection can take the vocabulary's row lock. A thread
+      # because the request's own connection already holds it and would be granted it
+      # again; NOWAIT so a held lock answers immediately rather than hanging.
+      #
+      # It raises on a miss rather than reporting "not locked": answering the wrong
+      # question is how an earlier version passed against a page taking no lock.
+      def lock_taken_by_another_connection
+        thread = Thread.new do
+          ActiveRecord::Base.connection_pool.with_connection do |connection|
+            # Quoted: the tenant is a uuid, which is not a bare identifier.
+            connection.execute("SET search_path TO #{connection.quote_table_name(account.tenant)}")
+            rows = connection.execute(
+              "SELECT id FROM qa_local_authorities WHERE name = 'reading_rooms' FOR UPDATE NOWAIT"
+            )
+            raise "the vocabulary was not visible to the second connection" if rows.count.zero?
+
+            :free
+          rescue ActiveRecord::LockWaitTimeout
+            :held
+          ensure
+            # Reset, or the pooled connection carries this tenant's schema into a
+            # later example that drops it.
+            connection.execute('SET search_path TO public')
+          end
+        end
+
+        thread.value
+      end
+
+      it 'offers the reorder controls on a vocabulary this tenant owns' do
+        get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms"
+
+        expect(response.body).to include 'data-term-order-table'
+        expect(response.body).to include 'Save order'
+      end
+
+      # Contended from another connection rather than pinning the call order, so a
+      # refactor that still holds the lock keeps passing. Truncating, because the
+      # second connection cannot see rows an open transaction has not committed.
+      it 'reads the digest under the same lock as the rows it guards', truncation: true do
+        contended = nil
+
+        allow(ControlledVocabularyCatalog).to receive(:terms_for).and_wrap_original do |original, entry|
+          original.call(entry).tap { contended = lock_taken_by_another_connection }
+        end
+
+        get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms"
+
+        expect(contended).to eq :held
+      end
+
+      # The order is carried by the sequence of the posted ids, so the page needs no
+      # position field to keep in step with the rows.
+      it 'posts the term ids rather than a position per term' do
+        get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms"
+
+        expect(response.body).to include 'term_ids[]'
+      end
+
+      it 'saves the order the terms were left in' do
+        reversed = term_ids.reverse
+
+        patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms/terms/order",
+              params: { term_ids: reversed }
+
+        expect(labels).to eq ['Closed Stacks', 'Special Collections']
+        expect(response.location).to include '/dashboard/controlled_vocabularies/reading_rooms'
+      end
+
+      # A retired term still holds a place in the list, so it has to be reorderable
+      # alongside the active ones rather than sinking to the bottom.
+      it 'reorders a retired term like any other' do
+        patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms/terms/order",
+              params: { term_ids: term_ids.reverse }
+
+        positions = Apartment::Tenant.switch(account.tenant) do
+          Qa::LocalAuthority.find_by(name: 'reading_rooms')
+                            .local_authority_entries.find_by(label: 'Closed Stacks').position
+        end
+
+        expect(positions).to eq 1
+      end
+
+      # A vocabulary with one term has no order to set, so the form would be a button
+      # that does nothing.
+      it 'omits the controls when there is only one term' do
+        Apartment::Tenant.switch(account.tenant) do
+          vocabulary = Qa::LocalAuthority.create!(label: 'Lab Names')
+          vocabulary.local_authority_entries.create!(label: 'Wet Lab', uri: 'wet')
+        end
+
+        get "http://#{account.cname}/dashboard/controlled_vocabularies/lab_names"
+
+        expect(response.body).to include 'Wet Lab'
+        expect(response.body).not_to include 'data-term-order-table'
+      end
+
+      # A yaml vocabulary has no rows to renumber, so its list is read-only however
+      # many terms it holds.
+      it 'omits the controls on a vocabulary defined in a configuration file' do
+        get "http://#{account.cname}/dashboard/controlled_vocabularies/resource_types"
+
+        expect(response).to have_http_status(:success)
+        expect(response.body).not_to include 'data-term-order-table'
+      end
+
+      # The next import replaces every row, so a saved order would be discarded
+      # without warning. The view hides the form; nothing stops a direct patch.
+      it 'refuses a vocabulary whose terms are not this tenant to change' do
+        ids = Apartment::Tenant.switch(account.tenant) do
+          vocabulary = Qa::LocalAuthority.create!(name: 'mesh', label: 'MeSH')
+          [vocabulary.local_authority_entries.create!(label: 'Anatomy', uri: 'anat').id,
+           vocabulary.local_authority_entries.create!(label: 'Biology', uri: 'bio').id]
+        end
+
+        patch "http://#{account.cname}/dashboard/controlled_vocabularies/mesh/terms/order",
+              params: { term_ids: ids.reverse }
+
+        first = Apartment::Tenant.switch(account.tenant) do
+          Qa::LocalAuthority.find_by(name: 'mesh').local_authority_entries.ordered.first.label
+        end
+
+        expect(first).to eq 'Anatomy'
+        expect(response).to have_http_status(:not_found)
+      end
+
+      # Terms belong to the vocabulary in the url, so an id from elsewhere must not be
+      # renumbered by posting it here.
+      it 'ignores an id belonging to another vocabulary' do
+        stranger = Apartment::Tenant.switch(account.tenant) do
+          vocabulary = Qa::LocalAuthority.create!(label: 'Lab Names')
+          vocabulary.local_authority_entries.create!(label: 'Wet Lab', uri: 'wet', position: 4)
+        end
+
+        patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms/terms/order",
+              params: { term_ids: [stranger.id] + term_ids.reverse }
+
+        expect(labels).to eq ['Closed Stacks', 'Special Collections']
+        expect(Apartment::Tenant.switch(account.tenant) { stranger.reload.position }).to eq 4
+      end
+
+      it 'leaves the order alone when nothing is posted' do
+        patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms/terms/order"
+
+        expect(labels).to eq ['Special Collections', 'Closed Stacks']
+      end
+
+      # A hash rather than a list reaches the action as ActionController::Parameters,
+      # which is not a number and so is not an id to reorder.
+      it 'ignores a posted value that is not an id' do
+        patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms/terms/order",
+              params: { term_ids: { 'a' => term_ids.first } }
+
+        expect(response).to have_http_status(:redirect)
+        expect(labels).to eq ['Special Collections', 'Closed Stacks']
+      end
+
+      # These ids are request data, so a json client can send whatever it likes.
+      # `true.to_i` raises where a stray string merely reads as zero.
+      it 'ignores json values that are not ids' do
+        patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms/terms/order",
+              params: { term_ids: [nil, true, 'abc', term_ids.last] }.to_json,
+              headers: { 'CONTENT_TYPE' => 'application/json' }
+
+        expect(response).to have_http_status(:redirect)
+        expect(labels).to eq ['Closed Stacks', 'Special Collections']
+      end
+    end
+
+    describe 'retiring and restoring a term' do
+      def term(label)
+        Apartment::Tenant.switch(account.tenant) do
+          Qa::LocalAuthority.find_by(name: 'reading_rooms').local_authority_entries.find_by(label:)
+        end
+      end
+
+      it 'offers a toggle against each term' do
+        get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms"
+
+        expect(response.body).to include 'Retire'
+        expect(response.body).to include 'Restore'
+      end
+
+      it 'retires an active term' do
+        patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms/terms/" \
+              "#{term('Special Collections').id}/status",
+              params: { active: 'false' }
+
+        expect(term('Special Collections').active).to be false
+        expect(response.location).to include '/dashboard/controlled_vocabularies/reading_rooms'
+      end
+
+      # Asserted on the rendered text, not just the redirect: the key is interpolated
+      # from the direction of the change, so a missing one only shows up on the page.
+      it 'says which way the term was moved' do
+        patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms/terms/" \
+              "#{term('Special Collections').id}/status",
+              params: { active: 'false' }
+        follow_redirect!
+
+        expect(response.body).to include 'Special Collections was retired'
+        expect(response.body).not_to include 'translation missing'
+      end
+
+      it 'restores a retired term' do
+        patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms/terms/" \
+              "#{term('Closed Stacks').id}/status",
+              params: { active: 'true' }
+
+        expect(term('Closed Stacks').active).to be true
+      end
+
+      # Retiring is how a term is taken out of use, because deleting it would orphan
+      # every work already citing it. The value has to keep resolving to its label.
+      it 'keeps a retired term available to works that already cite it' do
+        patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms/terms/" \
+              "#{term('Special Collections').id}/status",
+              params: { active: 'false' }
+
+        offered, stored = Apartment::Tenant.switch(account.tenant) do
+          service = Hyrax::QaSelectService.new('reading_rooms')
+          [service.select_active_options.map(&:first), service.select_all_options.map(&:first)]
+        end
+
+        expect(offered).not_to include 'Special Collections'
+        expect(stored).to include 'Special Collections'
+      end
+
+      # The position is what the order is read from, so retiring must not move the
+      # term: restoring it should put it back where it was, not at the end.
+      it 'leaves the term where it sits in the order' do
+        before_position = term('Special Collections').position
+
+        patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms/terms/" \
+              "#{term('Special Collections').id}/status",
+              params: { active: 'false' }
+
+        expect(term('Special Collections').position).to eq before_position
+      end
+
+      # Retiring is the destructive direction, so it has to be asked for. Casting a
+      # missing parameter reads as false, which would let an incomplete request
+      # retire a term nobody named.
+      it 'refuses to change a term when no state is given' do
+        patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms/terms/" \
+              "#{term('Special Collections').id}/status"
+
+        expect(term('Special Collections').active).to be true
+        expect(response).to have_http_status(:bad_request)
+      end
+
+      # A term belongs to the vocabulary in the url, so one from elsewhere must not be
+      # reachable by posting its id here.
+      it 'refuses a term belonging to another vocabulary' do
+        stranger = Apartment::Tenant.switch(account.tenant) do
+          vocabulary = Qa::LocalAuthority.create!(label: 'Lab Names')
+          vocabulary.local_authority_entries.create!(label: 'Wet Lab', uri: 'wet')
+        end
+
+        patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms/terms/" \
+              "#{stranger.id}/status",
+              params: { active: 'false' }
+
+        expect(Apartment::Tenant.switch(account.tenant) { stranger.reload.active }).to be true
+        expect(response).to have_http_status(:not_found)
+      end
+
+      # The next import replaces every row, so a retirement would be silently undone.
+      it 'refuses a vocabulary whose terms are not this tenant to change' do
+        mesh_term = Apartment::Tenant.switch(account.tenant) do
+          vocabulary = Qa::LocalAuthority.create!(name: 'mesh', label: 'MeSH')
+          vocabulary.local_authority_entries.create!(label: 'Anatomy', uri: 'anat')
+        end
+
+        patch "http://#{account.cname}/dashboard/controlled_vocabularies/mesh/terms/#{mesh_term.id}/status",
+              params: { active: 'false' }
+
+        expect(Apartment::Tenant.switch(account.tenant) { mesh_term.reload.active }).to be true
+        expect(response).to have_http_status(:not_found)
+      end
+    end
   end
 
   context 'as a user with no deposit access' do
@@ -748,6 +1043,12 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
       expect(response).to have_http_status(:success)
     end
 
+    it 'offers the vocabularies from the dashboard sidebar' do
+      get "http://#{account.cname}/dashboard"
+
+      expect(response.body).to include '/dashboard/controlled_vocabularies'
+    end
+
     it 'refuses the form' do
       get "http://#{account.cname}/dashboard/controlled_vocabularies/new"
 
@@ -761,6 +1062,61 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
       created = Apartment::Tenant.switch(account.tenant) { Qa::LocalAuthority.exists?(name: 'lab_names') }
 
       expect(created).to be false
+    end
+
+    it 'lists the terms without the reorder controls' do
+      get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms"
+
+      expect(response).to have_http_status(:success)
+      expect(response.body).to include 'Special Collections'
+      expect(response.body).not_to include 'data-term-order-table'
+    end
+
+    # A vocabulary can run to tens of thousands of terms, and the lock is the one a
+    # running import holds.
+    it 'reads the terms without locking the vocabulary or digesting it' do
+      taken = []
+      allow_any_instance_of(Qa::LocalAuthority).to receive(:with_lock).and_wrap_original do |original, &block| # rubocop:disable RSpec/AnyInstance
+        taken << :lock
+        original.call(&block)
+      end
+      allow_any_instance_of(Qa::LocalAuthority).to receive(:term_state_digest).and_wrap_original do |original| # rubocop:disable RSpec/AnyInstance
+        taken << :digest
+        original.call
+      end
+
+      get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms"
+
+      expect(response).to have_http_status(:success)
+      expect(taken).to be_empty
+    end
+
+    it 'refuses to retire a term' do
+      id = Apartment::Tenant.switch(account.tenant) do
+        Qa::LocalAuthority.find_by(name: 'reading_rooms').local_authority_entries.find_by(label: 'Special Collections').id
+      end
+
+      patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms/terms/#{id}/status",
+            params: { active: 'false' }
+
+      active = Apartment::Tenant.switch(account.tenant) { Qa::LocalAuthorityEntry.find(id).active }
+
+      expect(active).to be true
+    end
+
+    it 'refuses the reorder' do
+      ids = Apartment::Tenant.switch(account.tenant) do
+        Qa::LocalAuthority.find_by(name: 'reading_rooms').local_authority_entries.ordered.pluck(:id)
+      end
+
+      patch "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms/terms/order",
+            params: { term_ids: ids.reverse }
+
+      labels = Apartment::Tenant.switch(account.tenant) do
+        Qa::LocalAuthority.find_by(name: 'reading_rooms').local_authority_entries.ordered.pluck(:label)
+      end
+
+      expect(labels).to eq ['Special Collections', 'Closed Stacks']
     end
 
     it 'offers no edit control on a vocabulary it can read' do

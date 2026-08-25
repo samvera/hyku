@@ -39,6 +39,7 @@
 //= require hyku/admin/appearance/themes
 //= require hyku/admin/controlled_vocabulary_fields
 //= require hyku/admin/features_scroll
+//= require hyku/admin/vocabulary_term_order
 //= require hyku/groups/per_page
 //= require hyku/groups/add_member
 //= require hyku/demo_banner

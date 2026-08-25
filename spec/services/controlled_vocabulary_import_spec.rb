@@ -284,6 +284,16 @@ RSpec.describe ControlledVocabularyImport do
 
       expect(plan_for("id,label\nbraille,Braille\n").state_digest).not_to eq before_digest
     end
+
+    # A full-file import rewrites every position, so an order set after the review
+    # would be silently overwritten on confirm unless reordering moves the digest.
+    it 'changes its digest when the terms are reordered' do
+      before_digest = plan_for("id,label\nbraille,Braille\n").state_digest
+      vocabulary.resequence_terms(vocabulary.local_authority_entries.ordered.pluck(:id).rotate)
+      vocabulary.reload
+
+      expect(plan_for("id,label\nbraille,Braille\n").state_digest).not_to eq before_digest
+    end
   end
 
   describe 'round trips with the export' do
@@ -317,6 +327,23 @@ RSpec.describe ControlledVocabularyImport do
   end
 
   describe 'apply!' do
+    # The caller reports what was applied, and what was applied is the plan rebuilt
+    # under the lock. A term added between the review and the confirmation turns an
+    # addition into an update, which the pre-lock plan still counts as an addition.
+    it 'returns the plan it applied, classified as of the lock' do
+      import = described_class.new(content: "id,label\nbraille,Braille\n",
+                                   filename: 'terms.csv', vocabulary: vocabulary)
+      expect(import.plan.additions.size).to eq 1
+
+      # A different label, so the row is a change rather than a term already matching.
+      vocabulary.local_authority_entries.create!(label: 'Braille Type', uri: 'braille')
+
+      applied = import.apply!
+
+      expect(applied.additions).to be_empty
+      expect(applied.updates.size).to eq 1
+    end
+
     it 'creates terms with the file order and defaults' do
       apply("id,label,active\n,Braille,\nhap,Haptic,false\n")
 
@@ -384,7 +411,7 @@ RSpec.describe ControlledVocabularyImport do
     end
 
     it 'commits nothing when a batch fails partway' do
-      stub_const('ControlledVocabularyImport::BATCH_SIZE', 1)
+      stub_const('Qa::LocalAuthorityEntry::BATCH_SIZE', 1)
       calls = 0
       allow(Qa::LocalAuthorityEntry).to receive(:upsert_all).and_wrap_original do |original, *args, **kwargs|
         calls += 1
@@ -398,7 +425,7 @@ RSpec.describe ControlledVocabularyImport do
     end
 
     it 'imports in batches' do
-      stub_const('ControlledVocabularyImport::BATCH_SIZE', 2)
+      stub_const('Qa::LocalAuthorityEntry::BATCH_SIZE', 2)
 
       apply("label\n#{(1..5).map { |n| "Term #{n}\n" }.join}")
 

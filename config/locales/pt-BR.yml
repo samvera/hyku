@@ -284,8 +284,10 @@ pt-BR:
       controlled_vocabularies: Vocabulários controlados
       controlled_vocabulary:
         active: Ativo
+        at_position: '%{label} já está na posição %{position} de %{total}'
         awaiting_import: Não importado
         awaiting_import_help: 'Este vocabulário está disponível, mas ainda não tem termos neste locatário. Preencha-o executando: %{task}'
+        cancel_order: Cancelar
         confirm_back: Voltar para editar
         confirm_create: Confirmar e criar
         confirm_help: Verifique estes valores antes de o vocabulário ser criado.
@@ -366,6 +368,9 @@ pt-BR:
         inactive: Inativo
         label: Rótulo
         label_hint: O que um depositante vê no formulário. Pode ser reformulado sem afetar os registros armazenados.
+        move_earlier: Mover %{label} para antes
+        move_later: Mover %{label} para depois
+        moved: '%{label} movido para a posição %{position} de %{total}'
         name: Vocabulário
         new_help: Nomeie o vocabulário; sua chave de origem é definida a partir desse nome. A chave é o que um perfil de metadados cita, então não pode ser alterada depois.
         new_term_heading: Adicionar um termo a %{vocabulary}
@@ -375,6 +380,12 @@ pt-BR:
         no_description: Não informada
         no_terms: Este vocabulário ainda não tem termos.
         none: Nenhum vocabulário controlado foi configurado para este locatário ainda.
+        order: Ordem
+        order_hint: A ordem em que os termos são oferecidos em um formulário de depósito.
+        order_saved: A ordem dos termos foi salva.
+        order_stale: Os termos mudaram enquanto você os reordenava, portanto a ordem não foi salva. Verifique a ordem atual e tente novamente.
+        order_unsaved: Salve a ordem antes de retirar ou restaurar um termo. Caso contrário, a ordem que você definiu será descartada.
+        order_unsaved_short: indisponível até que a ordem seja salva
         origin: Origem
         origin_hint: Onde o vocabulário é definido e, portanto, se seus termos podem ser editados aqui.
         origins:
@@ -394,16 +405,22 @@ pt-BR:
         read_only:
           file: Este vocabulário é definido em um arquivo de configuração, portanto seus termos não podem ser alterados aqui.
         ready: Pronto
+        reorder_handle: 'Reordenar %{label}: arraste ou use as teclas de seta'
+        reorder_hint: Arraste um termo, ou use os botões de seta, para definir a ordem em que ele é oferecido em um formulário de depósito. Salve a ordem quando terminar.
+        restore: Restaurar
+        retire: Desativar
         retired_count:
           one: (%{count} desativado)
           other: (%{count} desativados)
         save: Salvar alterações
+        save_order: Salvar ordem
         show_title: 'Vocabulário controlado: %{name}'
         source_key: Chave de origem
         source_key_hint: Cole isto em um campo do perfil de metadados para controlar esse campo com este vocabulário.
         source_key_help: Cole uma chave de origem em um campo do perfil de metadados para controlar esse campo com este vocabulário. Os vocabulários gerenciados neste locatário podem ser editados aqui; os definidos em um arquivo de configuração ou por um serviço externo não podem.
         static_forms: Os perfis de metadados não estão habilitados, então os formulários de depósito leem este vocabulário de um arquivo de configuração. Alterar seus termos requer um desenvolvedor.
         status: Status
+        status_action: Alterar status
         status_hint: Se este vocabulário está pronto para uso ou precisa de alguma configuração primeiro.
         status_unknown: Não especificado
         term_created: '%{label} foi adicionado.'
@@ -415,6 +432,8 @@ pt-BR:
           other: (mostrando os primeiros %{count})
         term_id_hint: O valor armazenado em um registro e o valor a fornecer em uma importação do Bulkrax.
         term_id_help: O ID do termo é o valor armazenado em um registro e o valor a fornecer em uma importação do Bulkrax. O rótulo é apenas o que um depositante vê.
+        term_restored: '%{label} foi restaurado e volta a ser oferecido no formulário de depósito.'
+        term_retired: '%{label} foi desativado e não é mais oferecido no formulário de depósito.'
         term_total:
           one: 1 termo
           other: "%{count} termos"

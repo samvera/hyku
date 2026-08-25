@@ -402,8 +402,10 @@ it:
       controlled_vocabularies: Vocabolari controllati
       controlled_vocabulary:
         active: Attivo
+        at_position: '%{label} è già alla posizione %{position} di %{total}'
         awaiting_import: Non importato
         awaiting_import_help: 'Questo vocabolario è disponibile ma non ha ancora termini in questo tenant. Popolalo eseguendo: %{task}'
+        cancel_order: Annulla
         confirm_back: Torna alla modifica
         confirm_create: Conferma e crea
         confirm_help: Controlla questi valori prima che il vocabolario venga creato.
@@ -484,6 +486,9 @@ it:
         inactive: Inattivo
         label: Etichetta
         label_hint: Ciò che un depositante vede nel modulo. Può essere riformulata senza influire sui record salvati.
+        move_earlier: Sposta %{label} prima
+        move_later: Sposta %{label} dopo
+        moved: '%{label} spostato alla posizione %{position} di %{total}'
         name: Vocabolario
         new_help: Assegna un nome al vocabolario; la sua chiave di origine viene impostata da quel nome. La chiave è ciò che un profilo dei metadati cita, quindi non può essere cambiata in seguito.
         new_term_heading: Aggiungi un termine a %{vocabulary}
@@ -493,6 +498,12 @@ it:
         no_description: Non indicata
         no_terms: Questo vocabolario non ha ancora termini.
         none: Nessun vocabolario controllato è stato ancora configurato per questo tenant.
+        order: Ordine
+        order_hint: L'ordine in cui i termini vengono proposti in un modulo di deposito.
+        order_saved: L'ordine dei termini è stato salvato.
+        order_stale: I termini sono cambiati mentre li stavi riordinando, quindi l'ordine non è stato salvato. Controlla l'ordine attuale e riprova.
+        order_unsaved: Salva l'ordine prima di ritirare o ripristinare un termine. Altrimenti l'ordine che hai impostato andrà perso.
+        order_unsaved_short: non disponibile finché l'ordine non viene salvato
         origin: Origine
         origin_hint: Dove è definito il vocabolario, e quindi se i suoi termini possono essere modificati qui.
         origins:
@@ -512,16 +523,22 @@ it:
         read_only:
           file: Questo vocabolario è definito in un file di configurazione, quindi i suoi termini non possono essere modificati qui.
         ready: Pronto
+        reorder_handle: 'Riordina %{label}: trascina oppure usa i tasti freccia'
+        reorder_hint: Trascina un termine, oppure usa i pulsanti freccia, per definire l'ordine in cui viene proposto in un modulo di deposito. Salva l'ordine quando hai finito.
+        restore: Ripristina
+        retire: Ritira
         retired_count:
           one: (%{count} ritirato)
           other: (%{count} ritirati)
         save: Salva modifiche
+        save_order: Salva ordine
         show_title: 'Vocabolario controllato: %{name}'
         source_key: Chiave di origine
         source_key_hint: Incollala in un campo del profilo dei metadati per controllare quel campo con questo vocabolario.
         source_key_help: Incolla una chiave di origine in un campo del profilo dei metadati per controllare quel campo con questo vocabolario. I vocabolari gestiti in questo tenant possono essere modificati qui; quelli definiti in un file di configurazione o da un servizio esterno no.
         static_forms: I profili dei metadati non sono abilitati, quindi i moduli di deposito leggono questo vocabolario da un file di configurazione. La modifica dei suoi termini richiede uno sviluppatore.
         status: Stato
+        status_action: Modifica stato
         status_hint: Indica se questo vocabolario è pronto all'uso o se richiede prima una configurazione.
         status_unknown: Non specificato
         term_created: '%{label} è stato aggiunto.'
@@ -533,6 +550,8 @@ it:
           other: (vengono mostrati i primi %{count})
         term_id_hint: Il valore memorizzato su un record e il valore da fornire in un'importazione Bulkrax.
         term_id_help: L'ID del termine è il valore memorizzato su un record e il valore da fornire in un'importazione Bulkrax. L'etichetta è solo ciò che vede un depositante.
+        term_restored: '%{label} è stato ripristinato ed è di nuovo proposto nel modulo di deposito.'
+        term_retired: '%{label} è stato ritirato e non è più proposto nel modulo di deposito.'
         term_total:
           one: 1 termine
           other: "%{count} termini"

@@ -497,8 +497,49 @@ optional term ID; leaving the ID blank sets it to the label. The ID is what work
 store, so it cannot be changed once the term exists — the label can.
 
 A new term is assigned a sequence number placing it after the terms already in the
-vocabulary. Terms that predate this have no sequence number, and sort after the ones
-that do until they are assigned theirs.
+vocabulary. Terms that predate this have no sequence number and sort after the ones
+that do; the first reorder numbers every term, including any the page did not show,
+so the mixed state lasts only until then.
+
+### Retiring Terms
+
+A term in a vocabulary this tenant owns can be retired from its page, and restored
+the same way. Retiring takes the term out of use without deleting it: it stops being
+offered on the deposit form, while works that already cite it keep resolving it to
+its label. There is no delete, because the term ID is what a work stores and removing
+it would orphan every record citing it.
+
+Retiring does not move the term. It keeps its place in the order, so restoring it puts
+it back where it was rather than at the end.
+
+Retiring and restoring are withheld while a reorder is unsaved: they submit a form of
+their own, which would navigate away from an order recoverable only by redoing it.
+Saving the order offers them again, as does moving a term back where it started.
+
+A term whose `active` flag was never set — a YAML vocabulary may omit it — is treated
+as usable, matching how Hyrax reads it.
+
+### Ordering Terms
+
+The order terms are listed in is the order a depositor is offered them in, and it can
+be set on the vocabulary's page for any vocabulary this tenant owns. Drag a term by
+its handle, or move it with the arrow buttons, and then save — nothing is written
+until the order is saved.
+
+The arrow buttons are not only a convenience: dragging is unavailable to a keyboard,
+a screen reader, and a touch device, so the buttons are how the order is set in those
+cases. Each move is announced for a screen reader, and the handle itself takes the up
+and down arrow keys.
+
+Saving renumbers the terms from one, and writes only the terms whose position actually
+changed, in batches, so reordering a long vocabulary costs a few updates rather than
+one per term. A vocabulary long enough to be truncated on the page posts only the
+terms it showed; the rest keep their order, after the ones listed.
+
+Only a vocabulary backed by this tenant's own database rows can be reordered. A YAML
+file has no rows to renumber, an imported copy is replaced wholesale by its next
+import, and a remote service holds its own terms — so none of them offer the
+controls. A vocabulary holding a single term has no order to set.
 
 ### Seeding Vocabularies from YAML
 

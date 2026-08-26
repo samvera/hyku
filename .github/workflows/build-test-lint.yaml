@@ -35,7 +35,7 @@ jobs:
   build:
     strategy:
       matrix:
-        component: ["solr", "web", "worker"]
+        component: ["solr", "web", "worker", "nginx"]
         os: ["ubuntu-latest", "ubuntu-24.04-arm"]
     runs-on: ${{ matrix.os }}
     defaults:
@@ -115,7 +115,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Create multiarch manifests
         run: |
-          for component in solr web worker; do
+          for component in solr web worker nginx; do
             docker buildx imagetools create -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/$component:${{ env.TAG }} \
               ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/$component:${{ env.TAG }}-amd64 \
               ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/$component:${{ env.TAG }}-arm64

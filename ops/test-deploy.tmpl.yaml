@@ -301,8 +301,16 @@ nginx:
       cpu: "20m"
   image:
     registry: ghcr.io
-    repository: notch8/scripts/bitnamilegacy-nginx
-    tag: 1.21.6-debian-11-r21
+    repository: samvera/hyku/nginx
+    tag: "$TAG"
+  extraVolumes:
+    - name: uploads
+      persistentVolumeClaim:
+        claimName: "{{ .Release.Name }}-hyrax-uploads"
+  extraVolumeMounts:
+    - name: uploads
+      mountPath: /app/samvera/hyrax-webapp/public/system
+      subPath: public-system
   serverBlock: |-
     upstream rails_app {
       server {{ .Values.global.hyraxName }};
@@ -381,7 +389,7 @@ nginx:
         }
 
         # serve static (compiled) assets directly if they exist (for rails production)
-        location ~ ^/(assets|packs|fonts|images|javascripts|stylesheets|swfs|system)/ {
+        location ~ ^/(assets|packs|fonts|images|javascripts|stylesheets|swfs|system|uv|pdf\.js)/ {
           try_files ${DOLLAR}uri @rails;
 
           # access_log off;

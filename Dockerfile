@@ -30,6 +30,14 @@ CMD ./bin/web
 FROM hyku-web AS hyku-worker
 CMD ./bin/worker
 
+# Bakes the compiled asset paths into the nginx image so requests for them
+# are served directly instead of falling through to Puma (nginx has no
+# other way to see them - they're not on the EFS-backed uploads volume).
+FROM ghcr.io/notch8/scripts/bitnamilegacy-nginx:1.21.6-debian-11-r21 AS hyku-nginx
+COPY --from=hyku-web /app/samvera/hyrax-webapp/public/assets /app/samvera/hyrax-webapp/public/assets
+COPY --from=hyku-web /app/samvera/hyrax-webapp/public/pdf.js /app/samvera/hyrax-webapp/public/pdf.js
+COPY --from=hyku-web /app/samvera/hyrax-webapp/public/uv /app/samvera/hyrax-webapp/public/uv
+
 # Use a Solr version with patched Log4j to address CVE-2021-44228
 FROM solr:8.11.2 AS hyku-solr
 ENV SOLR_USER="solr" \

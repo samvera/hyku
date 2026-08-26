@@ -3,10 +3,10 @@ replicaCount: 2
 resources:
   limits:
     memory: "4Gi"
-    cpu: "1000m"
+    cpu: "3000m"
   requests:
     memory: "2Gi"
-    cpu: "100m"
+    cpu: "500m"
 
 livenessProbe:
   enabled: false

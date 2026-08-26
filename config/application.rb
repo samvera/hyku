@@ -257,9 +257,14 @@ module Hyku # rubocop:disable Metrics/ModuleLength
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
-    # Gzip all responses.  We probably could do this in an upstream proxy, but
+    UNCOMPRESSIBLE_MEDIA_TYPES = %w[video/ audio/ application/pdf].freeze
+
+    # Gzip all responses except for the ones in UNCOMPRESSIBLE_MEDIA_TYPES.  We probably could do this in an upstream proxy, but
     # configuring Nginx on Elastic Beanstalk is a pain.
-    config.middleware.use Rack::Deflater
+    config.middleware.use Rack::Deflater, if: lambda { |_env, _status, headers, _body|
+      content_type = headers['Content-Type'].to_s[/[^;]*/].to_s.strip.downcase
+      UNCOMPRESSIBLE_MEDIA_TYPES.none? { |type| content_type.start_with?(type) }
+    }
 
     # The locale is set by a query parameter, so if it's not found render 404
     config.action_dispatch.rescue_responses["I18n::InvalidLocale"] = :not_found

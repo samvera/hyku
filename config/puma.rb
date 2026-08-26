@@ -33,3 +33,6 @@ plugin :tmp_restart
 # Specify the PID file. Defaults to tmp/pids/server.pid in development.
 # In other environments, only set the PID file if requested.
 pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
+
+# Loopback-only control app; poll /stats for thread pool usage (busy/backlog).
+activate_control_app "tcp://127.0.0.1:9293", { no_token: true }

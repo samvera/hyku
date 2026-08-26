@@ -63,7 +63,6 @@ ingress:
     {
       nginx.org/client-max-body-size: "0",
       cert-manager.io/cluster-issuer: letsencrypt-production-dns,
-      nginx.org/websocket-services: "hyku-test-nginx",
     }
   tls:
     - hosts:
@@ -302,16 +301,8 @@ nginx:
       cpu: "20m"
   image:
     registry: ghcr.io
-    repository: samvera/hyku/nginx
-    tag: "$TAG"
-  extraVolumes:
-    - name: uploads
-      persistentVolumeClaim:
-        claimName: "{{ .Release.Name }}-hyrax-uploads"
-  extraVolumeMounts:
-    - name: uploads
-      mountPath: /app/samvera/hyrax-webapp/public/system
-      subPath: public-system
+    repository: notch8/scripts/bitnamilegacy-nginx
+    tag: 1.21.6-debian-11-r21
   serverBlock: |-
     upstream rails_app {
       server {{ .Values.global.hyraxName }};
@@ -320,12 +311,6 @@ nginx:
     map ${DOLLAR}status ${DOLLAR}loggable {
         ~^444  0;
         default 1;
-    }
-
-    # Lets ActionCable's websocket handshake upgrade instead of falling through to a plain HTTP request Rails 404s.
-    map ${DOLLAR}http_upgrade ${DOLLAR}connection_upgrade {
-        default upgrade;
-        ''      '';
     }
 
     log_format loki 'host=${DOLLAR}host ip=${DOLLAR}http_x_forwarded_for remote_user=${DOLLAR}remote_user [${DOLLAR}time_local] '
@@ -396,7 +381,7 @@ nginx:
         }
 
         # serve static (compiled) assets directly if they exist (for rails production)
-        location ~ ^/(assets|packs|fonts|images|javascripts|stylesheets|swfs|system|uv|pdf\.js|clover|clover-iiif)/ {
+        location ~ ^/(assets|packs|fonts|images|javascripts|stylesheets|swfs|system)/ {
           try_files ${DOLLAR}uri @rails;
 
           # access_log off;
@@ -413,38 +398,6 @@ nginx:
           break;
         }
 
-        # Large request/response bodies: chunked uploads, single-file/single-use-link
-        # downloads, and Bulkrax bulk import/export - long timeout so a slow transfer
-        # doesn't get killed mid-request.
-        location ~ ^/(uploads|downloads|importers|exporters|single_use_link)(/|${DOLLAR}) {
-          proxy_set_header  X-Real-IP  ${DOLLAR}remote_addr;
-          proxy_set_header  X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
-          proxy_set_header Host ${DOLLAR}http_host;
-          proxy_http_version 1.1;
-          proxy_set_header Upgrade ${DOLLAR}http_upgrade;
-          proxy_set_header Connection ${DOLLAR}connection_upgrade;
-          proxy_redirect off;
-          proxy_connect_timeout 3600s;
-          proxy_send_timeout 3600s;
-          proxy_read_timeout 3600s;
-          proxy_pass http://rails_app;
-        }
-
-        # Work/collection show pages can legitimately take longer than @rails' default to render under load.
-        location ~ ^/concern/ {
-          proxy_set_header  X-Real-IP  ${DOLLAR}remote_addr;
-          proxy_set_header  X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
-          proxy_set_header Host ${DOLLAR}http_host;
-          proxy_http_version 1.1;
-          proxy_set_header Upgrade ${DOLLAR}http_upgrade;
-          proxy_set_header Connection ${DOLLAR}connection_upgrade;
-          proxy_redirect off;
-          proxy_connect_timeout 180s;
-          proxy_send_timeout 180s;
-          proxy_read_timeout 180s;
-          proxy_pass http://rails_app;
-        }
-
         # send non-static file requests to the app server
         location / {
           try_files ${DOLLAR}uri @rails;
@@ -454,9 +407,6 @@ nginx:
           proxy_set_header  X-Real-IP  ${DOLLAR}remote_addr;
           proxy_set_header  X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
           proxy_set_header Host ${DOLLAR}http_host;
-          proxy_http_version 1.1;
-          proxy_set_header Upgrade ${DOLLAR}http_upgrade;
-          proxy_set_header Connection ${DOLLAR}connection_upgrade;
           proxy_redirect off;
           proxy_pass http://rails_app;
         }

@@ -4,6 +4,7 @@
 # A mixin for all additional Hyku applicable indexing; both Valkyrie and ActiveFedora friendly.
 module HykuIndexing
   include ScrubText
+  include IndexesControlledLabels
   # TODO: Once we've fully moved to Valkyrie, remove the generate_solr_document and move `#to_solr`
   #      to a more conventional method def (e.g. `def to_solr`).  However, we need to tap into two
   #      different inheritance paths based on ActiveFedora or Valkyrie
@@ -29,6 +30,7 @@ module HykuIndexing
         solr_doc['creator_ssi'] = object.creator&.first
         solr_doc[CatalogController.created_field] ||= Array(object.try(:date_created)).first
         add_date(solr_doc)
+        relabel_controlled_values(solr_doc)
       end
     end
   end

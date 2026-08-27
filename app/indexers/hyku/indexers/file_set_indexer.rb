@@ -5,13 +5,12 @@ module Hyku
     class FileSetIndexer < Hyrax::Indexers::FileSetIndexer
       include Hyrax::Indexer(:bulkrax_metadata) unless Hyrax.config.flexible?
       include ScrubText
+      include IndexesControlledLabels
 
       def to_solr
-        return super unless Flipflop.default_pdf_viewer?
-
-        super.tap do |solr_doc|
-          solr_doc['all_text_timv'] = solr_doc['all_text_tsimv'] = pdf_text
-        end
+        solr_doc = super
+        solr_doc['all_text_timv'] = solr_doc['all_text_tsimv'] = pdf_text if Flipflop.default_pdf_viewer?
+        relabel_controlled_values(solr_doc)
       end
 
       private

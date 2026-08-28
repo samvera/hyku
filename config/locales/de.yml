@@ -932,17 +932,10 @@ de:
         works_in_collection:
           one: 1 Werk
           other: "%{count} Werke"
-        reorder_handle: "%{title} neu anordnen: ziehen oder Pfeiltasten verwenden"
-        move_earlier: "%{title} nach vorne verschieben"
-        move_later: "%{title} nach hinten verschieben"
-        moved: "%{title} an Position %{position} von %{total} verschoben"
-        at_position: "%{title} ist bereits an Position %{position} von %{total}"
-        reorder_hint: Karte ziehen oder Pfeiltasten verwenden, um die Reihenfolge zu ändern. Anschließend die Reihenfolge speichern.
+        reorder_hint: "Element ziehen, um neu anzuordnen, dann speichern."
         save_order: Reihenfolge speichern
-        unfeature: Aus den vorgestellten entfernen
         unfeature_confirm: Dieses Werk aus der Liste der vorgestellten entfernen?
         unfeature_collection_confirm: Diese Sammlung aus der Liste der vorgestellten entfernen?
-        unfeature_failed: Entfernen aus den vorgestellten fehlgeschlagen. Seite neu laden und erneut versuchen.
         contributors_and_others:
           one: "%{names} und 1 weitere Person"
           other: "%{names} und %{count} weitere Personen"

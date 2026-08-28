@@ -8,6 +8,14 @@
 .practice_research.hyrax-homepage {
   overflow-x: clip;
 
+  // the striped placeholder is the no-image affordance; a thumbnail that did
+  // render must not sit on it, whatever height the box ends up
+  .pr-portfolio-cover:not(:has(img)),
+  .pr-work-thumb:not(:has(img)),
+  .pr-recent-thumb:not(:has(img)) {
+    @include pr-thumb-placeholder;
+  }
+
   @include pr-controls-reset;
 
   .pr-type-tile:focus-visible,
@@ -372,6 +380,12 @@
     list-style: none;
     margin: 0;
     padding: 1.375rem 0 0;
+
+    // the list item is a wrapper, so the card keeps filling the track
+    > li {
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   .pr-portfolio {
@@ -381,7 +395,7 @@
   }
 
   .pr-portfolio-cover {
-    @include pr-thumb-placeholder;
+    background: $pr-surface-thumb;
 
     align-items: center;
     border: 1px solid $pr-thumb-border;
@@ -434,6 +448,12 @@
     list-style: none;
     margin: 0;
     padding: 0.5rem 0 0;
+
+    // the list item is a wrapper, so the card keeps filling the track
+    > li {
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   .pr-work-row {
@@ -445,7 +465,7 @@
   }
 
   .pr-work-thumb {
-    @include pr-thumb-placeholder;
+    background: $pr-surface-thumb;
 
     border: 1px solid $pr-thumb-border;
     display: block;
@@ -528,70 +548,102 @@
   }
 
   // ---- featured reorder (editors only) -------------------------------------
+  // Hyrax's nestable markup, skinned. The drag clone .dd-dragel is appended to
+  // <body>, outside the grid, so it needs the same rules.
 
-  [data-featured-grid] .pr-portfolio {
-    position: relative;
-  }
-
-  [data-featured-grid] .pr-portfolio.is-dragging {
-    opacity: 0.4;
-  }
-
-  .pr-portfolio-tools {
-    display: flex;
-    gap: 0.25rem;
-    left: 0.375rem;
-    position: absolute;
-    top: 0.375rem;
-    z-index: 1;
-  }
-
-  .pr-portfolio-handle,
-  .pr-portfolio-move,
-  .pr-portfolio-unfeature {
-    align-items: center;
-    background: rgba(255, 255, 255, 0.92);
-    border: 1px solid $pr-border;
-    color: $pr-muted;
-    cursor: pointer;
-    display: flex;
-    font-size: 0.875rem;
-    height: 1.75rem;
-    justify-content: center;
-    line-height: 1;
+  // the grid keeps its own margin and padding; only the drag clone, which is
+  // appended to <body>, needs them reset
+  .dd-dragel {
+    margin: 0;
     padding: 0;
-    text-decoration: none;
-    width: 1.75rem;
   }
 
-  .pr-portfolio-handle {
-    cursor: grab;
-  }
-
-  .pr-portfolio-remove {
-    margin-left: 0.625rem;
-
-    &:hover,
-    &:focus {
-      background: #fff;
-      border-color: #9a4a3f;
-      color: #9a4a3f;
+  .pr-reorder-grid,
+  .dd-dragel {
+    .dd-item {
+      border-top: 0;
+      font-size: inherit;
+      list-style: none;
+      min-height: 0;
+      padding: 0;
+      position: relative;
     }
-  }
 
-  .pr-portfolio-handle:hover,
-  .pr-portfolio-handle:focus,
-  .pr-portfolio-move:hover,
-  .pr-portfolio-move:focus {
-    color: var(--pr-link, #{$pr-brand-700});
-  }
+    .dd3-content.card {
+      background: none;
+      border: 0;
+      border-radius: 0;
+      margin: 0;
+      padding: 0;
+      position: static;
+    }
 
-  .pr-portfolio-handle:focus-visible,
-  .pr-portfolio-move:focus-visible,
-  .pr-portfolio-unfeature:focus-visible {
-    box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.95);
-    outline: 2px solid $pr-ink;
-    outline-offset: 2px;
+    .main.row {
+      margin: 0;
+      padding: 0;
+    }
+
+    .col-sm-12 {
+      padding: 0;
+      position: static;
+    }
+
+    // nestable ships the handle as a gradient block with a white glyph and a
+    // text-indent that hides its label; all of that has to be unset
+    .dd-handle.dd3-handle,
+    .float-right a {
+      align-items: center;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid $pr-border;
+      border-radius: 0;
+      color: $pr-muted;
+      display: inline-flex;
+      height: 1.75rem;
+      justify-content: center;
+      margin: 0;
+      padding: 0;
+      position: absolute;
+      text-indent: 0;
+      top: 0.375rem;
+      width: 1.75rem;
+      z-index: 2;
+    }
+
+    .dd-handle.dd3-handle {
+      cursor: grab;
+      font-size: 0;
+      left: 0.375rem;
+
+      &::before {
+        color: $pr-muted;
+        content: '⠿';
+        font-size: 0.9375rem;
+        top: auto;
+      }
+
+      &:active {
+        cursor: grabbing;
+      }
+    }
+
+    .float-right {
+      float: none;
+      margin: 0;
+
+      a {
+        color: #9a4a3f;
+        font-size: 0.9375rem;
+        right: 0.375rem;
+        text-decoration: none;
+      }
+    }
+
+    .dd-handle.dd3-handle:focus-visible,
+    .float-right a:focus-visible {
+      box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.95);
+      outline: 2px solid $pr-ink;
+      outline-offset: 2px;
+    }
   }
 
   .pr-featured-reorder-hint {
@@ -714,7 +766,7 @@
   }
 
   .pr-recent-thumb {
-    @include pr-thumb-placeholder;
+    background: $pr-surface-thumb;
 
     align-items: center;
     border: 1px solid $pr-thumb-border;
@@ -1370,16 +1422,18 @@
       padding-top: 1.125rem;
     }
 
-    .pr-portfolio-grid > .pr-portfolio {
+    // the cards sit one wrapper deep, so the divider and the first card's
+    // padding key off the wrapper rather than the card
+    .pr-portfolio-grid .pr-portfolio {
       padding: 1.875rem 0;
+    }
 
-      + .pr-portfolio {
-        border-top: 1px solid $pr-thumb-border;
-      }
+    .pr-portfolio-grid > * + * .pr-portfolio {
+      border-top: 1px solid $pr-thumb-border;
+    }
 
-      &:first-child {
-        padding-top: 0;
-      }
+    .pr-portfolio-grid > :first-child .pr-portfolio {
+      padding-top: 0;
     }
 
     .pr-stack .pr-portfolio-cover {

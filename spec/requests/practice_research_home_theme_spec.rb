@@ -31,4 +31,13 @@ RSpec.describe 'practice research home theme', type: :request, singletenant: tru
     expect(card.text).to include('Studio Practice')
     expect(card.at_css('.pr-eyebrow-count').text.strip).to eq('1 work')
   end
+
+  it 'lists the featured collections for a screen reader' do
+    get root_path
+
+    grid = Nokogiri::HTML(response.body).at_css('.pr-portfolio-grid')
+    expect(grid.name).to eq 'ul'
+    expect(grid.css('> li').size).to eq 1
+    expect(grid.at_css('> li > .pr-portfolio')).to be_present
+  end
 end

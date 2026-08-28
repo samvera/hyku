@@ -929,17 +929,10 @@ it:
         works_in_collection:
           one: 1 opera
           other: "%{count} opere"
-        reorder_handle: "Riordina %{title}: trascina o usa i tasti freccia"
-        move_earlier: Sposta %{title} in avanti
-        move_later: Sposta %{title} indietro
-        moved: "%{title} spostato alla posizione %{position} di %{total}"
-        at_position: "%{title} è già alla posizione %{position} di %{total}"
-        reorder_hint: Trascina una scheda per riordinare, oppure usa i pulsanti freccia. Salva l'ordine quando hai finito.
+        reorder_hint: "Trascina un elemento per riordinare, poi salva."
         save_order: Salva ordine
-        unfeature: Rimuovi dagli elementi in evidenza
         unfeature_confirm: Rimuovere questa opera dall'elenco in evidenza?
         unfeature_collection_confirm: Rimuovere questa collezione dall'elenco in evidenza?
-        unfeature_failed: Rimozione dagli elementi in evidenza non riuscita. Ricarica la pagina e riprova.
         contributors_and_others:
           one: "%{names} e 1 altro"
           other: "%{names} e altri %{count}"

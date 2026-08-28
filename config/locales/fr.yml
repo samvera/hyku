@@ -934,17 +934,10 @@ fr:
         works_in_collection:
           one: 1 travail
           other: "%{count} travaux"
-        reorder_handle: "Réordonner %{title} : glisser ou utiliser les touches fléchées"
-        move_earlier: Avancer %{title}
-        move_later: Reculer %{title}
-        moved: "%{title} déplacé en position %{position} sur %{total}"
-        at_position: "%{title} est déjà en position %{position} sur %{total}"
-        reorder_hint: Faites glisser une carte pour réordonner, ou utilisez les boutons fléchés. Enregistrez l'ordre une fois terminé.
+        reorder_hint: "Faites glisser un élément pour réordonner, puis enregistrez."
         save_order: Enregistrer l'ordre
-        unfeature: Retirer de la une
         unfeature_confirm: Retirer ce travail de la liste à la une ?
         unfeature_collection_confirm: Retirer cette collection de la liste à la une ?
-        unfeature_failed: Le retrait de la une a échoué. Rechargez la page et réessayez.
         contributors_and_others:
           one: "%{names} et 1 autre"
           other: "%{names} et %{count} autres"

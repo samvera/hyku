@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <link rel="stylesheet" type="text/css" href="ramp.css">
+        <style>
+          html, body, #root, .iiif-player { margin: 0; height: 100%; }
+          .iiif-player { display: flex; flex-direction: column; }
+          .ramp--media_player { flex: 1 1 auto; min-height: 0; }
+          .ramp--structured-nav { flex: 0 0 auto; }
+          /* video.js fluid mode sizes by aspect-ratio padding, overflowing the fixed-height viewer frame; fill instead */
+          .ramp--media_player .video-js.vjs-fluid { padding-top: 0 !important; height: 100% !important; }
+          .ramp--media_player .video-js .vjs-tech { object-fit: contain; }
+        </style>
+    </head>
+    <body>
+    <div id="root"></div>
+    <script type="text/javascript" src="ramp.standalone.umd.js"></script>
+    <script>
+        const { IIIFPlayer, MediaPlayer, React, ReactDOM } = RampIIIF;
+        const manifestUrl = new URLSearchParams(window.location.search).get('manifest');
+        if (manifestUrl) {
+            const tree = React.createElement(
+                IIIFPlayer,
+                { manifestUrl },
+                React.createElement(
+                    'div', { className: 'iiif-player' },
+                    React.createElement(MediaPlayer)
+                )
+            );
+            ReactDOM.createRoot(document.getElementById('root')).render(tree);
+        }
+    </script>
+    </body>
+</html>

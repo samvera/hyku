@@ -36,10 +36,15 @@ RSpec.describe Hyku::WorkShowPresenter do
     end
 
     context 'method owner' do
-      # I was noticing load logic issues, so I'm adding this spec for verification
-      subject { presenter.method(:iiif_viewer?).owner }
+      # Order, not just ownership: behind the IiifPrint decorator the override still
+      # loads and every other expectation here still passes, but never runs.
+      it 'resolves the media viewer override ahead of the IiifPrint decorator' do
+        ancestors = described_class.ancestors
 
-      it { is_expected.to eq(IiifPrint::TenantConfig::WorkShowPresenterDecorator) }
+        expect(presenter.method(:iiif_viewer?).owner).to eq(Hyku::MediaViewerBehavior)
+        expect(ancestors.index(Hyku::MediaViewerBehavior))
+          .to be < ancestors.index(IiifPrint::TenantConfig::WorkShowPresenterDecorator)
+      end
     end
 
     context "for a PDF file" do

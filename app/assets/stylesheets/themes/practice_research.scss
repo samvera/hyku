@@ -1547,6 +1547,13 @@ body.practice_research.hyrax-homepage footer.navbar {
     text-align: left !important;
   }
 
+  // the columns are display: contents, so the login shares one flex row with
+  // the legal text; it takes the far edge on its own
+  .navbar-text > [class*='col-']:last-child > div:last-child {
+    margin-left: auto;
+    text-align: right !important;
+  }
+
   .p-1,
   .p-2,
   .p-lg-2 {
@@ -1580,6 +1587,11 @@ body.practice_research.hyrax-homepage footer.navbar {
   body.practice_research.hyrax-homepage footer.navbar .navbar-text {
     flex-direction: column;
     gap: 0.3125rem;
+  }
+
+  body.practice_research.hyrax-homepage footer.navbar .navbar-text > [class*='col-']:last-child > div:last-child {
+    margin-left: 0;
+    text-align: left !important;
   }
 }
 

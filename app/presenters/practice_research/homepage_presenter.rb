@@ -11,26 +11,27 @@ module PracticeResearch
     end
 
     def subjects
-      @subjects ||= @search_service.facet_field_response(
-        'subject_sim', 'facet.mincount' => '1', "f.subject_sim.facet.limit" => SUBJECT_LIMIT.to_s
-      ).aggregations['subject_sim']&.items.to_a
+      @subjects ||= facet_items('subject_sim', "f.subject_sim.facet.limit" => SUBJECT_LIMIT.to_s)
     end
 
     private
 
-    def facets
-      @facets ||= @search_service.facet_field_response(
-        'has_model_ssim', 'facet.mincount' => '1', 'f.has_model_ssim.facet.limit' => '-1'
-      )
+    # A tenant can remove any facet from the catalog config, and Blacklight
+    # raises rather than returning nothing when asked to facet on a field it
+    # does not know, so a theme cannot assume a facet exists.
+    def facet_items(field, extra_params = {})
+      return [] unless @search_service.blacklight_config.facet_fields.key?(field)
+
+      @search_service.facet_field_response(field, { 'facet.mincount' => '1' }.merge(extra_params))
+                     .aggregations[field]&.items.to_a
     end
 
     def model_counts
       works = ::Hyrax::ModelRegistry.work_rdf_representations
 
-      facets.aggregations['has_model_ssim']
-            .items
-            .select { |item| works.include?(item.value) }
-            .to_h { |item| [item.value, item.hits] }
+      facet_items('has_model_ssim', 'f.has_model_ssim.facet.limit' => '-1')
+        .select { |item| works.include?(item.value) }
+        .to_h { |item| [item.value, item.hits] }
     end
   end
 end

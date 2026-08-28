@@ -88,6 +88,30 @@ RSpec.describe PracticeResearch::HomepagePresenter, :clean_repo do
     it 'offers no work types on an empty repository, so the module hides' do
       expect(presenter.work_types).to be_empty
     end
+
+    context 'when the tenant has removed the facets from the catalog config' do
+      let(:config) do
+        ::CatalogController.blacklight_config.deep_dup.tap do |dup|
+          dup.facet_fields.delete('has_model_ssim')
+          dup.facet_fields.delete('subject_sim')
+        end
+      end
+      let(:scope) do
+        Struct.new(:blacklight_config, :current_ability, :params, :search_state_class)
+              .new(config, ability, {}, nil)
+      end
+      let(:search_service) do
+        Hyrax::SearchService.new(config:, user_params: {}, scope:, current_ability: ability,
+                                 search_builder_class: Hyrax::HomepageSearchBuilder)
+      end
+
+      it 'offers nothing rather than raising, so the module hides' do
+        indexed_work('Primary Space', 'open', subject: ['Sculpture'])
+
+        expect(presenter.work_types).to be_empty
+        expect(presenter.subjects).to be_empty
+      end
+    end
   end
 
   describe '#collection_works_count' do

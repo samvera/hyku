@@ -30,7 +30,7 @@ module Hyrax
       document = solr_document
       return unless document.respond_to?(:[])
 
-      Array(document["#{field}_label_tesim"] || document["#{field}_label_sim"]).presence
+      Array(document["#{field}_label_tesim"]).presence || Array(document["#{field}_label_sim"]).presence
     rescue StandardError => e
       Hyrax.logger.debug("controlled_labels_for(#{field}): #{e.message}")
       nil

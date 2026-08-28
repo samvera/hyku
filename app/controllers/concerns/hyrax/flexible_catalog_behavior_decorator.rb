@@ -42,6 +42,8 @@ module Hyrax
     # schema — during a load those are not always the same one.
     def controlled_properties
       profile_properties.filter_map do |itemprop, config|
+        next unless config.is_a?(Hash)
+
         source = Array(config.dig('controlled_values', 'sources')).map { |s| s.to_s.strip }
                                                                   .find { |s| ControlledVocabularyLabels.known_source?(s) }
         next if source.blank?
@@ -50,7 +52,11 @@ module Hyrax
       end.uniq
     end
 
+    # A malformed property config would otherwise raise here, taking down every
+    # catalog page rather than the one property.
     def indexed_name_for(itemprop, config)
+      return itemprop unless config.is_a?(Hash)
+
       config['name'].presence || itemprop
     end
 

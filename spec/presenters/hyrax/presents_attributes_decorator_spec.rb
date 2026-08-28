@@ -34,6 +34,20 @@ RSpec.describe Hyrax::PresentsAttributesDecorator do
       end
     end
 
+    context 'when the tesim label field is present but empty' do
+      let(:attributes) do
+        { id: 'labels-3',
+          has_model_ssim: ['GenericWork'],
+          license_tesim: ['http://creativecommons.org/licenses/by/3.0/us/'],
+          license_label_tesim: [],
+          license_label_sim: ['Attribution 3.0 United States'] }
+      end
+
+      it 'falls back to the sim label rather than treating empty as an answer' do
+        expect(presenter.attribute_to_html(:license)).to include 'Attribution 3.0 United States'
+      end
+    end
+
     context 'for a property with no label field' do
       it 'renders the stored value' do
         expect(presenter.attribute_to_html(:title)).to include 'A Title'

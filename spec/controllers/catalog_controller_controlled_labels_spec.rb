@@ -98,6 +98,16 @@ RSpec.describe 'catalog rendering of controlled vocabulary labels' do
       .to eq ['resource_type_label_sim']
   end
 
+  # Stubbed rather than saved: Hyrax's validator rejects a scalar config, so only a
+  # rake task writing the column directly can produce one.
+  it 'ignores a property whose config is not a hash' do
+    allow(catalog).to receive(:profile_properties)
+      .and_return('good' => { 'controlled_values' => { 'sources' => ['licenses'] } },
+                  'malformed' => 'not a config')
+
+    expect { catalog.send(:apply_controlled_vocabulary_labels!) }.not_to raise_error
+  end
+
   describe 'a property and vocabulary added only to the profile' do
     let(:vocabulary) do
       Qa::LocalAuthority.find_or_create_by!(name: 'brand_new_vocab') { |a| a.label = 'Brand New' }

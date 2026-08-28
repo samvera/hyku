@@ -920,6 +920,7 @@ it:
         heading: Ricercatore in evidenza
       browse:
         work_types: Sfoglia per tipo di opera
+        resource_types: Sfoglia per tipo di risorsa
         subjects: Sfoglia per soggetto
       featured:
         heading: Opere in evidenza

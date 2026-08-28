@@ -29,9 +29,9 @@ RSpec.describe PracticeResearch::HomepagePresenter, :clean_repo do
   end
   let(:collections) { [] }
 
-  def indexed_work(title, visibility, subject: [], member_of_collection_ids: [])
+  def indexed_work(title, visibility, subject: [], member_of_collection_ids: [], resource_type: [])
     saved = Hyrax.persister.save(
-      resource: GenericWorkResource.new(title: [title], subject:, member_of_collection_ids:)
+      resource: GenericWorkResource.new(title: [title], subject:, member_of_collection_ids:, resource_type:)
     )
     Hyrax::VisibilityWriter.new(resource: saved).assign_access_for(visibility:)
     saved.permission_manager.acl.save
@@ -75,18 +75,30 @@ RSpec.describe PracticeResearch::HomepagePresenter, :clean_repo do
     end
   end
 
-  describe '#work_types and #subjects' do
+  describe '#browse_types and #subjects' do
     it 'offers only what the visitor can see' do
       indexed_work('Primary Space', 'open', subject: ['Sculpture'])
       indexed_work('Kiln Yard', 'restricted', subject: ['Ceramics'])
 
-      expect(presenter.work_types.values).to eq([1])
+      expect(presenter.browse_types[:field]).to eq('has_model_ssim')
+      expect(presenter.browse_types[:items].values).to eq([1])
       expect(presenter.subjects.map(&:value)).to include('Sculpture')
       expect(presenter.subjects.map(&:value)).not_to include('Ceramics')
     end
 
-    it 'offers no work types on an empty repository, so the module hides' do
-      expect(presenter.work_types).to be_empty
+    it 'offers no types on an empty repository, so the module hides' do
+      expect(presenter.browse_types[:items]).to be_empty
+    end
+
+    it 'names no more work types than the tile row holds, the largest first' do
+      stub_const('PracticeResearch::HomepagePresenter::TYPE_LIMIT', 1)
+      2.times { |i| indexed_work("Primary Space #{i}", 'open') }
+      image = Hyrax.persister.save(resource: ImageResource.new(title: ['Contact sheet']))
+      Hyrax::VisibilityWriter.new(resource: image).assign_access_for(visibility: 'open')
+      image.permission_manager.acl.save
+      Hyrax.index_adapter.save(resource: image)
+
+      expect(presenter.browse_types[:items]).to eq('GenericWork' => 2)
     end
 
     context 'when the tenant has removed the facets from the catalog config' do
@@ -108,8 +120,39 @@ RSpec.describe PracticeResearch::HomepagePresenter, :clean_repo do
       it 'offers nothing rather than raising, so the module hides' do
         indexed_work('Primary Space', 'open', subject: ['Sculpture'])
 
-        expect(presenter.work_types).to be_empty
+        expect(presenter.browse_types[:items]).to be_empty
         expect(presenter.subjects).to be_empty
+      end
+    end
+
+    context 'when the tenant has removed only the work type facet' do
+      let(:config) do
+        ::CatalogController.blacklight_config.deep_dup.tap { |dup| dup.facet_fields.delete('has_model_ssim') }
+      end
+      let(:scope) do
+        Struct.new(:blacklight_config, :current_ability, :params, :search_state_class)
+              .new(config, ability, {}, nil)
+      end
+      let(:search_service) do
+        Hyrax::SearchService.new(config:, user_params: {}, scope:, current_ability: ability,
+                                 search_builder_class: Hyrax::HomepageSearchBuilder)
+      end
+
+      it 'falls back to resource type' do
+        indexed_work('Primary Space', 'open', resource_type: ['Poster'])
+        indexed_work('Kiln Yard', 'restricted', resource_type: ['Score'])
+
+        expect(presenter.browse_types[:field]).to eq('resource_type_sim')
+        expect(presenter.browse_types[:items]).to eq('Poster' => 1)
+      end
+
+      it 'names no more types than the tile row holds' do
+        stub_const('PracticeResearch::HomepagePresenter::TYPE_LIMIT', 2)
+        ['Poster', 'Score', 'Sound'].each_with_index do |type, i|
+          indexed_work("Piece #{i}", 'open', resource_type: [type])
+        end
+
+        expect(presenter.browse_types[:items].size).to eq 2
       end
     end
   end

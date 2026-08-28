@@ -936,6 +936,7 @@ zh:
         heading: 推荐研究者
       browse:
         work_types: 按作品类型浏览
+        resource_types: 按资源类型浏览
         subjects: 按主题浏览
       featured:
         heading: 推荐作品

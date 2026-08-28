@@ -923,6 +923,7 @@ de:
         heading: Vorgestellte Forscherin oder Forscher
       browse:
         work_types: Nach Werktyp durchstöbern
+        resource_types: Nach Ressourcentyp durchstöbern
         subjects: Nach Thema durchstöbern
       featured:
         heading: Vorgestellte Werke

@@ -920,6 +920,7 @@ es:
         heading: Investigador destacado
       browse:
         work_types: Explorar por tipo de obra
+        resource_types: Explorar por tipo de recurso
         subjects: Explorar por materia
       featured:
         heading: Obras destacadas

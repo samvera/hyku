@@ -803,6 +803,7 @@ pt-BR:
         heading: Pesquisador em destaque
       browse:
         work_types: Explorar por tipo de obra
+        resource_types: Explorar por tipo de recurso
         subjects: Explorar por assunto
       featured:
         heading: Obras em destaque

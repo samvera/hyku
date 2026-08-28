@@ -925,6 +925,7 @@ fr:
         heading: Chercheur à la une
       browse:
         work_types: Parcourir par type de travail
+        resource_types: Parcourir par type de ressource
         subjects: Parcourir par sujet
       featured:
         heading: Travaux à la une

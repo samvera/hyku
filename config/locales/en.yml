@@ -789,6 +789,7 @@ en:
         heading: Featured researcher
       browse:
         work_types: Browse by work type
+        resource_types: Browse by resource type
         subjects: Browse by subject
       featured:
         heading: Featured works

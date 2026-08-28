@@ -86,6 +86,32 @@
   }
 }
 
+@mixin scr-pager {
+  ul.pagination {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  ul.pagination .page-item .page-link {
+    background: var(--scr-raised, #{$scr-raised});
+    border: 1px solid var(--scr-rule-input, #{$scr-rule-input});
+    border-radius: 0;
+    color: $scr-ink-body;
+    font-size: 14px;
+    padding: 7px 12px;
+    text-decoration: none;
+  }
+
+  ul.pagination .page-item.disabled .page-link {
+    color: $scr-ink-faint;
+    pointer-events: none;
+  }
+}
+
 @mixin scr-dropdown {
   background-color: var(--scr-raised, #{$scr-raised});
   // the popup's fill barely separates it from the page, so its edge is the
@@ -102,11 +128,20 @@
 
   .dropdown-item {
     color: $scr-ink-body;
+    text-decoration: none;
 
     &:hover,
     &:focus {
       background-color: var(--scr-chrome, #{$scr-chrome});
       color: $scr-ink;
+    }
+
+    // bootstrap and hyku both paint the selected row a light fill, which a
+    // dark popup cannot carry
+    &.active,
+    &:active {
+      background-color: var(--scr-accent, #{$scr-accent});
+      color: var(--scr-accent-ink, #{$scr-accent-ink});
     }
   }
 }

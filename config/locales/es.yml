@@ -920,6 +920,7 @@ es:
         heading: Investigador destacado
       browse:
         work_types: Explorar por tipo de obra
+        resource_types: Explorar por tipo de recurso
         subjects: Explorar por materia
       featured:
         heading: Obras destacadas
@@ -929,17 +930,10 @@ es:
         works_in_collection:
           one: 1 obra
           other: "%{count} obras"
-        reorder_handle: "Reordenar %{title}: arrastre o use las teclas de flecha"
-        move_earlier: Mover %{title} hacia adelante
-        move_later: Mover %{title} hacia atrás
-        moved: "%{title} movido a la posición %{position} de %{total}"
-        at_position: "%{title} ya está en la posición %{position} de %{total}"
-        reorder_hint: Arrastre una tarjeta para reordenar o use los botones de flecha. Guarde el orden cuando termine.
+        reorder_hint: "Arrastre un elemento para reordenar y luego guarde."
         save_order: Guardar orden
-        unfeature: Quitar de destacados
         unfeature_confirm: ¿Quitar esta obra de la lista de destacados?
         unfeature_collection_confirm: ¿Quitar esta colección de la lista de destacados?
-        unfeature_failed: No se pudo quitar de destacados. Recargue la página e inténtelo de nuevo.
         contributors_and_others:
           one: "%{names} y 1 más"
           other: "%{names} y %{count} más"

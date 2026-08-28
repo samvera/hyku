@@ -193,4 +193,49 @@
     display: inline-block;
     padding: 6px 14px 0;
   }
+
+  // the clear control is an icon, so the link underline reads as a stray mark
+  a.remove {
+    text-decoration: none;
+  }
+}
+
+// Kaminari's blacklight theme renders Bootstrap pagination markup. The active
+// page rides the tenant's Appearance color, which is pinned !important, so it
+// is deliberately not set here.
+@mixin hrt-pager($font-size: 13px, $padding: 7px 9px, $min-width: 32px) {
+  ul.pagination {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  ul.pagination .page-item .page-link {
+    align-items: center;
+    background: $hrt-surface;
+    border: 1px solid $hrt-rule-strong;
+    border-radius: 0;
+    color: var(--hrt-link-strong, #{$hrt-link-strong});
+    display: inline-flex;
+    font-size: $font-size;
+    justify-content: center;
+    line-height: 1;
+    min-width: $min-width;
+    padding: $padding;
+    text-decoration: none;
+
+    &:focus-visible {
+      @include hrt-focus-ring;
+    }
+  }
+
+  ul.pagination .page-item.disabled .page-link {
+    border-color: $hrt-placeholder-edge;
+    color: $hrt-ink-muted;
+    pointer-events: none;
+  }
 }

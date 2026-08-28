@@ -3,6 +3,7 @@
 @import 'themes/heritage/tokens';
 @import 'themes/heritage/primitives';
 @import 'themes/heritage/shell';
+@import 'themes/heritage/chrome';
 
 .heritage.hyrax-homepage {
   overflow-x: clip;
@@ -271,7 +272,7 @@
   // ---- facet rail ----
   .hrt-rail-heading {
     @include hrt-section-title;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
   }
 
   .hrt-rail-toggle {
@@ -385,13 +386,16 @@
   }
 
   .hrt-tile-title {
+    @include hrt-serif;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.35;
     margin: 0;
 
     a {
-      @include hrt-serif;
       color: $hrt-ink;
-      font-size: 18px;
-      line-height: 1.35;
+      font-size: inherit;
+      line-height: inherit;
       text-decoration: none;
       text-wrap: pretty;
 
@@ -460,12 +464,14 @@
       background: none;
       border: 0;
       border-radius: 0;
+      margin: 0;
       padding: 0;
       position: static;
     }
 
     .main.row {
       margin: 0;
+      padding: 0;
     }
 
     .col-sm-12 {
@@ -594,13 +600,17 @@
   }
 
   .hrt-collection-title {
+    @include hrt-serif;
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 1.2;
     margin: 0;
 
     a {
-      @include hrt-serif;
       color: $hrt-ink;
-      font-size: 19px;
-      font-weight: 600;
+      font-size: inherit;
+      font-weight: inherit;
+      line-height: inherit;
       text-decoration: none;
       text-wrap: pretty;
 
@@ -665,13 +675,16 @@
   }
 
   .hrt-recent-title {
+    @include hrt-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.3;
     margin: 0;
 
     a {
-      @include hrt-serif;
       color: $hrt-ink;
-      font-size: 16px;
-      line-height: 1.3;
+      font-size: inherit;
+      line-height: inherit;
       text-decoration: none;
       text-wrap: pretty;
 

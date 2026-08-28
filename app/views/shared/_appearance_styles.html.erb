@@ -230,6 +230,11 @@ body.public-facing .hyc-banner .hyc-title h1 {
   --pr-link: <%= appearance.link_color %>;
   --pr-primary: <%= appearance.link_color %>;
   --pr-brand-ink: <%= appearance.link_hover_color %>;
+  --pr-button: <%= appearance.default_button_background_color %>;
+  --pr-button-edge: <%= appearance.default_button_border_color %>;
+  --pr-button-ink: <%= appearance.default_button_text_color %>;
+  --pr-button-hover: <%= appearance.default_button_hover_background_color %>;
+  --pr-button-hover-edge: <%= appearance.default_button_hover_border_color %>;
 }
 <% end %>
 
@@ -252,6 +257,11 @@ body.public-facing .hyc-banner .hyc-title h1 {
   --hrt-link-strong: <%= appearance.link_hover_color %>;
   --hrt-action: <%= appearance.primary_button_background_color %>;
   --hrt-action-ink: <%= appearance.primary_button_text_color %>;
+  --hrt-button: <%= appearance.default_button_background_color %>;
+  --hrt-button-edge: <%= appearance.default_button_border_color %>;
+  --hrt-button-ink: <%= appearance.default_button_text_color %>;
+  --hrt-button-hover: <%= appearance.default_button_hover_background_color %>;
+  --hrt-button-hover-edge: <%= appearance.default_button_hover_border_color %>;
   --hrt-footer-accent: <%= appearance.footer_link_color %>;
 }
 <% end %>
@@ -273,6 +283,7 @@ body.public-facing .hyc-banner .hyc-title h1 {
   --scr-rule: color-mix(in srgb, var(--scr-chrome-pick) 63%, #000000);
   --scr-rule-input: color-mix(in srgb, var(--scr-chrome-pick) 78%, #000000);
   --scr-rule-strong: color-mix(in srgb, var(--scr-chrome-pick) 65%, #ffffff);
+  --scr-rule-card: color-mix(in srgb, var(--scr-chrome-pick) 79%, #ffffff);
   --scr-accent: <%= appearance.link_color %>;
   --scr-accent-ink: <%= theme_readable_ink(appearance.link_color) %>;
   --scr-accent-hover: color-mix(in srgb, var(--scr-accent) 80%, <%= theme_readable_ink(appearance.link_color) == '#ffffff' ? '#000000' : '#ffffff' %>);

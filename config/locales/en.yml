@@ -789,6 +789,7 @@ en:
         heading: Featured researcher
       browse:
         work_types: Browse by work type
+        resource_types: Browse by resource type
         subjects: Browse by subject
       featured:
         heading: Featured works
@@ -798,17 +799,10 @@ en:
         works_in_collection:
           one: 1 work
           other: "%{count} works"
-        reorder_handle: "Reorder %{title}: drag, or use the arrow keys"
-        move_earlier: Move %{title} earlier
-        move_later: Move %{title} later
-        moved: Moved %{title} to position %{position} of %{total}
-        at_position: "%{title} is already at position %{position} of %{total}"
-        reorder_hint: Drag a card to reorder, or use the arrow buttons. Save the order when you are done.
+        reorder_hint: "Drag an item to reorder, then save."
         save_order: Save order
-        unfeature: Remove from featured
         unfeature_confirm: Remove this work from the featured list?
         unfeature_collection_confirm: Remove this collection from the featured list?
-        unfeature_failed: Removing from featured failed. Reload the page and try again.
         contributors_and_others:
           one: "%{names} and 1 other"
           other: "%{names} and %{count} others"

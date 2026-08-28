@@ -2103,3 +2103,27 @@ properties:
         - relationships
     form:
       cols: 12
+  redirects:
+    available_on:
+      class:
+        - CollectionResource
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+    display_label:
+      default: Redirects
+    type: hash
+    multiple: true
+    form:
+      display: false
+    indexing:
+      - editor_only
+    predicate: http://samvera.org/ns/hyku/redirects
+    range: http://www.w3.org/2001/XMLSchema#string
+    view:
+      render_term: redirects_path
+      render_as: redirects_label
+      html_dl: true

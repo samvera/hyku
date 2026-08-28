@@ -1,0 +1,110 @@
+# frozen_string_literal: true
+
+# OVERRIDE Hyrax v5.3.0 to show controlled-vocabulary labels in the catalog rather
+# than the term ids works store.
+#
+# TODO: TEMPORARY. Remove once Hyrax treats a property's controlled_values as
+# first-class in the catalog, rather than deriving every solr name from
+# "#{itemprop}". See app/indexers/hyrax/indexer_decorator.rb for the indexing half.
+#
+# Driven off the profile rather than a list of field names, so a property or
+# vocabulary added to an m3 profile is covered without touching CatalogController.
+#
+# Everything here runs once per controller instantiation — so once per request —
+# against a class-level config that persists between them, and upstream reapplies
+# its own schema each time. Every change below therefore has to be safe to repeat.
+#
+# A property may declare `name:` to stand in for another on a different class, as
+# oer_resource_type does for resource_type. The named attribute is what gets
+# indexed, so it is the name every solr field here derives from, and the surrogate's
+# own key never holds values.
+module Hyrax
+  module FlexibleCatalogBehaviorDecorator
+    def load_flexible_schema
+      super
+
+      apply_controlled_vocabulary_labels!
+    end
+
+    private
+
+    def apply_controlled_vocabulary_labels!
+      drop_surrogate_facets!
+
+      controlled_properties.each do |itemprop|
+        show_labels_in_search_results!(itemprop)
+        facet_on_labels!(itemprop)
+      end
+    end
+
+    # Sources come from the profile being loaded, not
+    # ControlledVocabularyLabels.source_for, which resolves against the newest
+    # schema — during a load those are not always the same one.
+    def controlled_properties
+      profile_properties.filter_map do |itemprop, config|
+        source = Array(config.dig('controlled_values', 'sources')).map { |s| s.to_s.strip }
+                                                                  .find { |s| ControlledVocabularyLabels.known_source?(s) }
+        next if source.blank?
+
+        indexed_name_for(itemprop, config)
+      end.uniq
+    end
+
+    def indexed_name_for(itemprop, config)
+      config['name'].presence || itemprop
+    end
+
+    # OVERRIDE: upstream leaves the row reading the id field.
+    def show_labels_in_search_results!(itemprop)
+      field = blacklight_config.index_fields["#{itemprop}_tesim"]
+      return if field.nil?
+
+      field.values = ControlledVocabularyFieldValues.to_proc
+    end
+
+    # OVERRIDE: upstream facets and links on "#{itemprop}_sim", and re-adds that
+    # facet on every pass — so this guards the add, which Blacklight raises on when
+    # the key already exists.
+    def facet_on_labels!(itemprop)
+      id_name = "#{itemprop}_sim"
+      label_name = "#{itemprop}_label_sim"
+      existing = blacklight_config.facet_fields[id_name]
+      blacklight_config.facet_fields.delete(id_name) if existing
+
+      unless blacklight_config.facet_fields.key?(label_name)
+        return if existing.nil?
+
+        blacklight_config.add_facet_field(label_name, label: facet_label_for(existing), limit: existing.limit)
+      end
+
+      field = blacklight_config.index_fields["#{itemprop}_tesim"]
+      field.link_to_facet = label_name if field
+    end
+
+    # Resolved rather than copied: a facet declared without a label stores the
+    # titleized solr key ("Keyword Sim"), which only stays hidden because
+    # display_label finds the "…fields.facet.<key>" translation first — and the
+    # renamed key has no such translation.
+    def facet_label_for(existing)
+      existing.display_label('facet')
+    end
+
+    # OVERRIDE: upstream registers a facet under the surrogate's own key, which
+    # holds no values.
+    def drop_surrogate_facets!
+      profile_properties.each do |itemprop, config|
+        next if indexed_name_for(itemprop, config).to_s == itemprop.to_s
+
+        blacklight_config.facet_fields.delete("#{itemprop}_sim")
+      end
+    end
+
+    def profile_properties
+      Hyrax::FlexibleSchema.order(:created_at).last&.profile&.fetch('properties', nil) || {}
+    rescue ActiveRecord::StatementInvalid
+      {}
+    end
+  end
+end
+
+Hyrax::FlexibleCatalogBehavior::ClassMethods.prepend(Hyrax::FlexibleCatalogBehaviorDecorator)

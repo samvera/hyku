@@ -16,58 +16,6 @@
     margin: 16px $scr-gutter-xl;
   }
 
-  // ---- breadcrumb row ----
-  // the layout drops its own breadcrumb inside the container; this theme carries
-  // the trail in the search band instead
-  #content-wrapper > .breadcrumb {
-    display: none;
-  }
-
-  .scr-searchbar-show {
-    align-items: center;
-    column-gap: 24px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    row-gap: 12px;
-
-    .scr-crumbs {
-      flex: 1 1 240px;
-      min-width: 0;
-    }
-
-    .search-form {
-      flex: 0 1 520px;
-    }
-  }
-
-  .scr-crumbs .breadcrumb {
-    background: none;
-    border: 0;
-    color: $scr-ink-muted;
-    font-size: 14px;
-    margin: 0;
-    padding: 0;
-
-    li + ::before {
-      border-right-color: var(--scr-rule-strong, #{$scr-rule-strong});
-    }
-
-    a {
-      @include scr-link;
-    }
-
-    li:last-child a {
-      color: $scr-ink;
-      text-decoration: none;
-
-      &:hover,
-      &:focus {
-        text-decoration: underline;
-      }
-    }
-  }
-
   // ---- editor actions ----
   // the partial always renders, since it carries the COinS hook citation
   // managers read; with no buttons in it there is nothing to make room for.

@@ -375,3 +375,63 @@ body.screening_room_show {
     text-transform: uppercase;
   }
 }
+
+// the search band carries the breadcrumb trail on every show page, not just the
+// work show: the theme's _controls partial renders on the collection and file
+// set pages as well. the list stays explicit so a page that never renders the
+// replacement keeps the layout's own trail
+body.screening_room_show.works-show,
+body.screening_room_show.hyrax-collections-show,
+body.screening_room_show.hyrax-file_sets-show {
+  // ---- breadcrumb row ----
+  // the layout drops its own breadcrumb inside the container; this theme carries
+  // the trail in the search band instead
+  #content-wrapper > .breadcrumb {
+    display: none;
+  }
+
+  .scr-searchbar-show {
+    align-items: center;
+    column-gap: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    row-gap: 12px;
+
+    .scr-crumbs {
+      flex: 1 1 240px;
+      min-width: 0;
+    }
+
+    .search-form {
+      flex: 0 1 520px;
+    }
+  }
+
+  .scr-crumbs .breadcrumb {
+    background: none;
+    border: 0;
+    color: $scr-ink-muted;
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+
+    li + ::before {
+      border-right-color: var(--scr-rule-strong, #{$scr-rule-strong});
+    }
+
+    a {
+      @include scr-link;
+    }
+
+    li:last-child a {
+      color: $scr-ink;
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        text-decoration: underline;
+      }
+    }
+  }
+}

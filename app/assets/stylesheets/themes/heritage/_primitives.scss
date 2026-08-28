@@ -193,6 +193,11 @@
     display: inline-block;
     padding: 6px 14px 0;
   }
+
+  // the clear control is an icon, so the link underline reads as a stray mark
+  a.remove {
+    text-decoration: none;
+  }
 }
 
 // Kaminari's blacklight theme renders Bootstrap pagination markup. The active

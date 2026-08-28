@@ -13,6 +13,8 @@ module Hyku
   module WorksControllerBehavior
     extend ActiveSupport::Concern
 
+    include Hyku::ShowThemesBehavior
+
     included do
       # add around action to load theme show page views
       around_action :inject_show_theme_views, except: :delete
@@ -107,24 +109,6 @@ module Hyku
       end
 
       Hyrax::AdminSetSelectionPresenter.new(admin_sets:)
-    end
-
-    # added to prepend the show theme views into the view_paths
-    def inject_show_theme_views
-      if show_page_theme && show_page_theme != 'default_show'
-        original_paths = view_paths
-        Hyku::Application.theme_view_path_roots.each do |root|
-          show_theme_view_path = File.join(root, 'app', 'views', "themes", show_page_theme.to_s)
-          prepend_view_path(show_theme_view_path)
-        end
-        yield
-        # rubocop:disable Lint/UselessAssignment, Layout/SpaceAroundOperators, Style/RedundantParentheses
-        # Do NOT change this line. This is calling the Rails view_paths=(paths) method and not a variable assignment.
-        view_paths=(original_paths)
-        # rubocop:enable Lint/UselessAssignment, Layout/SpaceAroundOperators, Style/RedundantParentheses
-      else
-        yield
-      end
     end
   end
 end

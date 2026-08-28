@@ -46,6 +46,23 @@ RSpec.describe "OAI PMH Support", type: :feature do
     end
   end
 
+  # Pins the harvested value so adding label indexing cannot change a published
+  # feed as a side effect. The id is the stable half of a term — `uri` is
+  # immutable once saved, `label` is not — so it stays what gets harvested until
+  # someone decides otherwise deliberately.
+  context 'for a work with a controlled vocabulary value' do
+    let(:work) { create(:work, user:, license: ['http://creativecommons.org/licenses/by/3.0/us/']) }
+
+    %w[oai_dc oai_hyku].each do |metadata_prefix|
+      it "emits the stored id rather than the term label with the #{metadata_prefix} prefix" do
+        visit oai_catalog_path(verb: 'GetRecord', metadataPrefix: metadata_prefix, identifier:)
+
+        expect(page).to have_content('http://creativecommons.org/licenses/by/3.0/us/')
+        expect(page).to have_no_content('Attribution 3.0 United States')
+      end
+    end
+  end
+
   context 'when using the oai_hyku prefix' do
     let(:metadata_prefix) { 'oai_hyku' }
 

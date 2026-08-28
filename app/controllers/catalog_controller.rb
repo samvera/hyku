@@ -2,6 +2,7 @@
 
 # rubocop:disable Metrics/ClassLength, Metrics/BlockLength
 class CatalogController < ApplicationController
+  include Hyku::HomePageThemesBehavior
   include BlacklightAdvancedSearch::Controller
   include BlacklightRangeLimit::ControllerOverride
   include Hydra::Catalog
@@ -605,6 +606,17 @@ class CatalogController < ApplicationController
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
     config.spell_max = 5
+  end
+
+  # Only a theme whose chrome was built for these pages injects its views here;
+  # the rest keep hyrax's own catalog and advanced search. The home page
+  # subclasses this controller and has injected views for every theme since
+  # long before this gate, so it is not one of the pages being gated.
+  def inject_theme_views(&block)
+    return super unless %w[catalog advanced].include?(controller_name)
+    return yield unless Hyku::ChromeThemes.home?(home_page_theme)
+
+    super
   end
 
   # This is overridden just to give us a JSON response for debugging.

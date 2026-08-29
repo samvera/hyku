@@ -1065,6 +1065,24 @@ zh:
         edit: 編輯
         header: 管理用户
         update: 更新
+  reference:
+    homepage:
+      intro_label: "简介"
+      hero:
+        headline: "检索资源库"
+        search_label: "检索资源库"
+        search_placeholder: "检索标题、作者、主题和全文"
+        search_button: "检索"
+        advanced: "高级检索"
+        deposit_prompt: "有成果要分享？"
+        deposit_button: "提交成果"
+      stats:
+        collections:
+          one: 馆藏
+          other: 馆藏
+        works:
+          one: 作品
+          other: 作品
   screening_room:
     chrome:
       toggle_navigation: 切换导航

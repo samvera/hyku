@@ -1054,6 +1054,24 @@ fr:
         edit: Modifier
         header: Gérer l'utilisateur
         update: Mettre à jour
+  reference:
+    homepage:
+      intro_label: "Introduction"
+      hero:
+        headline: "Rechercher dans le dépôt"
+        search_label: "Rechercher dans le dépôt"
+        search_placeholder: "Rechercher titres, auteurs, sujets et texte intégral"
+        search_button: "Rechercher"
+        advanced: "Recherche avancée"
+        deposit_prompt: "Des travaux à partager ?"
+        deposit_button: "Déposer vos travaux"
+      stats:
+        collections:
+          one: Collection
+          other: Collections
+        works:
+          one: Document
+          other: Documents
   screening_room:
     chrome:
       toggle_navigation: Afficher/masquer la navigation

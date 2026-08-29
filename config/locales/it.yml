@@ -1049,6 +1049,24 @@ it:
         edit: Modificare
         header: Gestisci utente
         update: Aggiornare
+  reference:
+    homepage:
+      intro_label: "Introduzione"
+      hero:
+        headline: "Cerca nel repository"
+        search_label: "Cerca nel repository"
+        search_placeholder: "Cerca titoli, autori, soggetti e testo completo"
+        search_button: "Cerca"
+        advanced: "Ricerca avanzata"
+        deposit_prompt: "Hai lavori da condividere?"
+        deposit_button: "Deposita il tuo lavoro"
+      stats:
+        collections:
+          one: Collezione
+          other: Collezioni
+        works:
+          one: Opera
+          other: Opere
   screening_room:
     chrome:
       toggle_navigation: Attiva/disattiva la navigazione

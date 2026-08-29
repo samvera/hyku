@@ -1049,6 +1049,24 @@ es:
         edit: Editar
         header: Administrar usuario
         update: Actualizar
+  reference:
+    homepage:
+      intro_label: "Introducción"
+      hero:
+        headline: "Buscar en el repositorio"
+        search_label: "Buscar en el repositorio"
+        search_placeholder: "Buscar títulos, autores, materias y texto completo"
+        search_button: "Buscar"
+        advanced: "Búsqueda avanzada"
+        deposit_prompt: "¿Tiene trabajos que compartir?"
+        deposit_button: "Deposite su trabajo"
+      stats:
+        collections:
+          one: Colección
+          other: Colecciones
+        works:
+          one: Obra
+          other: Obras
   screening_room:
     chrome:
       toggle_navigation: Alternar la navegación

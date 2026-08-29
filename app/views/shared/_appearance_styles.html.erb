@@ -297,12 +297,14 @@ body.public-facing .hyc-banner .hyc-title h1 {
 
 /* REFERENCE THEME CUSTOMIZATIONS */
 <% if home_page_theme == 'reference' || show_page_theme == 'reference_show' %>
+  <% reference_hero_ground = theme_ground_for(appearance.header_and_footer_background_color, 88, '#2b2b2b') %>
   <% reference_default_serif = appearance.headline_font.include?('Helvetica') %>
   <% reference_default_sans = appearance.body_font.include?('Helvetica') %>
 :root {
   --ref-serif: <%= reference_default_serif ? 'Newsreader, Georgia, Times New Roman, serif' : appearance.font_headline_family %>;
   --ref-sans: <%= reference_default_sans ? 'Public Sans, -apple-system, Segoe UI, Helvetica, Arial, sans-serif' : appearance.font_body_family %>;
-  --ref-chrome: <%= appearance.header_and_footer_background_color %>;
+  --ref-hero-ground: <%= reference_hero_ground %>;
+  --ref-on-dark: color-mix(in srgb, <%= appearance.primary_button_background_color %> <%= theme_brand_mix_on(appearance.primary_button_background_color, reference_hero_ground) %>%, #ffffff);
   --ref-link: <%= appearance.link_color %>;
   --ref-link-strong: <%= appearance.link_hover_color %>;
   --ref-action: <%= appearance.primary_button_background_color %>;

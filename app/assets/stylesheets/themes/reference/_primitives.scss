@@ -54,6 +54,29 @@
   }
 }
 
+@mixin ref-deposit-button($ring: var(--ref-link-strong, #{$ref-link-strong})) {
+  @include ref-sans;
+  background: var(--ref-button, #{$ref-surface});
+  border: 1px solid var(--ref-button-edge, #{$ref-input-edge});
+  color: var(--ref-button-ink, #{$ref-ink-body});
+  display: inline-block;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    @include ref-underline;
+    color: var(--ref-button-ink, #{$ref-ink-body});
+  }
+
+  &:focus-visible {
+    @include ref-focus-ring($ring);
+  }
+}
+
 @mixin ref-label($tracking: 0.14em) {
   @include ref-sans;
   color: $ref-ink-muted;

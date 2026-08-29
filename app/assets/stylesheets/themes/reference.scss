@@ -15,4 +15,303 @@
   #content-wrapper > .alert {
     margin: 16px $ref-gutter;
   }
+
+  // ---- hero ----
+  .ref-hero {
+    background: var(--ref-hero-ground, #{$ref-scrim});
+    overflow: hidden;
+    position: relative;
+  }
+
+  .ref-hero-image {
+    height: 100%;
+    left: 0;
+    object-fit: cover;
+    opacity: 0.62;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+
+  .ref-hero-scrim {
+    background: linear-gradient(90deg,
+      color-mix(in srgb, var(--ref-hero-ground, #{$ref-scrim}) 94%, transparent) 0%,
+      color-mix(in srgb, var(--ref-hero-ground, #{$ref-scrim}) 50%, transparent) 100%);
+    inset: 0;
+    position: absolute;
+  }
+
+  .ref-hero-content {
+    @include ref-gutter;
+    align-items: flex-end;
+    display: flex;
+    gap: 40px;
+    justify-content: space-between;
+    padding-bottom: 30px;
+    padding-top: 34px;
+    position: relative;
+
+    @media (max-width: $ref-mobile-max) {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 22px;
+    }
+  }
+
+  .ref-hero-lede {
+    max-width: 1040px;
+    min-width: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .ref-hero-eyebrow {
+    @include ref-sans;
+    color: var(--ref-on-dark, #{$ref-link-on-dark});
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  .ref-hero-headline,
+  .ref-hero-copy h1,
+  .ref-hero-copy h2,
+  .ref-hero-copy h3 {
+    @include ref-serif;
+    color: #fff;
+    font-size: 44px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    margin: 7px 0 0;
+    text-wrap: pretty;
+
+    @media (max-width: $ref-tablet-max) {
+      font-size: 36px;
+    }
+
+    @media (max-width: $ref-mobile-max) {
+      font-size: 30px;
+    }
+  }
+
+  .ref-hero-copy {
+    p {
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 17px;
+      line-height: 1.6;
+      margin: 10px 0 0;
+      text-wrap: pretty;
+    }
+
+    a {
+      @include ref-underline;
+      color: #fff;
+
+      &:focus-visible {
+        @include ref-focus-ring(var(--ref-on-dark, #{$ref-link-on-dark}));
+      }
+    }
+  }
+
+  .ref-hero-search {
+    display: flex;
+    height: 60px;
+    margin-top: 18px;
+    max-width: 1040px;
+
+    @media (max-width: $ref-mobile-max) {
+      flex-wrap: wrap;
+      height: auto;
+    }
+  }
+
+  .ref-hero-search-field {
+    @include ref-sans;
+    background: $ref-surface;
+    border: 0;
+    color: $ref-ink;
+    flex: 1;
+    font-size: 17px;
+    min-width: 0;
+    padding: 0 16px;
+
+    &::placeholder {
+      color: $ref-ink-faint;
+    }
+
+    &:focus-visible {
+      @include ref-focus-ring;
+      outline-offset: -3px;
+    }
+
+    @media (max-width: $ref-mobile-max) {
+      flex-basis: 100%;
+      height: 50px;
+    }
+  }
+
+  .ref-hero-search-submit {
+    @include ref-sans;
+    align-items: center;
+    background: var(--ref-action, #{$ref-action});
+    border: 0;
+    color: var(--ref-action-ink, #{$ref-action-ink});
+    display: inline-flex;
+    font-size: 15px;
+    font-weight: 700;
+    justify-content: center;
+    padding: 0 30px;
+
+    &:focus-visible {
+      @include ref-focus-ring(var(--ref-on-dark, #{$ref-link-on-dark}));
+    }
+
+    @media (max-width: $ref-mobile-max) {
+      flex-basis: 100%;
+      height: 50px;
+    }
+  }
+
+  .ref-hero-advanced {
+    @include ref-underline;
+    color: var(--ref-on-dark, #{$ref-link-on-dark});
+    display: inline-block;
+    font-size: 13px;
+    margin-top: 9px;
+
+    &:hover,
+    &:focus {
+      color: #fff;
+    }
+
+    &:focus-visible {
+      @include ref-focus-ring(var(--ref-on-dark, #{$ref-link-on-dark}));
+    }
+  }
+
+  // ---- hero counts ----
+  .ref-hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 34px;
+    margin: 22px 0 0;
+  }
+
+  .ref-stat {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .ref-stat-number {
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0 0 2px;
+
+    a {
+      color: #fff;
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        @include ref-underline;
+        color: #fff;
+      }
+
+      &:focus-visible {
+        @include ref-focus-ring(var(--ref-on-dark, #{$ref-link-on-dark}));
+      }
+    }
+  }
+
+  .ref-stat-key {
+    color: var(--ref-on-dark, #{$ref-link-on-dark});
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  // ---- hero deposit ----
+  .ref-hero-deposit {
+    flex: none;
+    position: relative;
+    text-align: right;
+
+    // the scrim fades to half strength at this edge of the hero, so the banner
+    // can lift the surface under this block; feather a local one behind it
+    &::before {
+      background: radial-gradient(farthest-side at 72% 50%,
+        color-mix(in srgb, var(--ref-hero-ground, #{$ref-scrim}) 94%, transparent) 0%,
+        color-mix(in srgb, var(--ref-hero-ground, #{$ref-scrim}) 76%, transparent) 45%,
+        color-mix(in srgb, var(--ref-hero-ground, #{$ref-scrim}) 0%, transparent) 100%);
+      content: '';
+      inset: -58px -48px -58px -170px;
+      pointer-events: none;
+      position: absolute;
+    }
+
+    @media (max-width: $ref-mobile-max) {
+      text-align: left;
+
+      &::before {
+        content: none;
+      }
+    }
+  }
+
+  .ref-hero-deposit-prompt,
+  .ref-hero-deposit-button {
+    position: relative;
+  }
+
+  .ref-hero-deposit-prompt {
+    color: var(--ref-on-dark, #{$ref-link-on-dark});
+    font-size: 13px;
+    margin: 0 0 7px;
+  }
+
+  .ref-hero-deposit-button {
+    @include ref-deposit-button(var(--ref-on-dark, #{$ref-link-on-dark}));
+  }
+
+  // ---- home page text ----
+  .ref-home-text {
+    @include ref-gutter;
+    padding-bottom: 34px;
+    padding-top: 38px;
+
+    > div {
+      max-width: 920px;
+    }
+
+    > div::before {
+      background: var(--ref-link, #{$ref-link});
+      content: '';
+      display: block;
+      height: 2px;
+      margin-bottom: 14px;
+      width: 96px;
+    }
+
+    p {
+      color: $ref-ink-body;
+      font-size: 19px;
+      line-height: 1.65;
+      overflow-wrap: anywhere;
+      text-wrap: pretty;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    a {
+      @include ref-link;
+    }
+  }
 }

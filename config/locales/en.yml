@@ -918,6 +918,24 @@ en:
         edit: Edit
         header: Manage User
         update: Update
+  reference:
+    homepage:
+      intro_label: "Introduction"
+      hero:
+        headline: "Search the repository"
+        search_label: "Search the repository"
+        search_placeholder: "Search titles, authors, subjects and full text"
+        search_button: "Search"
+        advanced: "Advanced search"
+        deposit_prompt: "Have work to share?"
+        deposit_button: "Deposit your work"
+      stats:
+        collections:
+          one: Collection
+          other: Collections
+        works:
+          one: Work
+          other: Works
   screening_room:
     chrome:
       toggle_navigation: Toggle navigation

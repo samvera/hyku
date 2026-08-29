@@ -943,6 +943,14 @@ pt-BR:
         advanced: "Busca avançada"
         deposit_prompt: "Tem trabalhos para compartilhar?"
         deposit_button: "Deposite seu trabalho"
+      browse:
+        heading: "Explore o repositório"
+        all_options: "Explorar tudo"
+        all:
+          subjects: "Todos os assuntos"
+          creators: "Todos os autores"
+          collections: "Todos os acervos"
+          publishers: "Todas as editoras"
       stats:
         collections:
           one: Acervo

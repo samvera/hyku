@@ -1076,6 +1076,14 @@ zh:
         advanced: "高级检索"
         deposit_prompt: "有成果要分享？"
         deposit_button: "提交成果"
+      browse:
+        heading: "浏览资源库"
+        all_options: "浏览全部"
+        all:
+          subjects: "全部主题"
+          creators: "全部作者"
+          collections: "全部馆藏"
+          publishers: "全部出版者"
       stats:
         collections:
           one: 馆藏

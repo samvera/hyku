@@ -1063,6 +1063,14 @@ de:
         advanced: "Erweiterte Suche"
         deposit_prompt: "Haben Sie Arbeiten zu teilen?"
         deposit_button: "Arbeit einreichen"
+      browse:
+        heading: "Das Repositorium durchstöbern"
+        all_options: "Alles durchstöbern"
+        all:
+          subjects: "Alle Schlagwörter"
+          creators: "Alle Urheber"
+          collections: "Alle Sammlungen"
+          publishers: "Alle Verlage"
       stats:
         collections:
           one: Sammlung

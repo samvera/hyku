@@ -1060,6 +1060,14 @@ it:
         advanced: "Ricerca avanzata"
         deposit_prompt: "Hai lavori da condividere?"
         deposit_button: "Deposita il tuo lavoro"
+      browse:
+        heading: "Esplora il repository"
+        all_options: "Esplora tutto"
+        all:
+          subjects: "Tutti i soggetti"
+          creators: "Tutti gli autori"
+          collections: "Tutte le collezioni"
+          publishers: "Tutti gli editori"
       stats:
         collections:
           one: Collezione

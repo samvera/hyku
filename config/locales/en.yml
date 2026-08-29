@@ -929,6 +929,14 @@ en:
         advanced: "Advanced search"
         deposit_prompt: "Have work to share?"
         deposit_button: "Deposit your work"
+      browse:
+        heading: "Browse the repository"
+        all_options: "Browse all"
+        all:
+          subjects: "All subjects"
+          creators: "All creators"
+          collections: "All collections"
+          publishers: "All publishers"
       stats:
         collections:
           one: Collection

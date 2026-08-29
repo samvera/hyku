@@ -1065,6 +1065,14 @@ fr:
         advanced: "Recherche avancée"
         deposit_prompt: "Des travaux à partager ?"
         deposit_button: "Déposer vos travaux"
+      browse:
+        heading: "Parcourir le dépôt"
+        all_options: "Tout parcourir"
+        all:
+          subjects: "Tous les sujets"
+          creators: "Tous les auteurs"
+          collections: "Toutes les collections"
+          publishers: "Tous les éditeurs"
       stats:
         collections:
           one: Collection

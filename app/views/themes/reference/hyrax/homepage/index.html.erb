@@ -1,0 +1,8 @@
+<% provide :page_title, application_name %>
+
+<div class="ref-home">
+  <% columns = ref_home.browse_columns %>
+  <%= render 'hyrax/homepage/browse', columns: columns if columns.any? %>
+</div>
+
+<%= render '/shared/select_work_type_modal', create_work_presenter: @presenter.create_work_presenter if @presenter.draw_select_work_modal? %>

@@ -279,6 +279,114 @@
     @include ref-deposit-button(var(--ref-on-dark, #{$ref-link-on-dark}));
   }
 
+  // ---- section heads ----
+  .ref-section-head {
+    align-items: baseline;
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .ref-section-title {
+    @include ref-section-title;
+  }
+
+  .ref-section-action {
+    @include ref-link(var(--ref-link-strong, #{$ref-link-strong}));
+    flex: none;
+    font-size: 14px;
+  }
+
+  // ---- browse the repository ----
+  .ref-browse {
+    background: var(--ref-band, #{$ref-band});
+    border-bottom: 1px solid var(--ref-band-edge, #{$ref-band-edge});
+    border-top: 1px solid var(--ref-band-edge, #{$ref-band-edge});
+  }
+
+  .ref-browse-inner {
+    @include ref-gutter;
+    padding-bottom: 44px;
+    padding-top: 44px;
+  }
+
+  .ref-browse-columns {
+    display: grid;
+    gap: 22px;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+
+    @media (max-width: $ref-tablet-max) {
+      grid-auto-flow: row;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @media (max-width: $ref-mobile-max) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .ref-browse-column + .ref-browse-column {
+    border-left: 1px solid var(--ref-band-rule, #{$ref-band-rule});
+    padding-left: 22px;
+
+    @media (max-width: $ref-tablet-max) {
+      &:nth-child(odd) {
+        border-left: 0;
+        padding-left: 0;
+      }
+    }
+
+    @media (max-width: $ref-mobile-max) {
+      border-left: 0;
+      border-top: 1px solid var(--ref-band-rule, #{$ref-band-rule});
+      padding-left: 0;
+      padding-top: 16px;
+    }
+  }
+
+  .ref-browse-label {
+    @include ref-label;
+    margin: 0 0 8px;
+  }
+
+  .ref-browse-values {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .ref-browse-value {
+    align-items: baseline;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    padding: 5px 0;
+  }
+
+  .ref-browse-link {
+    @include ref-link(var(--ref-link-strong, #{$ref-link-strong}));
+    font-size: 17px;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+  }
+
+  .ref-browse-count {
+    color: $ref-ink;
+    flex: none;
+    font-size: 16px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .ref-browse-all {
+    @include ref-link(var(--ref-link-strong, #{$ref-link-strong}));
+    display: inline-block;
+    font-size: 14px;
+    margin-top: 6px;
+  }
+
   // ---- home page text ----
   .ref-home-text {
     @include ref-gutter;

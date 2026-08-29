@@ -951,6 +951,12 @@ pt-BR:
           creators: "Todos os autores"
           collections: "Todos os acervos"
           publishers: "Todas as editoras"
+      recent:
+        heading: "Depósitos recentes"
+        view_all: "Todos os depósitos recentes"
+        and_others: "e outros"
+        deposited: "Depositado em %{date}"
+        embargo: "sob embargo"
       stats:
         collections:
           one: Acervo

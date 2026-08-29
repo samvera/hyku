@@ -1068,6 +1068,12 @@ it:
           creators: "Tutti gli autori"
           collections: "Tutte le collezioni"
           publishers: "Tutti gli editori"
+      recent:
+        heading: "Depositi recenti"
+        view_all: "Tutti i depositi recenti"
+        and_others: "e altri"
+        deposited: "Depositato il %{date}"
+        embargo: "sotto embargo"
       stats:
         collections:
           one: Collezione

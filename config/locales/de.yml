@@ -1071,6 +1071,12 @@ de:
           creators: "Alle Urheber"
           collections: "Alle Sammlungen"
           publishers: "Alle Verlage"
+      recent:
+        heading: "Neue Einreichungen"
+        view_all: "Alle neuen Einreichungen"
+        and_others: "und weitere"
+        deposited: "Eingereicht am %{date}"
+        embargo: "unter Sperrfrist"
       stats:
         collections:
           one: Sammlung

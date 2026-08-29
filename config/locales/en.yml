@@ -937,6 +937,12 @@ en:
           creators: "All creators"
           collections: "All collections"
           publishers: "All publishers"
+      recent:
+        heading: "Recent deposits"
+        view_all: "All recent deposits"
+        and_others: "and others"
+        deposited: "Deposited %{date}"
+        embargo: "under embargo"
       stats:
         collections:
           one: Collection

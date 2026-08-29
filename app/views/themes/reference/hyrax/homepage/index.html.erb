@@ -3,6 +3,7 @@
 <div class="ref-home">
   <% columns = ref_home.browse_columns %>
   <%= render 'hyrax/homepage/browse', columns: columns if columns.any? %>
+  <%= render 'hyrax/homepage/recently_uploaded' if @presenter&.display_recently_uploaded? && @recent_documents.present? %>
 </div>
 
 <%= render '/shared/select_work_type_modal', create_work_presenter: @presenter.create_work_presenter if @presenter.draw_select_work_modal? %>

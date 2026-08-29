@@ -285,7 +285,7 @@
     display: flex;
     gap: 16px;
     justify-content: space-between;
-    margin-bottom: 14px;
+    margin-bottom: 22px;
   }
 
   .ref-section-title {
@@ -385,6 +385,152 @@
     display: inline-block;
     font-size: 14px;
     margin-top: 6px;
+  }
+
+  // ---- recent deposits ----
+  .ref-recent-inner {
+    @include ref-gutter;
+    padding-bottom: 44px;
+    padding-top: 44px;
+  }
+
+  .ref-recent-list {
+    margin: 0;
+    padding: 0;
+  }
+
+  .ref-deposit {
+    border-top: 1px solid $ref-rule;
+    display: grid;
+    gap: 22px;
+    grid-template-columns: 87px minmax(0, 1fr) 192px;
+    padding: 18px 0;
+
+    @media (max-width: $ref-tablet-max) {
+      grid-template-columns: 78px minmax(0, 1fr);
+    }
+
+    @media (max-width: $ref-mobile-max) {
+      gap: 12px;
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .ref-deposit-thumb {
+    align-items: center;
+    background: $ref-mat;
+    box-shadow: inset 0 0 0 1px $ref-mat-edge;
+    display: flex;
+    height: 87px;
+    justify-content: center;
+    padding: 6px;
+    width: 87px;
+
+    img {
+      box-shadow: $ref-shadow-object;
+      max-height: 100%;
+      max-width: 100%;
+      object-fit: contain;
+      width: auto;
+    }
+
+    @media (max-width: $ref-tablet-max) {
+      height: 78px;
+      width: 78px;
+    }
+  }
+
+  .ref-deposit-title {
+    @include ref-serif;
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 1.35;
+    margin: 0;
+
+    a {
+      color: $ref-ink;
+      text-decoration: none;
+      text-wrap: pretty;
+
+      &:hover,
+      &:focus {
+        @include ref-underline;
+        color: var(--ref-link-strong, #{$ref-link-strong});
+      }
+
+      &:focus-visible {
+        @include ref-focus-ring;
+      }
+    }
+  }
+
+  .ref-deposit-creators {
+    color: $ref-ink-body;
+    font-size: 15px;
+    line-height: 1.4;
+    margin: 4px 0 0;
+    overflow-wrap: anywhere;
+  }
+
+  .ref-deposit-provenance {
+    color: $ref-ink-label;
+    font-size: 13px;
+    line-height: 1.4;
+    margin: 3px 0 0;
+    overflow-wrap: anywhere;
+  }
+
+  .ref-deposit-meta {
+    text-align: right;
+
+    @media (max-width: $ref-tablet-max) {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      grid-column: 2;
+      text-align: left;
+    }
+
+    @media (max-width: $ref-mobile-max) {
+      grid-column: 1;
+    }
+  }
+
+  .ref-chip {
+    background: var(--ref-chip, #{$ref-chip});
+    border: 1px solid var(--ref-chip-edge, #{$ref-chip-edge});
+    color: var(--ref-link-strong, #{$ref-link-strong});
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    padding: 2px 8px;
+    text-transform: uppercase;
+  }
+
+  .ref-deposit-date {
+    color: $ref-ink;
+    font-size: 13px;
+    font-weight: 700;
+    margin: 6px 0 0;
+
+    @media (max-width: $ref-tablet-max) {
+      margin: 0;
+    }
+  }
+
+  .ref-deposit-rights,
+  .ref-deposit-license {
+    color: $ref-ink-label;
+    font-size: 13px;
+    line-height: 1.4;
+    margin: 2px 0 0;
+    overflow-wrap: anywhere;
+
+    @media (max-width: $ref-tablet-max) {
+      margin: 0;
+    }
   }
 
   // ---- home page text ----

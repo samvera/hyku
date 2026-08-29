@@ -1073,6 +1073,12 @@ fr:
           creators: "Tous les auteurs"
           collections: "Toutes les collections"
           publishers: "Tous les éditeurs"
+      recent:
+        heading: "Dépôts récents"
+        view_all: "Tous les dépôts récents"
+        and_others: "et autres"
+        deposited: "Déposé le %{date}"
+        embargo: "sous embargo"
       stats:
         collections:
           one: Collection

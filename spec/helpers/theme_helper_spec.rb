@@ -190,6 +190,26 @@ RSpec.describe ThemeHelper, type: :helper do
     end
   end
 
+  describe '#theme_type_label' do
+    it 'prefers the resource type the tenant cataloged' do
+      object = double('document', resource_type: ['Thesis'], human_readable_type: 'Generic Work')
+
+      expect(helper.theme_type_label(object)).to eq('Thesis')
+    end
+
+    it 'falls back to the model name when no resource type is recorded' do
+      object = double('document', resource_type: [], human_readable_type: 'Generic Work')
+
+      expect(helper.theme_type_label(object)).to eq('Generic Work')
+    end
+
+    it 'ignores a blank resource type rather than rendering an empty chip' do
+      object = double('document', resource_type: ['  '], human_readable_type: 'Generic Work')
+
+      expect(helper.theme_type_label(object)).to eq('Generic Work')
+    end
+  end
+
   describe '#theme_license_badge' do
     def badge_for(license)
       helper.theme_license_badge(double('presenter', license: Array(license)))

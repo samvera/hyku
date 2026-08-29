@@ -1084,6 +1084,12 @@ zh:
           creators: "全部作者"
           collections: "全部馆藏"
           publishers: "全部出版者"
+      recent:
+        heading: "最新提交"
+        view_all: "全部最新提交"
+        and_others: "等"
+        deposited: "提交于 %{date}"
+        embargo: "处于禁限期"
       stats:
         collections:
           one: 馆藏

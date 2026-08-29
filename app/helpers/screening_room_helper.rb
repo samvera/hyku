@@ -6,10 +6,6 @@ module ScreeningRoomHelper
     theme_home(ScreeningRoom::HomepagePresenter)
   end
 
-  def scr_type_label(object)
-    Array(object.resource_type).first.presence || object.human_readable_type
-  end
-
   def scr_member_meta(member)
     visibility = theme_plain_text(member.permission_badge)
     uploaded = member.solr_document.date_uploaded

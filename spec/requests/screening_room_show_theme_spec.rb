@@ -43,6 +43,14 @@ RSpec.describe 'screening_room_show theme', type: :request, singletenant: true, 
       sign_in admin
     end
 
+    it 'leaves the dashboard layout alone, since no theme styles it' do
+      get "/concern/generic_works/#{work.id}/edit"
+
+      doc = Nokogiri::HTML(response.body)
+      expect(doc.at_css('body')['class']).to eq 'dashboard'
+      expect(doc.css('[class*="scr-"]')).to be_empty
+    end
+
     it 'puts the action row above the viewer' do
       get "/concern/generic_works/#{work.id}"
 

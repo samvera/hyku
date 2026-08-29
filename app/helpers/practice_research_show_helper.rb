@@ -3,7 +3,6 @@
 module PracticeResearchShowHelper
   VISIBLE_METADATA_ROWS = 8
   MAX_ROWS = 100
-  MAX_PAGE = 10_000
   DEFAULT_ROWS = 20
 
   def pr_show_panes(presenter)
@@ -16,13 +15,6 @@ module PracticeResearchShowHelper
       panes << [:items, "#{pr_items_label(presenter)} (#{children.total_count})"] if children.any?
       panes << [:files, "#{t('practice_research.show.tabs.files')} (#{files.total_count})"] if files.any?
     end
-  end
-
-  def pr_active_pane(presenter)
-    keys = pr_show_panes(presenter).map(&:first)
-    requested = params[:pane].to_s.to_sym
-
-    keys.include?(requested) ? requested : keys.first
   end
 
   def pr_context_html(presenter)
@@ -38,17 +30,12 @@ module PracticeResearchShowHelper
     Nokogiri::HTML.fragment(html.to_s).text.strip.present?
   end
 
-  def pr_viewer?(presenter)
-    presenter.video_embed_viewer? ||
-      (presenter.representative_id.present? && presenter.representative_presenter.present?)
-  end
-
   def pr_file_set_ids(presenter)
-    @pr_file_set_ids ||= pr_paginate(presenter.authorized_file_set_ids, :files_page)
+    theme_file_set_ids(presenter, per: pr_rows)
   end
 
   def pr_child_work_ids(presenter)
-    @pr_child_work_ids ||= pr_paginate(presenter.authorized_child_work_ids, :items_page)
+    theme_child_work_ids(presenter, per: pr_rows)
   end
 
   def pr_file_sets(presenter)
@@ -87,30 +74,9 @@ module PracticeResearchShowHelper
     names.select { |field| presenter.respond_to?(field) && presenter.public_send(field).present? }
   end
 
-  def pr_license_badge(presenter)
-    license = Array(presenter.try(:license)).first.to_s
-    return 'CC0 1.0' if license.include?('creativecommons.org/publicdomain/zero/1.0')
-
-    match = license.match(%r{creativecommons\.org/licenses/([a-z-]+)/(\d+\.\d+)})
-    return unless match
-
-    "CC #{match[1].upcase} #{match[2]}"
-  end
-
   private
 
-  # TODO: dedupe with heritage hrt_member_pages — shared paginate-members helper
-  def pr_paginate(ids, param_name)
-    paged = Kaminari.paginate_array(ids, total_count: ids.size)
-                    .page(pr_positive_param(param_name, 1, MAX_PAGE))
-                    .per(pr_positive_param(:rows, DEFAULT_ROWS, MAX_ROWS))
-
-    paged.out_of_range? && paged.total_pages.positive? ? paged.page(paged.total_pages) : paged
-  end
-
-  def pr_positive_param(name, fallback, ceiling)
-    digits = params[name].to_s[/\d+/]
-
-    digits.blank? ? fallback : digits.to_i.clamp(1, ceiling)
+  def pr_rows
+    theme_positive_param(:rows, DEFAULT_ROWS, MAX_ROWS)
   end
 end

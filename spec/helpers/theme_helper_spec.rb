@@ -101,6 +101,30 @@ RSpec.describe ThemeHelper, type: :helper do
     end
   end
 
+  describe '#theme_file_set_ids' do
+    let(:presenter) { double(authorized_file_set_ids: (1..25).map { |i| "fs-#{i}" }) }
+
+    it 'pages at ten entries' do
+      paged = helper.theme_file_set_ids(presenter)
+
+      expect(paged.total_count).to eq(25)
+      expect(paged.count).to eq(10)
+      expect(paged.total_pages).to eq(3)
+    end
+
+    it 'clamps an out of range page back to the last page' do
+      allow(helper).to receive(:params).and_return({ files_page: '99' })
+
+      expect(helper.theme_file_set_ids(presenter).current_page).to eq(3)
+    end
+
+    it 'ignores junk page params' do
+      allow(helper).to receive(:params).and_return({ files_page: 'DROP TABLE' })
+
+      expect(helper.theme_file_set_ids(presenter).current_page).to eq(1)
+    end
+  end
+
   describe '#theme_readable_ink' do
     it 'puts light ink on a dark accent' do
       expect(helper.theme_readable_ink('#2e74b2')).to eq('#ffffff')
@@ -163,6 +187,32 @@ RSpec.describe ThemeHelper, type: :helper do
         .and_return(double(default_work_image: double(url: '/uploads/work.jpg'), default_collection_image: nil))
 
       expect(helper.theme_thumbnail_url(SolrDocument.new)).to eq('/uploads/work.jpg')
+    end
+  end
+
+  describe '#theme_license_badge' do
+    def badge_for(license)
+      helper.theme_license_badge(double('presenter', license: Array(license)))
+    end
+
+    it 'shortens a Creative Commons license URL' do
+      expect(badge_for('https://creativecommons.org/licenses/by/4.0/')).to eq('CC BY 4.0')
+    end
+
+    it 'handles hyphenated codes' do
+      expect(badge_for('https://creativecommons.org/licenses/by-nc-nd/3.0/')).to eq('CC BY-NC-ND 3.0')
+    end
+
+    it 'recognizes CC0' do
+      expect(badge_for('http://creativecommons.org/publicdomain/zero/1.0/')).to eq('CC0 1.0')
+    end
+
+    it 'is nil for anything else, so the badge is not rendered' do
+      expect(badge_for('http://www.europeana.eu/portal/rights/rr-r.html')).to be_nil
+    end
+
+    it 'is nil with no license at all' do
+      expect(badge_for(nil)).to be_nil
     end
   end
 end

@@ -2,6 +2,11 @@
 
 # Presentation helpers shared by the Hyku themes.
 module ThemeHelper
+  include ThemeColorHelper
+
+  MEMBER_ROWS = 10
+  MAX_MEMBER_PAGE = 10_000
+
   def theme_plain_text(html)
     # strip_tags re-escapes what it returns, and every consumer escapes again on
     # the way out, so an ampersand would reach the reader as &amp;
@@ -25,34 +30,6 @@ module ThemeHelper
       (presenter.representative_id.present? && presenter.representative_presenter.present?)
   end
 
-  def theme_luminance(hex)
-    channels = hex.to_s.delete('#').scan(/../).map { |pair| pair.to_i(16) / 255.0 }
-    return 0 unless channels.size == 3
-
-    channels.zip([0.2126, 0.7152, 0.0722]).sum do |channel, weight|
-      weight * (channel <= 0.03928 ? channel / 12.92 : (((channel + 0.055) / 1.055)**2.4))
-    end
-  end
-
-  # How much of a brand colour to keep when lifting it for a dark surface: the
-  # design value unless that leaves it under the contrast floor.
-  def theme_brand_mix(hex)
-    return 55 unless hex.to_s.delete('#').length == 6
-
-    55.step(5, -5) do |percent|
-      lifted = hex.to_s.delete('#').scan(/../).map do |pair|
-        ((pair.to_i(16) * percent) + (255 * (100 - percent))) / 100
-      end
-      return percent if theme_luminance(format('#%02x%02x%02x', *lifted)) >= 0.31
-    end
-  end
-
-  def theme_readable_ink(hex)
-    # black clears 4.5:1 from 0.175 up and white to 0.183, so the crossover
-    # leaves no accent without a readable ink
-    theme_luminance(hex) > 0.175 ? '#000000' : '#ffffff'
-  end
-
   def theme_thumbnail_url(document, default: :work)
     indexed = document.try(:[], 'thumbnail_path_ss').presence
     return indexed if indexed && !indexed.include?('/assets/')
@@ -60,5 +37,75 @@ module ThemeHelper
     return Site.instance.default_collection_image&.url || image_path('default.png') if default == :collection
 
     Site.instance.default_work_image&.url || indexed || image_path('default.png')
+  end
+
+  def theme_home(presenter_class)
+    @theme_home ||= presenter_class.new(
+      search_service: controller.search_service,
+      response: @response,
+      collections: @collections,
+      featured_work_list: @featured_work_list,
+      featured_collection_list: @featured_collection_list,
+      current_ability:
+    )
+  end
+
+  def theme_file_set_ids(presenter, per: MEMBER_ROWS)
+    @theme_file_set_ids ||= paginate_members(presenter.authorized_file_set_ids, :files_page, per:)
+  end
+
+  def theme_child_work_ids(presenter, per: MEMBER_ROWS)
+    @theme_child_work_ids ||= paginate_members(presenter.authorized_child_work_ids, :items_page, per:)
+  end
+
+  def theme_active_pane(panes)
+    keys = panes.map(&:first)
+    requested = params[:pane].to_s.to_sym
+
+    keys.include?(requested) ? requested : keys.first
+  end
+
+  def theme_show_collection(presenter)
+    @theme_show_collection ||= Hyrax::CollectionMemberService.run(presenter.solr_document, current_ability).first
+  end
+
+  def theme_share_work?
+    @presenter&.display_share_button? && !Flipflop.read_only?
+  end
+
+  def theme_deposit_target
+    return [hyrax.my_works_path, {}] unless signed_in?
+
+    deposit_new_work_target(many: @presenter.create_many_work_types?, first_type: @presenter.first_work_type)
+  end
+
+  def theme_type_label(object)
+    Array(object.resource_type).first.presence || object.human_readable_type
+  end
+
+  def theme_license_badge(presenter)
+    license = Array(presenter.try(:license)).first.to_s
+    return 'CC0 1.0' if license.include?('creativecommons.org/publicdomain/zero/1.0')
+
+    match = license.match(%r{creativecommons\.org/licenses/([a-z-]+)/(\d+\.\d+)})
+    return unless match
+
+    "CC #{match[1].upcase} #{match[2]}"
+  end
+
+  private
+
+  def paginate_members(ids, param_name, per: MEMBER_ROWS)
+    paged = Kaminari.paginate_array(ids, total_count: ids.size)
+                    .page(theme_positive_param(param_name, 1, MAX_MEMBER_PAGE))
+                    .per(per)
+
+    paged.out_of_range? && paged.total_pages.positive? ? paged.page(paged.total_pages) : paged
+  end
+
+  def theme_positive_param(name, fallback, ceiling)
+    digits = params[name].to_s[/\d+/]
+
+    digits.blank? ? fallback : digits.to_i.clamp(1, ceiling)
   end
 end

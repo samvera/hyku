@@ -5,29 +5,11 @@ module PracticeResearchHomeHelper
   CARD_BLURB_LENGTH = 150
 
   def pr_home
-    @pr_home ||= PracticeResearch::HomepagePresenter.new(
-      search_service: controller.search_service,
-      response: @response,
-      collections: @collections,
-      featured_work_list: @featured_work_list,
-      featured_collection_list: @featured_collection_list,
-      current_ability:
-    )
+    theme_home(PracticeResearch::HomepagePresenter)
   end
 
   def pr_featured_researcher?
     @featured_researcher&.value.present?
-  end
-
-  def pr_share_work?
-    @presenter&.display_share_button? && !Flipflop.read_only?
-  end
-
-  def pr_share_work_target
-    return [hyrax.my_works_path, {}] unless signed_in?
-
-    deposit_new_work_target(many: @presenter.create_many_work_types?,
-                            first_type: @presenter.first_work_type)
   end
 
   def pr_card_blurb(presenter, length: CARD_BLURB_LENGTH)

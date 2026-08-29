@@ -1,0 +1,18 @@
+// ---- reference home page theme ----
+
+@import 'themes/reference/tokens';
+@import 'themes/reference/primitives';
+@import 'themes/reference/shell';
+
+.reference.hyrax-homepage {
+  overflow-x: clip;
+
+  #content-wrapper {
+    max-width: none;
+    padding: 0;
+  }
+
+  #content-wrapper > .alert {
+    margin: 16px $ref-gutter;
+  }
+}

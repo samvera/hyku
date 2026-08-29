@@ -295,6 +295,25 @@ body.public-facing .hyc-banner .hyc-title h1 {
 }
 <% end %>
 
+/* REFERENCE THEME CUSTOMIZATIONS */
+<% if home_page_theme == 'reference' || show_page_theme == 'reference_show' %>
+  <% reference_default_serif = appearance.headline_font.include?('Helvetica') %>
+  <% reference_default_sans = appearance.body_font.include?('Helvetica') %>
+:root {
+  --ref-serif: <%= reference_default_serif ? 'Newsreader, Georgia, Times New Roman, serif' : appearance.font_headline_family %>;
+  --ref-sans: <%= reference_default_sans ? 'Public Sans, -apple-system, Segoe UI, Helvetica, Arial, sans-serif' : appearance.font_body_family %>;
+  --ref-chrome: <%= appearance.header_and_footer_background_color %>;
+  --ref-link: <%= appearance.link_color %>;
+  --ref-link-strong: <%= appearance.link_hover_color %>;
+  --ref-action: <%= appearance.primary_button_background_color %>;
+  --ref-action-ink: <%= appearance.primary_button_text_color %>;
+  --ref-button: <%= appearance.default_button_background_color %>;
+  --ref-button-edge: <%= appearance.default_button_border_color %>;
+  --ref-button-ink: <%= appearance.default_button_text_color %>;
+  --ref-footer-accent: <%= appearance.footer_link_color %>;
+}
+<% end %>
+
 <%= appearance.custom_css_block %>
 
 /* COMMUNITY THEME CUSTOMIZATIONS */

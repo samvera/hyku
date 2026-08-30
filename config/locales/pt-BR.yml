@@ -970,6 +970,14 @@ pt-BR:
       featured_works:
         heading: "Obras em destaque"
         see_all: "Ver todas"
+      researcher:
+        heading: "Pesquisador em destaque"
+      about:
+        heading: "Sobre os acervos"
+      cta:
+        heading: "Compartilhe seu trabalho"
+        sub: "Deposite seus artigos, teses e dados de pesquisa no repositório."
+        button: "Iniciar um depósito"
       stats:
         collections:
           one: Acervo

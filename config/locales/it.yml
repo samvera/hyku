@@ -1087,6 +1087,14 @@ it:
       featured_works:
         heading: "Opere in evidenza"
         see_all: "Mostra tutte"
+      researcher:
+        heading: "Ricercatore in evidenza"
+      about:
+        heading: "Informazioni sulle collezioni"
+      cta:
+        heading: "Condividi il tuo lavoro"
+        sub: "Deposita articoli, tesi e dati di ricerca nel repository."
+        button: "Inizia un deposito"
       stats:
         collections:
           one: Collezione

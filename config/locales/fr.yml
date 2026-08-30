@@ -1092,6 +1092,14 @@ fr:
       featured_works:
         heading: "Documents en vedette"
         see_all: "Tout afficher"
+      researcher:
+        heading: "Chercheur à l'honneur"
+      about:
+        heading: "À propos des collections"
+      cta:
+        heading: "Partagez vos travaux"
+        sub: "Déposez vos articles, thèses et données de recherche dans le dépôt."
+        button: "Commencer un dépôt"
       stats:
         collections:
           one: Collection

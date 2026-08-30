@@ -956,6 +956,14 @@ en:
       featured_works:
         heading: "Featured works"
         see_all: "See all"
+      researcher:
+        heading: "Featured researcher"
+      about:
+        heading: "About the collections"
+      cta:
+        heading: "Share your work"
+        sub: "Deposit your articles, theses and research data into the repository."
+        button: "Start a deposit"
       stats:
         collections:
           one: Collection

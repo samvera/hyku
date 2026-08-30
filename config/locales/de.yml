@@ -1090,6 +1090,14 @@ de:
       featured_works:
         heading: "Ausgewählte Werke"
         see_all: "Alle anzeigen"
+      researcher:
+        heading: "Ausgewählte Forschende"
+      about:
+        heading: "Über die Sammlungen"
+      cta:
+        heading: "Teilen Sie Ihre Arbeit"
+        sub: "Reichen Sie Aufsätze, Abschlussarbeiten und Forschungsdaten in das Repositorium ein."
+        button: "Einreichung starten"
       stats:
         collections:
           one: Sammlung

@@ -1103,6 +1103,14 @@ zh:
       featured_works:
         heading: "精选作品"
         see_all: "查看全部"
+      researcher:
+        heading: "特邀研究者"
+      about:
+        heading: "关于馆藏"
+      cta:
+        heading: "分享您的成果"
+        sub: "将论文、学位论文与研究数据提交至资源库。"
+        button: "开始提交"
       stats:
         collections:
           one: 馆藏

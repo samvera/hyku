@@ -763,6 +763,154 @@
     }
   }
 
+  // ---- label bands ----
+  .ref-label-band {
+    border-top: 1px solid $ref-panel-edge;
+  }
+
+  .ref-label-band-inner {
+    @include ref-gutter(192px, 96px);
+    display: grid;
+    gap: 36px;
+    grid-template-columns: 340px minmax(0, 1fr);
+    padding-bottom: 40px;
+    padding-top: 36px;
+
+    @media (max-width: $ref-laptop-max) {
+      grid-template-columns: 240px minmax(0, 1fr);
+    }
+
+    @media (max-width: $ref-tablet-max) {
+      gap: 16px;
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .ref-researcher-body {
+    max-width: 760px;
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      @include ref-sans;
+      color: $ref-ink;
+      font-size: 21px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin: 0;
+    }
+
+    p {
+      color: $ref-ink-body;
+      font-size: 17px;
+      line-height: 1.7;
+      margin: 8px 0 0;
+      overflow-wrap: anywhere;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    em {
+      color: $ref-ink-muted;
+      font-size: 15px;
+    }
+
+    a {
+      @include ref-link;
+    }
+  }
+
+  .ref-about {
+    background: $ref-warm;
+  }
+
+  .ref-about-prose {
+    columns: 2;
+    gap: 40px;
+    max-width: 960px;
+
+    @media (max-width: $ref-laptop-max) {
+      columns: 1;
+    }
+
+    p {
+      color: $ref-ink-body;
+      font-size: 17px;
+      line-height: 1.7;
+      margin-top: 0;
+      overflow-wrap: anywhere;
+      text-wrap: pretty;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    a {
+      @include ref-link;
+    }
+  }
+
+  // ---- share your work ----
+  .ref-cta {
+    background: var(--ref-band, #{$ref-band});
+    border-top: 1px solid var(--ref-band-edge, #{$ref-band-edge});
+  }
+
+  .ref-cta-inner {
+    align-items: center;
+    grid-template-columns: 340px minmax(0, 1fr) auto;
+
+    @media (max-width: $ref-laptop-max) {
+      grid-template-columns: 240px minmax(0, 1fr) auto;
+    }
+
+    @media (max-width: $ref-tablet-max) {
+      align-items: flex-start;
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .ref-cta-heading {
+    @include ref-sans;
+    color: var(--ref-link-strong, #{$ref-link-strong});
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .ref-cta-sub {
+    color: $ref-ink-body;
+    font-size: 17px;
+    margin: 0;
+    max-width: 640px;
+  }
+
+  .ref-cta-actions {
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ref-cta-terms {
+    @include ref-link(var(--ref-link-strong, #{$ref-link-strong}));
+    font-size: 14px;
+    text-align: right;
+
+    @media (max-width: $ref-tablet-max) {
+      text-align: left;
+    }
+  }
+
+  .ref-cta-button {
+    @include ref-deposit-button;
+  }
+
   // ---- home page text ----
   .ref-home-text {
     @include ref-gutter(192px, 96px);

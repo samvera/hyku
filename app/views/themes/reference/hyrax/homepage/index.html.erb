@@ -11,6 +11,10 @@
       <%= render 'hyrax/homepage/featured_works' %>
     </div>
   </div>
+
+  <%= render 'hyrax/homepage/featured_researcher' if @presenter&.display_featured_researcher? && @featured_researcher&.value.present? %>
+  <%= render 'hyrax/homepage/about' if @homepage_about_section_heading&.value.present? || @homepage_about_section_content&.value.present? %>
+  <%= render 'hyrax/homepage/share_your_work' if theme_share_work? %>
 </div>
 
 <%= render '/shared/select_work_type_modal', create_work_presenter: @presenter.create_work_presenter if @presenter.draw_select_work_modal? %>

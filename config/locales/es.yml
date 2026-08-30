@@ -1087,6 +1087,14 @@ es:
       featured_works:
         heading: "Obras destacadas"
         see_all: "Ver todas"
+      researcher:
+        heading: "Investigador destacado"
+      about:
+        heading: "Acerca de las colecciones"
+      cta:
+        heading: "Comparta su trabajo"
+        sub: "Deposite sus artículos, tesis y datos de investigación en el repositorio."
+        button: "Iniciar un depósito"
       stats:
         collections:
           one: Colección

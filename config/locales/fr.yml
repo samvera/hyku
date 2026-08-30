@@ -1079,6 +1079,19 @@ fr:
         and_others: "et autres"
         deposited: "Déposé le %{date}"
         embargo: "sous embargo"
+      collections:
+        heading: "Collections en vedette"
+        view_all: "Tout afficher"
+        works_count:
+          one: "1 document"
+          other: "%{count} documents"
+      featured:
+        unfeature_confirm: "Retirer ceci de la sélection ?"
+        reorder_hint: "Faites glisser un élément pour réordonner, puis enregistrez."
+        save_order: "Enregistrer l'ordre"
+      featured_works:
+        heading: "Documents en vedette"
+        see_all: "Tout afficher"
       stats:
         collections:
           one: Collection

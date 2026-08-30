@@ -943,6 +943,19 @@ en:
         and_others: "and others"
         deposited: "Deposited %{date}"
         embargo: "under embargo"
+      collections:
+        heading: "Featured collections"
+        view_all: "View all"
+        works_count:
+          one: "1 work"
+          other: "%{count} works"
+      featured:
+        unfeature_confirm: "Remove this from the featured list?"
+        reorder_hint: "Drag an item to reorder, then save."
+        save_order: "Save order"
+      featured_works:
+        heading: "Featured works"
+        see_all: "See all"
       stats:
         collections:
           one: Collection

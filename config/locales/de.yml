@@ -1077,6 +1077,19 @@ de:
         and_others: "und weitere"
         deposited: "Eingereicht am %{date}"
         embargo: "unter Sperrfrist"
+      collections:
+        heading: "Ausgewählte Sammlungen"
+        view_all: "Alle anzeigen"
+        works_count:
+          one: "1 Werk"
+          other: "%{count} Werke"
+      featured:
+        unfeature_confirm: "Aus der Auswahl entfernen?"
+        reorder_hint: "Zum Umsortieren ziehen, dann speichern."
+        save_order: "Reihenfolge speichern"
+      featured_works:
+        heading: "Ausgewählte Werke"
+        see_all: "Alle anzeigen"
       stats:
         collections:
           one: Sammlung

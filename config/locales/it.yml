@@ -1074,6 +1074,19 @@ it:
         and_others: "e altri"
         deposited: "Depositato il %{date}"
         embargo: "sotto embargo"
+      collections:
+        heading: "Collezioni in evidenza"
+        view_all: "Mostra tutte"
+        works_count:
+          one: "1 opera"
+          other: "%{count} opere"
+      featured:
+        unfeature_confirm: "Rimuovere questo dagli elementi in evidenza?"
+        reorder_hint: "Trascina un elemento per riordinare, poi salva."
+        save_order: "Salva ordine"
+      featured_works:
+        heading: "Opere in evidenza"
+        see_all: "Mostra tutte"
       stats:
         collections:
           one: Collezione

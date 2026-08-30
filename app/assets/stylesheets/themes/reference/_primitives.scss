@@ -28,6 +28,26 @@
   font-family: var(--ref-serif, #{$ref-serif-stack}) !important;
 }
 
+@mixin ref-mat($pad: 6px) {
+  align-items: center;
+  background: $ref-mat;
+  box-shadow: inset 0 0 0 1px $ref-mat-edge;
+  display: flex;
+  justify-content: center;
+  padding: $pad;
+
+  img {
+    box-shadow: $ref-shadow-object;
+    float: none;
+    height: auto;
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    padding: 0;
+    width: auto;
+  }
+}
+
 @mixin ref-focus-ring($color: var(--ref-link-strong, #{$ref-link-strong})) {
   box-shadow: none;
   outline: 2px solid $color;
@@ -47,6 +67,25 @@
   &:hover,
   &:focus {
     color: var(--ref-link-strong, #{$ref-link-strong});
+  }
+
+  &:focus-visible {
+    @include ref-focus-ring;
+  }
+}
+
+@mixin ref-title-link {
+  color: $ref-ink;
+  text-decoration: underline;
+  text-decoration-color: $ref-ink-faint;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-wrap: pretty;
+
+  &:hover,
+  &:focus {
+    color: var(--ref-link-strong, #{$ref-link-strong});
+    text-decoration-color: currentColor;
   }
 
   &:focus-visible {

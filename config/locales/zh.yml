@@ -1090,6 +1090,19 @@ zh:
         and_others: "等"
         deposited: "提交于 %{date}"
         embargo: "处于禁限期"
+      collections:
+        heading: "精选馆藏"
+        view_all: "查看全部"
+        works_count:
+          one: "%{count} 件作品"
+          other: "%{count} 件作品"
+      featured:
+        unfeature_confirm: "要将其从精选列表中移除吗？"
+        reorder_hint: "拖动条目以重新排序，然后保存。"
+        save_order: "保存排序"
+      featured_works:
+        heading: "精选作品"
+        see_all: "查看全部"
       stats:
         collections:
           one: 馆藏

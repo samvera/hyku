@@ -957,6 +957,19 @@ pt-BR:
         and_others: "e outros"
         deposited: "Depositado em %{date}"
         embargo: "sob embargo"
+      collections:
+        heading: "Acervos em destaque"
+        view_all: "Ver todos"
+        works_count:
+          one: "1 obra"
+          other: "%{count} obras"
+      featured:
+        unfeature_confirm: "Remover isto da lista de destaques?"
+        reorder_hint: "Arraste um item para reordenar e salve."
+        save_order: "Salvar ordem"
+      featured_works:
+        heading: "Obras em destaque"
+        see_all: "Ver todas"
       stats:
         collections:
           one: Acervo

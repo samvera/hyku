@@ -1074,6 +1074,19 @@ es:
         and_others: "y otros"
         deposited: "Depositado el %{date}"
         embargo: "bajo embargo"
+      collections:
+        heading: "Colecciones destacadas"
+        view_all: "Ver todas"
+        works_count:
+          one: "1 obra"
+          other: "%{count} obras"
+      featured:
+        unfeature_confirm: "¿Quitar esto de la lista destacada?"
+        reorder_hint: "Arrastre un elemento para reordenar y guarde."
+        save_order: "Guardar orden"
+      featured_works:
+        heading: "Obras destacadas"
+        see_all: "Ver todas"
       stats:
         collections:
           one: Colección

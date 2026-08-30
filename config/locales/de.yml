@@ -1105,6 +1105,25 @@ de:
         works:
           one: Werk
           other: Werke
+    show:
+      tabs_label: "Abschnitte des Datensatzes"
+      in_collection: "in"
+      tabs:
+        metadata: "Metadaten"
+        files: "Dateien"
+        children: "Untergeordnete Werke"
+      part_of:
+        heading: "Gehört zu"
+      citation:
+        heading: "Zitation"
+        style: "Zitierstil"
+        endnote: "Nach EndNote exportieren"
+        copy: "Kopieren"
+        copied: "Kopiert"
+        styles:
+          apa: "APA"
+          mla: "MLA"
+          chicago: "Chicago"
   screening_room:
     chrome:
       toggle_navigation: Navigation umschalten

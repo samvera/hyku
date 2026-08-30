@@ -971,6 +971,25 @@ en:
         works:
           one: Work
           other: Works
+    show:
+      tabs_label: "Record sections"
+      in_collection: "in"
+      tabs:
+        metadata: "Metadata"
+        files: "Files"
+        children: "Child works"
+      part_of:
+        heading: "Part of"
+      citation:
+        heading: "Citation"
+        style: "Citation style"
+        endnote: "Export to EndNote"
+        copy: "Copy"
+        copied: "Copied"
+        styles:
+          apa: "APA"
+          mla: "MLA"
+          chicago: "Chicago"
   screening_room:
     chrome:
       toggle_navigation: Toggle navigation

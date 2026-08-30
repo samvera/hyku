@@ -1102,6 +1102,25 @@ it:
         works:
           one: Opera
           other: Opere
+    show:
+      tabs_label: "Sezioni del record"
+      in_collection: "in"
+      tabs:
+        metadata: "Metadati"
+        files: "File"
+        children: "Opere collegate"
+      part_of:
+        heading: "Fa parte di"
+      citation:
+        heading: "Citazione"
+        style: "Stile di citazione"
+        endnote: "Esporta in EndNote"
+        copy: "Copia"
+        copied: "Copiato"
+        styles:
+          apa: "APA"
+          mla: "MLA"
+          chicago: "Chicago"
   screening_room:
     chrome:
       toggle_navigation: Attiva/disattiva la navigazione

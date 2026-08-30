@@ -1,20 +1,13 @@
 # frozen_string_literal: true
 
-# Helpers for the reference theme's home page.
-module ReferenceHomeHelper
+# Helpers for the reference theme's home and show pages.
+module ReferenceHelper
   def ref_home
-    @ref_home ||= Reference::HomepagePresenter.new(
-      search_service: controller.search_service,
-      response: @response,
-      collections: @collections,
-      featured_work_list: @featured_work_list,
-      featured_collection_list: @featured_collection_list,
-      current_ability:
-    )
+    theme_home(Reference::HomepagePresenter)
   end
 
-  def ref_creators(document, limit: 3)
-    names = Array(document.creator).reject(&:blank?)
+  def ref_creators(object, limit: 3)
+    names = Array(object.creator).reject(&:blank?)
     return if names.empty?
 
     shown = names.first(limit).join('; ')
@@ -34,5 +27,16 @@ module ReferenceHomeHelper
     return if uri.blank?
 
     (@ref_rights_service ||= Hyrax::RightsStatementService.new).label(uri)
+  end
+
+  def ref_show_panes(presenter)
+    @ref_show_panes ||= [].tap do |panes|
+      panes << [:metadata, t('reference.show.tabs.metadata'), nil]
+
+      files = theme_file_set_ids(presenter)
+      children = theme_child_work_ids(presenter)
+      panes << [:files, t('reference.show.tabs.files'), files.total_count] if files.any?
+      panes << [:children, t('reference.show.tabs.children'), children.total_count] if children.any?
+    end
   end
 end

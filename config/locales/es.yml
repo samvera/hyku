@@ -1102,6 +1102,25 @@ es:
         works:
           one: Obra
           other: Obras
+    show:
+      tabs_label: "Secciones del registro"
+      in_collection: "en"
+      tabs:
+        metadata: "Metadatos"
+        files: "Archivos"
+        children: "Obras secundarias"
+      part_of:
+        heading: "Forma parte de"
+      citation:
+        heading: "Cita"
+        style: "Estilo de cita"
+        endnote: "Exportar a EndNote"
+        copy: "Copiar"
+        copied: "Copiado"
+        styles:
+          apa: "APA"
+          mla: "MLA"
+          chicago: "Chicago"
   screening_room:
     chrome:
       toggle_navigation: Alternar la navegación

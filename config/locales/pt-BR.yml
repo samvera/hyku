@@ -985,6 +985,25 @@ pt-BR:
         works:
           one: Obra
           other: Obras
+    show:
+      tabs_label: "Seções do registro"
+      in_collection: "em"
+      tabs:
+        metadata: "Metadados"
+        files: "Arquivos"
+        children: "Obras vinculadas"
+      part_of:
+        heading: "Faz parte de"
+      citation:
+        heading: "Citação"
+        style: "Estilo de citação"
+        endnote: "Exportar para o EndNote"
+        copy: "Copiar"
+        copied: "Copiado"
+        styles:
+          apa: "APA"
+          mla: "MLA"
+          chicago: "Chicago"
   screening_room:
     chrome:
       toggle_navigation: Alternar navegação

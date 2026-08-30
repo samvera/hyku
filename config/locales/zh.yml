@@ -1118,6 +1118,25 @@ zh:
         works:
           one: 作品
           other: 作品
+    show:
+      tabs_label: "记录板块"
+      in_collection: "属于"
+      tabs:
+        metadata: "元数据"
+        files: "文件"
+        children: "子作品"
+      part_of:
+        heading: "所属"
+      citation:
+        heading: "引用"
+        style: "引用格式"
+        endnote: "导出到 EndNote"
+        copy: "复制"
+        copied: "已复制"
+        styles:
+          apa: "APA"
+          mla: "MLA"
+          chicago: "Chicago"
   screening_room:
     chrome:
       toggle_navigation: 切换导航

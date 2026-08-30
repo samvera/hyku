@@ -1107,6 +1107,25 @@ fr:
         works:
           one: Document
           other: Documents
+    show:
+      tabs_label: "Sections de la notice"
+      in_collection: "dans"
+      tabs:
+        metadata: "Métadonnées"
+        files: "Fichiers"
+        children: "Documents liés"
+      part_of:
+        heading: "Fait partie de"
+      citation:
+        heading: "Citation"
+        style: "Style de citation"
+        endnote: "Exporter vers EndNote"
+        copy: "Copier"
+        copied: "Copié"
+        styles:
+          apa: "APA"
+          mla: "MLA"
+          chicago: "Chicago"
   screening_room:
     chrome:
       toggle_navigation: Afficher/masquer la navigation

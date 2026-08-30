@@ -307,6 +307,7 @@ body.public-facing .hyc-banner .hyc-title h1 {
   --ref-on-dark: color-mix(in srgb, <%= appearance.primary_button_background_color %> <%= theme_brand_mix_on(appearance.primary_button_background_color, reference_hero_ground) %>%, #ffffff);
   --ref-link: <%= appearance.link_color %>;
   --ref-link-strong: <%= appearance.link_hover_color %>;
+  --ref-link-strong-ink: <%= theme_readable_ink(appearance.link_hover_color) %>;
   --ref-band: color-mix(in srgb, var(--ref-action) 8%, #f4f4f2);
   --ref-band-edge: color-mix(in srgb, var(--ref-action) 16%, var(--ref-band));
   --ref-band-rule: color-mix(in srgb, var(--ref-action) 10%, var(--ref-band));

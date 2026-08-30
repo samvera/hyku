@@ -473,18 +473,6 @@
     }
   }
 
-  .ref-chip {
-    background: var(--ref-chip, #{$ref-chip});
-    border: 1px solid var(--ref-chip-edge, #{$ref-chip-edge});
-    color: var(--ref-link-strong, #{$ref-link-strong});
-    display: inline-block;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    padding: 2px 8px;
-    text-transform: uppercase;
-  }
-
   .ref-deposit-date {
     color: $ref-ink;
     font-size: 13px;

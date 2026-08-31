@@ -236,13 +236,91 @@ $ref-chrome: join($ref-chrome-home, $ref-chrome-show, comma);
   }
 
   // ---- result rows ----
-  #documents .document {
+  // hyrax ships pb-3 on the row, whose !important supplies the bottom padding
+  ul.catalog > li.document {
     border-top: 1px solid $ref-rule;
-    padding: 18px 0;
+    padding-top: 18px;
   }
 
-  #documents .document:first-of-type {
+  ul.catalog > li.document:first-of-type {
     border-top: 0;
+  }
+
+  // ---- gallery, masonry and slideshow cards ----
+  // blacklight builds the card views from their own grids, so they need a frame
+  // of their own rather than the row separators the list view takes
+  .documents-gallery .document,
+  .documents-masonry .document,
+  .documents-slideshow .document {
+    padding: 0 0 28px;
+  }
+
+  // gallery_view.scss qualifies this with .document, so an unqualified selector
+  // loses and the card keeps bootstrap's rounded gray frame
+  .documents-gallery .document .thumbnail-container,
+  .documents-masonry .document .thumbnail-container {
+    background: $ref-surface;
+    border: 1px solid var(--ref-band-edge, #{$ref-band-edge});
+    border-radius: 0;
+    padding: 0;
+  }
+
+  .documents-gallery .document-thumbnail,
+  .documents-masonry .document-thumbnail {
+    background: var(--ref-band, #{$ref-band});
+    border-bottom: 1px solid var(--ref-band-edge, #{$ref-band-edge});
+    height: 240px;
+    padding: 14px;
+  }
+
+  // gallery_view.scss pins a 250x300 cover crop on .img-thumbnail, which crops a
+  // portrait scan and stretches a square placeholder; the class beats a bare img
+  .documents-gallery .document .document-thumbnail .img-thumbnail,
+  .documents-masonry .document .document-thumbnail .img-thumbnail {
+    height: auto;
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    width: auto;
+  }
+
+  .documents-gallery .document .document-thumbnail > a,
+  .documents-masonry .document .document-thumbnail > a {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    max-width: 100%;
+  }
+
+  .documents-gallery .caption-area,
+  .documents-masonry .caption-area {
+    padding: 14px 16px 4px;
+  }
+
+  // the caption carries bootstrap's .container, whose 15px gutter indents the
+  // title and metadata off the card edge
+  .documents-gallery .caption.container,
+  .documents-masonry .caption.container {
+    max-width: none;
+    padding: 0;
+  }
+
+  .documents-gallery dl.document-metadata,
+  .documents-masonry dl.document-metadata {
+    margin: 0;
+
+    dt {
+      @include ref-label(0.08em);
+      font-size: 12px;
+      margin: 8px 0 2px;
+    }
+
+    dd {
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 0;
+    }
   }
 
   #content-wrapper h4.search-result-title,

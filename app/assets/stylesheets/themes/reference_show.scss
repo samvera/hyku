@@ -190,7 +190,33 @@
 
   .ref-viewer-still {
     @include ref-mat(18px);
-    height: 320px;
+    min-height: 320px;
+
+    // the still arrives wrapped in a .center-block whose height is auto, so the
+    // mat's own max-height on the object resolves against nothing; hyrax renders
+    // its thumbnails 450px tall, so that cap shows one at its own size and the
+    // mat grows for the download link beneath it
+    img {
+      max-height: 450px;
+    }
+
+    > * {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-width: 100%;
+    }
+
+    > * > * {
+      max-width: 100%;
+      min-height: 0;
+    }
+
+    a {
+      @include ref-link(var(--ref-link-strong, #{$ref-link-strong}));
+      font-size: 14px;
+    }
   }
 
   // ---- description ----

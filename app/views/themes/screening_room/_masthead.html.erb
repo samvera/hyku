@@ -1,0 +1,36 @@
+<header aria-label="header" class="top-header">
+  <nav id="masthead" class="navbar navbar-expand-md navbar-dark justify-content-between <%= placement_class %>" role="navigation" aria-label="masthead">
+    <h1 class="sr-only"><%= application_name %></h1>
+    <%= render '/logo' %>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#top-navbar-collapse" aria-expanded="false" aria-label="<%= t('screening_room.chrome.toggle_navigation') %>">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="top-navbar-collapse">
+      <ul class="nav navbar-nav scr-nav">
+        <li class="nav-item">
+          <%= link_to t(:'hyrax.controls.home'), hyrax.root_path, class: 'nav-link',
+                      aria: { current: ('page' if current_page?(hyrax.root_path(locale: nil))) } %>
+        </li>
+        <li class="nav-item">
+          <%= link_to t(:'hyrax.controls.about'), hyrax.about_path, class: 'nav-link',
+                      aria: { current: ('page' if current_page?(hyrax.about_path(locale: nil))) } %>
+        </li>
+        <li class="nav-item">
+          <%= link_to t(:'hyrax.controls.help'), hyrax.help_path, class: 'nav-link',
+                      aria: { current: ('page' if current_page?(hyrax.help_path(locale: nil))) } %>
+        </li>
+        <li class="nav-item">
+          <%= link_to t(:'hyrax.controls.contact'), hyrax.contact_path, class: 'nav-link',
+                      aria: { current: ('page' if current_page?(hyrax.contact_path(locale: nil))) } %>
+        </li>
+      </ul>
+
+      <% if admin_host? %>
+        <%= render '/admin_util_links' %>
+      <% else %>
+        <%= render '/user_util_links' %>
+      <% end %>
+    </div>
+  </nav>
+</header>

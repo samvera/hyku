@@ -1,0 +1,31 @@
+<% if Hyrax.config.flexible? %>
+  <% shown, rest = pr_metadata_rows(presenter) %>
+
+  <dl class="work-show pt-3 <%= dom_class(presenter) %>" <%= presenter.microdata_type_to_html %>>
+    <% shown.each do |render_field, view_options| %>
+      <%= presenter.attribute_to_html(render_field, view_options) %>
+    <% end %>
+    <%= presenter.attribute_to_html(:embargo_release_date, render_as: :date, html_dl: true) %>
+    <%= presenter.attribute_to_html(:lease_expiration_date, render_as: :date, html_dl: true) %>
+  </dl>
+
+  <% if rest.any? %>
+    <details class="pr-fields">
+      <summary class="pr-fields-toggle">
+        <span class="pr-fields-more"><%= t('practice_research.show.fields_show_all', count: shown.size + rest.size) %></span>
+        <span class="pr-fields-less"><%= t('practice_research.show.fields_show_fewer') %></span>
+      </summary>
+      <dl class="work-show <%= dom_class(presenter) %>">
+        <% rest.each do |render_field, view_options| %>
+          <%= presenter.attribute_to_html(render_field, view_options) %>
+        <% end %>
+      </dl>
+    </details>
+  <% end %>
+<% else %>
+  <dl class="work-show pt-3 <%= dom_class(presenter) %>" <%= presenter.microdata_type_to_html %>>
+    <%= render 'attribute_rows', presenter: presenter %>
+    <%= presenter.attribute_to_html(:embargo_release_date, render_as: :date, html_dl: true) %>
+    <%= presenter.attribute_to_html(:lease_expiration_date, render_as: :date, html_dl: true) %>
+  </dl>
+<% end %>

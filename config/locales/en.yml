@@ -10,6 +10,11 @@ en:
     attributes:
       site:
         institution_name_full: Full institution name
+    errors:
+      messages:
+        already_an_authority: is already in use by another controlled vocabulary
+        cannot_remove_last_superadmin: cannot remove the last tenant superadmin from a public demo tenant
+        taken_as_source_key: '%{value} is already the source key of another controlled vocabulary'
   application:
     tagline: The next-generation repository solution
   blacklight:
@@ -24,6 +29,9 @@ en:
         show:
           additional_information: Additional rights information
     slideshow_info: Select an image to start the slideshow
+  date:
+    formats:
+      pr_short: "%-d %b %Y"
   errors:
     messages:
       valid_embed_url: must be a valid YouTube or Vimeo Embed URL.
@@ -45,8 +53,70 @@ en:
         submit: Remove
       user_search:
         submit: Go
+  heritage:
+    homepage:
+      intro_label: "Introduction"
+      hero:
+        headline: Explore the collection
+        search_label: Search the collection
+        search_placeholder: Enter search terms
+        search_button: Go
+        advanced: Advanced
+      browse:
+        heading: Browse
+        toggle: Show facets
+      featured:
+        unfeature_confirm: "Remove this from the featured list?"
+        reorder_hint: "Drag an item to reorder, then save."
+        save_order: "Save order"
+      featured_works:
+        heading: Featured works
+        see_all:
+          one: See all %{count} work
+          other: See all %{count} works
+      collections:
+        heading: Explore collections
+        view_all: View all collections
+      recent:
+        ago: "%{time} ago"
+        heading: Recently added
+        view_all: "View all"
+      researcher:
+        heading: Featured researcher
+      about:
+        heading: About the collections
+      cta:
+        heading: Share your work
+        sub: Deposit works into the repository.
+        button: Start a deposit
+    show:
+      citation:
+        heading: "Cite this"
+        style: "Citation style"
+        styles:
+          apa: "APA"
+          mla: "MLA"
+          chicago: "Chicago"
+        copy_visible: "Copy citation"
+        copied: "Copied"
+        endnote: "Download EndNote record"
+        note: "Provided as a suggestion only. Check it against your preferred style guide."
+      files:
+        as_format: as %{name}
+        heading: Files
+        count:
+          one: 1 file
+          other: "%{count} files"
+      children:
+        heading: Child works
+        count:
+          one: 1 work
+          other: "%{count} works"
+      part_of:
+        heading: Part of
   hyku:
     account:
+      signup_challenge_failed: Your registration could not be verified. Please try again.
       signup_disabled: Account registration is disabled
     deposit_wizard:
       admin_set:
@@ -64,6 +134,12 @@ en:
       details:
         heading: Describe your item
         subtext: Add the details for this work. Required fields are marked.
+      discard: Discard this deposit
+      discard_confirm: Discard this deposit? Anything you have entered will be lost, and the files you uploaded will be deleted. This cannot be undone.
+      discarded: Your deposit was discarded.
+      discarded_with_files:
+        one: Your deposit was discarded and the file you had uploaded was deleted.
+        other: Your deposit was discarded and the %{count} files you had uploaded were deleted.
       disabled: The guided deposit wizard is not enabled.
       done:
         deposit_another: Deposit another work
@@ -79,6 +155,7 @@ en:
         deposit_failed: Your work could not be deposited
         details_invalid: Some details need fixing before you can continue
         no_parent: Please choose a work to add this deposit to.
+        parent_not_allowed: That work cannot contain this deposit. Choose a different one.
         no_work_type: Please choose a work type to continue.
       extras:
         add: Add
@@ -189,7 +266,183 @@ en:
           type: Item type
           upload: Upload files
         label: Deposit progress
+    works:
+      errors:
+        parent_not_allowed: That work cannot contain this deposit.
     admin:
+      controlled_vocabularies: Controlled Vocabularies
+      controlled_vocabulary:
+        active: Active
+        at_position: "%{label} is already at position %{position} of %{total}"
+        awaiting_import: Not imported
+        awaiting_import_help: 'This vocabulary is available but has no terms in this tenant yet. Populate it by running: %{task}'
+        cancel_order: Cancel
+        confirm_back: Back to edit
+        confirm_create: Confirm and create
+        confirm_help: Check these values before the vocabulary is created.
+        confirm_permanent: A vocabulary cannot be deleted once created, and its source key cannot be changed afterwards, so a metadata profile citing it keeps working.
+        confirm_title: Confirm new vocabulary
+        create: Review vocabulary
+        create_term: Add term
+        created: '%{name} was created. Add its terms below.'
+        description: Description
+        description_help: Optional. Explains to other staff what this vocabulary is for.
+        download: Download
+        edit_field: 'Edit %{field}'
+        edit_heading: 'Edit %{name}'
+        edit_help: Change how this vocabulary reads for staff. Its source key is fixed, so a metadata profile citing it keeps working.
+        edit_title: Edit vocabulary
+        import:
+          additions_heading: Terms to add
+          applied: Imported %{additions} new and updated %{updates} existing terms.
+          applied_reordered: The terms were reordered to match the file.
+          back: Upload a different file
+          button: Import terms
+          column: Column
+          columns:
+            active: true or false. A blank cell adds a new term as active, and keeps an existing term's current state.
+            id: Optional. Defaults to the label, and cannot change once saved.
+            label: Required. What a depositor sees.
+          confirm: Confirm import
+          continue: Continue to review
+          download_template: Download current terms (CSV)
+          errors:
+            blank_label: 'Row %{line}: the label is blank.'
+            duplicate_column: 'The file has columns that mean the same thing: %{columns}.'
+            duplicate_id: 'Rows %{lines}: duplicate term id %{id}.'
+            empty: The file has no term rows.
+            encoding: The file must be UTF-8 text.
+            invalid_active: 'Row %{line}: active must be true or false.'
+            invalid_term: 'Row %{line}: not a term entry.'
+            invalid_yaml: 'The file could not be read as yaml: %{message}'
+            malformed_csv: 'The file could not be read as CSV: %{message}'
+            missing_label: The file needs a label column.
+            not_a_vocabulary: The yaml file has no terms list.
+            too_long: 'Row %{line}: the id and label can be at most %{max} characters.'
+            too_many_rows: The file has more than %{max} rows. Split it and import the parts separately.
+            unsupported: Upload a .csv, .yml, or .yaml file.
+          errors_heading: Nothing was imported. Fix these rows and upload the file again.
+          example: Example
+          field: Field
+          file_help: CSV or yaml, up to 5 MB and 50,000 rows.
+          file_label: Terms file
+          file_missing: Choose a CSV or yaml file to import.
+          file_too_large: That file is too large. The importer accepts files up to 5 MB.
+          from: Current
+          heading: 'Import terms into %{name}'
+          help: Upload a file of terms to add to this vocabulary or update its existing terms. Nothing is saved until you confirm the review.
+          more_rows: and %{count} more
+          no_changes: This file matches the current terms. There is nothing to import.
+          notes: Notes
+          payload_invalid: The review expired or its data was corrupted. Upload the file again.
+          reordered: The terms will be reordered to match the file.
+          review_heading: 'Review import into %{name}'
+          review_title: Review import
+          rules:
+            missing_column: A column missing from the file leaves that attribute untouched.
+            missing_rows: Rows missing from the file never remove terms; deactivate a term with active=false.
+            order: Terms take their order from the file's row order. To reorder terms, edit a full download and re-import it.
+            yaml: A yaml file uses the same format as the yaml download.
+          stale: This vocabulary changed while you were reviewing. Check the updated comparison below and confirm again.
+          summary: '%{additions} to add, %{updates} to change (%{deactivations} to deactivate), %{unchanged} unchanged.'
+          template_heading: File format
+          title: Import terms
+          to: New
+          updates_heading: Terms to change
+          warnings:
+            partial_order: The file leaves out existing terms, so its row order was not applied. To reorder, edit a full download.
+            source_key_mismatch: This file was exported from %{source_key} but is being imported into %{name}.
+            unknown_columns: 'Ignored columns: %{columns}.'
+          warnings_heading: Warnings
+        inactive: Inactive
+        label: Label
+        label_hint: What a depositor sees in the form. Safe to reword without affecting stored records.
+        move_earlier: Move %{label} earlier
+        move_later: Move %{label} later
+        moved: Moved %{label} to position %{position} of %{total}
+        name: Vocabulary
+        new_help: Name the vocabulary, and its source key is set from that name. The key is what a metadata profile cites, so it cannot be changed afterwards.
+        new_term_heading: 'Add a term to %{vocabulary}'
+        new_term_help: Name the term as a depositor should see it. The term id is what a record stores, and cannot be changed once terms are in use.
+        new_term_title: Add term
+        new_title: New vocabulary
+        no_description: None given
+        no_terms: This vocabulary has no terms yet.
+        none: No controlled vocabularies have been set up for this tenant yet.
+        order: Order
+        order_hint: The order terms are offered in on a deposit form.
+        order_saved: The term order was saved.
+        order_stale: The terms changed while you were reordering them, so the order was not saved. Check the current order and try again.
+        order_unsaved: Save the order before retiring or restoring a term. Retiring one now would discard the order you have set.
+        order_unsaved_short: unavailable until the order is saved
+        origin: Source
+        origin_hint: Where the vocabulary is defined, and therefore whether its terms can be edited here.
+        origins:
+          cached: Imported copy
+          database: This tenant
+          file: Configuration file
+          remote: External service
+        providers:
+          crossref: Crossref
+          discogs: Discogs
+          fast: OCLC FAST
+          geonames: GeoNames
+          getty: Getty
+          loc: Library of Congress
+          mesh: MeSH
+          tgnlang: Getty TGN Languages
+        read_only:
+          file: This vocabulary is defined in a configuration file, so its terms cannot be changed here.
+        ready: Ready
+        reorder_handle: 'Reorder %{label}: drag, or use the arrow keys'
+        reorder_hint: Drag a term, or use the arrow buttons, to set the order it is offered in on a deposit form. Save the order when you are done.
+        restore: Restore
+        retire: Retire
+        retired_count:
+          one: (%{count} retired)
+          other: (%{count} retired)
+        save: Save changes
+        save_order: Save order
+        show_title: 'Controlled Vocabulary: %{name}'
+        source_key: Source key
+        source_key_help: Paste a source key into a metadata profile field to control that field with this vocabulary. Vocabularies managed in this tenant can be edited here; those defined in a configuration file or by an external service cannot.
+        source_key_hint: Paste this into a metadata profile field to control that field with this vocabulary.
+        static_forms: Metadata profiles are not enabled, so deposit forms read this vocabulary from a configuration file. Changing its terms requires a developer.
+        status: Status
+        status_action: Change status
+        status_hint: Whether this vocabulary is ready to use, or needs something set up first.
+        status_unknown: Unspecified
+        term_id: Term ID
+        term_limit:
+          one: (showing the first %{count})
+          other: (showing the first %{count})
+        term_created: '%{label} was added.'
+        term_id_from_label: Leave blank to use the label as the term id.
+        term_id_help: The term ID is the value stored on a record, and the value to supply in a Bulkrax import. The label is only what a depositor sees.
+        term_id_hint: The value stored on a record, and the value to supply in a Bulkrax import.
+        term_id_immutable: It cannot be changed afterwards.
+        term_restored: '%{label} was restored, and is offered on the deposit form again.'
+        term_retired: '%{label} was retired, and is no longer offered on the deposit form.'
+        term_total:
+          one: 1 term
+          other: "%{count} terms"
+        terms: Terms
+        terms_elsewhere:
+          cached: This vocabulary holds an imported copy of an external one, far too large to list here. Its terms are offered on the deposit form.
+          generic: This vocabulary's terms are not listed here.
+          remote: Terms come from the external service, so there is no list to show here.
+        terms_unavailable: This vocabulary's terms cannot be read, so they are not listed here. Its configuration file may be missing.
+        unconfigured: Needs setup
+        unconfigured_help: This service needs credentials before it can be used. Until then a field citing it accepts free text instead of offering suggestions.
+        unused: No metadata property uses this vocabulary.
+        unused_profile_hint: To start using it, add this vocabulary's source key to a property's controlled values in the tenant's metadata profile.
+        updated: '%{name} was updated.'
+        used_by: Used by properties
+        used_by_hint: The metadata properties controlled by this vocabulary, as named in Bulkrax imports and metadata profiles.
+        used_by_work_types: 'Available on:'
+        work_types:
+          etd_resource: ETD
+          oer_resource: OER
       flash:
         access_denied: You are not authorized to view this page
       google_analytics_settings:
@@ -305,6 +558,15 @@ en:
         works_over_time: Works over time
       title: Administration
       work_types: Available Work Types
+    demo_banner:
+      acceptable_use: Acceptable use policy
+      aria_label: Demo environment notice
+      dismiss: Dismiss this notice for today
+      last_reset: 'Last reset: %{time}.'
+      not_yet_reset: It has not been reset yet.
+      reset_schedule: Content and settings reset nightly.
+      title: Demo environment
+      version: Running Hyku v%{version}.
     footer:
       admin_login: Administrator login
     generic_type:
@@ -360,6 +622,9 @@ en:
         show:
           header: Manage User
           update: Update
+    search:
+      form:
+        advanced: Advanced
     splash:
       account_denied: You are not authorized to create tenants
       account_login: Login to get started
@@ -500,6 +765,89 @@ en:
     collections:
       cannot:
         manage_discovery: You do not have permission to change this Collection's discovery setting
+  practice_research:
+    homepage:
+      hero:
+        title: Practice research, kept together
+        lede: Artworks, documentation and writing, deposited as whole projects, in the order their makers intended.
+        search_label: Search the repository
+        search_placeholder: Search collections and works
+        search_button: Search
+        advanced_search: Advanced search
+        browse_everything: Browse everything
+      about:
+        heading: What this repository holds
+        first_paragraph: Practice research rarely arrives as a single file. A commission might leave behind drawings, a maquette, a film of the opening, a review and an article written years later, each meaningless on its own.
+        second_paragraph: Depositing whole projects keeps those parts together and in sequence, with a context statement explaining what the collection argues. Everything here is deposited by the researchers themselves.
+        about_link: About this repository
+      recent:
+        heading: Recently uploaded
+        all: See all
+        all_label: See all recently uploaded works
+        in_parent: in %{title}
+      researcher:
+        heading: Featured researcher
+      browse:
+        work_types: Browse by work type
+        resource_types: Browse by resource type
+        subjects: Browse by subject
+      featured:
+        heading: Featured works
+        view_all: View all works
+        collections_heading: Featured collections
+        view_all_collections: View all collections
+        works_in_collection:
+          one: 1 work
+          other: "%{count} works"
+        reorder_hint: "Drag an item to reorder, then save."
+        save_order: Save order
+        unfeature_confirm: Remove this work from the featured list?
+        unfeature_collection_confirm: Remove this collection from the featured list?
+        contributors_and_others:
+          one: "%{names} and 1 other"
+          other: "%{names} and %{count} others"
+      intro_label: Repository overview
+      stats:
+        works:
+          one: work
+          other: works
+        collections:
+          one: collection
+          other: collections
+    show:
+      tabs_label: Record sections
+      tabs:
+        context: Context statement
+        metadata: Additional information
+        files: Files
+      files_heading: Files on this record
+      items:
+        default: Items
+      metadata_heading: Descriptive metadata
+      placement_heading: Part of
+      parent_work_label: Parent work
+      fields_show_all: Show all %{count} fields
+      fields_show_fewer: Show fewer fields
+      files_note: Files deposited against this record itself. Files belonging to the works this record contains live on those works.
+      items_note: The works this record contains, in the order they were deposited.
+      files_count:
+        one: 1 file
+        other: "%{count} files"
+      items_count:
+        one: 1 item
+        other: "%{count} items"
+      relationships: Relationships
+      cite: Cite
+      endnote: Download for EndNote
+      permalink: Permalink
+      contributors: Contributors
+      citation_style: Citation style
+      citation_styles:
+        apa: APA (7th ed.)
+        mla: MLA (9th ed.)
+        chicago: Chicago
+      citation_copy: Copy
+      citation_copied: Copied
   proprietor:
     accounts:
       edit:
@@ -507,6 +855,10 @@ en:
         data_cite_endpoint: DataCite Endpoint
         fcrepo_endpoint: Fedora Endpoint
         header: Editing Account
+        public_demo_tenant:
+          disabled: 'No'
+          enabled: 'Yes'
+          immutable: This setting is defined when the account is created and cannot be changed.
         solr_endpoint: Solr Endpoint
       index:
         actions: Actions
@@ -566,6 +918,64 @@ en:
         edit: Edit
         header: Manage User
         update: Update
+  screening_room:
+    chrome:
+      toggle_navigation: Toggle navigation
+    homepage:
+      about:
+        heading: About the collections
+      collections:
+        heading: Featured collections
+        unfeature_confirm: Remove this collection from the featured list?
+        view_all: View all collections
+        works_count:
+          one: 1 work
+          other: '%{count} works'
+      cta:
+        button: Start a deposit
+        heading: Share your work
+        sub: Deposit recordings, transfers and production papers into the repository.
+      lede:
+        collections: Collections
+        label: About the collection
+        works: Works
+      player:
+        close: Close
+      recent:
+        ago: "%{time} ago"
+        heading: Latest additions
+        view_all: All recent additions
+      researcher:
+        heading: Featured researcher
+      spotlight:
+        editor_heading: Featured works
+        featured: Featured
+        hold: Pause
+        label: Featured works
+        quick_view: Quick view
+        reorder_hint: Drag an item to change the order it appears in, then save.
+        resume: Play
+        save_order: Save order
+        segment: 'Show %{title}'
+        unfeature_confirm: Remove this work from the featured list?
+        view_work: View work
+    show:
+      citation:
+        copied: Copied
+        copy_visible: Copy citation
+        endnote: Download EndNote record
+        heading: Cite this
+        note: Provided as a suggestion only. Check it against your preferred style guide.
+        style: Citation style
+        styles:
+          apa: APA
+          chicago: Chicago
+          mla: MLA
+      items:
+        count:
+          one: 1 item
+          other: '%{count} items'
+        meta: "%{visibility} · %{date}"
   single_signon:
     index:
       sign_in_with_provider: Sign in with %{provider}

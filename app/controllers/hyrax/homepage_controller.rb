@@ -80,6 +80,17 @@ module Hyrax
       load_shared_info
     end
 
+    # add this method to vary blacklight config and user_params
+    def search_service(*_args)
+      Hyrax::SearchService.new(
+        config: ::CatalogController.new.blacklight_config,
+        user_params: params.except(:q, :page),
+        scope: self,
+        current_ability:,
+        search_builder_class:
+      )
+    end
+
     # Added from Blacklight 6.23.0 to change url for facets on home page
     protected
 
@@ -89,6 +100,12 @@ module Hyrax
     def search_action_url(options = {})
       # Rails 4.2 deprecated url helpers accepting string keys for 'controller' or 'action'
       main_app.search_catalog_path(options)
+    end
+
+    # OVERRIDE Blacklight 7.41.0: Blacklight resolves the facet "more" link against the
+    # current controller, which has no facet action, so the modal loaded the homepage.
+    def search_facet_path(options = {})
+      main_app.facet_catalog_path(options)
     end
 
     private
@@ -117,7 +134,7 @@ module Hyrax
     def collections(rows: 6)
       Hyrax::CollectionsService.new(self).search_results do |builder|
         builder.rows(rows)
-        builder.merge(sort: "title_ssi")
+        builder.merge(sort: "title_ssi asc")
       end
     rescue Blacklight::Exceptions::ECONNREFUSED, Blacklight::Exceptions::InvalidRequest
       []
@@ -140,17 +157,6 @@ module Hyrax
     # COPIED from Hyrax::HomepageController
     def sort_field
       "date_uploaded_dtsi desc"
-    end
-
-    # add this method to vary blacklight config and user_params
-    def search_service(*_args)
-      Hyrax::SearchService.new(
-        config: ::CatalogController.new.blacklight_config,
-        user_params: params.except(:q, :page),
-        scope: self,
-        current_ability:,
-        search_builder_class:
-      )
     end
   end
 end

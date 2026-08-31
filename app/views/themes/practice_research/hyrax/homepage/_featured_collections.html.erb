@@ -1,0 +1,37 @@
+<% featured = pr_home.featured_collections %>
+<% editable = can?(:update, FeaturedCollection) && @featured_collection_list.present? && !@featured_collection_list.empty? %>
+
+<% if featured.any? || editable %>
+  <div class="pr-collections-band">
+  <section class="pr-section pr-featured">
+    <div class="pr-section-head">
+      <h2 class="pr-section-title"><%= t('practice_research.homepage.featured.collections_heading') %></h2>
+      <%= link_to t('practice_research.homepage.featured.view_all_collections'),
+                  main_app.search_catalog_path(f: { generic_type_sim: ['Collection'] }),
+                  class: 'pr-section-link' %>
+    </div>
+
+    <% if editable %>
+      <%= form_for [main_app, @featured_collection_list] do |f| %>
+        <div class="dd pr-reorder" id="ff"
+             data-unfeature-confirm="<%= t('practice_research.homepage.featured.unfeature_collection_confirm') %>">
+          <ol class="pr-portfolio-grid pr-reorder-grid list-unstyled">
+            <%= f.fields_for :featured_collections do |featured_collection| %>
+              <%= render 'hyrax/homepage/sortable_featured_collections', f: featured_collection %>
+            <% end %>
+          </ol>
+        </div>
+
+        <p class="pr-featured-reorder-hint"><%= t('practice_research.homepage.featured.reorder_hint') %></p>
+        <%= f.submit(t('practice_research.homepage.featured.save_order'), class: 'pr-featured-save') %>
+      <% end %>
+    <% else %>
+      <ul class="pr-portfolio-grid" role="list">
+        <% featured.each do |collection| %>
+          <li><%= render 'hyrax/homepage/featured_collection_fields', featured: collection.presenter %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  </section>
+  </div>
+<% end %>

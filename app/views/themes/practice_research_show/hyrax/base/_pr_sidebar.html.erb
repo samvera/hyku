@@ -1,0 +1,66 @@
+<aside class="pr-sidebar">
+  <% if presenter.show_pdf_download_button? %>
+    <%= render 'download_pdf', presenter: presenter %>
+  <% end %>
+
+  <% participants = Array(presenter.solr_document.try(:participants)).select { |row| row.is_a?(Hash) } %>
+  <% if participants.any? %>
+    <section class="pr-card">
+      <h2 class="pr-card-head"><%= t('practice_research.show.contributors') %></h2>
+      <div class="pr-card-body">
+        <ul class="pr-card-rows list-unstyled">
+          <% participants.each do |row| %>
+            <% next if row['name'].blank? %>
+            <li class="pr-card-row">
+              <span class="pr-contributor-name"><%= row['name'] %></span>
+              <% if row['role'].present? %>
+                <span class="pr-card-muted">&mdash; <%= row['role'] %></span>
+              <% end %>
+              <% if row['title'].present? %>
+                <span class="pr-card-muted"><%= row['title'] %></span>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </section>
+  <% end %>
+
+  <% relationships = Array(presenter.solr_document.try(:relationships)).select { |row| row.is_a?(Hash) } %>
+  <% if relationships.any? %>
+    <section class="pr-card">
+      <h2 class="pr-card-head"><%= t('practice_research.show.relationships') %></h2>
+      <div class="pr-card-body">
+        <ul class="pr-card-rows list-unstyled">
+          <% relationships.each do |row| %>
+            <% next if row['item'].blank? %>
+            <li class="pr-card-row">
+              <% if row['type'].present? %>
+                <span class="pr-relationship-type"><%= row['type'] %></span>
+              <% end %>
+              <% if Hyrax::CompoundWorkResolver.url?(row['item']) %>
+                <%= link_to row['item'], row['item'], target: '_blank', rel: 'noopener' %>
+              <% else %>
+                <% title, path = Hyrax::CompoundWorkResolver.title_and_path(row['item']) %>
+                <%= link_to title, path %>
+              <% end %>
+              <% if row['title'].present? %>
+                <span class="pr-card-muted">&mdash; <%= row['title'] %></span>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </section>
+  <% end %>
+
+  <% pr_card_fields(presenter).each do |field| %>
+    <% begin %>
+      <%= render 'hyrax/compounds/compound_card', presenter: presenter, field: field %>
+    <% rescue StandardError => e %>
+      <% Hyrax.logger.warn("practice_research_show sidebar, #{field} card: #{e.message}") %>
+    <% end %>
+  <% end %>
+
+  <%= render 'pr_citation', presenter: presenter %>
+</aside>

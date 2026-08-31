@@ -1,0 +1,45 @@
+<% types = pr_home.browse_types %>
+<% by_model = types[:field] == 'has_model_ssim' %>
+<% subjects = pr_home.subjects %>
+
+<% if types[:items].any? || subjects.any? %>
+  <div class="pr-browse <%= 'pr-browse-single' unless types[:items].any? && subjects.any? %>">
+    <% if types[:items].any? %>
+      <section class="pr-section">
+        <div class="pr-section-head">
+          <h2 class="pr-section-title">
+            <%= t("practice_research.homepage.browse.#{by_model ? 'work_types' : 'resource_types'}") %>
+          </h2>
+        </div>
+
+        <ul class="pr-type-tiles" role="list">
+          <% types[:items].each do |value, count| %>
+            <li>
+              <%= link_to main_app.search_catalog_path(f: { types[:field] => [value] }), class: 'pr-type-tile' do %>
+                <span class="pr-type-name"><%= by_model ? work_type_facet_label(value) : value %></span>
+                <span class="pr-type-count"><%= number_with_delimiter(count) %></span>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </section>
+    <% end %>
+
+    <% if subjects.any? %>
+      <section class="pr-section">
+        <div class="pr-section-head">
+          <h2 class="pr-section-title"><%= t('practice_research.homepage.browse.subjects') %></h2>
+        </div>
+
+        <ul class="pr-subject-chips" role="list">
+          <% subjects.each do |item| %>
+            <li>
+              <%= link_to item.value, main_app.search_catalog_path(f: { subject_sim: [item.value] }),
+                          class: 'pr-subject-chip' %>
+            </li>
+          <% end %>
+        </ul>
+      </section>
+    <% end %>
+  </div>
+<% end %>

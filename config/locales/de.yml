@@ -3,13 +3,18 @@ de:
   activefedora:
     models:
       etd: ETD
-      generic_work: Arbeiten
+      generic_work: Arbeit
       image: Bild
       oer: OER
   activerecord:
     attributes:
       site:
         institution_name_full: Vollständiger Name der Institution
+    errors:
+      messages:
+        already_an_authority: wird bereits von einem anderen kontrollierten Vokabular verwendet
+        taken_as_source_key: '%{value} ist bereits der Quellschlüssel eines anderen kontrollierten Vokabulars'
+        cannot_remove_last_superadmin: der letzte Superadministrator eines öffentlichen Demo-Mandanten kann nicht entfernt werden
   application:
     tagline: Die Next-Generation Repository-Lösung
   blacklight:
@@ -163,6 +168,9 @@ de:
         last_login: Letzter Zugriff
         name: Name
         user_key: Benutzername
+  date:
+    formats:
+      pr_short: "%-d. %b %Y"
   errors:
     messages:
       valid_embed_url: muss eine gültige YouTube- oder Vimeo-Einbettungs-URL sein.
@@ -184,6 +192,67 @@ de:
         submit: Entfernen
       user_search:
         submit: Suche
+  heritage:
+    homepage:
+      intro_label: "Einführung"
+      hero:
+        headline: Die Sammlung entdecken
+        search_label: Sammlung durchsuchen
+        search_placeholder: Suchbegriffe eingeben
+        search_button: Los
+        advanced: Erweitert
+      browse:
+        heading: Durchstöbern
+        toggle: Facetten anzeigen
+      featured:
+        unfeature_confirm: "Dies aus der Auswahl entfernen?"
+        reorder_hint: "Element ziehen, um neu anzuordnen, dann speichern."
+        save_order: "Reihenfolge speichern"
+      featured_works:
+        heading: Ausgewählte Werke
+        see_all:
+          one: "%{count} Werk anzeigen"
+          other: "Alle %{count} Werke anzeigen"
+      collections:
+        heading: Sammlungen erkunden
+        view_all: Alle Sammlungen anzeigen
+      recent:
+        ago: "vor %{time}"
+        heading: Kürzlich hinzugefügt
+        view_all: "Alle anzeigen"
+      researcher:
+        heading: Vorgestellte Forschende
+      about:
+        heading: Über die Sammlungen
+      cta:
+        heading: Teilen Sie Ihre Arbeit
+        sub: Hinterlegen Sie Werke im Repositorium.
+        button: Einreichung starten
+    show:
+      citation:
+        heading: "Zitieren"
+        style: "Zitierstil"
+        styles:
+          apa: "APA"
+          mla: "MLA"
+          chicago: "Chicago"
+        copy_visible: "Zitat kopieren"
+        copied: "Kopiert"
+        endnote: "EndNote-Datensatz herunterladen"
+        note: "Nur als Vorschlag gedacht. Bitte anhand des von Ihnen verwendeten Zitierstils prüfen."
+      files:
+        as_format: als %{name}
+        heading: Dateien
+        count:
+          one: 1 Datei
+          other: "%{count} Dateien"
+      children:
+        heading: Untergeordnete Werke
+        count:
+          one: 1 Werk
+          other: "%{count} Werke"
+      part_of:
+        heading: Teil von
   hyku:
     account:
       signup_disabled: Kontoanmeldung ist deaktiviert
@@ -329,6 +398,179 @@ de:
           upload: Dateien hochladen
         label: Fortschritt der Einreichung
     admin:
+      controlled_vocabularies: Kontrollierte Vokabulare
+      controlled_vocabulary:
+        active: Aktiv
+        at_position: '%{label} ist bereits an Position %{position} von %{total}'
+        awaiting_import: Nicht importiert
+        awaiting_import_help: 'Dieses Vokabular ist verfügbar, enthält in diesem Mandanten aber noch keine Begriffe. Befüllen Sie es durch Ausführen von: %{task}'
+        cancel_order: Abbrechen
+        confirm_back: Zurück zum Bearbeiten
+        confirm_create: Bestätigen und erstellen
+        confirm_help: Prüfen Sie diese Werte, bevor das Vokabular erstellt wird.
+        confirm_permanent: Ein Vokabular kann nach dem Erstellen nicht gelöscht werden, und sein Quellschlüssel kann danach nicht geändert werden, sodass ein Metadatenprofil, das darauf verweist, weiterhin funktioniert.
+        confirm_title: Neues Vokabular bestätigen
+        create: Vokabular prüfen
+        create_term: Begriff hinzufügen
+        created: '%{name} wurde erstellt. Fügen Sie unten die Begriffe hinzu.'
+        description: Beschreibung
+        description_help: Optional. Erklärt anderen Mitarbeitenden, wofür dieses Vokabular gedacht ist.
+        download: Herunterladen
+        edit_field: '%{field} bearbeiten'
+        edit_heading: '%{name} bearbeiten'
+        edit_help: Ändern Sie, wie dieses Vokabular für Mitarbeitende lautet. Sein Quellschlüssel ist fest, sodass ein Metadatenprofil, das ihn zitiert, weiterhin funktioniert.
+        edit_title: Vokabular bearbeiten
+        import:
+          additions_heading: Hinzuzufügende Begriffe
+          applied: Es wurden %{additions} neue Begriffe importiert und %{updates} bestehende aktualisiert.
+          applied_reordered: Die Begriffe wurden neu geordnet, um der Datei zu entsprechen.
+          back: Eine andere Datei hochladen
+          button: Begriffe importieren
+          column: Spalte
+          columns:
+            active: true oder false. Eine leere Zelle legt einen neuen Begriff als aktiv an und behält bei einem bestehenden Begriff den aktuellen Zustand bei.
+            id: Optional. Standardmäßig das label; kann nach dem Speichern nicht mehr geändert werden.
+            label: Erforderlich. Was ein Hinterleger sieht.
+          confirm: Import bestätigen
+          continue: Weiter zur Überprüfung
+          download_template: Aktuelle Begriffe herunterladen (CSV)
+          errors:
+            blank_label: 'Zeile %{line}: die Bezeichnung ist leer.'
+            duplicate_column: 'Die Datei enthält Spalten mit derselben Bedeutung: %{columns}.'
+            duplicate_id: 'Zeilen %{lines}: doppelte Begriffs-ID %{id}.'
+            empty: Die Datei enthält keine Begriffszeilen.
+            encoding: Die Datei muss UTF-8-Text sein.
+            invalid_active: 'Zeile %{line}: active muss true oder false sein.'
+            invalid_term: 'Zeile %{line}: kein Begriffseintrag.'
+            invalid_yaml: 'Die Datei konnte nicht als yaml gelesen werden: %{message}'
+            malformed_csv: 'Die Datei konnte nicht als CSV gelesen werden: %{message}'
+            missing_label: Die Datei benötigt eine label-Spalte.
+            not_a_vocabulary: Die yaml-Datei enthält keine Begriffsliste.
+            too_long: 'Zeile %{line}: ID und Bezeichnung dürfen höchstens %{max} Zeichen lang sein.'
+            too_many_rows: Die Datei hat mehr als %{max} Zeilen. Teilen Sie sie auf und importieren Sie die Teile einzeln.
+            unsupported: Laden Sie eine .csv-, .yml- oder .yaml-Datei hoch.
+          errors_heading: Es wurde nichts importiert. Korrigieren Sie diese Zeilen und laden Sie die Datei erneut hoch.
+          example: Beispiel
+          field: Feld
+          file_help: CSV oder yaml, bis zu 5 MB und 50,000 Zeilen.
+          file_label: Begriffsdatei
+          file_missing: Wählen Sie eine CSV- oder yaml-Datei zum Importieren aus.
+          file_too_large: Diese Datei ist zu groß. Der Import akzeptiert Dateien bis zu 5 MB.
+          from: Aktuell
+          heading: 'Begriffe in %{name} importieren'
+          help: Laden Sie eine Datei mit Begriffen hoch, um sie diesem Vokabular hinzuzufügen oder seine bestehenden Begriffe zu aktualisieren. Nichts wird gespeichert, bis Sie die Überprüfung bestätigen.
+          more_rows: und %{count} weitere
+          no_changes: Diese Datei stimmt mit den aktuellen Begriffen überein. Es gibt nichts zu importieren.
+          notes: Hinweise
+          payload_invalid: Die Überprüfung ist abgelaufen oder ihre Daten wurden beschädigt. Laden Sie die Datei erneut hoch.
+          reordered: Die Begriffe werden neu geordnet, um der Datei zu entsprechen.
+          review_heading: 'Import in %{name} überprüfen'
+          review_title: Import überprüfen
+          rules:
+            missing_column: Eine in der Datei fehlende Spalte lässt dieses Attribut unverändert.
+            missing_rows: In der Datei fehlende Zeilen entfernen niemals Begriffe; deaktivieren Sie einen Begriff mit active=false.
+            order: Die Begriffe übernehmen ihre Reihenfolge aus der Zeilenreihenfolge der Datei. Um Begriffe neu zu ordnen, bearbeiten Sie einen vollständigen Download und importieren Sie ihn erneut.
+            yaml: Eine yaml-Datei verwendet dasselbe Format wie der yaml-Download.
+          stale: Dieses Vokabular hat sich während Ihrer Überprüfung geändert. Prüfen Sie den aktualisierten Vergleich unten und bestätigen Sie erneut.
+          summary: '%{additions} hinzuzufügen, %{updates} zu ändern (%{deactivations} zu deaktivieren), %{unchanged} unverändert.'
+          template_heading: Dateiformat
+          title: Begriffe importieren
+          to: Neu
+          updates_heading: Zu ändernde Begriffe
+          warnings:
+            partial_order: Die Datei lässt bestehende Begriffe aus, daher wurde ihre Zeilenreihenfolge nicht übernommen. Zum Neuordnen bearbeiten Sie einen vollständigen Download.
+            source_key_mismatch: Diese Datei wurde aus %{source_key} exportiert, wird aber in %{name} importiert.
+            unknown_columns: 'Ignorierte Spalten: %{columns}.'
+          warnings_heading: Warnungen
+        inactive: Inaktiv
+        label: Bezeichnung
+        label_hint: Was ein Hinterleger im Formular sieht. Kann gefahrlos umformuliert werden, ohne gespeicherte Datensätze zu beeinflussen.
+        move_earlier: '%{label} nach vorne verschieben'
+        move_later: '%{label} nach hinten verschieben'
+        moved: '%{label} auf Position %{position} von %{total} verschoben'
+        name: Vokabular
+        new_help: Benennen Sie das Vokabular; sein Quellschlüssel wird aus diesem Namen gebildet. Der Schlüssel ist, was ein Metadatenprofil zitiert, und kann danach nicht mehr geändert werden.
+        new_term_heading: Einen Begriff zu %{vocabulary} hinzufügen
+        new_term_help: Benennen Sie den Begriff so, wie Einreichende ihn sehen sollen. Die Begriffs-ID ist, was ein Datensatz speichert, und kann nicht mehr geändert werden, sobald Begriffe verwendet werden.
+        new_term_title: Begriff hinzufügen
+        new_title: Neues Vokabular
+        no_description: Keine angegeben
+        no_terms: Dieses Vokabular enthält noch keine Begriffe.
+        none: Für diesen Mandanten wurden noch keine kontrollierten Vokabulare eingerichtet.
+        order: Reihenfolge
+        order_hint: Die Reihenfolge, in der die Begriffe in einem Abgabeformular angeboten werden.
+        order_saved: Die Reihenfolge der Begriffe wurde gespeichert.
+        order_stale: Die Begriffe haben sich geändert, während Sie sie neu sortiert haben. Die Reihenfolge wurde nicht gespeichert. Prüfen Sie die aktuelle Reihenfolge und versuchen Sie es erneut.
+        order_unsaved: Speichern Sie die Reihenfolge, bevor Sie einen Begriff zurückziehen oder wiederherstellen. Andernfalls geht die von Ihnen festgelegte Reihenfolge verloren.
+        order_unsaved_short: nicht verfügbar, bis die Reihenfolge gespeichert ist
+        origin: Quelle
+        origin_hint: Wo das Vokabular definiert ist und ob seine Begriffe daher hier bearbeitet werden können.
+        origins:
+          cached: Importierte Kopie
+          database: Dieser Mandant
+          file: Konfigurationsdatei
+          remote: Externer Dienst
+        providers:
+          crossref: Crossref
+          discogs: Discogs
+          fast: OCLC FAST
+          geonames: GeoNames
+          getty: Getty
+          loc: Library of Congress
+          mesh: MeSH
+          tgnlang: Getty TGN Languages
+        read_only:
+          file: Dieses Vokabular ist in einer Konfigurationsdatei definiert, daher können seine Begriffe hier nicht geändert werden.
+        ready: Bereit
+        reorder_handle: '%{label} neu anordnen: ziehen oder die Pfeiltasten verwenden'
+        reorder_hint: Ziehen Sie einen Begriff oder verwenden Sie die Pfeiltasten, um die Reihenfolge festzulegen, in der er in einem Abgabeformular angeboten wird. Speichern Sie die Reihenfolge, wenn Sie fertig sind.
+        restore: Wiederherstellen
+        retire: Außer Betrieb nehmen
+        retired_count:
+          one: (%{count} zurückgezogen)
+          other: (%{count} zurückgezogen)
+        save: Änderungen speichern
+        save_order: Reihenfolge speichern
+        show_title: 'Kontrolliertes Vokabular: %{name}'
+        source_key: Quellschlüssel
+        source_key_hint: Fügen Sie dies in ein Feld eines Metadatenprofils ein, um dieses Feld mit diesem Vokabular zu kontrollieren.
+        source_key_help: Fügen Sie einen Quellschlüssel in ein Feld eines Metadatenprofils ein, um dieses Feld mit diesem Vokabular zu kontrollieren. In diesem Mandanten verwaltete Vokabulare können hier bearbeitet werden; in einer Konfigurationsdatei oder von einem externen Dienst definierte Vokabulare nicht.
+        static_forms: Metadatenprofile sind nicht aktiviert, daher lesen Einreichungsformulare dieses Vokabular aus einer Konfigurationsdatei. Änderungen an seinen Begriffen erfordern einen Entwickler.
+        status: Status
+        status_action: Status ändern
+        status_hint: Ob dieses Vokabular einsatzbereit ist oder zuerst etwas eingerichtet werden muss.
+        status_unknown: Nicht angegeben
+        term_created: '%{label} wurde hinzugefügt.'
+        term_id: Begriffs-ID
+        term_id_from_label: Leer lassen, um das Label als Begriffs-ID zu verwenden.
+        term_id_immutable: Sie kann danach nicht mehr geändert werden.
+        term_limit:
+          one: (der erste %{count} wird angezeigt)
+          other: (die ersten %{count} werden angezeigt)
+        term_id_hint: Der Wert, der in einem Datensatz gespeichert wird, und der Wert, der bei einem Bulkrax-Import anzugeben ist.
+        term_id_help: Die Begriffs-ID ist der Wert, der in einem Datensatz gespeichert wird, und der Wert, der bei einem Bulkrax-Import anzugeben ist. Die Bezeichnung ist nur das, was ein Hinterleger sieht.
+        term_restored: '%{label} wurde wiederhergestellt und wird im Abgabeformular wieder angeboten.'
+        term_retired: '%{label} wurde außer Betrieb genommen und wird im Abgabeformular nicht mehr angeboten.'
+        term_total:
+          one: 1 Begriff
+          other: "%{count} Begriffe"
+        terms: Begriffe
+        terms_elsewhere:
+          cached: Dieses Vokabular enthält eine importierte Kopie eines externen Vokabulars, die für eine Auflistung hier viel zu umfangreich ist. Seine Begriffe werden im Abgabeformular angeboten.
+          generic: Die Begriffe dieses Vokabulars werden hier nicht aufgeführt.
+          remote: Die Begriffe stammen vom externen Dienst, daher gibt es hier keine Liste anzuzeigen.
+        terms_unavailable: Die Begriffe dieses Vokabulars können nicht gelesen werden und werden daher hier nicht aufgeführt. Möglicherweise fehlt seine Konfigurationsdatei.
+        unconfigured: Einrichtung erforderlich
+        unconfigured_help: Dieser Dienst benötigt Anmeldeinformationen, bevor er verwendet werden kann. Bis dahin akzeptiert ein Feld, das ihn referenziert, Freitext, statt Vorschläge anzubieten.
+        unused: Keine Metadaten-Eigenschaft verwendet dieses Vokabular.
+        unused_profile_hint: Um es zu verwenden, fügen Sie den Quellschlüssel dieses Vokabulars den kontrollierten Werten einer Eigenschaft im Metadatenprofil des Mandanten hinzu.
+        updated: '%{name} wurde aktualisiert.'
+        used_by: Verwendet von Eigenschaften
+        used_by_hint: Die von diesem Vokabular kontrollierten Metadaten-Eigenschaften, wie sie in Bulkrax-Importen und Metadatenprofilen benannt sind.
+        used_by_work_types: 'Verfügbar für:'
+        work_types:
+          etd_resource: ETD
+          oer_resource: OER
       flash:
         access_denied: Sie sind nicht berechtigt, diese Seite anzuzeigen
       google_analytics_settings:
@@ -500,6 +742,9 @@ de:
         show:
           header: Benutzer verwalten
           update: Aktualisieren
+    search:
+      form:
+        advanced: Erweitert
     splash:
       account_denied: Sie sind nicht berechtigt, Mieter anzulegen.
       account_login: Melden Sie sich an, um loszulegen.
@@ -654,6 +899,88 @@ de:
     collections:
       cannot:
         manage_discovery: Sie haben keine Berechtigung, die Erkennungseinstellung dieser Sammlung zu ändern
+  practice_research:
+    homepage:
+      hero:
+        title: Praxisforschung, zusammen bewahrt
+        lede: Kunstwerke, Dokumentation und Texte, hinterlegt als ganze Projekte, in der von ihren Urhebern vorgesehenen Reihenfolge.
+        search_label: Repositorium durchsuchen
+        search_placeholder: Sammlungen und Werke durchsuchen
+        search_button: Suchen
+        advanced_search: Erweiterte Suche
+        browse_everything: Alles durchstöbern
+      about:
+        heading: Was dieses Repositorium enthält
+        first_paragraph: Praxisforschung entsteht selten als einzelne Datei. Ein Auftrag kann Zeichnungen, ein Modell, einen Film der Eröffnung, eine Rezension und einen Jahre später verfassten Artikel hinterlassen, die für sich genommen bedeutungslos sind.
+        second_paragraph: Die Hinterlegung ganzer Projekte hält diese Teile zusammen und in Reihenfolge, mit einer Kontextdarstellung, die erläutert, was die Sammlung aussagt. Alles hier wird von den Forschenden selbst hinterlegt.
+        about_link: Über dieses Repositorium
+      recent:
+        heading: Kürzlich hochgeladen
+        all: Alle anzeigen
+        all_label: Alle kürzlich hochgeladenen Werke anzeigen
+        in_parent: in %{title}
+      researcher:
+        heading: Vorgestellte Forscherin oder Forscher
+      browse:
+        work_types: Nach Werktyp durchstöbern
+        resource_types: Nach Ressourcentyp durchstöbern
+        subjects: Nach Thema durchstöbern
+      featured:
+        heading: Vorgestellte Werke
+        view_all: Alle Werke anzeigen
+        collections_heading: Vorgestellte Sammlungen
+        view_all_collections: Alle Sammlungen anzeigen
+        works_in_collection:
+          one: 1 Werk
+          other: "%{count} Werke"
+        reorder_hint: "Element ziehen, um neu anzuordnen, dann speichern."
+        save_order: Reihenfolge speichern
+        unfeature_confirm: Dieses Werk aus der Liste der vorgestellten entfernen?
+        unfeature_collection_confirm: Diese Sammlung aus der Liste der vorgestellten entfernen?
+        contributors_and_others:
+          one: "%{names} und 1 weitere Person"
+          other: "%{names} und %{count} weitere Personen"
+      stats:
+        works:
+          one: Werk
+          other: Werke
+        collections:
+          one: Sammlung
+          other: Sammlungen
+    show:
+      tabs_label: Abschnitte des Datensatzes
+      tabs:
+        context: Kontextdarstellung
+        metadata: Weitere Informationen
+        files: Dateien
+      files_heading: Dateien dieses Datensatzes
+      items:
+        default: Objekte
+      metadata_heading: Beschreibende Metadaten
+      placement_heading: Teil von
+      parent_work_label: Übergeordnetes Werk
+      fields_show_all: Alle %{count} Felder anzeigen
+      fields_show_fewer: Weniger Felder anzeigen
+      files_note: Dateien, die direkt an diesem Datensatz hinterlegt sind. Dateien der enthaltenen Werke liegen bei diesen Werken.
+      items_note: Die in diesem Datensatz enthaltenen Werke, in der Reihenfolge ihrer Hinterlegung.
+      files_count:
+        one: 1 Datei
+        other: "%{count} Dateien"
+      items_count:
+        one: 1 Objekt
+        other: "%{count} Objekte"
+      relationships: Beziehungen
+      cite: Zitieren
+      endnote: Für EndNote herunterladen
+      permalink: Permalink
+      contributors: Mitwirkende
+      citation_style: Zitierstil
+      citation_styles:
+        apa: APA (7. Aufl.)
+        mla: MLA (9. Aufl.)
+        chicago: Chicago
+      citation_copy: Kopieren
+      citation_copied: Kopiert
   proprietor:
     accounts:
       edit:
@@ -661,6 +988,10 @@ de:
         data_cite_endpoint: DataCite-Endpunkt
         fcrepo_endpoint: Fedora-Endpunkt
         header: Konto bearbeiten
+        public_demo_tenant:
+          disabled: 'Nein'
+          enabled: 'Ja'
+          immutable: Diese Einstellung wird bei der Kontoerstellung festgelegt und kann nicht geändert werden.
         solr_endpoint: Solr-Endpunkt
       index:
         actions: Aktionen
@@ -721,6 +1052,64 @@ de:
         edit: Bearbeiten
         header: Benutzer verwalten
         update: Aktualisieren
+  screening_room:
+    chrome:
+      toggle_navigation: Navigation umschalten
+    homepage:
+      about:
+        heading: Über die Sammlungen
+      collections:
+        heading: Ausgewählte Sammlungen
+        unfeature_confirm: 'Diese Sammlung aus der Auswahl entfernen?'
+        view_all: Alle Sammlungen anzeigen
+        works_count:
+          one: 1 Werk
+          other: '%{count} Werke'
+      cta:
+        button: Einreichung starten
+        heading: Teilen Sie Ihre Arbeit
+        sub: Hinterlegen Sie Aufnahmen, Transfers und Produktionsunterlagen im Repositorium.
+      lede:
+        collections: Sammlungen
+        label: Über die Sammlung
+        works: Werke
+      player:
+        close: Schließen
+      recent:
+        ago: 'vor %{time}'
+        heading: Neueste Zugänge
+        view_all: Alle Neuzugänge
+      researcher:
+        heading: Vorgestellte Forschende
+      spotlight:
+        editor_heading: Ausgewählte Werke
+        featured: Ausgewählt
+        hold: Pause
+        label: Ausgewählte Werke
+        quick_view: Schnellansicht
+        reorder_hint: Element ziehen, um die Reihenfolge zu ändern, dann speichern.
+        resume: Abspielen
+        save_order: Reihenfolge speichern
+        segment: '%{title} anzeigen'
+        unfeature_confirm: 'Dieses Werk aus der Auswahl entfernen?'
+        view_work: Werk ansehen
+    show:
+      citation:
+        copied: Kopiert
+        copy_visible: Zitat kopieren
+        endnote: EndNote-Datensatz herunterladen
+        heading: Zitieren
+        note: Nur als Vorschlag. Bitte mit dem gewünschten Zitierstil abgleichen.
+        style: Zitierstil
+        styles:
+          apa: APA
+          chicago: Chicago
+          mla: MLA
+      items:
+        count:
+          one: 1 Element
+          other: '%{count} Elemente'
+        meta: '%{visibility} · %{date}'
   single_signon:
     index:
       sign_in_with_provider: Melden Sie sich mit %{provider} an

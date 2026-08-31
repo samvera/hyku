@@ -1,0 +1,20 @@
+<% provide :page_title, application_name %>
+
+<div class="pr-home">
+  <%= render 'hyrax/homepage/featured_collections' %>
+  <%= render 'hyrax/homepage/featured_works' %>
+  <%= render 'hyrax/homepage/browse' %>
+
+  <% recent = @recent_documents.present? %>
+  <% researcher = pr_featured_researcher? %>
+  <% if recent || researcher %>
+    <div class="pr-recent-row <%= 'pr-recent-row-single' unless recent && researcher %>">
+      <%= render 'hyrax/homepage/recently_uploaded' %>
+      <%= render 'hyrax/homepage/featured_researcher' %>
+    </div>
+  <% end %>
+
+  <%= render 'hyrax/homepage/about' %>
+</div>
+
+<%= render '/shared/select_work_type_modal', create_work_presenter: @presenter.create_work_presenter if @presenter.draw_select_work_modal? %>

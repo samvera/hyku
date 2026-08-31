@@ -66,6 +66,19 @@
     }
   }
 
+  // Deliberately understated: abandoning the deposit is destructive, so it
+  // shouldn't compete with Back/Next for attention.
+  &__discard-link {
+    color: var(--dw-ink-subtle);
+    font-size: 0.9rem;
+    text-decoration: underline;
+
+    &:hover,
+    &:focus {
+      color: var(--dw-danger);
+    }
+  }
+
   &__empty {
     color: var(--dw-ink-subtle);
     font-style: italic;

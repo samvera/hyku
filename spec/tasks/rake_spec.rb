@@ -99,4 +99,48 @@ RSpec.describe "Rake tasks" do
       end
     end
   end
+
+  describe 'hyku:demo:snapshot' do
+    it 'requires a tenant argument' do
+      expect { run_task('hyku:demo:snapshot') }.to raise_error(ArgumentError)
+    end
+
+    it 'raises for an unknown tenant' do
+      expect { run_task('hyku:demo:snapshot', 'not-a-tenant') }
+        .to raise_error(ArgumentError, /No account/)
+    end
+
+    it 'captures a snapshot for the named demo tenant' do
+      account = FactoryBot.create(:demo_account)
+      service = instance_double(DemoTenantResetService, snapshot!: true)
+      allow(DemoTenantResetService).to receive(:new).with(account:).and_return(service)
+      run_task('hyku:demo:snapshot', account.cname)
+      expect(service).to have_received(:snapshot!)
+    end
+  end
+
+  describe 'hyku:demo:reset' do
+    it 'requires a tenant argument' do
+      expect { run_task('hyku:demo:reset') }.to raise_error(ArgumentError)
+    end
+
+    it 'raises for an unknown tenant' do
+      expect { run_task('hyku:demo:reset', 'not-a-tenant') }
+        .to raise_error(ArgumentError, /No account/)
+    end
+
+    it 'refuses to reset an account that is not a public demo tenant' do
+      account = FactoryBot.create(:account)
+      expect { run_task('hyku:demo:reset', account.cname) }
+        .to raise_error(DemoTenantResetService::NotDemoTenant)
+    end
+
+    it 'resets the named demo tenant' do
+      account = FactoryBot.create(:demo_account)
+      service = instance_double(DemoTenantResetService, reset!: true)
+      allow(DemoTenantResetService).to receive(:new).and_return(service)
+      run_task('hyku:demo:reset', account.cname)
+      expect(service).to have_received(:reset!)
+    end
+  end
 end

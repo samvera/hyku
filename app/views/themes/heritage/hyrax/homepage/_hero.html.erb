@@ -1,0 +1,26 @@
+<div class="hrt-hero">
+  <img class="hrt-hero-image" src="<%= banner_image %>" alt="">
+  <div class="hrt-hero-scrim"></div>
+  <div class="hrt-hero-content">
+    <p class="hrt-hero-eyebrow"><%= application_name %></p>
+
+    <% if display_content_block? @marketing_text %>
+      <div class="hrt-hero-copy"><%= displayable_content_block @marketing_text %></div>
+    <% else %>
+      <h1 class="hrt-hero-headline"><%= t('heritage.homepage.hero.headline') %></h1>
+    <% end %>
+
+    <%= form_tag main_app.search_catalog_path, method: :get, class: 'hrt-hero-search', role: 'search' do %>
+      <%= hidden_field_tag :search_field, 'all_fields' %>
+      <label class="sr-only" for="hrt-hero-q"><%= t('heritage.homepage.hero.search_label') %></label>
+      <%= text_field_tag :q, nil, id: 'hrt-hero-q', autocomplete: 'off',
+                         class: 'hrt-hero-search-field',
+                         placeholder: t('heritage.homepage.hero.search_placeholder') %>
+      <%= button_tag class: 'hrt-hero-search-submit' do %>
+        <span class="fa fa-search" aria-hidden="true"></span>
+        <%= t('heritage.homepage.hero.search_button') %>
+      <% end %>
+      <%= link_to t('heritage.homepage.hero.advanced'), main_app.advanced_search_catalog_path, class: 'hrt-hero-search-advanced' %>
+    <% end %>
+  </div>
+</div>

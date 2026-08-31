@@ -71,20 +71,34 @@ module Hyrax
     # OVERRIDE: upstream facets and links on "#{itemprop}_sim", and re-adds that
     # facet on every pass — so this guards the add, which Blacklight raises on when
     # the key already exists.
+    #
+    # The id facet stays registered, only hidden. Blacklight resolves a filter and
+    # facet_field_response against configured facets alone, so unregistering it
+    # would drop every bookmarked "f[<prop>_sim][]" constraint silently and raise
+    # for the themes that request that facet by name.
     def facet_on_labels!(itemprop)
       id_name = "#{itemprop}_sim"
       label_name = "#{itemprop}_label_sim"
       existing = blacklight_config.facet_fields[id_name]
-      blacklight_config.facet_fields.delete(id_name) if existing
+      existing.show = false if existing
 
       unless blacklight_config.facet_fields.key?(label_name)
         return if existing.nil?
 
-        blacklight_config.add_facet_field(label_name, label: facet_label_for(existing), limit: existing.limit)
+        blacklight_config.add_facet_field(label_name, **label_facet_options(existing))
       end
 
       field = blacklight_config.index_fields["#{itemprop}_tesim"]
       field.link_to_facet = label_name if field
+    end
+
+    # Carried over wholesale rather than by naming a few keys: a facet may be
+    # declared with helper_method, sort or partial, and the label facet renders
+    # the same way its id counterpart did.
+    def label_facet_options(existing)
+      existing.to_h
+              .except(:field, :show)
+              .merge(label: facet_label_for(existing))
     end
 
     # Resolved rather than copied: a facet declared without a label stores the

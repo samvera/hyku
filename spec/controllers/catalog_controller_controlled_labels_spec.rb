@@ -51,10 +51,27 @@ RSpec.describe 'catalog rendering of controlled vocabulary labels' do
         expect(catalog.blacklight_config.facet_fields.keys).to include 'education_level_label_sim'
       end
 
-      it 'drops the id facet so staff are not offered the filter twice' do
+      it 'hides the id facet so staff are not offered the filter twice' do
         load_profile!
 
-        expect(catalog.blacklight_config.facet_fields.keys).not_to include 'education_level_sim'
+        expect(catalog.blacklight_config.facet_fields['education_level_sim'].show).to be false
+      end
+
+      # Bookmarks, saved searches and the theme views that build their own facet
+      # links all carry the id key, and a dropped constraint fails silently: the
+      # search returns everything rather than erroring.
+      it 'still applies a filter built on the id facet' do
+        load_profile!
+        params = ActionController::Parameters.new(f: { 'education_level_sim' => ['id_1'] }).permit!
+        state = Blacklight::SearchState.new(params, catalog.blacklight_config)
+
+        expect(state.filters.map(&:key)).to include 'education_level_sim'
+      end
+
+      it 'keeps the id facet resolvable for facet_field_response' do
+        load_profile!
+
+        expect(catalog.blacklight_config.facet_fields).to have_key 'education_level_sim'
       end
 
       # keyword rather than the property above: it is declared in CatalogController
@@ -93,8 +110,10 @@ RSpec.describe 'catalog rendering of controlled vocabulary labels' do
   it 'survives load_flexible_schema running again on every request' do
     load_profile!
     4.times { catalog.load_flexible_schema }
+    facets = catalog.blacklight_config.facet_fields
 
-    expect(catalog.blacklight_config.facet_fields.keys.grep(/resource_type/))
+    expect(facets.keys.grep(/resource_type/)).to eq %w[resource_type_sim resource_type_label_sim]
+    expect(facets.select { |_, f| f.show != false }.keys.grep(/resource_type/))
       .to eq ['resource_type_label_sim']
   end
 

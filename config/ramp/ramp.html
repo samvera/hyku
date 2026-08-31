@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -6,10 +7,11 @@
         <style>
           html, body, #root, .iiif-player { margin: 0; height: 100%; }
           .iiif-player { display: flex; flex-direction: column; }
-          .ramp--media_player { flex: 1 1 auto; min-height: 0; }
+          .ramp--media_player { flex: 1 1 auto; min-height: 0; height: 100%; }
+          /* Ramp wraps the player in an unclassed div; without a height here the
+             player's own height:100% resolves against a collapsed box. */
+          .ramp--media_player > div { height: 100%; }
           .ramp--structured-nav { flex: 0 0 auto; }
-          /* video.js fluid mode sizes by aspect-ratio padding, overflowing the fixed-height viewer frame; fill instead */
-          .ramp--media_player .video-js.vjs-fluid { padding-top: 0 !important; height: 100% !important; }
           .ramp--media_player .video-js .vjs-tech { object-fit: contain; }
         </style>
     </head>
@@ -29,6 +31,17 @@
                 )
             );
             ReactDOM.createRoot(document.getElementById('root')).render(tree);
+
+            // vjs-fluid sizes by aspect-ratio padding, which overflows this
+            // fixed-height frame; vjs-fill is video.js's container-filling mode.
+            // Observed rather than set once: the player applies fluid on mount.
+            const useFillMode = () => {
+                document.querySelectorAll('.video-js.vjs-fluid').forEach((el) => {
+                    el.classList.replace('vjs-fluid', 'vjs-fill');
+                });
+            };
+            new MutationObserver(useFillMode)
+                .observe(document.getElementById('root'), { childList: true, subtree: true });
         }
     </script>
     </body>

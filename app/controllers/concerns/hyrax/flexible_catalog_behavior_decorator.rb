@@ -5,7 +5,7 @@
 #
 # TODO: TEMPORARY. Remove once Hyrax treats a property's controlled_values as
 # first-class in the catalog, rather than deriving every solr name from
-# "#{itemprop}". See app/indexers/hyrax/indexer_decorator.rb for the indexing half.
+# "#{itemprop}". See lib/hyrax_overrides/indexer_decorator.rb for the indexing half.
 #
 # Driven off the profile rather than a list of field names, so a property or
 # vocabulary added to an m3 profile is covered without touching CatalogController.

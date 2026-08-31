@@ -16,9 +16,8 @@
 # seam around the rules loop. Everything below mirrors upstream except the lines
 # marked OVERRIDE, so re-sync when Hyrax changes this method.
 #
-# The prepend has to run before any indexer class body evaluates
-# `include Hyrax::Indexer(...)`, which builds its `to_solr` immediately — hence an
-# initializer rather than autoloading.
+# Loaded and prepended from config/initializers/hyrax.rb, which explains why it
+# has to happen there and why this file sits outside the autoload paths.
 module Hyrax
   module IndexerDecorator
     def define_solr_method(schema_name:, index_loader:) # rubocop:disable Metrics/MethodLength
@@ -50,23 +49,11 @@ module Hyrax
     def self.add_label(document, index_key, source, value)
       return if source.blank?
 
-      label_key = label_key_for(index_key)
+      label_key = ControlledVocabularyFieldValues.label_key(index_key)
       return if label_key.blank?
 
       labels = ControlledVocabularyLabels.labels_for(source, value)
       document[label_key] = labels if labels.present?
-    end
-
-    # `resource_type_tesim` -> `resource_type_label_tesim`. The suffix has to stay
-    # last: Solr resolves these through dynamic field rules keyed on the suffix, so
-    # `resource_type_sim_label` is not a field and indexing it fails the whole
-    # document with a 400.
-    def self.label_key_for(index_key)
-      key = index_key.to_s
-      base, _, suffix = key.rpartition('_')
-      return if base.blank? || suffix.blank?
-
-      "#{base}_label_#{suffix}"
     end
 
     # Keyed on the resource's own class as well as its schema version: the class is

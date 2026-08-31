@@ -3,14 +3,16 @@
 ENV['HYRAX_USE_SOLR_GRAPH_NESTING'].present? || ENV['HYRAX_USE_SOLR_GRAPH_NESTING'] = "true"
 
 # TODO: TEMPORARY — remove these two lines together with
-# app/indexers/hyrax/indexer_decorator.rb once controlled-vocabulary label
+# lib/hyrax_overrides/indexer_decorator.rb once controlled-vocabulary label
 # indexing lands in Hyrax. See that file's header for what upstream needs.
 #
 # Prepended here rather than in `to_prepare`: `Hyrax::Indexer(...)` builds its
 # `to_solr` at include time, so by the time `to_prepare` runs, every indexer class
 # body has already captured upstream's version and the override would silently do
-# nothing. `require` because app/ autoloading is not available this early.
-require Rails.root.join('app', 'indexers', 'hyrax', 'indexer_decorator')
+# nothing. It lives under lib/hyrax_overrides, which config.autoload_lib ignores:
+# a reloadable constant would be replaced while Hyrax::Indexer.ancestors kept the
+# module this line prepended.
+require Rails.root.join('lib', 'hyrax_overrides', 'indexer_decorator')
 Hyrax::Indexer.prepend(Hyrax::IndexerDecorator)
 
 # rubocop:disable Metrics/BlockLength

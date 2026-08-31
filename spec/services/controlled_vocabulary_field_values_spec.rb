@@ -54,8 +54,8 @@ RSpec.describe ControlledVocabularyFieldValues do
       expect(described_class.label_key('resource_type_sim')).to eq 'resource_type_label_sim'
     end
 
-    it 'leaves a key with no suffix alone' do
-      expect(described_class.label_key('id')).to eq 'id'
+    it 'is nil for a key with no suffix to insert before' do
+      expect(described_class.label_key('id')).to be_nil
     end
   end
 end

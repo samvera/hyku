@@ -4,7 +4,7 @@
 # property alongside its stored ids.
 #
 # TODO: TEMPORARY. Remove this file once Hyrax passes label values to renderers
-# itself. See app/indexers/hyrax/indexer_decorator.rb for the indexing half.
+# itself. See lib/hyrax_overrides/indexer_decorator.rb for the indexing half.
 #
 # A renderer holds only `field`, `values`, and `options` — no Solr document — so
 # it cannot look up the label itself. The values stay the ids, because a

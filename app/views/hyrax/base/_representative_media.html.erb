@@ -5,10 +5,6 @@
     <div class="center-block">
       <%= iiif_viewer_display presenter %>
     </div>
-    <%# A visible manifest link: interoperability proof for IIIF-literate
-        audiences (drag it onto any IIIF viewer). Kept outside the viewer
-        wrapper: the viewer iframe is absolutely positioned to fill the
-        wrapper, so it would cover anything else placed within it. %>
     <p class="iiif-manifest-link text-center mt-2">
       <%= link_to t('hyku.work_show.iiif_manifest'), presenter.manifest_url %>
     </p>

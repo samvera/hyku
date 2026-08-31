@@ -1,0 +1,147 @@
+// ---- screening room mixins ----
+
+@import 'themes/screening_room/tokens';
+
+@mixin scr-gutter($important: false) {
+  $bang: if($important, unquote('!important'), null);
+
+  padding-left: $scr-gutter-xl $bang;
+  padding-right: $scr-gutter-xl $bang;
+
+  @media (max-width: $scr-desktop-max) {
+    padding-left: $scr-gutter-lg $bang;
+    padding-right: $scr-gutter-lg $bang;
+  }
+
+  @media (max-width: $scr-laptop-max) {
+    padding-left: $scr-gutter-md $bang;
+    padding-right: $scr-gutter-md $bang;
+  }
+
+  @media (max-width: $scr-mobile-max) {
+    padding-left: $scr-gutter-sm $bang;
+    padding-right: $scr-gutter-sm $bang;
+  }
+}
+
+@mixin scr-serif {
+  font-family: var(--scr-serif, #{$scr-serif-stack}) !important;
+}
+
+@mixin scr-sans {
+  font-family: var(--scr-sans, #{$scr-sans-stack}) !important;
+}
+
+@mixin scr-eyebrow {
+  @include scr-sans;
+  color: $scr-ink-muted;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+@mixin scr-focus-ring {
+  // two tones, because this ring lands on every surface the theme touches: the
+  // dark chrome bands, the tinted notice and cta bands, and the light pages the
+  // theme does not paint. whichever tone the surface swallows, the other shows
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.85);
+  outline: 2px solid #ffffff;
+  outline-offset: 0;
+}
+
+@mixin scr-link($color: var(--scr-link, #{$scr-link})) {
+  color: $color;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+
+  &:hover,
+  &:focus {
+    color: $scr-ink;
+  }
+
+  &:focus-visible {
+    @include scr-focus-ring;
+  }
+}
+
+@mixin scr-controls-reset {
+  .badge,
+  .btn,
+  .card,
+  .dropdown-menu,
+  .form-control,
+  .modal-content {
+    border-radius: 0;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  .btn:focus-visible,
+  .form-control:focus-visible {
+    @include scr-focus-ring;
+  }
+}
+
+@mixin scr-pager {
+  ul.pagination {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  ul.pagination .page-item .page-link {
+    background: var(--scr-raised, #{$scr-raised});
+    border: 1px solid var(--scr-rule-input, #{$scr-rule-input});
+    border-radius: 0;
+    color: $scr-ink-body;
+    font-size: 14px;
+    padding: 7px 12px;
+    text-decoration: none;
+  }
+
+  ul.pagination .page-item.disabled .page-link {
+    color: $scr-ink-faint;
+    pointer-events: none;
+  }
+}
+
+@mixin scr-dropdown {
+  background-color: var(--scr-raised, #{$scr-raised});
+  // the popup's fill barely separates it from the page, so its edge is the
+  // boundary and carries the rule that clears 3:1
+  border: 1px solid var(--scr-rule-strong, #{$scr-rule-strong});
+
+  .dropdown-header {
+    color: $scr-ink-muted;
+  }
+
+  .dropdown-divider {
+    border-top-color: var(--scr-rule-input, #{$scr-rule-input});
+  }
+
+  .dropdown-item {
+    color: $scr-ink-body;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      background-color: var(--scr-chrome, #{$scr-chrome});
+      color: $scr-ink;
+    }
+
+    // bootstrap and hyku both paint the selected row a light fill, which a
+    // dark popup cannot carry
+    &.active,
+    &:active {
+      background-color: var(--scr-accent, #{$scr-accent});
+      color: var(--scr-accent-ink, #{$scr-accent-ink});
+    }
+  }
+}

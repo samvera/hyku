@@ -1,0 +1,34 @@
+<% paginated = hrt_file_set_ids(presenter) %>
+<% if paginated.any? %>
+  <section class="hrt-panel" id="hrt-files" aria-labelledby="hrt-files-label">
+    <div class="hrt-panel-head">
+      <h2 class="hrt-panel-label" id="hrt-files-label"><%= t('heritage.show.files.heading') %></h2>
+      <span class="hrt-panel-count"><%= t('heritage.show.files.count', count: paginated.total_count) %></span>
+    </div>
+
+    <ul class="hrt-panel-list list-unstyled">
+      <% presenter.member_presenters(paginated).each do |member| %>
+        <li class="hrt-panel-row">
+          <%= link_to contextual_path(member, presenter), class: 'hrt-file-thumb',
+                      tabindex: -1, aria: { hidden: true } do %>
+            <%= document_presenter(member).thumbnail.thumbnail_tag({ alt: '' }, { suppress_link: true }) %>
+          <% end %>
+          <div class="hrt-panel-row-body">
+            <%= link_to member.link_name, contextual_path(member, presenter), class: 'hrt-file-name' %>
+            <div class="hrt-panel-row-meta">
+              <span><%= theme_plain_text(member.permission_badge) %></span>
+              <%= render 'hyrax/file_sets/actions', file_set: member %>
+            </div>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+
+    <% if paginated.total_pages > 1 %>
+      <nav class="hrt-panel-pager" aria-labelledby="hrt-files-label">
+        <%= paginate paginated, theme: 'blacklight', window: 1, outer_window: 0,
+                     param_name: :files_page, route_set: main_app, params: { anchor: 'hrt-files' } %>
+      </nav>
+    <% end %>
+  </section>
+<% end %>

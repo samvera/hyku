@@ -99,6 +99,7 @@ module PracticeResearchShowHelper
 
   private
 
+  # TODO: dedupe with heritage hrt_member_pages — shared paginate-members helper
   def pr_paginate(ids, param_name)
     paged = Kaminari.paginate_array(ids, total_count: ids.size)
                     .page(pr_positive_param(param_name, 1, MAX_PAGE))

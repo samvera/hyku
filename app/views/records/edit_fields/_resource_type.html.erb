@@ -6,10 +6,6 @@
 <% if Hyrax.config.flexible? %>
   <%= render partial: 'records/edit_fields/default', locals: { f: f, key: :resource_type } %>
 <% else %>
-  <%= f.input key,
-      as: :select,
-      collection: Hyrax::ResourceTypesService.select_options,
-      label: label_for(term: key, record_class: f.object.class),
-      hint: hint_for(term: key, record_class: f.object.class),
-      input_html: { class: 'form-control', multiple: true } %>
+  <%= render partial: 'records/edit_fields/service_backed_select',
+             locals: { f: f, key: key, service: Hyrax::ResourceTypesService } %>
 <% end %>

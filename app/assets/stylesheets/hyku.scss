@@ -780,3 +780,149 @@ dd {
     font-size: 0.875rem;
     color: #6c757d;
 }
+
+// Status badges for the controlled vocabulary dashboard.
+//
+// Set explicitly rather than reusing badge-warning and friends: the themes
+// flatten most Bootstrap badge colours to grays
+// Needs no action, so it recedes.
+.badge-quiet {
+    background-color: #e9ecef;
+    color: #495057;
+}
+
+// Needs attention.
+.badge-attention {
+    background-color: #b45309;
+    color: #fff;
+}
+
+// Restores the scroll Bootstrap gives .table-responsive: Hyrax sets `overflow-x:
+// visible` on it app-wide in _file-listing.scss, so without this the table is cut
+// off at the container edge. Scoped here so Hyrax's own tables keep its behavior.
+.controlled-vocabularies-scroll {
+    overflow-x: auto;
+}
+
+// One line per cell, so a narrow container scrolls instead of breaking words
+// mid-letter ("Accessibilit / y"). The description spans the row and wraps.
+.controlled-vocabularies {
+    th,
+    td:not(.controlled-vocabulary-description) {
+        white-space: nowrap;
+    }
+}
+
+// The reorder column. Held narrow so the term itself stays the widest thing in the
+// row, and centered because the controls are icons rather than text.
+.controlled-vocabulary-order {
+    width: 1%;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.term-order-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.15rem;
+}
+
+// Bare buttons: these sit inside a borderless table, where a button's chrome would
+// read as the heaviest thing on the page.
+.term-order-handle,
+.term-order-move {
+    padding: 0.1rem 0.3rem;
+    border: 1px solid transparent;
+    border-radius: 0.2rem;
+    background: none;
+    color: #6c757d;
+    line-height: 1;
+
+    &:hover {
+        border-color: #ced4da;
+        color: #212529;
+    }
+
+    // Not `outline: none` — the keyboard path through this table is the arrow keys on
+    // these buttons, so where focus sits has to stay visible.
+    &:focus {
+        outline: 2px solid #0056b3;
+        outline-offset: 1px;
+    }
+}
+
+.term-order-handle {
+    cursor: grab;
+}
+
+// The retire/restore column. Right-aligned and held narrow, so the buttons line up
+// with each other against the edge of the table rather than drifting with the
+// varying width of the status badge beside them.
+.controlled-vocabulary-status-action {
+    width: 1%;
+    white-space: nowrap;
+    text-align: right;
+}
+
+// The row being dragged. Dimmed rather than hidden: it is still the thing being
+// positioned, so it has to stay readable against the rows it moves past.
+.controlled-vocabularies tr.is-dragging {
+    opacity: 0.4;
+    background-color: #f1f3f5;
+}
+
+// The explanation behind a column heading's question mark. CSS rather than
+// Bootstrap's tooltip plugin, which nothing initializes on these pages.
+.column-hint {
+    position: relative;
+    display: inline-block;
+    margin-left: 0.25rem;
+    border: 0;
+    cursor: help;
+    font-size: 0.875em;
+    vertical-align: baseline;
+
+    &:hover,
+    &:focus {
+        text-decoration: none;
+    }
+
+    // Opens downward, into the table: above a header-row heading the bubble is cut
+    // off by whatever sits over the table.
+    .column-hint-text {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 3;
+        // Fixed, not max-content: a cell held to one line gives no useful intrinsic
+        // width to resolve against.
+        width: 14rem;
+        margin-top: 0.35rem;
+        padding: 0.4rem 0.6rem;
+        border-radius: 0.25rem;
+        background-color: #000;
+        color: #fff;
+        // The heading is one line; the explanation itself wraps.
+        white-space: normal;
+        font-weight: 400;
+        font-size: 0.8125rem;
+        line-height: 1.3;
+        text-align: left;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.1s ease-in;
+    }
+
+    &:hover .column-hint-text,
+    &:focus .column-hint-text {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+// The last column has no room to its right inside the scroll container, which clips
+// horizontally, so its bubble opens leftward instead.
+.controlled-vocabularies th:last-child .column-hint .column-hint-text {
+    right: 0;
+    left: auto;
+}

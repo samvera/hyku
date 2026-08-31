@@ -1,0 +1,16 @@
+<%# Registered onto the Repository Contents section rather than written into that
+    partial; see config/initializers/hyrax_sidebar.rb. Upstream renders every partial
+    registered for a section, so the link is added without this app carrying a copy of
+    the sidebar to change one line of it.
+
+    main_app because the route is Hyku's own, even though the controller is namespaced
+    under Hyrax::. %>
+<% if can? :view, :controlled_vocabularies %>
+  <%= menu.nav_link(main_app.controlled_vocabularies_path,
+                    class: "nav-link",
+                    onclick: "dontChangeAccordion(event);",
+                    title: t('hyku.admin.controlled_vocabularies')) do %>
+    <span class="fa fa-tags" aria-hidden="true"></span>
+    <span class="sidebar-action-text"><%= t('hyku.admin.controlled_vocabularies') %></span>
+  <% end %>
+<% end %>

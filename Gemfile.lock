@@ -29,10 +29,10 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: 6fac65d85de8307d194b8608f48b33a7be0a4947
+  revision: 4bd778e968d135d254968f41ef30f02d2a170dd5
   branch: main
   specs:
-    hyrax (5.2.0)
+    hyrax (5.3.0)
       active-fedora (~> 15.0)
       almond-rails (~> 0.1)
       awesome_nested_set (~> 3.1)
@@ -96,17 +96,16 @@ GIT
 
 GIT
   remote: https://github.com/samvera/questioning_authority.git
-  revision: 54cb5e7047f0261b8ccfd4b737d6f30a0a96d3ba
+  revision: e2ee4225eb1d823c34b3e9df253801d819789b1b
   branch: main
   specs:
-    qa (5.15.0)
+    qa (5.17.0)
       activerecord-import
-      deprecation
       faraday (< 3.0, != 2.0.0)
       geocoder
       ldpath
       nokogiri (~> 1.6)
-      rails (>= 5.0, < 8.1)
+      rails (>= 6.0, < 8.2)
       rdf
 
 GIT
@@ -280,6 +279,7 @@ GEM
     bcp47_spec (0.2.1)
     bcrypt (3.1.22)
     benchmark (0.5.0)
+    benchmark-ips (2.15.1)
     benchmark_methods (0.7)
     bibtex-ruby (6.2.0)
       latex-decode (~> 0.0)
@@ -458,6 +458,9 @@ GEM
       database_cleaner-core (~> 2.0)
     database_cleaner-core (2.0.1)
     date (3.5.1)
+    db-query-matchers (0.15.0)
+      activesupport (>= 4.0)
+      rspec (>= 3.0)
     declarative (0.0.20)
     denormalize_fields (1.3.0)
       activerecord (>= 4.1.14, < 8.0.0)
@@ -1130,6 +1133,8 @@ GEM
       linkeddata (~> 3.2)
       rack (~> 2.1)
       rack-rdf (~> 3.2)
+    rack-mini-profiler (3.3.1)
+      rack (>= 1.2.0)
     rack-oauth2 (2.2.1)
       activesupport
       attr_required
@@ -1534,6 +1539,7 @@ GEM
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
     ssrf_filter (1.0.8)
+    stackprof (0.2.28)
     stringio (3.1.7)
     swd (2.0.3)
       activesupport (>= 3)
@@ -1661,6 +1667,7 @@ DEPENDENCIES
   activesupport (>= 4.2.0)
   addressable (= 2.8.1)
   aws-sdk-sqs
+  benchmark-ips (~> 2.14)
   bixby
   blacklight (~> 7.38)
   blacklight_advanced_search
@@ -1679,6 +1686,7 @@ DEPENDENCIES
   codemirror-rails
   coffee-rails (~> 4.2)
   database_cleaner
+  db-query-matchers (~> 0.15)
   derivative-rodeo (~> 0.5, >= 0.5.3)
   devise
   devise-guests (~> 0.3)
@@ -1725,6 +1733,7 @@ DEPENDENCIES
   puma (~> 7.2)
   qa!
   rack-attack
+  rack-mini-profiler (~> 3.3)
   rack-test (= 0.7.0)
   rails (~> 7.2.0)
   rails-controller-testing
@@ -1733,6 +1742,7 @@ DEPENDENCIES
   redis-actionpack
   redis-namespace (~> 1.10)
   redlock (>= 0.1.2, < 2.0)
+  request_store (~> 1.7)
   riiif!
   rolify
   ros-apartment
@@ -1760,6 +1770,7 @@ DEPENDENCIES
   spring (~> 1.7)
   spring-watcher-listen (~> 2.0.0)
   sprockets-rails
+  stackprof (~> 0.2)
   terser
   tether-rails
   turbolinks (~> 5)

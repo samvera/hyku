@@ -140,8 +140,8 @@ module Hyku
       end
 
       # nil unless the profile declares this property controlled and its authority
-      # resolves. Memoized per request: Qa re-reads and re-parses the whole
-      # authority file on every lookup.
+      # resolves. Memoized per request: each lookup re-reads the profile and then
+      # queries the vocabulary's terms, and the review step labels every value.
       def controlled_service_for(term)
         @controlled_services ||= {}
         return @controlled_services[term] if @controlled_services.key?(term)
@@ -149,14 +149,20 @@ module Hyku
         @controlled_services[term] = build_controlled_service(term)
       end
 
+      # Resolved by the helper, which is also what renders the field on the deposit
+      # form, so the review step cannot disagree with it about what controls a
+      # property.
       def build_controlled_service(term)
         source = context.helpers.controlled_vocabulary_source_for(term)
         return if source.blank?
 
-        # Prefer the registered service (it may add behavior); fall back to a bare
-        # authority lookup so a profile source with no registry entry still labels.
-        registered = Hyrax::ControlledVocabularies.services[source]&.safe_constantize
-        registered ? registered.new : Hyrax::TolerantSelectService.new(source)
+        service = context.helpers.controlled_vocabulary_service_for(source)
+
+        # Two service styles exist: a class (Hyrax::LicenseService) and a module
+        # extending AuthorityService (Hyrax::ResourceTypesService), whose `label` is
+        # a module method. Calling `.new` on the module raises, the rescue below
+        # swallows it, and the value renders as the stored id.
+        service.respond_to?(:new) ? service.new : service
       rescue StandardError => e
         Hyrax.logger.debug("Deposit wizard: no label service for #{term} (#{source}): #{e.message}")
         nil
@@ -623,12 +629,14 @@ module Hyku
       # Empty for a parent the depositor cannot edit as well as one that cannot be
       # read, so a forged parent_id is refused rather than merely type-checked.
       # Adding a child mutates the parent's member_ids, hence edit rather than read.
+      # Read from Solr, not the persistence layer: only the parent's id and class
+      # are needed, and AddToParent loads the resource itself at commit.
       def child_types_for(parent_id)
-        parent = Hyrax.query_service.find_by(id: parent_id)
+        parent = ::SolrDocument.find(parent_id)
         return [] unless current_ability.can?(:edit, parent)
 
-        Hyrax::ChildTypes.for(parent: parent.class).to_a
-      rescue Valkyrie::Persistence::ObjectNotFoundError
+        Hyrax::ChildTypes.for(parent: parent.hydra_model).to_a
+      rescue Blacklight::Exceptions::RecordNotFound, Valkyrie::Persistence::ObjectNotFoundError
         []
       end
 
@@ -646,11 +654,16 @@ module Hyku
         Transition.rerender(step, alert: 'hyku.deposit_wizard.errors.no_work_type')
       end
 
+      # The save is unconditional, as on the metadata steps: the ids are the only
+      # record of the uploads, so leaving without posting them orphans the files --
+      # invisible to the uploader, to commit, and to the discard cleanup.
       def advance_from_files
         # `uploaded_files[]` is emitted by Hyrax's upload js_templates for each
         # completed upload, matching the param name stock deposit uses.
         state.uploaded_file_ids = params[:uploaded_files]
         state.primary_file_id = params[:primary_file_id]
+        return Transition.advance(back_step('files')) if going_back?
+
         Transition.advance(next_step('files'))
       end
 
@@ -681,8 +694,8 @@ module Hyku
         state.attributes = preserved_launch_extras.merge(work_params.to_unsafe_h)
       end
 
-      # Set by the metadata steps' Back button, which submits the form (saving what
-      # was entered) instead of linking away.
+      # Set by the Back button on steps that submit the form (saving what was
+      # entered) instead of linking away: files, details, file_meta.
       def going_back?
         params[:direction].to_s == 'back'
       end

@@ -1,0 +1,12 @@
+<section class="scr-cta" aria-labelledby="scr-cta-heading">
+  <div>
+    <h2 class="scr-cta-heading" id="scr-cta-heading"><%= t('screening_room.homepage.cta.heading') %></h2>
+    <p class="scr-cta-sub"><%= t('screening_room.homepage.cta.sub') %></p>
+  </div>
+
+  <div class="scr-cta-actions">
+    <%= link_to t(:'hyrax.pages.tabs.terms_page'), hyrax.terms_path, class: 'scr-cta-terms' %>
+    <% href, data = signed_in? ? deposit_new_work_target(many: @presenter.create_many_work_types?, first_type: @presenter.first_work_type) : [hyrax.my_works_path, {}] %>
+    <%= link_to t('screening_room.homepage.cta.button'), href, data:, class: 'scr-cta-button' %>
+  </div>
+</section>

@@ -528,6 +528,46 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
           expect(session[:deposit_wizard]['primary_file_id']).to eq('7')
           expect(response).to redirect_to(deposit_wizard_step_path(step: 'details'))
         end
+
+        it 'keeps the uploads and steps back when Back is submitted' do
+          patch deposit_wizard_advance_path(step: 'files'),
+                params: { direction: 'back', uploaded_files: %w[3 7], primary_file_id: '7' }
+
+          expect(response).to redirect_to(deposit_wizard_step_path(step: 'known_type'))
+          expect(session[:deposit_wizard]['uploaded_file_ids']).to eq(%w[3 7])
+          expect(session[:deposit_wizard]['primary_file_id']).to eq('7')
+        end
+
+        it 'still lists a file uploaded before Back when the step is revisited' do
+          upload = FactoryBot.create(:uploaded_file, user: admin)
+          # Follow the Back button all the way: the redirect must land on the
+          # previous step, not advance past it, or this asserts the wrong journey.
+          patch deposit_wizard_advance_path(step: 'files'),
+                params: { direction: 'back', uploaded_files: [upload.id.to_s] }
+          expect(response).to redirect_to(deposit_wizard_step_path(step: 'known_type'))
+
+          get deposit_wizard_step_path(step: 'files')
+
+          expect(response).to have_http_status(:success)
+          # The uploader's own seed row, not merely the id appearing somewhere.
+          expect(response.body).to match(
+            /<input[^>]*name="uploaded_files\[\]"[^>]*value="#{upload.id}"/
+          )
+        end
+
+        it 'renders Back as a submit button so uploads post on the way out' do
+          get deposit_wizard_step_path(step: 'files')
+
+          expect(response.body).to match(
+            /<button[^>]*name="direction"[^>]*value="back"[^>]*formnovalidate/
+          )
+        end
+
+        it 'marks the Back button so uploads in flight can block leaving' do
+          get deposit_wizard_step_path(step: 'files')
+
+          expect(response.body).to include('data-behavior="back-submit"')
+        end
       end
     end
 

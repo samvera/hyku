@@ -74,6 +74,14 @@ RSpec.describe Hyku::DepositWizard::Presenter do
         expect(transition).to be_advance
         expect(presenter.state.parent_id).to eq(parent.id.to_s)
       end
+
+      it 'does not load the parent resource' do
+        parent # created before the spy, so the factory's own lookups aren't counted
+        allow(Hyrax.query_service).to receive(:find_by).and_call_original
+
+        expect(presenter.advance_from('select_parent')).to be_advance
+        expect(Hyrax.query_service).not_to have_received(:find_by).with(id: parent.id)
+      end
     end
 
     context 'when the chosen parent cannot contain children' do
@@ -198,6 +206,55 @@ RSpec.describe Hyku::DepositWizard::Presenter do
     end
   end
 
+  # The review step labels stored values through the same resolution the deposit form
+  # renders them with, so the two cannot disagree about what a property is controlled
+  # by. The helper owns that decision.
+  describe '#controlled_service_for' do
+    let(:helpers) { double }
+    let(:context) do
+      double(session: session, current_user: nil, current_ability: nil, params: params,
+             main_app: nil, blacklight_config: nil, helpers: helpers)
+    end
+
+    it 'asks the helper to resolve the property' do
+      service = Hyrax::TolerantSelectService.new('licenses')
+      allow(helpers).to receive(:controlled_vocabulary_source_for).with('license').and_return('licenses')
+      allow(helpers).to receive(:controlled_vocabulary_service_for).with('licenses').and_return(service)
+
+      expect(presenter.controlled_service_for('license')).to be service
+    end
+
+    it 'instantiates a service the helper returns as a class' do
+      allow(helpers).to receive(:controlled_vocabulary_source_for).with('license').and_return('licenses')
+      allow(helpers).to receive(:controlled_vocabulary_service_for)
+        .with('licenses').and_return(Hyrax::LicenseService)
+
+      expect(presenter.controlled_service_for('license')).to be_a Hyrax::LicenseService
+    end
+
+    it 'is nil for a property the profile does not control' do
+      allow(helpers).to receive(:controlled_vocabulary_source_for).with('title').and_return(nil)
+
+      expect(presenter.controlled_service_for('title')).to be_nil
+    end
+
+    it 'is nil when the helper cannot resolve the source' do
+      allow(helpers).to receive(:controlled_vocabulary_source_for).with('license').and_return('licenses')
+      allow(helpers).to receive(:controlled_vocabulary_service_for).with('licenses').and_return(nil)
+
+      expect(presenter.controlled_service_for('license')).to be_nil
+    end
+
+    it 'resolves a property once per request' do
+      allow(helpers).to receive(:controlled_vocabulary_source_for).with('license').and_return('licenses')
+      allow(helpers).to receive(:controlled_vocabulary_service_for).with('licenses').and_return(nil)
+
+      2.times { presenter.controlled_service_for('license') }
+
+      expect(helpers).to have_received(:controlled_vocabulary_source_for).once
+    end
+  end
+
   describe '#file_type_label' do
     it 'returns the uppercase extension' do
       uf = double(file: double(file: double(filename: 'thesis.PDF')))
@@ -207,6 +264,72 @@ RSpec.describe Hyku::DepositWizard::Presenter do
     it 'falls back to a generic label when there is no extension' do
       uf = double(file: double(file: double(filename: 'README')))
       expect(presenter.file_type_label(uf)).to eq(I18n.t('hyku.deposit_wizard.file_meta.file'))
+    end
+  end
+
+  # Hyrax registers controlled vocabularies as two different kinds of object, and
+  # the review step has to label values through both: most (audience, discipline,
+  # resource_types, ...) are modules extending AuthorityService whose `label` is a
+  # module method, while licenses and rights_statements are classes to instantiate.
+  describe '#review_display_values' do
+    let(:context) do
+      double(session: session, current_user: nil, current_ability: nil,
+             params: params, main_app: nil, blacklight_config: nil, helpers: helpers)
+    end
+    # The real helper for resolution, so these assert what the deposit form itself
+    # would build rather than a stubbed stand-in. Only the profile lookup is stubbed,
+    # since there is no profile in this example group.
+    let(:helpers) do
+      Class.new { include Hyrax::FormHelperBehavior }.new.tap do |helper|
+        allow(helper).to receive(:controlled_vocabulary_source_for).with(:a_term).and_return(source)
+      end
+    end
+
+    # Asserted on the resolved service rather than through the returned labels:
+    # every module-backed vocabulary Hyrax ships labels its ids with themselves
+    # ("Article" => "Article"), so a label comparison passes even when the service
+    # failed to resolve and the raw value was echoed instead.
+    context 'when the registered service is a module' do
+      let(:source) { 'resource_types' }
+
+      it 'uses the module itself rather than instantiating it' do
+        expect(presenter.controlled_service_for(:a_term)).to be(Hyrax::ResourceTypesService)
+      end
+
+      it 'labels a value through it' do
+        expect(presenter.review_display_values(:a_term, ['Article'])).to eq(['Article'])
+      end
+    end
+
+    context 'when the registered service is a class' do
+      let(:source) { 'licenses' }
+
+      it 'instantiates it' do
+        expect(presenter.controlled_service_for(:a_term)).to be_a(Hyrax::LicenseService)
+      end
+
+      it 'labels a value through the instance' do
+        value = Hyrax::LicenseService.new.select_all_options.first.last
+
+        expect(presenter.review_display_values(:a_term, [value]))
+          .to eq([Hyrax::LicenseService.new.label(value)])
+      end
+    end
+
+    context 'when the profile names a source with no registry entry' do
+      let(:source) { 'not_registered_anywhere' }
+
+      it 'falls back to a tolerant lookup and echoes the stored value' do
+        expect(presenter.review_display_values(:a_term, ['unmatched'])).to eq(['unmatched'])
+      end
+    end
+
+    context 'when the property is not controlled' do
+      let(:source) { nil }
+
+      it 'returns the values untouched' do
+        expect(presenter.review_display_values(:a_term, %w[one two])).to eq(%w[one two])
+      end
     end
   end
 end

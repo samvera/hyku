@@ -1,0 +1,26 @@
+<% if signup_challenge_enabled? %>
+  <%= raw negative_captcha(@captcha) %>
+  <div class="form-group">
+    <%= negative_label_tag(@captcha, :display_name, resource.class.human_attribute_name(:display_name)) %>
+    <%= negative_text_field_tag(@captcha, :display_name, class: 'form-control', required: true) %>
+  </div>
+  <div class="form-group">
+    <%= negative_label_tag(@captcha, :email, resource.class.human_attribute_name(:email)) %>
+    <%= negative_text_field_tag(@captcha, :email, class: 'form-control', required: true, autofocus: true) %>
+  </div>
+  <div class="form-group">
+    <%= negative_label_tag(@captcha, :password, resource.class.human_attribute_name(:password)) %>
+    <%= password_field_tag @captcha.fields[:password], '', class: 'form-control', required: true %>
+    <div style="display: none"><%= password_field_tag :password, '', tabindex: '999', autocomplete: 'off' %></div>
+  </div>
+  <div class="form-group">
+    <%= negative_label_tag(@captcha, :password_confirmation, resource.class.human_attribute_name(:password_confirmation)) %>
+    <%= password_field_tag @captcha.fields[:password_confirmation], '', class: 'form-control', required: true %>
+    <div style="display: none"><%= password_field_tag :password_confirmation, '', tabindex: '999', autocomplete: 'off' %></div>
+  </div>
+<% else %>
+  <%= f.input :display_name, required: true, wrapper: :inline %>
+  <%= f.input :email, required: true, autofocus: true, wrapper: :inline %>
+  <%= f.input :password, required: true, wrapper: :inline %>
+  <%= f.input :password_confirmation, required: true, wrapper: :inline %>
+<% end %>

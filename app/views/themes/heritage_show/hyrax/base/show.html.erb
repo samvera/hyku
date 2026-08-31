@@ -1,0 +1,57 @@
+<% content_for(:extra_body_classes, 'works-show ') %>
+<% provide :page_title, @presenter.page_title %>
+
+<% content_for :canonical_url do %>
+  <link rel="canonical" href="<%= canonical_url_for(@presenter) %>" />
+<% end %>
+
+<%= render 'shared/citations' %>
+<%= render 'shared/additional_citations' %>
+
+<div class="hrt-show" itemscope itemtype="http://schema.org/CreativeWork">
+  <div class="hrt-show-actions"><%= render 'show_actions', presenter: @presenter %></div>
+
+  <%= render 'work_title', presenter: @presenter %>
+
+  <%= render 'workflow_actions_widget', presenter: @presenter %>
+
+  <div class="hrt-show-body">
+    <div class="hrt-show-main">
+      <% if theme_viewer?(@presenter) %>
+        <% if @presenter.video_embed_viewer? %>
+          <div class="hrt-viewer hrt-viewer-media"><%= render 'video_embed_viewer', presenter: @presenter %></div>
+        <% elsif @presenter.iiif_viewer? %>
+          <div class="hrt-viewer hrt-viewer-media"><%= render 'representative_media', presenter: @presenter, viewer: true %></div>
+        <% elsif @presenter.show_pdf_viewer? %>
+          <div class="hrt-viewer hrt-viewer-media"><%= render 'pdf_js', file_set_presenter: pdf_file_set_presenter(@presenter) %></div>
+        <% else %>
+          <div class="hrt-viewer hrt-viewer-still">
+            <div class="hrt-viewer-thumb">
+              <%= render 'representative_media', presenter: @presenter, viewer: false %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+
+      <% if @presenter.description.present? %>
+        <div class="hrt-show-description">
+          <%= render 'work_description', presenter: @presenter %>
+        </div>
+      <% end %>
+
+      <%= render 'metadata', presenter: @presenter %>
+    </div>
+
+    <aside class="hrt-show-rail">
+      <%= render 'citations', presenter: @presenter %>
+      <%= render 'part_of_panel', presenter: @presenter %>
+      <%= render 'file_panel', presenter: @presenter %>
+      <%= render 'child_works_panel', presenter: @presenter %>
+    </aside>
+  </div>
+
+  <span class='hide analytics-event' data-category="work" data-action="work-view" data-name="<%= @presenter.id %>"></span>
+  <% @presenter.member_of_collection_ids.each do |collection_id| %>
+    <span class='hide analytics-event' data-category="work-in-collection" data-action="work-in-collection-view" data-name="<%= collection_id %>"></span>
+  <% end %>
+</div>

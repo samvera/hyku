@@ -2,16 +2,10 @@
   <h2 class="pr-card-head"><%= t('practice_research.show.cite') %></h2>
   <div class="pr-card-body">
     <% if all_authors(presenter).any? %>
-      <%
-        citations = {
-          'apa' => export_as_apa_citation(presenter),
-          'mla' => export_as_mla_citation(presenter),
-          'chicago' => export_as_chicago_citation(presenter)
-        }.select { |_style, text| text.present? }
-      %>
+      <% citations = theme_citations(presenter) %>
       <% if citations.any? %>
-        <div class="pr-cite" data-pr-cite>
-          <select class="form-control form-control-sm pr-cite-picker" data-pr-cite-picker
+        <div class="pr-cite" data-citation>
+          <select class="form-control form-control-sm pr-cite-picker" data-citation-picker
                   aria-label="<%= t('practice_research.show.citation_style') %>">
             <% citations.each_key do |style| %>
               <option value="<%= style %>"><%= t("practice_research.show.citation_styles.#{style}") %></option>
@@ -19,15 +13,15 @@
           </select>
 
           <% citations.each_with_index do |(style, text), index| %>
-            <blockquote class="pr-cite-text" data-pr-cite-text="<%= style %>"
+            <blockquote class="pr-cite-text" data-citation-text="<%= style %>"
                         <%= 'hidden' unless index.zero? %>><%= text %></blockquote>
           <% end %>
 
           <div class="d-flex align-items-center">
-            <button type="button" class="pr-cite-copy" data-pr-cite-copy>
+            <button type="button" class="pr-cite-copy" data-citation-copy>
               <%= t('practice_research.show.citation_copy') %>
             </button>
-            <span class="pr-cite-copied ml-2" data-pr-cite-copied hidden aria-live="polite"><%= t('practice_research.show.citation_copied') %></span>
+            <span class="pr-cite-copied ml-2" data-citation-copied hidden aria-live="polite"><%= t('practice_research.show.citation_copied') %></span>
           </div>
         </div>
       <% end %>

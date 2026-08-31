@@ -1,0 +1,31 @@
+<% provide :page_title, construct_page_title(t('hyku.admin.controlled_vocabulary.new_title'),
+                                             t('hyku.admin.controlled_vocabularies'),
+                                             t('hyku.admin.title')) %>
+<% provide :page_header do %>
+  <h1>
+    <span class="fa fa-tag" aria-hidden="true"></span>
+    <%= t('hyku.admin.controlled_vocabulary.new_title') %>
+  </h1>
+<% end %>
+
+<div class="card">
+  <div class="card-header">
+    <%= t('hyku.admin.controlled_vocabulary.new_help') %>
+  </div>
+  <div class="card-body">
+    <%= form_for @controlled_vocabulary,
+                 url: main_app.controlled_vocabularies_path,
+                 html: { class: 'controlled-vocabulary-form' } do |f| %>
+      <%# No source-key preview here: the review step shows the derived key before
+          anything is written. %>
+      <%= render 'fields', f: f, required: true %>
+
+      <%# Submitting reviews rather than saves: create renders the derived source key
+          for confirmation before writing the row. %>
+      <%= f.submit t('hyku.admin.controlled_vocabulary.create'), class: 'btn btn-primary' %>
+      <%= link_to t('helpers.action.cancel', default: 'Cancel'),
+                  main_app.controlled_vocabularies_path,
+                  class: 'btn btn-link' %>
+    <% end %>
+  </div>
+</div>

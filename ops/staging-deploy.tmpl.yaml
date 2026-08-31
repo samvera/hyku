@@ -141,6 +141,8 @@ extraEnvVars: &envVars
     value: no-reply@hykustaging.org
   - name: HYKU_FILE_ACL
     value: "false"
+  - name: HYKU_VOCABULARY_SIDEBAR_ENABLED
+    value: "true"
   - name: HYRAX_ANALYTICS
     value: "true"
   - name: HYRAX_ANALYTICS_PROVIDER

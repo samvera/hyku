@@ -175,10 +175,12 @@ Each `Step` declares its own rules; the navigator computes the rest:
   is never a prerequisite.
 - **Back** is the previous visible step (`Flow#back_before`), so views never name
   their predecessor. **Forward** is the next visible step (`Flow#next_after`).
-  On the metadata steps (`details`, `file_meta`) Back submits the form rather than
-  linking, so what was typed is saved on the way out; those steps save
-  unconditionally and validate only to decide whether to advance. The browser's own
-  back button bypasses this, so entries abandoned that way are still lost.
+  On the steps carrying depositor input (`files`, `details`, `file_meta`) Back
+  submits the form rather than linking, so what was entered is saved on the way
+  out; those steps save unconditionally and validate only to decide whether to
+  advance. On `files` that save is what keeps an upload from being orphaned: the
+  id only reaches the session by being posted. The browser's own back button
+  bypasses this, so entries abandoned that way are still lost.
 - **Detours** (`Flow#detour_for`) replace the old per-step redirect rules.
 
 | Step | Purpose | Shown when |
@@ -473,10 +475,10 @@ rebrand by overriding the tokens without touching the baseline.
 The start-screen path cards (new / add / standalone) render an optional icon
 above their label, read from an i18n key — mirroring how the work-type cards
 resolve their icon (`Hyrax::ModelIcon` → `hyrax.icons.*`). No icon shows unless the
-key is set, so vanilla installs are unaffected. A consuming app supplies the full
-CSS class string per path under `hyku.deposit_wizard.start.paths.<path>.icon` (the
-value is used verbatim, so include every class the icon needs — e.g. both `fa` and
-`fa-cube` for Font Awesome 4, or whatever your icon set requires):
+key is set, so vanilla installs are unaffected. A consuming app supplies the icon
+name per path under `hyku.deposit_wizard.start.paths.<path>.icon`. The view adds
+the `fa` family class itself (as `_stepper` does), so the value is the bare icon
+name — including `fa` here renders `fa fa fa-cube` and no glyph:
 
 ```yaml
 en:
@@ -485,11 +487,11 @@ en:
       start:
         paths:
           new:
-            icon: fa fa-cube
+            icon: fa-cube
           add:
-            icon: fa fa-sitemap
+            icon: fa-sitemap
           standalone:
-            icon: fa fa-file-o
+            icon: fa-file-o
 ```
 
 ## JavaScript hooks
@@ -504,5 +506,11 @@ exactly as on the stock form.
 
 Three steps gate their Next button on a `data-behavior` hook: `files-next` stays
 disabled while uploads are in flight (the uploaded-file ids only reach the form as
-each upload completes, so advancing early would drop them), and `parent-next` /
+each upload completes, so leaving early would drop them), and `parent-next` /
 `type-next` stay disabled until a parent or work type is chosen.
+
+On the files step the submitting Back button (`back-submit`) is disabled by that
+same guard. Both directions post the form, and the guard is bound to the form's
+submit rather than to either button, so leaving Back enabled would show a live
+button whose clicks are silently swallowed. The hook marks only the submitting
+variant — `disabled` is inert on the plain-link Back the other steps render.

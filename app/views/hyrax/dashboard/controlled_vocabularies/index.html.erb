@@ -1,0 +1,91 @@
+<% provide :page_title, construct_page_title(t('hyku.admin.controlled_vocabularies'), t('hyku.admin.title')) %>
+<% provide :page_header do %>
+  <h1><span class="fa fa-tags" aria-hidden="true"></span> <%= t('hyku.admin.controlled_vocabularies') %></h1>
+<% end %>
+
+<% if can? :manage, :controlled_vocabularies %>
+  <div class="mb-3 text-right">
+    <%= link_to main_app.new_controlled_vocabulary_path, class: 'btn btn-primary' do %>
+      <%= t('hyku.admin.controlled_vocabulary.new_title') %>
+    <% end %>
+  </div>
+<% end %>
+
+<div class="card">
+  <div class="card-header">
+    <%= t('hyku.admin.controlled_vocabulary.source_key_help') %>
+  </div>
+  <div class="card-body pt-1">
+    <% if @controlled_vocabularies.any? %>
+      <%# controlled-vocabularies-scroll restores the scroll Hyrax disables on
+          .table-responsive app-wide; see hyku.scss. %>
+      <div class="table-responsive controlled-vocabularies-scroll">
+        <table class="table table-borderless controlled-vocabularies">
+          <caption class="sr-only"><%= t('hyku.admin.controlled_vocabularies') %></caption>
+          <thead>
+            <tr>
+              <th scope="col"><%= t('hyku.admin.controlled_vocabulary.name') %></th>
+              <th scope="col">
+                <%= render 'column_hint',
+                           label: t('hyku.admin.controlled_vocabulary.source_key'),
+                           hint: t('hyku.admin.controlled_vocabulary.source_key_hint') %>
+              </th>
+              <th scope="col">
+                <%= render 'column_hint',
+                           label: t('hyku.admin.controlled_vocabulary.origin'),
+                           hint: t('hyku.admin.controlled_vocabulary.origin_hint') %>
+              </th>
+              <th scope="col">
+                <%= render 'column_hint',
+                           label: t('hyku.admin.controlled_vocabulary.status'),
+                           hint: t('hyku.admin.controlled_vocabulary.status_hint') %>
+              </th>
+              <th scope="col"><span class="sr-only"><%= t('hyku.admin.controlled_vocabulary.download') %></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @controlled_vocabularies.each do |entry| %>
+              <tr class="<%= 'border-bottom' if entry.description.blank? %>">
+                <td>
+                  <%= link_to entry.label, main_app.controlled_vocabulary_path(entry.source_key) %>
+                </td>
+                <td><code><%= entry.source_key %></code></td>
+                <td><%= entry.source_label %></td>
+                <td>
+                  <% if entry.awaiting_import? %>
+                    <span class="badge badge-info"
+                          title="<%= t('hyku.admin.controlled_vocabulary.awaiting_import_help', task: entry.import_task) %>">
+                      <%= t('hyku.admin.controlled_vocabulary.awaiting_import') %>
+                    </span>
+                  <% elsif !entry.configured? %>
+                    <span class="badge badge-attention"
+                          title="<%= t('hyku.admin.controlled_vocabulary.unconfigured_help') %>">
+                      <%= t('hyku.admin.controlled_vocabulary.unconfigured') %>
+                    </span>
+                  <% else %>
+                    <span class="badge badge-quiet">
+                      <%= t('hyku.admin.controlled_vocabulary.ready') %>
+                    </span>
+                  <% end %>
+                </td>
+                <td class="text-right">
+                  <%= render 'download_menu', entry: entry, button_class: 'btn-sm btn-outline-secondary' if entry.downloadable? %>
+                </td>
+              </tr>
+              <% if entry.description.present? %>
+                <tr class="border-bottom">
+                  <%# Spans the row, so it wraps rather than widening the table. %>
+                  <td colspan="5" class="pt-0 text-muted controlled-vocabulary-description">
+                    <%= entry.description %>
+                  </td>
+                </tr>
+              <% end %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <p><%= t('hyku.admin.controlled_vocabulary.none') %></p>
+    <% end %>
+  </div>
+</div>

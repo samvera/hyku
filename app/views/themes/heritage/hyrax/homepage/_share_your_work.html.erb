@@ -1,0 +1,11 @@
+<section class="hrt-cta" aria-labelledby="hrt-cta-heading">
+  <div class="hrt-cta-copy">
+    <h2 class="hrt-cta-heading" id="hrt-cta-heading"><%= t('heritage.homepage.cta.heading') %></h2>
+    <p class="hrt-cta-sub"><%= t('heritage.homepage.cta.sub') %></p>
+  </div>
+  <div class="hrt-cta-actions">
+    <%= link_to t(:'hyrax.pages.tabs.terms_page'), hyrax.terms_path, class: 'hrt-cta-terms' %>
+    <% href, data = signed_in? ? deposit_new_work_target(many: @presenter.create_many_work_types?, first_type: @presenter.first_work_type) : [hyrax.my_works_path, {}] %>
+    <%= link_to t('heritage.homepage.cta.button'), href, data:, class: 'hrt-cta-button' %>
+  </div>
+</section>

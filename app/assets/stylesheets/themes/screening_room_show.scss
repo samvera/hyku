@@ -1,0 +1,752 @@
+// ---- screening room show page theme ----
+
+@import 'themes/screening_room/tokens';
+@import 'themes/screening_room/primitives';
+@import 'themes/screening_room/shell';
+
+.screening_room_show.works-show {
+  background: var(--scr-base, #{$scr-base});
+
+  #content-wrapper {
+    max-width: none;
+    padding: 0;
+  }
+
+  #content-wrapper > .alert {
+    margin: 16px $scr-gutter-xl;
+  }
+
+  // ---- editor actions ----
+  // the partial always renders, since it carries the COinS hook citation
+  // managers read; with no buttons in it there is nothing to make room for.
+  // the stock partial ships the feature and unfeature links collapsed rather
+  // than absent, so those do not count as buttons
+  .scr-show-actions:not(:has(.show-actions a.btn:not(.collapse), .show-actions button.btn:not(.collapse))) {
+    display: none;
+  }
+
+  .scr-show-actions {
+    @include scr-gutter;
+    padding-bottom: 10px;
+    padding-top: 10px;
+
+    .show-actions {
+      column-gap: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin: 0;
+      row-gap: 10px;
+    }
+
+    .col-sm-6 {
+      column-gap: 10px;
+      display: flex;
+      // the stock columns are pinned to half the row each, which the row's own
+      // gap then overflows
+      flex: 1 1 auto;
+      flex-wrap: wrap;
+      max-width: none;
+      padding: 0;
+      row-gap: 10px;
+      width: auto;
+
+      &.text-right {
+        justify-content: flex-end;
+      }
+    }
+
+    // the appearance pins every button colour with !important, so a themed
+    // button has to answer in kind
+    .btn {
+      @include scr-sans;
+      background-color: var(--scr-raised, #{$scr-raised}) !important;
+      border: 1px solid var(--scr-rule-strong, #{$scr-rule-strong}) !important;
+      border-radius: 0;
+      color: $scr-ink !important;
+      font-size: 14px;
+      margin: 0;
+      padding: 9px 16px;
+
+      &:hover,
+      &:focus {
+        background-color: var(--scr-chrome-soft, #{$scr-chrome-soft}) !important;
+        border-color: var(--scr-rule-strong, #{$scr-rule-strong}) !important;
+        color: #fff !important;
+      }
+
+      &:focus-visible {
+        @include scr-focus-ring;
+      }
+    }
+
+    .btn-danger {
+      background-color: $scr-danger !important;
+      border-color: $scr-danger !important;
+      color: #1a1a1a !important;
+
+      &:hover,
+      &:focus {
+        background-color: #ffffff !important;
+        border-color: #ffffff !important;
+        color: #1a1a1a !important;
+      }
+    }
+
+    .dropdown-toggle::after {
+      margin-left: 8px;
+    }
+
+    .dropdown-menu {
+      background: var(--scr-chrome-soft, #{$scr-chrome-soft});
+      border: 1px solid var(--scr-rule-strong, #{$scr-rule-strong});
+      border-radius: 0;
+      color: $scr-ink;
+      padding: 4px 0;
+
+      .dropdown-item {
+        color: $scr-ink;
+        font-size: 14px;
+        padding: 8px 16px;
+
+        &:hover,
+        &:focus {
+          background: var(--scr-raised, #{$scr-raised});
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  // ---- viewer ----
+  .scr-viewer {
+    background: #000;
+
+    // the viewer's iframe is positioned absolutely, so the frame it fills has
+    // to be the positioned ancestor or it climbs over the masthead
+    .viewer-wrapper {
+      height: 720px;
+      overflow: hidden;
+      position: relative;
+
+      @media (max-width: $scr-laptop-max) {
+        height: 520px;
+      }
+
+      @media (max-width: $scr-mobile-max) {
+        height: 62vw;
+      }
+    }
+  }
+
+  .scr-viewer-still {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding: 24px;
+
+    img {
+      max-height: 720px;
+      max-width: 100%;
+      object-fit: contain;
+    }
+  }
+
+  // ---- show body ----
+  // the text below the viewer sits inside a wider margin than the full-bleed
+  // rows above it, so the description's measure reads as the column width
+  .scr-show-body {
+    align-items: start;
+    display: grid;
+    gap: 48px;
+    grid-template-columns: minmax(0, 1fr) 400px;
+    padding: 36px $scr-gutter-xl * 3 56px;
+
+    @media (max-width: $scr-desktop-max) {
+      grid-template-columns: minmax(0, 1fr) 320px;
+      padding-left: $scr-gutter-lg * 3;
+      padding-right: $scr-gutter-lg * 3;
+    }
+
+    @media (max-width: $scr-laptop-max) {
+      gap: 32px;
+      grid-template-columns: minmax(0, 1fr);
+      padding-left: $scr-gutter-md;
+      padding-right: $scr-gutter-md;
+    }
+
+    @media (max-width: $scr-mobile-max) {
+      padding-left: $scr-gutter-sm;
+      padding-right: $scr-gutter-sm;
+    }
+  }
+
+  .scr-show-main {
+    display: flex;
+    flex-direction: column;
+    row-gap: 28px;
+  }
+
+  // ---- title block ----
+  .scr-show-head {
+    display: flex;
+    flex-direction: column;
+    // .work-title-wrapper carries a bottom margin upstream, which reads as extra
+    // space on top of the column's own gap
+    margin-bottom: 0;
+    row-gap: 16px;
+  }
+
+  .scr-show-eyebrow {
+    align-items: center;
+    column-gap: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    row-gap: 8px;
+  }
+
+  .scr-show-context {
+    @include scr-eyebrow;
+    letter-spacing: 0.18em;
+
+    a {
+      @include scr-link($scr-ink-muted);
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        color: $scr-ink;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .scr-show-titleline {
+    align-items: baseline;
+    column-gap: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+
+  .scr-show-title {
+    @include scr-serif;
+    color: #fff;
+    font-size: 36px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.18;
+    margin: 0;
+    max-width: 1080px;
+    overflow-wrap: anywhere;
+
+    @media (max-width: $scr-laptop-max) {
+      font-size: 30px;
+    }
+
+    @media (max-width: $scr-mobile-max) {
+      font-size: 26px;
+    }
+  }
+
+  .scr-show-chips .badge {
+    border-radius: 0;
+  }
+
+  // ---- description ----
+  .scr-show-lede {
+    // the column is the measure now that the body sits inside a wider margin;
+    // the cap only guards very wide screens
+    max-width: 1080px;
+
+    &::before {
+      background: var(--scr-accent, #{$scr-accent});
+      content: '';
+      display: block;
+      height: 2px;
+      margin-bottom: 20px;
+      width: 96px;
+    }
+
+    // markdown() returns a paragraph, so the stock partial's <p class="work_description">
+    // wrapper ends up empty and the text renders as sibling paragraphs
+    p:empty {
+      display: none;
+    }
+
+    p {
+      @include scr-serif;
+      // the serif has no light weight, so subpixel smoothing is what keeps the
+      // lede from reading bold against the dark surface
+      -webkit-font-smoothing: antialiased;
+      color: $scr-ink-body;
+      font-size: 22px;
+      font-weight: 300;
+      line-height: 1.55;
+      margin: 0 0 14px;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-wrap: anywhere;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      @media (max-width: $scr-laptop-max) {
+        font-size: 20px;
+      }
+
+      @media (max-width: $scr-mobile-max) {
+        font-size: 18px;
+      }
+    }
+  }
+
+  // ---- metadata ----
+  .scr-show-main > dl.work-show {
+    // no column gap: the row's rule is drawn on both cells, so a gap would
+    // break it in two. the label carries the spacing as padding instead
+    column-gap: 0;
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    margin: 0;
+    padding-top: 0;
+
+    @media (max-width: $scr-mobile-max) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    dt {
+      @include scr-sans;
+      border-top: 1px solid var(--scr-rule, #{$scr-rule});
+      color: $scr-ink;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.55;
+      margin: 0;
+      padding: 12px 20px 12px 0;
+
+      @media (max-width: $scr-mobile-max) {
+        padding-bottom: 0;
+        padding-right: 0;
+      }
+    }
+
+    dd {
+      border-top: 1px solid var(--scr-rule, #{$scr-rule});
+      color: $scr-ink-body;
+      font-size: 16px;
+      line-height: 1.55;
+      margin: 0;
+      overflow-wrap: anywhere;
+      padding: 12px 0;
+      text-align: right;
+
+      @media (max-width: $scr-mobile-max) {
+        border-top: 0;
+        padding-top: 2px;
+        text-align: left;
+      }
+
+      a {
+        @include scr-link;
+      }
+
+      ul.tabular {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      // the stock partial gives every value its own list item; the row reads as
+      // one line of prose instead
+      ul.tabular li,
+      ul.tabular p {
+        display: inline;
+        margin: 0;
+      }
+
+      // the separator hangs off the value's own text, not the list item: the
+      // renderers differ on where they put whitespace, and a comma on the item
+      // lands on the far side of it
+      ul.tabular li:not(:last-child) a:last-of-type::after,
+      ul.tabular li:not(:last-child):not(:has(a))::after {
+        color: $scr-ink-faint;
+        content: ', ';
+        text-decoration: none;
+      }
+    }
+  }
+
+  // ---- featured fields and compound cards ----
+  // both gem partials arrive as bootstrap cards, and the compound header also
+  // picks up the appearance's facet palette
+  .work-featured-attribute,
+  .hyrax-compound-card {
+    background: var(--scr-band, #{$scr-band});
+    border: 1px solid var(--scr-rule, #{$scr-rule}) !important;
+    border-radius: 0;
+    color: $scr-ink-body;
+    // the gem ships .mb-4 on the featured card
+    margin-bottom: 0 !important;
+
+    .card-header,
+    .card-body {
+      background-color: transparent !important;
+      border-color: var(--scr-rule, #{$scr-rule}) !important;
+      border-radius: 0;
+      color: $scr-ink-body;
+      padding: 16px 20px;
+    }
+
+    h2,
+    .card-title {
+      @include scr-sans;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      margin: 0 0 8px;
+    }
+
+    .card-title {
+      margin-bottom: 0;
+    }
+
+    a {
+      @include scr-link;
+    }
+
+    .hyrax-compound-subproperty-label {
+      @include scr-sans;
+      color: $scr-ink;
+    }
+  }
+
+  // a compound whose values are all blank still renders its header
+  .hyrax-compound-card:not(:has(.hyrax-compound-entry)) {
+    display: none;
+  }
+
+  // ---- rail panels ----
+  .scr-show-rail {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    row-gap: 14px;
+  }
+
+  .scr-panel {
+    background: var(--scr-band, #{$scr-band});
+    border: 1px solid var(--scr-rule, #{$scr-rule});
+    padding: 20px;
+  }
+
+  .scr-panel-head {
+    align-items: baseline;
+    column-gap: 12px;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 6px;
+  }
+
+  .scr-panel-label {
+    @include scr-sans;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .scr-panel-count {
+    color: $scr-ink-faint;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .scr-panel-list {
+    margin: 0;
+  }
+
+  .scr-panel-row {
+    align-items: center;
+    column-gap: 14px;
+    display: grid;
+    grid-template-columns: 68px minmax(0, 1fr) auto;
+    padding: 14px 0;
+
+    & + .scr-panel-row {
+      border-top: 1px solid var(--scr-rule, #{$scr-rule});
+    }
+  }
+
+  .scr-panel-thumb {
+    background: var(--scr-raised, #{$scr-raised});
+    display: block;
+    height: 68px;
+    overflow: hidden;
+    width: 68px;
+
+    img {
+      height: 100%;
+      object-fit: cover;
+      width: 100%;
+    }
+  }
+
+  .scr-panel-body {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    row-gap: 3px;
+  }
+
+  .scr-panel-name {
+    @include scr-link($scr-ink);
+    font-size: 15px;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+    }
+  }
+
+  .scr-panel-meta {
+    color: $scr-ink-faint;
+    font-size: 13px;
+    margin: 0;
+  }
+
+  .scr-panel-actions {
+    // the file set actions arrive as appearance-pinned buttons
+    .btn,
+    a {
+      @include scr-link;
+      background: none !important;
+      border: 0 !important;
+      color: var(--scr-link, #{$scr-link}) !important;
+      font-size: 13px;
+      padding: 0;
+
+      &:hover,
+      &:focus {
+        color: #fff !important;
+      }
+    }
+
+    // an editor gets the action menu instead of a bare download link
+    .dropdown-toggle {
+      background-color: var(--scr-raised, #{$scr-raised}) !important;
+      border: 1px solid var(--scr-rule-strong, #{$scr-rule-strong}) !important;
+      border-radius: 0;
+      color: $scr-ink !important;
+      padding: 6px 10px;
+      text-decoration: none;
+      white-space: nowrap;
+
+      &:hover,
+      &:focus {
+        background-color: var(--scr-chrome-soft, #{$scr-chrome-soft}) !important;
+        border-color: var(--scr-rule-strong, #{$scr-rule-strong}) !important;
+        color: #fff !important;
+      }
+    }
+
+  }
+
+  // the rail's menus: the file set actions and the citation formats
+  .scr-show-rail .dropdown-menu {
+    background: var(--scr-chrome-soft, #{$scr-chrome-soft});
+    border: 1px solid var(--scr-rule-strong, #{$scr-rule-strong});
+    border-radius: 0;
+    margin: 0;
+    min-width: 190px;
+    padding: 4px 0;
+
+    // bootstrap hovers the list item, not the link inside it
+    .dropdown-item {
+      background: none;
+      padding: 0;
+
+      &:hover,
+      &:focus,
+      &:focus-within {
+        background: var(--scr-raised, #{$scr-raised});
+      }
+    }
+
+    a {
+      color: $scr-ink !important;
+      display: block;
+      padding: 8px 14px;
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        background: var(--scr-raised, #{$scr-raised});
+        color: #fff !important;
+      }
+    }
+
+    em {
+      color: $scr-ink-faint;
+    }
+  }
+
+  // ---- citation panel ----
+  .scr-cite {
+    display: flex;
+    flex-direction: column;
+    row-gap: 12px;
+
+    // the picker, the citation and the copy button share one wrapper, so the
+    // panel's own gap never reaches between them
+    [data-citation] {
+      display: flex;
+      flex-direction: column;
+      row-gap: 12px;
+    }
+  }
+
+  .scr-cite-picker {
+    @include scr-sans;
+    appearance: none;
+    background: var(--scr-chrome, #{$scr-chrome});
+    border: 1px solid var(--scr-rule-strong, #{$scr-rule-strong});
+    border-radius: 0;
+    color: $scr-ink;
+    font-size: 13px;
+    padding: 7px 10px;
+    width: 100%;
+
+    &:focus-visible {
+      @include scr-focus-ring;
+    }
+  }
+
+  .scr-cite-text {
+    border-left: 2px solid var(--scr-accent, #{$scr-accent});
+    color: $scr-ink-body;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+    overflow-wrap: anywhere;
+    padding: 6px 0 6px 12px;
+  }
+
+  .scr-cite-actions {
+    align-items: center;
+    column-gap: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 6px;
+  }
+
+  .scr-cite-copy {
+    @include scr-sans;
+    background: var(--scr-raised, #{$scr-raised});
+    border: 1px solid var(--scr-rule-strong, #{$scr-rule-strong});
+    color: $scr-ink;
+    font-size: 13px;
+    padding: 7px 12px;
+
+    &:hover,
+    &:focus {
+      background: var(--scr-chrome-soft, #{$scr-chrome-soft});
+      color: #fff;
+    }
+
+    &:focus-visible {
+      @include scr-focus-ring;
+    }
+  }
+
+  .scr-cite-copied {
+    color: $scr-ink-faint;
+    font-size: 13px;
+  }
+
+  .scr-cite-note {
+    color: $scr-ink-faint;
+    font-size: 12px;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .scr-cite-export {
+    @include scr-link;
+    font-size: 13px;
+  }
+
+  // ---- what the work belongs to ----
+  .scr-show-rail > dl.work-show {
+    background: var(--scr-band, #{$scr-band});
+    border: 1px solid var(--scr-rule, #{$scr-rule});
+    margin: 0;
+    padding: 16px;
+
+    // the gem partial always emits whitespace inside the list, so :empty never
+    // matches; what makes it worth showing is a term
+    &:not(:has(dt)) {
+      display: none;
+    }
+
+    dt {
+      @include scr-sans;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    dd {
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 4px 0 0;
+      overflow-wrap: anywhere;
+
+      + dt {
+        margin-top: 14px;
+      }
+
+      a {
+        @include scr-link;
+      }
+
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+
+  .scr-panel-empty {
+    color: $scr-ink-body;
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .scr-panel-pager {
+    padding-top: 12px;
+
+    .pagination {
+      column-gap: 4px;
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0;
+    }
+
+    .page-link {
+      background: none;
+      border: 1px solid var(--scr-rule-strong, #{$scr-rule-strong});
+      border-radius: 0;
+      color: $scr-ink-body;
+      font-size: 13px;
+      padding: 4px 9px;
+    }
+
+  }
+}

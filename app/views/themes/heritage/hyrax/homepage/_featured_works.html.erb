@@ -1,0 +1,36 @@
+<% featured = hrt_home.featured_works %>
+<% editable = can?(:update, FeaturedWork) && !@featured_work_list.empty? %>
+
+<% if @presenter&.display_featured_works? && (featured.any? || editable) %>
+  <section class="hrt-section" aria-labelledby="hrt-featured-heading">
+    <div class="hrt-section-head">
+      <h2 class="hrt-section-title" id="hrt-featured-heading"><%= t('heritage.homepage.featured_works.heading') %></h2>
+      <%= link_to t('heritage.homepage.featured_works.see_all', count: hrt_home.counts[:works]),
+                  main_app.search_catalog_path(f: { 'generic_type_sim' => ['Work'] }),
+                  class: 'hrt-section-action' %>
+    </div>
+
+    <% if editable %>
+      <%= form_for [hyrax, @featured_work_list] do |f| %>
+        <div class="dd hrt-reorder" id="dd" data-unfeature-confirm="<%= t('heritage.homepage.featured.unfeature_confirm') %>">
+          <ol class="hrt-tile-grid hrt-reorder-grid list-unstyled">
+            <%= f.fields_for :featured_works do |featured_work| %>
+              <%= render 'hyrax/homepage/sortable_featured', f: featured_work %>
+            <% end %>
+          </ol>
+        </div>
+
+        <div class="hrt-featured-actions">
+          <p class="hrt-featured-hint"><%= t('heritage.homepage.featured.reorder_hint') %></p>
+          <%= f.submit t('heritage.homepage.featured.save_order'), class: 'hrt-featured-save' %>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="hrt-tile-grid">
+        <% featured.each do |work| %>
+          <%= render 'hyrax/homepage/featured_fields', featured: work.presenter %>
+        <% end %>
+      </div>
+    <% end %>
+  </section>
+<% end %>

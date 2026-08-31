@@ -44,6 +44,14 @@ module Hyrax
             url: "/authorities/search/loc/names",
             type: 'autocomplete'
           },
+          # Spelled as qa resolves it, which is also what the vocabularies dashboard
+          # advertises.
+          'loc/genreForms' => {
+            url: "/authorities/search/loc/genreForms",
+            type: 'autocomplete'
+          },
+          # Kept for profiles written before the dashboard advertised the camelCase
+          # key. Both resolve, so an existing profile keeps working.
           'loc/genre_forms' => {
             url: "/authorities/search/loc/genreForms",
             type: 'autocomplete'

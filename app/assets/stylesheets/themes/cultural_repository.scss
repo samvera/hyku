@@ -282,7 +282,6 @@
   }
 
   @media screen and (max-width: 992px) {
-    // no element type: the recent-works cards are li (they render inside an ol)
     .recently-uploaded:nth-of-type(2n+3),
     div.featured-works-6-column-layout:nth-of-type(2n+3),
     div.featured-works-4-column-layout:nth-of-type(2n+3) {

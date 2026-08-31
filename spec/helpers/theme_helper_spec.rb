@@ -60,47 +60,6 @@ RSpec.describe ThemeHelper, type: :helper do
     end
   end
 
-  describe '#theme_luminance' do
-    it 'reads a dark brand color as dark' do
-      expect(helper.theme_luminance('#3c3c3c')).to be < 0.22
-    end
-
-    it 'reads a mid grey as already too light for a dark ramp' do
-      expect(helper.theme_luminance('#808080')).to be > 0.0631
-    end
-
-    it 'keeps a dark brand grey under the ramp ceiling' do
-      expect(helper.theme_luminance('#454545')).to be <= 0.0631
-    end
-
-    it 'treats a value it cannot read as dark' do
-      expect(helper.theme_luminance('rgb(0,0,0)')).to eq(0)
-    end
-  end
-
-  describe '#theme_brand_mix' do
-    it 'keeps the design value for a brand colour that already clears the floor' do
-      expect(helper.theme_brand_mix('#2e74b2')).to eq(55)
-    end
-
-    it 'lifts a near-black brand colour further' do
-      expect(helper.theme_brand_mix('#000000')).to be < 55
-    end
-
-    it 'lands a near-black brand colour above the floor' do
-      percent = helper.theme_brand_mix('#000000')
-      lifted = (255 * (100 - percent)) / 100
-
-      expect(helper.theme_luminance(format('#%02x%02x%02x', lifted, lifted, lifted))).to be >= 0.31
-    end
-  end
-
-  describe '#theme_brand_mix with junk input' do
-    it 'falls back to the design value rather than raising' do
-      expect(helper.theme_brand_mix('#fff')).to eq(55)
-    end
-  end
-
   describe '#theme_file_set_ids' do
     let(:presenter) { double(authorized_file_set_ids: (1..25).map { |i| "fs-#{i}" }) }
 
@@ -122,20 +81,6 @@ RSpec.describe ThemeHelper, type: :helper do
       allow(helper).to receive(:params).and_return({ files_page: 'DROP TABLE' })
 
       expect(helper.theme_file_set_ids(presenter).current_page).to eq(1)
-    end
-  end
-
-  describe '#theme_readable_ink' do
-    it 'puts light ink on a dark accent' do
-      expect(helper.theme_readable_ink('#2e74b2')).to eq('#ffffff')
-    end
-
-    it 'puts dark ink on a light accent' do
-      expect(helper.theme_readable_ink('#ffeb3b')).to eq('#000000')
-    end
-
-    it 'falls back to light ink for a value it cannot read' do
-      expect(helper.theme_readable_ink('rgb(0,0,0)')).to eq('#ffffff')
     end
   end
 

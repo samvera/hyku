@@ -68,18 +68,24 @@ class ControlledVocabularyLabels
 
     # Remote authorities (LOC, Getty, FAST) are excluded deliberately: resolving
     # one means a network call per value, which has no place in indexing.
+    # Memoized per request like label_map: indexing asks this once per controlled
+    # property per document, and each miss is a query plus a directory listing.
     def resolvable?(source)
       name = source.to_s
       return false if name.blank?
       return false if Hyrax::ControlledVocabularies.remote_authorities.key?(name)
 
-      Qa::LocalAuthority.exists?(name:) || file_based?(name)
+      store = RequestStore.store[:controlled_vocabulary_resolvable] ||= {}
+      return store[name] if store.key?(name)
+
+      store[name] = Qa::LocalAuthority.exists?(name:) || file_based?(name)
     end
 
     # Clears the current request's memo. Rarely needed in the app, where the store
     # is already per request; specs use it to isolate examples.
     def reset!
       RequestStore.store.delete(:controlled_vocabulary_label_maps)
+      RequestStore.store.delete(:controlled_vocabulary_resolvable)
     end
 
     private

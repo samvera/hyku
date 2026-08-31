@@ -14,6 +14,21 @@ RSpec.describe Site, type: :model do
   let(:admin2) { FactoryBot.create(:user, email: 'jane@was_here.net') }
   let(:admin3) { FactoryBot.create(:user, email: 'i@was_here.net') }
 
+  # Apartment's :switch callback calls this, so a cache that survives holds the
+  # previous tenant's rows -- in an in-process tenant loop such as a rake reindex,
+  # one tenant's ids would resolve against another's labels.
+  describe ".reset!" do
+    it "clears the per-request caches that hold tenant rows" do
+      RequestStore.store[:controlled_vocabulary_label_maps] = { 'licenses' => { 'id' => 'Tenant A' } }
+      RequestStore.store[:controlled_vocabulary_resolvable] = { 'tenant_a_only_vocab' => true }
+
+      described_class.reset!
+
+      expect(RequestStore.store).not_to have_key(:controlled_vocabulary_label_maps)
+      expect(RequestStore.store).not_to have_key(:controlled_vocabulary_resolvable)
+    end
+  end
+
   describe ".instance" do
     let(:request_store_mock) { {} }
     before do

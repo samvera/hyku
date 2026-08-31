@@ -1,0 +1,11 @@
+<% if pr_featured_researcher? %>
+  <section class="pr-section pr-researcher">
+    <div class="pr-section-head">
+      <h2 class="pr-section-title"><%= t('practice_research.homepage.researcher.heading') %></h2>
+    </div>
+
+    <div class="pr-researcher-body">
+      <%= displayable_content_block @featured_researcher %>
+    </div>
+  </section>
+<% end %>

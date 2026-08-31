@@ -1,0 +1,34 @@
+<div class="pr-portfolio">
+  <div class="pr-stack">
+    <div class="pr-stack-layer pr-stack-layer-2" aria-hidden="true"></div>
+    <div class="pr-stack-layer pr-stack-layer-1" aria-hidden="true"></div>
+    <%= link_to [hyrax, featured], class: 'pr-portfolio-cover', tabindex: -1,
+                aria: { hidden: true } do %>
+      <%= render_thumbnail_tag(featured, { alt: '' }, { suppress_link: true }) if pr_thumbnail?(featured) %>
+    <% end %>
+  </div>
+
+  <div class="pr-portfolio-body">
+    <p class="pr-eyebrow">
+      <span class="pr-eyebrow-type"><%= featured.human_readable_type %></span>
+      <% work_count = pr_home.collection_works_count(featured.solr_document) %>
+      <% if work_count.positive? %>
+        <span class="pr-eyebrow-sep" aria-hidden="true"></span>
+        <span class="pr-eyebrow-count">
+          <%= t('practice_research.homepage.featured.works_in_collection', count: work_count) %>
+        </span>
+      <% end %>
+    </p>
+
+    <h3 class="pr-portfolio-heading">
+      <%= link_to Array(featured.title).first.presence || featured.solr_document.title_or_label,
+                  [hyrax, featured],
+                  class: 'pr-portfolio-title' %>
+    </h3>
+
+    <% blurb = pr_card_blurb(featured) %>
+    <% if blurb %>
+      <p class="pr-portfolio-blurb"><%= blurb %></p>
+    <% end %>
+  </div>
+</div>

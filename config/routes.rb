@@ -157,6 +157,41 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     resources :featured_collection_lists, path: 'featured_collections', only: :create
   end
 
+  # Controlled vocabularies, viewable only from the dashboard
+  scope :dashboard, module: 'hyrax/dashboard' do
+    resources :controlled_vocabularies, only: [:index, :new, :create, :edit] do
+      resources :terms, only: [:new, :create], controller: 'controlled_vocabulary_terms' do
+        # On the collection: reordering is one write covering every term, not an
+        # edit of any one of them.
+        patch :order, on: :collection, action: :update_order
+        # Retiring a term is the only edit offered, so it has its own path rather
+        # than a general update the form would have to guard.
+        patch :status, on: :member, action: :update_status
+      end
+      resource :import, only: [:new, :create], controller: 'controlled_vocabulary_imports' do
+        post :confirm
+      end
+    end
+    # Declared separately so a remote source key keeps its slash: profiles cite
+    # `loc/subjects`, and the default segment stops at one. Anchored to a single
+    # slash, and placed after the collection routes so `new` is not read as a key.
+    #
+    # The glob would otherwise swallow the download formats, so `.csv` and `.yml` are
+    # excluded from the key and declared as the format instead.
+    get 'controlled_vocabularies/*id',
+        to: 'controlled_vocabularies#show',
+        as: :controlled_vocabulary,
+        constraints: { id: %r{[^/.]+(?:/[^/.]+)?} },
+        format: /csv|yml|yaml|html/
+    # Unnamed, and outside `resources`, so the glob above keeps the
+    # `controlled_vocabulary` route name a slashed source key needs.
+    match 'controlled_vocabularies/:id',
+          to: 'controlled_vocabularies#update',
+          via: %i[patch put],
+          format: false,
+          as: nil
+  end
+
   # Guided deposit wizard
   scope :dashboard, module: 'hyrax' do
     get 'deposit_wizard', to: 'deposit_wizard#start', as: :deposit_wizard
@@ -164,6 +199,8 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     get 'deposit_wizard/parent_options', to: 'deposit_wizard#parent_options', as: :deposit_wizard_parent_options
     # Must precede the :step wildcard so it isn't captured as a step.
     post 'deposit_wizard/extras', to: 'deposit_wizard#save_extras', as: :deposit_wizard_extras
+    # Must precede the :step wildcard so it isn't captured as a step.
+    delete 'deposit_wizard/discard', to: 'deposit_wizard#discard', as: :deposit_wizard_discard
     get 'deposit_wizard/:step', to: 'deposit_wizard#show', as: :deposit_wizard_step
     patch 'deposit_wizard/:step', to: 'deposit_wizard#update', as: :deposit_wizard_advance
     post 'deposit_wizard/commit', to: 'deposit_wizard#commit', as: :deposit_wizard_commit

@@ -9,6 +9,24 @@
     margin-bottom: 1.5rem;
   }
 
+  // The paths are a fixed set (at most a container lead plus two), not a
+  // variable-length list like __type-cards, so pin the columns. Under auto-fit
+  // three paths resolve to three columns and the two cards below the full-width
+  // lead fill only two of them, leaving a gap.
+  &__paths {
+    grid-template-columns: repeat(2, 1fr);
+
+    @media (max-width: 33rem) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  // The container path creates the thing the other paths deposit into, so it
+  // leads the group across the full width rather than sitting beside them.
+  &__path-card--container {
+    grid-column: 1 / -1;
+  }
+
   &__path-card,
   &__type-card {
     display: flex;

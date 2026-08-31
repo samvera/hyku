@@ -135,10 +135,14 @@ extraEnvVars: &envVars
     value: good_job
   - name: HYKU_BULKRAX_ENABLED
     value: "true"
+  - name: HYKU_BULLET_ENABLED
+    value: "true"
   - name: HYKU_CONTACT_EMAIL
     value: no-reply@hykustaging.org
   - name: HYKU_FILE_ACL
     value: "false"
+  - name: HYKU_VOCABULARY_SIDEBAR_ENABLED
+    value: "true"
   - name: HYRAX_ANALYTICS
     value: "true"
   - name: HYRAX_ANALYTICS_PROVIDER

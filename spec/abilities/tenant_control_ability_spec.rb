@@ -8,6 +8,7 @@ RSpec.describe Hyrax::Ability::TenantControlAbility do
   subject { ability }
   let(:tenant_superadmin) { FactoryBot.create(:tenant_superadmin) }
   let(:tenant_admin) { FactoryBot.create(:admin) }
+  let(:user_manager) { FactoryBot.create(:user_manager) }
   let(:basic_user) { FactoryBot.create(:user) }
   let(:ability) { Ability.new(current_user) }
 
@@ -24,6 +25,10 @@ RSpec.describe Hyrax::Ability::TenantControlAbility do
       it 'allows all user abilities' do
         is_expected.to be_able_to(:manage, :tenant_controls)
       end
+
+      it 'allows inviting users' do
+        is_expected.to be_able_to(:invite, User)
+      end
     end
 
     describe 'when tenant admin' do
@@ -32,6 +37,10 @@ RSpec.describe Hyrax::Ability::TenantControlAbility do
       it 'allows all user abilities' do
         is_expected.to be_able_to(:manage, :tenant_controls)
       end
+
+      it 'allows inviting users' do
+        is_expected.to be_able_to(:invite, User)
+      end
     end
 
     describe 'when basic user' do
@@ -39,6 +48,24 @@ RSpec.describe Hyrax::Ability::TenantControlAbility do
 
       it 'allows all user abilities' do
         is_expected.not_to be_able_to(:manage, :tenant_controls)
+      end
+
+      it 'does not allow inviting users' do
+        is_expected.not_to be_able_to(:invite, User)
+      end
+    end
+
+    describe 'when user manager' do
+      let(:current_user) { user_manager }
+
+      it 'does not grant tenant controls' do
+        is_expected.not_to be_able_to(:manage, :tenant_controls)
+      end
+
+      # User managers run user administration without holding :tenant_controls,
+      # so inviting cannot be gated on that ability.
+      it 'allows inviting users' do
+        is_expected.to be_able_to(:invite, User)
       end
     end
   end
@@ -55,6 +82,10 @@ RSpec.describe Hyrax::Ability::TenantControlAbility do
       it 'allows all user abilities' do
         is_expected.to be_able_to(:manage, :tenant_controls)
       end
+
+      it 'allows inviting users' do
+        is_expected.to be_able_to(:invite, User)
+      end
     end
 
     describe 'when tenant admin' do
@@ -63,6 +94,10 @@ RSpec.describe Hyrax::Ability::TenantControlAbility do
       it 'allows all user abilities' do
         is_expected.not_to be_able_to(:manage, :tenant_controls)
       end
+
+      it 'does not allow inviting users' do
+        is_expected.not_to be_able_to(:invite, User)
+      end
     end
 
     describe 'when basic user' do
@@ -70,6 +105,31 @@ RSpec.describe Hyrax::Ability::TenantControlAbility do
 
       it 'allows all user abilities' do
         is_expected.not_to be_able_to(:manage, :tenant_controls)
+      end
+
+      it 'does not allow inviting users' do
+        is_expected.not_to be_able_to(:invite, User)
+      end
+    end
+
+    describe 'when user manager' do
+      let(:current_user) { user_manager }
+
+      it 'does not grant tenant controls' do
+        is_expected.not_to be_able_to(:manage, :tenant_controls)
+      end
+
+      it 'does not allow inviting users' do
+        is_expected.not_to be_able_to(:invite, User)
+      end
+    end
+
+    describe 'when superadmin' do
+      let(:current_user) { FactoryBot.create(:superadmin) }
+
+      # A proprietor-level superadmin administers every tenant, demo or not.
+      it 'allows inviting users' do
+        is_expected.to be_able_to(:invite, User)
       end
     end
   end

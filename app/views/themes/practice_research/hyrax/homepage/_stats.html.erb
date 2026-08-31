@@ -1,0 +1,24 @@
+<% counts = pr_home.counts.reject { |_key, count| count.to_i.zero? } %>
+<% intro = display_content_block? @home_text %>
+
+<% if counts.any? || intro %>
+  <div class="<%= class_names('pr-stats', 'pr-stats-split' => intro && counts.any?) %>">
+    <div class="container pr-stats-inner">
+      <% if counts.any? %>
+        <div class="pr-stats-counts">
+          <% paths = { works: main_app.search_catalog_path,
+                       collections: main_app.search_catalog_path(f: { generic_type_sim: ['Collection'] }) } %>
+          <% counts.each do |key, count| %>
+            <p class="pr-stat">
+              <%= link_to paths[key], class: 'pr-stat-link' do %>
+                <span class="pr-stat-number"><%= number_with_delimiter(count) %></span>
+                <span class="pr-stat-key"><%= t("practice_research.homepage.stats.#{key}", count: count) %></span>
+              <% end %>
+            </p>
+          <% end %>
+        </div>
+      <% end %>
+      <%= displayable_content_block @home_text, class: 'pr-stats-intro' %>
+    </div>
+  </div>
+<% end %>

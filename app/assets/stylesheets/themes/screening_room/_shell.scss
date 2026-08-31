@@ -1,0 +1,437 @@
+// ---- shared site shell for the screening room themes ----
+
+@import 'themes/screening_room/tokens';
+@import 'themes/screening_room/primitives';
+
+html body.screening_room,
+html body.screening_room_show {
+  margin-bottom: 0;
+}
+
+// the theme owns the home and show pages; the chrome bands are dark on every
+// public page, so the page ink belongs to the pages, not to the body
+body.screening_room.hyrax-homepage,
+body.screening_room_show.works-show {
+  color: $scr-ink-body;
+
+  // bootstrap paints these near-black, and sanitized html values may carry them
+  pre,
+  code,
+  kbd,
+  samp {
+    color: $scr-ink-body;
+  }
+}
+
+body.screening_room.public-facing,
+body.screening_room_show.public-facing {
+  @include scr-controls-reset;
+  @include scr-sans;
+
+  // ---- masthead ----
+  #masthead {
+    @include scr-gutter;
+    color: $scr-ink-body;
+    align-items: center;
+    background-color: var(--scr-chrome, #{$scr-chrome}) !important;
+    border-bottom: 1px solid var(--scr-rule, #{$scr-rule}) !important;
+    min-height: $scr-masthead-height;
+    padding-bottom: 0;
+    padding-top: 0;
+  }
+
+  #masthead #logo {
+    margin-left: 0;
+    margin-right: 40px;
+    padding: 0;
+    text-decoration: none;
+  }
+
+  #masthead #logo .institution_name {
+    @include scr-sans;
+    color: $scr-ink;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  #masthead .navbar-collapse {
+    align-items: center;
+  }
+
+  #masthead .navbar-toggler {
+    border-color: var(--scr-rule-strong, #{$scr-rule-strong});
+  }
+
+  #masthead .dropdown-menu {
+    @include scr-dropdown;
+  }
+
+  @media (max-width: 767px) {
+    #masthead {
+      align-content: flex-start;
+      padding-bottom: 8px;
+      padding-top: 8px;
+    }
+
+    #masthead .navbar-collapse {
+      align-items: flex-start;
+    }
+
+    #masthead #logo {
+      margin-right: 0;
+    }
+
+  }
+
+  // the appearance pins this ink for its own header colour, but the theme may
+  // have clamped that colour away, so the id selector has to win
+  #masthead .navbar-nav .nav-link:not([aria-current='page']) {
+    color: $scr-ink-body !important;
+  }
+
+  #masthead .navbar-nav .nav-link:hover,
+  #masthead .navbar-nav .nav-link:focus {
+    color: $scr-ink !important;
+  }
+
+  // ---- masthead nav ----
+  .scr-nav {
+    column-gap: 28px;
+    flex-direction: row;
+
+    @media (max-width: 767px) {
+      align-items: flex-start;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .nav-link {
+      @include scr-sans;
+      font-size: 15px;
+      padding: 19px 0;
+      text-decoration: none;
+
+      @media (max-width: 767px) {
+        padding: 8px 0;
+      }
+
+      &:focus-visible {
+        @include scr-focus-ring;
+      }
+    }
+
+    .nav-link[aria-current='page'] {
+      box-shadow: inset 0 -2px 0 0 var(--scr-accent, #{$scr-accent});
+      color: $scr-ink !important;
+    }
+  }
+
+  #user_utility_links {
+    align-items: center;
+    padding-right: 0 !important;
+
+    @media (max-width: 767px) {
+      align-items: flex-start;
+      flex-direction: column;
+      margin-left: 0 !important;
+      padding-left: 0 !important;
+
+      > li > .nav-link {
+        padding-left: 0;
+      }
+    }
+
+    > li > .nav-link {
+      @include scr-sans;
+      font-size: 15px;
+    }
+
+    > li:last-child > .nav-link {
+      padding-right: 0;
+    }
+  }
+
+  // ---- announcement band ----
+  #announcement_text {
+    @include scr-gutter;
+    background: var(--scr-notice, #{$scr-notice});
+    border-bottom: 1px solid var(--scr-notice-rule, #{$scr-notice-rule});
+    padding-bottom: 14px;
+    padding-top: 14px;
+
+    div#announcement {
+      background-color: transparent;
+      border: 0;
+      border-radius: 0;
+      color: $scr-ink;
+      font-size: 15px;
+      padding-top: 0;
+      text-align: left;
+
+      > :last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    a {
+      @include scr-link;
+    }
+  }
+
+  // ---- search row ----
+  nav[aria-label='Root Menu'] > .navbar-nav > li.nav-item > a.nav-link {
+    @include scr-sans;
+    color: $scr-ink-body;
+    font-size: 15px;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      color: $scr-ink;
+    }
+
+    &:focus-visible {
+      @include scr-focus-ring;
+    }
+  }
+
+  nav[aria-label='Root Menu'] > .navbar-nav > li.nav-item.active > a.nav-link {
+    box-shadow: inset 0 -2px 0 0 var(--scr-accent, #{$scr-accent});
+    color: $scr-ink;
+  }
+
+  // this mode drops box-shadows and flattens the ink, leaving the current page
+  // with no cue at all; underlining it is carried through
+  @media (forced-colors: active) {
+    #masthead .navbar-nav .nav-link[aria-current='page'],
+    nav[aria-label='Root Menu'] > .navbar-nav > li.nav-item.active > a.nav-link {
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 4px;
+    }
+  }
+
+  .scr-searchbar,
+  nav[aria-label='Root Menu'] {
+    @include scr-gutter($important: true);
+    background-color: var(--scr-chrome-soft, #{$scr-chrome-soft}) !important;
+    color: $scr-ink-body;
+    border-bottom: 1px solid var(--scr-rule, #{$scr-rule}) !important;
+    padding-bottom: 18px !important;
+    padding-top: 18px !important;
+
+    .search-form .form-group {
+      align-items: center;
+      column-gap: 16px;
+      justify-content: flex-end;
+      margin-bottom: 0;
+      padding-top: 0 !important;
+    }
+
+    label[for='search-field-header'] {
+      clip: rect(0 0 0 0);
+      height: 1px;
+      max-width: none;
+      overflow: hidden;
+      padding: 0;
+      position: absolute;
+      width: 1px;
+    }
+
+    .input-group {
+      flex: 0 1 660px;
+      width: auto;
+    }
+
+    .input-group-append {
+      display: contents;
+    }
+
+    #search-field-header {
+      border-radius: 0;
+    }
+
+    .form-control {
+      background-color: var(--scr-raised, #{$scr-raised});
+      // the box is the only thing delimiting the field, so its edge carries the
+      // rule that clears 3:1 rather than the subtler input rule
+      border: 1px solid var(--scr-rule-strong, #{$scr-rule-strong});
+      color: $scr-ink;
+      height: 44px;
+      order: 0;
+
+      &::placeholder {
+        color: $scr-ink-muted;
+        opacity: 1;
+      }
+
+      &:focus {
+        @include scr-focus-ring;
+        background-color: var(--scr-raised, #{$scr-raised});
+        border-color: var(--scr-rule-strong, #{$scr-rule-strong});
+        color: $scr-ink;
+      }
+    }
+
+    #search-submit-header {
+      background-color: var(--scr-accent, #{$scr-accent}) !important;
+      border-color: var(--scr-accent, #{$scr-accent}) !important;
+      color: var(--scr-accent-ink, #{$scr-accent-ink}) !important;
+      font-weight: 700;
+      order: 1;
+      padding-left: 26px;
+      padding-right: 26px;
+
+      .fa {
+        display: none;
+      }
+    }
+
+    #advanced-top-button {
+      @include scr-link;
+      align-self: center;
+      background: none !important;
+      border: 0 !important;
+      color: var(--scr-link, #{$scr-link}) !important;
+      margin: 0 24px 0 0;
+      order: -2;
+      padding: 0;
+      white-space: nowrap;
+
+      &:hover,
+      &:focus {
+        color: $scr-ink !important;
+      }
+    }
+
+    .input-group-append > .btn-secondary.dropdown-toggle {
+      background-color: var(--scr-raised, #{$scr-raised}) !important;
+      border: 1px solid var(--scr-rule-strong, #{$scr-rule-strong}) !important;
+      border-right: 0 !important;
+      color: $scr-ink-body !important;
+      height: 44px;
+      margin: 0;
+      order: -1;
+      position: relative;
+    }
+
+    .dropdown-menu {
+      @include scr-dropdown;
+      left: 0 !important;
+      margin: 0;
+      right: auto !important;
+      top: 100% !important;
+      transform: none !important;
+    }
+  }
+
+  // ---- footer ----
+  footer.navbar {
+    @include scr-gutter($important: true);
+    background-color: var(--scr-chrome-deep, #{$scr-chrome-deep}) !important;
+    color: $scr-ink-footer;
+    border-top: 1px solid var(--scr-rule, #{$scr-rule});
+    padding-bottom: 26px;
+    padding-top: 26px;
+
+    .navbar-text {
+      color: $scr-ink-footer !important;
+      font-size: 13px;
+      margin: 0;
+      width: 100%;
+    }
+
+    // the stock footer nests a bootstrap column and a padding utility inside the
+    // band, which inset its text past every other section
+    [class*='col-'] {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .p-1,
+    .p-lg-2 {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+
+    .navbar-link {
+      @include scr-link(var(--scr-footer-accent, #{$scr-footer-accent}));
+    }
+  }
+}
+
+body.screening_room,
+body.screening_room_show {
+  .scr-chip {
+    @include scr-sans;
+    background: var(--scr-accent, #{$scr-accent});
+    color: var(--scr-accent-ink, #{$scr-accent-ink});
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    padding: 5px 11px;
+    text-transform: uppercase;
+  }
+}
+
+// the search band carries the breadcrumb trail on every show page, not just the
+// work show: the theme's _controls partial renders on the collection and file
+// set pages as well. the list stays explicit so a page that never renders the
+// replacement keeps the layout's own trail
+body.screening_room_show.works-show,
+body.screening_room_show.hyrax-collections-show,
+body.screening_room_show.hyrax-file_sets-show {
+  // ---- breadcrumb row ----
+  // the layout drops its own breadcrumb inside the container; this theme carries
+  // the trail in the search band instead
+  #content-wrapper > .breadcrumb {
+    display: none;
+  }
+
+  .scr-searchbar-show {
+    align-items: center;
+    column-gap: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    row-gap: 12px;
+
+    .scr-crumbs {
+      flex: 1 1 240px;
+      min-width: 0;
+    }
+
+    .search-form {
+      flex: 0 1 520px;
+    }
+  }
+
+  .scr-crumbs .breadcrumb {
+    background: none;
+    border: 0;
+    color: $scr-ink-muted;
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+
+    li + ::before {
+      border-right-color: var(--scr-rule-strong, #{$scr-rule-strong});
+    }
+
+    a {
+      @include scr-link;
+    }
+
+    li:last-child a {
+      color: $scr-ink;
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        text-decoration: underline;
+      }
+    }
+  }
+}

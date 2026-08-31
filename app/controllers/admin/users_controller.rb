@@ -18,7 +18,11 @@ module Admin
 
     def activate
       user = User.find(params[:id])
-      user.password = ENV.fetch('HYKU_USER_DEFAULT_PASSWORD', 'password')
+      # Assign the operator-configured default password when one is provided;
+      # otherwise assign a random placeholder so activation never falls back
+      # to a well-known literal. Users who do not know the placeholder can set
+      # their own password through the password reset flow.
+      user.password = ENV.fetch('HYKU_USER_DEFAULT_PASSWORD', nil).presence || Devise.friendly_token[0, 20]
 
       if user.save && user.accept_invitation!
         redirect_to hyrax.admin_users_path, notice: t('hyrax.admin.users.activate.success', user:)

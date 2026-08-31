@@ -318,6 +318,9 @@ de:
         dropzone: Dateien hier ablegen.
         local_upload_browse_everything_html: "<p> Sie können eine oder mehrere Dateien hinzufügen, die dieser Arbeit zugeordnet werden sollen. Fügen Sie Dateien von Ihrem lokalen System oder einem Cloud-Anbieter hinzu. </p><p> Beachten Sie, dass der Anbieter Ihre Anfrage möglicherweise nicht bearbeiten kann, wenn Sie einen Cloud-Anbieter verwenden, um innerhalb kurzer Zeit eine große Anzahl von Dateien hochzuladen. Wenn beim Hochladen aus der Cloud Fehler auftreten, teilen Sie uns dies über %{contact_href} mit. </p>"
         local_upload_html: "<p> Sie können eine oder mehrere Dateien hinzufügen, die dieser Arbeit zugeordnet werden sollen. </p>"
+      form_files_attached:
+        caption: "Diese Arbeit enthält derzeit diese Dateien. Vorhandene Dateien können auf ihren jeweiligen Detailseiten bearbeitet oder entfernt werden."
+        new_files: "Neue Dateien, die dieser Arbeit hinzugefügt werden"
       form_member_of_collections:
         actions:
           remove: Aus der Sammlung entfernen

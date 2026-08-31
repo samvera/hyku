@@ -1,9 +1,14 @@
 ---
 fr:
+  activerecord:
+    models:
+      generic_work: Œuvre
   hyrax:
+    models:
+      generic_work: Œuvre
     icons:
       generic_work: fa fa-file-text-o
     select_type:
       generic_work:
         description: Type de travail à usage général. Sélectionnez cette option si les types de travaux plus spécifiques ci-dessous ne conviennent pas au travail que vous souhaitez ajouter.
-        name: Œuvres Génériques
+        name: Œuvre

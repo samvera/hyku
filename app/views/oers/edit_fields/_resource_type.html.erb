@@ -9,10 +9,6 @@
                        key: key,
                        controlled_vocab_config: controlled_vocabulary_options_for(:oer_resource_type) } %>
 <% else %>
-  <%= f.input key,
-      as: :select,
-      collection: Hyrax::OerTypesService.select_all_options,
-      label: label_for(term: key, record_class: f.object.class),
-      hint: hint_for(term: key, record_class: f.object.class),
-      input_html: { class: 'form-control', multiple: true } %>
+  <%= render partial: 'records/edit_fields/service_backed_select',
+             locals: { f: f, key: key, service: Hyrax::OerTypesService } %>
 <% end %>

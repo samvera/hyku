@@ -37,17 +37,25 @@
 //= require hyku/admin/appearance/default_images
 //= require hyku/admin/appearance/fonts
 //= require hyku/admin/appearance/themes
+//= require hyku/admin/controlled_vocabulary_fields
 //= require hyku/admin/features_scroll
+//= require hyku/admin/vocabulary_term_order
 //= require hyku/groups/per_page
 //= require hyku/groups/add_member
+//= require hyku/demo_banner
 //= require hyku/google_analytics_settings
 //= require proprietor
 //= require bootstrap_carousel
 //= require bootstrap-datepicker
 
 //= require hyrax
+//= require hyrax/attached_files
 //= require hyrax/deposit_wizard
 //= require bulkrax/application
+
+//= require themes/screening_room_home
+
+//= require citation_picker
 
 //= require codemirror
 //= require codemirror/modes/css

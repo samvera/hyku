@@ -1,0 +1,52 @@
+<% provide :page_title, construct_page_title(t('hyku.admin.controlled_vocabulary.new_term_title'),
+                                             @vocabulary.display_label,
+                                             t('hyku.admin.title')) %>
+<% provide :page_header do %>
+  <h1>
+    <span class="fa fa-tag" aria-hidden="true"></span>
+    <%= t('hyku.admin.controlled_vocabulary.new_term_heading', vocabulary: @vocabulary.display_label) %>
+  </h1>
+<% end %>
+
+<div class="card">
+  <div class="card-header">
+    <%= t('hyku.admin.controlled_vocabulary.new_term_help') %>
+  </div>
+  <div class="card-body">
+    <%= form_for @term,
+                 url: main_app.controlled_vocabulary_terms_path(@vocabulary.name),
+                 html: { class: 'controlled-vocabulary-term-form' } do |f| %>
+      <% if @term.errors.any? %>
+        <div class="alert alert-danger" role="alert">
+          <ul class="mb-0">
+            <% @term.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= f.label :label, t('hyku.admin.controlled_vocabulary.label'), class: 'control-label' %>
+        <%= f.text_field :label, class: 'form-control', required: true %>
+        <small class="form-text text-muted">
+          <%= t('hyku.admin.controlled_vocabulary.label_hint') %>
+        </small>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :uri, t('hyku.admin.controlled_vocabulary.term_id'), class: 'control-label' %>
+        <%= f.text_field :uri, class: 'form-control', 'aria-describedby' => 'term-id-help' %>
+        <small id="term-id-help" class="form-text text-muted">
+          <%= t('hyku.admin.controlled_vocabulary.term_id_from_label') %>
+          <%= t('hyku.admin.controlled_vocabulary.term_id_immutable') %>
+        </small>
+      </div>
+
+      <%= f.submit t('hyku.admin.controlled_vocabulary.create_term'), class: 'btn btn-primary' %>
+      <%= link_to t('helpers.action.cancel', default: 'Cancel'),
+                  main_app.controlled_vocabulary_path(@vocabulary.name),
+                  class: 'btn btn-link' %>
+    <% end %>
+  </div>
+</div>

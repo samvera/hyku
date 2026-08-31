@@ -3,13 +3,18 @@ pt-BR:
   activefedora:
     models:
       etd: ETD
-      generic_work: Trabalhar
+      generic_work: Trabalho
       image: Imagem
       oer: REA
   activerecord:
     attributes:
       site:
         institution_name_full: Nome completo da instituição
+    errors:
+      messages:
+        already_an_authority: já está em uso por outro vocabulário controlado
+        taken_as_source_key: '%{value} já é a chave de origem de outro vocabulário controlado'
+        cannot_remove_last_superadmin: não é possível remover o último superadministrador de um inquilino de demonstração público
   application:
     tagline: A solução de repos
   blacklight:
@@ -29,6 +34,9 @@ pt-BR:
       sidebar:
         exporters: Exportadores
         importers: Importadores
+  date:
+    formats:
+      pr_short: "%-d %b %Y"
   errors:
     messages:
       valid_embed_url: deve ser uma URL de incorporação válida do YouTube ou Vimeo.
@@ -67,6 +75,67 @@ pt-BR:
         submit: Remover
       user_search:
         submit: Ir
+  heritage:
+    homepage:
+      intro_label: "Introdução"
+      hero:
+        headline: Explore o acervo
+        search_label: Pesquisar no acervo
+        search_placeholder: Digite os termos de busca
+        search_button: Ir
+        advanced: Avançada
+      browse:
+        heading: Navegar
+        toggle: Mostrar facetas
+      featured:
+        unfeature_confirm: "Remover isto da lista de destaques?"
+        reorder_hint: "Arraste um item para reordenar e depois salve."
+        save_order: "Salvar ordem"
+      featured_works:
+        heading: Obras em destaque
+        see_all:
+          one: "Ver %{count} obra"
+          other: "Ver todas as %{count} obras"
+      collections:
+        heading: Explorar coleções
+        view_all: Ver todas as coleções
+      recent:
+        ago: "há %{time}"
+        heading: Adicionados recentemente
+        view_all: "Ver tudo"
+      researcher:
+        heading: Pesquisador em destaque
+      about:
+        heading: Sobre as coleções
+      cta:
+        heading: Compartilhe seu trabalho
+        sub: Deposite obras no repositório.
+        button: Iniciar um depósito
+    show:
+      citation:
+        heading: "Como citar"
+        style: "Estilo de citação"
+        styles:
+          apa: "APA"
+          mla: "MLA"
+          chicago: "Chicago"
+        copy_visible: "Copiar citação"
+        copied: "Copiado"
+        endnote: "Baixar registro do EndNote"
+        note: "Fornecida apenas como sugestão. Confira com o seu guia de estilo preferido."
+      files:
+        as_format: como %{name}
+        heading: Arquivos
+        count:
+          one: 1 arquivo
+          other: "%{count} arquivos"
+      children:
+        heading: Obras filhas
+        count:
+          one: 1 obra
+          other: "%{count} obras"
+      part_of:
+        heading: Parte de
   hyku:
     account:
       signup_disabled: O registro da conta está desativado
@@ -212,6 +281,179 @@ pt-BR:
           upload: Enviar arquivos
         label: Progresso do depósito
     admin:
+      controlled_vocabularies: Vocabulários controlados
+      controlled_vocabulary:
+        active: Ativo
+        at_position: '%{label} já está na posição %{position} de %{total}'
+        awaiting_import: Não importado
+        awaiting_import_help: 'Este vocabulário está disponível, mas ainda não tem termos neste locatário. Preencha-o executando: %{task}'
+        cancel_order: Cancelar
+        confirm_back: Voltar para editar
+        confirm_create: Confirmar e criar
+        confirm_help: Verifique estes valores antes de o vocabulário ser criado.
+        confirm_permanent: Um vocabulário não pode ser excluído depois de criado, e sua chave de origem não pode ser alterada posteriormente, de modo que um perfil de metadados que a cite continua funcionando.
+        confirm_title: Confirmar novo vocabulário
+        create: Revisar vocabulário
+        create_term: Adicionar termo
+        created: '%{name} foi criado. Adicione seus termos abaixo.'
+        description: Descrição
+        description_help: Opcional. Explica a outros funcionários para que serve este vocabulário.
+        download: Baixar
+        edit_field: 'Editar %{field}'
+        edit_heading: 'Editar %{name}'
+        edit_help: Altere como este vocabulário aparece para a equipe. Sua chave de origem é fixa, então um perfil de metadados que a cita continua funcionando.
+        edit_title: Editar vocabulário
+        import:
+          additions_heading: Termos a adicionar
+          applied: Foram importados %{additions} termos novos e atualizados %{updates} existentes.
+          applied_reordered: Os termos foram reordenados para corresponder ao arquivo.
+          back: Enviar um arquivo diferente
+          button: Importar termos
+          column: Coluna
+          columns:
+            active: true ou false. Uma célula em branco adiciona um novo termo como ativo e mantém o estado atual de um termo existente.
+            id: Opcional. Por padrão é o label e não pode mudar depois de salvo.
+            label: Obrigatória. O que um depositante vê.
+          confirm: Confirmar importação
+          continue: Continuar para a revisão
+          download_template: Baixar os termos atuais (CSV)
+          errors:
+            blank_label: 'Linha %{line}: o rótulo está em branco.'
+            duplicate_column: 'O arquivo tem colunas que significam a mesma coisa: %{columns}.'
+            duplicate_id: 'Linhas %{lines}: id de termo duplicado %{id}.'
+            empty: O arquivo não tem linhas de termos.
+            encoding: O arquivo deve ser texto UTF-8.
+            invalid_active: 'Linha %{line}: active deve ser true ou false.'
+            invalid_term: 'Linha %{line}: não é uma entrada de termo.'
+            invalid_yaml: 'O arquivo não pôde ser lido como yaml: %{message}'
+            malformed_csv: 'O arquivo não pôde ser lido como CSV: %{message}'
+            missing_label: O arquivo precisa de uma coluna label.
+            not_a_vocabulary: O arquivo yaml não tem uma lista de termos.
+            too_long: 'Linha %{line}: o id e o rótulo podem ter no máximo %{max} caracteres.'
+            too_many_rows: O arquivo tem mais de %{max} linhas. Divida-o e importe as partes separadamente.
+            unsupported: Envie um arquivo .csv, .yml ou .yaml.
+          errors_heading: Nada foi importado. Corrija estas linhas e envie o arquivo novamente.
+          example: Exemplo
+          field: Campo
+          file_help: CSV ou yaml, até 5 MB e 50,000 linhas.
+          file_label: Arquivo de termos
+          file_missing: Escolha um arquivo CSV ou yaml para importar.
+          file_too_large: Esse arquivo é grande demais. A importação aceita arquivos de até 5 MB.
+          from: Atual
+          heading: 'Importar termos para %{name}'
+          help: Envie um arquivo de termos para adicioná-los a este vocabulário ou atualizar seus termos existentes. Nada é salvo até que você confirme a revisão.
+          more_rows: e mais %{count}
+          no_changes: Este arquivo corresponde aos termos atuais. Não há nada a importar.
+          notes: Observações
+          payload_invalid: A revisão expirou ou seus dados foram corrompidos. Envie o arquivo novamente.
+          reordered: Os termos serão reordenados para corresponder ao arquivo.
+          review_heading: 'Revisar a importação para %{name}'
+          review_title: Revisar importação
+          rules:
+            missing_column: Uma coluna ausente do arquivo deixa esse atributo intocado.
+            missing_rows: Linhas ausentes do arquivo nunca removem termos; desative um termo com active=false.
+            order: Os termos seguem a ordem das linhas do arquivo. Para reordenar os termos, edite um download completo e reimporte-o.
+            yaml: Um arquivo yaml usa o mesmo formato do download yaml.
+          stale: Este vocabulário mudou enquanto você revisava. Verifique a comparação atualizada abaixo e confirme novamente.
+          summary: '%{additions} a adicionar, %{updates} a alterar (%{deactivations} a desativar), %{unchanged} sem alterações.'
+          template_heading: Formato do arquivo
+          title: Importar termos
+          to: Novo
+          updates_heading: Termos a alterar
+          warnings:
+            partial_order: O arquivo omite termos existentes, então a ordem de suas linhas não foi aplicada. Para reordenar, edite um download completo.
+            source_key_mismatch: Este arquivo foi exportado de %{source_key}, mas está sendo importado para %{name}.
+            unknown_columns: 'Colunas ignoradas: %{columns}.'
+          warnings_heading: Avisos
+        inactive: Inativo
+        label: Rótulo
+        label_hint: O que um depositante vê no formulário. Pode ser reformulado sem afetar os registros armazenados.
+        move_earlier: Mover %{label} para antes
+        move_later: Mover %{label} para depois
+        moved: '%{label} movido para a posição %{position} de %{total}'
+        name: Vocabulário
+        new_help: Nomeie o vocabulário; sua chave de origem é definida a partir desse nome. A chave é o que um perfil de metadados cita, então não pode ser alterada depois.
+        new_term_heading: Adicionar um termo a %{vocabulary}
+        new_term_help: Nomeie o termo como um depositante deve vê-lo. O id do termo é o que um registro armazena e não pode ser alterado depois que os termos estão em uso.
+        new_term_title: Adicionar termo
+        new_title: Novo vocabulário
+        no_description: Não informada
+        no_terms: Este vocabulário ainda não tem termos.
+        none: Nenhum vocabulário controlado foi configurado para este locatário ainda.
+        order: Ordem
+        order_hint: A ordem em que os termos são oferecidos em um formulário de depósito.
+        order_saved: A ordem dos termos foi salva.
+        order_stale: Os termos mudaram enquanto você os reordenava, portanto a ordem não foi salva. Verifique a ordem atual e tente novamente.
+        order_unsaved: Salve a ordem antes de retirar ou restaurar um termo. Caso contrário, a ordem que você definiu será descartada.
+        order_unsaved_short: indisponível até que a ordem seja salva
+        origin: Origem
+        origin_hint: Onde o vocabulário é definido e, portanto, se seus termos podem ser editados aqui.
+        origins:
+          cached: Cópia importada
+          database: Este locatário
+          file: Arquivo de configuração
+          remote: Serviço externo
+        providers:
+          crossref: Crossref
+          discogs: Discogs
+          fast: OCLC FAST
+          geonames: GeoNames
+          getty: Getty
+          loc: Library of Congress
+          mesh: MeSH
+          tgnlang: Getty TGN Languages
+        read_only:
+          file: Este vocabulário é definido em um arquivo de configuração, portanto seus termos não podem ser alterados aqui.
+        ready: Pronto
+        reorder_handle: 'Reordenar %{label}: arraste ou use as teclas de seta'
+        reorder_hint: Arraste um termo, ou use os botões de seta, para definir a ordem em que ele é oferecido em um formulário de depósito. Salve a ordem quando terminar.
+        restore: Restaurar
+        retire: Desativar
+        retired_count:
+          one: (%{count} desativado)
+          other: (%{count} desativados)
+        save: Salvar alterações
+        save_order: Salvar ordem
+        show_title: 'Vocabulário controlado: %{name}'
+        source_key: Chave de origem
+        source_key_hint: Cole isto em um campo do perfil de metadados para controlar esse campo com este vocabulário.
+        source_key_help: Cole uma chave de origem em um campo do perfil de metadados para controlar esse campo com este vocabulário. Os vocabulários gerenciados neste locatário podem ser editados aqui; os definidos em um arquivo de configuração ou por um serviço externo não podem.
+        static_forms: Os perfis de metadados não estão habilitados, então os formulários de depósito leem este vocabulário de um arquivo de configuração. Alterar seus termos requer um desenvolvedor.
+        status: Status
+        status_action: Alterar status
+        status_hint: Se este vocabulário está pronto para uso ou precisa de alguma configuração primeiro.
+        status_unknown: Não especificado
+        term_created: '%{label} foi adicionado.'
+        term_id: ID do termo
+        term_id_from_label: Deixe em branco para usar o rótulo como id do termo.
+        term_id_immutable: Não pode ser alterado depois.
+        term_limit:
+          one: (mostrando o primeiro %{count})
+          other: (mostrando os primeiros %{count})
+        term_id_hint: O valor armazenado em um registro e o valor a fornecer em uma importação do Bulkrax.
+        term_id_help: O ID do termo é o valor armazenado em um registro e o valor a fornecer em uma importação do Bulkrax. O rótulo é apenas o que um depositante vê.
+        term_restored: '%{label} foi restaurado e volta a ser oferecido no formulário de depósito.'
+        term_retired: '%{label} foi desativado e não é mais oferecido no formulário de depósito.'
+        term_total:
+          one: 1 termo
+          other: "%{count} termos"
+        terms: Termos
+        terms_elsewhere:
+          cached: Este vocabulário contém uma cópia importada de um vocabulário externo, grande demais para ser listada aqui. Seus termos são oferecidos no formulário de depósito.
+          generic: Os termos deste vocabulário não são listados aqui.
+          remote: Os termos vêm do serviço externo, portanto não há lista a exibir aqui.
+        terms_unavailable: Os termos deste vocabulário não podem ser lidos e, portanto, não são listados aqui. Seu arquivo de configuração pode estar ausente.
+        unconfigured: Requer configuração
+        unconfigured_help: Este serviço precisa de credenciais antes de poder ser usado. Até lá, um campo que o utiliza aceita texto livre em vez de oferecer sugestões.
+        unused: Nenhuma propriedade de metadados usa este vocabulário.
+        unused_profile_hint: Para começar a usá-lo, adicione a chave de origem deste vocabulário aos valores controlados de uma propriedade no perfil de metadados do locatário.
+        updated: '%{name} foi atualizado.'
+        used_by: Usado pelas propriedades
+        used_by_hint: As propriedades de metadados controladas por este vocabulário, conforme nomeadas nas importações do Bulkrax e nos perfis de metadados.
+        used_by_work_types: 'Disponível em:'
+        work_types:
+          etd_resource: ETD
+          oer_resource: OER
       flash:
         access_denied: Você não está autorizado a visualizar esta página
       google_analytics_settings:
@@ -383,6 +625,9 @@ pt-BR:
         show:
           header: Gerenciar usuário
           update: Atualizar
+    search:
+      form:
+        advanced: Avançada
     splash:
       account_denied: Você não está autorizado a criar inquilinos
       account_login: Inicie sessão para começar
@@ -534,6 +779,88 @@ pt-BR:
     collections:
       cannot:
         manage_discovery: Você não tem permissão para alterar a configuração de descoberta desta coleção
+  practice_research:
+    homepage:
+      hero:
+        title: Pesquisa prática, mantida reunida
+        lede: Obras de arte, documentação e textos, depositados como projetos completos, na ordem pretendida por seus criadores.
+        search_label: Pesquisar no repositório
+        search_placeholder: Pesquisar coleções e obras
+        search_button: Pesquisar
+        advanced_search: Pesquisa avançada
+        browse_everything: Explorar tudo
+      about:
+        heading: O que este repositório contém
+        first_paragraph: A pesquisa prática raramente chega como um único arquivo. Uma encomenda pode deixar desenhos, uma maquete, um filme da inauguração, uma resenha e um artigo escrito anos depois, cada um sem sentido isoladamente.
+        second_paragraph: Depositar projetos completos mantém essas partes juntas e em sequência, com uma declaração de contexto explicando o que a coleção sustenta. Tudo aqui é depositado pelos próprios pesquisadores.
+        about_link: Sobre este repositório
+      recent:
+        heading: Enviados recentemente
+        all: Ver tudo
+        all_label: Ver todas as obras enviadas recentemente
+        in_parent: em %{title}
+      researcher:
+        heading: Pesquisador em destaque
+      browse:
+        work_types: Explorar por tipo de obra
+        resource_types: Explorar por tipo de recurso
+        subjects: Explorar por assunto
+      featured:
+        heading: Obras em destaque
+        view_all: Ver todas as obras
+        collections_heading: Coleções em destaque
+        view_all_collections: Ver todas as coleções
+        works_in_collection:
+          one: 1 obra
+          other: "%{count} obras"
+        reorder_hint: "Arraste um item para reordenar e depois salve."
+        save_order: Salvar ordem
+        unfeature_confirm: Remover esta obra da lista de destaques?
+        unfeature_collection_confirm: Remover esta coleção da lista de destaques?
+        contributors_and_others:
+          one: "%{names} e mais 1"
+          other: "%{names} e mais %{count}"
+      stats:
+        works:
+          one: obra
+          other: obras
+        collections:
+          one: coleção
+          other: coleções
+    show:
+      tabs_label: Seções do registro
+      tabs:
+        context: Declaração de contexto
+        metadata: Informações adicionais
+        files: Arquivos
+      files_heading: Arquivos deste registro
+      items:
+        default: Itens
+      metadata_heading: Metadados descritivos
+      placement_heading: Parte de
+      parent_work_label: Obra superior
+      fields_show_all: Mostrar todos os %{count} campos
+      fields_show_fewer: Mostrar menos campos
+      files_note: Arquivos depositados diretamente neste registro. Os arquivos das obras contidas ficam nessas obras.
+      items_note: As obras contidas neste registro, na ordem em que foram depositadas.
+      files_count:
+        one: 1 arquivo
+        other: "%{count} arquivos"
+      items_count:
+        one: 1 item
+        other: "%{count} itens"
+      relationships: Relações
+      cite: Citar
+      endnote: Baixar para EndNote
+      permalink: Link permanente
+      contributors: Colaboradores
+      citation_style: Estilo de citação
+      citation_styles:
+        apa: APA (7ª ed.)
+        mla: MLA (9ª ed.)
+        chicago: Chicago
+      citation_copy: Copiar
+      citation_copied: Copiado
   proprietor:
     accounts:
       edit:
@@ -541,6 +868,10 @@ pt-BR:
         data_cite_endpoint: Terminal DataCite
         fcrepo_endpoint: Ponto de extremidade do Fedora
         header: Editando conta
+        public_demo_tenant:
+          disabled: 'Não'
+          enabled: 'Sim'
+          immutable: Esta configuração é definida na criação da conta e não pode ser alterada.
         solr_endpoint: Ponto final do Solr
       index:
         actions: Ações
@@ -601,6 +932,64 @@ pt-BR:
         edit: Editar
         header: Gerenciar usuário
         update: Atualizar
+  screening_room:
+    chrome:
+      toggle_navigation: Alternar navegação
+    homepage:
+      about:
+        heading: Sobre as coleções
+      collections:
+        heading: Coleções em destaque
+        unfeature_confirm: 'Remover esta coleção da lista de destaques?'
+        view_all: Ver todas as coleções
+        works_count:
+          one: 1 obra
+          other: '%{count} obras'
+      cta:
+        button: Iniciar um depósito
+        heading: Compartilhe seu trabalho
+        sub: Deposite gravações, transferências e documentos de produção no repositório.
+      lede:
+        collections: Coleções
+        label: Sobre a coleção
+        works: Obras
+      player:
+        close: Fechar
+      recent:
+        ago: 'há %{time}'
+        heading: Adições recentes
+        view_all: Ver todas as adições recentes
+      researcher:
+        heading: Pesquisador em destaque
+      spotlight:
+        editor_heading: Obras em destaque
+        featured: Em destaque
+        hold: Pausar
+        label: Obras em destaque
+        quick_view: Visualização rápida
+        reorder_hint: Arraste um item para mudar a ordem e depois salve.
+        resume: Reproduzir
+        save_order: Salvar ordem
+        segment: 'Mostrar %{title}'
+        unfeature_confirm: 'Remover esta obra da lista de destaques?'
+        view_work: Ver a obra
+    show:
+      citation:
+        copied: Copiado
+        copy_visible: Copiar a citação
+        endnote: Baixar registro EndNote
+        heading: Como citar
+        note: Fornecido apenas como sugestão. Confira com seu guia de estilo.
+        style: Estilo de citação
+        styles:
+          apa: APA
+          chicago: Chicago
+          mla: MLA
+      items:
+        count:
+          one: 1 item
+          other: '%{count} itens'
+        meta: '%{visibility} · %{date}'
   single_signon:
     index:
       sign_in_with_provider: Faça login com %{provider}

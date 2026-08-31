@@ -40,5 +40,14 @@ RSpec.describe 'Requesting a work type the tenant does not offer', type: :reques
 
       expect(response).to have_http_status(:ok)
     end
+
+    # A reload detaches to_rdf_representation, so the registry returns the class name.
+    it 'allows new through when the registry falls back to the class name' do
+      allow(Hyrax::ModelRegistry).to receive(:rdf_representations_from).and_return(['GenericWorkResource'])
+
+      get new_hyrax_generic_work_path
+
+      expect(response).to have_http_status(:ok)
+    end
   end
 end

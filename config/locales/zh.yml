@@ -271,6 +271,9 @@ zh:
       part_of:
         heading: 所属
   hyku:
+    works:
+      errors:
+        work_type_not_offered: 本站点不提供该作品类型。请选择其他类型。
     account:
       signup_disabled: 帐户注册被禁用
     deposit_wizard:

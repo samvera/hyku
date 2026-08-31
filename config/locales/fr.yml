@@ -255,6 +255,9 @@ fr:
       part_of:
         heading: Fait partie de
   hyku:
+    works:
+      errors:
+        work_type_not_offered: Ce type d'œuvre n'est pas disponible sur ce site. Veuillez en choisir un autre.
     account:
       signup_disabled: L'enregistrement du compte est désactivé
     deposit_wizard:

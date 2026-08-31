@@ -254,6 +254,9 @@ de:
       part_of:
         heading: Teil von
   hyku:
+    works:
+      errors:
+        work_type_not_offered: Dieser Werktyp ist auf dieser Website nicht verfügbar. Wählen Sie einen anderen aus.
     account:
       signup_disabled: Kontoanmeldung ist deaktiviert
     deposit_wizard:

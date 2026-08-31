@@ -137,6 +137,9 @@ pt-BR:
       part_of:
         heading: Parte de
   hyku:
+    works:
+      errors:
+        work_type_not_offered: Esse tipo de obra não está disponível neste site. Escolha outro.
     account:
       signup_disabled: O registro da conta está desativado
     deposit_wizard:

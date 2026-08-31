@@ -334,6 +334,47 @@ RSpec.describe Site, type: :model do
     end
   end
 
+  describe '#offerable_work_types' do
+    subject(:site) { create(:site, available_works: %w[GenericWork Image Etd]) }
+
+    before do
+      allow(Hyrax.config).to receive(:registered_curation_concern_types)
+        .and_return(%w[GenericWork Image Etd])
+    end
+
+    context 'without flexible metadata' do
+      before { allow(Hyrax.config).to receive(:flexible?).and_return(false) }
+
+      it 'offers everything the site enables' do
+        expect(site.offerable_work_types).to eq(%w[GenericWork Image Etd])
+      end
+    end
+
+    context 'with a profile declaring fewer types than the site enables' do
+      before do
+        allow(Hyrax.config).to receive(:flexible?).and_return(true)
+        allow(Hyrax::FlexibleSchema).to receive(:current_version).and_return(
+          'classes' => { 'GenericWorkResource' => {}, 'ImageResource' => {} }
+        )
+      end
+
+      it 'drops the type the profile does not declare' do
+        expect(site.offerable_work_types).to eq(%w[GenericWork Image])
+      end
+    end
+
+    context 'with no current profile' do
+      before do
+        allow(Hyrax.config).to receive(:flexible?).and_return(true)
+        allow(Hyrax::FlexibleSchema).to receive(:current_version).and_return(nil)
+      end
+
+      it 'offers everything the site enables rather than nothing' do
+        expect(site.offerable_work_types).to eq(%w[GenericWork Image Etd])
+      end
+    end
+  end
+
   describe '.reset!' do
     it 'drops the tenant-scoped caches and leaves keys it does not own' do
       RequestStore.store[:site_instance] = 'stale site'

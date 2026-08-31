@@ -269,6 +269,7 @@ en:
     works:
       errors:
         parent_not_allowed: That work cannot contain this deposit.
+        work_type_not_offered: That work type is not available on this site. Choose a different one.
     admin:
       controlled_vocabularies: Controlled Vocabularies
       controlled_vocabulary:

@@ -2,8 +2,7 @@
 
 <h2 class="sr-only"><%= t('hyrax.homepage.recently_uploaded.title') %></h2>
 <% if recent_documents.blank? %>
-  <%# Absolute key: this partial is rendered by its explicit path from
-      _recent_works_section, so lazy lookup resolves under themes.* where no keys exist %>
+  <%# Absolute key: rendered by explicit path, so lazy lookup resolves under themes.* %>
   <p><%= t('hyrax.homepage.recently_uploaded.no_public') %></p>
 <% else %>
   <div id="recent_docs">

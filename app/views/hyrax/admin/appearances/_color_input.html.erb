@@ -1,6 +1,6 @@
 <div class='row'>
   <div class='col-lg-10'>
-    <% hint = I18n.t("hyrax.admin.appearances.show.forms.#{color_name}.hint", default: nil) %>
+    <% hint = color_hint_for(color_name) %>
     <%= f.input color_name,
         required: false,
         input_html: { type: 'color', data: { default_value: hex } },

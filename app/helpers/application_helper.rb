@@ -95,10 +95,10 @@ module ApplicationHelper
     locale_for(type: 'hints', term:, record_class:)
   end
 
-  # NOTE: do not define a helper named missing_translation here. Rails'
-  # ActionView::Helpers::TranslationHelper calls a private hook by that name for
-  # every missing view translation; an ApplicationHelper method shadows it and
-  # its return value gets rendered into the page (a literal "false", historically).
+  def color_hint_for(color_name)
+    I18n.t("hyrax.admin.appearances.show.forms.#{color_name}.hint", default: nil)
+  end
+
   def locale_for(type:, term:, record_class:)
     term              = term.to_s
     record_class      = record_class.to_s.underscore

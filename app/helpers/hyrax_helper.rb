@@ -51,9 +51,8 @@ module HyraxHelper
     Site.instance.logo_image? ? Site.instance.logo_image.url : false
   end
 
-  # Returns nil (not false) when the block is unset: these values are rendered
-  # directly into attributes like title and alt, and a false leaks as the string
-  # "false" while nil simply renders nothing.
+  # nil, not false: these values render straight into title and alt attributes,
+  # where a false leaks as the string "false".
   def block_for(name:)
     ContentBlock.block_for(name:, fallback_value: nil)
   end

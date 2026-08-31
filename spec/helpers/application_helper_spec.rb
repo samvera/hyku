@@ -87,10 +87,8 @@ RSpec.describe ApplicationHelper, type: :helper do
   end
 
   describe 'missing view translations' do
-    # ApplicationHelper used to define missing_translation(value), which shadowed
-    # Rails' private TranslationHelper hook of the same name. Rails calls that hook
-    # for every missing view translation, so every missing key rendered a literal
-    # "false" into the page (e.g. the cultural theme homepage's Recent Works block).
+    # A helper named missing_translation shadows Rails' private TranslationHelper
+    # hook, and its return value gets rendered into the page.
     it 'does not render a literal false for a missing key' do
       expect(helper.t('hyku.specs.definitely_missing_key')).not_to eq(false)
     end

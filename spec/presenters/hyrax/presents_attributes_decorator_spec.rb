@@ -21,6 +21,20 @@ RSpec.describe Hyrax::PresentsAttributesDecorator do
         .to include 'href="http://creativecommons.org/licenses/by/3.0/us/"'
     end
 
+    context 'when the labels are indexed under another suffix' do
+      let(:attributes) do
+        { id: 'labels-2',
+          has_model_ssim: ['GenericWork'],
+          title_tesim: ['A Title'],
+          resource_type_tesim: ['local_auth_123'],
+          resource_type_label_ssim: ['Opaque Term'] }
+      end
+
+      it 'still renders the label' do
+        expect(presenter.attribute_to_html(:resource_type)).to include 'Opaque Term'
+      end
+    end
+
     context 'when the work was indexed before the label fields existed' do
       let(:attributes) do
         { id: 'labels-2',

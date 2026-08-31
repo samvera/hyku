@@ -62,10 +62,20 @@ module Hyrax
 
     # OVERRIDE: upstream leaves the row reading the id field.
     def show_labels_in_search_results!(itemprop)
-      field = blacklight_config.index_fields["#{itemprop}_tesim"]
+      field = index_field_for(itemprop)
       return if field.nil?
 
       field.values = ControlledVocabularyFieldValues.to_proc
+    end
+
+    # Mirrors how upstream resolves the row it registers (FlexibleCatalogBehavior
+    # picks the first index_fields key starting with the property, falling back to
+    # _tesim), so a property CatalogController declares under another suffix is
+    # found here too rather than being left with neither labels nor a facet link.
+    def index_field_for(itemprop)
+      name = blacklight_config.index_fields.keys.detect { |key| key.start_with?(itemprop.to_s) }
+
+      blacklight_config.index_fields[name || "#{itemprop}_tesim"]
     end
 
     # OVERRIDE: upstream facets and links on "#{itemprop}_sim", and re-adds that
@@ -88,7 +98,7 @@ module Hyrax
         blacklight_config.add_facet_field(label_name, **label_facet_options(existing))
       end
 
-      field = blacklight_config.index_fields["#{itemprop}_tesim"]
+      field = index_field_for(itemprop)
       field.link_to_facet = label_name if field
     end
 

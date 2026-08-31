@@ -30,10 +30,22 @@ module Hyrax
       document = solr_document
       return unless document.respond_to?(:[])
 
-      Array(document["#{field}_label_tesim"]).presence || Array(document["#{field}_label_sim"]).presence
+      label_keys(document, field).lazy
+                                 .filter_map { |key| Array(document[key]).presence }
+                                 .first
     rescue StandardError => e
       Hyrax.logger.debug("controlled_labels_for(#{field}): #{e.message}")
       nil
+    end
+
+    # The suffix follows whatever the property was indexed under, so the pair we
+    # know is checked first and any other "<field>_label_*" after it.
+    def label_keys(document, field)
+      known = ["#{field}_label_tesim", "#{field}_label_sim"]
+      prefix = "#{field}_label_"
+      others = document.respond_to?(:keys) ? document.keys.grep(/\A#{Regexp.escape(prefix)}/) : []
+
+      (known + others).uniq
     end
   end
 end

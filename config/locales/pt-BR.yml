@@ -803,6 +803,7 @@ pt-BR:
         heading: Pesquisador em destaque
       browse:
         work_types: Explorar por tipo de obra
+        resource_types: Explorar por tipo de recurso
         subjects: Explorar por assunto
       featured:
         heading: Obras em destaque
@@ -812,17 +813,10 @@ pt-BR:
         works_in_collection:
           one: 1 obra
           other: "%{count} obras"
-        reorder_handle: "Reordenar %{title}: arraste ou use as teclas de seta"
-        move_earlier: Mover %{title} para frente
-        move_later: Mover %{title} para trás
-        moved: "%{title} movido para a posição %{position} de %{total}"
-        at_position: "%{title} já está na posição %{position} de %{total}"
-        reorder_hint: Arraste um cartão para reordenar ou use os botões de seta. Salve a ordem quando terminar.
+        reorder_hint: "Arraste um item para reordenar e depois salve."
         save_order: Salvar ordem
-        unfeature: Remover dos destaques
         unfeature_confirm: Remover esta obra da lista de destaques?
         unfeature_collection_confirm: Remover esta coleção da lista de destaques?
-        unfeature_failed: Falha ao remover dos destaques. Recarregue a página e tente novamente.
         contributors_and_others:
           one: "%{names} e mais 1"
           other: "%{names} e mais %{count}"

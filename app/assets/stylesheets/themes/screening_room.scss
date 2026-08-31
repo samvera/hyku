@@ -3,6 +3,7 @@
 @import 'themes/screening_room/tokens';
 @import 'themes/screening_room/primitives';
 @import 'themes/screening_room/shell';
+@import 'themes/screening_room/chrome';
 
 .screening_room.hyrax-homepage {
   background: var(--scr-base, #{$scr-base});
@@ -530,6 +531,9 @@
       height: auto;
       margin: 0;
       text-indent: 0;
+      // hyrax's _featured.scss drops the handle 13px, which leaves the strip
+      // short of the row and its glyph sitting low
+      top: 0;
       width: 32px;
 
       &::before {

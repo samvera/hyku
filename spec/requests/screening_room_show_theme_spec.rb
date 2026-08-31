@@ -123,4 +123,78 @@ RSpec.describe 'screening_room_show theme', type: :request, singletenant: true, 
     expect(doc.at_css('.scr-show-context')).to be_nil
     expect(doc.at_css('.scr-show-head').text).not_to include('Restricted Reels')
   end
+
+  context 'on the collection show page' do
+    let(:shown) do
+      shown = FactoryBot.valkyrie_create(:hyrax_collection, title: ['Film and Television'])
+      Hyrax::VisibilityWriter.new(resource: shown).assign_access_for(visibility: 'open')
+      shown.permission_manager.acl.save
+      Hyrax.index_adapter.save(resource: shown)
+      shown
+    end
+
+    it 'carries the theme chrome' do
+      get "/collections/#{shown.id}"
+
+      doc = Nokogiri::HTML(response.body)
+      expect(doc.at_css('.scr-searchbar-show .scr-crumbs')).to be_present
+    end
+
+    it 'leaves an unthemed tenant with the default chrome' do
+      allow_any_instance_of(ApplicationController).to receive(:show_page_theme).and_return('default_show')
+
+      get "/collections/#{shown.id}"
+
+      expect(Nokogiri::HTML(response.body).at_css('.scr-searchbar-show')).to be_nil
+    end
+
+    context 'as an editor' do
+      include Devise::Test::IntegrationHelpers
+
+      let(:admin) { FactoryBot.create(:admin) }
+
+      before do
+        Hyrax::Group.create(name: 'admin')
+        sign_in admin
+      end
+
+      it 'skins the action row the theme owns' do
+        get "/collections/#{shown.id}"
+
+        expect(Nokogiri::HTML(response.body).css('.show-actions-container .btn')).not_to be_empty
+      end
+    end
+  end
+
+  context 'on the file set show page' do
+    let(:file_set) do
+      indexed(Hyrax::FileSet.new(title: ['reel-001.mp4']))
+    end
+    let(:parent) do
+      indexed(GenericWorkResource.new(title: ['Parent reel'], member_ids: [file_set.id]))
+    end
+
+    it 'carries the theme chrome' do
+      get "/concern/parent/#{parent.id}/file_sets/#{file_set.id}"
+
+      expect(Nokogiri::HTML(response.body).at_css('.scr-searchbar-show .scr-crumbs')).to be_present
+    end
+
+    context 'as an editor' do
+      include Devise::Test::IntegrationHelpers
+
+      let(:admin) { FactoryBot.create(:admin) }
+
+      before do
+        Hyrax::Group.create(name: 'admin')
+        sign_in admin
+      end
+
+      it 'skins the single use link table the theme owns' do
+        get "/concern/parent/#{parent.id}/file_sets/#{file_set.id}"
+
+        expect(Nokogiri::HTML(response.body).at_css('table.table.single-use-links')).to be_present
+      end
+    end
+  end
 end

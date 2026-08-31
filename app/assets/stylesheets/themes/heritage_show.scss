@@ -8,6 +8,8 @@
   #content-wrapper {
     max-width: none;
     padding: 0;
+    // .navbar + .container pins a 0.5rem top padding, itself !important
+    padding-top: 0 !important;
   }
 
   #content-wrapper > .alert {
@@ -90,11 +92,10 @@
   }
 
   .hrt-show-title {
-    @include hrt-sans;
+    @include hrt-serif;
     color: $hrt-ink;
     font-size: 34px;
-    font-weight: 800;
-    letter-spacing: -0.01em;
+    font-weight: 500;
     line-height: 1.2;
     margin: 0;
     text-wrap: pretty;
@@ -585,45 +586,10 @@
   // Kaminari's blacklight theme renders Bootstrap pagination markup; this only
   // skins it to sit compactly in the narrow rail
   .hrt-panel-pager {
+    @include hrt-pager;
+
     border-top: 1px solid $hrt-rule;
     margin-top: 6px;
     padding-top: 14px;
-
-    .pagination {
-      align-items: center;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    .page-item .page-link {
-      align-items: center;
-      background: $hrt-surface;
-      border: 1px solid $hrt-rule-strong;
-      color: var(--hrt-link-strong, #{$hrt-link-strong});
-      display: inline-flex;
-      font-size: 13px;
-      justify-content: center;
-      line-height: 1;
-      min-width: 32px;
-      padding: 7px 9px;
-      text-decoration: none;
-
-      &:focus-visible {
-        @include hrt-focus-ring;
-      }
-    }
-
-    // the active page rides the tenant's Appearance color (pinned !important),
-    // which keeps the pager colorway-neutral like the rest of the theme
-
-    .page-item.disabled .page-link {
-      border-color: $hrt-placeholder-edge;
-      color: $hrt-ink-muted;
-      pointer-events: none;
-    }
   }
 }

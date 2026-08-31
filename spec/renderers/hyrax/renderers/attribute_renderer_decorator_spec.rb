@@ -22,6 +22,19 @@ RSpec.describe Hyrax::Renderers::AttributeRendererDecorator do
     end
   end
 
+  # keyword carries itemprop="keywords" upstream, and a controlled keyword is a
+  # real profile configuration -- so structured data has to survive the label swap.
+  context 'for a field configured with microdata' do
+    let(:field) { :keyword }
+    let(:values) { ['local_auth_123'] }
+    let(:options) { { labels: ['Opaque Term'] } }
+
+    it 'keeps the itemprop while showing the label' do
+      expect(rendered).to include 'itemprop="keywords"'
+      expect(rendered).to include 'Opaque Term'
+    end
+  end
+
   context 'with a label for a URI id' do
     let(:field) { :license }
     let(:values) { ['http://creativecommons.org/licenses/by/3.0/us/'] }

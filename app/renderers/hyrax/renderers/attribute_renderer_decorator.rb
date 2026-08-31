@@ -26,10 +26,24 @@ module Hyrax
       # The generic form of what LicenseAttributeRenderer and
       # RightsStatementAttributeRenderer each do for one hardcoded field.
       def controlled_value_to_html(value)
+        with_microdata(controlled_label_or_link(value))
+      end
+
+      def controlled_label_or_link(value)
         label = controlled_label_for(value)
         return ERB::Util.h(label) unless Hyrax::AuthorityRenderingHelper.linkable_uri?(value)
 
         %(<a href="#{ERB::Util.h(value)}" target="_blank" rel="noopener noreferrer">#{ERB::Util.h(label)}</a>)
+      end
+
+      # Mirrors the span upstream wraps a value in, which the controlled branch
+      # would otherwise skip -- a field such as keyword would lose its itemprop
+      # as soon as its vocabulary gained labels.
+      def with_microdata(html)
+        attributes = microdata_value_attributes(field)
+        return html if attributes.blank?
+
+        "<span#{html_attributes(attributes)}>#{html}</span>"
       end
 
       # Keyed by value rather than paired by position: `render` sorts values when

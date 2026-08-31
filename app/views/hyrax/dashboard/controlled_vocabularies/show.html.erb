@@ -1,0 +1,194 @@
+<% editable = @entry.editable? && can?(:manage, :controlled_vocabularies) %>
+<% provide :page_title, construct_page_title(@entry.label, t('hyku.admin.controlled_vocabularies'), t('hyku.admin.title')) %>
+<% provide :page_header do %>
+  <h1>
+    <span class="fa fa-tag" aria-hidden="true"></span>
+    <%= t('hyku.admin.controlled_vocabulary.show_title', name: @entry.label) %>
+  </h1>
+<% end %>
+
+<div class="mb-3 text-right">
+  <% if @entry.downloadable? %>
+    <%= render 'download_menu', entry: @entry %>
+  <% end %>
+  <% if editable %>
+    <%= link_to t('hyku.admin.controlled_vocabulary.import.button'),
+                main_app.new_controlled_vocabulary_import_path(@entry.source_key),
+                class: 'btn btn-outline-secondary' %>
+    <%= link_to t('hyku.admin.controlled_vocabulary.new_term_title'),
+                main_app.new_controlled_vocabulary_term_path(@entry.source_key),
+                class: 'btn btn-primary' %>
+  <% end %>
+</div>
+
+<div class="card">
+  <div class="card-body border-bottom">
+    <dl class="row mb-0">
+      <% if editable %>
+        <%= render 'editable_field',
+                   vocabulary: @entry.vocabulary,
+                   field: :label,
+                   heading: t('hyku.admin.controlled_vocabulary.name'),
+                   value: @entry.label %>
+      <% end %>
+
+      <dt class="col-sm-3"><%= t('hyku.admin.controlled_vocabulary.source_key') %></dt>
+      <dd class="col-sm-9"><code><%= @entry.source_key %></code></dd>
+
+      <dt class="col-sm-3"><%= t('hyku.admin.controlled_vocabulary.origin') %></dt>
+      <dd class="col-sm-9"><%= @entry.source_label %></dd>
+
+      <% if @terms.present? %>
+        <dt class="col-sm-3"><%= t('hyku.admin.controlled_vocabulary.terms') %></dt>
+        <dd class="col-sm-9">
+          <% total = @entry.term_count || @terms.size %>
+          <% truncated = total > @terms.size %>
+          <%= t('hyku.admin.controlled_vocabulary.term_total', count: total) %>
+          <% if truncated %>
+            <span class="text-muted">
+              <%= t('hyku.admin.controlled_vocabulary.term_limit', count: @terms.size) %>
+            </span>
+          <% else %>
+            <% retired = @terms.count { |term| term['active'] == false } %>
+            <% if retired.positive? %>
+              <span class="text-muted">
+                <%= t('hyku.admin.controlled_vocabulary.retired_count', count: retired) %>
+              </span>
+            <% end %>
+          <% end %>
+        </dd>
+      <% end %>
+
+      <% if editable %>
+        <%= render 'editable_field',
+                   vocabulary: @entry.vocabulary,
+                   field: :description,
+                   heading: t('hyku.admin.controlled_vocabulary.description'),
+                   value: @entry.description,
+                   blank_text: t('hyku.admin.controlled_vocabulary.no_description'),
+                   input_options: { rows: 3 } %>
+      <% elsif @entry.description.present? %>
+        <dt class="col-sm-3"><%= t('hyku.admin.controlled_vocabulary.description') %></dt>
+        <dd class="col-sm-9"><%= @entry.description %></dd>
+      <% end %>
+
+      <% unless @usage.nil? %>
+        <dt class="col-sm-3">
+          <%= render 'column_hint',
+                     label: t('hyku.admin.controlled_vocabulary.used_by'),
+                     hint: t('hyku.admin.controlled_vocabulary.used_by_hint') %>
+        </dt>
+        <dd class="col-sm-9">
+          <% if @usage.empty? %>
+            <span class="text-muted">
+              <%= t('hyku.admin.controlled_vocabulary.unused') %>
+              <% if Hyrax.config.flexible? %>
+                <%= t('hyku.admin.controlled_vocabulary.unused_profile_hint') %>
+              <% end %>
+            </span>
+          <% else %>
+            <ul class="list-unstyled mb-0">
+              <% @usage.each do |property| %>
+                <li class="mb-1">
+                  <code><%= property.name %></code>
+                  <br>
+                  <small class="text-muted">
+                    <%= t('hyku.admin.controlled_vocabulary.used_by_work_types') %>
+                    <% property.work_types.each_with_index do |work_type, index| %><%= ', ' if index.positive? %><span title="<%= work_type.name %>"><%= work_type.label %></span><% end %>
+                  </small>
+                </li>
+              <% end %>
+            </ul>
+          <% end %>
+        </dd>
+      <% end %>
+    </dl>
+
+    <%# A yaml vocabulary is the one case with a term list staff cannot edit, so it is
+        the one that needs saying. Where there is no list, the note below it already
+        explains where the terms live. %>
+    <% if @entry.origin == :file %>
+      <p class="form-text text-muted mt-3 mb-0">
+        <span class="fa fa-info-circle" aria-hidden="true"></span>
+        <%= t('hyku.admin.controlled_vocabulary.read_only.file') %>
+      </p>
+    <% end %>
+
+    <%# Only for file-backed entries: a database-backed vocabulary feeds the form
+        from the tenant's own rows, and a remote authority from its service. %>
+    <% if @usage.present? && !Hyrax.config.flexible? && @entry.origin == :file %>
+      <p class="form-text text-muted mt-3 mb-0">
+        <span class="fa fa-info-circle" aria-hidden="true"></span>
+        <%= t('hyku.admin.controlled_vocabulary.static_forms') %>
+      </p>
+    <% end %>
+  </div>
+  <%# Only where a term list is possible. A remote service holds its terms and is
+      searched as staff type, and an imported copy runs to tens of thousands, so
+      neither gets a terms panel to explain the absence of. %>
+  <% if @entry.listable? %>
+  <div class="card-header">
+    <%= t('hyku.admin.controlled_vocabulary.term_id_help') %>
+    <%# On its own row, next to the explanation of the columns it applies to, rather
+        than beside the save button where it reads as a note about saving. Muted like
+        the other advisory notes on this page: how to work the control is a lesser
+        thing than what the columns above it mean. %>
+    <% if @terms_presenter.reorderable? %>
+      <p class="form-text text-muted mt-2 mb-0">
+        <span class="fa fa-info-circle" aria-hidden="true"></span>
+        <%= t('hyku.admin.controlled_vocabulary.reorder_hint') %>
+      </p>
+    <% end %>
+  </div>
+  <div class="card-body pt-1">
+    <% if @terms.nil? %>
+      <%# nil is "cannot say", not "none": the yaml is missing or unreadable, and
+          reporting it empty would send staff looking for terms they never added. %>
+      <p class="text-muted mb-0"><%= t('hyku.admin.controlled_vocabulary.terms_unavailable') %></p>
+    <% elsif @terms.empty? %>
+      <p class="text-muted mb-0"><%= t('hyku.admin.controlled_vocabulary.no_terms') %></p>
+    <% elsif @terms_presenter.reorderable? %>
+      <%= form_tag main_app.order_controlled_vocabulary_terms_path(@entry.source_key),
+                   method: :patch, data: { term_order_form: true } do %>
+        <%= hidden_field_tag :state_digest, @term_state_digest %>
+        <%= render 'terms_table', presenter: @terms_presenter, reorderable: true %>
+
+        <p class="sr-only" role="status" aria-live="polite" data-term-order-status></p>
+        <div class="text-right">
+          <%# Announced rather than only styled, because the reason the toggles are
+              disabled is the unsaved order, which is not visible from the button. %>
+          <p class="form-text text-muted mb-2 d-none" role="status" aria-live="polite"
+             data-term-order-dirty>
+            <span class="fa fa-info-circle" aria-hidden="true"></span>
+            <%= t('hyku.admin.controlled_vocabulary.order_unsaved') %>
+          </p>
+          <%# Hidden until something moves: with nothing to undo it would offer to
+              cancel the order the page is already showing. %>
+          <button type="button" class="btn btn-link d-none" data-term-order-cancel>
+            <%= t('hyku.admin.controlled_vocabulary.cancel_order') %>
+          </button>
+          <%= submit_tag t('hyku.admin.controlled_vocabulary.save_order'),
+                         class: 'btn btn-secondary', data: { disable_with: false } %>
+        </div>
+      <% end %>
+      <%# After the reorder form closes, so the two never nest. %>
+      <%= render 'term_status_forms', entry: @entry, terms: @terms %>
+    <% else %>
+      <%= render 'terms_table', presenter: @terms_presenter, reorderable: false %>
+      <% if @terms_presenter.togglable? %>
+        <%= render 'term_status_forms', entry: @entry, terms: @terms %>
+      <% end %>
+    <% end %>
+  </div>
+  <% else %>
+    <div class="card-body pt-0">
+      <p class="form-text text-muted mb-0">
+        <span class="fa fa-info-circle" aria-hidden="true"></span>
+        <%# Defaulted because the key is interpolated from the origin: a new origin
+            without a message should read plainly, not raise. %>
+        <%= t("hyku.admin.controlled_vocabulary.terms_elsewhere.#{@entry.origin}",
+              default: t('hyku.admin.controlled_vocabulary.terms_elsewhere.generic')) %>
+      </p>
+    </div>
+  <% end %>
+</div>

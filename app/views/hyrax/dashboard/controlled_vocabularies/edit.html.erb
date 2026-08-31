@@ -1,0 +1,34 @@
+<% provide :page_title, construct_page_title(t('hyku.admin.controlled_vocabulary.edit_title'),
+                                             @controlled_vocabulary.display_label,
+                                             t('hyku.admin.controlled_vocabularies'),
+                                             t('hyku.admin.title')) %>
+<% provide :page_header do %>
+  <h1>
+    <span class="fa fa-tag" aria-hidden="true"></span>
+    <%= t('hyku.admin.controlled_vocabulary.edit_heading', name: @controlled_vocabulary.display_label) %>
+  </h1>
+<% end %>
+
+<div class="card">
+  <div class="card-header">
+    <%= t('hyku.admin.controlled_vocabulary.edit_help') %>
+  </div>
+  <div class="card-body">
+    <%= form_for @controlled_vocabulary,
+                 url: main_app.controlled_vocabulary_path(@controlled_vocabulary.name),
+                 method: :patch,
+                 html: { class: 'controlled-vocabulary-form' } do |f| %>
+      <%= render 'fields', f: f %>
+
+      <p class="form-text text-muted">
+        <%= t('hyku.admin.controlled_vocabulary.source_key') %>:
+        <code><%= @controlled_vocabulary.source_key %></code>
+      </p>
+
+      <%= f.submit t('hyku.admin.controlled_vocabulary.save'), class: 'btn btn-primary' %>
+      <%= link_to t('helpers.action.cancel', default: 'Cancel'),
+                  main_app.controlled_vocabulary_path(@controlled_vocabulary.name),
+                  class: 'btn btn-link' %>
+    <% end %>
+  </div>
+</div>

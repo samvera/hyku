@@ -1,10 +1,11 @@
-<%# OVERRIDE Hyrax 5.2.0 to include parent works %>
+<%# OVERRIDE Hyrax 5.2.0 to include parent works. The parent-works rows render inside the
+    <dl>: they are dt/dd and would otherwise sit outside any list on a child work. %>
 <dl class="work-show">
   <%= render 'relationships_parent_rows', presenter: presenter %>
-</dl>
 
-<%# Parent Work %>
-<%# Render a link back to its parent works %>
-<% if presenter.parent_works(current_user).present? %>
-  <%= render 'relationships_parent_works_rows', presenter: presenter %>
-<% end %>
+  <%# Parent Work %>
+  <%# Render a link back to its parent works %>
+  <% if presenter.parent_works(current_user).present? %>
+    <%= render 'relationships_parent_works_rows', presenter: presenter %>
+  <% end %>
+</dl>

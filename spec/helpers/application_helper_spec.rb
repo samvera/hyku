@@ -117,4 +117,50 @@ RSpec.describe ApplicationHelper, type: :helper do
       expect(helper.work_type_facet_label('NoSuchModel')).to eq('No Such Model')
     end
   end
+
+  describe '#options_including_current' do
+    let(:options) { [['Article', 'Article']] }
+    let(:service) do
+      Class.new do
+        # Mirrors Hyrax::AuthorityService, which appends only a value it no longer
+        # offers and returns the options alongside the html options.
+        def self.include_current_value(value, _index, render_options, html_options)
+          return [render_options, html_options] if render_options.flatten.include?(value)
+
+          [render_options + [[value, value]], html_options]
+        end
+      end
+    end
+
+    it 'offers the given options when nothing is stored' do
+      expect(helper.options_including_current(options, service, [])).to eq [['Article', 'Article']]
+    end
+
+    it 'keeps a retired term the record still stores' do
+      expect(helper.options_including_current(options, service, ['Retired']))
+        .to eq [['Article', 'Article'], %w[Retired Retired]]
+    end
+
+    it 'ignores a blank stored value' do
+      expect(helper.options_including_current(options, service, ['', nil])).to eq [['Article', 'Article']]
+    end
+
+    it 'does not repeat a stored term that is still offered' do
+      expect(helper.options_including_current(options, service, ['Article'])).to eq [['Article', 'Article']]
+    end
+
+    # A single-valued field hands over a bare string rather than an array.
+    it 'accepts a value that is not an array' do
+      expect(helper.options_including_current(options, service, 'Retired'))
+        .to eq [['Article', 'Article'], %w[Retired Retired]]
+    end
+
+    context 'when the service cannot re-add a current value' do
+      let(:service) { Class.new }
+
+      it 'returns the given options' do
+        expect(helper.options_including_current(options, service, ['Retired'])).to eq [['Article', 'Article']]
+      end
+    end
+  end
 end

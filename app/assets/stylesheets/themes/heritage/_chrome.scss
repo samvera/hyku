@@ -1,0 +1,1067 @@
+// ---- shared page chrome for the heritage themes ----
+
+@import 'themes/heritage/tokens';
+@import 'themes/heritage/primitives';
+
+$hrt-chrome-home:
+  'body.heritage.catalog-index',
+  'body.heritage.catalog-advanced_search',
+  'body.heritage.advanced-index',
+  'body.heritage.hyrax-pages-show',
+  'body.heritage.hyrax-contact_form-new',
+  'body.heritage.hyrax-contact_form-create';
+
+$hrt-chrome-show:
+  'body.heritage_show.hyrax-collections-show',
+  'body.heritage_show.hyrax-file_sets-show';
+
+$hrt-chrome: join($hrt-chrome-home, $hrt-chrome-show, comma);
+
+#{$hrt-chrome} {
+  color: $hrt-ink-body;
+
+  // ---- page frame ---------------------------------------------------------
+
+  #content-wrapper {
+    max-width: none;
+    padding: 0;
+    // .navbar + .container pins a 0.5rem top padding, itself !important
+    padding-top: 0 !important;
+  }
+
+  // ---- headings -----------------------------------------------------------
+
+  h1 {
+    @include hrt-serif;
+
+    color: $hrt-ink;
+    font-size: 34px;
+    font-weight: 500;
+    line-height: 1.15;
+    margin: 0 0 14px;
+  }
+
+  h2 {
+    @include hrt-section-title;
+  }
+
+  h3 {
+    @include hrt-sans;
+
+    color: $hrt-ink;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  // ---- breadcrumb ---------------------------------------------------------
+
+  .breadcrumb {
+    @include hrt-gutter;
+
+    background: $hrt-surface;
+    border-bottom: 1px solid $hrt-rule-light;
+    border-radius: 0;
+    border-top: 0;
+    font-size: 14px;
+    margin: 0;
+    padding-bottom: 14px;
+    padding-top: 14px;
+
+    li {
+      color: $hrt-ink-label;
+    }
+
+    li.active {
+      color: $hrt-ink;
+    }
+
+    a {
+      @include hrt-link;
+    }
+  }
+
+  // ---- badges -------------------------------------------------------------
+
+  // the masthead's notification counter is a .badge too, and resizing it there
+  // widens the utility row on chrome pages but not the homepage
+  #content-wrapper .badge {
+    @include hrt-sans;
+
+    border-radius: 0;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    line-height: 1.5;
+    padding: 3px 8px;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+
+  #content-wrapper .badge-success {
+    background-color: $hrt-ok-bg;
+    color: $hrt-ok-ink;
+  }
+
+  // hyku fills the selected row of a menu with a mid slate that the link
+  // colour cannot be read against
+  #content-wrapper .dropdown-item.active,
+  #content-wrapper .dropdown-item:active {
+    background-color: $hrt-mat;
+    color: $hrt-ink;
+    font-weight: 600;
+  }
+
+  // ---- notices ------------------------------------------------------------
+
+  .alert-info {
+    background: $hrt-info-bg;
+    border-color: $hrt-info-edge;
+    color: $hrt-ink-body;
+  }
+
+  .alert {
+    border-radius: 0;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  // ---- tables -------------------------------------------------------------
+
+  table.table {
+    font-size: 15px;
+    line-height: 1.55;
+    margin-bottom: 0;
+  }
+
+  table.table thead th {
+    @include hrt-eyebrow;
+
+    border-bottom: 1px solid $hrt-rule;
+    border-top: 0;
+    font-size: 13px;
+    padding: 10px 14px 10px 0;
+    vertical-align: bottom;
+  }
+
+  table.table tbody td {
+    border-bottom: 1px solid $hrt-rule-light;
+    border-top: 0;
+    overflow-wrap: break-word;
+    padding: 12px 14px 12px 0;
+    vertical-align: middle;
+  }
+
+  table.table tbody tr:last-child td {
+    border-bottom-color: $hrt-rule;
+  }
+
+  table.table-bordered,
+  table.table-bordered thead th,
+  table.table-bordered tbody td {
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+  }
+
+  table.table-striped tbody tr:nth-of-type(odd) {
+    background-color: transparent;
+  }
+
+  table.table a {
+    @include hrt-link;
+  }
+}
+
+// ---- catalog ---------------------------------------------------------------
+
+body.heritage.catalog-index,
+body.heritage.catalog-advanced_search,
+body.heritage.advanced-index {
+  #content-wrapper > .row,
+  #content-wrapper > .advanced-search-form {
+    @include hrt-gutter;
+
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  #content-wrapper > .advanced-search-form {
+    padding-top: 24px;
+  }
+
+  // chrome paints the selected row of a list box with its own blue and only
+  // honours a background here as a gradient; firefox takes the same rule,
+  // safari keeps the system highlight
+  .advanced-search-facet-select option:checked {
+    background: linear-gradient(0deg, $hrt-link-strong 0%, $hrt-link-strong 100%);
+    color: $hrt-action-ink;
+  }
+
+  .advanced-search-form > .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .advanced-search-form > .row > [class*='col-']:first-child {
+    padding-left: 0;
+  }
+
+  .advanced-search-form > .row > [class*='col-']:last-child {
+    padding-right: 0;
+  }
+
+  #sidebar {
+    padding-left: 0;
+
+    @media (min-width: #{$hrt-tablet-max + 1}) {
+      flex: 0 0 $hrt-rail-width;
+      max-width: $hrt-rail-width;
+      padding-right: $hrt-gutter;
+    }
+
+    @media (max-width: $hrt-laptop-max) and (min-width: #{$hrt-tablet-max + 1}) {
+      flex: 0 0 $hrt-rail-width-laptop;
+      max-width: $hrt-rail-width-laptop;
+      padding-right: $hrt-gutter-laptop;
+    }
+  }
+
+  #content {
+    padding-right: 0;
+
+    // the rail is pinned to a fixed width, so the results column takes the
+    // remainder rather than Bootstrap's 75%, which no longer fits the row
+    @media (min-width: #{$hrt-tablet-max + 1}) {
+      flex: 1 1 0;
+      max-width: 100%;
+    }
+  }
+
+  // ---- advanced search ----
+
+  h1.advanced {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: space-between;
+  }
+
+  .query-criteria-heading {
+    @include hrt-sans;
+
+    color: $hrt-ink-muted;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    margin: 0 0 16px;
+
+    select {
+      font-size: 15px;
+      width: auto;
+    }
+  }
+
+  // the stock field is a .form-group with col-* children but no .row, so the
+  // columns stack; own that rather than half-applying a grid
+  .advanced-search-field {
+    border-bottom: 1px solid $hrt-rule-light;
+    margin: 0;
+    padding: 10px 0;
+
+    // blacklight's own advanced page pins .text-md-right on these labels,
+    // which reads as a caption for the field above once the columns stack
+    .control-label,
+    .col-form-label {
+      @include hrt-sans;
+
+      color: $hrt-ink;
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.55;
+      margin-bottom: 4px;
+      max-width: 100%;
+      padding-left: 0;
+      text-align: left !important;
+    }
+
+    > [class*='col-'] {
+      flex: 1 1 auto;
+      max-width: 100%;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .form-control {
+      border-color: $hrt-rule;
+      font-size: 15px;
+    }
+  }
+
+  .sort-submit-buttons,
+  .submit-buttons {
+    margin-top: 20px;
+  }
+
+  .advanced-help {
+    color: $hrt-ink-body;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+    padding-left: 18px;
+
+    li + li {
+      margin-top: 6px;
+    }
+  }
+
+  .card-title {
+    @include hrt-eyebrow;
+
+    margin-bottom: 12px;
+  }
+
+  // ---- results toolbar ----
+
+  #sortAndPerPage {
+    border-bottom: 1px solid $hrt-rule;
+    padding-bottom: 12px;
+  }
+
+  #sortAndPerPage .page-entries,
+  #sortAndPerPage .page-links {
+    color: $hrt-ink-muted;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  #sortAndPerPage .page-links a {
+    @include hrt-link;
+  }
+
+  #sortAndPerPage .btn {
+    @include hrt-sans;
+
+    font-size: 14px;
+    line-height: 1.3;
+    padding: 6px 12px;
+  }
+
+  .view-type-group .btn {
+    margin-left: -1px;
+  }
+
+  // ---- pager ----
+
+  #content {
+    @include hrt-pager(14px, 8px 12px, 38px);
+  }
+
+  // ---- result rows ----
+
+  ul.catalog {
+    margin-top: 20px !important;
+  }
+
+  li.document {
+    border-bottom: 1px solid $hrt-rule-light;
+    padding: 20px 0 !important;
+  }
+
+  .search-result-wrapper {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .search-results-title-row,
+  .search-result-wrapper > .col-md-3 {
+    padding-left: 0;
+  }
+
+  .search-result-wrapper > [class*='col-']:last-child {
+    padding-right: 0;
+  }
+
+  .search-results-title-row {
+    column-gap: 10px;
+    flex-wrap: wrap;
+    padding-bottom: 8px;
+    row-gap: 6px;
+  }
+
+  .search-result-title {
+    margin: 0;
+
+    a {
+      @include hrt-serif;
+
+      color: $hrt-ink;
+      font-size: 21px;
+      font-weight: 500;
+      line-height: 1.25;
+      overflow-wrap: break-word;
+      text-decoration: none;
+      text-wrap: pretty;
+
+      &:hover,
+      &:focus {
+        @include hrt-underline;
+
+        color: var(--hrt-link-strong, #{$hrt-link-strong});
+      }
+
+      &:focus-visible {
+        @include hrt-focus-ring;
+      }
+    }
+
+    p {
+      display: inline;
+      margin: 0;
+    }
+  }
+
+  .list-thumbnail {
+    @include hrt-mat(10px);
+
+    height: 150px;
+    max-width: 190px;
+
+    > a {
+      align-items: center;
+      display: flex;
+      height: 100%;
+      justify-content: center;
+      max-width: 100%;
+    }
+
+  }
+
+  // works wrap the image in .list-thumbnail and get the mat; a collection row
+  // emits a bare <img> in the column, so it is only capped to the same footprint
+  .search-result-wrapper > .col-md-3 > img {
+    height: auto;
+    max-height: 150px;
+    max-width: 190px;
+    width: auto;
+  }
+
+  .metadata dl {
+    font-size: 14px;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .metadata dl > .row {
+    flex-wrap: nowrap;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 2px 0;
+  }
+
+  .metadata dt {
+    @include hrt-sans;
+
+    color: $hrt-ink;
+    flex: 0 0 150px;
+    font-weight: 700;
+    max-width: 150px;
+    padding: 0 14px 0 0;
+    text-align: left !important;
+  }
+
+  .metadata dd {
+    color: $hrt-ink-body;
+    flex: 1 1 auto;
+    margin: 0;
+    max-width: none;
+    min-width: 0;
+    overflow-wrap: break-word;
+    padding: 0;
+
+    a {
+      @include hrt-link;
+    }
+
+    p {
+      display: inline;
+      margin: 0;
+    }
+  }
+
+  .collection-counts-item {
+    color: $hrt-ink-muted;
+    font-size: 14px;
+
+    span {
+      color: $hrt-ink;
+      font-weight: 700;
+      margin-right: 6px;
+    }
+  }
+
+  // ---- gallery, masonry and slideshow captions ----
+
+  .documents-gallery .document .thumbnail-container,
+  .documents-masonry .document .thumbnail-container {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+  }
+
+  .documents-gallery .document .document-thumbnail,
+  .documents-masonry .document .document-thumbnail {
+    @include hrt-mat(12px);
+
+    height: 220px;
+  }
+
+  // gallery_view.scss pins a 300x250 cover crop on .img-thumbnail; heritage
+  // never crops an object, so the mat sizes it instead
+  .documents-gallery .document .document-thumbnail .img-thumbnail,
+  .documents-masonry .document .document-thumbnail .img-thumbnail {
+    height: auto;
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    width: auto;
+  }
+
+  .documents-gallery .document .document-thumbnail > a,
+  .documents-masonry .document .document-thumbnail > a {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    max-width: 100%;
+  }
+
+  .caption.container {
+    max-width: none;
+    padding: 12px;
+  }
+
+  .caption .documentHeader {
+    margin: 0 0 8px;
+  }
+
+  .caption .index_title {
+    margin: 0;
+    padding: 0;
+
+    a {
+      @include hrt-serif;
+
+      color: $hrt-ink;
+      font-size: 17px;
+      line-height: 1.3;
+      overflow-wrap: break-word;
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        @include hrt-underline;
+
+        color: var(--hrt-link-strong, #{$hrt-link-strong});
+      }
+    }
+  }
+
+  .caption dl.document-metadata {
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0;
+
+    dt {
+      @include hrt-eyebrow;
+
+      font-size: 11px;
+      padding: 6px 0 1px;
+    }
+
+    dd {
+      color: $hrt-ink-body;
+      margin: 0;
+      overflow-wrap: break-word;
+      padding: 0;
+    }
+  }
+}
+
+// ---- content pages and contact form -----------------------------------------
+
+body.heritage.hyrax-pages-show,
+body.heritage.hyrax-contact_form-new,
+body.heritage.hyrax-contact_form-create {
+  #content-wrapper > .alert,
+  #content-wrapper > h1,
+  #content-wrapper > form {
+    @include hrt-gutter;
+  }
+
+  #content-wrapper > form > * {
+    max-width: 900px;
+  }
+
+  #content-wrapper > .alert {
+    background: $hrt-notice-bg;
+    border-color: $hrt-notice-edge;
+    margin-left: 0;
+    margin-right: 0;
+    padding-bottom: 14px;
+    padding-top: 14px;
+  }
+
+  #content_block_page {
+    @include hrt-gutter;
+
+    margin-left: 0;
+    margin-right: 0;
+    max-width: 74ch;
+    padding-bottom: 40px;
+    padding-top: 30px;
+  }
+
+  #content_block_page,
+  #content_block_page p,
+  #content_block_page li {
+    @include hrt-serif;
+
+    color: $hrt-ink-body;
+    font-size: 18px;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+  }
+
+  #content_block_page a {
+    @include hrt-link;
+  }
+
+  #content_block_page h2 {
+    margin: 30px 0 12px;
+  }
+
+  #content_block_page h3 {
+    margin: 22px 0 8px;
+  }
+
+  #content-wrapper > .alert {
+    margin-top: 20px;
+  }
+
+  #content-wrapper > h1 {
+    margin-top: 24px;
+  }
+
+  #content-wrapper > form {
+    padding-bottom: 40px;
+  }
+
+  .form-group.row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .form-group.row > [class*='col-']:first-child {
+    padding-left: 0;
+  }
+
+  .form-group.row > [class*='col-']:last-child {
+    padding-right: 0;
+  }
+
+  .form-group label {
+    @include hrt-sans;
+
+    color: $hrt-ink;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.55;
+  }
+
+  .form-control {
+    border-color: $hrt-rule;
+    font-size: 15px;
+  }
+}
+
+// ---- collection show ---------------------------------------------------------
+
+body.heritage_show.hyrax-collections-show,
+body.heritage_show.hyrax-file_sets-show {
+  .breadcrumb {
+    @include hrt-gutter($laptop: 32px);
+  }
+}
+
+body.heritage_show.hyrax-collections-show {
+  overflow-x: clip;
+
+  .hyc-container {
+    padding-bottom: 48px;
+  }
+
+  .hyc-container > .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .hyc-container > .row > [class*='col-'] {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .hyc-body,
+  .hyc-blacklight {
+    @include hrt-gutter($laptop: 32px);
+  }
+
+  // ---- banner ----
+
+  .hyc-banner {
+    @include hrt-gutter($laptop: 32px);
+
+    background-color: var(--hrt-sunken, #{$hrt-surface-sunken});
+    border-bottom: 1px solid $hrt-rule;
+    border-radius: 0;
+    padding-bottom: 22px;
+    padding-top: 26px;
+    width: auto;
+  }
+
+  .hyc-banner .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .hyc-banner .row > [class*='col-'] {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .hyc-banner .space-between {
+    column-gap: 16px;
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+
+  .hyc-title {
+    padding: 0;
+
+    h1 {
+      @include hrt-serif;
+
+      font-size: 34px;
+      font-weight: 500;
+      line-height: 1.15;
+
+      p {
+        display: inline;
+        margin: 0;
+      }
+    }
+
+    .badge {
+      box-shadow: none;
+      margin-left: 8px;
+    }
+  }
+
+  .hyc-banner[style*='url()'] .hyc-title h1 {
+    text-shadow: none;
+  }
+
+  .hyc-item-count,
+  .hyc-created-by,
+  .hyc-last-updated {
+    border-radius: 0;
+  }
+
+  .hyc-banner[style*='url()'] {
+    .hyc-item-count,
+    .hyc-created-by,
+    .hyc-last-updated {
+      background: transparent;
+      color: $hrt-ink-muted;
+      padding: 0;
+      text-shadow: none;
+    }
+
+    .hyc-item-count {
+      @include hrt-eyebrow;
+    }
+  }
+
+  .hyc-created-by,
+  .hyc-last-updated {
+    font-size: 14px;
+    line-height: 1.4;
+    margin-top: 18px;
+  }
+
+  .show-actions-container {
+    .btn {
+      font-size: 14px;
+    }
+
+    // the work show's actions partial emits btn-secondary; this one emits
+    // btn-primary, so the two bars read differently. Appearance pins both
+    // colorways !important, so matching them has to be too.
+    .btn-primary {
+      background-color: var(--hrt-button, #{$hrt-surface}) !important;
+      border-color: var(--hrt-button-edge, #{$hrt-rule-strong}) !important;
+      color: var(--hrt-button-ink, #{$hrt-ink}) !important;
+    }
+
+    .btn-primary:hover,
+    .btn-primary:focus,
+    .btn-primary:active {
+      background-color: var(--hrt-button-hover, #{$hrt-mat}) !important;
+      border-color: var(--hrt-button-hover-edge, #{$hrt-rule-strong}) !important;
+      color: var(--hrt-button-ink, #{$hrt-ink}) !important;
+    }
+
+    form,
+    .btn-group {
+      display: inline-block;
+    }
+  }
+
+  // the actions partial emits feature/unfeature as .collapse rather than
+  // omitting them, so the bar's spacing keys off a real, non-collapsed button
+  .collection-title-row-content:has(a.btn:not(.collapse), button.btn:not(.collapse)) {
+    margin-top: 16px;
+  }
+
+  .collection-query {
+    border-color: $hrt-rule;
+  }
+
+  // ---- details ----
+
+  .hyc-body {
+    margin-bottom: 36px;
+    margin-top: 30px;
+  }
+
+  .hyc-body > [class*='col-']:first-child {
+    @include hrt-mat(14px);
+
+    align-self: start;
+  }
+
+  .hyc-container > .row > .hyc-metadata {
+    padding-left: 36px;
+  }
+
+  .hyc-metadata {
+
+    h2 {
+      margin-bottom: 12px;
+    }
+
+    p {
+      @include hrt-serif;
+
+      color: $hrt-ink-body;
+      font-size: 18px;
+      line-height: 1.6;
+      max-width: 70ch;
+      overflow-wrap: anywhere;
+    }
+
+    dl {
+      border-top: 0;
+      font-size: 15px;
+    }
+
+    dl > div {
+      border-bottom: 1px solid $hrt-rule-light;
+      padding: 11px 0;
+    }
+
+    dt {
+      @include hrt-sans;
+
+      color: $hrt-ink;
+      flex-basis: 150px;
+      font-weight: 700;
+    }
+
+    dd {
+      margin: 0;
+      overflow-wrap: break-word;
+
+      a {
+        @include hrt-link;
+      }
+    }
+  }
+
+  // ---- works listing ----
+
+  .hyc-bl-title h2 {
+    margin-bottom: 8px;
+  }
+
+  .hyc-bl-sort {
+    border-bottom: 1px solid $hrt-rule;
+    padding-bottom: 12px;
+
+    // hyrax's own per_page form draws a second rule 29px above this one, and
+    // pads and spaces itself below the controls the theme already spaces
+    form.per_page {
+      border-bottom: 0;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    label,
+    select {
+      font-size: 14px;
+    }
+
+    .btn {
+      font-size: 14px;
+      line-height: 1.3;
+      padding: 6px 12px;
+    }
+
+    .view-type-group .btn {
+      margin-left: -1px;
+    }
+  }
+
+  .hyc-bl-pager {
+    @include hrt-pager(14px, 8px 12px, 38px);
+
+    margin-bottom: 32px;
+  }
+
+  .hyc-bl-results {
+    margin: 20px 0 32px;
+
+    .media-left {
+      @include hrt-mat(4px);
+
+      height: 52px;
+      width: 52px;
+    }
+
+    td a {
+      @include hrt-serif;
+
+      font-size: 17px;
+    }
+  }
+}
+
+// ---- file set show -----------------------------------------------------------
+
+body.heritage_show.hyrax-file_sets-show {
+  overflow-x: clip;
+
+  .container-fluid {
+    @include hrt-gutter($laptop: 32px);
+
+    padding-bottom: 48px;
+    padding-top: 30px;
+  }
+
+  .container-fluid > .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .container-fluid > .row > [class*='col-']:first-child {
+    padding-left: 0;
+  }
+
+  .container-fluid > .row > [class*='col-']:last-child {
+    padding-right: 0;
+  }
+
+  .ensure-wrapped {
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  header h1 {
+    .badge {
+      margin-left: 8px;
+    }
+  }
+
+  h2 {
+    border-bottom: 0;
+    margin: 34px 0 12px;
+    padding: 0;
+  }
+
+  header + h2 {
+    margin-top: 24px;
+  }
+
+  dl.file-show-term {
+    font-size: 15px;
+    line-height: 1.55;
+    margin: 0;
+
+    > .row {
+      border-bottom: 1px solid $hrt-rule-light;
+      margin: 0;
+      padding: 11px 0;
+    }
+
+    dt {
+      @include hrt-sans;
+
+      color: $hrt-ink;
+      font-weight: 700;
+      padding-left: 0;
+    }
+
+    dd {
+      color: $hrt-ink-body;
+      margin: 0;
+      overflow-wrap: break-word;
+      padding-left: 0;
+
+      a {
+        @include hrt-link;
+      }
+    }
+  }
+
+  table.table.single-use-links tbody td {
+    border: 0;
+    padding-bottom: 6px;
+  }
+
+  .btn-group .dropdown-toggle {
+    @include hrt-sans;
+
+    font-size: 14px;
+  }
+
+  .dropdown-menu {
+    border-color: $hrt-rule;
+    border-radius: 0;
+    font-size: 14px;
+  }
+
+  #file_download {
+    @include hrt-link;
+
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 700;
+    margin-top: 12px;
+  }
+
+  .form-actions {
+    margin-top: 24px;
+  }
+}

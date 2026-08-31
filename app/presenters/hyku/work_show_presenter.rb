@@ -4,6 +4,7 @@
 # OVERRIDE: Hyrax 5 to manage logic for which viewer to display
 
 module Hyku
+  # rubocop:disable Metrics/ClassLength
   class WorkShowPresenter < Hyrax::WorkShowPresenter
     ##
     # NOTE: IIIF Print prepends a IiifPrint::WorkShowPresenterDecorator to Hyrax::WorkShowPresenter,
@@ -123,7 +124,36 @@ module Hyku
       end
     end
 
+    def authorized_file_set_ids
+      partitioned_authorized_ids.first
+    end
+
+    def authorized_child_work_ids
+      partitioned_authorized_ids.last
+    end
+
     private
+
+    def partitioned_authorized_ids
+      @partitioned_authorized_ids ||= begin
+        models = authorized_member_models
+        file_set_models = ::Hyrax::ModelRegistry.file_set_rdf_representations
+
+        authorized_item_ids.select { |id| models.key?(id.to_s) }
+                           .partition { |id| file_set_models.include?(models[id.to_s]) }
+      end
+    end
+
+    def authorized_member_models
+      ids = authorized_item_ids
+      return {} if ids.empty?
+
+      Hyrax::SolrService.post(q: "{!terms f=id}#{ids.join(',')}", rows: ids.size,
+                              fl: 'id,has_model_ssim')
+                        .dig('response', 'docs')
+                        .to_a
+                        .to_h { |doc| [doc['id'], Array(doc['has_model_ssim']).first.to_s] }
+    end
 
     # @todo: is this method obsolete?
     def members_include_viewable?
@@ -150,4 +180,5 @@ module Hyku
       valkyrie_presenter? ? field : field.first.to_i.positive?
     end
   end
+  # rubocop:enable Metrics/ClassLength
 end

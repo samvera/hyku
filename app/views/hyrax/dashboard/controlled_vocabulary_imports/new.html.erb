@@ -1,0 +1,68 @@
+<% provide :page_title, construct_page_title(t('hyku.admin.controlled_vocabulary.import.title'),
+                                             @vocabulary.display_label,
+                                             t('hyku.admin.title')) %>
+<% provide :page_header do %>
+  <h1>
+    <span class="fa fa-upload" aria-hidden="true"></span>
+    <%= t('hyku.admin.controlled_vocabulary.import.heading', name: @vocabulary.display_label) %>
+  </h1>
+<% end %>
+
+<div class="card">
+  <div class="card-header">
+    <%= t('hyku.admin.controlled_vocabulary.import.help') %>
+  </div>
+  <div class="card-body">
+    <%= form_tag main_app.controlled_vocabulary_import_path(@vocabulary.name), multipart: true do %>
+      <div class="form-group">
+        <%= label_tag :file, t('hyku.admin.controlled_vocabulary.import.file_label'), class: 'control-label' %>
+        <%= file_field_tag :file, accept: '.csv,.yml,.yaml', required: true, class: 'form-control-file',
+                                  'aria-describedby' => 'import-file-help' %>
+        <small id="import-file-help" class="form-text text-muted">
+          <%= t('hyku.admin.controlled_vocabulary.import.file_help') %>
+        </small>
+      </div>
+
+      <%= submit_tag t('hyku.admin.controlled_vocabulary.import.continue'), class: 'btn btn-primary' %>
+      <%= link_to t('helpers.action.cancel', default: 'Cancel'),
+                  main_app.controlled_vocabulary_path(@vocabulary.name),
+                  class: 'btn btn-link' %>
+    <% end %>
+  </div>
+  <div class="card-footer">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <h2 class="h6 mb-0"><%= t('hyku.admin.controlled_vocabulary.import.template_heading') %></h2>
+      <%= link_to main_app.controlled_vocabulary_path(@vocabulary.name, format: :csv),
+                  class: 'btn btn-sm btn-outline-secondary' do %>
+        <span class="fa fa-download" aria-hidden="true"></span>
+        <%= t('hyku.admin.controlled_vocabulary.import.download_template') %>
+      <% end %>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-sm table-borderless mb-2">
+        <caption class="sr-only"><%= t('hyku.admin.controlled_vocabulary.import.template_heading') %></caption>
+        <thead>
+          <tr>
+            <th scope="col"><%= t('hyku.admin.controlled_vocabulary.import.column') %></th>
+            <th scope="col"><%= t('hyku.admin.controlled_vocabulary.import.example') %></th>
+            <th scope="col"><%= t('hyku.admin.controlled_vocabulary.import.notes') %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% ControlledVocabularyImport::Parser::COLUMNS.each do |column| %>
+            <tr class="border-bottom">
+              <td><code><%= column %></code></td>
+              <td><code><%= ControlledVocabularyImport::Parser::EXAMPLES[column] %></code></td>
+              <td class="text-muted"><%= t("hyku.admin.controlled_vocabulary.import.columns.#{column}") %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <ul class="form-text text-muted small pl-3 mb-0">
+      <% t('hyku.admin.controlled_vocabulary.import.rules').each_value do |rule| %>
+        <li><%= rule %></li>
+      <% end %>
+    </ul>
+  </div>
+</div>

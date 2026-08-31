@@ -10,7 +10,7 @@ require 'ruby-progressbar'
 # No matter whether it is the first run or not, a run of the Reprocessor should always start with Reprocessor.load('tmp/imports/SOME_UNIQUE_NAME')
 # This creates a context for the Reprocessor to run. After that, calling Reprocessor.capture_ids (or capture_work_ids, capture_file_set_ids or capture collection_ids)
 # will record all the ids in a file.
-# Finally, once all the ids are split, calling Reprocessor.process_ids with a lambda (like Reprocessor.process_ids(Reprocessor.save)) to call the process on each item
+# Finally, once all the ids are split, calling Reprocessor.process_ids with a lambda (like Reprocessor.process_ids(Reprocessor.lambda_save)) to call the process on each item
 # At any point, the process can be stopped (or killed) and then resumed by doing Reprocessor.load(SAME_PATH) and then calling #process_ids again.
 class Reprocessor # rubocop:disable Metrics/ClassLength
   include Singleton

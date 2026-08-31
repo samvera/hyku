@@ -7,6 +7,7 @@ en:
     hints:
       account:
         admin_emails: Enter one email address at a time
+        demo_acceptable_use_url: Shown as a link in the demo environment banner on public demo tenants. Leave blank to omit the link.
         public_demo_tenant: Mark this account as a public demo tenant for testing. This cannot be changed after creation.
         search_only: Search-only accounts require at least one full account to be selected below for cross-tenant search.
         allow_signup: Allow users to sign up to your repository
@@ -38,6 +39,7 @@ en:
         name: A single or hyphenated name used for technical aspects of the repository (e.g., "acme" or "acme-library").
         oai_admin_email: OAI endpoint contact email address
         shared_login: Enable or disable shared login
+        signup_spam_protection: Require an invisible spam-prevention challenge (a negative captcha, the same protection as the contact form) on the user registration form. Always enforced on public demo tenants.
         solr_max_results: Maximum total documents Hyrax will return from paginated fetches (e.g. the "Add to Collection" dropdown). Exceeding this logs a warning and truncates. Default 10000.
         solr_rows_per_request: Page size for each Solr request inside Hyrax's paginated fetches. Default 1000.
         ssl_configured: Set it true if using https
@@ -50,6 +52,7 @@ en:
     labels:
       account:
         admin_emails: Add or invite new administrator (via email)
+        demo_acceptable_use_url: Demo Acceptable Use URL
         public_demo_tenant: Public Demo Tenant
         search_only: Search Only
         cname: Primary Domain Name

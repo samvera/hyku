@@ -1,0 +1,40 @@
+<div class="pr-section">
+  <div class="pr-section-head">
+    <h2 class="pr-section-title"><%= items_label %></h2>
+    <span class="pr-section-count"><%= t('practice_research.show.items_count', count: paginated.total_count) %></span>
+  </div>
+  <p class="pr-section-note"><%= t('practice_research.show.items_note') %></p>
+
+  <ol class="pr-items list-unstyled">
+    <% members.each_with_index do |member, index| %>
+      <li class="pr-item">
+        <span class="pr-item-num"><%= format('%02d', paginated.offset_value + index + 1) %></span>
+        <span class="pr-item-thumb">
+          <%= document_presenter(member).thumbnail.thumbnail_tag({ alt: '' }, { suppress_link: true }) %>
+        </span>
+        <div class="pr-item-body">
+          <div class="pr-item-kind">
+            <span class="pr-item-type"><%= member.human_readable_type %></span>
+            <%= member.permission_badge %>
+            <% if member.try(:date_uploaded).present? %>
+              <span class="pr-item-date"><%= member.date_uploaded %></span>
+            <% end %>
+          </div>
+          <%= link_to member.link_name, contextual_path(member, presenter), class: 'pr-item-title' %>
+          <% description = Array(member.try(:description)).first if can?(:read, member.solr_document) %>
+          <% if description.present? %>
+            <p class="pr-item-note"><%= description.to_s.truncate(280) %></p>
+          <% end %>
+        </div>
+      </li>
+    <% end %>
+  </ol>
+
+  <% if paginated.total_pages > 1 %>
+    <div class="pr-pager">
+      <%= paginate paginated, outer_window: 2, theme: 'blacklight',
+                   param_name: :items_page, route_set: main_app,
+                   params: { pane: 'items', anchor: 'pr-pane-items' } %>
+    </div>
+  <% end %>
+</div>

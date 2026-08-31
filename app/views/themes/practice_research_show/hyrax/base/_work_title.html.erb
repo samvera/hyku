@@ -1,0 +1,35 @@
+<% item_count = local_assigns.fetch(:item_count, 0) %>
+<div class="work-title-wrapper pr-masthead-head">
+  <div class="pr-eyebrow">
+    <span class="pr-eyebrow-type"><%= presenter.human_readable_type %></span>
+    <% if item_count.positive? %>
+      <span class="pr-eyebrow-sep" aria-hidden="true"></span>
+      <span class="pr-eyebrow-count"><%= t('practice_research.show.items_count', count: item_count) %></span>
+    <% end %>
+  </div>
+
+  <% presenter.title.each_with_index do |title, index| %>
+    <% if index.zero? %>
+      <h1 class="pr-title"><%= markdown(title) %></h1>
+    <% else %>
+      <h1 class="pr-title pr-title-alt"><%= markdown(title) %></h1>
+    <% end %>
+  <% end %>
+
+  <p class="pr-citation-line">
+    <% if all_authors(presenter).any? %>
+      <%= export_as_apa_citation(presenter) %>
+    <% end %>
+    <%= link_to t('practice_research.show.permalink'), canonical_url_for(presenter),
+                class: 'pr-citation-permalink' %>
+  </p>
+
+  <div class="pr-badges">
+    <%= presenter.permission_badge %>
+    <%= presenter.workflow.badge %>
+    <% license_badge = pr_license_badge(presenter) %>
+    <% if license_badge.present? %>
+      <span class="pr-badge-license"><%= license_badge %></span>
+    <% end %>
+  </div>
+</div>

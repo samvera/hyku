@@ -8,6 +8,7 @@ module ApplicationHelper
   include Bulkrax::ApplicationHelper
   include HykuKnapsack::ApplicationHelper
   include Hyrax::FormHelperBehavior
+  include Hyrax::AttachedFilesHelperBehavior
   include Hyku::HomepageHelper
 
   def group_navigation_presenter
@@ -65,6 +66,18 @@ module ApplicationHelper
     return document.alt_text_for_view if document.respond_to?(:thumbnail_alt_text) && document.thumbnail_alt_text.present?
 
     block_for(name: block_name) || super
+  end
+
+  # A term retired after a record stored it is not among the options, so the browser
+  # posts the select without it and the term is dropped on save. include_current_value
+  # adds those back. Its html_options, which carry the force-select class, are
+  # discarded here as upstream's partials do: the option is kept, not distinguished.
+  def options_including_current(options, service, values)
+    return options unless service.respond_to?(:include_current_value)
+
+    Array.wrap(values).select(&:present?).reduce(options) do |collected, value|
+      service.include_current_value(value, nil, collected, { class: [] }).first
+    end
   end
 
   def label_for(term:, record_class: nil)

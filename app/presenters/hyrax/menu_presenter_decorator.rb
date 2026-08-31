@@ -2,6 +2,15 @@
 
 module Hyrax
   # view-model for the admin menu
+  #
+  # NOTE: Hyku::MenuPresenter subclasses Hyrax::MenuPresenter and redefines most of
+  # these methods. A subclass wins over a module prepended to its parent, so within
+  # Hyku this module is shadowed and only the subclass is consulted — Hyku's dashboard
+  # sidebar instantiates that subclass. This module still applies to anything
+  # instantiating Hyrax::MenuPresenter itself, such as a knapsack.
+  #
+  # Change a method here and the same change is needed in Hyku::MenuPresenter, or the
+  # two disagree and the Hyku one is what users get.
   module MenuPresenterDecorator
     # Returns true if the current controller happens to be one of the controllers that deals
     # with roles and permissions.  This is used to keep the parent section on the sidebar open.

@@ -1,0 +1,1083 @@
+// ---- shared page chrome for the screening room themes ----
+
+@import 'themes/screening_room/tokens';
+@import 'themes/screening_room/primitives';
+
+$scr-chrome-pages-home:
+  'body.screening_room.catalog-index',
+  'body.screening_room.catalog-advanced_search',
+  'body.screening_room.advanced-index',
+  'body.screening_room.hyrax-pages-show',
+  'body.screening_room.hyrax-contact_form-new',
+  'body.screening_room.hyrax-contact_form-create';
+
+$scr-chrome-pages-show:
+  'body.screening_room_show.hyrax-collections-show',
+  'body.screening_room_show.hyrax-file_sets-show';
+
+// not $scr-chrome: that name is the chrome surface colour in _tokens
+$scr-chrome-pages: join($scr-chrome-pages-home, $scr-chrome-pages-show, comma);
+
+#{$scr-chrome-pages} {
+  background: var(--scr-base, #{$scr-base});
+  color: $scr-ink-body;
+
+  // ---- page frame ---------------------------------------------------------
+
+  #content-wrapper {
+    max-width: none;
+    padding: 0;
+  }
+
+  #content-wrapper > .alert {
+    margin: 16px 0;
+  }
+
+  // the appearance pins facet_panel_border_color !important, and its light-theme
+  // default of #bebebe reads as a hot white outline on this theme's near-black;
+  // dulled to the lowest value that still clears the 3:1 non-text floor
+  #content-wrapper .card {
+    border-color: var(--scr-rule-card, #{$scr-rule-card}) !important;
+  }
+
+  // bootstrap paints these near-black, and sanitized html values carry them
+  pre,
+  code,
+  kbd,
+  samp {
+    color: $scr-ink-body;
+  }
+
+  // ---- headings -----------------------------------------------------------
+
+  h1 {
+    @include scr-sans;
+
+    color: $scr-ink;
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin: 0 0 14px;
+  }
+
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: $scr-ink;
+  }
+
+  h2 {
+    @include scr-eyebrow;
+
+    font-size: 15px;
+    margin: 0 0 14px;
+  }
+
+  // scoped to the page body: a blanket rule reaches the masthead's utility
+  // links and every .btn, underlining both. every rule that answers this one
+  // carries #content-wrapper too, since an id here outranks a bare class block
+  #content-wrapper a:not(.btn) {
+    @include scr-link;
+  }
+
+  // ---- chips and badges ---------------------------------------------------
+
+  // the masthead's notification counter is a .badge too, and resizing it there
+  // widens the utility row on chrome pages but not the homepage
+  #content-wrapper .badge {
+    @include scr-sans;
+
+    border-radius: 0;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    line-height: 1.5;
+    padding: 5px 11px;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+
+  // hyrax sets the collection chips as bare siblings, and the row they sit in
+  // drops the whitespace between them
+  #content-wrapper .badge + .badge {
+    margin-left: 8px;
+  }
+
+  // the visibility chip is a status signal rather than brand, so it keeps its
+  // own plate the way heritage does
+  #content-wrapper .badge-success {
+    background: $scr-ok-bg;
+    color: $scr-ok-ink;
+  }
+
+  // ---- notices ------------------------------------------------------------
+
+  .alert {
+    background: var(--scr-notice, #{$scr-notice});
+    border-color: var(--scr-notice-rule, #{$scr-notice-rule});
+    border-radius: 0;
+    color: $scr-ink;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  // ---- forms --------------------------------------------------------------
+
+  .form-control,
+  select,
+  textarea {
+    background-color: var(--scr-raised, #{$scr-raised});
+    // the box is the only thing delimiting the field, so its edge carries the
+    // rule that clears 3:1 rather than the subtler input rule
+    border: 1px solid var(--scr-rule-strong, #{$scr-rule-strong});
+    border-radius: 0;
+    color: $scr-ink;
+  }
+
+  #content-wrapper .dropdown-menu {
+    @include scr-dropdown;
+  }
+
+  // ---- tables -------------------------------------------------------------
+
+  table.table {
+    color: $scr-ink-body;
+    font-size: 15px;
+    line-height: 1.55;
+    margin-bottom: 0;
+  }
+
+  table.table thead th {
+    @include scr-eyebrow;
+
+    border-bottom: 1px solid var(--scr-rule, #{$scr-rule});
+    border-top: 0;
+    padding: 11px 14px 11px 0;
+    vertical-align: bottom;
+  }
+
+  table.table tbody td {
+    border-bottom: 1px solid var(--scr-rule, #{$scr-rule});
+    border-top: 0;
+    color: $scr-ink-body;
+    overflow-wrap: break-word;
+    padding: 12px 14px 12px 0;
+    vertical-align: middle;
+  }
+
+  table.table-bordered,
+  table.table-bordered thead th,
+  table.table-bordered tbody td {
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+  }
+
+  table.table-striped tbody tr:nth-of-type(odd) {
+    background-color: transparent;
+  }
+
+  // ---- results toolbar ----------------------------------------------------
+
+  #sortAndPerPage {
+    border-bottom: 1px solid var(--scr-rule, #{$scr-rule});
+    padding-bottom: 12px;
+  }
+
+  #sortAndPerPage .page-entries,
+  #sortAndPerPage .page-links {
+    color: $scr-ink-muted;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  #sortAndPerPage .btn,
+  #appliedParams .btn,
+  .view-type-group .btn {
+    background-color: var(--scr-raised, #{$scr-raised}) !important;
+    border-color: var(--scr-rule-input, #{$scr-rule-input}) !important;
+    color: $scr-ink-body !important;
+    font-size: 14px;
+    line-height: 1.3;
+    padding: 6px 12px;
+  }
+
+  .view-type-group .btn {
+    margin-left: -1px;
+  }
+
+  // the catalog nests the group in #sortAndPerPage and the collection show in
+  // its own toolbar, so the state answers the id both of them sit inside; the
+  // accent edge is the cue, since two near-black fills cannot carry one
+  #content-wrapper .view-type-group .btn.active {
+    background-color: var(--scr-cta, #{$scr-cta}) !important;
+    border-color: var(--scr-link, #{$scr-link}) !important;
+    color: $scr-ink !important;
+    position: relative;
+    z-index: 1;
+  }
+
+  // ---- pager --------------------------------------------------------------
+
+  #content-wrapper {
+    @include scr-pager;
+
+    ul.pagination {
+      margin-top: 24px;
+    }
+  }
+}
+
+// ---- catalog ---------------------------------------------------------------
+
+body.screening_room.catalog-index,
+body.screening_room.catalog-advanced_search,
+body.screening_room.advanced-index {
+  #content-wrapper > .row {
+    @include scr-gutter;
+
+    margin-left: 0;
+    margin-right: 0;
+    padding-top: 28px;
+  }
+
+  #sidebar {
+    padding-left: 0;
+
+    @media (min-width: #{$scr-laptop-max + 1}) {
+      flex: 0 0 $scr-rail-width;
+      max-width: $scr-rail-width;
+    }
+  }
+
+  // the rail is pinned to a fixed width, so the results column takes the
+  // remainder rather than bootstrap's 75%, which no longer fits the row
+  #content {
+    padding-right: 0;
+
+    @media (min-width: #{$scr-laptop-max + 1}) {
+      flex: 1 1 0;
+      max-width: 100%;
+    }
+  }
+
+  // ---- facet rail ----
+  // blacklight's own advanced page renders the same limits under a second id
+
+  #facets,
+  #advanced_search_facets {
+    .facets-heading {
+      @include scr-eyebrow;
+
+      font-size: 15px;
+      margin-bottom: 14px;
+    }
+
+    .facet-limit {
+      background: transparent;
+      border-radius: 0;
+      margin-bottom: 10px;
+    }
+
+    .facet-field-heading {
+      margin: 0;
+    }
+
+    .facet-field-heading > .btn {
+      @include scr-sans;
+
+      background-color: var(--scr-chrome-soft, #{$scr-chrome-soft}) !important;
+      border: 0;
+      color: $scr-ink-body !important;
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.3;
+      padding: 12px 14px !important;
+    }
+
+    .facet-content .card-body {
+      background: transparent;
+      padding: 4px 14px 10px;
+    }
+
+    .facet-values li {
+      align-items: baseline;
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      line-height: 1.5;
+      padding: 6px 0;
+    }
+
+    .facet-label {
+      font-size: 15px;
+      overflow-wrap: anywhere;
+    }
+
+    // blacklight paints the applied value green and hyrax leaves the clear
+    // control grey, both of which land under 4.5:1 on this theme. the green is a
+    // status signal, so it keeps its hue and only gains luminance; blacklight
+    // pins it !important
+    .facet-label .selected,
+    .facet-count.selected {
+      color: $scr-ok !important;
+    }
+
+    a.remove {
+      color: var(--scr-link, #{$scr-link});
+      text-decoration: none;
+    }
+
+    .facet-count {
+      color: $scr-ink-faint;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+  }
+
+  // ---- result rows ----
+
+  ul.catalog {
+    margin-top: 20px !important;
+  }
+
+  li.document {
+    border-bottom: 1px solid var(--scr-rule, #{$scr-rule});
+    padding: 20px 0 !important;
+  }
+
+  .search-result-wrapper {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .search-results-title-row,
+  .search-result-wrapper > .col-md-3 {
+    padding-left: 0;
+  }
+
+  .search-result-wrapper > [class*='col-']:last-child {
+    padding-right: 0;
+  }
+
+  .search-results-title-row {
+    column-gap: 10px;
+    flex-wrap: wrap;
+    padding-bottom: 8px;
+    row-gap: 6px;
+  }
+
+  #content-wrapper .search-result-title {
+    margin: 0;
+
+    a {
+      @include scr-sans;
+
+      color: $scr-ink;
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.3;
+      overflow-wrap: break-word;
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        color: var(--scr-link, #{$scr-link});
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+    }
+
+    p {
+      display: inline;
+      margin: 0;
+    }
+  }
+
+  // the object sits on a raised plate, the one the home page uses behind its
+  // recent thumbnails
+  .list-thumbnail,
+  .search-result-wrapper > .col-md-3 > img {
+    background: var(--scr-raised, #{$scr-raised});
+    border: 1px solid var(--scr-rule, #{$scr-rule});
+    max-width: 190px;
+  }
+
+  // a collection row has no thumbnail wrapper to size, so the image itself is
+  // the plate and holds the same box the work rows get
+  .search-result-wrapper > .col-md-3 > img {
+    height: 150px;
+    object-fit: contain;
+    width: 190px;
+  }
+
+  .list-thumbnail {
+    align-items: center;
+    display: flex;
+    height: 150px;
+    justify-content: center;
+    overflow: hidden;
+    // hyrax pads the bottom of the box, which lifts the object off centre
+    padding: 0;
+
+    > a {
+      align-items: center;
+      display: flex;
+      height: 100%;
+      justify-content: center;
+      max-width: 100%;
+    }
+
+    img {
+      height: auto;
+      max-height: 100%;
+      max-width: 100%;
+      width: auto;
+    }
+  }
+
+  .metadata dl {
+    font-size: 14px;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .metadata dl > .row {
+    flex-wrap: nowrap;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 2px 0;
+  }
+
+  .metadata dt {
+    @include scr-sans;
+
+    color: $scr-ink;
+    flex: 0 0 150px;
+    font-weight: 700;
+    max-width: 150px;
+    padding: 0 14px 0 0;
+    text-align: left !important;
+  }
+
+  .metadata dd {
+    color: $scr-ink-body;
+    flex: 1 1 auto;
+    margin: 0;
+    max-width: none;
+    min-width: 0;
+    overflow-wrap: break-word;
+    padding: 0;
+
+    p {
+      display: inline;
+      margin: 0;
+    }
+  }
+
+  .collection-counts-item {
+    background: var(--scr-raised, #{$scr-raised});
+    color: $scr-ink-muted;
+    font-size: 14px;
+
+    span {
+      color: $scr-ink;
+      font-weight: 700;
+    }
+  }
+
+  // ---- gallery and masonry captions ----
+
+  .documents-gallery .document .thumbnail-container,
+  .documents-masonry .document .thumbnail-container {
+    background: var(--scr-raised, #{$scr-raised});
+    border-color: var(--scr-rule, #{$scr-rule});
+    border-radius: 0;
+  }
+
+  // the object is inline and narrower than the card, so it sits flush left
+  .documents-gallery .document .document-thumbnail,
+  .documents-masonry .document .document-thumbnail {
+    text-align: center;
+  }
+
+  .documents-gallery .document .document-thumbnail .img-thumbnail,
+  .documents-masonry .document .document-thumbnail .img-thumbnail {
+    background: transparent;
+    border: 0;
+    height: auto;
+    max-height: 220px;
+    max-width: 100%;
+    object-fit: contain;
+    width: auto;
+  }
+
+  .caption.container {
+    max-width: none;
+    padding: 12px;
+  }
+
+  #content-wrapper .caption .index_title {
+    margin: 0 0 8px;
+
+    a {
+      @include scr-sans;
+
+      color: $scr-ink;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.3;
+      overflow-wrap: break-word;
+      text-decoration: none;
+    }
+  }
+
+  .caption dl.document-metadata {
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0;
+
+    dt {
+      @include scr-eyebrow;
+
+      font-size: 11px;
+      padding: 6px 0 1px;
+    }
+
+    dd {
+      color: $scr-ink-body;
+      margin: 0;
+      overflow-wrap: break-word;
+      padding: 0;
+    }
+  }
+
+  // ---- advanced search ----
+
+  .advanced-search-form {
+    @include scr-gutter;
+
+    padding-bottom: 48px;
+    padding-top: 28px;
+  }
+
+  // chrome paints the selected row of a list box with its own blue and only
+  // honours a background here as a gradient; firefox takes the same rule,
+  // safari keeps the system highlight
+  .advanced-search-facet-select option:checked {
+    background: linear-gradient(0deg, $scr-accent 0%, $scr-accent 100%);
+    color: $scr-accent-ink;
+  }
+
+  .advanced-search-form > .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .advanced-search-form > .row > [class*='col-']:first-child {
+    padding-left: 0;
+  }
+
+  .advanced-search-form > .row > [class*='col-']:last-child {
+    padding-right: 0;
+  }
+
+  h1.advanced {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: space-between;
+  }
+
+  .query-criteria-heading {
+    @include scr-sans;
+
+    color: $scr-ink-muted;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    margin: 0 0 16px;
+
+    select {
+      font-size: 15px;
+      width: auto;
+    }
+  }
+
+  // the stock field is a .form-group with col-* children but no .row, so the
+  // columns stack; own that rather than half-applying a grid
+  .advanced-search-field {
+    border-bottom: 1px solid var(--scr-rule, #{$scr-rule});
+    margin: 0;
+    padding: 10px 0;
+
+    .control-label,
+    .col-form-label {
+      @include scr-sans;
+
+      color: $scr-ink;
+      // blacklight's own advanced page pins .text-md-right on these labels,
+      // which reads as a caption for the field above once the columns stack
+      text-align: left !important;
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.55;
+      margin-bottom: 4px;
+      max-width: 100%;
+      padding-left: 0;
+    }
+
+    > [class*='col-'] {
+      flex: 1 1 auto;
+      max-width: 100%;
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+
+  .card.card-default {
+    background: var(--scr-chrome-soft, #{$scr-chrome-soft});
+  }
+
+  .btn-link {
+    color: var(--scr-link, #{$scr-link});
+  }
+
+  .card-title {
+    @include scr-eyebrow;
+
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  .advanced-help {
+    color: $scr-ink-body;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+    padding-left: 18px;
+
+    li + li {
+      margin-top: 6px;
+    }
+  }
+
+  .submit-buttons,
+  .sort-submit-buttons {
+    margin-top: 20px;
+  }
+}
+
+// ---- content pages and contact form -----------------------------------------
+
+body.screening_room.hyrax-pages-show,
+body.screening_room.hyrax-contact_form-new,
+body.screening_room.hyrax-contact_form-create {
+  #content-wrapper > .alert,
+  #content-wrapper > h1,
+  #content-wrapper > form {
+    @include scr-gutter;
+  }
+
+  #content-wrapper > .alert {
+    margin-bottom: 0;
+    margin-top: 0;
+    padding-bottom: 14px;
+    padding-top: 14px;
+  }
+
+  #content-wrapper > h1 {
+    margin-top: 28px;
+  }
+
+  #content-wrapper > form {
+    padding-bottom: 48px;
+
+    > * {
+      max-width: 900px;
+    }
+  }
+
+  #content_block_page {
+    @include scr-gutter;
+
+    margin-left: 0;
+    margin-right: 0;
+    max-width: 74ch;
+    padding-bottom: 48px;
+    padding-top: 28px;
+  }
+
+  #content_block_page,
+  #content_block_page p,
+  #content_block_page li {
+    color: $scr-ink-body;
+    font-size: 17px;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+  }
+
+  #content_block_page h2 {
+    margin: 30px 0 12px;
+  }
+
+  .form-group.row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .form-group.row > [class*='col-']:first-child {
+    padding-left: 0;
+  }
+
+  .form-group.row > [class*='col-']:last-child {
+    padding-right: 0;
+  }
+
+  .form-group label {
+    @include scr-sans;
+
+    color: $scr-ink;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.55;
+  }
+}
+
+// ---- collection show ---------------------------------------------------------
+
+body.screening_room_show.hyrax-collections-show {
+  overflow-x: clip;
+
+  .hyc-container {
+    padding-bottom: 48px;
+  }
+
+  .hyc-container > .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .hyc-container > .row > [class*='col-'] {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .hyc-body,
+  .hyc-blacklight {
+    @include scr-gutter;
+  }
+
+  // ---- banner ----
+
+  .hyc-banner {
+    @include scr-gutter;
+
+    background-color: var(--scr-chrome-soft, #{$scr-chrome-soft});
+    border-bottom: 1px solid var(--scr-rule, #{$scr-rule});
+    border-radius: 0;
+    padding-bottom: 26px;
+    padding-top: 30px;
+    width: auto;
+  }
+
+  .hyc-banner .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .hyc-banner .row > [class*='col-'] {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .hyc-banner .space-between {
+    column-gap: 16px;
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+
+  .hyc-title {
+    align-items: center;
+    column-gap: 0;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    row-gap: 8px;
+
+    h1 {
+      @include scr-sans;
+
+      font-size: 34px;
+      overflow-wrap: anywhere;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-right: 14px;
+
+      p {
+        display: inline;
+        margin: 0;
+      }
+    }
+
+    .badge {
+      box-shadow: none;
+      margin-left: 0;
+    }
+  }
+
+  .hyc-banner[style*='url()'] .hyc-title h1 {
+    text-shadow: none;
+  }
+
+  // the appearance pins collection_banner_text_color !important, and its
+  // default of black measures 1.16:1 on this theme's band; a dark theme cannot
+  // ride a light-theme default here
+  .hyc-banner .hyc-title h1 {
+    color: $scr-ink !important;
+  }
+
+  .hyc-item-count,
+  .hyc-created-by,
+  .hyc-last-updated {
+    border-radius: 0;
+  }
+
+  .hyc-banner[style*='url()'] {
+    .hyc-item-count,
+    .hyc-created-by,
+    .hyc-last-updated {
+      background: transparent;
+      color: $scr-ink-muted;
+      padding: 0;
+      text-shadow: none;
+    }
+
+    .hyc-item-count {
+      @include scr-eyebrow;
+    }
+  }
+
+  .hyc-created-by,
+  .hyc-last-updated {
+    font-size: 14px;
+    line-height: 1.4;
+    margin-top: 18px;
+  }
+
+  // the same button treatment the work show's action bar uses; the appearance
+  // pins every button colour !important, so a themed button answers in kind
+  .show-actions-container {
+    margin-top: 14px;
+
+    .collection-title-row-content {
+      column-gap: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      row-gap: 10px;
+    }
+
+    .btn {
+      @include scr-sans;
+
+      background-color: var(--scr-raised, #{$scr-raised}) !important;
+      border: 1px solid var(--scr-rule-strong, #{$scr-rule-strong}) !important;
+      border-radius: 0;
+      color: $scr-ink !important;
+      font-size: 14px;
+      margin: 0;
+      padding: 9px 16px;
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        background-color: var(--scr-chrome-soft, #{$scr-chrome-soft}) !important;
+        color: #fff !important;
+      }
+    }
+  }
+
+  // ---- details ----
+
+  .hyc-body {
+    margin-bottom: 36px;
+    margin-top: 30px;
+  }
+
+  .representative-media {
+    background: var(--scr-raised, #{$scr-raised});
+    border: 1px solid var(--scr-rule, #{$scr-rule});
+    height: auto;
+    max-width: 100%;
+  }
+
+  .hyc-container > .row > .hyc-metadata {
+    padding-left: 36px;
+  }
+
+  .hyc-metadata {
+
+    p {
+      color: $scr-ink-body;
+      font-size: 17px;
+      line-height: 1.6;
+      max-width: 70ch;
+      overflow-wrap: anywhere;
+    }
+
+    dl {
+      border-top: 0;
+      font-size: 15px;
+    }
+
+    dl > div {
+      border-bottom: 1px solid var(--scr-rule, #{$scr-rule});
+      padding: 12px 0;
+    }
+
+    dt {
+      @include scr-sans;
+
+      color: $scr-ink;
+      flex-basis: 150px;
+      font-weight: 700;
+    }
+
+    dd {
+      color: $scr-ink-body;
+      margin: 0;
+      overflow-wrap: break-word;
+    }
+  }
+
+  // ---- works listing ----
+
+  .hyc-bl-title h2 {
+    margin-bottom: 10px;
+  }
+
+  .hyc-bl-sort {
+    border-bottom: 1px solid var(--scr-rule, #{$scr-rule});
+    padding-bottom: 12px;
+
+    // hyrax's own per_page form draws a second rule 29px above this one, and
+    // pads and spaces itself below the controls the theme already spaces
+    form.per_page {
+      border-bottom: 0;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    label,
+    select {
+      font-size: 14px;
+    }
+
+    .btn {
+      font-size: 14px;
+      line-height: 1.3;
+      padding: 6px 12px;
+    }
+  }
+
+  .hyc-bl-results {
+    margin: 20px 0 32px;
+
+    .media-left img {
+      background: var(--scr-raised, #{$scr-raised});
+      border: 1px solid var(--scr-rule, #{$scr-rule});
+    }
+  }
+}
+
+// ---- file set show -----------------------------------------------------------
+
+body.screening_room_show.hyrax-file_sets-show {
+  overflow-x: clip;
+
+  .container-fluid {
+    @include scr-gutter;
+
+    padding-bottom: 48px;
+    padding-top: 28px;
+  }
+
+  .container-fluid > .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .container-fluid > .row > [class*='col-']:first-child {
+    padding-left: 0;
+  }
+
+  .container-fluid > .row > [class*='col-']:last-child {
+    padding-right: 0;
+  }
+
+  .ensure-wrapped {
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  header h1 .badge {
+    margin-left: 10px;
+  }
+
+  h2 {
+    margin: 34px 0 12px;
+  }
+
+  header + h2 {
+    margin-top: 24px;
+  }
+
+  dl.file-show-term {
+    font-size: 15px;
+    line-height: 1.55;
+    margin: 0;
+
+    > .row {
+      border-bottom: 1px solid var(--scr-rule, #{$scr-rule});
+      margin: 0;
+      padding: 12px 0;
+    }
+
+    dt {
+      @include scr-sans;
+
+      color: $scr-ink;
+      font-weight: 700;
+      padding-left: 0;
+    }
+
+    dd {
+      color: $scr-ink-body;
+      margin: 0;
+      overflow-wrap: break-word;
+      padding-left: 0;
+    }
+  }
+
+  table.table.single-use-links tbody td {
+    border: 0;
+    padding-bottom: 6px;
+  }
+
+  #file_download {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 700;
+    margin-top: 12px;
+  }
+
+  // hyrax's single use link row spells the class with an underscore
+  .form-actions,
+  .form_actions {
+    margin-top: 24px;
+  }
+}

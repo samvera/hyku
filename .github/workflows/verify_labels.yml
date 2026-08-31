@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     name: PR has required labels
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v6
 
       # https://github.com/marketplace/actions/label-checker-for-pull-requests
       - name: Check PR for Release Notes labels

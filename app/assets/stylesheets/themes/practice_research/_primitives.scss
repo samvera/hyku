@@ -1,0 +1,144 @@
+// ---- practice research mixins ----
+
+@mixin pr-full-bleed {
+  margin-inline: calc(50% - 50vw);
+  padding-inline: calc(50vw - 50%);
+}
+
+@mixin pr-container-inset {
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+
+  @media (min-width: 576px) {
+    padding-left: calc((100% - 540px) / 2 + 15px) !important;
+    padding-right: calc((100% - 540px) / 2 + 15px) !important;
+  }
+
+  @media (min-width: 768px) {
+    padding-left: calc((100% - 720px) / 2 + 15px) !important;
+    padding-right: calc((100% - 720px) / 2 + 15px) !important;
+  }
+
+  @media (min-width: 992px) {
+    padding-left: calc((100% - 960px) / 2 + 15px) !important;
+    padding-right: calc((100% - 960px) / 2 + 15px) !important;
+  }
+
+  @media (min-width: 1200px) {
+    padding-left: calc((100% - 1140px) / 2 + 15px) !important;
+    padding-right: calc((100% - 1140px) / 2 + 15px) !important;
+  }
+}
+
+@mixin pr-controls-reset {
+  .btn,
+  .form-control {
+    border-radius: 0;
+  }
+
+  .btn:focus-visible,
+  .form-control:focus-visible,
+  select:focus-visible {
+    box-shadow: none;
+    outline: 2px solid var(--pr-link, #0e5c58);
+    outline-offset: 2px;
+  }
+}
+
+@mixin pr-focus-ring($color: var(--pr-link, #0e5c58)) {
+  box-shadow: none;
+  outline: 2px solid $color;
+  outline-offset: 2px;
+}
+
+@mixin pr-section-title($color, $size: 0.85rem) {
+  color: $color;
+  font-family: var(--pr-sans, 'Helvetica Neue', Helvetica, Arial, sans-serif) !important;
+  font-size: $size;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+@mixin pr-thumb-placeholder {
+  background: repeating-linear-gradient(135deg, #f2f4f3 0 6px, #e6eae8 6px 12px);
+}
+
+@mixin pr-eyebrow-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+// the block margin is a parameter so a caller never writes a margin shorthand,
+// which would reset the negative inline margins the full bleed depends on
+@mixin pr-breadcrumb($margin-bottom: 0) {
+  background: $pr-hairline;
+  border: 0;
+  border-radius: 0;
+  color: $pr-muted;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  padding-block: 0.7rem;
+
+  @include pr-full-bleed;
+
+  margin-block: 0 $margin-bottom;
+
+  a {
+    color: var(--pr-brand-ink, #{$pr-brand-900});
+  }
+
+  li + li::before {
+    border-right-color: #b6bdba;
+  }
+}
+
+@mixin pr-badge($font-size: 0.75rem, $padding: 0.2rem 0.5rem) {
+  border: 1px solid transparent;
+  border-radius: 0;
+  font-size: $font-size;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+  padding: $padding;
+  text-transform: uppercase;
+  vertical-align: baseline;
+}
+
+@mixin pr-badge-brand {
+  background-color: var(--pr-primary, #{$pr-brand-700});
+  color: var(--pr-primary-text, #fff);
+}
+
+// Bootstrap rounds the first and last page-link with a higher-specificity
+// selector than .page-link, and pins the active pill through the appearance
+// styles, so the active state is deliberately not set here.
+@mixin pr-pager($font-size: 0.875rem, $padding: 0.375rem 0.7rem) {
+  .pagination {
+    font-size: $font-size;
+  }
+
+  .page-link,
+  .page-item:first-child .page-link,
+  .page-item:last-child .page-link,
+  .pagination li a,
+  .pagination .active span {
+    border-radius: 0;
+  }
+
+  .page-link {
+    border-color: $pr-border;
+    color: var(--pr-link, #{$pr-brand-700});
+    line-height: 1.4;
+    padding: $padding;
+  }
+
+  .page-item.disabled .page-link {
+    color: $pr-faint;
+  }
+}

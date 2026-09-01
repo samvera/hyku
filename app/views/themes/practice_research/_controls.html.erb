@@ -14,8 +14,8 @@
     <div class="col-sm-7">
       <%= render partial: 'catalog/search_form' %>
     </div>
-  <% elsif pr_share_work? %>
-    <% href, data = pr_share_work_target %>
+  <% elsif theme_share_work? %>
+    <% href, data = theme_deposit_target %>
     <%= link_to t('hyrax.share_button'), href, data: data, class: 'pr-nav-share' %>
   <% end %>
 </nav><!-- /.navbar -->

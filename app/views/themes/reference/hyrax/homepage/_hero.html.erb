@@ -1,0 +1,45 @@
+<div class="ref-hero">
+  <img class="ref-hero-image" src="<%= banner_image %>" alt="">
+  <div class="ref-hero-scrim"></div>
+  <div class="ref-hero-content">
+    <div class="ref-hero-lede">
+      <p class="ref-hero-eyebrow"><%= application_name %></p>
+
+      <% if display_content_block? @marketing_text %>
+        <div class="ref-hero-copy"><%= displayable_content_block @marketing_text %></div>
+      <% else %>
+        <h1 class="ref-hero-headline"><%= t('reference.homepage.hero.headline') %></h1>
+      <% end %>
+
+      <%= form_tag main_app.search_catalog_path, method: :get, class: 'ref-hero-search', role: 'search' do %>
+        <%= hidden_field_tag :search_field, 'all_fields' %>
+        <label class="sr-only" for="ref-hero-q"><%= t('reference.homepage.hero.search_label') %></label>
+        <%= text_field_tag :q, nil, id: 'ref-hero-q', autocomplete: 'off',
+                           class: 'ref-hero-search-field',
+                           placeholder: t('reference.homepage.hero.search_placeholder') %>
+        <%= button_tag t('reference.homepage.hero.search_button'), class: 'ref-hero-search-submit' %>
+      <% end %>
+
+      <%= link_to t('reference.homepage.hero.advanced'), main_app.advanced_search_catalog_path, class: 'ref-hero-advanced' %>
+
+      <% paths = { works: main_app.search_catalog_path(f: { generic_type_sim: ['Work'] }),
+                   collections: main_app.search_catalog_path(f: { generic_type_sim: ['Collection'] }) } %>
+      <dl class="ref-hero-stats">
+        <% ref_home.counts.each do |key, count| %>
+          <div class="ref-stat">
+            <dt class="ref-stat-key"><%= t("reference.homepage.stats.#{key}", count: count) %></dt>
+            <dd class="ref-stat-number"><%= link_to number_with_delimiter(count), paths[key] %></dd>
+          </div>
+        <% end %>
+      </dl>
+    </div>
+
+    <% if theme_share_work? %>
+      <div class="ref-hero-deposit">
+        <p class="ref-hero-deposit-prompt"><%= t('reference.homepage.hero.deposit_prompt') %></p>
+        <% href, data = theme_deposit_target %>
+        <%= link_to t('reference.homepage.hero.deposit_button'), href, data:, class: 'ref-hero-deposit-button' %>
+      </div>
+    <% end %>
+  </div>
+</div>

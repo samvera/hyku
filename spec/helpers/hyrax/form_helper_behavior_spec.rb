@@ -16,6 +16,43 @@ RSpec.describe Hyrax::FormHelperBehavior, type: :helper do
         expect(helper.send(:controlled_vocabulary_source_for, :resource_type)).to eq('resource_types')
         expect(helper.send(:controlled_vocabulary_source_for, :rights_statement)).to eq('rights_statements')
       end
+
+      it 'resolves media_viewer from the mappings registry' do
+        expect(helper.send(:controlled_vocabulary_source_for, :media_viewer)).to eq('media_viewer')
+      end
+    end
+
+    # Both modes are covered because a source that resolves in only one renders the
+    # viewer picker as a free-text box in the other, which still looks like a working form.
+    context 'when flexible=true' do
+      let(:profile) do
+        { 'properties' => { 'media_viewer' => { 'controlled_values' => { 'sources' => ['media_viewer'] } } } }
+      end
+
+      before do
+        allow(Hyrax.config).to receive(:flexible?).and_return(true)
+        allow(Hyrax::FlexibleSchema).to receive(:order)
+          .with("created_at asc").and_return(double(last: double(profile:)))
+      end
+
+      it 'resolves media_viewer from the profile' do
+        expect(helper.send(:controlled_vocabulary_source_for, :media_viewer)).to eq('media_viewer')
+      end
+    end
+
+    context 'with the shipped m3 profile' do
+      let(:shipped_profile) do
+        YAML.safe_load_file(Rails.root.join('config', 'metadata_profiles', 'm3_profile.yaml'))
+      end
+
+      it 'declares media_viewer as a controlled, indexed, displayed property' do
+        property = shipped_profile.dig('properties', 'media_viewer')
+
+        expect(property.dig('controlled_values', 'sources')).to eq(['media_viewer'])
+        expect(property.dig('indexing')).to eq(['media_viewer_ssi'])
+        # secondary_terms selects on display, so omitting the flag hides the field.
+        expect(property.dig('form', 'display')).to be(true)
+      end
     end
   end
 

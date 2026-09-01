@@ -9,6 +9,8 @@ capybara-*.html
 pg_upgrade_*.log
 /public/system
 /public/uv
+/public/clover
+/public/ramp
 /node_modules
 /coverage/
 /spec/tmp

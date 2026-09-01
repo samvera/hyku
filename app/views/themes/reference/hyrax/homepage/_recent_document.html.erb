@@ -1,0 +1,47 @@
+<li class="ref-deposit">
+  <%= link_to generate_work_url(recent_document, request), class: 'ref-deposit-thumb',
+              tabindex: -1, aria: { hidden: true }, data: { turbolinks: block_valkyrie_redirect? } do %>
+    <%= image_tag theme_thumbnail_url(recent_document), alt: '' %>
+  <% end %>
+
+  <div class="ref-deposit-body">
+    <h3 class="ref-deposit-title">
+      <%= link_to recent_document.title_or_label, generate_work_url(recent_document, request),
+                  data: { turbolinks: block_valkyrie_redirect? } %>
+    </h3>
+
+    <% creators = ref_creators(recent_document) %>
+    <% if creators.present? %>
+      <p class="ref-deposit-creators"><%= creators %></p>
+    <% end %>
+
+    <% provenance = ref_provenance(recent_document) %>
+    <% if provenance.present? %>
+      <p class="ref-deposit-provenance"><%= provenance %></p>
+    <% end %>
+  </div>
+
+  <div class="ref-deposit-meta">
+    <% type = theme_type_label(recent_document) %>
+    <% if type.present? %>
+      <span class="ref-chip"><%= type %></span>
+    <% end %>
+
+    <% deposited = recent_document.date_uploaded %>
+    <% if deposited.present? %>
+      <p class="ref-deposit-date">
+        <%= t('reference.homepage.recent.deposited', date: l(deposited.to_date, format: :long)) %>
+      </p>
+    <% end %>
+
+    <% rights = ref_rights_statement(recent_document) %>
+    <% if rights.present? %>
+      <p class="ref-deposit-rights"><%= rights %></p>
+    <% end %>
+
+    <% license = theme_license_badge(recent_document) %>
+    <% if license.present? %>
+      <p class="ref-deposit-license"><%= license %></p>
+    <% end %>
+  </div>
+</li>

@@ -1,0 +1,640 @@
+// ---- reference show page theme ----
+
+@import 'themes/reference/tokens';
+@import 'themes/reference/primitives';
+@import 'themes/reference/shell';
+
+.reference_show.works-show {
+  overflow-x: clip;
+
+  // bootstrap's `.navbar + .container` pins both vertical paddings
+  #content-wrapper {
+    max-width: none;
+    padding: 0 !important;
+  }
+
+  // ---- breadcrumb ----
+  .breadcrumb {
+    @include ref-gutter;
+    background: $ref-surface;
+    border: 0;
+    border-bottom: 1px solid $ref-rule;
+    border-radius: 0;
+    font-size: 14px;
+    margin: 0;
+    padding-bottom: 13px;
+    padding-top: 13px;
+
+    .breadcrumb-item {
+      color: $ref-ink-label;
+    }
+
+    .breadcrumb-item.active {
+      color: $ref-ink;
+    }
+
+    a {
+      @include ref-link(var(--ref-link-strong, #{$ref-link-strong}));
+    }
+  }
+
+  // ---- editor actions ----
+  // the stock partial always renders, since it carries the COinS hook citation
+  // managers read, and it ships feature links collapsed rather than absent
+  .ref-show-actions:not(:has(.show-actions a.btn:not(.collapse), .show-actions button.btn:not(.collapse))) {
+    display: none;
+  }
+
+  .ref-show-actions {
+    @include ref-gutter;
+    padding-bottom: 14px;
+    padding-top: 14px;
+
+    // the stock partial wraps its buttons in a bootstrap row, whose negative
+    // margins and column padding pull them off the gutter
+    .show-actions {
+      align-items: center;
+      margin: 0;
+    }
+
+    // laid out rather than left inline, so the whitespace between the buttons
+    // does not stop their edges meeting
+    .show-actions > [class*='col-'] {
+      display: flex;
+      flex-wrap: wrap;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .show-actions > .text-right {
+      justify-content: flex-end;
+    }
+
+    // the buttons are bare siblings rather than a btn-group, so each draws its
+    // own edge and adjacent ones read as a double rule
+    .show-actions .btn + .btn,
+    .show-actions .btn + .btn-group,
+    .show-actions .btn-group + .btn,
+    .show-actions .btn-group + .btn-group {
+      margin-left: -1px;
+    }
+
+    .show-actions .btn:hover,
+    .show-actions .btn:focus {
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  // ---- record header ----
+  .ref-record {
+    background: var(--ref-band, #{$ref-band});
+    border-bottom: 1px solid var(--ref-band-edge, #{$ref-band-edge});
+    border-top: 1px solid var(--ref-band-edge, #{$ref-band-edge});
+  }
+
+  .ref-record-inner {
+    @include ref-gutter;
+    padding-bottom: 34px;
+    padding-top: 38px;
+  }
+
+  .ref-record-head {
+    max-width: 1000px;
+  }
+
+  .ref-record-eyebrow {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0;
+  }
+
+  .ref-record-context {
+    color: $ref-ink-body;
+    font-size: 15px;
+
+    a {
+      @include ref-link(var(--ref-link-strong, #{$ref-link-strong}));
+    }
+  }
+
+  .ref-record-title {
+    @include ref-serif;
+    color: $ref-ink;
+    font-size: 40px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.16;
+    margin: 9px 0 0;
+    overflow-wrap: anywhere;
+    text-wrap: pretty;
+
+    @media (max-width: $ref-tablet-max) {
+      font-size: 32px;
+    }
+
+    @media (max-width: $ref-mobile-max) {
+      font-size: 27px;
+    }
+  }
+
+  .ref-record-byline {
+    align-items: baseline;
+    color: $ref-ink-body;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 17px;
+    gap: 6px 14px;
+    margin: 10px 0 0;
+  }
+
+  .ref-record-creators {
+    overflow-wrap: anywhere;
+  }
+
+  .ref-record-date {
+    color: $ref-ink-muted;
+  }
+
+  .ref-record-chips {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  // ---- viewer ----
+  // the iframe is already absolutely positioned at full size by hyrax, so the
+  // only job here is being the positioned ancestor it fills
+  .ref-viewer {
+    @include ref-gutter;
+    margin-top: 24px;
+
+    .viewer-wrapper {
+      background: #000;
+      height: 680px;
+      overflow: hidden;
+      position: relative;
+
+      @media (max-width: $ref-tablet-max) {
+        height: 520px;
+      }
+
+      @media (max-width: $ref-mobile-max) {
+        height: 62vw;
+      }
+    }
+  }
+
+  .ref-viewer-still {
+    @include ref-mat(18px);
+    min-height: 320px;
+
+    // the still arrives wrapped in a .center-block whose height is auto, so the
+    // mat's own max-height on the object resolves against nothing; hyrax renders
+    // its thumbnails 450px tall, so that cap shows one at its own size and the
+    // mat grows for the download link beneath it
+    img {
+      max-height: 450px;
+    }
+
+    > * {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-width: 100%;
+    }
+
+    > * > * {
+      max-width: 100%;
+      min-height: 0;
+    }
+
+    a {
+      @include ref-link(var(--ref-link-strong, #{$ref-link-strong}));
+      font-size: 14px;
+    }
+  }
+
+  // ---- description ----
+  .ref-show-description {
+    @include ref-gutter(192px, 96px);
+    padding-top: 26px;
+
+    p {
+      @include ref-serif;
+      color: $ref-ink;
+      font-size: 25px;
+      line-height: 1.6;
+      margin: 0 0 14px;
+      max-width: 820px;
+      overflow-wrap: anywhere;
+      text-wrap: pretty;
+
+      @media (max-width: $ref-mobile-max) {
+        font-size: 20px;
+      }
+    }
+
+    a {
+      @include ref-link;
+    }
+  }
+
+  // ---- body grid ----
+  .ref-show-body {
+    @include ref-gutter(192px, 96px);
+    display: grid;
+    gap: 44px;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    padding-bottom: 48px;
+    padding-top: 26px;
+
+    @media (max-width: $ref-laptop-max) {
+      gap: 40px;
+    }
+
+    @media (max-width: $ref-tablet-max) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  // ---- tabs ----
+  .ref-tabs {
+    border-bottom: 1px solid $ref-panel-edge;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    .nav-item {
+      margin: 0;
+    }
+
+    .nav-link {
+      @include ref-sans;
+      background: none;
+      border: 0;
+      border-radius: 0;
+      color: var(--ref-link-strong, #{$ref-link-strong});
+      font-size: 15px;
+      margin-bottom: -1px;
+      padding: 8px 10px;
+
+      // _appearance_styles pins the tab hover and focus fill
+      &:hover,
+      &:focus {
+        background-color: transparent !important;
+      }
+
+      &:focus-visible {
+        @include ref-focus-ring;
+      }
+    }
+
+    .ref-tab-count {
+      background: var(--ref-chip, #{$ref-chip});
+      border: 1px solid var(--ref-chip-edge, #{$ref-chip-edge});
+      color: var(--ref-link-strong, #{$ref-link-strong});
+      font-size: 12px;
+      font-weight: 700;
+      margin-left: 7px;
+      padding: 1px 6px;
+    }
+
+    .nav-link.active {
+      border-bottom: 2px solid $ref-ink-body;
+      color: $ref-ink;
+      font-weight: 700;
+    }
+  }
+
+  // the tab bar carries the label, so the panel heading is hidden here and
+  // restored by the print block; the ?pane= hrefs are what make the strip
+  // work without javascript
+  .ref-pane-heading {
+    @include ref-sans;
+    clip-path: inset(50%);
+    color: $ref-ink;
+    font-size: 18px;
+    font-weight: 800;
+    height: 1px;
+    margin: 0 0 14px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+
+  .ref-panes {
+    padding-top: 18px;
+  }
+
+  // a printed record carries every panel
+  @media print {
+    .ref-tabs {
+      display: none;
+    }
+
+    .ref-panes .tab-pane {
+      display: block;
+      opacity: 1;
+    }
+
+    .ref-panes .tab-pane + .tab-pane {
+      margin-top: 32px;
+    }
+
+    .ref-pane-heading {
+      clip-path: none;
+      height: auto;
+      overflow: visible;
+      position: static;
+      white-space: normal;
+      width: auto;
+    }
+  }
+
+  // ---- metadata table ----
+  .hyrax-compound-card {
+    background: var(--ref-band, #{$ref-band});
+    border: 1px solid var(--ref-band-edge, #{$ref-band-edge}) !important;
+    border-radius: 0;
+    margin-bottom: 20px;
+
+    .card-header,
+    .card-body {
+      background-color: transparent !important;
+      border-color: var(--ref-band-edge, #{$ref-band-edge}) !important;
+      border-radius: 0;
+      padding: 16px 18px;
+    }
+
+    h2,
+    .card-title {
+      @include ref-label;
+      margin: 0;
+    }
+
+    a {
+      @include ref-link(var(--ref-link-strong, #{$ref-link-strong}));
+    }
+
+    .hyrax-compound-subproperty-label {
+      @include ref-sans;
+      color: $ref-ink;
+      font-weight: 700;
+    }
+  }
+
+  // a compound whose values are all blank still renders its header
+  .hyrax-compound-card:not(:has(.hyrax-compound-entry)) {
+    display: none;
+  }
+
+  .work-featured-attribute {
+    background: var(--ref-band, #{$ref-band});
+    // _appearance_styles pins every .card border, and the gem ships .mb-4 here
+    border: 1px solid var(--ref-band-edge, #{$ref-band-edge}) !important;
+    border-radius: 0;
+    margin-bottom: 20px !important;
+
+    .card-body {
+      padding: 16px 18px;
+    }
+  }
+
+  .work-featured-attribute-label {
+    @include ref-label;
+    margin: 0 0 6px;
+  }
+
+  .ref-meta {
+    dl.work-show {
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr);
+      margin: 0;
+
+      @media (max-width: $ref-mobile-max) {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    dt {
+      @include ref-sans;
+      border-top: 1px solid $ref-rule;
+      color: $ref-ink;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 12px 14px 12px 0;
+    }
+
+    dd {
+      border-top: 1px solid $ref-rule;
+      color: $ref-ink-body;
+      font-size: 15px;
+      margin: 0;
+      overflow-wrap: anywhere;
+      padding: 12px 0;
+
+      @media (max-width: $ref-mobile-max) {
+        border-top: 0;
+        padding-top: 0;
+      }
+    }
+
+    ul.tabular {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    // the stock renderer gives every value its own list item; a metadata row
+    // reads as one line of prose instead
+    ul.tabular li,
+    ul.tabular p {
+      display: inline;
+      margin: 0;
+    }
+
+    // the separator hangs off the value's own text rather than the list item,
+    // since the renderers disagree about where the whitespace goes
+    // text-decoration propagates into a descendant and cannot be unset there,
+    // so the separator is laid out as its own inline box to stay off the rule
+    ul.tabular li:not(:last-child) a:last-of-type::after,
+    ul.tabular li:not(:last-child):not(:has(a))::after {
+      color: $ref-ink-label;
+      content: ',';
+      display: inline-block;
+      margin-right: 0.25em;
+      text-decoration: none;
+    }
+
+    a {
+      @include ref-link;
+    }
+
+    // the tab bar already draws the rule above the first row
+    dl.work-show > dt:first-of-type,
+    dl.work-show > dt:first-of-type + dd {
+      border-top: 0;
+    }
+  }
+
+  // ---- file and child work rows ----
+  .ref-row-list {
+    margin: 0;
+    padding: 0;
+
+    // the tab bar already draws the rule above the first row
+    > .ref-row:first-child {
+      border-top: 0;
+    }
+  }
+
+  .ref-row {
+    align-items: center;
+    border-top: 1px solid $ref-rule;
+    display: grid;
+    gap: 14px;
+    grid-template-columns: 68px minmax(0, 1fr) auto;
+    padding: 14px 0;
+  }
+
+  .ref-row-thumb {
+    @include ref-mat(4px);
+    height: 68px;
+    width: 68px;
+  }
+
+  .ref-row-name {
+    @include ref-title-link;
+    font-size: 15px;
+    overflow-wrap: anywhere;
+  }
+
+  .ref-row-meta {
+    color: $ref-ink-label;
+    font-size: 13px;
+    margin: 3px 0 0;
+  }
+
+  .ref-row-actions .btn {
+    font-size: 13px;
+  }
+
+  .ref-pager {
+    padding-top: 16px;
+
+    ul.pagination {
+      @include ref-pagination;
+    }
+  }
+
+  // ---- rail ----
+  .ref-panel {
+    border: 1px solid $ref-panel-edge;
+    margin-bottom: 16px;
+    padding: 18px 20px;
+  }
+
+  .ref-panel-label {
+    @include ref-label(0.12em);
+    margin: 0 0 12px;
+  }
+
+  .ref-cite-picker {
+    @include ref-sans;
+    background: $ref-surface;
+    border: 1px solid $ref-input-edge;
+    color: $ref-ink;
+    font-size: 14px;
+    margin-bottom: 12px;
+    padding: 7px 9px;
+    width: 100%;
+
+    &:focus-visible {
+      @include ref-focus-ring;
+    }
+  }
+
+  .ref-cite-text {
+    color: $ref-ink-body;
+    font-size: 14px;
+    line-height: 1.55;
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .ref-cite-copy {
+    @include ref-sans;
+    background: $ref-surface;
+    border: 1px solid $ref-input-edge;
+    color: var(--ref-link-strong, #{$ref-link-strong});
+    font-size: 13px;
+    margin-top: 12px;
+    padding: 7px 12px;
+
+    &:focus-visible {
+      @include ref-focus-ring;
+    }
+  }
+
+  .ref-cite-export {
+    @include ref-link(var(--ref-link-strong, #{$ref-link-strong}));
+    display: inline-block;
+    font-size: 13px;
+    margin-top: 12px;
+  }
+
+  .ref-cite-copied {
+    color: $ref-ink-muted;
+    font-size: 13px;
+    margin-left: 8px;
+  }
+
+  // the relationship rows arrive as a dl; the panel hides itself when hyrax
+  // rendered nothing into it
+  .ref-part-of:not(:has(dt)) {
+    display: none;
+  }
+
+  .ref-part-of {
+    dl.work-show {
+      display: block;
+      margin: 0;
+    }
+
+    dt {
+      color: $ref-ink-muted;
+      font-size: 13px;
+      font-weight: 400;
+      padding: 0;
+    }
+
+    dd {
+      font-size: 14px;
+      margin: 2px 0 12px;
+      padding: 0;
+    }
+
+    dd:last-child {
+      margin-bottom: 0;
+    }
+
+    ul.tabular {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    a {
+      @include ref-link(var(--ref-link-strong, #{$ref-link-strong}));
+    }
+  }
+}

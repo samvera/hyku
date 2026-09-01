@@ -271,6 +271,9 @@ zh:
       part_of:
         heading: 所属
   hyku:
+    works:
+      errors:
+        work_type_not_offered: 本站点不提供该作品类型。请选择其他类型。
     account:
       signup_disabled: 帐户注册被禁用
     deposit_wizard:
@@ -1065,6 +1068,78 @@ zh:
         edit: 編輯
         header: 管理用户
         update: 更新
+  reference:
+    homepage:
+      intro_label: "简介"
+      hero:
+        headline: "检索资源库"
+        search_label: "检索资源库"
+        search_placeholder: "检索标题、作者、主题和全文"
+        search_button: "检索"
+        advanced: "高级检索"
+        deposit_prompt: "有成果要分享？"
+        deposit_button: "提交成果"
+      browse:
+        heading: "浏览资源库"
+        all_options: "浏览全部"
+        all:
+          subjects: "全部主题"
+          creators: "全部作者"
+          collections: "全部馆藏"
+          publishers: "全部出版者"
+      recent:
+        heading: "最新提交"
+        view_all: "全部最新提交"
+        and_others: "等"
+        deposited: "提交于 %{date}"
+        embargo: "处于禁限期"
+      collections:
+        heading: "精选馆藏"
+        view_all: "查看全部"
+        works_count:
+          one: "%{count} 件作品"
+          other: "%{count} 件作品"
+      featured:
+        unfeature_confirm: "要将其从精选列表中移除吗？"
+        reorder_hint: "拖动条目以重新排序，然后保存。"
+        save_order: "保存排序"
+      featured_works:
+        heading: "精选作品"
+        see_all: "查看全部"
+      researcher:
+        heading: "特邀研究者"
+      about:
+        heading: "关于馆藏"
+      cta:
+        heading: "分享您的成果"
+        sub: "将论文、学位论文与研究数据提交至资源库。"
+        button: "开始提交"
+      stats:
+        collections:
+          one: 馆藏
+          other: 馆藏
+        works:
+          one: 作品
+          other: 作品
+    show:
+      tabs_label: "记录板块"
+      in_collection: "属于"
+      tabs:
+        metadata: "元数据"
+        files: "文件"
+        children: "子作品"
+      part_of:
+        heading: "所属"
+      citation:
+        heading: "引用"
+        style: "引用格式"
+        endnote: "导出到 EndNote"
+        copy: "复制"
+        copied: "已复制"
+        styles:
+          apa: "APA"
+          mla: "MLA"
+          chicago: "Chicago"
   screening_room:
     chrome:
       toggle_navigation: 切换导航

@@ -1,0 +1,302 @@
+// ---- shared site shell for the reference themes ----
+
+@import 'themes/reference/tokens';
+@import 'themes/reference/primitives';
+
+html body.reference,
+html body.reference_show {
+  margin-bottom: 0;
+}
+
+body.reference.public-facing,
+body.reference_show.public-facing {
+  @include ref-sans;
+  @include ref-controls-reset;
+  color: $ref-ink-body;
+
+  // ---- masthead ----
+  #masthead {
+    @include ref-gutter;
+    min-height: 56px;
+    padding-bottom: 0;
+    padding-top: 0;
+  }
+
+  #masthead #logo {
+    margin-left: 0;
+    text-decoration: none;
+  }
+
+  #masthead #logo .institution_name {
+    @include ref-sans;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  #user_utility_links {
+    padding-right: 0 !important;
+
+    > li:last-child > .nav-link {
+      padding-right: 0;
+    }
+  }
+
+  // ---- nav row ----
+  nav[aria-label='Root Menu'] {
+    @include ref-gutter;
+    background-color: $ref-warm;
+    border-bottom: 1px solid $ref-panel-edge;
+    padding-bottom: 13px;
+    padding-top: 13px;
+
+    .navbar-nav {
+      align-items: center;
+      column-gap: 26px;
+      flex-direction: row;
+      min-height: 42px;
+    }
+
+    .nav.navbar-nav > li.nav-item > a.nav-link {
+      @include ref-sans;
+      color: var(--ref-link-strong, #{$ref-link-strong});
+      font-size: 15px;
+      line-height: 1.4;
+      padding: 0 0 3px;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+
+      &:focus-visible {
+        @include ref-focus-ring;
+      }
+    }
+
+    .nav.navbar-nav > li.nav-item > a.nav-link[aria-current='page'] {
+      color: $ref-ink;
+      font-weight: 700;
+      text-decoration-color: var(--ref-link, #{$ref-link});
+      text-decoration-thickness: 2px;
+    }
+
+    .ref-nav-search {
+      padding: 0;
+
+      #search-form-header label {
+        color: $ref-ink-muted;
+        font-size: 14px;
+      }
+
+      #search-form-header .form-group {
+        margin-bottom: 0;
+      }
+
+      .q.form-control,
+      #search-field-header {
+        border: 1px solid $ref-input-edge;
+        border-radius: 0;
+        border-right: 0;
+        box-shadow: none;
+        color: $ref-ink;
+        font-size: 15px;
+        height: 42px;
+
+        &::placeholder {
+          color: $ref-ink-faint;
+        }
+
+        &:focus-visible {
+          @include ref-focus-ring;
+          outline-offset: -2px;
+        }
+      }
+
+      .btn {
+        align-items: center;
+        border-radius: 0;
+        display: inline-flex;
+        font-size: 14px;
+        gap: 6px;
+        height: 42px;
+        justify-content: center;
+        line-height: 1;
+        padding: 0 16px;
+      }
+
+      #search-submit-header {
+        background-color: var(--ref-action, #{$ref-action}) !important;
+        border-color: var(--ref-action, #{$ref-action}) !important;
+        color: var(--ref-action-ink, #{$ref-action-ink}) !important;
+        font-weight: 700;
+      }
+
+      #advanced-top-button,
+      .input-group-append .dropdown-toggle {
+        background-color: $ref-surface !important;
+        border-color: $ref-input-edge !important;
+        color: var(--ref-link-strong, #{$ref-link-strong}) !important;
+      }
+    }
+  }
+
+  .ref-chip {
+    background: var(--ref-chip, #{$ref-chip});
+    border: 1px solid var(--ref-chip-edge, #{$ref-chip-edge});
+    color: var(--ref-link-strong, #{$ref-link-strong});
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    padding: 2px 8px;
+    text-transform: uppercase;
+  }
+
+  // ---- announcement band ----
+  #announcement_text {
+    @include ref-gutter;
+    background: $ref-notice-bg;
+    border-bottom: 1px solid $ref-notice-edge;
+    padding-bottom: 11px;
+    padding-top: 11px;
+  }
+
+  #announcement_text > div#announcement {
+    background-color: transparent;
+    border: 0;
+    border-radius: 0;
+    color: $ref-ink-body;
+    font-size: 15px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+    padding: 0;
+    text-align: left;
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    a {
+      @include ref-link;
+    }
+  }
+
+  // ---- facet modal ----
+  #blacklight-modal {
+    .modal-content {
+      border: 1px solid $ref-panel-edge;
+      border-radius: 0;
+    }
+
+    .modal-header {
+      align-items: center;
+      border-bottom: 1px solid $ref-rule;
+      padding: 16px 22px;
+    }
+
+    .modal-title {
+      @include ref-sans;
+      color: $ref-ink;
+      font-size: 20px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin: 0;
+    }
+
+    .blacklight-modal-close {
+      &:focus-visible {
+        @include ref-focus-ring;
+      }
+    }
+
+    .modal-body {
+      padding: 6px 22px 20px;
+    }
+
+    .facet-values {
+      column-gap: 34px;
+      columns: 2;
+      display: block;
+      margin: 0;
+      padding: 0;
+
+      @media (max-width: $ref-mobile-max) {
+        columns: 1;
+      }
+
+      li {
+        align-items: baseline;
+        border-bottom: 1px solid $ref-rule;
+        break-inside: avoid;
+        display: flex;
+        gap: 10px;
+        justify-content: space-between;
+        padding: 8px 0;
+      }
+    }
+
+    .facet-label a {
+      @include ref-link(var(--ref-link-strong, #{$ref-link-strong}));
+      font-size: 17px;
+      line-height: 1.3;
+      overflow-wrap: anywhere;
+    }
+
+    .facet-count {
+      color: $ref-ink;
+      flex: none;
+      font-size: 16px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .facet-pagination {
+      align-items: center;
+      margin: 0;
+      padding-top: 16px;
+    }
+
+    .prev_next_links .btn,
+    .sort-options .btn {
+      @include ref-sans;
+      background-color: $ref-surface !important;
+      border: 1px solid $ref-input-edge !important;
+      border-radius: 0 !important;
+      color: var(--ref-link-strong, #{$ref-link-strong}) !important;
+      font-size: 14px;
+      padding: 7px 14px;
+      text-decoration: none;
+
+      &:focus-visible {
+        @include ref-focus-ring;
+      }
+    }
+
+    .prev_next_links .disabled.btn,
+    .sort-options .active.btn {
+      border-color: $ref-disabled-edge !important;
+      color: $ref-ink-muted !important;
+    }
+
+    .sort-options .active.btn {
+      background-color: $ref-warm !important;
+      color: $ref-ink !important;
+      font-weight: 700;
+    }
+  }
+
+  // ---- footer ----
+  footer.navbar {
+    @include ref-gutter;
+    font-size: 13px;
+    padding-bottom: 22px;
+    padding-top: 22px;
+
+    .navbar-link {
+      color: var(--ref-footer-accent, #{$ref-footer-accent});
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+  }
+}

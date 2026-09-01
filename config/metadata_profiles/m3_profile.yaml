@@ -1797,6 +1797,36 @@ properties:
     sample_values:
       - "0"
       - "1"
+  media_viewer:
+    available_on:
+      class:
+        - GenericWorkResource
+        - ImageResource
+        - OerResource
+        - EtdResource
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+        - media_viewer
+    display_label:
+      default: Viewer
+    index_documentation: displayable
+    indexing:
+      - media_viewer_ssi
+    form:
+      display: true
+      primary: false
+      required: false
+      multiple: false
+    property_uri: https://hykucommons.org/terms/mediaViewer
+    range: http://www.w3.org/2001/XMLSchema#string
+    sample_values:
+      - universal_viewer
+      - clover
   video_embed:
     available_on:
       class:
@@ -2121,7 +2151,7 @@ properties:
       display: false
     indexing:
       - editor_only
-    predicate: http://samvera.org/ns/hyku/redirects
+    property_uri: http://samvera.org/ns/hyku/redirects
     range: http://www.w3.org/2001/XMLSchema#string
     view:
       render_term: redirects_path

@@ -50,6 +50,7 @@ Shipped with the application:
 - `discipline` - Academic disciplines and subject areas
 - `education_levels` - Educational levels (K-12, undergraduate, etc.)
 - `learning_resource_types` - Types of educational resources
+- `media_viewer` - Which player renders a work's media on its show page
 - `oer_types` - Open Educational Resource types
 - `licenses` - Creative Commons and other license options for the work
 - `resource_types` - Types of resources, such as "Article" or "Image"

@@ -255,6 +255,9 @@ es:
       part_of:
         heading: Parte de
   hyku:
+    works:
+      errors:
+        work_type_not_offered: Ese tipo de obra no está disponible en este sitio. Elija otro.
     account:
       signup_disabled: El registro de la cuenta está deshabilitado
     deposit_wizard:
@@ -1049,6 +1052,78 @@ es:
         edit: Editar
         header: Administrar usuario
         update: Actualizar
+  reference:
+    homepage:
+      intro_label: "Introducción"
+      hero:
+        headline: "Buscar en el repositorio"
+        search_label: "Buscar en el repositorio"
+        search_placeholder: "Buscar títulos, autores, materias y texto completo"
+        search_button: "Buscar"
+        advanced: "Búsqueda avanzada"
+        deposit_prompt: "¿Tiene trabajos que compartir?"
+        deposit_button: "Deposite su trabajo"
+      browse:
+        heading: "Explorar el repositorio"
+        all_options: "Explorar todo"
+        all:
+          subjects: "Todas las materias"
+          creators: "Todos los autores"
+          collections: "Todas las colecciones"
+          publishers: "Todas las editoriales"
+      recent:
+        heading: "Depósitos recientes"
+        view_all: "Todos los depósitos recientes"
+        and_others: "y otros"
+        deposited: "Depositado el %{date}"
+        embargo: "bajo embargo"
+      collections:
+        heading: "Colecciones destacadas"
+        view_all: "Ver todas"
+        works_count:
+          one: "1 obra"
+          other: "%{count} obras"
+      featured:
+        unfeature_confirm: "¿Quitar esto de la lista destacada?"
+        reorder_hint: "Arrastre un elemento para reordenar y guarde."
+        save_order: "Guardar orden"
+      featured_works:
+        heading: "Obras destacadas"
+        see_all: "Ver todas"
+      researcher:
+        heading: "Investigador destacado"
+      about:
+        heading: "Acerca de las colecciones"
+      cta:
+        heading: "Comparta su trabajo"
+        sub: "Deposite sus artículos, tesis y datos de investigación en el repositorio."
+        button: "Iniciar un depósito"
+      stats:
+        collections:
+          one: Colección
+          other: Colecciones
+        works:
+          one: Obra
+          other: Obras
+    show:
+      tabs_label: "Secciones del registro"
+      in_collection: "en"
+      tabs:
+        metadata: "Metadatos"
+        files: "Archivos"
+        children: "Obras secundarias"
+      part_of:
+        heading: "Forma parte de"
+      citation:
+        heading: "Cita"
+        style: "Estilo de cita"
+        endnote: "Exportar a EndNote"
+        copy: "Copiar"
+        copied: "Copiado"
+        styles:
+          apa: "APA"
+          mla: "MLA"
+          chicago: "Chicago"
   screening_room:
     chrome:
       toggle_navigation: Alternar la navegación

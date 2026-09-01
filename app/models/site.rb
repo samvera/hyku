@@ -23,6 +23,23 @@ class Site < ApplicationRecord
   belongs_to :account, optional: true
   accepts_nested_attributes_for :account, update_only: true
 
+  # A type the profile omits gets no metadata behaviour, so offering it can only fail.
+  #
+  # @return [Array<String>] work type names this tenant may offer a depositor
+  def offerable_work_types
+    enabled = available_works || []
+    return enabled unless Hyrax.config.flexible?
+    # Search-only tenants have no profile of their own.
+    return enabled if account&.search_only?
+
+    profile = Hyrax::FlexibleSchema.current_version
+    return enabled unless profile
+
+    declared = (profile['classes']&.keys || []).map { |klass| klass.gsub(/Resource$/, '') }
+
+    enabled & declared & Hyrax.config.registered_curation_concern_types
+  end
+
   class << self
     delegate :account, :application_name, :institution_name, :favicon,
              :institution_name_full, :reload, :update, :contact_email,

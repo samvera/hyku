@@ -22,23 +22,8 @@ module Hyrax
 
     private
 
-    # Filter available works based on metadata profile when flexible metadata is enabled
     def filtered_available_works
-      available_works = Site.instance.available_works
-      return available_works unless Hyrax.config.flexible?
-
-      # Search-only tenants don't have their own flexible metadata profiles
-      # They should use the basic available_works configuration
-      return available_works if Site.account&.search_only?
-
-      profile = Hyrax::FlexibleSchema.current_version
-      return available_works unless profile
-
-      profile_classes = profile['classes']&.keys || []
-      profile_work_types = profile_classes.map { |klass| klass.gsub(/Resource$/, '') } & Hyrax.config.registered_curation_concern_types
-
-      # Only include work types that are both enabled in site AND in the metadata profile
-      available_works & profile_work_types
+      Site.instance.offerable_work_types
     end
   end
 end

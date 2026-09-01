@@ -46,6 +46,12 @@ Flipflop.configure do
           default: false,
           description: "Enable storing tenant-specific color selections to override application defaults."
 
+  feature :per_work_media_viewer,
+          default: false,
+          description: "Let each work choose its own viewer (Universal Viewer, Clover IIIF, Ramp, or PDF.js) " \
+                       "instead of using the tenant default. Requires the media_viewer property in the tenant's " \
+                       "metadata profile."
+
   group :experimental_features do
     feature :include_guided_import,
             default: false,

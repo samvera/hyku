@@ -131,15 +131,19 @@ VALKYRIE_MODEL_NAME_MAP = {
   'OerResource' => { legacy_name: 'Oer',        route_namespace: nil }
 }.freeze
 
-# Registration and lazy migration both attach singleton methods to the resource
-# classes, which are reloadable. Run per reload, or a reloaded class loses
-# to_rdf_representation and reports its own name as its RDF representation.
+# Names, not classes: these are reloadable, so a constant holding the class
+# objects would pin a stale generation.
+WINGS_CONCERNS = %w[AdminSet Collection Etd GenericWork Image Oer].freeze
+
+# Both calls below attach singleton methods to reloadable classes. Re-run per
+# reload or a reloaded class reports its own name as its RDF representation.
 Rails.application.config.to_prepare do
   unless Hyrax.config.disable_wings
     require 'wings'
 
-    [AdminSet, Collection, Etd, GenericWork, Image, Oer].each do |klass|
-      Wings::ModelRegistry.register("#{klass}Resource".constantize, klass)
+    WINGS_CONCERNS.each do |name|
+      klass = name.constantize
+      Wings::ModelRegistry.register("#{name}Resource".constantize, klass)
       Wings::ModelRegistry.register(klass, klass)
     end
 

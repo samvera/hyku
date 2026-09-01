@@ -58,4 +58,20 @@ RSpec.describe Admin::UsersController, type: :controller do
       end
     end
   end
+
+  context 'as a user_manager (non-admin, admin-delegable role)' do
+    let(:user_manager) { FactoryBot.create(:user_manager) }
+    let(:victim_admin) { FactoryBot.create(:user, roles: ['admin']) }
+    let(:admin_role) { victim_admin.roles.find_by(name: 'admin') }
+
+    before { sign_in user_manager }
+
+    describe 'DELETE #remove_role' do
+      it 'does not let a non-admin user_manager strip the admin role from another user' do
+        expect do
+          delete :remove_role, params: { id: victim_admin.id, role_id: admin_role.id }
+        end.not_to change { victim_admin.reload.roles.pluck(:name) }
+      end
+    end
+  end
 end

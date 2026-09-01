@@ -4,12 +4,13 @@ module Admin
   class GroupRolesController < ApplicationController
     before_action :load_group
     before_action :cannot_remove_admin_role_from_admin_group, only: [:destroy]
+    before_action :cannot_add_admin_role_unless_admin
+    before_action :ensure_group_role_admin
     layout 'hyrax/dashboard'
 
     rescue_from ActiveRecord::RecordNotFound, with: :redirect_not_found
 
     def index
-      authorize! :edit, Hyrax::Group
       add_breadcrumb t(:'hyrax.controls.home'), root_path
       add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
       add_breadcrumb t(:'hyku.admin.groups.title.edit'), edit_admin_group_path(@group)
@@ -44,6 +45,14 @@ module Admin
 
     private
 
+    def ensure_admin!
+      authorize! :read, :admin_dashboard
+    end
+
+    def ensure_group_role_admin
+      authorize! :edit, Hyrax::Group
+    end
+
     def load_group
       @group = Hyrax::Group.find_by(id: params[:group_id])
     end
@@ -54,13 +63,22 @@ module Admin
     end
 
     def cannot_remove_admin_role_from_admin_group
-      role = Role.find_by(id: params[:role_id])
       return unless @group.name == ::Ability.admin_group_name && role.name == 'admin'
 
       redirect_back(
         fallback_location: edit_admin_group_path(@group),
         flash: { error: "Admin role cannot be removed from this group" }
       )
+    end
+
+    def cannot_add_admin_role_unless_admin
+      return unless role&.name == 'admin'
+
+      ensure_admin!
+    end
+
+    def role
+      @role ||= Role.find_by(id: params[:role_id])
     end
   end
 end

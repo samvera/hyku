@@ -1,0 +1,17 @@
+<% document = featured.try(:solr_document) || featured %>
+
+<div class="ref-collection-row">
+  <%= link_to hyrax.collection_path(featured.id), class: 'ref-collection-thumb',
+              tabindex: -1, aria: { hidden: true } do %>
+    <%= image_tag theme_thumbnail_url(document, default: :collection), alt: '' %>
+  <% end %>
+
+  <h3 class="ref-collection-title">
+    <%= link_to Array(featured.title).first.presence || featured.try(:title_or_label),
+                hyrax.collection_path(featured.id) %>
+  </h3>
+
+  <span class="ref-collection-count">
+    <%= t('reference.homepage.collections.works_count', count: ref_home.collection_works_count(featured)) %>
+  </span>
+</div>

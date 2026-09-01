@@ -1052,6 +1052,78 @@ it:
         edit: Modificare
         header: Gestisci utente
         update: Aggiornare
+  reference:
+    homepage:
+      intro_label: "Introduzione"
+      hero:
+        headline: "Cerca nel repository"
+        search_label: "Cerca nel repository"
+        search_placeholder: "Cerca titoli, autori, soggetti e testo completo"
+        search_button: "Cerca"
+        advanced: "Ricerca avanzata"
+        deposit_prompt: "Hai lavori da condividere?"
+        deposit_button: "Deposita il tuo lavoro"
+      browse:
+        heading: "Esplora il repository"
+        all_options: "Esplora tutto"
+        all:
+          subjects: "Tutti i soggetti"
+          creators: "Tutti gli autori"
+          collections: "Tutte le collezioni"
+          publishers: "Tutti gli editori"
+      recent:
+        heading: "Depositi recenti"
+        view_all: "Tutti i depositi recenti"
+        and_others: "e altri"
+        deposited: "Depositato il %{date}"
+        embargo: "sotto embargo"
+      collections:
+        heading: "Collezioni in evidenza"
+        view_all: "Mostra tutte"
+        works_count:
+          one: "1 opera"
+          other: "%{count} opere"
+      featured:
+        unfeature_confirm: "Rimuovere questo dagli elementi in evidenza?"
+        reorder_hint: "Trascina un elemento per riordinare, poi salva."
+        save_order: "Salva ordine"
+      featured_works:
+        heading: "Opere in evidenza"
+        see_all: "Mostra tutte"
+      researcher:
+        heading: "Ricercatore in evidenza"
+      about:
+        heading: "Informazioni sulle collezioni"
+      cta:
+        heading: "Condividi il tuo lavoro"
+        sub: "Deposita articoli, tesi e dati di ricerca nel repository."
+        button: "Inizia un deposito"
+      stats:
+        collections:
+          one: Collezione
+          other: Collezioni
+        works:
+          one: Opera
+          other: Opere
+    show:
+      tabs_label: "Sezioni del record"
+      in_collection: "in"
+      tabs:
+        metadata: "Metadati"
+        files: "File"
+        children: "Opere collegate"
+      part_of:
+        heading: "Fa parte di"
+      citation:
+        heading: "Citazione"
+        style: "Stile di citazione"
+        endnote: "Esporta in EndNote"
+        copy: "Copia"
+        copied: "Copiato"
+        styles:
+          apa: "APA"
+          mla: "MLA"
+          chicago: "Chicago"
   screening_room:
     chrome:
       toggle_navigation: Attiva/disattiva la navigazione

@@ -1,0 +1,25 @@
+<% paginated = theme_child_work_ids(presenter) %>
+<ul class="ref-row-list list-unstyled">
+  <% presenter.member_presenters(paginated).each do |member| %>
+    <li class="ref-row">
+      <%= link_to contextual_path(member, presenter), class: 'ref-row-thumb',
+                  tabindex: -1, aria: { hidden: true } do %>
+        <%= document_presenter(member).thumbnail.thumbnail_tag({ alt: '' }, { suppress_link: true }) %>
+      <% end %>
+      <div class="ref-row-body">
+        <%= link_to member.link_name, contextual_path(member, presenter), class: 'ref-row-name' %>
+        <p class="ref-row-meta">
+          <%= safe_join([theme_type_label(member), Array(member.date_created).first].compact_blank, ' · ') %>
+        </p>
+      </div>
+    </li>
+  <% end %>
+</ul>
+
+<% if paginated.total_pages > 1 %>
+  <nav class="ref-pager" aria-label="<%= t('reference.show.tabs.children') %>">
+    <%= paginate paginated, theme: 'blacklight', window: 1, outer_window: 0,
+                 param_name: :items_page, route_set: main_app,
+                 params: { pane: 'children', anchor: 'ref-pane-children' } %>
+  </nav>
+<% end %>

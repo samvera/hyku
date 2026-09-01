@@ -1057,6 +1057,78 @@ fr:
         edit: Modifier
         header: Gérer l'utilisateur
         update: Mettre à jour
+  reference:
+    homepage:
+      intro_label: "Introduction"
+      hero:
+        headline: "Rechercher dans le dépôt"
+        search_label: "Rechercher dans le dépôt"
+        search_placeholder: "Rechercher titres, auteurs, sujets et texte intégral"
+        search_button: "Rechercher"
+        advanced: "Recherche avancée"
+        deposit_prompt: "Des travaux à partager ?"
+        deposit_button: "Déposer vos travaux"
+      browse:
+        heading: "Parcourir le dépôt"
+        all_options: "Tout parcourir"
+        all:
+          subjects: "Tous les sujets"
+          creators: "Tous les auteurs"
+          collections: "Toutes les collections"
+          publishers: "Tous les éditeurs"
+      recent:
+        heading: "Dépôts récents"
+        view_all: "Tous les dépôts récents"
+        and_others: "et autres"
+        deposited: "Déposé le %{date}"
+        embargo: "sous embargo"
+      collections:
+        heading: "Collections en vedette"
+        view_all: "Tout afficher"
+        works_count:
+          one: "1 document"
+          other: "%{count} documents"
+      featured:
+        unfeature_confirm: "Retirer ceci de la sélection ?"
+        reorder_hint: "Faites glisser un élément pour réordonner, puis enregistrez."
+        save_order: "Enregistrer l'ordre"
+      featured_works:
+        heading: "Documents en vedette"
+        see_all: "Tout afficher"
+      researcher:
+        heading: "Chercheur à l'honneur"
+      about:
+        heading: "À propos des collections"
+      cta:
+        heading: "Partagez vos travaux"
+        sub: "Déposez vos articles, thèses et données de recherche dans le dépôt."
+        button: "Commencer un dépôt"
+      stats:
+        collections:
+          one: Collection
+          other: Collections
+        works:
+          one: Document
+          other: Documents
+    show:
+      tabs_label: "Sections de la notice"
+      in_collection: "dans"
+      tabs:
+        metadata: "Métadonnées"
+        files: "Fichiers"
+        children: "Documents liés"
+      part_of:
+        heading: "Fait partie de"
+      citation:
+        heading: "Citation"
+        style: "Style de citation"
+        endnote: "Exporter vers EndNote"
+        copy: "Copier"
+        copied: "Copié"
+        styles:
+          apa: "APA"
+          mla: "MLA"
+          chicago: "Chicago"
   screening_room:
     chrome:
       toggle_navigation: Afficher/masquer la navigation

@@ -1,7 +1,7 @@
 <div class="work-title-wrapper scr-show-head">
   <p class="scr-show-eyebrow">
-    <span class="scr-chip"><%= scr_type_label(presenter) %></span>
-    <% collection = scr_show_collection(presenter) %>
+    <span class="scr-chip"><%= theme_type_label(presenter) %></span>
+    <% collection = theme_show_collection(presenter) %>
     <% if collection %>
       <span class="scr-show-context">
         <%= link_to Array(collection.title).first.presence || collection.title_or_label,

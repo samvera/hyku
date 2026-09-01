@@ -10,6 +10,8 @@ module Hyku
     # NOTE: IIIF Print prepends a IiifPrint::WorkShowPresenterDecorator to Hyrax::WorkShowPresenter,
     # and we re-prepend it here so the knapsack-side WorkShowPresenter participates in that chain.
     prepend IiifPrint::TenantConfig::WorkShowPresenterDecorator
+    # Must stay after the prepend above; see Hyku::MediaViewerBehavior.
+    prepend Hyku::MediaViewerBehavior
 
     # OVERRIDE Hyrax v2.9.0 here to make featured collections work
     delegate :collection_presenters, to: :member_presenter_factory
@@ -68,7 +70,8 @@ module Hyku
 
     ##
     # Begin viewer determination logic
-    # note: iiif_viewer is defined in TenantConfig
+    # note: iiif_viewer? is defined in TenantConfig, and both it and #iiif_viewer are
+    # overridden per-work by Hyku::MediaViewerBehavior
 
     # @return [Boolean] Use PDF.js viewer
     def show_pdf_viewer?

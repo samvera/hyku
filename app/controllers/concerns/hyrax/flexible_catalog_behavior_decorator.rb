@@ -29,7 +29,7 @@ module Hyrax
     private
 
     def apply_controlled_vocabulary_labels!
-      drop_surrogate_facets!
+      hide_surrogate_facets!
 
       controlled_properties.each do |itemprop|
         show_labels_in_search_results!(itemprop)
@@ -120,12 +120,14 @@ module Hyrax
     end
 
     # OVERRIDE: upstream registers a facet under the surrogate's own key, which
-    # holds no values.
-    def drop_surrogate_facets!
+    # holds no values. Hidden rather than unregistered, for the same reason
+    # facet_on_labels! keeps the id facet: an unconfigured facet makes Blacklight
+    # drop a filter silently and raise from facet_field_response.
+    def hide_surrogate_facets!
       profile_properties.each do |itemprop, config|
         next if indexed_name_for(itemprop, config).to_s == itemprop.to_s
 
-        blacklight_config.facet_fields.delete("#{itemprop}_sim")
+        blacklight_config.facet_fields["#{itemprop}_sim"]&.show = false
       end
     end
 

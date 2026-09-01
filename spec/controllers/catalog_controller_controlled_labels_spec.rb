@@ -100,10 +100,18 @@ RSpec.describe 'catalog rendering of controlled vocabulary labels' do
       end
     end
 
-    it 'drops the facet upstream builds under a surrogate own key, which holds nothing' do
+    it 'hides the facet upstream builds under a surrogate own key, which holds nothing' do
       load_profile!
 
-      expect(catalog.blacklight_config.facet_fields).not_to have_key 'oer_resource_type_sim'
+      expect(catalog.blacklight_config.facet_fields['oer_resource_type_sim'].show).to be false
+    end
+
+    # Worth registering even though the key holds nothing: an unconfigured facet
+    # raises from facet_field_response and drops a bookmarked filter silently.
+    it 'leaves the surrogate facet resolvable' do
+      load_profile!
+
+      expect(catalog.blacklight_config.facet_fields).to have_key 'oer_resource_type_sim'
     end
   end
 
@@ -112,7 +120,8 @@ RSpec.describe 'catalog rendering of controlled vocabulary labels' do
     4.times { catalog.load_flexible_schema }
     facets = catalog.blacklight_config.facet_fields
 
-    expect(facets.keys.grep(/resource_type/)).to eq %w[resource_type_sim resource_type_label_sim]
+    expect(facets.keys.grep(/resource_type/))
+      .to eq %w[resource_type_sim oer_resource_type_sim resource_type_label_sim]
     expect(facets.select { |_, f| f.show != false }.keys.grep(/resource_type/))
       .to eq ['resource_type_label_sim']
   end

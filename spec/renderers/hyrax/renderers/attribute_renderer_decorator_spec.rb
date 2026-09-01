@@ -84,6 +84,36 @@ RSpec.describe Hyrax::Renderers::AttributeRendererDecorator do
     end
   end
 
+  # Not hypothetical: rights_statement is controlled in the shipped profile and
+  # declares render_as: rights_statement, so a term whose id is not a URI reaches
+  # its own renderer on a stock install.
+  context 'for a renderer subclass that defines its own attribute_value_to_html' do
+    let(:values) { ['local_rights_7'] }
+    let(:options) { { labels: ['Custom Rights Label'] } }
+
+    it 'shows the label for a rights statement' do
+      renderer = Hyrax::Renderers::RightsStatementAttributeRenderer.new(:rights_statement, values, options)
+
+      expect(renderer.render).to include 'Custom Rights Label'
+    end
+
+    it 'shows the label for a license' do
+      renderer = Hyrax::Renderers::LicenseAttributeRenderer.new(:license, values, options)
+
+      expect(renderer.render).to include 'Custom Rights Label'
+    end
+
+    # The service still resolves a URI the authority knows, so the dedicated
+    # renderers keep working where no indexed label exists.
+    it 'leaves a URI the service resolves alone' do
+      renderer = Hyrax::Renderers::LicenseAttributeRenderer.new(
+        :license, ['http://creativecommons.org/licenses/by/3.0/us/'], {}
+      )
+
+      expect(renderer.render).to include 'href="http://creativecommons.org/licenses/by/3.0/us/"'
+    end
+  end
+
   context 'for a free-text field' do
     let(:field) { :abstract }
     let(:values) { ['An *emphasized* abstract'] }

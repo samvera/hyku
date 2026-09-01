@@ -59,4 +59,11 @@ module Hyrax
   end
 end
 
-Hyrax::Renderers::AttributeRenderer.prepend(Hyrax::Renderers::AttributeRendererDecorator)
+# Each of these defines attribute_value_to_html itself, so prepending to the
+# parent alone would leave them rendering ids. Only the two authority-backed
+# renderers are listed: a date or rich text is never a controlled term.
+[Hyrax::Renderers::AttributeRenderer,
+ Hyrax::Renderers::LicenseAttributeRenderer,
+ Hyrax::Renderers::RightsStatementAttributeRenderer].each do |renderer|
+  renderer.prepend(Hyrax::Renderers::AttributeRendererDecorator)
+end

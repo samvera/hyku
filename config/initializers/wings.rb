@@ -28,18 +28,6 @@ Rails.application.config.after_initialize do
     require 'wings'
     require 'freyja'
 
-    WINGS_CONCERNS ||= [AdminSet, Collection, Etd, GenericWork, Image, Oer].freeze
-
-    WINGS_CONCERNS.each do |klass|
-      Wings::ModelRegistry.register("#{klass}Resource".constantize, klass)
-      Wings::ModelRegistry.register(klass, klass)
-    end
-
-    Wings::ModelRegistry.register(FileSet, FileSet)
-    Wings::ModelRegistry.register(Hyrax::FileSet, FileSet)
-    Wings::ModelRegistry.register(Hydra::PCDM::File, Hydra::PCDM::File)
-    Wings::ModelRegistry.register(Hyrax::FileMetadata, Hydra::PCDM::File)
-
     unless Valkyrie::MetadataAdapter.adapters.include?(:freyja)
       Valkyrie::MetadataAdapter.register(
         Freyja::MetadataAdapter.new,
@@ -48,16 +36,6 @@ Rails.application.config.after_initialize do
     end
 
     Valkyrie.config.metadata_adapter = :freyja
-
-    # Register lazy migration from legacy ActiveFedora models to Valkyrie resources.
-    # Done here (after config load) so we can use Hyrax.config.disable_wings.
-    AdminSetResource.class_eval { Hyrax::ValkyrieLazyMigration.migrating(self, from: ::AdminSet) }
-    CollectionResource.class_eval { Hyrax::ValkyrieLazyMigration.migrating(self, from: ::Collection) }
-    GenericWorkResource.class_eval { Hyrax::ValkyrieLazyMigration.migrating(self, from: GenericWork) }
-    EtdResource.class_eval { Hyrax::ValkyrieLazyMigration.migrating(self, from: Etd) }
-    ImageResource.class_eval { Hyrax::ValkyrieLazyMigration.migrating(self, from: Image) }
-    OerResource.class_eval { Hyrax::ValkyrieLazyMigration.migrating(self, from: Oer) }
-    Hyrax::ValkyrieLazyMigration.migrating(Hyrax::FileSet, from: ::FileSet)
   end
 
   Hyrax.config.query_index_from_valkyrie = true
@@ -153,8 +131,31 @@ VALKYRIE_MODEL_NAME_MAP = {
   'OerResource' => { legacy_name: 'Oer',        route_namespace: nil }
 }.freeze
 
+# Registration and lazy migration both attach singleton methods to the resource
+# classes, which are reloadable. Run per reload, or a reloaded class loses
+# to_rdf_representation and reports its own name as its RDF representation.
 Rails.application.config.to_prepare do
   unless Hyrax.config.disable_wings
+    require 'wings'
+
+    [AdminSet, Collection, Etd, GenericWork, Image, Oer].each do |klass|
+      Wings::ModelRegistry.register("#{klass}Resource".constantize, klass)
+      Wings::ModelRegistry.register(klass, klass)
+    end
+
+    Wings::ModelRegistry.register(FileSet, FileSet)
+    Wings::ModelRegistry.register(Hyrax::FileSet, FileSet)
+    Wings::ModelRegistry.register(Hydra::PCDM::File, Hydra::PCDM::File)
+    Wings::ModelRegistry.register(Hyrax::FileMetadata, Hydra::PCDM::File)
+
+    AdminSetResource.class_eval { Hyrax::ValkyrieLazyMigration.migrating(self, from: ::AdminSet) }
+    CollectionResource.class_eval { Hyrax::ValkyrieLazyMigration.migrating(self, from: ::Collection) }
+    GenericWorkResource.class_eval { Hyrax::ValkyrieLazyMigration.migrating(self, from: GenericWork) }
+    EtdResource.class_eval { Hyrax::ValkyrieLazyMigration.migrating(self, from: Etd) }
+    ImageResource.class_eval { Hyrax::ValkyrieLazyMigration.migrating(self, from: Image) }
+    OerResource.class_eval { Hyrax::ValkyrieLazyMigration.migrating(self, from: Oer) }
+    Hyrax::ValkyrieLazyMigration.migrating(Hyrax::FileSet, from: ::FileSet)
+
     AdminSetResource.class_eval do
       attribute :internal_resource, Valkyrie::Types::Any.default("AdminSet"), internal: true
     end

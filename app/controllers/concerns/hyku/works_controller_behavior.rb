@@ -53,12 +53,8 @@ module Hyku
       redirect_to main_app.root_path, alert: I18n.t('hyku.works.errors.work_type_not_offered')
     end
 
-    # The registry falls back to the class name once a reload detaches
-    # to_rdf_representation, which would otherwise refuse every type in development.
     def offered_work_type_name
-      Hyrax::ModelRegistry
-        .rdf_representations_from([self.class.curation_concern_type])
-        .first.to_s.sub(/Resource\z/, '')
+      Hyrax::ModelRegistry.rdf_representations_from([self.class.curation_concern_type]).first
     end
 
     # parent_id reaches Steps::AddToParent straight from params, and that step

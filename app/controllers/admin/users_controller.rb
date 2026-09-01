@@ -3,6 +3,7 @@
 module Admin
   class UsersController < AdminController
     before_action :ensure_admin!, except: [:remove_role]
+    before_action :cannot_remove_admin_role_unless_admin, only: [:remove_role]
     before_action :load_user, only: [:destroy]
 
     # NOTE: User creation/invitations handled by devise_invitable
@@ -47,6 +48,14 @@ module Admin
 
     def load_user
       @user = User.from_url_component(params[:id])
+    end
+
+    def cannot_remove_admin_role_unless_admin
+      ensure_admin! if Role.find_by(id: params[:role_id])&.name.in?(%w[admin superadmin])
+    end
+
+    def ensure_admin!
+      authorize! :read, :admin_dashboard
     end
   end
 end

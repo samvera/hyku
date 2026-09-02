@@ -6,6 +6,9 @@
 # the terms a field offers and which of them are retired. Managing is restricted
 # to admins: a vocabulary's terms are the values works store, so editing one
 # affects every work already citing it.
+#
+# Creating a new vocabulary needs flexible metadata, since the m3 profile is the
+# only way to attach it to a property.
 module Hyrax
   module Ability
     module ControlledVocabularyAbility
@@ -13,6 +16,10 @@ module Hyrax
       # because CanCan does not alias the two, and Hyrax callers reach for :read.
       def controlled_vocabulary_abilities
         can %i[manage view read], :controlled_vocabularies if admin?
+
+        # A new subject because `can :manage` above already covers every action on
+        # :controlled_vocabularies, so an action there would need a `cannot`.
+        can %i[create], :new_controlled_vocabulary if admin? && Hyrax.config.flexible?
 
         # Same check Bulkrax uses to gate importing, so anyone who can deposit
         # through it can also look up the vocabularies behind those fields.

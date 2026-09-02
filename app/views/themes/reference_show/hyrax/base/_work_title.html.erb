@@ -1,0 +1,35 @@
+<div class="work-title-wrapper ref-record-head">
+  <p class="ref-record-eyebrow">
+    <span class="ref-chip"><%= theme_type_label(presenter) %></span>
+    <% collection = theme_show_collection(presenter) %>
+    <% if collection %>
+      <span class="ref-record-context">
+        <%= t('reference.show.in_collection') %>
+        <%= link_to Array(collection.title).first.presence || collection.title_or_label,
+                    hyrax.collection_path(collection.id) %>
+      </span>
+    <% end %>
+  </p>
+
+  <% presenter.title.each do |title| %>
+    <h1 class="ref-record-title"><%= markdown(title) %></h1>
+  <% end %>
+
+  <% creators = ref_creators(presenter) %>
+  <% date = Array(presenter.date_created).first %>
+  <% if creators.present? || date.present? %>
+    <p class="ref-record-byline">
+      <% if creators.present? %>
+        <span class="ref-record-creators"><%= creators %></span>
+      <% end %>
+      <% if date.present? %>
+        <span class="ref-record-date"><%= date %></span>
+      <% end %>
+    </p>
+  <% end %>
+
+  <span class="ref-record-chips">
+    <%= presenter.permission_badge %>
+    <%= presenter.workflow.badge %>
+  </span>
+</div>

@@ -919,6 +919,78 @@ en:
         edit: Edit
         header: Manage User
         update: Update
+  reference:
+    homepage:
+      intro_label: "Introduction"
+      hero:
+        headline: "Search the repository"
+        search_label: "Search the repository"
+        search_placeholder: "Search titles, authors, subjects and full text"
+        search_button: "Search"
+        advanced: "Advanced search"
+        deposit_prompt: "Have work to share?"
+        deposit_button: "Deposit your work"
+      browse:
+        heading: "Browse the repository"
+        all_options: "Browse all"
+        all:
+          subjects: "All subjects"
+          creators: "All creators"
+          collections: "All collections"
+          publishers: "All publishers"
+      recent:
+        heading: "Recent deposits"
+        view_all: "All recent deposits"
+        and_others: "and others"
+        deposited: "Deposited %{date}"
+        embargo: "under embargo"
+      collections:
+        heading: "Featured collections"
+        view_all: "View all"
+        works_count:
+          one: "1 work"
+          other: "%{count} works"
+      featured:
+        unfeature_confirm: "Remove this from the featured list?"
+        reorder_hint: "Drag an item to reorder, then save."
+        save_order: "Save order"
+      featured_works:
+        heading: "Featured works"
+        see_all: "See all"
+      researcher:
+        heading: "Featured researcher"
+      about:
+        heading: "About the collections"
+      cta:
+        heading: "Share your work"
+        sub: "Deposit your articles, theses and research data into the repository."
+        button: "Start a deposit"
+      stats:
+        collections:
+          one: Collection
+          other: Collections
+        works:
+          one: Work
+          other: Works
+    show:
+      tabs_label: "Record sections"
+      in_collection: "in"
+      tabs:
+        metadata: "Metadata"
+        files: "Files"
+        children: "Child works"
+      part_of:
+        heading: "Part of"
+      citation:
+        heading: "Citation"
+        style: "Citation style"
+        endnote: "Export to EndNote"
+        copy: "Copy"
+        copied: "Copied"
+        styles:
+          apa: "APA"
+          mla: "MLA"
+          chicago: "Chicago"
   screening_room:
     chrome:
       toggle_navigation: Toggle navigation

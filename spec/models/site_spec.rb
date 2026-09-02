@@ -16,11 +16,10 @@ RSpec.describe Site, type: :model do
 
   describe ".instance" do
     let(:request_store_mock) { {} }
-    before do
-      allow(RequestStore).to receive(:store).and_return(request_store_mock)
-    end
+
     context "on global tenant" do
       before do
+        allow(RequestStore).to receive(:store).and_return(request_store_mock)
         allow(Account).to receive(:global_tenant?).and_return true
       end
 
@@ -30,6 +29,10 @@ RSpec.describe Site, type: :model do
     end
 
     context "on a specific tenant" do
+      before do
+        allow(RequestStore).to receive(:store).and_return(request_store_mock)
+      end
+
       it "is a singleton site" do
         expect(described_class.instance).to eq(described_class.instance)
       end
@@ -57,7 +60,10 @@ RSpec.describe Site, type: :model do
       end
     end
     describe '.instance across an in-process tenant switch' do
-      after { Apartment::Tenant.switch!(Apartment.default_tenant) }
+      after do
+        Apartment::Tenant.switch!(Apartment.default_tenant)
+        RequestStore.clear!
+      end
 
       let(:old_account) { FactoryBot.build(:sign_up_account) }
       let(:new_account) { FactoryBot.build(:sign_up_account) }

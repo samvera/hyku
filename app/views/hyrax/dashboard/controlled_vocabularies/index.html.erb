@@ -3,7 +3,7 @@
   <h1><span class="fa fa-tags" aria-hidden="true"></span> <%= t('hyku.admin.controlled_vocabularies') %></h1>
 <% end %>
 
-<% if can? :create, :new_controlled_vocabulary %>
+<% if can? :manage, :controlled_vocabularies %>
   <div class="mb-3 text-right">
     <%= link_to main_app.new_controlled_vocabulary_path, class: 'btn btn-primary' do %>
       <%= t('hyku.admin.controlled_vocabulary.new_title') %>

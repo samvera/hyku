@@ -60,10 +60,16 @@
   }
 
   .ref-hero-lede {
+    flex: 0 1 1040px;
     max-width: 1040px;
     min-width: 0;
     position: relative;
     z-index: 1;
+
+    @media (max-width: $ref-mobile-max) {
+      flex-basis: auto;
+      width: 100%;
+    }
   }
 
   .ref-hero-eyebrow {

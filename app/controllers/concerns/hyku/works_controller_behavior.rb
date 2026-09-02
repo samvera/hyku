@@ -18,7 +18,7 @@ module Hyku
 
     included do
       # add around action to load theme show page views
-      around_action :inject_show_theme_views, except: :delete
+      around_action :inject_show_theme_views, only: :show
       before_action :ensure_work_type_offered, only: %i[new create]
       before_action :ensure_parent_accepts_child, only: :create
       self.show_presenter = Hyku::WorkShowPresenter

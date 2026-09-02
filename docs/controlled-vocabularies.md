@@ -1,6 +1,6 @@
 # Controlled Vocabularies in Hyku
 
-Hyku supports both local and remote controlled vocabularies for form fields through the flexible metadata system. When `HYRAX_FLEXIBLE` is enabled, you can specify controlled vocabularies directly in your metadata profile YAML files by configuring the `controlled_values.sources` array for most properties.
+Hyku supports both local and remote controlled vocabularies for form fields. With `HYRAX_FLEXIBLE` enabled, a property cites a vocabulary through the `controlled_values.sources` array in the metadata profile. Without it, the property-to-vocabulary mapping lives in code, and only that mapping step differs — vocabularies, their terms, and the dashboard that manages them work in both modes.
 
 ## How It Works
 
@@ -50,7 +50,6 @@ Shipped with the application:
 - `discipline` - Academic disciplines and subject areas
 - `education_levels` - Educational levels (K-12, undergraduate, etc.)
 - `learning_resource_types` - Types of educational resources
-- `media_viewer` - Which player renders a work's media on its show page
 - `oer_types` - Open Educational Resource types
 - `licenses` - Creative Commons and other license options for the work
 - `resource_types` - Types of resources, such as "Article" or "Image"
@@ -464,6 +463,13 @@ The listing marks each authority with its origin:
 
 ### Creating a Vocabulary
 
+Creating a vocabulary from the dashboard requires flexible metadata, and the button is
+hidden without it: a new vocabulary is reached by citing its source key in a metadata
+profile, and there is no profile to cite it from. See
+[Adding a vocabulary without flexible metadata](#adding-a-vocabulary-without-flexible-metadata)
+for that case. Editing a vocabulary, managing its terms, and importing terms are
+unaffected and work in both modes.
+
 Administrators can create a vocabulary from the dashboard. The name is typed; the
 source key is derived from it (`Lab Names` becomes `lab_names`, and accented
 characters are transliterated), and the derived key is shown for confirmation before
@@ -597,8 +603,8 @@ effect immediately and are per-tenant.
 
 ### Adding Local Vocabularies
 
-Either create one through the dashboard, which needs no deployment, or ship a YAML
-file:
+With flexible metadata, create one through the dashboard — it needs no deployment. To
+ship one instead:
 
 1. Create a YAML file in `config/authorities/` following the existing pattern
 2. Reference the file name (without .yml extension) in your metadata profile's `sources` array
@@ -606,6 +612,27 @@ file:
 
 A YAML vocabulary is deployment-wide; a dashboard-created one belongs to the tenant it
 was created in.
+
+### Adding a vocabulary without flexible metadata
+
+There is no metadata profile to cite a source key from, so the property-to-vocabulary
+mapping is a code change. A developer is needed for the vocabulary itself; its terms are
+then managed from the dashboard like any other.
+
+1. Add `config/authorities/<name>.yml` following the pattern in
+   [File Structure](#file-structure). The filename is the source key and must be
+   lowercase letters, numbers, underscores and hyphens, starting with a letter or number.
+2. Import it into the tenant tables: `bundle exec rake populate_qa`. This runs for every
+   tenant, and `AUTHORITIES_PATH` overrides the directory. A newly created tenant is
+   seeded automatically, so this is for tenants that already exist.
+3. Map the property to the vocabulary in `controlled_vocab_mappings` in
+   `config/initializers/hyrax_controlled_vocabularies.rb`. Without this the vocabulary
+   exists but no property uses it.
+4. Confirm the property exists in the relevant schema under `config/metadata/`.
+5. Restart, then reindex so existing works pick up the term labels.
+
+The YAML seeds the terms once. After that the tenant's rows are the source of truth, so
+editing the YAML has no further effect and terms are managed from the dashboard.
 
 ### Registering a Service Class
 

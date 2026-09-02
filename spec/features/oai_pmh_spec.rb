@@ -61,6 +61,31 @@ RSpec.describe "OAI PMH Support", type: :feature do
         expect(page).to have_no_content('Attribution 3.0 United States')
       end
     end
+
+    # The examples above build an ActiveFedora work, which never routes through
+    # Hyrax::Indexer, so no label is written for it and "no label in the feed"
+    # would hold even if label indexing had never run. A valkyrie work is indexed
+    # with one, which is what makes the absence below mean the id won.
+    context 'when the work is indexed with a label' do
+      let(:admin_set) { FactoryBot.valkyrie_create(:hyku_admin_set, with_permission_template: true) }
+      let(:work) do
+        FactoryBot.valkyrie_create(:generic_work_resource,
+                                   depositor: user.user_key,
+                                   visibility_setting: 'open',
+                                   admin_set_id: admin_set.id,
+                                   license: ['http://creativecommons.org/licenses/by/3.0/us/'])
+      end
+
+      it 'emits the stored id rather than the term label' do
+        indexed = Hyrax::SolrService.query("id:#{work.id}", fl: 'license_label_tesim').first
+        expect(indexed['license_label_tesim']).to eq ['Attribution 3.0 United States']
+
+        visit oai_catalog_path(verb: 'GetRecord', metadataPrefix: 'oai_dc', identifier:)
+
+        expect(page).to have_content('http://creativecommons.org/licenses/by/3.0/us/')
+        expect(page).to have_no_content('Attribution 3.0 United States')
+      end
+    end
   end
 
   context 'when using the oai_hyku prefix' do

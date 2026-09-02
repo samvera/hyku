@@ -926,3 +926,145 @@ dd {
     right: 0;
     left: auto;
 }
+
+// ============================================================
+// Edit work form – spacing & alignment fixes (ticket #144)
+// CSS only: no markup changes, no field moves, no form changes.
+// ============================================================
+
+// 1. Consistent padding across all tab panes
+.tabs .tab-content > .tab-pane > .form-tab-content {
+    padding: 1.5rem;
+}
+
+// 2. Consistent vertical rhythm between form groups on the Descriptions tab
+.form-tab-content > .base-terms,
+.form-tab-content > #extended-terms {
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+}
+
+// 3. Sharing tab – align the Add group / Add user rows
+//
+// The group row has two <select>s; the user row has an unstyled <input[text]>
+// plus a <select>. Both rows also contain <br> + <span> result elements that
+// break the inline layout. Fix all of that with CSS only.
+
+// Style the bare text input to match Bootstrap .form-control
+.permission-add-user .form-inline input[type="text"] {
+    display: block;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+    &:focus {
+        color: #495057;
+        background-color: #fff;
+        border-color: #80bdff;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+}
+
+// Consistent flex layout for both sharing rows.
+// Bootstrap .form-inline sets `display: inline-block; width: auto` on
+// .form-control children, so we need enough specificity to override.
+.permission-add-group .col-sm-9.form-inline,
+.permission-add-user .col-sm-9.form-inline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+
+    // Hide the <br> tags that break the flex layout
+    br {
+        display: none;
+    }
+
+    // Result spans sit on their own line below the controls
+    > span:last-child {
+        flex-basis: 100%;
+    }
+
+    // Use gap instead of margin for spacing
+    .btn.ml-2 {
+        margin-left: 0;
+    }
+
+    // First control (group select or user Select2 container) fills available space.
+    // Override Bootstrap .form-inline .form-control { width: auto; display: inline-block }
+    > select.form-control:first-of-type {
+        flex: 1 1 0 !important;
+        width: 0 !important;
+        min-width: 10rem;
+    }
+
+    > .select2-container {
+        flex: 1 1 0 !important;
+        min-width: 10rem;
+    }
+
+    // The original input is hidden by Select2; don't let it affect layout
+    > input.select2-offscreen,
+    > input[type="text"] {
+        position: absolute;
+        width: 0;
+        flex: 0 0 0;
+    }
+
+    // "Choose Access" select – consistent width so both rows align.
+    // This is always the second visible select in each row.
+    > select.form-control:last-of-type {
+        flex: 0 0 auto !important;
+        width: auto !important;
+        min-width: 10rem;
+    }
+
+    // Add button – fixed width so both rows align
+    > .btn {
+        flex: 0 0 auto;
+        white-space: nowrap;
+    }
+}
+
+// Sharing tab legend labels – consistent sizing
+.permission-add-group legend,
+.permission-add-user legend {
+    font-size: 0.95rem;
+    padding-top: 0;
+}
+
+// Currently Shared With table – consistent spacing
+#share .table {
+    margin-top: 1rem;
+
+    td {
+        vertical-align: middle;
+    }
+}
+
+// 4. Relationships tab – match spacing to other tabs
+#relationships {
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    h2 {
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
+    }
+}
+
+// 5. Required field badges – consistent positioning
+.form-tab-content .required-tag {
+    vertical-align: middle;
+    margin-left: 0.25rem;
+}

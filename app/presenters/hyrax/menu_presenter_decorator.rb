@@ -54,5 +54,5 @@ module Hyrax
   end
 end
 
-Hyrax::MenuPresenter.section_controller_names = %w[appearances content_blocks labels features pages]
+Hyrax::MenuPresenter.section_controller_names = %w[accounts appearances collection_types content_blocks features identity_providers labels pages work_types]
 Hyrax::MenuPresenter.prepend(Hyrax::MenuPresenterDecorator)

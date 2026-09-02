@@ -1,6 +1,11 @@
 name: "Deploy"
-run-name: Deploy (${{ github.ref_name }} -> ${{ inputs.environment }}) by @${{ github.actor }}
+run-name: Deploy (${{ github.ref_name }} -> ${{ inputs.environment || 'branch default' }}) by @${{ github.actor }}
 on:
+  push:
+    branches:
+      - main
+      - staging
+      - production
   workflow_dispatch:
     inputs:
       environment:
@@ -19,16 +24,39 @@ on:
         default: false
 
 jobs:
+  resolve:
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ steps.pick.outputs.environment }}
+    steps:
+      - id: pick
+        env:
+          DISPATCHED: ${{ inputs.environment }}
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          if [ -n "$DISPATCHED" ]; then
+            RESOLVED="$DISPATCHED"
+          else
+            case "$BRANCH" in
+              main)       RESOLVED=test ;;
+              staging)    RESOLVED=staging ;;
+              production) RESOLVED=demo ;;
+              *) echo "No environment mapped for branch $BRANCH" >&2; exit 1 ;;
+            esac
+          fi
+          echo "environment=$RESOLVED" >> "$GITHUB_OUTPUT"
+
   deployment:
+    needs: resolve
     runs-on: ubuntu-latest
     container: dtzar/helm-kubectl:3.9.4
-    environment: ${{ inputs.environment }}
+    environment: ${{ needs.resolve.outputs.environment }}
     env:
       HELM_EXPERIMENTAL_OCI: 1
-      HELM_RELEASE_NAME: ${{ github.event.repository.name }}-${{ inputs.environment }}
-      KUBE_NAMESPACE: ${{ github.event.repository.name }}-${{ inputs.environment }}
+      HELM_RELEASE_NAME: ${{ github.event.repository.name }}-${{ needs.resolve.outputs.environment }}
+      KUBE_NAMESPACE: ${{ github.event.repository.name }}-${{ needs.resolve.outputs.environment }}
       HELM_EXTRA_ARGS: >
-        --values ops/${{ inputs.environment }}-deploy.yaml
+        --values ops/${{ needs.resolve.outputs.environment }}-deploy.yaml
       KUBECONFIG_FILE: ${{ secrets.KUBECONFIG_FILE }}
       KUBECONFIG: ./kubeconfig.yml
       BASE_URL: ${{ secrets.BASE_URL }}
@@ -71,8 +99,8 @@ jobs:
       - name: Do deploy
         run: |
           echo $KUBECONFIG_FILE | base64 -d > $KUBECONFIG;
-          DOLLAR=$ envsubst < ops/${{ inputs.environment }}-deploy.tmpl.yaml > ops/${{ inputs.environment }}-deploy.yaml;
+          DOLLAR=$ envsubst < ops/${{ needs.resolve.outputs.environment }}-deploy.tmpl.yaml > ops/${{ needs.resolve.outputs.environment }}-deploy.yaml;
           export DEPLOY_TAG=${TAG};
           export DEPLOY_IMAGE=ghcr.io/${REPO_LOWER}/web;
           export WORKER_IMAGE=ghcr.io/${REPO_LOWER}/worker;
-          ./bin/helm_deploy ${{ inputs.k8s-release-name || format('{0}-{1}', github.event.repository.name, inputs.environment) }} ${{ inputs.k8s-namespace || format('{0}-{1}', github.event.repository.name, inputs.environment) }}
+          ./bin/helm_deploy ${{ inputs.k8s-release-name || format('{0}-{1}', github.event.repository.name, needs.resolve.outputs.environment) }} ${{ inputs.k8s-namespace || format('{0}-{1}', github.event.repository.name, needs.resolve.outputs.environment) }}

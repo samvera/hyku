@@ -8,10 +8,34 @@ resources:
     memory: "2Gi"
     cpu: "100m"
 
+# Chart default path "/" does a full Solr+DB-backed page render - too slow/heavy for a health check. /healthz (okcomputer, standard Hyrax dependency) is cheap and dependency-free.
+startupProbe:
+  enabled: true
+  path: "/healthz"
+  failureThreshold: 30
 livenessProbe:
-  enabled: false
+  enabled: true
+  path: "/healthz"
+# Loosened timing to tolerate /healthz queuing behind slow large-work renders (hyrax/_items.html.erb N+1) without pulling pods from rotation mid-spike - utk-hyku hit this same cascade on chart-default timing (notch8/utk-hyku#882).
 readinessProbe:
-  enabled: false
+  enabled: true
+  path: "/healthz"
+  initialDelaySeconds: 15
+  periodSeconds: 60
+  timeoutSeconds: 60
+  failureThreshold: 6
+
+# db-setup's migration-count check queries schema_migrations before db:create
+# ever runs, so it dies under `set -e` against a genuinely empty database.
+# Host/user/db are hardcoded, not $DB_HOST-style: this container gets no env
+# from the chart, and envsubst blanks any $VARNAME with no matching CI secret.
+dbPreSetupInitContainer:
+  - name: ensure-schema-migrations
+    image: "ghcr.io/$REPO_LOWER/web:$TAG"
+    command:
+      - sh
+      - -c
+      - PGPASSWORD=$POSTGRES_PASSWORD psql -h zalando-postgres-v14-pooler.postgres.svc.cluster.local -p 5432 -U postgres hyku_demo -c "CREATE TABLE IF NOT EXISTS schema_migrations (version character varying(255) NOT NULL PRIMARY KEY);"
 
 brandingVolume:
   storageClass: aws-efs
@@ -76,11 +100,17 @@ extraEnvVars: &envVars
   - name: DB_ADAPTER
     value: postgresql
   - name: DB_HOST
-    value: postgres-postgresql.postgres.svc.cluster.local
+    value: zalando-postgres-v14-pooler.postgres.svc.cluster.local
   - name: DB_NAME
-    value: hyku-demo
+    value: hyku_demo
   - name: DB_USER
     value: postgres
+  - name: PGSSLMODE
+    value: require
+  - name: DB_PREPARED_STATEMENTS
+    value: "false"
+  - name: DB_ADVISORY_LOCKS
+    value: "false"
   - name: FCREPO_BASE_PATH
     value: /hykudemo
   - name: FCREPO_HOST
@@ -276,9 +306,10 @@ solr:
 externalFcrepoHost: fcrepo.fcrepo.svc.cluster.local
 
 externalPostgresql:
-  host: postgres-postgresql.postgres.svc.cluster.local
+  host: zalando-postgres-v14-pooler.postgres.svc.cluster.local
   username: postgres
   password: $POSTGRES_PASSWORD
+  database: hyku_demo
 
 externalSolrHost: solr.solr.svc.cluster.local
 externalSolrUser: admin

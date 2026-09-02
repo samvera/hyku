@@ -8,10 +8,22 @@ resources:
     memory: "2Gi"
     cpu: "100m"
 
+# Chart default path "/" does a full Solr+DB-backed page render - too slow/heavy for a health check. /healthz (okcomputer, standard Hyrax dependency) is cheap and dependency-free.
+startupProbe:
+  enabled: true
+  path: "/healthz"
+  failureThreshold: 30
 livenessProbe:
-  enabled: false
+  enabled: true
+  path: "/healthz"
+# Loosened timing to tolerate /healthz queuing behind slow large-work renders (hyrax/_items.html.erb N+1) without pulling pods from rotation mid-spike - utk-hyku hit this same cascade on chart-default timing (notch8/utk-hyku#882).
 readinessProbe:
-  enabled: false
+  enabled: true
+  path: "/healthz"
+  initialDelaySeconds: 15
+  periodSeconds: 60
+  timeoutSeconds: 60
+  failureThreshold: 6
 
 # db-setup's migration-count check queries schema_migrations before db:create
 # ever runs, so it dies under `set -e` against a genuinely empty database.

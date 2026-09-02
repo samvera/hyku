@@ -4,9 +4,13 @@ on:
   push:
     branches:
       - main
+      - staging
+      - production
   pull_request:
     branches:
       - main
+      - staging
+      - production
   workflow_dispatch:
     inputs:
       debug_step:

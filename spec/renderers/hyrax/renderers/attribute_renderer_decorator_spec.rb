@@ -103,14 +103,14 @@ RSpec.describe Hyrax::Renderers::AttributeRendererDecorator do
       expect(renderer.render).to include 'Custom Rights Label'
     end
 
-    # The service still resolves a URI the authority knows, so the dedicated
-    # renderers keep working where no indexed label exists.
-    it 'leaves a URI the service resolves alone' do
+    # The no-label case is every work indexed before this feature, not an edge case.
+    it 'falls back to the renderer authority when no label is indexed' do
       renderer = Hyrax::Renderers::LicenseAttributeRenderer.new(
         :license, ['http://creativecommons.org/licenses/by/3.0/us/'], {}
       )
 
       expect(renderer.render).to include 'href="http://creativecommons.org/licenses/by/3.0/us/"'
+      expect(renderer.render).to include 'Attribution 3.0 United States'
     end
   end
 

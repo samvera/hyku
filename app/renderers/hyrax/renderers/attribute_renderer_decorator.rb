@@ -13,14 +13,22 @@ module Hyrax
 
       def attribute_value_to_html(value)
         return controlled_value_to_html(value) if controlled_label_for(value)
+        return markdown(value) if field.to_s == 'abstract'
+        # No indexed label: a subclass resolves the value through its own authority,
+        # and every work indexed before labels existed arrives that way.
+        return super unless instance_of_base_renderer?
 
-        if field.to_s == 'abstract'
-          markdown(value)
-        elsif microdata_value_attributes(field).present?
+        if microdata_value_attributes(field).present?
           "<span#{html_attributes(microdata_value_attributes(field))}>#{markdown(li_value(value))}</span>"
         else
           markdown(li_value(value))
         end
+      end
+
+      # True for AttributeRenderer itself, where super is upstream's plain
+      # implementation and Hyku's markdown handling has to stay here instead.
+      def instance_of_base_renderer?
+        self.class == Hyrax::Renderers::AttributeRenderer
       end
 
       # The generic form of what LicenseAttributeRenderer and

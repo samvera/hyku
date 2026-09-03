@@ -2,12 +2,6 @@
 
 module Sample
   module SharedMethods # rubocop:disable Metrics/ModuleLength
-    VALID_VISIBILITIES = [
-      Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC,
-      Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED,
-      Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE
-    ].freeze
-
     attr_accessor :admin_set, :user
     attr_reader :tenant_name, :sample_files_dir, :sample_data, :quantity, :visibility
 

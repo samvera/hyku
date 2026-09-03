@@ -25,8 +25,9 @@ namespace :db do
         type = args[:type] || 'activefedora'
         visibility = args[:visibility]&.downcase
 
-        if visibility && !Sample::SharedMethods::VALID_VISIBILITIES.include?(visibility)
-          puts "ERROR: Unknown visibility '#{visibility}'. Valid values are 'open', 'authenticated' or 'restricted'"
+        valid_visibilities = Hyrax::VisibilityMap.instance.visibilities
+        if visibility && !valid_visibilities.include?(visibility)
+          puts "ERROR: Unknown visibility '#{visibility}'. Valid values are #{valid_visibilities.map { |v| "'#{v}'" }.join(', ')}"
           exit 1
         end
 

@@ -7,6 +7,7 @@
 #           - use Hyku::WorkShowPresenter rather than Hyrax's presenter
 #           - refuse a parent_id the depositor cannot edit or whose type cannot
 #             contain the work being created
+#           - refuse a work type the tenant does not offer
 module Hyku
   # include this module after including Hyrax::WorksControllerBehavior to override
   # Hyrax::WorksControllerBehavior methods with the ones defined here
@@ -17,7 +18,8 @@ module Hyku
 
     included do
       # add around action to load theme show page views
-      around_action :inject_show_theme_views, except: :delete
+      around_action :inject_show_theme_views, only: :show
+      before_action :ensure_work_type_offered, only: %i[new create]
       before_action :ensure_parent_accepts_child, only: :create
       self.show_presenter = Hyku::WorkShowPresenter
 
@@ -42,6 +44,18 @@ module Hyku
     end
 
     private
+
+    # Routes are drawn for every registered curation concern, so /concern/<type>/new is
+    # reachable on a tenant that does not offer the type.
+    def ensure_work_type_offered
+      return if Site.instance.offerable_work_types.include?(offered_work_type_name)
+
+      redirect_to main_app.root_path, alert: I18n.t('hyku.works.errors.work_type_not_offered')
+    end
+
+    def offered_work_type_name
+      Hyrax::ModelRegistry.rdf_representations_from([self.class.curation_concern_type]).first
+    end
 
     # parent_id reaches Steps::AddToParent straight from params, and that step
     # validates neither the type pairing nor the user's access to the parent.

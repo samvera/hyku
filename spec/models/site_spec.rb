@@ -16,11 +16,10 @@ RSpec.describe Site, type: :model do
 
   describe ".instance" do
     let(:request_store_mock) { {} }
-    before do
-      allow(RequestStore).to receive(:store).and_return(request_store_mock)
-    end
+
     context "on global tenant" do
       before do
+        allow(RequestStore).to receive(:store).and_return(request_store_mock)
         allow(Account).to receive(:global_tenant?).and_return true
       end
 
@@ -30,6 +29,10 @@ RSpec.describe Site, type: :model do
     end
 
     context "on a specific tenant" do
+      before do
+        allow(RequestStore).to receive(:store).and_return(request_store_mock)
+      end
+
       it "is a singleton site" do
         expect(described_class.instance).to eq(described_class.instance)
       end
@@ -57,7 +60,10 @@ RSpec.describe Site, type: :model do
       end
     end
     describe '.instance across an in-process tenant switch' do
-      after { Apartment::Tenant.switch!(Apartment.default_tenant) }
+      after do
+        Apartment::Tenant.switch!(Apartment.default_tenant)
+        RequestStore.clear!
+      end
 
       let(:old_account) { FactoryBot.build(:sign_up_account) }
       let(:new_account) { FactoryBot.build(:sign_up_account) }
@@ -330,6 +336,47 @@ RSpec.describe Site, type: :model do
 
       it 'returns the cname of the associated account' do
         expect(site.institution_label).to eq 'myuniversity.edu'
+      end
+    end
+  end
+
+  describe '#offerable_work_types' do
+    subject(:site) { create(:site, available_works: %w[GenericWork Image Etd]) }
+
+    before do
+      allow(Hyrax.config).to receive(:registered_curation_concern_types)
+        .and_return(%w[GenericWork Image Etd])
+    end
+
+    context 'without flexible metadata' do
+      before { allow(Hyrax.config).to receive(:flexible?).and_return(false) }
+
+      it 'offers everything the site enables' do
+        expect(site.offerable_work_types).to eq(%w[GenericWork Image Etd])
+      end
+    end
+
+    context 'with a profile declaring fewer types than the site enables' do
+      before do
+        allow(Hyrax.config).to receive(:flexible?).and_return(true)
+        allow(Hyrax::FlexibleSchema).to receive(:current_version).and_return(
+          'classes' => { 'GenericWorkResource' => {}, 'ImageResource' => {} }
+        )
+      end
+
+      it 'drops the type the profile does not declare' do
+        expect(site.offerable_work_types).to eq(%w[GenericWork Image])
+      end
+    end
+
+    context 'with no current profile' do
+      before do
+        allow(Hyrax.config).to receive(:flexible?).and_return(true)
+        allow(Hyrax::FlexibleSchema).to receive(:current_version).and_return(nil)
+      end
+
+      it 'offers everything the site enables rather than nothing' do
+        expect(site.offerable_work_types).to eq(%w[GenericWork Image Etd])
       end
     end
   end

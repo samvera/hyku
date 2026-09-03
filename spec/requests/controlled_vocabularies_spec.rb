@@ -296,6 +296,8 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
     end
 
     describe 'creating a vocabulary' do
+      before { allow(Hyrax.config).to receive(:flexible?).and_return(true) }
+
       it 'offers the form' do
         get "http://#{account.cname}/dashboard/controlled_vocabularies/new"
 
@@ -449,6 +451,31 @@ RSpec.describe 'Controlled vocabularies', type: :request, clean: true, multitena
 
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.body).to include 'cafe_terms'
+      end
+    end
+
+    # The rule itself is covered in spec/abilities; these two only prove it reaches
+    # the route and the view.
+    describe 'creating a vocabulary without flexible metadata' do
+      before { allow(Hyrax.config).to receive(:flexible?).and_return(false) }
+
+      it 'refuses a confirmed create posted directly, and hides the add button' do
+        post "http://#{account.cname}/dashboard/controlled_vocabularies",
+             params: { param_key => { label: 'Lab Names' }, confirmed: 'true' }
+        created = Apartment::Tenant.switch(account.tenant) { Qa::LocalAuthority.exists?(name: 'lab_names') }
+
+        get "http://#{account.cname}/dashboard/controlled_vocabularies"
+
+        expect(created).to be false
+        expect(response.body).not_to include 'dashboard/controlled_vocabularies/new'
+      end
+
+      it 'still allows managing an existing vocabulary and its terms' do
+        get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms/edit"
+        expect(response).to have_http_status(:success)
+
+        get "http://#{account.cname}/dashboard/controlled_vocabularies/reading_rooms/terms/new"
+        expect(response).to have_http_status(:success)
       end
     end
 

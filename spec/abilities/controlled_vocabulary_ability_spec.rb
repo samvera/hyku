@@ -13,6 +13,22 @@ RSpec.describe Hyrax::Ability::ControlledVocabularyAbility do
 
     it { is_expected.to be_able_to(:manage, :controlled_vocabularies) }
     it { is_expected.to be_able_to(:view, :controlled_vocabularies) }
+
+    context 'with flexible metadata' do
+      before { allow(Hyrax.config).to receive(:flexible?).and_return(true) }
+
+      it { is_expected.to be_able_to(:create, :new_controlled_vocabulary) }
+    end
+
+    context 'without flexible metadata' do
+      before { allow(Hyrax.config).to receive(:flexible?).and_return(false) }
+
+      it { is_expected.not_to be_able_to(:create, :new_controlled_vocabulary) }
+
+      it 'still manages the vocabularies that exist' do
+        expect(ability).to be_able_to(:manage, :controlled_vocabularies)
+      end
+    end
   end
 
   # Stubbed on the class rather than the instance: CanCan evaluates ability_logic

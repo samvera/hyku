@@ -256,6 +256,9 @@ de:
   hyku:
     work_show:
       iiif_manifest: IIIF-Manifest
+    works:
+      errors:
+        work_type_not_offered: Dieser Werktyp ist auf dieser Website nicht verfügbar. Wählen Sie einen anderen aus.
     account:
       signup_disabled: Kontoanmeldung ist deaktiviert
     deposit_wizard:
@@ -1054,6 +1057,78 @@ de:
         edit: Bearbeiten
         header: Benutzer verwalten
         update: Aktualisieren
+  reference:
+    homepage:
+      intro_label: "Einführung"
+      hero:
+        headline: "Das Repositorium durchsuchen"
+        search_label: "Repositorium durchsuchen"
+        search_placeholder: "Titel, Autoren, Schlagwörter und Volltext durchsuchen"
+        search_button: "Suchen"
+        advanced: "Erweiterte Suche"
+        deposit_prompt: "Haben Sie Arbeiten zu teilen?"
+        deposit_button: "Arbeit einreichen"
+      browse:
+        heading: "Das Repositorium durchstöbern"
+        all_options: "Alles durchstöbern"
+        all:
+          subjects: "Alle Schlagwörter"
+          creators: "Alle Urheber"
+          collections: "Alle Sammlungen"
+          publishers: "Alle Verlage"
+      recent:
+        heading: "Neue Einreichungen"
+        view_all: "Alle neuen Einreichungen"
+        and_others: "und weitere"
+        deposited: "Eingereicht am %{date}"
+        embargo: "unter Sperrfrist"
+      collections:
+        heading: "Ausgewählte Sammlungen"
+        view_all: "Alle anzeigen"
+        works_count:
+          one: "1 Werk"
+          other: "%{count} Werke"
+      featured:
+        unfeature_confirm: "Aus der Auswahl entfernen?"
+        reorder_hint: "Zum Umsortieren ziehen, dann speichern."
+        save_order: "Reihenfolge speichern"
+      featured_works:
+        heading: "Ausgewählte Werke"
+        see_all: "Alle anzeigen"
+      researcher:
+        heading: "Ausgewählte Forschende"
+      about:
+        heading: "Über die Sammlungen"
+      cta:
+        heading: "Teilen Sie Ihre Arbeit"
+        sub: "Reichen Sie Aufsätze, Abschlussarbeiten und Forschungsdaten in das Repositorium ein."
+        button: "Einreichung starten"
+      stats:
+        collections:
+          one: Sammlung
+          other: Sammlungen
+        works:
+          one: Werk
+          other: Werke
+    show:
+      tabs_label: "Abschnitte des Datensatzes"
+      in_collection: "in"
+      tabs:
+        metadata: "Metadaten"
+        files: "Dateien"
+        children: "Untergeordnete Werke"
+      part_of:
+        heading: "Gehört zu"
+      citation:
+        heading: "Zitation"
+        style: "Zitierstil"
+        endnote: "Nach EndNote exportieren"
+        copy: "Kopieren"
+        copied: "Kopiert"
+        styles:
+          apa: "APA"
+          mla: "MLA"
+          chicago: "Chicago"
   screening_room:
     chrome:
       toggle_navigation: Navigation umschalten

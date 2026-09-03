@@ -6,7 +6,7 @@ module Hyku
     # Returns true if the current controller happens to be one of the controllers that deals
     # with settings.  This is used to keep the parent section on the sidebar open.
     def settings_section?
-      %w[appearances content_blocks labels features pages].include?(controller_name)
+      %w[accounts appearances collection_types content_blocks features identity_providers labels pages work_types].include?(controller_name)
     end
 
     # Returns true if the current controller happens to be one of the controllers that deals

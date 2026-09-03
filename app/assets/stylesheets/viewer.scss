@@ -24,3 +24,9 @@
   aspect-ratio: 16 / 9;
   width: 100%;
 }
+
+// Ramp renders the player above a structure/transcript panel, so it needs more
+// vertical room than the default .viewer-wrapper height.
+.viewer-wrapper.ramp-viewer-wrapper {
+  height: 775px;
+}

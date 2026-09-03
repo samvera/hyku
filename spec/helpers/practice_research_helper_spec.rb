@@ -2,7 +2,117 @@
 
 require 'rails_helper'
 
-RSpec.describe PracticeResearchShowHelper, type: :helper do
+RSpec.describe PracticeResearchHelper, type: :helper do
+  describe '#pr_card_blurb' do
+    it 'uses the description' do
+      presenter = double('presenter', description: ['A commission for Dairy Primary School.'])
+
+      expect(helper.pr_card_blurb(presenter)).to eq('A commission for Dairy Primary School.')
+    end
+
+    it 'puts a space between paragraphs instead of running them together' do
+      presenter = double('presenter', description: ['<p>Six lighthouses.</p><p>The portfolio gathers.</p>'])
+
+      expect(helper.pr_card_blurb(presenter)).to eq('Six lighthouses. The portfolio gathers.')
+    end
+
+    it 'keeps prose comparisons that only look like tags' do
+      expect(helper.pr_plain_text('Editions <50 and >10 available.')).to eq('Editions <50 and >10 available.')
+    end
+
+    it 'truncates on a word boundary' do
+      presenter = double('presenter', description: ["#{'word ' * 40}end"])
+
+      blurb = helper.pr_card_blurb(presenter, length: 30)
+
+      expect(blurb.length).to be <= 30
+      expect(blurb).to end_with('...')
+    end
+
+    it 'is nil when the work has no description' do
+      presenter = double('presenter', description: [])
+
+      expect(helper.pr_card_blurb(presenter)).to be_nil
+    end
+  end
+
+  describe '#pr_thumbnail?' do
+    it 'is false for the Hyrax placeholder image, so the card shows the stripe instead' do
+      presenter = double('presenter', thumbnail_path: Hyrax::ThumbnailPathService.default_image)
+
+      expect(helper.pr_thumbnail?(presenter)).to be(false)
+    end
+
+    it 'is true for a real derivative' do
+      presenter = double('presenter', thumbnail_path: '/downloads/abc123?file=thumbnail')
+
+      expect(helper.pr_thumbnail?(presenter)).to be(true)
+    end
+
+    it 'is false when there is no path at all, rather than rendering a broken image' do
+      presenter = double('presenter', thumbnail_path: nil)
+
+      expect(helper.pr_thumbnail?(presenter)).to be(false)
+    end
+  end
+
+  describe '#pr_contributor_summary' do
+    def document(participants: nil, creators: nil)
+      SolrDocument.new(
+        { 'participants_json_ss' => participants&.to_json, 'creator_tesim' => creators }.compact
+      )
+    end
+
+    it 'names one participant' do
+      doc = document(participants: [{ 'name' => 'Bruce McLean' }])
+
+      expect(helper.pr_contributor_summary(doc)).to eq('Bruce McLean')
+    end
+
+    it 'names two' do
+      doc = document(participants: [{ 'name' => 'Bruce McLean' }, { 'name' => 'Jayne Osgood' }])
+
+      expect(helper.pr_contributor_summary(doc)).to eq('Bruce McLean and Jayne Osgood')
+    end
+
+    it 'counts the rest beyond two, separating inverted names with a semicolon' do
+      doc = document(participants: [{ 'name' => 'Achebe, Ngozi' }, { 'name' => 'Okonkwo, Adaeze' },
+                                    { 'name' => 'White, Neal' }])
+
+      expect(helper.pr_contributor_summary(doc)).to eq('Achebe, Ngozi; Okonkwo, Adaeze and 1 other')
+    end
+
+    it 'falls back to creators when the work has no participants' do
+      doc = document(creators: ['Neal White'])
+
+      expect(helper.pr_contributor_summary(doc)).to eq('Neal White')
+    end
+
+    it 'is nil when the work credits nobody, so the card drops the line' do
+      expect(helper.pr_contributor_summary(document)).to be_nil
+    end
+
+    it 'survives a malformed participants blob' do
+      doc = SolrDocument.new('participants_json_ss' => 'not json', 'creator_tesim' => ['Ama Boateng'])
+
+      expect(helper.pr_contributor_summary(doc)).to eq('Ama Boateng')
+    end
+  end
+
+  describe '#pr_featured_researcher?' do
+    it 'is false for a blank content block, so the module hides' do
+      assign(:featured_researcher, double(value: ''))
+
+      expect(helper.pr_featured_researcher?).to be(false)
+    end
+
+    it 'is true once an admin has written one' do
+      assign(:featured_researcher, double(value: '<p>Jayne Osgood</p>'))
+
+      expect(helper.pr_featured_researcher?).to be(true)
+    end
+  end
+
   describe '#pr_section_present?' do
     it 'is false for a fragment whose tags carry no text' do
       expect(helper.pr_section_present?('<hr><table><tr><td></td></tr></table>')).to be(false)
@@ -52,35 +162,7 @@ RSpec.describe PracticeResearchShowHelper, type: :helper do
   end
 
   it 'pages at twenty, above the Hyrax default of ten, so a work is not split mid-sequence' do
-    expect(described_class::DEFAULT_ROWS).to eq(20)
-  end
-
-  describe '#pr_viewer?' do
-    it 'is true for a work with a representative to show' do
-      presenter = double('presenter', video_embed_viewer?: false, representative_id: 'fs-1',
-                                      representative_presenter: double('file set'))
-
-      expect(helper.pr_viewer?(presenter)).to be(true)
-    end
-
-    it 'is true for an embed, which carries its own media' do
-      presenter = double('presenter', video_embed_viewer?: true)
-
-      expect(helper.pr_viewer?(presenter)).to be(true)
-    end
-
-    it 'is false with no representative, so the default work icon is not given a band' do
-      presenter = double('presenter', video_embed_viewer?: false, representative_id: nil)
-
-      expect(helper.pr_viewer?(presenter)).to be(false)
-    end
-
-    it 'is false when the representative id points at nothing indexed' do
-      presenter = double('presenter', video_embed_viewer?: false, representative_id: 'gone',
-                                      representative_presenter: nil)
-
-      expect(helper.pr_viewer?(presenter)).to be(false)
-    end
+    expect(PracticeResearchHelper::DEFAULT_ROWS).to eq(20)
   end
 
   describe 'member pane pagination' do
@@ -107,7 +189,7 @@ RSpec.describe PracticeResearchShowHelper, type: :helper do
     it 'keeps deposit order across the page boundary' do
       page_one = helper.pr_child_work_ids(presenter).to_a
 
-      helper.instance_variable_set(:@pr_child_work_ids, nil)
+      helper.instance_variable_set(:@theme_child_work_ids, nil)
       helper.params[:items_page] = '2'
 
       expect(page_one + helper.pr_child_work_ids(presenter).to_a).to eq(ids)
@@ -150,7 +232,7 @@ RSpec.describe PracticeResearchShowHelper, type: :helper do
     it 'clamps rows to the ceiling' do
       helper.params[:rows] = '999999'
 
-      expect(helper.pr_child_work_ids(presenter).limit_value).to eq(described_class::MAX_ROWS)
+      expect(helper.pr_child_work_ids(presenter).limit_value).to eq(PracticeResearchHelper::MAX_ROWS)
     end
 
     it 'clamps a page number too large for Kaminari to the last page' do
@@ -166,7 +248,7 @@ RSpec.describe PracticeResearchShowHelper, type: :helper do
     end
   end
 
-  describe '#pr_active_pane' do
+  describe '#theme_active_pane' do
     let(:presenter) do
       double('presenter', authorized_file_set_ids: Array.new(7) { |n| "f#{n}" },
                           authorized_child_work_ids: Array.new(12) { |n| "w#{n}" },
@@ -176,20 +258,20 @@ RSpec.describe PracticeResearchShowHelper, type: :helper do
     before { allow(helper).to receive(:pr_context_html).and_return('<p>Statement</p>') }
 
     it 'is the first pane with no page param' do
-      expect(helper.pr_active_pane(presenter)).to eq(:context)
+      expect(helper.theme_active_pane(helper.pr_show_panes(presenter))).to eq(:context)
     end
 
     it 'opens the pane the pager link names' do
       helper.params[:pane] = 'items'
 
-      expect(helper.pr_active_pane(presenter)).to eq(:items)
+      expect(helper.theme_active_pane(helper.pr_show_panes(presenter))).to eq(:items)
     end
 
     it 'opens it on page one too, where Kaminari drops the page param' do
       helper.params[:pane] = 'files'
 
       expect(helper.pr_file_set_ids(presenter).current_page).to eq(1)
-      expect(helper.pr_active_pane(presenter)).to eq(:files)
+      expect(helper.theme_active_pane(helper.pr_show_panes(presenter))).to eq(:files)
     end
 
     it 'ignores a pane that is not being shown' do
@@ -197,19 +279,19 @@ RSpec.describe PracticeResearchShowHelper, type: :helper do
                                            authorized_child_work_ids: Array.new(12) { |n| "w#{n}" })
       helper.params[:pane] = 'files'
 
-      expect(helper.pr_active_pane(presenter)).to eq(:context)
+      expect(helper.theme_active_pane(helper.pr_show_panes(presenter))).to eq(:context)
     end
 
     it 'ignores a pane that does not exist' do
       helper.params[:pane] = 'nonsense'
 
-      expect(helper.pr_active_pane(presenter)).to eq(:context)
+      expect(helper.theme_active_pane(helper.pr_show_panes(presenter))).to eq(:context)
     end
 
     it 'ignores an array pane instead of raising on it' do
       helper.params[:pane] = ['items']
 
-      expect(helper.pr_active_pane(presenter)).to eq(:context)
+      expect(helper.theme_active_pane(helper.pr_show_panes(presenter))).to eq(:context)
     end
   end
 
@@ -267,32 +349,6 @@ RSpec.describe PracticeResearchShowHelper, type: :helper do
 
     it 'drops the two the sidebar renders by hand, and any field with no value' do
       expect(helper.pr_card_fields(presenter)).to eq([:identifiers])
-    end
-  end
-
-  describe '#pr_license_badge' do
-    def badge_for(license)
-      helper.pr_license_badge(double('presenter', license: Array(license)))
-    end
-
-    it 'shortens a Creative Commons licence URL' do
-      expect(badge_for('https://creativecommons.org/licenses/by/4.0/')).to eq('CC BY 4.0')
-    end
-
-    it 'handles hyphenated codes' do
-      expect(badge_for('https://creativecommons.org/licenses/by-nc-nd/3.0/')).to eq('CC BY-NC-ND 3.0')
-    end
-
-    it 'recognises CC0' do
-      expect(badge_for('http://creativecommons.org/publicdomain/zero/1.0/')).to eq('CC0 1.0')
-    end
-
-    it 'is nil for anything else, so the badge is not rendered' do
-      expect(badge_for('http://www.europeana.eu/portal/rights/rr-r.html')).to be_nil
-    end
-
-    it 'is nil with no licence at all' do
-      expect(badge_for(nil)).to be_nil
     end
   end
 end

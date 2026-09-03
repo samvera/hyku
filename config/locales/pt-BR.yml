@@ -139,6 +139,9 @@ pt-BR:
   hyku:
     work_show:
       iiif_manifest: Manifesto IIIF
+    works:
+      errors:
+        work_type_not_offered: Esse tipo de obra não está disponível neste site. Escolha outro.
     account:
       signup_disabled: O registro da conta está desativado
     deposit_wizard:
@@ -934,6 +937,78 @@ pt-BR:
         edit: Editar
         header: Gerenciar usuário
         update: Atualizar
+  reference:
+    homepage:
+      intro_label: "Introdução"
+      hero:
+        headline: "Pesquisar no repositório"
+        search_label: "Pesquisar no repositório"
+        search_placeholder: "Pesquisar títulos, autores, assuntos e texto completo"
+        search_button: "Pesquisar"
+        advanced: "Busca avançada"
+        deposit_prompt: "Tem trabalhos para compartilhar?"
+        deposit_button: "Deposite seu trabalho"
+      browse:
+        heading: "Explore o repositório"
+        all_options: "Explorar tudo"
+        all:
+          subjects: "Todos os assuntos"
+          creators: "Todos os autores"
+          collections: "Todos os acervos"
+          publishers: "Todas as editoras"
+      recent:
+        heading: "Depósitos recentes"
+        view_all: "Todos os depósitos recentes"
+        and_others: "e outros"
+        deposited: "Depositado em %{date}"
+        embargo: "sob embargo"
+      collections:
+        heading: "Acervos em destaque"
+        view_all: "Ver todos"
+        works_count:
+          one: "1 obra"
+          other: "%{count} obras"
+      featured:
+        unfeature_confirm: "Remover isto da lista de destaques?"
+        reorder_hint: "Arraste um item para reordenar e salve."
+        save_order: "Salvar ordem"
+      featured_works:
+        heading: "Obras em destaque"
+        see_all: "Ver todas"
+      researcher:
+        heading: "Pesquisador em destaque"
+      about:
+        heading: "Sobre os acervos"
+      cta:
+        heading: "Compartilhe seu trabalho"
+        sub: "Deposite seus artigos, teses e dados de pesquisa no repositório."
+        button: "Iniciar um depósito"
+      stats:
+        collections:
+          one: Acervo
+          other: Acervos
+        works:
+          one: Obra
+          other: Obras
+    show:
+      tabs_label: "Seções do registro"
+      in_collection: "em"
+      tabs:
+        metadata: "Metadados"
+        files: "Arquivos"
+        children: "Obras vinculadas"
+      part_of:
+        heading: "Faz parte de"
+      citation:
+        heading: "Citação"
+        style: "Estilo de citação"
+        endnote: "Exportar para o EndNote"
+        copy: "Copiar"
+        copied: "Copiado"
+        styles:
+          apa: "APA"
+          mla: "MLA"
+          chicago: "Chicago"
   screening_room:
     chrome:
       toggle_navigation: Alternar navegação

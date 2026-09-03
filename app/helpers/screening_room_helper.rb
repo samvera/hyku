@@ -3,22 +3,7 @@
 # Helpers for the screening room theme's home and show pages.
 module ScreeningRoomHelper
   def scr_home
-    @scr_home ||= ScreeningRoom::HomepagePresenter.new(
-      search_service: controller.search_service,
-      response: @response,
-      collections: @collections,
-      featured_work_list: @featured_work_list,
-      featured_collection_list: @featured_collection_list,
-      current_ability:
-    )
-  end
-
-  def scr_type_label(object)
-    Array(object.resource_type).first.presence || object.human_readable_type
-  end
-
-  def scr_show_collection(presenter)
-    @scr_show_collection ||= Hyrax::CollectionMemberService.run(presenter.solr_document, current_ability).first
+    theme_home(ScreeningRoom::HomepagePresenter)
   end
 
   def scr_member_meta(member)

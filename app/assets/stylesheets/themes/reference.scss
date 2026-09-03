@@ -1,0 +1,944 @@
+// ---- reference home page theme ----
+
+@import 'themes/reference/tokens';
+@import 'themes/reference/primitives';
+@import 'themes/reference/shell';
+@import 'themes/reference/chrome';
+
+.reference.hyrax-homepage {
+  overflow-x: clip;
+
+  #content-wrapper {
+    max-width: none;
+    padding: 0;
+  }
+
+  #content-wrapper > .alert {
+    margin: 16px $ref-gutter;
+  }
+
+  // ---- hero ----
+  .ref-hero {
+    background: var(--ref-hero-ground, #{$ref-scrim});
+    overflow: hidden;
+    position: relative;
+  }
+
+  .ref-hero-image {
+    height: 100%;
+    left: 0;
+    object-fit: cover;
+    opacity: 0.62;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+
+  .ref-hero-scrim {
+    background: linear-gradient(90deg,
+      color-mix(in srgb, var(--ref-hero-ground, #{$ref-scrim}) 94%, transparent) 0%,
+      color-mix(in srgb, var(--ref-hero-ground, #{$ref-scrim}) 50%, transparent) 100%);
+    inset: 0;
+    position: absolute;
+  }
+
+  .ref-hero-content {
+    @include ref-gutter;
+    align-items: flex-end;
+    display: flex;
+    gap: 40px;
+    justify-content: space-between;
+    padding-bottom: 30px;
+    padding-top: 34px;
+    position: relative;
+
+    @media (max-width: $ref-mobile-max) {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 22px;
+    }
+  }
+
+  .ref-hero-lede {
+    flex: 0 1 1040px;
+    max-width: 1040px;
+    min-width: 0;
+    position: relative;
+    z-index: 1;
+
+    @media (max-width: $ref-mobile-max) {
+      flex-basis: auto;
+      width: 100%;
+    }
+  }
+
+  .ref-hero-eyebrow {
+    @include ref-sans;
+    color: var(--ref-on-dark, #{$ref-link-on-dark});
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  .ref-hero-headline,
+  .ref-hero-copy h1,
+  .ref-hero-copy h2,
+  .ref-hero-copy h3 {
+    @include ref-serif;
+    color: #fff;
+    font-size: 44px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    margin: 7px 0 0;
+    text-wrap: pretty;
+
+    @media (max-width: $ref-tablet-max) {
+      font-size: 36px;
+    }
+
+    @media (max-width: $ref-mobile-max) {
+      font-size: 30px;
+    }
+  }
+
+  .ref-hero-copy {
+    p {
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 17px;
+      line-height: 1.6;
+      margin: 10px 0 0;
+      text-wrap: pretty;
+    }
+
+    a {
+      @include ref-underline;
+      color: #fff;
+
+      &:focus-visible {
+        @include ref-focus-ring(var(--ref-on-dark, #{$ref-link-on-dark}));
+      }
+    }
+  }
+
+  .ref-hero-search {
+    display: flex;
+    height: 60px;
+    margin-top: 18px;
+    max-width: 1040px;
+
+    @media (max-width: $ref-mobile-max) {
+      flex-wrap: wrap;
+      height: auto;
+    }
+  }
+
+  .ref-hero-search-field {
+    @include ref-sans;
+    background: $ref-surface;
+    border: 0;
+    color: $ref-ink;
+    flex: 1;
+    font-size: 17px;
+    min-width: 0;
+    padding: 0 16px;
+
+    &::placeholder {
+      color: $ref-ink-faint;
+    }
+
+    &:focus-visible {
+      @include ref-focus-ring;
+      outline-offset: -3px;
+    }
+
+    @media (max-width: $ref-mobile-max) {
+      flex-basis: 100%;
+      height: 50px;
+    }
+  }
+
+  .ref-hero-search-submit {
+    @include ref-sans;
+    align-items: center;
+    background: var(--ref-action, #{$ref-action});
+    border: 0;
+    color: var(--ref-action-ink, #{$ref-action-ink});
+    display: inline-flex;
+    font-size: 15px;
+    font-weight: 700;
+    justify-content: center;
+    padding: 0 30px;
+
+    &:focus-visible {
+      @include ref-focus-ring(var(--ref-on-dark, #{$ref-link-on-dark}));
+    }
+
+    @media (max-width: $ref-mobile-max) {
+      flex-basis: 100%;
+      height: 50px;
+    }
+  }
+
+  .ref-hero-advanced {
+    @include ref-underline;
+    color: var(--ref-on-dark, #{$ref-link-on-dark});
+    display: inline-block;
+    font-size: 13px;
+    margin-top: 9px;
+
+    &:hover,
+    &:focus {
+      color: #fff;
+    }
+
+    &:focus-visible {
+      @include ref-focus-ring(var(--ref-on-dark, #{$ref-link-on-dark}));
+    }
+  }
+
+  // ---- hero counts ----
+  .ref-hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 34px;
+    margin: 22px 0 0;
+  }
+
+  .ref-stat {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .ref-stat-number {
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0 0 2px;
+
+    a {
+      color: #fff;
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        @include ref-underline;
+        color: #fff;
+      }
+
+      &:focus-visible {
+        @include ref-focus-ring(var(--ref-on-dark, #{$ref-link-on-dark}));
+      }
+    }
+  }
+
+  .ref-stat-key {
+    color: var(--ref-on-dark, #{$ref-link-on-dark});
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  // ---- hero deposit ----
+  .ref-hero-deposit {
+    flex: none;
+    position: relative;
+    text-align: right;
+
+    // the scrim fades to half strength at this edge of the hero, so the banner
+    // can lift the surface under this block; feather a local one behind it
+    &::before {
+      background: radial-gradient(farthest-side at 72% 50%,
+        color-mix(in srgb, var(--ref-hero-ground, #{$ref-scrim}) 94%, transparent) 0%,
+        color-mix(in srgb, var(--ref-hero-ground, #{$ref-scrim}) 76%, transparent) 45%,
+        color-mix(in srgb, var(--ref-hero-ground, #{$ref-scrim}) 0%, transparent) 100%);
+      content: '';
+      inset: -58px -48px -58px -170px;
+      pointer-events: none;
+      position: absolute;
+    }
+
+    @media (max-width: $ref-mobile-max) {
+      text-align: left;
+
+      &::before {
+        content: none;
+      }
+    }
+  }
+
+  .ref-hero-deposit-prompt,
+  .ref-hero-deposit-button {
+    position: relative;
+  }
+
+  .ref-hero-deposit-prompt {
+    color: var(--ref-on-dark, #{$ref-link-on-dark});
+    font-size: 13px;
+    margin: 0 0 7px;
+  }
+
+  .ref-hero-deposit-button {
+    @include ref-deposit-button(var(--ref-on-dark, #{$ref-link-on-dark}));
+  }
+
+  // ---- section heads ----
+  .ref-section-head {
+    align-items: baseline;
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+    margin-bottom: 22px;
+  }
+
+  .ref-section-title {
+    @include ref-section-title;
+  }
+
+  .ref-section-action {
+    @include ref-link(var(--ref-link-strong, #{$ref-link-strong}));
+    flex: none;
+    font-size: 14px;
+  }
+
+  // ---- browse the repository ----
+  .ref-browse {
+    background: var(--ref-band, #{$ref-band});
+    border-bottom: 1px solid var(--ref-band-edge, #{$ref-band-edge});
+    border-top: 1px solid var(--ref-band-edge, #{$ref-band-edge});
+  }
+
+  .ref-browse-inner {
+    @include ref-gutter;
+    padding-bottom: 44px;
+    padding-top: 44px;
+  }
+
+  .ref-browse-columns {
+    display: grid;
+    gap: 22px;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+
+    @media (max-width: $ref-tablet-max) {
+      grid-auto-flow: row;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @media (max-width: $ref-mobile-max) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .ref-browse-column + .ref-browse-column {
+    border-left: 1px solid var(--ref-band-rule, #{$ref-band-rule});
+    padding-left: 22px;
+
+    @media (max-width: $ref-tablet-max) {
+      &:nth-child(odd) {
+        border-left: 0;
+        padding-left: 0;
+      }
+    }
+
+    @media (max-width: $ref-mobile-max) {
+      border-left: 0;
+      border-top: 1px solid var(--ref-band-rule, #{$ref-band-rule});
+      padding-left: 0;
+      padding-top: 16px;
+    }
+  }
+
+  .ref-browse-label {
+    @include ref-label;
+    margin: 0 0 8px;
+  }
+
+  .ref-browse-values {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .ref-browse-value {
+    align-items: baseline;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    padding: 5px 0;
+  }
+
+  .ref-browse-link {
+    @include ref-link(var(--ref-link-strong, #{$ref-link-strong}));
+    font-size: 17px;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+  }
+
+  .ref-browse-count {
+    color: $ref-ink;
+    flex: none;
+    font-size: 16px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .ref-browse-all {
+    @include ref-link(var(--ref-link-strong, #{$ref-link-strong}));
+    display: inline-block;
+    font-size: 14px;
+    margin-top: 6px;
+  }
+
+  // ---- recent deposits ----
+  .ref-recent-inner {
+    @include ref-gutter(192px, 96px);
+    padding-bottom: 44px;
+    padding-top: 44px;
+  }
+
+  .ref-recent-list {
+    margin: 0;
+    padding: 0;
+  }
+
+  .ref-deposit {
+    border-top: 1px solid $ref-rule;
+    display: grid;
+    gap: 22px;
+    grid-template-columns: 87px minmax(0, 1fr) 192px;
+    padding: 18px 0;
+
+    @media (max-width: $ref-tablet-max) {
+      grid-template-columns: 78px minmax(0, 1fr);
+    }
+
+    @media (max-width: $ref-mobile-max) {
+      gap: 12px;
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .ref-deposit-thumb {
+    @include ref-mat;
+    height: 87px;
+    width: 87px;
+
+    @media (max-width: $ref-tablet-max) {
+      height: 78px;
+      width: 78px;
+    }
+  }
+
+  .ref-deposit-title {
+    @include ref-serif;
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 1.35;
+    margin: 0;
+
+    a {
+      @include ref-title-link;
+    }
+  }
+
+  .ref-deposit-creators {
+    color: $ref-ink-body;
+    font-size: 15px;
+    line-height: 1.4;
+    margin: 4px 0 0;
+    overflow-wrap: anywhere;
+  }
+
+  .ref-deposit-provenance {
+    color: $ref-ink-label;
+    font-size: 13px;
+    line-height: 1.4;
+    margin: 3px 0 0;
+    overflow-wrap: anywhere;
+  }
+
+  .ref-deposit-meta {
+    text-align: right;
+
+    @media (max-width: $ref-tablet-max) {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      grid-column: 2;
+      text-align: left;
+    }
+
+    @media (max-width: $ref-mobile-max) {
+      grid-column: 1;
+    }
+  }
+
+  .ref-deposit-date {
+    color: $ref-ink;
+    font-size: 13px;
+    font-weight: 700;
+    margin: 6px 0 0;
+
+    @media (max-width: $ref-tablet-max) {
+      margin: 0;
+    }
+  }
+
+  .ref-deposit-rights,
+  .ref-deposit-license {
+    color: $ref-ink-label;
+    font-size: 13px;
+    line-height: 1.4;
+    margin: 2px 0 0;
+    overflow-wrap: anywhere;
+
+    @media (max-width: $ref-tablet-max) {
+      margin: 0;
+    }
+  }
+
+  // ---- featured band ----
+  .ref-featured {
+    background: $ref-warm;
+    border-top: 1px solid $ref-panel-edge;
+
+    &:not(:has(section)) {
+      display: none;
+    }
+  }
+
+  .ref-featured-inner {
+    @include ref-gutter;
+    display: grid;
+    gap: 26px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding-bottom: 44px;
+    padding-top: 44px;
+
+    &:not(:has(> section + section)) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    @media (max-width: $ref-tablet-max) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  // ---- featured collections ----
+  .ref-collection-list {
+    margin: 0;
+    padding: 0;
+  }
+
+  .ref-collection-row {
+    align-items: center;
+    border-top: 1px solid $ref-panel-edge;
+    display: flex;
+    gap: 14px;
+    justify-content: space-between;
+    padding: 11px 0;
+  }
+
+  .ref-collection-thumb {
+    @include ref-mat(4px);
+    flex: none;
+    height: 48px;
+    width: 48px;
+  }
+
+  .ref-collection-title {
+    @include ref-serif;
+    flex: 1;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.32;
+    margin: 0;
+    min-width: 0;
+
+    a {
+      @include ref-title-link;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  .ref-collection-count {
+    color: $ref-ink-body;
+    flex: none;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  // ---- featured works ----
+  .ref-work-grid {
+    display: grid;
+    gap: 26px 18px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    @media (max-width: $ref-mobile-max) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .ref-work-thumb {
+    @include ref-mat(8px);
+    height: 132px;
+  }
+
+  .ref-work-title {
+    @include ref-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.32;
+    margin: 7px 0 0;
+
+    a {
+      @include ref-title-link;
+    }
+  }
+
+  .ref-work-byline {
+    color: $ref-ink-label;
+    font-size: 13px;
+    margin: 3px 0 0;
+  }
+
+  // ---- featured reorder (editors only) ----
+  // the drag clone is appended to <body>, outside this grid, so the skin has
+  // to name it as well as the list it came from
+  .ref-reorder-grid,
+  .ref-reorder-list,
+  .dd-dragel {
+    margin: 0;
+    padding: 0;
+
+    .dd-item {
+      border-top: 0;
+      font-size: inherit;
+      list-style: none;
+      min-height: 0;
+      padding: 0;
+      position: relative;
+    }
+
+    .dd3-content.card {
+      background: none;
+      border: 0;
+      border-radius: 0;
+      margin: 0;
+      padding: 0;
+      position: static;
+    }
+
+    .main.row {
+      margin: 0;
+      padding: 0;
+    }
+
+    .col-sm-12 {
+      padding: 0;
+      position: static;
+    }
+
+    .dd-handle.dd3-handle,
+    .float-right a {
+      align-items: center;
+      background: $ref-surface;
+      border: 1px solid $ref-input-edge;
+      border-radius: 0;
+      color: $ref-ink-body;
+      display: inline-flex;
+      height: 28px;
+      justify-content: center;
+      margin: 0;
+      padding: 0;
+      position: absolute;
+      top: 10px;
+      width: 28px;
+      z-index: 2;
+    }
+
+    .dd-handle.dd3-handle {
+      cursor: grab;
+      font-size: 0;
+      left: 8px;
+
+      &::before {
+        color: $ref-ink-body;
+        content: '⠿';
+        font-size: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      &:active {
+        cursor: grabbing;
+      }
+    }
+
+    .float-right {
+      float: none;
+      margin: 0;
+
+      a {
+        color: $ref-danger;
+        font-size: 15px;
+        right: 8px;
+        text-decoration: none;
+      }
+
+      a:focus-visible {
+        @include ref-focus-ring;
+      }
+    }
+  }
+
+  // the handle and the unfeature control are absolute, so the row they sit on
+  // has to reserve their width or they land on the title and the count
+  .ref-reorder-list,
+  .dd-dragel {
+    .ref-collection-row {
+      padding-left: 44px;
+      padding-right: 44px;
+    }
+  }
+
+  // a row is as tall as its thumbnail, so the controls center on it rather
+  // than pinning to the top the way they do on a work tile
+  .ref-reorder-list {
+    .dd-handle.dd3-handle,
+    .float-right a {
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  .dd-placeholder {
+    background: $ref-mat;
+    border: 1px dashed $ref-input-edge;
+    min-height: 110px;
+  }
+
+  .dd-dragel {
+    list-style: none;
+    z-index: 100;
+  }
+
+  .ref-reorder-actions {
+    align-items: center;
+    display: flex;
+    gap: 14px;
+    justify-content: flex-end;
+    margin-top: 16px;
+  }
+
+  .ref-reorder-hint {
+    color: $ref-ink-muted;
+    font-size: 13px;
+    margin: 0;
+  }
+
+  .ref-reorder-save {
+    @include ref-sans;
+    background: var(--ref-action, #{$ref-action});
+    border: 0;
+    color: var(--ref-action-ink, #{$ref-action-ink});
+    flex: none;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 9px 18px;
+
+    &:focus-visible {
+      @include ref-focus-ring;
+    }
+  }
+
+  // ---- label bands ----
+  .ref-label-band {
+    border-top: 1px solid $ref-panel-edge;
+  }
+
+  .ref-label-band-inner {
+    @include ref-gutter(192px, 96px);
+    display: grid;
+    gap: 36px;
+    grid-template-columns: 340px minmax(0, 1fr);
+    padding-bottom: 40px;
+    padding-top: 36px;
+
+    @media (max-width: $ref-laptop-max) {
+      grid-template-columns: 240px minmax(0, 1fr);
+    }
+
+    @media (max-width: $ref-tablet-max) {
+      gap: 16px;
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .ref-researcher-body {
+    max-width: 760px;
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      @include ref-sans;
+      color: $ref-ink;
+      font-size: 21px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin: 0;
+    }
+
+    p {
+      color: $ref-ink-body;
+      font-size: 17px;
+      line-height: 1.7;
+      margin: 8px 0 0;
+      overflow-wrap: anywhere;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    em {
+      color: $ref-ink-muted;
+      font-size: 15px;
+    }
+
+    a {
+      @include ref-link;
+    }
+  }
+
+  .ref-about {
+    background: $ref-warm;
+  }
+
+  .ref-about-prose {
+    columns: 2;
+    gap: 40px;
+    max-width: 960px;
+
+    @media (max-width: $ref-laptop-max) {
+      columns: 1;
+    }
+
+    p {
+      color: $ref-ink-body;
+      font-size: 17px;
+      line-height: 1.7;
+      margin-top: 0;
+      overflow-wrap: anywhere;
+      text-wrap: pretty;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    a {
+      @include ref-link;
+    }
+  }
+
+  // ---- share your work ----
+  .ref-cta {
+    background: var(--ref-band, #{$ref-band});
+    border-top: 1px solid var(--ref-band-edge, #{$ref-band-edge});
+  }
+
+  .ref-cta-inner {
+    align-items: center;
+    grid-template-columns: 340px minmax(0, 1fr) auto;
+
+    @media (max-width: $ref-laptop-max) {
+      grid-template-columns: 240px minmax(0, 1fr) auto;
+    }
+
+    @media (max-width: $ref-tablet-max) {
+      align-items: flex-start;
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .ref-cta-heading {
+    @include ref-sans;
+    color: var(--ref-link-strong, #{$ref-link-strong});
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .ref-cta-sub {
+    color: $ref-ink-body;
+    font-size: 17px;
+    margin: 0;
+    max-width: 640px;
+  }
+
+  .ref-cta-actions {
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ref-cta-terms {
+    @include ref-link(var(--ref-link-strong, #{$ref-link-strong}));
+    font-size: 14px;
+    text-align: right;
+
+    @media (max-width: $ref-tablet-max) {
+      text-align: left;
+    }
+  }
+
+  .ref-cta-button {
+    @include ref-deposit-button;
+  }
+
+  // ---- home page text ----
+  .ref-home-text {
+    @include ref-gutter(192px, 96px);
+    padding-bottom: 34px;
+    padding-top: 38px;
+
+    > div {
+      max-width: 920px;
+    }
+
+    > div::before {
+      background: var(--ref-link, #{$ref-link});
+      content: '';
+      display: block;
+      height: 2px;
+      margin-bottom: 14px;
+      width: 96px;
+    }
+
+    p {
+      color: $ref-ink-body;
+      font-size: 19px;
+      line-height: 1.65;
+      overflow-wrap: anywhere;
+      text-wrap: pretty;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    a {
+      @include ref-link;
+    }
+  }
+}

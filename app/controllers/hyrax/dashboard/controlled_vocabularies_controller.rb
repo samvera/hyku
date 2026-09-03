@@ -14,7 +14,8 @@ module Hyrax
       with_themed_layout 'dashboard'
 
       before_action -> { authorize! :view, :controlled_vocabularies }, only: %i[index show]
-      before_action -> { authorize! :manage, :controlled_vocabularies }, only: %i[new create edit update]
+      before_action -> { authorize! :manage, :controlled_vocabularies }, only: %i[edit update]
+      before_action -> { authorize! :create, :new_controlled_vocabulary }, only: %i[new create]
       before_action :load_vocabulary, only: %i[edit update]
 
       def index

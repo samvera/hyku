@@ -1,0 +1,12 @@
+attributes:
+  media_viewer:
+    type: string
+    predicate: https://hykucommons.org/terms/mediaViewer
+    multiple: false
+    form:
+      display: true
+      primary: false
+      required: false
+      multiple: false
+    index_keys:
+      - "media_viewer_ssi"

@@ -12,7 +12,8 @@ RSpec.describe 'the catalog under each home theme', type: :request, singletenant
   # each chrome theme's /controls fork carries a class of its own, so the
   # assertion names what should be there rather than what should be missing
   let(:theme_markers) do
-    { 'practice_research' => '.pr-nav', 'heritage' => '.hrt-nav', 'screening_room' => '.scr-searchbar' }
+    { 'practice_research' => '.pr-nav', 'heritage' => '.hrt-nav', 'screening_room' => '.scr-searchbar',
+      'reference' => '.ref-nav' }
   end
 
   it 'injects theme views only for the themes whose chrome covers these pages' do

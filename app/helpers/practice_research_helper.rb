@@ -1,10 +1,48 @@
 # frozen_string_literal: true
 
-module PracticeResearchShowHelper
+# Helpers for the practice research theme's home and show pages.
+module PracticeResearchHelper
+  NAMED_CONTRIBUTORS = 2
+  CARD_BLURB_LENGTH = 150
   VISIBLE_METADATA_ROWS = 8
   MAX_ROWS = 100
-  MAX_PAGE = 10_000
   DEFAULT_ROWS = 20
+
+  def pr_home
+    theme_home(PracticeResearch::HomepagePresenter)
+  end
+
+  def pr_featured_researcher?
+    @featured_researcher&.value.present?
+  end
+
+  def pr_card_blurb(presenter, length: CARD_BLURB_LENGTH)
+    text = Array(presenter.try(:description)).first
+    return if text.blank?
+
+    truncate(pr_plain_text(text), length:, separator: ' ')
+  end
+
+  def pr_plain_text(html)
+    Nokogiri::HTML.fragment(html.to_s.gsub(%r{</?[a-zA-Z][^>]*>}, ' ')).text.squish
+  end
+
+  def pr_thumbnail?(presenter)
+    path = presenter.thumbnail_path
+
+    path.is_a?(String) && path.present? && path != Hyrax::ThumbnailPathService.default_image
+  end
+
+  def pr_contributor_summary(document)
+    names = pr_contributor_names(document)
+    return if names.empty?
+
+    rest = names.size - NAMED_CONTRIBUTORS
+    return names.to_sentence if rest < 1
+
+    t('practice_research.homepage.featured.contributors_and_others',
+      names: names.first(NAMED_CONTRIBUTORS).join('; '), count: rest)
+  end
 
   def pr_show_panes(presenter)
     @pr_show_panes ||= [].tap do |panes|
@@ -16,13 +54,6 @@ module PracticeResearchShowHelper
       panes << [:items, "#{pr_items_label(presenter)} (#{children.total_count})"] if children.any?
       panes << [:files, "#{t('practice_research.show.tabs.files')} (#{files.total_count})"] if files.any?
     end
-  end
-
-  def pr_active_pane(presenter)
-    keys = pr_show_panes(presenter).map(&:first)
-    requested = params[:pane].to_s.to_sym
-
-    keys.include?(requested) ? requested : keys.first
   end
 
   def pr_context_html(presenter)
@@ -38,17 +69,12 @@ module PracticeResearchShowHelper
     Nokogiri::HTML.fragment(html.to_s).text.strip.present?
   end
 
-  def pr_viewer?(presenter)
-    presenter.video_embed_viewer? ||
-      (presenter.representative_id.present? && presenter.representative_presenter.present?)
-  end
-
   def pr_file_set_ids(presenter)
-    @pr_file_set_ids ||= pr_paginate(presenter.authorized_file_set_ids, :files_page)
+    theme_file_set_ids(presenter, per: pr_rows)
   end
 
   def pr_child_work_ids(presenter)
-    @pr_child_work_ids ||= pr_paginate(presenter.authorized_child_work_ids, :items_page)
+    theme_child_work_ids(presenter, per: pr_rows)
   end
 
   def pr_file_sets(presenter)
@@ -87,30 +113,20 @@ module PracticeResearchShowHelper
     names.select { |field| presenter.respond_to?(field) && presenter.public_send(field).present? }
   end
 
-  def pr_license_badge(presenter)
-    license = Array(presenter.try(:license)).first.to_s
-    return 'CC0 1.0' if license.include?('creativecommons.org/publicdomain/zero/1.0')
-
-    match = license.match(%r{creativecommons\.org/licenses/([a-z-]+)/(\d+\.\d+)})
-    return unless match
-
-    "CC #{match[1].upcase} #{match[2]}"
-  end
-
   private
 
-  # TODO: dedupe with heritage hrt_member_pages — shared paginate-members helper
-  def pr_paginate(ids, param_name)
-    paged = Kaminari.paginate_array(ids, total_count: ids.size)
-                    .page(pr_positive_param(param_name, 1, MAX_PAGE))
-                    .per(pr_positive_param(:rows, DEFAULT_ROWS, MAX_ROWS))
+  def pr_contributor_names(document)
+    rows = begin
+             JSON.parse(Array(document['participants_json_ss']).first.to_s)
+           rescue JSON::ParserError
+             []
+           end
+    names = Array(rows).filter_map { |row| row['name'] if row.is_a?(Hash) }.compact_blank
 
-    paged.out_of_range? && paged.total_pages.positive? ? paged.page(paged.total_pages) : paged
+    names.presence || Array(document['creator_tesim']).compact_blank
   end
 
-  def pr_positive_param(name, fallback, ceiling)
-    digits = params[name].to_s[/\d+/]
-
-    digits.blank? ? fallback : digits.to_i.clamp(1, ceiling)
+  def pr_rows
+    theme_positive_param(:rows, DEFAULT_ROWS, MAX_ROWS)
   end
 end

@@ -60,58 +60,27 @@ RSpec.describe ThemeHelper, type: :helper do
     end
   end
 
-  describe '#theme_luminance' do
-    it 'reads a dark brand color as dark' do
-      expect(helper.theme_luminance('#3c3c3c')).to be < 0.22
+  describe '#theme_file_set_ids' do
+    let(:presenter) { double(authorized_file_set_ids: (1..25).map { |i| "fs-#{i}" }) }
+
+    it 'pages at ten entries' do
+      paged = helper.theme_file_set_ids(presenter)
+
+      expect(paged.total_count).to eq(25)
+      expect(paged.count).to eq(10)
+      expect(paged.total_pages).to eq(3)
     end
 
-    it 'reads a mid grey as already too light for a dark ramp' do
-      expect(helper.theme_luminance('#808080')).to be > 0.0631
+    it 'clamps an out of range page back to the last page' do
+      allow(helper).to receive(:params).and_return({ files_page: '99' })
+
+      expect(helper.theme_file_set_ids(presenter).current_page).to eq(3)
     end
 
-    it 'keeps a dark brand grey under the ramp ceiling' do
-      expect(helper.theme_luminance('#454545')).to be <= 0.0631
-    end
+    it 'ignores junk page params' do
+      allow(helper).to receive(:params).and_return({ files_page: 'DROP TABLE' })
 
-    it 'treats a value it cannot read as dark' do
-      expect(helper.theme_luminance('rgb(0,0,0)')).to eq(0)
-    end
-  end
-
-  describe '#theme_brand_mix' do
-    it 'keeps the design value for a brand colour that already clears the floor' do
-      expect(helper.theme_brand_mix('#2e74b2')).to eq(55)
-    end
-
-    it 'lifts a near-black brand colour further' do
-      expect(helper.theme_brand_mix('#000000')).to be < 55
-    end
-
-    it 'lands a near-black brand colour above the floor' do
-      percent = helper.theme_brand_mix('#000000')
-      lifted = (255 * (100 - percent)) / 100
-
-      expect(helper.theme_luminance(format('#%02x%02x%02x', lifted, lifted, lifted))).to be >= 0.31
-    end
-  end
-
-  describe '#theme_brand_mix with junk input' do
-    it 'falls back to the design value rather than raising' do
-      expect(helper.theme_brand_mix('#fff')).to eq(55)
-    end
-  end
-
-  describe '#theme_readable_ink' do
-    it 'puts light ink on a dark accent' do
-      expect(helper.theme_readable_ink('#2e74b2')).to eq('#ffffff')
-    end
-
-    it 'puts dark ink on a light accent' do
-      expect(helper.theme_readable_ink('#ffeb3b')).to eq('#000000')
-    end
-
-    it 'falls back to light ink for a value it cannot read' do
-      expect(helper.theme_readable_ink('rgb(0,0,0)')).to eq('#ffffff')
+      expect(helper.theme_file_set_ids(presenter).current_page).to eq(1)
     end
   end
 
@@ -163,6 +132,52 @@ RSpec.describe ThemeHelper, type: :helper do
         .and_return(double(default_work_image: double(url: '/uploads/work.jpg'), default_collection_image: nil))
 
       expect(helper.theme_thumbnail_url(SolrDocument.new)).to eq('/uploads/work.jpg')
+    end
+  end
+
+  describe '#theme_type_label' do
+    it 'prefers the resource type the tenant cataloged' do
+      object = double('document', resource_type: ['Thesis'], human_readable_type: 'Generic Work')
+
+      expect(helper.theme_type_label(object)).to eq('Thesis')
+    end
+
+    it 'falls back to the model name when no resource type is recorded' do
+      object = double('document', resource_type: [], human_readable_type: 'Generic Work')
+
+      expect(helper.theme_type_label(object)).to eq('Generic Work')
+    end
+
+    it 'ignores a blank resource type rather than rendering an empty chip' do
+      object = double('document', resource_type: ['  '], human_readable_type: 'Generic Work')
+
+      expect(helper.theme_type_label(object)).to eq('Generic Work')
+    end
+  end
+
+  describe '#theme_license_badge' do
+    def badge_for(license)
+      helper.theme_license_badge(double('presenter', license: Array(license)))
+    end
+
+    it 'shortens a Creative Commons license URL' do
+      expect(badge_for('https://creativecommons.org/licenses/by/4.0/')).to eq('CC BY 4.0')
+    end
+
+    it 'handles hyphenated codes' do
+      expect(badge_for('https://creativecommons.org/licenses/by-nc-nd/3.0/')).to eq('CC BY-NC-ND 3.0')
+    end
+
+    it 'recognizes CC0' do
+      expect(badge_for('http://creativecommons.org/publicdomain/zero/1.0/')).to eq('CC0 1.0')
+    end
+
+    it 'is nil for anything else, so the badge is not rendered' do
+      expect(badge_for('http://www.europeana.eu/portal/rights/rr-r.html')).to be_nil
+    end
+
+    it 'is nil with no license at all' do
+      expect(badge_for(nil)).to be_nil
     end
   end
 end

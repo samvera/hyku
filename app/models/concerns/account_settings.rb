@@ -22,6 +22,7 @@ module AccountSettings
 
     setting :allow_downloads, type: 'boolean', default: true
     setting :allow_signup, type: 'boolean', default: true
+    setting :allowed_content_types, type: 'string', default: ''
     setting :analytics, type: 'boolean', default: false
     setting :batch_email_notifications, type: 'boolean', default: false
     setting :bulkrax_field_mappings, type: 'json_editor', default: Hyku.default_bulkrax_field_mappings.to_json
@@ -59,6 +60,7 @@ module AccountSettings
     setting :solr_max_results, type: 'string', default: '10000'
     setting :solr_rows_per_request, type: 'string', default: '1000'
     setting :ssl_configured, type: 'boolean', default: true, private: true
+    setting :storage_limit, type: 'string', default: ''
     setting :weekly_email_list, type: 'array', disabled: true
     setting :yearly_email_list, type: 'array', disabled: true
 
@@ -81,7 +83,10 @@ module AccountSettings
                 message: "must be numeric"
               },
               if: -> { google_analytics_property_id.present? }
-    validates :solr_rows_per_request, :solr_max_results,
+    # file_size_limit joins these now that it is enforced server-side rather than
+    # only feeding the upload widget: it is read with #to_i, so "5 GB" would parse
+    # to 5 bytes and "five" to 0, which reads as no limit at all.
+    validates :solr_rows_per_request, :solr_max_results, :storage_limit, :file_size_limit,
               format: { with: /\A\d+\z/, message: "must be a positive integer" },
               allow_blank: true
 

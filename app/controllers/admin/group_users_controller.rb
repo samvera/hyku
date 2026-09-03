@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 module Admin
-  class GroupUsersController < ApplicationController
-    before_action :load_group
+  class GroupUsersController < AdminController
+    # user_manager can manage group users as well as admins
+    before_action :ensure_admin!, except: [:index, :create, :destroy]
+    before_action :load_and_athorize_group
     before_action :cannot_remove_admin_users_from_admin_group, only: [:destroy]
-    before_action :cannot_add_admin_users_unless_admin
-    before_action :ensure_group_role_admin
     layout 'hyrax/dashboard'
 
     def index
@@ -33,16 +33,10 @@ module Admin
 
     private
 
-    def ensure_admin!
-      authorize! :read, :admin_dashboard
-    end
-
-    def ensure_group_role_admin
-      authorize! :edit, Hyrax::Group
-    end
-
-    def load_group
+    def load_and_athorize_group
       @group = Hyrax::Group.find_by(id: params[:group_id])
+      authorize! :edit, @group
+      ensure_admin! if @group.name == ::Ability.admin_group_name
     end
 
     def page_number
@@ -51,12 +45,6 @@ module Admin
 
     def page_size
       params.fetch(:per, 10).to_i
-    end
-
-    def cannot_add_admin_users_unless_admin
-      return unless @group.name == ::Ability.admin_group_name
-
-      ensure_admin!
     end
 
     def cannot_remove_admin_users_from_admin_group

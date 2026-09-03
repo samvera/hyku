@@ -75,6 +75,23 @@ RSpec.describe ApplicationHelper, type: :helper do
         expect(helper.locale_for(type: 'labels', record_class: "account", term: :very_much_missing)).to be_nil
       end
     end
+
+    context 'when the term exists only in the simple_form scope' do
+      it 'falls back to the simple_form translation' do
+        allow(I18n).to receive(:t).and_call_original
+        allow(I18n).to receive(:t).with('hyrax.account.hints.title', default: nil).and_return(nil)
+        allow(I18n).to receive(:t).with('simple_form.hints.defaults.title', default: nil).and_return('A hint')
+        expect(helper.locale_for(type: 'hints', record_class: 'account', term: :title)).to eq('A hint')
+      end
+    end
+  end
+
+  describe 'missing view translations' do
+    # A helper named missing_translation shadows Rails' private TranslationHelper
+    # hook, and its return value gets rendered into the page.
+    it 'does not render a literal false for a missing key' do
+      expect(helper.t('hyku.specs.definitely_missing_key')).not_to eq(false)
+    end
   end
 
   describe '#work_type_facet_label' do

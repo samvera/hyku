@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
 module Admin
-  class GroupRolesController < ApplicationController
-    before_action :load_group
+  class GroupRolesController < AdminController
+    before_action :ensure_admin!, except: [:index, :create, :destroy]
+    before_action :load_and_athorize_group
     before_action :cannot_remove_admin_role_from_admin_group, only: [:destroy]
-    before_action :cannot_add_admin_role_unless_admin
-    before_action :ensure_group_role_admin
     layout 'hyrax/dashboard'
 
     rescue_from ActiveRecord::RecordNotFound, with: :redirect_not_found
@@ -45,16 +44,10 @@ module Admin
 
     private
 
-    def ensure_admin!
-      authorize! :read, :admin_dashboard
-    end
-
-    def ensure_group_role_admin
-      authorize! :edit, Hyrax::Group
-    end
-
-    def load_group
+    def load_and_athorize_group
       @group = Hyrax::Group.find_by(id: params[:group_id])
+      authorize! :edit, @group
+      ensure_admin! if @group.name == ::Ability.admin_group_name
     end
 
     def redirect_not_found
@@ -63,22 +56,13 @@ module Admin
     end
 
     def cannot_remove_admin_role_from_admin_group
+      role = Role.find_by(id: params[:role_id])
       return unless @group.name == ::Ability.admin_group_name && role.name == 'admin'
 
       redirect_back(
         fallback_location: edit_admin_group_path(@group),
         flash: { error: "Admin role cannot be removed from this group" }
       )
-    end
-
-    def cannot_add_admin_role_unless_admin
-      return unless role&.name == 'admin'
-
-      ensure_admin!
-    end
-
-    def role
-      @role ||= Role.find_by(id: params[:role_id])
     end
   end
 end

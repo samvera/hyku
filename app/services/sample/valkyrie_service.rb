@@ -65,6 +65,17 @@ module Sample
 
     private
 
+    def random_visibility
+      visibility_pool.sample
+    end
+
+    # 80% public / 15% authenticated / 5% private by default, so access-control checks have real variety to chew on.
+    def visibility_pool
+      @visibility_pool ||= [Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC] * ENV.fetch('HYKU_SAMPLE_VISIBILITY_PUBLIC', 80).to_i +
+                           [Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED] * ENV.fetch('HYKU_SAMPLE_VISIBILITY_AUTHENTICATED', 15).to_i +
+                           [Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE] * ENV.fetch('HYKU_SAMPLE_VISIBILITY_PRIVATE', 5).to_i
+    end
+
     def confirm_cleanup # rubocop:disable Metrics/AbcSize
       # Skip confirmation if CONFIRM environment variable is set to 'true'
       return true if ENV['CONFIRM']&.downcase == 'true'

@@ -148,6 +148,25 @@ RSpec.describe Hyrax::HomepageController, type: :controller, clean_repo: true do
           expect(assigns(:ir_counts)['facet_counts']['facet_fields']['resource_type_sim']).to include('Article', 1)
         end
       end
+
+      context 'with the practice_research theme', :clean_repo do
+        before do
+          allow(controller).to receive(:home_page_theme).and_return('practice_research')
+        end
+
+        it 'wires the homepage presenter with the request data' do
+          get :index
+
+          home = controller.view_context.pr_home
+          expect(home).to be_a(PracticeResearch::HomepagePresenter)
+          expect(home.counts).to eq(collections: 0, works: 0)
+        end
+      end
+    end
+
+    it 'sends the facet "more" link to the catalog facet action' do
+      get :index
+      expect(controller.send(:search_facet_path, id: 'creator_sim')).to start_with '/catalog/facet/creator_sim'
     end
   end
 end

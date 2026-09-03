@@ -51,6 +51,30 @@ RSpec.describe Hyrax::MenuPresenter do
 
       it { is_expected.to be false }
     end
+
+    context "for the Admin::AccountsController" do
+      let(:controller) { Admin::AccountsController.new }
+
+      it { is_expected.to be true }
+    end
+
+    context "for the Admin::WorkTypesController" do
+      let(:controller) { Admin::WorkTypesController.new }
+
+      it { is_expected.to be true }
+    end
+
+    context "for the Hyrax::Admin::CollectionTypesController" do
+      let(:controller) { Hyrax::Admin::CollectionTypesController.new }
+
+      it { is_expected.to be true }
+    end
+
+    context "for the IdentityProvidersController" do
+      let(:controller) { IdentityProvidersController.new }
+
+      it { is_expected.to be true }
+    end
   end
 
   describe "#roles_and_permissions_section?" do

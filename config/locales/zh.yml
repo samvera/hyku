@@ -3,13 +3,18 @@ zh:
   activefedora:
     models:
       etd: 紧急断电
-      generic_work: 工作
+      generic_work: 作品
       image: 图像
       oer: 开放教育资源
   activerecord:
     attributes:
       site:
         institution_name_full: 完整的机构名称
+    errors:
+      messages:
+        already_an_authority: 已被另一个受控词表使用
+        taken_as_source_key: '%{value} 已是另一个受控词表的源键'
+        cannot_remove_last_superadmin: 无法移除公开演示租户的最后一名 superadmin
   application:
     tagline: 下一代存储库解决方案
   blacklight:
@@ -164,6 +169,25 @@ zh:
         last_login: 最后访问
         name: 名称
         user_key: 用户名
+  datetime:
+    distance_in_words:
+      about_x_hours: 大约%{count}小时
+      about_x_months: 大约%{count}个月
+      about_x_years: 大约%{count}年
+      almost_x_years: 接近%{count}年
+      half_a_minute: 半分钟
+      less_than_x_seconds: 不到%{count}秒
+      less_than_x_minutes: 不到%{count}分钟
+      over_x_years: "%{count}年多"
+      x_seconds: "%{count}秒"
+      x_minutes: "%{count}分钟"
+      x_days: "%{count}天"
+      x_months: "%{count}个月"
+      x_years: "%{count}年"
+  date:
+    formats:
+      long: "%Y年%-m月%-d日"
+      pr_short: "%Y年%-m月%-d日"
   errors:
     messages:
       valid_embed_url: 必须是有效的YouTube或Vimeo嵌入URL。
@@ -185,7 +209,71 @@ zh:
         submit: 去掉
       user_search:
         submit: 走
+  heritage:
+    homepage:
+      intro_label: "简介"
+      hero:
+        headline: 探索馆藏
+        search_label: 检索馆藏
+        search_placeholder: 输入检索词
+        search_button: 检索
+        advanced: 高级检索
+      browse:
+        heading: 浏览
+        toggle: 显示分面
+      featured:
+        unfeature_confirm: "要将其从精选列表中移除吗？"
+        reorder_hint: "拖动某个项目进行重新排序，然后保存。"
+        save_order: "保存顺序"
+      featured_works:
+        heading: 精选作品
+        see_all:
+          one: "查看全部 %{count} 件作品"
+          other: "查看全部 %{count} 件作品"
+      collections:
+        heading: 探索收藏
+        view_all: 查看全部收藏
+      recent:
+        ago: "%{time}前"
+        heading: 最近添加
+        view_all: "查看全部"
+      researcher:
+        heading: 精选研究员
+      about:
+        heading: 关于馆藏
+      cta:
+        heading: 分享您的作品
+        sub: 将作品存缴至本仓储。
+        button: 开始存缴
+    show:
+      citation:
+        heading: "引用"
+        style: "引用格式"
+        styles:
+          apa: "APA"
+          mla: "MLA"
+          chicago: "Chicago"
+        copy_visible: "复制引用"
+        copied: "已复制"
+        endnote: "下载 EndNote 记录"
+        note: "仅供参考。请根据您所用的格式指南进行核对。"
+      files:
+        as_format: 为 %{name}
+        heading: 文件
+        count:
+          one: 1 个文件
+          other: "%{count} 个文件"
+      children:
+        heading: 子作品
+        count:
+          one: 1 件作品
+          other: "%{count} 件作品"
+      part_of:
+        heading: 所属
   hyku:
+    works:
+      errors:
+        work_type_not_offered: 本站点不提供该作品类型。请选择其他类型。
     account:
       signup_disabled: 帐户注册被禁用
     deposit_wizard:
@@ -330,6 +418,179 @@ zh:
           upload: 上传文件
         label: 存缴进度
     admin:
+      controlled_vocabularies: 受控词表
+      controlled_vocabulary:
+        active: 已启用
+        at_position: '%{label} 已位于第 %{position} 项（共 %{total} 项）'
+        awaiting_import: 未导入
+        awaiting_import_help: '此词表可用，但在此租户中尚无词条。运行以下命令进行填充：%{task}'
+        cancel_order: 取消
+        confirm_back: 返回编辑
+        confirm_create: 确认并创建
+        confirm_help: 请在创建词表前检查这些值。
+        confirm_permanent: 词表创建后无法删除，其来源键此后也无法更改，因此引用该键的元数据配置文件将持续有效。
+        confirm_title: 确认新词表
+        create: 检查词表
+        create_term: 添加词条
+        created: '%{name} 已创建。请在下方添加其词条。'
+        description: 描述
+        description_help: 可选。向其他工作人员说明此词表的用途。
+        download: 下载
+        edit_field: '编辑%{field}'
+        edit_heading: '编辑 %{name}'
+        edit_help: 更改此词表对馆员显示的措辞。其源键固定不变，因此引用它的元数据配置档仍可正常使用。
+        edit_title: 编辑词表
+        import:
+          additions_heading: 待添加的词条
+          applied: 已导入 %{additions} 个新词条，并更新 %{updates} 个现有词条。
+          applied_reordered: 词条已重新排序以与文件一致。
+          back: 上传其他文件
+          button: 导入词条
+          column: 列
+          columns:
+            active: true 或 false。单元格留空时，新词条设为启用，现有词条保持当前状态。
+            id: 可选。默认取 label，保存后无法更改。
+            label: 必填。存缴者看到的内容。
+          confirm: 确认导入
+          continue: 继续进入审核
+          download_template: 下载当前词条（CSV）
+          errors:
+            blank_label: '第 %{line} 行：标签为空。'
+            duplicate_column: '文件包含含义相同的列：%{columns}。'
+            duplicate_id: '第 %{lines} 行：词条 id %{id} 重复。'
+            empty: 文件没有词条行。
+            encoding: 文件必须是 UTF-8 文本。
+            invalid_active: '第 %{line} 行：active 必须是 true 或 false。'
+            invalid_term: '第 %{line} 行：不是词条条目。'
+            invalid_yaml: '文件无法作为 yaml 读取：%{message}'
+            malformed_csv: '文件无法作为 CSV 读取：%{message}'
+            missing_label: 文件需要 label 列。
+            not_a_vocabulary: 该 yaml 文件没有词条列表。
+            too_long: '第 %{line} 行：id 和标签最多 %{max} 个字符。'
+            too_many_rows: 文件超过 %{max} 行。请拆分后分批导入。
+            unsupported: 请上传 .csv、.yml 或 .yaml 文件。
+          errors_heading: 未导入任何内容。请修正这些行后重新上传文件。
+          example: 示例
+          field: 字段
+          file_help: CSV 或 yaml，最大 5 MB，最多 50,000 行。
+          file_label: 词条文件
+          file_missing: 请选择要导入的 CSV 或 yaml 文件。
+          file_too_large: 该文件过大。导入最多接受 5 MB 的文件。
+          from: 当前
+          heading: '将词条导入 %{name}'
+          help: 上传词条文件，为此词表添加词条或更新其现有词条。在确认审核之前不会保存任何内容。
+          more_rows: 及另外 %{count} 个
+          no_changes: 此文件与当前词条一致，没有可导入的内容。
+          notes: 说明
+          payload_invalid: 审核已过期或其数据已损坏。请重新上传文件。
+          reordered: 词条将重新排序以与文件一致。
+          review_heading: '审核导入 %{name} 的词条'
+          review_title: 审核导入
+          rules:
+            missing_column: 文件中缺少的列不会改动对应属性。
+            missing_rows: 文件中缺少的行绝不会删除词条；请使用 active=false 停用词条。
+            order: 词条的顺序取自文件中的行顺序。要重新排序词条，请编辑完整的下载文件并重新导入。
+            yaml: yaml 文件使用与 yaml 下载相同的格式。
+          stale: 在您审核期间此词表发生了变化。请查看下方更新后的对比并再次确认。
+          summary: '%{additions} 个待添加，%{updates} 个待更改（%{deactivations} 个待停用），%{unchanged} 个无变化。'
+          template_heading: 文件格式
+          title: 导入词条
+          to: 新值
+          updates_heading: 待更改的词条
+          warnings:
+            partial_order: 文件遗漏了现有词条，因此未应用其行顺序。要重新排序，请编辑完整的下载文件。
+            source_key_mismatch: 此文件从 %{source_key} 导出，但正在导入 %{name}。
+            unknown_columns: '已忽略的列：%{columns}。'
+          warnings_heading: 警告
+        inactive: 未启用
+        label: 标签
+        label_hint: 存缴者在表单中看到的内容。可以放心改写，不会影响已存储的记录。
+        move_earlier: 将 %{label} 上移
+        move_later: 将 %{label} 下移
+        moved: 已将 %{label} 移至第 %{position} 项（共 %{total} 项）
+        name: 词表
+        new_help: 为词表命名，其源键将由该名称生成。源键是元数据配置档所引用的内容，之后无法更改。
+        new_term_heading: 向 %{vocabulary} 添加词条
+        new_term_help: 按存缴者应看到的形式为词条命名。词条 ID 是记录所存储的值，词条一旦使用便无法更改。
+        new_term_title: 添加词条
+        new_title: 新建词表
+        no_description: 未填写
+        no_terms: 此词表尚无词条。
+        none: 此租户尚未设置任何受控词表。
+        order: 顺序
+        order_hint: 词条在提交表单中的显示顺序。
+        order_saved: 词条顺序已保存。
+        order_stale: 术语在您重新排序时发生了更改，因此未保存排序。请查看当前顺序后重试。
+        order_unsaved: 请先保存顺序，然后再停用或恢复词条。否则您设置的顺序将被丢弃。
+        order_unsaved_short: 在保存顺序之前不可用
+        origin: 来源
+        origin_hint: 词表的定义位置，并由此决定其词条能否在此处编辑。
+        origins:
+          cached: 导入的副本
+          database: 此租户
+          file: 配置文件
+          remote: 外部服务
+        providers:
+          crossref: Crossref
+          discogs: Discogs
+          fast: OCLC FAST
+          geonames: GeoNames
+          getty: Getty
+          loc: Library of Congress
+          mesh: MeSH
+          tgnlang: Getty TGN Languages
+        read_only:
+          file: 此词表在配置文件中定义，因此其词条无法在此处修改。
+        ready: 就绪
+        reorder_handle: 重新排序 %{label}：拖动或使用箭头键
+        reorder_hint: 拖动词条，或使用箭头按钮，设置其在提交表单中的显示顺序。完成后请保存顺序。
+        restore: 恢复
+        retire: 停用
+        retired_count:
+          one: （已停用 %{count} 个）
+          other: （已停用 %{count} 个）
+        save: 保存更改
+        save_order: 保存顺序
+        show_title: '受控词表：%{name}'
+        source_key: 来源键
+        source_key_hint: 将其粘贴到元数据配置档的字段中，即可用此词表控制该字段。
+        source_key_help: 将来源键粘贴到元数据配置档的字段中，即可用此词表控制该字段。在此租户中管理的词表可以在此处编辑；在配置文件中定义或来自外部服务的词表则不能。
+        static_forms: 未启用元数据配置档，因此存缴表单从配置文件读取此词表。修改其词条需要开发人员协助。
+        status: 状态
+        status_action: 更改状态
+        status_hint: 此词表是就绪可用，还是需要先完成某些设置。
+        status_unknown: 未指定
+        term_created: '%{label} 已添加。'
+        term_id: 词条 ID
+        term_id_from_label: 留空则使用标签作为词条 ID。
+        term_id_immutable: 之后无法更改。
+        term_limit:
+          one: （显示前 %{count} 个）
+          other: （显示前 %{count} 个）
+        term_id_hint: 存储在记录上的值，也是 Bulkrax 导入时应提供的值。
+        term_id_help: 词条 ID 是存储在记录上的值，也是 Bulkrax 导入时应提供的值。标签只是存缴者看到的内容。
+        term_restored: '%{label} 已恢复，将再次在提交表单中提供。'
+        term_retired: '%{label} 已停用，将不再在提交表单中提供。'
+        term_total:
+          one: 1 个词条
+          other: "%{count} 个词条"
+        terms: 词条
+        terms_elsewhere:
+          cached: 此词表包含一份外部词表的导入副本，数量过多，无法在此处列出。其词条会在提交表单中提供。
+          generic: 此词表的词条未在此处列出。
+          remote: 词条来自外部服务，因此此处没有可显示的列表。
+        terms_unavailable: 无法读取此词表的词条，因此未在此处列出。其配置文件可能缺失。
+        unconfigured: 需要设置
+        unconfigured_help: 此服务需要先配置凭据才能使用。在此之前，引用它的字段将接受自由文本，而不提供建议。
+        unused: 没有元数据属性使用此词表。
+        unused_profile_hint: 如需启用，请将此词表的源键添加到租户元数据配置档中某个属性的受控值。
+        updated: '%{name} 已更新。'
+        used_by: 使用它的属性
+        used_by_hint: 由此词表控制的元数据属性，其名称与 Bulkrax 导入和元数据配置档中所用的一致。
+        used_by_work_types: '可用于：'
+        work_types:
+          etd_resource: ETD
+          oer_resource: OER
       flash:
         access_denied: 您无权查看此页面
       google_analytics_settings:
@@ -501,6 +762,9 @@ zh:
         show:
           header: 管理用户
           update: 更新
+    search:
+      form:
+        advanced: 高级检索
     splash:
       account_denied: 您没有创建租户的权限。
       account_login: 登录即可开始
@@ -651,6 +915,88 @@ zh:
     collections:
       cannot:
         manage_discovery: 您无权更改此收藏集的发现设置
+  practice_research:
+    homepage:
+      hero:
+        title: 实践研究，完整保存
+        lede: 艺术作品、文档与文字，以完整项目的形式存缴，并保持创作者设定的顺序。
+        search_label: 搜索本仓储库
+        search_placeholder: 搜索馆藏与作品
+        search_button: 搜索
+        advanced_search: 高级搜索
+        browse_everything: 浏览全部
+      about:
+        heading: 本仓储库收录的内容
+        first_paragraph: 实践研究很少以单个文件的形式出现。一项委托可能留下草图、模型、开幕影片、评论，以及多年后撰写的文章，单独来看都失去了意义。
+        second_paragraph: 以完整项目的方式存缴，可以将这些部分按顺序保存在一起，并附有说明该合集主旨的背景陈述。这里的一切均由研究者本人存缴。
+        about_link: 关于本仓储库
+      recent:
+        heading: 最近上传
+        all: 查看全部
+        all_label: 查看全部最近上传的作品
+        in_parent: 收录于 %{title}
+      researcher:
+        heading: 推荐研究者
+      browse:
+        work_types: 按作品类型浏览
+        resource_types: 按资源类型浏览
+        subjects: 按主题浏览
+      featured:
+        heading: 推荐作品
+        view_all: 查看全部作品
+        collections_heading: 推荐馆藏
+        view_all_collections: 查看全部馆藏
+        works_in_collection:
+          one: 1 件作品
+          other: "%{count} 件作品"
+        reorder_hint: "拖动某个项目进行重新排序，然后保存。"
+        save_order: 保存顺序
+        unfeature_confirm: 将此作品从推荐列表中移除？
+        unfeature_collection_confirm: 将此馆藏从推荐列表中移除？
+        contributors_and_others:
+          one: "%{names} 及另外 1 人"
+          other: "%{names} 及其他 %{count} 人"
+      stats:
+        works:
+          one: 件作品
+          other: 件作品
+        collections:
+          one: 个馆藏
+          other: 个馆藏
+    show:
+      tabs_label: 记录栏目
+      tabs:
+        context: 背景陈述
+        metadata: 更多信息
+        files: 文件
+      files_heading: 本记录的文件
+      items:
+        default: 条目
+      metadata_heading: 描述性元数据
+      placement_heading: 所属
+      parent_work_label: 上级作品
+      fields_show_all: 显示全部 %{count} 个字段
+      fields_show_fewer: 收起字段
+      files_note: 直接存缴在本记录下的文件。所含作品的文件位于各作品之下。
+      items_note: 本记录所含的作品，按存缴顺序排列。
+      files_count:
+        one: 1 个文件
+        other: "%{count} 个文件"
+      items_count:
+        one: 1 个条目
+        other: "%{count} 个条目"
+      relationships: 关联
+      cite: 引用
+      endnote: 下载 EndNote 格式
+      permalink: 永久链接
+      contributors: 贡献者
+      citation_style: 引用格式
+      citation_styles:
+        apa: APA（第7版）
+        mla: MLA（第9版）
+        chicago: 芝加哥格式
+      citation_copy: 复制
+      citation_copied: 已复制
   proprietor:
     accounts:
       edit:
@@ -658,6 +1004,10 @@ zh:
         data_cite_endpoint: 数据引用端点
         fcrepo_endpoint: Fedora端点
         header: 编辑帐号
+        public_demo_tenant:
+          disabled: '否'
+          enabled: '是'
+          immutable: 此设置在创建账户时确定，创建后无法更改。
         solr_endpoint: Solr端点
       index:
         actions: 操作
@@ -718,6 +1068,136 @@ zh:
         edit: 編輯
         header: 管理用户
         update: 更新
+  reference:
+    homepage:
+      intro_label: "简介"
+      hero:
+        headline: "检索资源库"
+        search_label: "检索资源库"
+        search_placeholder: "检索标题、作者、主题和全文"
+        search_button: "检索"
+        advanced: "高级检索"
+        deposit_prompt: "有成果要分享？"
+        deposit_button: "提交成果"
+      browse:
+        heading: "浏览资源库"
+        all_options: "浏览全部"
+        all:
+          subjects: "全部主题"
+          creators: "全部作者"
+          collections: "全部馆藏"
+          publishers: "全部出版者"
+      recent:
+        heading: "最新提交"
+        view_all: "全部最新提交"
+        and_others: "等"
+        deposited: "提交于 %{date}"
+        embargo: "处于禁限期"
+      collections:
+        heading: "精选馆藏"
+        view_all: "查看全部"
+        works_count:
+          one: "%{count} 件作品"
+          other: "%{count} 件作品"
+      featured:
+        unfeature_confirm: "要将其从精选列表中移除吗？"
+        reorder_hint: "拖动条目以重新排序，然后保存。"
+        save_order: "保存排序"
+      featured_works:
+        heading: "精选作品"
+        see_all: "查看全部"
+      researcher:
+        heading: "特邀研究者"
+      about:
+        heading: "关于馆藏"
+      cta:
+        heading: "分享您的成果"
+        sub: "将论文、学位论文与研究数据提交至资源库。"
+        button: "开始提交"
+      stats:
+        collections:
+          one: 馆藏
+          other: 馆藏
+        works:
+          one: 作品
+          other: 作品
+    show:
+      tabs_label: "记录板块"
+      in_collection: "属于"
+      tabs:
+        metadata: "元数据"
+        files: "文件"
+        children: "子作品"
+      part_of:
+        heading: "所属"
+      citation:
+        heading: "引用"
+        style: "引用格式"
+        endnote: "导出到 EndNote"
+        copy: "复制"
+        copied: "已复制"
+        styles:
+          apa: "APA"
+          mla: "MLA"
+          chicago: "Chicago"
+  screening_room:
+    chrome:
+      toggle_navigation: 切换导航
+    homepage:
+      about:
+        heading: 关于馆藏
+      collections:
+        heading: 精选收藏
+        unfeature_confirm: 从精选列表中移除此收藏？
+        view_all: 查看全部收藏
+        works_count:
+          one: 1 件作品
+          other: '%{count} 件作品'
+      cta:
+        button: 开始存缴
+        heading: 分享您的作品
+        sub: 将录音、转录件与制作文件存缴至本仓储。
+      lede:
+        collections: 收藏
+        label: 关于馆藏
+        works: 作品
+      player:
+        close: 关闭
+      recent:
+        ago: '%{time}前'
+        heading: 最新入藏
+        view_all: 查看全部最新入藏
+      researcher:
+        heading: 精选研究员
+      spotlight:
+        editor_heading: 精选作品
+        featured: 精选
+        hold: 暂停
+        label: 精选作品
+        quick_view: 快速查看
+        reorder_hint: 拖动项目以调整顺序，然后保存。
+        resume: 播放
+        save_order: 保存顺序
+        segment: '显示 %{title}'
+        unfeature_confirm: 从精选列表中移除此作品？
+        view_work: 查看作品
+    show:
+      citation:
+        copied: 已复制
+        copy_visible: 复制引用
+        endnote: 下载 EndNote 记录
+        heading: 引用
+        note: 仅供参考，请对照您常用的引用格式核对。
+        style: 引用格式
+        styles:
+          apa: APA
+          chicago: Chicago
+          mla: MLA
+      items:
+        count:
+          one: 1 个项目
+          other: '%{count} 个项目'
+        meta: '%{visibility} · %{date}'
   single_signon:
     index:
       sign_in_with_provider: 使用 %{provider} 登录

@@ -219,6 +219,109 @@ body.public-facing .hyc-banner .hyc-title h1 {
   color: <%= appearance.collection_banner_text_color %> !important;
 }
 
+/* PRACTICE RESEARCH THEME CUSTOMIZATIONS */
+<% if home_page_theme == 'practice_research' || show_page_theme == 'practice_research_show' %>
+:root {
+  --pr-accent: <%= appearance.primary_button_background_color %>;
+  --pr-accent-ink: <%= appearance.primary_button_text_color %>;
+  --pr-band-dark: <%= appearance.header_and_footer_background_color %>;
+  --pr-band-text: <%= appearance.header_and_footer_text_color %>;
+  --pr-band-link: <%= appearance.footer_link_color %>;
+  --pr-link: <%= appearance.link_color %>;
+  --pr-primary: <%= appearance.link_color %>;
+  --pr-brand-ink: <%= appearance.link_hover_color %>;
+  --pr-button: <%= appearance.default_button_background_color %>;
+  --pr-button-edge: <%= appearance.default_button_border_color %>;
+  --pr-button-ink: <%= appearance.default_button_text_color %>;
+  --pr-button-hover: <%= appearance.default_button_hover_background_color %>;
+  --pr-button-hover-edge: <%= appearance.default_button_hover_border_color %>;
+}
+<% end %>
+
+/* HERITAGE THEME CUSTOMIZATIONS */
+<% if home_page_theme == 'heritage' || show_page_theme == 'heritage_show' %>
+  <% heritage_default_serif = appearance.headline_font.include?('Helvetica') %>
+  <% heritage_default_sans = appearance.body_font.include?('Helvetica') %>
+:root {
+  --hrt-serif: <%= heritage_default_serif ? 'Georgia, Times New Roman, serif' : appearance.font_headline_family %>;
+  --hrt-sans: <%= heritage_default_sans ? 'Helvetica Neue, Helvetica, Arial, sans-serif' : appearance.font_body_family %>;
+  --hrt-chrome: <%= appearance.header_and_footer_background_color %>;
+  --hrt-paper: #fffdf8;
+  --hrt-sunken: color-mix(in srgb, var(--hrt-chrome) 8%, var(--hrt-paper));
+  --hrt-cta: color-mix(in srgb, var(--hrt-link-strong) 14%, #ffffff);
+  --hrt-cta-edge: color-mix(in srgb, var(--hrt-link-strong) 26%, #ffffff);
+  --hrt-mat: var(--hrt-sunken);
+  --hrt-mat-edge: color-mix(in srgb, var(--hrt-chrome) 16%, var(--hrt-paper));
+  --hrt-mat-edge-hover: color-mix(in srgb, var(--hrt-chrome) 29%, var(--hrt-paper));
+  --hrt-link: <%= appearance.link_color %>;
+  --hrt-link-strong: <%= appearance.link_hover_color %>;
+  --hrt-action: <%= appearance.primary_button_background_color %>;
+  --hrt-action-ink: <%= appearance.primary_button_text_color %>;
+  --hrt-button: <%= appearance.default_button_background_color %>;
+  --hrt-button-edge: <%= appearance.default_button_border_color %>;
+  --hrt-button-ink: <%= appearance.default_button_text_color %>;
+  --hrt-button-hover: <%= appearance.default_button_hover_background_color %>;
+  --hrt-button-hover-edge: <%= appearance.default_button_hover_border_color %>;
+  --hrt-footer-accent: <%= appearance.footer_link_color %>;
+}
+<% end %>
+
+/* SCREENING ROOM THEME CUSTOMIZATIONS */
+<% if home_page_theme == 'screening_room' || show_page_theme == 'screening_room_show' %>
+  <% screening_default_serif = appearance.headline_font.include?('Helvetica') %>
+  <% screening_default_sans = appearance.body_font.include?('Helvetica') %>
+:root {
+  --scr-serif: <%= screening_default_serif ? 'Georgia, Times New Roman, serif' : appearance.font_headline_family %>;
+  --scr-sans: <%= screening_default_sans ? 'Helvetica Neue, Helvetica, Arial, sans-serif' : appearance.font_body_family %>;
+  --scr-chrome-pick: <%= theme_luminance(appearance.header_and_footer_background_color).between?(0.02, 0.0631) ? appearance.header_and_footer_background_color : '#3c3c3c' %>;
+  --scr-chrome-deep: color-mix(in srgb, var(--scr-chrome-pick) 13%, #000000);
+  --scr-chrome: color-mix(in srgb, var(--scr-chrome-pick) 25%, #000000);
+  --scr-chrome-soft: color-mix(in srgb, var(--scr-chrome-pick) 37%, #000000);
+  --scr-base: color-mix(in srgb, var(--scr-chrome-pick) 33%, #000000);
+  --scr-raised: color-mix(in srgb, var(--scr-chrome-pick) 48%, #000000);
+  --scr-band: color-mix(in srgb, var(--scr-chrome-pick) 43%, #000000);
+  --scr-rule: color-mix(in srgb, var(--scr-chrome-pick) 63%, #000000);
+  --scr-rule-input: color-mix(in srgb, var(--scr-chrome-pick) 78%, #000000);
+  --scr-rule-strong: color-mix(in srgb, var(--scr-chrome-pick) 65%, #ffffff);
+  --scr-rule-card: color-mix(in srgb, var(--scr-chrome-pick) 79%, #ffffff);
+  --scr-accent: <%= appearance.link_color %>;
+  --scr-accent-ink: <%= theme_readable_ink(appearance.link_color) %>;
+  --scr-accent-hover: color-mix(in srgb, var(--scr-accent) 80%, <%= theme_readable_ink(appearance.link_color) == '#ffffff' ? '#000000' : '#ffffff' %>);
+  --scr-link: color-mix(in srgb, var(--scr-accent) <%= theme_brand_mix(appearance.link_color) %>%, #ffffff);
+  --scr-cta: color-mix(in srgb, var(--scr-accent) 27%, var(--scr-chrome));
+  --scr-notice: color-mix(in srgb, #ffebcd 14%, var(--scr-chrome));
+  --scr-notice-rule: color-mix(in srgb, #ffebcd 26%, var(--scr-chrome));
+  --scr-footer-accent: <%= theme_luminance(appearance.footer_link_color) > 0.19 ? appearance.footer_link_color : "color-mix(in srgb, #{appearance.footer_link_color} #{theme_brand_mix(appearance.footer_link_color)}%, #ffffff)" %>;
+}
+<% end %>
+
+/* REFERENCE THEME CUSTOMIZATIONS */
+<% if home_page_theme == 'reference' || show_page_theme == 'reference_show' %>
+  <% reference_hero_ground = theme_ground_for(appearance.header_and_footer_background_color, 88, '#2b2b2b') %>
+  <% reference_default_serif = appearance.headline_font.include?('Helvetica') %>
+  <% reference_default_sans = appearance.body_font.include?('Helvetica') %>
+:root {
+  --ref-serif: <%= reference_default_serif ? 'Newsreader, Georgia, Times New Roman, serif' : appearance.font_headline_family %>;
+  --ref-sans: <%= reference_default_sans ? 'Public Sans, -apple-system, Segoe UI, Helvetica, Arial, sans-serif' : appearance.font_body_family %>;
+  --ref-hero-ground: <%= reference_hero_ground %>;
+  --ref-on-dark: color-mix(in srgb, <%= appearance.primary_button_background_color %> <%= theme_brand_mix_on(appearance.primary_button_background_color, reference_hero_ground) %>%, #ffffff);
+  --ref-link: <%= appearance.link_color %>;
+  --ref-link-strong: <%= appearance.link_hover_color %>;
+  --ref-link-strong-ink: <%= theme_readable_ink(appearance.link_hover_color) %>;
+  --ref-band: color-mix(in srgb, var(--ref-action) 8%, #f4f4f2);
+  --ref-band-edge: color-mix(in srgb, var(--ref-action) 16%, var(--ref-band));
+  --ref-band-rule: color-mix(in srgb, var(--ref-action) 10%, var(--ref-band));
+  --ref-chip: color-mix(in srgb, var(--ref-link) 6%, #ffffff);
+  --ref-chip-edge: color-mix(in srgb, var(--ref-link) 20%, #ffffff);
+  --ref-action: <%= appearance.primary_button_background_color %>;
+  --ref-action-ink: <%= appearance.primary_button_text_color %>;
+  --ref-button: <%= appearance.default_button_background_color %>;
+  --ref-button-edge: <%= appearance.default_button_border_color %>;
+  --ref-button-ink: <%= appearance.default_button_text_color %>;
+  --ref-footer-accent: <%= appearance.footer_link_color %>;
+}
+<% end %>
+
 <%= appearance.custom_css_block %>
 
 /* COMMUNITY THEME CUSTOMIZATIONS */

@@ -1,0 +1,37 @@
+<section class="hrt-panel hrt-cite" aria-labelledby="hrt-cite-label">
+  <div class="hrt-panel-head">
+    <h2 class="hrt-panel-label" id="hrt-cite-label"><%= t('heritage.show.citation.heading') %></h2>
+  </div>
+
+  <% if all_authors(presenter).any? %>
+    <% citations = theme_citations(presenter) %>
+    <% if citations.any? %>
+      <div data-citation>
+        <select class="hrt-cite-picker" data-citation-picker
+                aria-label="<%= t('heritage.show.citation.style') %>">
+          <% citations.each_key do |style| %>
+            <option value="<%= style %>"><%= t("heritage.show.citation.styles.#{style}") %></option>
+          <% end %>
+        </select>
+
+        <% citations.each_with_index do |(style, text), index| %>
+          <blockquote class="hrt-cite-text" data-citation-text="<%= style %>"
+                      <%= 'hidden' unless index.zero? %>><%= text %></blockquote>
+        <% end %>
+
+        <div class="hrt-cite-actions">
+          <button type="button" class="hrt-cite-copy" data-citation-copy>
+            <%= t('heritage.show.citation.copy_visible') %>
+          </button>
+          <span class="hrt-cite-copied" data-citation-copied hidden aria-live="polite"><%= t('heritage.show.citation.copied') %></span>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+
+  <p class="hrt-cite-note"><%= t('heritage.show.citation.note') %></p>
+
+  <%= link_to t('heritage.show.citation.endnote'),
+              polymorphic_path([main_app, presenter], format: 'endnote'),
+              class: 'hrt-cite-export' %>
+</section>

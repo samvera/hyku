@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Site < ApplicationRecord
+  include SuperadminRemovalGuard
+
   resourcify
 
   validates :application_name, presence: true, allow_nil: true
@@ -21,16 +23,42 @@ class Site < ApplicationRecord
   belongs_to :account, optional: true
   accepts_nested_attributes_for :account, update_only: true
 
+  # A type the profile omits gets no metadata behaviour, so offering it can only fail.
+  #
+  # @return [Array<String>] work type names this tenant may offer a depositor
+  def offerable_work_types
+    enabled = available_works || []
+    return enabled unless Hyrax.config.flexible?
+    # Search-only tenants have no profile of their own.
+    return enabled if account&.search_only?
+
+    profile = Hyrax::FlexibleSchema.current_version
+    return enabled unless profile
+
+    declared = (profile['classes']&.keys || []).map { |klass| klass.gsub(/Resource$/, '') }
+
+    enabled & declared & Hyrax.config.registered_curation_concern_types
+  end
+
   class << self
     delegate :account, :application_name, :institution_name, :favicon,
              :institution_name_full, :reload, :update, :contact_email,
              to: :instance
 
     def instance
-      return NilSite.instance if Account.global_tenant?
-      first_or_create do |site|
-        site.available_works = Hyrax.config.registered_curation_concern_types
+      RequestStore.fetch(:site_instance) do
+        return NilSite.instance if Account.global_tenant?
+
+        first_or_create do |site|
+          site.available_works = Hyrax.config.registered_curation_concern_types
+        end
       end
+    end
+
+    # Clears the request-scoped caches that only hold rows from the tenant they
+    # were read under, the memoized Site included.
+    def reset!
+      RequestStore.store.except!(:site_instance, :content_blocks, :qa_local_authorities)
     end
   end
 
@@ -61,6 +89,8 @@ class Site < ApplicationRecord
     existing_superadmin_emails = superadmin_emails
     new_superadmin_emails = emails - existing_superadmin_emails
     removed_superadmin_emails = existing_superadmin_emails - emails
+    self.superadmin_removal_blocked = removed_superadmin_emails.present? && strips_last_superadmin?(emails)
+    removed_superadmin_emails = [] if superadmin_removal_blocked?
     add_superadmins_by_email(new_superadmin_emails) if new_superadmin_emails.present?
     remove_superadmins_by_email(removed_superadmin_emails) if removed_superadmin_emails.present?
   end
@@ -112,5 +142,16 @@ class Site < ApplicationRecord
     User.where(email: emails).find_each do |u|
       u.remove_role :superadmin, self
     end
+  end
+
+  # Public demo tenants must always keep at least one site-scoped superadmin.
+  # The refusal itself is carried by SuperadminRemovalGuard.
+  # @param [Array<String>] requested_emails the full email list being assigned
+  def strips_last_superadmin?(requested_emails)
+    return false unless account&.public_demo_tenant?
+
+    # Only existing users can hold the role, so an assignment naming none of
+    # them would leave the tenant with no superadmins.
+    User.where(email: requested_emails).none?
   end
 end

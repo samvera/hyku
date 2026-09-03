@@ -57,5 +57,39 @@ RSpec.describe Admin::UsersController, type: :controller do
         expect(flash[:notice]).to eq "User \"#{user.email}\" has been successfully activated."
       end
     end
+
+    describe 'POST #activate password sourcing' do
+      let(:user) { User.invite!(email: 'invited@example.com', skip_invitation: true) }
+
+      before do
+        allow(ENV).to receive(:fetch).and_call_original
+      end
+
+      context 'when HYKU_USER_DEFAULT_PASSWORD is set' do
+        before do
+          allow(ENV).to receive(:fetch).with('HYKU_USER_DEFAULT_PASSWORD', nil).and_return('configured-password')
+          post :activate, params: { id: user.id }
+        end
+
+        it 'assigns the configured password' do
+          expect(user.reload.valid_password?('configured-password')).to eq(true)
+        end
+      end
+
+      context 'when HYKU_USER_DEFAULT_PASSWORD is not set' do
+        before do
+          allow(ENV).to receive(:fetch).with('HYKU_USER_DEFAULT_PASSWORD', nil).and_return(nil)
+          post :activate, params: { id: user.id }
+        end
+
+        it 'does not fall back to a hardcoded literal password' do
+          expect(user.reload.valid_password?('password')).to eq(false)
+        end
+
+        it 'still accepts the invitation' do
+          expect(user.reload).to be_accepted_or_not_invited
+        end
+      end
+    end
   end
 end

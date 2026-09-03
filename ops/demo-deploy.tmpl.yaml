@@ -8,10 +8,36 @@ resources:
     memory: "2Gi"
     cpu: "100m"
 
+startupProbe:
+  enabled: true
+  path: "/healthz"
+  failureThreshold: 30
 livenessProbe:
-  enabled: false
+  enabled: true
+  path: "/healthz"
+  initialDelaySeconds: 15
+  periodSeconds: 60
+  timeoutSeconds: 60
+  failureThreshold: 6
 readinessProbe:
-  enabled: false
+  enabled: true
+  path: "/healthz"
+  initialDelaySeconds: 15
+  periodSeconds: 60
+  timeoutSeconds: 60
+  failureThreshold: 6
+
+# db-setup's migration-count check queries schema_migrations before db:create
+# ever runs, so it dies under `set -e` against a genuinely empty database.
+# Host/user/db are hardcoded, not $DB_HOST-style: this container gets no env
+# from the chart, and envsubst blanks any $VARNAME with no matching CI secret.
+dbPreSetupInitContainer:
+  - name: ensure-schema-migrations
+    image: "ghcr.io/$REPO_LOWER/web:$TAG"
+    command:
+      - sh
+      - -c
+      - PGPASSWORD=$POSTGRES_PASSWORD psql -h zalando-postgres-v14-pooler.postgres.svc.cluster.local -p 5432 -U postgres hyku_demo -c "CREATE TABLE IF NOT EXISTS schema_migrations (version character varying(255) NOT NULL PRIMARY KEY);"
 
 brandingVolume:
   storageClass: aws-efs
@@ -76,11 +102,17 @@ extraEnvVars: &envVars
   - name: DB_ADAPTER
     value: postgresql
   - name: DB_HOST
-    value: postgres-postgresql.postgres.svc.cluster.local
+    value: zalando-postgres-v14-pooler.postgres.svc.cluster.local
   - name: DB_NAME
-    value: hyku-demo
+    value: hyku_demo
   - name: DB_USER
     value: postgres
+  - name: PGSSLMODE
+    value: require
+  - name: DB_PREPARED_STATEMENTS
+    value: "false"
+  - name: DB_ADVISORY_LOCKS
+    value: "false"
   - name: FCREPO_BASE_PATH
     value: /hykudemo
   - name: FCREPO_HOST
@@ -138,6 +170,8 @@ extraEnvVars: &envVars
   - name: HYKU_CONTACT_EMAIL
     value: no-reply@hykudemo.org
   - name: HYKU_FILE_ACL
+    value: "false"
+  - name: HYKU_VOCABULARY_SIDEBAR_ENABLED
     value: "false"
   - name: HYRAX_ANALYTICS
     value: "true"
@@ -274,9 +308,10 @@ solr:
 externalFcrepoHost: fcrepo.fcrepo.svc.cluster.local
 
 externalPostgresql:
-  host: postgres-postgresql.postgres.svc.cluster.local
+  host: zalando-postgres-v14-pooler.postgres.svc.cluster.local
   username: postgres
   password: $POSTGRES_PASSWORD
+  database: hyku_demo
 
 externalSolrHost: solr.solr.svc.cluster.local
 externalSolrUser: admin

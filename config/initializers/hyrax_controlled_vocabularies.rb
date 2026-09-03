@@ -14,6 +14,7 @@ module Hyrax
           'education_level' => 'education_levels',
           'learning_resource_type' => 'learning_resource_types',
           'license' => 'licenses',
+          'media_viewer' => 'media_viewer',
           'resource_type' => 'resource_types',
           'rights_statement' => 'rights_statements'
         }.freeze
@@ -27,6 +28,7 @@ module Hyrax
           'discipline' => 'Hyrax::DisciplineService',
           'education_levels' => 'Hyrax::EducationLevelsService',
           'learning_resource_types' => 'Hyrax::LearningResourceTypesService',
+          'media_viewer' => 'Hyrax::MediaViewerService',
           'oer_types' => 'Hyrax::OerTypesService',
           'licenses' => 'Hyrax::LicenseService',
           'resource_types' => 'Hyrax::ResourceTypesService',
@@ -44,6 +46,14 @@ module Hyrax
             url: "/authorities/search/loc/names",
             type: 'autocomplete'
           },
+          # Spelled as qa resolves it, which is also what the vocabularies dashboard
+          # advertises.
+          'loc/genreForms' => {
+            url: "/authorities/search/loc/genreForms",
+            type: 'autocomplete'
+          },
+          # Kept for profiles written before the dashboard advertised the camelCase
+          # key. Both resolve, so an existing profile keeps working.
           'loc/genre_forms' => {
             url: "/authorities/search/loc/genreForms",
             type: 'autocomplete'

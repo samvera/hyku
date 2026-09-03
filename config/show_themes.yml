@@ -16,3 +16,15 @@ scholarly_show:
 community_show:
   name: Community Show Page
   notes: This show page features a dual-column layout for the metadata section, and a citation modal.
+practice_research_show:
+  name: Practice Research Show Page
+  notes: A narrative-first show page with a tabbed body (context statement, additional information, items, files) and a metadata sidebar with contributors, relationships, rights, and citation cards.
+heritage_show:
+  name: Heritage Show Page
+  notes: Viewer, description, and a two-column metadata table in the main column, with a 320px rail carrying the citation panel and Files and Child works panels that paginate in place at ten entries.
+screening_room_show:
+  name: Screening Room Show Page
+  notes: A dark show page that opens with the viewer full width before any text, then the work type chip, collection, title, a serif description at lede size, and a two column metadata table, with a rail carrying a citation picker, what the work belongs to, and one Items panel that lists files and child works together, ten at a time.
+reference_show:
+  name: Reference Show Page
+  notes: A record page where the viewer comes first and everything after it is apparatus. A banded header carries the work type, the parent collection, the title, the creator and the date, the description follows at lede size, and metadata, files and child works sit in three tabs that page in place at ten entries, with a rail holding the citation picker and what the work belongs to. A work with no files or no child works simply does not show that tab.

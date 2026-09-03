@@ -1,0 +1,41 @@
+<% kind = scr_player_kind(representative) %>
+
+<div class="modal fade scr-player" id="scr-player-<%= featured.id %>" tabindex="-1"
+     role="dialog" aria-modal="true" aria-label="<%= featured.solr_document.title_or_label %>">
+  <div class="modal-dialog modal-xl modal-dialog-centered scr-player-dialog" role="document">
+    <div class="modal-content scr-player-content">
+      <button type="button" class="scr-player-close" data-dismiss="modal"
+              aria-label="<%= t('screening_room.homepage.player.close') %>"></button>
+
+      <% case kind %>
+      <% when :video %>
+        <video class="scr-player-media" controls preload="none" playsinline
+               poster="<%= theme_thumbnail_url(featured.solr_document) %>">
+          <source src="<%= hyrax.download_path(representative, file: 'webm', mime_type: 'video/webm') %>" type="video/webm">
+          <source src="<%= hyrax.download_path(representative, file: 'mp4', mime_type: 'video/mp4') %>" type="video/mp4">
+          <% representative.transcripts.each do |transcript| %>
+            <track kind="captions" src="<%= representative.transcript_url(transcript, host: request.base_url) %>"
+                   srclang="<%= representative.language_code(transcript.language) %>"
+                   label="<%= transcript.title_or_label %>">
+          <% end %>
+          <%= t('hyrax.file_set.show.downloadable_content.video_tag_not_supported') %>
+        </video>
+      <% when :audio %>
+        <audio class="scr-player-media scr-player-audio" controls preload="none">
+          <source src="<%= hyrax.download_path(representative, file: 'ogg', mime_type: 'audio/ogg') %>" type="audio/ogg">
+          <source src="<%= hyrax.download_path(representative, file: 'mp3', mime_type: 'audio/mpeg') %>" type="audio/mpeg">
+          <% representative.transcripts.each do |transcript| %>
+            <track kind="captions" src="<%= representative.transcript_url(transcript, host: request.base_url) %>"
+                   srclang="<%= representative.language_code(transcript.language) %>"
+                   label="<%= transcript.title_or_label %>">
+          <% end %>
+          <%= t('hyrax.file_set.show.downloadable_content.audio_tag_not_supported') %>
+        </audio>
+      <% else %>
+        <img class="scr-player-media scr-player-image" loading="lazy"
+             src="<%= scr_lightbox_url(representative) %>"
+             alt="<%= representative.try(:alt_text_for_view) %>">
+      <% end %>
+    </div>
+  </div>
+</div>

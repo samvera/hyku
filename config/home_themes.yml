@@ -46,3 +46,31 @@ community:
   marketing_text: true
   name: Community
   notes: This theme is for demoing Hyku features
+practice_research:
+  banner_image: true
+  featured_researcher: true
+  home_page_text: true
+  marketing_text: true
+  name: Practice Research
+  notes: A search-led hero over the banner image whose intro copy comes from the marketing text, a counts band that carries the home page text beside the counts, featured collections and works, browse by work type and subject, recently uploaded, a featured researcher, and an about band. The accent rides the primary button colors, the dark bands ride the header and footer background, and links carry the brand. The browse band names whichever axis the tenant left in the catalog config, so it browses work type, falls back to resource type when work type is hidden, and hides when both are.
+heritage:
+  banner_image: true
+  featured_researcher: true
+  home_page_text: true
+  marketing_text: true
+  name: Heritage
+  notes: A catalog-first theme for digitized physical collections. Objects sit on paper mats and are never cropped, and the facet rail is promoted to the home page as Browse the collection. The hero headline comes from the marketing text and the prose band under it from the home page text. Serif for objects and prose, sans for interface chrome, riding the tenant headline and body fonts. Links carry the brand and the dark chrome rides the header and footer background.
+screening_room:
+  banner_image: false
+  featured_researcher: true
+  home_page_text: true
+  marketing_text: false
+  name: Screening Room
+  notes: A dark theme for moving image and long-form audio, where the object plays before it is described. A cycling spotlight opens a featured work in a player without leaving the page, then a lede band carries the home page text beside the holdings counts, the featured collections show as objects on a recessed band, latest additions sits beside the featured researcher, and an about band and a deposit band close the page. Every dark surface derives from the header and footer background color, falling back to the theme default when that color sits outside the range a dark ramp can be built from, and the accent, chips and links carry the link color.
+reference:
+  banner_image: true
+  featured_researcher: true
+  home_page_text: true
+  marketing_text: true
+  name: Reference
+  notes: A search-led theme for an institutional repository whose visitors arrive with a citation, an author or a subject already in mind. The home page opens with a full width search field and the repository's counts over the banner image, taking its headline from the marketing text and the band below it from the home page text, then offers four columns of real metadata — subject, creator, collection and publisher — for the visitor who would rather browse than query. Recent deposits are listed the way scholarship is listed, as citation rows carrying provenance and a license rather than a grid of pictures, and featured collections, featured works, a featured researcher and an about band close the page. Each browse column names a facet the tenant still has in the catalog config and drops when it does not, so the band survives a repository that has turned any of them off. Links and the browse columns carry the link color, the search button the primary button color, the deposit buttons the secondary button color, and the hero derives from the header and footer background color, falling back to the theme default when that color is too light to carry the white text over it.

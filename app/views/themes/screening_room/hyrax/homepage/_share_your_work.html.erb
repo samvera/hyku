@@ -1,0 +1,12 @@
+<section class="scr-cta" aria-labelledby="scr-cta-heading">
+  <div>
+    <h2 class="scr-cta-heading" id="scr-cta-heading"><%= t('screening_room.homepage.cta.heading') %></h2>
+    <p class="scr-cta-sub"><%= t('screening_room.homepage.cta.sub') %></p>
+  </div>
+
+  <div class="scr-cta-actions">
+    <%= link_to t(:'hyrax.pages.tabs.terms_page'), hyrax.terms_path, class: 'scr-cta-terms' %>
+    <% href, data = theme_deposit_target %>
+    <%= link_to t('screening_room.homepage.cta.button'), href, data:, class: 'scr-cta-button' %>
+  </div>
+</section>

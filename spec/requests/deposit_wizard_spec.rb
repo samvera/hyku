@@ -56,6 +56,76 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
           expect(session[:deposit_wizard]['parent_id']).to eq('parent-123')
         end
 
+        # The default placement (:review) accepts a handed-off parent and carries on;
+        # only an install that chooses the parent up front lands on that step.
+        it 'renders the path chooser under the default placement' do
+          get deposit_wizard_path(parent_id: 'parent-123')
+
+          expect(response).to have_http_status(:success)
+          expect(session[:deposit_wizard]['parent_id']).to eq('parent-123')
+        end
+
+        context 'when the parent is chosen up front' do
+          before { Hyku::DepositWizard.config.parent_connect_placement = :start }
+
+          it 'skips the path chooser and lands on the parent step, on the add path' do
+            get deposit_wizard_path(parent_id: 'parent-123')
+
+            expect(response).to redirect_to(deposit_wizard_step_path(step: 'select_parent'))
+            # Required for select_parent to be visible at all; without it the step's
+            # on_skip: :entry detour sends the visit straight back to start.
+            expect(session[:deposit_wizard]['path']).to eq('add')
+          end
+
+          it 'renders the parent step with the handed-off parent already chosen' do
+            get deposit_wizard_path(parent_id: 'parent-123')
+            follow_redirect!
+
+            expect(response).to have_http_status(:success)
+            expect(response.body).to include('parent-123')
+          end
+
+          # Back from select_parent returns to start without the param, so the
+          # redirect must not fire again and trap the depositor.
+          it 'does not redirect back out of the path chooser once there' do
+            get deposit_wizard_path(parent_id: 'parent-123')
+            get deposit_wizard_path
+
+            expect(response).to have_http_status(:success)
+            expect(response.body).to include(I18n.t('hyku.deposit_wizard.page_heading'))
+          end
+
+          it 'still renders the path chooser when no parent was handed off' do
+            get deposit_wizard_path
+
+            expect(response).to have_http_status(:success)
+          end
+
+          it 'tolerates a parent that cannot be found' do
+            get deposit_wizard_path(parent_id: 'no-such-work')
+
+            expect(response).to redirect_to(deposit_wizard_step_path(step: 'select_parent'))
+            expect(session[:deposit_wizard]['admin_set_id']).to be_blank
+          end
+
+          # A blank param passes params.present? but seeds nothing, so redirecting
+          # would land on the parent step with no parent chosen.
+          it 'renders the path chooser when the handed-off parent is blank' do
+            get deposit_wizard_path(parent_id: '   ')
+
+            expect(response).to have_http_status(:success)
+          end
+
+          it 'inherits the admin set from the handed-off parent' do
+            admin_set_id = Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id.to_s
+            parent = FactoryBot.valkyrie_create(:generic_work_resource, admin_set_id: admin_set_id)
+
+            get deposit_wizard_path(parent_id: parent.id.to_s)
+
+            expect(session[:deposit_wizard]['admin_set_id']).to eq(admin_set_id)
+          end
+        end
+
         it 'seeds collection membership from add_works_to_collection when the picker is enabled' do
           get deposit_wizard_path(add_works_to_collection: 'coll-9')
 
@@ -182,6 +252,26 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         expect(response.body).to include(I18n.t('hyku.deposit_wizard.start.paths.standalone.title'))
       end
 
+      it 'marks only the container path so it can lead the group' do
+        get deposit_wizard_path
+
+        cards = response.body.scan(/<button[^>]*name="path"[^>]*>/)
+        container_cards = cards.grep(/path-card--container/)
+
+        expect(container_cards.size).to eq(1)
+        expect(container_cards.first).to include('value="new"')
+      end
+
+      it 'marks no path when no container is configured' do
+        Hyku::DepositWizard.config = Hyku::DepositWizard::Config.new do |c|
+          c.parent_connect_placement = :start
+        end
+        get deposit_wizard_path
+
+        expect(response.body).to include(I18n.t('hyku.deposit_wizard.start.paths.new.title'))
+        expect(response.body).not_to include('path-card--container')
+      end
+
       it 'records the chosen path and advances to item_start' do
         patch deposit_wizard_advance_path(step: 'start'), params: { path: 'standalone' }
 
@@ -274,6 +364,83 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         expect(response).to redirect_to(deposit_wizard_path)
       end
 
+      context 'when the chosen parent accepts no children' do
+        let(:childless) { GenericWorkResource }
+
+        before do
+          @original = childless.valid_child_concerns
+          childless.valid_child_concerns = []
+        end
+
+        after { childless.valid_child_concerns = @original }
+
+        it 're-renders select_parent with an alert and does not seed the parent' do
+          parent = FactoryBot.valkyrie_create(:generic_work_resource, depositor: admin.user_key)
+          patch deposit_wizard_advance_path(step: 'start'), params: { path: 'add' }
+
+          patch deposit_wizard_advance_path(step: 'select_parent'), params: { parent_id: parent.id.to_s }
+
+          expect(response).to have_http_status(:success)
+          expect(response.body).to include(I18n.t('hyku.deposit_wizard.errors.parent_not_allowed'))
+          expect(session[:deposit_wizard]['parent_id']).to be_nil
+        end
+      end
+
+      it 're-renders select_parent when the chosen parent cannot be read' do
+        patch deposit_wizard_advance_path(step: 'start'), params: { path: 'add' }
+
+        patch deposit_wizard_advance_path(step: 'select_parent'), params: { parent_id: 'no-such-work' }
+
+        expect(response).to have_http_status(:success)
+        expect(response.body).to include(I18n.t('hyku.deposit_wizard.errors.parent_not_allowed'))
+        expect(session[:deposit_wizard]['parent_id']).to be_nil
+      end
+
+      # Needs a non-admin: an admin can edit everything.
+      context 'as a depositor who cannot edit the chosen parent' do
+        let(:depositor) { FactoryBot.create(:user) }
+
+        before { login_as depositor }
+
+        it 'refuses the parent and leaves it unset' do
+          other = FactoryBot.valkyrie_create(:generic_work_resource,
+                                             depositor: FactoryBot.create(:user).user_key)
+          patch deposit_wizard_advance_path(step: 'start'), params: { path: 'add' }
+
+          patch deposit_wizard_advance_path(step: 'select_parent'), params: { parent_id: other.id.to_s }
+
+          expect(response.body).to include(I18n.t('hyku.deposit_wizard.errors.parent_not_allowed'))
+          expect(session[:deposit_wizard]['parent_id']).to be_nil
+        end
+
+        it 'stays on start rather than inheriting the admin set on a launch handoff' do
+          other = FactoryBot.valkyrie_create(
+            :generic_work_resource,
+            depositor: FactoryBot.create(:user).user_key,
+            admin_set_id: Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id.to_s
+          )
+
+          get deposit_wizard_path(parent_id: other.id.to_s)
+
+          expect(response).to have_http_status(:success)
+          expect(response).not_to redirect_to(deposit_wizard_step_path(step: 'select_parent'))
+          expect(session[:deposit_wizard]['admin_set_id']).to be_blank
+        end
+
+        it 'keeps the parent but stays on start when it cannot deposit in that admin set' do
+          admin_set_id = Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id.to_s
+          parent = FactoryBot.valkyrie_create(:generic_work_resource, edit_users: [depositor],
+                                                                      admin_set_id: admin_set_id)
+
+          get deposit_wizard_path(parent_id: parent.id.to_s)
+
+          expect(response).to have_http_status(:success)
+          expect(response).not_to redirect_to(deposit_wizard_step_path(step: 'select_parent'))
+          expect(session[:deposit_wizard]['parent_id']).to eq(parent.id.to_s)
+          expect(session[:deposit_wizard]['admin_set_id']).to be_blank
+        end
+      end
+
       it 'shows the chosen parent and a Back-to-parent link on the type chooser' do
         parent = FactoryBot.valkyrie_create(:generic_work_resource, title: ['Umbrella'], depositor: admin.user_key)
         patch deposit_wizard_advance_path(step: 'start'), params: { path: 'add' }
@@ -336,6 +503,12 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         expect(response.body).to include(I18n.t('hyku.deposit_wizard.files.heading'))
       end
 
+      it 'marks the Next button so uploads in flight can block advancing' do
+        get deposit_wizard_step_path(step: 'files')
+
+        expect(response.body).to include('data-behavior="files-next"')
+      end
+
       context 'after a work type is chosen' do
         before { patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type } }
 
@@ -354,6 +527,46 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
           expect(session[:deposit_wizard]['uploaded_file_ids']).to eq(%w[3 7])
           expect(session[:deposit_wizard]['primary_file_id']).to eq('7')
           expect(response).to redirect_to(deposit_wizard_step_path(step: 'details'))
+        end
+
+        it 'keeps the uploads and steps back when Back is submitted' do
+          patch deposit_wizard_advance_path(step: 'files'),
+                params: { direction: 'back', uploaded_files: %w[3 7], primary_file_id: '7' }
+
+          expect(response).to redirect_to(deposit_wizard_step_path(step: 'known_type'))
+          expect(session[:deposit_wizard]['uploaded_file_ids']).to eq(%w[3 7])
+          expect(session[:deposit_wizard]['primary_file_id']).to eq('7')
+        end
+
+        it 'still lists a file uploaded before Back when the step is revisited' do
+          upload = FactoryBot.create(:uploaded_file, user: admin)
+          # Follow the Back button all the way: the redirect must land on the
+          # previous step, not advance past it, or this asserts the wrong journey.
+          patch deposit_wizard_advance_path(step: 'files'),
+                params: { direction: 'back', uploaded_files: [upload.id.to_s] }
+          expect(response).to redirect_to(deposit_wizard_step_path(step: 'known_type'))
+
+          get deposit_wizard_step_path(step: 'files')
+
+          expect(response).to have_http_status(:success)
+          # The uploader's own seed row, not merely the id appearing somewhere.
+          expect(response.body).to match(
+            /<input[^>]*name="uploaded_files\[\]"[^>]*value="#{upload.id}"/
+          )
+        end
+
+        it 'renders Back as a submit button so uploads post on the way out' do
+          get deposit_wizard_step_path(step: 'files')
+
+          expect(response.body).to match(
+            /<button[^>]*name="direction"[^>]*value="back"[^>]*formnovalidate/
+          )
+        end
+
+        it 'marks the Back button so uploads in flight can block leaving' do
+          get deposit_wizard_step_path(step: 'files')
+
+          expect(response.body).to include('data-behavior="back-submit"')
         end
       end
     end
@@ -409,8 +622,8 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
           expect(response).to have_http_status(:success)
           expect(response).not_to redirect_to(deposit_wizard_step_path(step: 'review'))
           expect(response.body).to include(I18n.t('hyku.deposit_wizard.errors.details_invalid'))
-          # The submission is not advanced into wizard state on failure.
-          expect(session[:deposit_wizard]['attributes']).to be_blank
+          # Saved even though invalid, so leaving the step doesn't discard the work.
+          expect(session[:deposit_wizard]['attributes']['title']).to eq(['Bad embed'])
           # Entered values survive the re-render so the depositor can correct them.
           expect(response.body).to include('Bad embed')
           expect(response.body).to include('not a url')
@@ -435,7 +648,36 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
                 params: { param_key => { title: [''] } }
 
           expect(response).to have_http_status(:success)
-          expect(session[:deposit_wizard]['attributes']).to be_nil
+          expect(session[:deposit_wizard]['attributes']).to be_present
+        end
+
+        it 'saves what was entered and steps back when Back is submitted' do
+          patch deposit_wizard_advance_path(step: 'details'),
+                params: { direction: 'back',
+                          param_key => { title: ['Half finished'], description: ['Some notes'] } }
+
+          expect(response).to redirect_to(deposit_wizard_step_path(step: 'files'))
+          expect(session[:deposit_wizard]['attributes']['title']).to eq(['Half finished'])
+          expect(session[:deposit_wizard]['attributes']['description']).to eq(['Some notes'])
+        end
+
+        it 'steps back without validating, so an incomplete form is still saved' do
+          patch deposit_wizard_advance_path(step: 'details'),
+                params: { direction: 'back', param_key => { title: [''], description: ['Just a note'] } }
+
+          expect(response).to redirect_to(deposit_wizard_step_path(step: 'files'))
+          expect(flash[:alert]).to be_blank
+          expect(session[:deposit_wizard]['attributes']['description']).to eq(['Just a note'])
+        end
+
+        it 'renders Back as a submit button so entries post on the way out' do
+          get deposit_wizard_step_path(step: 'details')
+
+          # formnovalidate is asserted because a request spec can't exercise the
+          # browser validation it suppresses (see _nav.html.erb).
+          expect(response.body).to match(
+            /<button[^>]*name="direction"[^>]*value="back"[^>]*formnovalidate/
+          )
         end
       end
     end
@@ -514,6 +756,79 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
           expect(response).to have_http_status(:success)
           expect(response.body).to include('Cover image')
         end
+
+        it 'saves per-file metadata and steps back when Back is submitted' do
+          patch deposit_wizard_advance_path(step: 'file_meta'),
+                params: { direction: 'back',
+                          file_metadata: { upload.id.to_s => { title: 'Typed then went back' } } }
+
+          expect(response).to redirect_to(deposit_wizard_step_path(step: 'details'))
+          expect(session[:deposit_wizard]['file_metadata'][upload.id.to_s]['title'])
+            .to eq('Typed then went back')
+        end
+      end
+    end
+
+    describe 'discarding an in-progress deposit' do
+      before { patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type } }
+
+      it 'offers a discard link on the step footer' do
+        get deposit_wizard_step_path(step: 'files')
+
+        expect(response.body).to include(deposit_wizard_discard_path)
+        expect(response.body).to include(I18n.t('hyku.deposit_wizard.discard'))
+      end
+
+      it 'clears the collected state and returns to the dashboard' do
+        patch deposit_wizard_advance_path(step: 'details'),
+              params: { param_key => { title: ['Abandon me'], creator: ['Ada'] } }
+
+        delete deposit_wizard_discard_path
+
+        expect(response).to redirect_to(hyrax.my_works_path)
+        expect(flash[:notice]).to eq(I18n.t('hyku.deposit_wizard.discarded'))
+        expect(session[:deposit_wizard]).to be_blank
+      end
+
+      it 'clears an unviewed confirmation so it cannot resurface later' do
+        delete deposit_wizard_discard_path
+
+        expect(session[:deposit_wizard_last]).to be_blank
+      end
+
+      it 'destroys the staged uploads, which nothing else would attach to a work' do
+        upload = FactoryBot.create(:uploaded_file, user: admin)
+        patch deposit_wizard_advance_path(step: 'files'), params: { uploaded_files: [upload.id.to_s] }
+        path = upload.file.path
+        expect(File).to exist(path)
+
+        delete deposit_wizard_discard_path
+
+        expect(Hyrax::UploadedFile.where(id: upload.id)).to be_empty
+        # The confirmation prompt promises the files are deleted, so assert the
+        # bytes are gone and not just the row.
+        expect(File).not_to exist(path)
+        expect(flash[:notice]).to eq(
+          I18n.t('hyku.deposit_wizard.discarded_with_files', count: 1)
+        )
+      end
+
+      # The ids come from the session, so a forged request must not be able to
+      # reach another depositor's staged files.
+      it "leaves another user's uploads alone" do
+        other_upload = FactoryBot.create(:uploaded_file, user: FactoryBot.create(:user))
+        patch deposit_wizard_advance_path(step: 'files'),
+              params: { uploaded_files: [other_upload.id.to_s] }
+
+        delete deposit_wizard_discard_path
+
+        expect(Hyrax::UploadedFile.where(id: other_upload.id)).to be_present
+      end
+
+      it 'is a no-op when nothing has been collected yet' do
+        delete deposit_wizard_discard_path
+
+        expect(response).to redirect_to(hyrax.my_works_path)
       end
     end
 
@@ -534,6 +849,27 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
               params: { param_key => { title: ['Repair Study'], creator: ['Ada Lovelace'] } }
       end
 
+      context 'when the seeded parent cannot contain the chosen type' do
+        before do
+          @original = GenericWorkResource.valid_child_concerns
+          GenericWorkResource.valid_child_concerns = []
+        end
+
+        after { GenericWorkResource.valid_child_concerns = @original }
+
+        it 'refuses to deposit and re-renders review with an alert' do
+          parent = FactoryBot.valkyrie_create(:generic_work_resource, depositor: admin.user_key)
+          get deposit_wizard_path(parent_id: parent.id.to_s)
+          fill_in_wizard
+
+          expect { post deposit_wizard_commit_path }
+            .not_to change { Hyrax.query_service.find_all_of_model(model: work_type.constantize).count }
+
+          expect(response).to have_http_status(:success)
+          expect(response.body).to include(I18n.t('hyku.deposit_wizard.errors.parent_not_allowed'))
+        end
+      end
+
       it 'renders a summary including visibility on the review step' do
         fill_in_wizard
         get deposit_wizard_step_path(step: 'review')
@@ -542,6 +878,36 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         expect(response.body).to include(I18n.t('hyku.deposit_wizard.review.heading'))
         expect(response.body).to include('Repair Study')
         expect(response.body).to include(I18n.t('hyku.deposit_wizard.review.work_visibility'))
+      end
+
+      it 'shows an authority label instead of the stored URI' do
+        uri = 'http://rightsstatements.org/vocab/InC/1.0/'
+        patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type }
+        patch deposit_wizard_advance_path(step: 'details'),
+              params: { param_key => { title: ['Labeled'], creator: ['Ada'], rights_statement: [uri] } }
+
+        get deposit_wizard_step_path(step: 'review')
+
+        expect(response.body).to include('In Copyright')
+        expect(response.body).not_to include(uri)
+      end
+
+      it 'leaves an uncontrolled value alone' do
+        fill_in_wizard
+        get deposit_wizard_step_path(step: 'review')
+
+        expect(response.body).to include('Repair Study')
+      end
+
+      it 'falls back to the stored value when the authority has no match' do
+        patch deposit_wizard_advance_path(step: 'start'), params: { work_type: work_type }
+        patch deposit_wizard_advance_path(step: 'details'),
+              params: { param_key => { title: ['Unmatched'], creator: ['Ada'],
+                                       rights_statement: ['http://example.com/not-an-authority-id'] } }
+
+        get deposit_wizard_step_path(step: 'review')
+
+        expect(response.body).to include('http://example.com/not-an-authority-id')
       end
 
       describe 'autosaving review extras (survive a refresh)' do
@@ -834,6 +1200,7 @@ RSpec.describe 'Deposit wizard', type: :request, singletenant: true, clean: true
         work = Hyrax.query_service.find_by(id: Valkyrie::ID.new(stashed['id']))
         expect(work).to be_a(resource_class)
         expect(Array(work.title).first).to eq(stashed['title'])
+        expect(stashed['work_type']).to eq(resource_class.to_s)
       end
 
       it 'applies a per-file embargo that differs from the work embargo' do

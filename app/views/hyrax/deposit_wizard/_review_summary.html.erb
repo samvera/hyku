@@ -21,7 +21,14 @@
   <% deposit_wizard.review_compound_terms.each do |row| %>
     <div class="row">
       <dt class="col-sm-3"><%= row[:label] %></dt>
-      <dd class="col-sm-9"><%= t('hyku.deposit_wizard.review.entry_count', count: row[:count]) %></dd>
+      <dd class="col-sm-9">
+        <%= t('hyku.deposit_wizard.review.entry_count', count: row[:count]) %>
+        <%# Names the controlled choices (a license, a rights statement) that a
+            bare count would hide. %>
+        <% if row[:values].present? %>
+          <span class="deposit-wizard__review-compound-values"><%= row[:values].join(', ') %></span>
+        <% end %>
+      </dd>
     </div>
   <% end %>
 

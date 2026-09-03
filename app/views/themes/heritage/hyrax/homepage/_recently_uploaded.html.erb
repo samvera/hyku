@@ -1,0 +1,11 @@
+<section class="hrt-section hrt-recent" aria-labelledby="hrt-recent-heading">
+  <div class="hrt-section-head">
+    <h2 class="hrt-section-title" id="hrt-recent-heading"><%= t('heritage.homepage.recent.heading') %></h2>
+    <%= link_to t('heritage.homepage.recent.view_all'), main_app.search_catalog_path,
+                class: 'hrt-section-action' %>
+  </div>
+
+  <ul class="hrt-recent-list list-unstyled">
+    <%= render partial: 'hyrax/homepage/recent_document', collection: @recent_documents %>
+  </ul>
+</section>

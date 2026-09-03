@@ -1,0 +1,16 @@
+<div class="hrt-collection-card">
+  <%= link_to hyrax.collection_path(featured.id), class: 'hrt-mat hrt-mat-card', tabindex: -1, aria: { hidden: true } do %>
+    <%= image_tag theme_thumbnail_url(featured, default: :collection), alt: '' %>
+  <% end %>
+
+  <div class="hrt-collection-body">
+    <h3 class="hrt-collection-title">
+      <%= link_to Array(featured.title).first.presence || featured.try(:title_or_label), hyrax.collection_path(featured.id) %>
+    </h3>
+
+    <% blurb = theme_blurb(Array(featured.description).first, length: 140) %>
+    <% if blurb %>
+      <p class="hrt-collection-blurb"><%= blurb %></p>
+    <% end %>
+  </div>
+</div>

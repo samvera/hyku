@@ -1,0 +1,36 @@
+<% collections = hrt_home.collections %>
+<% editable = can?(:update, FeaturedCollection) && !@featured_collection_list.empty? %>
+
+<% if collections.present? || editable %>
+  <section class="hrt-section" aria-labelledby="hrt-collections-heading">
+    <div class="hrt-section-head">
+      <h2 class="hrt-section-title" id="hrt-collections-heading"><%= t('heritage.homepage.collections.heading') %></h2>
+      <%= link_to t('heritage.homepage.collections.view_all'),
+                  main_app.search_catalog_path(f: { 'generic_type_sim' => ['Collection'] }),
+                  class: 'hrt-section-action' %>
+    </div>
+
+    <% if editable %>
+      <%= form_for [main_app, @featured_collection_list] do |f| %>
+        <div class="dd hrt-reorder" id="ff" data-unfeature-confirm="<%= t('heritage.homepage.featured.unfeature_confirm') %>">
+          <ol class="hrt-collection-grid hrt-reorder-grid list-unstyled">
+            <%= f.fields_for :featured_collections do |featured_collection| %>
+              <%= render 'hyrax/homepage/sortable_featured_collections', f: featured_collection %>
+            <% end %>
+          </ol>
+        </div>
+
+        <div class="hrt-featured-actions">
+          <p class="hrt-featured-hint"><%= t('heritage.homepage.featured.reorder_hint') %></p>
+          <%= f.submit t('heritage.homepage.featured.save_order'), class: 'hrt-featured-save' %>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="hrt-collection-grid">
+        <% collections.each do |collection| %>
+          <%= render 'hyrax/homepage/featured_collection_fields', featured: collection %>
+        <% end %>
+      </div>
+    <% end %>
+  </section>
+<% end %>

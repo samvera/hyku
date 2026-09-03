@@ -6,7 +6,7 @@ module Hyku
     # Returns true if the current controller happens to be one of the controllers that deals
     # with settings.  This is used to keep the parent section on the sidebar open.
     def settings_section?
-      %w[appearances content_blocks labels features pages].include?(controller_name)
+      %w[accounts appearances collection_types content_blocks features identity_providers labels pages work_types].include?(controller_name)
     end
 
     # Returns true if the current controller happens to be one of the controllers that deals
@@ -46,6 +46,9 @@ module Hyku
       can?(:read, :admin_dashboard)
     end
 
+    # Kept in step with Hyrax::MenuPresenterDecorator, which answers the same question
+    # for the Hyrax sidebar: this subclass overrides the method, so a module prepended
+    # to the parent never runs and an entry added there alone would go unseen here.
     def show_task?
       can?(:review, :submissions) ||
         can?(:read, User) ||

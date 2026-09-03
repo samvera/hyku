@@ -1,0 +1,34 @@
+<% featured = pr_home.featured_works %>
+<% editable = can?(:update, FeaturedWork) && @featured_work_list.present? && !@featured_work_list.empty? %>
+
+<% if featured.any? || editable %>
+  <section class="pr-section pr-featured">
+    <div class="pr-section-head">
+      <h2 class="pr-section-title"><%= t('practice_research.homepage.featured.heading') %></h2>
+      <%= link_to t('practice_research.homepage.featured.view_all'), main_app.search_catalog_path,
+                  class: 'pr-section-link' %>
+    </div>
+
+    <% if editable %>
+      <%= form_for [hyrax, @featured_work_list] do |f| %>
+        <div class="dd pr-reorder" id="dd"
+             data-unfeature-confirm="<%= t('practice_research.homepage.featured.unfeature_confirm') %>">
+          <ol class="pr-work-grid pr-reorder-grid list-unstyled">
+            <%= f.fields_for :featured_works do |featured_work| %>
+              <%= render 'hyrax/homepage/sortable_featured', f: featured_work %>
+            <% end %>
+          </ol>
+        </div>
+
+        <p class="pr-featured-reorder-hint"><%= t('practice_research.homepage.featured.reorder_hint') %></p>
+        <%= f.submit(t('practice_research.homepage.featured.save_order'), class: 'pr-featured-save') %>
+      <% end %>
+    <% else %>
+      <ul class="pr-work-grid" role="list">
+        <% featured.each do |work| %>
+          <li><%= render 'hyrax/homepage/featured_fields', featured: work.presenter %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  </section>
+<% end %>

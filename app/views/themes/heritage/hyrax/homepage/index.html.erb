@@ -1,0 +1,22 @@
+<% provide :page_title, application_name %>
+
+<div class="hrt-home">
+  <div class="hrt-home-body">
+    <%= render 'hyrax/homepage/browse_facets' if has_facet_values? %>
+
+    <div class="hrt-home-main">
+      <%= render 'hyrax/homepage/featured_works' %>
+      <%= render 'hyrax/homepage/featured_collection_section' %>
+
+      <div class="hrt-recent-row">
+        <%= render 'hyrax/homepage/recently_uploaded' if @presenter&.display_recently_uploaded? && @recent_documents.present? %>
+        <%= render 'hyrax/homepage/featured_researcher' if @presenter&.display_featured_researcher? && @featured_researcher&.value.present? %>
+      </div>
+    </div>
+  </div>
+
+  <%= render 'hyrax/homepage/about' if @homepage_about_section_heading&.value.present? || @homepage_about_section_content&.value.present? %>
+  <%= render 'hyrax/homepage/share_your_work' if theme_share_work? %>
+</div>
+
+<%= render '/shared/select_work_type_modal', create_work_presenter: @presenter.create_work_presenter if @presenter.draw_select_work_modal? %>

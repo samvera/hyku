@@ -129,6 +129,10 @@ class SolrDocument
     self['video_embed_tesi'] || first('video_embed_tesim')
   end
 
+  def media_viewer
+    self['media_viewer_ssi']
+  end
+
   private
 
   def link_to_item

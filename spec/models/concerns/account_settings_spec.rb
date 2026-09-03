@@ -28,6 +28,7 @@ RSpec.describe AccountSettings do
                                                                                 cache_api
                                                                                 contact_email
                                                                                 contact_email_to
+                                                                                demo_acceptable_use_url
                                                                                 depositor_email_notifications
                                                                                 discogs_user_token
                                                                                 doi_reader
@@ -46,6 +47,7 @@ RSpec.describe AccountSettings do
                                                                                 oai_prefix
                                                                                 oai_sample_identifier
                                                                                 s3_bucket
+                                                                                signup_spam_protection
                                                                                 smtp_settings
                                                                                 solr_collection_options
                                                                                 solr_max_results

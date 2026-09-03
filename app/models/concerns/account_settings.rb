@@ -29,6 +29,7 @@ module AccountSettings
     setting :cache_api, type: 'boolean', default: false
     setting :contact_email, type: 'string', default: 'change-me-in-settings@example.com'
     setting :contact_email_to, type: 'string', default: 'change-me-in-settings@example.com'
+    setting :demo_acceptable_use_url, type: 'string'
     setting :depositor_email_notifications, type: 'boolean', default: false
     setting :discogs_user_token, type: 'string', private: true
     setting :doi_reader, type: 'boolean', default: false
@@ -52,6 +53,7 @@ module AccountSettings
     setting :oai_sample_identifier, type: 'string', default: '806bbc5e-8ebe-468c-a188-b7c14fbe34df'
     setting :s3_bucket, type: 'string', private: true
     setting :shared_login, type: 'boolean', disabled: true
+    setting :signup_spam_protection, type: 'boolean', default: false
     setting :smtp_settings, type: 'hash', private: true, default: {}
     setting :solr_collection_options, type: 'hash', default: solr_collection_options
     setting :solr_max_results, type: 'string', default: '10000'

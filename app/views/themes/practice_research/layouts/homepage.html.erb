@@ -1,0 +1,12 @@
+<% content_for(:navbar) do %>
+  <%= render '/controls' %>
+  <% if controller_name == 'homepage' %>
+    <%= render 'hyrax/homepage/announcement' %>
+    <section aria-label="<%= t('practice_research.homepage.intro_label') %>">
+      <%= render 'hyrax/homepage/hero' %>
+      <%= render 'hyrax/homepage/stats' %>
+    </section>
+  <% end %>
+<% end %>
+
+<%= render template: 'layouts/hyrax' %>

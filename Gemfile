@@ -37,6 +37,7 @@ gem 'cocoon'
 gem 'codemirror-rails'
 gem 'coffee-rails', '~> 4.2' # Use CoffeeScript for .coffee assets and views
 gem 'database_cleaner', group: %i[test]
+gem 'db-query-matchers', '~> 0.15', group: %i[test]
 gem 'derivative-rodeo', '~>0.5', '>= 0.5.3'
 gem 'devise'
 gem 'devise-guests', '~> 0.3'
@@ -89,6 +90,7 @@ gem 'redcarpet' # for Markdown constant
 gem 'redis-actionpack'
 gem 'redis-namespace', '~> 1.10' # Hyrax v5 relies on 1.5; but we'd like to have the #clear method so we need 1.10 or greater.
 gem 'redlock', '>= 0.1.2', '< 2.0' # lock redlock per https://github.com/samvera/hyrax/pull/5961
+gem 'request_store', '~> 1.7'
 gem 'riiif', git: 'https://github.com/sul-dlss/riiif.git', ref: '9a375'
 gem 'rolify'
 gem 'ros-apartment', require: 'apartment' # Rails 7.2 compatible apartment fork - drop-in replacement
@@ -153,5 +155,9 @@ gem 'willow_sword', github: 'notch8/willow_sword', tag: 'v0.8.5'
 gem 'hyku_knapsack', github: 'samvera-labs/hyku_knapsack', branch: 'required_for_knapsack_instances'
 
 gem 'bullet', '~> 8.1', group: %i[development test]
+
+gem 'benchmark-ips', '~> 2.14', group: %i[development]
+gem 'rack-mini-profiler', '~> 3.3', group: %i[development]
+gem 'stackprof', '~> 0.2', group: %i[development]
 
 # rubocop:enable Metrics/MethodLength

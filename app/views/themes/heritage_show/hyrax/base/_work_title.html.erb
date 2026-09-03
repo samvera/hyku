@@ -1,0 +1,16 @@
+<div class="work-title-wrapper hrt-show-head">
+  <p class="hrt-show-eyebrow">
+    <span class="<%= Hyrax::ModelIcon.css_class_for(presenter.model) %>" aria-hidden="true"></span>
+    <%= presenter.human_readable_type %>
+  </p>
+
+  <div class="hrt-show-titleline">
+    <% presenter.title.each do |title| %>
+      <h1 class="hrt-show-title"><%= markdown(title) %></h1>
+    <% end %>
+    <span class="hrt-show-chips">
+      <%= presenter.permission_badge %>
+      <%= presenter.workflow.badge %>
+    </span>
+  </div>
+</div>

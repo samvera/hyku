@@ -23,6 +23,51 @@
       uploadTemplateId: 'deposit-wizard-template-upload',
       downloadTemplateId: 'deposit-wizard-template-download'
     });
+    guardLeavingWhileUploading(uploader);
+  }
+
+  // The uploaded_files[] hidden input is written only by the download template,
+  // which the plugin swaps in on completion — so leaving mid-upload posts
+  // without the in-flight ids and silently drops those files.
+  //
+  // Back is guarded too: it submits the same form, and the guard below binds to
+  // the form's submit rather than to either button, so an enabled Back would look
+  // live while its clicks were silently swallowed.
+  function guardLeavingWhileUploading(uploader) {
+    var leave = $('[data-behavior="files-next"], [data-behavior="back-submit"]');
+    if (!leave.length) return;
+    // Tracked per file rather than as a counter so the settle events can overlap
+    // without double-counting: an aborted upload fires both 'fail' and 'finished'.
+    var pending = [];
+
+    function settle(data) {
+      var files = (data && data.files) || [];
+      for (var i = 0; i < files.length; i += 1) {
+        var at = pending.indexOf(files[i]);
+        if (at !== -1) pending.splice(at, 1);
+      }
+      leave.prop('disabled', pending.length > 0);
+    }
+
+    uploader.on('fileuploadadded', function (e, data) {
+      pending = pending.concat((data && data.files) || []);
+      leave.prop('disabled', pending.length > 0);
+      // No explicit return: the plugin cancels the upload when an 'added'
+      // handler returns false.
+    });
+
+    // 'finished' covers success and a mid-flight abort, but a file cancelled before
+    // it is ever sent has no data.abort, so the plugin fires 'fail' alone — without
+    // that second binding the buttons would stay disabled until a reload.
+    // ('completed' alone, as Hyrax's save_work/uploaded_files.es6 counts, misses
+    // both.)
+    uploader.on('fileuploadfinished fileuploadfail', function (e, data) {
+      settle(data);
+    });
+
+    uploader.closest('form').on('submit', function (event) {
+      if (pending.length > 0) event.preventDefault();
+    });
   }
 
   // Visibility pills: mark the selected pill, expand its embargo/lease panel (by

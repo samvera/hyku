@@ -262,7 +262,7 @@ class DemoTenantResetService
   # Reuses the existing admin set rather than triggering creation, which runs
   # workflow grants that fail on partially provisioned tenants.
   def default_admin_set_id
-    existing = Hyrax.query_service.find_all_of_model(model: AdminSetResource).first
+    existing = Hyrax.query_service.find_all_of_model(model: Hyrax.config.admin_set_class).first
     (existing&.id || Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id).to_s
   end
 

@@ -1,7 +1,7 @@
-<!-- OVERRIDE Hyrax v5.0 to allow passign options to the thumbnail tag
-     to allow carrying along the query to the universal viewer -->
-<% model = document.hydra_model %>
-
+<!-- OVERRIDE Hyrax v5.3.0
+     - pass options to the work thumbnail tag, carrying the query along to the
+       universal viewer
+     - identify collections with SolrDocument#collection? -->
 <% if params['q'].present? && document.any_highlighting_in_all_text_fields? %>
   <% additional_options = params.slice('q').merge( { :highlight=>'true' } ) %>
 <% elsif params['q'].present? %>
@@ -11,7 +11,7 @@
 <% end %>
 
 <div class="col-md-3">
-  <% if model == Hyrax::PcdmCollection || model < Hyrax::PcdmCollection %>
+  <% if document.collection? %>
     <%= document_presenter(document)&.thumbnail&.thumbnail_tag({ alt: thumbnail_alt_text_for(document, block_name: 'default_collection_image_text') }, suppress_link: true) %>
   <% else %>
     <div class="list-thumbnail">

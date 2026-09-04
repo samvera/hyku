@@ -76,8 +76,35 @@ RSpec.describe SolrDocument, type: :model do
       end
     end
 
+    shared_examples_for 'keeps controlled vocabulary labels out of dc terms' do
+      let(:attributes) do
+        { id: '123',
+          has_model_ssim: ['GenericWork'],
+          title_tesim: ['A Title'],
+          title_label_tesim: ['A Label Nobody Should Harvest'],
+          license_tesim: ['http://creativecommons.org/licenses/by/3.0/us/'],
+          license_label_tesim: ['Attribution 3.0 United States'],
+          rights_statement_tesim: ['local_auth_123'],
+          rights_statement_label_tesim: ['Opaque Term'] }
+      end
+
+      # field_semantics reads declared index keys, and the indexer derives
+      # <property>_label_* by convention instead of declaring it — which is what
+      # keeps the editable label out of a harvested feed.
+      it 'harvests no label field under any dc term' do
+        labels = ['A Label Nobody Should Harvest', 'Attribution 3.0 United States', 'Opaque Term']
+
+        expect(subject.values.flatten).not_to include(*labels)
+      end
+
+      it 'still harvests the stored value' do
+        expect(subject.values.flatten).to include('A Title')
+      end
+    end
+
     context 'when not using flexible metadata' do
       it_behaves_like 'maps properties to dc terms'
+      it_behaves_like 'keeps controlled vocabulary labels out of dc terms'
     end
 
     context 'when using flexible metadata' do
@@ -96,6 +123,7 @@ RSpec.describe SolrDocument, type: :model do
       end
 
       it_behaves_like 'maps properties to dc terms'
+      it_behaves_like 'keeps controlled vocabulary labels out of dc terms'
     end
   end
 end

@@ -2,6 +2,8 @@
 
 Hyku supports both local and remote controlled vocabularies for form fields. With `HYRAX_FLEXIBLE` enabled, a property cites a vocabulary through the `controlled_values.sources` array in the metadata profile. Without it, the property-to-vocabulary mapping lives in code, and only that mapping step differs — vocabularies, their terms, and the dashboard that manages them work in both modes.
 
+Wherever a property cites a vocabulary, a term's label is what appears on work pages and in search results, while the id the term stores stays in the index for links and OAI harvesting.
+
 ## How It Works
 
 The flexible metadata system automatically detects controlled vocabularies based on the `sources` configuration:

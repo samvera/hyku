@@ -4,7 +4,7 @@ module Admin
   class GroupUsersController < AdminController
     # user_manager can manage group users as well as admins
     before_action :ensure_admin!, except: [:index, :create, :destroy]
-    before_action :load_and_athorize_group
+    before_action :load_and_authorize_group
     before_action :cannot_remove_admin_users_from_admin_group, only: [:destroy]
     layout 'hyrax/dashboard'
 
@@ -32,12 +32,6 @@ module Admin
     end
 
     private
-
-    def load_and_athorize_group
-      @group = Hyrax::Group.find_by(id: params[:group_id])
-      authorize! :edit, @group
-      ensure_admin! if @group.name == ::Ability.admin_group_name
-    end
 
     def page_number
       params.fetch(:page, 1).to_i

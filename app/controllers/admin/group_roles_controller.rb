@@ -3,7 +3,8 @@
 module Admin
   class GroupRolesController < AdminController
     before_action :ensure_admin!, except: [:index, :create, :destroy]
-    before_action :load_and_athorize_group
+    before_action :load_and_authorize_group
+    before_action :load_and_authorize_role, only: [:create, :destroy]
     before_action :cannot_remove_admin_role_from_admin_group, only: [:destroy]
     layout 'hyrax/dashboard'
 
@@ -20,8 +21,7 @@ module Admin
     end
 
     def create
-      role = ::Role.find(params[:role_id])
-      @group.roles << role unless @group.roles.include?(role)
+      @group.roles << @role unless @group.roles.include?(@role)
 
       respond_to do |format|
         format.html do
@@ -44,10 +44,9 @@ module Admin
 
     private
 
-    def load_and_athorize_group
-      @group = Hyrax::Group.find_by(id: params[:group_id])
-      authorize! :edit, @group
-      ensure_admin! if @group.name == ::Ability.admin_group_name
+    def load_and_authorize_role
+      @role = ::Role.find(params[:role_id])
+      ensure_admin! if ['admin', 'superadmin'].include?(@role.name)
     end
 
     def redirect_not_found

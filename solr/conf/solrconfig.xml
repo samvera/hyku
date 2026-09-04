@@ -45,6 +45,11 @@
 
   <dataDir>${solr.blacklight-core.data.dir:}</dataDir>
 
+  <query>
+    <filterCache class="solr.search.FastLRUCache" size="512" initialSize="512" autowarmCount="128"/>
+    <queryResultCache class="solr.search.LRUCache" size="512" initialSize="512" autowarmCount="128"/>
+  </query>
+
   <requestDispatcher handleSelect="true" >
     <requestParsers enableRemoteStreaming="false" multipartUploadLimitInKB="2048000" />
   </requestDispatcher>

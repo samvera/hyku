@@ -46,8 +46,17 @@
   <dataDir>${solr.blacklight-core.data.dir:}</dataDir>
 
   <query>
-    <filterCache class="solr.search.FastLRUCache" size="512" initialSize="512" autowarmCount="128"/>
-    <queryResultCache class="solr.search.LRUCache" size="512" initialSize="512" autowarmCount="128"/>
+    <filterCache class="solr.search.FastLRUCache"
+                 size="${solr.filterCache.size:512}"
+                 initialSize="${solr.filterCache.initialSize:512}"
+                 autowarmCount="${solr.filterCache.autowarmCount:128}"/>
+    <queryResultCache class="solr.search.LRUCache"
+                       size="${solr.queryResultCache.size:512}"
+                       initialSize="${solr.queryResultCache.initialSize:512}"
+                       autowarmCount="${solr.queryResultCache.autowarmCount:128}"/>
+    <documentCache class="solr.search.LRUCache"
+                    size="${solr.documentCache.size:512}"
+                    initialSize="${solr.documentCache.initialSize:512}"/>
   </query>
 
   <requestDispatcher handleSelect="true" >

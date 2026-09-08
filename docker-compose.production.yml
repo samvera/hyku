@@ -101,7 +101,7 @@ services:
       internal:
 
   db:
-    image: postgres:11.1
+    image: postgres:18
     env_file:
       - .env
     environment:

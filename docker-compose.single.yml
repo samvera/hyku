@@ -94,7 +94,7 @@ services:
       - "traefik.http.services.fits-${APP_NAME}.loadbalancer.server.port=8080"
 
   db:
-    image: postgres:11.1
+    image: postgres:18
     env_file:
       - .env
     ports:

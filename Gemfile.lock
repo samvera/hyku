@@ -294,7 +294,7 @@ GEM
       rubocop-performance
       rubocop-rails
       rubocop-rspec
-    blacklight (7.41.0)
+    blacklight (7.42.0)
       deprecation
       globalid
       hashdiff
@@ -302,7 +302,7 @@ GEM
       jbuilder (~> 2.7)
       kaminari (>= 0.15)
       ostruct (>= 0.3.2)
-      rails (>= 6.1, < 8.1)
+      rails (>= 6.1, < 9)
       view_component (>= 2.74, < 4)
       zeitwerk
     blacklight-access_controls (6.1.0)

@@ -136,6 +136,28 @@ RSpec.describe DemoTenantResetService do
     end
   end
 
+  describe 'seed importer creation' do
+    subject(:importer) { service.send(:create_importer!) }
+
+    let(:service) { described_class.new(account:, seed_csv_path: '/tmp/seed.csv') }
+
+    before do
+      allow(service).to receive(:default_admin_set_id).and_return('admin-set-1')
+      allow(service).to receive(:import_user).and_return(FactoryBot.create(:user))
+    end
+
+    it 'copies the configured field mappings onto the importer' do
+      # field_mapping is serialized as JSON, so a Regexp split round-trips to
+      # its source string. Compare the fields covered, not the raw values.
+      expect(importer.field_mapping.keys)
+        .to match_array Bulkrax.field_mappings[described_class::PARSER_KLASS].keys
+    end
+
+    it 'keeps the split option that pipe-delimited seed values depend on' do
+      expect(importer.field_mapping['subject']['split']).to be_present
+    end
+  end
+
   describe 'import verification' do
     it 'raises ImportFailed when the importer run recorded failures' do
       service = described_class.new(account:)

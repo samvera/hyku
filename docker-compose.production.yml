@@ -111,7 +111,7 @@ services:
       - VIRTUAL_PORT=5432
       - VIRTUAL_HOST=db.hyku.test
     volumes:
-      - db:/var/lib/postgresql/data
+      - db:/var/lib/postgresql
     networks:
       internal:
 

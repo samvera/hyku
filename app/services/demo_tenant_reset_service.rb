@@ -64,7 +64,8 @@ class DemoTenantResetService
               :health_check, :logger, :import_timeout, :poll_interval
 
   # @param account [Account] must be flagged public_demo_tenant
-  # @param seed_csv_path [String, nil] absolute path to a Bulkrax CSV to re-import; nil skips the import
+  # @param seed_csv_path [String, nil] path to a Bulkrax CSV to re-import; a %{tenant}
+  #   placeholder expands to the account name. nil skips the import
   # @param keep_emails [Array<String>] user emails that survive the reset in addition to superadmins
   # @param import_user_email [String, nil] owner of the seed import; defaults to the first tenant admin
   # @param health_check [#call, nil] called with the account after restore; a falsey return fails the reset
@@ -75,7 +76,7 @@ class DemoTenantResetService
   def initialize(account:, seed_csv_path: nil, keep_emails: [], import_user_email: nil,
                  health_check: nil, logger: Rails.logger, import_timeout: 3600, poll_interval: 5)
     @account = account
-    @seed_csv_path = seed_csv_path
+    @seed_csv_path = resolve_seed_csv_path(seed_csv_path)
     @keep_emails = Array(keep_emails).map { |email| email.to_s.downcase.strip }.reject(&:empty?)
     @import_user_email = import_user_email
     @health_check = health_check
@@ -137,6 +138,17 @@ class DemoTenantResetService
     return if account&.public_demo_tenant?
 
     raise NotDemoTenant, "#{account&.cname || account.inspect} is not flagged public_demo_tenant; refusing"
+  end
+
+  # A deployment configures one path for every demo tenant, so it carries a
+  # %{tenant} placeholder. Resolving it here rather than in each caller is what
+  # keeps the rake task and the nightly job agreeing about what they were given.
+  # Substitution rather than format, which would parse every other % in the
+  # path and raise on the ones it could not read as a placeholder.
+  def resolve_seed_csv_path(path)
+    return path if path.blank?
+
+    path.gsub('%{tenant}') { account.name }
   end
 
   # Both switches are needed: Account#switch only moves the endpoints,

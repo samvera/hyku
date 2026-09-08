@@ -44,19 +44,12 @@ class DemoTenantResetJob < ApplicationJob
 
   private
 
-  def service_options(account)
+  def service_options(_account)
     {
-      seed_csv_path: seed_csv_path_for(account),
+      seed_csv_path: ENV['DEMO_SEED_CSV_PATH'].presence,
       keep_emails: ENV.fetch('DEMO_KEEP_USERS', '').split(','),
       import_user_email: ENV['DEMO_IMPORT_USER'].presence,
       health_check: ENV['DEMO_HEALTH_CHECK'].presence&.constantize
     }
-  end
-
-  def seed_csv_path_for(account)
-    template = ENV['DEMO_SEED_CSV_PATH'].presence
-    return unless template
-
-    format(template, tenant: account.name)
   end
 end

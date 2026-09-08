@@ -136,6 +136,37 @@ RSpec.describe DemoTenantResetService do
     end
   end
 
+  describe 'seed csv path' do
+    it 'expands a %{tenant} template to the account name' do
+      service = described_class.new(account:, seed_csv_path: 'tmp/imports/%{tenant}/seed/metadata.csv')
+      expect(service.seed_csv_path).to eq "tmp/imports/#{account.name}/seed/metadata.csv"
+    end
+
+    it 'leaves a literal path alone' do
+      service = described_class.new(account:, seed_csv_path: '/srv/seed/metadata.csv')
+      expect(service.seed_csv_path).to eq '/srv/seed/metadata.csv'
+    end
+
+    it 'does not raise on a path carrying a percent that is not a placeholder' do
+      expect { described_class.new(account:, seed_csv_path: '/srv/100%/metadata.csv') }
+        .not_to raise_error
+    end
+
+    it 'expands the placeholder without interpreting other percent sequences' do
+      service = described_class.new(account:, seed_csv_path: 'tmp/imports/%{tenant}/100%/metadata.csv')
+      expect(service.seed_csv_path).to eq "tmp/imports/#{account.name}/100%/metadata.csv"
+    end
+
+    it 'leaves a placeholder it does not support alone rather than raising' do
+      service = described_class.new(account:, seed_csv_path: 'tmp/imports/%{tenant}/%{env}/metadata.csv')
+      expect(service.seed_csv_path).to eq "tmp/imports/#{account.name}/%{env}/metadata.csv"
+    end
+
+    it 'leaves a nil path nil, so a reset with no seed still restores branding' do
+      expect(described_class.new(account:).seed_csv_path).to be_nil
+    end
+  end
+
   describe 'seed importer creation' do
     subject(:importer) { service.send(:create_importer!) }
 

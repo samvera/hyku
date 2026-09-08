@@ -38,13 +38,13 @@ class DemoTenantResetJob < ApplicationJob
       return
     end
 
-    DemoTenantResetService.new(account:, **service_options(account)).reset!
+    DemoTenantResetService.new(account:, **service_options).reset!
     self.class.set(wait_until: Date.tomorrow.midnight).perform_later
   end
 
   private
 
-  def service_options(_account)
+  def service_options
     {
       seed_csv_path: ENV['DEMO_SEED_CSV_PATH'].presence,
       keep_emails: ENV.fetch('DEMO_KEEP_USERS', '').split(','),

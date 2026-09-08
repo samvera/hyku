@@ -147,11 +147,6 @@ RSpec.describe DemoTenantResetService do
       expect(service.seed_csv_path).to eq '/srv/seed/metadata.csv'
     end
 
-    it 'does not raise on a path carrying a percent that is not a placeholder' do
-      expect { described_class.new(account:, seed_csv_path: '/srv/100%/metadata.csv') }
-        .not_to raise_error
-    end
-
     it 'expands the placeholder without interpreting other percent sequences' do
       service = described_class.new(account:, seed_csv_path: 'tmp/imports/%{tenant}/100%/metadata.csv')
       expect(service.seed_csv_path).to eq "tmp/imports/#{account.name}/100%/metadata.csv"
@@ -164,6 +159,102 @@ RSpec.describe DemoTenantResetService do
 
     it 'leaves a nil path nil, so a reset with no seed still restores branding' do
       expect(described_class.new(account:).seed_csv_path).to be_nil
+    end
+  end
+
+  describe 'draining background jobs' do
+    subject(:pending_count) { described_class.new(account:).send(:pending_good_jobs) }
+
+    let(:due) do
+      { queue_name: 'default', scheduled_at: 1.minute.ago, job_class: 'ValkyrieCharacterizationJob',
+        serialized_params: { 'tenant' => account.tenant } }
+    end
+
+    # import_timeout is small on purpose: a drain regression fails the example
+    # instead of busy-looping for the default hour.
+    def draining(**options)
+      described_class.new(account:, poll_interval: 0.05, import_timeout: 1, **options)
+    end
+
+    def enqueue(**overrides)
+      GoodJob::Job.create!(active_job_id: SecureRandom.uuid, **due.merge(overrides))
+    end
+
+    it 'counts jobs due for this tenant' do
+      enqueue
+      expect(pending_count).to eq 1
+    end
+
+    it 'ignores jobs scheduled into the future, such as the recurring cron' do
+      enqueue(scheduled_at: 1.hour.from_now, job_class: 'EmbargoAutoExpiryJob')
+      expect(pending_count).to eq 0
+    end
+
+    it 'ignores another tenant, since good_jobs is not split by schema' do
+      enqueue(serialized_params: { 'tenant' => 'some-other-tenant' })
+      expect(pending_count).to eq 0
+    end
+
+    it 'ignores its own row, which is unfinished for as long as it runs' do
+      enqueue(job_class: described_class::RESET_JOB_CLASS)
+      expect(pending_count).to eq 0
+    end
+
+    it 'ignores jobs that have already finished' do
+      enqueue(finished_at: Time.current)
+      expect(pending_count).to eq 0
+    end
+
+    # The production failure was the loop, not the count: it spun for the whole
+    # import_timeout because the count could never reach zero.
+    it 'returns instead of spinning when only its own row remains' do
+      enqueue(job_class: described_class::RESET_JOB_CLASS)
+      expect { draining.send(:drain_good_job_queue!) }.not_to raise_error
+    end
+
+    it 'raises ImportFailed if the tenant queue never clears' do
+      enqueue
+      expect { draining.send(:drain_good_job_queue!) }
+        .to raise_error(described_class::ImportFailed, /did not drain/)
+    end
+
+    it 'pulls this tenant deferred relationship jobs forward' do
+      job = enqueue(scheduled_at: 10.minutes.from_now, job_class: 'Bulkrax::CreateRelationshipsJob')
+      expect { draining.send(:pull_relationship_jobs_forward!) }
+        .to change { job.reload.scheduled_at }
+    end
+
+    it 'leaves another tenant deferred relationship jobs alone' do
+      job = enqueue(scheduled_at: 10.minutes.from_now, job_class: 'Bulkrax::CreateRelationshipsJob',
+                    serialized_params: { 'tenant' => 'some-other-tenant' })
+      expect { draining.send(:pull_relationship_jobs_forward!) }
+        .not_to change { job.reload.scheduled_at }
+    end
+
+    # Only deferred ones count as pulled, or the outer loop never breaks.
+    it 'does not count relationship jobs that are already due' do
+      enqueue(job_class: 'Bulkrax::CreateRelationshipsJob')
+      expect(draining.send(:pull_relationship_jobs_forward!)).to eq 0
+    end
+
+    # It rewrites scheduled_at, so anything but a relationship job losing its
+    # backoff here would drag tomorrow's reset and every retry forward with it.
+    it 'leaves other deferred jobs, including tomorrow reset, where they are' do
+      job = enqueue(scheduled_at: 1.hour.from_now, job_class: 'EmbargoAutoExpiryJob')
+      expect { draining.send(:pull_relationship_jobs_forward!) }
+        .not_to change { job.reload.scheduled_at }
+    end
+
+    it 'leaves finished relationship jobs alone' do
+      enqueue(scheduled_at: 10.minutes.from_now, finished_at: Time.current,
+              job_class: 'Bulkrax::CreateRelationshipsJob')
+      expect(draining.send(:pull_relationship_jobs_forward!)).to eq 0
+    end
+
+    # The constant is a string, so a rename of the job would silently stop the
+    # drain excluding its own row and the hang would return with a green suite.
+    it 'names a job class that exists' do
+      expect(described_class::RESET_JOB_CLASS).to eq DemoTenantResetJob.name
     end
   end
 

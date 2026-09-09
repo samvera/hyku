@@ -29,8 +29,8 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: 340380fbc1fe421a1b367eb96d1279cedf6ae57e
-  branch: honor-collection-and-admin-set-model-config
+  revision: 39141755e744858a734b8fd3ee95cc85c7836533
+  branch: main
   specs:
     hyrax (5.3.0)
       active-fedora (~> 15.0)

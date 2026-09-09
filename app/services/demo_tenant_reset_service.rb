@@ -56,6 +56,10 @@ class DemoTenantResetService
   SITE_IMAGE_COLUMNS = %w[banner_image logo_image favicon directory_image
                           default_collection_image default_work_image].freeze
 
+  # Keyed the same way Bulkrax.field_mappings is, so the seed importer can look
+  # its own mappings up.
+  PARSER_KLASS = 'Bulkrax::CsvParser'
+
   attr_reader :account, :seed_csv_path, :keep_emails, :import_user_email,
               :health_check, :logger, :import_timeout, :poll_interval
 
@@ -254,7 +258,11 @@ class DemoTenantResetService
       admin_set_id: default_admin_set_id,
       user: import_user,
       frequency: 'PT0S',
-      parser_klass: 'Bulkrax::CsvParser',
+      parser_klass: PARSER_KLASS,
+      # Bulkrax::Importer#mapping ignores the tenant's mappings when
+      # field_mapping is blank and derives them from the CSV headers, losing
+      # `split`, so pipe-delimited values would import as a single value.
+      field_mapping: Bulkrax.field_mappings[PARSER_KLASS],
       parser_fields: { 'import_file_path' => seed_csv_path, 'update_files' => false }
     )
   end

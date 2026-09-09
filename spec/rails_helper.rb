@@ -30,10 +30,10 @@ require 'spec_helper'
 simple_work_spec = Hyrax::Engine.root.join("lib/hyrax/specs/shared_specs/simple_work.rb").to_s
 require simple_work_spec unless Hyrax.config.disable_wings
 
-# I want to set this so that our factory finder will have the right values.
-Hyrax.config.admin_set_model = "AdminSetResource"
-Hyrax.config.collection_model = "CollectionResource"
-
+# Do not pin admin_set_model/collection_model here for the factories' benefit; the
+# suite would then exercise those classes whatever the app configures, leaving a
+# substituted collection or admin set class untested.
+#
 # First find the Hyrax factories; then find the local factories (which extend/modify Hyrax
 # factories).
 FactoryBot.definition_file_paths = [

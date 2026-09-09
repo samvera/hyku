@@ -46,7 +46,7 @@ module Sample
         Hyrax.config.use_valkyrie = true
 
         counts = {
-          collections: clean_works_by_pattern(CollectionResource, "%CollectionResource %:%"),
+          collections: clean_works_by_pattern(Hyrax.config.collection_class, "%CollectionResource %:%"),
           images: clean_works_by_pattern(ImageResource, "%ImageResource %:%"),
           generic_works: clean_works_by_pattern(GenericWorkResource, "%GenericWorkResource %:%"),
           file_sets: clean_works_by_pattern(Hyrax::FileSet, "%Hyrax::FileSet %:%")
@@ -227,7 +227,7 @@ module Sample
         depositor: user.user_key
       }
 
-      collection = Hyrax.persister.save(resource: CollectionResource.new(collection_attrs))
+      collection = Hyrax.persister.save(resource: Hyrax.config.collection_class.new(collection_attrs))
       # visibility= builds an ACL that needs an explicit acl.save - setting it via the constructor is silently ignored.
       collection.visibility = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
       collection.permission_manager.acl.save

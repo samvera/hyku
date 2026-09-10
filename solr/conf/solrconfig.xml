@@ -28,7 +28,7 @@
        that you fully re-index after changing this setting as it can
        affect both how text is indexed and queried.
   -->
-  <luceneMatchVersion>8.11.0</luceneMatchVersion>
+  <luceneMatchVersion>6.0.0</luceneMatchVersion>
 
   <lib dir="${solr.install.dir:../../../..}/contrib/analysis-extras/lib" />
   <lib dir="${solr.install.dir:../../../..}/contrib/analysis-extras/lucene-libs" />

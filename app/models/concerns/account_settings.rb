@@ -54,6 +54,7 @@ module AccountSettings
     setting :s3_bucket, type: 'string', private: true
     setting :shared_login, type: 'boolean', disabled: true
     setting :signup_spam_protection, type: 'boolean', default: false
+    setting :skip_file_metadata_solr_indexing, type: 'boolean', default: false, disabled: true
     setting :smtp_settings, type: 'hash', private: true, default: {}
     setting :solr_collection_options, type: 'hash', default: solr_collection_options
     setting :solr_max_results, type: 'string', default: '10000'

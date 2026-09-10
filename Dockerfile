@@ -1,5 +1,5 @@
 ARG HYRAX_IMAGE_VERSION=hyrax-v5.2.0
-ARG SOLR_VERSION=8.11.2
+ARG SOLR_VERSION=9
 FROM ghcr.io/samvera/hyrax/hyrax-base:$HYRAX_IMAGE_VERSION AS hyku-web
 
 USER root
@@ -31,9 +31,7 @@ CMD ./bin/web
 FROM hyku-web AS hyku-worker
 CMD ./bin/worker
 
-# Default stays on 8.11.2 (patched Log4j, CVE-2021-44228). Override with
-# --build-arg SOLR_VERSION=9 to build against stock Solr 9 for testing/new
-# clusters; solr/conf is Solr 8+9 compatible, no other changes needed.
+# Solr 8 is EOL; new builds default to 9 - override with --build-arg SOLR_VERSION=8.11.2 for deployments not yet migrated.
 FROM solr:${SOLR_VERSION} AS hyku-solr
 ENV SOLR_USER="solr" \
     SOLR_GROUP="solr"

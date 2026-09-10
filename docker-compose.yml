@@ -80,7 +80,7 @@ services:
       target: hyku-solr
       args:
         BUILDKIT_INLINE_CACHE: 1
-        SOLR_VERSION: ${SOLR_VERSION:-8.11.2}
+        SOLR_VERSION: ${SOLR_VERSION:-9}
       cache_from:
         - ghcr.io/samvera/hyku/solr:latest
     environment:
@@ -91,7 +91,8 @@ services:
       - SOLR_CLOUD_BOOTSTRAP=yes
       - SOLR_ENABLE_CLOUD_MODE=yes
       - SOLR_ENABLE_AUTHENTICATION=yes
-      - SOLR_OPTS=${SOLR_OPTS:-}
+      # Required by Solr 9 (the default); override back to SOLR_VERSION=8.11.2 also needs SOLR_OPTS= (empty) - these sysprops don't exist there.
+      - SOLR_OPTS=${SOLR_OPTS--Dsolr.config.lib.enabled=true -Dsolr.filterCache.class=solr.CaffeineCache -Dsolr.queryResultCache.class=solr.CaffeineCache -Dsolr.documentCache.class=solr.CaffeineCache}
       - ZK_HOST=zoo:2181
       # Register SolrCloud replicas by this stable hostname instead of the
       # container IP, so ZooKeeper's node_name stays valid across IP churn on the

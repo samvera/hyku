@@ -28,6 +28,22 @@ RSpec.describe CatalogController do
     end
   end
 
+  describe "date_created search field" do
+    let(:field) { described_class.blacklight_config.search_fields['date_created'] }
+
+    it "queries only fields an indexer writes" do
+      expect(field.solr_local_parameters[:qf]).to eq 'date_created_tesim'
+    end
+
+    it "boosts the same fields it queries" do
+      expect(field.solr_local_parameters[:pf]).to eq field.solr_local_parameters[:qf]
+    end
+
+    it "names no int field, which only a numeric term could ever match" do
+      expect(field.solr_local_parameters[:qf].split.grep(/_isim?\z/)).to be_empty
+    end
+  end
+
   describe "GET /show" do
     let(:file_set) { create(:file_set) }
 

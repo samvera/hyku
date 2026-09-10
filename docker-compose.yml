@@ -74,7 +74,8 @@ services:
       timeout: "8s"
 
   solr:
-    image: ghcr.io/samvera/hyku/solr:${TAG:-latest}
+    # -9 suffix: pulls the Solr 9 variant (built by build-solr9) independent of web/worker's shared ${TAG}.
+    image: ghcr.io/samvera/hyku/solr:${TAG:-latest}-9
     build:
       context: .
       target: hyku-solr

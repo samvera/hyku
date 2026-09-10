@@ -85,6 +85,8 @@ jobs:
           context: .
           platforms: linux/${{ env.PLATFORM_TAG }}
           target: hyku-${{ matrix.component }}
+          build-args: |
+            ${{ matrix.component == 'solr' && 'SOLR_VERSION=8.11.2' || '' }}
           cache-from: |
             type=registry,ref=ghcr.io/samvera/hyku/${{ matrix.component }}:latest
           cache-to: type=inline
@@ -239,6 +241,8 @@ jobs:
           echo "SOLR_VERSION=${{ matrix.solr_version }}" >> $GITHUB_ENV
           if [ "${{ matrix.solr_version }}" = "9" ]; then
             echo "SOLR_OPTS=-Dsolr.config.lib.enabled=true -Dsolr.filterCache.class=solr.CaffeineCache -Dsolr.queryResultCache.class=solr.CaffeineCache -Dsolr.documentCache.class=solr.CaffeineCache" >> $GITHUB_ENV
+          else
+            echo "SOLR_OPTS=" >> $GITHUB_ENV
           fi
       - name: Build Solr image
         run: docker compose -f docker-compose.single.yml build solr

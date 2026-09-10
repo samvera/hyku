@@ -159,6 +159,9 @@
        <str name="spellcheck.collate">false</str>
        <str name="spellcheck.count">5</str>
 
+       <!-- Solr 9 defaults hl.method to "unified", which throws a ClassCastException on {!join} queries; "original" was Solr 8's default and stays correct on both. -->
+       <str name="hl.method">original</str>
+
      </lst>
     <arr name="last-components">
       <str>spellcheck</str>

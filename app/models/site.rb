@@ -58,7 +58,9 @@ class Site < ApplicationRecord
     # Clears the request-scoped caches that only hold rows from the tenant they
     # were read under, the memoized Site included.
     def reset!
-      RequestStore.store.except!(:site_instance, :content_blocks, :qa_local_authorities)
+      RequestStore.store.except!(:site_instance, :content_blocks, :qa_local_authorities,
+                                 :controlled_vocabulary_label_maps,
+                                 :controlled_vocabulary_resolvable)
     end
   end
 

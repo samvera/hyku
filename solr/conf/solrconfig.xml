@@ -45,16 +45,20 @@
 
   <dataDir>${solr.blacklight-core.data.dir:}</dataDir>
 
+  <!-- solr.search.LRUCache/FastLRUCache were removed in Solr 9 (replaced by
+       solr.CaffeineCache); the class names are overridable per-cluster via
+       sysprop so Solr 8 keeps its current default and a Solr 9 deployment can
+       pass e.g. -Dsolr.filterCache.class=solr.CaffeineCache. -->
   <query>
-    <filterCache class="solr.search.FastLRUCache"
+    <filterCache class="${solr.filterCache.class:solr.search.FastLRUCache}"
                  size="${solr.filterCache.size:512}"
                  initialSize="${solr.filterCache.initialSize:512}"
                  autowarmCount="${solr.filterCache.autowarmCount:128}"/>
-    <queryResultCache class="solr.search.LRUCache"
+    <queryResultCache class="${solr.queryResultCache.class:solr.search.LRUCache}"
                        size="${solr.queryResultCache.size:512}"
                        initialSize="${solr.queryResultCache.initialSize:512}"
                        autowarmCount="${solr.queryResultCache.autowarmCount:128}"/>
-    <documentCache class="solr.search.LRUCache"
+    <documentCache class="${solr.documentCache.class:solr.search.LRUCache}"
                     size="${solr.documentCache.size:512}"
                     initialSize="${solr.documentCache.initialSize:512}"/>
   </query>
@@ -154,6 +158,9 @@
        <str name="spellcheck.extendedResults">true</str>
        <str name="spellcheck.collate">false</str>
        <str name="spellcheck.count">5</str>
+
+       <!-- Solr 9 defaults hl.method to "unified", which throws a ClassCastException on {!join} queries; "original" was Solr 8's default and stays correct on both. -->
+       <str name="hl.method">original</str>
 
      </lst>
     <arr name="last-components">

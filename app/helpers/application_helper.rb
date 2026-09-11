@@ -92,28 +92,21 @@ module ApplicationHelper
   end
 
   def hint_for(term:, record_class: nil)
-    hint = locale_for(type: 'hints', term:, record_class:)
+    locale_for(type: 'hints', term:, record_class:)
+  end
 
-    return hint unless missing_translation(hint)
+  def color_hint_for(color_name)
+    I18n.t("hyrax.admin.appearances.show.forms.#{color_name}.hint", default: nil)
   end
 
   def locale_for(type:, term:, record_class:)
     term              = term.to_s
     record_class      = record_class.to_s.underscore
     work_or_collection = record_class == Hyrax.config.collection_model.underscore ? 'collection' : 'defaults'
-    locale             = t("hyrax.#{record_class}.#{type}.#{term}")
+    locale             = I18n.t("hyrax.#{record_class}.#{type}.#{term}", default: nil) ||
+                         I18n.t("simple_form.#{type}.#{work_or_collection}.#{term}", default: nil)
 
-    if missing_translation(locale)
-      (t("simple_form.#{type}.#{work_or_collection}.#{term}")).try(:html_safe)
-    else
-      locale.html_safe
-    end
-  end
-
-  def missing_translation(value, _options = {})
-    return true if value == false
-    return true if value.try(:false?)
-    false
+    locale&.html_safe
   end
 
   def markdown(text)

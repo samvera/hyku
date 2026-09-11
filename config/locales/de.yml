@@ -254,6 +254,8 @@ de:
       part_of:
         heading: Teil von
   hyku:
+    work_show:
+      iiif_manifest: IIIF-Manifest
     works:
       errors:
         work_type_not_offered: Dieser Werktyp ist auf dieser Website nicht verfügbar. Wählen Sie einen anderen aus.

@@ -137,6 +137,8 @@ pt-BR:
       part_of:
         heading: Parte de
   hyku:
+    work_show:
+      iiif_manifest: Manifesto IIIF
     works:
       errors:
         work_type_not_offered: Esse tipo de obra não está disponível neste site. Escolha outro.

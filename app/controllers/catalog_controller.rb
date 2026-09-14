@@ -303,12 +303,11 @@ class CatalogController < ApplicationController
       }
     end
 
-    date_fields = ['date_created_tesim', 'sorted_date_isi', 'sorted_month_isi']
-
     config.add_search_field('date_created') do |field|
+      solr_name = 'date_created_tesim'
       field.solr_local_parameters = {
-        qf: date_fields.join(' '),
-        pf: date_fields.join(' ')
+        qf: solr_name,
+        pf: solr_name
       }
     end
 

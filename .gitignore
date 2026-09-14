@@ -35,6 +35,8 @@ fits.log
 # unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
 .rvmrc
 .ruby-*
+# except .ruby-version, which should be checked in to normalize the environment
+!.ruby-version
 
 # if using bower-rails ignore default bower_components path bower.json files
 /vendor/assets/bower_components

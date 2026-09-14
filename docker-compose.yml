@@ -153,7 +153,7 @@ services:
       - "traefik.http.services.fcrepo-${APP_NAME}.loadbalancer.server.port=8080"
 
   db:
-    image: postgres:11.1
+    image: postgres:18
     env_file:
       - .env
     ports:
@@ -165,7 +165,7 @@ services:
       - VIRTUAL_PORT=5432
       - VIRTUAL_HOST=db.hyku.test
     volumes:
-      - db:/var/lib/postgresql/data
+      - db:/var/lib/postgresql
 
   adminer:
     image: adminer

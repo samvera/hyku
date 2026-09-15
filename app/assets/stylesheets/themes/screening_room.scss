@@ -1235,8 +1235,8 @@
   }
 
   .scr-player-audio {
-    padding: 64px 32px 32px;
-    width: 100%;
+    margin: 64px 32px 32px;
+    width: calc(100% - 64px);
   }
 
   .scr-player-image {

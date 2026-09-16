@@ -29,21 +29,7 @@ module Hyrax
     # controlled. Public because callers that only need to label a stored value
     # want the source without building the whole option list.
     def controlled_vocabulary_source_for(property_name)
-      if Hyrax.config.flexible?
-        schema = Hyrax::FlexibleSchema.order("created_at asc").last
-        return unless schema&.profile
-
-        property_config = schema.profile.dig('properties', property_name.to_s)
-        return unless property_config
-
-        sources = property_config.dig('controlled_values', 'sources')
-        return unless sources&.any? { |s| s != 'null' }
-
-        # Get the first non-null source and trim whitespace
-        sources.find { |s| s != 'null' }&.strip
-      else
-        controlled_vocabulary_mapping_for(property_name)
-      end
+      ControlledVocabularyLabels.source_for(property_name)
     end
 
     private

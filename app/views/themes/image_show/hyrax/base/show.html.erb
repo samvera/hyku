@@ -74,3 +74,7 @@
     </div>
   </div>
 </div>
+
+<% if @presenter.viewer? %>
+  <script>if (history.scrollRestoration) history.scrollRestoration = 'manual';</script>
+<% end %>

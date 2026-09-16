@@ -55,3 +55,7 @@
     <span class='hide analytics-event' data-category="work-in-collection" data-action="work-in-collection-view" data-name="<%= collection_id %>"></span>
   <% end %>
 </div>
+
+<% if theme_viewer?(@presenter) %>
+  <script>if (history.scrollRestoration) history.scrollRestoration = 'manual';</script>
+<% end %>

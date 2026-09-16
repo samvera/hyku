@@ -1,6 +1,23 @@
 # frozen_string_literal: true
 
 RSpec.describe PdfJsHelper, type: :helper do
+  describe '#pdf_js_url' do
+    it 'builds a viewer URL without a trailing fragment when there is no search query' do
+      allow(helper).to receive(:params).and_return({})
+      expect(helper.pdf_js_url('/downloads/abc')).to eq('/pdf.js/viewer.html?file=/downloads/abc')
+    end
+
+    it 'appends a fragment with the search query when one is present' do
+      allow(helper).to receive(:params).and_return(q: 'harbor')
+      expect(helper.pdf_js_url('/downloads/abc')).to eq('/pdf.js/viewer.html?file=/downloads/abc#search=harbor&phrase=true')
+    end
+
+    it 'URL-encodes special characters in the search query' do
+      allow(helper).to receive(:params).and_return(q: 'arts & crafts')
+      expect(helper.pdf_js_url('/downloads/abc')).to eq('/pdf.js/viewer.html?file=/downloads/abc#search=arts%20%26%20crafts&phrase=true')
+    end
+  end
+
   describe '#pdf_file_set_presenter' do
     let(:file_set_class) { Struct.new(:id, :pdf) { alias_method :pdf?, :pdf } }
     let(:image) { file_set_class.new('img-1', false) }

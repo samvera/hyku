@@ -28,16 +28,6 @@ POSTGRES_VERSION=18 POSTGRES_DATA_DIR=/var/lib/postgresql docker compose up
 
 Omit both variables to go back to Postgres 11, against a separate fresh volume.
 
-### Combining with Solr 9
-
-[Using Solr 9](using-solr-9.md) uses a `docker-compose.override.yml` file; this uses
-environment variables. Different services, different mechanisms - just do both:
-
-```bash
-cp docker-compose.override-solr-9.yml docker-compose.override.yml
-POSTGRES_VERSION=18 POSTGRES_DATA_DIR=/var/lib/postgresql docker compose up
-```
-
 ## In production
 
 Plan this as a real migration. See Postgres's own [upgrade documentation](https://www.postgresql.org/docs/current/upgrading.html)

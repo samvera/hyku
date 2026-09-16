@@ -1,15 +1,16 @@
 # frozen_string_literal: true
 
 module Admin
-  class GroupRolesController < ApplicationController
-    before_action :load_group
+  class GroupRolesController < AdminController
+    before_action :ensure_admin!, except: [:index, :create, :destroy]
+    before_action :load_and_authorize_group
+    before_action :load_and_authorize_role, only: [:create, :destroy]
     before_action :cannot_remove_admin_role_from_admin_group, only: [:destroy]
     layout 'hyrax/dashboard'
 
     rescue_from ActiveRecord::RecordNotFound, with: :redirect_not_found
 
     def index
-      authorize! :edit, Hyrax::Group
       add_breadcrumb t(:'hyrax.controls.home'), root_path
       add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
       add_breadcrumb t(:'hyku.admin.groups.title.edit'), edit_admin_group_path(@group)
@@ -20,8 +21,7 @@ module Admin
     end
 
     def create
-      role = ::Role.find(params[:role_id])
-      @group.roles << role unless @group.roles.include?(role)
+      @group.roles << @role unless @group.roles.include?(@role)
 
       respond_to do |format|
         format.html do
@@ -44,8 +44,9 @@ module Admin
 
     private
 
-    def load_group
-      @group = Hyrax::Group.find_by(id: params[:group_id])
+    def load_and_authorize_role
+      @role = ::Role.find(params[:role_id])
+      ensure_admin! if ['admin', 'superadmin'].include?(@role.name)
     end
 
     def redirect_not_found

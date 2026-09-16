@@ -126,11 +126,7 @@ DISABLE_REDIS_CLUSTER=true ./bin/web
 ```
 
 #### Developing with Solr 9
-In order to develop and test locally against Solr 9, copy the Solr 9 override file over, and bring up your application as you normally do.
-```bash
-cp docker-compose.override-solr-9.yml docker-compose.override.yml
-```
-
+Hyku defaults to Solr 8; see [Using Solr 9](using-solr-9.md) to develop and test against Solr 9 instead.
 
 ## Kubernetes
 

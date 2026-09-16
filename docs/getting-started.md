@@ -125,6 +125,13 @@ DISABLE_REDIS_CLUSTER=true ./bin/worker
 DISABLE_REDIS_CLUSTER=true ./bin/web
 ```
 
+#### Developing with Solr 9
+In order to develop and test locally against Solr 9, copy the Solr 9 override file over, and bring up your application as you normally do.
+```bash
+cp docker-compose.override-solr-9.yml docker-compose.override.yml
+```
+
+
 ## Kubernetes
 
 Hyku relies on the helm charts provided by Hyrax. See [Deployment Info](https://github.com/samvera/hyrax/blob/main/CONTAINERS.md#deploying-to-production) for more information. We also provide a basic helm [deployment script](/bin/helm_deploy). Hyku currently needs some additional volumes and ENV vars over the base Hyrax. See (ops/review-deploy.tmpl.yaml) for an example of what that might look like.

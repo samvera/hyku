@@ -1,0 +1,14 @@
+# Copy file to docker-compose.override.yml to use Solr 9
+# cp docker-compose.override-solr-9.yml docker-compose.override.yml
+# Only use for local development
+services:
+  solr:
+    image: ghcr.io/samvera/hyku/solr:${TAG:-latest}-9
+    build:
+      cache_from:
+        - ghcr.io/samvera/hyku/solr:latest-9
+      args:
+        SOLR_VERSION: ${SOLR_VERSION:-9}
+    environment:
+      # Required by Solr 9 (the default); override back to SOLR_VERSION=8.11.2 also needs SOLR_OPTS= (empty) - these sysprops don't exist there.
+      - SOLR_OPTS=${SOLR_OPTS--Dsolr.config.lib.enabled=true -Dsolr.filterCache.class=solr.CaffeineCache -Dsolr.queryResultCache.class=solr.CaffeineCache -Dsolr.documentCache.class=solr.CaffeineCache}

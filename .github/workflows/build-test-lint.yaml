@@ -146,7 +146,7 @@ jobs:
           build-args: |
             SOLR_VERSION=9
           cache-from: |
-            type=registry,ref=ghcr.io/samvera/hyku/solr:9_latest
+            type=registry,ref=ghcr.io/samvera/hyku/solr:latest-9
           cache-to: type=inline
           push: true
           tags: |

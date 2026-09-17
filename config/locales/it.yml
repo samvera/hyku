@@ -255,6 +255,8 @@ it:
       part_of:
         heading: Parte di
   hyku:
+    work_show:
+      iiif_manifest: Manifesto IIIF
     works:
       errors:
         work_type_not_offered: Questo tipo di opera non è disponibile su questo sito. Scegline un altro.

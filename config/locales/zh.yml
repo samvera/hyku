@@ -271,6 +271,8 @@ zh:
       part_of:
         heading: 所属
   hyku:
+    work_show:
+      iiif_manifest: IIIF 清单
     works:
       errors:
         work_type_not_offered: 本站点不提供该作品类型。请选择其他类型。

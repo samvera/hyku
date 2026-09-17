@@ -1,5 +1,6 @@
 .viewer-wrapper {
   height: 500px;
+  position: relative; // the viewer iframe is absolutely positioned and fills this box
 }
 
 .viewer {

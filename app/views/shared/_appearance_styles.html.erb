@@ -322,6 +322,28 @@ body.public-facing .hyc-banner .hyc-title h1 {
 }
 <% end %>
 
+/* DIGITAL COLLECTION THEME CUSTOMIZATIONS */
+<% if home_page_theme == 'digital_collection' || show_page_theme == 'digital_collection_show' %>
+:root {
+  --dc-accent: <%= appearance.link_color %>;
+  --dc-link: <%= appearance.link_color %>;
+  --dc-link-hover: <%= appearance.link_hover_color %>;
+  --dc-action: <%= appearance.primary_button_background_color %>;
+  --dc-action-edge: <%= appearance.primary_button_border_color %>;
+  --dc-action-ink: <%= appearance.primary_button_text_color %>;
+  --dc-action-hover: <%= appearance.primary_button_hover_color %>;
+  --dc-button: <%= appearance.default_button_background_color %>;
+  --dc-button-edge: <%= appearance.default_button_border_color %>;
+  --dc-button-ink: <%= appearance.default_button_text_color %>;
+  --dc-button-hover: <%= appearance.default_button_hover_background_color %>;
+  --dc-button-hover-edge: <%= appearance.default_button_hover_border_color %>;
+  --dc-chrome: <%= appearance.header_and_footer_background_color %>;
+  --dc-chrome-ink: <%= appearance.header_and_footer_text_color %>;
+  --dc-footer-link: <%= appearance.footer_link_color %>;
+  --dc-footer-link-hover: <%= appearance.footer_link_hover_color %>;
+}
+<% end %>
+
 <%= appearance.custom_css_block %>
 
 /* COMMUNITY THEME CUSTOMIZATIONS */

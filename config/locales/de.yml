@@ -1144,6 +1144,25 @@ de:
         unfeature_confirm: "Diese Sammlung aus der Auswahl entfernen?"
         reorder_hint: "Ziehen, um die Reihenfolge der Sammlungen zu ändern."
         save_order: "Reihenfolge speichern"
+      browse:
+        heading: "Sammlungen durchstöbern"
+        grid: "Raster"
+        list: "Liste"
+        view_label: "Anzeigeoptionen der Sammlungen"
+        sort: "Sortieren"
+        sort_asc: "A bis Z"
+        sort_desc: "Z bis A"
+        sort_aria: "Nach Titel sortieren, derzeit %{direction}. Aktivieren zum Umkehren."
+        previous: "Zurück"
+        next: "Weiter"
+        page: "Seite %{number}"
+        pages_label: "Seiten der Sammlungen"
+        status: "%{shown} von %{total} Sammlungen, Seite %{page} von %{pages}, Ansicht %{view}, sortiert %{sort}."
+        works_count:
+          one: "1 Werk"
+          other: "%{count} Werke"
+        empty: "Es wurden noch keine Sammlungen hinzugefügt."
+        all: "Alle Sammlungen durchstöbern"
       stats:
         collections:
           one: "Sammlung"

@@ -1024,6 +1024,25 @@ pt-BR:
         unfeature_confirm: "Remover esta coleção da lista de destaques?"
         reorder_hint: "Arraste para reordenar as coleções em destaque."
         save_order: "Salvar ordem"
+      browse:
+        heading: "Explorar acervos"
+        grid: "Grade"
+        list: "Lista"
+        view_label: "Opções de exibição dos acervos"
+        sort: "Ordenar"
+        sort_asc: "De A a Z"
+        sort_desc: "De Z a A"
+        sort_aria: "Ordenar por título, atualmente %{direction}. Ative para inverter."
+        previous: "Anterior"
+        next: "Próxima"
+        page: "Página %{number}"
+        pages_label: "Páginas dos acervos"
+        status: "Exibindo %{shown} de %{total} acervos, página %{page} de %{pages}, visualização %{view}, ordenados %{sort}."
+        works_count:
+          one: "1 obra"
+          other: "%{count} obras"
+        empty: "Nenhum acervo foi adicionado ainda."
+        all: "Explorar todos os acervos"
       stats:
         collections:
           one: "Acervo"

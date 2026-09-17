@@ -1146,6 +1146,25 @@ fr:
         unfeature_confirm: "Retirer cette collection de la liste mise en avant ?"
         reorder_hint: "Faites glisser pour réordonner les collections."
         save_order: "Enregistrer l'ordre"
+      browse:
+        heading: "Parcourir les collections"
+        grid: "Grille"
+        list: "Liste"
+        view_label: "Options d'affichage des collections"
+        sort: "Trier"
+        sort_asc: "De A à Z"
+        sort_desc: "De Z à A"
+        sort_aria: "Trier par titre, actuellement %{direction}. Activer pour inverser."
+        previous: "Précédent"
+        next: "Suivant"
+        page: "Page %{number}"
+        pages_label: "Pages des collections"
+        status: "Affichage de %{shown} collections sur %{total}, page %{page} sur %{pages}, affichage %{view}, tri %{sort}."
+        works_count:
+          one: "%{count} document"
+          other: "%{count} documents"
+        empty: "Aucune collection n'a encore été ajoutée."
+        all: "Parcourir toutes les collections"
       stats:
         collections:
           one: "Collection"

@@ -62,6 +62,11 @@
     order: 1;
   }
 
+  // Hyrax _home-page.scss restores 4px on #search-field-header by ID
+  #search-field-header {
+    border-radius: var(--dc-radius, #{$dc-radius});
+  }
+
   .q.form-control {
     border: 1px solid $dc-input-edge;
     border-radius: var(--dc-radius, #{$dc-radius});
@@ -93,6 +98,10 @@
     font-size: 14px;
     height: var(--dc-search-height, 44px);
     order: 0;
+  }
+
+  .dropdown-menu {
+    border-radius: var(--dc-radius, #{$dc-radius});
   }
 
   #search-submit-header {

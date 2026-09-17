@@ -1141,6 +1141,25 @@ es:
         unfeature_confirm: "¿Quitar esta colección de la lista de destacadas?"
         reorder_hint: "Arrastre para reordenar las colecciones destacadas."
         save_order: "Guardar orden"
+      browse:
+        heading: "Explorar colecciones"
+        grid: "Cuadrícula"
+        list: "Lista"
+        view_label: "Opciones de visualización de colecciones"
+        sort: "Ordenar"
+        sort_asc: "De A a Z"
+        sort_desc: "De Z a A"
+        sort_aria: "Ordenar por título, actualmente %{direction}. Activar para invertir."
+        previous: "Anterior"
+        next: "Siguiente"
+        page: "Página %{number}"
+        pages_label: "Páginas de colecciones"
+        status: "Mostrando %{shown} de %{total} colecciones, página %{page} de %{pages}, vista %{view}, ordenadas %{sort}."
+        works_count:
+          one: "1 obra"
+          other: "%{count} obras"
+        empty: "Aún no se han añadido colecciones."
+        all: "Explorar todas las colecciones"
       stats:
         collections:
           one: "Colección"

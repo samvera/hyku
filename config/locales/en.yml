@@ -1008,6 +1008,25 @@ en:
         unfeature_confirm: "Remove this collection from the featured list?"
         reorder_hint: "Drag to reorder featured collections."
         save_order: "Save order"
+      browse:
+        heading: "Browse collections"
+        grid: "Grid"
+        list: "List"
+        view_label: "Collection display options"
+        sort: "Sort"
+        sort_asc: "A to Z"
+        sort_desc: "Z to A"
+        sort_aria: "Sort by title, currently %{direction}. Activate to reverse."
+        previous: "Previous"
+        next: "Next"
+        page: "Page %{number}"
+        pages_label: "Collection pages"
+        status: "Showing %{shown} of %{total} collections, page %{page} of %{pages}, %{view} view, sorted %{sort}."
+        works_count:
+          one: "1 work"
+          other: "%{count} works"
+        empty: "No collections have been added yet."
+        all: "Browse all collections"
       stats:
         collections:
           one: "Collection"

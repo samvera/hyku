@@ -1157,6 +1157,25 @@ zh:
         unfeature_confirm: "要将此合集从精选列表中移除吗？"
         reorder_hint: "拖动以重新排列精选合集。"
         save_order: "保存排序"
+      browse:
+        heading: "浏览馆藏"
+        grid: "网格"
+        list: "列表"
+        view_label: "馆藏显示选项"
+        sort: "排序"
+        sort_asc: "A 到 Z"
+        sort_desc: "Z 到 A"
+        sort_aria: "按标题排序，当前为%{direction}。激活以反转。"
+        previous: "上一页"
+        next: "下一页"
+        page: "第 %{number} 页"
+        pages_label: "馆藏页面"
+        status: "显示 %{total} 个馆藏中的 %{shown} 个，第 %{page} 页，共 %{pages} 页，%{view}视图，%{sort}排序。"
+        works_count:
+          one: "%{count} 件作品"
+          other: "%{count} 件作品"
+        empty: "尚未添加任何馆藏。"
+        all: "浏览全部馆藏"
       stats:
         collections:
           one: "馆藏"

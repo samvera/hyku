@@ -61,7 +61,9 @@
   }
 
   .dc-hero-scrim {
-    background: linear-gradient(rgba(0, 0, 0, 0.3) 0%, transparent 30%, transparent 55%, rgba(0, 0, 0, 0.62) 100%);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    background: rgba(0, 0, 0, 0.6);
     inset: 0;
     position: absolute;
   }
@@ -87,15 +89,15 @@
       padding-bottom: 150px;
       padding-top: 32px;
     }
+
+    @media (max-width: $dc-mobile-max) {
+      padding-top: 64px;
+    }
   }
 
   .dc-hero-plate {
-    backdrop-filter: blur(4px);
-    background: $dc-plate;
-    border-radius: var(--dc-radius-plate, #{$dc-radius-plate});
     color: #fff;
     max-width: 100%;
-    padding: 16px;
     pointer-events: auto;
     text-align: center;
     width: 792px;
@@ -247,9 +249,10 @@
   }
 
   .dc-hero-caption {
-    backdrop-filter: blur(4px);
-    background: $dc-plate;
-    border-radius: var(--dc-radius-plate, #{$dc-radius-plate});
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    background: rgba(0, 0, 0, 0.55);
+    border-radius: 999px;
     bottom: 24px;
     color: #fff;
     display: flex;
@@ -257,10 +260,8 @@
     gap: 4px;
     left: $dc-hero-gutter;
     margin: 0;
-    // the controls sit at the same edge; reserve the widest they can be, which
-    // is FeaturedCollection.feature_limit segments plus the hold button
     max-width: calc(100% - #{$dc-hero-gutter * 2} - #{$dc-hero-controls-reserve});
-    padding: 12px 16px;
+    padding: 12px 24px;
     position: absolute;
     z-index: 2;
 
@@ -269,10 +270,7 @@
       max-width: calc(100% - #{$dc-hero-gutter-laptop * 2} - #{$dc-hero-controls-reserve});
     }
 
-    // narrow enough that reserving the controls' width leaves no usable
-    // measure, so the caption clears them vertically instead
     @media (max-width: $dc-tablet-max) {
-      bottom: 64px;
       left: $dc-gutter;
       max-width: calc(100% - #{$dc-gutter * 2});
     }
@@ -325,7 +323,11 @@
     }
 
     @media (max-width: $dc-mobile-max) {
-      right: $dc-gutter-mobile;
+      bottom: auto;
+      justify-content: center;
+      left: 0;
+      right: 0;
+      top: 18px;
     }
   }
 
@@ -482,6 +484,392 @@
     @media (max-width: $dc-mobile-max) {
       height: 56px;
       width: 140px;
+
+  // ---- home sections ----
+  .dc-home {
+    @include dc-column;
+    @include dc-gutter;
+    padding-bottom: 60px;
+    padding-top: 52px;
+  }
+
+  .dc-section-head {
+    align-items: flex-end;
+    border-bottom: 2px solid $dc-ink;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 24px;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    padding-bottom: 12px;
+  }
+
+  .dc-section-title {
+    color: $dc-ink-heading;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin: 0;
+
+    @media (max-width: $dc-laptop-max) {
+      font-size: 30px;
+    }
+
+    @media (max-width: $dc-tablet-max) {
+      font-size: 27px;
+    }
+
+    @media (max-width: $dc-mobile-max) {
+      font-size: 24px;
+    }
+  }
+
+  .dc-section-foot {
+    align-items: flex-end;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  .dc-section-action {
+    @include dc-link;
+    font-size: 15px;
+  }
+
+  .dc-empty {
+    color: $dc-ink;
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  // ---- browse controls ----
+  .dc-browse-controls {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-left: auto;
+  }
+
+  .dc-control {
+    align-items: center;
+    background: var(--dc-button, #{$dc-button});
+    border: 1px solid var(--dc-button-edge, #{$dc-button-edge});
+    border-radius: var(--dc-radius, #{$dc-radius});
+    color: var(--dc-button-ink, #{$dc-button-ink});
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 14px;
+    gap: 8px;
+    height: 36px;
+    justify-content: center;
+    line-height: 1;
+    min-width: 36px;
+    padding: 0 12px;
+    transition: background-color $dc-transition, border-color $dc-transition;
+
+    // hover only, not focus: a mouse click leaves the button focused, and a
+    // focus background would stick until the reader clicked elsewhere
+    &:hover {
+      background: var(--dc-button-hover, #{$dc-surface-alt});
+      border-color: var(--dc-button-hover-edge, #{$dc-button-ink});
+    }
+
+    &:focus-visible {
+      @include dc-focus-ring;
+    }
+
+    &[disabled] {
+      background: var(--dc-button, #{$dc-button});
+      border-color: var(--dc-button-edge, #{$dc-button-edge});
+      color: $dc-ink-secondary;
+      cursor: default;
+    }
+
+    // active toggle and current page: bold plus a 3px inset rule, not a
+    // border, so the label does not shift by a pixel when it toggles
+    &[aria-pressed='true'],
+    &[aria-current='page'] {
+      box-shadow: inset 0 -3px 0 var(--dc-accent, #{$dc-accent});
+      font-weight: 700;
+    }
+
+    @media (max-width: $dc-tablet-max) {
+      height: 44px;
+    }
+  }
+
+  .dc-view-toggle {
+    display: inline-flex;
+
+    @media (max-width: $dc-mobile-max) {
+      display: none;
+    }
+
+    // the two segments share an edge; joined groups round only their outer corners
+    .dc-control + .dc-control {
+      border-bottom-left-radius: 0;
+      border-top-left-radius: 0;
+      margin-left: -1px;
+    }
+
+    .dc-control:first-child {
+      border-bottom-right-radius: 0;
+      border-top-right-radius: 0;
+    }
+
+    .dc-control[aria-pressed='true'] {
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  .dc-sort-label {
+    color: $dc-ink-secondary;
+    font-size: 13px;
+    margin-left: 8px;
+  }
+
+  // the arrow follows the direction: down for A to Z, up for Z to A
+  .dc-sort::after {
+    content: '\25BC';
+    font-size: 10px;
+  }
+
+  .dc-sort[data-direction='desc']::after {
+    content: '\25B2';
+  }
+
+  // ---- collection cards ----
+  .dc-collections {
+    display: grid;
+    gap: 28px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0;
+
+    @media (max-width: $dc-tablet-max) {
+      gap: 20px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @media (max-width: $dc-mobile-max) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .dc-collection {
+    background: $dc-surface;
+    border-radius: var(--dc-radius, #{$dc-radius});
+    box-shadow: $dc-shadow-card;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+  }
+
+
+  .dc-collection-plate {
+    aspect-ratio: 16 / 10;
+    background: $dc-surface-alt;
+    display: block;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .dc-collection-plate-blur {
+    filter: blur(26px) saturate(1.2);
+    height: 124%;
+    left: -12%;
+    object-fit: cover;
+    position: absolute;
+    top: -12%;
+    width: 124%;
+  }
+
+  .dc-collection-plate-scrim {
+    background: rgba(28, 27, 26, 0.14);
+    inset: 0;
+    position: absolute;
+  }
+
+  .dc-collection-plate-figure {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    position: relative;
+
+    img {
+      display: block;
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .dc-collection-body {
+    border: 1px solid $dc-hairline;
+    border-top: 0;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+    padding: 16px 20px 20px;
+  }
+
+  // reserved in the title's own type, so two lines fit whatever the card's size
+  .dc-collection-title {
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.25;
+    margin: 0;
+    min-height: 2.5em;
+
+    a {
+      -webkit-box-orient: vertical;
+      color: $dc-ink-heading;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+      overflow-wrap: anywhere;
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        @include dc-underline;
+        color: var(--dc-link-hover, #{$dc-link-hover});
+      }
+
+      &:focus-visible {
+        @include dc-focus-ring;
+      }
+    }
+
+    @media (max-width: $dc-mobile-max) {
+      min-height: 0;
+    }
+  }
+
+  .dc-collection-description {
+    -webkit-box-orient: vertical;
+    color: $dc-ink;
+    display: -webkit-box;
+    font-size: 16px;
+    -webkit-line-clamp: 5;
+    line-height: 1.6;
+    margin: 0;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+  }
+
+  .dc-collection-count {
+    color: $dc-ink-secondary;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    margin: auto 0 0;
+    padding-top: 12px;
+  }
+
+  // ---- list view ----
+  // the thumbnail sits on a blurred copy of itself, so mixed aspect ratios
+  // letterbox in the item's own color rather than in gray bars
+  .dc-collections-list {
+    gap: 20px;
+    grid-template-columns: minmax(0, 1fr);
+
+    .dc-collection {
+      border: 1px solid $dc-hairline;
+      flex-direction: row;
+      height: 270px;
+    }
+
+    .dc-collection-plate {
+      aspect-ratio: auto;
+      flex: none;
+      width: 360px;
+    }
+
+    .dc-collection-plate-figure {
+      padding: 28px 32px;
+
+      img {
+        width: auto;
+      }
+    }
+
+    .dc-collection-body {
+      align-items: flex-start;
+      border: 0;
+      gap: 12px;
+      padding: 28px 32px;
+    }
+
+    .dc-collection-title {
+      min-height: 0;
+    }
+
+    .dc-collection-description {
+      font-size: 15px;
+      line-height: 1.7;
+      max-width: 760px;
+    }
+
+    .dc-collection-count {
+      padding-top: 0;
+    }
+
+    @media (max-width: $dc-tablet-max) {
+      .dc-collection-plate {
+        width: 280px;
+      }
+    }
+
+    @media (max-width: $dc-mobile-max) {
+      .dc-collection {
+        border: 0;
+        flex-direction: column;
+        height: 100%;
+      }
+
+      .dc-collection-plate {
+        aspect-ratio: 16 / 10;
+        width: 100%;
+      }
+
+      .dc-collection-plate-figure {
+        padding: 0;
+
+        img {
+          width: 100%;
+        }
+      }
+
+      .dc-collection-body {
+        border: 1px solid $dc-hairline;
+        border-top: 0;
+        gap: 8px;
+        padding: 16px 20px 20px;
+      }
+
+      .dc-collection-count {
+        padding-top: 12px;
+      }
+    }
+  }
+
+  // ---- pager ----
+  .dc-pager {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    justify-content: flex-end;
+
+    @media (max-width: $dc-mobile-max) {
+      justify-content: center;
     }
   }
 }

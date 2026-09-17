@@ -36,4 +36,5 @@ ENV SOLR_USER="solr" \
     SOLR_GROUP="solr"
 USER root
 COPY --chown=solr:solr solr/security.json /var/solr/data/security.json
+COPY --chown=solr:solr solr/conf /opt/solr/server/solr/configsets/hyku/conf
 USER $SOLR_USER

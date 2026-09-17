@@ -8,10 +8,36 @@ resources:
     memory: "2Gi"
     cpu: "100m"
 
+startupProbe:
+  enabled: true
+  path: "/healthz"
+  failureThreshold: 30
 livenessProbe:
-  enabled: false
+  enabled: true
+  path: "/healthz"
+  initialDelaySeconds: 15
+  periodSeconds: 60
+  timeoutSeconds: 60
+  failureThreshold: 6
 readinessProbe:
-  enabled: false
+  enabled: true
+  path: "/healthz"
+  initialDelaySeconds: 15
+  periodSeconds: 60
+  timeoutSeconds: 60
+  failureThreshold: 6
+
+# db-setup's migration-count check queries schema_migrations before db:create
+# ever runs, so it dies under `set -e` against a genuinely empty database.
+# Host/user/db are hardcoded, not $DB_HOST-style: this container gets no env
+# from the chart, and envsubst blanks any $VARNAME with no matching CI secret.
+dbPreSetupInitContainer:
+  - name: ensure-schema-migrations
+    image: "ghcr.io/$REPO_LOWER/web:$TAG"
+    command:
+      - sh
+      - -c
+      - PGPASSWORD=$POSTGRES_PASSWORD psql -h zalando-postgres-v14-pooler.postgres.svc.cluster.local -p 5432 -U postgres hyku_staging -c "CREATE TABLE IF NOT EXISTS schema_migrations (version character varying(255) NOT NULL PRIMARY KEY);"
 
 brandingVolume:
   storageClass: aws-efs
@@ -76,11 +102,17 @@ extraEnvVars: &envVars
   - name: DB_ADAPTER
     value: postgresql
   - name: DB_HOST
-    value: postgres-postgresql.postgres.svc.cluster.local
+    value: zalando-postgres-v14-pooler.postgres.svc.cluster.local
   - name: DB_NAME
-    value: hyku-staging
+    value: hyku_staging
   - name: DB_USER
     value: postgres
+  - name: PGSSLMODE
+    value: require
+  - name: DB_PREPARED_STATEMENTS
+    value: "false"
+  - name: DB_ADVISORY_LOCKS
+    value: "false"
   - name: FCREPO_BASE_PATH
     value: /hykustaging
   - name: FCREPO_HOST
@@ -89,8 +121,12 @@ extraEnvVars: &envVars
     value: "8080"
   - name: FCREPO_REST_PATH
     value: rest
+  - name: GOOGLE_ACCOUNT_JSON
+    value: $GOOGLE_ACCOUNT_JSON
   - name: GOOGLE_ANALYTICS_ID
     value: $GOOGLE_ANALYTICS_ID
+  - name: GOOGLE_ANALYTICS_PROPERTY_ID
+    value: $GOOGLE_ANALYTICS_PROPERTY_ID
   - name: GOOGLE_OAUTH_APP_NAME
     value: hyku-staging
   - name: GOOGLE_OAUTH_APP_VERSION
@@ -131,14 +167,26 @@ extraEnvVars: &envVars
     value: good_job
   - name: HYKU_BULKRAX_ENABLED
     value: "true"
+  - name: HYKU_BULLET_ENABLED
+    value: "true"
   - name: HYKU_CONTACT_EMAIL
-    value: support@notch8.com
+    value: no-reply@hykustaging.org
   - name: HYKU_FILE_ACL
     value: "false"
+  - name: HYKU_VOCABULARY_SIDEBAR_ENABLED
+    value: "true"
+  - name: HYRAX_ANALYTICS
+    value: "true"
+  - name: HYRAX_ANALYTICS_PROVIDER
+    value: "ga4"
+  - name: HYRAX_ANALYTICS_REPORTING
+    value: "true"
   - name: HYRAX_FITS_PATH
     value: /app/fits/fits.sh
   - name: HYRAX_FLEXIBLE
     value: "false"
+  - name: HYRAX_REDIRECTS_ENABLED
+    value: "true"
   - name: HYRAX_VALKYRIE
     value: "true"
   - name: HYKU_ADMIN_HOST
@@ -164,19 +212,19 @@ extraEnvVars: &envVars
   - name: NEGATIVE_CAPTCHA_SECRET
     value: $NEGATIVE_CAPTCHA_SECRET
   - name: SMTP_ADDRESS
-    value: "maildev-smtp.maildev.svc.cluster.local"
+    value: "smtp.sendgrid.net"
   - name: SMTP_DOMAIN
-    value: "maildev-smtp.maildev.svc.cluster.local"
+    value: "hykustaging.org"
   - name: SMTP_ENABLED
     value: "true"
   - name: SMTP_PORT
-    value: "1025"
+    value: "587"
   - name: SMTP_TYPE
     value: "plain"
   - name: SMTP_USER_NAME
-    value: "admin"
+    value: "apikey"
   - name: SMTP_STARTTLS
-    value: "false"
+    value: "true"
   - name: SMTP_PASSWORD
     value: $SMTP_PASSWORD
   - name: SOLR_ADMIN_USER
@@ -208,7 +256,7 @@ worker:
   resources:
     limits:
       memory: "4Gi"
-      cpu: "1000m"
+      cpu: "1250m"
     requests:
       memory: "2Gi"
       cpu: "100m"
@@ -233,6 +281,15 @@ leaseRelease:
 
 fcrepo:
   enabled: false
+fits:
+  enabled: true
+  resources:
+    limits:
+      memory: "2Gi"
+      cpu: "1000m"
+    requests:
+      memory: "1Gi"
+      cpu: "250m"
 postgresql:
   enabled: false
 redis:
@@ -248,30 +305,23 @@ redis:
   architecture: standalone
   auth:
     password: $REDIS_PASSWORD
+
 solr:
   enabled: false
 
 externalFcrepoHost: fcrepo.fcrepo.svc.cluster.local
 
 externalPostgresql:
-  host: postgres-postgresql.postgres.svc.cluster.local
+  host: zalando-postgres-v14-pooler.postgres.svc.cluster.local
   username: postgres
   password: $POSTGRES_PASSWORD
+  database: hyku_staging
 
 externalSolrHost: solr.solr.svc.cluster.local
 externalSolrUser: admin
 externalSolrCollection: "hyku-staging"
 externalSolrPassword: $SOLR_ADMIN_PASSWORD
 
-fits:
-  enabled: true
-  resources:
-    limits:
-      memory: "2Gi"
-      cpu: "1000m"
-    requests:
-      memory: "1Gi"
-      cpu: "250m"
 global:
   hyraxName: hyku-staging-hyrax
 

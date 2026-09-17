@@ -1143,6 +1143,27 @@ zh:
   digital_collection:
     chrome:
       toggle_navigation: "切换导航"
+    homepage:
+      intro_label: "简介"
+      hero:
+        label: "精选馆藏"
+        headline: "探索馆藏"
+        featured_collection: "精选馆藏"
+        hold: "暂停"
+        resume: "播放"
+        segment: "显示 %{title}"
+      featured_collections:
+        heading: "精选合集"
+        unfeature_confirm: "要将此合集从精选列表中移除吗？"
+        reorder_hint: "拖动以重新排列精选合集。"
+        save_order: "保存排序"
+      stats:
+        collections:
+          one: "馆藏"
+          other: "馆藏"
+        works:
+          one: "作品"
+          other: "作品"
   screening_room:
     chrome:
       toggle_navigation: 切换导航

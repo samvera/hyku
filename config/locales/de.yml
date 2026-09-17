@@ -1130,6 +1130,27 @@ de:
   digital_collection:
     chrome:
       toggle_navigation: "Navigation umschalten"
+    homepage:
+      intro_label: "Einführung"
+      hero:
+        label: "Ausgewählte Sammlungen"
+        headline: "Entdecken Sie die Sammlungen"
+        featured_collection: "Ausgewählte Sammlung"
+        hold: "Pause"
+        resume: "Abspielen"
+        segment: "%{title} anzeigen"
+      featured_collections:
+        heading: "Ausgewählte Sammlungen"
+        unfeature_confirm: "Diese Sammlung aus der Auswahl entfernen?"
+        reorder_hint: "Ziehen, um die Reihenfolge der Sammlungen zu ändern."
+        save_order: "Reihenfolge speichern"
+      stats:
+        collections:
+          one: "Sammlung"
+          other: "Sammlungen"
+        works:
+          one: "Werk"
+          other: "Werke"
   screening_room:
     chrome:
       toggle_navigation: Navigation umschalten

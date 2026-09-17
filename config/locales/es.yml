@@ -1127,6 +1127,27 @@ es:
   digital_collection:
     chrome:
       toggle_navigation: "Alternar la navegación"
+    homepage:
+      intro_label: "Introducción"
+      hero:
+        label: "Colecciones destacadas"
+        headline: "Explore las colecciones"
+        featured_collection: "Colección destacada"
+        hold: "Pausar"
+        resume: "Reproducir"
+        segment: "Mostrar %{title}"
+      featured_collections:
+        heading: "Colecciones destacadas"
+        unfeature_confirm: "¿Quitar esta colección de la lista de destacadas?"
+        reorder_hint: "Arrastre para reordenar las colecciones destacadas."
+        save_order: "Guardar orden"
+      stats:
+        collections:
+          one: "Colección"
+          other: "Colecciones"
+        works:
+          one: "Obra"
+          other: "Obras"
   screening_room:
     chrome:
       toggle_navigation: Alternar la navegación

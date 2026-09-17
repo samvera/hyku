@@ -1010,6 +1010,27 @@ pt-BR:
   digital_collection:
     chrome:
       toggle_navigation: "Alternar navegação"
+    homepage:
+      intro_label: "Introdução"
+      hero:
+        label: "Acervos em destaque"
+        headline: "Explore os acervos"
+        featured_collection: "Acervo em destaque"
+        hold: "Pausar"
+        resume: "Reproduzir"
+        segment: "Mostrar %{title}"
+      featured_collections:
+        heading: "Coleções em destaque"
+        unfeature_confirm: "Remover esta coleção da lista de destaques?"
+        reorder_hint: "Arraste para reordenar as coleções em destaque."
+        save_order: "Salvar ordem"
+      stats:
+        collections:
+          one: "Acervo"
+          other: "Acervos"
+        works:
+          one: "Obra"
+          other: "Obras"
   screening_room:
     chrome:
       toggle_navigation: Alternar navegação

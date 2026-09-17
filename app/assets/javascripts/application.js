@@ -53,6 +53,7 @@
 //= require hyrax/deposit_wizard
 //= require bulkrax/application
 
+//= require themes/spotlight
 //= require themes/screening_room_home
 
 //= require citation_picker

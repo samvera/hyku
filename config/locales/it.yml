@@ -1127,6 +1127,27 @@ it:
   digital_collection:
     chrome:
       toggle_navigation: "Attiva/disattiva la navigazione"
+    homepage:
+      intro_label: "Introduzione"
+      hero:
+        label: "Collezioni in evidenza"
+        headline: "Esplora le collezioni"
+        featured_collection: "Collezione in evidenza"
+        hold: "Pausa"
+        resume: "Riproduci"
+        segment: "Mostra %{title}"
+      featured_collections:
+        heading: "Collezioni in evidenza"
+        unfeature_confirm: "Rimuovere questa collezione dagli elementi in evidenza?"
+        reorder_hint: "Trascina per riordinare le collezioni in evidenza."
+        save_order: "Salva ordine"
+      stats:
+        collections:
+          one: "Collezione"
+          other: "Collezioni"
+        works:
+          one: "Opera"
+          other: "Opere"
   screening_room:
     chrome:
       toggle_navigation: Attiva/disattiva la navigazione

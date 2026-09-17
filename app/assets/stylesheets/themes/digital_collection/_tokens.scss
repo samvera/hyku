@@ -9,6 +9,8 @@ $dc-surface-alt: #f5f5f5;
 $dc-hairline: #e2e0dc;
 $dc-input-edge: #cccccc;
 $dc-notice: #fdf4f4;
+$dc-hero-ground: #2c2b29;
+$dc-plate: rgba(20, 19, 18, 0.66);
 
 $dc-accent: #2e74b2;
 $dc-link: #2e74b2;
@@ -20,8 +22,12 @@ $dc-chrome-ink: #dcdcdc;
 $dc-footer-link: #ffebcd;
 
 $dc-radius: 0;
+$dc-radius-plate: 0;
 $dc-transition: 120ms ease;
+$dc-hero-fade: 900ms;
 
+$dc-laptop-max: 1439px;
+$dc-tablet-max: 1023px;
 $dc-nav-collapse-max: 991px;
 $dc-mobile-max: 767px;
 
@@ -29,4 +35,7 @@ $dc-gutter: 28px;
 $dc-gutter-mobile: 16px;
 $dc-header-max: 1920px;
 $dc-content-max: 1440px;
+$dc-hero-gutter: 120px;
+$dc-hero-gutter-laptop: 64px;
+$dc-hero-controls-reserve: 420px;
 $dc-masthead-height: 64px;

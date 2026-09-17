@@ -1132,6 +1132,27 @@ fr:
   digital_collection:
     chrome:
       toggle_navigation: "Afficher/masquer la navigation"
+    homepage:
+      intro_label: "Introduction"
+      hero:
+        label: "Collections à la une"
+        headline: "Explorez les collections"
+        featured_collection: "Collection à la une"
+        hold: "Pause"
+        resume: "Lecture"
+        segment: "Afficher %{title}"
+      featured_collections:
+        heading: "Collections à la une"
+        unfeature_confirm: "Retirer cette collection de la liste mise en avant ?"
+        reorder_hint: "Faites glisser pour réordonner les collections."
+        save_order: "Enregistrer l'ordre"
+      stats:
+        collections:
+          one: "Collection"
+          other: "Collections"
+        works:
+          one: "Document"
+          other: "Documents"
   screening_room:
     chrome:
       toggle_navigation: Afficher/masquer la navigation

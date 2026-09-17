@@ -994,6 +994,27 @@ en:
   digital_collection:
     chrome:
       toggle_navigation: "Toggle navigation"
+    homepage:
+      intro_label: "Introduction"
+      hero:
+        label: "Featured collections"
+        headline: "Explore the collections"
+        featured_collection: "Featured collection"
+        hold: "Pause"
+        resume: "Play"
+        segment: "Show %{title}"
+      featured_collections:
+        heading: "Featured collections"
+        unfeature_confirm: "Remove this collection from the featured list?"
+        reorder_hint: "Drag to reorder featured collections."
+        save_order: "Save order"
+      stats:
+        collections:
+          one: "Collection"
+          other: "Collections"
+        works:
+          one: "Work"
+          other: "Works"
   screening_room:
     chrome:
       toggle_navigation: Toggle navigation

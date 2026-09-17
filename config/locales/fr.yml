@@ -1129,6 +1129,9 @@ fr:
           apa: "APA"
           mla: "MLA"
           chicago: "Chicago"
+  digital_collection:
+    chrome:
+      toggle_navigation: "Afficher/masquer la navigation"
   screening_room:
     chrome:
       toggle_navigation: Afficher/masquer la navigation

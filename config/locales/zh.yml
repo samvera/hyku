@@ -1140,6 +1140,9 @@ zh:
           apa: "APA"
           mla: "MLA"
           chicago: "Chicago"
+  digital_collection:
+    chrome:
+      toggle_navigation: "切换导航"
   screening_room:
     chrome:
       toggle_navigation: 切换导航

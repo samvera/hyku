@@ -1,0 +1,143 @@
+// ---- digital collection mixins ----
+
+@mixin dc-gutter {
+  padding-left: $dc-gutter;
+  padding-right: $dc-gutter;
+
+  @media (max-width: $dc-mobile-max) {
+    padding-left: $dc-gutter-mobile;
+    padding-right: $dc-gutter-mobile;
+  }
+}
+
+@mixin dc-column {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: $dc-content-max;
+}
+
+@mixin dc-focus-ring($color: var(--dc-link-hover, #{$dc-link-hover}), $offset: 2px) {
+  box-shadow: none;
+  outline: 2px solid $color;
+  outline-offset: $offset;
+}
+
+@mixin dc-underline($thickness: 1px) {
+  text-decoration: underline;
+  text-decoration-thickness: $thickness;
+  text-underline-offset: 3px;
+}
+
+@mixin dc-link($color: var(--dc-link, #{$dc-link})) {
+  @include dc-underline;
+  color: $color;
+  transition: color $dc-transition;
+
+  &:hover,
+  &:focus {
+    color: var(--dc-link-hover, #{$dc-link-hover});
+  }
+
+  &:focus-visible {
+    @include dc-focus-ring;
+  }
+}
+
+// skin for Hyku's catalog/_search_form, shared by the search row and the hero
+@mixin dc-search-form {
+  .form-group.row {
+    margin: 0;
+    // pt-4 and pt-sm-0 are Bootstrap utilities, !important
+    padding-top: 0 !important;
+  }
+
+  // the Advanced link is a button inside the group's append; it sits under the
+  // shell instead, so the append stays a real box for the scope menu's Popper
+  .input-group {
+    flex-wrap: nowrap;
+    margin-bottom: 26px;
+  }
+
+  .input-group-append {
+    order: 1;
+  }
+
+  .q.form-control {
+    border: 1px solid $dc-input-edge;
+    border-radius: var(--dc-radius, #{$dc-radius});
+    border-right: 0;
+    box-shadow: none;
+    color: $dc-ink-heading;
+    flex: 1 1 0%;
+    font-size: 15px;
+    height: var(--dc-search-height, 44px);
+    order: 0;
+
+    &::placeholder {
+      color: $dc-ink-secondary;
+    }
+
+    &:focus-visible {
+      @include dc-focus-ring(var(--dc-link-hover, #{$dc-link-hover}), -2px);
+    }
+  }
+
+  // btn-secondary is pinned by _appearance_styles with !important
+  .input-group-append .dropdown-toggle {
+    background-color: $dc-surface-alt !important;
+    border-color: $dc-input-edge !important;
+    border-radius: 0;
+    border-right-width: 0;
+    color: $dc-ink !important;
+    flex: none;
+    font-size: 14px;
+    height: var(--dc-search-height, 44px);
+    order: 0;
+  }
+
+  #search-submit-header {
+    align-items: center;
+    border-radius: var(--dc-radius, #{$dc-radius});
+    display: inline-flex;
+    font-size: 15px;
+    font-weight: 700;
+    height: var(--dc-search-height, 44px);
+    justify-content: center;
+    order: 1;
+    padding: 0 18px;
+
+    .fa {
+      display: none;
+    }
+  }
+
+  // btn-secondary and its :hover are pinned by _appearance_styles with !important
+  #advanced-top-button {
+    @include dc-underline;
+    background: none !important;
+    border: 0 !important;
+    color: var(--dc-link, #{$dc-link}) !important;
+    font-size: 13px;
+    left: 0;
+    line-height: 1.4;
+    padding: 6px 0 0;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    top: 100%;
+
+    &:hover,
+    &:focus {
+      color: var(--dc-link-hover, #{$dc-link-hover}) !important;
+    }
+
+    &:focus-visible {
+      @include dc-focus-ring;
+    }
+  }
+
+  .btn:focus-visible,
+  .dropdown-toggle:focus-visible {
+    @include dc-focus-ring;
+  }
+}

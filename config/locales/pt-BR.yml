@@ -1007,6 +1007,9 @@ pt-BR:
           apa: "APA"
           mla: "MLA"
           chicago: "Chicago"
+  digital_collection:
+    chrome:
+      toggle_navigation: "Alternar navegação"
   screening_room:
     chrome:
       toggle_navigation: Alternar navegação

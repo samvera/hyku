@@ -3,4 +3,6 @@
 <div class="dc-home">
   <%= render 'hyrax/homepage/featured_collection_section' %>
   <%= render 'hyrax/homepage/browse_collections' %>
+  <%= render 'hyrax/homepage/featured_works' %>
+  <%= render 'hyrax/homepage/recently_uploaded' if @presenter&.display_recently_uploaded? && @recent_documents.present? %>
 </div>

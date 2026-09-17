@@ -424,13 +424,16 @@ body.public-facing {
     border-top: 0;
     min-height: unset;
     padding: 0;
+    position: relative;
 }
 
-.dd3-handle {
+.dd-handle.dd3-handle {
     position: absolute;
     margin: 0;
     left: 0;
     top: 0;
+    bottom: auto;
+    height: 100%;
     cursor: pointer;
     width: 30px;
     text-indent: 100px;

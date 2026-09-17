@@ -1160,6 +1160,14 @@ es:
           other: "%{count} obras"
         empty: "Aún no se han añadido colecciones."
         all: "Explorar todas las colecciones"
+      featured:
+        heading: "Obras destacadas"
+        unfeature_confirm: "¿Quitar esta obra de la lista de destacadas?"
+        reorder_hint: "Arrastre para reordenar las obras destacadas."
+        save_order: "Guardar orden"
+      recent:
+        heading: "Añadidos recientemente"
+        view_all: "Ver todo"
       stats:
         collections:
           one: "Colección"

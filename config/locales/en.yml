@@ -1027,6 +1027,14 @@ en:
           other: "%{count} works"
         empty: "No collections have been added yet."
         all: "Browse all collections"
+      featured:
+        heading: "Featured works"
+        unfeature_confirm: "Remove this work from the featured list?"
+        reorder_hint: "Drag to reorder featured works."
+        save_order: "Save order"
+      recent:
+        heading: "Recently added works"
+        view_all: "View all"
       stats:
         collections:
           one: "Collection"

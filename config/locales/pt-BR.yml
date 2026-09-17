@@ -1043,6 +1043,14 @@ pt-BR:
           other: "%{count} obras"
         empty: "Nenhum acervo foi adicionado ainda."
         all: "Explorar todos os acervos"
+      featured:
+        heading: "Obras em destaque"
+        unfeature_confirm: "Remover esta obra da lista de destaques?"
+        reorder_hint: "Arraste para reordenar as obras em destaque."
+        save_order: "Salvar ordem"
+      recent:
+        heading: "Adicionados recentemente"
+        view_all: "Ver tudo"
       stats:
         collections:
           one: "Acervo"

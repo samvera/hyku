@@ -1165,6 +1165,14 @@ fr:
           other: "%{count} documents"
         empty: "Aucune collection n'a encore été ajoutée."
         all: "Parcourir toutes les collections"
+      featured:
+        heading: "Œuvres à la une"
+        unfeature_confirm: "Retirer cette œuvre de la liste mise en avant ?"
+        reorder_hint: "Faites glisser pour réordonner les œuvres."
+        save_order: "Enregistrer l'ordre"
+      recent:
+        heading: "Ajouts récents"
+        view_all: "Voir tout"
       stats:
         collections:
           one: "Collection"

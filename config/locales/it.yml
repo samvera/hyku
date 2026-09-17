@@ -1160,6 +1160,14 @@ it:
           other: "%{count} opere"
         empty: "Nessuna collezione è stata ancora aggiunta."
         all: "Esplora tutte le collezioni"
+      featured:
+        heading: "Opere in evidenza"
+        unfeature_confirm: "Rimuovere questa opera dagli elementi in evidenza?"
+        reorder_hint: "Trascina per riordinare le opere in evidenza."
+        save_order: "Salva ordine"
+      recent:
+        heading: "Aggiunti di recente"
+        view_all: "Vedi tutto"
       stats:
         collections:
           one: "Collezione"

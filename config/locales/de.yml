@@ -1163,6 +1163,14 @@ de:
           other: "%{count} Werke"
         empty: "Es wurden noch keine Sammlungen hinzugefügt."
         all: "Alle Sammlungen durchstöbern"
+      featured:
+        heading: "Ausgewählte Werke"
+        unfeature_confirm: "Dieses Werk aus der Auswahl entfernen?"
+        reorder_hint: "Ziehen, um die Reihenfolge zu ändern."
+        save_order: "Reihenfolge speichern"
+      recent:
+        heading: "Kürzlich hinzugefügt"
+        view_all: "Alle anzeigen"
       stats:
         collections:
           one: "Sammlung"

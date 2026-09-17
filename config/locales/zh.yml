@@ -1176,6 +1176,14 @@ zh:
           other: "%{count} 件作品"
         empty: "尚未添加任何馆藏。"
         all: "浏览全部馆藏"
+      featured:
+        heading: "精选作品"
+        unfeature_confirm: "要将此作品从精选列表中移除吗？"
+        reorder_hint: "拖动以重新排列精选作品。"
+        save_order: "保存顺序"
+      recent:
+        heading: "最近添加"
+        view_all: "查看全部"
       stats:
         collections:
           one: "馆藏"

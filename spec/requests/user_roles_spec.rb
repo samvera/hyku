@@ -166,14 +166,14 @@ RSpec.describe "User roles", type: :request, singletenant: true, clean: true do
 
     it 'cannot access/edit manage groups user tab' do
       get "/admin/groups/#{group_1.id}/users"
-      expect(response.status).to eq(401)
-      expect(response).to have_http_status(:unauthorized)
+      expect(response).to redirect_to(root_path)
+      expect(response).to have_http_status(:redirect)
     end
 
     it 'cannot access/edit manage groups role tab' do
       get "/admin/groups/#{group_1.id}/roles"
-      expect(response.status).to eq(401)
-      expect(response).to have_http_status(:unauthorized)
+      expect(response).to redirect_to(root_path)
+      expect(response).to have_http_status(:redirect)
     end
 
     it 'cannot access/edit manage groups remove tab' do

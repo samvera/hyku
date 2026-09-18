@@ -1152,6 +1152,9 @@ es:
         works:
           one: "Obra"
           other: "Obras"
+    show:
+      part_of:
+        heading: Parte de
   screening_room:
     chrome:
       toggle_navigation: Alternar la navegación

@@ -1155,6 +1155,9 @@ de:
         works:
           one: "Werk"
           other: "Werke"
+    show:
+      part_of:
+        heading: Teil von
   screening_room:
     chrome:
       toggle_navigation: Navigation umschalten

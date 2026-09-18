@@ -778,6 +778,7 @@ it:
     digital_collection:
       show:
         item_details: Dettagli dell'elemento
+        uploaded: "caricato il %{date}"
     directory:
       suffix: "@ hydrainabox.org"
     document_language: it

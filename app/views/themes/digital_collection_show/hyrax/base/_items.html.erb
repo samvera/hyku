@@ -1,19 +1,49 @@
 <% ids = presenter.list_of_item_ids_to_display %>
 <% members = presenter.member_presenters(ids) %>
 
-<section class="dc-panel" id="dc-items" aria-labelledby="dc-items-label">
-  <div class="dc-panel-head">
-    <h2 class="dc-panel-label" id="dc-items-label">Items</h2>
-    <% if members.present? %>
-      <span class="dc-panel-count"><%= ids.total_count %></span>
-    <% end %>
-  </div>
-
-  <% if members.present? %>
-    <ul class="dc-item-list list-unstyled">
-      <% members.each do |member| %>
-        <li class="dc-item-row"><%= member.first_title %></li>
+<% if members.present? || can?(:edit, presenter.id) %>
+  <section class="dc-panel dc-items" id="dc-items" aria-labelledby="dc-items-label">
+    <div class="dc-panel-head">
+      <h2 class="dc-panel-label" id="dc-items-label"><%= t('hyrax.base.items.header') %></h2>
+      <% if members.present? %>
+        <span class="dc-panel-count"><%= ids.total_count %></span>
       <% end %>
-    </ul>
-  <% end %>
-</section>
+    </div>
+
+    <% if members.present? %>
+      <ul class="dc-item-list list-unstyled">
+        <% members.each do |member| %>
+          <li class="dc-item-row">
+            <%= link_to contextual_path(member, @presenter), class: 'dc-item-thumb',
+                        tabindex: -1, aria: { hidden: true } do %>
+              <%= document_presenter(member).thumbnail.thumbnail_tag({ alt: '' }, { suppress_link: true }) %>
+            <% end %>
+            <div class="dc-item-body">
+              <%= link_to member.link_name, contextual_path(member, @presenter), class: 'dc-item-name' %>
+              <p class="dc-item-meta">
+                <%  mime = member.solr_document.mime_type
+                    vis = theme_plain_text(member.permission_badge)
+                    uploaded = member.solr_document.date_uploaded
+                    date_str = uploaded.present? ? t('hyrax.digital_collection.show.uploaded', date: l(uploaded, format: :long)) : nil
+                    %>
+                <%= [mime, vis, date_str].compact.join(' · ') %>
+              </p>
+            </div>
+            <% if member.model_name.singular.to_sym == :file_set %>
+              <%= render 'hyrax/file_sets/actions', file_set: member %>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+
+      <% if presenter.total_pages > 1 %>
+        <nav class="dc-panel-pager" aria-labelledby="dc-items-label">
+          <%= paginate ids, theme: 'blacklight', window: 1, outer_window: 0, param_name: :page,
+                       route_set: main_app, params: { anchor: 'dc-items' } %>
+        </nav>
+      <% end %>
+    <% elsif can? :edit, presenter.id %>
+      <p class="dc-panel-empty"><%= t('hyrax.base.items.empty', type: presenter.human_readable_type) %></p>
+    <% end %>
+  </section>
+<% end %>

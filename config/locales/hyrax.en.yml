@@ -783,6 +783,7 @@ en:
     digital_collection:
       show:
         item_details: Item details
+        uploaded: "uploaded %{date}"
     directory:
       suffix: "@hydrainabox.org"
     document_language: en

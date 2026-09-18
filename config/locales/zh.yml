@@ -188,6 +188,7 @@ zh:
     formats:
       long: "%Y年%-m月%-d日"
       pr_short: "%Y年%-m月%-d日"
+      short: "%Y年%-m月%-d日"
   errors:
     messages:
       valid_embed_url: 必须是有效的YouTube或Vimeo嵌入URL。
@@ -1168,6 +1169,9 @@ zh:
         works:
           one: "作品"
           other: "作品"
+    show:
+      part_of:
+        heading: 所属
   screening_room:
     chrome:
       toggle_navigation: 切换导航

@@ -298,23 +298,30 @@ body.digital_collection_show.works-show {
 
   // ---- body grid ----
   .dc-show-body {
-    @include dc-gutter;
     align-items: start;
     display: grid;
     gap: 48px;
-    grid-template-columns: minmax(0, 1fr) calc(#{$dc-rail-width} - 92px);
+    grid-template-columns: minmax(0, 1fr) 370px;
     margin: 0 auto;
-    max-width: 1056px;
-    padding-bottom: 56px;
-    padding-top: 32px;
+    max-width: $dc-content-max;
+    padding: 32px 148px 60px;
 
     @media (max-width: $dc-laptop-max) {
-      grid-template-columns: minmax(0, 1fr) calc(#{$dc-rail-width-laptop} - 80px);
+      grid-template-columns: minmax(0, 1fr) 320px;
+      padding-left: 80px;
+      padding-right: 80px;
+    }
+
+    @media (max-width: $dc-tablet-max) {
+      padding-left: $dc-gutter;
+      padding-right: $dc-gutter;
     }
 
     @media (max-width: $dc-mobile-max) {
       gap: 32px;
       grid-template-columns: minmax(0, 1fr);
+      padding-left: $dc-gutter-mobile;
+      padding-right: $dc-gutter-mobile;
     }
   }
 
@@ -403,5 +410,257 @@ body.digital_collection_show.works-show {
     display: flex;
     flex-direction: column;
     row-gap: 20px;
+  }
+
+  // ---- rail panels ----
+  .dc-panel {
+    background: $dc-surface;
+    border: 1px solid $dc-badge-edge;
+    box-shadow: $dc-shadow-card;
+  }
+
+  .dc-panel-head {
+    align-items: center;
+    background: $dc-surface-alt;
+    border-bottom: 2px solid var(--dc-accent, #{$dc-accent});
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    padding: 12px 16px;
+  }
+
+  .dc-panel-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .dc-panel-label {
+    color: $dc-ink;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  .dc-panel-count {
+    color: $dc-ink-secondary;
+    flex: none;
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  .dc-panel-empty {
+    color: $dc-ink-secondary;
+    font-size: 14px;
+    padding: 16px;
+  }
+
+  // ---- citation panel ----
+  .dc-cite-picker {
+    background: $dc-surface;
+    border: 1px solid $dc-hairline;
+    border-radius: var(--dc-radius, #{$dc-radius});
+    color: $dc-ink;
+    font-size: 14px;
+    height: 34px;
+    padding: 0 8px;
+
+    &:focus-visible {
+      @include dc-focus-ring;
+    }
+  }
+
+  .dc-cite-text {
+    border-left: 3px solid $dc-hairline;
+    color: $dc-ink;
+    font-size: 13px;
+    line-height: 1.65;
+    margin: 0;
+    min-height: 3.3em;
+    padding-left: 12px;
+    text-wrap: pretty;
+  }
+
+  .dc-cite-actions {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .dc-cite-copy {
+    background: $dc-surface;
+    border: 1px solid $dc-hairline;
+    border-radius: var(--dc-radius, #{$dc-radius});
+    color: $dc-ink;
+    font-size: 13px;
+    font-weight: 400;
+    min-width: 84px;
+    padding: 7px 12px;
+    text-align: center;
+
+    &:hover,
+    &:focus {
+      background: darken($dc-surface-alt, 3%);
+    }
+
+    &:focus-visible {
+      @include dc-focus-ring;
+    }
+  }
+
+  .dc-cite-copied {
+    color: $dc-ink;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .dc-cite-export {
+    @include dc-link;
+    font-size: 13px;
+  }
+
+  // ---- part-of panel ----
+  .dc-part-of {
+    dl.work-show {
+      display: block;
+      margin: 0;
+    }
+
+    dt {
+      border: 0;
+      color: $dc-ink-secondary;
+      font-size: 14px;
+      font-weight: 400;
+      margin-top: 12px;
+      padding: 0;
+    }
+
+    dt:first-of-type {
+      margin-top: 0;
+    }
+
+    dd {
+      border: 0;
+      font-size: 15px;
+      line-height: 1.35;
+      margin: 2px 0 0;
+      padding: 0;
+    }
+
+    ul.tabular {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    ul.tabular li + li {
+      margin-top: 3px;
+    }
+
+    a {
+      @include dc-link;
+    }
+  }
+
+  // ---- items panel ----
+  .dc-item-list {
+    margin: 0;
+  }
+
+  .dc-item-row {
+    align-items: center;
+    column-gap: 12px;
+    display: grid;
+    grid-template-columns: 60px minmax(0, 1fr) auto;
+    padding: 12px 16px;
+
+    & + .dc-item-row {
+      border-top: 1px solid $dc-row-rule;
+    }
+  }
+
+  .dc-item-thumb {
+    background: $dc-surface;
+    display: block;
+    height: 60px;
+    overflow: hidden;
+    width: 60px;
+
+    img {
+      height: 100%;
+      object-fit: cover;
+      width: 100%;
+    }
+  }
+
+  .dc-item-body {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    row-gap: 2px;
+  }
+
+  .dc-item-name {
+    @include dc-link;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+  }
+
+  .dc-item-meta {
+    color: $dc-ink-secondary;
+    font-size: 12px;
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  .dc-item-row .btn-group {
+    align-self: center;
+
+    .dropdown-menu {
+      border-radius: var(--dc-radius, #{$dc-radius});
+    }
+  }
+
+  .dc-item-row .btn-group .btn {
+    background: $dc-ink-secondary;
+    border: 0;
+    color: $dc-surface;
+    font-size: 13px;
+    padding: 6px 14px;
+    text-decoration: none;
+    white-space: nowrap;
+
+    &:hover,
+    &:focus {
+      background: $dc-ink;
+      color: $dc-surface;
+      text-decoration: none;
+    }
+  }
+
+  .dc-item-row > a.btn {
+    background: $dc-ink-secondary !important; // counters _appearance_styles .btn-secondary !important
+    border: 0 !important;
+    color: $dc-surface !important;
+    font-size: 13px;
+    padding: 6px 14px;
+    text-decoration: none;
+    white-space: nowrap;
+
+    &:hover,
+    &:focus {
+      background: $dc-ink !important;
+      color: $dc-surface !important;
+      text-decoration: none;
+    }
+  }
+
+  .dc-panel-pager {
+    margin-top: 12px;
   }
 }

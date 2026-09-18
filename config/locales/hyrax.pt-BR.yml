@@ -778,6 +778,7 @@ pt-BR:
     digital_collection:
       show:
         item_details: Detalhes do item
+        uploaded: "enviado em %{date}"
     directory:
       suffix: "@ Hydrainabox.org"
     document_language: en

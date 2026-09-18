@@ -778,6 +778,7 @@ zh:
     digital_collection:
       show:
         item_details: 项目详情
+        uploaded: "上传于 %{date}"
     directory:
       suffix: "@hydrainabox.org"
     document_language: 恩

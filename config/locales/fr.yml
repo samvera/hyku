@@ -1157,6 +1157,9 @@ fr:
         works:
           one: "Document"
           other: "Documents"
+    show:
+      part_of:
+        heading: Fait partie de
   screening_room:
     chrome:
       toggle_navigation: Afficher/masquer la navigation

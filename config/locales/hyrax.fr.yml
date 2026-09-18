@@ -776,6 +776,7 @@ fr:
     digital_collection:
       show:
         item_details: "Détails de l'élément"
+        uploaded: "téléversé le %{date}"
     directory:
       suffix: "@ Hydrainabox.org"
     document_language: en

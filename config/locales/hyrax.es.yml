@@ -778,6 +778,7 @@ es:
     digital_collection:
       show:
         item_details: Detalles del elemento
+        uploaded: "subido el %{date}"
     directory:
       suffix: "@hydrainabox.org"
     document_language: en

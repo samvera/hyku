@@ -1152,6 +1152,9 @@ it:
         works:
           one: "Opera"
           other: "Opere"
+    show:
+      part_of:
+        heading: Parte di
   screening_room:
     chrome:
       toggle_navigation: Attiva/disattiva la navigazione

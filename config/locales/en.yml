@@ -1019,6 +1019,9 @@ en:
         works:
           one: "Work"
           other: "Works"
+    show:
+      part_of:
+        heading: "Part of"
   screening_room:
     chrome:
       toggle_navigation: Toggle navigation

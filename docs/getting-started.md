@@ -125,6 +125,9 @@ DISABLE_REDIS_CLUSTER=true ./bin/worker
 DISABLE_REDIS_CLUSTER=true ./bin/web
 ```
 
+#### Developing with Solr 9
+Hyku defaults to Solr 8; see [Using Solr 9](using-solr-9.md) to develop and test against Solr 9 instead.
+
 ## Kubernetes
 
 Hyku relies on the helm charts provided by Hyrax. See [Deployment Info](https://github.com/samvera/hyrax/blob/main/CONTAINERS.md#deploying-to-production) for more information. We also provide a basic helm [deployment script](/bin/helm_deploy). Hyku currently needs some additional volumes and ENV vars over the base Hyrax. See (ops/review-deploy.tmpl.yaml) for an example of what that might look like.

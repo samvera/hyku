@@ -356,8 +356,10 @@ module Hyku # rubocop:disable Metrics/ModuleLength
       ActiveRecord.yaml_column_permitted_classes = yaml_column_permitted_classes
 
       # Because we're loading local translations early in the to_prepare block for our decorators,
-      # the I18n.load_path is out of order.  This line ensures that we load local translations last.
-      I18n.load_path |= Dir[Rails.root.join('config', 'locales', '**', '*.yml')]
+      # the I18n.load_path is out of order.  Remove and re-append so app locales load last and win.
+      app_locales = Dir[Rails.root.join('config', 'locales', '**', '*.yml')]
+      I18n.load_path -= app_locales
+      I18n.load_path += app_locales
 
       ##
       # The first "#valid?" service is the one that we'll use for generating derivatives.

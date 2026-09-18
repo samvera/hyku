@@ -765,6 +765,9 @@ zh:
         title: 用户活动
       user_notifications: 用户通知
       view_files: 查看文件
+    digital_collection:
+      show:
+        item_details: 项目详情
     directory:
       suffix: "@hydrainabox.org"
     document_language: 恩

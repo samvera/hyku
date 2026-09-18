@@ -770,6 +770,9 @@ en:
         title: User Activity
       user_notifications: User Notifications
       view_files: View Files
+    digital_collection:
+      show:
+        item_details: Item details
     directory:
       suffix: "@hydrainabox.org"
     document_language: en

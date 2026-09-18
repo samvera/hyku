@@ -765,6 +765,9 @@ it:
         title: Attività dell'utente
       user_notifications: Notifiche utente
       view_files: Vedi files
+    digital_collection:
+      show:
+        item_details: Dettagli dell'elemento
     directory:
       suffix: "@ hydrainabox.org"
     document_language: it

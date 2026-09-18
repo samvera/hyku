@@ -112,17 +112,6 @@ pt-BR:
         sub: Deposite obras no repositório.
         button: Iniciar um depósito
     show:
-      citation:
-        heading: "Como citar"
-        style: "Estilo de citação"
-        styles:
-          apa: "APA"
-          mla: "MLA"
-          chicago: "Chicago"
-        copy_visible: "Copiar citação"
-        copied: "Copiado"
-        endnote: "Baixar registro do EndNote"
-        note: "Fornecida apenas como sugestão. Confira com o seu guia de estilo preferido."
       files:
         as_format: como %{name}
         heading: Arquivos
@@ -853,17 +842,8 @@ pt-BR:
         one: 1 item
         other: "%{count} itens"
       relationships: Relações
-      cite: Citar
-      endnote: Baixar para EndNote
       permalink: Link permanente
       contributors: Colaboradores
-      citation_style: Estilo de citação
-      citation_styles:
-        apa: APA (7ª ed.)
-        mla: MLA (9ª ed.)
-        chicago: Chicago
-      citation_copy: Copiar
-      citation_copied: Copiado
   proprietor:
     accounts:
       edit:
@@ -997,16 +977,6 @@ pt-BR:
         children: "Obras vinculadas"
       part_of:
         heading: "Faz parte de"
-      citation:
-        heading: "Citação"
-        style: "Estilo de citação"
-        endnote: "Exportar para o EndNote"
-        copy: "Copiar"
-        copied: "Copiado"
-        styles:
-          apa: "APA"
-          mla: "MLA"
-          chicago: "Chicago"
   digital_collection:
     chrome:
       toggle_navigation: "Alternar navegação"
@@ -1107,17 +1077,6 @@ pt-BR:
         unfeature_confirm: 'Remover esta obra da lista de destaques?'
         view_work: Ver a obra
     show:
-      citation:
-        copied: Copiado
-        copy_visible: Copiar a citação
-        endnote: Baixar registro EndNote
-        heading: Como citar
-        note: Fornecido apenas como sugestão. Confira com seu guia de estilo.
-        style: Estilo de citação
-        styles:
-          apa: APA
-          chicago: Chicago
-          mla: MLA
       items:
         count:
           one: 1 item

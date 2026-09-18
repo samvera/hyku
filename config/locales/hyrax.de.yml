@@ -301,6 +301,11 @@ de:
     base:
       citations:
         header: Zitate
+        style: Zitierstil
+        copy: Kopieren
+        copied: Kopiert
+        endnote: Nach EndNote exportieren
+        note: Nur als Vorschlag gedacht. Bitte anhand des von Ihnen verwendeten Zitierstils prüfen.
       download_pdf: PDF herunterladen
       form_child_work_relationships:
         actions:
@@ -401,6 +406,11 @@ de:
         in_this_work: Andere Werke in diesem Werk
       progress:
         header: Werke speichern
+    citations:
+      work:
+        apa: APA
+        chicago: Chicago
+        mla: MLA
     bread_crumb:
       search_results: Zurück zu den Suchergebnissen
     collection:

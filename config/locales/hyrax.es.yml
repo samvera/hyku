@@ -302,6 +302,11 @@ es:
     base:
       citations:
         header: Citación
+        style: Estilo de cita
+        copy: Copiar
+        copied: Copiado
+        endnote: Exportar a EndNote
+        note: Se ofrece solo como sugerencia. Compruébela con su guía de estilo preferida.
       download_pdf: Descargar PDF
       form_child_work_relationships:
         actions:
@@ -402,6 +407,11 @@ es:
         in_this_work: Otros trabajos en este trabajo
       progress:
         header: Guardar trabajos
+    citations:
+      work:
+        apa: APA
+        chicago: Chicago
+        mla: MLA
     bread_crumb:
       search_results: Regresar a los resultados de búsqueda
     collection:

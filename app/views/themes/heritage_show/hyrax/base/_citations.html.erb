@@ -1,6 +1,6 @@
 <section class="hrt-panel hrt-cite" aria-labelledby="hrt-cite-label">
   <div class="hrt-panel-head">
-    <h2 class="hrt-panel-label" id="hrt-cite-label"><%= t('heritage.show.citation.heading') %></h2>
+    <h2 class="hrt-panel-label" id="hrt-cite-label"><%= t('hyrax.base.citations.header') %></h2>
   </div>
 
   <% if all_authors(presenter).any? %>
@@ -8,9 +8,9 @@
     <% if citations.any? %>
       <div data-citation>
         <select class="hrt-cite-picker" data-citation-picker
-                aria-label="<%= t('heritage.show.citation.style') %>">
+                aria-label="<%= t('hyrax.base.citations.style') %>">
           <% citations.each_key do |style| %>
-            <option value="<%= style %>"><%= t("heritage.show.citation.styles.#{style}") %></option>
+            <option value="<%= style %>"><%= t("hyrax.citations.work.#{style}") %></option>
           <% end %>
         </select>
 
@@ -21,17 +21,17 @@
 
         <div class="hrt-cite-actions">
           <button type="button" class="hrt-cite-copy" data-citation-copy>
-            <%= t('heritage.show.citation.copy_visible') %>
+            <%= t('hyrax.base.citations.copy') %>
           </button>
-          <span class="hrt-cite-copied" data-citation-copied hidden aria-live="polite"><%= t('heritage.show.citation.copied') %></span>
+          <span class="hrt-cite-copied" data-citation-copied hidden aria-live="polite"><%= t('hyrax.base.citations.copied') %></span>
         </div>
       </div>
     <% end %>
   <% end %>
 
-  <p class="hrt-cite-note"><%= t('heritage.show.citation.note') %></p>
+  <p class="hrt-cite-note"><%= t('hyrax.base.citations.note') %></p>
 
-  <%= link_to t('heritage.show.citation.endnote'),
+  <%= link_to t('hyrax.base.citations.endnote'),
               polymorphic_path([main_app, presenter], format: 'endnote'),
               class: 'hrt-cite-export' %>
 </section>

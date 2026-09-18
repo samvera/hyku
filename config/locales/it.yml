@@ -230,17 +230,6 @@ it:
         sub: Deposita opere nel repository.
         button: Inizia un deposito
     show:
-      citation:
-        heading: "Come citare"
-        style: "Stile di citazione"
-        styles:
-          apa: "APA"
-          mla: "MLA"
-          chicago: "Chicago"
-        copy_visible: "Copia citazione"
-        copied: "Copiato"
-        endnote: "Scarica il record EndNote"
-        note: "Fornita solo come suggerimento. Verificala con la guida di stile che utilizzi."
       files:
         as_format: come %{name}
         heading: File
@@ -970,17 +959,8 @@ it:
         one: 1 elemento
         other: "%{count} elementi"
       relationships: Relazioni
-      cite: Cita
-      endnote: Scarica per EndNote
       permalink: Permalink
       contributors: Contributori
-      citation_style: Stile di citazione
-      citation_styles:
-        apa: APA (7ª ed.)
-        mla: MLA (9ª ed.)
-        chicago: Chicago
-      citation_copy: Copia
-      citation_copied: Copiato
   proprietor:
     accounts:
       edit:
@@ -1114,16 +1094,6 @@ it:
         children: "Opere collegate"
       part_of:
         heading: "Fa parte di"
-      citation:
-        heading: "Citazione"
-        style: "Stile di citazione"
-        endnote: "Esporta in EndNote"
-        copy: "Copia"
-        copied: "Copiato"
-        styles:
-          apa: "APA"
-          mla: "MLA"
-          chicago: "Chicago"
   digital_collection:
     chrome:
       toggle_navigation: "Attiva/disattiva la navigazione"
@@ -1224,17 +1194,6 @@ it:
         unfeature_confirm: 'Rimuovere questa opera dall''elenco in evidenza?'
         view_work: Vedi l'opera
     show:
-      citation:
-        copied: Copiato
-        copy_visible: Copia la citazione
-        endnote: Scarica il record EndNote
-        heading: Come citare
-        note: Fornito solo come suggerimento. Verificare con la guida di stile preferita.
-        style: Stile di citazione
-        styles:
-          apa: APA
-          chicago: Chicago
-          mla: MLA
       items:
         count:
           one: 1 elemento

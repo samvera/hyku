@@ -229,17 +229,6 @@ de:
         sub: Hinterlegen Sie Werke im Repositorium.
         button: Einreichung starten
     show:
-      citation:
-        heading: "Zitieren"
-        style: "Zitierstil"
-        styles:
-          apa: "APA"
-          mla: "MLA"
-          chicago: "Chicago"
-        copy_visible: "Zitat kopieren"
-        copied: "Kopiert"
-        endnote: "EndNote-Datensatz herunterladen"
-        note: "Nur als Vorschlag gedacht. Bitte anhand des von Ihnen verwendeten Zitierstils prüfen."
       files:
         as_format: als %{name}
         heading: Dateien
@@ -973,17 +962,8 @@ de:
         one: 1 Objekt
         other: "%{count} Objekte"
       relationships: Beziehungen
-      cite: Zitieren
-      endnote: Für EndNote herunterladen
       permalink: Permalink
       contributors: Mitwirkende
-      citation_style: Zitierstil
-      citation_styles:
-        apa: APA (7. Aufl.)
-        mla: MLA (9. Aufl.)
-        chicago: Chicago
-      citation_copy: Kopieren
-      citation_copied: Kopiert
   proprietor:
     accounts:
       edit:
@@ -1117,16 +1097,6 @@ de:
         children: "Untergeordnete Werke"
       part_of:
         heading: "Gehört zu"
-      citation:
-        heading: "Zitation"
-        style: "Zitierstil"
-        endnote: "Nach EndNote exportieren"
-        copy: "Kopieren"
-        copied: "Kopiert"
-        styles:
-          apa: "APA"
-          mla: "MLA"
-          chicago: "Chicago"
   digital_collection:
     chrome:
       toggle_navigation: "Navigation umschalten"
@@ -1227,17 +1197,6 @@ de:
         unfeature_confirm: 'Dieses Werk aus der Auswahl entfernen?'
         view_work: Werk ansehen
     show:
-      citation:
-        copied: Kopiert
-        copy_visible: Zitat kopieren
-        endnote: EndNote-Datensatz herunterladen
-        heading: Zitieren
-        note: Nur als Vorschlag. Bitte mit dem gewünschten Zitierstil abgleichen.
-        style: Zitierstil
-        styles:
-          apa: APA
-          chicago: Chicago
-          mla: MLA
       items:
         count:
           one: 1 Element

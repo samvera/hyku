@@ -230,17 +230,6 @@ fr:
         sub: Déposez des œuvres dans le dépôt.
         button: Commencer un dépôt
     show:
-      citation:
-        heading: "Citer"
-        style: "Style de citation"
-        styles:
-          apa: "APA"
-          mla: "MLA"
-          chicago: "Chicago"
-        copy_visible: "Copier la citation"
-        copied: "Copié"
-        endnote: "Télécharger la notice EndNote"
-        note: "Fournie à titre indicatif seulement. Vérifiez-la selon votre guide de style."
       files:
         as_format: en %{name}
         heading: Fichiers
@@ -975,17 +964,8 @@ fr:
         one: 1 élément
         other: "%{count} éléments"
       relationships: Relations
-      cite: Citer
-      endnote: Télécharger pour EndNote
       permalink: Permalien
       contributors: Contributeurs
-      citation_style: Style de citation
-      citation_styles:
-        apa: APA (7e éd.)
-        mla: MLA (9e éd.)
-        chicago: Chicago
-      citation_copy: Copier
-      citation_copied: Copié
   proprietor:
     accounts:
       edit:
@@ -1119,16 +1099,6 @@ fr:
         children: "Documents liés"
       part_of:
         heading: "Fait partie de"
-      citation:
-        heading: "Citation"
-        style: "Style de citation"
-        endnote: "Exporter vers EndNote"
-        copy: "Copier"
-        copied: "Copié"
-        styles:
-          apa: "APA"
-          mla: "MLA"
-          chicago: "Chicago"
   digital_collection:
     chrome:
       toggle_navigation: "Afficher/masquer la navigation"
@@ -1229,17 +1199,6 @@ fr:
         unfeature_confirm: 'Retirer cette œuvre de la sélection ?'
         view_work: Voir l’œuvre
     show:
-      citation:
-        copied: Copié
-        copy_visible: Copier la citation
-        endnote: Télécharger la notice EndNote
-        heading: Citer
-        note: Fourni à titre indicatif. À vérifier avec votre guide de style.
-        style: Style de citation
-        styles:
-          apa: APA
-          chicago: Chicago
-          mla: MLA
       items:
         count:
           one: 1 élément

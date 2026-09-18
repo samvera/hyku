@@ -1,1 +1,8 @@
-<%= render 'themes/digital_collection/controls' %>
+<div class="dc-searchbar-show">
+  <div class="dc-searchbar-show-inner">
+    <div class="dc-searchbar-crumbs">
+      <%= render_breadcrumbs builder: Hyrax.config.breadcrumb_builder %>
+    </div>
+    <%= render partial: 'catalog/search_form' %>
+  </div>
+</div>

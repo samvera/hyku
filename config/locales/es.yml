@@ -1168,6 +1168,13 @@ es:
       recent:
         heading: "Añadidos recientemente"
         view_all: "Ver todo"
+      about:
+        heading: "Acerca de las colecciones"
+      cta:
+        eyebrow: "Contribuir"
+        heading: "Comparta su obra"
+        sub: "Deposite materiales en el repositorio."
+        button: "Iniciar un depósito"
       stats:
         collections:
           one: "Colección"

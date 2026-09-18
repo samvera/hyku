@@ -1184,6 +1184,13 @@ zh:
       recent:
         heading: "最近添加"
         view_all: "查看全部"
+      about:
+        heading: "关于馆藏"
+      cta:
+        eyebrow: "贡献"
+        heading: "分享您的作品"
+        sub: "将材料存入资料库。"
+        button: "开始提交"
       stats:
         collections:
           one: "馆藏"

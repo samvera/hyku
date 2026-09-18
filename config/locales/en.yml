@@ -1035,6 +1035,13 @@ en:
       recent:
         heading: "Recently added works"
         view_all: "View all"
+      about:
+        heading: "About the collections"
+      cta:
+        eyebrow: "Contribute"
+        heading: "Share your work"
+        sub: "Deposit materials into the repository."
+        button: "Start a deposit"
       stats:
         collections:
           one: "Collection"

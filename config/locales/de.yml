@@ -1171,6 +1171,13 @@ de:
       recent:
         heading: "Kürzlich hinzugefügt"
         view_all: "Alle anzeigen"
+      about:
+        heading: "Über die Sammlungen"
+      cta:
+        eyebrow: "Beitragen"
+        heading: "Teilen Sie Ihr Werk"
+        sub: "Materialien in das Repositorium einreichen."
+        button: "Einreichung starten"
       stats:
         collections:
           one: "Sammlung"

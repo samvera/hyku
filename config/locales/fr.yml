@@ -1173,6 +1173,13 @@ fr:
       recent:
         heading: "Ajouts récents"
         view_all: "Voir tout"
+      about:
+        heading: "À propos des collections"
+      cta:
+        eyebrow: "Contribuer"
+        heading: "Partagez vos travaux"
+        sub: "Déposez des documents dans le dépôt."
+        button: "Commencer un dépôt"
       stats:
         collections:
           one: "Collection"

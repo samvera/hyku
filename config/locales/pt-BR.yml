@@ -1051,6 +1051,13 @@ pt-BR:
       recent:
         heading: "Adicionados recentemente"
         view_all: "Ver tudo"
+      about:
+        heading: "Sobre as coleções"
+      cta:
+        eyebrow: "Contribuir"
+        heading: "Compartilhe seu trabalho"
+        sub: "Deposite materiais no repositório."
+        button: "Iniciar um depósito"
       stats:
         collections:
           one: "Acervo"

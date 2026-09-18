@@ -1198,4 +1198,166 @@
       display: none;
     }
   }
+
+  // ---- about band ----
+  .dc-about {
+    background: $dc-surface-alt;
+    border-top: 1px solid $dc-hairline;
+  }
+
+  .dc-about-inner {
+    @include dc-column;
+    @include dc-gutter;
+    display: grid;
+    gap: 48px;
+    grid-template-columns: 300px minmax(0, 1fr);
+    padding-bottom: 60px;
+    padding-top: 56px;
+
+    @media (max-width: $dc-tablet-max) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .dc-about-head {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .dc-about-rule {
+    background: var(--dc-accent, #{$dc-accent});
+    display: block;
+    height: 3px;
+    width: 140px;
+  }
+
+  .dc-about-title {
+    color: $dc-ink-heading;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .dc-about-prose {
+    column-count: 2;
+    column-gap: 48px;
+    overflow-wrap: anywhere;
+
+    p {
+      font-size: 16px;
+      line-height: 1.75;
+      margin: 0;
+    }
+
+    p + p {
+      margin-top: 1em;
+    }
+
+    @media (max-width: $dc-tablet-max) {
+      column-count: 1;
+    }
+  }
+
+  // ---- deposit CTA ----
+  .dc-cta {
+    background: color-mix(in srgb, var(--dc-chrome, #{$dc-hero-ground}) 85%, #fff);
+  }
+
+  .dc-cta-inner {
+    @include dc-column;
+    @include dc-gutter;
+    align-items: center;
+    display: flex;
+    gap: 48px;
+    justify-content: space-between;
+    padding-bottom: 36px;
+    padding-top: 36px;
+
+    @media (max-width: $dc-tablet-max) {
+      flex-direction: column;
+      gap: 24px;
+      text-align: center;
+    }
+  }
+
+  .dc-cta-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .dc-cta-eyebrow {
+    color: var(--dc-chrome-ink, #{$dc-chrome-ink});
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  .dc-cta-heading {
+    color: var(--dc-chrome-ink, #{$dc-chrome-ink});
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .dc-cta-sub {
+    color: var(--dc-chrome-ink, #{$dc-chrome-ink});
+    font-size: 15px;
+    margin: 0;
+  }
+
+  .dc-cta-actions {
+    align-items: center;
+    display: flex;
+    flex: none;
+    gap: 24px;
+  }
+
+  .dc-cta-terms {
+    color: var(--dc-chrome-ink, #{$dc-chrome-ink});
+    font-size: 14px;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    transition: text-decoration-color 0.15s;
+
+    &:hover {
+      color: var(--dc-chrome-ink, #{$dc-chrome-ink});
+      text-decoration-color: transparent;
+    }
+
+    &:focus-visible {
+      @include dc-focus-ring(var(--dc-chrome-ink, #{$dc-chrome-ink}));
+    }
+  }
+
+  .dc-cta-button {
+    background: var(--dc-action, #{$dc-accent});
+    border: 1px solid var(--dc-action-edge, #{$dc-accent});
+    border-radius: var(--dc-radius, #{$dc-radius});
+    color: var(--dc-action-ink, #fff);
+    font-size: 15px;
+    font-weight: 600;
+    padding: 10px 28px;
+    text-decoration: none;
+    transition: background 0.15s, border-color 0.15s;
+    white-space: nowrap;
+
+    &:hover {
+      background: var(--dc-action-hover, #{$dc-link-hover});
+      color: var(--dc-action-ink, #fff);
+      text-decoration: none;
+    }
+
+    &:focus-visible {
+      @include dc-focus-ring(var(--dc-action-ink, #fff));
+    }
+  }
 }

@@ -185,8 +185,10 @@
     #advanced-top-button {
       color: #fff !important;
       font-size: 15px;
+      left: 0;
+      margin-inline: auto;
       padding-top: 12px;
-      text-align: center;
+      width: fit-content;
 
       &:hover,
       &:focus {
@@ -233,8 +235,6 @@
 
   .dc-hero-stat {
     color: #fff;
-    display: inline-flex;
-    gap: 6px;
     text-decoration: none;
 
     &:hover,

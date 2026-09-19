@@ -127,12 +127,10 @@
     border: 0 !important;
     color: var(--dc-link, #{$dc-link}) !important;
     font-size: 13px;
-    left: 0;
     line-height: 1.4;
     padding: 6px 0 0;
     position: absolute;
     right: 0;
-    text-align: right;
     top: 100%;
 
     &:hover,

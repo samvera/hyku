@@ -1,0 +1,141 @@
+<%# OVERRIDE Hyrax 5.3.0 layout only: breadcrumbs and search in banner, collection grid reskin %>
+<% provide :page_title, construct_page_title(@presenter.title) %>
+<% content_for :canonical_url do %>
+  <link rel="canonical" href="<%= canonical_url_for(@presenter) %>" />
+<% end %>
+<div class="hyc-container" itemscope itemtype="http://schema.org/CollectionPage">
+  <div class="row hyc-header">
+    <div class="col-md-12">
+
+      <% if @presenter.banner_file[:relative_path].present? %>
+        <div class="hyc-banner" style="background-image:url(<%= @presenter.banner_file[:relative_path] %>)" title="<%= @presenter.banner_file[:alt_text] %>">
+      <% else %>
+        <div class="hyc-banner hyc-banner--no-image">
+      <% end %>
+
+      <div class="hyc-banner-body">
+        <div class="hyc-banner-glass">
+          <div class="hyc-banner-crumbs">
+            <%= render_breadcrumbs builder: Hyrax.config.breadcrumb_builder %>
+          </div>
+          <div class="hyc-badges">
+            <%= @presenter.collection_type_badge %>
+            <%= @presenter.permission_badge %>
+            <%= render 'hyrax/shared/copy_permalink', presenter: @presenter %>
+          </div>
+          <h1 class="hyc-title"><%= markdown(@presenter.title.first) %></h1>
+          <div class="hyc-banner-search">
+            <%= render 'search_form', presenter: @presenter, url: hyrax.collection_path(@presenter.id) %>
+          </div>
+          <% unless @presenter.creator.blank? %>
+            <div class="hyc-created-by">Created by: <%= @presenter.creator.first %></div>
+          <% end %>
+        </div>
+
+        <div class="hyc-item-count">
+          <%= pluralize(@presenter.total_viewable_items, t('.item_count')) %>
+        </div>
+
+        <% unless @presenter.modified_date.blank? %>
+          <div class="hyc-last-updated">Last Updated: <%= @presenter.modified_date %></div>
+        <% end %>
+        <% unless @presenter.logo_record.blank? %>
+          <div class="hyc-logos">
+            <% @presenter.logo_record.each do |lr| %>
+              <% if lr[:linkurl].blank? %>
+                <img alt="<%= lr[:alttext] %>" src="<%= lr[:file_location] %>" onerror="this.style.display='none'"/>
+              <% else %>
+                <a href="<%= lr[:linkurl] %>">
+                  <img alt="<%= lr[:alttext] %>" src="<%= lr[:file_location] %>" onerror="this.style.display='none'"/>
+                </a>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <div class='show-actions-container'>
+    <% id = @presenter.id %>
+    <section class="collection-title-row-wrapper"
+      data-source="show"
+      data-id="<%= id %>"
+      data-colls-hash="<%= available_parent_collections_data(collection: @presenter) %>"
+      data-post-url="<%= hyrax.dashboard_create_nest_collection_within_path(id) %>"
+      data-post-delete-url="<%= hyrax.dashboard_collection_path(id) %>">
+      <div class="collection-title-row-content">
+        <%= render 'hyrax/dashboard/collections/show_actions', presenter: @presenter %>
+      </div>
+    </section>
+  </div>
+
+  <div class="row hyc-body">
+    <div class='col-md-3'>
+      <%= render 'hyrax/collections/media_display', presenter: @presenter %>
+    </div>
+    <div class="col-md-9 hyc-metadata">
+      <h2><%= t('hyrax.dashboard.collections.show.metadata_header') %></h2>
+      <%= render 'collection_description', presenter: @presenter %>
+      <% unless collection_search_parameters? %>
+        <%= render 'show_descriptions' %>
+      <% end %>
+      <% if @presenter.collection_type_is_nestable? && @presenter.total_parent_collections > 0 %>
+        <div class="hyc-blacklight hyc-bl-title">
+          <h2>
+            <%= t('.parent_collection_header') %> (<%= @presenter.total_parent_collections %>)
+          </h2>
+        </div>
+        <div class="hyc-blacklight hyc-bl-results">
+          <%= render 'show_parent_collections', presenter: @presenter %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <%= render_compound_cards(@presenter) %>
+
+  <% if @members_count > 0 || @presenter.subcollection_count > 0 %>
+    <div class="hyc-blacklight hyc-bl-title">
+      <% if collection_search_parameters? %>
+        <h2>
+          <%= t('hyrax.dashboard.collections.show.search_results') %>
+        </h2>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if @presenter.collection_type_is_nestable? && @subcollection_count > 0 %>
+    <div class="hyc-blacklight hyc-bl-title">
+      <h2><%= t('.subcollection_count') %> (<%= @subcollection_count %>)</h2>
+    </div>
+    <div class="hyc-blacklight hyc-bl-results">
+      <%= render 'subcollection_list', collection: @subcollection_docs %>
+    </div>
+  <% end %>
+
+  <% if @members_count > 0 %>
+    <div class="hyc-blacklight hyc-members-head">
+      <h2><%= t('.works_in_collection') %> (<%= @members_count %>)</h2>
+      <%= render 'sort_and_per_page', collection: @presenter %>
+    </div>
+
+    <div class="hyc-blacklight hyc-bl-results">
+      <% if document_index_view_type == :slideshow %>
+        <div class="slideshow-info">
+          <h4><%= t('blacklight.slideshow_info') %></h4>
+        </div>
+      <% end %>
+      <%= render_document_index @member_docs %>
+    </div>
+
+    <div class="hyc-blacklight hyc-bl-pager">
+      <%= render 'paginate' %>
+    </div>
+  <% end %>
+</div>
+
+<span class='hide analytics-event' data-category="collection" data-action="collection-page-view" data-name="<%= @presenter.id %>" >

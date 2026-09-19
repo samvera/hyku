@@ -1362,14 +1362,16 @@
   }
 }
 
-// ---- content pages and contact form ----
+// ---- content pages, contact form, and advanced search ----
 
 body.digital_collection.hyrax-pages-show,
 body.digital_collection.hyrax-contact_form-new,
-body.digital_collection.hyrax-contact_form-create {
+body.digital_collection.hyrax-contact_form-create,
+body.digital_collection.catalog-advanced_search,
+body.digital_collection.advanced-index {
   #content-wrapper {
     @include dc-gutter;
-    max-width: 78ch;
+    @include dc-column;
     padding-bottom: 48px;
     padding-top: 32px;
   }
@@ -1395,5 +1397,108 @@ body.digital_collection.hyrax-contact_form-create {
   .btn {
     border-radius: var(--dc-radius, #{$dc-radius});
   }
+}
 
+// narrower max-width for prose-only pages (not advanced search)
+body.digital_collection.hyrax-pages-show,
+body.digital_collection.hyrax-contact_form-new,
+body.digital_collection.hyrax-contact_form-create {
+  #content-wrapper {
+    max-width: 78ch;
+  }
+}
+
+// ---- advanced search ----
+
+body.digital_collection.catalog-advanced_search,
+body.digital_collection.advanced-index {
+  .advanced-search-form {
+    padding: 0;
+  }
+
+  h1.advanced {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+  }
+
+  .query-criteria-heading {
+    color: $dc-ink-secondary;
+    font-size: 1rem;
+    font-weight: 400;
+    margin: 0 0 1rem;
+
+    select {
+      font-size: 15px;
+      width: auto;
+    }
+  }
+
+  .advanced-search-field {
+    align-items: baseline;
+    border-bottom: 0;
+    margin: 0;
+    padding: 0.55rem 0;
+
+    .control-label,
+    .col-form-label {
+      color: $dc-ink-secondary;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.25rem;
+      max-width: 100%;
+      padding-left: 0;
+      text-align: left !important;
+    }
+
+    > [class*='col-'] {
+      flex: 1 1 auto;
+      max-width: 100%;
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+
+  .sort-submit-buttons,
+  .submit-buttons {
+    margin-top: 1.25rem;
+  }
+
+  .card {
+    border-radius: var(--dc-radius, #{$dc-radius});
+  }
+
+  .advanced-help {
+    color: $dc-ink;
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0;
+    padding-left: 1.1rem;
+
+    li + li {
+      margin-top: 0.35rem;
+    }
+  }
+
+  #advanced_search_facets {
+    .facet-field-heading > .btn {
+      border: 0;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .facet-values li {
+      border-bottom: 1px solid $dc-hairline;
+      font-size: 14px;
+      line-height: 1.5;
+      padding: 0.45rem 0;
+    }
+
+    .facet-values li:last-child {
+      border-bottom: 0;
+    }
+  }
 }

@@ -105,10 +105,13 @@ body.digital_collection_show.public-facing {
     // the selector has to carry the same classes to win
     .nav.navbar-nav.dc-masthead-nav > li.nav-item > a.nav-link,
     #user_utility_links.navbar-nav > li.nav-item > a.nav-link {
+      align-items: center;
       color: var(--dc-button-ink, #{$dc-button-ink});
+      display: flex;
       font-size: 14px;
       line-height: 20px;
-      padding: 6px 2px;
+      min-height: $dc-masthead-height;
+      padding: 0 2px;
       text-decoration: none;
       transition: color $dc-transition;
 

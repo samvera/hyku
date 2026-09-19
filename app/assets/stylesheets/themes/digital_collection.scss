@@ -1361,3 +1361,39 @@
     }
   }
 }
+
+// ---- content pages and contact form ----
+
+body.digital_collection.hyrax-pages-show,
+body.digital_collection.hyrax-contact_form-new,
+body.digital_collection.hyrax-contact_form-create {
+  #content-wrapper {
+    @include dc-gutter;
+    max-width: 78ch;
+    padding-bottom: 48px;
+    padding-top: 32px;
+  }
+
+  .alert {
+    border-radius: var(--dc-radius, #{$dc-radius});
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  #content_block_page {
+    color: $dc-ink;
+    font-size: 1rem;
+    line-height: 1.65;
+
+    a {
+      @include dc-link;
+    }
+  }
+
+  .form-control,
+  .custom-select,
+  .btn {
+    border-radius: var(--dc-radius, #{$dc-radius});
+  }
+
+}

@@ -165,12 +165,25 @@ body.digital_collection_show.public-facing {
   // ---- search row ----
   .dc-searchbar {
     @include dc-gutter;
+    @include dc-column;
     background: $dc-surface;
-    border-bottom: 1px solid $dc-hairline;
+    border-bottom: 0;
     display: flex;
     justify-content: flex-end;
     padding-bottom: 12px;
     padding-top: 12px;
+    position: relative;
+
+    &::after {
+      background: $dc-hairline;
+      bottom: 0;
+      content: '';
+      height: 1px;
+      left: 50%;
+      position: absolute;
+      transform: translateX(-50%);
+      width: 100vw;
+    }
 
     #search-form-header {
       max-width: 100%;

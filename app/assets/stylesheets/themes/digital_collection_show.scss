@@ -2,21 +2,21 @@
 
 @import 'themes/digital_collection/shell';
 
-body.digital_collection_show.works-show {
-
+// ---- breadcrumb + search bar (shared by work show and file set show) ----
+body.digital_collection_show.works-show,
+body.digital_collection_show.hyrax-file_sets-show {
   #content-wrapper {
     max-width: none;
     padding: 0;
   }
 
+  #content-wrapper > .breadcrumb {
+    display: none;
+  }
+
   #content-wrapper > .alert {
     @include dc-gutter;
     @include dc-column;
-  }
-
-  // ---- breadcrumb + search bar ----
-  #content-wrapper > .breadcrumb {
-    display: none;
   }
 
   .dc-searchbar-show {
@@ -31,8 +31,8 @@ body.digital_collection_show.works-show {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    padding-bottom: 8px;
-    padding-top: 8px;
+    padding-bottom: 12px;
+    padding-top: 12px;
     row-gap: 8px;
 
     .dc-searchbar-crumbs {
@@ -87,6 +87,9 @@ body.digital_collection_show.works-show {
       }
     }
   }
+}
+
+body.digital_collection_show.works-show {
 
   // ---- editor actions ----
   .dc-show-actions:not(:has(.show-actions a.btn:not(.collapse), .show-actions button.btn:not(.collapse))) {
@@ -1334,6 +1337,186 @@ body.digital_collection_show.hyrax-collections-show {
     .btn,
     select,
     .page-link {
+      transition: background-color $dc-transition,
+                  border-color $dc-transition,
+                  color $dc-transition;
+    }
+  }
+}
+
+// ---- file set show page ----
+
+body.digital_collection_show.hyrax-file_sets-show {
+  overflow-x: clip;
+
+  .container-fluid {
+    @include dc-gutter;
+    @include dc-column;
+    padding-bottom: 48px;
+    padding-top: 28px;
+  }
+
+  .container-fluid > .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .container-fluid > .row > [class*='col-']:first-child {
+    padding-left: 0;
+    padding-right: 26px;
+  }
+
+  .container-fluid > .row > [class*='col-']:last-child {
+    padding-right: 0;
+  }
+
+  @media (max-width: $dc-mobile-max) {
+    .container-fluid > .row > [class*='col-']:first-child {
+      padding-right: 0;
+    }
+  }
+
+  .ensure-wrapped {
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  // ---- title ----
+  header h1 {
+    color: $dc-ink-heading;
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+
+    .badge {
+      border-radius: var(--dc-radius, #{$dc-radius});
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      margin-left: 8px;
+      padding: 5px 10px;
+      text-transform: uppercase;
+      vertical-align: middle;
+    }
+  }
+
+  // ---- section headings ----
+  h2 {
+    border-bottom: 2px solid $dc-ink;
+    color: $dc-ink-heading;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin: 34px 0 0;
+    padding-bottom: 10px;
+  }
+
+  header + h2 {
+    margin-top: 24px;
+  }
+
+  // ---- metadata rows ----
+  dl.file-show-term {
+    border-top: 0;
+    font-size: 15px;
+    line-height: 1.55;
+    margin: 0;
+    padding-top: 0;
+
+    &.file-show-details {
+      padding-top: 12px;
+    }
+
+    > .row {
+      border-bottom: 0;
+      margin: 0;
+      padding: 0;
+    }
+
+    dt {
+      color: $dc-ink-secondary;
+      font-weight: 400;
+      padding-left: 0;
+    }
+
+    dd {
+      color: $dc-ink;
+      margin: 0;
+      overflow-wrap: break-word;
+      padding-left: 0;
+
+      a { @include dc-link; }
+    }
+  }
+
+  // ---- download link ----
+  #file_download {
+    @include dc-link;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 700;
+    margin-top: 12px;
+  }
+
+  // ---- action buttons ----
+  .form-actions,
+  .form_actions {
+    margin-top: 24px;
+  }
+
+  .form-actions .btn,
+  .form_actions .btn {
+    border-radius: var(--dc-radius, #{$dc-radius});
+    font-size: 14px;
+  }
+
+  .form-actions .btn-danger {
+    background-color: #b4433c;
+    border-color: #b4433c;
+  }
+
+  .btn:focus-visible {
+    @include dc-focus-ring;
+  }
+
+  // ---- single use links table ----
+  table.table.single-use-links tbody td {
+    border: 0;
+    padding-bottom: 6px;
+  }
+
+  // ---- activity log ----
+  .activity-display {
+    padding-top: 12px;
+  }
+
+  table.table {
+    font-size: 14px;
+
+    thead th {
+      border-bottom-color: $dc-hairline;
+      color: $dc-ink-secondary;
+      font-weight: 700;
+    }
+
+    tbody td {
+      border-color: $dc-row-rule;
+      color: $dc-ink;
+    }
+
+    a { @include dc-link; }
+  }
+
+  // ---- social share ----
+  .social-media a {
+    border-radius: var(--dc-radius, #{$dc-radius});
+  }
+
+  // ---- transitions ----
+  @media (prefers-reduced-motion: no-preference) {
+    a,
+    .btn {
       transition: background-color $dc-transition,
                   border-color $dc-transition,
                   color $dc-transition;

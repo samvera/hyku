@@ -46,6 +46,29 @@ RSpec.describe "OAI PMH Support", type: :feature do
     end
   end
 
+  # `uri` is immutable once saved and `label` is not, so the id is the stable
+  # half of a term for a harvester to key on.
+  context 'for a work with a controlled vocabulary value' do
+    let(:admin_set) { FactoryBot.valkyrie_create(:hyku_admin_set, with_permission_template: true) }
+    let(:valkyrie_work) do
+      FactoryBot.valkyrie_create(:generic_work_resource,
+                                 depositor: user.user_key,
+                                 visibility_setting: 'open',
+                                 admin_set_id: admin_set.id,
+                                 license: ['http://creativecommons.org/licenses/by/3.0/us/'])
+    end
+
+    %w[oai_dc oai_hyku].each do |metadata_prefix|
+      it "emits the stored id rather than the term label with the #{metadata_prefix} prefix" do
+        visit oai_catalog_path(verb: 'GetRecord', metadataPrefix: metadata_prefix,
+                               identifier: valkyrie_work.id)
+
+        expect(page).to have_content('http://creativecommons.org/licenses/by/3.0/us/')
+        expect(page).to have_no_content('Attribution 3.0 United States')
+      end
+    end
+  end
+
   context 'when using the oai_hyku prefix' do
     let(:metadata_prefix) { 'oai_hyku' }
 

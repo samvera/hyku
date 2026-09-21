@@ -1377,7 +1377,6 @@ body.digital_collection.advanced-index {
   }
 
   .alert {
-    border-radius: var(--dc-radius, #{$dc-radius});
     margin-left: 0;
     margin-right: 0;
   }
@@ -1392,9 +1391,7 @@ body.digital_collection.advanced-index {
     }
   }
 
-  .form-control,
-  .custom-select,
-  .btn {
+  .form-control {
     border-radius: var(--dc-radius, #{$dc-radius});
   }
 }
@@ -1465,10 +1462,6 @@ body.digital_collection.advanced-index {
   .sort-submit-buttons,
   .submit-buttons {
     margin-top: 1.25rem;
-  }
-
-  .card {
-    border-radius: var(--dc-radius, #{$dc-radius});
   }
 
   .advanced-help {

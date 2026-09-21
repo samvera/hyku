@@ -12,6 +12,15 @@ body.digital_collection.public-facing,
 body.digital_collection_show.public-facing {
   color: $dc-ink;
 
+  .btn,
+  .badge,
+  .alert,
+  .card,
+  .dropdown-menu,
+  .custom-select {
+    border-radius: var(--dc-radius, #{$dc-radius});
+  }
+
   // ---- masthead ----
   // scoped to the theme's own masthead partial; the body class is present on
   // pages that still render Hyku's stock dark masthead

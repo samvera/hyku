@@ -76,7 +76,6 @@ body.catalog-index.digital_collection.public-facing {
 
   .facet-limit.card {
     border: 1px solid $dc-input-edge;
-    border-radius: $dc-radius;
     box-shadow: $dc-shadow-card;
     margin-bottom: 0;
     overflow: hidden;
@@ -208,7 +207,6 @@ body.catalog-index.digital_collection.public-facing {
   .sort-dropdown .dropdown-toggle,
   .per_page-dropdown .dropdown-toggle {
     border: 1px solid $dc-input-edge;
-    border-radius: $dc-radius;
     color: $dc-ink;
 
     &:hover {

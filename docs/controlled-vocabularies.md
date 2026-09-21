@@ -1,6 +1,6 @@
 # Controlled Vocabularies in Hyku
 
-Hyku supports both local and remote controlled vocabularies for form fields. With `HYRAX_FLEXIBLE` enabled, a property cites a vocabulary through the `controlled_values.sources` array in the metadata profile. Without it, the property-to-vocabulary mapping lives in code, and only that mapping step differs — vocabularies, their terms, and the dashboard that manages them work in both modes.
+Hyku supports both local and remote controlled vocabularies for form fields. A property cites a vocabulary through a `controlled_values.sources` array — in the metadata profile with `HYRAX_FLEXIBLE` enabled, and in the schema under `config/metadata/` without it. Vocabularies, their terms, and the dashboard that manages them work the same in both modes.
 
 Wherever a property cites a vocabulary, a term's label is what appears on work pages and in search results, while the id the term stores stays in the index for links and OAI harvesting.
 
@@ -617,9 +617,9 @@ was created in.
 
 ### Adding a vocabulary without flexible metadata
 
-There is no metadata profile to cite a source key from, so the property-to-vocabulary
-mapping is a code change. A developer is needed for the vocabulary itself; its terms are
-then managed from the dashboard like any other.
+There is no metadata profile to cite a source key from, so the property declares its
+vocabulary in the schema instead. A developer is needed for the vocabulary itself; its
+terms are then managed from the dashboard like any other.
 
 1. Add `config/authorities/<name>.yml` following the pattern in
    [File Structure](#file-structure). The filename is the source key and must be
@@ -627,10 +627,24 @@ then managed from the dashboard like any other.
 2. Import it into the tenant tables: `bundle exec rake populate_qa`. This runs for every
    tenant, and `AUTHORITIES_PATH` overrides the directory. A newly created tenant is
    seeded automatically, so this is for tenants that already exist.
-3. Map the property to the vocabulary in `controlled_vocab_mappings` in
-   `config/initializers/hyrax_controlled_vocabularies.rb`. Without this the vocabulary
-   exists but no property uses it.
-4. Confirm the property exists in the relevant schema under `config/metadata/`.
+3. Cite the vocabulary from the property in its schema under `config/metadata/`, the
+   way a profile does. Each schema declares its own, so a property can draw on a
+   different vocabulary per work type:
+
+   ```yaml
+   resource_type:
+     type: string
+     multiple: true
+     index_keys:
+       - "resource_type_sim"
+       - "resource_type_tesim"
+     controlled_values:
+       sources:
+         - oer_types
+   ```
+
+   The `index_keys` have to name the Solr fields themselves, since the term labels are
+   indexed beside them.
 5. Restart, then reindex so existing works pick up the term labels.
 
 The YAML seeds the terms once. After that the tenant's rows are the source of truth, so

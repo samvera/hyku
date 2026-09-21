@@ -58,6 +58,12 @@ RSpec.describe "OAI PMH Support", type: :feature do
                                  license: ['http://creativecommons.org/licenses/by/3.0/us/'])
     end
 
+    it 'indexes the label, so its absence from the feed means the id won' do
+      indexed = Hyrax::SolrService.query("id:#{valkyrie_work.id}", fl: 'license_label_tesim').first
+
+      expect(indexed['license_label_tesim']).to eq ['Attribution 3.0 United States']
+    end
+
     %w[oai_dc oai_hyku].each do |metadata_prefix|
       it "emits the stored id rather than the term label with the #{metadata_prefix} prefix" do
         visit oai_catalog_path(verb: 'GetRecord', metadataPrefix: metadata_prefix,

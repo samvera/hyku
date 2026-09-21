@@ -17,6 +17,20 @@ RSpec.describe Hyrax::FormHelperBehavior, type: :helper do
         expect(helper.send(:controlled_vocabulary_source_for, :rights_statement)).to eq('rights_statements')
       end
 
+      it 'prefers the authority the model own yaml schema declares' do
+        expect(helper.send(:controlled_vocabulary_source_for, :resource_type, model: :oer_resource))
+          .to eq('oer_types')
+      end
+
+      it 'falls back to the static mapping for a model whose schema declares none' do
+        expect(helper.send(:controlled_vocabulary_source_for, :media_viewer, model: :basic_metadata))
+          .to eq('media_viewer')
+      end
+
+      it 'is nil for a property no schema or mapping controls' do
+        expect(helper.send(:controlled_vocabulary_source_for, :title, model: :basic_metadata)).to be_nil
+      end
+
       it 'resolves media_viewer from the mappings registry' do
         expect(helper.send(:controlled_vocabulary_source_for, :media_viewer)).to eq('media_viewer')
       end
@@ -32,11 +46,58 @@ RSpec.describe Hyrax::FormHelperBehavior, type: :helper do
       before do
         allow(Hyrax.config).to receive(:flexible?).and_return(true)
         allow(Hyrax::FlexibleSchema).to receive(:order)
-          .with("created_at asc").and_return(double(last: double(profile:)))
+          .with(:created_at).and_return(double(last: double(profile:)))
       end
 
       it 'resolves media_viewer from the profile' do
         expect(helper.send(:controlled_vocabulary_source_for, :media_viewer)).to eq('media_viewer')
+      end
+    end
+
+    context 'when flexible=true and the profile is read through the schema' do
+      let(:vocabulary) do
+        Qa::LocalAuthority.find_or_create_by!(name: 'form_test_vocab') { |a| a.label = 'Form Test Vocab' }
+      end
+      let(:profile) do
+        { 'properties' => {
+          'subject' => { 'controlled_values' => { 'sources' => ['  form_test_vocab  '] } },
+          'title' => { 'controlled_values' => { 'sources' => ['null'] } },
+          'gone' => { 'controlled_values' => { 'sources' => ['since_deleted_vocab'] } },
+          'scalar' => 'not a config',
+          'remote' => { 'controlled_values' => { 'sources' => ['loc/subjects'] } }
+        } }
+      end
+
+      before do
+        vocabulary
+        allow(Hyrax.config).to receive(:flexible?).and_return(true)
+        allow(Hyrax::FlexibleSchema).to receive(:find_by).and_return(instance_double(Hyrax::FlexibleSchema, profile:))
+      end
+
+      it 'strips whitespace profiles have shipped around a source' do
+        expect(helper.send(:controlled_vocabulary_source_for, :subject)).to eq('form_test_vocab')
+      end
+
+      it 'is nil for a property whose only source is the null sentinel' do
+        expect(helper.send(:controlled_vocabulary_source_for, :title)).to be_nil
+      end
+
+      it 'is nil for a source naming a vocabulary that no longer exists' do
+        expect(helper.send(:controlled_vocabulary_source_for, :gone)).to be_nil
+      end
+
+      it 'keeps a remote authority, which the deposit form still offers' do
+        expect(helper.send(:controlled_vocabulary_source_for, :remote)).to eq('loc/subjects')
+      end
+
+      # Hyrax's validator rejects a scalar config, so only a rake task writing
+      # the column directly can produce one.
+      it 'ignores a property whose config is not a hash' do
+        expect { helper.send(:controlled_vocabulary_source_for, :scalar) }.not_to raise_error
+      end
+
+      it 'is nil for a property the profile does not declare' do
+        expect(helper.send(:controlled_vocabulary_source_for, :not_a_property)).to be_nil
       end
     end
 

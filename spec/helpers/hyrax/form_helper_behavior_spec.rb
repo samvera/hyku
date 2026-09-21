@@ -54,6 +54,20 @@ RSpec.describe Hyrax::FormHelperBehavior, type: :helper do
       end
     end
 
+    context 'for a property two profile entries describe' do
+      before { allow(Hyrax.config).to receive(:flexible?).and_return(true) }
+
+      it 'gives an OER work the authority its own entry cites' do
+        expect(helper.send(:controlled_vocabulary_source_for, :resource_type, model: 'OerResource'))
+          .to eq('oer_types')
+      end
+
+      it 'gives every other work type the general authority' do
+        expect(helper.send(:controlled_vocabulary_source_for, :resource_type, model: 'GenericWorkResource'))
+          .to eq('resource_types')
+      end
+    end
+
     context 'when flexible=true and the profile is read through the schema' do
       let(:vocabulary) do
         Qa::LocalAuthority.find_or_create_by!(name: 'form_test_vocab') { |a| a.label = 'Form Test Vocab' }
@@ -170,6 +184,15 @@ RSpec.describe Hyrax::FormHelperBehavior, type: :helper do
   end
 
   describe '#controlled_vocabulary_options_for' do
+    it 'offers the terms the model own authority holds' do
+      allow(Hyrax.config).to receive(:flexible?).and_return(true)
+
+      oer = helper.controlled_vocabulary_options_for(:resource_type, model: 'OerResource')
+      generic = helper.controlled_vocabulary_options_for(:resource_type, model: 'GenericWorkResource')
+
+      expect(oer[:options]).not_to eq generic[:options]
+    end
+
     context 'with a vocabulary created through the dashboard' do
       let!(:vocabulary) { Qa::LocalAuthority.create!(name: 'reading_rooms') }
 

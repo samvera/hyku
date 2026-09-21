@@ -17,8 +17,14 @@ module Hyrax
       Hyrax::ControlledVocabularies.remote_authorities[source_name]
     end
 
-    def controlled_vocabulary_options_for(property_name)
-      source = controlled_vocabulary_source_for(property_name)
+    def controlled_vocabulary_options_for(property_name, model: nil, schema_version: nil)
+      # Forwarded only when given, so an existing caller stubbing the one-argument
+      # form still matches.
+      source = if model || schema_version
+                 controlled_vocabulary_source_for(property_name, model:, schema_version:)
+               else
+                 controlled_vocabulary_source_for(property_name)
+               end
       return unless source
 
       # Only ensure Discogs credentials if we have a valid token

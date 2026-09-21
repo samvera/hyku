@@ -14,26 +14,44 @@ module Hyrax
     # work pinned to an older profile has to be read with the sources that
     # profile declared.
     def controlled_vocabulary_source_for(property_name, schema_version: nil, model: nil)
+      source = schema_vocabulary_source_for(property_name, model, schema_version)
+      return source if source
+
       return flexible_vocabulary_source_for(property_name, schema_version) if Hyrax.config.flexible?
 
-      schema_vocabulary_source_for(property_name, model) ||
-        controlled_vocabulary_mapping_for(property_name)
+      controlled_vocabulary_mapping_for(property_name)
     end
 
     private
 
-    # The yaml schemas declare their own authorities, and a model's own schema
-    # is what distinguishes them: an OER work's resource_type cites oer_types
-    # where every other work type cites resource_types. Without a model there is
-    # no way to tell those apart, so the caller falls back to the static map.
-    def schema_vocabulary_source_for(property_name, model)
+    # A model's own schema is what distinguishes two declarations of one
+    # property: an OER work's resource_type cites oer_types where every other
+    # work type cites resource_types. Both loaders answer this, so the model
+    # decides the authority in either flex mode; without one there is nothing to
+    # tell the two apart and the caller falls back to the whole-profile lookup.
+    def schema_vocabulary_source_for(property_name, model, schema_version = nil)
       return if model.blank?
 
-      Hyrax::SimpleSchemaLoader.new
-                               .authority_rules_for(schema: model)[property_name.to_sym]
+      vocabulary_schema_loader.authority_rules_for(schema: vocabulary_schema_name(model),
+                                                   version: schema_version)
+                              .fetch(property_name.to_sym, nil)
     rescue StandardError => e
-      Rails.logger.debug { "No yaml schema authority for #{model}##{property_name}: #{e.message}" }
+      Rails.logger.debug { "No schema authority for #{model}##{property_name}: #{e.message}" }
       nil
+    end
+
+    def vocabulary_schema_loader
+      Hyrax.config.flexible? ? Hyrax::Schema.m3_schema_loader : Hyrax::SimpleSchemaLoader.new
+    end
+
+    # A profile keys on the class name while a yaml schema is a filename, so a
+    # caller holding a resource can pass its class either way. Getting this
+    # wrong is silent: an unknown schema resolves no authority rather than
+    # raising, and the property falls back to the whole-profile answer.
+    def vocabulary_schema_name(model)
+      return model.to_s if Hyrax.config.flexible?
+
+      model.to_s.underscore
     end
 
     def flexible_vocabulary_source_for(property_name, schema_version)

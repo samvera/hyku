@@ -792,7 +792,7 @@ GEM
       faraday (~> 2.7)
       geo_coord
       json
-    iiif_manifest (1.6.0)
+    iiif_manifest (1.7.0)
       activesupport (>= 4)
     iiif_print (3.1.0)
       blacklight_iiif_search (>= 1.0, < 3.0)
@@ -1706,6 +1706,7 @@ DEPENDENCIES
   hyrax-doi!
   i18n-debug
   i18n-tasks
+  iiif_manifest (>= 1.7.0)
   iiif_print (~> 3.1)
   jbuilder (~> 2.5)
   jquery-rails

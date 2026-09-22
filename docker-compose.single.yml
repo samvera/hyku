@@ -59,6 +59,7 @@ services:
       - SOLR_CLOUD_BOOTSTRAP=no
       - SOLR_ENABLE_CLOUD_MODE=no
       - SOLR_ENABLE_AUTHENTICATION=no
+      - SOLR_OPTS=${SOLR_OPTS:-}
       - VIRTUAL_PORT=8983
       - VIRTUAL_HOST=solr.hyku.test
     labels:

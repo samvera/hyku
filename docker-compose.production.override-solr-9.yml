@@ -1,0 +1,8 @@
+# Solr 9 for docker-compose.production.yml (pull-only, unlike docker-compose.yml - no shared build: stanza to reuse). Compose won't auto-merge this; pass explicitly:
+#   docker compose -f docker-compose.production.yml -f docker-compose.production.override-solr-9.yml up
+services:
+  solr:
+    image: ghcr.io/samvera/hyku/solr:${TAG:-latest}-9
+    environment:
+      # Solr 9 needs these; they don't exist on Solr 8, so they're only set here, not in the base compose file.
+      - SOLR_OPTS=${SOLR_OPTS--Dsolr.config.lib.enabled=true -Dsolr.filterCache.class=solr.CaffeineCache -Dsolr.queryResultCache.class=solr.CaffeineCache -Dsolr.documentCache.class=solr.CaffeineCache}

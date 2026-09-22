@@ -5,26 +5,6 @@
          data-interval="<%= collections.many? ? 6000 : 'false' %>"
          data-pause="false"
          aria-roledescription="carousel" aria-label="<%= t('digital_collection.homepage.hero.label') %>">
-  <div class="carousel-inner dc-hero-slides">
-    <% if collections.any? %>
-      <% collections.each_with_index do |collection, index| %>
-        <div class="carousel-item <%= 'active' if index.zero? %>">
-          <img class="dc-hero-image" src="<%= collection.banner_file[:relative_path] || banner_image %>" alt="">
-          <div class="dc-hero-scrim"></div>
-          <p class="dc-hero-caption">
-            <span class="dc-hero-caption-label"><%= t('digital_collection.homepage.hero.featured_collection') %></span>
-            <%= link_to theme_blurb(Array(collection.title).first, length: 80), hyrax.collection_path(collection.id), class: 'dc-hero-caption-link' %>
-          </p>
-        </div>
-      <% end %>
-    <% else %>
-      <div class="carousel-item active">
-        <img class="dc-hero-image" src="<%= banner_image %>" alt="">
-        <div class="dc-hero-scrim"></div>
-      </div>
-    <% end %>
-  </div>
-
   <div class="dc-hero-content">
     <div class="dc-hero-plate">
       <% if display_content_block? @marketing_text %>
@@ -50,6 +30,26 @@
         <% end %>
       </ul>
     </div>
+  </div>
+
+  <div class="carousel-inner dc-hero-slides">
+    <% if collections.any? %>
+      <% collections.each_with_index do |collection, index| %>
+        <div class="carousel-item <%= 'active' if index.zero? %>">
+          <img class="dc-hero-image" src="<%= collection.banner_file[:relative_path] || banner_image %>" alt="">
+          <div class="dc-hero-scrim"></div>
+          <p class="dc-hero-caption">
+            <span class="dc-hero-caption-label"><%= t('digital_collection.homepage.hero.featured_collection') %></span>
+            <%= link_to theme_blurb(Array(collection.title).first, length: 80), hyrax.collection_path(collection.id), class: 'dc-hero-caption-link', tabindex: (index.zero? ? nil : '-1') %>
+          </p>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="carousel-item active">
+        <img class="dc-hero-image" src="<%= banner_image %>" alt="">
+        <div class="dc-hero-scrim"></div>
+      </div>
+    <% end %>
   </div>
 
   <% if collections.many? %>

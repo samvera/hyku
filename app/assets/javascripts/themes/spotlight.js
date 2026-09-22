@@ -1,12 +1,11 @@
 // Shared rotation controls for the themes' spotlight carousels. They run with
 // data-pause="false" because Bootstrap's hover handling reads the removal of a
 // modal overlay as a fresh mouseenter and pauses a carousel the reader never
-// hovered. That leaves no hover pause, so the hold button is the reader's way
-// to stop the auto-advance, and it stays stopped until they press it again.
-// Focus inside the region holds it too, since the outgoing slide is hidden and
-// a reader tabbing through it would otherwise lose their place. A slide change
-// is refused while a modal is open so the work being viewed is still the work
-// on screen when the modal closes.
+// hovered. The hold button is the reader's way to stop and resume auto-advance.
+// Clicking an indicator also holds, since a manual navigation implies the reader
+// wants to stay on the chosen slide. Only the hold button resumes.
+// A slide change is refused while a modal is open so the work being viewed is
+// still the work on screen when the modal closes.
 +function ($) {
   'use strict';
 
@@ -28,13 +27,15 @@
 
           $(this).toggleClass('is-current', current).attr('aria-current', current);
         });
+        $(this).find('.carousel-item').each(function (i) {
+          $(this).find('a, button').attr('tabindex', i === event.to ? null : '-1');
+        });
       })
-      .on('focusin.themeSpotlight', '[data-theme-spotlight]', function (event) {
-        var button = $(this).find('[data-spotlight-hold]');
-        if ($(event.target).closest('[data-spotlight-hold]').length) return;
+      .on('click.themeSpotlight', '[data-slide-to]', function () {
+        var region = $(this).closest('[data-theme-spotlight]');
+        var button = region.find('[data-spotlight-hold]');
         if (button.attr('data-held') === 'true') return;
-
-        hold($(this), button, true);
+        hold(region, button, true);
       })
       .on('click.themeSpotlight', '[data-spotlight-hold]', function () {
         var button = $(this);

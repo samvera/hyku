@@ -130,7 +130,7 @@ body.digital_collection_show.public-facing {
       }
 
       &:focus-visible {
-        @include dc-focus-ring;
+        @include dc-focus-ring($offset: -2px);
       }
     }
 

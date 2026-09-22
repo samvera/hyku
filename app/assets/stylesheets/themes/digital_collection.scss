@@ -228,9 +228,15 @@
     display: flex;
     flex-wrap: wrap;
     font-size: 14px;
-    gap: 4px 24px;
+    gap: 4px 0;
     justify-content: center;
     margin: 10px 0 0;
+
+    li + li::before {
+      content: '·';
+      margin-inline: 10px;
+      opacity: 0.6;
+    }
   }
 
   .dc-hero-stat {
@@ -335,11 +341,13 @@
 
   .dc-hero-segment {
     background: rgba(255, 255, 255, 0.55);
+    background-clip: content-box;
     border: 0;
+    box-sizing: content-box;
     cursor: pointer;
     display: block;
     height: 3px;
-    padding: 0;
+    padding: 10px 0;
     transition: background-color $dc-transition, height $dc-transition;
     width: 52px;
 
@@ -348,12 +356,11 @@
     }
 
     &:hover {
-      background: rgba(255, 255, 255, 0.85);
+      background-color: rgba(255, 255, 255, 0.85);
     }
 
     &.is-current {
-      background: #fff;
-      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.45);
+      background-color: #fff;
       height: 7px;
     }
 

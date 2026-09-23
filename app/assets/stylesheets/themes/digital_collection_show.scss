@@ -702,7 +702,13 @@ body.digital_collection_show.hyrax-collections-show {
     }
   }
 
-  .hyc-banner--no-image::after { display: none; }
+  .hyc-banner--no-image {
+    background-color: $dc-surface-alt;
+
+    &::after { display: none; }
+
+    .hyc-banner-body { min-height: 0; }
+  }
 
   .hyc-banner-body {
     @include dc-gutter;

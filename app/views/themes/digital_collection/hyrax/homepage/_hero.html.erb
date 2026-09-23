@@ -19,16 +19,17 @@
 
       <% paths = { works: main_app.search_catalog_path(f: { generic_type_sim: ['Work'] }),
                    collections: main_app.search_catalog_path(f: { generic_type_sim: ['Collection'] }) } %>
-      <ul class="dc-hero-stats list-unstyled">
-        <% dc_home.counts.each do |key, count| %>
-          <li>
-            <%= link_to paths[key], class: 'dc-hero-stat' do %>
-              <strong class="dc-hero-stat-number"><%= number_with_delimiter(count) %></strong>
-              <%= t("digital_collection.homepage.stats.#{key}", count:) %>
-            <% end %>
-          </li>
+      <div class="dc-hero-stats">
+        <% dc_home.counts.each_with_index do |(key, count), index| %>
+          <% if index.positive? %>
+            <i class="fa fa-circle dc-hero-stats-dot" aria-hidden="true"></i>
+          <% end %>
+          <%= link_to paths[key], class: 'dc-hero-stat' do %>
+            <strong class="dc-hero-stat-number"><%= number_with_delimiter(count) %></strong>
+            <%= t("digital_collection.homepage.stats.#{key}", count:) %>
+          <% end %>
         <% end %>
-      </ul>
+      </div>
     </div>
   </div>
 

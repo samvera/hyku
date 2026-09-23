@@ -225,18 +225,20 @@
   }
 
   .dc-hero-stats {
+    align-items: center;
     display: flex;
     flex-wrap: wrap;
     font-size: 14px;
     gap: 4px 0;
     justify-content: center;
     margin: 10px 0 0;
+  }
 
-    li + li::before {
-      content: '·';
-      margin-inline: 10px;
-      opacity: 0.6;
-    }
+  .dc-hero-stats-dot {
+    align-self: center;
+    font-size: 5px;
+    margin-inline: 10px;
+    opacity: 0.6;
   }
 
   .dc-hero-stat {

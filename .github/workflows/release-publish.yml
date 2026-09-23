@@ -1,0 +1,37 @@
+name: Publish Release
+
+on:
+  push:
+    branches:
+      - production
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Find draft release
+        id: find
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          draft=$(gh release list --json tagName,isDraft --jq '.[] | select(.isDraft) | .tagName' | head -1)
+          if [ -z "$draft" ]; then
+            echo "No draft release found, skipping."
+            echo "found=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=$draft" >> "$GITHUB_OUTPUT"
+            echo "found=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publish draft release
+        if: steps.find.outputs.found == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release edit "${{ steps.find.outputs.tag }}" --draft=false

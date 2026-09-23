@@ -27,7 +27,7 @@ module IiifPrint
     #       code's logic paths say otherwise."
     class LeakyAbstractionError < StandardError
       def initialize(klass:, method_name:)
-        super("Called #{klass}##{method_name} when we had said that #{klass} was not valid because we weren't using IIIF Print")
+        super("Called #{klass}##{method_name} when we had said that #{klass} was not valid because IIIF Print derivatives are disabled (check default_pdf_viewer and iiif_print_ocr)")
       end
     end
 
@@ -37,6 +37,10 @@ module IiifPrint
     # disabled, this method returns true, meaning the application should use IIIF Print.
     def self.use_iiif_print?
       !::Flipflop.default_pdf_viewer?
+    end
+
+    def self.use_iiif_print_derivatives?
+      use_iiif_print? || ::Flipflop.iiif_print_ocr?
     end
 
     ##
@@ -56,17 +60,17 @@ module IiifPrint
         @file_set = file_set
       end
 
-      delegate :use_iiif_print?, to: TenantConfig
+      delegate :use_iiif_print?, :use_iiif_print_derivatives?, to: TenantConfig
 
       def valid?
-        return false unless use_iiif_print?
+        return false unless use_iiif_print_derivatives?
 
         iiif_print_service_instance.valid?
       end
 
       %i[create_derivatives cleanup_derivatives].each do |method_name|
         define_method(method_name) do |*args|
-          raise LeakyAbstractionError.new(klass: self.class, method_name:) unless use_iiif_print?
+          raise LeakyAbstractionError.new(klass: self.class, method_name:) unless use_iiif_print_derivatives?
 
           iiif_print_service_instance.public_send(method_name, *args)
         end

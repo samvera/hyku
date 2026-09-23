@@ -473,7 +473,7 @@ body.catalog-index.digital_collection.public-facing {
     }
 
     #facets .navbar-toggler .navbar-toggler-icon {
-      display: none;
+      display: none !important;
     }
 
     #facets .navbar-toggler::after {

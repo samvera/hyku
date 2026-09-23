@@ -50,6 +50,14 @@ Flipflop.configure do
           default: false,
           description: "Run OCR and text extraction on uploaded images, even when PDF.js is the viewer."
 
+  group :site_configuration do
+    feature :iiif_ranges,
+            title: "IIIF Ranges",
+            default: false,
+            description: "Render child works' file sets as canvases in the parent work's IIIF manifest, " \
+                         "with a table of contents built from IIIF ranges."
+  end
+
   feature :per_work_media_viewer,
           default: false,
           description: "Let each work choose its own viewer (Universal Viewer, Clover IIIF, Ramp, or PDF.js) " \

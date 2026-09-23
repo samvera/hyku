@@ -182,6 +182,8 @@ module IiifPrint
       #
       # OVERRIDE Hyrax::WorkShowPresenter; this override introduces behavior to handle over-rides.
       def iiif_viewer?
+        return super unless TenantConfig.use_iiif_print?
+
         Hyrax.config.iiif_image_server? &&
           representative_id.present? &&
           representative_presenter.present? &&

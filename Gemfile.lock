@@ -294,12 +294,13 @@ GEM
       rubocop-performance
       rubocop-rails
       rubocop-rspec
-    blacklight (7.42.0)
+    blacklight (7.43.0)
       deprecation
       globalid
       hashdiff
       i18n (>= 1.7.0)
       jbuilder (~> 2.7)
+      json (< 3.0)
       kaminari (>= 0.15)
       ostruct (>= 0.3.2)
       rails (>= 6.1, < 9)

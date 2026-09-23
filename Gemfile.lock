@@ -794,7 +794,7 @@ GEM
       json
     iiif_manifest (1.7.0)
       activesupport (>= 4)
-    iiif_print (3.1.0)
+    iiif_print (3.1.1)
       blacklight_iiif_search (>= 1.0, < 3.0)
       derivative-rodeo (~> 0.5)
       hyrax (>= 2.5, < 6)

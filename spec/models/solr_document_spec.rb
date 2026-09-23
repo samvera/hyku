@@ -42,6 +42,70 @@ RSpec.describe SolrDocument, type: :model do
     end
   end
 
+  describe '#show_pdf_viewer' do
+    context 'when no pdf viewer field is indexed' do
+      it 'defaults to true' do
+        expect(solr_document.show_pdf_viewer).to be true
+      end
+    end
+
+    context 'when show_pdf_viewer_bsi is true' do
+      let(:solr_document) { described_class.new('show_pdf_viewer_bsi' => true) }
+
+      it 'returns true' do
+        expect(solr_document.show_pdf_viewer).to be true
+      end
+    end
+
+    context 'when show_pdf_viewer_bsi is false' do
+      let(:solr_document) { described_class.new('show_pdf_viewer_bsi' => false) }
+
+      it 'returns false' do
+        expect(solr_document.show_pdf_viewer).to be false
+      end
+    end
+
+    context 'when show_pdf_viewer_tesim is "1"' do
+      let(:solr_document) { described_class.new('show_pdf_viewer_tesim' => ['1']) }
+
+      it 'returns true' do
+        expect(solr_document.show_pdf_viewer).to be true
+      end
+    end
+
+    context 'when show_pdf_viewer_tesim is "0"' do
+      let(:solr_document) { described_class.new('show_pdf_viewer_tesim' => ['0']) }
+
+      it 'returns false' do
+        expect(solr_document.show_pdf_viewer).to be false
+      end
+    end
+  end
+
+  describe '#show_pdf_download_button' do
+    context 'when no download button field is indexed' do
+      it 'defaults to true' do
+        expect(solr_document.show_pdf_download_button).to be true
+      end
+    end
+
+    context 'when show_pdf_download_button_bsi is true' do
+      let(:solr_document) { described_class.new('show_pdf_download_button_bsi' => true) }
+
+      it 'returns true' do
+        expect(solr_document.show_pdf_download_button).to be true
+      end
+    end
+
+    context 'when show_pdf_download_button_bsi is false' do
+      let(:solr_document) { described_class.new('show_pdf_download_button_bsi' => false) }
+
+      it 'returns false' do
+        expect(solr_document.show_pdf_download_button).to be false
+      end
+    end
+  end
+
   describe '#to_semantic_values' do
     subject { solr_document.to_semantic_values }
     let(:solr_document) { SolrDocument.new(attributes) }

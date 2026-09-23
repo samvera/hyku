@@ -93,8 +93,9 @@ class SolrDocument
               self['show_pdf_viewer_tsi'] ||
                 Array.wrap(self['show_pdf_viewer_tesim']).first
             end
-    # Nil is not cast to false in the following Boolean operation.
-    return false if value.nil?
+    # Nil means the field was never persisted (e.g. Bulkrax imports).
+    # Default to true, matching ActiveFedora's PdfBehavior which sets '1'.
+    return true if value.nil?
     ActiveModel::Type::Boolean.new.cast(value)
   end
 
@@ -108,8 +109,9 @@ class SolrDocument
               self['show_pdf_download_button_tsi'] ||
                 Array.wrap(self['show_pdf_download_button_tesim']).first
             end
-    # Nil is not cast to false in the following Boolean operation.
-    return false if value.nil?
+    # Nil means the field was never persisted (e.g. Bulkrax imports).
+    # Default to true, matching ActiveFedora's PdfBehavior which sets '1'.
+    return true if value.nil?
     ActiveModel::Type::Boolean.new.cast(value)
   end
 

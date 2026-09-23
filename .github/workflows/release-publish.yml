@@ -6,6 +6,7 @@ on:
       - production
 
 permissions:
+  actions: write
   contents: write
   pull-requests: read
 
@@ -29,9 +30,39 @@ jobs:
             echo "found=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Publish draft release
+      - name: Wait for image builds
         if: steps.find.outputs.found == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release edit "${{ steps.find.outputs.tag }}" --draft=false
+          run_id=""
+          for attempt in $(seq 1 30); do
+            run_id=$(gh run list -w build-test-lint.yaml -b production \
+              --json databaseId,headSha \
+              -q ".[] | select(.headSha==\"$GITHUB_SHA\") | .databaseId" \
+              | head -1)
+            [ -n "$run_id" ] && break
+            sleep 10
+          done
+          if [ -z "$run_id" ]; then
+            echo "::error::build-test-lint run not found after 5 minutes"
+            exit 1
+          fi
+          echo "Waiting for build-test-lint run $run_id..."
+          gh run watch "$run_id" --exit-status
+
+      - name: Publish draft release
+        if: steps.find.outputs.found == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.find.outputs.tag }}
+        run: |
+          gh release edit "$TAG" --draft=false
+
+      - name: Trigger release images
+        if: steps.find.outputs.found == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.find.outputs.tag }}
+        run: |
+          gh workflow run release.yml --ref "$TAG"

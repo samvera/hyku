@@ -64,13 +64,12 @@ body.digital_collection_show.public-facing {
       align-items: center;
       display: flex;
       justify-self: start;
-      margin: 0;
-      min-height: $dc-masthead-height;
-      padding: 0;
+      margin: 0 -8px;
+      padding: 12px 8px;
       text-decoration: none;
 
       &:focus-visible {
-        @include dc-focus-ring(var(--dc-link-hover, #{$dc-link-hover}), -2px);
+        @include dc-focus-ring;
       }
     }
 
@@ -94,12 +93,14 @@ body.digital_collection_show.public-facing {
     }
 
     .dc-masthead-nav {
-      column-gap: 24px;
+      align-items: center;
+      column-gap: 8px;
       flex-direction: row;
     }
 
     #user_utility_links {
-      column-gap: 24px;
+      align-items: center;
+      column-gap: 8px;
       // Bootstrap's ml-auto and px-3 utilities are !important
       margin-left: 0 !important;
       padding-left: 0 !important;
@@ -119,8 +120,7 @@ body.digital_collection_show.public-facing {
       display: flex;
       font-size: 14px;
       line-height: 20px;
-      min-height: $dc-masthead-height;
-      padding: 0 2px;
+      padding: 12px 8px;
       text-decoration: none;
       transition: color $dc-transition;
 
@@ -130,7 +130,7 @@ body.digital_collection_show.public-facing {
       }
 
       &:focus-visible {
-        @include dc-focus-ring($offset: -2px);
+        @include dc-focus-ring;
       }
     }
 
@@ -157,6 +157,7 @@ body.digital_collection_show.public-facing {
 
       .dc-masthead-nav,
       #user_utility_links {
+        align-items: flex-start;
         flex-direction: column;
         margin: 0;
       }
@@ -165,8 +166,9 @@ body.digital_collection_show.public-facing {
       #user_utility_links.navbar-nav > li.nav-item > a.nav-link {
         align-items: center;
         display: flex;
+        margin-inline: -8px;
         min-height: 44px;
-        padding: 12px 0;
+        padding: 12px 8px;
       }
     }
   }

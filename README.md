@@ -26,7 +26,7 @@ Jump In: [![Slack Status](http://slack.samvera.org/badge.svg)](http://slack.samv
 
 ## Getting Started
 
-There are several ways to get started with Hyku. See the [Getting Started Guide](./docs/getting-started.md) for more information.
+There are several ways to get started with Hyku. See the [Getting Started Guide](./docs/getting-started.md) for more information. If you are evaluating Hyku, we recommend using the `production` branch and not `main` as your primary target.
 
 ## Configuration
 

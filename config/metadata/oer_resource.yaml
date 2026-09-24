@@ -52,6 +52,9 @@ attributes:
       html_dl: true
     mappings:
       simple_dc_pmh: dc:type
+    controlled_values:
+      sources:
+        - oer_types
   date_created:
     type: string
     multiple: true
@@ -82,6 +85,9 @@ attributes:
       html_dl: true
     mappings:
       simple_dc_pmh: dc:description
+    controlled_values:
+      sources:
+        - audience
   education_level:
     type: string
     multiple: true
@@ -97,6 +103,9 @@ attributes:
       html_dl: true
     mappings:
       simple_dc_pmh: dc:description
+    controlled_values:
+      sources:
+        - education_levels
   learning_resource_type:
     type: string
     multiple: true
@@ -112,6 +121,9 @@ attributes:
       html_dl: true
     mappings:
       simple_dc_pmh: dc:type
+    controlled_values:
+      sources:
+        - learning_resource_types
   discipline:
     type: string
     multiple: true
@@ -126,6 +138,9 @@ attributes:
       html_dl: true
     mappings:
       simple_dc_pmh: dc:subject
+    controlled_values:
+      sources:
+        - discipline
   rights_statement:
     type: string
     multiple: true
@@ -141,6 +156,9 @@ attributes:
       html_dl: true
     mappings:
       simple_dc_pmh: dc:rights
+    controlled_values:
+      sources:
+        - rights_statements
   license:
     type: string
     multiple: true
@@ -155,6 +173,9 @@ attributes:
       html_dl: true
     mappings:
       simple_dc_pmh: dc:rights
+    controlled_values:
+      sources:
+        - licenses
   abstract:
     type: string
     multiple: true
@@ -183,6 +204,9 @@ attributes:
       html_dl: true
     mappings:
       simple_dc_pmh: dc:description
+    controlled_values:
+      sources:
+        - accessibility_features
   accessibility_hazard:
     type: string
     multiple: true
@@ -197,6 +221,9 @@ attributes:
       html_dl: true
     mappings:
       simple_dc_pmh: dc:description
+    controlled_values:
+      sources:
+        - accessibility_hazards
   accessibility_summary:
     type: string
     multiple: false

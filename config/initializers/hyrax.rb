@@ -311,6 +311,12 @@ Qa::Authorities::Local.register_subauthority('mesh', 'Qa::Authorities::Mesh')
 Rails.application.config.to_prepare do
   Hyrax.config.file_set_indexer = Hyku::Indexers::FileSetIndexer
 
+  # Resolves a controlled term's id to its label for indexing and display.
+  # Hyrax's own QA resolver sees only the yaml authorities in config/authorities,
+  # so Hyku's subclass adds the dashboard-created ones and keys its cache by
+  # tenant.
+  Hyrax.config.controlled_vocabulary_label_service = Hyku::ControlledVocabularyLabelService.new
+
   # NOTE: Remote authorities like LOC don't need explicit registration
   # They are available by default through the QA engine routes
 

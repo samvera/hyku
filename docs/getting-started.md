@@ -15,7 +15,7 @@ Start off by setting up a local development environment where you can experiment
     ```bash
     git clone https://github.com/samvera/hyku.git
     cd hyku
-    git checkout tags/v6.2.0
+    git checkout production
     ```
 
 2) **Set up DNS and TLS certificates using Stack Car:**

@@ -1,0 +1,30 @@
+<% document = featured.solr_document %>
+<% url = generate_work_url(featured, request) %>
+<% description = document['description_tesim']&.first %>
+<% resource_type = document['resource_type_tesim']&.first %>
+
+<article class="dc-featured-row">
+  <%= link_to url, class: 'dc-featured-thumb', tabindex: -1, aria: { hidden: true },
+              data: { turbolinks: block_valkyrie_redirect? } do %>
+    <%= render_thumbnail_tag(featured, { alt: '' }, { suppress_link: true }) %>
+  <% end %>
+
+  <div class="dc-featured-body">
+    <h3 class="dc-featured-title">
+      <%= link_to document.title_or_label, url, data: { turbolinks: block_valkyrie_redirect? } %>
+    </h3>
+
+    <% meta = [featured.creator&.first, (document['date_created_tesim']&.first.presence || document['date_issued_tesim']&.first)].compact_blank %>
+    <% if meta.any? %>
+      <p class="dc-featured-meta"><%= safe_join(meta, ' · ') %></p>
+    <% end %>
+
+    <% if description.present? %>
+      <p class="dc-featured-desc"><%= description %></p>
+    <% end %>
+  </div>
+
+  <% if resource_type.present? %>
+    <span class="dc-badge"><%= resource_type %></span>
+  <% end %>
+</article>

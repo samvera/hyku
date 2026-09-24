@@ -1,0 +1,58 @@
+<% collections = dc_home.browse_collections %>
+<% per_page = 6 %>
+
+<section class="dc-browse" id="dc-browse" aria-labelledby="dc-browse-heading" data-dc-browse
+         data-per-page="<%= per_page %>"
+         data-status="<%= t('digital_collection.homepage.browse.status') %>"
+         data-view-grid="<%= t('digital_collection.homepage.browse.grid') %>"
+         data-view-list="<%= t('digital_collection.homepage.browse.list') %>"
+         data-sort-asc="<%= t('digital_collection.homepage.browse.sort_asc') %>"
+         data-sort-desc="<%= t('digital_collection.homepage.browse.sort_desc') %>"
+         data-sort-aria="<%= t('digital_collection.homepage.browse.sort_aria') %>"
+         data-previous="<%= t('digital_collection.homepage.browse.previous') %>"
+         data-next="<%= t('digital_collection.homepage.browse.next') %>"
+         data-page="<%= t('digital_collection.homepage.browse.page') %>">
+  <div class="dc-section-head">
+    <h2 class="dc-section-title" id="dc-browse-heading"><%= t('digital_collection.homepage.browse.heading') %></h2>
+
+    <% if collections.any? %>
+      <div class="dc-browse-controls" role="group" aria-label="<%= t('digital_collection.homepage.browse.view_label') %>" hidden data-dc-browse-controls>
+        <div class="dc-view-toggle">
+          <button type="button" class="dc-control" data-dc-browse-view="grid" aria-pressed="true"><%= t('digital_collection.homepage.browse.grid') %></button>
+          <button type="button" class="dc-control" data-dc-browse-view="list" aria-pressed="false"><%= t('digital_collection.homepage.browse.list') %></button>
+        </div>
+        <span class="dc-sort-label" id="dc-sort-label"><%= t('digital_collection.homepage.browse.sort') %></span>
+        <button type="button" class="dc-control dc-sort" data-dc-browse-sort data-direction="asc" aria-describedby="dc-sort-label">
+          <span data-dc-browse-sort-label><%= t('digital_collection.homepage.browse.sort_asc') %></span>
+        </button>
+      </div>
+    <% end %>
+  </div>
+
+  <% if collections.any? %>
+    <ul class="dc-collections list-unstyled" data-dc-browse-items>
+      <% collections.each_with_index do |document, index| %>
+        <%= tag.li data: { title: Array(document.title).first.presence || document.title_or_label }, hidden: index >= per_page do %>
+          <%= render 'hyrax/homepage/browse_collection_fields', document: %>
+        <% end %>
+      <% end %>
+    </ul>
+
+    <div class="dc-section-foot">
+      <nav class="dc-pager" aria-label="<%= t('digital_collection.homepage.browse.pages_label') %>" data-dc-browse-pager hidden></nav>
+      <%= link_to t('digital_collection.homepage.browse.all'),
+                  main_app.search_catalog_path(f: { generic_type_sim: ['Collection'] }), class: 'dc-section-action' %>
+    </div>
+
+    <p class="sr-only" role="status" aria-live="polite" data-dc-browse-live></p>
+
+    <noscript>
+      <style>
+        /* bootstrap's reboot pins [hidden] to display: none !important */
+        .dc-collections > li[hidden] { display: list-item !important; }
+      </style>
+    </noscript>
+  <% else %>
+    <p class="dc-empty"><%= t('digital_collection.homepage.browse.empty') %></p>
+  <% end %>
+</section>

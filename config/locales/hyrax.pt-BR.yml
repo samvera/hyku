@@ -302,6 +302,11 @@ pt-BR:
     base:
       citations:
         header: 'Citaçõ:'
+        style: Estilo de citação
+        copy: Copiar
+        copied: Copiado
+        endnote: Exportar para o EndNote
+        note: Fornecida apenas como sugestão. Confira com o seu guia de estilo preferido.
       download_pdf: Baixar PDF
       form_child_work_relationships:
         actions:
@@ -402,6 +407,11 @@ pt-BR:
         in_this_work: Outros trabalhos neste trabalho
       progress:
         header: Salvar Trabalhos
+    citations:
+      work:
+        apa: APA
+        chicago: Chicago
+        mla: MLA
     bread_crumb:
       search_results: Voltar aos resultados da pesquisa
     collection:
@@ -765,6 +775,10 @@ pt-BR:
         title: Atividade do Usuário
       user_notifications: Notificações do usuário
       view_files: Ver arquivos
+    digital_collection:
+      show:
+        item_details: Detalhes do item
+        uploaded: "enviado em %{date}"
     directory:
       suffix: "@ Hydrainabox.org"
     document_language: en

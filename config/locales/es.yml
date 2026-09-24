@@ -230,17 +230,6 @@ es:
         sub: Deposite obras en el repositorio.
         button: Iniciar un depósito
     show:
-      citation:
-        heading: "Cómo citar"
-        style: "Estilo de cita"
-        styles:
-          apa: "APA"
-          mla: "MLA"
-          chicago: "Chicago"
-        copy_visible: "Copiar cita"
-        copied: "Copiado"
-        endnote: "Descargar registro de EndNote"
-        note: "Se ofrece solo como sugerencia. Compruébela con su guía de estilo preferida."
       files:
         as_format: como %{name}
         heading: Archivos
@@ -970,17 +959,8 @@ es:
         one: 1 elemento
         other: "%{count} elementos"
       relationships: Relaciones
-      cite: Citar
-      endnote: Descargar para EndNote
       permalink: Enlace permanente
       contributors: Colaboradores
-      citation_style: Estilo de cita
-      citation_styles:
-        apa: APA (7.ª ed.)
-        mla: MLA (9.ª ed.)
-        chicago: Chicago
-      citation_copy: Copiar
-      citation_copied: Copiado
   proprietor:
     accounts:
       edit:
@@ -1114,16 +1094,67 @@ es:
         children: "Obras secundarias"
       part_of:
         heading: "Forma parte de"
-      citation:
-        heading: "Cita"
-        style: "Estilo de cita"
-        endnote: "Exportar a EndNote"
-        copy: "Copiar"
-        copied: "Copiado"
-        styles:
-          apa: "APA"
-          mla: "MLA"
-          chicago: "Chicago"
+  digital_collection:
+    chrome:
+      toggle_navigation: "Alternar la navegación"
+    homepage:
+      intro_label: "Introducción"
+      hero:
+        label: "Colecciones destacadas"
+        headline: "Explore las colecciones"
+        featured_collection: "Colección destacada"
+        hold: "Pausar"
+        resume: "Reproducir"
+        segment: "Mostrar %{title}"
+      featured_collections:
+        heading: "Colecciones destacadas"
+        unfeature_confirm: "¿Quitar esta colección de la lista de destacadas?"
+        reorder_hint: "Arrastre para reordenar las colecciones destacadas."
+        save_order: "Guardar orden"
+      browse:
+        heading: "Explorar colecciones"
+        grid: "Cuadrícula"
+        list: "Lista"
+        view_label: "Opciones de visualización de colecciones"
+        sort: "Ordenar"
+        sort_asc: "De A a Z"
+        sort_desc: "De Z a A"
+        sort_aria: "Ordenar por título, actualmente %{direction}. Activar para invertir."
+        previous: "Anterior"
+        next: "Siguiente"
+        page: "Página %{number}"
+        pages_label: "Páginas de colecciones"
+        status: "Mostrando %{shown} de %{total} colecciones, página %{page} de %{pages}, vista %{view}, ordenadas %{sort}."
+        works_count:
+          one: "1 obra"
+          other: "%{count} obras"
+        empty: "Aún no se han añadido colecciones."
+        all: "Explorar todas las colecciones"
+      featured:
+        heading: "Obras destacadas"
+        unfeature_confirm: "¿Quitar esta obra de la lista de destacadas?"
+        reorder_hint: "Arrastre para reordenar las obras destacadas."
+        save_order: "Guardar orden"
+      recent:
+        heading: "Añadidos recientemente"
+        view_all: "Ver todo"
+      about:
+        heading: "Acerca de las colecciones"
+      cta:
+        eyebrow: "Contribuir"
+        heading: "Comparta su obra"
+        sub: "Deposite materiales en el repositorio."
+        button: "Iniciar un depósito"
+      stats:
+        collections:
+          one: "Colección"
+          other: "Colecciones"
+        works:
+          one: "Obra"
+          other: "Obras"
+    show:
+      part_of:
+        heading: Parte de
   screening_room:
     chrome:
       toggle_navigation: Alternar la navegación
@@ -1166,17 +1197,6 @@ es:
         unfeature_confirm: '¿Quitar esta obra de la lista destacada?'
         view_work: Ver la obra
     show:
-      citation:
-        copied: Copiado
-        copy_visible: Copiar la cita
-        endnote: Descargar registro EndNote
-        heading: Cómo citar
-        note: Solo como sugerencia. Compruébela con su guía de estilo preferida.
-        style: Estilo de cita
-        styles:
-          apa: APA
-          chicago: Chicago
-          mla: MLA
       items:
         count:
           one: 1 elemento

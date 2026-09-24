@@ -1,0 +1,77 @@
+<% collections = dc_home.hero_collections %>
+
+<section id="dc-hero" class="dc-hero carousel slide carousel-fade" data-theme-spotlight
+         data-ride="<%= 'carousel' if collections.many? %>"
+         data-interval="<%= collections.many? ? 6000 : 'false' %>"
+         data-pause="false"
+         aria-roledescription="carousel" aria-label="<%= t('digital_collection.homepage.hero.label') %>">
+  <div class="dc-hero-content">
+    <div class="dc-hero-plate">
+      <% if display_content_block? @marketing_text %>
+        <div class="dc-hero-headline"><%= displayable_content_block @marketing_text %></div>
+      <% else %>
+        <h2 class="dc-hero-headline"><%= t('digital_collection.homepage.hero.headline') %></h2>
+      <% end %>
+
+      <div class="dc-hero-search">
+        <%= render partial: 'catalog/search_form' %>
+      </div>
+
+      <% paths = { works: main_app.search_catalog_path(f: { generic_type_sim: ['Work'] }),
+                   collections: main_app.search_catalog_path(f: { generic_type_sim: ['Collection'] }) } %>
+      <div class="dc-hero-stats">
+        <% dc_home.counts.each_with_index do |(key, count), index| %>
+          <% if index.positive? %>
+            <i class="fa fa-circle dc-hero-stats-dot" aria-hidden="true"></i>
+          <% end %>
+          <%= link_to paths[key], class: 'dc-hero-stat' do %>
+            <strong class="dc-hero-stat-number"><%= number_with_delimiter(count) %></strong>
+            <%= t("digital_collection.homepage.stats.#{key}", count:) %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="carousel-inner dc-hero-slides">
+    <% if collections.any? %>
+      <% collections.each_with_index do |collection, index| %>
+        <div class="carousel-item <%= 'active' if index.zero? %>">
+          <img class="dc-hero-image" src="<%= collection.banner_file[:relative_path] || banner_image %>" alt="">
+          <div class="dc-hero-scrim"></div>
+          <p class="dc-hero-caption">
+            <span class="dc-hero-caption-label"><%= t('digital_collection.homepage.hero.featured_collection') %></span>
+            <%= link_to theme_blurb(Array(collection.title).first, length: 80), hyrax.collection_path(collection.id), class: 'dc-hero-caption-link', tabindex: (index.zero? ? nil : '-1') %>
+          </p>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="carousel-item active">
+        <img class="dc-hero-image" src="<%= banner_image %>" alt="">
+        <div class="dc-hero-scrim"></div>
+      </div>
+    <% end %>
+  </div>
+
+  <% if collections.many? %>
+    <div class="dc-hero-controls">
+      <ul class="dc-hero-segments list-unstyled">
+        <% collections.each_with_index do |collection, position| %>
+          <li>
+            <button type="button" class="dc-hero-segment <%= 'is-current' if position.zero? %>"
+                    data-target="#dc-hero" data-slide-to="<%= position %>"
+                    aria-current="<%= position.zero? %>"
+                    aria-label="<%= t('digital_collection.homepage.hero.segment', title: Array(collection.title).first) %>"></button>
+          </li>
+        <% end %>
+      </ul>
+
+      <button type="button" class="dc-hero-hold" data-spotlight-hold data-held="false"
+              data-hold-label="<%= t('digital_collection.homepage.hero.hold') %>"
+              data-resume-label="<%= t('digital_collection.homepage.hero.resume') %>">
+        <span class="dc-hero-hold-icon" aria-hidden="true"></span>
+        <span class="sr-only" data-spotlight-hold-label><%= t('digital_collection.homepage.hero.hold') %></span>
+      </button>
+    </div>
+  <% end %>
+</section>

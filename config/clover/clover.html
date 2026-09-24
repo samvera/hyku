@@ -10,10 +10,11 @@
           .clover-viewer-content { height: 100% !important; }
           .clover-viewer-player-wrapper,
           .clover-viewer-painting :has(> .clover-viewer-player-wrapper) { background-color: transparent !important; }
-          .clover-viewer-painting,
-          [data-testid="media"] { padding-left: 16px !important; padding-right: 16px !important; }
           .clover-viewer-information-panel { overflow-wrap: anywhere; }
           [data-testid="information-panel-cue"] strong { white-space: nowrap; margin-left: .75rem; }
+          .clover-viewer-information-panel, .clover-viewer-information-panel * { box-sizing: border-box; }
+          .clover-viewer-header > span:first-child { padding-left: 0 !important; }
+          .clover-viewer-header > div:last-child { padding-right: 0 !important; }
         </style>
     </head>
     <body>

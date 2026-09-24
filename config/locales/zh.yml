@@ -188,6 +188,7 @@ zh:
     formats:
       long: "%Y年%-m月%-d日"
       pr_short: "%Y年%-m月%-d日"
+      short: "%Y年%-m月%-d日"
   errors:
     messages:
       valid_embed_url: 必须是有效的YouTube或Vimeo嵌入URL。
@@ -246,17 +247,6 @@ zh:
         sub: 将作品存缴至本仓储。
         button: 开始存缴
     show:
-      citation:
-        heading: "引用"
-        style: "引用格式"
-        styles:
-          apa: "APA"
-          mla: "MLA"
-          chicago: "Chicago"
-        copy_visible: "复制引用"
-        copied: "已复制"
-        endnote: "下载 EndNote 记录"
-        note: "仅供参考。请根据您所用的格式指南进行核对。"
       files:
         as_format: 为 %{name}
         heading: 文件
@@ -986,17 +976,8 @@ zh:
         one: 1 个条目
         other: "%{count} 个条目"
       relationships: 关联
-      cite: 引用
-      endnote: 下载 EndNote 格式
       permalink: 永久链接
       contributors: 贡献者
-      citation_style: 引用格式
-      citation_styles:
-        apa: APA（第7版）
-        mla: MLA（第9版）
-        chicago: 芝加哥格式
-      citation_copy: 复制
-      citation_copied: 已复制
   proprietor:
     accounts:
       edit:
@@ -1130,16 +1111,67 @@ zh:
         children: "子作品"
       part_of:
         heading: "所属"
-      citation:
-        heading: "引用"
-        style: "引用格式"
-        endnote: "导出到 EndNote"
-        copy: "复制"
-        copied: "已复制"
-        styles:
-          apa: "APA"
-          mla: "MLA"
-          chicago: "Chicago"
+  digital_collection:
+    chrome:
+      toggle_navigation: "切换导航"
+    homepage:
+      intro_label: "简介"
+      hero:
+        label: "精选馆藏"
+        headline: "探索馆藏"
+        featured_collection: "精选馆藏"
+        hold: "暂停"
+        resume: "播放"
+        segment: "显示 %{title}"
+      featured_collections:
+        heading: "精选合集"
+        unfeature_confirm: "要将此合集从精选列表中移除吗？"
+        reorder_hint: "拖动以重新排列精选合集。"
+        save_order: "保存排序"
+      browse:
+        heading: "浏览馆藏"
+        grid: "网格"
+        list: "列表"
+        view_label: "馆藏显示选项"
+        sort: "排序"
+        sort_asc: "A 到 Z"
+        sort_desc: "Z 到 A"
+        sort_aria: "按标题排序，当前为%{direction}。激活以反转。"
+        previous: "上一页"
+        next: "下一页"
+        page: "第 %{number} 页"
+        pages_label: "馆藏页面"
+        status: "显示 %{total} 个馆藏中的 %{shown} 个，第 %{page} 页，共 %{pages} 页，%{view}视图，%{sort}排序。"
+        works_count:
+          one: "%{count} 件作品"
+          other: "%{count} 件作品"
+        empty: "尚未添加任何馆藏。"
+        all: "浏览全部馆藏"
+      featured:
+        heading: "精选作品"
+        unfeature_confirm: "要将此作品从精选列表中移除吗？"
+        reorder_hint: "拖动以重新排列精选作品。"
+        save_order: "保存顺序"
+      recent:
+        heading: "最近添加"
+        view_all: "查看全部"
+      about:
+        heading: "关于馆藏"
+      cta:
+        eyebrow: "贡献"
+        heading: "分享您的作品"
+        sub: "将材料存入资料库。"
+        button: "开始提交"
+      stats:
+        collections:
+          one: "馆藏"
+          other: "馆藏"
+        works:
+          one: "作品"
+          other: "作品"
+    show:
+      part_of:
+        heading: 所属
   screening_room:
     chrome:
       toggle_navigation: 切换导航
@@ -1182,17 +1214,6 @@ zh:
         unfeature_confirm: 从精选列表中移除此作品？
         view_work: 查看作品
     show:
-      citation:
-        copied: 已复制
-        copy_visible: 复制引用
-        endnote: 下载 EndNote 记录
-        heading: 引用
-        note: 仅供参考，请对照您常用的引用格式核对。
-        style: 引用格式
-        styles:
-          apa: APA
-          chicago: Chicago
-          mla: MLA
       items:
         count:
           one: 1 个项目

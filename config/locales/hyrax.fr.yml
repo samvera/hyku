@@ -300,6 +300,11 @@ fr:
     base:
       citations:
         header: Citation
+        style: Style de citation
+        copy: Copier
+        copied: Copié
+        endnote: Exporter vers EndNote
+        note: Fournie à titre indicatif seulement. Vérifiez-la selon votre guide de style.
       download_pdf: Télécharger le PDF
       form_child_work_relationships:
         actions:
@@ -400,6 +405,11 @@ fr:
         in_this_work: Autres œuvres de cette œuvre
       progress:
         header: Enregistrer les travaux
+    citations:
+      work:
+        apa: APA
+        chicago: Chicago
+        mla: MLA
     bread_crumb:
       search_results: Retour aux résultats de recherche
     collection:
@@ -763,6 +773,10 @@ fr:
         title: Activité de l'utilisateur
       user_notifications: Notifications aux utilisateurs
       view_files: Afficher les fichiers
+    digital_collection:
+      show:
+        item_details: "Détails de l'élément"
+        uploaded: "téléversé le %{date}"
     directory:
       suffix: "@ Hydrainabox.org"
     document_language: en

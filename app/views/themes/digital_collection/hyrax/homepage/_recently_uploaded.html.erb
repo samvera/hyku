@@ -1,0 +1,13 @@
+<section class="dc-recent" aria-labelledby="dc-recent-heading">
+  <div class="dc-section-head">
+    <h2 class="dc-section-title" id="dc-recent-heading"><%= t('digital_collection.homepage.recent.heading') %></h2>
+    <%= link_to t('digital_collection.homepage.recent.view_all'), main_app.search_catalog_path,
+                class: 'dc-section-action' %>
+  </div>
+
+  <ul class="dc-recent-grid list-unstyled">
+    <% @recent_documents.each do |document| %>
+      <li><%= render 'hyrax/homepage/recent_document', recent_document: document %></li>
+    <% end %>
+  </ul>
+</section>

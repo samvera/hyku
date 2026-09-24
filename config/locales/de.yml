@@ -229,17 +229,6 @@ de:
         sub: Hinterlegen Sie Werke im Repositorium.
         button: Einreichung starten
     show:
-      citation:
-        heading: "Zitieren"
-        style: "Zitierstil"
-        styles:
-          apa: "APA"
-          mla: "MLA"
-          chicago: "Chicago"
-        copy_visible: "Zitat kopieren"
-        copied: "Kopiert"
-        endnote: "EndNote-Datensatz herunterladen"
-        note: "Nur als Vorschlag gedacht. Bitte anhand des von Ihnen verwendeten Zitierstils prüfen."
       files:
         as_format: als %{name}
         heading: Dateien
@@ -973,17 +962,8 @@ de:
         one: 1 Objekt
         other: "%{count} Objekte"
       relationships: Beziehungen
-      cite: Zitieren
-      endnote: Für EndNote herunterladen
       permalink: Permalink
       contributors: Mitwirkende
-      citation_style: Zitierstil
-      citation_styles:
-        apa: APA (7. Aufl.)
-        mla: MLA (9. Aufl.)
-        chicago: Chicago
-      citation_copy: Kopieren
-      citation_copied: Kopiert
   proprietor:
     accounts:
       edit:
@@ -1117,16 +1097,67 @@ de:
         children: "Untergeordnete Werke"
       part_of:
         heading: "Gehört zu"
-      citation:
-        heading: "Zitation"
-        style: "Zitierstil"
-        endnote: "Nach EndNote exportieren"
-        copy: "Kopieren"
-        copied: "Kopiert"
-        styles:
-          apa: "APA"
-          mla: "MLA"
-          chicago: "Chicago"
+  digital_collection:
+    chrome:
+      toggle_navigation: "Navigation umschalten"
+    homepage:
+      intro_label: "Einführung"
+      hero:
+        label: "Ausgewählte Sammlungen"
+        headline: "Entdecken Sie die Sammlungen"
+        featured_collection: "Ausgewählte Sammlung"
+        hold: "Pause"
+        resume: "Abspielen"
+        segment: "%{title} anzeigen"
+      featured_collections:
+        heading: "Ausgewählte Sammlungen"
+        unfeature_confirm: "Diese Sammlung aus der Auswahl entfernen?"
+        reorder_hint: "Ziehen, um die Reihenfolge der Sammlungen zu ändern."
+        save_order: "Reihenfolge speichern"
+      browse:
+        heading: "Sammlungen durchstöbern"
+        grid: "Raster"
+        list: "Liste"
+        view_label: "Anzeigeoptionen der Sammlungen"
+        sort: "Sortieren"
+        sort_asc: "A bis Z"
+        sort_desc: "Z bis A"
+        sort_aria: "Nach Titel sortieren, derzeit %{direction}. Aktivieren zum Umkehren."
+        previous: "Zurück"
+        next: "Weiter"
+        page: "Seite %{number}"
+        pages_label: "Seiten der Sammlungen"
+        status: "%{shown} von %{total} Sammlungen, Seite %{page} von %{pages}, Ansicht %{view}, sortiert %{sort}."
+        works_count:
+          one: "1 Werk"
+          other: "%{count} Werke"
+        empty: "Es wurden noch keine Sammlungen hinzugefügt."
+        all: "Alle Sammlungen durchstöbern"
+      featured:
+        heading: "Ausgewählte Werke"
+        unfeature_confirm: "Dieses Werk aus der Auswahl entfernen?"
+        reorder_hint: "Ziehen, um die Reihenfolge zu ändern."
+        save_order: "Reihenfolge speichern"
+      recent:
+        heading: "Kürzlich hinzugefügt"
+        view_all: "Alle anzeigen"
+      about:
+        heading: "Über die Sammlungen"
+      cta:
+        eyebrow: "Beitragen"
+        heading: "Teilen Sie Ihr Werk"
+        sub: "Materialien in das Repositorium einreichen."
+        button: "Einreichung starten"
+      stats:
+        collections:
+          one: "Sammlung"
+          other: "Sammlungen"
+        works:
+          one: "Werk"
+          other: "Werke"
+    show:
+      part_of:
+        heading: Teil von
   screening_room:
     chrome:
       toggle_navigation: Navigation umschalten
@@ -1169,17 +1200,6 @@ de:
         unfeature_confirm: 'Dieses Werk aus der Auswahl entfernen?'
         view_work: Werk ansehen
     show:
-      citation:
-        copied: Kopiert
-        copy_visible: Zitat kopieren
-        endnote: EndNote-Datensatz herunterladen
-        heading: Zitieren
-        note: Nur als Vorschlag. Bitte mit dem gewünschten Zitierstil abgleichen.
-        style: Zitierstil
-        styles:
-          apa: APA
-          chicago: Chicago
-          mla: MLA
       items:
         count:
           one: 1 Element

@@ -1,0 +1,715 @@
+// ---- catalog results ----
+// CSS reskin of Blacklight 7.42 / Hyrax 5.3 catalog list view.
+// Targets stock DOM; no new partials.
+
+body.catalog-index.digital_collection.public-facing {
+  --dc-cat-thumb: 200px;
+
+  // ---- page grid ----
+  .dc-searchbar {
+    @include dc-column;
+    border-bottom: 0;
+    position: relative;
+
+    &::after {
+      border-bottom: 1px solid $dc-hairline;
+      content: '';
+      left: 50%;
+      position: absolute;
+      bottom: 0;
+      transform: translateX(-50%);
+      width: 100vw;
+    }
+  }
+
+  #content-wrapper {
+    max-width: none;
+    padding: 0;
+  }
+
+  #content-wrapper > .row {
+    @include dc-column;
+    @include dc-gutter;
+    align-items: start;
+    display: grid;
+    gap: 0 40px;
+    grid-template-columns: 300px minmax(0, 1fr);
+    margin-top: 0 !important; // counters Bootstrap .mt-4 !important
+    padding-bottom: 56px;
+    padding-top: 20px;
+  }
+
+  #content,
+  #sidebar {
+    flex: none;
+    max-width: none;
+    padding: 0;
+    width: auto;
+  }
+
+  #sidebar {
+    order: -1;
+  }
+
+  #content {
+    min-width: 0;
+  }
+
+  // ---- facets ----
+  #facets {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #facet-panel-collapse {
+    display: flex !important; // counters BL facets-toggleable-md display: block !important
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .facets-heading {
+    color: $dc-ink-secondary;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  .facet-limit.card {
+    border: 1px solid $dc-input-edge;
+    box-shadow: $dc-shadow-card;
+    margin-bottom: 0;
+    overflow: hidden;
+  }
+
+  .card-header.facet-field-heading {
+    border: 0;
+    padding: 0;
+  }
+
+  .collapse-toggle {
+    align-items: center;
+    background: $dc-surface-alt;
+    border: 0;
+    border-bottom: 2px solid var(--dc-accent, #{$dc-accent});
+    border-radius: 0;
+    color: $dc-ink-heading;
+    display: flex !important; // counters BL btn-block display: block !important
+    font-size: 14px;
+    font-weight: 700;
+    justify-content: space-between;
+    padding: 12px 16px !important; // counters Bootstrap .p-2 !important
+    text-align: left;
+
+    &.collapsed {
+      border-bottom: 1px solid $dc-input-edge;
+      margin-bottom: -1px;
+    }
+
+    &:focus {
+      box-shadow: none;
+      outline: none;
+    }
+
+    &:focus-visible {
+      @include dc-focus-ring;
+    }
+
+    &::after {
+      content: '\25BE';
+      display: inline-block;
+      font-size: 16px;
+      transform: rotate(0deg); // counters BL rotation on expanded state
+      transition: transform 0.2s;
+    }
+
+    &.collapsed::after {
+      transform: rotate(-90deg);
+    }
+  }
+
+  .facet-values {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    li {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      justify-content: space-between;
+    }
+
+    .facet-label {
+      display: inline;
+      padding: 0;
+      text-indent: 0;
+
+      a {
+        @include dc-link;
+      }
+    }
+
+    .facet-count {
+      color: $dc-ink-secondary;
+      display: inline;
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+      vertical-align: baseline;
+      width: auto;
+    }
+  }
+
+  .facet-limit .card-body {
+    padding: 12px;
+  }
+
+  // ---- sort / per page / view type ----
+  #sortAndPerPage {
+    border-bottom: 1px solid $dc-hairline;
+    margin-bottom: 2px;
+    padding-bottom: 16px;
+  }
+
+  #sortAndPerPage > .pagination {
+    border: 0;
+    padding: 0;
+  }
+
+  #sortAndPerPage .page-links {
+    color: $dc-ink-secondary;
+    white-space: nowrap;
+
+    strong {
+      color: $dc-ink-heading;
+    }
+
+    a {
+      @include dc-link;
+    }
+  }
+
+  .search-widgets {
+    gap: 8px;
+    > * { margin-left: 0 !important; margin-right: 0 !important; } // counters BL .mx-1 !important via @extend
+  }
+
+  .sort-dropdown .dropdown-menu,
+  .per_page-dropdown .dropdown-menu {
+    border-radius: 0;
+
+    .dropdown-item:active,
+    .dropdown-item.active {
+      background-color: #e9ecef;
+      color: $dc-ink;
+    }
+  }
+
+  .sort-dropdown .dropdown-toggle,
+  .per_page-dropdown .dropdown-toggle {
+    border: 1px solid $dc-input-edge;
+    color: $dc-ink;
+
+    &:hover {
+      background: $dc-surface-alt;
+      border-color: #999;
+    }
+
+    &:focus-visible {
+      @include dc-focus-ring;
+    }
+  }
+
+  .view-type-group .btn {
+    border: 1px solid $dc-input-edge;
+    border-radius: 0;
+    color: $dc-ink;
+    padding: 8px 11px;
+    position: relative;
+
+    + .btn {
+      margin-left: -1px;
+    }
+
+    &:hover {
+      border-color: #999;
+      z-index: 1;
+    }
+
+    &.active {
+      background: $dc-surface-alt;
+      box-shadow: inset 0 -3px 0 var(--dc-accent, #{$dc-accent});
+      color: $dc-ink-heading;
+    }
+
+    &:focus-visible {
+      @include dc-focus-ring;
+    }
+  }
+
+  // ---- result rows ----
+  #search-results > .catalog {
+    margin-top: 0 !important; // counters Bootstrap .mt-4 !important
+    padding: 0;
+  }
+
+  li.document {
+    border-bottom: 1px solid $dc-hairline;
+    padding: 20px 0 !important; // counters Bootstrap .pb-3 !important
+
+    &:last-child {
+      border-bottom-color: transparent;
+    }
+  }
+
+  .search-result-wrapper {
+    display: grid;
+    grid-template-columns: var(--dc-cat-thumb) minmax(0, 1fr);
+    gap: 12px 24px;
+    margin: 0;
+
+    > [class*="col-"] {
+      flex: none;
+      max-width: none;
+      padding: 0;
+    }
+  }
+
+  .search-results-title-row {
+    gap: 10px;
+    grid-column: 1 / -1;
+    padding-bottom: 0 !important; // counters Bootstrap .pb-2 !important
+
+    .badge { border-radius: 0; margin: 0; }
+  }
+
+  h3.search-result-title {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.25;
+    margin: 0;
+
+    a {
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
+      display: -webkit-box;
+      max-width: 100%;
+      overflow: hidden;
+      width: fit-content;
+    }
+  }
+
+  .list-thumbnail {
+    aspect-ratio: 4 / 3;
+    background: $dc-surface-alt;
+    border: 1px solid $dc-hairline;
+    overflow: hidden;
+    padding: 0;
+
+    a {
+      display: block;
+      height: 100%;
+      width: 100%;
+    }
+
+    img {
+      display: block;
+      height: 100%;
+      object-fit: contain;
+      width: 100%;
+    }
+  }
+
+  // metadata: two-column CSS grid, overriding Bootstrap's dl > .row > .col-*
+  .metadata dl {
+    display: grid;
+    gap: 8px 20px;
+    grid-template-columns: 150px minmax(0, 78ch);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .metadata .row {
+    display: contents;
+    margin: 0;
+  }
+
+  .metadata dt {
+    color: $dc-ink-secondary;
+    font-weight: 400;
+    max-width: none;
+    padding: 0;
+    text-align: left !important; // counters Bootstrap .text-right !important
+  }
+
+  .metadata dd {
+    color: $dc-ink-heading;
+    margin: 0;
+    max-width: none;
+    overflow-wrap: anywhere;
+    padding: 0;
+  }
+
+  .metadata dt[data-solr-field-name="description_tesim"] + dd {
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    overflow: hidden;
+  }
+
+  .collection-counts-wrapper {
+    grid-column: 2;
+  }
+
+  // ---- pagination ----
+  .record-padding {
+    margin: 0;
+    padding: 0;
+
+    > .col-md-12 {
+      border-top: 1px solid $dc-hairline;
+      max-width: none;
+      padding: 0;
+    }
+  }
+
+  .record-padding > .col-md-12 > section.pagination {
+    border: 0;
+    padding: 0;
+  }
+
+  .record-padding ul.pagination {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin: 0;
+    padding-top: 28px;
+    width: 100%;
+  }
+
+  .record-padding .page-item {
+    .page-link {
+      border: 1px solid $dc-input-edge;
+      border-radius: $dc-radius;
+      color: $dc-ink;
+      min-width: 40px;
+      padding: 8px 12px;
+      text-align: center;
+    }
+
+    &.active .page-link {
+      background-color: $dc-surface !important;
+      border-color: $dc-input-edge !important;
+      box-shadow: inset 0 -3px 0 var(--dc-accent, #{$dc-accent});
+      color: $dc-ink-heading !important;
+      font-weight: 700;
+    }
+
+    &:not(.active):not(.disabled) .page-link:hover {
+      background: $dc-surface-alt;
+      border-color: #999;
+    }
+
+    &.disabled .page-link {
+      color: #a8a6a2;
+    }
+  }
+
+  // ---- tablet ----
+  @media (max-width: $dc-tablet-max) {
+    --dc-cat-thumb: 140px;
+
+    #content-wrapper > .row {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding-bottom: 40px;
+      padding-top: 16px;
+    }
+
+    #sidebar,
+    #content {
+      width: 100%;
+    }
+
+    // force facets collapsed at 1024px (BL collapses at 992px)
+    #facets .facets-collapse {
+      display: none !important; // counters BL facets-toggleable-md display: block !important
+    }
+
+    #facets .facets-collapse.show,
+    #facets .facets-collapse.collapsing {
+      display: flex !important;
+    }
+
+    .facets-header {
+      align-items: center;
+      background: $dc-surface-alt;
+      border: 1px solid $dc-input-edge;
+      box-shadow: $dc-shadow-card;
+      display: flex;
+      margin-bottom: -1px;
+      padding: 12px 16px;
+      position: relative;
+      width: 100%;
+    }
+
+    .facets-heading {
+      flex: 1;
+      margin: 0;
+    }
+
+    #facets .navbar-toggler {
+      align-items: center;
+      background: transparent;
+      border: 0;
+      color: $dc-ink-secondary;
+      display: flex;
+      inset: 0;
+      justify-content: flex-end;
+      padding: 0 16px;
+      position: absolute;
+      width: 100%;
+    }
+
+    #facets .navbar-toggler .navbar-toggler-icon {
+      display: none !important;
+    }
+
+    #facets .navbar-toggler::after {
+      content: '\25BE';
+      display: inline-block;
+      font-size: 16px;
+      transform: rotate(0deg);
+      transition: transform 0.2s;
+    }
+
+    #facets .navbar-toggler[aria-expanded="false"]::after {
+      transform: rotate(-90deg);
+    }
+
+    #facet-panel-collapse {
+      gap: 0;
+    }
+
+    .facet-limit.card + .facet-limit.card {
+      margin-top: -1px;
+    }
+
+    h3.search-result-title {
+      font-size: 19px;
+    }
+
+    .search-result-wrapper {
+      gap: 12px 20px;
+    }
+
+    #sortAndPerPage {
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    // 44px minimum targets
+    .sort-dropdown .dropdown-toggle,
+    .per_page-dropdown .dropdown-toggle,
+    .view-type-group .btn {
+      min-height: 44px;
+    }
+
+    .record-padding ul.pagination {
+      gap: 4px;
+    }
+
+    #sortAndPerPage .page-links a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      margin: -12px 0;
+      padding: 0 4px;
+    }
+  }
+
+  // ---- phone ----
+  @media (max-width: $dc-mobile-max) {
+    --dc-cat-thumb: 96px;
+
+    li.document {
+      padding: 16px 0 !important; // counters Bootstrap .pb-3 !important
+    }
+
+    .search-result-wrapper {
+      grid-template-areas: "thumb head" "meta meta";
+      grid-template-columns: var(--dc-cat-thumb) minmax(0, 1fr);
+      gap: 6px 12px;
+    }
+
+    .search-results-title-row {
+      align-self: start;
+      grid-area: head;
+    }
+
+    .search-result-wrapper > .col-md-3 {
+      grid-area: thumb;
+    }
+
+    .search-result-wrapper > [class*="col-md-9"] {
+      grid-area: meta;
+    }
+
+    h3.search-result-title {
+      font-size: 17px;
+      line-height: 1.3;
+    }
+
+    .metadata dl {
+      display: flex;
+      flex-direction: column;
+      font-size: 14px;
+      gap: 4px;
+    }
+
+    .metadata .row {
+      display: block;
+    }
+
+    .metadata dt {
+      display: inline;
+      float: left;
+      margin-right: 8px;
+    }
+
+    .metadata dd {
+      display: block;
+      overflow: hidden;
+    }
+
+    .metadata .row + .row dt {
+      clear: left;
+    }
+
+    .documents-gallery .document,
+    .documents-masonry .document {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+
+    .record-padding ul.pagination {
+      justify-content: center;
+    }
+  }
+
+  // ---- gallery, masonry and slideshow ----
+  #content > .container {
+    max-width: none;
+    padding: 0;
+  }
+
+  .documents-gallery {
+    margin: 20px -12px 0;
+  }
+
+  .documents-masonry {
+    margin-top: 20px;
+  }
+
+  .documents-gallery .document {
+    padding: 0 12px 24px;
+  }
+
+  .documents-masonry .document {
+    padding: 0;
+  }
+
+  .documents-slideshow .document {
+    padding: 0;
+  }
+
+  .documents-gallery .document .thumbnail-container,
+  .documents-masonry .document .thumbnail-container {
+    background: $dc-surface;
+    border: 1px solid $dc-hairline;
+    border-radius: 0;
+    padding: 0;
+  }
+
+  .documents-gallery .document .document-thumbnail,
+  .documents-masonry .document .document-thumbnail {
+    background: $dc-surface-alt;
+    height: 220px;
+    padding: 12px;
+  }
+
+  .documents-gallery .document .document-thumbnail .img-thumbnail,
+  .documents-masonry .document .document-thumbnail .img-thumbnail {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    height: auto;
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    width: auto;
+  }
+
+  .documents-gallery .document .document-thumbnail > a,
+  .documents-masonry .document .document-thumbnail > a {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    max-width: 100%;
+  }
+
+  .documents-gallery .caption.container {
+    max-width: none;
+    padding: 12px;
+  }
+
+  .documents-gallery .caption .documentHeader {
+    margin: 0 0 8px;
+  }
+
+  .documents-gallery .caption .index_title {
+    margin: 0;
+    padding: 0;
+
+    a {
+      @include dc-link;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.3;
+      overflow-wrap: break-word;
+    }
+  }
+
+  .documents-gallery .caption dl.document-metadata {
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0;
+
+    dt {
+      color: $dc-ink-secondary;
+      font-size: 12px;
+      font-weight: 400;
+      padding: 6px 0 1px;
+    }
+
+    dd {
+      color: $dc-ink;
+      margin: 0;
+      overflow-wrap: break-word;
+    }
+  }
+
+  // ---- transitions ----
+  @media (prefers-reduced-motion: no-preference) {
+    .collapse-toggle,
+    .sort-dropdown .dropdown-toggle,
+    .per_page-dropdown .dropdown-toggle,
+    .view-type-group .btn,
+    .page-link,
+    .facet-select {
+      transition: background-color $dc-transition, border-color $dc-transition, color $dc-transition;
+    }
+  }
+}

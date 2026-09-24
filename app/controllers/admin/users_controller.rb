@@ -28,10 +28,10 @@ module Admin
     end
 
     def remove_role
-      authorize! :edit, User
-
       user = User.find(params[:id])
+      authorize! :edit, user
       role = Role.find(params[:role_id])
+      authorize! :grant_admin_role, user if role.name.in?(%w[admin superadmin])
 
       if user && role && user.roles.include?(role)
         user.remove_role(role.name)

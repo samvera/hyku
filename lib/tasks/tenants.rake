@@ -11,40 +11,26 @@ namespace :tenants do
       puts "---------------#{account.cname}-------------------------"
 
       models = Hyrax.config.curation_concerns.map { |m| "\"#{m}\"" }
-      works = ActiveFedora::SolrService.query("has_model_ssim:(#{models.join(' OR ')})", rows: 100_000)
+      works = Hyrax::SolrService.query("has_model_ssim:(#{models.join(' OR ')})", rows: 100_000, fl: 'id,member_ids_ssim')
 
-      if works&.any?
-        puts "#{works.count} works found"
-        tenant_file_sizes = [] # Declare and initialize within the block
+      puts "#{works.count} works found"
+      total_mbs = [] # Declare and initialize within the block
+      works.each do |work|
+        member_ids = work.fetch("member_ids_ssim", [])
+        next if member_ids.blank?
 
-        works.each do |work|
-          document = SolrDocument.find(work.id)
-          files = document._source["file_set_ids_ssim"] || []
+        file_sets = Hyrax::SolrService.query("id:(#{member_ids.join(' OR ')}) AND has_model_ssim:FileSet", rows: 100_000, fl: 'id,file_size_lts')
+        next if file_sets.blank?
 
-          if files.any?
-            file_sizes = files.map do |file|
-              f = SolrDocument.find(file.to_s)
-              f.to_h['file_size_lts'] || 0
-            rescue Blacklight::Exceptions::RecordNotFound => e
-              puts "Warning: File #{file} not found. Skipping. Error: #{e.message}"
-              0
-            end
-
-            total_file_size_bytes = file_sizes.inject(0, :+)
-            tenant_file_sizes << (total_file_size_bytes / 1.0.megabyte).round(2)
-          else
-            tenant_file_sizes << 0
+        total_file_size_bytes =
+          file_sets.inject(0) do |sum, file_set|
+            file_set['file_size_lts'].to_i + sum
           end
-        rescue Blacklight::Exceptions::RecordNotFound => e
-          puts "Warning: Work #{work.id} not found. Skipping. Error: #{e.message}"
-          tenant_file_sizes << 0
-        end
 
-        total_mb = tenant_file_sizes.inject(0, :+)
-        @results << "#{account.cname}: #{total_mb} Total MB / #{works.count} Works"
-      else
-        @results << "#{account.cname}: 0 Total MB / 0 Works"
+        total_mbs << (total_file_size_bytes / 1.0.megabyte).round(2)
       end
+
+      @results << "#{account.cname}: #{total_mbs.sum} Total MB / #{works.count} Works"
 
       puts "=================================================================="
     end

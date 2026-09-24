@@ -47,6 +47,22 @@ RSpec.describe Hyku::ControlledVocabularyLabelService do
         .to eq ['nope', 'Opaque Term']
     end
 
+    it 'sees a label edited after the map was cached' do
+      expect(service.labels_for('dashboard_vocab', ['local_auth_123'])).to eq ['Opaque Term']
+
+      vocabulary.local_authority_entries.find_by(uri: 'local_auth_123').update!(label: 'Renamed Term')
+
+      expect(service.labels_for('dashboard_vocab', ['local_auth_123'])).to eq ['Renamed Term']
+    end
+
+    it 'sees a term added after the map was cached' do
+      expect(service.labels_for('dashboard_vocab', ['later_term'])).to eq ['later_term']
+
+      vocabulary.local_authority_entries.create!(uri: 'later_term', label: 'Later Term', active: true)
+
+      expect(service.labels_for('dashboard_vocab', ['later_term'])).to eq ['Later Term']
+    end
+
     # `populate_qa` seeds every yaml authority into the tables, so the database
     # branch answers first for all of them and the inherited yaml lookup is only
     # reachable with it stubbed away.
@@ -81,7 +97,8 @@ RSpec.describe Hyku::ControlledVocabularyLabelService do
 
       keys = RequestStore.store[:hyku_controlled_vocabulary_label_maps].keys
 
-      expect(keys).to include('another_tenant-dashboard_vocab')
+      expect(keys.grep(/another_tenant/)).to be_present
+      expect(keys.uniq.size).to eq 2
     end
 
     it 'does not share its memo between threads' do

@@ -2,7 +2,7 @@
 
 Hyku supports both local and remote controlled vocabularies for form fields. A property cites a vocabulary through a `controlled_values.sources` array — in the metadata profile with `HYRAX_FLEXIBLE` enabled, and in the schema under `config/metadata/` without it. Vocabularies, their terms, and the dashboard that manages them work the same in both modes.
 
-Wherever a property cites a vocabulary, a term's label is what appears on work pages and in search results, while the id the term stores stays in the index for links and OAI harvesting.
+Wherever a property cites a **local** vocabulary — one backed by a yaml file or by rows the dashboard manages — a term's label is what appears on work pages and in search results, while the id the term stores stays in the index for links and OAI harvesting. A property backed by a remote authority keeps displaying its stored value: resolving one would mean a network call per value, which has no place in an indexing run.
 
 ## How It Works
 
@@ -645,7 +645,7 @@ terms are then managed from the dashboard like any other.
 
    The `index_keys` have to name the Solr fields themselves, since the term labels are
    indexed beside them.
-5. Restart, then reindex so existing works pick up the term labels.
+4. Restart, then reindex so existing works pick up the term labels.
 
 The YAML seeds the terms once. After that the tenant's rows are the source of truth, so
 editing the YAML has no further effect and terms are managed from the dashboard.

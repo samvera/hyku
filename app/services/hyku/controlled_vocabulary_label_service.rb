@@ -38,8 +38,25 @@ module Hyku
       false
     end
 
+    # Versioned by the authority's rows, not left to CACHE_EXPIRATION alone: a
+    # timer-only key hands the indexer the labels as they stood before a term
+    # edit, so a reindex run straight afterward writes stale labels into Solr.
     def cache_key(name)
-      "#{super}-#{Apartment::Tenant.current}"
+      "#{super}-#{Apartment::Tenant.current}-#{terms_version(name)}"
+    end
+
+    # nil where no rows back the name, which leaves a yaml-only vocabulary keyed
+    # as before -- its terms change only on deploy.
+    def terms_version(name)
+      authority = Qa::LocalAuthority.find_by(name:)
+      return if authority.nil?
+
+      entries = Qa::LocalAuthorityEntry.where(local_authority: authority)
+      # Sub-second precision: an edit and the reindex that follows it land inside
+      # the same second often enough that a whole-second stamp misses the change.
+      "#{entries.count}-#{entries.maximum(:updated_at)&.to_f}"
+    rescue ActiveRecord::StatementInvalid
+      nil
     end
 
     # Upstream memoizes into @label_maps in front of Rails.cache, keyed by the
@@ -49,10 +66,12 @@ module Hyku
     # is the scope a tenant actually has.
     def label_map(name)
       store = RequestStore.store[:hyku_controlled_vocabulary_label_maps] ||= {}
-      key = "#{Apartment::Tenant.current}-#{name}"
+      # The full cache key, so this memo expires on a term edit for the same
+      # reason Rails.cache does rather than pinning the map for the request.
+      key = cache_key(name)
       return store[key] if store.key?(key)
 
-      store[key] = Rails.cache.fetch(cache_key(name), expires_in: self.class::CACHE_EXPIRATION) do
+      store[key] = Rails.cache.fetch(key, expires_in: self.class::CACHE_EXPIRATION) do
         build_label_map(name)
       end
     end

@@ -75,4 +75,6 @@ zh:
           rights_tesim: 权
           subject_tesim: 学科
           title_tesim: 标题
+      facets:
+        missing: 未指定
       start_over: 新搜索

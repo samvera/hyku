@@ -75,4 +75,6 @@ pt-BR:
           rights_tesim: Direitos
           subject_tesim: Sujeito
           title_tesim: Título
+      facets:
+        missing: Não especificado
       start_over: Nova pesquisa

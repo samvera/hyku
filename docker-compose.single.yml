@@ -5,6 +5,7 @@ x-app-env: &app-env
   HYKU_MULTITENANT: false
   HYKU_ROOT_HOST: hyku.localhost.direct
   HYRAX_FLEXIBLE: ${HYRAX_FLEXIBLE:-false}
+  HYRAX_REDIRECTS_ENABLED: ${HYRAX_REDIRECTS_ENABLED:-true}
   HYRAX_SKIP_WINGS: true
 x-app: &app
   build:

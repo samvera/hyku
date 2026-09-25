@@ -1,0 +1,88 @@
+name: Draft Release Notes
+
+on:
+  push:
+    branches:
+      - staging
+      - staging-test
+      - production
+      - production-test
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: release-draft
+  cancel-in-progress: false
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    env:
+      IS_STAGING: ${{ contains(github.ref_name, 'staging') }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          token: ${{ secrets.CHECKOUT_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Resolve next version
+        id: next-version
+        uses: release-drafter/release-drafter@v6
+        with:
+          config-name: ${{ env.IS_STAGING == 'true' && 'release-drafter-staging.yml' || 'release-drafter.yml' }}
+          commitish: ${{ github.ref_name }}
+          prerelease: ${{ env.IS_STAGING }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Bump version file
+        id: bump
+        env:
+          RESOLVED_VERSION: ${{ steps.next-version.outputs.resolved_version }}
+          TAG_NAME: ${{ steps.next-version.outputs.tag_name }}
+        run: |
+          if [ -z "$RESOLVED_VERSION" ]; then
+            echo "No resolved version from release-drafter, skipping bump"
+            echo "bumped=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          VERSION="$RESOLVED_VERSION"
+          if [ "${{ env.IS_STAGING }}" = "true" ]; then
+            VERSION="${VERSION}-rc"
+          fi
+
+          CURRENT=$(grep -oP "VERSION = '\K[^']+" config/initializers/version.rb)
+          if [ "$CURRENT" = "$VERSION" ]; then
+            echo "Version already ${VERSION}, skipping bump"
+            echo "bumped=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          sed -i "s/VERSION = '.*'/VERSION = '${VERSION}'/" config/initializers/version.rb
+          echo "Updated version to ${VERSION}"
+          echo "bumped=true" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Commit version bump
+        if: steps.bump.outputs.bumped == 'true'
+        env:
+          VERSION: ${{ steps.bump.outputs.version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add config/initializers/version.rb
+          git commit -m "Bump version to v${VERSION}"
+          git push
+
+      - name: Re-draft with version bump commit
+        if: steps.bump.outputs.bumped == 'true'
+        uses: release-drafter/release-drafter@v6
+        with:
+          config-name: ${{ env.IS_STAGING == 'true' && 'release-drafter-staging.yml' || 'release-drafter.yml' }}
+          commitish: ${{ github.ref_name }}
+          prerelease: ${{ env.IS_STAGING }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

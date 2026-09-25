@@ -4,13 +4,19 @@ on:
   push:
     branches:
       - main
+      - main-test
       - staging
+      - staging-test
       - production
+      - production-test
   pull_request:
     branches:
       - main
+      - main-test
       - staging
+      - staging-test
       - production
+      - production-test
   workflow_dispatch:
     inputs:
       debug_step:

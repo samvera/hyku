@@ -171,6 +171,13 @@ RSpec.configure do |config|
     prepare_test_solr
   end
 
+  # A request carrying `locale=es` leaves I18n.locale set for the rest of the
+  # process, so an unrelated later example asserting English prose fails
+  # wherever the random order puts the two in the same shard.
+  config.around do |example|
+    I18n.with_locale(I18n.default_locale) { example.run }
+  end
+
   config.before do |example|
     # When Wings is disabled (no Fedora), skip Fedora reset/clean and use Solr-only wipe for clean/feature examples.
     # Use ENV so DISABLE_WINGS=true is respected even if Hyrax.config was set from VALKYRIE_TRANSITION.

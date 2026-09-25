@@ -2,7 +2,8 @@
 
 <h2 class="sr-only"><%= t('hyrax.homepage.recently_uploaded.title') %></h2>
 <% if recent_documents.blank? %>
-  <p><%= t('.no_public') %></p>
+  <%# Absolute key: rendered by explicit path, so lazy lookup resolves under themes.* %>
+  <p><%= t('hyrax.homepage.recently_uploaded.no_public') %></p>
 <% else %>
   <div id="recent_docs">
     <ol class="row list-group list-group-flush recent_uploads">

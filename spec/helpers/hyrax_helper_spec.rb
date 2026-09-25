@@ -57,8 +57,8 @@ RSpec.describe HyraxHelper, type: :helper do
     context "when ContentBlock is not found" do
       let(:a_value) { nil }
 
-      it "returns false" do
-        expect(helper.block_for(name: key_name)).to be false
+      it "returns nil so views never render a literal false" do
+        expect(helper.block_for(name: key_name)).to be_nil
       end
     end
   end

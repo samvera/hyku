@@ -1,16 +1,16 @@
 <div class='row'>
   <div class='col-lg-10'>
-    <% hint = t("hyrax.admin.appearances.show.forms.#{color_name}.hint") %>
+    <% hint = color_hint_for(color_name) %>
     <%= f.input color_name,
         required: false,
         input_html: { type: 'color', data: { default_value: hex } },
-        hint: !missing_translation(hint) && hint %>
+        hint: hint %>
   </div>
   <div class='col-lg-2'>
     <% button_text = Flipflop.use_tenant_specific_colors? ? t('hyrax.admin.appearances.show.colors.restore_tenant_color') : t('hyrax.admin.appearances.show.colors.restore_default') %>
     <%= link_to button_text,
         '#color',
-        class: "btn btn-secondary restore-default-color #{'with-color-hint' if !missing_translation(hint)}",
+        class: "btn btn-secondary restore-default-color #{'with-color-hint' if hint}",
         data: { default_target: color_name } %>
   </div>
 </div>

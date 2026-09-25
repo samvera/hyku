@@ -152,8 +152,16 @@ module Hyku
       # Resolved by the helper, which is also what renders the field on the deposit
       # form, so the review step cannot disagree with it about what controls a
       # property.
+      # nil before a work type is chosen: work_resource_class constantizes whatever
+      # state holds, and the review step can resolve a term before then.
+      def chosen_work_class_name
+        work_resource_class.name
+      rescue StandardError
+        nil
+      end
+
       def build_controlled_service(term)
-        source = context.helpers.controlled_vocabulary_source_for(term)
+        source = context.helpers.controlled_vocabulary_source_for(term, model: chosen_work_class_name)
         return if source.blank?
 
         service = context.helpers.controlled_vocabulary_service_for(source)

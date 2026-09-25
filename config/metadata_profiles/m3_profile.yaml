@@ -827,7 +827,7 @@ properties:
       - Article
       - Conference Proceeding
     view:
-      render_as: linked
+      render_as: faceted
       html_dl: true
   oer_resource_type:
     name: resource_type
@@ -856,7 +856,7 @@ properties:
       - Article
       - Conference Proceeding
     view:
-      render_as: linked
+      render_as: faceted
       html_dl: true
   rights_notes:
     available_on:
@@ -1294,8 +1294,8 @@ properties:
       - Student
       - Instructor
     view:
+      render_as: faceted
       html_dl: true
-      render_as: linked
   date:
     available_on:
       class:
@@ -1333,9 +1333,10 @@ properties:
         - discipline
     display_label:
       default: blacklight.search.fields.index.discipline_tesim
-    index_documentation: searchable
+    index_documentation: displayable, searchable
     indexing:
       - discipline_tesim
+      - discipline_sim
     form:
       required: true
       primary: true
@@ -1345,8 +1346,8 @@ properties:
       - Languages - Spanish
       - Natural Sciences - Physics
     view:
+      render_as: faceted
       html_dl: true
-      render_as: linked
   education_level:
     available_on:
       class:
@@ -1374,8 +1375,8 @@ properties:
       - Community college / Lower division
       - College / Upper division
     view:
+      render_as: faceted
       html_dl: true
-      render_as: linked
   learning_resource_type:
     available_on:
       class:
@@ -1403,8 +1404,8 @@ properties:
       - Activity/lab
       - Assessment (test, quizzes, etc.)
     view:
+      render_as: faceted
       html_dl: true
-      render_as: linked
   newer_version_id:
     available_on:
       class:

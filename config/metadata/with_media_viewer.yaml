@@ -10,3 +10,6 @@ attributes:
       multiple: false
     index_keys:
       - "media_viewer_ssi"
+    controlled_values:
+      sources:
+        - media_viewer

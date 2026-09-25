@@ -1,0 +1,41 @@
+name-template: 'v$RESOLVED_VERSION'
+tag-template: 'v$RESOLVED_VERSION'
+template: |
+  ## What's Changed
+
+  $CHANGES
+
+categories:
+  - title: Breaking Changes
+    labels:
+      - major-ver
+  - title: New Features
+    labels:
+      - minor-ver
+  - title: Bug Fixes
+    labels:
+      - patch-ver
+  - title: Dependencies
+    labels:
+      - dependencies
+  - title: Other Changes
+    labels:
+      - '*'
+
+exclude-labels:
+  - ignore-for-release
+
+version-resolver:
+  major:
+    labels:
+      - major-ver
+  minor:
+    labels:
+      - minor-ver
+  patch:
+    labels:
+      - patch-ver
+      - dependencies
+  default: patch
+
+autolabeler: []

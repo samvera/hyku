@@ -62,7 +62,7 @@
                     size="${solr.documentCache.size:512}"
                     initialSize="${solr.documentCache.initialSize:512}"/>
   </query>
- 
+
   <requestDispatcher handleSelect="true" >
     <requestParsers enableRemoteStreaming="false" multipartUploadLimitInKB="2048000" />
   </requestDispatcher>

@@ -48,19 +48,44 @@ RSpec.describe Hyku::ControlledVocabularyLabelService do
     end
 
     it 'sees a label edited after the map was cached' do
+      # A real store: :null_store never caches, so this would pass with no version in the key.
+      allow(Rails).to receive(:cache).and_return(ActiveSupport::Cache::MemoryStore.new)
       expect(service.labels_for('dashboard_vocab', ['local_auth_123'])).to eq ['Opaque Term']
 
       vocabulary.local_authority_entries.find_by(uri: 'local_auth_123').update!(label: 'Renamed Term')
+      # Stands in for the next job; within one job the memo holds the version by design.
+      RequestStore.clear!
 
       expect(service.labels_for('dashboard_vocab', ['local_auth_123'])).to eq ['Renamed Term']
     end
 
     it 'sees a term added after the map was cached' do
+      # A real store: :null_store never caches, so this would pass with no version in the key.
+      allow(Rails).to receive(:cache).and_return(ActiveSupport::Cache::MemoryStore.new)
       expect(service.labels_for('dashboard_vocab', ['later_term'])).to eq ['later_term']
 
       vocabulary.local_authority_entries.create!(uri: 'later_term', label: 'Later Term', active: true)
+      # Stands in for the next job; within one job the memo holds the version by design.
+      RequestStore.clear!
 
       expect(service.labels_for('dashboard_vocab', ['later_term'])).to eq ['Later Term']
+    end
+
+    it 'queries the authority tables once per job rather than once per lookup' do
+      lookup = lambda do
+        service.resolvable?('dashboard_vocab')
+        service.labels_for('dashboard_vocab', ['local_auth_123'])
+        service.labels_for('licenses', ['https://creativecommons.org/licenses/by/4.0/'])
+      end
+      lookup.call
+      queries = 0
+      counter = ->(*, payload) { queries += 1 if payload[:sql].include?('qa_local_authorit') }
+
+      ActiveSupport::Notifications.subscribed(counter, 'sql.active_record') do
+        ActiveRecord::Base.uncached { 5.times { lookup.call } }
+      end
+
+      expect(queries).to eq 0
     end
 
     # `populate_qa` seeds every yaml authority into the tables, so the database
@@ -70,6 +95,13 @@ RSpec.describe Hyku::ControlledVocabularyLabelService do
       allow(service).to receive(:database_backed?).and_return(false)
 
       expect(service.labels_for('media_viewer', ['universal_viewer'])).to eq ['Universal Viewer']
+    end
+
+    it 'versions a vocabulary with no terms apart from one with no rows' do
+      Qa::LocalAuthority.create!(name: 'empty_vocab')
+
+      expect(service.send(:terms_version, 'empty_vocab')).to eq '0-'
+      expect(service.send(:terms_version, 'no_such_vocabulary')).to be_nil
     end
   end
 

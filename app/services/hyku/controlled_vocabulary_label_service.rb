@@ -24,18 +24,24 @@ module Hyku
     # Apartment's :switch callback reaches this through Site.reset!, so the maps
     # built for the previous tenant are dropped before the next one reads them.
     def reset!
-      RequestStore.store.delete(:hyku_controlled_vocabulary_label_maps)
+      RequestStore.store.except!(:hyku_controlled_vocabulary_label_maps,
+                                 :hyku_controlled_vocabulary_names,
+                                 :hyku_controlled_vocabulary_versions)
       @local_authority_names = nil
     end
 
     private
 
     def database_backed?(name)
-      Qa::LocalAuthority.exists?(name:)
+      database_names.include?(name)
+    end
+
+    def database_names
+      RequestStore.store[:hyku_controlled_vocabulary_names] ||= Qa::LocalAuthority.pluck(:name).to_set
     rescue ActiveRecord::StatementInvalid => e
       # No qa tables yet (early boot, a fresh database).
-      Hyrax.logger.debug { "Unable to look up local authority #{name}: #{e.message}" }
-      false
+      Hyrax.logger.debug { "Unable to look up local authorities: #{e.message}" }
+      Set.new
     end
 
     # Versioned by the authority's rows, not left to CACHE_EXPIRATION alone: a
@@ -48,15 +54,21 @@ module Hyku
     # nil where no rows back the name, which leaves a yaml-only vocabulary keyed
     # as before -- its terms change only on deploy.
     def terms_version(name)
-      authority = Qa::LocalAuthority.find_by(name:)
-      return if authority.nil?
+      terms_versions[name]
+    end
 
-      entries = Qa::LocalAuthorityEntry.where(local_authority: authority)
-      # Sub-second precision: an edit and the reindex that follows it land inside
-      # the same second often enough that a whole-second stamp misses the change.
-      "#{entries.count}-#{entries.maximum(:updated_at)&.to_f}"
+    def terms_versions
+      RequestStore.store[:hyku_controlled_vocabulary_versions] ||= begin
+        counts = Qa::LocalAuthorityEntry.group(:local_authority_id).count
+        stamps = Qa::LocalAuthorityEntry.group(:local_authority_id).maximum(:updated_at)
+        Qa::LocalAuthority.pluck(:id, :name).to_h do |id, name|
+          # Sub-second precision: an edit and the reindex that follows it land inside
+          # the same second often enough that a whole-second stamp misses the change.
+          [name, "#{counts[id].to_i}-#{stamps[id]&.to_f}"]
+        end
+      end
     rescue ActiveRecord::StatementInvalid
-      nil
+      {}
     end
 
     # Upstream memoizes into @label_maps in front of Rails.cache, keyed by the

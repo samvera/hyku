@@ -115,6 +115,8 @@ en:
       part_of:
         heading: Part of
   hyku:
+    work_show:
+      iiif_manifest: IIIF manifest
     account:
       signup_challenge_failed: Your registration could not be verified. Please try again.
       signup_disabled: Account registration is disabled

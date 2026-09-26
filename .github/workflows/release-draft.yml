@@ -22,10 +22,18 @@ jobs:
     env:
       IS_STAGING: ${{ contains(github.ref_name, 'staging') }}
     steps:
+      - name: Generate auto-merger App token
+        id: auto_merger_token
+        uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e # v2.0.6
+        with:
+          app-id: ${{ secrets.AUTO_MERGER_APP_ID }}
+          private-key: ${{ secrets.AUTO_MERGER_APP_PRIVATE_KEY }}
+
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.ref_name }}
-          token: ${{ secrets.CHECKOUT_TOKEN || secrets.GITHUB_TOKEN }}
+          token: ${{ steps.auto_merger_token.outputs.token }}
+          persist-credentials: true
 
       - name: Resolve next version
         id: next-version
@@ -71,6 +79,7 @@ jobs:
         env:
           VERSION: ${{ steps.bump.outputs.version }}
         run: |
+          # The auto-merger App must be a bypass actor for protected release branches.
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add config/initializers/version.rb

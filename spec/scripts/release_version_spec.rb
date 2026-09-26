@@ -12,7 +12,7 @@ class ReleaseVersionTest < Minitest::Test
     assert_equal '7.2.1.rc1', ReleaseVersion.next(current: '7.2.0', resolved: '7.2.1', staging: true)
   end
 
-  def test_uses_the_resolved_stable_version_outside_staging
-    assert_equal '7.2.1', ReleaseVersion.next(current: '7.2.0.rc1', resolved: '7.2.1', staging: false)
+  def test_removes_the_rc_suffix_when_promoting_a_release_candidate_to_production
+    assert_equal '7.2.0', ReleaseVersion.next(current: '7.2.0.rc2', resolved: '7.2.1', staging: false)
   end
 end

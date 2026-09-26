@@ -4,10 +4,11 @@ module ReleaseVersion
   RC_VERSION = /\A(?<base>\d+\.\d+\.\d+)\.rc(?<number>\d+)\z/
 
   def self.next(current:, resolved:, staging:)
-    return resolved unless staging
-
     current_rc = RC_VERSION.match(current)
+    return current_rc[:base] if current_rc && !staging
     return "#{current_rc[:base]}.rc#{current_rc[:number].to_i + 1}" if current_rc
+
+    return resolved unless staging
 
     "#{resolved}.rc1"
   end

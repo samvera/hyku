@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module Hyku
-  VERSION = '7.2.0.rc13'
+  VERSION = '7.2.0.rc14'
 end

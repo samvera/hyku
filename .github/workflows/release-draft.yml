@@ -57,12 +57,8 @@ jobs:
             exit 0
           fi
 
-          VERSION="$RESOLVED_VERSION"
-          if [ "${{ env.IS_STAGING }}" = "true" ]; then
-            VERSION="${VERSION}-rc"
-          fi
-
           CURRENT=$(grep -oP "VERSION = '\K[^']+" config/initializers/version.rb)
+          VERSION=$(ruby .github/scripts/release_version.rb "$CURRENT" "$RESOLVED_VERSION" "${{ env.IS_STAGING }}")
           if [ "$CURRENT" = "$VERSION" ]; then
             echo "Version already ${VERSION}, skipping bump"
             echo "bumped=false" >> "$GITHUB_OUTPUT"

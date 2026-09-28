@@ -35,7 +35,7 @@ class NilSite
   end
 
   def favicon
-    "favicon.ico"
+    "/favicon.ico"
   end
 
   def banner_image?

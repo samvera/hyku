@@ -46,11 +46,11 @@ $hrt-chrome: join($hrt-chrome-home, $hrt-chrome-show, comma);
   }
 
   h3 {
-    @include hrt-sans;
+    @include hrt-serif;
 
     color: $hrt-ink;
-    font-size: 17px;
-    font-weight: 700;
+    font-size: 20px;
+    font-weight: 500;
     line-height: 1.3;
   }
 

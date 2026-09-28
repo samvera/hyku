@@ -32,7 +32,7 @@ $ref-chrome: join($ref-chrome-home, $ref-chrome-show, comma);
 
   // ---- headings ----
   h1 {
-    @include ref-sans;
+    @include ref-serif;
     color: $ref-ink;
     font-size: 32px;
     font-weight: 800;
@@ -43,7 +43,7 @@ $ref-chrome: join($ref-chrome-home, $ref-chrome-show, comma);
   }
 
   h2 {
-    @include ref-sans;
+    @include ref-serif;
     color: $ref-ink;
     font-size: 22px;
     font-weight: 800;
@@ -51,7 +51,7 @@ $ref-chrome: join($ref-chrome-home, $ref-chrome-show, comma);
   }
 
   h3 {
-    @include ref-sans;
+    @include ref-serif;
     color: $ref-ink;
     font-size: 18px;
     font-weight: 700;

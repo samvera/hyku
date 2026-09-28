@@ -75,6 +75,23 @@ RSpec.describe ApplicationHelper, type: :helper do
         expect(helper.locale_for(type: 'labels', record_class: "account", term: :very_much_missing)).to be_nil
       end
     end
+
+    context 'when the term exists only in the simple_form scope' do
+      it 'falls back to the simple_form translation' do
+        allow(I18n).to receive(:t).and_call_original
+        allow(I18n).to receive(:t).with('hyrax.account.hints.title', default: nil).and_return(nil)
+        allow(I18n).to receive(:t).with('simple_form.hints.defaults.title', default: nil).and_return('A hint')
+        expect(helper.locale_for(type: 'hints', record_class: 'account', term: :title)).to eq('A hint')
+      end
+    end
+  end
+
+  describe 'missing view translations' do
+    # A helper named missing_translation shadows Rails' private TranslationHelper
+    # hook, and its return value gets rendered into the page.
+    it 'does not render a literal false for a missing key' do
+      expect(helper.t('hyku.specs.definitely_missing_key')).not_to eq(false)
+    end
   end
 
   describe '#work_type_facet_label' do
@@ -96,6 +113,52 @@ RSpec.describe ApplicationHelper, type: :helper do
 
     it 'titleizes values that are not model classes (stale index data)' do
       expect(helper.work_type_facet_label('NoSuchModel')).to eq('No Such Model')
+    end
+  end
+
+  describe '#options_including_current' do
+    let(:options) { [['Article', 'Article']] }
+    let(:service) do
+      Class.new do
+        # Mirrors Hyrax::AuthorityService, which appends only a value it no longer
+        # offers and returns the options alongside the html options.
+        def self.include_current_value(value, _index, render_options, html_options)
+          return [render_options, html_options] if render_options.flatten.include?(value)
+
+          [render_options + [[value, value]], html_options]
+        end
+      end
+    end
+
+    it 'offers the given options when nothing is stored' do
+      expect(helper.options_including_current(options, service, [])).to eq [['Article', 'Article']]
+    end
+
+    it 'keeps a retired term the record still stores' do
+      expect(helper.options_including_current(options, service, ['Retired']))
+        .to eq [['Article', 'Article'], %w[Retired Retired]]
+    end
+
+    it 'ignores a blank stored value' do
+      expect(helper.options_including_current(options, service, ['', nil])).to eq [['Article', 'Article']]
+    end
+
+    it 'does not repeat a stored term that is still offered' do
+      expect(helper.options_including_current(options, service, ['Article'])).to eq [['Article', 'Article']]
+    end
+
+    # A single-valued field hands over a bare string rather than an array.
+    it 'accepts a value that is not an array' do
+      expect(helper.options_including_current(options, service, 'Retired'))
+        .to eq [['Article', 'Article'], %w[Retired Retired]]
+    end
+
+    context 'when the service cannot re-add a current value' do
+      let(:service) { Class.new }
+
+      it 'returns the given options' do
+        expect(helper.options_including_current(options, service, ['Retired'])).to eq [['Article', 'Article']]
+      end
     end
   end
 end

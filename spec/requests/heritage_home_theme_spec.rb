@@ -30,6 +30,19 @@ RSpec.describe 'heritage home theme', type: :request, singletenant: true, clean_
     expect(doc.at_css('#hrt-researcher-heading')).to be_present
   end
 
+  it 'renders a featured collection card' do
+    collection = Hyrax.persister.save(resource: Hyrax::PcdmCollection.new(title: ['Harbor Photographs']))
+    Hyrax::VisibilityWriter.new(resource: collection).assign_access_for(visibility: 'open')
+    collection.permission_manager.acl.save
+    Hyrax.index_adapter.save(resource: collection)
+    FeaturedCollection.create!(collection_id: collection.id.to_s, order: 0)
+
+    get root_path
+
+    card = Nokogiri::HTML(response.body).at_css('.hrt-collection-card')
+    expect(card.text).to include('Harbor Photographs')
+  end
+
   it 'hides the featured works module when the tenant turns the feature off' do
     allow(Flipflop).to receive(:show_featured_works?).and_return(false)
 

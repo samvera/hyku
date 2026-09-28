@@ -4,6 +4,7 @@
 # A mixin for all additional Hyku applicable indexing; both Valkyrie and ActiveFedora friendly.
 module HykuIndexing
   include ScrubText
+  include DateRangeIndexing
   # TODO: Once we've fully moved to Valkyrie, remove the generate_solr_document and move `#to_solr`
   #      to a more conventional method def (e.g. `def to_solr`).  However, we need to tap into two
   #      different inheritance paths based on ActiveFedora or Valkyrie

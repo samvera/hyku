@@ -1,0 +1,13 @@
+<section class="ref-recent" aria-labelledby="ref-recent-heading">
+  <div class="ref-recent-inner">
+    <div class="ref-section-head">
+      <h2 class="ref-section-title" id="ref-recent-heading"><%= t('reference.homepage.recent.heading') %></h2>
+      <%= link_to t('reference.homepage.recent.view_all'),
+                  main_app.search_catalog_path(f: { generic_type_sim: ['Work'] }), class: 'ref-section-action' %>
+    </div>
+
+    <ul class="ref-recent-list list-unstyled">
+      <%= render partial: 'hyrax/homepage/recent_document', collection: @recent_documents %>
+    </ul>
+  </div>
+</section>

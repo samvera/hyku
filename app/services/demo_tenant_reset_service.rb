@@ -56,11 +56,19 @@ class DemoTenantResetService
   SITE_IMAGE_COLUMNS = %w[banner_image logo_image favicon directory_image
                           default_collection_image default_work_image].freeze
 
+  # Keyed the same way Bulkrax.field_mappings is, so the seed importer can look
+  # its own mappings up.
+  PARSER_KLASS = 'Bulkrax::CsvParser'
+
+  # The service runs inside it, so its row is in the queue it waits on.
+  RESET_JOB_CLASS = 'DemoTenantResetJob'
+
   attr_reader :account, :seed_csv_path, :keep_emails, :import_user_email,
               :health_check, :logger, :import_timeout, :poll_interval
 
   # @param account [Account] must be flagged public_demo_tenant
-  # @param seed_csv_path [String, nil] absolute path to a Bulkrax CSV to re-import; nil skips the import
+  # @param seed_csv_path [String, nil] path to a Bulkrax CSV to re-import; a %{tenant}
+  #   placeholder expands to the account name. nil skips the import
   # @param keep_emails [Array<String>] user emails that survive the reset in addition to superadmins
   # @param import_user_email [String, nil] owner of the seed import; defaults to the first tenant admin
   # @param health_check [#call, nil] called with the account after restore; a falsey return fails the reset
@@ -71,7 +79,7 @@ class DemoTenantResetService
   def initialize(account:, seed_csv_path: nil, keep_emails: [], import_user_email: nil,
                  health_check: nil, logger: Rails.logger, import_timeout: 3600, poll_interval: 5)
     @account = account
-    @seed_csv_path = seed_csv_path
+    @seed_csv_path = resolve_seed_csv_path(seed_csv_path)
     @keep_emails = Array(keep_emails).map { |email| email.to_s.downcase.strip }.reject(&:empty?)
     @import_user_email = import_user_email
     @health_check = health_check
@@ -133,6 +141,14 @@ class DemoTenantResetService
     return if account&.public_demo_tenant?
 
     raise NotDemoTenant, "#{account&.cname || account.inspect} is not flagged public_demo_tenant; refusing"
+  end
+
+  # Substitution rather than format, which parses every other % in the path and
+  # raises on the ones it cannot read as a placeholder.
+  def resolve_seed_csv_path(path)
+    return path if path.blank?
+
+    path.gsub('%{tenant}') { account.name }
   end
 
   # Both switches are needed: Account#switch only moves the endpoints,
@@ -254,7 +270,11 @@ class DemoTenantResetService
       admin_set_id: default_admin_set_id,
       user: import_user,
       frequency: 'PT0S',
-      parser_klass: 'Bulkrax::CsvParser',
+      parser_klass: PARSER_KLASS,
+      # Bulkrax::Importer#mapping ignores the tenant's mappings when
+      # field_mapping is blank and derives them from the CSV headers, losing
+      # `split`, so pipe-delimited values would import as a single value.
+      field_mapping: Bulkrax.field_mappings[PARSER_KLASS],
       parser_fields: { 'import_file_path' => seed_csv_path, 'update_files' => false }
     )
   end
@@ -262,7 +282,7 @@ class DemoTenantResetService
   # Reuses the existing admin set rather than triggering creation, which runs
   # workflow grants that fail on partially provisioned tenants.
   def default_admin_set_id
-    existing = Hyrax.query_service.find_all_of_model(model: AdminSetResource).first
+    existing = Hyrax.query_service.find_all_of_model(model: Hyrax.config.admin_set_class).first
     (existing&.id || Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id).to_s
   end
 
@@ -312,18 +332,26 @@ class DemoTenantResetService
     end
   end
 
-  # Only jobs due now: recurring jobs scheduled into the future must not
-  # block the drain.
-  def pending_good_jobs
+  # good_jobs is an Apartment excluded model, so one table holds every tenant's
+  # rows and both queries below have to say which tenant they mean.
+  def unfinished_jobs_for_tenant
     GoodJob::Job.where(finished_at: nil)
-                .where('scheduled_at IS NULL OR scheduled_at <= ?', Time.current)
-                .count
+                .where("serialized_params->>'tenant' = ?", account.tenant)
+  end
+
+  # Every reset row for the tenant, not only this one: its own is unfinished and
+  # due for as long as the drain runs, so counting it would wait on itself.
+  def pending_good_jobs
+    unfinished_jobs_for_tenant
+      .where('scheduled_at IS NULL OR scheduled_at <= ?', Time.current)
+      .where.not(job_class: RESET_JOB_CLASS)
+      .count
   end
 
   def pull_relationship_jobs_forward!
-    scope = GoodJob::Job.where(finished_at: nil)
-                        .where('scheduled_at > ?', Time.current)
-                        .where('job_class ILIKE ?', '%Relationship%')
+    scope = unfinished_jobs_for_tenant
+            .where('scheduled_at > ?', Time.current)
+            .where('job_class ILIKE ?', '%Relationship%')
     count = scope.count
     scope.update_all(scheduled_at: Time.current) if count.positive? # rubocop:disable Rails/SkipsModelValidations
     count

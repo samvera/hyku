@@ -75,4 +75,6 @@ es:
           rights_tesim: Derechos
           subject_tesim: Tema
           title_tesim: Título
+      facets:
+        missing: Sin especificar
       start_over: Nueva búsqueda

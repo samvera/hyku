@@ -1,0 +1,16 @@
+<% document = featured.solr_document %>
+
+<div class="ref-work">
+  <%= link_to [main_app, featured], class: 'ref-work-thumb', tabindex: -1, aria: { hidden: true } do %>
+    <%= image_tag theme_thumbnail_url(document), alt: '' %>
+  <% end %>
+
+  <h3 class="ref-work-title">
+    <%= link_to document.title_or_label, [main_app, featured] %>
+  </h3>
+
+  <% byline = [Array(featured.creator).first, Array(document.date_created).first].compact_blank %>
+  <% if byline.any? %>
+    <p class="ref-work-byline"><%= safe_join(byline, ' · ') %></p>
+  <% end %>
+</div>

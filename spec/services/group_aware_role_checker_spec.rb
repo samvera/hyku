@@ -141,4 +141,21 @@ RSpec.describe GroupAwareRoleChecker, clean: true do
       end
     end
   end
+
+  describe 'roles loaded outside this checker' do
+    let(:user) { FactoryBot.create(:user) }
+
+    before do
+      user.add_role('work_editor')
+      user.add_role('work_depositor')
+    end
+
+    it 'sees a role that a filtered preload left out of the association' do
+      partial = User.includes(:roles).references(:roles)
+                    .where(id: user.id, roles: { name: 'work_editor' }).first
+
+      expect(partial.roles.map(&:name)).to eq(['work_editor'])
+      expect(partial.ability.work_depositor?).to be true
+    end
+  end
 end

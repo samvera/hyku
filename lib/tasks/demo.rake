@@ -25,7 +25,8 @@ namespace :hyku do
       snapshot first with hyku:demo:snapshot.
 
       Options (environment variables):
-        DEMO_SEED_CSV_PATH  absolute path to a Bulkrax CSV to re-import (optional)
+        DEMO_SEED_CSV_PATH  path to a Bulkrax CSV to re-import; a %{tenant}
+                            placeholder expands to the account name (optional)
         DEMO_KEEP_USERS     comma-separated emails that survive the reset in
                             addition to superadmins (optional)
         DEMO_IMPORT_USER    email of the user that owns the seed import

@@ -12,7 +12,9 @@ class ImageResourceForm < Hyrax::Forms::ResourceForm(ImageResource)
     include Hyrax::FormFields(:image_resource)
     include Hyrax::FormFields(:with_pdf_viewer)
     include Hyrax::FormFields(:with_video_embed)
+    include Hyrax::FormFields(:with_media_viewer)
   end
+  include MediaViewerFormBehavior
   check_if_flexible(ImageResource)
 
   include VideoEmbedBehavior::Validation

@@ -1,0 +1,135 @@
+<% provide :page_title, construct_page_title(t('hyku.admin.controlled_vocabulary.import.review_title'),
+                                             @vocabulary.display_label,
+                                             t('hyku.admin.title')) %>
+<% provide :page_header do %>
+  <h1>
+    <span class="fa fa-upload" aria-hidden="true"></span>
+    <%= t('hyku.admin.controlled_vocabulary.import.review_heading', name: @vocabulary.display_label) %>
+  </h1>
+<% end %>
+
+<div class="card">
+  <div class="card-body">
+    <% if @plan.errors.any? %>
+      <div class="alert alert-danger" role="alert">
+        <p class="mb-1"><strong><%= t('hyku.admin.controlled_vocabulary.import.errors_heading') %></strong></p>
+        <ul class="mb-0">
+          <% @plan.errors.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <% if @plan.warnings.any? %>
+      <div class="alert alert-warning" role="alert">
+        <p class="mb-1"><strong><%= t('hyku.admin.controlled_vocabulary.import.warnings_heading') %></strong></p>
+        <ul class="mb-0">
+          <% @plan.warnings.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <% if @plan.changes? %>
+      <p>
+        <%= t('hyku.admin.controlled_vocabulary.import.summary',
+              additions: @plan.additions.size,
+              updates: @plan.updates.size,
+              deactivations: @plan.deactivations,
+              unchanged: @plan.unchanged_count) %>
+      </p>
+      <% if @plan.reorder? %>
+        <p class="text-muted"><%= t('hyku.admin.controlled_vocabulary.import.reordered') %></p>
+      <% end %>
+    <% elsif @plan.errors.none? %>
+      <p class="mb-0"><%= t('hyku.admin.controlled_vocabulary.import.no_changes') %></p>
+    <% end %>
+
+    <% if @plan.additions.any? %>
+      <h2 class="h6 mt-3"><%= t('hyku.admin.controlled_vocabulary.import.additions_heading') %></h2>
+      <div class="table-responsive">
+        <table class="table table-sm table-borderless">
+          <caption class="sr-only"><%= t('hyku.admin.controlled_vocabulary.import.additions_heading') %></caption>
+          <thead>
+            <tr>
+              <th scope="col"><%= t('hyku.admin.controlled_vocabulary.label') %></th>
+              <th scope="col"><%= t('hyku.admin.controlled_vocabulary.term_id') %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @plan.additions_preview.each do |row| %>
+              <tr class="border-bottom">
+                <td><%= row.label %></td>
+                <td><code><%= row.id %></code></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <% if @plan.additions_overflow.positive? %>
+        <p class="text-muted">
+          <%= t('hyku.admin.controlled_vocabulary.import.more_rows', count: @plan.additions_overflow) %>
+        </p>
+      <% end %>
+    <% end %>
+
+    <% if @plan.updates.any? %>
+      <h2 class="h6 mt-3"><%= t('hyku.admin.controlled_vocabulary.import.updates_heading') %></h2>
+      <div class="table-responsive">
+        <table class="table table-sm table-borderless">
+          <caption class="sr-only"><%= t('hyku.admin.controlled_vocabulary.import.updates_heading') %></caption>
+          <thead>
+            <tr>
+              <th scope="col"><%= t('hyku.admin.controlled_vocabulary.term_id') %></th>
+              <th scope="col"><%= t('hyku.admin.controlled_vocabulary.import.field') %></th>
+              <th scope="col"><%= t('hyku.admin.controlled_vocabulary.import.from') %></th>
+              <th scope="col"><%= t('hyku.admin.controlled_vocabulary.import.to') %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @plan.updates_preview.each do |update| %>
+              <% update.changes.each do |field, (from, to)| %>
+                <tr class="border-bottom">
+                  <td><code><%= update.row.id %></code></td>
+                  <td><%= field %></td>
+                  <td><%= from %></td>
+                  <td><%= to %></td>
+                </tr>
+              <% end %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <% if @plan.updates_overflow.positive? %>
+        <p class="text-muted">
+          <%= t('hyku.admin.controlled_vocabulary.import.more_rows', count: @plan.updates_overflow) %>
+        </p>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="card-footer">
+    <% if @plan.valid? && @plan.changes? %>
+      <%= form_tag main_app.confirm_controlled_vocabulary_import_path(@vocabulary.name) do %>
+        <%= hidden_field_tag :payload, @payload %>
+        <%= hidden_field_tag :filename, @filename %>
+        <%= hidden_field_tag :state_digest, @plan.state_digest %>
+        <%= submit_tag t('hyku.admin.controlled_vocabulary.import.confirm'), class: 'btn btn-primary' %>
+        <%= link_to t('hyku.admin.controlled_vocabulary.import.back'),
+                    main_app.new_controlled_vocabulary_import_path(@vocabulary.name),
+                    class: 'btn btn-link' %>
+        <%= link_to t('helpers.action.cancel', default: 'Cancel'),
+                    main_app.controlled_vocabulary_path(@vocabulary.name),
+                    class: 'btn btn-link' %>
+      <% end %>
+    <% else %>
+      <%= link_to t('hyku.admin.controlled_vocabulary.import.back'),
+                  main_app.new_controlled_vocabulary_import_path(@vocabulary.name),
+                  class: 'btn btn-primary' %>
+      <%= link_to t('helpers.action.cancel', default: 'Cancel'),
+                  main_app.controlled_vocabulary_path(@vocabulary.name),
+                  class: 'btn btn-link' %>
+    <% end %>
+  </div>
+</div>

@@ -14,7 +14,9 @@ class OerResourceForm < Hyrax::Forms::ResourceForm(OerResource)
     include Hyrax::FormFields(:oer_resource)
     include Hyrax::FormFields(:with_pdf_viewer)
     include Hyrax::FormFields(:with_video_embed)
+    include Hyrax::FormFields(:with_media_viewer)
   end
+  include MediaViewerFormBehavior
   check_if_flexible(OerResource)
   include VideoEmbedBehavior::Validation
   # Define custom form fields using the Valkyrie::ChangeSet interface

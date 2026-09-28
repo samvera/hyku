@@ -102,6 +102,12 @@ module Hyrax
       main_app.search_catalog_path(options)
     end
 
+    # OVERRIDE Blacklight 7.41.0: Blacklight resolves the facet "more" link against the
+    # current controller, which has no facet action, so the modal loaded the homepage.
+    def search_facet_path(options = {})
+      main_app.facet_catalog_path(options)
+    end
+
     private
 
     # shared methods for index and all_collections routes

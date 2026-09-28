@@ -1,0 +1,31 @@
+<% citations = all_authors(presenter).any? ? theme_citations(presenter) : {} %>
+<section class="ref-panel ref-cite" aria-labelledby="ref-cite-label">
+  <h2 class="ref-panel-label" id="ref-cite-label"><%= t('reference.show.citation.heading') %></h2>
+
+  <% if citations.any? %>
+    <div data-citation>
+      <select class="ref-cite-picker" data-citation-picker
+              aria-label="<%= t('reference.show.citation.style') %>">
+        <% citations.each_key do |style| %>
+          <option value="<%= style %>"><%= t("reference.show.citation.styles.#{style}") %></option>
+        <% end %>
+      </select>
+
+      <% citations.each_with_index do |(style, text), index| %>
+        <blockquote class="ref-cite-text" data-citation-text="<%= style %>"
+                    <%= 'hidden' unless index.zero? %>><%= text %></blockquote>
+      <% end %>
+
+      <button type="button" class="ref-cite-copy" data-citation-copy>
+        <%= t('reference.show.citation.copy') %>
+      </button>
+      <span class="ref-cite-copied" data-citation-copied aria-live="polite" hidden>
+        <%= t('reference.show.citation.copied') %>
+      </span>
+    </div>
+  <% end %>
+
+  <%= link_to t('reference.show.citation.endnote'),
+              polymorphic_path([main_app, presenter], format: 'endnote'),
+              class: 'ref-cite-export' %>
+</section>

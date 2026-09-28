@@ -1,0 +1,12 @@
+<%# One empty form per term, targeted by id from the toggle button in its row.
+    Kept out of the table, and out of the reorder form, because a form nested in
+    another is invalid html that browsers drop — so the toggle has to reach its form
+    by the button's `form` attribute instead of containing it.
+
+    Each form carries only the csrf token and the method override. Whether the term is
+    being retired or restored rides on the value of the button that submits it. %>
+<% terms.each do |term| %>
+  <%= form_tag main_app.status_controlled_vocabulary_term_path(entry.source_key, term['term_id']),
+               method: :patch, id: "term-status-#{term['term_id']}", class: 'd-none' do %>
+  <% end %>
+<% end %>

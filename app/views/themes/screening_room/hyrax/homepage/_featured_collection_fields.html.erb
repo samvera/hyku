@@ -1,0 +1,23 @@
+<div class="scr-collection-card">
+  <%= link_to hyrax.collection_path(featured.id), class: 'scr-collection-thumb',
+              tabindex: -1, aria: { hidden: true } do %>
+    <img src="<%= theme_thumbnail_url(featured, default: :collection) %>" alt="">
+  <% end %>
+
+  <div class="scr-collection-body">
+    <h3 class="scr-collection-title">
+      <%= link_to Array(featured.title).first.presence || featured.try(:title_or_label),
+                  hyrax.collection_path(featured.id) %>
+    </h3>
+
+    <% blurb = theme_blurb(Array(featured.description).first, length: 190) %>
+    <% if blurb.present? %>
+      <p class="scr-collection-blurb"><%= blurb %></p>
+    <% end %>
+
+    <p class="scr-collection-meta">
+      <%= t('screening_room.homepage.collections.works_count',
+            count: scr_home.collection_works_count(featured)) %>
+    </p>
+  </div>
+</div>

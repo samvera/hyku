@@ -1,0 +1,36 @@
+<% featured = ref_home.featured_works %>
+<% editable = can?(:update, FeaturedWork) && !@featured_work_list.empty? %>
+
+<% if @presenter&.display_featured_works? && (featured.any? || editable) %>
+  <section class="ref-featured-works" aria-labelledby="ref-featured-heading">
+    <div class="ref-section-head">
+      <h2 class="ref-section-title" id="ref-featured-heading"><%= t('reference.homepage.featured_works.heading') %></h2>
+      <%= link_to t('reference.homepage.featured_works.see_all'),
+                  main_app.search_catalog_path(f: { generic_type_sim: ['Work'] }),
+                  class: 'ref-section-action' %>
+    </div>
+
+    <% if editable %>
+      <%= form_for [hyrax, @featured_work_list] do |f| %>
+        <div class="dd ref-reorder" id="dd" data-unfeature-confirm="<%= t('reference.homepage.featured.unfeature_confirm') %>">
+          <ol class="ref-work-grid ref-reorder-grid list-unstyled">
+            <%= f.fields_for :featured_works do |featured_work| %>
+              <%= render 'hyrax/homepage/sortable_featured', f: featured_work %>
+            <% end %>
+          </ol>
+        </div>
+
+        <div class="ref-reorder-actions">
+          <p class="ref-reorder-hint"><%= t('reference.homepage.featured.reorder_hint') %></p>
+          <%= f.submit t('reference.homepage.featured.save_order'), class: 'ref-reorder-save' %>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="ref-work-grid">
+        <% featured.each do |work| %>
+          <%= render 'hyrax/homepage/featured_fields', featured: work.presenter %>
+        <% end %>
+      </div>
+    <% end %>
+  </section>
+<% end %>

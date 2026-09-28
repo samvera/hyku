@@ -9,7 +9,7 @@
 <%= render 'shared/additional_citations' %>
 
 <% panes = pr_show_panes(@presenter) %>
-<% active_pane = pr_active_pane(@presenter) %>
+<% active_pane = theme_active_pane(pr_show_panes(@presenter)) %>
 
 <div class="pr-show" itemscope itemtype="http://schema.org/CreativeWork">
 
@@ -24,7 +24,7 @@
 
   <%= render 'workflow_actions_widget', presenter: @presenter %>
 
-  <% if pr_viewer?(@presenter) %>
+  <% if theme_viewer?(@presenter) %>
     <div class="pr-viewer">
       <% if @presenter.video_embed_viewer? %>
         <%= render 'video_embed_viewer', presenter: @presenter %>

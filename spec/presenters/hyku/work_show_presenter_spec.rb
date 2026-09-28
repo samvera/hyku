@@ -36,10 +36,15 @@ RSpec.describe Hyku::WorkShowPresenter do
     end
 
     context 'method owner' do
-      # I was noticing load logic issues, so I'm adding this spec for verification
-      subject { presenter.method(:iiif_viewer?).owner }
+      # Order, not just ownership: behind the IiifPrint decorator the override still
+      # loads and every other expectation here still passes, but never runs.
+      it 'resolves the media viewer override ahead of the IiifPrint decorator' do
+        ancestors = described_class.ancestors
 
-      it { is_expected.to eq(IiifPrint::TenantConfig::WorkShowPresenterDecorator) }
+        expect(presenter.method(:iiif_viewer?).owner).to eq(Hyku::MediaViewerBehavior)
+        expect(ancestors.index(Hyku::MediaViewerBehavior))
+          .to be < ancestors.index(IiifPrint::TenantConfig::WorkShowPresenterDecorator)
+      end
     end
 
     context "for a PDF file" do
@@ -50,7 +55,10 @@ RSpec.describe Hyku::WorkShowPresenter do
       after { test_strategy.switch!(:default_pdf_viewer, default_pdf_viewer_value) }
 
       context 'when the tenant is not configured to use IIIF Print' do
-        before { test_strategy.switch!(:default_pdf_viewer, true) }
+        before do
+          test_strategy.switch!(:default_pdf_viewer, true)
+          allow(Hyrax::ViewableChildWorksService).to receive(:viewable?).and_return(false)
+        end
 
         it { is_expected.to be false }
       end
@@ -62,26 +70,56 @@ RSpec.describe Hyku::WorkShowPresenter do
       end
     end
 
-    context "for an audio file" do
+    context 'when use_iiif_print? is false and child works are viewable' do
+      let!(:test_strategy) { Flipflop::FeatureSet.current.test! }
+
       before do
+        test_strategy.switch!(:default_pdf_viewer, true)
+        allow(Hyrax::ViewableChildWorksService).to receive(:viewable?).and_return(true)
+      end
+
+      after { test_strategy.switch!(:default_pdf_viewer, default_pdf_viewer_value) }
+
+      it 'delegates to Hyrax base which checks child_works_viewable?' do
+        is_expected.to be true
+      end
+    end
+
+    context "for an audio file" do
+      let!(:test_strategy) { Flipflop::FeatureSet.current.test! }
+
+      before do
+        test_strategy.switch!(:default_pdf_viewer, false)
         allow_any_instance_of(Hyrax::FileSetPresenter).to receive(:audio?).and_return true
       end
+
+      after { test_strategy.switch!(:default_pdf_viewer, default_pdf_viewer_value) }
 
       it { is_expected.to be true }
     end
 
     context "for an image file" do
+      let!(:test_strategy) { Flipflop::FeatureSet.current.test! }
+
       before do
+        test_strategy.switch!(:default_pdf_viewer, false)
         allow_any_instance_of(Hyrax::FileSetPresenter).to receive(:image?).and_return true
       end
+
+      after { test_strategy.switch!(:default_pdf_viewer, default_pdf_viewer_value) }
 
       it { is_expected.to be true }
     end
 
     context "for a video file" do
+      let!(:test_strategy) { Flipflop::FeatureSet.current.test! }
+
       before do
+        test_strategy.switch!(:default_pdf_viewer, false)
         allow_any_instance_of(Hyrax::FileSetPresenter).to receive(:video?).and_return true
       end
+
+      after { test_strategy.switch!(:default_pdf_viewer, default_pdf_viewer_value) }
 
       it { is_expected.to be true }
     end

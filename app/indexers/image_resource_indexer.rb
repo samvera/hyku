@@ -10,6 +10,7 @@ class ImageResourceIndexer < Hyrax::ValkyrieWorkIndexer
     include Hyrax::Indexer(:image_resource)
     include Hyrax::Indexer(:with_pdf_viewer)
     include Hyrax::Indexer(:with_video_embed)
+    include Hyrax::Indexer(:with_media_viewer)
   end
   check_if_flexible(ImageResource)
 

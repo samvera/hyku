@@ -75,4 +75,6 @@ fr:
           rights_tesim: Droits
           subject_tesim: Assujettir
           title_tesim: Titre
+      facets:
+        missing: Non précisé
       start_over: Nouvelle recherche

@@ -197,9 +197,10 @@ body.heritage_show.public-facing {
   }
 
   // ---- catalog ----
-  // the theme owns no catalog views; the page keeps Bootstrap's container
-  // width, and this only pulls Blacklight's facet cards into the rail's look
-  &.catalog #facets {
+  // this only pulls Blacklight's facet cards into the rail's look; the page
+  // frame the rail sits in is set in themes/heritage/_chrome
+  &.catalog #facets,
+  &.catalog #advanced_search_facets {
     @include hrt-facets;
 
     .facets-heading {

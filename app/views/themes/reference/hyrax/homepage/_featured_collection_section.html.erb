@@ -1,0 +1,36 @@
+<% collections = ref_home.collections %>
+<% editable = can?(:update, FeaturedCollection) && !@featured_collection_list.empty? %>
+
+<% if editable || collections.present? %>
+  <section class="ref-featured-collections" aria-labelledby="ref-collections-heading">
+    <div class="ref-section-head">
+      <h2 class="ref-section-title" id="ref-collections-heading"><%= t('reference.homepage.collections.heading') %></h2>
+      <%= link_to t('reference.homepage.collections.view_all'),
+                  main_app.search_catalog_path(f: { generic_type_sim: ['Collection'] }),
+                  class: 'ref-section-action' %>
+    </div>
+
+    <% if editable %>
+      <%= form_for [main_app, @featured_collection_list] do |f| %>
+        <div class="dd ref-reorder" id="ff" data-unfeature-confirm="<%= t('reference.homepage.featured.unfeature_confirm') %>">
+          <ol class="ref-collection-list ref-reorder-list list-unstyled">
+            <%= f.fields_for :featured_collections do |featured_collection| %>
+              <%= render 'hyrax/homepage/sortable_featured_collections', f: featured_collection %>
+            <% end %>
+          </ol>
+        </div>
+
+        <div class="ref-reorder-actions">
+          <p class="ref-reorder-hint"><%= t('reference.homepage.featured.reorder_hint') %></p>
+          <%= f.submit t('reference.homepage.featured.save_order'), class: 'ref-reorder-save' %>
+        </div>
+      <% end %>
+    <% else %>
+      <ul class="ref-collection-list list-unstyled">
+        <% collections.each do |collection| %>
+          <li><%= render 'hyrax/homepage/featured_collection_fields', featured: collection %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  </section>
+<% end %>

@@ -1,0 +1,28 @@
+<% ids = presenter.list_of_item_ids_to_display %>
+<% members = presenter.member_presenters(ids) %>
+
+<section class="scr-panel" id="scr-items" aria-labelledby="scr-items-label">
+  <div class="scr-panel-head">
+    <h2 class="scr-panel-label" id="scr-items-label"><%= t('hyrax.base.items.header') %></h2>
+    <% if members.present? %>
+      <span class="scr-panel-count"><%= t('screening_room.show.items.count', count: ids.total_count) %></span>
+    <% end %>
+  </div>
+
+  <% if members.present? %>
+    <ul class="scr-panel-list list-unstyled">
+      <%= render partial: 'member', collection: members %>
+    </ul>
+
+    <% if presenter.total_pages > 1 %>
+      <nav class="scr-panel-pager" aria-labelledby="scr-items-label">
+        <%= paginate ids, theme: 'blacklight', window: 1, outer_window: 0, param_name: :page,
+                     route_set: main_app, params: { anchor: 'scr-items' } %>
+      </nav>
+    <% end %>
+  <% elsif can? :edit, presenter.id %>
+    <p class="scr-panel-empty"><%= t('hyrax.base.items.empty', type: presenter.human_readable_type) %></p>
+  <% else %>
+    <p class="scr-panel-empty"><%= t('hyrax.base.items.unauthorized', type: presenter.human_readable_type) %></p>
+  <% end %>
+</section>

@@ -1,3 +1,4 @@
+description: Creative Commons and other reuse licenses a depositor can apply to a work.
 terms:
   - id: https://creativecommons.org/licenses/by/4.0/
     term: Creative Commons BY Attribution 4.0 International
@@ -40,12 +41,6 @@ terms:
     active: false
   - id: http://creativecommons.org/licenses/by-nc-sa/3.0/us/
     term: Attribution-NonCommercial-ShareAlike 3.0 United States
-    active: false
-  - id: http://creativecommons.org/publicdomain/mark/1.0/
-    term: Public Domain Mark 1.0
-    active: false
-  - id: http://creativecommons.org/publicdomain/zero/1.0/
-    term: CC0 1.0 Universal
     active: false
   - id: http://www.europeana.eu/portal/rights/rr-r.html
     term: All rights reserved

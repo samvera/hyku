@@ -30,10 +30,10 @@ require 'spec_helper'
 simple_work_spec = Hyrax::Engine.root.join("lib/hyrax/specs/shared_specs/simple_work.rb").to_s
 require simple_work_spec unless Hyrax.config.disable_wings
 
-# I want to set this so that our factory finder will have the right values.
-Hyrax.config.admin_set_model = "AdminSetResource"
-Hyrax.config.collection_model = "CollectionResource"
-
+# Do not pin admin_set_model/collection_model here for the factories' benefit; the
+# suite would then exercise those classes whatever the app configures, leaving a
+# substituted collection or admin set class untested.
+#
 # First find the Hyrax factories; then find the local factories (which extend/modify Hyrax
 # factories).
 FactoryBot.definition_file_paths = [
@@ -127,6 +127,8 @@ Capybara.javascript_driver = :chrome
 # this security while still going through the captcha workflow.
 NegativeCaptcha.test_mode = true
 
+VOCABULARY_TABLES = %w[qa_local_authorities qa_local_authority_entries].freeze
+
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.file_fixture_path = Rails.root.join('spec', 'fixtures').to_s
@@ -165,6 +167,7 @@ RSpec.configure do |config|
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)
     Account.destroy_all
+    LocalVocabularyService.seed!
     prepare_test_solr
   end
 
@@ -191,7 +194,7 @@ RSpec.configure do |config|
     # (e.g. real Thread.new-based tests, where a spawned thread's own DB connection can't
     # see data created inside the main thread's still-open transaction).
     if (example.metadata[:js] && example.metadata[:type] == :feature) || example.metadata[:truncation]
-      DatabaseCleaner.strategy = :truncation
+      DatabaseCleaner.strategy = :truncation, { except: VOCABULARY_TABLES }
     else
       DatabaseCleaner.strategy = :transaction
       DatabaseCleaner.start
@@ -213,7 +216,7 @@ RSpec.configure do |config|
     Rails.logger.error "DatabaseCleaner error: #{e.message}"
     # Only switch to truncation if we hit a deadlock
     raise e unless e.message.include?('deadlock detected')
-    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.strategy = :truncation, { except: VOCABULARY_TABLES }
     DatabaseCleaner.clean
   end
 end

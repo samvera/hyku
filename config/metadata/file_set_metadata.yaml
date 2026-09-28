@@ -1,0 +1,187 @@
+# This is the metadata used for `Hyrax::FileSet`s.` It is similar to
+# `basic_metadata.yaml`, but not exactly the same.
+#
+# Terms which are already present in `core_metadata.yaml` are not repeated here.
+#
+# OVERRIDE Hyrax v5.3.0 to declare the authorities backing license,
+#   resource_type and rights_statement, so a file set's term labels are indexed
+#   beside the stored ids. Everything else mirrors the gem's copy, so re-diff
+#   against it on a Hyrax bump.
+attributes:
+  # Required attributes:
+  creator:
+    type: string
+    multiple: true
+    form:
+      required: true
+      primary: true
+    index_keys:
+      - "creator_tesim"
+    predicate: http://purl.org/dc/elements/1.1/creator
+  license:
+    type: string
+    multiple: true
+    form:
+      required: false
+      primary: true
+    predicate: http://purl.org/dc/terms/license
+    index_keys:
+      - "license_tesim"
+    # OVERRIDE Hyrax v5.3.0: declare the backing authority
+    controlled_values:
+      sources:
+        - licenses
+
+  # Other attributes:
+  abstract:
+    type: string
+    multiple: true
+    predicate: http://purl.org/dc/terms/abstract
+  # form:
+  #   primary: false
+  # missing: access_right
+  # missing: alternative_title
+  alt_text:
+    type: string
+    multiple: false
+    form:
+      primary: true
+    index_keys:
+      - "alt_text_sim"
+      - "alt_text_tesim"
+    predicate: https://schema.org/description
+  based_near:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "based_near_sim"
+      - "based_near_tesim"
+    predicate: http://xmlns.com/foaf/0.1/based_near
+  # missing: bibliograpic_citation
+  contributor:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    predicate: http://purl.org/dc/elements/1.1/contributor
+  # required: creator
+  date_created:
+    type: date_time
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "date_created_tesim"
+    predicate: http://purl.org/dc/terms/created
+  description:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "description_tesim"
+    predicate: http://purl.org/dc/elements/1.1/description
+  identifier:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    predicate: http://purl.org/dc/terms/identifier
+  # missing: import_url
+  keyword:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "keyword_sim"
+      - "keyword_tesim"
+    predicate: http://schema.org/keywords
+  # missing: publisher
+  label:
+    type: string
+    predicate: info:fedora/fedora-system:def/model#downloadFilename
+  # form:
+  #   primary: false
+  language:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    predicate: http://purl.org/dc/elements/1.1/language
+    index_keys:
+      - "language_tesim"
+  # required: license
+  publisher:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    predicate: http://purl.org/dc/elements/1.1/publisher
+  related_url:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "related_url_tesim"
+    predicate: http://www.w3.org/2000/01/rdf-schema#seeAlso
+  relative_path:
+    type: string
+    predicate: http://scholarsphere.psu.edu/ns#relativePath
+  resource_type:
+    type: string
+    multiple: true
+  # form:
+  #   primary: false
+    index_keys:
+      - "resource_type_sim"
+      - "resource_type_tesim"
+    predicate: http://purl.org/dc/terms/type
+    # OVERRIDE Hyrax v5.3.0: declare the backing authority
+    controlled_values:
+      sources:
+        - resource_types
+  rights_notes:
+    type: string
+    multiple: true
+    predicate: http://purl.org/dc/elements/1.1/rights
+  # form:
+  #   primary: false
+  rights_statement:
+    type: string
+    multiple: true
+  # form:
+  #   primary: true
+    index_keys:
+      - "rights_statement_tesim"
+    # OVERRIDE Hyrax v5.3.0: declare the backing authority
+    controlled_values:
+      sources:
+        - rights_statements
+    predicate: http://www.europeana.eu/schemas/edm/rights
+  source:
+    type: string
+    multiple: true
+    predicate: http://purl.org/dc/terms/source
+  # form:
+  #   primary: false
+  subject:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "subject_sim"
+      - "subject_tesim"
+    predicate: http://purl.org/dc/elements/1.1/subject
+  transcript_ids:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "transcript_ids_ssim"
+    predicate: http://vocabulary.samvera.org/ns#transcriptIds

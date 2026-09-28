@@ -1,0 +1,11 @@
+label: Media Viewer
+description: Which player renders this work's media on its show page.
+terms:
+  - id: universal_viewer
+    term: Universal Viewer
+  - id: clover
+    term: Clover IIIF
+  - id: ramp
+    term: Ramp (AV)
+  - id: pdf_js
+    term: PDF.js

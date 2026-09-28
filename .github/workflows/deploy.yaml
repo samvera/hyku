@@ -1,6 +1,13 @@
 name: "Deploy"
-run-name: Deploy (${{ github.ref_name }} -> ${{ inputs.environment }}) by @${{ github.actor }}
+run-name: Deploy (${{ github.event.workflow_run.head_branch || github.ref_name }} -> ${{ inputs.environment || (github.event.workflow_run.head_branch == 'main' && 'test') || (github.event.workflow_run.head_branch == 'staging' && 'staging') || (github.event.workflow_run.head_branch == 'production' && 'demo') }}) by @${{ github.actor }}
 on:
+  workflow_run:
+    workflows: ["build-test-lint"]
+    types: [completed]
+    branches:
+      - main
+      - staging
+      - production
   workflow_dispatch:
     inputs:
       environment:
@@ -10,7 +17,6 @@ on:
         type: choice
         options:
           - demo
-          - iiif
           - staging
           - test
       debug_enabled:
@@ -20,16 +26,39 @@ on:
         default: false
 
 jobs:
+  determine-environment:
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push') }}
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ steps.set.outputs.environment }}
+    steps:
+      - id: set
+        name: Map branch/input to target environment
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "environment=${{ inputs.environment }}" >> "$GITHUB_OUTPUT"
+          else
+            case "${{ github.event.workflow_run.head_branch }}" in
+              main) echo "environment=test" >> "$GITHUB_OUTPUT" ;;
+              staging) echo "environment=staging" >> "$GITHUB_OUTPUT" ;;
+              production) echo "environment=demo" >> "$GITHUB_OUTPUT" ;;
+            esac
+          fi
+
   deployment:
+    needs: determine-environment
     runs-on: ubuntu-latest
     container: dtzar/helm-kubectl:3.9.4
-    environment: ${{ inputs.environment }}
+    environment: ${{ needs.determine-environment.outputs.environment }}
+    concurrency:
+      group: deploy-${{ needs.determine-environment.outputs.environment }}
+      cancel-in-progress: false
     env:
       HELM_EXPERIMENTAL_OCI: 1
-      HELM_RELEASE_NAME: ${{ github.event.repository.name }}-${{ inputs.environment }}
-      KUBE_NAMESPACE: ${{ github.event.repository.name }}-${{ inputs.environment }}
+      HELM_RELEASE_NAME: ${{ github.event.repository.name }}-${{ needs.determine-environment.outputs.environment }}
+      KUBE_NAMESPACE: ${{ github.event.repository.name }}-${{ needs.determine-environment.outputs.environment }}
       HELM_EXTRA_ARGS: >
-        --values ops/${{ inputs.environment }}-deploy.yaml
+        --values ops/${{ needs.determine-environment.outputs.environment }}-deploy.yaml
       KUBECONFIG_FILE: ${{ secrets.KUBECONFIG_FILE }}
       KUBECONFIG: ./kubeconfig.yml
       BASE_URL: ${{ secrets.BASE_URL }}
@@ -64,6 +93,22 @@ jobs:
           tag: ${{ inputs.tag }}
           image_name: ${{ inputs.image_name }}
           token: ${{ secrets.CHECKOUT_TOKEN || secrets.GITHUB_TOKEN }}
+      - name: Re-checkout triggering commit
+        # workflow_run always runs against the default branch's HEAD by default,
+        # not the branch/commit that build-test-lint actually built - override it.
+        if: ${{ github.event_name == 'workflow_run' }}
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
+          submodules: true
+          token: ${{ secrets.CHECKOUT_TOKEN || secrets.GITHUB_TOKEN }}
+          clean: false
+      - name: Fix TAG for workflow_run trigger
+        if: ${{ github.event_name == 'workflow_run' }}
+        run: echo "TAG=${GIT_SHA::8}" >> $GITHUB_ENV
+        env:
+          GIT_SHA: ${{ github.event.workflow_run.head_sha }}
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
@@ -72,8 +117,8 @@ jobs:
       - name: Do deploy
         run: |
           echo $KUBECONFIG_FILE | base64 -d > $KUBECONFIG;
-          DOLLAR=$ envsubst < ops/${{ inputs.environment }}-deploy.tmpl.yaml > ops/${{ inputs.environment }}-deploy.yaml;
+          DOLLAR=$ envsubst < ops/${{ needs.determine-environment.outputs.environment }}-deploy.tmpl.yaml > ops/${{ needs.determine-environment.outputs.environment }}-deploy.yaml;
           export DEPLOY_TAG=${TAG};
           export DEPLOY_IMAGE=ghcr.io/${REPO_LOWER}/web;
           export WORKER_IMAGE=ghcr.io/${REPO_LOWER}/worker;
-          ./bin/helm_deploy ${{ inputs.k8s-release-name || format('{0}-{1}', github.event.repository.name, inputs.environment) }} ${{ inputs.k8s-namespace || format('{0}-{1}', github.event.repository.name, inputs.environment) }}
+          ./bin/helm_deploy $HELM_RELEASE_NAME $KUBE_NAMESPACE

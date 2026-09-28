@@ -1,0 +1,651 @@
+// ---- shared page chrome for the reference themes ----
+
+@import 'themes/reference/tokens';
+@import 'themes/reference/primitives';
+
+$ref-chrome-home:
+  'body.reference.catalog-index',
+  'body.reference.catalog-advanced_search',
+  'body.reference.advanced-index',
+  'body.reference.hyrax-pages-show',
+  'body.reference.hyrax-contact_form-new',
+  'body.reference.hyrax-contact_form-create';
+
+$ref-chrome-show:
+  'body.reference_show.hyrax-collections-show',
+  'body.reference_show.hyrax-file_sets-show';
+
+$ref-chrome: join($ref-chrome-home, $ref-chrome-show, comma);
+
+#{$ref-chrome} {
+  color: $ref-ink-body;
+
+  // ---- page frame ----
+  // bootstrap pins `.navbar + .container { padding: .5rem !important }` on both
+  // axes, so the frame's own vertical padding has to answer it in kind
+  #content-wrapper {
+    @include ref-gutter;
+    max-width: none;
+    padding-bottom: 48px !important;
+    padding-top: 28px !important;
+  }
+
+  // ---- headings ----
+  h1 {
+    @include ref-sans;
+    color: $ref-ink;
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin: 0 0 20px;
+    text-wrap: pretty;
+  }
+
+  h2 {
+    @include ref-sans;
+    color: $ref-ink;
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.25;
+  }
+
+  h3 {
+    @include ref-sans;
+    color: $ref-ink;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  // this rule carries an id, so a component that wants its own color has to
+  // match the wrapper too rather than relying on specificity
+  #content-wrapper a:not(.btn) {
+    @include ref-link;
+  }
+
+  // ---- pagination ----
+  #content-wrapper ul.pagination {
+    @include ref-pagination;
+    align-items: center;
+  }
+
+  // ---- notices ----
+  .alert {
+    border-radius: 0;
+  }
+
+  // ---- tables ----
+  table {
+    font-size: 15px;
+  }
+
+  table th {
+    @include ref-sans;
+    border-top: 1px solid $ref-rule;
+    color: $ref-ink;
+    font-weight: 700;
+  }
+
+  table td {
+    border-top: 1px solid $ref-rule;
+  }
+}
+
+// ---- catalog and advanced search ----
+#{$ref-chrome-home} {
+  #content-wrapper > .row,
+  #content-wrapper > .advanced-search-form {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  #content-wrapper > .advanced-search-form {
+    padding-top: 18px;
+  }
+
+  // chrome paints the selected row of a list box with its own blue and only
+  // honors a background here as a gradient; firefox takes the same rule
+  .advanced-search-facet-select option:checked {
+    background: linear-gradient(0deg, var(--ref-link-strong, #{$ref-link-strong}) 0%, var(--ref-link-strong, #{$ref-link-strong}) 100%);
+    color: var(--ref-link-strong-ink, #{$ref-link-strong-ink});
+  }
+
+  // the rail is pinned rather than left on bootstrap's 25%, and the results
+  // column takes the remainder instead of a matching 75%
+  #sidebar {
+    padding-left: 0;
+
+    @media (min-width: #{$ref-tablet-max + 1}) {
+      flex: 0 0 $ref-rail-width;
+      max-width: $ref-rail-width;
+      padding-right: 34px;
+    }
+  }
+
+  #content {
+    padding-right: 0;
+
+    @media (min-width: #{$ref-tablet-max + 1}) {
+      flex: 1 1 0;
+      max-width: 100%;
+    }
+  }
+
+  // ---- facet rail ----
+  #facets,
+  #advanced_search_facets {
+    .card.facet-limit {
+      border: 1px solid $ref-panel-edge;
+      border-color: $ref-panel-edge !important;
+      border-radius: 0;
+      margin-bottom: 0;
+    }
+
+    .card.facet-limit + .card.facet-limit {
+      border-top: 0;
+    }
+
+    h3.card-header {
+      background-color: $ref-warm !important;
+      border-bottom: 0;
+      border-radius: 0;
+    }
+
+    h3.card-header > .btn {
+      @include ref-sans;
+      align-items: center;
+      color: $ref-ink;
+      display: flex !important;
+      font-size: 15px;
+      font-weight: 700;
+      justify-content: space-between;
+      padding: 12px 14px !important;
+    }
+
+    // border-drawn so the stroke weight does not follow the tenant's font
+    h3.card-header > .btn::after {
+      border: solid $ref-ink-muted;
+      border-width: 0 2px 2px 0;
+      content: '';
+      flex: none;
+      height: 7px;
+      transform: rotate(45deg);
+      width: 7px;
+    }
+
+    h3.card-header > .btn.collapsed::after {
+      transform: rotate(-45deg);
+    }
+
+    .card-body {
+      padding: 4px 0 8px;
+    }
+
+    ul.facet-values li {
+      align-items: baseline;
+      display: flex;
+      font-size: 14px;
+      gap: 10px;
+      justify-content: space-between;
+      padding: 7px 14px;
+    }
+
+    .facet-label a {
+      @include ref-link(var(--ref-link-strong, #{$ref-link-strong}));
+    }
+
+    .facet-count {
+      color: $ref-ink-label;
+      flex: none;
+      white-space: nowrap;
+    }
+
+    ul.facet-values li.more_facets_link {
+      display: inline-block;
+      padding: 6px 14px 0;
+    }
+
+    // the clear control is an icon, so an underline reads as a stray mark
+    a.remove {
+      text-decoration: none;
+    }
+  }
+
+  // ---- results toolbar ----
+  // hyrax draws its own rule and padding under the per-page form, which lands
+  // a second rule a few pixels under the toolbar's own
+  form.per_page {
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  .sort-pagination,
+  .search-widgets {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .page-links,
+  .pagination-counter,
+  .page_entries_info {
+    color: $ref-ink-muted;
+    font-size: 14px;
+  }
+
+  // ---- result rows ----
+  // hyrax ships pb-3 on the row, whose !important supplies the bottom padding
+  ul.catalog > li.document {
+    border-top: 1px solid $ref-rule;
+    padding-top: 18px;
+  }
+
+  ul.catalog > li.document:first-of-type {
+    border-top: 0;
+  }
+
+  // ---- gallery, masonry and slideshow cards ----
+  // blacklight builds the card views from their own grids, so they need a frame
+  // of their own rather than the row separators the list view takes
+  .documents-gallery .document,
+  .documents-masonry .document,
+  .documents-slideshow .document {
+    padding: 0 0 28px;
+  }
+
+  // gallery_view.scss qualifies this with .document, so an unqualified selector
+  // loses and the card keeps bootstrap's rounded gray frame
+  .documents-gallery .document .thumbnail-container,
+  .documents-masonry .document .thumbnail-container {
+    background: $ref-surface;
+    border: 1px solid var(--ref-band-edge, #{$ref-band-edge});
+    border-radius: 0;
+    padding: 0;
+  }
+
+  .documents-gallery .document-thumbnail,
+  .documents-masonry .document-thumbnail {
+    background: var(--ref-band, #{$ref-band});
+    border-bottom: 1px solid var(--ref-band-edge, #{$ref-band-edge});
+    height: 240px;
+    padding: 14px;
+  }
+
+  // gallery_view.scss pins a 250x300 cover crop on .img-thumbnail, which crops a
+  // portrait scan and stretches a square placeholder; the class beats a bare img
+  .documents-gallery .document .document-thumbnail .img-thumbnail,
+  .documents-masonry .document .document-thumbnail .img-thumbnail {
+    height: auto;
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    width: auto;
+  }
+
+  .documents-gallery .document .document-thumbnail > a,
+  .documents-masonry .document .document-thumbnail > a {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    max-width: 100%;
+  }
+
+  .documents-gallery .caption-area,
+  .documents-masonry .caption-area {
+    padding: 14px 16px 4px;
+  }
+
+  // the caption carries bootstrap's .container, whose 15px gutter indents the
+  // title and metadata off the card edge
+  .documents-gallery .caption.container,
+  .documents-masonry .caption.container {
+    max-width: none;
+    padding: 0;
+  }
+
+  .documents-gallery dl.document-metadata,
+  .documents-masonry dl.document-metadata {
+    margin: 0;
+
+    dt {
+      @include ref-label(0.08em);
+      font-size: 12px;
+      margin: 8px 0 2px;
+    }
+
+    dd {
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 0;
+    }
+  }
+
+  #content-wrapper h4.search-result-title,
+  #content-wrapper .document-title-heading,
+  #content-wrapper .index_title {
+    @include ref-serif;
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 1.35;
+    margin: 0 0 6px;
+
+    a {
+      @include ref-title-link;
+    }
+  }
+
+  dl.document-metadata,
+  .search-result-wrapper .metadata dl {
+    font-size: 14px;
+    margin: 0;
+
+    dt {
+      @include ref-sans;
+      color: $ref-ink;
+      font-weight: 700;
+    }
+
+    dd {
+      color: $ref-ink-body;
+    }
+  }
+
+  // ---- applied filters ----
+  .constraints-container .filter,
+  .applied-filter {
+    border-radius: 0;
+  }
+}
+
+// ---- content pages and contact form ----
+#{$ref-chrome-home} {
+  #content_block_page {
+    p,
+    li {
+      font-size: 17px;
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  form label {
+    @include ref-sans;
+    color: $ref-ink;
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .form-control {
+    border: 1px solid $ref-input-edge;
+    border-radius: 0;
+    font-size: 15px;
+
+    &:focus-visible {
+      @include ref-focus-ring;
+    }
+  }
+}
+
+// ---- collection and file set show ----
+#{$ref-chrome-show} {
+  overflow-x: clip;
+
+  // the wrapper is gutter-free here so the breadcrumb runs full bleed, the way
+  // it does on the work show; the blocks inside carry their own gutter and
+  // their own closing space
+  #content-wrapper {
+    padding-bottom: 0 !important;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .breadcrumb {
+    @include ref-gutter;
+    background: $ref-surface;
+    border: 0;
+    border-bottom: 1px solid $ref-rule;
+    border-radius: 0;
+    font-size: 14px;
+    margin: 0;
+    padding-bottom: 13px;
+    padding-top: 13px;
+
+    .breadcrumb-item {
+      color: $ref-ink-label;
+    }
+
+    .breadcrumb-item.active {
+      color: $ref-ink;
+    }
+  }
+
+  #content-wrapper .breadcrumb a {
+    @include ref-link(var(--ref-link-strong, #{$ref-link-strong}));
+  }
+
+  // ---- action buttons ----
+  // the work show puts its actions on the tenant's default button, so the
+  // collection and file set actions read the same rather than as solid primaries
+  .show-actions-container .btn-primary,
+  .show-actions-container .btn-secondary,
+  .show-actions-container .btn-default,
+  header .btn-primary,
+  #content-wrapper .btn-default {
+    background-color: var(--ref-button, #{$ref-surface}) !important;
+    border-color: var(--ref-button-edge, #{$ref-input-edge}) !important;
+    border-radius: 0 !important;
+    color: var(--ref-button-ink, #{$ref-ink-body}) !important;
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  .btn-danger {
+    background-color: $ref-danger !important;
+    border-color: $ref-danger !important;
+    border-radius: 0 !important;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .btn:focus-visible {
+    @include ref-focus-ring;
+  }
+
+  .hyc-container,
+  .container-fluid {
+    padding-bottom: 48px;
+  }
+
+  .hyc-container > .row,
+  .container-fluid > .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .hyc-container > .row > [class*='col-'],
+  .container-fluid > .row > [class*='col-'] {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .hyc-body,
+  .hyc-blacklight,
+  .container-fluid {
+    @include ref-gutter;
+  }
+
+  .container-fluid {
+    padding-top: 30px;
+  }
+
+  // the preview column runs straight into the metadata beside it; the
+  // column-zeroing rule above is (0,3,0), so this has to outrank it
+  .container-fluid > .row > [class*='col-']:first-child {
+    padding-right: 26px;
+  }
+
+  .hyc-banner {
+    @include ref-gutter;
+    background-color: var(--ref-band, #{$ref-band});
+    border-bottom: 1px solid var(--ref-band-edge, #{$ref-band-edge});
+    border-radius: 0;
+    padding-bottom: 24px;
+    padding-top: 28px;
+  }
+
+  header h1 .badge {
+    margin-left: 8px;
+  }
+
+  .hyc-banner .row {
+    margin: 0;
+    padding-bottom: 22px;
+  }
+
+  .hyc-banner .row > [class*='col-'] {
+    padding-left: 0;
+  }
+
+  .hyc-banner .row .mt-5 {
+    margin-top: 22px !important;
+  }
+
+  // .hyc-body is itself the row, so the thumbnail column is its direct child;
+  // the column-zeroing rule above is equally specific, so this has to match it
+  .hyc-container > .hyc-body > .col-md-3 {
+    padding-right: 26px;
+  }
+
+  // ---- works listing ----
+  .hyc-blacklight table {
+    font-size: 15px;
+    margin-top: 8px;
+  }
+
+  .hyc-blacklight table thead th {
+    @include ref-sans;
+    background: none;
+    border-bottom: 1px solid $ref-panel-edge;
+    border-top: 0;
+    color: $ref-ink;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    padding: 10px 12px 10px 0;
+    text-transform: uppercase;
+  }
+
+  // striping fights the ruled rows the rest of the theme uses
+  .hyc-blacklight table.table-striped tbody tr,
+  .hyc-blacklight table.table-striped tbody tr:nth-of-type(odd) {
+    background: none;
+  }
+
+  .hyc-blacklight table tbody td {
+    border-top: 1px solid $ref-rule;
+    padding: 12px 12px 12px 0;
+    vertical-align: middle;
+  }
+
+  // the page-wide link rule carries an id, so the row title has to match it
+  #content-wrapper .hyc-blacklight table tbody a {
+    @include ref-title-link;
+    font-size: 15px;
+    font-weight: 400;
+  }
+
+  // the switcher is floated in the stock markup, so this row stays in flow
+  // rather than becoming a flex container that would ignore the float
+  .hyc-bl-sort {
+    padding-bottom: 8px;
+  }
+
+  .hyc-bl-sort::after {
+    clear: both;
+    content: '';
+    display: table;
+  }
+
+  // both action rows read as one control the way the work show's do, which
+  // needs the row laid out so the whitespace between buttons cannot hold
+  // their edges apart
+  .collection-title-row-content,
+  .form-actions {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .collection-title-row-content .btn + .btn,
+  .collection-title-row-content .btn + .btn-group,
+  .collection-title-row-content .btn-group + .btn,
+  .form-actions .btn + .btn {
+    margin-left: -1px;
+  }
+
+  .collection-title-row-content .btn:hover,
+  .collection-title-row-content .btn:focus,
+  .form-actions .btn:hover,
+  .form-actions .btn:focus {
+    position: relative;
+    z-index: 1;
+  }
+
+  .ensure-wrapped {
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  .hyc-title h1 {
+    @include ref-serif;
+    font-size: 36px;
+    font-weight: 400;
+    text-shadow: none;
+  }
+
+  // hyrax rounds these and floats them on white; the theme has no rounded chrome
+  .hyc-item-count,
+  .hyc-created-by,
+  .hyc-last-updated {
+    background: $ref-surface;
+    border: 1px solid var(--ref-band-edge, #{$ref-band-edge});
+    border-radius: 0;
+    color: $ref-ink-body;
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+
+  .hyc-description,
+  .hyc-body {
+    font-size: 16px;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+  }
+
+  // hyrax's per_page form inside the collection toolbar draws its own rule and
+  // padding, leaving a second rule and dead space under the controls
+  .hyc-bl-sort form.per_page {
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  dl.work-show,
+  .hyc-metadata dl {
+    font-size: 15px;
+
+    dt {
+      @include ref-sans;
+      color: $ref-ink;
+      font-weight: 700;
+    }
+
+    dd {
+      color: $ref-ink-body;
+      overflow-wrap: anywhere;
+    }
+  }
+}

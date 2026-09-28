@@ -1,0 +1,10 @@
+<section class="ref-label-band ref-about" aria-labelledby="ref-about-heading">
+  <div class="ref-label-band-inner">
+    <h2 class="ref-section-title" id="ref-about-heading">
+      <%= theme_plain_text(@homepage_about_section_heading&.value).presence || t('reference.homepage.about.heading') %>
+    </h2>
+    <div class="ref-about-prose">
+      <%= displayable_content_block @homepage_about_section_content %>
+    </div>
+  </div>
+</section>

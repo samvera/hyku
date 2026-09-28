@@ -10,6 +10,7 @@ class GenericWorkResourceIndexer < Hyrax::ValkyrieWorkIndexer
     include Hyrax::Indexer(:generic_work_resource)
     include Hyrax::Indexer(:with_pdf_viewer)
     include Hyrax::Indexer(:with_video_embed)
+    include Hyrax::Indexer(:with_media_viewer)
   end
   check_if_flexible(GenericWorkResource)
 

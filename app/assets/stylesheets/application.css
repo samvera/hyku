@@ -26,3 +26,9 @@
  *= require_self
  *= require hyku_knapsack/application
  */
+
+/* ---- date range facet ---- */
+
+.range_limit input.submit[aria-hidden="true"] {
+  display: none;
+}

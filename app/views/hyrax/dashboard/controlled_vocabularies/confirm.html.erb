@@ -1,0 +1,63 @@
+<% provide :page_title, construct_page_title(t('hyku.admin.controlled_vocabulary.confirm_title'),
+                                             t('hyku.admin.controlled_vocabularies'),
+                                             t('hyku.admin.title')) %>
+<% provide :page_header do %>
+  <h1>
+    <span class="fa fa-tag" aria-hidden="true"></span>
+    <%= t('hyku.admin.controlled_vocabulary.confirm_title') %>
+  </h1>
+<% end %>
+
+<div class="card">
+  <div class="card-header">
+    <%= t('hyku.admin.controlled_vocabulary.confirm_help') %>
+  </div>
+  <div class="card-body">
+    <dl class="row">
+      <dt class="col-sm-3"><%= t('hyku.admin.controlled_vocabulary.name') %></dt>
+      <dd class="col-sm-9"><%= @controlled_vocabulary.label %></dd>
+
+      <%# The value a metadata profile will cite. %>
+      <dt class="col-sm-3">
+        <%= render 'column_hint',
+                   label: t('hyku.admin.controlled_vocabulary.source_key'),
+                   hint: t('hyku.admin.controlled_vocabulary.source_key_hint') %>
+      </dt>
+      <dd class="col-sm-9"><code><%= @controlled_vocabulary.name %></code></dd>
+
+      <dt class="col-sm-3"><%= t('hyku.admin.controlled_vocabulary.description') %></dt>
+      <dd class="col-sm-9">
+        <% if @controlled_vocabulary.description.present? %>
+          <%= @controlled_vocabulary.description %>
+        <% else %>
+          <span class="text-muted"><%= t('hyku.admin.controlled_vocabulary.no_description') %></span>
+        <% end %>
+      </dd>
+    </dl>
+
+    <p class="form-text text-muted">
+      <span class="fa fa-info-circle" aria-hidden="true"></span>
+      <%= t('hyku.admin.controlled_vocabulary.confirm_permanent') %>
+    </p>
+
+    <%= form_for @controlled_vocabulary, url: main_app.controlled_vocabularies_path do |f| %>
+      <%# Carried forward rather than held in the session: the review step owns no
+          state, so a reload or a Back cannot leave a half-finished vocabulary. %>
+      <%= f.hidden_field :label %>
+      <%= f.hidden_field :description %>
+      <%= hidden_field_tag :confirmed, true %>
+
+      <%= f.submit t('hyku.admin.controlled_vocabulary.confirm_create'), class: 'btn btn-primary' %>
+    <% end %>
+
+    <%# Outside the form, carrying the values itself: submitting the form with
+        formmethod="get" would put its authenticity_token in the query string, and from
+        there into logs, history, and Referer headers. %>
+    <%= link_to t('hyku.admin.controlled_vocabulary.confirm_back'),
+                main_app.new_controlled_vocabulary_path(
+                  local_authority: { label: @controlled_vocabulary.label,
+                                      description: @controlled_vocabulary.description }
+                ),
+                class: 'btn btn-link' %>
+  </div>
+</div>

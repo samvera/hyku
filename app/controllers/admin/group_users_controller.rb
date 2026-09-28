@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
 module Admin
-  class GroupUsersController < ApplicationController
-    before_action :load_group
+  class GroupUsersController < AdminController
+    # user_manager can manage group users as well as admins
+    before_action :ensure_admin!, except: [:index, :create, :destroy]
+    before_action :load_and_authorize_group
     before_action :cannot_remove_admin_users_from_admin_group, only: [:destroy]
     layout 'hyrax/dashboard'
 
     def index
-      authorize! :edit, Hyrax::Group
       add_breadcrumb t(:'hyrax.controls.home'), root_path
       add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
       add_breadcrumb t(:'hyku.admin.groups.title.edit'), edit_admin_group_path(@group)
@@ -31,10 +32,6 @@ module Admin
     end
 
     private
-
-    def load_group
-      @group = Hyrax::Group.find_by(id: params[:group_id])
-    end
 
     def page_number
       params.fetch(:page, 1).to_i

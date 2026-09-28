@@ -44,6 +44,7 @@ class CreateAccount
     RolesService.create_default_hyrax_groups_with_roles!
     Hyrax::CollectionType.find_or_create_default_collection_type
     Hyrax::CollectionType.find_or_create_admin_set_type
+    LocalVocabularyService.seed!
     return if account.search_only?
 
     Hyrax::AdminSetCreateService.find_or_create_default_admin_set.id

@@ -1,9 +1,14 @@
 ---
 en:
+  activerecord:
+    models:
+      generic_work: Work
   hyrax:
+    models:
+      generic_work: Work
     icons:
       generic_work: fa fa-file-text-o
     select_type:
       generic_work:
         description: General purpose work type. Select this if the more specific work types below are not suited to the work you want to add.
-        name: Generic Work
+        name: Work

@@ -1,0 +1,23 @@
+<%# A select fed by a module-level Hyrax authority service, for the non-flexible
+    forms. The flexible path resolves its options from the metadata profile instead
+    and renders records/edit_fields/default.
+
+    options_including_current puts back the value an existing work already stores,
+    which a retired term would otherwise lose from its own form. %>
+<% current_values = Array.wrap(f.object[key]).select(&:present?) %>
+<% augmented_options = options_including_current(service.select_active_options, service, current_values) %>
+<% if f.object.multiple? key %>
+  <%= f.input key, as: :select,
+      collection: augmented_options,
+      include_blank: !f.object.required?(key),
+      label: label_for(term: key, record_class: f.object.class),
+      hint: hint_for(term: key, record_class: f.object.class),
+      input_html: { class: 'form-control', multiple: true, name: "#{f.object_name}[#{key}][]" } %>
+<% else %>
+  <%= f.input key, as: :select,
+      collection: augmented_options,
+      include_blank: !f.object.required?(key),
+      label: label_for(term: key, record_class: f.object.class),
+      hint: hint_for(term: key, record_class: f.object.class),
+      input_html: { class: 'form-control' } %>
+<% end %>

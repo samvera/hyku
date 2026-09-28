@@ -14,13 +14,33 @@ RSpec.describe Site, type: :model do
   let(:admin2) { FactoryBot.create(:user, email: 'jane@was_here.net') }
   let(:admin3) { FactoryBot.create(:user, email: 'i@was_here.net') }
 
+  # Apartment's :switch callback calls this, so a cache that survives holds the
+  # previous tenant's rows -- in an in-process tenant loop such as a rake reindex,
+  # one tenant's ids would resolve against another's labels.
+  describe ".reset!" do
+    it "clears the per-request caches that hold tenant rows" do
+      RequestStore.store[:site_instance] = 'Tenant A'
+      RequestStore.store[:qa_local_authorities] = { 'licenses' => 'Tenant A' }
+
+      described_class.reset!
+
+      expect(RequestStore.store).not_to have_key(:site_instance)
+      expect(RequestStore.store).not_to have_key(:qa_local_authorities)
+    end
+
+    it "clears the vocabulary label maps the resolver built for the tenant" do
+      expect(Hyrax.config.controlled_vocabulary_label_service).to receive(:reset!)
+
+      described_class.reset!
+    end
+  end
+
   describe ".instance" do
     let(:request_store_mock) { {} }
-    before do
-      allow(RequestStore).to receive(:store).and_return(request_store_mock)
-    end
+
     context "on global tenant" do
       before do
+        allow(RequestStore).to receive(:store).and_return(request_store_mock)
         allow(Account).to receive(:global_tenant?).and_return true
       end
 
@@ -30,6 +50,10 @@ RSpec.describe Site, type: :model do
     end
 
     context "on a specific tenant" do
+      before do
+        allow(RequestStore).to receive(:store).and_return(request_store_mock)
+      end
+
       it "is a singleton site" do
         expect(described_class.instance).to eq(described_class.instance)
       end
@@ -57,7 +81,10 @@ RSpec.describe Site, type: :model do
       end
     end
     describe '.instance across an in-process tenant switch' do
-      after { Apartment::Tenant.switch!(Apartment.default_tenant) }
+      after do
+        Apartment::Tenant.switch!(Apartment.default_tenant)
+        RequestStore.clear!
+      end
 
       let(:old_account) { FactoryBot.build(:sign_up_account) }
       let(:new_account) { FactoryBot.build(:sign_up_account) }
@@ -331,6 +358,60 @@ RSpec.describe Site, type: :model do
       it 'returns the cname of the associated account' do
         expect(site.institution_label).to eq 'myuniversity.edu'
       end
+    end
+  end
+
+  describe '#offerable_work_types' do
+    subject(:site) { create(:site, available_works: %w[GenericWork Image Etd]) }
+
+    before do
+      allow(Hyrax.config).to receive(:registered_curation_concern_types)
+        .and_return(%w[GenericWork Image Etd])
+    end
+
+    context 'without flexible metadata' do
+      before { allow(Hyrax.config).to receive(:flexible?).and_return(false) }
+
+      it 'offers everything the site enables' do
+        expect(site.offerable_work_types).to eq(%w[GenericWork Image Etd])
+      end
+    end
+
+    context 'with a profile declaring fewer types than the site enables' do
+      before do
+        allow(Hyrax.config).to receive(:flexible?).and_return(true)
+        allow(Hyrax::FlexibleSchema).to receive(:current_version).and_return(
+          'classes' => { 'GenericWorkResource' => {}, 'ImageResource' => {} }
+        )
+      end
+
+      it 'drops the type the profile does not declare' do
+        expect(site.offerable_work_types).to eq(%w[GenericWork Image])
+      end
+    end
+
+    context 'with no current profile' do
+      before do
+        allow(Hyrax.config).to receive(:flexible?).and_return(true)
+        allow(Hyrax::FlexibleSchema).to receive(:current_version).and_return(nil)
+      end
+
+      it 'offers everything the site enables rather than nothing' do
+        expect(site.offerable_work_types).to eq(%w[GenericWork Image Etd])
+      end
+    end
+  end
+
+  describe '.reset!' do
+    it 'drops the tenant-scoped caches and leaves keys it does not own' do
+      RequestStore.store[:site_instance] = 'stale site'
+      RequestStore.store[:content_blocks] = { 'block' => 'stale' }
+      RequestStore.store[:qa_local_authorities] = { 'vocab' => 'stale' }
+      RequestStore.store[:lograge_location] = '/keep/me'
+
+      described_class.reset!
+
+      expect(RequestStore.store.keys).to eq([:lograge_location])
     end
   end
 end

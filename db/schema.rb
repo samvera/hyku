@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_08_06_120000) do
+ActiveRecord::Schema[7.2].define(version: 2026_08_17_170002) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_trgm"
@@ -693,6 +693,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_06_120000) do
     t.string "name"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.string "label"
+    t.text "description"
     t.index ["name"], name: "index_qa_local_authorities_on_name", unique: true
   end
 
@@ -702,9 +704,14 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_06_120000) do
     t.string "uri"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.boolean "active", default: true, null: false
+    t.jsonb "data", default: {}, null: false
+    t.integer "position"
     t.index "lower((label)::text) gin_trgm_ops", name: "index_qa_local_authority_entries_on_lower_label_trgm", using: :gin
+    t.index ["local_authority_id", "active"], name: "index_qa_local_authority_entries_on_authority_and_active"
+    t.index ["local_authority_id", "position", "label"], name: "index_qa_local_authority_entries_on_authority_and_sequence"
+    t.index ["local_authority_id", "uri"], name: "index_qa_local_authority_entries_on_authority_and_uri", unique: true
     t.index ["local_authority_id"], name: "index_qa_local_authority_entries_on_local_authority_id"
-    t.index ["uri"], name: "index_qa_local_authority_entries_on_uri", unique: true
   end
 
   create_table "qa_mesh_trees", id: :serial, force: :cascade do |t|

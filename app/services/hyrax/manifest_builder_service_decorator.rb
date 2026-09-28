@@ -32,3 +32,23 @@ module Hyrax
 end
 
 Hyrax::ManifestBuilderService.prepend(Hyrax::ManifestBuilderServiceDecorator)
+
+# OVERRIDE IiifPrint 3.1.0 - IiifPrint's ManifestBuilderServiceDecorator flattens
+# child works, sanitizes canvas labels, and overwrites item_metadata, all of which
+# conflict with Ranges. Bypass its entire manifest_for when the feature is active
+# and let the iiif_manifest gem (which natively supports ranges and item_metadata)
+# build the manifest directly.
+module Hyrax
+  module ManifestBuilderServiceRangesDecorator
+    def manifest_for(presenter:)
+      return super unless Flipflop.iiif_ranges?
+
+      manifest = manifest_factory.new(presenter).to_h
+      hash = deep_sanitize(JSON.parse(manifest.to_json))
+      hash['viewingHint'] = 'paged'
+      hash
+    end
+  end
+end
+
+Hyrax::ManifestBuilderService.prepend(Hyrax::ManifestBuilderServiceRangesDecorator)

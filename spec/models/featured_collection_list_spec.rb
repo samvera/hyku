@@ -11,10 +11,13 @@ RSpec.describe FeaturedCollectionList, :clean_repo, type: :model do
   let(:collection2) { create(:collection, user:, title: ["Collection Title 2"]) }
 
   describe 'featured_collections' do
+    let(:featured_collection1) { create(:featured_collection, collection_id: collection1.id) }
+    let(:featured_collection2) { create(:featured_collection, collection_id: collection2.id) }
+
     before do
       Site.update(account:)
-      create(:featured_collection, collection_id: collection1.id)
-      create(:featured_collection, collection_id: collection2.id)
+      featured_collection1
+      featured_collection2
     end
 
     it 'is a list of the featured collection objects, each with the collection\'s solr_doc' do
@@ -43,16 +46,15 @@ RSpec.describe FeaturedCollectionList, :clean_repo, type: :model do
 
       context 'when the featured collections have not been manually ordered' do
         it 'is sorted by title' do
-          allow(instance).to receive(:manually_ordered?).and_return(false)
-
           expect(instance.featured_collections.map(&:presenter).map(&:title).flatten).to eq [collection1.title.first, collection2.title.first]
         end
       end
 
       context 'when the featured collections have been manually ordered' do
-        it 'is not sorted by title' do
-          allow(instance).to receive(:manually_ordered?).and_return(true)
+        let(:featured_collection1) { create(:featured_collection, collection_id: collection1.id, order: 1) }
+        let(:featured_collection2) { create(:featured_collection, collection_id: collection2.id, order: 0) }
 
+        it 'is not sorted by title' do
           expect(instance.featured_collections.map(&:presenter).map(&:title).flatten).to eq [collection2.title.first, collection1.title.first]
         end
       end

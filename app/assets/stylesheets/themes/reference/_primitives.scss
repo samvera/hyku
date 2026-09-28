@@ -1,0 +1,189 @@
+// ---- reference mixins ----
+
+@mixin ref-gutter($desktop: $ref-gutter, $laptop: $ref-gutter-laptop) {
+  padding-left: $desktop;
+  padding-right: $desktop;
+
+  @media (max-width: $ref-laptop-max) {
+    padding-left: $laptop;
+    padding-right: $laptop;
+  }
+
+  @media (max-width: $ref-tablet-max) {
+    padding-left: $ref-gutter-tablet;
+    padding-right: $ref-gutter-tablet;
+  }
+
+  @media (max-width: $ref-mobile-max) {
+    padding-left: $ref-gutter-mobile;
+    padding-right: $ref-gutter-mobile;
+  }
+}
+
+@mixin ref-sans {
+  font-family: var(--ref-sans, #{$ref-sans-stack}) !important;
+}
+
+@mixin ref-serif {
+  font-family: var(--ref-serif, #{$ref-serif-stack}) !important;
+}
+
+@mixin ref-mat($pad: 6px) {
+  align-items: center;
+  background: $ref-mat;
+  box-shadow: inset 0 0 0 1px $ref-mat-edge;
+  display: flex;
+  justify-content: center;
+  padding: $pad;
+
+  img {
+    box-shadow: $ref-shadow-object;
+    float: none;
+    height: auto;
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    padding: 0;
+    width: auto;
+  }
+}
+
+@mixin ref-focus-ring($color: var(--ref-link-strong, #{$ref-link-strong})) {
+  box-shadow: none;
+  outline: 2px solid $color;
+  outline-offset: 2px;
+}
+
+@mixin ref-underline {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+@mixin ref-link($color: var(--ref-link, #{$ref-link})) {
+  @include ref-underline;
+  color: $color;
+
+  &:hover,
+  &:focus {
+    color: var(--ref-link-strong, #{$ref-link-strong});
+  }
+
+  &:focus-visible {
+    @include ref-focus-ring;
+  }
+}
+
+@mixin ref-title-link {
+  color: $ref-ink;
+  text-decoration: underline;
+  text-decoration-color: $ref-ink-faint;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-wrap: pretty;
+
+  &:hover,
+  &:focus {
+    color: var(--ref-link-strong, #{$ref-link-strong});
+    text-decoration-color: currentColor;
+  }
+
+  &:focus-visible {
+    @include ref-focus-ring;
+  }
+}
+
+@mixin ref-deposit-button($ring: var(--ref-link-strong, #{$ref-link-strong})) {
+  @include ref-sans;
+  background: var(--ref-button, #{$ref-surface});
+  border: 1px solid var(--ref-button-edge, #{$ref-input-edge});
+  color: var(--ref-button-ink, #{$ref-ink-body});
+  display: inline-block;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    @include ref-underline;
+    color: var(--ref-button-ink, #{$ref-ink-body});
+  }
+
+  &:focus-visible {
+    @include ref-focus-ring($ring);
+  }
+}
+
+@mixin ref-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  .page-item .page-link {
+    align-items: center;
+    background: $ref-surface;
+    border: 1px solid $ref-input-edge;
+    border-radius: 0;
+    color: var(--ref-link-strong, #{$ref-link-strong});
+    display: inline-flex;
+    font-size: 13px;
+    justify-content: center;
+    line-height: 1;
+    min-width: 32px;
+    padding: 7px 9px;
+    text-decoration: none;
+
+    &:focus-visible {
+      @include ref-focus-ring;
+    }
+  }
+
+  .page-item.disabled .page-link {
+    border-color: $ref-disabled-edge;
+    color: $ref-ink-muted;
+    pointer-events: none;
+  }
+}
+
+@mixin ref-label($tracking: 0.14em) {
+  @include ref-sans;
+  color: $ref-ink-muted;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: $tracking;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+@mixin ref-section-title {
+  @include ref-sans;
+  color: $ref-ink;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 0;
+}
+
+@mixin ref-controls-reset {
+  .btn,
+  .form-control,
+  .card,
+  .dropdown-menu,
+  .modal-content,
+  .badge {
+    border-radius: 0;
+  }
+
+  .btn:focus-visible,
+  .form-control:focus-visible,
+  select:focus-visible,
+  a:focus-visible,
+  button:focus-visible {
+    @include ref-focus-ring;
+  }
+}

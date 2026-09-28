@@ -29,7 +29,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: 3be706ecdb75cfda4c5111f47dbc6c1875d4902d
+  revision: 1489c9571dd546c4edd0e0251fdbc1699cad4c90
   branch: main
   specs:
     hyrax (5.3.0)
@@ -96,17 +96,16 @@ GIT
 
 GIT
   remote: https://github.com/samvera/questioning_authority.git
-  revision: 54cb5e7047f0261b8ccfd4b737d6f30a0a96d3ba
+  revision: e2ee4225eb1d823c34b3e9df253801d819789b1b
   branch: main
   specs:
-    qa (5.15.0)
+    qa (5.17.0)
       activerecord-import
-      deprecation
       faraday (< 3.0, != 2.0.0)
       geocoder
       ldpath
       nokogiri (~> 1.6)
-      rails (>= 5.0, < 8.1)
+      rails (>= 6.0, < 8.2)
       rdf
 
 GIT
@@ -280,6 +279,7 @@ GEM
     bcp47_spec (0.2.1)
     bcrypt (3.1.22)
     benchmark (0.5.0)
+    benchmark-ips (2.15.1)
     benchmark_methods (0.7)
     bibtex-ruby (6.2.0)
       latex-decode (~> 0.0)
@@ -294,15 +294,16 @@ GEM
       rubocop-performance
       rubocop-rails
       rubocop-rspec
-    blacklight (7.41.0)
+    blacklight (7.43.0)
       deprecation
       globalid
       hashdiff
       i18n (>= 1.7.0)
       jbuilder (~> 2.7)
+      json (< 3.0)
       kaminari (>= 0.15)
       ostruct (>= 0.3.2)
-      rails (>= 6.1, < 8.1)
+      rails (>= 6.1, < 9)
       view_component (>= 2.74, < 4)
       zeitwerk
     blacklight-access_controls (6.1.0)
@@ -792,9 +793,9 @@ GEM
       faraday (~> 2.7)
       geo_coord
       json
-    iiif_manifest (1.6.0)
+    iiif_manifest (1.7.0)
       activesupport (>= 4)
-    iiif_print (3.1.0)
+    iiif_print (3.1.1)
       blacklight_iiif_search (>= 1.0, < 3.0)
       derivative-rodeo (~> 0.5)
       hyrax (>= 2.5, < 6)
@@ -1133,6 +1134,8 @@ GEM
       linkeddata (~> 3.2)
       rack (~> 2.1)
       rack-rdf (~> 3.2)
+    rack-mini-profiler (3.3.1)
+      rack (>= 1.2.0)
     rack-oauth2 (2.2.1)
       activesupport
       attr_required
@@ -1537,6 +1540,7 @@ GEM
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
     ssrf_filter (1.0.8)
+    stackprof (0.2.28)
     stringio (3.1.7)
     swd (2.0.3)
       activesupport (>= 3)
@@ -1664,6 +1668,7 @@ DEPENDENCIES
   activesupport (>= 4.2.0)
   addressable (= 2.8.1)
   aws-sdk-sqs
+  benchmark-ips (~> 2.14)
   bixby
   blacklight (~> 7.38)
   blacklight_advanced_search
@@ -1702,6 +1707,7 @@ DEPENDENCIES
   hyrax-doi!
   i18n-debug
   i18n-tasks
+  iiif_manifest (>= 1.7.0)
   iiif_print (~> 3.1)
   jbuilder (~> 2.5)
   jquery-rails
@@ -1729,6 +1735,7 @@ DEPENDENCIES
   puma (~> 7.2)
   qa!
   rack-attack
+  rack-mini-profiler (~> 3.3)
   rack-test (= 0.7.0)
   rails (~> 7.2.0)
   rails-controller-testing
@@ -1765,6 +1772,7 @@ DEPENDENCIES
   spring (~> 1.7)
   spring-watcher-listen (~> 2.0.0)
   sprockets-rails
+  stackprof (~> 0.2)
   terser
   tether-rails
   turbolinks (~> 5)

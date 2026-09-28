@@ -26,6 +26,12 @@ RSpec.describe 'Users trying to search for a Public Work', type: :feature, clean
       visit '/catalog'
       expect(page).to have_content('Public GenericWork')
     end
+
+    it 'sees the result title as an h3 with an access-status badge' do
+      visit '/catalog'
+      expect(page).to have_css('h3.search-result-title', text: 'Public GenericWork')
+      expect(page).to have_css('.search-results-title-row span.badge', text: I18n.t('hyrax.visibility.open.text'))
+    end
   end
 
   context 'a registered user' do

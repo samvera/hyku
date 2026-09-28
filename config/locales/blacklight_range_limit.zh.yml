@@ -1,0 +1,13 @@
+zh:
+  blacklight:
+    range_limit:
+      range_begin: "%{field_label} 范围起始"
+      range_end: "%{field_label} 范围结束"
+      submit_limit: '应用'
+      remove_limit: '移除'
+      missing: '未知'
+      view_distribution: '查看分布'
+      view_larger: '查看更大 »'
+      results_range_html: '当前结果范围从 <span class="min">%{min}</span> 到 <span class="max">%{max}</span>'
+      single_html: '<span class="single" data-blrl-single="%{begin_value}">%{begin}</span>'
+      range_html: '<span class="from" data-blrl-begin="%{begin_value}">%{begin}</span> 至 <span class="to" data-blrl-end="%{end_value}">%{end}</span>'

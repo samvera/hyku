@@ -224,6 +224,9 @@ attributes:
       html_dl: true
     mappings:
       simple_dc_pmh: dc:rights
+    controlled_values:
+      sources:
+        - licenses
   relative_path:
     type: string
     predicate: http://scholarsphere.psu.edu/ns#relativePath
@@ -255,6 +258,9 @@ attributes:
       html_dl: true
     mappings:
       simple_dc_pmh: dc:type
+    controlled_values:
+      sources:
+        - resource_types
   rights_notes:
     type: string
     multiple: true
@@ -282,6 +288,9 @@ attributes:
     predicate: http://www.europeana.eu/schemas/edm/rights
     mappings:
       simple_dc_pmh: dc:rights
+    controlled_values:
+      sources:
+        - rights_statements
   source:
     type: string
     multiple: true

@@ -16,7 +16,7 @@
   </div>
 
   <%= render 'hyrax/homepage/about' if @homepage_about_section_heading&.value.present? || @homepage_about_section_content&.value.present? %>
-  <%= render 'hyrax/homepage/share_your_work' if @presenter&.display_share_button? && !Flipflop.read_only? %>
+  <%= render 'hyrax/homepage/share_your_work' if theme_share_work? %>
 </div>
 
 <%= render '/shared/select_work_type_modal', create_work_presenter: @presenter.create_work_presenter if @presenter.draw_select_work_modal? %>

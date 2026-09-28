@@ -53,7 +53,7 @@
   }
 
   .hrt-hero-content {
-    @include hrt-gutter;
+    @include hrt-gutter($max: 1280px);
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -204,7 +204,7 @@
 
   // ---- home page text ----
   .hrt-home-text {
-    @include hrt-gutter;
+    @include hrt-gutter($max: 1280px);
     border-bottom: 1px solid $hrt-rule-band;
     padding-bottom: 40px;
     padding-top: 38px;
@@ -230,6 +230,8 @@
   .hrt-home-body {
     display: grid;
     grid-template-columns: $hrt-rail-width minmax(0, 1fr);
+    margin: 0 auto;
+    max-width: 1280px;
 
     @media (max-width: $hrt-laptop-max) {
       grid-template-columns: $hrt-rail-width-laptop minmax(0, 1fr);
@@ -757,7 +759,7 @@
   }
 
   .hrt-about-inner {
-    @include hrt-gutter;
+    @include hrt-gutter($max: 1280px);
     display: grid;
     gap: 40px;
     grid-template-columns: $hrt-rail-width minmax(0, 1fr);
@@ -807,24 +809,14 @@
     display: flex;
     gap: 48px;
     justify-content: flex-end;
-    padding: 34px $hrt-gutter;
-
-    @media (max-width: $hrt-laptop-max) {
-      padding-left: $hrt-gutter-laptop;
-      padding-right: $hrt-gutter-laptop;
-    }
-
-    @media (max-width: $hrt-tablet-max) {
-      padding-left: $hrt-gutter-tablet;
-      padding-right: $hrt-gutter-tablet;
-    }
+    @include hrt-gutter;
+    padding-bottom: 34px;
+    padding-top: 34px;
 
     @media (max-width: $hrt-mobile-max) {
       flex-direction: column;
       align-items: flex-start;
       gap: 20px;
-      padding-left: $hrt-gutter-mobile;
-      padding-right: $hrt-gutter-mobile;
     }
   }
 

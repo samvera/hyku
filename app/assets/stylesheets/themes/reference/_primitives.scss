@@ -1,8 +1,15 @@
 // ---- reference mixins ----
 
-@mixin ref-gutter($desktop: $ref-gutter, $laptop: $ref-gutter-laptop) {
+@mixin ref-gutter($desktop: $ref-gutter, $laptop: $ref-gutter-laptop, $max: null) {
   padding-left: $desktop;
   padding-right: $desktop;
+
+  @if $max {
+    @media (min-width: #{$max + $desktop * 2}) {
+      padding-left: calc(50% - #{$max / 2});
+      padding-right: calc(50% - #{$max / 2});
+    }
+  }
 
   @media (max-width: $ref-laptop-max) {
     padding-left: $laptop;

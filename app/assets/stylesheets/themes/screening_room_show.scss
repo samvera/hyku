@@ -10,6 +10,7 @@
   #content-wrapper {
     max-width: none;
     padding: 0;
+    width: 100%;
   }
 
   #content-wrapper > .alert {
@@ -160,6 +161,8 @@
     display: grid;
     gap: 48px;
     grid-template-columns: minmax(0, 1fr) 400px;
+    margin: 0 auto;
+    max-width: 1280px;
     padding: 36px $scr-gutter-xl * 3 56px;
 
     @media (max-width: $scr-desktop-max) {

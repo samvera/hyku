@@ -8,6 +8,7 @@
   #content-wrapper {
     max-width: none;
     padding: 0;
+    width: 100%;
     // .navbar + .container pins a 0.5rem top padding, itself !important
     padding-top: 0 !important;
   }
@@ -44,6 +45,8 @@
   // ---- page frame ----
   .hrt-show {
     @include hrt-gutter($laptop: 32px);
+    margin: 0 auto;
+    max-width: 1280px;
     padding-bottom: 48px;
     padding-top: 30px;
   }

@@ -11,6 +11,7 @@
   #content-wrapper {
     max-width: none;
     padding: 0 !important;
+    width: 100%;
   }
 
   // ---- breadcrumb ----
@@ -95,6 +96,8 @@
 
   .ref-record-inner {
     @include ref-gutter;
+    margin: 0 auto;
+    max-width: 1280px;
     padding-bottom: 34px;
     padding-top: 38px;
   }
@@ -170,7 +173,8 @@
   // only job here is being the positioned ancestor it fills
   .ref-viewer {
     @include ref-gutter;
-    margin-top: 24px;
+    margin: 24px auto 0;
+    max-width: 1280px;
 
     .viewer-wrapper {
       background: #000;
@@ -222,6 +226,8 @@
   // ---- description ----
   .ref-show-description {
     @include ref-gutter(192px, 96px);
+    margin: 0 auto;
+    max-width: 1280px;
     padding-top: 26px;
 
     p {
@@ -250,6 +256,8 @@
     display: grid;
     gap: 44px;
     grid-template-columns: minmax(0, 1fr) 360px;
+    margin: 0 auto;
+    max-width: 1280px;
     padding-bottom: 48px;
     padding-top: 26px;
 

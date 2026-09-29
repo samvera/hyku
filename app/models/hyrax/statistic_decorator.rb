@@ -16,6 +16,12 @@ module Hyrax
 
         super
       end
+
+      # OVERRIDE Hyrax 5.3.0: edtf's Date#<=> returns nil for the marker's TimeWithZone, so the
+      # comparison raises. Remove once samvera/hyrax#7674 is in Hyku's Hyrax.
+      def advance_zero_marker(object, object_method, date, user_id)
+        super(object, object_method, date.in_time_zone, user_id)
+      end
     end
   end
 end

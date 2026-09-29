@@ -6,7 +6,9 @@ content_block:
   image_uploadtab: true
   toolbar1: styleselect fontselect fontsizeselect | backcolor forecolor | bold italic underline
   toolbar2: indent outdent | alignleft aligncenter alignright | table | fullscreen | link hr image | undo redo  | code
+  paste_as_text: true
   plugins:
+    - paste
     - table
     - fullscreen
     - link

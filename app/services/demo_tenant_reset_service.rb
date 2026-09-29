@@ -44,6 +44,7 @@ class DemoTenantResetService
   class Error < StandardError; end
   class NotDemoTenant < Error; end
   class MissingSnapshot < Error; end
+  class SnapshotExists < Error; end
   class ImportFailed < Error; end
   class HealthCheckFailed < Error; end
 
@@ -91,10 +92,16 @@ class DemoTenantResetService
 
   # Capture the golden state of the tenant onto the account.
   #
+  # @param force [Boolean] overwrite an existing snapshot
   # @return [Hash] the captured snapshot
-  # @raise [NotDemoTenant]
-  def snapshot!
+  # @raise [NotDemoTenant, SnapshotExists]
+  def snapshot!(force: false)
     guard_demo_tenant!
+    if account.demo_tenant_snapshot.present? && !force
+      raise SnapshotExists,
+            "#{account.cname} already has a snapshot from #{account.demo_tenant_snapshot['captured_at']}; " \
+            "pass force: true to overwrite"
+    end
     snap = nil
     within_tenant do
       snap = {

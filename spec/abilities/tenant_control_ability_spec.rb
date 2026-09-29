@@ -86,6 +86,13 @@ RSpec.describe Hyrax::Ability::TenantControlAbility do
       it 'allows inviting users' do
         is_expected.to be_able_to(:invite, User)
       end
+
+      it 'does not add a cannot rule for editing the account' do
+        # TenantControlAbility does not block tenant superadmins;
+        # whether they can actually edit depends on admin_permissions granting access.
+        is_expected.not_to be_able_to(:edit, Account)
+        is_expected.not_to be_able_to(:update, Account)
+      end
     end
 
     describe 'when tenant admin' do
@@ -97,6 +104,11 @@ RSpec.describe Hyrax::Ability::TenantControlAbility do
 
       it 'does not allow inviting users' do
         is_expected.not_to be_able_to(:invite, User)
+      end
+
+      it 'does not allow editing or updating the account' do
+        is_expected.not_to be_able_to(:edit, Account)
+        is_expected.not_to be_able_to(:update, Account)
       end
     end
 
@@ -130,6 +142,13 @@ RSpec.describe Hyrax::Ability::TenantControlAbility do
       # A proprietor-level superadmin administers every tenant, demo or not.
       it 'allows inviting users' do
         is_expected.to be_able_to(:invite, User)
+      end
+
+      it 'does not add a cannot rule for editing the account' do
+        # superadmin_permissions grants can(:manage, :all), so Account access
+        # comes from there, not from TenantControlAbility.
+        is_expected.to be_able_to(:edit, Account)
+        is_expected.to be_able_to(:update, Account)
       end
     end
   end

@@ -157,6 +157,12 @@ RSpec.describe ControlledVocabularyUsage do
         expect(properties.first.work_types.map(&:name)).to eq ['OerResource']
       end
 
+      it 'leaves an OER work out of the general authority it does not use' do
+        names = described_class.citing('resource_types').first.work_types.map(&:name)
+
+        expect(names).not_to include 'OerResource'
+      end
+
       it 'returns an empty array for a vocabulary the mapping does not cite' do
         expect(described_class.citing('reading_rooms')).to eq []
       end

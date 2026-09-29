@@ -356,8 +356,13 @@ module Hyku # rubocop:disable Metrics/ModuleLength
       ActiveRecord.yaml_column_permitted_classes = yaml_column_permitted_classes
 
       # Because we're loading local translations early in the to_prepare block for our decorators,
-      # the I18n.load_path is out of order.  Remove and re-append so app locales load last and win.
-      app_locales = Dir[Rails.root.join('config', 'locales', '**', '*.yml')]
+      # the I18n.load_path is out of order.  This line ensures that we load local translations last.
+      #
+      # Removed before being appended: these paths are already listed by now, so any
+      # operation that only adds missing ones leaves them where they are, ahead of
+      # the engines'. Without eager loading the engines append after this runs, so
+      # development is where the ordering shows.
+      app_locales = Dir[Rails.root.join('config', 'locales', '**', '*.yml')].sort
       I18n.load_path -= app_locales
       I18n.load_path += app_locales
 

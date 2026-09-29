@@ -80,7 +80,7 @@ class ControlledVocabularyUsage
       mapped = Hyrax::ControlledVocabularies.controlled_vocab_mappings.filter_map do |name, source|
         next unless source == key
 
-        Property.new(name: name, work_types: model_work_types(name))
+        Property.new(name: name, work_types: model_work_types(name, key))
       end
 
       mapped + partial_properties(key)
@@ -97,12 +97,26 @@ class ControlledVocabularyUsage
       [Property.new(name: config[:property], work_types: work_types)]
     end
 
-    def model_work_types(name)
+    # A class is listed only when its own schema backs the property with this
+    # vocabulary: an OER work declares resource_type against oer_types, so it
+    # does not belong under resource_types even though it has the field.
+    def model_work_types(name, source_key = nil)
       model_classes.filter_map do |klass|
         next unless klass.fields.include?(name.to_sym)
+        next if source_key && schema_source(klass, name) &&
+                schema_source(klass, name) != source_key
 
         WorkType.new(name: klass.name, label: class_label(klass.name))
       end
+    end
+
+    # nil when the class has no yaml schema of its own naming the property, which
+    # leaves the static mapping as the only answer.
+    def schema_source(klass, name)
+      Hyrax::SimpleSchemaLoader.new
+                               .authority_rules_for(schema: klass.name.underscore)[name.to_sym]
+    rescue StandardError
+      nil
     end
 
     # Valkyrie classes only: the registry also lists each type's ActiveFedora

@@ -24,6 +24,37 @@ RSpec.describe Hyrax::GenericWorksController do
     end
   end
 
+  describe "#iiif_manifest_presenter" do
+    subject(:presenter) { controller.send :iiif_manifest_presenter }
+
+    let(:solr_document) { SolrDocument.new(id: 'work-1', has_model_ssim: ['GenericWork']) }
+
+    before do
+      allow(controller).to receive(:search_result_document).and_return(solr_document)
+      controller.params = { id: solr_document.id }
+    end
+
+    it "builds a Hyrax::IiifManifestPresenter by default" do
+      expect(presenter).to be_an_instance_of Hyrax::IiifManifestPresenter
+    end
+
+    context "when the controller configures its own presenter class" do
+      let(:presenter_class) { Class.new(Hyrax::IiifManifestPresenter) }
+
+      before { allow(described_class).to receive(:iiif_manifest_presenter_class).and_return(presenter_class) }
+
+      it "builds that class" do
+        expect(presenter).to be_an_instance_of presenter_class
+      end
+
+      it "still sets the hostname, ability and IiifPrint's base_url" do
+        expect(presenter.hostname).to eq "test.host"
+        expect(presenter.ability).to eq controller.current_ability
+        expect(presenter.base_url).to eq "http://test.host"
+      end
+    end
+  end
+
   describe '#create with a parent_id' do
     let(:parent) { FactoryBot.valkyrie_create(:generic_work_resource, depositor: user.user_key) }
 

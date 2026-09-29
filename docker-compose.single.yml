@@ -59,6 +59,7 @@ services:
       - SOLR_CLOUD_BOOTSTRAP=no
       - SOLR_ENABLE_CLOUD_MODE=no
       - SOLR_ENABLE_AUTHENTICATION=no
+      - SOLR_OPTS=${SOLR_OPTS:-}
       - VIRTUAL_PORT=8983
       - VIRTUAL_HOST=solr.hyku.test
     labels:
@@ -94,7 +95,7 @@ services:
       - "traefik.http.services.fits-${APP_NAME}.loadbalancer.server.port=8080"
 
   db:
-    image: postgres:11.1
+    image: postgres:${POSTGRES_VERSION:-11.1}
     env_file:
       - .env
     ports:
@@ -106,7 +107,7 @@ services:
       - VIRTUAL_PORT=5432
       - VIRTUAL_HOST=db.hyku.test
     volumes:
-      - db:/var/lib/postgresql/data
+      - db:${POSTGRES_DATA_DIR:-/var/lib/postgresql/data}
 
   adminer:
     image: adminer

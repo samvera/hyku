@@ -59,6 +59,7 @@ class Site < ApplicationRecord
     # were read under, the memoized Site included.
     def reset!
       RequestStore.store.except!(:site_instance, :content_blocks, :qa_local_authorities)
+      Hyrax.config.controlled_vocabulary_label_service.try(:reset!)
     end
   end
 

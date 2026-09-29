@@ -2,7 +2,10 @@
 
 module PdfJsHelper
   def pdf_js_url(path)
-    "/pdf.js/viewer.html?file=#{path}##{query_param}"
+    url = "/pdf.js/viewer.html?file=#{path}"
+    qp = query_param
+    url += "##{qp}" if qp
+    url
   end
 
   def pdf_file_set_presenter(presenter, downloadable: false)
@@ -17,9 +20,9 @@ module PdfJsHelper
   end
 
   def query_param
-    return unless params[:q]
+    return if params[:q].blank?
 
-    "search=#{params[:q]}&phrase=true"
+    "search=#{ERB::Util.url_encode(params[:q])}&phrase=true"
   end
 
   def render_show_pdf_behavior_checkbox?

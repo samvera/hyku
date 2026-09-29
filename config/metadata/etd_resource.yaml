@@ -68,6 +68,9 @@ attributes:
     predicate: http://www.europeana.eu/schemas/edm/rights
     mappings:
       simple_dc_pmh: dc:rights
+    controlled_values:
+      sources:
+        - rights_statements
   date:
     type: string
     multiple: true
@@ -159,6 +162,9 @@ attributes:
       html_dl: true
     mappings:
       simple_dc_pmh: dc:type
+    controlled_values:
+      sources:
+        - resource_types
   license:
     type: string
     multiple: true
@@ -173,6 +179,9 @@ attributes:
       html_dl: true
     mappings:
       simple_dc_pmh: dc:rights
+    controlled_values:
+      sources:
+        - licenses
   abstract:
     type: string
     multiple: true

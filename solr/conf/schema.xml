@@ -62,24 +62,25 @@
     <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true"/>
     <fieldType name="rand" class="solr.RandomSortField" omitNorms="true"/>
 
-    <!-- Default numeric field types.  -->
-    <fieldType name="int" class="solr.TrieIntField" precisionStep="0" positionIncrementGap="0"/>
-    <fieldType name="float" class="solr.TrieFloatField" precisionStep="0" positionIncrementGap="0"/>
-    <fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0"/>
-    <fieldType name="double" class="solr.TrieDoubleField" precisionStep="0" positionIncrementGap="0"/>
+    <!-- Default numeric field types. Trie*Field types were removed in Solr 9;
+         Point fields are supported since Solr 6, so this works on both 8.x and 9.x. -->
+    <fieldType name="int" class="solr.IntPointField" docValues="true"/>
+    <fieldType name="float" class="solr.FloatPointField" docValues="true"/>
+    <fieldType name="long" class="solr.LongPointField" docValues="true"/>
+    <fieldType name="double" class="solr.DoublePointField" docValues="true"/>
 
-    <!-- trie numeric field types for faster range queries -->
-    <fieldType name="tint" class="solr.TrieIntField" precisionStep="8" positionIncrementGap="0"/>
-    <fieldType name="tfloat" class="solr.TrieFloatField" precisionStep="8" positionIncrementGap="0"/>
-    <fieldType name="tlong" class="solr.TrieLongField" precisionStep="8" positionIncrementGap="0"/>
-    <fieldType name="tdouble" class="solr.TrieDoubleField" precisionStep="8" positionIncrementGap="0"/>
+    <!-- PointField numeric field types for faster range queries -->
+    <fieldType name="tint" class="solr.IntPointField" docValues="true"/>
+    <fieldType name="tfloat" class="solr.FloatPointField" docValues="true"/>
+    <fieldType name="tlong" class="solr.LongPointField" docValues="true"/>
+    <fieldType name="tdouble" class="solr.DoublePointField" docValues="true"/>
 
     <!-- The format for this date field is of the form 1995-12-31T23:59:59Z
          Optional fractional seconds are allowed: 1995-12-31T23:59:59.999Z
       -->
-    <fieldType name="date" class="solr.TrieDateField" precisionStep="0" positionIncrementGap="0"/>
-    <!-- A Trie based date field for faster date range queries and date faceting. -->
-    <fieldType name="tdate" class="solr.TrieDateField" precisionStep="6" positionIncrementGap="0"/>
+    <fieldType name="date" class="solr.DatePointField" docValues="true"/>
+    <!-- A PointField based date field for faster date range queries and date faceting. -->
+    <fieldType name="tdate" class="solr.DatePointField" docValues="true"/>
 
     <!-- This point type indexes the coordinates as separate fields (subFields)
       If subFieldType is defined, it references a type, and a dynamic field
@@ -94,8 +95,12 @@
      -->
     <fieldType name="point" class="solr.PointType" dimension="2" subFieldSuffix="_d"/>
 
-    <!-- A specialized field for geospatial search. If indexed, this fieldType must not be multivalued. -->
-    <fieldType name="location" class="solr.LatLonType" subFieldSuffix="_coordinate"/>
+    <!-- A specialized field for geospatial search. If indexed, this fieldType must not be multivalued.
+         solr.LatLonType was removed in Solr 9; LatLonPointSpatialField is its
+         supported replacement and has been available since Solr 6, so this
+         works on both 8.x and 9.x. It takes "lat,lon" input directly (no
+         subFieldSuffix indirection). -->
+    <fieldType name="location" class="solr.LatLonPointSpatialField" docValues="true"/>
 
     <!-- An alternative geospatial field type new to Solr 4.  It supports multiValued and polygon shapes.
       For more information about this and other Spatial fields new to Solr 4, see:

@@ -143,6 +143,11 @@ class CatalogController < ApplicationController
     # config.add_facet_field 'part_sim', limit: 5, label: 'Part'
     # config.add_facet_field 'part_of_sim', limit: 5
 
+    config.add_facet_field DateRangeIndexing::SOLR_FIELD,
+                           label: 'Date Range',
+                           range: { assumed_boundaries: [1800, Time.zone.now.year + 2] },
+                           include_in_advanced_search: false
+
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
     # handler defaults, or have no facets.

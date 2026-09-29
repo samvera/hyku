@@ -1,0 +1,35 @@
+# When a non-main change reaches staging, open/update staging -> main.
+# When a non-staging change reaches production, open/update production -> staging.
+name: Auto-Merger
+
+on:
+  push:
+    branches:
+      - staging
+      - production
+  workflow_dispatch:
+
+jobs:
+  auto-merger:
+    runs-on: ubuntu-latest
+    steps:
+      # A GitHub App token lets CI run automatically on the PR this workflow creates.
+      - name: Generate a token
+        id: generate_token
+        uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e # v2.0.6
+        with:
+          app-id: ${{ secrets.AUTO_MERGER_APP_ID }}
+          private-key: ${{ secrets.AUTO_MERGER_APP_PRIVATE_KEY }}
+
+      - name: Check out the repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Open or update merge-down pull request
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          github-token: ${{ steps.generate_token.outputs.token }}
+          script: |
+            const script = require('${{ github.workspace }}/.github/auto-merger.cjs')
+            await script({ github, context })

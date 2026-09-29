@@ -29,7 +29,7 @@ GIT
 
 GIT
   remote: https://github.com/samvera/hyrax.git
-  revision: 78ff0b92fd89da340c9a6fc740626347fe18dec9
+  revision: 1489c9571dd546c4edd0e0251fdbc1699cad4c90
   branch: main
   specs:
     hyrax (5.3.0)
@@ -294,12 +294,13 @@ GEM
       rubocop-performance
       rubocop-rails
       rubocop-rspec
-    blacklight (7.42.0)
+    blacklight (7.43.0)
       deprecation
       globalid
       hashdiff
       i18n (>= 1.7.0)
       jbuilder (~> 2.7)
+      json (< 3.0)
       kaminari (>= 0.15)
       ostruct (>= 0.3.2)
       rails (>= 6.1, < 9)
@@ -792,9 +793,9 @@ GEM
       faraday (~> 2.7)
       geo_coord
       json
-    iiif_manifest (1.6.0)
+    iiif_manifest (1.7.0)
       activesupport (>= 4)
-    iiif_print (3.1.0)
+    iiif_print (3.1.1)
       blacklight_iiif_search (>= 1.0, < 3.0)
       derivative-rodeo (~> 0.5)
       hyrax (>= 2.5, < 6)
@@ -1706,6 +1707,7 @@ DEPENDENCIES
   hyrax-doi!
   i18n-debug
   i18n-tasks
+  iiif_manifest (>= 1.7.0)
   iiif_print (~> 3.1)
   jbuilder (~> 2.5)
   jquery-rails

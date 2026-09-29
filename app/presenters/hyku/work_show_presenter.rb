@@ -151,8 +151,7 @@ module Hyku
       ids = authorized_item_ids
       return {} if ids.empty?
 
-      Hyrax::SolrService.post(q: "{!terms f=id}#{ids.join(',')}", rows: ids.size,
-                              fl: 'id,has_model_ssim')
+      Hyrax::SolrService.post("{!terms f=id}#{ids.join(',')}", rows: ids.size, fl: 'id,has_model_ssim')
                         .dig('response', 'docs')
                         .to_a
                         .to_h { |doc| [doc['id'], Array(doc['has_model_ssim']).first.to_s] }

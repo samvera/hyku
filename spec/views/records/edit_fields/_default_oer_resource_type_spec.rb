@@ -1,15 +1,16 @@
 # frozen_string_literal: true
 
-# The OER form carries its own copy of this field, so the retired-term handling the
-# records/ partial is checked for has to be confirmed here too rather than assumed.
-RSpec.describe 'oers/edit_fields/_resource_type', type: :view do
+# An OER work resolves resource_type to oer_types where every other work type
+# resolves it to resource_types, so the generic partial is exercised with an OER
+# to confirm the model reaches the authority lookup.
+RSpec.describe 'records/edit_fields/_default with an OER resource_type', type: :view do
   let(:work) { OerResource.new }
   let(:form) { Hyrax::Forms::ResourceForm.for(resource: work) }
   let(:active_term) { Hyrax::OerTypesService.select_active_options.first.last }
 
   def render_field
     view.simple_form_for(form, url: '/') do |f|
-      concat render(partial: 'oers/edit_fields/resource_type', locals: { f: f, key: :resource_type })
+      concat render(partial: 'records/edit_fields/default', locals: { f: f, key: :resource_type })
     end
   end
 
@@ -47,8 +48,15 @@ RSpec.describe 'oers/edit_fields/_resource_type', type: :view do
     end
   end
 
-  # Hyrax::OerForm lists resource_type in required_fields, so unlike the records/
-  # partial there is no blank to choose: include_blank follows required?.
+  it 'offers the terms from oer_types rather than the general authority' do
+    render_field
+
+    expect(rendered).to have_css("option[value='InteractiveResource']")
+    expect(rendered).to have_no_css("option[value='Article']")
+  end
+
+  # Hyrax::OerForm lists resource_type in required_fields, so include_blank
+  # follows required? and there is no blank to choose.
   it 'offers no blank, because an OER must carry a resource type' do
     render_field
 

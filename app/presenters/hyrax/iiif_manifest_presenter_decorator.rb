@@ -33,6 +33,7 @@ module Hyrax
     end
 
     def file_ids
+      return Array(model.member_ids) if Flipflop.iiif_ranges?
       model["descendent_member_ids_ssim"] || model.member_ids
     end
 
@@ -60,5 +61,27 @@ module Hyrax
 end
 
 Hyrax::IiifManifestPresenter.prepend(Hyrax::IiifManifestPresenterDecorator)
+Hyrax::IiifManifestPresenter.prepend(Hyku::Ranges)
 Hyrax::IiifManifestPresenter::DisplayImagePresenter
   .prepend(Hyrax::IiifManifestPresenterDecorator::DisplayImagePresenterDecorator)
+Hyrax::IiifManifestPresenter::DisplayImagePresenter
+  .include(Hyku::DisplaysItemMetadata)
+
+# OVERRIDE IiifPrint 3.1.0 - IiifPrint's Factory decorator flattens child work
+# members into their file sets, which drops the work/file-set distinction Ranges
+# needs to build the table of contents. Bypass it when the feature is active.
+module Hyrax
+  module IiifManifestPresenterFactoryRangesDecorator
+    def build
+      return super unless Flipflop.iiif_ranges?
+
+      ids.map do |id|
+        solr_doc = load_docs.find { |doc| doc.id == id.to_s }
+        presenter_class.for(solr_doc) if solr_doc
+      end.compact
+    end
+  end
+end
+
+Hyrax::IiifManifestPresenter::Factory
+  .prepend(Hyrax::IiifManifestPresenterFactoryRangesDecorator)

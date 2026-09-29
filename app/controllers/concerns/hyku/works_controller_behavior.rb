@@ -8,6 +8,7 @@
 #           - refuse a parent_id the depositor cannot edit or whose type cannot
 #             contain the work being created
 #           - refuse a work type the tenant does not offer
+#           - let a controller choose its IIIF manifest presenter class
 module Hyku
   # include this module after including Hyrax::WorksControllerBehavior to override
   # Hyrax::WorksControllerBehavior methods with the ones defined here
@@ -22,6 +23,8 @@ module Hyku
       before_action :ensure_work_type_offered, only: %i[new create]
       before_action :ensure_parent_accepts_child, only: :create
       self.show_presenter = Hyku::WorkShowPresenter
+      class_attribute :iiif_manifest_presenter_class
+      self.iiif_manifest_presenter_class = Hyrax::IiifManifestPresenter
 
       # These cache wrapper methods need to be in the top level so that they override other modules
       def show
@@ -86,7 +89,7 @@ module Hyku
     end
 
     def iiif_manifest_presenter
-      Hyrax::IiifManifestPresenter.new(search_result_document(id: params[:id])).tap do |p|
+      iiif_manifest_presenter_class.new(search_result_document(id: params[:id])).tap do |p|
         p.hostname = request.hostname
         p.ability = current_ability
       end

@@ -14,6 +14,27 @@ RSpec.describe Site, type: :model do
   let(:admin2) { FactoryBot.create(:user, email: 'jane@was_here.net') }
   let(:admin3) { FactoryBot.create(:user, email: 'i@was_here.net') }
 
+  # Apartment's :switch callback calls this, so a cache that survives holds the
+  # previous tenant's rows -- in an in-process tenant loop such as a rake reindex,
+  # one tenant's ids would resolve against another's labels.
+  describe ".reset!" do
+    it "clears the per-request caches that hold tenant rows" do
+      RequestStore.store[:site_instance] = 'Tenant A'
+      RequestStore.store[:qa_local_authorities] = { 'licenses' => 'Tenant A' }
+
+      described_class.reset!
+
+      expect(RequestStore.store).not_to have_key(:site_instance)
+      expect(RequestStore.store).not_to have_key(:qa_local_authorities)
+    end
+
+    it "clears the vocabulary label maps the resolver built for the tenant" do
+      expect(Hyrax.config.controlled_vocabulary_label_service).to receive(:reset!)
+
+      described_class.reset!
+    end
+  end
+
   describe ".instance" do
     let(:request_store_mock) { {} }
 

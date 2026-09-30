@@ -108,4 +108,25 @@ RSpec.describe CatalogController do
       expect(second_cache).not_to eq(third_cache)
     end
   end
+
+  describe '.add_full_text_index_fields' do
+    let(:config) { Blacklight::Configuration.new }
+
+    it 'renders snippets for every configured full-text field' do
+      described_class.add_full_text_index_fields(config, %w[all_text_tsimv file_set_text_tsimv])
+
+      expect(config.index_fields.values.map { |field| [field.field, field.highlight, field.helper_method] })
+        .to eq([['all_text_tsimv', true, :render_ocr_snippets], ['file_set_text_tsimv', true, :render_ocr_snippets]])
+    end
+  end
+
+  describe 'full-text keyword search' do
+    let(:config) { described_class.blacklight_config }
+
+    it 'searches every configured full-text field' do
+      qfs = [config.default_solr_params[:qf], config.search_fields['all_fields'].solr_parameters[:qf]].map(&:split)
+
+      expect(qfs).to all(include(*Hyku::Application.full_text_fields))
+    end
+  end
 end

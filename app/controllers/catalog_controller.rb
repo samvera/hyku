@@ -34,6 +34,16 @@ class CatalogController < ApplicationController
     'system_create_dtsi'
   end
 
+  def self.add_full_text_index_fields(config, full_text_fields = Hyku::Application.full_text_fields)
+    full_text_fields.each do |field|
+      config.add_index_field field,
+        label: "Item contents",
+        highlight: true,
+        helper_method: :render_ocr_snippets,
+        values: ->(field_config, document, _context) { document.highlight_field(field_config.field).map(&:html_safe) if document.has_highlight_field? field_config.field }
+    end
+  end
+
   # CatalogController-scope behavior and configuration for BlacklightIiifSearch
   include BlacklightIiifSearch::Controller
 
@@ -43,12 +53,7 @@ class CatalogController < ApplicationController
     config.view.slideshow(document_component: Blacklight::Gallery::SlideshowComponent)
 
     # IiifPrint index fields
-    config.add_index_field 'all_text_timv'
-    config.add_index_field 'all_text_tsimv',
-      label: "Item contents",
-      highlight: true,
-      helper_method: :render_ocr_snippets,
-      values: ->(field_config, document, _context) { document.highlight_field(field_config.field).map(&:html_safe) if document.has_highlight_field? field_config.field }
+    add_full_text_index_fields(config)
 
     # configuration for Blacklight IIIF Content Search
     config.iiif_search = {
@@ -91,7 +96,7 @@ class CatalogController < ApplicationController
       rows: 10,
       qf: (
         IiifPrint.config.metadata_fields.keys.map { |attribute| "#{attribute}_tesim" } +
-        ["title_tesim", "description_tesim", "all_text_timv", "all_text_tsimv"]
+        ["title_tesim", "description_tesim", "all_text_timv"] + Hyku::Application.full_text_fields
       ).uniq.join(' '),
       "hl": true,
       "hl.simple.pre": "<span class='highlight'>",
@@ -245,7 +250,7 @@ class CatalogController < ApplicationController
       all_names = config.show_fields.values.map(&:field).join(" ")
       title_name = 'title_tesim'
       field.solr_parameters = {
-        qf: "#{all_names} #{title_name} file_format_tesim all_text_tsimv all_text_tsimv",
+        qf: "#{all_names} #{title_name} file_format_tesim #{Hyku::Application.full_text_fields.join(' ')}",
         pf: title_name.to_s
       }
     end

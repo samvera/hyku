@@ -90,6 +90,39 @@ RSpec.describe ControlledVocabularyUsage do
       expect(described_class.citing('rights_statements').map(&:name)).to eq ['rights_statement']
     end
 
+    context 'a profile key renaming its attribute' do
+      before do
+        profile['properties']['rights_statement_optional'] = {
+          'name' => 'rights_statement',
+          'available_on' => { 'class' => ['CollectionResource', 'GenericWorkResource'] },
+          'controlled_values' => { 'sources' => ['rights_statements'] }
+        }
+      end
+
+      it 'reports the attribute name once, not the profile key' do
+        expect(described_class.citing('rights_statements').map(&:name)).to eq ['rights_statement']
+      end
+
+      it 'merges the work types of every key sharing the attribute' do
+        work_types = described_class.citing('rights_statements').first.work_types
+
+        expect(work_types.map(&:name)).to eq %w[GenericWorkResource CollectionResource]
+      end
+    end
+
+    it 'takes the work types of a partial-controlled property from every key naming it' do
+      profile['properties']['based_near_collection'] = {
+        'name' => 'based_near',
+        'available_on' => { 'class' => ['CollectionResource'] },
+        'controlled_values' => { 'sources' => ['null'] }
+      }
+
+      properties = described_class.citing('geonames')
+
+      expect(properties.map(&:name)).to eq ['based_near']
+      expect(properties.first.work_types.map(&:name)).to eq %w[GenericWorkResource ImageResource CollectionResource]
+    end
+
     it 'returns an empty array when no property cites the vocabulary' do
       expect(described_class.citing('subjects')).to eq []
     end

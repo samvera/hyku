@@ -45,13 +45,26 @@ class ControlledVocabularyUsage
       # keyed canonically and then asks for that key's usage.
       keys = [key] + ControlledVocabularyCatalog.aliases_for(key)
 
-      declared = properties.filter_map do |name, config|
-        next unless config.is_a?(Hash) && cites?(config, keys)
-
-        Property.new(name: name, work_types: work_types(config))
+      citing = properties.select { |_, config| config.is_a?(Hash) && cites?(config, keys) }
+      declared = by_attribute_name(citing).map do |name, configs|
+        Property.new(name: name, work_types: merged_work_types(configs))
       end
 
       declared + profile_partial_properties(profile, key, declared)
+    end
+
+    # A profile key is only unique within the profile; the attribute a work
+    # carries, and Bulkrax imports, is its `name:`. Keys such as
+    # rights_statement_optional exist to give the same attribute different
+    # settings on different classes, so they collapse into one property.
+    def by_attribute_name(properties)
+      properties.each_with_object({}) do |(key, config), grouped|
+        (grouped[attribute_name(key, config)] ||= []) << config
+      end
+    end
+
+    def attribute_name(key, config)
+      config['name'].presence || key
     end
 
     # A partial that hardcodes its authority leaves the profile with nothing to
@@ -63,10 +76,11 @@ class ControlledVocabularyUsage
       return [] if config.nil?
       return [] if declared.any? { |property| property.name == config[:property] }
 
-      property_config = (profile['properties'] || {})[config[:property]]
-      return [] unless property_config.is_a?(Hash)
+      property_configs = (profile['properties'] || {}).select do |name, property_config|
+        property_config.is_a?(Hash) && attribute_name(name, property_config) == config[:property]
+      end
 
-      types = work_types(property_config)
+      types = merged_work_types(property_configs.values)
       types = types.select { |type| config[:classes].include?(type.name) } if config[:classes]
       return [] if types.empty?
 
@@ -133,6 +147,10 @@ class ControlledVocabularyUsage
       Array(config.dig('controlled_values', 'sources')).any? do |source|
         keys.include?(source.to_s.strip)
       end
+    end
+
+    def merged_work_types(configs)
+      configs.flat_map { |config| work_types(config) }.uniq(&:name)
     end
 
     def work_types(config)

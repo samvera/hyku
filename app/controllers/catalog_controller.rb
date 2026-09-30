@@ -104,7 +104,12 @@ class CatalogController < ApplicationController
     config.http_method = :post
 
     ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
+    #  The hl.* settings only take effect when a search builder turns hl on.
     #  Max fragsize is needed to not cut off full text search at default 51,000 characters
+    #  The fastVector highlighter reads hl.tag.*; the original highlighter, and fields without term
+    #  vectors under fastVector, read hl.simple.*.
+    highlight_pre = "<span class='highlight'>"
+    highlight_post = "</span>"
     config.default_solr_params = {
       qt: "search",
       rows: 10,
@@ -113,10 +118,10 @@ class CatalogController < ApplicationController
         IiifPrint.config.metadata_fields.keys.map { |attribute| "#{attribute}_tesim" } +
         ["title_tesim", "description_tesim", "all_text_timv"] + Hyku::Application.full_text_fields
       ).uniq.join(' '),
-      "hl": true,
-      "hl.simple.pre": "<span class='highlight'>",
-      "hl.simple.post": "</span>",
-      "hl.snippets": 30,
+      "hl.tag.pre": highlight_pre,
+      "hl.tag.post": highlight_post,
+      "hl.simple.pre": highlight_pre,
+      "hl.simple.post": highlight_post,
       "hl.fragsize": 100,
       "hl.maxAnalyzedChars": 5_100_000
     }

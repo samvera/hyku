@@ -21,6 +21,24 @@ RSpec.describe 'Full-text snippets in catalog search results', type: :feature, c
     solr.commit
   end
 
+  it 'shows a highlighted snippet for a keyword that only appears in the full text' do
+    visit '/catalog?q=quinquereme&search_field=all_fields'
+
+    expect(page).to have_content('Ledger of the harbor master')
+    expect(page).to have_css('.ocr_snippet span.highlight', text: 'quinquereme')
+  end
+
+  context 'with full-text snippets turned off' do
+    before { allow(Flipflop).to receive(:full_text_snippets?).and_return(false) }
+
+    it 'still finds the work by its full text but shows no snippet' do
+      visit '/catalog?q=quinquereme&search_field=all_fields'
+
+      expect(page).to have_content('Ledger of the harbor master')
+      expect(page).to have_no_css('.ocr_snippet')
+    end
+  end
+
   context 'when the keyword only matches the full text of a file set' do
     let(:file_set_id) { SecureRandom.uuid }
     let(:work_document) do

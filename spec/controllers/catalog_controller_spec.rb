@@ -109,6 +109,42 @@ RSpec.describe CatalogController do
     end
   end
 
+  describe '.search_result_fields' do
+    let(:full_text_fields) { %w[all_text_tsimv] }
+    let(:globs) { described_class.search_result_fields(full_text_fields).split(',') - ['score'] }
+    let(:stored_schema_fields) do
+      schema = Nokogiri::XML(File.read(Rails.root.join('solr', 'conf', 'schema.xml')))
+      stored_types = schema.xpath('//fieldType').reject { |type| type['stored'] == 'false' }.map { |type| type['name'] }
+      schema.xpath('//field | //dynamicField')
+            .select { |field| field['stored'] == 'true' || (field['stored'].nil? && stored_types.include?(field['type'])) }
+            .map { |field| field['name'] }
+    end
+
+    def returned?(name)
+      globs.any? { |glob| File.fnmatch(glob, name) }
+    end
+
+    it 'returns every stored field in the schema except the stored full text' do
+      expect(stored_schema_fields - ['*_tsimv']).to all(satisfy { |name| returned?(name) })
+    end
+
+    it 'does not return the stored full text' do
+      expect(returned?('all_text_tsimv')).to be(false)
+    end
+
+    context 'with a legacy full-text field under another suffix' do
+      let(:full_text_fields) { %w[all_text_tsimv all_text_tesimv] }
+
+      it 'does not return either full-text field' do
+        expect(%w[all_text_tsimv all_text_tesimv].map { |name| returned?(name) }).to eq([false, false])
+      end
+    end
+
+    it 'is what catalog searches ask Solr to return' do
+      expect(described_class.blacklight_config.default_solr_params[:fl]).to eq(described_class.search_result_fields)
+    end
+  end
+
   describe '.add_full_text_index_fields' do
     let(:config) { Blacklight::Configuration.new }
 

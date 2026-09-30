@@ -34,6 +34,20 @@ class CatalogController < ApplicationController
     'system_create_dtsi'
   end
 
+  # Search results never read the stored full text (snippets come from the highlighting block), and
+  # returning it for every hit is the bulk of the payload. Solr's fl cannot exclude a field, so these
+  # globs match every field name by its last character except "v", then restore the stored *v
+  # suffixes that no full-text field uses. A full-text field is therefore left out by its suffix,
+  # and one whose name does not end in "v" cannot be left out.
+  def self.search_result_fields(full_text_fields = Hyku::Application.full_text_fields)
+    full_text_suffixes = full_text_fields.map { |field| field[/[^_]+\z/] }
+    (
+      (('a'..'z').to_a + ('A'..'Z').to_a + ('0'..'9').to_a + ['_'] - %w[v V]).map { |last| "*#{last}" } +
+      (%w[tesimv tesiv tsimv tsiv] - full_text_suffixes).map { |suffix| "*_#{suffix}" } +
+      ['score']
+    ).join(',')
+  end
+
   def self.add_full_text_index_fields(config, full_text_fields = Hyku::Application.full_text_fields)
     full_text_fields.each do |field|
       config.add_index_field field,
@@ -94,6 +108,7 @@ class CatalogController < ApplicationController
     config.default_solr_params = {
       qt: "search",
       rows: 10,
+      fl: search_result_fields,
       qf: (
         IiifPrint.config.metadata_fields.keys.map { |attribute| "#{attribute}_tesim" } +
         ["title_tesim", "description_tesim", "all_text_timv"] + Hyku::Application.full_text_fields

@@ -427,6 +427,42 @@ RSpec.describe AccountSettings do
       end
     end
   end
+
+  describe 'Hyrax::Analytics.config ids across tenants' do
+    let(:analytics_config) { Hyrax::Analytics.config }
+    let!(:original_ids) { [analytics_config.analytics_id, analytics_config.property_id] }
+
+    before do
+      account
+      analytics_config.analytics_id = 'G-OTHERTENANT'
+      analytics_config.property_id = '111111111'
+    end
+
+    after do
+      analytics_config.analytics_id = original_ids.first
+      analytics_config.property_id = original_ids.last
+    end
+
+    it 'clears the previous tenant\'s ids when this tenant has no analytics' do
+      account.send(:reload_hyrax_analytics)
+
+      expect(analytics_config.analytics_id).to be_blank
+      expect(analytics_config.property_id).to be_blank
+    end
+
+    it 'leaves a provider config without id setters alone' do
+      allow(Hyrax::Analytics).to receive(:config).and_return(Hyrax::Analytics::Matomo::Config.new({}))
+
+      expect { account.send(:reload_hyrax_analytics) }.not_to raise_error
+    end
+
+    it 'still loads the account when the analytics config cannot load' do
+      allow(Hyrax::Analytics).to receive(:config).and_raise(Psych::SyntaxError.new('analytics.yml', 1, 1, 0, 'bad', 'bad'))
+
+      expect { account.send(:reload_hyrax_analytics) }.not_to raise_error
+    end
+  end
+
   describe '#solr_collection_options' do
     let(:old_account) do
       Account.create(name: 'old', cname: 'old.example.com').tap do |a|
